@@ -1189,9 +1189,6 @@ Oder über Python: Dies ist die kompatible bessere Version.
 pip install gcalcli
 ```
 
-
-
-
 #### Google OAuth einrichten
 
 Beim ersten Zugriff auf den Calendar-Skill öffnet sich ein Browser-Login (oder du bekommst einen URL-Code, wenn du Headless arbeitest).
@@ -1288,17 +1285,19 @@ cat ~/.openclaw/config.json
 Jetzt sollten die beiden Zeilen endlich sichtbar sein.
 
 
+XXXXXXX
 SCHRITT 6
 
 
 
 SCHRITTE die noch FEHLEN
-
+```
 openclaw doctor         # check for config issues
 openclaw status         # gateway status
 openclaw dashboard      # open the browser UI
+```
 
-1. Die Bindung von OpenClaw von dev zu openclaw muss noch erstellt werden. 
+1. Die Bindung von OpenClaw von `dev` zu `openclaw` muss noch erstellt werden. 
 
 #### 3. 🛠️ Optional (sehr empfohlen)
 ```
@@ -1315,55 +1314,50 @@ Das fixt:
 
 ##### Ziel
 
-Klick auf Desktop →
-PowerShell öffnet sich →
-WSL startet →
-`openclaw` läuft.
-
-Kommando (fertig):
++ Klick auf Desktop →
++ PowerShell öffnet sich →
++ WSL startet →
++ `openclaw` läuft.
++ Kommando (fertig):
 ```
 wsl -d Ubuntu -e bash -lc "openclaw --profile dev gateway"
 ```
 
 ##### Desktop-Verknüpfung erstellen
 
-2. Rechtsklick Desktop → Neu → Verknüpfung
+1. Rechtsklick Desktop → Neu → Verknüpfung
 
-2. Ziel:
-```
-C:\Windows\System32\wsl.exe -d Ubuntu -e bash -lc "openclaw --profile dev gateway"
-```
-
-3. Starten in (optional):
-```
-C:\Users\danie
-```
-
-4. Name z.B.:
-```
-OpenClaw Gateway
-```
-
+	1. Ziel:
+	```
+	C:\Windows\System32\wsl.exe -d Ubuntu -e bash -lc "openclaw --profile dev gateway"
+	```
+	2. Starten in (optional):
+	```
+	C:\Users\danie
+	```
+	3. Name z.B.:
+	```
+	OpenClaw Gateway
+	```
 
 3. Online mein OpenClaw beinhaltet die gesuchten Screenshots auf Github und ist etwas anders. 
 
-
-4. Die Android App mit Android Studio bauen. Quellcode ist hier innenliegend. 
+4. Die Android App mit Android Studio bauen. Bitte beschreiben und hier einfügen. 
 
 5. Eine Brücke zu HomeAssistent und Amazon Alexa bauen.
 
-Bitte fortfahren
 
 #### OpenManus_General_AI_Agents 
 [OpenManus_General_AI_Agents ](https://github.com/dwhr-pi/OpenManus_General_AI_Agents)
 
 
+<!--
 #### chatgpt-to-markdown
 [chatgpt-to-markdown](https://github.com/dwhr-pi/chatgpt-to-markdown)
 
 #### ai-chat-to-markdown
 [ai-chat-to-markdown](https://github.com/dwhr-pi/ai-chat-to-markdown)
-
+-->
 #### GenAI_Agents
 [GenAI_Agents](https://github.com/dwhr-pi/GenAI_Agents)
 
@@ -1386,23 +1380,20 @@ Bitte fortfahren
 [OpenClawHomeAssistant](https://github.com/dwhr-pi/OpenClawHomeAssistant)
 oder direkt mit Alexa verbinden. 
 
-Bitte fortfahren
++ [Google Suche: openclaw auf windows installieren](https://www.google.com/search?q=openclaw+auf+windows+installieren&oq=openclaw+auf+windows&gs_lcrp=EgZjaHJvbWUqBwgCECEYoAEyBggAEEUYOTIHCAEQIRigATIHCAIQIRigATIHCAMQIRigAdIBCTE5ODQzajBqN6gCCLACAfEFdSD3kA_gYh4&sourceid=chrome&ie=UTF-8)  
++ [YouTube: Installing OpenClaw on Windows 10/11 – Step-by-Step Guide](https://www.youtube.com/watch?v=nDdPMVNzv4s)  
++ [Heise: OpenClaw im Selbstversuch: Erste Schritte mit dem Super-KI-Agenten](https://www.heise.de/ratgeber/OpenClaw-im-Selbstversuch-Erste-Schritte-mit-dem-Super-KI-Agenten-11167211.html)  
++ [TikTok: Rin OpenClaw on a MicroPC: A Step by Step guide](https://www.tiktok.com/@adamstewartmarketing/video/7604098695574981909)  
 
 
-[Google Suche: openclaw auf windows installieren](https://www.google.com/search?q=openclaw+auf+windows+installieren&oq=openclaw+auf+windows&gs_lcrp=EgZjaHJvbWUqBwgCECEYoAEyBggAEEUYOTIHCAEQIRigATIHCAIQIRigATIHCAMQIRigAdIBCTE5ODQzajBqN6gCCLACAfEFdSD3kA_gYh4&sourceid=chrome&ie=UTF-8)  
-[YouTube: Installing OpenClaw on Windows 10/11 – Step-by-Step Guide](https://www.youtube.com/watch?v=nDdPMVNzv4s)  
-[Heise: OpenClaw im Selbstversuch: Erste Schritte mit dem Super-KI-Agenten](https://www.heise.de/ratgeber/OpenClaw-im-Selbstversuch-Erste-Schritte-mit-dem-Super-KI-Agenten-11167211.html)  
-[TikTok: Rin OpenClaw on a MicroPC: A Step by Step guide](https://www.tiktok.com/@adamstewartmarketing/video/7604098695574981909)  
-
-
-[OpenClaw Install](https://docs.openclaw.ai/install)
++ [OpenClaw Install](https://docs.openclaw.ai/install)
 
 
 
 
 
 
-
+XXXXXX
 
 
 ### OpenClaw-Konfiguration 
@@ -1524,16 +1515,12 @@ Bitte pass das auf Deine Angaben entsprechend hin an.
 
 
 
-
-
-
-
 Editiere dies mit: 
 ```
 nano ~/.openclaw/openclaw.json
 ```
 
-Prüfe ob es richtig gepsiechert wurde mit: 
+Prüfe ob es richtig gespeichert wurde mit: 
 ```
 cat ~/.openclaw/openclaw.json
 ```
@@ -1616,7 +1603,7 @@ AGENTS.md  BOOTSTRAP.md  HEARTBEAT.md  IDENTITY.md  SOUL.md  TOOLS.md  USER.md
 
 Sieht es genauso aus, ist alles gut. 
 
-### 🩺 Was macht openclaw doctor?
+### 🩺 Was macht `openclaw doctor`?
 
 Im Prinzip:
 
@@ -1675,8 +1662,6 @@ Das gibt dir tiefere Infos (hilfreich, wenn man wirklich debuggen will).
 
 
 
-
-
 ### 🔑 1️⃣ Gemini API-Key bekommen
 
 Der Key kommt von Google AI Studio:
@@ -1685,9 +1670,6 @@ Der Key kommt von Google AI Studio:
 ```
 https://aistudio.google.com/app/apikey
 ```
-
-XXXXXXEntfernen
-AIzaSyCBKBBHQZUSjyfKWLt6vRsTQ82y9dWbWsw
 
 Dort:
 
@@ -1718,14 +1700,14 @@ Danach prüfen:
 echo $GEMINI_API_KEY
 ```
 
-
-
 Wenn der Key ausgegeben wird → passt.
 
-#### ⚙️ 3️⃣ Gemini in OpenClaw konfigurieren
+#### ⚙️ 3️⃣  Gemini in OpenClaw konfigurieren
 
 Jetzt sagst du OpenClaw, dass es Gemini nutzen soll.
-ALT
+
+# ALT:
+
 ##### Variante A (empfohlen, sauber):
 ```
 openclaw auth add --provider gemini
@@ -1780,17 +1762,18 @@ whoami
 Wenn das unterschiedlich war, kann es sein, dass du zwei .openclaw-Ordner hast.
 
 
-NEU 
-#### 3️⃣ OpenClaw sagen, dass Gemini verwendet werden soll
+# NEU: 
+
+#### 3️⃣  OpenClaw sagen, dass Gemini verwendet werden soll
 
 Jetzt:
 ```
 npx openclaw config set agents.defaults.llm.provider gemini
 ```
-#####🔹 2️⃣ Gemini als LLM nutzen
+#####🔹 2️⃣  Gemini als LLM nutzen
 
 In dieser OpenClaw-Version wird der Provider automatisch erkannt,
-wenn GEMINI_API_KEY gesetzt ist.
+wenn `GEMINI_API_KEY` gesetzt ist.
 
 Du musst keinen llm.provider setzen.
 
@@ -1802,7 +1785,7 @@ OpenClaw priorisiert:
 
 Wenn nur Gemini gesetzt ist → wird Gemini genutzt.
 
-#####🔹 3️⃣ Memory Search mit Gemini konfigurieren
+#####🔹 3️⃣  Memory Search mit Gemini konfigurieren
 
 Das ist der einzige Teil, den du wirklich setzen musst:
 ```
@@ -1823,9 +1806,9 @@ npx openclaw memory index
 npx openclaw memory status --deep
 ```
 
-Wenn dort Gemini + embedding-001 steht → läuft.
+Wenn dort `Gemini + embedding-001` steht → läuft.
 
-Speichern → neu starten → npx openclaw doctor
+Speichern → neu starten → `npx openclaw doctor`
 
 
 
