@@ -435,12 +435,12 @@ npm audit
 
 Aber:
 
-##### ⚠️ Nicht blind `npm audit fix --force` ausführen,
+#### ⚠️ Nicht blind `npm audit fix --force` ausführen,
 das kann OpenClaw kaputtpatchen.
 
 In 90% der Fälle betrifft das nur Dev-Dependencies oder CLI-Tools.
 
-#####💡 Warum diese Warnungen erscheinen
+####💡 Warum diese Warnungen erscheinen
 
 OpenClaw zieht u.a.:
 
