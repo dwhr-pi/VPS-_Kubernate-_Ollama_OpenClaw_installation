@@ -1126,13 +1126,13 @@ Du kannst diese URL nicht einfach in einem normalen Browser öffnen, weil 127.0.
 In deinem Fall:
 
 ```
-clk_PsA0t378gTOD95gyAB-zMHZ3lRibxTX7hdvpasN-vkE
+clk_PsA0t378gTOD95gyAB-zMHZ3lRibxTX7hdvpasN-vsE
 ```
 
 2. Dann manuell beim CLI einloggen:
 
 ```
-npx clawhub login --token clk_PsA0t378gTOD95gyAB-zMHZ3lRibxTX7hdvpasN-vkE
+npx clawhub login --token clk_PsA0t378gTOD95gyAB-zMHZ3lRibxTX7hdvpasN-vsE
 ```
 
 Damit bist du eingeloggt **ohne Browser**. 
