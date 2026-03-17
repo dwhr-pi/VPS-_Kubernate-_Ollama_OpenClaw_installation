@@ -29,9 +29,9 @@ Bei mir musste `snapd` wieder entfernt werden. Damit die man-db beim update und 
 Linus Torwald hat ganze Arbeit geleistet. Ohne Chatgpt.com wäre Linux nur einfacher mißt und nicht zu bedienen. 
 In einigen Fällen ist es besser, die weiteren Empfelungen von ChatGPT.com zu übersprigen und somit zu ignorieren. 
 In dem man nach dem Ausführen des ersten Schrittes besser gleich sofort die Ausgabe im Terminal ChatGPT.com postet. 
-Dann wird in der neuen Auswertung dessen schonmal festgestellt, das es noch an etwas anderes liegt und von daher sich der obrige Schritt 2 nur deshalb erübrigt hat. Später könnte dieser deshalb fehlende Schritt 2 noch mal von ChatGPT.com genannt werden und wird somit erst an geeignter Stelle erst angewendet. 
+Dann wird in der neuen Auswertung dessen schonmal festgestellt, das es noch an etwas anderes liegt und von daher sich der obrige Schritt 2 nur deshalb erübrigt hat. Später könnte dieser deshalb fehlende Schritt 2 noch mal von ChatGPT.com genannt werden und wird somit erst an geeignter Stelle erst angewendet.  
 In meinem Fall klammerte sich `snapd` als Endlosschleife an das `systemd`, somit der `dbus` versucht, `systemd` zu triggern – **WSL hat aber kein richtiges systemd**, also hängt alles bei `apt/dpkg` 
-Mit ChatGPT könnte man zusammen zum med. Linux Chirugen werden. 
+Mit ChatGPT könnte man zusammen zum med. Linux Chirugen werden.  
 **Merke**: Immer wenn eine Meldung oder unerwartes Verhalten von Linux einem Fragwürdig vorkommt. Rein damit in ChaptGPT.com. Das hat geholfen! 
 
 ### Schritt 1 – Prüfen der WSL-Version
