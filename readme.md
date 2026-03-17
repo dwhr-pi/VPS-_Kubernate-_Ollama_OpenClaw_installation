@@ -439,7 +439,7 @@ das kann OpenClaw kaputtpatchen.
 
 In 90% der Fälle betrifft das nur Dev-Dependencies oder CLI-Tools.
 
-####💡 Warum diese Warnungen erscheinen
+####💡Warum diese Warnungen erscheinen
 
 OpenClaw zieht u.a.:
 
