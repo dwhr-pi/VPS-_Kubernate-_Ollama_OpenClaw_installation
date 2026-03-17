@@ -150,7 +150,7 @@ Es wird die Legacy-Verteilungsregistrierung verwendet. Erwägen Sie, stattdessen
 ist nur ein Warnhinweis, kein Fehler.
 WSL lädt gerade die Distro herunter (der Fortschrittsbalken zeigt 0,0 %).  
 
-####⚡Wichtig:
+#### ⚡Wichtig:
 
 + Der Download kann mehrere Minuten dauern, je nach Internetverbindung.
 + Bei sehr langsamer Verbindung bleibt der Balken lange auf 0,0 %.
