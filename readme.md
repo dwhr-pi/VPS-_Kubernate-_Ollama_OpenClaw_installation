@@ -1,5 +1,5 @@
-# VPS,_Kubernate,_Ollama_OpenClaw_installation
-VPS, Kubernetes, Olama & OpenClaw-Installation
+# VPS, Kubernetes, Olama & OpenClaw-Installation
+
 
 
 ### ChatGPT.com
