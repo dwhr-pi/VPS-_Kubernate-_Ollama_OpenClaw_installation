@@ -1,0 +1,142 @@
+# ==============================================================================
+# Kubernetes-Deployments für KI-Infrastruktur & Trading-Bots
+# Teil des Projekts: VPS-_Kubernate-_Ollama_OpenClaw_installation
+# ==============================================================================
+
+# 1. Namespace für KI-Dienste
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ai-services
+---
+
+# 2. Ollama Deployment (CPU-Version für VPS-Only)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ollama
+  namespace: ai-services
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ollama
+  template:
+    metadata:
+      labels:
+        app: ollama
+    spec:
+      containers:
+      - name: ollama
+        image: ollama/ollama:latest
+        ports:
+        - containerPort: 11434
+        resources:
+          limits:
+            cpu: "2"
+            memory: "4Gi"
+          requests:
+            cpu: "1"
+            memory: "2Gi"
+        volumeMounts:
+        - name: ollama-models
+          mountPath: /root/.ollama
+      volumes:
+      - name: ollama-models
+        persistentVolumeClaim:
+          claimName: ollama-pvc
+---
+
+# 3. Persistent Volume Claim für Ollama-Modelle
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ollama-pvc
+  namespace: ai-services
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 30Gi
+---
+
+# 4. Zenbot Deployment (Trading-Bot)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zenbot
+  namespace: ai-services
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zenbot
+  template:
+    metadata:
+      labels:
+        app: zenbot
+    spec:
+      containers:
+      - name: zenbot
+        image: deviavir/zenbot:latest
+        env:
+        - name: MONGODB_URI
+          value: "mongodb://mongo:27017/zenbot"
+        ports:
+        - containerPort: 8080
+---
+
+# 5. MongoDB Service für Zenbot
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo
+  namespace: ai-services
+spec:
+  selector:
+    app: mongo
+  ports:
+    - protocol: TCP
+      port: 27017
+      targetPort: 27017
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo
+  namespace: ai-services
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongo
+  template:
+    metadata:
+      labels:
+        app: mongo
+    spec:
+      containers:
+      - name: mongo
+        image: mongo:latest
+        ports:
+        - containerPort: 27017
+        volumeMounts:
+        - name: mongo-data
+          mountPath: /data/db
+      volumes:
+      - name: mongo-data
+        persistentVolumeClaim:
+          claimName: mongo-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongo-pvc
+  namespace: ai-services
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
