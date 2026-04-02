@@ -1,0 +1,86 @@
+#!/bin/bash
+# ==============================================================================
+# BASE_INSTALL.SH - Gemeinsame Abhängigkeiten & OpenClaw Build
+# Dieses Skript installiert grundlegende Abhängigkeiten und baut OpenClaw
+# aus den GitHub-Quellen mit pnpm.
+# ==============================================================================
+
+# Farben
+GREEN=\033[0;32m
+BLUE=\033[0;34m
+RED=\033[0;31m
+YELLOW=\033[1;33m
+NC=\033[0m
+
+echo -e "${BLUE}Starte Basis-Installation: System-Updates, Node.js, pnpm, Python, Git...${NC}"
+
+# 1. System aktualisieren
+echo -e "${GREEN}1/5: System-Updates durchführen...${NC}"
+sudo apt update && sudo apt upgrade -y
+sudo apt install -y curl git python3 python3-pip nodejs npm
+
+# 2. pnpm installieren (falls nicht vorhanden)
+echo -e "${GREEN}2/5: pnpm installieren...${NC}"
+if ! command -v pnpm >/dev/null 2>&1; then
+    echo -e "${YELLOW}pnpm nicht gefunden, installiere global...${NC}"
+    sudo npm install -g pnpm
+    if ! command -v pnpm >/dev/null 2>&1; then
+        echo -e "${RED}Fehler: pnpm konnte nicht installiert werden. Bitte manuell prüfen.${NC}"
+        exit 1
+    fi
+else
+    echo -e "${GREEN}pnpm ist bereits installiert.${NC}"
+fi
+
+# 3. OpenClaw aus GitHub klonen und bauen
+echo -e "${GREEN}3/5: OpenClaw aus GitHub klonen und bauen...${NC}"
+OPENCLAW_DIR="/opt/openclaw"
+if [ -d "$OPENCLAW_DIR" ]; then
+    echo -e "${YELLOW}OpenClaw Verzeichnis $OPENCLAW_DIR existiert bereits. Überspringe Klonen.${NC}"
+    cd "$OPENCLAW_DIR"
+    git pull
+else
+    echo -e "${BLUE}Klone OpenClaw in $OPENCLAW_DIR...${NC}"
+    sudo mkdir -p "$OPENCLAW_DIR"
+    sudo chown -R $USER:$USER "$OPENCLAW_DIR"
+    git clone https://github.com/openclaw/openclaw.git "$OPENCLAW_DIR"
+    cd "$OPENCLAW_DIR"
+fi
+
+echo -e "${BLUE}Installiere OpenClaw Abhängigkeiten mit pnpm...${NC}"
+pnpm install
+if [ $? -ne 0 ]; then
+    echo -e "${RED}Fehler: pnpm install fehlgeschlagen.${NC}"
+    exit 1
+fi
+
+echo -e "${BLUE}Baue OpenClaw mit pnpm...${NC}"
+pnpm build
+if [ $? -ne 0 ]; then
+    echo -e "${RED}Fehler: pnpm build fehlgeschlagen.${NC}"
+    exit 1
+fi
+
+# 4. .env Datei für OpenClaw vorbereiten
+echo -e "${GREEN}4/5: OpenClaw .env Datei vorbereiten...${NC}"
+if [ ! -f "$OPENCLAW_DIR/.env" ]; then
+    cp "$OPENCLAW_DIR/.env.example" "$OPENCLAW_DIR/.env"
+    echo -e "${YELLOW}OpenClaw .env Datei erstellt. Bitte bearbeiten Sie diese später.${NC}"
+else
+    echo -e "${GREEN}OpenClaw .env Datei existiert bereits.${NC}"
+fi
+
+# 5. Ollama installieren (falls nicht vorhanden)
+echo -e "${GREEN}5/5: Ollama installieren...${NC}"
+if ! command -v ollama >/dev/null 2>&1; then
+    echo -e "${YELLOW}Ollama nicht gefunden, installiere...${NC}"
+    curl -fsSL https://ollama.com/install.sh | sh
+    if ! command -v ollama >/dev/null 2>&1; then
+        echo -e "${RED}Fehler: Ollama konnte nicht installiert werden. Bitte manuell prüfen.${NC}"
+        exit 1
+    fi
+else
+    echo -e "${GREEN}Ollama ist bereits installiert.${NC}"
+fi
+
+echo -e "${GREEN}Basis-Installation abgeschlossen.${NC}"
