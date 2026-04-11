@@ -55,7 +55,7 @@ Eine detaillierte Anleitung zur Konfiguration, API-Keys, Port-Analyse und den ve
 │   ├── port_check.sh           # Skript zur Überprüfung von Port-Konflikten
 │   └── k8s_deployments.yaml    # Kubernetes Deployment-Definitionen für VPS-Dienste
 ├── scripts/
-    └─ profiles/
+│   └─ profiles/
 │      ├── KI_Forschung_install.sh               # Spezifisches Setup für "KI Forschung"
 │      ├── KI_Forschung_uninstall.sh             # Spezifisches Deinstallation für "KI Forschung"
 │      ├── Media_Musik_install.sh                # Spezifisches Setup für "Media Musik"
