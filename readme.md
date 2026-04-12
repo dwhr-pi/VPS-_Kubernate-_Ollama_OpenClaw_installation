@@ -54,6 +54,16 @@ Eine detaillierte Anleitung zur Konfiguration, API-Keys, Port-Analyse und den ve
 │   ├── ruflo_install.sh        # Skript für Ruflo Installation & Management
 │   ├── port_check.sh           # Skript zur Überprüfung von Port-Konflikten
 │   └── k8s_deployments.yaml    # Kubernetes Deployment-Definitionen für VPS-Dienste
+├── scripts/
+│   └─ profiles/
+│      ├── KI_Forschung_install.sh               # Spezifisches Setup für "KI Forschung"
+│      ├── KI_Forschung_uninstall.sh             # Spezifisches Deinstallation für "KI Forschung"
+│      ├── Media_Musik_install.sh                # Spezifisches Setup für "Media Musik"
+│      ├── Media_Musik_uninstall.sh              # Spezifisches Deinstallation für "Media Musik"
+│      ├── Programmierer_install.sh              # Spezifisches Setup für "Programmierer"
+│      ├── Programmierer_uninstall.sh            # Spezifisches Deinstallation für "Programmierer"
+│      ├── Texter_Werbung_Marketing_install.sh   # Spezifisches Setup für "Texter Werbung Marketing"
+│      └── Texter_Werbung_Marketing_uninstall.sh # Spezifisches Deinstallation für "Texter Werbung Marketing"
 └── docs/
     ├── API_KEY_GUIDE.md        # Detaillierte Anleitung für API-Keys, Ports und Fallback-Routing
     ├── setup_guide.md          # Umfassende Dokumentation des gesamten Setups
