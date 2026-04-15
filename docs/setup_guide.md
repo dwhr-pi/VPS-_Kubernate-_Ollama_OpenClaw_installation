@@ -1,96 +1,102 @@
-# 📖 Umfassender Setup Guide (V5)
+# Setup Guide: OpenClaw & AI Infrastructure - Ultimate Setup V7
 
-Willkommen zum detaillierten Setup Guide für Ihr hybrides KI- und Smart Home System! Dieses Dokument bietet einen tiefen Einblick in die Architektur, die einzelnen Komponenten und deren Zusammenspiel. Es ist als Referenz für die Installation, Konfiguration und Wartung Ihres Systems gedacht.
+## 1. Einführung
 
----
+Dieser umfassende Guide beschreibt die Installation und Konfiguration einer hochflexiblen und leistungsstarken KI- und Smart Home Infrastruktur. Das System ist darauf ausgelegt, sowohl auf einem lokalen MiniPC (Letsung mit WSL2) als auch auf mehreren Cloud-basierten Virtual Private Servern (VPS) zu laufen, um eine optimale Ressourcennutzung und Ausfallsicherheit zu gewährleisten. Die Installation erfolgt vollautomatisch über ein interaktives Bash-Skript, das direkt von GitHub bezogen wird.
 
-## 🌐 1. Systemarchitektur: Hybrid & Modular
+### 1.1 Architektur-Übersicht
 
-Unser Setup verfolgt einen hybriden Ansatz, der die Stärken Ihres lokalen Letsung MiniPCs mit der Skalierbarkeit und Verfügbarkeit mehrerer Cloud-VPS kombiniert. Die Architektur ist modular aufgebaut, um Flexibilität bei der Installation und Konfiguration zu gewährleisten.
+Die Architektur basiert auf einem hybriden Ansatz:
 
-### 1.1. Letsung MiniPC (WSL2) - Lokale Intelligenz & Edge Computing
+*   **Letsung MiniPC (WSL2):** Dient als lokaler Hub für datenschutzsensible Anwendungen, Home Assistant, lokale LLMs (Ollama) und als Edge-Computing-Knoten. Die dynamische IP wird über Hurricane Electric DNS verwaltet.
+*   **Oracle Cloud Free Tier VPS:** Bietet eine kostenlose, leistungsstarke Cloud-Umgebung für Kubernetes (K3s), weitere LLMs, und 24/7 laufende Dienste wie Zenbot-trader oder n8n.
+*   **Weitere kostenlose VPS (optional):** Können für spezifische Dienste wie Monitoring, Backup oder zusätzliche LLM-Instanzen genutzt werden, um die Last zu verteilen und die Verfügbarkeit zu erhöhen.
 
-Dein MiniPC dient als zentrale lokale Intelligenz und Edge-Computing-Plattform. Hier laufen ressourcenintensive, privacy-sensible und latenzkritische Dienste.
+Die Kommunikation zwischen den Komponenten erfolgt über sichere Kanäle (z.B. Cloudflare Tunnel, VPNs) und API-Schnittstellen.
 
-*   **Betriebssystem:** Windows mit WSL2 (Ubuntu 22.04 LTS)
-*   **Hardware:** 16GB RAM, 70GB SSD (dediziert für WSL2)
-*   **Internet:** Fritzbox 7590 AX (dynamische IP, Glasfaser geplant)
-*   **Dienste:**
-    *   **Ollama:** Lokales LLM-Backend mit `llama3.2:1b` als primäres Modell für schnelle, lokale Anfragen und als Fallback für Gemini.
-    *   **OpenClaw (Hauptinstanz):** Der Kern-KI-Agent, der deine Befehle verarbeitet, Skills ausführt und mit anderen Diensten interagiert. Beinhaltet OpenClaw RL (Reinforcement Learning) für adaptives Verhalten und den `gcali` Skill für Google Kalender.
-    *   **Home Assistant Core:** Die zentrale Smart Home Plattform für die Steuerung deiner Geräte, Automatisierungen und die Integration des Google Kalenders. Erreichbar über einen Cloudflare Tunnel.
-    *   **Cloudflared:** Stellt einen sicheren Tunnel für den externen Zugriff auf Home Assistant und OpenClaw bereit, unerlässlich für den Alexa Skill und den Zugriff von VPS-Diensten.
-    *   **Ruflo:** Das offizielle GitHub-Projekt für Workflow-Automatisierung und -Orchestrierung, lokal installiert und mit OpenClaw integriert.
+## 2. Installations-Voraussetzungen
 
-### 1.2. Oracle Cloud Free Tier VPS (oder ähnlicher 24GB RAM VPS) - Cloud-Native & 24/7 Dienste
+Bevor du mit der Installation beginnst, stelle sicher, dass die folgenden Voraussetzungen erfüllt sind:
 
-Dieser VPS hostet Dienste, die hohe Verfügbarkeit, Skalierbarkeit und 24/7-Betrieb erfordern. Er dient als Cloud-Gateway und Rechenzentrum für bestimmte Aufgaben.
+*   **Betriebssystem:** Ubuntu 22.04 LTS (oder neuer) auf dem MiniPC (innerhalb von WSL2) und auf allen VPS-Instanzen.
+*   **Internetverbindung:** Stabile Internetverbindung auf allen Systemen.
+*   **GitHub-Konto:** Für den Zugriff auf die Installationsskripte und die Projekt-Repositories.
+*   **GitHub Personal Access Token (PAT):** Erforderlich, wenn du das Setup aus einem privaten Repository installierst (siehe `PRIVATE_REPO_GUIDE.md`).
+*   **Cloud-Konten:** Konten bei Oracle Cloud (für Free Tier VPS), Google Cloud (für Gemini API, Google Calendar API), Cloudflare (für Tunnel, DNS) und Hurricane Electric (für dynamisches DNS).
+*   **API-Keys:** Alle notwendigen API-Keys müssen bereitgehalten werden (siehe `API_KEY_GUIDE.md`).
 
-*   **Hardware:** 24GB RAM (Oracle Free Tier)
-*   **Dienste:**
-    *   **K3s (Kubernetes) Cluster:** Ein leichtgewichtiges Kubernetes-Cluster für die Orchestrierung von Containern.
-    *   **Zenbot Trading Bot:** Für automatisierte Krypto-Trading-Operationen, läuft als Kubernetes Deployment.
-    *   **OpenManus (Agent):** Ein weiterer KI-Agent für Web-Recherche, Datenanalyse und andere Cloud-basierte Aufgaben, läuft als Kubernetes Deployment.
-    *   **Gemini-Ollama Fallback Proxy:** Ein intelligenter Proxy-Dienst, der Anfragen an Google Gemini sendet und bei Fehlern oder Ratenlimits automatisch auf den lokalen Ollama-Dienst auf deinem MiniPC (via Cloudflare Tunnel oder VPN) umschaltet. Läuft als Kubernetes Deployment.
+## 3. Der Installationsprozess
 
-### 1.3. Zusätzliche kostenlose VPS (z.B. Google Cloud Free Tier, AWS Free Tier) - Spezialisierte Dienste
+Die Installation erfolgt über ein interaktives Bash-Skript (`setup_ultimate_v7.sh`), das über einen One-Liner-Befehl gestartet wird. Das Skript führt dich durch ein Menü, in dem du verschiedene Setup-Optionen und Profile auswählen kannst.
 
-Um die Haupt-VPS zu entlasten und die Ausfallsicherheit zu erhöhen, können weitere kostenlose VPS für spezialisierte, nicht-kritische Dienste genutzt werden.
+### 3.1 Start der Installation
 
-*   **Dienste:**
-    *   **Monitoring:** Grafana und Prometheus für die Überwachung der Systemleistung und Anwendungsmetriken.
-    *   **Backup-Dienste:** Automatisierte Backups für kritische Daten (z.B. MongoDB für Zenbot, Home Assistant Konfigurationen).
-    *   **Spezialisierte APIs/Dienste:** Bei Bedarf weitere Dienste, die eine hohe Verfügbarkeit erfordern oder geografisch verteilt sein sollen.
+Führe den folgenden Befehl in deinem Terminal aus:
 
----
+```bash
+curl -sSL https://raw.githubusercontent.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation/main/install.sh | bash
+```
 
-## 🛠️ 2. Installationsprozess: Interaktiv & Modular
+Das `install.sh`-Skript klont das Repository und startet das Hauptmenü.
 
-Der Installationsprozess ist interaktiv und modular gestaltet. Du kannst zwischen verschiedenen Setup-Typen und Profilen wählen.
+### 3.2 Hauptmenü-Optionen
 
-### 2.1. Setup-Typen
+Das Hauptmenü bietet folgende Optionen:
 
-*   **Hybrid Setup (MiniPC + Multi-VPS):** Die empfohlene Option, die die Last optimal verteilt und die volle Funktionalität bietet.
-*   **Standalone VPS Setup (Cloud-Native):** Installiert alle Cloud-Dienste auf einem einzigen VPS mit K3s.
-*   **Standalone MiniPC Setup (Lokal):** Installiert alle lokalen Dienste (Ollama, OpenClaw, Home Assistant, Ruflo) nur auf deinem MiniPC, ohne VPS-Anbindung.
+*   **1. System-Update (OS & pnpm):** Aktualisiert das Betriebssystem und `pnpm` auf die neuesten Versionen.
+*   **2. Ollama Modell-Manager:** Ermöglicht die Installation und Deinstallation spezifischer Ollama-Modelle.
+*   **3. Hybrid: Letsung MiniPC + Multi-VPS (Empfohlen):** Installiert das Setup auf deinem MiniPC und bereitet die Multi-VPS-Umgebung vor.
+*   **4. Standalone: Nur VPS (Cloud-Native):** Installiert das Setup auf einem einzelnen VPS mit Kubernetes (K3s).
+*   **5. Standalone: Nur MiniPC (Lokal):** Installiert alle Komponenten lokal auf deinem MiniPC ohne VPS-Anbindung.
+*   **6. Ruflo: Installation & Management:** Installiert und verwaltet das Ruflo-System.
+*   **7. Tools: Installieren & Deinstallieren:** Ein Untermenü zur Auswahl spezifischer Tools (n8n, Activepieces, Flowise, etc.).
+*   **8. Profile: Installieren & Deinstallieren:** Ein Untermenü zur Auswahl und Verwaltung von Profilen (Programmierer, Media & Musik, KI-Forschung, Texter/Werbung/Marketing).
+*   **9. Dokumentation & API-Key Guide:** Zeigt diesen Guide und den API-Key Guide an.
+*   **10. System-Check & Port-Analyse:** Führt eine Analyse der Systemressourcen und Port-Verfügbarkeit durch.
+*   **11. OpenClaw starten (Dev-Modus):** Startet OpenClaw im Entwicklungsmodus.
+*   **12. Home Assistant starten:** Startet den Home Assistant Dienst.
+*   **13. Beenden:** Beendet das Installationsprogramm.
 
-### 2.2. Profile (Installieren & Deinstallieren)
+### 3.3 Profil-Management
 
-Profile ermöglichen es dir, spezifische Toolsets und Konfigurationen für bestimmte Anwendungsfälle zu installieren. Du kannst mehrere Profile gleichzeitig installieren und bei Bedarf auch wieder deinstallieren.
+Das Profil-Management (Option 8 im Hauptmenü) ermöglicht die Installation und Deinstallation von thematisch gebündelten Softwarepaketen. Du kannst mehrere Profile gleichzeitig installieren.
 
-*   **Programmierer-Setup:** Tools für Entwicklung, Code-Generierung (z.B. DeepSeek Coder Modell für Ollama), Git-Integration.
-*   **Media & Musik:** Tools für Audio-Verarbeitung (FFmpeg, Audio-AI), Video-Generierung und Alexa-Integration.
-*   **KI-Forschung:** Spezialisierte Bibliotheken und Konfigurationen für OpenClaw RL, erweiterte LLM-Modelle (z.B. Gemini-1.5-Pro).
-*   **Texter, Werbung & Marketing:** Tools für Content-Generierung, SEO-Analyse, Social Media Integration und spezialisierte LLM-Modelle für Textproduktion.
+*   **Programmierer-Setup:** Enthält Tools für Entwicklung, Code-Generierung (z.B. DeepSeek Coder Modell für Ollama), Git-Integration und Huginn.
+*   **Media & Musik:** Beinhaltet Tools für Audio-Verarbeitung (FFmpeg, Audio-AI), Video-Generierung und die Alexa-Integration.
+*   **KI-Forschung:** Umfasst spezialisierte Bibliotheken und Konfigurationen für OpenClaw RL und erweiterte LLM-Modelle (z.B. Gemini-1.5-Pro).
+*   **Texter, Werbung & Marketing:** Stellt Tools für Content-Generierung, SEO-Analyse, Social Media Integration und spezialisierte LLM-Modelle für Textproduktion bereit.
 
-### 2.3. Ruflo Integration
+### 3.4 Tool-Management
 
-Ruflo ist ein leistungsstarkes Workflow-Automatisierungs-Tool von GitHub. Es wird lokal auf deinem MiniPC installiert und kann über OpenClaw gesteuert werden, um komplexe Aufgaben und Automatisierungen zu orchestrieren. Die Installation erfolgt direkt aus den GitHub-Quellen mit `pnpm`.
+Das Tool-Management (Option 7 im Hauptmenü) ermöglicht die Installation und Deinstallation einzelner Tools. Hier eine Übersicht der verfügbaren Tools:
 
----
+*   **Ollama:** Lokales LLM-Backend. Du kannst über den Ollama Modell-Manager (Option 2 im Hauptmenü) spezifische Modelle installieren und verwalten.
+*   **OpenManus:** Ein KI-Agenten-Framework für automatisierte Aufgaben.
+*   **OpenClaw:** Ein KI-Agenten-Framework mit Reinforcement Learning (RL) und Skill-Integration (z.B. `gcali` für Google Kalender).
+*   **Clawhub CLI:** Ein Kommandozeilen-Tool zur Interaktion mit Clawhub-Diensten.
+*   **OpenClaw RL:** Die Reinforcement Learning Erweiterung für OpenClaw.
+*   **Clawbake:** Ein Tool zur Automatisierung von Builds und Deployments.
+*   **n8n:** Ein Workflow-Automatisierungstool, das viele Apps und Dienste verbindet.
+*   **Activepieces:** Eine Open-Source-Alternative zu Zapier für Workflow-Automatisierung.
+*   **Flowise / LangFlow:** Open-Source-UIs für LLM-Anwendungen, basierend auf LangchainJS, zur visuellen Erstellung von LLM-Workflows.
+*   **Pipedream:** Eine Serverless-Plattform zur Integration von APIs und Diensten (Self-Hosted Option ist komplex und wird auf die offizielle Doku verwiesen).
+*   **Huginn:** Ein Open-Source-Agentensystem, das Aktionen im Web automatisiert (wird auch im Programmierer-Profil installiert).
+*   **Zenbot-trader:** Eine Plattform für automatisierten Krypto-Handel.
 
-## 🔑 3. API-Keys & Port-Konfiguration
+## 4. Konfiguration und API-Keys
 
-Alle notwendigen API-Keys und die Port-Konfiguration sind im `API_KEY_GUIDE.md` detailliert beschrieben. Es ist entscheidend, dieses Dokument vor der Installation zu lesen, um alle Voraussetzungen zu erfüllen und potenzielle Konflikte zu vermeiden.
+Die detaillierte Konfiguration von API-Keys, Port-Einstellungen und Fallback-Routing zwischen Gemini und Ollama ist im `API_KEY_GUIDE.md` beschrieben. Bitte lies diese Datei sorgfältig durch, bevor du mit der Konfiguration beginnst.
 
----
+## 5. Multi-VPS-Strategie
 
-## ⚠️ 4. Wichtige Hinweise
+Um die Ressourcen optimal zu nutzen und die Stabilität zu erhöhen, wird eine Multi-VPS-Strategie empfohlen. Hier sind einige Vorschläge:
 
-*   **pnpm:** Alle Node.js-basierten Projekte (wie OpenClaw und Ruflo) werden mit `pnpm` installiert und gebaut, um die Abhängigkeitsverwaltung zu optimieren.
-*   **Ollama Modell:** Das Standard-Ollama-Modell ist `llama3.2:1b`, um die Ressourcen deines MiniPCs optimal zu nutzen.
-*   **Dynamische IP:** Die Integration von Hurricane Electric für dynamisches DNS ist vorgesehen, um deinen MiniPC auch mit dynamischer IP-Adresse erreichbar zu machen.
-*   **Sicherheit:** Achte stets auf die Sicherheit deiner API-Keys und deines Systems. Verwende starke Passwörter und halte deine Systeme aktuell.
+*   **Letsung MiniPC:** Home Assistant, lokale Ollama-Instanzen (für schnelle, datenschutzsensible Anfragen), Alexa Skill über Cloudflare Tunnel.
+*   **Oracle Cloud Free Tier VPS:** Kubernetes (K3s) Cluster, Zenbot-trader, n8n, Activepieces, Flowise/LangFlow, Pipedream (Self-Hosted).
+*   **Zusätzliche kostenlose VPS:** Können für spezifische Dienste wie Monitoring (z.B. Prometheus/Grafana), Backup-Lösungen oder weitere LLM-Instanzen genutzt werden.
 
----
+## 6. Fehlerbehebung und Support
 
-## ❓ 5. Häufig gestellte Fragen (FAQ)
+Sollten während der Installation oder Konfiguration Probleme auftreten, konsultiere bitte zuerst die `API_KEY_GUIDE.md` und die `PRIVATE_REPO_GUIDE.md`. Bei weiteren Fragen oder Problemen kannst du Issues im GitHub-Repository erstellen.
 
-*   **Kann ich mehrere Profile gleichzeitig installieren?** Ja, die Profile sind so konzipiert, dass sie koexistieren können. Du kannst sie über das Hauptmenü installieren und deinstallieren.
-*   **Wie deinstalliere ich ein Profil?** Wähle die entsprechende Option im Hauptmenü. Das Skript wird versuchen, alle vom Profil installierten Komponenten sauber zu entfernen.
-*   **Was passiert, wenn ein Port-Konflikt auftritt?** Das `port_check.sh` Skript wird dich warnen. Du musst dann entweder den Konflikt manuell lösen oder die Konfiguration des betroffenen Dienstes anpassen.
-*   **Wie aktualisiere ich das Setup?** Führe den `curl`-Befehl erneut aus. Das Skript wird das Repository aktualisieren und dir die Option geben, Komponenten neu zu installieren oder zu aktualisieren.
-
----
-
-Wir wünschen dir viel Erfolg und Freude mit deinem neuen, leistungsstarken KI- und Smart Home System!
+Wir wünschen dir viel Erfolg bei der Einrichtung deines intelligenten, automatisierten Systems!

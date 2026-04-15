@@ -37,38 +37,30 @@ show_main_menu() {
     "10" "Beenden" 2> /tmp/menu_choice
 }
 
-# Funktion zum Anzeigen des Profil-Menüs
-show_profile_menu() {
-    dialog --clear --backtitle "OpenClaw & AI Infrastructure - Ultimate Setup V5" \
-    --title "PROFIL-MANAGEMENT" --menu "Wählen Sie ein Profil oder eine Aktion:" 20 70 10 \
-    "1" "Programmierer-Setup" \
-    "2" "Media & Musik" \
-    "3" "KI-Forschung" \
-    "4" "Texter, Werbung & Marketing" \
-    "5" "Alle installierten Profile anzeigen" \
-    "6" "Profil deinstallieren" \
-    "7" "Zurück zum Hauptmenü" 2> /tmp/profile_choice
-}
-
-# Installations-Logik für Profile
+# Funktion zum Installieren eines Profils
 install_profile() {
     PROFILE_NAME=$1
     echo -e "${BLUE}Installiere Profil: ${PROFILE_NAME}...${NC}"
-    # Hier würde die spezifische Installationslogik für jedes Profil stehen
-    # Beispiel: ./scripts/profiles/${PROFILE_NAME}_install.sh
-    echo -e "${GREEN}Profil '${PROFILE_NAME}' erfolgreich installiert (Platzhalter).${NC}"
-    # Marker setzen, dass Profil installiert ist
-    echo "${PROFILE_NAME}" >> "$INSTALL_DIR/installed_profiles.txt"
+    "$INSTALL_DIR/scripts/profiles/${PROFILE_NAME}_install.sh"
+    if [ $? -eq 0 ]; then
+        echo "${PROFILE_NAME}" >> "$INSTALL_DIR/installed_profiles.txt"
+        echo -e "${GREEN}Profil '${PROFILE_NAME}' erfolgreich installiert.${NC}"
+    else
+        echo -e "${RED}Fehler bei der Installation von Profil '${PROFILE_NAME}'.${NC}"
+    fi
 }
 
-# Deinstallations-Logik für Profile
+# Funktion zum Deinstallieren eines Profils
 uninstall_profile() {
     PROFILE_NAME=$1
     echo -e "${BLUE}Deinstalliere Profil: ${PROFILE_NAME}...${NC}"
-    # Hier würde die spezifische Deinstallationslogik für jedes Profil stehen
-    # Beispiel: ./scripts/profiles/${PROFILE_NAME}_uninstall.sh
-    sed -i "/${PROFILE_NAME}/d" "$INSTALL_DIR/installed_profiles.txt"
-    echo -e "${GREEN}Profil '${PROFILE_NAME}' erfolgreich deinstalliert (Platzhalter).${NC}"
+    "$INSTALL_DIR/scripts/profiles/${PROFILE_NAME}_uninstall.sh"
+    if [ $? -eq 0 ]; then
+        sed -i "/${PROFILE_NAME}/d" "$INSTALL_DIR/installed_profiles.txt"
+        echo -e "${GREEN}Profil '${PROFILE_NAME}' erfolgreich deinstalliert.${NC}"
+    else
+        echo -e "${RED}Fehler bei der Deinstallation von Profil '${PROFILE_NAME}'.${NC}"
+    fi
 }
 
 # Hauptschleife
@@ -92,9 +84,7 @@ while true; do
         3)
             echo -e "${BLUE}Starte Standalone MiniPC-Setup (Lokal)...${NC}"
             "$INSTALL_DIR/scripts/base_install.sh"
-            # Hier spezifische lokale Installationen, die nicht im Hybrid-Setup sind
-            # z.B. Ruflo, wenn es nur lokal laufen soll
-            "$INSTALL_DIR/scripts/install_local_only.sh" # Neues Skript für lokale Komponenten
+            "$INSTALL_DIR/scripts/install_local_only.sh"
             read -p "Standalone MiniPC-Setup abgeschlossen. Drücken Sie Enter..."
             ;;
         4)
@@ -103,33 +93,61 @@ while true; do
             read -p "Ruflo-Aktion abgeschlossen. Drücken Sie Enter..."
             ;;
         5)
-            while true; do
-                show_profile_menu
-                PROFILE_CHOICE=$(cat /tmp/profile_choice)
-                case $PROFILE_CHOICE in
-                    1) install_profile "Programmierer";; 
-                    2) install_profile "Media_Musik";; 
-                    3) install_profile "KI_Forschung";; 
-                    4) install_profile "Texter_Werbung_Marketing";; 
-                    5)
-                        dialog --clear --backtitle "OpenClaw & AI Infrastructure - Ultimate Setup V5" \
-                        --title "Installierte Profile" --textbox "$INSTALL_DIR/installed_profiles.txt" 20 60
-                        ;;
-                    6)
-                        dialog --clear --backtitle "OpenClaw & AI Infrastructure - Ultimate Setup V5" \
-                        --title "Profil deinstallieren" --inputbox "Welches Profil möchten Sie deinstallieren?" 10 60 "" 2> /tmp/profile_to_uninstall
-                        PROFILE_TO_UNINSTALL=$(cat /tmp/profile_to_uninstall)
-                        if [ -n "$PROFILE_TO_UNINSTALL" ]; then
-                            uninstall_profile "$PROFILE_TO_UNINSTALL"
+            # Profil-Management
+            PROFILE_OPTIONS=(
+                "Programmierer" "Tools für Entwicklung, Code-Generierung (DeepSeek Coder), Git-Integration." "off" \
+                "Media_Musik" "Tools für Audio/Video (FFmpeg), Audio-AI, Alexa-Integration." "off" \
+                "KI_Forschung" "Spezialisierte Bibliotheken für RL, erweiterte LLM-Modelle (Gemini-1.5-Pro)." "off" \
+                "Texter_Werbung_Marketing" "Tools für Content-Generierung, SEO-Analyse, Social Media, Textproduktion." "off"
+            )
+
+            # Prüfen, welche Profile bereits installiert sind
+            if [ -f "$INSTALL_DIR/installed_profiles.txt" ]; then
+                while IFS= read -r profile_name; do
+                    for i in "${!PROFILE_OPTIONS[@]}"; do
+                        if [[ "${PROFILE_OPTIONS[$i]}" == "$profile_name" ]]; then
+                            PROFILE_OPTIONS[$((i+2))]="on"
                         fi
-                        ;;
-                    7) break;;
-                    *)
-                        echo -e "${RED}Ungültige Auswahl. Bitte versuchen Sie es erneut.${NC}"
-                        sleep 2
-                        ;;
-                esac
+                    done
+                done < "$INSTALL_DIR/installed_profiles.txt"
+            fi
+
+            dialog --clear --backtitle "OpenClaw & AI Infrastructure - Ultimate Setup V5" \
+            --title "PROFIL-MANAGEMENT" --checklist "Wählen Sie Profile zum Installieren/Deinstallieren:" 25 70 10 \
+            "Programmierer" "Tools für Entwicklung, Code-Generierung (DeepSeek Coder), Git-Integration." "${PROFILE_OPTIONS[2]}" \
+            "Media_Musik" "Tools für Audio/Video (FFmpeg), Audio-AI, Alexa-Integration." "${PROFILE_OPTIONS[5]}" \
+            "KI_Forschung" "Spezialisierte Bibliotheken für RL, erweiterte LLM-Modelle (Gemini-1.5-Pro)." "${PROFILE_OPTIONS[8]}" \
+            "Texter_Werbung_Marketing" "Tools für Content-Generierung, SEO-Analyse, Social Media, Textproduktion." "${PROFILE_OPTIONS[11]}" 2> /tmp/profile_selection
+
+            SELECTED_PROFILES=$(cat /tmp/profile_selection)
+
+            # Installierte Profile laden
+            declare -A INSTALLED_PROFILES_MAP
+            if [ -f "$INSTALL_DIR/installed_profiles.txt" ]; then
+                while IFS= read -r profile_name; do
+                    INSTALLED_PROFILES_MAP["$profile_name"]=1
+                done < "$INSTALL_DIR/installed_profiles.txt"
+            fi
+
+            # Installation/Deinstallation basierend auf Auswahl
+            for profile_key in "Programmierer" "Media_Musik" "KI_Forschung" "Texter_Werbung_Marketing"; do
+                IS_SELECTED=false
+                for selected_key in $SELECTED_PROFILES; do
+                    if [[ "$profile_key" == "$selected_key" ]]; then
+                        IS_SELECTED=true
+                        break
+                    fi
+                done
+
+                if $IS_SELECTED && [[ ! -v INSTALLED_PROFILES_MAP["$profile_key"] ]]; then
+                    # Profil ausgewählt und nicht installiert -> Installieren
+                    install_profile "$profile_key"
+                elif ! $IS_SELECTED && [[ -v INSTALLED_PROFILES_MAP["$profile_key"] ]]; then
+                    # Profil nicht ausgewählt und installiert -> Deinstallieren
+                    uninstall_profile "$profile_key"
+                fi
             done
+            read -p "Profil-Management abgeschlossen. Drücken Sie Enter..."
             ;;
         6)
             dialog --clear --backtitle "OpenClaw & AI Infrastructure - Ultimate Setup V5" \
@@ -157,4 +175,4 @@ while true; do
             ;;
     esac
 done
-rm -f /tmp/menu_choice /tmp/profile_choice /tmp/profile_to_uninstall
+rm -f /tmp/menu_choice /tmp/profile_selection
