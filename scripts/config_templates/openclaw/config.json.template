@@ -1,0 +1,75 @@
+{
+  "_comment_1": "OpenClaw config.json Konfigurationsvorlage",
+  "_comment_2": "Diese Datei enthält JSON-basierte Konfigurationen für OpenClaw.",
+  "_comment_3": "Passe die Werte entsprechend deiner Umgebung an. Einige Einstellungen können auch über .env überschrieben werden.",
+
+  "server": {
+    "_comment_4": "Port, auf dem OpenClaw läuft. Standard ist 3000. Kann durch PORT in .env überschrieben werden.",
+    "port": 3000,
+    "_comment_5": "Host, auf dem OpenClaw lauscht. Für alle Schnittstellen '0.0.0.0' verwenden. Kann durch HOST in .env überschrieben werden.",
+    "host": "0.0.0.0",
+    "_comment_6": "Deine öffentliche Domain für OpenClaw. Wird für externe Zugriffe und Callbacks benötigt. Kann durch DOMAIN in .env überschrieben werden.",
+    "domain": "https://botsoft.uk"
+  },
+
+  "llm": {
+    "_comment_7": "Primärer LLM-Anbieter (gemini oder ollama). Kann durch PRIMÄRES_LLM_ANBIETER in .env überschrieben werden.",
+    "primaryProvider": "gemini",
+    "gemini": {
+      "_comment_8": "Dein Google Gemini API-Schlüssel. Kann durch GEMINI_API_KEY in .env überschrieben werden.",
+      "apiKey": "DEIN_GEMINI_API_KEY_HIER",
+      "_comment_9": "Das zu verwendende Gemini-Modell (z.B. gemini-1.5-flash, gemini-1.5-pro). Kann durch GEMINI_MODEL in .env überschrieben werden.",
+      "model": "gemini-1.5-flash"
+    },
+    "ollama": {
+      "_comment_10": "Host und Port deines Ollama-Servers. Kann durch OLLAMA_HOST in .env überschrieben werden.",
+      "host": "http://localhost:11434",
+      "_comment_11": "Das zu verwendende Ollama-Modell. Kann durch OLLAMA_MODEL in .env überschrieben werden.",
+      "model": "llama3.2:1b"
+    },
+    "_comment_12": "Auf true setzen, um Ollama als Fallback zu nutzen, wenn der primäre Anbieter fehlschlägt. Kann durch FALLBACK_TO_OLLAMA in .env überschrieben werden.",
+    "fallbackToOllama": true
+  },
+
+  "database": {
+    "_comment_13": "MongoDB Verbindungsstring. Kann durch DB_CONNECTION_STRING in .env überschrieben werden.",
+    "connectionString": "mongodb://localhost:27017/openclaw"
+  },
+
+  "security": {
+    "_comment_14": "Ein langer, zufälliger String für JWT-Token. Kann durch JWT_SECRET in .env überschrieben werden.",
+    "jwtSecret": "DEIN_SUPER_GEHEIMER_JWT_SCHLUESSEL_HIER"
+  },
+
+  "admin": {
+    "_comment_15": "E-Mail-Adresse des Admin-Benutzers. Kann durch ADMIN_EMAIL in .env überschrieben werden.",
+    "email": "admin@botsoft.uk",
+    "_comment_16": "Passwort des Admin-Benutzers. Kann durch ADMIN_PASSWORD in .env überschrieben werden.",
+    "password": "DEIN_ADMIN_PASSWORT_HIER"
+  },
+
+  "cloudflare": {
+    "_comment_17": "Cloudflare Tunnel ID. Kann durch CLOUDFLARE_TUNNEL_ID in .env überschrieben werden.",
+    "tunnelId": "DEIN_CLOUDFLARE_TUNNEL_ID_HIER",
+    "_comment_18": "Cloudflare Tunnel Secret. Kann durch CLOUDFLARE_TUNNEL_SECRET in .env überschrieben werden.",
+    "tunnelSecret": "DEIN_CLOUDFLARE_TUNNEL_SECRET_HIER"
+  },
+
+  "googleCalendar": {
+    "_comment_19": "Google Cloud Client ID für den Kalender-Zugriff. Kann durch GOOGLE_CLIENT_ID in .env überschrieben werden.",
+    "clientId": "DEINE_GOOGLE_CLIENT_ID_HIER",
+    "_comment_20": "Dein Google Cloud Client Secret. Kann durch GOOGLE_CLIENT_SECRET in .env überschrieben werden.",
+    "clientSecret": "DEIN_GOOGLE_CLIENT_SECRET_HIER",
+    "_comment_21": "Die Redirect URI. Muss mit deiner OpenClaw Domain übereinstimmen. Kann durch GOOGLE_REDIRECT_URI in .env überschrieben werden.",
+    "redirectUri": "https://botsoft.uk/auth/google/callback"
+  },
+
+  "rlAgent": {
+    "_comment_22": "Auf true setzen, um den RL-Agenten zu aktivieren. Kann durch RL_AGENT_ENABLED in .env überschrieben werden.",
+    "enabled": false,
+    "_comment_23": "Pfad zum RL-Modell. Kann durch RL_MODEL_PATH in .env überschrieben werden.",
+    "modelPath": "/opt/openclaw-rl/models/default_rl_model.pth",
+    "_comment_24": "Auf true setzen, um den RL-Agenten im Trainingsmodus zu starten. Kann durch RL_TRAINING_MODE in .env überschrieben werden.",
+    "trainingMode": false
+  }
+}

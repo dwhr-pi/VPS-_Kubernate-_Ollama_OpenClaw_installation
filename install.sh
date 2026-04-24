@@ -61,7 +61,7 @@ else
 fi
 
 # Haupt-Setup-Skript ausführen
-chmod +x setup_ultimate_v5.sh
-./setup_ultimate_v5.sh
+chmod +x setup_ultimate_v11.sh
+./setup_ultimate_v11.sh
 
 echo -e "${GREEN}Installation abgeschlossen. Bitte folgen Sie den Anweisungen im Menü.${NC}"

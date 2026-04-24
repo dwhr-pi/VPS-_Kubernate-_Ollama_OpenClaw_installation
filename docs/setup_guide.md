@@ -1,4 +1,5 @@
-# Setup Guide: OpenClaw & AI Infrastructure - Ultimate Setup V7
+```markdown
+# Setup Guide: OpenClaw & AI Infrastructure - Ultimate Setup V11
 
 ## 1. Einführung
 
@@ -27,7 +28,7 @@ Bevor du mit der Installation beginnst, stelle sicher, dass die folgenden Voraus
 
 ## 3. Der Installationsprozess
 
-Die Installation erfolgt über ein interaktives Bash-Skript (`setup_ultimate_v7.sh`), das über einen One-Liner-Befehl gestartet wird. Das Skript führt dich durch ein Menü, in dem du verschiedene Setup-Optionen und Profile auswählen kannst.
+Die Installation erfolgt über ein interaktives Bash-Skript (`setup_ultimate_v11.sh`), das über einen One-Liner-Befehl gestartet wird. Das Skript führt dich durch ein Menü, in dem du verschiedene Setup-Optionen und Profile auswählen kannst.
 
 ### 3.1 Start der Installation
 
@@ -45,47 +46,53 @@ Das Hauptmenü bietet folgende Optionen:
 
 *   **1. System-Update (OS & pnpm):** Aktualisiert das Betriebssystem und `pnpm` auf die neuesten Versionen.
 *   **2. Ollama Modell-Manager:** Ermöglicht die Installation und Deinstallation spezifischer Ollama-Modelle.
-*   **3. Hybrid: Letsung MiniPC + Multi-VPS (Empfohlen):** Installiert das Setup auf deinem MiniPC und bereitet die Multi-VPS-Umgebung vor.
-*   **4. Standalone: Nur VPS (Cloud-Native):** Installiert das Setup auf einem einzelnen VPS mit Kubernetes (K3s).
-*   **5. Standalone: Nur MiniPC (Lokal):** Installiert alle Komponenten lokal auf deinem MiniPC ohne VPS-Anbindung.
-*   **6. Ruflo: Installation & Management:** Installiert und verwaltet das Ruflo-System.
-*   **7. Tools: Installieren & Deinstallieren:** Ein Untermenü zur Auswahl spezifischer Tools (n8n, Activepieces, Flowise, etc.).
-*   **8. Profile: Installieren & Deinstallieren:** Ein Untermenü zur Auswahl und Verwaltung von Profilen (Programmierer, Media & Musik, KI-Forschung, Texter/Werbung/Marketing).
-*   **9. Dokumentation & API-Key Guide:** Zeigt diesen Guide und den API-Key Guide an.
-*   **10. System-Check & Port-Analyse:** Führt eine Analyse der Systemressourcen und Port-Verfügbarkeit durch.
-*   **11. OpenClaw starten (Dev-Modus):** Startet OpenClaw im Entwicklungsmodus.
-*   **12. Home Assistant starten:** Startet den Home Assistant Dienst.
-*   **13. Beenden:** Beendet das Installationsprogramm.
+*   **3. OpenClaw Konfiguration (.env & config.json):** Startet den OpenClaw Konfigurations-Manager, um die `.env`- und `config.json`-Dateien zu bearbeiten und anzuwenden.
+*   **4. Hybrid: Letsung MiniPC + Multi-VPS (Empfohlen):** Installiert das Setup auf deinem MiniPC und bereitet die Multi-VPS-Umgebung vor.
+*   **5. Standalone: Nur VPS (Cloud-Native):** Installiert das Setup auf einem einzelnen VPS mit Kubernetes (K3s).
+*   **6. Standalone: Nur MiniPC (Lokal):** Installiert alle Komponenten lokal auf deinem MiniPC ohne VPS-Anbindung.
+*   **7. Ruflo: Installation & Management:** Installiert und verwaltet das Ruflo-System.
+*   **8. Tools: Installieren & Deinstallieren:** Ein Untermenü zur Auswahl spezifischer Tools (n8n, Activepieces, Flowise, etc.).
+*   **9. Profile: Installieren & Deinstallieren:** Ein Untermenü zur Auswahl und Verwaltung von Profilen (Programmierer, Media & Musik, KI-Forschung, Texter/Werbung/Marketing, Rechtsberatung & Steuerrecht).
+*   **10. Dokumentation & API-Key Guide:** Zeigt diesen Guide und den API-Key Guide an.
+*   **11. System-Check & Port-Analyse:** Führt eine Analyse der Systemressourcen und Port-Verfügbarkeit durch.
+*   **12. OpenClaw starten (Dev-Modus):** Startet OpenClaw im Entwicklungsmodus.
+*   **13. Home Assistant starten:** Startet den Home Assistant Dienst.
+*   **14. Beenden:** Beendet das Installationsprogramm.
 
 ### 3.3 Profil-Management
 
-Das Profil-Management (Option 8 im Hauptmenü) ermöglicht die Installation und Deinstallation von thematisch gebündelten Softwarepaketen. Du kannst mehrere Profile gleichzeitig installieren.
+Das Profil-Management (Option 9 im Hauptmenü) ermöglicht die Installation und Deinstallation von thematisch gebündelten Softwarepaketen. Du kannst mehrere Profile gleichzeitig installieren.
 
-*   **Programmierer-Setup:** Enthält Tools für Entwicklung, Code-Generierung (z.B. DeepSeek Coder Modell für Ollama), Git-Integration und Huginn.
-*   **Media & Musik:** Beinhaltet Tools für Audio-Verarbeitung (FFmpeg, Audio-AI), Video-Generierung und die Alexa-Integration.
-*   **KI-Forschung:** Umfasst spezialisierte Bibliotheken und Konfigurationen für OpenClaw RL und erweiterte LLM-Modelle (z.B. Gemini-1.5-Pro).
-*   **Texter, Werbung & Marketing:** Stellt Tools für Content-Generierung, SEO-Analyse, Social Media Integration und spezialisierte LLM-Modelle für Textproduktion bereit.
+*   **Programmierer-Setup:** Enthält Tools für Entwicklung, Code-Generierung (z.B. DeepSeek Coder Modell für Ollama), Git-Integration, Huginn und Clawhub CLI. Ideal für Entwickler und Automatisierungsexperten.
+*   **Media & Musik:** Beinhaltet Tools für Audio-Verarbeitung (FFmpeg, Audio-AI), Video-Generierung und die Alexa-Integration, Clawbake. Für Content Creator und Medienproduzenten.
+*   **KI-Forschung:** Umfasst spezialisierte Bibliotheken und Konfigurationen für OpenClaw RL und erweiterte LLM-Modelle (z.B. Gemini-1.5-Pro), Flowise/LangFlow. Für KI-Wissenschaftler und Forscher.
+*   **Texter, Werbung & Marketing:** Stellt Tools für Content-Generierung, SEO-Analyse, Social Media Integration und spezialisierte LLM-Modelle für Textproduktion bereit, n8n, Activepieces. Optimiert für Marketingexperten und Texter, die ihre Inhalte mit KI verbessern möchten.
+*   **Rechtsberatung & Steuerrecht:** Tools für Web-Search & Fetch, PDF-Reader/Document-Parser, Zotero. Für die Analyse von Rechtsdokumenten und Steuerrecht, unterstützt durch spezialisierte KI-Agenten.
 
 ### 3.4 Tool-Management
 
-Das Tool-Management (Option 7 im Hauptmenü) ermöglicht die Installation und Deinstallation einzelner Tools. Hier eine Übersicht der verfügbaren Tools:
+Das Tool-Management (Option 8 im Hauptmenü) ermöglicht die Installation und Deinstallation einzelner Tools. Hier eine Übersicht der verfügbaren Tools:
 
 *   **Ollama:** Lokales LLM-Backend. Du kannst über den Ollama Modell-Manager (Option 2 im Hauptmenü) spezifische Modelle installieren und verwalten.
-*   **OpenManus:** Ein KI-Agenten-Framework für automatisierte Aufgaben.
-*   **OpenClaw:** Ein KI-Agenten-Framework mit Reinforcement Learning (RL) und Skill-Integration (z.B. `gcali` für Google Kalender).
+*   **OpenManus:** Ein KI-Agenten-Framework für automatisierte Aufgaben wie Web-Recherche und Datenanalyse.
+*   **OpenClaw:** Ein KI-Agenten-Framework mit Reinforcement Learning (RL) und Skill-Integration (z.B. `gcali` für Google Kalender). Nutze den OpenClaw Konfigurations-Manager (Option 3) für die `.env` und `config.json`.
+*   **Clawhub:** Zentraler Server für die Orchestrierung und Verwaltung von KI-Agenten und deren Interaktionen.
 *   **Clawhub CLI:** Ein Kommandozeilen-Tool zur Interaktion mit Clawhub-Diensten.
 *   **OpenClaw RL:** Die Reinforcement Learning Erweiterung für OpenClaw.
-*   **Clawbake:** Ein Tool zur Automatisierung von Builds und Deployments.
-*   **n8n:** Ein Workflow-Automatisierungstool, das viele Apps und Dienste verbindet.
-*   **Activepieces:** Eine Open-Source-Alternative zu Zapier für Workflow-Automatisierung.
-*   **Flowise / LangFlow:** Open-Source-UIs für LLM-Anwendungen, basierend auf LangchainJS, zur visuellen Erstellung von LLM-Workflows.
+*   **Clawbake:** Ein Tool zur Automatisierung von Builds und Deployments, ideal für CI/CD-Pipelines.
+*   **n8n:** Ein Workflow-Automatisierungstool, das viele Apps und Dienste verbindet (Open-Source-Alternative zu Zapier).
+*   **Activepieces:** Eine Open-Source-Alternative zu Zapier für Workflow-Automatisierung und Integrationen.
+*   **Flowise:** Open-Source-UI für LLM-Anwendungen, basierend auf LangchainJS, zur visuellen Workflow-Erstellung.
+*   **LangFlow:** UI für LangChain, um LLM-Anwendungen visuell zu erstellen und zu testen.
 *   **Pipedream:** Eine Serverless-Plattform zur Integration von APIs und Diensten (Self-Hosted Option ist komplex und wird auf die offizielle Doku verwiesen).
-*   **Huginn:** Ein Open-Source-Agentensystem, das Aktionen im Web automatisiert (wird auch im Programmierer-Profil installiert).
-*   **Zenbot-trader:** Eine Plattform für automatisierten Krypto-Handel.
+*   **Huginn:** Ein Open-Source-Agentensystem, das Aktionen im Web automatisiert und Ereignisse überwacht (wird auch im Programmierer-Profil installiert).
+*   **Zenbot-trader:** Eine Plattform für automatisierten Krypto-Handel mit Backtesting, Sim-Trading und Live-Trading.
+*   **Kimi 2:** KI-Agent von Moonshot AI für intelligente Interaktionen und Aufgaben.
+*   **Huge Facing (Hugging Face):** Integration von Hugging Face Modellen, entweder lokal über Ollama oder über die Hugging Face Inference API. Ermöglicht den Zugriff auf eine riesige Bibliothek von vortrainierten KI-Modellen.
 
 ## 4. Konfiguration und API-Keys
 
-Die detaillierte Konfiguration von API-Keys, Port-Einstellungen und Fallback-Routing zwischen Gemini und Ollama ist im `API_KEY_GUIDE.md` beschrieben. Bitte lies diese Datei sorgfältig durch, bevor du mit der Konfiguration beginnst.
+Die detaillierte Konfiguration von API-Keys, Port-Einstellungen und Fallback-Routing zwischen Gemini und Ollama ist im `API_KEY_GUIDE.md` beschrieben. Bitte lies diese Datei sorgfältig durch, bevor du mit der Konfiguration beginnst. Informationen zur DNS-Umstellung und zum DDoS-Schutz findest du in `DNS_DDoS_GUIDE.md`.
 
 ## 5. Multi-VPS-Strategie
 
@@ -97,6 +104,7 @@ Um die Ressourcen optimal zu nutzen und die Stabilität zu erhöhen, wird eine M
 
 ## 6. Fehlerbehebung und Support
 
-Sollten während der Installation oder Konfiguration Probleme auftreten, konsultiere bitte zuerst die `API_KEY_GUIDE.md` und die `PRIVATE_REPO_GUIDE.md`. Bei weiteren Fragen oder Problemen kannst du Issues im GitHub-Repository erstellen.
+Sollten während der Installation oder Konfiguration Probleme auftreten, konsultiere bitte zuerst die `API_KEY_GUIDE.md`, `DNS_DDoS_GUIDE.md` und die `PRIVATE_REPO_GUIDE.md`. Bei weiteren Fragen oder Problemen kannst du Issues im GitHub-Repository erstellen.
 
 Wir wünschen dir viel Erfolg bei der Einrichtung deines intelligenten, automatisierten Systems!
+```

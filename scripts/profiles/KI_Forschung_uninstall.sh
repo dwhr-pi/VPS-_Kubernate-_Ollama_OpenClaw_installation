@@ -1,0 +1,44 @@
+#!/bin/bash
+#
+# Skript: KI_Forschung_uninstall.sh
+# Beschreibung: Dieses Skript deinstalliert Tools und Konfigurationen, die zum KI-Forschung Profil gehören.
+# Es entfernt die entsprechenden Softwarepakete und Konfigurationsdateien.
+# Verwendung: Wird vom Haupt-Setup-Skript aufgerufen, wenn das KI-Forschung Profil deinstalliert wird.
+#
+
+# Farben
+GREEN=\033[0;32m
+BLUE=\033[0;34m
+RED=\033[0;31m
+YELLOW=\033[1;33m
+NC=\033[0m
+
+echo -e "${BLUE}Starte Deinstallation des KI-Forschung Profils...${NC}"
+
+# Beispiel: Deinstallation von OpenClaw RL (falls installiert)
+if [ -f "$INSTALL_DIR/scripts/tools/openclaw_rl_uninstall.sh" ]; then
+    echo -e "${BLUE}Deinstalliere OpenClaw RL als Teil des KI-Forschung Profils...${NC}"
+    "$INSTALL_DIR/scripts/tools/openclaw_rl_uninstall.sh"
+else
+    echo -e "${YELLOW}OpenClaw RL Deinstallationsskript nicht gefunden. Überspringe OpenClaw RL Deinstallation.${NC}"
+fi
+
+# Beispiel: Deinstallation von Flowise (falls installiert)
+if [ -f "$INSTALL_DIR/scripts/tools/flowise_uninstall.sh" ]; then
+    echo -e "${BLUE}Deinstalliere Flowise als Teil des KI-Forschung Profils...${NC}"
+    "$INSTALL_DIR/scripts/tools/flowise_uninstall.sh"
+else
+    echo -e "${YELLOW}Flowise Deinstallationsskript nicht gefunden. Überspringe Flowise Deinstallation.${NC}"
+fi
+
+# Beispiel: Deinstallation von LangFlow (falls installiert)
+if [ -f "$INSTALL_DIR/scripts/tools/langflow_uninstall.sh" ]; then
+    echo -e "${BLUE}Deinstalliere LangFlow als Teil des KI-Forschung Profils...${NC}"
+    "$INSTALL_DIR/scripts/tools/langflow_uninstall.sh"
+else
+    echo -e "${YELLOW}LangFlow Deinstallationsskript nicht gefunden. Überspringe LangFlow Deinstallation.${NC}"
+fi
+
+# Weitere KI-Forschung spezifische Tools hier deinstallieren
+
+echo -e "${GREEN}KI-Forschung Profil Deinstallation abgeschlossen.${NC}"
