@@ -1,4 +1,3 @@
-```markdown
 # VPS-_Kubernate-_Ollama_OpenClaw_installation - Ultimate Setup V11
 
 Dies ist das ultimative Setup für ein hybrides KI- und Smart Home System, das deinen Letsung MiniPC (WSL2) und mehrere kostenlose VPS kombiniert. Es integriert eine Vielzahl von Tools und KI-Agenten, die direkt aus GitHub-Quellen kompiliert werden.
