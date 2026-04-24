@@ -5,7 +5,7 @@
 # ==============================================================================
 
 REPO_URL="https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation.git" # BITTE AN IHR REPOSITORY ANPASSEN!
-INSTALL_DIR="~/openclaw_ultimate_setup"
+INSTALL_DIR="openclaw_ultimate_setup"
 
 GREEN=\033[032m
 BLUE=\033[034m
