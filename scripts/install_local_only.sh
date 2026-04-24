@@ -20,7 +20,8 @@ python3 -m venv /srv/homeassistant
 /srv/homeassistant/bin/pip install homeassistant
 
 # Systemd Service für Home Assistant
-sudo cp /opt/openclaw/docs/homeassistant.service /etc/systemd/system/homeassistant@homeassistant.service # Annahme: Service-Datei liegt hier
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+sudo cp "$SCRIPT_DIR/../docs/homeassistant.service" /etc/systemd/system/homeassistant@homeassistant.service
 sudo systemctl daemon-reload
 sudo systemctl enable homeassistant@homeassistant
 sudo systemctl start homeassistant@homeassistant

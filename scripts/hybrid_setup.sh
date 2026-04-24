@@ -12,6 +12,7 @@ YELLOW=\033[1;33m
 NC=\033[0m
 
 echo -e "${BLUE}Starte Hybrid-Setup für Letsung MiniPC und Multi-VPS...${NC}"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # 1. Ressourcenplan (für Dokumentation)
 cat <<EOF > ~/RESOURCE_PLAN.md
@@ -79,7 +80,7 @@ python3 -m venv /srv/homeassistant
 /srv/homeassistant/bin/pip install homeassistant
 
 # Systemd Service für Home Assistant
-sudo cp /opt/openclaw/docs/homeassistant.service /etc/systemd/system/homeassistant@homeassistant.service
+sudo cp "$SCRIPT_DIR/../docs/homeassistant.service" /etc/systemd/system/homeassistant@homeassistant.service
 sudo systemctl daemon-reload
 sudo systemctl enable homeassistant@homeassistant
 sudo systemctl start homeassistant@homeassistant
