@@ -183,6 +183,18 @@ Tools:
   - Fristenmodul
 ```
 
+🚀 Bonus: Realistische Erwartung
+* AI = Assistenzsystem, kein Anwalt
+* Halluzinationen möglich
+* Mit Setup → Associate-Level realistisch erreichbar
+```
+
+```
+
+```
+
+```
+
 ```
 
 ```
