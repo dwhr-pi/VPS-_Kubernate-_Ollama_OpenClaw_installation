@@ -17,6 +17,17 @@ NC=\033[0m
 # Installationsverzeichnis (wird vom install.sh Skript gesetzt)
 INSTALL_DIR="$(pwd)"
 
+run_bash_script() {
+    local script_path="$1"
+
+    if [ ! -f "$script_path" ]; then
+        echo -e "${RED}Fehler: Skript nicht gefunden: $script_path${NC}"
+        return 1
+    fi
+
+    bash "$script_path"
+}
+
 # Check dependencies
 if ! command -v dialog >/dev/null 2>&1; then
     echo -e "${YELLOW}Installiere dialog für die Menüführung...${NC}"
@@ -37,7 +48,7 @@ PROFILES["Rechtsberatung_Steuerrecht"]="Tools für Web-Search & Fetch, PDF-Reade
 install_profile() {
     PROFILE_KEY=$1
     echo -e "${BLUE}Installiere Profil: ${PROFILE_KEY}...${NC}"
-    "$INSTALL_DIR/scripts/profiles/${PROFILE_KEY}_install.sh"
+    run_bash_script "$INSTALL_DIR/scripts/profiles/${PROFILE_KEY}_install.sh"
     if [ $? -eq 0 ]; then
         echo "$PROFILE_KEY" >> "$INSTALL_DIR/installed_profiles.txt"
         echo -e "${GREEN}Profil \'$PROFILE_KEY\' erfolgreich installiert.${NC}"
@@ -50,7 +61,7 @@ install_profile() {
 uninstall_profile() {
     PROFILE_KEY=$1
     echo -e "${BLUE}Deinstalliere Profil: ${PROFILE_KEY}...${NC}"
-    "$INSTALL_DIR/scripts/profiles/${PROFILE_KEY}_uninstall.sh"
+    run_bash_script "$INSTALL_DIR/scripts/profiles/${PROFILE_KEY}_uninstall.sh"
     if [ $? -eq 0 ]; then
         sed -i "/${PROFILE_KEY}/d" "$INSTALL_DIR/installed_profiles.txt"
         echo -e "${GREEN}Profil \'$PROFILE_KEY\' erfolgreich deinstalliert.${NC}"
@@ -129,7 +140,7 @@ TOOLS["Huge_Facing"]="Integration von Hugging Face Modellen, entweder lokal übe
 install_tool() {
     TOOL_KEY=$1
     echo -e "${BLUE}Installiere Tool: ${TOOL_KEY}...${NC}"
-    "$INSTALL_DIR/scripts/tools/${TOOL_KEY}_install.sh"
+    run_bash_script "$INSTALL_DIR/scripts/tools/${TOOL_KEY}_install.sh"
     if [ $? -eq 0 ]; then
         echo "$TOOL_KEY" >> "$INSTALL_DIR/installed_tools.txt"
         echo -e "${GREEN}Tool \'$TOOL_KEY\' erfolgreich installiert.${NC}"
@@ -142,7 +153,7 @@ install_tool() {
 uninstall_tool() {
     TOOL_KEY=$1
     echo -e "${BLUE}Deinstalliere Tool: ${TOOL_KEY}...${NC}"
-    "$INSTALL_DIR/scripts/tools/${TOOL_KEY}_uninstall.sh"
+    run_bash_script "$INSTALL_DIR/scripts/tools/${TOOL_KEY}_uninstall.sh"
     if [ $? -eq 0 ]; then
         sed -i "/${TOOL_KEY}/d" "$INSTALL_DIR/installed_tools.txt"
         echo -e "${GREEN}Tool \'$TOOL_KEY\' erfolgreich deinstalliert.${NC}"
@@ -225,38 +236,38 @@ while true; do
     
     case $CHOICE in
         1)
-            "$INSTALL_DIR/scripts/auto_update.sh"
+            run_bash_script "$INSTALL_DIR/scripts/auto_update.sh"
             read -p "System-Update abgeschlossen. Drücken Sie Enter..."
             ;;
         2)
-            "$INSTALL_DIR/scripts/ollama_model_manager.sh"
+            run_bash_script "$INSTALL_DIR/scripts/ollama_model_manager.sh"
             read -p "Ollama Modell-Management abgeschlossen. Drücken Sie Enter..."
             ;;
         3)
-            "$INSTALL_DIR/scripts/openclaw_config_manager.sh"
+            run_bash_script "$INSTALL_DIR/scripts/openclaw_config_manager.sh"
             read -p "OpenClaw Konfiguration abgeschlossen. Drücken Sie Enter..."
             ;;
         4)
             echo -e "${BLUE}Starte Hybrid-Setup (Letsung MiniPC + Multi-VPS)...${NC}"
-            "$INSTALL_DIR/scripts/base_install.sh"
-            "$INSTALL_DIR/scripts/hybrid_setup.sh"
+            run_bash_script "$INSTALL_DIR/scripts/base_install.sh"
+            run_bash_script "$INSTALL_DIR/scripts/hybrid_setup.sh"
             read -p "Hybrid-Setup abgeschlossen. Drücken Sie Enter..."
             ;;
         5)
             echo -e "${BLUE}Starte Standalone VPS-Setup (Cloud-Native)...${NC}"
-            "$INSTALL_DIR/scripts/base_install.sh"
-            "$INSTALL_DIR/scripts/vps_standalone.sh"
+            run_bash_script "$INSTALL_DIR/scripts/base_install.sh"
+            run_bash_script "$INSTALL_DIR/scripts/vps_standalone.sh"
             read -p "VPS-Standalone-Setup abgeschlossen. Drücken Sie Enter..."
             ;;
         6)
             echo -e "${BLUE}Starte Standalone MiniPC-Setup (Lokal)...${NC}"
-            "$INSTALL_DIR/scripts/base_install.sh"
-            "$INSTALL_DIR/scripts/install_local_only.sh"
+            run_bash_script "$INSTALL_DIR/scripts/base_install.sh"
+            run_bash_script "$INSTALL_DIR/scripts/install_local_only.sh"
             read -p "Standalone MiniPC-Setup abgeschlossen. Drücken Sie Enter..."
             ;;
         7)
             echo -e "${BLUE}Ruflo Installation & Management...${NC}"
-            "$INSTALL_DIR/scripts/ruflo_install.sh"
+            run_bash_script "$INSTALL_DIR/scripts/ruflo_install.sh"
             read -p "Ruflo-Aktion abgeschlossen. Drücken Sie Enter..."
             ;;
         8)
@@ -270,7 +281,7 @@ while true; do
             --title "Dokumentation & API-Key Guide" --textbox "$INSTALL_DIR/docs/API_KEY_GUIDE.md" 25 80
             ;;
         11)
-            "$INSTALL_DIR/scripts/port_check.sh"
+            run_bash_script "$INSTALL_DIR/scripts/port_check.sh"
             read -p "Port-Analyse abgeschlossen. Drücken Sie Enter..."
             ;;
         12)
