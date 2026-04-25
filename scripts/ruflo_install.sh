@@ -12,6 +12,7 @@ YELLOW=\033[133m
 NC=\033[0m
 
 RUFLO_DIR="/opt/ruflo"
+RUFLO_REPO_URL="${RUFLO_REPO_URL:-https://github.com/ruvnet/ruflo.git}"
 
 echo -e "${BLUE}Starte Ruflo Installation & Management...${NC}"
 
@@ -25,7 +26,7 @@ else
     echo -e "${BLUE}Klone Ruflo in $RUFLO_DIR...${NC}"
     sudo mkdir -p "$RUFLO_DIR"
     sudo chown -R $USER:$USER "$RUFLO_DIR"
-    git clone https://github.com/ruvnet/ruflo.git "$RUFLO_DIR"
+    git clone "$RUFLO_REPO_URL" "$RUFLO_DIR"
     cd "$RUFLO_DIR"
 fi
 
