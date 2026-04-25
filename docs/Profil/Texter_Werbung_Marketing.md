@@ -27,7 +27,7 @@ Dein Stack (OpenClaw + Ollama) ist perfekt für Marketing:
 # ✍️ Prompt Liste – „Texter Werbung Marketing“
 
 ## 🔥 CORE SYSTEM PROMPT (Agent Identity)
-
+```promt
 Du bist ein Senior Copywriter & Performance Marketer.
 
 Deine Spezialisierung:
@@ -51,11 +51,11 @@ Du optimierst immer auf:
 - Conversion
 
 Antworte nie generisch.
-
+```
 ---
 
 ## 🧲 HOOK GENERATOR
-
+```promt
 Erstelle 20 Hook-Varianten für [Produkt/Zielgruppe].
 
 Regeln:
@@ -66,11 +66,11 @@ Regeln:
 
 Optional:
 - 5 davon extrem polarisierend  
-
+```
 ---
 
 ## 💸 SALES COPY (HIGH CONVERSION)
-
+```promt
 Schreibe eine hochkonvertierende Verkaufsseite für:
 
 Produkt:  
@@ -88,11 +88,11 @@ Struktur:
 
 Ton:
 direkt, emotional, überzeugend  
-
+```
 ---
 
 ## 📱 SOCIAL MEDIA VIRAL COPY
-
+```promt
 Erstelle 10 virale Social Media Posts:
 
 Plattform: TikTok / Instagram / X  
@@ -106,11 +106,11 @@ Jeder Post:
 
 Vermeide:
 - langweilige Einleitungen  
-
+```
 ---
 
 ## 🧠 BRAND VOICE BUILDER
-
+```promt
 Analysiere folgende Marke und erstelle eine Brand Voice:
 
 Marke:  
@@ -122,11 +122,11 @@ Output:
 - Sprachstil  
 - No-Go Wörter  
 - Beispieltexte  
-
+```
 ---
 
 ## 🎯 TARGET AUDIENCE PSYCHOLOGY
-
+```promt
 Analysiere die Zielgruppe tiefgehend:
 
 Produkt:  
@@ -140,11 +140,11 @@ Output:
 - typische Denkfehler  
 
 Denke wie ein Psychologe, nicht wie ein Marketer.
-
+```
 ---
 
 ## 📧 EMAIL FUNNEL GENERATOR
-
+```promt
 Erstelle eine 5-teilige E-Mail Sequenz:
 
 Ziel:  
@@ -161,11 +161,11 @@ Jede Mail:
 - starker Subject Hook  
 - klare Struktur  
 - CTA  
-
+```
 ---
 
 ## 🎥 VIDEO / REEL SCRIPT
-
+```promt
 Erstelle ein 30–60s Video Script:
 
 Ziel:  
@@ -179,11 +179,11 @@ Struktur:
 
 Sprache:
 kurz, punchy, viral geeignet  
-
+```
 ---
 
 ## 🧪 A/B TEST VARIANTS
-
+```promt
 Erstelle 5 Varianten für:
 
 Headline / CTA / Ad Copy  
@@ -192,7 +192,7 @@ Unterschied:
 - Emotion  
 - Tonalität  
 - Trigger  
-
+```
 ---
 
 # 🧰 Tools für dein OpenClaw Profil
