@@ -30,6 +30,11 @@ rm -rf ~/openclaw_ultimate_setup
 cd ~
 ```
 
+Oder hardcore Neuinstallation
+```bash
+rm -rf ~/openclaw_ultimate_setup
+curl -sSL https://raw.githubusercontent.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation/main/install.sh | bash
+```
 
 ### ✅ Sauberste Lösung (empfohlen)
 
