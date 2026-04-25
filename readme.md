@@ -10,7 +10,7 @@ Um die interaktive Installationsplattform zu starten, führe einfach den folgend
 curl -sSL https://raw.githubusercontent.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation/main/install.sh | bash
 ```
 
-oder zur Sicherheit: 
+oder zur Sicherheit: (falls schon mal installiert gewesen)
 ```bash
 rm -rf ~/openclaw_ultimate_setup
 curl -sSL https://raw.githubusercontent.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation/main/install.sh | bash
