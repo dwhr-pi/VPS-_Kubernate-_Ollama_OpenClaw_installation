@@ -321,3 +321,14 @@ memory:
   - brand_voice
   - past_campaigns
   - audience_profiles
+```
+
+## 🚀 High-Level Nutzung
+
+Für maximale Power:
+* Prompts modular nutzen
+* Agenten trennen
+* Daten speichern (RAG)
+* Automatisierung bauen
+
+👉 Ergebnis: Autonome Marketing-Agentur auf deinem VPS
