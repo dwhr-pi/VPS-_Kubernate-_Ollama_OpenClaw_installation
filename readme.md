@@ -18,7 +18,7 @@ curl -sSL https://raw.githubusercontent.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenC
 
 Dieser Befehl lädt das `install.sh` Skript herunter und führt es aus. Das Skript klont dieses Repository und startet das interaktive Setup-Menü, das dich durch die weiteren Schritte führt.
 
-**Für private Repositories:** Das Skript wird dich nach einem GitHub Personal Access Token (PAT) fragen. Eine Anleitung zur Erstellung findest du in der `[docs/PRIVATE_REPO_GUIDE.md](docs/PRIVATE_REPO_GUIDE.md)`.
+**Für private Repositories:** Das Skript wird dich nach einem GitHub Personal Access Token (PAT) fragen. Eine Anleitung zur Erstellung findest du in der [docs/PRIVATE_REPO_GUIDE.md](docs/PRIVATE_REPO_GUIDE.md).
 
 ## 🔄 Setup erneut starten
 
