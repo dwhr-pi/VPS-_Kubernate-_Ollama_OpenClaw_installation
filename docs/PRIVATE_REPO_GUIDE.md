@@ -26,7 +26,7 @@ Dies ist der sicherste und einfachste Weg für private Repositories. Ersetzen Si
 git clone https://DEIN_TOKEN@github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation.git openclaw_setup
 
 # In das Verzeichnis wechseln und das Setup starten
-cd openclaw_setup && chmod +x setup_ultimate_v4.sh && ./setup_ultimate_v4.sh
+cd openclaw_setup && chmod +x setup_ultimate_v11.sh && ./setup_ultimate_v11.sh
 ```
 
 ---
