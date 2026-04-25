@@ -25,7 +25,7 @@ else
     echo -e "${BLUE}Klone Ruflo in $RUFLO_DIR...${NC}"
     sudo mkdir -p "$RUFLO_DIR"
     sudo chown -R $USER:$USER "$RUFLO_DIR"
-    git clone https://github.com/ruflo/ruflo.git "$RUFLO_DIR"
+    git clone https://github.com/ruvnet/ruflo.git "$RUFLO_DIR"
     cd "$RUFLO_DIR"
 fi
 
