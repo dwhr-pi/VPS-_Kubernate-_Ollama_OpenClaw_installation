@@ -1,4 +1,3 @@
-```markdown
 # Setup Guide: OpenClaw & AI Infrastructure - Ultimate Setup V11
 
 ## 1. Einführung
@@ -28,7 +27,7 @@ Bevor du mit der Installation beginnst, stelle sicher, dass die folgenden Voraus
 
 ## 3. Der Installationsprozess
 
-Die Installation erfolgt über ein interaktives Bash-Skript (`setup_ultimate_v11.sh`), das über einen One-Liner-Befehl gestartet wird. Das Skript führt dich durch ein Menü, in dem du verschiedene Setup-Optionen und Profile auswählen kannst.
+Die Installation erfolgt über ein interaktives Bash-Skript (`setup_ultimate.sh`), das über einen One-Liner-Befehl gestartet wird. Das Skript führt dich durch ein Menü, in dem du verschiedene Setup-Optionen und Profile auswählen kannst.
 
 ### 3.1 Start der Installation
 

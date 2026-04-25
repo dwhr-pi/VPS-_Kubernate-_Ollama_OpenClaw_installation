@@ -42,6 +42,7 @@ Das Setup bietet eine breite Palette an Tools, die du nach Bedarf installieren u
 *   **n8n:** Workflow-Automatisierungstool, das viele Apps und Dienste verbindet. Ermöglicht die visuelle Erstellung komplexer Automatisierungen und Integrationen ohne Code.
 *   **Activepieces:** Open-Source-Alternative zu Zapier für Workflow-Automatisierung. Eine flexible Plattform zur Automatisierung von Aufgaben und zur Verbindung verschiedener Anwendungen.
 *   **Flowise / LangFlow:** Open-Source-UIs für LLM-Anwendungen, basierend auf LangchainJS, zur visuellen Erstellung von LLM-Workflows. Ermöglicht die einfache Gestaltung und das Testen von KI-Anwendungen durch Drag-and-Drop-Oberflächen.
+*   **AutoGPT:** Agenten-Plattform von Significant Gravitas zum Erstellen, Starten und Verwalten komplexer KI-Workflows. Kann lokal per Docker Compose betrieben werden.
 *   **Pipedream:** Serverless-Plattform zur Integration von APIs und Diensten (Self-Hosted Option). Ideal für die schnelle Entwicklung und Bereitstellung von Backend-Logik und Integrationen.
 *   **Huginn:** Open-Source-Agentensystem, das Aktionen im Web automatisiert (ideal für Programmierer-Profil). Ermöglicht das Sammeln, Filtern und Reagieren auf Informationen aus dem Internet.
 *   **Zenbot-trader:** Plattform für automatisierten Krypto-Handel. Ein leistungsstarkes Tool für algorithmischen Handel auf verschiedenen Kryptowährungsbörsen.
@@ -86,36 +87,38 @@ Das Setup unterstützt die Installation und Deinstallation verschiedener Profile
 │   │       ├── .env.template
 │   │       └── config.json.template
 │   └── tools/                  # Verzeichnis für Tool-Installations-/Deinstallationsskripte
-│       ├── openmanus_install.sh
-│       ├── openmanus_uninstall.sh
-│       ├── openclaw_install.sh
-│       ├── openclaw_uninstall.sh
-│       ├── clawhub_cli_install.sh
-│       ├── clawhub_cli_uninstall.sh
-│       ├── clawhub_install.sh
-│       ├── clawhub_uninstall.sh
-│       ├── openclaw_rl_install.sh
-│       ├── openclaw_rl_uninstall.sh
-│       ├── clawbake_install.sh
-│       ├── clawbake_uninstall.sh
-│       ├── n8n_install.sh
-│       ├── n8n_uninstall.sh
-│       ├── activepieces_install.sh
-│       ├── activepieces_uninstall.sh
-│       ├── flowise_install.sh
-│       ├── flowise_uninstall.sh
-│       ├── langflow_install.sh
-│       ├── langflow_uninstall.sh
-│       ├── pipedream_install.sh
-│       ├── pipedream_uninstall.sh
-│       ├── huginn_install.sh
-│       ├── huginn_uninstall.sh
-│       ├── zenbot_trader_install.sh
-│       ├── zenbot_trader_uninstall.sh
-│       ├── kimi2_install.sh
-│       ├── kimi2_uninstall.sh
-│       ├── huge_facing_install.sh
-│       └── huge_facing_uninstall.sh
+│       ├── openmanus_install.sh       # Installiert OpenManus aus GitHub und richtet die Python-Abhängigkeiten ein
+│       ├── openmanus_uninstall.sh     # Entfernt die OpenManus Installation wieder vom System
+│       ├── openclaw_install.sh        # Installiert OpenClaw und baut das Projekt mit pnpm
+│       ├── openclaw_uninstall.sh      # Entfernt die OpenClaw Installation vollständig
+│       ├── clawhub_cli_install.sh     # Installiert die Clawhub CLI oder nutzt bei Bedarf das Clawhub Haupt-Repository als Fallback
+│       ├── clawhub_cli_uninstall.sh   # Entfernt die Clawhub CLI Installation wieder
+│       ├── clawhub_install.sh         # Installiert den Clawhub Server für Agenten-Orchestrierung
+│       ├── clawhub_uninstall.sh       # Entfernt die Clawhub Server-Installation
+│       ├── openclaw_rl_install.sh     # Installiert die Reinforcement-Learning-Erweiterung für OpenClaw aus primärem oder alternativem Repository
+│       ├── openclaw_rl_uninstall.sh   # Entfernt die OpenClaw RL Installation wieder
+│       ├── clawbake_install.sh        # Installiert Clawbake für Build- und Deployment-Automatisierung
+│       ├── clawbake_uninstall.sh      # Entfernt Clawbake vom System
+│       ├── n8n_install.sh             # Installiert n8n und baut die Workflow-Plattform mit pnpm
+│       ├── n8n_uninstall.sh           # Entfernt die n8n Installation vollständig
+│       ├── activepieces_install.sh    # Installiert Activepieces als Open-Source Workflow-Automatisierung
+│       ├── activepieces_uninstall.sh  # Entfernt Activepieces wieder vom System
+│       ├── flowise_install.sh         # Installiert Flowise zur visuellen Erstellung von LLM-Workflows
+│       ├── flowise_uninstall.sh       # Entfernt die Flowise Installation wieder
+│       ├── langflow_install.sh        # Installiert LangFlow für visuelle LangChain-Workflows
+│       ├── langflow_uninstall.sh      # Entfernt LangFlow wieder vom System
+│       ├── autogpt_install.sh         # Installiert AutoGPT und startet die Plattform per Docker Compose
+│       ├── autogpt_uninstall.sh       # Stoppt AutoGPT Container und entfernt die lokale Installation
+│       ├── pipedream_install.sh       # Bereitet die Self-Hosted Installation von Pipedream vor
+│       ├── pipedream_uninstall.sh     # Entfernt eine vorhandene Pipedream Installation wieder
+│       ├── huginn_install.sh          # Installiert Huginn für ereignisgesteuerte Web-Automatisierungen
+│       ├── huginn_uninstall.sh        # Entfernt die Huginn Installation vollständig
+│       ├── zenbot_trader_install.sh   # Installiert die Zenbot-Trader-Plattform für automatisierten Krypto-Handel
+│       ├── zenbot_trader_uninstall.sh # Entfernt die Zenbot-Trader Installation wieder
+│       ├── kimi2_install.sh           # Installiert Kimi K2.5 aus primärem oder alternativem Repository und richtet Python-Abhängigkeiten ein
+│       ├── kimi2_uninstall.sh         # Entfernt die Kimi Installation vollständig
+│       ├── huge_facing_install.sh     # Erklärt die Einbindung von Hugging Face Modellen in das Setup
+│       └── huge_facing_uninstall.sh   # Entfernt die hinterlegte Hugging-Face-Integration aus dem Setup-Kontext
 │   └── profiles/               # Verzeichnis für Profil-Installations-/Deinstallationsskripte
 │       ├── Programmierer_install.sh
 │       ├── Programmierer_uninstall.sh

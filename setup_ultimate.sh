@@ -119,6 +119,7 @@ show_profile_management_menu() {
 # --- Funktionen für Tool-Management ---
 
 declare -A TOOLS
+declare -A TOOL_SCRIPT_NAMES
 TOOLS["Ollama"]="Lokales LLM-Backend. Du kannst über den Ollama Modell-Manager spezifische Modelle installieren und verwalten."
 TOOLS["OpenManus"]="KI-Agenten-Framework für automatisierte Aufgaben wie Web-Recherche und Datenanalyse."
 TOOLS["OpenClaw"]="Fortschrittliches KI-Agenten-Framework mit Reinforcement Learning (RL) und Skill-Integration (z.B. gcali)."
@@ -129,18 +130,49 @@ TOOLS["n8n"]="Workflow-Automatisierungstool, das viele Apps und Dienste verbinde
 TOOLS["Activepieces"]="Open-Source-Alternative zu Zapier für Workflow-Automatisierung und Integrationen."
 TOOLS["Flowise"]="Open-Source-UI für LLM-Anwendungen, basierend auf LangchainJS, zur visuellen Workflow-Erstellung."
 TOOLS["LangFlow"]="UI für LangChain, um LLM-Anwendungen visuell zu erstellen und zu testen."
+TOOLS["AutoGPT"]="Agenten-Plattform von Significant Gravitas zur Erstellung, Ausführung und Verwaltung komplexer KI-Workflows."
 TOOLS["Pipedream"]="Serverless-Plattform zur Integration von APIs und Diensten (Self-Hosted-Option verfügbar)."
 TOOLS["Huginn"]="Open-Source-Agentensystem, das Aktionen im Web automatisiert und Ereignisse überwacht."
 TOOLS["Zenbot_trader"]="Plattform für automatisierten Krypto-Handel mit Backtesting, Sim-Trading und Live-Trading."
 TOOLS["Kimi2"]="KI-Agent von Moonshot AI für intelligente Interaktionen und Aufgaben."
 TOOLS["Clawhub"]="Zentraler Server für die Orchestrierung und Verwaltung von KI-Agenten und deren Interaktionen."
 TOOLS["Huge_Facing"]="Integration von Hugging Face Modellen, entweder lokal über Ollama oder über die Hugging Face Inference API."
+TOOL_SCRIPT_NAMES["Ollama"]="ollama"
+TOOL_SCRIPT_NAMES["OpenManus"]="openmanus"
+TOOL_SCRIPT_NAMES["OpenClaw"]="openclaw"
+TOOL_SCRIPT_NAMES["Clawhub_CLI"]="clawhub_cli"
+TOOL_SCRIPT_NAMES["OpenClaw_RL"]="openclaw_rl"
+TOOL_SCRIPT_NAMES["Clawbake"]="clawbake"
+TOOL_SCRIPT_NAMES["n8n"]="n8n"
+TOOL_SCRIPT_NAMES["Activepieces"]="activepieces"
+TOOL_SCRIPT_NAMES["Flowise"]="flowise"
+TOOL_SCRIPT_NAMES["LangFlow"]="langflow"
+TOOL_SCRIPT_NAMES["AutoGPT"]="autogpt"
+TOOL_SCRIPT_NAMES["Pipedream"]="pipedream"
+TOOL_SCRIPT_NAMES["Huginn"]="huginn"
+TOOL_SCRIPT_NAMES["Zenbot_trader"]="zenbot_trader"
+TOOL_SCRIPT_NAMES["Kimi2"]="kimi2"
+TOOL_SCRIPT_NAMES["Clawhub"]="clawhub"
+TOOL_SCRIPT_NAMES["Huge_Facing"]="huge_facing"
+
+run_tool_script() {
+    local tool_key="$1"
+    local action="$2"
+    local script_name="${TOOL_SCRIPT_NAMES[$tool_key]}"
+
+    if [ -z "$script_name" ]; then
+        echo -e "${RED}Fehler: Kein Skript-Mapping für Tool '$tool_key' gefunden.${NC}"
+        return 1
+    fi
+
+    run_bash_script "$INSTALL_DIR/scripts/tools/${script_name}_${action}.sh"
+}
 
 # Funktion zum Installieren eines Tools
 install_tool() {
     TOOL_KEY=$1
     echo -e "${BLUE}Installiere Tool: ${TOOL_KEY}...${NC}"
-    run_bash_script "$INSTALL_DIR/scripts/tools/${TOOL_KEY}_install.sh"
+    run_tool_script "$TOOL_KEY" "install"
     if [ $? -eq 0 ]; then
         echo "$TOOL_KEY" >> "$INSTALL_DIR/installed_tools.txt"
         echo -e "${GREEN}Tool \'$TOOL_KEY\' erfolgreich installiert.${NC}"
@@ -153,7 +185,7 @@ install_tool() {
 uninstall_tool() {
     TOOL_KEY=$1
     echo -e "${BLUE}Deinstalliere Tool: ${TOOL_KEY}...${NC}"
-    run_bash_script "$INSTALL_DIR/scripts/tools/${TOOL_KEY}_uninstall.sh"
+    run_tool_script "$TOOL_KEY" "uninstall"
     if [ $? -eq 0 ]; then
         sed -i "/${TOOL_KEY}/d" "$INSTALL_DIR/installed_tools.txt"
         echo -e "${GREEN}Tool \'$TOOL_KEY\' erfolgreich deinstalliert.${NC}"
@@ -173,7 +205,7 @@ show_tool_management_menu() {
     fi
 
     TOOL_CHECKLIST_OPTIONS=()
-    for tool_key in "Ollama" "OpenManus" "OpenClaw" "Clawhub_CLI" "OpenClaw_RL" "Clawbake" "n8n" "Activepieces" "Flowise" "LangFlow" "Pipedream" "Huginn" "Zenbot_trader" "Kimi2" "Clawhub" "Huge_Facing"; do
+    for tool_key in "Ollama" "OpenManus" "OpenClaw" "Clawhub_CLI" "OpenClaw_RL" "Clawbake" "n8n" "Activepieces" "Flowise" "LangFlow" "AutoGPT" "Pipedream" "Huginn" "Zenbot_trader" "Kimi2" "Clawhub" "Huge_Facing"; do
         STATUS="off"
         if [[ -v INSTALLED_TOOLS_MAP["$tool_key"] ]]; then
             STATUS="on"
@@ -188,7 +220,7 @@ show_tool_management_menu() {
     SELECTED_TOOLS=$(cat /tmp/tool_selection)
 
     # Installation/Deinstallation basierend auf Auswahl
-    for tool_key in "Ollama" "OpenManus" "OpenClaw" "Clawhub_CLI" "OpenClaw_RL" "Clawbake" "n8n" "Activepieces" "Flowise" "LangFlow" "Pipedream" "Huginn" "Zenbot_trader" "Kimi2" "Clawhub" "Huge_Facing"; do
+    for tool_key in "Ollama" "OpenManus" "OpenClaw" "Clawhub_CLI" "OpenClaw_RL" "Clawbake" "n8n" "Activepieces" "Flowise" "LangFlow" "AutoGPT" "Pipedream" "Huginn" "Zenbot_trader" "Kimi2" "Clawhub" "Huge_Facing"; do
         IS_SELECTED=false
         for selected_key in $SELECTED_TOOLS; do
             if [[ "$tool_key" == "$selected_key" ]]; then

@@ -5,14 +5,17 @@
 # ==============================================================================
 
 # Farben
-GREEN=\033[032m
-BLUE=\033[034m
-RED=\033[031m
-YELLOW=\033[133m
+GREEN=\033[0;32m
+BLUE=\033[0;34m
+RED=\033[0;31m
+YELLOW=\033[1;33m
 NC=\033[0m
 
 echo -e "${BLUE}Starte Hybrid-Setup für Letsung MiniPC und Multi-VPS...${NC}"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+HOME_ASSISTANT_USER="homeassistant"
+HOME_ASSISTANT_HOME="/var/lib/homeassistant"
+HOME_ASSISTANT_VENV="/srv/homeassistant"
 
 # 1. Ressourcenplan (für Dokumentation)
 cat <<EOF > ~/RESOURCE_PLAN.md
@@ -75,9 +78,14 @@ echo -e "${GREEN}OpenClaw .env erfolgreich konfiguriert.${NC}"
 
 # 4. Home Assistant Core Installation
 echo -e "${GREEN}3/5: Installiere Home Assistant Core...${NC}"
-python3 -m venv /srv/homeassistant
-/srv/homeassistant/bin/pip install wheel
-/srv/homeassistant/bin/pip install homeassistant
+if ! id -u "$HOME_ASSISTANT_USER" >/dev/null 2>&1; then
+    sudo useradd --system --create-home --home-dir "$HOME_ASSISTANT_HOME" --shell /usr/sbin/nologin "$HOME_ASSISTANT_USER"
+fi
+sudo mkdir -p "$HOME_ASSISTANT_VENV" "$HOME_ASSISTANT_HOME/.homeassistant"
+sudo chown -R "$HOME_ASSISTANT_USER":"$HOME_ASSISTANT_USER" "$HOME_ASSISTANT_VENV" "$HOME_ASSISTANT_HOME"
+sudo -u "$HOME_ASSISTANT_USER" python3 -m venv "$HOME_ASSISTANT_VENV"
+sudo -u "$HOME_ASSISTANT_USER" "$HOME_ASSISTANT_VENV/bin/pip" install wheel
+sudo -u "$HOME_ASSISTANT_USER" "$HOME_ASSISTANT_VENV/bin/pip" install homeassistant
 
 # Systemd Service für Home Assistant
 sudo cp "$SCRIPT_DIR/../docs/homeassistant.service" /etc/systemd/system/homeassistant@homeassistant.service

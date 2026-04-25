@@ -8,7 +8,7 @@ Type=simple
 User=homeassistant
 WorkingDirectory=/srv/homeassistant
 Environment="PATH=/srv/homeassistant/bin"
-ExecStart=/srv/homeassistant/bin/hass -c "/home/homeassistant/.homeassistant"
+ExecStart=/srv/homeassistant/bin/hass -c "/var/lib/homeassistant/.homeassistant"
 Restart=on-failure
 RestartSec=5
 
