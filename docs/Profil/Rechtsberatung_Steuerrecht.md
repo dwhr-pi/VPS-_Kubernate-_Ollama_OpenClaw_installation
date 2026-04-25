@@ -187,6 +187,16 @@ Tools:
 * AI = Assistenzsystem, kein Anwalt
 * Halluzinationen möglich
 * Mit Setup → Associate-Level realistisch erreichbar
+
+
+
+xxxxxxxx
+## Assistant (Abschluss)
+👉 Wenn du willst:
+* komplettes OpenClaw Agent-Setup (YAML + Tools)
+* fertige RAG Pipeline für deutsches Steuerrecht
+* Multi-Agent System wie eine echte Kanzlei
+Sag einfach: „baue mir das Setup“
 ```
 
 ```
