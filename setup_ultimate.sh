@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Skript: setup_ultimate_v11.sh
+# Skript: setup_ultimate.sh
 # Beschreibung: Dies ist das Hauptinstallationsskript für die ultimative KI-Infrastruktur.
 # Es bietet eine interaktive Menüführung zur Installation, Deinstallation und Verwaltung verschiedener KI-Tools, Profile und Systemkomponenten.
 # Das Skript unterstützt hybride Setups (MiniPC + Multi-VPS), Standalone-Installationen und bietet Funktionen wie Auto-Updates, Ollama-Modellverwaltung und OpenClaw-Konfiguration.
@@ -14,8 +14,8 @@ RED=\033[031m
 YELLOW=\033[133m
 NC=\033[0m
 
-# Installationsverzeichnis (wird vom install.sh Skript gesetzt)
-INSTALL_DIR="$(pwd)"
+# Installationsverzeichnis
+INSTALL_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 run_bash_script() {
     local script_path="$1"

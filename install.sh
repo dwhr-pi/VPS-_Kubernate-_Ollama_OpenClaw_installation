@@ -4,6 +4,8 @@
 # Dieses Skript klont das Repository und startet das Haupt-Setup-Skript.
 # ==============================================================================
 
+set -e
+
 REPO_URL="https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation.git" # BITTE AN IHR REPOSITORY ANPASSEN!
 INSTALL_DIR="openclaw_ultimate_setup"
 
@@ -49,19 +51,15 @@ fi
 if [ -d "$INSTALL_DIR" ]; then
     echo -e "${YELLOW}Installationsverzeichnis $INSTALL_DIR existiert bereits. Aktualisiere Repository...${NC}"
     cd "$INSTALL_DIR"
-    git pull
+    git pull --ff-only
 else
     echo -e "${BLUE}Klone Repository in $INSTALL_DIR...${NC}"
     git clone "$GIT_AUTH_URL" "$INSTALL_DIR"
-    if [ $? -ne 0 ]; then
-        echo -e "${RED}Fehler: Repository konnte nicht geklont werden. Prüfen Sie die URL, Ihr Token und Ihre Internetverbindung.${NC}"
-        exit 1
-    fi
     cd "$INSTALL_DIR"
 fi
 
 # Haupt-Setup-Skript ausführen
 find . -type f -name "*.sh" -exec chmod +x {} \; 2>/dev/null || true
-bash ./setup_ultimate_v11.sh
+bash ./setup_ultimate.sh
 
 echo -e "${GREEN}Installation abgeschlossen. Bitte folgen Sie den Anweisungen im Menü.${NC}"

@@ -10,15 +10,9 @@ Um die interaktive Installationsplattform zu starten, führe einfach den folgend
 curl -sSL https://raw.githubusercontent.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation/main/install.sh | bash
 ```
 
-oder zur Sicherheit: (falls schon mal installiert gewesen)
-```bash
-rm -rf ~/openclaw_ultimate_setup
-curl -sSL https://raw.githubusercontent.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation/main/install.sh | bash
-```
-
 Dieser Befehl lädt das `install.sh` Skript herunter und führt es aus. Das Skript klont dieses Repository und startet das interaktive Setup-Menü, das dich durch die weiteren Schritte führt.
 
-**Für private Repositories:** Das Skript wird dich nach einem GitHub Personal Access Token (PAT) fragen. Eine Anleitung zur Erstellung findest du in der [docs/PRIVATE_REPO_GUIDE.md](docs/PRIVATE_REPO_GUIDE.md).
+**Für private Repositories:** Das Skript wird dich nach einem GitHub Personal Access Token (PAT) fragen. Eine Anleitung zur Erstellung findest du in der `docs/PRIVATE_REPO_GUIDE.md`.
 
 ## 🔄 Setup erneut starten
 
@@ -26,7 +20,7 @@ Wenn du das Setup-Menü erneut starten möchtest, navigiere in das Installations
 
 ```bash
 cd ~/openclaw_ultimate_setup
-./setup_ultimate_v11.sh
+bash ./setup_ultimate.sh
 ```
 
 ## 📖 Dokumentation
@@ -74,7 +68,7 @@ Das Setup unterstützt die Installation und Deinstallation verschiedener Profile
 ```
 . # Repository Root
 ├── install.sh                  # One-Liner Bootstrapper (mit Privat-Repo Support)
-├── setup_ultimate_v11.sh       # Interaktives Haupt-Setup-Menü
+├── setup_ultimate.sh           # Interaktives Haupt-Setup-Menü
 ├── README.md                   # Diese Datei
 ├── scripts/
 │   ├── auto_update.sh          # Skript für System- und pnpm-Updates
