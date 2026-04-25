@@ -15,85 +15,97 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 INSTALL_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 OPENCLAW_CONFIG_TEMPLATES_DIR="$INSTALL_DIR/scripts/config_templates/openclaw"
 OPENCLAW_INSTALL_DIR="/opt/openclaw"
+OPENCLAW_CONFIG_CHOICE_FILE="/tmp/openclaw_config_choice"
 
-# Funktion zum Bearbeiten einer Datei
+cleanup_temp_files() {
+    rm -f "$OPENCLAW_CONFIG_CHOICE_FILE"
+}
+
+pause_screen() {
+    read -r -p "Drücken Sie Enter..."
+}
+
 edit_file() {
-    FILE_PATH=$1
-    echo -e "${BLUE}Öffne Datei zum Bearbeiten: ${FILE_PATH}${NC}"
-    # Prüfen, ob nano oder vi verfügbar ist
+    local file_path="$1"
+
+    if [ ! -f "$file_path" ]; then
+        echo -e "${RED}Fehler: Datei nicht gefunden: ${file_path}${NC}"
+        pause_screen
+        return 1
+    fi
+
+    echo -e "${BLUE}Öffne Datei zum Bearbeiten: ${file_path}${NC}"
     if command -v nano >/dev/null 2>&1; then
-        nano "$FILE_PATH"
+        nano "$file_path"
     elif command -v vi >/dev/null 2>&1; then
-        vi "$FILE_PATH"
+        vi "$file_path"
     else
-        echo -e "${RED}Kein geeigneter Texteditor (nano oder vi) gefunden. Bitte bearbeiten Sie die Datei manuell: ${FILE_PATH}${NC}"
-        read -p "Drücken Sie Enter, wenn Sie fertig sind..."
+        echo -e "${RED}Kein geeigneter Texteditor (nano oder vi) gefunden. Bitte bearbeiten Sie die Datei manuell: ${file_path}${NC}"
+        pause_screen
     fi
 }
 
-# Funktion zum Anwenden der Konfiguration
 apply_config() {
-    CONFIG_TYPE=$1 # .env oder config.json
-    TEMPLATE_FILE="$OPENCLAW_CONFIG_TEMPLATES_DIR/${CONFIG_TYPE}.template"
-    TARGET_FILE="$OPENCLAW_INSTALL_DIR/${CONFIG_TYPE}"
+    local config_type="$1"
+    local template_file="$OPENCLAW_CONFIG_TEMPLATES_DIR/${config_type}.template"
+    local target_file="$OPENCLAW_INSTALL_DIR/${config_type}"
 
-    if [ ! -f "$TEMPLATE_FILE" ]; then
-        echo -e "${RED}Fehler: Vorlagendatei ${TEMPLATE_FILE} nicht gefunden.${NC}"
+    if [ ! -f "$template_file" ]; then
+        echo -e "${RED}Fehler: Vorlagendatei ${template_file} nicht gefunden.${NC}"
         return 1
     fi
 
     if [ ! -d "$OPENCLAW_INSTALL_DIR" ]; then
-        echo -e "${YELLOW}Warnung: OpenClaw ist nicht unter ${OPENCLAW_INSTALL_DIR} installiert. Konfiguration wird nur in die Vorlage geschrieben.${NC}"
-        echo -e "${BLUE}Möchten Sie die Konfiguration trotzdem in die Vorlage schreiben? (j/n)${NC}"
-        read -r -p "" response
-        if [[ "$response" =~ ^([jJ][aA]|[jJ])$ ]]; then
-            echo -e "${BLUE}Konfiguration in Vorlage ${TEMPLATE_FILE} geschrieben.${NC}"
-            return 0
-        else
-            echo -e "${YELLOW}Vorgang abgebrochen.${NC}"
-            return 1
-        fi
+        echo -e "${YELLOW}Warnung: OpenClaw ist nicht unter ${OPENCLAW_INSTALL_DIR} installiert.${NC}"
+        echo -e "${YELLOW}Die Vorlage wurde nicht angewendet, kann aber weiter bearbeitet werden.${NC}"
+        return 1
     fi
 
-    echo -e "${BLUE}Wende ${CONFIG_TYPE} Konfiguration an...${NC}"
-    sudo cp "$TEMPLATE_FILE" "$TARGET_FILE"
-    if [ $? -eq 0 ]; then
-        echo -e "${GREEN}Konfiguration ${CONFIG_TYPE} erfolgreich auf OpenClaw angewendet.${NC}"
+    echo -e "${BLUE}Wende ${config_type} Konfiguration an...${NC}"
+    if sudo cp "$template_file" "$target_file"; then
+        echo -e "${GREEN}Konfiguration ${config_type} erfolgreich auf OpenClaw angewendet.${NC}"
     else
-        echo -e "${RED}Fehler beim Anwenden der Konfiguration ${CONFIG_TYPE}.${NC}"
+        echo -e "${RED}Fehler beim Anwenden der Konfiguration ${config_type}.${NC}"
         return 1
     fi
 }
 
-# Hauptmenü für OpenClaw Konfiguration
 show_openclaw_config_menu() {
+    rm -f "$OPENCLAW_CONFIG_CHOICE_FILE"
     dialog --clear --backtitle "OpenClaw Konfigurations-Manager" \
     --title "OpenClaw Konfiguration" --menu "Wählen Sie eine Option:" 15 60 5 \
     "1" "Bearbeite .env Vorlage" \
     "2" "Wende .env Vorlage auf OpenClaw an" \
     "3" "Bearbeite config.json Vorlage" \
     "4" "Wende config.json Vorlage auf OpenClaw an" \
-    "5" "Zurück zum Hauptmenü" 2> /tmp/openclaw_config_choice
+    "5" "Zurück zum Hauptmenü" 2> "$OPENCLAW_CONFIG_CHOICE_FILE"
 }
+
+trap cleanup_temp_files EXIT
 
 while true; do
     show_openclaw_config_menu
-    CHOICE=$(cat /tmp/openclaw_config_choice)
 
-    case $CHOICE in
+    if [ $? -ne 0 ] || [ ! -f "$OPENCLAW_CONFIG_CHOICE_FILE" ]; then
+        break
+    fi
+
+    CHOICE="$(tr -d '\r' < "$OPENCLAW_CONFIG_CHOICE_FILE")"
+
+    case "$CHOICE" in
         1)
             edit_file "$OPENCLAW_CONFIG_TEMPLATES_DIR/.env.template"
             ;;
         2)
             apply_config ".env"
-            read -p "Drücken Sie Enter..."
+            pause_screen
             ;;
         3)
             edit_file "$OPENCLAW_CONFIG_TEMPLATES_DIR/config.json.template"
             ;;
         4)
             apply_config "config.json"
-            read -p "Drücken Sie Enter..."
+            pause_screen
             ;;
         5)
             break
@@ -104,5 +116,3 @@ while true; do
             ;;
     esac
 done
-
-rm -f /tmp/openclaw_config_choice
