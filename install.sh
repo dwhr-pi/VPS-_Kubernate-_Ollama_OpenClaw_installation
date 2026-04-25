@@ -8,6 +8,7 @@ set -e
 
 REPO_URL="https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation.git" # BITTE AN IHR REPOSITORY ANPASSEN!
 INSTALL_DIR="openclaw_ultimate_setup"
+TTY_DEVICE="/dev/tty"
 
 GREEN=\033[032m
 BLUE=\033[034m
@@ -16,6 +17,11 @@ YELLOW=\033[133m
 NC=\033[0m
 
 echo -e "${BLUE}Starte die OpenClaw Ultimate Setup Installation...${NC}"
+
+if [ ! -e "$TTY_DEVICE" ]; then
+    echo -e "${RED}Fehler: Kein interaktives Terminal gefunden. Bitte starten Sie das Skript in einer normalen Shell.${NC}"
+    exit 1
+fi
 
 # Prüfen, ob Git installiert ist
 if ! command -v git >/dev/null 2>&1; then
@@ -29,14 +35,14 @@ if ! command -v git >/dev/null 2>&1; then
 fi
 
 # Abfrage für privates Repository
-read -p "Ist Ihr GitHub-Repository privat? (j/N): " IS_PRIVATE_REPO
+read -r -p "Ist Ihr GitHub-Repository privat? (j/N): " IS_PRIVATE_REPO < "$TTY_DEVICE"
 IS_PRIVATE_REPO=${IS_PRIVATE_REPO:-N}
 
 GIT_AUTH_URL="$REPO_URL"
 if [[ "$IS_PRIVATE_REPO" =~ ^[jJ]$ ]]; then
     echo -e "${YELLOW}Für private Repositories benötigen Sie ein GitHub Personal Access Token (PAT).${NC}"
     echo -e "${YELLOW}Anleitung zur Erstellung: docs/PRIVATE_REPO_GUIDE.md im geklonten Repo.${NC}"
-    read -s -p "Bitte geben Sie Ihr GitHub Personal Access Token ein: " GITHUB_PAT
+    read -r -s -p "Bitte geben Sie Ihr GitHub Personal Access Token ein: " GITHUB_PAT < "$TTY_DEVICE"
     echo
     if [ -z "$GITHUB_PAT" ]; then
         echo -e "${RED}Fehler: Kein GitHub Personal Access Token eingegeben. Installation abgebrochen.${NC}"
@@ -60,6 +66,6 @@ fi
 
 # Haupt-Setup-Skript ausführen
 find . -type f -name "*.sh" -exec chmod +x {} \; 2>/dev/null || true
-bash ./setup_ultimate.sh
+bash ./setup_ultimate.sh < "$TTY_DEVICE" > "$TTY_DEVICE" 2>&1
 
 echo -e "${GREEN}Installation abgeschlossen. Bitte folgen Sie den Anweisungen im Menü.${NC}"

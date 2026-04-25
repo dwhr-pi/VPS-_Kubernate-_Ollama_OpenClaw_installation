@@ -23,44 +23,6 @@ cd ~/openclaw_ultimate_setup
 bash ./setup_ultimate.sh
 ```
 
-## ⚡Setup entfernen
-
-```bash
-rm -rf ~/openclaw_ultimate_setup
-cd ~
-```
-
-
-### ✅ Sauberste Lösung (empfohlen)
-
-Wenn du nichts Wichtiges angepasst hast → hart resetten
-```bash
-cd ~/openclaw_ultimate_setup
-
-# alles verwerfen
-git reset --hard
-
-# untracked files löschen
-git clean -fd
-
-# dann update ziehen
-git pull
-```
-
-👉 Danach ist dein Repo wieder 100% sauber wie GitHub
-
-
-### 🧠 Alternative: Änderungen behalten
-
-Falls du deine Fixes behalten willst:
-```bash
-git stash
-git pull
-git stash pop
-```
-
-⚠️ Kann Konflikte erzeugen – eher nur sinnvoll, wenn du bewusst was geändert hast.
-
 ## 📖 Dokumentation
 
 Eine detaillierte Anleitung zur Konfiguration, API-Keys, Port-Analyse und den verschiedenen Setup-Optionen findest du in der `docs/API_KEY_GUIDE.md`, `docs/setup_guide.md` und `docs/DNS_DDoS_GUIDE.md` innerhalb dieses Repositorys.
