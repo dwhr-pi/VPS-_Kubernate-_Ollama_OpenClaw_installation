@@ -2,6 +2,11 @@
 
 Dies ist das ultimative Setup für ein hybrides KI- und Smart Home System, das deinen Letsung MiniPC (WSL2) und mehrere kostenlose VPS kombiniert. Es integriert eine Vielzahl von Tools und KI-Agenten, die direkt aus GitHub-Quellen kompiliert werden.
 
+Eventuell zuvor in das Stammverzeichnis von Linux wechseln.
+```bash
+cd ~
+```
+
 ## 🚀 Schnelle Installation (One-Liner)
 
 Um die interaktive Installationsplattform zu starten, führe einfach den folgenden Befehl in deinem Terminal aus:
@@ -30,6 +35,11 @@ rm -rf ~/openclaw_ultimate_setup
 cd ~
 ```
 
+Oder hardcore Neuinstallation
+```bash
+rm -rf ~/openclaw_ultimate_setup
+curl -sSL https://raw.githubusercontent.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation/main/install.sh | bash
+```
 
 ### ✅ Sauberste Lösung (empfohlen)
 
