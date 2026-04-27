@@ -13,13 +13,12 @@ Es beschreibt ein OpenClaw- und Ollama-kompatibles Audioprofil für Transkriptio
   - FFmpeg systemweit
   - librosa unter `/opt/librosa`
   - pydub unter `/opt/pydub`
+  - Piper unter `/opt/piper`
+  - Coqui_TTS unter `/opt/coqui_tts`
 
 ## Dokumentierte zusätzliche Tools
 
-Diese Bausteine sind in der Quelldatei enthalten, aber noch nicht vollständig als einzelne Installskripte umgesetzt:
-
-- Piper
-- Coqui TTS
+Aktuell sind alle in der Quelldatei explizit genannten Kernwerkzeuge als installierbare Bausteine abgedeckt.
 
 ## Verantwortlichkeiten
 
@@ -35,6 +34,8 @@ scripts/tools/whisper_install.sh
 scripts/tools/ffmpeg_install.sh
 scripts/tools/librosa_install.sh
 scripts/tools/pydub_install.sh
+scripts/tools/piper_install.sh
+scripts/tools/coqui_tts_install.sh
 ```
 
 ## Beispielprompts
@@ -58,7 +59,7 @@ Nutze FFmpeg für Konvertierung und Cleanup und gib die empfohlenen Verarbeitung
 - Dieses Profil passt gut zu OpenClaw für Audio-Pipelines und Vorverarbeitung.
 - `Whisper` deckt Speech-to-Text ab.
 - `FFmpeg`, `librosa` und `pydub` ergänzen Analyse und Cleanup.
-- Für echtes Text-to-Speech fehlen noch die dokumentierten TTS-Bausteine.
+- Mit `Piper` und `Coqui_TTS` ist jetzt auch die dokumentierte TTS-Seite als installierbarer Baustein vorhanden.
 
 ## Vergleich
 
@@ -66,10 +67,10 @@ Nutze FFmpeg für Konvertierung und Cleanup und gib die empfohlenen Verarbeitung
 
 - `Whisper` und `ffmpeg` aus der Quelle sind im Projekt bereits als installierbare Tools vorhanden.
 - Die Audioanalyse kann zusätzlich über `librosa` und `pydub` gestützt werden.
+- `Piper` und `Coqui_TTS` sind jetzt ebenfalls als TTS-Bausteine installierbar.
 
 ### ⚠ Missing in Setup
 
-- `Piper` und `Coqui` fehlen noch als installierbare TTS-Module.
 - Ein explizites Voice-Assistant-Laufzeitprofil gibt es noch nicht.
 
 ### ❌ Missing in Docs

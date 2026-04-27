@@ -10,17 +10,18 @@ Es beschreibt ein OpenClaw- und Ollama-kompatibles Kreativprofil für Bild- und 
 - Basis: `python3`, `python3-pip`, `python3-venv`
 - Bereits als einzelne Tools installierbar:
   - FFmpeg systemweit
+  - Stable_Diffusion_WebUI unter `/opt/stable-diffusion-webui`
+  - ComfyUI unter `/opt/comfyui`
+  - RealESRGAN unter `/opt/realesrgan`
 
 ## Dokumentierte zusätzliche Tools
 
 Diese Bausteine sind in der Quelldatei enthalten, aber noch nicht vollständig als einzelne Installskripte umgesetzt:
 
-- stable-diffusion-webui
-- comfyui
 - AnimateDiff
 - SVD
 - Runway API
-- RealESRGAN oder andere Upscaler
+- weitere Upscaler neben RealESRGAN
 
 ## Verantwortlichkeiten
 
@@ -33,6 +34,9 @@ Diese Bausteine sind in der Quelldatei enthalten, aber noch nicht vollständig a
 
 ```bash
 scripts/tools/ffmpeg_install.sh
+scripts/tools/stable_diffusion_webui_install.sh
+scripts/tools/comfyui_install.sh
+scripts/tools/realesrgan_install.sh
 ```
 
 ## Beispielprompts
@@ -54,19 +58,19 @@ Nutze FFmpeg für Post-Processing und beschreibe, wo Stable Diffusion, ComfyUI o
 ## OpenClaw / Ollama Fit
 
 - Dieses Profil passt gut zu OpenClaw für kreative Asset-Pipelines und Workflow-Orchestrierung.
-- `FFmpeg` ist der aktuell einzige direkt vorhandene Medienbaustein aus der Quelle.
-- Die eigentlichen Bild- und Video-Generatoren fehlen im Setup derzeit noch.
+- `FFmpeg` ist bereits vorhanden.
+- `Stable_Diffusion_WebUI`, `ComfyUI` und `RealESRGAN` sind jetzt als installierbare Bausteine ergänzt.
 
 ## Vergleich
 
 ### ✅ In Sync
 
 - `ffmpeg` aus der Quelle ist bereits als Tool vorhanden.
+- `stable-diffusion-webui`, `comfyui` und `RealESRGAN` sind jetzt als installierbare Module vorhanden.
 
 ### ⚠ Missing in Setup
 
-- `stable-diffusion-webui`, `comfyui`, `AnimateDiff`, `SVD`, `Runway API` und `RealESRGAN` fehlen noch als installierbare Module.
-- Es gibt noch kein dediziertes Visual-Profilskript.
+- Es gibt noch keine vollständig vorkonfigurierte visuelle Laufzeitpipeline für lokale Bild- und Videojobs.
 
 ### ❌ Missing in Docs
 

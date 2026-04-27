@@ -17,20 +17,48 @@
 - Das Profilskript installiert jetzt `Clawbake`, `FFmpeg`, `librosa`, `pydub`, `Demucs` und `Whisper`.
 - MusicGen, Riffusion, Stable Diffusion, ControlNet und echte Video-Generatoren fehlen weiterhin.
 
+### Audio
+- Die dokumentierten Kernwerkzeuge `Whisper`, `ffmpeg`, `Piper` und `Coqui TTS` sind jetzt als installierbare Bausteine vorhanden.
+- Es fehlt weiterhin ein vollständig vorkonfigurierter Voice-Assistant-Laufzeitstack.
+
 ### KI_Forschung
 - Erweiterte LLM-Modelle wie `gemini-1.5-pro` werden dokumentiert.
 - Das Profilskript installiert jetzt `OpenClaw RL`, `Flowise`, `LangFlow`, `LangChain`, `LlamaIndex`, `MLflow` und `Whisper`.
 - Ray, vLLM, Stable Diffusion und EnviroLLM fehlen weiterhin.
+
+### Agent_Orchestrator
+- Queue-/Event-Bus-, Memory- und Observability-Bausteine sind jetzt als installierbare Module vorhanden: `Redis`, `NATS`, `Qdrant`, `Weaviate`, `Prometheus`, `Grafana`, `Loki`.
+- Es fehlt weiterhin ein dediziertes Laufzeitmodul mit Policies für Retry, Routing und Konfliktauflösung.
+
+### Research_Agent
+- Trend-Monitoring ist jetzt als installierbares Modul vorhanden.
+- Es fehlt weiterhin eine vollständig vorkonfigurierte Repo-Vergleichs- und Monitoring-Pipeline.
 
 ### Texter_Werbung_Marketing
 - SEO, Social Media und spezialisierte Textproduktion werden dokumentiert.
 - Das Profilskript installiert jetzt `n8n`, `Activepieces`, `LangChain`, `ChromaDB` und `Playwright`.
 - API-Integrationen wie Google Analytics, Meta Ads, TikTok Ads, HubSpot, Notion, Airtable, Buffer, Zapier, Make, Ahrefs, SEMrush und ElevenLabs fehlen weiterhin.
 
+### Content_Automation
+- `Piper`, `Coqui_TTS`, `YT_DLP`, `Stable_Diffusion_WebUI` und `Trend_Monitor` sind jetzt als installierbare Module vorhanden.
+- Es fehlt weiterhin eine vollständig vorkonfigurierte End-to-End-Laufzeitpipeline inklusive Upload-Automation.
+
 ### Rechtsberatung_Steuerrecht
 - Zotero ist dokumentiert.
 - Das Profilskript installiert jetzt Zotero, `LangChain`, `LlamaIndex` und `ChromaDB`, referenziert aber weiterhin ein fehlendes Skill-Skript.
 - Neo4j, EULLM, ALIENTELLIGENCE, Fristen-Checker und Risiko-Scoring sind dokumentiert, aber noch nicht als Tools umgesetzt.
+
+### Security_Analyst
+- `nmap`, `nikto`, `trivy` und `Fail2Ban` sind jetzt als installierbare Module vorhanden.
+- Es fehlt weiterhin eine vollwertige Pentest- oder Compliance-Workflow-Kette.
+
+### Trading_AI
+- `Web3_APIs` und `Exchange_APIs` sind jetzt als installierbare Module vorhanden.
+- Es fehlt weiterhin ein dediziertes Backtest- oder Risikomodul.
+
+### Visual_Creator
+- `stable-diffusion-webui`, `comfyui` und `RealESRGAN` sind jetzt als installierbare Module vorhanden.
+- Es fehlt weiterhin eine vollständig vorkonfigurierte lokale Bild-/Video-Laufzeitpipeline.
 
 ## Im Setup vorhanden, aber schwach oder gar nicht dokumentiert
 

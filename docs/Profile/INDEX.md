@@ -63,6 +63,41 @@ Die fünf fachlichen Quelldateien unter [docs/Profil](/C:/Users/danie/.codex/wor
 - Tatsächlicher Setup-Kern: `pup`, `jq`, `wget`, `curl`, `poppler-utils`, `tesseract-ocr`, Zotero, LangChain, LlamaIndex, ChromaDB
 - Hauptlücke: die angekündigte OpenClaw-Skill-Integration für Rechtsquellen fehlt weiterhin
 
+### Agent_Orchestrator
+- Fokus: Aufgabenzerlegung, Routing, Mehragenten-Koordination
+- Tatsächlicher Setup-Kern: LangGraph, CrewAI, AutoGen, ChromaDB, Redis, NATS, Qdrant, Weaviate, Prometheus, Grafana, Loki
+- Hauptlücke: kein dediziertes Laufzeitmodul für Policies, Retry-Logik und Konfliktauflösung
+
+### Audio
+- Fokus: Speech-to-Text, Text-to-Speech, Audio-Cleanup
+- Tatsächlicher Setup-Kern: Whisper, FFmpeg, librosa, pydub, Piper, Coqui_TTS
+- Hauptlücke: kein vollständiger Voice-Assistant-Laufzeitstack
+
+### Content_Automation
+- Fokus: Skript, Voiceover, Videoschnitt und Workflow-Automation
+- Tatsächlicher Setup-Kern: FFmpeg, Whisper, Playwright, n8n, Activepieces, Piper, Coqui_TTS, YT_DLP, Stable_Diffusion_WebUI, Trend_Monitor
+- Hauptlücke: keine vollständig vorkonfigurierte End-to-End-Laufzeitpipeline
+
+### Research_Agent
+- Fokus: Repository-Analyse, Dokumentationsverständnis, Setup-Verbesserung
+- Tatsächlicher Setup-Kern: Playwright, LangChain, LlamaIndex, ChromaDB, Qdrant, Weaviate, Trend_Monitor
+- Hauptlücke: keine vollständig vorkonfigurierte Repo-Vergleichs- und Monitoring-Pipeline
+
+### Security_Analyst
+- Fokus: Exposure, Logs, Schwachstellenprüfung, Hardening
+- Tatsächlicher Setup-Kern: Port-Check, Nmap, Nikto, Trivy, Fail2Ban
+- Hauptlücke: keine vollwertige Pentest- oder Compliance-Workflow-Kette
+
+### Trading_AI
+- Fokus: Marktanalyse, Strategietests, Bot-Integration
+- Tatsächlicher Setup-Kern: Zenbot_trader, Web3_APIs, Exchange_APIs
+- Hauptlücke: kein dediziertes Backtest- oder Risikomodul
+
+### Visual_Creator
+- Fokus: Bild-, Video- und Asset-Pipelines
+- Tatsächlicher Setup-Kern: FFmpeg, Stable_Diffusion_WebUI, ComfyUI, RealESRGAN
+- Hauptlücke: keine vollständig vorkonfigurierte lokale Bild-/Video-Laufzeitpipeline
+
 ## Profil-Differenzen
 
 | Profil | Tatsächlich installierte Kern-Tools | Wichtige Abweichungen |
@@ -72,6 +107,13 @@ Die fünf fachlichen Quelldateien unter [docs/Profil](/C:/Users/danie/.codex/wor
 | KI_Forschung | OpenClaw RL, Flowise, LangFlow, LangChain, LlamaIndex, MLflow, Whisper | Kein automatisches Forschungsmodell-Setup, kein Ray/vLLM |
 | Texter_Werbung_Marketing | n8n, Activepieces, LangChain, ChromaDB, Playwright | Keine SEO-/Social-/CRM-/Ads-Spezialtools |
 | Rechtsberatung_Steuerrecht | Web-Fetch, PDF/OCR, Zotero, LangChain, LlamaIndex, ChromaDB | Fehlendes Skill-Skript, keine Legal-KG-/Risk-Tools |
+| Agent_Orchestrator | LangGraph, CrewAI, AutoGen, ChromaDB, Redis, NATS, Qdrant, Weaviate, Prometheus, Grafana, Loki | Keine fertige Policy-/Retry-/Konfliktlogik |
+| Audio | Whisper, FFmpeg, librosa, pydub, Piper, Coqui_TTS | Kein kompletter Voice-Assistant-Stack |
+| Content_Automation | FFmpeg, Whisper, Playwright, n8n, Activepieces, Piper, Coqui_TTS, YT_DLP, Stable_Diffusion_WebUI, Trend_Monitor | Keine vorkonfigurierte End-to-End-Laufzeitpipeline |
+| Research_Agent | Playwright, LangChain, LlamaIndex, ChromaDB, Qdrant, Weaviate, Trend_Monitor | Keine fertige Repo-Vergleichs- und Monitoring-Pipeline |
+| Security_Analyst | Port-Check, Nmap, Nikto, Trivy, Fail2Ban | Kein vollwertiger Pentest-/Compliance-Workflow |
+| Trading_AI | Zenbot_trader, Web3_APIs, Exchange_APIs | Kein dediziertes Backtest-/Risikomodul |
+| Visual_Creator | FFmpeg, Stable_Diffusion_WebUI, ComfyUI, RealESRGAN | Keine vorkonfigurierte lokale Bild-/Video-Laufzeitpipeline |
 
 ## Relevante globale Befunde
 

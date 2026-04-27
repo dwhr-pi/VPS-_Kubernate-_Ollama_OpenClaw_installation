@@ -12,15 +12,16 @@ Es beschreibt ein OpenClaw- und Ollama-kompatibles Sicherheitsprofil für Exposu
   - [scripts/port_check.sh](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/scripts/port_check.sh:1)
   - OpenClaw-Konfiguration und Port-/Dienstprüfung
   - Kubernetes-/K3s-bezogene Setup-Dateien
+  - Nmap
+  - Nikto
+  - Trivy
+  - Fail2Ban
 
 ## Dokumentierte zusätzliche Tools
 
 Diese Bausteine sind in der Quelldatei enthalten, aber noch nicht vollständig als einzelne Installskripte umgesetzt:
 
-- nmap
-- nikto
-- trivy
-- fail2ban logs als dediziertes Analysemodul
+- tieferes `fail2ban`-Logmodul als eigene Analysepipeline
 
 ## Verantwortlichkeiten
 
@@ -34,6 +35,10 @@ Diese Bausteine sind in der Quelldatei enthalten, aber noch nicht vollständig a
 ```bash
 scripts/port_check.sh
 scripts/openclaw_config_manager.sh
+scripts/tools/nmap_install.sh
+scripts/tools/nikto_install.sh
+scripts/tools/trivy_install.sh
+scripts/tools/fail2ban_install.sh
 ```
 
 ## Beispielprompts
@@ -55,7 +60,7 @@ Schlage konkrete Maßnahmen für Firewall, Secret-Handling, Dienste und Laufzeit
 ## OpenClaw / Ollama Fit
 
 - Dieses Profil passt gut zu OpenClaw als Sicherheits- und Review-Agent.
-- Das Repo enthält bereits Konfigurations- und Portprüfpfade, aber noch keinen vollwertigen Pentest-Stack.
+- Das Repo enthält jetzt Konfigurations- und Portprüfpfade plus zusätzliche Security-Tools, aber noch keinen vollwertigen Pentest-Stack.
 
 ## Vergleich
 
@@ -63,10 +68,10 @@ Schlage konkrete Maßnahmen für Firewall, Secret-Handling, Dienste und Laufzeit
 
 - Port- und Konfigurationsprüfung ist im Projekt bereits grundsätzlich angelegt.
 - Das Profil ergänzt die bereits vorhandenen Hardening- und Sicherheitsbefunde sinnvoll.
+- `nmap`, `nikto`, `trivy` und `Fail2Ban` sind jetzt als installierbare Bausteine vorhanden.
 
 ### ⚠ Missing in Setup
 
-- `nmap`, `nikto`, `trivy` und explizite `fail2ban`-Loganalyse fehlen noch als installierbare Module.
 - Ein dediziertes Security-Workflow-Skript gibt es noch nicht.
 
 ### ❌ Missing in Docs

@@ -14,14 +14,16 @@ Es beschreibt ein OpenClaw- und Ollama-kompatibles Profil für automatisierte Co
   - Playwright unter `/opt/playwright`
   - n8n unter `/opt/n8n`
   - Activepieces unter `/opt/activepieces`
+  - Piper unter `/opt/piper`
+  - Coqui_TTS unter `/opt/coqui_tts`
+  - YT_DLP unter `/opt/yt_dlp`
+  - Stable_Diffusion_WebUI unter `/opt/stable-diffusion-webui`
+  - Trend_Monitor unter `/opt/trend_monitor`
 
 ## Dokumentierte zusätzliche Tools
 
 Diese Bausteine sind in der Quelldatei enthalten, aber noch nicht vollständig als einzelne Installskripte umgesetzt:
 
-- Coqui / Piper TTS
-- yt-dlp
-- Stable Diffusion
 - Thumbnail-spezifische Bildpipeline
 - Upload-Automation als dediziertes Modul
 
@@ -41,6 +43,11 @@ scripts/tools/whisper_install.sh
 scripts/tools/playwright_install.sh
 scripts/tools/n8n_install.sh
 scripts/tools/activepieces_install.sh
+scripts/tools/piper_install.sh
+scripts/tools/coqui_tts_install.sh
+scripts/tools/yt_dlp_install.sh
+scripts/tools/stable_diffusion_webui_install.sh
+scripts/tools/trend_monitor_install.sh
 ```
 
 ## Beispielprompts
@@ -66,6 +73,8 @@ Thema analysieren, Skript erzeugen, Voiceover vorbereiten, Video schneiden und E
 - `FFmpeg` deckt den Videoschnitt-Baustein ab.
 - `Whisper` hilft bei Transkript- und Audio-Vorarbeit.
 - `Playwright`, `n8n` und `Activepieces` sind gute Grundlagen für Automatisierung und Browser-/Upload-Schritte.
+- `Piper`, `Coqui_TTS`, `YT_DLP` und `Stable_Diffusion_WebUI` ergänzen jetzt TTS, Quellbeschaffung und visuelle Asset-Erstellung.
+- `Trend_Monitor` ergänzt Themenradar und Feed-basierte Content-Vorbereitung.
 
 ## Vergleich
 
@@ -73,11 +82,12 @@ Thema analysieren, Skript erzeugen, Voiceover vorbereiten, Video schneiden und E
 
 - `ffmpeg` aus der Quelle ist bereits installierbar.
 - Die Workflow-Seite lässt sich mit `n8n`, `Activepieces` und `Playwright` bereits teilweise abbilden.
+- `Piper`, `Coqui_TTS`, `YT_DLP` und `Stable_Diffusion_WebUI` sind jetzt ebenfalls als echte Bausteine vorhanden.
+- `Trend_Monitor` ist jetzt als Recherche- und Trendmodul installierbar.
 
 ### ⚠ Missing in Setup
 
-- `Coqui`/`Piper`, `yt-dlp` und `Stable Diffusion` fehlen noch als installierbare Module.
-- Die dokumentierte End-to-End-Pipeline existiert noch nicht als fertig verdrahtetes Profilskript.
+- Die dokumentierte End-to-End-Pipeline existiert noch nicht als vollständig vorkonfigurierter Laufzeitworkflow.
 
 ### ❌ Missing in Docs
 

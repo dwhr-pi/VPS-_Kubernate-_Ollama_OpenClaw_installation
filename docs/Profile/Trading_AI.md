@@ -10,14 +10,14 @@ Es beschreibt ein OpenClaw- und Ollama-kompatibles Tradingprofil für Marktanaly
 - Basis: `git`, `nodejs>=22`, `pnpm`
 - Bereits als einzelne Tools installierbar:
   - Zenbot_trader unter `/opt/zenbot-trader`
+  - Web3_APIs unter `/opt/web3_apis`
+  - Exchange_APIs unter `/opt/exchange_apis`
 
 ## Dokumentierte zusätzliche Tools
 
 Diese Bausteine sind in der Quelldatei enthalten, aber noch nicht vollständig als einzelne Installskripte umgesetzt:
 
-- Zenbot API
-- Web3 APIs
-- Exchange APIs
+- Zenbot API als separates Integrationsmodul
 - dedizierte Risiko- und Strategieanalyse als Profilmodul
 
 ## Verantwortlichkeiten
@@ -31,7 +31,8 @@ Diese Bausteine sind in der Quelldatei enthalten, aber noch nicht vollständig a
 
 ```bash
 scripts/tools/zenbot_trader_install.sh
-scripts/tools/zenbot_trader_uninstall.sh
+scripts/tools/web3_apis_install.sh
+scripts/tools/exchange_apis_install.sh
 ```
 
 ## Beispielprompts
@@ -54,18 +55,18 @@ Zeige mir, welche Parameter ich vor einem Backtest priorisieren sollte.
 
 - Dieses Profil passt vor allem als Analyse- und Koordinationsschicht zu OpenClaw.
 - `Zenbot_trader` ist der wichtigste bereits vorhandene konkrete Baustein.
-- Zusätzliche APIs und Marktdaten-Integrationen fehlen aktuell noch.
+- `Web3_APIs` und `Exchange_APIs` ergänzen jetzt zusätzliche Daten- und Börsenanbindungen.
 
 ## Vergleich
 
 ### ✅ In Sync
 
 - Ein Trading-Bot-Baustein ist mit `Zenbot_trader` bereits vorhanden.
+- `Web3_APIs` und `Exchange_APIs` sind jetzt als installierbare Zusatzbausteine vorhanden.
 
 ### ⚠ Missing in Setup
 
-- `Zenbot API`, `Web3 APIs` und `Exchange APIs` fehlen noch als eigene Integrationsmodule.
-- Es gibt noch kein dediziertes Trading-Profilskript oder Backtest-Workflow-Modul.
+- Es gibt noch kein dediziertes Backtest- oder Risiko-Workflow-Modul.
 
 ### ❌ Missing in Docs
 

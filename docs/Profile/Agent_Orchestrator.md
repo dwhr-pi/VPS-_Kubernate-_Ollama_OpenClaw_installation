@@ -13,6 +13,13 @@ Es beschreibt ein OpenClaw- und Ollama-kompatibles Koordinationsprofil für Mehr
   - CrewAI unter `/opt/crewai`
   - AutoGen unter `/opt/autogen`
   - ChromaDB unter `/opt/chromadb`
+  - Redis systemweit
+  - NATS unter `/opt/nats`
+  - Qdrant unter `/opt/qdrant`
+  - Weaviate unter `/opt/weaviate`
+  - Prometheus unter `/opt/prometheus`
+  - Grafana unter `/opt/grafana`
+  - Loki unter `/opt/loki`
 
 ## Dokumentierte zusätzliche Tools
 
@@ -20,7 +27,6 @@ Diese Bausteine sind in der Quelldatei enthalten oder logisch direkt damit verwa
 
 - spezieller Router-Agent als eigenes Laufzeitmodul
 - dedizierte Multi-Agent-Memory-Policies
-- fortgeschrittene Ergebnis-Synchronisierung über Queue/Event-Bus
 
 ## Verantwortlichkeiten
 
@@ -36,6 +42,13 @@ scripts/tools/langgraph_install.sh
 scripts/tools/crewai_install.sh
 scripts/tools/autogen_install.sh
 scripts/tools/chromadb_install.sh
+scripts/tools/redis_install.sh
+scripts/tools/nats_install.sh
+scripts/tools/qdrant_install.sh
+scripts/tools/weaviate_install.sh
+scripts/tools/prometheus_install.sh
+scripts/tools/grafana_install.sh
+scripts/tools/loki_install.sh
 ```
 
 ## Beispielprompts
@@ -60,7 +73,9 @@ Begründe die Auswahl und gib die Übergabedaten je Agent an.
 
 - Dieses Profil passt direkt zur Orchestrierungsrolle von OpenClaw.
 - `LangGraph`, `CrewAI` und `AutoGen` sind die naheliegendsten bereits vorhandenen Bausteine.
-- `ChromaDB` ergänzt die Memory-Seite für Zwischenstände und Profilwissen.
+- `ChromaDB`, `Qdrant` und `Weaviate` ergänzen die Memory-Seite für Zwischenstände und Profilwissen.
+- `Redis` und `NATS` bilden jetzt die Queue-/Event-Bus-Bausteine für Synchronisierung.
+- `Prometheus`, `Grafana` und `Loki` decken den Observability-Teil ab.
 
 ## Vergleich
 
@@ -68,11 +83,12 @@ Begründe die Auswahl und gib die Übergabedaten je Agent an.
 
 - Task Decomposition, Multi-Agent Routing und Memory Management lassen sich mit den vorhandenen Agenten-Frameworks grundsätzlich abbilden.
 - Die wichtigsten Frameworks dafür sind bereits als Tools vorhanden.
+- Queue-/Event-Bus- und Observability-Bausteine sind jetzt als installierbare Module vorhanden.
 
 ### ⚠ Missing in Setup
 
 - Es gibt noch kein eigenes Install-/Run-Modul für einen dedizierten `Agent_Orchestrator`.
-- Queue-/Event-Bus-Bausteine für robuste Synchronisierung fehlen noch.
+- Es fehlen noch vorkonfigurierte Policies für Routing, Retry, Dead-Letter und Konfliktauflösung.
 
 ### ❌ Missing in Docs
 

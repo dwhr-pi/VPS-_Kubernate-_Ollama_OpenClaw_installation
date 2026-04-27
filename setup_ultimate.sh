@@ -176,12 +176,19 @@ fi
 
 # Profil-Definitionen mit Beschreibungen
 declare -A PROFILES
-PROFILE_KEYS=("Programmierer" "Media_Musik" "KI_Forschung" "Texter_Werbung_Marketing" "Rechtsberatung_Steuerrecht")
+PROFILE_KEYS=("Programmierer" "Media_Musik" "KI_Forschung" "Texter_Werbung_Marketing" "Rechtsberatung_Steuerrecht" "Agent_Orchestrator" "Audio" "Content_Automation" "Research_Agent" "Security_Analyst" "Trading_AI" "Visual_Creator")
 PROFILES["Programmierer"]="Tools für Entwicklung, Code-Generierung (DeepSeek Coder), Git-Integration, Huginn, Clawhub CLI. Ideal für Entwickler und Automatisierungsexperten."
 PROFILES["Media_Musik"]="Tools für Audio/Video (FFmpeg), Audio-AI, Alexa-Integration, Clawbake. Für Content Creator und Medienproduzenten."
 PROFILES["KI_Forschung"]="Spezialisierte Bibliotheken für Reinforcement Learning (OpenClaw RL), erweiterte LLM-Modelle (Gemini-1.5-Pro), Flowise/LangFlow. Für KI-Wissenschaftler und Forscher."
 PROFILES["Texter_Werbung_Marketing"]="Tools für Content-Generierung, SEO-Analyse, Social Media, Textproduktion, n8n, Activepieces. Optimiert für Marketingexperten und Texter, die ihre Inhalte mit KI verbessern möchten."
 PROFILES["Rechtsberatung_Steuerrecht"]="Tools für Web-Search & Fetch, PDF-Reader/Document-Parser, Zotero. Für die Analyse von Rechtsdokumenten und Steuerrecht, unterstützt durch spezialisierte KI-Agenten."
+PROFILES["Agent_Orchestrator"]="Koordiniert Agentenrollen mit LangGraph, CrewAI, AutoGen und Memory-Bausteinen für Routing und Ergebnis-Synchronisierung."
+PROFILES["Audio"]="Verarbeitet Sprache und Audio mit Speech-to-Text, Text-to-Speech und Cleanup-Bausteinen wie Whisper, Piper und Coqui TTS."
+PROFILES["Content_Automation"]="Automatisiert Content-Pipelines von Skript über Voiceover und Videoschnitt bis zu Upload-Workflows."
+PROFILES["Research_Agent"]="Analysiert Repositories, Dokumentation und neue Tools, um das Setup gezielt weiterzuentwickeln."
+PROFILES["Security_Analyst"]="Fokussiert auf Exposure-Checks, Log-Analyse, Schwachstellensuche und Docker-/Kubernetes-Hardening."
+PROFILES["Trading_AI"]="Unterstützt Marktanalyse, Strategietests und Trading-Bots mit Zenbot sowie Web3- und Exchange-Integrationen."
+PROFILES["Visual_Creator"]="Kreativprofil für Bild-, Video- und Asset-Pipelines mit Diffusions-, UI- und Upscaling-Bausteinen."
 
 # Funktion zum Installieren eines Profils
 install_profile() {
@@ -227,7 +234,7 @@ show_profile_management_menu() {
     done
 
     dialog --clear --backtitle "OpenClaw & AI Infrastructure - Ultimate Setup V11" \
-    --title "PROFIL-MANAGEMENT" --checklist "Wählen Sie Profile zum Installieren/Deinstallieren:" 25 70 10 \
+    --title "PROFIL-MANAGEMENT" --checklist "Wählen Sie Profile zum Installieren/Deinstallieren:" 30 100 18 \
     "${PROFILE_CHECKLIST_OPTIONS[@]}" 2> /tmp/profile_selection
 
     if [ $? -ne 0 ]; then
@@ -253,7 +260,7 @@ show_profile_management_menu() {
 
 declare -A TOOLS
 declare -A TOOL_SCRIPT_NAMES
-TOOL_KEYS=("Ollama" "OpenManus" "OpenClaw" "Clawhub_CLI" "OpenClaw_RL" "Clawbake" "n8n" "Activepieces" "Flowise" "LangFlow" "AutoGPT" "Pipedream" "Huginn" "FFmpeg" "LangGraph" "CrewAI" "AutoGen" "Playwright" "ChromaDB" "LangChain" "LlamaIndex" "MLflow" "Whisper" "librosa" "pydub" "Demucs" "Zenbot_trader" "Kimi2" "Clawhub" "Huge_Facing" "Zotero")
+TOOL_KEYS=("Ollama" "OpenManus" "OpenClaw" "Clawhub_CLI" "OpenClaw_RL" "Clawbake" "n8n" "Activepieces" "Flowise" "LangFlow" "AutoGPT" "Pipedream" "Huginn" "FFmpeg" "LangGraph" "CrewAI" "AutoGen" "Playwright" "ChromaDB" "LangChain" "LlamaIndex" "MLflow" "Whisper" "librosa" "pydub" "Demucs" "Zenbot_trader" "Kimi2" "Clawhub" "Huge_Facing" "Zotero" "Piper" "Coqui_TTS" "YT_DLP" "Web3_APIs" "Exchange_APIs" "Nmap" "Nikto" "Trivy" "Fail2Ban" "Stable_Diffusion_WebUI" "ComfyUI" "RealESRGAN" "Redis" "NATS" "Qdrant" "Weaviate" "Prometheus" "Grafana" "Loki" "Trend_Monitor")
 TOOLS["Ollama"]="Lokales LLM-Backend. Du kannst über den Ollama Modell-Manager spezifische Modelle installieren und verwalten."
 TOOLS["OpenManus"]="KI-Agenten-Framework für automatisierte Aufgaben wie Web-Recherche und Datenanalyse."
 TOOLS["OpenClaw"]="Fortschrittliches KI-Agenten-Framework mit Reinforcement Learning (RL) und Skill-Integration (z.B. gcali)."
@@ -285,6 +292,26 @@ TOOLS["Kimi2"]="KI-Agent von Moonshot AI für intelligente Interaktionen und Auf
 TOOLS["Clawhub"]="Zentraler Server für die Orchestrierung und Verwaltung von KI-Agenten und deren Interaktionen."
 TOOLS["Huge_Facing"]="Integration von Hugging Face Modellen, entweder lokal über Ollama oder über die Hugging Face Inference API."
 TOOLS["Zotero"]="Literatur- und Quellenverwaltung für Recherche- und Dokumentations-Workflows."
+TOOLS["Piper"]="Lokale Text-to-Speech Engine für Voiceover, Audio-Profile und Assistenzsysteme."
+TOOLS["Coqui_TTS"]="Lokale Text-to-Speech Pipeline für Sprachsynthese und Content-Automation."
+TOOLS["YT_DLP"]="Downloader und Eingangsbaustein für Video- und Audioquellen in Content-Pipelines."
+TOOLS["Web3_APIs"]="Web3- und Blockchain-Bibliotheken für On-Chain-Daten und Trading-Integrationen."
+TOOLS["Exchange_APIs"]="Börsen- und Marktdatenbibliotheken für Trading-Bots und Strategietests."
+TOOLS["Nmap"]="Port- und Netzwerkscanner für Security-Checks und Exposure-Analysen."
+TOOLS["Nikto"]="Webserver-Scanner für grundlegende Sicherheits- und Exposure-Prüfungen."
+TOOLS["Trivy"]="Scanner für Container, Images und Abhängigkeiten mit Fokus auf Sicherheitslücken."
+TOOLS["Fail2Ban"]="Schutz- und Log-Baustein gegen auffällige Login-Muster und Brute-Force-Versuche."
+TOOLS["Stable_Diffusion_WebUI"]="WebUI-basierte Bildgenerierung und Prompt-Arbeit für visuelle Pipelines."
+TOOLS["ComfyUI"]="Node-basierte visuelle Pipeline für Bild- und Video-Workflows."
+TOOLS["RealESRGAN"]="Upscaling-Tool für Bilder, Thumbnails und visuelle Assets."
+TOOLS["Redis"]="Queue- und Cache-Baustein für Agentenorchestrierung, State-Sharing und Workflow-Puffer."
+TOOLS["NATS"]="Event-Bus für leichtgewichtige Agentenkommunikation und Signale."
+TOOLS["Qdrant"]="Vektor-Datenbank für Memory, Retrieval und profilübergreifendes Wissensrouting."
+TOOLS["Weaviate"]="Vektor- und Wissensschicht für komplexere Retrieval- und Schema-Workflows."
+TOOLS["Prometheus"]="Metrics- und Monitoring-Baustein für Dienste, Agenten und Pipelines."
+TOOLS["Grafana"]="Dashboard- und Visualisierungsschicht für Metriken, Trends und Betriebszustände."
+TOOLS["Loki"]="Log-Aggregation für Profile, Services und Agentenläufe."
+TOOLS["Trend_Monitor"]="Trend- und Feed-Monitoring für Recherche- und Content-Automation-Pipelines."
 TOOL_SCRIPT_NAMES["Ollama"]="ollama"
 TOOL_SCRIPT_NAMES["OpenManus"]="openmanus"
 TOOL_SCRIPT_NAMES["OpenClaw"]="openclaw"
@@ -316,6 +343,26 @@ TOOL_SCRIPT_NAMES["Kimi2"]="kimi2"
 TOOL_SCRIPT_NAMES["Clawhub"]="clawhub"
 TOOL_SCRIPT_NAMES["Huge_Facing"]="huge_facing"
 TOOL_SCRIPT_NAMES["Zotero"]="zotero"
+TOOL_SCRIPT_NAMES["Piper"]="piper"
+TOOL_SCRIPT_NAMES["Coqui_TTS"]="coqui_tts"
+TOOL_SCRIPT_NAMES["YT_DLP"]="yt_dlp"
+TOOL_SCRIPT_NAMES["Web3_APIs"]="web3_apis"
+TOOL_SCRIPT_NAMES["Exchange_APIs"]="exchange_apis"
+TOOL_SCRIPT_NAMES["Nmap"]="nmap"
+TOOL_SCRIPT_NAMES["Nikto"]="nikto"
+TOOL_SCRIPT_NAMES["Trivy"]="trivy"
+TOOL_SCRIPT_NAMES["Fail2Ban"]="fail2ban"
+TOOL_SCRIPT_NAMES["Stable_Diffusion_WebUI"]="stable_diffusion_webui"
+TOOL_SCRIPT_NAMES["ComfyUI"]="comfyui"
+TOOL_SCRIPT_NAMES["RealESRGAN"]="realesrgan"
+TOOL_SCRIPT_NAMES["Redis"]="redis"
+TOOL_SCRIPT_NAMES["NATS"]="nats"
+TOOL_SCRIPT_NAMES["Qdrant"]="qdrant"
+TOOL_SCRIPT_NAMES["Weaviate"]="weaviate"
+TOOL_SCRIPT_NAMES["Prometheus"]="prometheus"
+TOOL_SCRIPT_NAMES["Grafana"]="grafana"
+TOOL_SCRIPT_NAMES["Loki"]="loki"
+TOOL_SCRIPT_NAMES["Trend_Monitor"]="trend_monitor"
 
 run_tool_script() {
     local tool_key="$1"
@@ -374,7 +421,7 @@ show_tool_management_menu() {
     done
 
     dialog --clear --backtitle "OpenClaw & AI Infrastructure - Ultimate Setup V11" \
-    --title "TOOL-MANAGEMENT" --checklist "Wählen Sie Tools zum Installieren/Deinstallieren:" 25 70 15 \
+    --title "TOOL-MANAGEMENT" --checklist "Wählen Sie Tools zum Installieren/Deinstallieren:" 32 110 24 \
     "${TOOL_CHECKLIST_OPTIONS[@]}" 2> /tmp/tool_selection
 
     if [ $? -ne 0 ]; then

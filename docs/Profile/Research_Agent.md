@@ -13,13 +13,15 @@ Es beschreibt ein OpenClaw- und Ollama-kompatibles Rechercheprofil für GitHub-A
   - LangChain unter `/opt/langchain`
   - LlamaIndex unter `/opt/llamaindex`
   - ChromaDB unter `/opt/chromadb`
+  - Qdrant unter `/opt/qdrant`
+  - Weaviate unter `/opt/weaviate`
+  - Trend_Monitor unter `/opt/trend_monitor`
 
 ## Dokumentierte zusätzliche Tools
 
 Diese Bausteine sind in der Quelldatei enthalten oder logisch direkt damit verwandt, aber noch nicht vollständig als einzelne Installskripte umgesetzt:
 
 - dedizierte GitHub-Analyse als eigenes Profil-Tool
-- Trend-Erkennung über externe Datenquellen
 - automatisierte Repo-Vergleichspipelines
 
 ## Verantwortlichkeiten
@@ -36,6 +38,9 @@ scripts/tools/playwright_install.sh
 scripts/tools/langchain_install.sh
 scripts/tools/llamaindex_install.sh
 scripts/tools/chromadb_install.sh
+scripts/tools/qdrant_install.sh
+scripts/tools/weaviate_install.sh
+scripts/tools/trend_monitor_install.sh
 ```
 
 ## Beispielprompts
@@ -59,7 +64,8 @@ Begründe Nutzen, Integrationsaufwand und welches Profil am meisten davon profit
 
 - Dieses Profil passt gut zu OpenClaw als koordinierendem Recherche-Agenten.
 - `Playwright` eignet sich für Browser- und UI-nahe Recherche.
-- `LangChain`, `LlamaIndex` und `ChromaDB` helfen bei Doku-Auswertung, Notizen und Retrieval.
+- `LangChain`, `LlamaIndex`, `ChromaDB`, `Qdrant` und `Weaviate` helfen bei Doku-Auswertung, Notizen und Retrieval.
+- `Trend_Monitor` ergänzt die Trend- und Feed-Seite für Themenradar.
 
 ## Vergleich
 
@@ -67,11 +73,12 @@ Begründe Nutzen, Integrationsaufwand und welches Profil am meisten davon profit
 
 - Die Kernrollen Recherche, Doku-Verständnis und Setup-Verbesserung lassen sich mit den vorhandenen Bausteinen gut abbilden.
 - Die wichtigsten RAG- und Browser-Werkzeuge sind schon installierbar.
+- Trend-Monitoring ist jetzt als eigenes Modul installierbar.
 
 ### ⚠ Missing in Setup
 
 - Es gibt noch kein eigenes Laufzeitmodul nur für `Research_Agent`.
-- Externe Trend- und Repo-Monitoring-Bausteine fehlen noch als dedizierte Tools.
+- Es fehlt noch eine vollständig vorkonfigurierte Repo-Vergleichs- und Monitoring-Pipeline.
 
 ### ❌ Missing in Docs
 

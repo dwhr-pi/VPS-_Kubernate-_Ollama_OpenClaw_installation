@@ -91,6 +91,13 @@ Das Setup unterstützt die Installation und Deinstallation verschiedener Profile
 *   **KI-Forschung:** Umfasst spezialisierte Bibliotheken und Konfigurationen für OpenClaw RL und erweiterte LLM-Modelle (z.B. Gemini-1.5-Pro). Für Forscher und Enthusiasten, die an der Entwicklung und dem Training von KI-Modellen arbeiten.
 *   **Texter, Werbung & Marketing:** Stellt Tools für Content-Generierung, SEO-Analyse, Social Media Integration und spezialisierte LLM-Modelle für Textproduktion bereit. Optimiert für Marketingexperten und Texter, die ihre Inhalte mit KI verbessern möchten.
 *   **Rechtsberatung & Steuerrecht:** Tools für Web-Search & Fetch, PDF-Reader/Document-Parser, Zotero. Für die Analyse von Rechtsdokumenten und Steuerrecht, unterstützt durch spezialisierte KI-Agenten.
+*   **Agent Orchestrator:** Profil für Aufgabenzerlegung, Mehragenten-Routing und Ergebnis-Synchronisierung mit LangGraph, CrewAI, AutoGen und Memory-Bausteinen.
+*   **Audio:** Sprach- und Audioprofil mit Whisper, FFmpeg, Piper, Coqui TTS, librosa und pydub.
+*   **Content Automation:** Profil für automatisierte Content-Pipelines von Skript über Voiceover und Videoschnitt bis zum Upload.
+*   **Research Agent:** Rechercheprofil für Repository-Analyse, Dokumentationsauswertung und Setup-Verbesserungen.
+*   **Security Analyst:** Security- und Hardening-Profil mit Scan- und Prüfwerkzeugen wie Nmap, Nikto, Trivy und Fail2Ban.
+*   **Trading AI:** Profil für Marktanalyse, Bot-gestützte Strategietests und Trading-Integrationen.
+*   **Visual Creator:** Kreativprofil für Bild-, Video- und Asset-Pipelines mit Stable Diffusion WebUI, ComfyUI, FFmpeg und RealESRGAN.
 
 ## ⚙️ Verzeichnisstruktur
 
@@ -161,7 +168,21 @@ Das Setup unterstützt die Installation und Deinstallation verschiedener Profile
 │       ├── Texter_Werbung_Marketing_install.sh
 │       ├── Texter_Werbung_Marketing_uninstall.sh
 │       ├── Rechtsberatung_Steuerrecht_install.sh
-│       └── Rechtsberatung_Steuerrecht_uninstall.sh
+│       ├── Rechtsberatung_Steuerrecht_uninstall.sh
+│       ├── Agent_Orchestrator_install.sh
+│       ├── Agent_Orchestrator_uninstall.sh
+│       ├── Audio_install.sh
+│       ├── Audio_uninstall.sh
+│       ├── Content_Automation_install.sh
+│       ├── Content_Automation_uninstall.sh
+│       ├── Research_Agent_install.sh
+│       ├── Research_Agent_uninstall.sh
+│       ├── Security_Analyst_install.sh
+│       ├── Security_Analyst_uninstall.sh
+│       ├── Trading_AI_install.sh
+│       ├── Trading_AI_uninstall.sh
+│       ├── Visual_Creator_install.sh
+│       └── Visual_Creator_uninstall.sh
 ├── docs/
 │   ├── API_KEY_GUIDE.md        # Detaillierte Anleitung für API-Keys, Ports und Fallback-Routing
 │   ├── setup_guide.md          # Umfassende Dokumentation des gesamten Setups
