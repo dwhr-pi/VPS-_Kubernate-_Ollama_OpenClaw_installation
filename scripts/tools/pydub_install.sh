@@ -1,5 +1,6 @@
 #!/bin/bash
 TOOL_NAME="pydub"
+TOOL_KEY="pydub"
 TOOL_SLUG="pydub"
 TOOL_PACKAGES="pydub"
 TOOL_DESCRIPTION="Einfache Audio-Manipulation für Splits, Fades und Vorverarbeitung."

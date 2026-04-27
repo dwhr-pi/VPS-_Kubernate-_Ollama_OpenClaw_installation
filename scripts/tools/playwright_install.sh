@@ -1,5 +1,6 @@
 #!/bin/bash
 TOOL_NAME="Playwright"
+TOOL_KEY="Playwright"
 TOOL_SLUG="playwright"
 TOOL_PACKAGES="playwright"
 TOOL_POST_INSTALL="python -m playwright install chromium"

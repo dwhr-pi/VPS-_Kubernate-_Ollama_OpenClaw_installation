@@ -11,6 +11,12 @@ RED=\033[0;31m
 YELLOW=\033[1;33m
 NC=\033[0m
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+INSTALL_DIR="${INSTALL_DIR:-$(cd "$SCRIPT_DIR/../.." && pwd)}"
+# shellcheck disable=SC1091
+source "$INSTALL_DIR/scripts/helpers/status_tracking.sh"
+init_tool_tracking "AutoGPT"
+
 AUTOGPT_DIR="/opt/autogpt"
 AUTOGPT_PLATFORM_DIR="$AUTOGPT_DIR/autogpt_platform"
 AUTOGPT_REPOS=(
@@ -99,3 +105,5 @@ echo -e "${GREEN}AutoGPT Installation abgeschlossen.${NC}"
 echo -e "${YELLOW}Die Plattform liegt unter ${AUTOGPT_DIR}.${NC}"
 echo -e "${YELLOW}Falls Docker gerade neu installiert wurde, kann eine neue Shell-Anmeldung für die Docker-Gruppe nötig sein.${NC}"
 echo -e "${YELLOW}Die AutoGPT Plattform ist nach dem Start typischerweise unter http://localhost:3000 erreichbar.${NC}"
+mark_current_tool_installed
+

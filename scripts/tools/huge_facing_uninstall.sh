@@ -13,6 +13,12 @@ RED=\033[0;31m
 YELLOW=\033[1;33m
 NC=\033[0m
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+INSTALL_DIR="${INSTALL_DIR:-$(cd "$SCRIPT_DIR/../.." && pwd)}"
+# shellcheck disable=SC1091
+source "$INSTALL_DIR/scripts/helpers/status_tracking.sh"
+init_tool_tracking "Huge_Facing"
+
 echo -e "${BLUE}Starte Deinstallation der Hugging Face (Huge Facing) Integration...${NC}"
 
 echo -e "${YELLOW}Hugging Face ist eine Plattform und keine direkt installierte Software. Es gibt keine spezifische Software zu deinstallieren.${NC}"
@@ -23,3 +29,5 @@ echo -e "${YELLOW}Dieses Skript entfernt lediglich die Konfigurationshinweise un
 # wird hier nur ein allgemeiner Hinweis gegeben.
 
 echo -e "${GREEN}Hugging Face Integration Deinstallation abgeschlossen. Bitte prüfe manuelle Konfigurationen in anderen Tools.${NC}"
+mark_current_tool_removed
+

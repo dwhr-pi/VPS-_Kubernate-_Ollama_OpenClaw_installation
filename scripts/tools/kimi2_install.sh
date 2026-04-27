@@ -10,6 +10,12 @@ RED=\033[0;31m
 YELLOW=\033[1;33m
 NC=\033[0m
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+INSTALL_DIR="${INSTALL_DIR:-$(cd "$SCRIPT_DIR/../.." && pwd)}"
+# shellcheck disable=SC1091
+source "$INSTALL_DIR/scripts/helpers/status_tracking.sh"
+init_tool_tracking "Kimi2"
+
 KIMI2_DIR="/opt/kimi2"
 KIMI2_REPOS=(
     "${KIMI2_REPO:-}"
@@ -73,3 +79,5 @@ deactivate
 
 echo -e "${GREEN}Kimi 2 erfolgreich installiert unter ${KIMI2_DIR}.${NC}"
 echo -e "${YELLOW}Bitte konfiguriere deinen Kimi 2 API-Key in der entsprechenden Konfigurationsdatei oder Umgebungsvariablen.${NC}"
+mark_current_tool_installed
+

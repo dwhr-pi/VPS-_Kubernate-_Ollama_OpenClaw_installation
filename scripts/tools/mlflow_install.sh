@@ -1,5 +1,6 @@
 #!/bin/bash
 TOOL_NAME="MLflow"
+TOOL_KEY="MLflow"
 TOOL_SLUG="mlflow"
 TOOL_PACKAGES="mlflow"
 TOOL_DESCRIPTION="Experiment-Tracking und Modell-Metadaten für Forschung und iterative Optimierung."

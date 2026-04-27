@@ -1,5 +1,6 @@
 #!/bin/bash
 TOOL_NAME="Demucs"
+TOOL_KEY="Demucs"
 TOOL_SLUG="demucs"
 TOOL_PACKAGES="demucs"
 TOOL_DESCRIPTION="Stem-Separation für Audio in Gesang, Drums, Bass und weitere Spuren."

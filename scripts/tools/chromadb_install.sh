@@ -1,5 +1,6 @@
 #!/bin/bash
 TOOL_NAME="ChromaDB"
+TOOL_KEY="ChromaDB"
 TOOL_SLUG="chromadb"
 TOOL_PACKAGES="chromadb"
 TOOL_DESCRIPTION="Lokale Vector-Datenbank für RAG, Prompt-Memory und Profilwissen."

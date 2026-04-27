@@ -1,5 +1,6 @@
 #!/bin/bash
 TOOL_NAME="CrewAI"
+TOOL_KEY="CrewAI"
 TOOL_SLUG="crewai"
 TOOL_PACKAGES="crewai"
 TOOL_DESCRIPTION="Multi-Agent Framework für aufgabenbasierte Zusammenarbeit mehrerer spezialisierter Agents."

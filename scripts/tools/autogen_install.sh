@@ -1,5 +1,6 @@
 #!/bin/bash
 TOOL_NAME="AutoGen"
+TOOL_KEY="AutoGen"
 TOOL_SLUG="autogen"
 TOOL_PACKAGES="pyautogen"
 TOOL_DESCRIPTION="Microsoft AutoGen für strukturierte Multi-Agent-Dialoge und Tool-Use-Workflows."

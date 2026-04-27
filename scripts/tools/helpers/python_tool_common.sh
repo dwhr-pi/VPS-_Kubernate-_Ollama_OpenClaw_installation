@@ -9,13 +9,19 @@ RED='\033[0;31m'
 YELLOW='\033[1;33m'
 NC='\033[0m'
 
+HELPER_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck disable=SC1091
+source "$HELPER_DIR/../../helpers/status_tracking.sh"
+
 install_python_tool() {
     : "${TOOL_NAME:?TOOL_NAME ist erforderlich}"
     : "${TOOL_SLUG:?TOOL_SLUG ist erforderlich}"
     : "${TOOL_PACKAGES:?TOOL_PACKAGES ist erforderlich}"
+    : "${TOOL_KEY:?TOOL_KEY ist erforderlich}"
 
     TOOL_DIR="${TOOL_DIR:-/opt/${TOOL_SLUG}}"
     TOOL_PYTHON="${TOOL_PYTHON:-python3}"
+    init_tool_tracking "$TOOL_KEY"
 
     echo -e "${BLUE}Starte Installation von ${TOOL_NAME}...${NC}"
 
@@ -66,15 +72,19 @@ EOF
     fi
 
     deactivate
+    mark_current_tool_installed
     echo -e "${GREEN}${TOOL_NAME} wurde erfolgreich installiert.${NC}"
 }
 
 uninstall_python_tool() {
     : "${TOOL_NAME:?TOOL_NAME ist erforderlich}"
     : "${TOOL_SLUG:?TOOL_SLUG ist erforderlich}"
+    : "${TOOL_KEY:?TOOL_KEY ist erforderlich}"
     TOOL_DIR="${TOOL_DIR:-/opt/${TOOL_SLUG}}"
+    init_tool_tracking "$TOOL_KEY"
 
     echo -e "${BLUE}Starte Deinstallation von ${TOOL_NAME}...${NC}"
     sudo rm -rf "${TOOL_DIR}"
+    mark_current_tool_removed
     echo -e "${GREEN}${TOOL_NAME} wurde entfernt.${NC}"
 }

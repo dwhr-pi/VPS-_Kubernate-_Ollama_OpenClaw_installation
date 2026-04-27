@@ -1,5 +1,6 @@
 #!/bin/bash
 TOOL_NAME="LangChain"
+TOOL_KEY="LangChain"
 TOOL_SLUG="langchain"
 TOOL_PACKAGES="langchain"
 TOOL_DESCRIPTION="Tool-Use-, Prompt- und RAG-Bausteine für Agenten- und Forschungs-Workflows."

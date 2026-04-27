@@ -1,5 +1,6 @@
 #!/bin/bash
 TOOL_NAME="LlamaIndex"
+TOOL_KEY="LlamaIndex"
 TOOL_SLUG="llamaindex"
 TOOL_PACKAGES="llama-index"
 TOOL_DESCRIPTION="Indexing- und Retrieval-Layer für Dokumente, Papers und juristische Quellen."

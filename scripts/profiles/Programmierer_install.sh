@@ -13,13 +13,19 @@ RED=\033[0;31m
 YELLOW=\033[1;33m
 NC=\033[0m
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+INSTALL_DIR="${INSTALL_DIR:-$(cd "$SCRIPT_DIR/../.." && pwd)}"
+# shellcheck disable=SC1091
+source "$INSTALL_DIR/scripts/helpers/status_tracking.sh"
+init_profile_tracking "Programmierer"
+
 echo -e "${BLUE}Starte Installation des Programmierer-Profils...${NC}"
 
 # Beispiel: Installation von Huginn (falls noch nicht geschehen)
 # Huginn ist ein Agentensystem, das für Programmierer nützlich sein kann, um Workflows zu automatisieren.
 if [ -f "$INSTALL_DIR/scripts/tools/huginn_install.sh" ]; then
     echo -e "${BLUE}Installiere Huginn als Teil des Programmierer-Profils...${NC}"
-    "$INSTALL_DIR/scripts/tools/huginn_install.sh"
+    bash "$INSTALL_DIR/scripts/tools/huginn_install.sh"
 else
     echo -e "${YELLOW}Huginn Installationsskript nicht gefunden. Überspringe Huginn Installation.${NC}"
 fi
@@ -27,7 +33,7 @@ fi
 # Beispiel: Installation von Clawhub CLI
 if [ -f "$INSTALL_DIR/scripts/tools/clawhub_cli_install.sh" ]; then
     echo -e "${BLUE}Installiere Clawhub CLI als Teil des Programmierer-Profils...${NC}"
-    "$INSTALL_DIR/scripts/tools/clawhub_cli_install.sh"
+    bash "$INSTALL_DIR/scripts/tools/clawhub_cli_install.sh"
 else
     echo -e "${YELLOW}Clawhub CLI Installationsskript nicht gefunden. Überspringe Clawhub CLI Installation.${NC}"
 fi
@@ -35,10 +41,12 @@ fi
 for tool_script in langgraph_install.sh crewai_install.sh autogen_install.sh playwright_install.sh chromadb_install.sh; do
     if [ -f "$INSTALL_DIR/scripts/tools/$tool_script" ]; then
         echo -e "${BLUE}Installiere ${tool_script%.sh} als Teil des Programmierer-Profils...${NC}"
-        "$INSTALL_DIR/scripts/tools/$tool_script"
+        bash "$INSTALL_DIR/scripts/tools/$tool_script"
     else
         echo -e "${YELLOW}${tool_script} nicht gefunden. Überspringe diesen Baustein.${NC}"
     fi
 done
 
 echo -e "${GREEN}Programmierer-Profil Installation abgeschlossen.${NC}"
+mark_current_profile_installed
+

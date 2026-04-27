@@ -1,5 +1,6 @@
 #!/bin/bash
 TOOL_NAME="Whisper"
+TOOL_KEY="Whisper"
 TOOL_SLUG="whisper"
 TOOL_PACKAGES="openai-whisper"
 TOOL_DESCRIPTION="Lokale Speech-to-Text-Pipeline für Multimedia- und Forschungs-Workflows."

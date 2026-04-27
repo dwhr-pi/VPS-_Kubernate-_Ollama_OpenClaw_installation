@@ -8,11 +8,11 @@
 #
 
 # Farben & UI
-GREEN=\033[032m
-BLUE=\033[034m
-RED=\033[031m
-YELLOW=\033[133m
-NC=\033[0m
+GREEN="\033[0;32m"
+BLUE="\033[0;34m"
+RED="\033[0;31m"
+YELLOW="\033[1;33m"
+NC="\033[0m"
 
 # Installationsverzeichnis
 INSTALL_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -28,6 +28,144 @@ run_bash_script() {
     bash "$script_path"
 }
 
+append_unique_line() {
+    local file_path="$1"
+    local value="$2"
+
+    touch "$file_path"
+    if ! grep -Fxq "$value" "$file_path"; then
+        echo "$value" >> "$file_path"
+    fi
+}
+
+remove_exact_line() {
+    local file_path="$1"
+    local value="$2"
+
+    [ -f "$file_path" ] || return 0
+    sed -i "\|^${value}\$|d" "$file_path"
+}
+
+is_allowed_value() {
+    local candidate="$1"
+    shift
+    local allowed
+
+    for allowed in "$@"; do
+        if [ "$candidate" = "$allowed" ]; then
+            return 0
+        fi
+    done
+
+    return 1
+}
+
+normalize_status_file() {
+    local file_path="$1"
+    shift
+    local allowed_values=("$@")
+    local tmp_file
+    local backup_file
+    local entry_name
+    local cleaned_name
+    local has_changes=0
+    declare -A seen_values
+
+    mkdir -p "$(dirname "$file_path")"
+    touch "$file_path"
+    tmp_file="$(mktemp)"
+
+    while IFS= read -r entry_name || [ -n "$entry_name" ]; do
+        cleaned_name="${entry_name%$'\r'}"
+        cleaned_name="${cleaned_name//\"/}"
+
+        if [ "$cleaned_name" != "$entry_name" ]; then
+            has_changes=1
+        fi
+
+        if [ -z "$cleaned_name" ]; then
+            [ -n "$entry_name" ] && has_changes=1
+            continue
+        fi
+
+        if ! is_allowed_value "$cleaned_name" "${allowed_values[@]}"; then
+            has_changes=1
+            continue
+        fi
+
+        if [[ -n "${seen_values[$cleaned_name]:-}" ]]; then
+            has_changes=1
+            continue
+        fi
+
+        seen_values["$cleaned_name"]=1
+        printf '%s\n' "$cleaned_name" >> "$tmp_file"
+    done < "$file_path"
+
+    if ! cmp -s "$file_path" "$tmp_file"; then
+        has_changes=1
+    fi
+
+    if [ "$has_changes" -eq 1 ]; then
+        backup_file="${file_path}.bak.$(date +%Y%m%d_%H%M%S)"
+        cp "$file_path" "$backup_file" 2>/dev/null || true
+        mv "$tmp_file" "$file_path"
+        echo -e "${YELLOW}Hinweis: Statusdatei $(basename "$file_path") wurde bereinigt. Sicherung: $backup_file${NC}"
+    else
+        rm -f "$tmp_file"
+    fi
+}
+
+load_installed_map() {
+    local file_path="$1"
+    local map_name="$2"
+    local entry_name
+
+    [ -f "$file_path" ] || return 0
+
+    while IFS= read -r entry_name || [ -n "$entry_name" ]; do
+        entry_name="${entry_name%$'\r'}"
+        entry_name="${entry_name//\"/}"
+        [ -n "$entry_name" ] || continue
+        eval "$map_name[\"\$entry_name\"]=1"
+    done < "$file_path"
+}
+
+selection_contains() {
+    local needle="$1"
+    shift
+    local item
+
+    for item in "$@"; do
+        if [ "$item" = "$needle" ]; then
+            return 0
+        fi
+    done
+
+    return 1
+}
+
+is_base_install_ready() {
+    command -v node >/dev/null 2>&1 || return 1
+    command -v pnpm >/dev/null 2>&1 || return 1
+    command -v ollama >/dev/null 2>&1 || return 1
+    [ -d /opt/openclaw ] || return 1
+    [ -f /opt/openclaw/package.json ] || return 1
+    [ -d /opt/openclaw/node_modules ] || return 1
+    return 0
+}
+
+run_base_install_if_needed() {
+    if is_base_install_ready; then
+        echo -e "${GREEN}Basis-Installation bereits vorhanden. Überspringe erneuten OpenClaw-Build.${NC}"
+        echo -e "${YELLOW}Hinweis: Falls Sie bewusst neu bauen möchten, führen Sie scripts/base_install.sh manuell aus.${NC}"
+        return 0
+    fi
+
+    echo -e "${BLUE}Starte Basis-Installation. Der OpenClaw-Build kann mehrere Minuten dauern.${NC}"
+    run_bash_script "$INSTALL_DIR/scripts/base_install.sh"
+}
+
 # Check dependencies
 if ! command -v dialog >/dev/null 2>&1; then
     echo -e "${YELLOW}Installiere dialog für die Menüführung...${NC}"
@@ -38,6 +176,7 @@ fi
 
 # Profil-Definitionen mit Beschreibungen
 declare -A PROFILES
+PROFILE_KEYS=("Programmierer" "Media_Musik" "KI_Forschung" "Texter_Werbung_Marketing" "Rechtsberatung_Steuerrecht")
 PROFILES["Programmierer"]="Tools für Entwicklung, Code-Generierung (DeepSeek Coder), Git-Integration, Huginn, Clawhub CLI. Ideal für Entwickler und Automatisierungsexperten."
 PROFILES["Media_Musik"]="Tools für Audio/Video (FFmpeg), Audio-AI, Alexa-Integration, Clawbake. Für Content Creator und Medienproduzenten."
 PROFILES["KI_Forschung"]="Spezialisierte Bibliotheken für Reinforcement Learning (OpenClaw RL), erweiterte LLM-Modelle (Gemini-1.5-Pro), Flowise/LangFlow. Für KI-Wissenschaftler und Forscher."
@@ -46,11 +185,11 @@ PROFILES["Rechtsberatung_Steuerrecht"]="Tools für Web-Search & Fetch, PDF-Reade
 
 # Funktion zum Installieren eines Profils
 install_profile() {
-    PROFILE_KEY=$1
+    local PROFILE_KEY="$1"
     echo -e "${BLUE}Installiere Profil: ${PROFILE_KEY}...${NC}"
     run_bash_script "$INSTALL_DIR/scripts/profiles/${PROFILE_KEY}_install.sh"
     if [ $? -eq 0 ]; then
-        echo "$PROFILE_KEY" >> "$INSTALL_DIR/installed_profiles.txt"
+        append_unique_line "$INSTALL_DIR/installed_profiles.txt" "$PROFILE_KEY"
         echo -e "${GREEN}Profil \'$PROFILE_KEY\' erfolgreich installiert.${NC}"
     else
         echo -e "${RED}Fehler bei der Installation von Profil \'$PROFILE_KEY\'.${NC}"
@@ -59,11 +198,11 @@ install_profile() {
 
 # Funktion zum Deinstallieren eines Profils
 uninstall_profile() {
-    PROFILE_KEY=$1
+    local PROFILE_KEY="$1"
     echo -e "${BLUE}Deinstalliere Profil: ${PROFILE_KEY}...${NC}"
     run_bash_script "$INSTALL_DIR/scripts/profiles/${PROFILE_KEY}_uninstall.sh"
     if [ $? -eq 0 ]; then
-        sed -i "/${PROFILE_KEY}/d" "$INSTALL_DIR/installed_profiles.txt"
+        remove_exact_line "$INSTALL_DIR/installed_profiles.txt" "$PROFILE_KEY"
         echo -e "${GREEN}Profil \'$PROFILE_KEY\' erfolgreich deinstalliert.${NC}"
     else
         echo -e "${RED}Fehler bei der Deinstallation von Profil \'$PROFILE_KEY\'.${NC}"
@@ -72,16 +211,14 @@ uninstall_profile() {
 
 # Funktion zum Anzeigen des Profil-Management-Menüs
 show_profile_management_menu() {
+    normalize_status_file "$INSTALL_DIR/installed_profiles.txt" "${PROFILE_KEYS[@]}"
+
     # Installierte Profile laden
     declare -A INSTALLED_PROFILES_MAP
-    if [ -f "$INSTALL_DIR/installed_profiles.txt" ]; then
-        while IFS= read -r profile_name; do
-            INSTALLED_PROFILES_MAP["$profile_name"]=1
-        done < "$INSTALL_DIR/installed_profiles.txt"
-    fi
+    load_installed_map "$INSTALL_DIR/installed_profiles.txt" INSTALLED_PROFILES_MAP
 
     PROFILE_CHECKLIST_OPTIONS=()
-    for profile_key in "Programmierer" "Media_Musik" "KI_Forschung" "Texter_Werbung_Marketing" "Rechtsberatung_Steuerrecht"; do
+    for profile_key in "${PROFILE_KEYS[@]}"; do
         STATUS="off"
         if [[ -v INSTALLED_PROFILES_MAP["$profile_key"] ]]; then
             STATUS="on"
@@ -93,22 +230,18 @@ show_profile_management_menu() {
     --title "PROFIL-MANAGEMENT" --checklist "Wählen Sie Profile zum Installieren/Deinstallieren:" 25 70 10 \
     "${PROFILE_CHECKLIST_OPTIONS[@]}" 2> /tmp/profile_selection
 
-    SELECTED_PROFILES=$(cat /tmp/profile_selection)
+    if [ $? -ne 0 ]; then
+        return 0
+    fi
+
+    mapfile -t SELECTED_PROFILES_ARRAY < <(tr ' ' '\n' < /tmp/profile_selection | tr -d '"' | sed '/^$/d')
 
     # Installation/Deinstallation basierend auf Auswahl
-    for profile_key in "Programmierer" "Media_Musik" "KI_Forschung" "Texter_Werbung_Marketing" "Rechtsberatung_Steuerrecht"; do
-        IS_SELECTED=false
-        for selected_key in $SELECTED_PROFILES; do
-            if [[ "$profile_key" == "$selected_key" ]]; then
-                IS_SELECTED=true
-                break
-            fi
-        done
-
-        if $IS_SELECTED && [[ ! -v INSTALLED_PROFILES_MAP["$profile_key"] ]]; then
+    for profile_key in "${PROFILE_KEYS[@]}"; do
+        if selection_contains "$profile_key" "${SELECTED_PROFILES_ARRAY[@]}" && [[ ! -v INSTALLED_PROFILES_MAP["$profile_key"] ]]; then
             # Profil ausgewählt und nicht installiert -> Installieren
             install_profile "$profile_key"
-        elif ! $IS_SELECTED && [[ -v INSTALLED_PROFILES_MAP["$profile_key"] ]]; then
+        elif ! selection_contains "$profile_key" "${SELECTED_PROFILES_ARRAY[@]}" && [[ -v INSTALLED_PROFILES_MAP["$profile_key"] ]]; then
             # Profil nicht ausgewählt und installiert -> Deinstallieren
             uninstall_profile "$profile_key"
         fi
@@ -120,6 +253,7 @@ show_profile_management_menu() {
 
 declare -A TOOLS
 declare -A TOOL_SCRIPT_NAMES
+TOOL_KEYS=("Ollama" "OpenManus" "OpenClaw" "Clawhub_CLI" "OpenClaw_RL" "Clawbake" "n8n" "Activepieces" "Flowise" "LangFlow" "AutoGPT" "Pipedream" "Huginn" "FFmpeg" "LangGraph" "CrewAI" "AutoGen" "Playwright" "ChromaDB" "LangChain" "LlamaIndex" "MLflow" "Whisper" "librosa" "pydub" "Demucs" "Zenbot_trader" "Kimi2" "Clawhub" "Huge_Facing" "Zotero")
 TOOLS["Ollama"]="Lokales LLM-Backend. Du kannst über den Ollama Modell-Manager spezifische Modelle installieren und verwalten."
 TOOLS["OpenManus"]="KI-Agenten-Framework für automatisierte Aufgaben wie Web-Recherche und Datenanalyse."
 TOOLS["OpenClaw"]="Fortschrittliches KI-Agenten-Framework mit Reinforcement Learning (RL) und Skill-Integration (z.B. gcali)."
@@ -198,11 +332,11 @@ run_tool_script() {
 
 # Funktion zum Installieren eines Tools
 install_tool() {
-    TOOL_KEY=$1
+    local TOOL_KEY="$1"
     echo -e "${BLUE}Installiere Tool: ${TOOL_KEY}...${NC}"
     run_tool_script "$TOOL_KEY" "install"
     if [ $? -eq 0 ]; then
-        echo "$TOOL_KEY" >> "$INSTALL_DIR/installed_tools.txt"
+        append_unique_line "$INSTALL_DIR/installed_tools.txt" "$TOOL_KEY"
         echo -e "${GREEN}Tool \'$TOOL_KEY\' erfolgreich installiert.${NC}"
     else
         echo -e "${RED}Fehler bei der Installation von Tool \'$TOOL_KEY\'.${NC}"
@@ -211,11 +345,11 @@ install_tool() {
 
 # Funktion zum Deinstallieren eines Tools
 uninstall_tool() {
-    TOOL_KEY=$1
+    local TOOL_KEY="$1"
     echo -e "${BLUE}Deinstalliere Tool: ${TOOL_KEY}...${NC}"
     run_tool_script "$TOOL_KEY" "uninstall"
     if [ $? -eq 0 ]; then
-        sed -i "/${TOOL_KEY}/d" "$INSTALL_DIR/installed_tools.txt"
+        remove_exact_line "$INSTALL_DIR/installed_tools.txt" "$TOOL_KEY"
         echo -e "${GREEN}Tool \'$TOOL_KEY\' erfolgreich deinstalliert.${NC}"
     else
         echo -e "${RED}Fehler bei der Deinstallation von Tool \'$TOOL_KEY\'.${NC}"
@@ -224,16 +358,14 @@ uninstall_tool() {
 
 # Funktion zum Anzeigen des Tool-Management-Menüs
 show_tool_management_menu() {
+    normalize_status_file "$INSTALL_DIR/installed_tools.txt" "${TOOL_KEYS[@]}"
+
     # Installierte Tools laden
     declare -A INSTALLED_TOOLS_MAP
-    if [ -f "$INSTALL_DIR/installed_tools.txt" ]; then
-        while IFS= read -r tool_name; do
-            INSTALLED_TOOLS_MAP["$tool_name"]=1
-        done < "$INSTALL_DIR/installed_tools.txt"
-    fi
+    load_installed_map "$INSTALL_DIR/installed_tools.txt" INSTALLED_TOOLS_MAP
 
     TOOL_CHECKLIST_OPTIONS=()
-    for tool_key in "Ollama" "OpenManus" "OpenClaw" "Clawhub_CLI" "OpenClaw_RL" "Clawbake" "n8n" "Activepieces" "Flowise" "LangFlow" "AutoGPT" "Pipedream" "Huginn" "FFmpeg" "LangGraph" "CrewAI" "AutoGen" "Playwright" "ChromaDB" "LangChain" "LlamaIndex" "MLflow" "Whisper" "librosa" "pydub" "Demucs" "Zenbot_trader" "Kimi2" "Clawhub" "Huge_Facing" "Zotero"; do
+    for tool_key in "${TOOL_KEYS[@]}"; do
         STATUS="off"
         if [[ -v INSTALLED_TOOLS_MAP["$tool_key"] ]]; then
             STATUS="on"
@@ -245,22 +377,18 @@ show_tool_management_menu() {
     --title "TOOL-MANAGEMENT" --checklist "Wählen Sie Tools zum Installieren/Deinstallieren:" 25 70 15 \
     "${TOOL_CHECKLIST_OPTIONS[@]}" 2> /tmp/tool_selection
 
-    SELECTED_TOOLS=$(cat /tmp/tool_selection)
+    if [ $? -ne 0 ]; then
+        return 0
+    fi
+
+    mapfile -t SELECTED_TOOLS_ARRAY < <(tr ' ' '\n' < /tmp/tool_selection | tr -d '"' | sed '/^$/d')
 
     # Installation/Deinstallation basierend auf Auswahl
-    for tool_key in "Ollama" "OpenManus" "OpenClaw" "Clawhub_CLI" "OpenClaw_RL" "Clawbake" "n8n" "Activepieces" "Flowise" "LangFlow" "AutoGPT" "Pipedream" "Huginn" "FFmpeg" "LangGraph" "CrewAI" "AutoGen" "Playwright" "ChromaDB" "LangChain" "LlamaIndex" "MLflow" "Whisper" "librosa" "pydub" "Demucs" "Zenbot_trader" "Kimi2" "Clawhub" "Huge_Facing" "Zotero"; do
-        IS_SELECTED=false
-        for selected_key in $SELECTED_TOOLS; do
-            if [[ "$tool_key" == "$selected_key" ]]; then
-                IS_SELECTED=true
-                break
-            fi
-        done
-
-        if $IS_SELECTED && [[ ! -v INSTALLED_TOOLS_MAP["$tool_key"] ]]; then
+    for tool_key in "${TOOL_KEYS[@]}"; do
+        if selection_contains "$tool_key" "${SELECTED_TOOLS_ARRAY[@]}" && [[ ! -v INSTALLED_TOOLS_MAP["$tool_key"] ]]; then
             # Tool ausgewählt und nicht installiert -> Installieren
             install_tool "$tool_key"
-        elif ! $IS_SELECTED && [[ -v INSTALLED_TOOLS_MAP["$tool_key"] ]]; then
+        elif ! selection_contains "$tool_key" "${SELECTED_TOOLS_ARRAY[@]}" && [[ -v INSTALLED_TOOLS_MAP["$tool_key"] ]]; then
             # Tool nicht ausgewählt und installiert -> Deinstallieren
             uninstall_tool "$tool_key"
         fi
@@ -309,20 +437,29 @@ while true; do
             ;;
         4)
             echo -e "${BLUE}Starte Hybrid-Setup (Letsung MiniPC + Multi-VPS)...${NC}"
-            run_bash_script "$INSTALL_DIR/scripts/base_install.sh"
-            run_bash_script "$INSTALL_DIR/scripts/hybrid_setup.sh"
+            if run_base_install_if_needed; then
+                run_bash_script "$INSTALL_DIR/scripts/hybrid_setup.sh"
+            else
+                echo -e "${RED}Hybrid-Setup abgebrochen, weil die Basis-Installation fehlgeschlagen ist.${NC}"
+            fi
             read -p "Hybrid-Setup abgeschlossen. Drücken Sie Enter..."
             ;;
         5)
             echo -e "${BLUE}Starte Standalone VPS-Setup (Cloud-Native)...${NC}"
-            run_bash_script "$INSTALL_DIR/scripts/base_install.sh"
-            run_bash_script "$INSTALL_DIR/scripts/vps_standalone.sh"
+            if run_base_install_if_needed; then
+                run_bash_script "$INSTALL_DIR/scripts/vps_standalone.sh"
+            else
+                echo -e "${RED}VPS-Standalone-Setup abgebrochen, weil die Basis-Installation fehlgeschlagen ist.${NC}"
+            fi
             read -p "VPS-Standalone-Setup abgeschlossen. Drücken Sie Enter..."
             ;;
         6)
             echo -e "${BLUE}Starte Standalone MiniPC-Setup (Lokal)...${NC}"
-            run_bash_script "$INSTALL_DIR/scripts/base_install.sh"
-            run_bash_script "$INSTALL_DIR/scripts/install_local_only.sh"
+            if run_base_install_if_needed; then
+                run_bash_script "$INSTALL_DIR/scripts/install_local_only.sh"
+            else
+                echo -e "${RED}Standalone MiniPC-Setup abgebrochen, weil die Basis-Installation fehlgeschlagen ist.${NC}"
+            fi
             read -p "Standalone MiniPC-Setup abgeschlossen. Drücken Sie Enter..."
             ;;
         7)

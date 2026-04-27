@@ -1,5 +1,6 @@
 #!/bin/bash
 TOOL_NAME="librosa"
+TOOL_KEY="librosa"
 TOOL_SLUG="librosa"
 TOOL_PACKAGES="librosa soundfile"
 TOOL_DESCRIPTION="Audioanalyse für BPM, Spektren, Harmonik und Signal-Merkmale."

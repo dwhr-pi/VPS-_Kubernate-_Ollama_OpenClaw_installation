@@ -1,5 +1,6 @@
 #!/bin/bash
 TOOL_NAME="LangGraph"
+TOOL_KEY="LangGraph"
 TOOL_SLUG="langgraph"
 TOOL_PACKAGES="langgraph langchain"
 TOOL_DESCRIPTION="Workflow- und Graph-Orchestrierung für Agentenketten im OpenClaw/Ollama-Umfeld."
