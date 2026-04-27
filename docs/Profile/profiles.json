@@ -19,64 +19,21 @@
   "profiles": [
     {
       "profile": "Programmierer",
-      "source": {
-        "docs_profile_md": true,
-        "readme_or_guide": true,
-        "scripts": true
-      },
+      "source": { "docs_profile_md": true, "readme_or_guide": true, "scripts": true },
       "system": {
-        "packages": [
-          "git",
-          "nodejs>=22",
-          "pnpm",
-          "python3",
-          "python3-pip",
-          "build-essential",
-          "ruby-full",
-          "libmysqlclient-dev"
-        ],
-        "paths": [
-          "/opt/huginn",
-          "/opt/clawhub-cli",
-          "/usr/local/bin/clawhub",
-          "/opt/langgraph",
-          "/opt/crewai",
-          "/opt/autogen",
-          "/opt/playwright",
-          "/opt/chromadb"
-        ]
+        "packages": ["git", "nodejs>=22", "pnpm", "python3", "python3-pip", "build-essential", "ruby-full", "libmysqlclient-dev"],
+        "paths": ["/opt/huginn", "/opt/clawhub-cli", "/usr/local/bin/clawhub", "/opt/langgraph", "/opt/crewai", "/opt/autogen", "/opt/playwright", "/opt/chromadb"]
       },
       "ai_stack": {
         "ollama_models": [],
-        "agents": [
-          "huginn"
-        ],
-        "cli": [
-          "clawhub"
-        ],
-        "frameworks": [
-          "langgraph",
-          "crewai",
-          "autogen"
-        ],
-        "memory": [
-          "chromadb"
-        ],
-        "browser_tools": [
-          "playwright"
-        ]
+        "agents": ["huginn"],
+        "cli": ["clawhub"],
+        "frameworks": ["langgraph", "crewai", "autogen"],
+        "memory": ["chromadb"],
+        "browser_tools": ["playwright"]
       },
-      "services": [
-        "Huginn (manueller Rails-Start)"
-      ],
-      "network": {
-        "ports": [
-          3000
-        ],
-        "bindings": [
-          "nicht explizit festgelegt"
-        ]
-      },
+      "services": ["Huginn (manueller Rails-Start)"],
+      "network": { "ports": [3000], "bindings": ["nicht explizit festgelegt"] },
       "commands": [
         "scripts/tools/huginn_install.sh",
         "scripts/tools/clawhub_cli_install.sh",
@@ -91,56 +48,25 @@
         "missing_in_system": [
           "kein dedizierter DeepSeek-Coder/Ollama-Pull",
           "keine explizite Git-Integration als Profilschritt",
-          "keine eigenen Installskripte für Prometheus, Grafana, Loki, OpenTelemetry, Vault, Weaviate, Qdrant, Redis, RabbitMQ oder NATS"
+          "keine eigenen Installskripte für OpenTelemetry, Vault, RabbitMQ oder NATS-Policies"
         ],
-        "missing_in_docs": [
-          "CLI-Verlinkung nach /usr/local/bin/clawhub"
-        ]
+        "missing_in_docs": ["CLI-Verlinkung nach /usr/local/bin/clawhub"]
       }
     },
     {
       "profile": "Media_Musik",
-      "source": {
-        "docs_profile_md": true,
-        "readme_or_guide": true,
-        "scripts": true
-      },
+      "source": { "docs_profile_md": true, "readme_or_guide": true, "scripts": true },
       "system": {
-        "packages": [
-          "git",
-          "nodejs>=22",
-          "pnpm",
-          "ffmpeg",
-          "python3",
-          "python3-pip",
-          "python3-venv"
-        ],
-        "paths": [
-          "/opt/clawbake",
-          "/opt/librosa",
-          "/opt/pydub",
-          "/opt/demucs",
-          "/opt/whisper"
-        ]
+        "packages": ["git", "nodejs>=22", "pnpm", "ffmpeg", "python3", "python3-pip", "python3-venv"],
+        "paths": ["/opt/clawbake", "/opt/librosa", "/opt/pydub", "/opt/demucs", "/opt/whisper"]
       },
       "ai_stack": {
         "ollama_models": [],
-        "agents": [
-          "clawbake"
-        ],
-        "media_tools": [
-          "ffmpeg",
-          "librosa",
-          "pydub",
-          "demucs",
-          "whisper"
-        ]
+        "agents": ["clawbake"],
+        "media_tools": ["ffmpeg", "librosa", "pydub", "demucs", "whisper"]
       },
       "services": [],
-      "network": {
-        "ports": [],
-        "bindings": []
-      },
+      "network": { "ports": [], "bindings": [] },
       "commands": [
         "scripts/tools/clawbake_install.sh",
         "scripts/tools/ffmpeg_install.sh",
@@ -154,70 +80,28 @@
           "keine installierbaren MusicGen- oder Riffusion-Skripte",
           "keine Video-Generatoren",
           "keine Alexa-Integration aus dem Profil heraus",
-          "keine installierbaren Stable-Diffusion- oder ControlNet-Skripte"
+          "keine installierbaren ControlNet-Skripte"
         ],
         "missing_in_docs": []
       }
     },
     {
       "profile": "KI_Forschung",
-      "source": {
-        "docs_profile_md": true,
-        "readme_or_guide": true,
-        "scripts": true
-      },
+      "source": { "docs_profile_md": true, "readme_or_guide": true, "scripts": true },
       "system": {
-        "packages": [
-          "git",
-          "nodejs>=22",
-          "pnpm",
-          "python3",
-          "python3-pip",
-          "python3-venv"
-        ],
-        "paths": [
-          "/opt/openclaw-rl",
-          "/opt/flowise",
-          "/opt/langflow",
-          "/opt/langchain",
-          "/opt/llamaindex",
-          "/opt/mlflow",
-          "/opt/whisper"
-        ]
+        "packages": ["git", "nodejs>=22", "pnpm", "python3", "python3-pip", "python3-venv"],
+        "paths": ["/opt/openclaw-rl", "/opt/flowise", "/opt/langflow", "/opt/langchain", "/opt/llamaindex", "/opt/mlflow", "/opt/whisper"]
       },
       "ai_stack": {
         "ollama_models": [],
-        "agents": [
-          "openclaw-rl"
-        ],
-        "ui": [
-          "flowise",
-          "langflow"
-        ],
-        "frameworks": [
-          "langchain",
-          "llamaindex"
-        ],
-        "experiment_tracking": [
-          "mlflow"
-        ],
-        "speech": [
-          "whisper"
-        ]
+        "agents": ["openclaw-rl"],
+        "ui": ["flowise", "langflow"],
+        "frameworks": ["langchain", "llamaindex"],
+        "experiment_tracking": ["mlflow"],
+        "speech": ["whisper"]
       },
-      "services": [
-        "Flowise (manuell)",
-        "LangFlow (manuell)"
-      ],
-      "network": {
-        "ports": [
-          3000,
-          7860
-        ],
-        "bindings": [
-          "nicht explizit festgelegt"
-        ]
-      },
+      "services": ["Flowise (manuell)", "LangFlow (manuell)"],
+      "network": { "ports": [3000, 7860], "bindings": ["nicht explizit festgelegt"] },
       "commands": [
         "scripts/tools/openclaw_rl_install.sh",
         "scripts/tools/flowise_install.sh",
@@ -230,68 +114,28 @@
       "inconsistencies": {
         "missing_in_system": [
           "kein automatisches gemini-1.5-pro-Setup",
-          "keine zusätzlichen ML-Frameworks wie TensorFlow oder PyTorch",
           "keine installierbaren Skripte für Ray, vLLM, Stable Diffusion oder EnviroLLM"
         ],
-        "missing_in_docs": [
-          "Flowise und LangFlow sind script-seitig deutlich konkreter als in der Doku"
-        ]
+        "missing_in_docs": ["Flowise und LangFlow sind script-seitig deutlich konkreter als in der Doku"]
       }
     },
     {
       "profile": "Texter_Werbung_Marketing",
-      "source": {
-        "docs_profile_md": true,
-        "readme_or_guide": true,
-        "scripts": true
-      },
+      "source": { "docs_profile_md": true, "readme_or_guide": true, "scripts": true },
       "system": {
-        "packages": [
-          "git",
-          "nodejs>=22",
-          "pnpm",
-          "python3",
-          "python3-pip",
-          "python3-venv"
-        ],
-        "paths": [
-          "/opt/n8n",
-          "/opt/activepieces",
-          "/opt/langchain",
-          "/opt/chromadb",
-          "/opt/playwright"
-        ]
+        "packages": ["git", "nodejs>=22", "pnpm", "python3", "python3-pip", "python3-venv"],
+        "paths": ["/opt/n8n", "/opt/activepieces", "/opt/langchain", "/opt/chromadb", "/opt/playwright"]
       },
       "ai_stack": {
         "ollama_models": [],
         "agents": [],
-        "automation": [
-          "n8n",
-          "activepieces"
-        ],
-        "frameworks": [
-          "langchain"
-        ],
-        "memory": [
-          "chromadb"
-        ],
-        "browser_tools": [
-          "playwright"
-        ]
+        "automation": ["n8n", "activepieces"],
+        "frameworks": ["langchain"],
+        "memory": ["chromadb"],
+        "browser_tools": ["playwright"]
       },
-      "services": [
-        "n8n (manuell)",
-        "Activepieces (manuell)"
-      ],
-      "network": {
-        "ports": [
-          5678,
-          3000
-        ],
-        "bindings": [
-          "nicht explizit festgelegt"
-        ]
-      },
+      "services": ["n8n (manuell)", "Activepieces (manuell)"],
+      "network": { "ports": [5678, 3000], "bindings": ["nicht explizit festgelegt"] },
       "commands": [
         "scripts/tools/n8n_install.sh",
         "scripts/tools/activepieces_install.sh",
@@ -301,63 +145,27 @@
       ],
       "inconsistencies": {
         "missing_in_system": [
-          "keine SEO-Tools",
-          "kein Social-Media-Management",
-          "keine dedizierten Textmodelle",
-          "keine installierbaren API-Integrationen für Google Analytics, Meta Ads, TikTok Ads, HubSpot, Notion, Airtable, Buffer, Zapier, Make, Ahrefs, SEMrush oder ElevenLabs"
+          "keine API-Integrationen für Google Analytics, Meta Ads, TikTok Ads, HubSpot, Notion, Airtable, Buffer, Zapier, Make, Ahrefs, SEMrush oder ElevenLabs"
         ],
         "missing_in_docs": []
       }
     },
     {
       "profile": "Rechtsberatung_Steuerrecht",
-      "source": {
-        "docs_profile_md": true,
-        "readme_or_guide": true,
-        "scripts": true
-      },
+      "source": { "docs_profile_md": true, "readme_or_guide": true, "scripts": true },
       "system": {
-        "packages": [
-          "pup",
-          "jq",
-          "wget",
-          "curl",
-          "poppler-utils",
-          "tesseract-ocr",
-          "python3",
-          "python3-pip",
-          "python3-venv"
-        ],
-        "paths": [
-          "/opt/zotero",
-          "/usr/local/bin/zotero",
-          "/opt/langchain",
-          "/opt/llamaindex",
-          "/opt/chromadb"
-        ]
+        "packages": ["pup", "jq", "wget", "curl", "poppler-utils", "tesseract-ocr", "python3", "python3-pip", "python3-venv"],
+        "paths": ["/opt/zotero", "/usr/local/bin/zotero", "/opt/langchain", "/opt/llamaindex", "/opt/chromadb"]
       },
       "ai_stack": {
         "ollama_models": [],
         "agents": [],
-        "document_tools": [
-          "Web fetch",
-          "PDF parsing",
-          "OCR",
-          "Zotero"
-        ],
-        "frameworks": [
-          "langchain",
-          "llamaindex"
-        ],
-        "memory": [
-          "chromadb"
-        ]
+        "document_tools": ["Web fetch", "PDF parsing", "OCR", "Zotero"],
+        "frameworks": ["langchain", "llamaindex"],
+        "memory": ["chromadb"]
       },
       "services": [],
-      "network": {
-        "ports": [],
-        "bindings": []
-      },
+      "network": { "ports": [], "bindings": [] },
       "commands": [
         "sudo apt-get install -y pup jq wget curl",
         "sudo apt-get install -y poppler-utils tesseract-ocr",
@@ -370,6 +178,219 @@
         "missing_in_system": [
           "scripts/openclaw_skill_config.sh fehlt",
           "keine installierbaren Skripte für Neo4j, EULLM, ALIENTELLIGENCE, Fristen-Checker oder Risiko-Scoring"
+        ],
+        "missing_in_docs": []
+      }
+    },
+    {
+      "profile": "Agent_Orchestrator",
+      "source": { "docs_profile_md": true, "readme_or_guide": true, "scripts": true },
+      "system": {
+        "packages": ["git", "nodejs>=22", "pnpm", "python3", "python3-pip", "python3-venv", "redis-server"],
+        "paths": ["/opt/langgraph", "/opt/crewai", "/opt/autogen", "/opt/chromadb", "/opt/nats", "/opt/qdrant", "/opt/weaviate", "/opt/prometheus", "/opt/grafana", "/opt/loki"]
+      },
+      "ai_stack": {
+        "ollama_models": [],
+        "frameworks": ["langgraph", "crewai", "autogen"],
+        "memory": ["chromadb", "qdrant", "weaviate"],
+        "queue_bus": ["redis", "nats"],
+        "observability": ["prometheus", "grafana", "loki"]
+      },
+      "services": ["Redis", "Qdrant (docker)", "Weaviate (docker)", "Prometheus (docker)", "Grafana (docker)", "Loki (docker)"],
+      "network": { "ports": [6379, 4222, 6333, 6334, 8081, 9090, 3001, 3100], "bindings": ["nicht explizit gehärtet"] },
+      "commands": [
+        "scripts/tools/langgraph_install.sh",
+        "scripts/tools/crewai_install.sh",
+        "scripts/tools/autogen_install.sh",
+        "scripts/tools/chromadb_install.sh",
+        "scripts/tools/redis_install.sh",
+        "scripts/tools/nats_install.sh",
+        "scripts/tools/qdrant_install.sh",
+        "scripts/tools/weaviate_install.sh",
+        "scripts/tools/prometheus_install.sh",
+        "scripts/tools/grafana_install.sh",
+        "scripts/tools/loki_install.sh"
+      ],
+      "inconsistencies": {
+        "missing_in_system": [
+          "kein dediziertes Install-/Run-Modul für einen eigenständigen Agent_Orchestrator",
+          "keine vorkonfigurierten Policies für Retry, Dead-Letter und Konfliktauflösung"
+        ],
+        "missing_in_docs": []
+      }
+    },
+    {
+      "profile": "Audio",
+      "source": { "docs_profile_md": true, "readme_or_guide": true, "scripts": true },
+      "system": {
+        "packages": ["python3", "python3-pip", "python3-venv", "ffmpeg"],
+        "paths": ["/opt/whisper", "/opt/librosa", "/opt/pydub", "/opt/piper", "/opt/coqui_tts"]
+      },
+      "ai_stack": {
+        "speech_to_text": ["whisper"],
+        "text_to_speech": ["piper", "coqui_tts"],
+        "audio_tools": ["ffmpeg", "librosa", "pydub"]
+      },
+      "services": [],
+      "network": { "ports": [], "bindings": [] },
+      "commands": [
+        "scripts/tools/whisper_install.sh",
+        "scripts/tools/ffmpeg_install.sh",
+        "scripts/tools/librosa_install.sh",
+        "scripts/tools/pydub_install.sh",
+        "scripts/tools/piper_install.sh",
+        "scripts/tools/coqui_tts_install.sh"
+      ],
+      "inconsistencies": {
+        "missing_in_system": ["kein vollständiger Voice-Assistant-Laufzeitstack"],
+        "missing_in_docs": []
+      }
+    },
+    {
+      "profile": "Content_Automation",
+      "source": { "docs_profile_md": true, "readme_or_guide": true, "scripts": true },
+      "system": {
+        "packages": ["python3", "python3-pip", "python3-venv", "nodejs>=22", "pnpm", "ffmpeg"],
+        "paths": ["/opt/whisper", "/opt/playwright", "/opt/n8n", "/opt/activepieces", "/opt/piper", "/opt/coqui_tts", "/opt/yt_dlp", "/opt/stable-diffusion-webui", "/opt/trend_monitor"]
+      },
+      "ai_stack": {
+        "workflow": ["n8n", "activepieces"],
+        "media_tools": ["ffmpeg", "whisper", "yt_dlp", "stable_diffusion_webui"],
+        "speech": ["piper", "coqui_tts"],
+        "browser_tools": ["playwright"],
+        "research": ["trend_monitor"]
+      },
+      "services": ["n8n (manuell)", "Activepieces (manuell)", "Stable Diffusion WebUI (vorbereitet)"],
+      "network": { "ports": [5678], "bindings": ["nicht explizit festgelegt"] },
+      "commands": [
+        "scripts/tools/ffmpeg_install.sh",
+        "scripts/tools/whisper_install.sh",
+        "scripts/tools/playwright_install.sh",
+        "scripts/tools/n8n_install.sh",
+        "scripts/tools/activepieces_install.sh",
+        "scripts/tools/piper_install.sh",
+        "scripts/tools/coqui_tts_install.sh",
+        "scripts/tools/yt_dlp_install.sh",
+        "scripts/tools/stable_diffusion_webui_install.sh",
+        "scripts/tools/trend_monitor_install.sh"
+      ],
+      "inconsistencies": {
+        "missing_in_system": [
+          "keine vollständig vorkonfigurierte End-to-End-Laufzeitpipeline",
+          "keine dedizierte Upload-Automation als separates Modul"
+        ],
+        "missing_in_docs": []
+      }
+    },
+    {
+      "profile": "Research_Agent",
+      "source": { "docs_profile_md": true, "readme_or_guide": true, "scripts": true },
+      "system": {
+        "packages": ["git", "nodejs>=22", "pnpm", "python3", "python3-pip", "python3-venv"],
+        "paths": ["/opt/playwright", "/opt/langchain", "/opt/llamaindex", "/opt/chromadb", "/opt/qdrant", "/opt/weaviate", "/opt/trend_monitor"]
+      },
+      "ai_stack": {
+        "browser_tools": ["playwright"],
+        "frameworks": ["langchain", "llamaindex"],
+        "memory": ["chromadb", "qdrant", "weaviate"],
+        "research": ["trend_monitor"]
+      },
+      "services": ["Qdrant (docker)", "Weaviate (docker)"],
+      "network": { "ports": [6333, 6334, 8081], "bindings": ["nicht explizit gehärtet"] },
+      "commands": [
+        "scripts/tools/playwright_install.sh",
+        "scripts/tools/langchain_install.sh",
+        "scripts/tools/llamaindex_install.sh",
+        "scripts/tools/chromadb_install.sh",
+        "scripts/tools/qdrant_install.sh",
+        "scripts/tools/weaviate_install.sh",
+        "scripts/tools/trend_monitor_install.sh"
+      ],
+      "inconsistencies": {
+        "missing_in_system": [
+          "kein eigenes Laufzeitmodul nur für Research_Agent",
+          "keine vollständig vorkonfigurierte Repo-Vergleichs- und Monitoring-Pipeline"
+        ],
+        "missing_in_docs": []
+      }
+    },
+    {
+      "profile": "Security_Analyst",
+      "source": { "docs_profile_md": true, "readme_or_guide": true, "scripts": true },
+      "system": {
+        "packages": ["curl", "git", "python3", "python3-pip", "nmap", "nikto", "fail2ban", "trivy"],
+        "paths": []
+      },
+      "ai_stack": {
+        "security_tools": ["nmap", "nikto", "trivy", "fail2ban"],
+        "checks": ["port_check", "openclaw_config"]
+      },
+      "services": ["Fail2Ban"],
+      "network": { "ports": [], "bindings": [] },
+      "commands": [
+        "scripts/port_check.sh",
+        "scripts/openclaw_config_manager.sh",
+        "scripts/tools/nmap_install.sh",
+        "scripts/tools/nikto_install.sh",
+        "scripts/tools/trivy_install.sh",
+        "scripts/tools/fail2ban_install.sh"
+      ],
+      "inconsistencies": {
+        "missing_in_system": [
+          "keine vollwertige Pentest- oder Compliance-Workflow-Kette",
+          "keine dedizierte fail2ban-Loganalyse-Pipeline"
+        ],
+        "missing_in_docs": []
+      }
+    },
+    {
+      "profile": "Trading_AI",
+      "source": { "docs_profile_md": true, "readme_or_guide": true, "scripts": true },
+      "system": {
+        "packages": ["git", "nodejs>=22", "pnpm", "python3", "python3-pip", "python3-venv"],
+        "paths": ["/opt/zenbot-trader", "/opt/web3_apis", "/opt/exchange_apis"]
+      },
+      "ai_stack": {
+        "trading_tools": ["zenbot_trader"],
+        "integrations": ["web3_apis", "exchange_apis"]
+      },
+      "services": [],
+      "network": { "ports": [], "bindings": [] },
+      "commands": [
+        "scripts/tools/zenbot_trader_install.sh",
+        "scripts/tools/web3_apis_install.sh",
+        "scripts/tools/exchange_apis_install.sh"
+      ],
+      "inconsistencies": {
+        "missing_in_system": [
+          "kein dediziertes Backtest- oder Risikomodul",
+          "keine Zenbot-API als separates Integrationsmodul"
+        ],
+        "missing_in_docs": []
+      }
+    },
+    {
+      "profile": "Visual_Creator",
+      "source": { "docs_profile_md": true, "readme_or_guide": true, "scripts": true },
+      "system": {
+        "packages": ["python3", "python3-pip", "python3-venv", "ffmpeg"],
+        "paths": ["/opt/stable-diffusion-webui", "/opt/comfyui", "/opt/realesrgan"]
+      },
+      "ai_stack": {
+        "visual_tools": ["stable_diffusion_webui", "comfyui", "realesrgan", "ffmpeg"]
+      },
+      "services": ["Stable Diffusion WebUI (vorbereitet)", "ComfyUI (vorbereitet)"],
+      "network": { "ports": [], "bindings": [] },
+      "commands": [
+        "scripts/tools/ffmpeg_install.sh",
+        "scripts/tools/stable_diffusion_webui_install.sh",
+        "scripts/tools/comfyui_install.sh",
+        "scripts/tools/realesrgan_install.sh"
+      ],
+      "inconsistencies": {
+        "missing_in_system": [
+          "keine vollständig vorkonfigurierte lokale Bild-/Video-Laufzeitpipeline",
+          "keine Module für AnimateDiff, SVD oder Runway API"
         ],
         "missing_in_docs": []
       }

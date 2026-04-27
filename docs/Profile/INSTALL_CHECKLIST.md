@@ -76,6 +76,34 @@ Optional weitere Modelle manuell über den Ollama-Modell-Manager installieren.
 - `scripts/profiles/Rechtsberatung_Steuerrecht_install.sh`
 - installiert: Web-Fetch- und PDF/OCR-Werkzeuge, Zotero, LangChain, LlamaIndex, ChromaDB
 
+### Agent_Orchestrator
+- `scripts/profiles/Agent_Orchestrator_install.sh`
+- installiert: LangGraph, CrewAI, AutoGen, ChromaDB, Redis, NATS, Qdrant, Weaviate, Prometheus, Grafana, Loki
+
+### Audio
+- `scripts/profiles/Audio_install.sh`
+- installiert: Whisper, FFmpeg, librosa, pydub, Piper, Coqui_TTS
+
+### Content_Automation
+- `scripts/profiles/Content_Automation_install.sh`
+- installiert: FFmpeg, Whisper, Playwright, n8n, Activepieces, Piper, Coqui_TTS, YT_DLP, Stable_Diffusion_WebUI, Trend_Monitor
+
+### Research_Agent
+- `scripts/profiles/Research_Agent_install.sh`
+- installiert: Playwright, LangChain, LlamaIndex, ChromaDB, Qdrant, Weaviate, Trend_Monitor
+
+### Security_Analyst
+- `scripts/profiles/Security_Analyst_install.sh`
+- installiert: Nmap, Nikto, Trivy, Fail2Ban
+
+### Trading_AI
+- `scripts/profiles/Trading_AI_install.sh`
+- installiert: Zenbot_trader, Web3_APIs, Exchange_APIs
+
+### Visual_Creator
+- `scripts/profiles/Visual_Creator_install.sh`
+- installiert: FFmpeg, Stable_Diffusion_WebUI, ComfyUI, RealESRGAN
+
 ## 7. Port-Check
 
 Das vorhandene Skript deckt nur einen Teil ab:

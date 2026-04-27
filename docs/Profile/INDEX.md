@@ -19,7 +19,7 @@ Die Inhalte in diesem Verzeichnis wurden daher aus folgenden Quellen zusammengef
 
 ## Profilquellen und abgeleitete Dateien
 
-Die fünf fachlichen Quelldateien unter [docs/Profil](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/Profil:1) sind lokal vorhanden und in die abgeleiteten Profilseiten übernommen:
+Die fachlichen Quelldateien unter [docs/Profil](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/Profil:1) sind lokal vorhanden und in die abgeleiteten Profilseiten übernommen:
 
 | Quelle in `docs/Profil` | Abgeleitete Datei in `docs/Profile` |
 |---|---|
