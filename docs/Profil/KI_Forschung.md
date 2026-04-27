@@ -1,128 +1,49 @@
-# Chatverlauf – KI Forschung / OpenClaw / Ollama Setup
+# Profil: KI_Forschung
 
----
+## Überblick
 
-## 👤 User
+Dieses Profil richtet sich an RL- und LLM-Experimentier-Workflows.
 
-Promt Liste für KI Forschung erstellen, welche Tools wären außerdem für mein Ollama OpenClaw Projekt für das Profil KI_Forschung sinnvoll:
-https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation
+## Installierter Stack
 
----
+- Basis: `git`, `nodejs>=22`, `pnpm`, `python3`, `python3-pip`, `python3-venv`
+- Profil-Tooling:
+  - OpenClaw RL unter `/opt/openclaw-rl`
+  - Flowise unter `/opt/flowise`
+  - LangFlow unter `/opt/langflow`
 
-## 🤖 Assistant
+## Verantwortlichkeiten
 
-Sehr gutes Setup, das du da baust – **Ollama + OpenClaw + Kubernetes** ist im Prinzip schon eine halbe Research-Plattform 😄  
-Ich geb dir jetzt **3 Dinge in einem Paket**:
+- Reinforcement-Learning-Experimente
+- visuelle LLM-Workflow-Erstellung
+- OpenClaw-nahe Forschung und Prototyping
 
----
+## Verfügbare Kommandos
 
-# 🧠 1. Prompt-Liste für dein Profil **KI_Forschung**
-
-Diese Prompts sind so gebaut, dass sie mit Agenten wie OpenClaw + Ollama gut funktionieren (inkl. Tool-Use / RAG / Automation).
-
----
-
-## 🔍 A. Deep Research Prompts
-```txt
-SYSTEM:
-Du bist ein KI-Forschungsassistent mit Zugriff auf lokale Modelle, Dokumente und Webdaten.
-
-USER:
-Analysiere das Thema: {THEMA}
-
-Aufgaben:
-1. Aktueller Stand der Forschung (2024–2026)
-2. Key Papers & Durchbrüche
-3. Offene Probleme
-4. Zukunftstrends (3–5 Jahre)
-5. Eigene Hypothesen / Ideen
+```bash
+scripts/tools/openclaw_rl_install.sh
+scripts/tools/flowise_install.sh
+scripts/tools/langflow_install.sh
 ```
 
-📚 B. Paper-Analyse
-```Plain text
-Analysiere dieses Paper:
+## Vergleich
 
-- Kurz-Zusammenfassung
-- Methodik
-- Stärken / Schwächen
-- Reproduzierbarkeit
-- Neuheit
-```
-⚡ C. Hypothesen Generator
+### ✅ In Sync
 
-```Plain text
-Generiere 10 Forschungs-Hypothesen zu: {THEMA}
-```
+- OpenClaw RL ist sauber im Profil verankert.
+- Flowise und LangFlow sind sowohl in Doku als auch im Profilskript vorgesehen.
 
-🔁 D. Self Improving Agent
+### ⚠ Missing in Setup
 
-```Plain text
-Analysiere → löse → kritisiere → verbessere (3 Iterationen)
-🧩 E. Multi Agent Debate
-Plain text
-Simuliere:
-- Researcher
-- Engineer
-- Reviewer
+- Kein automatisches `gemini-1.5-pro`-Setup
+- Keine breitere ML-Bibliotheksauswahl wie TensorFlow oder PyTorch
 
-Diskutiere: {THEMA}
-```
+### ❌ Missing in Docs
 
-📊 F. Vergleich Prompt
+- Keine dedizierte Profil-Datei im ursprünglichen Repo
 
-```Plain text
-Vergleiche Modelle nach:
-- Reasoning
-- Speed
-- Memory
-- Kosten
-```
-🧠 G. RAG Knowledge Extraction
-```Plain text
-Extrahiere Key Insights + Knowledge Graph Struktur
-```
+## Hinweise
 
-## ⚙️ 2. Tools für dein OpenClaw / Ollama Setup
-
-### 🧱 Core Stack
-* LangChain → Agenten & Tool Use
-* LlamaIndex → Dokumente / RAG
-* Chroma / Weaviate → Vector DB
-
-### 🧠 Agent Frameworks
-* CrewAI
-* AutoGPT
-
-### 🧪 Research Tools
-* MLflow
-* Weights & Biases
-
-### ⚡ Serving / Performance
-* vLLM
-* llama.cpp
-
-### 🎨 Multimodal
-* Whisper (Speech)
-* Stable Diffusion (Image)
-
-### 🧬 Advanced
-* Ray (Scaling)
-* EnviroLLM (Efficiency Tracking)
-
-## 🧩 3. Architektur Upgrade
-```Plain text
-User → OpenClaw → LangChain/CrewAI → Ollama + RAG + Tools
-```
-
-### 🔥 Erweiterungen
-
-RAG Layer
-* PDFs
-* GitHub
-* Papers
-Multi-Agent System
-* Planner
-* Researcher
-* Critic
-Auto Pipelines
-* Topic → Research → Summary → Storage
+- Flowise nutzt standardmäßig Port `3000`.
+- LangFlow nutzt standardmäßig Port `7860`.
+- Port-3000-Kollisionen mit OpenClaw, Huginn, Activepieces und Zenbot sind wahrscheinlich.
