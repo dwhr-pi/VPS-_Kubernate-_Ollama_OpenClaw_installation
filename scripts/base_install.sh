@@ -11,6 +11,7 @@ BLUE=\033[0;34m
 RED=\033[0;31m
 YELLOW=\033[1;33m
 NC=\033[0m
+TTY_DEVICE="/dev/tty"
 
 echo -e "${BLUE}Starte Basis-Installation: System-Updates, Node.js, pnpm, Python, Git...${NC}"
 
@@ -41,10 +42,48 @@ ensure_nodejs_22() {
     fi
 }
 
+prompt_yes_no() {
+    local prompt="$1"
+    local response
+
+    if [ ! -e "$TTY_DEVICE" ]; then
+        return 1
+    fi
+
+    read -r -p "$prompt" response < "$TTY_DEVICE"
+    [[ "$response" =~ ^[JjYy]$ ]]
+}
+
+handle_ignored_build_scripts() {
+    local ignored_output
+
+    ignored_output="$(pnpm ignored-builds 2>/dev/null || true)"
+    if [ -z "$ignored_output" ]; then
+        return 0
+    fi
+
+    if ! printf '%s' "$ignored_output" | grep -Eq '@discordjs/opus|Ignored build scripts|ignored'; then
+        return 0
+    fi
+
+    echo -e "${YELLOW}Hinweis: pnpm hat ignorierte Build-Skripte gemeldet.${NC}"
+    echo "$ignored_output"
+
+    if prompt_yes_no "Ich korrigiere jetzt das zuvor fehlende ignorierte Build-Skript, z.B. @discordjs/opus@0.10.0. Bitte bestätige die Korrektur mit (j/N): "; then
+        pnpm approve-builds < "$TTY_DEVICE" > "$TTY_DEVICE" 2>&1 || {
+            echo -e "${RED}Warnung: 'pnpm approve-builds' konnte nicht erfolgreich abgeschlossen werden.${NC}"
+            return 1
+        }
+        echo -e "${GREEN}Die Freigabe der Build-Skripte wurde durchgeführt bzw. interaktiv bestätigt.${NC}"
+    else
+        echo -e "${YELLOW}Freigabe übersprungen. Du kannst sie später manuell mit 'pnpm approve-builds' im Projektordner ausführen.${NC}"
+    fi
+}
+
 # 1. System aktualisieren
 echo -e "${GREEN}1/5: System-Updates durchführen...${NC}"
 sudo apt update && sudo apt upgrade -y
-sudo apt install -y curl ca-certificates git python3 python3-pip build-essential
+sudo apt install -y curl ca-certificates git python3 python3-pip build-essential zstd
 ensure_nodejs_22
 
 # 2. pnpm installieren (falls nicht vorhanden)
@@ -88,6 +127,9 @@ if [ $? -ne 0 ]; then
     echo -e "${RED}Fehler: pnpm build fehlgeschlagen.${NC}"
     exit 1
 fi
+
+echo -e "${GREEN}OpenClaw Build abgeschlossen. Prüfe nun auf ignorierte pnpm-Build-Skripte...${NC}"
+handle_ignored_build_scripts || true
 
 # 4. .env Datei für OpenClaw vorbereiten
 echo -e "${GREEN}4/5: OpenClaw .env Datei vorbereiten...${NC}"

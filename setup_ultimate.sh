@@ -227,7 +227,7 @@ show_profile_management_menu() {
     PROFILE_CHECKLIST_OPTIONS=()
     for profile_key in "${PROFILE_KEYS[@]}"; do
         STATUS="off"
-        if [[ -v INSTALLED_PROFILES_MAP["$profile_key"] ]]; then
+        if [ -n "$profile_key" ] && [ "${INSTALLED_PROFILES_MAP[$profile_key]:-}" = "1" ]; then
             STATUS="on"
         fi
         PROFILE_CHECKLIST_OPTIONS+=("$profile_key" "${PROFILES[$profile_key]}" "$STATUS")
@@ -245,10 +245,10 @@ show_profile_management_menu() {
 
     # Installation/Deinstallation basierend auf Auswahl
     for profile_key in "${PROFILE_KEYS[@]}"; do
-        if selection_contains "$profile_key" "${SELECTED_PROFILES_ARRAY[@]}" && [[ ! -v INSTALLED_PROFILES_MAP["$profile_key"] ]]; then
+        if selection_contains "$profile_key" "${SELECTED_PROFILES_ARRAY[@]}" && [ "${INSTALLED_PROFILES_MAP[$profile_key]:-}" != "1" ]; then
             # Profil ausgewählt und nicht installiert -> Installieren
             install_profile "$profile_key"
-        elif ! selection_contains "$profile_key" "${SELECTED_PROFILES_ARRAY[@]}" && [[ -v INSTALLED_PROFILES_MAP["$profile_key"] ]]; then
+        elif ! selection_contains "$profile_key" "${SELECTED_PROFILES_ARRAY[@]}" && [ "${INSTALLED_PROFILES_MAP[$profile_key]:-}" = "1" ]; then
             # Profil nicht ausgewählt und installiert -> Deinstallieren
             uninstall_profile "$profile_key"
         fi
@@ -552,7 +552,7 @@ show_tool_management_menu() {
     TOOL_CHECKLIST_OPTIONS=()
     for tool_key in "${TOOL_KEYS[@]}"; do
         STATUS="off"
-        if [[ -v INSTALLED_TOOLS_MAP["$tool_key"] ]]; then
+        if [ -n "$tool_key" ] && [ "${INSTALLED_TOOLS_MAP[$tool_key]:-}" = "1" ]; then
             STATUS="on"
         fi
         TOOL_CHECKLIST_OPTIONS+=("$tool_key" "${TOOLS[$tool_key]}" "$STATUS")
@@ -570,10 +570,10 @@ show_tool_management_menu() {
 
     # Installation/Deinstallation basierend auf Auswahl
     for tool_key in "${TOOL_KEYS[@]}"; do
-        if selection_contains "$tool_key" "${SELECTED_TOOLS_ARRAY[@]}" && [[ ! -v INSTALLED_TOOLS_MAP["$tool_key"] ]]; then
+        if selection_contains "$tool_key" "${SELECTED_TOOLS_ARRAY[@]}" && [ "${INSTALLED_TOOLS_MAP[$tool_key]:-}" != "1" ]; then
             # Tool ausgewählt und nicht installiert -> Installieren
             install_tool "$tool_key"
-        elif ! selection_contains "$tool_key" "${SELECTED_TOOLS_ARRAY[@]}" && [[ -v INSTALLED_TOOLS_MAP["$tool_key"] ]]; then
+        elif ! selection_contains "$tool_key" "${SELECTED_TOOLS_ARRAY[@]}" && [ "${INSTALLED_TOOLS_MAP[$tool_key]:-}" = "1" ]; then
             # Tool nicht ausgewählt und installiert -> Deinstallieren
             uninstall_tool "$tool_key"
         fi

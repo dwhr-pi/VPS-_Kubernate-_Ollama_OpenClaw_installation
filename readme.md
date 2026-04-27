@@ -12,6 +12,8 @@ curl -sSL https://raw.githubusercontent.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenC
 
 Dieser Befehl lädt das `install.sh` Skript herunter und führt es aus. Das Skript klont dieses Repository und startet das interaktive Setup-Menü, das dich durch die weiteren Schritte führt.
 
+**Wichtig für Einsteiger:** Während der Installation wirst du mehrfach nach einem Passwort gefragt. Gemeint ist dabei das `sudo`-Passwort deines Linux-Benutzers, also das Passwort des Ubuntu-/Linux-Users innerhalb von WSL oder auf deinem Server.
+
 **Für private Repositories:** Das Skript wird dich nach einem GitHub Personal Access Token (PAT) fragen. Eine Anleitung zur Erstellung findest du in der `docs/PRIVATE_REPO_GUIDE.md`.
 
 ## 🔄 Setup erneut starten
@@ -47,6 +49,11 @@ Wenn du zusätzlich lokal installierte Komponenten wie `Home Assistant`, `Ollama
 ## 📖 Dokumentation
 
 Eine detaillierte Anleitung zur Konfiguration, API-Keys, Port-Analyse und den verschiedenen Setup-Optionen findest du in der `docs/API_KEY_GUIDE.md`, `docs/setup_guide.md` und `docs/DNS_DDoS_GUIDE.md` innerhalb dieses Repositorys.
+
+Zusätzliche Hilfen:
+
+*   `docs/CLOUDFLARE_TUNNEL_GUIDE.md` erklärt Schritt für Schritt, wie du den benötigten Cloudflare-Tunnel und Token anlegst.
+*   `docs/WSL_SETUP_GUIDE.md` erklärt WSL unter Windows, Ubuntu-24.04 bzw. andere Linux-Distributionen, sowie Deinstallation und komplettes Zurücksetzen.
 
 Zusätzlich gibt es zwei Profil-Verzeichnisse:
 
@@ -211,6 +218,9 @@ Das Setup unterstützt die Installation und Deinstallation verschiedener Profile
 ## ⚠️ Wichtige Hinweise
 
 *   **API-Keys:** Werden während der Installation abgefragt oder müssen manuell in Konfigurationsdateien hinterlegt werden. Nutze den OpenClaw Konfigurations-Manager für die `.env` und `config.json`.
+*   **`sudo`-Passwort:** Wenn `sudo` ein Passwort verlangt, ist das das Passwort deines Linux-Benutzers. Unter WSL ist das nicht dein Windows-Passwort, sondern das Passwort des Ubuntu-/Linux-Users.
+*   **`zstd` Voraussetzung:** Einige Installationen oder Paketentpackungen benötigen `zstd`. Das Setup installiert `zstd` jetzt direkt mit den Basis-Abhängigkeiten.
+*   **pnpm Warnung zu ignorierten Build-Skripten:** Wenn `pnpm` z. B. `@discordjs/opus@0.10.0` als ignoriertes Build-Skript meldet, bietet das Setup jetzt am Ende des OpenClaw-Builds einen separaten Bestätigungsschritt für `pnpm approve-builds` an.
 *   **Ressourcen:** Das Setup ist für eine optimale Verteilung auf einen Letsung MiniPC (16GB RAM / 70GB Disk) und einen Oracle Cloud Free Tier VPS (24GB RAM) sowie weitere kostenlose VPS ausgelegt.
 *   **Dynamische IP:** Hurricane Electric wird für die dynamische DNS-Auflösung des MiniPCs verwendet. Eine detaillierte Anleitung zur Umstellung und zum DDoS-Schutz findest du in `docs/DNS_DDoS_GUIDE.md`.
 

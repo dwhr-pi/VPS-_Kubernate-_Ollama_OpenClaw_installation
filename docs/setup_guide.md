@@ -107,3 +107,20 @@ Sollten während der Installation oder Konfiguration Probleme auftreten, konsult
 
 Wir wünschen dir viel Erfolg bei der Einrichtung deines intelligenten, automatisierten Systems!
 ```
+# Zusätzliche Hinweise
+
+## sudo Passwort
+
+Wenn während der Installation ein Passwort abgefragt wird, ist damit das `sudo`-Passwort des Linux-Benutzers gemeint. Unter WSL ist das das Passwort deines Ubuntu-/Linux-Users, nicht automatisch dein Windows-Passwort.
+
+## zstd Voraussetzung
+
+Einige Tools oder Paketarchive benötigen `zstd` zum Entpacken. Das Setup installiert `zstd` jetzt direkt mit den Basis-Abhängigkeiten, damit Meldungen wie `This version requires zstd for extraction` nicht mehr auftreten.
+
+## pnpm Warnung zu ignorierten Build-Skripten
+
+Wenn `pnpm` beim OpenClaw-Build z. B. `@discordjs/opus@0.10.0` als ignoriertes Build-Skript meldet, bietet das Setup jetzt am Ende des Builds einen separaten Bestätigungsschritt für `pnpm approve-builds` an.
+
+## Cloudflare Tunnel
+
+Für die Schritt-für-Schritt-Erstellung des benötigten Tunnel-Tokens siehe [CLOUDFLARE_TUNNEL_GUIDE.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/CLOUDFLARE_TUNNEL_GUIDE.md:1).

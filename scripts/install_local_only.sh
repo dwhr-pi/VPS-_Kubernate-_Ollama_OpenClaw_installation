@@ -66,6 +66,7 @@ sudo cloudflared service install
 
 echo -e "${YELLOW}Bitte melden Sie sich bei Cloudflare an und erstellen Sie einen Tunnel.${NC}"
 echo -e "${YELLOW}Der Token wird nur erfasst; die eigentlichen Tunnel-Befehle werden anschließend als manuelle Schritte ausgegeben, damit das Skript nicht blockiert.${NC}"
+echo -e "${YELLOW}Siehe dazu auch docs/CLOUDFLARE_TUNNEL_GUIDE.md für die Cloudflare-Seitenfolge bis zum Tunnel-Token.${NC}"
 read_from_tty "Cloudflare Tunnel Token: " CF_TUNNEL_TOKEN true
 
 if [ -n "$CF_TUNNEL_TOKEN" ]; then
