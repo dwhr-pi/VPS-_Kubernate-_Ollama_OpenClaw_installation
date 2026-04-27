@@ -1,0 +1,281 @@
+{
+  "generated_from": [
+    "readme.md",
+    "docs/setup_guide.md",
+    "docs/API_KEY_GUIDE.md",
+    "scripts/profiles/*.sh",
+    "scripts/tools/*.sh",
+    "scripts/base_install.sh",
+    "scripts/hybrid_setup.sh",
+    "scripts/install_local_only.sh",
+    "scripts/vps_standalone.sh"
+  ],
+  "assumptions": [
+    "docs/Profile/*.md existierten im ursprünglichen Repository nicht.",
+    "Profilinhalte wurden aus README, Guide und Profilskripten rekonstruiert.",
+    "Skriptwahrheit hat Vorrang vor allgemeinen Doku-Formulierungen."
+  ],
+  "profiles": [
+    {
+      "profile": "Programmierer",
+      "source": {
+        "docs_profile_md": false,
+        "readme_or_guide": true,
+        "scripts": true
+      },
+      "system": {
+        "packages": [
+          "git",
+          "nodejs>=22",
+          "pnpm",
+          "python3",
+          "python3-pip",
+          "build-essential",
+          "ruby-full",
+          "libmysqlclient-dev"
+        ],
+        "paths": [
+          "/opt/huginn",
+          "/opt/clawhub-cli",
+          "/usr/local/bin/clawhub"
+        ]
+      },
+      "ai_stack": {
+        "ollama_models": [],
+        "agents": [
+          "huginn"
+        ],
+        "cli": [
+          "clawhub"
+        ]
+      },
+      "services": [
+        "Huginn (manueller Rails-Start)"
+      ],
+      "network": {
+        "ports": [
+          3000
+        ],
+        "bindings": [
+          "nicht explizit festgelegt"
+        ]
+      },
+      "commands": [
+        "scripts/tools/huginn_install.sh",
+        "scripts/tools/clawhub_cli_install.sh",
+        "RAILS_ENV=production bundle exec rails server -p 3000"
+      ],
+      "inconsistencies": {
+        "missing_in_system": [
+          "kein dedizierter DeepSeek-Coder/Ollama-Pull",
+          "keine explizite Git-Integration als Profilschritt",
+          "kein docs/Profile/Programmierer.md im ursprünglichen Repo"
+        ],
+        "missing_in_docs": [
+          "CLI-Verlinkung nach /usr/local/bin/clawhub"
+        ]
+      }
+    },
+    {
+      "profile": "Media_Musik",
+      "source": {
+        "docs_profile_md": false,
+        "readme_or_guide": true,
+        "scripts": true
+      },
+      "system": {
+        "packages": [
+          "git",
+          "nodejs>=22",
+          "pnpm"
+        ],
+        "paths": [
+          "/opt/clawbake"
+        ]
+      },
+      "ai_stack": {
+        "ollama_models": [],
+        "agents": [
+          "clawbake"
+        ]
+      },
+      "services": [],
+      "network": {
+        "ports": [],
+        "bindings": []
+      },
+      "commands": [
+        "scripts/tools/clawbake_install.sh"
+      ],
+      "inconsistencies": {
+        "missing_in_system": [
+          "kein FFmpeg",
+          "keine Audio-AI-Tools",
+          "keine Video-Generatoren",
+          "keine Alexa-Integration aus dem Profil heraus",
+          "kein docs/Profile/Media_Musik.md im ursprünglichen Repo"
+        ],
+        "missing_in_docs": []
+      }
+    },
+    {
+      "profile": "KI_Forschung",
+      "source": {
+        "docs_profile_md": false,
+        "readme_or_guide": true,
+        "scripts": true
+      },
+      "system": {
+        "packages": [
+          "git",
+          "nodejs>=22",
+          "pnpm",
+          "python3",
+          "python3-pip",
+          "python3-venv"
+        ],
+        "paths": [
+          "/opt/openclaw-rl",
+          "/opt/flowise",
+          "/opt/langflow"
+        ]
+      },
+      "ai_stack": {
+        "ollama_models": [],
+        "agents": [
+          "openclaw-rl"
+        ],
+        "ui": [
+          "flowise",
+          "langflow"
+        ]
+      },
+      "services": [
+        "Flowise (manuell)",
+        "LangFlow (manuell)"
+      ],
+      "network": {
+        "ports": [
+          3000,
+          7860
+        ],
+        "bindings": [
+          "nicht explizit festgelegt"
+        ]
+      },
+      "commands": [
+        "scripts/tools/openclaw_rl_install.sh",
+        "scripts/tools/flowise_install.sh",
+        "scripts/tools/langflow_install.sh"
+      ],
+      "inconsistencies": {
+        "missing_in_system": [
+          "kein automatisches gemini-1.5-pro-Setup",
+          "keine zusätzlichen ML-Frameworks wie TensorFlow oder PyTorch",
+          "kein docs/Profile/KI_Forschung.md im ursprünglichen Repo"
+        ],
+        "missing_in_docs": [
+          "Flowise und LangFlow sind script-seitig deutlich konkreter als in der Doku"
+        ]
+      }
+    },
+    {
+      "profile": "Texter_Werbung_Marketing",
+      "source": {
+        "docs_profile_md": false,
+        "readme_or_guide": true,
+        "scripts": true
+      },
+      "system": {
+        "packages": [
+          "git",
+          "nodejs>=22",
+          "pnpm"
+        ],
+        "paths": [
+          "/opt/n8n",
+          "/opt/activepieces"
+        ]
+      },
+      "ai_stack": {
+        "ollama_models": [],
+        "agents": [],
+        "automation": [
+          "n8n",
+          "activepieces"
+        ]
+      },
+      "services": [
+        "n8n (manuell)",
+        "Activepieces (manuell)"
+      ],
+      "network": {
+        "ports": [
+          5678,
+          3000
+        ],
+        "bindings": [
+          "nicht explizit festgelegt"
+        ]
+      },
+      "commands": [
+        "scripts/tools/n8n_install.sh",
+        "scripts/tools/activepieces_install.sh"
+      ],
+      "inconsistencies": {
+        "missing_in_system": [
+          "keine SEO-Tools",
+          "kein Social-Media-Management",
+          "keine dedizierten Textmodelle",
+          "kein docs/Profile/Texter_Werbung_Marketing.md im ursprünglichen Repo"
+        ],
+        "missing_in_docs": []
+      }
+    },
+    {
+      "profile": "Rechtsberatung_Steuerrecht",
+      "source": {
+        "docs_profile_md": false,
+        "readme_or_guide": true,
+        "scripts": true
+      },
+      "system": {
+        "packages": [
+          "pup",
+          "jq",
+          "wget",
+          "curl",
+          "poppler-utils",
+          "tesseract-ocr"
+        ],
+        "paths": []
+      },
+      "ai_stack": {
+        "ollama_models": [],
+        "agents": [],
+        "document_tools": [
+          "Web fetch",
+          "PDF parsing",
+          "OCR"
+        ]
+      },
+      "services": [],
+      "network": {
+        "ports": [],
+        "bindings": []
+      },
+      "commands": [
+        "sudo apt-get install -y pup jq wget curl",
+        "sudo apt-get install -y poppler-utils tesseract-ocr"
+      ],
+      "inconsistencies": {
+        "missing_in_system": [
+          "Zotero wird nicht automatisch installiert",
+          "scripts/openclaw_skill_config.sh fehlt",
+          "kein docs/Profile/Rechtsberatung_Steuerrecht.md im ursprünglichen Repo"
+        ],
+        "missing_in_docs": []
+      }
+    }
+  ]
+}
