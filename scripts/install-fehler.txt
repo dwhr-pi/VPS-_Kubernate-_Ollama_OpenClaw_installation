@@ -4,7 +4,7 @@ k3s.io
 
 
 GB notwendig
-
+Installationstest auf Letsung MiniPC mit Windows 11 original. 
 
 Betriebssystem:  Downloadzeit:  Installationszeit:  
 Setup:  Downloadzeit:  Installationszeit:  

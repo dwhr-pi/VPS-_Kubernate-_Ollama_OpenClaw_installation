@@ -2,12 +2,13 @@
 
 ## Überblick
 
-Dieses Profil richtet sich an RL- und LLM-Experimentier-Workflows.
+Dieses Profil wurde aus der fachlichen Quelle [KI_Forschung.doc.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/Profil/KI_Forschung.doc.md:1), `readme.md`, `docs/setup_guide.md` und `scripts/profiles/KI_Forschung_install.sh` zusammengeführt.
+Es beschreibt ein OpenClaw- und Ollama-kompatibles Forschungsprofil für Recherche, Paper-Analyse, Hypothesenbildung, RAG und experimentelle Agenten-Workflows.
 
 ## Installierter Stack
 
 - Basis: `git`, `nodejs>=22`, `pnpm`, `python3`, `python3-pip`, `python3-venv`
-- Profil-Tooling:
+- Bereits als einzelne Tools installierbar:
   - OpenClaw RL unter `/opt/openclaw-rl`
   - Flowise unter `/opt/flowise`
   - LangFlow unter `/opt/langflow`
@@ -16,11 +17,29 @@ Dieses Profil richtet sich an RL- und LLM-Experimentier-Workflows.
   - MLflow unter `/opt/mlflow`
   - Whisper unter `/opt/whisper`
 
+## Dokumentierte zusätzliche Tools
+
+Diese Bausteine sind in der Quelldatei enthalten, aber noch nicht vollständig als einzelne Installskripte umgesetzt:
+
+- Chroma
+- Weaviate
+- CrewAI
+- AutoGPT
+- Weights & Biases
+- vLLM
+- llama.cpp
+- Stable Diffusion
+- Ray
+- EnviroLLM
+
 ## Verantwortlichkeiten
 
-- Reinforcement-Learning-Experimente
-- visuelle LLM-Workflow-Erstellung
-- OpenClaw-nahe Forschung und Prototyping
+- Deep Research und Themenanalyse
+- Paper-Review und Reproduzierbarkeitsprüfung
+- Hypothesen- und Ideenfindung
+- Modell- und Methodenvergleich
+- RAG-gestützte Wissensextraktion
+- Forschungsnahe Multi-Agent-Workflows
 
 ## Verfügbare Kommandos
 
@@ -34,9 +53,9 @@ scripts/tools/mlflow_install.sh
 scripts/tools/whisper_install.sh
 ```
 
-## Beispielprompts
+## Vollständige Prompt-Liste
 
-### Deep Research
+### Deep Research Prompts
 
 ```txt
 SYSTEM:
@@ -46,49 +65,117 @@ USER:
 Analysiere das Thema: {THEMA}
 
 Aufgaben:
-1. Aktueller Stand der Forschung
-2. Key Papers und Durchbrüche
+1. Aktueller Stand der Forschung (2024–2026)
+2. Key Papers & Durchbrüche
 3. Offene Probleme
-4. Zukunftstrends
-5. Eigene Hypothesen
+4. Zukunftstrends (3–5 Jahre)
+5. Eigene Hypothesen / Ideen
 ```
 
 ### Paper-Analyse
 
 ```txt
 Analysiere dieses Paper:
+
 - Kurz-Zusammenfassung
 - Methodik
-- Stärken und Schwächen
+- Stärken / Schwächen
 - Reproduzierbarkeit
 - Neuheit
 ```
 
+### Hypothesen Generator
+
+```txt
+Generiere 10 Forschungs-Hypothesen zu: {THEMA}
+```
+
+### Self Improving Agent
+
+```txt
+Analysiere → löse → kritisiere → verbessere (3 Iterationen)
+```
+
+### Multi Agent Debate
+
+```txt
+Simuliere:
+- Researcher
+- Engineer
+- Reviewer
+
+Diskutiere: {THEMA}
+```
+
+### Vergleich Prompt
+
+```txt
+Vergleiche Modelle nach:
+- Reasoning
+- Speed
+- Memory
+- Kosten
+```
+
+### RAG Knowledge Extraction
+
+```txt
+Extrahiere Key Insights + Knowledge Graph Struktur
+```
+
+## Beispiel-Nutzung im OpenClaw-Setup
+
+### Themen-Recherche mit RAG
+
+```txt
+Nutze den Deep Research Prompt. Analysiere das Thema: lokales Multi-Agent-Routing mit Ollama und OpenClaw.
+Liefere Forschungsstand, zentrale Papers, offene Probleme, Zukunftstrends und eigene Hypothesen.
+Nutze vorhandene Dokumente und Webdaten strukturiert.
+```
+
+### Paper-Review
+
+```txt
+Nutze den Paper-Analyse Prompt. Analysiere dieses Paper auf Kurz-Zusammenfassung, Methodik,
+Stärken, Schwächen, Reproduzierbarkeit und Neuheit. Gib am Ende eine Einschätzung,
+ob das Paper für mein OpenClaw-Forschungssetup praktisch relevant ist.
+```
+
+### Modellvergleich
+
+```txt
+Nutze den Vergleich Prompt. Vergleiche meine verfügbaren Modelle nach Reasoning, Speed,
+Memory und Kosten und gib eine Empfehlung für Research, Coding und Agentensteuerung.
+```
+
 ## OpenClaw / Ollama Fit
 
-- OpenClaw eignet sich hier als Orchestrator zwischen Research-Agent, Critic-Agent und Retrieval-Layer.
-- Die neuen Tools stärken vor allem RAG, Experiment-Tracking und Audio-/Speech-Auswertung.
+- Dieses Profil passt gut zu OpenClaw als Forschungs-Orchestrator und Ollama als lokaler Modellschicht.
+- `LangChain` und `LlamaIndex` sind die wichtigsten aktuell installierbaren RAG-Bausteine.
+- `Flowise` und `LangFlow` unterstützen visuelle Forschungs- und Agentenflüsse.
+- `MLflow` und `Whisper` ergänzen Experiment-Tracking und Sprachverarbeitung.
+- Für das Zielbild aus der Quelldatei fehlen noch mehrere skalierende und multimodale Module.
 
 ## Vergleich
 
 ### ✅ In Sync
 
-- OpenClaw RL ist sauber im Profil verankert.
-- Flowise und LangFlow sind sowohl in Doku als auch im Profilskript vorgesehen.
-- LangChain, LlamaIndex, MLflow und Whisper sind jetzt als installierbare Ergänzungen vorhanden.
+- `OpenClaw RL`, `Flowise` und `LangFlow` sind eingebunden.
+- `LangChain`, `LlamaIndex`, `MLflow` und `Whisper` sind als einzelne Tools vorhanden.
+- Die RAG- und Forschungsgrundlage aus der Quelldatei ist damit teilweise praktisch nutzbar.
 
 ### ⚠ Missing in Setup
 
-- Kein automatisches `gemini-1.5-pro`-Setup
-- Keine breitere ML-Bibliotheksauswahl wie TensorFlow oder PyTorch
-- vLLM, Ray, Stable Diffusion und EnviroLLM aus der Quelldatei sind noch nicht als Tool-Skripte umgesetzt.
+- `Chroma` und `Weaviate` sind dokumentiert, aber in diesem Profil nicht beide als Forschungsoption umgesetzt.
+- `CrewAI`, `AutoGPT`, `Weights & Biases`, `vLLM`, `llama.cpp`, `Stable Diffusion`, `Ray` und `EnviroLLM` fehlen noch als installierbare Module.
+- Forschungsmodelle wie `gemini-1.5-pro` oder andere externe Spezialmodelle werden nicht automatisch provisioniert.
 
 ### ❌ Missing in Docs
 
-- Keine dedizierte Profil-Datei im ursprünglichen Repo
+- Die visuelle Abgrenzung zwischen Forschungsprofil und allgemeinem Tool-Menü ist in der Hauptdoku noch schwach.
 
 ## Hinweise
 
-- Flowise nutzt standardmäßig Port `3000`.
-- LangFlow nutzt standardmäßig Port `7860`.
-- Port-3000-Kollisionen mit OpenClaw, Huginn, Activepieces und Zenbot sind wahrscheinlich.
+- `Flowise` und `LangFlow` werden nicht vollständig als dauerhafte Services provisioniert.
+- Portkonflikte mit `3000` und `7860` bleiben relevant.
+- Für ernsthafte Forschungs-Pipelines fehlen noch mehrere in der Quelldatei genannte Skalierungs- und Tracking-Bausteine.
