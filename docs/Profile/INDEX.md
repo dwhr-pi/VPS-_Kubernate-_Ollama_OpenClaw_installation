@@ -17,6 +17,25 @@ Die Inhalte in diesem Verzeichnis wurden daher aus folgenden Quellen zusammengef
 - `scripts/vps_standalone.sh`
 - `docs/Profil/*.doc.md`
 
+## Profilquellen und abgeleitete Dateien
+
+Die fünf fachlichen Quelldateien unter [docs/Profil](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/Profil:1) sind lokal vorhanden und in die abgeleiteten Profilseiten übernommen:
+
+| Quelle in `docs/Profil` | Abgeleitete Datei in `docs/Profile` |
+|---|---|
+| `Programmierer.doc.md` | `Programmierer.md` |
+| `Media_Musik.doc.md` | `Media_Musik.md` |
+| `KI_Forschung.doc.md` | `KI_Forschung.md` |
+| `Texter_Werbung_Marketing.doc.md` | `Texter_Werbung_Marketing.md` |
+| `Rechtsberatung_Steuerrecht.doc.md` | `Rechtsberatung_Steuerrecht.md` |
+| `Agent_Orchestrator.doc.md` | `Agent_Orchestrator.md` |
+| `Audio.doc.md` | `Audio.md` |
+| `Content_Automation.doc.md` | `Content_Automation.md` |
+| `Research_Agent.doc.md` | `Research_Agent.md` |
+| `Security_Analyst.doc.md` | `Security_Analyst.md` |
+| `Trading_AI.doc.md` | `Trading_AI.md` |
+| `Visual_Creator.doc.md` | `Visual_Creator.md` |
+
 ## Profile im Überblick
 
 ### Programmierer

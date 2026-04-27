@@ -23,9 +23,35 @@ cd ~/openclaw_ultimate_setup
 bash ./setup_ultimate.sh
 ```
 
+## 🔁 Setup aktualisieren oder lokal entfernen
+
+Wenn es Änderungen im Repository gab und du dein bestehendes Setup aktualisieren möchtest, ziehe zuerst den aktuellen Stand und starte danach das Menü erneut:
+
+```bash
+cd ~/openclaw_ultimate_setup
+git pull --ff-only
+bash ./setup_ultimate.sh
+```
+
+Wenn du das lokale Setup wieder entfernen möchtest, hast du zwei saubere Wege:
+
+1. Zuerst im Menü `Tools: Installieren & Deinstallieren` und `Profile: Installieren & Deinstallieren` alle gewünschten Komponenten wieder abwählen.
+2. Danach das lokale Arbeitsverzeichnis entfernen:
+
+```bash
+rm -rf ~/openclaw_ultimate_setup
+```
+
+Wenn du zusätzlich lokal installierte Komponenten wie `Home Assistant`, `Ollama` oder einzelne Tools vollständig entfernen willst, nutze die jeweiligen `*_uninstall.sh` Skripte im Menü oder direkt unter `scripts/tools/`.
+
 ## 📖 Dokumentation
 
 Eine detaillierte Anleitung zur Konfiguration, API-Keys, Port-Analyse und den verschiedenen Setup-Optionen findest du in der `docs/API_KEY_GUIDE.md`, `docs/setup_guide.md` und `docs/DNS_DDoS_GUIDE.md` innerhalb dieses Repositorys.
+
+Zusätzlich gibt es zwei Profil-Verzeichnisse:
+
+*   `docs/Profil/` enthält die fachlichen Quelltexte und Prompt-Sammlungen je Profil.
+*   `docs/Profile/` enthält die daraus abgeleiteten, repo-spezifischen Profilseiten mit tatsächlichem Setup-Stand, installierbaren Tools und OpenClaw-/Ollama-Fit.
 
 ## 🛠️ Enthaltene Komponenten & Tools
 
@@ -140,7 +166,23 @@ Das Setup unterstützt die Installation und Deinstallation verschiedener Profile
 │   ├── API_KEY_GUIDE.md        # Detaillierte Anleitung für API-Keys, Ports und Fallback-Routing
 │   ├── setup_guide.md          # Umfassende Dokumentation des gesamten Setups
 │   ├── PRIVATE_REPO_GUIDE.md   # Anleitung für die Installation aus einem privaten Repository
-│   └── DNS_DDoS_GUIDE.md       # Anleitung zur DNS-Umstellung und DDoS-Schutz
+│   ├── DNS_DDoS_GUIDE.md       # Anleitung zur DNS-Umstellung und DDoS-Schutz
+│   ├── Profil/                 # Fachliche Profilquellen und Prompt-Sammlungen je Themenprofil
+│   │   ├── Programmierer.doc.md
+│   │   ├── Media_Musik.doc.md
+│   │   ├── KI_Forschung.doc.md
+│   │   ├── Texter_Werbung_Marketing.doc.md
+│   │   └── Rechtsberatung_Steuerrecht.doc.md
+│   └── Profile/                # Abgeleitete Profilseiten mit tatsächlichem Setup-Stand
+│       ├── INDEX.md
+│       ├── INCONSISTENCY_REPORT.md
+│       ├── INSTALL_CHECKLIST.md
+│       ├── profiles.json
+│       ├── Programmierer.md
+│       ├── Media_Musik.md
+│       ├── KI_Forschung.md
+│       ├── Texter_Werbung_Marketing.md
+│       └── Rechtsberatung_Steuerrecht.md
 └── installed_profiles.txt      # Liste der aktuell installierten Profile
 └── installed_tools.txt         # Liste der aktuell installierten Tools
 ```
