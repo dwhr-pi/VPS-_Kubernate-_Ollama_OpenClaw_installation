@@ -1,3 +1,33 @@
 für programmierersetup 
 
 k3s.io
+
+
+GB notwendig
+
+
+Betriebssystem:  Downloadzeit:  Installationszeit:  
+Setup:  Downloadzeit:  Installationszeit:  
+
+Updates für ubuntu-24.04 lts zur Zeit:   Downloadzeit:  Installationszeit:  
+
+
+Fehler: 
+. prepare$ command -v git >/dev/null 2>&1 && git rev-parse --is-inside-work-tree >/dev/null 2>&1 && git config core.h…
+└─ Done in 71ms
+╭ Warning ───────────────────────────────────────────────────────────────────────────────────╮
+│                                                                                            │
+│   Ignored build scripts: @discordjs/opus@0.10.0.                                           │
+│   Run "pnpm approve-builds" to pick which dependencies should be allowed to run scripts.   │
+│                                                                                            │
+╰────────────────────────────────────────────────────────────────────────────────────────────╯
+Done in 3m 32.9s using pnpm v10.33.0
+033[0Baue OpenClaw mit pnpm...033[0m
+
+> openclaw@2026.4.26 build /opt/openclaw
+> node scripts/build-all.mjs
+
+[build-all] canvas:a2ui:bundle
+
+> openclaw@2026.4.26 canvas:a2ui:bundle /opt/openclaw
+
