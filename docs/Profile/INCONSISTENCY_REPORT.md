@@ -10,55 +10,55 @@
 ### Programmierer
 - DeepSeek-Coder oder ein anderes Coding-Modell für Ollama wird erwähnt, aber nicht automatisch installiert.
 - Git-Integration wird dokumentiert, aber nicht als eigenständiges Profil-Setup umgesetzt.
-- Observability-, Secrets- und Queue-Bausteine wie Prometheus, Grafana, Loki, OpenTelemetry, Vault, Redis, RabbitMQ oder NATS sind in `docs/Profil/Programmierer.doc.md` beschrieben, aber noch nicht als eigene Tools im Setup vorhanden.
+- Observability-, Secrets- und Queue-Bausteine wie Prometheus, Grafana, Loki, OpenTelemetry, Vault, Redis, RabbitMQ oder NATS sind jetzt als eigene Tools im Setup vorhanden.
 
 ### Media_Musik
 - Audio-Verarbeitung, Video-Generierung und Alexa-Bezug werden dokumentiert.
 - Das Profilskript installiert jetzt `Clawbake`, `FFmpeg`, `librosa`, `pydub`, `Demucs` und `Whisper`.
-- MusicGen, Riffusion, Stable Diffusion, ControlNet und echte Video-Generatoren fehlen weiterhin.
+- MusicGen, Riffusion, Stable Diffusion und ControlNet sind jetzt als Setup-Module vorhanden; echte externe Video-Generatoren bleiben weiterhin credential- und dienstabhängig.
 
 ### Audio
 - Die dokumentierten Kernwerkzeuge `Whisper`, `ffmpeg`, `Piper` und `Coqui TTS` sind jetzt als installierbare Bausteine vorhanden.
-- Es fehlt weiterhin ein vollständig vorkonfigurierter Voice-Assistant-Laufzeitstack.
+- Das zusätzliche Laufzeitmodul `Voice_Assistant_Runtime` ist jetzt vorhanden; offen bleibt nur Feintuning für ein produktives End-to-End-Voice-Setup.
 
 ### KI_Forschung
 - Erweiterte LLM-Modelle wie `gemini-1.5-pro` werden dokumentiert.
 - Das Profilskript installiert jetzt `OpenClaw RL`, `Flowise`, `LangFlow`, `LangChain`, `LlamaIndex`, `MLflow` und `Whisper`.
-- Ray, vLLM, Stable Diffusion und EnviroLLM fehlen weiterhin.
+- Ray, vLLM, Stable Diffusion und EnviroLLM sind jetzt als Setup-Module oder Tool-Äquivalente vorhanden.
 
 ### Agent_Orchestrator
 - Queue-/Event-Bus-, Memory- und Observability-Bausteine sind jetzt als installierbare Module vorhanden: `Redis`, `NATS`, `Qdrant`, `Weaviate`, `Prometheus`, `Grafana`, `Loki`.
-- Es fehlt weiterhin ein dediziertes Laufzeitmodul mit Policies für Retry, Routing und Konfliktauflösung.
+- Dedizierte Laufzeitmodule für Routing und Memory-Policies sind jetzt vorhanden; offen bleibt produktives Policy-Feintuning.
 
 ### Research_Agent
 - Trend-Monitoring ist jetzt als installierbares Modul vorhanden.
-- Es fehlt weiterhin eine vollständig vorkonfigurierte Repo-Vergleichs- und Monitoring-Pipeline.
+- Eigene Module für GitHub-Research und Repo-Vergleich sind jetzt vorhanden; offen bleibt ein stärker vorkonfigurierter Monitoring-Standard.
 
 ### Texter_Werbung_Marketing
 - SEO, Social Media und spezialisierte Textproduktion werden dokumentiert.
 - Das Profilskript installiert jetzt `n8n`, `Activepieces`, `LangChain`, `ChromaDB` und `Playwright`.
-- API-Integrationen wie Google Analytics, Meta Ads, TikTok Ads, HubSpot, Notion, Airtable, Buffer, Zapier, Make, Ahrefs, SEMrush und ElevenLabs fehlen weiterhin.
+- API-Integrationen wie Google Analytics, Meta Ads, TikTok Ads, HubSpot, Notion, Airtable, Buffer, Zapier, Make, Ahrefs, SEMrush und ElevenLabs sind jetzt als Connector-Module im Setup vorhanden.
 
 ### Content_Automation
 - `Piper`, `Coqui_TTS`, `YT_DLP`, `Stable_Diffusion_WebUI` und `Trend_Monitor` sind jetzt als installierbare Module vorhanden.
-- Es fehlt weiterhin eine vollständig vorkonfigurierte End-to-End-Laufzeitpipeline inklusive Upload-Automation.
+- Thumbnail- und Upload-Module sind jetzt vorhanden; offen bleibt nur eine vollständig produktionsfertige End-to-End-Verdrahtung mit echten Zielplattform-Credentials.
 
 ### Rechtsberatung_Steuerrecht
 - Zotero ist dokumentiert.
-- Das Profilskript installiert jetzt Zotero, `LangChain`, `LlamaIndex` und `ChromaDB`, referenziert aber weiterhin ein fehlendes Skill-Skript.
-- Neo4j, EULLM, ALIENTELLIGENCE, Fristen-Checker und Risiko-Scoring sind dokumentiert, aber noch nicht als Tools umgesetzt.
+- Das Profilskript referenziert jetzt ein vorhandenes Skill-Skript.
+- Neo4j, EULLM, AI Powered Law Firms, Fristen-Checker und Risiko-Scoring sind jetzt als Tools oder Module umgesetzt.
 
 ### Security_Analyst
 - `nmap`, `nikto`, `trivy` und `Fail2Ban` sind jetzt als installierbare Module vorhanden.
-- Es fehlt weiterhin eine vollwertige Pentest- oder Compliance-Workflow-Kette.
+- Zusätzliche Workflow-Module für Fail2Ban-Analyse und Security-Workflows sind jetzt vorhanden; offen bleibt nur tieferes Compliance-Feintuning.
 
 ### Trading_AI
 - `Web3_APIs` und `Exchange_APIs` sind jetzt als installierbare Module vorhanden.
-- Es fehlt weiterhin ein dediziertes Backtest- oder Risikomodul.
+- Dedizierte Module für Zenbot-Integration, Risiko-/Strategieanalyse und Backtests sind jetzt vorhanden.
 
 ### Visual_Creator
 - `stable-diffusion-webui`, `comfyui` und `RealESRGAN` sind jetzt als installierbare Module vorhanden.
-- Es fehlt weiterhin eine vollständig vorkonfigurierte lokale Bild-/Video-Laufzeitpipeline.
+- Zusätzliche Module für AnimateDiff, SVD, Runway-Connector und Upscaler-Pipeline sind jetzt vorhanden; offen bleibt nur produktives Pipeline-Feintuning.
 
 ## Im Setup vorhanden, aber schwach oder gar nicht dokumentiert
 
@@ -81,7 +81,7 @@
 ## Fehlende Dateien oder Referenzen
 
 - `docs/Profile/` fehlte ursprünglich.
-- `scripts/openclaw_skill_config.sh` wird im Profil `Rechtsberatung_Steuerrecht` referenziert, existiert aber nicht.
+- `scripts/openclaw_skill_config.sh` ist jetzt vorhanden und wird im Rechtsprofil direkt verwendet.
 
 ## Sicherheitsrelevante Abweichungen
 

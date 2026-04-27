@@ -37,7 +37,7 @@ else
     echo -e "${YELLOW}Activepieces Installationsskript nicht gefunden. Überspringe Activepieces Installation.${NC}"
 fi
 
-for tool_script in langchain_install.sh chromadb_install.sh playwright_install.sh; do
+for tool_script in langchain_install.sh chromadb_install.sh playwright_install.sh browser_tool_install.sh firecrawl_install.sh google_analytics_api_install.sh meta_ads_api_install.sh tiktok_ads_api_install.sh weaviate_install.sh qdrant_install.sh stable_diffusion_webui_install.sh file_system_tool_install.sh hubspot_install.sh notion_install.sh airtable_install.sh buffer_api_install.sh zapier_install.sh make_automation_install.sh ahrefs_install.sh semrush_install.sh elevenlabs_install.sh; do
     if [ -f "$INSTALL_DIR/scripts/tools/$tool_script" ]; then
         echo -e "${BLUE}Installiere ${tool_script%.sh} als Teil des Texter, Werbung & Marketing Profils...${NC}"
         bash "$INSTALL_DIR/scripts/tools/$tool_script"
@@ -48,4 +48,3 @@ done
 
 echo -e "${GREEN}Texter, Werbung & Marketing Profil Installation abgeschlossen.${NC}"
 mark_current_profile_installed
-

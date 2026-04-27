@@ -17,26 +17,26 @@ Es beschreibt ein OpenClaw- und Ollama-kompatibles Marketingprofil für Conversi
 
 ## Dokumentierte zusätzliche Tools
 
-Diese Bausteine sind in der Quelldatei enthalten, aber noch nicht vollständig als einzelne Installskripte umgesetzt:
+Die zuvor zusätzlich dokumentierten Marketing-Bausteine sind jetzt als Setup-Module oder vorhandene Tool-Äquivalente abbildbar:
 
-- Web Browser Tool
-- Firecrawl oder vergleichbarer Scraper
-- Google Analytics API
-- Meta Ads API
-- TikTok Ads API
-- Weaviate
-- Qdrant
-- Stable Diffusion
-- File System Tool
-- HubSpot
-- Notion
-- Airtable
-- Buffer API
-- Zapier
-- Make
-- Ahrefs
-- SEMrush
-- ElevenLabs
+- `Browser_Tool`
+- `Firecrawl`
+- `Google_Analytics_API`
+- `Meta_Ads_API`
+- `TikTok_Ads_API`
+- `Weaviate`
+- `Qdrant`
+- `Stable_Diffusion_WebUI`
+- `File_System_Tool`
+- `HubSpot`
+- `Notion`
+- `Airtable`
+- `Buffer_API`
+- `Zapier`
+- `Make`
+- `Ahrefs`
+- `SEMrush`
+- `ElevenLabs`
 
 ## Verantwortlichkeiten
 
@@ -268,9 +268,8 @@ und gib mir Tonalität, Sprachstil, No-Go-Wörter und Beispieltexte.
 
 ### ⚠ Missing in Setup
 
-- API-Integrationen für `Google Analytics`, `Meta Ads`, `TikTok Ads`, `HubSpot`, `Notion`, `Airtable`, `Buffer`, `Zapier`, `Make`, `Ahrefs`, `SEMrush` und `ElevenLabs` fehlen noch als installierbare Module.
-- `Weaviate`, `Qdrant` und `Stable Diffusion` sind nur dokumentiert.
-- Der dokumentierte Web-/Scraper-Stack ist noch nicht als eigene Toolkette umgesetzt.
+- Die zuvor fehlenden Marketing-Connectoren, Vektorspeicher und Kreativbausteine sind jetzt im Setup vorhanden.
+- Für externe Plattformen müssen weiterhin echte API-Keys und Kontozugänge hinterlegt werden.
 
 ### ❌ Missing in Docs
 

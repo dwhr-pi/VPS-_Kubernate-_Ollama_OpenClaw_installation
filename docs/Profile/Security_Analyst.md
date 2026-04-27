@@ -19,9 +19,10 @@ Es beschreibt ein OpenClaw- und Ollama-kompatibles Sicherheitsprofil für Exposu
 
 ## Dokumentierte zusätzliche Tools
 
-Diese Bausteine sind in der Quelldatei enthalten, aber noch nicht vollständig als einzelne Installskripte umgesetzt:
+Die zuvor zusätzlich beschriebenen Security-Bausteine sind jetzt als Setup-Module vorhanden:
 
-- tieferes `fail2ban`-Logmodul als eigene Analysepipeline
+- `Fail2Ban_Analyzer`
+- `Security_Workflow`
 
 ## Verantwortlichkeiten
 
@@ -72,7 +73,7 @@ Schlage konkrete Maßnahmen für Firewall, Secret-Handling, Dienste und Laufzeit
 
 ### ⚠ Missing in Setup
 
-- Ein dediziertes Security-Workflow-Skript gibt es noch nicht.
+- Die zuvor fehlenden Security-Workflow-Bausteine sind jetzt im Setup vorhanden.
 
 ### ❌ Missing in Docs
 

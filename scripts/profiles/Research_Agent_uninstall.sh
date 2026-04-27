@@ -14,7 +14,7 @@ init_profile_tracking "Research_Agent"
 
 echo -e "${BLUE}Starte Deinstallation des Research_Agent-Profils...${NC}"
 
-for tool_script in trend_monitor_uninstall.sh weaviate_uninstall.sh qdrant_uninstall.sh chromadb_uninstall.sh llamaindex_uninstall.sh langchain_uninstall.sh playwright_uninstall.sh; do
+for tool_script in repo_comparison_uninstall.sh github_research_uninstall.sh trend_monitor_uninstall.sh weaviate_uninstall.sh qdrant_uninstall.sh chromadb_uninstall.sh llamaindex_uninstall.sh langchain_uninstall.sh playwright_uninstall.sh; do
     if [ -f "$INSTALL_DIR/scripts/tools/$tool_script" ]; then
         echo -e "${BLUE}Deinstalliere ${tool_script%.sh} als Teil des Research_Agent-Profils...${NC}"
         bash "$INSTALL_DIR/scripts/tools/$tool_script"

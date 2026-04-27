@@ -19,18 +19,18 @@ Es beschreibt ein OpenClaw- und Ollama-kompatibles Forschungsprofil für Recherc
 
 ## Dokumentierte zusätzliche Tools
 
-Diese Bausteine sind in der Quelldatei enthalten, aber noch nicht vollständig als einzelne Installskripte umgesetzt:
+Die zuvor zusätzlich dokumentierten Forschungsbausteine sind jetzt als Setup-Module oder vorhandene Tool-Äquivalente abbildbar:
 
-- Chroma
-- Weaviate
-- CrewAI
-- AutoGPT
-- Weights & Biases
-- vLLM
-- llama.cpp
-- Stable Diffusion
-- Ray
-- EnviroLLM
+- `ChromaDB` als lokale Chroma-Entsprechung
+- `Weaviate`
+- `CrewAI`
+- `AutoGPT`
+- `Weights_and_Biases`
+- `vLLM`
+- `Llama_CPP`
+- `Stable_Diffusion_WebUI`
+- `Ray`
+- `EnviroLLM`
 
 ## Verantwortlichkeiten
 
@@ -166,9 +166,8 @@ Memory und Kosten und gib eine Empfehlung für Research, Coding und Agentensteue
 
 ### ⚠ Missing in Setup
 
-- `Chroma` und `Weaviate` sind dokumentiert, aber in diesem Profil nicht beide als Forschungsoption umgesetzt.
-- `CrewAI`, `AutoGPT`, `Weights & Biases`, `vLLM`, `llama.cpp`, `Stable Diffusion`, `Ray` und `EnviroLLM` fehlen noch als installierbare Module.
-- Forschungsmodelle wie `gemini-1.5-pro` oder andere externe Spezialmodelle werden nicht automatisch provisioniert.
+- Die zuvor fehlenden Forschungsbausteine sind jetzt im Setup als Module oder Profilbestandteile vorhanden.
+- Externe Spezialmodelle und proprietäre Forschungszugänge müssen weiterhin manuell mit ihren eigenen Credentials angebunden werden.
 
 ### ❌ Missing in Docs
 

@@ -19,10 +19,10 @@ Es beschreibt ein OpenClaw- und Ollama-kompatibles Rechercheprofil für GitHub-A
 
 ## Dokumentierte zusätzliche Tools
 
-Diese Bausteine sind in der Quelldatei enthalten oder logisch direkt damit verwandt, aber noch nicht vollständig als einzelne Installskripte umgesetzt:
+Die zuvor zusätzlich beschriebenen Research-Bausteine sind jetzt als eigene Setup-Module vorhanden:
 
-- dedizierte GitHub-Analyse als eigenes Profil-Tool
-- automatisierte Repo-Vergleichspipelines
+- `GitHub_Research`
+- `Repo_Comparison`
 
 ## Verantwortlichkeiten
 
@@ -77,8 +77,8 @@ Begründe Nutzen, Integrationsaufwand und welches Profil am meisten davon profit
 
 ### ⚠ Missing in Setup
 
-- Es gibt noch kein eigenes Laufzeitmodul nur für `Research_Agent`.
-- Es fehlt noch eine vollständig vorkonfigurierte Repo-Vergleichs- und Monitoring-Pipeline.
+- Die zuvor fehlenden Research-Bausteine sind jetzt im Setup vorhanden.
+- Offen bleibt nur ein stärker vorkonfigurierter Monitoring-Standard für konkrete Ziel-Repositories.
 
 ### ❌ Missing in Docs
 

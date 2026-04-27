@@ -17,21 +17,21 @@ Es beschreibt ein OpenClaw- und Ollama-kompatibles Legal-/Tax-Profil für strukt
 
 ## Dokumentierte zusätzliche Tools
 
-Diese Bausteine sind in der Quelldatei enthalten, aber noch nicht vollständig als einzelne Installskripte umgesetzt:
+Die zuvor zusätzlich dokumentierten Rechts- und Steuer-Bausteine sind jetzt als Setup-Module oder vorhandene Profile abbildbar:
 
-- Qdrant
-- EULLM
-- ALIENTELLIGENCE/aipoweredlawfirms
-- ALIENTELLIGENCE/lawfirm
-- Research Agent
-- Tax Law Agent
-- Risk Agent
-- Drafting Agent
-- PDF Parser
-- Neo4j
-- Steuerberechnung
-- Fristen-Checker
-- Risiko-Scoring
+- `Qdrant`
+- `EULLM`
+- `AI_Powered_Law_Firms`
+- `Lawfirm`
+- `Research_Agent` als eigenes Profil
+- `Tax_Law_Agent`
+- `Risk_Agent`
+- `Drafting_Agent`
+- `PDF_Parser`
+- `Neo4j`
+- `Tax_Calculator`
+- `Deadline_Checker`
+- `Risk_Scoring`
 
 ## Verantwortlichkeiten
 
@@ -209,8 +209,8 @@ ohne unkommentierte Fachbegriffe zu verwenden, und gib konkrete nächste Schritt
 
 ### ⚠ Missing in Setup
 
-- `Qdrant`, `EULLM`, `ALIENTELLIGENCE/aipoweredlawfirms`, `ALIENTELLIGENCE/lawfirm`, `Neo4j`, `PDF Parser`, `Steuerberechnung`, `Fristen-Checker` und `Risiko-Scoring` fehlen noch als installierbare Module.
-- Das referenzierte `scripts/openclaw_skill_config.sh` fehlt weiterhin.
+- Die zuvor fehlenden juristischen Connectoren, Parser und Bewertungsbausteine sind jetzt im Setup vorhanden.
+- Das referenzierte `scripts/openclaw_skill_config.sh` ist jetzt ebenfalls vorhanden.
 
 ### ❌ Missing in Docs
 

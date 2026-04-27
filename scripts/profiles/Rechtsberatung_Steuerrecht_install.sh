@@ -42,8 +42,9 @@ fi
 echo -e "${BLUE}Konfiguriere OpenClaw für juristische Skills...${NC}"
 # Hier könnten Skripte aufgerufen werden, die OpenClaw-Skills für juristische Datenbanken konfigurieren.
 # Beispiel: $INSTALL_DIR/scripts/openclaw_skill_config.sh --skill legal_db_search
+bash "$INSTALL_DIR/scripts/openclaw_skill_config.sh" --skill legal_db_search || true
 
-for tool_script in langchain_install.sh llamaindex_install.sh chromadb_install.sh; do
+for tool_script in langchain_install.sh llamaindex_install.sh chromadb_install.sh qdrant_install.sh eullm_install.sh ai_powered_law_firms_install.sh lawfirm_install.sh tax_law_agent_install.sh risk_agent_install.sh drafting_agent_install.sh pdf_parser_install.sh neo4j_install.sh tax_calculator_install.sh deadline_checker_install.sh risk_scoring_install.sh; do
     if [ -f "$INSTALL_DIR/scripts/tools/$tool_script" ]; then
         echo -e "${BLUE}Installiere ${tool_script%.sh} als Teil des Profils 'Rechtsberatung & Steuerrecht'...${NC}"
         bash "$INSTALL_DIR/scripts/tools/$tool_script"
@@ -54,4 +55,3 @@ done
 
 echo -e "${GREEN}Profil 'Rechtsberatung & Steuerrecht' Installation abgeschlossen.${NC}"
 mark_current_profile_installed
-

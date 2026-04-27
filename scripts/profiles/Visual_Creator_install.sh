@@ -14,7 +14,7 @@ init_profile_tracking "Visual_Creator"
 
 echo -e "${BLUE}Starte Installation des Visual_Creator-Profils...${NC}"
 
-for tool_script in ffmpeg_install.sh stable_diffusion_webui_install.sh comfyui_install.sh realesrgan_install.sh; do
+for tool_script in ffmpeg_install.sh stable_diffusion_webui_install.sh comfyui_install.sh realesrgan_install.sh animatediff_install.sh svd_install.sh runway_api_install.sh image_upscaler_pipeline_install.sh; do
     if [ -f "$INSTALL_DIR/scripts/tools/$tool_script" ]; then
         echo -e "${BLUE}Installiere ${tool_script%.sh} als Teil des Visual_Creator-Profils...${NC}"
         bash "$INSTALL_DIR/scripts/tools/$tool_script"

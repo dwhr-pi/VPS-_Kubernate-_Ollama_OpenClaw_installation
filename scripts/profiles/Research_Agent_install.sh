@@ -14,7 +14,7 @@ init_profile_tracking "Research_Agent"
 
 echo -e "${BLUE}Starte Installation des Research_Agent-Profils...${NC}"
 
-for tool_script in playwright_install.sh langchain_install.sh llamaindex_install.sh chromadb_install.sh qdrant_install.sh weaviate_install.sh trend_monitor_install.sh; do
+for tool_script in playwright_install.sh langchain_install.sh llamaindex_install.sh chromadb_install.sh qdrant_install.sh weaviate_install.sh trend_monitor_install.sh github_research_install.sh repo_comparison_install.sh; do
     if [ -f "$INSTALL_DIR/scripts/tools/$tool_script" ]; then
         echo -e "${BLUE}Installiere ${tool_script%.sh} als Teil des Research_Agent-Profils...${NC}"
         bash "$INSTALL_DIR/scripts/tools/$tool_script"

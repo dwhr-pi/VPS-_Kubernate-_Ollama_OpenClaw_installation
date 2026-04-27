@@ -14,7 +14,7 @@ init_profile_tracking "Trading_AI"
 
 echo -e "${BLUE}Starte Installation des Trading_AI-Profils...${NC}"
 
-for tool_script in zenbot_trader_install.sh web3_apis_install.sh exchange_apis_install.sh; do
+for tool_script in zenbot_trader_install.sh web3_apis_install.sh exchange_apis_install.sh zenbot_api_install.sh risk_strategy_analyzer_install.sh backtest_workflow_install.sh; do
     if [ -f "$INSTALL_DIR/scripts/tools/$tool_script" ]; then
         echo -e "${BLUE}Installiere ${tool_script%.sh} als Teil des Trading_AI-Profils...${NC}"
         bash "$INSTALL_DIR/scripts/tools/$tool_script"

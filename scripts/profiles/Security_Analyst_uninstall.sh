@@ -14,7 +14,7 @@ init_profile_tracking "Security_Analyst"
 
 echo -e "${BLUE}Starte Deinstallation des Security_Analyst-Profils...${NC}"
 
-for tool_script in fail2ban_uninstall.sh trivy_uninstall.sh nikto_uninstall.sh nmap_uninstall.sh; do
+for tool_script in security_workflow_uninstall.sh fail2ban_analyzer_uninstall.sh fail2ban_uninstall.sh trivy_uninstall.sh nikto_uninstall.sh nmap_uninstall.sh; do
     if [ -f "$INSTALL_DIR/scripts/tools/$tool_script" ]; then
         echo -e "${BLUE}Deinstalliere ${tool_script%.sh} als Teil des Security_Analyst-Profils...${NC}"
         bash "$INSTALL_DIR/scripts/tools/$tool_script"

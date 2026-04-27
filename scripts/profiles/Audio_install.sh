@@ -14,7 +14,7 @@ init_profile_tracking "Audio"
 
 echo -e "${BLUE}Starte Installation des Audio-Profils...${NC}"
 
-for tool_script in whisper_install.sh ffmpeg_install.sh librosa_install.sh pydub_install.sh piper_install.sh coqui_tts_install.sh; do
+for tool_script in whisper_install.sh ffmpeg_install.sh librosa_install.sh pydub_install.sh piper_install.sh coqui_tts_install.sh voice_assistant_runtime_install.sh; do
     if [ -f "$INSTALL_DIR/scripts/tools/$tool_script" ]; then
         echo -e "${BLUE}Installiere ${tool_script%.sh} als Teil des Audio-Profils...${NC}"
         bash "$INSTALL_DIR/scripts/tools/$tool_script"

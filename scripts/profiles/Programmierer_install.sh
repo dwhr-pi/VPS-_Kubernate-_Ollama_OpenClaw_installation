@@ -38,7 +38,7 @@ else
     echo -e "${YELLOW}Clawhub CLI Installationsskript nicht gefunden. Überspringe Clawhub CLI Installation.${NC}"
 fi
 
-for tool_script in langgraph_install.sh crewai_install.sh autogen_install.sh playwright_install.sh chromadb_install.sh; do
+for tool_script in langgraph_install.sh crewai_install.sh autogen_install.sh playwright_install.sh chromadb_install.sh docker_install.sh kubernetes_install.sh k3s_install.sh github_api_tooling_install.sh code_sandbox_install.sh vs_code_server_install.sh puppeteer_install.sh prometheus_install.sh grafana_install.sh loki_install.sh opentelemetry_install.sh vault_install.sh sqlite_install.sh postgres_install.sh weaviate_install.sh qdrant_install.sh redis_install.sh rabbitmq_install.sh nats_install.sh; do
     if [ -f "$INSTALL_DIR/scripts/tools/$tool_script" ]; then
         echo -e "${BLUE}Installiere ${tool_script%.sh} als Teil des Programmierer-Profils...${NC}"
         bash "$INSTALL_DIR/scripts/tools/$tool_script"
@@ -49,4 +49,3 @@ done
 
 echo -e "${GREEN}Programmierer-Profil Installation abgeschlossen.${NC}"
 mark_current_profile_installed
-

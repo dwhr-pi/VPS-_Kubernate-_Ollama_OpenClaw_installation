@@ -18,7 +18,7 @@ Es beschreibt ein OpenClaw- und Ollama-kompatibles Audioprofil für Transkriptio
 
 ## Dokumentierte zusätzliche Tools
 
-Aktuell sind alle in der Quelldatei explizit genannten Kernwerkzeuge als installierbare Bausteine abgedeckt.
+Aktuell sind die Kernwerkzeuge plus das zusätzliche Laufzeitmodul `Voice_Assistant_Runtime` als installierbare Bausteine abgedeckt.
 
 ## Verantwortlichkeiten
 
@@ -71,7 +71,7 @@ Nutze FFmpeg für Konvertierung und Cleanup und gib die empfohlenen Verarbeitung
 
 ### ⚠ Missing in Setup
 
-- Ein explizites Voice-Assistant-Laufzeitprofil gibt es noch nicht.
+- Das zuvor fehlende Voice-Assistant-Laufzeitprofil ist jetzt als `Voice_Assistant_Runtime` im Setup vorhanden.
 
 ### ❌ Missing in Docs
 

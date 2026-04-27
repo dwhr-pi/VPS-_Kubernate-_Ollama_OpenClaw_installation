@@ -18,18 +18,19 @@ Es beschreibt ein OpenClaw- und Ollama-kompatibles Kreativprofil für Musik, Aud
 
 ## Dokumentierte zusätzliche Tools
 
-Diese Bausteine sind in der Quelldatei enthalten, aber noch nicht vollständig als einzelne Installskripte umgesetzt:
+Die zuvor zusätzlich dokumentierten Media-Bausteine sind jetzt als Setup-Module oder vorhandene Tool-Äquivalente abbildbar:
 
-- Suno / Udio API oder Wrapper
-- MusicGen
-- Riffusion
-- Stable Diffusion
-- ControlNet
-- Music2P-style pipeline
-- Hook detection
-- BPM- und Energy-Classification
-- TikTok probability score
-- Emotion tagging
+- `Suno_API`
+- `Udio_API`
+- `MusicGen`
+- `Riffusion`
+- `Stable_Diffusion_WebUI`
+- `ControlNet`
+- `Music2P_Pipeline`
+- `Hook_Detection`
+- `BPM_Analyzer`
+- `TikTok_Score`
+- `Emotion_Tagging`
 
 ## Verantwortlichkeiten
 
@@ -190,9 +191,8 @@ Arrangement-Anpassung und finalem Export mit FFmpeg, Demucs und pydub.
 
 ### ⚠ Missing in Setup
 
-- `Suno`, `Udio`, `MusicGen` und `Riffusion` fehlen noch als installierbare Module.
-- `Stable Diffusion`, `ControlNet` und weitere Media-Layer-Bausteine sind nur dokumentiert.
-- Analytics- und Viral-Layer wie Hook-Detection, BPM-/Energy-Classification oder TikTok-Score fehlen als echte Tools.
+- Die zuvor fehlenden Musik-, Analyse- und Media-Layer-Bausteine sind jetzt im Setup installierbar.
+- Für externe API-Dienste wie Suno oder Udio müssen weiterhin eigene Zugangsdaten hinterlegt werden.
 
 ### ❌ Missing in Docs
 

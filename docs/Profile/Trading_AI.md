@@ -15,10 +15,11 @@ Es beschreibt ein OpenClaw- und Ollama-kompatibles Tradingprofil für Marktanaly
 
 ## Dokumentierte zusätzliche Tools
 
-Diese Bausteine sind in der Quelldatei enthalten, aber noch nicht vollständig als einzelne Installskripte umgesetzt:
+Die zuvor zusätzlich beschriebenen Trading-Bausteine sind jetzt als Setup-Module vorhanden:
 
-- Zenbot API als separates Integrationsmodul
-- dedizierte Risiko- und Strategieanalyse als Profilmodul
+- `Zenbot_API`
+- `Risk_Strategy_Analyzer`
+- `Backtest_Workflow`
 
 ## Verantwortlichkeiten
 
@@ -66,7 +67,7 @@ Zeige mir, welche Parameter ich vor einem Backtest priorisieren sollte.
 
 ### ⚠ Missing in Setup
 
-- Es gibt noch kein dediziertes Backtest- oder Risiko-Workflow-Modul.
+- Die zuvor fehlenden Trading-Integrations- und Analysebausteine sind jetzt im Setup vorhanden.
 
 ### ❌ Missing in Docs
 

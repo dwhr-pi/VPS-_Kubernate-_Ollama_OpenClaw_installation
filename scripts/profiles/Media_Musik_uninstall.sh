@@ -37,7 +37,7 @@ else
     echo -e "${YELLOW}FFmpeg Deinstallationsskript nicht gefunden. Überspringe FFmpeg Deinstallation.${NC}"
 fi
 
-for tool_script in whisper_uninstall.sh demucs_uninstall.sh pydub_uninstall.sh librosa_uninstall.sh; do
+for tool_script in emotion_tagging_uninstall.sh tiktok_score_uninstall.sh bpm_analyzer_uninstall.sh hook_detection_uninstall.sh music2p_pipeline_uninstall.sh controlnet_uninstall.sh stable_diffusion_webui_uninstall.sh riffusion_uninstall.sh musicgen_uninstall.sh udio_api_uninstall.sh suno_api_uninstall.sh whisper_uninstall.sh demucs_uninstall.sh pydub_uninstall.sh librosa_uninstall.sh; do
     if [ -f "$INSTALL_DIR/scripts/tools/$tool_script" ]; then
         echo -e "${BLUE}Deinstalliere ${tool_script%.sh} als Teil des Media & Musik Profils...${NC}"
         bash "$INSTALL_DIR/scripts/tools/$tool_script"
@@ -48,4 +48,3 @@ done
 
 echo -e "${GREEN}Media & Musik Profil Deinstallation abgeschlossen.${NC}"
 mark_current_profile_removed
-

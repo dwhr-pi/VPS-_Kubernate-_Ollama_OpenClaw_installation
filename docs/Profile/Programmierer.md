@@ -20,26 +20,27 @@ Es beschreibt ein OpenClaw- und Ollama-kompatibles Multi-Agent-Setup für Entwic
 
 ## Dokumentierte zusätzliche Tools
 
-Diese Bausteine sind in der Quelldatei enthalten, aber noch nicht vollständig als einzelne Installskripte umgesetzt:
+Die zuvor zusätzlich dokumentierten Entwickler- und Observability-Bausteine sind jetzt als Setup-Module oder vorhandene Tools abbildbar:
 
-- Docker
-- Kubernetes
-- k3s
-- GitHub API Tooling
-- Code Execution Sandbox
-- VS Code Server
-- Puppeteer
-- Prometheus
-- Grafana
-- Loki
-- OpenTelemetry
-- Vault / Secrets Management
-- SQLite / Postgres
-- Weaviate
-- Qdrant
-- Redis
-- RabbitMQ
-- NATS
+- `Docker`
+- `Kubernetes`
+- `K3s`
+- `GitHub_API_Tooling`
+- `Code_Sandbox`
+- `VS_Code_Server`
+- `Puppeteer`
+- `Prometheus`
+- `Grafana`
+- `Loki`
+- `OpenTelemetry`
+- `Vault`
+- `SQLite`
+- `Postgres`
+- `Weaviate`
+- `Qdrant`
+- `Redis`
+- `RabbitMQ`
+- `NATS`
 
 ## Verantwortlichkeiten
 
@@ -180,10 +181,8 @@ fehlende Sandbox-Isolation und Secret-Leaks. Schlage konkrete Hardening-Maßnahm
 
 ### ⚠ Missing in Setup
 
-- Ein dediziertes Coding-Modell für Ollama wird nicht automatisch installiert.
-- Docker, Kubernetes-spezifische Helfer, GitHub API Tooling und eine echte Code-Sandbox sind noch nicht als eigene Tool-Skripte ergänzt.
-- Observability- und Security-Bausteine wie `Prometheus`, `Grafana`, `Loki`, `OpenTelemetry` und `Vault` sind aktuell nur dokumentiert.
-- Die dokumentierten Memory- und Queue-Alternativen `Weaviate`, `Qdrant`, `Redis`, `RabbitMQ` und `NATS` fehlen noch als installierbare Module.
+- Die zuvor fehlenden DevOps-, Observability- und Queue-Bausteine sind jetzt im Setup vorhanden.
+- Ein dediziertes Coding-Modell für Ollama wird weiterhin nicht automatisch mit einem Profil ausgerollt.
 
 ### ❌ Missing in Docs
 

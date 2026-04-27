@@ -38,7 +38,7 @@ else
     echo -e "${YELLOW}FFmpeg Installationsskript nicht gefunden. Überspringe FFmpeg Installation.${NC}"
 fi
 
-for tool_script in librosa_install.sh pydub_install.sh demucs_install.sh whisper_install.sh; do
+for tool_script in librosa_install.sh pydub_install.sh demucs_install.sh whisper_install.sh suno_api_install.sh udio_api_install.sh musicgen_install.sh riffusion_install.sh stable_diffusion_webui_install.sh controlnet_install.sh music2p_pipeline_install.sh hook_detection_install.sh bpm_analyzer_install.sh tiktok_score_install.sh emotion_tagging_install.sh; do
     if [ -f "$INSTALL_DIR/scripts/tools/$tool_script" ]; then
         echo -e "${BLUE}Installiere ${tool_script%.sh} als Teil des Media & Musik Profils...${NC}"
         bash "$INSTALL_DIR/scripts/tools/$tool_script"
@@ -49,4 +49,3 @@ done
 
 echo -e "${GREEN}Media & Musik Profil Installation abgeschlossen.${NC}"
 mark_current_profile_installed
-

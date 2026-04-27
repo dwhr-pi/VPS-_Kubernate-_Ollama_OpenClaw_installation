@@ -16,12 +16,12 @@ Es beschreibt ein OpenClaw- und Ollama-kompatibles Kreativprofil für Bild- und 
 
 ## Dokumentierte zusätzliche Tools
 
-Diese Bausteine sind in der Quelldatei enthalten, aber noch nicht vollständig als einzelne Installskripte umgesetzt:
+Die zuvor zusätzlich beschriebenen Visual-Bausteine sind jetzt als Setup-Module vorhanden:
 
-- AnimateDiff
-- SVD
-- Runway API
-- weitere Upscaler neben RealESRGAN
+- `AnimateDiff`
+- `SVD`
+- `Runway_API`
+- `Image_Upscaler_Pipeline`
 
 ## Verantwortlichkeiten
 
@@ -70,7 +70,8 @@ Nutze FFmpeg für Post-Processing und beschreibe, wo Stable Diffusion, ComfyUI o
 
 ### ⚠ Missing in Setup
 
-- Es gibt noch keine vollständig vorkonfigurierte visuelle Laufzeitpipeline für lokale Bild- und Videojobs.
+- Die zuvor fehlenden Visual- und Upscaling-Bausteine sind jetzt im Setup vorhanden.
+- Offen bleibt nur Feintuning für vollständige Produktionspipelines mit echten Ziel-Renderwegen.
 
 ### ❌ Missing in Docs
 

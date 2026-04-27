@@ -43,7 +43,7 @@ fi
 echo -e "${BLUE}Entferne OpenClaw Konfigurationen für juristische Skills...${NC}"
 # Hier könnten Skripte aufgerufen werden, die OpenClaw-Skills für juristische Datenbanken dekonfigurieren.
 
-for tool_script in chromadb_uninstall.sh llamaindex_uninstall.sh langchain_uninstall.sh; do
+for tool_script in risk_scoring_uninstall.sh deadline_checker_uninstall.sh tax_calculator_uninstall.sh neo4j_uninstall.sh pdf_parser_uninstall.sh drafting_agent_uninstall.sh risk_agent_uninstall.sh tax_law_agent_uninstall.sh lawfirm_uninstall.sh ai_powered_law_firms_uninstall.sh eullm_uninstall.sh qdrant_uninstall.sh chromadb_uninstall.sh llamaindex_uninstall.sh langchain_uninstall.sh; do
     if [ -f "$INSTALL_DIR/scripts/tools/$tool_script" ]; then
         echo -e "${BLUE}Deinstalliere ${tool_script%.sh} als Teil des Profils 'Rechtsberatung & Steuerrecht'...${NC}"
         bash "$INSTALL_DIR/scripts/tools/$tool_script"
@@ -54,4 +54,3 @@ done
 
 echo -e "${GREEN}Profil 'Rechtsberatung & Steuerrecht' Deinstallation abgeschlossen.${NC}"
 mark_current_profile_removed
-

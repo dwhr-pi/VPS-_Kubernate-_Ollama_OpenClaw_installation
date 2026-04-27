@@ -45,7 +45,7 @@ else
     echo -e "${YELLOW}LangFlow Installationsskript nicht gefunden. Überspringe LangFlow Installation.${NC}"
 fi
 
-for tool_script in langchain_install.sh llamaindex_install.sh mlflow_install.sh whisper_install.sh; do
+for tool_script in langchain_install.sh llamaindex_install.sh mlflow_install.sh whisper_install.sh chromadb_install.sh weaviate_install.sh crewai_install.sh autogpt_install.sh weights_and_biases_install.sh vllm_install.sh llama_cpp_install.sh stable_diffusion_webui_install.sh ray_install.sh envirollm_install.sh; do
     if [ -f "$INSTALL_DIR/scripts/tools/$tool_script" ]; then
         echo -e "${BLUE}Installiere ${tool_script%.sh} als Teil des KI-Forschung Profils...${NC}"
         bash "$INSTALL_DIR/scripts/tools/$tool_script"
@@ -56,4 +56,3 @@ done
 
 echo -e "${GREEN}KI-Forschung Profil Installation abgeschlossen.${NC}"
 mark_current_profile_installed
-

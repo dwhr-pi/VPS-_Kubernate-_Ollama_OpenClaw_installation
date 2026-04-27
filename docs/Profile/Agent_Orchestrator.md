@@ -23,10 +23,10 @@ Es beschreibt ein OpenClaw- und Ollama-kompatibles Koordinationsprofil für Mehr
 
 ## Dokumentierte zusätzliche Tools
 
-Diese Bausteine sind in der Quelldatei enthalten oder logisch direkt damit verwandt, aber noch nicht vollständig als einzelne Installskripte umgesetzt:
+Die zuvor nur fachlich beschriebenen Bausteine sind jetzt als eigene Setup-Module vorhanden:
 
-- spezieller Router-Agent als eigenes Laufzeitmodul
-- dedizierte Multi-Agent-Memory-Policies
+- `Agent_Router`
+- `Memory_Policies`
 
 ## Verantwortlichkeiten
 
@@ -87,8 +87,8 @@ Begründe die Auswahl und gib die Übergabedaten je Agent an.
 
 ### ⚠ Missing in Setup
 
-- Es gibt noch kein eigenes Install-/Run-Modul für einen dedizierten `Agent_Orchestrator`.
-- Es fehlen noch vorkonfigurierte Policies für Routing, Retry, Dead-Letter und Konfliktauflösung.
+- Die zuvor fehlenden Orchestrierungsbausteine sind jetzt als einzelne Module im Setup vorhanden.
+- Offen bleibt produktives Feintuning für konkrete Routing-, Retry- und Dead-Letter-Regeln.
 
 ### ❌ Missing in Docs
 

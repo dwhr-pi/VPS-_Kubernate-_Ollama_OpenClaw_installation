@@ -22,10 +22,10 @@ Es beschreibt ein OpenClaw- und Ollama-kompatibles Profil für automatisierte Co
 
 ## Dokumentierte zusätzliche Tools
 
-Diese Bausteine sind in der Quelldatei enthalten, aber noch nicht vollständig als einzelne Installskripte umgesetzt:
+Die zuvor nur dokumentierten Zusatzbausteine sind jetzt als Setup-Module vorhanden:
 
-- Thumbnail-spezifische Bildpipeline
-- Upload-Automation als dediziertes Modul
+- `Thumbnail_Pipeline`
+- `Upload_Automation`
 
 ## Verantwortlichkeiten
 
@@ -87,7 +87,8 @@ Thema analysieren, Skript erzeugen, Voiceover vorbereiten, Video schneiden und E
 
 ### ⚠ Missing in Setup
 
-- Die dokumentierte End-to-End-Pipeline existiert noch nicht als vollständig vorkonfigurierter Laufzeitworkflow.
+- Die zuvor fehlenden Thumbnail- und Upload-Bausteine sind jetzt direkt installierbar.
+- Offen bleibt nur eine vollständig produktionsfertige End-to-End-Verdrahtung mit echten Zielplattform-Credentials.
 
 ### ❌ Missing in Docs
 

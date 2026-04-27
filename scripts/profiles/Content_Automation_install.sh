@@ -14,7 +14,7 @@ init_profile_tracking "Content_Automation"
 
 echo -e "${BLUE}Starte Installation des Content_Automation-Profils...${NC}"
 
-for tool_script in ffmpeg_install.sh whisper_install.sh playwright_install.sh n8n_install.sh activepieces_install.sh piper_install.sh coqui_tts_install.sh yt_dlp_install.sh stable_diffusion_webui_install.sh trend_monitor_install.sh; do
+for tool_script in ffmpeg_install.sh whisper_install.sh playwright_install.sh n8n_install.sh activepieces_install.sh piper_install.sh coqui_tts_install.sh yt_dlp_install.sh stable_diffusion_webui_install.sh trend_monitor_install.sh thumbnail_pipeline_install.sh upload_automation_install.sh; do
     if [ -f "$INSTALL_DIR/scripts/tools/$tool_script" ]; then
         echo -e "${BLUE}Installiere ${tool_script%.sh} als Teil des Content_Automation-Profils...${NC}"
         bash "$INSTALL_DIR/scripts/tools/$tool_script"

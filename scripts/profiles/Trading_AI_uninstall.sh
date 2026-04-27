@@ -14,7 +14,7 @@ init_profile_tracking "Trading_AI"
 
 echo -e "${BLUE}Starte Deinstallation des Trading_AI-Profils...${NC}"
 
-for tool_script in exchange_apis_uninstall.sh web3_apis_uninstall.sh zenbot_trader_uninstall.sh; do
+for tool_script in backtest_workflow_uninstall.sh risk_strategy_analyzer_uninstall.sh zenbot_api_uninstall.sh exchange_apis_uninstall.sh web3_apis_uninstall.sh zenbot_trader_uninstall.sh; do
     if [ -f "$INSTALL_DIR/scripts/tools/$tool_script" ]; then
         echo -e "${BLUE}Deinstalliere ${tool_script%.sh} als Teil des Trading_AI-Profils...${NC}"
         bash "$INSTALL_DIR/scripts/tools/$tool_script"

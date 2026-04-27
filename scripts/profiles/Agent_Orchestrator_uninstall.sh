@@ -14,7 +14,7 @@ init_profile_tracking "Agent_Orchestrator"
 
 echo -e "${BLUE}Starte Deinstallation des Agent_Orchestrator-Profils...${NC}"
 
-for tool_script in loki_uninstall.sh grafana_uninstall.sh prometheus_uninstall.sh weaviate_uninstall.sh qdrant_uninstall.sh nats_uninstall.sh redis_uninstall.sh chromadb_uninstall.sh autogen_uninstall.sh crewai_uninstall.sh langgraph_uninstall.sh; do
+for tool_script in memory_policies_uninstall.sh agent_router_uninstall.sh loki_uninstall.sh grafana_uninstall.sh prometheus_uninstall.sh weaviate_uninstall.sh qdrant_uninstall.sh nats_uninstall.sh redis_uninstall.sh chromadb_uninstall.sh autogen_uninstall.sh crewai_uninstall.sh langgraph_uninstall.sh; do
     if [ -f "$INSTALL_DIR/scripts/tools/$tool_script" ]; then
         echo -e "${BLUE}Deinstalliere ${tool_script%.sh} als Teil des Agent_Orchestrator-Profils...${NC}"
         bash "$INSTALL_DIR/scripts/tools/$tool_script"

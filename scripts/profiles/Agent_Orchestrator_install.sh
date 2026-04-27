@@ -14,7 +14,7 @@ init_profile_tracking "Agent_Orchestrator"
 
 echo -e "${BLUE}Starte Installation des Agent_Orchestrator-Profils...${NC}"
 
-for tool_script in langgraph_install.sh crewai_install.sh autogen_install.sh chromadb_install.sh redis_install.sh nats_install.sh qdrant_install.sh weaviate_install.sh prometheus_install.sh grafana_install.sh loki_install.sh; do
+for tool_script in langgraph_install.sh crewai_install.sh autogen_install.sh chromadb_install.sh redis_install.sh nats_install.sh qdrant_install.sh weaviate_install.sh prometheus_install.sh grafana_install.sh loki_install.sh agent_router_install.sh memory_policies_install.sh; do
     if [ -f "$INSTALL_DIR/scripts/tools/$tool_script" ]; then
         echo -e "${BLUE}Installiere ${tool_script%.sh} als Teil des Agent_Orchestrator-Profils...${NC}"
         bash "$INSTALL_DIR/scripts/tools/$tool_script"

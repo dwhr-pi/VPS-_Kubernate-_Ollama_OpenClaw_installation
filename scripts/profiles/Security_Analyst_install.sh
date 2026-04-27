@@ -14,7 +14,7 @@ init_profile_tracking "Security_Analyst"
 
 echo -e "${BLUE}Starte Installation des Security_Analyst-Profils...${NC}"
 
-for tool_script in nmap_install.sh nikto_install.sh trivy_install.sh fail2ban_install.sh; do
+for tool_script in nmap_install.sh nikto_install.sh trivy_install.sh fail2ban_install.sh fail2ban_analyzer_install.sh security_workflow_install.sh; do
     if [ -f "$INSTALL_DIR/scripts/tools/$tool_script" ]; then
         echo -e "${BLUE}Installiere ${tool_script%.sh} als Teil des Security_Analyst-Profils...${NC}"
         bash "$INSTALL_DIR/scripts/tools/$tool_script"
