@@ -14,10 +14,38 @@ NC=\033[0m
 
 echo -e "${BLUE}Starte Basis-Installation: System-Updates, Node.js, pnpm, Python, Git...${NC}"
 
+ensure_nodejs_22() {
+    local current_major
+
+    if command -v node >/dev/null 2>&1; then
+        current_major="$(node -p "process.versions.node.split('.')[0]")"
+        if [ "$current_major" -ge 22 ]; then
+            echo -e "${GREEN}Node.js $(node -v) erfüllt bereits die Anforderung >= 22.${NC}"
+            return 0
+        fi
+    fi
+
+    echo -e "${YELLOW}Installiere bzw. aktualisiere Node.js auf Version 22.x...${NC}"
+    curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
+    sudo apt install -y nodejs
+
+    if ! command -v node >/dev/null 2>&1; then
+        echo -e "${RED}Fehler: Node.js konnte nicht installiert werden.${NC}"
+        exit 1
+    fi
+
+    current_major="$(node -p "process.versions.node.split('.')[0]")"
+    if [ "$current_major" -lt 22 ]; then
+        echo -e "${RED}Fehler: Node.js $(node -v) ist weiterhin zu alt. Benötigt wird >= 22.${NC}"
+        exit 1
+    fi
+}
+
 # 1. System aktualisieren
 echo -e "${GREEN}1/5: System-Updates durchführen...${NC}"
 sudo apt update && sudo apt upgrade -y
-sudo apt install -y curl git python3 python3-pip nodejs npm
+sudo apt install -y curl ca-certificates git python3 python3-pip build-essential
+ensure_nodejs_22
 
 # 2. pnpm installieren (falls nicht vorhanden)
 echo -e "${GREEN}2/5: pnpm installieren...${NC}"
@@ -38,7 +66,7 @@ OPENCLAW_DIR="/opt/openclaw"
 if [ -d "$OPENCLAW_DIR" ]; then
     echo -e "${YELLOW}OpenClaw Verzeichnis $OPENCLAW_DIR existiert bereits. Überspringe Klonen.${NC}"
     cd "$OPENCLAW_DIR"
-    git pull
+    git pull --ff-only
 else
     echo -e "${BLUE}Klone OpenClaw in $OPENCLAW_DIR...${NC}"
     sudo mkdir -p "$OPENCLAW_DIR"

@@ -1,56 +1,115 @@
 #!/bin/bash
 # ==============================================================================
-# VPS_STANDALONE.SH - VPS-only Setup (Cloud-Native)
-# Dieses Skript konfiguriert einen VPS als Standalone-System mit K3s,
-# Zenbot, OpenManus und Gemini-Ollama Fallback.
+# VPS_STANDALONE.SH - VPS-only Foundation Setup (Cloud-Native)
+# Bereitet einen VPS fuer K3s-basierte Deployments vor und legt eine saubere
+# Grundlage fuer OpenManus, Zenbot und weitere Dienste an.
 # ==============================================================================
 
+set -euo pipefail
+
 # Farben
-GREEN=\033[0;32m
-BLUE=\033[0;34m
-RED=\033[0;31m
-YELLOW=\033[1;33m
-NC=\033[0m
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+RED='\033[0;31m'
+YELLOW='\033[1;33m'
+NC='\033[0m'
 
-echo -e "${BLUE}Starte VPS-Standalone-Setup: K3s, Zenbot, OpenManus...${NC}"
+VPS_STACK_DIR="/opt/openclaw-vps"
+MANIFEST_DIR="$VPS_STACK_DIR/manifests"
+STATE_FILE="$VPS_STACK_DIR/README.md"
 
-# 1. K3s (Kubernetes) Installation
-echo -e "${GREEN}1/4: Installiere K3s (Lightweight Kubernetes)...${NC}"
-curl -sfL https://get.k3s.io | sh -
-if [ $? -ne 0 ]; then
-    echo -e "${RED}Fehler: K3s Installation fehlgeschlagen.${NC}"
-    exit 1
-fi
-echo -e "${GREEN}K3s erfolgreich installiert.${NC}"
+run_sudo() {
+    if [ "${EUID}" -eq 0 ]; then
+        "$@"
+    else
+        sudo "$@"
+    fi
+}
 
-# 2. OpenManus Installation (als Kubernetes Deployment)
-echo -e "${GREEN}2/4: Installiere OpenManus als Kubernetes Deployment...${NC}"
-# Annahme: OpenManus kann als Docker Image oder direkt aus GitHub in einem Pod laufen
-# Für dieses Setup nehmen wir an, dass ein Dockerfile im OpenManus Repo existiert
-# oder wir ein generisches Image nutzen und den Code mounten.
-# Da der Nutzer GitHub-basierte Installation bevorzugt, würden wir hier einen Init-Container nutzen,
-# der den Code klont und baut, bevor der Hauptcontainer startet.
+require_command() {
+    if ! command -v "$1" >/dev/null 2>&1; then
+        echo -e "${RED}Fehler: Benoetigter Befehl '$1' ist nicht verfuegbar.${NC}"
+        exit 1
+    fi
+}
 
-# Beispiel für ein Kubernetes Deployment (muss noch detailliert werden)
-# kubectl apply -f /path/to/openmanus-deployment.yaml
+install_base_packages() {
+    if ! command -v apt-get >/dev/null 2>&1; then
+        echo -e "${RED}Fehler: Dieses Skript unterstuetzt aktuell nur apt-basierte Systeme.${NC}"
+        exit 1
+    fi
 
-echo -e "${YELLOW}Hinweis: OpenManus Kubernetes Deployment muss noch detailliert werden.${NC}"
+    echo -e "${GREEN}1/4: Installiere grundlegende VPS-Abhaengigkeiten...${NC}"
+    run_sudo apt-get update
+    run_sudo apt-get install -y curl ca-certificates git
+}
 
-# 3. Zenbot Installation (als Kubernetes Deployment)
-echo -e "${GREEN}3/4: Installiere Zenbot als Kubernetes Deployment...${NC}"
-# Ähnlich wie OpenManus, Zenbot als Deployment mit persistentem Speicher für Daten
-# kubectl apply -f /path/to/zenbot-deployment.yaml
+install_k3s() {
+    echo -e "${GREEN}2/4: Pruefe K3s Installation...${NC}"
 
-echo -e "${YELLOW}Hinweis: Zenbot Kubernetes Deployment muss noch detailliert werden.${NC}"
+    if command -v k3s >/dev/null 2>&1; then
+        echo -e "${YELLOW}K3s ist bereits installiert. Ueberspringe Neuinstallation.${NC}"
+    else
+        echo -e "${BLUE}Installiere K3s (Lightweight Kubernetes)...${NC}"
+        curl -sfL https://get.k3s.io | sh -
+    fi
 
-# 4. Gemini-Ollama Fallback Proxy (als Kubernetes Deployment)
-echo -e "${GREEN}4/4: Konfiguriere Gemini-Ollama Fallback Proxy...${NC}"
-# Ein kleiner Proxy-Dienst, der Anfragen an Gemini sendet und bei Fehler/Limit auf Ollama umschaltet.
-# Dieser Dienst würde auf dem VPS laufen und Ollama könnte entweder auch auf dem VPS laufen
-# oder über eine VPN-Verbindung zum Letsung MiniPC geroutet werden.
+    if ! run_sudo systemctl is-active --quiet k3s; then
+        echo -e "${RED}Fehler: Der K3s-Dienst laeuft nicht erfolgreich.${NC}"
+        echo -e "${YELLOW}Bitte pruefen Sie 'sudo systemctl status k3s' fuer Details.${NC}"
+        exit 1
+    fi
 
-# kubectl apply -f /path/to/gemini-ollama-proxy-deployment.yaml
+    if ! command -v kubectl >/dev/null 2>&1; then
+        echo -e "${YELLOW}kubectl ist nicht direkt im PATH. Verwende /usr/local/bin/kubectl, falls vorhanden.${NC}"
+        if [ -x /usr/local/bin/kubectl ]; then
+            export PATH="/usr/local/bin:$PATH"
+        fi
+    fi
 
-echo -e "${YELLOW}Hinweis: Gemini-Ollama Fallback Proxy Kubernetes Deployment muss noch detailliert werden.${NC}"
+    require_command kubectl
+    echo -e "${GREEN}K3s laeuft und kubectl ist verfuegbar.${NC}"
+}
 
-echo -e "${GREEN}VPS-Standalone-Setup abgeschlossen. Bitte prüfen Sie die Kubernetes Deployments.${NC}"
+prepare_workspace() {
+    echo -e "${GREEN}3/4: Lege VPS-Workspace und Deployment-Hinweise an...${NC}"
+    run_sudo mkdir -p "$MANIFEST_DIR"
+    run_sudo tee "$STATE_FILE" >/dev/null <<EOF
+# OpenClaw VPS Standalone Foundation
+
+Dieser VPS wurde fuer K3s-basierte Deployments vorbereitet.
+
+Vorbereitete Verzeichnisse:
+- $VPS_STACK_DIR
+- $MANIFEST_DIR
+
+Empfohlene naechste Schritte:
+1. OpenManus Deployment-Manifest nach $MANIFEST_DIR/openmanus.yaml legen und mit kubectl anwenden.
+2. Zenbot Deployment-Manifest nach $MANIFEST_DIR/zenbot.yaml legen und mit kubectl anwenden.
+3. Optionalen Gemini/Ollama-Proxy nach $MANIFEST_DIR/gemini-ollama-proxy.yaml legen.
+4. Status pruefen mit:
+   sudo kubectl get nodes
+   sudo kubectl get pods -A
+
+Wichtiger Hinweis:
+Dieses Skript installiert bewusst keine unfertigen Platzhalter-Deployments mehr.
+Es bereitet den VPS verifizierbar vor, damit nachfolgende Kubernetes-Manifeste
+sauber und reproduzierbar eingespielt werden koennen.
+EOF
+}
+
+print_summary() {
+    echo -e "${GREEN}4/4: VPS-Foundation erfolgreich vorbereitet.${NC}"
+    echo -e "${BLUE}K3s-Status:${NC}"
+    run_sudo kubectl get nodes || true
+    echo ""
+    echo -e "${YELLOW}Hinweis:${NC} OpenManus, Zenbot und der Gemini/Ollama-Proxy werden hier nicht mehr als unfertige Platzhalter installiert."
+    echo -e "${YELLOW}Die naechsten manuellen Deployment-Schritte finden Sie in:${NC} $STATE_FILE"
+}
+
+echo -e "${BLUE}Starte VPS-Standalone-Foundation-Setup...${NC}"
+
+install_base_packages
+install_k3s
+prepare_workspace
+print_summary

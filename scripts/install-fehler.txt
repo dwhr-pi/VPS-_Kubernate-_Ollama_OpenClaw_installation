@@ -1,31 +1,3 @@
-In dem Setup von "https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation" löste das "hybrid_setup.sh" den nachfolgenden Installationsfehler aus.
+für programmierersetup 
 
-033[0Installiere OpenClaw Abhängigkeiten mit pnpm...033[0m
- WARN  Unsupported engine: wanted: {"node":">=22.14.0"} (current: {"node":"v18.19.1","pnpm":"10.33.0"})
-Scope: all 114 workspace projects
-Lockfile is up to date, resolution step is skipped
-Packages: +1339
-
-Downloading @wasm-audio-decoders/opus-ml@0.0.2: 6.39 MB/6.39 MB, done
-Progress: resolved 0, reused 0, downloaded 1282, added 1339, done
-node_modules/protobufjs: Running postinstall script, done in 5s
-node_modules/sharp: Running install script, done in 9.6s
-node_modules/esbuild: Running postinstall script, done in 6.5s
-node_modules/@tloncorp/tlon-skill: Running postinstall script, done in 6.1s
-node_modules/node-llama-cpp: Running postinstall script, failed in 9.9s
-node_modules/node-llama-cpp postinstall$ node ./dist/cli/cli.js postinstall
-│ file:///opt/openclaw/node_modules/ora/node_modules/cli-spinners/index.js:1
-│ import spinners from './spinners.json' with {type: 'json'};
-│                                        ^^^^
-│ SyntaxError: Unexpected token 'with'
-│     at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:152:18)
-│     at ModuleLoader.moduleProvider (node:internal/modules/esm/loader:298:14)
-│ Node.js v18.19.1
-└─ Failed in 9.9s at /opt/openclaw/node_modules/node-llama-cpp
-node_modules/@matrix-org/matrix-sdk-crypto-nodejs: Running postinstall script...
- ELIFECYCLE  Command failed with exit code 1.
-033[0Fehler: pnpm install fehlgeschlagen.033[0m
-/home/ubuntu/openclaw_ultimate_setup/scripts/hybrid_setup.sh: line 8: 32m: command not found
-/home/ubuntu/openclaw_ultimate_setup/scripts/hybrid_setup.sh: line 9: 34m: command not found
-/home/ubuntu/openclaw_ultimate_setup/scripts/hybrid_setup.sh: line 10: 31m: command not found
-/home/ubuntu/openclaw_ultimate_setup/scripts/hybrid_setup.sh: line 11: 33m: command not found
+k3s.io

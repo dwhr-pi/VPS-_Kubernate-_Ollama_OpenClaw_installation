@@ -2,11 +2,6 @@
 
 Dies ist das ultimative Setup für ein hybrides KI- und Smart Home System, das deinen Letsung MiniPC (WSL2) und mehrere kostenlose VPS kombiniert. Es integriert eine Vielzahl von Tools und KI-Agenten, die direkt aus GitHub-Quellen kompiliert werden.
 
-Eventuell zuvor in das Stammverzeichnis von Linux wechseln.
-```bash
-cd ~
-```
-
 ## 🚀 Schnelle Installation (One-Liner)
 
 Um die interaktive Installationsplattform zu starten, führe einfach den folgenden Befehl in deinem Terminal aus:
@@ -27,49 +22,6 @@ Wenn du das Setup-Menü erneut starten möchtest, navigiere in das Installations
 cd ~/openclaw_ultimate_setup
 bash ./setup_ultimate.sh
 ```
-
-## ⚡Setup entfernen
-
-```bash
-rm -rf ~/openclaw_ultimate_setup
-cd ~
-```
-
-Oder hardcore Neuinstallation
-```bash
-rm -rf ~/openclaw_ultimate_setup
-curl -sSL https://raw.githubusercontent.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation/main/install.sh | bash
-```
-
-### ✅ Sauberste Lösung (empfohlen)
-
-Wenn du nichts Wichtiges angepasst hast → hart resetten
-```bash
-cd ~/openclaw_ultimate_setup
-
-# alles verwerfen
-git reset --hard
-
-# untracked files löschen
-git clean -fd
-
-# dann update ziehen
-git pull
-```
-
-👉 Danach ist dein Repo wieder 100% sauber wie GitHub
-
-
-### 🧠 Alternative: Änderungen behalten
-
-Falls du deine Fixes behalten willst:
-```bash
-git stash
-git pull
-git stash pop
-```
-
-⚠️ Kann Konflikte erzeugen – eher nur sinnvoll, wenn du bewusst was geändert hast.
 
 ## 📖 Dokumentation
 
@@ -98,8 +50,8 @@ Das Setup bietet eine breite Palette an Tools, die du nach Bedarf installieren u
 *   **Hugging Face:** Integration von Hugging Face Modellen, entweder lokal über Ollama oder über die Hugging Face Inference API. Ermöglicht den Zugriff auf eine riesige Bibliothek von vortrainierten KI-Modellen.
 *   **Home Assistant Core:** Smart Home Automatisierung. Die zentrale Steuerung für dein Smart Home, die eine Vielzahl von Geräten und Diensten integriert.
 *   **Alexa Skill Integration:** Verbindung zu Alexa über Cloudflare Tunnel. Ermöglicht die Sprachsteuerung deiner Smart-Home-Geräte und KI-Agenten über Amazon Alexa.
-*   **Kubernetes (K3s):** Für VPS-basierte Deployments. Eine leichtgewichtige Kubernetes-Distribution für die Orchestrierung von Containern auf deinen VPS.
-*   **Ruflo:** GitHub-Workflow-Automatisierung und -Orchestrierung. Optimiert die Entwicklungsprozesse durch automatisierte Workflows und CI/CD-Pipelines.
+*   **Kubernetes (K3s):** Grundlage für VPS-basierte Deployments. Das Setup bereitet einen VPS mit K3s, `kubectl` und einer sauberen Verzeichnisstruktur für nachfolgende Kubernetes-Manifeste vor.
+*   **Ruflo:** Multi-Agenten- und Automatisierungsplattform mit CLI. Das Setup installiert Ruflo aus GitHub, stellt Node.js und `pnpm` bereit und verlinkt die CLI für lokale Nutzung.
 *   **Multi-VPS-Strategie:** Optimierte Ressourcennutzung über mehrere kostenlose VPS. Eine Strategie zur Verteilung der Last und Erhöhung der Ausfallsicherheit durch Nutzung mehrerer Cloud-Anbieter.
 
 ## 👤 Profil-Management
@@ -125,9 +77,9 @@ Das Setup unterstützt die Installation und Deinstallation verschiedener Profile
 │   ├── openclaw_config_manager.sh # Skript für OpenClaw Konfigurationsverwaltung
 │   ├── base_install.sh         # Basis-Installation von System-Abhängigkeiten, pnpm
 │   ├── hybrid_setup.sh         # Spezifisches Setup für Letsung MiniPC (WSL2) und Vorbereitung für Multi-VPS
-│   ├── vps_standalone.sh       # Spezifisches Setup für reinen VPS (K3s, Kubernetes Deployments)
+│   ├── vps_standalone.sh       # Bereitet einen reinen VPS mit K3s, kubectl und Deployment-Workspace für spätere Kubernetes-Manifeste vor
 │   ├── install_local_only.sh   # Spezifisches Setup für reinen MiniPC (Lokal)
-│   ├── ruflo_install.sh        # Skript für Ruflo Installation & Management
+│   ├── ruflo_install.sh        # Installiert Ruflo aus GitHub, stellt Node.js 22 und pnpm sicher und verlinkt die CLI
 │   ├── port_check.sh           # Skript zur Überprüfung von Port-Konflikten
 │   ├── k8s_deployments.yaml    # Kubernetes Deployment-Definitionen für VPS-Dienste
 │   ├── config_templates/       # Verzeichnis für Konfigurationsvorlagen

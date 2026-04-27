@@ -11,11 +11,34 @@ RED=\033[0;31m
 YELLOW=\033[1;33m
 NC=\033[0m
 
-echo -e "${BLUE}Starte Standalone MiniPC-Setup: Home Assistant, Cloudflared, gcali...${NC}"
+TTY_DEVICE="/dev/tty"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 HOME_ASSISTANT_USER="homeassistant"
 HOME_ASSISTANT_HOME="/var/lib/homeassistant"
 HOME_ASSISTANT_VENV="/srv/homeassistant"
+
+read_from_tty() {
+    local prompt="$1"
+    local target_var="$2"
+    local secret="${3:-false}"
+    local input_value
+
+    if [ ! -e "$TTY_DEVICE" ]; then
+        echo -e "${RED}Fehler: Kein interaktives Terminal für Eingaben verfügbar.${NC}"
+        exit 1
+    fi
+
+    if [ "$secret" = "true" ]; then
+        read -r -s -p "$prompt" input_value < "$TTY_DEVICE"
+        echo
+    else
+        read -r -p "$prompt" input_value < "$TTY_DEVICE"
+    fi
+
+    printf -v "$target_var" '%s' "$input_value"
+}
+
+echo -e "${BLUE}Starte Standalone MiniPC-Setup: Home Assistant, Cloudflared, gcali...${NC}"
 
 # 1. Home Assistant Core Installation
 echo -e "${GREEN}1/3: Installiere Home Assistant Core...${NC}"
@@ -28,7 +51,6 @@ sudo -u "$HOME_ASSISTANT_USER" python3 -m venv "$HOME_ASSISTANT_VENV"
 sudo -u "$HOME_ASSISTANT_USER" "$HOME_ASSISTANT_VENV/bin/pip" install wheel
 sudo -u "$HOME_ASSISTANT_USER" "$HOME_ASSISTANT_VENV/bin/pip" install homeassistant
 
-# Systemd Service für Home Assistant
 sudo cp "$SCRIPT_DIR/../docs/homeassistant.service" /etc/systemd/system/homeassistant@homeassistant.service
 sudo systemctl daemon-reload
 sudo systemctl enable homeassistant@homeassistant
@@ -42,24 +64,25 @@ curl -L --output cloudflared.deb https://github.com/cloudflare/cloudflared/relea
 sudo dpkg -i cloudflared.deb
 sudo cloudflared service install
 
-# Cloudflared Tunnel konfigurieren (Platzhalter - Benutzer muss Token eingeben)
-echo -e "${YELLOW}Bitte melden Sie sich bei Cloudflare an und erstellen Sie einen Tunnel. Fügen Sie dann den Token hier ein.${NC}"
-read -p "Cloudflare Tunnel Token: " CF_TUNNEL_TOKEN
-sudo cloudflared tunnel login
-sudo cloudflared tunnel create alexa-skill-tunnel
-sudo cloudflared tunnel route dns alexa-skill-tunnel your_domain.com # Domain anpassen
-sudo cloudflared tunnel run --token $CF_TUNNEL_TOKEN alexa-skill-tunnel
+echo -e "${YELLOW}Bitte melden Sie sich bei Cloudflare an und erstellen Sie einen Tunnel.${NC}"
+echo -e "${YELLOW}Der Token wird nur erfasst; die eigentlichen Tunnel-Befehle werden anschließend als manuelle Schritte ausgegeben, damit das Skript nicht blockiert.${NC}"
+read_from_tty "Cloudflare Tunnel Token: " CF_TUNNEL_TOKEN true
 
-echo -e "${GREEN}Cloudflared installiert und Tunnel konfiguriert (manuelle Token-Eingabe erforderlich).${NC}"
+if [ -n "$CF_TUNNEL_TOKEN" ]; then
+    echo -e "${BLUE}Cloudflare Tunnel Token erfasst.${NC}"
+    echo -e "${YELLOW}Führen Sie die folgenden Befehle bei Bedarf manuell aus:${NC}"
+    echo "sudo cloudflared tunnel login"
+    echo "sudo cloudflared tunnel create alexa-skill-tunnel"
+    echo "sudo cloudflared tunnel route dns alexa-skill-tunnel <ihre-domain>"
+    echo "sudo cloudflared tunnel run --token <ihr-token> alexa-skill-tunnel"
+else
+    echo -e "${YELLOW}Kein Cloudflare Tunnel Token eingegeben. Cloudflared wurde installiert, die Tunnel-Konfiguration bleibt manuell.${NC}"
+fi
+
+echo -e "${GREEN}Cloudflared installiert. Die Tunnel-Konfiguration ist als manueller Schritt dokumentiert.${NC}"
 
 # 3. gcali Skill Integration (OpenClaw)
 echo -e "${GREEN}3/3: Integriere gcali Skill in OpenClaw...${NC}"
-# Annahme: gcali Skill-Dateien sind im dwhr-pi Repo unter openclaw/skills/gcali
-# Kopiere diese in die OpenClaw Installation
-
-# Hier müsste der Pfad zum geklonten dwhr-pi Repo bekannt sein
-# Fürs Erste nehmen wir an, dass die gcali Dateien manuell kopiert werden müssen
-
 echo -e "${YELLOW}Hinweis: gcali Skill-Dateien müssen manuell in /opt/openclaw/skills/gcali kopiert werden.${NC}"
 echo -e "${YELLOW}Folgen Sie den Anweisungen im API_KEY_GUIDE.md für die Google Kalender API-Einrichtung.${NC}"
 
