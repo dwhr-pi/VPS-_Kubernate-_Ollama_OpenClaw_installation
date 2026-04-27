@@ -31,7 +31,13 @@ else
     echo -e "${YELLOW}Activepieces Installationsskript nicht gefunden. Überspringe Activepieces Installation.${NC}"
 fi
 
-# Weitere Texter, Werbung & Marketing spezifische Tools hier hinzufügen
-# z.B. Skripte für Content-Management-Systeme, SEO-Tools oder spezialisierte KI-Textgeneratoren
+for tool_script in langchain_install.sh chromadb_install.sh playwright_install.sh; do
+    if [ -f "$INSTALL_DIR/scripts/tools/$tool_script" ]; then
+        echo -e "${BLUE}Installiere ${tool_script%.sh} als Teil des Texter, Werbung & Marketing Profils...${NC}"
+        "$INSTALL_DIR/scripts/tools/$tool_script"
+    else
+        echo -e "${YELLOW}${tool_script} nicht gefunden. Überspringe diesen Baustein.${NC}"
+    fi
+done
 
 echo -e "${GREEN}Texter, Werbung & Marketing Profil Installation abgeschlossen.${NC}"

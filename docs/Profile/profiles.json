@@ -1,0 +1,378 @@
+{
+  "generated_from": [
+    "readme.md",
+    "docs/setup_guide.md",
+    "docs/API_KEY_GUIDE.md",
+    "docs/Profil/*.doc.md",
+    "scripts/profiles/*.sh",
+    "scripts/tools/*.sh",
+    "scripts/base_install.sh",
+    "scripts/hybrid_setup.sh",
+    "scripts/install_local_only.sh",
+    "scripts/vps_standalone.sh"
+  ],
+  "assumptions": [
+    "docs/Profile/*.md existierten im ursprünglichen Repository nicht.",
+    "Die Quelldateien unter docs/Profil/*.doc.md wurden als fachliche Profilquelle mit den Skripten zusammengeführt.",
+    "Skriptwahrheit hat Vorrang vor allgemeinen Doku-Formulierungen."
+  ],
+  "profiles": [
+    {
+      "profile": "Programmierer",
+      "source": {
+        "docs_profile_md": true,
+        "readme_or_guide": true,
+        "scripts": true
+      },
+      "system": {
+        "packages": [
+          "git",
+          "nodejs>=22",
+          "pnpm",
+          "python3",
+          "python3-pip",
+          "build-essential",
+          "ruby-full",
+          "libmysqlclient-dev"
+        ],
+        "paths": [
+          "/opt/huginn",
+          "/opt/clawhub-cli",
+          "/usr/local/bin/clawhub",
+          "/opt/langgraph",
+          "/opt/crewai",
+          "/opt/autogen",
+          "/opt/playwright",
+          "/opt/chromadb"
+        ]
+      },
+      "ai_stack": {
+        "ollama_models": [],
+        "agents": [
+          "huginn"
+        ],
+        "cli": [
+          "clawhub"
+        ],
+        "frameworks": [
+          "langgraph",
+          "crewai",
+          "autogen"
+        ],
+        "memory": [
+          "chromadb"
+        ],
+        "browser_tools": [
+          "playwright"
+        ]
+      },
+      "services": [
+        "Huginn (manueller Rails-Start)"
+      ],
+      "network": {
+        "ports": [
+          3000
+        ],
+        "bindings": [
+          "nicht explizit festgelegt"
+        ]
+      },
+      "commands": [
+        "scripts/tools/huginn_install.sh",
+        "scripts/tools/clawhub_cli_install.sh",
+        "scripts/tools/langgraph_install.sh",
+        "scripts/tools/crewai_install.sh",
+        "scripts/tools/autogen_install.sh",
+        "scripts/tools/playwright_install.sh",
+        "scripts/tools/chromadb_install.sh",
+        "RAILS_ENV=production bundle exec rails server -p 3000"
+      ],
+      "inconsistencies": {
+        "missing_in_system": [
+          "kein dedizierter DeepSeek-Coder/Ollama-Pull",
+          "keine explizite Git-Integration als Profilschritt",
+          "keine eigenen Installskripte für Prometheus, Grafana, Loki, OpenTelemetry, Vault, Weaviate, Qdrant, Redis, RabbitMQ oder NATS"
+        ],
+        "missing_in_docs": [
+          "CLI-Verlinkung nach /usr/local/bin/clawhub"
+        ]
+      }
+    },
+    {
+      "profile": "Media_Musik",
+      "source": {
+        "docs_profile_md": true,
+        "readme_or_guide": true,
+        "scripts": true
+      },
+      "system": {
+        "packages": [
+          "git",
+          "nodejs>=22",
+          "pnpm",
+          "ffmpeg",
+          "python3",
+          "python3-pip",
+          "python3-venv"
+        ],
+        "paths": [
+          "/opt/clawbake",
+          "/opt/librosa",
+          "/opt/pydub",
+          "/opt/demucs",
+          "/opt/whisper"
+        ]
+      },
+      "ai_stack": {
+        "ollama_models": [],
+        "agents": [
+          "clawbake"
+        ],
+        "media_tools": [
+          "ffmpeg",
+          "librosa",
+          "pydub",
+          "demucs",
+          "whisper"
+        ]
+      },
+      "services": [],
+      "network": {
+        "ports": [],
+        "bindings": []
+      },
+      "commands": [
+        "scripts/tools/clawbake_install.sh",
+        "scripts/tools/ffmpeg_install.sh",
+        "scripts/tools/librosa_install.sh",
+        "scripts/tools/pydub_install.sh",
+        "scripts/tools/demucs_install.sh",
+        "scripts/tools/whisper_install.sh"
+      ],
+      "inconsistencies": {
+        "missing_in_system": [
+          "keine installierbaren MusicGen- oder Riffusion-Skripte",
+          "keine Video-Generatoren",
+          "keine Alexa-Integration aus dem Profil heraus",
+          "keine installierbaren Stable-Diffusion- oder ControlNet-Skripte"
+        ],
+        "missing_in_docs": []
+      }
+    },
+    {
+      "profile": "KI_Forschung",
+      "source": {
+        "docs_profile_md": true,
+        "readme_or_guide": true,
+        "scripts": true
+      },
+      "system": {
+        "packages": [
+          "git",
+          "nodejs>=22",
+          "pnpm",
+          "python3",
+          "python3-pip",
+          "python3-venv"
+        ],
+        "paths": [
+          "/opt/openclaw-rl",
+          "/opt/flowise",
+          "/opt/langflow",
+          "/opt/langchain",
+          "/opt/llamaindex",
+          "/opt/mlflow",
+          "/opt/whisper"
+        ]
+      },
+      "ai_stack": {
+        "ollama_models": [],
+        "agents": [
+          "openclaw-rl"
+        ],
+        "ui": [
+          "flowise",
+          "langflow"
+        ],
+        "frameworks": [
+          "langchain",
+          "llamaindex"
+        ],
+        "experiment_tracking": [
+          "mlflow"
+        ],
+        "speech": [
+          "whisper"
+        ]
+      },
+      "services": [
+        "Flowise (manuell)",
+        "LangFlow (manuell)"
+      ],
+      "network": {
+        "ports": [
+          3000,
+          7860
+        ],
+        "bindings": [
+          "nicht explizit festgelegt"
+        ]
+      },
+      "commands": [
+        "scripts/tools/openclaw_rl_install.sh",
+        "scripts/tools/flowise_install.sh",
+        "scripts/tools/langflow_install.sh",
+        "scripts/tools/langchain_install.sh",
+        "scripts/tools/llamaindex_install.sh",
+        "scripts/tools/mlflow_install.sh",
+        "scripts/tools/whisper_install.sh"
+      ],
+      "inconsistencies": {
+        "missing_in_system": [
+          "kein automatisches gemini-1.5-pro-Setup",
+          "keine zusätzlichen ML-Frameworks wie TensorFlow oder PyTorch",
+          "keine installierbaren Skripte für Ray, vLLM, Stable Diffusion oder EnviroLLM"
+        ],
+        "missing_in_docs": [
+          "Flowise und LangFlow sind script-seitig deutlich konkreter als in der Doku"
+        ]
+      }
+    },
+    {
+      "profile": "Texter_Werbung_Marketing",
+      "source": {
+        "docs_profile_md": true,
+        "readme_or_guide": true,
+        "scripts": true
+      },
+      "system": {
+        "packages": [
+          "git",
+          "nodejs>=22",
+          "pnpm",
+          "python3",
+          "python3-pip",
+          "python3-venv"
+        ],
+        "paths": [
+          "/opt/n8n",
+          "/opt/activepieces",
+          "/opt/langchain",
+          "/opt/chromadb",
+          "/opt/playwright"
+        ]
+      },
+      "ai_stack": {
+        "ollama_models": [],
+        "agents": [],
+        "automation": [
+          "n8n",
+          "activepieces"
+        ],
+        "frameworks": [
+          "langchain"
+        ],
+        "memory": [
+          "chromadb"
+        ],
+        "browser_tools": [
+          "playwright"
+        ]
+      },
+      "services": [
+        "n8n (manuell)",
+        "Activepieces (manuell)"
+      ],
+      "network": {
+        "ports": [
+          5678,
+          3000
+        ],
+        "bindings": [
+          "nicht explizit festgelegt"
+        ]
+      },
+      "commands": [
+        "scripts/tools/n8n_install.sh",
+        "scripts/tools/activepieces_install.sh",
+        "scripts/tools/langchain_install.sh",
+        "scripts/tools/chromadb_install.sh",
+        "scripts/tools/playwright_install.sh"
+      ],
+      "inconsistencies": {
+        "missing_in_system": [
+          "keine SEO-Tools",
+          "kein Social-Media-Management",
+          "keine dedizierten Textmodelle",
+          "keine installierbaren API-Integrationen für Google Analytics, Meta Ads, TikTok Ads, HubSpot, Notion, Airtable, Buffer, Zapier, Make, Ahrefs, SEMrush oder ElevenLabs"
+        ],
+        "missing_in_docs": []
+      }
+    },
+    {
+      "profile": "Rechtsberatung_Steuerrecht",
+      "source": {
+        "docs_profile_md": true,
+        "readme_or_guide": true,
+        "scripts": true
+      },
+      "system": {
+        "packages": [
+          "pup",
+          "jq",
+          "wget",
+          "curl",
+          "poppler-utils",
+          "tesseract-ocr",
+          "python3",
+          "python3-pip",
+          "python3-venv"
+        ],
+        "paths": [
+          "/opt/zotero",
+          "/usr/local/bin/zotero",
+          "/opt/langchain",
+          "/opt/llamaindex",
+          "/opt/chromadb"
+        ]
+      },
+      "ai_stack": {
+        "ollama_models": [],
+        "agents": [],
+        "document_tools": [
+          "Web fetch",
+          "PDF parsing",
+          "OCR",
+          "Zotero"
+        ],
+        "frameworks": [
+          "langchain",
+          "llamaindex"
+        ],
+        "memory": [
+          "chromadb"
+        ]
+      },
+      "services": [],
+      "network": {
+        "ports": [],
+        "bindings": []
+      },
+      "commands": [
+        "sudo apt-get install -y pup jq wget curl",
+        "sudo apt-get install -y poppler-utils tesseract-ocr",
+        "scripts/tools/zotero_install.sh",
+        "scripts/tools/langchain_install.sh",
+        "scripts/tools/llamaindex_install.sh",
+        "scripts/tools/chromadb_install.sh"
+      ],
+      "inconsistencies": {
+        "missing_in_system": [
+          "scripts/openclaw_skill_config.sh fehlt",
+          "keine installierbaren Skripte für Neo4j, EULLM, ALIENTELLIGENCE, Fristen-Checker oder Risiko-Scoring"
+        ],
+        "missing_in_docs": []
+      }
+    }
+  ]
+}

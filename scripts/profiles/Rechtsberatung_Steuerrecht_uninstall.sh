@@ -25,12 +25,25 @@ echo -e "${BLUE}Deinstalliere PDF-Reader / Document-Parser (poppler-utils, tesse
 sudo apt-get remove -y poppler-utils tesseract-ocr
 sudo apt-get autoremove -y
 
-# 3. Deinstallation von Zotero (falls CLI-Integration vorgenommen wurde)
-echo -e "${BLUE}Deinstalliere Zotero-Integration (falls vorhanden)...${NC}"
-# Hier könnten Skripte zur Deinstallation von zotero-cli oder ähnlichem stehen.
+# 3. Deinstallation von Zotero
+if [ -f "$INSTALL_DIR/scripts/tools/zotero_uninstall.sh" ]; then
+    echo -e "${BLUE}Deinstalliere Zotero als Teil des Profils 'Rechtsberatung & Steuerrecht'...${NC}"
+    "$INSTALL_DIR/scripts/tools/zotero_uninstall.sh"
+else
+    echo -e "${YELLOW}Zotero Deinstallationsskript nicht gefunden. Überspringe Zotero Deinstallation.${NC}"
+fi
 
 # 4. Entfernen von OpenClaw Skills Konfigurationen (falls spezifische Skills für Rechtsdatenbanken existieren)
 echo -e "${BLUE}Entferne OpenClaw Konfigurationen für juristische Skills...${NC}"
 # Hier könnten Skripte aufgerufen werden, die OpenClaw-Skills für juristische Datenbanken dekonfigurieren.
+
+for tool_script in chromadb_uninstall.sh llamaindex_uninstall.sh langchain_uninstall.sh; do
+    if [ -f "$INSTALL_DIR/scripts/tools/$tool_script" ]; then
+        echo -e "${BLUE}Deinstalliere ${tool_script%.sh} als Teil des Profils 'Rechtsberatung & Steuerrecht'...${NC}"
+        "$INSTALL_DIR/scripts/tools/$tool_script"
+    else
+        echo -e "${YELLOW}${tool_script} nicht gefunden. Überspringe diesen Baustein.${NC}"
+    fi
+done
 
 echo -e "${GREEN}Profil 'Rechtsberatung & Steuerrecht' Deinstallation abgeschlossen.${NC}"

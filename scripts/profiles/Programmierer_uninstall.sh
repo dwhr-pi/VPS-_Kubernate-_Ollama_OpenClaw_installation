@@ -31,6 +31,13 @@ else
     echo -e "${YELLOW}Clawhub CLI Deinstallationsskript nicht gefunden. Überspringe Clawhub CLI Deinstallation.${NC}"
 fi
 
-# Weitere programmiererspezifische Tools hier deinstallieren
+for tool_script in chromadb_uninstall.sh playwright_uninstall.sh autogen_uninstall.sh crewai_uninstall.sh langgraph_uninstall.sh; do
+    if [ -f "$INSTALL_DIR/scripts/tools/$tool_script" ]; then
+        echo -e "${BLUE}Deinstalliere ${tool_script%.sh} als Teil des Programmierer-Profils...${NC}"
+        "$INSTALL_DIR/scripts/tools/$tool_script"
+    else
+        echo -e "${YELLOW}${tool_script} nicht gefunden. Überspringe diesen Baustein.${NC}"
+    fi
+done
 
 echo -e "${GREEN}Programmierer-Profil Deinstallation abgeschlossen.${NC}"

@@ -39,6 +39,13 @@ else
     echo -e "${YELLOW}LangFlow Deinstallationsskript nicht gefunden. Überspringe LangFlow Deinstallation.${NC}"
 fi
 
-# Weitere KI-Forschung spezifische Tools hier deinstallieren
+for tool_script in whisper_uninstall.sh mlflow_uninstall.sh llamaindex_uninstall.sh langchain_uninstall.sh; do
+    if [ -f "$INSTALL_DIR/scripts/tools/$tool_script" ]; then
+        echo -e "${BLUE}Deinstalliere ${tool_script%.sh} als Teil des KI-Forschung Profils...${NC}"
+        "$INSTALL_DIR/scripts/tools/$tool_script"
+    else
+        echo -e "${YELLOW}${tool_script} nicht gefunden. Überspringe diesen Baustein.${NC}"
+    fi
+done
 
 echo -e "${GREEN}KI-Forschung Profil Deinstallation abgeschlossen.${NC}"

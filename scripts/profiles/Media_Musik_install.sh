@@ -24,7 +24,21 @@ else
     echo -e "${YELLOW}Clawbake Installationsskript nicht gefunden. Überspringe Clawbake Installation.${NC}"
 fi
 
-# Weitere medien- und musikspezifische Tools hier hinzufügen
-# z.B. FFmpeg, Audio-AI-Tools, Alexa-Integration
+# FFmpeg für Audio-/Video-Verarbeitung
+if [ -f "$INSTALL_DIR/scripts/tools/ffmpeg_install.sh" ]; then
+    echo -e "${BLUE}Installiere FFmpeg als Teil des Media & Musik Profils...${NC}"
+    "$INSTALL_DIR/scripts/tools/ffmpeg_install.sh"
+else
+    echo -e "${YELLOW}FFmpeg Installationsskript nicht gefunden. Überspringe FFmpeg Installation.${NC}"
+fi
+
+for tool_script in librosa_install.sh pydub_install.sh demucs_install.sh whisper_install.sh; do
+    if [ -f "$INSTALL_DIR/scripts/tools/$tool_script" ]; then
+        echo -e "${BLUE}Installiere ${tool_script%.sh} als Teil des Media & Musik Profils...${NC}"
+        "$INSTALL_DIR/scripts/tools/$tool_script"
+    else
+        echo -e "${YELLOW}${tool_script} nicht gefunden. Überspringe diesen Baustein.${NC}"
+    fi
+done
 
 echo -e "${GREEN}Media & Musik Profil Installation abgeschlossen.${NC}"

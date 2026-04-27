@@ -24,16 +24,26 @@ sudo apt-get install -y pup jq wget curl
 echo -e "${BLUE}Installiere PDF-Reader / Document-Parser (poppler-utils, tesseract-ocr)...${NC}"
 sudo apt-get install -y poppler-utils tesseract-ocr
 
-# 3. Installation von Zotero (Desktop-Anwendung, hier nur Vorbereitung oder CLI-Integration)
-# Zotero ist primär eine Desktop-Anwendung. Hier wird eine CLI-Integration oder die Vorbereitung für die Desktop-Installation vorgenommen.
-echo -e "${BLUE}Bereite Zotero-Integration vor (manuelle Desktop-Installation empfohlen)...${NC}"
-echo -e "${YELLOW}Hinweis: Zotero ist eine Desktop-Anwendung. Bitte installiere Zotero manuell auf deinem System.${NC}"
-echo -e "${YELLOW}Besuche https://www.zotero.org/download/ für die Installation.${NC}"
-# Hier könnte ein Skript zum Download des .deb-Pakets stehen oder eine CLI-Integration, falls verfügbar.
+# 3. Installation von Zotero
+if [ -f "$INSTALL_DIR/scripts/tools/zotero_install.sh" ]; then
+    echo -e "${BLUE}Installiere Zotero als Teil des Profils 'Rechtsberatung & Steuerrecht'...${NC}"
+    "$INSTALL_DIR/scripts/tools/zotero_install.sh"
+else
+    echo -e "${YELLOW}Zotero Installationsskript nicht gefunden. Überspringe Zotero Installation.${NC}"
+fi
 
 # 4. Konfiguration für OpenClaw Skills (falls spezifische Skills für Rechtsdatenbanken existieren)
 echo -e "${BLUE}Konfiguriere OpenClaw für juristische Skills...${NC}"
 # Hier könnten Skripte aufgerufen werden, die OpenClaw-Skills für juristische Datenbanken konfigurieren.
 # Beispiel: $INSTALL_DIR/scripts/openclaw_skill_config.sh --skill legal_db_search
+
+for tool_script in langchain_install.sh llamaindex_install.sh chromadb_install.sh; do
+    if [ -f "$INSTALL_DIR/scripts/tools/$tool_script" ]; then
+        echo -e "${BLUE}Installiere ${tool_script%.sh} als Teil des Profils 'Rechtsberatung & Steuerrecht'...${NC}"
+        "$INSTALL_DIR/scripts/tools/$tool_script"
+    else
+        echo -e "${YELLOW}${tool_script} nicht gefunden. Überspringe diesen Baustein.${NC}"
+    fi
+done
 
 echo -e "${GREEN}Profil 'Rechtsberatung & Steuerrecht' Installation abgeschlossen.${NC}"

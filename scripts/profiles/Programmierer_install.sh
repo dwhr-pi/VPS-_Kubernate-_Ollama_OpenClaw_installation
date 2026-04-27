@@ -32,7 +32,13 @@ else
     echo -e "${YELLOW}Clawhub CLI Installationsskript nicht gefunden. Überspringe Clawhub CLI Installation.${NC}"
 fi
 
-# Weitere programmiererspezifische Tools hier hinzufügen
-# z.B. Code-Editoren, Debugger, weitere CLI-Tools
+for tool_script in langgraph_install.sh crewai_install.sh autogen_install.sh playwright_install.sh chromadb_install.sh; do
+    if [ -f "$INSTALL_DIR/scripts/tools/$tool_script" ]; then
+        echo -e "${BLUE}Installiere ${tool_script%.sh} als Teil des Programmierer-Profils...${NC}"
+        "$INSTALL_DIR/scripts/tools/$tool_script"
+    else
+        echo -e "${YELLOW}${tool_script} nicht gefunden. Überspringe diesen Baustein.${NC}"
+    fi
+done
 
 echo -e "${GREEN}Programmierer-Profil Installation abgeschlossen.${NC}"

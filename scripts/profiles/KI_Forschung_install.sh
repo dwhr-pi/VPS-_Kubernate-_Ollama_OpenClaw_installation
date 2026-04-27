@@ -39,7 +39,13 @@ else
     echo -e "${YELLOW}LangFlow Installationsskript nicht gefunden. Überspringe LangFlow Installation.${NC}"
 fi
 
-# Weitere KI-Forschung spezifische Tools hier hinzufügen
-# z.B. Skripte für TensorFlow, PyTorch, oder spezialisierte RL-Frameworks
+for tool_script in langchain_install.sh llamaindex_install.sh mlflow_install.sh whisper_install.sh; do
+    if [ -f "$INSTALL_DIR/scripts/tools/$tool_script" ]; then
+        echo -e "${BLUE}Installiere ${tool_script%.sh} als Teil des KI-Forschung Profils...${NC}"
+        "$INSTALL_DIR/scripts/tools/$tool_script"
+    else
+        echo -e "${YELLOW}${tool_script} nicht gefunden. Überspringe diesen Baustein.${NC}"
+    fi
+done
 
 echo -e "${GREEN}KI-Forschung Profil Installation abgeschlossen.${NC}"

@@ -31,6 +31,13 @@ else
     echo -e "${YELLOW}Activepieces Deinstallationsskript nicht gefunden. Überspringe Activepieces Deinstallation.${NC}"
 fi
 
-# Weitere Texter, Werbung & Marketing spezifische Tools hier deinstallieren
+for tool_script in playwright_uninstall.sh chromadb_uninstall.sh langchain_uninstall.sh; do
+    if [ -f "$INSTALL_DIR/scripts/tools/$tool_script" ]; then
+        echo -e "${BLUE}Deinstalliere ${tool_script%.sh} als Teil des Texter, Werbung & Marketing Profils...${NC}"
+        "$INSTALL_DIR/scripts/tools/$tool_script"
+    else
+        echo -e "${YELLOW}${tool_script} nicht gefunden. Überspringe diesen Baustein.${NC}"
+    fi
+done
 
 echo -e "${GREEN}Texter, Werbung & Marketing Profil Deinstallation abgeschlossen.${NC}"

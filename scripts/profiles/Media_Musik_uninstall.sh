@@ -23,6 +23,21 @@ else
     echo -e "${YELLOW}Clawbake Deinstallationsskript nicht gefunden. Überspringe Clawbake Deinstallation.${NC}"
 fi
 
-# Weitere medien- und musikspezifische Tools hier deinstallieren
+# FFmpeg deinstallieren
+if [ -f "$INSTALL_DIR/scripts/tools/ffmpeg_uninstall.sh" ]; then
+    echo -e "${BLUE}Deinstalliere FFmpeg als Teil des Media & Musik Profils...${NC}"
+    "$INSTALL_DIR/scripts/tools/ffmpeg_uninstall.sh"
+else
+    echo -e "${YELLOW}FFmpeg Deinstallationsskript nicht gefunden. Überspringe FFmpeg Deinstallation.${NC}"
+fi
+
+for tool_script in whisper_uninstall.sh demucs_uninstall.sh pydub_uninstall.sh librosa_uninstall.sh; do
+    if [ -f "$INSTALL_DIR/scripts/tools/$tool_script" ]; then
+        echo -e "${BLUE}Deinstalliere ${tool_script%.sh} als Teil des Media & Musik Profils...${NC}"
+        "$INSTALL_DIR/scripts/tools/$tool_script"
+    else
+        echo -e "${YELLOW}${tool_script} nicht gefunden. Überspringe diesen Baustein.${NC}"
+    fi
+done
 
 echo -e "${GREEN}Media & Musik Profil Deinstallation abgeschlossen.${NC}"

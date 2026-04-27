@@ -45,9 +45,11 @@ Das Setup bietet eine breite Palette an Tools, die du nach Bedarf installieren u
 *   **AutoGPT:** Agenten-Plattform von Significant Gravitas zum Erstellen, Starten und Verwalten komplexer KI-Workflows. Kann lokal per Docker Compose betrieben werden.
 *   **Pipedream:** Serverless-Plattform zur Integration von APIs und Diensten (Self-Hosted Option). Ideal für die schnelle Entwicklung und Bereitstellung von Backend-Logik und Integrationen.
 *   **Huginn:** Open-Source-Agentensystem, das Aktionen im Web automatisiert (ideal für Programmierer-Profil). Ermöglicht das Sammeln, Filtern und Reagieren auf Informationen aus dem Internet.
+*   **FFmpeg:** CLI-Werkzeug für Audio- und Videoverarbeitung. Unterstützt Medienprofile bei Konvertierung, Extraktion und Transcoding.
 *   **Zenbot-trader:** Plattform für automatisierten Krypto-Handel. Ein leistungsstarkes Tool für algorithmischen Handel auf verschiedenen Kryptowährungsbörsen.
 *   **Kimi 2:** KI-Agent von Moonshot AI für intelligente Interaktionen und Aufgaben. Ein fortschrittlicher KI-Assistent, der komplexe Anfragen verstehen und bearbeiten kann.
 *   **Hugging Face:** Integration von Hugging Face Modellen, entweder lokal über Ollama oder über die Hugging Face Inference API. Ermöglicht den Zugriff auf eine riesige Bibliothek von vortrainierten KI-Modellen.
+*   **Zotero:** Literatur- und Quellenverwaltung für Recherche- und Dokumentations-Workflows, besonders relevant für Rechts- und Wissensprofile.
 *   **Home Assistant Core:** Smart Home Automatisierung. Die zentrale Steuerung für dein Smart Home, die eine Vielzahl von Geräten und Diensten integriert.
 *   **Alexa Skill Integration:** Verbindung zu Alexa über Cloudflare Tunnel. Ermöglicht die Sprachsteuerung deiner Smart-Home-Geräte und KI-Agenten über Amazon Alexa.
 *   **Kubernetes (K3s):** Grundlage für VPS-basierte Deployments. Das Setup bereitet einen VPS mit K3s, `kubectl` und einer sauberen Verzeichnisstruktur für nachfolgende Kubernetes-Manifeste vor.
@@ -113,12 +115,16 @@ Das Setup unterstützt die Installation und Deinstallation verschiedener Profile
 │       ├── pipedream_uninstall.sh     # Entfernt eine vorhandene Pipedream Installation wieder
 │       ├── huginn_install.sh          # Installiert Huginn für ereignisgesteuerte Web-Automatisierungen
 │       ├── huginn_uninstall.sh        # Entfernt die Huginn Installation vollständig
+│       ├── ffmpeg_install.sh          # Installiert FFmpeg für Audio- und Videoverarbeitung im Medienprofil
+│       ├── ffmpeg_uninstall.sh        # Entfernt FFmpeg wieder vom System
 │       ├── zenbot_trader_install.sh   # Installiert die Zenbot-Trader-Plattform für automatisierten Krypto-Handel
 │       ├── zenbot_trader_uninstall.sh # Entfernt die Zenbot-Trader Installation wieder
 │       ├── kimi2_install.sh           # Installiert Kimi K2.5 aus primärem oder alternativem Repository und richtet Python-Abhängigkeiten ein
 │       ├── kimi2_uninstall.sh         # Entfernt die Kimi Installation vollständig
 │       ├── huge_facing_install.sh     # Erklärt die Einbindung von Hugging Face Modellen in das Setup
-│       └── huge_facing_uninstall.sh   # Entfernt die hinterlegte Hugging-Face-Integration aus dem Setup-Kontext
+│       ├── huge_facing_uninstall.sh   # Entfernt die hinterlegte Hugging-Face-Integration aus dem Setup-Kontext
+│       ├── zotero_install.sh          # Installiert Zotero für Recherche- und Wissensmanagement unter Linux
+│       └── zotero_uninstall.sh        # Entfernt die Zotero Installation wieder
 │   └── profiles/               # Verzeichnis für Profil-Installations-/Deinstallationsskripte
 │       ├── Programmierer_install.sh
 │       ├── Programmierer_uninstall.sh

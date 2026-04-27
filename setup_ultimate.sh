@@ -133,10 +133,24 @@ TOOLS["LangFlow"]="UI für LangChain, um LLM-Anwendungen visuell zu erstellen un
 TOOLS["AutoGPT"]="Agenten-Plattform von Significant Gravitas zur Erstellung, Ausführung und Verwaltung komplexer KI-Workflows."
 TOOLS["Pipedream"]="Serverless-Plattform zur Integration von APIs und Diensten (Self-Hosted-Option verfügbar)."
 TOOLS["Huginn"]="Open-Source-Agentensystem, das Aktionen im Web automatisiert und Ereignisse überwacht."
+TOOLS["FFmpeg"]="CLI-Werkzeug für Audio- und Videoverarbeitung, nützlich für Medienprofile und Konvertierungs-Workflows."
+TOOLS["LangGraph"]="Graph-basierte Workflow-Orchestrierung für mehrstufige Agentensysteme."
+TOOLS["CrewAI"]="Multi-Agent Framework für spezialisierte Rollen und abgestimmte Team-Workflows."
+TOOLS["AutoGen"]="Microsoft AutoGen für dialogbasierte Multi-Agent Koordination."
+TOOLS["Playwright"]="Browser-Automatisierung für Tests, Scraping und UI-Workflows."
+TOOLS["ChromaDB"]="Lokale Vector-Datenbank für RAG, Prompt-Memory und Wissensspeicher."
+TOOLS["LangChain"]="RAG-, Tool-Use- und Agenten-Bausteine für OpenClaw-nahe Pipelines."
+TOOLS["LlamaIndex"]="Dokumenten-Indexierung und Retrieval für Research- und Legal-Workflows."
+TOOLS["MLflow"]="Experiment-Tracking für Forschungs- und Modellvergleiche."
+TOOLS["Whisper"]="Lokale Speech-to-Text-Pipeline für Audio- und Forschungsdaten."
+TOOLS["librosa"]="Audioanalyse für BPM, Key, Spektren und Energielevel."
+TOOLS["pydub"]="Einfache Audio-Manipulation für Schnitt, Fades und Export."
+TOOLS["Demucs"]="Stem-Separation für Musik- und Remix-Workflows."
 TOOLS["Zenbot_trader"]="Plattform für automatisierten Krypto-Handel mit Backtesting, Sim-Trading und Live-Trading."
 TOOLS["Kimi2"]="KI-Agent von Moonshot AI für intelligente Interaktionen und Aufgaben."
 TOOLS["Clawhub"]="Zentraler Server für die Orchestrierung und Verwaltung von KI-Agenten und deren Interaktionen."
 TOOLS["Huge_Facing"]="Integration von Hugging Face Modellen, entweder lokal über Ollama oder über die Hugging Face Inference API."
+TOOLS["Zotero"]="Literatur- und Quellenverwaltung für Recherche- und Dokumentations-Workflows."
 TOOL_SCRIPT_NAMES["Ollama"]="ollama"
 TOOL_SCRIPT_NAMES["OpenManus"]="openmanus"
 TOOL_SCRIPT_NAMES["OpenClaw"]="openclaw"
@@ -150,10 +164,24 @@ TOOL_SCRIPT_NAMES["LangFlow"]="langflow"
 TOOL_SCRIPT_NAMES["AutoGPT"]="autogpt"
 TOOL_SCRIPT_NAMES["Pipedream"]="pipedream"
 TOOL_SCRIPT_NAMES["Huginn"]="huginn"
+TOOL_SCRIPT_NAMES["FFmpeg"]="ffmpeg"
+TOOL_SCRIPT_NAMES["LangGraph"]="langgraph"
+TOOL_SCRIPT_NAMES["CrewAI"]="crewai"
+TOOL_SCRIPT_NAMES["AutoGen"]="autogen"
+TOOL_SCRIPT_NAMES["Playwright"]="playwright"
+TOOL_SCRIPT_NAMES["ChromaDB"]="chromadb"
+TOOL_SCRIPT_NAMES["LangChain"]="langchain"
+TOOL_SCRIPT_NAMES["LlamaIndex"]="llamaindex"
+TOOL_SCRIPT_NAMES["MLflow"]="mlflow"
+TOOL_SCRIPT_NAMES["Whisper"]="whisper"
+TOOL_SCRIPT_NAMES["librosa"]="librosa"
+TOOL_SCRIPT_NAMES["pydub"]="pydub"
+TOOL_SCRIPT_NAMES["Demucs"]="demucs"
 TOOL_SCRIPT_NAMES["Zenbot_trader"]="zenbot_trader"
 TOOL_SCRIPT_NAMES["Kimi2"]="kimi2"
 TOOL_SCRIPT_NAMES["Clawhub"]="clawhub"
 TOOL_SCRIPT_NAMES["Huge_Facing"]="huge_facing"
+TOOL_SCRIPT_NAMES["Zotero"]="zotero"
 
 run_tool_script() {
     local tool_key="$1"
@@ -205,7 +233,7 @@ show_tool_management_menu() {
     fi
 
     TOOL_CHECKLIST_OPTIONS=()
-    for tool_key in "Ollama" "OpenManus" "OpenClaw" "Clawhub_CLI" "OpenClaw_RL" "Clawbake" "n8n" "Activepieces" "Flowise" "LangFlow" "AutoGPT" "Pipedream" "Huginn" "Zenbot_trader" "Kimi2" "Clawhub" "Huge_Facing"; do
+    for tool_key in "Ollama" "OpenManus" "OpenClaw" "Clawhub_CLI" "OpenClaw_RL" "Clawbake" "n8n" "Activepieces" "Flowise" "LangFlow" "AutoGPT" "Pipedream" "Huginn" "FFmpeg" "LangGraph" "CrewAI" "AutoGen" "Playwright" "ChromaDB" "LangChain" "LlamaIndex" "MLflow" "Whisper" "librosa" "pydub" "Demucs" "Zenbot_trader" "Kimi2" "Clawhub" "Huge_Facing" "Zotero"; do
         STATUS="off"
         if [[ -v INSTALLED_TOOLS_MAP["$tool_key"] ]]; then
             STATUS="on"
@@ -220,7 +248,7 @@ show_tool_management_menu() {
     SELECTED_TOOLS=$(cat /tmp/tool_selection)
 
     # Installation/Deinstallation basierend auf Auswahl
-    for tool_key in "Ollama" "OpenManus" "OpenClaw" "Clawhub_CLI" "OpenClaw_RL" "Clawbake" "n8n" "Activepieces" "Flowise" "LangFlow" "AutoGPT" "Pipedream" "Huginn" "Zenbot_trader" "Kimi2" "Clawhub" "Huge_Facing"; do
+    for tool_key in "Ollama" "OpenManus" "OpenClaw" "Clawhub_CLI" "OpenClaw_RL" "Clawbake" "n8n" "Activepieces" "Flowise" "LangFlow" "AutoGPT" "Pipedream" "Huginn" "FFmpeg" "LangGraph" "CrewAI" "AutoGen" "Playwright" "ChromaDB" "LangChain" "LlamaIndex" "MLflow" "Whisper" "librosa" "pydub" "Demucs" "Zenbot_trader" "Kimi2" "Clawhub" "Huge_Facing" "Zotero"; do
         IS_SELECTED=false
         for selected_key in $SELECTED_TOOLS; do
             if [[ "$tool_key" == "$selected_key" ]]; then
