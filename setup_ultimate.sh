@@ -16,6 +16,61 @@ NC="\033[0m"
 
 # Installationsverzeichnis
 INSTALL_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+METRICS_CONFIG_FILE="$INSTALL_DIR/config/setup_metrics.conf"
+
+ensure_metrics_config() {
+    mkdir -p "$INSTALL_DIR/config"
+    if [ ! -f "$METRICS_CONFIG_FILE" ]; then
+        cat > "$METRICS_CONFIG_FILE" <<'EOF'
+# Editierbare Schätz- und Testwerte für dieses Setup
+# Stand: Letsung MiniPC Testziel mit Windows 11 original + Ubuntu 24.04 LTS in WSL2
+
+TARGET_DEVICE_NAME="Letsung MiniPC"
+TARGET_HOST_OS="Windows 11 original"
+TARGET_LINUX_OS="Ubuntu 24.04 LTS (WSL2)"
+MIN_FREE_GB_RECOMMENDED="80"
+MIN_FREE_GB_ABSOLUTE="50"
+
+OS_DOWNLOAD_TIME_ESTIMATE="5-15 min"
+OS_INSTALL_TIME_ESTIMATE="10-25 min"
+SETUP_DOWNLOAD_TIME_ESTIMATE="< 1 min"
+SETUP_INSTALL_TIME_ESTIMATE="20-60 min"
+UBUNTU_UPDATES_DOWNLOAD_TIME_ESTIMATE="5-20 min"
+UBUNTU_UPDATES_INSTALL_TIME_ESTIMATE="10-30 min"
+OPENCLAW_DOWNLOAD_TIME_ESTIMATE="2-10 min"
+OPENCLAW_BUILD_TIME_ESTIMATE="10-40 min"
+OLLAMA_INSTALL_TIME_ESTIMATE="2-10 min"
+HOME_ASSISTANT_INSTALL_TIME_ESTIMATE="5-20 min"
+CLOUDFLARED_INSTALL_TIME_ESTIMATE="2-10 min"
+
+PROGRAMMIERER_REQUIRED_GB="8-20"
+MEDIA_MUSIK_REQUIRED_GB="15-40"
+KI_FORSCHUNG_REQUIRED_GB="15-50"
+MARKETING_REQUIRED_GB="8-20"
+RECHT_STEUER_REQUIRED_GB="6-15"
+AGENT_ORCHESTRATOR_REQUIRED_GB="10-25"
+AUDIO_REQUIRED_GB="8-20"
+CONTENT_AUTOMATION_REQUIRED_GB="12-30"
+RESEARCH_AGENT_REQUIRED_GB="8-20"
+SECURITY_ANALYST_REQUIRED_GB="5-15"
+TRADING_AI_REQUIRED_GB="8-20"
+VISUAL_CREATOR_REQUIRED_GB="20-60"
+
+NOTES="Alle Werte sind editierbare Schätzwerte. Je nach Bandbreite, CPU, SSD und gewählten Profilen kann der echte Wert deutlich abweichen."
+EOF
+    fi
+}
+
+show_metrics_editor() {
+    ensure_metrics_config
+    dialog --clear --backtitle "OpenClaw & AI Infrastructure - Ultimate Setup V11" \
+    --title "SETUP-MESSWERTE & BENCHMARKS" --editbox "$METRICS_CONFIG_FILE" 30 110 2> /tmp/metrics_config_edit
+
+    if [ $? -eq 0 ]; then
+        cp /tmp/metrics_config_edit "$METRICS_CONFIG_FILE"
+        echo -e "${GREEN}Die editierbaren Setup-Messwerte wurden aktualisiert.${NC}"
+    fi
+}
 
 run_bash_script() {
     local script_path="$1"
@@ -586,11 +641,193 @@ show_tool_management_menu() {
     read -p "Tool-Management abgeschlossen. Drücken Sie Enter..."
 }
 
+declare -A PROFILE_CORE_TOOLS
+declare -A PROFILE_EXTENDED_TOOLS
+declare -A PROFILE_INTEGRATION_TOOLS
+
+PROFILE_CORE_TOOLS["Programmierer"]="Huginn Clawhub_CLI LangGraph CrewAI AutoGen Playwright ChromaDB"
+PROFILE_EXTENDED_TOOLS["Programmierer"]="GitHub_API_Tooling Code_Sandbox VS_Code_Server Puppeteer SQLite Postgres"
+PROFILE_INTEGRATION_TOOLS["Programmierer"]="Docker Kubernetes K3s Prometheus Grafana Loki OpenTelemetry Vault Weaviate Qdrant Redis RabbitMQ NATS"
+
+PROFILE_CORE_TOOLS["Media_Musik"]="Clawbake FFmpeg librosa pydub Demucs Whisper"
+PROFILE_EXTENDED_TOOLS["Media_Musik"]="MusicGen Riffusion ControlNet Hook_Detection BPM_Analyzer Emotion_Tagging"
+PROFILE_INTEGRATION_TOOLS["Media_Musik"]="Suno_API Udio_API Music2P_Pipeline TikTok_Score Stable_Diffusion_WebUI"
+
+PROFILE_CORE_TOOLS["KI_Forschung"]="OpenClaw_RL Flowise LangFlow LangChain LlamaIndex MLflow Whisper"
+PROFILE_EXTENDED_TOOLS["KI_Forschung"]="ChromaDB Weaviate CrewAI AutoGPT Weights_and_Biases vLLM Llama_CPP Ray EnviroLLM"
+PROFILE_INTEGRATION_TOOLS["KI_Forschung"]="Stable_Diffusion_WebUI"
+
+PROFILE_CORE_TOOLS["Texter_Werbung_Marketing"]="n8n Activepieces LangChain ChromaDB Playwright"
+PROFILE_EXTENDED_TOOLS["Texter_Werbung_Marketing"]="Browser_Tool Firecrawl File_System_Tool Weaviate Qdrant Stable_Diffusion_WebUI"
+PROFILE_INTEGRATION_TOOLS["Texter_Werbung_Marketing"]="Google_Analytics_API Meta_Ads_API TikTok_Ads_API HubSpot Notion Airtable Buffer_API Zapier Make Ahrefs SEMrush ElevenLabs"
+
+PROFILE_CORE_TOOLS["Rechtsberatung_Steuerrecht"]="Zotero LangChain LlamaIndex ChromaDB PDF_Parser Qdrant"
+PROFILE_EXTENDED_TOOLS["Rechtsberatung_Steuerrecht"]="EULLM Neo4j Tax_Calculator Deadline_Checker Risk_Scoring"
+PROFILE_INTEGRATION_TOOLS["Rechtsberatung_Steuerrecht"]="AI_Powered_Law_Firms Lawfirm Tax_Law_Agent Risk_Agent Drafting_Agent"
+
+PROFILE_CORE_TOOLS["Agent_Orchestrator"]="LangGraph CrewAI AutoGen Agent_Router Memory_Policies"
+PROFILE_EXTENDED_TOOLS["Agent_Orchestrator"]="ChromaDB Redis NATS Qdrant Weaviate"
+PROFILE_INTEGRATION_TOOLS["Agent_Orchestrator"]="Prometheus Grafana Loki"
+
+PROFILE_CORE_TOOLS["Audio"]="Whisper FFmpeg Piper Coqui_TTS librosa pydub"
+PROFILE_EXTENDED_TOOLS["Audio"]="Voice_Assistant_Runtime"
+PROFILE_INTEGRATION_TOOLS["Audio"]=""
+
+PROFILE_CORE_TOOLS["Content_Automation"]="FFmpeg Whisper Playwright n8n Activepieces YT_DLP"
+PROFILE_EXTENDED_TOOLS["Content_Automation"]="Piper Coqui_TTS Stable_Diffusion_WebUI Trend_Monitor Thumbnail_Pipeline Upload_Automation"
+PROFILE_INTEGRATION_TOOLS["Content_Automation"]=""
+
+PROFILE_CORE_TOOLS["Research_Agent"]="Playwright LangChain LlamaIndex ChromaDB Trend_Monitor GitHub_Research Repo_Comparison"
+PROFILE_EXTENDED_TOOLS["Research_Agent"]="Qdrant Weaviate"
+PROFILE_INTEGRATION_TOOLS["Research_Agent"]=""
+
+PROFILE_CORE_TOOLS["Security_Analyst"]="Nmap Nikto Trivy Fail2Ban"
+PROFILE_EXTENDED_TOOLS["Security_Analyst"]="Fail2Ban_Analyzer Security_Workflow"
+PROFILE_INTEGRATION_TOOLS["Security_Analyst"]=""
+
+PROFILE_CORE_TOOLS["Trading_AI"]="Zenbot_trader Web3_APIs Exchange_APIs"
+PROFILE_EXTENDED_TOOLS["Trading_AI"]="Zenbot_API Risk_Strategy_Analyzer Backtest_Workflow"
+PROFILE_INTEGRATION_TOOLS["Trading_AI"]=""
+
+PROFILE_CORE_TOOLS["Visual_Creator"]="FFmpeg Stable_Diffusion_WebUI ComfyUI RealESRGAN"
+PROFILE_EXTENDED_TOOLS["Visual_Creator"]="AnimateDiff SVD Runway_API Image_Upscaler_Pipeline"
+PROFILE_INTEGRATION_TOOLS["Visual_Creator"]=""
+
+show_tool_group_checklist() {
+    local group_title="$1"
+    local tool_list="$2"
+    local options=()
+    local tool_key
+    local status
+    declare -A installed_map
+
+    normalize_status_file "$INSTALL_DIR/installed_tools.txt" "${TOOL_KEYS[@]}"
+    load_installed_map "$INSTALL_DIR/installed_tools.txt" installed_map
+
+    for tool_key in $tool_list; do
+        [ -n "$tool_key" ] || continue
+        status="off"
+        if [ "${installed_map[$tool_key]:-}" = "1" ]; then
+            status="on"
+        fi
+        options+=("$tool_key" "${TOOLS[$tool_key]}" "$status")
+    done
+
+    if [ ${#options[@]} -eq 0 ]; then
+        dialog --msgbox "Für diesen Block sind aktuell keine Einzeltools definiert." 8 60
+        return 0
+    fi
+
+    dialog --clear --backtitle "OpenClaw & AI Infrastructure - Ultimate Setup V11" \
+    --title "$group_title" --checklist "Wählen Sie Tools zum Installieren/Deinstallieren:" 28 110 18 \
+    "${options[@]}" 2> /tmp/profile_block_tools_selection
+
+    if [ $? -ne 0 ]; then
+        return 0
+    fi
+
+    mapfile -t SELECTED_GROUP_TOOLS < <(tr ' ' '\n' < /tmp/profile_block_tools_selection | tr -d '"' | sed '/^$/d')
+
+    for tool_key in $tool_list; do
+        [ -n "$tool_key" ] || continue
+        if selection_contains "$tool_key" "${SELECTED_GROUP_TOOLS[@]}" && [ "${installed_map[$tool_key]:-}" != "1" ]; then
+            install_tool "$tool_key"
+        elif ! selection_contains "$tool_key" "${SELECTED_GROUP_TOOLS[@]}" && [ "${installed_map[$tool_key]:-}" = "1" ]; then
+            uninstall_tool "$tool_key"
+        fi
+    done
+}
+
+toggle_full_profile_from_block() {
+    local profile_key="$1"
+    declare -A installed_profiles_map
+
+    normalize_status_file "$INSTALL_DIR/installed_profiles.txt" "${PROFILE_KEYS[@]}"
+    load_installed_map "$INSTALL_DIR/installed_profiles.txt" installed_profiles_map
+
+    if [ "${installed_profiles_map[$profile_key]:-}" = "1" ]; then
+        dialog --yesno "Profil '$profile_key' ist aktuell installiert. Möchten Sie das gesamte Profil jetzt deinstallieren?" 8 80
+        if [ $? -eq 0 ]; then
+            uninstall_profile "$profile_key"
+        fi
+    else
+        dialog --yesno "Profil '$profile_key' ist aktuell nicht installiert. Möchten Sie das gesamte Profil jetzt installieren?" 8 80
+        if [ $? -eq 0 ]; then
+            install_profile "$profile_key"
+        fi
+    fi
+}
+
+show_profile_block_detail_menu() {
+    local profile_key="$1"
+    local choice
+
+    while true; do
+        dialog --clear --backtitle "OpenClaw & AI Infrastructure - Ultimate Setup V11" \
+        --title "PROFILBLOCK: $profile_key" --menu "Wählen Sie Block oder Gesamtprofil:" 22 90 8 \
+        "1" "Gesamtes Profil installieren/deinstallieren" \
+        "2" "Kernmodule (wichtig)" \
+        "3" "Erweiterte Module" \
+        "4" "Integrationen / Optional" \
+        "5" "Zurück" 2> /tmp/profile_block_choice
+
+        if [ $? -ne 0 ]; then
+            return 0
+        fi
+
+        choice="$(cat /tmp/profile_block_choice)"
+        case "$choice" in
+            1) toggle_full_profile_from_block "$profile_key" ;;
+            2) show_tool_group_checklist "$profile_key - Kernmodule" "${PROFILE_CORE_TOOLS[$profile_key]}" ;;
+            3) show_tool_group_checklist "$profile_key - Erweiterte Module" "${PROFILE_EXTENDED_TOOLS[$profile_key]}" ;;
+            4) show_tool_group_checklist "$profile_key - Integrationen / Optional" "${PROFILE_INTEGRATION_TOOLS[$profile_key]}" ;;
+            5) return 0 ;;
+        esac
+    done
+}
+
+show_profile_block_browser() {
+    local options=()
+    local profile_key
+
+    for profile_key in "${PROFILE_KEYS[@]}"; do
+        options+=("$profile_key" "${PROFILES[$profile_key]}")
+    done
+
+    dialog --clear --backtitle "OpenClaw & AI Infrastructure - Ultimate Setup V11" \
+    --title "PROFILBLÖCKE & EINZELTOOLS" --menu "Wählen Sie einen Profilblock aus:" 26 100 14 \
+    "${options[@]}" 2> /tmp/profile_block_profile_choice
+
+    if [ $? -ne 0 ]; then
+        return 0
+    fi
+
+    show_profile_block_detail_menu "$(cat /tmp/profile_block_profile_choice)"
+}
+
+show_profile_management_hub() {
+    dialog --clear --backtitle "OpenClaw & AI Infrastructure - Ultimate Setup V11" \
+    --title "PROFIL-MANAGEMENT" --menu "Wählen Sie eine Ansicht:" 18 90 6 \
+    "1" "Schnellansicht: komplette Profile" \
+    "2" "Blockansicht: Profilblöcke + Einzeltools" \
+    "3" "Zurück" 2> /tmp/profile_management_hub_choice
+
+    if [ $? -ne 0 ]; then
+        return 0
+    fi
+
+    case "$(cat /tmp/profile_management_hub_choice)" in
+        1) show_profile_management_menu ;;
+        2) show_profile_block_browser ;;
+        3) return 0 ;;
+    esac
+}
+
 # --- Hauptmenü --- 
 
 show_main_menu() {
     dialog --clear --backtitle "OpenClaw & AI Infrastructure - Ultimate Setup V11" \
-    --title "HAUPTMENÜ" --menu "Wählen Sie Ihr Ziel-System oder eine Aktion:" 25 70 16 \
+    --title "HAUPTMENÜ" --menu "Wählen Sie Ihr Ziel-System oder eine Aktion:" 27 78 17 \
     "1" "System-Update (OS & pnpm)" \
     "2" "Ollama Modell-Manager" \
     "3" "OpenClaw Konfiguration (.env & config.json)" \
@@ -599,12 +836,13 @@ show_main_menu() {
     "6" "Standalone: Nur MiniPC (Lokal)" \
     "7" "Ruflo: Installation & Management" \
     "8" "Tools: Installieren & Deinstallieren" \
-    "9" "Profile: Installieren & Deinstallieren" \
+    "9" "Profile: Blöcke, Gesamtprofile & Einzeltools" \
     "10" "Dokumentation & API-Key Guide" \
     "11" "System-Check & Port-Analyse" \
     "12" "OpenClaw starten (Dev-Modus)" \
     "13" "Home Assistant starten" \
-    "14" "Beenden" 2> /tmp/menu_choice
+    "14" "Setup-Messwerte & Benchmarks bearbeiten" \
+    "15" "Beenden" 2> /tmp/menu_choice
 }
 
 # Hauptschleife
@@ -661,7 +899,7 @@ while true; do
             show_tool_management_menu
             ;;
         9)
-            show_profile_management_menu
+            show_profile_management_hub
             ;;
         10)
             dialog --clear --backtitle "OpenClaw & AI Infrastructure - Ultimate Setup V11" \
@@ -680,6 +918,10 @@ while true; do
             sudo systemctl start homeassistant@homeassistant
             ;;
         14)
+            show_metrics_editor
+            read -p "Setup-Messwerte aktualisiert. Drücken Sie Enter..."
+            ;;
+        15)
             echo -e "${BLUE}Installation beendet. Auf Wiedersehen!${NC}"
             exit 0
             ;;

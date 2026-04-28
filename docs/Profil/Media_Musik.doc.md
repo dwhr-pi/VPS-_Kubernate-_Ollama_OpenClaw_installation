@@ -1,4 +1,4 @@
-# 🎾 Chatverlauf – Media_Musik (OpenClaw + Ollama)
+# 🎾 Chatverlauf – Media Musik (OpenClaw + Ollama)
 
 Quelle: GitHub-Remote `docs/Profil/Media_Musik.doc.md`
 

@@ -1,4 +1,4 @@
-# Profil: Research_Agent
+# Profil: Research Agent
 
 ## Überblick
 

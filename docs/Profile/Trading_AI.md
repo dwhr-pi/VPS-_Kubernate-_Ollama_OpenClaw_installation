@@ -1,4 +1,4 @@
-# Profil: Trading_AI
+# Profil: Trading AI
 
 ## Überblick
 

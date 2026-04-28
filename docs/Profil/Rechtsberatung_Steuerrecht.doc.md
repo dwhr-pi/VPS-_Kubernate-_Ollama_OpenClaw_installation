@@ -1,4 +1,4 @@
-# Chatverlauf – Rechtsberatung_Steuerrecht / Ollama OpenClaw
+# Chatverlauf – Rechtsberatung Steuerrecht / Ollama OpenClaw
 
 Quelle: GitHub-Remote `docs/Profil/Rechtsberatung_Steuerrecht.doc.md`
 

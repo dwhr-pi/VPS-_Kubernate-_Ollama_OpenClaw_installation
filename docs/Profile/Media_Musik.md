@@ -1,4 +1,4 @@
-# Profil: Media_Musik
+# Profil: Media Musik
 
 ## Überblick
 

@@ -1,4 +1,4 @@
-# VPS-_Kubernate-_Ollama_OpenClaw_installation - Ultimate Setup V11
+# VPS- Kubernate- Ollama & OpenClaw installation - Ultimate Setup V11
 
 Dies ist das ultimative Setup für ein hybrides KI- und Smart Home System, das deinen Letsung MiniPC (WSL2) und mehrere kostenlose VPS kombiniert. Es integriert eine Vielzahl von Tools und KI-Agenten, die direkt aus GitHub-Quellen kompiliert werden.
 
@@ -55,6 +55,7 @@ Zusätzliche Hilfen:
 
 *   `docs/CLOUDFLARE_TUNNEL_GUIDE.md` erklärt Schritt für Schritt, wie du den benötigten Cloudflare-Tunnel und Token anlegst.
 *   `docs/WSL_SETUP_GUIDE.md` erklärt WSL unter Windows, Ubuntu-24.04 bzw. andere Linux-Distributionen, sowie Deinstallation und komplettes Zurücksetzen.
+*   `docs/INSTALLATION_BENCHMARKS.md` beschreibt die editierbaren Installations-Schätzwerte und verweist auf `config/setup_metrics.conf`.
 
 Zusätzlich gibt es zwei Profil-Verzeichnisse:
 
@@ -93,6 +94,13 @@ Das Setup bietet eine breite Palette an Tools, die du nach Bedarf installieren u
 ## 👤 Profil-Management
 
 Das Setup unterstützt die Installation und Deinstallation verschiedener Profile über eine interaktive Checkliste. Du kannst mehrere Profile gleichzeitig installieren und verwalten.
+
+Neu dazu kommt eine Blockansicht im Menü:
+
+*   komplette Profile schnell auswählen
+*   Profilblöcke öffnen
+*   Kernmodule, erweiterte Module und Integrationen getrennt anzeigen
+*   einzelne Tools innerhalb eines Profils gezielt an- oder abwählen
 
 *   **Programmierer-Setup:** Enthält Tools für Entwicklung, Code-Generierung (z.B. DeepSeek Coder Modell für Ollama), Git-Integration und Huginn. Ideal für Entwickler, die ihre Produktivität mit KI-Unterstützung steigern möchten.
 *   **Media & Musik:** Beinhaltet Tools für Audio-Verarbeitung (FFmpeg, Audio-AI), Video-Generierung und die Alexa-Integration. Perfekt für Kreative, die KI zur Erstellung und Bearbeitung von Medieninhalten nutzen wollen.
@@ -193,6 +201,7 @@ Das Setup unterstützt die Installation und Deinstallation verschiedener Profile
 │       └── Visual_Creator_uninstall.sh
 ├── docs/
 │   ├── API_KEY_GUIDE.md        # Detaillierte Anleitung für API-Keys, Ports und Fallback-Routing
+│   ├── INSTALLATION_BENCHMARKS.md # Editierbare Schätzwerte für Downloadzeit, Installationszeit und GB-Bedarf
 │   ├── setup_guide.md          # Umfassende Dokumentation des gesamten Setups
 │   ├── PRIVATE_REPO_GUIDE.md   # Anleitung für die Installation aus einem privaten Repository
 │   ├── DNS_DDoS_GUIDE.md       # Anleitung zur DNS-Umstellung und DDoS-Schutz
@@ -212,6 +221,8 @@ Das Setup unterstützt die Installation und Deinstallation verschiedener Profile
 │       ├── KI_Forschung.md
 │       ├── Texter_Werbung_Marketing.md
 │       └── Rechtsberatung_Steuerrecht.md
+├── config/
+│   └── setup_metrics.conf      # Editierbare Benchmarks, Platzbedarf und Zeit-Schätzwerte
 └── installed_profiles.txt      # Liste der aktuell installierten Profile
 └── installed_tools.txt         # Liste der aktuell installierten Tools
 ```

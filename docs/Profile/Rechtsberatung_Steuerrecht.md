@@ -1,4 +1,4 @@
-# Profil: Rechtsberatung_Steuerrecht
+# Profil: Rechtsberatung Steuerrecht
 
 ## Überblick
 

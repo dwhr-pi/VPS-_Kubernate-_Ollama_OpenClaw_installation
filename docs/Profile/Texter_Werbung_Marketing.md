@@ -1,4 +1,4 @@
-# Profil: Texter_Werbung_Marketing
+# Profil: Texter Werbung Marketing
 
 ## Überblick
 

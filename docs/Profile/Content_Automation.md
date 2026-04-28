@@ -1,4 +1,4 @@
-# Profil: Content_Automation
+# Profil: Content Automation
 
 ## Überblick
 

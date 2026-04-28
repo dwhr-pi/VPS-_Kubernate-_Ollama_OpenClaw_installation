@@ -1,4 +1,4 @@
-# Profil: Security_Analyst
+# Profil: Security Analyst
 
 ## Überblick
 

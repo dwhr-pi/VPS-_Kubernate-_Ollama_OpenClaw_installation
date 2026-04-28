@@ -1,4 +1,4 @@
-# 🧾 Chatverlauf – Texter_Werbung_Marketing (OpenClaw + Ollama)
+# 🧾 Chatverlauf – Texter Werbung Marketing (OpenClaw + Ollama)
 
 Quelle: GitHub-Remote `docs/Profil/Texter_Werbung_Marketing.doc.md`
 

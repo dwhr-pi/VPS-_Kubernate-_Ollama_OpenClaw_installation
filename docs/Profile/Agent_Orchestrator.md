@@ -1,4 +1,4 @@
-# Profil: Agent_Orchestrator
+# Profil: Agent Orchestrator
 
 ## Überblick
 

@@ -1,4 +1,4 @@
-# Profil: KI_Forschung
+# Profil: KI Forschung
 
 ## Überblick
 
