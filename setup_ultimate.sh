@@ -853,6 +853,7 @@ show_profile_management_hub() {
 
 show_main_menu() {
     dialog --clear --backtitle "OpenClaw & AI Infrastructure - Ultimate Setup V11" \
+    --cancel-label "Beenden" \
     --title "HAUPTMENÜ" --menu "Wählen Sie Ihr Ziel-System oder eine Aktion:" 27 78 17 \
     "1" "System-Update (OS & pnpm)" \
     "2" "Ollama Modell-Manager" \
@@ -869,6 +870,10 @@ show_main_menu() {
     "13" "Home Assistant starten" \
     "14" "Setup-Messwerte & Benchmarks bearbeiten" \
     "15" "Beenden" 2> /tmp/menu_choice
+
+    if [ $? -ne 0 ]; then
+        printf '%s\n' "15" > /tmp/menu_choice
+    fi
 }
 
 # Hauptschleife
