@@ -5,11 +5,11 @@
 # ==============================================================================
 
 # Farben
-GREEN=\033[0;32m
-BLUE=\033[0;34m
-RED=\033[0;31m
-YELLOW=\033[1;33m
-NC=\033[0m
+GREEN="\033[0;32m"
+BLUE="\033[0;34m"
+RED="\033[0;31m"
+YELLOW="\033[1;33m"
+NC="\033[0m"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 INSTALL_DIR="${INSTALL_DIR:-$(cd "$SCRIPT_DIR/../.." && pwd)}"
@@ -24,7 +24,7 @@ echo -e "${BLUE}Starte Installation von Huginn...${NC}"
 # 1. Abhängigkeiten installieren (Ruby, Bundler, MySQL/PostgreSQL Client)
 echo -e "${GREEN}1/5: Installiere System-Abhängigkeiten für Huginn...${NC}"
 sudo apt update
-sudo apt install -y ruby-full build-essential libmysqlclient-dev # oder libpq-dev für PostgreSQL
+sudo apt install -y ruby-full ruby-bundler build-essential libmysqlclient-dev libpq-dev pkg-config # oder libpq-dev für PostgreSQL
 
 # 2. Huginn aus GitHub klonen
 if [ -d "$HUGINN_DIR" ]; then
@@ -41,8 +41,12 @@ fi
 
 # 3. Ruby Gems installieren mit Bundler
 echo -e "${GREEN}2/5: Installiere Ruby Gems mit Bundler...${NC}"
-gem install bundler
-bundle install --deployment --without development test
+if ! command -v bundle >/dev/null 2>&1; then
+    sudo gem install bundler
+fi
+bundle config set --local path vendor/bundle
+bundle config set --local without "development test"
+bundle install
 if [ $? -ne 0 ]; then
     echo -e "${RED}Fehler: Bundler install für Huginn fehlgeschlagen.${NC}"
     exit 1
@@ -66,4 +70,3 @@ echo -e "${YELLOW}Hinweis: Huginn kann mit 'RAILS_ENV=production bundle exec rai
 
 echo -e "${GREEN}Huginn Installation abgeschlossen.${NC}"
 mark_current_tool_installed
-

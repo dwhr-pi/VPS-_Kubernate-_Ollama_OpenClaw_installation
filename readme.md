@@ -7,6 +7,7 @@ Dies ist das ultimative Setup für ein hybrides KI- und Smart Home System, das d
 Um die interaktive Installationsplattform zu starten, führe einfach den folgenden Befehl in deinem Terminal aus:
 
 ```bash
+cd ~
 curl -sSL https://raw.githubusercontent.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation/main/install.sh | bash
 ```
 

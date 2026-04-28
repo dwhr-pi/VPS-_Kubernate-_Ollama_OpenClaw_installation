@@ -220,6 +220,11 @@ uninstall_profile() {
 show_profile_management_menu() {
     normalize_status_file "$INSTALL_DIR/installed_profiles.txt" "${PROFILE_KEYS[@]}"
 
+    if ! is_base_install_ready; then
+        echo -e "${YELLOW}Hinweis: Ollama und/oder OpenClaw sind aktuell noch nicht vollständig installiert.${NC}"
+        echo -e "${YELLOW}Die Profilverwaltung kann trotzdem geöffnet werden. Einige Profile benötigen für die volle Funktion aber die Basis-Installation.${NC}"
+    fi
+
     # Installierte Profile laden
     declare -A INSTALLED_PROFILES_MAP
     load_installed_map "$INSTALL_DIR/installed_profiles.txt" INSTALLED_PROFILES_MAP

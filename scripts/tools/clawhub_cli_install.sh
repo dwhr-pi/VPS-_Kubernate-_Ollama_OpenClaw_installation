@@ -5,11 +5,11 @@
 # ==============================================================================
 
 # Farben
-GREEN=\033[0;32m
-BLUE=\033[0;34m
-RED=\033[0;31m
-YELLOW=\033[1;33m
-NC=\033[0m
+GREEN="\033[0;32m"
+BLUE="\033[0;34m"
+RED="\033[0;31m"
+YELLOW="\033[1;33m"
+NC="\033[0m"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 INSTALL_DIR="${INSTALL_DIR:-$(cd "$SCRIPT_DIR/../.." && pwd)}"
@@ -30,7 +30,7 @@ echo -e "${BLUE}Starte Installation von Clawhub CLI...${NC}"
 CLAWHUB_CLI_REPO_URL=""
 for repo in "${CLAWHUB_CLI_REPOS[@]}"; do
     [ -z "$repo" ] && continue
-    if git ls-remote "$repo" HEAD >/dev/null 2>&1; then
+    if GIT_TERMINAL_PROMPT=0 git ls-remote "$repo" HEAD >/dev/null 2>&1; then
         CLAWHUB_CLI_REPO_URL="$repo"
         break
     fi
@@ -47,12 +47,12 @@ fi
 if [ -d "$CLAWHUB_CLI_DIR" ]; then
     echo -e "${YELLOW}Clawhub CLI Verzeichnis $CLAWHUB_CLI_DIR existiert bereits. Aktualisiere Repository...${NC}"
     cd "$CLAWHUB_CLI_DIR"
-    git pull --ff-only
+    GIT_TERMINAL_PROMPT=0 git pull --ff-only
 else
     echo -e "${BLUE}Klone Clawhub CLI in $CLAWHUB_CLI_DIR...${NC}"
     sudo mkdir -p "$CLAWHUB_CLI_DIR"
     sudo chown -R $USER:$USER "$CLAWHUB_CLI_DIR"
-    git clone "$CLAWHUB_CLI_REPO_URL" "$CLAWHUB_CLI_DIR"
+    GIT_TERMINAL_PROMPT=0 git clone "$CLAWHUB_CLI_REPO_URL" "$CLAWHUB_CLI_DIR"
     cd "$CLAWHUB_CLI_DIR"
 fi
 
@@ -82,4 +82,3 @@ fi
 
 echo -e "${GREEN}Clawhub CLI Installation abgeschlossen. Du kannst es jetzt mit 'clawhub' aufrufen.${NC}"
 mark_current_tool_installed
-

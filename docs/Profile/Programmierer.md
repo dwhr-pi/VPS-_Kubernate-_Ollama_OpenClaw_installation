@@ -193,3 +193,4 @@ fehlende Sandbox-Isolation und Secret-Leaks. Schlage konkrete Hardening-Maßnahm
 - Huginn benötigt weiterhin manuelle `.env`-Anpassung und einen manuellen Start.
 - Standardport von Huginn ist `3000` und kollidiert potenziell mit OpenClaw, Flowise, Activepieces und Zenbot.
 - Für das volle Zielbild aus der Quelldatei fehlen noch mehrere Infra- und Observability-Module als echte Install-/Uninstall-Skripte.
+- Falls bei einem Git-Clone überhaupt ein GitHub-Username abgefragt wird, ist damit dein eigener GitHub-Benutzer gemeint. Das sollte nur bei privaten oder geschützten Repositories nötig sein; öffentliche Repositories sollten ohne Login klonen.
