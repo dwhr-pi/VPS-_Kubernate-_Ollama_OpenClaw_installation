@@ -175,6 +175,7 @@ load_installed_map() {
     local file_path="$1"
     local map_name="$2"
     local entry_name
+    local -n target_map="$map_name"
 
     [ -f "$file_path" ] || return 0
 
@@ -182,7 +183,7 @@ load_installed_map() {
         entry_name="${entry_name%$'\r'}"
         entry_name="${entry_name//\"/}"
         [ -n "$entry_name" ] || continue
-        eval "$map_name[\"\$entry_name\"]=1"
+        target_map["$entry_name"]=1
     done < "$file_path"
 }
 
@@ -208,6 +209,30 @@ is_base_install_ready() {
     [ -f /opt/openclaw/package.json ] || return 1
     [ -d /opt/openclaw/node_modules ] || return 1
     return 0
+}
+
+sync_core_tool_status() {
+    local status_changed=0
+
+    normalize_status_file "$INSTALL_DIR/installed_tools.txt" "${TOOL_KEYS[@]}"
+
+    if command -v ollama >/dev/null 2>&1; then
+        if ! grep -Fxq "Ollama" "$INSTALL_DIR/installed_tools.txt" 2>/dev/null; then
+            append_unique_line "$INSTALL_DIR/installed_tools.txt" "Ollama"
+            status_changed=1
+        fi
+    fi
+
+    if [ -d /opt/openclaw ] && [ -f /opt/openclaw/package.json ]; then
+        if ! grep -Fxq "OpenClaw" "$INSTALL_DIR/installed_tools.txt" 2>/dev/null; then
+            append_unique_line "$INSTALL_DIR/installed_tools.txt" "OpenClaw"
+            status_changed=1
+        fi
+    fi
+
+    if [ "$status_changed" -eq 1 ]; then
+        echo -e "${BLUE}Hinweis: Der Tool-Status fuer Ollama/OpenClaw wurde aus der vorhandenen Systeminstallation nachsynchronisiert.${NC}"
+    fi
 }
 
 run_base_install_if_needed() {
@@ -603,6 +628,7 @@ uninstall_tool() {
 
 # Funktion zum Anzeigen des Tool-Management-Menüs
 show_tool_management_menu() {
+    sync_core_tool_status
     normalize_status_file "$INSTALL_DIR/installed_tools.txt" "${TOOL_KEYS[@]}"
 
     # Installierte Tools laden

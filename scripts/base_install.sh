@@ -5,6 +5,10 @@
 # aus den GitHub-Quellen mit pnpm.
 # ==============================================================================
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+INSTALL_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+source "$INSTALL_DIR/scripts/helpers/status_tracking.sh"
+
 # Farben
 GREEN="\033[0;32m"
 BLUE="\033[0;34m"
@@ -128,6 +132,9 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
+init_tool_tracking "OpenClaw"
+mark_current_tool_installed
+
 echo -e "${GREEN}OpenClaw Build abgeschlossen. Prüfe nun auf ignorierte pnpm-Build-Skripte...${NC}"
 handle_ignored_build_scripts || true
 
@@ -152,5 +159,8 @@ if ! command -v ollama >/dev/null 2>&1; then
 else
     echo -e "${GREEN}Ollama ist bereits installiert.${NC}"
 fi
+
+init_tool_tracking "Ollama"
+mark_current_tool_installed
 
 echo -e "${GREEN}Basis-Installation abgeschlossen.${NC}"

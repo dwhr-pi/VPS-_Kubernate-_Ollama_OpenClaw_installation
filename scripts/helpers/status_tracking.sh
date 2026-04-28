@@ -102,6 +102,7 @@ load_installed_map() {
     local file_path="$1"
     local map_name="$2"
     local entry_name
+    local -n target_map="$map_name"
 
     [ -f "$file_path" ] || return 0
 
@@ -109,7 +110,7 @@ load_installed_map() {
         entry_name="${entry_name%$'\r'}"
         entry_name="${entry_name//\"/}"
         [ -n "$entry_name" ] || continue
-        eval "$map_name[\"\$entry_name\"]=1"
+        target_map["$entry_name"]=1
     done < "$file_path"
 }
 
