@@ -4,7 +4,7 @@
 # Beschreibung: Dies ist das Hauptinstallationsskript für die ultimative KI-Infrastruktur.
 # Es bietet eine interaktive Menüführung zur Installation, Deinstallation und Verwaltung verschiedener KI-Tools, Profile und Systemkomponenten.
 # Das Skript unterstützt hybride Setups (MiniPC + Multi-VPS), Standalone-Installationen und bietet Funktionen wie Auto-Updates, Ollama-Modellverwaltung und OpenClaw-Konfiguration.
-# Version: V11
+# Version: V11.01
 #
 
 # Farben & UI
@@ -13,6 +13,8 @@ BLUE="\033[0;34m"
 RED="\033[0;31m"
 YELLOW="\033[1;33m"
 NC="\033[0m"
+APP_VERSION="11.01"
+APP_TITLE="OpenClaw & AI Infrastructure - Ultimate Setup V${APP_VERSION}"
 
 # Installationsverzeichnis
 INSTALL_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -63,7 +65,7 @@ EOF
 
 show_metrics_editor() {
     ensure_metrics_config
-    dialog --clear --backtitle "OpenClaw & AI Infrastructure - Ultimate Setup V11" \
+    dialog --clear --backtitle "$APP_TITLE" \
     --title "SETUP-MESSWERTE & BENCHMARKS" --editbox "$METRICS_CONFIG_FILE" 30 110 2> /tmp/metrics_config_edit
 
     if [ $? -eq 0 ]; then
@@ -81,6 +83,15 @@ run_bash_script() {
     fi
 
     bash "$script_path"
+}
+
+print_exit_message() {
+    clear
+    echo
+    echo -e "${YELLOW}Setup beendet. Bis zum naechsten Mal.${NC}"
+    echo -e "${YELLOW}Zum Neustart siehe README oder direkt:${NC}"
+    echo -e "${YELLOW}cd ~/openclaw_ultimate_setup && bash ./setup_ultimate.sh${NC}"
+    echo
 }
 
 append_unique_line() {
@@ -318,7 +329,7 @@ show_profile_management_menu() {
         PROFILE_CHECKLIST_OPTIONS+=("$profile_key" "${PROFILES[$profile_key]}" "$STATUS")
     done
 
-    dialog --clear --backtitle "OpenClaw & AI Infrastructure - Ultimate Setup V11" \
+    dialog --clear --backtitle "$APP_TITLE" \
     --title "PROFIL-MANAGEMENT" --checklist "Wählen Sie Profile zum Installieren/Deinstallieren:" 30 100 18 \
     "${PROFILE_CHECKLIST_OPTIONS[@]}" 2> /tmp/profile_selection
 
@@ -644,7 +655,7 @@ show_tool_management_menu() {
         TOOL_CHECKLIST_OPTIONS+=("$tool_key" "${TOOLS[$tool_key]}" "$STATUS")
     done
 
-    dialog --clear --backtitle "OpenClaw & AI Infrastructure - Ultimate Setup V11" \
+    dialog --clear --backtitle "$APP_TITLE" \
     --title "TOOL-MANAGEMENT" --checklist "Wählen Sie Tools zum Installieren/Deinstallieren:" 32 110 24 \
     "${TOOL_CHECKLIST_OPTIONS[@]}" 2> /tmp/tool_selection
 
@@ -744,7 +755,7 @@ show_tool_group_checklist() {
         return 0
     fi
 
-    dialog --clear --backtitle "OpenClaw & AI Infrastructure - Ultimate Setup V11" \
+    dialog --clear --backtitle "$APP_TITLE" \
     --title "$group_title" --checklist "Wählen Sie Tools zum Installieren/Deinstallieren:" 28 110 18 \
     "${options[@]}" 2> /tmp/profile_block_tools_selection
 
@@ -789,7 +800,7 @@ show_profile_block_detail_menu() {
     local choice
 
     while true; do
-        dialog --clear --backtitle "OpenClaw & AI Infrastructure - Ultimate Setup V11" \
+        dialog --clear --backtitle "$APP_TITLE" \
         --title "PROFILBLOCK: $profile_key" --menu "Wählen Sie Block oder Gesamtprofil:" 22 90 8 \
         "1" "Gesamtes Profil installieren/deinstallieren" \
         "2" "Kernmodule (wichtig)" \
@@ -820,7 +831,7 @@ show_profile_block_browser() {
         options+=("$profile_key" "${PROFILES[$profile_key]}")
     done
 
-    dialog --clear --backtitle "OpenClaw & AI Infrastructure - Ultimate Setup V11" \
+    dialog --clear --backtitle "$APP_TITLE" \
     --title "PROFILBLÖCKE & EINZELTOOLS" --menu "Wählen Sie einen Profilblock aus:" 26 100 14 \
     "${options[@]}" 2> /tmp/profile_block_profile_choice
 
@@ -832,7 +843,7 @@ show_profile_block_browser() {
 }
 
 show_profile_management_hub() {
-    dialog --clear --backtitle "OpenClaw & AI Infrastructure - Ultimate Setup V11" \
+    dialog --clear --backtitle "$APP_TITLE" \
     --title "PROFIL-MANAGEMENT" --menu "Wählen Sie eine Ansicht:" 18 90 6 \
     "1" "Schnellansicht: komplette Profile" \
     "2" "Blockansicht: Profilblöcke + Einzeltools" \
@@ -852,7 +863,10 @@ show_profile_management_hub() {
 # --- Hauptmenü --- 
 
 show_main_menu() {
-    dialog --clear --backtitle "OpenClaw & AI Infrastructure - Ultimate Setup V11" \
+    local dialog_rc
+
+    : > /tmp/menu_choice
+    dialog --clear --backtitle "$APP_TITLE" \
     --cancel-label "Beenden" \
     --title "HAUPTMENÜ" --menu "Wählen Sie Ihr Ziel-System oder eine Aktion:" 27 78 17 \
     "1" "System-Update (OS & pnpm)" \
@@ -871,15 +885,27 @@ show_main_menu() {
     "14" "Setup-Messwerte & Benchmarks bearbeiten" \
     "15" "Beenden" 2> /tmp/menu_choice
 
-    if [ $? -ne 0 ]; then
+    dialog_rc=$?
+    if [ $dialog_rc -ne 0 ]; then
         printf '%s\n' "15" > /tmp/menu_choice
     fi
+
+    return 0
 }
 
 # Hauptschleife
 while true; do
     show_main_menu
-    CHOICE=$(cat /tmp/menu_choice)
+    if [ -s /tmp/menu_choice ]; then
+        CHOICE=$(cat /tmp/menu_choice)
+    else
+        CHOICE="15"
+    fi
+
+    if [ "$CHOICE" = "15" ]; then
+        print_exit_message
+        exit 0
+    fi
     
     case $CHOICE in
         1)
@@ -933,7 +959,7 @@ while true; do
             show_profile_management_hub
             ;;
         10)
-            dialog --clear --backtitle "OpenClaw & AI Infrastructure - Ultimate Setup V11" \
+            dialog --clear --backtitle "$APP_TITLE" \
             --title "Dokumentation & API-Key Guide" --textbox "$INSTALL_DIR/docs/API_KEY_GUIDE.md" 25 80
             ;;
         11)
@@ -953,7 +979,7 @@ while true; do
             read -p "Setup-Messwerte aktualisiert. Drücken Sie Enter..."
             ;;
         15)
-            echo -e "${BLUE}Installation beendet. Auf Wiedersehen!${NC}"
+            print_exit_message
             exit 0
             ;;
         *)
