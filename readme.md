@@ -1,4 +1,4 @@
-# VPS- Kubernate- Ollama & OpenClaw installation - Ultimate Setup V11
+# VPS- Kubernate- Ollama & OpenClaw installation - Ultimate Setup V11.06
 
 Dies ist das ultimative Setup für ein hybrides KI- und Smart Home System, das deinen Letsung MiniPC (WSL2) und mehrere kostenlose VPS kombiniert. Es integriert eine Vielzahl von Tools und KI-Agenten, die direkt aus GitHub-Quellen kompiliert werden.
 
@@ -15,6 +15,8 @@ Dieser Befehl lädt das `install.sh` Skript herunter und führt es aus. Das Skri
 
 **Wichtig für Einsteiger:** Während der Installation wirst du mehrfach nach einem Passwort gefragt. Gemeint ist dabei das `sudo`-Passwort deines Linux-Benutzers, also das Passwort des Ubuntu-/Linux-Users innerhalb von WSL oder auf deinem Server.
 
+**Sprachauswahl schon beim ersten Start:** Noch vor der Frage nach einem privaten GitHub-Repository kannst du jetzt bereits die Setup-Sprache festlegen. Diese Auswahl wird ausgelagert gespeichert und bei späteren Starts wiederverwendet.
+
 **Für private Repositories:** Das Skript wird dich nach einem GitHub Personal Access Token (PAT) fragen. Eine Anleitung zur Erstellung findest du in der `docs/PRIVATE_REPO_GUIDE.md`.
 
 **Für die OpenClaw `.env`:** Eine eigene Detaildokumentation zur `.env`-Struktur, zu den Feldern und zur originalen OpenClaw-Vorlage findest du in [docs/OPENCLAW_ENV_GUIDE.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/OPENCLAW_ENV_GUIDE.md:1).
@@ -26,6 +28,7 @@ Dazu gehören jetzt insbesondere:
 - OpenClaw-`.env`- und `config.json`-Vorlagen
 - Statusdateien für installierte Tools und Profile
 - editierbare Installations-Messwerte
+- ausgelagerte Sprachvorgaben in `~/.openclaw_ultimate_user_data/setup_preferences.conf`
 - Profil-Quellen aus `docs/Profil`
 - abgeleitete Profilseiten aus `docs/Profile`
 - ein separater Bereich für künftige Benutzer-Prompts

@@ -4,7 +4,7 @@
 # Beschreibung: Dies ist das Hauptinstallationsskript für die ultimative KI-Infrastruktur.
 # Es bietet eine interaktive Menüführung zur Installation, Deinstallation und Verwaltung verschiedener KI-Tools, Profile und Systemkomponenten.
 # Das Skript unterstützt hybride Setups (MiniPC + Multi-VPS), Standalone-Installationen und bietet Funktionen wie Auto-Updates, Ollama-Modellverwaltung und OpenClaw-Konfiguration.
-# Version: V11.05
+# Version: V11.06
 #
 
 # Farben & UI
@@ -13,7 +13,7 @@ BLUE="\033[0;34m"
 RED="\033[0;31m"
 YELLOW="\033[1;33m"
 NC="\033[0m"
-APP_VERSION="11.05"
+APP_VERSION="11.06"
 APP_TITLE="OpenClaw & AI Infrastructure - Ultimate Setup V${APP_VERSION}"
 
 # Installationsverzeichnis
@@ -28,8 +28,19 @@ METRICS_CONFIG_FILE="$USER_WORKSPACE_DIR/setup_metrics.conf"
 METRICS_HISTORY_FILE="$USER_METRICS_LOG_DIR/operation_history.tsv"
 PROFILE_STATUS_FILE="$USER_WORKSPACE_DIR/installed_profiles.txt"
 TOOL_STATUS_FILE="$USER_WORKSPACE_DIR/installed_tools.txt"
+SETUP_PREFERENCES_FILE="$USER_WORKSPACE_DIR/setup_preferences.conf"
+SCRIPT_ROOT_DIR="$INSTALL_DIR"
+LANGUAGE_SELECTION_REQUIRED=0
+
+if [ ! -f "$SETUP_PREFERENCES_FILE" ]; then
+    LANGUAGE_SELECTION_REQUIRED=1
+fi
+
+source "$INSTALL_DIR/scripts/lang/common.sh"
+load_setup_language
 
 ensure_user_workspace() {
+    ensure_setup_preferences
     mkdir -p "$USER_WORKSPACE_DIR"
     mkdir -p "$USER_OPENCLAW_TEMPLATE_DIR"
     mkdir -p "$USER_PROFILE_SOURCE_DIR"
@@ -297,9 +308,9 @@ run_bash_script() {
 print_exit_message() {
     clear
     echo
-    echo -e "${YELLOW}Setup beendet. Bis zum naechsten Mal.${NC}"
-    echo -e "${YELLOW}Zum Neustart siehe README oder direkt:${NC}"
-    echo -e "${YELLOW}cd ~/openclaw_ultimate_setup && bash ./setup_ultimate.sh${NC}"
+    echo -e "${YELLOW}${TXT_EXIT_LINE_1:-Setup beendet. Bis zum naechsten Mal.}${NC}"
+    echo -e "${YELLOW}${TXT_EXIT_LINE_2:-Zum Neustart siehe README oder direkt:}${NC}"
+    echo -e "${YELLOW}${TXT_EXIT_RESTART:-cd ~/openclaw_ultimate_setup && bash ./setup_ultimate.sh}${NC}"
     echo
 }
 
@@ -308,15 +319,16 @@ show_user_workspace_menu() {
 
     while true; do
         dialog --clear --backtitle "$APP_TITLE" \
-        --title "BENUTZER-WORKSPACE" --menu "Bearbeitbare und sensible Dateien liegen außerhalb des Repos." 21 104 8 \
-        "1" "Pfad anzeigen" \
-        "2" "Workspace-Dateien auflisten" \
-        "3" "OpenClaw Vorlagen aus dem Repo neu in den Workspace kopieren" \
-        "4" "Profil-Quellen und Profilseiten aus dem Repo neu in den Workspace kopieren" \
-        "5" "Prompt-Bereich im Workspace anzeigen" \
-        "6" "Letzte Messwerte anzeigen" \
-        "7" "Benutzer-Workspace komplett löschen" \
-        "8" "Zurück" 2> /tmp/user_workspace_choice
+        --title "${TXT_WORKSPACE_MENU_TITLE:-BENUTZER-WORKSPACE}" --menu "${TXT_WORKSPACE_MENU_PROMPT:-Bearbeitbare und sensible Dateien liegen außerhalb des Repos.}" 22 104 9 \
+        "1" "${TXT_WORKSPACE_OPTION_1:-Pfad anzeigen}" \
+        "2" "${TXT_WORKSPACE_OPTION_2:-Workspace-Dateien auflisten}" \
+        "3" "${TXT_WORKSPACE_OPTION_3:-OpenClaw Vorlagen aus dem Repo neu in den Workspace kopieren}" \
+        "4" "${TXT_WORKSPACE_OPTION_4:-Profil-Quellen und Profilseiten aus dem Repo neu in den Workspace kopieren}" \
+        "5" "${TXT_WORKSPACE_OPTION_5:-Prompt-Bereich im Workspace anzeigen}" \
+        "6" "${TXT_WORKSPACE_OPTION_6:-Letzte Messwerte anzeigen}" \
+        "7" "${TXT_WORKSPACE_OPTION_7:-Benutzer-Workspace komplett löschen}" \
+        "8" "${TXT_WORKSPACE_OPTION_8:-Sprache ändern}" \
+        "9" "${TXT_WORKSPACE_OPTION_9:-Zurück}" 2> /tmp/user_workspace_choice
 
         if [ $? -ne 0 ]; then
             return 0
@@ -326,23 +338,23 @@ show_user_workspace_menu() {
             1)
                 clear
                 echo
-                echo -e "${YELLOW}Benutzer-Workspace:${NC} $USER_WORKSPACE_DIR"
+                echo -e "${YELLOW}${TXT_WORKSPACE_PATH_LABEL:-Benutzer-Workspace:}${NC} $USER_WORKSPACE_DIR"
                 echo
-                read -p "Drücken Sie Enter..."
+                read -p "${TXT_PRESS_ENTER:-Drücken Sie Enter...}"
                 ;;
             2)
                 clear
                 echo
-                echo -e "${YELLOW}Inhalt des Benutzer-Workspace:${NC}"
+                echo -e "${YELLOW}${TXT_WORKSPACE_CONTENT_LABEL:-Inhalt des Benutzer-Workspace:}${NC}"
                 find "$USER_WORKSPACE_DIR" -maxdepth 3 -type f 2>/dev/null | sort
                 echo
-                read -p "Drücken Sie Enter..."
+                read -p "${TXT_PRESS_ENTER:-Drücken Sie Enter...}"
                 ;;
             3)
                 cp "$INSTALL_DIR/scripts/config_templates/openclaw/.env.template" "$USER_OPENCLAW_TEMPLATE_DIR/.env.template"
                 cp "$INSTALL_DIR/scripts/config_templates/openclaw/config.json.template" "$USER_OPENCLAW_TEMPLATE_DIR/config.json.template"
-                echo -e "${GREEN}Die OpenClaw-Vorlagen wurden erneut in den Benutzer-Workspace kopiert.${NC}"
-                read -p "Drücken Sie Enter..."
+                echo -e "${GREEN}${TXT_WORKSPACE_OPENCLAW_COPIED:-Die OpenClaw-Vorlagen wurden erneut in den Benutzer-Workspace kopiert.}${NC}"
+                read -p "${TXT_PRESS_ENTER:-Drücken Sie Enter...}"
                 ;;
             4)
                 if [ -d "$INSTALL_DIR/docs/Profil" ]; then
@@ -351,31 +363,37 @@ show_user_workspace_menu() {
                 if [ -d "$INSTALL_DIR/docs/Profile" ]; then
                     find "$INSTALL_DIR/docs/Profile" -maxdepth 1 -type f -name '*.md' -exec cp {} "$USER_PROFILE_RENDERED_DIR/" \;
                 fi
-                echo -e "${GREEN}Profil-Quellen und abgeleitete Profilseiten wurden erneut in den Benutzer-Workspace kopiert.${NC}"
-                read -p "Drücken Sie Enter..."
+                echo -e "${GREEN}${TXT_WORKSPACE_PROFILES_COPIED:-Profil-Quellen und abgeleitete Profilseiten wurden erneut in den Benutzer-Workspace kopiert.}${NC}"
+                read -p "${TXT_PRESS_ENTER:-Drücken Sie Enter...}"
                 ;;
             5)
                 clear
                 echo
-                echo -e "${YELLOW}Prompt-Bereich im Benutzer-Workspace:${NC} $USER_PROMPTS_DIR"
+                echo -e "${YELLOW}${TXT_WORKSPACE_PROMPTS_LABEL:-Prompt-Bereich im Benutzer-Workspace:}${NC} $USER_PROMPTS_DIR"
                 echo
                 find "$USER_PROMPTS_DIR" -maxdepth 2 -type f 2>/dev/null | sort
                 echo
-                read -p "Drücken Sie Enter..."
+                read -p "${TXT_PRESS_ENTER:-Drücken Sie Enter...}"
                 ;;
             6)
                 show_recent_measurements
                 ;;
             7)
-                dialog --yesno "Der gesamte Benutzer-Workspace wird gelöscht. Darin können .env-Vorlagen, Statusdateien und weitere sensible Daten liegen. Wirklich fortfahren?" 10 100
+                dialog --yesno "${TXT_WORKSPACE_DELETE_CONFIRM:-Der gesamte Benutzer-Workspace wird gelöscht. Darin können .env-Vorlagen, Statusdateien und weitere sensible Daten liegen. Wirklich fortfahren?}" 10 100
                 if [ $? -eq 0 ]; then
                     rm -rf "$USER_WORKSPACE_DIR"
-                    echo -e "${YELLOW}Der Benutzer-Workspace wurde gelöscht.${NC}"
+                    echo -e "${YELLOW}${TXT_WORKSPACE_DELETED:-Der Benutzer-Workspace wurde gelöscht.}${NC}"
                     ensure_user_workspace
-                    read -p "Drücken Sie Enter..."
+                    read -p "${TXT_PRESS_ENTER:-Drücken Sie Enter...}"
                 fi
                 ;;
             8)
+                if show_setup_language_menu; then
+                    echo -e "${GREEN}${TXT_LANGUAGE_CHANGED:-Die Setup-Sprache wurde aktualisiert.}${NC}"
+                    read -p "${TXT_PRESS_ENTER:-Drücken Sie Enter...}"
+                fi
+                ;;
+            9)
                 return 0
                 ;;
         esac
@@ -1059,7 +1077,7 @@ show_tool_group_checklist() {
     done
 
     if [ ${#options[@]} -eq 0 ]; then
-        dialog --msgbox "Für diesen Block sind aktuell keine Einzeltools definiert." 8 60
+        dialog --msgbox "${TXT_NO_TOOLS_DEFINED:-Für diesen Block sind aktuell keine Einzeltools definiert.}" 8 60
         return 0
     fi
 
@@ -1176,25 +1194,29 @@ show_main_menu() {
 
     : > /tmp/menu_choice
     dialog --clear --backtitle "$APP_TITLE" \
-    --cancel-label "Beenden" \
-    --title "HAUPTMENÜ" --menu "Wählen Sie Ihr Ziel-System oder eine Aktion:" 27 84 19 \
-    "1" "Setup-Update + System-Update (Repo, OS & pnpm)" \
-    "2" "Ollama Modell-Manager" \
-    "3" "OpenClaw Konfiguration (.env & config.json)" \
-    "4" "Hybrid: Letsung MiniPC + Multi-VPS (Empfohlen)" \
-    "5" "Standalone: Nur VPS (Cloud-Native)" \
-    "6" "Standalone: Nur MiniPC (Lokal)" \
-    "7" "Ruflo: Installation & Management" \
-    "8" "Tools: Installieren & Deinstallieren" \
-    "9" "Profile: Blöcke, Gesamtprofile & Einzeltools" \
-    "10" "Dokumentation & API-Key Guide" \
-    "11" "System-Check & Port-Analyse" \
-    "12" "OpenClaw starten (Dev-Modus)" \
-    "13" "Home Assistant starten" \
-    "14" "Setup-Messwerte & Benchmarks bearbeiten" \
-    "15" "Setup hart mit GitHub main abgleichen" \
-    "16" "Benutzer-Workspace verwalten" \
-    "17" "Beenden" 2> /tmp/menu_choice
+    --cancel-label "${TXT_CANCEL_LABEL:-Beenden}" \
+    --title "${TXT_MENU_TITLE:-HAUPTMENÜ}" --menu "${TXT_MENU_PROMPT:-Wählen Sie Ihr Ziel-System oder eine Aktion:}" 31 92 23 \
+    "1" "${TXT_MENU_1:-Setup-Update + System-Update (Repo, OS & pnpm)}" \
+    "2" "${TXT_MENU_2:-Ollama Modell-Manager}" \
+    "3" "${TXT_MENU_3:-OpenClaw Konfiguration (.env & config.json)}" \
+    "4" "${TXT_MENU_4:-Hybrid: Letsung MiniPC + Multi-VPS (Empfohlen)}" \
+    "5" "${TXT_MENU_5:-Standalone: Nur VPS (Cloud-Native)}" \
+    "6" "${TXT_MENU_6:-Standalone: Nur MiniPC (Lokal)}" \
+    "─" "${TXT_SEPARATOR_LINE:-────────────────────────────────────────────────────────}" \
+    "7" "${TXT_MENU_7:-Ruflo: Installation & Management}" \
+    "──" "${TXT_SEPARATOR_LINE:-────────────────────────────────────────────────────────}" \
+    "8" "${TXT_MENU_8:-Tools: Installieren & Deinstallieren}" \
+    "9" "${TXT_MENU_9:-Profile: Blöcke, Gesamtprofile & Einzeltools}" \
+    "───" "${TXT_SEPARATOR_LINE:-────────────────────────────────────────────────────────}" \
+    "10" "${TXT_MENU_10:-Dokumentation & API-Key Guide}" \
+    "11" "${TXT_MENU_11:-System-Check & Port-Analyse}" \
+    "12" "${TXT_MENU_12:-OpenClaw starten (Dev-Modus)}" \
+    "13" "${TXT_MENU_13:-Home Assistant starten}" \
+    "────" "${TXT_SEPARATOR_LINE:-────────────────────────────────────────────────────────}" \
+    "14" "${TXT_MENU_14:-Setup-Messwerte & Benchmarks bearbeiten}" \
+    "15" "${TXT_MENU_15:-Setup hart mit GitHub main abgleichen}" \
+    "16" "${TXT_MENU_16:-Benutzer-Workspace verwalten}" \
+    "17" "${TXT_MENU_17:-Beenden}" 2> /tmp/menu_choice
 
     dialog_rc=$?
     if [ $dialog_rc -ne 0 ]; then
@@ -1206,6 +1228,10 @@ show_main_menu() {
 
 # Hauptschleife
 while true; do
+    if [ "$LANGUAGE_SELECTION_REQUIRED" = "1" ]; then
+        show_setup_language_menu || true
+        LANGUAGE_SELECTION_REQUIRED=0
+    fi
     show_main_menu
     if [ -s /tmp/menu_choice ]; then
         CHOICE="$(tr -d '[:space:]' < /tmp/menu_choice)"
@@ -1292,6 +1318,9 @@ while true; do
                 echo -e "${RED}Standalone MiniPC-Setup abgebrochen, weil die Basis-Installation fehlgeschlagen ist.${NC}"
             fi
             read -p "Standalone MiniPC-Setup abgeschlossen. Drücken Sie Enter..."
+            ;;
+        "─"|"──"|"───"|"────")
+            continue
             ;;
         7)
             show_operation_intro \
