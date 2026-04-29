@@ -36,6 +36,8 @@ git pull --ff-only
 bash ./setup_ultimate.sh
 ```
 
+Alternativ kannst du im Menü den Punkt `Setup-Update + System-Update (Repo, OS & pnpm)` nutzen. Dieser zieht den aktuellen Repository-Stand direkt im Setup-Verzeichnis und aktualisiert danach Ubuntu sowie `pnpm`.
+
 Wenn du das lokale Setup wieder entfernen möchtest, hast du zwei saubere Wege:
 
 1. Zuerst im Menü `Tools: Installieren & Deinstallieren` und `Profile: Installieren & Deinstallieren` alle gewünschten Komponenten wieder abwählen.

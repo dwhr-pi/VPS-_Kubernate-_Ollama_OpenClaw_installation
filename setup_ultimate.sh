@@ -869,7 +869,7 @@ show_main_menu() {
     dialog --clear --backtitle "$APP_TITLE" \
     --cancel-label "Beenden" \
     --title "HAUPTMENÜ" --menu "Wählen Sie Ihr Ziel-System oder eine Aktion:" 27 78 17 \
-    "1" "System-Update (OS & pnpm)" \
+    "1" "Setup-Update + System-Update (Repo, OS & pnpm)" \
     "2" "Ollama Modell-Manager" \
     "3" "OpenClaw Konfiguration (.env & config.json)" \
     "4" "Hybrid: Letsung MiniPC + Multi-VPS (Empfohlen)" \
