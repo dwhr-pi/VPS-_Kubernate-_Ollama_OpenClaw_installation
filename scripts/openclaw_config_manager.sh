@@ -35,6 +35,8 @@ edit_file() {
     fi
 
     echo -e "${BLUE}Öffne Datei zum Bearbeiten: ${file_path}${NC}"
+    echo -e "${YELLOW}Hinweis: Details zur OpenClaw-.env und zur originalen Vorlage stehen in docs/OPENCLAW_ENV_GUIDE.md${NC}"
+    echo -e "${YELLOW}Hinweise zur Beschaffung von API-Schlüsseln stehen in docs/API_KEY_GUIDE.md${NC}"
     if command -v nano >/dev/null 2>&1; then
         nano "$file_path"
     elif command -v vi >/dev/null 2>&1; then

@@ -17,6 +17,8 @@ Dieser Befehl lädt das `install.sh` Skript herunter und führt es aus. Das Skri
 
 **Für private Repositories:** Das Skript wird dich nach einem GitHub Personal Access Token (PAT) fragen. Eine Anleitung zur Erstellung findest du in der `docs/PRIVATE_REPO_GUIDE.md`.
 
+**Für die OpenClaw `.env`:** Eine eigene Detaildokumentation zur `.env`-Struktur, zu den Feldern und zur originalen OpenClaw-Vorlage findest du in [docs/OPENCLAW_ENV_GUIDE.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/OPENCLAW_ENV_GUIDE.md:1).
+
 ## 🔄 Setup erneut starten
 
 Wenn du das Setup-Menü erneut starten möchtest, navigiere in das Installationsverzeichnis (standardmäßig `~/openclaw_ultimate_setup`) und führe das Hauptskript aus:
@@ -54,7 +56,7 @@ Wenn du zusätzlich lokal installierte Komponenten wie `Home Assistant`, `Ollama
 
 ## 📖 Dokumentation
 
-Eine detaillierte Anleitung zur Konfiguration, API-Keys, Port-Analyse und den verschiedenen Setup-Optionen findest du in der `docs/API_KEY_GUIDE.md`, `docs/setup_guide.md` und `docs/DNS_DDoS_GUIDE.md` innerhalb dieses Repositorys.
+Eine detaillierte Anleitung zur Konfiguration, API-Keys, Port-Analyse und den verschiedenen Setup-Optionen findest du in der `docs/API_KEY_GUIDE.md`, `docs/setup_guide.md`, `docs/DNS_DDoS_GUIDE.md` und [docs/OPENCLAW_ENV_GUIDE.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/OPENCLAW_ENV_GUIDE.md:1) innerhalb dieses Repositorys.
 
 Zusätzliche Hilfen:
 
