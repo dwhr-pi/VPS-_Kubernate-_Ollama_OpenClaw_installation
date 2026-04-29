@@ -4,7 +4,7 @@
 # Beschreibung: Dies ist das Hauptinstallationsskript für die ultimative KI-Infrastruktur.
 # Es bietet eine interaktive Menüführung zur Installation, Deinstallation und Verwaltung verschiedener KI-Tools, Profile und Systemkomponenten.
 # Das Skript unterstützt hybride Setups (MiniPC + Multi-VPS), Standalone-Installationen und bietet Funktionen wie Auto-Updates, Ollama-Modellverwaltung und OpenClaw-Konfiguration.
-# Version: V11.11
+# Version: V11.12
 #
 
 # Farben & UI
@@ -13,7 +13,7 @@ BLUE="\033[0;34m"
 RED="\033[0;31m"
 YELLOW="\033[1;33m"
 NC="\033[0m"
-APP_VERSION="11.11"
+APP_VERSION="11.12"
 APP_TITLE="OpenClaw & AI Infrastructure - Ultimate Setup V${APP_VERSION}"
 
 # Installationsverzeichnis
@@ -84,25 +84,25 @@ und nicht versehentlich in Git oder GitHub landen.
 EOF
     fi
 
-    if [ ! -f "$USER_DIALOGRC_FILE" ]; then
-        cat > "$USER_DIALOGRC_FILE" <<'EOF'
+    cat > "$USER_DIALOGRC_FILE" <<'EOF'
 # Ausgelagerte dialog-Farben für das Ultimate Setup
 use_colors = ON
-screen_color = (WHITE,BLUE,ON)
+use_shadow = OFF
+screen_color = (WHITE,BLACK,ON)
 shadow_color = (BLACK,BLACK,ON)
 dialog_color = (BLACK,WHITE,OFF)
-title_color = (YELLOW,WHITE,ON)
-border_color = (BLUE,WHITE,ON)
-button_active_color = (WHITE,GREEN,ON)
+title_color = (YELLOW,BLUE,ON)
+border_color = (WHITE,BLUE,ON)
+button_active_color = (BLACK,GREEN,ON)
 button_inactive_color = (BLACK,WHITE,OFF)
 button_key_active_color = (WHITE,GREEN,ON)
 button_key_inactive_color = (BLUE,WHITE,ON)
-button_label_active_color = (YELLOW,GREEN,ON)
+button_label_active_color = (BLACK,GREEN,ON)
 button_label_inactive_color = (BLACK,WHITE,ON)
 check_color = (BLACK,WHITE,OFF)
-check_selected_color = (WHITE,GREEN,ON)
+check_selected_color = (BLACK,GREEN,ON)
 tag_color = (BLUE,WHITE,ON)
-tag_selected_color = (WHITE,GREEN,ON)
+tag_selected_color = (BLACK,GREEN,ON)
 item_color = (BLACK,WHITE,OFF)
 item_selected_color = (WHITE,BLUE,ON)
 inputbox_color = (BLACK,WHITE,OFF)
@@ -112,10 +112,9 @@ searchbox_title_color = (YELLOW,WHITE,ON)
 menubox_color = (BLACK,WHITE,OFF)
 menubox_border_color = (BLUE,WHITE,ON)
 position_indicator_color = (YELLOW,WHITE,ON)
-uarrow_color = (GREEN,WHITE,ON)
-darrow_color = (GREEN,WHITE,ON)
+uarrow_color = (BLACK,GREEN,ON)
+darrow_color = (BLACK,GREEN,ON)
 EOF
-    fi
 
     if [ ! -f "$METRICS_HISTORY_FILE" ]; then
         printf 'timestamp\toperation_id\toperation_title\tstatus\tduration_seconds\tfree_kb_before\tfree_kb_after\tdelta_kb\n' > "$METRICS_HISTORY_FILE"
@@ -1272,7 +1271,7 @@ show_profile_management_hub() {
 
 show_main_menu() {
     local dialog_rc
-    local menu_height=25
+    local menu_height=24
     local menu_width=88
     local menu_rows=17
     local term_lines=0
