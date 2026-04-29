@@ -4,7 +4,7 @@
 # Beschreibung: Dies ist das Hauptinstallationsskript für die ultimative KI-Infrastruktur.
 # Es bietet eine interaktive Menüführung zur Installation, Deinstallation und Verwaltung verschiedener KI-Tools, Profile und Systemkomponenten.
 # Das Skript unterstützt hybride Setups (MiniPC + Multi-VPS), Standalone-Installationen und bietet Funktionen wie Auto-Updates, Ollama-Modellverwaltung und OpenClaw-Konfiguration.
-# Version: V11.10
+# Version: V11.11
 #
 
 # Farben & UI
@@ -13,7 +13,7 @@ BLUE="\033[0;34m"
 RED="\033[0;31m"
 YELLOW="\033[1;33m"
 NC="\033[0m"
-APP_VERSION="11.10"
+APP_VERSION="11.11"
 APP_TITLE="OpenClaw & AI Infrastructure - Ultimate Setup V${APP_VERSION}"
 
 # Installationsverzeichnis
@@ -24,6 +24,7 @@ USER_PROFILE_SOURCE_DIR="$USER_WORKSPACE_DIR/profil_quellen"
 USER_PROFILE_RENDERED_DIR="$USER_WORKSPACE_DIR/profile_ableitungen"
 USER_PROMPTS_DIR="$USER_WORKSPACE_DIR/prompts"
 USER_METRICS_LOG_DIR="$USER_WORKSPACE_DIR/metrics_logs"
+USER_DIALOGRC_FILE="$USER_WORKSPACE_DIR/dialogrc"
 METRICS_CONFIG_FILE="$USER_WORKSPACE_DIR/setup_metrics.conf"
 METRICS_HISTORY_FILE="$USER_METRICS_LOG_DIR/operation_history.tsv"
 PROFILE_STATUS_FILE="$USER_WORKSPACE_DIR/installed_profiles.txt"
@@ -83,11 +84,45 @@ und nicht versehentlich in Git oder GitHub landen.
 EOF
     fi
 
+    if [ ! -f "$USER_DIALOGRC_FILE" ]; then
+        cat > "$USER_DIALOGRC_FILE" <<'EOF'
+# Ausgelagerte dialog-Farben für das Ultimate Setup
+use_colors = ON
+screen_color = (WHITE,BLUE,ON)
+shadow_color = (BLACK,BLACK,ON)
+dialog_color = (BLACK,WHITE,OFF)
+title_color = (YELLOW,WHITE,ON)
+border_color = (BLUE,WHITE,ON)
+button_active_color = (WHITE,GREEN,ON)
+button_inactive_color = (BLACK,WHITE,OFF)
+button_key_active_color = (WHITE,GREEN,ON)
+button_key_inactive_color = (BLUE,WHITE,ON)
+button_label_active_color = (YELLOW,GREEN,ON)
+button_label_inactive_color = (BLACK,WHITE,ON)
+check_color = (BLACK,WHITE,OFF)
+check_selected_color = (WHITE,GREEN,ON)
+tag_color = (BLUE,WHITE,ON)
+tag_selected_color = (WHITE,GREEN,ON)
+item_color = (BLACK,WHITE,OFF)
+item_selected_color = (WHITE,BLUE,ON)
+inputbox_color = (BLACK,WHITE,OFF)
+inputbox_border_color = (BLUE,WHITE,ON)
+searchbox_color = (BLACK,WHITE,OFF)
+searchbox_title_color = (YELLOW,WHITE,ON)
+menubox_color = (BLACK,WHITE,OFF)
+menubox_border_color = (BLUE,WHITE,ON)
+position_indicator_color = (YELLOW,WHITE,ON)
+uarrow_color = (GREEN,WHITE,ON)
+darrow_color = (GREEN,WHITE,ON)
+EOF
+    fi
+
     if [ ! -f "$METRICS_HISTORY_FILE" ]; then
         printf 'timestamp\toperation_id\toperation_title\tstatus\tduration_seconds\tfree_kb_before\tfree_kb_after\tdelta_kb\n' > "$METRICS_HISTORY_FILE"
     fi
 
     touch "$PROFILE_STATUS_FILE" "$TOOL_STATUS_FILE"
+    export DIALOGRC="$USER_DIALOGRC_FILE"
 }
 
 ensure_metrics_config() {
@@ -1237,13 +1272,32 @@ show_profile_management_hub() {
 
 show_main_menu() {
     local dialog_rc
+    local menu_height=25
+    local menu_width=88
+    local menu_rows=17
+    local term_lines=0
+    local term_cols=0
+    local begin_row=1
+    local begin_col=1
 
     : > /tmp/menu_choice
+    if command -v tput >/dev/null 2>&1; then
+        term_lines="$(tput lines 2>/dev/null || echo 0)"
+        term_cols="$(tput cols 2>/dev/null || echo 0)"
+        if [ "$term_lines" -gt "$menu_height" ]; then
+            begin_row=$(( (term_lines - menu_height) / 2 + 1 ))
+        fi
+        if [ "$term_cols" -gt "$menu_width" ]; then
+            begin_col=$(( (term_cols - menu_width) / 2 ))
+        fi
+    fi
+
     dialog --clear --backtitle "$APP_TITLE" \
+    --begin "$begin_row" "$begin_col" \
     --ok-label "${TXT_OK_LABEL:-✔  OK}" \
     --cancel-label "${TXT_CANCEL_LABEL:-🚪 Beenden}" \
     --extra-button --extra-label "${TXT_OPTIONS_BUTTON:-⚙  Optionen}" \
-    --title "${TXT_MENU_TITLE:-HAUPTMENÜ}" --menu "${TXT_MENU_PROMPT:-Wählen Sie Ihr Ziel-System oder eine Aktion:}" 25 88 17 \
+    --title "${TXT_MENU_TITLE:-HAUPTMENÜ}" --menu "${TXT_MENU_PROMPT:-Wählen Sie Ihr Ziel-System oder eine Aktion:}" "$menu_height" "$menu_width" "$menu_rows" \
     "1" "${TXT_MENU_1:-Setup-Update + System-Update (Repo, OS & pnpm)}" \
     "2" "${TXT_MENU_2:-Ollama Modell-Manager}" \
     "3" "${TXT_MENU_3:-OpenClaw Konfiguration (.env & config.json)}" \
