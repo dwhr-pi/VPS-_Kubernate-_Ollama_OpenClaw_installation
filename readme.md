@@ -21,6 +21,15 @@ Dieser Befehl lädt das `install.sh` Skript herunter und führt es aus. Das Skri
 
 **Wichtig für sensible Daten:** Bearbeitbare und sensible Dateien werden ab den neueren Setup-Versionen zusätzlich außerhalb des Repositories in `~/.openclaw_ultimate_user_data` abgelegt. Dadurch bleiben API-Keys, bearbeitete Vorlagen und Statusdateien beim Repo-Update sauber getrennt und werden nicht versehentlich ins Git-Repository geschrieben.
 
+Dazu gehören jetzt insbesondere:
+
+- OpenClaw-`.env`- und `config.json`-Vorlagen
+- Statusdateien für installierte Tools und Profile
+- editierbare Installations-Messwerte
+- Profil-Quellen aus `docs/Profil`
+- abgeleitete Profilseiten aus `docs/Profile`
+- ein separater Bereich für künftige Benutzer-Prompts
+
 ## 🔐 Sicherheit bei der Nutzung
 
 Dieses Setup trennt ab den neueren Versionen bewusst zwischen:
@@ -137,6 +146,7 @@ Zusätzliche Hilfen:
 *   `docs/WSL_SETUP_GUIDE.md` erklärt WSL unter Windows, Ubuntu-24.04 bzw. andere Linux-Distributionen, sowie Deinstallation und komplettes Zurücksetzen.
 *   `docs/INSTALLATION_BENCHMARKS.md` beschreibt die editierbaren Installations-Schätzwerte und verweist auf `config/setup_metrics.conf`.
 *   sensible und bearbeitbare Setup-Dateien liegen jetzt außerhalb des Repos in `~/.openclaw_ultimate_user_data`.
+*   über `Benutzer-Workspace verwalten` kannst du diese ausgelagerten Dateien anzeigen, neu aus dem Repo kopieren oder vollständig löschen.
 
 Zusätzlich gibt es zwei Profil-Verzeichnisse:
 

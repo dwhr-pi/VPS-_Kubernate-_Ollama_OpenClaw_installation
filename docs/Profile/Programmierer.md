@@ -17,6 +17,7 @@ Es beschreibt ein OpenClaw- und Ollama-kompatibles Multi-Agent-Setup für Entwic
   - AutoGen unter `/opt/autogen`
   - Playwright unter `/opt/playwright`
   - ChromaDB unter `/opt/chromadb`
+  - Code Sandbox als Kernmodul für isolierte Entwicklungs- und Ausführungs-Workflows
 
 ## Dokumentierte zusätzliche Tools
 

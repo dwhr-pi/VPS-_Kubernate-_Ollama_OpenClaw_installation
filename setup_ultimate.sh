@@ -20,6 +20,9 @@ APP_TITLE="OpenClaw & AI Infrastructure - Ultimate Setup V${APP_VERSION}"
 INSTALL_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 USER_WORKSPACE_DIR="${HOME}/.openclaw_ultimate_user_data"
 USER_OPENCLAW_TEMPLATE_DIR="$USER_WORKSPACE_DIR/openclaw"
+USER_PROFILE_SOURCE_DIR="$USER_WORKSPACE_DIR/profil_quellen"
+USER_PROFILE_RENDERED_DIR="$USER_WORKSPACE_DIR/profile_ableitungen"
+USER_PROMPTS_DIR="$USER_WORKSPACE_DIR/prompts"
 METRICS_CONFIG_FILE="$USER_WORKSPACE_DIR/setup_metrics.conf"
 PROFILE_STATUS_FILE="$USER_WORKSPACE_DIR/installed_profiles.txt"
 TOOL_STATUS_FILE="$USER_WORKSPACE_DIR/installed_tools.txt"
@@ -27,6 +30,9 @@ TOOL_STATUS_FILE="$USER_WORKSPACE_DIR/installed_tools.txt"
 ensure_user_workspace() {
     mkdir -p "$USER_WORKSPACE_DIR"
     mkdir -p "$USER_OPENCLAW_TEMPLATE_DIR"
+    mkdir -p "$USER_PROFILE_SOURCE_DIR"
+    mkdir -p "$USER_PROFILE_RENDERED_DIR"
+    mkdir -p "$USER_PROMPTS_DIR"
 
     if [ ! -f "$USER_OPENCLAW_TEMPLATE_DIR/.env.template" ]; then
         cp "$INSTALL_DIR/scripts/config_templates/openclaw/.env.template" "$USER_OPENCLAW_TEMPLATE_DIR/.env.template"
@@ -34,6 +40,32 @@ ensure_user_workspace() {
 
     if [ ! -f "$USER_OPENCLAW_TEMPLATE_DIR/config.json.template" ]; then
         cp "$INSTALL_DIR/scripts/config_templates/openclaw/config.json.template" "$USER_OPENCLAW_TEMPLATE_DIR/config.json.template"
+    fi
+
+    if [ -d "$INSTALL_DIR/docs/Profil" ]; then
+        find "$INSTALL_DIR/docs/Profil" -maxdepth 1 -type f -name '*.doc.md' | while IFS= read -r source_file; do
+            target_file="$USER_PROFILE_SOURCE_DIR/$(basename "$source_file")"
+            if [ ! -f "$target_file" ]; then
+                cp "$source_file" "$target_file"
+            fi
+        done
+    fi
+
+    if [ -d "$INSTALL_DIR/docs/Profile" ]; then
+        find "$INSTALL_DIR/docs/Profile" -maxdepth 1 -type f -name '*.md' | while IFS= read -r rendered_file; do
+            target_file="$USER_PROFILE_RENDERED_DIR/$(basename "$rendered_file")"
+            if [ ! -f "$target_file" ]; then
+                cp "$rendered_file" "$target_file"
+            fi
+        done
+    fi
+
+    if [ ! -f "$USER_PROMPTS_DIR/README.txt" ]; then
+        cat > "$USER_PROMPTS_DIR/README.txt" <<'EOF'
+Hier können künftig benutzerdefinierte Prompt-Dateien abgelegt werden.
+Diese Dateien liegen bewusst außerhalb des Repositories, damit sie bei Updates erhalten bleiben
+und nicht versehentlich in Git oder GitHub landen.
+EOF
     fi
 
     touch "$PROFILE_STATUS_FILE" "$TOOL_STATUS_FILE"
@@ -197,12 +229,14 @@ show_user_workspace_menu() {
 
     while true; do
         dialog --clear --backtitle "$APP_TITLE" \
-        --title "BENUTZER-WORKSPACE" --menu "Bearbeitbare und sensible Dateien liegen außerhalb des Repos." 18 100 6 \
+        --title "BENUTZER-WORKSPACE" --menu "Bearbeitbare und sensible Dateien liegen außerhalb des Repos." 20 104 7 \
         "1" "Pfad anzeigen" \
         "2" "Workspace-Dateien auflisten" \
         "3" "OpenClaw Vorlagen aus dem Repo neu in den Workspace kopieren" \
-        "4" "Benutzer-Workspace komplett löschen" \
-        "5" "Zurück" 2> /tmp/user_workspace_choice
+        "4" "Profil-Quellen und Profilseiten aus dem Repo neu in den Workspace kopieren" \
+        "5" "Prompt-Bereich im Workspace anzeigen" \
+        "6" "Benutzer-Workspace komplett löschen" \
+        "7" "Zurück" 2> /tmp/user_workspace_choice
 
         if [ $? -ne 0 ]; then
             return 0
@@ -231,6 +265,25 @@ show_user_workspace_menu() {
                 read -p "Drücken Sie Enter..."
                 ;;
             4)
+                if [ -d "$INSTALL_DIR/docs/Profil" ]; then
+                    find "$INSTALL_DIR/docs/Profil" -maxdepth 1 -type f -name '*.doc.md' -exec cp {} "$USER_PROFILE_SOURCE_DIR/" \;
+                fi
+                if [ -d "$INSTALL_DIR/docs/Profile" ]; then
+                    find "$INSTALL_DIR/docs/Profile" -maxdepth 1 -type f -name '*.md' -exec cp {} "$USER_PROFILE_RENDERED_DIR/" \;
+                fi
+                echo -e "${GREEN}Profil-Quellen und abgeleitete Profilseiten wurden erneut in den Benutzer-Workspace kopiert.${NC}"
+                read -p "Drücken Sie Enter..."
+                ;;
+            5)
+                clear
+                echo
+                echo -e "${YELLOW}Prompt-Bereich im Benutzer-Workspace:${NC} $USER_PROMPTS_DIR"
+                echo
+                find "$USER_PROMPTS_DIR" -maxdepth 2 -type f 2>/dev/null | sort
+                echo
+                read -p "Drücken Sie Enter..."
+                ;;
+            6)
                 dialog --yesno "Der gesamte Benutzer-Workspace wird gelöscht. Darin können .env-Vorlagen, Statusdateien und weitere sensible Daten liegen. Wirklich fortfahren?" 10 100
                 if [ $? -eq 0 ]; then
                     rm -rf "$USER_WORKSPACE_DIR"
@@ -239,7 +292,7 @@ show_user_workspace_menu() {
                     read -p "Drücken Sie Enter..."
                 fi
                 ;;
-            5)
+            7)
                 return 0
                 ;;
         esac
@@ -841,8 +894,8 @@ declare -A PROFILE_CORE_TOOLS
 declare -A PROFILE_EXTENDED_TOOLS
 declare -A PROFILE_INTEGRATION_TOOLS
 
-PROFILE_CORE_TOOLS["Programmierer"]="Huginn Clawhub_CLI LangGraph CrewAI AutoGen Playwright ChromaDB"
-PROFILE_EXTENDED_TOOLS["Programmierer"]="GitHub_API_Tooling Code_Sandbox VS_Code_Server Puppeteer SQLite Postgres"
+PROFILE_CORE_TOOLS["Programmierer"]="Huginn Clawhub_CLI LangGraph CrewAI AutoGen Playwright ChromaDB Code_Sandbox"
+PROFILE_EXTENDED_TOOLS["Programmierer"]="GitHub_API_Tooling VS_Code_Server Puppeteer SQLite Postgres"
 PROFILE_INTEGRATION_TOOLS["Programmierer"]="Docker Kubernetes K3s Prometheus Grafana Loki OpenTelemetry Vault Weaviate Qdrant Redis RabbitMQ NATS"
 
 PROFILE_CORE_TOOLS["Media_Musik"]="Clawbake FFmpeg librosa pydub Demucs Whisper"
