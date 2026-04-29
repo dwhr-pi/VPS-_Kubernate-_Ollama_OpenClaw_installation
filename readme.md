@@ -32,7 +32,9 @@ Wenn es Änderungen im Repository gab und du dein bestehendes Setup aktualisiere
 
 ```bash
 cd ~/openclaw_ultimate_setup
-git pull --ff-only
+git fetch origin --prune
+git checkout main 2>/dev/null || git checkout -b main --track origin/main
+git pull --ff-only origin main
 bash ./setup_ultimate.sh
 ```
 

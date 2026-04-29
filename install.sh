@@ -57,7 +57,21 @@ fi
 if [ -d "$INSTALL_DIR" ]; then
     echo -e "${YELLOW}Installationsverzeichnis $INSTALL_DIR existiert bereits. Aktualisiere Repository...${NC}"
     cd "$INSTALL_DIR"
-    git pull --ff-only
+    git fetch origin --prune
+    if git show-ref --verify --quiet refs/remotes/origin/main; then
+        if git symbolic-ref --quiet HEAD >/dev/null 2>&1; then
+            CURRENT_BRANCH="$(git rev-parse --abbrev-ref HEAD)"
+            if [ "$CURRENT_BRANCH" != "main" ]; then
+                git checkout main 2>/dev/null || git checkout -b main --track origin/main
+            fi
+        else
+            git checkout -B main origin/main
+        fi
+        git pull --ff-only origin main
+    else
+        echo -e "${RED}Fehler: Remote-Branch origin/main wurde nicht gefunden.${NC}"
+        exit 1
+    fi
 else
     echo -e "${BLUE}Klone Repository in $INSTALL_DIR...${NC}"
     git clone "$GIT_AUTH_URL" "$INSTALL_DIR"
