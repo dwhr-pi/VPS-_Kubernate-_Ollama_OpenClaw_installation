@@ -42,6 +42,38 @@ bash ./setup_ultimate.sh
 
 Alternativ kannst du im Menü den Punkt `Setup-Update + System-Update (Repo, OS & pnpm)` nutzen. Dieser zieht den aktuellen Repository-Stand direkt im Setup-Verzeichnis und aktualisiert danach Ubuntu sowie `pnpm`.
 
+Wenn danach trotzdem noch ein älterer Setup-Stand angezeigt wird, liegen im Verzeichnis oft noch lokale Änderungen oder Zusatzdateien. Dann zieht `git pull` absichtlich nicht einfach darüber.
+
+Prüfen:
+
+```bash
+cd ~/openclaw_ultimate_setup
+git status
+```
+
+Wenn du sicher bist, dass lokale Setup-Änderungen verworfen werden dürfen, kannst du das Setup hart auf den aktuellen GitHub-Stand zurücksetzen:
+
+```bash
+cd ~/openclaw_ultimate_setup
+git fetch origin --prune
+git reset --hard origin/main
+bash ./setup_ultimate.sh
+```
+
+Dafür gibt es jetzt auch direkt im Menü einen eigenen Punkt:
+
+- `Setup hart mit GitHub main abgleichen`
+
+Dieser Weg ist hilfreich, wenn trotz normalem `git pull` noch ein älterer Setup-Stand angezeigt wird.
+
+Wenn du ganz sauber neu anfangen willst, ist auch das weiterhin möglich:
+
+```bash
+cd ~
+rm -rf ~/openclaw_ultimate_setup
+curl -sSL https://raw.githubusercontent.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation/main/install.sh | bash
+```
+
 Wenn du das lokale Setup wieder entfernen möchtest, hast du zwei saubere Wege:
 
 1. Zuerst im Menü `Tools: Installieren & Deinstallieren` und `Profile: Installieren & Deinstallieren` alle gewünschten Komponenten wieder abwählen.

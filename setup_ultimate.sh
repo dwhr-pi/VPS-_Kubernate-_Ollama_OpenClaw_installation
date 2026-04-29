@@ -4,7 +4,7 @@
 # Beschreibung: Dies ist das Hauptinstallationsskript für die ultimative KI-Infrastruktur.
 # Es bietet eine interaktive Menüführung zur Installation, Deinstallation und Verwaltung verschiedener KI-Tools, Profile und Systemkomponenten.
 # Das Skript unterstützt hybride Setups (MiniPC + Multi-VPS), Standalone-Installationen und bietet Funktionen wie Auto-Updates, Ollama-Modellverwaltung und OpenClaw-Konfiguration.
-# Version: V11.02
+# Version: V11.03
 #
 
 # Farben & UI
@@ -13,7 +13,7 @@ BLUE="\033[0;34m"
 RED="\033[0;31m"
 YELLOW="\033[1;33m"
 NC="\033[0m"
-APP_VERSION="11.02"
+APP_VERSION="11.03"
 APP_TITLE="OpenClaw & AI Infrastructure - Ultimate Setup V${APP_VERSION}"
 
 # Installationsverzeichnis
@@ -951,7 +951,7 @@ show_main_menu() {
     : > /tmp/menu_choice
     dialog --clear --backtitle "$APP_TITLE" \
     --cancel-label "Beenden" \
-    --title "HAUPTMENÜ" --menu "Wählen Sie Ihr Ziel-System oder eine Aktion:" 27 78 17 \
+    --title "HAUPTMENÜ" --menu "Wählen Sie Ihr Ziel-System oder eine Aktion:" 28 82 18 \
     "1" "Setup-Update + System-Update (Repo, OS & pnpm)" \
     "2" "Ollama Modell-Manager" \
     "3" "OpenClaw Konfiguration (.env & config.json)" \
@@ -966,11 +966,12 @@ show_main_menu() {
     "12" "OpenClaw starten (Dev-Modus)" \
     "13" "Home Assistant starten" \
     "14" "Setup-Messwerte & Benchmarks bearbeiten" \
-    "15" "Beenden" 2> /tmp/menu_choice
+    "15" "Setup hart mit GitHub main abgleichen" \
+    "16" "Beenden" 2> /tmp/menu_choice
 
     dialog_rc=$?
     if [ $dialog_rc -ne 0 ]; then
-        printf '%s\n' "15" > /tmp/menu_choice
+        printf '%s\n' "16" > /tmp/menu_choice
     fi
 
     return 0
@@ -982,10 +983,10 @@ while true; do
     if [ -s /tmp/menu_choice ]; then
         CHOICE="$(tr -d '[:space:]' < /tmp/menu_choice)"
     else
-        CHOICE="15"
+        CHOICE="16"
     fi
 
-    if [ "$CHOICE" = "15" ]; then
+    if [ "$CHOICE" = "16" ]; then
         print_exit_message
         exit 0
     fi
@@ -1104,6 +1105,16 @@ while true; do
             read -p "Setup-Messwerte aktualisiert. Drücken Sie Enter..."
             ;;
         15)
+            show_operation_intro \
+            "Harter Setup-Abgleich mit GitHub main" \
+            "Das Setup-Repository wird zwangsweise auf origin/main zurückgesetzt. Lokale Änderungen im Setup-Verzeichnis gehen dabei verloren." \
+            "Meist nur wenige Minuten, abhängig von Netzwerk und Repo-Größe" \
+            "${MIN_FREE_GB_ABSOLUTE}-${MIN_FREE_GB_RECOMMENDED} GB" \
+            "Nutze diese Methode nur, wenn das normale Update nicht greift oder ein alter Setup-Stand festhaengt."
+            run_bash_script "$INSTALL_DIR/scripts/auto_update_hard.sh"
+            read -p "Harter Setup-Abgleich abgeschlossen. Drücken Sie Enter..."
+            ;;
+        16)
             print_exit_message
             exit 0
             ;;
