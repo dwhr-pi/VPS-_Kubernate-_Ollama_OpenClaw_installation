@@ -44,6 +44,7 @@ Wenn du das lokale Setup wieder entfernen möchtest, hast du zwei saubere Wege:
 2. Danach das lokale Arbeitsverzeichnis entfernen:
 
 ```bash
+cd ~
 rm -rf ~/openclaw_ultimate_setup
 ```
 
