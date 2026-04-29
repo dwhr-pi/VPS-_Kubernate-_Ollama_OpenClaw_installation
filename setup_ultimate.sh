@@ -4,7 +4,7 @@
 # Beschreibung: Dies ist das Hauptinstallationsskript für die ultimative KI-Infrastruktur.
 # Es bietet eine interaktive Menüführung zur Installation, Deinstallation und Verwaltung verschiedener KI-Tools, Profile und Systemkomponenten.
 # Das Skript unterstützt hybride Setups (MiniPC + Multi-VPS), Standalone-Installationen und bietet Funktionen wie Auto-Updates, Ollama-Modellverwaltung und OpenClaw-Konfiguration.
-# Version: V11.08
+# Version: V11.09
 #
 
 # Farben & UI
@@ -13,7 +13,7 @@ BLUE="\033[0;34m"
 RED="\033[0;31m"
 YELLOW="\033[1;33m"
 NC="\033[0m"
-APP_VERSION="11.08"
+APP_VERSION="11.09"
 APP_TITLE="OpenClaw & AI Infrastructure - Ultimate Setup V${APP_VERSION}"
 
 # Installationsverzeichnis
@@ -31,7 +31,7 @@ TOOL_STATUS_FILE="$USER_WORKSPACE_DIR/installed_tools.txt"
 SETUP_PREFERENCES_FILE="$USER_WORKSPACE_DIR/setup_preferences.conf"
 SCRIPT_ROOT_DIR="$INSTALL_DIR"
 LANGUAGE_SELECTION_REQUIRED=0
-STARTUP_LANGUAGE_DIALOG_PENDING=1
+STARTUP_LANGUAGE_DIALOG_PENDING=0
 
 if [ ! -f "$SETUP_PREFERENCES_FILE" ]; then
     LANGUAGE_SELECTION_REQUIRED=1
@@ -315,18 +315,6 @@ print_exit_message() {
     echo
 }
 
-show_startup_language_prompt() {
-    dialog --clear --backtitle "$APP_TITLE" \
-    --yes-label "${TXT_STARTUP_LANGUAGE_PROMPT_YES:-Sprache ändern}" \
-    --no-label "${TXT_STARTUP_LANGUAGE_PROMPT_NO:-Weiter}" \
-    --title "${TXT_STARTUP_LANGUAGE_PROMPT_TITLE:-Willkommen}" \
-    --yesno "${TXT_STARTUP_LANGUAGE_PROMPT_BODY:-Aktuelle Setup-Sprache:} $(setup_language_name "$SETUP_LANGUAGE")\n\n${TXT_STARTUP_LANGUAGE_PROMPT_BODY_2:-Sie können die Sprache jetzt direkt wechseln oder einfach mit dem Setup fortfahren.}" 11 88
-
-    if [ $? -eq 0 ]; then
-        show_setup_language_menu || true
-    fi
-}
-
 show_user_workspace_menu() {
     ensure_user_workspace
 
@@ -407,6 +395,51 @@ show_user_workspace_menu() {
                 fi
                 ;;
             9)
+                return 0
+                ;;
+        esac
+    done
+}
+
+show_options_menu() {
+    while true; do
+        dialog --clear --backtitle "$APP_TITLE" \
+        --title "${TXT_OPTIONS_MENU_TITLE:-OPTIONEN}" --menu "${TXT_OPTIONS_MENU_PROMPT:-Wählen Sie eine Verwaltungs- oder Konfigurationsfunktion:}" 19 92 6 \
+        "1" "${TXT_OPTIONS_1:-Sprache ändern}" \
+        "2" "${TXT_OPTIONS_2:-Setup-Messwerte & Benchmarks bearbeiten}" \
+        "3" "${TXT_OPTIONS_3:-Setup hart mit GitHub main abgleichen}" \
+        "4" "${TXT_OPTIONS_4:-Benutzer-Workspace verwalten}" \
+        "5" "${TXT_OPTIONS_5:-Zurück}" 2> /tmp/options_choice
+
+        if [ $? -ne 0 ]; then
+            return 0
+        fi
+
+        case "$(cat /tmp/options_choice)" in
+            1)
+                if show_setup_language_menu; then
+                    echo -e "${GREEN}${TXT_LANGUAGE_CHANGED:-Die Setup-Sprache wurde aktualisiert.}${NC}"
+                    read -p "${TXT_PRESS_ENTER:-Drücken Sie Enter...}"
+                fi
+                ;;
+            2)
+                show_metrics_editor
+                read -p "Setup-Messwerte aktualisiert. Drücken Sie Enter..."
+                ;;
+            3)
+                show_operation_intro \
+                "Harter Setup-Abgleich mit GitHub main" \
+                "Das Setup-Repository wird zwangsweise auf origin/main zurückgesetzt. Lokale Änderungen im Setup-Verzeichnis gehen dabei verloren." \
+                "Meist nur wenige Minuten, abhängig von Netzwerk und Repo-Größe" \
+                "${MIN_FREE_GB_ABSOLUTE}-${MIN_FREE_GB_RECOMMENDED} GB" \
+                "Nutze diese Methode nur, wenn das normale Update nicht greift oder ein alter Setup-Stand festhaengt."
+                run_bash_script "$INSTALL_DIR/scripts/auto_update_hard.sh"
+                read -p "Harter Setup-Abgleich abgeschlossen. Drücken Sie Enter..."
+                ;;
+            4)
+                show_user_workspace_menu
+                ;;
+            5)
                 return 0
                 ;;
         esac
@@ -1207,9 +1240,9 @@ show_main_menu() {
 
     : > /tmp/menu_choice
     dialog --clear --backtitle "$APP_TITLE" \
-    --begin 2 2 \
     --cancel-label "${TXT_CANCEL_LABEL:-Beenden}" \
-    --title "${TXT_MENU_TITLE:-HAUPTMENÜ}" --menu "${TXT_MENU_PROMPT:-Wählen Sie Ihr Ziel-System oder eine Aktion:}" 27 92 21 \
+    --extra-button --extra-label "${TXT_OPTIONS_BUTTON:-⚙ Optionen}" \
+    --title "${TXT_MENU_TITLE:-HAUPTMENÜ}" --menu "${TXT_MENU_PROMPT:-Wählen Sie Ihr Ziel-System oder eine Aktion:}" 29 92 19 \
     "1" "${TXT_MENU_1:-Setup-Update + System-Update (Repo, OS & pnpm)}" \
     "2" "${TXT_MENU_2:-Ollama Modell-Manager}" \
     "3" "${TXT_MENU_3:-OpenClaw Konfiguration (.env & config.json)}" \
@@ -1225,15 +1258,12 @@ show_main_menu() {
     "10" "${TXT_MENU_10:-Dokumentation & API-Key Guide}" \
     "11" "${TXT_MENU_11:-System-Check & Port-Analyse}" \
     "12" "${TXT_MENU_12:-OpenClaw starten (Dev-Modus)}" \
-    "13" "${TXT_MENU_13:-Home Assistant starten}" \
-    "────" "${TXT_SEPARATOR_LINE:-────────────────────────────────────────────────────────}" \
-    "14" "${TXT_MENU_14:-Setup-Messwerte & Benchmarks bearbeiten}" \
-    "15" "${TXT_MENU_15:-Setup hart mit GitHub main abgleichen}" \
-    "16" "${TXT_MENU_16:-Benutzer-Workspace verwalten}" \
-    "17" "${TXT_MENU_17:-Beenden}" 2> /tmp/menu_choice
+    "13" "${TXT_MENU_13:-Home Assistant starten}" 2> /tmp/menu_choice
 
     dialog_rc=$?
-    if [ $dialog_rc -ne 0 ]; then
+    if [ $dialog_rc -eq 3 ]; then
+        printf '%s\n' "OPTIONS" > /tmp/menu_choice
+    elif [ $dialog_rc -ne 0 ]; then
         printf '%s\n' "17" > /tmp/menu_choice
     fi
 
@@ -1245,10 +1275,6 @@ while true; do
     if [ "$LANGUAGE_SELECTION_REQUIRED" = "1" ]; then
         show_setup_language_menu || true
         LANGUAGE_SELECTION_REQUIRED=0
-    fi
-    if [ "$STARTUP_LANGUAGE_DIALOG_PENDING" = "1" ]; then
-        show_startup_language_prompt
-        STARTUP_LANGUAGE_DIALOG_PENDING=0
     fi
     show_main_menu
     if [ -s /tmp/menu_choice ]; then
@@ -1263,6 +1289,9 @@ while true; do
     fi
     
     case $CHOICE in
+        OPTIONS)
+            show_options_menu
+            ;;
         1)
             show_operation_intro \
             "Setup-Update + System-Update" \
@@ -1390,23 +1419,6 @@ while true; do
             echo -e "${BLUE}Starte Home Assistant...${NC}"
             sudo systemctl start homeassistant@homeassistant
             if [ $? -eq 0 ]; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
-            ;;
-        14)
-            show_metrics_editor
-            read -p "Setup-Messwerte aktualisiert. Drücken Sie Enter..."
-            ;;
-        15)
-            show_operation_intro \
-            "Harter Setup-Abgleich mit GitHub main" \
-            "Das Setup-Repository wird zwangsweise auf origin/main zurückgesetzt. Lokale Änderungen im Setup-Verzeichnis gehen dabei verloren." \
-            "Meist nur wenige Minuten, abhängig von Netzwerk und Repo-Größe" \
-            "${MIN_FREE_GB_ABSOLUTE}-${MIN_FREE_GB_RECOMMENDED} GB" \
-            "Nutze diese Methode nur, wenn das normale Update nicht greift oder ein alter Setup-Stand festhaengt."
-            run_bash_script "$INSTALL_DIR/scripts/auto_update_hard.sh"
-            read -p "Harter Setup-Abgleich abgeschlossen. Drücken Sie Enter..."
-            ;;
-        16)
-            show_user_workspace_menu
             ;;
         17)
             print_exit_message
