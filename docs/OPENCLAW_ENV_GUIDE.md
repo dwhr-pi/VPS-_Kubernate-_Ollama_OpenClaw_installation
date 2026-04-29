@@ -35,6 +35,57 @@ cd /opt/openclaw
 nano .env
 ```
 
+### Nano-Spickzettel
+
+Wichtige Tasten in `nano`:
+
+- Speichern: `Ctrl` + `O`
+- Bestätigen des Dateinamens: `Enter`
+- Beenden: `Ctrl` + `X`
+- Hilfe anzeigen: `Ctrl` + `G`
+- Ausschneiden einer Zeile: `Ctrl` + `K`
+- Einfügen: `Ctrl` + `U`
+- Markierung starten: `Ctrl` + `^`
+- Kopieren einer markierten Auswahl: `Alt` + `6`
+- Suche starten: `Ctrl` + `W`
+- Weitersuchen: `Alt` + `W`
+- Suchen und Ersetzen: `Ctrl` + `\\`
+- Zu Zeile springen: `Ctrl` + `_`
+- Rückgängig: `Alt` + `U`
+- Wiederholen: `Alt` + `E`
+- Aktuelle Zeile/Spalte anzeigen: `Alt` + `C`
+- Zeilenumbruch ein-/ausschalten: `Alt` + `L`
+- Dateiinhalt an Cursorposition einfügen: `Ctrl` + `R`
+
+Wichtig:
+
+- `M-6` in Nano bedeutet `Meta + 6`
+- auf den meisten Tastaturen ist das `Alt + 6`
+- falls `Alt` in deiner Umgebung nicht sauber funktioniert, geht oft auch:
+  - erst `Esc`
+  - dann `6`
+
+Typischer Ablauf zum Kopieren:
+
+1. `Ctrl` + `^`
+2. mit den Pfeiltasten markieren
+3. `Alt` + `6`
+4. `Ctrl` + `U` zum Einfügen
+
+Typischer Ablauf zum Ausschneiden und Einfügen:
+
+1. Cursor in die gewünschte Zeile stellen
+2. `Ctrl` + `K` zum Ausschneiden
+3. Cursor an Zielposition bewegen
+4. `Ctrl` + `U` zum Einfügen
+
+Typischer Ablauf zum Suchen:
+
+1. `Ctrl` + `W`
+2. Suchbegriff eingeben
+3. `Enter`
+4. `Alt` + `W` für den nächsten Treffer
+
 ## 1. Minimal `.env` für localhost
 
 ```env
@@ -139,6 +190,37 @@ OLLAMA_HOST=http://127.0.0.1:11434
 
 Dann kann OpenClaw direkt dein lokales LLM ansprechen.
 
+### Besonderheit unseres Setups: Primäranbieter und Fallbacks
+
+Unser Setup unterstützt zwei typische Hybrid-Richtungen:
+
+`Gemini primär, Ollama als Fallback`
+
+```env
+PRIMÄRES_LLM_ANBIETER=GEMINI
+FALLBACK_TO_OLLAMA=true
+```
+
+Das ist in unserem Projekt die klassische und am besten vorbereitete Richtung.
+
+`Ollama primär, Gemini als Fallback`
+
+```env
+PRIMÄRES_LLM_ANBIETER=OLLAMA
+FALLBACK_TO_GEMINI=true
+```
+
+Das ist eine Besonderheit unseres Setups und dient dazu, lokal zuerst Ollama zu verwenden und nur bei Bedarf auf Gemini auszuweichen.
+
+Wichtig:
+
+- beide Provider müssen dafür sauber konfiguriert sein
+- also sowohl `OLLAMA_HOST` als auch `GEMINI_API_KEY`
+- im Chatfenster ist das nicht automatisch als frei sichtbarer Modellwähler garantiert
+- die Auswahl wird in unserem Setup daher primär über `.env` und `config.json` gesteuert
+
+Wenn du also im Alltag spontan zwischen Modellen wechseln willst, ist das in unserem Setup eher eine Konfigurationsentscheidung als eine reine Chat-UI-Auswahl.
+
 ## 6. Beispiel einer vollständigen lokalen `.env`
 
 ```env
@@ -152,6 +234,7 @@ OPENCLAW_LOAD_SHELL_ENV=1
 OPENCLAW_SHELL_ENV_TIMEOUT_MS=15000
 
 OLLAMA_HOST=http://127.0.0.1:11434
+FALLBACK_TO_GEMINI=false
 ```
 
 ## 7. Datei speichern und starten

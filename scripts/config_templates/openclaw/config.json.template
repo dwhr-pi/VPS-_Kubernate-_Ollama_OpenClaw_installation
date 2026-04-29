@@ -27,8 +27,10 @@
       "_comment_11": "Das zu verwendende Ollama-Modell. Kann durch OLLAMA_MODEL in .env überschrieben werden.",
       "model": "llama3.2:1b"
     },
-    "_comment_12": "Auf true setzen, um Ollama als Fallback zu nutzen, wenn der primäre Anbieter fehlschlägt. Kann durch FALLBACK_TO_OLLAMA in .env überschrieben werden.",
-    "fallbackToOllama": true
+    "_comment_12": "Auf true setzen, um Ollama als Fallback zu nutzen, wenn Gemini der primäre Anbieter ist. Kann durch FALLBACK_TO_OLLAMA in .env überschrieben werden.",
+    "fallbackToOllama": true,
+    "_comment_12b": "Setup-Besonderheit: Auf true setzen, um Gemini als Fallback zu nutzen, wenn Ollama der primäre Anbieter ist. Kann durch FALLBACK_TO_GEMINI in .env überschrieben werden.",
+    "fallbackToGemini": false
   },
 
   "database": {
