@@ -897,7 +897,7 @@ show_main_menu() {
 while true; do
     show_main_menu
     if [ -s /tmp/menu_choice ]; then
-        CHOICE=$(cat /tmp/menu_choice)
+        CHOICE="$(tr -d '[:space:]' < /tmp/menu_choice)"
     else
         CHOICE="15"
     fi
@@ -983,8 +983,8 @@ while true; do
             exit 0
             ;;
         *)
-            echo -e "${RED}Ungültige Auswahl. Bitte versuchen Sie es erneut.${NC}"
-            sleep 2
+            print_exit_message
+            exit 0
             ;;
     esac
 done
