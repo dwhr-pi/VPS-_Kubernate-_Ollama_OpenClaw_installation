@@ -4,7 +4,7 @@
 # Beschreibung: Dies ist das Hauptinstallationsskript für die ultimative KI-Infrastruktur.
 # Es bietet eine interaktive Menüführung zur Installation, Deinstallation und Verwaltung verschiedener KI-Tools, Profile und Systemkomponenten.
 # Das Skript unterstützt hybride Setups (MiniPC + Multi-VPS), Standalone-Installationen und bietet Funktionen wie Auto-Updates, Ollama-Modellverwaltung und OpenClaw-Konfiguration.
-# Version: V11.06
+# Version: V11.07
 #
 
 # Farben & UI
@@ -13,7 +13,7 @@ BLUE="\033[0;34m"
 RED="\033[0;31m"
 YELLOW="\033[1;33m"
 NC="\033[0m"
-APP_VERSION="11.06"
+APP_VERSION="11.07"
 APP_TITLE="OpenClaw & AI Infrastructure - Ultimate Setup V${APP_VERSION}"
 
 # Installationsverzeichnis
@@ -31,6 +31,7 @@ TOOL_STATUS_FILE="$USER_WORKSPACE_DIR/installed_tools.txt"
 SETUP_PREFERENCES_FILE="$USER_WORKSPACE_DIR/setup_preferences.conf"
 SCRIPT_ROOT_DIR="$INSTALL_DIR"
 LANGUAGE_SELECTION_REQUIRED=0
+STARTUP_LANGUAGE_DIALOG_PENDING=1
 
 if [ ! -f "$SETUP_PREFERENCES_FILE" ]; then
     LANGUAGE_SELECTION_REQUIRED=1
@@ -312,6 +313,18 @@ print_exit_message() {
     echo -e "${YELLOW}${TXT_EXIT_LINE_2:-Zum Neustart siehe README oder direkt:}${NC}"
     echo -e "${YELLOW}${TXT_EXIT_RESTART:-cd ~/openclaw_ultimate_setup && bash ./setup_ultimate.sh}${NC}"
     echo
+}
+
+show_startup_language_prompt() {
+    dialog --clear --backtitle "$APP_TITLE" \
+    --yes-label "${TXT_STARTUP_LANGUAGE_PROMPT_YES:-Sprache ändern}" \
+    --no-label "${TXT_STARTUP_LANGUAGE_PROMPT_NO:-Weiter}" \
+    --title "${TXT_STARTUP_LANGUAGE_PROMPT_TITLE:-Willkommen}" \
+    --yesno "${TXT_STARTUP_LANGUAGE_PROMPT_BODY:-Aktuelle Setup-Sprache:} $(setup_language_name "$SETUP_LANGUAGE")\n\n${TXT_STARTUP_LANGUAGE_PROMPT_BODY_2:-Sie können die Sprache jetzt direkt wechseln oder einfach mit dem Setup fortfahren.}" 11 88
+
+    if [ $? -eq 0 ]; then
+        show_setup_language_menu || true
+    fi
 }
 
 show_user_workspace_menu() {
@@ -1195,7 +1208,7 @@ show_main_menu() {
     : > /tmp/menu_choice
     dialog --clear --backtitle "$APP_TITLE" \
     --cancel-label "${TXT_CANCEL_LABEL:-Beenden}" \
-    --title "${TXT_MENU_TITLE:-HAUPTMENÜ}" --menu "${TXT_MENU_PROMPT:-Wählen Sie Ihr Ziel-System oder eine Aktion:}" 31 92 23 \
+    --title "${TXT_MENU_TITLE:-HAUPTMENÜ}" --menu "${TXT_MENU_PROMPT:-Wählen Sie Ihr Ziel-System oder eine Aktion:}" 29 92 21 \
     "1" "${TXT_MENU_1:-Setup-Update + System-Update (Repo, OS & pnpm)}" \
     "2" "${TXT_MENU_2:-Ollama Modell-Manager}" \
     "3" "${TXT_MENU_3:-OpenClaw Konfiguration (.env & config.json)}" \
@@ -1231,6 +1244,10 @@ while true; do
     if [ "$LANGUAGE_SELECTION_REQUIRED" = "1" ]; then
         show_setup_language_menu || true
         LANGUAGE_SELECTION_REQUIRED=0
+    fi
+    if [ "$STARTUP_LANGUAGE_DIALOG_PENDING" = "1" ]; then
+        show_startup_language_prompt
+        STARTUP_LANGUAGE_DIALOG_PENDING=0
     fi
     show_main_menu
     if [ -s /tmp/menu_choice ]; then

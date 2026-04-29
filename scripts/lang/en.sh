@@ -6,6 +6,11 @@
 TXT_LANGUAGE_MENU_TITLE="Language Selection"
 TXT_LANGUAGE_MENU_PROMPT="Please choose the language for the setup:"
 TXT_LANGUAGE_CHANGED="The setup language has been updated."
+TXT_STARTUP_LANGUAGE_PROMPT_TITLE="Welcome"
+TXT_STARTUP_LANGUAGE_PROMPT_BODY="Current setup language:"
+TXT_STARTUP_LANGUAGE_PROMPT_BODY_2="You can change the language now or simply continue with the setup."
+TXT_STARTUP_LANGUAGE_PROMPT_YES="Change language"
+TXT_STARTUP_LANGUAGE_PROMPT_NO="Continue"
 
 # Ursprünglich Deutsch:
 # - Beenden
