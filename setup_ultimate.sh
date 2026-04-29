@@ -4,7 +4,7 @@
 # Beschreibung: Dies ist das Hauptinstallationsskript für die ultimative KI-Infrastruktur.
 # Es bietet eine interaktive Menüführung zur Installation, Deinstallation und Verwaltung verschiedener KI-Tools, Profile und Systemkomponenten.
 # Das Skript unterstützt hybride Setups (MiniPC + Multi-VPS), Standalone-Installationen und bietet Funktionen wie Auto-Updates, Ollama-Modellverwaltung und OpenClaw-Konfiguration.
-# Version: V11.04
+# Version: V11.05
 #
 
 # Farben & UI
@@ -13,15 +13,34 @@ BLUE="\033[0;34m"
 RED="\033[0;31m"
 YELLOW="\033[1;33m"
 NC="\033[0m"
-APP_VERSION="11.04"
+APP_VERSION="11.05"
 APP_TITLE="OpenClaw & AI Infrastructure - Ultimate Setup V${APP_VERSION}"
 
 # Installationsverzeichnis
 INSTALL_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-METRICS_CONFIG_FILE="$INSTALL_DIR/config/setup_metrics.conf"
+USER_WORKSPACE_DIR="${HOME}/.openclaw_ultimate_user_data"
+USER_OPENCLAW_TEMPLATE_DIR="$USER_WORKSPACE_DIR/openclaw"
+METRICS_CONFIG_FILE="$USER_WORKSPACE_DIR/setup_metrics.conf"
+PROFILE_STATUS_FILE="$USER_WORKSPACE_DIR/installed_profiles.txt"
+TOOL_STATUS_FILE="$USER_WORKSPACE_DIR/installed_tools.txt"
+
+ensure_user_workspace() {
+    mkdir -p "$USER_WORKSPACE_DIR"
+    mkdir -p "$USER_OPENCLAW_TEMPLATE_DIR"
+
+    if [ ! -f "$USER_OPENCLAW_TEMPLATE_DIR/.env.template" ]; then
+        cp "$INSTALL_DIR/scripts/config_templates/openclaw/.env.template" "$USER_OPENCLAW_TEMPLATE_DIR/.env.template"
+    fi
+
+    if [ ! -f "$USER_OPENCLAW_TEMPLATE_DIR/config.json.template" ]; then
+        cp "$INSTALL_DIR/scripts/config_templates/openclaw/config.json.template" "$USER_OPENCLAW_TEMPLATE_DIR/config.json.template"
+    fi
+
+    touch "$PROFILE_STATUS_FILE" "$TOOL_STATUS_FILE"
+}
 
 ensure_metrics_config() {
-    mkdir -p "$INSTALL_DIR/config"
+    ensure_user_workspace
     if [ ! -f "$METRICS_CONFIG_FILE" ]; then
         cat > "$METRICS_CONFIG_FILE" <<'EOF'
 # Editierbare Schätz- und Testwerte für dieses Setup
@@ -173,6 +192,60 @@ print_exit_message() {
     echo
 }
 
+show_user_workspace_menu() {
+    ensure_user_workspace
+
+    while true; do
+        dialog --clear --backtitle "$APP_TITLE" \
+        --title "BENUTZER-WORKSPACE" --menu "Bearbeitbare und sensible Dateien liegen außerhalb des Repos." 18 100 6 \
+        "1" "Pfad anzeigen" \
+        "2" "Workspace-Dateien auflisten" \
+        "3" "OpenClaw Vorlagen aus dem Repo neu in den Workspace kopieren" \
+        "4" "Benutzer-Workspace komplett löschen" \
+        "5" "Zurück" 2> /tmp/user_workspace_choice
+
+        if [ $? -ne 0 ]; then
+            return 0
+        fi
+
+        case "$(cat /tmp/user_workspace_choice)" in
+            1)
+                clear
+                echo
+                echo -e "${YELLOW}Benutzer-Workspace:${NC} $USER_WORKSPACE_DIR"
+                echo
+                read -p "Drücken Sie Enter..."
+                ;;
+            2)
+                clear
+                echo
+                echo -e "${YELLOW}Inhalt des Benutzer-Workspace:${NC}"
+                find "$USER_WORKSPACE_DIR" -maxdepth 3 -type f 2>/dev/null | sort
+                echo
+                read -p "Drücken Sie Enter..."
+                ;;
+            3)
+                cp "$INSTALL_DIR/scripts/config_templates/openclaw/.env.template" "$USER_OPENCLAW_TEMPLATE_DIR/.env.template"
+                cp "$INSTALL_DIR/scripts/config_templates/openclaw/config.json.template" "$USER_OPENCLAW_TEMPLATE_DIR/config.json.template"
+                echo -e "${GREEN}Die OpenClaw-Vorlagen wurden erneut in den Benutzer-Workspace kopiert.${NC}"
+                read -p "Drücken Sie Enter..."
+                ;;
+            4)
+                dialog --yesno "Der gesamte Benutzer-Workspace wird gelöscht. Darin können .env-Vorlagen, Statusdateien und weitere sensible Daten liegen. Wirklich fortfahren?" 10 100
+                if [ $? -eq 0 ]; then
+                    rm -rf "$USER_WORKSPACE_DIR"
+                    echo -e "${YELLOW}Der Benutzer-Workspace wurde gelöscht.${NC}"
+                    ensure_user_workspace
+                    read -p "Drücken Sie Enter..."
+                fi
+                ;;
+            5)
+                return 0
+                ;;
+        esac
+    done
+}
+
 append_unique_line() {
     local file_path="$1"
     local value="$2"
@@ -304,18 +377,19 @@ is_base_install_ready() {
 sync_core_tool_status() {
     local status_changed=0
 
-    normalize_status_file "$INSTALL_DIR/installed_tools.txt" "${TOOL_KEYS[@]}"
+    ensure_user_workspace
+    normalize_status_file "$TOOL_STATUS_FILE" "${TOOL_KEYS[@]}"
 
     if command -v ollama >/dev/null 2>&1; then
-        if ! grep -Fxq "Ollama" "$INSTALL_DIR/installed_tools.txt" 2>/dev/null; then
-            append_unique_line "$INSTALL_DIR/installed_tools.txt" "Ollama"
+        if ! grep -Fxq "Ollama" "$TOOL_STATUS_FILE" 2>/dev/null; then
+            append_unique_line "$TOOL_STATUS_FILE" "Ollama"
             status_changed=1
         fi
     fi
 
     if [ -d /opt/openclaw ] && [ -f /opt/openclaw/package.json ]; then
-        if ! grep -Fxq "OpenClaw" "$INSTALL_DIR/installed_tools.txt" 2>/dev/null; then
-            append_unique_line "$INSTALL_DIR/installed_tools.txt" "OpenClaw"
+        if ! grep -Fxq "OpenClaw" "$TOOL_STATUS_FILE" 2>/dev/null; then
+            append_unique_line "$TOOL_STATUS_FILE" "OpenClaw"
             status_changed=1
         fi
     fi
@@ -367,7 +441,7 @@ install_profile() {
     echo -e "${BLUE}Installiere Profil: ${PROFILE_KEY}...${NC}"
     run_bash_script "$INSTALL_DIR/scripts/profiles/${PROFILE_KEY}_install.sh"
     if [ $? -eq 0 ]; then
-        append_unique_line "$INSTALL_DIR/installed_profiles.txt" "$PROFILE_KEY"
+        append_unique_line "$PROFILE_STATUS_FILE" "$PROFILE_KEY"
         echo -e "${GREEN}Profil \'$PROFILE_KEY\' erfolgreich installiert.${NC}"
     else
         echo -e "${RED}Fehler bei der Installation von Profil \'$PROFILE_KEY\'.${NC}"
@@ -381,7 +455,7 @@ uninstall_profile() {
     echo -e "${BLUE}Deinstalliere Profil: ${PROFILE_KEY}...${NC}"
     run_bash_script "$INSTALL_DIR/scripts/profiles/${PROFILE_KEY}_uninstall.sh"
     if [ $? -eq 0 ]; then
-        remove_exact_line "$INSTALL_DIR/installed_profiles.txt" "$PROFILE_KEY"
+        remove_exact_line "$PROFILE_STATUS_FILE" "$PROFILE_KEY"
         echo -e "${GREEN}Profil \'$PROFILE_KEY\' erfolgreich deinstalliert.${NC}"
     else
         echo -e "${RED}Fehler bei der Deinstallation von Profil \'$PROFILE_KEY\'.${NC}"
@@ -390,7 +464,8 @@ uninstall_profile() {
 
 # Funktion zum Anzeigen des Profil-Management-Menüs
 show_profile_management_menu() {
-    normalize_status_file "$INSTALL_DIR/installed_profiles.txt" "${PROFILE_KEYS[@]}"
+    ensure_user_workspace
+    normalize_status_file "$PROFILE_STATUS_FILE" "${PROFILE_KEYS[@]}"
 
     if ! is_base_install_ready; then
         echo -e "${YELLOW}Hinweis: Ollama und/oder OpenClaw sind aktuell noch nicht vollständig installiert.${NC}"
@@ -399,7 +474,7 @@ show_profile_management_menu() {
 
     # Installierte Profile laden
     declare -A INSTALLED_PROFILES_MAP
-    load_installed_map "$INSTALL_DIR/installed_profiles.txt" INSTALLED_PROFILES_MAP
+    load_installed_map "$PROFILE_STATUS_FILE" INSTALLED_PROFILES_MAP
 
     PROFILE_CHECKLIST_OPTIONS=()
     for profile_key in "${PROFILE_KEYS[@]}"; do
@@ -699,7 +774,7 @@ install_tool() {
     echo -e "${BLUE}Installiere Tool: ${TOOL_KEY}...${NC}"
     run_tool_script "$TOOL_KEY" "install"
     if [ $? -eq 0 ]; then
-        append_unique_line "$INSTALL_DIR/installed_tools.txt" "$TOOL_KEY"
+        append_unique_line "$TOOL_STATUS_FILE" "$TOOL_KEY"
         echo -e "${GREEN}Tool \'$TOOL_KEY\' erfolgreich installiert.${NC}"
     else
         echo -e "${RED}Fehler bei der Installation von Tool \'$TOOL_KEY\'.${NC}"
@@ -713,7 +788,7 @@ uninstall_tool() {
     echo -e "${BLUE}Deinstalliere Tool: ${TOOL_KEY}...${NC}"
     run_tool_script "$TOOL_KEY" "uninstall"
     if [ $? -eq 0 ]; then
-        remove_exact_line "$INSTALL_DIR/installed_tools.txt" "$TOOL_KEY"
+        remove_exact_line "$TOOL_STATUS_FILE" "$TOOL_KEY"
         echo -e "${GREEN}Tool \'$TOOL_KEY\' erfolgreich deinstalliert.${NC}"
     else
         echo -e "${RED}Fehler bei der Deinstallation von Tool \'$TOOL_KEY\'.${NC}"
@@ -723,11 +798,12 @@ uninstall_tool() {
 # Funktion zum Anzeigen des Tool-Management-Menüs
 show_tool_management_menu() {
     sync_core_tool_status
-    normalize_status_file "$INSTALL_DIR/installed_tools.txt" "${TOOL_KEYS[@]}"
+    ensure_user_workspace
+    normalize_status_file "$TOOL_STATUS_FILE" "${TOOL_KEYS[@]}"
 
     # Installierte Tools laden
     declare -A INSTALLED_TOOLS_MAP
-    load_installed_map "$INSTALL_DIR/installed_tools.txt" INSTALLED_TOOLS_MAP
+    load_installed_map "$TOOL_STATUS_FILE" INSTALLED_TOOLS_MAP
 
     TOOL_CHECKLIST_OPTIONS=()
     for tool_key in "${TOOL_KEYS[@]}"; do
@@ -821,8 +897,9 @@ show_tool_group_checklist() {
     local status
     declare -A installed_map
 
-    normalize_status_file "$INSTALL_DIR/installed_tools.txt" "${TOOL_KEYS[@]}"
-    load_installed_map "$INSTALL_DIR/installed_tools.txt" installed_map
+    ensure_user_workspace
+    normalize_status_file "$TOOL_STATUS_FILE" "${TOOL_KEYS[@]}"
+    load_installed_map "$TOOL_STATUS_FILE" installed_map
 
     for tool_key in $tool_list; do
         [ -n "$tool_key" ] || continue
@@ -862,8 +939,9 @@ toggle_full_profile_from_block() {
     local profile_key="$1"
     declare -A installed_profiles_map
 
-    normalize_status_file "$INSTALL_DIR/installed_profiles.txt" "${PROFILE_KEYS[@]}"
-    load_installed_map "$INSTALL_DIR/installed_profiles.txt" installed_profiles_map
+    ensure_user_workspace
+    normalize_status_file "$PROFILE_STATUS_FILE" "${PROFILE_KEYS[@]}"
+    load_installed_map "$PROFILE_STATUS_FILE" installed_profiles_map
 
     if [ "${installed_profiles_map[$profile_key]:-}" = "1" ]; then
         dialog --yesno "Profil '$profile_key' ist aktuell installiert. Möchten Sie das gesamte Profil jetzt deinstallieren?" 8 80
@@ -951,7 +1029,7 @@ show_main_menu() {
     : > /tmp/menu_choice
     dialog --clear --backtitle "$APP_TITLE" \
     --cancel-label "Beenden" \
-    --title "HAUPTMENÜ" --menu "Wählen Sie Ihr Ziel-System oder eine Aktion:" 26 82 18 \
+    --title "HAUPTMENÜ" --menu "Wählen Sie Ihr Ziel-System oder eine Aktion:" 27 84 19 \
     "1" "Setup-Update + System-Update (Repo, OS & pnpm)" \
     "2" "Ollama Modell-Manager" \
     "3" "OpenClaw Konfiguration (.env & config.json)" \
@@ -967,11 +1045,12 @@ show_main_menu() {
     "13" "Home Assistant starten" \
     "14" "Setup-Messwerte & Benchmarks bearbeiten" \
     "15" "Setup hart mit GitHub main abgleichen" \
-    "16" "Beenden" 2> /tmp/menu_choice
+    "16" "Benutzer-Workspace verwalten" \
+    "17" "Beenden" 2> /tmp/menu_choice
 
     dialog_rc=$?
     if [ $dialog_rc -ne 0 ]; then
-        printf '%s\n' "16" > /tmp/menu_choice
+        printf '%s\n' "17" > /tmp/menu_choice
     fi
 
     return 0
@@ -983,10 +1062,10 @@ while true; do
     if [ -s /tmp/menu_choice ]; then
         CHOICE="$(tr -d '[:space:]' < /tmp/menu_choice)"
     else
-        CHOICE="16"
+        CHOICE="17"
     fi
 
-    if [ "$CHOICE" = "16" ]; then
+    if [ "$CHOICE" = "17" ]; then
         print_exit_message
         exit 0
     fi
@@ -1115,6 +1194,9 @@ while true; do
             read -p "Harter Setup-Abgleich abgeschlossen. Drücken Sie Enter..."
             ;;
         16)
+            show_user_workspace_menu
+            ;;
+        17)
             print_exit_message
             exit 0
             ;;

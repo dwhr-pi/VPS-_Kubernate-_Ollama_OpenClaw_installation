@@ -1,7 +1,7 @@
 #!/bin/bash
 # Gemeinsame Hilfsfunktionen für robuste Statusdateien und direkte Script-Aufrufe.
 
-STATUS_HELPER_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+STATUS_HELPER_ROOT="${HOME}/.openclaw_ultimate_user_data"
 PROFILE_STATUS_FILE="$STATUS_HELPER_ROOT/installed_profiles.txt"
 TOOL_STATUS_FILE="$STATUS_HELPER_ROOT/installed_tools.txt"
 

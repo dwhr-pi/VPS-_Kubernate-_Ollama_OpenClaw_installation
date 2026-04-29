@@ -2,7 +2,7 @@
 
 Das Setup enthält jetzt eine editierbare Datei für Installations-Schätzwerte und Platzbedarf:
 
-- [config/setup_metrics.conf](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/config/setup_metrics.conf:1)
+- `~/.openclaw_ultimate_user_data/setup_metrics.conf`
 
 ## Zweck
 
@@ -35,6 +35,14 @@ Im Hauptmenü gibt es dafür jetzt einen eigenen Punkt:
 - `Setup-Messwerte & Benchmarks bearbeiten`
 
 Dort wird die Datei direkt editierbar geöffnet.
+
+## Speicherort
+
+Die Datei liegt bewusst außerhalb des Repositories, damit sie bei Updates erhalten bleibt und nicht versehentlich ins Git-Repository geschrieben wird:
+
+```text
+~/.openclaw_ultimate_user_data/setup_metrics.conf
+```
 
 ## Wichtiger Hinweis
 

@@ -13,9 +13,22 @@ NC=\033[0m
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 INSTALL_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
-OPENCLAW_CONFIG_TEMPLATES_DIR="$INSTALL_DIR/scripts/config_templates/openclaw"
+USER_WORKSPACE_DIR="${HOME}/.openclaw_ultimate_user_data"
+OPENCLAW_CONFIG_TEMPLATES_DIR="$USER_WORKSPACE_DIR/openclaw"
 OPENCLAW_INSTALL_DIR="/opt/openclaw"
 OPENCLAW_CONFIG_CHOICE_FILE="/tmp/openclaw_config_choice"
+
+ensure_user_workspace() {
+    mkdir -p "$OPENCLAW_CONFIG_TEMPLATES_DIR"
+
+    if [ ! -f "$OPENCLAW_CONFIG_TEMPLATES_DIR/.env.template" ]; then
+        cp "$INSTALL_DIR/scripts/config_templates/openclaw/.env.template" "$OPENCLAW_CONFIG_TEMPLATES_DIR/.env.template"
+    fi
+
+    if [ ! -f "$OPENCLAW_CONFIG_TEMPLATES_DIR/config.json.template" ]; then
+        cp "$INSTALL_DIR/scripts/config_templates/openclaw/config.json.template" "$OPENCLAW_CONFIG_TEMPLATES_DIR/config.json.template"
+    fi
+}
 
 cleanup_temp_files() {
     rm -f "$OPENCLAW_CONFIG_CHOICE_FILE"
@@ -86,6 +99,7 @@ show_openclaw_config_menu() {
 trap cleanup_temp_files EXIT
 
 while true; do
+    ensure_user_workspace
     show_openclaw_config_menu
 
     if [ $? -ne 0 ] || [ ! -f "$OPENCLAW_CONFIG_CHOICE_FILE" ]; then

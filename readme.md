@@ -19,6 +19,41 @@ Dieser Befehl lädt das `install.sh` Skript herunter und führt es aus. Das Skri
 
 **Für die OpenClaw `.env`:** Eine eigene Detaildokumentation zur `.env`-Struktur, zu den Feldern und zur originalen OpenClaw-Vorlage findest du in [docs/OPENCLAW_ENV_GUIDE.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/OPENCLAW_ENV_GUIDE.md:1).
 
+**Wichtig für sensible Daten:** Bearbeitbare und sensible Dateien werden ab den neueren Setup-Versionen zusätzlich außerhalb des Repositories in `~/.openclaw_ultimate_user_data` abgelegt. Dadurch bleiben API-Keys, bearbeitete Vorlagen und Statusdateien beim Repo-Update sauber getrennt und werden nicht versehentlich ins Git-Repository geschrieben.
+
+## 🔐 Sicherheit bei der Nutzung
+
+Dieses Setup trennt ab den neueren Versionen bewusst zwischen:
+
+- dem eigentlichen Git-Repository
+- und deinem persönlichen Benutzer-Workspace unter `~/.openclaw_ultimate_user_data`
+
+Das ist wichtig, weil dort typischerweise sensible Inhalte liegen können:
+
+- API-Keys
+- bearbeitete `.env`-Dateien
+- Zugangsdaten
+- Statusdateien
+- angepasste Konfigurationsvorlagen
+
+Darauf solltest du achten:
+
+- Niemals echte Secrets in Git committen oder auf GitHub hochladen.
+- Bearbeite sensible Vorlagen möglichst nur über den ausgelagerten Benutzer-Workspace.
+- Sichere deine `.env` lokal zusätzlich, wenn du wichtige API-Keys eingetragen hast.
+- Wenn du den Rechner oder die WSL weitergibst, lösche den Benutzer-Workspace gezielt mit.
+- Wenn du einen öffentlichen Host, VPS oder `0.0.0.0` nutzt, setze immer sichere Tokens und Passwörter.
+
+Wichtig:
+
+- Das Entfernen von `~/openclaw_ultimate_setup` löscht nicht automatisch deinen ausgelagerten Benutzer-Workspace.
+- Das ist Absicht, damit persönliche Daten und bearbeitete Vorlagen beim Repo-Update oder Neu-Klonen nicht verloren gehen.
+- Wenn du wirklich alles entfernen möchtest, lösche zusätzlich:
+
+```bash
+rm -rf ~/.openclaw_ultimate_user_data
+```
+
 ## 🔄 Setup erneut starten
 
 Wenn du das Setup-Menü erneut starten möchtest, navigiere in das Installationsverzeichnis (standardmäßig `~/openclaw_ultimate_setup`) und führe das Hauptskript aus:
@@ -86,6 +121,12 @@ rm -rf ~/openclaw_ultimate_setup
 
 Wenn du zusätzlich lokal installierte Komponenten wie `Home Assistant`, `Ollama` oder einzelne Tools vollständig entfernen willst, nutze die jeweiligen `*_uninstall.sh` Skripte im Menü oder direkt unter `scripts/tools/`.
 
+Wenn du zusätzlich den ausgelagerten Benutzer-Workspace mit sensiblen Daten entfernen möchtest, kannst du das entweder im Menü über `Benutzer-Workspace verwalten` tun oder manuell:
+
+```bash
+rm -rf ~/.openclaw_ultimate_user_data
+```
+
 ## 📖 Dokumentation
 
 Eine detaillierte Anleitung zur Konfiguration, API-Keys, Port-Analyse und den verschiedenen Setup-Optionen findest du in der `docs/API_KEY_GUIDE.md`, `docs/setup_guide.md`, `docs/DNS_DDoS_GUIDE.md` und [docs/OPENCLAW_ENV_GUIDE.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/OPENCLAW_ENV_GUIDE.md:1) innerhalb dieses Repositorys.
@@ -95,6 +136,7 @@ Zusätzliche Hilfen:
 *   `docs/CLOUDFLARE_TUNNEL_GUIDE.md` erklärt Schritt für Schritt, wie du den benötigten Cloudflare-Tunnel und Token anlegst.
 *   `docs/WSL_SETUP_GUIDE.md` erklärt WSL unter Windows, Ubuntu-24.04 bzw. andere Linux-Distributionen, sowie Deinstallation und komplettes Zurücksetzen.
 *   `docs/INSTALLATION_BENCHMARKS.md` beschreibt die editierbaren Installations-Schätzwerte und verweist auf `config/setup_metrics.conf`.
+*   sensible und bearbeitbare Setup-Dateien liegen jetzt außerhalb des Repos in `~/.openclaw_ultimate_user_data`.
 
 Zusätzlich gibt es zwei Profil-Verzeichnisse:
 

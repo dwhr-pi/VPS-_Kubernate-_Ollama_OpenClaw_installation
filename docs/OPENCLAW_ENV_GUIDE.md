@@ -20,6 +20,43 @@ Sie wird vom OpenClaw-Konfigurationsmanager verwendet und verbindet:
 - Echte Geheimnisse niemals in Git speichern.
 - API-Schlüssel bitte über die übrige Projekt-Dokumentation beschaffen und eintragen.
 
+## Sicherheit bei der Verwendung
+
+Unsere neueren Setup-Versionen lagern sensible und bearbeitbare Dateien bewusst aus dem Repository aus.
+
+Der Benutzer-Workspace liegt hier:
+
+```text
+~/.openclaw_ultimate_user_data
+```
+
+Dort können unter anderem liegen:
+
+- bearbeitete OpenClaw-Vorlagen
+- API-Keys
+- Zugangsdaten
+- Statusdateien
+- lokale Anpassungen, die nicht ins Git-Repository gehören
+
+Warum das wichtig ist:
+
+- Repo-Updates werden dadurch sauberer
+- sensible Daten landen nicht versehentlich im Git-Status
+- das Risiko eines unbeabsichtigten GitHub-Uploads sinkt deutlich
+
+Worauf du trotzdem achten musst:
+
+- Niemals echte Secrets auf GitHub hochladen
+- `.env` nur lokal speichern und sichern
+- Screenshots mit API-Keys vermeiden
+- den Benutzer-Workspace beim Weitergeben des Systems bewusst mitlöschen
+
+Wenn du alles vollständig entfernen willst, lösche zusätzlich zum Setup-Verzeichnis auch den Benutzer-Workspace:
+
+```bash
+rm -rf ~/.openclaw_ultimate_user_data
+```
+
 Die wichtigsten Begleitseiten dazu sind:
 
 - [docs/API_KEY_GUIDE.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/API_KEY_GUIDE.md:1)
