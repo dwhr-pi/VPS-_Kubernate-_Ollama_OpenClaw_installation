@@ -20,6 +20,31 @@ NC="\033[0m"
 
 SETUP_LANGUAGE="de"
 
+create_repo_update_backup() {
+    local repo_dir="$1"
+    local backup_dir="$USER_WORKSPACE_DIR/repo_update_backups"
+    local timestamp
+
+    timestamp="$(date +%Y%m%d_%H%M%S)"
+    mkdir -p "$backup_dir"
+
+    git -C "$repo_dir" status --porcelain > "$backup_dir/status_${timestamp}.txt" 2>/dev/null || true
+    git -C "$repo_dir" diff > "$backup_dir/unstaged_${timestamp}.patch" 2>/dev/null || true
+    git -C "$repo_dir" diff --cached > "$backup_dir/staged_${timestamp}.patch" 2>/dev/null || true
+    git -C "$repo_dir" ls-files --others --exclude-standard > "$backup_dir/untracked_${timestamp}.txt" 2>/dev/null || true
+
+    LAST_REPO_BACKUP_DIR="$backup_dir"
+    LAST_REPO_BACKUP_TIMESTAMP="$timestamp"
+}
+
+perform_repo_hard_sync() {
+    local repo_dir="$1"
+
+    create_repo_update_backup "$repo_dir"
+    git -C "$repo_dir" reset --hard origin/main
+    git -C "$repo_dir" clean -fd
+}
+
 persist_setup_language() {
     mkdir -p "$USER_WORKSPACE_DIR"
     cat > "$SETUP_PREFERENCES_FILE" <<EOF
@@ -41,6 +66,13 @@ apply_install_language() {
             TXT_PAT_PROMPT="Please enter your GitHub Personal Access Token: "
             TXT_PAT_MISSING="Error: No GitHub Personal Access Token entered. Installation aborted."
             TXT_EXISTING_DIR_UPDATE="Installation directory $INSTALL_DIR already exists. Updating repository..."
+            TXT_LOCAL_CHANGES_DETECTED="Local changes were detected in the setup repository."
+            TXT_LOCAL_CHANGES_EXPLANATION="That is why the normal update command does not switch to the latest setup version."
+            TXT_LOCAL_CHANGES_QUESTION="Do you want to hard-sync the setup repository with origin/main now? (y/N): "
+            TXT_LOCAL_CHANGES_WARNING="Only files inside the setup repository will be reset. Your external user workspace remains untouched."
+            TXT_LOCAL_CHANGES_ABORTED="Repository update aborted because local changes were kept."
+            TXT_LOCAL_CHANGES_HARD_SYNC_DONE="The setup repository was hard-synced to origin/main."
+            TXT_LOCAL_CHANGES_BACKUP_INFO="A backup of the repo changes was stored in:"
             TXT_REMOTE_MAIN_MISSING="Error: Remote branch origin/main was not found."
             TXT_CLONE_REPO="Cloning repository into $INSTALL_DIR..."
             TXT_INSTALLATION_FINISHED="Installation completed. Please follow the instructions in the menu."
@@ -56,6 +88,13 @@ apply_install_language() {
             TXT_PAT_PROMPT="Veuillez saisir votre GitHub Personal Access Token : "
             TXT_PAT_MISSING="Erreur : aucun GitHub Personal Access Token saisi. Installation annulée."
             TXT_EXISTING_DIR_UPDATE="Le dossier d'installation $INSTALL_DIR existe déjà. Mise à jour du dépôt..."
+            TXT_LOCAL_CHANGES_DETECTED="Des modifications locales ont été détectées dans le dépôt du setup."
+            TXT_LOCAL_CHANGES_EXPLANATION="C'est pour cela que la commande de mise à jour normale ne bascule pas vers la version la plus récente."
+            TXT_LOCAL_CHANGES_QUESTION="Voulez-vous synchroniser maintenant de force le dépôt du setup avec origin/main ? (o/N) : "
+            TXT_LOCAL_CHANGES_WARNING="Seuls les fichiers du dépôt du setup seront réinitialisés. L'espace utilisateur externe reste intact."
+            TXT_LOCAL_CHANGES_ABORTED="La mise à jour du dépôt a été annulée, car les modifications locales ont été conservées."
+            TXT_LOCAL_CHANGES_HARD_SYNC_DONE="Le dépôt du setup a été synchronisé de force avec origin/main."
+            TXT_LOCAL_CHANGES_BACKUP_INFO="Une sauvegarde des modifications du dépôt a été enregistrée dans :"
             TXT_REMOTE_MAIN_MISSING="Erreur : la branche distante origin/main est introuvable."
             TXT_CLONE_REPO="Clonage du dépôt dans $INSTALL_DIR..."
             TXT_INSTALLATION_FINISHED="Installation terminée. Veuillez suivre les instructions du menu."
@@ -71,6 +110,13 @@ apply_install_language() {
             TXT_PAT_PROMPT="请输入你的 GitHub Personal Access Token："
             TXT_PAT_MISSING="错误：未输入 GitHub Personal Access Token。安装已中止。"
             TXT_EXISTING_DIR_UPDATE="安装目录 $INSTALL_DIR 已存在。正在更新仓库..."
+            TXT_LOCAL_CHANGES_DETECTED="检测到 setup 仓库中存在本地更改。"
+            TXT_LOCAL_CHANGES_EXPLANATION="这就是普通更新命令无法切换到最新 setup 版本的原因。"
+            TXT_LOCAL_CHANGES_QUESTION="现在要将 setup 仓库强制同步到 origin/main 吗？(y/N)："
+            TXT_LOCAL_CHANGES_WARNING="只有 setup 仓库中的文件会被重置，外部用户工作区不会受影响。"
+            TXT_LOCAL_CHANGES_ABORTED="因为保留了本地更改，仓库更新已取消。"
+            TXT_LOCAL_CHANGES_HARD_SYNC_DONE="setup 仓库已强制同步到 origin/main。"
+            TXT_LOCAL_CHANGES_BACKUP_INFO="仓库更改的备份已保存到："
             TXT_REMOTE_MAIN_MISSING="错误：未找到远程分支 origin/main。"
             TXT_CLONE_REPO="正在将仓库克隆到 $INSTALL_DIR..."
             TXT_INSTALLATION_FINISHED="安装完成。请按照菜单中的说明继续。"
@@ -86,6 +132,13 @@ apply_install_language() {
             TXT_PAT_PROMPT="GitHub Personal Access Token を入力してください: "
             TXT_PAT_MISSING="エラー：GitHub Personal Access Token が入力されていません。インストールを中止します。"
             TXT_EXISTING_DIR_UPDATE="インストールディレクトリ $INSTALL_DIR は既に存在します。リポジトリを更新します..."
+            TXT_LOCAL_CHANGES_DETECTED="セットアップリポジトリにローカル変更が見つかりました。"
+            TXT_LOCAL_CHANGES_EXPLANATION="そのため通常の更新コマンドでは最新のセットアップ版へ切り替わりません。"
+            TXT_LOCAL_CHANGES_QUESTION="今すぐ setup リポジトリを origin/main と強制同期しますか？(y/N): "
+            TXT_LOCAL_CHANGES_WARNING="リセットされるのは setup リポジトリ内のファイルだけです。外部のユーザーワークスペースはそのまま残ります。"
+            TXT_LOCAL_CHANGES_ABORTED="ローカル変更を保持したため、リポジトリ更新を中止しました。"
+            TXT_LOCAL_CHANGES_HARD_SYNC_DONE="setup リポジトリは origin/main に強制同期されました。"
+            TXT_LOCAL_CHANGES_BACKUP_INFO="リポジトリ変更のバックアップ保存先:"
             TXT_REMOTE_MAIN_MISSING="エラー：リモートブランチ origin/main が見つかりません。"
             TXT_CLONE_REPO="リポジトリを $INSTALL_DIR にクローンしています..."
             TXT_INSTALLATION_FINISHED="インストールが完了しました。メニューの案内に従ってください。"
@@ -101,6 +154,13 @@ apply_install_language() {
             TXT_PAT_PROMPT="Введите ваш GitHub Personal Access Token: "
             TXT_PAT_MISSING="Ошибка: GitHub Personal Access Token не введён. Установка прервана."
             TXT_EXISTING_DIR_UPDATE="Каталог установки $INSTALL_DIR уже существует. Обновляем репозиторий..."
+            TXT_LOCAL_CHANGES_DETECTED="В репозитории setup обнаружены локальные изменения."
+            TXT_LOCAL_CHANGES_EXPLANATION="Именно поэтому обычная команда обновления не переключается на самую новую версию setup."
+            TXT_LOCAL_CHANGES_QUESTION="Выполнить сейчас жёсткую синхронизацию репозитория setup с origin/main? (y/N): "
+            TXT_LOCAL_CHANGES_WARNING="Будут сброшены только файлы внутри репозитория setup. Внешнее пользовательское рабочее пространство не затрагивается."
+            TXT_LOCAL_CHANGES_ABORTED="Обновление репозитория отменено, потому что локальные изменения были сохранены."
+            TXT_LOCAL_CHANGES_HARD_SYNC_DONE="Репозиторий setup жёстко синхронизирован с origin/main."
+            TXT_LOCAL_CHANGES_BACKUP_INFO="Резервная копия изменений репозитория сохранена в:"
             TXT_REMOTE_MAIN_MISSING="Ошибка: удалённая ветка origin/main не найдена."
             TXT_CLONE_REPO="Клонируем репозиторий в $INSTALL_DIR..."
             TXT_INSTALLATION_FINISHED="Установка завершена. Следуйте инструкциям в меню."
@@ -116,6 +176,13 @@ apply_install_language() {
             TXT_PAT_PROMPT="Introduce tu GitHub Personal Access Token: "
             TXT_PAT_MISSING="Error: no se introdujo ningún GitHub Personal Access Token. Instalación cancelada."
             TXT_EXISTING_DIR_UPDATE="El directorio de instalación $INSTALL_DIR ya existe. Actualizando el repositorio..."
+            TXT_LOCAL_CHANGES_DETECTED="Se detectaron cambios locales en el repositorio del setup."
+            TXT_LOCAL_CHANGES_EXPLANATION="Por eso el comando de actualización normal no cambia a la versión más reciente del setup."
+            TXT_LOCAL_CHANGES_QUESTION="¿Quieres sincronizar ahora a la fuerza el repositorio del setup con origin/main? (s/N): "
+            TXT_LOCAL_CHANGES_WARNING="Solo se restablecerán los archivos dentro del repositorio del setup. Tu espacio de usuario externo no se tocará."
+            TXT_LOCAL_CHANGES_ABORTED="La actualización del repositorio se canceló porque se conservaron los cambios locales."
+            TXT_LOCAL_CHANGES_HARD_SYNC_DONE="El repositorio del setup se sincronizó a la fuerza con origin/main."
+            TXT_LOCAL_CHANGES_BACKUP_INFO="Se guardó una copia de seguridad de los cambios del repositorio en:"
             TXT_REMOTE_MAIN_MISSING="Error: no se encontró la rama remota origin/main."
             TXT_CLONE_REPO="Clonando el repositorio en $INSTALL_DIR..."
             TXT_INSTALLATION_FINISHED="La instalación ha finalizado. Sigue las instrucciones del menú."
@@ -131,6 +198,13 @@ apply_install_language() {
             TXT_PAT_PROMPT="Bonvolu entajpi vian GitHub Personal Access Token: "
             TXT_PAT_MISSING="Eraro: neniu GitHub Personal Access Token estis entajpita. Instalado nuligita."
             TXT_EXISTING_DIR_UPDATE="La instaldosierujo $INSTALL_DIR jam ekzistas. Ĝisdatigante la deponejon..."
+            TXT_LOCAL_CHANGES_DETECTED="Lokaj ŝanĝoj estis detektitaj en la setup-deponejo."
+            TXT_LOCAL_CHANGES_EXPLANATION="Pro tio la normala ĝisdatiga komando ne ŝanĝas al la plej nova setup-versio."
+            TXT_LOCAL_CHANGES_QUESTION="Ĉu vi volas nun forte sinkronigi la setup-deponejon kun origin/main? (j/N): "
+            TXT_LOCAL_CHANGES_WARNING="Nur dosieroj ene de la setup-deponejo estos resetitaj. Via ekstera uzanta laborejo restos netuŝita."
+            TXT_LOCAL_CHANGES_ABORTED="La deponeja ĝisdatigo estis nuligita, ĉar la lokaj ŝanĝoj estis konservitaj."
+            TXT_LOCAL_CHANGES_HARD_SYNC_DONE="La setup-deponejo estis forte sinkronigita kun origin/main."
+            TXT_LOCAL_CHANGES_BACKUP_INFO="Sekurkopio de la deponejaj ŝanĝoj estis konservita en:"
             TXT_REMOTE_MAIN_MISSING="Eraro: fora branĉo origin/main ne estis trovita."
             TXT_CLONE_REPO="Klonante la deponejon en $INSTALL_DIR..."
             TXT_INSTALLATION_FINISHED="La instalado finiĝis. Bonvolu sekvi la instrukciojn en la menuo."
@@ -146,6 +220,13 @@ apply_install_language() {
             TXT_PAT_PROMPT="يرجى إدخال GitHub Personal Access Token الخاص بك: "
             TXT_PAT_MISSING="خطأ: لم يتم إدخال GitHub Personal Access Token. تم إيقاف التثبيت."
             TXT_EXISTING_DIR_UPDATE="دليل التثبيت $INSTALL_DIR موجود بالفعل. جارٍ تحديث المستودع..."
+            TXT_LOCAL_CHANGES_DETECTED="تم اكتشاف تغييرات محلية داخل مستودع setup."
+            TXT_LOCAL_CHANGES_EXPLANATION="ولهذا السبب لا ينتقل أمر التحديث العادي إلى أحدث إصدار من setup."
+            TXT_LOCAL_CHANGES_QUESTION="هل تريد الآن إجراء مزامنة قسرية لمستودع setup مع origin/main؟ (y/N): "
+            TXT_LOCAL_CHANGES_WARNING="سيتم إعادة ضبط الملفات داخل مستودع setup فقط. مساحة المستخدم الخارجية لن تتأثر."
+            TXT_LOCAL_CHANGES_ABORTED="تم إلغاء تحديث المستودع لأن التغييرات المحلية تم الاحتفاظ بها."
+            TXT_LOCAL_CHANGES_HARD_SYNC_DONE="تمت مزامنة مستودع setup قسرياً مع origin/main."
+            TXT_LOCAL_CHANGES_BACKUP_INFO="تم حفظ نسخة احتياطية من تغييرات المستودع في:"
             TXT_REMOTE_MAIN_MISSING="خطأ: لم يتم العثور على الفرع البعيد origin/main."
             TXT_CLONE_REPO="جارٍ استنساخ المستودع إلى $INSTALL_DIR..."
             TXT_INSTALLATION_FINISHED="اكتمل التثبيت. يرجى متابعة التعليمات في القائمة."
@@ -161,6 +242,13 @@ apply_install_language() {
             TXT_PAT_PROMPT="נא להזין את GitHub Personal Access Token שלך: "
             TXT_PAT_MISSING="שגיאה: לא הוזן GitHub Personal Access Token. ההתקנה בוטלה."
             TXT_EXISTING_DIR_UPDATE="ספריית ההתקנה $INSTALL_DIR כבר קיימת. מעדכן את המאגר..."
+            TXT_LOCAL_CHANGES_DETECTED="זוהו שינויים מקומיים במאגר ה-setup."
+            TXT_LOCAL_CHANGES_EXPLANATION="לכן פקודת העדכון הרגילה לא עוברת לגרסת ה-setup החדשה ביותר."
+            TXT_LOCAL_CHANGES_QUESTION="האם לבצע עכשיו סנכרון קשיח של מאגר ה-setup עם origin/main? (y/N): "
+            TXT_LOCAL_CHANGES_WARNING="רק קבצים בתוך מאגר ה-setup יאופסו. מרחב המשתמש החיצוני שלך לא ייפגע."
+            TXT_LOCAL_CHANGES_ABORTED="עדכון המאגר בוטל כי השינויים המקומיים נשמרו."
+            TXT_LOCAL_CHANGES_HARD_SYNC_DONE="מאגר ה-setup סונכרן בקשיחות עם origin/main."
+            TXT_LOCAL_CHANGES_BACKUP_INFO="גיבוי של שינויי המאגר נשמר בנתיב:"
             TXT_REMOTE_MAIN_MISSING="שגיאה: הענף המרוחק origin/main לא נמצא."
             TXT_CLONE_REPO="משכפל את המאגר אל $INSTALL_DIR..."
             TXT_INSTALLATION_FINISHED="ההתקנה הושלמה. נא לפעול לפי ההוראות שבתפריט."
@@ -176,6 +264,13 @@ apply_install_language() {
             TXT_PAT_PROMPT="Bitte geben Sie Ihr GitHub Personal Access Token ein: "
             TXT_PAT_MISSING="Fehler: Kein GitHub Personal Access Token eingegeben. Installation abgebrochen."
             TXT_EXISTING_DIR_UPDATE="Installationsverzeichnis $INSTALL_DIR existiert bereits. Aktualisiere Repository..."
+            TXT_LOCAL_CHANGES_DETECTED="Im Setup-Repository wurden lokale Änderungen erkannt."
+            TXT_LOCAL_CHANGES_EXPLANATION="Genau deshalb wechselt der normale Update-Befehl nicht auf die neueste Setup-Version."
+            TXT_LOCAL_CHANGES_QUESTION="Möchten Sie das Setup-Repository jetzt hart mit origin/main abgleichen? (j/N): "
+            TXT_LOCAL_CHANGES_WARNING="Zurückgesetzt werden nur Dateien im Setup-Repository. Ihr ausgelagerter Benutzer-Workspace bleibt erhalten."
+            TXT_LOCAL_CHANGES_ABORTED="Das Repository-Update wurde abgebrochen, weil die lokalen Änderungen beibehalten wurden."
+            TXT_LOCAL_CHANGES_HARD_SYNC_DONE="Das Setup-Repository wurde hart auf origin/main abgeglichen."
+            TXT_LOCAL_CHANGES_BACKUP_INFO="Eine Sicherung der Repo-Änderungen wurde hier abgelegt:"
             TXT_REMOTE_MAIN_MISSING="Fehler: Remote-Branch origin/main wurde nicht gefunden."
             TXT_CLONE_REPO="Klone Repository in $INSTALL_DIR..."
             TXT_INSTALLATION_FINISHED="Installation abgeschlossen. Bitte folgen Sie den Anweisungen im Menü."
@@ -281,7 +376,26 @@ if [ -d "$INSTALL_DIR" ]; then
         else
             git checkout -B main origin/main
         fi
-        git pull --ff-only origin main
+        REPO_STATUS="$(git status --porcelain)"
+        if [ -n "$REPO_STATUS" ]; then
+            echo -e "${YELLOW}${TXT_LOCAL_CHANGES_DETECTED}${NC}"
+            echo -e "${YELLOW}${TXT_LOCAL_CHANGES_EXPLANATION}${NC}"
+            echo -e "${YELLOW}${TXT_LOCAL_CHANGES_WARNING}${NC}"
+            echo
+            printf '%s\n' "$REPO_STATUS"
+            echo
+            read -r -p "$TXT_LOCAL_CHANGES_QUESTION" DO_HARD_SYNC < "$TTY_DEVICE"
+            if [[ "$DO_HARD_SYNC" =~ ^([jJyYsSoO])$ ]]; then
+                perform_repo_hard_sync "$PWD"
+                echo -e "${GREEN}${TXT_LOCAL_CHANGES_HARD_SYNC_DONE}${NC}"
+                echo -e "${YELLOW}${TXT_LOCAL_CHANGES_BACKUP_INFO}${NC} $LAST_REPO_BACKUP_DIR"
+            else
+                echo -e "${RED}${TXT_LOCAL_CHANGES_ABORTED}${NC}"
+                exit 1
+            fi
+        else
+            git pull --ff-only origin main
+        fi
     else
         echo -e "${RED}${TXT_REMOTE_MAIN_MISSING}${NC}"
         exit 1

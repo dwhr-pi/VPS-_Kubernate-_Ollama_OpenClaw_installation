@@ -45,12 +45,13 @@ if command -v git >/dev/null 2>&1 && git -C "$INSTALL_DIR" rev-parse --is-inside
         echo -e "${YELLOW}Hinweis: Lokale Aenderungen oder Zusatzdateien im Setup erkannt. Repository-Update wurde uebersprungen, damit nichts ueberschrieben wird.${NC}"
         echo -e "${YELLOW}Deshalb kann weiterhin ein aelterer Setup-Stand angezeigt werden.${NC}"
         echo -e "${YELLOW}Bitte committen, sichern oder entfernen Sie lokale Aenderungen und fuehren Sie das Update danach erneut aus.${NC}"
+        echo -e "${YELLOW}Der ausgelagerte Benutzer-Workspace unter ~/.openclaw_ultimate_user_data bleibt davon unberuehrt.${NC}"
         echo
         echo -e "${YELLOW}Git-Status im Setup-Verzeichnis:${NC}"
         printf '%s\n' "$REPO_STATUS"
         echo
         echo -e "${YELLOW}Manueller harter Neuabgleich nur wenn Sie sicher sind, dass lokale Setup-Aenderungen weg duerfen:${NC}"
-        echo -e "${YELLOW}cd ~/openclaw_ultimate_setup && git fetch origin --prune && git reset --hard origin/main${NC}"
+        echo -e "${YELLOW}cd ~/openclaw_ultimate_setup && git fetch origin --prune && git reset --hard origin/main && git clean -fd${NC}"
     fi
 else
     echo -e "${YELLOW}Hinweis: Kein Git-Repository im Setup-Verzeichnis erkannt. Ueberspringe Repo-Update.${NC}"

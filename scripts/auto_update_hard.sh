@@ -17,6 +17,7 @@ NC="\033[0m"
 
 echo -e "${YELLOW}Harter Setup-Abgleich startet...${NC}"
 echo -e "${YELLOW}Lokale Änderungen im Setup-Verzeichnis werden verworfen.${NC}"
+echo -e "${YELLOW}Der ausgelagerte Benutzer-Workspace bleibt dabei erhalten.${NC}"
 
 if ! command -v git >/dev/null 2>&1; then
     echo -e "${RED}Fehler: git ist nicht installiert.${NC}"
@@ -45,6 +46,7 @@ else
 fi
 
 git -C "$INSTALL_DIR" reset --hard origin/main
+git -C "$INSTALL_DIR" clean -fd
 
 echo -e "${GREEN}Das Setup wurde hart auf origin/main zurückgesetzt.${NC}"
 echo -e "${YELLOW}Starte danach das Menü neu, damit der aktuelle Stand sicher geladen wird.${NC}"

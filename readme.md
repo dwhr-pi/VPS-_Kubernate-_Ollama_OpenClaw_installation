@@ -87,6 +87,19 @@ git pull --ff-only origin main
 bash ./setup_ultimate.sh
 ```
 
+Wenn dabei eine Meldung zu lokalen Änderungen in Dateien wie `install.sh` oder `setup_ultimate.sh` erscheint, dann blockiert nicht GitHub das Update, sondern dein lokales Setup-Repository ist nicht mehr sauber. Das kann auch schon durch ältere Teststände oder frühere lokale Dateien passieren, selbst wenn du selbst nichts bewusst bearbeitet hast.
+
+In diesem Fall gibt es jetzt zwei sichere Wege:
+
+- im Menü den Punkt `Setup hart mit GitHub main abgleichen` verwenden
+- oder den One-Liner-Installer erneut starten und den angebotenen harten Repo-Abgleich bestätigen
+
+Wichtig dabei:
+
+- Es werden nur Dateien im Setup-Repository zurückgesetzt.
+- Dein ausgelagerter Benutzer-Workspace unter `~/.openclaw_ultimate_user_data` bleibt erhalten.
+- Vor dem harten Abgleich legt der Installer jetzt zusätzlich eine Sicherung des Repo-Zustands unter `~/.openclaw_ultimate_user_data/repo_update_backups` an.
+
 Alternativ kannst du im Menü den Punkt `Setup-Update + System-Update (Repo, OS & pnpm)` nutzen. Dieser zieht den aktuellen Repository-Stand direkt im Setup-Verzeichnis und aktualisiert danach Ubuntu sowie `pnpm`.
 
 Wenn danach trotzdem noch ein älterer Setup-Stand angezeigt wird, liegen im Verzeichnis oft noch lokale Änderungen oder Zusatzdateien. Dann zieht `git pull` absichtlich nicht einfach darüber.
