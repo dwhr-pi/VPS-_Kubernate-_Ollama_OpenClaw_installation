@@ -1240,8 +1240,9 @@ show_main_menu() {
 
     : > /tmp/menu_choice
     dialog --clear --backtitle "$APP_TITLE" \
-    --cancel-label "${TXT_CANCEL_LABEL:-Beenden}" \
-    --extra-button --extra-label "${TXT_OPTIONS_BUTTON:-⚙ Optionen}" \
+    --ok-label "${TXT_OK_LABEL:-✔ OK}" \
+    --cancel-label "${TXT_CANCEL_LABEL:-🚪 Beenden}" \
+    --extra-button --extra-label "${TXT_OPTIONS_BUTTON:-⚙  Optionen}" \
     --title "${TXT_MENU_TITLE:-HAUPTMENÜ}" --menu "${TXT_MENU_PROMPT:-Wählen Sie Ihr Ziel-System oder eine Aktion:}" 29 92 19 \
     "1" "${TXT_MENU_1:-Setup-Update + System-Update (Repo, OS & pnpm)}" \
     "2" "${TXT_MENU_2:-Ollama Modell-Manager}" \

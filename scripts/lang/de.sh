@@ -16,7 +16,8 @@ TXT_STARTUP_LANGUAGE_PROMPT_NO="Weiter"
 # - Beenden
 # - Hauptmenü
 # - Wählen Sie Ihr Ziel-System oder eine Aktion:
-TXT_CANCEL_LABEL="Beenden"
+TXT_OK_LABEL="✔ OK"
+TXT_CANCEL_LABEL="🚪 Beenden"
 TXT_MENU_TITLE="HAUPTMENÜ"
 TXT_MENU_PROMPT="Wählen Sie Ihr Ziel-System oder eine Aktion:"
 
@@ -38,7 +39,7 @@ TXT_MENU_14="Setup-Messwerte & Benchmarks bearbeiten"
 TXT_MENU_15="Setup hart mit GitHub main abgleichen"
 TXT_MENU_16="Benutzer-Workspace verwalten"
 TXT_MENU_17="Beenden"
-TXT_OPTIONS_BUTTON="⚙ Optionen"
+TXT_OPTIONS_BUTTON="⚙  Optionen"
 
 # Ursprünglich Deutsch: Trennlinien im Hauptmenü
 TXT_SEPARATOR_LINE="────────────────────────────────────────────────────────"

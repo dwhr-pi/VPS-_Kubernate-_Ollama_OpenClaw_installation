@@ -16,7 +16,8 @@ TXT_STARTUP_LANGUAGE_PROMPT_NO="Continue"
 # - Beenden
 # - Hauptmenü
 # - Wählen Sie Ihr Ziel-System oder eine Aktion:
-TXT_CANCEL_LABEL="Exit"
+TXT_OK_LABEL="✔ OK"
+TXT_CANCEL_LABEL="🚪 Exit"
 TXT_MENU_TITLE="MAIN MENU"
 TXT_MENU_PROMPT="Choose your target system or an action:"
 
@@ -38,7 +39,7 @@ TXT_MENU_14="Edit setup metrics & benchmarks"
 TXT_MENU_15="Hard sync setup with GitHub main"
 TXT_MENU_16="Manage user workspace"
 TXT_MENU_17="Exit"
-TXT_OPTIONS_BUTTON="⚙ Options"
+TXT_OPTIONS_BUTTON="⚙  Options"
 
 # Ursprünglich Deutsch: Trennlinien im Hauptmenü
 TXT_SEPARATOR_LINE="────────────────────────────────────────────────────────"
