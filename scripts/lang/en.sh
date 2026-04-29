@@ -16,7 +16,7 @@ TXT_STARTUP_LANGUAGE_PROMPT_NO="Continue"
 # - Beenden
 # - Hauptmenü
 # - Wählen Sie Ihr Ziel-System oder eine Aktion:
-TXT_OK_LABEL="✔ OK"
+TXT_OK_LABEL="✔  OK"
 TXT_CANCEL_LABEL="🚪 Exit"
 TXT_MENU_TITLE="MAIN MENU"
 TXT_MENU_PROMPT="Choose your target system or an action:"
