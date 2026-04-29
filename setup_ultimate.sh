@@ -4,7 +4,7 @@
 # Beschreibung: Dies ist das Hauptinstallationsskript für die ultimative KI-Infrastruktur.
 # Es bietet eine interaktive Menüführung zur Installation, Deinstallation und Verwaltung verschiedener KI-Tools, Profile und Systemkomponenten.
 # Das Skript unterstützt hybride Setups (MiniPC + Multi-VPS), Standalone-Installationen und bietet Funktionen wie Auto-Updates, Ollama-Modellverwaltung und OpenClaw-Konfiguration.
-# Version: V11.01
+# Version: V11.02
 #
 
 # Farben & UI
@@ -13,7 +13,7 @@ BLUE="\033[0;34m"
 RED="\033[0;31m"
 YELLOW="\033[1;33m"
 NC="\033[0m"
-APP_VERSION="11.01"
+APP_VERSION="11.02"
 APP_TITLE="OpenClaw & AI Infrastructure - Ultimate Setup V${APP_VERSION}"
 
 # Installationsverzeichnis
@@ -72,6 +72,85 @@ show_metrics_editor() {
         cp /tmp/metrics_config_edit "$METRICS_CONFIG_FILE"
         echo -e "${GREEN}Die editierbaren Setup-Messwerte wurden aktualisiert.${NC}"
     fi
+}
+
+load_metrics_config() {
+    ensure_metrics_config
+    # shellcheck source=/dev/null
+    source "$METRICS_CONFIG_FILE"
+}
+
+show_operation_intro() {
+    local operation_title="$1"
+    local operation_summary="$2"
+    local operation_duration="$3"
+    local operation_storage="$4"
+    local operation_notes="${5:-}"
+
+    load_metrics_config
+    clear
+    echo
+    echo -e "${YELLOW}Willkommen im ${APP_TITLE}.${NC}"
+    echo -e "${YELLOW}Es startet jetzt: ${operation_title}${NC}"
+    echo
+    echo -e "${YELLOW}Was passiert:${NC} ${operation_summary}"
+    echo -e "${YELLOW}Geschaetzte Dauer:${NC} ${operation_duration}"
+    echo -e "${YELLOW}Empfohlener freier Speicher:${NC} ${operation_storage}"
+    echo -e "${YELLOW}Hinweis:${NC} Mehrere sudo-/Passwortabfragen sind normal. Gemeint ist das Linux-/Ubuntu-Passwort deines Users."
+    echo -e "${YELLOW}Hinweis:${NC} Die Zeiten sind nur Schaetzwerte und haengen von SSD, CPU, RAM, Internet und den gewaehlten Modulen ab."
+    if [ -n "$operation_notes" ]; then
+        echo -e "${YELLOW}Zusatz:${NC} ${operation_notes}"
+    fi
+    echo
+    sleep 4
+}
+
+get_profile_required_gb() {
+    local profile_key="$1"
+
+    load_metrics_config
+
+    case "$profile_key" in
+        "Programmierer") echo "${PROGRAMMIERER_REQUIRED_GB} GB" ;;
+        "Media_Musik") echo "${MEDIA_MUSIK_REQUIRED_GB} GB" ;;
+        "KI_Forschung") echo "${KI_FORSCHUNG_REQUIRED_GB} GB" ;;
+        "Texter_Werbung_Marketing") echo "${MARKETING_REQUIRED_GB} GB" ;;
+        "Rechtsberatung_Steuerrecht") echo "${RECHT_STEUER_REQUIRED_GB} GB" ;;
+        "Agent_Orchestrator") echo "${AGENT_ORCHESTRATOR_REQUIRED_GB} GB" ;;
+        "Audio") echo "${AUDIO_REQUIRED_GB} GB" ;;
+        "Content_Automation") echo "${CONTENT_AUTOMATION_REQUIRED_GB} GB" ;;
+        "Research_Agent") echo "${RESEARCH_AGENT_REQUIRED_GB} GB" ;;
+        "Security_Analyst") echo "${SECURITY_ANALYST_REQUIRED_GB} GB" ;;
+        "Trading_AI") echo "${TRADING_AI_REQUIRED_GB} GB" ;;
+        "Visual_Creator") echo "${VISUAL_CREATOR_REQUIRED_GB} GB" ;;
+        *) echo "${MIN_FREE_GB_ABSOLUTE}-${MIN_FREE_GB_RECOMMENDED} GB" ;;
+    esac
+}
+
+show_profile_action_intro() {
+    local profile_key="$1"
+    local action_label="$2"
+    local required_gb
+
+    required_gb="$(get_profile_required_gb "$profile_key")"
+    show_operation_intro \
+    "Profil ${action_label}: ${profile_key}" \
+    "${PROFILES[$profile_key]}" \
+    "${SETUP_DOWNLOAD_TIME_ESTIMATE} Download + ${SETUP_INSTALL_TIME_ESTIMATE} Installation/Anpassung je nach Profilgroesse" \
+    "$required_gb" \
+    "Je nach Profil werden mehrere Einzeltools nacheinander installiert oder entfernt. Das kann laenger dauern als bei einem Einzeltool."
+}
+
+show_tool_action_intro() {
+    local tool_key="$1"
+    local action_label="$2"
+
+    show_operation_intro \
+    "Tool ${action_label}: ${tool_key}" \
+    "${TOOLS[$tool_key]}" \
+    "${SETUP_DOWNLOAD_TIME_ESTIMATE} Download + ${SETUP_INSTALL_TIME_ESTIMATE} Installation/Anpassung je nach Tool" \
+    "${MIN_FREE_GB_ABSOLUTE}-${MIN_FREE_GB_RECOMMENDED} GB" \
+    "Einige Tools benoetigen zusaetzliche Paketquellen, Builds, Container oder API-Eingaben."
 }
 
 run_bash_script() {
@@ -284,6 +363,7 @@ PROFILES["Visual_Creator"]="Kreativprofil für Bild-, Video- und Asset-Pipelines
 # Funktion zum Installieren eines Profils
 install_profile() {
     local PROFILE_KEY="$1"
+    show_profile_action_intro "$PROFILE_KEY" "installieren"
     echo -e "${BLUE}Installiere Profil: ${PROFILE_KEY}...${NC}"
     run_bash_script "$INSTALL_DIR/scripts/profiles/${PROFILE_KEY}_install.sh"
     if [ $? -eq 0 ]; then
@@ -297,6 +377,7 @@ install_profile() {
 # Funktion zum Deinstallieren eines Profils
 uninstall_profile() {
     local PROFILE_KEY="$1"
+    show_profile_action_intro "$PROFILE_KEY" "deinstallieren"
     echo -e "${BLUE}Deinstalliere Profil: ${PROFILE_KEY}...${NC}"
     run_bash_script "$INSTALL_DIR/scripts/profiles/${PROFILE_KEY}_uninstall.sh"
     if [ $? -eq 0 ]; then
@@ -614,6 +695,7 @@ run_tool_script() {
 # Funktion zum Installieren eines Tools
 install_tool() {
     local TOOL_KEY="$1"
+    show_tool_action_intro "$TOOL_KEY" "installieren"
     echo -e "${BLUE}Installiere Tool: ${TOOL_KEY}...${NC}"
     run_tool_script "$TOOL_KEY" "install"
     if [ $? -eq 0 ]; then
@@ -627,6 +709,7 @@ install_tool() {
 # Funktion zum Deinstallieren eines Tools
 uninstall_tool() {
     local TOOL_KEY="$1"
+    show_tool_action_intro "$TOOL_KEY" "deinstallieren"
     echo -e "${BLUE}Deinstalliere Tool: ${TOOL_KEY}...${NC}"
     run_tool_script "$TOOL_KEY" "uninstall"
     if [ $? -eq 0 ]; then
@@ -909,6 +992,12 @@ while true; do
     
     case $CHOICE in
         1)
+            show_operation_intro \
+            "Setup-Update + System-Update" \
+            "Das Setup-Repository wird aktualisiert. Danach folgen Ubuntu-Updates sowie die Aktualisierung von pnpm." \
+            "${UBUNTU_UPDATES_DOWNLOAD_TIME_ESTIMATE} Download + ${UBUNTU_UPDATES_INSTALL_TIME_ESTIMATE} Installation" \
+            "${MIN_FREE_GB_ABSOLUTE}-${MIN_FREE_GB_RECOMMENDED} GB" \
+            "Bei lokalen Aenderungen im Setup wird das Repo-Update bewusst uebersprungen, damit nichts ueberschrieben wird."
             run_bash_script "$INSTALL_DIR/scripts/auto_update.sh"
             read -p "System-Update abgeschlossen. Drücken Sie Enter..."
             ;;
@@ -921,6 +1010,12 @@ while true; do
             read -p "OpenClaw Konfiguration abgeschlossen. Drücken Sie Enter..."
             ;;
         4)
+            show_operation_intro \
+            "Hybrid-Setup: Letsung MiniPC + Multi-VPS" \
+            "Installiert zuerst die Basis mit OpenClaw und Ollama und richtet danach das hybride Setup mit Home Assistant und Cloudflare-nahem Zugriff ein." \
+            "${SETUP_INSTALL_TIME_ESTIMATE} Gesamt, darin meist ${OPENCLAW_DOWNLOAD_TIME_ESTIMATE} Download + ${OPENCLAW_BUILD_TIME_ESTIMATE} Build + ${OLLAMA_INSTALL_TIME_ESTIMATE} fuer Ollama + ${HOME_ASSISTANT_INSTALL_TIME_ESTIMATE} fuer Home Assistant" \
+            "${MIN_FREE_GB_RECOMMENDED} GB oder mehr" \
+            "Je nach Cloudflare- und VPS-Schritten koennen weitere manuelle Angaben oder API-Daten noetig sein."
             echo -e "${BLUE}Starte Hybrid-Setup (Letsung MiniPC + Multi-VPS)...${NC}"
             if run_base_install_if_needed; then
                 run_bash_script "$INSTALL_DIR/scripts/hybrid_setup.sh"
@@ -930,6 +1025,12 @@ while true; do
             read -p "Hybrid-Setup abgeschlossen. Drücken Sie Enter..."
             ;;
         5)
+            show_operation_intro \
+            "Standalone-Setup: Nur VPS (Cloud-Native)" \
+            "Installiert die Basis und richtet danach die VPS-Variante mit K3s-/Cloud-Native-Bausteinen fuer OpenClaw vor." \
+            "${SETUP_INSTALL_TIME_ESTIMATE} Gesamt, darin meist ${OPENCLAW_DOWNLOAD_TIME_ESTIMATE} Download + ${OPENCLAW_BUILD_TIME_ESTIMATE} Build + ${OLLAMA_INSTALL_TIME_ESTIMATE} fuer Ollama" \
+            "${MIN_FREE_GB_RECOMMENDED} GB oder mehr" \
+            "Einige Teile sind vorbereitende Infrastruktur. Fuer produktive Deployments koennen spaeter noch weitere Schritte notwendig sein."
             echo -e "${BLUE}Starte Standalone VPS-Setup (Cloud-Native)...${NC}"
             if run_base_install_if_needed; then
                 run_bash_script "$INSTALL_DIR/scripts/vps_standalone.sh"
@@ -939,6 +1040,12 @@ while true; do
             read -p "VPS-Standalone-Setup abgeschlossen. Drücken Sie Enter..."
             ;;
         6)
+            show_operation_intro \
+            "Standalone-Setup: Nur MiniPC (Lokal)" \
+            "Installiert die komplette lokale Basis mit OpenClaw, Ollama und den fuer den MiniPC vorgesehenen Zusatzkomponenten." \
+            "${SETUP_INSTALL_TIME_ESTIMATE} Gesamt, darin meist ${OPENCLAW_DOWNLOAD_TIME_ESTIMATE} Download + ${OPENCLAW_BUILD_TIME_ESTIMATE} Build + ${OLLAMA_INSTALL_TIME_ESTIMATE} fuer Ollama + ${HOME_ASSISTANT_INSTALL_TIME_ESTIMATE} fuer Home Assistant" \
+            "${MIN_FREE_GB_RECOMMENDED} GB oder mehr" \
+            "Gerade der OpenClaw-Build kann mehrere Minuten laufen. Zwischenabfragen und Paketinstallationen sind in diesem Schritt normal."
             echo -e "${BLUE}Starte Standalone MiniPC-Setup (Lokal)...${NC}"
             if run_base_install_if_needed; then
                 run_bash_script "$INSTALL_DIR/scripts/install_local_only.sh"
@@ -948,6 +1055,12 @@ while true; do
             read -p "Standalone MiniPC-Setup abgeschlossen. Drücken Sie Enter..."
             ;;
         7)
+            show_operation_intro \
+            "Ruflo: Installation & Management" \
+            "Klonen, Node.js-/pnpm-Pruefung, Build und CLI-Verknuepfung fuer Ruflo bzw. Claude-Flow-nahe Werkzeuge." \
+            "${SETUP_DOWNLOAD_TIME_ESTIMATE} Download + ${SETUP_INSTALL_TIME_ESTIMATE} Installation" \
+            "${MIN_FREE_GB_ABSOLUTE} GB oder mehr" \
+            "Abhaengig vom Repo-Ziel kann zusaetzlich Netzwerkzeit fuer das Klonen und den Build anfallen."
             echo -e "${BLUE}Ruflo Installation & Management...${NC}"
             run_bash_script "$INSTALL_DIR/scripts/ruflo_install.sh"
             read -p "Ruflo-Aktion abgeschlossen. Drücken Sie Enter..."
@@ -967,10 +1080,22 @@ while true; do
             read -p "Port-Analyse abgeschlossen. Drücken Sie Enter..."
             ;;
         12)
+            show_operation_intro \
+            "OpenClaw im Dev-Modus starten" \
+            "Startet die vorhandene OpenClaw-Installation im Entwicklungsmodus mit pnpm dev." \
+            "Start meist in wenigen Sekunden bis Minuten, je nach vorhandenem Build-Stand" \
+            "${MIN_FREE_GB_ABSOLUTE} GB oder mehr" \
+            "Falls die Basis noch nicht installiert ist, fuehre zuerst ein Setup wie Punkt 4, 5 oder 6 aus."
             echo -e "${BLUE}Starte OpenClaw im Dev-Modus...${NC}"
             cd /opt/openclaw && pnpm dev
             ;;
         13)
+            show_operation_intro \
+            "Home Assistant starten" \
+            "Startet den vorhandenen Home-Assistant-Dienst ueber systemd." \
+            "${HOME_ASSISTANT_INSTALL_TIME_ESTIMATE} fuer Erstaufbau, Start selbst meist deutlich kuerzer" \
+            "${MIN_FREE_GB_ABSOLUTE} GB oder mehr" \
+            "Wenn Home Assistant noch nicht eingerichtet wurde, nutze vorher ein passendes Setup mit lokaler oder hybrider Installation."
             echo -e "${BLUE}Starte Home Assistant...${NC}"
             sudo systemctl start homeassistant@homeassistant
             ;;
