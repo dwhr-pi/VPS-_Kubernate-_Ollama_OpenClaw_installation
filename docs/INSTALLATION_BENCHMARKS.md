@@ -4,6 +4,10 @@ Das Setup enthält jetzt eine editierbare Datei für Installations-Schätzwerte 
 
 - `~/.openclaw_ultimate_user_data/setup_metrics.conf`
 
+Zusätzlich schreibt das Setup jetzt echte Messwerte in:
+
+- `~/.openclaw_ultimate_user_data/metrics_logs/operation_history.tsv`
+
 ## Zweck
 
 Darin kannst du für jede wichtige Sektion eigene Werte pflegen, zum Beispiel:
@@ -43,6 +47,33 @@ Die Datei liegt bewusst außerhalb des Repositories, damit sie bei Updates erhal
 ```text
 ~/.openclaw_ultimate_user_data/setup_metrics.conf
 ```
+
+Die automatisch aufgezeichneten echten Messwerte landen hier:
+
+```text
+~/.openclaw_ultimate_user_data/metrics_logs/operation_history.tsv
+```
+
+## Automatische Erfahrungswerte
+
+Das Setup misst bei wichtigen Vorgängen jetzt automatisch:
+
+- Startzeit
+- Endzeit
+- Gesamtdauer
+- freien Speicher vor dem Start
+- freien Speicher nach dem Ende
+- daraus die grobe Speicheränderung
+
+Das gilt insbesondere für:
+
+- große Hauptmenü-Installationen
+- Profil-Installationen und Profil-Deinstallationen
+- Tool-Installationen und Tool-Deinstallationen
+
+Damit bekommst du mit der Zeit echte Erfahrungswerte deines eigenen Systems statt nur allgemeiner Schätzungen.
+
+Diese Werte kannst du später nutzen, um die Standard-Schätzwerte in `setup_metrics.conf` besser an deine reale Umgebung anzupassen.
 
 ## Wichtiger Hinweis
 

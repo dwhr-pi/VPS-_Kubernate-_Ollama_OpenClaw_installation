@@ -23,7 +23,9 @@ USER_OPENCLAW_TEMPLATE_DIR="$USER_WORKSPACE_DIR/openclaw"
 USER_PROFILE_SOURCE_DIR="$USER_WORKSPACE_DIR/profil_quellen"
 USER_PROFILE_RENDERED_DIR="$USER_WORKSPACE_DIR/profile_ableitungen"
 USER_PROMPTS_DIR="$USER_WORKSPACE_DIR/prompts"
+USER_METRICS_LOG_DIR="$USER_WORKSPACE_DIR/metrics_logs"
 METRICS_CONFIG_FILE="$USER_WORKSPACE_DIR/setup_metrics.conf"
+METRICS_HISTORY_FILE="$USER_METRICS_LOG_DIR/operation_history.tsv"
 PROFILE_STATUS_FILE="$USER_WORKSPACE_DIR/installed_profiles.txt"
 TOOL_STATUS_FILE="$USER_WORKSPACE_DIR/installed_tools.txt"
 
@@ -33,6 +35,7 @@ ensure_user_workspace() {
     mkdir -p "$USER_PROFILE_SOURCE_DIR"
     mkdir -p "$USER_PROFILE_RENDERED_DIR"
     mkdir -p "$USER_PROMPTS_DIR"
+    mkdir -p "$USER_METRICS_LOG_DIR"
 
     if [ ! -f "$USER_OPENCLAW_TEMPLATE_DIR/.env.template" ]; then
         cp "$INSTALL_DIR/scripts/config_templates/openclaw/.env.template" "$USER_OPENCLAW_TEMPLATE_DIR/.env.template"
@@ -66,6 +69,10 @@ Hier können künftig benutzerdefinierte Prompt-Dateien abgelegt werden.
 Diese Dateien liegen bewusst außerhalb des Repositories, damit sie bei Updates erhalten bleiben
 und nicht versehentlich in Git oder GitHub landen.
 EOF
+    fi
+
+    if [ ! -f "$METRICS_HISTORY_FILE" ]; then
+        printf 'timestamp\toperation_id\toperation_title\tstatus\tduration_seconds\tfree_kb_before\tfree_kb_after\tdelta_kb\n' > "$METRICS_HISTORY_FILE"
     fi
 
     touch "$PROFILE_STATUS_FILE" "$TOOL_STATUS_FILE"
@@ -129,6 +136,78 @@ load_metrics_config() {
     ensure_metrics_config
     # shellcheck source=/dev/null
     source "$METRICS_CONFIG_FILE"
+}
+
+get_free_disk_kb() {
+    df -Pk "$HOME" 2>/dev/null | awk 'NR==2 {print $4}'
+}
+
+format_duration_human() {
+    local total_seconds="$1"
+    local minutes=$((total_seconds / 60))
+    local seconds=$((total_seconds % 60))
+
+    if [ "$minutes" -gt 0 ]; then
+        printf '%s min %s s' "$minutes" "$seconds"
+    else
+        printf '%s s' "$seconds"
+    fi
+}
+
+begin_operation_measurement() {
+    ensure_user_workspace
+    ACTIVE_OPERATION_ID="$1"
+    ACTIVE_OPERATION_TITLE="$2"
+    ACTIVE_OPERATION_STARTED_AT="$(date +%s)"
+    ACTIVE_OPERATION_FREE_KB_BEFORE="$(get_free_disk_kb)"
+}
+
+end_operation_measurement() {
+    local operation_status="$1"
+    local ended_at
+    local free_kb_after
+    local duration_seconds
+    local delta_kb
+
+    [ -n "${ACTIVE_OPERATION_STARTED_AT:-}" ] || return 0
+
+    ended_at="$(date +%s)"
+    free_kb_after="$(get_free_disk_kb)"
+    duration_seconds=$((ended_at - ACTIVE_OPERATION_STARTED_AT))
+    delta_kb=$((ACTIVE_OPERATION_FREE_KB_BEFORE - free_kb_after))
+
+    printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n' \
+        "$(date '+%Y-%m-%d %H:%M:%S')" \
+        "${ACTIVE_OPERATION_ID:-unbekannt}" \
+        "${ACTIVE_OPERATION_TITLE:-Unbekannt}" \
+        "$operation_status" \
+        "$duration_seconds" \
+        "${ACTIVE_OPERATION_FREE_KB_BEFORE:-0}" \
+        "${free_kb_after:-0}" \
+        "$delta_kb" >> "$METRICS_HISTORY_FILE"
+
+    echo -e "${YELLOW}Messwert gespeichert:${NC} ${ACTIVE_OPERATION_TITLE:-Unbekannt} | Status: $operation_status | Dauer: $(format_duration_human "$duration_seconds") | Speicheränderung: ${delta_kb} KB"
+
+    unset ACTIVE_OPERATION_ID ACTIVE_OPERATION_TITLE ACTIVE_OPERATION_STARTED_AT ACTIVE_OPERATION_FREE_KB_BEFORE
+}
+
+show_recent_measurements() {
+    ensure_user_workspace
+
+    if [ ! -f "$METRICS_HISTORY_FILE" ]; then
+        echo -e "${YELLOW}Es liegen noch keine Messwerte vor.${NC}"
+        read -p "Drücken Sie Enter..."
+        return 0
+    fi
+
+    clear
+    echo
+    echo -e "${YELLOW}Letzte Messwerte aus dem Benutzer-Workspace:${NC}"
+    echo -e "${YELLOW}Datei:${NC} $METRICS_HISTORY_FILE"
+    echo
+    tail -n 20 "$METRICS_HISTORY_FILE"
+    echo
+    read -p "Drücken Sie Enter..."
 }
 
 show_operation_intro() {
@@ -229,14 +308,15 @@ show_user_workspace_menu() {
 
     while true; do
         dialog --clear --backtitle "$APP_TITLE" \
-        --title "BENUTZER-WORKSPACE" --menu "Bearbeitbare und sensible Dateien liegen außerhalb des Repos." 20 104 7 \
+        --title "BENUTZER-WORKSPACE" --menu "Bearbeitbare und sensible Dateien liegen außerhalb des Repos." 21 104 8 \
         "1" "Pfad anzeigen" \
         "2" "Workspace-Dateien auflisten" \
         "3" "OpenClaw Vorlagen aus dem Repo neu in den Workspace kopieren" \
         "4" "Profil-Quellen und Profilseiten aus dem Repo neu in den Workspace kopieren" \
         "5" "Prompt-Bereich im Workspace anzeigen" \
-        "6" "Benutzer-Workspace komplett löschen" \
-        "7" "Zurück" 2> /tmp/user_workspace_choice
+        "6" "Letzte Messwerte anzeigen" \
+        "7" "Benutzer-Workspace komplett löschen" \
+        "8" "Zurück" 2> /tmp/user_workspace_choice
 
         if [ $? -ne 0 ]; then
             return 0
@@ -284,6 +364,9 @@ show_user_workspace_menu() {
                 read -p "Drücken Sie Enter..."
                 ;;
             6)
+                show_recent_measurements
+                ;;
+            7)
                 dialog --yesno "Der gesamte Benutzer-Workspace wird gelöscht. Darin können .env-Vorlagen, Statusdateien und weitere sensible Daten liegen. Wirklich fortfahren?" 10 100
                 if [ $? -eq 0 ]; then
                     rm -rf "$USER_WORKSPACE_DIR"
@@ -292,7 +375,7 @@ show_user_workspace_menu() {
                     read -p "Drücken Sie Enter..."
                 fi
                 ;;
-            7)
+            8)
                 return 0
                 ;;
         esac
@@ -491,12 +574,15 @@ PROFILES["Visual_Creator"]="Kreativprofil für Bild-, Video- und Asset-Pipelines
 install_profile() {
     local PROFILE_KEY="$1"
     show_profile_action_intro "$PROFILE_KEY" "installieren"
+    begin_operation_measurement "profile_install_${PROFILE_KEY}" "Profil installieren: ${PROFILE_KEY}"
     echo -e "${BLUE}Installiere Profil: ${PROFILE_KEY}...${NC}"
     run_bash_script "$INSTALL_DIR/scripts/profiles/${PROFILE_KEY}_install.sh"
     if [ $? -eq 0 ]; then
         append_unique_line "$PROFILE_STATUS_FILE" "$PROFILE_KEY"
+        end_operation_measurement "success"
         echo -e "${GREEN}Profil \'$PROFILE_KEY\' erfolgreich installiert.${NC}"
     else
+        end_operation_measurement "failed"
         echo -e "${RED}Fehler bei der Installation von Profil \'$PROFILE_KEY\'.${NC}"
     fi
 }
@@ -505,12 +591,15 @@ install_profile() {
 uninstall_profile() {
     local PROFILE_KEY="$1"
     show_profile_action_intro "$PROFILE_KEY" "deinstallieren"
+    begin_operation_measurement "profile_uninstall_${PROFILE_KEY}" "Profil deinstallieren: ${PROFILE_KEY}"
     echo -e "${BLUE}Deinstalliere Profil: ${PROFILE_KEY}...${NC}"
     run_bash_script "$INSTALL_DIR/scripts/profiles/${PROFILE_KEY}_uninstall.sh"
     if [ $? -eq 0 ]; then
         remove_exact_line "$PROFILE_STATUS_FILE" "$PROFILE_KEY"
+        end_operation_measurement "success"
         echo -e "${GREEN}Profil \'$PROFILE_KEY\' erfolgreich deinstalliert.${NC}"
     else
+        end_operation_measurement "failed"
         echo -e "${RED}Fehler bei der Deinstallation von Profil \'$PROFILE_KEY\'.${NC}"
     fi
 }
@@ -824,12 +913,15 @@ run_tool_script() {
 install_tool() {
     local TOOL_KEY="$1"
     show_tool_action_intro "$TOOL_KEY" "installieren"
+    begin_operation_measurement "tool_install_${TOOL_KEY}" "Tool installieren: ${TOOL_KEY}"
     echo -e "${BLUE}Installiere Tool: ${TOOL_KEY}...${NC}"
     run_tool_script "$TOOL_KEY" "install"
     if [ $? -eq 0 ]; then
         append_unique_line "$TOOL_STATUS_FILE" "$TOOL_KEY"
+        end_operation_measurement "success"
         echo -e "${GREEN}Tool \'$TOOL_KEY\' erfolgreich installiert.${NC}"
     else
+        end_operation_measurement "failed"
         echo -e "${RED}Fehler bei der Installation von Tool \'$TOOL_KEY\'.${NC}"
     fi
 }
@@ -838,12 +930,15 @@ install_tool() {
 uninstall_tool() {
     local TOOL_KEY="$1"
     show_tool_action_intro "$TOOL_KEY" "deinstallieren"
+    begin_operation_measurement "tool_uninstall_${TOOL_KEY}" "Tool deinstallieren: ${TOOL_KEY}"
     echo -e "${BLUE}Deinstalliere Tool: ${TOOL_KEY}...${NC}"
     run_tool_script "$TOOL_KEY" "uninstall"
     if [ $? -eq 0 ]; then
         remove_exact_line "$TOOL_STATUS_FILE" "$TOOL_KEY"
+        end_operation_measurement "success"
         echo -e "${GREEN}Tool \'$TOOL_KEY\' erfolgreich deinstalliert.${NC}"
     else
+        end_operation_measurement "failed"
         echo -e "${RED}Fehler bei der Deinstallation von Tool \'$TOOL_KEY\'.${NC}"
     fi
 }
@@ -1131,7 +1226,9 @@ while true; do
             "${UBUNTU_UPDATES_DOWNLOAD_TIME_ESTIMATE} Download + ${UBUNTU_UPDATES_INSTALL_TIME_ESTIMATE} Installation" \
             "${MIN_FREE_GB_ABSOLUTE}-${MIN_FREE_GB_RECOMMENDED} GB" \
             "Bei lokalen Aenderungen im Setup wird das Repo-Update bewusst uebersprungen, damit nichts ueberschrieben wird."
+            begin_operation_measurement "main_menu_update" "Setup-Update + System-Update"
             run_bash_script "$INSTALL_DIR/scripts/auto_update.sh"
+            if [ $? -eq 0 ]; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
             read -p "System-Update abgeschlossen. Drücken Sie Enter..."
             ;;
         2)
@@ -1149,10 +1246,13 @@ while true; do
             "${SETUP_INSTALL_TIME_ESTIMATE} Gesamt, darin meist ${OPENCLAW_DOWNLOAD_TIME_ESTIMATE} Download + ${OPENCLAW_BUILD_TIME_ESTIMATE} Build + ${OLLAMA_INSTALL_TIME_ESTIMATE} fuer Ollama + ${HOME_ASSISTANT_INSTALL_TIME_ESTIMATE} fuer Home Assistant" \
             "${MIN_FREE_GB_RECOMMENDED} GB oder mehr" \
             "Je nach Cloudflare- und VPS-Schritten koennen weitere manuelle Angaben oder API-Daten noetig sein."
+            begin_operation_measurement "main_menu_hybrid" "Hybrid-Setup: Letsung MiniPC + Multi-VPS"
             echo -e "${BLUE}Starte Hybrid-Setup (Letsung MiniPC + Multi-VPS)...${NC}"
             if run_base_install_if_needed; then
                 run_bash_script "$INSTALL_DIR/scripts/hybrid_setup.sh"
+                if [ $? -eq 0 ]; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
             else
+                end_operation_measurement "failed"
                 echo -e "${RED}Hybrid-Setup abgebrochen, weil die Basis-Installation fehlgeschlagen ist.${NC}"
             fi
             read -p "Hybrid-Setup abgeschlossen. Drücken Sie Enter..."
@@ -1164,10 +1264,13 @@ while true; do
             "${SETUP_INSTALL_TIME_ESTIMATE} Gesamt, darin meist ${OPENCLAW_DOWNLOAD_TIME_ESTIMATE} Download + ${OPENCLAW_BUILD_TIME_ESTIMATE} Build + ${OLLAMA_INSTALL_TIME_ESTIMATE} fuer Ollama" \
             "${MIN_FREE_GB_RECOMMENDED} GB oder mehr" \
             "Einige Teile sind vorbereitende Infrastruktur. Fuer produktive Deployments koennen spaeter noch weitere Schritte notwendig sein."
+            begin_operation_measurement "main_menu_vps" "Standalone-Setup: Nur VPS"
             echo -e "${BLUE}Starte Standalone VPS-Setup (Cloud-Native)...${NC}"
             if run_base_install_if_needed; then
                 run_bash_script "$INSTALL_DIR/scripts/vps_standalone.sh"
+                if [ $? -eq 0 ]; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
             else
+                end_operation_measurement "failed"
                 echo -e "${RED}VPS-Standalone-Setup abgebrochen, weil die Basis-Installation fehlgeschlagen ist.${NC}"
             fi
             read -p "VPS-Standalone-Setup abgeschlossen. Drücken Sie Enter..."
@@ -1179,10 +1282,13 @@ while true; do
             "${SETUP_INSTALL_TIME_ESTIMATE} Gesamt, darin meist ${OPENCLAW_DOWNLOAD_TIME_ESTIMATE} Download + ${OPENCLAW_BUILD_TIME_ESTIMATE} Build + ${OLLAMA_INSTALL_TIME_ESTIMATE} fuer Ollama + ${HOME_ASSISTANT_INSTALL_TIME_ESTIMATE} fuer Home Assistant" \
             "${MIN_FREE_GB_RECOMMENDED} GB oder mehr" \
             "Gerade der OpenClaw-Build kann mehrere Minuten laufen. Zwischenabfragen und Paketinstallationen sind in diesem Schritt normal."
+            begin_operation_measurement "main_menu_local" "Standalone-Setup: Nur MiniPC"
             echo -e "${BLUE}Starte Standalone MiniPC-Setup (Lokal)...${NC}"
             if run_base_install_if_needed; then
                 run_bash_script "$INSTALL_DIR/scripts/install_local_only.sh"
+                if [ $? -eq 0 ]; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
             else
+                end_operation_measurement "failed"
                 echo -e "${RED}Standalone MiniPC-Setup abgebrochen, weil die Basis-Installation fehlgeschlagen ist.${NC}"
             fi
             read -p "Standalone MiniPC-Setup abgeschlossen. Drücken Sie Enter..."
@@ -1194,8 +1300,10 @@ while true; do
             "${SETUP_DOWNLOAD_TIME_ESTIMATE} Download + ${SETUP_INSTALL_TIME_ESTIMATE} Installation" \
             "${MIN_FREE_GB_ABSOLUTE} GB oder mehr" \
             "Abhaengig vom Repo-Ziel kann zusaetzlich Netzwerkzeit fuer das Klonen und den Build anfallen."
+            begin_operation_measurement "main_menu_ruflo" "Ruflo: Installation & Management"
             echo -e "${BLUE}Ruflo Installation & Management...${NC}"
             run_bash_script "$INSTALL_DIR/scripts/ruflo_install.sh"
+            if [ $? -eq 0 ]; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
             read -p "Ruflo-Aktion abgeschlossen. Drücken Sie Enter..."
             ;;
         8)
@@ -1219,8 +1327,10 @@ while true; do
             "Start meist in wenigen Sekunden bis Minuten, je nach vorhandenem Build-Stand" \
             "${MIN_FREE_GB_ABSOLUTE} GB oder mehr" \
             "Falls die Basis noch nicht installiert ist, fuehre zuerst ein Setup wie Punkt 4, 5 oder 6 aus."
+            begin_operation_measurement "main_menu_openclaw_dev" "OpenClaw im Dev-Modus starten"
             echo -e "${BLUE}Starte OpenClaw im Dev-Modus...${NC}"
             cd /opt/openclaw && pnpm dev
+            if [ $? -eq 0 ]; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
             ;;
         13)
             show_operation_intro \
@@ -1229,8 +1339,10 @@ while true; do
             "${HOME_ASSISTANT_INSTALL_TIME_ESTIMATE} fuer Erstaufbau, Start selbst meist deutlich kuerzer" \
             "${MIN_FREE_GB_ABSOLUTE} GB oder mehr" \
             "Wenn Home Assistant noch nicht eingerichtet wurde, nutze vorher ein passendes Setup mit lokaler oder hybrider Installation."
+            begin_operation_measurement "main_menu_homeassistant" "Home Assistant starten"
             echo -e "${BLUE}Starte Home Assistant...${NC}"
             sudo systemctl start homeassistant@homeassistant
+            if [ $? -eq 0 ]; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
             ;;
         14)
             show_metrics_editor
