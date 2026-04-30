@@ -7,11 +7,11 @@
 #
 
 # Farben
-GREEN=\033[0;32m
-BLUE=\033[0;34m
-RED=\033[0;31m
-YELLOW=\033[1;33m
-NC=\033[0m
+GREEN="\033[0;32m"
+BLUE="\033[0;34m"
+RED="\033[0;31m"
+YELLOW="\033[1;33m"
+NC="\033[0m"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 INSTALL_DIR="${INSTALL_DIR:-$(cd "$SCRIPT_DIR/../.." && pwd)}"
@@ -46,6 +46,8 @@ for tool_script in langgraph_install.sh crewai_install.sh autogen_install.sh pla
         echo -e "${YELLOW}${tool_script} nicht gefunden. Überspringe diesen Baustein.${NC}"
     fi
 done
+
+echo -e "${YELLOW}Optional verfügbar:${NC} Der neue Block 'Codex-Nachbau' kann im Profilmenü zusätzlich Aider, OpenCode, OpenHands, GitHub CLI und Podman installieren."
 
 echo -e "${GREEN}Programmierer-Profil Installation abgeschlossen.${NC}"
 mark_current_profile_installed

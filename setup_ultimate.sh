@@ -4,7 +4,7 @@
 # Beschreibung: Dies ist das Hauptinstallationsskript für die ultimative KI-Infrastruktur.
 # Es bietet eine interaktive Menüführung zur Installation, Deinstallation und Verwaltung verschiedener KI-Tools, Profile und Systemkomponenten.
 # Das Skript unterstützt hybride Setups (MiniPC + Multi-VPS), Standalone-Installationen und bietet Funktionen wie Auto-Updates, Ollama-Modellverwaltung und OpenClaw-Konfiguration.
-# Version: V11.12
+# Version: V11.13
 #
 
 # Farben & UI
@@ -13,7 +13,7 @@ BLUE="\033[0;34m"
 RED="\033[0;31m"
 YELLOW="\033[1;33m"
 NC="\033[0m"
-APP_VERSION="11.12"
+APP_VERSION="11.13"
 APP_TITLE="OpenClaw & AI Infrastructure - Ultimate Setup V${APP_VERSION}"
 
 # Installationsverzeichnis
@@ -88,21 +88,21 @@ EOF
 # Ausgelagerte dialog-Farben für das Ultimate Setup
 use_colors = ON
 use_shadow = OFF
-screen_color = (WHITE,BLACK,ON)
+screen_color = (WHITE,BLUE,ON)
 shadow_color = (BLACK,BLACK,ON)
 dialog_color = (BLACK,WHITE,OFF)
-title_color = (YELLOW,BLUE,ON)
-border_color = (WHITE,BLUE,ON)
-button_active_color = (BLACK,GREEN,ON)
+title_color = (YELLOW,WHITE,ON)
+border_color = (BLUE,WHITE,ON)
+button_active_color = (WHITE,BLUE,ON)
 button_inactive_color = (BLACK,WHITE,OFF)
-button_key_active_color = (WHITE,GREEN,ON)
+button_key_active_color = (WHITE,BLUE,ON)
 button_key_inactive_color = (BLUE,WHITE,ON)
-button_label_active_color = (BLACK,GREEN,ON)
+button_label_active_color = (WHITE,BLUE,ON)
 button_label_inactive_color = (BLACK,WHITE,ON)
 check_color = (BLACK,WHITE,OFF)
-check_selected_color = (BLACK,GREEN,ON)
+check_selected_color = (WHITE,BLUE,ON)
 tag_color = (BLUE,WHITE,ON)
-tag_selected_color = (BLACK,GREEN,ON)
+tag_selected_color = (WHITE,BLUE,ON)
 item_color = (BLACK,WHITE,OFF)
 item_selected_color = (WHITE,BLUE,ON)
 inputbox_color = (BLACK,WHITE,OFF)
@@ -112,8 +112,8 @@ searchbox_title_color = (YELLOW,WHITE,ON)
 menubox_color = (BLACK,WHITE,OFF)
 menubox_border_color = (BLUE,WHITE,ON)
 position_indicator_color = (YELLOW,WHITE,ON)
-uarrow_color = (BLACK,GREEN,ON)
-darrow_color = (BLACK,GREEN,ON)
+uarrow_color = (BLUE,WHITE,ON)
+darrow_color = (BLUE,WHITE,ON)
 EOF
 
     if [ ! -f "$METRICS_HISTORY_FILE" ]; then
@@ -148,6 +148,10 @@ OPENCLAW_BUILD_TIME_ESTIMATE="10-40 min"
 OLLAMA_INSTALL_TIME_ESTIMATE="2-10 min"
 HOME_ASSISTANT_INSTALL_TIME_ESTIMATE="5-20 min"
 CLOUDFLARED_INSTALL_TIME_ESTIMATE="2-10 min"
+LOCAL_SETUP_TOTAL_ESTIMATE="25-70 min"
+LOCAL_SETUP_CONFIRM_STOP_1_ESTIMATE="12-35 min"
+LOCAL_SETUP_CONFIRM_STOP_2_ESTIMATE="18-45 min"
+LOCAL_SETUP_CLOUDFLARE_TOKEN_STOP_ESTIMATE="22-60 min"
 
 PROGRAMMIERER_REQUIRED_GB="8-20"
 MEDIA_MUSIK_REQUIRED_GB="15-40"
@@ -182,6 +186,15 @@ load_metrics_config() {
     ensure_metrics_config
     # shellcheck source=/dev/null
     source "$METRICS_CONFIG_FILE"
+    : "${LOCAL_SETUP_TOTAL_ESTIMATE:=$SETUP_INSTALL_TIME_ESTIMATE}"
+    : "${LOCAL_SETUP_CONFIRM_STOP_1_ESTIMATE:=12-35 min}"
+    : "${LOCAL_SETUP_CONFIRM_STOP_2_ESTIMATE:=18-45 min}"
+    : "${LOCAL_SETUP_CLOUDFLARE_TOKEN_STOP_ESTIMATE:=22-60 min}"
+}
+
+reset_terminal_display() {
+    printf '\033[0m'
+    tput sgr0 2>/dev/null || true
 }
 
 get_free_disk_kb() {
@@ -338,6 +351,9 @@ run_bash_script() {
     fi
 
     bash "$script_path"
+    local script_rc=$?
+    reset_terminal_display
+    return $script_rc
 }
 
 print_exit_message() {
@@ -752,7 +768,7 @@ show_profile_management_menu() {
 
 declare -A TOOLS
 declare -A TOOL_SCRIPT_NAMES
-TOOL_KEYS=("Ollama" "OpenManus" "OpenClaw" "Clawhub_CLI" "OpenClaw_RL" "Clawbake" "n8n" "Activepieces" "Flowise" "LangFlow" "AutoGPT" "Pipedream" "Huginn" "FFmpeg" "LangGraph" "CrewAI" "AutoGen" "Playwright" "ChromaDB" "LangChain" "LlamaIndex" "MLflow" "Whisper" "librosa" "pydub" "Demucs" "Zenbot_trader" "Kimi2" "Clawhub" "Huge_Facing" "Zotero" "Piper" "Coqui_TTS" "YT_DLP" "Web3_APIs" "Exchange_APIs" "Nmap" "Nikto" "Trivy" "Fail2Ban" "Stable_Diffusion_WebUI" "ComfyUI" "RealESRGAN" "Redis" "NATS" "Qdrant" "Weaviate" "Prometheus" "Grafana" "Loki" "Trend_Monitor" "Agent_Router" "Memory_Policies" "Voice_Assistant_Runtime" "Thumbnail_Pipeline" "Upload_Automation" "Weights_and_Biases" "vLLM" "Llama_CPP" "Ray" "EnviroLLM" "Suno_API" "Udio_API" "MusicGen" "Riffusion" "ControlNet" "Music2P_Pipeline" "Hook_Detection" "BPM_Analyzer" "TikTok_Score" "Emotion_Tagging" "Docker" "Kubernetes" "K3s" "GitHub_API_Tooling" "Code_Sandbox" "VS_Code_Server" "Puppeteer" "OpenTelemetry" "Vault" "SQLite" "Postgres" "RabbitMQ" "EULLM" "AI_Powered_Law_Firms" "Lawfirm" "Tax_Law_Agent" "Risk_Agent" "Drafting_Agent" "PDF_Parser" "Neo4j" "Tax_Calculator" "Deadline_Checker" "Risk_Scoring" "GitHub_Research" "Repo_Comparison" "Fail2Ban_Analyzer" "Security_Workflow" "Browser_Tool" "Firecrawl" "Google_Analytics_API" "Meta_Ads_API" "TikTok_Ads_API" "File_System_Tool" "HubSpot" "Notion" "Airtable" "Buffer_API" "Zapier" "Make" "Ahrefs" "SEMrush" "ElevenLabs" "Zenbot_API" "Risk_Strategy_Analyzer" "Backtest_Workflow" "AnimateDiff" "SVD" "Runway_API" "Image_Upscaler_Pipeline")
+TOOL_KEYS=("Ollama" "OpenManus" "OpenClaw" "Clawhub_CLI" "OpenClaw_RL" "Clawbake" "n8n" "Activepieces" "Flowise" "LangFlow" "AutoGPT" "Pipedream" "Huginn" "FFmpeg" "LangGraph" "CrewAI" "AutoGen" "Playwright" "ChromaDB" "LangChain" "LlamaIndex" "MLflow" "Whisper" "librosa" "pydub" "Demucs" "Zenbot_trader" "Kimi2" "Clawhub" "Huge_Facing" "Zotero" "Piper" "Coqui_TTS" "YT_DLP" "Web3_APIs" "Exchange_APIs" "Nmap" "Nikto" "Trivy" "Fail2Ban" "Stable_Diffusion_WebUI" "ComfyUI" "RealESRGAN" "Redis" "NATS" "Qdrant" "Weaviate" "Prometheus" "Grafana" "Loki" "Trend_Monitor" "Agent_Router" "Memory_Policies" "Voice_Assistant_Runtime" "Thumbnail_Pipeline" "Upload_Automation" "Weights_and_Biases" "vLLM" "Llama_CPP" "Ray" "EnviroLLM" "Suno_API" "Udio_API" "MusicGen" "Riffusion" "ControlNet" "Music2P_Pipeline" "Hook_Detection" "BPM_Analyzer" "TikTok_Score" "Emotion_Tagging" "Docker" "Kubernetes" "K3s" "GitHub_API_Tooling" "Code_Sandbox" "VS_Code_Server" "Puppeteer" "OpenTelemetry" "Vault" "SQLite" "Postgres" "RabbitMQ" "EULLM" "AI_Powered_Law_Firms" "Lawfirm" "Tax_Law_Agent" "Risk_Agent" "Drafting_Agent" "PDF_Parser" "Neo4j" "Tax_Calculator" "Deadline_Checker" "Risk_Scoring" "GitHub_Research" "Repo_Comparison" "Fail2Ban_Analyzer" "Security_Workflow" "Browser_Tool" "Firecrawl" "Google_Analytics_API" "Meta_Ads_API" "TikTok_Ads_API" "File_System_Tool" "HubSpot" "Notion" "Airtable" "Buffer_API" "Zapier" "Make" "Ahrefs" "SEMrush" "ElevenLabs" "Zenbot_API" "Risk_Strategy_Analyzer" "Backtest_Workflow" "AnimateDiff" "SVD" "Runway_API" "Image_Upscaler_Pipeline" "Aider" "OpenCode" "OpenHands" "GitHub_CLI" "Podman")
 TOOLS["Ollama"]="Lokales LLM-Backend. Du kannst über den Ollama Modell-Manager spezifische Modelle installieren und verwalten."
 TOOLS["OpenManus"]="KI-Agenten-Framework für automatisierte Aufgaben wie Web-Recherche und Datenanalyse."
 TOOLS["OpenClaw"]="Fortschrittliches KI-Agenten-Framework mit Reinforcement Learning (RL) und Skill-Integration (z.B. gcali)."
@@ -831,6 +847,11 @@ TOOLS["GitHub_API_Tooling"]="Python-Tooling für GitHub-API-Workflows, Repo-Auto
 TOOLS["Code_Sandbox"]="Lokal vorbereitetes Sandbox-Modul für isolierte Codeausführung."
 TOOLS["VS_Code_Server"]="Code-Server für browserbasierte Entwicklungsumgebungen."
 TOOLS["Puppeteer"]="Node-basierte Browserautomatisierung für Tests, Screenshots und Web-Workflows."
+TOOLS["Aider"]="Terminal-Pair-Programming-Agent für Coding, Diffs, Refactoring und agentisches Arbeiten im Repository."
+TOOLS["OpenCode"]="Offener Coding-Agent-Workspace mit Fokus auf Ollama- oder Provider-Anbindung für Codex-ähnliche Abläufe."
+TOOLS["OpenHands"]="Agenten- und Sandbox-Workspace für größere Software-Engineering-Aufgaben mit stärkerer Automatisierung."
+TOOLS["GitHub_CLI"]="GitHub CLI für Branches, Pull Requests, Actions und repo-nahe Entwicklerworkflows."
+TOOLS["Podman"]="Daemonfreie Container-Laufzeit als Alternative oder Ergänzung zu Docker für lokale Sandboxes."
 TOOLS["OpenTelemetry"]="Collector für Traces, Metrics und strukturierte Telemetrie."
 TOOLS["Vault"]="Lokale Vault-Instanz für Secrets-Management und sichere Profileingaben."
 TOOLS["SQLite"]="Leichtgewichtige Datenbank für lokale Agenten-, Workflow- und Testdaten."
@@ -951,6 +972,11 @@ TOOL_SCRIPT_NAMES["GitHub_API_Tooling"]="github_api_tooling"
 TOOL_SCRIPT_NAMES["Code_Sandbox"]="code_sandbox"
 TOOL_SCRIPT_NAMES["VS_Code_Server"]="vs_code_server"
 TOOL_SCRIPT_NAMES["Puppeteer"]="puppeteer"
+TOOL_SCRIPT_NAMES["Aider"]="aider"
+TOOL_SCRIPT_NAMES["OpenCode"]="opencode"
+TOOL_SCRIPT_NAMES["OpenHands"]="openhands"
+TOOL_SCRIPT_NAMES["GitHub_CLI"]="github_cli"
+TOOL_SCRIPT_NAMES["Podman"]="podman"
 TOOL_SCRIPT_NAMES["OpenTelemetry"]="opentelemetry"
 TOOL_SCRIPT_NAMES["Vault"]="vault"
 TOOL_SCRIPT_NAMES["SQLite"]="sqlite"
@@ -1086,10 +1112,12 @@ show_tool_management_menu() {
 declare -A PROFILE_CORE_TOOLS
 declare -A PROFILE_EXTENDED_TOOLS
 declare -A PROFILE_INTEGRATION_TOOLS
+declare -A PROFILE_SPECIAL_TOOLS
 
 PROFILE_CORE_TOOLS["Programmierer"]="Huginn Clawhub_CLI LangGraph CrewAI AutoGen Playwright ChromaDB Code_Sandbox"
 PROFILE_EXTENDED_TOOLS["Programmierer"]="GitHub_API_Tooling VS_Code_Server Puppeteer SQLite Postgres"
 PROFILE_INTEGRATION_TOOLS["Programmierer"]="Docker Kubernetes K3s Prometheus Grafana Loki OpenTelemetry Vault Weaviate Qdrant Redis RabbitMQ NATS"
+PROFILE_SPECIAL_TOOLS["Programmierer"]="Aider OpenCode OpenHands GitHub_CLI Podman Docker K3s Clawbake Ollama"
 
 PROFILE_CORE_TOOLS["Media_Musik"]="Clawbake FFmpeg librosa pydub Demucs Whisper"
 PROFILE_EXTENDED_TOOLS["Media_Musik"]="MusicGen Riffusion ControlNet Hook_Detection BPM_Analyzer Emotion_Tagging"
@@ -1205,15 +1233,31 @@ toggle_full_profile_from_block() {
 show_profile_block_detail_menu() {
     local profile_key="$1"
     local choice
+    local has_special_tools=0
+
+    if [ -n "${PROFILE_SPECIAL_TOOLS[$profile_key]:-}" ]; then
+        has_special_tools=1
+    fi
 
     while true; do
-        dialog --clear --backtitle "$APP_TITLE" \
-        --title "PROFILBLOCK: $profile_key" --menu "Wählen Sie Block oder Gesamtprofil:" 22 90 8 \
-        "1" "Gesamtes Profil installieren/deinstallieren" \
-        "2" "Kernmodule (wichtig)" \
-        "3" "Erweiterte Module" \
-        "4" "Integrationen / Optional" \
-        "5" "Zurück" 2> /tmp/profile_block_choice
+        if [ "$has_special_tools" -eq 1 ]; then
+            dialog --clear --backtitle "$APP_TITLE" \
+            --title "PROFILBLOCK: $profile_key" --menu "Wählen Sie Block oder Gesamtprofil:" 23 92 9 \
+            "1" "Gesamtes Profil installieren/deinstallieren" \
+            "2" "Kernmodule (wichtig)" \
+            "3" "Erweiterte Module" \
+            "4" "Integrationen / Optional" \
+            "5" "Codex-Nachbau" \
+            "6" "Zurück" 2> /tmp/profile_block_choice
+        else
+            dialog --clear --backtitle "$APP_TITLE" \
+            --title "PROFILBLOCK: $profile_key" --menu "Wählen Sie Block oder Gesamtprofil:" 22 90 8 \
+            "1" "Gesamtes Profil installieren/deinstallieren" \
+            "2" "Kernmodule (wichtig)" \
+            "3" "Erweiterte Module" \
+            "4" "Integrationen / Optional" \
+            "5" "Zurück" 2> /tmp/profile_block_choice
+        fi
 
         if [ $? -ne 0 ]; then
             return 0
@@ -1225,7 +1269,14 @@ show_profile_block_detail_menu() {
             2) show_tool_group_checklist "$profile_key - Kernmodule" "${PROFILE_CORE_TOOLS[$profile_key]}" ;;
             3) show_tool_group_checklist "$profile_key - Erweiterte Module" "${PROFILE_EXTENDED_TOOLS[$profile_key]}" ;;
             4) show_tool_group_checklist "$profile_key - Integrationen / Optional" "${PROFILE_INTEGRATION_TOOLS[$profile_key]}" ;;
-            5) return 0 ;;
+            5)
+                if [ "$has_special_tools" -eq 1 ]; then
+                    show_tool_group_checklist "$profile_key - Codex-Nachbau" "${PROFILE_SPECIAL_TOOLS[$profile_key]}"
+                else
+                    return 0
+                fi
+                ;;
+            6) return 0 ;;
         esac
     done
 }
@@ -1271,7 +1322,7 @@ show_profile_management_hub() {
 
 show_main_menu() {
     local dialog_rc
-    local menu_height=24
+    local menu_height=23
     local menu_width=88
     local menu_rows=17
     local term_lines=0
@@ -1280,6 +1331,7 @@ show_main_menu() {
     local begin_col=1
 
     : > /tmp/menu_choice
+    reset_terminal_display
     if command -v tput >/dev/null 2>&1; then
         term_lines="$(tput lines 2>/dev/null || echo 0)"
         term_cols="$(tput cols 2>/dev/null || echo 0)"
@@ -1403,12 +1455,13 @@ while true; do
             read -p "VPS-Standalone-Setup abgeschlossen. Drücken Sie Enter..."
             ;;
         6)
+            load_metrics_config
             show_operation_intro \
             "Standalone-Setup: Nur MiniPC (Lokal)" \
             "Installiert die komplette lokale Basis mit OpenClaw, Ollama und den fuer den MiniPC vorgesehenen Zusatzkomponenten." \
-            "${SETUP_INSTALL_TIME_ESTIMATE} Gesamt, darin meist ${OPENCLAW_DOWNLOAD_TIME_ESTIMATE} Download + ${OPENCLAW_BUILD_TIME_ESTIMATE} Build + ${OLLAMA_INSTALL_TIME_ESTIMATE} fuer Ollama + ${HOME_ASSISTANT_INSTALL_TIME_ESTIMATE} fuer Home Assistant" \
+            "${LOCAL_SETUP_TOTAL_ESTIMATE} Gesamt, darin meist ${OPENCLAW_DOWNLOAD_TIME_ESTIMATE} Download + ${OPENCLAW_BUILD_TIME_ESTIMATE} Build + ${OLLAMA_INSTALL_TIME_ESTIMATE} fuer Ollama + ${HOME_ASSISTANT_INSTALL_TIME_ESTIMATE} fuer Home Assistant" \
             "${MIN_FREE_GB_RECOMMENDED} GB oder mehr" \
-            "Gerade der OpenClaw-Build kann mehrere Minuten laufen. Zwischenabfragen und Paketinstallationen sind in diesem Schritt normal."
+            "Der OpenClaw-Build mit Ollama kann geschaetzt ${LOCAL_SETUP_TOTAL_ESTIMATE} dauern.\nEine Eingabe des Ubuntu-Passworts wird kurz nach Beginn der Installation abverlangt.\nIn voraussichtlich ${RED}${LOCAL_SETUP_CONFIRM_STOP_1_ESTIMATE}${YELLOW} wird eine manuelle Bestaetigung von dir verlangt, typischerweise beim nachtraeglichen Build von @discordjs/opus.\nDanach geht es auch schon mit Ollama weiter, grob ab ${RED}${LOCAL_SETUP_CONFIRM_STOP_2_ESTIMATE}${YELLOW}, inklusive einer erneuten Ubuntu-Passwortabfrage.\nKurz vor ${RED}${LOCAL_SETUP_CLOUDFLARE_TOKEN_STOP_ESTIMATE}${YELLOW} wird in der Regel der Cloudflare-Token abgefragt.\nDiese Zwischenstopps gehoeren zur gesamten Zeitmessung mit dazu."
             begin_operation_measurement "main_menu_local" "Standalone-Setup: Nur MiniPC"
             echo -e "${BLUE}Starte Standalone MiniPC-Setup (Lokal)...${NC}"
             if run_base_install_if_needed; then

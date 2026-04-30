@@ -4,11 +4,11 @@
 # ==============================================================================
 
 # Farben
-GREEN=\033[0;32m
-BLUE=\033[0;34m
-RED=\033[0;31m
-YELLOW=\033[1;33m
-NC=\033[0m
+GREEN="\033[0;32m"
+BLUE="\033[0;34m"
+RED="\033[0;31m"
+YELLOW="\033[1;33m"
+NC="\033[0m"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 INSTALL_DIR="${INSTALL_DIR:-$(cd "$SCRIPT_DIR/../.." && pwd)}"
@@ -80,4 +80,3 @@ deactivate
 echo -e "${GREEN}Kimi 2 erfolgreich installiert unter ${KIMI2_DIR}.${NC}"
 echo -e "${YELLOW}Bitte konfiguriere deinen Kimi 2 API-Key in der entsprechenden Konfigurationsdatei oder Umgebungsvariablen.${NC}"
 mark_current_tool_installed
-

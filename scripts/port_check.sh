@@ -5,11 +5,11 @@
 # ==============================================================================
 
 # Farben
-GREEN=\033[0;32m
-BLUE=\033[0;34m
-RED=\033[0;31m
-YELLOW=\033[1;33m
-NC=\033[0m
+GREEN="\033[0;32m"
+BLUE="\033[0;34m"
+RED="\033[0;31m"
+YELLOW="\033[1;33m"
+NC="\033[0m"
 
 PORTS=("11434" "18789" "8123" "8080")
 SERVICES=("Ollama" "OpenClaw Gateway" "Home Assistant" "Zenbot Web")

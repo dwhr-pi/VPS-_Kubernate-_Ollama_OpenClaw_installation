@@ -5,11 +5,11 @@
 # ==============================================================================
 
 # Farben
-GREEN=\033[0;32m
-BLUE=\033[0;34m
-RED=\033[0;31m
-YELLOW=\033[1;33m
-NC=\033[0m
+GREEN="\033[0;32m"
+BLUE="\033[0;34m"
+RED="\033[0;31m"
+YELLOW="\033[1;33m"
+NC="\033[0m"
 
 OLLAMA_CHOICE_FILE="/tmp/ollama_choice"
 MODEL_TO_INSTALL_FILE="/tmp/model_to_install"

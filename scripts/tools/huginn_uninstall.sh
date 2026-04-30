@@ -4,11 +4,11 @@
 # ==============================================================================
 
 # Farben
-GREEN=\033[0;32m
-BLUE=\033[0;34m
-RED=\033[0;31m
-YELLOW=\033[1;33m
-NC=\033[0m
+GREEN="\033[0;32m"
+BLUE="\033[0;34m"
+RED="\033[0;31m"
+YELLOW="\033[1;33m"
+NC="\033[0m"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 INSTALL_DIR="${INSTALL_DIR:-$(cd "$SCRIPT_DIR/../.." && pwd)}"
@@ -33,4 +33,3 @@ echo -e "${YELLOW}Hinweis: Datenbank-Einträge für Huginn müssen eventuell man
 
 echo -e "${GREEN}Huginn Deinstallation abgeschlossen.${NC}"
 mark_current_tool_removed
-

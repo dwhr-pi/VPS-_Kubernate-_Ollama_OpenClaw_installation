@@ -7,11 +7,11 @@
 #
 
 # Farben
-GREEN=\033[0;32m
-BLUE=\033[0;34m
-RED=\033[0;31m
-YELLOW=\033[1;33m
-NC=\033[0m
+GREEN="\033[0;32m"
+BLUE="\033[0;34m"
+RED="\033[0;31m"
+YELLOW="\033[1;33m"
+NC="\033[0m"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 INSTALL_DIR="${INSTALL_DIR:-$(cd "$SCRIPT_DIR/../.." && pwd)}"
@@ -45,6 +45,8 @@ for tool_script in nats_uninstall.sh rabbitmq_uninstall.sh redis_uninstall.sh qd
         echo -e "${YELLOW}${tool_script} nicht gefunden. Überspringe diesen Baustein.${NC}"
     fi
 done
+
+echo -e "${YELLOW}Hinweis:${NC} Optional installierte Codex-Nachbau-Bausteine wie Aider, OpenCode, OpenHands, GitHub CLI oder Podman werden separat über den Block 'Codex-Nachbau' verwaltet."
 
 echo -e "${GREEN}Programmierer-Profil Deinstallation abgeschlossen.${NC}"
 mark_current_profile_removed

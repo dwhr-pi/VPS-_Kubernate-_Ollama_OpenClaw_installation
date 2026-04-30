@@ -32,3 +32,26 @@ Quelle: GitHub-Remote `docs/Profil/Programmierer.doc.md`
 - SQLite / Postgres
 - ChromaDB / Weaviate / Qdrant
 - Redis / RabbitMQ / NATS
+
+### Codex-Nachbau aus dem Setup
+- Ollama
+- OpenClaw
+- OpenManus oder AutoGPT
+- Clawbake
+- K3s / kubectl
+- optional Flowise / LangFlow
+- optional Huginn / n8n / Activepieces
+
+### Ergänzende Nachbau-Bausteine
+- Docker oder Podman
+- Git + GitHub CLI (`gh`)
+- Aider
+- OpenCode
+- OpenHands
+- Devcontainer- oder Dockerfile-Templates pro Projekt
+- optional Trivy / Nmap / Fail2Ban aus dem Security-Profil
+
+### Empfohlene Ollama-Modelle
+- `qwen3-coder:30b`
+- `devstral:24b`
+- `qwen2.5-coder:7b`

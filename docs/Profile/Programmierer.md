@@ -43,6 +43,70 @@ Die zuvor zusätzlich dokumentierten Entwickler- und Observability-Bausteine sin
 - `RabbitMQ`
 - `NATS`
 
+## Codex-Nachbau
+
+Aus deinem Setup ergibt sich jetzt zusätzlich ein eigener optionaler `Codex-Nachbau`-Block im `Programmierer`-Profil. Er ist bewusst separat auswählbar, damit das normale Entwicklerprofil schlank bleibt und der schwerere Coding-Agent-Stack nur bei Bedarf mitinstalliert wird.
+
+### Kern aus deinem Setup
+
+- `Ollama` als lokales LLM-Backend
+- `Programmierer`-Profil als Entwicklergrundlage
+- `OpenClaw` als Orchestrator und Tool-Schicht
+- `OpenManus` oder `AutoGPT` für agentische Mehrschritt-Workflows
+- `Clawbake` für Build-/Deploy-Automation
+- `K3s` und `kubectl` für spätere Sandbox- oder Cluster-Workflows
+- optional `Flowise` und `LangFlow` für visuelle LLM-Flows
+- `Huginn`, `n8n` und `Activepieces` für umgebende Automatisierung
+
+### Ergänzte Module für den Nachbau
+
+Diese Bausteine sind jetzt im Setup als einzelne Tools hinterlegt und über `Programmierer -> Codex-Nachbau` auswählbar:
+
+- `Aider`
+- `OpenCode`
+- `OpenHands`
+- `GitHub_CLI`
+- `Podman`
+- ergänzend die bereits vorhandenen Bausteine `Docker`, `K3s`, `Clawbake` und `Ollama`
+
+### Empfohlener Stack
+
+```text
+Ollama
++ qwen3-coder:30b oder devstral:24b
++ OpenCode oder Aider als CLI-Coding-Agent
++ OpenHands für größere Sandbox-Agentenläufe
++ Docker/Podman Sandbox
++ GitHub CLI
++ OpenClaw als Orchestrator
++ Clawbake für Build/Test/Deploy
++ K3s für spätere VPS-/Cluster-Sandbox
+```
+
+### Empfohlene Ollama-Modelle
+
+```bash
+ollama pull qwen3-coder:30b
+ollama pull devstral:24b
+ollama pull qwen2.5-coder:7b
+```
+
+Empfehlung:
+
+- `qwen3-coder:30b` als Hauptmodell für lokale agentische Coding-Aufgaben
+- `devstral:24b` als starke Alternative oder Fallback
+- `qwen2.5-coder:7b` als leichtere Ergänzung für kleinere Maschinen oder VPS
+
+### Beispiel-Nutzung
+
+```txt
+Nutze den Codex-Nachbau-Block mit Ollama, Aider und GitHub CLI. Analysiere mein Repository, schlage einen minimalen Patch vor, erkläre den Diff und bereite einen sauberen Branch-Workflow für einen späteren Pull Request vor.
+```
+
+```txt
+Nutze OpenHands mit einer lokalen Sandbox und devstral:24b, um eine mehrstufige Setup-Reparatur zu planen, den Fix zu schreiben und die wichtigsten Risiken für Build, Repo-Zustand und Deployment zusammenzufassen.
+```
+
 ## Verantwortlichkeiten
 
 - Entwicklungsnahe Automatisierung
@@ -179,11 +243,13 @@ fehlende Sandbox-Isolation und Secret-Leaks. Schlage konkrete Hardening-Maßnahm
 - Clawhub CLI ist sowohl im Menü als auch im Profilskript enthalten.
 - `LangGraph`, `CrewAI`, `AutoGen`, `Playwright` und `ChromaDB` sind jetzt als einzelne Tools vorhanden.
 - Die wichtigsten agentischen Entwicklungsbausteine aus der Quelldatei sind damit praktisch nutzbar.
+- Der `Codex-Nachbau` ist jetzt als eigener optionaler Profilblock mit `Aider`, `OpenCode`, `OpenHands`, `GitHub_CLI` und `Podman` auswählbar.
 
 ### ⚠ Missing in Setup
 
 - Die zuvor fehlenden DevOps-, Observability- und Queue-Bausteine sind jetzt im Setup vorhanden.
 - Ein dediziertes Coding-Modell für Ollama wird weiterhin nicht automatisch mit einem Profil ausgerollt.
+- Die empfohlenen Ollama-Modelle werden weiterhin bewusst über den Ollama-Modell-Manager oder manuelle `ollama pull`-Kommandos installiert.
 
 ### ❌ Missing in Docs
 
