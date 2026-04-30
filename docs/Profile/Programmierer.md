@@ -60,7 +60,7 @@ Aus deinem Setup ergibt sich jetzt zusätzlich ein eigener optionaler `Codex-Nac
 
 ### Ergänzte Module für den Nachbau
 
-Diese Bausteine sind jetzt im Setup als einzelne Tools hinterlegt und über `Programmierer -> Codex-Nachbau` auswählbar:
+Diese Bausteine sind jetzt im Setup als einzelne Tools hinterlegt und über `Programmierer -> Codex-Nachbau` auswählbar. Zusätzlich gibt es dort jetzt auch eine Komplettaktion, um den ganzen Block in einem Schritt zu installieren oder wieder zu entfernen.
 
 - `Aider`
 - `OpenCode`
@@ -68,6 +68,8 @@ Diese Bausteine sind jetzt im Setup als einzelne Tools hinterlegt und über `Pro
 - `GitHub_CLI`
 - `Podman`
 - ergänzend die bereits vorhandenen Bausteine `Docker`, `K3s`, `Clawbake` und `Ollama`
+
+Wo sinnvoll, werden die neuen Bausteine direkt aus GitHub-Quellen geholt und lokal auf dem Zielsystem vorbereitet oder gebaut.
 
 ### Empfohlener Stack
 
@@ -259,5 +261,5 @@ fehlende Sandbox-Isolation und Secret-Leaks. Schlage konkrete Hardening-Maßnahm
 
 - Huginn benötigt weiterhin manuelle `.env`-Anpassung und einen manuellen Start.
 - Standardport von Huginn ist `3000` und kollidiert potenziell mit OpenClaw, Flowise, Activepieces und Zenbot.
-- Für das volle Zielbild aus der Quelldatei fehlen noch mehrere Infra- und Observability-Module als echte Install-/Uninstall-Skripte.
+- Für das volle Zielbild bleiben vor allem Modellwahl, konkrete Sandbox-Strategie und projektabhängige Startkommandos als bewusste Feinarbeit beim Nutzer.
 - Falls bei einem Git-Clone überhaupt ein GitHub-Username abgefragt wird, ist damit dein eigener GitHub-Benutzer gemeint. Das sollte nur bei privaten oder geschützten Repositories nötig sein; öffentliche Repositories sollten ohne Login klonen.

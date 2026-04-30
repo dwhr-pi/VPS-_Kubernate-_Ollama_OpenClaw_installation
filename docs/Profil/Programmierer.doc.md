@@ -51,6 +51,10 @@ Quelle: GitHub-Remote `docs/Profil/Programmierer.doc.md`
 - Devcontainer- oder Dockerfile-Templates pro Projekt
 - optional Trivy / Nmap / Fail2Ban aus dem Security-Profil
 
+### Umsetzungsnotiz im Setup
+- Der Codex-Nachbau ist im `Programmierer`-Profil als eigener optionaler Block verfügbar.
+- Die neuen Bausteine werden, wo sinnvoll, direkt aus GitHub-Quellen geholt und lokal auf dem Zielsystem vorbereitet oder gebaut.
+
 ### Empfohlene Ollama-Modelle
 - `qwen3-coder:30b`
 - `devstral:24b`

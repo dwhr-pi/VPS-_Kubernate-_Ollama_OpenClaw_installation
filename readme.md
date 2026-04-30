@@ -1,4 +1,4 @@
-# VPS- Kubernate- Ollama & OpenClaw installation - Ultimate Setup V11.06
+# VPS- Kubernate- Ollama & OpenClaw installation - Ultimate Setup V11.14
 
 Dies ist das ultimative Setup für ein hybrides KI- und Smart Home System, das deinen Letsung MiniPC (WSL2) und mehrere kostenlose VPS kombiniert. Es integriert eine Vielzahl von Tools und KI-Agenten, die direkt aus GitHub-Quellen kompiliert werden.
 
@@ -29,6 +29,7 @@ Dazu gehören jetzt insbesondere:
 - Statusdateien für installierte Tools und Profile
 - editierbare Installations-Messwerte
 - ausgelagerte Sprachvorgaben in `~/.openclaw_ultimate_user_data/setup_preferences.conf`
+- lokale Ollama-Modelfiles in `~/.openclaw_ultimate_user_data/modelfiles`
 - Profil-Quellen aus `docs/Profil`
 - abgeleitete Profilseiten aus `docs/Profile`
 - ein separater Bereich für künftige Benutzer-Prompts
@@ -47,6 +48,7 @@ Das ist wichtig, weil dort typischerweise sensible Inhalte liegen können:
 - Zugangsdaten
 - Statusdateien
 - angepasste Konfigurationsvorlagen
+- lokale Modelfiles für eigene Ollama-Modelle
 
 Darauf solltest du achten:
 
@@ -55,6 +57,7 @@ Darauf solltest du achten:
 - Sichere deine `.env` lokal zusätzlich, wenn du wichtige API-Keys eingetragen hast.
 - Wenn du den Rechner oder die WSL weitergibst, lösche den Benutzer-Workspace gezielt mit.
 - Wenn du einen öffentlichen Host, VPS oder `0.0.0.0` nutzt, setze immer sichere Tokens und Passwörter.
+- Eigene Modelfiles und GGUF-Pfade solltest du möglichst ebenfalls nur im Benutzer-Workspace pflegen und nicht ins Git-Repository schreiben.
 
 Wichtig:
 
@@ -222,6 +225,7 @@ Neu dazu kommt eine Blockansicht im Menü:
 *   **Security Analyst:** Security- und Hardening-Profil mit Scan- und Prüfwerkzeugen wie Nmap, Nikto, Trivy und Fail2Ban.
 *   **Trading AI:** Profil für Marktanalyse, Bot-gestützte Strategietests und Trading-Integrationen.
 *   **Visual Creator:** Kreativprofil für Bild-, Video- und Asset-Pipelines mit Stable Diffusion WebUI, ComfyUI, FFmpeg und RealESRGAN.
+*   **LLM-Builder:** Profil für einen realistischen lokalen Workflow rund um Datensatzaufbereitung, LoRA/QLoRA-Fine-Tuning, GGUF-Export, Quantisierung und Ollama-Einbindung.
 
 ## ⚙️ Verzeichnisstruktur
 
@@ -306,7 +310,9 @@ Neu dazu kommt eine Blockansicht im Menü:
 │       ├── Trading_AI_install.sh
 │       ├── Trading_AI_uninstall.sh
 │       ├── Visual_Creator_install.sh
-│       └── Visual_Creator_uninstall.sh
+│       ├── Visual_Creator_uninstall.sh
+│       ├── LLM_Builder_install.sh
+│       └── LLM_Builder_uninstall.sh
 ├── docs/
 │   ├── API_KEY_GUIDE.md        # Detaillierte Anleitung für API-Keys, Ports und Fallback-Routing
 │   ├── INSTALLATION_BENCHMARKS.md # Editierbare Schätzwerte für Downloadzeit, Installationszeit und GB-Bedarf
@@ -318,7 +324,8 @@ Neu dazu kommt eine Blockansicht im Menü:
 │   │   ├── Media_Musik.doc.md
 │   │   ├── KI_Forschung.doc.md
 │   │   ├── Texter_Werbung_Marketing.doc.md
-│   │   └── Rechtsberatung_Steuerrecht.doc.md
+│   │   ├── Rechtsberatung_Steuerrecht.doc.md
+│   │   └── LLM-Builder.doc.md
 │   └── Profile/                # Abgeleitete Profilseiten mit tatsächlichem Setup-Stand
 │       ├── INDEX.md
 │       ├── INCONSISTENCY_REPORT.md
@@ -328,7 +335,8 @@ Neu dazu kommt eine Blockansicht im Menü:
 │       ├── Media_Musik.md
 │       ├── KI_Forschung.md
 │       ├── Texter_Werbung_Marketing.md
-│       └── Rechtsberatung_Steuerrecht.md
+│       ├── Rechtsberatung_Steuerrecht.md
+│       └── LLM-Builder.md
 ├── config/
 │   └── setup_metrics.conf      # Editierbare Benchmarks, Platzbedarf und Zeit-Schätzwerte
 └── installed_profiles.txt      # Liste der aktuell installierten Profile

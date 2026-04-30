@@ -35,6 +35,7 @@ Die fachlichen Quelldateien unter [docs/Profil](/C:/Users/danie/.codex/worktrees
 | `Security_Analyst.doc.md` | `Security_Analyst.md` |
 | `Trading_AI.doc.md` | `Trading_AI.md` |
 | `Visual_Creator.doc.md` | `Visual_Creator.md` |
+| `LLM-Builder.doc.md` | `LLM-Builder.md` |
 
 ## Profile im Überblick
 
@@ -98,6 +99,11 @@ Die fachlichen Quelldateien unter [docs/Profil](/C:/Users/danie/.codex/worktrees
 - Tatsächlicher Setup-Kern: FFmpeg, Stable_Diffusion_WebUI, ComfyUI, RealESRGAN
 - Hauptlücke: keine vollständig vorkonfigurierte lokale Bild-/Video-Laufzeitpipeline
 
+### LLM-Builder
+- Fokus: realistischer lokaler Workflow für Fine-Tuning, GGUF-Export, Quantisierung und Ollama-Einbindung
+- Tatsächlicher Setup-Kern: Ollama, Data_Juicer, Unsloth, LLaMA_Factory, Llama_CPP_Toolchain, Axolotl
+- Hauptlücke: kein starres Ein-Klick-Training, weil Basismodelle, Datensätze und Hyperparameter bewusst variabel bleiben
+
 ## Profil-Differenzen
 
 | Profil | Tatsächlich installierte Kern-Tools | Wichtige Abweichungen |
@@ -114,6 +120,7 @@ Die fachlichen Quelldateien unter [docs/Profil](/C:/Users/danie/.codex/worktrees
 | Security_Analyst | Port-Check, Nmap, Nikto, Trivy, Fail2Ban | Kein vollwertiger Pentest-/Compliance-Workflow |
 | Trading_AI | Zenbot_trader, Web3_APIs, Exchange_APIs | Kein dediziertes Backtest-/Risikomodul |
 | Visual_Creator | FFmpeg, Stable_Diffusion_WebUI, ComfyUI, RealESRGAN | Keine vorkonfigurierte lokale Bild-/Video-Laufzeitpipeline |
+| LLM-Builder | Ollama, Data_Juicer, Unsloth, LLaMA_Factory, Llama_CPP_Toolchain, Axolotl | Kein starres End-to-End-Fine-Tuning per Ein-Klick, Modellwahl bewusst nicht automatisiert |
 
 ## Relevante globale Befunde
 

@@ -104,6 +104,10 @@ Optional weitere Modelle manuell über den Ollama-Modell-Manager installieren.
 - `scripts/profiles/Visual_Creator_install.sh`
 - installiert: FFmpeg, Stable_Diffusion_WebUI, ComfyUI, RealESRGAN
 
+### LLM_Builder
+- `scripts/profiles/LLM_Builder_install.sh`
+- installiert: Ollama, Data_Juicer, Unsloth, LLaMA_Factory, Llama_CPP_Toolchain, Axolotl sowie ergänzende Evaluations- und Orchestrierungsbausteine
+
 ## 7. Port-Check
 
 Das vorhandene Skript deckt nur einen Teil ab:

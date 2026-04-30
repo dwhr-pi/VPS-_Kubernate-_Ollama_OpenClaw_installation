@@ -4,7 +4,7 @@ TOOL_KEY="OpenHands"
 TOOL_SLUG="openhands"
 TOOL_DESCRIPTION="Offenes Software-Engineering-Agentensystem mit stärkerer Sandbox- und Arbeitsbereichs-Ausrichtung."
 TOOL_MODULE_TYPE="Coding-Agent- und Sandbox-Scaffold"
-TOOL_GIT_REPO="https://github.com/All-Hands-AI/OpenHands.git"
+TOOL_GIT_REPO="https://github.com/OpenHands/OpenHands.git"
 TOOL_APT_PACKAGES="docker.io docker-compose-v2"
 TOOL_ENV_TEMPLATE='OPENHANDS_LLM_PROVIDER=ollama
 OPENHANDS_LLM_MODEL=devstral:24b

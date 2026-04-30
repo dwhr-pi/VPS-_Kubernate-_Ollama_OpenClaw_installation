@@ -60,6 +60,10 @@
 - `stable-diffusion-webui`, `comfyui` und `RealESRGAN` sind jetzt als installierbare Module vorhanden.
 - Zusätzliche Module für AnimateDiff, SVD, Runway-Connector und Upscaler-Pipeline sind jetzt vorhanden; offen bleibt nur produktives Pipeline-Feintuning.
 
+### LLM_Builder
+- Die GitHub-basierten Kernbausteine `Data_Juicer`, `Unsloth`, `LLaMA_Factory`, `Axolotl` und `Llama_CPP_Toolchain` sind jetzt als installierbare Module vorhanden.
+- Offen bleibt bewusst ein fixer Ein-Klick-Trainingslauf, weil Basismodelle, Datensätze, Hyperparameter und Hardware zwischen Projekten stark variieren.
+
 ## Im Setup vorhanden, aber schwach oder gar nicht dokumentiert
 
 - `Ruflo` wird mittlerweile script-seitig mit Node.js-22-Absicherung und CLI-Verlinkung installiert.

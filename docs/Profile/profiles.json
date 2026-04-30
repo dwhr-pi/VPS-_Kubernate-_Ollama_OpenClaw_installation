@@ -394,6 +394,43 @@
         ],
         "missing_in_docs": []
       }
+    },
+    {
+      "profile": "LLM_Builder",
+      "source": { "docs_profile_md": true, "readme_or_guide": true, "scripts": true },
+      "system": {
+        "packages": ["git", "python3", "python3-pip", "python3-venv", "build-essential", "cmake", "ninja-build"],
+        "paths": ["/opt/data_juicer", "/opt/unsloth", "/opt/llama_factory", "/opt/llama_cpp_toolchain", "/opt/axolotl"]
+      },
+      "ai_stack": {
+        "ollama_models": [],
+        "training_tools": ["data_juicer", "unsloth", "llama_factory", "axolotl"],
+        "export_and_quantization": ["llama_cpp_toolchain", "llama_cpp"],
+        "evaluation": ["mlflow", "weights_and_biases", "vllm"]
+      },
+      "services": [],
+      "network": { "ports": [11434], "bindings": ["localhost"] },
+      "commands": [
+        "scripts/tools/ollama_install.sh",
+        "scripts/tools/data_juicer_install.sh",
+        "scripts/tools/unsloth_install.sh",
+        "scripts/tools/llama_factory_install.sh",
+        "scripts/tools/llama_cpp_toolchain_install.sh",
+        "scripts/tools/axolotl_install.sh",
+        "scripts/tools/mlflow_install.sh",
+        "scripts/tools/weights_and_biases_install.sh",
+        "scripts/tools/vllm_install.sh",
+        "scripts/tools/llama_cpp_install.sh",
+        "ollama create mein-llm -f Modelfile",
+        "ollama run mein-llm"
+      ],
+      "inconsistencies": {
+        "missing_in_system": [
+          "kein starres End-to-End-Fine-Tuning per Ein-Klick",
+          "Basismodellwahl und Datensatzpfade bleiben bewusst manuell und projektabhängig"
+        ],
+        "missing_in_docs": []
+      }
     }
   ]
 }

@@ -13,7 +13,7 @@ BLUE="\033[0;34m"
 RED="\033[0;31m"
 YELLOW="\033[1;33m"
 NC="\033[0m"
-APP_VERSION="11.13"
+APP_VERSION="11.14"
 APP_TITLE="OpenClaw & AI Infrastructure - Ultimate Setup V${APP_VERSION}"
 
 # Installationsverzeichnis
@@ -23,6 +23,7 @@ USER_OPENCLAW_TEMPLATE_DIR="$USER_WORKSPACE_DIR/openclaw"
 USER_PROFILE_SOURCE_DIR="$USER_WORKSPACE_DIR/profil_quellen"
 USER_PROFILE_RENDERED_DIR="$USER_WORKSPACE_DIR/profile_ableitungen"
 USER_PROMPTS_DIR="$USER_WORKSPACE_DIR/prompts"
+USER_MODELFILE_DIR="$USER_WORKSPACE_DIR/modelfiles"
 USER_METRICS_LOG_DIR="$USER_WORKSPACE_DIR/metrics_logs"
 USER_DIALOGRC_FILE="$USER_WORKSPACE_DIR/dialogrc"
 METRICS_CONFIG_FILE="$USER_WORKSPACE_DIR/setup_metrics.conf"
@@ -48,6 +49,7 @@ ensure_user_workspace() {
     mkdir -p "$USER_PROFILE_SOURCE_DIR"
     mkdir -p "$USER_PROFILE_RENDERED_DIR"
     mkdir -p "$USER_PROMPTS_DIR"
+    mkdir -p "$USER_MODELFILE_DIR"
     mkdir -p "$USER_METRICS_LOG_DIR"
 
     if [ ! -f "$USER_OPENCLAW_TEMPLATE_DIR/.env.template" ]; then
@@ -165,6 +167,7 @@ RESEARCH_AGENT_REQUIRED_GB="8-20"
 SECURITY_ANALYST_REQUIRED_GB="5-15"
 TRADING_AI_REQUIRED_GB="8-20"
 VISUAL_CREATOR_REQUIRED_GB="20-60"
+LLM_BUILDER_REQUIRED_GB="25-120"
 
 NOTES="Alle Werte sind editierbare Schätzwerte. Je nach Bandbreite, CPU, SSD und gewählten Profilen kann der echte Wert deutlich abweichen."
 EOF
@@ -312,6 +315,7 @@ get_profile_required_gb() {
         "Security_Analyst") echo "${SECURITY_ANALYST_REQUIRED_GB} GB" ;;
         "Trading_AI") echo "${TRADING_AI_REQUIRED_GB} GB" ;;
         "Visual_Creator") echo "${VISUAL_CREATOR_REQUIRED_GB} GB" ;;
+        "LLM_Builder") echo "${LLM_BUILDER_REQUIRED_GB} GB" ;;
         *) echo "${MIN_FREE_GB_ABSOLUTE}-${MIN_FREE_GB_RECOMMENDED} GB" ;;
     esac
 }
@@ -454,12 +458,13 @@ show_user_workspace_menu() {
 show_options_menu() {
     while true; do
         dialog --clear --backtitle "$APP_TITLE" \
-        --title "${TXT_OPTIONS_MENU_TITLE:-OPTIONEN}" --menu "${TXT_OPTIONS_MENU_PROMPT:-Wählen Sie eine Verwaltungs- oder Konfigurationsfunktion:}" 19 92 6 \
+        --title "${TXT_OPTIONS_MENU_TITLE:-OPTIONEN}" --menu "${TXT_OPTIONS_MENU_PROMPT:-Wählen Sie eine Verwaltungs- oder Konfigurationsfunktion:}" 20 92 7 \
         "1" "${TXT_OPTIONS_1:-Sprache ändern}" \
         "2" "${TXT_OPTIONS_2:-Setup-Messwerte & Benchmarks bearbeiten}" \
-        "3" "${TXT_OPTIONS_3:-Setup hart mit GitHub main abgleichen}" \
-        "4" "${TXT_OPTIONS_4:-Benutzer-Workspace verwalten}" \
-        "5" "${TXT_OPTIONS_5:-Zurück}" 2> /tmp/options_choice
+        "3" "${TXT_OPTIONS_3:-Ollama Modelfile-Assistent}" \
+        "4" "${TXT_OPTIONS_4:-Setup hart mit GitHub main abgleichen}" \
+        "5" "${TXT_OPTIONS_5:-Benutzer-Workspace verwalten}" \
+        "6" "${TXT_OPTIONS_6:-Zurück}" 2> /tmp/options_choice
 
         if [ $? -ne 0 ]; then
             return 0
@@ -477,6 +482,9 @@ show_options_menu() {
                 read -p "Setup-Messwerte aktualisiert. Drücken Sie Enter..."
                 ;;
             3)
+                run_bash_script "$INSTALL_DIR/scripts/ollama_modelfile_assistant.sh"
+                ;;
+            4)
                 show_operation_intro \
                 "Harter Setup-Abgleich mit GitHub main" \
                 "Das Setup-Repository wird zwangsweise auf origin/main zurückgesetzt. Lokale Änderungen im Setup-Verzeichnis gehen dabei verloren." \
@@ -486,10 +494,10 @@ show_options_menu() {
                 run_bash_script "$INSTALL_DIR/scripts/auto_update_hard.sh"
                 read -p "Harter Setup-Abgleich abgeschlossen. Drücken Sie Enter..."
                 ;;
-            4)
+            5)
                 show_user_workspace_menu
                 ;;
-            5)
+            6)
                 return 0
                 ;;
         esac
@@ -670,7 +678,7 @@ fi
 
 # Profil-Definitionen mit Beschreibungen
 declare -A PROFILES
-PROFILE_KEYS=("Programmierer" "Media_Musik" "KI_Forschung" "Texter_Werbung_Marketing" "Rechtsberatung_Steuerrecht" "Agent_Orchestrator" "Audio" "Content_Automation" "Research_Agent" "Security_Analyst" "Trading_AI" "Visual_Creator")
+PROFILE_KEYS=("Programmierer" "Media_Musik" "KI_Forschung" "Texter_Werbung_Marketing" "Rechtsberatung_Steuerrecht" "Agent_Orchestrator" "Audio" "Content_Automation" "Research_Agent" "Security_Analyst" "Trading_AI" "Visual_Creator" "LLM_Builder")
 PROFILES["Programmierer"]="Tools für Entwicklung, Code-Generierung (DeepSeek Coder), Git-Integration, Huginn, Clawhub CLI. Ideal für Entwickler und Automatisierungsexperten."
 PROFILES["Media_Musik"]="Tools für Audio/Video (FFmpeg), Audio-AI, Alexa-Integration, Clawbake. Für Content Creator und Medienproduzenten."
 PROFILES["KI_Forschung"]="Spezialisierte Bibliotheken für Reinforcement Learning (OpenClaw RL), erweiterte LLM-Modelle (Gemini-1.5-Pro), Flowise/LangFlow. Für KI-Wissenschaftler und Forscher."
@@ -683,6 +691,7 @@ PROFILES["Research_Agent"]="Analysiert Repositories, Dokumentation und neue Tool
 PROFILES["Security_Analyst"]="Fokussiert auf Exposure-Checks, Log-Analyse, Schwachstellensuche und Docker-/Kubernetes-Hardening."
 PROFILES["Trading_AI"]="Unterstützt Marktanalyse, Strategietests und Trading-Bots mit Zenbot sowie Web3- und Exchange-Integrationen."
 PROFILES["Visual_Creator"]="Kreativprofil für Bild-, Video- und Asset-Pipelines mit Diffusions-, UI- und Upscaling-Bausteinen."
+PROFILES["LLM_Builder"]="Baut einen realistischen lokalen Workflow zum Fine-Tuning, Testen, Exportieren und Quantisieren eigener Modelle für Ollama auf."
 
 # Funktion zum Installieren eines Profils
 install_profile() {
@@ -768,7 +777,7 @@ show_profile_management_menu() {
 
 declare -A TOOLS
 declare -A TOOL_SCRIPT_NAMES
-TOOL_KEYS=("Ollama" "OpenManus" "OpenClaw" "Clawhub_CLI" "OpenClaw_RL" "Clawbake" "n8n" "Activepieces" "Flowise" "LangFlow" "AutoGPT" "Pipedream" "Huginn" "FFmpeg" "LangGraph" "CrewAI" "AutoGen" "Playwright" "ChromaDB" "LangChain" "LlamaIndex" "MLflow" "Whisper" "librosa" "pydub" "Demucs" "Zenbot_trader" "Kimi2" "Clawhub" "Huge_Facing" "Zotero" "Piper" "Coqui_TTS" "YT_DLP" "Web3_APIs" "Exchange_APIs" "Nmap" "Nikto" "Trivy" "Fail2Ban" "Stable_Diffusion_WebUI" "ComfyUI" "RealESRGAN" "Redis" "NATS" "Qdrant" "Weaviate" "Prometheus" "Grafana" "Loki" "Trend_Monitor" "Agent_Router" "Memory_Policies" "Voice_Assistant_Runtime" "Thumbnail_Pipeline" "Upload_Automation" "Weights_and_Biases" "vLLM" "Llama_CPP" "Ray" "EnviroLLM" "Suno_API" "Udio_API" "MusicGen" "Riffusion" "ControlNet" "Music2P_Pipeline" "Hook_Detection" "BPM_Analyzer" "TikTok_Score" "Emotion_Tagging" "Docker" "Kubernetes" "K3s" "GitHub_API_Tooling" "Code_Sandbox" "VS_Code_Server" "Puppeteer" "OpenTelemetry" "Vault" "SQLite" "Postgres" "RabbitMQ" "EULLM" "AI_Powered_Law_Firms" "Lawfirm" "Tax_Law_Agent" "Risk_Agent" "Drafting_Agent" "PDF_Parser" "Neo4j" "Tax_Calculator" "Deadline_Checker" "Risk_Scoring" "GitHub_Research" "Repo_Comparison" "Fail2Ban_Analyzer" "Security_Workflow" "Browser_Tool" "Firecrawl" "Google_Analytics_API" "Meta_Ads_API" "TikTok_Ads_API" "File_System_Tool" "HubSpot" "Notion" "Airtable" "Buffer_API" "Zapier" "Make" "Ahrefs" "SEMrush" "ElevenLabs" "Zenbot_API" "Risk_Strategy_Analyzer" "Backtest_Workflow" "AnimateDiff" "SVD" "Runway_API" "Image_Upscaler_Pipeline" "Aider" "OpenCode" "OpenHands" "GitHub_CLI" "Podman")
+TOOL_KEYS=("Ollama" "OpenManus" "OpenClaw" "Clawhub_CLI" "OpenClaw_RL" "Clawbake" "n8n" "Activepieces" "Flowise" "LangFlow" "AutoGPT" "Pipedream" "Huginn" "FFmpeg" "LangGraph" "CrewAI" "AutoGen" "Playwright" "ChromaDB" "LangChain" "LlamaIndex" "MLflow" "Whisper" "librosa" "pydub" "Demucs" "Zenbot_trader" "Kimi2" "Clawhub" "Huge_Facing" "Zotero" "Piper" "Coqui_TTS" "YT_DLP" "Web3_APIs" "Exchange_APIs" "Nmap" "Nikto" "Trivy" "Fail2Ban" "Stable_Diffusion_WebUI" "ComfyUI" "RealESRGAN" "Redis" "NATS" "Qdrant" "Weaviate" "Prometheus" "Grafana" "Loki" "Trend_Monitor" "Agent_Router" "Memory_Policies" "Voice_Assistant_Runtime" "Thumbnail_Pipeline" "Upload_Automation" "Weights_and_Biases" "vLLM" "Llama_CPP" "Ray" "EnviroLLM" "Suno_API" "Udio_API" "MusicGen" "Riffusion" "ControlNet" "Music2P_Pipeline" "Hook_Detection" "BPM_Analyzer" "TikTok_Score" "Emotion_Tagging" "Docker" "Kubernetes" "K3s" "GitHub_API_Tooling" "Code_Sandbox" "VS_Code_Server" "Puppeteer" "OpenTelemetry" "Vault" "SQLite" "Postgres" "RabbitMQ" "EULLM" "AI_Powered_Law_Firms" "Lawfirm" "Tax_Law_Agent" "Risk_Agent" "Drafting_Agent" "PDF_Parser" "Neo4j" "Tax_Calculator" "Deadline_Checker" "Risk_Scoring" "GitHub_Research" "Repo_Comparison" "Fail2Ban_Analyzer" "Security_Workflow" "Browser_Tool" "Firecrawl" "Google_Analytics_API" "Meta_Ads_API" "TikTok_Ads_API" "File_System_Tool" "HubSpot" "Notion" "Airtable" "Buffer_API" "Zapier" "Make" "Ahrefs" "SEMrush" "ElevenLabs" "Zenbot_API" "Risk_Strategy_Analyzer" "Backtest_Workflow" "AnimateDiff" "SVD" "Runway_API" "Image_Upscaler_Pipeline" "Aider" "OpenCode" "OpenHands" "GitHub_CLI" "Podman" "Unsloth" "LLaMA_Factory" "Axolotl" "Data_Juicer" "Llama_CPP_Toolchain")
 TOOLS["Ollama"]="Lokales LLM-Backend. Du kannst über den Ollama Modell-Manager spezifische Modelle installieren und verwalten."
 TOOLS["OpenManus"]="KI-Agenten-Framework für automatisierte Aufgaben wie Web-Recherche und Datenanalyse."
 TOOLS["OpenClaw"]="Fortschrittliches KI-Agenten-Framework mit Reinforcement Learning (RL) und Skill-Integration (z.B. gcali)."
@@ -852,6 +861,11 @@ TOOLS["OpenCode"]="Offener Coding-Agent-Workspace mit Fokus auf Ollama- oder Pro
 TOOLS["OpenHands"]="Agenten- und Sandbox-Workspace für größere Software-Engineering-Aufgaben mit stärkerer Automatisierung."
 TOOLS["GitHub_CLI"]="GitHub CLI für Branches, Pull Requests, Actions und repo-nahe Entwicklerworkflows."
 TOOLS["Podman"]="Daemonfreie Container-Laufzeit als Alternative oder Ergänzung zu Docker für lokale Sandboxes."
+TOOLS["Unsloth"]="GitHub-basierter Fine-Tuning-Baustein für effizientes LoRA- und QLoRA-Training lokaler LLMs."
+TOOLS["LLaMA_Factory"]="GitHub-basierter Trainings- und Evaluationsstack für Fine-Tuning, Adapterschichten und Modelltests."
+TOOLS["Axolotl"]="GitHub-basierte Fine-Tuning-Toolchain für lokale LLM-Trainingsläufe und Adapter-Workflows."
+TOOLS["Data_Juicer"]="GitHub-basierter Datensatz-Baustein für Bereinigung, Strukturierung und Qualitätskontrolle vor dem Fine-Tuning."
+TOOLS["Llama_CPP_Toolchain"]="GitHub-basierte llama.cpp-Toolchain für GGUF-Export, Quantisierung und lokale Modelltests."
 TOOLS["OpenTelemetry"]="Collector für Traces, Metrics und strukturierte Telemetrie."
 TOOLS["Vault"]="Lokale Vault-Instanz für Secrets-Management und sichere Profileingaben."
 TOOLS["SQLite"]="Leichtgewichtige Datenbank für lokale Agenten-, Workflow- und Testdaten."
@@ -977,6 +991,11 @@ TOOL_SCRIPT_NAMES["OpenCode"]="opencode"
 TOOL_SCRIPT_NAMES["OpenHands"]="openhands"
 TOOL_SCRIPT_NAMES["GitHub_CLI"]="github_cli"
 TOOL_SCRIPT_NAMES["Podman"]="podman"
+TOOL_SCRIPT_NAMES["Unsloth"]="unsloth"
+TOOL_SCRIPT_NAMES["LLaMA_Factory"]="llama_factory"
+TOOL_SCRIPT_NAMES["Axolotl"]="axolotl"
+TOOL_SCRIPT_NAMES["Data_Juicer"]="data_juicer"
+TOOL_SCRIPT_NAMES["Llama_CPP_Toolchain"]="llama_cpp_toolchain"
 TOOL_SCRIPT_NAMES["OpenTelemetry"]="opentelemetry"
 TOOL_SCRIPT_NAMES["Vault"]="vault"
 TOOL_SCRIPT_NAMES["SQLite"]="sqlite"
@@ -1113,11 +1132,13 @@ declare -A PROFILE_CORE_TOOLS
 declare -A PROFILE_EXTENDED_TOOLS
 declare -A PROFILE_INTEGRATION_TOOLS
 declare -A PROFILE_SPECIAL_TOOLS
+declare -A PROFILE_SPECIAL_LABELS
 
 PROFILE_CORE_TOOLS["Programmierer"]="Huginn Clawhub_CLI LangGraph CrewAI AutoGen Playwright ChromaDB Code_Sandbox"
 PROFILE_EXTENDED_TOOLS["Programmierer"]="GitHub_API_Tooling VS_Code_Server Puppeteer SQLite Postgres"
 PROFILE_INTEGRATION_TOOLS["Programmierer"]="Docker Kubernetes K3s Prometheus Grafana Loki OpenTelemetry Vault Weaviate Qdrant Redis RabbitMQ NATS"
 PROFILE_SPECIAL_TOOLS["Programmierer"]="Aider OpenCode OpenHands GitHub_CLI Podman Docker K3s Clawbake Ollama"
+PROFILE_SPECIAL_LABELS["Programmierer"]="Codex-Nachbau"
 
 PROFILE_CORE_TOOLS["Media_Musik"]="Clawbake FFmpeg librosa pydub Demucs Whisper"
 PROFILE_EXTENDED_TOOLS["Media_Musik"]="MusicGen Riffusion ControlNet Hook_Detection BPM_Analyzer Emotion_Tagging"
@@ -1162,6 +1183,12 @@ PROFILE_INTEGRATION_TOOLS["Trading_AI"]=""
 PROFILE_CORE_TOOLS["Visual_Creator"]="FFmpeg Stable_Diffusion_WebUI ComfyUI RealESRGAN"
 PROFILE_EXTENDED_TOOLS["Visual_Creator"]="AnimateDiff SVD Runway_API Image_Upscaler_Pipeline"
 PROFILE_INTEGRATION_TOOLS["Visual_Creator"]=""
+
+PROFILE_CORE_TOOLS["LLM_Builder"]="Ollama Data_Juicer Unsloth LLaMA_Factory Llama_CPP_Toolchain"
+PROFILE_EXTENDED_TOOLS["LLM_Builder"]="Axolotl MLflow Weights_and_Biases vLLM Llama_CPP"
+PROFILE_INTEGRATION_TOOLS["LLM_Builder"]="OpenClaw Flowise LangFlow Huginn Clawbake Docker Code_Sandbox GitHub_CLI ChromaDB"
+PROFILE_SPECIAL_TOOLS["LLM_Builder"]="Ollama Data_Juicer Unsloth LLaMA_Factory Llama_CPP_Toolchain Axolotl MLflow Weights_and_Biases vLLM Llama_CPP OpenClaw Flowise LangFlow Huginn Clawbake Docker Code_Sandbox GitHub_CLI ChromaDB"
+PROFILE_SPECIAL_LABELS["LLM_Builder"]="LLM-Builder komplett"
 
 show_tool_group_checklist() {
     local group_title="$1"
@@ -1230,25 +1257,74 @@ toggle_full_profile_from_block() {
     fi
 }
 
+toggle_tool_group_bulk() {
+    local group_title="$1"
+    local tool_list="$2"
+    local tool_key
+    local all_installed=1
+    local has_tools=0
+    declare -A installed_map
+
+    ensure_user_workspace
+    normalize_status_file "$TOOL_STATUS_FILE" "${TOOL_KEYS[@]}"
+    load_installed_map "$TOOL_STATUS_FILE" installed_map
+
+    for tool_key in $tool_list; do
+        [ -n "$tool_key" ] || continue
+        has_tools=1
+        if [ "${installed_map[$tool_key]:-}" != "1" ]; then
+            all_installed=0
+        fi
+    done
+
+    if [ "$has_tools" -eq 0 ]; then
+        dialog --msgbox "Für diesen Block sind aktuell keine Tools definiert." 8 60
+        return 0
+    fi
+
+    if [ "$all_installed" -eq 1 ]; then
+        dialog --yesno "Block '$group_title' ist aktuell installiert. Möchten Sie alle enthaltenen Tools jetzt deinstallieren?" 9 90
+        if [ $? -eq 0 ]; then
+            for tool_key in $tool_list; do
+                [ -n "$tool_key" ] || continue
+                uninstall_tool "$tool_key"
+            done
+        fi
+    else
+        dialog --yesno "Block '$group_title' ist aktuell nicht vollständig installiert. Möchten Sie alle enthaltenen Tools jetzt installieren?" 9 95
+        if [ $? -eq 0 ]; then
+            for tool_key in $tool_list; do
+                [ -n "$tool_key" ] || continue
+                install_tool "$tool_key"
+            done
+        fi
+    fi
+}
+
 show_profile_block_detail_menu() {
     local profile_key="$1"
     local choice
     local has_special_tools=0
+    local special_label="Spezialblock"
 
     if [ -n "${PROFILE_SPECIAL_TOOLS[$profile_key]:-}" ]; then
         has_special_tools=1
+    fi
+    if [ -n "${PROFILE_SPECIAL_LABELS[$profile_key]:-}" ]; then
+        special_label="${PROFILE_SPECIAL_LABELS[$profile_key]}"
     fi
 
     while true; do
         if [ "$has_special_tools" -eq 1 ]; then
             dialog --clear --backtitle "$APP_TITLE" \
-            --title "PROFILBLOCK: $profile_key" --menu "Wählen Sie Block oder Gesamtprofil:" 23 92 9 \
+            --title "PROFILBLOCK: $profile_key" --menu "Wählen Sie Block oder Gesamtprofil:" 24 96 10 \
             "1" "Gesamtes Profil installieren/deinstallieren" \
             "2" "Kernmodule (wichtig)" \
             "3" "Erweiterte Module" \
             "4" "Integrationen / Optional" \
-            "5" "Codex-Nachbau" \
-            "6" "Zurück" 2> /tmp/profile_block_choice
+            "5" "${special_label} (Einzeltools)" \
+            "6" "${special_label} komplett installieren/deinstallieren" \
+            "7" "Zurück" 2> /tmp/profile_block_choice
         else
             dialog --clear --backtitle "$APP_TITLE" \
             --title "PROFILBLOCK: $profile_key" --menu "Wählen Sie Block oder Gesamtprofil:" 22 90 8 \
@@ -1271,12 +1347,19 @@ show_profile_block_detail_menu() {
             4) show_tool_group_checklist "$profile_key - Integrationen / Optional" "${PROFILE_INTEGRATION_TOOLS[$profile_key]}" ;;
             5)
                 if [ "$has_special_tools" -eq 1 ]; then
-                    show_tool_group_checklist "$profile_key - Codex-Nachbau" "${PROFILE_SPECIAL_TOOLS[$profile_key]}"
+                    show_tool_group_checklist "$profile_key - ${special_label}" "${PROFILE_SPECIAL_TOOLS[$profile_key]}"
                 else
                     return 0
                 fi
                 ;;
-            6) return 0 ;;
+            6)
+                if [ "$has_special_tools" -eq 1 ]; then
+                    toggle_tool_group_bulk "$profile_key - ${special_label}" "${PROFILE_SPECIAL_TOOLS[$profile_key]}"
+                else
+                    return 0
+                fi
+                ;;
+            7) return 0 ;;
         esac
     done
 }
