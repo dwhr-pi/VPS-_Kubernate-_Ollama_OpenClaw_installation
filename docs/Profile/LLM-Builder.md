@@ -70,6 +70,16 @@ Zusätzlich sind zur Einbettung ins übrige Setup verfügbar:
 9. Ein `Modelfile` für Ollama anlegen.
 10. Das eigene Modell lokal mit Ollama ausführen.
 
+## Assistenten im Setup
+
+Das Setup bringt jetzt drei direkt passende Hilfen mit:
+
+- `⚙ Optionen -> LLM-Builder Projektstruktur-Assistent`
+- `⚙ Optionen -> Ollama Modelfile-Assistent`
+- `⚙ Optionen -> Ollama Modellkatalog`
+
+Damit kannst du Projektordner, Modelfiles und lokale Modell-Installationen getrennt vom Git-Repository pflegen.
+
 ## Verfügbare Kommandos
 
 ```bash

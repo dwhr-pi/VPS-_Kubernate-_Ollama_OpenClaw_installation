@@ -30,6 +30,16 @@
 - Queue-/Event-Bus-, Memory- und Observability-Bausteine sind jetzt als installierbare Module vorhanden: `Redis`, `NATS`, `Qdrant`, `Weaviate`, `Prometheus`, `Grafana`, `Loki`.
 - Dedizierte Laufzeitmodule für Routing und Memory-Policies sind jetzt vorhanden; offen bleibt produktives Policy-Feintuning.
 
+### Codex-Nachbau
+- Die Kernbausteine `Aider`, `OpenCode`, `OpenHands`, `GitHub_CLI`, `Podman`, `Docker`, `K3s`, `Clawbake` und `Ollama` sind jetzt als optionaler Spezialblock im `Programmierer`-Profil abbildbar.
+- Mobile und Embedded-Zielsysteme wie Android, ESP32 oder Arduino sind fachlich moeglich, brauchen aber zusaetzliche Toolchains wie Android SDK, Flutter, PlatformIO, Arduino CLI oder ESP-IDF, die im aktuellen Repo noch nicht als eigene Module umgesetzt sind.
+- iPhone- und macOS-Nativbuilds bleiben fuer Signierung und finalen Build an ein echtes macOS-/Xcode-System gebunden.
+
+### Plattformprofile
+- Die neuen Plattformprofile unter `docs/Profile/*.md` fuer `llmops`, `rag_knowledge_base`, `openwebui_frontend`, `mcp_toolserver`, `ai_security_guardrails`, `sandbox_coding_agent`, `database_backend`, `monitoring_observability` und `backup_storage` sind jetzt vorhanden.
+- Die zugrunde liegenden Einzeltools sind ebenfalls als Setup-Module vorhanden.
+- Noch offen bleibt die vollstaendige Verdrahtung dieser Plattformprofile als eigene interaktive Profil-Eintraege im Hauptmenue; aktuell werden sie ueber Einzeltools und den Compose-Stack bedient.
+
 ### Research_Agent
 - Trend-Monitoring ist jetzt als installierbares Modul vorhanden.
 - Eigene Module für GitHub-Research und Repo-Vergleich sind jetzt vorhanden; offen bleibt ein stärker vorkonfigurierter Monitoring-Standard.

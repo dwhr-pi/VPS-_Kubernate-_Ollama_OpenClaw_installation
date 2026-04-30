@@ -431,6 +431,254 @@
         ],
         "missing_in_docs": []
       }
+    },
+    {
+      "profile": "llmops",
+      "source": { "docs_profile_md": true, "readme_or_guide": true, "scripts": true },
+      "system": {
+        "packages": ["docker", "docker-compose-plugin", "ollama"],
+        "paths": ["/opt/litellm", "/opt/open_webui", "/opt/langfuse", "/opt/openlit"]
+      },
+      "ai_stack": {
+        "gateway": ["litellm"],
+        "ui": ["open_webui"],
+        "observability": ["langfuse", "openlit"],
+        "models": ["ollama", "gemini", "openai"]
+      },
+      "services": ["LiteLLM", "Open WebUI", "Langfuse"],
+      "network": { "ports": [4000, 3000, 3003], "bindings": ["localhost oder Docker-Bridge"] },
+      "commands": [
+        "scripts/tools/litellm_install.sh",
+        "scripts/tools/open_webui_install.sh",
+        "scripts/tools/langfuse_install.sh",
+        "scripts/tools/openlit_install.sh",
+        "docker compose -f stacks/llmops-platform/docker-compose.yml up -d"
+      ],
+      "inconsistencies": {
+        "missing_in_system": [
+          "noch kein eigenes interaktives Install-Profil im Hauptmenü",
+          "Security- und Policy-Feintuning bleibt einsatzabhängig"
+        ],
+        "missing_in_docs": []
+      }
+    },
+    {
+      "profile": "rag_knowledge_base",
+      "source": { "docs_profile_md": true, "readme_or_guide": true, "scripts": true },
+      "system": {
+        "packages": ["python3", "python3-pip", "docker"],
+        "paths": ["/opt/qdrant", "/opt/chromadb", "/opt/llamaindex", "/opt/langchain", "/opt/data_juicer"]
+      },
+      "ai_stack": {
+        "vector_databases": ["qdrant", "chromadb"],
+        "retrieval": ["llamaindex", "langchain"],
+        "ingestion": ["data_juicer"]
+      },
+      "services": ["Qdrant", "ChromaDB"],
+      "network": { "ports": [6333], "bindings": ["localhost oder Docker-Bridge"] },
+      "commands": [
+        "scripts/tools/qdrant_install.sh",
+        "scripts/tools/chromadb_install.sh",
+        "scripts/tools/llamaindex_install.sh",
+        "scripts/tools/langchain_install.sh",
+        "scripts/tools/data_juicer_install.sh"
+      ],
+      "inconsistencies": {
+        "missing_in_system": [
+          "Dokumenten-Import-Pipelines fuer PDF, Webseiten und Repos bleiben workflow-abhaengig",
+          "kein interaktives Gesamtprofil im Hauptmenü"
+        ],
+        "missing_in_docs": []
+      }
+    },
+    {
+      "profile": "openwebui_frontend",
+      "source": { "docs_profile_md": true, "readme_or_guide": true, "scripts": true },
+      "system": {
+        "packages": ["docker", "ollama"],
+        "paths": ["/opt/open_webui", "/opt/litellm", "/opt/mcpo"]
+      },
+      "ai_stack": {
+        "frontend": ["open_webui"],
+        "gateway": ["litellm"],
+        "tool_proxy": ["mcpo"]
+      },
+      "services": ["Open WebUI", "LiteLLM"],
+      "network": { "ports": [3000, 4000, 8000], "bindings": ["localhost oder Docker-Bridge"] },
+      "commands": [
+        "scripts/tools/open_webui_install.sh",
+        "scripts/tools/litellm_install.sh",
+        "scripts/tools/mcpo_install.sh"
+      ],
+      "inconsistencies": {
+        "missing_in_system": [
+          "MCPO-Konfiguration bleibt einsatzabhängig",
+          "kein eigenes interaktives Frontend-Profil im Hauptmenü"
+        ],
+        "missing_in_docs": []
+      }
+    },
+    {
+      "profile": "mcp_toolserver",
+      "source": { "docs_profile_md": true, "readme_or_guide": true, "scripts": true },
+      "system": {
+        "packages": ["python3", "python3-venv"],
+        "paths": ["/opt/mcpo"]
+      },
+      "ai_stack": {
+        "toolservers": ["mcpo"],
+        "integrations": ["browser_tool", "file_system_tool", "firecrawl"]
+      },
+      "services": ["MCPO"],
+      "network": { "ports": [8000], "bindings": ["localhost oder Docker-Bridge"] },
+      "commands": [
+        "scripts/tools/mcpo_install.sh",
+        "mcpo --help"
+      ],
+      "inconsistencies": {
+        "missing_in_system": [
+          "keine vorkonfigurierte Sammlung produktiver MCP-Server",
+          "Tool-Freigaben bleiben anwendungsabhaengig"
+        ],
+        "missing_in_docs": []
+      }
+    },
+    {
+      "profile": "ai_security_guardrails",
+      "source": { "docs_profile_md": true, "readme_or_guide": true, "scripts": true },
+      "system": {
+        "packages": ["python3", "nodejs>=22", "docker"],
+        "paths": ["/opt/guardrails_ai", "/opt/promptfoo", "/opt/gitleaks"]
+      },
+      "ai_stack": {
+        "security": ["guardrails_ai", "promptfoo", "trivy", "gitleaks", "fail2ban"]
+      },
+      "services": [],
+      "network": { "ports": [], "bindings": [] },
+      "commands": [
+        "scripts/tools/guardrails_ai_install.sh",
+        "scripts/tools/promptfoo_install.sh",
+        "scripts/tools/trivy_install.sh",
+        "scripts/tools/gitleaks_install.sh",
+        "scripts/tools/fail2ban_install.sh"
+      ],
+      "inconsistencies": {
+        "missing_in_system": [
+          "kein globales Tool-Permission-System fuer alle Agenten",
+          "keine zentrale SOPS- oder Vault-Policy ueber das gesamte Repo"
+        ],
+        "missing_in_docs": []
+      }
+    },
+    {
+      "profile": "sandbox_coding_agent",
+      "source": { "docs_profile_md": true, "readme_or_guide": true, "scripts": true },
+      "system": {
+        "packages": ["git", "docker", "podman", "nodejs>=22", "python3"],
+        "paths": ["/opt/aider", "/opt/opencode", "/opt/openhands", "/opt/continue_dev"]
+      },
+      "ai_stack": {
+        "coding_agents": ["aider", "opencode", "openhands", "continue_dev"],
+        "orchestration": ["openclaw"],
+        "sandbox": ["docker", "podman", "code_sandbox"]
+      },
+      "services": [],
+      "network": { "ports": [], "bindings": [] },
+      "commands": [
+        "scripts/tools/aider_install.sh",
+        "scripts/tools/opencode_install.sh",
+        "scripts/tools/openhands_install.sh",
+        "scripts/tools/continue_dev_install.sh",
+        "scripts/tools/github_cli_install.sh"
+      ],
+      "inconsistencies": {
+        "missing_in_system": [
+          "mobile und embedded Toolchains wie Android SDK, PlatformIO oder ESP-IDF fehlen noch",
+          "iPhone- und macOS-Signing bleibt extern an Xcode gebunden"
+        ],
+        "missing_in_docs": []
+      }
+    },
+    {
+      "profile": "database_backend",
+      "source": { "docs_profile_md": true, "readme_or_guide": true, "scripts": true },
+      "system": {
+        "packages": ["docker", "postgresql", "redis-server"],
+        "paths": ["/opt/minio", "/opt/supabase"]
+      },
+      "ai_stack": {
+        "databases": ["postgres", "redis", "minio", "supabase"]
+      },
+      "services": ["Postgres", "Redis", "MinIO", "Supabase (teilweise Compose-basiert)"],
+      "network": { "ports": [5432, 6379, 9000, 9001], "bindings": ["localhost oder Docker-Bridge"] },
+      "commands": [
+        "scripts/tools/postgres_install.sh",
+        "scripts/tools/redis_install.sh",
+        "scripts/tools/minio_install.sh",
+        "scripts/tools/supabase_install.sh"
+      ],
+      "inconsistencies": {
+        "missing_in_system": [
+          "kein einheitliches Backup-Profil fuer alle Datenquellen",
+          "Supabase bleibt stark upstream- und Compose-abhaengig"
+        ],
+        "missing_in_docs": []
+      }
+    },
+    {
+      "profile": "monitoring_observability",
+      "source": { "docs_profile_md": true, "readme_or_guide": true, "scripts": true },
+      "system": {
+        "packages": ["docker"],
+        "paths": ["/opt/langfuse", "/opt/openlit", "/opt/grafana", "/opt/prometheus", "/opt/loki", "/opt/uptime_kuma", "/opt/netdata"]
+      },
+      "ai_stack": {
+        "observability": ["langfuse", "openlit", "grafana", "prometheus", "loki", "uptime_kuma", "netdata"]
+      },
+      "services": ["Langfuse", "Grafana", "Prometheus", "Loki", "Uptime Kuma", "Netdata"],
+      "network": { "ports": [3003, 3001, 9090, 3100, 3004, 19999], "bindings": ["localhost oder Docker-Bridge"] },
+      "commands": [
+        "scripts/tools/langfuse_install.sh",
+        "scripts/tools/openlit_install.sh",
+        "scripts/tools/grafana_install.sh",
+        "scripts/tools/prometheus_install.sh",
+        "scripts/tools/loki_install.sh",
+        "scripts/tools/uptime_kuma_install.sh",
+        "scripts/tools/netdata_install.sh"
+      ],
+      "inconsistencies": {
+        "missing_in_system": [
+          "GPU-Monitoring ist noch nicht gesondert als Modul umgesetzt",
+          "OTEL-Instrumentierung bleibt workflow- und codeabhaengig"
+        ],
+        "missing_in_docs": []
+      }
+    },
+    {
+      "profile": "backup_storage",
+      "source": { "docs_profile_md": true, "readme_or_guide": true, "scripts": true },
+      "system": {
+        "packages": ["docker", "postgresql", "redis-server"],
+        "paths": ["~/.openclaw_ultimate_user_data", "/opt/minio"]
+      },
+      "ai_stack": {
+        "backup_targets": ["workspace", "postgres", "redis", "minio"]
+      },
+      "services": [],
+      "network": { "ports": [9000, 9001], "bindings": ["localhost oder Docker-Bridge"] },
+      "commands": [
+        "scripts/tools/minio_install.sh",
+        "scripts/tools/postgres_install.sh",
+        "scripts/tools/redis_install.sh",
+        "ls ~/.openclaw_ultimate_user_data"
+      ],
+      "inconsistencies": {
+        "missing_in_system": [
+          "restic oder borg sind noch nicht als eigene Setup-Module umgesetzt",
+          "automatisierte Snapshot- und Restore-Workflows bleiben manuell"
+        ],
+        "missing_in_docs": []
+      }
     }
   ]
 }

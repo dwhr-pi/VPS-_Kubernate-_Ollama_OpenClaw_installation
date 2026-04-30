@@ -1,6 +1,14 @@
 # VPS- Kubernate- Ollama & OpenClaw installation - Ultimate Setup V11.14
 
-Dies ist das ultimative Setup für ein hybrides KI- und Smart Home System, das deinen Letsung MiniPC (WSL2) und mehrere kostenlose VPS kombiniert. Es integriert eine Vielzahl von Tools und KI-Agenten, die direkt aus GitHub-Quellen kompiliert werden.
+Dies ist das ultimative Setup für ein hybrides KI- und Smart-Home-System, das deinen Letsung MiniPC (WSL2) und mehrere kostenlose VPS kombiniert. Es integriert eine Vielzahl von Tools und KI-Agenten, die direkt aus GitHub-Quellen kompiliert oder lokal aufgebaut werden.
+
+## 🧱 Zielbild
+
+Das Repository entwickelt sich von einer reinen Tool-Sammlung zu einer modularen **LLMOps-Plattform**:
+
+`Base System -> Runtime -> Model Gateway -> Agent Layer -> Memory/RAG -> Tool Layer -> UI -> Monitoring -> Security`
+
+Die zugehoerige Architektur-Dokumentation findest du in [docs/ARCHITECTURE_LLMOPS_PLATFORM.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/ARCHITECTURE_LLMOPS_PLATFORM.md:1).
 
 ## 🚀 Schnelle Installation (One-Liner)
 
@@ -58,6 +66,7 @@ Darauf solltest du achten:
 - Wenn du den Rechner oder die WSL weitergibst, lösche den Benutzer-Workspace gezielt mit.
 - Wenn du einen öffentlichen Host, VPS oder `0.0.0.0` nutzt, setze immer sichere Tokens und Passwörter.
 - Eigene Modelfiles und GGUF-Pfade solltest du möglichst ebenfalls nur im Benutzer-Workspace pflegen und nicht ins Git-Repository schreiben.
+- Auch neue Plattform-Stacks fuer LiteLLM, Open WebUI, Langfuse, Qdrant oder MinIO sollen immer ueber `.env`-Dateien im Benutzer-Workspace oder in separaten lokalen Stack-Verzeichnissen konfiguriert werden, nicht im Git-Repository.
 
 Wichtig:
 
@@ -68,6 +77,44 @@ Wichtig:
 ```bash
 rm -rf ~/.openclaw_ultimate_user_data
 ```
+
+## 🧭 Installationspfade
+
+### Minimal Setup
+
+Empfohlen fuer einen schnellen lokalen Einstieg:
+
+1. `Standalone: Nur MiniPC (Lokal)`
+2. `Ollama`
+3. `OpenClaw`
+4. optional `Programmierer` oder `LLM_Builder`
+
+### Full Setup
+
+Empfohlen fuer eine lokale plus hybride AI-Plattform:
+
+1. `Standalone: Nur MiniPC (Lokal)` oder `Hybrid`
+2. `Programmierer`
+3. `LLM_Builder`
+4. `LiteLLM`
+5. `Open_WebUI`
+6. `Qdrant`
+7. `Langfuse`
+8. `Grafana`, `Prometheus`, `Loki`
+
+### Cluster Setup
+
+Empfohlen fuer VPS oder spaeteres Multi-Node-Sandboxing:
+
+1. `Standalone: Nur VPS (Cloud-Native)`
+2. `K3s`
+3. `LiteLLM`
+4. `Open_WebUI`
+5. `Qdrant`
+6. `Langfuse`
+7. `Grafana`, `Prometheus`, `Loki`
+
+Fuer einen vorkonfigurierten Plattform-Stack liegt jetzt auch ein Compose-Stack unter [stacks/llmops-platform/docker-compose.yml](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/stacks/llmops-platform/docker-compose.yml:1).
 
 ## 🔄 Setup erneut starten
 
@@ -157,16 +204,31 @@ rm -rf ~/.openclaw_ultimate_user_data
 
 ## 📖 Dokumentation
 
-Eine detaillierte Anleitung zur Konfiguration, API-Keys, Port-Analyse und den verschiedenen Setup-Optionen findest du in der `docs/API_KEY_GUIDE.md`, `docs/setup_guide.md`, `docs/DNS_DDoS_GUIDE.md` und [docs/OPENCLAW_ENV_GUIDE.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/OPENCLAW_ENV_GUIDE.md:1) innerhalb dieses Repositorys.
+Eine detaillierte Anleitung zur Konfiguration, API-Keys, Port-Analyse und den verschiedenen Setup-Optionen findest du in der `docs/API_KEY_GUIDE.md`, `docs/setup_guide.md`, `docs/DNS_DDoS_GUIDE.md`, [docs/OPENCLAW_ENV_GUIDE.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/OPENCLAW_ENV_GUIDE.md:1) und [docs/ARCHITECTURE_LLMOPS_PLATFORM.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/ARCHITECTURE_LLMOPS_PLATFORM.md:1) innerhalb dieses Repositorys.
 
 Zusätzliche Hilfen:
 
 *   `docs/CLOUDFLARE_TUNNEL_GUIDE.md` erklärt Schritt für Schritt, wie du den benötigten Cloudflare-Tunnel und Token anlegst.
 *   `docs/WSL_SETUP_GUIDE.md` erklärt WSL unter Windows, Ubuntu-24.04 bzw. andere Linux-Distributionen, sowie Deinstallation und komplettes Zurücksetzen.
 *   `docs/INSTALLATION_BENCHMARKS.md` beschreibt die editierbaren Installations-Schätzwerte und verweist auf `~/.openclaw_ultimate_user_data/setup_metrics.conf`.
+*   [docs/OLLAMA_MODEL_CATALOG.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/OLLAMA_MODEL_CATALOG.md:1) listet empfohlene lokale Modelle, Coding-Modelle und EU-nahe Modelle mit Groessen- und RAM-Hinweisen.
 *   sensible und bearbeitbare Setup-Dateien liegen jetzt außerhalb des Repos in `~/.openclaw_ultimate_user_data`.
 *   über `Benutzer-Workspace verwalten` kannst du diese ausgelagerten Dateien anzeigen, neu aus dem Repo kopieren oder vollständig löschen.
 *   das Setup zeichnet für wichtige Vorgänge jetzt zusätzlich reale Messwerte in `~/.openclaw_ultimate_user_data/metrics_logs/operation_history.tsv` auf.
+
+### Neue Plattformprofile
+
+Zusaetzlich zu den fachlichen Profilen gibt es jetzt eine zweite Ebene fuer den produktionsnahen Plattformbetrieb:
+
+- [docs/Profile/llmops.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/Profile/llmops.md:1)
+- [docs/Profile/rag_knowledge_base.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/Profile/rag_knowledge_base.md:1)
+- [docs/Profile/openwebui_frontend.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/Profile/openwebui_frontend.md:1)
+- [docs/Profile/mcp_toolserver.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/Profile/mcp_toolserver.md:1)
+- [docs/Profile/ai_security_guardrails.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/Profile/ai_security_guardrails.md:1)
+- [docs/Profile/sandbox_coding_agent.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/Profile/sandbox_coding_agent.md:1)
+- [docs/Profile/database_backend.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/Profile/database_backend.md:1)
+- [docs/Profile/monitoring_observability.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/Profile/monitoring_observability.md:1)
+- [docs/Profile/backup_storage.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/Profile/backup_storage.md:1)
 
 Zusätzlich gibt es zwei Profil-Verzeichnisse:
 
@@ -226,6 +288,26 @@ Neu dazu kommt eine Blockansicht im Menü:
 *   **Trading AI:** Profil für Marktanalyse, Bot-gestützte Strategietests und Trading-Integrationen.
 *   **Visual Creator:** Kreativprofil für Bild-, Video- und Asset-Pipelines mit Stable Diffusion WebUI, ComfyUI, FFmpeg und RealESRGAN.
 *   **LLM-Builder:** Profil für einen realistischen lokalen Workflow rund um Datensatzaufbereitung, LoRA/QLoRA-Fine-Tuning, GGUF-Export, Quantisierung und Ollama-Einbindung.
+
+## 💻 Codex-Nachbau und Plattformziele
+
+Der optionale `Codex-Nachbau` im `Programmierer`-Profil ist fuer klassische Softwareprojekte bereits sinnvoll nutzbar:
+
+- Linux
+- Windows
+- Web- und API-Projekte
+- Container- und Serverdienste
+- allgemeine Python-, Node-, Go- und Multi-Repo-Workflows
+
+Mit zusaetzlichen Toolchains ebenfalls gut denkbar:
+
+- Android mit Android SDK, Gradle, Flutter oder React Native
+- ESP32 mit PlatformIO oder ESP-IDF
+- Arduino mit Arduino CLI oder PlatformIO
+
+Wichtige Grenze:
+
+- iPhone- und macOS-Nativbuilds lassen sich fachlich vorbereiten, analysieren und grossteils generieren, der finale Build, die Signierung und der App-Store-/TestFlight-Weg brauchen aber weiterhin ein echtes macOS-/Xcode-System
 
 ## ⚙️ Verzeichnisstruktur
 
@@ -316,6 +398,8 @@ Neu dazu kommt eine Blockansicht im Menü:
 ├── docs/
 │   ├── API_KEY_GUIDE.md        # Detaillierte Anleitung für API-Keys, Ports und Fallback-Routing
 │   ├── INSTALLATION_BENCHMARKS.md # Editierbare Schätzwerte für Downloadzeit, Installationszeit und GB-Bedarf
+│   ├── ARCHITECTURE_LLMOPS_PLATFORM.md # Neue Layer-Architektur für die produktionsreife LLMOps-Plattform
+│   ├── OLLAMA_MODEL_CATALOG.md # Kuratierter Ollama-Modellkatalog mit Größen- und RAM-Hinweisen
 │   ├── setup_guide.md          # Umfassende Dokumentation des gesamten Setups
 │   ├── PRIVATE_REPO_GUIDE.md   # Anleitung für die Installation aus einem privaten Repository
 │   ├── DNS_DDoS_GUIDE.md       # Anleitung zur DNS-Umstellung und DDoS-Schutz
@@ -336,7 +420,21 @@ Neu dazu kommt eine Blockansicht im Menü:
 │       ├── KI_Forschung.md
 │       ├── Texter_Werbung_Marketing.md
 │       ├── Rechtsberatung_Steuerrecht.md
-│       └── LLM-Builder.md
+│       ├── LLM-Builder.md
+│       ├── llmops.md
+│       ├── rag_knowledge_base.md
+│       ├── openwebui_frontend.md
+│       ├── mcp_toolserver.md
+│       ├── ai_security_guardrails.md
+│       ├── sandbox_coding_agent.md
+│       ├── database_backend.md
+│       ├── monitoring_observability.md
+│       └── backup_storage.md
+├── stacks/
+│   └── llmops-platform/
+│       ├── docker-compose.yml  # Plattform-Stack für LiteLLM, Open WebUI, Qdrant, Langfuse, Monitoring und Storage
+│       ├── .env.example        # Beispiel-Umgebungsvariablen für den Plattform-Stack
+│       └── litellm-config.yaml # Routing und Fallback-Konfiguration für LiteLLM
 ├── config/
 │   └── setup_metrics.conf      # Editierbare Benchmarks, Platzbedarf und Zeit-Schätzwerte
 └── installed_profiles.txt      # Liste der aktuell installierten Profile

@@ -93,6 +93,26 @@ ollama pull devstral:24b
 ollama pull qwen2.5-coder:7b
 ```
 
+## Plattformabdeckung des Codex-Nachbaus
+
+Mit dem aktuellen Stack sind vor allem diese Zielsysteme sinnvoll bedienbar:
+
+- Linux
+- Windows
+- Web- und API-Projekte
+- Container- und Serverdienste
+- allgemeine Python-, Node-, Go- und Multi-Repo-Projekte
+
+Mit zusaetzlichen Toolchains ebenfalls gut denkbar:
+
+- Android mit Android SDK, Gradle, Flutter oder React Native
+- ESP32 mit PlatformIO oder ESP-IDF
+- Arduino mit Arduino CLI oder PlatformIO
+
+Wichtige Grenze:
+
+- iPhone- und macOS-Nativbuilds lassen sich fachlich vorbereiten, analysieren und grossteils generieren, der finale Build, die Signierung und der App-Store-/TestFlight-Weg brauchen aber weiterhin ein echtes macOS-/Xcode-System
+
 Empfehlung:
 
 - `qwen3-coder:30b` als Hauptmodell für lokale agentische Coding-Aufgaben

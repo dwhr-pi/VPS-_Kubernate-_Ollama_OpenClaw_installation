@@ -458,13 +458,15 @@ show_user_workspace_menu() {
 show_options_menu() {
     while true; do
         dialog --clear --backtitle "$APP_TITLE" \
-        --title "${TXT_OPTIONS_MENU_TITLE:-OPTIONEN}" --menu "${TXT_OPTIONS_MENU_PROMPT:-Wählen Sie eine Verwaltungs- oder Konfigurationsfunktion:}" 20 92 7 \
+        --title "${TXT_OPTIONS_MENU_TITLE:-OPTIONEN}" --menu "${TXT_OPTIONS_MENU_PROMPT:-Wählen Sie eine Verwaltungs- oder Konfigurationsfunktion:}" 22 96 8 \
         "1" "${TXT_OPTIONS_1:-Sprache ändern}" \
         "2" "${TXT_OPTIONS_2:-Setup-Messwerte & Benchmarks bearbeiten}" \
         "3" "${TXT_OPTIONS_3:-Ollama Modelfile-Assistent}" \
-        "4" "${TXT_OPTIONS_4:-Setup hart mit GitHub main abgleichen}" \
-        "5" "${TXT_OPTIONS_5:-Benutzer-Workspace verwalten}" \
-        "6" "${TXT_OPTIONS_6:-Zurück}" 2> /tmp/options_choice
+        "4" "${TXT_OPTIONS_4:-LLM-Builder Projektstruktur-Assistent}" \
+        "5" "${TXT_OPTIONS_5:-Ollama Modellkatalog}" \
+        "6" "${TXT_OPTIONS_6:-Setup hart mit GitHub main abgleichen}" \
+        "7" "${TXT_OPTIONS_7:-Benutzer-Workspace verwalten}" \
+        "8" "${TXT_OPTIONS_8:-Zurück}" 2> /tmp/options_choice
 
         if [ $? -ne 0 ]; then
             return 0
@@ -485,6 +487,12 @@ show_options_menu() {
                 run_bash_script "$INSTALL_DIR/scripts/ollama_modelfile_assistant.sh"
                 ;;
             4)
+                run_bash_script "$INSTALL_DIR/scripts/llm_builder_project_scaffold.sh"
+                ;;
+            5)
+                run_bash_script "$INSTALL_DIR/scripts/ollama_model_catalog_manager.sh"
+                ;;
+            6)
                 show_operation_intro \
                 "Harter Setup-Abgleich mit GitHub main" \
                 "Das Setup-Repository wird zwangsweise auf origin/main zurückgesetzt. Lokale Änderungen im Setup-Verzeichnis gehen dabei verloren." \
@@ -494,10 +502,10 @@ show_options_menu() {
                 run_bash_script "$INSTALL_DIR/scripts/auto_update_hard.sh"
                 read -p "Harter Setup-Abgleich abgeschlossen. Drücken Sie Enter..."
                 ;;
-            5)
+            7)
                 show_user_workspace_menu
                 ;;
-            6)
+            8)
                 return 0
                 ;;
         esac
@@ -777,7 +785,7 @@ show_profile_management_menu() {
 
 declare -A TOOLS
 declare -A TOOL_SCRIPT_NAMES
-TOOL_KEYS=("Ollama" "OpenManus" "OpenClaw" "Clawhub_CLI" "OpenClaw_RL" "Clawbake" "n8n" "Activepieces" "Flowise" "LangFlow" "AutoGPT" "Pipedream" "Huginn" "FFmpeg" "LangGraph" "CrewAI" "AutoGen" "Playwright" "ChromaDB" "LangChain" "LlamaIndex" "MLflow" "Whisper" "librosa" "pydub" "Demucs" "Zenbot_trader" "Kimi2" "Clawhub" "Huge_Facing" "Zotero" "Piper" "Coqui_TTS" "YT_DLP" "Web3_APIs" "Exchange_APIs" "Nmap" "Nikto" "Trivy" "Fail2Ban" "Stable_Diffusion_WebUI" "ComfyUI" "RealESRGAN" "Redis" "NATS" "Qdrant" "Weaviate" "Prometheus" "Grafana" "Loki" "Trend_Monitor" "Agent_Router" "Memory_Policies" "Voice_Assistant_Runtime" "Thumbnail_Pipeline" "Upload_Automation" "Weights_and_Biases" "vLLM" "Llama_CPP" "Ray" "EnviroLLM" "Suno_API" "Udio_API" "MusicGen" "Riffusion" "ControlNet" "Music2P_Pipeline" "Hook_Detection" "BPM_Analyzer" "TikTok_Score" "Emotion_Tagging" "Docker" "Kubernetes" "K3s" "GitHub_API_Tooling" "Code_Sandbox" "VS_Code_Server" "Puppeteer" "OpenTelemetry" "Vault" "SQLite" "Postgres" "RabbitMQ" "EULLM" "AI_Powered_Law_Firms" "Lawfirm" "Tax_Law_Agent" "Risk_Agent" "Drafting_Agent" "PDF_Parser" "Neo4j" "Tax_Calculator" "Deadline_Checker" "Risk_Scoring" "GitHub_Research" "Repo_Comparison" "Fail2Ban_Analyzer" "Security_Workflow" "Browser_Tool" "Firecrawl" "Google_Analytics_API" "Meta_Ads_API" "TikTok_Ads_API" "File_System_Tool" "HubSpot" "Notion" "Airtable" "Buffer_API" "Zapier" "Make" "Ahrefs" "SEMrush" "ElevenLabs" "Zenbot_API" "Risk_Strategy_Analyzer" "Backtest_Workflow" "AnimateDiff" "SVD" "Runway_API" "Image_Upscaler_Pipeline" "Aider" "OpenCode" "OpenHands" "GitHub_CLI" "Podman" "Unsloth" "LLaMA_Factory" "Axolotl" "Data_Juicer" "Llama_CPP_Toolchain")
+TOOL_KEYS=("Ollama" "OpenManus" "OpenClaw" "Clawhub_CLI" "OpenClaw_RL" "Clawbake" "n8n" "Activepieces" "Flowise" "LangFlow" "AutoGPT" "Pipedream" "Huginn" "FFmpeg" "LangGraph" "CrewAI" "AutoGen" "Playwright" "ChromaDB" "LangChain" "LlamaIndex" "MLflow" "Whisper" "librosa" "pydub" "Demucs" "Zenbot_trader" "Kimi2" "Clawhub" "Huge_Facing" "Zotero" "Piper" "Coqui_TTS" "YT_DLP" "Web3_APIs" "Exchange_APIs" "Nmap" "Nikto" "Trivy" "Fail2Ban" "Stable_Diffusion_WebUI" "ComfyUI" "RealESRGAN" "Redis" "NATS" "Qdrant" "Weaviate" "Prometheus" "Grafana" "Loki" "Trend_Monitor" "Agent_Router" "Memory_Policies" "Voice_Assistant_Runtime" "Thumbnail_Pipeline" "Upload_Automation" "Weights_and_Biases" "vLLM" "Llama_CPP" "Ray" "EnviroLLM" "Suno_API" "Udio_API" "MusicGen" "Riffusion" "ControlNet" "Music2P_Pipeline" "Hook_Detection" "BPM_Analyzer" "TikTok_Score" "Emotion_Tagging" "Docker" "Kubernetes" "K3s" "GitHub_API_Tooling" "Code_Sandbox" "VS_Code_Server" "Puppeteer" "OpenTelemetry" "Vault" "SQLite" "Postgres" "RabbitMQ" "EULLM" "AI_Powered_Law_Firms" "Lawfirm" "Tax_Law_Agent" "Risk_Agent" "Drafting_Agent" "PDF_Parser" "Neo4j" "Tax_Calculator" "Deadline_Checker" "Risk_Scoring" "GitHub_Research" "Repo_Comparison" "Fail2Ban_Analyzer" "Security_Workflow" "Browser_Tool" "Firecrawl" "Google_Analytics_API" "Meta_Ads_API" "TikTok_Ads_API" "File_System_Tool" "HubSpot" "Notion" "Airtable" "Buffer_API" "Zapier" "Make" "Ahrefs" "SEMrush" "ElevenLabs" "Zenbot_API" "Risk_Strategy_Analyzer" "Backtest_Workflow" "AnimateDiff" "SVD" "Runway_API" "Image_Upscaler_Pipeline" "Aider" "OpenCode" "OpenHands" "GitHub_CLI" "Podman" "Unsloth" "LLaMA_Factory" "Axolotl" "Data_Juicer" "Llama_CPP_Toolchain" "LiteLLM" "Open_WebUI" "Langfuse" "OpenLIT" "MCPO" "Continue_Dev" "Guardrails_AI" "Promptfoo" "Gitleaks" "Uptime_Kuma" "Netdata" "MinIO" "Supabase")
 TOOLS["Ollama"]="Lokales LLM-Backend. Du kannst über den Ollama Modell-Manager spezifische Modelle installieren und verwalten."
 TOOLS["OpenManus"]="KI-Agenten-Framework für automatisierte Aufgaben wie Web-Recherche und Datenanalyse."
 TOOLS["OpenClaw"]="Fortschrittliches KI-Agenten-Framework mit Reinforcement Learning (RL) und Skill-Integration (z.B. gcali)."
@@ -866,6 +874,19 @@ TOOLS["LLaMA_Factory"]="GitHub-basierter Trainings- und Evaluationsstack für Fi
 TOOLS["Axolotl"]="GitHub-basierte Fine-Tuning-Toolchain für lokale LLM-Trainingsläufe und Adapter-Workflows."
 TOOLS["Data_Juicer"]="GitHub-basierter Datensatz-Baustein für Bereinigung, Strukturierung und Qualitätskontrolle vor dem Fine-Tuning."
 TOOLS["Llama_CPP_Toolchain"]="GitHub-basierte llama.cpp-Toolchain für GGUF-Export, Quantisierung und lokale Modelltests."
+TOOLS["LiteLLM"]="Zentrales Model-Gateway für Ollama, Gemini und OpenAI mit Routing, Logging und Fallbacks."
+TOOLS["Open_WebUI"]="Standard-Frontend für Chats, Multi-Model-Nutzung, RAG und Agenten-Workflows."
+TOOLS["Langfuse"]="LLM-Observability-Plattform für Traces, Prompts, Kosten und Produktionsanalyse."
+TOOLS["OpenLIT"]="OpenTelemetry-native Instrumentierung für LLM-, Agenten- und RAG-Workflows."
+TOOLS["MCPO"]="MCP-zu-OpenAPI-Proxy für sichere HTTP-basierte Toolserver und Open-WebUI-Integration."
+TOOLS["Continue_Dev"]="Open-Source Coding-Assistant-Workspace für IDE-nahe LLM-Entwicklung."
+TOOLS["Guardrails_AI"]="Framework für Sicherheitsregeln, Validierung und Prompt-/Output-Schutz."
+TOOLS["Promptfoo"]="Test- und Red-Teaming-Framework für Prompts, Agenten und RAG."
+TOOLS["Gitleaks"]="Secrets-Scanner für Repositories, Commits und Dateien."
+TOOLS["Uptime_Kuma"]="Self-Hosted Uptime- und URL-Monitoring für Dienste und Agentenendpunkte."
+TOOLS["Netdata"]="System- und Container-Monitoring mit Live-Metriken."
+TOOLS["MinIO"]="S3-kompatibler Objekt-Storage für Artefakte, Exporte und Plattformdaten."
+TOOLS["Supabase"]="Self-Hosted Backend-Plattform mit Postgres, Auth, Storage und Realtime."
 TOOLS["OpenTelemetry"]="Collector für Traces, Metrics und strukturierte Telemetrie."
 TOOLS["Vault"]="Lokale Vault-Instanz für Secrets-Management und sichere Profileingaben."
 TOOLS["SQLite"]="Leichtgewichtige Datenbank für lokale Agenten-, Workflow- und Testdaten."
@@ -996,6 +1017,19 @@ TOOL_SCRIPT_NAMES["LLaMA_Factory"]="llama_factory"
 TOOL_SCRIPT_NAMES["Axolotl"]="axolotl"
 TOOL_SCRIPT_NAMES["Data_Juicer"]="data_juicer"
 TOOL_SCRIPT_NAMES["Llama_CPP_Toolchain"]="llama_cpp_toolchain"
+TOOL_SCRIPT_NAMES["LiteLLM"]="litellm"
+TOOL_SCRIPT_NAMES["Open_WebUI"]="open_webui"
+TOOL_SCRIPT_NAMES["Langfuse"]="langfuse"
+TOOL_SCRIPT_NAMES["OpenLIT"]="openlit"
+TOOL_SCRIPT_NAMES["MCPO"]="mcpo"
+TOOL_SCRIPT_NAMES["Continue_Dev"]="continue_dev"
+TOOL_SCRIPT_NAMES["Guardrails_AI"]="guardrails_ai"
+TOOL_SCRIPT_NAMES["Promptfoo"]="promptfoo"
+TOOL_SCRIPT_NAMES["Gitleaks"]="gitleaks"
+TOOL_SCRIPT_NAMES["Uptime_Kuma"]="uptime_kuma"
+TOOL_SCRIPT_NAMES["Netdata"]="netdata"
+TOOL_SCRIPT_NAMES["MinIO"]="minio"
+TOOL_SCRIPT_NAMES["Supabase"]="supabase"
 TOOL_SCRIPT_NAMES["OpenTelemetry"]="opentelemetry"
 TOOL_SCRIPT_NAMES["Vault"]="vault"
 TOOL_SCRIPT_NAMES["SQLite"]="sqlite"

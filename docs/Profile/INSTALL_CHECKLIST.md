@@ -108,7 +108,71 @@ Optional weitere Modelle manuell über den Ollama-Modell-Manager installieren.
 - `scripts/profiles/LLM_Builder_install.sh`
 - installiert: Ollama, Data_Juicer, Unsloth, LLaMA_Factory, Llama_CPP_Toolchain, Axolotl sowie ergänzende Evaluations- und Orchestrierungsbausteine
 
-## 7. Port-Check
+## 7. Plattform-Stack erweitern
+
+Fuer den produktionsnaeheren Ausbau stehen jetzt zusaetzliche Plattformprofile und Einzeltools bereit:
+
+### LLMOps
+- `scripts/tools/litellm_install.sh`
+- `scripts/tools/open_webui_install.sh`
+- `scripts/tools/langfuse_install.sh`
+- `scripts/tools/openlit_install.sh`
+
+### RAG / Knowledge Base
+- `scripts/tools/qdrant_install.sh`
+- `scripts/tools/chromadb_install.sh`
+- `scripts/tools/llamaindex_install.sh`
+- `scripts/tools/langchain_install.sh`
+- `scripts/tools/data_juicer_install.sh`
+
+### MCP / Toolserver
+- `scripts/tools/mcpo_install.sh`
+
+### Security / Guardrails
+- `scripts/tools/guardrails_ai_install.sh`
+- `scripts/tools/promptfoo_install.sh`
+- `scripts/tools/trivy_install.sh`
+- `scripts/tools/gitleaks_install.sh`
+
+### Monitoring / Observability
+- `scripts/tools/grafana_install.sh`
+- `scripts/tools/prometheus_install.sh`
+- `scripts/tools/loki_install.sh`
+- `scripts/tools/uptime_kuma_install.sh`
+- `scripts/tools/netdata_install.sh`
+
+### Daten und Storage
+- `scripts/tools/postgres_install.sh`
+- `scripts/tools/redis_install.sh`
+- `scripts/tools/minio_install.sh`
+- `scripts/tools/supabase_install.sh`
+
+## 8. Vorkonfigurierten Plattform-Stack starten
+
+Alternativ oder zusaetzlich kannst du den vorkonfigurierten Plattform-Stack unter `stacks/llmops-platform` nutzen:
+
+```bash
+cd stacks/llmops-platform
+cp .env.example .env
+docker compose up -d
+```
+
+Danach pruefen:
+
+- `LiteLLM`: `http://localhost:4000`
+- `Open WebUI`: `http://localhost:3000`
+- `Qdrant`: `http://localhost:6333`
+- `Langfuse`: `http://localhost:3003`
+- `Grafana`: `http://localhost:3001`
+- `Prometheus`: `http://localhost:9090`
+
+## 9. Ollama-Modelle und Modelfiles verwalten
+
+- ueber `⚙ Optionen -> Ollama Modellkatalog`
+- ueber `⚙ Optionen -> Ollama Modelfile-Assistent`
+- fuer eigene Fine-Tuning-Projekte ueber `⚙ Optionen -> LLM-Builder Projektstruktur-Assistent`
+
+## 10. Port-Check
 
 Das vorhandene Skript deckt nur einen Teil ab:
 
@@ -124,7 +188,7 @@ Zusätzlich manuell prüfen:
 - `8000`
 - `27017`
 
-## 8. Dienste starten
+## 11. Dienste starten
 
 Der aktuelle Repo-Stand provisioniert nicht alle Tools als dauerhafte Services.
 
@@ -135,14 +199,14 @@ Manuell relevant:
 - Home Assistant: `sudo systemctl start homeassistant@homeassistant`
 - Ruflo: `ruflo --help`
 
-## 9. Externe Integrationen finalisieren
+## 12. Externe Integrationen finalisieren
 
 - Cloudflare Tunnel einrichten
 - DNS bei Hurricane Electric oder Cloudflare prüfen
 - Google Kalender OAuth korrekt registrieren
 - Hugging Face Token, Kimi API-Key und weitere Zielsystem-Secrets hinterlegen
 
-## 10. VPS/Kubernetes optional ergänzen
+## 13. VPS/Kubernetes optional ergänzen
 
 Für VPS-Deployments:
 

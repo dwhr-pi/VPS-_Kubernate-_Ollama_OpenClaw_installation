@@ -37,6 +37,22 @@ Die fachlichen Quelldateien unter [docs/Profil](/C:/Users/danie/.codex/worktrees
 | `Visual_Creator.doc.md` | `Visual_Creator.md` |
 | `LLM-Builder.doc.md` | `LLM-Builder.md` |
 
+## Neue Plattformprofile
+
+Die folgenden Profile wurden direkt aus der neuen Plattform-Architektur, den Tool-Skripten und dem Stack unter `stacks/llmops-platform` abgeleitet. Sie haben derzeit keine eigene fachliche Quelldatei unter `docs/Profil`, weil sie explizit den produktionsnahen Betriebsaufbau des Repositories beschreiben:
+
+| Plattformprofil in `docs/Profile` | Ableitung |
+|---|---|
+| `llmops.md` | Layer-Architektur, LiteLLM, Open WebUI, Langfuse, OpenLIT |
+| `rag_knowledge_base.md` | Qdrant, ChromaDB, LlamaIndex, LangChain, Data Juicer |
+| `openwebui_frontend.md` | Open WebUI, LiteLLM, MCPO |
+| `mcp_toolserver.md` | MCPO und Toolserver-Anbindung |
+| `ai_security_guardrails.md` | Guardrails AI, Promptfoo, Trivy, Gitleaks, Fail2Ban |
+| `sandbox_coding_agent.md` | Aider, OpenHands, OpenCode, Continue, GitHub CLI, Sandbox |
+| `database_backend.md` | Postgres, Redis, MinIO, Supabase |
+| `monitoring_observability.md` | Langfuse, OpenLIT, Grafana, Prometheus, Loki, Uptime Kuma, Netdata |
+| `backup_storage.md` | Backup-/Restore-Betrieb für Workspace, Datenbanken und Volumes |
+
 ## Profile im Überblick
 
 ### Programmierer
@@ -121,6 +137,11 @@ Die fachlichen Quelldateien unter [docs/Profil](/C:/Users/danie/.codex/worktrees
 | Trading_AI | Zenbot_trader, Web3_APIs, Exchange_APIs | Kein dediziertes Backtest-/Risikomodul |
 | Visual_Creator | FFmpeg, Stable_Diffusion_WebUI, ComfyUI, RealESRGAN | Keine vorkonfigurierte lokale Bild-/Video-Laufzeitpipeline |
 | LLM-Builder | Ollama, Data_Juicer, Unsloth, LLaMA_Factory, Llama_CPP_Toolchain, Axolotl | Kein starres End-to-End-Fine-Tuning per Ein-Klick, Modellwahl bewusst nicht automatisiert |
+
+### Plattformprofile
+- Fokus: produktionsreife LLMOps-Plattform statt einzelner Fachrolle
+- Tatsächlicher Setup-Kern: LiteLLM, Open WebUI, Langfuse, OpenLIT, Qdrant, MCPO, Security- und Monitoring-Bausteine
+- Hauptlücke: Noch nicht alle Plattformprofile sind als eigenes interaktives Install-Profil im Hauptmenü verdrahtet; dokumentiert und als einzelne Tools sind sie aber bereits vorhanden
 
 ## Relevante globale Befunde
 
