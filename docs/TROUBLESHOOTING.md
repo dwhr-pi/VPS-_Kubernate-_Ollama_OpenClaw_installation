@@ -7,6 +7,13 @@
 - `grep 'APP_VERSION=' setup_ultimate.sh`
 - `git show origin/main:setup_ultimate.sh | grep 'APP_VERSION='`
 
+Wenn du dich gerade nur in `~` befindest:
+
+```bash
+grep 'APP_VERSION=' ~/openclaw_ultimate_setup/setup_ultimate.sh
+git -C ~/openclaw_ultimate_setup show origin/main:setup_ultimate.sh | grep 'APP_VERSION='
+```
+
 ### Menü oder Dialoge sehen kaputt aus
 
 - Setup neu starten

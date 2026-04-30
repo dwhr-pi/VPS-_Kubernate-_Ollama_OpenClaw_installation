@@ -166,6 +166,13 @@ Oder über GitHub direkt:
 git show origin/main:setup_ultimate.sh | grep 'APP_VERSION='
 ```
 
+Wenn du **nicht** im Repository-Verzeichnis bist, nutze stattdessen:
+
+```bash
+grep 'APP_VERSION=' ~/openclaw_ultimate_setup/setup_ultimate.sh
+git -C ~/openclaw_ultimate_setup show origin/main:setup_ultimate.sh | grep 'APP_VERSION='
+```
+
 Wenn beide Werte gleich sind, dann stimmt die Version im Repository mit der Version auf GitHub überein.
 
 ## 6. Häufigster Fehler
