@@ -1,4 +1,4 @@
-# VPS- Kubernate- Ollama & OpenClaw installation - Ultimate Setup V11.14
+# VPS- Kubernate- Ollama & OpenClaw installation - Ultimate Setup V11.15
 
 Dies ist das ultimative Setup für ein hybrides KI- und Smart-Home-System, das deinen Letsung MiniPC (WSL2) und mehrere kostenlose VPS kombiniert. Es integriert eine Vielzahl von Tools und KI-Agenten, die direkt aus GitHub-Quellen kompiliert oder lokal aufgebaut werden.
 
@@ -212,6 +212,7 @@ Zusätzliche Hilfen:
 *   `docs/WSL_SETUP_GUIDE.md` erklärt WSL unter Windows, Ubuntu-24.04 bzw. andere Linux-Distributionen, sowie Deinstallation und komplettes Zurücksetzen.
 *   `docs/INSTALLATION_BENCHMARKS.md` beschreibt die editierbaren Installations-Schätzwerte und verweist auf `~/.openclaw_ultimate_user_data/setup_metrics.conf`.
 *   [docs/OLLAMA_MODEL_CATALOG.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/OLLAMA_MODEL_CATALOG.md:1) listet empfohlene lokale Modelle, Coding-Modelle und EU-nahe Modelle mit Groessen- und RAM-Hinweisen.
+*   [docs/REPO_SYNC_AND_RECOVERY.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/REPO_SYNC_AND_RECOVERY.md:1) beschreibt saubere Sync-, Backup- und Wiederherstellungswege zwischen Windows, Ubuntu/WSL und Codex-Worktrees.
 *   sensible und bearbeitbare Setup-Dateien liegen jetzt außerhalb des Repos in `~/.openclaw_ultimate_user_data`.
 *   über `Benutzer-Workspace verwalten` kannst du diese ausgelagerten Dateien anzeigen, neu aus dem Repo kopieren oder vollständig löschen.
 *   das Setup zeichnet für wichtige Vorgänge jetzt zusätzlich reale Messwerte in `~/.openclaw_ultimate_user_data/metrics_logs/operation_history.tsv` auf.
