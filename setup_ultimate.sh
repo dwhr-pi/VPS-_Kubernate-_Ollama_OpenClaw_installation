@@ -4,7 +4,7 @@
 # Beschreibung: Dies ist das Hauptinstallationsskript für die ultimative KI-Infrastruktur.
 # Es bietet eine interaktive Menüführung zur Installation, Deinstallation und Verwaltung verschiedener KI-Tools, Profile und Systemkomponenten.
 # Das Skript unterstützt hybride Setups (MiniPC + Multi-VPS), Standalone-Installationen und bietet Funktionen wie Auto-Updates, Ollama-Modellverwaltung und OpenClaw-Konfiguration.
-# Version: V11.13
+# Version: V11.15
 #
 
 # Farben & UI
@@ -745,40 +745,46 @@ show_profile_management_menu() {
         echo -e "${YELLOW}Die Profilverwaltung kann trotzdem geöffnet werden. Einige Profile benötigen für die volle Funktion aber die Basis-Installation.${NC}"
     fi
 
-    # Installierte Profile laden
     declare -A INSTALLED_PROFILES_MAP
     load_installed_map "$PROFILE_STATUS_FILE" INSTALLED_PROFILES_MAP
 
-    PROFILE_CHECKLIST_OPTIONS=()
+    PROFILE_MENU_OPTIONS=()
     for profile_key in "${PROFILE_KEYS[@]}"; do
-        STATUS="off"
+        local profile_status_text="Nicht installiert"
         if [ -n "$profile_key" ] && [ "${INSTALLED_PROFILES_MAP[$profile_key]:-}" = "1" ]; then
-            STATUS="on"
+            profile_status_text="Installiert"
         fi
-        PROFILE_CHECKLIST_OPTIONS+=("$profile_key" "${PROFILES[$profile_key]}" "$STATUS")
+        PROFILE_MENU_OPTIONS+=("$profile_key" "[$profile_status_text] ${PROFILES[$profile_key]}")
     done
 
-    dialog --clear --backtitle "$APP_TITLE" \
-    --title "PROFIL-MANAGEMENT" --checklist "Wählen Sie Profile zum Installieren/Deinstallieren:" 30 100 18 \
-    "${PROFILE_CHECKLIST_OPTIONS[@]}" 2> /tmp/profile_selection
+    while true; do
+        dialog --clear --backtitle "$APP_TITLE" \
+        --title "PROFIL-MANAGEMENT" --menu "Wählen Sie ein Profil für die Detailansicht. Dort können Sie das Gesamtprofil oder einzelne enthaltene Tools installieren bzw. deinstallieren:" 28 108 18 \
+        "${PROFILE_MENU_OPTIONS[@]}" \
+        "ZURUECK" "Zurück zum Profil-Hub" 2> /tmp/profile_selection
 
-    if [ $? -ne 0 ]; then
-        return 0
-    fi
-
-    mapfile -t SELECTED_PROFILES_ARRAY < <(tr ' ' '\n' < /tmp/profile_selection | tr -d '"' | sed '/^$/d')
-
-    # Installation/Deinstallation basierend auf Auswahl
-    for profile_key in "${PROFILE_KEYS[@]}"; do
-        if selection_contains "$profile_key" "${SELECTED_PROFILES_ARRAY[@]}" && [ "${INSTALLED_PROFILES_MAP[$profile_key]:-}" != "1" ]; then
-            # Profil ausgewählt und nicht installiert -> Installieren
-            install_profile "$profile_key"
-        elif ! selection_contains "$profile_key" "${SELECTED_PROFILES_ARRAY[@]}" && [ "${INSTALLED_PROFILES_MAP[$profile_key]:-}" = "1" ]; then
-            # Profil nicht ausgewählt und installiert -> Deinstallieren
-            uninstall_profile "$profile_key"
+        if [ $? -ne 0 ]; then
+            return 0
         fi
+
+        local selected_profile
+        selected_profile="$(cat /tmp/profile_selection)"
+
+        if [ "$selected_profile" = "ZURUECK" ]; then
+            return 0
+        fi
+
+        show_profile_block_detail_menu "$selected_profile"
+        load_installed_map "$PROFILE_STATUS_FILE" INSTALLED_PROFILES_MAP
+        PROFILE_MENU_OPTIONS=()
+        for profile_key in "${PROFILE_KEYS[@]}"; do
+            local refreshed_status_text="Nicht installiert"
+            if [ -n "$profile_key" ] && [ "${INSTALLED_PROFILES_MAP[$profile_key]:-}" = "1" ]; then
+                refreshed_status_text="Installiert"
+            fi
+            PROFILE_MENU_OPTIONS+=("$profile_key" "[$refreshed_status_text] ${PROFILES[$profile_key]}")
+        done
     done
-    read -p "Profil-Management abgeschlossen. Drücken Sie Enter..."
 }
 
 # --- Funktionen für Tool-Management ---
