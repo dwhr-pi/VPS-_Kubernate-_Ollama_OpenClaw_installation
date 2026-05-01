@@ -213,9 +213,13 @@ Zusätzliche Hilfen:
 *   `docs/INSTALLATION_BENCHMARKS.md` beschreibt die editierbaren Installations-Schätzwerte und verweist auf `~/.openclaw_ultimate_user_data/setup_metrics.conf`.
 *   [docs/OLLAMA_MODEL_CATALOG.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/OLLAMA_MODEL_CATALOG.md:1) listet empfohlene lokale Modelle, Coding-Modelle und EU-nahe Modelle mit Groessen- und RAM-Hinweisen.
 *   [docs/REPO_SYNC_AND_RECOVERY.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/REPO_SYNC_AND_RECOVERY.md:1) beschreibt saubere Sync-, Backup- und Wiederherstellungswege zwischen Windows, Ubuntu/WSL und Codex-Worktrees.
+*   [docs/ROADMAP.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/ROADMAP.md:1) zeigt die naechsten Ausbauphasen der Plattform.
+*   [docs/SECURITY_HARDENING.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/SECURITY_HARDENING.md:1) fasst Härtung, Agentenrisiken, Tunnel-Absicherung und Secret-Hygiene kompakt zusammen.
+*   [docs/PROFILE_MATRIX.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/PROFILE_MATRIX.md:1), [docs/TOOL_MATRIX.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/TOOL_MATRIX.md:1) und [docs/PORT_MATRIX.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/PORT_MATRIX.md:1) geben die aktuelle Betriebsübersicht.
 *   sensible und bearbeitbare Setup-Dateien liegen jetzt außerhalb des Repos in `~/.openclaw_ultimate_user_data`.
 *   über `Benutzer-Workspace verwalten` kannst du diese ausgelagerten Dateien anzeigen, neu aus dem Repo kopieren oder vollständig löschen.
 *   das Setup zeichnet für wichtige Vorgänge jetzt zusätzlich reale Messwerte in `~/.openclaw_ultimate_user_data/metrics_logs/operation_history.tsv` auf.
+*   die neuen zentralen Registries liegen unter `config/tools.yml`, `config/profiles.yml` und `config/ports.yml`.
 
 ### Neue Plattformprofile
 
@@ -235,6 +239,25 @@ Zusätzlich gibt es zwei Profil-Verzeichnisse:
 
 *   `docs/Profil/` enthält die fachlichen Quelltexte und Prompt-Sammlungen je Profil.
 *   `docs/Profile/` enthält die daraus abgeleiteten, repo-spezifischen Profilseiten mit tatsächlichem Setup-Stand, installierbaren Tools und OpenClaw-/Ollama-Fit.
+
+### Neue Studio- und Spezialprofile
+
+Zusätzlich wurden spezialisierte Ausbauprofile ergänzt:
+
+*   `Video_Generation_Studio`
+*   `Image_Generation_Studio`
+*   `Voice_Clone_TTS_Studio`
+*   `Music_AI_Studio`
+*   `Web3_Crypto_Agent`
+*   `Smart_Home_AI_Assistant`
+*   `Document_Intelligence`
+*   `Personal_Knowledge_Memory`
+*   `DevOps_SRE_Agent`
+*   `Data_Analytics_BI`
+*   `Game_Dev_AI`
+*   `Education_Tutor`
+
+Die gesammelte Uebersicht steht in [docs/Profile/INDEX.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/Profile/INDEX.md:1).
 
 ## 🛠️ Enthaltene Komponenten & Tools
 
@@ -265,6 +288,16 @@ Das Setup bietet eine breite Palette an Tools, die du nach Bedarf installieren u
 *   **Ruflo:** Multi-Agenten- und Automatisierungsplattform mit CLI. Das Setup installiert Ruflo aus GitHub, stellt Node.js und `pnpm` bereit und verlinkt die CLI für lokale Nutzung.
 *   **Multi-VPS-Strategie:** Optimierte Ressourcennutzung über mehrere kostenlose VPS. Eine Strategie zur Verteilung der Last und Erhöhung der Ausfallsicherheit durch Nutzung mehrerer Cloud-Anbieter.
 
+Zusätzlich im neuen Ausbau:
+
+*   **RAG / Wissensschicht:** `LightRAG`, `Qdrant`, `ChromaDB`, `Apache Tika`, `Docling`
+*   **Security:** `CrowdSec`, `Semgrep`, `Syft`, `Grype`, `UFW`
+*   **Monitoring / Betrieb:** `Healthchecks`, `Node Exporter`, `Promtail`
+*   **Automation / UI:** `Node-RED`, `Mosquitto`, `Zigbee2MQTT`, `ESPHome`, `Appsmith`, `Budibase`, `NocoDB`, `Directus`
+*   **Media / Studio:** `GFPGAN`, `Rembg`, `faster-whisper`, `Blender`
+
+Die aktuelle kuratierte Toolübersicht steht in [docs/TOOL_MATRIX.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/TOOL_MATRIX.md:1).
+
 ## 👤 Profil-Management
 
 Das Setup unterstützt die Installation und Deinstallation verschiedener Profile über eine interaktive Checkliste. Du kannst mehrere Profile gleichzeitig installieren und verwalten.
@@ -289,6 +322,18 @@ Neu dazu kommt eine Blockansicht im Menü:
 *   **Trading AI:** Profil für Marktanalyse, Bot-gestützte Strategietests und Trading-Integrationen.
 *   **Visual Creator:** Kreativprofil für Bild-, Video- und Asset-Pipelines mit Stable Diffusion WebUI, ComfyUI, FFmpeg und RealESRGAN.
 *   **LLM-Builder:** Profil für einen realistischen lokalen Workflow rund um Datensatzaufbereitung, LoRA/QLoRA-Fine-Tuning, GGUF-Export, Quantisierung und Ollama-Einbindung.
+*   **Document Intelligence:** Profil für OCR, Rechnungen, Verträge, PDF-/Markdown-/Docx-Konvertierung und lokale RAG-Ablage.
+*   **Personal Knowledge Memory:** Profil für privates Wissensgedächtnis mit lokaler Vector-DB.
+*   **DevOps SRE Agent:** Profil für CI/CD, Kubernetes, IaC, Healthchecks und Betriebsautomatisierung.
+*   **Data Analytics BI:** Profil für DuckDB, JupyterLab, Metabase, Reports und Analytik.
+*   **Game Dev AI:** Profil für Blender-, Asset- und Dialog-/Quest-Workflows.
+*   **Education Tutor:** Profil für Lernassistenten, Quiz, Karteikarten und PDF-RAG.
+
+Wichtige Orientierung:
+
+*   die älteren Kernprofile bleiben kompakt und einsteigerfreundlich
+*   `*_Studio`- und `*_Agent`-Profile sind die vertieften Spezialpfade
+*   nicht jedes neue Profil ist schon als eigener Top-Level-Eintrag im grossen Hauptmenü verdrahtet; Skripte und Doku existieren aber bereits
 
 ## 💻 Codex-Nachbau und Plattformziele
 
@@ -437,10 +482,21 @@ Wichtige Grenze:
 │       ├── .env.example        # Beispiel-Umgebungsvariablen für den Plattform-Stack
 │       └── litellm-config.yaml # Routing und Fallback-Konfiguration für LiteLLM
 ├── config/
-│   └── setup_metrics.conf      # Editierbare Benchmarks, Platzbedarf und Zeit-Schätzwerte
-└── installed_profiles.txt      # Liste der aktuell installierten Profile
-└── installed_tools.txt         # Liste der aktuell installierten Tools
+│   ├── tools.yml               # Zentrale Tool-Registry
+│   ├── profiles.yml            # Zentrale Profil-Registry
+│   └── ports.yml               # Port-Registry mit Konfliktbasis
+├── configs/
+│   └── .env.example            # Beispiel-Konfigurationen ohne Secrets
+└── .github/
+    ├── workflows/              # Shellcheck, Markdownlint, Linkcheck, Secret Scan
+    └── markdown-link-check.json
 ```
+
+Wichtige Ergänzung:
+
+*   persönliche und sensible Nutzerdaten liegen **nicht** im Repo, sondern in `~/.openclaw_ultimate_user_data`
+*   die Setup-Messwerte und Statusdateien werden ebenfalls im Benutzer-Workspace geführt
+*   `scripts/lib/` und `scripts/operations/` enthalten die neue gemeinsame Betriebs- und Prüfungslogik
 
 ## ⚠️ Wichtige Hinweise
 
@@ -450,5 +506,8 @@ Wichtige Grenze:
 *   **pnpm Warnung zu ignorierten Build-Skripten:** Wenn `pnpm` z. B. `@discordjs/opus@0.10.0` als ignoriertes Build-Skript meldet, bietet das Setup jetzt am Ende des OpenClaw-Builds einen separaten Bestätigungsschritt für `pnpm approve-builds` an.
 *   **Ressourcen:** Das Setup ist für eine optimale Verteilung auf einen Letsung MiniPC (16GB RAM / 70GB Disk) und einen Oracle Cloud Free Tier VPS (24GB RAM) sowie weitere kostenlose VPS ausgelegt.
 *   **Dynamische IP:** Hurricane Electric wird für die dynamische DNS-Auflösung des MiniPCs verwendet. Eine detaillierte Anleitung zur Umstellung und zum DDoS-Schutz findest du in `docs/DNS_DDoS_GUIDE.md`.
+*   **Trading / Web3:** Keine Seed-Phrases, Private Keys oder echte Börsen-Keys im Repo oder in Dokumentationsbeispielen speichern.
+*   **Cloudflare / öffentliche Ports:** Exponierte Dienste immer mit Policies, HTTPS und minimalen Freigaben absichern.
+*   **Registry-System:** Die neuen Dateien unter `config/` sind die Zielstruktur für künftige automatische Menü-Generierung, aber noch nicht jede Stelle des Hauptmenüs liest bereits daraus.
 
 Wir wünschen dir viel Erfolg bei der Einrichtung deines intelligenten, automatisierten Systems!

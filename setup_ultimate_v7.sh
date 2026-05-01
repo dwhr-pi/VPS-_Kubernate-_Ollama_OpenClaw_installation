@@ -26,7 +26,8 @@ main_menu() {
     echo "11 Update aller Tools"
     echo "12 Ollama Modelle verwalten"
     echo "13 Kubernetes Deployments anzeigen"
-    echo "14 Beenden"
+    echo "14 Registry-Healthcheck"
+    echo "15 Beenden"
     echo
     read -r -p "Auswahl: " choice
     case "$choice" in
@@ -34,7 +35,13 @@ main_menu() {
       2) ls "$REPO_ROOT/scripts/tools";;
       3) bash "$REPO_ROOT/setup_ultimate.sh";;
       4) bash "$REPO_ROOT/scripts/operations/status_report.sh";;
-      5) bash "$REPO_ROOT/scripts/port_check.sh";;
+      5)
+        if [ -f "$REPO_ROOT/scripts/operations/check_port_conflicts.sh" ]; then
+          bash "$REPO_ROOT/scripts/operations/check_port_conflicts.sh"
+        else
+          bash "$REPO_ROOT/scripts/port_check.sh"
+        fi
+        ;;
       6) bash "$REPO_ROOT/scripts/lib/resource_check.sh" --summary;;
       7) ls -lah "${HOME}/.openclaw_ultimate_user_data/logs" 2>/dev/null || true;;
       8) bash "$REPO_ROOT/scripts/operations/backup_run.sh";;
@@ -49,7 +56,8 @@ main_menu() {
         fi
         ;;
       13) bash "$REPO_ROOT/scripts/operations/show_k8s_deployments.sh";;
-      14) exit 0;;
+      14) bash "$REPO_ROOT/scripts/operations/tool_healthcheck.sh";;
+      15) exit 0;;
       *) echo "Ungültige Auswahl.";;
     esac
     echo

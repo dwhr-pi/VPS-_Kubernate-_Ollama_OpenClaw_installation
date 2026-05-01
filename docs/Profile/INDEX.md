@@ -1,152 +1,78 @@
 # Profil-Index
 
-Dieses Verzeichnis bündelt den aktuell aus dem Repository rekonstruierten Profil-Stand.
+Dieses Verzeichnis enthält die aktuell gepflegten, aus dem Repository abgeleiteten Profilseiten. Die fachlichen Quelltexte liegen unter `docs/Profil/*.doc.md`, die nutzerorientierten Zielseiten unter `docs/Profile/*.md`.
 
-Wichtiger Hinweis:
-Im aktuellen Repository existierten vor dieser Zusammenführung keine dedizierten Profil-Dateien unter `docs/Profile/`.
-Die Inhalte in diesem Verzeichnis wurden daher aus folgenden Quellen zusammengeführt:
+## Kern- und Bestandsprofile
 
-- `readme.md`
-- `docs/setup_guide.md`
-- `docs/API_KEY_GUIDE.md`
-- `scripts/profiles/*.sh`
-- `scripts/tools/*.sh`
-- `scripts/base_install.sh`
-- `scripts/hybrid_setup.sh`
-- `scripts/install_local_only.sh`
-- `scripts/vps_standalone.sh`
-- `docs/Profil/*.doc.md`
-
-## Profilquellen und abgeleitete Dateien
-
-Die fachlichen Quelldateien unter [docs/Profil](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/Profil:1) sind lokal vorhanden und in die abgeleiteten Profilseiten übernommen:
-
-| Quelle in `docs/Profil` | Abgeleitete Datei in `docs/Profile` |
-|---|---|
-| `Programmierer.doc.md` | `Programmierer.md` |
-| `Media_Musik.doc.md` | `Media_Musik.md` |
-| `KI_Forschung.doc.md` | `KI_Forschung.md` |
-| `Texter_Werbung_Marketing.doc.md` | `Texter_Werbung_Marketing.md` |
-| `Rechtsberatung_Steuerrecht.doc.md` | `Rechtsberatung_Steuerrecht.md` |
-| `Agent_Orchestrator.doc.md` | `Agent_Orchestrator.md` |
-| `Audio.doc.md` | `Audio.md` |
-| `Content_Automation.doc.md` | `Content_Automation.md` |
-| `Research_Agent.doc.md` | `Research_Agent.md` |
-| `Security_Analyst.doc.md` | `Security_Analyst.md` |
-| `Trading_AI.doc.md` | `Trading_AI.md` |
-| `Visual_Creator.doc.md` | `Visual_Creator.md` |
-| `LLM-Builder.doc.md` | `LLM-Builder.md` |
-
-## Neue Plattformprofile
-
-Die folgenden Profile wurden direkt aus der neuen Plattform-Architektur, den Tool-Skripten und dem Stack unter `stacks/llmops-platform` abgeleitet. Sie haben derzeit keine eigene fachliche Quelldatei unter `docs/Profil`, weil sie explizit den produktionsnahen Betriebsaufbau des Repositories beschreiben:
-
-| Plattformprofil in `docs/Profile` | Ableitung |
-|---|---|
-| `llmops.md` | Layer-Architektur, LiteLLM, Open WebUI, Langfuse, OpenLIT |
-| `rag_knowledge_base.md` | Qdrant, ChromaDB, LlamaIndex, LangChain, Data Juicer |
-| `openwebui_frontend.md` | Open WebUI, LiteLLM, MCPO |
-| `mcp_toolserver.md` | MCPO und Toolserver-Anbindung |
-| `ai_security_guardrails.md` | Guardrails AI, Promptfoo, Trivy, Gitleaks, Fail2Ban |
-| `sandbox_coding_agent.md` | Aider, OpenHands, OpenCode, Continue, GitHub CLI, Sandbox |
-| `database_backend.md` | Postgres, Redis, MinIO, Supabase |
-| `monitoring_observability.md` | Langfuse, OpenLIT, Grafana, Prometheus, Loki, Uptime Kuma, Netdata |
-| `backup_storage.md` | Backup-/Restore-Betrieb für Workspace, Datenbanken und Volumes |
-
-## Profile im Überblick
-
-### Programmierer
-- Fokus: Entwicklungs- und Automatisierungs-Workflows
-- Tatsächlicher Setup-Kern: Huginn, Clawhub CLI, LangGraph, CrewAI, AutoGen, Playwright, ChromaDB
-- Hauptlücke: dokumentiertes Coding-Modell wie DeepSeek Coder wird nicht automatisch installiert
-
-### Media_Musik
-- Fokus: Medien- und Musik-Workflows
-- Tatsächlicher Setup-Kern: Clawbake, FFmpeg, librosa, pydub, Demucs, Whisper
-- Hauptlücke: dokumentierte Audio-AI- und Video-Tooling-Breite ist weiterhin nur teilweise umgesetzt
-
-### KI_Forschung
-- Fokus: RL, visuelle LLM-Workflows, Experimentieren
-- Tatsächlicher Setup-Kern: OpenClaw RL, Flowise, LangFlow, LangChain, LlamaIndex, MLflow, Whisper
-- Hauptlücke: dokumentierte Forschungsmodelle wie `gemini-1.5-pro` werden nicht automatisch provisioniert
-
-### Texter_Werbung_Marketing
-- Fokus: Content- und Workflow-Automatisierung
-- Tatsächlicher Setup-Kern: n8n, Activepieces, LangChain, ChromaDB, Playwright
-- Hauptlücke: keine dedizierten SEO-, Social- oder Text-Tools im Skript
-
-### Rechtsberatung_Steuerrecht
-- Fokus: Recherche, PDF-Analyse, OCR
-- Tatsächlicher Setup-Kern: `pup`, `jq`, `wget`, `curl`, `poppler-utils`, `tesseract-ocr`, Zotero, LangChain, LlamaIndex, ChromaDB
-- Hauptlücke: die angekündigte OpenClaw-Skill-Integration für Rechtsquellen fehlt weiterhin
-
-### Agent_Orchestrator
-- Fokus: Aufgabenzerlegung, Routing, Mehragenten-Koordination
-- Tatsächlicher Setup-Kern: LangGraph, CrewAI, AutoGen, ChromaDB, Redis, NATS, Qdrant, Weaviate, Prometheus, Grafana, Loki
-- Hauptlücke: kein dediziertes Laufzeitmodul für Policies, Retry-Logik und Konfliktauflösung
-
-### Audio
-- Fokus: Speech-to-Text, Text-to-Speech, Audio-Cleanup
-- Tatsächlicher Setup-Kern: Whisper, FFmpeg, librosa, pydub, Piper, Coqui_TTS
-- Hauptlücke: kein vollständiger Voice-Assistant-Laufzeitstack
-
-### Content_Automation
-- Fokus: Skript, Voiceover, Videoschnitt und Workflow-Automation
-- Tatsächlicher Setup-Kern: FFmpeg, Whisper, Playwright, n8n, Activepieces, Piper, Coqui_TTS, YT_DLP, Stable_Diffusion_WebUI, Trend_Monitor
-- Hauptlücke: keine vollständig vorkonfigurierte End-to-End-Laufzeitpipeline
-
-### Research_Agent
-- Fokus: Repository-Analyse, Dokumentationsverständnis, Setup-Verbesserung
-- Tatsächlicher Setup-Kern: Playwright, LangChain, LlamaIndex, ChromaDB, Qdrant, Weaviate, Trend_Monitor
-- Hauptlücke: keine vollständig vorkonfigurierte Repo-Vergleichs- und Monitoring-Pipeline
-
-### Security_Analyst
-- Fokus: Exposure, Logs, Schwachstellenprüfung, Hardening
-- Tatsächlicher Setup-Kern: Port-Check, Nmap, Nikto, Trivy, Fail2Ban
-- Hauptlücke: keine vollwertige Pentest- oder Compliance-Workflow-Kette
-
-### Trading_AI
-- Fokus: Marktanalyse, Strategietests, Bot-Integration
-- Tatsächlicher Setup-Kern: Zenbot_trader, Web3_APIs, Exchange_APIs
-- Hauptlücke: kein dediziertes Backtest- oder Risikomodul
-
-### Visual_Creator
-- Fokus: Bild-, Video- und Asset-Pipelines
-- Tatsächlicher Setup-Kern: FFmpeg, Stable_Diffusion_WebUI, ComfyUI, RealESRGAN
-- Hauptlücke: keine vollständig vorkonfigurierte lokale Bild-/Video-Laufzeitpipeline
-
-### LLM-Builder
-- Fokus: realistischer lokaler Workflow für Fine-Tuning, GGUF-Export, Quantisierung und Ollama-Einbindung
-- Tatsächlicher Setup-Kern: Ollama, Data_Juicer, Unsloth, LLaMA_Factory, Llama_CPP_Toolchain, Axolotl
-- Hauptlücke: kein starres Ein-Klick-Training, weil Basismodelle, Datensätze und Hyperparameter bewusst variabel bleiben
-
-## Profil-Differenzen
-
-| Profil | Tatsächlich installierte Kern-Tools | Wichtige Abweichungen |
+| Profil | Zweck | Datei |
 |---|---|---|
-| Programmierer | Huginn, Clawhub CLI, LangGraph, CrewAI, AutoGen, Playwright, ChromaDB | Kein automatischer Ollama-Coder-Model-Pull, kein Observability-/Queue-Stack |
-| Media_Musik | Clawbake, FFmpeg, librosa, pydub, Demucs, Whisper | Keine MusicGen-/Riffusion-/Video-Tools |
-| KI_Forschung | OpenClaw RL, Flowise, LangFlow, LangChain, LlamaIndex, MLflow, Whisper | Kein automatisches Forschungsmodell-Setup, kein Ray/vLLM |
-| Texter_Werbung_Marketing | n8n, Activepieces, LangChain, ChromaDB, Playwright | Keine SEO-/Social-/CRM-/Ads-Spezialtools |
-| Rechtsberatung_Steuerrecht | Web-Fetch, PDF/OCR, Zotero, LangChain, LlamaIndex, ChromaDB | Fehlendes Skill-Skript, keine Legal-KG-/Risk-Tools |
-| Agent_Orchestrator | LangGraph, CrewAI, AutoGen, ChromaDB, Redis, NATS, Qdrant, Weaviate, Prometheus, Grafana, Loki | Keine fertige Policy-/Retry-/Konfliktlogik |
-| Audio | Whisper, FFmpeg, librosa, pydub, Piper, Coqui_TTS | Kein kompletter Voice-Assistant-Stack |
-| Content_Automation | FFmpeg, Whisper, Playwright, n8n, Activepieces, Piper, Coqui_TTS, YT_DLP, Stable_Diffusion_WebUI, Trend_Monitor | Keine vorkonfigurierte End-to-End-Laufzeitpipeline |
-| Research_Agent | Playwright, LangChain, LlamaIndex, ChromaDB, Qdrant, Weaviate, Trend_Monitor | Keine fertige Repo-Vergleichs- und Monitoring-Pipeline |
-| Security_Analyst | Port-Check, Nmap, Nikto, Trivy, Fail2Ban | Kein vollwertiger Pentest-/Compliance-Workflow |
-| Trading_AI | Zenbot_trader, Web3_APIs, Exchange_APIs | Kein dediziertes Backtest-/Risikomodul |
-| Visual_Creator | FFmpeg, Stable_Diffusion_WebUI, ComfyUI, RealESRGAN | Keine vorkonfigurierte lokale Bild-/Video-Laufzeitpipeline |
-| LLM-Builder | Ollama, Data_Juicer, Unsloth, LLaMA_Factory, Llama_CPP_Toolchain, Axolotl | Kein starres End-to-End-Fine-Tuning per Ein-Klick, Modellwahl bewusst nicht automatisiert |
+| `Programmierer` | Coding, Agenten, Automatisierung | `Programmierer.md` |
+| `Media_Musik` | Audio, Medien, Content | `Media_Musik.md` |
+| `KI_Forschung` | Experimente, Modelle, Evaluation | `KI_Forschung.md` |
+| `Texter_Werbung_Marketing` | Marketing, Copy, Kampagnen | `Texter_Werbung_Marketing.md` |
+| `Rechtsberatung_Steuerrecht` | rechtliche/steuerliche Wissensarbeit | `Rechtsberatung_Steuerrecht.md` |
+| `Agent_Orchestrator` | Agentenkoordination, Flows, Queues | `Agent_Orchestrator.md` |
+| `Audio` | klassische Audio-Werkzeuge | `Audio.md` |
+| `Content_Automation` | Content-Pipelines und Publishing | `Content_Automation.md` |
+| `Research_Agent` | Recherche- und Sammelagent | `Research_Agent.md` |
+| `Security_Analyst` | Analyse und Security-Basis | `Security_Analyst.md` |
+| `Trading_AI` | Trading- und Analyseideen | `Trading_AI.md` |
+| `Visual_Creator` | Bild- und Visual-Workflows | `Visual_Creator.md` |
+| `LLM-Builder` | Fine-Tuning, GGUF, Ollama-Import | `LLM-Builder.md` |
 
-### Plattformprofile
-- Fokus: produktionsreife LLMOps-Plattform statt einzelner Fachrolle
-- Tatsächlicher Setup-Kern: LiteLLM, Open WebUI, Langfuse, OpenLIT, Qdrant, MCPO, Security- und Monitoring-Bausteine
-- Hauptlücke: Noch nicht alle Plattformprofile sind als eigenes interaktives Install-Profil im Hauptmenü verdrahtet; dokumentiert und als einzelne Tools sind sie aber bereits vorhanden
+## Plattform- und Betriebsprofile
 
-## Relevante globale Befunde
+| Profil | Zweck | Datei |
+|---|---|---|
+| `llmops` | Gesamtplattform, Gateway, Agenten | `llmops.md` |
+| `rag_knowledge_base` | RAG und Wissensdatenbank | `rag_knowledge_base.md` |
+| `openwebui_frontend` | Standard-Frontend für Multi-Model | `openwebui_frontend.md` |
+| `mcp_toolserver` | MCP-Server und Tool-Anbindung | `mcp_toolserver.md` |
+| `ai_security_guardrails` | Guardrails, Policies, Schutz | `ai_security_guardrails.md` |
+| `sandbox_coding_agent` | Coding-Agenten mit Sandbox | `sandbox_coding_agent.md` |
+| `database_backend` | Datenbank- und Storage-Basis | `database_backend.md` |
+| `monitoring_observability` | Logging, Tracing, Dashboards | `monitoring_observability.md` |
+| `backup_storage` | Backup, Restore, Storage | `backup_storage.md` |
 
-- `docs/Profile/` fehlte ursprünglich vollständig.
-- Viele Tool-Skripte bauen Projekte, richten aber keinen dauerhaften Dienst ein.
-- Mehrere Dienste konkurrieren standardmäßig um Port `3000`.
-- OpenClaw-Konfiguration nutzt inkonsistent `OLLAMA_HOST` und `OLLAMA_BASE_URL`.
-- Die Variable `PRIMÄRES_LLM_ANBIETER` ist dokumentiert, aber als Nicht-ASCII-Umgebungsvariable betrieblich fragil.
+## Operative Ausbauprofile
+
+| Profil | Zweck | Datei |
+|---|---|---|
+| `RAG_Wissensdatenbank` | Open WebUI, LightRAG, Qdrant/Chroma | `RAG_Wissensdatenbank.md` |
+| `Security_DevSecOps` | Trivy, Semgrep, Secrets, Container-Scans | `Security_DevSecOps.md` |
+| `Monitoring_Observability` | Prometheus, Grafana, Loki, Uptime Kuma | `Monitoring_Observability.md` |
+| `Backup_Recovery` | Restic, Borg, Rclone, Wiederherstellung | `Backup_Recovery.md` |
+| `MCP_Agent_Tools` | MCP, Browser, Filesystem, GitHub | `MCP_Agent_Tools.md` |
+| `Image_Generation` | ComfyUI, Forge, ControlNet | `Image_Generation.md` |
+| `Video_Generation` | SVD, AnimateDiff, FFmpeg | `Video_Generation.md` |
+| `Audio_Voice_Music` | Whisper, Piper, Coqui, FFmpeg | `Audio_Voice_Music.md` |
+| `Trading_Crypto_Web3` | Zenbot, Web3, Safe-Mode-Trading | `Trading_Crypto_Web3.md` |
+| `Smart_Home_Automation` | Home Assistant, MQTT, Node-RED | `Smart_Home_Automation.md` |
+| `Office_Productivity` | Paperless, OCR, PDF, DMS | `Office_Productivity.md` |
+| `Data_Engineering` | PostgreSQL, Redis, MinIO, BI | `Data_Engineering.md` |
+| `Developer_CI_CD` | Forgejo, Act, Helm, kubectl | `Developer_CI_CD.md` |
+
+## Studio- und Spezialprofile
+
+| Profil | Zweck | Datei |
+|---|---|---|
+| `Video_Generation_Studio` | lokale Video-KI, Batch, Upscaling | `Video_Generation_Studio.md` |
+| `Image_Generation_Studio` | SD/ComfyUI/Flux-orientierte Bild-Workflows | `Image_Generation_Studio.md` |
+| `Voice_Clone_TTS_Studio` | TTS, STT, Voiceover, Audio-Pipelines | `Voice_Clone_TTS_Studio.md` |
+| `Music_AI_Studio` | Musik, Demucs, Analyse, Prompt-Hilfen | `Music_AI_Studio.md` |
+| `Web3_Crypto_Agent` | Portfolio, RPC, On-Chain-Checks | `Web3_Crypto_Agent.md` |
+| `Smart_Home_AI_Assistant` | HA, MQTT, Zigbee, ESPHome, Voice | `Smart_Home_AI_Assistant.md` |
+| `Document_Intelligence` | OCR, PDF, Rechnungen, Vertragsanalyse | `Document_Intelligence.md` |
+| `Personal_Knowledge_Memory` | lokale Memory-/RAG-Schicht | `Personal_Knowledge_Memory.md` |
+| `DevOps_SRE_Agent` | CI/CD, IaC, Kubernetes, Healthchecks | `DevOps_SRE_Agent.md` |
+| `Data_Analytics_BI` | DuckDB, Jupyter, BI, Reports | `Data_Analytics_BI.md` |
+| `Game_Dev_AI` | Blender, Assets, Dialoge, Pipelines | `Game_Dev_AI.md` |
+| `Education_Tutor` | Lernassistent, Quiz, Karteikarten, RAG | `Education_Tutor.md` |
+
+## Begleitdateien
+
+| Datei | Zweck |
+|---|---|
+| `INSTALL_CHECKLIST.md` | empfohlener Installationspfad |
+| `INCONSISTENCY_REPORT.md` | bekannte Sync-Lücken und Dubletten |
+| `profiles.json` | maschinenlesbarer Profilkatalog |

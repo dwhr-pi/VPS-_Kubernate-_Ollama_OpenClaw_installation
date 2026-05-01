@@ -1,104 +1,57 @@
 # Inkonsistenzbericht
 
-## Profil-Dokumentation
+Dieser Bericht benennt die aktuell wichtigsten inhaltlichen und strukturellen Lücken des Repositories.
 
-- `docs/Profile/` fehlte im ursprünglichen Repository vollständig.
-- Die Profilwahrheit lag verteilt in `readme.md`, `docs/setup_guide.md` und `scripts/profiles/*.sh`.
+## 1. Profil-Dubletten und Überlappungen
 
-## Dokumentiert, aber nicht sauber im Setup umgesetzt
+- `Audio` und `Audio_Voice_Music` überschneiden sich stark.
+- `Trading_AI`, `Trading_Crypto_Web3` und `Web3_Crypto_Agent` liegen thematisch dicht beieinander.
+- `Image_Generation` und `Image_Generation_Studio` sind ähnlich, unterscheiden sich aber im Reifegrad und in der Workflow-Tiefe.
+- `Video_Generation` und `Video_Generation_Studio` überlappen ebenfalls.
+- `Smart_Home_Automation` und `Smart_Home_AI_Assistant` teilen große Teile der Toolbasis.
 
-### Programmierer
-- DeepSeek-Coder oder ein anderes Coding-Modell für Ollama wird erwähnt, aber nicht automatisch installiert.
-- Git-Integration wird dokumentiert, aber nicht als eigenständiges Profil-Setup umgesetzt.
-- Observability-, Secrets- und Queue-Bausteine wie Prometheus, Grafana, Loki, OpenTelemetry, Vault, Redis, RabbitMQ oder NATS sind jetzt als eigene Tools im Setup vorhanden.
+Empfehlung:
+- die älteren Profile als kompakte Einstiegspfade lassen
+- die `*_Studio`- und `*_Agent`-Varianten als vertiefte Spezialisierungen dokumentieren
 
-### Media_Musik
-- Audio-Verarbeitung, Video-Generierung und Alexa-Bezug werden dokumentiert.
-- Das Profilskript installiert jetzt `Clawbake`, `FFmpeg`, `librosa`, `pydub`, `Demucs` und `Whisper`.
-- MusicGen, Riffusion, Stable Diffusion und ControlNet sind jetzt als Setup-Module vorhanden; echte externe Video-Generatoren bleiben weiterhin credential- und dienstabhängig.
+## 2. README, Menü und Skriptwahrheit sind noch nicht vollständig identisch
 
-### Audio
-- Die dokumentierten Kernwerkzeuge `Whisper`, `ffmpeg`, `Piper` und `Coqui TTS` sind jetzt als installierbare Bausteine vorhanden.
-- Das zusätzliche Laufzeitmodul `Voice_Assistant_Runtime` ist jetzt vorhanden; offen bleibt nur Feintuning für ein produktives End-to-End-Voice-Setup.
+- viele neue Profile und Tools existieren bereits als Skripte
+- das große `setup_ultimate.sh` kennt aber nicht jede neue Profilfamilie bereits als vollwertigen Menüpfad
+- `setup_ultimate_v7.sh` dient aktuell eher als ergänzendes Betriebsmenü
 
-### KI_Forschung
-- Erweiterte LLM-Modelle wie `gemini-1.5-pro` werden dokumentiert.
-- Das Profilskript installiert jetzt `OpenClaw RL`, `Flowise`, `LangFlow`, `LangChain`, `LlamaIndex`, `MLflow` und `Whisper`.
-- Ray, vLLM, Stable Diffusion und EnviroLLM sind jetzt als Setup-Module oder Tool-Äquivalente vorhanden.
+## 3. Registry-System ist neu, aber noch nicht die alleinige Wahrheit
 
-### Agent_Orchestrator
-- Queue-/Event-Bus-, Memory- und Observability-Bausteine sind jetzt als installierbare Module vorhanden: `Redis`, `NATS`, `Qdrant`, `Weaviate`, `Prometheus`, `Grafana`, `Loki`.
-- Dedizierte Laufzeitmodule für Routing und Memory-Policies sind jetzt vorhanden; offen bleibt produktives Policy-Feintuning.
+- `config/tools.yml`
+- `config/profiles.yml`
+- `config/ports.yml`
 
-### Codex-Nachbau
-- Die Kernbausteine `Aider`, `OpenCode`, `OpenHands`, `GitHub_CLI`, `Podman`, `Docker`, `K3s`, `Clawbake` und `Ollama` sind jetzt als optionaler Spezialblock im `Programmierer`-Profil abbildbar.
-- Mobile und Embedded-Zielsysteme wie Android, ESP32 oder Arduino sind fachlich moeglich, brauchen aber zusaetzliche Toolchains wie Android SDK, Flutter, PlatformIO, Arduino CLI oder ESP-IDF, die im aktuellen Repo noch nicht als eigene Module umgesetzt sind.
-- iPhone- und macOS-Nativbuilds bleiben fuer Signierung und finalen Build an ein echtes macOS-/Xcode-System gebunden.
+sind jetzt als zentrale Registries vorhanden, werden aber noch nicht vollständig zur Menü-Generierung verwendet.
 
-### Plattformprofile
-- Die neuen Plattformprofile unter `docs/Profile/*.md` fuer `llmops`, `rag_knowledge_base`, `openwebui_frontend`, `mcp_toolserver`, `ai_security_guardrails`, `sandbox_coding_agent`, `database_backend`, `monitoring_observability` und `backup_storage` sind jetzt vorhanden.
-- Die zugrunde liegenden Einzeltools sind ebenfalls als Setup-Module vorhanden.
-- Noch offen bleibt die vollstaendige Verdrahtung dieser Plattformprofile als eigene interaktive Profil-Eintraege im Hauptmenue; aktuell werden sie ueber Einzeltools und den Compose-Stack bedient.
+## 4. Nicht jeder Installer ist vollumfänglich source-only
 
-### Research_Agent
-- Trend-Monitoring ist jetzt als installierbares Modul vorhanden.
-- Eigene Module für GitHub-Research und Repo-Vergleich sind jetzt vorhanden; offen bleibt ein stärker vorkonfigurierter Monitoring-Standard.
+Der Nutzerwunsch lautet bevorzugt: direkt aus GitHub beziehen und lokal bauen.
 
-### Texter_Werbung_Marketing
-- SEO, Social Media und spezialisierte Textproduktion werden dokumentiert.
-- Das Profilskript installiert jetzt `n8n`, `Activepieces`, `LangChain`, `ChromaDB` und `Playwright`.
-- API-Integrationen wie Google Analytics, Meta Ads, TikTok Ads, HubSpot, Notion, Airtable, Buffer, Zapier, Make, Ahrefs, SEMrush und ElevenLabs sind jetzt als Connector-Module im Setup vorhanden.
+Aktueller Stand:
+- ein Teil der Tools wird bereits per GitHub-Clone aufgebaut
+- andere Installer nutzen aus Stabilitätsgründen `apt`, `pip`, `npm` oder Docker-Images
 
-### Content_Automation
-- `Piper`, `Coqui_TTS`, `YT_DLP`, `Stable_Diffusion_WebUI` und `Trend_Monitor` sind jetzt als installierbare Module vorhanden.
-- Thumbnail- und Upload-Module sind jetzt vorhanden; offen bleibt nur eine vollständig produktionsfertige End-to-End-Verdrahtung mit echten Zielplattform-Credentials.
+Das ist funktional, aber nicht überall deckungsgleich mit dem GitHub-only-Ziel.
 
-### Rechtsberatung_Steuerrecht
-- Zotero ist dokumentiert.
-- Das Profilskript referenziert jetzt ein vorhandenes Skill-Skript.
-- Neo4j, EULLM, AI Powered Law Firms, Fristen-Checker und Risiko-Scoring sind jetzt als Tools oder Module umgesetzt.
+## 5. Uninstall-Reifegrad ist unterschiedlich
 
-### Security_Analyst
-- `nmap`, `nikto`, `trivy` und `Fail2Ban` sind jetzt als installierbare Module vorhanden.
-- Zusätzliche Workflow-Module für Fail2Ban-Analyse und Security-Workflows sind jetzt vorhanden; offen bleibt nur tieferes Compliance-Feintuning.
+- für die meisten neuen Tools gibt es echte `*_uninstall.sh`-Skripte
+- einige Uninstall-Wege entfernen jedoch primär Installationspfade und Statusmarken, nicht immer jede Laufzeit- oder Datenablage
 
-### Trading_AI
-- `Web3_APIs` und `Exchange_APIs` sind jetzt als installierbare Module vorhanden.
-- Dedizierte Module für Zenbot-Integration, Risiko-/Strategieanalyse und Backtests sind jetzt vorhanden.
+## 6. Dokumentation ist deutlich besser, aber noch im Wachstum
 
-### Visual_Creator
-- `stable-diffusion-webui`, `comfyui` und `RealESRGAN` sind jetzt als installierbare Module vorhanden.
-- Zusätzliche Module für AnimateDiff, SVD, Runway-Connector und Upscaler-Pipeline sind jetzt vorhanden; offen bleibt nur produktives Pipeline-Feintuning.
+Verbessert:
+- Profilseiten
+- Matrixen
+- Security- und Recovery-Doku
+- LLMOps-/RAG-/Ollama-Doku
 
-### LLM_Builder
-- Die GitHub-basierten Kernbausteine `Data_Juicer`, `Unsloth`, `LLaMA_Factory`, `Axolotl` und `Llama_CPP_Toolchain` sind jetzt als installierbare Module vorhanden.
-- Offen bleibt bewusst ein fixer Ein-Klick-Trainingslauf, weil Basismodelle, Datensätze, Hyperparameter und Hardware zwischen Projekten stark variieren.
-
-## Im Setup vorhanden, aber schwach oder gar nicht dokumentiert
-
-- `Ruflo` wird mittlerweile script-seitig mit Node.js-22-Absicherung und CLI-Verlinkung installiert.
-- `AutoGPT` wird per Docker Compose provisioniert.
-- `vps_standalone.sh` ist jetzt ein ehrliches K3s-Foundation-Setup statt ein halbfertiger Platzhalter.
-
-## Konfigurations-Inkonsistenzen
-
-- `scripts/config_templates/openclaw/.env.template` nutzt `OLLAMA_HOST`.
-- `scripts/hybrid_setup.sh` schreibt `OLLAMA_BASE_URL`.
-- `scripts/config_templates/openclaw/.env.template` und `config.json.template` dokumentieren `PRIMÄRES_LLM_ANBIETER`, was als Umgebungsvariable unnötig fragil ist.
-
-## Port- und Dienst-Inkonsistenzen
-
-- `docs/API_KEY_GUIDE.md` listet kritische Ports `3000`, `5678`, `7860`, `8123`, `11434`, `27017`.
-- `scripts/port_check.sh` prüft aktuell nur `11434`, `18789`, `8123`, `8080`.
-- `3000` als Kollisionsport für OpenClaw, Flowise, Activepieces, Huginn und Zenbot wird nicht script-seitig geprüft.
-
-## Fehlende Dateien oder Referenzen
-
-- `docs/Profile/` fehlte ursprünglich.
-- `scripts/openclaw_skill_config.sh` ist jetzt vorhanden und wird im Rechtsprofil direkt verwendet.
-
-## Sicherheitsrelevante Abweichungen
-
-- OpenClaw ist in der Vorlage mit `HOST=0.0.0.0` konfiguriert.
-- `scripts/k8s_deployments.yaml` enthält einen `LoadBalancer` für den `gemini-ollama-proxy`.
-- Secrets sind als Klartext-Platzhalter in `.env.template` und `config.json.template` vorgesehen.
+Offen bzw. weiter pflegebedürftig:
+- Port- und Ressourcenangaben bei jedem einzelnen Tool
+- Source-vs-Package-vs-Container-Hinweise pro Tool
+- Start/Stop/Status-Kommandos für jede neue Toolfamilie

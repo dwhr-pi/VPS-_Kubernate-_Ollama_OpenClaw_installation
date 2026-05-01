@@ -2,108 +2,101 @@
 
 ## Kurzfazit
 
-Das Repository verfolgt eine starke und interessante Idee: eine hybride lokale und VPS-nahe KI-Plattform mit OpenClaw, Ollama, Automationen, spezialisierten Profilen und wachsender LLMOps-Schicht. Der aktuelle Stand ist aber in Struktur, Menüführung und Wartbarkeit noch uneinheitlich und weist deutliche Spuren schnellen organischen Wachstums auf.
+Das Repository ist inzwischen deutlich mehr als eine lose Tool-Sammlung. Es entwickelt sich klar in Richtung einer modularen lokalen und hybriden LLMOps-Plattform. Gleichzeitig zeigt der aktuelle Stand noch typische Wachstumsprobleme:
 
-## Audit Scope
+- Menü, README, Registries und Skriptwahrheit sind noch nicht überall identisch
+- einige Profile überlappen sich stark
+- nicht alle Installationspfade folgen bereits demselben Reifegrad
+- ein Teil der neuen Tools ist dokumentiert und installierbar, aber noch nicht vollständig im Hauptmenü verdrahtet
 
-Geprüft wurden insbesondere:
+## Geprüfte Bereiche
 
 - `README.md`
 - `docs/`
-- `install.sh`
-- `setup_ultimate_v7.sh`
-- `setup_ultimate.sh`
-- `scripts/`
+- `docs/Profil/`
+- `docs/Profile/`
 - `scripts/tools/`
 - `scripts/profiles/`
+- `scripts/lib/`
+- `scripts/operations/`
+- `stacks/`
+- `setup_ultimate.sh`
+- `setup_ultimate_v7.sh`
 
-## Zentrale Feststellungen
+## Was bereits gut ist
 
-### 1. Repository-Struktur
+### Idee und Konzept
 
-- Das Repo enthält bereits sehr viele Tool-Skripte und Profilskripte.
-- `setup_ultimate_v7.sh` war im aktuellen Repo-Stand nicht mehr die führende Datei; dafür existierte `setup_ultimate.sh`.
-- `configs/` und `scripts/lib/` fehlten bisher als klare Produktionsbasis und wurden jetzt ergänzt.
+- klare Plattformidee: Base System -> Runtime -> Gateway -> Agenten -> RAG -> Tool Layer -> UI -> Monitoring -> Security
+- gute Trennung in Profile und Einzeltools
+- lokale, kostenlose und optionale Cloud-/API-Pfade werden überwiegend erkennbar gemacht
 
-### 2. README vs. tatsächlicher Stand
+### Sicherheit
 
-- Das README war teilweise hinter dem tatsächlichen Ausbau zurück.
-- Es nannte Profile und Tools, die zwar konzeptionell vorhanden waren, aber nicht immer als echte Skripte oder klare Betriebsdoku.
-- Die Verzeichnisstruktur war nicht vollständig synchron mit dem realen Repo-Wachstum.
+- Benutzer-Workspace außerhalb des Repos reduziert versehentliche Secret-Leaks
+- viele Warnhinweise für Web3, Trading, Shell-Agenten und Cloudflare sind schon vorhanden
+- Uninstall-Skripte existieren für einen großen Teil der Tools
 
-### 3. Skriptqualität
+### Modularität
 
-Positiv:
+- breite Toolabdeckung
+- wachsender Satz an Betriebs- und Spezialprofilen
+- eigene LLM-/RAG-/Media-/Security-/DevOps-Schicht erkennbar
 
-- viele Skripte folgen klaren Install-/Uninstall-Paaren
-- die Idee eines ausgelagerten Benutzer-Workspace ist sicherheitlich stark
+## Kritische Feststellungen
 
-Probleme:
+### 1. Sync-Lücke zwischen Dokumentation und Menü
 
-- historisch mehrfach fehleranfällige Farbcodes
-- inkonsistente Zustandsführung zwischen Repo und Benutzer-Workspace
-- nicht alle Skripte sind gleich robust, idempotent oder sauber geloggt
-- viele Tools bauen etwas lokal, aber standardisieren Start/Stop/Status nicht vollständig
+- `setup_ultimate.sh` ist noch nicht für jede neue Profilfamilie die alleinige Wahrheit
+- einige neue Studio- und Agentenprofile existieren bereits als Skripte und Doku, aber noch nicht als vollständig integrierte Menüpfade
 
-### 4. Sicherheitslage
+### 2. Dubletten und Namensüberschneidungen
 
-Positiv:
+- `Audio` vs. `Audio_Voice_Music`
+- `Image_Generation` vs. `Image_Generation_Studio`
+- `Video_Generation` vs. `Video_Generation_Studio`
+- `Trading_AI` vs. `Trading_Crypto_Web3` vs. `Web3_Crypto_Agent`
+- `Smart_Home_Automation` vs. `Smart_Home_AI_Assistant`
 
-- sensible Dateien werden inzwischen bewusst ausgelagert
-- Security- und Guardrails-Tools sind vorhanden oder ergänzt
+### 3. Tool-Reifegrad ist uneinheitlich
 
-Probleme:
+- ein Teil der Tools wird direkt aus GitHub-Quellen geclont oder lokal aufgebaut
+- andere nutzen `apt`, `pip`, `npm` oder Docker-Images
+- funktional ist das sinnvoll, entspricht aber nicht überall dem strengsten GitHub-only-Wunsch
 
-- große Funktionsbreite mit Shell-, Browser- und Agentenzugriff erhöht das Risiko
-- nicht alle Dienste sind standardmäßig auf sichere Publikation oder Auth-Härtung dokumentiert
-- `.env`-/Secret-Hygiene musste weiter vereinheitlicht werden
+### 4. Healthchecks und Rollback sind noch nicht vollständig standardisiert
 
-### 5. Fehlende oder unklare Produktionsnähe
+- es gibt jetzt Operations-Skripte und Registries
+- aber noch nicht für jedes Tool einen gleich tiefen Runtime-Healthcheck
+- Rollback geschieht überwiegend über Uninstall + Backup, nicht überall transaktional
 
-- gemeinsame Bibliotheken für Logging, Ressourcenchecks und Security fehlten bisher
-- Backups, Restore und Monitoring waren nur teilweise operationalisiert
-- mehrere Plattformprofile existierten vorher nicht als echte Profile
+## Bewertung 1-10
 
-## Bewertung (1–10)
-
-| Bereich | Bewertung | Kurzbegründung |
+| Bereich | Bewertung | Kommentar |
 |---|---:|---|
-| Idee/Konzept | 9 | Starkes, ungewöhnlich breites Plattformziel |
-| Modularität | 7 | Viele Module vorhanden, aber gewachsen und teils uneinheitlich |
-| Sicherheit | 6 | Gute Richtung, aber durch mächtige Agenten- und Toolrechte riskant |
-| Wartbarkeit | 5 | Viel Logik verteilt, Menüs und Doku drifteten auseinander |
-| Anfängerfreundlichkeit | 6 | Gute Menüidee, aber hohe Komplexität und viele mögliche Stolperstellen |
-| VPS-Tauglichkeit | 7 | Viele geeignete Bausteine, aber nicht überall produktionshart |
-| WSL2-Tauglichkeit | 7 | Sinnvoll möglich, aber Pfad- und Dienstbesonderheiten müssen klar dokumentiert werden |
-| Kubernetes-Tauglichkeit | 6 | Vorhanden als Richtung, aber noch nicht durchgehend standardisiert |
-| Offline-/Local-AI-Tauglichkeit | 8 | Ollama, OpenClaw und Builder-Ansatz sind stark |
-| Automatisierungsgrad | 7 | Viele Skripte und Profile, aber teils noch eher Baukasten als fertige Plattform |
-| Risiko durch Shell-/Browser-Agenten | 8 | Hoher Risikofaktor, muss strikt im Safe-Mode behandelt werden |
+| Idee / Konzept | 9 | sehr starke Grundidee und guter Praxisbezug |
+| Modularität | 8 | Profile und Tools sind gut getrennt, aber teils redundant |
+| Sicherheit | 7 | deutliche Fortschritte, dennoch noch Härtungspotenzial |
+| Wartbarkeit | 6 | gewachsenes Repo, noch nicht überall aus einer Registry gesteuert |
+| Anfängerfreundlichkeit | 7 | Doku ist besser geworden, Komplexität bleibt hoch |
+| VPS-Tauglichkeit | 8 | Hybrid- und Serverpfade sind klar vorhanden |
+| WSL2-Tauglichkeit | 7 | viel berücksichtigt, GPU/Docker/Netzwerk bleiben knifflig |
+| Kubernetes-/K3s-Tauglichkeit | 7 | Option vorhanden, aber nicht überall gleicher Ausbaugrad |
+| Offline-/Local-AI-Tauglichkeit | 9 | Ollama, RAG, lokale Medienpfade stark vorhanden |
+| Automatisierungsgrad | 7 | viele Skripte, aber noch nicht alles aus zentraler Registry |
+| Risiko durch Shell-/Browser-Agenten | 5 | beherrschbar, aber nur mit klarer Nutzerdisziplin |
 
-## Neue sinnvolle Ergänzungen in diesem Stand
+## Wichtigste Verbesserungen dieses Ausbaus
 
-- `scripts/lib/common.sh`
-- `scripts/lib/resource_check.sh`
-- `setup_ultimate_v7.sh` als kompatibles Betriebsmenü
-- neue Profile für RAG, Security, Monitoring, Backup, MCP, Media, Smart Home, Data Engineering und CI/CD
-- zusätzliche Open-Source-Tool-Skripte für Security, Office, Monitoring, Data und DevOps
-- neue Sicherheits-, Ressourcen- und Matrix-Dokumentation
+- neue Studio-Profile und Spezialprofile
+- neue Tool-Installer mit Uninstall-Pendants
+- zentrale Registries unter `config/`
+- Portkonflikt- und Registry-Healthcheck-Skripte
+- Ausbau der Matrixen, Security- und Roadmap-Doku
 
-## Wichtigste verbleibende TODOs
+## Offene nächste Schritte
 
-1. `setup_ultimate.sh` direkt um alle neuen Profile und Tools erweitern
-2. einheitliche Start/Stop/Status-/Logs-Befehle für wirklich jedes Tool standardisieren
-3. alle Tool-Skripte vollumfänglich per `bash -n` und realen Installationspfaden testen
-4. optionale Secrets-Verschlüsselung mit `age` oder `sops` ergänzen
-5. Android-/ESP32-/Arduino-Toolchains für den Codex-Nachbau als eigene Module ausbauen
-
-## Empfehlung
-
-Das Projekt ist jetzt klar besser strukturiert als zuvor, aber noch immer eher eine fortgeschrittene modulare Plattform im Ausbau als ein vollständig poliertes Endprodukt. Für produktive Nutzung sollte man den Fokus nun auf:
-
-- Vereinheitlichung
-- Sicherheitsvorgaben
-- Betriebsbefehle
-- und Testbarkeit
-
-legen.
+1. `setup_ultimate.sh` schrittweise vollständig aus den Registry-Dateien generieren
+2. mehr Installer vom Paket-/Containerweg auf GitHub-Source-Builds umstellen
+3. Healthchecks und Start/Stop/Status pro Tool weiter vereinheitlichen
+4. GPU-/VRAM-Anforderungen noch genauer pro Medienprofil dokumentieren

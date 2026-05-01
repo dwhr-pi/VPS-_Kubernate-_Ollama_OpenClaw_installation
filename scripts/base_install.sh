@@ -16,6 +16,7 @@ RED="\033[0;31m"
 YELLOW="\033[1;33m"
 NC="\033[0m"
 TTY_DEVICE="/dev/tty"
+OPENCLAW_BUILD_LOG="/tmp/openclaw_build.log"
 
 echo -e "${BLUE}Starte Basis-Installation: System-Updates, Node.js, pnpm, Python, Git...${NC}"
 
@@ -56,6 +57,43 @@ prompt_yes_no() {
 
     read -r -p "$prompt" response < "$TTY_DEVICE"
     [[ "$response" =~ ^[JjYy]$ ]]
+}
+
+build_openclaw_with_safe_env() {
+    local build_mode="${1:-normal}"
+    local linux_path
+    local pnpm_home_local
+
+    pnpm_home_local="${PNPM_HOME:-$HOME/.local/share/pnpm}"
+    linux_path="$OPENCLAW_DIR/node_modules/.bin:$pnpm_home_local:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+
+    echo -e "${BLUE}OpenClaw-Buildmodus: ${build_mode}${NC}"
+    echo -e "${BLUE}Verwende bereinigte Linux-PATH und konservative Build-Umgebung für OpenClaw.${NC}"
+
+    (
+        export PATH="$linux_path"
+        export LANG="C.UTF-8"
+        export LC_ALL="C.UTF-8"
+        export TERM="${TERM:-xterm-256color}"
+        export NO_COLOR="1"
+        export OPENCLAW_DISABLE_BUNDLED_SOURCE_OVERLAYS="1"
+        export OPENCLAW_DISABLE_BUNDLED_PLUGINS="1"
+        export OPENCLAW_DISABLE_P2P="1"
+        pnpm build
+    ) 2>&1 | tee "$OPENCLAW_BUILD_LOG"
+
+    return "${PIPESTATUS[0]}"
+}
+
+should_retry_openclaw_build() {
+    [ -f "$OPENCLAW_BUILD_LOG" ] || return 1
+
+    if grep -q "write-cli-startup-metadata" "$OPENCLAW_BUILD_LOG" && \
+       grep -q "ETIMEDOUT" "$OPENCLAW_BUILD_LOG"; then
+        return 0
+    fi
+
+    return 1
 }
 
 handle_ignored_build_scripts() {
@@ -126,10 +164,21 @@ if [ $? -ne 0 ]; then
 fi
 
 echo -e "${BLUE}Baue OpenClaw mit pnpm...${NC}"
-pnpm build
-if [ $? -ne 0 ]; then
-    echo -e "${RED}Fehler: pnpm build fehlgeschlagen.${NC}"
-    exit 1
+if ! build_openclaw_with_safe_env "Erstversuch"; then
+    if should_retry_openclaw_build; then
+        echo -e "${YELLOW}OpenClaw-Build ist beim Metadaten-Schritt 'write-cli-startup-metadata' in einen Timeout gelaufen.${NC}"
+        echo -e "${YELLOW}Das passiert vor allem auf WSL2/MiniPC-Systemen mit langsamer Initialisierung oder sehr großer geerbter PATH-Variable.${NC}"
+        echo -e "${BLUE}Starte einen zweiten Buildversuch mit derselben abgesicherten Umgebung...${NC}"
+        if ! build_openclaw_with_safe_env "Retry nach write-cli-startup-metadata-Timeout"; then
+            echo -e "${RED}Fehler: pnpm build ist auch nach dem Retry fehlgeschlagen.${NC}"
+            echo -e "${YELLOW}Build-Log: $OPENCLAW_BUILD_LOG${NC}"
+            exit 1
+        fi
+    else
+        echo -e "${RED}Fehler: pnpm build fehlgeschlagen.${NC}"
+        echo -e "${YELLOW}Build-Log: $OPENCLAW_BUILD_LOG${NC}"
+        exit 1
+    fi
 fi
 
 init_tool_tracking "OpenClaw"
