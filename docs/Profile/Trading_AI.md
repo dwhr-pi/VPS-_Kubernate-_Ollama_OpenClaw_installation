@@ -75,4 +75,11 @@ Zeige mir, welche Parameter ich vor einem Backtest priorisieren sollte.
 
 ## Hinweise
 
-- Das Profil ist aktuell eher analyse- und botnah, nicht als vollautomatisches Handelssystem umgesetzt.
+- Keine Haftung für Verluste oder sonstige verursachte Schäden.
+- Das Profil ist bewusst eher analyse-, bot- und backtestnah gehalten, nicht als vollautomatisches Handelssystem.
+- LLMs und Agenten sollen hier keine autonomen Live-Trading-Entscheidungen treffen.
+- Empfohlen sind Marktanalyse, historische Tests, Paper-Trading und Risikoauswertung statt echter Ausführung.
+- Seed-Phrases, Private Keys und echte Exchange-Secrets gehören niemals ins Repository.
+- Empfohlene sichere Lesepfade:
+  - [Trading_Analysis.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/Profile/Trading_Analysis.md:1)
+  - [Trading_Execution_Manual_Mode.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/Profile/Trading_Execution_Manual_Mode.md:1)

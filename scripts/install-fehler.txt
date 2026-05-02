@@ -12,22 +12,42 @@ Setup:  Downloadzeit:  Installationszeit:
 Updates für ubuntu-24.04 lts zur Zeit:   Downloadzeit:  Installationszeit:  
 
 
-Fehler: 
-. prepare$ command -v git >/dev/null 2>&1 && git rev-parse --is-inside-work-tree >/dev/null 2>&1 && git config core.h…
-└─ Done in 71ms
-╭ Warning ───────────────────────────────────────────────────────────────────────────────────╮
-│                                                                                            │
-│   Ignored build scripts: @discordjs/opus@0.10.0.                                           │
-│   Run "pnpm approve-builds" to pick which dependencies should be allowed to run scripts.   │
-│                                                                                            │
-╰────────────────────────────────────────────────────────────────────────────────────────────╯
-Done in 3m 32.9s using pnpm v10.33.0
-033[0Baue OpenClaw mit pnpm...033[0m
+Starte Basis-Installation. Der OpenClaw-Build kann mehrere Minuten dauern.
+/home/ubuntu/openclaw_ultimate_setup/scripts/base_install.sh: line 9: 32m: command not found
+/home/ubuntu/openclaw_ultimate_setup/scripts/base_install.sh: line 10: 34m: command not found
+/home/ubuntu/openclaw_ultimate_setup/scripts/base_install.sh: line 11: 31m: command not found
+/home/ubuntu/openclaw_ultimate_setup/scripts/base_install.sh: line 12: 33m: command not found
+033[0Starte Basis-Installation: System-Updates, Node.js, pnpm, Python, Git...033[0m
+033[01/5: System-Updates durchführen...033[0m
 
-> openclaw@2026.4.26 build /opt/openclaw
-> node scripts/build-all.mjs
 
-[build-all] canvas:a2ui:bundle
 
-> openclaw@2026.4.26 canvas:a2ui:bundle /opt/openclaw
+
+Nicht öffendlich: 
+Select your host’s operating system
+Debian
+Select your architecture
+If you’re unsure, type ‘uname -m’ into your terminal. The output will indicate your system’s architecture.
+64-bit
+
+Your Tunnel command
+If you don’t have cloudflared installed on your machine:
+
+```$
+# Add cloudflare gpg key
+sudo mkdir -p --mode=0755 /usr/share/keyrings
+curl -fsSL https://pkg.cloudflare.com/cloudflare-public-v2.gpg | sudo tee /usr/share/keyrings/cloudflare-public-v2.gpg >/dev/null
+
+# Add this repo to your apt repositories
+echo 'deb [signed-by=/usr/share/keyrings/cloudflare-public-v2.gpg] https://pkg.cloudflare.com/cloudflared any main' | sudo tee /etc/apt/sources.list.d/cloudflared.list
+
+# install cloudflared
+sudo apt-get update && sudo apt-get install cloudflared
+```
+
+After you have installed cloudflared on your machine, you can install a service to automatically run your tunnel whenever your machine starts:
+
+```$
+sudo cloudflared service install eyJhIjoiYzI0YWFjNzNlNWM0ZjlmMmNmMzg0ZTE0ZGY3ZWI1M2UiLCJ0IjoiNDA2ZDg5OTktODhmZi00MzMxLWE1ZTUtNWJjZThkZjE3OTlmIiwicyI6Ik9HSXhaakkzWVRNdFpXUTFOaTAwTUdVeUxUaGpPVE10WVRnM09XTTROalV5T1RSayJ9
+```
 

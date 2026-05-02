@@ -78,6 +78,41 @@ Wichtig:
 rm -rf ~/.openclaw_ultimate_user_data
 ```
 
+## ⚠️ Trading-, Web3- und Finanzhinweis
+
+Für Trading-, Web3- und finanznahe Profile gilt ausdrücklich:
+
+- Keine Haftung für Verluste oder sonstige verursachte Schäden.
+- Dieses Repository ist keine Anlageberatung, keine Finanzberatung und kein regulierter Trading-Dienst.
+- Live-Trading, automatische Orderausführung und Wallet-nahe Automatisierung sind bewusst kein sicherer Standardpfad dieses Setups.
+
+Warum dieser Hinweis wichtig ist:
+
+- automatisierte Trading-Signale oder Handlungsempfehlungen können rechtlich schnell in Richtung regulierter Finanzdienstleistung fallen
+- LLMs wie `Ollama` oder agentische Workflows mit `OpenClaw` sind für Marktentscheidungen nicht verlässlich genug
+- API-Keys, Börsenzugänge, Wallets und Private Keys sind ein hohes Sicherheitsrisiko
+- Nutzer können sich psychologisch zu stark auf KI-Ausgaben verlassen und Risiken unterschätzen
+
+Deshalb gilt im Repository als Best Practice:
+
+- erlaubt und sinnvoll:
+  - Marktanalyse
+  - Backtesting
+  - Paper Trading
+  - Alerts
+  - Portfolio-Tracking
+- nicht als Default:
+  - echtes automatisches Trading
+  - autonome Kauf-/Verkaufsentscheidungen durch KI
+  - Live-Orders durch Agenten
+
+Wenn du mit Trading- oder Web3-Profilen arbeitest:
+
+- nutze zuerst Simulation, Dry-Run und Paper-Trading
+- speichere niemals Seed-Phrases oder Private Keys im Repo
+- behandle alle Wallet-, API- und Exchange-Zugänge wie Hochrisiko-Secrets
+- lies zusätzlich die Sicherheits- und Profilhinweise in den jeweiligen Trading-/Web3-Dokumentationen
+
 ## 🧭 Installationspfade
 
 ### Minimal Setup
@@ -115,6 +150,37 @@ Empfohlen fuer VPS oder spaeteres Multi-Node-Sandboxing:
 7. `Grafana`, `Prometheus`, `Loki`
 
 Fuer einen vorkonfigurierten Plattform-Stack liegt jetzt auch ein Compose-Stack unter [stacks/llmops-platform/docker-compose.yml](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/stacks/llmops-platform/docker-compose.yml:1).
+
+### Quickstart GPU Workstation
+
+Empfohlen für lokale Medien- und Bild/Video-Workflows:
+
+- `Standalone: Nur MiniPC` oder Linux-Workstation
+- danach gezielt:
+  - `Image_Generation`
+  - `Video_Generation`
+  - `Voice_Assistant`
+- vorher unbedingt GPU, VRAM und SSD prüfen
+
+### Quickstart Media AI
+
+Für Audio, Bild, Video und Content-Pipelines:
+
+- `Media_Musik`
+- `Visual_Creator`
+- `Image_Generation`
+- `Video_Generation`
+- `Voice_Assistant`
+
+### Quickstart Secure Production-like
+
+Für produktionsnähere Self-Hosted-Setups:
+
+- `DevOps_SRE`
+- `Security_DevSecOps`
+- `Compliance_Privacy`
+- `Monitoring_Observability`
+- `Backup_Recovery`
 
 ## 🔄 Setup erneut starten
 
@@ -299,6 +365,18 @@ Zusätzlich im neuen Ausbau:
 Die aktuelle kuratierte Toolübersicht steht in [docs/TOOL_MATRIX.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/TOOL_MATRIX.md:1).
 
 ## 👤 Profil-Management
+
+### Profilgruppen
+
+- `Core`: Programmierer, KI_Forschung, Agent_Orchestrator, LLM_Builder
+- `LLMOps`: RAG_Wissensdatenbank, Monitoring_Observability, Backup_Recovery, MCP_Agent_Tools
+- `Coding`: Repo_Maintainer, Developer_CI_CD, DevOps_SRE
+- `Media`: Media_Musik, Visual_Creator, Image_Generation, Video_Generation, Voice_Assistant
+- `Security`: Security_Analyst, Security_DevSecOps, Compliance_Privacy
+- `Data`: Data_Engineering, Data_Analytics_BI, Document_AI
+- `Smart Home`: Smart_Home_Automation, Smart_Home_AI_Assistant
+- `Web3`: Trading_AI, Trading_Crypto_Web3, Web3_Crypto_Tools, Web3_Crypto_Agent
+- `Compliance`: Compliance_Privacy
 
 Das Setup unterstützt die Installation und Deinstallation verschiedener Profile über eine interaktive Checkliste. Du kannst mehrere Profile gleichzeitig installieren und verwalten.
 

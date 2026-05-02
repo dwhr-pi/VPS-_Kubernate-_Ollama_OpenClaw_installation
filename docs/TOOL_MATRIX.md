@@ -1,6 +1,6 @@
 # Tool Matrix
 
-Diese Matrix gruppiert die wichtigsten benutzerrelevanten Tools. Sie ist bewusst kompakter als `scripts/tools/` und dient als Orientierungs- und Planungsübersicht.
+Diese Matrix gruppiert die wichtigsten benutzerrelevanten Tools. Sie ist bewusst kompakter als `scripts/tools/`.
 
 ## LLM / RAG / Agenten
 
@@ -12,63 +12,51 @@ Diese Matrix gruppiert die wichtigsten benutzerrelevanten Tools. Sie ist bewusst
 | Qdrant, ChromaDB, LightRAG, LlamaIndex, LangChain | RAG, Embeddings, Wissensspeicher |
 | Langfuse, OpenLIT | Observability für LLM-Aufrufe |
 | Aider, OpenHands, OpenCode, Continue.dev | Coding-Agenten und Pairing |
-| MCPO, Browser-/Filesystem-/GitHub-MCP | Toolserver und sichere Integrationen |
 
-## Security
+## Security / Compliance
 
 | Tools | Hinweis |
 |---|---|
-| Trivy, Gitleaks, Semgrep | Container-, Secret- und Code-Scans |
+| Trivy, Gitleaks, TruffleHog, Semgrep | Secret-, Container- und Code-Scans |
 | Syft, Grype | SBOM und Vulnerability-Korrelation |
 | Nmap, Nikto | Netz- und Web-Oberflächentests |
 | Fail2Ban, CrowdSec, UFW | Host-Härtung und Schutzschicht |
-| Guardrails AI, Promptfoo | LLM-Sicherheit, Prompt-Evaluation |
+| OPA, Guardrails AI, Promptfoo | Policies und LLM-Sicherheit |
 
-## Monitoring / Betrieb
+## DevOps / Betrieb
+
+| Tools | Hinweis |
+|---|---|
+| Docker, Docker Compose Plugin, Podman | Container-Laufzeit und Sandbox |
+| K3s, kubectl, Helm, Kustomize, k9s | optionale Kubernetes-Ebene |
+| Ansible, OpenTofu, Velero | Infrastruktur, Rollout, Backup |
+| Argo CD, Flux, kubectx/kubens | GitOps und Clusterbedienung |
+| GitHub CLI, Act, Pre-Commit, Actionlint, ShellCheck, Shfmt, Hadolint | Repo- und CI-Pflege |
+
+## Monitoring / Health
 
 | Tools | Hinweis |
 |---|---|
 | Prometheus, Grafana, Loki, Promtail | Metriken, Logs, Dashboards |
 | Uptime Kuma, Healthchecks, Netdata | Verfügbarkeit und Host-Blick |
-| Node Exporter, OpenTelemetry | Host- und Telemetrie-Bausteine |
-| Watchtower | Container-Update-Helfer, nur bewusst aktivieren |
+| Grafana Alloy, cAdvisor, Node Exporter | Container- und Host-Telemetrie |
 
-## DevOps / Plattform
-
-| Tools | Hinweis |
-|---|---|
-| Docker, Docker Compose, Podman | Container-Laufzeit und Dev-Sandbox |
-| K3s, kubectl, Helm, Kustomize, k9s | optionale Kubernetes-Ebene |
-| Forgejo, GitHub CLI, Act, Renovate | Repo-, PR- und CI/CD-Workflow |
-| Ansible, OpenTofu, Terraform-nah | Infrastruktur-Automatisierung |
-
-## Storage / Backup / Daten
+## Data / Dokumente
 
 | Tools | Hinweis |
 |---|---|
-| PostgreSQL, Redis, SQLite | klassische Datenhaltung |
-| MinIO, Supabase, Nextcloud | Objekt-, App- und Datei-Storage |
-| Restic, BorgBackup, Rclone | Backup und Wiederherstellung |
-| Airbyte, Metabase, DuckDB, dbt, JupyterLab | Datenpipelines und BI |
+| PostgreSQL, pgvector, DuckDB, SQLite, sqlite-vec | Daten- und Vektorspeicher |
+| MinIO, Supabase, Nextcloud | Objekt- und App-Storage |
+| Prefect, Airbyte, dbt, Metabase, JupyterLab | ETL, BI und Reports |
+| Apache Tika, Docling, OCRmyPDF, Tesseract, Marker, Pandoc | Dokument- und OCR-Schicht |
+| Paperless-ngx, Stirling PDF, LibreOffice headless | DMS und Konvertierung |
 
-## Automation / UI / DMS
-
-| Tools | Hinweis |
-|---|---|
-| n8n, Activepieces, Huginn, Pipedream | Workflow-Automation |
-| Node-RED, Mosquitto, Zigbee2MQTT, ESPHome | Home- und IoT-Automation |
-| Appsmith, Budibase, NocoDB, Directus | No-/Low-Code-Oberflächen |
-| Paperless-ngx, Stirling PDF, OCRmyPDF, Apache Tika, Docling, Pandoc | Dokumenten- und OCR-Schicht |
-
-## Media / Bild / Video / Audio
+## Media / Voice / Smart Home / Web3
 
 | Tools | Hinweis |
 |---|---|
-| ComfyUI, Stable Diffusion WebUI Forge, ControlNet | Bild- und Node-Workflows |
-| RealESRGAN, GFPGAN, Rembg | Upscaling, Gesichter, Freistellung |
-| SVD, AnimateDiff | Video-Generierung |
-| FFmpeg, yt-dlp | Medienkonvertierung und Pipelines |
-| Whisper.cpp, faster-whisper | STT |
-| Piper, Coqui TTS | TTS |
-| Demucs, librosa, pydub | Musik, Stems und Audioanalyse |
-| Blender | 3D- und Asset-Workflows |
+| ComfyUI, Stable Diffusion WebUI Forge, Fooocus, InvokeAI | Bild- und Video-Workflows |
+| RealESRGAN, GFPGAN, Rembg, RIFE, Blender | Upscaling, Cleanup, 3D und Video |
+| Whisper.cpp, faster-whisper, Piper, Coqui TTS, openWakeWord, Rhasspy, Wyoming | STT/TTS/Wakeword |
+| Node-RED, Mosquitto, Zigbee2MQTT, ESPHome, Home Assistant | Smart-Home- und IoT-Automation |
+| Foundry, Hardhat, Ethers.js, Web3.py | Web3- und Contract-Werkzeuge |

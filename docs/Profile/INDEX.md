@@ -47,6 +47,8 @@ Dieses Verzeichnis enthält die aktuell gepflegten, aus dem Repository abgeleite
 | `Video_Generation` | SVD, AnimateDiff, FFmpeg | `Video_Generation.md` |
 | `Audio_Voice_Music` | Whisper, Piper, Coqui, FFmpeg | `Audio_Voice_Music.md` |
 | `Trading_Crypto_Web3` | Zenbot, Web3, Safe-Mode-Trading | `Trading_Crypto_Web3.md` |
+| `Trading_Analysis` | Analyse, Backtesting, Paper-Trading | `Trading_Analysis.md` |
+| `Trading_Execution_Manual_Mode` | getrennte manuelle Ausführung mit Bestätigung | `Trading_Execution_Manual_Mode.md` |
 | `Smart_Home_Automation` | Home Assistant, MQTT, Node-RED | `Smart_Home_Automation.md` |
 | `Office_Productivity` | Paperless, OCR, PDF, DMS | `Office_Productivity.md` |
 | `Data_Engineering` | PostgreSQL, Redis, MinIO, BI | `Data_Engineering.md` |
@@ -68,6 +70,21 @@ Dieses Verzeichnis enthält die aktuell gepflegten, aus dem Repository abgeleite
 | `Data_Analytics_BI` | DuckDB, Jupyter, BI, Reports | `Data_Analytics_BI.md` |
 | `Game_Dev_AI` | Blender, Assets, Dialoge, Pipelines | `Game_Dev_AI.md` |
 | `Education_Tutor` | Lernassistent, Quiz, Karteikarten, RAG | `Education_Tutor.md` |
+
+## Neue 11.16-Profile
+
+| Profil | Zweck | Datei |
+|---|---|---|
+| `DevOps_SRE` | Betrieb, GitOps, Rollback, Clusterpflege | `DevOps_SRE.md` |
+| `Data_Engineering` | ETL, RAG-Vorbereitung, Datenpipelines | `Data_Engineering.md` |
+| `Document_AI` | OCR, PDF, Verträge, Akten, Rechnungen | `Document_AI.md` |
+| `Voice_Assistant` | Wakeword, STT, TTS, Sprachassistent | `Voice_Assistant.md` |
+| `Video_Generation` | lokale Video-KI, Upscaling, Interpolation | `Video_Generation.md` |
+| `Image_Generation` | Bild-KI, Upscaling, Asset-Workflows | `Image_Generation.md` |
+| `Web3_Crypto_Tools` | RPC-, Wallet- und Contract-Werkzeuge | `Web3_Crypto_Tools.md` |
+| `Compliance_Privacy` | DSGVO, Policies, Secret- und SBOM-Checks | `Compliance_Privacy.md` |
+| `Personal_Knowledge_OS` | persönliche Wissensdatenbank und Sync | `Personal_Knowledge_OS.md` |
+| `Repo_Maintainer` | Repo-Pflege, Lints, Releases, Actions | `Repo_Maintainer.md` |
 
 ## Begleitdateien
 

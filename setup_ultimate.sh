@@ -4,7 +4,7 @@
 # Beschreibung: Dies ist das Hauptinstallationsskript für die ultimative KI-Infrastruktur.
 # Es bietet eine interaktive Menüführung zur Installation, Deinstallation und Verwaltung verschiedener KI-Tools, Profile und Systemkomponenten.
 # Das Skript unterstützt hybride Setups (MiniPC + Multi-VPS), Standalone-Installationen und bietet Funktionen wie Auto-Updates, Ollama-Modellverwaltung und OpenClaw-Konfiguration.
-# Version: V11.15
+# Version: V11.16
 #
 
 # Farben & UI
@@ -13,7 +13,7 @@ BLUE="\033[0;34m"
 RED="\033[0;31m"
 YELLOW="\033[1;33m"
 NC="\033[0m"
-APP_VERSION="11.15"
+APP_VERSION="11.16"
 APP_TITLE="OpenClaw & AI Infrastructure - Ultimate Setup V${APP_VERSION}"
 
 # Installationsverzeichnis
@@ -168,6 +168,16 @@ SECURITY_ANALYST_REQUIRED_GB="5-15"
 TRADING_AI_REQUIRED_GB="8-20"
 VISUAL_CREATOR_REQUIRED_GB="20-60"
 LLM_BUILDER_REQUIRED_GB="25-120"
+DEVOPS_SRE_REQUIRED_GB="12-40"
+DATA_ENGINEERING_REQUIRED_GB="20-60"
+DOCUMENT_AI_REQUIRED_GB="15-40"
+VOICE_ASSISTANT_REQUIRED_GB="10-25"
+VIDEO_GENERATION_REQUIRED_GB="40-140"
+IMAGE_GENERATION_REQUIRED_GB="25-90"
+WEB3_CRYPTO_TOOLS_REQUIRED_GB="8-20"
+COMPLIANCE_PRIVACY_REQUIRED_GB="6-15"
+PERSONAL_KNOWLEDGE_OS_REQUIRED_GB="10-30"
+REPO_MAINTAINER_REQUIRED_GB="6-15"
 
 NOTES="Alle Werte sind editierbare Schätzwerte. Je nach Bandbreite, CPU, SSD und gewählten Profilen kann der echte Wert deutlich abweichen."
 EOF
@@ -316,6 +326,16 @@ get_profile_required_gb() {
         "Trading_AI") echo "${TRADING_AI_REQUIRED_GB} GB" ;;
         "Visual_Creator") echo "${VISUAL_CREATOR_REQUIRED_GB} GB" ;;
         "LLM_Builder") echo "${LLM_BUILDER_REQUIRED_GB} GB" ;;
+        "DevOps_SRE") echo "${DEVOPS_SRE_REQUIRED_GB} GB" ;;
+        "Data_Engineering") echo "${DATA_ENGINEERING_REQUIRED_GB} GB" ;;
+        "Document_AI") echo "${DOCUMENT_AI_REQUIRED_GB} GB" ;;
+        "Voice_Assistant") echo "${VOICE_ASSISTANT_REQUIRED_GB} GB" ;;
+        "Video_Generation") echo "${VIDEO_GENERATION_REQUIRED_GB} GB" ;;
+        "Image_Generation") echo "${IMAGE_GENERATION_REQUIRED_GB} GB" ;;
+        "Web3_Crypto_Tools") echo "${WEB3_CRYPTO_TOOLS_REQUIRED_GB} GB" ;;
+        "Compliance_Privacy") echo "${COMPLIANCE_PRIVACY_REQUIRED_GB} GB" ;;
+        "Personal_Knowledge_OS") echo "${PERSONAL_KNOWLEDGE_OS_REQUIRED_GB} GB" ;;
+        "Repo_Maintainer") echo "${REPO_MAINTAINER_REQUIRED_GB} GB" ;;
         *) echo "${MIN_FREE_GB_ABSOLUTE}-${MIN_FREE_GB_RECOMMENDED} GB" ;;
     esac
 }
@@ -324,14 +344,23 @@ show_profile_action_intro() {
     local profile_key="$1"
     local action_label="$2"
     local required_gb
+    local extra_notes
 
     required_gb="$(get_profile_required_gb "$profile_key")"
+    extra_notes="Je nach Profil werden mehrere Einzeltools nacheinander installiert oder entfernt. Das kann laenger dauern als bei einem Einzeltool."
+
+    case "$profile_key" in
+        "Trading_AI"|"Web3_Crypto_Tools")
+            extra_notes="${extra_notes} Achtung: Diese Profile sind standardmaessig fuer Analyse, Backtesting, Alerts und Paper-Trading gedacht. Keine autonome Live-Orderausfuehrung, keine Finanzberatung und keine Haftung fuer Verluste oder sonstige verursachte Schaeden."
+            ;;
+    esac
+
     show_operation_intro \
     "Profil ${action_label}: ${profile_key}" \
     "${PROFILES[$profile_key]}" \
     "${SETUP_DOWNLOAD_TIME_ESTIMATE} Download + ${SETUP_INSTALL_TIME_ESTIMATE} Installation/Anpassung je nach Profilgroesse" \
     "$required_gb" \
-    "Je nach Profil werden mehrere Einzeltools nacheinander installiert oder entfernt. Das kann laenger dauern als bei einem Einzeltool."
+    "$extra_notes"
 }
 
 show_tool_action_intro() {
@@ -686,7 +715,7 @@ fi
 
 # Profil-Definitionen mit Beschreibungen
 declare -A PROFILES
-PROFILE_KEYS=("Programmierer" "Media_Musik" "KI_Forschung" "Texter_Werbung_Marketing" "Rechtsberatung_Steuerrecht" "Agent_Orchestrator" "Audio" "Content_Automation" "Research_Agent" "Security_Analyst" "Trading_AI" "Visual_Creator" "LLM_Builder")
+PROFILE_KEYS=("Programmierer" "Media_Musik" "KI_Forschung" "Texter_Werbung_Marketing" "Rechtsberatung_Steuerrecht" "Agent_Orchestrator" "Audio" "Content_Automation" "Research_Agent" "Security_Analyst" "Trading_AI" "Visual_Creator" "LLM_Builder" "DevOps_SRE" "Data_Engineering" "Document_AI" "Voice_Assistant" "Video_Generation" "Image_Generation" "Web3_Crypto_Tools" "Compliance_Privacy" "Personal_Knowledge_OS" "Repo_Maintainer")
 PROFILES["Programmierer"]="Tools für Entwicklung, Code-Generierung (DeepSeek Coder), Git-Integration, Huginn, Clawhub CLI. Ideal für Entwickler und Automatisierungsexperten."
 PROFILES["Media_Musik"]="Tools für Audio/Video (FFmpeg), Audio-AI, Alexa-Integration, Clawbake. Für Content Creator und Medienproduzenten."
 PROFILES["KI_Forschung"]="Spezialisierte Bibliotheken für Reinforcement Learning (OpenClaw RL), erweiterte LLM-Modelle (Gemini-1.5-Pro), Flowise/LangFlow. Für KI-Wissenschaftler und Forscher."
@@ -697,9 +726,19 @@ PROFILES["Audio"]="Verarbeitet Sprache und Audio mit Speech-to-Text, Text-to-Spe
 PROFILES["Content_Automation"]="Automatisiert Content-Pipelines von Skript über Voiceover und Videoschnitt bis zu Upload-Workflows."
 PROFILES["Research_Agent"]="Analysiert Repositories, Dokumentation und neue Tools, um das Setup gezielt weiterzuentwickeln."
 PROFILES["Security_Analyst"]="Fokussiert auf Exposure-Checks, Log-Analyse, Schwachstellensuche und Docker-/Kubernetes-Hardening."
-PROFILES["Trading_AI"]="Unterstützt Marktanalyse, Strategietests und Trading-Bots mit Zenbot sowie Web3- und Exchange-Integrationen."
+PROFILES["Trading_AI"]="Unterstuetzt Marktanalyse, Strategietests, Backtesting und Paper-Trading mit Zenbot sowie Web3- und Exchange-Integrationen. Keine autonome Live-Orderausfuehrung."
 PROFILES["Visual_Creator"]="Kreativprofil für Bild-, Video- und Asset-Pipelines mit Diffusions-, UI- und Upscaling-Bausteinen."
 PROFILES["LLM_Builder"]="Baut einen realistischen lokalen Workflow zum Fine-Tuning, Testen, Exportieren und Quantisieren eigener Modelle für Ollama auf."
+PROFILES["DevOps_SRE"]="Betriebsprofil für Deployment, Logs, Monitoring, Rollback, GitOps und Infrastruktur-Wartung auf lokalem Host, VPS oder K3s."
+PROFILES["Data_Engineering"]="Datenprofil für ETL, Dokumentenaufbereitung, RAG-Vorbereitung, lokale Datenpipelines und BI-nahe Vorarbeit."
+PROFILES["Document_AI"]="Dokumentenprofil für OCR, PDF, Formulare, Verträge, Rechnungen und lokale Wissensablage mit Parser- und DMS-Bausteinen."
+PROFILES["Voice_Assistant"]="Sprachprofil für STT, TTS, Wakeword, Rhasspy/Wyoming und Smart-Home-nahe Sprachassistenten."
+PROFILES["Video_Generation"]="Heavy-Profil für lokale Video-KI, Upscaling, Frame-Interpolation, FFmpeg und GPU-nahe Video-Workflows."
+PROFILES["Image_Generation"]="Heavy-Profil für Bildgenerierung, Upscaling, LoRA-Workflows und Asset-Erzeugung mit ComfyUI/Forge/Fooocus."
+PROFILES["Web3_Crypto_Tools"]="Web3-Werkzeuge fuer lokale Vertragsanalyse, RPC-Checks und Wallet-nahe Entwicklung ohne automatische Finanzaktionen oder autonome Trading-Ausfuehrung."
+PROFILES["Compliance_Privacy"]="Governance- und Compliance-Profil für DSGVO, EU-AI-Act-nahe Prüfungen, Policies, SBOM und Secret-Scans."
+PROFILES["Personal_Knowledge_OS"]="Persönliches Wissensprofil für lokale Suche, RAG, Sync, Export und Memory-Workflows."
+PROFILES["Repo_Maintainer"]="Maintainer-Profil für GitHub-Repo-Pflege, lokale CI, Linting, Releases, Changelogs und Pre-Commit-Prüfungen."
 
 # Funktion zum Installieren eines Profils
 install_profile() {
@@ -791,7 +830,7 @@ show_profile_management_menu() {
 
 declare -A TOOLS
 declare -A TOOL_SCRIPT_NAMES
-TOOL_KEYS=("Ollama" "OpenManus" "OpenClaw" "Clawhub_CLI" "OpenClaw_RL" "Clawbake" "n8n" "Activepieces" "Flowise" "LangFlow" "AutoGPT" "Pipedream" "Huginn" "FFmpeg" "LangGraph" "CrewAI" "AutoGen" "Playwright" "ChromaDB" "LangChain" "LlamaIndex" "MLflow" "Whisper" "librosa" "pydub" "Demucs" "Zenbot_trader" "Kimi2" "Clawhub" "Huge_Facing" "Zotero" "Piper" "Coqui_TTS" "YT_DLP" "Web3_APIs" "Exchange_APIs" "Nmap" "Nikto" "Trivy" "Fail2Ban" "Stable_Diffusion_WebUI" "ComfyUI" "RealESRGAN" "Redis" "NATS" "Qdrant" "Weaviate" "Prometheus" "Grafana" "Loki" "Trend_Monitor" "Agent_Router" "Memory_Policies" "Voice_Assistant_Runtime" "Thumbnail_Pipeline" "Upload_Automation" "Weights_and_Biases" "vLLM" "Llama_CPP" "Ray" "EnviroLLM" "Suno_API" "Udio_API" "MusicGen" "Riffusion" "ControlNet" "Music2P_Pipeline" "Hook_Detection" "BPM_Analyzer" "TikTok_Score" "Emotion_Tagging" "Docker" "Kubernetes" "K3s" "GitHub_API_Tooling" "Code_Sandbox" "VS_Code_Server" "Puppeteer" "OpenTelemetry" "Vault" "SQLite" "Postgres" "RabbitMQ" "EULLM" "AI_Powered_Law_Firms" "Lawfirm" "Tax_Law_Agent" "Risk_Agent" "Drafting_Agent" "PDF_Parser" "Neo4j" "Tax_Calculator" "Deadline_Checker" "Risk_Scoring" "GitHub_Research" "Repo_Comparison" "Fail2Ban_Analyzer" "Security_Workflow" "Browser_Tool" "Firecrawl" "Google_Analytics_API" "Meta_Ads_API" "TikTok_Ads_API" "File_System_Tool" "HubSpot" "Notion" "Airtable" "Buffer_API" "Zapier" "Make" "Ahrefs" "SEMrush" "ElevenLabs" "Zenbot_API" "Risk_Strategy_Analyzer" "Backtest_Workflow" "AnimateDiff" "SVD" "Runway_API" "Image_Upscaler_Pipeline" "Aider" "OpenCode" "OpenHands" "GitHub_CLI" "Podman" "Unsloth" "LLaMA_Factory" "Axolotl" "Data_Juicer" "Llama_CPP_Toolchain" "LiteLLM" "Open_WebUI" "Langfuse" "OpenLIT" "MCPO" "Continue_Dev" "Guardrails_AI" "Promptfoo" "Gitleaks" "Uptime_Kuma" "Netdata" "MinIO" "Supabase")
+TOOL_KEYS=("Ollama" "OpenManus" "OpenClaw" "Clawhub_CLI" "OpenClaw_RL" "Clawbake" "n8n" "Activepieces" "Flowise" "LangFlow" "AutoGPT" "Pipedream" "Huginn" "FFmpeg" "LangGraph" "CrewAI" "AutoGen" "Playwright" "ChromaDB" "LangChain" "LlamaIndex" "MLflow" "Whisper" "librosa" "pydub" "Demucs" "Zenbot_trader" "Kimi2" "Clawhub" "Huge_Facing" "Zotero" "Piper" "Coqui_TTS" "YT_DLP" "Web3_APIs" "Exchange_APIs" "Nmap" "Nikto" "Trivy" "Fail2Ban" "Stable_Diffusion_WebUI" "Stable_Diffusion_WebUI_Forge" "ComfyUI" "RealESRGAN" "GFPGAN" "Rembg" "Redis" "NATS" "Qdrant" "Weaviate" "Prometheus" "Grafana" "Loki" "Trend_Monitor" "Agent_Router" "Memory_Policies" "Voice_Assistant_Runtime" "Thumbnail_Pipeline" "Upload_Automation" "Weights_and_Biases" "vLLM" "Llama_CPP" "Ray" "EnviroLLM" "Suno_API" "Udio_API" "MusicGen" "Riffusion" "ControlNet" "Music2P_Pipeline" "Hook_Detection" "BPM_Analyzer" "TikTok_Score" "Emotion_Tagging" "Docker" "Kubernetes" "K3s" "GitHub_API_Tooling" "Code_Sandbox" "VS_Code_Server" "Puppeteer" "OpenTelemetry" "Vault" "SQLite" "Postgres" "RabbitMQ" "EULLM" "AI_Powered_Law_Firms" "Lawfirm" "Tax_Law_Agent" "Risk_Agent" "Drafting_Agent" "PDF_Parser" "Neo4j" "Tax_Calculator" "Deadline_Checker" "Risk_Scoring" "GitHub_Research" "Repo_Comparison" "Fail2Ban_Analyzer" "Security_Workflow" "Browser_Tool" "Firecrawl" "Google_Analytics_API" "Meta_Ads_API" "TikTok_Ads_API" "File_System_Tool" "HubSpot" "Notion" "Airtable" "Buffer_API" "Zapier" "Make" "Ahrefs" "SEMrush" "ElevenLabs" "Zenbot_API" "Risk_Strategy_Analyzer" "Backtest_Workflow" "AnimateDiff" "SVD" "Runway_API" "Image_Upscaler_Pipeline" "Aider" "OpenCode" "OpenHands" "GitHub_CLI" "Podman" "Unsloth" "LLaMA_Factory" "Axolotl" "Data_Juicer" "Llama_CPP_Toolchain" "LiteLLM" "Open_WebUI" "Langfuse" "OpenLIT" "MCPO" "Continue_Dev" "Guardrails_AI" "Promptfoo" "Gitleaks" "Uptime_Kuma" "Netdata" "MinIO" "Supabase" "Ansible" "OpenTofu" "K9s" "Helm" "Kubectl" "Kustomize" "Act" "Pre_Commit" "Markdownlint_CLI" "ShellCheck" "Shfmt" "Hadolint" "Actionlint" "Docker_Compose_Plugin" "TruffleHog" "ArgoCD_CLI" "Flux_CLI" "Kubectx_Kubens" "Velero" "Grafana_Alloy" "cAdvisor" "Node_Exporter" "DuckDB" "JupyterLab" "Airbyte" "Metabase" "dbt" "Apache_Tika" "Docling" "OCRmyPDF" "Paperless_NGX" "Stirling_PDF" "Whisper_CPP" "Faster_Whisper" "openWakeWord" "Rhasspy" "Wyoming" "Tesseract" "Marker" "LibreOffice_Headless" "RIFE" "Fooocus" "InvokeAI" "Blender" "Foundry" "Hardhat" "Ethers_JS" "Web3_Py" "OPA" "Meilisearch" "Joplin_CLI" "Syncthing" "SQLite_Vec" "Release_Please" "Changelog_Generator" "Pgvector" "Prefect" "Unstructured" "Home_Assistant" "Node_Red" "Restic" "Rclone" "Syft" "Grype" "Semgrep" "Healthchecks" "Pandoc" "Mosquitto")
 TOOLS["Ollama"]="Lokales LLM-Backend. Du kannst über den Ollama Modell-Manager spezifische Modelle installieren und verwalten."
 TOOLS["OpenManus"]="KI-Agenten-Framework für automatisierte Aufgaben wie Web-Recherche und Datenanalyse."
 TOOLS["OpenClaw"]="Fortschrittliches KI-Agenten-Framework mit Reinforcement Learning (RL) und Skill-Integration (z.B. gcali)."
@@ -833,8 +872,11 @@ TOOLS["Nikto"]="Webserver-Scanner für grundlegende Sicherheits- und Exposure-Pr
 TOOLS["Trivy"]="Scanner für Container, Images und Abhängigkeiten mit Fokus auf Sicherheitslücken."
 TOOLS["Fail2Ban"]="Schutz- und Log-Baustein gegen auffällige Login-Muster und Brute-Force-Versuche."
 TOOLS["Stable_Diffusion_WebUI"]="WebUI-basierte Bildgenerierung und Prompt-Arbeit für visuelle Pipelines."
+TOOLS["Stable_Diffusion_WebUI_Forge"]="Forge-Variante der Stable-Diffusion-WebUI für moderne GPU- und Modell-Workflows."
 TOOLS["ComfyUI"]="Node-basierte visuelle Pipeline für Bild- und Video-Workflows."
 TOOLS["RealESRGAN"]="Upscaling-Tool für Bilder, Thumbnails und visuelle Assets."
+TOOLS["GFPGAN"]="Gesichtsrestauration für Portraits und nachgelagerte Bildpipelines."
+TOOLS["Rembg"]="Hintergrundentfernung für Bildassets, Produktbilder und Freisteller-Workflows."
 TOOLS["Redis"]="Queue- und Cache-Baustein für Agentenorchestrierung, State-Sharing und Workflow-Puffer."
 TOOLS["NATS"]="Event-Bus für leichtgewichtige Agentenkommunikation und Signale."
 TOOLS["Qdrant"]="Vektor-Datenbank für Memory, Retrieval und profilübergreifendes Wissensrouting."
@@ -893,6 +935,74 @@ TOOLS["Uptime_Kuma"]="Self-Hosted Uptime- und URL-Monitoring für Dienste und Ag
 TOOLS["Netdata"]="System- und Container-Monitoring mit Live-Metriken."
 TOOLS["MinIO"]="S3-kompatibler Objekt-Storage für Artefakte, Exporte und Plattformdaten."
 TOOLS["Supabase"]="Self-Hosted Backend-Plattform mit Postgres, Auth, Storage und Realtime."
+TOOLS["Healthchecks"]="Heartbeat- und Cronjob-Monitoring für Skripte, Backups und periodische Prozesse."
+TOOLS["Ansible"]="Automatisiert Konfiguration, Rollouts und Host-Wartung über deklarative Playbooks."
+TOOLS["OpenTofu"]="Open-Source-Infrastruktur als Code für reproduzierbare Cloud- und Host-Ressourcen."
+TOOLS["K9s"]="Terminal-UI für Kubernetes/K3s-Clusterbetrieb und schnelle Statusdiagnose."
+TOOLS["Helm"]="Paketmanager für Kubernetes- und K3s-Deployments."
+TOOLS["Kubectl"]="Zentrale CLI für Kubernetes- und K3s-Ressourcen."
+TOOLS["Kustomize"]="Deklaratives Overlay-Tool für Kubernetes-Manifeste."
+TOOLS["Act"]="Lokale Ausführung von GitHub-Actions-Workflows zur schnellen CI-Prüfung."
+TOOLS["Pre_Commit"]="Lokale Git-Hooks für Lints, Formatierung und Sicherheitsprüfungen vor Commits."
+TOOLS["Markdownlint_CLI"]="CLI-Linter für Markdown-Struktur und Dokuqualität."
+TOOLS["ShellCheck"]="Shell-Skript-Linter für Bash-Qualität und Fehlerprävention."
+TOOLS["Shfmt"]="Formatter für Shell-Skripte."
+TOOLS["Hadolint"]="Linter für Dockerfiles und Container-Builds."
+TOOLS["Actionlint"]="Linter für GitHub-Actions-Workflows."
+TOOLS["Docker_Compose_Plugin"]="Stellt das Docker-Compose-Plugin für moderne Compose-Stacks bereit."
+TOOLS["TruffleHog"]="Secret-Scanner für Dateisysteme und Repositories."
+TOOLS["ArgoCD_CLI"]="GitOps-CLI für Argo CD."
+TOOLS["Flux_CLI"]="GitOps-CLI für Flux-basierte Cluster-Workflows."
+TOOLS["Kubectx_Kubens"]="Schneller Wechsel zwischen Kubernetes-Kontexten und Namespaces."
+TOOLS["Velero"]="Backup- und Restore-Werkzeug für Kubernetes-Ressourcen und Volumes."
+TOOLS["Grafana_Alloy"]="Lightweight-Agent für Logs, Metrics und Telemetrie im Grafana-Stack."
+TOOLS["cAdvisor"]="Container-Monitoring für Ressourcen, Volumes und Prozessnutzung."
+TOOLS["Node_Exporter"]="Host-Metriken für Prometheus."
+TOOLS["DuckDB"]="Analytische eingebettete Datenbank für lokale ETL- und BI-Workflows."
+TOOLS["JupyterLab"]="Notebook- und Analyseumgebung für Daten, ML und Reports."
+TOOLS["Airbyte"]="Connector-basierte Dateningestion für ETL und Analytics."
+TOOLS["Metabase"]="BI-Oberfläche für Dashboards und Abfragen."
+TOOLS["dbt"]="Transformation, Modellierung und Tests für analytische Daten."
+TOOLS["Apache_Tika"]="Dokumentenparser für Text-, PDF- und Office-Inhalte."
+TOOLS["Docling"]="Dokument-zu-strukturiert-Content Pipeline für lokale Verarbeitungsworkflows."
+TOOLS["Pandoc"]="Konverter für Markdown, HTML, DOCX und weitere Dokumentformate."
+TOOLS["OCRmyPDF"]="OCR-Pipeline für gescannte PDFs."
+TOOLS["Paperless_NGX"]="Dokumentenmanagement mit OCR, Tags und Suche."
+TOOLS["Stirling_PDF"]="Self-Hosted PDF-Werkzeugkasten für Konvertierung, Merge und Struktur."
+TOOLS["Whisper_CPP"]="Lokale Speech-to-Text Engine auf Basis von Whisper.cpp."
+TOOLS["Faster_Whisper"]="Beschleunigte Whisper-Variante für lokale STT-Workflows."
+TOOLS["openWakeWord"]="Wakeword-Erkennung für lokale Sprachassistenten."
+TOOLS["Rhasspy"]="Lokaler Sprachassistent mit Home- und Voice-Fokus."
+TOOLS["Wyoming"]="Python-/Service-Baustein für Wyoming-Protokoll und Sprachkomponenten."
+TOOLS["Tesseract"]="OCR-Engine für Dokumente und Scan-Verarbeitung."
+TOOLS["Marker"]="PDF-/Dokumentenverarbeitung mit Marker-PDF."
+TOOLS["LibreOffice_Headless"]="Headless-Office-Konvertierung für Dokumentenpipelines."
+TOOLS["RIFE"]="Frame-Interpolation für Video- und Render-Workflows."
+TOOLS["Fooocus"]="Einsteigerfreundlicher Bildgenerator auf Stable-Diffusion-Basis."
+TOOLS["InvokeAI"]="Lokale Bildgenerierungsplattform mit Modell- und Workflowverwaltung."
+TOOLS["Blender"]="3D-, Render- und Asset-Werkzeug für Game-, Video- und Kreativprofile."
+TOOLS["Foundry"]="Toolchain für EVM-Smart-Contracts, Tests und RPC-Workflows."
+TOOLS["Hardhat"]="JavaScript/TypeScript-Toolchain für Smart-Contract-Entwicklung."
+TOOLS["Ethers_JS"]="JavaScript-Bibliothek für RPC-, Wallet- und Contract-Zugriffe."
+TOOLS["Web3_Py"]="Python-Bibliothek für lokale Web3-Workflows."
+TOOLS["OPA"]="Open Policy Agent für Policies, Compliance und Governance."
+TOOLS["Meilisearch"]="Leichte Suchmaschine für persönliche Wissens- und DMS-Workflows."
+TOOLS["Joplin_CLI"]="CLI-basierter Notiz- und Wissensspeicher."
+TOOLS["Syncthing"]="Peer-to-Peer-Synchronisierung für lokale Daten und Notizen."
+TOOLS["SQLite_Vec"]="Leichter lokaler Vektor-Speicher auf SQLite-Basis."
+TOOLS["Release_Please"]="Release-Automatisierung für semantische Versionen und PR-gesteuerte Releases."
+TOOLS["Changelog_Generator"]="CLI zur Erzeugung strukturierter Changelogs aus Commits."
+TOOLS["Pgvector"]="Postgres-Erweiterung für Embeddings und Vektorsuche."
+TOOLS["Prefect"]="Python-orchestrierte Daten- und ETL-Workflows."
+TOOLS["Unstructured"]="Dokumenten- und Inhaltszerlegung für ETL, RAG und Parsing."
+TOOLS["Home_Assistant"]="Smart-Home-Zentrale für lokale Automatisierung."
+TOOLS["Restic"]="Backup-Werkzeug für versionierte Sicherungen auf lokale und entfernte Ziele."
+TOOLS["Rclone"]="Synchronisations- und Cloud-Transfer-Werkzeug für Backups und Datenmigration."
+TOOLS["Syft"]="SBOM-Scanner zur Erzeugung von Paket- und Container-Stücklisten."
+TOOLS["Grype"]="Vulnerability-Scanner für Container, Pakete und SBOMs."
+TOOLS["Semgrep"]="Statischer Code-Scanner für Security-Regeln und Richtlinienprüfungen."
+TOOLS["Mosquitto"]="Leichtgewichtiger MQTT-Broker für Smart Home, Voice und lokale Eventbus-Setups."
+TOOLS["Node_Red"]="Low-Code-Flow-Engine für Automation und Smart Home."
 TOOLS["OpenTelemetry"]="Collector für Traces, Metrics und strukturierte Telemetrie."
 TOOLS["Vault"]="Lokale Vault-Instanz für Secrets-Management und sichere Profileingaben."
 TOOLS["SQLite"]="Leichtgewichtige Datenbank für lokale Agenten-, Workflow- und Testdaten."
@@ -976,8 +1086,11 @@ TOOL_SCRIPT_NAMES["Nikto"]="nikto"
 TOOL_SCRIPT_NAMES["Trivy"]="trivy"
 TOOL_SCRIPT_NAMES["Fail2Ban"]="fail2ban"
 TOOL_SCRIPT_NAMES["Stable_Diffusion_WebUI"]="stable_diffusion_webui"
+TOOL_SCRIPT_NAMES["Stable_Diffusion_WebUI_Forge"]="stable_diffusion_webui_forge"
 TOOL_SCRIPT_NAMES["ComfyUI"]="comfyui"
 TOOL_SCRIPT_NAMES["RealESRGAN"]="realesrgan"
+TOOL_SCRIPT_NAMES["GFPGAN"]="gfpgan"
+TOOL_SCRIPT_NAMES["Rembg"]="rembg"
 TOOL_SCRIPT_NAMES["Redis"]="redis"
 TOOL_SCRIPT_NAMES["NATS"]="nats"
 TOOL_SCRIPT_NAMES["Qdrant"]="qdrant"
@@ -1036,6 +1149,74 @@ TOOL_SCRIPT_NAMES["Uptime_Kuma"]="uptime_kuma"
 TOOL_SCRIPT_NAMES["Netdata"]="netdata"
 TOOL_SCRIPT_NAMES["MinIO"]="minio"
 TOOL_SCRIPT_NAMES["Supabase"]="supabase"
+TOOL_SCRIPT_NAMES["Healthchecks"]="healthchecks"
+TOOL_SCRIPT_NAMES["Ansible"]="ansible"
+TOOL_SCRIPT_NAMES["OpenTofu"]="opentofu"
+TOOL_SCRIPT_NAMES["K9s"]="k9s"
+TOOL_SCRIPT_NAMES["Helm"]="helm"
+TOOL_SCRIPT_NAMES["Kubectl"]="kubectl"
+TOOL_SCRIPT_NAMES["Kustomize"]="kustomize"
+TOOL_SCRIPT_NAMES["Act"]="act"
+TOOL_SCRIPT_NAMES["Pre_Commit"]="pre_commit"
+TOOL_SCRIPT_NAMES["Markdownlint_CLI"]="markdownlint_cli"
+TOOL_SCRIPT_NAMES["ShellCheck"]="shellcheck_cli"
+TOOL_SCRIPT_NAMES["Shfmt"]="shfmt"
+TOOL_SCRIPT_NAMES["Hadolint"]="hadolint"
+TOOL_SCRIPT_NAMES["Actionlint"]="actionlint"
+TOOL_SCRIPT_NAMES["Docker_Compose_Plugin"]="docker_compose_plugin"
+TOOL_SCRIPT_NAMES["TruffleHog"]="trufflehog"
+TOOL_SCRIPT_NAMES["ArgoCD_CLI"]="argocd_cli"
+TOOL_SCRIPT_NAMES["Flux_CLI"]="flux_cli"
+TOOL_SCRIPT_NAMES["Kubectx_Kubens"]="kubectx_kubens"
+TOOL_SCRIPT_NAMES["Velero"]="velero"
+TOOL_SCRIPT_NAMES["Grafana_Alloy"]="grafana_alloy"
+TOOL_SCRIPT_NAMES["cAdvisor"]="cadvisor"
+TOOL_SCRIPT_NAMES["Node_Exporter"]="node_exporter"
+TOOL_SCRIPT_NAMES["DuckDB"]="duckdb"
+TOOL_SCRIPT_NAMES["JupyterLab"]="jupyterlab"
+TOOL_SCRIPT_NAMES["Airbyte"]="airbyte"
+TOOL_SCRIPT_NAMES["Metabase"]="metabase"
+TOOL_SCRIPT_NAMES["dbt"]="dbt"
+TOOL_SCRIPT_NAMES["Apache_Tika"]="apache_tika"
+TOOL_SCRIPT_NAMES["Docling"]="docling"
+TOOL_SCRIPT_NAMES["Pandoc"]="pandoc"
+TOOL_SCRIPT_NAMES["OCRmyPDF"]="ocrmypdf"
+TOOL_SCRIPT_NAMES["Paperless_NGX"]="paperless_ngx"
+TOOL_SCRIPT_NAMES["Stirling_PDF"]="stirling_pdf"
+TOOL_SCRIPT_NAMES["Whisper_CPP"]="whisper_cpp"
+TOOL_SCRIPT_NAMES["Faster_Whisper"]="faster_whisper"
+TOOL_SCRIPT_NAMES["openWakeWord"]="openwakeword"
+TOOL_SCRIPT_NAMES["Rhasspy"]="rhasspy"
+TOOL_SCRIPT_NAMES["Wyoming"]="wyoming"
+TOOL_SCRIPT_NAMES["Tesseract"]="tesseract"
+TOOL_SCRIPT_NAMES["Marker"]="marker"
+TOOL_SCRIPT_NAMES["LibreOffice_Headless"]="libreoffice_headless"
+TOOL_SCRIPT_NAMES["RIFE"]="rife"
+TOOL_SCRIPT_NAMES["Fooocus"]="fooocus"
+TOOL_SCRIPT_NAMES["InvokeAI"]="invokeai"
+TOOL_SCRIPT_NAMES["Blender"]="blender"
+TOOL_SCRIPT_NAMES["Foundry"]="foundry"
+TOOL_SCRIPT_NAMES["Hardhat"]="hardhat"
+TOOL_SCRIPT_NAMES["Ethers_JS"]="ethers_js"
+TOOL_SCRIPT_NAMES["Web3_Py"]="web3_py"
+TOOL_SCRIPT_NAMES["OPA"]="opa"
+TOOL_SCRIPT_NAMES["Meilisearch"]="meilisearch"
+TOOL_SCRIPT_NAMES["Joplin_CLI"]="joplin_cli"
+TOOL_SCRIPT_NAMES["Syncthing"]="syncthing"
+TOOL_SCRIPT_NAMES["SQLite_Vec"]="sqlite_vec"
+TOOL_SCRIPT_NAMES["Release_Please"]="release_please"
+TOOL_SCRIPT_NAMES["Changelog_Generator"]="changelog_generator"
+TOOL_SCRIPT_NAMES["Pgvector"]="pgvector"
+TOOL_SCRIPT_NAMES["Prefect"]="prefect"
+TOOL_SCRIPT_NAMES["Unstructured"]="unstructured"
+TOOL_SCRIPT_NAMES["Home_Assistant"]="home_assistant"
+TOOL_SCRIPT_NAMES["Restic"]="restic"
+TOOL_SCRIPT_NAMES["Rclone"]="rclone"
+TOOL_SCRIPT_NAMES["Syft"]="syft"
+TOOL_SCRIPT_NAMES["Grype"]="grype"
+TOOL_SCRIPT_NAMES["Semgrep"]="semgrep"
+TOOL_SCRIPT_NAMES["Mosquitto"]="mosquitto"
+TOOL_SCRIPT_NAMES["Node_Red"]="node_red"
 TOOL_SCRIPT_NAMES["OpenTelemetry"]="opentelemetry"
 TOOL_SCRIPT_NAMES["Vault"]="vault"
 TOOL_SCRIPT_NAMES["SQLite"]="sqlite"
@@ -1229,6 +1410,46 @@ PROFILE_EXTENDED_TOOLS["LLM_Builder"]="Axolotl MLflow Weights_and_Biases vLLM Ll
 PROFILE_INTEGRATION_TOOLS["LLM_Builder"]="OpenClaw Flowise LangFlow Huginn Clawbake Docker Code_Sandbox GitHub_CLI ChromaDB"
 PROFILE_SPECIAL_TOOLS["LLM_Builder"]="Ollama Data_Juicer Unsloth LLaMA_Factory Llama_CPP_Toolchain Axolotl MLflow Weights_and_Biases vLLM Llama_CPP OpenClaw Flowise LangFlow Huginn Clawbake Docker Code_Sandbox GitHub_CLI ChromaDB"
 PROFILE_SPECIAL_LABELS["LLM_Builder"]="LLM-Builder komplett"
+
+PROFILE_CORE_TOOLS["DevOps_SRE"]="Ansible OpenTofu Helm K9s Uptime_Kuma Grafana_Alloy cAdvisor Node_Exporter"
+PROFILE_EXTENDED_TOOLS["DevOps_SRE"]="ArgoCD_CLI Flux_CLI Kubectx_Kubens Velero Restic Rclone Docker_Compose_Plugin"
+PROFILE_INTEGRATION_TOOLS["DevOps_SRE"]="Docker Kubernetes K3s Prometheus Grafana Loki Healthchecks"
+
+PROFILE_CORE_TOOLS["Data_Engineering"]="DuckDB Prefect MinIO Postgres Pgvector Qdrant Apache_Tika Unstructured Pandoc"
+PROFILE_EXTENDED_TOOLS["Data_Engineering"]="Metabase Airbyte dbt JupyterLab Docling"
+PROFILE_INTEGRATION_TOOLS["Data_Engineering"]="Ollama ChromaDB LangChain LlamaIndex"
+
+PROFILE_CORE_TOOLS["Document_AI"]="OCRmyPDF Tesseract Stirling_PDF Paperless_NGX Apache_Tika Docling Marker Pandoc"
+PROFILE_EXTENDED_TOOLS["Document_AI"]="LibreOffice_Headless"
+PROFILE_INTEGRATION_TOOLS["Document_AI"]="Qdrant Open_WebUI ChromaDB"
+
+PROFILE_CORE_TOOLS["Voice_Assistant"]="Whisper_CPP Faster_Whisper Piper openWakeWord Mosquitto"
+PROFILE_EXTENDED_TOOLS["Voice_Assistant"]="Rhasspy Wyoming"
+PROFILE_INTEGRATION_TOOLS["Voice_Assistant"]="Node_Red"
+
+PROFILE_CORE_TOOLS["Video_Generation"]="ComfyUI Stable_Diffusion_WebUI_Forge SVD AnimateDiff RIFE RealESRGAN FFmpeg Blender"
+PROFILE_EXTENDED_TOOLS["Video_Generation"]="ControlNet"
+PROFILE_INTEGRATION_TOOLS["Video_Generation"]="YT_DLP Thumbnail_Pipeline"
+
+PROFILE_CORE_TOOLS["Image_Generation"]="ComfyUI Stable_Diffusion_WebUI_Forge Fooocus InvokeAI RealESRGAN"
+PROFILE_EXTENDED_TOOLS["Image_Generation"]="ControlNet GFPGAN Rembg"
+PROFILE_INTEGRATION_TOOLS["Image_Generation"]="Image_Upscaler_Pipeline"
+
+PROFILE_CORE_TOOLS["Web3_Crypto_Tools"]="Foundry Hardhat Ethers_JS Web3_Py"
+PROFILE_EXTENDED_TOOLS["Web3_Crypto_Tools"]="Web3_APIs Exchange_APIs"
+PROFILE_INTEGRATION_TOOLS["Web3_Crypto_Tools"]="GitHub_CLI"
+
+PROFILE_CORE_TOOLS["Compliance_Privacy"]="OPA Gitleaks TruffleHog Syft Grype Trivy Semgrep"
+PROFILE_EXTENDED_TOOLS["Compliance_Privacy"]="Promptfoo Guardrails_AI"
+PROFILE_INTEGRATION_TOOLS["Compliance_Privacy"]="OpenTelemetry"
+
+PROFILE_CORE_TOOLS["Personal_Knowledge_OS"]="Joplin_CLI Meilisearch Qdrant SQLite_Vec Syncthing Rclone"
+PROFILE_EXTENDED_TOOLS["Personal_Knowledge_OS"]="ChromaDB LangChain LlamaIndex"
+PROFILE_INTEGRATION_TOOLS["Personal_Knowledge_OS"]="Open_WebUI Ollama"
+
+PROFILE_CORE_TOOLS["Repo_Maintainer"]="GitHub_CLI Pre_Commit Act Markdownlint_CLI ShellCheck Shfmt Hadolint Actionlint Release_Please Changelog_Generator"
+PROFILE_EXTENDED_TOOLS["Repo_Maintainer"]="Gitleaks Docker_Compose_Plugin"
+PROFILE_INTEGRATION_TOOLS["Repo_Maintainer"]="Docker"
 
 show_tool_group_checklist() {
     local group_title="$1"
@@ -1441,7 +1662,7 @@ show_profile_management_hub() {
     esac
 }
 
-# --- Hauptmenü --- 
+# --- Hauptmenü ---
 
 show_main_menu() {
     local dialog_rc
@@ -1516,7 +1737,7 @@ while true; do
         print_exit_message
         exit 0
     fi
-    
+
     case $CHOICE in
         OPTIONS)
             show_options_menu

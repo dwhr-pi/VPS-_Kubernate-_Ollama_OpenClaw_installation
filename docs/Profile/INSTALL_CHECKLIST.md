@@ -80,6 +80,13 @@ Registry-basierte Tool-Checks:
 bash scripts/operations/tool_healthcheck.sh
 ```
 
+Gesamtzustand prüfen:
+
+```bash
+bash scripts/healthcheck_all.sh
+bash scripts/resource_estimator.sh
+```
+
 Security-Basischeck:
 
 ```bash

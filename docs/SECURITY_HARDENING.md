@@ -11,6 +11,7 @@ Diese Datei ist die kompakte Härtungsanleitung für das Setup.
 
 ```bash
 bash scripts/operations/security_scan.sh
+bash scripts/security/secret_scan.sh
 ```
 
 ## 2. Benutzer-Workspace nutzen
@@ -41,6 +42,7 @@ Portübersicht:
 
 ```bash
 bash scripts/operations/check_port_conflicts.sh
+bash scripts/security/port_exposure_audit.sh
 ```
 
 ## 4. Host-Härtung
@@ -55,6 +57,14 @@ Wichtig:
 - SSH nicht unnötig offen lassen
 - Passwort-Login nach Möglichkeit deaktivieren
 - SSH-Keys bevorzugen
+
+Zusätzliche Audits:
+
+```bash
+bash scripts/security/firewall_audit.sh
+bash scripts/security/docker_socket_audit.sh
+bash scripts/security/env_permissions_audit.sh
+```
 
 ## 5. Agenten mit Schreib- oder Shell-Rechten
 
@@ -79,10 +89,27 @@ Regel:
 
 ## 7. Trading und Web3
 
+- Keine Haftung für Verluste oder sonstige verursachte Schäden.
+- Das Setup ist keine Finanz- oder Anlageberatung.
 - Paper-Trading als Default
 - keine Seed-Phrases speichern
 - keine Private Keys im Klartext
 - echte Börsen- oder Wallet-Zugänge erst nach bewusster Freigabe verwenden
+- keine autonomen Live-Orders durch LLMs oder Agenten zulassen
+- Backtesting, Marktbeobachtung und Simulation vor echter Ausführung bevorzugen
+
+Warum so streng:
+
+- LLMs sind probabilistisch und können Trading-Begründungen halluzinieren
+- ein einzelner Key-Leak kann Konten oder Wallets kompromittieren
+- automatisierte Signale oder Empfehlungen können rechtliche Risiken erzeugen
+- psychologisch entsteht schnell ein falsches Sicherheitsgefühl gegenüber KI-Ausgaben
+
+Empfohlener Ansatz:
+
+- Trading- und Web3-Profile primär für Analyse, Alerts, Simulation und Strategieprüfung nutzen
+- echte Execution nur getrennt, manuell und mit ausdrücklicher Bestätigung ausführen
+- Börsen-, Wallet- und RPC-Zugänge immer getrennt von normalen Agenten-Workflows behandeln
 
 ## 8. Medien- und Dokumenten-Profile
 

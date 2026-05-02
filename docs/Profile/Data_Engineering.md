@@ -1,22 +1,23 @@
 # Profil: Data_Engineering
 
 ## Zweck
-Datenplattform mit PostgreSQL, Redis, MinIO, Metabase, DuckDB und optional Airbyte/dbt.
+Profil für lokale Datenpipelines, ETL, Vorverarbeitung, RAG-Datenspeicher und Analyse.
 
 ## Use Cases
-- ETL/ELT
-- Analyse
-- Objekt- und Artefaktspeicher
-- BI und Metadaten
+- Dokumentenaufbereitung für RAG
+- lokale ETL-Strecken
+- BI- und Datenvorverarbeitung
 
 ## Enthaltene Tools
-- PostgreSQL
-- Redis
-- MinIO
-- Airbyte optional
-- Metabase
 - DuckDB
-- dbt optional
+- Prefect
+- MinIO
+- PostgreSQL
+- pgvector
+- Qdrant
+- Apache Tika
+- unstructured
+- Pandoc
 
 ## Installation
 ```bash
@@ -25,31 +26,30 @@ scripts/profiles/Data_Engineering_install.sh
 
 ## Ports
 - 5432 PostgreSQL
-- 6379 Redis
-- 9000/9001 MinIO
-- 8003 Airbyte
-- 3006 Metabase
+- 6333 Qdrant
+- 9000 MinIO
+- 9001 MinIO Console
 
 ## Modelle
-- keine Pflichtmodelle
+- optional lokale Embedding-Modelle via Ollama
 
 ## Abhängigkeiten
-- Docker
-- Storage
+- Python
+- Docker für einige Teilkomponenten sinnvoll
 
 ## Ressourcenverbrauch (CPU / RAM / Storage)
 - CPU: mittel
-- RAM: ab 16 GB
-- Storage: ab 40 GB
+- RAM: ab 12 GB
+- Storage: ab 30 GB
 
 ## Sicherheitshinweise
-- Standardpasswörter sofort ersetzen
-- Datenbanken nie ungeschützt ins Netz stellen
+- sensible Rohdaten nicht ungeschützt in Containern oder Freigaben ablegen
+- Datenquellen und Rechte dokumentieren
 
 ## Start / Stop / Status Befehle
 ```bash
 docker ps
-pg_isready || true
+ss -ltn | grep -E '5432|6333|9000|9001' || true
 ```
 
 ## Test-Command

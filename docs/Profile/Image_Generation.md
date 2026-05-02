@@ -1,19 +1,20 @@
 # Profil: Image_Generation
 
 ## Zweck
-Lokale Bildgenerierung mit GPU-Prüfung, Modellordnern und vorbereiteten Flux/SDXL/ControlNet-Pfaden.
+Profil für Bildgenerierung, UI-Assets, Icons, LoRA-Workflows und Upscaling.
 
 ## Use Cases
-- ComfyUI-Workflows
-- Stable Diffusion Forge
-- ControlNet
-- lokale Asset-Erstellung
+- Bilder und Assets
+- SDXL-/Flux-nahe Workflows
+- Upscaling und Freistellung
 
 ## Enthaltene Tools
 - ComfyUI
 - Stable Diffusion WebUI Forge
+- Fooocus
+- InvokeAI
+- Real-ESRGAN
 - ControlNet
-- FFmpeg
 
 ## Installation
 ```bash
@@ -21,29 +22,31 @@ scripts/profiles/Image_Generation_install.sh
 ```
 
 ## Ports
-- 7860 typisch für SD-WebUI
-- 8188 typisch für ComfyUI
+- 8188 ComfyUI
+- 7860 Stable Diffusion WebUI Forge
 
 ## Modelle
 - SDXL
-- Flux vorbereitbar
-- ControlNet-Modelle optional
+- Flux-nahe Workflows
+- optionale LoRAs
 
 ## Abhängigkeiten
 - GPU empfohlen
+- Python
 
 ## Ressourcenverbrauch (CPU / RAM / Storage)
-- CPU: mittel
-- RAM: ab 16 GB
+- CPU: mittel bis hoch
+- RAM: ab 12 GB
 - Storage: ab 40 GB
 
 ## Sicherheitshinweise
-- Modelldownloads prüfen
-- WebUIs nur mit Auth oder lokal betreiben
+- große Modellordner können SSD schnell füllen
+- optionale Heavy-Tools wie Fooocus/InvokeAI bewusst wählen
 
 ## Start / Stop / Status Befehle
 ```bash
-nvidia-smi || true
+docker ps
+ss -ltn | grep -E '7860|8188' || true
 ```
 
 ## Test-Command

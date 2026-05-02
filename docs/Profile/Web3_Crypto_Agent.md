@@ -36,9 +36,15 @@ scripts/profiles/Web3_Crypto_Agent_install.sh
 - Storage: gering
 
 ## Sicherheitshinweise
+- Keine Haftung für Verluste oder sonstige verursachte Schäden.
+- Das Profil ist für Monitoring, Analyse und Simulation gedacht, nicht für autonome Finanzentscheidungen.
 - keine Seed-Phrases
 - keine privaten Keys im Repo
 - kein Live-Trading als Default
+- keine AI-gesteuerte automatische Orderausführung ohne ausdrückliche manuelle Kontrolle
+- Empfohlene Trennung:
+  - [Trading_Analysis.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/Profile/Trading_Analysis.md:1)
+  - [Trading_Execution_Manual_Mode.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/Profile/Trading_Execution_Manual_Mode.md:1)
 
 ## Start / Stop / Status Befehle
 ```bash

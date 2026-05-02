@@ -1,18 +1,23 @@
 # Profil: Video_Generation
 
 ## Zweck
-Videogenerierung und Render-Pipelines mit ComfyUI-Video-Nodes, AnimateDiff und FFmpeg.
+Profil für lokale Video-KI, Musikvideo-Pipelines, Upscaling und Frame-Interpolation.
 
 ## Use Cases
 - kurze KI-Videos
-- AnimateDiff-Workflows
-- Render-Queue und Frames
+- Musikvideo-Experimente
+- Rendering, Upscaling und Interpolation
 
 ## Enthaltene Tools
 - ComfyUI
-- AnimateDiff
 - Stable Diffusion WebUI Forge
+- Stable Video Diffusion
+- AnimateDiff
+- RIFE
+- Real-ESRGAN
 - FFmpeg
+- Blender
+- ControlNet
 
 ## Installation
 ```bash
@@ -20,29 +25,31 @@ scripts/profiles/Video_Generation_install.sh
 ```
 
 ## Ports
-- 7860
-- 8188
+- 8188 ComfyUI
+- 7860 Stable Diffusion WebUI Forge
 
 ## Modelle
-- Stable Video Diffusion vorbereitet
-- AnimateDiff optional
+- SVD
+- AnimateDiff-kompatible Modelle
+- optional Wan/weitere Video-Modelle nur manuell
 
 ## Abhängigkeiten
-- GPU
-- hoher Speicherplatz
+- GPU dringend empfohlen
+- ausreichend VRAM und SSD
 
 ## Ressourcenverbrauch (CPU / RAM / Storage)
 - CPU: hoch
-- RAM: ab 24 GB
+- RAM: ab 16 GB
 - Storage: ab 60 GB
 
 ## Sicherheitshinweise
-- VRAM und Disk vor Start prüfen
-- Render-Ausgaben getrennt halten
+- schwere Medien-Stacks nicht blind auf kleinen Systemen installieren
+- Modelle und Assets nur aus vertrauenswürdigen Quellen laden
 
 ## Start / Stop / Status Befehle
 ```bash
-nvidia-smi || true
+docker ps
+ss -ltn | grep -E '7860|8188' || true
 ```
 
 ## Test-Command
