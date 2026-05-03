@@ -1,8 +1,11 @@
 #!/bin/bash
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck disable=SC1091
+source "$SCRIPT_DIR/../lib/common.sh"
 TOOL_NAME="Open_WebUI"
 TOOL_KEY="Open_WebUI"
 TOOL_SLUG="open_webui"
-TOOL_GIT_REPO="https://github.com/open-webui/open-webui.git"
+TOOL_GIT_REPO="$(get_custom_repo_url "OPEN_WEBUI" "https://github.com/open-webui/open-webui.git")"
 COMPOSE_YAML='services:
   open-webui:
     image: ghcr.io/open-webui/open-webui:main

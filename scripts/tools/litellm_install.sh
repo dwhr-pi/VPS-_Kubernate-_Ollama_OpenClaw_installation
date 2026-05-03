@@ -1,8 +1,11 @@
 #!/bin/bash
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck disable=SC1091
+source "$SCRIPT_DIR/../lib/common.sh"
 TOOL_NAME="LiteLLM"
 TOOL_KEY="LiteLLM"
 TOOL_SLUG="litellm"
-TOOL_GIT_REPO="https://github.com/BerriAI/litellm.git"
+TOOL_GIT_REPO="$(get_custom_repo_url "LITELLM" "https://github.com/BerriAI/litellm.git")"
 COMPOSE_YAML='services:
   litellm:
     image: ghcr.io/berriai/litellm:main-latest

@@ -7,6 +7,9 @@ USER_WORKSPACE_DIR="${HOME}/.openclaw_ultimate_user_data"
 USER_STATUS_DIR="${USER_WORKSPACE_DIR}/status"
 USER_LOG_DIR="${USER_WORKSPACE_DIR}/logs"
 USER_METRICS_DIR="${USER_WORKSPACE_DIR}/metrics_logs"
+CUSTOM_SOURCE_REPOS_DIR="${USER_WORKSPACE_DIR}/custom_sources"
+CUSTOM_SOURCES_FILE="${USER_WORKSPACE_DIR}/custom_sources.conf"
+CUSTOM_OLLAMA_BUILDS_FILE="${USER_WORKSPACE_DIR}/custom_ollama_builds.conf"
 TOOL_STATUS_FILE="${USER_STATUS_DIR}/installed_tools.txt"
 PROFILE_STATUS_FILE="${USER_STATUS_DIR}/installed_profiles.txt"
 METRICS_HISTORY_FILE="${USER_METRICS_DIR}/operation_history.tsv"
@@ -18,10 +21,56 @@ YELLOW="\033[1;33m"
 NC="\033[0m"
 
 ensure_user_workspace() {
-  mkdir -p "$USER_WORKSPACE_DIR" "$USER_STATUS_DIR" "$USER_LOG_DIR" "$USER_METRICS_DIR"
+  mkdir -p "$USER_WORKSPACE_DIR" "$USER_STATUS_DIR" "$USER_LOG_DIR" "$USER_METRICS_DIR" "$CUSTOM_SOURCE_REPOS_DIR"
   touch "$TOOL_STATUS_FILE" "$PROFILE_STATUS_FILE"
   if [ ! -f "$METRICS_HISTORY_FILE" ]; then
     printf 'timestamp\toperation_id\toperation_title\tstatus\tduration_seconds\tfree_kb_before\tfree_kb_after\tdelta_kb\n' > "$METRICS_HISTORY_FILE"
+  fi
+  if [ ! -f "$CUSTOM_SOURCES_FILE" ]; then
+    cat > "$CUSTOM_SOURCES_FILE" <<'EOF'
+# Benutzerdefinierte GitHub-Quellen für Setup, Tools und eigene Forks
+# Format:
+# CUSTOM_REPO_<SCHLUESSEL>_URL="https://github.com/owner/repo.git"
+#
+# Der Standard bleibt aktiv, wenn die Zeile leer bleibt oder auskommentiert ist.
+# Die ursprüngliche Standardquelle ist jeweils im Kommentar dokumentiert.
+#
+# Hauptprogramme
+# Standard OpenClaw: https://github.com/openclaw/openclaw.git
+CUSTOM_REPO_OPENCLAW_URL=""
+# Standard OpenManus: https://github.com/openmanus/openmanus.git
+CUSTOM_REPO_OPENMANUS_URL=""
+# Standard Open WebUI: https://github.com/open-webui/open-webui.git
+CUSTOM_REPO_OPEN_WEBUI_URL=""
+# Standard LiteLLM: https://github.com/BerriAI/litellm.git
+CUSTOM_REPO_LITELLM_URL=""
+# Standard ComfyUI: https://github.com/comfyanonymous/ComfyUI.git
+CUSTOM_REPO_COMFYUI_URL=""
+#
+# Finanz- und Analyse-Repos
+# Standard FinGPT: https://github.com/AI4Finance-Foundation/FinGPT.git
+CUSTOM_REPO_FINGPT_URL=""
+# Standard FinRobot: https://github.com/AI4Finance-Foundation/FinRobot.git
+CUSTOM_REPO_FINROBOT_URL=""
+# Standard FinRAG: https://github.com/AI4Finance-Foundation/FinRAG.git
+CUSTOM_REPO_FINRAG_URL=""
+EOF
+  fi
+  if [ ! -f "$CUSTOM_OLLAMA_BUILDS_FILE" ]; then
+    cat > "$CUSTOM_OLLAMA_BUILDS_FILE" <<'EOF'
+# Benutzerdefinierte Ollama-Builds und Fork-Notizen
+# Für jeden eigenen Build kannst du hier einen gut lesbaren Block anlegen.
+#
+# Beispiel FinGPT-Fork:
+# BUILD_FINGPT_FORK_NAME="fingpt-fork-local"
+# BUILD_FINGPT_FORK_REPO_URL="https://github.com/DEINNAME/FinGPT.git"
+# BUILD_FINGPT_FORK_REPO_REF="main"
+# BUILD_FINGPT_FORK_SOURCE_DIR="$HOME/.openclaw_ultimate_user_data/custom_sources/fingpt-fork"
+# BUILD_FINGPT_FORK_BASE_MODEL="qwen3:30b"
+# BUILD_FINGPT_FORK_GGUF_PATH=""
+# BUILD_FINGPT_FORK_MODEFILE_PATH="$HOME/.openclaw_ultimate_user_data/modelfiles/fingpt-fork-local.Modelfile"
+# BUILD_FINGPT_FORK_NOTES="Nach Fine-Tuning/Export die GGUF-Datei eintragen und dann ollama create ausführen."
+EOF
   fi
 }
 
@@ -147,4 +196,25 @@ confirm_heavy_install() {
     esac
   fi
   return 0
+}
+
+load_custom_sources_config() {
+  ensure_user_workspace
+  # shellcheck source=/dev/null
+  source "$CUSTOM_SOURCES_FILE"
+}
+
+get_custom_repo_url() {
+  local key="$1"
+  local default_url="$2"
+  local var_name="CUSTOM_REPO_${key}_URL"
+  local value=""
+
+  load_custom_sources_config
+  value="${!var_name:-}"
+  if [ -n "$value" ]; then
+    printf '%s\n' "$value"
+  else
+    printf '%s\n' "$default_url"
+  fi
 }

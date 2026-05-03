@@ -11,6 +11,11 @@ RED="\033[0;31m"
 YELLOW="\033[1;33m"
 NC="\033[0m"
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+INSTALL_DIR="${INSTALL_DIR:-$(cd "$SCRIPT_DIR/.." && pwd)}"
+# shellcheck disable=SC1091
+source "$INSTALL_DIR/scripts/lib/common.sh"
+
 OLLAMA_CHOICE_FILE="/tmp/ollama_choice"
 MODEL_TO_INSTALL_FILE="/tmp/model_to_install"
 MODEL_TO_UNINSTALL_FILE="/tmp/model_to_uninstall"
@@ -52,6 +57,7 @@ list_installed_models() {
 
 install_ollama_model() {
     local model_name
+    local sanitized_model_name
 
     rm -f "$MODEL_TO_INSTALL_FILE"
     dialog --clear --backtitle "Ollama Modell-Manager" \
@@ -69,9 +75,13 @@ install_ollama_model() {
     fi
 
     echo -e "${BLUE}Installiere Modell: ${model_name}...${NC}"
+    sanitized_model_name="$(printf '%s' "$model_name" | tr '/: .' '_---')"
+    begin_measurement "ollama_model_install_${sanitized_model_name}" "Ollama Modell installieren: ${model_name}"
     if ollama pull "$model_name"; then
+        end_measurement "success"
         echo -e "${GREEN}Modell ${model_name} erfolgreich installiert.${NC}"
     else
+        end_measurement "failed"
         echo -e "${RED}Fehler bei der Installation von Modell ${model_name}.${NC}"
     fi
     read -r -p "Drücken Sie Enter, um fortzufahren..."
@@ -79,6 +89,7 @@ install_ollama_model() {
 
 uninstall_ollama_model() {
     local model_name
+    local sanitized_model_name
 
     rm -f "$MODEL_TO_UNINSTALL_FILE"
     dialog --clear --backtitle "Ollama Modell-Manager" \
@@ -96,9 +107,13 @@ uninstall_ollama_model() {
     fi
 
     echo -e "${BLUE}Deinstalliere Modell: ${model_name}...${NC}"
+    sanitized_model_name="$(printf '%s' "$model_name" | tr '/: .' '_---')"
+    begin_measurement "ollama_model_uninstall_${sanitized_model_name}" "Ollama Modell deinstallieren: ${model_name}"
     if ollama rm "$model_name"; then
+        end_measurement "success"
         echo -e "${GREEN}Modell ${model_name} erfolgreich deinstalliert.${NC}"
     else
+        end_measurement "failed"
         echo -e "${RED}Fehler bei der Deinstallation von Modell ${model_name}.${NC}"
     fi
     read -r -p "Drücken Sie Enter, um fortzufahren..."

@@ -25,12 +25,15 @@ USER_PROFILE_RENDERED_DIR="$USER_WORKSPACE_DIR/profile_ableitungen"
 USER_PROMPTS_DIR="$USER_WORKSPACE_DIR/prompts"
 USER_MODELFILE_DIR="$USER_WORKSPACE_DIR/modelfiles"
 USER_METRICS_LOG_DIR="$USER_WORKSPACE_DIR/metrics_logs"
+USER_CUSTOM_SOURCE_DIR="$USER_WORKSPACE_DIR/custom_sources"
 USER_DIALOGRC_FILE="$USER_WORKSPACE_DIR/dialogrc"
 METRICS_CONFIG_FILE="$USER_WORKSPACE_DIR/setup_metrics.conf"
 METRICS_HISTORY_FILE="$USER_METRICS_LOG_DIR/operation_history.tsv"
 PROFILE_STATUS_FILE="$USER_WORKSPACE_DIR/installed_profiles.txt"
 TOOL_STATUS_FILE="$USER_WORKSPACE_DIR/installed_tools.txt"
 SETUP_PREFERENCES_FILE="$USER_WORKSPACE_DIR/setup_preferences.conf"
+CUSTOM_SOURCES_FILE="$USER_WORKSPACE_DIR/custom_sources.conf"
+CUSTOM_OLLAMA_BUILDS_FILE="$USER_WORKSPACE_DIR/custom_ollama_builds.conf"
 SCRIPT_ROOT_DIR="$INSTALL_DIR"
 LANGUAGE_SELECTION_REQUIRED=0
 STARTUP_LANGUAGE_DIALOG_PENDING=0
@@ -51,6 +54,7 @@ ensure_user_workspace() {
     mkdir -p "$USER_PROMPTS_DIR"
     mkdir -p "$USER_MODELFILE_DIR"
     mkdir -p "$USER_METRICS_LOG_DIR"
+    mkdir -p "$USER_CUSTOM_SOURCE_DIR"
 
     if [ ! -f "$USER_OPENCLAW_TEMPLATE_DIR/.env.template" ]; then
         cp "$INSTALL_DIR/scripts/config_templates/openclaw/.env.template" "$USER_OPENCLAW_TEMPLATE_DIR/.env.template"
@@ -83,6 +87,54 @@ ensure_user_workspace() {
 Hier können künftig benutzerdefinierte Prompt-Dateien abgelegt werden.
 Diese Dateien liegen bewusst außerhalb des Repositories, damit sie bei Updates erhalten bleiben
 und nicht versehentlich in Git oder GitHub landen.
+EOF
+    fi
+
+    if [ ! -f "$CUSTOM_SOURCES_FILE" ]; then
+        cat > "$CUSTOM_SOURCES_FILE" <<'EOF'
+# Benutzerdefinierte GitHub-Quellen für Setup, Tools und eigene Forks
+# Format:
+# CUSTOM_REPO_<SCHLUESSEL>_URL="https://github.com/owner/repo.git"
+#
+# Der Standard bleibt aktiv, wenn die Zeile leer bleibt oder auskommentiert ist.
+# Die ursprüngliche Standardquelle ist jeweils im Kommentar dokumentiert.
+#
+# Hauptprogramme
+# Standard OpenClaw: https://github.com/openclaw/openclaw.git
+CUSTOM_REPO_OPENCLAW_URL=""
+# Standard OpenManus: https://github.com/openmanus/openmanus.git
+CUSTOM_REPO_OPENMANUS_URL=""
+# Standard Open WebUI: https://github.com/open-webui/open-webui.git
+CUSTOM_REPO_OPEN_WEBUI_URL=""
+# Standard LiteLLM: https://github.com/BerriAI/litellm.git
+CUSTOM_REPO_LITELLM_URL=""
+# Standard ComfyUI: https://github.com/comfyanonymous/ComfyUI.git
+CUSTOM_REPO_COMFYUI_URL=""
+#
+# Finanz- und Analyse-Repos
+# Standard FinGPT: https://github.com/AI4Finance-Foundation/FinGPT.git
+CUSTOM_REPO_FINGPT_URL=""
+# Standard FinRobot: https://github.com/AI4Finance-Foundation/FinRobot.git
+CUSTOM_REPO_FINROBOT_URL=""
+# Standard FinRAG: https://github.com/AI4Finance-Foundation/FinRAG.git
+CUSTOM_REPO_FINRAG_URL=""
+EOF
+    fi
+
+    if [ ! -f "$CUSTOM_OLLAMA_BUILDS_FILE" ]; then
+        cat > "$CUSTOM_OLLAMA_BUILDS_FILE" <<'EOF'
+# Benutzerdefinierte Ollama-Builds und Fork-Notizen
+# Für jeden eigenen Build kannst du hier einen gut lesbaren Block anlegen.
+#
+# Beispiel FinGPT-Fork:
+# BUILD_FINGPT_FORK_NAME="fingpt-fork-local"
+# BUILD_FINGPT_FORK_REPO_URL="https://github.com/DEINNAME/FinGPT.git"
+# BUILD_FINGPT_FORK_REPO_REF="main"
+# BUILD_FINGPT_FORK_SOURCE_DIR="$HOME/.openclaw_ultimate_user_data/custom_sources/fingpt-fork"
+# BUILD_FINGPT_FORK_BASE_MODEL="qwen3:30b"
+# BUILD_FINGPT_FORK_GGUF_PATH=""
+# BUILD_FINGPT_FORK_MODEFILE_PATH="$HOME/.openclaw_ultimate_user_data/modelfiles/fingpt-fork-local.Modelfile"
+# BUILD_FINGPT_FORK_NOTES="Nach Fine-Tuning/Export die GGUF-Datei eintragen und dann ollama create ausführen."
 EOF
     fi
 
@@ -155,6 +207,43 @@ LOCAL_SETUP_CONFIRM_STOP_1_ESTIMATE="12-35 min"
 LOCAL_SETUP_CONFIRM_STOP_2_ESTIMATE="18-45 min"
 LOCAL_SETUP_CLOUDFLARE_TOKEN_STOP_ESTIMATE="22-60 min"
 
+# Optionale, feinere Tool-Schätzwerte fuer Einzelinstallationen.
+# Diese Werte greifen, wenn noch keine echte erfolgreiche Messung fuer das Tool vorliegt.
+# Namensschema:
+# <TOOLNAME>_TOOL_DURATION_ESTIMATE="..."
+# <TOOLNAME>_TOOL_STORAGE_ESTIMATE="..."
+#
+# Haeufige Beispiele:
+# OLLAMA_TOOL_DURATION_ESTIMATE
+# OLLAMA_TOOL_STORAGE_ESTIMATE
+# N8N_TOOL_DURATION_ESTIMATE
+# N8N_TOOL_STORAGE_ESTIMATE
+# OPENCLAW_TOOL_DURATION_ESTIMATE
+# OPENCLAW_TOOL_STORAGE_ESTIMATE
+# OPENMANUS_TOOL_DURATION_ESTIMATE
+# OPENMANUS_TOOL_STORAGE_ESTIMATE
+# COMFYUI_TOOL_DURATION_ESTIMATE
+# COMFYUI_TOOL_STORAGE_ESTIMATE
+# STABLE_DIFFUSION_WEBUI_FORGE_TOOL_DURATION_ESTIMATE
+# STABLE_DIFFUSION_WEBUI_FORGE_TOOL_STORAGE_ESTIMATE
+#
+# Prioritaet im Setup:
+# 1. letzte erfolgreiche echte Messung
+# 2. dein hier eingetragener Wert
+# 3. interner Fallback aus dem Setup
+OLLAMA_TOOL_DURATION_ESTIMATE="5-15 min Installation, Modelle zusaetzlich je nach Groesse"
+OLLAMA_TOOL_STORAGE_ESTIMATE="15-40 GB ohne Modelle, mit mehreren Modellen deutlich mehr"
+N8N_TOOL_DURATION_ESTIMATE="10-30 min Klonen + Build bzw. Runtime-Installation"
+N8N_TOOL_STORAGE_ESTIMATE="5-15 GB"
+OPENCLAW_TOOL_DURATION_ESTIMATE="15-60 min Download + Build je nach System"
+OPENCLAW_TOOL_STORAGE_ESTIMATE="15-40 GB je nach Build- und Statusdaten"
+OPENMANUS_TOOL_DURATION_ESTIMATE="5-20 min Download + Einrichtung"
+OPENMANUS_TOOL_STORAGE_ESTIMATE="5-15 GB"
+COMFYUI_TOOL_DURATION_ESTIMATE="15-45 min plus Modell-Downloads"
+COMFYUI_TOOL_STORAGE_ESTIMATE="30-120 GB je nach Modellen und Workflows"
+STABLE_DIFFUSION_WEBUI_FORGE_TOOL_DURATION_ESTIMATE="20-60 min plus Modell-Downloads"
+STABLE_DIFFUSION_WEBUI_FORGE_TOOL_STORAGE_ESTIMATE="40-150 GB je nach Modellen, LoRAs und Outputs"
+
 PROGRAMMIERER_REQUIRED_GB="8-20"
 MEDIA_MUSIK_REQUIRED_GB="15-40"
 KI_FORSCHUNG_REQUIRED_GB="15-50"
@@ -224,6 +313,118 @@ format_duration_human() {
     else
         printf '%s s' "$seconds"
     fi
+}
+
+format_kb_human() {
+    local total_kb="${1:-0}"
+    local abs_kb="$total_kb"
+
+    if [ "${abs_kb#-}" != "$abs_kb" ]; then
+        abs_kb="${abs_kb#-}"
+    fi
+
+    if [ "$abs_kb" -ge 1048576 ] 2>/dev/null; then
+        awk -v kb="$total_kb" 'BEGIN {printf "%.1f GB", kb/1048576}'
+    elif [ "$abs_kb" -ge 1024 ] 2>/dev/null; then
+        awk -v kb="$total_kb" 'BEGIN {printf "%.1f MB", kb/1024}'
+    else
+        printf '%s KB' "$total_kb"
+    fi
+}
+
+get_last_success_metric_field() {
+    local operation_id="$1"
+    local field_index="$2"
+
+    ensure_user_workspace
+    [ -f "$METRICS_HISTORY_FILE" ] || return 1
+
+    awk -F'\t' -v opid="$operation_id" -v field="$field_index" '
+        NR > 1 && $2 == opid && $4 == "success" {
+            value = $field
+        }
+        END {
+            if (value != "") {
+                print value
+            }
+        }
+    ' "$METRICS_HISTORY_FILE"
+}
+
+get_operation_duration_estimate_label() {
+    local operation_id="$1"
+    local fallback_label="$2"
+    local duration_seconds
+
+    duration_seconds="$(get_last_success_metric_field "$operation_id" 5)"
+    if [ -n "$duration_seconds" ]; then
+        printf '%s (letzte erfolgreiche Messung)' "$(format_duration_human "$duration_seconds")"
+    else
+        printf '%s' "$fallback_label"
+    fi
+}
+
+get_operation_storage_estimate_label() {
+    local operation_id="$1"
+    local fallback_label="$2"
+    local delta_kb
+
+    delta_kb="$(get_last_success_metric_field "$operation_id" 8)"
+    if [ -n "$delta_kb" ]; then
+        printf '%s freier Speicher empfohlen, letzte erfolgreiche Aenderung: %s' "$fallback_label" "$(format_kb_human "$delta_kb")"
+    else
+        printf '%s' "$fallback_label"
+    fi
+}
+
+get_default_tool_duration_label() {
+    local tool_key="$1"
+
+    case "$tool_key" in
+        "Ollama") printf '5-15 min Installation, Modelle zusaetzlich je nach Groesse' ;;
+        "n8n") printf '10-30 min Klonen + Build bzw. Runtime-Installation' ;;
+        "OpenClaw") printf '15-60 min Download + Build je nach System' ;;
+        "OpenManus") printf '5-20 min Download + Einrichtung' ;;
+        "ComfyUI"|"Stable_Diffusion_WebUI_Forge") printf '15-45 min plus Modell-Downloads' ;;
+        *) printf '%s Download + %s Installation/Anpassung je nach Tool' "${SETUP_DOWNLOAD_TIME_ESTIMATE}" "${SETUP_INSTALL_TIME_ESTIMATE}" ;;
+    esac
+}
+
+tool_key_to_metric_prefix() {
+    local tool_key="$1"
+
+    printf '%s' "$tool_key" | tr '[:lower:]- /.' '[:upper:]____'
+}
+
+get_configured_tool_duration_label() {
+    local tool_key="$1"
+    local metric_prefix
+    local metric_var_name
+
+    metric_prefix="$(tool_key_to_metric_prefix "$tool_key")"
+    metric_var_name="${metric_prefix}_TOOL_DURATION_ESTIMATE"
+    printf '%s' "${!metric_var_name:-}"
+}
+
+get_configured_tool_storage_label() {
+    local tool_key="$1"
+    local metric_prefix
+    local metric_var_name
+
+    metric_prefix="$(tool_key_to_metric_prefix "$tool_key")"
+    metric_var_name="${metric_prefix}_TOOL_STORAGE_ESTIMATE"
+    printf '%s' "${!metric_var_name:-}"
+}
+
+get_default_tool_storage_label() {
+    local tool_key="$1"
+
+    case "$tool_key" in
+        "Ollama") printf '15-40 GB ohne Modelle, mit mehreren Modellen deutlich mehr' ;;
+        "n8n") printf '5-15 GB' ;;
+        "ComfyUI"|"Stable_Diffusion_WebUI_Forge") printf '30-120 GB je nach Modellen und Workflows' ;;
+        *) printf '%s-%s GB' "${MIN_FREE_GB_ABSOLUTE}" "${MIN_FREE_GB_RECOMMENDED}" ;;
+    esac
 }
 
 begin_operation_measurement() {
@@ -343,11 +544,16 @@ get_profile_required_gb() {
 show_profile_action_intro() {
     local profile_key="$1"
     local action_label="$2"
+    local operation_kind="${3:-install}"
     local required_gb
     local extra_notes
+    local duration_label
+    local operation_id="profile_${operation_kind}_${profile_key}"
 
     required_gb="$(get_profile_required_gb "$profile_key")"
     extra_notes="Je nach Profil werden mehrere Einzeltools nacheinander installiert oder entfernt. Das kann laenger dauern als bei einem Einzeltool."
+    duration_label="$(get_operation_duration_estimate_label "$operation_id" "${SETUP_DOWNLOAD_TIME_ESTIMATE} Download + ${SETUP_INSTALL_TIME_ESTIMATE} Installation/Anpassung je nach Profilgroesse")"
+    required_gb="$(get_operation_storage_estimate_label "$operation_id" "$required_gb")"
 
     case "$profile_key" in
         "Trading_AI"|"Web3_Crypto_Tools")
@@ -358,7 +564,7 @@ show_profile_action_intro() {
     show_operation_intro \
     "Profil ${action_label}: ${profile_key}" \
     "${PROFILES[$profile_key]}" \
-    "${SETUP_DOWNLOAD_TIME_ESTIMATE} Download + ${SETUP_INSTALL_TIME_ESTIMATE} Installation/Anpassung je nach Profilgroesse" \
+    "$duration_label" \
     "$required_gb" \
     "$extra_notes"
 }
@@ -366,12 +572,24 @@ show_profile_action_intro() {
 show_tool_action_intro() {
     local tool_key="$1"
     local action_label="$2"
+    local operation_kind="${3:-install}"
+    local operation_id="tool_${operation_kind}_${tool_key}"
+    local duration_label
+    local storage_label
+    local configured_duration
+    local configured_storage
+
+    configured_duration="$(get_configured_tool_duration_label "$tool_key")"
+    configured_storage="$(get_configured_tool_storage_label "$tool_key")"
+
+    duration_label="$(get_operation_duration_estimate_label "$operation_id" "${configured_duration:-$(get_default_tool_duration_label "$tool_key")}")"
+    storage_label="$(get_operation_storage_estimate_label "$operation_id" "${configured_storage:-$(get_default_tool_storage_label "$tool_key")}")"
 
     show_operation_intro \
     "Tool ${action_label}: ${tool_key}" \
     "${TOOLS[$tool_key]}" \
-    "${SETUP_DOWNLOAD_TIME_ESTIMATE} Download + ${SETUP_INSTALL_TIME_ESTIMATE} Installation/Anpassung je nach Tool" \
-    "${MIN_FREE_GB_ABSOLUTE}-${MIN_FREE_GB_RECOMMENDED} GB" \
+    "$duration_label" \
+    "$storage_label" \
     "Einige Tools benoetigen zusaetzliche Paketquellen, Builds, Container oder API-Eingaben."
 }
 
@@ -487,7 +705,7 @@ show_user_workspace_menu() {
 show_options_menu() {
     while true; do
         dialog --clear --backtitle "$APP_TITLE" \
-        --title "${TXT_OPTIONS_MENU_TITLE:-OPTIONEN}" --menu "${TXT_OPTIONS_MENU_PROMPT:-Wählen Sie eine Verwaltungs- oder Konfigurationsfunktion:}" 22 96 8 \
+        --title "${TXT_OPTIONS_MENU_TITLE:-OPTIONEN}" --menu "${TXT_OPTIONS_MENU_PROMPT:-Wählen Sie eine Verwaltungs- oder Konfigurationsfunktion:}" 23 100 9 \
         "1" "${TXT_OPTIONS_1:-Sprache ändern}" \
         "2" "${TXT_OPTIONS_2:-Setup-Messwerte & Benchmarks bearbeiten}" \
         "3" "${TXT_OPTIONS_3:-Ollama Modelfile-Assistent}" \
@@ -495,7 +713,8 @@ show_options_menu() {
         "5" "${TXT_OPTIONS_5:-Ollama Modellkatalog}" \
         "6" "${TXT_OPTIONS_6:-Setup hart mit GitHub main abgleichen}" \
         "7" "${TXT_OPTIONS_7:-Benutzer-Workspace verwalten}" \
-        "8" "${TXT_OPTIONS_8:-Zurück}" 2> /tmp/options_choice
+        "8" "${TXT_OPTIONS_8:-Custom GitHub-Quellen & Ollama-Builds}" \
+        "9" "${TXT_OPTIONS_9:-Zurück}" 2> /tmp/options_choice
 
         if [ $? -ne 0 ]; then
             return 0
@@ -535,6 +754,9 @@ show_options_menu() {
                 show_user_workspace_menu
                 ;;
             8)
+                run_bash_script "$INSTALL_DIR/scripts/custom_source_manager.sh"
+                ;;
+            9)
                 return 0
                 ;;
         esac
@@ -743,7 +965,7 @@ PROFILES["Repo_Maintainer"]="Maintainer-Profil für GitHub-Repo-Pflege, lokale C
 # Funktion zum Installieren eines Profils
 install_profile() {
     local PROFILE_KEY="$1"
-    show_profile_action_intro "$PROFILE_KEY" "installieren"
+    show_profile_action_intro "$PROFILE_KEY" "installieren" "install"
     begin_operation_measurement "profile_install_${PROFILE_KEY}" "Profil installieren: ${PROFILE_KEY}"
     echo -e "${BLUE}Installiere Profil: ${PROFILE_KEY}...${NC}"
     run_bash_script "$INSTALL_DIR/scripts/profiles/${PROFILE_KEY}_install.sh"
@@ -760,7 +982,7 @@ install_profile() {
 # Funktion zum Deinstallieren eines Profils
 uninstall_profile() {
     local PROFILE_KEY="$1"
-    show_profile_action_intro "$PROFILE_KEY" "deinstallieren"
+    show_profile_action_intro "$PROFILE_KEY" "deinstallieren" "uninstall"
     begin_operation_measurement "profile_uninstall_${PROFILE_KEY}" "Profil deinstallieren: ${PROFILE_KEY}"
     echo -e "${BLUE}Deinstalliere Profil: ${PROFILE_KEY}...${NC}"
     run_bash_script "$INSTALL_DIR/scripts/profiles/${PROFILE_KEY}_uninstall.sh"
@@ -830,8 +1052,8 @@ show_profile_management_menu() {
 
 declare -A TOOLS
 declare -A TOOL_SCRIPT_NAMES
-TOOL_KEYS=("Ollama" "OpenManus" "OpenClaw" "Clawhub_CLI" "OpenClaw_RL" "Clawbake" "n8n" "Activepieces" "Flowise" "LangFlow" "AutoGPT" "Pipedream" "Huginn" "FFmpeg" "LangGraph" "CrewAI" "AutoGen" "Playwright" "ChromaDB" "LangChain" "LlamaIndex" "MLflow" "Whisper" "librosa" "pydub" "Demucs" "Zenbot_trader" "Kimi2" "Clawhub" "Huge_Facing" "Zotero" "Piper" "Coqui_TTS" "YT_DLP" "Web3_APIs" "Exchange_APIs" "Nmap" "Nikto" "Trivy" "Fail2Ban" "Stable_Diffusion_WebUI" "Stable_Diffusion_WebUI_Forge" "ComfyUI" "RealESRGAN" "GFPGAN" "Rembg" "Redis" "NATS" "Qdrant" "Weaviate" "Prometheus" "Grafana" "Loki" "Trend_Monitor" "Agent_Router" "Memory_Policies" "Voice_Assistant_Runtime" "Thumbnail_Pipeline" "Upload_Automation" "Weights_and_Biases" "vLLM" "Llama_CPP" "Ray" "EnviroLLM" "Suno_API" "Udio_API" "MusicGen" "Riffusion" "ControlNet" "Music2P_Pipeline" "Hook_Detection" "BPM_Analyzer" "TikTok_Score" "Emotion_Tagging" "Docker" "Kubernetes" "K3s" "GitHub_API_Tooling" "Code_Sandbox" "VS_Code_Server" "Puppeteer" "OpenTelemetry" "Vault" "SQLite" "Postgres" "RabbitMQ" "EULLM" "AI_Powered_Law_Firms" "Lawfirm" "Tax_Law_Agent" "Risk_Agent" "Drafting_Agent" "PDF_Parser" "Neo4j" "Tax_Calculator" "Deadline_Checker" "Risk_Scoring" "GitHub_Research" "Repo_Comparison" "Fail2Ban_Analyzer" "Security_Workflow" "Browser_Tool" "Firecrawl" "Google_Analytics_API" "Meta_Ads_API" "TikTok_Ads_API" "File_System_Tool" "HubSpot" "Notion" "Airtable" "Buffer_API" "Zapier" "Make" "Ahrefs" "SEMrush" "ElevenLabs" "Zenbot_API" "Risk_Strategy_Analyzer" "Backtest_Workflow" "AnimateDiff" "SVD" "Runway_API" "Image_Upscaler_Pipeline" "Aider" "OpenCode" "OpenHands" "GitHub_CLI" "Podman" "Unsloth" "LLaMA_Factory" "Axolotl" "Data_Juicer" "Llama_CPP_Toolchain" "LiteLLM" "Open_WebUI" "Langfuse" "OpenLIT" "MCPO" "Continue_Dev" "Guardrails_AI" "Promptfoo" "Gitleaks" "Uptime_Kuma" "Netdata" "MinIO" "Supabase" "Ansible" "OpenTofu" "K9s" "Helm" "Kubectl" "Kustomize" "Act" "Pre_Commit" "Markdownlint_CLI" "ShellCheck" "Shfmt" "Hadolint" "Actionlint" "Docker_Compose_Plugin" "TruffleHog" "ArgoCD_CLI" "Flux_CLI" "Kubectx_Kubens" "Velero" "Grafana_Alloy" "cAdvisor" "Node_Exporter" "DuckDB" "JupyterLab" "Airbyte" "Metabase" "dbt" "Apache_Tika" "Docling" "OCRmyPDF" "Paperless_NGX" "Stirling_PDF" "Whisper_CPP" "Faster_Whisper" "openWakeWord" "Rhasspy" "Wyoming" "Tesseract" "Marker" "LibreOffice_Headless" "RIFE" "Fooocus" "InvokeAI" "Blender" "Foundry" "Hardhat" "Ethers_JS" "Web3_Py" "OPA" "Meilisearch" "Joplin_CLI" "Syncthing" "SQLite_Vec" "Release_Please" "Changelog_Generator" "Pgvector" "Prefect" "Unstructured" "Home_Assistant" "Node_Red" "Restic" "Rclone" "Syft" "Grype" "Semgrep" "Healthchecks" "Pandoc" "Mosquitto")
-TOOLS["Ollama"]="Lokales LLM-Backend. Du kannst über den Ollama Modell-Manager spezifische Modelle installieren und verwalten."
+TOOL_KEYS=("Ollama" "OpenManus" "OpenClaw" "Clawhub_CLI" "OpenClaw_RL" "Clawbake" "n8n" "Activepieces" "Flowise" "LangFlow" "AutoGPT" "Pipedream" "Huginn" "FFmpeg" "LangGraph" "CrewAI" "AutoGen" "Playwright" "ChromaDB" "LangChain" "LlamaIndex" "MLflow" "Whisper" "librosa" "pydub" "Demucs" "Zenbot_trader" "Kimi2" "Clawhub" "Huge_Facing" "Zotero" "Piper" "Coqui_TTS" "YT_DLP" "Web3_APIs" "Exchange_APIs" "FinGPT" "FinRobot" "FinRAG" "Nmap" "Nikto" "Trivy" "Fail2Ban" "Stable_Diffusion_WebUI" "Stable_Diffusion_WebUI_Forge" "ComfyUI" "RealESRGAN" "GFPGAN" "Rembg" "Redis" "NATS" "Qdrant" "Weaviate" "Prometheus" "Grafana" "Loki" "Trend_Monitor" "Agent_Router" "Memory_Policies" "Voice_Assistant_Runtime" "Thumbnail_Pipeline" "Upload_Automation" "Weights_and_Biases" "vLLM" "Llama_CPP" "Ray" "EnviroLLM" "Suno_API" "Udio_API" "MusicGen" "Riffusion" "ControlNet" "Music2P_Pipeline" "Hook_Detection" "BPM_Analyzer" "TikTok_Score" "Emotion_Tagging" "Docker" "Kubernetes" "K3s" "GitHub_API_Tooling" "Code_Sandbox" "VS_Code_Server" "Puppeteer" "OpenTelemetry" "Vault" "SQLite" "Postgres" "RabbitMQ" "EULLM" "AI_Powered_Law_Firms" "Lawfirm" "Tax_Law_Agent" "Risk_Agent" "Drafting_Agent" "PDF_Parser" "Neo4j" "Tax_Calculator" "Deadline_Checker" "Risk_Scoring" "GitHub_Research" "Repo_Comparison" "Fail2Ban_Analyzer" "Security_Workflow" "Browser_Tool" "Firecrawl" "Google_Analytics_API" "Meta_Ads_API" "TikTok_Ads_API" "File_System_Tool" "HubSpot" "Notion" "Airtable" "Buffer_API" "Zapier" "Make" "Ahrefs" "SEMrush" "ElevenLabs" "Zenbot_API" "Risk_Strategy_Analyzer" "Backtest_Workflow" "AnimateDiff" "SVD" "Runway_API" "Image_Upscaler_Pipeline" "Aider" "OpenCode" "OpenHands" "GitHub_CLI" "Podman" "Unsloth" "LLaMA_Factory" "Axolotl" "Data_Juicer" "Llama_CPP_Toolchain" "LiteLLM" "Open_WebUI" "Langfuse" "OpenLIT" "MCPO" "Continue_Dev" "Guardrails_AI" "Promptfoo" "Gitleaks" "Uptime_Kuma" "Netdata" "MinIO" "Supabase" "Ansible" "OpenTofu" "K9s" "Helm" "Kubectl" "Kustomize" "Act" "Pre_Commit" "Markdownlint_CLI" "ShellCheck" "Shfmt" "Hadolint" "Actionlint" "Docker_Compose_Plugin" "TruffleHog" "ArgoCD_CLI" "Flux_CLI" "Kubectx_Kubens" "Velero" "Grafana_Alloy" "cAdvisor" "Node_Exporter" "DuckDB" "JupyterLab" "Airbyte" "Metabase" "dbt" "Apache_Tika" "Docling" "OCRmyPDF" "Paperless_NGX" "Stirling_PDF" "Whisper_CPP" "Faster_Whisper" "openWakeWord" "Rhasspy" "Wyoming" "Tesseract" "Marker" "LibreOffice_Headless" "RIFE" "Fooocus" "InvokeAI" "Blender" "Foundry" "Hardhat" "Ethers_JS" "Web3_Py" "OPA" "Meilisearch" "Joplin_CLI" "Syncthing" "SQLite_Vec" "Release_Please" "Changelog_Generator" "Pgvector" "Prefect" "Unstructured" "Home_Assistant" "Node_Red" "Restic" "Rclone" "Syft" "Grype" "Semgrep" "Healthchecks" "Pandoc" "Mosquitto")
+TOOLS["Ollama"]="Lokales LLM-Backend. Du kannst über den Ollama Modell-Manager spezifische Modelle installieren und verwalten. Für weitere Informationen zu den Modellen siehe in der Online-Dokumentation nach."
 TOOLS["OpenManus"]="KI-Agenten-Framework für automatisierte Aufgaben wie Web-Recherche und Datenanalyse."
 TOOLS["OpenClaw"]="Fortschrittliches KI-Agenten-Framework mit Reinforcement Learning (RL) und Skill-Integration (z.B. gcali)."
 TOOLS["Clawhub_CLI"]="Kommandozeilen-Tool zur Interaktion mit Clawhub-Diensten, dem zentralen Hub für KI-Agenten."
@@ -867,6 +1089,9 @@ TOOLS["Coqui_TTS"]="Lokale Text-to-Speech Pipeline für Sprachsynthese und Conte
 TOOLS["YT_DLP"]="Downloader und Eingangsbaustein für Video- und Audioquellen in Content-Pipelines."
 TOOLS["Web3_APIs"]="Web3- und Blockchain-Bibliotheken für On-Chain-Daten und Trading-Integrationen."
 TOOLS["Exchange_APIs"]="Börsen- und Marktdatenbibliotheken für Trading-Bots und Strategietests."
+TOOLS["FinGPT"]="GitHub-basierter Open-Source-Finanz-LLM-Stack für Analyse, Fine-Tuning und Finanzaufgaben."
+TOOLS["FinRobot"]="Agentische Open-Source-Plattform für Finanzanalyse, Reports und Research-Workflows."
+TOOLS["FinRAG"]="Finanz-RAG-Stack für Berichte, Dokumente und lokale Wissensabfragen."
 TOOLS["Nmap"]="Port- und Netzwerkscanner für Security-Checks und Exposure-Analysen."
 TOOLS["Nikto"]="Webserver-Scanner für grundlegende Sicherheits- und Exposure-Prüfungen."
 TOOLS["Trivy"]="Scanner für Container, Images und Abhängigkeiten mit Fokus auf Sicherheitslücken."
@@ -1081,6 +1306,9 @@ TOOL_SCRIPT_NAMES["Coqui_TTS"]="coqui_tts"
 TOOL_SCRIPT_NAMES["YT_DLP"]="yt_dlp"
 TOOL_SCRIPT_NAMES["Web3_APIs"]="web3_apis"
 TOOL_SCRIPT_NAMES["Exchange_APIs"]="exchange_apis"
+TOOL_SCRIPT_NAMES["FinGPT"]="fingpt"
+TOOL_SCRIPT_NAMES["FinRobot"]="finrobot"
+TOOL_SCRIPT_NAMES["FinRAG"]="finrag"
 TOOL_SCRIPT_NAMES["Nmap"]="nmap"
 TOOL_SCRIPT_NAMES["Nikto"]="nikto"
 TOOL_SCRIPT_NAMES["Trivy"]="trivy"
@@ -1276,7 +1504,7 @@ run_tool_script() {
 # Funktion zum Installieren eines Tools
 install_tool() {
     local TOOL_KEY="$1"
-    show_tool_action_intro "$TOOL_KEY" "installieren"
+    show_tool_action_intro "$TOOL_KEY" "installieren" "install"
     begin_operation_measurement "tool_install_${TOOL_KEY}" "Tool installieren: ${TOOL_KEY}"
     echo -e "${BLUE}Installiere Tool: ${TOOL_KEY}...${NC}"
     run_tool_script "$TOOL_KEY" "install"
@@ -1293,7 +1521,7 @@ install_tool() {
 # Funktion zum Deinstallieren eines Tools
 uninstall_tool() {
     local TOOL_KEY="$1"
-    show_tool_action_intro "$TOOL_KEY" "deinstallieren"
+    show_tool_action_intro "$TOOL_KEY" "deinstallieren" "uninstall"
     begin_operation_measurement "tool_uninstall_${TOOL_KEY}" "Tool deinstallieren: ${TOOL_KEY}"
     echo -e "${BLUE}Deinstalliere Tool: ${TOOL_KEY}...${NC}"
     run_tool_script "$TOOL_KEY" "uninstall"
@@ -1398,7 +1626,7 @@ PROFILE_EXTENDED_TOOLS["Security_Analyst"]="Fail2Ban_Analyzer Security_Workflow"
 PROFILE_INTEGRATION_TOOLS["Security_Analyst"]=""
 
 PROFILE_CORE_TOOLS["Trading_AI"]="Zenbot_trader Web3_APIs Exchange_APIs"
-PROFILE_EXTENDED_TOOLS["Trading_AI"]="Zenbot_API Risk_Strategy_Analyzer Backtest_Workflow"
+PROFILE_EXTENDED_TOOLS["Trading_AI"]="Zenbot_API Risk_Strategy_Analyzer Backtest_Workflow FinGPT FinRobot FinRAG"
 PROFILE_INTEGRATION_TOOLS["Trading_AI"]=""
 
 PROFILE_CORE_TOOLS["Visual_Creator"]="FFmpeg Stable_Diffusion_WebUI ComfyUI RealESRGAN"
@@ -1696,7 +1924,8 @@ show_main_menu() {
     "1" "${TXT_MENU_1:-Setup-Update + System-Update (Repo, OS & pnpm)}" \
     "2" "${TXT_MENU_2:-Ollama Modell-Manager}" \
     "3" "${TXT_MENU_3:-OpenClaw Konfiguration (.env & config.json)}" \
-    "4" "${TXT_MENU_4:-Hybrid: Letsung MiniPC + Multi-VPS (Empfohlen)}" \
+    "----" "${TXT_SEPARATOR_LINE:-────────────────────────────────────────────────────────}" \
+    "4" "${TXT_MENU_4:-Hybrid: Dein MiniPC + Multi-VPS (Empfohlen)}" \
     "5" "${TXT_MENU_5:-Standalone: Nur VPS (Cloud-Native)}" \
     "6" "${TXT_MENU_6:-Standalone: Nur MiniPC (Lokal)}" \
     "─" "${TXT_SEPARATOR_LINE:-────────────────────────────────────────────────────────}" \
@@ -1746,8 +1975,8 @@ while true; do
             show_operation_intro \
             "Setup-Update + System-Update" \
             "Das Setup-Repository wird aktualisiert. Danach folgen Ubuntu-Updates sowie die Aktualisierung von pnpm." \
-            "${UBUNTU_UPDATES_DOWNLOAD_TIME_ESTIMATE} Download + ${UBUNTU_UPDATES_INSTALL_TIME_ESTIMATE} Installation" \
-            "${MIN_FREE_GB_ABSOLUTE}-${MIN_FREE_GB_RECOMMENDED} GB" \
+            "$(get_operation_duration_estimate_label "main_menu_update" "${UBUNTU_UPDATES_DOWNLOAD_TIME_ESTIMATE} Download + ${UBUNTU_UPDATES_INSTALL_TIME_ESTIMATE} Installation")" \
+            "$(get_operation_storage_estimate_label "main_menu_update" "${MIN_FREE_GB_ABSOLUTE}-${MIN_FREE_GB_RECOMMENDED} GB")" \
             "Bei lokalen Aenderungen im Setup wird das Repo-Update bewusst uebersprungen, damit nichts ueberschrieben wird."
             begin_operation_measurement "main_menu_update" "Setup-Update + System-Update"
             run_bash_script "$INSTALL_DIR/scripts/auto_update.sh"
@@ -1755,6 +1984,12 @@ while true; do
             read -p "System-Update abgeschlossen. Drücken Sie Enter..."
             ;;
         2)
+            show_operation_intro \
+            "Ollama Modell-Manager" \
+            "Lokales LLM-Backend. Du kannst über den Ollama Modell-Manager spezifische Modelle installieren und verwalten. Für weitere Informationen zu den Modellen siehe in der Online-Dokumentation nach." \
+            "Modell-Downloads und Installationszeiten werden im Modell-Manager je Modell gemessen und spaeter fuer reale Erfahrungswerte gespeichert" \
+            "15-40 GB ohne Modelle, mit mehreren Modellen deutlich mehr" \
+            "Die eigentliche Dauer haengt stark von Modellgroesse, Internetgeschwindigkeit und SSD-Leistung ab."
             run_bash_script "$INSTALL_DIR/scripts/ollama_model_manager.sh"
             read -p "Ollama Modell-Management abgeschlossen. Drücken Sie Enter..."
             ;;
@@ -1764,13 +1999,13 @@ while true; do
             ;;
         4)
             show_operation_intro \
-            "Hybrid-Setup: Letsung MiniPC + Multi-VPS" \
+            "Hybrid-Setup: Dein MiniPC + Multi-VPS" \
             "Installiert zuerst die Basis mit OpenClaw und Ollama und richtet danach das hybride Setup mit Home Assistant und Cloudflare-nahem Zugriff ein." \
-            "${SETUP_INSTALL_TIME_ESTIMATE} Gesamt, darin meist ${OPENCLAW_DOWNLOAD_TIME_ESTIMATE} Download + ${OPENCLAW_BUILD_TIME_ESTIMATE} Build + ${OLLAMA_INSTALL_TIME_ESTIMATE} fuer Ollama + ${HOME_ASSISTANT_INSTALL_TIME_ESTIMATE} fuer Home Assistant" \
-            "${MIN_FREE_GB_RECOMMENDED} GB oder mehr" \
+            "$(get_operation_duration_estimate_label "main_menu_hybrid" "${SETUP_INSTALL_TIME_ESTIMATE} Gesamt, darin meist ${OPENCLAW_DOWNLOAD_TIME_ESTIMATE} Download + ${OPENCLAW_BUILD_TIME_ESTIMATE} Build + ${OLLAMA_INSTALL_TIME_ESTIMATE} fuer Ollama + ${HOME_ASSISTANT_INSTALL_TIME_ESTIMATE} fuer Home Assistant")" \
+            "$(get_operation_storage_estimate_label "main_menu_hybrid" "${MIN_FREE_GB_RECOMMENDED} GB oder mehr")" \
             "Je nach Cloudflare- und VPS-Schritten koennen weitere manuelle Angaben oder API-Daten noetig sein."
-            begin_operation_measurement "main_menu_hybrid" "Hybrid-Setup: Letsung MiniPC + Multi-VPS"
-            echo -e "${BLUE}Starte Hybrid-Setup (Letsung MiniPC + Multi-VPS)...${NC}"
+            begin_operation_measurement "main_menu_hybrid" "Hybrid-Setup: Dein MiniPC + Multi-VPS"
+            echo -e "${BLUE}Starte Hybrid-Setup (Dein MiniPC + Multi-VPS)...${NC}"
             if run_base_install_if_needed; then
                 run_bash_script "$INSTALL_DIR/scripts/hybrid_setup.sh"
                 if [ $? -eq 0 ]; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
@@ -1784,8 +2019,8 @@ while true; do
             show_operation_intro \
             "Standalone-Setup: Nur VPS (Cloud-Native)" \
             "Installiert die Basis und richtet danach die VPS-Variante mit K3s-/Cloud-Native-Bausteinen fuer OpenClaw vor." \
-            "${SETUP_INSTALL_TIME_ESTIMATE} Gesamt, darin meist ${OPENCLAW_DOWNLOAD_TIME_ESTIMATE} Download + ${OPENCLAW_BUILD_TIME_ESTIMATE} Build + ${OLLAMA_INSTALL_TIME_ESTIMATE} fuer Ollama" \
-            "${MIN_FREE_GB_RECOMMENDED} GB oder mehr" \
+            "$(get_operation_duration_estimate_label "main_menu_vps" "${SETUP_INSTALL_TIME_ESTIMATE} Gesamt, darin meist ${OPENCLAW_DOWNLOAD_TIME_ESTIMATE} Download + ${OPENCLAW_BUILD_TIME_ESTIMATE} Build + ${OLLAMA_INSTALL_TIME_ESTIMATE} fuer Ollama")" \
+            "$(get_operation_storage_estimate_label "main_menu_vps" "${MIN_FREE_GB_RECOMMENDED} GB oder mehr")" \
             "Einige Teile sind vorbereitende Infrastruktur. Fuer produktive Deployments koennen spaeter noch weitere Schritte notwendig sein."
             begin_operation_measurement "main_menu_vps" "Standalone-Setup: Nur VPS"
             echo -e "${BLUE}Starte Standalone VPS-Setup (Cloud-Native)...${NC}"
@@ -1803,8 +2038,8 @@ while true; do
             show_operation_intro \
             "Standalone-Setup: Nur MiniPC (Lokal)" \
             "Installiert die komplette lokale Basis mit OpenClaw, Ollama und den fuer den MiniPC vorgesehenen Zusatzkomponenten." \
-            "${LOCAL_SETUP_TOTAL_ESTIMATE} Gesamt, darin meist ${OPENCLAW_DOWNLOAD_TIME_ESTIMATE} Download + ${OPENCLAW_BUILD_TIME_ESTIMATE} Build + ${OLLAMA_INSTALL_TIME_ESTIMATE} fuer Ollama + ${HOME_ASSISTANT_INSTALL_TIME_ESTIMATE} fuer Home Assistant" \
-            "${MIN_FREE_GB_RECOMMENDED} GB oder mehr" \
+            "$(get_operation_duration_estimate_label "main_menu_local" "${LOCAL_SETUP_TOTAL_ESTIMATE} Gesamt, darin meist ${OPENCLAW_DOWNLOAD_TIME_ESTIMATE} Download + ${OPENCLAW_BUILD_TIME_ESTIMATE} Build + ${OLLAMA_INSTALL_TIME_ESTIMATE} fuer Ollama + ${HOME_ASSISTANT_INSTALL_TIME_ESTIMATE} fuer Home Assistant")" \
+            "$(get_operation_storage_estimate_label "main_menu_local" "${MIN_FREE_GB_RECOMMENDED} GB oder mehr")" \
             "Der OpenClaw-Build mit Ollama kann geschaetzt ${LOCAL_SETUP_TOTAL_ESTIMATE} dauern.\nEine Eingabe des Ubuntu-Passworts wird kurz nach Beginn der Installation abverlangt.\nIn voraussichtlich ${RED}${LOCAL_SETUP_CONFIRM_STOP_1_ESTIMATE}${YELLOW} wird eine manuelle Bestaetigung von dir verlangt, typischerweise beim nachtraeglichen Build von @discordjs/opus.\nDanach geht es auch schon mit Ollama weiter, grob ab ${RED}${LOCAL_SETUP_CONFIRM_STOP_2_ESTIMATE}${YELLOW}, inklusive einer erneuten Ubuntu-Passwortabfrage.\nKurz vor ${RED}${LOCAL_SETUP_CLOUDFLARE_TOKEN_STOP_ESTIMATE}${YELLOW} wird in der Regel der Cloudflare-Token abgefragt.\nDiese Zwischenstopps gehoeren zur gesamten Zeitmessung mit dazu."
             begin_operation_measurement "main_menu_local" "Standalone-Setup: Nur MiniPC"
             echo -e "${BLUE}Starte Standalone MiniPC-Setup (Lokal)...${NC}"
@@ -1824,8 +2059,8 @@ while true; do
             show_operation_intro \
             "Ruflo: Installation & Management" \
             "Klonen, Node.js-/pnpm-Pruefung, Build und CLI-Verknuepfung fuer Ruflo bzw. Claude-Flow-nahe Werkzeuge." \
-            "${SETUP_DOWNLOAD_TIME_ESTIMATE} Download + ${SETUP_INSTALL_TIME_ESTIMATE} Installation" \
-            "${MIN_FREE_GB_ABSOLUTE} GB oder mehr" \
+            "$(get_operation_duration_estimate_label "main_menu_ruflo" "${SETUP_DOWNLOAD_TIME_ESTIMATE} Download + ${SETUP_INSTALL_TIME_ESTIMATE} Installation")" \
+            "$(get_operation_storage_estimate_label "main_menu_ruflo" "${MIN_FREE_GB_ABSOLUTE} GB oder mehr")" \
             "Abhaengig vom Repo-Ziel kann zusaetzlich Netzwerkzeit fuer das Klonen und den Build anfallen."
             begin_operation_measurement "main_menu_ruflo" "Ruflo: Installation & Management"
             echo -e "${BLUE}Ruflo Installation & Management...${NC}"
@@ -1851,8 +2086,8 @@ while true; do
             show_operation_intro \
             "OpenClaw im Dev-Modus starten" \
             "Startet die vorhandene OpenClaw-Installation im Entwicklungsmodus mit pnpm dev." \
-            "Start meist in wenigen Sekunden bis Minuten, je nach vorhandenem Build-Stand" \
-            "${MIN_FREE_GB_ABSOLUTE} GB oder mehr" \
+            "$(get_operation_duration_estimate_label "main_menu_openclaw_dev" "Start meist in wenigen Sekunden bis Minuten, je nach vorhandenem Build-Stand")" \
+            "$(get_operation_storage_estimate_label "main_menu_openclaw_dev" "${MIN_FREE_GB_ABSOLUTE} GB oder mehr")" \
             "Falls die Basis noch nicht installiert ist, fuehre zuerst ein Setup wie Punkt 4, 5 oder 6 aus."
             begin_operation_measurement "main_menu_openclaw_dev" "OpenClaw im Dev-Modus starten"
             echo -e "${BLUE}Starte OpenClaw im Dev-Modus...${NC}"
@@ -1863,8 +2098,8 @@ while true; do
             show_operation_intro \
             "Home Assistant starten" \
             "Startet den vorhandenen Home-Assistant-Dienst ueber systemd." \
-            "${HOME_ASSISTANT_INSTALL_TIME_ESTIMATE} fuer Erstaufbau, Start selbst meist deutlich kuerzer" \
-            "${MIN_FREE_GB_ABSOLUTE} GB oder mehr" \
+            "$(get_operation_duration_estimate_label "main_menu_homeassistant" "${HOME_ASSISTANT_INSTALL_TIME_ESTIMATE} fuer Erstaufbau, Start selbst meist deutlich kuerzer")" \
+            "$(get_operation_storage_estimate_label "main_menu_homeassistant" "${MIN_FREE_GB_ABSOLUTE} GB oder mehr")" \
             "Wenn Home Assistant noch nicht eingerichtet wurde, nutze vorher ein passendes Setup mit lokaler oder hybrider Installation."
             begin_operation_measurement "main_menu_homeassistant" "Home Assistant starten"
             echo -e "${BLUE}Starte Home Assistant...${NC}"

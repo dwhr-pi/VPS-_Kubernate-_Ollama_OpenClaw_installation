@@ -13,9 +13,12 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 INSTALL_DIR="${INSTALL_DIR:-$(cd "$SCRIPT_DIR/../.." && pwd)}"
 # shellcheck disable=SC1091
 source "$INSTALL_DIR/scripts/helpers/status_tracking.sh"
+# shellcheck disable=SC1091
+source "$INSTALL_DIR/scripts/lib/common.sh"
 init_tool_tracking "OpenManus"
 
 OPENMANUS_DIR="/opt/openmanus"
+OPENMANUS_REPO_URL="$(get_custom_repo_url "OPENMANUS" "https://github.com/openmanus/openmanus.git")"
 
 echo -e "${BLUE}Starte Installation von OpenManus...${NC}"
 
@@ -28,7 +31,7 @@ else
     echo -e "${BLUE}Klone OpenManus in $OPENMANUS_DIR...${NC}"
     sudo mkdir -p "$OPENMANUS_DIR"
     sudo chown -R $USER:$USER "$OPENMANUS_DIR"
-    git clone https://github.com/openmanus/openmanus.git "$OPENMANUS_DIR"
+    git clone "$OPENMANUS_REPO_URL" "$OPENMANUS_DIR"
     cd "$OPENMANUS_DIR"
 fi
 

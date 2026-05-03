@@ -11,9 +11,11 @@ NC='\033[0m'
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 INSTALL_DIR="${INSTALL_DIR:-$(cd "$SCRIPT_DIR/../.." && pwd)}"
 TOOL_DIR="/opt/comfyui"
-REPO_URL="${COMFYUI_REPO_URL:-https://github.com/comfyanonymous/ComfyUI.git}"
 # shellcheck disable=SC1091
 source "$INSTALL_DIR/scripts/helpers/status_tracking.sh"
+# shellcheck disable=SC1091
+source "$INSTALL_DIR/scripts/lib/common.sh"
+REPO_URL="${COMFYUI_REPO_URL:-$(get_custom_repo_url "COMFYUI" "https://github.com/comfyanonymous/ComfyUI.git")}"
 init_tool_tracking "ComfyUI"
 
 echo -e "${BLUE}Starte Installation von ComfyUI...${NC}"

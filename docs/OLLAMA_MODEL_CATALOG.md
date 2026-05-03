@@ -20,6 +20,43 @@ Wichtig:
 | `phi4:14b` | ca. 9.1 GB | ab 20 GB | Stärkeres Modell für Analyse, Reasoning und schwierigere lokale Aufgaben |
 | `deepseek-r1:8b` | ca. 5.2 GB | ab 12 GB | Reasoning-Ableger für Planung, Analyse und schrittweises Denken |
 
+## Finanzdatenanalyse / Trading-Analyse
+
+Für Finanzdatenanalyse sind im lokalen Setup vor allem Modelle sinnvoll, die:
+
+- strukturiert Tabellen, Zahlen und Meldungen auswerten können
+- sauberes Reasoning für Szenarien, Risiko und Gegenargumente liefern
+- sich mit GitHub-basierten Finanzprojekten kombinieren lassen
+
+| Modell / Stack | Downloadgröße | Empf. RAM | Zweck |
+|---|---:|---:|---|
+| `qwen3:4b` | ca. 2.6 GB | ab 8 GB | Kompakter Finanzanalyse-Einstieg für MiniPC, Meldungen, Watchlists und einfache Kennzahlen |
+| `qwen3:30b` | ca. 19 GB | ab 32 GB | Starkes lokales Analysemodell für Berichte, Tabellen, Earnings-Zusammenfassungen und mehrstufige Auswertung |
+| `deepseek-r1:8b` | ca. 5.2 GB | ab 12 GB | Lokaler Reasoning-Stack für Risikoargumentation, Szenarien und Backtest-Erklärungen |
+| `deepseek-r1:14b` | ca. 9.0 GB | ab 20 GB | Größerer Reasoning-Ableger für komplexere Finanz- und Marktanalysen |
+| `FinGPT` (GitHub) | Repo-basiert | ab 16 GB | Open-Source Finanz-LLM-Stack zum Fine-Tuning, Testen und Weiterentwickeln |
+| `FinRobot` (GitHub) | Repo-basiert | ab 16 GB | Agentische Finanzanalyse mit Reports, Equity-Research und Workflows |
+| `FinRAG` (GitHub) | Repo-basiert | ab 12 GB | Finanz-RAG für Berichte, Dokumente, Research und Wissensabfragen |
+
+### Empfohlene Startbefehle
+
+Für lokale Analyse mit Ollama:
+
+```bash
+ollama pull qwen3:4b
+ollama pull qwen3:30b
+ollama pull deepseek-r1:8b
+ollama pull deepseek-r1:14b
+```
+
+Für GitHub-basierte Weiterentwicklung im Setup:
+
+- `FinGPT`
+- `FinRobot`
+- `FinRAG`
+
+Diese drei Stacks sind keine simplen Gewichtsdateien, sondern weiterentwickelbare Open-Source-Projekte für Finanzanalyse, RAG und agentische Auswertung.
+
 ## Coding- und Agentenmodelle
 
 | Modell | Downloadgröße | Empf. RAM | Zweck |
@@ -65,6 +102,7 @@ ollama pull devstral:24b
 - `llama3.2:3b`
 - `gemma3:4b`
 - `qwen2.5:7b`
+- `qwen3:4b`
 
 ### Mittlere Systeme
 
@@ -72,6 +110,7 @@ ollama pull devstral:24b
 - `qwen2.5-coder:7b`
 - `deepseek-r1:8b`
 - `mistral-nemo:12b`
+- `deepseek-r1:14b`
 
 ### Größere Systeme
 
@@ -79,6 +118,7 @@ ollama pull devstral:24b
 - `mistral-small:24b`
 - `devstral:24b`
 - `qwen3-coder:30b`
+- `qwen3:30b`
 
 ## Nutzung in OpenClaw
 

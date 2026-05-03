@@ -16,9 +16,12 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 INSTALL_DIR="${INSTALL_DIR:-$(cd "$SCRIPT_DIR/../.." && pwd)}"
 # shellcheck disable=SC1091
 source "$INSTALL_DIR/scripts/helpers/status_tracking.sh"
+# shellcheck disable=SC1091
+source "$INSTALL_DIR/scripts/lib/common.sh"
 init_tool_tracking "OpenClaw"
 
 OPENCLAW_DIR="/opt/openclaw"
+OPENCLAW_REPO_URL="$(get_custom_repo_url "OPENCLAW" "https://github.com/openclaw/openclaw.git")"
 
 echo -e "${BLUE}Starte Installation von OpenClaw...${NC}"
 
@@ -31,7 +34,7 @@ else
     echo -e "${BLUE}Klone OpenClaw in $OPENCLAW_DIR...${NC}"
     sudo mkdir -p "$OPENCLAW_DIR"
     sudo chown -R $USER:$USER "$OPENCLAW_DIR"
-    git clone https://github.com/openclaw/openclaw.git "$OPENCLAW_DIR"
+    git clone "$OPENCLAW_REPO_URL" "$OPENCLAW_DIR"
     cd "$OPENCLAW_DIR"
 fi
 

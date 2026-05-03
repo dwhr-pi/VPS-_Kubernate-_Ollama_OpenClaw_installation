@@ -58,6 +58,27 @@ Zeige mir, welche Parameter ich vor einem Backtest priorisieren sollte.
 - `Zenbot_trader` ist der wichtigste bereits vorhandene konkrete Baustein.
 - `Web3_APIs` und `Exchange_APIs` ergänzen jetzt zusätzliche Daten- und Börsenanbindungen.
 
+## Empfohlene LLMs für Finanzdatenanalyse
+
+Für dieses Profil sind im aktuellen Setup besonders sinnvoll:
+
+- `qwen3:4b`
+  - für kleine lokale Systeme, Watchlists, Nachrichten und einfache Kennzahlen
+- `qwen3:30b`
+  - für stärkere lokale Analyse, Research-Zusammenfassungen und mehrstufige Auswertung
+- `deepseek-r1:8b`
+  - für Reasoning, Risikoargumentation und Backtest-Erklärungen
+- `deepseek-r1:14b`
+  - für komplexere Finanz- und Szenarioanalyse
+
+GitHub-basierte Finanz-Stacks zur Weiterentwicklung:
+
+- `FinGPT`
+- `FinRobot`
+- `FinRAG`
+
+Diese GitHub-Stapel sind im Setup als optionale Module für Analyse, RAG und lokale Weiterentwicklung vorgesehen, nicht als automatische Live-Trading-Engine.
+
 ## Vergleich
 
 ### ✅ In Sync
