@@ -163,6 +163,64 @@ Wenn `botsoft.uk` direkt bei `Cloudflare Registrar` liegt:
 
 Ohne diesen Zwischenschritt ist ein echter Wechsel der autoritativen Nameserver oft nicht der normale direkte Weg.
 
+### Prüfliste mit echten `dig`-Befehlen fuer `botsoft.uk`
+
+Nach der Umstellung sollte zuerst geprueft werden, ob Hurricane Electric autoritativ antwortet und ob die wichtigsten Records auch ueber externe Resolver bereits korrekt sichtbar sind.
+
+Grundpruefung der Zone:
+
+```bash
+dig botsoft.uk NS +short
+dig botsoft.uk SOA +short
+dig botsoft.uk A +short
+dig botsoft.uk AAAA +short
+dig botsoft.uk MX +short
+dig botsoft.uk TXT +short
+```
+
+Typische Hostnamen pruefen:
+
+```bash
+dig www.botsoft.uk CNAME +short
+dig www.botsoft.uk A +short
+dig ha.botsoft.uk A +short
+dig grafana.botsoft.uk A +short
+dig api.botsoft.uk A +short
+dig tunnel.botsoft.uk CNAME +short
+```
+
+ACME- und Validierungs-Records pruefen:
+
+```bash
+dig _acme-challenge.botsoft.uk TXT +short
+dig _acme-challenge.ha.botsoft.uk TXT +short
+```
+
+Direkt gegen Hurricane-Electric-Nameserver pruefen:
+
+```bash
+dig @ns1.he.net botsoft.uk NS +short
+dig @ns1.he.net botsoft.uk A +short
+dig @ns1.he.net www.botsoft.uk CNAME +short
+dig @ns1.he.net _acme-challenge.botsoft.uk TXT +short
+```
+
+Aufloesung aus Sicht externer Resolver gegenpruefen:
+
+```bash
+dig @1.1.1.1 botsoft.uk A +short
+dig @8.8.8.8 botsoft.uk A +short
+dig @9.9.9.9 botsoft.uk A +short
+```
+
+Worauf dabei zu achten ist:
+
+- `NS` und `SOA` sollten nach der Umstellung klar auf die Hurricane-Electric-Zone zeigen.
+- `A`- und `AAAA`-Records sollten nur auf bewusst freigegebene Ziele zeigen, nicht versehentlich auf interne Tailscale-Adressen.
+- `CNAME`-Records fuer Tunnel- oder Service-Subdomains muessen mit der geplanten Cloudflare- oder Reverse-Proxy-Route uebereinstimmen.
+- `TXT`-Records fuer SPF, DKIM, DMARC oder ACME muessen vollstaendig uebernommen worden sein, bevor alte DNS-Eintraege entfernt werden.
+- Wenn `@ns1.he.net` schon korrekt antwortet, `1.1.1.1` oder `8.8.8.8` aber noch alte Werte zeigen, ist das meist nur DNS-Propagation und kein Konfigurationsfehler.
+
 ## 2. Schutz vor DDoS-Angriffen und Bot-Attacken
 
 Auch wenn du Cloudflare als primären DNS-Anbieter verlassen hast, gibt es weiterhin Maßnahmen, die du ergreifen kannst, um deine Dienste zu schützen.
