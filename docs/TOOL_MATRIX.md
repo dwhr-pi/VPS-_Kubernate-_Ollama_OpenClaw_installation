@@ -2,6 +2,12 @@
 
 Diese Matrix zeigt die derzeit sinnvoll verdrahteten Toolgruppen. Sie ist bewusst kompakter als `scripts/tools/` und unterscheidet zwischen `Core`, `Optional`, `Experimental` und `High-Risk`.
 
+Wichtig zur Zaehlung:
+
+- die automatische Live-Zaehlung erfolgt im Setup unter `Tool-Management`
+- dort werden `Gesamtzahl` und `bereits installierte Tools` direkt aus der Tool-Liste und der Statusdatei berechnet
+- diese Markdown-Datei bleibt bewusst eine thematische Uebersicht und nicht die laufende Statusanzeige
+
 ## Core
 
 | Gruppe | Tools | Einsatz |

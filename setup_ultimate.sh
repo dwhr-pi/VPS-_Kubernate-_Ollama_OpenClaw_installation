@@ -937,7 +937,7 @@ fi
 
 # Profil-Definitionen mit Beschreibungen
 declare -A PROFILES
-PROFILE_KEYS=("Programmierer" "Media_Musik" "KI_Forschung" "Texter_Werbung_Marketing" "Rechtsberatung_Steuerrecht" "Agent_Orchestrator" "Audio" "Content_Automation" "Research_Agent" "Security_Analyst" "Trading_AI" "Visual_Creator" "LLM_Builder" "DevOps_SRE" "Data_Engineering" "Document_AI" "Voice_Assistant" "Video_Generation" "Image_Generation" "Web3_Crypto_Tools" "Compliance_Privacy" "Personal_Knowledge_OS" "Repo_Maintainer")
+PROFILE_KEYS=("Programmierer" "Repo_Maintainer" "Agent_Orchestrator" "LLM_Builder" "Research_Agent" "KI_Forschung" "Data_Engineering" "Document_AI" "Personal_Knowledge_OS" "Texter_Werbung_Marketing" "Rechtsberatung_Steuerrecht" "DevOps_SRE" "Security_Analyst" "Compliance_Privacy" "Audio" "Voice_Assistant" "Media_Musik" "Content_Automation" "Image_Generation" "Video_Generation" "Visual_Creator" "Trading_AI" "Web3_Crypto_Tools")
 PROFILES["Programmierer"]="Tools für Entwicklung, Code-Generierung (DeepSeek Coder), Git-Integration, Huginn, Clawhub CLI. Ideal für Entwickler und Automatisierungsexperten."
 PROFILES["Media_Musik"]="Tools für Audio/Video (FFmpeg), Audio-AI, Alexa-Integration, Clawbake. Für Content Creator und Medienproduzenten."
 PROFILES["KI_Forschung"]="Spezialisierte Bibliotheken für Reinforcement Learning (OpenClaw RL), erweiterte LLM-Modelle (Gemini-1.5-Pro), Flowise/LangFlow. Für KI-Wissenschaftler und Forscher."
@@ -1543,19 +1543,23 @@ show_tool_management_menu() {
 
     # Installierte Tools laden
     declare -A INSTALLED_TOOLS_MAP
+    local total_tool_count=0
+    local installed_tool_count=0
     load_installed_map "$TOOL_STATUS_FILE" INSTALLED_TOOLS_MAP
+    total_tool_count="${#TOOL_KEYS[@]}"
 
     TOOL_CHECKLIST_OPTIONS=()
     for tool_key in "${TOOL_KEYS[@]}"; do
         STATUS="off"
         if [ -n "$tool_key" ] && [ "${INSTALLED_TOOLS_MAP[$tool_key]:-}" = "1" ]; then
             STATUS="on"
+            installed_tool_count=$((installed_tool_count + 1))
         fi
         TOOL_CHECKLIST_OPTIONS+=("$tool_key" "${TOOLS[$tool_key]}" "$STATUS")
     done
 
     dialog --clear --backtitle "$APP_TITLE" \
-    --title "TOOL-MANAGEMENT" --checklist "Wählen Sie Tools zum Installieren/Deinstallieren:" 32 110 24 \
+    --title "TOOL-MANAGEMENT (${installed_tool_count}/${total_tool_count} installiert)" --checklist "Wählen Sie Tools zum Installieren/Deinstallieren. Gesamt: ${total_tool_count} | Installiert: ${installed_tool_count}" 32 110 24 \
     "${TOOL_CHECKLIST_OPTIONS[@]}" 2> /tmp/tool_selection
 
     if [ $? -ne 0 ]; then
