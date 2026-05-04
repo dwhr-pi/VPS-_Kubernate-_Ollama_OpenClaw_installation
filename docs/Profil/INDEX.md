@@ -76,6 +76,8 @@ Die Inhalte in diesem Verzeichnis wurden daher aus folgenden Quellen zusammengef
 - `Synthetic_Data_Lab.doc.md`
 - `AI_Governance_Audit.doc.md`
 - `Cost_Energy_Optimizer.doc.md`
+- `Influencer_LiveCam_Streaming_AI.doc.md`
+- `Interior_RoomGPT_Designer.md`
 
 ## Bewusst nicht separat abgeleitet
 

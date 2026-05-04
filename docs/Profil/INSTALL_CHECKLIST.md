@@ -119,3 +119,17 @@ Für VPS-Deployments:
 
 Wichtiger Hinweis:
 `scripts/k8s_deployments.yaml` enthält Beispiel-/Risikostellen und sollte vor produktiver Nutzung gehärtet werden.
+
+## 11. Profilhinweis: Influencer_LiveCam_Streaming_AI
+
+Fuer das Profil `Influencer_LiveCam_Streaming_AI` zusaetzlich einplanen:
+
+- `OBS Studio` lokal oder auf dem Creator-Host
+- `ffmpeg` fuer Clip- und Re-Encode-Workflows
+- `Ollama` mit kleinem bis mittlerem lokalen Modell
+- `faster-whisper` fuer Transkription
+- `Piper` optional fuer lokale TTS
+- `ComfyUI` oder `Fooocus` optional fuer Thumbnail- und Branding-Ideen
+- Speicherplatz fuer Aufnahmen, Transkripte, Clips und Assets
+- Datenschutzpruefung fuer Chat-Logs, Fan-Kommunikation und Moderationsspeicher
+- keine oeffentliche Freigabe sensibler Creator- oder Admin-Panels ohne Tunnel, Reverse Proxy oder privates Overlay
