@@ -1,5 +1,7 @@
 # Cloudflare Tunnel Schritt für Schritt
 
+Ergänzend zur Schritt-für-Schritt-Anleitung gibt es jetzt auch die gemeinsame Einordnung unter [docs/REMOTE_ACCESS_DNS_GUIDE.md](/C:/Users/danie/.codex/worktrees/50f5/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/REMOTE_ACCESS_DNS_GUIDE.md:1). Dort wird erklärt, wann `Cloudflare Tunnel`, `Tailscale` oder `Hurricane Electric` der sinnvollere Pfad ist.
+
 Diese Anleitung hilft dir dabei, den für das Setup benötigten Tunnel und den zugehörigen Token bei [cloudflare.com](https://cloudflare.com) anzulegen.
 
 ## Ziel

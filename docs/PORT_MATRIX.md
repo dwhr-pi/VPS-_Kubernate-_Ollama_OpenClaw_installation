@@ -1,59 +1,68 @@
 # Port Matrix
 
-Diese Matrix listet die wichtigsten Standardports der dokumentierten Dienste. Nicht jeder Port ist in jedem Profil aktiv.
+Diese Matrix listet die wichtigsten Standardports im Repo. Standardregel ab jetzt: Dienste werden nach Moeglichkeit nur auf `127.0.0.1` gebunden und erst bewusst ueber Tunnel oder Reverse Proxy freigegeben.
 
-| Port | Dienst | Konflikthinweis |
-|---:|---|---|
-| 1880 | Node-RED | Smart-Home-/Flow-Port |
-| 1883 | Mosquitto MQTT | MQTT-Basisport |
-| 3000 | Open WebUI | konfliktanfälliger Web-UI-Port |
-| 3001 | Grafana | Dashboard-Zugriff |
-| 3003 | Langfuse | LLM-Telemetrie |
-| 3004 | Uptime Kuma | Uptime-Monitoring |
-| 3005 | Forgejo | Self-Hosted Git |
-| 3006 | Metabase | BI-Frontend |
-| 4000 | LiteLLM | Gateway-Port |
-| 5000 | changedetection.io | Web-Monitoring |
-| 5232 | Radicale | CalDAV/CardDAV |
-| 5432 | PostgreSQL | Datenbank |
-| 6900 | Argilla | Annotation / Feedback |
-| 7474 | Neo4j HTTP | Wissensgraph-UI |
-| 7687 | Neo4j Bolt | Wissensgraph-Treiber |
-| 6333 | Qdrant | Vektor-DB |
-| 7700 | Meilisearch | Suche |
-| 7860 | Stable Diffusion WebUI Forge | Bild-/Video-UI |
-| 7861 | Gradio | Demo-UI |
-| 8003 | Airbyte | Dateningestion |
-| 8004 | Healthchecks | Cron-/Job-Monitoring |
-| 8000 | ArchiveBox | Web-Archiv |
-| 8001 | FastAPI / Datasette | lokale App- oder Daten-UI |
-| 8010 | Paperless-ngx | DMS-Port |
-| 8055 | Directus | Low-Code/API-UI |
-| 8080 | Label Studio | Annotation |
-| 8081 | Stirling PDF | PDF-Tooling |
-| 8082 | Nextcloud | Files/DMS |
-| 8083 | NocoDB | No-Code-Datenbank-UI |
-| 8084 | Tabby | Coding-Assistenz |
-| 8086 | Caddy | Reverse Proxy lokal |
-| 8088 | cAdvisor | Container-Monitoring |
-| 8090 | Appsmith | Low-Code-App-Builder |
-| 8099 | Zigbee2MQTT | Smart-Home-Dashboard |
-| 8123 | Home Assistant | Smart-Home-Zentrale |
-| 8188 | ComfyUI | Node-basiertes Medien-Frontend |
-| 8384 | Syncthing | Sync-Weboberfläche |
-| 8501 | Streamlit | interne Dashboards |
-| 8888 | SearXNG | private Meta-Suche |
-| 9000 | MinIO API | Objekt-Storage |
-| 9001 | MinIO Console | Objekt-Storage-Weboberfläche |
-| 9090 | Prometheus | Monitoring |
-| 9091 | Authelia | Auth-Schicht |
-| 9998 | Apache Tika | Dokumentenparser |
-| 10000 | Budibase | App-Builder |
-| 11434 | Ollama | lokaler Modellserver |
-| 12101 | Rhasspy | lokaler Sprachassistent |
-| 19999 | Netdata | Host-Monitoring |
+## Kernports
 
-Empfohlene Prüfung:
+| Port | Dienst | Kategorie | Hinweis |
+|---:|---|---|---|
+| 3000 | Open WebUI | UI | haeufiger UI-Port, lokal binden |
+| 3001 | Grafana | Monitoring | Auth und starke Passwoerter setzen |
+| 3003 | Langfuse | LLMOps | Prompt-/Trace-Daten schuetzen |
+| 3004 | Uptime Kuma | Monitoring | Monitoring nicht offen exponieren |
+| 4000 | LiteLLM | Gateway | Upstream-Keys nur in `.env` |
+| 5432 | PostgreSQL | Data | nie ohne Auth / Firewall oeffnen |
+| 6333 | Qdrant | RAG | nur intern oder mit Proxy |
+| 7700 | Meilisearch | Search | Indexdaten koennen sensibel sein |
+| 9090 | Prometheus | Monitoring | intern halten |
+| 11434 | Ollama | Runtime | lokal oder im privaten Netz halten |
+
+## Automation, Apps und Office
+
+| Port | Dienst | Kategorie | Hinweis |
+|---:|---|---|---|
+| 1880 | Node-RED | Automation | Flows und Credentials schuetzen |
+| 3006 | Metabase | BI | nur mit Rollenmodell betreiben |
+| 5678 | n8n | Automation | Workflow-Credentials extern halten |
+| 8004 | Healthchecks | Monitoring | Cron-Metadaten intern halten |
+| 8010 | Paperless-ngx | Office | Dokumentdaten sensibel behandeln |
+| 8055 | Directus | Apps | API-/CMS-Rechte trennen |
+| 8081 | Stirling PDF | Office | nur intern freigeben |
+| 8082 | Nextcloud | Office | TLS, Backup und MFA einplanen |
+| 8083 | NocoDB | Apps | DB-Zugriff begrenzen |
+| 8090 | Appsmith | Apps | nur intern oder via Auth |
+| 10000 | Budibase | Apps | Low-Code-Instanzen absichern |
+
+## Smart Home, Media und Edge
+
+| Port | Dienst | Kategorie | Hinweis |
+|---:|---|---|---|
+| 1883 | Mosquitto | IoT | MQTT nicht offen ins Internet haengen |
+| 8099 | Zigbee2MQTT | IoT | lokale Funkgeraete besonders schuetzen |
+| 8123 | Home Assistant | IoT | extern nur ueber Tunnel/Proxy |
+| 8188 | ComfyUI | Media | GPU-Frontend intern halten |
+| 7860 | Stable Diffusion WebUI Forge | Media | kann mit anderen KI-UIs kollidieren |
+| 12101 | Rhasspy | Voice | Audiodaten und Mikrofonzugriffe schuetzen |
+| 19999 | Netdata | Monitoring | Host-Telemetrie nicht offen veroeffentlichen |
+
+## Storage und Infrastruktur
+
+| Port | Dienst | Kategorie | Hinweis |
+|---:|---|---|---|
+| 8003 | Airbyte | Data | Konnektoren und Secrets beachten |
+| 9000 | MinIO API | Storage | Access Keys niemals im Repo |
+| 9001 | MinIO Console | Storage | Console nur intern oder via Auth |
+| 9998 | Apache Tika | Dokumente | Parser nicht ungeschuetzt freigeben |
+
+## Aktuelle Port-Risiken
+
+- mehrere UIs konkurrieren konzeptionell um klassische Webports wie `3000`
+- `Flowise`, `LangFlow`, `LibreChat`, `AnythingLLM` und weitere UI-Stacks sind noch nicht repo-weit auf feste Default-Ports normiert
+- lokale Compose-Stacks und spaetere K3s-Ingress-Pfade brauchen noch eine gemeinsame Port-/Hostname-Taxonomie
+
+## Empfehlung
+
+Vor groesseren Installationen zuerst Port- und Ressourcenpruefung laufen lassen:
 
 ```bash
 bash scripts/operations/check_port_conflicts.sh

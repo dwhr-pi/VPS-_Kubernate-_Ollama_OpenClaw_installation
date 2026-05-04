@@ -7,15 +7,12 @@ Diese Datei ist die kompakte Härtungsanleitung für das Setup.
 - keine `.env` mit echten Schlüsseln committen
 - keine Wallet-Seeds, Private Keys, API-Tokens oder OAuth-Secrets ablegen
 - nur Vorlagen wie `configs/.env.example` verwenden
-- produktive `.env`-, Token- und Auth-Dateien nur im Benutzer-Workspace halten
 - Secret-Scan vor Commit ausführen:
 
 ```bash
 bash scripts/operations/security_scan.sh
 bash scripts/security/secret_scan.sh
 ```
-
-Wenn lokal `pre-commit` aktiv ist, sollten `gitleaks` und `trufflehog` vor jedem Commit durchlaufen.
 
 ## 2. Benutzer-Workspace nutzen
 
@@ -31,17 +28,16 @@ Nicht in:
 ~/openclaw_ultimate_setup
 ```
 
-## 3. Oeffentliche Ports absichern
+## 3. Öffentliche Ports absichern
 
-- Grafana, Open WebUI, LiteLLM, Home Assistant, MinIO, Neo4j, Nextcloud und Browser-Agent-Dienste nicht blind ins Internet haengen
-- Standardregel: zuerst nur `127.0.0.1`, dann bewusst Proxy/Tunnel/Auth davorsetzen
+- Grafana, Open WebUI, LiteLLM, Home Assistant und MinIO nicht blind ins Internet hängen
 - wenn extern nötig:
   - Reverse Proxy
   - Auth
   - HTTPS
   - Firewall-Regeln
   - Cloudflare-Tunnel-Policies
-  - oder Tailscale/Headscale fuer private Netzpfade
+  - alternativ privater Zugriff über `Tailscale`
 
 Portübersicht:
 
@@ -57,6 +53,7 @@ Empfohlene Basis:
 - `UFW`
 - `Fail2Ban`
 - optional `CrowdSec`
+- optional `Tailscale` für privaten Admin-Zugriff ohne offene Panel-Ports
 
 Wichtig:
 - SSH nicht unnötig offen lassen
@@ -84,16 +81,23 @@ Regel:
 - immer mit Safe-Mode starten
 - niemals ungeprüft Schreibzugriff auf produktive Verzeichnisse geben
 - keine API-Schlüssel oder Wallet-Operationen automatisch durch Agenten ausführen lassen
-- Browser- und Crawl-Profile nur für legale und dokumentierte Web-Recherche einsetzen
 
-## 6. Tunnel / Reverse Proxy / Auth
+## 6. Cloudflare Tunnel
 
-- Cloudflare Tunnel, Tailscale/Headscale und Reverse Proxy sauber voneinander trennen
 - nur die wirklich nötigen Ziele freigeben
-- keine ueberbreiten Wildcard-Freigaben
+- keine überbreiten Wildcard-Freigaben
 - Tunnel-Tokens nicht im Repo speichern
-- Caddy/Traefik nur vor bewusst freigegebene interne Dienste setzen
-- Authelia oder Authentik als separate Auth-Schicht behandeln, nicht als Ersatz fuer Netzwerksegmentierung
+- Policies und Identitätsregeln nutzen
+- `cloudflared` nur für bewusst veröffentlichte Dienste verwenden, nicht als Ersatz für privaten Admin-Zugriff auf alles
+- für die gemeinsame Einordnung mit `Tailscale` und `Hurricane Electric` siehe `docs/REMOTE_ACCESS_DNS_GUIDE.md`
+
+## 6b. Tailscale
+
+- sinnvoll für privaten Zugriff auf `SSH`, `Open WebUI`, `Grafana`, `Home Assistant`, `MinIO` oder andere Admin-UIs
+- `tailscale up` bewusst manuell ausführen, damit Tailnet-Join und Freigaben nicht ungefragt automatisiert werden
+- oft die sauberere Wahl, wenn kein öffentlicher Reverse-Proxy-Zugang benötigt wird
+- ACLs, Key-Expiry und eventuelle Subnet-Router bewusst planen
+- für die gemeinsame Einordnung mit `Cloudflare` und `Hurricane Electric` siehe `docs/REMOTE_ACCESS_DNS_GUIDE.md`
 
 ## 7. Trading und Web3
 
@@ -124,7 +128,6 @@ Empfohlener Ansatz:
 - nur vertrauenswürdige Dateien importieren
 - OCR-, PDF- und Office-Tools lokal verwenden, wenn Dokumente sensibel sind
 - Audio-/Voice-Cloning nur mit Einwilligung und sauberer Lizenzlage nutzen
-- PII-sensitive Dokumente vor RAG oder Prompting zuerst anonymisieren oder redigieren
 
 ## 9. WSL2-Hinweise
 

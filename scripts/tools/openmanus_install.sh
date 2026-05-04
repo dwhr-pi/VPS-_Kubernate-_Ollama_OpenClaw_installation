@@ -22,12 +22,6 @@ OPENMANUS_REPO_URL="$(get_custom_repo_url "OPENMANUS" "https://github.com/openma
 
 echo -e "${BLUE}Starte Installation von OpenManus...${NC}"
 
-if command -v apt-get >/dev/null 2>&1; then
-    echo -e "${BLUE}Prüfe OpenManus-Basisabhängigkeiten...${NC}"
-    sudo apt-get update
-    sudo apt-get install -y git python3 python3-pip python3-venv build-essential curl
-fi
-
 # 1. OpenManus aus GitHub klonen
 if [ -d "$OPENMANUS_DIR" ]; then
     echo -e "${YELLOW}OpenManus Verzeichnis $OPENMANUS_DIR existiert bereits. Aktualisiere Repository...${NC}"
@@ -43,19 +37,8 @@ fi
 
 # 2. Python-Abhängigkeiten installieren
 echo -e "${BLUE}Installiere Python-Abhängigkeiten für OpenManus...${NC}"
-if ! python3 -m venv venv; then
-    PYTHON_VERSION="$(python3 -c 'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}")')"
-    if command -v apt-get >/dev/null 2>&1; then
-        echo -e "${YELLOW}python3 -m venv ist fehlgeschlagen. Versuche zusätzlich python${PYTHON_VERSION}-venv zu installieren...${NC}"
-        sudo apt-get install -y "python${PYTHON_VERSION}-venv"
-        python3 -m venv venv
-    else
-        echo -e "${RED}Fehler: python3 -m venv ist fehlgeschlagen und apt-get steht nicht zur Verfügung.${NC}"
-        exit 1
-    fi
-fi
+python3 -m venv venv
 source venv/bin/activate
-pip install --upgrade pip setuptools wheel
 pip install -r requirements.txt
 deactivate
 

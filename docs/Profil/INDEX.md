@@ -60,3 +60,31 @@ Die Inhalte in diesem Verzeichnis wurden daher aus folgenden Quellen zusammengef
 - Mehrere Dienste konkurrieren standardmäßig um Port `3000`.
 - OpenClaw-Konfiguration nutzt inkonsistent `OLLAMA_HOST` und `OLLAMA_BASE_URL`.
 - Die Variable `PRIMÄRES_LLM_ANBIETER` ist dokumentiert, aber als Nicht-ASCII-Umgebungsvariable betrieblich fragil.
+
+## Neue fachliche Quellprofile
+
+- `AI_Project_Manager.doc.md`
+- `Prompt_Engineering_Studio.doc.md`
+- `AI_Agent_Evaluation.doc.md`
+- `Model_Router_Gateway.doc.md`
+- `Local_AI_App_Builder.doc.md`
+- `NoCode_LowCode_AI.doc.md`
+- `Browser_Automation_Agent.doc.md`
+- `OSINT_Research.doc.md`
+- `Email_Office_Automation.doc.md`
+- `Robotics_IoT_Edge_AI.doc.md`
+- `Synthetic_Data_Lab.doc.md`
+- `AI_Governance_Audit.doc.md`
+- `Cost_Energy_Optimizer.doc.md`
+
+## Bewusst nicht separat abgeleitet
+
+- `Voice_Call_Agent`
+- `Meeting_Assistant`
+- `Legal_Tax_Document_AI`
+- `Health_Fitness_Knowledge`
+- `Android_App_AI_Dev`
+- `Desktop_App_AI_Dev`
+- `Dataset_Curation_Labeling`
+
+Diese Felder bleiben fachlich relevant, ueberlappen aber derzeit stark mit bestehenden Profilen oder brauchen erst weitere installierbare Toolbausteine.

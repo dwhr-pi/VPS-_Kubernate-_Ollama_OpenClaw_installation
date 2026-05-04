@@ -1,43 +1,33 @@
-# Robotics_IoT_Edge_AI
+# Profil: Robotics_IoT_Edge_AI
 
 ## Zweck
-ESP32-, Arduino-, MQTT- und Edge-AI-Workflows für Sensorik, Automatisierung und lokale Auswertung.
 
-## Typische Aufgaben
-- Firmware-Projekte
-- Edge-Kamera- und Sensor-Pipelines
-- MQTT-basierte Automatisierung
-- lokale CV-Auswertung auf Edge-Systemen
+Lokale Edge-AI- und IoT-Plattform fuer Sensorik, MQTT, Home Assistant und spaetere ESP-/Robotik-Pfade.
 
-## Empfohlene Tools
-PlatformIO, OpenCV Python, ESPHome, Mosquitto, Zigbee2MQTT.
+## Installierbare Kern-Tools
 
-## Optionale Tools
-Arduino CLI, Node-RED, Home Assistant.
+- `home_assistant`
+- `node_red`
+- `mosquitto`
+- `zigbee2mqtt`
+- `esphome`
 
-## Benötigte Ports
-`1883`, `8099`
+## Optionale / noch nicht sauber verdrahtete Tools
 
-## Ressourcenbedarf
-4 GB RAM lokal; mehr bei Bild-/CV-Workflows.
+- spaeter sinnvoll: `PlatformIO`, `Arduino CLI`, `ROS2`, Kamera-/Audio-Edge-Pipelines
 
-## Sicherheitsrisiken
-Greift auf physische Geräte und Heimnetz-Nähe zu. Keine ungetesteten Flows oder OTA-Änderungen auf produktive Geräte schieben.
+## Hardware / Plattform
 
-## Ollama/OpenClaw-Fit
-Gut für lokale Assistenz, Diagnose und Steuerlogik, aber nur mit klaren Freigabegrenzen.
+- gut fuer `MiniPC`, Edge-Systeme, `VPS` als Begleitinstanz
+- lokale Funk- und Netzwerkanbindung beachten
 
-## LiteLLM/Open WebUI-Fit
-Optional für Bedienung und Assistenz, nicht Kern des Profils.
+## Risiken und Grenzen
+
+- Smart-Home- und Sensordaten sind privat
+- externe Freigaben nur ueber abgesicherte Tunnel/Reverse Proxies
 
 ## Quickstart
-`bash scripts/profiles/Robotics_IoT_Edge_AI_install.sh`
 
-## Deinstallation
-`bash scripts/profiles/Robotics_IoT_Edge_AI_uninstall.sh`
-
-## Sinnvolle lokale Modelle
-Kleine Generalisten und Vision-Helfer für Debugging und Dokumentation.
-
-## Grenzen und Warnhinweise
-Keine autonomen Eingriffe in reale Aktoren ohne manuelle Freigabe und Sicherheitslogik.
+```bash
+bash scripts/profiles/Robotics_IoT_Edge_AI_install.sh
+```

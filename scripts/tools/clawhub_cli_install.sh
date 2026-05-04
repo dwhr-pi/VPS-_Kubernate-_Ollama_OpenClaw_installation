@@ -18,6 +18,7 @@ source "$INSTALL_DIR/scripts/helpers/status_tracking.sh"
 init_tool_tracking "Clawhub_CLI"
 
 CLAWHUB_CLI_DIR="/opt/clawhub-cli"
+PNPM_REGISTRY_URL="${PNPM_REGISTRY_URL:-https://registry.npmjs.org}"
 CLAWHUB_CLI_REPOS=(
     "${CLAWHUB_CLI_REPO_URL:-}"
     "https://github.com/openclaw/clawhub-cli.git"
@@ -25,7 +26,96 @@ CLAWHUB_CLI_REPOS=(
     "https://github.com/dwhr-pi/clawhub.git"
 )
 
+require_command() {
+    local cmd="$1"
+    local hint="$2"
+    if ! command -v "$cmd" >/dev/null 2>&1; then
+        echo -e "${RED}Fehler: Benötigter Befehl '$cmd' wurde nicht gefunden.${NC}"
+        echo -e "${YELLOW}${hint}${NC}"
+        exit 1
+    fi
+}
+
+check_npm_registry() {
+    local url="$1"
+
+    if command -v curl >/dev/null 2>&1; then
+        if curl -fsSI --connect-timeout 10 --max-time 20 "$url/pnpm" >/dev/null 2>&1; then
+            return 0
+        fi
+    elif command -v wget >/dev/null 2>&1; then
+        if wget -q --spider --timeout=20 "$url/pnpm"; then
+            return 0
+        fi
+    else
+        echo -e "${YELLOW}Hinweis: Weder curl noch wget gefunden, Registry-Preflight wird übersprungen.${NC}"
+        return 0
+    fi
+
+    echo -e "${RED}Fehler: Die npm-Registry unter $url ist derzeit nicht zuverlässig erreichbar.${NC}"
+    echo -e "${YELLOW}Typische Ursachen: DNS-Probleme, Proxy/Firewall, temporäre Paket-Registry-Störung oder instabile Internetverbindung.${NC}"
+    echo -e "${YELLOW}Bitte prüfen Sie insbesondere ERR_SOCKET_TIMEOUT, ECONNRESET und EAI_AGAIN im Installationslog.${NC}"
+    exit 1
+}
+
+ensure_pnpm_workspace_file() {
+    if [ -f "pnpm-workspace.yaml" ] || [ ! -f "package.json" ]; then
+        return 0
+    fi
+
+    if ! command -v node >/dev/null 2>&1; then
+        echo -e "${YELLOW}Hinweis: node nicht gefunden, automatische pnpm-Workspace-Erkennung wird übersprungen.${NC}"
+        return 0
+    fi
+
+    if node <<'NODE' >/tmp/clawhub-pnpm-workspace.log 2>&1
+const fs = require("fs");
+const pkg = JSON.parse(fs.readFileSync("package.json", "utf8"));
+const workspaces = Array.isArray(pkg.workspaces)
+  ? pkg.workspaces
+  : Array.isArray(pkg.workspaces && pkg.workspaces.packages)
+    ? pkg.workspaces.packages
+    : [];
+
+if (!workspaces.length) {
+  process.exit(1);
+}
+
+const body = "packages:\n" + workspaces.map((entry) => `  - '${String(entry).replace(/'/g, "''")}'`).join("\n") + "\n";
+fs.writeFileSync("pnpm-workspace.yaml", body, "utf8");
+process.stdout.write("pnpm-workspace.yaml wurde aus package.json/workspaces erzeugt.");
+NODE
+    then
+        echo -e "${YELLOW}Hinweis: package.json nutzt Workspaces, aber pnpm-workspace.yaml fehlte.${NC}"
+        cat /tmp/clawhub-pnpm-workspace.log
+        return 0
+    fi
+
+    return 0
+}
+
+run_pnpm_install() {
+    local attempt
+
+    for attempt in 1 2 3; do
+        echo -e "${BLUE}pnpm install Versuch ${attempt}/3...${NC}"
+        if pnpm install --fetch-retries 5 --fetch-timeout 120000 --network-concurrency 8; then
+            return 0
+        fi
+
+        if [ "$attempt" -lt 3 ]; then
+            echo -e "${YELLOW}pnpm install fehlgeschlagen. Neuer Versuch in 15 Sekunden...${NC}"
+            sleep 15
+        fi
+    done
+
+    return 1
+}
+
 echo -e "${BLUE}Starte Installation von Clawhub CLI...${NC}"
+
+require_command git "Bitte git installieren und das Skript erneut starten."
+require_command pnpm "Bitte pnpm installieren oder via Corepack aktivieren, z. B. 'corepack enable && corepack prepare pnpm@latest --activate'."
 
 CLAWHUB_CLI_REPO_URL=""
 for repo in "${CLAWHUB_CLI_REPOS[@]}"; do
@@ -51,16 +141,19 @@ if [ -d "$CLAWHUB_CLI_DIR" ]; then
 else
     echo -e "${BLUE}Klone Clawhub CLI in $CLAWHUB_CLI_DIR...${NC}"
     sudo mkdir -p "$CLAWHUB_CLI_DIR"
-    sudo chown -R $USER:$USER "$CLAWHUB_CLI_DIR"
+    sudo chown -R "$USER:$USER" "$CLAWHUB_CLI_DIR"
     GIT_TERMINAL_PROMPT=0 git clone "$CLAWHUB_CLI_REPO_URL" "$CLAWHUB_CLI_DIR"
     cd "$CLAWHUB_CLI_DIR"
 fi
 
 # 2. Abhängigkeiten installieren mit pnpm
 echo -e "${BLUE}Installiere Abhängigkeiten für Clawhub CLI mit pnpm...${NC}"
-pnpm install
-if [ $? -ne 0 ]; then
+check_npm_registry "$PNPM_REGISTRY_URL"
+ensure_pnpm_workspace_file
+if ! run_pnpm_install; then
     echo -e "${RED}Fehler: pnpm install für Clawhub CLI fehlgeschlagen.${NC}"
+    echo -e "${YELLOW}Wenn weiterhin ERR_SOCKET_TIMEOUT, ECONNRESET oder EAI_AGAIN auftreten, liegt das sehr wahrscheinlich an Netzwerk, DNS, Proxy oder npm-Registry-Erreichbarkeit.${NC}"
+    echo -e "${YELLOW}Wenn nur die Workspace-Warnung bleibt, prüfen Sie das Repo-Layout oder hinterlegen Sie dauerhaft eine pnpm-workspace.yaml im Upstream-Repository.${NC}"
     exit 1
 fi
 

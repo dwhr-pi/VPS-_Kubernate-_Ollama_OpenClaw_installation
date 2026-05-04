@@ -8,23 +8,14 @@ Das Repository entwickelt sich von einer reinen Tool-Sammlung zu einer modularen
 
 `Base System -> Runtime -> Model Gateway -> Agent Layer -> Memory/RAG -> Tool Layer -> UI -> Monitoring -> Security`
 
-Neu konsolidiert in den zentralen Registries und Profilen sind jetzt zusaetzlich vor allem:
-
-- Coding-/Sandbox-Pfade wie `Local_Codex_IDE_Agent`
-- Browser- und Web-Automatisierung ueber `Browser_Agent_Web_Automation`
-- Eval-/Benchmark-Pfade fuer Modelle, Prompts und RAG
-- Dataset-, Synthetic-Data- und Graph-RAG-Workflows
-- Office-/Cloud-/Privacy-Profile fuer produktionsnaehere Self-Hosted-Szenarien
-
 Die zugehoerige Architektur-Dokumentation findest du in [docs/ARCHITECTURE_LLMOPS_PLATFORM.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/ARCHITECTURE_LLMOPS_PLATFORM.md:1).
 
-## 📌 Gegenwärtiger Status
+## 🟡 Gegenwärtiger Status
 
-Der aktuelle Schwerpunkt liegt auf der praktischen Funktionspruefung der Setups. Die Konfigurationsfeinarbeit folgt danach schrittweise.
-
-- Das `MiniPC`-Setup ist gegenwaertig fertig.
-- Der aktuelle Hauptfokus liegt auf dem `Programmierer`-Setup.
-- Weitere Setups werden derzeit funktional geprueft und erst danach feiner konfiguriert.
+- `MiniPC`-Setup ist aktuell der stabilste abgeschlossene Pfad.
+- Der laufende Funktionstest konzentriert sich derzeit bevorzugt auf das `Programmierer`-Setup.
+- Weitere Profile und Plattformpfade werden aktuell funktional geprueft, bevor tiefer an der Feinkonfiguration gearbeitet wird.
+- Neuere Plattform- und Ausbauprofile wurden jetzt strukturell in Doku und Registries aufgenommen, sind aber nicht alle schon als Top-Level-Menuepfade gleich weit durchgetestet.
 
 ## 🚀 Schnelle Installation (One-Liner)
 
@@ -60,6 +51,14 @@ Dazu gehören jetzt insbesondere:
 - abgeleitete Profilseiten aus `docs/Profile`
 - ein separater Bereich für künftige Benutzer-Prompts
 
+**Wichtiger Stack-Standard:** Die Compose-Plattform unter `stacks/llmops-platform/` nutzt jetzt eine echte `.env` als Laufzeitdatei, waehrend `.env.example` nur noch die Vorlage ist. Exponierte Dienste werden dort standardmaessig nur an `127.0.0.1` gebunden und sollten erst bewusst ueber Tunnel oder Reverse Proxy freigegeben werden.
+
+Fuer diesen Stack gibt es jetzt analog zu OpenClaw auch eine auslagerbare, editierbare Vorlage unter `scripts/config_templates/llmops-platform/.env.template`. Die bearbeitbare Benutzerkopie liegt unter `~/.openclaw_ultimate_user_data/llmops-platform/.env.template` und kann ueber `scripts/llmops_platform_config_manager.sh` auf `stacks/llmops-platform/.env` angewendet werden.
+
+Für privaten Remote-Zugriff ist jetzt zusätzlich `Tailscale` als Tool vorgesehen. Das passt besonders an die Stelle, an der sonst unnötig offene Admin-Ports entstehen würden, etwa für `Open WebUI`, `Grafana`, `Home Assistant`, `SSH` oder interne Dashboards.
+
+Für veröffentlichte, aber abgesicherte öffentliche Dienste ist zusätzlich `cloudflared` vorgesehen. Zusammen mit `Hurricane Electric` für DNS/DDNS und `Tailscale` für privaten Admin-Zugriff ist die gemeinsame Orientierung jetzt in [docs/REMOTE_ACCESS_DNS_GUIDE.md](/C:/Users/danie/.codex/worktrees/50f5/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/REMOTE_ACCESS_DNS_GUIDE.md:1) dokumentiert.
+
 ## 🔐 Sicherheit bei der Nutzung
 
 Dieses Setup trennt ab den neueren Versionen bewusst zwischen:
@@ -81,7 +80,6 @@ Darauf solltest du achten:
 - Niemals echte Secrets in Git committen oder auf GitHub hochladen.
 - Bearbeite sensible Vorlagen möglichst nur über den ausgelagerten Benutzer-Workspace.
 - Sichere deine `.env` lokal zusätzlich, wenn du wichtige API-Keys eingetragen hast.
-- Dienste standardmaessig nur auf `127.0.0.1` binden und nur bewusst per Reverse Proxy/Tunnel freigeben.
 - Wenn du den Rechner oder die WSL weitergibst, lösche den Benutzer-Workspace gezielt mit.
 - Wenn du einen öffentlichen Host, VPS oder `0.0.0.0` nutzt, setze immer sichere Tokens und Passwörter.
 - Eigene Modelfiles und GGUF-Pfade solltest du möglichst ebenfalls nur im Benutzer-Workspace pflegen und nicht ins Git-Repository schreiben.
@@ -128,7 +126,6 @@ Deshalb gilt im Repository als Best Practice:
 Wenn du mit Trading- oder Web3-Profilen arbeitest:
 
 - nutze zuerst Simulation, Dry-Run und Paper-Trading
-- nutze Live-Order-Ausfuehrung niemals als Repo-Default
 - speichere niemals Seed-Phrases oder Private Keys im Repo
 - behandle alle Wallet-, API- und Exchange-Zugänge wie Hochrisiko-Secrets
 - lies zusätzlich die Sicherheits- und Profilhinweise in den jeweiligen Trading-/Web3-Dokumentationen
