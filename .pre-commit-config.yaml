@@ -15,3 +15,10 @@ repos:
     rev: v8.24.0
     hooks:
       - id: gitleaks
+  - repo: local
+    hooks:
+      - id: trufflehog-local
+        name: trufflehog-local
+        entry: bash -lc 'if command -v trufflehog >/dev/null 2>&1; then trufflehog filesystem . --no-update; else echo "trufflehog nicht installiert, Hook wird uebersprungen."; fi'
+        language: system
+        pass_filenames: false

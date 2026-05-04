@@ -1,26 +1,25 @@
 # Profile Matrix
 
-Diese Matrix gruppiert die wichtigsten Profilfamilien mit Fokus, Reifegrad und Sicherheitsbesonderheiten.
+Die Matrix priorisiert die produktionsnaeheren und aktuell strategisch wichtigsten Profile.
 
-| Profil | Kategorie | Hauptzweck | Wichtige Tools | Reifegrad | Sicherheit |
+| Profil | Taxonomie | Hauptzweck | Wichtige Tools | Reifegrad | Sicherheit |
 |---|---|---|---|---|---|
-| `Programmierer` | Core | Coding + Agenten | Ollama, OpenClaw, Huginn, LangGraph | hoch | Shell-/Browser-Agenten nur bewusst nutzen |
-| `LLM_Builder` | Core | Fine-Tuning + GGUF + Ollama | Unsloth, LLaMA Factory, Axolotl | mittel | Trainingsdaten lokal halten |
-| `RAG_Wissensdatenbank` | LLMOps | lokales RAG | Open WebUI, LightRAG, Qdrant, Chroma | mittel | sensible Dokumente nicht ungeprüft importieren |
-| `Security_DevSecOps` | Security | Container-, Secret- und Code-Scans | Trivy, Gitleaks, Semgrep, Syft, Grype | mittel | Findings vor Auto-Fixes prüfen |
-| `Monitoring_Observability` | LLMOps | Dashboards, Logs, Metriken | Prometheus, Grafana, Loki, Uptime Kuma | mittel | öffentliche Dashboards absichern |
-| `Backup_Recovery` | LLMOps | Backup und Restore | Restic, Borg, Rclone | mittel | Restore regelmäßig testen |
-| `MCP_Agent_Tools` | LLMOps | MCP, Toolserver, sichere Agentenzugriffe | MCPO, Browser, Filesystem, GitHub | mittel | Shell-MCP nur mit Warnhinweis |
-| `DevOps_SRE` | DevOps | GitOps, Rollback, Clusterpflege | Ansible, OpenTofu, Helm, Argo CD, Velero | mittel | produktive Cluster nicht blind verändern |
-| `Repo_Maintainer` | DevOps | Repo-Pflege, Releases, lokale CI | GitHub CLI, act, shellcheck, actionlint | mittel | Release- und GitHub-Tokens schützen |
-| `Data_Engineering` | Data | ETL, RAG-Vorbereitung, Pipelines | DuckDB, Prefect, MinIO, PostgreSQL, pgvector | mittel | Datenquellen und Rechte sauber trennen |
-| `Document_AI` | Data | OCR, PDF, Verträge, Akten | OCRmyPDF, Tesseract, Paperless, Tika, Docling | mittel | sensible Dokumente lokal schützen |
-| `Data_Analytics_BI` | Data | BI, Jupyter, Reports | DuckDB, JupyterLab, Metabase, Grafana | mittel | personenbezogene Daten anonymisieren |
-| `Image_Generation` | Media | Bild-KI, Asset-Workflows | ComfyUI, Forge, Fooocus, InvokeAI | mittel | große Modellcaches einkalkulieren |
-| `Video_Generation` | Media | Video-KI, Interpolation, Upscaling | ComfyUI, Forge, SVD, RIFE, Blender | niedrig bis mittel | sehr hoher VRAM-/SSD-Bedarf |
-| `Voice_Assistant` | Smart Home | STT, TTS, Wakeword, Voice-Automation | Whisper.cpp, faster-whisper, Piper, openWakeWord | mittel | Mikrofon- und Rauminformationen schützen |
-| `Smart_Home_Automation` | Smart Home | Home Assistant + MQTT | Node-RED, Mosquitto, HA | mittel | öffentliche Ports und Tunnel härten |
-| `Web3_Crypto_Tools` | Web3 | Contract- und RPC-Tooling | Foundry, Hardhat, Ethers.js, Web3.py | niedrig bis mittel | keine Seeds oder Private Keys speichern |
-| `Compliance_Privacy` | Compliance | DSGVO, Policies, Secret-/SBOM-Checks | OPA, Gitleaks, TruffleHog, Trivy | mittel | Findings vertraulich behandeln |
-| `Personal_Knowledge_OS` | Knowledge | Notizen, Suche, Sync, Memory | Joplin, Meilisearch, Qdrant, Syncthing | mittel | Wissensdaten lokal und verschlüsselt halten |
-| `Education_Tutor` | Knowledge | Lernassistent und RAG aus Lernmaterial | Open WebUI, Qdrant, JupyterLab, Docling | mittel | Lerninhalte und Prüfungsdaten lokal schützen |
+| `Security_DevSecOps` | Security | Secret-, SBOM- und Container-Scans | Trivy, Gitleaks, TruffleHog, Syft, Grype | mittel | Findings und Reports vertraulich behandeln |
+| `Local_Codex_IDE_Agent` | Coding | lokaler Coding-Agent und Sandbox | Aider, OpenHands, Continue.dev, act, Ruff | mittel | Agenten nur mit Review und ohne Secrets |
+| `Browser_Agent_Web_Automation` | Automation | Browser-Tasks, Tests, Research | Playwright, Browser Use, ArchiveBox, SearXNG | mittel | keine Credentials oder fremden Konten als Default |
+| `Model_Evaluation_Benchmark` | LLMOps | Evaluations- und Benchmarking-Schicht | Promptfoo, LM Harness, Ragas, Langfuse | mittel | Prompt-/Eval-Daten schuetzen |
+| `Knowledge_Graph_RAG` | RAG / Knowledge | Graph-RAG und strukturierte Suche | Neo4j, Qdrant, LightRAG, Haystack | niedrig bis mittel | Wissensgraphen besonders absichern |
+| `Dataset_Curation_Labeling` | Data | Daten sammeln und annotieren | DVC, Label Studio, Argilla, DuckDB | mittel | Datenquellen, Lizenzen, PII sauber trennen |
+| `Synthetic_Data_Generator` | Data | synthetische Test- und Trainingsdaten | Distilabel, Argilla, LangChain | niedrig bis mittel | Bias und Halluzinationen pruefen |
+| `Privacy_Anonymization_Redaction` | Security | Redaction und DSGVO-nahe Vorverarbeitung | Presidio, OCRmyPDF, Tesseract | mittel | Zwischenartefakte und Logs schuetzen |
+| `Email_Calendar_Office_Agent` | Office | Kalender, Aufgaben, DMS | Radicale, Vikunja, Paperless, Nextcloud | niedrig bis mittel | nur lokal oder hinter Auth freigeben |
+| `Self_Hosted_Cloud_Sync` | Office | Sync-, Cloud- und Backup-Schicht | Nextcloud, Syncthing, MinIO, Restic | mittel | Public Exposure strikt vermeiden |
+| `AI_App_Builder` | Data | lokale KI-Webapps und Dashboards | FastAPI, Streamlit, Gradio, Appsmith | mittel | UIs nur auf localhost oder mit Auth |
+| `Robotics_IoT_Edge_AI` | Smart Home / IoT | Edge-AI und Firmware-Workflows | PlatformIO, OpenCV, ESPHome, MQTT | niedrig bis mittel | keine ungetesteten Flows auf reale Aktoren |
+| `OSINT_Research_Safe` | Research | legale Recherche und Archivierung | SearXNG, ArchiveBox, changedetection.io | mittel | klare Safety-Grenzen, kein Doxxing |
+
+## Duplikat- und Strukturhinweise
+
+- `Document_AI` ist jetzt der engere Produktionspfad; `Document_Intelligence` bleibt das breitere Analyseprofil.
+- `Data_Engineering` existiert nur einmal in der Registry und ist als Data-Profil verankert.
+- `Image_`/`Video_` Basis und `*_Studio` Heavy-Varianten bleiben nebeneinander bestehen, weil Ressourcen- und Bedienpfade unterschiedlich sind.

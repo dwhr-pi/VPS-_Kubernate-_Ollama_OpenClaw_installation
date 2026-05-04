@@ -1,62 +1,54 @@
 # Tool Matrix
 
-Diese Matrix gruppiert die wichtigsten benutzerrelevanten Tools. Sie ist bewusst kompakter als `scripts/tools/`.
+Diese Matrix gruppiert die strategisch wichtigsten, zentral registrierten Tools.
 
-## LLM / RAG / Agenten
-
-| Tools | Hinweis |
-|---|---|
-| Ollama, LiteLLM, Open WebUI | lokale und hybride Modellnutzung |
-| OpenClaw, OpenManus, AutoGPT | Agenten- und Workflow-Ebene |
-| LangGraph, CrewAI, AutoGen | orchestrierte Multi-Step-Agenten |
-| Qdrant, ChromaDB, LightRAG, LlamaIndex, LangChain | RAG, Embeddings, Wissensspeicher |
-| Langfuse, OpenLIT | Observability für LLM-Aufrufe |
-| Aider, OpenHands, OpenCode, Continue.dev | Coding-Agenten und Pairing |
-
-## Security / Compliance
+## Core / Coding
 
 | Tools | Hinweis |
 |---|---|
-| Trivy, Gitleaks, TruffleHog, Semgrep | Secret-, Container- und Code-Scans |
-| Syft, Grype | SBOM und Vulnerability-Korrelation |
-| Nmap, Nikto | Netz- und Web-Oberflächentests |
-| Fail2Ban, CrowdSec, UFW | Host-Härtung und Schutzschicht |
-| OPA, Guardrails AI, Promptfoo | Policies und LLM-Sicherheit |
+| Ollama, OpenClaw, LiteLLM, Open WebUI | Basis aus Runtime, Agent Layer, Gateway und UI |
+| Aider, OpenHands, Continue.dev, Tabby | lokale Coding- und Agenten-Assistenz |
+| GitHub CLI, act, pre-commit, ShellCheck, Ruff, Black, Prettier, ESLint, pytest | GitHub-ready Repo-Hygiene |
+| Dev Container CLI | reproduzierbare Container-Workspaces |
 
-## DevOps / Betrieb
-
-| Tools | Hinweis |
-|---|---|
-| Docker, Docker Compose Plugin, Podman | Container-Laufzeit und Sandbox |
-| K3s, kubectl, Helm, Kustomize, k9s | optionale Kubernetes-Ebene |
-| Ansible, OpenTofu, Velero | Infrastruktur, Rollout, Backup |
-| Argo CD, Flux, kubectx/kubens | GitOps und Clusterbedienung |
-| GitHub CLI, Act, Pre-Commit, Actionlint, ShellCheck, Shfmt, Hadolint | Repo- und CI-Pflege |
-
-## Monitoring / Health
+## Browser / Research
 
 | Tools | Hinweis |
 |---|---|
-| Prometheus, Grafana, Loki, Promtail | Metriken, Logs, Dashboards |
-| Uptime Kuma, Healthchecks, Netdata | Verfügbarkeit und Host-Blick |
-| Grafana Alloy, cAdvisor, Node Exporter | Container- und Host-Telemetrie |
+| Playwright, Browser Use | Browser-Agenten und UI-Tests |
+| Firecrawl, Trafilatura | Web-Extraktion und strukturierte Inhalte |
+| ArchiveBox, changedetection.io, SearXNG | Archivierung, Monitoring, private Meta-Suche |
 
-## Data / Dokumente
-
-| Tools | Hinweis |
-|---|---|
-| PostgreSQL, pgvector, DuckDB, SQLite, sqlite-vec | Daten- und Vektorspeicher |
-| MinIO, Supabase, Nextcloud | Objekt- und App-Storage |
-| Prefect, Airbyte, dbt, Metabase, JupyterLab | ETL, BI und Reports |
-| Apache Tika, Docling, OCRmyPDF, Tesseract, Marker, Pandoc | Dokument- und OCR-Schicht |
-| Paperless-ngx, Stirling PDF, LibreOffice headless | DMS und Konvertierung |
-
-## Media / Voice / Smart Home / Web3
+## LLMOps / Evaluation
 
 | Tools | Hinweis |
 |---|---|
-| ComfyUI, Stable Diffusion WebUI Forge, Fooocus, InvokeAI | Bild- und Video-Workflows |
-| RealESRGAN, GFPGAN, Rembg, RIFE, Blender | Upscaling, Cleanup, 3D und Video |
-| Whisper.cpp, faster-whisper, Piper, Coqui TTS, openWakeWord, Rhasspy, Wyoming | STT/TTS/Wakeword |
-| Node-RED, Mosquitto, Zigbee2MQTT, ESPHome, Home Assistant | Smart-Home- und IoT-Automation |
-| Foundry, Hardhat, Ethers.js, Web3.py | Web3- und Contract-Werkzeuge |
+| Promptfoo, LM Evaluation Harness, Ragas, DeepEval, TruLens | Prompt-, RAG- und Modellvergleiche |
+| Langfuse, OpenLIT | Tracing, Kosten, Prompt- und Laufzeitbeobachtung |
+
+## RAG / Knowledge / Documents
+
+| Tools | Hinweis |
+|---|---|
+| Qdrant, ChromaDB, LightRAG, Neo4j | Vektor- und Graph-Speicher |
+| LangChain, LlamaIndex, Haystack | RAG- und Pipeline-Bibliotheken |
+| Docling, Apache Tika, OCRmyPDF, Tesseract, Unstructured | Dokumenten- und OCR-Schicht |
+| Paperless-ngx, Stirling PDF | DMS und PDF-Werkzeuge |
+
+## Data / Apps / Office
+
+| Tools | Hinweis |
+|---|---|
+| DuckDB, Datasette, Metabase, JupyterLab | Analyse und BI |
+| DVC, Label Studio, Argilla, Distilabel | Datenversionierung, Labeling und Synthese |
+| FastAPI, Streamlit, Gradio, Appsmith, Budibase, NocoDB | lokale KI-Apps und interne Tools |
+| Nextcloud, Syncthing, MinIO, Restic, Radicale, Vikunja | Sync, Office, Aufgaben und Backup |
+
+## Security / DevOps / IoT
+
+| Tools | Hinweis |
+|---|---|
+| Gitleaks, TruffleHog, Trivy, Syft, Grype, Semgrep, OPA | P0-Hardening, Secret-, SBOM- und Policy-Layer |
+| Caddy, Authelia | bewusste Freigabe- und Auth-Schicht statt Default-Exposure |
+| Helm, Kustomize, Argo CD, Flux, OpenTofu, Ansible | produktionsnaehere Cluster- und IaC-Workflows |
+| PlatformIO, ESPHome, Mosquitto, Zigbee2MQTT, OpenCV | IoT-, Firmware- und Edge-AI-Bausteine |

@@ -7,12 +7,15 @@ Diese Datei ist die kompakte Härtungsanleitung für das Setup.
 - keine `.env` mit echten Schlüsseln committen
 - keine Wallet-Seeds, Private Keys, API-Tokens oder OAuth-Secrets ablegen
 - nur Vorlagen wie `configs/.env.example` verwenden
+- produktive `.env`-, Token- und Auth-Dateien nur im Benutzer-Workspace halten
 - Secret-Scan vor Commit ausführen:
 
 ```bash
 bash scripts/operations/security_scan.sh
 bash scripts/security/secret_scan.sh
 ```
+
+Wenn lokal `pre-commit` aktiv ist, sollten `gitleaks` und `trufflehog` vor jedem Commit durchlaufen.
 
 ## 2. Benutzer-Workspace nutzen
 
@@ -28,15 +31,17 @@ Nicht in:
 ~/openclaw_ultimate_setup
 ```
 
-## 3. Öffentliche Ports absichern
+## 3. Oeffentliche Ports absichern
 
-- Grafana, Open WebUI, LiteLLM, Home Assistant und MinIO nicht blind ins Internet hängen
+- Grafana, Open WebUI, LiteLLM, Home Assistant, MinIO, Neo4j, Nextcloud und Browser-Agent-Dienste nicht blind ins Internet haengen
+- Standardregel: zuerst nur `127.0.0.1`, dann bewusst Proxy/Tunnel/Auth davorsetzen
 - wenn extern nötig:
   - Reverse Proxy
   - Auth
   - HTTPS
   - Firewall-Regeln
   - Cloudflare-Tunnel-Policies
+  - oder Tailscale/Headscale fuer private Netzpfade
 
 Portübersicht:
 
@@ -79,13 +84,16 @@ Regel:
 - immer mit Safe-Mode starten
 - niemals ungeprüft Schreibzugriff auf produktive Verzeichnisse geben
 - keine API-Schlüssel oder Wallet-Operationen automatisch durch Agenten ausführen lassen
+- Browser- und Crawl-Profile nur für legale und dokumentierte Web-Recherche einsetzen
 
-## 6. Cloudflare Tunnel
+## 6. Tunnel / Reverse Proxy / Auth
 
+- Cloudflare Tunnel, Tailscale/Headscale und Reverse Proxy sauber voneinander trennen
 - nur die wirklich nötigen Ziele freigeben
-- keine überbreiten Wildcard-Freigaben
+- keine ueberbreiten Wildcard-Freigaben
 - Tunnel-Tokens nicht im Repo speichern
-- Policies und Identitätsregeln nutzen
+- Caddy/Traefik nur vor bewusst freigegebene interne Dienste setzen
+- Authelia oder Authentik als separate Auth-Schicht behandeln, nicht als Ersatz fuer Netzwerksegmentierung
 
 ## 7. Trading und Web3
 
@@ -116,6 +124,7 @@ Empfohlener Ansatz:
 - nur vertrauenswürdige Dateien importieren
 - OCR-, PDF- und Office-Tools lokal verwenden, wenn Dokumente sensibel sind
 - Audio-/Voice-Cloning nur mit Einwilligung und sauberer Lizenzlage nutzen
+- PII-sensitive Dokumente vor RAG oder Prompting zuerst anonymisieren oder redigieren
 
 ## 9. WSL2-Hinweise
 

@@ -1,38 +1,35 @@
 # Roadmap
 
-Diese Roadmap beschreibt die naechsten sinnvollen Ausbauschritte fuer das Repository als stabile LLMOps-Plattform.
+Diese Roadmap priorisiert das Repo nach Sicherheits- und Produktionsnutzen.
 
-## Phase 1: Konsolidierung
+## P0: Security / Konsistenz
 
-- `config/tools.yml`, `config/profiles.yml`, `config/ports.yml` als zentrale Wahrheit ausbauen
-- `setup_ultimate.sh` schrittweise aus den Registries generieren
-- Dubletten zwischen alten und neuen Profilen sichtbar markieren
-- Healthcheck- und Portcheck-Skripte in das Hauptmenue einhaengen
+- `config/tools.yml`, `config/profiles.yml`, `config/ports.yml` als zentrale Registry pflegen
+- `.env`- und Secret-Trennung ausserhalb des Repos erzwingen
+- Gitleaks und TruffleHog vor Commit und in lokalen Checks nutzen
+- Services standardmaessig auf `127.0.0.1` halten
+- Proxy-/Tunnel-/Auth-Schicht sauber von lokalen Diensten trennen
 
-## Phase 2: Reifegrad der Installer
+## P1: Codex / Sandbox / Browser-Agent
 
-- mehr Installer direkt aus GitHub-Quellen aufbauen
-- `DRY_RUN=1` und `SAFE_MODE=1` konsistent ueber alle neuen Installer ziehen
-- Rollback-Konzept pro Profil vereinheitlichen
-- Backup vor groesseren Profil- oder Stack-Aenderungen automatisch anbieten
+- `Local_Codex_IDE_Agent` und `Browser_Agent_Web_Automation` stabilisieren
+- Devcontainer-, Test- und Patch-Workflows weiter vereinheitlichen
+- Browser-Agenten nur mit Safe-Mode und nachvollziehbaren Guardrails freigeben
 
-## Phase 3: Medien- und GPU-Workflows
+## P2: Evaluation / RAG / Dokumente
 
-- GPU-/VRAM-Pruefung pro Bild-/Video-Profil schaerfen
-- Modellordner-Management fuer ComfyUI/Forge standardisieren
-- NVIDIA-, CUDA- und WSL2-Hinweise weiter praezisieren
-- Batch-Rendering und Modell-Caches besser dokumentieren
+- `Model_Evaluation_Benchmark`, `Knowledge_Graph_RAG`, `Dataset_Curation_Labeling` und `Privacy_Anonymization_Redaction` vertiefen
+- Datasets, Prompt-Registries und Eval-Artefakte strukturierter versionieren
+- Dokumentenprofile weiter auf OCR, Redaction und sichere DMS-Workflows ausrichten
 
-## Phase 4: Plattform und Betrieb
+## P3: Media / Studio / IoT / Office
 
-- GitHub Actions ausbauen
-- Shellcheck, Markdownlint, Linkcheck und Secret-Scan als Pflichtpruefungen
-- Monitoring- und Backup-Profile direkt im Hauptsetup verdrahten
-- Kubernetes/K3s-Manifeste optional weiter ausbauen, aber nicht zum Zwangspfad machen
+- GPU-/VRAM-Pruefungen fuer Medienprofile schaerfen
+- `Robotics_IoT_Edge_AI`, `Email_Calendar_Office_Agent` und `Self_Hosted_Cloud_Sync` weiter operationalisieren
+- optionale Heavy-Tools wie Longhorn, Authentik, Traefik, Superset oder WhisperX erst nach separater Validierung aufnehmen
 
-## Phase 5: Sicherheit und Governance
+## Offene Strukturthemen
 
-- Secret-Handling weiter haerten
-- SOPS/age optional vorbereiten
-- Cloudflare-Tunnel-, Trading- und Web3-Hinweise weiter standardisieren
-- Shell-/Browser-/Filesystem-Agenten in Safe-Mode noch deutlicher abschirmen
+- Historische Altstruktur in `docs/Profil/` mittelfristig klar als Legacy markieren
+- `setup_ultimate.sh` langfristig staerker aus den Registries ableiten
+- Tool-Installationen mit mehr automatischen Ressourcenchecks versehen

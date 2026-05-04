@@ -13,25 +13,40 @@ Diese Matrix listet die wichtigsten Standardports der dokumentierten Dienste. Ni
 | 3005 | Forgejo | Self-Hosted Git |
 | 3006 | Metabase | BI-Frontend |
 | 4000 | LiteLLM | Gateway-Port |
+| 5000 | changedetection.io | Web-Monitoring |
+| 5232 | Radicale | CalDAV/CardDAV |
 | 5432 | PostgreSQL | Datenbank |
+| 6900 | Argilla | Annotation / Feedback |
+| 7474 | Neo4j HTTP | Wissensgraph-UI |
+| 7687 | Neo4j Bolt | Wissensgraph-Treiber |
 | 6333 | Qdrant | Vektor-DB |
 | 7700 | Meilisearch | Suche |
 | 7860 | Stable Diffusion WebUI Forge | Bild-/Video-UI |
+| 7861 | Gradio | Demo-UI |
 | 8003 | Airbyte | Dateningestion |
 | 8004 | Healthchecks | Cron-/Job-Monitoring |
+| 8000 | ArchiveBox | Web-Archiv |
+| 8001 | FastAPI / Datasette | lokale App- oder Daten-UI |
 | 8010 | Paperless-ngx | DMS-Port |
 | 8055 | Directus | Low-Code/API-UI |
+| 8080 | Label Studio | Annotation |
 | 8081 | Stirling PDF | PDF-Tooling |
 | 8082 | Nextcloud | Files/DMS |
 | 8083 | NocoDB | No-Code-Datenbank-UI |
+| 8084 | Tabby | Coding-Assistenz |
+| 8086 | Caddy | Reverse Proxy lokal |
 | 8088 | cAdvisor | Container-Monitoring |
 | 8090 | Appsmith | Low-Code-App-Builder |
 | 8099 | Zigbee2MQTT | Smart-Home-Dashboard |
 | 8123 | Home Assistant | Smart-Home-Zentrale |
 | 8188 | ComfyUI | Node-basiertes Medien-Frontend |
+| 8384 | Syncthing | Sync-Weboberfläche |
+| 8501 | Streamlit | interne Dashboards |
+| 8888 | SearXNG | private Meta-Suche |
 | 9000 | MinIO API | Objekt-Storage |
 | 9001 | MinIO Console | Objekt-Storage-Weboberfläche |
 | 9090 | Prometheus | Monitoring |
+| 9091 | Authelia | Auth-Schicht |
 | 9998 | Apache Tika | Dokumentenparser |
 | 10000 | Budibase | App-Builder |
 | 11434 | Ollama | lokaler Modellserver |

@@ -22,5 +22,6 @@ fi
 echo
 echo "Manuelle Kurzprüfung:"
 echo "- Keine .env mit echten Secrets committen"
+echo "- Produktions-.env nur ausserhalb des Repos im Benutzer-Workspace halten"
 echo "- Keine Wallet-Seed oder Private Keys im Repo speichern"
 echo "- Keine GitHub PATs, API-Keys oder Cloudflare-Tokens ablegen"

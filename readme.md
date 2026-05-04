@@ -1,4 +1,4 @@
-# VPS- Kubernate- Ollama & OpenClaw installation - Ultimate Setup V11.15
+# VPS- Kubernate- Ollama & OpenClaw installation - Ultimate Setup V11.16
 
 Dies ist das ultimative Setup für ein hybrides KI- und Smart-Home-System, das deinen Letsung MiniPC (WSL2) und mehrere kostenlose VPS kombiniert. Es integriert eine Vielzahl von Tools und KI-Agenten, die direkt aus GitHub-Quellen kompiliert oder lokal aufgebaut werden.
 
@@ -7,6 +7,14 @@ Dies ist das ultimative Setup für ein hybrides KI- und Smart-Home-System, das d
 Das Repository entwickelt sich von einer reinen Tool-Sammlung zu einer modularen **LLMOps-Plattform**:
 
 `Base System -> Runtime -> Model Gateway -> Agent Layer -> Memory/RAG -> Tool Layer -> UI -> Monitoring -> Security`
+
+Neu konsolidiert in den zentralen Registries und Profilen sind jetzt zusaetzlich vor allem:
+
+- Coding-/Sandbox-Pfade wie `Local_Codex_IDE_Agent`
+- Browser- und Web-Automatisierung ueber `Browser_Agent_Web_Automation`
+- Eval-/Benchmark-Pfade fuer Modelle, Prompts und RAG
+- Dataset-, Synthetic-Data- und Graph-RAG-Workflows
+- Office-/Cloud-/Privacy-Profile fuer produktionsnaehere Self-Hosted-Szenarien
 
 Die zugehoerige Architektur-Dokumentation findest du in [docs/ARCHITECTURE_LLMOPS_PLATFORM.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/ARCHITECTURE_LLMOPS_PLATFORM.md:1).
 
@@ -65,6 +73,7 @@ Darauf solltest du achten:
 - Niemals echte Secrets in Git committen oder auf GitHub hochladen.
 - Bearbeite sensible Vorlagen möglichst nur über den ausgelagerten Benutzer-Workspace.
 - Sichere deine `.env` lokal zusätzlich, wenn du wichtige API-Keys eingetragen hast.
+- Dienste standardmaessig nur auf `127.0.0.1` binden und nur bewusst per Reverse Proxy/Tunnel freigeben.
 - Wenn du den Rechner oder die WSL weitergibst, lösche den Benutzer-Workspace gezielt mit.
 - Wenn du einen öffentlichen Host, VPS oder `0.0.0.0` nutzt, setze immer sichere Tokens und Passwörter.
 - Eigene Modelfiles und GGUF-Pfade solltest du möglichst ebenfalls nur im Benutzer-Workspace pflegen und nicht ins Git-Repository schreiben.
@@ -111,6 +120,7 @@ Deshalb gilt im Repository als Best Practice:
 Wenn du mit Trading- oder Web3-Profilen arbeitest:
 
 - nutze zuerst Simulation, Dry-Run und Paper-Trading
+- nutze Live-Order-Ausfuehrung niemals als Repo-Default
 - speichere niemals Seed-Phrases oder Private Keys im Repo
 - behandle alle Wallet-, API- und Exchange-Zugänge wie Hochrisiko-Secrets
 - lies zusätzlich die Sicherheits- und Profilhinweise in den jeweiligen Trading-/Web3-Dokumentationen
