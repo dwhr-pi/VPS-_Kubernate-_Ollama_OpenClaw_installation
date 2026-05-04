@@ -94,19 +94,7 @@ checkout_huginn_ref
 mkdir -p log tmp/pids tmp/sockets
 chmod -R u+rwX,go-w log tmp
 
-echo -e "${GREEN}3/5: Installiere Ruby Gems mit Bundler...${NC}"
-if ! command -v bundle >/dev/null 2>&1; then
-    sudo gem install bundler
-fi
-bundle config set --local path vendor/bundle
-bundle config set --local without "development test"
-echo -e "${YELLOW}Hinweis: 'development test' ist hier keine Versionsnummer, sondern die ausgeschlossene Bundler-Gruppenkombination.${NC}"
-if ! bundle install; then
-    echo -e "${RED}Fehler: Bundler install für Huginn fehlgeschlagen.${NC}"
-    exit 1
-fi
-
-echo -e "${GREEN}4/5: Bereite .env und Verzeichnisse vor...${NC}"
+echo -e "${GREEN}3/5: Bereite .env und Verzeichnisse vor...${NC}"
 if [ ! -f .env ]; then
     if [ -f .env.example ]; then
         cp .env.example .env
@@ -117,6 +105,19 @@ fi
 ensure_secret_token
 ensure_production_env_defaults
 chmod o-rwx .env 2>/dev/null || true
+
+echo -e "${GREEN}4/5: Installiere Ruby Gems mit Bundler...${NC}"
+if ! command -v bundle >/dev/null 2>&1; then
+    sudo gem install bundler
+fi
+bundle config set --local path vendor/bundle
+bundle config set --local without "development test"
+echo -e "${YELLOW}Hinweis: 'development test' ist hier keine Versionsnummer, sondern die ausgeschlossene Bundler-Gruppenkombination.${NC}"
+if ! bundle install; then
+    echo -e "${RED}Fehler: Bundler install für Huginn fehlgeschlagen.${NC}"
+    echo -e "${YELLOW}Prüfe insbesondere, ob $HUGINN_DIR/.env existiert und lesbare Basiswerte wie APP_SECRET_TOKEN und RAILS_ENV enthält.${NC}"
+    exit 1
+fi
 
 if ! database_config_complete; then
     echo -e "${YELLOW}Huginn Quellcode und Gems wurden vorbereitet, aber die Datenbank-Konfiguration in $HUGINN_DIR/.env ist noch unvollständig.${NC}"
