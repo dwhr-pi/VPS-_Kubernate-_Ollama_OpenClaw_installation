@@ -18,6 +18,14 @@ Neu konsolidiert in den zentralen Registries und Profilen sind jetzt zusaetzlich
 
 Die zugehoerige Architektur-Dokumentation findest du in [docs/ARCHITECTURE_LLMOPS_PLATFORM.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/ARCHITECTURE_LLMOPS_PLATFORM.md:1).
 
+## 📌 Gegenwärtiger Status
+
+Der aktuelle Schwerpunkt liegt auf der praktischen Funktionspruefung der Setups. Die Konfigurationsfeinarbeit folgt danach schrittweise.
+
+- Das `MiniPC`-Setup ist gegenwaertig fertig.
+- Der aktuelle Hauptfokus liegt auf dem `Programmierer`-Setup.
+- Weitere Setups werden derzeit funktional geprueft und erst danach feiner konfiguriert.
+
 ## 🚀 Schnelle Installation (One-Liner)
 
 Um die interaktive Installationsplattform zu starten, führe einfach den folgenden Befehl in deinem Terminal aus:
