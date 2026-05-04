@@ -50,6 +50,131 @@ Offizielle Quellen:
 
 - [Tailscale Linux Install](https://tailscale.com/kb/install)
 - [DNS in Tailscale](https://tailscale.com/docs/reference/dns-in-tailscale)
+- [Subnet routers](https://tailscale.com/kb/1019/subnets)
+- [Tailscale CLI](https://tailscale.com/docs/reference/tailscale-cli)
+- [Install Tailscale on Android](https://tailscale.com/docs/install/android)
+- [Install Tailscale on Apple TV](https://tailscale.com/kb/1280/appletv)
+
+### Tailscale: `subnet routes` vs. `advertised routes`
+
+Diese beiden Begriffe werden oft verwechselt, meinen aber nicht ganz dasselbe:
+
+- `advertised routes` ist der uebergeordnete Tailscale-Begriff fuer Netze, die ein Geraet dem Tailnet anbietet
+- `subnet routes` sind die konkreten LAN- oder VLAN-Netze hinter diesem Geraet, zum Beispiel `192.168.178.0/24` oder `10.10.20.0/24`
+
+Praktisch bedeutet das:
+
+- mit `tailscale up --advertise-routes=192.168.178.0/24` bewirbst du eine `subnet route`
+- das Geraet wird damit zum `subnet router`
+- andere Tailnet-Geraete koennen dann auch Ziele erreichen, auf denen selbst kein Tailscale installiert ist, etwa Drucker, Kameras, NAS, Smart-TV, AV-Receiver oder lokale IoT-Webinterfaces
+
+Sinn und Zweck:
+
+- `normales Tailscale`: direkter Zugriff nur auf Geraete, auf denen Tailscale selbst laeuft
+- `subnet router`: Zugriff auch auf das restliche Heim- oder Standortnetz hinter einem Tailscale-Knoten
+
+Wichtig:
+
+- die beworbenen Routen muessen im Tailscale-Adminbereich freigegeben werden oder per `autoApprovers` erlaubt sein
+- auf Linux braucht ein echter `subnet router` in der Regel aktiviertes IP-Forwarding
+- `advertised routes` sind nicht dasselbe wie ein `exit node`
+
+### Unterschied zu `exit nodes`
+
+Ein `subnet router` leitet nur Verkehr fuer bestimmte interne Netze weiter, zum Beispiel:
+
+```bash
+sudo tailscale up --advertise-routes=192.168.178.0/24
+```
+
+Ein `exit node` leitet den gesamten Internetverkehr eines entfernten Clients ueber dieses Geraet:
+
+```bash
+sudo tailscale up --advertise-exit-node
+```
+
+Wann was sinnvoll ist:
+
+- `subnet router`: wenn du zu Hause oder im Buero interne Systeme ohne Tailscale-App erreichen willst
+- `exit node`: wenn Handy, Tablet oder Notebook unterwegs so arbeiten sollen, als waeren sie im Heimnetz oder ueber den Heimanschluss im Internet
+
+Beides kann auf demselben Geraet kombiniert werden, wenn der Host stabil genug ist und sauber abgesichert wurde.
+
+### Typisches Beispiel fuer dieses Repo
+
+MiniPC zuhause mit Heimnetz `192.168.178.0/24`:
+
+```bash
+sudo tailscale up --advertise-routes=192.168.178.0/24
+```
+
+Das ist sinnvoll, wenn du von unterwegs zugreifen willst auf:
+
+- `Home Assistant`
+- Webinterfaces von NAS, Drucker, Router oder Kameras
+- nicht direkt Tailscale-faehige Smart-Home-Geraete
+- lokale Admin-Dienste auf weiteren Maschinen im Heimnetz
+
+Wenn du zusaetzlich willst, dass dein Handy unterwegs den Heimanschluss als Internet-Ausgang nutzt:
+
+```bash
+sudo tailscale up --advertise-routes=192.168.178.0/24 --advertise-exit-node
+```
+
+### Handy und Tablet mit Tailscale einrichten
+
+Fuer `iPhone`, `iPad`, `Android-Handy` und `Android-Tablet` ist der direkte Weg am saubersten:
+
+1. Tailscale-App installieren
+2. mit demselben Tailnet anmelden
+3. pruefen, ob der MiniPC oder VPS in der Geraeteliste sichtbar ist
+4. bei Bedarf `Use Exit Node` oder `Exit Node` aktivieren
+5. interne Weboberflaechen direkt ueber Tailnet-IP, MagicDNS oder ueber die freigegebene `subnet route` aufrufen
+
+Sinnvoll fuer mobile Geraete:
+
+- privater Zugriff auf `Open WebUI`, `Grafana`, `Home Assistant` oder `SSH`
+- Nutzung des Heimanschlusses als `exit node` in fremden WLANs
+- Zugriff auf Drucker, NAS oder lokale IP-Kameras ueber einen `subnet router`
+
+### TV und andere Geraete ohne oder mit eingeschraenktem Tailscale-Support
+
+Hier muss man drei Faelle unterscheiden:
+
+- `Apple TV`: Tailscale-App wird offiziell unterstuetzt
+- `Android TV`: Tailscale wird offiziell auf Android 8.0+ inklusive Android TV unterstuetzt
+- viele andere Smart-TVs, Streaming-Boxen oder IoT-Geraete: kein nativer Tailscale-Client
+
+Wenn ein TV oder Geraet keinen nativen Tailscale-Client hat, gibt es zwei typische Wege:
+
+1. `subnet router`
+   Dann bleibt das TV im normalen Heimnetz, und deine anderen Tailscale-Geraete koennen dieses TV oder seine Weboberflaeche ueber das Heimnetz erreichen.
+
+2. vorgeschalteter Router oder Gateway mit Tailscale
+   Ein Router, MiniPC, Raspberry Pi oder kleines Gateway-Geraet im selben Netz kann Tailscale sprechen und als `subnet router` oder `exit node` dienen.
+
+Wichtig dabei:
+
+- das Geraet ohne Tailscale wird dadurch nicht selbst Teil des Tailnets
+- erreichbar wird es ueber das Netz hinter dem `subnet router`
+- fuer echte ausgehende Nutzung ueber Tailscale braucht das Endgeraet entweder einen eigenen Client oder einen vorgeschalteten Router, der den Verkehr entsprechend fuehrt
+
+### Wann ein `subnet router` besonders sinnvoll ist
+
+Ein `subnet router` passt sehr gut, wenn du:
+
+- Smart-Home-Geraete ohne eigene Tailscale-App nutzen willst
+- Kameras, Drucker oder NAS nicht oeffentlich exponieren moechtest
+- Handy und Tablet privat ins Heimnetz holen willst
+- einen TV, AV-Receiver oder andere lokale Mediengeraete remote indirekt erreichen moechtest
+
+### Sicherheits- und Praxis-Hinweise
+
+- Admin-Oberflaechen trotzdem nur gezielt freigeben, nicht pauschal das ganze LAN unnoetig gross bewerben
+- moeglichst nur die wirklich benoetigten Netze per `--advertise-routes` freigeben
+- bei mehreren Standorten auf ueberschneidende Netze achten, zum Beispiel nicht mehrfach dasselbe `192.168.0.0/24`
+- `subnet routes` loesen keinen DNS- oder Reverse-Proxy-Bedarf fuer oeffentliche Dienste
+- fuer Web-Apps mit oeffentlicher Domain bleibt `Cloudflare Tunnel` oder ein sauberer Reverse Proxy oft die bessere Ergaenzung
 
 ### Wann `Cloudflare Tunnel`?
 
