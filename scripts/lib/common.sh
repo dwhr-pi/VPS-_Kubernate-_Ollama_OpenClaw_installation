@@ -12,6 +12,8 @@ CUSTOM_SOURCES_FILE="${USER_WORKSPACE_DIR}/custom_sources.conf"
 CUSTOM_OLLAMA_BUILDS_FILE="${USER_WORKSPACE_DIR}/custom_ollama_builds.conf"
 TOOL_STATUS_FILE="${USER_STATUS_DIR}/installed_tools.txt"
 PROFILE_STATUS_FILE="${USER_STATUS_DIR}/installed_profiles.txt"
+LEGACY_TOOL_STATUS_FILE="${USER_WORKSPACE_DIR}/installed_tools.txt"
+LEGACY_PROFILE_STATUS_FILE="${USER_WORKSPACE_DIR}/installed_profiles.txt"
 METRICS_HISTORY_FILE="${USER_METRICS_DIR}/operation_history.tsv"
 
 GREEN="\033[0;32m"
@@ -22,7 +24,20 @@ NC="\033[0m"
 
 ensure_user_workspace() {
   mkdir -p "$USER_WORKSPACE_DIR" "$USER_STATUS_DIR" "$USER_LOG_DIR" "$USER_METRICS_DIR" "$CUSTOM_SOURCE_REPOS_DIR"
-  touch "$TOOL_STATUS_FILE" "$PROFILE_STATUS_FILE"
+  touch "$TOOL_STATUS_FILE" "$PROFILE_STATUS_FILE" "$LEGACY_TOOL_STATUS_FILE" "$LEGACY_PROFILE_STATUS_FILE"
+
+  if [ ! -s "$LEGACY_TOOL_STATUS_FILE" ] && [ -s "$TOOL_STATUS_FILE" ]; then
+    cp "$TOOL_STATUS_FILE" "$LEGACY_TOOL_STATUS_FILE"
+  elif [ ! -s "$TOOL_STATUS_FILE" ] && [ -s "$LEGACY_TOOL_STATUS_FILE" ]; then
+    cp "$LEGACY_TOOL_STATUS_FILE" "$TOOL_STATUS_FILE"
+  fi
+
+  if [ ! -s "$LEGACY_PROFILE_STATUS_FILE" ] && [ -s "$PROFILE_STATUS_FILE" ]; then
+    cp "$PROFILE_STATUS_FILE" "$LEGACY_PROFILE_STATUS_FILE"
+  elif [ ! -s "$PROFILE_STATUS_FILE" ] && [ -s "$LEGACY_PROFILE_STATUS_FILE" ]; then
+    cp "$LEGACY_PROFILE_STATUS_FILE" "$PROFILE_STATUS_FILE"
+  fi
+
   if [ ! -f "$METRICS_HISTORY_FILE" ]; then
     printf 'timestamp\toperation_id\toperation_title\tstatus\tduration_seconds\tfree_kb_before\tfree_kb_after\tdelta_kb\n' > "$METRICS_HISTORY_FILE"
   fi
@@ -94,6 +109,19 @@ status_add() {
   grep -Fxv "$value" "$file" > "${file}.tmp" 2>/dev/null || true
   mv "${file}.tmp" "$file"
   printf '%s\n' "$value" >> "$file"
+
+  case "$file" in
+    "$TOOL_STATUS_FILE")
+      grep -Fxv "$value" "$LEGACY_TOOL_STATUS_FILE" > "${LEGACY_TOOL_STATUS_FILE}.tmp" 2>/dev/null || true
+      mv "${LEGACY_TOOL_STATUS_FILE}.tmp" "$LEGACY_TOOL_STATUS_FILE"
+      printf '%s\n' "$value" >> "$LEGACY_TOOL_STATUS_FILE"
+      ;;
+    "$PROFILE_STATUS_FILE")
+      grep -Fxv "$value" "$LEGACY_PROFILE_STATUS_FILE" > "${LEGACY_PROFILE_STATUS_FILE}.tmp" 2>/dev/null || true
+      mv "${LEGACY_PROFILE_STATUS_FILE}.tmp" "$LEGACY_PROFILE_STATUS_FILE"
+      printf '%s\n' "$value" >> "$LEGACY_PROFILE_STATUS_FILE"
+      ;;
+  esac
 }
 
 status_remove() {
@@ -102,6 +130,17 @@ status_remove() {
   ensure_user_workspace
   grep -Fxv "$value" "$file" > "${file}.tmp" 2>/dev/null || true
   mv "${file}.tmp" "$file"
+
+  case "$file" in
+    "$TOOL_STATUS_FILE")
+      grep -Fxv "$value" "$LEGACY_TOOL_STATUS_FILE" > "${LEGACY_TOOL_STATUS_FILE}.tmp" 2>/dev/null || true
+      mv "${LEGACY_TOOL_STATUS_FILE}.tmp" "$LEGACY_TOOL_STATUS_FILE"
+      ;;
+    "$PROFILE_STATUS_FILE")
+      grep -Fxv "$value" "$LEGACY_PROFILE_STATUS_FILE" > "${LEGACY_PROFILE_STATUS_FILE}.tmp" 2>/dev/null || true
+      mv "${LEGACY_PROFILE_STATUS_FILE}.tmp" "$LEGACY_PROFILE_STATUS_FILE"
+      ;;
+  esac
 }
 
 mark_tool_installed() { status_add "$TOOL_STATUS_FILE" "$1"; }

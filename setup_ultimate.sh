@@ -19,6 +19,7 @@ APP_TITLE="OpenClaw & AI Infrastructure - Ultimate Setup V${APP_VERSION}"
 # Installationsverzeichnis
 INSTALL_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 USER_WORKSPACE_DIR="${HOME}/.openclaw_ultimate_user_data"
+USER_STATUS_DIR="$USER_WORKSPACE_DIR/status"
 USER_OPENCLAW_TEMPLATE_DIR="$USER_WORKSPACE_DIR/openclaw"
 USER_PROFILE_SOURCE_DIR="$USER_WORKSPACE_DIR/profil_quellen"
 USER_PROFILE_RENDERED_DIR="$USER_WORKSPACE_DIR/profile_ableitungen"
@@ -48,6 +49,7 @@ load_setup_language
 ensure_user_workspace() {
     ensure_setup_preferences
     mkdir -p "$USER_WORKSPACE_DIR"
+    mkdir -p "$USER_STATUS_DIR"
     mkdir -p "$USER_OPENCLAW_TEMPLATE_DIR"
     mkdir -p "$USER_PROFILE_SOURCE_DIR"
     mkdir -p "$USER_PROFILE_RENDERED_DIR"
@@ -55,6 +57,19 @@ ensure_user_workspace() {
     mkdir -p "$USER_MODELFILE_DIR"
     mkdir -p "$USER_METRICS_LOG_DIR"
     mkdir -p "$USER_CUSTOM_SOURCE_DIR"
+    touch "$PROFILE_STATUS_FILE" "$TOOL_STATUS_FILE"
+
+    if [ ! -s "$TOOL_STATUS_FILE" ] && [ -s "$USER_STATUS_DIR/installed_tools.txt" ]; then
+        cp "$USER_STATUS_DIR/installed_tools.txt" "$TOOL_STATUS_FILE"
+    elif [ ! -s "$USER_STATUS_DIR/installed_tools.txt" ] && [ -s "$TOOL_STATUS_FILE" ]; then
+        cp "$TOOL_STATUS_FILE" "$USER_STATUS_DIR/installed_tools.txt"
+    fi
+
+    if [ ! -s "$PROFILE_STATUS_FILE" ] && [ -s "$USER_STATUS_DIR/installed_profiles.txt" ]; then
+        cp "$USER_STATUS_DIR/installed_profiles.txt" "$PROFILE_STATUS_FILE"
+    elif [ ! -s "$USER_STATUS_DIR/installed_profiles.txt" ] && [ -s "$PROFILE_STATUS_FILE" ]; then
+        cp "$PROFILE_STATUS_FILE" "$USER_STATUS_DIR/installed_profiles.txt"
+    fi
 
     if [ ! -f "$USER_OPENCLAW_TEMPLATE_DIR/.env.template" ]; then
         cp "$INSTALL_DIR/scripts/config_templates/openclaw/.env.template" "$USER_OPENCLAW_TEMPLATE_DIR/.env.template"
@@ -1922,9 +1937,9 @@ show_profile_management_hub() {
 
 show_main_menu() {
     local dialog_rc
-    local menu_height=23
+    local menu_height=24
     local menu_width=88
-    local menu_rows=17
+    local menu_rows=18
     local term_lines=0
     local term_cols=0
     local begin_row=1
@@ -1950,6 +1965,8 @@ show_main_menu() {
     --extra-button --extra-label "${TXT_OPTIONS_BUTTON:-⚙  Optionen}" \
     --title "${TXT_MENU_TITLE:-HAUPTMENÜ}" --menu "${TXT_MENU_PROMPT:-Wählen Sie Ihr Ziel-System oder eine Aktion:}" "$menu_height" "$menu_width" "$menu_rows" \
     "1" "${TXT_MENU_1:-Setup-Update + System-Update (Repo, OS & pnpm)}" \
+    "15" "${TXT_MENU_15:-Nur auf Setup-Updates prüfen}" \
+    "16" "${TXT_MENU_16:-Jetzt nur das Setup aktualisieren}" \
     "2" "${TXT_MENU_2:-Ollama Modell-Manager}" \
     "3" "${TXT_MENU_3:-OpenClaw Konfiguration (.env & config.json)}" \
     "14" "${TXT_MENU_14:-LLMOps Plattform Konfiguration (.env Stack)}" \
@@ -2011,6 +2028,30 @@ while true; do
             run_bash_script "$INSTALL_DIR/scripts/auto_update.sh"
             if [ $? -eq 0 ]; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
             read -p "System-Update abgeschlossen. Drücken Sie Enter..."
+            ;;
+        15)
+            show_operation_intro \
+            "Nur auf Setup-Updates prüfen" \
+            "Prüft den lokalen Git-Stand gegen origin/main, ohne direkt Updates oder Systempakete zu installieren." \
+            "Wenige Sekunden bis ca. 1 Minute, je nach Netzwerk und Git-Status" \
+            "$(get_operation_storage_estimate_label "main_menu_update_check" "${MIN_FREE_GB_ABSOLUTE}-${MIN_FREE_GB_RECOMMENDED} GB")" \
+            "Dabei werden keine Paket-Updates installiert und keine lokalen Aenderungen automatisch verworfen."
+            begin_operation_measurement "main_menu_update_check" "Nur auf Setup-Updates prüfen"
+            run_bash_script "$INSTALL_DIR/scripts/check_setup_updates.sh"
+            if [ $? -eq 0 ]; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
+            read -p "Update-Prüfung abgeschlossen. Drücken Sie Enter..."
+            ;;
+        16)
+            show_operation_intro \
+            "Jetzt nur das Setup aktualisieren" \
+            "Aktualisiert nur dieses Setup-Repository gegen origin/main. Betriebssystem und pnpm bleiben dabei unberuehrt." \
+            "Wenige Sekunden bis einige Minuten, je nach Netzwerk und Git-Stand" \
+            "$(get_operation_storage_estimate_label "main_menu_setup_only_update" "${MIN_FREE_GB_ABSOLUTE}-${MIN_FREE_GB_RECOMMENDED} GB")" \
+            "Bei lokalen Aenderungen im Setup wird das Repo-Update bewusst uebersprungen, damit nichts ueberschrieben wird."
+            begin_operation_measurement "main_menu_setup_only_update" "Nur das Setup aktualisieren"
+            run_bash_script "$INSTALL_DIR/scripts/update_setup_only.sh"
+            if [ $? -eq 0 ]; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
+            read -p "Setup-Update abgeschlossen. Drücken Sie Enter..."
             ;;
         2)
             show_operation_intro \
