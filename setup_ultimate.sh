@@ -911,8 +911,22 @@ sync_core_tool_status() {
         fi
     fi
 
+    if [ -d /opt/huginn ]; then
+        if ! grep -Fxq "Huginn" "$TOOL_STATUS_FILE" 2>/dev/null; then
+            append_unique_line "$TOOL_STATUS_FILE" "Huginn"
+            status_changed=1
+        fi
+    fi
+
+    if [ -d /opt/clawhub-cli ]; then
+        if ! grep -Fxq "Clawhub_CLI" "$TOOL_STATUS_FILE" 2>/dev/null; then
+            append_unique_line "$TOOL_STATUS_FILE" "Clawhub_CLI"
+            status_changed=1
+        fi
+    fi
+
     if [ "$status_changed" -eq 1 ]; then
-        echo -e "${BLUE}Hinweis: Der Tool-Status fuer Ollama/OpenClaw wurde aus der vorhandenen Systeminstallation nachsynchronisiert.${NC}"
+        echo -e "${BLUE}Hinweis: Der Tool-Status fuer vorhandene Kern- und Zusatzinstallationen wurde aus dem System nachsynchronisiert.${NC}"
     fi
 }
 

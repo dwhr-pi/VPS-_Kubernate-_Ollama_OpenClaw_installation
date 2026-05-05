@@ -58,6 +58,38 @@ check_npm_registry() {
     exit 1
 }
 
+project_prefers_bun() {
+    [ -f "package.json" ] || return 1
+
+    if grep -q 'only-allow bun' package.json 2>/dev/null; then
+        return 0
+    fi
+
+    [ -f "bun.lockb" ] || [ -f "bun.lock" ]
+}
+
+ensure_bun_runtime() {
+    export PATH="$HOME/.bun/bin:$PATH"
+
+    if command -v bun >/dev/null 2>&1 && command -v bunx >/dev/null 2>&1; then
+        return 0
+    fi
+
+    if ! command -v curl >/dev/null 2>&1; then
+        echo -e "${RED}Fehler: Dieses Repository benötigt bun, aber curl zum Installieren fehlt.${NC}"
+        exit 1
+    fi
+
+    echo -e "${YELLOW}Hinweis: package.json erzwingt bun als Paketmanager. Installiere bun für den aktuellen Benutzer...${NC}"
+    curl -fsSL https://bun.sh/install | bash
+    export PATH="$HOME/.bun/bin:$PATH"
+
+    if ! command -v bun >/dev/null 2>&1 || ! command -v bunx >/dev/null 2>&1; then
+        echo -e "${RED}Fehler: bun konnte nicht korrekt eingerichtet werden.${NC}"
+        exit 1
+    fi
+}
+
 ensure_pnpm_workspace_file() {
     if [ -f "pnpm-workspace.yaml" ] || [ ! -f "package.json" ]; then
         return 0
@@ -94,6 +126,24 @@ NODE
     return 0
 }
 
+run_bun_install() {
+    local attempt
+
+    for attempt in 1 2 3; do
+        echo -e "${BLUE}bun install Versuch ${attempt}/3...${NC}"
+        if bun install; then
+            return 0
+        fi
+
+        if [ "$attempt" -lt 3 ]; then
+            echo -e "${YELLOW}bun install fehlgeschlagen. Neuer Versuch in 15 Sekunden...${NC}"
+            sleep 15
+        fi
+    done
+
+    return 1
+}
+
 run_pnpm_install() {
     local attempt
 
@@ -115,7 +165,6 @@ run_pnpm_install() {
 echo -e "${BLUE}Starte Installation von Clawhub CLI...${NC}"
 
 require_command git "Bitte git installieren und das Skript erneut starten."
-require_command pnpm "Bitte pnpm installieren oder via Corepack aktivieren, z. B. 'corepack enable && corepack prepare pnpm@latest --activate'."
 
 CLAWHUB_CLI_REPO_URL=""
 for repo in "${CLAWHUB_CLI_REPOS[@]}"; do
@@ -146,23 +195,40 @@ else
     cd "$CLAWHUB_CLI_DIR"
 fi
 
-# 2. Abhängigkeiten installieren mit pnpm
-echo -e "${BLUE}Installiere Abhängigkeiten für Clawhub CLI mit pnpm...${NC}"
+# 2. Abhängigkeiten installieren
+echo -e "${BLUE}Installiere Abhängigkeiten für Clawhub CLI...${NC}"
 check_npm_registry "$PNPM_REGISTRY_URL"
 ensure_pnpm_workspace_file
-if ! run_pnpm_install; then
-    echo -e "${RED}Fehler: pnpm install für Clawhub CLI fehlgeschlagen.${NC}"
-    echo -e "${YELLOW}Wenn weiterhin ERR_SOCKET_TIMEOUT, ECONNRESET oder EAI_AGAIN auftreten, liegt das sehr wahrscheinlich an Netzwerk, DNS, Proxy oder npm-Registry-Erreichbarkeit.${NC}"
-    echo -e "${YELLOW}Wenn nur die Workspace-Warnung bleibt, prüfen Sie das Repo-Layout oder hinterlegen Sie dauerhaft eine pnpm-workspace.yaml im Upstream-Repository.${NC}"
-    exit 1
+
+if project_prefers_bun; then
+    ensure_bun_runtime
+    if ! run_bun_install; then
+        echo -e "${RED}Fehler: bun install für Clawhub CLI fehlgeschlagen.${NC}"
+        exit 1
+    fi
+else
+    require_command pnpm "Bitte pnpm installieren oder via Corepack aktivieren, z. B. 'corepack enable && corepack prepare pnpm@latest --activate'."
+    if ! run_pnpm_install; then
+        echo -e "${RED}Fehler: pnpm install für Clawhub CLI fehlgeschlagen.${NC}"
+        echo -e "${YELLOW}Wenn weiterhin ERR_SOCKET_TIMEOUT, ECONNRESET oder EAI_AGAIN auftreten, liegt das sehr wahrscheinlich an Netzwerk, DNS, Proxy oder npm-Registry-Erreichbarkeit.${NC}"
+        echo -e "${YELLOW}Wenn nur die Workspace-Warnung bleibt, prüfen Sie das Repo-Layout oder hinterlegen Sie dauerhaft eine pnpm-workspace.yaml im Upstream-Repository.${NC}"
+        exit 1
+    fi
 fi
 
 # 3. Clawhub CLI bauen
-echo -e "${BLUE}Baue Clawhub CLI mit pnpm...${NC}"
-pnpm build
-if [ $? -ne 0 ]; then
-    echo -e "${RED}Fehler: pnpm build für Clawhub CLI fehlgeschlagen.${NC}"
-    exit 1
+if project_prefers_bun; then
+    echo -e "${BLUE}Baue Clawhub CLI mit bun...${NC}"
+    if ! bun run build; then
+        echo -e "${RED}Fehler: bun run build für Clawhub CLI fehlgeschlagen.${NC}"
+        exit 1
+    fi
+else
+    echo -e "${BLUE}Baue Clawhub CLI mit pnpm...${NC}"
+    if ! pnpm build; then
+        echo -e "${RED}Fehler: pnpm build für Clawhub CLI fehlgeschlagen.${NC}"
+        exit 1
+    fi
 fi
 
 # 4. Verknüpfung erstellen (optional)
