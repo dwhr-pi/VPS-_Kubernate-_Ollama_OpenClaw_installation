@@ -145,3 +145,25 @@ Fuer das Profil `Ethical_HackerGPT` zusaetzlich einplanen:
 - Basistools wie `nmap`, `gitleaks`, `semgrep`, `trivy`, `syft`, `grype`, `ufw`, `fail2ban` und `lynis` defensiv nutzen
 - optionale Tools und Labs nur bewusst aktivieren
 - keine oeffentlichen IP-Ranges oder fremden Domains pruefen
+
+## 13. Profilhinweis: Living_Persona_System
+
+Fuer das Profil `Living_Persona_System` zusaetzlich einplanen:
+
+- Persona-Dateien sauber trennen in `personas/`, `memory/` und `prompts/`
+- Persona-Memory datensparsam und nachvollziehbar halten
+- keine versteckte Menschenausgabe oder Identitaetsvortaeuschung bauen
+- `Ollama` und `OpenClaw` fuer Routing und Prompt-Aufbau vorbereiten
+- optional `Qdrant` oder `ChromaDB` nur dann nutzen, wenn Memory wirklich ueber Einzelfiles hinausgehen soll
+- Testfaelle fuer Rollenwechsel, Memory-Recall und Kontextmodi anlegen
+
+## 14. Profilhinweis: Next_Level_Persona_System
+
+Fuer das Profil `Next_Level_Persona_System` zusaetzlich einplanen:
+
+- Persona-Templates unter `personas/` und Prompt-Bausteine unter `prompts/persona/` pruefen
+- Memory-Struktur unter `memory/personas/<persona_id>/` sauber halten
+- oeffentliche Nutzung nur mit Disclosure-Regeln
+- `scripts/persona/install_persona_system.sh` fuer den Workspace-Aufbau nutzen
+- `scripts/persona/validate_personas.sh` vor produktiver Verwendung ausfuehren
+- Voice-, STT-, Bild-/Video- und Telefon-Hooks nur bewusst aktivieren

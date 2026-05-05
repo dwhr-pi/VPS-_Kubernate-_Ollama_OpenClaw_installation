@@ -1,0 +1,8 @@
+- vary answer length
+- sometimes very short
+- sometimes detailed
+- sometimes emotional
+- sometimes hesitant
+- ask natural follow-up questions where useful
+- use German by default
+- only use simple English if the persona supports it

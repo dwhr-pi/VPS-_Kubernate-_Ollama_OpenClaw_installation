@@ -937,7 +937,7 @@ fi
 
 # Profil-Definitionen mit Beschreibungen
 declare -A PROFILES
-PROFILE_KEYS=("Programmierer" "Repo_Maintainer" "Agent_Orchestrator" "LLM_Builder" "Research_Agent" "KI_Forschung" "Data_Engineering" "Document_AI" "Personal_Knowledge_OS" "Texter_Werbung_Marketing" "Rechtsberatung_Steuerrecht" "DevOps_SRE" "Security_Analyst" "Ethical_HackerGPT" "Compliance_Privacy" "Audio" "Voice_Assistant" "Media_Musik" "Content_Automation" "Image_Generation" "Video_Generation" "Visual_Creator" "Trading_AI" "Web3_Crypto_Tools")
+PROFILE_KEYS=("Programmierer" "Repo_Maintainer" "Agent_Orchestrator" "LLM_Builder" "Research_Agent" "KI_Forschung" "Data_Engineering" "Document_AI" "Personal_Knowledge_OS" "Next_Level_Persona_System" "Texter_Werbung_Marketing" "Rechtsberatung_Steuerrecht" "DevOps_SRE" "Security_Analyst" "Ethical_HackerGPT" "Compliance_Privacy" "Audio" "Voice_Assistant" "Media_Musik" "Content_Automation" "Image_Generation" "Video_Generation" "Visual_Creator" "Trading_AI" "Web3_Crypto_Tools")
 PROFILES["Programmierer"]="Tools für Entwicklung, Code-Generierung (DeepSeek Coder), Git-Integration, Huginn, Clawhub CLI. Ideal für Entwickler und Automatisierungsexperten."
 PROFILES["Media_Musik"]="Tools für Audio/Video (FFmpeg), Audio-AI, Alexa-Integration, Clawbake. Für Content Creator und Medienproduzenten."
 PROFILES["KI_Forschung"]="Spezialisierte Bibliotheken für Reinforcement Learning (OpenClaw RL), erweiterte LLM-Modelle (Gemini-1.5-Pro), Flowise/LangFlow. Für KI-Wissenschaftler und Forscher."
@@ -961,6 +961,7 @@ PROFILES["Image_Generation"]="Heavy-Profil für Bildgenerierung, Upscaling, LoRA
 PROFILES["Web3_Crypto_Tools"]="Web3-Werkzeuge fuer lokale Vertragsanalyse, RPC-Checks und Wallet-nahe Entwicklung ohne automatische Finanzaktionen oder autonome Trading-Ausfuehrung."
 PROFILES["Compliance_Privacy"]="Governance- und Compliance-Profil für DSGVO, EU-AI-Act-nahe Prüfungen, Policies, SBOM und Secret-Scans."
 PROFILES["Personal_Knowledge_OS"]="Persönliches Wissensprofil für lokale Suche, RAG, Sync, Export und Memory-Workflows."
+PROFILES["Next_Level_Persona_System"]="Modulares Persona-System fuer persistente Charaktere, Moduswechsel, Memory, Disclosure-Regeln und spaetere Voice-/Multimodal-Hooks."
 PROFILES["Repo_Maintainer"]="Maintainer-Profil für GitHub-Repo-Pflege, lokale CI, Linting, Releases, Changelogs und Pre-Commit-Prüfungen."
 
 # Funktion zum Installieren eines Profils
@@ -1683,6 +1684,10 @@ PROFILE_INTEGRATION_TOOLS["Compliance_Privacy"]="OpenTelemetry"
 PROFILE_CORE_TOOLS["Personal_Knowledge_OS"]="Joplin_CLI Meilisearch Qdrant SQLite_Vec Syncthing Rclone"
 PROFILE_EXTENDED_TOOLS["Personal_Knowledge_OS"]="ChromaDB LangChain LlamaIndex"
 PROFILE_INTEGRATION_TOOLS["Personal_Knowledge_OS"]="Open_WebUI Ollama"
+
+PROFILE_CORE_TOOLS["Next_Level_Persona_System"]="Ollama OpenClaw Open_WebUI Qdrant ChromaDB"
+PROFILE_EXTENDED_TOOLS["Next_Level_Persona_System"]="Piper Faster_Whisper ComfyUI Langfuse"
+PROFILE_INTEGRATION_TOOLS["Next_Level_Persona_System"]="GitHub_CLI Docker"
 
 PROFILE_CORE_TOOLS["Repo_Maintainer"]="GitHub_CLI Pre_Commit Act Markdownlint_CLI ShellCheck Shfmt Hadolint Actionlint Release_Please Changelog_Generator"
 PROFILE_EXTENDED_TOOLS["Repo_Maintainer"]="Gitleaks Docker_Compose_Plugin"

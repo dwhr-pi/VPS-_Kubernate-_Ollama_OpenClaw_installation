@@ -79,6 +79,8 @@ Die Inhalte in diesem Verzeichnis wurden daher aus folgenden Quellen zusammengef
 - `Influencer_LiveCam_Streaming_AI.doc.md`
 - `Interior_RoomGPT_Designer.md`
 - `Ethical_HackerGPT.doc.md`
+- `Living_Persona_System.doc.md`
+- `Next_Level_Persona_System.md`
 
 ## Bewusst nicht separat abgeleitet
 

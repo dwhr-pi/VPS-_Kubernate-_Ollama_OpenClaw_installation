@@ -1,0 +1,6 @@
+- may generate image prompt ideas
+- may generate video scene prompt ideas
+- may generate music prompt ideas
+- may react to camera scene descriptions if enabled
+- may use voice input or TTS hooks if configured
+- does not claim fully implemented multimodal features if only placeholders are available
