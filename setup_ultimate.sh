@@ -937,7 +937,7 @@ fi
 
 # Profil-Definitionen mit Beschreibungen
 declare -A PROFILES
-PROFILE_KEYS=("Programmierer" "Repo_Maintainer" "Agent_Orchestrator" "LLM_Builder" "Research_Agent" "KI_Forschung" "Data_Engineering" "Document_AI" "Personal_Knowledge_OS" "Texter_Werbung_Marketing" "Rechtsberatung_Steuerrecht" "DevOps_SRE" "Security_Analyst" "Compliance_Privacy" "Audio" "Voice_Assistant" "Media_Musik" "Content_Automation" "Image_Generation" "Video_Generation" "Visual_Creator" "Trading_AI" "Web3_Crypto_Tools")
+PROFILE_KEYS=("Programmierer" "Repo_Maintainer" "Agent_Orchestrator" "LLM_Builder" "Research_Agent" "KI_Forschung" "Data_Engineering" "Document_AI" "Personal_Knowledge_OS" "Texter_Werbung_Marketing" "Rechtsberatung_Steuerrecht" "DevOps_SRE" "Security_Analyst" "Ethical_HackerGPT" "Compliance_Privacy" "Audio" "Voice_Assistant" "Media_Musik" "Content_Automation" "Image_Generation" "Video_Generation" "Visual_Creator" "Trading_AI" "Web3_Crypto_Tools")
 PROFILES["Programmierer"]="Tools für Entwicklung, Code-Generierung (DeepSeek Coder), Git-Integration, Huginn, Clawhub CLI. Ideal für Entwickler und Automatisierungsexperten."
 PROFILES["Media_Musik"]="Tools für Audio/Video (FFmpeg), Audio-AI, Alexa-Integration, Clawbake. Für Content Creator und Medienproduzenten."
 PROFILES["KI_Forschung"]="Spezialisierte Bibliotheken für Reinforcement Learning (OpenClaw RL), erweiterte LLM-Modelle (Gemini-1.5-Pro), Flowise/LangFlow. Für KI-Wissenschaftler und Forscher."
@@ -948,6 +948,7 @@ PROFILES["Audio"]="Verarbeitet Sprache und Audio mit Speech-to-Text, Text-to-Spe
 PROFILES["Content_Automation"]="Automatisiert Content-Pipelines von Skript über Voiceover und Videoschnitt bis zu Upload-Workflows."
 PROFILES["Research_Agent"]="Analysiert Repositories, Dokumentation und neue Tools, um das Setup gezielt weiterzuentwickeln."
 PROFILES["Security_Analyst"]="Fokussiert auf Exposure-Checks, Log-Analyse, Schwachstellensuche und Docker-/Kubernetes-Hardening."
+PROFILES["Ethical_HackerGPT"]="Defensiver Security-Assistent fuer autorisierte Audits, Hardening, Reporting und lokale Lab-Umgebungen mit strikter Allowlist und Audit-Default."
 PROFILES["Trading_AI"]="Unterstuetzt Marktanalyse, Strategietests, Backtesting und Paper-Trading mit Zenbot sowie Web3- und Exchange-Integrationen. Keine autonome Live-Orderausfuehrung."
 PROFILES["Visual_Creator"]="Kreativprofil für Bild-, Video- und Asset-Pipelines mit Diffusions-, UI- und Upscaling-Bausteinen."
 PROFILES["LLM_Builder"]="Baut einen realistischen lokalen Workflow zum Fine-Tuning, Testen, Exportieren und Quantisieren eigener Modelle für Ollama auf."
@@ -1628,6 +1629,10 @@ PROFILE_INTEGRATION_TOOLS["Research_Agent"]=""
 PROFILE_CORE_TOOLS["Security_Analyst"]="Nmap Nikto Trivy Fail2Ban"
 PROFILE_EXTENDED_TOOLS["Security_Analyst"]="Fail2Ban_Analyzer Security_Workflow"
 PROFILE_INTEGRATION_TOOLS["Security_Analyst"]=""
+
+PROFILE_CORE_TOOLS["Ethical_HackerGPT"]="Nmap Trivy Gitleaks Semgrep Syft Grype Fail2Ban"
+PROFILE_EXTENDED_TOOLS["Ethical_HackerGPT"]="GitHub_CLI Docker Kubernetes"
+PROFILE_INTEGRATION_TOOLS["Ethical_HackerGPT"]="OpenTelemetry"
 
 PROFILE_CORE_TOOLS["Trading_AI"]="Zenbot_trader Web3_APIs Exchange_APIs"
 PROFILE_EXTENDED_TOOLS["Trading_AI"]="Zenbot_API Risk_Strategy_Analyzer Backtest_Workflow FinGPT FinRobot FinRAG"

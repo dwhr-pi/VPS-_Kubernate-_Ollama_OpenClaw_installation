@@ -276,6 +276,72 @@
         ],
         "missing_in_docs": []
       }
+    },
+    {
+      "id": "ethical_hackergpt",
+      "name": "Ethical HackerGPT",
+      "file": "Ethical_HackerGPT.doc.md",
+      "category": "Security",
+      "risk_level": "controlled",
+      "default_enabled": false,
+      "profile": "Ethical_HackerGPT",
+      "source": {
+        "docs_profile_md": true,
+        "readme_or_guide": true,
+        "scripts": true
+      },
+      "system": {
+        "packages": [
+          "curl",
+          "jq",
+          "git",
+          "whois",
+          "dnsutils",
+          "iproute2",
+          "net-tools",
+          "openssl",
+          "ufw",
+          "fail2ban",
+          "lynis",
+          "nmap"
+        ],
+        "paths": [
+          "./reports/security",
+          "~/.openclaw_ultimate_user_data/ethical_hackergpt"
+        ]
+      },
+      "ai_stack": {
+        "ollama_models": [],
+        "agents": [
+          "Ethical HackerGPT"
+        ],
+        "security_tools": [
+          "gitleaks",
+          "semgrep",
+          "trivy",
+          "syft",
+          "grype"
+        ]
+      },
+      "services": [],
+      "network": {
+        "ports": [],
+        "bindings": [
+          "nur Allowlist-Ziele, default localhost"
+        ]
+      },
+      "commands": [
+        "scripts/profiles/Ethical_HackerGPT_install.sh",
+        "scripts/profiles/Ethical_HackerGPT_uninstall.sh",
+        "gitleaks detect --source . --no-git",
+        "trivy fs ."
+      ],
+      "guardrails": [
+        "keine fremden Ziele ohne Erlaubnis",
+        "kein Malware- oder Credential-Diebstahl-Kontext",
+        "kein offensiver Standardmodus",
+        "nur lokale oder explizit erlaubte Ziele"
+      ]
     }
   ]
 }

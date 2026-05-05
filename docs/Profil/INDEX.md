@@ -78,6 +78,7 @@ Die Inhalte in diesem Verzeichnis wurden daher aus folgenden Quellen zusammengef
 - `Cost_Energy_Optimizer.doc.md`
 - `Influencer_LiveCam_Streaming_AI.doc.md`
 - `Interior_RoomGPT_Designer.md`
+- `Ethical_HackerGPT.doc.md`
 
 ## Bewusst nicht separat abgeleitet
 

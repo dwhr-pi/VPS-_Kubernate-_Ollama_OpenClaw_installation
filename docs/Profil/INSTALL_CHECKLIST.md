@@ -133,3 +133,15 @@ Fuer das Profil `Influencer_LiveCam_Streaming_AI` zusaetzlich einplanen:
 - Speicherplatz fuer Aufnahmen, Transkripte, Clips und Assets
 - Datenschutzpruefung fuer Chat-Logs, Fan-Kommunikation und Moderationsspeicher
 - keine oeffentliche Freigabe sensibler Creator- oder Admin-Panels ohne Tunnel, Reverse Proxy oder privates Overlay
+
+## 12. Profilhinweis: Ethical_HackerGPT
+
+Fuer das Profil `Ethical_HackerGPT` zusaetzlich einplanen:
+
+- Default immer `audit` und `read-only` denken
+- Allowlist nur mit eigenen oder lokal isolierten Zielen befuellen
+- bei leerer Allowlist nur `127.0.0.1` und `localhost` verwenden
+- Output-Verzeichnis `./reports/security` pruefen
+- Basistools wie `nmap`, `gitleaks`, `semgrep`, `trivy`, `syft`, `grype`, `ufw`, `fail2ban` und `lynis` defensiv nutzen
+- optionale Tools und Labs nur bewusst aktivieren
+- keine oeffentlichen IP-Ranges oder fremden Domains pruefen

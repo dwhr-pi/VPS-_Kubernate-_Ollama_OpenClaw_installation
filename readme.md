@@ -16,6 +16,7 @@ Die zugehoerige Architektur-Dokumentation findest du in [docs/ARCHITECTURE_LLMOP
 - Der laufende Funktionstest konzentriert sich derzeit bevorzugt auf das `Programmierer`-Setup.
 - Weitere Profile und Plattformpfade werden aktuell funktional geprueft, bevor tiefer an der Feinkonfiguration gearbeitet wird.
 - Neuere Plattform- und Ausbauprofile wurden jetzt strukturell in Doku und Registries aufgenommen, sind aber nicht alle schon als Top-Level-Menuepfade gleich weit durchgetestet.
+- Neu hinzugekommen ist ausserdem das klar defensive Profil [Ethical_HackerGPT](docs/Profil/Ethical_HackerGPT.doc.md) fuer autorisierte Sicherheitsanalysen, Hardening, Reporting und lokale Security-Labs.
 
 ## 🚀 Schnelle Installation (One-Liner)
 
