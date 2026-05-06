@@ -85,8 +85,8 @@ echo -e "${YELLOW}Standard-Referenz: ${HUGINN_REPO_REF}.${NC}"
 echo -e "${YELLOW}Wenn du bewusst einen anderen Upstream-Stand testen willst, kannst du HUGINN_REPO_REF überschreiben.${NC}"
 
 echo -e "${GREEN}1/5: Installiere System-Abhängigkeiten für Huginn...${NC}"
-sudo apt update
-sudo apt install -y ruby-full ruby-bundler build-essential libmysqlclient-dev libpq-dev pkg-config
+sudo apt-get update
+sudo apt-get install -y ruby-full ruby-bundler build-essential libmysqlclient-dev libpq-dev pkg-config
 
 echo -e "${GREEN}2/5: Hole Huginn aus GitHub...${NC}"
 checkout_huginn_ref
