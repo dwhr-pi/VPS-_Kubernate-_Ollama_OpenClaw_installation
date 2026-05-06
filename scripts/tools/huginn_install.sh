@@ -112,11 +112,26 @@ if ! command -v bundle >/dev/null 2>&1; then
 fi
 bundle config set --local path vendor/bundle
 bundle config set --local without "development test"
+bundle config set --local force_ruby_platform true
+bundle lock --add-platform ruby >/dev/null 2>&1 || true
 echo -e "${YELLOW}Hinweis: 'development test' ist hier keine Versionsnummer, sondern die ausgeschlossene Bundler-Gruppenkombination.${NC}"
-if ! bundle install; then
-    echo -e "${RED}Fehler: Bundler install für Huginn fehlgeschlagen.${NC}"
-    exit 1
+bundle_log_file="$(mktemp)"
+if ! bundle install 2>&1 | tee "$bundle_log_file"; then
+    if grep -Eq 'nokogiri .* can no longer be found' "$bundle_log_file"; then
+        echo -e "${YELLOW}Hinweis: Bundler ist auf eine entfernte nokogiri-Binärversion gelaufen. Versuche Reparatur mit Ruby-Plattform und nokogiri-Update...${NC}"
+        bundle update nokogiri 2>&1 | tee -a "$bundle_log_file" || true
+        if ! bundle install 2>&1 | tee -a "$bundle_log_file"; then
+            rm -f "$bundle_log_file"
+            echo -e "${RED}Fehler: Bundler install für Huginn fehlgeschlagen.${NC}"
+            exit 1
+        fi
+    else
+        rm -f "$bundle_log_file"
+        echo -e "${RED}Fehler: Bundler install für Huginn fehlgeschlagen.${NC}"
+        exit 1
+    fi
 fi
+rm -f "$bundle_log_file"
 
 if ! database_config_complete; then
     echo -e "${YELLOW}Huginn Quellcode und Gems wurden vorbereitet, aber die Datenbank-Konfiguration in $HUGINN_DIR/.env ist noch unvollständig.${NC}"

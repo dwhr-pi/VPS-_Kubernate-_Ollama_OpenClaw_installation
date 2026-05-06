@@ -1,6 +1,8 @@
 #!/bin/bash
 
 DEFAULT_SETUP_LANGUAGE="de"
+DEFAULT_INSTALL_MONITORING_VERBOSE="false"
+DEFAULT_INSTALL_MONITORING_MANUAL_FLOW="false"
 SUPPORTED_SETUP_LANGUAGES=(de en fr zh ja ru es eo ar he)
 
 USER_WORKSPACE_DIR="${USER_WORKSPACE_DIR:-${HOME}/.openclaw_ultimate_user_data}"
@@ -43,24 +45,69 @@ normalize_setup_language() {
     fi
 }
 
+normalize_setup_boolean() {
+    local candidate="${1:-false}"
+    case "$(printf '%s' "$candidate" | tr '[:upper:]' '[:lower:]')" in
+        1|true|yes|on|ja)
+            printf '%s\n' "true"
+            ;;
+        *)
+            printf '%s\n' "false"
+            ;;
+    esac
+}
+
 ensure_setup_preferences() {
     mkdir -p "$USER_WORKSPACE_DIR"
     if [ ! -f "$SETUP_PREFERENCES_FILE" ]; then
         cat > "$SETUP_PREFERENCES_FILE" <<EOF
 # Ausgelagerte Benutzer-Einstellungen für das Ultimate Setup
 SETUP_LANGUAGE="$DEFAULT_SETUP_LANGUAGE"
+INSTALL_MONITORING_VERBOSE="$DEFAULT_INSTALL_MONITORING_VERBOSE"
+INSTALL_MONITORING_MANUAL_FLOW="$DEFAULT_INSTALL_MONITORING_MANUAL_FLOW"
 EOF
     fi
 }
 
-persist_setup_language() {
-    local language_code
-    language_code="$(normalize_setup_language "$1")"
+persist_setup_preference() {
+    local key="$1"
+    local raw_value="$2"
+    local normalized_value="$raw_value"
+    local tmp_file
+
+    case "$key" in
+        SETUP_LANGUAGE)
+            normalized_value="$(normalize_setup_language "$raw_value")"
+            ;;
+        INSTALL_MONITORING_VERBOSE|INSTALL_MONITORING_MANUAL_FLOW)
+            normalized_value="$(normalize_setup_boolean "$raw_value")"
+            ;;
+    esac
+
+    ensure_setup_preferences
     mkdir -p "$USER_WORKSPACE_DIR"
-    cat > "$SETUP_PREFERENCES_FILE" <<EOF
-# Ausgelagerte Benutzer-Einstellungen für das Ultimate Setup
-SETUP_LANGUAGE="$language_code"
-EOF
+    tmp_file="$(mktemp)"
+
+    awk -v pref_key="$key" -v pref_value="$normalized_value" '
+        BEGIN { updated = 0 }
+        $0 ~ ("^" pref_key "=") {
+            print pref_key "=\"" pref_value "\""
+            updated = 1
+            next
+        }
+        { print }
+        END {
+            if (updated == 0) {
+                print pref_key "=\"" pref_value "\""
+            }
+        }
+    ' "$SETUP_PREFERENCES_FILE" > "$tmp_file"
+
+    mv "$tmp_file" "$SETUP_PREFERENCES_FILE"
+}
+
+persist_setup_language() {
+    persist_setup_preference "SETUP_LANGUAGE" "$1"
 }
 
 load_setup_language() {
@@ -70,6 +117,8 @@ load_setup_language() {
     source "$SETUP_PREFERENCES_FILE"
     language_code="$(normalize_setup_language "${SETUP_LANGUAGE:-$DEFAULT_SETUP_LANGUAGE}")"
     SETUP_LANGUAGE="$language_code"
+    INSTALL_MONITORING_VERBOSE="$(normalize_setup_boolean "${INSTALL_MONITORING_VERBOSE:-$DEFAULT_INSTALL_MONITORING_VERBOSE}")"
+    INSTALL_MONITORING_MANUAL_FLOW="$(normalize_setup_boolean "${INSTALL_MONITORING_MANUAL_FLOW:-$DEFAULT_INSTALL_MONITORING_MANUAL_FLOW}")"
 
     if [ -f "$LANG_FILES_DIR/$SETUP_LANGUAGE.sh" ]; then
         # shellcheck disable=SC1090

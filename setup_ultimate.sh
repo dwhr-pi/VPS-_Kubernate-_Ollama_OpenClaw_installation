@@ -26,6 +26,7 @@ USER_PROFILE_RENDERED_DIR="$USER_WORKSPACE_DIR/profile_ableitungen"
 USER_PROMPTS_DIR="$USER_WORKSPACE_DIR/prompts"
 USER_MODELFILE_DIR="$USER_WORKSPACE_DIR/modelfiles"
 USER_METRICS_LOG_DIR="$USER_WORKSPACE_DIR/metrics_logs"
+USER_INSTALL_LOG_DIR="$USER_WORKSPACE_DIR/install_logs"
 USER_CUSTOM_SOURCE_DIR="$USER_WORKSPACE_DIR/custom_sources"
 USER_DIALOGRC_FILE="$USER_WORKSPACE_DIR/dialogrc"
 METRICS_CONFIG_FILE="$USER_WORKSPACE_DIR/setup_metrics.conf"
@@ -56,6 +57,7 @@ ensure_user_workspace() {
     mkdir -p "$USER_PROMPTS_DIR"
     mkdir -p "$USER_MODELFILE_DIR"
     mkdir -p "$USER_METRICS_LOG_DIR"
+    mkdir -p "$USER_INSTALL_LOG_DIR"
     mkdir -p "$USER_CUSTOM_SOURCE_DIR"
     touch "$PROFILE_STATUS_FILE" "$TOOL_STATUS_FILE"
 
@@ -309,6 +311,26 @@ load_metrics_config() {
     : "${LOCAL_SETUP_CLOUDFLARE_TOKEN_STOP_ESTIMATE:=22-60 min}"
 }
 
+is_preference_enabled() {
+    case "$(printf '%s' "${1:-false}" | tr '[:upper:]' '[:lower:]')" in
+        1|true|yes|on|ja)
+            return 0
+            ;;
+        *)
+            return 1
+            ;;
+    esac
+}
+
+set_installation_monitoring_mode() {
+    local enabled="$1"
+
+    enabled="$(normalize_setup_boolean "$enabled")"
+    persist_setup_preference "INSTALL_MONITORING_VERBOSE" "$enabled"
+    persist_setup_preference "INSTALL_MONITORING_MANUAL_FLOW" "$enabled"
+    load_setup_language
+}
+
 reset_terminal_display() {
     printf '\033[0m'
     tput sgr0 2>/dev/null || true
@@ -458,6 +480,7 @@ end_operation_measurement() {
     local delta_kb
 
     [ -n "${ACTIVE_OPERATION_STARTED_AT:-}" ] || return 0
+    LAST_OPERATION_LOG_FILE="${ACTIVE_OPERATION_LOG_FILE:-}"
 
     ended_at="$(date +%s)"
     free_kb_after="$(get_free_disk_kb)"
@@ -475,8 +498,11 @@ end_operation_measurement() {
         "$delta_kb" >> "$METRICS_HISTORY_FILE"
 
     echo -e "${YELLOW}Messwert gespeichert:${NC} ${ACTIVE_OPERATION_TITLE:-Unbekannt} | Status: $operation_status | Dauer: $(format_duration_human "$duration_seconds") | Speicheränderung: ${delta_kb} KB"
+    if [ -n "${LAST_OPERATION_LOG_FILE:-}" ]; then
+        echo -e "${YELLOW}Installationsprotokoll:${NC} ${LAST_OPERATION_LOG_FILE}"
+    fi
 
-    unset ACTIVE_OPERATION_ID ACTIVE_OPERATION_TITLE ACTIVE_OPERATION_STARTED_AT ACTIVE_OPERATION_FREE_KB_BEFORE
+    unset ACTIVE_OPERATION_ID ACTIVE_OPERATION_TITLE ACTIVE_OPERATION_STARTED_AT ACTIVE_OPERATION_FREE_KB_BEFORE ACTIVE_OPERATION_LOG_FILE
 }
 
 show_recent_measurements() {
@@ -610,16 +636,122 @@ show_tool_action_intro() {
 
 run_bash_script() {
     local script_path="$1"
+    local script_rc
+    local operation_slug
+    local timestamp_slug
 
     if [ ! -f "$script_path" ]; then
         echo -e "${RED}Fehler: Skript nicht gefunden: $script_path${NC}"
         return 1
     fi
 
-    bash "$script_path"
-    local script_rc=$?
+    ensure_user_workspace
+    ACTIVE_OPERATION_LOG_FILE=""
+
+    if is_preference_enabled "${INSTALL_MONITORING_VERBOSE:-false}"; then
+        operation_slug="$(printf '%s' "${ACTIVE_OPERATION_ID:-$(basename "$script_path" .sh)}" | tr -cs '[:alnum:]_.-' '_')"
+        timestamp_slug="$(date +%Y%m%d_%H%M%S)"
+        ACTIVE_OPERATION_LOG_FILE="$USER_INSTALL_LOG_DIR/${timestamp_slug}_${operation_slug}.log"
+
+        echo -e "${YELLOW}Erweiterte Installationsüberwachung ist aktiv.${NC}"
+        echo -e "${YELLOW}Logdatei:${NC} ${ACTIVE_OPERATION_LOG_FILE}"
+        bash "$script_path" 2>&1 | tee "$ACTIVE_OPERATION_LOG_FILE"
+        script_rc=${PIPESTATUS[0]}
+    else
+        bash "$script_path"
+        script_rc=$?
+    fi
+
     reset_terminal_display
     return $script_rc
+}
+
+show_installation_monitoring_menu() {
+    local monitoring_state
+
+    while true; do
+        if is_preference_enabled "${INSTALL_MONITORING_VERBOSE:-false}"; then
+            monitoring_state="aktiv"
+        else
+            monitoring_state="inaktiv"
+        fi
+
+        dialog --clear --backtitle "$APP_TITLE" \
+        --title "INSTALLATIONSÜBERWACHUNG" --menu "Zusätzliche Überwachung und manuelle Fortsetzung für Tool-Installationen." 18 104 4 \
+        "1" "Erweiterte Installationsüberwachung umschalten (aktuell: ${monitoring_state})" \
+        "2" "Log-Verzeichnis anzeigen" \
+        "3" "Letzte Messwerte anzeigen" \
+        "4" "Zurück" 2> /tmp/install_monitoring_choice
+
+        if [ $? -ne 0 ]; then
+            return 0
+        fi
+
+        case "$(cat /tmp/install_monitoring_choice)" in
+            1)
+                if is_preference_enabled "${INSTALL_MONITORING_VERBOSE:-false}"; then
+                    set_installation_monitoring_mode "false"
+                    echo -e "${GREEN}Erweiterte Installationsüberwachung wurde deaktiviert.${NC}"
+                else
+                    set_installation_monitoring_mode "true"
+                    echo -e "${GREEN}Erweiterte Installationsüberwachung wurde aktiviert.${NC}"
+                    echo -e "${YELLOW}Ab jetzt werden Tool-Installationen und -Deinstallationen zusätzlich ins Terminal protokolliert, in Logdateien geschrieben und nach jedem Schritt manuell bestätigt.${NC}"
+                fi
+                read -p "Drücken Sie Enter..."
+                ;;
+            2)
+                clear
+                echo
+                echo -e "${YELLOW}Log-Verzeichnis für Installations- und Deinstallationsläufe:${NC}"
+                echo "$USER_INSTALL_LOG_DIR"
+                echo
+                read -p "Drücken Sie Enter..."
+                ;;
+            3)
+                show_recent_measurements
+                ;;
+            4)
+                return 0
+                ;;
+        esac
+    done
+}
+
+handle_manual_tool_post_action() {
+    local tool_key="$1"
+    local action_label="$2"
+    local current_log_file="${LAST_OPERATION_LOG_FILE:-}"
+    local next_choice
+
+    if ! is_preference_enabled "${INSTALL_MONITORING_MANUAL_FLOW:-false}"; then
+        return 0
+    fi
+
+    echo
+    echo -e "${YELLOW}Erweiterte Installationsüberwachung ist aktiv.${NC}"
+    echo -e "${YELLOW}Nach dem Schritt '${action_label} ${tool_key}' wird nicht automatisch weitergesprungen.${NC}"
+    if [ -n "$current_log_file" ]; then
+        echo -e "${YELLOW}Logdatei:${NC} $current_log_file"
+    fi
+
+    while true; do
+        read -r -p "Weiter mit der nächsten Installation/Deinstallation [N] oder zurück ins Setup [Z]? " next_choice
+        case "$(printf '%s' "${next_choice:-N}" | tr '[:lower:]' '[:upper:]')" in
+            N|"")
+                TOOL_BATCH_ABORT_REQUESTED=0
+                break
+                ;;
+            Z)
+                TOOL_BATCH_ABORT_REQUESTED=1
+                break
+                ;;
+            *)
+                echo -e "${YELLOW}Bitte nur N oder Z eingeben.${NC}"
+                ;;
+        esac
+    done
+
+    LAST_OPERATION_LOG_FILE=""
 }
 
 print_exit_message() {
@@ -720,7 +852,7 @@ show_user_workspace_menu() {
 show_options_menu() {
     while true; do
         dialog --clear --backtitle "$APP_TITLE" \
-        --title "${TXT_OPTIONS_MENU_TITLE:-OPTIONEN}" --menu "${TXT_OPTIONS_MENU_PROMPT:-Wählen Sie eine Verwaltungs- oder Konfigurationsfunktion:}" 25 100 11 \
+        --title "${TXT_OPTIONS_MENU_TITLE:-OPTIONEN}" --menu "${TXT_OPTIONS_MENU_PROMPT:-Wählen Sie eine Verwaltungs- oder Konfigurationsfunktion:}" 27 100 12 \
         "1" "${TXT_OPTIONS_1:-Sprache ändern}" \
         "2" "${TXT_OPTIONS_2:-Setup-Messwerte & Benchmarks bearbeiten}" \
         "3" "${TXT_OPTIONS_3:-Ollama Modelfile-Assistent}" \
@@ -729,9 +861,10 @@ show_options_menu() {
         "6" "${TXT_OPTIONS_6:-Setup hart mit GitHub main abgleichen}" \
         "7" "${TXT_OPTIONS_7:-Benutzer-Workspace verwalten}" \
         "8" "${TXT_OPTIONS_8:-Custom GitHub-Quellen & Ollama-Builds}" \
-        "9" "${TXT_OPTIONS_9:-Nur auf Setup-Updates prüfen}" \
-        "10" "${TXT_OPTIONS_10:-Jetzt nur das Setup aktualisieren}" \
-        "11" "${TXT_OPTIONS_11:-Zurück}" 2> /tmp/options_choice
+        "9" "${TXT_OPTIONS_9:-Installationsüberwachung konfigurieren}" \
+        "10" "${TXT_OPTIONS_10:-Nur auf Setup-Updates prüfen}" \
+        "11" "${TXT_OPTIONS_11:-Jetzt nur das Setup aktualisieren}" \
+        "12" "${TXT_OPTIONS_12:-Zurück}" 2> /tmp/options_choice
 
         if [ $? -ne 0 ]; then
             return 0
@@ -774,6 +907,9 @@ show_options_menu() {
                 run_bash_script "$INSTALL_DIR/scripts/custom_source_manager.sh"
                 ;;
             9)
+                show_installation_monitoring_menu
+                ;;
+            10)
                 show_operation_intro \
                 "Nur auf Setup-Updates prüfen" \
                 "Prüft den lokalen Git-Stand gegen origin/main, ohne direkt Updates oder Systempakete zu installieren." \
@@ -785,7 +921,7 @@ show_options_menu() {
                 if [ $? -eq 0 ]; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
                 read -p "Update-Prüfung abgeschlossen. Drücken Sie Enter..."
                 ;;
-            10)
+            11)
                 show_operation_intro \
                 "Jetzt nur das Setup aktualisieren" \
                 "Aktualisiert nur dieses Setup-Repository gegen origin/main. Betriebssystem und pnpm bleiben dabei unberuehrt." \
@@ -797,7 +933,7 @@ show_options_menu() {
                 if [ $? -eq 0 ]; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
                 read -p "Setup-Update abgeschlossen. Drücken Sie Enter..."
                 ;;
-            11)
+            12)
                 return 0
                 ;;
         esac
@@ -1573,6 +1709,7 @@ install_tool() {
         end_operation_measurement "failed"
         echo -e "${RED}Fehler bei der Installation von Tool \'$TOOL_KEY\'.${NC}"
     fi
+    handle_manual_tool_post_action "$TOOL_KEY" "Installation"
 }
 
 # Funktion zum Deinstallieren eines Tools
@@ -1590,10 +1727,12 @@ uninstall_tool() {
         end_operation_measurement "failed"
         echo -e "${RED}Fehler bei der Deinstallation von Tool \'$TOOL_KEY\'.${NC}"
     fi
+    handle_manual_tool_post_action "$TOOL_KEY" "Deinstallation"
 }
 
 # Funktion zum Anzeigen des Tool-Management-Menüs
 show_tool_management_menu() {
+    TOOL_BATCH_ABORT_REQUESTED=0
     sync_core_tool_status
     ensure_user_workspace
     normalize_status_file "$TOOL_STATUS_FILE" "${TOOL_KEYS[@]}"
@@ -1630,9 +1769,15 @@ show_tool_management_menu() {
         if selection_contains "$tool_key" "${SELECTED_TOOLS_ARRAY[@]}" && [ "${INSTALLED_TOOLS_MAP[$tool_key]:-}" != "1" ]; then
             # Tool ausgewählt und nicht installiert -> Installieren
             install_tool "$tool_key"
+            if [ "${TOOL_BATCH_ABORT_REQUESTED:-0}" = "1" ]; then
+                return 0
+            fi
         elif ! selection_contains "$tool_key" "${SELECTED_TOOLS_ARRAY[@]}" && [ "${INSTALLED_TOOLS_MAP[$tool_key]:-}" = "1" ]; then
             # Tool nicht ausgewählt und installiert -> Deinstallieren
             uninstall_tool "$tool_key"
+            if [ "${TOOL_BATCH_ABORT_REQUESTED:-0}" = "1" ]; then
+                return 0
+            fi
         fi
     done
     read -p "Tool-Management abgeschlossen. Drücken Sie Enter..."
