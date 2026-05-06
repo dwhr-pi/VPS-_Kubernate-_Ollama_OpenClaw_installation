@@ -754,6 +754,43 @@ handle_manual_tool_post_action() {
     LAST_OPERATION_LOG_FILE=""
 }
 
+handle_manual_profile_post_action() {
+    local profile_key="$1"
+    local action_label="$2"
+    local current_log_file="${LAST_OPERATION_LOG_FILE:-}"
+    local next_choice
+
+    if ! is_preference_enabled "${INSTALL_MONITORING_MANUAL_FLOW:-false}"; then
+        return 0
+    fi
+
+    echo
+    echo -e "${YELLOW}Erweiterte Installationsüberwachung ist aktiv.${NC}"
+    echo -e "${YELLOW}Nach dem Schritt '${action_label} ${profile_key}' wird nicht automatisch weitergesprungen.${NC}"
+    if [ -n "$current_log_file" ]; then
+        echo -e "${YELLOW}Logdatei:${NC} $current_log_file"
+    fi
+
+    while true; do
+        read -r -p "Zurück ins Profilmenü [N] oder direkt zurück ins Setup [Z]? " next_choice
+        case "$(printf '%s' "${next_choice:-N}" | tr '[:lower:]' '[:upper:]')" in
+            N|"")
+                PROFILE_FLOW_ABORT_REQUESTED=0
+                break
+                ;;
+            Z)
+                PROFILE_FLOW_ABORT_REQUESTED=1
+                break
+                ;;
+            *)
+                echo -e "${YELLOW}Bitte nur N oder Z eingeben.${NC}"
+                ;;
+        esac
+    done
+
+    LAST_OPERATION_LOG_FILE=""
+}
+
 print_exit_message() {
     clear
     echo
@@ -852,7 +889,8 @@ show_user_workspace_menu() {
 show_options_menu() {
     while true; do
         dialog --clear --backtitle "$APP_TITLE" \
-        --title "${TXT_OPTIONS_MENU_TITLE:-OPTIONEN}" --menu "${TXT_OPTIONS_MENU_PROMPT:-Wählen Sie eine Verwaltungs- oder Konfigurationsfunktion:}" 27 100 12 \
+        --cancel-label "↩ Zurück" \
+        --title "${TXT_OPTIONS_MENU_TITLE:-OPTIONEN}" --menu "${TXT_OPTIONS_MENU_PROMPT:-Wählen Sie eine Verwaltungs- oder Konfigurationsfunktion:}" 26 100 11 \
         "1" "${TXT_OPTIONS_1:-Sprache ändern}" \
         "2" "${TXT_OPTIONS_2:-Setup-Messwerte & Benchmarks bearbeiten}" \
         "3" "${TXT_OPTIONS_3:-Ollama Modelfile-Assistent}" \
@@ -863,8 +901,7 @@ show_options_menu() {
         "8" "${TXT_OPTIONS_8:-Custom GitHub-Quellen & Ollama-Builds}" \
         "9" "${TXT_OPTIONS_9:-Installationsüberwachung konfigurieren}" \
         "10" "${TXT_OPTIONS_10:-Nur auf Setup-Updates prüfen}" \
-        "11" "${TXT_OPTIONS_11:-Jetzt nur das Setup aktualisieren}" \
-        "12" "${TXT_OPTIONS_12:-Zurück}" 2> /tmp/options_choice
+        "11" "${TXT_OPTIONS_11:-Jetzt nur das Setup aktualisieren}" 2> /tmp/options_choice
 
         if [ $? -ne 0 ]; then
             return 0
@@ -932,9 +969,6 @@ show_options_menu() {
                 run_bash_script "$INSTALL_DIR/scripts/update_setup_only.sh"
                 if [ $? -eq 0 ]; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
                 read -p "Setup-Update abgeschlossen. Drücken Sie Enter..."
-                ;;
-            12)
-                return 0
                 ;;
         esac
     done
@@ -1170,6 +1204,7 @@ install_profile() {
         end_operation_measurement "failed"
         echo -e "${RED}Fehler bei der Installation von Profil \'$PROFILE_KEY\'.${NC}"
     fi
+    handle_manual_profile_post_action "$PROFILE_KEY" "Profil-Installation"
 }
 
 # Funktion zum Deinstallieren eines Profils
@@ -1187,10 +1222,12 @@ uninstall_profile() {
         end_operation_measurement "failed"
         echo -e "${RED}Fehler bei der Deinstallation von Profil \'$PROFILE_KEY\'.${NC}"
     fi
+    handle_manual_profile_post_action "$PROFILE_KEY" "Profil-Deinstallation"
 }
 
 # Funktion zum Anzeigen des Profil-Management-Menüs
 show_profile_management_menu() {
+    PROFILE_FLOW_ABORT_REQUESTED=0
     ensure_user_workspace
     normalize_status_file "$PROFILE_STATUS_FILE" "${PROFILE_KEYS[@]}"
 
@@ -1229,6 +1266,9 @@ show_profile_management_menu() {
         fi
 
         show_profile_block_detail_menu "$selected_profile"
+        if [ "${PROFILE_FLOW_ABORT_REQUESTED:-0}" = "1" ]; then
+            return 0
+        fi
         load_installed_map "$PROFILE_STATUS_FILE" INSTALLED_PROFILES_MAP
         PROFILE_MENU_OPTIONS=()
         for profile_key in "${PROFILE_KEYS[@]}"; do
@@ -2018,6 +2058,9 @@ show_profile_block_detail_menu() {
     fi
 
     while true; do
+        if [ "${PROFILE_FLOW_ABORT_REQUESTED:-0}" = "1" ]; then
+            return 0
+        fi
         if [ "$has_special_tools" -eq 1 ]; then
             dialog --clear --backtitle "$APP_TITLE" \
             --title "PROFILBLOCK: $profile_key" --menu "Wählen Sie Block oder Gesamtprofil:" 24 96 10 \
@@ -2064,6 +2107,9 @@ show_profile_block_detail_menu() {
                 ;;
             7) return 0 ;;
         esac
+        if [ "${PROFILE_FLOW_ABORT_REQUESTED:-0}" = "1" ]; then
+            return 0
+        fi
     done
 }
 
