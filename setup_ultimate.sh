@@ -677,11 +677,12 @@ show_installation_monitoring_menu() {
         fi
 
         dialog --clear --backtitle "$APP_TITLE" \
-        --title "INSTALLATIONSÜBERWACHUNG" --menu "Zusätzliche Überwachung und manuelle Fortsetzung für Tool-Installationen." 18 104 4 \
+        --title "INSTALLATIONSÜBERWACHUNG" --menu "Zusätzliche Überwachung und manuelle Fortsetzung für Tool-Installationen." 20 104 5 \
         "1" "Erweiterte Installationsüberwachung umschalten (aktuell: ${monitoring_state})" \
         "2" "Log-Verzeichnis anzeigen" \
-        "3" "Letzte Messwerte anzeigen" \
-        "4" "Zurück" 2> /tmp/install_monitoring_choice
+        "3" "Letzte Installations-Logs anzeigen" \
+        "4" "Letzte Messwerte anzeigen" \
+        "5" "Zurück" 2> /tmp/install_monitoring_choice
 
         if [ $? -ne 0 ]; then
             return 0
@@ -708,13 +709,60 @@ show_installation_monitoring_menu() {
                 read -p "Drücken Sie Enter..."
                 ;;
             3)
-                show_recent_measurements
+                show_recent_install_logs
                 ;;
             4)
+                show_recent_measurements
+                ;;
+            5)
                 return 0
                 ;;
         esac
     done
+}
+
+show_recent_install_logs() {
+    local log_file
+    local options=()
+    local selected_log
+    local full_path
+
+    ensure_user_workspace
+    mkdir -p "$USER_INSTALL_LOG_DIR"
+
+    while IFS= read -r log_file; do
+        [ -n "$log_file" ] || continue
+        options+=("$log_file" "Installationsprotokoll")
+    done < <(find "$USER_INSTALL_LOG_DIR" -maxdepth 1 -type f -name '*.log' -printf '%f\n' 2>/dev/null | sort -r | head -n 15)
+
+    if [ ${#options[@]} -eq 0 ]; then
+        clear
+        echo
+        echo -e "${YELLOW}Es wurden noch keine Installations- oder Deinstallationslogs gefunden.${NC}"
+        echo -e "${YELLOW}Log-Verzeichnis:${NC} $USER_INSTALL_LOG_DIR"
+        echo
+        read -p "Drücken Sie Enter..."
+        return 0
+    fi
+
+    dialog --clear --backtitle "$APP_TITLE" \
+    --title "LETZTE INSTALLATIONS-LOGS" --menu "Wähle eine Logdatei zur Ansicht aus:" 22 110 15 \
+    "${options[@]}" 2> /tmp/install_log_choice
+
+    if [ $? -ne 0 ]; then
+        return 0
+    fi
+
+    selected_log="$(cat /tmp/install_log_choice)"
+    full_path="$USER_INSTALL_LOG_DIR/$selected_log"
+
+    clear
+    echo
+    echo -e "${YELLOW}Installationslog:${NC} $full_path"
+    echo
+    tail -n 200 "$full_path"
+    echo
+    read -p "Drücken Sie Enter..."
 }
 
 handle_manual_tool_post_action() {
