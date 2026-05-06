@@ -145,6 +145,7 @@ Das Setup reagiert jetzt robuster:
 - es liest die erwartete Bundler-Version aus Huginns `Gemfile.lock`
   - fuer `v2022.08.18` ist das `Bundler 2.3.10`
 - es bevorzugt vorkompilierte Linux-Gems und setzt **nicht mehr standardmaessig** `force_ruby_platform=true`
+- wenn im Lockfile noch der alte Huginn-gRPC-Stack (`grpc 1.42.0`, `googleapis-common-protos 1.3.12`, `google-protobuf 3.21.5`) steckt und Ruby nicht auf `2.7` laeuft, zieht das Setup den Kompatibilitaetsfix jetzt **bereits vor dem ersten** `bundle install` ein
 - wenn trotzdem ein `grpc`-Buildfehler erkannt wird, versucht das Setup einen gezielten Refresh der Google-/gRPC-Transitivabhaengigkeiten
   - dabei wird `grpc` auf einen kompatiblen neueren `1.x`-Stand gezogen
 - zusaetzlich protokolliert das Skript erkannte Ruby- und Bundler-Versionen direkt im Installationslauf

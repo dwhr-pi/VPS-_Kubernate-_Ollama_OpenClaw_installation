@@ -25,6 +25,7 @@ HUGINN_DISABLE_JAVASCRIPT_AGENT_ON_LIBV8_FAILURE="${HUGINN_DISABLE_JAVASCRIPT_AG
 HUGINN_FORCE_RUBY_PLATFORM="${HUGINN_FORCE_RUBY_PLATFORM:-false}"
 HUGINN_GRPC_VERSION="${HUGINN_GRPC_VERSION:-~> 1.54.3}"
 HUGINN_EXPECTED_BUNDLER_VERSION="${HUGINN_EXPECTED_BUNDLER_VERSION:-}"
+HUGINN_AUTO_REFRESH_LEGACY_GRPC_STACK="${HUGINN_AUTO_REFRESH_LEGACY_GRPC_STACK:-true}"
 
 print_runtime_summary() {
     local ruby_version bundler_version
@@ -46,6 +47,14 @@ warn_if_ruby_version_is_unexpected() {
         echo -e "${YELLOW}Hinweis: Huginn ${HUGINN_REPO_REF} wurde mit Ruby 2.7.x gepflegt, erkannt wurde aber Ruby ${ruby_version}.${NC}"
         echo -e "${YELLOW}Die Installation kann trotzdem funktionieren, aber bei nativen Gems und Rails-Tasks sind Abweichungen moeglich.${NC}"
     fi
+}
+
+ruby_version_is_27() {
+    local ruby_version ruby_major_minor
+
+    ruby_version="$(ruby -e 'print RUBY_VERSION' 2>/dev/null || true)"
+    ruby_major_minor="$(printf '%s' "$ruby_version" | awk -F. '{print $1 "." $2}')"
+    [ "$ruby_major_minor" = "2.7" ]
 }
 
 detect_lockfile_bundler_version() {
@@ -138,6 +147,35 @@ try_grpc_stack_refresh() {
     fi
 
     "$BUNDLE_CMD" update grpc google-protobuf googleapis-common-protos googleapis-common-protos-types 2>&1
+}
+
+lockfile_contains_problematic_grpc_stack() {
+    grep -Eq '^    grpc \(1\.42\.0' Gemfile.lock 2>/dev/null ||
+    grep -Eq '^    google-protobuf \(3\.21\.5-x86_64-linux\)' Gemfile.lock 2>/dev/null ||
+    grep -Eq '^    googleapis-common-protos \(1\.3\.12\)' Gemfile.lock 2>/dev/null
+}
+
+prepare_known_legacy_dependency_fixes() {
+    if [ "${HUGINN_AUTO_REFRESH_LEGACY_GRPC_STACK}" != "true" ]; then
+        return 0
+    fi
+
+    if ! lockfile_contains_problematic_grpc_stack; then
+        return 0
+    fi
+
+    if ruby_version_is_27; then
+        echo -e "${YELLOW}Legacy-gRPC-Stack erkannt, aber Ruby 2.7 ist aktiv. Belasse den Upstream-Stand zunaechst unveraendert.${NC}"
+        return 0
+    fi
+
+    echo -e "${YELLOW}Legacy-gRPC-Stack im Huginn-Lockfile erkannt und Ruby ist nicht 2.7.${NC}"
+    echo -e "${YELLOW}Ziehe den bekannten grpc/google-protobuf-Fix deshalb proaktiv vor dem ersten bundle install ein.${NC}"
+
+    if ! try_grpc_stack_refresh; then
+        echo -e "${RED}Fehler: Proaktiver grpc-Fallback für Huginn fehlgeschlagen.${NC}"
+        exit 1
+    fi
 }
 
 ensure_secret_token() {
@@ -251,6 +289,7 @@ warn_if_ruby_version_is_unexpected
 ensure_matching_bundler
 print_runtime_summary
 configure_bundle_platform
+prepare_known_legacy_dependency_fixes
 echo -e "${YELLOW}Hinweis: 'development test' ist hier keine Versionsnummer, sondern die ausgeschlossene Bundler-Gruppenkombination.${NC}"
 bundle_log_file="$(mktemp)"
 if ! bash -lc "$BUNDLE_CMD install" 2>&1 | tee "$bundle_log_file"; then
