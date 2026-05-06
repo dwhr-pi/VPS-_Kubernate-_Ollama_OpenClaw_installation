@@ -938,7 +938,7 @@ show_options_menu() {
     while true; do
         dialog --clear --backtitle "$APP_TITLE" \
         --cancel-label "↩ Zurück" \
-        --title "${TXT_OPTIONS_MENU_TITLE:-OPTIONEN}" --menu "${TXT_OPTIONS_MENU_PROMPT:-Wählen Sie eine Verwaltungs- oder Konfigurationsfunktion:}" 26 100 11 \
+        --title "${TXT_OPTIONS_MENU_TITLE:-OPTIONEN}" --menu "${TXT_OPTIONS_MENU_PROMPT:-Wählen Sie eine Verwaltungs- oder Konfigurationsfunktion:}" 28 100 12 \
         "1" "${TXT_OPTIONS_1:-Sprache ändern}" \
         "2" "${TXT_OPTIONS_2:-Setup-Messwerte & Benchmarks bearbeiten}" \
         "3" "${TXT_OPTIONS_3:-Ollama Modelfile-Assistent}" \
@@ -947,9 +947,10 @@ show_options_menu() {
         "6" "${TXT_OPTIONS_6:-Setup hart mit GitHub main abgleichen}" \
         "7" "${TXT_OPTIONS_7:-Benutzer-Workspace verwalten}" \
         "8" "${TXT_OPTIONS_8:-Custom GitHub-Quellen & Ollama-Builds}" \
-        "9" "${TXT_OPTIONS_9:-Installationsüberwachung konfigurieren}" \
-        "10" "${TXT_OPTIONS_10:-Nur auf Setup-Updates prüfen}" \
-        "11" "${TXT_OPTIONS_11:-Jetzt nur das Setup aktualisieren}" 2> /tmp/options_choice
+        "9" "${TXT_OPTIONS_9:-LLMOps Plattform Konfiguration (.env Stack)}" \
+        "10" "${TXT_OPTIONS_10:-Installationsüberwachung konfigurieren}" \
+        "11" "${TXT_OPTIONS_11:-Nur auf Setup-Updates prüfen}" \
+        "12" "${TXT_OPTIONS_12:-Jetzt nur das Setup aktualisieren}" 2> /tmp/options_choice
 
         if [ $? -ne 0 ]; then
             return 0
@@ -992,9 +993,12 @@ show_options_menu() {
                 run_bash_script "$INSTALL_DIR/scripts/custom_source_manager.sh"
                 ;;
             9)
-                show_installation_monitoring_menu
+                run_bash_script "$INSTALL_DIR/scripts/llmops_platform_config_manager.sh"
                 ;;
             10)
+                show_installation_monitoring_menu
+                ;;
+            11)
                 show_operation_intro \
                 "Nur auf Setup-Updates prüfen" \
                 "Prüft den lokalen Git-Stand gegen origin/main, ohne direkt Updates oder Systempakete zu installieren." \
@@ -1006,7 +1010,7 @@ show_options_menu() {
                 if [ $? -eq 0 ]; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
                 read -p "Update-Prüfung abgeschlossen. Drücken Sie Enter..."
                 ;;
-            11)
+            12)
                 show_operation_intro \
                 "Jetzt nur das Setup aktualisieren" \
                 "Aktualisiert nur dieses Setup-Repository gegen origin/main. Betriebssystem und pnpm bleiben dabei unberuehrt." \
@@ -2202,9 +2206,9 @@ show_profile_management_hub() {
 
 show_main_menu() {
     local dialog_rc
-    local menu_height=24
+    local menu_height=22
     local menu_width=88
-    local menu_rows=18
+    local menu_rows=15
     local term_lines=0
     local term_cols=0
     local begin_row=1
@@ -2230,11 +2234,8 @@ show_main_menu() {
     --extra-button --extra-label "${TXT_OPTIONS_BUTTON:-⚙  Optionen}" \
     --title "${TXT_MENU_TITLE:-HAUPTMENÜ}" --menu "${TXT_MENU_PROMPT:-Wählen Sie Ihr Ziel-System oder eine Aktion:}" "$menu_height" "$menu_width" "$menu_rows" \
     "1" "${TXT_MENU_1:-Setup-Update + System-Update (Repo, OS & pnpm)}" \
-    "15" "${TXT_MENU_15:-Nur auf Setup-Updates prüfen}" \
-    "16" "${TXT_MENU_16:-Jetzt nur das Setup aktualisieren}" \
     "2" "${TXT_MENU_2:-Ollama Modell-Manager}" \
     "3" "${TXT_MENU_3:-OpenClaw Konfiguration (.env & config.json)}" \
-    "14" "${TXT_MENU_14:-LLMOps Plattform Konfiguration (.env Stack)}" \
     "----" "${TXT_SEPARATOR_LINE:-────────────────────────────────────────────────────────}" \
     "4" "${TXT_MENU_4:-Hybrid: Dein MiniPC + Multi-VPS (Empfohlen)}" \
     "5" "${TXT_MENU_5:-Standalone: Nur VPS (Cloud-Native)}" \
@@ -2294,30 +2295,6 @@ while true; do
             if [ $? -eq 0 ]; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
             read -p "System-Update abgeschlossen. Drücken Sie Enter..."
             ;;
-        15)
-            show_operation_intro \
-            "Nur auf Setup-Updates prüfen" \
-            "Prüft den lokalen Git-Stand gegen origin/main, ohne direkt Updates oder Systempakete zu installieren." \
-            "Wenige Sekunden bis ca. 1 Minute, je nach Netzwerk und Git-Status" \
-            "$(get_operation_storage_estimate_label "main_menu_update_check" "${MIN_FREE_GB_ABSOLUTE}-${MIN_FREE_GB_RECOMMENDED} GB")" \
-            "Dabei werden keine Paket-Updates installiert und keine lokalen Aenderungen automatisch verworfen."
-            begin_operation_measurement "main_menu_update_check" "Nur auf Setup-Updates prüfen"
-            run_bash_script "$INSTALL_DIR/scripts/check_setup_updates.sh"
-            if [ $? -eq 0 ]; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
-            read -p "Update-Prüfung abgeschlossen. Drücken Sie Enter..."
-            ;;
-        16)
-            show_operation_intro \
-            "Jetzt nur das Setup aktualisieren" \
-            "Aktualisiert nur dieses Setup-Repository gegen origin/main. Betriebssystem und pnpm bleiben dabei unberuehrt." \
-            "Wenige Sekunden bis einige Minuten, je nach Netzwerk und Git-Stand" \
-            "$(get_operation_storage_estimate_label "main_menu_setup_only_update" "${MIN_FREE_GB_ABSOLUTE}-${MIN_FREE_GB_RECOMMENDED} GB")" \
-            "Bei lokalen Aenderungen im Setup wird das Repo-Update bewusst uebersprungen, damit nichts ueberschrieben wird."
-            begin_operation_measurement "main_menu_setup_only_update" "Nur das Setup aktualisieren"
-            run_bash_script "$INSTALL_DIR/scripts/update_setup_only.sh"
-            if [ $? -eq 0 ]; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
-            read -p "Setup-Update abgeschlossen. Drücken Sie Enter..."
-            ;;
         2)
             show_operation_intro \
             "Ollama Modell-Manager" \
@@ -2331,10 +2308,6 @@ while true; do
         3)
             run_bash_script "$INSTALL_DIR/scripts/openclaw_config_manager.sh"
             read -p "OpenClaw Konfiguration abgeschlossen. Drücken Sie Enter..."
-            ;;
-        14)
-            run_bash_script "$INSTALL_DIR/scripts/llmops_platform_config_manager.sh"
-            read -p "LLMOps Plattform Konfiguration abgeschlossen. Drücken Sie Enter..."
             ;;
         4)
             show_operation_intro \
