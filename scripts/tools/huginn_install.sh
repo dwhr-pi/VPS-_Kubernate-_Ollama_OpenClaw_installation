@@ -21,6 +21,7 @@ init_tool_tracking "Huginn"
 HUGINN_DIR="/opt/huginn"
 HUGINN_REPO_URL="${HUGINN_REPO_URL:-https://github.com/huginn/huginn.git}"
 HUGINN_REPO_REF="${HUGINN_REPO_REF:-v2022.08.18}"
+HUGINN_DISABLE_JAVASCRIPT_AGENT_ON_LIBV8_FAILURE="${HUGINN_DISABLE_JAVASCRIPT_AGENT_ON_LIBV8_FAILURE:-true}"
 
 ensure_secret_token() {
     if grep -Eq '^APP_SECRET_TOKEN=.+$' .env 2>/dev/null; then
@@ -80,6 +81,25 @@ checkout_huginn_ref() {
     fi
 }
 
+disable_huginn_javascript_agent() {
+    if ! grep -Eq "^gem 'mini_racer'.*# JavaScriptAgent" Gemfile 2>/dev/null; then
+        return 1
+    fi
+
+    cp Gemfile Gemfile.bak.before_no_mini_racer 2>/dev/null || true
+    python3 - <<'PY'
+from pathlib import Path
+path = Path("Gemfile")
+text = path.read_text(encoding="utf-8")
+old = "gem 'mini_racer'                  # JavaScriptAgent"
+new = "# gem 'mini_racer'                # JavaScriptAgent (deaktiviert durch Setup-Fallback wegen libv8-node Build-Fehler)"
+if old in text:
+    text = text.replace(old, new, 1)
+path.write_text(text, encoding="utf-8")
+PY
+    return 0
+}
+
 echo -e "${BLUE}Starte Installation von Huginn...${NC}"
 echo -e "${YELLOW}Standard-Referenz: ${HUGINN_REPO_REF}.${NC}"
 echo -e "${YELLOW}Wenn du bewusst einen anderen Upstream-Stand testen willst, kannst du HUGINN_REPO_REF überschreiben.${NC}"
@@ -123,6 +143,22 @@ if ! bundle install 2>&1 | tee "$bundle_log_file"; then
         if ! bundle install 2>&1 | tee -a "$bundle_log_file"; then
             rm -f "$bundle_log_file"
             echo -e "${RED}Fehler: Bundler install für Huginn fehlgeschlagen.${NC}"
+            exit 1
+        fi
+    elif grep -Eq 'An error occurred while installing libv8-node|mini_racer was resolved to .* depends on[[:space:]]+libv8-node' "$bundle_log_file" && [ "${HUGINN_DISABLE_JAVASCRIPT_AGENT_ON_LIBV8_FAILURE}" = "true" ]; then
+        echo -e "${YELLOW}Hinweis: mini_racer bzw. libv8-node konnte auf diesem System nicht gebaut werden.${NC}"
+        echo -e "${YELLOW}Versuche Fallback ohne JavaScriptAgent, damit Huginn sonst weiter installiert werden kann.${NC}"
+        if disable_huginn_javascript_agent; then
+            bundle update mini_racer libv8-node 2>&1 | tee -a "$bundle_log_file" || true
+            if ! bundle install 2>&1 | tee -a "$bundle_log_file"; then
+                rm -f "$bundle_log_file"
+                echo -e "${RED}Fehler: Bundler install für Huginn fehlgeschlagen.${NC}"
+                exit 1
+            fi
+            echo -e "${YELLOW}Huginn wurde ohne JavaScriptAgent vorbereitet. Die Datei $HUGINN_DIR/Gemfile.bak.before_no_mini_racer enthält die Originalzeile.${NC}"
+        else
+            rm -f "$bundle_log_file"
+            echo -e "${RED}Fehler: mini_racer/libv8-node schlug fehl, aber der Fallback konnte in der Gemfile nicht sicher angewendet werden.${NC}"
             exit 1
         fi
     else
