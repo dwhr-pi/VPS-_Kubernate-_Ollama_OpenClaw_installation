@@ -22,6 +22,123 @@ HUGINN_DIR="/opt/huginn"
 HUGINN_REPO_URL="${HUGINN_REPO_URL:-https://github.com/huginn/huginn.git}"
 HUGINN_REPO_REF="${HUGINN_REPO_REF:-v2022.08.18}"
 HUGINN_DISABLE_JAVASCRIPT_AGENT_ON_LIBV8_FAILURE="${HUGINN_DISABLE_JAVASCRIPT_AGENT_ON_LIBV8_FAILURE:-true}"
+HUGINN_FORCE_RUBY_PLATFORM="${HUGINN_FORCE_RUBY_PLATFORM:-false}"
+HUGINN_GRPC_VERSION="${HUGINN_GRPC_VERSION:-~> 1.54.3}"
+HUGINN_EXPECTED_BUNDLER_VERSION="${HUGINN_EXPECTED_BUNDLER_VERSION:-}"
+
+print_runtime_summary() {
+    local ruby_version bundler_version
+
+    ruby_version="$(ruby -e 'print RUBY_VERSION' 2>/dev/null || echo 'unbekannt')"
+    bundler_version="$(bundle --version 2>/dev/null | awk '{print $3}' || echo 'unbekannt')"
+
+    echo -e "${YELLOW}Ruby erkannt: ${ruby_version}${NC}"
+    echo -e "${YELLOW}Bundler erkannt: ${bundler_version}${NC}"
+}
+
+warn_if_ruby_version_is_unexpected() {
+    local ruby_version ruby_major_minor
+
+    ruby_version="$(ruby -e 'print RUBY_VERSION' 2>/dev/null || true)"
+    ruby_major_minor="$(printf '%s' "$ruby_version" | awk -F. '{print $1 "." $2}')"
+
+    if [ -n "$ruby_major_minor" ] && [ "$ruby_major_minor" != "2.7" ]; then
+        echo -e "${YELLOW}Hinweis: Huginn ${HUGINN_REPO_REF} wurde mit Ruby 2.7.x gepflegt, erkannt wurde aber Ruby ${ruby_version}.${NC}"
+        echo -e "${YELLOW}Die Installation kann trotzdem funktionieren, aber bei nativen Gems und Rails-Tasks sind Abweichungen moeglich.${NC}"
+    fi
+}
+
+detect_lockfile_bundler_version() {
+    awk '
+        /^BUNDLED WITH$/ { getline; gsub(/^[[:space:]]+/, "", $0); print $0; exit }
+    ' Gemfile.lock 2>/dev/null || true
+}
+
+ensure_matching_bundler() {
+    local requested_version bundler_command current_version
+
+    requested_version="${HUGINN_EXPECTED_BUNDLER_VERSION}"
+    if [ -z "$requested_version" ]; then
+        requested_version="$(detect_lockfile_bundler_version || true)"
+    fi
+    if [ -z "$requested_version" ]; then
+        BUNDLE_CMD="bundle"
+        return 0
+    fi
+
+    current_version="$(bundle --version 2>/dev/null | awk '{print $3}' || true)"
+    if [ "$current_version" != "$requested_version" ]; then
+        echo -e "${YELLOW}Installiere Bundler ${requested_version}, passend zum Huginn-Lockfile...${NC}"
+        gem install bundler -v "$requested_version"
+    fi
+
+    bundler_command="bundle _${requested_version}_"
+    if ! bash -lc "${bundler_command} --version" >/dev/null 2>&1; then
+        echo -e "${RED}Fehler: Bundler ${requested_version} konnte nicht aktiviert werden.${NC}"
+        exit 1
+    fi
+
+    BUNDLE_CMD="$bundler_command"
+}
+
+configure_bundle_platform() {
+    "$BUNDLE_CMD" config set --local path vendor/bundle
+    "$BUNDLE_CMD" config set --local without "development test"
+
+    if [ "$HUGINN_FORCE_RUBY_PLATFORM" = "true" ]; then
+        echo -e "${YELLOW}force_ruby_platform=true wurde explizit angefordert. Native Gems werden aus dem Quellcode gebaut.${NC}"
+        "$BUNDLE_CMD" config set --local force_ruby_platform true
+    else
+        "$BUNDLE_CMD" config unset --local force_ruby_platform >/dev/null 2>&1 || true
+        "$BUNDLE_CMD" lock --add-platform x86_64-linux >/dev/null 2>&1 || true
+        "$BUNDLE_CMD" lock --add-platform ruby >/dev/null 2>&1 || true
+        echo -e "${YELLOW}Bevorzuge vorkompilierte Linux-Gems, damit Legacy-Abhaengigkeiten wie grpc nicht unnoetig lokal kompiliert werden.${NC}"
+    fi
+}
+
+ensure_grpc_compatibility_override() {
+    HUGINN_GRPC_VERSION="$HUGINN_GRPC_VERSION" python3 - <<'PY'
+import os
+from pathlib import Path
+
+path = Path("Gemfile")
+text = path.read_text(encoding="utf-8")
+marker = "gem 'google-cloud-translate', '~> 2.0', require: 'google/cloud/translate'\n"
+grpc_version = os.environ["HUGINN_GRPC_VERSION"]
+override_line = f"gem 'grpc', '{grpc_version}' # Setup-Fix: vermeidet bekannte Build-Probleme mit grpc 1.42 auf moderner Toolchain\n"
+override = marker + override_line
+
+if "gem 'grpc'," in text:
+    lines = text.splitlines(keepends=True)
+    for index, line in enumerate(lines):
+        if "Setup-Fix: vermeidet bekannte Build-Probleme mit grpc 1.42 auf moderner Toolchain" in line:
+            lines[index] = override_line
+            text = "".join(lines)
+            break
+    else:
+        raise SystemExit(1)
+elif marker in text:
+    text = text.replace(marker, override, 1)
+else:
+    raise SystemExit(1)
+
+path.write_text(text, encoding="utf-8")
+PY
+}
+
+try_grpc_stack_refresh() {
+    echo -e "${YELLOW}Versuche kompatiblen grpc-Fallback mit ${HUGINN_GRPC_VERSION}...${NC}"
+
+    cp Gemfile Gemfile.bak.before_grpc_override 2>/dev/null || true
+    cp Gemfile.lock Gemfile.lock.bak.before_grpc_override 2>/dev/null || true
+
+    if ! ensure_grpc_compatibility_override; then
+        echo -e "${RED}Fehler: grpc-Fallback konnte nicht sicher in die Gemfile eingetragen werden.${NC}"
+        return 1
+    fi
+
+    "$BUNDLE_CMD" update grpc google-protobuf googleapis-common-protos googleapis-common-protos-types 2>&1
+}
 
 ensure_secret_token() {
     if grep -Eq '^APP_SECRET_TOKEN=.+$' .env 2>/dev/null; then
@@ -106,7 +223,7 @@ echo -e "${YELLOW}Wenn du bewusst einen anderen Upstream-Stand testen willst, ka
 
 echo -e "${GREEN}1/5: Installiere System-Abhängigkeiten für Huginn...${NC}"
 sudo apt-get update
-sudo apt-get install -y ruby-full ruby-bundler build-essential libmysqlclient-dev libpq-dev pkg-config
+sudo apt-get install -y ruby-full ruby-bundler build-essential libmysqlclient-dev libpq-dev pkg-config git curl libyaml-dev zlib1g-dev libffi-dev shared-mime-info
 
 echo -e "${GREEN}2/5: Hole Huginn aus GitHub...${NC}"
 checkout_huginn_ref
@@ -128,29 +245,53 @@ chmod o-rwx .env 2>/dev/null || true
 
 echo -e "${GREEN}4/5: Installiere Ruby Gems mit Bundler...${NC}"
 if ! command -v bundle >/dev/null 2>&1; then
-    sudo gem install bundler
+    gem install bundler
 fi
-bundle config set --local path vendor/bundle
-bundle config set --local without "development test"
-bundle config set --local force_ruby_platform true
-bundle lock --add-platform ruby >/dev/null 2>&1 || true
+warn_if_ruby_version_is_unexpected
+ensure_matching_bundler
+print_runtime_summary
+configure_bundle_platform
 echo -e "${YELLOW}Hinweis: 'development test' ist hier keine Versionsnummer, sondern die ausgeschlossene Bundler-Gruppenkombination.${NC}"
 bundle_log_file="$(mktemp)"
-if ! bundle install 2>&1 | tee "$bundle_log_file"; then
+if ! bash -lc "$BUNDLE_CMD install" 2>&1 | tee "$bundle_log_file"; then
     if grep -Eq 'nokogiri .* can no longer be found' "$bundle_log_file"; then
         echo -e "${YELLOW}Hinweis: Bundler ist auf eine entfernte nokogiri-Binärversion gelaufen. Versuche Reparatur mit Ruby-Plattform und nokogiri-Update...${NC}"
-        bundle update nokogiri 2>&1 | tee -a "$bundle_log_file" || true
-        if ! bundle install 2>&1 | tee -a "$bundle_log_file"; then
+        bash -lc "$BUNDLE_CMD update nokogiri" 2>&1 | tee -a "$bundle_log_file" || true
+        if ! bash -lc "$BUNDLE_CMD install" 2>&1 | tee -a "$bundle_log_file"; then
+            if grep -Eq 'grpc|google-protobuf|google-cloud-translate|google-gax|googleapis-common-protos|FormatConversionChar' "$bundle_log_file"; then
+                if ! try_grpc_stack_refresh 2>&1 | tee -a "$bundle_log_file"; then
+                    rm -f "$bundle_log_file"
+                    echo -e "${RED}Fehler: grpc-Kompatibilitaetsfallback für Huginn fehlgeschlagen.${NC}"
+                    exit 1
+                fi
+                if ! bash -lc "$BUNDLE_CMD install" 2>&1 | tee -a "$bundle_log_file"; then
+                    rm -f "$bundle_log_file"
+                    echo -e "${RED}Fehler: Bundler install für Huginn ist nach nokogiri- und grpc-Fallback fehlgeschlagen.${NC}"
+                    exit 1
+                fi
+            else
+                rm -f "$bundle_log_file"
+                echo -e "${RED}Fehler: Bundler install für Huginn fehlgeschlagen.${NC}"
+                exit 1
+            fi
+        fi
+    elif grep -Eq 'grpc|google-protobuf|google-cloud-translate|google-gax|googleapis-common-protos|FormatConversionChar' "$bundle_log_file"; then
+        if ! try_grpc_stack_refresh 2>&1 | tee -a "$bundle_log_file"; then
             rm -f "$bundle_log_file"
-            echo -e "${RED}Fehler: Bundler install für Huginn fehlgeschlagen.${NC}"
+            echo -e "${RED}Fehler: grpc-Kompatibilitaetsfallback für Huginn fehlgeschlagen.${NC}"
+            exit 1
+        fi
+        if ! bash -lc "$BUNDLE_CMD install" 2>&1 | tee -a "$bundle_log_file"; then
+            rm -f "$bundle_log_file"
+            echo -e "${RED}Fehler: Bundler install für Huginn ist trotz grpc-Fallback fehlgeschlagen.${NC}"
             exit 1
         fi
     elif grep -Eq 'An error occurred while installing libv8-node|mini_racer was resolved to .* depends on[[:space:]]+libv8-node' "$bundle_log_file" && [ "${HUGINN_DISABLE_JAVASCRIPT_AGENT_ON_LIBV8_FAILURE}" = "true" ]; then
         echo -e "${YELLOW}Hinweis: mini_racer bzw. libv8-node konnte auf diesem System nicht gebaut werden.${NC}"
         echo -e "${YELLOW}Versuche Fallback ohne JavaScriptAgent, damit Huginn sonst weiter installiert werden kann.${NC}"
         if disable_huginn_javascript_agent; then
-            bundle update mini_racer libv8-node 2>&1 | tee -a "$bundle_log_file" || true
-            if ! bundle install 2>&1 | tee -a "$bundle_log_file"; then
+            bash -lc "$BUNDLE_CMD update mini_racer libv8-node" 2>&1 | tee -a "$bundle_log_file" || true
+            if ! bash -lc "$BUNDLE_CMD install" 2>&1 | tee -a "$bundle_log_file"; then
                 rm -f "$bundle_log_file"
                 echo -e "${RED}Fehler: Bundler install für Huginn fehlgeschlagen.${NC}"
                 exit 1
@@ -174,28 +315,28 @@ if ! database_config_complete; then
     echo -e "${YELLOW}Bitte trage mindestens DATABASE_ADAPTER, DATABASE_NAME und je nach Adapter auch DATABASE_USERNAME/DATABASE_PASSWORD ein.${NC}"
     echo -e "${YELLOW}Danach kannst du manuell fortsetzen mit:${NC}"
     echo "cd $HUGINN_DIR"
-    echo "RAILS_ENV=production bundle exec rake db:create"
-    echo "RAILS_ENV=production bundle exec rake db:migrate"
-    echo "RAILS_ENV=production bundle exec rake db:seed"
-    echo "RAILS_ENV=production bundle exec rails server -p 3000"
+    echo "RAILS_ENV=production $BUNDLE_CMD exec rake db:create"
+    echo "RAILS_ENV=production $BUNDLE_CMD exec rake db:migrate"
+    echo "RAILS_ENV=production $BUNDLE_CMD exec rake db:seed"
+    echo "RAILS_ENV=production $BUNDLE_CMD exec rails server -p 3000"
     mark_current_tool_installed
     echo -e "${GREEN}Huginn wurde als vorbereitet markiert.${NC}"
     exit 0
 fi
 
 echo -e "${GREEN}5/5: Initialisiere Datenbank...${NC}"
-if ! RAILS_ENV=production bundle exec rake db:create; then
+if ! bash -lc "RAILS_ENV=production $BUNDLE_CMD exec rake db:create"; then
     echo -e "${RED}Fehler: Huginn Datenbank konnte nicht erstellt werden.${NC}"
     exit 1
 fi
-if ! RAILS_ENV=production bundle exec rake db:migrate; then
+if ! bash -lc "RAILS_ENV=production $BUNDLE_CMD exec rake db:migrate"; then
     echo -e "${RED}Fehler: Huginn Datenbankmigration fehlgeschlagen.${NC}"
     exit 1
 fi
 
 echo -e "${YELLOW}Hinweis: Das Seeding von Huginn wurde nicht blind automatisiert, damit keine unsicheren Standard-Zugangsdaten entstehen.${NC}"
-echo -e "${YELLOW}Wenn du Beispiel-Daten oder einen Startbenutzer anlegen willst, führe danach bewusst 'RAILS_ENV=production bundle exec rake db:seed' aus.${NC}"
-echo -e "${YELLOW}Start-Hinweis: RAILS_ENV=production bundle exec rails server -p 3000${NC}"
+echo -e "${YELLOW}Wenn du Beispiel-Daten oder einen Startbenutzer anlegen willst, führe danach bewusst 'RAILS_ENV=production $BUNDLE_CMD exec rake db:seed' aus.${NC}"
+echo -e "${YELLOW}Start-Hinweis: RAILS_ENV=production $BUNDLE_CMD exec rails server -p 3000${NC}"
 
 mark_current_tool_installed
 echo -e "${GREEN}Huginn Installation abgeschlossen.${NC}"

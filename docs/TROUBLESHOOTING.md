@@ -115,6 +115,73 @@ cd /opt/huginn
 RAILS_ENV=production bundle exec rake db:seed
 ```
 
+### Huginn oder Bundler scheitert beim Bauen von `grpc 1.42.0`
+
+Typische Hinweise:
+
+```text
+third_party/abseil-cpp/absl/strings/internal/str_format/extension.h:183:20:
+'FormatConversionChar' does not name a type
+```
+
+oder im Abhaengigkeitspfad:
+
+```text
+google-cloud-translate 2.3.0
+google-gax 1.8.2
+googleapis-common-protos 1.3.12
+grpc 1.42.0
+```
+
+Bedeutung:
+
+- das Huginn-Release `v2022.08.18` bringt ein aelteres Lockfile mit
+- `grpc 1.42.0` ist darin grundsaetzlich nicht falsch, aber auf modernen Toolchains problematisch
+- der Fehler wird oft erst dadurch ausgeloest, dass Bundler mit `force_ruby_platform=true` einen lokalen Source-Build erzwingt
+- auf `x86_64-linux` existieren fuer neuere `grpc`-1.x-Versionen vorkompilierte Gems, die diesen Compilerpfad vermeiden
+
+Das Setup reagiert jetzt robuster:
+
+- es liest die erwartete Bundler-Version aus Huginns `Gemfile.lock`
+  - fuer `v2022.08.18` ist das `Bundler 2.3.10`
+- es bevorzugt vorkompilierte Linux-Gems und setzt **nicht mehr standardmaessig** `force_ruby_platform=true`
+- wenn trotzdem ein `grpc`-Buildfehler erkannt wird, versucht das Setup einen gezielten Refresh der Google-/gRPC-Transitivabhaengigkeiten
+  - dabei wird `grpc` auf einen kompatiblen neueren `1.x`-Stand gezogen
+- zusaetzlich protokolliert das Skript erkannte Ruby- und Bundler-Versionen direkt im Installationslauf
+
+Wichtig:
+
+- das Huginn-Release `v2022.08.18` wurde mit `Ruby 2.7.6` und `Bundler 2.3.10` gepflegt
+- neuere System-Rubies koennen funktionieren, sind aber fuer dieses Release nicht ideal
+- in diesem Repository gibt es **kein eigenes Huginn-Dockerfile**; die Installation laeuft ueber `scripts/tools/huginn_install.sh` und das Upstream-Repo unter `/opt/huginn`
+
+Manuelle Pruefung:
+
+```bash
+cd /opt/huginn
+ruby --version
+bundle --version
+grep -n "google-cloud-translate\|grpc" Gemfile
+awk '/^BUNDLED WITH$/{getline; print}' Gemfile.lock
+bundle config
+```
+
+Wenn `force_ruby_platform` noch aktiv ist, entferne die lokale Vorgabe und installiere erneut:
+
+```bash
+cd /opt/huginn
+bundle config unset --local force_ruby_platform
+bundle install
+```
+
+Wenn du den gezielten `grpc`-Fallback bewusst manuell nachziehen willst:
+
+```bash
+cd /opt/huginn
+bundle update grpc google-protobuf googleapis-common-protos googleapis-common-protos-types
+bundle install
+```
+
 ### Versionsanzeige passt nicht
 
 - `grep 'APP_VERSION=' setup_ultimate.sh`
