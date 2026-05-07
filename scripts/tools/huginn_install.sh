@@ -28,6 +28,7 @@ HUGINN_EXPECTED_BUNDLER_VERSION="${HUGINN_EXPECTED_BUNDLER_VERSION:-}"
 HUGINN_AUTO_REFRESH_LEGACY_GRPC_STACK="${HUGINN_AUTO_REFRESH_LEGACY_GRPC_STACK:-true}"
 HUGINN_SKIP_SYSTEM_PACKAGES="${HUGINN_SKIP_SYSTEM_PACKAGES:-false}"
 HUGINN_DISABLE_GOOGLE_TRANSLATE_AGENT_ON_GRPC_FAILURE="${HUGINN_DISABLE_GOOGLE_TRANSLATE_AGENT_ON_GRPC_FAILURE:-true}"
+HUGINN_AUTO_REFRESH_NOKOGIRI_STACK="${HUGINN_AUTO_REFRESH_NOKOGIRI_STACK:-true}"
 HUGINN_GOOGLE_TRANSLATE_AGENT_DISABLED=0
 
 print_runtime_summary() {
@@ -202,6 +203,35 @@ apply_google_translate_grpc_fallback() {
     return 0
 }
 
+lockfile_contains_problematic_nokogiri_stack() {
+    grep -Eq '^    nokogiri \([0-9][^)]*-x86_64-linux\)' Gemfile.lock 2>/dev/null
+}
+
+repair_nokogiri_stack() {
+    echo -e "${YELLOW}Versuche kompatiblen nokogiri-Fallback fuer veraltete Linux-Lockfile-Eintraege...${NC}"
+
+    cp Gemfile.lock Gemfile.lock.bak.before_nokogiri_refresh 2>/dev/null || true
+    run_bundle lock --add-platform x86_64-linux >/dev/null 2>&1 || true
+    run_bundle lock --add-platform ruby >/dev/null 2>&1 || true
+    run_bundle update nokogiri mini_portile2 racc 2>&1
+}
+
+apply_nokogiri_fallback() {
+    local reason="$1"
+
+    if [ "${HUGINN_AUTO_REFRESH_NOKOGIRI_STACK}" != "true" ]; then
+        return 1
+    fi
+
+    echo -e "${YELLOW}Nokogiri-Fallback wird aktiviert, weil ${reason}.${NC}"
+    if ! repair_nokogiri_stack; then
+        return 1
+    fi
+
+    echo -e "${YELLOW}Huginn wird jetzt mit aktualisiertem nokogiri-Lockfile erneut vorbereitet. Der vorherige Stand liegt in $HUGINN_DIR/Gemfile.lock.bak.before_nokogiri_refresh.${NC}"
+    return 0
+}
+
 lockfile_contains_problematic_grpc_stack() {
     grep -Eq '^    grpc \(1\.42\.0' Gemfile.lock 2>/dev/null ||
     grep -Eq '^    google-protobuf \(3\.21\.5-x86_64-linux\)' Gemfile.lock 2>/dev/null ||
@@ -234,6 +264,24 @@ prepare_known_legacy_dependency_fixes() {
             exit 1
         fi
     fi
+}
+
+prepare_known_nokogiri_fixes() {
+    if [ "${HUGINN_AUTO_REFRESH_NOKOGIRI_STACK}" != "true" ]; then
+        return 0
+    fi
+
+    if ! lockfile_contains_problematic_nokogiri_stack; then
+        return 0
+    fi
+
+    if ruby_version_is_27; then
+        echo -e "${YELLOW}Platform-spezifischer nokogiri-Lockfile-Eintrag erkannt, aber Ruby 2.7 ist aktiv. Belasse den Upstream-Stand zunaechst unveraendert.${NC}"
+        return 0
+    fi
+
+    echo -e "${YELLOW}Platform-spezifischer nokogiri-Lockfile-Eintrag erkannt und Ruby ist nicht 2.7.${NC}"
+    echo -e "${YELLOW}Falls Rubygems diese Binärversion nicht mehr ausliefert, aktualisiert das Setup den nokogiri-Stack spaeter automatisch.${NC}"
 }
 
 ensure_secret_token() {
@@ -356,13 +404,17 @@ warn_if_ruby_version_is_unexpected
 ensure_matching_bundler
 print_runtime_summary
 configure_bundle_platform
+prepare_known_nokogiri_fixes
 prepare_known_legacy_dependency_fixes
 echo -e "${YELLOW}Hinweis: 'development test' ist hier keine Versionsnummer, sondern die ausgeschlossene Bundler-Gruppenkombination.${NC}"
 bundle_log_file="$(mktemp)"
 if ! bash -lc "$BUNDLE_CMD install" 2>&1 | tee "$bundle_log_file"; then
     if grep -Eq 'nokogiri .* can no longer be found' "$bundle_log_file"; then
-        echo -e "${YELLOW}Hinweis: Bundler ist auf eine entfernte nokogiri-Binärversion gelaufen. Versuche Reparatur mit Ruby-Plattform und nokogiri-Update...${NC}"
-        bash -lc "$BUNDLE_CMD update nokogiri" 2>&1 | tee -a "$bundle_log_file" || true
+        if ! apply_nokogiri_fallback "Bundler auf eine entfernte nokogiri-Binaerversion gelaufen ist" 2>&1 | tee -a "$bundle_log_file"; then
+            rm -f "$bundle_log_file"
+            echo -e "${RED}Fehler: nokogiri-Fallback fuer Huginn fehlgeschlagen.${NC}"
+            exit 1
+        fi
         if ! bash -lc "$BUNDLE_CMD install" 2>&1 | tee -a "$bundle_log_file"; then
             if grep -Eq 'grpc|google-protobuf|google-cloud-translate|google-gax|googleapis-common-protos|FormatConversionChar' "$bundle_log_file"; then
                 if ! try_grpc_stack_refresh 2>&1 | tee -a "$bundle_log_file"; then
@@ -414,7 +466,32 @@ if ! bash -lc "$BUNDLE_CMD install" 2>&1 | tee "$bundle_log_file"; then
         if disable_huginn_javascript_agent; then
             bash -lc "$BUNDLE_CMD update mini_racer libv8-node" 2>&1 | tee -a "$bundle_log_file" || true
             if ! bash -lc "$BUNDLE_CMD install" 2>&1 | tee -a "$bundle_log_file"; then
-                if grep -Eq 'grpc|google-protobuf|google-cloud-translate|google-gax|googleapis-common-protos|FormatConversionChar' "$bundle_log_file"; then
+                if grep -Eq 'nokogiri .* can no longer be found' "$bundle_log_file"; then
+                    if ! apply_nokogiri_fallback "der Bundler-Lauf nach Deaktivierung des JavaScriptAgent auf eine entfernte nokogiri-Binaerversion gelaufen ist" 2>&1 | tee -a "$bundle_log_file"; then
+                        rm -f "$bundle_log_file"
+                        echo -e "${RED}Fehler: nokogiri-Fallback fuer Huginn fehlgeschlagen.${NC}"
+                        exit 1
+                    fi
+                    if ! bash -lc "$BUNDLE_CMD install" 2>&1 | tee -a "$bundle_log_file"; then
+                        if grep -Eq 'grpc|google-protobuf|google-cloud-translate|google-gax|googleapis-common-protos|FormatConversionChar' "$bundle_log_file"; then
+                            if apply_google_translate_grpc_fallback "der Bundler-Lauf nach Nokogiri- und JavaScriptAgent-Fallback am Google-/gRPC-Stack scheitert"; then
+                                if ! bash -lc "$BUNDLE_CMD install" 2>&1 | tee -a "$bundle_log_file"; then
+                                    rm -f "$bundle_log_file"
+                                    echo -e "${RED}Fehler: Bundler install fuer Huginn ist auch nach Nokogiri-, JavaScriptAgent- und GoogleTranslate-Fallback fehlgeschlagen.${NC}"
+                                    exit 1
+                                fi
+                            else
+                                rm -f "$bundle_log_file"
+                                echo -e "${RED}Fehler: Bundler install fuer Huginn fehlgeschlagen.${NC}"
+                                exit 1
+                            fi
+                        else
+                            rm -f "$bundle_log_file"
+                            echo -e "${RED}Fehler: Bundler install fuer Huginn ist auch nach Nokogiri- und JavaScriptAgent-Fallback fehlgeschlagen.${NC}"
+                            exit 1
+                        fi
+                    fi
+                elif grep -Eq 'grpc|google-protobuf|google-cloud-translate|google-gax|googleapis-common-protos|FormatConversionChar' "$bundle_log_file"; then
                     if apply_google_translate_grpc_fallback "der Bundler-Lauf nach Deaktivierung des JavaScriptAgent am Google-/gRPC-Stack scheitert"; then
                         if ! bash -lc "$BUNDLE_CMD install" 2>&1 | tee -a "$bundle_log_file"; then
                             rm -f "$bundle_log_file"

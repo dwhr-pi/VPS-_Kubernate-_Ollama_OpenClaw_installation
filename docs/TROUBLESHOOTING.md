@@ -188,6 +188,41 @@ bundle update grpc google-protobuf googleapis-common-protos googleapis-common-pr
 bundle install
 ```
 
+### Huginn oder Bundler scheitert an `nokogiri ... can no longer be found`
+
+Typische Hinweise:
+
+```text
+Your bundle is locked to nokogiri (1.13.8-x86_64-linux) ...
+but that version can no longer be found in that source.
+```
+
+Bedeutung:
+
+- das aeltere Huginn-Lockfile kann plattformspezifische `nokogiri`-Eintraege fuer `x86_64-linux` enthalten
+- wenn Rubygems genau diese vorkompilierte Binärversion nicht mehr ausliefert, stoppt `bundle install` schon vor spaeteren Abhaengigkeiten
+- der Fehler ist dann kein `grpc`-Problem mehr, sondern ein veralteter `nokogiri`-Lockfile-Stand
+
+Das Setup reagiert jetzt robuster:
+
+- es erkennt plattformspezifische `nokogiri`-Lockfile-Eintraege und weist frueh darauf hin
+- wenn Bundler an einer entfernten `nokogiri`-Binärversion haengen bleibt, startet das Setup automatisch einen gezielten Refresh von:
+  - `nokogiri`
+  - `mini_portile2`
+  - `racc`
+- davor wird der bisherige Lockfile-Stand als `Gemfile.lock.bak.before_nokogiri_refresh` gesichert
+- nach dem Refresh startet `bundle install` automatisch erneut
+- wenn danach spaeter noch der bekannte Google-/gRPC-Pfad faellt, greift weiterhin der vorhandene `GoogleTranslateAgent`-Fallback
+
+Manuelle Pruefung:
+
+```bash
+cd /opt/huginn
+grep -n "nokogiri" Gemfile.lock
+bundle update nokogiri mini_portile2 racc
+bundle install
+```
+
 ### Versionsanzeige passt nicht
 
 - `grep 'APP_VERSION=' setup_ultimate.sh`
