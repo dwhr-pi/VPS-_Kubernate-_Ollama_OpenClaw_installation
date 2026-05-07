@@ -148,6 +148,8 @@ Das Setup reagiert jetzt robuster:
 - wenn im Lockfile noch der alte Huginn-gRPC-Stack (`grpc 1.42.0`, `googleapis-common-protos 1.3.12`, `google-protobuf 3.21.5`) steckt und Ruby nicht auf `2.7` laeuft, zieht das Setup den Kompatibilitaetsfix jetzt **bereits vor dem ersten** `bundle install` ein
 - wenn trotzdem ein `grpc`-Buildfehler erkannt wird, versucht das Setup einen gezielten Refresh der Google-/gRPC-Transitivabhaengigkeiten
   - dabei wird `grpc` auf einen kompatiblen neueren `1.x`-Stand gezogen
+- wenn selbst dieser Refresh haengt oder nicht sauber durchlaeuft, kann das Setup als letzten robusten Fallback die optionale `google-cloud-translate`-Abhaengigkeit deaktivieren
+  - dadurch fehlt dann der `GoogleTranslateAgent`, aber Huginn kann auf Systemen mit problematischem Legacy-gRPC-Stack trotzdem weiter installiert werden
 - zusaetzlich protokolliert das Skript erkannte Ruby- und Bundler-Versionen direkt im Installationslauf
 
 Wichtig:

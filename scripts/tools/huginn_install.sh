@@ -18,7 +18,7 @@ INSTALL_DIR="${INSTALL_DIR:-$(cd "$SCRIPT_DIR/../.." && pwd)}"
 source "$INSTALL_DIR/scripts/helpers/status_tracking.sh"
 init_tool_tracking "Huginn"
 
-HUGINN_DIR="/opt/huginn"
+HUGINN_DIR="${HUGINN_DIR:-/opt/huginn}"
 HUGINN_REPO_URL="${HUGINN_REPO_URL:-https://github.com/huginn/huginn.git}"
 HUGINN_REPO_REF="${HUGINN_REPO_REF:-v2022.08.18}"
 HUGINN_DISABLE_JAVASCRIPT_AGENT_ON_LIBV8_FAILURE="${HUGINN_DISABLE_JAVASCRIPT_AGENT_ON_LIBV8_FAILURE:-true}"
@@ -26,6 +26,8 @@ HUGINN_FORCE_RUBY_PLATFORM="${HUGINN_FORCE_RUBY_PLATFORM:-false}"
 HUGINN_GRPC_VERSION="${HUGINN_GRPC_VERSION:-~> 1.54.3}"
 HUGINN_EXPECTED_BUNDLER_VERSION="${HUGINN_EXPECTED_BUNDLER_VERSION:-}"
 HUGINN_AUTO_REFRESH_LEGACY_GRPC_STACK="${HUGINN_AUTO_REFRESH_LEGACY_GRPC_STACK:-true}"
+HUGINN_SKIP_SYSTEM_PACKAGES="${HUGINN_SKIP_SYSTEM_PACKAGES:-false}"
+HUGINN_DISABLE_GOOGLE_TRANSLATE_AGENT_ON_GRPC_FAILURE="${HUGINN_DISABLE_GOOGLE_TRANSLATE_AGENT_ON_GRPC_FAILURE:-true}"
 
 print_runtime_summary() {
     local ruby_version bundler_version
@@ -90,17 +92,27 @@ ensure_matching_bundler() {
     BUNDLE_CMD="$bundler_command"
 }
 
+run_bundle() {
+    bash -lc "$BUNDLE_CMD $*"
+}
+
+run_bundle_timeout() {
+    local seconds="$1"
+    shift
+    timeout "$seconds" bash -lc "cd $(printf '%q' "$PWD") && $BUNDLE_CMD $*"
+}
+
 configure_bundle_platform() {
-    "$BUNDLE_CMD" config set --local path vendor/bundle
-    "$BUNDLE_CMD" config set --local without "development test"
+    run_bundle config set --local path vendor/bundle
+    run_bundle config set --local without "development test"
 
     if [ "$HUGINN_FORCE_RUBY_PLATFORM" = "true" ]; then
         echo -e "${YELLOW}force_ruby_platform=true wurde explizit angefordert. Native Gems werden aus dem Quellcode gebaut.${NC}"
-        "$BUNDLE_CMD" config set --local force_ruby_platform true
+        run_bundle config set --local force_ruby_platform true
     else
-        "$BUNDLE_CMD" config unset --local force_ruby_platform >/dev/null 2>&1 || true
-        "$BUNDLE_CMD" lock --add-platform x86_64-linux >/dev/null 2>&1 || true
-        "$BUNDLE_CMD" lock --add-platform ruby >/dev/null 2>&1 || true
+        run_bundle config unset --local force_ruby_platform >/dev/null 2>&1 || true
+        run_bundle lock --add-platform x86_64-linux >/dev/null 2>&1 || true
+        run_bundle lock --add-platform ruby >/dev/null 2>&1 || true
         echo -e "${YELLOW}Bevorzuge vorkompilierte Linux-Gems, damit Legacy-Abhaengigkeiten wie grpc nicht unnoetig lokal kompiliert werden.${NC}"
     fi
 }
@@ -146,7 +158,27 @@ try_grpc_stack_refresh() {
         return 1
     fi
 
-    "$BUNDLE_CMD" update grpc google-protobuf googleapis-common-protos googleapis-common-protos-types 2>&1
+    run_bundle update grpc google-protobuf googleapis-common-protos googleapis-common-protos-types 2>&1
+}
+
+disable_google_translate_agent() {
+    if ! grep -Eq "^gem 'google-cloud-translate'.*google/cloud/translate" Gemfile 2>/dev/null; then
+        return 1
+    fi
+
+    cp Gemfile Gemfile.bak.before_no_google_translate 2>/dev/null || true
+    python3 - <<'PY'
+from pathlib import Path
+
+path = Path("Gemfile")
+text = path.read_text(encoding="utf-8")
+old = "gem 'google-cloud-translate', '~> 2.0', require: 'google/cloud/translate'"
+new = "# gem 'google-cloud-translate', '~> 2.0', require: 'google/cloud/translate' # deaktiviert durch Setup-Fallback wegen grpc/google-protobuf-Konflikt"
+if old in text:
+    text = text.replace(old, new, 1)
+path.write_text(text, encoding="utf-8")
+PY
+    return 0
 }
 
 lockfile_contains_problematic_grpc_stack() {
@@ -172,9 +204,14 @@ prepare_known_legacy_dependency_fixes() {
     echo -e "${YELLOW}Legacy-gRPC-Stack im Huginn-Lockfile erkannt und Ruby ist nicht 2.7.${NC}"
     echo -e "${YELLOW}Ziehe den bekannten grpc/google-protobuf-Fix deshalb proaktiv vor dem ersten bundle install ein.${NC}"
 
-    if ! try_grpc_stack_refresh; then
-        echo -e "${RED}Fehler: Proaktiver grpc-Fallback für Huginn fehlgeschlagen.${NC}"
-        exit 1
+    if ! run_bundle_timeout 600 update grpc google-protobuf googleapis-common-protos googleapis-common-protos-types >/dev/null 2>&1; then
+        echo -e "${YELLOW}Der proaktive grpc-Refresh lief nicht sauber oder hat zu lange gebraucht.${NC}"
+        if [ "${HUGINN_DISABLE_GOOGLE_TRANSLATE_AGENT_ON_GRPC_FAILURE}" = "true" ] && disable_google_translate_agent; then
+            echo -e "${YELLOW}Deaktiviere als robusten Fallback den optionalen GoogleTranslateAgent, damit Huginn ohne diesen grpc-Stack weiter installiert werden kann.${NC}"
+        else
+            echo -e "${RED}Fehler: Proaktiver grpc-Fallback für Huginn fehlgeschlagen.${NC}"
+            exit 1
+        fi
     fi
 }
 
@@ -229,8 +266,12 @@ checkout_huginn_ref() {
         fi
     else
         echo -e "${BLUE}Klone Huginn (${HUGINN_REPO_REF}) in $HUGINN_DIR...${NC}"
-        sudo mkdir -p "$HUGINN_DIR"
-        sudo chown -R "$USER:$USER" "$HUGINN_DIR"
+        if mkdir -p "$HUGINN_DIR" 2>/dev/null; then
+            :
+        else
+            sudo mkdir -p "$HUGINN_DIR"
+            sudo chown -R "$USER:$USER" "$HUGINN_DIR"
+        fi
         git clone --branch "$HUGINN_REPO_REF" "$HUGINN_REPO_URL" "$HUGINN_DIR"
         cd "$HUGINN_DIR"
     fi
@@ -258,10 +299,15 @@ PY
 echo -e "${BLUE}Starte Installation von Huginn...${NC}"
 echo -e "${YELLOW}Standard-Referenz: ${HUGINN_REPO_REF}.${NC}"
 echo -e "${YELLOW}Wenn du bewusst einen anderen Upstream-Stand testen willst, kannst du HUGINN_REPO_REF überschreiben.${NC}"
+echo -e "${YELLOW}Installationsverzeichnis: ${HUGINN_DIR}${NC}"
 
 echo -e "${GREEN}1/5: Installiere System-Abhängigkeiten für Huginn...${NC}"
-sudo apt-get update
-sudo apt-get install -y ruby-full ruby-bundler build-essential libmysqlclient-dev libpq-dev pkg-config git curl libyaml-dev zlib1g-dev libffi-dev shared-mime-info
+if [ "${HUGINN_SKIP_SYSTEM_PACKAGES}" = "true" ]; then
+    echo -e "${YELLOW}Systempaket-Schritt wurde uebersprungen (HUGINN_SKIP_SYSTEM_PACKAGES=true).${NC}"
+else
+    sudo apt-get update
+    sudo apt-get install -y ruby-full ruby-bundler build-essential libmysqlclient-dev libpq-dev pkg-config git curl libyaml-dev zlib1g-dev libffi-dev shared-mime-info
+fi
 
 echo -e "${GREEN}2/5: Hole Huginn aus GitHub...${NC}"
 checkout_huginn_ref
