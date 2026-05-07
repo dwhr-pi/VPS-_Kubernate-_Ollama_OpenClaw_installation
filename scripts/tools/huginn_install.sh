@@ -28,6 +28,7 @@ HUGINN_EXPECTED_BUNDLER_VERSION="${HUGINN_EXPECTED_BUNDLER_VERSION:-}"
 HUGINN_AUTO_REFRESH_LEGACY_GRPC_STACK="${HUGINN_AUTO_REFRESH_LEGACY_GRPC_STACK:-true}"
 HUGINN_SKIP_SYSTEM_PACKAGES="${HUGINN_SKIP_SYSTEM_PACKAGES:-false}"
 HUGINN_DISABLE_GOOGLE_TRANSLATE_AGENT_ON_GRPC_FAILURE="${HUGINN_DISABLE_GOOGLE_TRANSLATE_AGENT_ON_GRPC_FAILURE:-true}"
+HUGINN_GOOGLE_TRANSLATE_AGENT_DISABLED=0
 
 print_runtime_summary() {
     local ruby_version bundler_version
@@ -178,6 +179,23 @@ if old in text:
     text = text.replace(old, new, 1)
 path.write_text(text, encoding="utf-8")
 PY
+    HUGINN_GOOGLE_TRANSLATE_AGENT_DISABLED=1
+    return 0
+}
+
+apply_google_translate_grpc_fallback() {
+    local reason="$1"
+
+    if [ "${HUGINN_DISABLE_GOOGLE_TRANSLATE_AGENT_ON_GRPC_FAILURE}" != "true" ]; then
+        return 1
+    fi
+
+    if ! disable_google_translate_agent; then
+        return 1
+    fi
+
+    echo -e "${YELLOW}GoogleTranslateAgent wird automatisch deaktiviert, weil ${reason}.${NC}"
+    echo -e "${YELLOW}Huginn wird jetzt ohne google-cloud-translate erneut vorbereitet. Der Fallback ist in $HUGINN_DIR/Gemfile.bak.before_no_google_translate dokumentiert.${NC}"
     return 0
 }
 
@@ -206,8 +224,8 @@ prepare_known_legacy_dependency_fixes() {
 
     if ! run_bundle_timeout 600 update grpc google-protobuf googleapis-common-protos googleapis-common-protos-types >/dev/null 2>&1; then
         echo -e "${YELLOW}Der proaktive grpc-Refresh lief nicht sauber oder hat zu lange gebraucht.${NC}"
-        if [ "${HUGINN_DISABLE_GOOGLE_TRANSLATE_AGENT_ON_GRPC_FAILURE}" = "true" ] && disable_google_translate_agent; then
-            echo -e "${YELLOW}Deaktiviere als robusten Fallback den optionalen GoogleTranslateAgent, damit Huginn ohne diesen grpc-Stack weiter installiert werden kann.${NC}"
+        if apply_google_translate_grpc_fallback "der grpc/google-protobuf-Refresh gehangen oder fehlgeschlagen ist"; then
+            :
         else
             echo -e "${RED}Fehler: Proaktiver grpc-Fallback für Huginn fehlgeschlagen.${NC}"
             exit 1
@@ -362,14 +380,30 @@ if ! bash -lc "$BUNDLE_CMD install" 2>&1 | tee "$bundle_log_file"; then
         fi
     elif grep -Eq 'grpc|google-protobuf|google-cloud-translate|google-gax|googleapis-common-protos|FormatConversionChar' "$bundle_log_file"; then
         if ! try_grpc_stack_refresh 2>&1 | tee -a "$bundle_log_file"; then
-            rm -f "$bundle_log_file"
-            echo -e "${RED}Fehler: grpc-Kompatibilitaetsfallback für Huginn fehlgeschlagen.${NC}"
-            exit 1
+            if apply_google_translate_grpc_fallback "der grpc-Kompatibilitaetsfallback im Live-Pfad fehlgeschlagen ist"; then
+                if ! bash -lc "$BUNDLE_CMD install" 2>&1 | tee -a "$bundle_log_file"; then
+                    rm -f "$bundle_log_file"
+                    echo -e "${RED}Fehler: Bundler install für Huginn ist auch nach automatischer Deaktivierung des GoogleTranslateAgent fehlgeschlagen.${NC}"
+                    exit 1
+                fi
+            else
+                rm -f "$bundle_log_file"
+                echo -e "${RED}Fehler: grpc-Kompatibilitaetsfallback für Huginn fehlgeschlagen.${NC}"
+                exit 1
+            fi
         fi
         if ! bash -lc "$BUNDLE_CMD install" 2>&1 | tee -a "$bundle_log_file"; then
-            rm -f "$bundle_log_file"
-            echo -e "${RED}Fehler: Bundler install für Huginn ist trotz grpc-Fallback fehlgeschlagen.${NC}"
-            exit 1
+            if apply_google_translate_grpc_fallback "bundle install trotz grpc-Refresh weiter am Google-/gRPC-Stack scheitert"; then
+                if ! bash -lc "$BUNDLE_CMD install" 2>&1 | tee -a "$bundle_log_file"; then
+                    rm -f "$bundle_log_file"
+                    echo -e "${RED}Fehler: Bundler install für Huginn ist auch nach automatischer Deaktivierung des GoogleTranslateAgent fehlgeschlagen.${NC}"
+                    exit 1
+                fi
+            else
+                rm -f "$bundle_log_file"
+                echo -e "${RED}Fehler: Bundler install für Huginn ist trotz grpc-Fallback fehlgeschlagen.${NC}"
+                exit 1
+            fi
         fi
     elif grep -Eq 'An error occurred while installing libv8-node|mini_racer was resolved to .* depends on[[:space:]]+libv8-node' "$bundle_log_file" && [ "${HUGINN_DISABLE_JAVASCRIPT_AGENT_ON_LIBV8_FAILURE}" = "true" ]; then
         echo -e "${YELLOW}Hinweis: mini_racer bzw. libv8-node konnte auf diesem System nicht gebaut werden.${NC}"
@@ -394,6 +428,10 @@ if ! bash -lc "$BUNDLE_CMD install" 2>&1 | tee "$bundle_log_file"; then
     fi
 fi
 rm -f "$bundle_log_file"
+
+if [ "$HUGINN_GOOGLE_TRANSLATE_AGENT_DISABLED" -eq 1 ]; then
+    echo -e "${YELLOW}Status: Der optionale GoogleTranslateAgent wurde fuer diese Huginn-Installation automatisch deaktiviert.${NC}"
+fi
 
 if ! database_config_complete; then
     echo -e "${YELLOW}Huginn Quellcode und Gems wurden vorbereitet, aber die Datenbank-Konfiguration in $HUGINN_DIR/.env ist noch unvollständig.${NC}"

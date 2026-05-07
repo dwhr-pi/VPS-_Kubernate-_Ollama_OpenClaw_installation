@@ -150,6 +150,8 @@ Das Setup reagiert jetzt robuster:
   - dabei wird `grpc` auf einen kompatiblen neueren `1.x`-Stand gezogen
 - wenn selbst dieser Refresh haengt oder nicht sauber durchlaeuft, kann das Setup als letzten robusten Fallback die optionale `google-cloud-translate`-Abhaengigkeit deaktivieren
   - dadurch fehlt dann der `GoogleTranslateAgent`, aber Huginn kann auf Systemen mit problematischem Legacy-gRPC-Stack trotzdem weiter installiert werden
+- dieser Fallback greift jetzt nicht nur vorbereitend, sondern auch im echten `bundle install`-Fehlerpfad automatisch
+  - das Setup meldet dabei klar, dass der `GoogleTranslateAgent` deaktiviert wurde und startet den Bundler-Lauf danach erneut
 - zusaetzlich protokolliert das Skript erkannte Ruby- und Bundler-Versionen direkt im Installationslauf
 
 Wichtig:
