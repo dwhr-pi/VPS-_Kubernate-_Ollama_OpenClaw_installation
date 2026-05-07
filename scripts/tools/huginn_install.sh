@@ -163,7 +163,7 @@ try_grpc_stack_refresh() {
 }
 
 disable_google_translate_agent() {
-    if ! grep -Eq "^gem 'google-cloud-translate'.*google/cloud/translate" Gemfile 2>/dev/null; then
+    if ! grep -Eq "^gem 'google-cloud-translate'.*google/cloud/translate|^# gem 'google-cloud-translate'.*grpc/google-protobuf-Konflikt" Gemfile 2>/dev/null; then
         return 1
     fi
 
@@ -177,6 +177,9 @@ old = "gem 'google-cloud-translate', '~> 2.0', require: 'google/cloud/translate'
 new = "# gem 'google-cloud-translate', '~> 2.0', require: 'google/cloud/translate' # deaktiviert durch Setup-Fallback wegen grpc/google-protobuf-Konflikt"
 if old in text:
     text = text.replace(old, new, 1)
+grpc_line = "gem 'grpc', '~> 1.54.3' # Setup-Fix: vermeidet bekannte Build-Probleme mit grpc 1.42 auf moderner Toolchain\n"
+if grpc_line in text:
+    text = text.replace(grpc_line, "", 1)
 path.write_text(text, encoding="utf-8")
 PY
     HUGINN_GOOGLE_TRANSLATE_AGENT_DISABLED=1
@@ -411,9 +414,23 @@ if ! bash -lc "$BUNDLE_CMD install" 2>&1 | tee "$bundle_log_file"; then
         if disable_huginn_javascript_agent; then
             bash -lc "$BUNDLE_CMD update mini_racer libv8-node" 2>&1 | tee -a "$bundle_log_file" || true
             if ! bash -lc "$BUNDLE_CMD install" 2>&1 | tee -a "$bundle_log_file"; then
-                rm -f "$bundle_log_file"
-                echo -e "${RED}Fehler: Bundler install für Huginn fehlgeschlagen.${NC}"
-                exit 1
+                if grep -Eq 'grpc|google-protobuf|google-cloud-translate|google-gax|googleapis-common-protos|FormatConversionChar' "$bundle_log_file"; then
+                    if apply_google_translate_grpc_fallback "der Bundler-Lauf nach Deaktivierung des JavaScriptAgent am Google-/gRPC-Stack scheitert"; then
+                        if ! bash -lc "$BUNDLE_CMD install" 2>&1 | tee -a "$bundle_log_file"; then
+                            rm -f "$bundle_log_file"
+                            echo -e "${RED}Fehler: Bundler install für Huginn ist auch nach JavaScriptAgent- und GoogleTranslate-Fallback fehlgeschlagen.${NC}"
+                            exit 1
+                        fi
+                    else
+                        rm -f "$bundle_log_file"
+                        echo -e "${RED}Fehler: Bundler install für Huginn fehlgeschlagen.${NC}"
+                        exit 1
+                    fi
+                else
+                    rm -f "$bundle_log_file"
+                    echo -e "${RED}Fehler: Bundler install für Huginn fehlgeschlagen.${NC}"
+                    exit 1
+                fi
             fi
             echo -e "${YELLOW}Huginn wurde ohne JavaScriptAgent vorbereitet. Die Datei $HUGINN_DIR/Gemfile.bak.before_no_mini_racer enthält die Originalzeile.${NC}"
         else

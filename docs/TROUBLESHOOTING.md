@@ -152,6 +152,7 @@ Das Setup reagiert jetzt robuster:
   - dadurch fehlt dann der `GoogleTranslateAgent`, aber Huginn kann auf Systemen mit problematischem Legacy-gRPC-Stack trotzdem weiter installiert werden
 - dieser Fallback greift jetzt nicht nur vorbereitend, sondern auch im echten `bundle install`-Fehlerpfad automatisch
   - das Setup meldet dabei klar, dass der `GoogleTranslateAgent` deaktiviert wurde und startet den Bundler-Lauf danach erneut
+- wenn zunaechst `mini_racer` oder `libv8-node` ausfaellt und der nachfolgende Bundler-Lauf erst danach in `grpc` kippt, greift derselbe Google-Translate-Fallback jetzt ebenfalls automatisch
 - zusaetzlich protokolliert das Skript erkannte Ruby- und Bundler-Versionen direkt im Installationslauf
 
 Wichtig:
