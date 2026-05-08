@@ -24,10 +24,10 @@ Wichtig zur Zaehlung:
 | Gruppe | Tools | Einsatz |
 |---|---|---|
 | No-Code / Low-Code | `n8n`, `activepieces`, `node_red`, `flowise`, `langflow`, `appsmith`, `budibase`, `nocodb`, `directus` | interne Apps, Automatisierung, Daten-Frontends |
-| UI / Design | `penpot` | self-hosted UI/UX-Design, Prototyping, Design-Systeme, Design-to-Code-nahe Workflows |
 | Office / Knowledge | `nextcloud`, `stirling_pdf`, `pandoc`, `meilisearch`, `jupyterlab`, `duckdb`, `metabase`, `minio` | DMS, Berichte, Suche, Notiz-/Dateischicht |
 | DevOps | `github_cli`, `act`, `pre_commit`, `release_please`, `ansible`, `opentofu`, `argocd_cli`, `grafana_alloy`, `restic`, `rclone`, `borgbackup` | Repo-, Release- und Plattformpflege |
 | Browser / Research | `playwright`, `puppeteer` | kontrollierte Browser-Tests und Web-Analysen |
+| Web-Automation | `huginn` | Event-Automation, Agentenketten und Webhook-Routing mit eigener `.env`-Vorlage |
 | Smart Home / Edge | `home_assistant`, `mosquitto`, `zigbee2mqtt`, `esphome` | lokale IoT- und Sensor-Workflows |
 
 ## Experimental

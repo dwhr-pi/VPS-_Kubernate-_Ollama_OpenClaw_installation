@@ -127,12 +127,6 @@ CUSTOM_REPO_OPEN_WEBUI_URL=""
 CUSTOM_REPO_LITELLM_URL=""
 # Standard ComfyUI: https://github.com/comfyanonymous/ComfyUI.git
 CUSTOM_REPO_COMFYUI_URL=""
-# Standard Huginn: https://github.com/huginn/huginn.git
-# Empfohlenes Standardprofil: stable-release
-# Empfohlener Standard-Ref: v2022.08.18
-CUSTOM_REPO_HUGINN_URL=""
-CUSTOM_REPO_HUGINN_REF=""
-CUSTOM_REPO_HUGINN_PROFILE="stable-release"
 #
 # Finanz- und Analyse-Repos
 # Standard FinGPT: https://github.com/AI4Finance-Foundation/FinGPT.git
@@ -944,7 +938,7 @@ show_options_menu() {
     while true; do
         dialog --clear --backtitle "$APP_TITLE" \
         --cancel-label "↩ Zurück" \
-        --title "${TXT_OPTIONS_MENU_TITLE:-OPTIONEN}" --menu "${TXT_OPTIONS_MENU_PROMPT:-Wählen Sie eine Verwaltungs- oder Konfigurationsfunktion:}" 28 100 12 \
+        --title "${TXT_OPTIONS_MENU_TITLE:-OPTIONEN}" --menu "${TXT_OPTIONS_MENU_PROMPT:-Wählen Sie eine Verwaltungs- oder Konfigurationsfunktion:}" 28 100 13 \
         "1" "${TXT_OPTIONS_1:-Sprache ändern}" \
         "2" "${TXT_OPTIONS_2:-Setup-Messwerte & Benchmarks bearbeiten}" \
         "3" "${TXT_OPTIONS_3:-Ollama Modelfile-Assistent}" \
@@ -954,9 +948,10 @@ show_options_menu() {
         "7" "${TXT_OPTIONS_7:-Benutzer-Workspace verwalten}" \
         "8" "${TXT_OPTIONS_8:-Custom GitHub-Quellen & Ollama-Builds}" \
         "9" "${TXT_OPTIONS_9:-LLMOps Plattform Konfiguration (.env Stack)}" \
-        "10" "${TXT_OPTIONS_10:-Installationsüberwachung konfigurieren}" \
-        "11" "${TXT_OPTIONS_11:-Nur auf Setup-Updates prüfen}" \
-        "12" "${TXT_OPTIONS_12:-Jetzt nur das Setup aktualisieren}" 2> /tmp/options_choice
+        "10" "${TXT_OPTIONS_10:-Huginn Konfiguration (.env Vorlage)}" \
+        "11" "${TXT_OPTIONS_11:-Installationsüberwachung konfigurieren}" \
+        "12" "${TXT_OPTIONS_12:-Nur auf Setup-Updates prüfen}" \
+        "13" "${TXT_OPTIONS_13:-Jetzt nur das Setup aktualisieren}" 2> /tmp/options_choice
 
         if [ $? -ne 0 ]; then
             return 0
@@ -1002,9 +997,12 @@ show_options_menu() {
                 run_bash_script "$INSTALL_DIR/scripts/llmops_platform_config_manager.sh"
                 ;;
             10)
-                show_installation_monitoring_menu
+                run_bash_script "$INSTALL_DIR/scripts/huginn_config_manager.sh"
                 ;;
             11)
+                show_installation_monitoring_menu
+                ;;
+            12)
                 show_operation_intro \
                 "Nur auf Setup-Updates prüfen" \
                 "Prüft den lokalen Git-Stand gegen origin/main, ohne direkt Updates oder Systempakete zu installieren." \
@@ -1016,7 +1014,7 @@ show_options_menu() {
                 if [ $? -eq 0 ]; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
                 read -p "Update-Prüfung abgeschlossen. Drücken Sie Enter..."
                 ;;
-            12)
+            13)
                 show_operation_intro \
                 "Jetzt nur das Setup aktualisieren" \
                 "Aktualisiert nur dieses Setup-Repository gegen origin/main. Betriebssystem und pnpm bleiben dabei unberuehrt." \
@@ -1343,7 +1341,7 @@ show_profile_management_menu() {
 
 declare -A TOOLS
 declare -A TOOL_SCRIPT_NAMES
-TOOL_KEYS=("Ollama" "OpenManus" "OpenClaw" "Clawhub_CLI" "OpenClaw_RL" "Clawbake" "n8n" "Activepieces" "Flowise" "LangFlow" "AutoGPT" "Pipedream" "Huginn" "Penpot" "FFmpeg" "LangGraph" "CrewAI" "AutoGen" "Playwright" "ChromaDB" "LangChain" "LlamaIndex" "MLflow" "Whisper" "librosa" "pydub" "Demucs" "Zenbot_trader" "Kimi2" "Clawhub" "Huge_Facing" "Zotero" "Piper" "Coqui_TTS" "YT_DLP" "Web3_APIs" "Exchange_APIs" "FinGPT" "FinRobot" "FinRAG" "Nmap" "Nikto" "Trivy" "Fail2Ban" "Stable_Diffusion_WebUI" "Stable_Diffusion_WebUI_Forge" "ComfyUI" "RealESRGAN" "GFPGAN" "Rembg" "Redis" "NATS" "Qdrant" "Weaviate" "Prometheus" "Grafana" "Loki" "Trend_Monitor" "Agent_Router" "Memory_Policies" "Voice_Assistant_Runtime" "Thumbnail_Pipeline" "Upload_Automation" "Weights_and_Biases" "vLLM" "Llama_CPP" "Ray" "EnviroLLM" "Suno_API" "Udio_API" "MusicGen" "Riffusion" "ControlNet" "Music2P_Pipeline" "Hook_Detection" "BPM_Analyzer" "TikTok_Score" "Emotion_Tagging" "Docker" "Kubernetes" "K3s" "GitHub_API_Tooling" "Code_Sandbox" "VS_Code_Server" "Puppeteer" "OpenTelemetry" "Vault" "SQLite" "Postgres" "RabbitMQ" "EULLM" "AI_Powered_Law_Firms" "Lawfirm" "Tax_Law_Agent" "Risk_Agent" "Drafting_Agent" "PDF_Parser" "Neo4j" "Tax_Calculator" "Deadline_Checker" "Risk_Scoring" "GitHub_Research" "Repo_Comparison" "Fail2Ban_Analyzer" "Security_Workflow" "Browser_Tool" "Firecrawl" "Google_Analytics_API" "Meta_Ads_API" "TikTok_Ads_API" "File_System_Tool" "HubSpot" "Notion" "Airtable" "Buffer_API" "Zapier" "Make" "Ahrefs" "SEMrush" "ElevenLabs" "Zenbot_API" "Risk_Strategy_Analyzer" "Backtest_Workflow" "AnimateDiff" "SVD" "Runway_API" "Image_Upscaler_Pipeline" "Aider" "OpenCode" "OpenHands" "GitHub_CLI" "Podman" "Unsloth" "LLaMA_Factory" "Axolotl" "Data_Juicer" "Llama_CPP_Toolchain" "LiteLLM" "Open_WebUI" "Langfuse" "OpenLIT" "MCPO" "Continue_Dev" "Guardrails_AI" "Promptfoo" "Gitleaks" "Uptime_Kuma" "Netdata" "MinIO" "Supabase" "Ansible" "OpenTofu" "K9s" "Helm" "Kubectl" "Kustomize" "Act" "Pre_Commit" "Markdownlint_CLI" "ShellCheck" "Shfmt" "Hadolint" "Actionlint" "Docker_Compose_Plugin" "TruffleHog" "ArgoCD_CLI" "Flux_CLI" "Kubectx_Kubens" "Velero" "Grafana_Alloy" "cAdvisor" "Node_Exporter" "DuckDB" "JupyterLab" "Airbyte" "Metabase" "dbt" "Apache_Tika" "Docling" "OCRmyPDF" "Paperless_NGX" "Stirling_PDF" "Whisper_CPP" "Faster_Whisper" "openWakeWord" "Rhasspy" "Wyoming" "Tesseract" "Marker" "LibreOffice_Headless" "RIFE" "Fooocus" "InvokeAI" "Blender" "Foundry" "Hardhat" "Ethers_JS" "Web3_Py" "OPA" "Meilisearch" "Joplin_CLI" "Syncthing" "SQLite_Vec" "Release_Please" "Changelog_Generator" "Pgvector" "Prefect" "Unstructured" "Home_Assistant" "Node_Red" "Restic" "Rclone" "Syft" "Grype" "Semgrep" "Healthchecks" "Pandoc" "Mosquitto")
+TOOL_KEYS=("Ollama" "OpenClaw" "Act" "Actionlint" "Activepieces" "Agent_Router" "Ahrefs" "AI_Powered_Law_Firms" "Aider" "Airbyte" "Airtable" "AnimateDiff" "Ansible" "Apache_Tika" "ArgoCD_CLI" "AutoGen" "AutoGPT" "Axolotl" "Backtest_Workflow" "Blender" "BPM_Analyzer" "Browser_Tool" "Buffer_API" "cAdvisor" "Changelog_Generator" "ChromaDB" "Clawbake" "Clawhub" "Clawhub_CLI" "Code_Sandbox" "ComfyUI" "Continue_Dev" "ControlNet" "Coqui_TTS" "CrewAI" "Data_Juicer" "dbt" "Deadline_Checker" "Demucs" "Docker" "Docker_Compose_Plugin" "Docling" "Drafting_Agent" "DuckDB" "ElevenLabs" "Emotion_Tagging" "EnviroLLM" "Ethers_JS" "EULLM" "Exchange_APIs" "Fail2Ban" "Fail2Ban_Analyzer" "Faster_Whisper" "FFmpeg" "File_System_Tool" "FinGPT" "FinRAG" "FinRobot" "Firecrawl" "Flowise" "Flux_CLI" "Fooocus" "Foundry" "GFPGAN" "GitHub_API_Tooling" "GitHub_CLI" "GitHub_Research" "Gitleaks" "Google_Analytics_API" "Grafana" "Grafana_Alloy" "Grype" "Guardrails_AI" "Hadolint" "Hardhat" "Healthchecks" "Helm" "Home_Assistant" "Hook_Detection" "HubSpot" "Huge_Facing" "Huginn" "Image_Upscaler_Pipeline" "InvokeAI" "Joplin_CLI" "JupyterLab" "K3s" "K9s" "Kimi2" "Kubectl" "Kubectx_Kubens" "Kubernetes" "Kustomize" "LangChain" "LangFlow" "Langfuse" "LangGraph" "Lawfirm" "LibreOffice_Headless" "librosa" "LiteLLM" "Llama_CPP" "Llama_CPP_Toolchain" "LLaMA_Factory" "LlamaIndex" "Loki" "Make" "Markdownlint_CLI" "Marker" "MCPO" "Meilisearch" "Memory_Policies" "Meta_Ads_API" "Metabase" "MinIO" "MLflow" "Mosquitto" "Music2P_Pipeline" "MusicGen" "n8n" "NATS" "Neo4j" "Netdata" "Nikto" "Nmap" "Node_Exporter" "Node_Red" "Notion" "OCRmyPDF" "OPA" "Open_WebUI" "OpenClaw_RL" "OpenCode" "OpenHands" "OpenLIT" "OpenManus" "OpenTelemetry" "OpenTofu" "openWakeWord" "Pandoc" "Paperless_NGX" "PDF_Parser" "Pgvector" "Pipedream" "Piper" "Playwright" "Podman" "Postgres" "Pre_Commit" "Prefect" "Prometheus" "Promptfoo" "Puppeteer" "pydub" "Qdrant" "RabbitMQ" "Ray" "Rclone" "RealESRGAN" "Redis" "Release_Please" "Rembg" "Repo_Comparison" "Restic" "Rhasspy" "RIFE" "Riffusion" "Risk_Agent" "Risk_Scoring" "Risk_Strategy_Analyzer" "Runway_API" "Security_Workflow" "Semgrep" "SEMrush" "ShellCheck" "Shfmt" "SQLite" "SQLite_Vec" "Stable_Diffusion_WebUI" "Stable_Diffusion_WebUI_Forge" "Stirling_PDF" "Suno_API" "Supabase" "SVD" "Syft" "Syncthing" "Tax_Calculator" "Tax_Law_Agent" "Tesseract" "Thumbnail_Pipeline" "TikTok_Ads_API" "TikTok_Score" "Trend_Monitor" "Trivy" "TruffleHog" "Udio_API" "Unsloth" "Unstructured" "Upload_Automation" "Uptime_Kuma" "Vault" "Velero" "vLLM" "Voice_Assistant_Runtime" "VS_Code_Server" "Weaviate" "Web3_APIs" "Web3_Py" "Weights_and_Biases" "Whisper" "Whisper_CPP" "Wyoming" "YT_DLP" "Zapier" "Zenbot_API" "Zenbot_trader" "Zotero")
 TOOLS["Ollama"]="Lokales LLM-Backend. Du kannst über den Ollama Modell-Manager spezifische Modelle installieren und verwalten. Für weitere Informationen zu den Modellen siehe in der Online-Dokumentation nach."
 TOOLS["OpenManus"]="KI-Agenten-Framework für automatisierte Aufgaben wie Web-Recherche und Datenanalyse."
 TOOLS["OpenClaw"]="Fortschrittliches KI-Agenten-Framework mit Reinforcement Learning (RL) und Skill-Integration (z.B. gcali)."
@@ -1357,7 +1355,6 @@ TOOLS["LangFlow"]="UI für LangChain, um LLM-Anwendungen visuell zu erstellen un
 TOOLS["AutoGPT"]="Agenten-Plattform von Significant Gravitas zur Erstellung, Ausführung und Verwaltung komplexer KI-Workflows."
 TOOLS["Pipedream"]="Serverless-Plattform zur Integration von APIs und Diensten (Self-Hosted-Option verfügbar)."
 TOOLS["Huginn"]="Open-Source-Agentensystem, das Aktionen im Web automatisiert und Ereignisse überwacht."
-TOOLS["Penpot"]="Open-Source-UI/UX-Design-Plattform fuer Self-Hosting, Prototyping, Design-Systeme und Design-to-Code-nahe Workflows. Installiert Penpot optional per Docker Compose mit lokaler Standardbindung."
 TOOLS["FFmpeg"]="CLI-Werkzeug für Audio- und Videoverarbeitung, nützlich für Medienprofile und Konvertierungs-Workflows."
 TOOLS["LangGraph"]="Graph-basierte Workflow-Orchestrierung für mehrstufige Agentensysteme."
 TOOLS["CrewAI"]="Multi-Agent Framework für spezialisierte Rollen und abgestimmte Team-Workflows."
@@ -1575,7 +1572,6 @@ TOOL_SCRIPT_NAMES["LangFlow"]="langflow"
 TOOL_SCRIPT_NAMES["AutoGPT"]="autogpt"
 TOOL_SCRIPT_NAMES["Pipedream"]="pipedream"
 TOOL_SCRIPT_NAMES["Huginn"]="huginn"
-TOOL_SCRIPT_NAMES["Penpot"]="penpot"
 TOOL_SCRIPT_NAMES["FFmpeg"]="ffmpeg"
 TOOL_SCRIPT_NAMES["LangGraph"]="langgraph"
 TOOL_SCRIPT_NAMES["CrewAI"]="crewai"
