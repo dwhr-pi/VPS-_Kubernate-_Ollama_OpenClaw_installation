@@ -19,6 +19,7 @@ Wichtig:
 | `gemma3:4b` | ca. 3.3 GB | ab 8 GB | Kompaktes Modell für sparsame lokale Nutzung |
 | `phi4:14b` | ca. 9.1 GB | ab 20 GB | Stärkeres Modell für Analyse, Reasoning und schwierigere lokale Aufgaben |
 | `deepseek-r1:8b` | ca. 5.2 GB | ab 12 GB | Reasoning-Ableger für Planung, Analyse und schrittweises Denken |
+| `mixtral:8x7b` | ca. 26 GB | ab 48 GB | Starker Mistral-MoE-Hauptagent für allgemeine Aufgaben, RAG und Multi-Agent-Workflows |
 
 ## Finanzdatenanalyse / Trading-Analyse
 
@@ -63,7 +64,30 @@ Diese drei Stacks sind keine simplen Gewichtsdateien, sondern weiterentwickelbar
 |---|---:|---:|---|
 | `qwen2.5-coder:7b` | ca. 4.7 GB | ab 12 GB | Leichtes Coding-Modell für lokalen Codex-Nachbau, Diff-Arbeit und Skript-Fixes |
 | `qwen3-coder:30b` | ca. 19 GB | ab 32 GB | Großes agentisches Coding-Modell mit langem Kontext für Repository-Verständnis |
+| `codestral:22b` | ca. 13 GB | ab 28-32 GB | Mistral-Coding-Modell für Refactoring, Code-Generierung und Entwickleragenten |
 | `devstral:24b` | ca. 14 GB | ab 32 GB | Agentisches Software-Engineering-Modell für Multi-File-Edits und Tool-Nutzung |
+
+## Mistral AI Integration
+
+Mistral AI ist fuer dieses Setup besonders interessant, weil mehrere Modelle lokal mit `Ollama` und agentisch mit `OpenClaw` sinnvoll laufen koennen.
+
+Wichtig zur Einordnung:
+
+- viele Mistral-Modelle sind `Open Weight`, aber nicht jedes Modell ist gleich lizenziert
+- mehrere Gewichte sind laut Mistral unter `Apache 2.0` verfuegbar
+- `codestral` ist fuer Coding sehr attraktiv, sollte aber immer mit Blick auf die konkrete Modelllizenz genutzt werden
+- fuer lokale oder hybride Self-Hosting-Setups sind Mistral-Modelle oft eine gute Balance aus Qualitaet und Ressourcenbedarf
+
+## Empfohlene Mistral-Modelle
+
+| Modell | Downloadgröße | Empf. RAM | Zweck | Empfehlung |
+|---|---:|---:|---|---|
+| `mistral:7b` | ca. 4.4 GB | ab 12 GB | Leichtgewichtiges Allround-Modell | gut fuer VPS, kleine Systeme und allgemeine OpenClaw-Basis |
+| `mistral-nemo:12b` | ca. 7.1 GB | ab 16 GB | Allgemeines Modell mit langem Kontext | gut fuer RAG, Routing und groessere Dokumente |
+| `mixtral:8x7b` | ca. 26 GB | ab 48 GB | Starke General AI | gut als Hauptagent auf staerkeren Maschinen |
+| `mixtral:8x22b` | ca. 80 GB | ab 96-128 GB | High-End MoE-Modell | nur fuer grosse Server oder Lab-Systeme |
+| `codestral:22b` | ca. 13 GB | ab 28-32 GB | Coding-Modell | gut fuer Codex-nahe Entwicklerpfade |
+| `devstral:24b` | ca. 14 GB | ab 32 GB | Agentisches Software Engineering | sehr gut fuer Tool-Nutzung und Multi-File-Edits |
 
 ## EU-LLMs / Europa-nahe Modelle
 
@@ -73,9 +97,22 @@ Hier sind vor allem Modelle aus dem Mistral-Umfeld relevant, weil Mistral AI ein
 |---|---:|---:|---|
 | `mistral:7b` | ca. 4.1 GB | ab 12 GB | Kompakter europäischer Allrounder |
 | `mistral-nemo:12b` | ca. 7.1 GB | ab 16 GB | EU-LLM mit guter Balance aus Qualität und Hardwarebedarf |
+| `mixtral:8x7b` | ca. 26 GB | ab 48 GB | Stärkerer europäischer Hauptagent mit MoE-Architektur |
+| `mixtral:8x22b` | ca. 80 GB | ab 96-128 GB | High-End-EU-Modell für große Kontexte und starke Hauptagenten |
 | `mistral-small:24b` | ca. 14 GB | ab 32 GB | Stärkeres allgemeines EU-Modell für anspruchsvollere Produktivaufgaben |
 | `codestral:22b` | ca. 13 GB | ab 28-32 GB | EU-Coding-Modell für Programmierung, Refactoring und Build-Hilfe |
 | `devstral:24b` | ca. 14 GB | ab 32 GB | EU-naher agentischer Software-Engineering-Stack |
+
+### Typische Mistral-Startbefehle
+
+```bash
+ollama pull mistral
+ollama pull mistral-nemo
+ollama pull mixtral
+ollama pull mixtral:8x22b
+ollama pull codestral
+ollama pull devstral
+```
 
 ## LLM-Builder Startempfehlungen
 
@@ -85,11 +122,14 @@ Für das neue Profil `LLM-Builder` sind als realistische Startpunkte besonders s
 ollama pull llama3.2:3b
 ollama pull qwen2.5:7b
 ollama pull mistral:7b
+ollama pull mistral-nemo
 ```
 
 Für stärkere oder spezialisierte Coding-/Agentenpfade:
 
 ```bash
+ollama pull mixtral
+ollama pull codestral
 ollama pull qwen2.5-coder:7b
 ollama pull qwen3-coder:30b
 ollama pull devstral:24b
@@ -114,11 +154,13 @@ ollama pull devstral:24b
 
 ### Größere Systeme
 
+- `mixtral:8x7b`
 - `phi4:14b`
 - `mistral-small:24b`
 - `devstral:24b`
 - `qwen3-coder:30b`
 - `qwen3:30b`
+- `mixtral:8x22b`
 
 ## Nutzung in OpenClaw
 

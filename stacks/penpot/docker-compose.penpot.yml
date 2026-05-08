@@ -1,0 +1,108 @@
+services:
+  penpot-frontend:
+    image: "penpotapp/frontend:${PENPOT_VERSION:-latest}"
+    container_name: penpot-frontend
+    restart: unless-stopped
+    depends_on:
+      - penpot-backend
+      - penpot-exporter
+    ports:
+      - "${PENPOT_BIND_HOST:-127.0.0.1}:${PENPOT_HOST_PORT:-9011}:8080"
+    volumes:
+      - penpot_assets:/opt/data/assets
+    environment:
+      PENPOT_FLAGS: "${PENPOT_FLAGS:-enable-smtp disable-email-verification}"
+      PENPOT_PUBLIC_URI: "${PENPOT_PUBLIC_URI:-http://127.0.0.1:9011}"
+      PENPOT_HTTP_SERVER_MAX_BODY_SIZE: "${PENPOT_HTTP_SERVER_MAX_BODY_SIZE:-367001600}"
+      PENPOT_HTTP_SERVER_MAX_MULTIPART_BODY_SIZE: "${PENPOT_HTTP_SERVER_MAX_MULTIPART_BODY_SIZE:-367001600}"
+
+  penpot-backend:
+    image: "penpotapp/backend:${PENPOT_VERSION:-latest}"
+    container_name: penpot-backend
+    restart: unless-stopped
+    depends_on:
+      penpot-postgres:
+        condition: service_healthy
+      penpot-valkey:
+        condition: service_healthy
+    volumes:
+      - penpot_assets:/opt/data/assets
+    environment:
+      PENPOT_FLAGS: "${PENPOT_FLAGS:-enable-smtp disable-email-verification}"
+      PENPOT_PUBLIC_URI: "${PENPOT_PUBLIC_URI:-http://127.0.0.1:9011}"
+      PENPOT_HTTP_SERVER_MAX_BODY_SIZE: "${PENPOT_HTTP_SERVER_MAX_BODY_SIZE:-367001600}"
+      PENPOT_HTTP_SERVER_MAX_MULTIPART_BODY_SIZE: "${PENPOT_HTTP_SERVER_MAX_MULTIPART_BODY_SIZE:-367001600}"
+      PENPOT_SECRET_KEY: "${PENPOT_SECRET_KEY}"
+      PENPOT_DATABASE_URI: "postgresql://penpot-postgres/penpot"
+      PENPOT_DATABASE_USERNAME: "${PENPOT_DATABASE_USERNAME:-penpot}"
+      PENPOT_DATABASE_PASSWORD: "${PENPOT_DATABASE_PASSWORD:-penpot}"
+      PENPOT_REDIS_URI: "redis://penpot-valkey/0"
+      PENPOT_OBJECTS_STORAGE_BACKEND: "${PENPOT_OBJECTS_STORAGE_BACKEND:-fs}"
+      PENPOT_OBJECTS_STORAGE_FS_DIRECTORY: "/opt/data/assets"
+      PENPOT_TELEMETRY_ENABLED: "${PENPOT_TELEMETRY_ENABLED:-false}"
+      PENPOT_TELEMETRY_REFERER: "${PENPOT_TELEMETRY_REFERER:-openclaw-ultimate-setup}"
+      PENPOT_SMTP_DEFAULT_FROM: "${PENPOT_SMTP_DEFAULT_FROM:-no-reply@example.local}"
+      PENPOT_SMTP_DEFAULT_REPLY_TO: "${PENPOT_SMTP_DEFAULT_REPLY_TO:-no-reply@example.local}"
+      PENPOT_SMTP_HOST: "${PENPOT_SMTP_HOST:-penpot-mailcatch}"
+      PENPOT_SMTP_PORT: "${PENPOT_SMTP_PORT:-1025}"
+      PENPOT_SMTP_USERNAME: "${PENPOT_SMTP_USERNAME:-}"
+      PENPOT_SMTP_PASSWORD: "${PENPOT_SMTP_PASSWORD:-}"
+      PENPOT_SMTP_TLS: "${PENPOT_SMTP_TLS:-false}"
+      PENPOT_SMTP_SSL: "${PENPOT_SMTP_SSL:-false}"
+
+  penpot-exporter:
+    image: "penpotapp/exporter:${PENPOT_VERSION:-latest}"
+    container_name: penpot-exporter
+    restart: unless-stopped
+    depends_on:
+      penpot-valkey:
+        condition: service_healthy
+    environment:
+      PENPOT_SECRET_KEY: "${PENPOT_SECRET_KEY}"
+      PENPOT_PUBLIC_URI: "http://penpot-frontend:8080"
+      PENPOT_REDIS_URI: "redis://penpot-valkey/0"
+
+  penpot-postgres:
+    image: "postgres:15"
+    container_name: penpot-postgres
+    restart: unless-stopped
+    stop_signal: SIGINT
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${PENPOT_DATABASE_USERNAME:-penpot}"]
+      interval: 2s
+      timeout: 10s
+      retries: 5
+      start_period: 2s
+    volumes:
+      - penpot_postgres_v15:/var/lib/postgresql/data
+    environment:
+      POSTGRES_INITDB_ARGS: "--data-checksums"
+      POSTGRES_DB: "${PENPOT_DATABASE_NAME:-penpot}"
+      POSTGRES_USER: "${PENPOT_DATABASE_USERNAME:-penpot}"
+      POSTGRES_PASSWORD: "${PENPOT_DATABASE_PASSWORD:-penpot}"
+
+  penpot-valkey:
+    image: "valkey/valkey:8.1"
+    container_name: penpot-valkey
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "valkey-cli ping | grep PONG"]
+      interval: 1s
+      timeout: 3s
+      retries: 5
+      start_period: 3s
+    environment:
+      VALKEY_EXTRA_FLAGS: "${PENPOT_VALKEY_EXTRA_FLAGS:---maxmemory 128mb --maxmemory-policy volatile-lfu}"
+
+  penpot-mailcatch:
+    image: "sj26/mailcatcher:latest"
+    container_name: penpot-mailcatch
+    restart: unless-stopped
+    expose:
+      - "1025"
+    ports:
+      - "${PENPOT_BIND_HOST:-127.0.0.1}:${PENPOT_MAILCATCH_PORT:-1081}:1080"
+
+volumes:
+  penpot_postgres_v15:
+  penpot_assets:

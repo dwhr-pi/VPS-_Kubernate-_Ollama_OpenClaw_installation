@@ -88,6 +88,8 @@ Ollama
 ### Empfohlene Ollama-Modelle
 
 ```bash
+ollama pull mixtral
+ollama pull codestral
 ollama pull qwen3-coder:30b
 ollama pull devstral:24b
 ollama pull qwen2.5-coder:7b
@@ -117,6 +119,8 @@ Empfehlung:
 
 - `qwen3-coder:30b` als Hauptmodell für lokale agentische Coding-Aufgaben
 - `devstral:24b` als starke Alternative oder Fallback
+- `codestral:22b` als fokussiertes Mistral-Coding-Modell
+- `mixtral:8x7b` als allgemeiner Planungs-, Review- oder Hauptagent
 - `qwen2.5-coder:7b` als leichtere Ergänzung für kleinere Maschinen oder VPS
 
 ### Beispiel-Nutzung

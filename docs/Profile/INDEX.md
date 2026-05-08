@@ -19,6 +19,7 @@ Dieses Verzeichnis enthält die aktuell gepflegten, aus dem Repository abgeleite
 | `Trading_AI` | Trading- und Analyseideen | `Trading_AI.md` |
 | `Visual_Creator` | Bild- und Visual-Workflows | `Visual_Creator.md` |
 | `LLM-Builder` | Fine-Tuning, GGUF, Ollama-Import | `LLM-Builder.md` |
+| `UI-UX-Designer-Penpot-AI` | self-hosted UI/UX-Design, Prototyping, Design-Systeme | `UI-UX-Designer-Penpot-AI.md` |
 
 ## Plattform- und Betriebsprofile
 

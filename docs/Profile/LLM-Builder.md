@@ -120,10 +120,22 @@ ollama pull mistral:7b
 Für Code- oder agentennahe Spezialfälle im weiteren Ausbau:
 
 ```bash
+ollama pull mixtral
+ollama pull codestral
 ollama pull qwen2.5-coder:7b
 ollama pull qwen3-coder:30b
 ollama pull devstral:24b
 ```
+
+### Mistral-Orientierung fuer dieses Profil
+
+Fuer den lokalen Modellbau und spaetere Ollama-Nutzung sind aus der Mistral-Familie besonders interessant:
+
+- `mistral:7b` als kompakter offener Startpunkt
+- `mistral-nemo:12b` fuer mehr Kontext und staerkere allgemeine Nutzung
+- `codestral:22b` fuer coding-lastige Fine-Tuning- oder Evaluationspfade
+- `devstral:24b` fuer agentisches Software Engineering
+- `mixtral:8x7b` eher fuer staerkere Maschinen und spaetere Hauptagenten
 
 ## Beispielprompts
 

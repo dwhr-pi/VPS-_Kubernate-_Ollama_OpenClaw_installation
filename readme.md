@@ -40,6 +40,10 @@ Dieser Befehl lädt das `install.sh` Skript herunter und führt es aus. Das Skri
 
 **Für eigene Forks und Custom-Builds:** Die neue Anleitung für benutzerdefinierte GitHub-Quellen, eigene Repositories, GGUF-Exporte und `ollama create` findest du in [docs/CUSTOM_SOURCES_AND_BUILDS.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/CUSTOM_SOURCES_AND_BUILDS.md:1).
 
+**Für Mistral-Modelle in Ollama und OpenClaw:** Die neue Einordnung zu Mistral AI, Open Weight vs. Open Source, empfohlenen Modellen und typischen `ollama pull`-Pfade findest du in [docs/MISTRAL_AI_INTEGRATION.md](/C:/Users/danie/Documents/GitHub/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/MISTRAL_AI_INTEGRATION.md:1).
+
+**Für visuelles UI/UX-Design mit Self-Hosting:** Penpot ist jetzt als optionale Design-Plattform vorgesehen. Profil und MCP-Einordnung findest du in [docs/Profile/UI-UX-Designer-Penpot-AI.md](/C:/Users/danie/Documents/GitHub/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/Profile/UI-UX-Designer-Penpot-AI.md:1) und [docs/Profil/Penpot-MCP-Integration.md](/C:/Users/danie/Documents/GitHub/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/Profil/Penpot-MCP-Integration.md:1).
+
 **Wichtig für sensible Daten:** Bearbeitbare und sensible Dateien werden ab den neueren Setup-Versionen zusätzlich außerhalb des Repositories in `~/.openclaw_ultimate_user_data` abgelegt. Dadurch bleiben API-Keys, bearbeitete Vorlagen und Statusdateien beim Repo-Update sauber getrennt und werden nicht versehentlich ins Git-Repository geschrieben.
 
 Dazu gehören jetzt insbesondere:
@@ -191,6 +195,29 @@ Für Audio, Bild, Video und Content-Pipelines:
 - `Video_Generation`
 - `Voice_Assistant`
 
+### Quickstart UI/UX Design
+
+Fuer visuelle KI-Dashboards, Prototyping und Design-Systeme:
+
+- `Penpot` als optionale self-hosted Design-Plattform
+- `Ollama` fuer lokale Modelle
+- `OpenClaw` oder `Codex` fuer Design-to-Code- und MCP-Workflows
+- `Tailscale` oder Reverse Proxy fuer spaetere private Freigabe
+
+## Mistral AI Integration
+
+Mistral AI ist fuer dieses Setup besonders interessant, weil mehrere Modelle gut mit lokalem `Ollama`, `OpenClaw`, Coding-Agenten und Multi-Agent-Architekturen harmonieren.
+
+Kurzorientierung:
+
+- `mistral:7b` fuer kleine lokale Systeme und allgemeine Agenten-Starts
+- `mistral-nemo:12b` fuer laengeren Kontext und staerkere allgemeine Aufgaben
+- `mixtral:8x7b` als leistungsstaerkerer Hauptagent
+- `codestral:22b` und `devstral:24b` fuer Entwickler- und Coding-Workflows
+- `mixtral:8x22b` fuer grosse Server oder High-End-Lab-Setups
+
+Die ausfuehrliche Mistral-Dokumentation mit Lizenzhinweisen, Modellvergleich und Ollama-Beispielen steht in [docs/MISTRAL_AI_INTEGRATION.md](/C:/Users/danie/Documents/GitHub/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/MISTRAL_AI_INTEGRATION.md:1).
+
 ### Quickstart Secure Production-like
 
 Für produktionsnähere Self-Hosted-Setups:
@@ -297,6 +324,8 @@ Zusätzliche Hilfen:
 *   `docs/WSL_SETUP_GUIDE.md` erklärt WSL unter Windows, Ubuntu-24.04 bzw. andere Linux-Distributionen, sowie Deinstallation und komplettes Zurücksetzen.
 *   `docs/INSTALLATION_BENCHMARKS.md` beschreibt die editierbaren Installations-Schätzwerte und verweist auf `~/.openclaw_ultimate_user_data/setup_metrics.conf`.
 *   [docs/OLLAMA_MODEL_CATALOG.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/OLLAMA_MODEL_CATALOG.md:1) listet empfohlene lokale Modelle, Coding-Modelle und EU-nahe Modelle mit Groessen- und RAM-Hinweisen.
+*   [docs/MISTRAL_AI_INTEGRATION.md](/C:/Users/danie/Documents/GitHub/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/MISTRAL_AI_INTEGRATION.md:1) erklaert Mistral AI, Open-Weight-Modelle, empfohlene Ollama-Modelle und den Fit fuer lokale Agentensysteme.
+*   [docs/Profile/UI-UX-Designer-Penpot-AI.md](/C:/Users/danie/Documents/GitHub/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/Profile/UI-UX-Designer-Penpot-AI.md:1) beschreibt Penpot als optionales Profil fuer UI/UX, Design-Systeme und Design-to-Code-nahe Workflows.
 *   [docs/REPO_SYNC_AND_RECOVERY.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/REPO_SYNC_AND_RECOVERY.md:1) beschreibt saubere Sync-, Backup- und Wiederherstellungswege zwischen Windows, Ubuntu/WSL und Codex-Worktrees.
 *   [docs/ROADMAP.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/ROADMAP.md:1) zeigt die naechsten Ausbauphasen der Plattform.
 *   [docs/SECURITY_HARDENING.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/SECURITY_HARDENING.md:1) fasst Härtung, Agentenrisiken, Tunnel-Absicherung und Secret-Hygiene kompakt zusammen.

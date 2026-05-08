@@ -10,6 +10,10 @@
     { "port": 3005, "service": "forgejo", "label": "Forgejo" },
     { "port": 3006, "service": "metabase", "label": "Metabase" },
     { "port": 4000, "service": "litellm", "label": "LiteLLM" },
+    { "port": 4400, "service": "penpot_mcp_plugin", "label": "Penpot MCP Plugin Server" },
+    { "port": 4401, "service": "penpot_mcp_server", "label": "Penpot MCP HTTP/SSE" },
+    { "port": 4402, "service": "penpot_mcp_websocket", "label": "Penpot MCP WebSocket" },
+    { "port": 4403, "service": "penpot_mcp_repl", "label": "Penpot MCP REPL" },
     { "port": 5432, "service": "postgres", "label": "PostgreSQL" },
     { "port": 5678, "service": "n8n", "label": "n8n" },
     { "port": 6333, "service": "qdrant", "label": "Qdrant" },
@@ -22,6 +26,7 @@
     { "port": 8081, "service": "stirling_pdf", "label": "Stirling PDF" },
     { "port": 8082, "service": "nextcloud", "label": "Nextcloud" },
     { "port": 8083, "service": "nocodb", "label": "NocoDB" },
+    { "port": 9011, "service": "penpot", "label": "Penpot Web UI" },
     { "port": 8090, "service": "appsmith", "label": "Appsmith" },
     { "port": 8099, "service": "zigbee2mqtt", "label": "Zigbee2MQTT" },
     { "port": 8123, "service": "home_assistant", "label": "Home Assistant" },
@@ -32,6 +37,7 @@
     { "port": 9998, "service": "apache_tika", "label": "Apache Tika" },
     { "port": 10000, "service": "budibase", "label": "Budibase" },
     { "port": 11434, "service": "ollama", "label": "Ollama" },
+    { "port": 1081, "service": "penpot_mailcatch", "label": "Penpot Mailcatch UI" },
     { "port": 19999, "service": "netdata", "label": "Netdata" }
   ]
 }

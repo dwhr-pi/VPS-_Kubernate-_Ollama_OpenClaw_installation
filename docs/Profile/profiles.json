@@ -19,6 +19,7 @@
     { "id": "Trading_AI", "category": "core", "doc": "docs/Profile/Trading_AI.md", "install": "scripts/profiles/Trading_AI_install.sh", "uninstall": "scripts/profiles/Trading_AI_uninstall.sh" },
     { "id": "Visual_Creator", "category": "core", "doc": "docs/Profile/Visual_Creator.md", "install": "scripts/profiles/Visual_Creator_install.sh", "uninstall": "scripts/profiles/Visual_Creator_uninstall.sh" },
     { "id": "LLM_Builder", "category": "core", "doc": "docs/Profile/LLM-Builder.md", "install": "scripts/profiles/LLM_Builder_install.sh", "uninstall": "scripts/profiles/LLM_Builder_uninstall.sh" },
+    { "id": "UI_UX_Designer_Penpot_AI", "category": "apps", "doc": "docs/Profile/UI-UX-Designer-Penpot-AI.md", "install": null, "uninstall": null },
     { "id": "RAG_Wissensdatenbank", "category": "llmops", "doc": "docs/Profile/RAG_Wissensdatenbank.md", "install": "scripts/profiles/RAG_Wissensdatenbank_install.sh", "uninstall": "scripts/profiles/RAG_Wissensdatenbank_uninstall.sh" },
     { "id": "Security_DevSecOps", "category": "security", "doc": "docs/Profile/Security_DevSecOps.md", "install": "scripts/profiles/Security_DevSecOps_install.sh", "uninstall": "scripts/profiles/Security_DevSecOps_uninstall.sh" },
     { "id": "Monitoring_Observability", "category": "llmops", "doc": "docs/Profile/Monitoring_Observability.md", "install": "scripts/profiles/Monitoring_Observability_install.sh", "uninstall": "scripts/profiles/Monitoring_Observability_uninstall.sh" },
