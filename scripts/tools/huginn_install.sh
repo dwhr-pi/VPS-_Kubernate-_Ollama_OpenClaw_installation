@@ -18,13 +18,15 @@ INSTALL_DIR="${INSTALL_DIR:-$(cd "$SCRIPT_DIR/../.." && pwd)}"
 source "$INSTALL_DIR/scripts/helpers/status_tracking.sh"
 init_tool_tracking "Huginn"
 
-HUGINN_DIR="/opt/huginn"
+HUGINN_DIR="${HUGINN_DIR:-/opt/huginn}"
 HUGINN_REPO_URL="${HUGINN_REPO_URL:-https://github.com/huginn/huginn.git}"
 HUGINN_REPO_REF="${HUGINN_REPO_REF:-v2022.08.18}"
 HUGINN_DISABLE_JAVASCRIPT_AGENT_ON_LIBV8_FAILURE="${HUGINN_DISABLE_JAVASCRIPT_AGENT_ON_LIBV8_FAILURE:-true}"
 HUGINN_FORCE_RUBY_PLATFORM="${HUGINN_FORCE_RUBY_PLATFORM:-false}"
 HUGINN_GRPC_VERSION="${HUGINN_GRPC_VERSION:-~> 1.54.3}"
 HUGINN_EXPECTED_BUNDLER_VERSION="${HUGINN_EXPECTED_BUNDLER_VERSION:-}"
+HUGINN_SKIP_SYSTEM_PACKAGES="${HUGINN_SKIP_SYSTEM_PACKAGES:-false}"
+HUGINN_GIT_CLONE_DEPTH="${HUGINN_GIT_CLONE_DEPTH:-1}"
 USER_WORKSPACE_DIR="${HOME}/.openclaw_ultimate_user_data"
 HUGINN_TEMPLATE_DIR="$USER_WORKSPACE_DIR/huginn"
 HUGINN_TEMPLATE_FILE="$HUGINN_TEMPLATE_DIR/.env.template"
@@ -85,17 +87,28 @@ ensure_matching_bundler() {
     BUNDLE_CMD="$bundler_command"
 }
 
+run_bundle() {
+    local escaped_args=()
+    local arg
+
+    for arg in "$@"; do
+        escaped_args+=("$(printf '%q' "$arg")")
+    done
+
+    bash -lc "$BUNDLE_CMD ${escaped_args[*]}"
+}
+
 configure_bundle_platform() {
-    "$BUNDLE_CMD" config set --local path vendor/bundle
-    "$BUNDLE_CMD" config set --local without "development test"
+    run_bundle config set --local path vendor/bundle
+    run_bundle config set --local without "development test"
 
     if [ "$HUGINN_FORCE_RUBY_PLATFORM" = "true" ]; then
         echo -e "${YELLOW}force_ruby_platform=true wurde explizit angefordert. Native Gems werden aus dem Quellcode gebaut.${NC}"
-        "$BUNDLE_CMD" config set --local force_ruby_platform true
+        run_bundle config set --local force_ruby_platform true
     else
-        "$BUNDLE_CMD" config unset --local force_ruby_platform >/dev/null 2>&1 || true
-        "$BUNDLE_CMD" lock --add-platform x86_64-linux >/dev/null 2>&1 || true
-        "$BUNDLE_CMD" lock --add-platform ruby >/dev/null 2>&1 || true
+        run_bundle config unset --local force_ruby_platform >/dev/null 2>&1 || true
+        run_bundle lock --add-platform x86_64-linux >/dev/null 2>&1 || true
+        run_bundle lock --add-platform ruby >/dev/null 2>&1 || true
         echo -e "${YELLOW}Bevorzuge vorkompilierte Linux-Gems, damit Legacy-Abhaengigkeiten wie grpc nicht unnoetig lokal kompiliert werden.${NC}"
     fi
 }
@@ -160,7 +173,7 @@ try_grpc_stack_refresh() {
         return 1
     fi
 
-    "$BUNDLE_CMD" update grpc google-protobuf googleapis-common-protos googleapis-common-protos-types 2>&1
+    run_bundle update grpc google-protobuf googleapis-common-protos googleapis-common-protos-types 2>&1
 }
 
 disable_google_translate_agent() {
@@ -190,7 +203,7 @@ PY
 refresh_google_translate_lockfile() {
     cp Gemfile.lock Gemfile.lock.bak.before_no_google_translate 2>/dev/null || true
 
-    "$BUNDLE_CMD" update google-cloud-translate google-gax googleapis-common-protos googleapis-common-protos-types grpc google-protobuf 2>&1 || true
+    run_bundle update google-cloud-translate google-gax googleapis-common-protos googleapis-common-protos-types grpc google-protobuf 2>&1 || true
 
     if [ -f Gemfile.lock ] && grep -Eq 'grpc \(1\.42\.0\)|google-cloud-translate \(2\.3\.0\)|google-gax \(1\.8\.2\)|googleapis-common-protos \(1\.3\.12\)' Gemfile.lock; then
         echo -e "${YELLOW}Das alte Huginn-Lockfile haelt den Legacy-gRPC-Stack weiter fest. Entferne Gemfile.lock fuer eine frische Aufloesung ohne GoogleTranslateAgent...${NC}"
@@ -235,7 +248,7 @@ ensure_production_env_defaults() {
 database_config_complete() {
     local adapter
 
-    adapter="$(awk -F= '/^DATABASE_ADAPTER=/{print $2}' .env | tail -n 1 | tr -d '\r" ')"
+    adapter="$(awk -F= '/^DATABASE_ADAPTER=/{print $2}' .env | tail -n 1 | tr -d '\r\" ')"
     case "$adapter" in
         mysql2|postgresql)
             grep -Eq '^DATABASE_NAME=.+$' .env &&
@@ -252,6 +265,8 @@ database_config_complete() {
 }
 
 checkout_huginn_ref() {
+    local clone_args=()
+
     if [ -d "$HUGINN_DIR/.git" ]; then
         echo -e "${YELLOW}Huginn Verzeichnis $HUGINN_DIR existiert bereits. Aktualisiere Repository und wechsle auf ${HUGINN_REPO_REF}...${NC}"
         cd "$HUGINN_DIR"
@@ -262,9 +277,17 @@ checkout_huginn_ref() {
         fi
     else
         echo -e "${BLUE}Klone Huginn (${HUGINN_REPO_REF}) in $HUGINN_DIR...${NC}"
-        sudo mkdir -p "$HUGINN_DIR"
-        sudo chown -R "$USER:$USER" "$HUGINN_DIR"
-        git clone --branch "$HUGINN_REPO_REF" "$HUGINN_REPO_URL" "$HUGINN_DIR"
+        if [ -n "$HUGINN_GIT_CLONE_DEPTH" ] && [ "$HUGINN_GIT_CLONE_DEPTH" != "0" ]; then
+            clone_args+=(--depth "$HUGINN_GIT_CLONE_DEPTH")
+            echo -e "${YELLOW}Verwende flachen Huginn-Clone mit --depth ${HUGINN_GIT_CLONE_DEPTH}, um Checkout-Zeit und Netzwerkdruck zu senken.${NC}"
+        fi
+        if mkdir -p "$HUGINN_DIR" 2>/dev/null; then
+            chown -R "$USER:$USER" "$HUGINN_DIR" 2>/dev/null || true
+        else
+            sudo mkdir -p "$HUGINN_DIR"
+            sudo chown -R "$USER:$USER" "$HUGINN_DIR"
+        fi
+        GIT_TERMINAL_PROMPT=0 git clone "${clone_args[@]}" --branch "$HUGINN_REPO_REF" "$HUGINN_REPO_URL" "$HUGINN_DIR"
         cd "$HUGINN_DIR"
     fi
 }
@@ -291,10 +314,15 @@ PY
 echo -e "${BLUE}Starte Installation von Huginn...${NC}"
 echo -e "${YELLOW}Standard-Referenz: ${HUGINN_REPO_REF}.${NC}"
 echo -e "${YELLOW}Wenn du bewusst einen anderen Upstream-Stand testen willst, kannst du HUGINN_REPO_REF überschreiben.${NC}"
+echo -e "${YELLOW}Installationsziel: ${HUGINN_DIR}${NC}"
 
 echo -e "${GREEN}1/5: Installiere System-Abhängigkeiten für Huginn...${NC}"
-sudo apt-get update
-sudo apt-get install -y ruby-full ruby-bundler build-essential libmysqlclient-dev libpq-dev pkg-config git curl libyaml-dev zlib1g-dev libffi-dev shared-mime-info
+if [ "${HUGINN_SKIP_SYSTEM_PACKAGES}" = "true" ]; then
+    echo -e "${YELLOW}HUGINN_SKIP_SYSTEM_PACKAGES=true: Überspringe apt-get für isolierten Testlauf.${NC}"
+else
+    sudo apt-get update
+    sudo apt-get install -y ruby-full ruby-bundler build-essential libmysqlclient-dev libpq-dev pkg-config git curl libyaml-dev zlib1g-dev libffi-dev shared-mime-info
+fi
 
 echo -e "${GREEN}2/5: Hole Huginn aus GitHub...${NC}"
 checkout_huginn_ref
