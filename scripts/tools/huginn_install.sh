@@ -18,9 +18,16 @@ INSTALL_DIR="${INSTALL_DIR:-$(cd "$SCRIPT_DIR/../.." && pwd)}"
 source "$INSTALL_DIR/scripts/helpers/status_tracking.sh"
 init_tool_tracking "Huginn"
 
+USER_WORKSPACE_DIR="${USER_WORKSPACE_DIR:-${HOME}/.openclaw_ultimate_user_data}"
+CUSTOM_SOURCES_FILE="${CUSTOM_SOURCES_FILE:-$USER_WORKSPACE_DIR/custom_sources.conf}"
+HUGINN_SOURCE_STATE_FILE="${HUGINN_SOURCE_STATE_FILE:-$USER_WORKSPACE_DIR/huginn_source_state.conf}"
 HUGINN_DIR="${HUGINN_DIR:-/opt/huginn}"
-HUGINN_REPO_URL="${HUGINN_REPO_URL:-https://github.com/huginn/huginn.git}"
-HUGINN_REPO_REF="${HUGINN_REPO_REF:-v2022.08.18}"
+DEFAULT_HUGINN_REPO_URL="https://github.com/huginn/huginn.git"
+DEFAULT_HUGINN_REPO_REF="v2022.08.18"
+DEFAULT_HUGINN_SOURCE_PROFILE="stable-release"
+HUGINN_REPO_URL="${HUGINN_REPO_URL:-$DEFAULT_HUGINN_REPO_URL}"
+HUGINN_REPO_REF="${HUGINN_REPO_REF:-$DEFAULT_HUGINN_REPO_REF}"
+HUGINN_SOURCE_PROFILE="${HUGINN_SOURCE_PROFILE:-$DEFAULT_HUGINN_SOURCE_PROFILE}"
 HUGINN_DISABLE_JAVASCRIPT_AGENT_ON_LIBV8_FAILURE="${HUGINN_DISABLE_JAVASCRIPT_AGENT_ON_LIBV8_FAILURE:-true}"
 HUGINN_FORCE_RUBY_PLATFORM="${HUGINN_FORCE_RUBY_PLATFORM:-false}"
 HUGINN_GRPC_VERSION="${HUGINN_GRPC_VERSION:-~> 1.54.3}"
@@ -30,6 +37,67 @@ HUGINN_SKIP_SYSTEM_PACKAGES="${HUGINN_SKIP_SYSTEM_PACKAGES:-false}"
 HUGINN_DISABLE_GOOGLE_TRANSLATE_AGENT_ON_GRPC_FAILURE="${HUGINN_DISABLE_GOOGLE_TRANSLATE_AGENT_ON_GRPC_FAILURE:-true}"
 HUGINN_AUTO_REFRESH_NOKOGIRI_STACK="${HUGINN_AUTO_REFRESH_NOKOGIRI_STACK:-true}"
 HUGINN_GOOGLE_TRANSLATE_AGENT_DISABLED=0
+
+load_huginn_source_config() {
+    if [ -f "$CUSTOM_SOURCES_FILE" ]; then
+        # shellcheck disable=SC1090
+        source "$CUSTOM_SOURCES_FILE"
+    fi
+
+    if [ -z "${HUGINN_REPO_URL:-}" ] || [ "$HUGINN_REPO_URL" = "$DEFAULT_HUGINN_REPO_URL" ]; then
+        HUGINN_REPO_URL="${CUSTOM_REPO_HUGINN_URL:-$DEFAULT_HUGINN_REPO_URL}"
+        [ -n "$HUGINN_REPO_URL" ] || HUGINN_REPO_URL="$DEFAULT_HUGINN_REPO_URL"
+    fi
+    if [ -z "${HUGINN_REPO_REF:-}" ] || [ "$HUGINN_REPO_REF" = "$DEFAULT_HUGINN_REPO_REF" ]; then
+        HUGINN_REPO_REF="${CUSTOM_REPO_HUGINN_REF:-$DEFAULT_HUGINN_REPO_REF}"
+        [ -n "$HUGINN_REPO_REF" ] || HUGINN_REPO_REF="$DEFAULT_HUGINN_REPO_REF"
+    fi
+    if [ -z "${HUGINN_SOURCE_PROFILE:-}" ] || [ "$HUGINN_SOURCE_PROFILE" = "$DEFAULT_HUGINN_SOURCE_PROFILE" ]; then
+        HUGINN_SOURCE_PROFILE="${CUSTOM_REPO_HUGINN_PROFILE:-$DEFAULT_HUGINN_SOURCE_PROFILE}"
+        [ -n "$HUGINN_SOURCE_PROFILE" ] || HUGINN_SOURCE_PROFILE="$DEFAULT_HUGINN_SOURCE_PROFILE"
+    fi
+}
+
+huginn_source_profile_label() {
+    case "$1" in
+        stable-release) echo "Stable Release (empfohlen)" ;;
+        master-ai) echo "Master Branch" ;;
+        main-ai) echo "Main Branch" ;;
+        pinned-commit) echo "Pinned Commit" ;;
+        custom-fork) echo "Eigener Fork / Branch" ;;
+        *) echo "$1" ;;
+    esac
+}
+
+warn_if_huginn_branch_setup_changed() {
+    local previous_repo_url previous_repo_ref previous_profile
+
+    if [ ! -f "$HUGINN_SOURCE_STATE_FILE" ]; then
+        return 0
+    fi
+
+    # shellcheck disable=SC1090
+    source "$HUGINN_SOURCE_STATE_FILE"
+    previous_repo_url="${LAST_HUGINN_REPO_URL:-}"
+    previous_repo_ref="${LAST_HUGINN_REPO_REF:-}"
+    previous_profile="${LAST_HUGINN_SOURCE_PROFILE:-}"
+
+    if [ "$previous_repo_url" != "$HUGINN_REPO_URL" ] || [ "$previous_repo_ref" != "$HUGINN_REPO_REF" ] || [ "$previous_profile" != "$HUGINN_SOURCE_PROFILE" ]; then
+        echo -e "${YELLOW}Huginn-Quelle oder Huginn-Branch hat sich seit dem letzten Setup-Lauf geaendert.${NC}"
+        echo -e "${YELLOW}Das Setup behandelt jeden Huginn-Branch/Ref als eigenen Installationsstand und fuehrt Bundle-, Datenbank- und Fallback-Schritte deshalb erneut fuer den neuen Stand aus.${NC}"
+        echo -e "${YELLOW}Vorher: ${previous_repo_url:-unbekannt} @ ${previous_repo_ref:-unbekannt} (${previous_profile:-unbekannt})${NC}"
+        echo -e "${YELLOW}Jetzt:   ${HUGINN_REPO_URL} @ ${HUGINN_REPO_REF} (${HUGINN_SOURCE_PROFILE})${NC}"
+    fi
+}
+
+persist_huginn_source_state() {
+    mkdir -p "$USER_WORKSPACE_DIR"
+    cat > "$HUGINN_SOURCE_STATE_FILE" <<EOF
+LAST_HUGINN_REPO_URL="$HUGINN_REPO_URL"
+LAST_HUGINN_REPO_REF="$HUGINN_REPO_REF"
+LAST_HUGINN_SOURCE_PROFILE="$HUGINN_SOURCE_PROFILE"
+EOF
+}
 
 print_runtime_summary() {
     local ruby_version bundler_version
@@ -329,6 +397,7 @@ checkout_huginn_ref() {
         echo -e "${YELLOW}Huginn Verzeichnis $HUGINN_DIR existiert bereits. Aktualisiere Repository und wechsle auf ${HUGINN_REPO_REF}...${NC}"
         cd "$HUGINN_DIR"
         git fetch --tags origin
+        git fetch origin "+refs/heads/*:refs/remotes/origin/*" >/dev/null 2>&1 || true
         git checkout "$HUGINN_REPO_REF"
         if git show-ref --verify --quiet "refs/heads/$HUGINN_REPO_REF"; then
             git pull --ff-only origin "$HUGINN_REPO_REF"
@@ -341,8 +410,11 @@ checkout_huginn_ref() {
             sudo mkdir -p "$HUGINN_DIR"
             sudo chown -R "$USER:$USER" "$HUGINN_DIR"
         fi
-        git clone --branch "$HUGINN_REPO_REF" "$HUGINN_REPO_URL" "$HUGINN_DIR"
+        git clone "$HUGINN_REPO_URL" "$HUGINN_DIR"
         cd "$HUGINN_DIR"
+        git fetch --tags origin
+        git fetch origin "+refs/heads/*:refs/remotes/origin/*" >/dev/null 2>&1 || true
+        git checkout "$HUGINN_REPO_REF"
     fi
 }
 
@@ -366,8 +438,12 @@ PY
 }
 
 echo -e "${BLUE}Starte Installation von Huginn...${NC}"
-echo -e "${YELLOW}Standard-Referenz: ${HUGINN_REPO_REF}.${NC}"
+load_huginn_source_config
+warn_if_huginn_branch_setup_changed
+echo -e "${YELLOW}Aktiver Huginn-Ref: ${HUGINN_REPO_REF}.${NC}"
 echo -e "${YELLOW}Wenn du bewusst einen anderen Upstream-Stand testen willst, kannst du HUGINN_REPO_REF überschreiben.${NC}"
+echo -e "${YELLOW}Huginn Branch-Profil: $(huginn_source_profile_label "$HUGINN_SOURCE_PROFILE").${NC}"
+echo -e "${YELLOW}Huginn Quelle: ${HUGINN_REPO_URL}${NC}"
 echo -e "${YELLOW}Installationsverzeichnis: ${HUGINN_DIR}${NC}"
 
 echo -e "${GREEN}1/5: Installiere System-Abhängigkeiten für Huginn...${NC}"
@@ -536,6 +612,7 @@ if ! database_config_complete; then
     echo "RAILS_ENV=production $BUNDLE_CMD exec rake db:migrate"
     echo "RAILS_ENV=production $BUNDLE_CMD exec rake db:seed"
     echo "RAILS_ENV=production $BUNDLE_CMD exec rails server -p 3000"
+    persist_huginn_source_state
     mark_current_tool_installed
     echo -e "${GREEN}Huginn wurde als vorbereitet markiert.${NC}"
     exit 0
@@ -555,5 +632,6 @@ echo -e "${YELLOW}Hinweis: Das Seeding von Huginn wurde nicht blind automatisier
 echo -e "${YELLOW}Wenn du Beispiel-Daten oder einen Startbenutzer anlegen willst, führe danach bewusst 'RAILS_ENV=production $BUNDLE_CMD exec rake db:seed' aus.${NC}"
 echo -e "${YELLOW}Start-Hinweis: RAILS_ENV=production $BUNDLE_CMD exec rails server -p 3000${NC}"
 
+persist_huginn_source_state
 mark_current_tool_installed
 echo -e "${GREEN}Huginn Installation abgeschlossen.${NC}"

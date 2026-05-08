@@ -223,6 +223,14 @@ bundle update nokogiri mini_portile2 racc
 bundle install
 ```
 
+### Welche Huginn-Upstream-Version soll ich mit `HUGINN_REPO_REF` verwenden?
+
+- fuer eine laenger stabile Standardinstallation bleibt `HUGINN_REPO_REF=v2022.08.18` die empfohlene Voreinstellung
+- fuer modernere AI-/LLM-, Docker- oder Kubernetes-Szenarien kann bewusst ein neuerer Branch wie `master` getestet werden
+- im Setup wird diese Auswahl jetzt branch-orientiert ueber `custom_sources.conf` gespeichert, damit Branch, Tag, Commit oder Fork spaeter wieder geaendert werden koennen
+- eine ausfuehrliche Einordnung der Varianten `Release-Tag`, `master/main`, `Commit SHA` und `eigener Fork` steht hier:
+  - [HUGINN_REPO_REF_GUIDE.md](/C:/Users/danie/Documents/GitHub/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/HUGINN_REPO_REF_GUIDE.md)
+
 ### Versionsanzeige passt nicht
 
 - `grep 'APP_VERSION=' setup_ultimate.sh`

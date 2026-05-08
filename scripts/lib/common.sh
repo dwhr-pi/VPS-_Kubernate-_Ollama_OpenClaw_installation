@@ -61,6 +61,12 @@ CUSTOM_REPO_OPEN_WEBUI_URL=""
 CUSTOM_REPO_LITELLM_URL=""
 # Standard ComfyUI: https://github.com/comfyanonymous/ComfyUI.git
 CUSTOM_REPO_COMFYUI_URL=""
+# Standard Huginn: https://github.com/huginn/huginn.git
+# Empfohlenes Standardprofil: stable-release
+# Empfohlener Standard-Ref: v2022.08.18
+CUSTOM_REPO_HUGINN_URL=""
+CUSTOM_REPO_HUGINN_REF=""
+CUSTOM_REPO_HUGINN_PROFILE="stable-release"
 #
 # Finanz- und Analyse-Repos
 # Standard FinGPT: https://github.com/AI4Finance-Foundation/FinGPT.git
@@ -255,5 +261,35 @@ get_custom_repo_url() {
     printf '%s\n' "$value"
   else
     printf '%s\n' "$default_url"
+  fi
+}
+
+get_custom_repo_ref() {
+  local key="$1"
+  local default_ref="$2"
+  local var_name="CUSTOM_REPO_${key}_REF"
+  local value=""
+
+  load_custom_sources_config
+  value="${!var_name:-}"
+  if [ -n "$value" ]; then
+    printf '%s\n' "$value"
+  else
+    printf '%s\n' "$default_ref"
+  fi
+}
+
+get_custom_repo_profile() {
+  local key="$1"
+  local default_profile="$2"
+  local var_name="CUSTOM_REPO_${key}_PROFILE"
+  local value=""
+
+  load_custom_sources_config
+  value="${!var_name:-}"
+  if [ -n "$value" ]; then
+    printf '%s\n' "$value"
+  else
+    printf '%s\n' "$default_profile"
   fi
 }

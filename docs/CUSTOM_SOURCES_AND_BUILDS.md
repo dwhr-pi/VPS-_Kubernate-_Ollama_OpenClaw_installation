@@ -57,6 +57,33 @@ Dort kannst du:
 3. vorhandene Custom-Quellen anzeigen
 4. ein eigenes Repo klonen oder aktualisieren
 5. einen Custom-Ollama-Build vorbereiten oder direkt registrieren
+6. den Huginn-Branch oder Ref als eigenes Setup-Profil konfigurieren
+
+## Huginn als branch-orientiertes Setup
+
+Huginn wird im Setup jetzt nicht nur ueber eine einmalige Umgebungsvariable gesteuert, sondern als branch-orientierte Quelle mit gespeichertem Profil.
+
+Relevante Schluessel in `custom_sources.conf`:
+
+```bash
+CUSTOM_REPO_HUGINN_URL=""
+CUSTOM_REPO_HUGINN_REF=""
+CUSTOM_REPO_HUGINN_PROFILE="stable-release"
+```
+
+Empfohlene Huginn-Profile:
+
+- `stable-release`: empfohlener Standard fuer stabile Produktion, aktuell `v2022.08.18`
+- `master-ai`: fuer modernere AI-/LLM-Tests
+- `main-ai`: nur falls der Upstream `main` statt `master` nutzt
+- `pinned-commit`: fuer exakt reproduzierbare Snapshots
+- `custom-fork`: fuer eigene Huginn-Forks und Branches
+
+Wichtig:
+
+- wenn du den Huginn-Branch, Tag, Commit oder Fork aenderst, sollte der Huginn-Installer danach erneut laufen
+- das Setup behandelt jeden Huginn-Stand bewusst als eigenen Installationslauf
+- dadurch werden Bundle-, Datenbank- und Fallback-Schritte passend zum gewaehlten Stand erneut ausgefuehrt
 
 ## Unterstützte Override-Quellen
 

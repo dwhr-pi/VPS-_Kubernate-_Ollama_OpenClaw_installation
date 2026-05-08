@@ -127,6 +127,12 @@ CUSTOM_REPO_OPEN_WEBUI_URL=""
 CUSTOM_REPO_LITELLM_URL=""
 # Standard ComfyUI: https://github.com/comfyanonymous/ComfyUI.git
 CUSTOM_REPO_COMFYUI_URL=""
+# Standard Huginn: https://github.com/huginn/huginn.git
+# Empfohlenes Standardprofil: stable-release
+# Empfohlener Standard-Ref: v2022.08.18
+CUSTOM_REPO_HUGINN_URL=""
+CUSTOM_REPO_HUGINN_REF=""
+CUSTOM_REPO_HUGINN_PROFILE="stable-release"
 #
 # Finanz- und Analyse-Repos
 # Standard FinGPT: https://github.com/AI4Finance-Foundation/FinGPT.git
