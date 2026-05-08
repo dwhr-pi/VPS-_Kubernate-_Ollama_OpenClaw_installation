@@ -272,7 +272,7 @@
         "missing_in_system": [
           "Zotero wird nicht automatisch installiert",
           "scripts/openclaw_skill_config.sh fehlt",
-          "kein docs/Profile/Rechtsberatung_Steuerrecht.md im ursprünglichen Repo"
+          "kein docs/Profile/Rechtsberatung.md im ursprünglichen Repo"
         ],
         "missing_in_docs": []
       }

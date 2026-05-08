@@ -62,6 +62,7 @@ Empfohlene Reihenfolge:
    - `Data_Analytics_BI`
 3. Betriebs- und Sicherheitsprofile:
    - `Security_DevSecOps`
+   - `Ethical_HackerGPT`
    - `Monitoring_Observability`
    - `Backup_Recovery`
    - `DevOps_SRE_Agent`
@@ -92,6 +93,13 @@ Security-Basischeck:
 ```bash
 bash scripts/operations/security_scan.sh
 ```
+
+Für `Ethical_HackerGPT` zusätzlich:
+
+- Allowlist bewusst setzen
+- nur eigene oder lokale Ziele prüfen
+- `reports/security` als Report-Ziel kontrollieren
+- optionale Tools und Labs nur bewusst aktivieren
 
 ## 7. Vor riskanten Profilen unbedingt lesen
 

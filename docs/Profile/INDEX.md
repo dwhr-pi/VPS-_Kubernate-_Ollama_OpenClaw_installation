@@ -10,12 +10,13 @@ Dieses Verzeichnis enthält die aktuell gepflegten, aus dem Repository abgeleite
 | `Media_Musik` | Audio, Medien, Content | `Media_Musik.md` |
 | `KI_Forschung` | Experimente, Modelle, Evaluation | `KI_Forschung.md` |
 | `Texter_Werbung_Marketing` | Marketing, Copy, Kampagnen | `Texter_Werbung_Marketing.md` |
-| `Rechtsberatung_Steuerrecht` | rechtliche/steuerliche Wissensarbeit | `Rechtsberatung_Steuerrecht.md` |
+| `Rechtsberatung` | rechtliche Wissensarbeit mit Fachgebiets-Prompts | `Rechtsberatung.md` |
 | `Agent_Orchestrator` | Agentenkoordination, Flows, Queues | `Agent_Orchestrator.md` |
 | `Audio` | klassische Audio-Werkzeuge | `Audio.md` |
 | `Content_Automation` | Content-Pipelines und Publishing | `Content_Automation.md` |
 | `Research_Agent` | Recherche- und Sammelagent | `Research_Agent.md` |
 | `Security_Analyst` | Analyse und Security-Basis | `Security_Analyst.md` |
+| `Ethical_HackerGPT` | defensiver Security-Assistent fuer Audits und Hardening | `Ethical_HackerGPT.md` |
 | `Trading_AI` | Trading- und Analyseideen | `Trading_AI.md` |
 | `Visual_Creator` | Bild- und Visual-Workflows | `Visual_Creator.md` |
 | `LLM-Builder` | Fine-Tuning, GGUF, Ollama-Import | `LLM-Builder.md` |

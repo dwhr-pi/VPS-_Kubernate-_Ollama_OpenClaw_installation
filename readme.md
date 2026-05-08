@@ -565,7 +565,7 @@ Wichtige Grenze:
 │       ├── Media_Musik.md
 │       ├── KI_Forschung.md
 │       ├── Texter_Werbung_Marketing.md
-│       ├── Rechtsberatung_Steuerrecht.md
+│       ├── Rechtsberatung.md
 │       ├── LLM-Builder.md
 │       ├── llmops.md
 │       ├── rag_knowledge_base.md
