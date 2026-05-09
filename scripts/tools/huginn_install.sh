@@ -142,7 +142,7 @@ repair_huginn_google_stack() {
     echo -e "${YELLOW}Hinweis: Der alte google-protobuf/grpc-Stack ist auf diesem System nicht mehr stabil installierbar.${NC}"
     echo -e "${YELLOW}Versuche Fallback ohne GoogleTranslateAgent, damit Huginn sonst weiter installiert werden kann.${NC}"
     if disable_huginn_google_translate_agent; then
-        bundle update google-cloud-translate google-gax google-protobuf googleapis-common-protos googleapis-common-protos-types grpc 2>&1 | tee -a "$bundle_log_file" || true
+        bundle update nokogiri racc mini_portile2 google-cloud-translate google-gax google-protobuf googleapis-common-protos googleapis-common-protos-types grpc 2>&1 | tee -a "$bundle_log_file" || true
         echo -e "${YELLOW}Huginn wurde für diesen Lauf ohne GoogleTranslateAgent vorbereitet.${NC}"
         echo -e "${YELLOW}Die Datei $HUGINN_DIR/Gemfile.bak.before_no_google_translate enthält die Originalzeile.${NC}"
         return 0
@@ -214,6 +214,7 @@ while true; do
             bundle update mini_racer libv8-node 2>&1 | tee -a "$bundle_log_file" || true
             echo -e "${YELLOW}Huginn wurde ohne JavaScriptAgent vorbereitet. Die Datei $HUGINN_DIR/Gemfile.bak.before_no_mini_racer enthält die Originalzeile.${NC}"
             bundle_disable_js_done="true"
+            bundle_repair_nokogiri_done="false"
             continue
         fi
     fi
@@ -221,6 +222,7 @@ while true; do
     if grep -Eq 'Your bundle is locked to google-protobuf|google-protobuf .* can no longer be found|An error occurred while installing grpc|google-cloud-translate was resolved to .* depends on|googleapis-common-protos was resolved to .* depends on[[:space:]]+grpc' "$bundle_log_file" && [ "${HUGINN_DISABLE_GOOGLE_TRANSLATE_ON_GRPC_FAILURE}" = "true" ] && [ "$bundle_disable_translate_done" != "true" ]; then
         if repair_huginn_google_stack "$bundle_log_file"; then
             bundle_disable_translate_done="true"
+            bundle_repair_nokogiri_done="false"
             continue
         fi
     fi
