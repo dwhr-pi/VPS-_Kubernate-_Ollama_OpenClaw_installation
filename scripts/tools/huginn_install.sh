@@ -130,11 +130,130 @@ run_bundle_install_logged() {
     bundle install 2>&1 | tee -a "$bundle_log_file"
 }
 
+run_bundle_lock_logged() {
+    local bundle_log_file="$1"
+    shift || true
+
+    if [ "$#" -gt 0 ]; then
+        bundle lock --update "$@" 2>&1 | tee -a "$bundle_log_file"
+    else
+        bundle lock 2>&1 | tee -a "$bundle_log_file"
+    fi
+}
+
+normalize_huginn_lockfile_platforms() {
+    local bundle_log_file="$1"
+
+    if [ ! -f Gemfile.lock ]; then
+        return 0
+    fi
+
+    echo -e "${YELLOW}Bereinige veraltete Linux-Plattform-Locks aus Gemfile.lock, damit Bundler wieder auflösbar bleibt...${NC}"
+    cp Gemfile.lock Gemfile.lock.bak.before_platform_cleanup 2>/dev/null || true
+
+    bundle lock --remove-platform x86_64-linux 2>&1 | tee -a "$bundle_log_file" || true
+    bundle lock --remove-platform x86_64-darwin 2>&1 | tee -a "$bundle_log_file" || true
+    bundle lock --add-platform ruby 2>&1 | tee -a "$bundle_log_file" || true
+}
+
+rebuild_huginn_lockfile_from_current_gemfile() {
+    local bundle_log_file="$1"
+
+    if [ -f Gemfile.lock ]; then
+        cp Gemfile.lock Gemfile.lock.bak.before_rebuild 2>/dev/null || true
+        rm -f Gemfile.lock
+    fi
+
+    echo -e "${YELLOW}Erzeuge Gemfile.lock aus dem aktuell bereinigten Gemfile neu, damit keine Alt-Locks erhalten bleiben...${NC}"
+    run_bundle_lock_logged "$bundle_log_file"
+}
+
+persist_huginn_lockfile() {
+    local bundle_log_file="$1"
+    shift || true
+
+    run_bundle_lock_logged "$bundle_log_file" "$@" || true
+
+    if [ ! -f Gemfile.lock ]; then
+        rebuild_huginn_lockfile_from_current_gemfile "$bundle_log_file"
+    fi
+}
+
+lockfile_contains_pattern() {
+    local pattern="$1"
+    if [ ! -f Gemfile.lock ]; then
+        return 1
+    fi
+
+    grep -Eq "$pattern" Gemfile.lock
+}
+
+ruby_version_at_least() {
+    local required="$1"
+
+    ruby -e 'exit((Gem::Version.new(RUBY_VERSION) >= Gem::Version.new(ARGV[0])) ? 0 : 1)' "$required"
+}
+
+huginn_google_translate_agent_active() {
+    grep -Eq "^gem 'google-cloud-translate'.*google/cloud/translate" Gemfile 2>/dev/null
+}
+
+legacy_huginn_google_grpc_stack_present() {
+    if ! [ -f Gemfile.lock ]; then
+        return 1
+    fi
+
+    huginn_google_translate_agent_active &&
+    lockfile_contains_pattern '^\s*grpc \(1\.42\.0\)$|^\s*google-gax \(1\.8\.2\)$|^\s*googleapis-common-protos \(1\.3\.12\)$'
+}
+
+ensure_huginn_lockfile_without_nokogiri_legacy_linux() {
+    local bundle_log_file="$1"
+
+    if lockfile_contains_pattern '^\s*nokogiri \(1\.13\.8(-x86_64-linux)?\)$|^\s*nokogiri \(1\.13\.8-x86_64-linux\)$'; then
+        echo -e "${YELLOW}Gemfile.lock enthält weiterhin den veralteten nokogiri-Stand. Erzwinge einen Neuaufbau des Lockfiles...${NC}"
+        rebuild_huginn_lockfile_from_current_gemfile "$bundle_log_file"
+    fi
+}
+
+ensure_huginn_lockfile_without_disabled_gems() {
+    local bundle_log_file="$1"
+
+    if grep -Eq '^# gem '\''mini_racer'\''' Gemfile 2>/dev/null && lockfile_contains_pattern '^\s*mini_racer \('; then
+        echo -e "${YELLOW}Gemfile.lock enthält mini_racer noch trotz deaktiviertem JavaScriptAgent. Erzwinge einen Neuaufbau des Lockfiles...${NC}"
+        rebuild_huginn_lockfile_from_current_gemfile "$bundle_log_file"
+    fi
+
+    if grep -Eq '^# gem '\''google-cloud-translate'\''' Gemfile 2>/dev/null && lockfile_contains_pattern '^\s*google-cloud-translate \('; then
+        echo -e "${YELLOW}Gemfile.lock enthält google-cloud-translate noch trotz deaktiviertem GoogleTranslateAgent. Erzwinge einen Neuaufbau des Lockfiles...${NC}"
+        rebuild_huginn_lockfile_from_current_gemfile "$bundle_log_file"
+    fi
+}
+
+prepare_huginn_google_stack_if_needed() {
+    local bundle_log_file="$1"
+
+    if [ "${HUGINN_DISABLE_GOOGLE_TRANSLATE_ON_GRPC_FAILURE}" != "true" ]; then
+        return 1
+    fi
+
+    if ruby_version_at_least "3.1" && legacy_huginn_google_grpc_stack_present; then
+        echo -e "${YELLOW}Hinweis: Ruby $(ruby -e 'print RUBY_VERSION') trifft auf den alten Huginn-Google/gRPC-Stack.${NC}"
+        echo -e "${YELLOW}Aktiviere den GoogleTranslate-Fallback vorsorglich, bevor Bundler erneut in grpc 1.42.0 läuft...${NC}"
+        repair_huginn_google_stack "$bundle_log_file"
+        return 0
+    fi
+
+    return 1
+}
+
 repair_huginn_nokogiri_stack() {
     local bundle_log_file="$1"
     echo -e "${YELLOW}Hinweis: Das Huginn-Lockfile verweist auf eine nicht mehr verfügbare nokogiri-Binärversion.${NC}"
     echo -e "${YELLOW}Versuche Reparatur über nokogiri-, racc- und mini_portile2-Refresh ohne erzwungene Ruby-Plattform...${NC}"
-    bundle update nokogiri racc mini_portile2 2>&1 | tee -a "$bundle_log_file" || true
+    normalize_huginn_lockfile_platforms "$bundle_log_file"
+    persist_huginn_lockfile "$bundle_log_file" nokogiri racc mini_portile2
+    ensure_huginn_lockfile_without_nokogiri_legacy_linux "$bundle_log_file"
 }
 
 repair_huginn_google_stack() {
@@ -142,7 +261,10 @@ repair_huginn_google_stack() {
     echo -e "${YELLOW}Hinweis: Der alte google-protobuf/grpc-Stack ist auf diesem System nicht mehr stabil installierbar.${NC}"
     echo -e "${YELLOW}Versuche Fallback ohne GoogleTranslateAgent, damit Huginn sonst weiter installiert werden kann.${NC}"
     if disable_huginn_google_translate_agent; then
-        bundle update nokogiri racc mini_portile2 google-cloud-translate google-gax google-protobuf googleapis-common-protos googleapis-common-protos-types grpc 2>&1 | tee -a "$bundle_log_file" || true
+        normalize_huginn_lockfile_platforms "$bundle_log_file"
+        persist_huginn_lockfile "$bundle_log_file" nokogiri racc mini_portile2 google-gax google-protobuf googleapis-common-protos googleapis-common-protos-types grpc
+        ensure_huginn_lockfile_without_disabled_gems "$bundle_log_file"
+        ensure_huginn_lockfile_without_nokogiri_legacy_linux "$bundle_log_file"
         echo -e "${YELLOW}Huginn wurde für diesen Lauf ohne GoogleTranslateAgent vorbereitet.${NC}"
         echo -e "${YELLOW}Die Datei $HUGINN_DIR/Gemfile.bak.before_no_google_translate enthält die Originalzeile.${NC}"
         return 0
@@ -196,6 +318,10 @@ bundle_repair_nokogiri_done="false"
 bundle_disable_js_done="false"
 bundle_disable_translate_done="false"
 
+if prepare_huginn_google_stack_if_needed "$bundle_log_file"; then
+    bundle_disable_translate_done="true"
+fi
+
 while true; do
     if run_bundle_install_logged "$bundle_log_file"; then
         break
@@ -204,6 +330,9 @@ while true; do
     if grep -Eq 'Your bundle is locked to nokogiri|nokogiri .* can no longer be found' "$bundle_log_file" && [ "$bundle_repair_nokogiri_done" != "true" ]; then
         repair_huginn_nokogiri_stack "$bundle_log_file"
         bundle_repair_nokogiri_done="true"
+        if [ "$bundle_disable_translate_done" != "true" ] && prepare_huginn_google_stack_if_needed "$bundle_log_file"; then
+            bundle_disable_translate_done="true"
+        fi
         continue
     fi
 
@@ -211,7 +340,10 @@ while true; do
         echo -e "${YELLOW}Hinweis: mini_racer bzw. libv8-node konnte auf diesem System nicht gebaut werden.${NC}"
         echo -e "${YELLOW}Versuche Fallback ohne JavaScriptAgent, damit Huginn sonst weiter installiert werden kann.${NC}"
         if disable_huginn_javascript_agent; then
-            bundle update mini_racer libv8-node 2>&1 | tee -a "$bundle_log_file" || true
+            normalize_huginn_lockfile_platforms "$bundle_log_file"
+            persist_huginn_lockfile "$bundle_log_file"
+            ensure_huginn_lockfile_without_disabled_gems "$bundle_log_file"
+            ensure_huginn_lockfile_without_nokogiri_legacy_linux "$bundle_log_file"
             echo -e "${YELLOW}Huginn wurde ohne JavaScriptAgent vorbereitet. Die Datei $HUGINN_DIR/Gemfile.bak.before_no_mini_racer enthält die Originalzeile.${NC}"
             bundle_disable_js_done="true"
             bundle_repair_nokogiri_done="false"
