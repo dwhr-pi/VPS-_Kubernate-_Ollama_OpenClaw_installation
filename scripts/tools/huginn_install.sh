@@ -192,7 +192,7 @@ PY
 }
 
 ensure_huginn_mysql2_ruby32_compat() {
-    if grep -Eq "gem 'mysql2'\s*,\s*\"~> 0\.5\.(5|6|7)\"" Gemfile 2>/dev/null; then
+    if grep -Eq "gem 'mysql2'[[:space:]]*,[[:space:]]*\"~> 0\.5\.(5|6|7)\"" Gemfile 2>/dev/null; then
         return 0
     fi
 
@@ -658,7 +658,7 @@ legacy_huginn_ftpsite_stack_present() {
     fi
 
     huginn_ftpsite_agent_active &&
-    lockfile_contains_pattern '^\s*net-ftp-list \(3\.2\.8\)$'
+    lockfile_contains_pattern '^[[:space:]]*net-ftp-list \(3\.2\.8\)$'
 }
 
 legacy_huginn_net_imap_stack_present() {
@@ -668,7 +668,7 @@ legacy_huginn_net_imap_stack_present() {
 
     huginn_gmail_xoauth_active &&
     ! grep -Eq "^gem 'net-imap'" Gemfile 2>/dev/null &&
-    lockfile_contains_pattern '^\s*gmail_xoauth \(0\.4\.2\)$'
+    lockfile_contains_pattern '^[[:space:]]*gmail_xoauth \(0\.4\.2\)$'
 }
 
 legacy_huginn_mysql2_stack_present() {
@@ -677,7 +677,7 @@ legacy_huginn_mysql2_stack_present() {
     fi
 
     [ "$(current_database_adapter)" = "mysql2" ] &&
-    lockfile_contains_pattern '^\s*mysql2 \(0\.5\.3\)$'
+    lockfile_contains_pattern '^[[:space:]]*mysql2 \(0\.5\.3\)$'
 }
 
 legacy_huginn_growl_stack_present() {
@@ -686,7 +686,7 @@ legacy_huginn_growl_stack_present() {
     fi
 
     huginn_growl_agent_active &&
-    lockfile_contains_pattern '^\s*ruby-growl \(4\.1\)$'
+    lockfile_contains_pattern '^[[:space:]]*ruby-growl \(4\.1\)$'
 }
 
 legacy_huginn_javascript_stack_present() {
@@ -695,7 +695,7 @@ legacy_huginn_javascript_stack_present() {
     fi
 
     huginn_javascript_agent_active &&
-    lockfile_contains_pattern '^\s*mini_racer \(0\.6\.2\)$|^\s*libv8-node \(16\.10\.0\.0\)$'
+    lockfile_contains_pattern '^[[:space:]]*mini_racer \(0\.6\.2\)$|^[[:space:]]*libv8-node \(16\.10\.0\.0\)$'
 }
 
 legacy_huginn_google_grpc_stack_present() {
@@ -704,13 +704,13 @@ legacy_huginn_google_grpc_stack_present() {
     fi
 
     huginn_google_translate_agent_active &&
-    lockfile_contains_pattern '^\s*grpc \(1\.42\.0\)$|^\s*google-gax \(1\.8\.2\)$|^\s*googleapis-common-protos \(1\.3\.12\)$'
+    lockfile_contains_pattern '^[[:space:]]*grpc \(1\.42\.0\)$|^[[:space:]]*google-gax \(1\.8\.2\)$|^[[:space:]]*googleapis-common-protos \(1\.3\.12\)$'
 }
 
 ensure_huginn_lockfile_without_nokogiri_legacy_linux() {
     local bundle_log_file="$1"
 
-    if lockfile_contains_pattern '^\s*nokogiri \(1\.13\.8(-x86_64-linux)?\)$|^\s*nokogiri \(1\.13\.8-x86_64-linux\)$'; then
+    if lockfile_contains_pattern '^[[:space:]]*nokogiri \(1\.13\.8(-x86_64-linux)?\)$|^[[:space:]]*nokogiri \(1\.13\.8-x86_64-linux\)$'; then
         echo -e "${YELLOW}Gemfile.lock enthält weiterhin den veralteten nokogiri-Stand. Erzwinge einen Neuaufbau des Lockfiles...${NC}"
         rebuild_huginn_lockfile_from_current_gemfile "$bundle_log_file"
     fi
@@ -719,27 +719,27 @@ ensure_huginn_lockfile_without_nokogiri_legacy_linux() {
 ensure_huginn_lockfile_without_disabled_gems() {
     local bundle_log_file="$1"
 
-    if grep -Eq '^# gem '\''ruby-growl'\''' Gemfile 2>/dev/null && lockfile_contains_pattern '^\s*ruby-growl \('; then
+    if grep -Eq '^# gem '\''ruby-growl'\''' Gemfile 2>/dev/null && lockfile_contains_pattern '^[[:space:]]*ruby-growl \('; then
         echo -e "${YELLOW}Gemfile.lock enthält ruby-growl noch trotz deaktiviertem GrowlAgent. Erzwinge einen Neuaufbau des Lockfiles...${NC}"
         rebuild_huginn_lockfile_from_current_gemfile "$bundle_log_file"
     fi
 
-    if grep -Eq '^# gem '\''mini_racer'\''' Gemfile 2>/dev/null && lockfile_contains_pattern '^\s*mini_racer \('; then
+    if grep -Eq '^# gem '\''mini_racer'\''' Gemfile 2>/dev/null && lockfile_contains_pattern '^[[:space:]]*mini_racer \('; then
         echo -e "${YELLOW}Gemfile.lock enthält mini_racer noch trotz deaktiviertem JavaScriptAgent. Erzwinge einen Neuaufbau des Lockfiles...${NC}"
         rebuild_huginn_lockfile_from_current_gemfile "$bundle_log_file"
     fi
 
-    if grep -Eq '^# gem '\''google-cloud-translate'\''' Gemfile 2>/dev/null && lockfile_contains_pattern '^\s*google-cloud-translate \('; then
+    if grep -Eq '^# gem '\''google-cloud-translate'\''' Gemfile 2>/dev/null && lockfile_contains_pattern '^[[:space:]]*google-cloud-translate \('; then
         echo -e "${YELLOW}Gemfile.lock enthält google-cloud-translate noch trotz deaktiviertem GoogleTranslateAgent. Erzwinge einen Neuaufbau des Lockfiles...${NC}"
         rebuild_huginn_lockfile_from_current_gemfile "$bundle_log_file"
     fi
 
-    if grep -Eq '^# gem '\''net-ftp-list'\''' Gemfile 2>/dev/null && lockfile_contains_pattern '^\s*net-ftp-list \('; then
+    if grep -Eq '^# gem '\''net-ftp-list'\''' Gemfile 2>/dev/null && lockfile_contains_pattern '^[[:space:]]*net-ftp-list \('; then
         echo -e "${YELLOW}Gemfile.lock enthält net-ftp-list noch trotz deaktiviertem FtpsiteAgent. Erzwinge einen Neuaufbau des Lockfiles...${NC}"
         rebuild_huginn_lockfile_from_current_gemfile "$bundle_log_file"
     fi
 
-    if grep -Eq '^# gem '\''gmail_xoauth'\''' Gemfile 2>/dev/null && lockfile_contains_pattern '^\s*gmail_xoauth \('; then
+    if grep -Eq '^# gem '\''gmail_xoauth'\''' Gemfile 2>/dev/null && lockfile_contains_pattern '^[[:space:]]*gmail_xoauth \('; then
         echo -e "${YELLOW}Gemfile.lock enthält gmail_xoauth noch trotz deaktivierter Gmail-OAuth-Unterstützung. Erzwinge einen Neuaufbau des Lockfiles...${NC}"
         rebuild_huginn_lockfile_from_current_gemfile "$bundle_log_file"
     fi
