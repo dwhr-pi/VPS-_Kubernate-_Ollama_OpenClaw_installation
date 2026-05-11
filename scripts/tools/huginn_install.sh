@@ -55,6 +55,20 @@ current_database_adapter() {
     awk -F= '/^DATABASE_ADAPTER=/{print $2}' .env 2>/dev/null | tail -n 1 | tr -d '\r" '
 }
 
+print_huginn_compat_debug_state() {
+    echo -e "${YELLOW}Huginn Debug: Script=$0${NC}"
+    echo -e "${YELLOW}Huginn Debug: INSTALL_DIR=$INSTALL_DIR${NC}"
+    echo -e "${YELLOW}Huginn Debug: HUGINN_DIR=$HUGINN_DIR${NC}"
+    echo -e "${YELLOW}Huginn Debug: Ruby=$(ruby -e 'print RUBY_VERSION')${NC}"
+    echo -e "${YELLOW}Huginn Debug: DB_ADAPTER=$(current_database_adapter || true)${NC}"
+    echo -e "${YELLOW}Huginn Debug: GOOGLE_ACTIVE=$(huginn_google_translate_agent_active; echo $?) GOOGLE_LOCK=$(lockfile_contains_pattern '^[[:space:]]*grpc \(1\.42\.0\)$|^[[:space:]]*google-gax \(1\.8\.2\)$|^[[:space:]]*googleapis-common-protos \(1\.3\.12\)$'; echo $?)${NC}"
+    echo -e "${YELLOW}Huginn Debug: JS_ACTIVE=$(huginn_javascript_agent_active; echo $?) JS_LOCK=$(lockfile_contains_pattern '^[[:space:]]*mini_racer \(0\.6\.2\)$|^[[:space:]]*libv8-node \(16\.10\.0\.0\)$'; echo $?)${NC}"
+    echo -e "${YELLOW}Huginn Debug: GROWL_ACTIVE=$(huginn_growl_agent_active; echo $?) GROWL_LOCK=$(lockfile_contains_pattern '^[[:space:]]*ruby-growl \(4\.1\)$'; echo $?)${NC}"
+    echo -e "${YELLOW}Huginn Debug: FTPSITE_ACTIVE=$(huginn_ftpsite_agent_active; echo $?) FTPSITE_LOCK=$(lockfile_contains_pattern '^[[:space:]]*net-ftp-list \(3\.2\.8\)$'; echo $?)${NC}"
+    echo -e "${YELLOW}Huginn Debug: GMAIL_ACTIVE=$(huginn_gmail_xoauth_active; echo $?) GMAIL_LOCK=$(lockfile_contains_pattern '^[[:space:]]*gmail_xoauth \(0\.4\.2\)$'; echo $?)${NC}"
+    echo -e "${YELLOW}Huginn Debug: MYSQL_LINE=$(grep -Eq \"gem 'mysql2'[[:space:]]*,[[:space:]]*\\\"~> 0\\.5\\.2\\\"\" Gemfile 2>/dev/null; echo $?) MYSQL_LOCK=$(lockfile_contains_pattern '^[[:space:]]*mysql2 \(0\.5\.3\)$'; echo $?)${NC}"
+}
+
 database_config_complete() {
     local adapter
 
@@ -950,6 +964,8 @@ bundle_enable_mysql2_done="false"
 bundle_disable_growl_done="false"
 bundle_disable_js_done="false"
 bundle_disable_translate_done="false"
+
+print_huginn_compat_debug_state
 
 if prepare_huginn_mysql2_stack_if_needed "$bundle_log_file"; then
     bundle_enable_mysql2_done="true"
