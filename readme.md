@@ -18,6 +18,7 @@ Die zugehoerige Architektur-Dokumentation findest du in [docs/ARCHITECTURE_LLMOP
 - Neuere Plattform- und Ausbauprofile wurden jetzt strukturell in Doku und Registries aufgenommen, sind aber nicht alle schon als Top-Level-Menuepfade gleich weit durchgetestet.
 - Neu hinzugekommen ist ausserdem das klar defensive Profil [Ethical_HackerGPT](docs/Profil/Ethical_HackerGPT.doc.md) fuer autorisierte Sicherheitsanalysen, Hardening, Reporting und lokale Security-Labs.
 - Ebenfalls neu ist das modulare [Next Level Persona System](docs/Profil/Next_Level_Persona_System.md) fuer persistente Persona-, Memory- und Modus-Workflows mit sicheren Disclosure-Defaults.
+- Fuer laenger laufende Baustellen und Chat-Uebergaenge gibt es jetzt zusaetzlich eine kleine dauerhafte Projekt-Erinnerung unter [docs/SETUP_MEMORY.md](/C:/Users/danie/Documents/GitHub/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/SETUP_MEMORY.md:1).
 
 ## 🚀 Schnelle Installation (One-Liner)
 
