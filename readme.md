@@ -219,6 +219,7 @@ Wenn es Änderungen im Repository gab und du dein bestehendes Setup aktualisiere
 
 ```bash
 cd ~/openclaw_ultimate_setup
+git status --short
 git fetch origin --prune
 git checkout main 2>/dev/null || git checkout -b main --track origin/main
 git pull --ff-only origin main
@@ -229,6 +230,16 @@ bash ./setup_ultimate.sh
 ```
 
 Wenn du vor dem Neustart des Menüs den angezeigten Stand erst prüfen möchtest, ist diese kleine Pause bewusst hilfreich. So kannst du z. B. Git-Meldungen, Versionsstände oder Warnungen noch lesen und direkt aus dem Terminal kopieren, bevor das interaktive Setup weiterläuft.
+
+Wichtig:
+
+- Die Pause erscheint nur dann, wenn `git pull` erfolgreich war.
+- Wenn schon davor eine Meldung wie `Your local changes ... would be overwritten by merge` erscheint, wurde das Repository nicht aktualisiert und `bash ./setup_ultimate.sh` startet noch nicht.
+- In diesem Fall prüfe zuerst den `git status --short`-Auszug. Wenn dort z. B. `M scripts/tools/huginn_install.sh` steht, liegt eine lokale Änderung im Setup-Repository vor.
+- Dann hast du drei sichere Wege:
+  - lokale Änderung bewusst committen oder stashen
+  - im Setup-Menü `Setup hart mit GitHub main abgleichen` verwenden
+  - oder manuell hart zurücksetzen, wenn du die lokalen Setup-Änderungen sicher verwerfen willst
 
 Wenn dabei eine Meldung zu lokalen Änderungen in Dateien wie `install.sh` oder `setup_ultimate.sh` erscheint, dann blockiert nicht GitHub das Update, sondern dein lokales Setup-Repository ist nicht mehr sauber. Das kann auch schon durch ältere Teststände oder frühere lokale Dateien passieren, selbst wenn du selbst nichts bewusst bearbeitet hast.
 

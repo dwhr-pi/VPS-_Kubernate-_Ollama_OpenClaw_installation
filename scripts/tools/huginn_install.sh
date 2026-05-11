@@ -55,6 +55,47 @@ current_database_adapter() {
     awk -F= '/^DATABASE_ADAPTER=/{print $2}' .env 2>/dev/null | tail -n 1 | tr -d '\r" '
 }
 
+current_database_host() {
+    awk -F= '/^DATABASE_HOST=/{print $2}' .env 2>/dev/null | tail -n 1 | tr -d '\r" '
+}
+
+mysql_local_socket_expected() {
+    local host
+
+    host="$(current_database_host)"
+    [ -z "$host" ] || [ "$host" = "localhost" ]
+}
+
+print_huginn_mysql_service_guidance() {
+    local host
+
+    host="$(current_database_host)"
+    if [ -z "$host" ]; then
+        host="localhost/socket-default"
+    fi
+
+    echo -e "${RED}Fehler: Huginn ist auf mysql2 konfiguriert, aber lokal ist aktuell kein erreichbarer MySQL-/MariaDB-Dienst verfügbar.${NC}"
+    echo -e "${YELLOW}Aktueller Adapter: mysql2${NC}"
+    echo -e "${YELLOW}Aktueller Host: $host${NC}"
+    echo -e "${YELLOW}Erwarteter Socket: /var/run/mysqld/mysqld.sock${NC}"
+    echo -e "${YELLOW}Du hast jetzt drei sinnvolle Wege:${NC}"
+    echo -e "${YELLOW}1. Lokalen MySQL- oder MariaDB-Server installieren und starten.${NC}"
+    echo -e "${YELLOW}2. In $HUGINN_DIR/.env einen externen MySQL-Host über DATABASE_HOST und optional DATABASE_PORT eintragen.${NC}"
+    echo -e "${YELLOW}3. Huginn auf postgresql oder sqlite3 umstellen, wenn du keinen lokalen MySQL-Dienst betreiben willst.${NC}"
+}
+
+mysql_service_available_for_huginn() {
+    if [ "$(current_database_adapter)" != "mysql2" ]; then
+        return 0
+    fi
+
+    if ! mysql_local_socket_expected; then
+        return 0
+    fi
+
+    [ -S /var/run/mysqld/mysqld.sock ]
+}
+
 print_huginn_compat_debug_state() {
     echo -e "${YELLOW}Huginn Debug: Script=$0${NC}"
     echo -e "${YELLOW}Huginn Debug: INSTALL_DIR=$INSTALL_DIR${NC}"
@@ -1060,6 +1101,15 @@ if ! database_config_complete; then
 fi
 
 echo -e "${GREEN}5/5: Initialisiere Datenbank...${NC}"
+if ! mysql_service_available_for_huginn; then
+    print_huginn_mysql_service_guidance
+    echo -e "${YELLOW}Danach kannst du manuell fortsetzen mit:${NC}"
+    echo "cd $HUGINN_DIR"
+    echo "RAILS_ENV=production bundle exec rake db:create"
+    echo "RAILS_ENV=production bundle exec rake db:migrate"
+    echo "RAILS_ENV=production bundle exec rake db:seed"
+    exit 1
+fi
 db_init_log_file="$(mktemp)"
 if ! RAILS_ENV=production bundle exec rake db:create 2>&1 | tee "$db_init_log_file"; then
     if grep -Eq 'cannot load such file -- net/ftp|cannot load such file -- net-ftp-list' "$db_init_log_file" && [ "${HUGINN_DISABLE_FTPSITE_AGENT_ON_RUBY32_FAILURE}" = "true" ] && [ "$bundle_disable_ftpsite_done" != "true" ]; then
@@ -1170,6 +1220,12 @@ if ! RAILS_ENV=production bundle exec rake db:create 2>&1 | tee "$db_init_log_fi
             echo -e "${RED}Fehler: Huginn Datenbank konnte nicht erstellt werden.${NC}"
             exit 1
         fi
+    elif grep -Eq "Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld\.sock'|Mysql2::Error::ConnectionError" "$db_init_log_file" && [ "$(current_database_adapter)" = "mysql2" ]; then
+        rm -f "$db_init_log_file"
+        print_huginn_mysql_service_guidance
+        echo -e "${YELLOW}Deine aktuelle .env zeigt derzeit auf eine lokale MySQL-Standardverbindung ohne gesetzten DATABASE_HOST.${NC}"
+        echo -e "${YELLOW}Wenn du lokal bleiben willst, installiere und starte MariaDB/MySQL zuerst. Wenn du extern arbeiten willst, setze DATABASE_HOST, DATABASE_PORT und passende Zugangsdaten.${NC}"
+        exit 1
     else
         rm -f "$db_init_log_file"
         echo -e "${RED}Fehler: Huginn Datenbank konnte nicht erstellt werden.${NC}"
