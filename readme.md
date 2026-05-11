@@ -222,8 +222,13 @@ cd ~/openclaw_ultimate_setup
 git fetch origin --prune
 git checkout main 2>/dev/null || git checkout -b main --track origin/main
 git pull --ff-only origin main
+printf '\nDas Repository ist jetzt aktualisiert.\n'
+printf 'Du kannst die aktuelle Terminal-Ausgabe jetzt in Ruhe lesen oder kopieren.\n'
+read -rp "Drücke Enter, um danach das Setup-Menü zu starten ... "
 bash ./setup_ultimate.sh
 ```
+
+Wenn du vor dem Neustart des Menüs den angezeigten Stand erst prüfen möchtest, ist diese kleine Pause bewusst hilfreich. So kannst du z. B. Git-Meldungen, Versionsstände oder Warnungen noch lesen und direkt aus dem Terminal kopieren, bevor das interaktive Setup weiterläuft.
 
 Wenn dabei eine Meldung zu lokalen Änderungen in Dateien wie `install.sh` oder `setup_ultimate.sh` erscheint, dann blockiert nicht GitHub das Update, sondern dein lokales Setup-Repository ist nicht mehr sauber. Das kann auch schon durch ältere Teststände oder frühere lokale Dateien passieren, selbst wenn du selbst nichts bewusst bearbeitet hast.
 
@@ -255,6 +260,9 @@ Wenn du sicher bist, dass lokale Setup-Änderungen verworfen werden dürfen, kan
 cd ~/openclaw_ultimate_setup
 git fetch origin --prune
 git reset --hard origin/main
+printf '\nDas Repository wurde hart auf GitHub main zurückgesetzt.\n'
+printf 'Du kannst die aktuelle Terminal-Ausgabe jetzt in Ruhe lesen oder kopieren.\n'
+read -rp "Drücke Enter, um danach das Setup-Menü zu starten ... "
 bash ./setup_ultimate.sh
 ```
 
@@ -565,7 +573,7 @@ Wichtige Grenze:
 │       ├── Media_Musik.md
 │       ├── KI_Forschung.md
 │       ├── Texter_Werbung_Marketing.md
-│       ├── Rechtsberatung.md
+│       ├── Rechtsberatung_Steuerrecht.md
 │       ├── LLM-Builder.md
 │       ├── llmops.md
 │       ├── rag_knowledge_base.md
