@@ -68,8 +68,10 @@ Ein sehr einfacher erster Test ist ein `Manual Event Agent`.
 
 ```json
 {
-  "message": "Hallo aus meinem ersten Huginn-Test",
-  "source": "manual_test"
+  "payload": {
+    "message": "Hallo aus meinem ersten Huginn-Test",
+    "source": "manual_test"
+  }
 }
 ```
 
@@ -78,6 +80,17 @@ Ein sehr einfacher erster Test ist ein `Manual Event Agent`.
 Wichtig:
 
 - Bei diesem Agententyp gibt es je nach Huginn-Oberflaeche nicht immer einen auffaelligen `Run`-Button.
+- Beim `Manual Event Agent` wird auf der Detailseite stattdessen ein eigenes Formular mit einem `Submit`-Button verwendet.
+- Dort kann direkt ein JSON-Event eingetragen und abgesendet werden, zum Beispiel:
+
+```json
+{
+  "message": "Hallo aus meinem ersten Huginn-Test",
+  "source": "manual_test"
+}
+```
+
+- Wenn mehrere Test-Events auf einmal erzeugt werden sollen, kann auf der Detailseite stattdessen ein Top-Level-Schluessel `payloads` mit einem Array von Objekten verwendet werden.
 - Der einfachste Erfolgsindikator ist, dass beim Agenten in der Liste oder Detailansicht die Anzahl der `Events` hochgeht.
 - Wenn dort bereits `2` oder mehr Events stehen, hat der Test im Kern schon funktioniert.
 
