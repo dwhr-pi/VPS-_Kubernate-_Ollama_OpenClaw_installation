@@ -62,7 +62,7 @@ Ein sehr einfacher erster Test ist ein `Manual Event Agent`.
 
 1. Oeffne `Agents`.
 2. Klicke `New Agent`.
-3. Waehle `Manual Event Agent`.
+3. Suche in der Suchleiste gezielt nach `Manual Event Agent`, statt den Typ manuell in der langen Liste zu suchen.
 4. Vergib einen Namen, z. B. `Erster Test`.
 5. Trage als Optionen zum Beispiel ein:
 
@@ -82,6 +82,26 @@ Wichtig:
 - Bei diesem Agententyp gibt es je nach Huginn-Oberflaeche nicht immer einen auffaelligen `Run`-Button.
 - Beim `Manual Event Agent` wird auf der Detailseite stattdessen ein eigenes Formular mit einem `Submit`-Button verwendet.
 - Dort kann direkt ein JSON-Event eingetragen und abgesendet werden, zum Beispiel:
+
+```json
+{
+  "message": "Hallo aus meinem ersten Huginn-Test",
+  "source": "manual_test"
+}
+```
+
+- Je nach Huginn-Oberflaeche laesst sich derselbe Inhalt auch nicht als freier JSON-Text, sondern als einzelne Eingabezeilen pflegen.
+- Dann handelt es sich im Webinterface um einzelne Bloecke:
+  - links der Schluessel
+  - rechts der Wert
+- Fuer das erste Beispiel trägst du dann zuerst ein:
+  - links `message`
+  - rechts `Hallo aus meinem ersten Huginn-Test`
+- Danach klickst du rechts etwas oberhalb in der Zeile auf das gruene `+`-Symbol.
+- Dadurch entsteht die naechste Zeile fuer:
+  - links `source`
+  - rechts `manual_test`
+- Inhaltlich entspricht das genau diesem JSON:
 
 ```json
 {
@@ -125,6 +145,15 @@ Wichtig:
 - Fuer die echte Verarbeitung reicht der Webserver allein nicht aus. Huginn braucht zusaetzlich einen laufenden Worker-Prozess.
 
 Wenn danach beim `Event Formatting Agent` `Last received event` und `Events created` hochgehen, funktioniert die Agent-Kette.
+
+## Weitere Beispiele
+
+- Weitere Huginn-Anwendungsbeispiele koennen spaeter direkt aus der Huginn-Oberflaeche, aus der offiziellen Huginn-Dokumentation oder aus Video-Tutorials erschlossen werden.
+- Fuer dieses Setup ist zuerst wichtig, dass die kleinen lokalen Grundtests sauber funktionieren:
+  - Agent speichern
+  - Event erzeugen
+  - Event empfangen
+  - Agent-Kette verarbeiten
 
 ## Huginn lokal starten
 
