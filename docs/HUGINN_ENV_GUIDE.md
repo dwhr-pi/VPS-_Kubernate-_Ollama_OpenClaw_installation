@@ -6,6 +6,8 @@ Diese Datei erklaert, **wo** die Huginn-`.env` in diesem Setup gepflegt wird und
 
 - Bearbeitbare Vorlage im Benutzer-Workspace:
   `~/.openclaw_ultimate_user_data/huginn/.env.template`
+- Sichere Huginn-Installationswerte im Benutzer-Workspace:
+  `~/.openclaw_ultimate_user_data/huginn/install_settings.env`
 - Runtime-Datei der Huginn-Installation:
   `/opt/huginn/.env`
 - Repo-Vorlage:
@@ -15,7 +17,8 @@ Diese Datei erklaert, **wo** die Huginn-`.env` in diesem Setup gepflegt wird und
 
 1. Oeffne im Setup unter `Optionen` den Punkt `Huginn Konfiguration (.env Vorlage)`.
 2. Bearbeite dort die Vorlage im Benutzer-Workspace.
-3. Wende die Vorlage bewusst auf `/opt/huginn/.env` an.
+3. Lege dort bei Bedarf auch den Huginn-Upstream-Stand (`HUGINN_REPO_REF`) fest.
+4. Wende die Vorlage bewusst auf `/opt/huginn/.env` an.
 
 Dadurch bleiben deine Anpassungen ausserhalb des Git-Repositories und ueberstehen Setup-Updates deutlich sauberer.
 

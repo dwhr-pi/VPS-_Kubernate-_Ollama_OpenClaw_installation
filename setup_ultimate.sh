@@ -636,6 +636,7 @@ show_tool_action_intro() {
 
 run_bash_script() {
     local script_path="$1"
+    shift || true
     local script_rc
     local operation_slug
     local timestamp_slug
@@ -655,10 +656,10 @@ run_bash_script() {
 
         echo -e "${YELLOW}Erweiterte Installationsüberwachung ist aktiv.${NC}"
         echo -e "${YELLOW}Logdatei:${NC} ${ACTIVE_OPERATION_LOG_FILE}"
-        bash "$script_path" 2>&1 | tee "$ACTIVE_OPERATION_LOG_FILE"
+        bash "$script_path" "$@" 2>&1 | tee "$ACTIVE_OPERATION_LOG_FILE"
         script_rc=${PIPESTATUS[0]}
     else
-        bash "$script_path"
+        bash "$script_path" "$@"
         script_rc=$?
     fi
 
@@ -944,7 +945,7 @@ show_options_menu() {
         "3" "${TXT_OPTIONS_3:-Ollama Modelfile-Assistent}" \
         "4" "${TXT_OPTIONS_4:-LLM-Builder Projektstruktur-Assistent}" \
         "5" "${TXT_OPTIONS_5:-Ollama Modellkatalog}" \
-        "6" "${TXT_OPTIONS_6:-Setup hart mit GitHub main abgleichen}" \
+        "6" "${TXT_OPTIONS_6:-Setup-Repository hart reparieren / auf GitHub main zurücksetzen}" \
         "7" "${TXT_OPTIONS_7:-Benutzer-Workspace verwalten}" \
         "8" "${TXT_OPTIONS_8:-Custom GitHub-Quellen & Ollama-Builds}" \
         "9" "${TXT_OPTIONS_9:-LLMOps Plattform Konfiguration (.env Stack)}" \
@@ -1796,6 +1797,13 @@ install_tool() {
     show_tool_action_intro "$TOOL_KEY" "installieren" "install"
     begin_operation_measurement "tool_install_${TOOL_KEY}" "Tool installieren: ${TOOL_KEY}"
     echo -e "${BLUE}Installiere Tool: ${TOOL_KEY}...${NC}"
+    if [ "$TOOL_KEY" = "Huginn" ]; then
+        if ! run_bash_script "$INSTALL_DIR/scripts/huginn_config_manager.sh" --prepare-install; then
+            end_operation_measurement "aborted"
+            echo -e "${YELLOW}Huginn-Installation wurde vor dem Start abgebrochen.${NC}"
+            return 1
+        fi
+    fi
     run_tool_script "$TOOL_KEY" "install"
     if [ $? -eq 0 ]; then
         append_unique_line "$TOOL_STATUS_FILE" "$TOOL_KEY"

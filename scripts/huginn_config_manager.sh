@@ -16,10 +16,13 @@ INSTALL_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 USER_WORKSPACE_DIR="${HOME}/.openclaw_ultimate_user_data"
 HUGINN_TEMPLATE_DIR="$USER_WORKSPACE_DIR/huginn"
 HUGINN_TEMPLATE_FILE="$HUGINN_TEMPLATE_DIR/.env.template"
+HUGINN_SETTINGS_FILE="$HUGINN_TEMPLATE_DIR/install_settings.env"
 HUGINN_REPO_TEMPLATE_FILE="$INSTALL_DIR/scripts/config_templates/huginn/.env.template"
 HUGINN_INSTALL_DIR="/opt/huginn"
 HUGINN_RUNTIME_ENV="$HUGINN_INSTALL_DIR/.env"
 HUGINN_CONFIG_CHOICE_FILE="/tmp/huginn_config_choice"
+HUGINN_REF_CHOICE_FILE="/tmp/huginn_ref_choice"
+HUGINN_REF_INPUT_FILE="/tmp/huginn_ref_input"
 
 ensure_user_workspace() {
     mkdir -p "$HUGINN_TEMPLATE_DIR"
@@ -31,14 +34,104 @@ ensure_user_workspace() {
             touch "$HUGINN_TEMPLATE_FILE"
         fi
     fi
+
+    if [ ! -f "$HUGINN_SETTINGS_FILE" ]; then
+        cat > "$HUGINN_SETTINGS_FILE" <<'EOF'
+HUGINN_REPO_REF=v2022.08.18
+EOF
+        chmod 600 "$HUGINN_SETTINGS_FILE" 2>/dev/null || true
+    fi
 }
 
 cleanup_temp_files() {
     rm -f "$HUGINN_CONFIG_CHOICE_FILE"
+    rm -f "$HUGINN_REF_CHOICE_FILE"
+    rm -f "$HUGINN_REF_INPUT_FILE"
 }
 
 pause_screen() {
     read -r -p "Druecken Sie Enter..."
+}
+
+current_huginn_repo_ref() {
+    ensure_user_workspace
+    awk -F= '/^HUGINN_REPO_REF=/{print $2}' "$HUGINN_SETTINGS_FILE" 2>/dev/null | tail -n 1 | tr -d '\r\" '
+}
+
+save_huginn_repo_ref() {
+    local repo_ref="$1"
+    ensure_user_workspace
+    python3 - "$repo_ref" "$HUGINN_SETTINGS_FILE" <<'PY'
+from pathlib import Path
+import sys
+
+repo_ref = sys.argv[1].strip()
+path = Path(sys.argv[2])
+text = path.read_text(encoding="utf-8") if path.exists() else ""
+new_line = f"HUGINN_REPO_REF={repo_ref}"
+
+if "HUGINN_REPO_REF=" in text:
+    lines = text.splitlines()
+    for idx, line in enumerate(lines):
+        if line.startswith("HUGINN_REPO_REF="):
+            lines[idx] = new_line
+            break
+    text = "\n".join(lines)
+else:
+    text = (text.rstrip("\n") + "\n" if text else "") + new_line
+
+path.write_text(text + ("\n" if not text.endswith("\n") else ""), encoding="utf-8")
+PY
+    chmod 600 "$HUGINN_SETTINGS_FILE" 2>/dev/null || true
+}
+
+choose_huginn_repo_ref() {
+    ensure_user_workspace
+    local current_ref selected_ref custom_ref
+    current_ref="$(current_huginn_repo_ref)"
+    [ -n "$current_ref" ] || current_ref="v2022.08.18"
+
+    rm -f "$HUGINN_REF_CHOICE_FILE"
+    dialog --clear --backtitle "OpenClaw Ultimate Setup" \
+        --cancel-label "Zurueck" \
+        --title "HUGINN UPSTREAM-STAND" --radiolist \
+        "Waehlen Sie den Huginn-Upstream-Stand. Die empfohlene Version ist v2022.08.18. Andere Werte koennen Sie hier im Setup auswaehlen oder festlegen." \
+        20 110 8 \
+        "stable_recommended" "Empfohlen: v2022.08.18" "$([ "$current_ref" = "v2022.08.18" ] && echo on || echo off)" \
+        "main_branch" "GitHub main (aktueller Upstream-Stand)" "$([ "$current_ref" = "main" ] && echo on || echo off)" \
+        "custom_ref" "Andere Referenz manuell festlegen" "$([ "$current_ref" != "v2022.08.18" ] && [ "$current_ref" != "main" ] && echo on || echo off)" \
+        2> "$HUGINN_REF_CHOICE_FILE" || return 1
+
+    selected_ref="$(cat "$HUGINN_REF_CHOICE_FILE" 2>/dev/null || true)"
+    case "$selected_ref" in
+        stable_recommended)
+            save_huginn_repo_ref "v2022.08.18"
+            ;;
+        main_branch)
+            save_huginn_repo_ref "main"
+            ;;
+        custom_ref)
+            rm -f "$HUGINN_REF_INPUT_FILE"
+            dialog --clear --backtitle "OpenClaw Ultimate Setup" \
+                --cancel-label "Zurueck" \
+                --title "HUGINN REPO REF" \
+                --inputbox "Geben Sie eine Huginn-Referenz ein, z. B. Tag, Branch oder Commit-SHA:" \
+                10 100 "$current_ref" 2> "$HUGINN_REF_INPUT_FILE" || return 1
+            custom_ref="$(tr -d '\r' < "$HUGINN_REF_INPUT_FILE")"
+            if [ -z "$custom_ref" ]; then
+                echo -e "${RED}Fehler: Die Huginn-Referenz darf nicht leer sein.${NC}"
+                pause_screen
+                return 1
+            fi
+            save_huginn_repo_ref "$custom_ref"
+            ;;
+        *)
+            return 1
+            ;;
+    esac
+
+    echo -e "${GREEN}Aktiver Huginn-Upstream-Stand: $(current_huginn_repo_ref)${NC}"
+    return 0
 }
 
 edit_file() {
@@ -102,7 +195,9 @@ import_runtime_env() {
 show_huginn_paths() {
     echo -e "${BLUE}Huginn-Konfigurationspfade${NC}"
     echo -e "${YELLOW}Bearbeitbare Vorlage: ${HUGINN_TEMPLATE_FILE}${NC}"
+    echo -e "${YELLOW}Installationswerte: ${HUGINN_SETTINGS_FILE}${NC}"
     echo -e "${YELLOW}Laufzeitdatei: ${HUGINN_RUNTIME_ENV}${NC}"
+    echo -e "${YELLOW}Aktiver HUGINN_REPO_REF: $(current_huginn_repo_ref)${NC}"
     echo -e "${YELLOW}Guide: docs/HUGINN_ENV_GUIDE.md${NC}"
     echo -e "${YELLOW}Tipp: Oeffentliche Freigaben nur ueber Reverse Proxy, Cloudflare Tunnel oder Tailscale.${NC}"
     pause_screen
@@ -116,8 +211,9 @@ show_huginn_config_menu() {
         "1" "Huginn-.env-Vorlage bearbeiten" \
         "2" "Vorlage auf /opt/huginn/.env anwenden" \
         "3" "Aktuelle /opt/huginn/.env in Vorlage uebernehmen" \
-        "4" "Pfade und Hinweise anzeigen" \
-        "5" "Beenden" 2> "$HUGINN_CONFIG_CHOICE_FILE"
+        "4" "Huginn-Upstream-Stand (HUGINN_REPO_REF) auswaehlen" \
+        "5" "Pfade und Hinweise anzeigen" \
+        "6" "Beenden" 2> "$HUGINN_CONFIG_CHOICE_FILE"
 }
 
 main() {
@@ -141,9 +237,13 @@ main() {
                 pause_screen
                 ;;
             4)
-                show_huginn_paths
+                choose_huginn_repo_ref
+                pause_screen
                 ;;
             5)
+                show_huginn_paths
+                ;;
+            6)
                 break
                 ;;
             *)
@@ -152,5 +252,10 @@ main() {
         esac
     done
 }
+if [ "${1:-}" = "--prepare-install" ]; then
+    ensure_user_workspace
+    choose_huginn_repo_ref
+    exit $?
+fi
 
 main "$@"

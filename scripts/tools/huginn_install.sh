@@ -31,6 +31,53 @@ HUGINN_ENABLE_MYSQL2_RUBY32_COMPAT="${HUGINN_ENABLE_MYSQL2_RUBY32_COMPAT:-true}"
 HUGINN_SKIP_SYSTEM_PACKAGES="${HUGINN_SKIP_SYSTEM_PACKAGES:-false}"
 HUGINN_SYSTEMD_WEB_SERVICE="${HUGINN_SYSTEMD_WEB_SERVICE:-huginn-web.service}"
 HUGINN_SYSTEMD_WORKER_SERVICE="${HUGINN_SYSTEMD_WORKER_SERVICE:-huginn-worker.service}"
+USER_WORKSPACE_DIR="${HOME}/.openclaw_ultimate_user_data"
+HUGINN_USER_CONFIG_DIR="${USER_WORKSPACE_DIR}/huginn"
+HUGINN_USER_SETTINGS_FILE="${HUGINN_USER_CONFIG_DIR}/install_settings.env"
+HUGINN_USER_ENV_TEMPLATE="${HUGINN_USER_CONFIG_DIR}/.env.template"
+
+load_huginn_user_settings() {
+    if [ -f "$HUGINN_USER_SETTINGS_FILE" ]; then
+        # shellcheck disable=SC1090
+        source "$HUGINN_USER_SETTINGS_FILE"
+    fi
+}
+
+load_huginn_user_settings
+
+bootstrap_huginn_env_from_secure_template() {
+    if [ -f "$HUGINN_USER_ENV_TEMPLATE" ]; then
+        cp "$HUGINN_USER_ENV_TEMPLATE" .env
+        return 0
+    fi
+
+    if [ -f .env.example ]; then
+        cp .env.example .env
+    else
+        touch .env
+    fi
+}
+
+sanitize_huginn_env_database_defaults() {
+    python3 - <<'PY'
+from pathlib import Path
+
+path = Path(".env")
+if not path.exists():
+    raise SystemExit(0)
+
+text = path.read_text(encoding="utf-8")
+replacements = {
+    "DATABASE_NAME=huginn_development": "DATABASE_NAME=huginn_production",
+    "DATABASE_USERNAME=root": "DATABASE_USERNAME=huginn",
+    'DATABASE_PASSWORD=""': 'DATABASE_PASSWORD=change-me',
+}
+for old, new in replacements.items():
+    text = text.replace(old, new)
+
+path.write_text(text, encoding="utf-8")
+PY
+}
 
 current_huginn_service_user() {
     if [ -n "${SUDO_USER:-}" ] && [ "${SUDO_USER}" != "root" ]; then
@@ -277,6 +324,25 @@ new = """  class CharacterEncoding < Faraday::Middleware
 if old in text:
     text = text.replace(old, new, 1)
 path.write_text(text, encoding="utf-8")
+PY
+}
+
+apply_huginn_mysql_reconnect_deprecation_fix() {
+    if [ ! -f config/database.yml ]; then
+        return 1
+    fi
+
+    python3 - <<'PY'
+from pathlib import Path
+
+path = Path("config/database.yml")
+text = path.read_text(encoding="utf-8")
+old = '  reconnect: <%= ENV[\'DATABASE_RECONNECT\'].presence || "true" %>'
+new = '  reconnect: <%= ENV[\'DATABASE_RECONNECT\'].presence || "false" %>'
+
+if old in text:
+    text = text.replace(old, new)
+    path.write_text(text, encoding="utf-8")
 PY
 }
 
@@ -1210,7 +1276,7 @@ repair_huginn_google_stack() {
 
 echo -e "${BLUE}Starte Installation von Huginn...${NC}"
 echo -e "${YELLOW}Standard-Referenz: ${HUGINN_REPO_REF}.${NC}"
-echo -e "${YELLOW}Wenn du bewusst einen anderen Upstream-Stand testen willst, kannst du HUGINN_REPO_REF überschreiben.${NC}"
+echo -e "${YELLOW}Wenn du bewusst einen anderen Upstream-Stand testen willst, kannst du HUGINN_REPO_REF im Setup auswaehlen oder festlegen.${NC}"
 
 echo -e "${GREEN}1/5: Installiere System-Abhängigkeiten für Huginn...${NC}"
 if [ "$HUGINN_SKIP_SYSTEM_PACKAGES" != "true" ]; then
@@ -1228,18 +1294,16 @@ chmod -R u+rwX,go-w log tmp
 
 echo -e "${GREEN}3/5: Bereite .env und Verzeichnisse vor...${NC}"
 if [ ! -f .env ]; then
-    if [ -f .env.example ]; then
-        cp .env.example .env
-    else
-        touch .env
-    fi
+    bootstrap_huginn_env_from_secure_template
 fi
 ensure_secret_token
 ensure_huginn_invitation_code
 ensure_production_env_defaults
+sanitize_huginn_env_database_defaults
 apply_huginn_dry_runnable_kwarg_fix
 apply_huginn_jobs_yaml_fix
 apply_huginn_web_request_faraday_fix
+apply_huginn_mysql_reconnect_deprecation_fix
 chmod o-rwx .env 2>/dev/null || true
 
 echo -e "${GREEN}4/5: Installiere Ruby Gems mit Bundler...${NC}"
