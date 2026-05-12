@@ -63,6 +63,26 @@ reset_dialog_terminal_state() {
     stty sane 2>/dev/null || true
 }
 
+dialog_begin_args() {
+    local height="$1"
+    local width="$2"
+    local lines cols row col
+
+    lines="$(tput lines 2>/dev/null || printf '24')"
+    cols="$(tput cols 2>/dev/null || printf '80')"
+
+    case "$lines" in ''|*[!0-9]*) lines=24 ;; esac
+    case "$cols" in ''|*[!0-9]*) cols=80 ;; esac
+
+    row=$(( (lines - height) / 2 ))
+    col=$(( (cols - width) / 2 ))
+
+    [ "$row" -lt 0 ] && row=0
+    [ "$col" -lt 0 ] && col=0
+
+    printf '%s %s\n' "$row" "$col"
+}
+
 current_huginn_repo_ref() {
     ensure_user_workspace
     awk -F= '/^HUGINN_REPO_REF=/{print $2}' "$HUGINN_SETTINGS_FILE" 2>/dev/null | tail -n 1 | tr -d '\r\" '
@@ -212,20 +232,22 @@ PY
 
 choose_huginn_repo_ref() {
     ensure_user_workspace
-    local current_ref selected_ref custom_ref
+    local current_ref selected_ref custom_ref begin_row begin_col
     current_ref="$(current_huginn_repo_ref)"
     [ -n "$current_ref" ] || current_ref="v2022.08.18"
+    read -r begin_row begin_col <<<"$(dialog_begin_args 16 78)"
 
     rm -f "$HUGINN_REF_CHOICE_FILE"
     reset_dialog_terminal_state
     dialog --clear --backtitle "OpenClaw Ultimate Setup" \
+        --begin "$begin_row" "$begin_col" \
         --cancel-label "Zurueck" \
-        --title "HUGINN UPSTREAM-STAND" --radiolist \
+        --title "HUGINN UPSTREAM-STAND" --menu \
         "Waehlen Sie den Huginn-Upstream-Stand.\nEmpfohlen: v2022.08.18" \
         16 78 6 \
-        "1" "Empfohlen: v2022.08.18" "$([ "$current_ref" = "v2022.08.18" ] && echo on || echo off)" \
-        "2" "GitHub main (aktueller Upstream-Stand)" "$([ "$current_ref" = "main" ] && echo on || echo off)" \
-        "3" "Andere Referenz manuell festlegen" "$([ "$current_ref" != "v2022.08.18" ] && [ "$current_ref" != "main" ] && echo on || echo off)" \
+        "1" "Empfohlen: v2022.08.18${current_ref:+$([ "$current_ref" = "v2022.08.18" ] && printf ' [aktiv]')}" \
+        "2" "GitHub main (aktueller Upstream-Stand)${current_ref:+$([ "$current_ref" = "main" ] && printf ' [aktiv]')}" \
+        "3" "Andere Referenz manuell festlegen$([ "$current_ref" != "v2022.08.18" ] && [ "$current_ref" != "main" ] && printf ' [aktiv: %s]' "$current_ref")" \
         2> "$HUGINN_REF_CHOICE_FILE" || return 1
     reset_dialog_terminal_state
 
@@ -241,6 +263,7 @@ choose_huginn_repo_ref() {
             rm -f "$HUGINN_REF_INPUT_FILE"
             reset_dialog_terminal_state
             dialog --clear --backtitle "OpenClaw Ultimate Setup" \
+                --begin "$begin_row" "$begin_col" \
                 --cancel-label "Zurueck" \
                 --title "HUGINN REPO REF" \
                 --inputbox "Geben Sie eine Huginn-Referenz ein, z. B. Tag, Branch oder Commit-SHA:" \
@@ -265,19 +288,21 @@ choose_huginn_repo_ref() {
 
 choose_huginn_database_adapter() {
     ensure_user_workspace
-    local current_adapter selected_adapter
+    local current_adapter selected_adapter begin_row begin_col
     current_adapter="$(current_huginn_database_adapter)"
     [ -n "$current_adapter" ] || current_adapter="mysql2"
+    read -r begin_row begin_col <<<"$(dialog_begin_args 16 78)"
 
     rm -f "$HUGINN_DB_CHOICE_FILE"
     reset_dialog_terminal_state
     dialog --clear --backtitle "OpenClaw Ultimate Setup" \
+        --begin "$begin_row" "$begin_col" \
         --cancel-label "Zurueck" \
-        --title "HUGINN DATENBANK" --radiolist \
+        --title "HUGINN DATENBANK" --menu \
         "Waehlen Sie die Huginn-Datenbanktechnik.\nEmpfohlen: MySQL/MariaDB" \
         16 78 6 \
-        "1" "MySQL / MariaDB (empfohlen)" "$([ "$current_adapter" = "mysql2" ] && echo on || echo off)" \
-        "2" "PostgreSQL" "$([ "$current_adapter" = "postgresql" ] && echo on || echo off)" \
+        "1" "MySQL / MariaDB (empfohlen)$([ "$current_adapter" = "mysql2" ] && printf ' [aktiv]')" \
+        "2" "PostgreSQL$([ "$current_adapter" = "postgresql" ] && printf ' [aktiv]')" \
         2> "$HUGINN_DB_CHOICE_FILE" || return 1
     reset_dialog_terminal_state
 
