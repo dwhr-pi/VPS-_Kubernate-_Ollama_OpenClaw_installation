@@ -99,6 +99,58 @@ Danach kannst du in der Agent-Detailansicht oder ueber `Events` pruefen, ob Nutz
 - `message: Hallo aus meinem ersten Huginn-Test`
 - `source: manual_test`
 
+## Erste funktionierende Agent-Kette
+
+Ein guter zweiter Test ist eine kleine Kette aus:
+
+1. `Manual Event Agent`
+2. `Event Formatting Agent`
+
+Beispiel fuer den `Event Formatting Agent`:
+
+```json
+{
+  "instructions": {
+    "message": "Nachricht: {{ message }}",
+    "origin": "{{ source }}"
+  },
+  "mode": "clean"
+}
+```
+
+Wichtig:
+
+- Der `Manual Event Agent` muss den `Event Formatting Agent` als Empfaenger gesetzt haben.
+- Beim `Event Formatting Agent` sollte `Propagate immediately` auf `Yes` stehen.
+- Fuer die echte Verarbeitung reicht der Webserver allein nicht aus. Huginn braucht zusaetzlich einen laufenden Worker-Prozess.
+
+Wenn danach beim `Event Formatting Agent` `Last received event` und `Events created` hochgehen, funktioniert die Agent-Kette.
+
+## Huginn lokal starten
+
+Fuer einen funktionierenden lokalen Betrieb auf diesem Setup werden zwei Prozesse gebraucht:
+
+### 1. Webserver
+
+```bash
+cd /opt/huginn
+RAILS_ENV=production RAILS_SERVE_STATIC_FILES=1 bundle exec rails server -b 127.0.0.1 -p 3000
+```
+
+### 2. Worker
+
+```bash
+cd /opt/huginn
+RAILS_ENV=production bundle exec rails runner bin/threaded.rb
+```
+
+Ohne den Worker werden Events oft nur in die Queue gelegt, aber nicht weiterverarbeitet. Typische Symptome sind:
+
+- Agenten erzeugen zwar Events
+- verbundene Empfaenger-Agenten erhalten aber nichts
+- `Last received event` bleibt auf `never`
+- Job-Eintraege erscheinen, werden aber nicht sauber abgearbeitet
+
 ## Freigabe nach aussen
 
 Die Huginn-Weboberflaeche sollte nicht roh ins Internet gestellt werden.

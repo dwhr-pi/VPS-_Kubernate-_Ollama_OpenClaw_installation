@@ -10,6 +10,12 @@ Diese Datei dient als dauerhafte Projekt-Erinnerung fuer spaetere Chats und Folg
 - Das Setup erzeugt jetzt auch automatisch einen echten Huginn-`INVITATION_CODE`, wenn die `.env` noch leer ist oder noch auf dem unsicheren Default `try-huginn` steht.
 - Der aktuelle Huginn-Invitation-Code laesst sich jederzeit mit `grep '^INVITATION_CODE=' /opt/huginn/.env` im Terminal nachlesen.
 - Der erste Huginn-Admin kann bei Bedarf ohne Web-Registrierung direkt per `rails runner` angelegt werden, indem `requires_no_invitation_code!` gesetzt wird.
+- Der `dry_runnable.rb`-Pfad wurde fuer Ruby 3.2 angepasst, damit Agenten wieder speicherbar sind.
+- Der `jobs_helper.rb`-Pfad wurde fuer den aktuellen Psych/YAML-Stack auf `YAML.unsafe_load` umgestellt, damit die `Jobs`-Seite wieder funktioniert.
+- Fuer echte Huginn-Verarbeitung reichen im aktuellen Setup nicht nur der Webserver, sondern zusaetzlich ein Worker-Prozess mit `RAILS_ENV=production bundle exec rails runner bin/threaded.rb`.
+- Eine einfache funktionierende Testkette wurde erfolgreich bestaetigt:
+  - `Manual Event Agent`
+  - `Event Formatting Agent`
 - Die alten problematischen Huginn-Zweige werden jetzt proaktiv erkannt und bei Bedarf entschärft:
   - `google-cloud-translate` / `grpc 1.42.0`
   - `mini_racer` / `libv8-node`
