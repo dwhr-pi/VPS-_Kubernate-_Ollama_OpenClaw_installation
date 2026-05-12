@@ -23,6 +23,7 @@ HUGINN_RUNTIME_ENV="$HUGINN_INSTALL_DIR/.env"
 HUGINN_CONFIG_CHOICE_FILE="/tmp/huginn_config_choice"
 HUGINN_REF_CHOICE_FILE="/tmp/huginn_ref_choice"
 HUGINN_REF_INPUT_FILE="/tmp/huginn_ref_input"
+HUGINN_DB_CHOICE_FILE="/tmp/huginn_db_choice"
 
 ensure_user_workspace() {
     mkdir -p "$HUGINN_TEMPLATE_DIR"
@@ -47,6 +48,7 @@ cleanup_temp_files() {
     rm -f "$HUGINN_CONFIG_CHOICE_FILE"
     rm -f "$HUGINN_REF_CHOICE_FILE"
     rm -f "$HUGINN_REF_INPUT_FILE"
+    rm -f "$HUGINN_DB_CHOICE_FILE"
 }
 
 pause_screen() {
@@ -64,6 +66,11 @@ reset_dialog_terminal_state() {
 current_huginn_repo_ref() {
     ensure_user_workspace
     awk -F= '/^HUGINN_REPO_REF=/{print $2}' "$HUGINN_SETTINGS_FILE" 2>/dev/null | tail -n 1 | tr -d '\r\" '
+}
+
+current_huginn_database_adapter() {
+    ensure_user_workspace
+    awk -F= '/^DATABASE_ADAPTER=/{print $2}' "$HUGINN_TEMPLATE_FILE" 2>/dev/null | tail -n 1 | tr -d '\r\" '
 }
 
 save_huginn_repo_ref() {
@@ -91,6 +98,116 @@ else:
 path.write_text(text + ("\n" if not text.endswith("\n") else ""), encoding="utf-8")
 PY
     chmod 600 "$HUGINN_SETTINGS_FILE" 2>/dev/null || true
+}
+
+save_huginn_setting() {
+    local key="$1"
+    local value="$2"
+    ensure_user_workspace
+    python3 - "$key" "$value" "$HUGINN_SETTINGS_FILE" <<'PY'
+from pathlib import Path
+import sys
+
+key = sys.argv[1].strip()
+value = sys.argv[2].strip()
+path = Path(sys.argv[3])
+text = path.read_text(encoding="utf-8") if path.exists() else ""
+new_line = f"{key}={value}"
+
+if f"{key}=" in text:
+    lines = text.splitlines()
+    replaced = False
+    for idx, line in enumerate(lines):
+        if line.startswith(f"{key}="):
+            lines[idx] = new_line
+            replaced = True
+    text = "\n".join(lines)
+    if not replaced:
+        text = (text.rstrip("\n") + "\n" if text else "") + new_line
+else:
+    text = (text.rstrip("\n") + "\n" if text else "") + new_line
+
+path.write_text(text + ("\n" if not text.endswith("\n") else ""), encoding="utf-8")
+PY
+    chmod 600 "$HUGINN_SETTINGS_FILE" 2>/dev/null || true
+}
+
+apply_huginn_database_template_preset() {
+    local adapter="$1"
+    ensure_user_workspace
+    python3 - "$adapter" "$HUGINN_TEMPLATE_FILE" <<'PY'
+from pathlib import Path
+import sys
+
+adapter = sys.argv[1].strip()
+path = Path(sys.argv[2])
+text = path.read_text(encoding="utf-8") if path.exists() else ""
+lines = text.splitlines()
+data = {}
+other_lines = []
+
+for line in lines:
+    if "=" in line and not line.lstrip().startswith("#"):
+        key, value = line.split("=", 1)
+        key = key.strip()
+        if key in {
+            "DATABASE_ADAPTER",
+            "DATABASE_NAME",
+            "DATABASE_USERNAME",
+            "DATABASE_PASSWORD",
+            "DATABASE_HOST",
+            "DATABASE_PORT",
+        }:
+            data[key] = value.strip()
+            continue
+    other_lines.append(line)
+
+if adapter == "mysql2":
+    data.update({
+        "DATABASE_ADAPTER": "mysql2",
+        "DATABASE_NAME": "huginn_production",
+        "DATABASE_USERNAME": "huginn",
+        "DATABASE_PASSWORD": "huginn_local_change_me",
+        "DATABASE_HOST": "localhost",
+        "DATABASE_PORT": "3306",
+    })
+elif adapter == "postgresql":
+    data.update({
+        "DATABASE_ADAPTER": "postgresql",
+        "DATABASE_NAME": "huginn_production",
+        "DATABASE_USERNAME": "huginn",
+        "DATABASE_PASSWORD": "change-me",
+        "DATABASE_HOST": "127.0.0.1",
+        "DATABASE_PORT": "5432",
+    })
+else:
+    raise SystemExit(f"Unsupported database adapter preset: {adapter}")
+
+db_lines = [
+    f"DATABASE_ADAPTER={data['DATABASE_ADAPTER']}",
+    f"DATABASE_NAME={data['DATABASE_NAME']}",
+    f"DATABASE_USERNAME={data['DATABASE_USERNAME']}",
+    f"DATABASE_PASSWORD={data['DATABASE_PASSWORD']}",
+    f"DATABASE_HOST={data['DATABASE_HOST']}",
+    f"DATABASE_PORT={data['DATABASE_PORT']}",
+]
+
+result_lines = []
+inserted = False
+for line in other_lines:
+    result_lines.append(line)
+    if not inserted and line.strip() == "### Database":
+        result_lines.extend(db_lines)
+        inserted = True
+
+if not inserted:
+    if result_lines and result_lines[-1].strip():
+        result_lines.append("")
+    result_lines.append("### Database")
+    result_lines.extend(db_lines)
+
+path.write_text("\n".join(result_lines).rstrip() + "\n", encoding="utf-8")
+PY
 }
 
 choose_huginn_repo_ref() {
@@ -143,6 +260,44 @@ choose_huginn_repo_ref() {
     esac
 
     echo -e "${GREEN}Aktiver Huginn-Upstream-Stand: $(current_huginn_repo_ref)${NC}"
+    return 0
+}
+
+choose_huginn_database_adapter() {
+    ensure_user_workspace
+    local current_adapter selected_adapter
+    current_adapter="$(current_huginn_database_adapter)"
+    [ -n "$current_adapter" ] || current_adapter="mysql2"
+
+    rm -f "$HUGINN_DB_CHOICE_FILE"
+    reset_dialog_terminal_state
+    dialog --clear --backtitle "OpenClaw Ultimate Setup" \
+        --cancel-label "Zurueck" \
+        --title "HUGINN DATENBANK" --radiolist \
+        "Waehlen Sie die Huginn-Datenbanktechnik.\nEmpfohlen: MySQL/MariaDB" \
+        16 78 6 \
+        "1" "MySQL / MariaDB (empfohlen)" "$([ "$current_adapter" = "mysql2" ] && echo on || echo off)" \
+        "2" "PostgreSQL" "$([ "$current_adapter" = "postgresql" ] && echo on || echo off)" \
+        2> "$HUGINN_DB_CHOICE_FILE" || return 1
+    reset_dialog_terminal_state
+
+    selected_adapter="$(cat "$HUGINN_DB_CHOICE_FILE" 2>/dev/null || true)"
+    case "$selected_adapter" in
+        1)
+            apply_huginn_database_template_preset "mysql2"
+            save_huginn_setting "HUGINN_DATABASE_ADAPTER" "mysql2"
+            echo -e "${GREEN}Aktive Huginn-Datenbank: MySQL/MariaDB${NC}"
+            ;;
+        2)
+            apply_huginn_database_template_preset "postgresql"
+            save_huginn_setting "HUGINN_DATABASE_ADAPTER" "postgresql"
+            echo -e "${GREEN}Aktive Huginn-Datenbank: PostgreSQL${NC}"
+            ;;
+        *)
+            return 1
+            ;;
+    esac
+
     return 0
 }
 
@@ -210,6 +365,7 @@ show_huginn_paths() {
     echo -e "${YELLOW}Installationswerte: ${HUGINN_SETTINGS_FILE}${NC}"
     echo -e "${YELLOW}Laufzeitdatei: ${HUGINN_RUNTIME_ENV}${NC}"
     echo -e "${YELLOW}Aktiver HUGINN_REPO_REF: $(current_huginn_repo_ref)${NC}"
+    echo -e "${YELLOW}Aktiver Datenbank-Adapter: $(current_huginn_database_adapter)${NC}"
     echo -e "${YELLOW}Guide: docs/HUGINN_ENV_GUIDE.md${NC}"
     echo -e "${YELLOW}Tipp: Oeffentliche Freigaben nur ueber Reverse Proxy, Cloudflare Tunnel oder Tailscale.${NC}"
     pause_screen
@@ -219,13 +375,14 @@ show_huginn_config_menu() {
     rm -f "$HUGINN_CONFIG_CHOICE_FILE"
     dialog --clear --backtitle "OpenClaw Ultimate Setup" \
         --cancel-label "Zurueck" \
-        --title "HUGINN .env KONFIGURATION" --menu "Waehlen Sie eine Aktion fuer die Huginn-.env:" 20 100 10 \
+        --title "HUGINN .env KONFIGURATION" --menu "Waehlen Sie eine Aktion fuer die Huginn-.env:" 22 100 10 \
         "1" "Huginn-.env-Vorlage bearbeiten" \
         "2" "Vorlage auf /opt/huginn/.env anwenden" \
         "3" "Aktuelle /opt/huginn/.env in Vorlage uebernehmen" \
         "4" "Huginn-Upstream-Stand (HUGINN_REPO_REF) auswaehlen" \
-        "5" "Pfade und Hinweise anzeigen" \
-        "6" "Beenden" 2> "$HUGINN_CONFIG_CHOICE_FILE"
+        "5" "Huginn-Datenbanktechnik auswaehlen" \
+        "6" "Pfade und Hinweise anzeigen" \
+        "7" "Beenden" 2> "$HUGINN_CONFIG_CHOICE_FILE"
 }
 
 main() {
@@ -253,9 +410,13 @@ main() {
                 pause_screen
                 ;;
             5)
-                show_huginn_paths
+                choose_huginn_database_adapter
+                pause_screen
                 ;;
             6)
+                show_huginn_paths
+                ;;
+            7)
                 break
                 ;;
             *)
@@ -266,8 +427,13 @@ main() {
 }
 if [ "${1:-}" = "--prepare-install" ]; then
     ensure_user_workspace
-    choose_huginn_repo_ref
-    exit $?
+    if ! choose_huginn_repo_ref; then
+        exit 1
+    fi
+    if ! choose_huginn_database_adapter; then
+        exit 1
+    fi
+    exit 0
 fi
 
 main "$@"
