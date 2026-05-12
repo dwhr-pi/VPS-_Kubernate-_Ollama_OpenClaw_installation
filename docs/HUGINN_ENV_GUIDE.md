@@ -142,9 +142,39 @@ Wichtig:
 
 - Der `Manual Event Agent` muss den `Event Formatting Agent` als Empfaenger gesetzt haben.
 - Beim `Event Formatting Agent` sollte `Propagate immediately` auf `Yes` stehen.
+- Beim `Trigger Agent` ist `Propagate immediately` im aktuellen UI keine Textauswahl, sondern eine Checkbox direkt unter `Sources`.
 - Fuer die echte Verarbeitung reicht der Webserver allein nicht aus. Huginn braucht zusaetzlich einen laufenden Worker-Prozess.
 
 Wenn danach beim `Event Formatting Agent` `Last received event` und `Events created` hochgehen, funktioniert die Agent-Kette.
+
+## Website Agent Hinweis
+
+Beim `Website Agent` dieses Huginn-Stands muss der Wert in `extract` fuer HTML/XML als XPath-Ausdruck angegeben werden.
+
+Wichtig:
+
+- `value: "text"` ist hier nicht korrekt.
+- Fuer sichtbaren Text sollte stattdessen zum Beispiel `value: "string(.)"` oder `value: "normalize-space(.)"` verwendet werden.
+- Erst `css` waehlt die HTML-Knoten aus, danach liest `value` den Inhalt per XPath aus.
+
+Beispiel fuer einen robusteren ersten Website-Test:
+
+```json
+{
+  "expected_update_period_in_days": "2",
+  "url": "https://example.com/",
+  "type": "html",
+  "mode": "all",
+  "extract": {
+    "headline": {
+      "css": "h1",
+      "value": "string(.)"
+    }
+  }
+}
+```
+
+Wenn stattdessen `headline` oder `page_title` leer bleibt, liegt der Fehler oft nicht mehr am Abruf, sondern an einem unpassenden `value`-Ausdruck.
 
 ## Weitere Beispiele
 
