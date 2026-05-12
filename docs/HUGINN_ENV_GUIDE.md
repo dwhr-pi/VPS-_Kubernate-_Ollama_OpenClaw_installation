@@ -185,6 +185,27 @@ Wenn stattdessen `headline` oder `page_title` leer bleibt, liegt der Fehler oft 
   - Event empfangen
   - Agent-Kette verarbeiten
 
+## Scenario-Import Hinweis
+
+Beim Export und erneuten Import eines bestehenden Scenarios dieses Huginn-Stands kann der Import vorhandene Objekte anhand ihrer internen Export-Identitaet wiedererkennen und aktualisieren.
+
+Das bedeutet praktisch:
+
+- Wenn ein Scenario exportiert wird,
+- danach lokal nur umbenannt wird,
+- und dann dieselbe Exportdatei erneut importiert wird,
+
+kann der Import den lokalen Datensatz wieder mit dem Namen aus der Exportdatei ueberschreiben.
+
+Wichtig:
+
+- Das ist in diesem Fall nicht automatisch ein neuer Installationsfehler.
+- Fuer einen echten Klon oder eine parallele Variante sollte nicht einfach dieselbe Exportdatei unveraendert erneut importiert werden.
+- Fuer sichere Tests besser:
+  - das Scenario nur bearbeiten statt reimportieren,
+  - oder vor dem Reimport die alte Testvariante loeschen,
+  - oder die Exportdatei gezielt fuer einen echten Klon anpassen.
+
 ## Huginn lokal starten
 
 Fuer einen funktionierenden lokalen Betrieb auf diesem Setup werden zwei Prozesse gebraucht:
