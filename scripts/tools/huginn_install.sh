@@ -138,6 +138,24 @@ path.write_text(text, encoding="utf-8")
 PY
 }
 
+apply_huginn_jobs_yaml_fix() {
+    if [ ! -f app/helpers/jobs_helper.rb ]; then
+        return 1
+    fi
+
+    python3 - <<'PY'
+from pathlib import Path
+
+path = Path("app/helpers/jobs_helper.rb")
+text = path.read_text(encoding="utf-8")
+old = "    data = YAML.load(job.handler.to_s).try(:job_data)\n"
+new = "    data = YAML.unsafe_load(job.handler.to_s).try(:job_data)\n"
+if old in text:
+    text = text.replace(old, new, 1)
+path.write_text(text, encoding="utf-8")
+PY
+}
+
 current_database_adapter() {
     awk -F= '/^DATABASE_ADAPTER=/{print $2}' .env 2>/dev/null | tail -n 1 | tr -d '\r" '
 }
@@ -1096,6 +1114,7 @@ ensure_secret_token
 ensure_huginn_invitation_code
 ensure_production_env_defaults
 apply_huginn_dry_runnable_kwarg_fix
+apply_huginn_jobs_yaml_fix
 chmod o-rwx .env 2>/dev/null || true
 
 echo -e "${GREEN}4/5: Installiere Ruby Gems mit Bundler...${NC}"
