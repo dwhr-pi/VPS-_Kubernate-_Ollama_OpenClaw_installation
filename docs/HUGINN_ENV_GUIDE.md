@@ -231,6 +231,38 @@ Ohne den Worker werden Events oft nur in die Queue gelegt, aber nicht weitervera
 - `Last received event` bleibt auf `never`
 - Job-Eintraege erscheinen, werden aber nicht sauber abgearbeitet
 
+## Huginn als lokaler Dauerbetrieb
+
+Das Setup richtet Huginn jetzt nach erfolgreicher Installation nach Moeglichkeit auch als zwei lokale `systemd`-Dienste ein:
+
+- `huginn-web.service`
+- `huginn-worker.service`
+
+Die Rollen bleiben dabei gleich:
+
+- `huginn-web.service` startet die Weboberflaeche
+- `huginn-worker.service` verarbeitet Jobs, Events und Agent-Ketten
+
+Nützliche Befehle:
+
+```bash
+sudo systemctl status huginn-web.service huginn-worker.service
+```
+
+```bash
+sudo systemctl restart huginn-web.service huginn-worker.service
+```
+
+```bash
+sudo systemctl stop huginn-web.service huginn-worker.service
+```
+
+```bash
+sudo systemctl start huginn-web.service huginn-worker.service
+```
+
+Wenn `systemd` in der Zielumgebung nicht verfuegbar ist, bleibt der manuelle Zwei-Prozess-Start aus den obigen Befehlen der Fallback.
+
 ## Freigabe nach aussen
 
 Die Huginn-Weboberflaeche sollte nicht roh ins Internet gestellt werden.

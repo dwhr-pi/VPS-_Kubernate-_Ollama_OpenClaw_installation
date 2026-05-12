@@ -29,6 +29,97 @@ HUGINN_ENABLE_NET_IMAP_COMPAT_ON_RUBY32="${HUGINN_ENABLE_NET_IMAP_COMPAT_ON_RUBY
 HUGINN_DISABLE_GMAIL_XOAUTH_ON_NET_IMAP_FAILURE="${HUGINN_DISABLE_GMAIL_XOAUTH_ON_NET_IMAP_FAILURE:-true}"
 HUGINN_ENABLE_MYSQL2_RUBY32_COMPAT="${HUGINN_ENABLE_MYSQL2_RUBY32_COMPAT:-true}"
 HUGINN_SKIP_SYSTEM_PACKAGES="${HUGINN_SKIP_SYSTEM_PACKAGES:-false}"
+HUGINN_SYSTEMD_WEB_SERVICE="${HUGINN_SYSTEMD_WEB_SERVICE:-huginn-web.service}"
+HUGINN_SYSTEMD_WORKER_SERVICE="${HUGINN_SYSTEMD_WORKER_SERVICE:-huginn-worker.service}"
+
+current_huginn_service_user() {
+    if [ -n "${SUDO_USER:-}" ] && [ "${SUDO_USER}" != "root" ]; then
+        printf '%s' "$SUDO_USER"
+    else
+        printf '%s' "$USER"
+    fi
+}
+
+current_huginn_service_home() {
+    local service_user
+    service_user="$(current_huginn_service_user)"
+    getent passwd "$service_user" | cut -d: -f6
+}
+
+systemd_available_for_huginn() {
+    command -v systemctl >/dev/null 2>&1 && [ -d /run/systemd/system ]
+}
+
+install_huginn_systemd_units() {
+    if ! systemd_available_for_huginn; then
+        echo -e "${YELLOW}Hinweis: systemd ist in dieser Umgebung nicht verfuegbar. Huginn wird nicht als Dienst eingerichtet.${NC}"
+        return 1
+    fi
+
+    local service_user service_home
+    service_user="$(current_huginn_service_user)"
+    service_home="$(current_huginn_service_home)"
+
+    if [ -z "$service_home" ]; then
+        echo -e "${YELLOW}Warnung: Konnte kein Home-Verzeichnis fuer den Huginn-Dienstbenutzer ermitteln.${NC}"
+        return 1
+    fi
+
+    sudo tee "/etc/systemd/system/${HUGINN_SYSTEMD_WEB_SERVICE}" >/dev/null <<EOF
+[Unit]
+Description=Huginn Web Server
+After=network.target mariadb.service mysql.service postgresql.service
+Wants=network.target
+
+[Service]
+Type=simple
+User=${service_user}
+WorkingDirectory=${HUGINN_DIR}
+Environment=HOME=${service_home}
+Environment=RAILS_ENV=production
+Environment=RAILS_SERVE_STATIC_FILES=1
+ExecStart=/usr/bin/env bash -lc 'bundle exec rails server -b 127.0.0.1 -p 3000'
+Restart=always
+RestartSec=5
+TimeoutStopSec=30
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+    sudo tee "/etc/systemd/system/${HUGINN_SYSTEMD_WORKER_SERVICE}" >/dev/null <<EOF
+[Unit]
+Description=Huginn Worker
+After=network.target mariadb.service mysql.service postgresql.service ${HUGINN_SYSTEMD_WEB_SERVICE}
+Wants=network.target
+
+[Service]
+Type=simple
+User=${service_user}
+WorkingDirectory=${HUGINN_DIR}
+Environment=HOME=${service_home}
+Environment=RAILS_ENV=production
+ExecStart=/usr/bin/env bash -lc 'bundle exec rails runner bin/threaded.rb'
+Restart=always
+RestartSec=5
+TimeoutStopSec=30
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+    sudo systemctl daemon-reload
+}
+
+enable_and_start_huginn_systemd_units() {
+    if ! systemd_available_for_huginn; then
+        return 1
+    fi
+
+    sudo systemctl enable "$HUGINN_SYSTEMD_WEB_SERVICE" "$HUGINN_SYSTEMD_WORKER_SERVICE"
+    sudo systemctl restart "$HUGINN_SYSTEMD_WEB_SERVICE"
+    sudo systemctl restart "$HUGINN_SYSTEMD_WORKER_SERVICE"
+}
 
 ensure_secret_token() {
     if grep -Eq '^APP_SECRET_TOKEN=.+$' .env 2>/dev/null; then
@@ -1421,6 +1512,16 @@ if ! RAILS_ENV=production bundle exec rake assets:precompile; then
     exit 1
 fi
 
+echo -e "${GREEN}7/7: Richte optionalen Dauerbetrieb als lokale systemd-Dienste ein...${NC}"
+if install_huginn_systemd_units; then
+    if enable_and_start_huginn_systemd_units; then
+        echo -e "${GREEN}Huginn Dauerbetrieb aktiviert: ${HUGINN_SYSTEMD_WEB_SERVICE} und ${HUGINN_SYSTEMD_WORKER_SERVICE}.${NC}"
+    else
+        echo -e "${YELLOW}Warnung: Die Huginn-Dienste wurden angelegt, konnten aber nicht automatisch gestartet werden.${NC}"
+        echo -e "${YELLOW}Pruefe spaeter mit: sudo systemctl status ${HUGINN_SYSTEMD_WEB_SERVICE} ${HUGINN_SYSTEMD_WORKER_SERVICE}${NC}"
+    fi
+fi
+
 echo -e "${YELLOW}Hinweis: Das Seeding von Huginn wurde nicht blind automatisiert, damit keine unsicheren Standard-Zugangsdaten entstehen.${NC}"
 echo -e "${YELLOW}Wenn du Beispiel-Daten oder einen Startbenutzer anlegen willst, führe danach bewusst 'RAILS_ENV=production bundle exec rake db:seed' aus.${NC}"
 echo -e "${YELLOW}Huginn Invitation Code: $(current_huginn_invitation_code)${NC}"
@@ -1428,6 +1529,8 @@ echo -e "${YELLOW}Zum Nachlesen im Terminal: grep '^INVITATION_CODE=' $HUGINN_DI
 echo -e "${YELLOW}Optionaler erster Admin ohne Web-Registrierung:${NC}"
 echo "cd $HUGINN_DIR && RAILS_ENV=production bundle exec rails runner \"u=User.new(username: 'admin', email: 'admin@example.com', password: 'change-me-now', password_confirmation: 'change-me-now', admin: true); u.requires_no_invitation_code!; u.save!\""
 echo -e "${YELLOW}Start-Hinweis: RAILS_ENV=production RAILS_SERVE_STATIC_FILES=1 bundle exec rails server -p 3000${NC}"
+echo -e "${YELLOW}Dienst-Status: sudo systemctl status ${HUGINN_SYSTEMD_WEB_SERVICE} ${HUGINN_SYSTEMD_WORKER_SERVICE}${NC}"
+echo -e "${YELLOW}Dienst-Neustart: sudo systemctl restart ${HUGINN_SYSTEMD_WEB_SERVICE} ${HUGINN_SYSTEMD_WORKER_SERVICE}${NC}"
 
 mark_current_tool_installed
 echo -e "${GREEN}Huginn Installation abgeschlossen.${NC}"

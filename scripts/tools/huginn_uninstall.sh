@@ -17,8 +17,17 @@ source "$INSTALL_DIR/scripts/helpers/status_tracking.sh"
 init_tool_tracking "Huginn"
 
 HUGINN_DIR="/opt/huginn"
+HUGINN_SYSTEMD_WEB_SERVICE="${HUGINN_SYSTEMD_WEB_SERVICE:-huginn-web.service}"
+HUGINN_SYSTEMD_WORKER_SERVICE="${HUGINN_SYSTEMD_WORKER_SERVICE:-huginn-worker.service}"
 
 echo -e "${BLUE}Starte Deinstallation von Huginn...${NC}"
+
+if command -v systemctl >/dev/null 2>&1 && [ -d /run/systemd/system ]; then
+    echo -e "${YELLOW}Stoppe und entferne lokale Huginn-Dienste...${NC}"
+    sudo systemctl disable --now "$HUGINN_SYSTEMD_WEB_SERVICE" "$HUGINN_SYSTEMD_WORKER_SERVICE" 2>/dev/null || true
+    sudo rm -f "/etc/systemd/system/${HUGINN_SYSTEMD_WEB_SERVICE}" "/etc/systemd/system/${HUGINN_SYSTEMD_WORKER_SERVICE}"
+    sudo systemctl daemon-reload
+fi
 
 if [ -d "$HUGINN_DIR" ]; then
     echo -e "${YELLOW}Lösche Huginn Verzeichnis $HUGINN_DIR...${NC}"
