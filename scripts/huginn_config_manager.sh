@@ -95,8 +95,8 @@ choose_huginn_repo_ref() {
     dialog --clear --backtitle "OpenClaw Ultimate Setup" \
         --cancel-label "Zurueck" \
         --title "HUGINN UPSTREAM-STAND" --radiolist \
-        "Waehlen Sie den Huginn-Upstream-Stand. Die empfohlene Version ist v2022.08.18. Andere Werte koennen Sie hier im Setup auswaehlen oder festlegen." \
-        20 110 8 \
+        "Waehlen Sie den Huginn-Upstream-Stand.\nEmpfohlen: v2022.08.18\nAndere Werte koennen Sie hier im Setup auswaehlen oder festlegen." \
+        18 92 8 \
         "stable_recommended" "Empfohlen: v2022.08.18" "$([ "$current_ref" = "v2022.08.18" ] && echo on || echo off)" \
         "main_branch" "GitHub main (aktueller Upstream-Stand)" "$([ "$current_ref" = "main" ] && echo on || echo off)" \
         "custom_ref" "Andere Referenz manuell festlegen" "$([ "$current_ref" != "v2022.08.18" ] && [ "$current_ref" != "main" ] && echo on || echo off)" \
