@@ -156,6 +156,39 @@ path.write_text(text, encoding="utf-8")
 PY
 }
 
+apply_huginn_web_request_faraday_fix() {
+    if [ ! -f app/concerns/web_request_concern.rb ]; then
+        return 1
+    fi
+
+    python3 - <<'PY'
+from pathlib import Path
+
+path = Path("app/concerns/web_request_concern.rb")
+text = path.read_text(encoding="utf-8")
+old = """  class CharacterEncoding < Faraday::Middleware
+    def initialize(app, force_encoding: nil, default_encoding: nil, unzip: nil)
+      super(app)
+      @force_encoding   = force_encoding
+      @default_encoding = default_encoding
+      @unzip            = unzip
+    end
+"""
+new = """  class CharacterEncoding < Faraday::Middleware
+    def initialize(app = nil, options = nil, force_encoding: nil, default_encoding: nil, unzip: nil)
+      super(app)
+      options = options.is_a?(Hash) ? options : {}
+      @force_encoding   = force_encoding || options[:force_encoding]
+      @default_encoding = default_encoding || options[:default_encoding]
+      @unzip            = unzip || options[:unzip]
+    end
+"""
+if old in text:
+    text = text.replace(old, new, 1)
+path.write_text(text, encoding="utf-8")
+PY
+}
+
 current_database_adapter() {
     awk -F= '/^DATABASE_ADAPTER=/{print $2}' .env 2>/dev/null | tail -n 1 | tr -d '\r" '
 }
@@ -1115,6 +1148,7 @@ ensure_huginn_invitation_code
 ensure_production_env_defaults
 apply_huginn_dry_runnable_kwarg_fix
 apply_huginn_jobs_yaml_fix
+apply_huginn_web_request_faraday_fix
 chmod o-rwx .env 2>/dev/null || true
 
 echo -e "${GREEN}4/5: Installiere Ruby Gems mit Bundler...${NC}"
