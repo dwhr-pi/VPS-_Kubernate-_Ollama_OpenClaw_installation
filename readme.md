@@ -39,7 +39,7 @@ Dieser Befehl lädt das `install.sh` Skript herunter und führt es aus. Das Skri
 
 **Für die OpenClaw `.env`:** Eine eigene Detaildokumentation zur `.env`-Struktur, zu den Feldern und zur originalen OpenClaw-Vorlage findest du in [docs/OPENCLAW_ENV_GUIDE.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/OPENCLAW_ENV_GUIDE.md:1).
 
-**Für die Huginn `.env`:** Die Huginn-spezifische Vorlage, der Benutzer-Workspace-Pfad und die Runtime-Datei unter `/opt/huginn/.env` sind jetzt in [docs/HUGINN_ENV_GUIDE.md](/C:/Users/danie/.codex/worktrees/8354/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/HUGINN_ENV_GUIDE.md:1) dokumentiert.
+**Für die Huginn `.env`:** Die Huginn-spezifische Vorlage, der Benutzer-Workspace-Pfad, der `INVITATION_CODE` und die Runtime-Datei unter `/opt/huginn/.env` sind jetzt in [docs/HUGINN_ENV_GUIDE.md](/C:/Users/danie/.codex/worktrees/8354/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/HUGINN_ENV_GUIDE.md:1) dokumentiert.
 
 **Für eigene Forks und Custom-Builds:** Die neue Anleitung für benutzerdefinierte GitHub-Quellen, eigene Repositories, GGUF-Exporte und `ollama create` findest du in [docs/CUSTOM_SOURCES_AND_BUILDS.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/CUSTOM_SOURCES_AND_BUILDS.md:1).
 
@@ -216,14 +216,15 @@ bash ./setup_ultimate.sh
 
 ## 🔁 Setup aktualisieren oder lokal entfernen
 
-Wenn es Änderungen im Repository gab und du dein bestehendes Setup aktualisieren möchtest, ziehe zuerst den aktuellen Stand und starte danach das Menü erneut:
+Wenn es Änderungen im Repository gab und du dein bestehendes Setup aktualisieren möchtest, wird jetzt bewusst ein **harter Repo-Abgleich** empfohlen. So bleiben keine alten Setup-Dateien halb stehen, während dein ausgelagerter Benutzer-Workspace erhalten bleibt:
 
 ```bash
 cd ~/openclaw_ultimate_setup
 git status --short
 git fetch origin --prune
 git checkout main 2>/dev/null || git checkout -b main --track origin/main
-git pull --ff-only origin main
+git reset --hard origin/main
+git clean -fd
 printf '\nDas Repository ist jetzt aktualisiert.\n'
 printf 'Du kannst die aktuelle Terminal-Ausgabe jetzt in Ruhe lesen oder kopieren.\n'
 read -rp "Drücke Enter, um danach das Setup-Menü zu starten ... "
@@ -234,20 +235,17 @@ Wenn du vor dem Neustart des Menüs den angezeigten Stand erst prüfen möchtest
 
 Wichtig:
 
-- Die Pause erscheint nur dann, wenn `git pull` erfolgreich war.
-- Wenn schon davor eine Meldung wie `Your local changes ... would be overwritten by merge` erscheint, wurde das Repository nicht aktualisiert und `bash ./setup_ultimate.sh` startet noch nicht.
-- In diesem Fall prüfe zuerst den `git status --short`-Auszug. Wenn dort z. B. `M scripts/tools/huginn_install.sh` steht, liegt eine lokale Änderung im Setup-Repository vor.
-- Dann hast du drei sichere Wege:
-  - lokale Änderung bewusst committen oder stashen
-  - im Setup-Menü `Setup hart mit GitHub main abgleichen` verwenden
-  - oder manuell hart zurücksetzen, wenn du die lokalen Setup-Änderungen sicher verwerfen willst
+- Die Pause erscheint nur dann, wenn der harte Repo-Abgleich erfolgreich war.
+- `git reset --hard origin/main` und `git clean -fd` verwerfen lokale Änderungen und ungetrackte Zusatzdateien **im Setup-Repository**.
+- Dein ausgelagerter Benutzer-Workspace unter `~/.openclaw_ultimate_user_data` bleibt dabei erhalten.
+- Die neueren Update-Skripte legen vor dem harten Abgleich zusätzlich eine Sicherung der verworfenen Repo-Differenzen unter `~/.openclaw_ultimate_user_data/repo_update_backups` an.
 
-Wenn dabei eine Meldung zu lokalen Änderungen in Dateien wie `install.sh` oder `setup_ultimate.sh` erscheint, dann blockiert nicht GitHub das Update, sondern dein lokales Setup-Repository ist nicht mehr sauber. Das kann auch schon durch ältere Teststände oder frühere lokale Dateien passieren, selbst wenn du selbst nichts bewusst bearbeitet hast.
+Wenn dabei vorher lokale Änderungen in Dateien wie `install.sh` oder `setup_ultimate.sh` auftauchen, ist das gerade der Grund für den harten Abgleich: Das Repo soll vollständig auf `origin/main` zurück, statt nur teilweise über `git pull` aktualisiert zu werden.
 
 In diesem Fall gibt es jetzt zwei sichere Wege:
 
-- im Menü den Punkt `Setup hart mit GitHub main abgleichen` verwenden
-- oder den One-Liner-Installer erneut starten und den angebotenen harten Repo-Abgleich bestätigen
+- im Menü den Punkt `Setup-Repository hart reparieren / auf GitHub main zurücksetzen` verwenden
+- oder den One-Liner-Installer erneut starten, der bei vorhandenem Repo jetzt ebenfalls den harten Abgleich verwendet
 
 Wichtig dabei:
 
@@ -257,7 +255,7 @@ Wichtig dabei:
 
 Alternativ kannst du im Menü den Punkt `Setup-Update + System-Update (Repo, OS & pnpm)` nutzen. Dieser zieht den aktuellen Repository-Stand direkt im Setup-Verzeichnis und aktualisiert danach Ubuntu sowie `pnpm`.
 
-Wenn danach trotzdem noch ein älterer Setup-Stand angezeigt wird, liegen im Verzeichnis oft noch lokale Änderungen oder Zusatzdateien. Dann zieht `git pull` absichtlich nicht einfach darüber.
+Wenn danach trotzdem noch ein älterer Setup-Stand angezeigt wird, sollte zuerst geprüft werden, ob wirklich das richtige Repository-Verzeichnis verwendet wird. Ein normaler `git pull` ist dafür nicht mehr der empfohlene Weg.
 
 Prüfen:
 
@@ -266,7 +264,7 @@ cd ~/openclaw_ultimate_setup
 git status
 ```
 
-Wenn du sicher bist, dass lokale Setup-Änderungen verworfen werden dürfen, kannst du das Setup hart auf den aktuellen GitHub-Stand zurücksetzen:
+Wenn du den harten Repo-Abgleich lieber manuell ausführen möchtest, kannst du das Setup so direkt auf den aktuellen GitHub-Stand zurücksetzen:
 
 ```bash
 cd ~/openclaw_ultimate_setup
@@ -280,7 +278,7 @@ bash ./setup_ultimate.sh
 
 Dafür gibt es jetzt auch direkt im Menü einen eigenen Punkt:
 
-- `Setup hart mit GitHub main abgleichen`
+- `Setup-Repository hart reparieren / auf GitHub main zurücksetzen`
 
 Dieser Weg ist hilfreich, wenn trotz normalem `git pull` noch ein älterer Setup-Stand angezeigt wird.
 

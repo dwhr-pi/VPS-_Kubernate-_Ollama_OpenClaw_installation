@@ -7,6 +7,9 @@ Diese Datei dient als dauerhafte Projekt-Erinnerung fuer spaetere Chats und Folg
 ### Huginn
 
 - Der aktuelle Huginn-Installer wurde intensiv fuer Ruby `3.2.x` gehaertet.
+- Das Setup erzeugt jetzt auch automatisch einen echten Huginn-`INVITATION_CODE`, wenn die `.env` noch leer ist oder noch auf dem unsicheren Default `try-huginn` steht.
+- Der aktuelle Huginn-Invitation-Code laesst sich jederzeit mit `grep '^INVITATION_CODE=' /opt/huginn/.env` im Terminal nachlesen.
+- Der erste Huginn-Admin kann bei Bedarf ohne Web-Registrierung direkt per `rails runner` angelegt werden, indem `requires_no_invitation_code!` gesetzt wird.
 - Die alten problematischen Huginn-Zweige werden jetzt proaktiv erkannt und bei Bedarf entschärft:
   - `google-cloud-translate` / `grpc 1.42.0`
   - `mini_racer` / `libv8-node`
@@ -39,10 +42,30 @@ Geprueft wurden:
 
 Aktueller Befund:
 
-- Eine aktive MySQL-/MariaDB-Nutzung ist im aktuellen Setup vor allem bei `Huginn` sichtbar.
-- In den aktuellen Profilskripten ausserhalb von Huginn wurde keine weitere direkte MySQL-/MariaDB-Verwendung gefunden.
-- In den aktuellen Stack-Dateien unter `stacks/` wurde ebenfalls keine weitere direkte MySQL-/MariaDB-Verwendung gefunden.
-- Wenn spaeter weitere Komponenten MySQL oder MariaDB nutzen sollen, sollte diese Datei erweitert werden.
+- Eine aktive MySQL-/MariaDB-Nutzung ist im aktuellen Setup derzeit vor allem bei `Huginn` sichtbar.
+- Das Trading-Profil mit `Zenbot_trader` bzw. der verlinkten externen GitHub-Plattform richtet im lokalen Setup aktuell **keinen** MySQL-/MariaDB-Dienst ein.
+- Fuer `ZenTrade AI` wurde im aktuellen lokalen Repository **kein** eigener Quelltreffer gefunden. Falls spaeter ein externer `ZenTrade AI`-Stand angebunden wird, muss dessen Datenbankbedarf separat im Zielrepo geprueft werden.
+- In den aktuellen Profilskripten und Stacks gibt es ausdrueckliche **PostgreSQL- und SQLite-Pfade**, die nicht pauschal auf MySQL/MariaDB umgestellt werden sollten.
+
+### Bewusste DB-Ausnahmen im Projekt
+
+Diese Komponenten sind im aktuellen Setup fachlich bewusst nicht auf MySQL/MariaDB verdrahtet:
+
+- `Data_Engineering` installiert explizit `postgres` und `pgvector`.
+- `Personal_Knowledge_OS` installiert explizit `sqlite_vec`.
+- `Programmierer` fuehrt sowohl `sqlite` als auch `postgres` als allgemeine Infrastrukturbausteine.
+- `Langfuse` nutzt im Tool-Setup PostgreSQL.
+- `Healthchecks` nutzt im Tool-Setup PostgreSQL.
+- `Paperless_NGX` nutzt im Tool-Setup PostgreSQL.
+- `llmops-platform` nutzt fuer `langfuse` einen eigenen PostgreSQL-Dienst.
+- Das Kubernetes-Beispiel fuer `zenbot` zeigt aktuell `MongoDB`, nicht MySQL/MariaDB.
+
+### Projektregel fuer kuenftige Chats
+
+- MariaDB/MySQL soll im Projekt bevorzugt dort verwendet werden, wo der Zielstack frei zwischen Adaptern waehlen kann und der Betrieb damit vereinheitlicht werden soll.
+- PostgreSQL-, SQLite- oder MongoDB-native Pfade sollen **nicht** automatisch auf MariaDB/MySQL umgestellt werden, nur um einen globalen Einheitsstandard zu erzwingen.
+- Vor jeder kuenftigen DB-Umstellung ist zuerst zu pruefen, ob der jeweilige Upstream-Stack technisch oder dokumentarisch auf PostgreSQL, SQLite oder MongoDB zugeschnitten ist.
+- Fuer `Huginn` ist MySQL/MariaDB aktuell der reale operative Kandidat, solange keine bewusste Entscheidung fuer `postgresql` oder `sqlite3` getroffen wird.
 
 ### Praktische Schlussfolgerung
 

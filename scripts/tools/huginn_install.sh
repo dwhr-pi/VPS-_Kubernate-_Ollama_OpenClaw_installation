@@ -45,10 +45,97 @@ ensure_secret_token() {
     echo "APP_SECRET_TOKEN=$secret_token" >> .env
 }
 
+generate_huginn_invitation_code() {
+    if [ -n "${HUGINN_INVITATION_CODE:-}" ]; then
+        printf '%s' "$HUGINN_INVITATION_CODE"
+        return 0
+    fi
+
+    if command -v openssl >/dev/null 2>&1; then
+        openssl rand -hex 12
+    else
+        printf 'huginn-%s' "$(date +%s)"
+    fi
+}
+
+ensure_huginn_invitation_code() {
+    local invitation_code
+
+    invitation_code="$(awk -F= '/^INVITATION_CODE=/{print $2}' .env 2>/dev/null | tail -n 1 | tr -d '\r\" ')"
+    if [ -n "$invitation_code" ] && [ "$invitation_code" != "try-huginn" ]; then
+        return 0
+    fi
+
+    invitation_code="$(generate_huginn_invitation_code)"
+    python3 - "$invitation_code" <<'PY'
+from pathlib import Path
+import sys
+
+path = Path(".env")
+text = path.read_text(encoding="utf-8")
+code = sys.argv[1]
+new_line = f"INVITATION_CODE={code}"
+
+if "INVITATION_CODE=" in text:
+    lines = text.splitlines()
+    for idx, line in enumerate(lines):
+        if line.startswith("INVITATION_CODE="):
+            lines[idx] = new_line
+            break
+    text = "\n".join(lines) + ("\n" if text.endswith("\n") else "")
+else:
+    if text and not text.endswith("\n"):
+        text += "\n"
+    text += new_line + "\n"
+
+path.write_text(text, encoding="utf-8")
+PY
+}
+
+current_huginn_invitation_code() {
+    awk -F= '/^INVITATION_CODE=/{print $2}' .env 2>/dev/null | tail -n 1 | tr -d '\r\" '
+}
+
 ensure_production_env_defaults() {
     if ! grep -Eq '^RAILS_ENV=' .env 2>/dev/null; then
         echo "RAILS_ENV=production" >> .env
     fi
+}
+
+apply_huginn_dry_runnable_kwarg_fix() {
+    if [ ! -f app/concerns/dry_runnable.rb ]; then
+        return 1
+    fi
+
+    python3 - <<'PY'
+from pathlib import Path
+
+path = Path("app/concerns/dry_runnable.rb")
+text = path.read_text(encoding="utf-8")
+old = """    def save(options = {})
+      return super unless dry_run?
+      perform_validations(options)
+    end
+
+    def save!(options = {})
+      return super unless dry_run?
+      save(options) or raise_record_invalid
+    end
+"""
+new = """    def save(**options)
+      return super(**options) unless dry_run?
+      perform_validations(options)
+    end
+
+    def save!(**options)
+      return super(**options) unless dry_run?
+      save(**options) or raise_record_invalid
+    end
+"""
+if old in text:
+    text = text.replace(old, new, 1)
+path.write_text(text, encoding="utf-8")
+PY
 }
 
 current_database_adapter() {
@@ -228,7 +315,7 @@ PY
 }
 
 ensure_huginn_gmail_xoauth_compat_gems() {
-    if grep -Eq "^gem 'net-imap'" Gemfile 2>/dev/null && grep -Eq "^gem 'net-smtp'" Gemfile 2>/dev/null; then
+    if grep -Eq "^gem 'net-imap'" Gemfile 2>/dev/null && grep -Eq "^gem 'net-smtp'" Gemfile 2>/dev/null && grep -Eq "^gem 'net-pop'" Gemfile 2>/dev/null; then
         return 0
     fi
 
@@ -238,9 +325,17 @@ from pathlib import Path
 path = Path("Gemfile")
 text = path.read_text(encoding="utf-8")
 needle = "gem 'gmail_xoauth' # support for Gmail using OAuth"
-insert = "gem 'gmail_xoauth' # support for Gmail using OAuth\ngem 'net-imap', '~> 0.4', require: false # Ruby-3.x Kompatibilitaet fuer gmail_xoauth\ngem 'net-smtp', require: false # Ruby-3.x Kompatibilitaet fuer gmail_xoauth"
-if needle in text and "gem 'net-imap'" not in text and "gem 'net-smtp'" not in text:
-    text = text.replace(needle, insert, 1)
+insert = "gem 'gmail_xoauth' # support for Gmail using OAuth\ngem 'net-imap', '~> 0.4', require: false # Ruby-3.x Kompatibilitaet fuer gmail_xoauth\ngem 'net-smtp', require: false # Ruby-3.x Kompatibilitaet fuer gmail_xoauth\ngem 'net-pop', require: false # Ruby-3.x Kompatibilitaet fuer mail/pop3"
+if needle in text:
+    additions = []
+    if "gem 'net-imap'" not in text:
+        additions.append("gem 'net-imap', '~> 0.4', require: false # Ruby-3.x Kompatibilitaet fuer gmail_xoauth")
+    if "gem 'net-smtp'" not in text:
+        additions.append("gem 'net-smtp', require: false # Ruby-3.x Kompatibilitaet fuer gmail_xoauth")
+    if "gem 'net-pop'" not in text:
+        additions.append("gem 'net-pop', require: false # Ruby-3.x Kompatibilitaet fuer mail/pop3")
+    if additions:
+        text = text.replace(needle, needle + "\n" + "\n".join(additions), 1)
 path.write_text(text, encoding="utf-8")
 PY
     return 0
@@ -672,6 +767,11 @@ persist_huginn_lockfile() {
     fi
 }
 
+bundle_log_contains_net_imap_resolution_failure() {
+    local bundle_log_file="$1"
+    grep -Eq "Could not find gem 'net-imap'|Could not find gem 'net-smtp'|Could not find gem 'net-pop'" "$bundle_log_file" 2>/dev/null
+}
+
 lockfile_contains_pattern() {
     local pattern="$1"
     if [ ! -f Gemfile.lock ]; then
@@ -855,12 +955,22 @@ prepare_huginn_net_imap_stack_if_needed() {
 
     if ruby_version_at_least "3.1" && legacy_huginn_net_imap_stack_present; then
         echo -e "${YELLOW}Hinweis: Ruby $(ruby -e 'print RUBY_VERSION') trifft auf den alten Huginn-Gmail/gmail_xoauth-Stack.${NC}"
-        echo -e "${YELLOW}Ergänze die ausgelagerten Ruby-Stdlib-Gems net-imap und net-smtp vorsorglich, bevor Rails spaeter an gmail_xoauth scheitert...${NC}"
+        echo -e "${YELLOW}Ergänze die ausgelagerten Ruby-Stdlib-Gems net-imap, net-smtp und net-pop vorsorglich, bevor Rails spaeter an gmail_xoauth oder mail/pop3 scheitert...${NC}"
         ensure_huginn_gmail_xoauth_compat_gems
-        persist_huginn_lockfile "$bundle_log_file" net-imap net-smtp nokogiri racc mini_portile2
+        persist_huginn_lockfile "$bundle_log_file" net-imap net-smtp net-pop nokogiri racc mini_portile2
         ensure_huginn_lockfile_without_disabled_gems "$bundle_log_file"
         ensure_huginn_lockfile_without_nokogiri_legacy_linux "$bundle_log_file"
-        echo -e "${YELLOW}Huginn wurde fuer diesen Lauf mit net-imap/net-smtp-Kompatibilitaet fuer gmail_xoauth vorbereitet.${NC}"
+        if bundle_log_contains_net_imap_resolution_failure "$bundle_log_file" && [ "${HUGINN_DISABLE_GMAIL_XOAUTH_ON_NET_IMAP_FAILURE}" = "true" ] && disable_huginn_gmail_xoauth_support; then
+            echo -e "${YELLOW}Hinweis: net-imap/net-smtp/net-pop konnte in diesem Huginn-Stand nicht sauber aufgeloest werden.${NC}"
+            echo -e "${YELLOW}Wechsle deshalb direkt auf den Gmail-OAuth-Fallback ohne gmail_xoauth, statt einen halben Compat-Stand zu behalten...${NC}"
+            prune_huginn_gmail_xoauth_lock_entries
+            persist_huginn_lockfile "$bundle_log_file" nokogiri racc mini_portile2
+            ensure_huginn_lockfile_without_disabled_gems "$bundle_log_file"
+            ensure_huginn_lockfile_without_nokogiri_legacy_linux "$bundle_log_file"
+            echo -e "${YELLOW}Huginn wurde fuer diesen Lauf ohne Gmail-OAuth-Unterstuetzung vorbereitet.${NC}"
+            return 0
+        fi
+        echo -e "${YELLOW}Huginn wurde fuer diesen Lauf mit net-imap/net-smtp/net-pop-Kompatibilitaet fuer gmail_xoauth vorbereitet.${NC}"
         return 0
     fi
 
@@ -983,7 +1093,9 @@ if [ ! -f .env ]; then
     fi
 fi
 ensure_secret_token
+ensure_huginn_invitation_code
 ensure_production_env_defaults
+apply_huginn_dry_runnable_kwarg_fix
 chmod o-rwx .env 2>/dev/null || true
 
 echo -e "${GREEN}4/5: Installiere Ruby Gems mit Bundler...${NC}"
@@ -1070,6 +1182,17 @@ while true; do
             bundle_repair_nokogiri_done="false"
             continue
         fi
+    fi
+
+    if bundle_log_contains_net_imap_resolution_failure "$bundle_log_file" && [ "${HUGINN_DISABLE_GMAIL_XOAUTH_ON_NET_IMAP_FAILURE}" = "true" ] && [ "$bundle_disable_gmail_xoauth_done" != "true" ] && disable_huginn_gmail_xoauth_support; then
+        echo -e "${YELLOW}Hinweis: net-imap/net-smtp konnte in diesem Huginn-Stand nicht sauber aufgeloest werden.${NC}"
+        echo -e "${YELLOW}Deaktiviere deshalb gmail_xoauth direkt und versuche Bundler danach erneut...${NC}"
+        prune_huginn_gmail_xoauth_lock_entries
+        persist_huginn_lockfile "$bundle_log_file" nokogiri racc mini_portile2
+        ensure_huginn_lockfile_without_disabled_gems "$bundle_log_file"
+        ensure_huginn_lockfile_without_nokogiri_legacy_linux "$bundle_log_file"
+        bundle_disable_gmail_xoauth_done="true"
+        continue
     fi
 
     if grep -Eq 'Your bundle is locked to google-protobuf|google-protobuf .* can no longer be found|An error occurred while installing grpc|google-cloud-translate was resolved to .* depends on|googleapis-common-protos was resolved to .* depends on[[:space:]]+grpc' "$bundle_log_file" && [ "${HUGINN_DISABLE_GOOGLE_TRANSLATE_ON_GRPC_FAILURE}" = "true" ] && [ "$bundle_disable_translate_done" != "true" ]; then
@@ -1239,9 +1362,19 @@ if ! RAILS_ENV=production bundle exec rake db:migrate; then
     exit 1
 fi
 
+echo -e "${GREEN}6/6: Vorkompiliere Production-Assets...${NC}"
+if ! RAILS_ENV=production bundle exec rake assets:precompile; then
+    echo -e "${RED}Fehler: Huginn Asset-Precompile fehlgeschlagen.${NC}"
+    exit 1
+fi
+
 echo -e "${YELLOW}Hinweis: Das Seeding von Huginn wurde nicht blind automatisiert, damit keine unsicheren Standard-Zugangsdaten entstehen.${NC}"
 echo -e "${YELLOW}Wenn du Beispiel-Daten oder einen Startbenutzer anlegen willst, führe danach bewusst 'RAILS_ENV=production bundle exec rake db:seed' aus.${NC}"
-echo -e "${YELLOW}Start-Hinweis: RAILS_ENV=production bundle exec rails server -p 3000${NC}"
+echo -e "${YELLOW}Huginn Invitation Code: $(current_huginn_invitation_code)${NC}"
+echo -e "${YELLOW}Zum Nachlesen im Terminal: grep '^INVITATION_CODE=' $HUGINN_DIR/.env${NC}"
+echo -e "${YELLOW}Optionaler erster Admin ohne Web-Registrierung:${NC}"
+echo "cd $HUGINN_DIR && RAILS_ENV=production bundle exec rails runner \"u=User.new(username: 'admin', email: 'admin@example.com', password: 'change-me-now', password_confirmation: 'change-me-now', admin: true); u.requires_no_invitation_code!; u.save!\""
+echo -e "${YELLOW}Start-Hinweis: RAILS_ENV=production RAILS_SERVE_STATIC_FILES=1 bundle exec rails server -p 3000${NC}"
 
 mark_current_tool_installed
 echo -e "${GREEN}Huginn Installation abgeschlossen.${NC}"
