@@ -53,6 +53,14 @@ pause_screen() {
     read -r -p "Druecken Sie Enter..."
 }
 
+reset_dialog_terminal_state() {
+    # Windows Terminal/WSL hinterlaesst mit dialog gelegentlich Mouse-Tracking-
+    # bzw. Escape-Sequenzen im unteren Bereich. Das hier raeumt den Zustand auf.
+    printf '\033[?1000l\033[?1002l\033[?1003l\033[?1006l' 2>/dev/null || true
+    tput sgr0 2>/dev/null || true
+    stty sane 2>/dev/null || true
+}
+
 current_huginn_repo_ref() {
     ensure_user_workspace
     awk -F= '/^HUGINN_REPO_REF=/{print $2}' "$HUGINN_SETTINGS_FILE" 2>/dev/null | tail -n 1 | tr -d '\r\" '
@@ -92,31 +100,35 @@ choose_huginn_repo_ref() {
     [ -n "$current_ref" ] || current_ref="v2022.08.18"
 
     rm -f "$HUGINN_REF_CHOICE_FILE"
+    reset_dialog_terminal_state
     dialog --clear --backtitle "OpenClaw Ultimate Setup" \
         --cancel-label "Zurueck" \
         --title "HUGINN UPSTREAM-STAND" --radiolist \
-        "Waehlen Sie den Huginn-Upstream-Stand.\nEmpfohlen: v2022.08.18\nAndere Werte koennen Sie hier im Setup auswaehlen oder festlegen." \
-        18 92 8 \
-        "stable_recommended" "Empfohlen: v2022.08.18" "$([ "$current_ref" = "v2022.08.18" ] && echo on || echo off)" \
-        "main_branch" "GitHub main (aktueller Upstream-Stand)" "$([ "$current_ref" = "main" ] && echo on || echo off)" \
-        "custom_ref" "Andere Referenz manuell festlegen" "$([ "$current_ref" != "v2022.08.18" ] && [ "$current_ref" != "main" ] && echo on || echo off)" \
+        "Waehlen Sie den Huginn-Upstream-Stand.\nEmpfohlen: v2022.08.18" \
+        16 78 6 \
+        "1" "Empfohlen: v2022.08.18" "$([ "$current_ref" = "v2022.08.18" ] && echo on || echo off)" \
+        "2" "GitHub main (aktueller Upstream-Stand)" "$([ "$current_ref" = "main" ] && echo on || echo off)" \
+        "3" "Andere Referenz manuell festlegen" "$([ "$current_ref" != "v2022.08.18" ] && [ "$current_ref" != "main" ] && echo on || echo off)" \
         2> "$HUGINN_REF_CHOICE_FILE" || return 1
+    reset_dialog_terminal_state
 
     selected_ref="$(cat "$HUGINN_REF_CHOICE_FILE" 2>/dev/null || true)"
     case "$selected_ref" in
-        stable_recommended)
+        1)
             save_huginn_repo_ref "v2022.08.18"
             ;;
-        main_branch)
+        2)
             save_huginn_repo_ref "main"
             ;;
-        custom_ref)
+        3)
             rm -f "$HUGINN_REF_INPUT_FILE"
+            reset_dialog_terminal_state
             dialog --clear --backtitle "OpenClaw Ultimate Setup" \
                 --cancel-label "Zurueck" \
                 --title "HUGINN REPO REF" \
                 --inputbox "Geben Sie eine Huginn-Referenz ein, z. B. Tag, Branch oder Commit-SHA:" \
                 10 100 "$current_ref" 2> "$HUGINN_REF_INPUT_FILE" || return 1
+            reset_dialog_terminal_state
             custom_ref="$(tr -d '\r' < "$HUGINN_REF_INPUT_FILE")"
             if [ -z "$custom_ref" ]; then
                 echo -e "${RED}Fehler: Die Huginn-Referenz darf nicht leer sein.${NC}"
