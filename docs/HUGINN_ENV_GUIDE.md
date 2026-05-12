@@ -56,6 +56,36 @@ RAILS_ENV=production bundle exec rails runner "u=User.new(username: 'admin', ema
 
 Danach solltest du das Passwort sofort auf einen eigenen sicheren Wert aendern.
 
+## Erster Funktionstest im Webinterface
+
+Ein sehr einfacher erster Test ist ein `Manual Event Agent`.
+
+1. Oeffne `Agents`.
+2. Klicke `New Agent`.
+3. Waehle `Manual Event Agent`.
+4. Vergib einen Namen, z. B. `Erster Test`.
+5. Trage als Optionen zum Beispiel ein:
+
+```json
+{
+  "message": "Hallo aus meinem ersten Huginn-Test",
+  "source": "manual_test"
+}
+```
+
+6. Speichere den Agenten.
+
+Wichtig:
+
+- Bei diesem Agententyp gibt es je nach Huginn-Oberflaeche nicht immer einen auffaelligen `Run`-Button.
+- Der einfachste Erfolgsindikator ist, dass beim Agenten in der Liste oder Detailansicht die Anzahl der `Events` hochgeht.
+- Wenn dort bereits `2` oder mehr Events stehen, hat der Test im Kern schon funktioniert.
+
+Danach kannst du in der Agent-Detailansicht oder ueber `Events` pruefen, ob Nutzdaten wie diese sichtbar sind:
+
+- `message: Hallo aus meinem ersten Huginn-Test`
+- `source: manual_test`
+
 ## Freigabe nach aussen
 
 Die Huginn-Weboberflaeche sollte nicht roh ins Internet gestellt werden.
