@@ -4,6 +4,53 @@ Diese Datei dient als dauerhafte Projekt-Erinnerung fuer spaetere Chats und Folg
 
 ## Stand 2026-05-11
 
+## Als veraltet identifiziert
+
+Diese Punkte gelten im Projektverlauf inzwischen als veraltet, problematisch oder nur noch als Legacy-Verhalten:
+
+### Setup / Update-Pfad
+
+- Der fruehere weiche Setup-Update-Pfad mit `git pull --ff-only` ohne harten Repo-Abgleich war fehleranfaellig, weil alte lokale Repo-Dateien neue Staende blockieren oder teilweise stehen bleiben konnten.
+- Fuer das Setup-Repository gilt deshalb der harte Abgleich auf `main` inzwischen als bevorzugter Standard.
+
+### Huginn Upstream / Installer-Meldungen
+
+- Die Formulierung `HUGINN_REPO_REF ueberschreiben` gilt als veraltet; der Wert wird jetzt im Setup ausgewaehlt oder festgelegt.
+- Ein Huginn-Lauf ohne vorgeschaltetes Auswahlmenue fuer den Upstream-Stand gilt als veraltet; die Ref-Wahl gehoert jetzt vor den eigentlichen Installationslauf.
+
+### Huginn Konfigurationsablage
+
+- Ein neuer Huginn-Lauf, der sich blind an Huginns alter `.env.example` orientiert, gilt als veraltet.
+- Sichere Huginn-Werte gehoeren in den Benutzer-Workspace unter `~/.openclaw_ultimate_user_data/huginn/`.
+- Alte Datenbank-Defaults wie `huginn_development`, `root` und leeres Passwort gelten fuer dieses Setup als Legacy und sollen nicht mehr der Standard sein.
+
+### Huginn Datenbankpfade
+
+- Die alten Fallbacks in `config/database.yml` mit `username: root`, Produktionspasswort-Fallback und `reconnect: true` gelten als Legacy.
+- Der alte PostgreSQL-Gemstand `pg-1.1.3` gilt unter Ruby 3.2 in diesem Huginn-Upstream als veraltet und inkompatibel.
+- Der alte mysql2-Pfad `0.5.3` gilt unter Ruby 3.2 als veraltet.
+
+### Huginn Ruby-/Gem-Altlasten
+
+- Die folgenden Huginn-Teilbereiche gelten in diesem Upstream auf moderner Ruby-Basis als veraltet oder besonders stoeranfaellig:
+  - `google-cloud-translate` mit altem `grpc 1.42.0`
+  - `mini_racer` / `libv8-node`
+  - `ruby-growl`
+  - `net-ftp-list`
+  - `gmail_xoauth` ohne nachgezogene `net-imap` / `net-smtp` / `net-pop`-Kompatibilitaet
+- Das alte Asset-/Startverhalten ohne Production-Asset-Precompile gilt ebenfalls als veraltet.
+
+### Huginn Laufzeitverhalten
+
+- Ein Huginn-Betrieb nur mit Webserver ohne Worker gilt fuer echte Verarbeitung als unvollstaendig und damit als veralteter Betriebsmodus.
+- Bei HTML-Extraction im `Website Agent` gilt `value: "text"` in diesem Huginn-Stand als veraltet bzw. unpassend; erwartet werden XPath-Ausdruecke wie `string(.)` oder `normalize-space(.)`.
+- Das alte YAML-Ladeverhalten ueber `YAML.load` im Jobs-Pfad gilt fuer den aktuellen Psych-Stack als veraltet.
+
+### Huginn UI-/Workflow-Eigenheiten
+
+- Der Eindruck, dass ein Scenario-Reimport immer einen echten Klon erzeugt, gilt fuer diesen Huginn-Stand als falsch bzw. veraltet.
+- Bestehende Scenarios koennen beim Reimport anhand ihrer Export-Identitaet wiedererkannt und aktualisiert werden.
+
 ### Huginn
 
 - Der aktuelle Huginn-Installer wurde intensiv fuer Ruby `3.2.x` gehaertet.
@@ -18,6 +65,7 @@ Diese Datei dient als dauerhafte Projekt-Erinnerung fuer spaetere Chats und Folg
 - Der Installer richtet nach erfolgreicher Huginn-Installation nach Moeglichkeit zwei lokale `systemd`-Dienste ein: `huginn-web.service` und `huginn-worker.service`.
 - Der Installer bevorzugt fuer neue Huginn-`.env` jetzt die sichere Vorlage aus `~/.openclaw_ultimate_user_data/huginn/.env.template` und bereinigt alte DB-Defaults wie `root`/`huginn_development`.
 - Die Warnung `MYSQL_OPT_RECONNECT is deprecated` stammt im Huginn-Stand nicht primaer vom MySQL-Server-Update, sondern vom alten `reconnect`-Default in `config/database.yml`; der Installer setzt diesen Default jetzt auf `false`.
+- Wenn die sichere Huginn-Vorlage versehentlich auf `DATABASE_ADAPTER=postgresql` steht, laeuft der alte `pg-1.1.3`-Stack unter Ruby 3.2 in `pg_ext.so` aus; der Installer gibt dafuer jetzt einen gezielten Hinweis statt nur allgemein bei `db:create` zu scheitern.
 - Eine einfache funktionierende Testkette wurde erfolgreich bestaetigt:
   - `Manual Event Agent`
   - `Event Formatting Agent`

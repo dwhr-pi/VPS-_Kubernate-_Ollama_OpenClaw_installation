@@ -1551,6 +1551,13 @@ if ! RAILS_ENV=production bundle exec rake db:create 2>&1 | tee "$db_init_log_fi
             echo -e "${RED}Fehler: Huginn Datenbank konnte nicht erstellt werden.${NC}"
             exit 1
         fi
+    elif grep -Eq 'pg_ext\.so: undefined symbol: rb_tainted_str_new|LoadError: .*pg_ext\.so' "$db_init_log_file" && [ "$(current_database_adapter)" = "postgresql" ]; then
+        rm -f "$db_init_log_file"
+        echo -e "${YELLOW}Hinweis: Huginn laeuft derzeit mit DATABASE_ADAPTER=postgresql und trifft dabei auf den alten pg-Stack dieses Huginn-Stands.${NC}"
+        echo -e "${YELLOW}Unter Ruby 3.2 fuehrt das alte pg-Gem in diesem Upstream-Stand zu einem LoadError in pg_ext.so.${NC}"
+        echo -e "${YELLOW}Wenn du Huginn auf MariaDB/MySQL betreiben willst, stelle die sichere Vorlage in ~/.openclaw_ultimate_user_data/huginn/.env.template auf DATABASE_ADAPTER=mysql2 um und starte die Installation erneut.${NC}"
+        echo -e "${YELLOW}Wenn du bewusst PostgreSQL testen willst, braucht dieser Huginn-Stand dafuer einen eigenen pg-Kompatibilitaets-Fix oder einen neueren Upstream-Stand.${NC}"
+        exit 1
     elif grep -Eq "Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld\.sock'|Mysql2::Error::ConnectionError" "$db_init_log_file" && [ "$(current_database_adapter)" = "mysql2" ]; then
         rm -f "$db_init_log_file"
         print_huginn_mysql_service_guidance
