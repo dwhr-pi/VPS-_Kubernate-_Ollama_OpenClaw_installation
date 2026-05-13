@@ -114,6 +114,10 @@ Moeglicher Huginn-Fluss:
 
 Das ist alltagstauglich, weil es nicht nur ein Demo-Agent ist, sondern sofort echte Postfaecher entlasten kann.
 
+Eine konkrete deutsche Vorlage dazu liegt jetzt auch hier:
+
+- [HUGINN_MAIL_WORKFLOWS_DE.md](C:/Users/danie/.codex/worktrees/8354/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/HUGINN_MAIL_WORKFLOWS_DE.md:1)
+
 ## Invitation Code und erster Benutzer
 
 Huginn liest den Registrierungs-Code direkt aus `/opt/huginn/.env`:
