@@ -235,6 +235,12 @@ RAILS_ENV=production bundle exec rails runner bin/threaded.rb
 cd /opt/huginn && (RAILS_ENV=production RAILS_SERVE_STATIC_FILES=1 bundle exec rails server -b 127.0.0.1 -p 3002 &) && RAILS_ENV=production bundle exec rails runner bin/threaded.rb
 ```
 
+### Einzeiler: beide lokalen systemd-Dienste
+
+```bash
+sudo systemctl start huginn-web.service huginn-worker.service
+```
+
 ### Einzeiler: nur Webserver
 
 ```bash
@@ -284,6 +290,17 @@ sudo systemctl stop huginn-web.service huginn-worker.service
 ```bash
 sudo systemctl start huginn-web.service huginn-worker.service
 ```
+
+```bash
+sudo systemctl start huginn-web.service
+```
+
+```bash
+sudo systemctl start huginn-worker.service
+```
+
+Im Setup-Hauptmenue gibt es dafuer jetzt zusaetzlich den Punkt `Installierte Dienste starten`.
+Dort kannst du alle aktuell startbaren Tools gesammelt oder gezielt starten und dir ein anpassbares Autostart-Skript erzeugen lassen.
 
 Wenn `systemd` in der Zielumgebung nicht verfuegbar ist, bleibt der manuelle Zwei-Prozess-Start aus den obigen Befehlen der Fallback.
 

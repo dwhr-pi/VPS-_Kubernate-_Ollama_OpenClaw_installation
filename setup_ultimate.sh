@@ -2218,9 +2218,9 @@ show_profile_management_hub() {
 
 show_main_menu() {
     local dialog_rc
-    local menu_height=22
+    local menu_height=23
     local menu_width=88
-    local menu_rows=15
+    local menu_rows=16
     local term_lines=0
     local term_cols=0
     local begin_row=1
@@ -2261,7 +2261,8 @@ show_main_menu() {
     "10" "${TXT_MENU_10:-Dokumentation & API-Key Guide}" \
     "11" "${TXT_MENU_11:-System-Check & Port-Analyse}" \
     "12" "${TXT_MENU_12:-OpenClaw starten (Dev-Modus)}" \
-    "13" "${TXT_MENU_13:-Home Assistant starten}" 2> /tmp/menu_choice
+    "13" "${TXT_MENU_13:-Home Assistant starten}" \
+    "14" "${TXT_MENU_14:-Installierte Dienste starten}" 2> /tmp/menu_choice
 
     dialog_rc=$?
     if [ $dialog_rc -eq 3 ]; then
@@ -2428,6 +2429,17 @@ while true; do
             begin_operation_measurement "main_menu_homeassistant" "Home Assistant starten"
             echo -e "${BLUE}Starte Home Assistant...${NC}"
             sudo systemctl start homeassistant@homeassistant
+            if [ $? -eq 0 ]; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
+            ;;
+        14)
+            show_operation_intro \
+            "Installierte Dienste starten" \
+            "Oeffnet den zentralen Start-Manager fuer aktuell installierte und im Setup hinterlegte Startziele. Dort kannst du alle oder nur ausgewaehlte Tools starten und ein anpassbares Autostart-Skript erzeugen." \
+            "$(get_operation_duration_estimate_label "main_menu_start_manager" "Menue oeffnet sofort, eigentliche Starts je nach Tool in Sekunden bis wenigen Minuten")" \
+            "$(get_operation_storage_estimate_label "main_menu_start_manager" "${MIN_FREE_GB_ABSOLUTE} GB oder mehr fuer Logs und Runtime-Dateien")" \
+            "Falls du einen Autostart spaeter abbrechen willst, kann das erzeugte Skript dich direkt wieder ins Setup zurueckbringen."
+            begin_operation_measurement "main_menu_start_manager" "Installierte Dienste starten"
+            run_bash_script "$INSTALL_DIR/scripts/tool_start_manager.sh"
             if [ $? -eq 0 ]; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
             ;;
         17)
