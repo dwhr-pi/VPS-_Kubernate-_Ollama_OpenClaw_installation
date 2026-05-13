@@ -322,7 +322,6 @@ Zusätzliche Hilfen:
 *   [docs/ROADMAP.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/ROADMAP.md:1) zeigt die naechsten Ausbauphasen der Plattform.
 *   [docs/SECURITY_HARDENING.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/SECURITY_HARDENING.md:1) fasst Härtung, Agentenrisiken, Tunnel-Absicherung und Secret-Hygiene kompakt zusammen.
 *   [docs/PROFILE_MATRIX.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/PROFILE_MATRIX.md:1), [docs/TOOL_MATRIX.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/TOOL_MATRIX.md:1) und [docs/PORT_MATRIX.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/PORT_MATRIX.md:1) geben die aktuelle Betriebsübersicht.
-*   [docs/SVG_GRAPHICS_OVERVIEW.md](docs/SVG_GRAPHICS_OVERVIEW.md) dokumentiert alle verwendeten `.svg`-Grafiken und den aktuellen Prüfstand.
 *   sensible und bearbeitbare Setup-Dateien liegen jetzt außerhalb des Repos in `~/.openclaw_ultimate_user_data`.
 *   über `Benutzer-Workspace verwalten` kannst du diese ausgelagerten Dateien anzeigen, neu aus dem Repo kopieren oder vollständig löschen.
 *   das Setup zeichnet für wichtige Vorgänge jetzt zusätzlich reale Messwerte in `~/.openclaw_ultimate_user_data/metrics_logs/operation_history.tsv` auf.

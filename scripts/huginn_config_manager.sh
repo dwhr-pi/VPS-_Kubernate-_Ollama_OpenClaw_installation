@@ -56,9 +56,8 @@ pause_screen() {
 }
 
 reset_dialog_terminal_state() {
-    # Windows Terminal/WSL hinterlaesst mit dialog gelegentlich Mouse-Tracking-
-    # bzw. Escape-Sequenzen im unteren Bereich. Das hier raeumt den Zustand auf.
-    printf '\033[?1000l\033[?1002l\033[?1003l\033[?1006l' 2>/dev/null || true
+    # Windows Terminal/WSL hinterlaesst mit dialog gelegentlich Terminal-Modi.
+    # Keine Escape-Sequenzen ausgeben: die landen sonst sichtbar im Dialog.
     tput sgr0 2>/dev/null || true
     stty sane 2>/dev/null || true
 }
@@ -232,22 +231,31 @@ PY
 
 choose_huginn_repo_ref() {
     ensure_user_workspace
-    local current_ref selected_ref custom_ref begin_row begin_col
+    local current_ref selected_ref custom_ref begin_row begin_col ref_v2022_state ref_master_state ref_custom_state
     current_ref="$(current_huginn_repo_ref)"
     [ -n "$current_ref" ] || current_ref="v2022.08.18"
-    read -r begin_row begin_col <<<"$(dialog_begin_args 14 68)"
+    read -r begin_row begin_col <<<"$(dialog_begin_args 16 78)"
+
+    ref_v2022_state="off"
+    ref_master_state="off"
+    ref_custom_state="off"
+    case "$current_ref" in
+        v2022.08.18) ref_v2022_state="on" ;;
+        master) ref_master_state="on" ;;
+        *) ref_custom_state="on" ;;
+    esac
 
     rm -f "$HUGINN_REF_CHOICE_FILE"
     reset_dialog_terminal_state
-    dialog --clear --backtitle "OpenClaw Ultimate Setup" \
+    dialog --clear --no-mouse --backtitle "OpenClaw Ultimate Setup" \
         --begin "$begin_row" "$begin_col" \
         --cancel-label "Zurueck" \
-        --title "HUGINN UPSTREAM-STAND" --menu \
-        "Waehlen Sie den Huginn-Stand.\nEmpfohlen: v2022.08.18" \
-        14 68 5 \
-        "1" "v2022.08.18" \
-        "2" "GitHub master" \
-        "3" "Andere Referenz" \
+        --title "HUGINN UPSTREAM-STAND" --radiolist \
+        "Waehlen Sie den Huginn-Stand.\nEmpfohlen: v2022.08.18\nAktuell: ${current_ref}" \
+        16 78 5 \
+        "1" "v2022.08.18 (empfohlen, stabiler Stand)" "$ref_v2022_state" \
+        "2" "GitHub master (aktueller Upstream, kann brechen)" "$ref_master_state" \
+        "3" "Andere Referenz / Tag / Commit-SHA" "$ref_custom_state" \
         2> "$HUGINN_REF_CHOICE_FILE" || return 1
     reset_dialog_terminal_state
 
@@ -262,7 +270,7 @@ choose_huginn_repo_ref() {
         3)
             rm -f "$HUGINN_REF_INPUT_FILE"
             reset_dialog_terminal_state
-            dialog --clear --backtitle "OpenClaw Ultimate Setup" \
+            dialog --clear --no-mouse --backtitle "OpenClaw Ultimate Setup" \
                 --begin "$begin_row" "$begin_col" \
                 --cancel-label "Zurueck" \
                 --title "HUGINN REPO REF" \
@@ -288,21 +296,29 @@ choose_huginn_repo_ref() {
 
 choose_huginn_database_adapter() {
     ensure_user_workspace
-    local current_adapter selected_adapter begin_row begin_col
+    local current_adapter selected_adapter begin_row begin_col mysql_state postgres_state
     current_adapter="$(current_huginn_database_adapter)"
     [ -n "$current_adapter" ] || current_adapter="mysql2"
-    read -r begin_row begin_col <<<"$(dialog_begin_args 14 68)"
+    read -r begin_row begin_col <<<"$(dialog_begin_args 15 78)"
+
+    mysql_state="off"
+    postgres_state="off"
+    case "$current_adapter" in
+        mysql2) mysql_state="on" ;;
+        postgresql) postgres_state="on" ;;
+        *) mysql_state="on" ;;
+    esac
 
     rm -f "$HUGINN_DB_CHOICE_FILE"
     reset_dialog_terminal_state
-    dialog --clear --backtitle "OpenClaw Ultimate Setup" \
+    dialog --clear --no-mouse --backtitle "OpenClaw Ultimate Setup" \
         --begin "$begin_row" "$begin_col" \
         --cancel-label "Zurueck" \
-        --title "HUGINN DATENBANK" --menu \
-        "Waehlen Sie die Huginn-Datenbank.\nEmpfohlen: MySQL/MariaDB" \
-        14 68 5 \
-        "1" "MySQL / MariaDB" \
-        "2" "PostgreSQL" \
+        --title "HUGINN DATENBANK" --radiolist \
+        "Waehlen Sie die Huginn-Datenbank.\nEmpfohlen: MySQL/MariaDB\nAktuell: ${current_adapter}" \
+        15 78 5 \
+        "1" "MySQL / MariaDB (empfohlen fuer diesen Huginn-Stand)" "$mysql_state" \
+        "2" "PostgreSQL (optional, kann Zusatzfixes brauchen)" "$postgres_state" \
         2> "$HUGINN_DB_CHOICE_FILE" || return 1
     reset_dialog_terminal_state
 
