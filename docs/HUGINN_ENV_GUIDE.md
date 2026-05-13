@@ -36,6 +36,84 @@ Dadurch bleiben deine Anpassungen ausserhalb des Git-Repositories und ueberstehe
   - bei `postgresql` oder `mysql2` auch `DATABASE_USERNAME` und `DATABASE_PASSWORD`
 - Fuer lokale Setups ist `APP_HOST=127.0.0.1` ein guter Default.
 
+## Gmail und andere Mailanbieter
+
+Ja, Huginn ist nicht auf Gmail beschraenkt.
+
+Wichtig ist die Unterscheidung:
+
+- `gmail_xoauth` ist nur ein spezieller Gmail-OAuth-Pfad fuer aeltere Huginn-Staende
+- normale andere Mailadressen funktionieren typischerweise ueber klassische Mailprotokolle wie `IMAP`, `POP3` und `SMTP`
+
+Praktisch bedeutet das:
+
+- fuer **eingehende Mails** nutzt du in Huginn spaeter Agenten oder Zugangsdaten mit den Serverdaten deines Mailanbieters
+- fuer **ausgehende Mails** nutzt Huginn die SMTP-Werte aus der `.env`
+
+Das ist also nicht auf Gmail beschraenkt. Typische Kandidaten sind zum Beispiel:
+
+- eigene Domain-Postfaecher
+- mailbox.org
+- GMX
+- WEB.DE
+- Outlook / Microsoft 365
+- IONOS
+- andere IMAP-/SMTP-faehige Anbieter
+
+Gmail ist in diesem Setup nur deshalb sichtbarer, weil der alte Huginn-Upstream dafuer einen eigenen OAuth-Sonderpfad mit `gmail_xoauth` mitbringt.
+Fuer andere Adressen ist der klassische IMAP-/SMTP-Weg oft sogar unkomplizierter.
+
+## Was gehoert in die `.env` und was nicht?
+
+In die Huginn-`.env` gehoert aktuell vor allem der **ausgehende SMTP-Pfad**.
+
+Beispielhafte Felder:
+
+- `SMTP_DOMAIN`
+- `SMTP_USER_NAME`
+- `SMTP_PASSWORD`
+- `SMTP_SERVER`
+- `SMTP_PORT`
+- `SMTP_AUTHENTICATION`
+- `SMTP_ENABLE_STARTTLS_AUTO`
+
+Wichtig:
+
+- Die `.env` ist **nicht automatisch die komplette Mailbox-Konfiguration fuer eingehende Mails**.
+- IMAP-/POP3-Zugangsdaten fuer konkrete Mailabrufe liegen spaeter je nach Huginn-Agent oder Credential im jeweiligen Workflow.
+- Deshalb muss nicht fuer jeden Mailanbieter ein eigener globaler Setup-Schalter gebaut werden.
+
+## Alltagstaugliche erste Mail-Aufgabe
+
+Eine wirklich nuetzliche erste Huginn-Aufgabe fuer den Alltag waere:
+
+- ein bestimmtes Postfach oder einen bestimmten Ordner ueberwachen
+- nur wichtige Mails herausfiltern
+- daraus strukturierte Events erzeugen
+- und dir taeglich oder sofort eine kurze Zusammenfassung geben
+
+Ein guter Startfall waere zum Beispiel:
+
+### Mail-Eingang fuer Rechnungen, Termine und wichtige Benachrichtigungen
+
+Ziel:
+
+- Rechnungen
+- Versandbestaetigungen
+- Terminmails
+- Support- oder Systemmeldungen
+
+automatisch erkennen und sortieren.
+
+Moeglicher Huginn-Fluss:
+
+1. Mailabruf ueber dein IMAP-Postfach
+2. Filter auf Absender, Betreff oder Stichwoerter
+3. Umformung in klare Event-Felder
+4. taegliche Sammelmail oder direkte Weitergabe an einen anderen Agenten
+
+Das ist alltagstauglich, weil es nicht nur ein Demo-Agent ist, sondern sofort echte Postfaecher entlasten kann.
+
 ## Invitation Code und erster Benutzer
 
 Huginn liest den Registrierungs-Code direkt aus `/opt/huginn/.env`:
