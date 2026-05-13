@@ -1795,6 +1795,68 @@ run_tool_script() {
     run_bash_script "$INSTALL_DIR/scripts/tools/${script_name}_${action}.sh"
 }
 
+remove_tool_from_autostart_script() {
+    local tool_key="$1"
+    local autostart_script="$USER_WORKSPACE_DIR/autostart/start_selected_tools.sh"
+    local remaining_count=0
+
+    [ -f "$autostart_script" ] || return 0
+
+    python3 - "$tool_key" "$autostart_script" <<'PY'
+from pathlib import Path
+import re
+import sys
+
+tool = sys.argv[1]
+path = Path(sys.argv[2])
+text = path.read_text(encoding="utf-8")
+lines = text.splitlines()
+removed = False
+remaining = 0
+output = []
+
+tool_line_pattern = re.compile(r'^\s*"([^"]+)"\s*$')
+
+for line in lines:
+    match = tool_line_pattern.match(line)
+    if match:
+        current_tool = match.group(1)
+        if current_tool == tool:
+            removed = True
+            continue
+        remaining += 1
+    output.append(line)
+
+if removed:
+    path.write_text("\n".join(output).rstrip() + "\n", encoding="utf-8")
+PY
+
+    remaining_count="$(python3 - "$autostart_script" <<'PY'
+from pathlib import Path
+import re
+import sys
+
+path = Path(sys.argv[1])
+if not path.exists():
+    print(0)
+    raise SystemExit
+
+count = 0
+for line in path.read_text(encoding="utf-8").splitlines():
+    if re.match(r'^\s*"[^"]+"\s*$', line):
+        count += 1
+print(count)
+PY
+)"
+
+    if [ "$remaining_count" -eq 0 ] 2>/dev/null; then
+        rm -f "$autostart_script"
+        echo -e "${YELLOW}Autostart-Skript entfernt, weil kein Startziel mehr eingetragen ist.${NC}"
+    else
+        echo -e "${YELLOW}Autostart bereinigt: ${tool_key} wurde aus ${autostart_script} ausgetragen.${NC}"
+    fi
+}
+
 # Funktion zum Installieren eines Tools
 install_tool() {
     local TOOL_KEY="$1"
@@ -1836,6 +1898,7 @@ uninstall_tool() {
     run_tool_script "$TOOL_KEY" "uninstall"
     if [ $? -eq 0 ]; then
         remove_exact_line "$TOOL_STATUS_FILE" "$TOOL_KEY"
+        remove_tool_from_autostart_script "$TOOL_KEY"
         end_operation_measurement "success"
         echo -e "${GREEN}Tool \'$TOOL_KEY\' erfolgreich deinstalliert.${NC}"
     else
