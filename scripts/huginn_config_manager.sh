@@ -109,6 +109,39 @@ dialog_begin_args() {
     printf '%s %s\n' "$row" "$col"
 }
 
+confirm_experimental_huginn_ref() {
+    local repo_ref="$1"
+    local warning_text
+
+    case "$repo_ref" in
+        v2022.08.18)
+            return 0
+            ;;
+    esac
+
+    warning_text="Der Huginn-Stand '${repo_ref}' ist in diesem Setup experimentell.\n\nDer stabil vorbereitete Stand ist v2022.08.18. Neuere Upstream-Staende koennen durch geaenderte Ruby-/Bundler-/Gem-Abhaengigkeiten frueh brechen.\n\nTrotzdem mit '${repo_ref}' fortfahren?"
+
+    if dialog_available; then
+        local dialog_mouse_args=()
+        mapfile -t dialog_mouse_args < <(dialog_common_args)
+        if dialog --clear "${dialog_mouse_args[@]}" --backtitle "OpenClaw Ultimate Setup" \
+            --title "EXPERIMENTELLER HUGINN-STAND" \
+            --yesno "$warning_text" 14 92; then
+            return 0
+        fi
+        return 1
+    fi
+
+    echo
+    echo -e "${YELLOW}Warnung: Der Huginn-Stand '${repo_ref}' ist experimentell.${NC}"
+    echo -e "${YELLOW}Stabil vorbereitet ist v2022.08.18. Master kann frueh brechen.${NC}"
+    read -r -p "Trotzdem fortfahren? [ja/Nein]: " confirm_choice
+    case "$confirm_choice" in
+        ja|JA|j|J|yes|YES|y|Y) return 0 ;;
+        *) return 1 ;;
+    esac
+}
+
 read_setting_value() {
     local key="$1"
     local file_path="$2"
@@ -227,25 +260,33 @@ PY
 }
 
 choose_huginn_repo_ref_cli() {
-    local selected_ref
+    local selected_ref custom_ref
 
     echo
     echo "Huginn-Upstream-Stand"
     echo "1) v2022.08.18 (empfohlen)"
-    echo "2) GitHub master (aktueller Upstream, kann brechen)"
-    echo "3) Andere Referenz / Tag / Commit-SHA"
+    echo "2) GitHub master (experimentell, kann brechen)"
+    echo "3) Andere Referenz / Tag / Commit-SHA (experimentell)"
     read -r -p "Auswahl [1-3]: " selected_ref
 
     case "$selected_ref" in
         1|"") save_huginn_repo_ref "v2022.08.18" ;;
-        2) save_huginn_repo_ref "master" ;;
+        2)
+            if confirm_experimental_huginn_ref "master"; then
+                save_huginn_repo_ref "master"
+            else
+                echo -e "${YELLOW}Huginn-Upstream-Auswahl abgebrochen. Es wurde keine master-Installation gestartet.${NC}"
+                return 1
+            fi
+            ;;
         3)
-            read -r -p "Huginn-Referenz: " selected_ref
-            if [ -z "$selected_ref" ]; then
+            read -r -p "Huginn-Referenz: " custom_ref
+            if [ -z "$custom_ref" ]; then
                 echo -e "${RED}Fehler: Die Huginn-Referenz darf nicht leer sein.${NC}"
                 return 1
             fi
-            save_huginn_repo_ref "$selected_ref"
+            confirm_experimental_huginn_ref "$custom_ref" || return 1
+            save_huginn_repo_ref "$custom_ref"
             ;;
         *) return 1 ;;
     esac
@@ -286,8 +327,8 @@ choose_huginn_repo_ref() {
         "Waehlen Sie den Huginn-Stand.\n\nEmpfohlen: v2022.08.18\nAktuell: ${current_ref}" \
         16 82 5 \
         "1" "v2022.08.18 (empfohlen, stabiler Stand)" "$ref_v2022_state" \
-        "2" "GitHub master (aktueller Upstream, kann brechen)" "$ref_master_state" \
-        "3" "Andere Referenz / Tag / Commit-SHA" "$ref_custom_state" \
+        "2" "GitHub master (experimentell, kann brechen)" "$ref_master_state" \
+        "3" "Andere Referenz / Tag / Commit-SHA (experimentell)" "$ref_custom_state" \
         2> "$HUGINN_REF_CHOICE_FILE"; then
         reset_terminal_state
         return 1
@@ -297,7 +338,14 @@ choose_huginn_repo_ref() {
     selected_ref="$(tr -d '\r" ' < "$HUGINN_REF_CHOICE_FILE" 2>/dev/null || true)"
     case "$selected_ref" in
         1) save_huginn_repo_ref "v2022.08.18" ;;
-        2) save_huginn_repo_ref "master" ;;
+        2)
+            if confirm_experimental_huginn_ref "master"; then
+                save_huginn_repo_ref "master"
+            else
+                echo -e "${YELLOW}Huginn-Upstream-Auswahl abgebrochen. Es wurde keine master-Installation gestartet.${NC}"
+                return 1
+            fi
+            ;;
         3)
             rm -f "$HUGINN_REF_INPUT_FILE"
             if ! dialog --clear "${dialog_mouse_args[@]}" --backtitle "OpenClaw Ultimate Setup" \
@@ -316,7 +364,12 @@ choose_huginn_repo_ref() {
                 pause_screen
                 return 1
             fi
-            save_huginn_repo_ref "$custom_ref"
+            if confirm_experimental_huginn_ref "$custom_ref"; then
+                save_huginn_repo_ref "$custom_ref"
+            else
+                echo -e "${YELLOW}Huginn-Upstream-Auswahl abgebrochen. Es wurde keine Installation mit ${custom_ref} gestartet.${NC}"
+                return 1
+            fi
             ;;
         *) return 1 ;;
     esac
