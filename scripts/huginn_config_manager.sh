@@ -235,7 +235,7 @@ choose_huginn_repo_ref() {
     local current_ref selected_ref custom_ref begin_row begin_col
     current_ref="$(current_huginn_repo_ref)"
     [ -n "$current_ref" ] || current_ref="v2022.08.18"
-    read -r begin_row begin_col <<<"$(dialog_begin_args 16 78)"
+    read -r begin_row begin_col <<<"$(dialog_begin_args 16 74)"
 
     rm -f "$HUGINN_REF_CHOICE_FILE"
     reset_dialog_terminal_state
@@ -243,11 +243,11 @@ choose_huginn_repo_ref() {
         --begin "$begin_row" "$begin_col" \
         --cancel-label "Zurueck" \
         --title "HUGINN UPSTREAM-STAND" --menu \
-        "Waehlen Sie den Huginn-Upstream-Stand.\nEmpfohlen: v2022.08.18" \
-        16 78 6 \
-        "1" "Empfohlen: v2022.08.18${current_ref:+$([ "$current_ref" = "v2022.08.18" ] && printf ' [aktiv]')}" \
-        "2" "GitHub main (aktueller Upstream-Stand)${current_ref:+$([ "$current_ref" = "main" ] && printf ' [aktiv]')}" \
-        "3" "Andere Referenz manuell festlegen$([ "$current_ref" != "v2022.08.18" ] && [ "$current_ref" != "main" ] && printf ' [aktiv: %s]' "$current_ref")" \
+        "Waehlen Sie den Huginn-Stand.\nEmpfohlen: v2022.08.18" \
+        16 74 6 \
+        "1" "v2022.08.18 (empfohlen)" \
+        "2" "GitHub main" \
+        "3" "Andere Referenz manuell" \
         2> "$HUGINN_REF_CHOICE_FILE" || return 1
     reset_dialog_terminal_state
 
@@ -291,7 +291,7 @@ choose_huginn_database_adapter() {
     local current_adapter selected_adapter begin_row begin_col
     current_adapter="$(current_huginn_database_adapter)"
     [ -n "$current_adapter" ] || current_adapter="mysql2"
-    read -r begin_row begin_col <<<"$(dialog_begin_args 16 78)"
+    read -r begin_row begin_col <<<"$(dialog_begin_args 16 74)"
 
     rm -f "$HUGINN_DB_CHOICE_FILE"
     reset_dialog_terminal_state
@@ -299,10 +299,10 @@ choose_huginn_database_adapter() {
         --begin "$begin_row" "$begin_col" \
         --cancel-label "Zurueck" \
         --title "HUGINN DATENBANK" --menu \
-        "Waehlen Sie die Huginn-Datenbanktechnik.\nEmpfohlen: MySQL/MariaDB" \
-        16 78 6 \
-        "1" "MySQL / MariaDB (empfohlen)$([ "$current_adapter" = "mysql2" ] && printf ' [aktiv]')" \
-        "2" "PostgreSQL$([ "$current_adapter" = "postgresql" ] && printf ' [aktiv]')" \
+        "Waehlen Sie die Huginn-Datenbank.\nEmpfohlen: MySQL/MariaDB" \
+        16 74 6 \
+        "1" "MySQL / MariaDB (empfohlen)" \
+        "2" "PostgreSQL" \
         2> "$HUGINN_DB_CHOICE_FILE" || return 1
     reset_dialog_terminal_state
 
@@ -311,12 +311,12 @@ choose_huginn_database_adapter() {
         1)
             apply_huginn_database_template_preset "mysql2"
             save_huginn_setting "HUGINN_DATABASE_ADAPTER" "mysql2"
-            echo -e "${GREEN}Aktive Huginn-Datenbank: MySQL/MariaDB${NC}"
+            echo -e "${GREEN}Huginn wird jetzt mit MySQL/MariaDB vorbereitet.${NC}"
             ;;
         2)
             apply_huginn_database_template_preset "postgresql"
             save_huginn_setting "HUGINN_DATABASE_ADAPTER" "postgresql"
-            echo -e "${GREEN}Aktive Huginn-Datenbank: PostgreSQL${NC}"
+            echo -e "${GREEN}Huginn wird jetzt mit PostgreSQL vorbereitet.${NC}"
             ;;
         *)
             return 1
