@@ -22,45 +22,16 @@ echo -e "${BLUE}Starte Setup-, System- und pnpm-Update...${NC}"
 
 # 1. Setup-Repository aktualisieren
 echo -e "${GREEN}1/3: Aktualisiere das Setup-Repository...${NC}"
-if command -v git >/dev/null 2>&1 && git -C "$INSTALL_DIR" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-    REPO_STATUS="$(git -C "$INSTALL_DIR" status --porcelain)"
-    if [ -z "$REPO_STATUS" ]; then
-        git -C "$INSTALL_DIR" fetch --all --prune
-        if git -C "$INSTALL_DIR" show-ref --verify --quiet refs/remotes/origin/main; then
-            if git -C "$INSTALL_DIR" symbolic-ref --quiet HEAD >/dev/null 2>&1; then
-                CURRENT_BRANCH="$(git -C "$INSTALL_DIR" rev-parse --abbrev-ref HEAD)"
-                if [ "$CURRENT_BRANCH" != "main" ]; then
-                    git -C "$INSTALL_DIR" checkout main 2>/dev/null || git -C "$INSTALL_DIR" checkout -b main --track origin/main
-                fi
-            else
-                git -C "$INSTALL_DIR" checkout -B main origin/main
-            fi
-            git -C "$INSTALL_DIR" pull --ff-only origin main
-            echo -e "${GREEN}Setup-Repository wurde aktualisiert.${NC}"
-        else
-            echo -e "${RED}Fehler: Remote-Branch origin/main wurde nicht gefunden.${NC}"
-            exit 1
-        fi
-    else
-        echo -e "${YELLOW}Hinweis: Lokale Aenderungen oder Zusatzdateien im Setup erkannt. Repository-Update wurde uebersprungen, damit nichts ueberschrieben wird.${NC}"
-        echo -e "${YELLOW}Deshalb kann weiterhin ein aelterer Setup-Stand angezeigt werden.${NC}"
-        echo -e "${YELLOW}Bitte committen, sichern oder entfernen Sie lokale Aenderungen und fuehren Sie das Update danach erneut aus.${NC}"
-        echo -e "${YELLOW}Der ausgelagerte Benutzer-Workspace unter ~/.openclaw_ultimate_user_data bleibt davon unberuehrt.${NC}"
-        echo
-        echo -e "${YELLOW}Git-Status im Setup-Verzeichnis:${NC}"
-        printf '%s\n' "$REPO_STATUS"
-        echo
-        echo -e "${YELLOW}Manueller harter Neuabgleich nur wenn Sie sicher sind, dass lokale Setup-Aenderungen weg duerfen:${NC}"
-        echo -e "${YELLOW}cd ~/openclaw_ultimate_setup && git fetch origin --prune && git reset --hard origin/main && git clean -fd${NC}"
-    fi
+if [ -x "$INSTALL_DIR/scripts/update_setup_only.sh" ]; then
+    "$INSTALL_DIR/scripts/update_setup_only.sh"
 else
-    echo -e "${YELLOW}Hinweis: Kein Git-Repository im Setup-Verzeichnis erkannt. Ueberspringe Repo-Update.${NC}"
+    bash "$INSTALL_DIR/scripts/update_setup_only.sh"
 fi
 
 # 2. System aktualisieren
 echo -e "${GREEN}2/3: Führe System-Updates durch...${NC}"
-sudo apt update && sudo apt upgrade -y
-sudo apt autoremove -y
+sudo apt-get update && sudo apt-get upgrade -y
+sudo apt-get autoremove -y
 
 # 3. pnpm aktualisieren
 echo -e "${GREEN}3/3: Aktualisiere pnpm...${NC}"

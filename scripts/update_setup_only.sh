@@ -46,16 +46,17 @@ if [ "$CURRENT_BRANCH" != "main" ]; then
     git -C "$INSTALL_DIR" checkout main 2>/dev/null || git -C "$INSTALL_DIR" checkout -b main --track origin/main
 fi
 
+echo -e "${GREEN}Führe Fast-Forward-Update aus...${NC}"
+git -C "$INSTALL_DIR" pull --ff-only origin main
+
 LOCAL_SHA="$(git -C "$INSTALL_DIR" rev-parse HEAD)"
 REMOTE_SHA="$(git -C "$INSTALL_DIR" rev-parse origin/main)"
 
 if [ "$LOCAL_SHA" = "$REMOTE_SHA" ]; then
-    echo -e "${GREEN}Das Setup ist bereits aktuell.${NC}"
+    echo -e "${GREEN}Das Setup ist aktuell.${NC}"
+    echo -e "${YELLOW}Starte das Menü danach neu, damit neue Menütexte und Sprachdateien sicher geladen werden.${NC}"
     exit 0
 fi
-
-echo -e "${GREEN}Aktualisiere das Setup-Repository...${NC}"
-git -C "$INSTALL_DIR" pull --ff-only origin main
 
 echo -e "${GREEN}Setup-Update abgeschlossen.${NC}"
 echo -e "${YELLOW}Falls sich das Setup selbst geaendert hat, starten Sie das Menue danach neu.${NC}"
