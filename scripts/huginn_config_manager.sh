@@ -246,7 +246,7 @@ choose_huginn_repo_ref() {
         "Waehlen Sie den Huginn-Stand.\nEmpfohlen: v2022.08.18" \
         14 68 5 \
         "1" "v2022.08.18" \
-        "2" "GitHub main" \
+        "2" "GitHub master" \
         "3" "Andere Referenz" \
         2> "$HUGINN_REF_CHOICE_FILE" || return 1
     reset_dialog_terminal_state
@@ -257,7 +257,7 @@ choose_huginn_repo_ref() {
             save_huginn_repo_ref "v2022.08.18"
             ;;
         2)
-            save_huginn_repo_ref "main"
+            save_huginn_repo_ref "master"
             ;;
         3)
             rm -f "$HUGINN_REF_INPUT_FILE"

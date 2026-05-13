@@ -71,6 +71,8 @@ Diese Punkte gelten im Projektverlauf inzwischen als veraltet, problematisch ode
 - Der Installer bevorzugt fuer neue Huginn-`.env` jetzt die sichere Vorlage aus `~/.openclaw_ultimate_user_data/huginn/.env.template` und bereinigt alte DB-Defaults wie `root`/`huginn_development`.
 - Die Warnung `MYSQL_OPT_RECONNECT is deprecated` stammt im Huginn-Stand nicht primaer vom MySQL-Server-Update, sondern vom alten `reconnect`-Default in `config/database.yml`; der Installer setzt diesen Default jetzt auf `false`.
 - Wenn die sichere Huginn-Vorlage versehentlich auf `DATABASE_ADAPTER=postgresql` steht, laeuft der alte `pg-1.1.3`-Stack unter Ruby 3.2 in `pg_ext.so` aus; der Installer gibt dafuer jetzt einen gezielten Hinweis statt nur allgemein bei `db:create` zu scheitern.
+- Der offizielle aktuelle Huginn-Upstream spricht in der Installationsdoku derzeit weiterhin von `master`; unsere Huginn-Auswahl und Doku sollten diesen Namen fuer den Teststand konsistent verwenden statt zwischen `main` und `master` zu mischen.
+- `master` ist gegenueber `v2022.08.18` sichtbar moderner bei Ruby, OpenAI-kompatiblen `.env`-Optionen und dem HTTP-Backend-Pfad; MySQL/MariaDB bleibt laut offizieller Installationsdateien aber weiter ein realer Standardpfad.
 - Eine einfache funktionierende Testkette wurde erfolgreich bestaetigt:
   - `Manual Event Agent`
   - `Event Formatting Agent`
@@ -82,6 +84,7 @@ Diese Punkte gelten im Projektverlauf inzwischen als veraltet, problematisch ode
 - Sprachpakete werden nach der eingebauten Setup-Sprache als Overlay geladen und koennen vorhandene `TXT_*`-Texte gezielt ueberschreiben.
 - Fuer die Verwaltung gibt es jetzt `Optionen -> Sprachpakete verwalten`.
 - Das Repo enthaelt mit `language_packs/de_core_ui/` bereits ein erstes deutsches Starter-Paket, das spaeter in ein eigenes Repo ausgelagert werden kann.
+- Das separate Repo `Ultimate_KI_Setup-Sprachenpakete` soll kuenftig parallel zum Haupt-Setup mit gepflegt werden, damit exportierbare Sprachpakete und Setup-Integration nicht auseinanderlaufen.
   - `google-cloud-translate` / `grpc 1.42.0`
   - `mini_racer` / `libv8-node`
   - `ruby-growl`

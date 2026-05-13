@@ -36,6 +36,67 @@ Dadurch bleiben deine Anpassungen ausserhalb des Git-Repositories und ueberstehe
   - bei `postgresql` oder `mysql2` auch `DATABASE_USERNAME` und `DATABASE_PASSWORD`
 - Fuer lokale Setups ist `APP_HOST=127.0.0.1` ein guter Default.
 
+## `v2022.08.18` vs `master`
+
+Fuer Huginn gibt es in diesem Setup aktuell zwei bewusst unterschiedliche Richtungen:
+
+- `v2022.08.18`
+  - konservativer Altstand
+  - in unseren bisherigen Tests der leichter kontrollierbare Legacy-Pfad
+- `master`
+  - offizieller aktuellerer Upstream-Stand
+  - deutlich moderner bei Ruby und einigen Umgebungsoptionen
+
+Wichtige Unterschiede:
+
+- Ruby:
+  - `v2022.08.18` stammt aus dem Ruby-2.6/2.7-Uebergang.
+  - `master` nutzt in der offiziellen Installationsanleitung derzeit Ruby `3.4.8`.
+- Datenbank-Defaults:
+  - beide Stande verwenden in den offiziellen Beispieldateien weiter `mysql2` als Default-Adapter
+  - beide haben weiter MySQL-/MariaDB-Pfade
+  - `master` entfernt den alten `DATABASE_RECONNECT`-/`reconnect: true`-Pfad, der in `v2022.08.18` die Warnung `MYSQL_OPT_RECONNECT is deprecated` ausloest
+- Neue Umgebungsoptionen auf `master`:
+  - `OPENAI_API_KEY`
+  - `OPENAI_BASE_URL`
+  - `ADDITIONAL_GEMS`
+  - `FARADAY_HTTP_BACKEND`
+- Mail/HTTP/LLM:
+  - `master` ist fuer modernere OpenAI-kompatible APIs und konfigurierbare HTTP-Backends sichtbar besser vorbereitet
+  - `v2022.08.18` ist hier deutlich aelter und braucht mehr lokale Sonderbehandlung
+
+Wichtig zur Datenbankeinschaetzung:
+
+- Ich sehe in den offiziellen Installations- und Beispiel-Dateien keinen Hinweis auf einen grundsaetzlichen Wechsel weg von MySQL/MariaDB.
+- `master` bleibt also fuer unser Setup ein sinnvoller Kandidat, wenn wir Huginn weiter auf MySQL/MariaDB betreiben wollen.
+- Ich sehe in diesen Quellen auch keinen offensichtlichen Hinweis auf einen grossen, sofort problematischen Datenbankmodell-Bruch zwischen `v2022.08.18` und `master`.
+- Das ist aber eine vorsichtige Einschaetzung aus den offiziellen Installationsdateien, keine vollstaendige Migrationsgarantie. Der sichere Nachweis bleibt der frische `db:create`-/`db:migrate`-Lauf auf `master`.
+
+Unsere aktuelle Setup-Empfehlung:
+
+- fuer konservative Reproduktion und Legacy-Fixes: `v2022.08.18`
+- fuer den naechsten aktiven Vergleichslauf und modernere Huginn-Funktionen: `master`
+
+## Install-Logs fuer den `master`-Test
+
+Den neuesten Huginn-Installationslog findest du mit:
+
+```bash
+ls -1t /home/ubuntu/.openclaw_ultimate_user_data/install_logs/*Huginn*.log | head -n 5
+```
+
+Den Schluss des neuesten Logs gibst du mir dann am besten so:
+
+```bash
+tail -n 120 /home/ubuntu/.openclaw_ultimate_user_data/install_logs/NEUER_LOGNAME.log
+```
+
+Oder direkt den relevanten Fehler-/Hinweisblock:
+
+```bash
+grep -nE 'Hinweis:|Fehler:|rake aborted!|LoadError|ArgumentError|ConnectionError|mysql2|pg_ext|grpc|net-imap|net-pop|assets:precompile|systemd|huginn-web|huginn-worker' /home/ubuntu/.openclaw_ultimate_user_data/install_logs/NEUER_LOGNAME.log | tail -n 200
+```
+
 ## Gmail und andere Mailanbieter
 
 Ja, Huginn ist nicht auf Gmail beschraenkt.
