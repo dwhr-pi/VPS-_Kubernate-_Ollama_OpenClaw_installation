@@ -60,6 +60,8 @@ Diese Punkte gelten im Projektverlauf inzwischen als veraltet, problematisch ode
 - Der `dry_runnable.rb`-Pfad wurde fuer Ruby 3.2 angepasst, damit Agenten wieder speicherbar sind.
 - Der `jobs_helper.rb`-Pfad wurde fuer den aktuellen Psych/YAML-Stack auf `YAML.unsafe_load` umgestellt, damit die `Jobs`-Seite wieder funktioniert.
 - Fuer echte Huginn-Verarbeitung reichen im aktuellen Setup nicht nur der Webserver, sondern zusaetzlich ein Worker-Prozess mit `RAILS_ENV=production bundle exec rails runner bin/threaded.rb`.
+- Huginn nutzt in diesem Setup jetzt standardmaessig den Port `3002`, damit kein Konflikt mit OpenClaw auf `3000` und Grafana auf `3001` entsteht.
+- Portkonflikte muessen im Setup kuenftig immer mitgedacht werden: upstream-defaults und setup-empfohlene Ports sollten beide benannt werden. Fuer Huginn gilt: upstream oft `3000`, Setup-Empfehlung bewusst `3002`.
 - Beim `Website Agent` dieses Huginn-Stands muss HTML-Extraction in `extract` mit XPath-Werten wie `string(.)` oder `normalize-space(.)` arbeiten; `value: "text"` fuehrt hier leicht zu leeren Payload-Feldern trotz erfolgreichem Abruf.
 - Scenario-Export und Reimport koennen bestehende Scenarios anhand ihrer internen Export-Identitaet wiedererkennen; ein lokal umbenanntes Scenario kann beim Reimport derselben Exportdatei wieder auf den alten Exportnamen zurueckfallen.
 - Der Installer richtet nach erfolgreicher Huginn-Installation nach Moeglichkeit zwei lokale `systemd`-Dienste ein: `huginn-web.service` und `huginn-worker.service`.

@@ -31,6 +31,8 @@ HUGINN_ENABLE_MYSQL2_RUBY32_COMPAT="${HUGINN_ENABLE_MYSQL2_RUBY32_COMPAT:-true}"
 HUGINN_SKIP_SYSTEM_PACKAGES="${HUGINN_SKIP_SYSTEM_PACKAGES:-false}"
 HUGINN_SYSTEMD_WEB_SERVICE="${HUGINN_SYSTEMD_WEB_SERVICE:-huginn-web.service}"
 HUGINN_SYSTEMD_WORKER_SERVICE="${HUGINN_SYSTEMD_WORKER_SERVICE:-huginn-worker.service}"
+HUGINN_UPSTREAM_DEFAULT_PORT="${HUGINN_UPSTREAM_DEFAULT_PORT:-3000}"
+HUGINN_WEB_PORT="${HUGINN_WEB_PORT:-3002}"
 USER_WORKSPACE_DIR="${HOME}/.openclaw_ultimate_user_data"
 HUGINN_USER_CONFIG_DIR="${USER_WORKSPACE_DIR}/huginn"
 HUGINN_USER_SETTINGS_FILE="${HUGINN_USER_CONFIG_DIR}/install_settings.env"
@@ -125,7 +127,7 @@ WorkingDirectory=${HUGINN_DIR}
 Environment=HOME=${service_home}
 Environment=RAILS_ENV=production
 Environment=RAILS_SERVE_STATIC_FILES=1
-ExecStart=/usr/bin/env bash -lc 'bundle exec rails server -b 127.0.0.1 -p 3000'
+ExecStart=/usr/bin/env bash -lc 'bundle exec rails server -b 127.0.0.1 -p ${HUGINN_WEB_PORT}'
 Restart=always
 RestartSec=5
 TimeoutStopSec=30
@@ -1277,6 +1279,7 @@ repair_huginn_google_stack() {
 echo -e "${BLUE}Starte Installation von Huginn...${NC}"
 echo -e "${YELLOW}Standard-Referenz: ${HUGINN_REPO_REF}.${NC}"
 echo -e "${YELLOW}Wenn du bewusst einen anderen Upstream-Stand testen willst, kannst du HUGINN_REPO_REF im Setup auswaehlen oder festlegen.${NC}"
+echo -e "${YELLOW}Port-Hinweis: Huginn nutzt upstream oft ${HUGINN_UPSTREAM_DEFAULT_PORT}; dieses Setup verwendet standardmaessig ${HUGINN_WEB_PORT}, damit kein Konflikt mit OpenClaw auf 3000 entsteht.${NC}"
 
 echo -e "${GREEN}1/5: Installiere System-Abhängigkeiten für Huginn...${NC}"
 if [ "$HUGINN_SKIP_SYSTEM_PACKAGES" != "true" ]; then
@@ -1425,7 +1428,7 @@ if ! database_config_complete; then
     echo "RAILS_ENV=production bundle exec rake db:create"
     echo "RAILS_ENV=production bundle exec rake db:migrate"
     echo "RAILS_ENV=production bundle exec rake db:seed"
-    echo "RAILS_ENV=production bundle exec rails server -p 3000"
+    echo "RAILS_ENV=production bundle exec rails server -p ${HUGINN_WEB_PORT}"
     mark_current_tool_installed
     echo -e "${GREEN}Huginn wurde als vorbereitet markiert.${NC}"
     exit 0
@@ -1599,7 +1602,8 @@ echo -e "${YELLOW}Huginn Invitation Code: $(current_huginn_invitation_code)${NC}
 echo -e "${YELLOW}Zum Nachlesen im Terminal: grep '^INVITATION_CODE=' $HUGINN_DIR/.env${NC}"
 echo -e "${YELLOW}Optionaler erster Admin ohne Web-Registrierung:${NC}"
 echo "cd $HUGINN_DIR && RAILS_ENV=production bundle exec rails runner \"u=User.new(username: 'admin', email: 'admin@example.com', password: 'change-me-now', password_confirmation: 'change-me-now', admin: true); u.requires_no_invitation_code!; u.save!\""
-echo -e "${YELLOW}Start-Hinweis: RAILS_ENV=production RAILS_SERVE_STATIC_FILES=1 bundle exec rails server -p 3000${NC}"
+echo -e "${YELLOW}Start-Hinweis: RAILS_ENV=production RAILS_SERVE_STATIC_FILES=1 bundle exec rails server -p ${HUGINN_WEB_PORT}${NC}"
+echo -e "${YELLOW}Port-Hinweis: Upstream-Default ${HUGINN_UPSTREAM_DEFAULT_PORT}, Setup-Empfehlung ${HUGINN_WEB_PORT}.${NC}"
 echo -e "${YELLOW}Dienst-Status: sudo systemctl status ${HUGINN_SYSTEMD_WEB_SERVICE} ${HUGINN_SYSTEMD_WORKER_SERVICE}${NC}"
 echo -e "${YELLOW}Dienst-Neustart: sudo systemctl restart ${HUGINN_SYSTEMD_WEB_SERVICE} ${HUGINN_SYSTEMD_WORKER_SERVICE}${NC}"
 

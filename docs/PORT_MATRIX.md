@@ -8,13 +8,10 @@ Diese Matrix listet die wichtigsten Standardports im Repo. Standardregel ab jetz
 |---:|---|---|---|
 | 3000 | Open WebUI | UI | haeufiger UI-Port, lokal binden |
 | 3001 | Grafana | Monitoring | Auth und starke Passwoerter setzen |
+| 3002 | Huginn | Automation | Setup-Empfehlung; upstream nutzt oft 3000 |
 | 3003 | Langfuse | LLMOps | Prompt-/Trace-Daten schuetzen |
 | 3004 | Uptime Kuma | Monitoring | Monitoring nicht offen exponieren |
 | 4000 | LiteLLM | Gateway | Upstream-Keys nur in `.env` |
-| 4400 | Penpot MCP Plugin Server | MCP / Design | nur lokal oder privat bereitstellen |
-| 4401 | Penpot MCP HTTP/SSE | MCP / Design | nicht offen ins Internet stellen |
-| 4402 | Penpot MCP WebSocket | MCP / Design | Plugin-Verbindung absichern |
-| 4403 | Penpot MCP REPL | MCP / Debug | nur lokal, nicht produktiv exponieren |
 | 5432 | PostgreSQL | Data | nie ohne Auth / Firewall oeffnen |
 | 6333 | Qdrant | RAG | nur intern oder mit Proxy |
 | 7700 | Meilisearch | Search | Indexdaten koennen sensibel sein |
@@ -36,8 +33,6 @@ Diese Matrix listet die wichtigsten Standardports im Repo. Standardregel ab jetz
 | 8083 | NocoDB | Apps | DB-Zugriff begrenzen |
 | 8090 | Appsmith | Apps | nur intern oder via Auth |
 | 10000 | Budibase | Apps | Low-Code-Instanzen absichern |
-| 9011 | Penpot Web UI | UI / Design | in diesem Repo bewusst statt 9001, lokal binden |
-| 1081 | Penpot Mailcatch | UI / Debug | nur lokal, nicht fuer produktive Mailzustellung |
 
 ## Smart Home, Media und Edge
 
@@ -63,6 +58,7 @@ Diese Matrix listet die wichtigsten Standardports im Repo. Standardregel ab jetz
 ## Aktuelle Port-Risiken
 
 - mehrere UIs konkurrieren konzeptionell um klassische Webports wie `3000`
+- Huginn upstream nutzt oft `3000`; im Setup ist deshalb bewusst `3002` reserviert, damit OpenClaw `3000` und Grafana `3001` frei bleiben
 - `Flowise`, `LangFlow`, `LibreChat`, `AnythingLLM` und weitere UI-Stacks sind noch nicht repo-weit auf feste Default-Ports normiert
 - lokale Compose-Stacks und spaetere K3s-Ingress-Pfade brauchen noch eine gemeinsame Port-/Hostname-Taxonomie
 

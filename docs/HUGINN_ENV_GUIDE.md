@@ -28,6 +28,8 @@ Dadurch bleiben deine Anpassungen ausserhalb des Git-Repositories und ueberstehe
   Wenn der Wert leer bleibt, erzeugt das Setup bei der Installation einen lokalen Secret-Token.
 - `INVITATION_CODE` sollte nicht auf dem unsicheren Huginn-Default `try-huginn` bleiben.
   Wenn der Wert leer ist oder noch auf `try-huginn` steht, erzeugt das Setup jetzt automatisch einen lokalen Zufallscode.
+- Huginn nutzt upstream haeufig den Web-Port `3000`.
+  Dieses Setup verwendet fuer Huginn bewusst standardmaessig `3002`, damit kein Konflikt mit OpenClaw auf `3000` und Grafana auf `3001` entsteht.
 - Fuer die Datenbank braucht Huginn mindestens:
   - `DATABASE_ADAPTER`
   - `DATABASE_NAME`
@@ -217,7 +219,7 @@ Fuer einen funktionierenden lokalen Betrieb auf diesem Setup werden zwei Prozess
 
 ```bash
 cd /opt/huginn
-RAILS_ENV=production RAILS_SERVE_STATIC_FILES=1 bundle exec rails server -b 127.0.0.1 -p 3000
+RAILS_ENV=production RAILS_SERVE_STATIC_FILES=1 bundle exec rails server -b 127.0.0.1 -p 3002
 ```
 
 ### 2. Worker
@@ -225,6 +227,24 @@ RAILS_ENV=production RAILS_SERVE_STATIC_FILES=1 bundle exec rails server -b 127.
 ```bash
 cd /opt/huginn
 RAILS_ENV=production bundle exec rails runner bin/threaded.rb
+```
+
+### Einzeiler: Webserver + Worker zusammen
+
+```bash
+cd /opt/huginn && (RAILS_ENV=production RAILS_SERVE_STATIC_FILES=1 bundle exec rails server -b 127.0.0.1 -p 3002 &) && RAILS_ENV=production bundle exec rails runner bin/threaded.rb
+```
+
+### Einzeiler: nur Webserver
+
+```bash
+cd /opt/huginn && RAILS_ENV=production RAILS_SERVE_STATIC_FILES=1 bundle exec rails server -b 127.0.0.1 -p 3002
+```
+
+### Einzeiler: nur Worker
+
+```bash
+cd /opt/huginn && RAILS_ENV=production bundle exec rails runner bin/threaded.rb
 ```
 
 Ohne den Worker werden Events oft nur in die Queue gelegt, aber nicht weiterverarbeitet. Typische Symptome sind:
@@ -245,6 +265,7 @@ Die Rollen bleiben dabei gleich:
 
 - `huginn-web.service` startet die Weboberflaeche
 - `huginn-worker.service` verarbeitet Jobs, Events und Agent-Ketten
+- Huginn nutzt in diesem Setup standardmaessig `127.0.0.1:3002`, damit kein Konflikt mit OpenClaw auf `3000` und Grafana auf `3001` entsteht
 
 Nützliche Befehle:
 
