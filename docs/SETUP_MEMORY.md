@@ -75,6 +75,13 @@ Diese Punkte gelten im Projektverlauf inzwischen als veraltet, problematisch ode
   - `Manual Event Agent`
   - `Event Formatting Agent`
 - Die alten problematischen Huginn-Zweige werden jetzt proaktiv erkannt und bei Bedarf entschärft:
+
+### Sprachpakete
+
+- Das Setup kann jetzt nachinstallierbare Sprachpakete aus `~/.openclaw_ultimate_user_data/language_packs/` laden.
+- Sprachpakete werden nach der eingebauten Setup-Sprache als Overlay geladen und koennen vorhandene `TXT_*`-Texte gezielt ueberschreiben.
+- Fuer die Verwaltung gibt es jetzt `Optionen -> Sprachpakete verwalten`.
+- Das Repo enthaelt mit `language_packs/de_core_ui/` bereits ein erstes deutsches Starter-Paket, das spaeter in ein eigenes Repo ausgelagert werden kann.
   - `google-cloud-translate` / `grpc 1.42.0`
   - `mini_racer` / `libv8-node`
   - `ruby-growl`

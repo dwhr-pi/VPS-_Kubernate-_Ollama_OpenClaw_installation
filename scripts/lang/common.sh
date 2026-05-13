@@ -8,6 +8,7 @@ SUPPORTED_SETUP_LANGUAGES=(de en fr zh ja ru es eo ar he)
 USER_WORKSPACE_DIR="${USER_WORKSPACE_DIR:-${HOME}/.openclaw_ultimate_user_data}"
 SETUP_PREFERENCES_FILE="${SETUP_PREFERENCES_FILE:-$USER_WORKSPACE_DIR/setup_preferences.conf}"
 LANG_FILES_DIR="${SCRIPT_ROOT_DIR}/scripts/lang"
+LANGUAGE_PACKS_DIR="${LANGUAGE_PACKS_DIR:-$USER_WORKSPACE_DIR/language_packs}"
 
 setup_language_name() {
     case "$1" in
@@ -59,6 +60,7 @@ normalize_setup_boolean() {
 
 ensure_setup_preferences() {
     mkdir -p "$USER_WORKSPACE_DIR"
+    mkdir -p "$LANGUAGE_PACKS_DIR"
     if [ ! -f "$SETUP_PREFERENCES_FILE" ]; then
         cat > "$SETUP_PREFERENCES_FILE" <<EOF
 # Ausgelagerte Benutzer-Einstellungen für das Ultimate Setup
@@ -110,6 +112,36 @@ persist_setup_language() {
     persist_setup_preference "SETUP_LANGUAGE" "$1"
 }
 
+load_setup_language_pack_overlays() {
+    local language_code="${1:-$DEFAULT_SETUP_LANGUAGE}"
+    local manifest_file pack_dir pack_setup_file
+
+    [ -d "$LANGUAGE_PACKS_DIR" ] || return 0
+
+    shopt -s nullglob
+    for manifest_file in "$LANGUAGE_PACKS_DIR"/*/manifest.conf; do
+        unset PACK_ID PACK_NAME PACK_LANGUAGE PACK_VERSION PACK_ENABLED PACK_DESCRIPTION
+        # shellcheck disable=SC1090
+        source "$manifest_file"
+
+        if [ "${PACK_ENABLED:-true}" != "true" ]; then
+            continue
+        fi
+
+        if [ "${PACK_LANGUAGE:-}" != "$language_code" ]; then
+            continue
+        fi
+
+        pack_dir="$(cd "$(dirname "$manifest_file")" && pwd)"
+        pack_setup_file="$pack_dir/setup/$language_code.sh"
+        if [ -f "$pack_setup_file" ]; then
+            # shellcheck disable=SC1090
+            source "$pack_setup_file"
+        fi
+    done
+    shopt -u nullglob
+}
+
 load_setup_language() {
     local language_code
     ensure_setup_preferences
@@ -128,6 +160,8 @@ load_setup_language() {
         source "$LANG_FILES_DIR/$DEFAULT_SETUP_LANGUAGE.sh"
         SETUP_LANGUAGE="$DEFAULT_SETUP_LANGUAGE"
     fi
+
+    load_setup_language_pack_overlays "$SETUP_LANGUAGE"
 }
 
 show_setup_language_menu() {

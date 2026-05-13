@@ -939,7 +939,7 @@ show_options_menu() {
     while true; do
         dialog --clear --backtitle "$APP_TITLE" \
         --cancel-label "↩ Zurück" \
-        --title "${TXT_OPTIONS_MENU_TITLE:-OPTIONEN}" --menu "${TXT_OPTIONS_MENU_PROMPT:-Wählen Sie eine Verwaltungs- oder Konfigurationsfunktion:}" 28 100 13 \
+        --title "${TXT_OPTIONS_MENU_TITLE:-OPTIONEN}" --menu "${TXT_OPTIONS_MENU_PROMPT:-Wählen Sie eine Verwaltungs- oder Konfigurationsfunktion:}" 29 100 14 \
         "1" "${TXT_OPTIONS_1:-Sprache ändern}" \
         "2" "${TXT_OPTIONS_2:-Setup-Messwerte & Benchmarks bearbeiten}" \
         "3" "${TXT_OPTIONS_3:-Ollama Modelfile-Assistent}" \
@@ -952,7 +952,8 @@ show_options_menu() {
         "10" "${TXT_OPTIONS_10:-Huginn Konfiguration (.env Vorlage)}" \
         "11" "${TXT_OPTIONS_11:-Installationsüberwachung konfigurieren}" \
         "12" "${TXT_OPTIONS_12:-Nur auf Setup-Updates prüfen}" \
-        "13" "${TXT_OPTIONS_13:-Jetzt nur das Setup aktualisieren}" 2> /tmp/options_choice
+        "13" "${TXT_OPTIONS_13:-Jetzt nur das Setup aktualisieren}" \
+        "14" "${TXT_OPTIONS_14:-Sprachpakete verwalten}" 2> /tmp/options_choice
 
         if [ $? -ne 0 ]; then
             return 0
@@ -1026,6 +1027,9 @@ show_options_menu() {
                 run_bash_script "$INSTALL_DIR/scripts/update_setup_only.sh"
                 if [ $? -eq 0 ]; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
                 read -p "Setup-Update abgeschlossen. Drücken Sie Enter..."
+                ;;
+            14)
+                run_bash_script "$INSTALL_DIR/scripts/language_pack_manager.sh"
                 ;;
         esac
     done
