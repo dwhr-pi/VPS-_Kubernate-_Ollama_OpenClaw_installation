@@ -1798,15 +1798,22 @@ run_tool_script() {
 # Funktion zum Installieren eines Tools
 install_tool() {
     local TOOL_KEY="$1"
+    if [ "$TOOL_KEY" = "Huginn" ]; then
+        reset_terminal_display
+        echo -e "${YELLOW}Huginn Vorbereitung: Zuerst Version und Datenbank auswählen, danach startet die Installation.${NC}"
+        if ! bash "$INSTALL_DIR/scripts/huginn_config_manager.sh" --prepare-install; then
+            reset_terminal_display
+            echo -e "${YELLOW}Huginn-Installation wurde vor dem Start abgebrochen.${NC}"
+            return 1
+        fi
+        reset_terminal_display
+    fi
+
     show_tool_action_intro "$TOOL_KEY" "installieren" "install"
     begin_operation_measurement "tool_install_${TOOL_KEY}" "Tool installieren: ${TOOL_KEY}"
     echo -e "${BLUE}Installiere Tool: ${TOOL_KEY}...${NC}"
     if [ "$TOOL_KEY" = "Huginn" ]; then
-        if ! run_bash_script "$INSTALL_DIR/scripts/huginn_config_manager.sh" --prepare-install; then
-            end_operation_measurement "aborted"
-            echo -e "${YELLOW}Huginn-Installation wurde vor dem Start abgebrochen.${NC}"
-            return 1
-        fi
+        echo -e "${YELLOW}Huginn nutzt jetzt die soeben gespeicherte Konfiguration aus ~/.openclaw_ultimate_user_data/huginn/.${NC}"
     fi
     run_tool_script "$TOOL_KEY" "install"
     if [ $? -eq 0 ]; then
