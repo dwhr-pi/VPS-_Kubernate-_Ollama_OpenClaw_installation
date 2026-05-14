@@ -248,6 +248,30 @@ Optional mit explizitem Log:
 bash scripts/huginn_log_diagnostics.sh /home/ubuntu/.openclaw_ultimate_user_data/install_logs/DEIN_HUGINN_LOG.log
 ```
 
+### Tool-Logs allgemein auswerten und optional per E-Mail senden
+
+Die Diagnose ist nicht auf Huginn beschraenkt. Fuer den neuesten Installationslog aller Tools:
+
+```bash
+bash scripts/tool_log_diagnostics.sh
+```
+
+Fuer ein bestimmtes Tool:
+
+```bash
+bash scripts/tool_log_diagnostics.sh --tool Clawhub_CLI
+bash scripts/tool_log_diagnostics.sh --tool OpenManus
+bash scripts/tool_log_diagnostics.sh --tool Huginn
+```
+
+Das Script zeigt den Bericht weiterhin im Terminal und fragt anschliessend, ob der Bericht per E-Mail an `ai-chat-to-markdown@web.de` gesendet werden soll. Der Versand nutzt nur lokal vorhandene Mailprogramme wie `mail` oder `sendmail`.
+
+Wichtig:
+
+- keine SMTP-Passwoerter, App-Passwoerter oder API-Keys ins Repository schreiben
+- fuer echten Versand lokal z. B. `mailutils` oder `msmtp` sicher konfigurieren
+- Huginn kann spaeter als erste Aufgabe genau diese Diagnoseberichte weiterverarbeiten oder weiterleiten
+
 ### Versionsanzeige passt nicht
 
 - `grep 'APP_VERSION=' setup_ultimate.sh`

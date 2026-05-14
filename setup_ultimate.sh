@@ -939,7 +939,7 @@ show_options_menu() {
     while true; do
         dialog --clear --backtitle "$APP_TITLE" \
         --cancel-label "↩ Zurück" \
-        --title "${TXT_OPTIONS_MENU_TITLE:-OPTIONEN}" --menu "${TXT_OPTIONS_MENU_PROMPT:-Wählen Sie eine Verwaltungs- oder Konfigurationsfunktion:}" 29 100 14 \
+        --title "${TXT_OPTIONS_MENU_TITLE:-OPTIONEN}" --menu "${TXT_OPTIONS_MENU_PROMPT:-Wählen Sie eine Verwaltungs- oder Konfigurationsfunktion:}" 30 100 15 \
         "1" "${TXT_OPTIONS_1:-Sprache ändern}" \
         "2" "${TXT_OPTIONS_2:-Setup-Messwerte & Benchmarks bearbeiten}" \
         "3" "${TXT_OPTIONS_3:-Ollama Modelfile-Assistent}" \
@@ -953,7 +953,8 @@ show_options_menu() {
         "11" "${TXT_OPTIONS_11:-Installationsüberwachung konfigurieren}" \
         "12" "${TXT_OPTIONS_12:-Nur auf Setup-Updates prüfen}" \
         "13" "${TXT_OPTIONS_13:-Jetzt nur das Setup aktualisieren}" \
-        "14" "${TXT_OPTIONS_14:-Sprachpakete verwalten}" 2> /tmp/options_choice
+        "14" "${TXT_OPTIONS_14:-Sprachpakete verwalten}" \
+        "15" "${TXT_OPTIONS_15:-Tool-Logdiagnose anzeigen / optional per E-Mail senden}" 2> /tmp/options_choice
 
         if [ $? -ne 0 ]; then
             return 0
@@ -1030,6 +1031,10 @@ show_options_menu() {
                 ;;
             14)
                 run_bash_script "$INSTALL_DIR/scripts/language_pack_manager.sh"
+                ;;
+            15)
+                bash "$INSTALL_DIR/scripts/tool_log_diagnostics.sh"
+                read -p "Tool-Logdiagnose abgeschlossen. Drücken Sie Enter..."
                 ;;
         esac
     done
