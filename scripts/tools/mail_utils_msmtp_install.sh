@@ -20,6 +20,7 @@ init_tool_tracking "Mail_Utils_MSMTP"
 USER_WORKSPACE_DIR="${HOME}/.openclaw_ultimate_user_data"
 MAIL_CONFIG_DIR="$USER_WORKSPACE_DIR/mail"
 MSMTP_TEMPLATE="$MAIL_CONFIG_DIR/msmtprc.template"
+MAIL_SETTINGS_TEMPLATE="$MAIL_CONFIG_DIR/mail_settings.env.template"
 MAIL_README="$MAIL_CONFIG_DIR/README.md"
 
 echo -e "${BLUE}Installiere Mail-Tools fuer Diagnoseberichte...${NC}"
@@ -78,6 +79,18 @@ EOF
     chmod 600 "$MSMTP_TEMPLATE" 2>/dev/null || true
 fi
 
+if [ ! -f "$MAIL_SETTINGS_TEMPLATE" ]; then
+    cat > "$MAIL_SETTINGS_TEMPLATE" <<'EOF'
+# OpenClaw Diagnose-Mail Einstellungen
+# Diese Datei bei Bedarf nach ~/.openclaw_ultimate_user_data/mail/mail_settings.env kopieren.
+# Keine Passwoerter oder Tokens in diese Datei schreiben.
+
+MAIL_FROM="deine-adresse@web.de"
+MSMTP_ACCOUNT="default"
+EOF
+    chmod 600 "$MAIL_SETTINGS_TEMPLATE" 2>/dev/null || true
+fi
+
 cat > "$MAIL_README" <<'EOF'
 # Mailausgabe fuer OpenClaw Setup-Diagnose
 
@@ -98,15 +111,32 @@ command -v sendmail
 
 Sicherer Konfigurationsweg:
 
+Empfohlen ueber das Setup-Menue:
+
+```bash
+bash ~/openclaw_ultimate_setup/setup_ultimate.sh
+# Optionen -> E-Mail-Diagnose konfigurieren / Testmail senden
+```
+
+Manuell:
+
 1. `~/.openclaw_ultimate_user_data/mail/msmtprc.template` nach `~/.msmtprc` kopieren.
 2. SMTP-Host, Absender und Benutzer lokal anpassen.
 3. Passwort nur lokal ueber `pass`, `passwordeval` oder eine Datei mit `chmod 600` einbinden.
-4. Keine Zugangsdaten ins Repository schreiben.
+4. `~/.openclaw_ultimate_user_data/mail/mail_settings.env.template` nach `~/.openclaw_ultimate_user_data/mail/mail_settings.env` kopieren.
+5. Dort `MAIL_FROM` auf die erlaubte SMTP-Absenderadresse setzen.
+6. Keine Zugangsdaten ins Repository schreiben.
+
+Wichtig beim E-Mail-Anbieter:
+
+- SMTP/IMAP bzw. Zugriff fuer Drittanbieter-Apps muss oft erst aktiviert werden.
+- Das ist vergleichbar mit Mail-Apps auf Handy oder Tablet.
+- Bei manchen Anbietern ist ein App-Passwort noetig statt des normalen Login-Passworts.
 
 Testversand:
 
 ```bash
-echo "OpenClaw Mailtest" | mail -s "OpenClaw Diagnose Mailtest" ai-chat-to-markdown@web.de
+printf "From: deine-adresse@web.de\nTo: ai-chat-to-markdown@web.de\nSubject: OpenClaw Diagnose Mailtest\n\nOpenClaw Mailtest\n" | msmtp -a default -f deine-adresse@web.de ai-chat-to-markdown@web.de
 ```
 
 Diagnosebericht senden:

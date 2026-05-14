@@ -177,7 +177,8 @@ Das ist alltagstauglich, weil es nicht nur ein Demo-Agent ist, sondern sofort ec
 
 Eine konkrete deutsche Vorlage dazu liegt jetzt auch hier:
 
-- [HUGINN_MAIL_WORKFLOWS_DE.md](C:/Users/danie/.codex/worktrees/8354/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/HUGINN_MAIL_WORKFLOWS_DE.md:1)
+- [HUGINN_MAIL_WORKFLOWS_DE.md](C:/Users/danie/Documents/GitHub/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/HUGINN_MAIL_WORKFLOWS_DE.md:1)
+- [HUGINN_LOG_DIAGNOSTIC_WORKTREE.md](C:/Users/danie/Documents/GitHub/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/HUGINN_LOG_DIAGNOSTIC_WORKTREE.md:1)
 
 ## Invitation Code und erster Benutzer
 

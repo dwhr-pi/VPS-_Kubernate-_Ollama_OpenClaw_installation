@@ -270,7 +270,47 @@ Wichtig:
 
 - keine SMTP-Passwoerter, App-Passwoerter oder API-Keys ins Repository schreiben
 - fuer echten Versand lokal z. B. `mailutils` oder `msmtp` sicher konfigurieren
+- fuer WEB.DE und aehnliche Provider muss der Envelope-Absender zur SMTP-Adresse passen; setze dafuer lokal `MAIL_FROM` in `~/.openclaw_ultimate_user_data/mail/mail_settings.env`
 - Huginn kann spaeter als erste Aufgabe genau diese Diagnoseberichte weiterverarbeiten oder weiterleiten
+
+Beispiel ohne Passwort:
+
+```bash
+cp ~/.openclaw_ultimate_user_data/mail/mail_settings.env.template ~/.openclaw_ultimate_user_data/mail/mail_settings.env
+nano ~/.openclaw_ultimate_user_data/mail/mail_settings.env
+chmod 600 ~/.openclaw_ultimate_user_data/mail/mail_settings.env
+```
+
+Inhalt:
+
+```bash
+MAIL_FROM="deine-adresse@web.de"
+MSMTP_ACCOUNT="default"
+```
+
+Komfortabler ist der Editor im Setup:
+
+```bash
+bash ~/openclaw_ultimate_setup/setup_ultimate.sh
+# Optionen -> E-Mail-Diagnose konfigurieren / Testmail senden
+```
+
+Der Editor schreibt die Konfiguration `.env`-aehnlich in:
+
+- `~/.openclaw_ultimate_user_data/mail/mail_settings.env`
+- `~/.openclaw_ultimate_user_data/mail/smtp_password`
+- `~/.msmtprc`
+
+Das SMTP-/App-Passwort wird getrennt in `smtp_password` gespeichert und mit `chmod 600` abgesichert. Wenn beim Eintragen der Daten `msmtp`, `mail` oder `sendmail` fehlen, installiert das Setup die Komponente `Mail_Utils_MSMTP` automatisch nach.
+
+Wichtig beim E-Mail-Anbieter:
+
+- SMTP/IMAP bzw. Zugriff fuer Drittanbieter-Apps muss haeufig erst im Konto aktiviert werden.
+- Das entspricht der Freigabe fuer externe Mail-Apps auf Handy, Tablet oder Desktop.
+- Einige Anbieter verlangen ein eigenes App-Passwort statt des normalen Konto-Passworts.
+- Der Envelope-Absender muss zur SMTP-Adresse passen, sonst lehnen Anbieter wie WEB.DE den Versand mit `Sender address is not allowed` ab.
+
+Der Menuepunkt `Testmail ohne Logs senden` versendet bewusst nur eine kurze Pruefmail und keine Installations- oder Diagnoseberichte. Die lokale Testmail-Datei liegt in `~/.openclaw_ultimate_user_data/mail/last_test_mail.txt` und kann im selben Menue wieder geloescht werden. Bereits zugestellte Testmails muessen im Postfach des Anbieters geloescht werden.
 
 ### Alte Installations- und Diagnose-Logs aufraeumen
 

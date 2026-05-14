@@ -14,11 +14,13 @@ USER_WORKSPACE_DIR="${USER_WORKSPACE_DIR:-$HOME/.openclaw_ultimate_user_data}"
 INSTALL_LOG_DIR="${INSTALL_LOG_DIR:-$USER_WORKSPACE_DIR/install_logs}"
 REPORT_DIR="${REPORT_DIR:-$USER_WORKSPACE_DIR/diagnostic_reports}"
 DEFAULT_EMAIL_TO="${DEFAULT_EMAIL_TO:-ai-chat-to-markdown@web.de}"
+MAIL_SETTINGS_FILE="${MAIL_SETTINGS_FILE:-$USER_WORKSPACE_DIR/mail/mail_settings.env}"
 LINE_COUNT="${LINE_COUNT:-220}"
 TOOL_NAME=""
 LOG_FILE=""
 EMAIL_TO=""
 EMAIL_MODE="ask"
+MAIL_FROM="${MAIL_FROM:-}"
 NO_COLOR="false"
 
 PATTERN='Hinweis:|Warnung:|Fehler:|ERROR:|Error:|error|failed|fatal|rake aborted!|Traceback|Exception|LoadError|ArgumentError|ConnectionError|ECONNRESET|EAI_AGAIN|ERR_SOCKET_TIMEOUT|ELIFECYCLE|npm ERR|pnpm|bunx|bundle|Bundler|Gemfile|mysql2|postgresql|pg_ext|grpc|net-imap|net-pop|assets:precompile|systemd|service|port|permission denied|Permission denied|No such file|not found|syntax error|ruby|rails|python|node|docker|kubernetes|helm'
@@ -178,16 +180,45 @@ send_report_email() {
     local report_file="$1"
     local recipient="$2"
     local subject
+    local from_header=()
 
     subject="[OpenClaw Setup] Tool-Logdiagnose ${TOOL_NAME:-all_tools} $(date '+%Y-%m-%d %H:%M')"
 
+    if [ -f "$MAIL_SETTINGS_FILE" ]; then
+        # shellcheck disable=SC1090
+        source "$MAIL_SETTINGS_FILE"
+    fi
+
+    if [ -n "${MAIL_FROM:-}" ]; then
+        from_header=("From: ${MAIL_FROM}")
+    fi
+
+    if command -v msmtp >/dev/null 2>&1 && [ -n "${MAIL_FROM:-}" ]; then
+        {
+            printf 'From: %s\n' "$MAIL_FROM"
+            printf 'To: %s\n' "$recipient"
+            printf 'Subject: %s\n' "$subject"
+            printf 'Content-Type: text/plain; charset=UTF-8\n'
+            printf '\n'
+            cat "$report_file"
+        } | msmtp -a "${MSMTP_ACCOUNT:-default}" -f "$MAIL_FROM" "$recipient"
+        return $?
+    fi
+
     if command -v mail >/dev/null 2>&1; then
-        mail -s "$subject" "$recipient" < "$report_file"
+        if [ -n "${MAIL_FROM:-}" ]; then
+            mail -r "$MAIL_FROM" -s "$subject" "$recipient" < "$report_file"
+        else
+            mail -s "$subject" "$recipient" < "$report_file"
+        fi
         return $?
     fi
 
     if command -v sendmail >/dev/null 2>&1; then
         {
+            if [ ${#from_header[@]} -gt 0 ]; then
+                echo "${from_header[0]}"
+            fi
             echo "To: $recipient"
             echo "Subject: $subject"
             echo "Content-Type: text/plain; charset=UTF-8"
@@ -197,13 +228,18 @@ send_report_email() {
         return $?
     fi
 
-    echo -e "${YELLOW}E-Mail-Versand nicht moeglich: weder 'mail' noch 'sendmail' gefunden.${NC}"
-    echo -e "${YELLOW}Installiere und konfiguriere z. B. mailutils/msmtp, ohne Zugangsdaten ins Repo zu schreiben.${NC}"
+    echo -e "${YELLOW}E-Mail-Versand nicht moeglich: weder 'msmtp', 'mail' noch 'sendmail' passend nutzbar.${NC}"
+    echo -e "${YELLOW}Installiere Mail_Utils_MSMTP und setze lokal MAIL_FROM in ${MAIL_SETTINGS_FILE}.${NC}"
     return 1
 }
 
 maybe_send_email() {
     local report_file="$1"
+    if [ -f "$MAIL_SETTINGS_FILE" ]; then
+        # shellcheck disable=SC1090
+        source "$MAIL_SETTINGS_FILE"
+    fi
+
     local recipient="${EMAIL_TO:-$DEFAULT_EMAIL_TO}"
     local answer
 

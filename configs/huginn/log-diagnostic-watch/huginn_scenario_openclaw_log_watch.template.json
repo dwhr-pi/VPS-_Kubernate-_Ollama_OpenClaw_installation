@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "name": "OpenClaw Log Diagnostic Watch",
+  "description": "Vorlage fuer einen lokalen Huginn ShellCommandAgent, der neue OpenClaw-Diagnoseberichte erkennt und Codex-Handoff-Dateien erzeugt.",
+  "agents": [
+    {
+      "type": "Agents::ShellCommandAgent",
+      "name": "OpenClaw Diagnoseberichte pruefen",
+      "schedule": "every_5m",
+      "keep_events_for": 14,
+      "options": {
+        "path": "/home/ubuntu/openclaw_ultimate_setup",
+        "command": "bash scripts/huginn_log_worktree/check_log_intake.sh",
+        "unbundle": true,
+        "suppress_on_failure": false,
+        "suppress_on_empty_output": true,
+        "expected_update_period_in_days": 1
+      }
+    }
+  ],
+  "security_notes": [
+    "ShellCommandAgent benoetigt ENABLE_INSECURE_AGENTS=true in /opt/huginn/.env.",
+    "Nur auf eigener lokaler Huginn-Instanz verwenden.",
+    "Das Skript schreibt keine Secrets in das Repository.",
+    "Vor Versand oder Weitergabe von Reports immer auf private Daten pruefen."
+  ]
+}
