@@ -382,8 +382,8 @@ choose_huginn_database_adapter_cli() {
 
     echo
     echo "Huginn-Datenbank"
-    echo "1) MySQL / MariaDB (empfohlen)"
-    echo "2) PostgreSQL"
+    echo "1) MySQL / MariaDB (empfohlen fuer unser v2022.08.18-Setup)"
+    echo "2) PostgreSQL (nur bewusst fuer Original-/Upstream-Tests)"
     read -r -p "Auswahl [1-2]: " selected_adapter
 
     case "$selected_adapter" in
@@ -430,10 +430,10 @@ choose_huginn_database_adapter() {
         --begin "$begin_row" "$begin_col" \
         --cancel-label "Zurueck" \
         --title "HUGINN DATENBANK" --radiolist \
-        "Waehlen Sie die Huginn-Datenbank.\n\nEmpfohlen: MySQL/MariaDB\nAktuell: ${current_adapter}" \
+        "Waehlen Sie die Huginn-Datenbank.\n\nEmpfohlen fuer unser v2022.08.18-Setup: MySQL/MariaDB\nPostgreSQL nur bewusst fuer Original-/Upstream-Tests.\nAktuell: ${current_adapter}" \
         15 82 5 \
-        "1" "MySQL / MariaDB (empfohlen fuer diesen Huginn-Stand)" "$mysql_state" \
-        "2" "PostgreSQL (optional, kann Zusatzfixes brauchen)" "$postgres_state" \
+        "1" "MySQL / MariaDB (Setup-Empfehlung)" "$mysql_state" \
+        "2" "PostgreSQL (Original/Upstream-Test, kann Zusatzfixes brauchen)" "$postgres_state" \
         2> "$HUGINN_DB_CHOICE_FILE"; then
         reset_terminal_state
         return 1
@@ -445,12 +445,12 @@ choose_huginn_database_adapter() {
         1)
             apply_huginn_database_template_preset "mysql2"
             save_huginn_install_setting "HUGINN_DATABASE_ADAPTER" "mysql2"
-            echo -e "${GREEN}Huginn wird jetzt mit MySQL/MariaDB vorbereitet.${NC}"
+            echo -e "${GREEN}Huginn wird jetzt mit MySQL/MariaDB vorbereitet. Das ist die Setup-Empfehlung.${NC}"
             ;;
         2)
             apply_huginn_database_template_preset "postgresql"
             save_huginn_install_setting "HUGINN_DATABASE_ADAPTER" "postgresql"
-            echo -e "${GREEN}Huginn wird jetzt mit PostgreSQL vorbereitet.${NC}"
+            echo -e "${GREEN}Huginn wird jetzt mit PostgreSQL vorbereitet. Das ist bewusst als Original-/Upstream-Testpfad gedacht.${NC}"
             ;;
         *) return 1 ;;
     esac

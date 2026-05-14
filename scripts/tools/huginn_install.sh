@@ -29,6 +29,10 @@ HUGINN_ENABLE_NET_IMAP_COMPAT_ON_RUBY32="${HUGINN_ENABLE_NET_IMAP_COMPAT_ON_RUBY
 HUGINN_DISABLE_GMAIL_XOAUTH_ON_NET_IMAP_FAILURE="${HUGINN_DISABLE_GMAIL_XOAUTH_ON_NET_IMAP_FAILURE:-true}"
 HUGINN_ENABLE_MYSQL2_RUBY32_COMPAT="${HUGINN_ENABLE_MYSQL2_RUBY32_COMPAT:-true}"
 HUGINN_SKIP_SYSTEM_PACKAGES="${HUGINN_SKIP_SYSTEM_PACKAGES:-false}"
+HUGINN_ENABLE_RBENV_FOR_MASTER="${HUGINN_ENABLE_RBENV_FOR_MASTER:-true}"
+HUGINN_MASTER_RUBY_VERSION="${HUGINN_MASTER_RUBY_VERSION:-3.4.9}"
+HUGINN_RBENV_ROOT="${HUGINN_RBENV_ROOT:-$HOME/.rbenv-openclaw-huginn}"
+HUGINN_ACTIVE_RUBY_VERSION="${HUGINN_ACTIVE_RUBY_VERSION:-}"
 HUGINN_SYSTEMD_WEB_SERVICE="${HUGINN_SYSTEMD_WEB_SERVICE:-huginn-web.service}"
 HUGINN_SYSTEMD_WORKER_SERVICE="${HUGINN_SYSTEMD_WORKER_SERVICE:-huginn-worker.service}"
 HUGINN_UPSTREAM_DEFAULT_PORT="${HUGINN_UPSTREAM_DEFAULT_PORT:-3000}"
@@ -127,6 +131,9 @@ WorkingDirectory=${HUGINN_DIR}
 Environment=HOME=${service_home}
 Environment=RAILS_ENV=production
 Environment=RAILS_SERVE_STATIC_FILES=1
+Environment=RBENV_ROOT=${HUGINN_RBENV_ROOT}
+Environment=RBENV_VERSION=${HUGINN_ACTIVE_RUBY_VERSION}
+Environment=PATH=${HUGINN_RBENV_ROOT}/shims:${HUGINN_RBENV_ROOT}/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 ExecStart=/usr/bin/env bash -lc 'bundle exec rails server -b 127.0.0.1 -p ${HUGINN_WEB_PORT}'
 Restart=always
 RestartSec=5
@@ -148,6 +155,9 @@ User=${service_user}
 WorkingDirectory=${HUGINN_DIR}
 Environment=HOME=${service_home}
 Environment=RAILS_ENV=production
+Environment=RBENV_ROOT=${HUGINN_RBENV_ROOT}
+Environment=RBENV_VERSION=${HUGINN_ACTIVE_RUBY_VERSION}
+Environment=PATH=${HUGINN_RBENV_ROOT}/shims:${HUGINN_RBENV_ROOT}/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 ExecStart=/usr/bin/env bash -lc 'bundle exec rails runner bin/threaded.rb'
 Restart=always
 RestartSec=5
@@ -997,6 +1007,70 @@ ruby_version_at_least() {
     ruby -e 'exit((Gem::Version.new(RUBY_VERSION) >= Gem::Version.new(ARGV[0])) ? 0 : 1)' "$required"
 }
 
+is_huginn_master_ref() {
+    case "$HUGINN_REPO_REF" in
+        master|main)
+            return 0
+            ;;
+        *)
+            return 1
+            ;;
+    esac
+}
+
+activate_rbenv_shell() {
+    export RBENV_ROOT="$HUGINN_RBENV_ROOT"
+    export PATH="$RBENV_ROOT/bin:$RBENV_ROOT/shims:$PATH"
+    if [ -x "$RBENV_ROOT/bin/rbenv" ]; then
+        eval "$("$RBENV_ROOT/bin/rbenv" init - bash)"
+    fi
+}
+
+ensure_huginn_master_ruby() {
+    if ! is_huginn_master_ref; then
+        return 0
+    fi
+
+    echo -e "${YELLOW}Huginn master erkannt: aktueller Upstream verlangt Ruby >= 3.4.0.${NC}"
+    echo -e "${YELLOW}Dieses Setup nutzt dafuer einen separaten rbenv-Pfad nur fuer Huginn master: ${HUGINN_RBENV_ROOT}.${NC}"
+
+    if ruby_version_at_least "3.4"; then
+        HUGINN_ACTIVE_RUBY_VERSION="$(ruby -e 'print RUBY_VERSION')"
+        echo -e "${GREEN}System-Ruby ist bereits ausreichend: Ruby ${HUGINN_ACTIVE_RUBY_VERSION}.${NC}"
+        return 0
+    fi
+
+    if [ "$HUGINN_ENABLE_RBENV_FOR_MASTER" != "true" ]; then
+        echo -e "${RED}Fehler: Huginn master benoetigt Ruby >= 3.4.0, aber HUGINN_ENABLE_RBENV_FOR_MASTER=false.${NC}"
+        echo -e "${YELLOW}Nutze v2022.08.18 oder aktiviere den separaten rbenv-Pfad fuer Huginn master.${NC}"
+        exit 1
+    fi
+
+    echo -e "${GREEN}Installiere bzw. aktualisiere rbenv/ruby-build fuer Huginn master...${NC}"
+    if [ ! -d "$HUGINN_RBENV_ROOT/.git" ]; then
+        rm -rf "$HUGINN_RBENV_ROOT"
+        git clone https://github.com/rbenv/rbenv.git "$HUGINN_RBENV_ROOT"
+    else
+        git -C "$HUGINN_RBENV_ROOT" pull --ff-only || true
+    fi
+
+    mkdir -p "$HUGINN_RBENV_ROOT/plugins"
+    if [ ! -d "$HUGINN_RBENV_ROOT/plugins/ruby-build/.git" ]; then
+        git clone https://github.com/rbenv/ruby-build.git "$HUGINN_RBENV_ROOT/plugins/ruby-build"
+    else
+        git -C "$HUGINN_RBENV_ROOT/plugins/ruby-build" pull --ff-only || true
+    fi
+
+    activate_rbenv_shell
+    echo -e "${GREEN}Installiere Ruby ${HUGINN_MASTER_RUBY_VERSION} fuer Huginn master, falls noch nicht vorhanden...${NC}"
+    rbenv install -s "$HUGINN_MASTER_RUBY_VERSION"
+    rbenv shell "$HUGINN_MASTER_RUBY_VERSION"
+    HUGINN_ACTIVE_RUBY_VERSION="$HUGINN_MASTER_RUBY_VERSION"
+    gem install bundler
+    ruby -v
+    bundle -v
+}
+
 huginn_google_translate_agent_active() {
     grep -Eq "^gem 'google-cloud-translate'.*google/cloud/translate" Gemfile 2>/dev/null
 }
@@ -1284,13 +1358,23 @@ echo -e "${YELLOW}Port-Hinweis: Huginn nutzt upstream oft ${HUGINN_UPSTREAM_DEFA
 echo -e "${GREEN}1/5: Installiere System-Abhängigkeiten für Huginn...${NC}"
 if [ "$HUGINN_SKIP_SYSTEM_PACKAGES" != "true" ]; then
     sudo apt-get update
-    sudo apt-get install -y ruby-full ruby-bundler build-essential libmysqlclient-dev libpq-dev pkg-config
+    sudo apt-get install -y \
+        ruby-full ruby-bundler build-essential git curl pkg-config \
+        libmysqlclient-dev libpq-dev \
+        autoconf bison libssl-dev libyaml-dev zlib1g-dev libreadline-dev \
+        libgmp-dev libncurses-dev libffi-dev libgdbm-dev libdb-dev
 else
     echo -e "${YELLOW}Überspringe Systempakete, weil HUGINN_SKIP_SYSTEM_PACKAGES=true gesetzt ist.${NC}"
 fi
 
 echo -e "${GREEN}2/5: Hole Huginn aus GitHub...${NC}"
 checkout_huginn_ref
+ensure_huginn_master_ruby
+if [ -n "$HUGINN_ACTIVE_RUBY_VERSION" ] && [ -x "$HUGINN_RBENV_ROOT/bin/rbenv" ]; then
+    activate_rbenv_shell
+    rbenv shell "$HUGINN_ACTIVE_RUBY_VERSION"
+    rbenv local "$HUGINN_ACTIVE_RUBY_VERSION" 2>/dev/null || true
+fi
 
 mkdir -p log tmp/pids tmp/sockets
 chmod -R u+rwX,go-w log tmp

@@ -226,10 +226,27 @@ bundle install
 ### Welche Huginn-Upstream-Version soll ich mit `HUGINN_REPO_REF` verwenden?
 
 - fuer eine laenger stabile Standardinstallation bleibt `HUGINN_REPO_REF=v2022.08.18` die empfohlene Voreinstellung
+- fuer dieses Setup ist bei `v2022.08.18` MySQL/MariaDB der empfohlene Datenbankpfad
+- PostgreSQL ist bewusst eher ein Original-/Upstream-Testpfad, weil es in dieser lokalen Installation bereits wiederholt Zusatzprobleme mit alten Huginn-/Gem-Staenden gab
 - fuer modernere AI-/LLM-, Docker- oder Kubernetes-Szenarien kann bewusst ein neuerer Branch wie `master` getestet werden
-- im Setup wird diese Auswahl jetzt branch-orientiert ueber `custom_sources.conf` gespeichert, damit Branch, Tag, Commit oder Fork spaeter wieder geaendert werden koennen
+- `master` benoetigt aktuell Ruby `>= 3.4.0`; das Setup nutzt dafuer bei Bedarf einen getrennten rbenv-Pfad unter `~/.rbenv-openclaw-huginn`, damit der stabile `v2022.08.18`-Pfad nicht kaputtgeht
+- die Auswahl liegt in `~/.openclaw_ultimate_user_data/huginn/install_settings.env`, die bearbeitbare Huginn-`.env.template` in `~/.openclaw_ultimate_user_data/huginn/.env.template`
 - eine ausfuehrliche Einordnung der Varianten `Release-Tag`, `master/main`, `Commit SHA` und `eigener Fork` steht hier:
   - [HUGINN_REPO_REF_GUIDE.md](/C:/Users/danie/Documents/GitHub/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/HUGINN_REPO_REF_GUIDE.md)
+
+### Neuesten Huginn-Installationslog automatisch auswerten
+
+Der Logname enthaelt Datum, Uhrzeit und Vorgang. Statt den neuesten Namen manuell einzusetzen, nutze:
+
+```bash
+bash scripts/huginn_log_diagnostics.sh
+```
+
+Optional mit explizitem Log:
+
+```bash
+bash scripts/huginn_log_diagnostics.sh /home/ubuntu/.openclaw_ultimate_user_data/install_logs/DEIN_HUGINN_LOG.log
+```
 
 ### Versionsanzeige passt nicht
 

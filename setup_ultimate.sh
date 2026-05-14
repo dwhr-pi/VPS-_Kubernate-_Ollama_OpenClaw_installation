@@ -1875,7 +1875,8 @@ install_tool() {
     begin_operation_measurement "tool_install_${TOOL_KEY}" "Tool installieren: ${TOOL_KEY}"
     echo -e "${BLUE}Installiere Tool: ${TOOL_KEY}...${NC}"
     if [ "$TOOL_KEY" = "Huginn" ]; then
-        echo -e "${YELLOW}Huginn nutzt jetzt die soeben gespeicherte Konfiguration aus ~/.openclaw_ultimate_user_data/huginn/.${NC}"
+        echo -e "${YELLOW}Huginn nutzt die Benutzerkonfiguration aus ~/.openclaw_ultimate_user_data/huginn/.${NC}"
+        echo -e "${YELLOW}Dort liegen HUGINN_REPO_REF, Datenbankauswahl und .env.template bewusst ausserhalb des Repos.${NC}"
     fi
     run_tool_script "$TOOL_KEY" "install"
     if [ $? -eq 0 ]; then
