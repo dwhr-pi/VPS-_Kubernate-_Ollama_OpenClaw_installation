@@ -556,6 +556,28 @@ prepare_postgresql_database_for_huginn() {
     echo -e "${GREEN}PostgreSQL-Rolle fuer Huginn ist vorbereitet. Datenbankname: ${db_name}.${NC}"
 }
 
+prepare_huginn_frontend_dependencies() {
+    if [ ! -f package.json ]; then
+        return 0
+    fi
+
+    if command -v npm >/dev/null 2>&1 && npm run 2>/dev/null | grep -q ' build'; then
+        if command -v npx >/dev/null 2>&1 && npx --no-install esbuild --version >/dev/null 2>&1; then
+            return 0
+        fi
+
+        echo -e "${GREEN}Bereite Huginn-Frontend-Abhaengigkeiten fuer assets:precompile vor...${NC}"
+        if [ -f package-lock.json ]; then
+            npm ci || npm install --include=dev
+        else
+            npm install --include=dev
+        fi
+        return 0
+    fi
+
+    return 0
+}
+
 print_huginn_compat_debug_state() {
     echo -e "${YELLOW}Huginn Debug: Script=$0${NC}"
     echo -e "${YELLOW}Huginn Debug: INSTALL_DIR=$INSTALL_DIR${NC}"
@@ -1820,6 +1842,7 @@ if ! RAILS_ENV=production bundle exec rake db:migrate; then
 fi
 
 echo -e "${GREEN}6/6: Vorkompiliere Production-Assets...${NC}"
+prepare_huginn_frontend_dependencies
 if ! RAILS_ENV=production bundle exec rake assets:precompile; then
     echo -e "${RED}Fehler: Huginn Asset-Precompile fehlgeschlagen.${NC}"
     exit 1
