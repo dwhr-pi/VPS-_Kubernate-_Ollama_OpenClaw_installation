@@ -144,6 +144,80 @@ Wichtig:
 - IMAP-/POP3-Zugangsdaten fuer konkrete Mailabrufe liegen spaeter je nach Huginn-Agent oder Credential im jeweiligen Workflow.
 - Deshalb muss nicht fuer jeden Mailanbieter ein eigener globaler Setup-Schalter gebaut werden.
 
+## Passwort-Reset und Account-Mails
+
+Wichtig: Huginn versendet Account-Mails, Einladungen und Passwort-Reset-Mails ueber Rails ActionMailer.
+Das ist **nicht automatisch dasselbe** wie die OpenClaw-Diagnosemail ueber `msmtp`.
+
+Das bedeutet:
+
+- `msmtp` kann fuer Setup-Diagnoseberichte funktionieren, waehrend Huginn selbst trotzdem keine Passwort-Reset-Mail senden kann.
+- Huginn braucht dafuer eigene Mailwerte in `/opt/huginn/.env`.
+- Der Absender muss zum SMTP-Konto passen, sonst lehnen Anbieter wie WEB.DE, GMX oder Gmail die Mail oft ab.
+- Viele Mailanbieter muessen Drittanbieter-Mailprogramme oder App-Passwoerter zuerst im Webinterface freischalten.
+
+Aktuelle Pruefung:
+
+```bash
+grep -E '^(SMTP_|SMTP_DELIVERY_METHOD|EMAIL_FROM_ADDRESS|DOMAIN|APP_HOST|APP_PORT)' /opt/huginn/.env \
+  | sed -E 's/(PASSWORD|PASS|SECRET|TOKEN|KEY)=.*/\1=[REDACTED]/I'
+```
+
+Wenn Huginn ueber den bereits lokal eingerichteten `msmtp`-/`sendmail`-Pfad versenden soll, ist diese Variante meist am einfachsten:
+
+```env
+SMTP_DELIVERY_METHOD=sendmail
+EMAIL_FROM_ADDRESS=deine-adresse@example.com
+DOMAIN=127.0.0.1:3002
+APP_HOST=127.0.0.1
+APP_PORT=3002
+```
+
+Danach Huginn neu starten:
+
+```bash
+sudo systemctl restart huginn-web.service huginn-worker.service
+```
+
+Wenn Huginn direkt ueber SMTP versenden soll, braucht Huginn stattdessen vollstaendige SMTP-Werte:
+
+```env
+SMTP_DELIVERY_METHOD=smtp
+SMTP_DOMAIN=example.com
+SMTP_SERVER=smtp.example.com
+SMTP_PORT=587
+SMTP_AUTHENTICATION=plain
+SMTP_ENABLE_STARTTLS_AUTO=true
+SMTP_USER_NAME=deine-adresse@example.com
+SMTP_PASSWORD=HIER_NICHT_INS_REPO_SCHREIBEN
+EMAIL_FROM_ADDRESS=deine-adresse@example.com
+DOMAIN=127.0.0.1:3002
+APP_HOST=127.0.0.1
+APP_PORT=3002
+```
+
+Sicherheitsregel:
+
+- echte SMTP-Passwoerter niemals ins Git-Repository schreiben
+- wenn moeglich App-Passwort statt Hauptpasswort verwenden
+- lokale `.env` nur auf dem Zielsystem pflegen
+- vor externem Betrieb `DOMAIN` auf die echte geschuetzte Domain setzen, z. B. hinter Tailscale, Cloudflare Tunnel oder Reverse Proxy mit Auth
+
+Wenn du ausgesperrt bist und E-Mail noch nicht funktioniert, ist der lokale Terminalweg sicherer als ein Passwort-Reset per Mail:
+
+```bash
+cd /opt/huginn
+RAILS_ENV=production bundle exec rails runner "u=User.find_by(username: 'admin') || User.first; u.password='NEUES_SICHERES_PASSWORT'; u.password_confirmation='NEUES_SICHERES_PASSWORT'; u.save!"
+```
+
+Bei der `master`-Installation mit separatem rbenv-Pfad kann vorher diese Umgebung noetig sein:
+
+```bash
+export RBENV_ROOT="$HOME/.rbenv-openclaw-huginn"
+export PATH="$RBENV_ROOT/bin:$RBENV_ROOT/shims:$PATH"
+eval "$(rbenv init - bash)"
+```
+
 ## Alltagstaugliche erste Mail-Aufgabe
 
 Eine wirklich nuetzliche erste Huginn-Aufgabe fuer den Alltag waere:
