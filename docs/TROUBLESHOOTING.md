@@ -272,6 +272,23 @@ Wichtig:
 - fuer echten Versand lokal z. B. `mailutils` oder `msmtp` sicher konfigurieren
 - Huginn kann spaeter als erste Aufgabe genau diese Diagnoseberichte weiterverarbeiten oder weiterleiten
 
+### Huginn `master` mit PostgreSQL nachtesten
+
+Der Pfad `HUGINN_REPO_REF=master` plus `DATABASE_ADAPTER=postgresql` nutzt Ruby `3.4.x` ueber den getrennten rbenv-Pfad `~/.rbenv-openclaw-huginn`.
+
+Nach einer erfolgreichen Installation pruefen:
+
+```bash
+bash scripts/huginn_status.sh
+```
+
+Erwartete grobe Signale:
+
+- `huginn-web.service` und `huginn-worker.service` sind vorhanden
+- Huginn nutzt Port `3002`
+- `curl -I http://127.0.0.1:3002` liefert eine HTTP-Antwort
+- Datenbankadapter zeigt `DATABASE_ADAPTER=postgresql`
+
 ### Versionsanzeige passt nicht
 
 - `grep 'APP_VERSION=' setup_ultimate.sh`
