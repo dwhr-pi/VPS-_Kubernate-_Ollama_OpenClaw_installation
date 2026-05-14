@@ -438,6 +438,18 @@ current_database_host() {
     awk -F= '/^DATABASE_HOST=/{print $2}' .env 2>/dev/null | tail -n 1 | tr -d '\r" '
 }
 
+current_database_name() {
+    awk -F= '/^DATABASE_NAME=/{print $2}' .env 2>/dev/null | tail -n 1 | tr -d '\r" '
+}
+
+current_database_username() {
+    awk -F= '/^DATABASE_USERNAME=/{print $2}' .env 2>/dev/null | tail -n 1 | tr -d '\r" '
+}
+
+current_database_password() {
+    awk -F= '/^DATABASE_PASSWORD=/{print $2}' .env 2>/dev/null | tail -n 1 | tr -d '\r" '
+}
+
 mysql_local_socket_expected() {
     local host
 
@@ -473,6 +485,86 @@ mysql_service_available_for_huginn() {
     fi
 
     [ -S /var/run/mysqld/mysqld.sock ]
+}
+
+postgresql_local_expected() {
+    local host
+
+    host="$(current_database_host)"
+    [ -z "$host" ] || [ "$host" = "localhost" ] || [ "$host" = "127.0.0.1" ]
+}
+
+start_postgresql_service_for_huginn() {
+    if command -v systemctl >/dev/null 2>&1 && [ -d /run/systemd/system ]; then
+        sudo systemctl enable postgresql >/dev/null 2>&1 || true
+        sudo systemctl start postgresql
+        return $?
+    fi
+
+    if command -v pg_ctlcluster >/dev/null 2>&1; then
+        local cluster_version
+        cluster_version="$(pg_lsclusters --no-header 2>/dev/null | awk 'NR == 1 {print $1}')"
+        if [ -n "$cluster_version" ]; then
+            sudo pg_ctlcluster "$cluster_version" main start
+            return $?
+        fi
+    fi
+
+    if command -v service >/dev/null 2>&1; then
+        sudo service postgresql start
+        return $?
+    fi
+
+    return 1
+}
+
+prepare_postgresql_database_for_huginn() {
+    local db_user db_password db_name
+
+    if [ "$(current_database_adapter)" != "postgresql" ]; then
+        return 0
+    fi
+
+    if ! postgresql_local_expected; then
+        echo -e "${YELLOW}PostgreSQL ist auf einen externen Host konfiguriert. Lokale Role-/DB-Vorbereitung wird uebersprungen.${NC}"
+        return 0
+    fi
+
+    db_user="$(current_database_username)"
+    db_password="$(current_database_password)"
+    db_name="$(current_database_name)"
+
+    if [ -z "$db_user" ] || [ -z "$db_password" ] || [ -z "$db_name" ]; then
+        echo -e "${RED}Fehler: PostgreSQL-Konfiguration ist unvollstaendig. DATABASE_NAME, DATABASE_USERNAME und DATABASE_PASSWORD muessen gesetzt sein.${NC}"
+        return 1
+    fi
+
+    echo -e "${GREEN}Bereite lokale PostgreSQL-Datenbank fuer Huginn vor...${NC}"
+    sudo apt-get install -y postgresql postgresql-contrib libpq-dev
+
+    if ! start_postgresql_service_for_huginn; then
+        echo -e "${RED}Fehler: PostgreSQL-Dienst konnte nicht gestartet werden.${NC}"
+        return 1
+    fi
+
+    sudo -u postgres psql -v ON_ERROR_STOP=1 \
+        -v huginn_user="$db_user" \
+        -v huginn_password="$db_password" <<'SQL'
+DO $$
+DECLARE
+    role_name text := :'huginn_user';
+    role_password text := :'huginn_password';
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = role_name) THEN
+        EXECUTE format('CREATE ROLE %I LOGIN CREATEDB PASSWORD %L', role_name, role_password);
+    ELSE
+        EXECUTE format('ALTER ROLE %I LOGIN CREATEDB PASSWORD %L', role_name, role_password);
+    END IF;
+END
+$$;
+SQL
+
+    echo -e "${GREEN}PostgreSQL-Rolle fuer Huginn ist vorbereitet. Datenbankname: ${db_name}.${NC}"
 }
 
 print_huginn_compat_debug_state() {
@@ -1592,6 +1684,7 @@ if ! database_config_complete; then
 fi
 
 echo -e "${GREEN}5/5: Initialisiere Datenbank...${NC}"
+prepare_postgresql_database_for_huginn
 if ! mysql_service_available_for_huginn; then
     print_huginn_mysql_service_guidance
     echo -e "${YELLOW}Danach kannst du manuell fortsetzen mit:${NC}"
