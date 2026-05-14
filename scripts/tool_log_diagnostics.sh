@@ -122,6 +122,14 @@ safe_report_name() {
     printf '%s' "$base" | tr -cs '[:alnum:]_.-' '_'
 }
 
+redact_sensitive_output() {
+    sed -E \
+        -e 's/(set-cookie:[[:space:]]*)[^[:space:];]+([^[:space:]]*)/\1[REDACTED_COOKIE]/Ig' \
+        -e 's/(cookie:[[:space:]]*)[^[:space:]]+/\1[REDACTED_COOKIE]/Ig' \
+        -e 's/([?&](token|key|secret|password|passwd|api_key)=)[^&[:space:]]+/\1[REDACTED]/Ig' \
+        -e 's/((token|secret|password|passwd|api_key)[=:][[:space:]]*)[^[:space:]]+/\1[REDACTED]/Ig'
+}
+
 create_report() {
     local log_file="$1"
     local report_file="$2"
@@ -141,7 +149,7 @@ create_report() {
         echo
     } > "$report_file"
 
-    if grep -nE "$PATTERN" "$log_file" | tail -n "$LINE_COUNT" >> "$report_file"; then
+    if grep -nE "$PATTERN" "$log_file" | tail -n "$LINE_COUNT" | redact_sensitive_output >> "$report_file"; then
         found_matches="true"
     else
         found_matches="false"
@@ -154,7 +162,7 @@ create_report() {
             echo
             echo "## Letzte Logzeilen"
             echo
-            tail -n "$LINE_COUNT" "$log_file"
+            tail -n "$LINE_COUNT" "$log_file" | redact_sensitive_output
         } >> "$report_file"
     fi
 }

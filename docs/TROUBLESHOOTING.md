@@ -276,6 +276,16 @@ Wichtig:
 
 Der Pfad `HUGINN_REPO_REF=master` plus `DATABASE_ADAPTER=postgresql` nutzt Ruby `3.4.x` ueber den getrennten rbenv-Pfad `~/.rbenv-openclaw-huginn`.
 
+Validierter lokaler Teststand vom 14. Mai 2026:
+
+- Repository: `/opt/huginn`
+- Git-Stand: `9895f308` auf `master`
+- Ruby: `3.4.9`
+- Datenbank: `DATABASE_ADAPTER=postgresql`, `DATABASE_HOST=127.0.0.1`, `DATABASE_PORT=5432`
+- Webdienst: `huginn-web.service` aktiv, Puma auf `127.0.0.1:3002`
+- Worker: `huginn-worker.service` aktiv
+- HTTP-Nachtest: `HTTP/1.1 200 OK` auf `http://127.0.0.1:3002`
+
 Nach einer erfolgreichen Installation pruefen:
 
 ```bash

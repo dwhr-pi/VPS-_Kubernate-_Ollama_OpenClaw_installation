@@ -23,6 +23,14 @@ print_header() {
     echo -e "${BLUE}============================================================${NC}"
 }
 
+redact_sensitive_output() {
+    sed -E \
+        -e 's/(set-cookie:[[:space:]]*)[^[:space:];]+([^[:space:]]*)/\1[REDACTED_COOKIE]/Ig' \
+        -e 's/(cookie:[[:space:]]*)[^[:space:]]+/\1[REDACTED_COOKIE]/Ig' \
+        -e 's/([?&](token|key|secret|password|passwd|api_key)=)[^&[:space:]]+/\1[REDACTED]/Ig' \
+        -e 's/((token|secret|password|passwd|api_key)[=:][[:space:]]*)[^[:space:]]+/\1[REDACTED]/Ig'
+}
+
 print_header "Huginn Status"
 
 if [ -d "$HUGINN_DIR/.git" ]; then
@@ -54,10 +62,10 @@ echo -e "${YELLOW}HTTP-Test auf 127.0.0.1:${HUGINN_WEB_PORT}:${NC}"
 if command -v curl >/dev/null 2>&1; then
     if curl -fsS -I "http://127.0.0.1:${HUGINN_WEB_PORT}" >/tmp/huginn_status_headers 2>/tmp/huginn_status_error; then
         echo -e "${GREEN}Huginn antwortet auf Port ${HUGINN_WEB_PORT}.${NC}"
-        cat /tmp/huginn_status_headers
+        redact_sensitive_output < /tmp/huginn_status_headers
     else
         echo -e "${YELLOW}Noch keine erfolgreiche HTTP-Antwort auf Port ${HUGINN_WEB_PORT}.${NC}"
-        cat /tmp/huginn_status_error 2>/dev/null || true
+        redact_sensitive_output < /tmp/huginn_status_error 2>/dev/null || true
     fi
 else
     echo "curl ist nicht installiert."
