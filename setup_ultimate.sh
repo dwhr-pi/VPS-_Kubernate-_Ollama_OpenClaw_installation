@@ -331,6 +331,29 @@ set_installation_monitoring_mode() {
     load_setup_language
 }
 
+set_log_cleanup_mode() {
+    local enabled="$1"
+
+    enabled="$(normalize_setup_boolean "$enabled")"
+    persist_setup_preference "LOG_CLEANUP_BEFORE_OPERATION" "$enabled"
+    load_setup_language
+}
+
+set_log_cleanup_number_preference() {
+    local key="$1"
+    local value="$2"
+
+    case "$value" in
+        ''|*[!0-9]*)
+            echo -e "${RED}Fehler: '$value' ist keine gültige Zahl.${NC}"
+            return 1
+            ;;
+    esac
+
+    persist_setup_preference "$key" "$value"
+    load_setup_language
+}
+
 reset_terminal_display() {
     printf '\033[0m'
     tput sgr0 2>/dev/null || true
@@ -667,8 +690,39 @@ run_bash_script() {
     return $script_rc
 }
 
+run_setup_log_cleanup() {
+    local mode="${1:-dry-run}"
+    local cleanup_script="$INSTALL_DIR/scripts/cleanup_setup_logs.sh"
+    local cleanup_args=("--dry-run")
+
+    ensure_user_workspace
+
+    if [ "$mode" = "apply" ]; then
+        cleanup_args=("--apply")
+    fi
+
+    if [ ! -f "$cleanup_script" ]; then
+        echo -e "${YELLOW}Log-Aufräumskript nicht gefunden: $cleanup_script${NC}"
+        return 1
+    fi
+
+    bash "$cleanup_script" "${cleanup_args[@]}" \
+        --days "${LOG_CLEANUP_RETENTION_DAYS:-14}" \
+        --keep "${LOG_CLEANUP_KEEP_RECENT:-30}"
+}
+
+maybe_cleanup_logs_before_operation() {
+    if ! is_preference_enabled "${LOG_CLEANUP_BEFORE_OPERATION:-false}"; then
+        return 0
+    fi
+
+    echo -e "${YELLOW}Log-Aufräumung vor dem nächsten Installations-/Deinstallationslauf ist aktiv.${NC}"
+    run_setup_log_cleanup "apply" || echo -e "${YELLOW}Hinweis: Log-Aufräumung konnte nicht vollständig ausgeführt werden. Installation läuft weiter.${NC}"
+}
+
 show_installation_monitoring_menu() {
     local monitoring_state
+    local cleanup_state
 
     while true; do
         if is_preference_enabled "${INSTALL_MONITORING_VERBOSE:-false}"; then
@@ -677,13 +731,23 @@ show_installation_monitoring_menu() {
             monitoring_state="inaktiv"
         fi
 
+        if is_preference_enabled "${LOG_CLEANUP_BEFORE_OPERATION:-false}"; then
+            cleanup_state="aktiv"
+        else
+            cleanup_state="inaktiv"
+        fi
+
         dialog --clear --backtitle "$APP_TITLE" \
-        --title "INSTALLATIONSÜBERWACHUNG" --menu "Zusätzliche Überwachung und manuelle Fortsetzung für Tool-Installationen." 20 104 5 \
+        --title "INSTALLATIONSÜBERWACHUNG" --menu "Zusätzliche Überwachung, Logansicht und sichere Log-Aufräumung." 24 112 9 \
         "1" "Erweiterte Installationsüberwachung umschalten (aktuell: ${monitoring_state})" \
         "2" "Log-Verzeichnis anzeigen" \
         "3" "Letzte Installations-Logs anzeigen" \
         "4" "Letzte Messwerte anzeigen" \
-        "5" "Zurück" 2> /tmp/install_monitoring_choice
+        "5" "Log-Aufräumung vor Installationen umschalten (aktuell: ${cleanup_state})" \
+        "6" "Log-Aufräumung Trockenlauf anzeigen" \
+        "7" "Alte Logs jetzt löschen" \
+        "8" "Aufbewahrung einstellen (Tage/neueste Dateien)" \
+        "9" "Zurück" 2> /tmp/install_monitoring_choice
 
         if [ $? -ne 0 ]; then
             return 0
@@ -716,10 +780,71 @@ show_installation_monitoring_menu() {
                 show_recent_measurements
                 ;;
             5)
+                if is_preference_enabled "${LOG_CLEANUP_BEFORE_OPERATION:-false}"; then
+                    set_log_cleanup_mode "false"
+                    echo -e "${GREEN}Automatische Log-Aufräumung vor Installationen wurde deaktiviert.${NC}"
+                else
+                    set_log_cleanup_mode "true"
+                    echo -e "${GREEN}Automatische Log-Aufräumung vor Installationen wurde aktiviert.${NC}"
+                    echo -e "${YELLOW}Es werden nur alte Installations- und Diagnoseberichte im Benutzer-Workspace rotiert.${NC}"
+                fi
+                read -p "Drücken Sie Enter..."
+                ;;
+            6)
+                clear
+                run_setup_log_cleanup "dry-run"
+                echo
+                read -p "Drücken Sie Enter..."
+                ;;
+            7)
+                clear
+                echo -e "${YELLOW}Alte Logs werden jetzt anhand der aktuellen Aufbewahrungsregeln gelöscht.${NC}"
+                run_setup_log_cleanup "apply"
+                echo
+                read -p "Drücken Sie Enter..."
+                ;;
+            8)
+                show_log_cleanup_settings_menu
+                ;;
+            9)
                 return 0
                 ;;
         esac
     done
+}
+
+show_log_cleanup_settings_menu() {
+    local new_days
+    local new_keep
+
+    dialog --clear --backtitle "$APP_TITLE" \
+    --title "LOG-AUFBEWAHRUNG" --inputbox "Wie viele Tage sollen Installations-/Diagnoselogs mindestens behalten werden?" 10 90 "${LOG_CLEANUP_RETENTION_DAYS:-14}" 2> /tmp/log_cleanup_days
+
+    if [ $? -ne 0 ]; then
+        return 0
+    fi
+
+    new_days="$(cat /tmp/log_cleanup_days)"
+    if ! set_log_cleanup_number_preference "LOG_CLEANUP_RETENTION_DAYS" "$new_days"; then
+        read -p "Drücken Sie Enter..."
+        return 1
+    fi
+
+    dialog --clear --backtitle "$APP_TITLE" \
+    --title "LOG-AUFBEWAHRUNG" --inputbox "Wie viele neueste Dateien sollen pro Log-Ordner immer behalten werden?" 10 90 "${LOG_CLEANUP_KEEP_RECENT:-30}" 2> /tmp/log_cleanup_keep
+
+    if [ $? -ne 0 ]; then
+        return 0
+    fi
+
+    new_keep="$(cat /tmp/log_cleanup_keep)"
+    if ! set_log_cleanup_number_preference "LOG_CLEANUP_KEEP_RECENT" "$new_keep"; then
+        read -p "Drücken Sie Enter..."
+        return 1
+    fi
+
+    echo -e "${GREEN}Log-Aufbewahrung aktualisiert: ${LOG_CLEANUP_RETENTION_DAYS} Tage, neueste ${LOG_CLEANUP_KEEP_RECENT} Dateien behalten.${NC}"
+    read -p "Drücken Sie Enter..."
 }
 
 show_recent_install_logs() {
@@ -1351,7 +1476,7 @@ show_profile_management_menu() {
 
 declare -A TOOLS
 declare -A TOOL_SCRIPT_NAMES
-TOOL_KEYS=("Ollama" "OpenClaw" "Act" "Actionlint" "Activepieces" "Agent_Router" "Ahrefs" "AI_Powered_Law_Firms" "Aider" "Airbyte" "Airtable" "AnimateDiff" "Ansible" "Apache_Tika" "ArgoCD_CLI" "AutoGen" "AutoGPT" "Axolotl" "Backtest_Workflow" "Blender" "BPM_Analyzer" "Browser_Tool" "Buffer_API" "cAdvisor" "Changelog_Generator" "ChromaDB" "Clawbake" "Clawhub" "Clawhub_CLI" "Code_Sandbox" "ComfyUI" "Continue_Dev" "ControlNet" "Coqui_TTS" "CrewAI" "Data_Juicer" "dbt" "Deadline_Checker" "Demucs" "Docker" "Docker_Compose_Plugin" "Docling" "Drafting_Agent" "DuckDB" "ElevenLabs" "Emotion_Tagging" "EnviroLLM" "Ethers_JS" "EULLM" "Exchange_APIs" "Fail2Ban" "Fail2Ban_Analyzer" "Faster_Whisper" "FFmpeg" "File_System_Tool" "FinGPT" "FinRAG" "FinRobot" "Firecrawl" "Flowise" "Flux_CLI" "Fooocus" "Foundry" "GFPGAN" "GitHub_API_Tooling" "GitHub_CLI" "GitHub_Research" "Gitleaks" "Google_Analytics_API" "Grafana" "Grafana_Alloy" "Grype" "Guardrails_AI" "Hadolint" "Hardhat" "Healthchecks" "Helm" "Home_Assistant" "Hook_Detection" "HubSpot" "Huge_Facing" "Huginn" "Image_Upscaler_Pipeline" "InvokeAI" "Joplin_CLI" "JupyterLab" "K3s" "K9s" "Kimi2" "Kubectl" "Kubectx_Kubens" "Kubernetes" "Kustomize" "LangChain" "LangFlow" "Langfuse" "LangGraph" "Lawfirm" "LibreOffice_Headless" "librosa" "LiteLLM" "Llama_CPP" "Llama_CPP_Toolchain" "LLaMA_Factory" "LlamaIndex" "Loki" "Make" "Markdownlint_CLI" "Marker" "MCPO" "Meilisearch" "Memory_Policies" "Meta_Ads_API" "Metabase" "MinIO" "MLflow" "Mosquitto" "Music2P_Pipeline" "MusicGen" "n8n" "NATS" "Neo4j" "Netdata" "Nikto" "Nmap" "Node_Exporter" "Node_Red" "Notion" "OCRmyPDF" "OPA" "Open_WebUI" "OpenClaw_RL" "OpenCode" "OpenHands" "OpenLIT" "OpenManus" "OpenTelemetry" "OpenTofu" "openWakeWord" "Pandoc" "Paperless_NGX" "PDF_Parser" "Pgvector" "Pipedream" "Piper" "Playwright" "Podman" "Postgres" "Pre_Commit" "Prefect" "Prometheus" "Promptfoo" "Puppeteer" "pydub" "Qdrant" "RabbitMQ" "Ray" "Rclone" "RealESRGAN" "Redis" "Release_Please" "Rembg" "Repo_Comparison" "Restic" "Rhasspy" "RIFE" "Riffusion" "Risk_Agent" "Risk_Scoring" "Risk_Strategy_Analyzer" "Runway_API" "Security_Workflow" "Semgrep" "SEMrush" "ShellCheck" "Shfmt" "SQLite" "SQLite_Vec" "Stable_Diffusion_WebUI" "Stable_Diffusion_WebUI_Forge" "Stirling_PDF" "Suno_API" "Supabase" "SVD" "Syft" "Syncthing" "Tax_Calculator" "Tax_Law_Agent" "Tesseract" "Thumbnail_Pipeline" "TikTok_Ads_API" "TikTok_Score" "Trend_Monitor" "Trivy" "TruffleHog" "Udio_API" "Unsloth" "Unstructured" "Upload_Automation" "Uptime_Kuma" "Vault" "Velero" "vLLM" "Voice_Assistant_Runtime" "VS_Code_Server" "Weaviate" "Web3_APIs" "Web3_Py" "Weights_and_Biases" "Whisper" "Whisper_CPP" "Wyoming" "YT_DLP" "Zapier" "Zenbot_API" "Zenbot_trader" "Zotero")
+TOOL_KEYS=("Ollama" "OpenClaw" "Act" "Actionlint" "Activepieces" "Agent_Router" "Ahrefs" "AI_Powered_Law_Firms" "Aider" "Airbyte" "Airtable" "AnimateDiff" "Ansible" "Apache_Tika" "ArgoCD_CLI" "AutoGen" "AutoGPT" "Axolotl" "Backtest_Workflow" "Blender" "BPM_Analyzer" "Browser_Tool" "Buffer_API" "cAdvisor" "Changelog_Generator" "ChromaDB" "Clawbake" "Clawhub" "Clawhub_CLI" "Code_Sandbox" "ComfyUI" "Continue_Dev" "ControlNet" "Coqui_TTS" "CrewAI" "Data_Juicer" "dbt" "Deadline_Checker" "Demucs" "Docker" "Docker_Compose_Plugin" "Docling" "Drafting_Agent" "DuckDB" "ElevenLabs" "Emotion_Tagging" "EnviroLLM" "Ethers_JS" "EULLM" "Exchange_APIs" "Fail2Ban" "Fail2Ban_Analyzer" "Faster_Whisper" "FFmpeg" "File_System_Tool" "FinGPT" "FinRAG" "FinRobot" "Firecrawl" "Flowise" "Flux_CLI" "Fooocus" "Foundry" "GFPGAN" "GitHub_API_Tooling" "GitHub_CLI" "GitHub_Research" "Gitleaks" "Google_Analytics_API" "Grafana" "Grafana_Alloy" "Grype" "Guardrails_AI" "Hadolint" "Hardhat" "Healthchecks" "Helm" "Home_Assistant" "Hook_Detection" "HubSpot" "Huge_Facing" "Huginn" "Image_Upscaler_Pipeline" "InvokeAI" "Joplin_CLI" "JupyterLab" "K3s" "K9s" "Kimi2" "Kubectl" "Kubectx_Kubens" "Kubernetes" "Kustomize" "LangChain" "LangFlow" "Langfuse" "LangGraph" "Lawfirm" "LibreOffice_Headless" "librosa" "LiteLLM" "Llama_CPP" "Llama_CPP_Toolchain" "LLaMA_Factory" "LlamaIndex" "Loki" "Make" "Mail_Utils_MSMTP" "Markdownlint_CLI" "Marker" "MCPO" "Meilisearch" "Memory_Policies" "Meta_Ads_API" "Metabase" "MinIO" "MLflow" "Mosquitto" "Music2P_Pipeline" "MusicGen" "n8n" "NATS" "Neo4j" "Netdata" "Nikto" "Nmap" "Node_Exporter" "Node_Red" "Notion" "OCRmyPDF" "OPA" "Open_WebUI" "OpenClaw_RL" "OpenCode" "OpenHands" "OpenLIT" "OpenManus" "OpenTelemetry" "OpenTofu" "openWakeWord" "Pandoc" "Paperless_NGX" "PDF_Parser" "Pgvector" "Pipedream" "Piper" "Playwright" "Podman" "Postgres" "Pre_Commit" "Prefect" "Prometheus" "Promptfoo" "Puppeteer" "pydub" "Qdrant" "RabbitMQ" "Ray" "Rclone" "RealESRGAN" "Redis" "Release_Please" "Rembg" "Repo_Comparison" "Restic" "Rhasspy" "RIFE" "Riffusion" "Risk_Agent" "Risk_Scoring" "Risk_Strategy_Analyzer" "Runway_API" "Security_Workflow" "Semgrep" "SEMrush" "ShellCheck" "Shfmt" "SQLite" "SQLite_Vec" "Stable_Diffusion_WebUI" "Stable_Diffusion_WebUI_Forge" "Stirling_PDF" "Suno_API" "Supabase" "SVD" "Syft" "Syncthing" "Tax_Calculator" "Tax_Law_Agent" "Tesseract" "Thumbnail_Pipeline" "TikTok_Ads_API" "TikTok_Score" "Trend_Monitor" "Trivy" "TruffleHog" "Udio_API" "Unsloth" "Unstructured" "Upload_Automation" "Uptime_Kuma" "Vault" "Velero" "vLLM" "Voice_Assistant_Runtime" "VS_Code_Server" "Weaviate" "Web3_APIs" "Web3_Py" "Weights_and_Biases" "Whisper" "Whisper_CPP" "Wyoming" "YT_DLP" "Zapier" "Zenbot_API" "Zenbot_trader" "Zotero")
 TOOLS["Ollama"]="Lokales LLM-Backend. Du kannst über den Ollama Modell-Manager spezifische Modelle installieren und verwalten. Für weitere Informationen zu den Modellen siehe in der Online-Dokumentation nach."
 TOOLS["OpenManus"]="KI-Agenten-Framework für automatisierte Aufgaben wie Web-Recherche und Datenanalyse."
 TOOLS["OpenClaw"]="Fortschrittliches KI-Agenten-Framework mit Reinforcement Learning (RL) und Skill-Integration (z.B. gcali)."
@@ -1559,6 +1684,7 @@ TOOLS["Airtable"]="Connector-Modul für Airtable-Bases und Kampagnendaten."
 TOOLS["Buffer_API"]="Connector-Modul für Buffer-basierte Scheduling- und Posting-Workflows."
 TOOLS["Zapier"]="Connector-Modul für Zapier-Webhook- und Übergabepunkte."
 TOOLS["Make"]="Connector-Modul für Make.com-Workflows und Webhook-Pfade."
+TOOLS["Mail_Utils_MSMTP"]="Lokale Mailausgabe fuer Diagnoseberichte ueber mailutils/msmtp. Installiert keine Zugangsdaten und nutzt nur lokale Benutzerkonfiguration."
 TOOLS["Ahrefs"]="Connector-Modul für Ahrefs-SEO-Daten und Keyword-Workflows."
 TOOLS["SEMrush"]="Connector-Modul für SEMrush SEO- und Wettbewerbsdaten."
 TOOLS["ElevenLabs"]="Connector-Modul für ElevenLabs-TTS- oder Voice-Cloning-Workflows."
@@ -1776,6 +1902,7 @@ TOOL_SCRIPT_NAMES["Airtable"]="airtable"
 TOOL_SCRIPT_NAMES["Buffer_API"]="buffer_api"
 TOOL_SCRIPT_NAMES["Zapier"]="zapier"
 TOOL_SCRIPT_NAMES["Make"]="make_automation"
+TOOL_SCRIPT_NAMES["Mail_Utils_MSMTP"]="mail_utils_msmtp"
 TOOL_SCRIPT_NAMES["Ahrefs"]="ahrefs"
 TOOL_SCRIPT_NAMES["SEMrush"]="semrush"
 TOOL_SCRIPT_NAMES["ElevenLabs"]="elevenlabs"
@@ -1877,6 +2004,7 @@ install_tool() {
     fi
 
     show_tool_action_intro "$TOOL_KEY" "installieren" "install"
+    maybe_cleanup_logs_before_operation
     begin_operation_measurement "tool_install_${TOOL_KEY}" "Tool installieren: ${TOOL_KEY}"
     echo -e "${BLUE}Installiere Tool: ${TOOL_KEY}...${NC}"
     if [ "$TOOL_KEY" = "Huginn" ]; then
@@ -1899,6 +2027,7 @@ install_tool() {
 uninstall_tool() {
     local TOOL_KEY="$1"
     show_tool_action_intro "$TOOL_KEY" "deinstallieren" "uninstall"
+    maybe_cleanup_logs_before_operation
     begin_operation_measurement "tool_uninstall_${TOOL_KEY}" "Tool deinstallieren: ${TOOL_KEY}"
     echo -e "${BLUE}Deinstalliere Tool: ${TOOL_KEY}...${NC}"
     run_tool_script "$TOOL_KEY" "uninstall"

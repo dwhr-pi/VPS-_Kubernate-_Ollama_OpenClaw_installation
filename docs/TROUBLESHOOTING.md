@@ -272,6 +272,27 @@ Wichtig:
 - fuer echten Versand lokal z. B. `mailutils` oder `msmtp` sicher konfigurieren
 - Huginn kann spaeter als erste Aufgabe genau diese Diagnoseberichte weiterverarbeiten oder weiterleiten
 
+### Alte Installations- und Diagnose-Logs aufraeumen
+
+Wenn viele Installationsversuche laufen, wachsen die Logordner im Benutzer-Workspace schnell an:
+
+- `~/.openclaw_ultimate_user_data/install_logs/`
+- `~/.openclaw_ultimate_user_data/diagnostic_reports/`
+
+Die sichere Log-Rotation loescht nur Dateien in diesen Benutzerordnern und behaelt standardmaessig die neuesten 30 Dateien je Ordner. Ein Trockenlauf zeigt zuerst, was geloescht wuerde:
+
+```bash
+bash scripts/cleanup_setup_logs.sh --dry-run --days 14 --keep 30
+```
+
+Anwenden:
+
+```bash
+bash scripts/cleanup_setup_logs.sh --apply --days 14 --keep 30
+```
+
+Im Setup-Menue liegt die Funktion unter `Optionen` -> `Installationsueberwachung`. Dort kann auch aktiviert werden, dass alte Logs vor jeder Tool-Installation oder -Deinstallation automatisch rotiert werden.
+
 ### Huginn `master` mit PostgreSQL nachtesten
 
 Der Pfad `HUGINN_REPO_REF=master` plus `DATABASE_ADAPTER=postgresql` nutzt Ruby `3.4.x` ueber den getrennten rbenv-Pfad `~/.rbenv-openclaw-huginn`.
