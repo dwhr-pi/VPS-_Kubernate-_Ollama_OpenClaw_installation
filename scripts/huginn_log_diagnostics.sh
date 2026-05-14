@@ -31,6 +31,14 @@ main() {
     fi
 
     if [ -z "$log_file" ] || [ ! -f "$log_file" ]; then
+        if [ -n "${1:-}" ]; then
+            echo -e "${YELLOW}Angegebener Log nicht gefunden:${NC} ${1}"
+            echo -e "${YELLOW}Versuche stattdessen automatisch den neuesten Huginn-Log zu finden...${NC}"
+            log_file="$(find_latest_huginn_log)"
+        fi
+    fi
+
+    if [ -z "$log_file" ] || [ ! -f "$log_file" ]; then
         echo -e "${RED}Kein Huginn-Installationslog gefunden.${NC}"
         echo -e "${YELLOW}Gesucht in:${NC} $INSTALL_LOG_DIR"
         echo -e "${YELLOW}Pattern:${NC} $LOG_PATTERN"

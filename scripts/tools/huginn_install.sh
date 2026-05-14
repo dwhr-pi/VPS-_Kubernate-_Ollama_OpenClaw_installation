@@ -85,6 +85,78 @@ path.write_text(text, encoding="utf-8")
 PY
 }
 
+apply_huginn_selected_database_adapter() {
+    local selected_adapter="${HUGINN_DATABASE_ADAPTER:-}"
+
+    [ -f .env ] || return 0
+    [ -n "$selected_adapter" ] || return 0
+
+    case "$selected_adapter" in
+        mysql2|postgresql)
+            ;;
+        *)
+            echo -e "${YELLOW}Warnung: Unbekannter HUGINN_DATABASE_ADAPTER=${selected_adapter}. Bestehende .env bleibt unveraendert.${NC}"
+            return 0
+            ;;
+    esac
+
+    python3 - "$selected_adapter" <<'PY'
+from pathlib import Path
+import sys
+
+adapter = sys.argv[1]
+path = Path(".env")
+text = path.read_text(encoding="utf-8") if path.exists() else ""
+db_keys = {
+    "DATABASE_ADAPTER",
+    "DATABASE_NAME",
+    "DATABASE_USERNAME",
+    "DATABASE_PASSWORD",
+    "DATABASE_HOST",
+    "DATABASE_PORT",
+}
+
+presets = {
+    "mysql2": {
+        "DATABASE_ADAPTER": "mysql2",
+        "DATABASE_NAME": "huginn_production",
+        "DATABASE_USERNAME": "huginn",
+        "DATABASE_PASSWORD": "huginn_local_change_me",
+        "DATABASE_HOST": "localhost",
+        "DATABASE_PORT": "3306",
+    },
+    "postgresql": {
+        "DATABASE_ADAPTER": "postgresql",
+        "DATABASE_NAME": "huginn_production",
+        "DATABASE_USERNAME": "huginn",
+        "DATABASE_PASSWORD": "change-me",
+        "DATABASE_HOST": "127.0.0.1",
+        "DATABASE_PORT": "5432",
+    },
+}
+
+kept_lines = []
+for line in text.splitlines():
+    if line.strip() == "### Database":
+        continue
+    if "=" in line and not line.lstrip().startswith("#"):
+        key = line.split("=", 1)[0].strip()
+        if key in db_keys:
+            continue
+    kept_lines.append(line)
+
+if kept_lines and kept_lines[-1].strip():
+    kept_lines.append("")
+kept_lines.append("### Database")
+for key, value in presets[adapter].items():
+    kept_lines.append(f"{key}={value}")
+
+path.write_text("\n".join(kept_lines).rstrip() + "\n", encoding="utf-8")
+PY
+
+    echo -e "${YELLOW}Huginn Datenbankauswahl aus install_settings.env angewendet: ${selected_adapter}.${NC}"
+}
+
 current_huginn_service_user() {
     if [ -n "${SUDO_USER:-}" ] && [ "${SUDO_USER}" != "root" ]; then
         printf '%s' "$SUDO_USER"
@@ -1387,6 +1459,7 @@ ensure_secret_token
 ensure_huginn_invitation_code
 ensure_production_env_defaults
 sanitize_huginn_env_database_defaults
+apply_huginn_selected_database_adapter
 apply_huginn_dry_runnable_kwarg_fix
 apply_huginn_jobs_yaml_fix
 apply_huginn_web_request_faraday_fix
