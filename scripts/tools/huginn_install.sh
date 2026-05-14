@@ -547,22 +547,11 @@ prepare_postgresql_database_for_huginn() {
         return 1
     fi
 
-    sudo -u postgres psql -v ON_ERROR_STOP=1 \
-        -v huginn_user="$db_user" \
-        -v huginn_password="$db_password" <<'SQL'
-DO $$
-DECLARE
-    role_name text := :'huginn_user';
-    role_password text := :'huginn_password';
-BEGIN
-    IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = role_name) THEN
-        EXECUTE format('CREATE ROLE %I LOGIN CREATEDB PASSWORD %L', role_name, role_password);
-    ELSE
-        EXECUTE format('ALTER ROLE %I LOGIN CREATEDB PASSWORD %L', role_name, role_password);
-    END IF;
-END
-$$;
-SQL
+    if sudo -u postgres psql -tAc "SELECT 1 FROM pg_roles WHERE rolname = '$db_user'" | grep -qx '1'; then
+        sudo -u postgres psql -v ON_ERROR_STOP=1 -c "ALTER ROLE \"$db_user\" LOGIN CREATEDB PASSWORD '$db_password';"
+    else
+        sudo -u postgres psql -v ON_ERROR_STOP=1 -c "CREATE ROLE \"$db_user\" LOGIN CREATEDB PASSWORD '$db_password';"
+    fi
 
     echo -e "${GREEN}PostgreSQL-Rolle fuer Huginn ist vorbereitet. Datenbankname: ${db_name}.${NC}"
 }
