@@ -19,8 +19,27 @@ init_tool_tracking "Huginn"
 HUGINN_DIR="/opt/huginn"
 HUGINN_SYSTEMD_WEB_SERVICE="${HUGINN_SYSTEMD_WEB_SERVICE:-huginn-web.service}"
 HUGINN_SYSTEMD_WORKER_SERVICE="${HUGINN_SYSTEMD_WORKER_SERVICE:-huginn-worker.service}"
+HUGINN_UNINSTALL_ASSUME_YES="${HUGINN_UNINSTALL_ASSUME_YES:-false}"
 
 echo -e "${BLUE}Starte Deinstallation von Huginn...${NC}"
+
+if [ -f "$INSTALL_DIR/scripts/huginn_status.sh" ]; then
+    echo -e "${YELLOW}Vor dem Loeschen wird der aktuelle Huginn-Stand angezeigt.${NC}"
+    bash "$INSTALL_DIR/scripts/huginn_status.sh" || true
+fi
+
+if [ "$HUGINN_UNINSTALL_ASSUME_YES" != "true" ] && [ -t 0 ]; then
+    echo
+    read -r -p "Huginn jetzt wirklich deinstallieren? [ja/Nein]: " confirm_uninstall
+    case "$confirm_uninstall" in
+        ja|JA|j|J|yes|YES|y|Y)
+            ;;
+        *)
+            echo -e "${YELLOW}Huginn-Deinstallation abgebrochen. Es wurde nichts geloescht.${NC}"
+            exit 1
+            ;;
+    esac
+fi
 
 if command -v systemctl >/dev/null 2>&1 && [ -d /run/systemd/system ]; then
     echo -e "${YELLOW}Stoppe und entferne lokale Huginn-Dienste...${NC}"

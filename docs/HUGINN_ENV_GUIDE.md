@@ -97,6 +97,44 @@ Oder direkt den relevanten Fehler-/Hinweisblock:
 grep -nE 'Hinweis:|Fehler:|rake aborted!|LoadError|ArgumentError|ConnectionError|mysql2|pg_ext|grpc|net-imap|net-pop|assets:precompile|systemd|huginn-web|huginn-worker' /home/ubuntu/.openclaw_ultimate_user_data/install_logs/NEUER_LOGNAME.log | tail -n 200
 ```
 
+## Installierte Version und Datenbank vor Deinstallation erkennen
+
+Bevor Huginn deinstalliert wird, sollte immer festgehalten werden, welche Kombination gerade installiert oder fehlgeschlagen ist.
+Das Setup bringt dafuer einen Statuscheck mit:
+
+```bash
+cd ~/openclaw_ultimate_setup
+bash scripts/huginn_status.sh
+```
+
+Der Status zeigt:
+
+- Repository-Pfad
+- aktiven Git-Ref, Branch oder exakten Tag
+- letzten Commit
+- Datenbankadapter aus `/opt/huginn/.env`
+- geplante Benutzerkonfiguration aus `~/.openclaw_ultimate_user_data/huginn/install_settings.env`
+- neuesten Huginn-Installationslog
+- erkannte Problemklasse, z. B. `v2022.08.18 + PostgreSQL`
+
+Im Setup-Menue liegt derselbe Check unter:
+
+```text
+Optionen -> Huginn Konfiguration (.env Vorlage) -> Installierte Huginn-Version und Datenbank erkennen
+```
+
+Beim Deinstallieren zeigt das Huginn-Uninstall-Skript diesen Status ebenfalls an, bevor `/opt/huginn` geloescht wird.
+
+Bekanntes Fehlerbild:
+
+```text
+LoadError: .../pg-1.1.3/lib/pg_ext.so: undefined symbol: rb_tainted_str_new
+```
+
+Das ist typisch fuer den alten `v2022.08.18`-Stand mit `DATABASE_ADAPTER=postgresql` unter neuerem Ruby.
+Fuer unser stabiles Setup bleibt bei `v2022.08.18` daher MySQL/MariaDB empfohlen.
+PostgreSQL bleibt erhalten, aber als bewusster Original-/Upstream-Testpfad.
+
 ## Gmail und andere Mailanbieter
 
 Ja, Huginn ist nicht auf Gmail beschraenkt.

@@ -524,6 +524,17 @@ show_huginn_paths() {
     pause_screen
 }
 
+show_installed_huginn_status() {
+    if [ -x "$INSTALL_DIR/scripts/huginn_status.sh" ]; then
+        bash "$INSTALL_DIR/scripts/huginn_status.sh"
+    elif [ -f "$INSTALL_DIR/scripts/huginn_status.sh" ]; then
+        bash "$INSTALL_DIR/scripts/huginn_status.sh"
+    else
+        echo -e "${YELLOW}Statusskript nicht gefunden: $INSTALL_DIR/scripts/huginn_status.sh${NC}"
+    fi
+    pause_screen
+}
+
 show_huginn_config_menu_cli() {
     local choice
 
@@ -534,8 +545,9 @@ show_huginn_config_menu_cli() {
     echo "3) Aktuelle /opt/huginn/.env in Vorlage uebernehmen"
     echo "4) Huginn-Upstream-Stand auswaehlen"
     echo "5) Huginn-Datenbanktechnik auswaehlen"
-    echo "6) Pfade und Hinweise anzeigen"
-    echo "7) Beenden"
+    echo "6) Installierte Huginn-Version/DB erkennen"
+    echo "7) Pfade und Hinweise anzeigen"
+    echo "8) Beenden"
     read -r -p "Auswahl: " choice
     printf '%s' "$choice" > "$HUGINN_CONFIG_CHOICE_FILE"
 }
@@ -555,14 +567,15 @@ show_huginn_config_menu() {
     reset_terminal_state
     if ! dialog --clear "${dialog_mouse_args[@]}" --backtitle "OpenClaw Ultimate Setup" \
         --cancel-label "Zurueck" \
-        --title "HUGINN .env KONFIGURATION" --menu "Waehlen Sie eine Aktion fuer die Huginn-.env:" 22 100 10 \
+        --title "HUGINN .env KONFIGURATION" --menu "Waehlen Sie eine Aktion fuer die Huginn-.env:" 24 104 11 \
         "1" "Huginn-.env-Vorlage bearbeiten" \
         "2" "Vorlage auf /opt/huginn/.env anwenden" \
         "3" "Aktuelle /opt/huginn/.env in Vorlage uebernehmen" \
         "4" "Huginn-Upstream-Stand (HUGINN_REPO_REF) auswaehlen" \
         "5" "Huginn-Datenbanktechnik auswaehlen" \
-        "6" "Pfade und Hinweise anzeigen" \
-        "7" "Beenden" 2> "$HUGINN_CONFIG_CHOICE_FILE"; then
+        "6" "Installierte Huginn-Version und Datenbank erkennen" \
+        "7" "Pfade und Hinweise anzeigen" \
+        "8" "Beenden" 2> "$HUGINN_CONFIG_CHOICE_FILE"; then
         reset_terminal_state
         rm -f "$HUGINN_CONFIG_CHOICE_FILE"
         return 1
@@ -584,8 +597,9 @@ main() {
             3) import_runtime_env; pause_screen ;;
             4) choose_huginn_repo_ref; pause_screen ;;
             5) choose_huginn_database_adapter; pause_screen ;;
-            6) show_huginn_paths ;;
-            7) break ;;
+            6) show_installed_huginn_status ;;
+            7) show_huginn_paths ;;
+            8) break ;;
             *) break ;;
         esac
     done

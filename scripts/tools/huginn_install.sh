@@ -1529,6 +1529,7 @@ echo -e "${BLUE}Starte Installation von Huginn...${NC}"
 echo -e "${YELLOW}Standard-Referenz: ${HUGINN_REPO_REF}.${NC}"
 echo -e "${YELLOW}Wenn du bewusst einen anderen Upstream-Stand testen willst, kannst du HUGINN_REPO_REF im Setup auswaehlen oder festlegen.${NC}"
 echo -e "${YELLOW}Port-Hinweis: Huginn nutzt upstream oft ${HUGINN_UPSTREAM_DEFAULT_PORT}; dieses Setup verwendet standardmaessig ${HUGINN_WEB_PORT}, damit kein Konflikt mit OpenClaw auf 3000 entsteht.${NC}"
+echo -e "${YELLOW}Erkennungs-Hinweis: Der Installationslog enthaelt Standard-Referenz, Git-Ref, Commit und DATABASE_ADAPTER, damit spaeter klar ist, welche Kombination getestet wurde.${NC}"
 
 echo -e "${GREEN}1/5: Installiere System-Abhängigkeiten für Huginn...${NC}"
 if [ "$HUGINN_SKIP_SYSTEM_PACKAGES" != "true" ]; then
@@ -1544,6 +1545,8 @@ fi
 
 echo -e "${GREEN}2/5: Hole Huginn aus GitHub...${NC}"
 checkout_huginn_ref
+echo -e "${YELLOW}Huginn Git-Ref nach Checkout: $(git -C "$HUGINN_DIR" describe --tags --exact-match 2>/dev/null || git -C "$HUGINN_DIR" branch --show-current 2>/dev/null || git -C "$HUGINN_DIR" rev-parse --short HEAD 2>/dev/null || echo unbekannt)${NC}"
+echo -e "${YELLOW}Huginn Commit nach Checkout: $(git -C "$HUGINN_DIR" rev-parse --short HEAD 2>/dev/null || echo unbekannt)${NC}"
 ensure_huginn_master_ruby
 if [ -n "$HUGINN_ACTIVE_RUBY_VERSION" ] && [ -x "$HUGINN_RBENV_ROOT/bin/rbenv" ]; then
     activate_rbenv_shell
@@ -1563,6 +1566,7 @@ ensure_huginn_invitation_code
 ensure_production_env_defaults
 sanitize_huginn_env_database_defaults
 apply_huginn_selected_database_adapter
+echo -e "${YELLOW}Huginn effektive Kombination: REPO_REF=$(git -C "$HUGINN_DIR" describe --tags --exact-match 2>/dev/null || git -C "$HUGINN_DIR" branch --show-current 2>/dev/null || git -C "$HUGINN_DIR" rev-parse --short HEAD 2>/dev/null || echo unbekannt), DATABASE_ADAPTER=$(current_database_adapter || true), WEB_PORT=${HUGINN_WEB_PORT}.${NC}"
 apply_huginn_dry_runnable_kwarg_fix
 apply_huginn_jobs_yaml_fix
 apply_huginn_web_request_faraday_fix
