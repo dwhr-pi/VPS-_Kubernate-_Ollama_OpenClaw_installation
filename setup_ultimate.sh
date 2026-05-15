@@ -12,6 +12,7 @@ GREEN="\033[0;32m"
 BLUE="\033[0;34m"
 RED="\033[0;31m"
 YELLOW="\033[1;33m"
+WHITE="\033[1;37m"
 NC="\033[0m"
 APP_VERSION="11.16"
 APP_TITLE="OpenClaw & AI Infrastructure - Ultimate Setup V${APP_VERSION}"
@@ -375,6 +376,11 @@ format_duration_human() {
     fi
 }
 
+highlight_time_value() {
+    local value="$1"
+    printf '%b%s%b' "$WHITE" "$value" "$NC"
+}
+
 format_kb_human() {
     local total_kb="${1:-0}"
     local abs_kb="$total_kb"
@@ -418,9 +424,9 @@ get_operation_duration_estimate_label() {
 
     duration_seconds="$(get_last_success_metric_field "$operation_id" 5)"
     if [ -n "$duration_seconds" ]; then
-        printf '%s (letzte erfolgreiche Messung)' "$(format_duration_human "$duration_seconds")"
+        printf '%s %s' "$(highlight_time_value "$(format_duration_human "$duration_seconds")")" "${YELLOW}(letzte erfolgreiche Messung)${NC}"
     else
-        printf '%s' "$fallback_label"
+        highlight_time_value "$fallback_label"
     fi
 }
 
@@ -520,7 +526,7 @@ end_operation_measurement() {
         "${free_kb_after:-0}" \
         "$delta_kb" >> "$METRICS_HISTORY_FILE"
 
-    echo -e "${YELLOW}Messwert gespeichert:${NC} ${ACTIVE_OPERATION_TITLE:-Unbekannt} | Status: $operation_status | Dauer: $(format_duration_human "$duration_seconds") | Speicheränderung: ${delta_kb} KB"
+    echo -e "${YELLOW}Messwert gespeichert:${NC} ${ACTIVE_OPERATION_TITLE:-Unbekannt} | Status: $operation_status | Dauer: ${WHITE}$(format_duration_human "$duration_seconds")${NC} | Speicheränderung: ${delta_kb} KB"
     if [ -n "${LAST_OPERATION_LOG_FILE:-}" ]; then
         echo -e "${YELLOW}Installationsprotokoll:${NC} ${LAST_OPERATION_LOG_FILE}"
     fi
@@ -530,6 +536,9 @@ end_operation_measurement() {
 
 show_recent_measurements() {
     ensure_user_workspace
+    local white="$WHITE"
+    local yellow="$YELLOW"
+    local nc="$NC"
 
     if [ ! -f "$METRICS_HISTORY_FILE" ]; then
         echo -e "${YELLOW}Es liegen noch keine Messwerte vor.${NC}"
@@ -542,7 +551,25 @@ show_recent_measurements() {
     echo -e "${YELLOW}Letzte Messwerte aus dem Benutzer-Workspace:${NC}"
     echo -e "${YELLOW}Datei:${NC} $METRICS_HISTORY_FILE"
     echo
-    tail -n 20 "$METRICS_HISTORY_FILE"
+    tail -n 20 "$METRICS_HISTORY_FILE" | awk -F'\t' -v white="$white" -v yellow="$yellow" -v nc="$nc" '
+        NR == 1 && $1 == "timestamp" {
+            print
+            next
+        }
+        NF >= 8 {
+            duration = $5
+            minutes = int(duration / 60)
+            seconds = duration % 60
+            if (minutes > 0) {
+                human = minutes " min " seconds " s"
+            } else {
+                human = seconds " s"
+            }
+            print yellow $1 nc " | " $3 " | Status: " $4 " | Dauer: " white human nc " | Speicheränderung: " $8 " KB"
+            next
+        }
+        { print }
+    '
     echo
     read -p "Drücken Sie Enter..."
 }
@@ -2578,7 +2605,7 @@ while true; do
             "Installiert die komplette lokale Basis mit OpenClaw, Ollama und den fuer den MiniPC vorgesehenen Zusatzkomponenten." \
             "$(get_operation_duration_estimate_label "main_menu_local" "${LOCAL_SETUP_TOTAL_ESTIMATE} Gesamt, darin meist ${OPENCLAW_DOWNLOAD_TIME_ESTIMATE} Download + ${OPENCLAW_BUILD_TIME_ESTIMATE} Build + ${OLLAMA_INSTALL_TIME_ESTIMATE} fuer Ollama + ${HOME_ASSISTANT_INSTALL_TIME_ESTIMATE} fuer Home Assistant")" \
             "$(get_operation_storage_estimate_label "main_menu_local" "${MIN_FREE_GB_RECOMMENDED} GB oder mehr")" \
-            "Der OpenClaw-Build mit Ollama kann geschaetzt ${LOCAL_SETUP_TOTAL_ESTIMATE} dauern.\nEine Eingabe des Ubuntu-Passworts wird kurz nach Beginn der Installation abverlangt.\nIn voraussichtlich ${RED}${LOCAL_SETUP_CONFIRM_STOP_1_ESTIMATE}${YELLOW} wird eine manuelle Bestaetigung von dir verlangt, typischerweise beim nachtraeglichen Build von @discordjs/opus.\nDanach geht es auch schon mit Ollama weiter, grob ab ${RED}${LOCAL_SETUP_CONFIRM_STOP_2_ESTIMATE}${YELLOW}, inklusive einer erneuten Ubuntu-Passwortabfrage.\nKurz vor ${RED}${LOCAL_SETUP_CLOUDFLARE_TOKEN_STOP_ESTIMATE}${YELLOW} wird in der Regel der Cloudflare-Token abgefragt.\nDiese Zwischenstopps gehoeren zur gesamten Zeitmessung mit dazu."
+            "Der OpenClaw-Build mit Ollama kann geschaetzt ${WHITE}${LOCAL_SETUP_TOTAL_ESTIMATE}${YELLOW} dauern.\nEine Eingabe des Ubuntu-Passworts wird kurz nach Beginn der Installation abverlangt.\nIn voraussichtlich ${WHITE}${LOCAL_SETUP_CONFIRM_STOP_1_ESTIMATE}${YELLOW} wird eine manuelle Bestaetigung von dir verlangt, typischerweise beim nachtraeglichen Build von @discordjs/opus.\nDanach geht es auch schon mit Ollama weiter, grob ab ${WHITE}${LOCAL_SETUP_CONFIRM_STOP_2_ESTIMATE}${YELLOW}, inklusive einer erneuten Ubuntu-Passwortabfrage.\nKurz vor ${WHITE}${LOCAL_SETUP_CLOUDFLARE_TOKEN_STOP_ESTIMATE}${YELLOW} wird in der Regel der Cloudflare-Token abgefragt.\nDiese Zwischenstopps gehoeren zur gesamten Zeitmessung mit dazu."
             begin_operation_measurement "main_menu_local" "Standalone-Setup: Nur MiniPC"
             echo -e "${BLUE}Starte Standalone MiniPC-Setup (Lokal)...${NC}"
             if run_base_install_if_needed; then
