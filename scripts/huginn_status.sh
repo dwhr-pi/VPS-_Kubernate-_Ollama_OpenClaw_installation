@@ -74,6 +74,15 @@ detect_latest_any_huginn_log() {
     ls -1t $HUGINN_LATEST_ANY_LOG_PATTERN 2>/dev/null | head -n 1 || true
 }
 
+huginn_runtime_healthy() {
+    if command -v systemctl >/dev/null 2>&1 && [ -d /run/systemd/system ]; then
+        systemctl is-active --quiet "$HUGINN_WEB_SERVICE" "$HUGINN_WORKER_SERVICE" || return 1
+    fi
+
+    command -v curl >/dev/null 2>&1 || return 1
+    curl -fsS -I "http://127.0.0.1:${HUGINN_WEB_PORT}" >/dev/null 2>&1
+}
+
 print_detected_problem_class() {
     local installed_ref="$1"
     local db_adapter="$2"
@@ -85,10 +94,16 @@ print_detected_problem_class() {
     echo -e "${YELLOW}Erkannte Problemklasse:${NC}"
 
     if [ "$installed_ref" = "v2022.08.18" ] && [ "$db_adapter" = "postgresql" ]; then
-        echo -e "${RED}v2022.08.18 + PostgreSQL erkannt.${NC}"
-        echo -e "${YELLOW}Dieser Pfad kann unter Ruby 3.2 am alten pg-Gem scheitern: pg_ext.so / rb_tainted_str_new.${NC}"
-        echo -e "${YELLOW}Der Installer versucht diesen Pfad jetzt mit HUGINN_ENABLE_PG_RUBY32_COMPAT=true automatisch ueber einen neueren pg-Gem-Zweig zu reparieren.${NC}"
-        echo -e "${YELLOW}Fuer unser stabiles Setup bleibt MySQL/MariaDB die Empfehlung; PostgreSQL ist hier ein bewusster Original-/Upstream-Test.${NC}"
+        if huginn_runtime_healthy; then
+            echo -e "${GREEN}v2022.08.18 + PostgreSQL laeuft aktuell erfolgreich.${NC}"
+            echo -e "${YELLOW}Der pg-Ruby-3.2-Kompatibilitaetsfix wurde offenbar erfolgreich angewendet.${NC}"
+            echo -e "${YELLOW}Fuer das konservative Standardsetup bleibt MySQL/MariaDB empfohlen; PostgreSQL ist jetzt aber als Testpfad lauffaehig dokumentiert.${NC}"
+        else
+            echo -e "${RED}v2022.08.18 + PostgreSQL erkannt.${NC}"
+            echo -e "${YELLOW}Dieser Pfad kann unter Ruby 3.2 am alten pg-Gem scheitern: pg_ext.so / rb_tainted_str_new.${NC}"
+            echo -e "${YELLOW}Der Installer versucht diesen Pfad jetzt mit HUGINN_ENABLE_PG_RUBY32_COMPAT=true automatisch ueber einen neueren pg-Gem-Zweig zu reparieren.${NC}"
+            echo -e "${YELLOW}Fuer unser stabiles Setup bleibt MySQL/MariaDB die Empfehlung; PostgreSQL ist hier ein bewusster Original-/Upstream-Test.${NC}"
+        fi
         return 0
     fi
 

@@ -144,6 +144,12 @@ HUGINN_ENABLE_PG_RUBY32_COMPAT=true
 Wenn dieser Schalter aktiv ist, versucht der Installer den alten `pg ~> 1.1.3`-Pfad auf einen Ruby-3.2-kompatiblen `pg`-Zweig zu aktualisieren und den Lockfile gezielt neu zu schreiben.
 Das ist fuer PostgreSQL-Tests gedacht, nicht als neue Standardempfehlung fuer das konservative Huginn-Profil.
 
+Aktueller Testerfolg:
+
+- `v2022.08.18 + PostgreSQL + Ruby 3.2.3` konnte mit diesem Compat-Pfad bis zu laufenden `huginn-web.service`- und `huginn-worker.service`-Diensten gebracht werden.
+- Der lokale HTTP-Test auf `127.0.0.1:3002` antwortete erfolgreich.
+- Die bekannten Warnungen zu `DidYouMean` und altem `ERB.new`/Sprockets-Code sind Legacy-Warnungen des alten Rails-/Ruby-Stacks und nicht automatisch ein Installationsabbruch.
+
 Falls danach ein Bundler-Hinweis zu `twitter >= 0` oder `version solving has failed` erscheint, ist das meist kein neuer PostgreSQL-Fehler.
 Dann wurde der alte Huginn-Lockfile zu breit neu aufgeloest.
 Der Installer vermeidet deshalb jetzt bei Nokogiri-Reparaturen einen kompletten Lockfile-Neuaufbau und aktualisiert stattdessen nur `nokogiri`, `racc` und `mini_portile2` gezielt.
