@@ -1355,8 +1355,9 @@ ensure_huginn_lockfile_without_nokogiri_legacy_linux() {
     local bundle_log_file="$1"
 
     if lockfile_contains_pattern '^[[:space:]]*nokogiri \(1\.13\.8(-x86_64-linux)?\)$|^[[:space:]]*nokogiri \(1\.13\.8-x86_64-linux\)$'; then
-        echo -e "${YELLOW}Gemfile.lock enthält weiterhin den veralteten nokogiri-Stand. Erzwinge einen Neuaufbau des Lockfiles...${NC}"
-        rebuild_huginn_lockfile_from_current_gemfile "$bundle_log_file"
+        echo -e "${YELLOW}Gemfile.lock enthaelt weiterhin den veralteten nokogiri-Stand. Aktualisiere nur nokogiri/racc/mini_portile2 gezielt...${NC}"
+        echo -e "${YELLOW}Hinweis: Ein kompletter Lockfile-Neuaufbau wird vermieden, weil der alte Huginn-twitter-Stack sonst in einen Solverkonflikt laufen kann.${NC}"
+        persist_huginn_lockfile "$bundle_log_file" nokogiri racc mini_portile2
     fi
 }
 

@@ -144,6 +144,10 @@ HUGINN_ENABLE_PG_RUBY32_COMPAT=true
 Wenn dieser Schalter aktiv ist, versucht der Installer den alten `pg ~> 1.1.3`-Pfad auf einen Ruby-3.2-kompatiblen `pg`-Zweig zu aktualisieren und den Lockfile gezielt neu zu schreiben.
 Das ist fuer PostgreSQL-Tests gedacht, nicht als neue Standardempfehlung fuer das konservative Huginn-Profil.
 
+Falls danach ein Bundler-Hinweis zu `twitter >= 0` oder `version solving has failed` erscheint, ist das meist kein neuer PostgreSQL-Fehler.
+Dann wurde der alte Huginn-Lockfile zu breit neu aufgeloest.
+Der Installer vermeidet deshalb jetzt bei Nokogiri-Reparaturen einen kompletten Lockfile-Neuaufbau und aktualisiert stattdessen nur `nokogiri`, `racc` und `mini_portile2` gezielt.
+
 ## Gmail und andere Mailanbieter
 
 Ja, Huginn ist nicht auf Gmail beschraenkt.
