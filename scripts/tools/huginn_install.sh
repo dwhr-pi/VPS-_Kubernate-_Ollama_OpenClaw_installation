@@ -520,7 +520,7 @@ start_postgresql_service_for_huginn() {
 }
 
 prepare_postgresql_database_for_huginn() {
-    local db_user db_password db_name
+    local db_user db_password db_name db_user_ident db_user_literal db_password_literal
 
     if [ "$(current_database_adapter)" != "postgresql" ]; then
         return 0
@@ -548,10 +548,14 @@ prepare_postgresql_database_for_huginn() {
         return 1
     fi
 
-    if sudo -u postgres psql -tAc "SELECT 1 FROM pg_roles WHERE rolname = '$db_user'" | grep -qx '1'; then
-        sudo -u postgres psql -v ON_ERROR_STOP=1 -c "ALTER ROLE \"$db_user\" LOGIN CREATEDB PASSWORD '$db_password';"
+    db_user_ident="$(printf "%s" "$db_user" | sed 's/"/""/g')"
+    db_user_literal="$(printf "%s" "$db_user" | sed "s/'/''/g")"
+    db_password_literal="$(printf "%s" "$db_password" | sed "s/'/''/g")"
+
+    if sudo -u postgres psql -tAc "SELECT 1 FROM pg_roles WHERE rolname = '$db_user_literal'" | grep -qx '1'; then
+        sudo -u postgres psql -v ON_ERROR_STOP=1 -c "ALTER ROLE \"$db_user_ident\" LOGIN CREATEDB PASSWORD '$db_password_literal';"
     else
-        sudo -u postgres psql -v ON_ERROR_STOP=1 -c "CREATE ROLE \"$db_user\" LOGIN CREATEDB PASSWORD '$db_password';"
+        sudo -u postgres psql -v ON_ERROR_STOP=1 -c "CREATE ROLE \"$db_user_ident\" LOGIN CREATEDB PASSWORD '$db_password_literal';"
     fi
 
     echo -e "${GREEN}PostgreSQL-Rolle fuer Huginn ist vorbereitet. Datenbankname: ${db_name}.${NC}"

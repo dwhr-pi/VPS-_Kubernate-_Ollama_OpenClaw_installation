@@ -150,6 +150,31 @@ Aktueller Testerfolg:
 - Der lokale HTTP-Test auf `127.0.0.1:3002` antwortete erfolgreich.
 - Die bekannten Warnungen zu `DidYouMean` und altem `ERB.new`/Sprockets-Code sind Legacy-Warnungen des alten Rails-/Ruby-Stacks und nicht automatisch ein Installationsabbruch.
 
+### Frisches Ubuntu mit lokaler PostgreSQL-Datenbank
+
+Der PostgreSQL-Pfad ist nicht nur ein Effekt einer bereits vorhandenen Installation. Wenn `DATABASE_ADAPTER=postgresql` und `DATABASE_HOST=127.0.0.1` oder `localhost` gesetzt ist, installiert der Huginn-Installer selbst:
+
+```bash
+sudo apt-get install -y postgresql postgresql-contrib libpq-dev
+```
+
+Danach versucht das Setup den PostgreSQL-Dienst per `systemctl`, `pg_ctlcluster` oder klassischem `service` zu starten und legt die Rolle aus `DATABASE_USERNAME` mit `CREATEDB` an. `bundle exec rake db:create` erstellt anschliessend die Huginn-Datenbank.
+
+Auf einem frischen Ubuntu sind daher vor allem diese Voraussetzungen wichtig:
+
+- `sudo` muss verfuegbar sein.
+- `apt-get` muss die Ubuntu-Paketquellen erreichen.
+- lokale PostgreSQL-Nutzung muss gewuenscht sein; bei externer Datenbank wird die lokale Vorbereitung bewusst uebersprungen.
+- Sonderzeichen in Datenbanknutzer und Passwort werden vom Installer fuer die lokale Rollenanlage gequotet; trotzdem sollten produktive Passwoerter nur in der ausgelagerten Benutzerkonfiguration liegen.
+
+Schnelltest nach der Installation:
+
+```bash
+systemctl is-active postgresql
+sudo -u postgres psql -tAc "SELECT 1 FROM pg_roles WHERE rolname = 'huginn';"
+sudo -u postgres psql -lqt | cut -d '|' -f 1 | grep -w huginn_production
+```
+
 Falls danach ein Bundler-Hinweis zu `twitter >= 0` oder `version solving has failed` erscheint, ist das meist kein neuer PostgreSQL-Fehler.
 Dann wurde der alte Huginn-Lockfile zu breit neu aufgeloest.
 Der Installer vermeidet deshalb jetzt bei Nokogiri-Reparaturen einen kompletten Lockfile-Neuaufbau und aktualisiert stattdessen nur `nokogiri`, `racc` und `mini_portile2` gezielt.
