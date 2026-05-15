@@ -135,6 +135,15 @@ Das ist typisch fuer den alten `v2022.08.18`-Stand mit `DATABASE_ADAPTER=postgre
 Fuer unser stabiles Setup bleibt bei `v2022.08.18` daher MySQL/MariaDB empfohlen.
 PostgreSQL bleibt erhalten, aber als bewusster Original-/Upstream-Testpfad.
 
+Das Setup enthaelt dafuer einen optionalen Kompatibilitaetsversuch:
+
+```env
+HUGINN_ENABLE_PG_RUBY32_COMPAT=true
+```
+
+Wenn dieser Schalter aktiv ist, versucht der Installer den alten `pg ~> 1.1.3`-Pfad auf einen Ruby-3.2-kompatiblen `pg`-Zweig zu aktualisieren und den Lockfile gezielt neu zu schreiben.
+Das ist fuer PostgreSQL-Tests gedacht, nicht als neue Standardempfehlung fuer das konservative Huginn-Profil.
+
 ## Gmail und andere Mailanbieter
 
 Ja, Huginn ist nicht auf Gmail beschraenkt.

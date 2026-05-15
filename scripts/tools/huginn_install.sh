@@ -28,6 +28,7 @@ HUGINN_DISABLE_FTPSITE_AGENT_ON_RUBY32_FAILURE="${HUGINN_DISABLE_FTPSITE_AGENT_O
 HUGINN_ENABLE_NET_IMAP_COMPAT_ON_RUBY32="${HUGINN_ENABLE_NET_IMAP_COMPAT_ON_RUBY32:-true}"
 HUGINN_DISABLE_GMAIL_XOAUTH_ON_NET_IMAP_FAILURE="${HUGINN_DISABLE_GMAIL_XOAUTH_ON_NET_IMAP_FAILURE:-true}"
 HUGINN_ENABLE_MYSQL2_RUBY32_COMPAT="${HUGINN_ENABLE_MYSQL2_RUBY32_COMPAT:-true}"
+HUGINN_ENABLE_PG_RUBY32_COMPAT="${HUGINN_ENABLE_PG_RUBY32_COMPAT:-true}"
 HUGINN_SKIP_SYSTEM_PACKAGES="${HUGINN_SKIP_SYSTEM_PACKAGES:-false}"
 HUGINN_ENABLE_RBENV_FOR_MASTER="${HUGINN_ENABLE_RBENV_FOR_MASTER:-true}"
 HUGINN_MASTER_RUBY_VERSION="${HUGINN_MASTER_RUBY_VERSION:-3.4.9}"
@@ -590,6 +591,7 @@ print_huginn_compat_debug_state() {
     echo -e "${YELLOW}Huginn Debug: FTPSITE_ACTIVE=$(huginn_ftpsite_agent_active; echo $?) FTPSITE_LOCK=$(lockfile_contains_pattern '^[[:space:]]*net-ftp-list \(3\.2\.8\)$'; echo $?)${NC}"
     echo -e "${YELLOW}Huginn Debug: GMAIL_ACTIVE=$(huginn_gmail_xoauth_active; echo $?) GMAIL_LOCK=$(lockfile_contains_pattern '^[[:space:]]*gmail_xoauth \(0\.4\.2\)$'; echo $?)${NC}"
     echo -e "${YELLOW}Huginn Debug: MYSQL_LINE=$(grep -Eq \"gem 'mysql2'[[:space:]]*,[[:space:]]*\\\"~> 0\\.5\\.2\\\"\" Gemfile 2>/dev/null; echo $?) MYSQL_LOCK=$(lockfile_contains_pattern '^[[:space:]]*mysql2 \(0\.5\.3\)$'; echo $?)${NC}"
+    echo -e "${YELLOW}Huginn Debug: PG_LINE=$(grep -Eq \"gem 'pg'[[:space:]]*,[[:space:]]*'~> 1\\.1\\.3'\" Gemfile 2>/dev/null; echo $?) PG_LOCK=$(lockfile_contains_pattern '^[[:space:]]*pg \(1\.1\.3\)$'; echo $?)${NC}"
 }
 
 database_config_complete() {
@@ -750,6 +752,25 @@ old = "  gem 'mysql2' , \"~> 0.5.2\""
 new = "  gem 'mysql2' , \"~> 0.5.7\" # Ruby-3.2-Kompatibilitaet fuer mysql2"
 if old in text:
     text = text.replace(old, new, 1)
+path.write_text(text, encoding="utf-8")
+PY
+    return 0
+}
+
+ensure_huginn_pg_ruby32_compat() {
+    if grep -Eq "gem 'pg'[[:space:]]*,[[:space:]]*'~> 1\.(5|6|7)'" Gemfile 2>/dev/null; then
+        return 0
+    fi
+
+    cp Gemfile Gemfile.bak.before_pg_ruby32_compat 2>/dev/null || true
+    python3 - <<'PY'
+from pathlib import Path
+import re
+
+path = Path("Gemfile")
+text = path.read_text(encoding="utf-8")
+new = "  gem 'pg', '~> 1.5' # Ruby-3.2-Kompatibilitaet fuer PostgreSQL"
+text = re.sub(r"^[ \t]*gem 'pg'[ \t]*,[ \t]*['\"][^'\"]+['\"].*$", new, text, count=1, flags=re.MULTILINE)
 path.write_text(text, encoding="utf-8")
 PY
     return 0
@@ -1294,6 +1315,15 @@ legacy_huginn_mysql2_stack_present() {
     lockfile_contains_pattern '^[[:space:]]*mysql2 \(0\.5\.3\)$'
 }
 
+legacy_huginn_pg_stack_present() {
+    if ! [ -f Gemfile.lock ]; then
+        return 1
+    fi
+
+    [ "$(current_database_adapter)" = "postgresql" ] &&
+    lockfile_contains_pattern '^[[:space:]]*pg \(1\.1\.3\)$'
+}
+
 legacy_huginn_growl_stack_present() {
     if ! [ -f Gemfile.lock ]; then
         return 1
@@ -1457,6 +1487,27 @@ prepare_huginn_mysql2_stack_if_needed() {
     return 1
 }
 
+prepare_huginn_pg_stack_if_needed() {
+    local bundle_log_file="$1"
+
+    if [ "${HUGINN_ENABLE_PG_RUBY32_COMPAT}" != "true" ]; then
+        return 1
+    fi
+
+    if ruby_version_at_least "3.2" && legacy_huginn_pg_stack_present; then
+        echo -e "${YELLOW}Hinweis: Ruby $(ruby -e 'print RUBY_VERSION') trifft auf den alten Huginn-pg-Stack.${NC}"
+        echo -e "${YELLOW}Aktualisiere den pg-Pfad vorsorglich auf einen Ruby-3.2-kompatiblen Stand, bevor Rails spaeter an pg_ext.so scheitert...${NC}"
+        ensure_huginn_pg_ruby32_compat
+        persist_huginn_lockfile "$bundle_log_file" pg
+        ensure_huginn_lockfile_without_disabled_gems "$bundle_log_file"
+        ensure_huginn_lockfile_without_nokogiri_legacy_linux "$bundle_log_file"
+        echo -e "${YELLOW}Huginn wurde fuer diesen Lauf mit pg-Ruby-3.2-Kompatibilitaet vorbereitet.${NC}"
+        return 0
+    fi
+
+    return 1
+}
+
 prepare_huginn_google_stack_if_needed() {
     local bundle_log_file="$1"
 
@@ -1589,6 +1640,7 @@ bundle_disable_ftpsite_done="false"
 bundle_enable_net_imap_done="false"
 bundle_disable_gmail_xoauth_done="false"
 bundle_enable_mysql2_done="false"
+bundle_enable_pg_done="false"
 bundle_disable_growl_done="false"
 bundle_disable_js_done="false"
 bundle_disable_translate_done="false"
@@ -1597,6 +1649,9 @@ print_huginn_compat_debug_state
 
 if prepare_huginn_mysql2_stack_if_needed "$bundle_log_file"; then
     bundle_enable_mysql2_done="true"
+fi
+if prepare_huginn_pg_stack_if_needed "$bundle_log_file"; then
+    bundle_enable_pg_done="true"
 fi
 if prepare_huginn_ftpsite_stack_if_needed "$bundle_log_file"; then
     bundle_disable_ftpsite_done="true"
@@ -1627,6 +1682,9 @@ while true; do
         fi
         if [ "$bundle_enable_mysql2_done" != "true" ] && prepare_huginn_mysql2_stack_if_needed "$bundle_log_file"; then
             bundle_enable_mysql2_done="true"
+        fi
+        if [ "${bundle_enable_pg_done:-false}" != "true" ] && prepare_huginn_pg_stack_if_needed "$bundle_log_file"; then
+            bundle_enable_pg_done="true"
         fi
         if [ "$bundle_enable_net_imap_done" != "true" ] && prepare_huginn_net_imap_stack_if_needed "$bundle_log_file"; then
             bundle_enable_net_imap_done="true"
@@ -1819,12 +1877,30 @@ if ! RAILS_ENV=production bundle exec rake db:create 2>&1 | tee "$db_init_log_fi
             echo -e "${RED}Fehler: Huginn Datenbank konnte nicht erstellt werden.${NC}"
             exit 1
         fi
+    elif grep -Eq 'pg_ext\.so: undefined symbol: rb_tainted_str_new|LoadError: .*pg_ext\.so' "$db_init_log_file" && [ "${HUGINN_ENABLE_PG_RUBY32_COMPAT}" = "true" ] && [ "${bundle_enable_pg_done:-false}" != "true" ] && [ "$(current_database_adapter)" = "postgresql" ]; then
+        echo -e "${YELLOW}Hinweis: Huginn laeuft derzeit mit DATABASE_ADAPTER=postgresql und trifft dabei auf den alten pg-Stack dieses Huginn-Stands.${NC}"
+        echo -e "${YELLOW}Versuche pg auf einen Ruby-3.2-kompatiblen Stand anzuheben und initialisiere die Datenbank danach erneut...${NC}"
+        ensure_huginn_pg_ruby32_compat
+        persist_huginn_lockfile "$db_init_log_file" pg
+        ensure_huginn_lockfile_without_disabled_gems "$db_init_log_file"
+        ensure_huginn_lockfile_without_nokogiri_legacy_linux "$db_init_log_file"
+        bundle_enable_pg_done="true"
+        if ! RAILS_ENV=production bundle install 2>&1 | tee -a "$db_init_log_file"; then
+            rm -f "$db_init_log_file"
+            echo -e "${RED}Fehler: Bundler-Reparatur nach pg-Ruby-3.2-Kompatibilitaet fehlgeschlagen.${NC}"
+            exit 1
+        fi
+        if ! RAILS_ENV=production bundle exec rake db:create 2>&1 | tee -a "$db_init_log_file"; then
+            rm -f "$db_init_log_file"
+            echo -e "${RED}Fehler: Huginn Datenbank konnte auch nach pg-Ruby-3.2-Kompatibilitaet nicht erstellt werden.${NC}"
+            exit 1
+        fi
     elif grep -Eq 'pg_ext\.so: undefined symbol: rb_tainted_str_new|LoadError: .*pg_ext\.so' "$db_init_log_file" && [ "$(current_database_adapter)" = "postgresql" ]; then
         rm -f "$db_init_log_file"
         echo -e "${YELLOW}Hinweis: Huginn laeuft derzeit mit DATABASE_ADAPTER=postgresql und trifft dabei auf den alten pg-Stack dieses Huginn-Stands.${NC}"
         echo -e "${YELLOW}Unter Ruby 3.2 fuehrt das alte pg-Gem in diesem Upstream-Stand zu einem LoadError in pg_ext.so.${NC}"
         echo -e "${YELLOW}Wenn du Huginn auf MariaDB/MySQL betreiben willst, stelle die sichere Vorlage in ~/.openclaw_ultimate_user_data/huginn/.env.template auf DATABASE_ADAPTER=mysql2 um und starte die Installation erneut.${NC}"
-        echo -e "${YELLOW}Wenn du bewusst PostgreSQL testen willst, braucht dieser Huginn-Stand dafuer einen eigenen pg-Kompatibilitaets-Fix oder einen neueren Upstream-Stand.${NC}"
+        echo -e "${YELLOW}Wenn du bewusst PostgreSQL testen willst, pruefe HUGINN_ENABLE_PG_RUBY32_COMPAT=true oder einen neueren Upstream-Stand.${NC}"
         exit 1
     elif grep -Eq "Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld\.sock'|Mysql2::Error::ConnectionError" "$db_init_log_file" && [ "$(current_database_adapter)" = "mysql2" ]; then
         rm -f "$db_init_log_file"

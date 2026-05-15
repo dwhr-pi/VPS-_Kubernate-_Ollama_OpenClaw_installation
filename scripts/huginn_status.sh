@@ -87,6 +87,7 @@ print_detected_problem_class() {
     if [ "$installed_ref" = "v2022.08.18" ] && [ "$db_adapter" = "postgresql" ]; then
         echo -e "${RED}v2022.08.18 + PostgreSQL erkannt.${NC}"
         echo -e "${YELLOW}Dieser Pfad kann unter Ruby 3.2 am alten pg-Gem scheitern: pg_ext.so / rb_tainted_str_new.${NC}"
+        echo -e "${YELLOW}Der Installer versucht diesen Pfad jetzt mit HUGINN_ENABLE_PG_RUBY32_COMPAT=true automatisch ueber einen neueren pg-Gem-Zweig zu reparieren.${NC}"
         echo -e "${YELLOW}Fuer unser stabiles Setup bleibt MySQL/MariaDB die Empfehlung; PostgreSQL ist hier ein bewusster Original-/Upstream-Test.${NC}"
         return 0
     fi
