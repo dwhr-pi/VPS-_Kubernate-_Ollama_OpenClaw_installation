@@ -100,6 +100,31 @@ log_warn() { echo -e "${YELLOW}$*${NC}"; }
 log_error() { echo -e "${RED}$*${NC}" >&2; }
 log_success() { echo -e "${GREEN}$*${NC}"; }
 
+run_with_retry() {
+  local attempts="${1:?attempt count required}"
+  local delay_seconds="${2:?delay seconds required}"
+  shift 2
+
+  local attempt=1
+  local exit_code=0
+  while [ "$attempt" -le "$attempts" ]; do
+    if "$@"; then
+      return 0
+    else
+      exit_code=$?
+    fi
+    if [ "$attempt" -ge "$attempts" ]; then
+      break
+    fi
+    log_warn "Befehl fehlgeschlagen (Versuch ${attempt}/${attempts}): $*"
+    log_warn "Warte ${delay_seconds}s und versuche es erneut..."
+    sleep "$delay_seconds"
+    attempt=$((attempt + 1))
+  done
+
+  return "$exit_code"
+}
+
 require_command() {
   local cmd="$1"
   if ! command -v "$cmd" >/dev/null 2>&1; then

@@ -16,6 +16,8 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 INSTALL_DIR="${INSTALL_DIR:-$(cd "$SCRIPT_DIR/../.." && pwd)}"
 # shellcheck disable=SC1091
 source "$INSTALL_DIR/scripts/helpers/status_tracking.sh"
+# shellcheck disable=SC1091
+source "$INSTALL_DIR/scripts/lib/common.sh"
 init_tool_tracking "Huginn"
 
 HUGINN_DIR="${HUGINN_DIR:-/opt/huginn}"
@@ -38,6 +40,8 @@ HUGINN_SYSTEMD_WEB_SERVICE="${HUGINN_SYSTEMD_WEB_SERVICE:-huginn-web.service}"
 HUGINN_SYSTEMD_WORKER_SERVICE="${HUGINN_SYSTEMD_WORKER_SERVICE:-huginn-worker.service}"
 HUGINN_UPSTREAM_DEFAULT_PORT="${HUGINN_UPSTREAM_DEFAULT_PORT:-3000}"
 HUGINN_WEB_PORT="${HUGINN_WEB_PORT:-3002}"
+HUGINN_NETWORK_RETRY_ATTEMPTS="${HUGINN_NETWORK_RETRY_ATTEMPTS:-3}"
+HUGINN_NETWORK_RETRY_DELAY_SECONDS="${HUGINN_NETWORK_RETRY_DELAY_SECONDS:-5}"
 USER_WORKSPACE_DIR="${HOME}/.openclaw_ultimate_user_data"
 HUGINN_USER_CONFIG_DIR="${USER_WORKSPACE_DIR}/huginn"
 HUGINN_USER_SETTINGS_FILE="${HUGINN_USER_CONFIG_DIR}/install_settings.env"
@@ -621,10 +625,10 @@ checkout_huginn_ref() {
     if [ -d "$HUGINN_DIR/.git" ]; then
         echo -e "${YELLOW}Huginn Verzeichnis $HUGINN_DIR existiert bereits. Aktualisiere Repository und wechsle auf ${HUGINN_REPO_REF}...${NC}"
         cd "$HUGINN_DIR"
-        git fetch --tags origin
+        run_with_retry "$HUGINN_NETWORK_RETRY_ATTEMPTS" "$HUGINN_NETWORK_RETRY_DELAY_SECONDS" git fetch --tags origin
         git checkout "$HUGINN_REPO_REF"
         if git show-ref --verify --quiet "refs/heads/$HUGINN_REPO_REF"; then
-            git pull --ff-only origin "$HUGINN_REPO_REF"
+            run_with_retry "$HUGINN_NETWORK_RETRY_ATTEMPTS" "$HUGINN_NETWORK_RETRY_DELAY_SECONDS" git pull --ff-only origin "$HUGINN_REPO_REF"
         fi
     else
         echo -e "${BLUE}Klone Huginn (${HUGINN_REPO_REF}) in $HUGINN_DIR...${NC}"
@@ -634,7 +638,8 @@ checkout_huginn_ref() {
             sudo mkdir -p "$HUGINN_DIR"
             sudo chown -R "$USER:$USER" "$HUGINN_DIR"
         fi
-        git clone --branch "$HUGINN_REPO_REF" "$HUGINN_REPO_URL" "$HUGINN_DIR"
+        run_with_retry "$HUGINN_NETWORK_RETRY_ATTEMPTS" "$HUGINN_NETWORK_RETRY_DELAY_SECONDS" \
+            git clone --branch "$HUGINN_REPO_REF" "$HUGINN_REPO_URL" "$HUGINN_DIR"
         cd "$HUGINN_DIR"
     fi
 }
@@ -1589,7 +1594,7 @@ echo -e "${YELLOW}Erkennungs-Hinweis: Der Installationslog enthaelt Standard-Ref
 
 echo -e "${GREEN}1/5: Installiere System-Abhängigkeiten für Huginn...${NC}"
 if [ "$HUGINN_SKIP_SYSTEM_PACKAGES" != "true" ]; then
-    sudo apt-get update
+    run_with_retry "$HUGINN_NETWORK_RETRY_ATTEMPTS" "$HUGINN_NETWORK_RETRY_DELAY_SECONDS" sudo apt-get update
     sudo apt-get install -y \
         ruby-full ruby-bundler build-essential git curl pkg-config \
         libmysqlclient-dev libpq-dev \

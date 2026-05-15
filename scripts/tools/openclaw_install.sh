@@ -22,6 +22,8 @@ init_tool_tracking "OpenClaw"
 
 OPENCLAW_DIR="/opt/openclaw"
 OPENCLAW_REPO_URL="$(get_custom_repo_url "OPENCLAW" "https://github.com/openclaw/openclaw.git")"
+OPENCLAW_NETWORK_RETRY_ATTEMPTS="${OPENCLAW_NETWORK_RETRY_ATTEMPTS:-3}"
+OPENCLAW_NETWORK_RETRY_DELAY_SECONDS="${OPENCLAW_NETWORK_RETRY_DELAY_SECONDS:-5}"
 
 echo -e "${BLUE}Starte Installation von OpenClaw...${NC}"
 
@@ -29,18 +31,19 @@ echo -e "${BLUE}Starte Installation von OpenClaw...${NC}"
 if [ -d "$OPENCLAW_DIR" ]; then
     echo -e "${YELLOW}OpenClaw Verzeichnis $OPENCLAW_DIR existiert bereits. Aktualisiere Repository...${NC}"
     cd "$OPENCLAW_DIR"
-    git pull
+    run_with_retry "$OPENCLAW_NETWORK_RETRY_ATTEMPTS" "$OPENCLAW_NETWORK_RETRY_DELAY_SECONDS" git pull --ff-only
 else
     echo -e "${BLUE}Klone OpenClaw in $OPENCLAW_DIR...${NC}"
     sudo mkdir -p "$OPENCLAW_DIR"
     sudo chown -R $USER:$USER "$OPENCLAW_DIR"
-    git clone "$OPENCLAW_REPO_URL" "$OPENCLAW_DIR"
+    run_with_retry "$OPENCLAW_NETWORK_RETRY_ATTEMPTS" "$OPENCLAW_NETWORK_RETRY_DELAY_SECONDS" \
+        git clone "$OPENCLAW_REPO_URL" "$OPENCLAW_DIR"
     cd "$OPENCLAW_DIR"
 fi
 
 # 2. Abhängigkeiten installieren mit pnpm
 echo -e "${BLUE}Installiere Abhängigkeiten für OpenClaw mit pnpm...${NC}"
-pnpm install
+run_with_retry "$OPENCLAW_NETWORK_RETRY_ATTEMPTS" "$OPENCLAW_NETWORK_RETRY_DELAY_SECONDS" pnpm install
 if [ $? -ne 0 ]; then
     echo -e "${RED}Fehler: pnpm install für OpenClaw fehlgeschlagen.${NC}"
     exit 1
