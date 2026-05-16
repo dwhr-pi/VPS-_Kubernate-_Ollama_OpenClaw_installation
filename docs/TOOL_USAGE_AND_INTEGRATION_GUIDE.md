@@ -8,7 +8,7 @@ Diese Datei beschreibt die grundsaetzliche Nutzungskategorie der Tools. Ziel: Ei
 |---|---|---|---|
 | Dienst mit Web-UI | systemd, Docker, Compose oder lokaler Server | Huginn, n8n, Open WebUI, Grafana, Uptime Kuma | braucht Port, Auth, Healthcheck |
 | API-Dienst | lokaler HTTP-Port | Ollama, LiteLLM, Qdrant, Meilisearch | meist kein Desktopfenster |
-| CLI-Tool | Terminalbefehl | gitleaks, trivy, syft, grype, restic, rclone | gut fuer Doctor/Automation |
+| CLI-Tool | Terminalbefehl | aider, opencode, gitleaks, trivy, syft, grype, restic, rclone | gut fuer Doctor/Automation |
 | Python-Bibliothek | Python-Skript/venv | LangGraph, LlamaIndex, CrewAI, AutoGen | wird importiert, nicht gestartet |
 | Desktopprogramm | Fenster/GUI | Blender, Android Studio, teils OBS | eher Windows/Linux-Desktop |
 | Browser-App/PWA | Webinterface im Browser | Open WebUI, Grafana, Home Assistant, Nextcloud | Android oft via Browser oder App |
@@ -22,11 +22,17 @@ Diese Datei beschreibt die grundsaetzliche Nutzungskategorie der Tools. Ziel: Ei
 | Open WebUI | Browser auf Port `3000`, ideal via Tailscale oder lokal |
 | LiteLLM | API-Gateway auf Port `4000`, Clients nutzen OpenAI-kompatible API |
 | Qdrant | Vektor-DB auf Port `6333`, Nutzung ueber RAG-Skripte |
+| ChromaDB | Python-Vektorstore oder lokaler Server; wird erst durch RAG-/Memory-Skripte genutzt, nicht automatisch durch Ollama/OpenClaw |
 | Huginn | Web auf Port `3002`, Worker via `huginn-worker.service` |
 | n8n | Web auf Port `5678`, Credentials nur im User-Workspace |
+| Aider | `source /opt/aider/venv/bin/activate`, dann im Git-Repo `aider` starten |
+| OpenCode | Scaffold unter `/opt/opencode`; Upstream-README pruefen und mit Ollama/LiteLLM konfigurieren |
 | LangGraph | `source /opt/langgraph/venv/bin/activate`, dann Python-Skript ausfuehren |
 | CrewAI | `source /opt/crewai/venv/bin/activate`, dann Python-Team/Skript ausfuehren |
+| AutoGen | `source /opt/autogen/venv/bin/activate`, dann Python-Agentenchat/Skript ausfuehren |
+| Playwright | `source /opt/playwright/venv/bin/activate`, dann `python -m playwright install chromium` und eigene Browser-Skripte ausfuehren |
 | Flowise | Web-UI fuer visuelle LLM-Flows |
+| Code_Sandbox | vorbereitetes Modul unter `/opt/code_sandbox`; braucht spaeter Docker/Podman/Devcontainer-Runner |
 | LangFlow | Web-UI/Python-nahe visuelle LLM-Flows |
 | Aider | Terminal-Coding-Agent im Git-Repo |
 | Continue.dev | IDE-Erweiterung, nicht Serverdienst |
@@ -47,8 +53,14 @@ Diese Datei beschreibt die grundsaetzliche Nutzungskategorie der Tools. Ziel: Ei
 
 Diese Tools sind wichtig, wirken aber nach Installation "unsichtbar":
 
+- Aider
+- OpenCode
 - LangGraph
 - CrewAI
+- AutoGen
+- Playwright
+- ChromaDB
+- Code_Sandbox
 - LlamaIndex
 - LangChain-nahe Pakete
 - CrewAI

@@ -6,6 +6,36 @@ Diese Datei dient als dauerhafte Projekt-Erinnerung fuer spaetere Chats und Folg
 
 ## Stand 2026-05-16
 
+### Aider / Coding-Agent
+
+- Letzter Installationsfehler: `rm: cannot remove '/opt/aider': Permission denied`.
+- Ursache: Der gemeinsame Scaffold-Installer hatte `/opt/aider` mit `sudo` vorbereitet, loeschte alte Clone-Reste beim Neuaufbau aber ohne `sudo`.
+- Fix: `scripts/tools/helpers/scaffold_tool_common.sh` nutzt jetzt eine pfadgeschuetzte Aufraeumfunktion fuer `/opt/*` und User-Home-Pfade, bevor ein Git-Clone neu erstellt wird.
+- Wichtig: Der Fix ist bewusst zentral, damit auch andere Scaffold-Tools von alten Root-Resten sauber repariert werden koennen.
+- Neue Doku dazu: `docs/AIDER_INTEGRATION_GUIDE.md`.
+
+### TODO: Aider funktional nachruesten
+
+- `scripts/aider/run_aider_task.sh` erstellen.
+- Allowlist fuer erlaubte Repositories und optionalen Dry-Run-Patchmodus ergaenzen.
+- OpenClaw-Tooldefinition fuer Repo-Analyse, Patch-Vorschlag und Testlauf ergaenzen.
+- Nach Aider-Aenderungen automatisch `git diff`, `scripts/validate_config.sh` und passende Tests anbieten.
+
+### OpenCode / Coding-Agent-Scaffold
+
+- Letzter Installationsfehler: `rm: cannot remove '/opt/opencode': Permission denied`.
+- Ursache ist sehr wahrscheinlich eine alte Helper-Version oder eine andere Setup-Kopie, weil OpenCode den gemeinsamen Scaffold-Helper nutzt.
+- Aktueller Fix: Der Scaffold-Helper nutzt eine pfadgeschuetzte `sudo rm -rf`-Routine fuer alte `/opt/<tool>`-Reste.
+- Im neuen Installationslog muss `Scaffold-Helper: sichere /opt-Aufraeumroutine aktiv.` erscheinen. Fehlt diese Zeile, wurde nicht der aktuelle Setup-Stand gestartet.
+- Neue Doku dazu: `docs/OPENCODE_INTEGRATION_GUIDE.md`.
+
+### TODO: OpenCode funktional nachruesten
+
+- `scripts/opencode/run_opencode_task.sh` erstellen.
+- OpenCode-Startkommando je Upstream-Stand automatisch erkennen.
+- OpenClaw-Tooldefinition fuer OpenCode als optionalen Coding-Agent ergaenzen.
+- Doctor-Check fuer `/opt/opencode`, Git-Ref und Modellkonfiguration ergaenzen.
+
 ### LangGraph / Bibliothekstools
 
 - LangGraph ist kein eigenstaendiger Webdienst und kein Desktopprogramm, sondern eine Python-Bibliothek fuer zustandsbehaftete Agenten- und Workflow-Graphen.
@@ -44,6 +74,81 @@ Diese Datei dient als dauerhafte Projekt-Erinnerung fuer spaetere Chats und Folg
 - Ausgabeordner `~/.openclaw_ultimate_user_data/crewai/runs` standardisieren.
 - Optional Langfuse/OpenLIT-Tracing anbinden.
 - Safety: Default `read-only`, `dry-run`, keine autonomen Shell-/Browseraktionen.
+
+### AutoGen / Multi-Agent-Chats
+
+- AutoGen wurde laut Installationslog erfolgreich unter `/opt/autogen/venv` installiert, u. a. mit `pyautogen-0.10.0`, `autogen-core-0.7.5` und `autogen-agentchat-0.7.5`.
+- AutoGen ist kein Webdienst, sondern ein Python-Framework fuer Multi-Agent-Chats, Reviewer-Agenten, Planner/Worker-Muster und User-Proxy-Freigaben.
+- Geeignete Integrationsform: OpenClaw Task -> `scripts/autogen/run_autogen_task.py` -> Planner/Worker/Reviewer/User-Proxy -> Ollama/LiteLLM/Qdrant -> Markdown/JSON-Report.
+- Gute erste Szenarien: Repo-Review-Chat, Installationsfehler-Triage, Security-Findings-Review, Profil-Design-Review.
+- Neue Doku dazu: `docs/AUTOGEN_INTEGRATION_GUIDE.md`.
+
+### TODO: AutoGen funktional nachruesten
+
+- `scripts/autogen/run_autogen_task.py` erstellen.
+- `examples/autogen/repo_review_chat.py` erstellen.
+- AutoGen-Smoke-Test in `scripts/doctor.sh` ergaenzen.
+- OpenClaw-Tooldefinition fuer AutoGen-Aufrufe ergaenzen.
+- Ausgabeordner `~/.openclaw_ultimate_user_data/autogen/runs` standardisieren.
+- User-Proxy-/Approval-Konzept fuer riskante Aktionen dokumentieren.
+- Safety: Default `read-only`, `dry-run`, keine autonomen Shell-/Browseraktionen ohne Freigabe.
+
+### Playwright / Browser Automation
+
+- Playwright ist kein Webdienst, sondern ein Browser-Automation-Framework.
+- Eine vorhandene Python-Umgebung unter `/opt/playwright/venv` reicht nur fuer den Python-Import; fuer echte Browserlaeufe muessen Browser-Binaries wie Chromium installiert sein.
+- Pruefbefehle: `source /opt/playwright/venv/bin/activate`, `python -c "import playwright"`, `python -m playwright install chromium`.
+- Geeignete Integrationsform: OpenClaw Task -> `scripts/playwright/browser_worker.py` -> headless Chromium -> Screenshot/HTML/JSON unter `~/.openclaw_ultimate_user_data/playwright/`.
+- Playwright kann fuer OpenClaw, Browser_Automation_Agent, Huginn, n8n, LangGraph, CrewAI und AutoGen als sicher begrenzter Browser-Worker dienen.
+- Neue Doku dazu: `docs/PLAYWRIGHT_INTEGRATION_GUIDE.md`.
+
+### TODO: Playwright funktional nachruesten
+
+- `scripts/playwright/browser_worker.py` erstellen.
+- `scripts/playwright/screenshot_url.py` erstellen.
+- Allowlist unter `~/.openclaw_ultimate_user_data/playwright/allowed_targets.txt` einfuehren.
+- Doctor-Check fuer Playwright-Import und Chromium-Binary ergaenzen.
+- OpenClaw-Tooldefinition fuer Browser-Screenshot und HTML-Extraktion ergaenzen.
+- Safety: nur erlaubte Ziele, Rate-Limit, keine Captcha-Umgehung, keine Cookies/Screenshots ins Repo.
+
+### ChromaDB / lokaler Vektorstore
+
+- ChromaDB wurde laut Installationslog erfolgreich unter `/opt/chromadb/venv` installiert, u. a. mit `chromadb-1.5.9`.
+- ChromaDB ist kein klassisches Desktopprogramm. Es kann als Python-Bibliothek direkt in RAG-/Memory-Skripten oder optional als lokaler HTTP-Server genutzt werden.
+- ChromaDB wird nicht automatisch von Ollama oder OpenClaw genutzt. Es braucht eine Pipeline: Import/Chunking -> Embeddings -> ChromaDB -> Retrieval -> Kontext fuer Ollama/OpenClaw.
+- Empfohlener Datenpfad: `~/.openclaw_ultimate_user_data/chromadb/`.
+- Geeignete Integrationsform: OpenClaw Task -> `scripts/chromadb/query_memory.py` -> ChromaDB PersistentClient -> relevante Dokumente/Erinnerungen -> OpenClaw-Kontext.
+- ChromaDB passt zu OpenClaw, Memory_Import_Export, Personal_Knowledge_Memory, Document_Intelligence, LangGraph, CrewAI und AutoGen.
+- Neue Doku dazu: `docs/CHROMADB_INTEGRATION_GUIDE.md`.
+
+### TODO: ChromaDB funktional nachruesten
+
+- `scripts/chromadb/import_markdown_memory.py` erstellen.
+- `scripts/chromadb/query_memory.py` erstellen.
+- Embedding-Modell und Standardpipeline fuer Ollama/OpenClaw festlegen.
+- Doctor-Check fuer ChromaDB-Import und optionalen Serverport ergaenzen.
+- OpenClaw-Tooldefinition fuer ChromaDB-RAG-Kontext ergaenzen.
+- Memory_Import_Export-Profil mit ChromaDB-Beispielpipeline verbinden.
+- Safety: keine privaten ChromaDB-Datenbanken oder Exporte ins Repo.
+
+### Code_Sandbox
+
+- Diagnosemeldung `Keine Treffer fuer das Diagnosemuster gefunden` ist bei erfolgreicher Installation kein Fehler, sondern bedeutet nur, dass der Logfilter keine bekannten Problemzeilen gefunden hat.
+- Logstatus: `Starte Installation von Code_Sandbox...` gefolgt von `Code_Sandbox wurde erfolgreich installiert.`
+- Code_Sandbox ist aktuell ein vorbereitetes Sandbox-Modul unter `/opt/code_sandbox`, kein vollstaendiger Runner und kein Webdienst.
+- Die Installation erzeugt `.env.template`, `README.md` und einen Platzhalter-`run.sh`.
+- Ziel: OpenClaw, Programmierer-, LLM-Builder- und Agentenprofile sollen spaeter riskante Codeausfuehrung ueber Docker/Podman/Devcontainer statt direkt auf dem Host starten.
+- Neue Doku dazu: `docs/CODE_SANDBOX_USAGE_GUIDE.md`.
+
+### TODO: Code_Sandbox funktional nachruesten
+
+- `scripts/code_sandbox/run_in_sandbox.sh` erstellen.
+- Policy-Datei unter `~/.openclaw_ultimate_user_data/code_sandbox/policy.env` einfuehren.
+- Docker-Backend mit `--network none`, `--memory`, `--cpus` und Timeout bauen.
+- Optional Podman- und Devcontainer-Backend.
+- OpenClaw-Tooldefinition fuer Sandbox-Kommandos ergaenzen.
+- Doctor-Check fuer Docker/Podman und Sandbox-Testlauf.
+- Safety: keine Secrets, kein Docker-Socket-Mount, kein `--privileged`, keine Host-Pfade ausser explizitem Workspace.
 
 ## Als veraltet identifiziert
 

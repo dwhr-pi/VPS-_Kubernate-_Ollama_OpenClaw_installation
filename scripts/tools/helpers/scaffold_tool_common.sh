@@ -24,6 +24,23 @@ EOF
     fi
 }
 
+safe_prepare_tool_dir_for_clone() {
+    local target_dir="$1"
+
+    case "$target_dir" in
+        /opt/*|"${HOME}"/*)
+            ;;
+        *)
+            echo -e "${RED}Fehler: Unsicherer Tool-Pfad fuer Neuaufbau: ${target_dir}${NC}"
+            exit 1
+            ;;
+    esac
+
+    if [ -e "$target_dir" ]; then
+        sudo rm -rf "$target_dir"
+    fi
+}
+
 install_scaffold_tool() {
     : "${TOOL_NAME:?TOOL_NAME ist erforderlich}"
     : "${TOOL_KEY:?TOOL_KEY ist erforderlich}"
@@ -34,6 +51,7 @@ install_scaffold_tool() {
     init_tool_tracking "$TOOL_KEY"
 
     echo -e "${BLUE}Starte Installation von ${TOOL_NAME}...${NC}"
+    echo -e "${BLUE}Scaffold-Helper: sichere /opt-Aufraeumroutine aktiv.${NC}"
 
     if [ -n "${TOOL_APT_PACKAGES:-}" ]; then
         if ! command -v apt-get >/dev/null 2>&1; then
@@ -51,8 +69,9 @@ install_scaffold_tool() {
         if [ -d "$TOOL_DIR/.git" ]; then
             git -C "$TOOL_DIR" pull --ff-only || true
         else
-            rm -rf "$TOOL_DIR"
+            safe_prepare_tool_dir_for_clone "$TOOL_DIR"
             git clone "$TOOL_GIT_REPO" "$TOOL_DIR"
+            sudo chown -R "$USER:$USER" "$TOOL_DIR"
         fi
     fi
 
