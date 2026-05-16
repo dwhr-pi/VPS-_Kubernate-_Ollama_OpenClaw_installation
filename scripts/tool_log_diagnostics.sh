@@ -34,12 +34,15 @@ Nutzung:
   bash scripts/tool_log_diagnostics.sh --tool Huginn
   bash scripts/tool_log_diagnostics.sh --log /pfad/zum/log.log
   bash scripts/tool_log_diagnostics.sh --tool Huginn --email ai-chat-to-markdown@web.de
+  bash scripts/tool_log_diagnostics.sh --log /pfad/zum/log.log --email-now ai-chat-to-markdown@web.de
   bash scripts/tool_log_diagnostics.sh --tool Huginn --no-email
 
 Optionen:
   --tool NAME       Toolname im Lognamen, z. B. Huginn, Clawhub_CLI, OpenManus
   --log PFAD        konkreten Log auswerten
   --email ADRESSE   nach Terminalausgabe E-Mail-Versand an Adresse anbieten
+  --email-now ADRESSE
+                   Diagnosebericht ohne weitere Rueckfrage an Adresse senden
   --no-email        keine E-Mail-Abfrage
   --lines ZAHL      Anzahl gefilterter Treffer
   --no-color        Ausgabe ohne ANSI-Farben
@@ -70,6 +73,11 @@ parse_args() {
             --email)
                 EMAIL_TO="${2:-$DEFAULT_EMAIL_TO}"
                 EMAIL_MODE="ask"
+                shift 2
+                ;;
+            --email-now|--send-email)
+                EMAIL_TO="${2:-$DEFAULT_EMAIL_TO}"
+                EMAIL_MODE="always"
                 shift 2
                 ;;
             --no-email)
@@ -244,6 +252,15 @@ maybe_send_email() {
     local answer
 
     if [ "$EMAIL_MODE" = "never" ]; then
+        return 0
+    fi
+
+    if [ "$EMAIL_MODE" = "always" ]; then
+        if send_report_email "$report_file" "$recipient"; then
+            echo -e "${GREEN}Diagnosebericht wurde an ${recipient} uebergeben.${NC}"
+        else
+            echo -e "${YELLOW}Diagnosebericht konnte nicht per E-Mail versendet werden. Datei bleibt lokal erhalten:${NC} $report_file"
+        fi
         return 0
     fi
 

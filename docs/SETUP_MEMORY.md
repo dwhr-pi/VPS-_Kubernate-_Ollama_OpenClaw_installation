@@ -72,6 +72,9 @@ Diese Datei dient als dauerhafte Projekt-Erinnerung fuer spaetere Chats und Folg
 - Neue Quelle laut Nutzer und GitHub-Pruefung: `https://github.com/NeurometricAI/clawbake`.
 - Wichtige Korrektur: Die neue Quelle ist kein pnpm-Projekt, sondern ein Go/Kubernetes/Helm/OpenClaw-Operator-Projekt.
 - Installer wurde auf die neue Quelle, Remote-Backup bei Quellenwechsel, Go/Make-Pruefung und `make build` umgestellt.
+- Nachfolgefehler: `fatal: could not create work tree dir '/opt/clawbake': Permission denied`.
+- Ursache: Nach `sudo rm -rf /opt/clawbake` wurde direkt nach `/opt/clawbake` geklont, obwohl der normale User nicht in `/opt` schreiben darf.
+- Fix: Der Installer erzeugt nun das Zielverzeichnis mit `sudo mkdir`, setzt Besitzrechte und klont in das leere Zielverzeichnis.
 - `CLAWBAKE_SKIP_BUILD=true` kann genutzt werden, um nur das Repository vorzubereiten.
 - Neue Doku dazu: `docs/CLAWBAKE_INTEGRATION_GUIDE.md`.
 
@@ -81,6 +84,15 @@ Diese Datei dient als dauerhafte Projekt-Erinnerung fuer spaetere Chats und Folg
 - Doctor-Check fuer Git-Remote, Go-Version, Makefile und Helm/Kubernetes-Abhaengigkeiten.
 - Helm-/K3s-Deployment als getrennte Advanced-Option dokumentieren.
 - Secrets/OIDC/Gateway-Konfiguration nur im User-Workspace ablegen.
+
+### Installationsueberwachung / Sofortdiagnose
+
+- Der manuelle Nach-Schritt-Dialog der erweiterten Installationsueberwachung bietet jetzt neben `[N]` und `[Z]` auch:
+- `[L]` zeigt direkt das aktuelle bzw. letzte Installationslog.
+- `[D]` startet sofort `scripts/tool_log_diagnostics.sh --log <log> --no-email`.
+- `[E]` startet sofort `scripts/tool_log_diagnostics.sh --log <log> --email-now ai-chat-to-markdown@web.de`.
+- `tool_log_diagnostics.sh` unterstuetzt dafuer neu `--email-now` bzw. `--send-email`, damit nach expliziter Auswahl keine zweite Rueckfrage mehr noetig ist.
+- Voraussetzung fuer E-Mail: `Mail_Utils_MSMTP` installieren und lokal `~/.msmtprc` sowie `~/.openclaw_ultimate_user_data/mail/mail_settings.env` konfigurieren. Keine SMTP-Zugangsdaten ins Repo schreiben.
 
 ### LangGraph / Bibliothekstools
 

@@ -918,6 +918,70 @@ show_recent_install_logs() {
     read -p "Drücken Sie Enter..."
 }
 
+find_latest_install_log_file() {
+    ensure_user_workspace
+    find "$USER_INSTALL_LOG_DIR" -maxdepth 1 -type f -name '*.log' -printf '%T@ %p\n' 2>/dev/null |
+        sort -nr |
+        awk 'NR == 1 {sub(/^[^ ]+ /, ""); print}'
+}
+
+resolve_install_log_file() {
+    local current_log_file="${1:-}"
+
+    if [ -n "$current_log_file" ] && [ -f "$current_log_file" ]; then
+        printf '%s\n' "$current_log_file"
+        return 0
+    fi
+
+    find_latest_install_log_file
+}
+
+show_install_log_tail_now() {
+    local current_log_file="${1:-}"
+    local log_file
+
+    log_file="$(resolve_install_log_file "$current_log_file")"
+    if [ -z "$log_file" ] || [ ! -f "$log_file" ]; then
+        echo -e "${YELLOW}Kein Installationsprotokoll gefunden.${NC}"
+        return 1
+    fi
+
+    clear
+    echo
+    echo -e "${YELLOW}Installationsprotokoll:${NC} $log_file"
+    echo
+    tail -n 220 "$log_file"
+    echo
+    read -p "Drücken Sie Enter..."
+}
+
+run_install_log_diagnostics_now() {
+    local current_log_file="${1:-}"
+    local email_mode="${2:-no-email}"
+    local log_file
+    local diagnostics_script="$INSTALL_DIR/scripts/tool_log_diagnostics.sh"
+
+    log_file="$(resolve_install_log_file "$current_log_file")"
+    if [ -z "$log_file" ] || [ ! -f "$log_file" ]; then
+        echo -e "${YELLOW}Kein Installationsprotokoll gefunden.${NC}"
+        return 1
+    fi
+
+    if [ ! -f "$diagnostics_script" ]; then
+        echo -e "${RED}Fehler: Tool-Logdiagnose nicht gefunden: $diagnostics_script${NC}"
+        return 1
+    fi
+
+    clear
+    if [ "$email_mode" = "email" ]; then
+        bash "$diagnostics_script" --log "$log_file" --email-now "${DEFAULT_DIAGNOSTIC_EMAIL_TO:-ai-chat-to-markdown@web.de}"
+    else
+        bash "$diagnostics_script" --log "$log_file" --no-email
+    fi
+    echo
+    read -p "Drücken Sie Enter..."
+}
+
 handle_manual_tool_post_action() {
     local tool_key="$1"
     local action_label="$2"
@@ -936,7 +1000,7 @@ handle_manual_tool_post_action() {
     fi
 
     while true; do
-        read -r -p "Weiter mit der nächsten Installation/Deinstallation [N] oder zurück ins Setup [Z]? " next_choice
+        read -r -p "Weiter [N], zurück ins Setup [Z], Log anzeigen [L], Diagnose [D] oder Diagnose per E-Mail [E]? " next_choice
         case "$(printf '%s' "${next_choice:-N}" | tr '[:lower:]' '[:upper:]')" in
             N|"")
                 TOOL_BATCH_ABORT_REQUESTED=0
@@ -946,8 +1010,17 @@ handle_manual_tool_post_action() {
                 TOOL_BATCH_ABORT_REQUESTED=1
                 break
                 ;;
+            L)
+                show_install_log_tail_now "$current_log_file"
+                ;;
+            D)
+                run_install_log_diagnostics_now "$current_log_file" "no-email"
+                ;;
+            E)
+                run_install_log_diagnostics_now "$current_log_file" "email"
+                ;;
             *)
-                echo -e "${YELLOW}Bitte nur N oder Z eingeben.${NC}"
+                echo -e "${YELLOW}Bitte N, Z, L, D oder E eingeben.${NC}"
                 ;;
         esac
     done
@@ -973,7 +1046,7 @@ handle_manual_profile_post_action() {
     fi
 
     while true; do
-        read -r -p "Zurück ins Profilmenü [N] oder direkt zurück ins Setup [Z]? " next_choice
+        read -r -p "Zurück ins Profilmenü [N], direkt zurück ins Setup [Z], Log anzeigen [L], Diagnose [D] oder Diagnose per E-Mail [E]? " next_choice
         case "$(printf '%s' "${next_choice:-N}" | tr '[:lower:]' '[:upper:]')" in
             N|"")
                 PROFILE_FLOW_ABORT_REQUESTED=0
@@ -983,8 +1056,17 @@ handle_manual_profile_post_action() {
                 PROFILE_FLOW_ABORT_REQUESTED=1
                 break
                 ;;
+            L)
+                show_install_log_tail_now "$current_log_file"
+                ;;
+            D)
+                run_install_log_diagnostics_now "$current_log_file" "no-email"
+                ;;
+            E)
+                run_install_log_diagnostics_now "$current_log_file" "email"
+                ;;
             *)
-                echo -e "${YELLOW}Bitte nur N oder Z eingeben.${NC}"
+                echo -e "${YELLOW}Bitte N, Z, L, D oder E eingeben.${NC}"
                 ;;
         esac
     done

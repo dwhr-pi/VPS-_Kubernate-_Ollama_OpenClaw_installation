@@ -86,6 +86,8 @@ Für veröffentlichte, aber abgesicherte öffentliche Dienste ist zusätzlich `c
 - [docs/PLAYWRIGHT_INTEGRATION_GUIDE.md](docs/PLAYWRIGHT_INTEGRATION_GUIDE.md)
 - [docs/CHROMADB_INTEGRATION_GUIDE.md](docs/CHROMADB_INTEGRATION_GUIDE.md)
 - [docs/CODE_SANDBOX_USAGE_GUIDE.md](docs/CODE_SANDBOX_USAGE_GUIDE.md)
+
+Hinweis zur erweiterten Installationsueberwachung: Wenn sie aktiv ist, bietet der Nach-Schritt-Dialog direkte Sofortaktionen an. `[L]` zeigt das letzte Log, `[D]` erstellt eine Diagnose im Terminal und `[E]` sendet die Diagnose per konfigurierter E-Mail-Ausgabe.
 - [docs/HARDWARE_REQUIREMENTS.md](docs/HARDWARE_REQUIREMENTS.md)
 - [docs/WSL_VPS_GPU_COMPATIBILITY.md](docs/WSL_VPS_GPU_COMPATIBILITY.md)
 - [docs/ROADMAP_NEXT_PROFILES.md](docs/ROADMAP_NEXT_PROFILES.md)
