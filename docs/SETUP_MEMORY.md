@@ -4,6 +4,47 @@ Diese Datei dient als dauerhafte Projekt-Erinnerung fuer spaetere Chats und Folg
 
 ## Stand 2026-05-11
 
+## Stand 2026-05-16
+
+### LangGraph / Bibliothekstools
+
+- LangGraph ist kein eigenstaendiger Webdienst und kein Desktopprogramm, sondern eine Python-Bibliothek fuer zustandsbehaftete Agenten- und Workflow-Graphen.
+- Eine erfolgreiche Installation unter `/opt/langgraph/venv` bedeutet nur, dass LangGraph importierbar ist. Es funktioniert dadurch noch nicht automatisch direkt in OpenClaw.
+- OpenClaw soll LangGraph spaeter ueber ein klares Tool-/Worker-Skript nutzen, z. B. `scripts/langgraph/run_graph_tool.py`.
+- Geplanter Ablauf: OpenClaw Task -> LangGraph Python-Worker -> Ollama/LiteLLM/Qdrant/Langfuse -> Markdown/JSON-Ergebnis unter `~/.openclaw_ultimate_user_data/langgraph/runs`.
+- Erste sinnvolle LangGraph-Use-Cases: Repo-Review-Graph, Install-Log-Diagnose-Graph, RAG-Antwort-Graph, Profil-Planungs-Graph, defensiver Security-Audit-Graph.
+- Fuer alle Bibliothekstools gilt: Installation allein reicht nicht. Sie brauchen Smoke-Test, Beispielskript, Ergebnisformat, Doctor-Check und eine klare Integrationsbeschreibung.
+- Neue Doku dazu:
+  - `docs/LANGGRAPH_INTEGRATION_GUIDE.md`
+  - `docs/TOOL_USAGE_AND_INTEGRATION_GUIDE.md`
+
+### TODO: LangGraph funktional nachruesten
+
+- `scripts/langgraph/run_graph_tool.py` erstellen.
+- `examples/langgraph/repo_review_graph.py` erstellen.
+- OpenClaw-Tooldefinition fuer LangGraph-Aufrufe ergaenzen.
+- LangGraph-Doctor-Check in `scripts/doctor.sh` aufnehmen.
+- Optional Langfuse/OpenLIT-Tracing anbinden.
+- Safety: Default `read-only`, `dry-run`, keine Secrets im Graph-State.
+
+### CrewAI / Multi-Agent-Teams
+
+- CrewAI wurde erfolgreich als Python-Agentenframework unter `/opt/crewai/venv` installiert, laut Log mit `crewai-1.14.4`.
+- CrewAI ist wie LangGraph kein eigenstaendiger Webdienst, sondern wird ueber Python-Skripte, Teams und Rollen-Workflows genutzt.
+- Geeignete Integrationsform: OpenClaw Task -> `scripts/crewai/run_crew_task.py` -> CrewAI Team -> Ollama/LiteLLM/Qdrant -> Markdown/JSON-Report.
+- Gute erste Teams: Repo-Maintainer-Team, Install-Log-Diagnose-Team, Profil-Builder-Team, defensives Security-Review-Team.
+- Neue Doku dazu: `docs/CREWAI_INTEGRATION_GUIDE.md`.
+
+### TODO: CrewAI funktional nachruesten
+
+- `scripts/crewai/run_crew_task.py` erstellen.
+- `examples/crewai/repo_maintainer_team.py` erstellen.
+- CrewAI-Smoke-Test in `scripts/doctor.sh` ergaenzen.
+- OpenClaw-Tooldefinition fuer CrewAI-Aufrufe ergaenzen.
+- Ausgabeordner `~/.openclaw_ultimate_user_data/crewai/runs` standardisieren.
+- Optional Langfuse/OpenLIT-Tracing anbinden.
+- Safety: Default `read-only`, `dry-run`, keine autonomen Shell-/Browseraktionen.
+
 ## Als veraltet identifiziert
 
 Diese Punkte gelten im Projektverlauf inzwischen als veraltet, problematisch oder nur noch als Legacy-Verhalten:
