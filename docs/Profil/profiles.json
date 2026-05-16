@@ -342,6 +342,77 @@
         "kein offensiver Standardmodus",
         "nur lokale oder explizit erlaubte Ziele"
       ]
+    },
+    {
+      "profile": "Prompt_Generator_Studio",
+      "category": "LLMOps",
+      "status": "beta",
+      "doc": "Prompt_Generator_Studio.doc.md",
+      "tools": ["ollama", "litellm", "open_webui", "promptfoo", "langfuse"]
+    },
+    {
+      "profile": "Memory_Import_Export",
+      "category": "RAG/Knowledge",
+      "status": "beta",
+      "doc": "Memory_Import_Export.doc.md",
+      "tools": ["qdrant", "chromadb", "duckdb", "docling", "apache_tika"]
+    },
+    {
+      "profile": "Self_Learning_Agent_Lab",
+      "category": "Agent",
+      "status": "experimental",
+      "doc": "Self_Learning_Agent_Lab.doc.md",
+      "tools": ["openclaw", "litellm", "langfuse", "promptfoo", "openlit"],
+      "guardrails": ["kein autonomes Live-Handeln", "Dry-Run und Allowlist fuer riskante Tools"]
+    },
+    {
+      "profile": "Home_Network_Security",
+      "category": "Security",
+      "status": "beta",
+      "doc": "Home_Network_Security.doc.md",
+      "tools": ["tailscale", "cloudflared", "ufw", "crowdsec", "prometheus", "grafana"]
+    },
+    {
+      "profile": "Android_App_Builder",
+      "category": "Coding",
+      "status": "planned",
+      "doc": "Android_App_Builder.doc.md",
+      "tools": []
+    },
+    {
+      "profile": "AI_Dashboard_Builder",
+      "category": "Monitoring",
+      "status": "beta",
+      "doc": "AI_Dashboard_Builder.doc.md",
+      "tools": ["grafana", "prometheus", "loki", "netdata", "appsmith", "budibase", "nocodb"]
+    },
+    {
+      "profile": "Render_Farm_GPU_Workstation",
+      "category": "Media",
+      "status": "experimental",
+      "doc": "Render_Farm_GPU_Workstation.doc.md",
+      "tools": ["comfyui", "stable_diffusion_webui_forge", "blender", "realesrgan"]
+    },
+    {
+      "profile": "Legal_Safe_Creator",
+      "category": "Office",
+      "status": "beta",
+      "doc": "Legal_Safe_Creator.doc.md",
+      "tools": ["docling", "apache_tika", "paperless_ngx", "qdrant", "chromadb"]
+    },
+    {
+      "profile": "Cyber_Security_AI",
+      "category": "Security",
+      "status": "beta",
+      "doc": "Cyber_Security_AI.doc.md",
+      "tools": ["gitleaks", "semgrep", "trivy", "syft", "grype", "ufw", "crowdsec", "fail2ban"]
+    },
+    {
+      "profile": "Anti_Virus",
+      "category": "Security",
+      "status": "beta",
+      "doc": "Anti_Virus.doc.md",
+      "tools": ["clamav", "yara", "gitleaks"]
     }
   ]
 }

@@ -81,6 +81,16 @@ Die Inhalte in diesem Verzeichnis wurden daher aus folgenden Quellen zusammengef
 - `Ethical_HackerGPT.doc.md`
 - `Living_Persona_System.doc.md`
 - `Next_Level_Persona_System.md`
+- `Prompt_Generator_Studio.doc.md`
+- `Memory_Import_Export.doc.md`
+- `Self_Learning_Agent_Lab.doc.md`
+- `Home_Network_Security.doc.md`
+- `Android_App_Builder.doc.md`
+- `AI_Dashboard_Builder.doc.md`
+- `Render_Farm_GPU_Workstation.doc.md`
+- `Legal_Safe_Creator.doc.md`
+- `Cyber_Security_AI.doc.md`
+- `Anti_Virus.doc.md`
 
 ## Bewusst nicht separat abgeleitet
 

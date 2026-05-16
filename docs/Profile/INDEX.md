@@ -90,6 +90,16 @@ Dieses Verzeichnis enthält die aktuell gepflegten, aus dem Repository abgeleite
 | `Synthetic_Data_Lab` | Testdaten, Datensynthese, Eval-Datensaetze | `Synthetic_Data_Lab.md` |
 | `AI_Governance_Audit` | Audit, SBOM, Secret- und Governance-Sicht | `AI_Governance_Audit.md` |
 | `Cost_Energy_Optimizer` | Ressourcen-, Kosten- und Laufzeitoptimierung | `Cost_Energy_Optimizer.md` |
+| `Prompt_Generator_Studio` | Prompts fuer Text, Bild, Video, Musik, Code und Agenten | `Prompt_Generator_Studio.md` |
+| `Memory_Import_Export` | lokale Memory-/Chat-/Projektkontext-Importe und Exporte | `Memory_Import_Export.md` |
+| `Self_Learning_Agent_Lab` | sichere Agenten-Replay- und Feedback-Experimente | `Self_Learning_Agent_Lab.md` |
+| `Home_Network_Security` | defensive Heimnetz-, DNS-, Tailscale- und Tunnel-Hygiene | `Home_Network_Security.md` |
+| `Android_App_Builder` | Android SDK-/Gradle-/Companion-App-Planung | `Android_App_Builder.md` |
+| `AI_Dashboard_Builder` | Dashboards fuer Dienste, Logs, Ressourcen und Agentenstatus | `AI_Dashboard_Builder.md` |
+| `Render_Farm_GPU_Workstation` | GPU-Workstation, ComfyUI, Blender und Rendering | `Render_Farm_GPU_Workstation.md` |
+| `Legal_Safe_Creator` | Lizenz-, Quellen- und Rechte-Checklisten fuer Creator | `Legal_Safe_Creator.md` |
+| `Cyber_Security_AI` | defensive Security-AI fuer Findings, Hardening und SBOM | `Cyber_Security_AI.md` |
+| `Anti_Virus` | lokale Datei-, Malware- und Quarantaene-Hygiene | `Anti_Virus.md` |
 
 ## Bewusst zurueckgestellt
 

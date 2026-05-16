@@ -8,7 +8,7 @@ Das Repository entwickelt sich von einer reinen Tool-Sammlung zu einer modularen
 
 `Base System -> Runtime -> Model Gateway -> Agent Layer -> Memory/RAG -> Tool Layer -> UI -> Monitoring -> Security`
 
-Die zugehoerige Architektur-Dokumentation findest du in [docs/ARCHITECTURE_LLMOPS_PLATFORM.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/ARCHITECTURE_LLMOPS_PLATFORM.md:1).
+Die zugehoerige Architektur-Dokumentation findest du in [docs/ARCHITECTURE_LLMOPS_PLATFORM.md](docs/ARCHITECTURE_LLMOPS_PLATFORM.md).
 
 ## 🟡 Gegenwärtiger Status
 
@@ -18,7 +18,9 @@ Die zugehoerige Architektur-Dokumentation findest du in [docs/ARCHITECTURE_LLMOP
 - Neuere Plattform- und Ausbauprofile wurden jetzt strukturell in Doku und Registries aufgenommen, sind aber nicht alle schon als Top-Level-Menuepfade gleich weit durchgetestet.
 - Neu hinzugekommen ist ausserdem das klar defensive Profil [Ethical_HackerGPT](docs/Profil/Ethical_HackerGPT.doc.md) fuer autorisierte Sicherheitsanalysen, Hardening, Reporting und lokale Security-Labs.
 - Ebenfalls neu ist das modulare [Next Level Persona System](docs/Profil/Next_Level_Persona_System.md) fuer persistente Persona-, Memory- und Modus-Workflows mit sicheren Disclosure-Defaults.
-- Fuer laenger laufende Baustellen und Chat-Uebergaenge gibt es jetzt zusaetzlich eine kleine dauerhafte Projekt-Erinnerung unter [docs/SETUP_MEMORY.md](/C:/Users/danie/Documents/GitHub/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/SETUP_MEMORY.md:1).
+- Fuer laenger laufende Baustellen und Chat-Uebergaenge gibt es jetzt zusaetzlich eine kleine dauerhafte Projekt-Erinnerung unter [docs/SETUP_MEMORY.md](docs/SETUP_MEMORY.md).
+- Die aktuelle Review- und Prioritaetenliste liegt in [docs/SETUP_REVIEW_AND_NEXT_STEPS.md](docs/SETUP_REVIEW_AND_NEXT_STEPS.md).
+- Neue modulare Profilbausteine: `Prompt_Generator_Studio`, `Memory_Import_Export`, `Self_Learning_Agent_Lab`, `Home_Network_Security`, `Android_App_Builder`, `AI_Dashboard_Builder`, `Render_Farm_GPU_Workstation`, `Legal_Safe_Creator`, `Cyber_Security_AI` und `Anti_Virus`.
 
 ## 🚀 Schnelle Installation (One-Liner)
 
@@ -37,11 +39,11 @@ Dieser Befehl lädt das `install.sh` Skript herunter und führt es aus. Das Skri
 
 **Für private Repositories:** Das Skript wird dich nach einem GitHub Personal Access Token (PAT) fragen. Eine Anleitung zur Erstellung findest du in der `docs/PRIVATE_REPO_GUIDE.md`.
 
-**Für die OpenClaw `.env`:** Eine eigene Detaildokumentation zur `.env`-Struktur, zu den Feldern und zur originalen OpenClaw-Vorlage findest du in [docs/OPENCLAW_ENV_GUIDE.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/OPENCLAW_ENV_GUIDE.md:1).
+**Für die OpenClaw `.env`:** Eine eigene Detaildokumentation zur `.env`-Struktur, zu den Feldern und zur originalen OpenClaw-Vorlage findest du in [docs/OPENCLAW_ENV_GUIDE.md](docs/OPENCLAW_ENV_GUIDE.md).
 
-**Für die Huginn `.env`:** Die Huginn-spezifische Vorlage, der Benutzer-Workspace-Pfad, der `INVITATION_CODE` und die Runtime-Datei unter `/opt/huginn/.env` sind jetzt in [docs/HUGINN_ENV_GUIDE.md](/C:/Users/danie/.codex/worktrees/8354/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/HUGINN_ENV_GUIDE.md:1) dokumentiert.
+**Für die Huginn `.env`:** Die Huginn-spezifische Vorlage, der Benutzer-Workspace-Pfad, der `INVITATION_CODE` und die Runtime-Datei unter `/opt/huginn/.env` sind jetzt in [docs/HUGINN_ENV_GUIDE.md](docs/HUGINN_ENV_GUIDE.md) dokumentiert.
 
-**Für eigene Forks und Custom-Builds:** Die neue Anleitung für benutzerdefinierte GitHub-Quellen, eigene Repositories, GGUF-Exporte und `ollama create` findest du in [docs/CUSTOM_SOURCES_AND_BUILDS.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/CUSTOM_SOURCES_AND_BUILDS.md:1).
+**Für eigene Forks und Custom-Builds:** Die neue Anleitung für benutzerdefinierte GitHub-Quellen, eigene Repositories, GGUF-Exporte und `ollama create` findest du in [docs/CUSTOM_SOURCES_AND_BUILDS.md](docs/CUSTOM_SOURCES_AND_BUILDS.md).
 
 **Wichtig für sensible Daten:** Bearbeitbare und sensible Dateien werden ab den neueren Setup-Versionen zusätzlich außerhalb des Repositories in `~/.openclaw_ultimate_user_data` abgelegt. Dadurch bleiben API-Keys, bearbeitete Vorlagen und Statusdateien beim Repo-Update sauber getrennt und werden nicht versehentlich ins Git-Repository geschrieben.
 
@@ -63,7 +65,27 @@ Fuer diesen Stack gibt es jetzt analog zu OpenClaw auch eine auslagerbare, editi
 
 Für privaten Remote-Zugriff ist jetzt zusätzlich `Tailscale` als Tool vorgesehen. Das passt besonders an die Stelle, an der sonst unnötig offene Admin-Ports entstehen würden, etwa für `Open WebUI`, `Grafana`, `Home Assistant`, `SSH` oder interne Dashboards.
 
-Für veröffentlichte, aber abgesicherte öffentliche Dienste ist zusätzlich `cloudflared` vorgesehen. Zusammen mit `Hurricane Electric` für DNS/DDNS und `Tailscale` für privaten Admin-Zugriff ist die gemeinsame Orientierung jetzt in [docs/REMOTE_ACCESS_DNS_GUIDE.md](/C:/Users/danie/.codex/worktrees/50f5/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/REMOTE_ACCESS_DNS_GUIDE.md:1) dokumentiert.
+Für veröffentlichte, aber abgesicherte öffentliche Dienste ist zusätzlich `cloudflared` vorgesehen. Zusammen mit `Hurricane Electric` für DNS/DDNS und `Tailscale` für privaten Admin-Zugriff ist die gemeinsame Orientierung jetzt in [docs/REMOTE_ACCESS_DNS_GUIDE.md](docs/REMOTE_ACCESS_DNS_GUIDE.md) dokumentiert.
+
+## 🧭 Neue Übersichten und Doctor-Skripte
+
+- [docs/PROFILE_INDEX.md](docs/PROFILE_INDEX.md)
+- [docs/TOOL_INDEX.md](docs/TOOL_INDEX.md)
+- [docs/PROFILE_TOOL_MAPPING.md](docs/PROFILE_TOOL_MAPPING.md)
+- [docs/PORT_SECURITY_MATRIX.md](docs/PORT_SECURITY_MATRIX.md)
+- [docs/TOOL_DEPLOYMENT_MATRIX.md](docs/TOOL_DEPLOYMENT_MATRIX.md)
+- [docs/HARDWARE_REQUIREMENTS.md](docs/HARDWARE_REQUIREMENTS.md)
+- [docs/WSL_VPS_GPU_COMPATIBILITY.md](docs/WSL_VPS_GPU_COMPATIBILITY.md)
+- [docs/ROADMAP_NEXT_PROFILES.md](docs/ROADMAP_NEXT_PROFILES.md)
+
+Validierung:
+
+```bash
+bash scripts/doctor.sh
+bash scripts/validate_config.sh
+bash scripts/check_profiles.sh
+bash scripts/check_ports.sh
+```
 
 ## 🔐 Sicherheit bei der Nutzung
 

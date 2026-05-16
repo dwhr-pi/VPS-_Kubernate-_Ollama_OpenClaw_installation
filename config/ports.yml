@@ -5,6 +5,7 @@
     { "port": 1883, "service": "mosquitto", "label": "Mosquitto MQTT" },
     { "port": 3000, "service": "open_webui", "label": "Open WebUI" },
     { "port": 3001, "service": "grafana", "label": "Grafana" },
+    { "port": 3002, "service": "huginn", "label": "Huginn" },
     { "port": 3003, "service": "langfuse", "label": "Langfuse" },
     { "port": 3004, "service": "uptime_kuma", "label": "Uptime Kuma" },
     { "port": 3005, "service": "forgejo", "label": "Forgejo" },
