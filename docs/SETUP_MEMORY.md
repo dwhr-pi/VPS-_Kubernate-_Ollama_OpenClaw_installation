@@ -51,6 +51,21 @@ Diese Datei dient als dauerhafte Projekt-Erinnerung fuer spaetere Chats und Folg
 - Schreibende Aktionen nur nach expliziter Freigabe.
 - Doctor-Check fuer `gh --version` und optional `gh auth status`.
 
+### Podman / Container Runtime
+
+- Installationslog zeigt aktivierte systemd-Einheiten: `podman-auto-update.service`, `podman-auto-update.timer`, `podman-clean-transient.service`, `podman-restart.service`, `podman.service`, `podman.socket`.
+- Das ist kein Fehler, aber eine wichtige Autostart-/Update-Nebenwirkung.
+- `podman.socket` stellt eine lokale API bereit und darf nicht unbewusst extern freigegeben werden.
+- `podman-auto-update.timer` kann Container aktualisieren, wenn passende Labels/Units genutzt werden. Fuer reproduzierbare Tests sollte Auto-Update optional und bewusst bleiben.
+- Neue Doku dazu: `docs/PODMAN_CONTAINER_RUNTIME_GUIDE.md`.
+
+### TODO: Podman funktional nachruesten
+
+- Doctor-Check fuer `podman --version`, `podman info`, `podman.socket` und `podman-auto-update.timer`.
+- Setup-Option fuer Auto-Update aktivieren/deaktivieren ergaenzen.
+- Podman als Runtime fuer `Code_Sandbox` und spaetere OpenClaw-Toolausfuehrung dokumentieren.
+- Security-Hinweis: Socket nur lokal, rootless bevorzugen, keine `--privileged`-Defaults.
+
 ### LangGraph / Bibliothekstools
 
 - LangGraph ist kein eigenstaendiger Webdienst und kein Desktopprogramm, sondern eine Python-Bibliothek fuer zustandsbehaftete Agenten- und Workflow-Graphen.
