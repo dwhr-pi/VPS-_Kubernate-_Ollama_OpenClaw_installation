@@ -88,6 +88,16 @@ Diese Datei dient als dauerhafte Projekt-Erinnerung fuer spaetere Chats und Folg
 - Helm-/K3s-Deployment als getrennte Advanced-Option dokumentieren.
 - Secrets/OIDC/Gateway-Konfiguration nur im User-Workspace ablegen.
 
+### Authentik / Authelia / OIDC
+
+- OIDC ist kein einzelnes Tool, sondern ein Login-Standard auf Basis von OAuth2.
+- Authentik und Authelia wurden als optionale Security-/SSO-Bausteine aufgenommen.
+- Authentik ist ein komfortabler Identity Provider mit Web-UI und eignet sich eher fuer VPS, K3s und Homelab-Setups mit mehreren Diensten.
+- Authelia ist eine schlanke Auth-/MFA-Schicht vor Webdiensten und eignet sich gut fuer MiniPC, Homelab und Reverse-Proxy-Schutz.
+- Installationsskripte erzeugen nur lokale Vorlagen unter `~/.openclaw_ultimate_user_data/auth/...` und starten bewusst keinen produktiven Dienst.
+- Authentik nutzt im Setup lokale Port-Mappings `9010`/`9444`, damit kein Konflikt mit MinIO `9000` entsteht. Authelia nutzt `9091`.
+- Neue Doku dazu: `docs/AUTH_OIDC_HELM_SECRETS_GUIDE.md`.
+
 ### Installationsueberwachung / Sofortdiagnose
 
 - Der manuelle Nach-Schritt-Dialog der erweiterten Installationsueberwachung bietet jetzt neben `[N]` und `[Z]` auch:

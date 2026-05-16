@@ -64,6 +64,31 @@ Laut Upstream sind fuer lokale Entwicklung relevant:
 
 Das bedeutet: Clawbake ist eher ein fortgeschrittenes Kubernetes-/OpenClaw-Managementmodul, nicht ein leichtes MiniPC-Basistool.
 
+## Helm-Werte, OIDC und Secrets
+
+Helm-Werte sind die Kubernetes-Konfiguration fuer ein Chart. Sie stehen meist in einer `values.yaml` und entsprechen grob einer `.env.template` fuer Kubernetes. Darin liegen zum Beispiel Hostnames, Ressourcenlimits, Datenbanknamen, Ingress-Einstellungen oder Feature-Schalter.
+
+OIDC steht fuer OpenID Connect. Das ist kein einzelnes Tool, sondern ein Login-Standard. Clawbake kann darueber spaeter einen externen Login-Anbieter nutzen.
+
+OIDC-Secrets sind sensible Login-Werte wie:
+
+```env
+OIDC_ISSUER_URL=https://auth.example.local/application/o/clawbake/
+OIDC_CLIENT_ID=clawbake
+OIDC_CLIENT_SECRET=change-me-outside-repo
+OIDC_REDIRECT_URI=https://clawbake.example.local/auth/callback
+```
+
+`OIDC_CLIENT_SECRET` ist wie ein Passwort oder API-Key und gehoert nie ins Repository.
+
+Sinnvolle OIDC-Provider fuer dieses Setup:
+
+- Authentik: komfortabler Identity Provider mit Web-UI, OIDC/OAuth2, SAML und LDAP.
+- Authelia: schlankere Auth-/MFA-Schicht vor Webdiensten, gut fuer Reverse-Proxy-Setups.
+- Keycloak: sehr maechtig, aber fuer dieses Setup meist schwerer als noetig.
+
+Mehr dazu: [Auth, OIDC, Helm-Werte und Secrets](AUTH_OIDC_HELM_SECRETS_GUIDE.md)
+
 ## Nutzung im Setup
 
 Sinnvolle Zielumgebungen:
