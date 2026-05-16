@@ -8,7 +8,7 @@ Diese Datei beschreibt die grundsaetzliche Nutzungskategorie der Tools. Ziel: Ei
 |---|---|---|---|
 | Dienst mit Web-UI | systemd, Docker, Compose oder lokaler Server | Huginn, n8n, Open WebUI, Grafana, Uptime Kuma | braucht Port, Auth, Healthcheck |
 | API-Dienst | lokaler HTTP-Port | Ollama, LiteLLM, Qdrant, Meilisearch | meist kein Desktopfenster |
-| CLI-Tool | Terminalbefehl | aider, opencode, gitleaks, trivy, syft, grype, restic, rclone | gut fuer Doctor/Automation |
+| CLI-Tool | Terminalbefehl | gh, aider, opencode, gitleaks, trivy, syft, grype, restic, rclone | gut fuer Doctor/Automation |
 | Python-Bibliothek | Python-Skript/venv | LangGraph, LlamaIndex, CrewAI, AutoGen | wird importiert, nicht gestartet |
 | Desktopprogramm | Fenster/GUI | Blender, Android Studio, teils OBS | eher Windows/Linux-Desktop |
 | Browser-App/PWA | Webinterface im Browser | Open WebUI, Grafana, Home Assistant, Nextcloud | Android oft via Browser oder App |
@@ -25,6 +25,7 @@ Diese Datei beschreibt die grundsaetzliche Nutzungskategorie der Tools. Ziel: Ei
 | ChromaDB | Python-Vektorstore oder lokaler Server; wird erst durch RAG-/Memory-Skripte genutzt, nicht automatisch durch Ollama/OpenClaw |
 | Huginn | Web auf Port `3002`, Worker via `huginn-worker.service` |
 | n8n | Web auf Port `5678`, Credentials nur im User-Workspace |
+| GitHub CLI | `gh --version`, `gh auth status`; fuer Issues, PRs und Actions |
 | Aider | `source /opt/aider/venv/bin/activate`, dann im Git-Repo `aider` starten |
 | OpenCode | Scaffold unter `/opt/opencode`; Upstream-README pruefen und mit Ollama/LiteLLM konfigurieren |
 | LangGraph | `source /opt/langgraph/venv/bin/activate`, dann Python-Skript ausfuehren |
@@ -55,6 +56,7 @@ Diese Tools sind wichtig, wirken aber nach Installation "unsichtbar":
 
 - Aider
 - OpenCode
+- GitHub CLI
 - LangGraph
 - CrewAI
 - AutoGen

@@ -36,6 +36,21 @@ Diese Datei dient als dauerhafte Projekt-Erinnerung fuer spaetere Chats und Folg
 - OpenClaw-Tooldefinition fuer OpenCode als optionalen Coding-Agent ergaenzen.
 - Doctor-Check fuer `/opt/opencode`, Git-Ref und Modellkonfiguration ergaenzen.
 
+### GitHub CLI / gh
+
+- Letzter Installationsfehler: `rm: cannot remove '/opt/github_cli': Permission denied`.
+- GitHub CLI nutzt ebenfalls den gemeinsamen Scaffold-Helper und baut aus `https://github.com/cli/cli.git` nach `/opt/github_cli`.
+- Der aktuelle Helper entfernt alte `/opt/<tool>`-Reste mit einer pfadgeschuetzten `sudo rm -rf`-Routine.
+- Im neuen Installationslog muss `Scaffold-Helper: sichere /opt-Aufraeumroutine aktiv.` erscheinen. Fehlt diese Zeile, wurde noch eine alte Setup-Kopie gestartet.
+- Neue Doku dazu: `docs/GITHUB_CLI_INTEGRATION_GUIDE.md`.
+
+### TODO: GitHub CLI funktional nachruesten
+
+- `scripts/github_cli/gh_safe.sh` als Allowlist-Wrapper erstellen.
+- Read-only Default fuer `gh repo view`, `gh issue list`, `gh pr list`, `gh run list`.
+- Schreibende Aktionen nur nach expliziter Freigabe.
+- Doctor-Check fuer `gh --version` und optional `gh auth status`.
+
 ### LangGraph / Bibliothekstools
 
 - LangGraph ist kein eigenstaendiger Webdienst und kein Desktopprogramm, sondern eine Python-Bibliothek fuer zustandsbehaftete Agenten- und Workflow-Graphen.
