@@ -50,6 +50,49 @@ Nur Repository vorbereiten und Build ueberspringen:
 CLAWBAKE_SKIP_BUILD=true bash scripts/tools/clawbake_install.sh
 ```
 
+## Was der aktuelle Installer wirklich leistet
+
+Der aktuelle Installer ist bewusst ein **Vorbereitungs- und Build-Pfad**. Wenn im Log Zeilen wie diese erscheinen, ist das ein gutes Zeichen:
+
+```text
+Hinweis: Clawbake ist ein Kubernetes-/OpenClaw-Operator-Projekt. Fuer produktive Nutzung werden Go, Docker/K3s und spaeter Helm-Werte/OIDC-Secrets benoetigt.
+go: downloading github.com/jackc/pgservicefile ...
+Hinweis: Clawbake braucht für echten Betrieb Kubernetes, PostgreSQL/OIDC-Secrets und Helm-/Values-Konfiguration. Keine Secrets ins Repo schreiben.
+```
+
+Interpretation:
+
+- Das Repository wurde erreicht und der Go-Abhaengigkeitsaufbau ist gestartet.
+- `pgservicefile` ist ein normaler Go-Download aus dem PostgreSQL-Stack, kein Fehler.
+- Ein erfolgreicher Build bedeutet noch nicht, dass Clawbake produktiv erreichbar ist.
+- Fuer echten Betrieb fehlen danach noch Kubernetes/K3s, PostgreSQL, OIDC/Auth, Helm-Values, Domain/TLS und eine sichere Secret-Ablage.
+
+Kurz gesagt: `installiert/gebaut` bedeutet bei Clawbake aktuell `Quellcode vorbereitet und ggf. Binary gebaut`, nicht `Webdienst fertig deployed`.
+
+## Datenbank: PostgreSQL statt MySQL/MariaDB
+
+Nach Pruefung der aktuellen Upstream-Quelle ist Clawbake derzeit **PostgreSQL-only**.
+
+Wichtige Upstream-Befunde:
+
+- `db/sqlc.yaml` nutzt `engine: "postgresql"`.
+- `db/sqlc.yaml` generiert Go-Code mit `sql_package: "pgx/v5"`.
+- `go.mod` enthaelt direkt `github.com/jackc/pgx/v5`.
+- `cmd/server/main.go` nutzt den `golang-migrate`-Treiber `database/pgx/v5`.
+- `cmd/server/main.go` wandelt `postgresql://` und `postgres://` in `pgx5://` um.
+- `charts/clawbake/values.yaml` setzt intern `postgres:18`.
+- `charts/clawbake/templates/secret.yaml` erzeugt eine PostgreSQL-URL.
+
+Damit ist MySQL/MariaDB aktuell keine sinnvolle Setup-Option fuer Clawbake. Ein MySQL-Pfad waere ein echter Upstream-Port mit neuen Migrationen, sqlc-Konfiguration, Go-Treiber, Tests und Helm-Templates. Das ist deutlich mehr als eine `.env`- oder `values.yaml`-Aenderung.
+
+Der Installer akzeptiert deshalb nur:
+
+```bash
+CLAWBAKE_DATABASE_ENGINE=postgresql
+```
+
+Wenn `CLAWBAKE_DATABASE_ENGINE=mysql`, `mariadb` oder `mysql2` gesetzt wird, bricht der Installer bewusst mit einer erklaerenden Meldung ab. Das verhindert eine Scheinkonfiguration, die spaeter erst im Kubernetes-/Helm-Betrieb scheitert.
+
 ## Voraussetzungen
 
 Laut Upstream sind fuer lokale Entwicklung relevant:
@@ -63,6 +106,29 @@ Laut Upstream sind fuer lokale Entwicklung relevant:
 - Helm fuer Deployment
 
 Das bedeutet: Clawbake ist eher ein fortgeschrittenes Kubernetes-/OpenClaw-Managementmodul, nicht ein leichtes MiniPC-Basistool.
+
+## Status erkennen
+
+Nach dem Installer sollte zuerst zwischen drei Stufen unterschieden werden:
+
+| Stufe | Bedeutung | Pruefung |
+|---|---|---|
+| Quelle vorhanden | Repo liegt unter `/opt/clawbake` | `test -d /opt/clawbake/.git` |
+| Build vorbereitet | Go/Make-Abhaengigkeiten konnten aufgeloest werden | `cd /opt/clawbake && go version && make --version` |
+| Produktiv bereit | Kubernetes, DB, Auth, Helm und Secrets sind konfiguriert | noch nicht automatisch im Setup umgesetzt |
+
+Pruefbefehle:
+
+```bash
+cd /opt/clawbake
+git remote -v
+git log -1 --oneline
+go version
+make --version
+find . -maxdepth 3 -type f -perm -111 | sort
+```
+
+Wenn kein laufender Dienst, kein Helm-Release oder kein Kubernetes-Namespace fuer Clawbake existiert, ist Clawbake noch nicht produktiv deployed.
 
 ## Helm-Werte, OIDC und Secrets
 
@@ -133,6 +199,8 @@ find . -maxdepth 3 -type f -perm -111 | sort
 
 - Doctor-Check fuer `/opt/clawbake`, Git-Remote, Go-Version und Makefile.
 - Helm-Deployment als getrennte Advanced-Option dokumentieren.
+- Statusausgabe im Setup ergaenzen: `prepared`, `built`, `deployed`.
+- Keinen MySQL-Schalter fuer Clawbake einbauen, solange Upstream PostgreSQL-only ist.
 - `CLAWBAKE_SKIP_BUILD=true` als Vorbereitungspfad im Setup-Menue sichtbar machen.
 - Port-/Secret-/OIDC-Konfiguration in ausgelagerten User-Workspace verschieben.
 - Clawbake als `experimental` oder `advanced` markieren, nicht als Default-Installation.

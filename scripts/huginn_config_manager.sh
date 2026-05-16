@@ -430,7 +430,7 @@ choose_huginn_database_adapter() {
         --begin "$begin_row" "$begin_col" \
         --cancel-label "Zurueck" \
         --title "HUGINN DATENBANK" --radiolist \
-        "Waehlen Sie die Huginn-Datenbank.\n\nEmpfohlen fuer unser v2022.08.18-Setup: MySQL/MariaDB\nPostgreSQL nur bewusst fuer Original-/Upstream-Tests.\nAktuell: ${current_adapter}" \
+        "Waehlen Sie die Huginn-Datenbank.\n\nMiniPC/WSL2/Standalone: MySQL/MariaDB bleibt ein praktischer Huginn-Pfad.\nVPS/K3s mit Clawbake: PostgreSQL bevorzugen, weil Clawbake upstream PostgreSQL-only ist.\nScenarios koennen lokal abgesichert, exportiert und auf der VPS mit PostgreSQL importiert werden.\nAktuell: ${current_adapter}" \
         15 82 5 \
         "1" "MySQL / MariaDB (Setup-Empfehlung)" "$mysql_state" \
         "2" "PostgreSQL (Original/Upstream-Test, kann Zusatzfixes brauchen)" "$postgres_state" \

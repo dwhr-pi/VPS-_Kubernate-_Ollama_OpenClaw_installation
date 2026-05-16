@@ -77,6 +77,42 @@ Unsere aktuelle Setup-Empfehlung:
 - fuer konservative Reproduktion und Legacy-Fixes: `v2022.08.18`
 - fuer den naechsten aktiven Vergleichslauf und modernere Huginn-Funktionen: `master`
 
+## Datenbank-Empfehlung nach Zielumgebung
+
+Die Huginn-Datenbankentscheidung haengt in diesem Setup von der Zielumgebung ab:
+
+| Umgebung | Empfehlung | Begruendung |
+|---|---|---|
+| MiniPC / WSL2 / lokaler Standalone-Test | MySQL/MariaDB oder vorhandener funktionierender Adapter | praktisch, lokal gut kontrollierbar, bisher als konservativer Huginn-Pfad nuetzlich |
+| VPS / K3s / Kubernetes mit Clawbake | PostgreSQL bevorzugt | Clawbake ist upstream PostgreSQL-only, daher ist PostgreSQL als gemeinsame Server-/Cluster-Datenbankrichtung konsistenter |
+| Reiner Huginn-Upstream-Vergleich | bewusst gewaehlter Adapter | `master` und `v2022.08.18` sollen getrennt testbar bleiben |
+
+Wichtig: Diese Empfehlung bedeutet nicht, dass MySQL/MariaDB fuer Huginn unbrauchbar ist. Sie bedeutet nur, dass auf einer VPS oder in einem K3s-/Clawbake-Szenario PostgreSQL strategisch besser passt, weil Clawbake selbst nicht sinnvoll auf MySQL/MariaDB umgestellt werden kann.
+
+## Szenario: lokale Agenten absichern und auf VPS importieren
+
+Ein sinnvoller Betriebsablauf kann so aussehen:
+
+1. Huginn lokal auf dem MiniPC oder in WSL2 einrichten.
+2. Agents, Scenarios, Credentials und Trigger lokal testen.
+3. Scenarios lokal exportieren.
+4. Secrets vor dem Transfer entfernen oder im Zielsystem neu setzen.
+5. Huginn auf der VPS mit PostgreSQL betreiben.
+6. Scenarios dort wieder importieren und mit produktiven Zielwerten verbinden.
+
+Das funktioniert auch umgekehrt:
+
+- Scenarios von der VPS exportieren.
+- lokal in einer abgesicherten Huginn-Instanz importieren.
+- Aenderungen offline testen.
+- nach erfolgreichem Test wieder kontrolliert auf die VPS uebertragen.
+
+Dabei gilt:
+
+- Exporte duerfen keine produktiven Passwoerter, Tokens oder privaten Mail-/API-Zugangsdaten enthalten.
+- PostgreSQL auf der VPS sollte wie Clawbake nicht oeffentlich exponiert werden.
+- Huginn-Agenten mit Webhooks, Mailzugriff oder externen APIs sollten lokal zuerst in einem Safe-/Test-Modus laufen.
+
 ## Install-Logs fuer den `master`-Test
 
 Den neuesten Huginn-Installationslog findest du mit:

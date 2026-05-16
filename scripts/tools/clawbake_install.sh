@@ -20,6 +20,7 @@ init_tool_tracking "Clawbake"
 CLAWBAKE_DIR="/opt/clawbake"
 CLAWBAKE_REPO_URL="${CLAWBAKE_REPO_URL:-https://github.com/NeurometricAI/clawbake.git}"
 CLAWBAKE_SKIP_BUILD="${CLAWBAKE_SKIP_BUILD:-false}"
+CLAWBAKE_DATABASE_ENGINE="${CLAWBAKE_DATABASE_ENGINE:-postgresql}"
 
 clone_clawbake_repo() {
     local target_dir="$1"
@@ -34,6 +35,22 @@ clone_clawbake_repo() {
 echo -e "${BLUE}Starte Installation von Clawbake...${NC}"
 echo -e "${BLUE}Clawbake Quelle: ${CLAWBAKE_REPO_URL}${NC}"
 echo -e "${YELLOW}Hinweis: Clawbake ist ein Kubernetes-/OpenClaw-Operator-Projekt. Fuer produktive Nutzung werden Go, Docker/K3s und spaeter Helm-Werte/OIDC-Secrets benoetigt.${NC}"
+
+case "$CLAWBAKE_DATABASE_ENGINE" in
+    postgresql|postgres)
+        echo -e "${BLUE}Clawbake Datenbank-Engine: PostgreSQL (Upstream-Standard).${NC}"
+        ;;
+    mysql|mariadb|mysql2)
+        echo -e "${RED}Fehler: Clawbake unterstuetzt in der aktuellen Upstream-Quelle keine MySQL/MariaDB-Engine.${NC}"
+        echo -e "${YELLOW}Begruendung: Upstream nutzt sqlc engine=postgresql, pgx/v5, PostgreSQL-Migrationen und ein Helm-Chart mit postgres:18.${NC}"
+        echo -e "${YELLOW}Nutzen Sie fuer Clawbake PostgreSQL. MySQL/MariaDB waere ein eigener Upstream-Port, nicht nur eine .env-Aenderung.${NC}"
+        exit 1
+        ;;
+    *)
+        echo -e "${RED}Fehler: Unbekannte CLAWBAKE_DATABASE_ENGINE='${CLAWBAKE_DATABASE_ENGINE}'. Erlaubt ist aktuell nur postgresql.${NC}"
+        exit 1
+        ;;
+esac
 
 if ! git ls-remote "$CLAWBAKE_REPO_URL" HEAD >/dev/null 2>&1; then
     echo -e "${RED}Fehler: Clawbake Repository nicht erreichbar: ${CLAWBAKE_REPO_URL}${NC}"

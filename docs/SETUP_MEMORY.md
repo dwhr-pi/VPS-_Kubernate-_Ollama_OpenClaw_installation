@@ -88,6 +88,18 @@ Diese Datei dient als dauerhafte Projekt-Erinnerung fuer spaetere Chats und Folg
 - Helm-/K3s-Deployment als getrennte Advanced-Option dokumentieren.
 - Secrets/OIDC/Gateway-Konfiguration nur im User-Workspace ablegen.
 
+### Aktueller Clawbake-Befund aus Installationslogs
+
+- Wenn `go: downloading github.com/jackc/pgservicefile ...` erscheint, ist das kein Installationsfehler, sondern ein normaler Go-Modul-Download aus dem PostgreSQL-Umfeld.
+- Der Loghinweis `Clawbake braucht für echten Betrieb Kubernetes, PostgreSQL/OIDC-Secrets und Helm-/Values-Konfiguration` bedeutet: Quelle/Build sind vorbereitet, aber der produktive Kubernetes-Deployment-Pfad ist noch offen.
+- Fuer die Setup-Statusanzeige sollte Clawbake spaeter drei Zustaende bekommen: `prepared` fuer Repo vorhanden, `built` fuer lokales Build-Artefakt, `deployed` fuer laufenden Kubernetes-/Helm-Betrieb.
+
+### Clawbake und MySQL/MariaDB
+
+- Der aktuelle Upstream ist PostgreSQL-only: `db/sqlc.yaml` setzt `engine: postgresql`, der Go-Code nutzt `pgx/v5`, die Migration nutzt `database/pgx/v5`, und das Helm-Chart erzeugt PostgreSQL-URLs.
+- MySQL/MariaDB waere fuer Clawbake kein einfacher Adapter-Schalter, sondern ein echter Port mit neuen Migrationen, sqlc-Generator, Treiber, Tests und Helm-Templates.
+- Der Installer akzeptiert deshalb nur `CLAWBAKE_DATABASE_ENGINE=postgresql` und bricht bei `mysql`, `mariadb` oder `mysql2` bewusst ab.
+
 ### Authentik / Authelia / OIDC
 
 - OIDC ist kein einzelnes Tool, sondern ein Login-Standard auf Basis von OAuth2.
@@ -290,6 +302,8 @@ Diese Punkte gelten im Projektverlauf inzwischen als veraltet, problematisch ode
 - Wenn die sichere Huginn-Vorlage versehentlich auf `DATABASE_ADAPTER=postgresql` steht, laeuft der alte `pg-1.1.3`-Stack unter Ruby 3.2 in `pg_ext.so` aus; der Installer gibt dafuer jetzt einen gezielten Hinweis statt nur allgemein bei `db:create` zu scheitern.
 - Der offizielle aktuelle Huginn-Upstream spricht in der Installationsdoku derzeit weiterhin von `master`; unsere Huginn-Auswahl und Doku sollten diesen Namen fuer den Teststand konsistent verwenden statt zwischen `main` und `master` zu mischen.
 - `master` ist gegenueber `v2022.08.18` sichtbar moderner bei Ruby, OpenAI-kompatiblen `.env`-Optionen und dem HTTP-Backend-Pfad; MySQL/MariaDB bleibt laut offizieller Installationsdateien aber weiter ein realer Standardpfad.
+- Fuer VPS/K3s-Szenarien mit Clawbake ist PostgreSQL bei Huginn strategisch vorzuziehen, weil Clawbake upstream PostgreSQL-only ist. Lokale MiniPC-/WSL2-Huginn-Tests koennen weiterhin mit MySQL/MariaDB sinnvoll sein.
+- Sinnvoller Workflow: Huginn-Agents/Scenarios lokal absichern und testen, dann ohne Secrets exportieren und in eine VPS-Huginn-Instanz mit PostgreSQL importieren; bei Bedarf auch umgekehrt von VPS nach lokal zurueckholen.
 - Eine einfache funktionierende Testkette wurde erfolgreich bestaetigt:
   - `Manual Event Agent`
   - `Event Formatting Agent`
@@ -357,6 +371,7 @@ Diese Komponenten sind im aktuellen Setup fachlich bewusst nicht auf MySQL/Maria
 - PostgreSQL-, SQLite- oder MongoDB-native Pfade sollen **nicht** automatisch auf MariaDB/MySQL umgestellt werden, nur um einen globalen Einheitsstandard zu erzwingen.
 - Vor jeder kuenftigen DB-Umstellung ist zuerst zu pruefen, ob der jeweilige Upstream-Stack technisch oder dokumentarisch auf PostgreSQL, SQLite oder MongoDB zugeschnitten ist.
 - Fuer `Huginn` ist MySQL/MariaDB aktuell der reale operative Kandidat, solange keine bewusste Entscheidung fuer `postgresql` oder `sqlite3` getroffen wird.
+- Ausnahme/Ergaenzung: Wenn Huginn auf einer VPS oder in K3s zusammen mit Clawbake betrieben werden soll, ist PostgreSQL fuer Huginn vorzuziehen, weil Clawbake selbst PostgreSQL-only ist.
 
 ### Praktische Schlussfolgerung
 
