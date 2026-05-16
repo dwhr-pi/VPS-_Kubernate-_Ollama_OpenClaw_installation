@@ -84,6 +84,7 @@ Für veröffentlichte, aber abgesicherte öffentliche Dienste ist zusätzlich `c
 - [docs/PODMAN_CONTAINER_RUNTIME_GUIDE.md](docs/PODMAN_CONTAINER_RUNTIME_GUIDE.md)
 - [docs/CLAWBAKE_INTEGRATION_GUIDE.md](docs/CLAWBAKE_INTEGRATION_GUIDE.md)
 - [docs/AUTH_OIDC_HELM_SECRETS_GUIDE.md](docs/AUTH_OIDC_HELM_SECRETS_GUIDE.md)
+- [docs/Profile/Jarvis_FritzBox_Alexa_Home_Assistant.md](docs/Profile/Jarvis_FritzBox_Alexa_Home_Assistant.md)
 - [docs/PLAYWRIGHT_INTEGRATION_GUIDE.md](docs/PLAYWRIGHT_INTEGRATION_GUIDE.md)
 - [docs/CHROMADB_INTEGRATION_GUIDE.md](docs/CHROMADB_INTEGRATION_GUIDE.md)
 - [docs/CODE_SANDBOX_USAGE_GUIDE.md](docs/CODE_SANDBOX_USAGE_GUIDE.md)

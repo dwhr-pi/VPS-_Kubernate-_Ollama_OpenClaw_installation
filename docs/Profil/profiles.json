@@ -413,6 +413,13 @@
       "status": "beta",
       "doc": "Anti_Virus.doc.md",
       "tools": ["clamav", "yara", "gitleaks"]
+    },
+    {
+      "profile": "Jarvis_FritzBox_Alexa_Home_Assistant",
+      "category": "Automation",
+      "status": "experimental",
+      "doc": "Jarvis_FritzBox_Alexa_Home_Assistant.doc.md",
+      "tools": ["home_assistant", "mosquitto", "node_red", "ollama", "openclaw", "piper", "faster_whisper", "qdrant", "chromadb"]
     }
   ]
 }

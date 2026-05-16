@@ -379,3 +379,10 @@ Wenn ein spaeterer Chat an Huginn weiterarbeitet, sollte er zuerst diese Punkte 
 - Der fruehere `grpc 1.42.0`-Fehler ist nicht mehr der primaere Blocker.
 - Der aktuelle reale Restfehler ist die fehlende lokale MySQL-/MariaDB-Infrastruktur fuer Huginn.
 - Vor weiteren Gem-/Bundler-Eingriffen sollte zuerst entschieden werden, ob Huginn mit `mysql2`, `postgresql` oder `sqlite3` betrieben werden soll.
+
+### Jarvis / FritzBox / Alexa / Home Assistant
+
+- Fuer die Kombination aus Fritz!Box/Fritz!Fon, Home Assistant, optionaler Alexa-Bridge und lokalem Sprachassistenten gibt es jetzt das Profil `Jarvis_FritzBox_Alexa_Home_Assistant`.
+- Das sogenannte `Jarvis Brain` ist kein einzelnes Tool, sondern eine logische Zentrale aus Ollama, OpenClaw, Home Assistant, Node-RED/MQTT, optionalem Memory und lokaler STT/TTS-Pipeline.
+- Alexa soll dabei nicht als eigentliche Telefonanlage verstanden werden. Fritz!Box oder spaeter Asterisk/SIP sind die Telefonie-Schicht; Alexa ist hoechstens optionaler Trigger oder Ausgabekanal.
+- Datenschutzregel: keine heimliche Anrufaufzeichnung, keine Cloud-Weitergabe privater Anrufdaten als Standard, keine sicherheitskritischen Smart-Home-Aktionen ohne Bestaetigung.

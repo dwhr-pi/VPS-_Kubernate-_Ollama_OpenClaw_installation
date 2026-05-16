@@ -1466,7 +1466,7 @@ fi
 
 # Profil-Definitionen mit Beschreibungen
 declare -A PROFILES
-PROFILE_KEYS=("Programmierer" "Repo_Maintainer" "Agent_Orchestrator" "LLM_Builder" "Research_Agent" "KI_Forschung" "Data_Engineering" "Document_AI" "Personal_Knowledge_OS" "Next_Level_Persona_System" "Texter_Werbung_Marketing" "Rechtsberatung_Steuerrecht" "DevOps_SRE" "Security_Analyst" "Ethical_HackerGPT" "Compliance_Privacy" "Audio" "Voice_Assistant" "Media_Musik" "Content_Automation" "Image_Generation" "Video_Generation" "Visual_Creator" "Trading_AI" "Web3_Crypto_Tools")
+PROFILE_KEYS=("Programmierer" "Repo_Maintainer" "Agent_Orchestrator" "LLM_Builder" "Research_Agent" "KI_Forschung" "Data_Engineering" "Document_AI" "Personal_Knowledge_OS" "Next_Level_Persona_System" "Texter_Werbung_Marketing" "Rechtsberatung_Steuerrecht" "DevOps_SRE" "Security_Analyst" "Ethical_HackerGPT" "Compliance_Privacy" "Audio" "Voice_Assistant" "Jarvis_FritzBox_Alexa_Home_Assistant" "Media_Musik" "Content_Automation" "Image_Generation" "Video_Generation" "Visual_Creator" "Trading_AI" "Web3_Crypto_Tools")
 PROFILES["Programmierer"]="Tools für Entwicklung, Code-Generierung (DeepSeek Coder), Git-Integration, Huginn, Clawhub CLI. Ideal für Entwickler und Automatisierungsexperten."
 PROFILES["Media_Musik"]="Tools für Audio/Video (FFmpeg), Audio-AI, Alexa-Integration, Clawbake. Für Content Creator und Medienproduzenten."
 PROFILES["KI_Forschung"]="Spezialisierte Bibliotheken für Reinforcement Learning (OpenClaw RL), erweiterte LLM-Modelle (Gemini-1.5-Pro), Flowise/LangFlow. Für KI-Wissenschaftler und Forscher."
@@ -1485,6 +1485,7 @@ PROFILES["DevOps_SRE"]="Betriebsprofil für Deployment, Logs, Monitoring, Rollba
 PROFILES["Data_Engineering"]="Datenprofil für ETL, Dokumentenaufbereitung, RAG-Vorbereitung, lokale Datenpipelines und BI-nahe Vorarbeit."
 PROFILES["Document_AI"]="Dokumentenprofil für OCR, PDF, Formulare, Verträge, Rechnungen und lokale Wissensablage mit Parser- und DMS-Bausteinen."
 PROFILES["Voice_Assistant"]="Sprachprofil für STT, TTS, Wakeword, Rhasspy/Wyoming und Smart-Home-nahe Sprachassistenten."
+PROFILES["Jarvis_FritzBox_Alexa_Home_Assistant"]="Experimental-Profil fuer ein lokales Jarvis-Brain mit Fritz!Box/Fritz!Fon, Home Assistant, optionaler Alexa-Bridge, MQTT, STT/TTS, Ollama und OpenClaw."
 PROFILES["Video_Generation"]="Heavy-Profil für lokale Video-KI, Upscaling, Frame-Interpolation, FFmpeg und GPU-nahe Video-Workflows."
 PROFILES["Image_Generation"]="Heavy-Profil für Bildgenerierung, Upscaling, LoRA-Workflows und Asset-Erzeugung mit ComfyUI/Forge/Fooocus."
 PROFILES["Web3_Crypto_Tools"]="Web3-Werkzeuge fuer lokale Vertragsanalyse, RPC-Checks und Wallet-nahe Entwicklung ohne automatische Finanzaktionen oder autonome Trading-Ausfuehrung."

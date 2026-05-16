@@ -100,6 +100,7 @@ Dieses Verzeichnis enthält die aktuell gepflegten, aus dem Repository abgeleite
 | `Legal_Safe_Creator` | Lizenz-, Quellen- und Rechte-Checklisten fuer Creator | `Legal_Safe_Creator.md` |
 | `Cyber_Security_AI` | defensive Security-AI fuer Findings, Hardening und SBOM | `Cyber_Security_AI.md` |
 | `Anti_Virus` | lokale Datei-, Malware- und Quarantaene-Hygiene | `Anti_Virus.md` |
+| `Jarvis_FritzBox_Alexa_Home_Assistant` | Fritz!Box-/Alexa-/Home-Assistant-Brain fuer Telefonie und Smart Home | `Jarvis_FritzBox_Alexa_Home_Assistant.md` |
 
 ## Bewusst zurueckgestellt
 

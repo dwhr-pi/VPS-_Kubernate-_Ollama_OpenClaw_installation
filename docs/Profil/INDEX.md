@@ -91,6 +91,7 @@ Die Inhalte in diesem Verzeichnis wurden daher aus folgenden Quellen zusammengef
 - `Legal_Safe_Creator.doc.md`
 - `Cyber_Security_AI.doc.md`
 - `Anti_Virus.doc.md`
+- `Jarvis_FritzBox_Alexa_Home_Assistant.doc.md`
 
 ## Bewusst nicht separat abgeleitet
 
