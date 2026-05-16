@@ -18,6 +18,7 @@ Aktueller Fix:
 
 - Der Scaffold-Helper entfernt alte `/opt/<tool>`-Reste mit `sudo`.
 - Der Loeschpfad ist auf sichere Ziele wie `/opt/*` oder den User-Home-Bereich begrenzt.
+- Das leere Zielverzeichnis wird danach mit korrekten User-Rechten neu angelegt, bevor `git clone` startet.
 - Im Log erscheint jetzt der Hinweis `Scaffold-Helper: sichere /opt-Aufraeumroutine aktiv.`
 
 Wenn dieser Hinweis im neuen Log fehlt, wurde noch eine alte Setup-Kopie gestartet.

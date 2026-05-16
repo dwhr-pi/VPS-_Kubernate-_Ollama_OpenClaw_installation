@@ -14,6 +14,7 @@ Wichtiger Reparaturhinweis:
 
 - Wenn eine fruehere Installation `/opt/aider` mit Root-Rechten angelegt hat, kann ein normaler `rm -rf /opt/aider` scheitern.
 - Der gemeinsame Scaffold-Installer entfernt alte `/opt/<tool>`-Reste deshalb mit `sudo`, aber nur fuer sichere Pfade wie `/opt/*` oder den User-Home-Bereich.
+- Danach wird das Zielverzeichnis mit `sudo mkdir -p` vorbereitet und dem aktuellen User uebergeben, damit `git clone` nicht an `/opt`-Rechten scheitert.
 - Dadurch betrifft der Fix auch aehnliche Scaffold-Tools, ohne beliebige Loeschpfade zu erlauben.
 
 ## Schnelltest

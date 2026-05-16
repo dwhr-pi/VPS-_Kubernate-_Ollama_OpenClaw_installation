@@ -39,6 +39,9 @@ safe_prepare_tool_dir_for_clone() {
     if [ -e "$target_dir" ]; then
         sudo rm -rf "$target_dir"
     fi
+
+    sudo mkdir -p "$target_dir"
+    sudo chown -R "$USER:$USER" "$target_dir"
 }
 
 install_scaffold_tool() {

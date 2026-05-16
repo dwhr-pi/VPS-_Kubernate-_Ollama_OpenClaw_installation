@@ -11,6 +11,9 @@ Diese Datei dient als dauerhafte Projekt-Erinnerung fuer spaetere Chats und Folg
 - Letzter Installationsfehler: `rm: cannot remove '/opt/aider': Permission denied`.
 - Ursache: Der gemeinsame Scaffold-Installer hatte `/opt/aider` mit `sudo` vorbereitet, loeschte alte Clone-Reste beim Neuaufbau aber ohne `sudo`.
 - Fix: `scripts/tools/helpers/scaffold_tool_common.sh` nutzt jetzt eine pfadgeschuetzte Aufraeumfunktion fuer `/opt/*` und User-Home-Pfade, bevor ein Git-Clone neu erstellt wird.
+- Nachfolgefehler: `fatal: could not create work tree dir '/opt/aider': Permission denied`.
+- Ursache: Nach dem sicheren Loeschen wurde direkt nach `/opt/aider` geklont, obwohl der normale User nicht in `/opt` schreiben darf.
+- Fix-Erweiterung: Die Aufraeumfunktion erstellt das Zielverzeichnis danach mit `sudo mkdir -p` und setzt Besitzrechte auf den aktuellen User, bevor `git clone` in das leere Verzeichnis schreibt.
 - Wichtig: Der Fix ist bewusst zentral, damit auch andere Scaffold-Tools von alten Root-Resten sauber repariert werden koennen.
 - Neue Doku dazu: `docs/AIDER_INTEGRATION_GUIDE.md`.
 
