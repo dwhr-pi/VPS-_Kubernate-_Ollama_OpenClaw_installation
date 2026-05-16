@@ -88,11 +88,28 @@ Für veröffentlichte, aber abgesicherte öffentliche Dienste ist zusätzlich `c
 - [docs/PLAYWRIGHT_INTEGRATION_GUIDE.md](docs/PLAYWRIGHT_INTEGRATION_GUIDE.md)
 - [docs/CHROMADB_INTEGRATION_GUIDE.md](docs/CHROMADB_INTEGRATION_GUIDE.md)
 - [docs/CODE_SANDBOX_USAGE_GUIDE.md](docs/CODE_SANDBOX_USAGE_GUIDE.md)
-
-Hinweis zur erweiterten Installationsueberwachung: Wenn sie aktiv ist, bietet der Nach-Schritt-Dialog direkte Sofortaktionen an. `[L]` zeigt das letzte Log, `[D]` erstellt eine Diagnose im Terminal und `[E]` sendet die Diagnose per konfigurierter E-Mail-Ausgabe.
 - [docs/HARDWARE_REQUIREMENTS.md](docs/HARDWARE_REQUIREMENTS.md)
 - [docs/WSL_VPS_GPU_COMPATIBILITY.md](docs/WSL_VPS_GPU_COMPATIBILITY.md)
 - [docs/ROADMAP_NEXT_PROFILES.md](docs/ROADMAP_NEXT_PROFILES.md)
+
+Hinweis zur erweiterten Installationsueberwachung: Wenn sie aktiv ist, bietet der Nach-Schritt-Dialog direkte Sofortaktionen an. `[L]` zeigt das letzte Log, `[D]` erstellt eine Diagnose im Terminal und `[E]` sendet die Diagnose per konfigurierter E-Mail-Ausgabe.
+
+## Optional: OpenHiggsStack / AI Cinema Studio
+
+Higgsfield AI ist ein proprietaerer bzw. cloudbasierter AI-Video-/Image-/Marketing-Studio-Pfad mit CLI-/Agent-Anbindung. Dieses Setup ergaenzt dafuer eine offene, lokale Alternative: [OpenHiggsStack AI Cinema Studio](docs/Profile/OpenHiggsStack_AI_Cinema_Studio.md).
+
+OpenHiggsStack ist kein 1:1-Klon, sondern eine modulare Pipeline aus `OpenClaw`, `Ollama`, `ComfyUI`, `Wan2.x`, `FFmpeg` und `n8n`. Cloud-APIs wie Higgsfield, Veo, Kling, Seedance, Runway, Pika oder Sora koennen optional spaeter angebunden werden, bleiben aber standardmaessig aus und benoetigen eigene Keys ausserhalb des Repositories.
+
+Technischer Einstieg:
+
+```bash
+bash scripts/install-openhiggsstack.sh
+bash scripts/last_install_log.sh
+```
+
+Das Installskript legt Ordner, Log und Beispielkonfiguration an, installiert nach Moeglichkeit `ffmpeg`, und fragt interaktiv, ob ComfyUI geklont werden soll. Grosse Modelle werden nicht automatisch heruntergeladen.
+
+Wenn eine Installation fehlschlaegt, zeigt `bash scripts/last_install_log.sh` sofort das neueste Protokoll. Mit `bash scripts/last_install_log.sh --email` kann die bestehende Diagnose-Mail-Funktion genutzt werden, sofern SMTP/msmtp bereits konfiguriert ist.
 
 Validierung:
 

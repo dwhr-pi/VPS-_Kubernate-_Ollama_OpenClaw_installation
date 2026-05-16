@@ -401,3 +401,12 @@ Wenn ein spaeterer Chat an Huginn weiterarbeitet, sollte er zuerst diese Punkte 
 - Das sogenannte `Jarvis Brain` ist kein einzelnes Tool, sondern eine logische Zentrale aus Ollama, OpenClaw, Home Assistant, Node-RED/MQTT, optionalem Memory und lokaler STT/TTS-Pipeline.
 - Alexa soll dabei nicht als eigentliche Telefonanlage verstanden werden. Fritz!Box oder spaeter Asterisk/SIP sind die Telefonie-Schicht; Alexa ist hoechstens optionaler Trigger oder Ausgabekanal.
 - Datenschutzregel: keine heimliche Anrufaufzeichnung, keine Cloud-Weitergabe privater Anrufdaten als Standard, keine sicherheitskritischen Smart-Home-Aktionen ohne Bestaetigung.
+
+### OpenHiggsStack / AI Cinema Studio
+
+- Neues optionales Profil: `OpenHiggsStack_AI_Cinema_Studio`.
+- Zweck: offene, lokale bzw. hybride Alternative zu cloudbasierten AI-Cinema-/Marketing-Studios.
+- Kernbausteine: OpenClaw, Ollama, ComfyUI, Wan2.x, FFmpeg, n8n.
+- `scripts/install-openhiggsstack.sh` bereitet Ordner, Log und `.env` vor, installiert nach Moeglichkeit `ffmpeg` und fragt vor dem ComfyUI-Klon.
+- Grosse Modelle wie Wan2.1/Wan2.2, Flux oder Cloud-Modelle werden nie automatisch heruntergeladen.
+- Fuer allgemeine Installationsfehler gibt es `scripts/last_install_log.sh`, um das neueste Log sofort anzuzeigen oder via bestehender Diagnose-Mail weiterzugeben.
