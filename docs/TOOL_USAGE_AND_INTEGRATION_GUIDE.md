@@ -29,6 +29,7 @@ Diese Datei beschreibt die grundsaetzliche Nutzungskategorie der Tools. Ziel: Ei
 | Aider | `source /opt/aider/venv/bin/activate`, dann im Git-Repo `aider` starten |
 | OpenCode | Scaffold unter `/opt/opencode`; Upstream-README pruefen und mit Ollama/LiteLLM konfigurieren |
 | Podman | `podman --version`, `podman info`; Container-Runtime, kein Webinterface |
+| Clawbake | Advanced Kubernetes/OpenClaw-Operator unter `/opt/clawbake`; Go/Make/Helm/K3s-Kontext |
 | LangGraph | `source /opt/langgraph/venv/bin/activate`, dann Python-Skript ausfuehren |
 | CrewAI | `source /opt/crewai/venv/bin/activate`, dann Python-Team/Skript ausfuehren |
 | AutoGen | `source /opt/autogen/venv/bin/activate`, dann Python-Agentenchat/Skript ausfuehren |
@@ -59,6 +60,7 @@ Diese Tools sind wichtig, wirken aber nach Installation "unsichtbar":
 - OpenCode
 - GitHub CLI
 - Podman
+- Clawbake
 - LangGraph
 - CrewAI
 - AutoGen

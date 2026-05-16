@@ -66,6 +66,22 @@ Diese Datei dient als dauerhafte Projekt-Erinnerung fuer spaetere Chats und Folg
 - Podman als Runtime fuer `Code_Sandbox` und spaetere OpenClaw-Toolausfuehrung dokumentieren.
 - Security-Hinweis: Socket nur lokal, rootless bevorzugen, keine `--privileged`-Defaults.
 
+### Clawbake
+
+- Alter Fehler: `Fehler: Clawbake Repository nicht erreichbar: https://github.com/openclaw/clawbake.git`.
+- Neue Quelle laut Nutzer und GitHub-Pruefung: `https://github.com/NeurometricAI/clawbake`.
+- Wichtige Korrektur: Die neue Quelle ist kein pnpm-Projekt, sondern ein Go/Kubernetes/Helm/OpenClaw-Operator-Projekt.
+- Installer wurde auf die neue Quelle, Remote-Backup bei Quellenwechsel, Go/Make-Pruefung und `make build` umgestellt.
+- `CLAWBAKE_SKIP_BUILD=true` kann genutzt werden, um nur das Repository vorzubereiten.
+- Neue Doku dazu: `docs/CLAWBAKE_INTEGRATION_GUIDE.md`.
+
+### TODO: Clawbake funktional nachruesten
+
+- Clawbake als `advanced`/`experimental` markieren.
+- Doctor-Check fuer Git-Remote, Go-Version, Makefile und Helm/Kubernetes-Abhaengigkeiten.
+- Helm-/K3s-Deployment als getrennte Advanced-Option dokumentieren.
+- Secrets/OIDC/Gateway-Konfiguration nur im User-Workspace ablegen.
+
 ### LangGraph / Bibliothekstools
 
 - LangGraph ist kein eigenstaendiger Webdienst und kein Desktopprogramm, sondern eine Python-Bibliothek fuer zustandsbehaftete Agenten- und Workflow-Graphen.
