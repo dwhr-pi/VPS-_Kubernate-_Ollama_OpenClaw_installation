@@ -13,6 +13,10 @@ Nutzung:
   bash scripts/last_install_log.sh
   bash scripts/last_install_log.sh --tail 240
   bash scripts/last_install_log.sh --path
+  bash scripts/last_install_log.sh --list
+  bash scripts/last_install_log.sh --failed
+  bash scripts/last_install_log.sh --diagnostics
+  bash scripts/last_install_log.sh --snapshot
   bash scripts/last_install_log.sh --email
 
 Zeigt das neueste Installationsprotokoll aus ~/.openclaw_ultimate_user_data/install_logs
@@ -28,6 +32,22 @@ while [ "$#" -gt 0 ]; do
       ;;
     --path)
       MODE="path"
+      shift
+      ;;
+    --list)
+      MODE="list"
+      shift
+      ;;
+    --failed|--failures)
+      MODE="failed"
+      shift
+      ;;
+    --diagnostics|--run-diagnostics)
+      MODE="diagnostics"
+      shift
+      ;;
+    --snapshot|--dependencies)
+      MODE="snapshot"
       shift
       ;;
     --email|--send-email)
@@ -46,14 +66,16 @@ while [ "$#" -gt 0 ]; do
   esac
 done
 
-latest_log="$(
+list_logs() {
   {
     find "$USER_LOG_DIR" -maxdepth 1 -type f -name '*.log' 2>/dev/null
     find "$LOCAL_LOG_DIR" -maxdepth 1 -type f -name '*.log' 2>/dev/null
-  } | xargs -r ls -1t 2>/dev/null | head -n 1
-)"
+  } | xargs -r ls -1t 2>/dev/null
+}
 
-if [ -z "$latest_log" ]; then
+latest_log="$(list_logs | sed -n '1p' || true)"
+
+if [ -z "$latest_log" ] && [ "$MODE" != "diagnostics" ] && [ "$MODE" != "snapshot" ]; then
   echo "Kein Installationsprotokoll gefunden." >&2
   echo "Gesucht in: $USER_LOG_DIR und $LOCAL_LOG_DIR" >&2
   exit 1
@@ -71,6 +93,27 @@ case "$MODE" in
       echo "Letztes Log: $latest_log" >&2
       exit 1
     fi
+    ;;
+  list)
+    list_logs | sed -n '1,80p' | nl -w2 -s'. '
+    ;;
+  failed)
+    found=0
+    while IFS= read -r log_file; do
+      if grep -qiE 'Status:[[:space:]]*failed|Fehler bei der Installation|Fehler bei der Deinstallation|FEHLER:|failed|fatal|Traceback|Exception|Permission denied|No space left|ENOSPC' "$log_file"; then
+        found=1
+        printf '%s\n' "$log_file"
+        grep -nE 'Messwert gespeichert:|Fehler:|FEHLER:|failed|fatal|Permission denied|No space left|ENOSPC' "$log_file" | tail -n 8 || true
+        printf '\n'
+      fi
+    done < <(list_logs | sed -n '1,80p')
+    [ "$found" -eq 1 ] || echo "Keine Fehlerlogs in den letzten 80 Logs erkannt."
+    ;;
+  diagnostics)
+    bash "$ROOT_DIR/scripts/install_run_diagnostics.sh"
+    ;;
+  snapshot)
+    bash "$ROOT_DIR/scripts/dependency_snapshot.sh"
     ;;
   show)
     echo "Letztes Installationsprotokoll: $latest_log"

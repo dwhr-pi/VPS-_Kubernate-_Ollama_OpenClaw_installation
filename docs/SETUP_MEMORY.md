@@ -410,3 +410,14 @@ Wenn ein spaeterer Chat an Huginn weiterarbeitet, sollte er zuerst diese Punkte 
 - `scripts/install-openhiggsstack.sh` bereitet Ordner, Log und `.env` vor, installiert nach Moeglichkeit `ffmpeg` und fragt vor dem ComfyUI-Klon.
 - Grosse Modelle wie Wan2.1/Wan2.2, Flux oder Cloud-Modelle werden nie automatisch heruntergeladen.
 - Fuer allgemeine Installationsfehler gibt es `scripts/last_install_log.sh`, um das neueste Log sofort anzuzeigen oder via bestehender Diagnose-Mail weiterzugeben.
+
+### Installationsueberwachung / Log- und Speicherdiagnose
+
+- Ursache fuer das beobachtete Weiterinstallieren nach `[Z]`: Der normale Tool-Batch hatte den Abbruch bereits, aber Profil-/Gruppeninstallationen haben `TOOL_BATCH_ABORT_REQUESTED` nicht konsequent bis zur Profilansicht zurueckgegeben.
+- Fix: `show_tool_group_checklist` und `toggle_tool_group_bulk` brechen nun nach `install_tool` und `uninstall_tool` sofort ab, setzen `PROFILE_FLOW_ABORT_REQUESTED=1` und springen zurueck, sobald `[Z]` oder `[z]` gewaehlt wurde.
+- Neue Sofortbefehle: `bash scripts/last_install_log.sh --failed`, `bash scripts/last_install_log.sh --diagnostics` und `bash scripts/last_install_log.sh --snapshot`.
+- `scripts/install_run_diagnostics.sh` erstellt einen Bericht ueber mehrere aktuelle Logs statt nur ueber das letzte Tool. Damit gehen fruehere fehlgeschlagene Tools im selben Installationslauf nicht mehr unter.
+- `scripts/dependency_snapshot.sh` dokumentiert Speicherorte, `/opt`, Python-venvs, apt-Markierungen, Node/npm/pnpm und Docker/Podman-Spuren. Das ist wichtig, weil Deinstallation nicht automatisch alle Caches, globalen Abhaengigkeiten, Container-Images oder Modellordner entfernt.
+- Deinstallationen laufen im Tool-Management und in Profil-Toolgruppen jetzt vor Installationen, damit bei knappen Datentraegern zuerst Speicher freigegeben wird.
+- Fehler nach `install_tool`/`uninstall_tool` oeffnen den Sofortdialog auch ohne aktivierte erweiterte Ueberwachung. Bei Fehlern ist Enter bewusst wie `[Z]`, damit nicht versehentlich weiterinstalliert wird.
+- Alte Fehlerlogs koennen ueber die Installationsueberwachung oder per `bash scripts/cleanup_setup_logs.sh --apply --failed-only` gezielt geloescht werden.

@@ -92,7 +92,26 @@ Für veröffentlichte, aber abgesicherte öffentliche Dienste ist zusätzlich `c
 - [docs/WSL_VPS_GPU_COMPATIBILITY.md](docs/WSL_VPS_GPU_COMPATIBILITY.md)
 - [docs/ROADMAP_NEXT_PROFILES.md](docs/ROADMAP_NEXT_PROFILES.md)
 
-Hinweis zur erweiterten Installationsueberwachung: Wenn sie aktiv ist, bietet der Nach-Schritt-Dialog direkte Sofortaktionen an. `[L]` zeigt das letzte Log, `[D]` erstellt eine Diagnose im Terminal und `[E]` sendet die Diagnose per konfigurierter E-Mail-Ausgabe.
+Hinweis zur erweiterten Installationsueberwachung: Wenn sie aktiv ist, bietet der Nach-Schritt-Dialog direkte Sofortaktionen an. `[L]` zeigt das letzte Log, `[D]` erstellt eine Diagnose im Terminal und `[E]` sendet die Diagnose per konfigurierter E-Mail-Ausgabe. Wenn waehrend eines Installations-/Deinstallations-Batches ein Fehler auftritt, bricht `[Z]` bzw. `[z]` den laufenden Batch ab und fuehrt zurueck ins Setup statt blind mit dem naechsten Tool weiterzumachen.
+
+Schnelle Log- und Speicherdiagnose:
+
+```bash
+bash scripts/last_install_log.sh --failed
+bash scripts/last_install_log.sh --diagnostics
+bash scripts/last_install_log.sh --snapshot
+```
+
+`--failed` zeigt die letzten erkannten Fehlerlogs, `--diagnostics` erstellt einen Bericht ueber den letzten Installationslauf und `--snapshot` schreibt einen Abhaengigkeiten-/Speicher-Snapshot nach `~/.openclaw_ultimate_user_data/diagnostic_reports`. Das hilft besonders nach grossen Tool-Installationen, weil Deinstallationen nicht automatisch alle Systempakete, Python-venvs, npm/pnpm-Caches, Docker-/Podman-Images, Modellordner oder Build-Caches entfernen.
+
+Im Tool-Management werden Deinstallationen jetzt vor Installationen ausgefuehrt. Wenn in einem Batch also Tools abgewaehlt und andere neu angewaehlt werden, wird zuerst Speicher freigegeben und erst danach installiert. Bei Installationsfehlern erscheint der Log-/Diagnose-Dialog sofort, auch wenn die erweiterte Ueberwachung nicht aktiv ist; Enter entspricht in diesem Fehlerfall sicherheitshalber `Z` und springt zurueck ins Setup.
+
+Alte Fehlerlogs koennen gezielt rotiert werden:
+
+```bash
+bash scripts/cleanup_setup_logs.sh --dry-run --failed-only
+bash scripts/cleanup_setup_logs.sh --apply --failed-only
+```
 
 ## Optional: OpenHiggsStack / AI Cinema Studio
 

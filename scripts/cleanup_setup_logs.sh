@@ -9,17 +9,20 @@ USER_WORKSPACE_DIR="${USER_WORKSPACE_DIR:-${HOME}/.openclaw_ultimate_user_data}"
 RETENTION_DAYS="${LOG_CLEANUP_RETENTION_DAYS:-14}"
 KEEP_RECENT="${LOG_CLEANUP_KEEP_RECENT:-30}"
 APPLY=false
+FAILED_ONLY=false
 
 usage() {
     cat <<'EOF'
 Usage:
-  cleanup_setup_logs.sh [--dry-run|--apply] [--days N] [--keep N]
+  cleanup_setup_logs.sh [--dry-run|--apply] [--days N] [--keep N] [--failed-only]
 
 Bereinigt nur Dateien im Benutzer-Workspace:
   ~/.openclaw_ultimate_user_data/install_logs/*.log
   ~/.openclaw_ultimate_user_data/diagnostic_reports/*.md
 
 Standard ist --dry-run. Es werden immer die neuesten N Dateien je Ordner behalten.
+Mit --failed-only werden nur Installationslogs geloescht, die bekannte Fehler-
+oder Warnmuster enthalten. Diagnoseberichte bleiben dabei unangetastet.
 EOF
 }
 
@@ -40,6 +43,10 @@ while [ $# -gt 0 ]; do
         --keep)
             KEEP_RECENT="${2:-}"
             shift 2
+            ;;
+        --failed-only)
+            FAILED_ONLY=true
+            shift
             ;;
         -h|--help)
             usage
@@ -118,6 +125,16 @@ cleanup_dir() {
             continue
         fi
 
+        if [ "$FAILED_ONLY" = true ]; then
+            case "$target_real" in
+                */install_logs) ;;
+                *) continue ;;
+            esac
+            if ! grep -qiE 'Status:[[:space:]]*failed|Fehler bei der Installation|Fehler bei der Deinstallation|FEHLER:|failed|fatal|Traceback|Exception|Permission denied|No space left|ENOSPC|rake aborted!|ELIFECYCLE|ECONNRESET|EAI_AGAIN|ERR_SOCKET_TIMEOUT' "$file_real"; then
+                continue
+            fi
+        fi
+
         file_epoch="$(stat -c '%Y' "$file_real" 2>/dev/null || echo 0)"
         if [ "$file_epoch" -le "$cutoff_epoch" ]; then
             candidate_count=$((candidate_count + 1))
@@ -135,7 +152,9 @@ cleanup_dir() {
 }
 
 cleanup_dir "$USER_WORKSPACE_DIR/install_logs" "*.log"
-cleanup_dir "$USER_WORKSPACE_DIR/diagnostic_reports" "*.md"
+if [ "$FAILED_ONLY" != true ]; then
+    cleanup_dir "$USER_WORKSPACE_DIR/diagnostic_reports" "*.md"
+fi
 
 echo
 if [ "$APPLY" = true ]; then

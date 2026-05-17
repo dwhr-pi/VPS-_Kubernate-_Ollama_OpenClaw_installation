@@ -37,6 +37,11 @@ Nutzung:
   bash scripts/tool_log_diagnostics.sh --log /pfad/zum/log.log --email-now ai-chat-to-markdown@web.de
   bash scripts/tool_log_diagnostics.sh --tool Huginn --no-email
 
+Fuer mehrere Logs eines Installationslaufs:
+  bash scripts/install_run_diagnostics.sh
+  bash scripts/last_install_log.sh --failed
+  bash scripts/last_install_log.sh --snapshot
+
 Optionen:
   --tool NAME       Toolname im Lognamen, z. B. Huginn, Clawhub_CLI, OpenManus
   --log PFAD        konkreten Log auswerten

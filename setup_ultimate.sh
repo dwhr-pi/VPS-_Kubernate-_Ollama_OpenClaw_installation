@@ -719,6 +719,7 @@ run_bash_script() {
 
 run_setup_log_cleanup() {
     local mode="${1:-dry-run}"
+    local failed_only="${2:-false}"
     local cleanup_script="$INSTALL_DIR/scripts/cleanup_setup_logs.sh"
     local cleanup_args=("--dry-run")
 
@@ -726,6 +727,10 @@ run_setup_log_cleanup() {
 
     if [ "$mode" = "apply" ]; then
         cleanup_args=("--apply")
+    fi
+
+    if [ "$failed_only" = "true" ]; then
+        cleanup_args+=("--failed-only")
     fi
 
     if [ ! -f "$cleanup_script" ]; then
@@ -765,7 +770,7 @@ show_installation_monitoring_menu() {
         fi
 
         dialog --clear --backtitle "$APP_TITLE" \
-        --title "INSTALLATIONSÜBERWACHUNG" --menu "Zusätzliche Überwachung, Logansicht und sichere Log-Aufräumung." 24 112 9 \
+        --title "INSTALLATIONSÜBERWACHUNG" --menu "Zusätzliche Überwachung, Logansicht und sichere Log-Aufräumung." 30 112 12 \
         "1" "Erweiterte Installationsüberwachung umschalten (aktuell: ${monitoring_state})" \
         "2" "Log-Verzeichnis anzeigen" \
         "3" "Letzte Installations-Logs anzeigen" \
@@ -773,8 +778,11 @@ show_installation_monitoring_menu() {
         "5" "Log-Aufräumung vor Installationen umschalten (aktuell: ${cleanup_state})" \
         "6" "Log-Aufräumung Trockenlauf anzeigen" \
         "7" "Alte Logs jetzt löschen" \
-        "8" "Aufbewahrung einstellen (Tage/neueste Dateien)" \
-        "9" "Zurück" 2> /tmp/install_monitoring_choice
+        "8" "Alte Fehler-Logs jetzt löschen" \
+        "9" "Aufbewahrung einstellen (Tage/neueste Dateien)" \
+        "10" "Installationslauf-Diagnose erstellen" \
+        "11" "Abhängigkeiten-/Speicher-Snapshot erstellen" \
+        "12" "Zurück" 2> /tmp/install_monitoring_choice
 
         if [ $? -ne 0 ]; then
             return 0
@@ -831,9 +839,28 @@ show_installation_monitoring_menu() {
                 read -p "Drücken Sie Enter..."
                 ;;
             8)
-                show_log_cleanup_settings_menu
+                clear
+                echo -e "${YELLOW}Alte Fehler-Logs werden jetzt anhand der aktuellen Aufbewahrungsregeln gelöscht.${NC}"
+                run_setup_log_cleanup "apply" "true"
+                echo
+                read -p "Drücken Sie Enter..."
                 ;;
             9)
+                show_log_cleanup_settings_menu
+                ;;
+            10)
+                clear
+                bash "$INSTALL_DIR/scripts/install_run_diagnostics.sh"
+                echo
+                read -p "Installationslauf-Diagnose abgeschlossen. Drücken Sie Enter..."
+                ;;
+            11)
+                clear
+                bash "$INSTALL_DIR/scripts/dependency_snapshot.sh"
+                echo
+                read -p "Abhängigkeiten-/Speicher-Snapshot abgeschlossen. Drücken Sie Enter..."
+                ;;
+            12)
                 return 0
                 ;;
         esac
@@ -985,23 +1012,40 @@ run_install_log_diagnostics_now() {
 handle_manual_tool_post_action() {
     local tool_key="$1"
     local action_label="$2"
+    local operation_status="${3:-success}"
     local current_log_file="${LAST_OPERATION_LOG_FILE:-}"
     local next_choice
+    local prompt_text
+    local default_choice="N"
 
-    if ! is_preference_enabled "${INSTALL_MONITORING_MANUAL_FLOW:-false}"; then
+    if ! is_preference_enabled "${INSTALL_MONITORING_MANUAL_FLOW:-false}" && [ "$operation_status" != "failed" ]; then
         return 0
     fi
 
+    if [ "$operation_status" = "failed" ]; then
+        default_choice="Z"
+    fi
+
     echo
-    echo -e "${YELLOW}Erweiterte Installationsüberwachung ist aktiv.${NC}"
-    echo -e "${YELLOW}Nach dem Schritt '${action_label} ${tool_key}' wird nicht automatisch weitergesprungen.${NC}"
+    if [ "$operation_status" = "failed" ]; then
+        echo -e "${RED}Fehler erkannt bei '${action_label} ${tool_key}'.${NC}"
+        echo -e "${YELLOW}Bevor der Batch weiterläuft, kannst du sofort Log, Diagnose oder E-Mail-Diagnose öffnen.${NC}"
+    else
+        echo -e "${YELLOW}Erweiterte Installationsüberwachung ist aktiv.${NC}"
+        echo -e "${YELLOW}Nach dem Schritt '${action_label} ${tool_key}' wird nicht automatisch weitergesprungen.${NC}"
+    fi
     if [ -n "$current_log_file" ]; then
         echo -e "${YELLOW}Logdatei:${NC} $current_log_file"
     fi
 
     while true; do
-        read -r -p "Weiter [N], zurück ins Setup [Z], Log anzeigen [L], Diagnose [D] oder Diagnose per E-Mail [E]? " next_choice
-        case "$(printf '%s' "${next_choice:-N}" | tr '[:lower:]' '[:upper:]')" in
+        if [ "$operation_status" = "failed" ]; then
+            prompt_text="Zurück ins Setup [Z], weiter [N], Log [L], Diagnose [D] oder Diagnose per E-Mail [E]? "
+        else
+            prompt_text="Weiter [N], zurück ins Setup [Z], Log anzeigen [L], Diagnose [D] oder Diagnose per E-Mail [E]? "
+        fi
+        read -r -p "$prompt_text" next_choice
+        case "$(printf '%s' "${next_choice:-$default_choice}" | tr '[:lower:]' '[:upper:]')" in
             N|"")
                 TOOL_BATCH_ABORT_REQUESTED=0
                 break
@@ -1173,23 +1217,29 @@ show_options_menu() {
     while true; do
         dialog --clear --backtitle "$APP_TITLE" \
         --cancel-label "↩ Zurück" \
-        --title "${TXT_OPTIONS_MENU_TITLE:-OPTIONEN}" --menu "${TXT_OPTIONS_MENU_PROMPT:-Wählen Sie eine Verwaltungs- oder Konfigurationsfunktion:}" 31 104 16 \
+        --title "${TXT_OPTIONS_MENU_TITLE:-OPTIONEN}" --menu "${TXT_OPTIONS_MENU_PROMPT:-Wählen Sie eine Verwaltungs- oder Konfigurationsfunktion:}" 40 110 24 \
         "1" "${TXT_OPTIONS_1:-Sprache ändern}" \
-        "2" "${TXT_OPTIONS_2:-Setup-Messwerte & Benchmarks bearbeiten}" \
-        "3" "${TXT_OPTIONS_3:-Ollama Modelfile-Assistent}" \
-        "4" "${TXT_OPTIONS_4:-LLM-Builder Projektstruktur-Assistent}" \
+        "2" "${TXT_OPTIONS_14:-Sprachpakete verwalten}" \
+        "--sep-1" "──────────────── Sprache / Basis ────────────────" \
+        "3" "${TXT_OPTIONS_2:-Setup-Messwerte & Benchmarks bearbeiten}" \
+        "--sep-2" "──────────────── Messwerte / Workspace ──────────" \
+        "4" "${TXT_OPTIONS_7:-Benutzer-Workspace verwalten}" \
         "5" "${TXT_OPTIONS_5:-Ollama Modellkatalog}" \
-        "6" "${TXT_OPTIONS_6:-Setup-Repository hart reparieren / auf GitHub main zurücksetzen}" \
-        "7" "${TXT_OPTIONS_7:-Benutzer-Workspace verwalten}" \
+        "6" "${TXT_OPTIONS_3:-Ollama Modelfile-Assistent}" \
+        "7" "${TXT_OPTIONS_4:-LLM-Builder Projektstruktur-Assistent}" \
         "8" "${TXT_OPTIONS_8:-Custom GitHub-Quellen & Ollama-Builds}" \
+        "--sep-3" "──────────────── Quellen / Konfiguration ────────" \
         "9" "${TXT_OPTIONS_9:-LLMOps Plattform Konfiguration (.env Stack)}" \
         "10" "${TXT_OPTIONS_10:-Huginn Konfiguration (.env Vorlage)}" \
-        "11" "${TXT_OPTIONS_11:-Installationsüberwachung konfigurieren}" \
+        "--sep-4" "──────────────── Setup / Diagnose ───────────────" \
+        "11" "${TXT_OPTIONS_6:-Setup-Repository hart reparieren / auf GitHub main zurücksetzen}" \
         "12" "${TXT_OPTIONS_12:-Nur auf Setup-Updates prüfen}" \
         "13" "${TXT_OPTIONS_13:-Jetzt nur das Setup aktualisieren}" \
-        "14" "${TXT_OPTIONS_14:-Sprachpakete verwalten}" \
+        "14" "${TXT_OPTIONS_11:-Installationsüberwachung konfigurieren}" \
         "15" "${TXT_OPTIONS_15:-Tool-Logdiagnose anzeigen / optional per E-Mail senden}" \
-        "16" "E-Mail-Diagnose konfigurieren / Testmail senden" 2> /tmp/options_choice
+        "16" "E-Mail-Diagnose konfigurieren / Testmail senden" \
+        "17" "Installationslauf-Diagnose erstellen" \
+        "18" "Abhängigkeiten-/Speicher-Snapshot erstellen" 2> /tmp/options_choice
 
         if [ $? -ne 0 ]; then
             return 0
@@ -1203,30 +1253,23 @@ show_options_menu() {
                 fi
                 ;;
             2)
+                run_bash_script "$INSTALL_DIR/scripts/language_pack_manager.sh"
+                ;;
+            3)
                 show_metrics_editor
                 read -p "Setup-Messwerte aktualisiert. Drücken Sie Enter..."
                 ;;
-            3)
-                run_bash_script "$INSTALL_DIR/scripts/ollama_modelfile_assistant.sh"
-                ;;
             4)
-                run_bash_script "$INSTALL_DIR/scripts/llm_builder_project_scaffold.sh"
+                show_user_workspace_menu
                 ;;
             5)
                 run_bash_script "$INSTALL_DIR/scripts/ollama_model_catalog_manager.sh"
                 ;;
             6)
-                show_operation_intro \
-                "Harter Setup-Abgleich mit GitHub main" \
-                "Das Setup-Repository wird zwangsweise auf origin/main zurückgesetzt. Lokale Änderungen im Setup-Verzeichnis gehen dabei verloren." \
-                "Meist nur wenige Minuten, abhängig von Netzwerk und Repo-Größe" \
-                "${MIN_FREE_GB_ABSOLUTE}-${MIN_FREE_GB_RECOMMENDED} GB" \
-                "Nutze diese Methode nur, wenn das normale Update nicht greift oder ein alter Setup-Stand festhaengt."
-                run_bash_script "$INSTALL_DIR/scripts/auto_update_hard.sh"
-                read -p "Harter Setup-Abgleich abgeschlossen. Drücken Sie Enter..."
+                run_bash_script "$INSTALL_DIR/scripts/ollama_modelfile_assistant.sh"
                 ;;
             7)
-                show_user_workspace_menu
+                run_bash_script "$INSTALL_DIR/scripts/llm_builder_project_scaffold.sh"
                 ;;
             8)
                 run_bash_script "$INSTALL_DIR/scripts/custom_source_manager.sh"
@@ -1238,7 +1281,14 @@ show_options_menu() {
                 run_bash_script "$INSTALL_DIR/scripts/huginn_config_manager.sh"
                 ;;
             11)
-                show_installation_monitoring_menu
+                show_operation_intro \
+                "Harter Setup-Abgleich mit GitHub main" \
+                "Das Setup-Repository wird zwangsweise auf origin/main zurückgesetzt. Lokale Änderungen im Setup-Verzeichnis gehen dabei verloren." \
+                "Meist nur wenige Minuten, abhängig von Netzwerk und Repo-Größe" \
+                "${MIN_FREE_GB_ABSOLUTE}-${MIN_FREE_GB_RECOMMENDED} GB" \
+                "Nutze diese Methode nur, wenn das normale Update nicht greift oder ein alter Setup-Stand festhaengt."
+                run_bash_script "$INSTALL_DIR/scripts/auto_update_hard.sh"
+                read -p "Harter Setup-Abgleich abgeschlossen. Drücken Sie Enter..."
                 ;;
             12)
                 show_operation_intro \
@@ -1265,7 +1315,7 @@ show_options_menu() {
                 read -p "Setup-Update abgeschlossen. Drücken Sie Enter..."
                 ;;
             14)
-                run_bash_script "$INSTALL_DIR/scripts/language_pack_manager.sh"
+                show_installation_monitoring_menu
                 ;;
             15)
                 bash "$INSTALL_DIR/scripts/tool_log_diagnostics.sh"
@@ -1273,6 +1323,17 @@ show_options_menu() {
                 ;;
             16)
                 run_bash_script "$INSTALL_DIR/scripts/mail_config_manager.sh"
+                ;;
+            17)
+                bash "$INSTALL_DIR/scripts/install_run_diagnostics.sh"
+                read -p "Installationslauf-Diagnose abgeschlossen. Drücken Sie Enter..."
+                ;;
+            18)
+                bash "$INSTALL_DIR/scripts/dependency_snapshot.sh"
+                read -p "Abhängigkeiten-/Speicher-Snapshot abgeschlossen. Drücken Sie Enter..."
+                ;;
+            --sep-*)
+                continue
                 ;;
         esac
     done
@@ -2112,6 +2173,7 @@ PY
 # Funktion zum Installieren eines Tools
 install_tool() {
     local TOOL_KEY="$1"
+    local operation_status="failed"
     if [ "$TOOL_KEY" = "Huginn" ]; then
         reset_terminal_display
         echo -e "${YELLOW}Huginn Vorbereitung: Zuerst Version und Datenbank auswählen, danach startet die Installation.${NC}"
@@ -2135,17 +2197,19 @@ install_tool() {
     if [ $? -eq 0 ]; then
         append_unique_line "$TOOL_STATUS_FILE" "$TOOL_KEY"
         end_operation_measurement "success"
+        operation_status="success"
         echo -e "${GREEN}Tool \'$TOOL_KEY\' erfolgreich installiert.${NC}"
     else
         end_operation_measurement "failed"
         echo -e "${RED}Fehler bei der Installation von Tool \'$TOOL_KEY\'.${NC}"
     fi
-    handle_manual_tool_post_action "$TOOL_KEY" "Installation"
+    handle_manual_tool_post_action "$TOOL_KEY" "Installation" "$operation_status"
 }
 
 # Funktion zum Deinstallieren eines Tools
 uninstall_tool() {
     local TOOL_KEY="$1"
+    local operation_status="failed"
     show_tool_action_intro "$TOOL_KEY" "deinstallieren" "uninstall"
     maybe_cleanup_logs_before_operation
     begin_operation_measurement "tool_uninstall_${TOOL_KEY}" "Tool deinstallieren: ${TOOL_KEY}"
@@ -2155,12 +2219,13 @@ uninstall_tool() {
         remove_exact_line "$TOOL_STATUS_FILE" "$TOOL_KEY"
         remove_tool_from_autostart_script "$TOOL_KEY"
         end_operation_measurement "success"
+        operation_status="success"
         echo -e "${GREEN}Tool \'$TOOL_KEY\' erfolgreich deinstalliert.${NC}"
     else
         end_operation_measurement "failed"
         echo -e "${RED}Fehler bei der Deinstallation von Tool \'$TOOL_KEY\'.${NC}"
     fi
-    handle_manual_tool_post_action "$TOOL_KEY" "Deinstallation"
+    handle_manual_tool_post_action "$TOOL_KEY" "Deinstallation" "$operation_status"
 }
 
 # Funktion zum Anzeigen des Tool-Management-Menüs
@@ -2197,17 +2262,20 @@ show_tool_management_menu() {
 
     mapfile -t SELECTED_TOOLS_ARRAY < <(tr ' ' '\n' < /tmp/tool_selection | tr -d '"' | sed '/^$/d')
 
-    # Installation/Deinstallation basierend auf Auswahl
+    # Erst Deinstallationen, dann Installationen. So wird Speicher freigegeben,
+    # bevor neue, oft grosse Abhaengigkeiten geladen werden.
     for tool_key in "${TOOL_KEYS[@]}"; do
-        if selection_contains "$tool_key" "${SELECTED_TOOLS_ARRAY[@]}" && [ "${INSTALLED_TOOLS_MAP[$tool_key]:-}" != "1" ]; then
-            # Tool ausgewählt und nicht installiert -> Installieren
-            install_tool "$tool_key"
+        if ! selection_contains "$tool_key" "${SELECTED_TOOLS_ARRAY[@]}" && [ "${INSTALLED_TOOLS_MAP[$tool_key]:-}" = "1" ]; then
+            uninstall_tool "$tool_key"
             if [ "${TOOL_BATCH_ABORT_REQUESTED:-0}" = "1" ]; then
                 return 0
             fi
-        elif ! selection_contains "$tool_key" "${SELECTED_TOOLS_ARRAY[@]}" && [ "${INSTALLED_TOOLS_MAP[$tool_key]:-}" = "1" ]; then
-            # Tool nicht ausgewählt und installiert -> Deinstallieren
-            uninstall_tool "$tool_key"
+        fi
+    done
+
+    for tool_key in "${TOOL_KEYS[@]}"; do
+        if selection_contains "$tool_key" "${SELECTED_TOOLS_ARRAY[@]}" && [ "${INSTALLED_TOOLS_MAP[$tool_key]:-}" != "1" ]; then
+            install_tool "$tool_key"
             if [ "${TOOL_BATCH_ABORT_REQUESTED:-0}" = "1" ]; then
                 return 0
             fi
@@ -2362,12 +2430,27 @@ show_tool_group_checklist() {
 
     mapfile -t SELECTED_GROUP_TOOLS < <(tr ' ' '\n' < /tmp/profile_block_tools_selection | tr -d '"' | sed '/^$/d')
 
+    # Erst Deinstallationen, dann Installationen, damit Speicher vor neuen
+    # Downloads/Builds frei wird.
+    for tool_key in $tool_list; do
+        [ -n "$tool_key" ] || continue
+        if ! selection_contains "$tool_key" "${SELECTED_GROUP_TOOLS[@]}" && [ "${installed_map[$tool_key]:-}" = "1" ]; then
+            uninstall_tool "$tool_key"
+            if [ "${TOOL_BATCH_ABORT_REQUESTED:-0}" = "1" ]; then
+                PROFILE_FLOW_ABORT_REQUESTED=1
+                return 0
+            fi
+        fi
+    done
+
     for tool_key in $tool_list; do
         [ -n "$tool_key" ] || continue
         if selection_contains "$tool_key" "${SELECTED_GROUP_TOOLS[@]}" && [ "${installed_map[$tool_key]:-}" != "1" ]; then
             install_tool "$tool_key"
-        elif ! selection_contains "$tool_key" "${SELECTED_GROUP_TOOLS[@]}" && [ "${installed_map[$tool_key]:-}" = "1" ]; then
-            uninstall_tool "$tool_key"
+            if [ "${TOOL_BATCH_ABORT_REQUESTED:-0}" = "1" ]; then
+                PROFILE_FLOW_ABORT_REQUESTED=1
+                return 0
+            fi
         fi
     done
 }
@@ -2423,7 +2506,12 @@ toggle_tool_group_bulk() {
         if [ $? -eq 0 ]; then
             for tool_key in $tool_list; do
                 [ -n "$tool_key" ] || continue
+                [ "${installed_map[$tool_key]:-}" = "1" ] || continue
                 uninstall_tool "$tool_key"
+                if [ "${TOOL_BATCH_ABORT_REQUESTED:-0}" = "1" ]; then
+                    PROFILE_FLOW_ABORT_REQUESTED=1
+                    return 0
+                fi
             done
         fi
     else
@@ -2431,7 +2519,12 @@ toggle_tool_group_bulk() {
         if [ $? -eq 0 ]; then
             for tool_key in $tool_list; do
                 [ -n "$tool_key" ] || continue
+                [ "${installed_map[$tool_key]:-}" != "1" ] || continue
                 install_tool "$tool_key"
+                if [ "${TOOL_BATCH_ABORT_REQUESTED:-0}" = "1" ]; then
+                    PROFILE_FLOW_ABORT_REQUESTED=1
+                    return 0
+                fi
             done
         fi
     fi
