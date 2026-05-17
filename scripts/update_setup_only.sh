@@ -29,7 +29,7 @@ if [ -n "$REPO_STATUS" ]; then
     echo
     echo -e "${YELLOW}Git-Status im Setup-Verzeichnis:${NC}"
     printf '%s\n' "$REPO_STATUS"
-    exit 0
+    exit 2
 fi
 
 echo -e "${GREEN}Pruefe Remote-Stand...${NC}"

@@ -1303,6 +1303,7 @@ show_options_menu() {
                 read -p "Update-Prüfung abgeschlossen. Drücken Sie Enter..."
                 ;;
             13)
+                local_update_rc=0
                 show_operation_intro \
                 "Jetzt nur das Setup aktualisieren" \
                 "Aktualisiert nur dieses Setup-Repository gegen origin/main. Betriebssystem und pnpm bleiben dabei unberuehrt." \
@@ -1311,7 +1312,14 @@ show_options_menu() {
                 "Bei lokalen Aenderungen im Setup wird das Repo-Update bewusst uebersprungen, damit nichts ueberschrieben wird."
                 begin_operation_measurement "main_menu_setup_only_update" "Nur das Setup aktualisieren"
                 run_bash_script "$INSTALL_DIR/scripts/update_setup_only.sh"
-                if [ $? -eq 0 ]; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
+                local_update_rc=$?
+                if [ "$local_update_rc" -eq 0 ]; then
+                    end_operation_measurement "success"
+                elif [ "$local_update_rc" -eq 2 ]; then
+                    end_operation_measurement "skipped"
+                else
+                    end_operation_measurement "failed"
+                fi
                 read -p "Setup-Update abgeschlossen. Drücken Sie Enter..."
                 ;;
             14)
@@ -1527,7 +1535,7 @@ fi
 
 # Profil-Definitionen mit Beschreibungen
 declare -A PROFILES
-PROFILE_KEYS=("Programmierer" "Repo_Maintainer" "Agent_Orchestrator" "LLM_Builder" "Research_Agent" "KI_Forschung" "Data_Engineering" "Document_AI" "Personal_Knowledge_OS" "Next_Level_Persona_System" "Texter_Werbung_Marketing" "Rechtsberatung_Steuerrecht" "DevOps_SRE" "Security_Analyst" "Ethical_HackerGPT" "Compliance_Privacy" "Audio" "Voice_Assistant" "Jarvis_FritzBox_Alexa_Home_Assistant" "Media_Musik" "Content_Automation" "Image_Generation" "Video_Generation" "Video_Generation_ComfyUI_Wan" "OpenHiggsStack_AI_Cinema_Studio" "Visual_Creator" "Trading_AI" "Web3_Crypto_Tools")
+PROFILE_KEYS=("Programmierer" "Repo_Maintainer" "Agent_Orchestrator" "LLM_Builder" "Research_Agent" "KI_Forschung" "Data_Engineering" "Document_AI" "Memory_Import_Export" "Personal_Knowledge_OS" "Next_Level_Persona_System" "Texter_Werbung_Marketing" "Rechtsberatung_Steuerrecht" "DevOps_SRE" "Security_Analyst" "Ethical_HackerGPT" "Compliance_Privacy" "Audio" "Voice_Assistant" "Jarvis_FritzBox_Alexa_Home_Assistant" "Media_Musik" "Content_Automation" "Image_Generation" "Video_Generation" "Video_Generation_ComfyUI_Wan" "OpenHiggsStack_AI_Cinema_Studio" "Visual_Creator" "Trading_AI" "Web3_Crypto_Tools")
 PROFILES["Programmierer"]="Tools für Entwicklung, Code-Generierung (DeepSeek Coder), Git-Integration, Huginn, Clawhub CLI. Ideal für Entwickler und Automatisierungsexperten."
 PROFILES["Media_Musik"]="Tools für Audio/Video (FFmpeg), Audio-AI, Alexa-Integration, Clawbake. Für Content Creator und Medienproduzenten."
 PROFILES["KI_Forschung"]="Spezialisierte Bibliotheken für Reinforcement Learning (OpenClaw RL), erweiterte LLM-Modelle (Gemini-1.5-Pro), Flowise/LangFlow. Für KI-Wissenschaftler und Forscher."
@@ -1545,6 +1553,7 @@ PROFILES["LLM_Builder"]="Baut einen realistischen lokalen Workflow zum Fine-Tuni
 PROFILES["DevOps_SRE"]="Betriebsprofil für Deployment, Logs, Monitoring, Rollback, GitOps und Infrastruktur-Wartung auf lokalem Host, VPS oder K3s."
 PROFILES["Data_Engineering"]="Datenprofil für ETL, Dokumentenaufbereitung, RAG-Vorbereitung, lokale Datenpipelines und BI-nahe Vorarbeit."
 PROFILES["Document_AI"]="Dokumentenprofil für OCR, PDF, Formulare, Verträge, Rechnungen und lokale Wissensablage mit Parser- und DMS-Bausteinen."
+PROFILES["Memory_Import_Export"]="Importiert und exportiert Chat-, Notiz- und Projekt-Memory lokal als Markdown, JSONL, SQLite oder RAG-Bestand mit Qdrant/ChromaDB."
 PROFILES["Voice_Assistant"]="Sprachprofil für STT, TTS, Wakeword, Rhasspy/Wyoming und Smart-Home-nahe Sprachassistenten."
 PROFILES["Jarvis_FritzBox_Alexa_Home_Assistant"]="Experimental-Profil fuer ein lokales Jarvis-Brain mit Fritz!Box/Fritz!Fon, Home Assistant, optionaler Alexa-Bridge, MQTT, STT/TTS, Ollama und OpenClaw."
 PROFILES["Video_Generation"]="Heavy-Profil für lokale Video-KI, Upscaling, Frame-Interpolation, FFmpeg und GPU-nahe Video-Workflows."
@@ -2361,6 +2370,10 @@ PROFILE_INTEGRATION_TOOLS["Data_Engineering"]="Ollama ChromaDB LangChain LlamaIn
 PROFILE_CORE_TOOLS["Document_AI"]="OCRmyPDF Tesseract Stirling_PDF Paperless_NGX Apache_Tika Docling Marker Pandoc"
 PROFILE_EXTENDED_TOOLS["Document_AI"]="LibreOffice_Headless"
 PROFILE_INTEGRATION_TOOLS["Document_AI"]="Qdrant Open_WebUI ChromaDB"
+
+PROFILE_CORE_TOOLS["Memory_Import_Export"]="Qdrant ChromaDB DuckDB Docling Apache_Tika"
+PROFILE_EXTENDED_TOOLS["Memory_Import_Export"]="Open_WebUI"
+PROFILE_INTEGRATION_TOOLS["Memory_Import_Export"]="Ollama"
 
 PROFILE_CORE_TOOLS["Voice_Assistant"]="Whisper_CPP Faster_Whisper Piper openWakeWord Mosquitto"
 PROFILE_EXTENDED_TOOLS["Voice_Assistant"]="Rhasspy Wyoming"
