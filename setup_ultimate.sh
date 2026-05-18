@@ -1260,27 +1260,59 @@ show_user_workspace_menu() {
     done
 }
 
+setup_updates_available_quick() {
+    if ! command -v git >/dev/null 2>&1; then
+        return 2
+    fi
+
+    if ! git -C "$INSTALL_DIR" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+        return 2
+    fi
+
+    git -C "$INSTALL_DIR" fetch origin --prune --quiet >/dev/null 2>&1 || return 2
+
+    local behind_count
+    behind_count="$(git -C "$INSTALL_DIR" rev-list --count HEAD..origin/main 2>/dev/null || printf '0')"
+    if [ "${behind_count:-0}" -gt 0 ]; then
+        return 0
+    fi
+
+    return 1
+}
+
+get_setup_update_menu_label() {
+    if setup_updates_available_quick; then
+        printf '%s' '\Z2●\Zn Neue Updates verfügbar'
+    else
+        printf '%s' '○ Keine neuen Updates'
+    fi
+}
+
 show_options_menu() {
     while true; do
+        local setup_update_menu_label
+        setup_update_menu_label="$(get_setup_update_menu_label)"
+
         dialog --clear --backtitle "$APP_TITLE" \
+        --colors \
         --cancel-label "↩ Zurück" \
         --title "${TXT_OPTIONS_MENU_TITLE:-OPTIONEN}" --menu "${TXT_OPTIONS_MENU_PROMPT:-Wählen Sie eine Verwaltungs- oder Konfigurationsfunktion:}" 40 110 24 \
         "1" "${TXT_OPTIONS_1:-Sprache ändern}" \
         "2" "${TXT_OPTIONS_14:-Sprachpakete verwalten}" \
-        "────────" "────────────── Sprache / Basis ──────────────" \
+        "────────────" "────────────── Sprache / Basis ──────────────" \
         "3" "${TXT_OPTIONS_2:-Setup-Messwerte & Benchmarks bearbeiten}" \
-        "─────────" "────────── Messwerte / Workspace ────────────" \
+        "────────────" "────────── Messwerte / Workspace ────────────" \
         "4" "${TXT_OPTIONS_7:-Benutzer-Workspace verwalten}" \
         "5" "${TXT_OPTIONS_5:-Ollama Modellkatalog}" \
         "6" "${TXT_OPTIONS_3:-Ollama Modelfile-Assistent}" \
         "7" "${TXT_OPTIONS_4:-LLM-Builder Projektstruktur-Assistent}" \
         "8" "${TXT_OPTIONS_8:-Custom GitHub-Quellen & Ollama-Builds}" \
-        "──────────" "───────── Quellen / Konfiguration ───────────" \
+        "────────────" "───────── Quellen / Konfiguration ───────────" \
         "9" "${TXT_OPTIONS_9:-LLMOps Plattform Konfiguration (.env Stack)}" \
         "10" "${TXT_OPTIONS_10:-Huginn Konfiguration (.env Vorlage)}" \
-        "───────────" "──────────── Setup / Diagnose ───────────────" \
+        "────────────" "──────────── Setup / Diagnose ───────────────" \
         "11" "${TXT_OPTIONS_6:-Setup-Repository hart reparieren / auf GitHub main zurücksetzen}" \
-        "12" "${TXT_OPTIONS_12:-Nur auf Setup-Updates prüfen}" \
+        "12" "${TXT_OPTIONS_12:-$setup_update_menu_label}" \
         "13" "${TXT_OPTIONS_13:-Jetzt nur das Setup aktualisieren}" \
         "────────────" "──────── Installation / Diagnose ────────────" \
         "14" "${TXT_OPTIONS_11:-Installationsüberwachung konfigurieren}" \
@@ -1341,12 +1373,12 @@ show_options_menu() {
                 ;;
             12)
                 show_operation_intro \
-                "Nur auf Setup-Updates prüfen" \
+                "Neue Updates verfügbar" \
                 "Prüft den lokalen Git-Stand gegen origin/main, ohne direkt Updates oder Systempakete zu installieren." \
                 "Wenige Sekunden bis ca. 1 Minute, je nach Netzwerk und Git-Status" \
                 "$(get_operation_storage_estimate_label "main_menu_update_check" "${MIN_FREE_GB_ABSOLUTE}-${MIN_FREE_GB_RECOMMENDED} GB")" \
                 "Dabei werden keine Paket-Updates installiert und keine lokalen Aenderungen automatisch verworfen."
-                begin_operation_measurement "main_menu_update_check" "Nur auf Setup-Updates prüfen"
+                begin_operation_measurement "main_menu_update_check" "Neue Updates verfügbar"
                 run_bash_script "$INSTALL_DIR/scripts/check_setup_updates.sh"
                 if [ $? -eq 0 ]; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
                 read -p "Update-Prüfung abgeschlossen. Drücken Sie Enter..."
@@ -2786,16 +2818,16 @@ show_main_menu() {
     "1" "${TXT_MENU_1:-Setup-Update + System-Update (Repo, OS & pnpm)}" \
     "2" "${TXT_MENU_2:-Ollama Modell-Manager}" \
     "3" "${TXT_MENU_3:-OpenClaw Konfiguration (.env & config.json)}" \
-    "────────" "${TXT_SEPARATOR_LINE:-────────────────────────────────────────────────────────}" \
+    "────────────" "${TXT_SEPARATOR_LINE:-────────────────────────────────────────────────────────}" \
     "4" "${TXT_MENU_4:-Hybrid: Dein MiniPC + Multi-VPS (Empfohlen)}" \
     "5" "${TXT_MENU_5:-Standalone: Nur VPS (Cloud-Native)}" \
     "6" "${TXT_MENU_6:-Standalone: Nur MiniPC (Lokal)}" \
-    "─────────" "${TXT_SEPARATOR_LINE:-────────────────────────────────────────────────────────}" \
+    "────────────" "${TXT_SEPARATOR_LINE:-────────────────────────────────────────────────────────}" \
     "7" "${TXT_MENU_7:-Ruflo: Installation & Management}" \
-    "──────────" "${TXT_SEPARATOR_LINE:-────────────────────────────────────────────────────────}" \
+    "────────────" "${TXT_SEPARATOR_LINE:-────────────────────────────────────────────────────────}" \
     "8" "${TXT_MENU_8:-Tools: Installieren & Deinstallieren}" \
     "9" "${TXT_MENU_9:-Profile: Blöcke, Gesamtprofile & Einzeltools}" \
-    "───────────" "${TXT_SEPARATOR_LINE:-────────────────────────────────────────────────────────}" \
+    "────────────" "${TXT_SEPARATOR_LINE:-────────────────────────────────────────────────────────}" \
     "10" "${TXT_MENU_10:-Dokumentation & API-Key Guide}" \
     "11" "${TXT_MENU_11:-System-Check & Port-Analyse}" \
     "12" "${TXT_MENU_12:-OpenClaw starten (Dev-Modus)}" \
