@@ -1289,7 +1289,8 @@ show_options_menu() {
                 "${MIN_FREE_GB_ABSOLUTE}-${MIN_FREE_GB_RECOMMENDED} GB" \
                 "Nutze diese Methode nur, wenn das normale Update nicht greift oder ein alter Setup-Stand festhaengt."
                 run_bash_script "$INSTALL_DIR/scripts/auto_update_hard.sh"
-                read -p "Harter Setup-Abgleich abgeschlossen. Drücken Sie Enter..."
+                read -p "Harter Setup-Abgleich abgeschlossen. Drücken Sie Enter, um das Setup-Menue neu zu starten..."
+                restart_setup_menu_after_update
                 ;;
             12)
                 show_operation_intro \
@@ -1321,6 +1322,10 @@ show_options_menu() {
                 else
                     end_operation_measurement "failed"
                 fi
+                if [ "$local_update_rc" -eq 0 ]; then
+                    read -p "Setup-Update abgeschlossen. Drücken Sie Enter, um das Setup-Menue neu zu starten..."
+                    restart_setup_menu_after_update
+                fi
                 read -p "Setup-Update abgeschlossen. Drücken Sie Enter..."
                 ;;
             14)
@@ -1346,6 +1351,14 @@ show_options_menu() {
                 ;;
         esac
     done
+}
+
+restart_setup_menu_after_update() {
+    echo
+    echo -e "${YELLOW}Das Setup-Menue wird jetzt neu gestartet, damit keine alte geladene Bash-Version weiterlaeuft.${NC}"
+    echo -e "${YELLOW}Falls du danach alte Inhalte siehst, pruefe bitte, ob noch ein zweites Setup-Terminal offen ist.${NC}"
+    sleep 2
+    exec bash "$INSTALL_DIR/setup_ultimate.sh"
 }
 
 append_unique_line() {
@@ -2787,7 +2800,12 @@ while true; do
             "Bei lokalen Aenderungen im Setup wird das Repo-Update bewusst uebersprungen, damit nichts ueberschrieben wird."
             begin_operation_measurement "main_menu_update" "Setup-Update + System-Update"
             run_bash_script "$INSTALL_DIR/scripts/auto_update.sh"
-            if [ $? -eq 0 ]; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
+            local_update_rc=$?
+            if [ "$local_update_rc" -eq 0 ]; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
+            if [ "$local_update_rc" -eq 0 ]; then
+                read -p "System-Update abgeschlossen. Drücken Sie Enter, um das Setup-Menue neu zu starten..."
+                restart_setup_menu_after_update
+            fi
             read -p "System-Update abgeschlossen. Drücken Sie Enter..."
             ;;
         2)
