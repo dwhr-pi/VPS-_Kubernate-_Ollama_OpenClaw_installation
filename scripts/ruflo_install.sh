@@ -121,6 +121,23 @@ EOF
     } > pnpm-workspace.yaml
 }
 
+repair_legacy_or_broken_pnpm_workspace() {
+    if [ ! -f pnpm-workspace.yaml ]; then
+        return 0
+    fi
+
+    if grep -qE 'onlyBuiltDependencies:|set this to true or false|Automatically ignored builds during installation|hint: allowBuilds:' pnpm-workspace.yaml; then
+        echo -e "${YELLOW}Bereinige alte oder kaputte pnpm-workspace.yaml aus einem vorherigen Ruflo-Versuch...${NC}"
+        write_pnpm_allowed_builds_config
+        return 0
+    fi
+
+    if ! node -e 'const fs=require("fs"); const text=fs.readFileSync("pnpm-workspace.yaml","utf8"); if (!/^packages:/m.test(text)) process.exit(1);' >/dev/null 2>&1; then
+        echo -e "${YELLOW}pnpm-workspace.yaml wirkt unvollstaendig. Erzeuge sichere Ruflo-Workspace-Konfiguration neu...${NC}"
+        write_pnpm_allowed_builds_config
+    fi
+}
+
 handle_pnpm_ignored_builds() {
     local answer
 
@@ -206,10 +223,15 @@ install_ruflo() {
         exit 1
     fi
 
+    repair_legacy_or_broken_pnpm_workspace
+
     echo -e "${BLUE}Installiere Ruflo-Abhaengigkeiten mit pnpm...${NC}"
     if ! pnpm install --no-frozen-lockfile; then
         echo -e "${YELLOW}pnpm install wurde nicht erfolgreich abgeschlossen. Pruefe auf blockierte Build-Skripte...${NC}"
-        if ! handle_pnpm_ignored_builds; then
+        if grep -qE 'onlyBuiltDependencies:|set this to true or false|Automatically ignored builds during installation|hint: allowBuilds:' pnpm-workspace.yaml 2>/dev/null; then
+            repair_legacy_or_broken_pnpm_workspace
+            pnpm install --no-frozen-lockfile
+        elif ! handle_pnpm_ignored_builds; then
             echo -e "${RED}Fehler: pnpm install fuer Ruflo fehlgeschlagen.${NC}"
             echo -e "${YELLOW}Wenn ERR_PNPM_IGNORED_BUILDS angezeigt wurde, muss die gezielte Build-Freigabe bestaetigt werden.${NC}"
             echo -e "${YELLOW}Nicht-interaktiv kann bewusst RUFLO_APPROVE_BUILDS=1 gesetzt werden.${NC}"
