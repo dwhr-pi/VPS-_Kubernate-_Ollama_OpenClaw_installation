@@ -421,3 +421,9 @@ Wenn ein spaeterer Chat an Huginn weiterarbeitet, sollte er zuerst diese Punkte 
 - Deinstallationen laufen im Tool-Management und in Profil-Toolgruppen jetzt vor Installationen, damit bei knappen Datentraegern zuerst Speicher freigegeben wird.
 - Fehler nach `install_tool`/`uninstall_tool` oeffnen den Sofortdialog auch ohne aktivierte erweiterte Ueberwachung. Bei Fehlern ist Enter bewusst wie `[Z]`, damit nicht versehentlich weiterinstalliert wird.
 - Alte Fehlerlogs koennen ueber die Installationsueberwachung oder per `bash scripts/cleanup_setup_logs.sh --apply --failed-only` gezielt geloescht werden.
+## Erinnerung: Tool-Quellen sauber trennen
+
+- Nicht jedes Tool stammt direkt aus GitHub. Viele Installskripte nutzen apt, pip, npm/pnpm, Docker/Podman, curl/wget, Go-Builds, Modell-Hubs oder Cloud-/Herstellerquellen.
+- Wenn ein Tool GitHub im Skript enthaelt, bedeutet das nur "GitHub-Bezug vorhanden", nicht automatisch "vollstaendig aus GitHub installiert".
+- Kuenftig sollen `source_type`, `source_url`, `upstream_repo`, Branch/Tag/Commit und Paketmanager-Abhaengigkeiten getrennt dokumentiert werden.
+- Aenderungen an WSL sind nicht die Upload-Quelle. Aenderungen fuer GitHub muessen im Windows-Arbeitsverzeichnis liegen: `C:\Users\danie\Documents\GitHub\VPS,_Kubernate,_Ollama_OpenClaw_installation`.
