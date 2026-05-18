@@ -89,23 +89,36 @@ packages:
 EOF
 }
 
-append_pnpm_allowed_builds() {
+write_pnpm_allowed_builds_config() {
     local dep
 
     ensure_pnpm_workspace_file
 
-    if ! grep -q '^onlyBuiltDependencies:' pnpm-workspace.yaml; then
-        {
-            echo
-            echo "onlyBuiltDependencies:"
-        } >> pnpm-workspace.yaml
-    fi
+    cp pnpm-workspace.yaml "pnpm-workspace.yaml.bak.$(date +%Y%m%d_%H%M%S)" 2>/dev/null || true
 
-    for dep in "${RUFLO_PNPM_ALLOWED_BUILDS[@]}"; do
-        if ! grep -qx "  - ${dep}" pnpm-workspace.yaml; then
-            echo "  - ${dep}" >> pnpm-workspace.yaml
-        fi
-    done
+    {
+        echo "packages:"
+        node <<'EOF'
+const fs = require("fs");
+let packages = ["."];
+try {
+  const pkg = JSON.parse(fs.readFileSync("package.json", "utf8"));
+  if (Array.isArray(pkg.workspaces)) {
+    packages = pkg.workspaces;
+  } else if (pkg.workspaces && Array.isArray(pkg.workspaces.packages)) {
+    packages = pkg.workspaces.packages;
+  }
+} catch (_) {}
+for (const entry of packages) {
+  console.log(`  - ${JSON.stringify(entry)}`);
+}
+EOF
+        echo
+        echo "allowBuilds:"
+        for dep in "${RUFLO_PNPM_ALLOWED_BUILDS[@]}"; do
+            printf '  "%s": true\n' "$dep"
+        done
+    } > pnpm-workspace.yaml
 }
 
 handle_pnpm_ignored_builds() {
@@ -128,7 +141,7 @@ handle_pnpm_ignored_builds() {
     sed 's/^/  - /' /tmp/ruflo_pnpm_ignored_builds.txt
     echo
     echo -e "${YELLOW}Ohne Freigabe koennen native Module wie esbuild, sharp, argon2 oder better-sqlite3 spaeter im Build fehlen.${NC}"
-    echo -e "${YELLOW}Es werden nur bekannte Ruflo-Abhaengigkeiten in pnpm-workspace.yaml unter onlyBuiltDependencies eingetragen.${NC}"
+    echo -e "${YELLOW}Es werden nur bekannte Ruflo-Abhaengigkeiten in pnpm-workspace.yaml unter allowBuilds: true eingetragen.${NC}"
 
     if [ "${RUFLO_APPROVE_BUILDS:-}" = "1" ] || [ "${RUFLO_APPROVE_BUILDS:-}" = "true" ]; then
         answer="j"
@@ -138,10 +151,11 @@ handle_pnpm_ignored_builds() {
 
     case "${answer:-N}" in
         j|J|y|Y)
-            cp pnpm-workspace.yaml "pnpm-workspace.yaml.bak.$(date +%Y%m%d_%H%M%S)" 2>/dev/null || true
-            append_pnpm_allowed_builds
+            write_pnpm_allowed_builds_config
             echo -e "${BLUE}pnpm install wird mit gezielter Build-Freigabe erneut ausgefuehrt...${NC}"
             pnpm install --no-frozen-lockfile
+            echo -e "${BLUE}Fuehre pnpm rebuild fuer freigegebene native Pakete aus...${NC}"
+            pnpm rebuild
             return $?
             ;;
         *)
