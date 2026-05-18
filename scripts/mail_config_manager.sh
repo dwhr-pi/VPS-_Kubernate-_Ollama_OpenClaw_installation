@@ -229,16 +229,16 @@ main_menu() {
         dialog --clear --backtitle "OpenClaw Ultimate Setup" \
         --cancel-label "Zurueck" \
         --title "E-MAIL-DIAGNOSE" \
-        --menu "Konfiguration fuer Diagnoseberichte per E-Mail. Keine Secrets im Repo." 22 100 7 \
+        --menu "Konfiguration fuer Diagnoseberichte per E-Mail. Keine Secrets im Repo." 22 100 6 \
         "1" ".env-aehnliche SMTP-Einstellungen bearbeiten" \
         "2" "SMTP-/App-Passwort sicher speichern" \
         "3" "Mailtools installieren / pruefen" \
         "4" "Testmail ohne Logs senden" \
         "5" "Lokale Testmail-Datei loeschen" \
-        "6" "Status anzeigen" \
-        "7" "Zurueck" 2> /tmp/mail_config_choice
+        "6" "Status anzeigen" 2> /tmp/mail_config_choice
 
         if [ $? -ne 0 ]; then
+            clear
             return 0
         fi
 
@@ -254,7 +254,6 @@ main_menu() {
             4) send_test_mail ;;
             5) delete_local_test_artifacts ;;
             6) show_status ;;
-            7) return 0 ;;
         esac
     done
 }

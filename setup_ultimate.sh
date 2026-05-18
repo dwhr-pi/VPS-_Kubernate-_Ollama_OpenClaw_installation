@@ -1009,6 +1009,53 @@ run_install_log_diagnostics_now() {
     read -p "Drücken Sie Enter..."
 }
 
+show_diagnostics_quick_menu() {
+    while true; do
+        dialog --clear --backtitle "$APP_TITLE" \
+        --cancel-label "Zurueck" \
+        --title "TOOL-DIAGNOSE & LETZTE FEHLER" \
+        --menu "Schneller Zugriff auf die letzten Installationsprotokolle und Diagnoseberichte." 22 104 6 \
+        "1" "Letzten fehlgeschlagenen Fehlerbericht anzeigen" \
+        "2" "Letztes Installationsprotokoll anzeigen" \
+        "3" "Tool-Logdiagnose interaktiv starten" \
+        "4" "Installationslauf-Diagnose erstellen" \
+        "5" "Abhaengigkeiten-/Speicher-Snapshot erstellen" \
+        "6" "Letztes Installationsprotokoll per E-Mail senden" 2> /tmp/diagnostics_quick_choice
+
+        if [ $? -ne 0 ]; then
+            clear
+            return 0
+        fi
+
+        case "$(cat /tmp/diagnostics_quick_choice)" in
+            1)
+                bash "$INSTALL_DIR/scripts/last_install_log.sh" --failed
+                read -p "Letzter Fehlerbericht angezeigt. Drücken Sie Enter..."
+                ;;
+            2)
+                bash "$INSTALL_DIR/scripts/last_install_log.sh"
+                read -p "Letztes Installationsprotokoll angezeigt. Drücken Sie Enter..."
+                ;;
+            3)
+                bash "$INSTALL_DIR/scripts/tool_log_diagnostics.sh"
+                read -p "Tool-Logdiagnose abgeschlossen. Drücken Sie Enter..."
+                ;;
+            4)
+                bash "$INSTALL_DIR/scripts/install_run_diagnostics.sh"
+                read -p "Installationslauf-Diagnose abgeschlossen. Drücken Sie Enter..."
+                ;;
+            5)
+                bash "$INSTALL_DIR/scripts/dependency_snapshot.sh"
+                read -p "Abhängigkeiten-/Speicher-Snapshot abgeschlossen. Drücken Sie Enter..."
+                ;;
+            6)
+                bash "$INSTALL_DIR/scripts/last_install_log.sh" --email
+                read -p "E-Mail-Diagnose abgeschlossen. Drücken Sie Enter..."
+                ;;
+        esac
+    done
+}
+
 handle_manual_tool_post_action() {
     local tool_key="$1"
     local action_label="$2"
@@ -1220,24 +1267,24 @@ show_options_menu() {
         --title "${TXT_OPTIONS_MENU_TITLE:-OPTIONEN}" --menu "${TXT_OPTIONS_MENU_PROMPT:-Wählen Sie eine Verwaltungs- oder Konfigurationsfunktion:}" 40 110 24 \
         "1" "${TXT_OPTIONS_1:-Sprache ändern}" \
         "2" "${TXT_OPTIONS_14:-Sprachpakete verwalten}" \
-        "────────1" "────────────── Sprache / Basis ──────────────" \
+        "────────" "────────────── Sprache / Basis ──────────────" \
         "3" "${TXT_OPTIONS_2:-Setup-Messwerte & Benchmarks bearbeiten}" \
-        "────────2" "────────── Messwerte / Workspace ────────────" \
+        "─────────" "────────── Messwerte / Workspace ────────────" \
         "4" "${TXT_OPTIONS_7:-Benutzer-Workspace verwalten}" \
         "5" "${TXT_OPTIONS_5:-Ollama Modellkatalog}" \
         "6" "${TXT_OPTIONS_3:-Ollama Modelfile-Assistent}" \
         "7" "${TXT_OPTIONS_4:-LLM-Builder Projektstruktur-Assistent}" \
         "8" "${TXT_OPTIONS_8:-Custom GitHub-Quellen & Ollama-Builds}" \
-        "────────3" "───────── Quellen / Konfiguration ───────────" \
+        "──────────" "───────── Quellen / Konfiguration ───────────" \
         "9" "${TXT_OPTIONS_9:-LLMOps Plattform Konfiguration (.env Stack)}" \
         "10" "${TXT_OPTIONS_10:-Huginn Konfiguration (.env Vorlage)}" \
-        "────────4" "──────────── Setup / Diagnose ───────────────" \
+        "───────────" "──────────── Setup / Diagnose ───────────────" \
         "11" "${TXT_OPTIONS_6:-Setup-Repository hart reparieren / auf GitHub main zurücksetzen}" \
         "12" "${TXT_OPTIONS_12:-Nur auf Setup-Updates prüfen}" \
         "13" "${TXT_OPTIONS_13:-Jetzt nur das Setup aktualisieren}" \
-        "────────5" "──────── Installation / Diagnose ────────────" \
+        "────────────" "──────── Installation / Diagnose ────────────" \
         "14" "${TXT_OPTIONS_11:-Installationsüberwachung konfigurieren}" \
-        "15" "${TXT_OPTIONS_15:-Tool-Logdiagnose anzeigen / optional per E-Mail senden}" \
+        "15" "${TXT_OPTIONS_15:-Tooldiagnose / letzter Fehlerbericht}" \
         "16" "E-Mail-Diagnose konfigurieren / Testmail senden" \
         "17" "Installationslauf-Diagnose erstellen" \
         "18" "Abhängigkeiten-/Speicher-Snapshot erstellen" 2> /tmp/options_choice
@@ -1332,8 +1379,7 @@ show_options_menu() {
                 show_installation_monitoring_menu
                 ;;
             15)
-                bash "$INSTALL_DIR/scripts/tool_log_diagnostics.sh"
-                read -p "Tool-Logdiagnose abgeschlossen. Drücken Sie Enter..."
+                show_diagnostics_quick_menu
                 ;;
             16)
                 run_bash_script "$INSTALL_DIR/scripts/mail_config_manager.sh"
@@ -2740,16 +2786,16 @@ show_main_menu() {
     "1" "${TXT_MENU_1:-Setup-Update + System-Update (Repo, OS & pnpm)}" \
     "2" "${TXT_MENU_2:-Ollama Modell-Manager}" \
     "3" "${TXT_MENU_3:-OpenClaw Konfiguration (.env & config.json)}" \
-    "────────1" "${TXT_SEPARATOR_LINE:-────────────────────────────────────────────────────────}" \
+    "────────" "${TXT_SEPARATOR_LINE:-────────────────────────────────────────────────────────}" \
     "4" "${TXT_MENU_4:-Hybrid: Dein MiniPC + Multi-VPS (Empfohlen)}" \
     "5" "${TXT_MENU_5:-Standalone: Nur VPS (Cloud-Native)}" \
     "6" "${TXT_MENU_6:-Standalone: Nur MiniPC (Lokal)}" \
-    "────────2" "${TXT_SEPARATOR_LINE:-────────────────────────────────────────────────────────}" \
+    "─────────" "${TXT_SEPARATOR_LINE:-────────────────────────────────────────────────────────}" \
     "7" "${TXT_MENU_7:-Ruflo: Installation & Management}" \
-    "────────3" "${TXT_SEPARATOR_LINE:-────────────────────────────────────────────────────────}" \
+    "──────────" "${TXT_SEPARATOR_LINE:-────────────────────────────────────────────────────────}" \
     "8" "${TXT_MENU_8:-Tools: Installieren & Deinstallieren}" \
     "9" "${TXT_MENU_9:-Profile: Blöcke, Gesamtprofile & Einzeltools}" \
-    "────────4" "${TXT_SEPARATOR_LINE:-────────────────────────────────────────────────────────}" \
+    "───────────" "${TXT_SEPARATOR_LINE:-────────────────────────────────────────────────────────}" \
     "10" "${TXT_MENU_10:-Dokumentation & API-Key Guide}" \
     "11" "${TXT_MENU_11:-System-Check & Port-Analyse}" \
     "12" "${TXT_MENU_12:-OpenClaw starten (Dev-Modus)}" \
