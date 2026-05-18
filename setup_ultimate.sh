@@ -1220,22 +1220,22 @@ show_options_menu() {
         --title "${TXT_OPTIONS_MENU_TITLE:-OPTIONEN}" --menu "${TXT_OPTIONS_MENU_PROMPT:-Wählen Sie eine Verwaltungs- oder Konfigurationsfunktion:}" 40 110 24 \
         "1" "${TXT_OPTIONS_1:-Sprache ändern}" \
         "2" "${TXT_OPTIONS_14:-Sprachpakete verwalten}" \
-        "________1" "────────────── Sprache / Basis ──────────────" \
+        "────────1" "────────────── Sprache / Basis ──────────────" \
         "3" "${TXT_OPTIONS_2:-Setup-Messwerte & Benchmarks bearbeiten}" \
-        "________2" "────────── Messwerte / Workspace ────────────" \
+        "────────2" "────────── Messwerte / Workspace ────────────" \
         "4" "${TXT_OPTIONS_7:-Benutzer-Workspace verwalten}" \
         "5" "${TXT_OPTIONS_5:-Ollama Modellkatalog}" \
         "6" "${TXT_OPTIONS_3:-Ollama Modelfile-Assistent}" \
         "7" "${TXT_OPTIONS_4:-LLM-Builder Projektstruktur-Assistent}" \
         "8" "${TXT_OPTIONS_8:-Custom GitHub-Quellen & Ollama-Builds}" \
-        "________3" "───────── Quellen / Konfiguration ───────────" \
+        "────────3" "───────── Quellen / Konfiguration ───────────" \
         "9" "${TXT_OPTIONS_9:-LLMOps Plattform Konfiguration (.env Stack)}" \
         "10" "${TXT_OPTIONS_10:-Huginn Konfiguration (.env Vorlage)}" \
-        "________4" "──────────── Setup / Diagnose ───────────────" \
+        "────────4" "──────────── Setup / Diagnose ───────────────" \
         "11" "${TXT_OPTIONS_6:-Setup-Repository hart reparieren / auf GitHub main zurücksetzen}" \
         "12" "${TXT_OPTIONS_12:-Nur auf Setup-Updates prüfen}" \
         "13" "${TXT_OPTIONS_13:-Jetzt nur das Setup aktualisieren}" \
-        "________5" "──────── Installation / Diagnose ────────────" \
+        "────────5" "──────── Installation / Diagnose ────────────" \
         "14" "${TXT_OPTIONS_11:-Installationsüberwachung konfigurieren}" \
         "15" "${TXT_OPTIONS_15:-Tool-Logdiagnose anzeigen / optional per E-Mail senden}" \
         "16" "E-Mail-Diagnose konfigurieren / Testmail senden" \
@@ -1346,7 +1346,7 @@ show_options_menu() {
                 bash "$INSTALL_DIR/scripts/dependency_snapshot.sh"
                 read -p "Abhängigkeiten-/Speicher-Snapshot abgeschlossen. Drücken Sie Enter..."
                 ;;
-            ________*)
+            ────────*)
                 continue
                 ;;
         esac
@@ -2740,16 +2740,16 @@ show_main_menu() {
     "1" "${TXT_MENU_1:-Setup-Update + System-Update (Repo, OS & pnpm)}" \
     "2" "${TXT_MENU_2:-Ollama Modell-Manager}" \
     "3" "${TXT_MENU_3:-OpenClaw Konfiguration (.env & config.json)}" \
-    "________1" "${TXT_SEPARATOR_LINE:-────────────────────────────────────────────────────────}" \
+    "────────1" "${TXT_SEPARATOR_LINE:-────────────────────────────────────────────────────────}" \
     "4" "${TXT_MENU_4:-Hybrid: Dein MiniPC + Multi-VPS (Empfohlen)}" \
     "5" "${TXT_MENU_5:-Standalone: Nur VPS (Cloud-Native)}" \
     "6" "${TXT_MENU_6:-Standalone: Nur MiniPC (Lokal)}" \
-    "________2" "${TXT_SEPARATOR_LINE:-────────────────────────────────────────────────────────}" \
+    "────────2" "${TXT_SEPARATOR_LINE:-────────────────────────────────────────────────────────}" \
     "7" "${TXT_MENU_7:-Ruflo: Installation & Management}" \
-    "________3" "${TXT_SEPARATOR_LINE:-────────────────────────────────────────────────────────}" \
+    "────────3" "${TXT_SEPARATOR_LINE:-────────────────────────────────────────────────────────}" \
     "8" "${TXT_MENU_8:-Tools: Installieren & Deinstallieren}" \
     "9" "${TXT_MENU_9:-Profile: Blöcke, Gesamtprofile & Einzeltools}" \
-    "________4" "${TXT_SEPARATOR_LINE:-────────────────────────────────────────────────────────}" \
+    "────────4" "${TXT_SEPARATOR_LINE:-────────────────────────────────────────────────────────}" \
     "10" "${TXT_MENU_10:-Dokumentation & API-Key Guide}" \
     "11" "${TXT_MENU_11:-System-Check & Port-Analyse}" \
     "12" "${TXT_MENU_12:-OpenClaw starten (Dev-Modus)}" \
@@ -2785,7 +2785,7 @@ while true; do
     fi
 
     case $CHOICE in
-        ________*)
+        ────────*)
             continue
             ;;
         OPTIONS)
@@ -2877,7 +2877,7 @@ while true; do
             fi
             read -p "Standalone MiniPC-Setup abgeschlossen. Drücken Sie Enter..."
             ;;
-        ________*)
+        ────────*)
             continue
             ;;
         7)
