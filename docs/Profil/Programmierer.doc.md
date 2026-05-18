@@ -54,6 +54,7 @@ Quelle: GitHub-Remote `docs/Profil/Programmierer.doc.md`
 ### Umsetzungsnotiz im Setup
 - Der Codex-Nachbau ist im `Programmierer`-Profil als eigener optionaler Block verfügbar.
 - Die neuen Bausteine werden, wo sinnvoll, direkt aus GitHub-Quellen geholt und lokal auf dem Zielsystem vorbereitet oder gebaut.
+- Validierungsnotiz 2026-05-19: Die Tools im `Programmierer`-Setup wurden auf Installationsfähigkeit geprüft. `Ollama` und `OpenClaw` sind in diesem Teststand funktionierend vorhanden.
 
 ### Empfohlene Ollama-Modelle
 - `qwen3-coder:30b`
