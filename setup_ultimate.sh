@@ -2769,6 +2769,9 @@ while true; do
     fi
 
     case $CHOICE in
+        ________*)
+            continue
+            ;;
         OPTIONS)
             show_options_menu
             ;;
