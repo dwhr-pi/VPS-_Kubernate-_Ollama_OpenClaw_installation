@@ -117,7 +117,7 @@ bash scripts/cleanup_setup_logs.sh --apply --failed-only
 
 Higgsfield AI ist ein proprietaerer bzw. cloudbasierter AI-Video-/Image-/Marketing-Studio-Pfad mit CLI-/Agent-Anbindung. Dieses Setup ergaenzt dafuer eine offene, lokale Alternative: [OpenHiggsStack AI Cinema Studio](docs/Profile/OpenHiggsStack_AI_Cinema_Studio.md).
 
-OpenHiggsStack ist kein 1:1-Klon, sondern eine modulare Pipeline aus `OpenClaw`, `Ollama`, `ComfyUI`, `Wan2.x`, `FFmpeg` und `n8n`. Cloud-APIs wie Higgsfield, Veo, Kling, Seedance, Runway, Pika oder Sora koennen optional spaeter angebunden werden, bleiben aber standardmaessig aus und benoetigen eigene Keys ausserhalb des Repositories.
+OpenHiggsStack ist kein 1:1-Klon, sondern eine modulare Pipeline aus `OpenClaw`, `Ollama`, `ComfyUI`, `Wan2.x`, `FFmpeg` und `n8n`. Hugging Face / Huge_Facing dient als optionale Modellquelle fuer Wan-, Flux-, SD-, LoRA- und ControlNet-Modelle; grosse Modelle werden nicht automatisch heruntergeladen. Cloud-APIs wie Higgsfield, Veo, Kling, Seedance, Runway, Pika oder Sora koennen optional spaeter angebunden werden, bleiben aber standardmaessig aus und benoetigen eigene Keys ausserhalb des Repositories.
 
 Technischer Einstieg:
 
@@ -703,3 +703,17 @@ Wichtige Ergänzung:
 *   **Registry-System:** Die neuen Dateien unter `config/` sind die Zielstruktur für künftige automatische Menü-Generierung, aber noch nicht jede Stelle des Hauptmenüs liest bereits daraus.
 
 Wir wünschen dir viel Erfolg bei der Einrichtung deines intelligenten, automatisierten Systems!
+## Optional: OpenHiggsStack / AI Cinema Studio
+
+OpenHiggsStack erweitert das Setup um eine lokale/offene AI-Cinema- und Marketing-Pipeline als Alternative zu proprietaeren Cloud-Studios wie Higgsfield AI. Higgsfield CLI/API kann optional als Cloud-Fallback angebunden werden, aber der bevorzugte Pfad bleibt self-hosted mit OpenClaw, Ollama, ComfyUI, Wan2.x, FFmpeg und n8n. Hugging Face / Huge_Facing ist dabei als optionale Modellquelle und Lizenz-/Versionsanker dokumentiert.
+
+Ziel ist kein 1:1-Klon von Higgsfield, sondern eine modulare Pipeline fuer Text-to-Video, Image-to-Video, Musikvideos, AI-Influencer-Konzepte, Produktclips, Social-Media-Shorts und kontrollierte Batch-Renderjobs. API-Keys werden nicht ins Repository geschrieben, grosse Modelle werden nicht automatisch heruntergeladen.
+
+Wichtige Dateien:
+
+- `docs/Profile/OpenHiggsStack_AI_Cinema_Studio.md`
+- `docs/Profile/Video_Generation_ComfyUI_Wan.md`
+- `scripts/install-openhiggsstack.sh`
+- `.env.openhiggsstack.example`
+- `docs/agents/video-director-agent.md`
+- `docs/n8n/openhiggsstack-workflows.md`

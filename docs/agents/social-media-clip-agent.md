@@ -2,57 +2,56 @@
 
 ## Aufgabe
 
-Bereitet kurze Social-Media-Clips aus vorhandenen Videos, Bildern, Musik oder Blogartikeln vor.
+Bereitet Kurzvideos fuer TikTok, YouTube Shorts, Instagram Reels und Archiv-Exports vor.
 
 ## Eingaben
 
-- Quellclip oder Thema
-- Plattform
+- Rohvideo oder Storyboard
+- Zielplattform
 - Zielgruppe
-- Hook-Wunsch
-- Laenge
+- Hook, CTA, Hashtags, Posting-Zeitfenster
 
 ## Ausgaben
 
 - Hook-Varianten
+- Titel und Beschreibung
+- Untertitelkonzept
 - Schnittplan
-- Caption
-- Hashtags
-- Thumbnail-Idee
-- Exportformat
+- Exportprofile
+- Posting-Checkliste
 
 ## Tools
 
-- Ollama
-- FFmpeg
-- n8n
-- ComfyUI optional
-- Wan2.x optional
+Ollama, OpenClaw, FFmpeg, Whisper/faster-whisper, n8n, optional Higgsfield Virality Predictor oder lokale Heuristik.
 
 ## Sicherheitsregeln
 
-- Keine Clickbait-Luegen.
-- Keine ungeprueften Gesundheits-, Finanz- oder Rechtsversprechen.
-- Rechte an Musik/Bild/Video pruefen.
+- Keine irrefuehrenden Claims.
+- Werbung, Affiliate und Sponsoring kennzeichnen.
+- Jugendschutz und Plattformregeln beachten.
+- Keine privaten Chats oder personenbezogenen Daten in Clips uebernehmen.
 
 ## Kostenkontrolle
 
-- Reuse vorhandener Assets bevorzugen.
-- Cloud-Rendering nur nach Freigabe.
+Virality-/Cloud-Analysen nur nach manueller Freigabe.
 
 ## Beispielprompt
 
 ```text
-Erstelle aus diesem Thema eine Shorts-Serie mit 5 Clips.
-Jeder Clip braucht Hook, 3 Szenen, Caption, Hashtags und Exportformat.
-Thema: lokales OpenClaw/Ollama AI Studio.
+Erstelle aus diesem Storyboard drei TikTok-Varianten:
+1. emotionaler Hook
+2. informativer Hook
+3. provokanter, aber fairer Hook
+Gib Titel, Beschreibung, Hashtags und FFmpeg-Ziel aus.
 ```
 
 ## Beispielworkflow
 
-1. Thema in Clip-Ideen zerlegen.
-2. Hook je Clip erstellen.
-3. Shots und Overlays planen.
-4. FFmpeg-Exportparameter ausgeben.
-5. n8n-Upload-Vorbereitung erzeugen.
+1. Rohmaterial oder Storyboard analysieren.
+2. Hook und Clip-Struktur festlegen.
+3. Untertitel und Titel erzeugen.
+4. FFmpeg-Export vorbereiten.
+5. n8n-Publishing-Entwurf erzeugen.
+## Hugging Face / Huge_Facing
 
+Der Social-Media-Clip-Agent kann lokal vorhandene Hugging-Face-Modelle fuer Upscaling, Untertitelung, Voice oder kurze Video-Varianten referenzieren. Tokens und private Modellzugriffe werden nicht im Prompt oder Repo gespeichert.

@@ -1,53 +1,51 @@
 # OpenHiggsStack AI Cinema Studio
 
-Status: `experimental`  
-Tier: `advanced`  
-Kategorie: `media`
-
-OpenHiggsStack ist ein optionales lokales bzw. halb-lokales AI-Cinema- und Marketing-Studio. Es ist kein 1:1-Klon von Higgsfield AI, sondern eine modulare Self-Hosted-Pipeline aus OpenClaw, Ollama, ComfyUI, Wan2.x, FFmpeg, n8n und optionalen Cloud-APIs.
+Status: experimental  
+Kategorie: Media / Video / Marketing / Agenten  
+Zielsystem: MiniPC/GPU-Workstation, optional WSL2, optional VPS-Orchestrierung  
 
 ## Zweck
 
-Higgsfield AI bietet cloudbasierte Bild-/Video-/Marketing-Funktionen und eine CLI-/MCP-Anbindung fuer Agenten. OpenHiggsStack bildet die offenen Bausteine nach, soweit sie lokal oder self-hosted sinnvoll nutzbar sind.
+OpenHiggsStack ist ein optionales lokales oder halb-lokales AI-Cinema-Studio fuer das Ultimate-KI-Setup. Es ist keine 1:1-Kopie von Higgsfield AI, sondern eine modulare Self-Hosted-Pipeline fuer Bild-, Video-, Musikvideo-, Marketing- und Social-Media-Produktion mit OpenClaw, Ollama, ComfyUI, Wan2.x, FFmpeg und n8n.
 
-Ziel:
+Higgsfield AI bleibt als proprietaere Cloud-/API-Option dokumentiert. Lokale Workflows sollen jedoch bevorzugt werden, wenn Datenschutz, Kostenkontrolle, Offline-Faehigkeit oder kreative Kontrolle wichtiger sind.
 
-- Text-to-Video und Image-to-Video lokal vorbereiten.
-- Storyboards, Prompts, Shots und Kamerabewegungen mit Ollama/OpenClaw planen.
-- ComfyUI als visuelle Workflow-Engine nutzen.
-- Wan2.1/Wan2.2 als lokale Video-Modellfamilie einbinden.
-- FFmpeg fuer Postprocessing, Schnitt, Audio, Untertitel und Export verwenden.
-- n8n fuer Automationen, Warteschlangen und Publishing-Vorbereitung nutzen.
-- Cloud-Modelle nur optional und bewusst aktivieren.
+## Quellen und Einordnung
+
+- [Higgsfield CLI](https://github.com/higgsfield-ai/cli): CLI fuer Bild-/Video-Generierung, Marketing Studio, Virality Predictor, Soul/Character-Funktionen und Cloud-Modelle.
+- [Higgsfield Skills](https://github.com/higgsfield-ai/skills): Agenten-/Skill-Integrationen als Inspiration fuer Codex, Claude Code, OpenClaw und MCP-nahe Workflows.
+- [Open Generative AI](https://github.com/anil-matcha/open-generative-ai): Open-Source-orientiertes Studio fuer viele Bild-/Video-Modelle und self-hosted Anwendungslogik.
+- [Open Higgsfield AI Docs](https://anil-matcha-open-higgsfield-ai.mintlify.app/): Dokumentation zur offenen Higgsfield-inspirierten Plattform.
+- [ComfyUI](https://github.com/comfy-org/ComfyUI): modulare Node-/Graph-Engine fuer Diffusion, Bild, Video, Audio und API-Workflows.
+- [Wan2.1](https://github.com/Wan-Video/Wan2.1): offene Video-Modelle fuer Text-to-Video, Image-to-Video, Editing und Video-to-Audio; kleine Workflows koennen bereits mit Consumer-GPUs starten.
+- [Wan2.2](https://github.com/Wan-Video/Wan2.2): neuere Wan-Generation fuer offene Large-Scale-Video-Workflows.
+- [ComfyUI Wan2.2 Workflow](https://docs.comfy.org/tutorials/video/wan/wan2_2): offizielles ComfyUI-Beispiel fuer Wan2.2-Workflows.
 
 ## Einsatzgebiete
 
-- Text-to-Video
-- Image-to-Video
-- AI Influencer und virtuelle Creator
-- Marketing Clips
-- Musikvideo-Pipeline
-- Social-Media-Shorts
-- Produktvideos
-- Character Consistency
-- Kamera-/Motion-Presets
-- Virality-/Marketing-Analyse
-- Thumbnail- und Hook-Varianten
-- Batch-Rendering mit Warteschlange
+- Text-to-Video aus Skript, Kampagnenidee oder Storyboard.
+- Image-to-Video aus Produktfoto, Charakterbild, Raumfoto oder Thumbnail.
+- AI-Influencer- und Creator-Workflows mit konsistenten Charakteren.
+- Marketing-Clips fuer Produkte, Landingpages, Ads und Reels.
+- Musikvideo-Pipeline aus Songidee, Suno/Udio-Track, Lyrics und Moodboard.
+- Social-Media-Shorts fuer TikTok, YouTube Shorts, Instagram Reels und Archivclips.
+- Produktvideos mit kontrolliertem Stil, Licht, Kamera und Schnittlogik.
+- Character Consistency mit Referenzbildern, LoRA-/IPAdapter-/ControlNet-nahen Konzepten.
+- Kamera- und Motion-Presets wie Dolly, Push-in, Orbit, Handheld, Drone Shot, Macro.
+- Virality-/Marketing-Analyse als optionaler Cloud- oder lokaler Heuristik-Schritt.
 
-## Zusammenspiel der Komponenten
+## Zusammenspiel im Setup
 
-| Komponente | Rolle |
-|---|---|
-| Ollama | lokale Planung, Prompt-Varianten, Shotlisten, Stilregeln |
-| OpenClaw | Agenten-Orchestrierung, Toolaufrufe, Freigaben, Memory |
-| n8n | Workflow-Automation, Warteschlange, Export-Vorbereitung |
-| ComfyUI | Node-basierte Bild-/Video-/Audio-/3D-Workflow-Engine |
-| Wan2.1/Wan2.2 | lokale Text-to-Video- und Image-to-Video-Modellfamilie |
-| Open Generative AI | offene Web-Studio-Inspiration fuer Higgsfield-aehnliche Workflows |
-| FFmpeg | Schnitt, Transcoding, Audio-Muxing, Untertitel, Thumbnails |
-| Higgsfield CLI/API optional | Cloud-Fallback oder Vergleichspfad, nur mit eigenen Keys |
-| Veo/Kling/Seedance/Sora/Runway/Pika optional | externe Modelle, kosten- und datenschutzpflichtig |
+- Ollama erzeugt Briefings, Prompts, Shotlisten, negative Prompts und Varianten.
+- OpenClaw koordiniert Agentenrollen wie Video Director, Storyboard, Social Clip und Music Video.
+- n8n automatisiert Warteschlangen, Statusmeldungen, Exporte und Publishing-Vorbereitung.
+- ComfyUI fuehrt Bild- und Video-Workflows lokal oder auf einer GPU-Workstation aus.
+- Wan2.1/Wan2.2 liefern offene Video-Generierungsmodelle fuer lokale Pipeline-Experimente.
+- Open Generative AI kann als Web-UI-/Produkt-Inspiration fuer ein eigenes Studio dienen.
+- FFmpeg uebernimmt Schnitt, Transcoding, Untertitel, Seitenverhaeltnisse und Audio-Muxing.
+- Higgsfield CLI/API bleibt optionaler Cloud-Fallback fuer Modelle, Marketing Studio, Soul ID oder Virality Predictor.
+- Cloud-Modelle wie Veo, Kling, Seedance, Sora 2, Runway und Pika duerfen nur bewusst per API-Key aktiviert werden.
+- Stable Diffusion lokal bleibt die bevorzugte Bildbasis fuer Datenschutz, Kostenkontrolle und reproduzierbare Workflows.
 
 ## Architektur
 
@@ -64,45 +62,7 @@ flowchart LR
     I --> J["Export: YouTube / TikTok / Instagram / Archiv"]
 ```
 
-## Lokale Betriebsmodi
-
-### Prompt-only
-
-- geeignet fuer Low-End-CPU, VPS ohne GPU oder WSL2 ohne NVIDIA-Pfad
-- erzeugt Storyboards, Shotlisten, Promptpakete und n8n-Aufgaben
-- kein lokales Rendering grosser Modelle
-
-### Local GPU
-
-- ComfyUI lokal
-- Wan2.x-Workflows manuell installiert
-- FFmpeg lokal
-- ideal fuer MiniPC/GPU-Workstation mit ausreichend VRAM und SSD
-
-### Hybrid
-
-- lokale Planung und Asset-Verwaltung
-- optional Cloud-APIs fuer einzelne Renderjobs
-- Kostenlimits und Datenschutzregeln zwingend dokumentieren
-
-### K3s/Advanced
-
-- Rendering-Worker spaeter ueber Kubernetes/Queue trennbar
-- noch nicht als Standard-Setup umgesetzt
-- nur sinnvoll mit GPU-Nodes, Storage-Konzept und Monitoring
-
-## Sicherheit, Rechte und Kostenkontrolle
-
-- Keine API-Keys in Git speichern.
-- Cloud-Modelle nur mit bewusst gesetzten Keys aktivieren.
-- Keine Deepfakes realer Personen ohne Zustimmung.
-- Keine heimliche Gesichtserkennung oder biometrische Identifikation.
-- Marken, Musikrechte, Stockmaterial und Personenrechte pruefen.
-- Kostenlimits fuer externe APIs definieren.
-- Lokale Outputs koennen gross werden; Speicher regelmaessig pruefen.
-- NSFW-/Jugendschutz-Filter fuer public-facing Creator-Workflows einplanen.
-
-## Empfohlene Ordnerstruktur
+## Empfohlene Ordner
 
 ```text
 ~/ai-stack/
@@ -110,61 +70,77 @@ flowchart LR
   models/
     image/
     video/
-    vae/
     loras/
+    controlnet/
   outputs/
     video/
-    image/
-    audio/
-  workflows/
-    comfyui/
-    n8n/
-  prompts/
-  logs/
+    images/
+    storyboards/
+  projects/
+    <projektname>/
+      brief.md
+      storyboard.md
+      prompts/
+      assets/
+      renders/
+      exports/
 ~/.openclaw/agents/video-director/
 ```
 
-## Beispiel `.env`
+## Datenschutz und Kostenkontrolle
 
-Siehe [../../.env.openhiggsstack.example](../../.env.openhiggsstack.example).
+- Standard: lokal arbeiten, keine Cloud-API ohne bewusste Aktivierung.
+- Keine API-Keys ins Repository schreiben.
+- Personenbilder, Marken, Stimmen und Charaktere nur mit Rechten oder Zustimmung verwenden.
+- Keine Deepfakes realer Personen ohne Einwilligung.
+- Cloud-Kosten mit Tageslimit, Projektlimit und manueller Freigabe absichern.
+- Groesse von Modell-Downloads vorher pruefen; Wan-/Video-Modelle koennen viele GB beanspruchen.
 
-## Agentenprofile
+## Beispielprompt
 
-- [Video Director Agent](../agents/video-director-agent.md)
-- [Storyboard Agent](../agents/storyboard-agent.md)
-- [Social Media Clip Agent](../agents/social-media-clip-agent.md)
-- [Music Video Agent](../agents/music-video-agent.md)
-
-## n8n Workflow-Ideen
-
-Siehe [OpenHiggsStack Workflows](../n8n/openhiggsstack-workflows.md).
-
-## Quickstart
-
-```bash
-bash scripts/install-openhiggsstack.sh
-cp .env.openhiggsstack.example ~/.openclaw_ultimate_user_data/openhiggsstack/.env
+```text
+Erstelle ein Storyboard fuer einen 20-Sekunden-Produktclip im Format 9:16.
+Produkt: tragbare Powerbank.
+Stil: hochwertig, warmes Licht, realistische Kamera, kein Cartoon.
+Ausgabe:
+1. Hook in 2 Sekunden
+2. 5 Shots mit Kameraanweisung
+3. Bildprompt je Shot
+4. Videoprompt je Shot
+5. Negative Prompts
+6. FFmpeg Exportziel fuer TikTok und YouTube Shorts
 ```
 
-Danach manuell:
+## Erste Tests
 
-1. ComfyUI starten.
-2. Wan2.x-Modelle gemaess eigener Hardware passend herunterladen.
-3. ComfyUI-Wan-Workflow importieren.
-4. Ollama-Modell bereitstellen, z. B. `ollama pull llama3.2:1b`.
-5. Einen Agentenprompt aus `docs/agents/` testen.
+1. `bash scripts/install-openhiggsstack.sh`
+2. Nur Ordnerstruktur und `.env` erzeugen lassen.
+3. ComfyUI optional klonen, aber keine grossen Modelle automatisch laden.
+4. ComfyUI separat starten und ein kleines Bild- oder Wan-Testworkflow manuell laden.
+5. Mit `docs/agents/video-director-agent.md` einen ersten Shotplan erzeugen.
 
 ## Grenzen
 
-OpenHiggsStack ist eine Arbeitsgrundlage. Es ersetzt nicht automatisch eine fertige Higgsfield-Cloud-Produktion. Besonders Character Consistency, Multi-Shot-Kontinuitaet, Lippenbewegung, saubere Haende/Gesichter und lange Videos bleiben anspruchsvoll und brauchen manuelle Kontrolle.
+- CPU-only ist nur fuer Planung, Prompting und sehr kleine Tests sinnvoll.
+- 8-12 GB VRAM reichen nur fuer kleine/optimierte Workflows.
+- 16-24 GB VRAM sind fuer lokale Video-KI deutlich realistischer.
+- Multi-GPU/Kubernetes bleibt Advanced/Experimental.
+- Dieses Profil installiert keine grossen Modelle automatisch.
+## Hugging Face / Huge_Facing als Modellquelle
 
-## Gepruefte Quellen und Referenzen
+Hugging Face wird im OpenHiggsStack nicht als Pflicht-Cloud-Dienst verstanden, sondern als optionale Modellquelle, Lizenznachweis und Versionsanker. Viele lokale Bild-, Video-, Audio- und Multimodal-Workflows beziehen Modellkarten, Beispiel-Workflows oder Gewichte ueber Hugging Face. Im historischen Setup-Kontext kann dies auch als `Huge_Facing` gefuehrt werden.
 
-- Higgsfield CLI: `https://github.com/higgsfield-ai/cli`
-- Higgsfield Skills: `https://github.com/higgsfield-ai/skills`
-- Open Generative AI: `https://github.com/anil-matcha/open-generative-ai`
-- Open Higgsfield AI Doku: `https://anil-matcha-open-higgsfield-ai.mintlify.app/`
-- ComfyUI: `https://github.com/comfy-org/ComfyUI`
-- Wan2.1: `https://github.com/Wan-Video/Wan2.1`
-- Wan2.2: `https://github.com/Wan-Video/Wan2.2`
-- ComfyUI Wan2.2 Tutorial: `https://docs.comfy.org/tutorials/video/wan/wan2_2`
+Empfohlene Nutzung:
+
+- Modellkarten, Lizenzbedingungen, Speicherbedarf und Hardwarehinweise vor dem Download pruefen.
+- Grosse Modelle manuell herunterladen und nicht automatisch durch das Setup ziehen lassen.
+- `HUGGINGFACE_TOKEN` nur lokal in `.env.openhiggsstack` oder unter `~/.openclaw_ultimate_user_data` speichern, niemals im Repo.
+- Modellpfade in OpenClaw-, ComfyUI- und n8n-Workflows dokumentieren, damit spaeter nachvollziehbar bleibt, welches Modell welchen Clip erzeugt hat.
+- Bei kommerzieller Nutzung Lizenz, Quellenangabe und erlaubte Ausgabeverwendung gesondert pruefen.
+
+Typische Modellquellen:
+
+- Wan2.x-Video-Modelle und Varianten
+- Flux-, SDXL- und Stable-Diffusion-Bildmodelle
+- LoRA-, ControlNet-, IPAdapter- und Upscaler-Modelle
+- Whisper-, TTS- oder Multimodal-Modelle fuer optionale Audio-/Voice-Erweiterungen

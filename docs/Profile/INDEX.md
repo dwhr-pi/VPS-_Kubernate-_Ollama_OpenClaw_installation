@@ -138,3 +138,5 @@ Diese Pfade wurden geprueft, aber wegen Profilueberlappung oder noch fehlender s
 | `INSTALL_CHECKLIST.md` | empfohlener Installationspfad |
 | `INCONSISTENCY_REPORT.md` | bekannte Sync-Lücken und Dubletten |
 | `profiles.json` | maschinenlesbarer Profilkatalog |
+- [OpenHiggsStack AI Cinema Studio](OpenHiggsStack_AI_Cinema_Studio.md) - Optionales lokales/halb-lokales AI-Cinema- und Marketing-Studio mit OpenClaw, Ollama, ComfyUI, Wan2.x, FFmpeg und n8n.
+- [Video Generation ComfyUI Wan](Video_Generation_ComfyUI_Wan.md) - Technisches Installationsprofil fuer ComfyUI, Wan2.1/Wan2.2, FFmpeg, WSL2/GPU und lokale Video-KI-Workflows.

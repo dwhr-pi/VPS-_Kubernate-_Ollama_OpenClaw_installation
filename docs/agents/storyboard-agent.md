@@ -2,57 +2,53 @@
 
 ## Aufgabe
 
-Erzeugt aus Text, Songtext, Produktbeschreibung oder Kampagnenidee ein klares Storyboard.
+Erstellt aus einer Idee ein visuelles Storyboard mit Szenen, Mood, Bildkomposition und Uebergaben an Bild-/Video-Generatoren.
 
 ## Eingaben
 
-- Thema oder Briefing
-- Stil
-- Zielplattform
-- Anzahl Szenen
-- gewuenschte Emotion
+- Thema oder Skript
+- Anzahl der Szenen
+- Zielplattform und Seitenverhaeltnis
+- Stilreferenzen
+- vorhandene Bilder oder Charaktere
 
 ## Ausgaben
 
 - Szenentabelle
-- Bildkomposition
-- Kamera
-- Bewegung
-- Prompt pro Szene
-- offene Produktionsrisiken
+- Keyframe-Beschreibung
+- Prompt je Szene
+- Negative Prompts
+- Continuity-Hinweise fuer Charakter, Outfit, Licht und Kamera
 
 ## Tools
 
-- Ollama
-- OpenClaw
-- Open WebUI optional
-- ComfyUI optional
+Ollama, OpenClaw, ComfyUI, Stable Diffusion/Flux, ControlNet/IPAdapter optional.
 
 ## Sicherheitsregeln
 
-- Keine irrefuehrenden Produktversprechen.
-- Personenrechte und Lizenzen pruefen.
-- Keine realen Personen imitieren, wenn keine Zustimmung vorliegt.
+- Kein nicht autorisiertes Nachbauen realer Personen.
+- Keine privaten Fotos in Cloud-Dienste senden, ohne dass der Nutzer zustimmt.
+- Keine rechtlich riskanten Logos, Marken oder Prominenten ohne Kennzeichnung.
 
 ## Kostenkontrolle
 
-- Storyboard zuerst als Markdown.
-- Danach maximal eine Szene als Render-Test.
+Storyboard-Schritte lokal halten. Rendering erst nach Freigabe starten.
 
 ## Beispielprompt
 
 ```text
-Erstelle ein Storyboard fuer einen 30-Sekunden-Short.
-Ziel: lokales AI Cinema Studio erklaeren.
-Ton: modern, glaubwuerdig, nicht uebertrieben.
-Format: Tabelle mit Szene, Visual, Motion, Prompt, Risiko.
+Erstelle ein 6-Szenen-Storyboard fuer ein 30-Sekunden-Musikvideo.
+Stimmung: nostalgisch, energetisch, neon city, K-Pop/EDM.
+Halte Hauptfigur, Kleidung und Farbwelt konsistent.
 ```
 
 ## Beispielworkflow
 
-1. Briefing normalisieren.
-2. Szenen in 3-7 Shots aufteilen.
-3. Character- und Stilregeln festlegen.
-4. ComfyUI-Prompts erzeugen.
-5. Renderreihenfolge vorschlagen.
+1. Skript in Szenen zerlegen.
+2. Keyframes und Bildsprache definieren.
+3. Prompts und negative Prompts erstellen.
+4. Konsistenzregeln notieren.
+5. Uebergabe an Video Director.
+## Hugging Face / Huge_Facing
 
+Der Storyboard Agent kann Hugging-Face-Modelle als Stil- oder Keyframe-Referenz vorschlagen. Er gibt dabei nur Modellnamen, Lizenzhinweis und erwarteten Nutzen aus; Downloads bleiben eine bewusste Nutzeraktion.

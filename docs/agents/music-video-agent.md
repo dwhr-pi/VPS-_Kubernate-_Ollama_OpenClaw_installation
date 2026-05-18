@@ -2,56 +2,52 @@
 
 ## Aufgabe
 
-Plant Musikvideo-Workflows aus Songtext, Audioanalyse, Suno/Udio-Idee oder vorhandener Musik.
+Entwickelt Musikvideo-Konzepte aus Song, Lyrics, Moodboard oder Suno/Udio-Prompt.
 
 ## Eingaben
 
-- Songbeschreibung
-- Lyrics oder Struktur
-- BPM/Stimmung
-- Stilreferenz
-- Zielplattform
+- Songbeschreibung, BPM, Genre, Lyrics oder Audioanalyse
+- Zielstil
+- Charaktere, Farben, Orte
+- Plattform und Laenge
 
 ## Ausgaben
 
-- Szenenbogen
-- Beat-nahe Shotliste
-- Keyframes
-- Videoprompts
-- FFmpeg-Timing-Hinweise
+- Musikvideo-Konzept
+- Szenen nach Songstruktur
+- Bild- und Videoprompts
+- Schnitt- und Beat-Marker
+- Export- und Thumbnail-Ideen
 
 ## Tools
 
-- Ollama
-- OpenClaw
-- FFmpeg
-- ComfyUI
-- Wan2.x
-- optional Demucs/BPM-Analyse
+Ollama, OpenClaw, FFmpeg, Whisper, BPM Analyzer, ComfyUI, Wan2.x, optional Suno/Udio-Connector.
 
 ## Sicherheitsregeln
 
-- Musikrechte pruefen.
-- Keine fremde Kuenstlerstimme oder Person ohne Zustimmung imitieren.
-- Keine irrefuehrende Kennzeichnung von KI-generiertem Material.
+- Keine urheberrechtlich geschuetzten Songs ohne Rechte verarbeiten.
+- Keine Stimmen realer Personen imitieren.
+- Keine irrefuehrende Kuenstleridentitaet erzeugen.
 
 ## Kostenkontrolle
 
-- Erst 10-15 Sekunden als Proof-of-Concept.
-- Full-Length erst nach Stilfreigabe.
+Rendering nach Szenen staffeln und erst mit Low-Res-Preview testen.
 
 ## Beispielprompt
 
 ```text
-Plane ein 45-Sekunden-Musikvideo fuer einen nostalgischen EDM/K-Pop Song.
-Erstelle 8 Shots mit Stimmung, Kamera, Licht, Motion, Bildprompt und Videoprompt.
+Erstelle ein Musikvideo-Konzept fuer einen 90er-EDM/K-Pop Track.
+Gefuehl: nostalgisch, euphorisch, spaete Nacht, Neonlichter.
+Ordne jede Szene Intro, Verse, Drop und Outro zu.
 ```
 
 ## Beispielworkflow
 
 1. Songstruktur erfassen.
-2. Beat- und Szenenpunkte festlegen.
-3. Keyframes generieren.
-4. Wan2.x-Clips rendern.
-5. FFmpeg-Schnitt mit Audio synchronisieren.
+2. Visual Theme bestimmen.
+3. Szenen an Beatmarker koppeln.
+4. Keyframes und Motion-Prompts erstellen.
+5. FFmpeg-Schnittplan ausgeben.
+## Hugging Face / Huge_Facing
 
+Der Music-Video-Agent kann Hugging Face als Quelle fuer Video-, Bild-, Upscaler-, Whisper- oder TTS-Modelle dokumentieren. Fuer Musikvideos ist besonders wichtig, Modelllizenz, Songlizenz und Rechte am Ausgangsmaterial getrennt zu pruefen.
