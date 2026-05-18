@@ -1465,6 +1465,45 @@ selection_contains() {
     return 1
 }
 
+run_ordered_tool_actions() {
+    local context_label="$1"
+    local -n uninstall_queue_ref="$2"
+    local -n install_queue_ref="$3"
+    local tool_key
+
+    if [ "${#uninstall_queue_ref[@]}" -eq 0 ] && [ "${#install_queue_ref[@]}" -eq 0 ]; then
+        echo -e "${YELLOW}Keine Tool-Aenderungen fuer ${context_label} ausgewaehlt.${NC}"
+        return 0
+    fi
+
+    echo
+    echo -e "${BLUE}Geplante Reihenfolge fuer ${context_label}:${NC}"
+    echo -e "${YELLOW}1. Deinstallationen zuerst:${NC} ${uninstall_queue_ref[*]:-(keine)}"
+    echo -e "${YELLOW}2. Installationen danach:${NC} ${install_queue_ref[*]:-(keine)}"
+    echo -e "${YELLOW}So wird Speicherplatz vor neuen Downloads, Builds und Container-Images freigegeben.${NC}"
+    echo
+
+    for tool_key in "${uninstall_queue_ref[@]}"; do
+        [ -n "$tool_key" ] || continue
+        uninstall_tool "$tool_key"
+        if [ "${TOOL_BATCH_ABORT_REQUESTED:-0}" = "1" ]; then
+            echo -e "${YELLOW}Batch wurde auf Wunsch nach '${tool_key}' abgebrochen. Rueckkehr ins Setup.${NC}"
+            return 1
+        fi
+    done
+
+    for tool_key in "${install_queue_ref[@]}"; do
+        [ -n "$tool_key" ] || continue
+        install_tool "$tool_key"
+        if [ "${TOOL_BATCH_ABORT_REQUESTED:-0}" = "1" ]; then
+            echo -e "${YELLOW}Batch wurde auf Wunsch nach '${tool_key}' abgebrochen. Rueckkehr ins Setup.${NC}"
+            return 1
+        fi
+    done
+
+    return 0
+}
+
 is_base_install_ready() {
     command -v node >/dev/null 2>&1 || return 1
     command -v pnpm >/dev/null 2>&1 || return 1
@@ -2262,7 +2301,7 @@ show_tool_management_menu() {
     done
 
     dialog --clear --backtitle "$APP_TITLE" \
-    --title "TOOL-MANAGEMENT (${installed_tool_count}/${total_tool_count} installiert)" --checklist "Wählen Sie Tools zum Installieren/Deinstallieren. Gesamt: ${total_tool_count} | Installiert: ${installed_tool_count}" 32 110 24 \
+    --title "TOOL-MANAGEMENT (${installed_tool_count}/${total_tool_count} installiert)" --checklist "(*) = behalten oder installieren. Leer = bei installierten Tools deinstallieren. Ausführung: erst Deinstallationen, danach Installationen. Gesamt: ${total_tool_count} | Installiert: ${installed_tool_count}" 32 110 24 \
     "${TOOL_CHECKLIST_OPTIONS[@]}" 2> /tmp/tool_selection
 
     if [ $? -ne 0 ]; then
@@ -2271,25 +2310,27 @@ show_tool_management_menu() {
 
     mapfile -t SELECTED_TOOLS_ARRAY < <(tr ' ' '\n' < /tmp/tool_selection | tr -d '"' | sed '/^$/d')
 
-    # Erst Deinstallationen, dann Installationen. So wird Speicher freigegeben,
-    # bevor neue, oft grosse Abhaengigkeiten geladen werden.
+    local -a tools_to_uninstall=()
+    local -a tools_to_install=()
+
+    # Erst Deinstallationen planen, dann Installationen. So wird Speicher
+    # freigegeben, bevor neue, oft grosse Abhaengigkeiten geladen werden.
     for tool_key in "${TOOL_KEYS[@]}"; do
         if ! selection_contains "$tool_key" "${SELECTED_TOOLS_ARRAY[@]}" && [ "${INSTALLED_TOOLS_MAP[$tool_key]:-}" = "1" ]; then
-            uninstall_tool "$tool_key"
-            if [ "${TOOL_BATCH_ABORT_REQUESTED:-0}" = "1" ]; then
-                return 0
-            fi
+            tools_to_uninstall+=("$tool_key")
         fi
     done
 
     for tool_key in "${TOOL_KEYS[@]}"; do
         if selection_contains "$tool_key" "${SELECTED_TOOLS_ARRAY[@]}" && [ "${INSTALLED_TOOLS_MAP[$tool_key]:-}" != "1" ]; then
-            install_tool "$tool_key"
-            if [ "${TOOL_BATCH_ABORT_REQUESTED:-0}" = "1" ]; then
-                return 0
-            fi
+            tools_to_install+=("$tool_key")
         fi
     done
+
+    if ! run_ordered_tool_actions "Tool-Management" tools_to_uninstall tools_to_install; then
+        return 0
+    fi
+
     read -p "Tool-Management abgeschlossen. Drücken Sie Enter..."
 }
 
@@ -2434,7 +2475,7 @@ show_tool_group_checklist() {
     fi
 
     dialog --clear --backtitle "$APP_TITLE" \
-    --title "$group_title" --checklist "Wählen Sie Tools zum Installieren/Deinstallieren:" 28 110 18 \
+    --title "$group_title" --checklist "(*) = behalten oder installieren. Leer = bei installierten Tools deinstallieren. Ausführung: erst Deinstallationen, danach Installationen." 28 110 18 \
     "${options[@]}" 2> /tmp/profile_block_tools_selection
 
     if [ $? -ne 0 ]; then
@@ -2443,29 +2484,29 @@ show_tool_group_checklist() {
 
     mapfile -t SELECTED_GROUP_TOOLS < <(tr ' ' '\n' < /tmp/profile_block_tools_selection | tr -d '"' | sed '/^$/d')
 
-    # Erst Deinstallationen, dann Installationen, damit Speicher vor neuen
-    # Downloads/Builds frei wird.
+    local -a tools_to_uninstall=()
+    local -a tools_to_install=()
+
+    # Erst Deinstallationen planen, dann Installationen, damit Speicher vor
+    # neuen Downloads/Builds frei wird.
     for tool_key in $tool_list; do
         [ -n "$tool_key" ] || continue
         if ! selection_contains "$tool_key" "${SELECTED_GROUP_TOOLS[@]}" && [ "${installed_map[$tool_key]:-}" = "1" ]; then
-            uninstall_tool "$tool_key"
-            if [ "${TOOL_BATCH_ABORT_REQUESTED:-0}" = "1" ]; then
-                PROFILE_FLOW_ABORT_REQUESTED=1
-                return 0
-            fi
+            tools_to_uninstall+=("$tool_key")
         fi
     done
 
     for tool_key in $tool_list; do
         [ -n "$tool_key" ] || continue
         if selection_contains "$tool_key" "${SELECTED_GROUP_TOOLS[@]}" && [ "${installed_map[$tool_key]:-}" != "1" ]; then
-            install_tool "$tool_key"
-            if [ "${TOOL_BATCH_ABORT_REQUESTED:-0}" = "1" ]; then
-                PROFILE_FLOW_ABORT_REQUESTED=1
-                return 0
-            fi
+            tools_to_install+=("$tool_key")
         fi
     done
+
+    if ! run_ordered_tool_actions "$group_title" tools_to_uninstall tools_to_install; then
+        PROFILE_FLOW_ABORT_REQUESTED=1
+        return 0
+    fi
 }
 
 toggle_full_profile_from_block() {
