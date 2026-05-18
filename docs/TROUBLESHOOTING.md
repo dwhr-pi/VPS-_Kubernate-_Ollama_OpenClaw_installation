@@ -401,3 +401,26 @@ bash scripts/lib/resource_check.sh --summary
 ```bash
 bash scripts/operations/security_scan.sh
 ```
+## pnpm: ERR_PNPM_IGNORED_BUILDS
+
+Symptom:
+
+```text
+[ERR_PNPM_IGNORED_BUILDS] Ignored build scripts: esbuild, sharp, better-sqlite3, ...
+Run "pnpm approve-builds" to pick which dependencies should be allowed to run scripts.
+```
+
+Bedeutung:
+
+pnpm 10/11 blockiert Build-Skripte von Abhaengigkeiten standardmaessig oder nach Policy, damit Pakete beim Installieren nicht ungefragt Code ausfuehren. Das ist eine Sicherheitsfunktion, aber native Module wie `esbuild`, `sharp`, `argon2`, `better-sqlite3`, `onnxruntime-node` oder `hnswlib-node` koennen dadurch unvollstaendig bleiben.
+
+Empfohlener Umgang:
+
+- Nicht blind alle Builds erlauben.
+- Im jeweiligen Projektverzeichnis `pnpm ignored-builds` ausfuehren.
+- Nur bekannte und benoetigte Pakete mit `pnpm approve-builds` oder einer gepflegten `onlyBuiltDependencies`-Liste freigeben.
+- Danach `pnpm install --no-frozen-lockfile` und den Build erneut starten.
+
+Ruflo:
+
+Das Ruflo-Installskript erkennt diesen Fall und fragt interaktiv, ob nur bekannte Ruflo-Build-Abhaengigkeiten in `pnpm-workspace.yaml` unter `onlyBuiltDependencies` eingetragen werden sollen. Fuer nicht-interaktive Tests kann bewusst `RUFLO_APPROVE_BUILDS=1` gesetzt werden.

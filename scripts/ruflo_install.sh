@@ -19,6 +19,19 @@ RUFLO_REPOS=(
     "https://github.com/ruvnet/ruflo.git"
     "https://github.com/dwhr-pi/ruflo.git"
 )
+RUFLO_PNPM_ALLOWED_BUILDS=(
+    "@google/genai"
+    "agentdb"
+    "agentic-flow"
+    "argon2"
+    "better-sqlite3"
+    "esbuild"
+    "hnswlib-node"
+    "onnxruntime-node"
+    "protobufjs"
+    "sharp"
+    "tldjs"
+)
 
 run_sudo() {
     if [ "${EUID}" -eq 0 ]; then
@@ -65,6 +78,77 @@ ensure_pnpm() {
     run_sudo env PATH="$PATH" corepack prepare pnpm@latest --activate
 }
 
+ensure_pnpm_workspace_file() {
+    if [ -f pnpm-workspace.yaml ]; then
+        return
+    fi
+
+    cat > pnpm-workspace.yaml <<'EOF'
+packages:
+  - "."
+EOF
+}
+
+append_pnpm_allowed_builds() {
+    local dep
+
+    ensure_pnpm_workspace_file
+
+    if ! grep -q '^onlyBuiltDependencies:' pnpm-workspace.yaml; then
+        {
+            echo
+            echo "onlyBuiltDependencies:"
+        } >> pnpm-workspace.yaml
+    fi
+
+    for dep in "${RUFLO_PNPM_ALLOWED_BUILDS[@]}"; do
+        if ! grep -qx "  - ${dep}" pnpm-workspace.yaml; then
+            echo "  - ${dep}" >> pnpm-workspace.yaml
+        fi
+    done
+}
+
+handle_pnpm_ignored_builds() {
+    local answer
+
+    if ! command -v pnpm >/dev/null 2>&1; then
+        return
+    fi
+
+    if ! pnpm ignored-builds >/tmp/ruflo_pnpm_ignored_builds.txt 2>/dev/null; then
+        return
+    fi
+
+    if ! grep -qE '^[[:space:]]*[[:alnum:]_@./-]+' /tmp/ruflo_pnpm_ignored_builds.txt; then
+        return
+    fi
+
+    echo -e "${YELLOW}pnpm hat Build-Skripte blockiert. Das ist eine Sicherheitsfunktion von pnpm 10/11.${NC}"
+    echo -e "${YELLOW}Blockierte Pakete laut pnpm:${NC}"
+    sed 's/^/  - /' /tmp/ruflo_pnpm_ignored_builds.txt
+    echo
+    echo -e "${YELLOW}Ohne Freigabe koennen native Module wie esbuild, sharp, argon2 oder better-sqlite3 spaeter im Build fehlen.${NC}"
+    echo -e "${YELLOW}Es werden nur bekannte Ruflo-Abhaengigkeiten in pnpm-workspace.yaml unter onlyBuiltDependencies eingetragen.${NC}"
+
+    if [ "${RUFLO_APPROVE_BUILDS:-}" = "1" ] || [ "${RUFLO_APPROVE_BUILDS:-}" = "true" ]; then
+        answer="j"
+    else
+        read -r -p "Bekannte Ruflo-Build-Abhaengigkeiten gezielt erlauben und pnpm install wiederholen? [j/N] " answer
+    fi
+
+    case "${answer:-N}" in
+        j|J|y|Y)
+            cp pnpm-workspace.yaml "pnpm-workspace.yaml.bak.$(date +%Y%m%d_%H%M%S)" 2>/dev/null || true
+            append_pnpm_allowed_builds
+            echo -e "${BLUE}pnpm install wird mit gezielter Build-Freigabe erneut ausgefuehrt...${NC}"
+            pnpm install --no-frozen-lockfile
+            ;;
+        *)
+            echo -e "${YELLOW}Keine Build-Skripte freigegeben. Wenn der Build fehlschlaegt, fuehre im Ruflo-Verzeichnis bewusst 'pnpm approve-builds' aus oder setze RUFLO_APPROVE_BUILDS=1.${NC}"
+            ;;
+    esac
+}
+
 detect_ruflo_repo() {
     local repo
     for repo in "${RUFLO_REPOS[@]}"; do
@@ -108,9 +192,20 @@ install_ruflo() {
 
     echo -e "${BLUE}Installiere Ruflo-Abhaengigkeiten mit pnpm...${NC}"
     pnpm install --no-frozen-lockfile
+    handle_pnpm_ignored_builds
 
     echo -e "${BLUE}Baue Ruflo mit pnpm...${NC}"
-    pnpm build
+    if ! pnpm build; then
+        echo -e "${RED}Fehler: Ruflo Build mit pnpm fehlgeschlagen.${NC}"
+        echo -e "${YELLOW}Wenn kurz zuvor ERR_PNPM_IGNORED_BUILDS erschien, fehlen wahrscheinlich freigegebene native Build-Skripte.${NC}"
+        echo -e "${YELLOW}Sichere Optionen:${NC}"
+        echo "  cd $RUFLO_DIR"
+        echo "  pnpm ignored-builds"
+        echo "  pnpm approve-builds"
+        echo "  pnpm install --no-frozen-lockfile"
+        echo "  pnpm build"
+        exit 1
+    fi
 }
 
 link_ruflo_cli() {

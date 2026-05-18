@@ -2856,7 +2856,7 @@ while true; do
             fi
             read -p "Standalone MiniPC-Setup abgeschlossen. Drücken Sie Enter..."
             ;;
-        "─"|"──"|"───"|"────")
+        ________*)
             continue
             ;;
         7)
