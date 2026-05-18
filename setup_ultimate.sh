@@ -1220,18 +1220,18 @@ show_options_menu() {
         --title "${TXT_OPTIONS_MENU_TITLE:-OPTIONEN}" --menu "${TXT_OPTIONS_MENU_PROMPT:-Wählen Sie eine Verwaltungs- oder Konfigurationsfunktion:}" 40 110 24 \
         "1" "${TXT_OPTIONS_1:-Sprache ändern}" \
         "2" "${TXT_OPTIONS_14:-Sprachpakete verwalten}" \
-        "--sep-1" "──────────────── Sprache / Basis ────────────────" \
+        "________1" "________________ Sprache / Basis ________________" \
         "3" "${TXT_OPTIONS_2:-Setup-Messwerte & Benchmarks bearbeiten}" \
-        "--sep-2" "──────────────── Messwerte / Workspace ──────────" \
+        "________2" "____________ Messwerte / Workspace ______________" \
         "4" "${TXT_OPTIONS_7:-Benutzer-Workspace verwalten}" \
         "5" "${TXT_OPTIONS_5:-Ollama Modellkatalog}" \
         "6" "${TXT_OPTIONS_3:-Ollama Modelfile-Assistent}" \
         "7" "${TXT_OPTIONS_4:-LLM-Builder Projektstruktur-Assistent}" \
         "8" "${TXT_OPTIONS_8:-Custom GitHub-Quellen & Ollama-Builds}" \
-        "--sep-3" "──────────────── Quellen / Konfiguration ────────" \
+        "________3" "___________ Quellen / Konfiguration _____________" \
         "9" "${TXT_OPTIONS_9:-LLMOps Plattform Konfiguration (.env Stack)}" \
         "10" "${TXT_OPTIONS_10:-Huginn Konfiguration (.env Vorlage)}" \
-        "--sep-4" "──────────────── Setup / Diagnose ───────────────" \
+        "________4" "______________ Setup / Diagnose _________________" \
         "11" "${TXT_OPTIONS_6:-Setup-Repository hart reparieren / auf GitHub main zurücksetzen}" \
         "12" "${TXT_OPTIONS_12:-Nur auf Setup-Updates prüfen}" \
         "13" "${TXT_OPTIONS_13:-Jetzt nur das Setup aktualisieren}" \
@@ -1340,7 +1340,7 @@ show_options_menu() {
                 bash "$INSTALL_DIR/scripts/dependency_snapshot.sh"
                 read -p "Abhängigkeiten-/Speicher-Snapshot abgeschlossen. Drücken Sie Enter..."
                 ;;
-            --sep-*)
+            ________*)
                 continue
                 ;;
         esac
@@ -2724,16 +2724,16 @@ show_main_menu() {
     "1" "${TXT_MENU_1:-Setup-Update + System-Update (Repo, OS & pnpm)}" \
     "2" "${TXT_MENU_2:-Ollama Modell-Manager}" \
     "3" "${TXT_MENU_3:-OpenClaw Konfiguration (.env & config.json)}" \
-    "----" "${TXT_SEPARATOR_LINE:-────────────────────────────────────────────────────────}" \
+    "________1" "${TXT_SEPARATOR_LINE:-________________________________________________________}" \
     "4" "${TXT_MENU_4:-Hybrid: Dein MiniPC + Multi-VPS (Empfohlen)}" \
     "5" "${TXT_MENU_5:-Standalone: Nur VPS (Cloud-Native)}" \
     "6" "${TXT_MENU_6:-Standalone: Nur MiniPC (Lokal)}" \
-    "─" "${TXT_SEPARATOR_LINE:-────────────────────────────────────────────────────────}" \
+    "________2" "${TXT_SEPARATOR_LINE:-________________________________________________________}" \
     "7" "${TXT_MENU_7:-Ruflo: Installation & Management}" \
-    "──" "${TXT_SEPARATOR_LINE:-────────────────────────────────────────────────────────}" \
+    "________3" "${TXT_SEPARATOR_LINE:-________________________________________________________}" \
     "8" "${TXT_MENU_8:-Tools: Installieren & Deinstallieren}" \
     "9" "${TXT_MENU_9:-Profile: Blöcke, Gesamtprofile & Einzeltools}" \
-    "───" "${TXT_SEPARATOR_LINE:-────────────────────────────────────────────────────────}" \
+    "________4" "${TXT_SEPARATOR_LINE:-________________________________________________________}" \
     "10" "${TXT_MENU_10:-Dokumentation & API-Key Guide}" \
     "11" "${TXT_MENU_11:-System-Check & Port-Analyse}" \
     "12" "${TXT_MENU_12:-OpenClaw starten (Dev-Modus)}" \
