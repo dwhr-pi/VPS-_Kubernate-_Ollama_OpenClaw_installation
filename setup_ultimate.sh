@@ -1235,6 +1235,7 @@ show_options_menu() {
         "11" "${TXT_OPTIONS_6:-Setup-Repository hart reparieren / auf GitHub main zurücksetzen}" \
         "12" "${TXT_OPTIONS_12:-Nur auf Setup-Updates prüfen}" \
         "13" "${TXT_OPTIONS_13:-Jetzt nur das Setup aktualisieren}" \
+        "________5" "____________ Installation / Diagnose ____________" \
         "14" "${TXT_OPTIONS_11:-Installationsüberwachung konfigurieren}" \
         "15" "${TXT_OPTIONS_15:-Tool-Logdiagnose anzeigen / optional per E-Mail senden}" \
         "16" "E-Mail-Diagnose konfigurieren / Testmail senden" \
