@@ -112,15 +112,15 @@ handle_pnpm_ignored_builds() {
     local answer
 
     if ! command -v pnpm >/dev/null 2>&1; then
-        return
+        return 1
     fi
 
     if ! pnpm ignored-builds >/tmp/ruflo_pnpm_ignored_builds.txt 2>/dev/null; then
-        return
+        return 1
     fi
 
     if ! grep -qE '^[[:space:]]*[[:alnum:]_@./-]+' /tmp/ruflo_pnpm_ignored_builds.txt; then
-        return
+        return 1
     fi
 
     echo -e "${YELLOW}pnpm hat Build-Skripte blockiert. Das ist eine Sicherheitsfunktion von pnpm 10/11.${NC}"
@@ -142,9 +142,11 @@ handle_pnpm_ignored_builds() {
             append_pnpm_allowed_builds
             echo -e "${BLUE}pnpm install wird mit gezielter Build-Freigabe erneut ausgefuehrt...${NC}"
             pnpm install --no-frozen-lockfile
+            return $?
             ;;
         *)
             echo -e "${YELLOW}Keine Build-Skripte freigegeben. Wenn der Build fehlschlaegt, fuehre im Ruflo-Verzeichnis bewusst 'pnpm approve-builds' aus oder setze RUFLO_APPROVE_BUILDS=1.${NC}"
+            return 1
             ;;
     esac
 }
@@ -191,8 +193,17 @@ install_ruflo() {
     fi
 
     echo -e "${BLUE}Installiere Ruflo-Abhaengigkeiten mit pnpm...${NC}"
-    pnpm install --no-frozen-lockfile
-    handle_pnpm_ignored_builds
+    if ! pnpm install --no-frozen-lockfile; then
+        echo -e "${YELLOW}pnpm install wurde nicht erfolgreich abgeschlossen. Pruefe auf blockierte Build-Skripte...${NC}"
+        if ! handle_pnpm_ignored_builds; then
+            echo -e "${RED}Fehler: pnpm install fuer Ruflo fehlgeschlagen.${NC}"
+            echo -e "${YELLOW}Wenn ERR_PNPM_IGNORED_BUILDS angezeigt wurde, muss die gezielte Build-Freigabe bestaetigt werden.${NC}"
+            echo -e "${YELLOW}Nicht-interaktiv kann bewusst RUFLO_APPROVE_BUILDS=1 gesetzt werden.${NC}"
+            exit 1
+        fi
+    else
+        handle_pnpm_ignored_builds || true
+    fi
 
     echo -e "${BLUE}Baue Ruflo mit pnpm...${NC}"
     if ! pnpm build; then
