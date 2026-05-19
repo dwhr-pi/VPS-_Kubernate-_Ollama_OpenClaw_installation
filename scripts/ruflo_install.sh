@@ -276,6 +276,21 @@ prepare_ruflo_cli_workspace() {
         pnpm_v3 --dir "$RUFLO_DIR/v3" --filter @claude-flow/swarm run build || true
     fi
 
+    if [ -f "$RUFLO_DIR/v3/@claude-flow/cli-core/package.json" ]; then
+        echo -e "${BLUE}Baue @claude-flow/cli-core vor, falls vorhanden...${NC}"
+        pnpm_v3 --dir "$RUFLO_DIR/v3" --filter @claude-flow/cli-core run build || true
+    fi
+
+    if [ -f "$RUFLO_DIR/v3/@claude-flow/hooks/package.json" ]; then
+        echo -e "${BLUE}Baue @claude-flow/hooks vor, falls vorhanden...${NC}"
+        pnpm_v3 --dir "$RUFLO_DIR/v3" --filter @claude-flow/hooks run build || true
+    fi
+
+    if [ -f "$RUFLO_DIR/v3/@claude-flow/codex/package.json" ]; then
+        echo -e "${BLUE}Baue @claude-flow/codex vor, falls vorhanden...${NC}"
+        pnpm_v3 --dir "$RUFLO_DIR/v3" --filter @claude-flow/codex run build || true
+    fi
+
     if [ -f "$RUFLO_DIR/v3/@claude-flow/cli/package.json" ]; then
         echo -e "${BLUE}Installiere fehlende optionale CLI-Abhaengigkeiten lokal im CLI-Workspace...${NC}"
         pnpm_v3 --dir "$RUFLO_DIR/v3/@claude-flow/cli" add @ruvector/learning-wasm@^0.1.29 --save-optional || true

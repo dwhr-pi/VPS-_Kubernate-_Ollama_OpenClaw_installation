@@ -456,6 +456,7 @@ Der Ruflo-v3-Workspace verlangt derzeit `pnpm@8.15.0`, waehrend das Root-Setup m
 Validierter Stand:
 
 - Der erfolgreiche Ruflo-Lauf ist daran erkennbar, dass `@claude-flow/memory` und `@claude-flow/swarm` gebaut werden.
+- Fuer eine wirklich startbare CLI muessen ausserdem `@claude-flow/cli-core` und, je nach Upstream-Stand, optionale Hilfspakete wie `@claude-flow/hooks` und `@claude-flow/codex` gebaut sein.
 - Danach muss `Ruflo CLI-Build ist vorhanden` erscheinen.
 - Zum Schluss muss `Ruflo wurde erfolgreich vorbereitet` erscheinen.
 - Warnungen zu fehlenden optionalen Bin-Links, Peer Dependencies oder `agentic-flow` sind in diesem Alpha-Stand dokumentierte Upstream-Einschraenkungen, solange der CLI-Build vorhanden ist.
