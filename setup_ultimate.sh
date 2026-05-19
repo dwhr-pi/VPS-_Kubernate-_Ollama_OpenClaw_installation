@@ -770,7 +770,7 @@ show_installation_monitoring_menu() {
         fi
 
         dialog --clear --backtitle "$APP_TITLE" \
-        --title "INSTALLATIONSÜBERWACHUNG" --menu "Zusätzliche Überwachung, Logansicht und sichere Log-Aufräumung." 30 112 12 \
+        --title "INSTALLATIONSÜBERWACHUNG" --menu "Zusätzliche Überwachung, Logansicht und sichere Log-Aufräumung." 32 112 13 \
         "1" "Erweiterte Installationsüberwachung umschalten (aktuell: ${monitoring_state})" \
         "2" "Log-Verzeichnis anzeigen" \
         "3" "Letzte Installations-Logs anzeigen" \
@@ -779,10 +779,12 @@ show_installation_monitoring_menu() {
         "6" "Log-Aufräumung Trockenlauf anzeigen" \
         "7" "Alte Logs jetzt löschen" \
         "8" "Alte Fehler-Logs jetzt löschen" \
-        "9" "Aufbewahrung einstellen (Tage/neueste Dateien)" \
-        "10" "Installationslauf-Diagnose erstellen" \
-        "11" "Abhängigkeiten-/Speicher-Snapshot erstellen" \
-        "12" "Zurück" 2> /tmp/install_monitoring_choice
+        "9" "Überholte Fehler-Logs anzeigen" \
+        "10" "Überholte Fehler-Logs jetzt löschen" \
+        "11" "Aufbewahrung einstellen (Tage/neueste Dateien)" \
+        "12" "Installationslauf-Diagnose erstellen" \
+        "13" "Abhängigkeiten-/Speicher-Snapshot erstellen" \
+        "14" "Zurück" 2> /tmp/install_monitoring_choice
 
         if [ $? -ne 0 ]; then
             return 0
@@ -846,21 +848,35 @@ show_installation_monitoring_menu() {
                 read -p "Drücken Sie Enter..."
                 ;;
             9)
-                show_log_cleanup_settings_menu
+                clear
+                echo -e "${YELLOW}Überholte Fehler-Logs werden im Trockenlauf angezeigt.${NC}"
+                bash "$INSTALL_DIR/scripts/cleanup_setup_logs.sh" --dry-run --superseded-failed
+                echo
+                read -p "Drücken Sie Enter..."
                 ;;
             10)
+                clear
+                echo -e "${YELLOW}Überholte Fehler-Logs werden jetzt gelöscht, wenn ein neuerer Erfolgslog desselben Tools existiert.${NC}"
+                bash "$INSTALL_DIR/scripts/cleanup_setup_logs.sh" --apply --superseded-failed
+                echo
+                read -p "Drücken Sie Enter..."
+                ;;
+            11)
+                show_log_cleanup_settings_menu
+                ;;
+            12)
                 clear
                 bash "$INSTALL_DIR/scripts/install_run_diagnostics.sh"
                 echo
                 read -p "Installationslauf-Diagnose abgeschlossen. Drücken Sie Enter..."
                 ;;
-            11)
+            13)
                 clear
                 bash "$INSTALL_DIR/scripts/dependency_snapshot.sh"
                 echo
                 read -p "Abhängigkeiten-/Speicher-Snapshot abgeschlossen. Drücken Sie Enter..."
                 ;;
-            12)
+            14)
                 return 0
                 ;;
         esac
@@ -1014,13 +1030,14 @@ show_diagnostics_quick_menu() {
         dialog --clear --backtitle "$APP_TITLE" \
         --cancel-label "Zurueck" \
         --title "TOOL-DIAGNOSE & LETZTE FEHLER" \
-        --menu "Schneller Zugriff auf die letzten Installationsprotokolle und Diagnoseberichte." 22 104 6 \
+        --menu "Schneller Zugriff auf die letzten Installationsprotokolle und Diagnoseberichte." 24 104 7 \
         "1" "Letzten fehlgeschlagenen Fehlerbericht anzeigen" \
         "2" "Letztes Installationsprotokoll anzeigen" \
         "3" "Tool-Logdiagnose interaktiv starten" \
         "4" "Installationslauf-Diagnose erstellen" \
         "5" "Abhaengigkeiten-/Speicher-Snapshot erstellen" \
-        "6" "Letztes Installationsprotokoll per E-Mail senden" 2> /tmp/diagnostics_quick_choice
+        "6" "Ueberholte Fehler-Logs jetzt loeschen" \
+        "7" "Letztes Installationsprotokoll per E-Mail senden" 2> /tmp/diagnostics_quick_choice
 
         if [ $? -ne 0 ]; then
             clear
@@ -1049,6 +1066,10 @@ show_diagnostics_quick_menu() {
                 read -p "Abhängigkeiten-/Speicher-Snapshot abgeschlossen. Drücken Sie Enter..."
                 ;;
             6)
+                bash "$INSTALL_DIR/scripts/cleanup_setup_logs.sh" --apply --superseded-failed
+                read -p "Überholte Fehler-Logs bereinigt. Drücken Sie Enter..."
+                ;;
+            7)
                 bash "$INSTALL_DIR/scripts/last_install_log.sh" --email
                 read -p "E-Mail-Diagnose abgeschlossen. Drücken Sie Enter..."
                 ;;
@@ -2973,8 +2994,13 @@ while true; do
             "Abhaengig vom Repo-Ziel kann zusaetzlich Netzwerkzeit fuer das Klonen und den Build anfallen."
             begin_operation_measurement "main_menu_ruflo" "Ruflo: Installation & Management"
             echo -e "${BLUE}Ruflo Installation & Management...${NC}"
-            run_bash_script "$INSTALL_DIR/scripts/ruflo_install.sh"
-            if [ $? -eq 0 ]; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
+            if run_bash_script "$INSTALL_DIR/scripts/ruflo_install.sh"; then
+                append_unique_line "$TOOL_STATUS_FILE" "Ruflo"
+                end_operation_measurement "success"
+                echo -e "${GREEN}Ruflo wurde als installiert markiert.${NC}"
+            else
+                end_operation_measurement "failed"
+            fi
             read -p "Ruflo-Aktion abgeschlossen. Drücken Sie Enter..."
             ;;
         8)

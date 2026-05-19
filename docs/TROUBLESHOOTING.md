@@ -345,6 +345,14 @@ Vorgehen:
 - Fuer eine Lauf-Zusammenfassung `bash scripts/install_run_diagnostics.sh` nutzen.
 - Fuer aktuell offene Fehler `bash scripts/last_install_log.sh --failed` nutzen. Das Script trennt inzwischen offene Fehler von alten Fehlerlogs, die durch einen spaeteren erfolgreichen Lauf desselben Tools ueberholt wurden.
 - Fuer den neuesten Tool-Bericht `bash scripts/tool_log_diagnostics.sh` nutzen.
+- Ueberholte Fehlerlogs kannst du gezielt bereinigen:
+
+```bash
+bash scripts/cleanup_setup_logs.sh --dry-run --superseded-failed
+bash scripts/cleanup_setup_logs.sh --apply --superseded-failed
+```
+
+Im Setup-Menue liegt das unter `Optionen` -> `Installationsueberwachung` -> `Ueberholte Fehler-Logs anzeigen` bzw. `Ueberholte Fehler-Logs jetzt loeschen`. Im Schnellmenue `Tooldiagnose / letzter Fehlerbericht` gibt es ebenfalls einen direkten Loeschpunkt.
 
 Bekannte Beispiele aus der Fehlerhistorie:
 
