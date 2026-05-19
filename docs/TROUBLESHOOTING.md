@@ -333,6 +333,25 @@ bash scripts/cleanup_setup_logs.sh --apply --days 14 --keep 30
 
 Im Setup-Menue liegt die Funktion unter `Optionen` -> `Installationsueberwachung`. Dort kann auch aktiviert werden, dass alte Logs vor jeder Tool-Installation oder -Deinstallation automatisch rotiert werden.
 
+### Mehrere Fehlerlogs richtig einordnen
+
+Bei wiederholten Installationsversuchen bleiben bewusst auch alte Fehlerlogs erhalten. Das ist gut fuer die Nachverfolgung, kann aber verwirren: Ein alter Treffer wie `npm error Lifecycle script build failed`, `Permission denied` oder ein Docker-Mount-Fehler bedeutet nicht automatisch, dass der aktuelle Stand noch defekt ist.
+
+Vorgehen:
+
+- Zuerst immer das neueste Log nach Zeitstempel pruefen, z. B. `20260519_191415_main_menu_ruflo.log`.
+- Danach erst aeltere Logs als Fehlerhistorie lesen.
+- Wenn ein neueres Log mit `wurde erfolgreich vorbereitet`, `Bundle complete`, `Build ist vorhanden` oder `success` endet, ueberstimmt dieser letzte erfolgreiche Lauf die alten Fehlerlogs.
+- Fuer eine Lauf-Zusammenfassung `bash scripts/install_run_diagnostics.sh` nutzen.
+- Fuer den neuesten Tool-Bericht `bash scripts/tool_log_diagnostics.sh` nutzen.
+
+Bekannte Beispiele aus der Fehlerhistorie:
+
+- Ruflo vor dem Fix: `Permission denied`, `pnpm install fuer Ruflo fehlgeschlagen`, `Lifecycle script build failed`, alter Root-Build mit unfertigen v3-/Plugin-Bereichen.
+- Ruflo nach dem Fix: `Ruflo CLI-Build ist vorhanden` und `Ruflo wurde erfolgreich vorbereitet`.
+- Prometheus: Docker-Mount-Fehler, wenn `/opt/prometheus/prometheus.yml` auf dem Host ein Verzeichnis statt einer Datei ist oder fehlt.
+- K3s-Deinstallation: `Unit k3s.service not loaded` ist meist ein harmloser Hinweis, wenn K3s bereits entfernt oder nie als systemd-Service geladen war.
+
 ### Huginn `master` mit PostgreSQL nachtesten
 
 Der Pfad `HUGINN_REPO_REF=master` plus `DATABASE_ADAPTER=postgresql` nutzt Ruby `3.4.x` ueber den getrennten rbenv-Pfad `~/.rbenv-openclaw-huginn`.
@@ -430,3 +449,11 @@ Hinweis zu Ruflo Alpha/Upstream:
 Der komplette Upstream-Befehl `pnpm build` kompiliert aktuell auch unfertige v3-/Plugin-Bereiche und kann mit TypeScript-Fehlern scheitern. Das Setup nutzt deshalb als Installationskriterium den gezielten v3-CLI-Build `npx -y pnpm@8.15.0 --dir v3 --filter @claude-flow/cli run build` und prueft danach, ob `v3/@claude-flow/cli/dist/src/index.js` vorhanden ist.
 
 Der Ruflo-v3-Workspace verlangt derzeit `pnpm@8.15.0`, waehrend das Root-Setup mit aktuellem pnpm/Corepack laufen kann. Weil Corepack in manchen Shells trotzdem bei pnpm 11 bleibt, ruft das Installskript fuer die v3-Workspace-Schritte bewusst `npx -y pnpm@8.15.0` auf. Danach baut es `@claude-flow/memory` und `@claude-flow/swarm` vor und installiert `@ruvector/learning-wasm` als optionale CLI-Abhaengigkeit.
+
+Validierter Stand:
+
+- Der erfolgreiche Ruflo-Lauf ist daran erkennbar, dass `@claude-flow/memory` und `@claude-flow/swarm` gebaut werden.
+- Danach muss `Ruflo CLI-Build ist vorhanden` erscheinen.
+- Zum Schluss muss `Ruflo wurde erfolgreich vorbereitet` erscheinen.
+- Warnungen zu fehlenden optionalen Bin-Links, Peer Dependencies oder `agentic-flow` sind in diesem Alpha-Stand dokumentierte Upstream-Einschraenkungen, solange der CLI-Build vorhanden ist.
+- Ruflo bleibt deshalb im Setup als `experimental` einzustufen, auch wenn die CLI vorbereitet wurde.
