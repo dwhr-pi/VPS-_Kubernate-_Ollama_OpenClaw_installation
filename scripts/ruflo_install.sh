@@ -83,6 +83,10 @@ activate_pnpm_version() {
     run_sudo env PATH="$PATH" corepack prepare "pnpm@${version}" --activate
 }
 
+pnpm_v3() {
+    npx -y pnpm@8.15.0 "$@"
+}
+
 ensure_pnpm_workspace_file() {
     if [ -f pnpm-workspace.yaml ]; then
         return
@@ -232,25 +236,24 @@ prepare_ruflo_cli_workspace() {
     echo -e "${BLUE}Bereite Ruflo CLI-Workspace gezielt vor...${NC}"
 
     if [ -f "$RUFLO_DIR/v3/package.json" ]; then
-        echo -e "${BLUE}Aktiviere pnpm 8.15.0 fuer den Ruflo-v3-Workspace...${NC}"
-        activate_pnpm_version "8.15.0"
+        echo -e "${BLUE}Nutze pnpm 8.15.0 fuer den Ruflo-v3-Workspace...${NC}"
         echo -e "${BLUE}Installiere Ruflo-v3 Workspace-Abhaengigkeiten...${NC}"
-        pnpm --dir "$RUFLO_DIR/v3" install --no-frozen-lockfile || true
+        pnpm_v3 --dir "$RUFLO_DIR/v3" install --no-frozen-lockfile || true
     fi
 
     if [ -f "$RUFLO_DIR/v3/@claude-flow/memory/package.json" ]; then
         echo -e "${BLUE}Baue @claude-flow/memory vor, falls vorhanden...${NC}"
-        pnpm --dir "$RUFLO_DIR/v3" --filter @claude-flow/memory run build || true
+        pnpm_v3 --dir "$RUFLO_DIR/v3" --filter @claude-flow/memory run build || true
     fi
 
     if [ -f "$RUFLO_DIR/v3/@claude-flow/swarm/package.json" ]; then
         echo -e "${BLUE}Baue @claude-flow/swarm vor, falls vorhanden...${NC}"
-        pnpm --dir "$RUFLO_DIR/v3" --filter @claude-flow/swarm run build || true
+        pnpm_v3 --dir "$RUFLO_DIR/v3" --filter @claude-flow/swarm run build || true
     fi
 
     if [ -f "$RUFLO_DIR/v3/@claude-flow/cli/package.json" ]; then
         echo -e "${BLUE}Installiere fehlende optionale CLI-Abhaengigkeiten lokal im CLI-Workspace...${NC}"
-        pnpm --dir "$RUFLO_DIR/v3/@claude-flow/cli" add @ruvector/learning-wasm@^0.1.29 --save-optional || true
+        pnpm_v3 --dir "$RUFLO_DIR/v3/@claude-flow/cli" add @ruvector/learning-wasm@^0.1.29 --save-optional || true
     fi
 }
 
@@ -288,8 +291,8 @@ install_ruflo() {
     prepare_ruflo_cli_workspace
 
     echo -e "${BLUE}Baue Ruflo CLI mit pnpm...${NC}"
-    echo -e "${YELLOW}Hinweis:${NC} Der Upstream-Root-Build kompiliert derzeit auch unfertige v3-/Plugin-Bereiche. Fuer die CLI wird gezielt build:ts genutzt."
-    pnpm run build:ts || true
+    echo -e "${YELLOW}Hinweis:${NC} Der Upstream-Root-Build kompiliert derzeit auch unfertige v3-/Plugin-Bereiche. Fuer die CLI wird gezielt der v3-CLI-Workspace gebaut."
+    pnpm_v3 --dir "$RUFLO_DIR/v3" --filter @claude-flow/cli run build || true
 
     if [ ! -f "$RUFLO_DIR/v3/@claude-flow/cli/dist/src/index.js" ]; then
         echo -e "${RED}Fehler: Ruflo CLI-Build konnte die benoetigte Datei nicht erzeugen.${NC}"
@@ -297,7 +300,7 @@ install_ruflo() {
         echo -e "${YELLOW}Sichere Optionen:${NC}"
         echo "  cd $RUFLO_DIR"
         echo "  pnpm install --no-frozen-lockfile"
-        echo "  pnpm run build:ts"
+        echo "  npx -y pnpm@8.15.0 --dir v3 --filter @claude-flow/cli run build"
         echo "  node bin/cli.js --help"
         echo -e "${YELLOW}Der komplette Upstream-Befehl 'pnpm build' ist fuer diesen Ruflo-Stand aktuell nicht als Installationskriterium geeignet.${NC}"
         exit 1
