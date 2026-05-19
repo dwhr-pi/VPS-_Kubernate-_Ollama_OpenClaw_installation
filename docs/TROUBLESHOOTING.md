@@ -343,6 +343,7 @@ Vorgehen:
 - Danach erst aeltere Logs als Fehlerhistorie lesen.
 - Wenn ein neueres Log mit `wurde erfolgreich vorbereitet`, `Bundle complete`, `Build ist vorhanden` oder `success` endet, ueberstimmt dieser letzte erfolgreiche Lauf die alten Fehlerlogs.
 - Fuer eine Lauf-Zusammenfassung `bash scripts/install_run_diagnostics.sh` nutzen.
+- Fuer aktuell offene Fehler `bash scripts/last_install_log.sh --failed` nutzen. Das Script trennt inzwischen offene Fehler von alten Fehlerlogs, die durch einen spaeteren erfolgreichen Lauf desselben Tools ueberholt wurden.
 - Fuer den neuesten Tool-Bericht `bash scripts/tool_log_diagnostics.sh` nutzen.
 
 Bekannte Beispiele aus der Fehlerhistorie:
