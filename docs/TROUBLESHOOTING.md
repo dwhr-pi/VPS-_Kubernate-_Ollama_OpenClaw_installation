@@ -423,7 +423,7 @@ Empfohlener Umgang:
 
 Ruflo:
 
-Das Ruflo-Installskript erkennt diesen Fall und fragt interaktiv, ob nur bekannte Ruflo-Build-Abhaengigkeiten in `pnpm-workspace.yaml` unter `allowBuilds: true` eingetragen werden sollen. Alte oder kaputte `onlyBuiltDependencies`-Versuche werden gesichert und durch eine saubere Workspace-Datei ersetzt. Fuer nicht-interaktive Tests kann bewusst `RUFLO_APPROVE_BUILDS=1` gesetzt werden.
+Das Ruflo-Installskript erkennt diesen Fall und fragt interaktiv, ob nur bekannte Ruflo-Build-Abhaengigkeiten in `pnpm-workspace.yaml` unter `allowBuilds: true` eingetragen werden sollen. Alte oder kaputte `onlyBuiltDependencies`-Versuche werden gesichert und durch eine saubere Workspace-Datei ersetzt. Wenn die Freigabe abgelehnt wird, bricht der Installer bewusst ab, weil der CLI-Build sonst reproduzierbar an fehlenden nativen Modulen scheitert. Fuer nicht-interaktive Tests kann bewusst `RUFLO_APPROVE_BUILDS=1` gesetzt werden.
 
 Hinweis zu Ruflo Alpha/Upstream:
 

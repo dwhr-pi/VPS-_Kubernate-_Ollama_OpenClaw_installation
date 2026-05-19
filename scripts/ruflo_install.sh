@@ -182,6 +182,12 @@ handle_pnpm_ignored_builds() {
     esac
 }
 
+has_pnpm_ignored_builds() {
+    command -v pnpm >/dev/null 2>&1 || return 1
+    pnpm ignored-builds >/tmp/ruflo_pnpm_ignored_builds.txt 2>/dev/null || return 1
+    grep -qE '^[[:space:]]*[[:alnum:]_@./-]+' /tmp/ruflo_pnpm_ignored_builds.txt
+}
+
 detect_ruflo_repo() {
     local repo
     for repo in "${RUFLO_REPOS[@]}"; do
@@ -217,6 +223,22 @@ clone_or_update_repo() {
     cd "$RUFLO_DIR"
 }
 
+prepare_ruflo_cli_workspace() {
+    echo -e "${BLUE}Bereite Ruflo CLI-Workspace gezielt vor...${NC}"
+
+    if [ -f "$RUFLO_DIR/v3/@claude-flow/swarm/package.json" ]; then
+        echo -e "${BLUE}Baue @claude-flow/swarm vor, falls vorhanden...${NC}"
+        pnpm --dir "$RUFLO_DIR/v3/@claude-flow/swarm" install --no-frozen-lockfile || true
+        pnpm --dir "$RUFLO_DIR/v3/@claude-flow/swarm" run build || true
+    fi
+
+    if [ -f "$RUFLO_DIR/v3/@claude-flow/cli/package.json" ]; then
+        echo -e "${BLUE}Installiere fehlende optionale CLI-Abhaengigkeiten lokal im CLI-Workspace...${NC}"
+        pnpm --dir "$RUFLO_DIR/v3/@claude-flow/cli" install --no-frozen-lockfile || true
+        pnpm --dir "$RUFLO_DIR/v3/@claude-flow/cli" add @claude-flow/memory@^3.0.0-alpha.17 @ruvector/learning-wasm@^0.1.29 --save-optional || true
+    fi
+}
+
 install_ruflo() {
     if [ ! -f package.json ]; then
         echo -e "${RED}Fehler: Im Ruflo-Repository wurde keine package.json gefunden.${NC}"
@@ -238,8 +260,17 @@ install_ruflo() {
             exit 1
         fi
     else
-        handle_pnpm_ignored_builds || true
+        if has_pnpm_ignored_builds; then
+            if ! handle_pnpm_ignored_builds; then
+                echo -e "${RED}Fehler: Ruflo braucht die gezielte Freigabe bekannter pnpm-Build-Skripte.${NC}"
+                echo -e "${YELLOW}Ohne diese Freigabe bleiben native Module unvollstaendig und der CLI-Build scheitert reproduzierbar.${NC}"
+                echo -e "${YELLOW}Starte erneut und bestaetige mit 'j' oder setze bewusst RUFLO_APPROVE_BUILDS=1.${NC}"
+                exit 1
+            fi
+        fi
     fi
+
+    prepare_ruflo_cli_workspace
 
     echo -e "${BLUE}Baue Ruflo CLI mit pnpm...${NC}"
     echo -e "${YELLOW}Hinweis:${NC} Der Upstream-Root-Build kompiliert derzeit auch unfertige v3-/Plugin-Bereiche. Fuer die CLI wird gezielt build:ts genutzt."
