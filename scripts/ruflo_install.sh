@@ -78,6 +78,11 @@ ensure_pnpm() {
     run_sudo env PATH="$PATH" corepack prepare pnpm@latest --activate
 }
 
+activate_pnpm_version() {
+    local version="$1"
+    run_sudo env PATH="$PATH" corepack prepare "pnpm@${version}" --activate
+}
+
 ensure_pnpm_workspace_file() {
     if [ -f pnpm-workspace.yaml ]; then
         return
@@ -226,16 +231,26 @@ clone_or_update_repo() {
 prepare_ruflo_cli_workspace() {
     echo -e "${BLUE}Bereite Ruflo CLI-Workspace gezielt vor...${NC}"
 
+    if [ -f "$RUFLO_DIR/v3/package.json" ]; then
+        echo -e "${BLUE}Aktiviere pnpm 8.15.0 fuer den Ruflo-v3-Workspace...${NC}"
+        activate_pnpm_version "8.15.0"
+        echo -e "${BLUE}Installiere Ruflo-v3 Workspace-Abhaengigkeiten...${NC}"
+        pnpm --dir "$RUFLO_DIR/v3" install --no-frozen-lockfile || true
+    fi
+
+    if [ -f "$RUFLO_DIR/v3/@claude-flow/memory/package.json" ]; then
+        echo -e "${BLUE}Baue @claude-flow/memory vor, falls vorhanden...${NC}"
+        pnpm --dir "$RUFLO_DIR/v3" --filter @claude-flow/memory run build || true
+    fi
+
     if [ -f "$RUFLO_DIR/v3/@claude-flow/swarm/package.json" ]; then
         echo -e "${BLUE}Baue @claude-flow/swarm vor, falls vorhanden...${NC}"
-        pnpm --dir "$RUFLO_DIR/v3/@claude-flow/swarm" install --no-frozen-lockfile || true
-        pnpm --dir "$RUFLO_DIR/v3/@claude-flow/swarm" run build || true
+        pnpm --dir "$RUFLO_DIR/v3" --filter @claude-flow/swarm run build || true
     fi
 
     if [ -f "$RUFLO_DIR/v3/@claude-flow/cli/package.json" ]; then
         echo -e "${BLUE}Installiere fehlende optionale CLI-Abhaengigkeiten lokal im CLI-Workspace...${NC}"
-        pnpm --dir "$RUFLO_DIR/v3/@claude-flow/cli" install --no-frozen-lockfile || true
-        pnpm --dir "$RUFLO_DIR/v3/@claude-flow/cli" add @claude-flow/memory@^3.0.0-alpha.17 @ruvector/learning-wasm@^0.1.29 --save-optional || true
+        pnpm --dir "$RUFLO_DIR/v3/@claude-flow/cli" add @ruvector/learning-wasm@^0.1.29 --save-optional || true
     fi
 }
 

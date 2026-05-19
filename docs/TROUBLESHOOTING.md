@@ -428,3 +428,5 @@ Das Ruflo-Installskript erkennt diesen Fall und fragt interaktiv, ob nur bekannt
 Hinweis zu Ruflo Alpha/Upstream:
 
 Der komplette Upstream-Befehl `pnpm build` kompiliert aktuell auch unfertige v3-/Plugin-Bereiche und kann mit TypeScript-Fehlern scheitern. Das Setup nutzt deshalb als Installationskriterium den gezielten CLI-Build `pnpm run build:ts` und prueft danach, ob `v3/@claude-flow/cli/dist/src/index.js` vorhanden ist.
+
+Der Ruflo-v3-Workspace verlangt derzeit `pnpm@8.15.0`, waehrend das Root-Setup mit aktuellem pnpm/Corepack laufen kann. Das Installskript aktiviert fuer die v3-Workspace-Vorbereitung gezielt pnpm 8.15.0, baut `@claude-flow/memory` und `@claude-flow/swarm` vor und installiert `@ruvector/learning-wasm` als optionale CLI-Abhaengigkeit.
