@@ -460,3 +460,5 @@ Validierter Stand:
 - Zum Schluss muss `Ruflo wurde erfolgreich vorbereitet` erscheinen.
 - Warnungen zu fehlenden optionalen Bin-Links, Peer Dependencies oder `agentic-flow` sind in diesem Alpha-Stand dokumentierte Upstream-Einschraenkungen, solange der CLI-Build vorhanden ist.
 - Ruflo bleibt deshalb im Setup als `experimental` einzustufen, auch wenn die CLI vorbereitet wurde.
+
+Wenn `git pull` in `/opt/ruflo` mit `Your local changes ... v3/pnpm-lock.yaml would be overwritten by merge` abbricht, stammen diese lokalen Aenderungen normalerweise von vorherigen `pnpm install`-/Build-Laeufen. `/opt/ruflo` ist kein Benutzer-Arbeitsrepo, sondern ein Upstream-Checkout. Der Installer sichert deshalb Status und Diffs nach `~/.openclaw_ultimate_user_data/backups/ruflo_git_dirty_*`, setzt nur `/opt/ruflo` per `git reset --hard`/`git clean -fd` sauber zurueck und aktualisiert danach erneut. Das betrifft nicht das OpenClaw-Setup-Repository.

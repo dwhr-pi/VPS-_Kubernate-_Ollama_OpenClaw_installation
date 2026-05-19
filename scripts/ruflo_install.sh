@@ -209,12 +209,37 @@ detect_ruflo_repo() {
     return 1
 }
 
+backup_and_reset_ruflo_repo_changes() {
+    local backup_dir
+
+    if git diff --quiet && git diff --cached --quiet && [ -z "$(git ls-files --others --exclude-standard)" ]; then
+        return 0
+    fi
+
+    backup_dir="$HOME/.openclaw_ultimate_user_data/backups/ruflo_git_dirty_$(date +%Y%m%d_%H%M%S)"
+    mkdir -p "$backup_dir"
+
+    echo -e "${YELLOW}Lokale Aenderungen im Ruflo-Upstream-Checkout erkannt.${NC}"
+    echo -e "${YELLOW}Sie stammen meist von vorherigen pnpm-install/build-Laeufen und wuerden das Update blockieren.${NC}"
+    echo -e "${YELLOW}Sichere Diff/Status nach:${NC} $backup_dir"
+
+    git status --short > "$backup_dir/git_status.txt" 2>/dev/null || true
+    git diff > "$backup_dir/worktree.diff" 2>/dev/null || true
+    git diff --cached > "$backup_dir/index.diff" 2>/dev/null || true
+    git ls-files --others --exclude-standard > "$backup_dir/untracked_files.txt" 2>/dev/null || true
+
+    echo -e "${BLUE}Setze /opt/ruflo auf den sauberen Upstream-Stand zurueck...${NC}"
+    git reset --hard
+    git clean -fd
+}
+
 clone_or_update_repo() {
     local repo_url="$1"
 
     if [ -d "$RUFLO_DIR/.git" ]; then
         echo -e "${YELLOW}Ruflo-Verzeichnis $RUFLO_DIR existiert bereits. Aktualisiere Repository...${NC}"
         cd "$RUFLO_DIR"
+        backup_and_reset_ruflo_repo_changes
         git pull --ff-only
         return
     fi
