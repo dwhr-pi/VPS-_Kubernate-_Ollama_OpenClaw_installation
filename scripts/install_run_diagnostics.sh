@@ -75,13 +75,106 @@ human_du() {
 
 infer_status() {
   local log_file="$1"
-  if grep -qiE 'Status:[[:space:]]*failed|Fehler bei der Installation|Fehler bei der Deinstallation|FEHLER:|failed|fatal|Traceback|Exception|Permission denied|No space left|ENOSPC' "$log_file"; then
-    echo "failed_or_warning"
-  elif grep -qiE 'Status:[[:space:]]*success|erfolgreich installiert|erfolgreich deinstalliert|Installation abgeschlossen|success' "$log_file"; then
+  local tail_success="false"
+  if tail -n 160 "$log_file" | grep -qiE 'Status:[[:space:]]*success|erfolgreich installiert|erfolgreich deinstalliert|Installation abgeschlossen|wurde erfolgreich vorbereitet|Build ist vorhanden|Ruflo CLI-Build ist vorhanden|Bundle complete|success'; then
+    tail_success="true"
+  fi
+
+  if grep -qiE 'Status:[[:space:]]*failed|Fehler bei der Installation|Fehler bei der Deinstallation|FEHLER:|fatal|Traceback|Exception|Permission denied|No space left|ENOSPC|Lifecycle script .* failed|Command failed' "$log_file"; then
+    if [ "$tail_success" = "true" ]; then
+      echo "success_with_old_warnings"
+    else
+      echo "failed_or_warning"
+    fi
+  elif grep -qiE 'failed|WARN|Warnung|warning' "$log_file"; then
+    if [ "$tail_success" = "true" ]; then
+      echo "success_with_warnings"
+    else
+      echo "warning"
+    fi
+  elif grep -qiE 'Status:[[:space:]]*success|erfolgreich installiert|erfolgreich deinstalliert|Installation abgeschlossen|wurde erfolgreich vorbereitet|Build ist vorhanden|success' "$log_file"; then
     echo "success"
   else
     echo "unknown"
   fi
+}
+
+extract_log_subject() {
+  local name
+  name="$(basename "$1" .log)"
+  name="${name#????????_??????_}"
+  name="${name#main_menu_}"
+  name="${name#tool_install_}"
+  name="${name#tool_uninstall_}"
+  name="${name#profile_install_}"
+  name="${name#profile_uninstall_}"
+  printf '%s\n' "$name"
+}
+
+status_rank() {
+  case "$1" in
+    success) echo 0 ;;
+    success_with_warnings|success_with_old_warnings) echo 1 ;;
+    warning) echo 2 ;;
+    unknown) echo 3 ;;
+    failed_or_warning) echo 4 ;;
+    *) echo 5 ;;
+  esac
+}
+
+status_note() {
+  case "$1" in
+    success) echo "letzter Lauf erfolgreich" ;;
+    success_with_warnings) echo "letzter Lauf erfolgreich, aber mit Warnungen" ;;
+    success_with_old_warnings) echo "letzter Lauf erfolgreich; alte Fehler/Warnungen im Log wurden ueberholt" ;;
+    warning) echo "Warnung ohne klares Erfolgssignal" ;;
+    failed_or_warning) echo "letzter Lauf fehlgeschlagen oder kritisch" ;;
+    unknown) echo "kein klares Ergebnis erkannt" ;;
+    *) echo "unbekannt" ;;
+  esac
+}
+
+list_current_subject_status() {
+  local tmp_file subject log_file status mtime metric
+  tmp_file="$(mktemp)"
+  list_recent_logs | while IFS= read -r log_file; do
+    [ -n "$log_file" ] || continue
+    subject="$(extract_log_subject "$log_file")"
+    if ! grep -Fq "${subject}|" "$tmp_file" 2>/dev/null; then
+      status="$(infer_status "$log_file")"
+      mtime="$(date -r "$log_file" '+%Y-%m-%d %H:%M:%S' 2>/dev/null || echo unbekannt)"
+      metric="$(grep -E 'Messwert gespeichert:|Status:' "$log_file" | tail -n 1 | redact | sed 's/|/\\|/g' || true)"
+      printf '%s|%s|%s|%s|%s\n' "$subject" "$status" "$mtime" "$log_file" "${metric:-kein Messwert gefunden}" >> "$tmp_file"
+    fi
+  done
+  sort "$tmp_file"
+  rm -f "$tmp_file"
+}
+
+list_superseded_failures() {
+  local tmp_latest tmp_failed subject log_file status rank latest_status latest_rank latest_log
+  tmp_latest="$(mktemp)"
+  tmp_failed="$(mktemp)"
+
+  list_current_subject_status > "$tmp_latest"
+  list_recent_logs | while IFS= read -r log_file; do
+    [ -n "$log_file" ] || continue
+    subject="$(extract_log_subject "$log_file")"
+    status="$(infer_status "$log_file")"
+    [ "$status" = "failed_or_warning" ] || continue
+    latest_status="$(awk -F'|' -v s="$subject" '$1 == s {print $2; exit}' "$tmp_latest")"
+    latest_log="$(awk -F'|' -v s="$subject" '$1 == s {print $4; exit}' "$tmp_latest")"
+    [ -n "$latest_status" ] || continue
+    [ "$latest_log" != "$log_file" ] || continue
+    rank="$(status_rank "$status")"
+    latest_rank="$(status_rank "$latest_status")"
+    if [ "$latest_rank" -lt "$rank" ]; then
+      printf '%s|%s|%s|%s\n' "$subject" "$(basename "$log_file")" "$latest_status" "$(basename "$latest_log")" >> "$tmp_failed"
+    fi
+  done
+
+  sort -u "$tmp_failed"
+  rm -f "$tmp_latest" "$tmp_failed"
 }
 
 send_report_email() {
@@ -145,8 +238,8 @@ list_recent_logs() {
     total=$((total + 1))
     status="$(infer_status "$log_file")"
     case "$status" in
-      failed_or_warning) failed=$((failed + 1)) ;;
-      success) success=$((success + 1)) ;;
+      failed_or_warning|warning) failed=$((failed + 1)) ;;
+      success|success_with_warnings|success_with_old_warnings) success=$((success + 1)) ;;
       *) unknown=$((unknown + 1)) ;;
     esac
   done < <(list_recent_logs)
@@ -156,6 +249,31 @@ list_recent_logs() {
   echo "- Fehler/Warnung erkannt: $failed"
   echo "- Unklar: $unknown"
   echo
+
+  echo "## Aktueller Status je Tool oder Aktion"
+  echo
+  echo "Diese Tabelle zeigt pro Tool/Aktion nur den neuesten Log. Aeltere Fehler desselben Tools sind darunter als Historie eingeordnet."
+  echo
+  echo "| Tool/Aktion | Aktueller Status | Bedeutung | Zeit | Neuester Log | Messwertzeile |"
+  echo "|---|---|---|---|---|---|"
+  while IFS='|' read -r subject status mtime log_file metric; do
+    [ -n "$subject" ] || continue
+    echo "| $subject | $status | $(status_note "$status") | $mtime | \`$log_file\` | ${metric:-kein Messwert gefunden} |"
+  done < <(list_current_subject_status)
+  echo
+
+  superseded="$(list_superseded_failures)"
+  if [ -n "$superseded" ]; then
+    echo "## Alte Fehler, die durch spaetere Logs ueberholt sind"
+    echo
+    echo "| Tool/Aktion | Alter Fehlerlog | Neuerer Status | Neuerer Log |"
+    echo "|---|---|---|---|"
+    while IFS='|' read -r subject old_log latest_status latest_log; do
+      [ -n "$subject" ] || continue
+      echo "| $subject | \`$old_log\` | $latest_status | \`$latest_log\` |"
+    done <<< "$superseded"
+    echo
+  fi
 
   echo "## Letzte Installationslogs"
   echo

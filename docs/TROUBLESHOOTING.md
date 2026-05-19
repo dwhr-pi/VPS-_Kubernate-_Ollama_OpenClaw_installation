@@ -352,6 +352,8 @@ Bekannte Beispiele aus der Fehlerhistorie:
 - Prometheus: Docker-Mount-Fehler, wenn `/opt/prometheus/prometheus.yml` auf dem Host ein Verzeichnis statt einer Datei ist oder fehlt.
 - K3s-Deinstallation: `Unit k3s.service not loaded` ist meist ein harmloser Hinweis, wenn K3s bereits entfernt oder nie als systemd-Service geladen war.
 
+Wichtig: Prometheus und K3s sind keine Voraussetzung fuer Ruflo. Wenn diese Fehler zusammen mit Ruflo-Logs auftauchen, stammen sie aus aelteren, anderen Installationsversuchen im gemeinsamen Logordner. Sie verschwinden nicht dadurch, dass man Prometheus oder K3s fuer Ruflo installiert, sondern durch Log-Rotation, durch gezielte Reparatur des jeweiligen Tools oder durch die neue Laufdiagnose, die den neuesten Status pro Tool getrennt ausweist.
+
 ### Huginn `master` mit PostgreSQL nachtesten
 
 Der Pfad `HUGINN_REPO_REF=master` plus `DATABASE_ADAPTER=postgresql` nutzt Ruby `3.4.x` ueber den getrennten rbenv-Pfad `~/.rbenv-openclaw-huginn`.
