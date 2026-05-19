@@ -418,9 +418,13 @@ Empfohlener Umgang:
 
 - Nicht blind alle Builds erlauben.
 - Im jeweiligen Projektverzeichnis `pnpm ignored-builds` ausfuehren.
-- Nur bekannte und benoetigte Pakete mit `pnpm approve-builds` oder einer gepflegten `onlyBuiltDependencies`-Liste freigeben.
+- Nur bekannte und benoetigte Pakete mit `pnpm approve-builds` oder einer gepflegten `allowBuilds`-Liste freigeben.
 - Danach `pnpm install --no-frozen-lockfile` und den Build erneut starten.
 
 Ruflo:
 
-Das Ruflo-Installskript erkennt diesen Fall und fragt interaktiv, ob nur bekannte Ruflo-Build-Abhaengigkeiten in `pnpm-workspace.yaml` unter `onlyBuiltDependencies` eingetragen werden sollen. Fuer nicht-interaktive Tests kann bewusst `RUFLO_APPROVE_BUILDS=1` gesetzt werden.
+Das Ruflo-Installskript erkennt diesen Fall und fragt interaktiv, ob nur bekannte Ruflo-Build-Abhaengigkeiten in `pnpm-workspace.yaml` unter `allowBuilds: true` eingetragen werden sollen. Alte oder kaputte `onlyBuiltDependencies`-Versuche werden gesichert und durch eine saubere Workspace-Datei ersetzt. Fuer nicht-interaktive Tests kann bewusst `RUFLO_APPROVE_BUILDS=1` gesetzt werden.
+
+Hinweis zu Ruflo Alpha/Upstream:
+
+Der komplette Upstream-Befehl `pnpm build` kompiliert aktuell auch unfertige v3-/Plugin-Bereiche und kann mit TypeScript-Fehlern scheitern. Das Setup nutzt deshalb als Installationskriterium den gezielten CLI-Build `pnpm run build:ts` und prueft danach, ob `v3/@claude-flow/cli/dist/src/index.js` vorhanden ist.

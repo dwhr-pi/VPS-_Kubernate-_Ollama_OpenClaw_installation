@@ -241,18 +241,23 @@ install_ruflo() {
         handle_pnpm_ignored_builds || true
     fi
 
-    echo -e "${BLUE}Baue Ruflo mit pnpm...${NC}"
-    if ! pnpm build; then
-        echo -e "${RED}Fehler: Ruflo Build mit pnpm fehlgeschlagen.${NC}"
-        echo -e "${YELLOW}Wenn kurz zuvor ERR_PNPM_IGNORED_BUILDS erschien, fehlen wahrscheinlich freigegebene native Build-Skripte.${NC}"
+    echo -e "${BLUE}Baue Ruflo CLI mit pnpm...${NC}"
+    echo -e "${YELLOW}Hinweis:${NC} Der Upstream-Root-Build kompiliert derzeit auch unfertige v3-/Plugin-Bereiche. Fuer die CLI wird gezielt build:ts genutzt."
+    pnpm run build:ts || true
+
+    if [ ! -f "$RUFLO_DIR/v3/@claude-flow/cli/dist/src/index.js" ]; then
+        echo -e "${RED}Fehler: Ruflo CLI-Build konnte die benoetigte Datei nicht erzeugen.${NC}"
+        echo "Fehlende Datei: $RUFLO_DIR/v3/@claude-flow/cli/dist/src/index.js"
         echo -e "${YELLOW}Sichere Optionen:${NC}"
         echo "  cd $RUFLO_DIR"
-        echo "  pnpm ignored-builds"
-        echo "  pnpm approve-builds"
         echo "  pnpm install --no-frozen-lockfile"
-        echo "  pnpm build"
+        echo "  pnpm run build:ts"
+        echo "  node bin/cli.js --help"
+        echo -e "${YELLOW}Der komplette Upstream-Befehl 'pnpm build' ist fuer diesen Ruflo-Stand aktuell nicht als Installationskriterium geeignet.${NC}"
         exit 1
     fi
+
+    echo -e "${GREEN}Ruflo CLI-Build ist vorhanden.${NC}"
 }
 
 link_ruflo_cli() {
