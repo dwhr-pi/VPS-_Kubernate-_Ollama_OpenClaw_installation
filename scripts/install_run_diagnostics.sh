@@ -108,7 +108,7 @@ extract_log_subject() {
   name="${name#tool_uninstall_}"
   name="${name#profile_install_}"
   name="${name#profile_uninstall_}"
-  printf '%s\n' "$name"
+  printf '%s\n' "$name" | tr '[:upper:]' '[:lower:]'
 }
 
 status_rank() {
