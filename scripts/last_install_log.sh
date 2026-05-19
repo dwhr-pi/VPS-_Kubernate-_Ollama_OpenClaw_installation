@@ -126,17 +126,16 @@ case "$MODE" in
     superseded_file="$(mktemp)"
     while IFS= read -r log_file; do
       subject="$(extract_log_subject "$log_file")"
-      if log_has_success "$log_file" && ! grep -Fxq "$subject" "$success_subjects_file" 2>/dev/null; then
-        printf '%s\n' "$subject" >> "$success_subjects_file"
+      if log_has_success "$log_file"; then
+        if ! grep -Fxq "$subject" "$success_subjects_file" 2>/dev/null; then
+          printf '%s\n' "$subject" >> "$success_subjects_file"
+        fi
+        continue
       fi
       if log_has_failure "$log_file"; then
         if grep -Fxq "$subject" "$success_subjects_file" 2>/dev/null; then
           superseded=1
-          {
-            printf '%s\n' "$log_file"
-            grep -nE 'Messwert gespeichert:|Fehler:|FEHLER:|failed|fatal|Permission denied|No space left|ENOSPC|Lifecycle script .* failed|Command failed' "$log_file" | tail -n 4 || true
-            printf '\n'
-          } >> "$superseded_file"
+          printf '%s -> %s\n' "$subject" "$log_file" >> "$superseded_file"
           continue
         fi
         found=1
@@ -149,7 +148,9 @@ case "$MODE" in
     if [ "$superseded" -eq 1 ]; then
       echo
       echo "Ueberholte alte Fehlerlogs mit neuerem erfolgreichem Log desselben Tools:"
-      cat "$superseded_file"
+      sort -u "$superseded_file" | sed 's/^/- /'
+      echo
+      echo "Details bei Bedarf mit 'bash scripts/last_install_log.sh --list' oder der konkreten Logdatei anzeigen."
     fi
     rm -f "$success_subjects_file" "$superseded_file"
     ;;
