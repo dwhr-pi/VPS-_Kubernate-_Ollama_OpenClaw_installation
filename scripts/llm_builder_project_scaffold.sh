@@ -18,6 +18,24 @@ if ! command -v dialog >/dev/null 2>&1; then
     exit 1
 fi
 
+dialog() {
+    local arg
+    local has_cancel_label=0
+
+    for arg in "$@"; do
+        if [ "$arg" = "--cancel-label" ]; then
+            has_cancel_label=1
+            break
+        fi
+    done
+
+    if [ "$has_cancel_label" -eq 1 ]; then
+        command dialog "$@"
+    else
+        command dialog --cancel-label "Zurueck" "$@"
+    fi
+}
+
 dialog --clear --backtitle "OpenClaw & AI Infrastructure - Ultimate Setup" \
 --title "LLM-Builder Projekt-Assistent" --inputbox \
 "Name des neuen LLM-Projekts:" 10 80 "mein-lokales-llm" 2> /tmp/llm_builder_project_name

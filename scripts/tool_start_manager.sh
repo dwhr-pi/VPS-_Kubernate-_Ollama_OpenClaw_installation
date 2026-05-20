@@ -5,6 +5,24 @@
 
 set -euo pipefail
 
+dialog() {
+    local arg
+    local has_cancel_label=0
+
+    for arg in "$@"; do
+        if [ "$arg" = "--cancel-label" ]; then
+            has_cancel_label=1
+            break
+        fi
+    done
+
+    if [ "$has_cancel_label" -eq 1 ]; then
+        command dialog "$@"
+    else
+        command dialog --cancel-label "Zurueck" "$@"
+    fi
+}
+
 GREEN="\033[0;32m"
 BLUE="\033[0;34m"
 RED="\033[0;31m"

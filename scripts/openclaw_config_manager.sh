@@ -11,6 +11,24 @@ RED="\033[0;31m"
 YELLOW="\033[1;33m"
 NC="\033[0m"
 
+dialog() {
+    local arg
+    local has_cancel_label=0
+
+    for arg in "$@"; do
+        if [ "$arg" = "--cancel-label" ]; then
+            has_cancel_label=1
+            break
+        fi
+    done
+
+    if [ "$has_cancel_label" -eq 1 ]; then
+        command dialog "$@"
+    else
+        command dialog --cancel-label "Zurueck" "$@"
+    fi
+}
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 INSTALL_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 USER_WORKSPACE_DIR="${HOME}/.openclaw_ultimate_user_data"
