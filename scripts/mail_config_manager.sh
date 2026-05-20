@@ -95,18 +95,19 @@ edit_mail_settings_dialog() {
     local tmp_form
     tmp_form="$(mktemp)"
 
-    if ! dialog --clear --backtitle "OpenClaw Ultimate Setup" \
-        --cancel-label "Zurueck" \
-        --title "E-MAIL-DIAGNOSE KONFIGURATION" \
-        --form "SMTP-Daten fuer Diagnoseberichte. Hinweis: Beim E-Mail-Anbieter muss SMTP/IMAP fuer Drittanbieter-Apps aktiviert sein." 22 100 10 \
-        "Absender / SMTP-User:" 1 1 "$MAIL_FROM" 1 28 60 120 \
-        "SMTP-Host:" 2 1 "$SMTP_HOST" 2 28 60 120 \
-        "SMTP-Port:" 3 1 "$SMTP_PORT" 3 28 60 10 \
-        "TLS:" 4 1 "$SMTP_TLS" 4 28 60 10 \
-        "STARTTLS:" 5 1 "$SMTP_TLS_STARTTLS" 5 28 60 10 \
-        "msmtp Account:" 6 1 "$MSMTP_ACCOUNT" 6 28 60 40 \
-        "Test-Empfaenger:" 7 1 "$DEFAULT_EMAIL_TO" 7 28 60 120 \
-        2> "$tmp_form"; then
+    dialog --clear --backtitle "OpenClaw Ultimate Setup" \
+    --title "E-MAIL-DIAGNOSE KONFIGURATION" \
+    --form "SMTP-Daten fuer Diagnoseberichte. Hinweis: Beim E-Mail-Anbieter muss SMTP/IMAP fuer Drittanbieter-Apps aktiviert sein." 22 100 10 \
+    "Absender / SMTP-User:" 1 1 "$MAIL_FROM" 1 28 60 120 \
+    "SMTP-Host:" 2 1 "$SMTP_HOST" 2 28 60 120 \
+    "SMTP-Port:" 3 1 "$SMTP_PORT" 3 28 60 10 \
+    "TLS:" 4 1 "$SMTP_TLS" 4 28 60 10 \
+    "STARTTLS:" 5 1 "$SMTP_TLS_STARTTLS" 5 28 60 10 \
+    "msmtp Account:" 6 1 "$MSMTP_ACCOUNT" 6 28 60 40 \
+    "Test-Empfaenger:" 7 1 "$DEFAULT_EMAIL_TO" 7 28 60 120 \
+    2> "$tmp_form"
+
+    if [ $? -ne 0 ]; then
         rm -f "$tmp_form"
         return 0
     fi
@@ -140,10 +141,11 @@ edit_password_dialog() {
     tmp_pass="$(mktemp)"
     chmod 600 "$tmp_pass" 2>/dev/null || true
 
-    if ! dialog --clear --backtitle "OpenClaw Ultimate Setup" \
-        --cancel-label "Zurueck" \
-        --title "SMTP-PASSWORT / APP-PASSWORT" \
-        --insecure --passwordbox "SMTP- oder App-Passwort lokal speichern.\n\nEs wird nur in $SMTP_PASSWORD_FILE gespeichert, chmod 600.\nNicht ins Repo schreiben." 12 92 2> "$tmp_pass"; then
+    dialog --clear --backtitle "OpenClaw Ultimate Setup" \
+    --title "SMTP-PASSWORT / APP-PASSWORT" \
+    --insecure --passwordbox "SMTP- oder App-Passwort lokal speichern.\n\nEs wird nur in $SMTP_PASSWORD_FILE gespeichert, chmod 600.\nNicht ins Repo schreiben." 12 92 2> "$tmp_pass"
+
+    if [ $? -ne 0 ]; then
         rm -f "$tmp_pass"
         return 0
     fi
@@ -222,28 +224,25 @@ show_status() {
 
 main_menu() {
     ensure_mail_workspace
-    local tmp_choice
-    tmp_choice="$(mktemp)"
 
     while true; do
-        if ! dialog --clear --backtitle "OpenClaw Ultimate Setup" \
-            --cancel-label "Zurueck" \
-            --title "E-MAIL-DIAGNOSE" \
-            --menu "Konfiguration fuer Diagnoseberichte per E-Mail. Keine Secrets im Repo." 22 100 7 \
-            "1" ".env-aehnliche SMTP-Einstellungen bearbeiten" \
-            "2" "SMTP-/App-Passwort sicher speichern" \
-            "3" "Mailtools installieren / pruefen" \
-            "4" "Testmail ohne Logs senden" \
-            "5" "Lokale Testmail-Datei loeschen" \
-            "6" "Status anzeigen" \
-            "0" "Zurueck" 2> "$tmp_choice"; then
-            rm -f "$tmp_choice"
+        dialog --clear --backtitle "OpenClaw Ultimate Setup" \
+        --cancel-label "Zurueck" \
+        --title "E-MAIL-DIAGNOSE" \
+        --menu "Konfiguration fuer Diagnoseberichte per E-Mail. Keine Secrets im Repo." 22 100 6 \
+        "1" ".env-aehnliche SMTP-Einstellungen bearbeiten" \
+        "2" "SMTP-/App-Passwort sicher speichern" \
+        "3" "Mailtools installieren / pruefen" \
+        "4" "Testmail ohne Logs senden" \
+        "5" "Lokale Testmail-Datei loeschen" \
+        "6" "Status anzeigen" 2> /tmp/mail_config_choice
+
+        if [ $? -ne 0 ]; then
             clear
             return 0
         fi
 
-        case "$(cat "$tmp_choice")" in
-            0) rm -f "$tmp_choice"; clear; return 0 ;;
+        case "$(cat /tmp/mail_config_choice)" in
             1) edit_mail_settings_dialog ;;
             2) edit_password_dialog ;;
             3)

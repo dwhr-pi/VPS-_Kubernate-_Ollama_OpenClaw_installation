@@ -1,0 +1,27 @@
+# profile|name|github_url|purpose|notes
+Physik|QuTiP|https://github.com/qutip/qutip.git|Quantenoptik, offene Quantensysteme, Simulation|Python/NumPy/SciPy-Stack
+Physik|PlasmaPy|https://github.com/PlasmaPy/PlasmaPy.git|Plasmaphysik, Einheiten, Partikel, Analyse|wissenschaftliche Python-Umgebung
+Physik|yt|https://github.com/yt-project/yt.git|Volumendaten, Simulationen, Astrophysik|Datenanalyse und Visualisierung
+Chemie|RDKit|https://github.com/rdkit/rdkit.git|Cheminformatik, Molekuele, Fingerprints|Build kann gross sein
+Chemie|OpenBabel|https://github.com/openbabel/openbabel.git|Dateiformate, Molekuelkonvertierung|C++/Python-Bindings optional
+Chemie|Psi4|https://github.com/psi4/psi4.git|Quantenchemie|sehr ressourcenintensiv
+Chemie|DeepChem|https://github.com/deepchem/deepchem.git|Molecular ML und Cheminformatik|GPU optional
+Biologie|Biopython|https://github.com/biopython/biopython.git|Sequenzen, Formate, Bio-Datenanalyse|Basisbaustein
+Biologie|Scanpy|https://github.com/scverse/scanpy.git|Single-cell Analyse|RAM-intensiv
+Biologie|Napari|https://github.com/napari/napari.git|Mikroskopie- und Bildanalyse|GUI/GPU optional
+Bioinformatik|Biopython|https://github.com/biopython/biopython.git|Sequenzanalyse und Parser|Basisbaustein
+Bioinformatik|nf-core tools|https://github.com/nf-core/tools.git|Nextflow-Workflow-Standards|Workflow-Hilfe
+Bioinformatik|Galaxy|https://github.com/galaxyproject/galaxy.git|Bioinformatik-Plattform|grosses Serverprojekt
+Bioinformatik|Bioconda Recipes|https://github.com/bioconda/bioconda-recipes.git|Bioinformatik-Paketrezepte|Referenz fuer Tools
+Molekuelsimulation|OpenMM|https://github.com/openmm/openmm.git|Molekulardynamik, GPU-Simulation|CUDA/ROCm pruefen
+Molekuelsimulation|LAMMPS|https://github.com/lammps/lammps.git|MD, Materialien, Partikel|Build optional
+Molekuelsimulation|GROMACS|https://github.com/gromacs/gromacs.git|Molekulardynamik|Build sehr gross
+Molekuelsimulation|MDTraj|https://github.com/mdtraj/mdtraj.git|Trajektorienanalyse|Python-Analyse
+Robotik_Labor|ROS 2|https://github.com/ros2/ros2.git|Robotik-Middleware|Quellinstallationen sind gross
+Robotik_Labor|MoveIt 2|https://github.com/moveit/moveit2.git|Bewegungsplanung|Simulation-first
+Robotik_Labor|ros2_control|https://github.com/ros-controls/ros2_control.git|Controller-Interfaces|Realhardware nur mit Freigabe
+Robotik_Labor|Opentrons|https://github.com/Opentrons/opentrons.git|Laborautomation und Pipettierroboter|nur sichere Testmodi
+Materialwissenschaft|pymatgen|https://github.com/materialsproject/pymatgen.git|Kristalle, Materialien, Strukturen|Python-Stack
+Materialwissenschaft|matminer|https://github.com/hackingmaterials/matminer.git|Material-Features und ML|Datenanalyse
+Materialwissenschaft|atomate2|https://github.com/materialsproject/atomate2.git|Workflow-Automation fuer Materialien|fortgeschritten
+Materialwissenschaft|AiiDA|https://github.com/aiidateam/aiida-core.git|reproduzierbare Forschungsworkflows|DB/Service optional

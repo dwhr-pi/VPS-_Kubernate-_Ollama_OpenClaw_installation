@@ -10,13 +10,11 @@ RETENTION_DAYS="${LOG_CLEANUP_RETENTION_DAYS:-14}"
 KEEP_RECENT="${LOG_CLEANUP_KEEP_RECENT:-30}"
 APPLY=false
 FAILED_ONLY=false
-SUPERSEDED_FAILED=false
 
 usage() {
     cat <<'EOF'
 Usage:
   cleanup_setup_logs.sh [--dry-run|--apply] [--days N] [--keep N] [--failed-only]
-  cleanup_setup_logs.sh [--dry-run|--apply] --superseded-failed
 
 Bereinigt nur Dateien im Benutzer-Workspace:
   ~/.openclaw_ultimate_user_data/install_logs/*.log
@@ -25,8 +23,6 @@ Bereinigt nur Dateien im Benutzer-Workspace:
 Standard ist --dry-run. Es werden immer die neuesten N Dateien je Ordner behalten.
 Mit --failed-only werden nur Installationslogs geloescht, die bekannte Fehler-
 oder Warnmuster enthalten. Diagnoseberichte bleiben dabei unangetastet.
-Mit --superseded-failed werden Fehlerlogs geloescht, wenn es fuer dasselbe
-Tool/dieselbe Aktion bereits einen neueren erfolgreichen Log gibt.
 EOF
 }
 
@@ -50,10 +46,6 @@ while [ $# -gt 0 ]; do
             ;;
         --failed-only)
             FAILED_ONLY=true
-            shift
-            ;;
-        --superseded-failed)
-            SUPERSEDED_FAILED=true
             shift
             ;;
         -h|--help)
@@ -85,85 +77,6 @@ esac
 workspace_real="$(realpath -m "$USER_WORKSPACE_DIR")"
 deleted_count=0
 candidate_count=0
-
-extract_log_subject() {
-    local name
-    name="$(basename "$1" .log)"
-    name="${name#????????_??????_}"
-    name="${name#main_menu_}"
-    name="${name#tool_install_}"
-    name="${name#tool_uninstall_}"
-    name="${name#profile_install_}"
-    name="${name#profile_uninstall_}"
-    printf '%s\n' "$name" | tr '[:upper:]' '[:lower:]'
-}
-
-log_has_success() {
-    local log_file="$1"
-    tail -n 180 "$log_file" | grep -qiE 'Status:[[:space:]]*success|erfolgreich installiert|erfolgreich deinstalliert|Installation abgeschlossen|wurde erfolgreich vorbereitet|Build ist vorhanden|Ruflo CLI-Build ist vorhanden|Bundle complete|success'
-}
-
-log_has_failure() {
-    local log_file="$1"
-    grep -qiE 'Status:[[:space:]]*failed|Fehler bei der Installation|Fehler bei der Deinstallation|FEHLER:|fatal|Traceback|Exception|Permission denied|No space left|ENOSPC|Lifecycle script .* failed|Command failed|ELIFECYCLE' "$log_file"
-}
-
-cleanup_superseded_failed_logs() {
-    local target_dir="$USER_WORKSPACE_DIR/install_logs"
-    local target_real
-    local log_file
-    local file_real
-    local subject
-    local success_subjects
-
-    [ -d "$target_dir" ] || return 0
-    target_real="$(realpath -m "$target_dir")"
-    case "$target_real" in
-        "$workspace_real"/*) ;;
-        *)
-            echo "Sicherheitsabbruch: Ziel liegt nicht im Benutzer-Workspace: $target_real" >&2
-            return 1
-            ;;
-    esac
-
-    success_subjects="$(mktemp)"
-    echo
-    echo "Pruefe ueberholte Fehlerlogs: $target_real"
-    echo "Regel: Fehlerlog wird geloescht, wenn fuer dasselbe Tool/Aktion ein neuerer Erfolgslog existiert."
-
-    while IFS= read -r log_file; do
-        [ -n "$log_file" ] || continue
-        file_real="$(realpath -m "$log_file")"
-        case "$file_real" in
-            "$target_real"/*) ;;
-            *)
-                echo "Ueberspringe unsicheren Pfad: $file_real" >&2
-                continue
-                ;;
-        esac
-
-        subject="$(extract_log_subject "$file_real")"
-        if log_has_success "$file_real"; then
-            if ! grep -Fxq "$subject" "$success_subjects" 2>/dev/null; then
-                printf '%s\n' "$subject" >> "$success_subjects"
-            fi
-            continue
-        fi
-
-        if log_has_failure "$file_real" && grep -Fxq "$subject" "$success_subjects" 2>/dev/null; then
-            candidate_count=$((candidate_count + 1))
-            if [ "$APPLY" = true ]; then
-                rm -f -- "$file_real"
-                deleted_count=$((deleted_count + 1))
-                echo "Geloescht: $file_real"
-            else
-                echo "Wuerde loeschen: $file_real"
-            fi
-        fi
-    done < <(find "$target_real" -maxdepth 1 -type f -name "*.log" -printf '%T@ %p\n' 2>/dev/null | sort -nr | cut -d' ' -f2-)
-
-    rm -f "$success_subjects"
-}
 
 cleanup_dir() {
     local target_dir="$1"
@@ -238,13 +151,9 @@ cleanup_dir() {
     rm -f "$recent_list"
 }
 
-if [ "$SUPERSEDED_FAILED" = true ]; then
-    cleanup_superseded_failed_logs
-else
-    cleanup_dir "$USER_WORKSPACE_DIR/install_logs" "*.log"
-    if [ "$FAILED_ONLY" != true ]; then
-        cleanup_dir "$USER_WORKSPACE_DIR/diagnostic_reports" "*.md"
-    fi
+cleanup_dir "$USER_WORKSPACE_DIR/install_logs" "*.log"
+if [ "$FAILED_ONLY" != true ]; then
+    cleanup_dir "$USER_WORKSPACE_DIR/diagnostic_reports" "*.md"
 fi
 
 echo

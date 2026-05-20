@@ -1,0 +1,6 @@
+# Optionales Beispiel fuer spaetere Laborumgebungen.
+# Docker ist fuer dieses Profil keine Pflicht.
+services:
+  placeholder:
+    image: hello-world
+    profiles: ["disabled-by-default"]

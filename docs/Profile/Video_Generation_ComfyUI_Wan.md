@@ -1,47 +1,47 @@
-# Video Generation ComfyUI Wan
+# Video Generation: ComfyUI + Wan2.x
 
-Status: experimental  
-Kategorie: Video / GPU / ComfyUI / Wan  
+Status: `experimental`  
+Tier: `advanced`  
+Kategorie: `media`
 
-## Ziel
-
-Dieses technische Profil beschreibt eine lokale Video-KI-Pipeline mit ComfyUI, Wan2.1/Wan2.2, FFmpeg und optionaler OpenClaw-/n8n-Orchestrierung. Es ist die technische Basis fuer OpenHiggsStack.
+Dieses technische Profil beschreibt den lokalen Video-Stack fuer ComfyUI und Wan2.1/Wan2.2. Es ist die Render-Schicht fuer OpenHiggsStack.
 
 ## Hardware-Anforderungen
 
-- Low-End CPU-only: nur Prompting, Planung, kleine Tests und Workflow-Vorbereitung.
-- 8-12 GB VRAM: minimal fuer kleine oder stark optimierte Workflows.
-- 16-24 GB VRAM: empfohlen fuer realistische lokale Video-Experimente.
-- 32 GB+ RAM: empfohlen fuer groessere Modelle, ComfyUI und parallele Tools.
-- 100 GB+ freier Speicher: empfohlen, weil Modelle, Caches und Outputs schnell wachsen.
-- Multi-GPU/Kubernetes: optional, Advanced, erst nach stabiler Einzel-GPU-Konfiguration.
+| Klasse | Erwartung |
+|---|---|
+| Low-End CPU-only | nur Prompting, Planung, Workflow-Tests ohne ernsthaftes Rendering |
+| 8-12 GB VRAM | minimale kleine Workflows, kurze Clips, reduzierte Aufloesung |
+| 16-24 GB VRAM | empfohlen fuer realistischere lokale Tests |
+| 24 GB+ VRAM | komfortabler fuer groessere Modelle, laengere Clips und Batch-Jobs |
+| Multi-GPU/Kubernetes | optional, spaeterer Advanced-Pfad mit Queue, Storage und Monitoring |
 
-## Windows 11 und WSL2
+Speicherwarnung: Video-Modelle, VAE, LoRAs, Zwischenbilder und Outputs koennen schnell viele hundert GB belegen.
 
-- WSL2 mit Ubuntu 24.04 ist geeignet, wenn GPU-Passthrough funktioniert.
-- NVIDIA-Treiber unter Windows installieren, CUDA in WSL pruefen.
-- Speicherort fuer Modelle nach Moeglichkeit nicht auf sehr knappem `C:` belassen.
-- Nach grossen Loeschungen `wsl --shutdown` und VHDX-Compact einplanen.
+## Windows 11 + WSL2
 
-## Ubuntu-Hinweise
+- WSL2 mit Ubuntu nutzen.
+- NVIDIA-Treiber auf Windows-Seite installieren.
+- In WSL mit `nvidia-smi` pruefen, ob die GPU sichtbar ist.
+- Projektdateien und Modelle moeglichst im Linux-Dateisystem speichern, nicht unter `/mnt/c`, wenn viele kleine Dateien genutzt werden.
+- ComfyUI-Weboberflaeche standardmaessig nur lokal nutzen: `http://127.0.0.1:8188`.
+
+## Ubuntu Hinweise
+
+Basis:
 
 ```bash
-sudo apt update
-sudo apt install -y git python3 python3-venv python3-pip ffmpeg
+sudo apt-get update
+sudo apt-get install -y git python3 python3-venv python3-pip ffmpeg
 ```
 
-GPU-Pfade sind hardwareabhaengig. NVIDIA Container Toolkit oder CUDA sollten erst installiert werden, wenn die GPU sauber erkannt wird.
+Optional GPU:
 
-## Beispielordner
+- NVIDIA-Treiber
+- CUDA-kompatibles PyTorch
+- ausreichend Swap/SSD
 
-```text
-~/ai-stack/comfyui
-~/ai-stack/models
-~/ai-stack/outputs/video
-~/.openclaw/agents/video-director
-```
-
-## ComfyUI Installation
+## Python venv
 
 ```bash
 mkdir -p ~/ai-stack
@@ -54,7 +54,7 @@ pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-Start:
+## ComfyUI starten
 
 ```bash
 cd ~/ai-stack/comfyui
@@ -62,51 +62,65 @@ source venv/bin/activate
 python main.py --listen 127.0.0.1 --port 8188
 ```
 
+Dann im Browser:
+
+```text
+http://127.0.0.1:8188
+```
+
 ## ComfyUI Manager
 
-ComfyUI Manager ist optional. Er erleichtert Custom Nodes, kann aber auch Abhaengigkeiten und Updates vermischen. Fuer produktive Systeme erst nach Snapshot/Backup aktivieren.
+ComfyUI Manager ist optional. Er erleichtert Custom Nodes, kann aber auch unkontrolliert viele Abhaengigkeiten nachziehen. In produktionsnahen Setups besser dokumentiert und bewusst installieren.
 
 ## Wan2.1/Wan2.2 Modellhinweise
 
-- Wan2.1 dokumentiert Text-to-Video, Image-to-Video, Video Editing, Text-to-Image und Video-to-Audio.
-- Wan2.1 T2V-1.3B ist der sinnvollste Einstieg fuer kleinere GPUs.
-- Wan2.2 sollte bevorzugt ueber dokumentierte ComfyUI-Workflows getestet werden.
-- Modelle manuell herunterladen und Checksummen/Quelle dokumentieren.
-- Keine automatischen Downloads im Setup, weil einzelne Modelle viele GB belegen.
+- Modelle nicht automatisch im Setup herunterladen.
+- Modellquellen und Lizenzen vor Nutzung pruefen.
+- Passende ComfyUI-Workflows separat importieren.
+- Fuer kurze Tests mit niedriger Aufloesung starten.
+- Outputs zuerst lokal pruefen, bevor Cloud-/Social-Uploads automatisiert werden.
+
+## Beispielordner
+
+```text
+~/ai-stack/comfyui
+~/ai-stack/models
+~/ai-stack/outputs/video
+~/.openclaw/agents/video-director
+```
 
 ## FFmpeg
 
-FFmpeg wird fuer Postprocessing benoetigt:
+FFmpeg wird fuer folgende Schritte genutzt:
+
+- Framerate anpassen
+- Audio und Video zusammenfuehren
+- Shorts-Formate erzeugen
+- Thumbnails extrahieren
+- Untertitel einbrennen
+- Archivkopien erzeugen
+
+Beispiel:
 
 ```bash
-ffmpeg -i input.mp4 -vf "scale=1080:1920:force_original_aspect_ratio=decrease,pad=1080:1920:(ow-iw)/2:(oh-ih)/2" -c:v libx264 -crf 18 -preset medium output-shorts.mp4
+ffmpeg -i input.mp4 -vf "scale=1080:1920:force_original_aspect_ratio=decrease,pad=1080:1920:(ow-iw)/2:(oh-ih)/2" output-short.mp4
 ```
 
-## OpenClaw-Integration
+## OpenClaw/Ollama-Einbindung
 
-OpenClaw sollte nicht direkt rohe Modellbefehle blind ausfuehren. Empfohlen ist:
+Ollama erstellt Storyboards, Shotlisten, negative Prompts und Social Captions. OpenClaw entscheidet, welcher Schritt lokal, per ComfyUI oder optional per Cloud-Fallback laufen soll.
 
-- Agent erstellt Storyboard und Prompts.
-- Mensch bestaetigt Modell, Aufloesung, Kosten und Speicher.
-- ComfyUI fuehrt Workflow aus.
-- n8n ueberwacht Queue und Export.
-- FFmpeg erzeugt finale Formate.
+## Ersttest
 
-## Manuell zu ladende Modelle
+1. `bash scripts/install-openhiggsstack.sh` ausfuehren.
+2. ComfyUI starten.
+3. Einen kleinen Image-to-Video-Workflow manuell importieren.
+4. Mit kurzer Dauer und niedriger Aufloesung rendern.
+5. Ergebnis mit FFmpeg nachbearbeiten.
 
-- Wan2.1 T2V-1.3B fuer Einstieg.
-- Wan2.1/Wan2.2 I2V je nach Workflow.
-- Flux oder Stable Diffusion fuer Keyframes.
-- ControlNet/IPAdapter/LoRA nur bei Bedarf.
-## Hugging Face / Huge_Facing
+## Referenzen
 
-Hugging Face ist fuer dieses Profil vor allem Modellquelle, Lizenznachweis und Versionsanker. Das Setup soll keine grossen Modelle automatisch herunterladen. Stattdessen werden Modellkarten und Lizenzen manuell geprueft und die Pfade anschliessend in `.env.openhiggsstack`, ComfyUI oder OpenClaw hinterlegt.
-
-Sinnvolle Einsatzpunkte:
-
-- Wan2.1/Wan2.2-Modellgewichte fuer Text-to-Video und Image-to-Video.
-- Flux-, SDXL- oder Stable-Diffusion-Modelle fuer Keyframes und Character Consistency.
-- LoRA-, ControlNet-, IPAdapter- und Upscaler-Modelle fuer konsistente Stile.
-- Whisper/TTS-Modelle fuer spaetere Voice- und Musikvideo-Workflows.
-
-Sicherheitsregel: `HUGGINGFACE_TOKEN` bleibt leer, solange kein privates oder gated Modell benoetigt wird. Wenn ein Token gebraucht wird, liegt er nur lokal in der persoenlichen Env-Datei oder unter `~/.openclaw_ultimate_user_data`.
+- ComfyUI: `https://github.com/comfy-org/ComfyUI`
+- Wan2.1: `https://github.com/Wan-Video/Wan2.1`
+- Wan2.2: `https://github.com/Wan-Video/Wan2.2`
+- ComfyUI Wan2.2 Tutorial: `https://docs.comfy.org/tutorials/video/wan/wan2_2`

@@ -1,138 +1,136 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
-LOG_DIR="$REPO_DIR/logs"
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+LOG_DIR="$ROOT_DIR/logs"
 LOG_FILE="$LOG_DIR/openhiggsstack-install.log"
 START_TS="$(date +%s)"
 
 mkdir -p "$LOG_DIR"
-exec > >(tee -a "$LOG_FILE") 2>&1
+touch "$LOG_FILE"
 
-say() { printf '\n[%s] %s\n' "$(date '+%Y-%m-%d %H:%M:%S')" "$*"; }
-need_cmd() { command -v "$1" >/dev/null 2>&1; }
-
-expand_path() {
-    local value="$1"
-    value="${value/#\~/$HOME}"
-    printf '%s\n' "$value"
+log() {
+  printf '[%s] %s\n' "$(date '+%Y-%m-%d %H:%M:%S')" "$*" | tee -a "$LOG_FILE"
 }
 
-OPENHIGGSSTACK_HOME="${OPENHIGGSSTACK_HOME:-~/ai-stack}"
-OPENHIGGSSTACK_HOME="$(expand_path "$OPENHIGGSSTACK_HOME")"
+fail() {
+  log "FEHLER: $*"
+  log "Letztes Protokoll: $LOG_FILE"
+  exit 1
+}
+
+run() {
+  log "+ $*"
+  "$@" 2>&1 | tee -a "$LOG_FILE"
+}
+
+detect_os() {
+  if grep -qi microsoft /proc/version 2>/dev/null; then
+    echo "wsl2"
+  elif [ -f /etc/os-release ]; then
+    . /etc/os-release
+    echo "${ID:-linux}"
+  else
+    echo "unknown"
+  fi
+}
+
+free_kb() {
+  df -Pk "${OPENHIGGSSTACK_HOME:-$HOME/ai-stack}" 2>/dev/null | awk 'NR==2 {print $4}'
+}
+
+install_package_if_possible() {
+  local pkg="$1"
+  if command -v "$pkg" >/dev/null 2>&1; then
+    log "$pkg ist bereits vorhanden."
+    return 0
+  fi
+
+  if command -v apt-get >/dev/null 2>&1; then
+    log "Installiere Paket: $pkg"
+    run sudo apt-get update
+    run sudo apt-get install -y "$pkg"
+  else
+    log "Kein apt-get gefunden. Bitte $pkg manuell installieren."
+  fi
+}
+
+confirm() {
+  local prompt="$1"
+  local answer
+  read -r -p "$prompt [y/N] " answer
+  case "$answer" in
+    y|Y|yes|YES|j|J|ja|JA) return 0 ;;
+    *) return 1 ;;
+  esac
+}
+
+OPENHIGGSSTACK_HOME="${OPENHIGGSSTACK_HOME:-$HOME/ai-stack}"
 COMFYUI_DIR="$OPENHIGGSSTACK_HOME/comfyui"
-MODEL_DIR="$OPENHIGGSSTACK_HOME/models"
-VIDEO_OUTPUT_DIR="${VIDEO_OUTPUT_DIR:-~/ai-stack/outputs/video}"
-VIDEO_OUTPUT_DIR="$(expand_path "$VIDEO_OUTPUT_DIR")"
-ENV_EXAMPLE="$REPO_DIR/.env.openhiggsstack.example"
+USER_ENV_DIR="$HOME/.openclaw_ultimate_user_data/openhiggsstack"
 
-say "OpenHiggsStack Installation startet"
-say "Logdatei: $LOG_FILE"
-say "OS: $(uname -a)"
-say "Freier Speicher vorher:"
-df -h "$HOME" || true
+log "Starte OpenHiggsStack Installation."
+log "OS-Erkennung: $(detect_os)"
+log "Zielordner: $OPENHIGGSSTACK_HOME"
+log "Freier Speicher vorher: $(( $(free_kb 2>/dev/null || echo 0) / 1024 )) MB"
 
-say "Pruefe Basisprogramme"
-need_cmd python3 || { echo "Fehler: python3 fehlt."; exit 1; }
-need_cmd git || { echo "Fehler: git fehlt."; exit 1; }
+command -v git >/dev/null 2>&1 || install_package_if_possible git
+command -v python3 >/dev/null 2>&1 || install_package_if_possible python3
+command -v ffmpeg >/dev/null 2>&1 || install_package_if_possible ffmpeg
+python3 -m venv --help >/dev/null 2>&1 || install_package_if_possible python3-venv
 
-if ! need_cmd ffmpeg; then
-    say "FFmpeg fehlt."
-    if need_cmd apt; then
-        read -r -p "FFmpeg via apt installieren? [j/N] " answer
-        case "${answer:-N}" in
-            j|J|y|Y)
-                sudo apt update
-                sudo apt install -y ffmpeg
-                ;;
-            *)
-                echo "FFmpeg wird nicht installiert. Postprocessing bleibt deaktiviert."
-                ;;
-        esac
-    else
-        echo "Kein apt gefunden. Bitte FFmpeg manuell installieren."
-    fi
-else
-    say "FFmpeg gefunden: $(command -v ffmpeg)"
-fi
+command -v git >/dev/null 2>&1 || fail "git fehlt."
+command -v python3 >/dev/null 2>&1 || fail "python3 fehlt."
+command -v ffmpeg >/dev/null 2>&1 || log "Warnung: ffmpeg ist nicht im PATH. Postprocessing funktioniert erst nach Installation."
 
-say "Erstelle Ordnerstruktur"
 mkdir -p \
-    "$OPENHIGGSSTACK_HOME" \
-    "$MODEL_DIR/image" \
-    "$MODEL_DIR/video" \
-    "$MODEL_DIR/loras" \
-    "$MODEL_DIR/controlnet" \
-    "$VIDEO_OUTPUT_DIR" \
-    "$OPENHIGGSSTACK_HOME/outputs/images" \
-    "$OPENHIGGSSTACK_HOME/outputs/storyboards" \
-    "$OPENHIGGSSTACK_HOME/projects" \
-    "$HOME/.openclaw/agents/video-director"
+  "$OPENHIGGSSTACK_HOME/models/image" \
+  "$OPENHIGGSSTACK_HOME/models/video" \
+  "$OPENHIGGSSTACK_HOME/models/vae" \
+  "$OPENHIGGSSTACK_HOME/models/loras" \
+  "$OPENHIGGSSTACK_HOME/outputs/video" \
+  "$OPENHIGGSSTACK_HOME/outputs/image" \
+  "$OPENHIGGSSTACK_HOME/outputs/audio" \
+  "$OPENHIGGSSTACK_HOME/workflows/comfyui" \
+  "$OPENHIGGSSTACK_HOME/workflows/n8n" \
+  "$OPENHIGGSSTACK_HOME/prompts" \
+  "$OPENHIGGSSTACK_HOME/logs" \
+  "$HOME/.openclaw/agents/video-director" \
+  "$USER_ENV_DIR"
 
-if [ ! -f "$ENV_EXAMPLE" ]; then
-    say "Erzeuge $ENV_EXAMPLE"
-    cat > "$ENV_EXAMPLE" <<'EOF'
-OPENHIGGSSTACK_HOME=~/ai-stack
-COMFYUI_HOST=http://127.0.0.1:8188
-OLLAMA_BASE_URL=http://127.0.0.1:11434
-OPENCLAW_GATEWAY_URL=ws://127.0.0.1:18789
-VIDEO_OUTPUT_DIR=~/ai-stack/outputs/video
-FFMPEG_PATH=ffmpeg
-HIGGSFIELD_API_KEY=
-HUGGINGFACE_TOKEN=
-KLING_API_KEY=
-VEO_API_KEY=
-RUNWAY_API_KEY=
-SEEDANCE_API_KEY=
-DEFAULT_VIDEO_MODEL=wan2.2
-DEFAULT_IMAGE_MODEL=flux
-DEFAULT_LLM_MODEL=ollama/llama3.2:1b
-EOF
+if [ ! -f "$USER_ENV_DIR/.env" ]; then
+  cp "$ROOT_DIR/.env.openhiggsstack.example" "$USER_ENV_DIR/.env"
+  log "Beispielkonfiguration kopiert nach: $USER_ENV_DIR/.env"
 else
-    say "$ENV_EXAMPLE existiert bereits und wird nicht ueberschrieben."
+  log "Bestehende Konfiguration bleibt erhalten: $USER_ENV_DIR/.env"
 fi
 
-if [ ! -d "$COMFYUI_DIR/.git" ]; then
-    read -r -p "ComfyUI jetzt nach $COMFYUI_DIR klonen? [j/N] " clone_answer
-    case "${clone_answer:-N}" in
-        j|J|y|Y)
-            git clone https://github.com/comfy-org/ComfyUI.git "$COMFYUI_DIR"
-            python3 -m venv "$COMFYUI_DIR/venv"
-            # shellcheck disable=SC1091
-            source "$COMFYUI_DIR/venv/bin/activate"
-            pip install --upgrade pip
-            pip install -r "$COMFYUI_DIR/requirements.txt"
-            deactivate || true
-            ;;
-        *)
-            say "ComfyUI-Klon uebersprungen."
-            ;;
-    esac
+if [ -d "$COMFYUI_DIR/.git" ]; then
+  log "ComfyUI existiert bereits. Aktualisierung wird nicht automatisch erzwungen."
+elif confirm "ComfyUI nach $COMFYUI_DIR klonen?"; then
+  run git clone https://github.com/comfy-org/ComfyUI.git "$COMFYUI_DIR"
+  (
+    cd "$COMFYUI_DIR"
+    run python3 -m venv venv
+    # shellcheck disable=SC1091
+    source venv/bin/activate
+    run pip install --upgrade pip
+    run pip install -r requirements.txt
+  )
 else
-    say "ComfyUI ist bereits vorhanden: $COMFYUI_DIR"
+  log "ComfyUI-Klon uebersprungen."
 fi
 
-say "Grosse Modelle werden absichtlich NICHT automatisch heruntergeladen."
-read -r -p "Nur Dokumentationshinweis fuer manuelle Wan/Flux-Modell-Downloads anzeigen? [J/n] " model_answer
-case "${model_answer:-J}" in
-    n|N) ;;
-    *)
-        cat <<'EOF'
-Manuelle Modellkandidaten:
-- Wan2.1 T2V-1.3B als kleiner Einstieg
-- Wan2.1/Wan2.2 I2V je nach ComfyUI-Workflow
-- Flux oder Stable Diffusion fuer Keyframes
-- ControlNet/IPAdapter/LoRA nur projektbezogen
-- Hugging Face / Huge_Facing als Modellquelle nutzen, aber grosse Modelle nur manuell laden
-- HUGGINGFACE_TOKEN nur lokal setzen, falls private oder gated Modelle wirklich benoetigt werden
-EOF
-        ;;
-esac
+if confirm "Grosse Wan2.x-/Flux-/Video-Modelle jetzt automatisch herunterladen?"; then
+  log "Automatischer Modelldownload ist in diesem Setup bewusst deaktiviert."
+  log "Bitte lade Modelle manuell passend zu VRAM, Lizenz und Workflow herunter."
+else
+  log "Keine grossen Modelle heruntergeladen."
+fi
 
 END_TS="$(date +%s)"
-DURATION="$((END_TS - START_TS))"
-say "Freier Speicher nachher:"
-df -h "$HOME" || true
-say "OpenHiggsStack Vorbereitung abgeschlossen in ${DURATION}s."
-say "Erster Test: cd \"$COMFYUI_DIR\" && source venv/bin/activate && python main.py --listen 127.0.0.1 --port 8188"
+log "Freier Speicher nachher: $(( $(free_kb 2>/dev/null || echo 0) / 1024 )) MB"
+log "Installationsdauer: $((END_TS - START_TS)) Sekunden"
+log "OpenHiggsStack Vorbereitung abgeschlossen."
+log "Naechster Schritt: ComfyUI starten und Wan2.x-Workflow manuell importieren."
+

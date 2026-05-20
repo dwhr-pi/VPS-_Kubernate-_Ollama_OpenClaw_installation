@@ -78,15 +78,6 @@ ensure_pnpm() {
     run_sudo env PATH="$PATH" corepack prepare pnpm@latest --activate
 }
 
-activate_pnpm_version() {
-    local version="$1"
-    run_sudo env PATH="$PATH" corepack prepare "pnpm@${version}" --activate
-}
-
-pnpm_v3() {
-    npx -y pnpm@8.15.0 "$@"
-}
-
 ensure_pnpm_workspace_file() {
     if [ -f pnpm-workspace.yaml ]; then
         return
@@ -98,68 +89,38 @@ packages:
 EOF
 }
 
-write_pnpm_allowed_builds_config() {
+append_pnpm_allowed_builds() {
     local dep
 
     ensure_pnpm_workspace_file
 
-    cp pnpm-workspace.yaml "pnpm-workspace.yaml.bak.$(date +%Y%m%d_%H%M%S)" 2>/dev/null || true
-
-    {
-        echo "packages:"
-        node <<'EOF'
-const fs = require("fs");
-let packages = ["."];
-try {
-  const pkg = JSON.parse(fs.readFileSync("package.json", "utf8"));
-  if (Array.isArray(pkg.workspaces)) {
-    packages = pkg.workspaces;
-  } else if (pkg.workspaces && Array.isArray(pkg.workspaces.packages)) {
-    packages = pkg.workspaces.packages;
-  }
-} catch (_) {}
-for (const entry of packages) {
-  console.log(`  - ${JSON.stringify(entry)}`);
-}
-EOF
-        echo
-        echo "allowBuilds:"
-        for dep in "${RUFLO_PNPM_ALLOWED_BUILDS[@]}"; do
-            printf '  "%s": true\n' "$dep"
-        done
-    } > pnpm-workspace.yaml
-}
-
-repair_legacy_or_broken_pnpm_workspace() {
-    if [ ! -f pnpm-workspace.yaml ]; then
-        return 0
+    if ! grep -q '^onlyBuiltDependencies:' pnpm-workspace.yaml; then
+        {
+            echo
+            echo "onlyBuiltDependencies:"
+        } >> pnpm-workspace.yaml
     fi
 
-    if grep -qE 'onlyBuiltDependencies:|set this to true or false|Automatically ignored builds during installation|hint: allowBuilds:' pnpm-workspace.yaml; then
-        echo -e "${YELLOW}Bereinige alte oder kaputte pnpm-workspace.yaml aus einem vorherigen Ruflo-Versuch...${NC}"
-        write_pnpm_allowed_builds_config
-        return 0
-    fi
-
-    if ! node -e 'const fs=require("fs"); const text=fs.readFileSync("pnpm-workspace.yaml","utf8"); if (!/^packages:/m.test(text)) process.exit(1);' >/dev/null 2>&1; then
-        echo -e "${YELLOW}pnpm-workspace.yaml wirkt unvollstaendig. Erzeuge sichere Ruflo-Workspace-Konfiguration neu...${NC}"
-        write_pnpm_allowed_builds_config
-    fi
+    for dep in "${RUFLO_PNPM_ALLOWED_BUILDS[@]}"; do
+        if ! grep -qx "  - ${dep}" pnpm-workspace.yaml; then
+            echo "  - ${dep}" >> pnpm-workspace.yaml
+        fi
+    done
 }
 
 handle_pnpm_ignored_builds() {
     local answer
 
     if ! command -v pnpm >/dev/null 2>&1; then
-        return 1
+        return
     fi
 
     if ! pnpm ignored-builds >/tmp/ruflo_pnpm_ignored_builds.txt 2>/dev/null; then
-        return 1
+        return
     fi
 
     if ! grep -qE '^[[:space:]]*[[:alnum:]_@./-]+' /tmp/ruflo_pnpm_ignored_builds.txt; then
-        return 1
+        return
     fi
 
     echo -e "${YELLOW}pnpm hat Build-Skripte blockiert. Das ist eine Sicherheitsfunktion von pnpm 10/11.${NC}"
@@ -167,7 +128,7 @@ handle_pnpm_ignored_builds() {
     sed 's/^/  - /' /tmp/ruflo_pnpm_ignored_builds.txt
     echo
     echo -e "${YELLOW}Ohne Freigabe koennen native Module wie esbuild, sharp, argon2 oder better-sqlite3 spaeter im Build fehlen.${NC}"
-    echo -e "${YELLOW}Es werden nur bekannte Ruflo-Abhaengigkeiten in pnpm-workspace.yaml unter allowBuilds: true eingetragen.${NC}"
+    echo -e "${YELLOW}Es werden nur bekannte Ruflo-Abhaengigkeiten in pnpm-workspace.yaml unter onlyBuiltDependencies eingetragen.${NC}"
 
     if [ "${RUFLO_APPROVE_BUILDS:-}" = "1" ] || [ "${RUFLO_APPROVE_BUILDS:-}" = "true" ]; then
         answer="j"
@@ -177,24 +138,15 @@ handle_pnpm_ignored_builds() {
 
     case "${answer:-N}" in
         j|J|y|Y)
-            write_pnpm_allowed_builds_config
+            cp pnpm-workspace.yaml "pnpm-workspace.yaml.bak.$(date +%Y%m%d_%H%M%S)" 2>/dev/null || true
+            append_pnpm_allowed_builds
             echo -e "${BLUE}pnpm install wird mit gezielter Build-Freigabe erneut ausgefuehrt...${NC}"
             pnpm install --no-frozen-lockfile
-            echo -e "${BLUE}Fuehre pnpm rebuild fuer freigegebene native Pakete aus...${NC}"
-            pnpm rebuild
-            return $?
             ;;
         *)
             echo -e "${YELLOW}Keine Build-Skripte freigegeben. Wenn der Build fehlschlaegt, fuehre im Ruflo-Verzeichnis bewusst 'pnpm approve-builds' aus oder setze RUFLO_APPROVE_BUILDS=1.${NC}"
-            return 1
             ;;
     esac
-}
-
-has_pnpm_ignored_builds() {
-    command -v pnpm >/dev/null 2>&1 || return 1
-    pnpm ignored-builds >/tmp/ruflo_pnpm_ignored_builds.txt 2>/dev/null || return 1
-    grep -qE '^[[:space:]]*[[:alnum:]_@./-]+' /tmp/ruflo_pnpm_ignored_builds.txt
 }
 
 detect_ruflo_repo() {
@@ -209,37 +161,12 @@ detect_ruflo_repo() {
     return 1
 }
 
-backup_and_reset_ruflo_repo_changes() {
-    local backup_dir
-
-    if git diff --quiet && git diff --cached --quiet && [ -z "$(git ls-files --others --exclude-standard)" ]; then
-        return 0
-    fi
-
-    backup_dir="$HOME/.openclaw_ultimate_user_data/backups/ruflo_git_dirty_$(date +%Y%m%d_%H%M%S)"
-    mkdir -p "$backup_dir"
-
-    echo -e "${YELLOW}Lokale Aenderungen im Ruflo-Upstream-Checkout erkannt.${NC}"
-    echo -e "${YELLOW}Sie stammen meist von vorherigen pnpm-install/build-Laeufen und wuerden das Update blockieren.${NC}"
-    echo -e "${YELLOW}Sichere Diff/Status nach:${NC} $backup_dir"
-
-    git status --short > "$backup_dir/git_status.txt" 2>/dev/null || true
-    git diff > "$backup_dir/worktree.diff" 2>/dev/null || true
-    git diff --cached > "$backup_dir/index.diff" 2>/dev/null || true
-    git ls-files --others --exclude-standard > "$backup_dir/untracked_files.txt" 2>/dev/null || true
-
-    echo -e "${BLUE}Setze /opt/ruflo auf den sauberen Upstream-Stand zurueck...${NC}"
-    git reset --hard
-    git clean -fd
-}
-
 clone_or_update_repo() {
     local repo_url="$1"
 
     if [ -d "$RUFLO_DIR/.git" ]; then
         echo -e "${YELLOW}Ruflo-Verzeichnis $RUFLO_DIR existiert bereits. Aktualisiere Repository...${NC}"
         cd "$RUFLO_DIR"
-        backup_and_reset_ruflo_repo_changes
         git pull --ff-only
         return
     fi
@@ -257,96 +184,28 @@ clone_or_update_repo() {
     cd "$RUFLO_DIR"
 }
 
-prepare_ruflo_cli_workspace() {
-    echo -e "${BLUE}Bereite Ruflo CLI-Workspace gezielt vor...${NC}"
-
-    if [ -f "$RUFLO_DIR/v3/package.json" ]; then
-        echo -e "${BLUE}Nutze pnpm 8.15.0 fuer den Ruflo-v3-Workspace...${NC}"
-        echo -e "${BLUE}Installiere Ruflo-v3 Workspace-Abhaengigkeiten...${NC}"
-        pnpm_v3 --dir "$RUFLO_DIR/v3" install --no-frozen-lockfile || true
-    fi
-
-    if [ -f "$RUFLO_DIR/v3/@claude-flow/memory/package.json" ]; then
-        echo -e "${BLUE}Baue @claude-flow/memory vor, falls vorhanden...${NC}"
-        pnpm_v3 --dir "$RUFLO_DIR/v3" --filter @claude-flow/memory run build || true
-    fi
-
-    if [ -f "$RUFLO_DIR/v3/@claude-flow/swarm/package.json" ]; then
-        echo -e "${BLUE}Baue @claude-flow/swarm vor, falls vorhanden...${NC}"
-        pnpm_v3 --dir "$RUFLO_DIR/v3" --filter @claude-flow/swarm run build || true
-    fi
-
-    if [ -f "$RUFLO_DIR/v3/@claude-flow/cli-core/package.json" ]; then
-        echo -e "${BLUE}Baue @claude-flow/cli-core vor, falls vorhanden...${NC}"
-        pnpm_v3 --dir "$RUFLO_DIR/v3" --filter @claude-flow/cli-core run build || true
-    fi
-
-    if [ -f "$RUFLO_DIR/v3/@claude-flow/hooks/package.json" ]; then
-        echo -e "${BLUE}Baue @claude-flow/hooks vor, falls vorhanden...${NC}"
-        pnpm_v3 --dir "$RUFLO_DIR/v3" --filter @claude-flow/hooks run build || true
-    fi
-
-    if [ -f "$RUFLO_DIR/v3/@claude-flow/codex/package.json" ]; then
-        echo -e "${BLUE}Baue @claude-flow/codex vor, falls vorhanden...${NC}"
-        pnpm_v3 --dir "$RUFLO_DIR/v3" --filter @claude-flow/codex run build || true
-    fi
-
-    if [ -f "$RUFLO_DIR/v3/@claude-flow/cli/package.json" ]; then
-        echo -e "${BLUE}Installiere fehlende optionale CLI-Abhaengigkeiten lokal im CLI-Workspace...${NC}"
-        pnpm_v3 --dir "$RUFLO_DIR/v3/@claude-flow/cli" add @ruvector/learning-wasm@^0.1.29 --save-optional || true
-    fi
-}
-
 install_ruflo() {
     if [ ! -f package.json ]; then
         echo -e "${RED}Fehler: Im Ruflo-Repository wurde keine package.json gefunden.${NC}"
         exit 1
     fi
 
-    repair_legacy_or_broken_pnpm_workspace
-
     echo -e "${BLUE}Installiere Ruflo-Abhaengigkeiten mit pnpm...${NC}"
-    if ! pnpm install --no-frozen-lockfile; then
-        echo -e "${YELLOW}pnpm install wurde nicht erfolgreich abgeschlossen. Pruefe auf blockierte Build-Skripte...${NC}"
-        if grep -qE 'onlyBuiltDependencies:|set this to true or false|Automatically ignored builds during installation|hint: allowBuilds:' pnpm-workspace.yaml 2>/dev/null; then
-            repair_legacy_or_broken_pnpm_workspace
-            pnpm install --no-frozen-lockfile
-        elif ! handle_pnpm_ignored_builds; then
-            echo -e "${RED}Fehler: pnpm install fuer Ruflo fehlgeschlagen.${NC}"
-            echo -e "${YELLOW}Wenn ERR_PNPM_IGNORED_BUILDS angezeigt wurde, muss die gezielte Build-Freigabe bestaetigt werden.${NC}"
-            echo -e "${YELLOW}Nicht-interaktiv kann bewusst RUFLO_APPROVE_BUILDS=1 gesetzt werden.${NC}"
-            exit 1
-        fi
-    else
-        if has_pnpm_ignored_builds; then
-            if ! handle_pnpm_ignored_builds; then
-                echo -e "${RED}Fehler: Ruflo braucht die gezielte Freigabe bekannter pnpm-Build-Skripte.${NC}"
-                echo -e "${YELLOW}Ohne diese Freigabe bleiben native Module unvollstaendig und der CLI-Build scheitert reproduzierbar.${NC}"
-                echo -e "${YELLOW}Starte erneut und bestaetige mit 'j' oder setze bewusst RUFLO_APPROVE_BUILDS=1.${NC}"
-                exit 1
-            fi
-        fi
-    fi
+    pnpm install --no-frozen-lockfile
+    handle_pnpm_ignored_builds
 
-    prepare_ruflo_cli_workspace
-
-    echo -e "${BLUE}Baue Ruflo CLI mit pnpm...${NC}"
-    echo -e "${YELLOW}Hinweis:${NC} Der Upstream-Root-Build kompiliert derzeit auch unfertige v3-/Plugin-Bereiche. Fuer die CLI wird gezielt der v3-CLI-Workspace gebaut."
-    pnpm_v3 --dir "$RUFLO_DIR/v3" --filter @claude-flow/cli run build || true
-
-    if [ ! -f "$RUFLO_DIR/v3/@claude-flow/cli/dist/src/index.js" ]; then
-        echo -e "${RED}Fehler: Ruflo CLI-Build konnte die benoetigte Datei nicht erzeugen.${NC}"
-        echo "Fehlende Datei: $RUFLO_DIR/v3/@claude-flow/cli/dist/src/index.js"
+    echo -e "${BLUE}Baue Ruflo mit pnpm...${NC}"
+    if ! pnpm build; then
+        echo -e "${RED}Fehler: Ruflo Build mit pnpm fehlgeschlagen.${NC}"
+        echo -e "${YELLOW}Wenn kurz zuvor ERR_PNPM_IGNORED_BUILDS erschien, fehlen wahrscheinlich freigegebene native Build-Skripte.${NC}"
         echo -e "${YELLOW}Sichere Optionen:${NC}"
         echo "  cd $RUFLO_DIR"
+        echo "  pnpm ignored-builds"
+        echo "  pnpm approve-builds"
         echo "  pnpm install --no-frozen-lockfile"
-        echo "  npx -y pnpm@8.15.0 --dir v3 --filter @claude-flow/cli run build"
-        echo "  node bin/cli.js --help"
-        echo -e "${YELLOW}Der komplette Upstream-Befehl 'pnpm build' ist fuer diesen Ruflo-Stand aktuell nicht als Installationskriterium geeignet.${NC}"
+        echo "  pnpm build"
         exit 1
     fi
-
-    echo -e "${GREEN}Ruflo CLI-Build ist vorhanden.${NC}"
 }
 
 link_ruflo_cli() {

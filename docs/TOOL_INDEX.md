@@ -25,15 +25,6 @@ Die technische Quelle ist `config/tools.yml`. Diese Seite fasst die wichtigsten 
 - `openlit`
 - `promptfoo`
 
-## Agenten und Coding-CLI
-
-- `ruflo`
-- `aider`
-- `opencode`
-- `openhands`
-- `github_cli`
-- `code_sandbox`
-
 ## Automation und Apps
 
 - `n8n`

@@ -1,0 +1,24 @@
+{
+  "profile": "architektur_3d_bim",
+  "mode": "local_first",
+  "requireReview": true,
+  "agents": [
+    "architektur_assistent",
+    "bim_analyst",
+    "cad_code_generator",
+    "innenraum_designer",
+    "materialplaner",
+    "smarthome_architekt",
+    "stadtplanungs_ki",
+    "renderfarm_manager",
+    "ifc_parser",
+    "stl_3d_druck_assistent"
+  ],
+  "safeDefaults": {
+    "writeIfc": false,
+    "remoteWebUi": false,
+    "cloudApis": false,
+    "costLimitRequired": true
+  }
+}
+

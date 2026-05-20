@@ -20,51 +20,7 @@ Die zugehoerige Architektur-Dokumentation findest du in [docs/ARCHITECTURE_LLMOP
 - Ebenfalls neu ist das modulare [Next Level Persona System](docs/Profil/Next_Level_Persona_System.md) fuer persistente Persona-, Memory- und Modus-Workflows mit sicheren Disclosure-Defaults.
 - Fuer laenger laufende Baustellen und Chat-Uebergaenge gibt es jetzt zusaetzlich eine kleine dauerhafte Projekt-Erinnerung unter [docs/SETUP_MEMORY.md](docs/SETUP_MEMORY.md).
 - Die aktuelle Review- und Prioritaetenliste liegt in [docs/SETUP_REVIEW_AND_NEXT_STEPS.md](docs/SETUP_REVIEW_AND_NEXT_STEPS.md).
-- Neue modulare Profilbausteine: `Prompt_Generator_Studio`, `Memory_Import_Export`, `Self_Learning_Agent_Lab`, `Home_Network_Security`, `Android_App_Builder`, `AI_Dashboard_Builder`, `Render_Farm_GPU_Workstation`, `OpenHiggsStack_AI_Cinema_Studio`, `AI_3D_Generation_Studio`, `Elektronik_Entwickler`, `Architektur_3D_BIM`, `CAD_3D_Konstruktion`, `FotoScan_Panorama_360_3D`, `Robotik_Anlagensteuerung`, `Legal_Safe_Creator`, `Cyber_Security_AI` und `Anti_Virus`.
-
-## Optional: AI 3D Generation Studio
-
-Das Profil [AI_3D_Generation_Studio](docs/Profile/AI_3D_Generation_Studio.md) bereitet ein lokales Open-Source-3D-Studio fuer Ubuntu/WSL2 vor. Es kombiniert Ollama, OpenClaw, ComfyUI, Blender, Hunyuan3D 2.1, TripoSR und FFmpeg fuer Text-/Bild-zu-3D, Game Assets, CAD-nahe Prototypen, STL/GLB/FBX-Export und spaetere GPU-/Kubernetes-Skalierung.
-
-Die Installer legen nur Projektstruktur, Repositories und optionale virtuelle Umgebungen an. Grosse Modellgewichte werden bewusst nicht automatisch geladen. Details stehen in [docs/AI_3D_STUDIO.md](docs/AI_3D_STUDIO.md), [docs/AI_3D_KUBERNETES_SCALING.md](docs/AI_3D_KUBERNETES_SCALING.md), [docs/AI_3D_DASHBOARD.md](docs/AI_3D_DASHBOARD.md) und [docs/AI_3D_WORKFLOWS.md](docs/AI_3D_WORKFLOWS.md).
-
-## Optional: Elektronik Entwickler
-
-Das Profil [Elektronik_Entwickler](docs/Profile/Elektronik_Entwickler.md) bereitet eine lokale KI-gestuetzte Elektronik-, PCB-, Embedded- und FPGA-Entwicklungsumgebung vor. Es integriert KiCad, FreeCAD, ngspice, PlatformIO, ESP-IDF/Arduino-/Zephyr-nahe Workflows, OpenOCD, Verilator, Yosys, OpenROAD/OpenLane-Hinweise, KiCad MCP, Circuit-Synth, tscircuit, n8n, Home Assistant und OpenClaw-Agenten fuer Schaltplanpruefung, PCB Review, BOM, Firmware, FPGA und IoT-Hardware.
-
-Details und Automationsideen stehen in [docs/ELECTRONICS_DEVELOPER_GUIDE.md](docs/ELECTRONICS_DEVELOPER_GUIDE.md), [docs/ELECTRONICS_DASHBOARD.md](docs/ELECTRONICS_DASHBOARD.md) und [docs/ELECTRONICS_N8N_WORKFLOWS.md](docs/ELECTRONICS_N8N_WORKFLOWS.md).
-
-## Optional: Architektur 3D BIM
-
-Das Profil [Architektur_3D_BIM](docs/Profile/Architektur_3D_BIM.md) bereitet ein lokales KI-gestuetztes Architektur-, CAD-, BIM- und 3D-Rendering-Setup vor. Es verbindet FreeCAD, Blender, Bonsai/IfcOpenShell, Speckle, SweetHome3D, OpenStudio/EnergyPlus-Hinweise, QGIS, OpenSCAD, Meshroom/COLMAP, ComfyUI, Ollama, OpenClaw und n8n fuer Architekturplanung, IFC-Analyse, AI-Rendering, Smart-Home-Planung, Scan-to-BIM, VR/AR und Renderfarm-Skalierung.
-
-Weitere Details stehen in [docs/ARCHITECTURE_3D_BIM_GUIDE.md](docs/ARCHITECTURE_3D_BIM_GUIDE.md), [docs/ARCHITECTURE_N8N_WORKFLOWS.md](docs/ARCHITECTURE_N8N_WORKFLOWS.md) und [docs/ARCHITECTURE_RENDERFARM_KUBERNETES.md](docs/ARCHITECTURE_RENDERFARM_KUBERNETES.md).
-
-## Optional: CAD 3D Konstruktion
-
-Das Profil [CAD_3D_Konstruktion](docs/Profile/CAD_3D_Konstruktion.md) ergaenzt das Setup um Text-to-CAD, FreeCAD-Python, OpenSCAD, optional CadQuery/build123d, STL/STEP/OBJ/GLB-Export, 3D-Druck-Pruefung und Robotik-Bauteile. Es ist bewusst lokal-first und dockerfrei vorbereitet; schwere Slicer, Cloud-APIs und grosse AI-3D-Modelle bleiben optional.
-
-Der Einstieg erfolgt ueber:
-
-```bash
-bash scripts/tools/cad_3d_konstruktion_install.sh
-```
-
-## Optional: FotoScan Panorama 360 3D
-
-Das Profil [FotoScan_Panorama_360_3D](docs/Profile/FotoScan_Panorama_360_3D.md) beschreibt lokale Workflows fuer Fotoordner zu Panorama, 360-Grad-Panorama, Photogrammetrie und optional Gaussian Splatting. Es nutzt Hugin/PanoTools, COLMAP und dokumentiert Meshroom/AliceVision, OpenMVG/OpenMVS sowie GPU-lastige Splatting-Pipelines klar als optional.
-
-Der Einstieg erfolgt ueber:
-
-```bash
-bash scripts/install_fotoscan_panorama_360_3d.sh
-```
-
-## Optional: Robotik Anlagensteuerung
-
-Das Profil [Robotik_Anlagensteuerung](docs/Profile/Robotik_Anlagensteuerung.md) beschreibt eine lokale, sicherheitsorientierte Erweiterung fuer Robotik, Anlagensteuerung, Digital Twin, SCADA/HMI, SPS/PLC-Anbindung und KI-gestuetzte Diagnose. Es kombiniert Ollama, OpenClaw, n8n, Node-RED, MQTT, optionale Home-Assistant-Integration sowie spaetere ROS-2-/Gazebo-/MoveIt-2- und Kubernetes-Pfade.
-
-Wichtig: Die KI arbeitet standardmaessig read-only. Echte Aktoren, SPS/PLC-Schreibzugriffe, Robotercontroller, Relais, Ventile oder Motoren duerfen nicht direkt durch KI gesteuert werden; dafuer braucht es sichere Gateways, Whitelists, Grenzwerte, Protokollierung, Not-Aus und menschliche Freigabe.
+- Neue modulare Profilbausteine: `Prompt_Generator_Studio`, `Memory_Import_Export`, `Self_Learning_Agent_Lab`, `Home_Network_Security`, `Android_App_Builder`, `AI_Dashboard_Builder`, `Render_Farm_GPU_Workstation`, `GameDev_3D_Studio_NEXTLEVEL`, `CAD_Konstrukteur`, `Architektur_3D_BIM`, `Robotertechnik_Anlagensteuerung`, `Physik`, `Chemie`, `Biologie`, `Bioinformatik`, `Molekuelsimulation`, `Robotik_Labor`, `Materialwissenschaft`, `Legal_Safe_Creator`, `Cyber_Security_AI` und `Anti_Virus`.
 
 ## 🚀 Schnelle Installation (One-Liner)
 
@@ -150,6 +106,10 @@ bash scripts/last_install_log.sh --snapshot
 
 Im Tool-Management werden Deinstallationen jetzt vor Installationen ausgefuehrt. Wenn in einem Batch also Tools abgewaehlt und andere neu angewaehlt werden, wird zuerst Speicher freigegeben und erst danach installiert. Bei Installationsfehlern erscheint der Log-/Diagnose-Dialog sofort, auch wenn die erweiterte Ueberwachung nicht aktiv ist; Enter entspricht in diesem Fehlerfall sicherheitshalber `Z` und springt zurueck ins Setup.
 
+Vor und nach Tool-Installationen werden Speicherwerte gemessen. Die Historie liegt unter `~/.openclaw_ultimate_user_data/metrics_logs/operation_history.tsv` und direkte Tool-Skript-Messungen unter `~/.openclaw_ultimate_user_data/metrics_logs/tool_script_history.tsv`. Die jeweils letzte Messung wird zusaetzlich in `~/.openclaw_ultimate_user_data/setup_metrics.conf` als `LAST_...` bzw. `LAST_TOOL_SCRIPT_...` Wert fortgeschrieben.
+
+Die Tool-Quellenpolitik steht ebenfalls in `setup_metrics.conf`: Standardmaessig sollen Primaertools aus GitHub kommen, waehrend Systemabhaengigkeiten wie `apt` erlaubt bleiben. Mit `STRICT_GITHUB_TOOL_SOURCES=true` kann das Setup Tool-Installer ohne erkannte GitHub-Quelle blockieren; bewusste Ausnahmen sind mit `ALLOW_NON_GITHUB_TOOL_SOURCE=1` moeglich.
+
 Alte Fehlerlogs koennen gezielt rotiert werden:
 
 ```bash
@@ -161,7 +121,7 @@ bash scripts/cleanup_setup_logs.sh --apply --failed-only
 
 Higgsfield AI ist ein proprietaerer bzw. cloudbasierter AI-Video-/Image-/Marketing-Studio-Pfad mit CLI-/Agent-Anbindung. Dieses Setup ergaenzt dafuer eine offene, lokale Alternative: [OpenHiggsStack AI Cinema Studio](docs/Profile/OpenHiggsStack_AI_Cinema_Studio.md).
 
-OpenHiggsStack ist kein 1:1-Klon, sondern eine modulare Pipeline aus `OpenClaw`, `Ollama`, `ComfyUI`, `Wan2.x`, `FFmpeg` und `n8n`. Hugging Face / Huge_Facing dient als optionale Modellquelle fuer Wan-, Flux-, SD-, LoRA- und ControlNet-Modelle; grosse Modelle werden nicht automatisch heruntergeladen. Cloud-APIs wie Higgsfield, Veo, Kling, Seedance, Runway, Pika oder Sora koennen optional spaeter angebunden werden, bleiben aber standardmaessig aus und benoetigen eigene Keys ausserhalb des Repositories.
+OpenHiggsStack ist kein 1:1-Klon, sondern eine modulare Pipeline aus `OpenClaw`, `Ollama`, `ComfyUI`, `Wan2.x`, `FFmpeg` und `n8n`. Cloud-APIs wie Higgsfield, Veo, Kling, Seedance, Runway, Pika oder Sora koennen optional spaeter angebunden werden, bleiben aber standardmaessig aus und benoetigen eigene Keys ausserhalb des Repositories.
 
 Technischer Einstieg:
 
@@ -174,6 +134,55 @@ Das Installskript legt Ordner, Log und Beispielkonfiguration an, installiert nac
 
 Wenn eine Installation fehlschlaegt, zeigt `bash scripts/last_install_log.sh` sofort das neueste Protokoll. Mit `bash scripts/last_install_log.sh --email` kann die bestehende Diagnose-Mail-Funktion genutzt werden, sofern SMTP/msmtp bereits konfiguriert ist.
 
+## Optional: GameDev 3D Studio NEXTLEVEL
+
+Das Profil [GameDev 3D Studio NEXTLEVEL](docs/Profile/GameDev_3D_Studio.md) beschreibt ein lokales AI Game Studio fuer Godot 4.x, Godot-Demo-Projekte, Blender, ComfyUI, Ollama-NPCs, OpenClaw als Game Master, n8n-Automation, Multiplayer-/Kubernetes-Pfade, Renderfarm, Voice und Modding.
+
+Der Einstieg ist speicherschonend: Standardmaessig werden nur Ordnerstruktur, Env-Beispiel und Agent-/NPC-Beispiele angelegt. Grosse Schritte wie Godot-Quellcode, Demo-Projekte, Blender-Pakete oder ein Godot-Source-Build laufen nur, wenn sie bewusst per Umgebungsvariable aktiviert werden.
+
+```bash
+bash scripts/tools/gamedev_3d_studio_install.sh
+GAMEDEV_CLONE_GODOT=1 GAMEDEV_CLONE_DEMOS=1 bash scripts/tools/gamedev_3d_studio_install.sh
+```
+
+## Optional: CAD_Konstrukteur
+
+Das Profil [CAD_Konstrukteur](docs/Profile/CAD_Konstrukteur.md) beschreibt einen lokalen CAD-/3D-Druck-Assistenten fuer FreeCAD, CadQuery, OpenSCAD, Blender-Preview, Ollama-CAD-Code, OpenClaw-Agenten, N8n und Whisper-Sprachkommandos.
+
+Der Pfad ist experimentell, aber bewusst pruefbar: Das Installationsskript installiert nach Moeglichkeit FreeCAD/OpenSCAD und eine Python-venv fuer CadQuery, waehrend Blender optional bleibt.
+
+```bash
+bash scripts/install/install_cad_tools.sh
+bash scripts/check/check_cad_tools.sh
+```
+
+Beispielanwendung: Ein parametrisches Raspberry-Pi-, Mini-PC- oder ESP32-Gehaeuse mit Wandstaerke, Schraubloechern, Lueftungsschlitzen und STL-/STEP-Export vorbereiten. Sicherheitskritische oder tragende Bauteile muessen immer fachlich geprueft werden.
+
+## Optional: Architektur 3D BIM
+
+Das Profil [Architektur_3D_BIM](docs/Profile/Architektur_3D_BIM.md) beschreibt ein lokales Architektur-, BIM-/IFC-, CAD- und 3D-Rendering-Studio fuer FreeCAD, Blender, Bonsai/BlenderBIM, IFCOpenShell, QGIS, ComfyUI, OpenClaw-Agenten, n8n-Automation und optionale Renderfarm-/Kubernetes-Workflows.
+
+Der Einstieg ist bewusst lokal-first und vorsichtig: Standardmaessig werden Projektordner, Dokumentation, Agentenrollen und Checks vorbereitet. Schwere Architektur-/CAD-/BIM-Pakete werden nur mit explizitem Opt-in installiert.
+
+```bash
+bash scripts/install_architektur_3d_bim_optional.sh
+ARCH_INSTALL_CORE=1 bash scripts/install_architektur_3d_bim_optional.sh
+bash profiles/architektur_3d_bim/scripts/check_architektur_stack.sh
+```
+
+Wichtig: KI-Entwuerfe, IFC-Analysen und Renderings ersetzen keine Fachplanung. Bau, Statik, Brandschutz, Elektroplanung, Energieausweis und Genehmigung muessen immer fachlich geprueft werden.
+
+## Optional: Robotertechnik & Anlagensteuerung
+
+Das Profil [Robotertechnik_Anlagensteuerung](docs/Profile/Robotertechnik_Anlagensteuerung.md) ist ein Simulation-first-Profil fuer ROS 2, Gazebo, MoveIt 2, Anlagenmonitoring, Sensorik, Predictive Maintenance, MQTT-/OPC-UA-/Modbus-Anbindung und sichere KI-Assistenz fuer technische Systeme.
+
+Standardmaessig arbeitet dieses Profil im Simulations-, Diagnose- und Vorschlagsmodus. Reale Hardware darf nur mit explizitem Realmodus, menschlicher Freigabe, Not-Aus, Hardware-Interlocks, Grenzwerten und Audit-Logging angesteuert werden.
+
+```bash
+bash scripts/install_robotics_profile_optional.sh
+bash profiles/robotik_anlagensteuerung/scripts/check_robotics_stack.sh
+```
+
 Validierung:
 
 ```bash
@@ -182,6 +191,20 @@ bash scripts/validate_config.sh
 bash scripts/check_profiles.sh
 bash scripts/check_ports.sh
 ```
+
+## Optional: Wissenschaftliche Science-Lab-Profile
+
+Die Science-Lab-Profile [Physik](docs/Profile/Physik.md), [Chemie](docs/Profile/Chemie.md), [Biologie](docs/Profile/Biologie.md), [Bioinformatik](docs/Profile/Bioinformatik.md), [Molekuelsimulation](docs/Profile/Molekuelsimulation.md), [Robotik_Labor](docs/Profile/Robotik_Labor.md) und [Materialwissenschaft](docs/Profile/Materialwissenschaft.md) erweitern Ollama, OpenClaw, Codex, Kubernetes, JupyterLab, Dashboards, Whisper und Home-Assistant-Sensorik zu einer lokalen wissenschaftlichen Arbeitsumgebung.
+
+Die Installer sind bewusst modular: Standardmaessig werden Ordner, Profilhinweise, Speicherprotokoll und eine Python-Umgebung vorbereitet. Grosse GitHub-Projekte werden nur mit `SCIENCE_CLONE_GITHUB=1` geklont; umfangreiche Python-Pakete werden nur mit `SCIENCE_INSTALL_PYTHON_DEPS=1` installiert.
+
+```bash
+bash scripts/profiles/Physik_install.sh
+SCIENCE_CLONE_GITHUB=1 bash scripts/profiles/Molekuelsimulation_install.sh
+SCIENCE_INSTALL_PYTHON_DEPS=1 bash scripts/profiles/Bioinformatik_install.sh
+```
+
+Docker ist fuer diese Profile nicht Pflicht. CUDA/ROCm werden erkannt und dokumentiert; Kubernetes-Offloading bleibt optional fuer groessere Simulationen, Batch-Analysen und GPU-Worker.
 
 ## 🔐 Sicherheit bei der Nutzung
 
@@ -208,6 +231,23 @@ Darauf solltest du achten:
 - Wenn du einen öffentlichen Host, VPS oder `0.0.0.0` nutzt, setze immer sichere Tokens und Passwörter.
 - Eigene Modelfiles und GGUF-Pfade solltest du möglichst ebenfalls nur im Benutzer-Workspace pflegen und nicht ins Git-Repository schreiben.
 - Auch neue Plattform-Stacks fuer LiteLLM, Open WebUI, Langfuse, Qdrant oder MinIO sollen immer ueber `.env`-Dateien im Benutzer-Workspace oder in separaten lokalen Stack-Verzeichnissen konfiguriert werden, nicht im Git-Repository.
+
+## ⚠️ Kostenfalle durch Cloud-APIs und Bezahldienste
+
+Dieses Setup ist lokal-first ausgelegt und wurde so konzipiert, dass viele Funktionen kostenlos oder mit Open-Source-Komponenten genutzt werden koennen. Trotzdem koennen einzelne Tools, Agenten oder Workflows auf externe KI-APIs, Cloud-Dienste, bezahlte Modellanbieter, Speicher-, VPS-, E-Mail-, Trading-, Medien- oder Automationsdienste zugreifen, wenn dort API-Keys, Zahlungsdaten oder eine Kreditkarte hinterlegt sind.
+
+Je nach Prompt, Fehlkonfiguration oder automatisiertem Workflow koennen dadurch unerwartete Kosten entstehen. Besonders kritisch sind Batch-Jobs, Agenten-Schleifen, automatische Mediengenerierung, Cloud-LLMs, Video-/Bild-APIs, Deployments, Speicher- und Traffic-Kosten sowie Dienste, die pro Anfrage, Token, Minute, GPU-Zeit oder Export abrechnen.
+
+Best Practices:
+
+- Nutze lokale Modelle und kostenlose Kontingente bevorzugt.
+- Hinterlege Zahlungsdaten nur bei Diensten, die du wirklich nutzen willst.
+- Setze harte Kostenlimits, Quotas, Budget-Warnungen und API-Limits beim Anbieter.
+- Trage Cloud-API-Keys nur bewusst und nur im Benutzer-Workspace ein, niemals im Repository.
+- Pruefe `.env`-Dateien, n8n-Workflows, Agenten-Tools und Fallback-Router, bevor du sie startest.
+- Starte neue Agenten- oder Batch-Workflows zuerst mit kleinen Tests.
+- Deaktiviere oder entferne API-Keys, wenn ein Tool nicht aktiv genutzt wird.
+- Kontrolliere regelmaessig Anbieter-Dashboards und Rechnungsseiten.
 
 Wichtig:
 
@@ -747,17 +787,3 @@ Wichtige Ergänzung:
 *   **Registry-System:** Die neuen Dateien unter `config/` sind die Zielstruktur für künftige automatische Menü-Generierung, aber noch nicht jede Stelle des Hauptmenüs liest bereits daraus.
 
 Wir wünschen dir viel Erfolg bei der Einrichtung deines intelligenten, automatisierten Systems!
-## Optional: OpenHiggsStack / AI Cinema Studio
-
-OpenHiggsStack erweitert das Setup um eine lokale/offene AI-Cinema- und Marketing-Pipeline als Alternative zu proprietaeren Cloud-Studios wie Higgsfield AI. Higgsfield CLI/API kann optional als Cloud-Fallback angebunden werden, aber der bevorzugte Pfad bleibt self-hosted mit OpenClaw, Ollama, ComfyUI, Wan2.x, FFmpeg und n8n. Hugging Face / Huge_Facing ist dabei als optionale Modellquelle und Lizenz-/Versionsanker dokumentiert.
-
-Ziel ist kein 1:1-Klon von Higgsfield, sondern eine modulare Pipeline fuer Text-to-Video, Image-to-Video, Musikvideos, AI-Influencer-Konzepte, Produktclips, Social-Media-Shorts und kontrollierte Batch-Renderjobs. API-Keys werden nicht ins Repository geschrieben, grosse Modelle werden nicht automatisch heruntergeladen.
-
-Wichtige Dateien:
-
-- `docs/Profile/OpenHiggsStack_AI_Cinema_Studio.md`
-- `docs/Profile/Video_Generation_ComfyUI_Wan.md`
-- `scripts/install-openhiggsstack.sh`
-- `.env.openhiggsstack.example`
-- `docs/agents/video-director-agent.md`
-- `docs/n8n/openhiggsstack-workflows.md`

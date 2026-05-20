@@ -18,32 +18,41 @@ source "$INSTALL_DIR/scripts/helpers/status_tracking.sh"
 init_tool_tracking "n8n"
 
 N8N_DIR="/opt/n8n"
-N8N_RUNTIME_DIR="/opt/n8n-runtime"
+N8N_MIN_FREE_GB="${N8N_MIN_FREE_GB:-20}"
+N8N_RECOMMENDED_FREE_GB="${N8N_RECOMMENDED_FREE_GB:-40}"
 
-install_n8n_runtime_fallback() {
-    echo -e "${YELLOW}Der Build aus den aktuellen GitHub-Quellen ist fehlgeschlagen. Es wird eine stabilere Runtime-Installation als Fallback vorbereitet.${NC}"
-
-    sudo mkdir -p "$N8N_RUNTIME_DIR"
-    sudo chown -R "$USER:$USER" "$N8N_RUNTIME_DIR"
-    cd "$N8N_RUNTIME_DIR"
-
-    if [ ! -f package.json ]; then
-        npm init -y >/dev/null 2>&1
-    fi
-
-    echo -e "${BLUE}Installiere n8n Runtime-Paket lokal mit npm...${NC}"
-    npm install n8n
-    if [ $? -ne 0 ]; then
-        echo -e "${RED}Fehler: Auch die Runtime-Fallback-Installation von n8n ist fehlgeschlagen.${NC}"
-        return 1
-    fi
-
-    sudo ln -sf "$N8N_RUNTIME_DIR/node_modules/.bin/n8n" /usr/local/bin/n8n
-    echo -e "${YELLOW}Hinweis: n8n wurde als stabile Runtime-Fallback-Installation eingerichtet. Der Quellcode-Build aus dem GitHub-Monorepo blieb fehlerhaft.${NC}"
-    return 0
+free_gb_for_path() {
+    local path="$1"
+    df -BG "$path" 2>/dev/null | awk 'NR==2 {gsub("G","",$4); print $4}'
 }
 
-echo -e "${BLUE}Starte Installation von n8n...${NC}"
+check_n8n_disk_space() {
+    local target_parent="/opt"
+    local free_gb
+
+    free_gb="$(free_gb_for_path "$target_parent")"
+    if [ -z "$free_gb" ]; then
+        free_gb="$(free_gb_for_path /)"
+    fi
+
+    echo -e "${BLUE}Speicherplatzpruefung fuer n8n GitHub-Build:${NC}"
+    echo -e "${BLUE}- Freier Speicher auf $target_parent: ${free_gb:-unbekannt} GB${NC}"
+    echo -e "${BLUE}- Geschaetzter Bedarf fuer n8n aus GitHub: ca. 5-15 GB dauerhaft, zusaetzlich temporaerer pnpm-/Build-Cache.${NC}"
+    echo -e "${BLUE}- Empfohlen vor Start: ${N8N_RECOMMENDED_FREE_GB} GB frei; absolutes Minimum: ${N8N_MIN_FREE_GB} GB frei.${NC}"
+    echo -e "${YELLOW}Hinweis: Der n8n-Monorepo-Build kann bei @n8n/chat:build mit 'Terminated' abbrechen, wenn RAM, Swap oder freier Speicher knapp sind.${NC}"
+
+    if [ -n "$free_gb" ] && [ "$free_gb" -lt "$N8N_MIN_FREE_GB" ]; then
+        echo -e "${RED}Fehler: Zu wenig freier Speicher fuer den n8n GitHub-Build. Bitte Speicher freigeben oder Zielsystem erweitern.${NC}"
+        exit 1
+    fi
+
+    if [ -n "$free_gb" ] && [ "$free_gb" -lt "$N8N_RECOMMENDED_FREE_GB" ]; then
+        echo -e "${YELLOW}Warnung: Der freie Speicher liegt unter der Empfehlung. Der Build kann trotzdem starten, aber Abbrueche sind wahrscheinlicher.${NC}"
+    fi
+}
+
+echo -e "${BLUE}Starte Installation von n8n aus GitHub...${NC}"
+check_n8n_disk_space
 
 # 1. n8n aus GitHub klonen
 if [ -d "$N8N_DIR" ]; then
@@ -70,11 +79,10 @@ fi
 echo -e "${BLUE}Baue n8n mit pnpm...${NC}"
 pnpm build
 if [ $? -ne 0 ]; then
-    echo -e "${YELLOW}Warnung: pnpm build für n8n aus dem Monorepo ist fehlgeschlagen.${NC}"
-    if ! install_n8n_runtime_fallback; then
-        echo -e "${RED}Fehler: pnpm build für n8n fehlgeschlagen und auch der Runtime-Fallback konnte nicht eingerichtet werden.${NC}"
-        exit 1
-    fi
+    echo -e "${RED}Fehler: pnpm build für n8n aus dem GitHub-Monorepo ist fehlgeschlagen.${NC}"
+    echo -e "${YELLOW}Wenn im Log '@n8n/chat:build' und 'Terminated' steht, wurde der Build wahrscheinlich durch RAM-/Swap-/Speichermangel beendet.${NC}"
+    echo -e "${YELLOW}Pruefe freien Speicher mit 'df -h', RAM/Swap mit 'free -h' und wiederhole danach die GitHub-Installation.${NC}"
+    exit 1
 fi
 
 # 4. Konfiguration und Start (Platzhalter)

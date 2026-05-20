@@ -1,217 +1,167 @@
 # GameDev 3D Studio NEXTLEVEL
 
-Das Profil `GameDev_3D_Studio_NEXTLEVEL` erweitert das Ultimate KI Setup zu einem lokalen AI Game Studio fuer Godot, Blender, ComfyUI, Ollama-NPCs, OpenClaw als Game Master, n8n-Automation, Multiplayer-Server, Renderfarm, Voice-Systeme und spaetere Kubernetes-Skalierung. Es ist Linux-first, WSL2-kompatibel, offlinefreundlich und bevorzugt Open Source.
+Dieses Profil erweitert das Ultimate KI Setup zu einem lokalen AI Game Studio fuer Godot 4.x, Blender, ComfyUI, Ollama, OpenClaw, n8n, Voice, Renderfarm und spaetere Multiplayer-/Kubernetes-Workflows.
 
-## Zielbild
+Ziel ist kein schweres Alles-auf-einmal-Setup, sondern ein modularer, speicherschonender Studio-Baukasten. Grosse Repositories, Demo-Projekte, Godot-Source-Builds, Modelle und Assets werden nur nach bewusster Aktivierung geladen.
+
+## Einsatzgebiete
+
+- Godot 4.x Projekte mit GDScript, C#, Vulkan, OpenXR, Multiplayer APIs und NavigationServer3D.
+- Godot Demo Projects als lokale Lern-, Benchmark- und Testbibliothek.
+- Blender Pipeline fuer Mesh Cleanup, PBR-Materialien, LODs, Asset-Konvertierung und Batch-Export.
+- ComfyUI Workflows fuer Concept Art, Texturen, Skyboxes, NPC-Portraits, Item-Icons und Upscaling.
+- Ollama NPC-System mit lokalen Dialogmodellen, Memory, RAG und Fraktionslogik.
+- OpenClaw als Game Master, Quest Manager, AI Director, Story Generator und Welt-Synchronisierung.
+- n8n Automatisierung fuer Builds, GitHub Uploads, Asset-Verwaltung, Discord, Backups und Render Queues.
+- Multiplayer-Vorbereitung mit Linux Dedicated Server, Tailscale, Cloudflare Tunnel und spaeter Kubernetes.
+
+## Architektur
 
 ```mermaid
-flowchart LR
-  A["Game Idee / World Bible / Asset Brief"] --> B["OpenClaw Game Master"]
-  B --> C["Ollama Planner / NPC Brains"]
-  C --> D["Godot Project / Gameplay Systems"]
-  C --> E["Blender Asset Pipeline"]
-  C --> F["ComfyUI Concept / Textures / Icons"]
-  D --> G["Build / Benchmark / Dedicated Server"]
-  E --> H["Models / LOD / PBR / GLB"]
-  F --> I["Textures / Skyboxes / Portraits"]
-  G --> J["n8n Automation / GitHub / Backup"]
-  J --> K["Kubernetes / Tailscale / Cloudflare optional"]
+flowchart TD
+    A["Designer / Entwickler Prompt"] --> B["OpenClaw Game Master"]
+    B --> C["Quest / Story / NPC Planner"]
+    B --> D["Asset Pipeline"]
+    C --> E["Ollama NPC Brains + Memory/RAG"]
+    D --> F["ComfyUI Concept / Texture / Skybox"]
+    D --> G["Blender Asset Processing"]
+    G --> H["Godot 4 Project"]
+    F --> H
+    E --> H
+    H --> I["n8n Build / Backup / Publish"]
+    I --> J["GitHub / Dedicated Server / Kubernetes optional"]
+    I --> K["Dashboard / GPU / Render / NPC Status"]
 ```
 
-## Kernziele
+## GitHub Projekte
 
-- Lokale Spielentwicklung mit Godot 4.x, GDScript, C#-Option, Vulkan, OpenXR und Multiplayer APIs.
-- Lokale Demo-Bibliothek mit Godot Demo Projects fuer Shader, Physics, Multiplayer, 3D und Benchmarks.
-- Blender-Pipeline fuer Modelle, PBR-Materialien, LOD, Asset-Konvertierung und GLB/FBX/OBJ/STL-Export.
-- ComfyUI-Pipelines fuer Concept Art, Texturen, Skyboxes, NPC-Portraits, Icons und Terrain-Material.
-- Ollama-basierte NPC-Gehirne mit RAG, Langzeitgedaechtnis, Fraktionen, Beziehungen, Geruechten und Dialog.
-- OpenClaw als Quest Manager, AI Director, Game Master, Story Generator und Welt-Synchronisierung.
-- n8n fuer Builds, GitHub, Backups, Render Queue, Discord/Webhooks und Mod-Synchronisierung.
-- Multiplayer- und Serverkonzepte fuer Linux Dedicated Server, Tailscale/Cloudflare und spaeter Kubernetes.
+| Bereich | Quelle | Nutzung |
+|---|---|---|
+| Godot Engine | `https://github.com/godotengine/godot` | Godot 4.x, Vulkan, GDScript, C#, OpenXR, Multiplayer, Navigation, AnimationTree |
+| Godot Demo Projects | `https://github.com/godotengine/godot-demo-projects` | Demos, Benchmarks, Shader, Physics, 3D, Multiplayer |
 
-## GitHub-Projekte
+## Lokale Projektstruktur
 
-| Bereich | Projekt | Quelle | Umgang im Setup |
-| --- | --- | --- | --- |
-| Game Engine | Godot Engine | `https://github.com/godotengine/godot` | Optional klonen; Source-Build nur bewusst starten |
-| Demo-Bibliothek | Godot Demo Projects | `https://github.com/godotengine/godot-demo-projects` | Optional klonen; lokale Demo- und Benchmark-Bibliothek |
-| Blender | Blender | Paket/Website/Git optional | Bevorzugt Paket oder vorhandene Installation |
-| ComfyUI | ComfyUI | vorhandenes Setup | GameDev-Workflows und Asset-Pfade vorbereiten |
-
-Hinweis: Godot aus Source zu bauen kann lange dauern und viel Speicher brauchen. Fuer erste Tests ist ein offizielles Godot-Binary oder Paket oft sinnvoller als ein kompletter Build.
-
-## Projektstruktur
+Das Installationsprofil legt unter `~/Ultimate_KI_Setup/gamedev_3d_studio` eine vorbereitete Struktur an:
 
 ```text
-~/Ultimate_KI_Setup/gamedev_3d_studio/
-  projects/
-    godot/
-    unreal/
-    unity/
-    npc-ai/
-    worldgen/
-    renderfarm/
-    multiplayer/
-    voice/
-    mods/
-  ai/
-    ollama/
-    agents/
-    memory/
-    rag/
-    npc-brains/
-  assets/
-    textures/
-    models/
-    audio/
-    music/
-    skyboxes/
-    icons/
-    portraits/
-  blender/
-  comfyui/
-  dashboard/
-    gamedev-control-center/
-  benchmarks/
-  builds/
-  docs/
-  logs/
+projects/godot/
+projects/unreal/
+projects/unity/
+projects/npc-ai/
+projects/worldgen/
+projects/renderfarm/
+projects/multiplayer/
+projects/voice/
+projects/mods/
+ai/ollama/
+ai/agents/
+ai/memory/
+ai/rag/
+ai/npc-brains/
+assets/textures/
+assets/models/
+assets/audio/
+assets/music/
+assets/skyboxes/
+dashboard/gamedev-control-center/
+benchmarks/
+builds/
+logs/
 ```
 
-## Godot 4.x Pipeline
+## Godot Pipeline
 
-- Vulkan Renderer, Forward+/Mobile/Compatibility Renderpfade dokumentieren.
-- GDScript als Standard, C# optional fuer groessere Tooling-Projekte.
-- OpenXR fuer VR/AR-Prototypen.
-- Multiplayer APIs fuer lokale Dedicated-Server-Tests.
-- NavigationServer3D, AnimationTree, AnimationPlayer und CharacterBody3D als Kernbausteine.
-- Terrain-Systeme ueber Add-ons oder eigene Chunk-/Heightmap-Pipelines.
-- Demo-Projekte als Lern-, Benchmark- und Regressionstest-Bibliothek.
+- Standard: nur Ordner und Hinweise anlegen.
+- Optional: Godot Repository klonen mit `GAMEDEV_CLONE_GODOT=1`.
+- Optional: Godot Demo Projects klonen mit `GAMEDEV_CLONE_DEMOS=1`.
+- Optional: Godot bauen mit `GAMEDEV_BUILD_GODOT=1`.
+- Empfehlung: Erst Godot Release-Binary nutzen, Source-Build nur bei genug Speicher und Zeit.
 
 ## Blender Pipeline
 
-- Auto-Import von GLB/FBX/OBJ/STL in Projektordner.
-- Asset-Konvertierung nach Godot-freundlichem GLB.
-- PBR-Materialordner fuer Albedo, Normal, Roughness, Metallic, AO.
-- LOD-Generator als geplanter Schritt; automatische LODs nur nach Sichtpruefung.
-- Procedural Meshes fuer Prototyping, nicht fuer finale Collision ohne Review.
-- Batch-Rendering fuer Icons, Thumbnails, Cutscenes und Marketing-Screenshots.
+Blender wird als Asset-Werkbank vorgesehen fuer Import, Cleanup, Retopology, UV, Texture Baking, LODs, FBX/GLB/OBJ/STL Export und Headless Rendering. Die Installation von Blender wird nicht erzwungen; sie kann ueber Tool-Auswahl oder `GAMEDEV_INSTALL_HEAVY_TOOLS=1` erfolgen.
 
 ## ComfyUI GameDev Workflows
 
-- Texture Generation fuer Terrain, Props, UI und Decals.
-- Concept Art fuer Figuren, Waffen, Gebaeude, Fahrzeuge und Fraktionen.
-- Skybox Generation und Panorama-Varianten.
-- NPC Portrait Generator fuer Dialogsysteme.
-- AI Item Icons fuer Inventar und Shops.
-- Batch Upscaler und Stil-Konsistenz ueber Referenzbilder/LoRAs.
-
-Grosse Modelle, LoRAs und kommerzielle APIs werden nicht automatisch geladen. Lizenz, Stilrechte und Model Cards muessen bewusst geprueft werden.
+ComfyUI soll spaeter Workflows fuer Texturen, Skyboxes, NPC-Portraits, Item Icons, Concept Art, Terrain-Texturen, Upscaling und Batch-Rendering aufnehmen. Modelle werden nicht automatisch heruntergeladen.
 
 ## Ollama NPC System
 
-NPCs koennen lokal mit Ollama, RAG und Vektor-Datenbanken vorbereitet werden:
+Empfohlene lokale Modellrollen:
 
-- NPC-Gehirne mit Persona, Zielen, Wissen und Grenzen.
-- Haendler-KI mit Angebot, Nachfrage, Preisen und Erinnerungen.
-- Fraktions-KI mit Beziehungen, Geruechten und Konflikten.
-- Quest-KI fuer dynamische Aufgaben und Dialogoptionen.
-- Dungeon-Master-KI fuer Pen-and-Paper- und Roguelike-Systeme.
-- Emotionale NPC-Systeme mit Stimmungen, Vertrauen und Beziehungshistorie.
+- kleines Modell fuer schnelle NPC-Dialoge: `llama3.2:1b`, `qwen2.5:3b`, `phi3`.
+- staerkeres Modell fuer Story/Quest: Qwen, Llama, Mistral oder DeepSeek in passender Groesse.
+- RAG/Memory mit Qdrant oder ChromaDB fuer Weltwissen, Beziehungen, Queststatus und Fraktionshistorie.
 
-Datenschutzregel: Spielerdaten, Voice-Transkripte und Langzeit-Memory bleiben lokal, ausser Cloud-Export wird explizit aktiviert.
+NPCs duerfen Spielzustand vorschlagen und simulieren. Persistente Memory-Schreibzugriffe sollten versioniert, begrenzt und exportierbar bleiben.
 
 ## OpenClaw als Game Master
 
-OpenClaw kann als Orchestrator arbeiten:
+OpenClaw kann Rollen uebernehmen:
 
-- Quest Manager und Story Generator.
-- NPC Controller und Dialogplaner.
-- AI Director fuer Spannung, Schwierigkeit, Spawn- und Event-Dichte.
-- Welt-Synchronisierung zwischen Godot, n8n, RAG und Savegame.
-- Live-Event-Systeme fuer Missionen, Wetter, Fraktionen und Wirtschaft.
-- automatische Dialoge und dynamische Weltveraenderungen.
+- Quest Manager
+- Story Generator
+- AI Director
+- NPC Controller
+- Welt-Synchronisierung
+- dynamischer Schwierigkeitsgrad
+- Event-System
 
-OpenClaw sollte keine unkontrollierten Live-Server-Aktionen ohne Freigabe ausfuehren. Deployments, Mod-Uploads und Multiplayer-Changes brauchen Review.
+Live-Spielsteuerung sollte erst nach Sandbox-Tests und klaren Grenzen erfolgen.
 
-## n8n Automation
+## n8n Automatisierung
 
-- Godot Builds fuer Linux/Windows/Web vorbereiten.
-- GitHub Pull Requests und Release-Artefakte erzeugen.
-- Asset-Import, Konvertierung und Report automatisieren.
-- Discord/Webhook-Meldungen fuer Builds, Renderjobs und Serverstatus.
-- Render Queue und Backup-Systeme steuern.
-- Multiplayer-Deployments vorbereiten, aber nicht blind live schalten.
-- Mod-Synchronisierung und Konfliktberichte erstellen.
+Sinnvolle Workflows:
 
-## Multiplayer und Kubernetes
+- GitHub Push -> Testbuild -> Artefakt sichern.
+- Neuer Asset-Ordner -> Thumbnail/Preview -> Asset-Katalog.
+- Renderjob -> Queue -> Statusmeldung.
+- Discord Webhook fuer Build- und Serverstatus.
+- Backup von Projekten, Saves, NPC-Memory und Weltzustand.
 
-Optionales Skalierungsmodell:
+## Multiplayer, Server und Kubernetes
 
-- Node 1: Ollama, OpenClaw, n8n, RAG.
-- Node 2: Godot Dedicated Server / Matchmaking.
-- Node 3: Blender/ComfyUI Render Worker.
-- Node 4: Voice/NPC/Simulation Worker.
-- Node 5+: GPU Nodes fuer Renderfarm, Video, Cutscenes.
+Kubernetes bleibt optional. Geeignete spaetere Rollen:
 
-Unterstuetzt werden Linux Dedicated Server, bare-metal bevorzugt, Docker optional, Tailscale/Cloudflare fuer sicheren Zugriff und spaetere Kubernetes-Autoskalierung.
+- Node 1: Ollama / RAG / Agenten
+- Node 2: Godot Dedicated Server
+- Node 3: Render-/ComfyUI-GPU
+- Node 4: Blender Batch Rendering
+- Node 5: Monitoring und Dashboard
 
-## Renderfarm
-
-- Multi-GPU Rendering und Blender Batch-Rendering.
-- Cinematic Cutscenes und AI-Video-Pipelines.
-- GPU-Auslastung, Job-Prioritaeten und Warteschlangen.
-- Rendercache, Asset-Versionen und Output-Archiv.
-- Keine Cloud-Renderkosten ohne explizite API-Keys und Kostenlimit.
+Bare-metal und WSL2 bleiben bevorzugt. Docker ist nur als optionaler Hinweis gedacht.
 
 ## Voice und Audio
 
-- Whisper/Faster-Whisper fuer Speech-to-Text.
-- Piper, Coqui TTS und XTTS-nahe Workflows fuer NPC-Stimmen.
-- AI-Erzaehler, Radio-Systeme, regionale Akzente und emotionale Stimmen.
-- Musik- und Soundeffekt-Pipelines ueber vorhandene Audio-/Media-Profile.
+Vorbereitete Bausteine:
 
-Stimmrechte und Einwilligungen beachten. Keine echten Stimmen ohne Rechte klonen.
+- Whisper oder faster-whisper fuer Spracheingabe.
+- Piper oder Coqui TTS fuer lokale Stimmen.
+- XTTS/Emotion-Voice optional, nur mit sauberer Lizenz- und Einwilligungspruefung.
+- FFmpeg fuer Schnitt, Normalisierung und Export.
 
-## Cyberpunk / Open World Modus
+## Modding und Open World
 
-Dieses Profil bereitet Konzepte fuer groessere Welten vor:
+Das Profil dokumentiert spaetere Pfade fuer Minecraft KI-NPCs, VRChat, GTA-/Cyberpunk-Mods, Open-World-Systeme, Fraktionen, Wirtschaft, Wetter, Verkehr, AI Police, AI Dungeon Master und AI Companion Systeme. Diese Funktionen sind Entwicklungsziele, keine sofort fertigen Automatiken.
 
-- prozedurale Staedte, Distrikte, Verkehr und Tagesablaeufe.
-- Fraktionen, Wirtschaft, Rufsystem und dynamische Geruechte.
-- AI Polizei/Kriminalitaet als Simulationssystem.
-- Wetter-KI, Ereignisse und Weltveraenderungen.
-- NPC-Tagesplaene und lokale Memory-Shards.
+## Dashboard
 
-## Modding Support
+Das geplante Dashboard soll GPU, Render Queue, NPC Status, Multiplayer Status, Kubernetes Nodes, Ollama Modelle, Speicherverbrauch und FPS Benchmarks anzeigen. Umsetzung kann spaeter mit React, Tailwind, WebGL/Three.js und einer lokalen API erfolgen.
 
-Vorbereitet als Dokumentations- und Tooling-Schicht:
-
-- Cyberpunk 2077 Mods, GTA Mods, Minecraft KI-NPCs, VRChat und Open-Metaverse-Ideen.
-- Mod Loader, Mod SDK und Mod API als spaetere Projektmodule.
-- automatische Mod-Konfliktpruefung ueber Dateilisten, Manifest und Checksums.
-
-Rechtlicher Hinweis: Modding muss EULAs, Lizenzen, Nutzungsbedingungen und Plattformregeln beachten.
-
-## AI Game Studio Dashboard
-
-Das geplante `gamedev-control-center` zeigt:
-
-- GPU Status und VRAM.
-- Render Status und Queue.
-- NPC Status, Memory und Fraktionen.
-- Multiplayer Server und Kubernetes Nodes.
-- Ollama Modelle und Token-/Latenzwerte.
-- Speicherverbrauch, Buildstatus, FPS Benchmarks.
-- Dark Mode, mobilfaehige WebUI und lokale Auth.
-
-## Erste Tests
+## Erster Test
 
 ```bash
 bash scripts/tools/gamedev_3d_studio_install.sh
-cd ~/Ultimate_KI_Setup/gamedev_3d_studio
-git -C projects/godot/godot status || true
-git -C projects/godot/godot-demo-projects status || true
+ls ~/Ultimate_KI_Setup/gamedev_3d_studio
+GAMEDEV_CLONE_DEMOS=1 bash scripts/tools/gamedev_3d_studio_install.sh
 ```
 
-Wenn wenig Speicherplatz vorhanden ist, zuerst mit `GAMEDEV_CLONE_GODOT=0 GAMEDEV_CLONE_DEMOS=0` nur die Struktur anlegen.
+## Sicherheits- und Speicherregeln
+
+- Keine API-Keys im Repo speichern.
+- Keine grossen Modelle automatisch herunterladen.
+- Godot-Source-Builds nur bei ausreichend Speicher.
+- Demo- und Asset-Bibliotheken koennen schnell mehrere GB belegen.
+- Multiplayer- und Cloudflare-Freigaben nur mit Auth, Firewall und bewusstem Zielmapping.
+- NPC-Memory kann personenbezogene oder kreative Projektinhalte enthalten und gehoert in den Benutzer-Workspace.

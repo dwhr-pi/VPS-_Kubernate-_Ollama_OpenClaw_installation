@@ -2,12 +2,6 @@
 
 Stand: 2026-05-15
 
-## Aktueller Validierungsstand
-
-- Stand 2026-05-19: Im `Programmierer`-Setup wurden die enthaltenen Tools auf Installationsfaehigkeit hin geprueft.
-- `Ollama` und `OpenClaw` sind in diesem Teststand funktionierend vorhanden.
-- Weitere Detailtests sollten weiterhin pro Tool-Log und ueber die Setup-Diagnose dokumentiert werden, damit erfolgreiche Installierbarkeit und tatsaechliche Nutzbarkeit getrennt nachvollziehbar bleiben.
-
 ## Kurzbewertung
 
 Das Repository ist inzwischen deutlich mehr als ein einzelnes Installationsskript. Stark sind vor allem das modulare Zielbild `Base System -> Runtime -> Model Gateway -> Agent Layer -> Memory/RAG -> Tool Layer -> UI -> Monitoring -> Security`, die getrennte Benutzerablage unter `~/.openclaw_ultimate_user_data`, die zentrale Tool-/Profil-/Port-Registry und die wachsende Trennung zwischen lokaler Nutzung, VPS, WSL2, K3s und GPU-Workstation.

@@ -251,7 +251,7 @@ LOCAL_SETUP_CLOUDFLARE_TOKEN_STOP_ESTIMATE="22-60 min"
 # 3. interner Fallback aus dem Setup
 OLLAMA_TOOL_DURATION_ESTIMATE="5-15 min Installation, Modelle zusaetzlich je nach Groesse"
 OLLAMA_TOOL_STORAGE_ESTIMATE="15-40 GB ohne Modelle, mit mehreren Modellen deutlich mehr"
-N8N_TOOL_DURATION_ESTIMATE="10-30 min Klonen + Build bzw. Runtime-Installation"
+N8N_TOOL_DURATION_ESTIMATE="10-45 min Klonen + GitHub-Monorepo-Build"
 N8N_TOOL_STORAGE_ESTIMATE="5-15 GB"
 OPENCLAW_TOOL_DURATION_ESTIMATE="15-60 min Download + Build je nach System"
 OPENCLAW_TOOL_STORAGE_ESTIMATE="15-40 GB je nach Build- und Statusdaten"
@@ -265,6 +265,13 @@ STABLE_DIFFUSION_WEBUI_FORGE_TOOL_STORAGE_ESTIMATE="40-150 GB je nach Modellen, 
 PROGRAMMIERER_REQUIRED_GB="8-20"
 MEDIA_MUSIK_REQUIRED_GB="15-40"
 KI_FORSCHUNG_REQUIRED_GB="15-50"
+PHYSIK_REQUIRED_GB="8-30"
+CHEMIE_REQUIRED_GB="10-40"
+BIOLOGIE_REQUIRED_GB="10-40"
+BIOINFORMATIK_REQUIRED_GB="15-60"
+MOLEKUELSIMULATION_REQUIRED_GB="20-120"
+ROBOTIK_LABOR_REQUIRED_GB="12-60"
+MATERIALWISSENSCHAFT_REQUIRED_GB="15-80"
 MARKETING_REQUIRED_GB="8-20"
 RECHT_STEUER_REQUIRED_GB="6-15"
 AGENT_ORCHESTRATOR_REQUIRED_GB="10-25"
@@ -287,6 +294,16 @@ PERSONAL_KNOWLEDGE_OS_REQUIRED_GB="10-30"
 REPO_MAINTAINER_REQUIRED_GB="6-15"
 
 NOTES="Alle Werte sind editierbare Schätzwerte. Je nach Bandbreite, CPU, SSD und gewählten Profilen kann der echte Wert deutlich abweichen."
+
+# Quellen- und Speicherpolitik:
+# Standard: Tool-Installer sollen ihre Primaerquelle aus GitHub beziehen.
+# Systempakete wie apt-Abhaengigkeiten bleiben als Basisabhaengigkeiten erlaubt.
+# Wenn STRICT_GITHUB_TOOL_SOURCES=true gesetzt wird, blockiert das Setup Tool-Installer,
+# deren Skript keine GitHub-Quelle erkennen laesst. Einzelne Ausnahmen koennen bewusst
+# per ALLOW_NON_GITHUB_TOOL_SOURCE=1 gestartet werden.
+GITHUB_TOOL_SOURCES_PREFERRED="true"
+STRICT_GITHUB_TOOL_SOURCES="false"
+ALLOW_NON_GITHUB_TOOL_SOURCE="false"
 EOF
     fi
 }
@@ -362,6 +379,16 @@ reset_terminal_display() {
 
 get_free_disk_kb() {
     df -Pk "$HOME" 2>/dev/null | awk 'NR==2 {print $4}'
+}
+
+get_free_disk_gb() {
+    local free_kb
+    free_kb="$(get_free_disk_kb)"
+    if [ -n "$free_kb" ]; then
+        printf '%s' $((free_kb / 1024 / 1024))
+    else
+        printf '0'
+    fi
 }
 
 format_duration_human() {
@@ -448,7 +475,7 @@ get_default_tool_duration_label() {
 
     case "$tool_key" in
         "Ollama") printf '5-15 min Installation, Modelle zusaetzlich je nach Groesse' ;;
-        "n8n") printf '10-30 min Klonen + Build bzw. Runtime-Installation' ;;
+        "n8n") printf '10-45 min Klonen + GitHub-Monorepo-Build' ;;
         "OpenClaw") printf '15-60 min Download + Build je nach System' ;;
         "OpenManus") printf '5-20 min Download + Einrichtung' ;;
         "ComfyUI"|"Stable_Diffusion_WebUI_Forge") printf '15-45 min plus Modell-Downloads' ;;
@@ -460,6 +487,12 @@ tool_key_to_metric_prefix() {
     local tool_key="$1"
 
     printf '%s' "$tool_key" | tr '[:lower:]- /.' '[:upper:]____'
+}
+
+operation_id_to_metric_prefix() {
+    local operation_id="$1"
+
+    printf '%s' "$operation_id" | tr '[:lower:]- /.' '[:upper:]____'
 }
 
 get_configured_tool_duration_label() {
@@ -499,6 +532,7 @@ begin_operation_measurement() {
     ACTIVE_OPERATION_TITLE="$2"
     ACTIVE_OPERATION_STARTED_AT="$(date +%s)"
     ACTIVE_OPERATION_FREE_KB_BEFORE="$(get_free_disk_kb)"
+    echo -e "${YELLOW}Freier Speicher vor Start:${NC} $(format_kb_human "${ACTIVE_OPERATION_FREE_KB_BEFORE:-0}")"
 }
 
 end_operation_measurement() {
@@ -507,12 +541,16 @@ end_operation_measurement() {
     local free_kb_after
     local duration_seconds
     local delta_kb
+    local metric_prefix
+    local tmp_metrics_file
 
     [ -n "${ACTIVE_OPERATION_STARTED_AT:-}" ] || return 0
     LAST_OPERATION_LOG_FILE="${ACTIVE_OPERATION_LOG_FILE:-}"
 
     ended_at="$(date +%s)"
     free_kb_after="$(get_free_disk_kb)"
+    free_kb_after="${free_kb_after:-0}"
+    ACTIVE_OPERATION_FREE_KB_BEFORE="${ACTIVE_OPERATION_FREE_KB_BEFORE:-$free_kb_after}"
     duration_seconds=$((ended_at - ACTIVE_OPERATION_STARTED_AT))
     delta_kb=$((ACTIVE_OPERATION_FREE_KB_BEFORE - free_kb_after))
 
@@ -526,7 +564,25 @@ end_operation_measurement() {
         "${free_kb_after:-0}" \
         "$delta_kb" >> "$METRICS_HISTORY_FILE"
 
-    echo -e "${YELLOW}Messwert gespeichert:${NC} ${ACTIVE_OPERATION_TITLE:-Unbekannt} | Status: $operation_status | Dauer: ${WHITE}$(format_duration_human "$duration_seconds")${NC} | Speicheränderung: ${delta_kb} KB"
+    ensure_metrics_config
+    metric_prefix="LAST_$(operation_id_to_metric_prefix "${ACTIVE_OPERATION_ID:-unknown}")"
+    tmp_metrics_file="$(mktemp)"
+    grep -Ev "^${metric_prefix}_(TIMESTAMP|STATUS|DURATION_SECONDS|FREE_KB_BEFORE|FREE_KB_AFTER|FREE_GB_BEFORE|FREE_GB_AFTER|DELTA_KB)=" "$METRICS_CONFIG_FILE" > "$tmp_metrics_file" || true
+    {
+        printf '\n# Letzte Messung fuer %s\n' "${ACTIVE_OPERATION_TITLE:-Unbekannt}"
+        printf '%s_TIMESTAMP="%s"\n' "$metric_prefix" "$(date '+%Y-%m-%d %H:%M:%S')"
+        printf '%s_STATUS="%s"\n' "$metric_prefix" "$operation_status"
+        printf '%s_DURATION_SECONDS="%s"\n' "$metric_prefix" "$duration_seconds"
+        printf '%s_FREE_KB_BEFORE="%s"\n' "$metric_prefix" "${ACTIVE_OPERATION_FREE_KB_BEFORE:-0}"
+        printf '%s_FREE_KB_AFTER="%s"\n' "$metric_prefix" "${free_kb_after:-0}"
+        printf '%s_FREE_GB_BEFORE="%s"\n' "$metric_prefix" "$(( ${ACTIVE_OPERATION_FREE_KB_BEFORE:-0} / 1024 / 1024 ))"
+        printf '%s_FREE_GB_AFTER="%s"\n' "$metric_prefix" "$(( ${free_kb_after:-0} / 1024 / 1024 ))"
+        printf '%s_DELTA_KB="%s"\n' "$metric_prefix" "$delta_kb"
+    } >> "$tmp_metrics_file"
+    mv "$tmp_metrics_file" "$METRICS_CONFIG_FILE"
+
+    echo -e "${YELLOW}Messwert gespeichert:${NC} ${ACTIVE_OPERATION_TITLE:-Unbekannt} | Status: $operation_status | Dauer: ${WHITE}$(format_duration_human "$duration_seconds")${NC} | Speicher vorher: $(format_kb_human "${ACTIVE_OPERATION_FREE_KB_BEFORE:-0}") | Speicher nachher: $(format_kb_human "${free_kb_after:-0}") | Speicheränderung: $(format_kb_human "$delta_kb")"
+    echo -e "${YELLOW}Messwert in Config aktualisiert:${NC} ${METRICS_CONFIG_FILE}"
     if [ -n "${LAST_OPERATION_LOG_FILE:-}" ]; then
         echo -e "${YELLOW}Installationsprotokoll:${NC} ${LAST_OPERATION_LOG_FILE}"
     fi
@@ -608,6 +664,13 @@ get_profile_required_gb() {
         "Programmierer") echo "${PROGRAMMIERER_REQUIRED_GB} GB" ;;
         "Media_Musik") echo "${MEDIA_MUSIK_REQUIRED_GB} GB" ;;
         "KI_Forschung") echo "${KI_FORSCHUNG_REQUIRED_GB} GB" ;;
+        "Physik") echo "${PHYSIK_REQUIRED_GB} GB" ;;
+        "Chemie") echo "${CHEMIE_REQUIRED_GB} GB" ;;
+        "Biologie") echo "${BIOLOGIE_REQUIRED_GB} GB" ;;
+        "Bioinformatik") echo "${BIOINFORMATIK_REQUIRED_GB} GB" ;;
+        "Molekuelsimulation") echo "${MOLEKUELSIMULATION_REQUIRED_GB} GB" ;;
+        "Robotik_Labor") echo "${ROBOTIK_LABOR_REQUIRED_GB} GB" ;;
+        "Materialwissenschaft") echo "${MATERIALWISSENSCHAFT_REQUIRED_GB} GB" ;;
         "Texter_Werbung_Marketing") echo "${MARKETING_REQUIRED_GB} GB" ;;
         "Rechtsberatung_Steuerrecht") echo "${RECHT_STEUER_REQUIRED_GB} GB" ;;
         "Agent_Orchestrator") echo "${AGENT_ORCHESTRATOR_REQUIRED_GB} GB" ;;
@@ -681,7 +744,36 @@ show_tool_action_intro() {
     "${TOOLS[$tool_key]}" \
     "$duration_label" \
     "$storage_label" \
-    "Einige Tools benoetigen zusaetzliche Paketquellen, Builds, Container oder API-Eingaben."
+    "Freier Speicher jetzt: $(get_free_disk_gb) GB. Primaerquellen sollen aus GitHub kommen; Systemabhaengigkeiten wie apt bleiben als Basis erlaubt."
+}
+
+validate_tool_source_policy() {
+    local tool_key="$1"
+    local action="$2"
+    local script_name="${TOOL_SCRIPT_NAMES[$tool_key]}"
+    local script_path="$INSTALL_DIR/scripts/tools/${script_name}_${action}.sh"
+
+    load_metrics_config
+
+    [ "$action" = "install" ] || return 0
+    [ "${GITHUB_TOOL_SOURCES_PREFERRED:-true}" = "true" ] || return 0
+    [ -f "$script_path" ] || return 0
+
+    if grep -Eq 'github\.com|raw\.githubusercontent\.com' "$script_path"; then
+        echo -e "${YELLOW}Quellenpruefung:${NC} GitHub-Quelle im Installer erkannt."
+        return 0
+    fi
+
+    echo -e "${YELLOW}Quellenpruefung:${NC} In ${script_path} wurde keine GitHub-Primaerquelle erkannt."
+    echo -e "${YELLOW}Hinweis:${NC} Systemabhaengigkeiten duerfen apt/pip/npm nutzen, aber Primaertools sollen aus GitHub-Repos kommen."
+
+    if [ "${STRICT_GITHUB_TOOL_SOURCES:-false}" = "true" ] && [ "${ALLOW_NON_GITHUB_TOOL_SOURCE:-false}" != "true" ]; then
+        echo -e "${RED}Abbruch: STRICT_GITHUB_TOOL_SOURCES=true blockiert diesen Installer ohne erkannte GitHub-Quelle.${NC}"
+        echo -e "${YELLOW}Bewusste Ausnahme: ALLOW_NON_GITHUB_TOOL_SOURCE=1 setzen oder den Installer auf GitHub-Quelle umbauen.${NC}"
+        return 1
+    fi
+
+    return 0
 }
 
 run_bash_script() {
@@ -770,7 +862,7 @@ show_installation_monitoring_menu() {
         fi
 
         dialog --clear --backtitle "$APP_TITLE" \
-        --title "INSTALLATIONSÜBERWACHUNG" --menu "Zusätzliche Überwachung, Logansicht und sichere Log-Aufräumung." 32 112 13 \
+        --title "INSTALLATIONSÜBERWACHUNG" --menu "Zusätzliche Überwachung, Logansicht und sichere Log-Aufräumung." 30 112 12 \
         "1" "Erweiterte Installationsüberwachung umschalten (aktuell: ${monitoring_state})" \
         "2" "Log-Verzeichnis anzeigen" \
         "3" "Letzte Installations-Logs anzeigen" \
@@ -779,12 +871,10 @@ show_installation_monitoring_menu() {
         "6" "Log-Aufräumung Trockenlauf anzeigen" \
         "7" "Alte Logs jetzt löschen" \
         "8" "Alte Fehler-Logs jetzt löschen" \
-        "9" "Überholte Fehler-Logs anzeigen" \
-        "10" "Überholte Fehler-Logs jetzt löschen" \
-        "11" "Aufbewahrung einstellen (Tage/neueste Dateien)" \
-        "12" "Installationslauf-Diagnose erstellen" \
-        "13" "Abhängigkeiten-/Speicher-Snapshot erstellen" \
-        "14" "Zurück" 2> /tmp/install_monitoring_choice
+        "9" "Aufbewahrung einstellen (Tage/neueste Dateien)" \
+        "10" "Installationslauf-Diagnose erstellen" \
+        "11" "Abhängigkeiten-/Speicher-Snapshot erstellen" \
+        "12" "Zurück" 2> /tmp/install_monitoring_choice
 
         if [ $? -ne 0 ]; then
             return 0
@@ -848,35 +938,21 @@ show_installation_monitoring_menu() {
                 read -p "Drücken Sie Enter..."
                 ;;
             9)
-                clear
-                echo -e "${YELLOW}Überholte Fehler-Logs werden im Trockenlauf angezeigt.${NC}"
-                bash "$INSTALL_DIR/scripts/cleanup_setup_logs.sh" --dry-run --superseded-failed
-                echo
-                read -p "Drücken Sie Enter..."
-                ;;
-            10)
-                clear
-                echo -e "${YELLOW}Überholte Fehler-Logs werden jetzt gelöscht, wenn ein neuerer Erfolgslog desselben Tools existiert.${NC}"
-                bash "$INSTALL_DIR/scripts/cleanup_setup_logs.sh" --apply --superseded-failed
-                echo
-                read -p "Drücken Sie Enter..."
-                ;;
-            11)
                 show_log_cleanup_settings_menu
                 ;;
-            12)
+            10)
                 clear
                 bash "$INSTALL_DIR/scripts/install_run_diagnostics.sh"
                 echo
                 read -p "Installationslauf-Diagnose abgeschlossen. Drücken Sie Enter..."
                 ;;
-            13)
+            11)
                 clear
                 bash "$INSTALL_DIR/scripts/dependency_snapshot.sh"
                 echo
                 read -p "Abhängigkeiten-/Speicher-Snapshot abgeschlossen. Drücken Sie Enter..."
                 ;;
-            14)
+            12)
                 return 0
                 ;;
         esac
@@ -1030,14 +1106,13 @@ show_diagnostics_quick_menu() {
         dialog --clear --backtitle "$APP_TITLE" \
         --cancel-label "Zurueck" \
         --title "TOOL-DIAGNOSE & LETZTE FEHLER" \
-        --menu "Schneller Zugriff auf die letzten Installationsprotokolle und Diagnoseberichte." 24 104 7 \
+        --menu "Schneller Zugriff auf die letzten Installationsprotokolle und Diagnoseberichte." 22 104 6 \
         "1" "Letzten fehlgeschlagenen Fehlerbericht anzeigen" \
         "2" "Letztes Installationsprotokoll anzeigen" \
         "3" "Tool-Logdiagnose interaktiv starten" \
         "4" "Installationslauf-Diagnose erstellen" \
         "5" "Abhaengigkeiten-/Speicher-Snapshot erstellen" \
-        "6" "Ueberholte Fehler-Logs jetzt loeschen" \
-        "7" "Letztes Installationsprotokoll per E-Mail senden" 2> /tmp/diagnostics_quick_choice
+        "6" "Letztes Installationsprotokoll per E-Mail senden" 2> /tmp/diagnostics_quick_choice
 
         if [ $? -ne 0 ]; then
             clear
@@ -1066,10 +1141,6 @@ show_diagnostics_quick_menu() {
                 read -p "Abhängigkeiten-/Speicher-Snapshot abgeschlossen. Drücken Sie Enter..."
                 ;;
             6)
-                bash "$INSTALL_DIR/scripts/cleanup_setup_logs.sh" --apply --superseded-failed
-                read -p "Überholte Fehler-Logs bereinigt. Drücken Sie Enter..."
-                ;;
-            7)
                 bash "$INSTALL_DIR/scripts/last_install_log.sh" --email
                 read -p "E-Mail-Diagnose abgeschlossen. Drücken Sie Enter..."
                 ;;
@@ -1281,59 +1352,27 @@ show_user_workspace_menu() {
     done
 }
 
-setup_updates_available_quick() {
-    if ! command -v git >/dev/null 2>&1; then
-        return 2
-    fi
-
-    if ! git -C "$INSTALL_DIR" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-        return 2
-    fi
-
-    git -C "$INSTALL_DIR" fetch origin --prune --quiet >/dev/null 2>&1 || return 2
-
-    local behind_count
-    behind_count="$(git -C "$INSTALL_DIR" rev-list --count HEAD..origin/main 2>/dev/null || printf '0')"
-    if [ "${behind_count:-0}" -gt 0 ]; then
-        return 0
-    fi
-
-    return 1
-}
-
-get_setup_update_menu_label() {
-    if setup_updates_available_quick; then
-        printf '%s' '\Z2●\Zn Neue Updates verfügbar'
-    else
-        printf '%s' '○ Keine neuen Updates'
-    fi
-}
-
 show_options_menu() {
     while true; do
-        local setup_update_menu_label
-        setup_update_menu_label="$(get_setup_update_menu_label)"
-
         dialog --clear --backtitle "$APP_TITLE" \
-        --colors \
         --cancel-label "↩ Zurück" \
         --title "${TXT_OPTIONS_MENU_TITLE:-OPTIONEN}" --menu "${TXT_OPTIONS_MENU_PROMPT:-Wählen Sie eine Verwaltungs- oder Konfigurationsfunktion:}" 40 110 24 \
         "1" "${TXT_OPTIONS_1:-Sprache ändern}" \
         "2" "${TXT_OPTIONS_14:-Sprachpakete verwalten}" \
-        "────────────" "────────────── Sprache / Basis ──────────────" \
+        "────────" "────────────── Sprache / Basis ──────────────" \
         "3" "${TXT_OPTIONS_2:-Setup-Messwerte & Benchmarks bearbeiten}" \
-        "────────────" "────────── Messwerte / Workspace ────────────" \
+        "─────────" "────────── Messwerte / Workspace ────────────" \
         "4" "${TXT_OPTIONS_7:-Benutzer-Workspace verwalten}" \
         "5" "${TXT_OPTIONS_5:-Ollama Modellkatalog}" \
         "6" "${TXT_OPTIONS_3:-Ollama Modelfile-Assistent}" \
         "7" "${TXT_OPTIONS_4:-LLM-Builder Projektstruktur-Assistent}" \
         "8" "${TXT_OPTIONS_8:-Custom GitHub-Quellen & Ollama-Builds}" \
-        "────────────" "───────── Quellen / Konfiguration ───────────" \
+        "──────────" "───────── Quellen / Konfiguration ───────────" \
         "9" "${TXT_OPTIONS_9:-LLMOps Plattform Konfiguration (.env Stack)}" \
         "10" "${TXT_OPTIONS_10:-Huginn Konfiguration (.env Vorlage)}" \
-        "────────────" "──────────── Setup / Diagnose ───────────────" \
+        "───────────" "──────────── Setup / Diagnose ───────────────" \
         "11" "${TXT_OPTIONS_6:-Setup-Repository hart reparieren / auf GitHub main zurücksetzen}" \
-        "12" "${TXT_OPTIONS_12:-$setup_update_menu_label}" \
+        "12" "${TXT_OPTIONS_12:-Nur auf Setup-Updates prüfen}" \
         "13" "${TXT_OPTIONS_13:-Jetzt nur das Setup aktualisieren}" \
         "────────────" "──────── Installation / Diagnose ────────────" \
         "14" "${TXT_OPTIONS_11:-Installationsüberwachung konfigurieren}" \
@@ -1394,12 +1433,12 @@ show_options_menu() {
                 ;;
             12)
                 show_operation_intro \
-                "Neue Updates verfügbar" \
+                "Nur auf Setup-Updates prüfen" \
                 "Prüft den lokalen Git-Stand gegen origin/main, ohne direkt Updates oder Systempakete zu installieren." \
                 "Wenige Sekunden bis ca. 1 Minute, je nach Netzwerk und Git-Status" \
                 "$(get_operation_storage_estimate_label "main_menu_update_check" "${MIN_FREE_GB_ABSOLUTE}-${MIN_FREE_GB_RECOMMENDED} GB")" \
                 "Dabei werden keine Paket-Updates installiert und keine lokalen Aenderungen automatisch verworfen."
-                begin_operation_measurement "main_menu_update_check" "Neue Updates verfügbar"
+                begin_operation_measurement "main_menu_update_check" "Nur auf Setup-Updates prüfen"
                 run_bash_script "$INSTALL_DIR/scripts/check_setup_updates.sh"
                 if [ $? -eq 0 ]; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
                 read -p "Update-Prüfung abgeschlossen. Drücken Sie Enter..."
@@ -1683,32 +1722,21 @@ if ! command -v dialog >/dev/null 2>&1; then
     sudo apt update && sudo apt install -y dialog
 fi
 
-dialog() {
-    local arg
-    local has_cancel_label=0
-
-    for arg in "$@"; do
-        if [ "$arg" = "--cancel-label" ]; then
-            has_cancel_label=1
-            break
-        fi
-    done
-
-    if [ "$has_cancel_label" -eq 1 ]; then
-        command dialog "$@"
-    else
-        command dialog --cancel-label "${TXT_BACK_LABEL:-Zurueck}" "$@"
-    fi
-}
-
 # --- Funktionen für Profil-Management ---
 
 # Profil-Definitionen mit Beschreibungen
 declare -A PROFILES
-PROFILE_KEYS=("Programmierer" "Repo_Maintainer" "Agent_Orchestrator" "LLM_Builder" "Research_Agent" "KI_Forschung" "Data_Engineering" "Document_AI" "Memory_Import_Export" "Personal_Knowledge_OS" "Next_Level_Persona_System" "Texter_Werbung_Marketing" "Rechtsberatung_Steuerrecht" "DevOps_SRE" "Security_Analyst" "Ethical_HackerGPT" "Compliance_Privacy" "Audio" "Voice_Assistant" "Jarvis_FritzBox_Alexa_Home_Assistant" "Media_Musik" "Content_Automation" "Image_Generation" "Video_Generation" "Video_Generation_ComfyUI_Wan" "OpenHiggsStack_AI_Cinema_Studio" "AI_3D_Generation_Studio" "Elektronik_Entwickler" "Architektur_3D_BIM" "CAD_3D_Konstruktion" "FotoScan_Panorama_360_3D" "Robotik_Anlagensteuerung" "Visual_Creator" "Trading_AI" "Web3_Crypto_Tools")
+PROFILE_KEYS=("Programmierer" "Repo_Maintainer" "Agent_Orchestrator" "LLM_Builder" "Research_Agent" "KI_Forschung" "Physik" "Chemie" "Biologie" "Bioinformatik" "Molekuelsimulation" "Robotik_Labor" "Materialwissenschaft" "Data_Engineering" "Document_AI" "Memory_Import_Export" "Personal_Knowledge_OS" "Next_Level_Persona_System" "Texter_Werbung_Marketing" "Rechtsberatung_Steuerrecht" "DevOps_SRE" "Security_Analyst" "Ethical_HackerGPT" "Compliance_Privacy" "Audio" "Voice_Assistant" "Jarvis_FritzBox_Alexa_Home_Assistant" "Media_Musik" "Content_Automation" "Image_Generation" "Video_Generation" "Video_Generation_ComfyUI_Wan" "GameDev_3D_Studio_NEXTLEVEL" "CAD_Konstrukteur" "Architektur_3D_BIM" "Robotertechnik_Anlagensteuerung" "OpenHiggsStack_AI_Cinema_Studio" "Visual_Creator" "Trading_AI" "Web3_Crypto_Tools")
 PROFILES["Programmierer"]="Tools für Entwicklung, Code-Generierung (DeepSeek Coder), Git-Integration, Huginn, Clawhub CLI. Ideal für Entwickler und Automatisierungsexperten."
 PROFILES["Media_Musik"]="Tools für Audio/Video (FFmpeg), Audio-AI, Alexa-Integration, Clawbake. Für Content Creator und Medienproduzenten."
 PROFILES["KI_Forschung"]="Spezialisierte Bibliotheken für Reinforcement Learning (OpenClaw RL), erweiterte LLM-Modelle (Gemini-1.5-Pro), Flowise/LangFlow. Für KI-Wissenschaftler und Forscher."
+PROFILES["Physik"]="Science-Lab-Profil fuer Messdaten, Simulation, JupyterLab, GPU-Auswertung, Paper/PDF-Analyse und OpenClaw-Forschungsagenten."
+PROFILES["Chemie"]="Science-Lab-Profil fuer Molekuel- und Reaktionsanalyse, RDKit/Open-Babel-orientierte Workflows, Laborberichte, Dashboards und lokale KI-Unterstuetzung."
+PROFILES["Biologie"]="Science-Lab-Profil fuer Omics, Mikroskopie, Laborprotokolle, Home-Assistant-Sensorik, JupyterLab und OpenClaw-Bio-Agenten."
+PROFILES["Bioinformatik"]="Science-Lab-Profil fuer Sequenzanalyse, Varianten, Pipelines, Paper-Auswertung, JupyterLab und optionales Kubernetes-Offloading."
+PROFILES["Molekuelsimulation"]="Science-Lab-Profil fuer Molekulardynamik, OpenMM/GROMACS/LAMMPS-nahe Workflows, CUDA/ROCm-Erkennung und GPU-Batchjobs."
+PROFILES["Robotik_Labor"]="Science-Lab-Profil fuer sichere Laborrobotik, ROS-2-nahe Planung, Sensorintegration, Simulation-first und menschliche Freigabe."
+PROFILES["Materialwissenschaft"]="Science-Lab-Profil fuer Materials Informatics, Struktur- und Simulationsdaten, pymatgen/ASE-nahe Analysen und Dashboards."
 PROFILES["Texter_Werbung_Marketing"]="Tools für Content-Generierung, SEO-Analyse, Social Media, Textproduktion, n8n, Activepieces. Optimiert für Marketingexperten und Texter, die ihre Inhalte mit KI verbessern möchten."
 PROFILES["Rechtsberatung_Steuerrecht"]="Tools für Web-Search & Fetch, PDF-Reader/Document-Parser, Zotero. Für die Analyse von Rechtsdokumenten und Steuerrecht, unterstützt durch spezialisierte KI-Agenten."
 PROFILES["Agent_Orchestrator"]="Koordiniert Agentenrollen mit LangGraph, CrewAI, AutoGen und Memory-Bausteinen für Routing und Ergebnis-Synchronisierung."
@@ -1728,13 +1756,11 @@ PROFILES["Voice_Assistant"]="Sprachprofil für STT, TTS, Wakeword, Rhasspy/Wyomi
 PROFILES["Jarvis_FritzBox_Alexa_Home_Assistant"]="Experimental-Profil fuer ein lokales Jarvis-Brain mit Fritz!Box/Fritz!Fon, Home Assistant, optionaler Alexa-Bridge, MQTT, STT/TTS, Ollama und OpenClaw."
 PROFILES["Video_Generation"]="Heavy-Profil für lokale Video-KI, Upscaling, Frame-Interpolation, FFmpeg und GPU-nahe Video-Workflows."
 PROFILES["Video_Generation_ComfyUI_Wan"]="Technisches Advanced-Profil fuer ComfyUI, Wan2.x, FFmpeg, WSL2/GPU-Hinweise und lokale Video-KI-Renderpfade."
+PROFILES["GameDev_3D_Studio_NEXTLEVEL"]="Optionales lokales AI Game Studio fuer Godot 4.x, Godot-Demos, Blender, ComfyUI, Ollama-NPCs, OpenClaw Game Master, n8n, Multiplayer, Renderfarm und Voice."
+PROFILES["CAD_Konstrukteur"]="Optionales lokales CAD-/3D-Druck-Profil fuer FreeCAD, CadQuery, OpenSCAD, Blender-Preview, Ollama-CAD-Code, OpenClaw-Agenten, N8n und Whisper-Kommandos."
+PROFILES["Architektur_3D_BIM"]="Optionales lokales Architektur-/BIM-/CAD-/3D-Rendering-Profil fuer FreeCAD, Blender, Bonsai, IFCOpenShell, QGIS, ComfyUI, OpenClaw-Agenten, n8n und Renderfarm-Workflows."
+PROFILES["Robotertechnik_Anlagensteuerung"]="Simulation-first-Profil fuer ROS 2, Gazebo, MoveIt 2, digitale Zwillinge, Anlagenmonitoring, MQTT/OPC UA/Modbus, OpenClaw-Diagnoseagenten und sichere Freigabeprozesse."
 PROFILES["OpenHiggsStack_AI_Cinema_Studio"]="Optionales AI-Cinema-/Marketing-Studio als offene Alternative zu Higgsfield: OpenClaw, Ollama, ComfyUI, Wan2.x, FFmpeg und n8n."
-PROFILES["AI_3D_Generation_Studio"]="Optionales lokales AI-3D-Studio fuer Hunyuan3D, TripoSR, ComfyUI, Blender, Game Assets, CAD-Prototypen, STL/GLB/FBX-Export und spaetere GPU-/Kubernetes-Skalierung."
-PROFILES["Elektronik_Entwickler"]="Optionales KI-Profil fuer Elektronik, PCB, Embedded, FPGA, KiCad, Firmware, IoT, Home Assistant Hardware und EDA-/Simulation-Workflows."
-PROFILES["Architektur_3D_BIM"]="Optionales KI-Profil fuer Architektur, CAD, BIM/IFC, FreeCAD, Blender/Bonsai, Rendering, Scan-to-BIM, Smart Home Planung und Renderfarm-Skalierung."
-PROFILES["CAD_3D_Konstruktion"]="Optionales KI-Profil fuer CAD, 3D-Konstruktion, Text-to-CAD, FreeCAD, OpenSCAD, 3D-Druck, STEP/STL-Export und Robotik-Bauteile."
-PROFILES["FotoScan_Panorama_360_3D"]="Optionales KI-Profil fuer Fotoordner zu Panorama, 360-Grad-Ansicht, Photogrammetrie und optional Gaussian Splatting mit Hugin, COLMAP und OpenClaw-Jobs."
-PROFILES["Robotik_Anlagensteuerung"]="Optionales Sicherheitsprofil fuer Robotik, Anlagensteuerung, Digital Twin, SCADA/HMI, ROS 2, OpenPLC, Modbus/OPC UA/MQTT und KI-Diagnose ohne direkte Aktorsteuerung."
 PROFILES["Image_Generation"]="Heavy-Profil für Bildgenerierung, Upscaling, LoRA-Workflows und Asset-Erzeugung mit ComfyUI/Forge/Fooocus."
 PROFILES["Web3_Crypto_Tools"]="Web3-Werkzeuge fuer lokale Vertragsanalyse, RPC-Checks und Wallet-nahe Entwicklung ohne automatische Finanzaktionen oder autonome Trading-Ausfuehrung."
 PROFILES["Compliance_Privacy"]="Governance- und Compliance-Profil für DSGVO, EU-AI-Act-nahe Prüfungen, Policies, SBOM und Secret-Scans."
@@ -1838,7 +1864,7 @@ show_profile_management_menu() {
 
 declare -A TOOLS
 declare -A TOOL_SCRIPT_NAMES
-TOOL_KEYS=("Ollama" "OpenClaw" "Ruflo" "────────────" "Act" "Actionlint" "Activepieces" "Agent_Router" "Ahrefs" "AI_Powered_Law_Firms" "Aider" "Airbyte" "Airtable" "AnimateDiff" "Ansible" "Apache_Tika" "ArgoCD_CLI" "Authentik" "Authelia" "AutoGen" "AutoGPT" "Axolotl" "Backtest_Workflow" "Blender" "BPM_Analyzer" "Browser_Tool" "Buffer_API" "cAdvisor" "Changelog_Generator" "ChromaDB" "Clawbake" "Clawhub" "Clawhub_CLI" "Code_Sandbox" "ComfyUI" "Continue_Dev" "ControlNet" "Coqui_TTS" "CrewAI" "Data_Juicer" "dbt" "Deadline_Checker" "Demucs" "Docker" "Docker_Compose_Plugin" "Docling" "Drafting_Agent" "DuckDB" "ElevenLabs" "Emotion_Tagging" "EnviroLLM" "Ethers_JS" "EULLM" "Exchange_APIs" "Fail2Ban" "Fail2Ban_Analyzer" "Faster_Whisper" "FFmpeg" "File_System_Tool" "FinGPT" "FinRAG" "FinRobot" "Firecrawl" "Flowise" "Flux_CLI" "Fooocus" "Foundry" "GFPGAN" "GitHub_API_Tooling" "GitHub_CLI" "GitHub_Research" "Gitleaks" "Google_Analytics_API" "Grafana" "Grafana_Alloy" "Grype" "Guardrails_AI" "Hadolint" "Hardhat" "Healthchecks" "Helm" "Home_Assistant" "Hook_Detection" "HubSpot" "Huge_Facing" "Huginn" "Image_Upscaler_Pipeline" "InvokeAI" "Joplin_CLI" "JupyterLab" "K3s" "K9s" "Kimi2" "Kubectl" "Kubectx_Kubens" "Kubernetes" "Kustomize" "LangChain" "LangFlow" "Langfuse" "LangGraph" "Lawfirm" "LibreOffice_Headless" "librosa" "LiteLLM" "Llama_CPP" "Llama_CPP_Toolchain" "LLaMA_Factory" "LlamaIndex" "Loki" "Make" "Mail_Utils_MSMTP" "Markdownlint_CLI" "Marker" "MCPO" "Meilisearch" "Memory_Policies" "Meta_Ads_API" "Metabase" "MinIO" "MLflow" "Mosquitto" "Music2P_Pipeline" "MusicGen" "n8n" "NATS" "Neo4j" "Netdata" "Nikto" "Nmap" "Node_Exporter" "Node_Red" "Notion" "OCRmyPDF" "OPA" "Open_WebUI" "OpenClaw_RL" "OpenCode" "OpenHands" "OpenLIT" "OpenManus" "OpenTelemetry" "OpenTofu" "openWakeWord" "Pandoc" "Paperless_NGX" "PDF_Parser" "Pgvector" "Pipedream" "Piper" "Playwright" "Podman" "Postgres" "Pre_Commit" "Prefect" "Prometheus" "Promptfoo" "Puppeteer" "pydub" "Qdrant" "RabbitMQ" "Ray" "Rclone" "RealESRGAN" "Redis" "Release_Please" "Rembg" "Repo_Comparison" "Restic" "Rhasspy" "RIFE" "Riffusion" "Risk_Agent" "Risk_Scoring" "Risk_Strategy_Analyzer" "Runway_API" "Security_Workflow" "Semgrep" "SEMrush" "ShellCheck" "Shfmt" "SQLite" "SQLite_Vec" "Stable_Diffusion_WebUI" "Stable_Diffusion_WebUI_Forge" "Stirling_PDF" "Suno_API" "Supabase" "SVD" "Syft" "Syncthing" "Tax_Calculator" "Tax_Law_Agent" "Tesseract" "Thumbnail_Pipeline" "TikTok_Ads_API" "TikTok_Score" "Trend_Monitor" "Trivy" "TruffleHog" "Udio_API" "Unsloth" "Unstructured" "Upload_Automation" "Uptime_Kuma" "Vault" "Velero" "vLLM" "Voice_Assistant_Runtime" "VS_Code_Server" "Weaviate" "Web3_APIs" "Web3_Py" "Weights_and_Biases" "Whisper" "Whisper_CPP" "Wyoming" "YT_DLP" "Zapier" "Zenbot_API" "Zenbot_trader" "Zotero")
+TOOL_KEYS=("Ollama" "OpenClaw" "Ruflo" "Act" "Actionlint" "Activepieces" "Agent_Router" "Ahrefs" "AI_Powered_Law_Firms" "Aider" "Airbyte" "Airtable" "AnimateDiff" "Ansible" "Apache_Tika" "ArgoCD_CLI" "Authentik" "Authelia" "AutoGen" "AutoGPT" "Axolotl" "Backtest_Workflow" "Blender" "BPM_Analyzer" "Browser_Tool" "Buffer_API" "CAD_Konstrukteur" "Architektur_3D_BIM" "cAdvisor" "Changelog_Generator" "ChromaDB" "Clawbake" "Clawhub" "Clawhub_CLI" "Code_Sandbox" "ComfyUI" "Continue_Dev" "ControlNet" "Coqui_TTS" "CrewAI" "Data_Juicer" "dbt" "Deadline_Checker" "Demucs" "Docker" "Docker_Compose_Plugin" "Docling" "Drafting_Agent" "DuckDB" "ElevenLabs" "Emotion_Tagging" "EnviroLLM" "Ethers_JS" "EULLM" "Exchange_APIs" "Fail2Ban" "Fail2Ban_Analyzer" "Faster_Whisper" "FFmpeg" "File_System_Tool" "FinGPT" "FinRAG" "FinRobot" "Firecrawl" "Flowise" "Flux_CLI" "Fooocus" "Foundry" "GFPGAN" "GameDev_3D_Studio" "GitHub_API_Tooling" "GitHub_CLI" "GitHub_Research" "Gitleaks" "Google_Analytics_API" "Grafana" "Grafana_Alloy" "Grype" "Guardrails_AI" "Hadolint" "Hardhat" "Healthchecks" "Helm" "Home_Assistant" "Hook_Detection" "HubSpot" "Huge_Facing" "Huginn" "Image_Upscaler_Pipeline" "InvokeAI" "Joplin_CLI" "JupyterLab" "K3s" "K9s" "Kimi2" "Kubectl" "Kubectx_Kubens" "Kubernetes" "Kustomize" "LangChain" "LangFlow" "Langfuse" "LangGraph" "Lawfirm" "LibreOffice_Headless" "librosa" "LiteLLM" "Llama_CPP" "Llama_CPP_Toolchain" "LLaMA_Factory" "LlamaIndex" "Loki" "Make" "Mail_Utils_MSMTP" "Markdownlint_CLI" "Marker" "MCPO" "Meilisearch" "Memory_Policies" "Meta_Ads_API" "Metabase" "MinIO" "MLflow" "Mosquitto" "Music2P_Pipeline" "MusicGen" "n8n" "NATS" "Neo4j" "Netdata" "Nikto" "Nmap" "Node_Exporter" "Node_Red" "Notion" "OCRmyPDF" "OPA" "Open_WebUI" "OpenClaw_RL" "OpenCode" "OpenHands" "OpenLIT" "OpenManus" "OpenTelemetry" "OpenTofu" "openWakeWord" "Pandoc" "Paperless_NGX" "PDF_Parser" "Pgvector" "Pipedream" "Piper" "Playwright" "Podman" "Postgres" "Pre_Commit" "Prefect" "Prometheus" "Promptfoo" "Puppeteer" "pydub" "Qdrant" "RabbitMQ" "Ray" "Rclone" "RealESRGAN" "Redis" "Release_Please" "Rembg" "Repo_Comparison" "Restic" "Rhasspy" "RIFE" "Riffusion" "Risk_Agent" "Risk_Scoring" "Risk_Strategy_Analyzer" "Robotertechnik_Anlagensteuerung" "Runway_API" "Security_Workflow" "Semgrep" "SEMrush" "ShellCheck" "Shfmt" "SQLite" "SQLite_Vec" "Stable_Diffusion_WebUI" "Stable_Diffusion_WebUI_Forge" "Stirling_PDF" "Suno_API" "Supabase" "SVD" "Syft" "Syncthing" "Tax_Calculator" "Tax_Law_Agent" "Tesseract" "Thumbnail_Pipeline" "TikTok_Ads_API" "TikTok_Score" "Trend_Monitor" "Trivy" "TruffleHog" "Udio_API" "Unsloth" "Unstructured" "Upload_Automation" "Uptime_Kuma" "Vault" "Velero" "vLLM" "Voice_Assistant_Runtime" "VS_Code_Server" "Weaviate" "Web3_APIs" "Web3_Py" "Weights_and_Biases" "Whisper" "Whisper_CPP" "Wyoming" "YT_DLP" "Zapier" "Zenbot_API" "Zenbot_trader" "Zotero")
 TOOLS["Ollama"]="Lokales LLM-Backend. Du kannst über den Ollama Modell-Manager spezifische Modelle installieren und verwalten. Für weitere Informationen zu den Modellen siehe in der Online-Dokumentation nach."
 TOOLS["Ruflo"]="Ruflo/claude-flow-nahe CLI fuer Agenten-Orchestrierung und Hive-Mind-Workflows. Installation nutzt GitHub, Node.js und pnpm; Build-Skripte werden nur nach gezielter Freigabe erlaubt."
 TOOLS["Authentik"]="Optionaler Identity Provider fuer OIDC/OAuth2, SSO und zentrale Logins vor internen Webdiensten. Bereitet nur sichere lokale Vorlagen vor."
@@ -1995,6 +2021,10 @@ TOOLS["RIFE"]="Frame-Interpolation für Video- und Render-Workflows."
 TOOLS["Fooocus"]="Einsteigerfreundlicher Bildgenerator auf Stable-Diffusion-Basis."
 TOOLS["InvokeAI"]="Lokale Bildgenerierungsplattform mit Modell- und Workflowverwaltung."
 TOOLS["Blender"]="3D-, Render- und Asset-Werkzeug für Game-, Video- und Kreativprofile."
+TOOLS["CAD_Konstrukteur"]="Lokaler CAD-/3D-Druck-Baukasten mit FreeCAD, CadQuery, OpenSCAD, Blender-Preview, Ollama-CAD-Code und OpenClaw-Agentenprompt."
+TOOLS["Architektur_3D_BIM"]="Lokales Architektur-/BIM-/CAD-/3D-Rendering-Profil mit FreeCAD, Blender, Bonsai, IFCOpenShell, QGIS, ComfyUI, n8n und OpenClaw-Agenten."
+TOOLS["GameDev_3D_Studio"]="Lokales AI Game Studio mit Godot 4.x, Demo-Bibliothek, Blender-/ComfyUI-Asset-Pipeline, Ollama-NPCs, OpenClaw Game Master, n8n, Multiplayer und Renderfarm."
+TOOLS["Robotertechnik_Anlagensteuerung"]="Simulation-first-Baukasten fuer ROS 2, Gazebo, MoveIt 2, Anlagenmonitoring, MQTT/OPC UA/Modbus und sichere OpenClaw-Diagnose-/Freigabeagenten."
 TOOLS["Foundry"]="Toolchain für EVM-Smart-Contracts, Tests und RPC-Workflows."
 TOOLS["Hardhat"]="JavaScript/TypeScript-Toolchain für Smart-Contract-Entwicklung."
 TOOLS["Ethers_JS"]="JavaScript-Bibliothek für RPC-, Wallet- und Contract-Zugriffe."
@@ -2061,31 +2091,6 @@ TOOLS["SVD"]="Scaffold für Stable Video Diffusion-nahe lokale Experimente."
 TOOLS["Runway_API"]="Connector-Modul für Runway-nahe Visual- und Videoworkflows."
 TOOLS["Image_Upscaler_Pipeline"]="Workflow-Modul für Upscaling, Nachschärfen und Asset-Finalisierung."
 TOOL_SCRIPT_NAMES["Ollama"]="ollama"
-for ai3d_tool_key in "AI_3D_Studio" "Hunyuan3D" "TripoSR" "Electronics_Dev_Studio" "Architecture_BIM_Studio" "CAD_3D_Konstruktion" "FotoScan_Panorama_360_3D" "Robotik_Anlagensteuerung" "Cloudflared" "Tailscale"; do
-    if ! printf '%s\n' "${TOOL_KEYS[@]}" | grep -Fxq "$ai3d_tool_key"; then
-        TOOL_KEYS+=("$ai3d_tool_key")
-    fi
-done
-TOOLS["AI_3D_Studio"]="Lokale Projektstruktur und Basisvorbereitung fuer ein Open-Source AI-3D-Studio mit Ollama, OpenClaw, ComfyUI, Blender, Hunyuan3D und TripoSR."
-TOOLS["Hunyuan3D"]="Tencent Hunyuan3D 2.1 fuer Image/Text-to-3D, Mesh-Generierung und PBR-Materialien. Hohe VRAM-Anforderungen; Modelle werden nicht automatisch geladen."
-TOOLS["TripoSR"]="Schnelle Single-Image-zu-3D-Mesh-Rekonstruktion fuer Prototypen, STL/GLB-Vorstufen und lokale Asset-Entwuerfe."
-TOOLS["Electronics_Dev_Studio"]="Lokale Elektronik-, PCB-, Embedded- und FPGA-Toolchain mit KiCad, FreeCAD, ngspice, PlatformIO, OpenOCD, Verilator, Yosys und optionalen KiCad-AI-Tools."
-TOOLS["Architecture_BIM_Studio"]="Lokales Architektur-, CAD-, BIM- und 3D-Rendering-Profil mit FreeCAD, Blender, Bonsai/IfcOpenShell, QGIS, OpenSCAD, COLMAP, ComfyUI und Renderfarm-Hinweisen."
-TOOLS["CAD_3D_Konstruktion"]="Lokale CAD-/Text-to-CAD-/3D-Druck-Umgebung mit FreeCAD, OpenSCAD, optional CadQuery/build123d, STL/STEP/OBJ/GLB-Export und Robotik-Bauteil-Workflows."
-TOOLS["FotoScan_Panorama_360_3D"]="Lokale Panorama-, 360-Grad-, Photogrammetrie- und optional Gaussian-Splatting-Pipeline mit Hugin/PanoTools, COLMAP und klar markierten GPU-lastigen Zusatzpfaden."
-TOOLS["Robotik_Anlagensteuerung"]="Read-only vorbereitete Robotik-/Anlagensteuerungsumgebung fuer ROS 2, Gazebo, MoveIt 2, OpenPLC, Modbus/OPC UA/MQTT, Dashboards, n8n/Node-RED und KI-Diagnose ohne direkte Aktorsteuerung."
-TOOLS["Cloudflared"]="Cloudflare Tunnel fuer sicheren Zugriff auf lokale Dashboards ohne offene Ports."
-TOOLS["Tailscale"]="Zero-Trust-VPN fuer sicheren Zugriff zwischen MiniPC, VPS, Notebook und lokalen Services."
-TOOL_SCRIPT_NAMES["AI_3D_Studio"]="ai_3d_studio"
-TOOL_SCRIPT_NAMES["Hunyuan3D"]="hunyuan3d"
-TOOL_SCRIPT_NAMES["TripoSR"]="triposr"
-TOOL_SCRIPT_NAMES["Electronics_Dev_Studio"]="electronics_dev"
-TOOL_SCRIPT_NAMES["Architecture_BIM_Studio"]="architecture_bim"
-TOOL_SCRIPT_NAMES["CAD_3D_Konstruktion"]="cad_3d_konstruktion"
-TOOL_SCRIPT_NAMES["FotoScan_Panorama_360_3D"]="fotoscan_panorama_360_3d"
-TOOL_SCRIPT_NAMES["Robotik_Anlagensteuerung"]="robotik_anlagensteuerung"
-TOOL_SCRIPT_NAMES["Cloudflared"]="cloudflared"
-TOOL_SCRIPT_NAMES["Tailscale"]="tailscale"
 TOOL_SCRIPT_NAMES["Ruflo"]="ruflo"
 TOOL_SCRIPT_NAMES["Authentik"]="authentik"
 TOOL_SCRIPT_NAMES["Authelia"]="authelia"
@@ -2241,6 +2246,10 @@ TOOL_SCRIPT_NAMES["RIFE"]="rife"
 TOOL_SCRIPT_NAMES["Fooocus"]="fooocus"
 TOOL_SCRIPT_NAMES["InvokeAI"]="invokeai"
 TOOL_SCRIPT_NAMES["Blender"]="blender"
+TOOL_SCRIPT_NAMES["CAD_Konstrukteur"]="cad_konstrukteur"
+TOOL_SCRIPT_NAMES["Architektur_3D_BIM"]="architektur_3d_bim"
+TOOL_SCRIPT_NAMES["GameDev_3D_Studio"]="gamedev_3d_studio"
+TOOL_SCRIPT_NAMES["Robotertechnik_Anlagensteuerung"]="robotertechnik_anlagensteuerung"
 TOOL_SCRIPT_NAMES["Foundry"]="foundry"
 TOOL_SCRIPT_NAMES["Hardhat"]="hardhat"
 TOOL_SCRIPT_NAMES["Ethers_JS"]="ethers_js"
@@ -2314,6 +2323,10 @@ run_tool_script() {
 
     if [ -z "$script_name" ]; then
         echo -e "${RED}Fehler: Kein Skript-Mapping für Tool '$tool_key' gefunden.${NC}"
+        return 1
+    fi
+
+    if ! validate_tool_source_policy "$tool_key" "$action"; then
         return 1
     fi
 
@@ -2457,10 +2470,6 @@ show_tool_management_menu() {
     TOOL_CHECKLIST_OPTIONS=()
     for tool_key in "${TOOL_KEYS[@]}"; do
         STATUS="off"
-        if [[ "$tool_key" == ────────* ]]; then
-            TOOL_CHECKLIST_OPTIONS+=("$tool_key" "──────────── A-Z Tools ────────────" "$STATUS")
-            continue
-        fi
         if [ -n "$tool_key" ] && [ "${INSTALLED_TOOLS_MAP[$tool_key]:-}" = "1" ]; then
             STATUS="on"
             installed_tool_count=$((installed_tool_count + 1))
@@ -2484,14 +2493,12 @@ show_tool_management_menu() {
     # Erst Deinstallationen planen, dann Installationen. So wird Speicher
     # freigegeben, bevor neue, oft grosse Abhaengigkeiten geladen werden.
     for tool_key in "${TOOL_KEYS[@]}"; do
-        [[ "$tool_key" == ────────* ]] && continue
         if ! selection_contains "$tool_key" "${SELECTED_TOOLS_ARRAY[@]}" && [ "${INSTALLED_TOOLS_MAP[$tool_key]:-}" = "1" ]; then
             tools_to_uninstall+=("$tool_key")
         fi
     done
 
     for tool_key in "${TOOL_KEYS[@]}"; do
-        [[ "$tool_key" == ────────* ]] && continue
         if selection_contains "$tool_key" "${SELECTED_TOOLS_ARRAY[@]}" && [ "${INSTALLED_TOOLS_MAP[$tool_key]:-}" != "1" ]; then
             tools_to_install+=("$tool_key")
         fi
@@ -2523,6 +2530,52 @@ PROFILE_INTEGRATION_TOOLS["Media_Musik"]="Suno_API Udio_API Music2P_Pipeline Tik
 PROFILE_CORE_TOOLS["KI_Forschung"]="OpenClaw_RL Flowise LangFlow LangChain LlamaIndex MLflow Whisper"
 PROFILE_EXTENDED_TOOLS["KI_Forschung"]="ChromaDB Weaviate CrewAI AutoGPT Weights_and_Biases vLLM Llama_CPP Ray EnviroLLM"
 PROFILE_INTEGRATION_TOOLS["KI_Forschung"]="Stable_Diffusion_WebUI"
+
+SCIENCE_CORE_TOOLS="Ollama OpenClaw JupyterLab Docling Apache_Tika"
+SCIENCE_EXTENDED_TOOLS="Whisper_CPP Grafana Prometheus n8n"
+SCIENCE_INTEGRATION_TOOLS="Kubernetes K3s Home_Assistant Mosquitto"
+
+PROFILE_CORE_TOOLS["Physik"]="$SCIENCE_CORE_TOOLS"
+PROFILE_EXTENDED_TOOLS["Physik"]="$SCIENCE_EXTENDED_TOOLS"
+PROFILE_INTEGRATION_TOOLS["Physik"]="$SCIENCE_INTEGRATION_TOOLS"
+PROFILE_SPECIAL_TOOLS["Physik"]="Ollama OpenClaw JupyterLab Docling Apache_Tika Whisper_CPP"
+PROFILE_SPECIAL_LABELS["Physik"]="Physik Science Lab"
+
+PROFILE_CORE_TOOLS["Chemie"]="$SCIENCE_CORE_TOOLS"
+PROFILE_EXTENDED_TOOLS["Chemie"]="$SCIENCE_EXTENDED_TOOLS"
+PROFILE_INTEGRATION_TOOLS["Chemie"]="$SCIENCE_INTEGRATION_TOOLS"
+PROFILE_SPECIAL_TOOLS["Chemie"]="Ollama OpenClaw JupyterLab Docling Apache_Tika Whisper_CPP"
+PROFILE_SPECIAL_LABELS["Chemie"]="Chemie Science Lab"
+
+PROFILE_CORE_TOOLS["Biologie"]="$SCIENCE_CORE_TOOLS"
+PROFILE_EXTENDED_TOOLS["Biologie"]="$SCIENCE_EXTENDED_TOOLS"
+PROFILE_INTEGRATION_TOOLS["Biologie"]="$SCIENCE_INTEGRATION_TOOLS"
+PROFILE_SPECIAL_TOOLS["Biologie"]="Ollama OpenClaw JupyterLab Docling Apache_Tika Whisper_CPP Home_Assistant Mosquitto"
+PROFILE_SPECIAL_LABELS["Biologie"]="Biologie Science Lab"
+
+PROFILE_CORE_TOOLS["Bioinformatik"]="$SCIENCE_CORE_TOOLS"
+PROFILE_EXTENDED_TOOLS["Bioinformatik"]="$SCIENCE_EXTENDED_TOOLS"
+PROFILE_INTEGRATION_TOOLS["Bioinformatik"]="$SCIENCE_INTEGRATION_TOOLS"
+PROFILE_SPECIAL_TOOLS["Bioinformatik"]="Ollama OpenClaw JupyterLab Docling Apache_Tika Whisper_CPP"
+PROFILE_SPECIAL_LABELS["Bioinformatik"]="Bioinformatik Science Lab"
+
+PROFILE_CORE_TOOLS["Molekuelsimulation"]="$SCIENCE_CORE_TOOLS"
+PROFILE_EXTENDED_TOOLS["Molekuelsimulation"]="$SCIENCE_EXTENDED_TOOLS"
+PROFILE_INTEGRATION_TOOLS["Molekuelsimulation"]="$SCIENCE_INTEGRATION_TOOLS"
+PROFILE_SPECIAL_TOOLS["Molekuelsimulation"]="Ollama OpenClaw JupyterLab Docling Apache_Tika Whisper_CPP"
+PROFILE_SPECIAL_LABELS["Molekuelsimulation"]="Molekuelsimulation Science Lab"
+
+PROFILE_CORE_TOOLS["Robotik_Labor"]="$SCIENCE_CORE_TOOLS"
+PROFILE_EXTENDED_TOOLS["Robotik_Labor"]="$SCIENCE_EXTENDED_TOOLS"
+PROFILE_INTEGRATION_TOOLS["Robotik_Labor"]="$SCIENCE_INTEGRATION_TOOLS"
+PROFILE_SPECIAL_TOOLS["Robotik_Labor"]="Ollama OpenClaw JupyterLab Docling Apache_Tika Whisper_CPP Home_Assistant Mosquitto"
+PROFILE_SPECIAL_LABELS["Robotik_Labor"]="Robotik Labor Science Lab"
+
+PROFILE_CORE_TOOLS["Materialwissenschaft"]="$SCIENCE_CORE_TOOLS"
+PROFILE_EXTENDED_TOOLS["Materialwissenschaft"]="$SCIENCE_EXTENDED_TOOLS"
+PROFILE_INTEGRATION_TOOLS["Materialwissenschaft"]="$SCIENCE_INTEGRATION_TOOLS"
+PROFILE_SPECIAL_TOOLS["Materialwissenschaft"]="Ollama OpenClaw JupyterLab Docling Apache_Tika Whisper_CPP"
+PROFILE_SPECIAL_LABELS["Materialwissenschaft"]="Materialwissenschaft Science Lab"
 
 PROFILE_CORE_TOOLS["Texter_Werbung_Marketing"]="n8n Activepieces LangChain ChromaDB Playwright"
 PROFILE_EXTENDED_TOOLS["Texter_Werbung_Marketing"]="Browser_Tool Firecrawl File_System_Tool Weaviate Qdrant Stable_Diffusion_WebUI"
@@ -2594,41 +2647,29 @@ PROFILE_CORE_TOOLS["Video_Generation"]="ComfyUI Stable_Diffusion_WebUI_Forge SVD
 PROFILE_EXTENDED_TOOLS["Video_Generation"]="ControlNet"
 PROFILE_INTEGRATION_TOOLS["Video_Generation"]="YT_DLP Thumbnail_Pipeline"
 
-PROFILE_CORE_TOOLS["AI_3D_Generation_Studio"]="AI_3D_Studio Hunyuan3D TripoSR ComfyUI Blender FFmpeg"
-PROFILE_EXTENDED_TOOLS["AI_3D_Generation_Studio"]="Ollama OpenClaw Qdrant ChromaDB n8n"
-PROFILE_INTEGRATION_TOOLS["AI_3D_Generation_Studio"]="Kubernetes K3s Prometheus Grafana MinIO"
-PROFILE_SPECIAL_TOOLS["AI_3D_Generation_Studio"]="AI_3D_Studio Hunyuan3D TripoSR ComfyUI Blender FFmpeg Ollama OpenClaw"
-PROFILE_SPECIAL_LABELS["AI_3D_Generation_Studio"]="AI-3D-Studio komplett"
+PROFILE_CORE_TOOLS["GameDev_3D_Studio_NEXTLEVEL"]="GameDev_3D_Studio Blender ComfyUI Ollama OpenClaw n8n FFmpeg"
+PROFILE_EXTENDED_TOOLS["GameDev_3D_Studio_NEXTLEVEL"]="Whisper_CPP Faster_Whisper Piper Coqui_TTS Qdrant ChromaDB"
+PROFILE_INTEGRATION_TOOLS["GameDev_3D_Studio_NEXTLEVEL"]="Kubernetes K3s Cloudflared Tailscale GitHub_CLI Prometheus Grafana"
+PROFILE_SPECIAL_TOOLS["GameDev_3D_Studio_NEXTLEVEL"]="GameDev_3D_Studio Blender ComfyUI Ollama OpenClaw n8n FFmpeg"
+PROFILE_SPECIAL_LABELS["GameDev_3D_Studio_NEXTLEVEL"]="AI Game Studio komplett"
 
-PROFILE_CORE_TOOLS["Elektronik_Entwickler"]="Electronics_Dev_Studio Ollama OpenClaw n8n Home_Assistant Mosquitto GitHub_CLI"
-PROFILE_EXTENDED_TOOLS["Elektronik_Entwickler"]="Docker Kubernetes K3s Prometheus Grafana Cloudflared Tailscale"
-PROFILE_INTEGRATION_TOOLS["Elektronik_Entwickler"]="Qdrant ChromaDB LangChain LlamaIndex Node_Red"
-PROFILE_SPECIAL_TOOLS["Elektronik_Entwickler"]="Electronics_Dev_Studio Ollama OpenClaw n8n Home_Assistant Mosquitto GitHub_CLI"
-PROFILE_SPECIAL_LABELS["Elektronik_Entwickler"]="Elektronik-Lab komplett"
+PROFILE_CORE_TOOLS["CAD_Konstrukteur"]="CAD_Konstrukteur Blender Ollama OpenClaw n8n"
+PROFILE_EXTENDED_TOOLS["CAD_Konstrukteur"]="Whisper_CPP Faster_Whisper Qdrant ChromaDB"
+PROFILE_INTEGRATION_TOOLS["CAD_Konstrukteur"]="Cloudflared Tailscale GitHub_CLI Kubernetes K3s"
+PROFILE_SPECIAL_TOOLS["CAD_Konstrukteur"]="CAD_Konstrukteur Blender Ollama OpenClaw n8n"
+PROFILE_SPECIAL_LABELS["CAD_Konstrukteur"]="CAD Konstrukteur komplett"
 
-PROFILE_CORE_TOOLS["Architektur_3D_BIM"]="Architecture_BIM_Studio Blender ComfyUI FFmpeg Ollama OpenClaw n8n"
-PROFILE_EXTENDED_TOOLS["Architektur_3D_BIM"]="Home_Assistant Qdrant ChromaDB Prometheus Grafana MinIO"
-PROFILE_INTEGRATION_TOOLS["Architektur_3D_BIM"]="Kubernetes K3s Cloudflared Tailscale Authentik Authelia"
-PROFILE_SPECIAL_TOOLS["Architektur_3D_BIM"]="Architecture_BIM_Studio Blender ComfyUI FFmpeg Ollama OpenClaw n8n"
-PROFILE_SPECIAL_LABELS["Architektur_3D_BIM"]="Architektur-BIM-Studio komplett"
+PROFILE_CORE_TOOLS["Architektur_3D_BIM"]="Architektur_3D_BIM CAD_Konstrukteur Blender ComfyUI Ollama OpenClaw n8n"
+PROFILE_EXTENDED_TOOLS["Architektur_3D_BIM"]="Qdrant ChromaDB Prometheus Grafana"
+PROFILE_INTEGRATION_TOOLS["Architektur_3D_BIM"]="Cloudflared Tailscale GitHub_CLI Kubernetes K3s"
+PROFILE_SPECIAL_TOOLS["Architektur_3D_BIM"]="Architektur_3D_BIM CAD_Konstrukteur Blender ComfyUI Ollama OpenClaw n8n"
+PROFILE_SPECIAL_LABELS["Architektur_3D_BIM"]="Architektur BIM komplett"
 
-PROFILE_CORE_TOOLS["CAD_3D_Konstruktion"]="CAD_3D_Konstruktion Blender Ollama OpenClaw n8n"
-PROFILE_EXTENDED_TOOLS["CAD_3D_Konstruktion"]="ComfyUI AI_3D_Studio Hunyuan3D TripoSR Qdrant ChromaDB"
-PROFILE_INTEGRATION_TOOLS["CAD_3D_Konstruktion"]="Kubernetes K3s Cloudflared Tailscale GitHub_CLI"
-PROFILE_SPECIAL_TOOLS["CAD_3D_Konstruktion"]="CAD_3D_Konstruktion Blender Ollama OpenClaw n8n"
-PROFILE_SPECIAL_LABELS["CAD_3D_Konstruktion"]="CAD/Text-to-CAD komplett"
-
-PROFILE_CORE_TOOLS["FotoScan_Panorama_360_3D"]="FotoScan_Panorama_360_3D FFmpeg Ollama OpenClaw n8n"
-PROFILE_EXTENDED_TOOLS["FotoScan_Panorama_360_3D"]="Blender ComfyUI Qdrant ChromaDB"
-PROFILE_INTEGRATION_TOOLS["FotoScan_Panorama_360_3D"]="Cloudflared Tailscale MinIO"
-PROFILE_SPECIAL_TOOLS["FotoScan_Panorama_360_3D"]="FotoScan_Panorama_360_3D FFmpeg Ollama OpenClaw n8n"
-PROFILE_SPECIAL_LABELS["FotoScan_Panorama_360_3D"]="FotoScan komplett"
-
-PROFILE_CORE_TOOLS["Robotik_Anlagensteuerung"]="Robotik_Anlagensteuerung Ollama OpenClaw n8n Node_Red Mosquitto Home_Assistant"
-PROFILE_EXTENDED_TOOLS["Robotik_Anlagensteuerung"]="Docker Kubernetes K3s Prometheus Grafana"
-PROFILE_INTEGRATION_TOOLS["Robotik_Anlagensteuerung"]="Cloudflared Tailscale Qdrant ChromaDB"
-PROFILE_SPECIAL_TOOLS["Robotik_Anlagensteuerung"]="Robotik_Anlagensteuerung Ollama OpenClaw n8n Node_Red Mosquitto Home_Assistant"
-PROFILE_SPECIAL_LABELS["Robotik_Anlagensteuerung"]="Robotik-Gateway read-only"
+PROFILE_CORE_TOOLS["Robotertechnik_Anlagensteuerung"]="Robotertechnik_Anlagensteuerung Ollama OpenClaw n8n Mosquitto Node_Red Home_Assistant"
+PROFILE_EXTENDED_TOOLS["Robotertechnik_Anlagensteuerung"]="Whisper_CPP Prometheus Grafana"
+PROFILE_INTEGRATION_TOOLS["Robotertechnik_Anlagensteuerung"]="Kubernetes K3s Cloudflared Tailscale"
+PROFILE_SPECIAL_TOOLS["Robotertechnik_Anlagensteuerung"]="Robotertechnik_Anlagensteuerung Ollama OpenClaw n8n Mosquitto Node_Red Home_Assistant Prometheus Grafana"
+PROFILE_SPECIAL_LABELS["Robotertechnik_Anlagensteuerung"]="Robotik & Anlagensteuerung komplett"
 
 PROFILE_CORE_TOOLS["Image_Generation"]="ComfyUI Stable_Diffusion_WebUI_Forge Fooocus InvokeAI RealESRGAN"
 PROFILE_EXTENDED_TOOLS["Image_Generation"]="ControlNet GFPGAN Rembg"
@@ -2930,16 +2971,16 @@ show_main_menu() {
     "1" "${TXT_MENU_1:-Setup-Update + System-Update (Repo, OS & pnpm)}" \
     "2" "${TXT_MENU_2:-Ollama Modell-Manager}" \
     "3" "${TXT_MENU_3:-OpenClaw Konfiguration (.env & config.json)}" \
-    "────────────" "${TXT_SEPARATOR_LINE:-────────────────────────────────────────────────────────}" \
+    "────────" "${TXT_SEPARATOR_LINE:-────────────────────────────────────────────────────────}" \
     "4" "${TXT_MENU_4:-Hybrid: Dein MiniPC + Multi-VPS (Empfohlen)}" \
     "5" "${TXT_MENU_5:-Standalone: Nur VPS (Cloud-Native)}" \
     "6" "${TXT_MENU_6:-Standalone: Nur MiniPC (Lokal)}" \
-    "────────────" "${TXT_SEPARATOR_LINE:-────────────────────────────────────────────────────────}" \
+    "─────────" "${TXT_SEPARATOR_LINE:-────────────────────────────────────────────────────────}" \
     "7" "${TXT_MENU_7:-Ruflo: Installation & Management}" \
-    "────────────" "${TXT_SEPARATOR_LINE:-────────────────────────────────────────────────────────}" \
+    "──────────" "${TXT_SEPARATOR_LINE:-────────────────────────────────────────────────────────}" \
     "8" "${TXT_MENU_8:-Tools: Installieren & Deinstallieren}" \
     "9" "${TXT_MENU_9:-Profile: Blöcke, Gesamtprofile & Einzeltools}" \
-    "────────────" "${TXT_SEPARATOR_LINE:-────────────────────────────────────────────────────────}" \
+    "───────────" "${TXT_SEPARATOR_LINE:-────────────────────────────────────────────────────────}" \
     "10" "${TXT_MENU_10:-Dokumentation & API-Key Guide}" \
     "11" "${TXT_MENU_11:-System-Check & Port-Analyse}" \
     "12" "${TXT_MENU_12:-OpenClaw starten (Dev-Modus)}" \
@@ -3079,13 +3120,8 @@ while true; do
             "Abhaengig vom Repo-Ziel kann zusaetzlich Netzwerkzeit fuer das Klonen und den Build anfallen."
             begin_operation_measurement "main_menu_ruflo" "Ruflo: Installation & Management"
             echo -e "${BLUE}Ruflo Installation & Management...${NC}"
-            if run_bash_script "$INSTALL_DIR/scripts/ruflo_install.sh"; then
-                append_unique_line "$TOOL_STATUS_FILE" "Ruflo"
-                end_operation_measurement "success"
-                echo -e "${GREEN}Ruflo wurde als installiert markiert.${NC}"
-            else
-                end_operation_measurement "failed"
-            fi
+            run_bash_script "$INSTALL_DIR/scripts/ruflo_install.sh"
+            if [ $? -eq 0 ]; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
             read -p "Ruflo-Aktion abgeschlossen. Drücken Sie Enter..."
             ;;
         8)

@@ -70,7 +70,18 @@ Dieses Verzeichnis enthält die aktuell gepflegten, aus dem Repository abgeleite
 | `Personal_Knowledge_Memory` | lokale Memory-/RAG-Schicht | `Personal_Knowledge_Memory.md` |
 | `DevOps_SRE_Agent` | CI/CD, IaC, Kubernetes, Healthchecks | `DevOps_SRE_Agent.md` |
 | `Data_Analytics_BI` | DuckDB, Jupyter, BI, Reports | `Data_Analytics_BI.md` |
+| `Physik` | lokale Physik-Analyse, Simulation, JupyterLab und Paper-Auswertung | `Physik.md` |
+| `Chemie` | Molekuel- und Reaktionsanalyse, RDKit, Open Babel und Laborberichte | `Chemie.md` |
+| `Biologie` | Omics-, Mikroskopie-, Sensorik- und Laborassistent mit OpenClaw | `Biologie.md` |
+| `Bioinformatik` | Sequenzanalyse, Varianten, Pipelines, JupyterLab und Kubernetes-Offloading | `Bioinformatik.md` |
+| `Molekuelsimulation` | OpenMM/GROMACS/LAMMPS-orientierte GPU-Simulationen und Analyse | `Molekuelsimulation.md` |
+| `Robotik_Labor` | sichere Laborrobotik, ROS 2, Sensorintegration und Simulation-first | `Robotik_Labor.md` |
+| `Materialwissenschaft` | Materials Informatics, Simulation, Strukturanalyse und Dashboards | `Materialwissenschaft.md` |
 | `Game_Dev_AI` | Blender, Assets, Dialoge, Pipelines | `Game_Dev_AI.md` |
+| `GameDev_3D_Studio_NEXTLEVEL` | lokales AI Game Studio mit Godot, Blender, ComfyUI, NPC-KI und Renderfarm | `GameDev_3D_Studio.md` |
+| `CAD_Konstrukteur` | CAD, 3D-Druck, FreeCAD, CadQuery, OpenSCAD und technische Modellierung | `CAD_Konstrukteur.md` |
+| `Architektur_3D_BIM` | Architektur, BIM/IFC, CAD, Rendering, Smart Home Planung und Renderfarm | `Architektur_3D_BIM.md` |
+| `FotoScan_Panorama_360_3D` | Panorama, 360-Grad-Ansichten, Photogrammetrie und optional Gaussian Splatting | `FotoScan_Panorama_360_3D.md` |
 | `Education_Tutor` | Lernassistent, Quiz, Karteikarten, RAG | `Education_Tutor.md` |
 
 ## Neue Plattform- und Ausbauprofile
@@ -87,7 +98,15 @@ Dieses Verzeichnis enthält die aktuell gepflegten, aus dem Repository abgeleite
 | `OSINT_Research` | legale Recherche, Archivierung, Suchindexe | `OSINT_Research.md` |
 | `Email_Office_Automation` | Datenschutzmodus fuer DMS-/Office-Automation | `Email_Office_Automation.md` |
 | `Robotics_IoT_Edge_AI` | Edge-AI, Sensorik, Home Assistant, MQTT | `Robotics_IoT_Edge_AI.md` |
+| `Robotertechnik_Anlagensteuerung` | ROS 2, Gazebo, MoveIt, Anlagenmonitoring und sichere Steuerungsassistenz | `Robotertechnik_Anlagensteuerung.md` |
 | `Synthetic_Data_Lab` | Testdaten, Datensynthese, Eval-Datensaetze | `Synthetic_Data_Lab.md` |
+| `Physik` | Science-Lab-Profil fuer Simulation, Messdaten, Paper und GPU-Analyse | `Physik.md` |
+| `Chemie` | Science-Lab-Profil fuer Chemie, Molekueltools, Labordaten und Reports | `Chemie.md` |
+| `Biologie` | Science-Lab-Profil fuer Omics, Mikroskopie, Sensorik und Home-Assistant-Labordaten | `Biologie.md` |
+| `Bioinformatik` | Science-Lab-Profil fuer Sequenzen, Varianten, Pipelines und lokale KI-Auswertung | `Bioinformatik.md` |
+| `Molekuelsimulation` | Science-Lab-Profil fuer MD, GPU-Offloading, OpenMM/GROMACS/LAMMPS und Analyse | `Molekuelsimulation.md` |
+| `Robotik_Labor` | Science-Lab-Profil fuer sichere Laborautomation, ROS 2, MQTT und Simulation | `Robotik_Labor.md` |
+| `Materialwissenschaft` | Science-Lab-Profil fuer Materials Informatics, Struktur- und Simulationsdaten | `Materialwissenschaft.md` |
 | `AI_Governance_Audit` | Audit, SBOM, Secret- und Governance-Sicht | `AI_Governance_Audit.md` |
 | `Cost_Energy_Optimizer` | Ressourcen-, Kosten- und Laufzeitoptimierung | `Cost_Energy_Optimizer.md` |
 | `Prompt_Generator_Studio` | Prompts fuer Text, Bild, Video, Musik, Code und Agenten | `Prompt_Generator_Studio.md` |
@@ -97,8 +116,10 @@ Dieses Verzeichnis enthält die aktuell gepflegten, aus dem Repository abgeleite
 | `Android_App_Builder` | Android SDK-/Gradle-/Companion-App-Planung | `Android_App_Builder.md` |
 | `AI_Dashboard_Builder` | Dashboards fuer Dienste, Logs, Ressourcen und Agentenstatus | `AI_Dashboard_Builder.md` |
 | `Render_Farm_GPU_Workstation` | GPU-Workstation, ComfyUI, Blender und Rendering | `Render_Farm_GPU_Workstation.md` |
+| `GameDev_3D_Studio_NEXTLEVEL` | Godot 4.x, OpenClaw Game Master, Ollama-NPCs, Assets, Multiplayer und Renderfarm | `GameDev_3D_Studio.md` |
+| `CAD_Konstrukteur` | Text-to-CAD, parametrische Gehaeuse, 3D-Druck und CAD-Agentenprompt | `CAD_Konstrukteur.md` |
+| `Architektur_3D_BIM` | lokales Architektur-/BIM-/CAD-/3D-Rendering-Studio mit IFC, ComfyUI und Renderfarm | `Architektur_3D_BIM.md` |
 | `OpenHiggsStack_AI_Cinema_Studio` | offenes AI-Cinema-/Marketing-Studio mit OpenClaw, ComfyUI, Wan und n8n | `OpenHiggsStack_AI_Cinema_Studio.md` |
-| `CAD_3D_Konstruktion` | Text-to-CAD, FreeCAD, OpenSCAD, 3D-Druck und Robotik-Bauteile | `CAD_3D_Konstruktion.md` |
 | `Video_Generation_ComfyUI_Wan` | technisches ComfyUI-/Wan2.x-Renderprofil fuer lokale Video-KI | `Video_Generation_ComfyUI_Wan.md` |
 | `Legal_Safe_Creator` | Lizenz-, Quellen- und Rechte-Checklisten fuer Creator | `Legal_Safe_Creator.md` |
 | `Cyber_Security_AI` | defensive Security-AI fuer Findings, Hardening und SBOM | `Cyber_Security_AI.md` |
@@ -139,5 +160,3 @@ Diese Pfade wurden geprueft, aber wegen Profilueberlappung oder noch fehlender s
 | `INSTALL_CHECKLIST.md` | empfohlener Installationspfad |
 | `INCONSISTENCY_REPORT.md` | bekannte Sync-Lücken und Dubletten |
 | `profiles.json` | maschinenlesbarer Profilkatalog |
-- [OpenHiggsStack AI Cinema Studio](OpenHiggsStack_AI_Cinema_Studio.md) - Optionales lokales/halb-lokales AI-Cinema- und Marketing-Studio mit OpenClaw, Ollama, ComfyUI, Wan2.x, FFmpeg und n8n.
-- [Video Generation ComfyUI Wan](Video_Generation_ComfyUI_Wan.md) - Technisches Installationsprofil fuer ComfyUI, Wan2.1/Wan2.2, FFmpeg, WSL2/GPU und lokale Video-KI-Workflows.

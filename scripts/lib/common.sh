@@ -22,24 +22,6 @@ RED="\033[0;31m"
 YELLOW="\033[1;33m"
 NC="\033[0m"
 
-dialog() {
-  local arg
-  local has_cancel_label=0
-
-  for arg in "$@"; do
-    if [ "$arg" = "--cancel-label" ]; then
-      has_cancel_label=1
-      break
-    fi
-  done
-
-  if [ "$has_cancel_label" -eq 1 ]; then
-    command dialog "$@"
-  else
-    command dialog --cancel-label "${TXT_BACK_LABEL:-Zurueck}" "$@"
-  fi
-}
-
 ensure_user_workspace() {
   mkdir -p "$USER_WORKSPACE_DIR" "$USER_STATUS_DIR" "$USER_LOG_DIR" "$USER_METRICS_DIR" "$CUSTOM_SOURCE_REPOS_DIR"
   touch "$TOOL_STATUS_FILE" "$PROFILE_STATUS_FILE" "$LEGACY_TOOL_STATUS_FILE" "$LEGACY_PROFILE_STATUS_FILE"

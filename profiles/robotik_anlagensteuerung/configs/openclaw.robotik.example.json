@@ -1,0 +1,21 @@
+{
+  "profile": "robotik_anlagensteuerung",
+  "mode": "simulation",
+  "real_hardware": false,
+  "safety_gate": true,
+  "require_human_approval": true,
+  "allowed_actions": [
+    "analyze_logs",
+    "summarize_sensor_data",
+    "draft_ros2_launch",
+    "draft_n8n_workflow",
+    "create_maintenance_checklist"
+  ],
+  "blocked_by_default": [
+    "write_plc",
+    "move_robot",
+    "switch_relay",
+    "open_valve",
+    "start_motor"
+  ]
+}

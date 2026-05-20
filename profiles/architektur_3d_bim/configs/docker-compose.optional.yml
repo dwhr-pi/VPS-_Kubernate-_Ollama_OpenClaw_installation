@@ -1,0 +1,11 @@
+services:
+  architecture-notes:
+    image: nginx:alpine
+    ports:
+      - "8098:80"
+    volumes:
+      - ./../../docs:/usr/share/nginx/html:ro
+    restart: unless-stopped
+
+# Optionales Beispiel. Das Profil bevorzugt native lokale Installationen.
+
