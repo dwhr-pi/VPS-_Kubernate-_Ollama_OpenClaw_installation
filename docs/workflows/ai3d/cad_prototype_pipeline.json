@@ -1,0 +1,10 @@
+{
+  "name": "cad_prototype_pipeline",
+  "status": "template",
+  "description": "CAD-like concept brief -> simple mesh/prototype -> Blender scale check -> STL export.",
+  "manual_setup_required": true,
+  "models": ["TripoSR checkpoint", "optional local LLM for specification checks"],
+  "nodes": ["Technical Brief", "Prototype Mesh", "Scale Check", "STL Repair Checklist", "Save STL"],
+  "output_formats": ["stl", "obj", "blend"]
+}
+

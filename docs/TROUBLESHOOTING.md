@@ -363,6 +363,17 @@ Bekannte Beispiele aus der Fehlerhistorie:
 
 Wichtig: Prometheus und K3s sind keine Voraussetzung fuer Ruflo. Wenn diese Fehler zusammen mit Ruflo-Logs auftauchen, stammen sie aus aelteren, anderen Installationsversuchen im gemeinsamen Logordner. Sie verschwinden nicht dadurch, dass man Prometheus oder K3s fuer Ruflo installiert, sondern durch Log-Rotation, durch gezielte Reparatur des jeweiligen Tools oder durch die neue Laufdiagnose, die den neuesten Status pro Tool getrennt ausweist.
 
+### Zotero-Download laesst sich nicht entpacken
+
+Zotero liefert die Linux-Version inzwischen als `.tar.xz` aus. Wenn ein alter Installer noch `tar -xjf` bzw. bzip2 erwartet, erscheint:
+
+```text
+bzip2: (stdin) is not a bzip2 file.
+tar: Child returned status 2
+```
+
+Der Installer prueft deshalb den Dateityp mit `file`, installiert `xz-utils` und entpackt `.tar.xz`, `.tar.bz2` oder `.tar.gz` passend. Wenn Zotero die Download-URL erneut umstellt, zeigt der Installer Quelle, erkannten Dateityp und die ersten Bytes der Datei an, statt mit einem unklaren `tar`-Fehler abzubrechen.
+
 ### Huginn `master` mit PostgreSQL nachtesten
 
 Der Pfad `HUGINN_REPO_REF=master` plus `DATABASE_ADAPTER=postgresql` nutzt Ruby `3.4.x` ueber den getrennten rbenv-Pfad `~/.rbenv-openclaw-huginn`.

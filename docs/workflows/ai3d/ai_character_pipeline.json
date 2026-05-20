@@ -1,0 +1,10 @@
+{
+  "name": "ai_character_pipeline",
+  "status": "template",
+  "description": "Character brief -> reference sheet -> 3D mesh -> Blender rig/turntable preparation.",
+  "manual_setup_required": true,
+  "models": ["Hunyuan3D-Shape-v2-1", "Hunyuan3D-Paint-v2-1", "optional FLUX/SDXL"],
+  "nodes": ["Character Brief", "Reference Image", "Image-to-3D", "Texture Bake", "Turntable Export"],
+  "output_formats": ["glb", "fbx", "blend", "mp4"]
+}
+

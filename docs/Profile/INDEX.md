@@ -98,6 +98,7 @@ Dieses Verzeichnis enthält die aktuell gepflegten, aus dem Repository abgeleite
 | `AI_Dashboard_Builder` | Dashboards fuer Dienste, Logs, Ressourcen und Agentenstatus | `AI_Dashboard_Builder.md` |
 | `Render_Farm_GPU_Workstation` | GPU-Workstation, ComfyUI, Blender und Rendering | `Render_Farm_GPU_Workstation.md` |
 | `OpenHiggsStack_AI_Cinema_Studio` | offenes AI-Cinema-/Marketing-Studio mit OpenClaw, ComfyUI, Wan und n8n | `OpenHiggsStack_AI_Cinema_Studio.md` |
+| `CAD_3D_Konstruktion` | Text-to-CAD, FreeCAD, OpenSCAD, 3D-Druck und Robotik-Bauteile | `CAD_3D_Konstruktion.md` |
 | `Video_Generation_ComfyUI_Wan` | technisches ComfyUI-/Wan2.x-Renderprofil fuer lokale Video-KI | `Video_Generation_ComfyUI_Wan.md` |
 | `Legal_Safe_Creator` | Lizenz-, Quellen- und Rechte-Checklisten fuer Creator | `Legal_Safe_Creator.md` |
 | `Cyber_Security_AI` | defensive Security-AI fuer Findings, Hardening und SBOM | `Cyber_Security_AI.md` |

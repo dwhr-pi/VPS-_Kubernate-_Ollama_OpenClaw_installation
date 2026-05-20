@@ -1,0 +1,10 @@
+{
+  "name": "text_to_3d",
+  "status": "template",
+  "description": "OpenClaw/Ollama prompt planning -> ComfyUI reference image -> Hunyuan3D mesh/PBR -> Blender export.",
+  "manual_setup_required": true,
+  "models": ["Hunyuan3D-Shape-v2-1", "Hunyuan3D-Paint-v2-1", "optional FLUX or Stable Diffusion"],
+  "nodes": ["Prompt Planner", "Image Generator", "Hunyuan3D Shape", "Hunyuan3D Paint", "Save GLB"],
+  "output_formats": ["glb", "fbx", "obj", "blend"]
+}
+

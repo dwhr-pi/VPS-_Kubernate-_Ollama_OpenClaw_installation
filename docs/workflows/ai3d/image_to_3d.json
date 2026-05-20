@@ -1,0 +1,10 @@
+{
+  "name": "image_to_3d",
+  "status": "template",
+  "description": "Single reference image -> TripoSR fast mesh -> optional Hunyuan3D texture pass -> Blender cleanup.",
+  "manual_setup_required": true,
+  "models": ["TripoSR checkpoint", "optional Hunyuan3D-Paint-v2-1"],
+  "nodes": ["Load Image", "Background Removal", "TripoSR Sampler", "Mesh Preview", "Save GLB"],
+  "output_formats": ["glb", "stl", "obj", "blend"]
+}
+

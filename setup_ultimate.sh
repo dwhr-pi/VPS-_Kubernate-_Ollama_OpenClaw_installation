@@ -1687,7 +1687,7 @@ fi
 
 # Profil-Definitionen mit Beschreibungen
 declare -A PROFILES
-PROFILE_KEYS=("Programmierer" "Repo_Maintainer" "Agent_Orchestrator" "LLM_Builder" "Research_Agent" "KI_Forschung" "Data_Engineering" "Document_AI" "Memory_Import_Export" "Personal_Knowledge_OS" "Next_Level_Persona_System" "Texter_Werbung_Marketing" "Rechtsberatung_Steuerrecht" "DevOps_SRE" "Security_Analyst" "Ethical_HackerGPT" "Compliance_Privacy" "Audio" "Voice_Assistant" "Jarvis_FritzBox_Alexa_Home_Assistant" "Media_Musik" "Content_Automation" "Image_Generation" "Video_Generation" "Video_Generation_ComfyUI_Wan" "OpenHiggsStack_AI_Cinema_Studio" "Visual_Creator" "Trading_AI" "Web3_Crypto_Tools")
+PROFILE_KEYS=("Programmierer" "Repo_Maintainer" "Agent_Orchestrator" "LLM_Builder" "Research_Agent" "KI_Forschung" "Data_Engineering" "Document_AI" "Memory_Import_Export" "Personal_Knowledge_OS" "Next_Level_Persona_System" "Texter_Werbung_Marketing" "Rechtsberatung_Steuerrecht" "DevOps_SRE" "Security_Analyst" "Ethical_HackerGPT" "Compliance_Privacy" "Audio" "Voice_Assistant" "Jarvis_FritzBox_Alexa_Home_Assistant" "Media_Musik" "Content_Automation" "Image_Generation" "Video_Generation" "Video_Generation_ComfyUI_Wan" "OpenHiggsStack_AI_Cinema_Studio" "AI_3D_Generation_Studio" "Elektronik_Entwickler" "Architektur_3D_BIM" "CAD_3D_Konstruktion" "FotoScan_Panorama_360_3D" "Robotik_Anlagensteuerung" "Visual_Creator" "Trading_AI" "Web3_Crypto_Tools")
 PROFILES["Programmierer"]="Tools für Entwicklung, Code-Generierung (DeepSeek Coder), Git-Integration, Huginn, Clawhub CLI. Ideal für Entwickler und Automatisierungsexperten."
 PROFILES["Media_Musik"]="Tools für Audio/Video (FFmpeg), Audio-AI, Alexa-Integration, Clawbake. Für Content Creator und Medienproduzenten."
 PROFILES["KI_Forschung"]="Spezialisierte Bibliotheken für Reinforcement Learning (OpenClaw RL), erweiterte LLM-Modelle (Gemini-1.5-Pro), Flowise/LangFlow. Für KI-Wissenschaftler und Forscher."
@@ -1711,6 +1711,12 @@ PROFILES["Jarvis_FritzBox_Alexa_Home_Assistant"]="Experimental-Profil fuer ein l
 PROFILES["Video_Generation"]="Heavy-Profil für lokale Video-KI, Upscaling, Frame-Interpolation, FFmpeg und GPU-nahe Video-Workflows."
 PROFILES["Video_Generation_ComfyUI_Wan"]="Technisches Advanced-Profil fuer ComfyUI, Wan2.x, FFmpeg, WSL2/GPU-Hinweise und lokale Video-KI-Renderpfade."
 PROFILES["OpenHiggsStack_AI_Cinema_Studio"]="Optionales AI-Cinema-/Marketing-Studio als offene Alternative zu Higgsfield: OpenClaw, Ollama, ComfyUI, Wan2.x, FFmpeg und n8n."
+PROFILES["AI_3D_Generation_Studio"]="Optionales lokales AI-3D-Studio fuer Hunyuan3D, TripoSR, ComfyUI, Blender, Game Assets, CAD-Prototypen, STL/GLB/FBX-Export und spaetere GPU-/Kubernetes-Skalierung."
+PROFILES["Elektronik_Entwickler"]="Optionales KI-Profil fuer Elektronik, PCB, Embedded, FPGA, KiCad, Firmware, IoT, Home Assistant Hardware und EDA-/Simulation-Workflows."
+PROFILES["Architektur_3D_BIM"]="Optionales KI-Profil fuer Architektur, CAD, BIM/IFC, FreeCAD, Blender/Bonsai, Rendering, Scan-to-BIM, Smart Home Planung und Renderfarm-Skalierung."
+PROFILES["CAD_3D_Konstruktion"]="Optionales KI-Profil fuer CAD, 3D-Konstruktion, Text-to-CAD, FreeCAD, OpenSCAD, 3D-Druck, STEP/STL-Export und Robotik-Bauteile."
+PROFILES["FotoScan_Panorama_360_3D"]="Optionales KI-Profil fuer Fotoordner zu Panorama, 360-Grad-Ansicht, Photogrammetrie und optional Gaussian Splatting mit Hugin, COLMAP und OpenClaw-Jobs."
+PROFILES["Robotik_Anlagensteuerung"]="Optionales Sicherheitsprofil fuer Robotik, Anlagensteuerung, Digital Twin, SCADA/HMI, ROS 2, OpenPLC, Modbus/OPC UA/MQTT und KI-Diagnose ohne direkte Aktorsteuerung."
 PROFILES["Image_Generation"]="Heavy-Profil für Bildgenerierung, Upscaling, LoRA-Workflows und Asset-Erzeugung mit ComfyUI/Forge/Fooocus."
 PROFILES["Web3_Crypto_Tools"]="Web3-Werkzeuge fuer lokale Vertragsanalyse, RPC-Checks und Wallet-nahe Entwicklung ohne automatische Finanzaktionen oder autonome Trading-Ausfuehrung."
 PROFILES["Compliance_Privacy"]="Governance- und Compliance-Profil für DSGVO, EU-AI-Act-nahe Prüfungen, Policies, SBOM und Secret-Scans."
@@ -2037,6 +2043,31 @@ TOOLS["SVD"]="Scaffold für Stable Video Diffusion-nahe lokale Experimente."
 TOOLS["Runway_API"]="Connector-Modul für Runway-nahe Visual- und Videoworkflows."
 TOOLS["Image_Upscaler_Pipeline"]="Workflow-Modul für Upscaling, Nachschärfen und Asset-Finalisierung."
 TOOL_SCRIPT_NAMES["Ollama"]="ollama"
+for ai3d_tool_key in "AI_3D_Studio" "Hunyuan3D" "TripoSR" "Electronics_Dev_Studio" "Architecture_BIM_Studio" "CAD_3D_Konstruktion" "FotoScan_Panorama_360_3D" "Robotik_Anlagensteuerung" "Cloudflared" "Tailscale"; do
+    if ! printf '%s\n' "${TOOL_KEYS[@]}" | grep -Fxq "$ai3d_tool_key"; then
+        TOOL_KEYS+=("$ai3d_tool_key")
+    fi
+done
+TOOLS["AI_3D_Studio"]="Lokale Projektstruktur und Basisvorbereitung fuer ein Open-Source AI-3D-Studio mit Ollama, OpenClaw, ComfyUI, Blender, Hunyuan3D und TripoSR."
+TOOLS["Hunyuan3D"]="Tencent Hunyuan3D 2.1 fuer Image/Text-to-3D, Mesh-Generierung und PBR-Materialien. Hohe VRAM-Anforderungen; Modelle werden nicht automatisch geladen."
+TOOLS["TripoSR"]="Schnelle Single-Image-zu-3D-Mesh-Rekonstruktion fuer Prototypen, STL/GLB-Vorstufen und lokale Asset-Entwuerfe."
+TOOLS["Electronics_Dev_Studio"]="Lokale Elektronik-, PCB-, Embedded- und FPGA-Toolchain mit KiCad, FreeCAD, ngspice, PlatformIO, OpenOCD, Verilator, Yosys und optionalen KiCad-AI-Tools."
+TOOLS["Architecture_BIM_Studio"]="Lokales Architektur-, CAD-, BIM- und 3D-Rendering-Profil mit FreeCAD, Blender, Bonsai/IfcOpenShell, QGIS, OpenSCAD, COLMAP, ComfyUI und Renderfarm-Hinweisen."
+TOOLS["CAD_3D_Konstruktion"]="Lokale CAD-/Text-to-CAD-/3D-Druck-Umgebung mit FreeCAD, OpenSCAD, optional CadQuery/build123d, STL/STEP/OBJ/GLB-Export und Robotik-Bauteil-Workflows."
+TOOLS["FotoScan_Panorama_360_3D"]="Lokale Panorama-, 360-Grad-, Photogrammetrie- und optional Gaussian-Splatting-Pipeline mit Hugin/PanoTools, COLMAP und klar markierten GPU-lastigen Zusatzpfaden."
+TOOLS["Robotik_Anlagensteuerung"]="Read-only vorbereitete Robotik-/Anlagensteuerungsumgebung fuer ROS 2, Gazebo, MoveIt 2, OpenPLC, Modbus/OPC UA/MQTT, Dashboards, n8n/Node-RED und KI-Diagnose ohne direkte Aktorsteuerung."
+TOOLS["Cloudflared"]="Cloudflare Tunnel fuer sicheren Zugriff auf lokale Dashboards ohne offene Ports."
+TOOLS["Tailscale"]="Zero-Trust-VPN fuer sicheren Zugriff zwischen MiniPC, VPS, Notebook und lokalen Services."
+TOOL_SCRIPT_NAMES["AI_3D_Studio"]="ai_3d_studio"
+TOOL_SCRIPT_NAMES["Hunyuan3D"]="hunyuan3d"
+TOOL_SCRIPT_NAMES["TripoSR"]="triposr"
+TOOL_SCRIPT_NAMES["Electronics_Dev_Studio"]="electronics_dev"
+TOOL_SCRIPT_NAMES["Architecture_BIM_Studio"]="architecture_bim"
+TOOL_SCRIPT_NAMES["CAD_3D_Konstruktion"]="cad_3d_konstruktion"
+TOOL_SCRIPT_NAMES["FotoScan_Panorama_360_3D"]="fotoscan_panorama_360_3d"
+TOOL_SCRIPT_NAMES["Robotik_Anlagensteuerung"]="robotik_anlagensteuerung"
+TOOL_SCRIPT_NAMES["Cloudflared"]="cloudflared"
+TOOL_SCRIPT_NAMES["Tailscale"]="tailscale"
 TOOL_SCRIPT_NAMES["Ruflo"]="ruflo"
 TOOL_SCRIPT_NAMES["Authentik"]="authentik"
 TOOL_SCRIPT_NAMES["Authelia"]="authelia"
@@ -2544,6 +2575,42 @@ PROFILE_INTEGRATION_TOOLS["Voice_Assistant"]="Node_Red"
 PROFILE_CORE_TOOLS["Video_Generation"]="ComfyUI Stable_Diffusion_WebUI_Forge SVD AnimateDiff RIFE RealESRGAN FFmpeg Blender"
 PROFILE_EXTENDED_TOOLS["Video_Generation"]="ControlNet"
 PROFILE_INTEGRATION_TOOLS["Video_Generation"]="YT_DLP Thumbnail_Pipeline"
+
+PROFILE_CORE_TOOLS["AI_3D_Generation_Studio"]="AI_3D_Studio Hunyuan3D TripoSR ComfyUI Blender FFmpeg"
+PROFILE_EXTENDED_TOOLS["AI_3D_Generation_Studio"]="Ollama OpenClaw Qdrant ChromaDB n8n"
+PROFILE_INTEGRATION_TOOLS["AI_3D_Generation_Studio"]="Kubernetes K3s Prometheus Grafana MinIO"
+PROFILE_SPECIAL_TOOLS["AI_3D_Generation_Studio"]="AI_3D_Studio Hunyuan3D TripoSR ComfyUI Blender FFmpeg Ollama OpenClaw"
+PROFILE_SPECIAL_LABELS["AI_3D_Generation_Studio"]="AI-3D-Studio komplett"
+
+PROFILE_CORE_TOOLS["Elektronik_Entwickler"]="Electronics_Dev_Studio Ollama OpenClaw n8n Home_Assistant Mosquitto GitHub_CLI"
+PROFILE_EXTENDED_TOOLS["Elektronik_Entwickler"]="Docker Kubernetes K3s Prometheus Grafana Cloudflared Tailscale"
+PROFILE_INTEGRATION_TOOLS["Elektronik_Entwickler"]="Qdrant ChromaDB LangChain LlamaIndex Node_Red"
+PROFILE_SPECIAL_TOOLS["Elektronik_Entwickler"]="Electronics_Dev_Studio Ollama OpenClaw n8n Home_Assistant Mosquitto GitHub_CLI"
+PROFILE_SPECIAL_LABELS["Elektronik_Entwickler"]="Elektronik-Lab komplett"
+
+PROFILE_CORE_TOOLS["Architektur_3D_BIM"]="Architecture_BIM_Studio Blender ComfyUI FFmpeg Ollama OpenClaw n8n"
+PROFILE_EXTENDED_TOOLS["Architektur_3D_BIM"]="Home_Assistant Qdrant ChromaDB Prometheus Grafana MinIO"
+PROFILE_INTEGRATION_TOOLS["Architektur_3D_BIM"]="Kubernetes K3s Cloudflared Tailscale Authentik Authelia"
+PROFILE_SPECIAL_TOOLS["Architektur_3D_BIM"]="Architecture_BIM_Studio Blender ComfyUI FFmpeg Ollama OpenClaw n8n"
+PROFILE_SPECIAL_LABELS["Architektur_3D_BIM"]="Architektur-BIM-Studio komplett"
+
+PROFILE_CORE_TOOLS["CAD_3D_Konstruktion"]="CAD_3D_Konstruktion Blender Ollama OpenClaw n8n"
+PROFILE_EXTENDED_TOOLS["CAD_3D_Konstruktion"]="ComfyUI AI_3D_Studio Hunyuan3D TripoSR Qdrant ChromaDB"
+PROFILE_INTEGRATION_TOOLS["CAD_3D_Konstruktion"]="Kubernetes K3s Cloudflared Tailscale GitHub_CLI"
+PROFILE_SPECIAL_TOOLS["CAD_3D_Konstruktion"]="CAD_3D_Konstruktion Blender Ollama OpenClaw n8n"
+PROFILE_SPECIAL_LABELS["CAD_3D_Konstruktion"]="CAD/Text-to-CAD komplett"
+
+PROFILE_CORE_TOOLS["FotoScan_Panorama_360_3D"]="FotoScan_Panorama_360_3D FFmpeg Ollama OpenClaw n8n"
+PROFILE_EXTENDED_TOOLS["FotoScan_Panorama_360_3D"]="Blender ComfyUI Qdrant ChromaDB"
+PROFILE_INTEGRATION_TOOLS["FotoScan_Panorama_360_3D"]="Cloudflared Tailscale MinIO"
+PROFILE_SPECIAL_TOOLS["FotoScan_Panorama_360_3D"]="FotoScan_Panorama_360_3D FFmpeg Ollama OpenClaw n8n"
+PROFILE_SPECIAL_LABELS["FotoScan_Panorama_360_3D"]="FotoScan komplett"
+
+PROFILE_CORE_TOOLS["Robotik_Anlagensteuerung"]="Robotik_Anlagensteuerung Ollama OpenClaw n8n Node_Red Mosquitto Home_Assistant"
+PROFILE_EXTENDED_TOOLS["Robotik_Anlagensteuerung"]="Docker Kubernetes K3s Prometheus Grafana"
+PROFILE_INTEGRATION_TOOLS["Robotik_Anlagensteuerung"]="Cloudflared Tailscale Qdrant ChromaDB"
+PROFILE_SPECIAL_TOOLS["Robotik_Anlagensteuerung"]="Robotik_Anlagensteuerung Ollama OpenClaw n8n Node_Red Mosquitto Home_Assistant"
+PROFILE_SPECIAL_LABELS["Robotik_Anlagensteuerung"]="Robotik-Gateway read-only"
 
 PROFILE_CORE_TOOLS["Image_Generation"]="ComfyUI Stable_Diffusion_WebUI_Forge Fooocus InvokeAI RealESRGAN"
 PROFILE_EXTENDED_TOOLS["Image_Generation"]="ControlNet GFPGAN Rembg"

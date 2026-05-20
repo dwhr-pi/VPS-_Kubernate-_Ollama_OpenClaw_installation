@@ -20,7 +20,51 @@ Die zugehoerige Architektur-Dokumentation findest du in [docs/ARCHITECTURE_LLMOP
 - Ebenfalls neu ist das modulare [Next Level Persona System](docs/Profil/Next_Level_Persona_System.md) fuer persistente Persona-, Memory- und Modus-Workflows mit sicheren Disclosure-Defaults.
 - Fuer laenger laufende Baustellen und Chat-Uebergaenge gibt es jetzt zusaetzlich eine kleine dauerhafte Projekt-Erinnerung unter [docs/SETUP_MEMORY.md](docs/SETUP_MEMORY.md).
 - Die aktuelle Review- und Prioritaetenliste liegt in [docs/SETUP_REVIEW_AND_NEXT_STEPS.md](docs/SETUP_REVIEW_AND_NEXT_STEPS.md).
-- Neue modulare Profilbausteine: `Prompt_Generator_Studio`, `Memory_Import_Export`, `Self_Learning_Agent_Lab`, `Home_Network_Security`, `Android_App_Builder`, `AI_Dashboard_Builder`, `Render_Farm_GPU_Workstation`, `Legal_Safe_Creator`, `Cyber_Security_AI` und `Anti_Virus`.
+- Neue modulare Profilbausteine: `Prompt_Generator_Studio`, `Memory_Import_Export`, `Self_Learning_Agent_Lab`, `Home_Network_Security`, `Android_App_Builder`, `AI_Dashboard_Builder`, `Render_Farm_GPU_Workstation`, `OpenHiggsStack_AI_Cinema_Studio`, `AI_3D_Generation_Studio`, `Elektronik_Entwickler`, `Architektur_3D_BIM`, `CAD_3D_Konstruktion`, `FotoScan_Panorama_360_3D`, `Robotik_Anlagensteuerung`, `Legal_Safe_Creator`, `Cyber_Security_AI` und `Anti_Virus`.
+
+## Optional: AI 3D Generation Studio
+
+Das Profil [AI_3D_Generation_Studio](docs/Profile/AI_3D_Generation_Studio.md) bereitet ein lokales Open-Source-3D-Studio fuer Ubuntu/WSL2 vor. Es kombiniert Ollama, OpenClaw, ComfyUI, Blender, Hunyuan3D 2.1, TripoSR und FFmpeg fuer Text-/Bild-zu-3D, Game Assets, CAD-nahe Prototypen, STL/GLB/FBX-Export und spaetere GPU-/Kubernetes-Skalierung.
+
+Die Installer legen nur Projektstruktur, Repositories und optionale virtuelle Umgebungen an. Grosse Modellgewichte werden bewusst nicht automatisch geladen. Details stehen in [docs/AI_3D_STUDIO.md](docs/AI_3D_STUDIO.md), [docs/AI_3D_KUBERNETES_SCALING.md](docs/AI_3D_KUBERNETES_SCALING.md), [docs/AI_3D_DASHBOARD.md](docs/AI_3D_DASHBOARD.md) und [docs/AI_3D_WORKFLOWS.md](docs/AI_3D_WORKFLOWS.md).
+
+## Optional: Elektronik Entwickler
+
+Das Profil [Elektronik_Entwickler](docs/Profile/Elektronik_Entwickler.md) bereitet eine lokale KI-gestuetzte Elektronik-, PCB-, Embedded- und FPGA-Entwicklungsumgebung vor. Es integriert KiCad, FreeCAD, ngspice, PlatformIO, ESP-IDF/Arduino-/Zephyr-nahe Workflows, OpenOCD, Verilator, Yosys, OpenROAD/OpenLane-Hinweise, KiCad MCP, Circuit-Synth, tscircuit, n8n, Home Assistant und OpenClaw-Agenten fuer Schaltplanpruefung, PCB Review, BOM, Firmware, FPGA und IoT-Hardware.
+
+Details und Automationsideen stehen in [docs/ELECTRONICS_DEVELOPER_GUIDE.md](docs/ELECTRONICS_DEVELOPER_GUIDE.md), [docs/ELECTRONICS_DASHBOARD.md](docs/ELECTRONICS_DASHBOARD.md) und [docs/ELECTRONICS_N8N_WORKFLOWS.md](docs/ELECTRONICS_N8N_WORKFLOWS.md).
+
+## Optional: Architektur 3D BIM
+
+Das Profil [Architektur_3D_BIM](docs/Profile/Architektur_3D_BIM.md) bereitet ein lokales KI-gestuetztes Architektur-, CAD-, BIM- und 3D-Rendering-Setup vor. Es verbindet FreeCAD, Blender, Bonsai/IfcOpenShell, Speckle, SweetHome3D, OpenStudio/EnergyPlus-Hinweise, QGIS, OpenSCAD, Meshroom/COLMAP, ComfyUI, Ollama, OpenClaw und n8n fuer Architekturplanung, IFC-Analyse, AI-Rendering, Smart-Home-Planung, Scan-to-BIM, VR/AR und Renderfarm-Skalierung.
+
+Weitere Details stehen in [docs/ARCHITECTURE_3D_BIM_GUIDE.md](docs/ARCHITECTURE_3D_BIM_GUIDE.md), [docs/ARCHITECTURE_N8N_WORKFLOWS.md](docs/ARCHITECTURE_N8N_WORKFLOWS.md) und [docs/ARCHITECTURE_RENDERFARM_KUBERNETES.md](docs/ARCHITECTURE_RENDERFARM_KUBERNETES.md).
+
+## Optional: CAD 3D Konstruktion
+
+Das Profil [CAD_3D_Konstruktion](docs/Profile/CAD_3D_Konstruktion.md) ergaenzt das Setup um Text-to-CAD, FreeCAD-Python, OpenSCAD, optional CadQuery/build123d, STL/STEP/OBJ/GLB-Export, 3D-Druck-Pruefung und Robotik-Bauteile. Es ist bewusst lokal-first und dockerfrei vorbereitet; schwere Slicer, Cloud-APIs und grosse AI-3D-Modelle bleiben optional.
+
+Der Einstieg erfolgt ueber:
+
+```bash
+bash scripts/tools/cad_3d_konstruktion_install.sh
+```
+
+## Optional: FotoScan Panorama 360 3D
+
+Das Profil [FotoScan_Panorama_360_3D](docs/Profile/FotoScan_Panorama_360_3D.md) beschreibt lokale Workflows fuer Fotoordner zu Panorama, 360-Grad-Panorama, Photogrammetrie und optional Gaussian Splatting. Es nutzt Hugin/PanoTools, COLMAP und dokumentiert Meshroom/AliceVision, OpenMVG/OpenMVS sowie GPU-lastige Splatting-Pipelines klar als optional.
+
+Der Einstieg erfolgt ueber:
+
+```bash
+bash scripts/install_fotoscan_panorama_360_3d.sh
+```
+
+## Optional: Robotik Anlagensteuerung
+
+Das Profil [Robotik_Anlagensteuerung](docs/Profile/Robotik_Anlagensteuerung.md) beschreibt eine lokale, sicherheitsorientierte Erweiterung fuer Robotik, Anlagensteuerung, Digital Twin, SCADA/HMI, SPS/PLC-Anbindung und KI-gestuetzte Diagnose. Es kombiniert Ollama, OpenClaw, n8n, Node-RED, MQTT, optionale Home-Assistant-Integration sowie spaetere ROS-2-/Gazebo-/MoveIt-2- und Kubernetes-Pfade.
+
+Wichtig: Die KI arbeitet standardmaessig read-only. Echte Aktoren, SPS/PLC-Schreibzugriffe, Robotercontroller, Relais, Ventile oder Motoren duerfen nicht direkt durch KI gesteuert werden; dafuer braucht es sichere Gateways, Whitelists, Grenzwerte, Protokollierung, Not-Aus und menschliche Freigabe.
 
 ## 🚀 Schnelle Installation (One-Liner)
 

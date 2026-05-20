@@ -1,0 +1,10 @@
+{
+  "name": "game_asset_pipeline",
+  "status": "template",
+  "description": "Game asset prompt -> mesh -> LOD/retopo checklist -> PBR export.",
+  "manual_setup_required": true,
+  "models": ["Hunyuan3D-Shape-v2-1", "Hunyuan3D-Paint-v2-1", "TripoSR checkpoint"],
+  "nodes": ["Asset Brief", "3D Generation", "Mesh Optimization", "PBR Baking", "Engine Export"],
+  "output_formats": ["glb", "fbx", "obj", "blend"]
+}
+
