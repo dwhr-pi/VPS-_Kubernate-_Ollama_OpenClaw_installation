@@ -151,11 +151,12 @@ status_tracking_print_space_summary() {
     local linux_free_kb="$1"
     local windows_free_kb
 
-    echo "Freier Linux-/WSL-Speicher vor Tool-Skript ${CURRENT_TOOL_KEY}: $(status_tracking_format_kb "${linux_free_kb:-0}")"
+    echo "Freier WSL-/Linux-Dateisystemspeicher vor Tool-Skript ${CURRENT_TOOL_KEY}: $(status_tracking_format_kb "${linux_free_kb:-0}")"
     if status_tracking_is_wsl; then
         windows_free_kb="$(status_tracking_windows_host_free_kb)"
         if [ -n "$windows_free_kb" ]; then
             echo "Freier Windows-Host-Speicher (${WINDOWS_HOST_DRIVE:-C}:): $(status_tracking_format_kb "$windows_free_kb")"
+            echo "Hinweis: Die WSL-Zahl ist die freie Kapazitaet im Linux-Dateisystem/Mountpoint. Wenn die WSL-Distro auf ${WINDOWS_HOST_DRIVE:-C}: liegt, ist dieser Windows-Wert der praktische Engpass fuer das weitere Wachstum der WSL-VHDX."
             if [ "$windows_free_kb" -lt $((50 * 1024 * 1024)) ] 2>/dev/null; then
                 echo "Warnung: Windows meldet weniger als 50 GB frei. Grosse Installationen koennen scheitern oder Windows/WSL instabil machen."
             fi

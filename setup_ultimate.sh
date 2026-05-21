@@ -426,7 +426,7 @@ show_wsl_windows_space_warning() {
     [ -n "$windows_free_kb" ] || return 0
 
     echo -e "${YELLOW}Freier Windows-Host-Speicher (${WINDOWS_HOST_DRIVE:-C}:):${NC} $(format_kb_human "$windows_free_kb")"
-    echo -e "${YELLOW}Hinweis:${NC} Unter WSL koennen Linux- und Windows-Anzeige abweichen. Entscheidend fuer die echte SSD-Fuellung ist auch der Windows-Host-Speicher."
+    echo -e "${YELLOW}Hinweis:${NC} Die WSL-Zahl oben ist die freie Kapazitaet im Linux-Dateisystem bzw. Mountpoint, nicht automatisch die freie Kapazitaet deiner gesamten Windows-Festplatten. Wenn WSL auf ${WINDOWS_HOST_DRIVE:-C}: liegt, begrenzt der Windows-Host-Speicher praktisch, wie stark die WSL-VHDX noch wachsen kann."
 
     absolute_min_kb=$(( ${MIN_FREE_GB_ABSOLUTE:-50} * 1024 * 1024 ))
     if [ "$windows_free_kb" -lt "$absolute_min_kb" ] 2>/dev/null; then
@@ -575,7 +575,7 @@ begin_operation_measurement() {
     ACTIVE_OPERATION_TITLE="$2"
     ACTIVE_OPERATION_STARTED_AT="$(date +%s)"
     ACTIVE_OPERATION_FREE_KB_BEFORE="$(get_free_disk_kb)"
-    echo -e "${YELLOW}Freier Linux-/WSL-Speicher vor Start:${NC} $(format_kb_human "${ACTIVE_OPERATION_FREE_KB_BEFORE:-0}")"
+    echo -e "${YELLOW}Freier WSL-/Linux-Dateisystemspeicher vor Start:${NC} $(format_kb_human "${ACTIVE_OPERATION_FREE_KB_BEFORE:-0}")"
     show_wsl_windows_space_warning
 }
 
@@ -799,7 +799,7 @@ show_tool_action_intro() {
     "${TOOLS[$tool_key]}" \
     "$duration_label" \
     "$storage_label" \
-    "Freier Speicher jetzt: $(get_free_disk_gb) GB. Primaerquellen sollen aus GitHub kommen; Systemabhaengigkeiten wie apt bleiben als Basis erlaubt."
+    "Freier WSL-/Linux-Dateisystemspeicher jetzt: $(get_free_disk_gb) GB. Primaerquellen sollen aus GitHub kommen; Systemabhaengigkeiten wie apt bleiben als Basis erlaubt."
 }
 
 validate_tool_source_policy() {

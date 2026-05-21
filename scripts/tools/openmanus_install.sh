@@ -67,7 +67,7 @@ check_windows_host_space_openmanus() {
     recommended_free_kb=$((OPENMANUS_RECOMMENDED_FREE_GB * 1024 * 1024))
 
     echo -e "${BLUE}Freier Windows-Host-Speicher (${WINDOWS_HOST_DRIVE:-C}:): $(format_kb_human_openmanus "$windows_free_kb")${NC}"
-    echo -e "${YELLOW}Hinweis: Unter WSL kann Linux viel freien Speicher melden, obwohl die Windows-Partition fast voll ist.${NC}"
+    echo -e "${YELLOW}Hinweis: Die WSL-Zahl ist die freie Kapazitaet im Linux-Dateisystem/Mountpoint. Wenn die WSL-Distro auf ${WINDOWS_HOST_DRIVE:-C}: liegt, ist dieser Windows-Wert der praktische Engpass fuer das weitere Wachstum der WSL-VHDX.${NC}"
 
     if [ "$windows_free_kb" -lt "$min_free_kb" ]; then
         echo -e "${RED}Zu wenig freier Windows-Host-Speicher fuer OpenManus. Frei: $(format_kb_human_openmanus "$windows_free_kb"), mindestens ${OPENMANUS_MIN_FREE_GB} GB, empfohlen ${OPENMANUS_RECOMMENDED_FREE_GB} GB.${NC}"
@@ -97,7 +97,7 @@ EOF
 
 echo -e "${BLUE}Starte Installation von OpenManus...${NC}"
 FREE_GB_BEFORE="$(get_free_gb_for_path /opt)"
-echo -e "${BLUE}Freier Linux-/WSL-Speicher vor OpenManus: ${FREE_GB_BEFORE:-unbekannt} GB${NC}"
+echo -e "${BLUE}Freier WSL-/Linux-Dateisystemspeicher vor OpenManus: ${FREE_GB_BEFORE:-unbekannt} GB${NC}"
 check_windows_host_space_openmanus
 if [ -n "${FREE_GB_BEFORE:-}" ] && [ "$FREE_GB_BEFORE" -lt "$OPENMANUS_MIN_FREE_GB" ]; then
     echo -e "${RED}Zu wenig freier Speicher fuer OpenManus. Mindestens ${OPENMANUS_MIN_FREE_GB} GB, empfohlen ${OPENMANUS_RECOMMENDED_FREE_GB} GB.${NC}"
@@ -164,6 +164,6 @@ deactivate
 echo -e "${YELLOW}Hinweis: OpenManus Konfiguration muss eventuell manuell angepasst werden.${NC}"
 
 echo -e "${GREEN}OpenManus Installation abgeschlossen.${NC}"
-echo -e "${BLUE}Freier Linux-/WSL-Speicher nach OpenManus: $(get_free_gb_for_path /opt) GB${NC}"
+echo -e "${BLUE}Freier WSL-/Linux-Dateisystemspeicher nach OpenManus: $(get_free_gb_for_path /opt) GB${NC}"
 check_windows_host_space_openmanus
 mark_current_tool_installed
