@@ -846,7 +846,7 @@ run_bash_script() {
     ensure_user_workspace
     ACTIVE_OPERATION_LOG_FILE=""
 
-    if is_preference_enabled "${INSTALL_MONITORING_VERBOSE:-false}"; then
+    if is_preference_enabled "${INSTALL_MONITORING_VERBOSE:-false}" || is_preference_enabled "${INSTALL_MONITORING_MANUAL_FLOW:-false}"; then
         operation_slug="$(printf '%s' "${ACTIVE_OPERATION_ID:-$(basename "$script_path" .sh)}" | tr -cs '[:alnum:]_.-' '_')"
         timestamp_slug="$(date +%Y%m%d_%H%M%S)"
         ACTIVE_OPERATION_LOG_FILE="$USER_INSTALL_LOG_DIR/${timestamp_slug}_${operation_slug}.log"
@@ -902,6 +902,7 @@ maybe_cleanup_logs_before_operation() {
 show_installation_monitoring_menu() {
     local monitoring_state
     local cleanup_state
+    local separator_line="${TXT_SEPARATOR_LINE:-────────────────────────────────────────────────────────}"
 
     while true; do
         if is_preference_enabled "${INSTALL_MONITORING_VERBOSE:-false}"; then
@@ -917,25 +918,33 @@ show_installation_monitoring_menu() {
         fi
 
         dialog --clear --backtitle "$APP_TITLE" \
-        --title "INSTALLATIONSÜBERWACHUNG" --menu "Zusätzliche Überwachung, Logansicht und sichere Log-Aufräumung." 30 112 12 \
+        --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
+        --title "INSTALLATIONSÜBERWACHUNG" --menu "Zusätzliche Überwachung, Logansicht und sichere Log-Aufräumung." 34 112 16 \
         "1" "Erweiterte Installationsüberwachung umschalten (aktuell: ${monitoring_state})" \
+        "────────" "$separator_line" \
         "2" "Log-Verzeichnis anzeigen" \
         "3" "Letzte Installations-Logs anzeigen" \
         "4" "Letzte Messwerte anzeigen" \
+        "─────────" "$separator_line" \
         "5" "Log-Aufräumung vor Installationen umschalten (aktuell: ${cleanup_state})" \
         "6" "Log-Aufräumung Trockenlauf anzeigen" \
         "7" "Alte Logs jetzt löschen" \
         "8" "Alte Fehler-Logs jetzt löschen" \
         "9" "Aufbewahrung einstellen (Tage/neueste Dateien)" \
+        "──────────" "$separator_line" \
         "10" "Installationslauf-Diagnose erstellen" \
         "11" "Abhängigkeiten-/Speicher-Snapshot erstellen" \
-        "12" "Zurück" 2> /tmp/install_monitoring_choice
+        "───────────" "$separator_line" \
+        "12" "${TXT_BACK_ITEM:-Zurück}" 2> /tmp/install_monitoring_choice
 
         if [ $? -ne 0 ]; then
             return 0
         fi
 
         case "$(cat /tmp/install_monitoring_choice)" in
+            ────────*)
+                continue
+                ;;
             1)
                 if is_preference_enabled "${INSTALL_MONITORING_VERBOSE:-false}"; then
                     set_installation_monitoring_mode "false"
@@ -1073,6 +1082,7 @@ show_recent_install_logs() {
     fi
 
     dialog --clear --backtitle "$APP_TITLE" \
+    --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
     --title "LETZTE INSTALLATIONS-LOGS" --menu "Wähle eine Logdatei zur Ansicht aus:" 22 110 15 \
     "${options[@]}" 2> /tmp/install_log_choice
 
@@ -1159,7 +1169,7 @@ run_install_log_diagnostics_now() {
 show_diagnostics_quick_menu() {
     while true; do
         dialog --clear --backtitle "$APP_TITLE" \
-        --cancel-label "Zurueck" \
+        --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
         --title "TOOL-DIAGNOSE & LETZTE FEHLER" \
         --menu "Schneller Zugriff auf die letzten Installationsprotokolle und Diagnoseberichte." 22 104 6 \
         "1" "Letzten fehlgeschlagenen Fehlerbericht anzeigen" \
@@ -1326,6 +1336,7 @@ show_user_workspace_menu() {
 
     while true; do
         dialog --clear --backtitle "$APP_TITLE" \
+        --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
         --title "${TXT_WORKSPACE_MENU_TITLE:-BENUTZER-WORKSPACE}" --menu "${TXT_WORKSPACE_MENU_PROMPT:-Bearbeitbare und sensible Dateien liegen außerhalb des Repos.}" 22 104 9 \
         "1" "${TXT_WORKSPACE_OPTION_1:-Pfad anzeigen}" \
         "2" "${TXT_WORKSPACE_OPTION_2:-Workspace-Dateien auflisten}" \
@@ -1335,7 +1346,7 @@ show_user_workspace_menu() {
         "6" "${TXT_WORKSPACE_OPTION_6:-Letzte Messwerte anzeigen}" \
         "7" "${TXT_WORKSPACE_OPTION_7:-Benutzer-Workspace komplett löschen}" \
         "8" "${TXT_WORKSPACE_OPTION_8:-Sprache ändern}" \
-        "9" "${TXT_WORKSPACE_OPTION_9:-Zurück}" 2> /tmp/user_workspace_choice
+        "9" "${TXT_WORKSPACE_OPTION_9:-${TXT_BACK_ITEM:-Zurück}}" 2> /tmp/user_workspace_choice
 
         if [ $? -ne 0 ]; then
             return 0
@@ -1386,7 +1397,7 @@ show_user_workspace_menu() {
                 show_recent_measurements
                 ;;
             7)
-                dialog --yesno "${TXT_WORKSPACE_DELETE_CONFIRM:-Der gesamte Benutzer-Workspace wird gelöscht. Darin können .env-Vorlagen, Statusdateien und weitere sensible Daten liegen. Wirklich fortfahren?}" 10 100
+                dialog --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" --yesno "${TXT_WORKSPACE_DELETE_CONFIRM:-Der gesamte Benutzer-Workspace wird gelöscht. Darin können .env-Vorlagen, Statusdateien und weitere sensible Daten liegen. Wirklich fortfahren?}" 10 100
                 if [ $? -eq 0 ]; then
                     rm -rf "$USER_WORKSPACE_DIR"
                     echo -e "${YELLOW}${TXT_WORKSPACE_DELETED:-Der Benutzer-Workspace wurde gelöscht.}${NC}"
@@ -1410,7 +1421,7 @@ show_user_workspace_menu() {
 show_options_menu() {
     while true; do
         dialog --clear --backtitle "$APP_TITLE" \
-        --cancel-label "↩ Zurück" \
+        --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
         --title "${TXT_OPTIONS_MENU_TITLE:-OPTIONEN}" --menu "${TXT_OPTIONS_MENU_PROMPT:-Wählen Sie eine Verwaltungs- oder Konfigurationsfunktion:}" 40 110 24 \
         "1" "${TXT_OPTIONS_1:-Sprache ändern}" \
         "2" "${TXT_OPTIONS_14:-Sprachpakete verwalten}" \
@@ -1895,9 +1906,10 @@ show_profile_management_menu() {
 
     while true; do
         dialog --clear --backtitle "$APP_TITLE" \
+        --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
         --title "PROFIL-MANAGEMENT" --menu "Wählen Sie ein Profil für die Detailansicht. Dort können Sie das Gesamtprofil oder einzelne enthaltene Tools installieren bzw. deinstallieren:" 28 108 18 \
         "${PROFILE_MENU_OPTIONS[@]}" \
-        "ZURUECK" "Zurück zum Profil-Hub" 2> /tmp/profile_selection
+        "ZURUECK" "${TXT_BACK_ITEM:-Zurück} zum Profil-Hub" 2> /tmp/profile_selection
 
         if [ $? -ne 0 ]; then
             return 0
@@ -2544,6 +2556,7 @@ show_tool_management_menu() {
     done
 
     dialog --clear --backtitle "$APP_TITLE" \
+    --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
     --title "TOOL-MANAGEMENT (${installed_tool_count}/${total_tool_count} installiert)" --checklist "(*) = behalten oder installieren. Leer = bei installierten Tools deinstallieren. Ausführung: erst Deinstallationen, danach Installationen. Gesamt: ${total_tool_count} | Installiert: ${installed_tool_count}" 32 110 24 \
     "${TOOL_CHECKLIST_OPTIONS[@]}" 2> /tmp/tool_selection
 
@@ -2836,6 +2849,7 @@ show_tool_group_checklist() {
     fi
 
     dialog --clear --backtitle "$APP_TITLE" \
+    --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
     --title "$group_title" --checklist "(*) = behalten oder installieren. Leer = bei installierten Tools deinstallieren. Ausführung: erst Deinstallationen, danach Installationen." 28 110 18 \
     "${options[@]}" 2> /tmp/profile_block_tools_selection
 
@@ -2879,12 +2893,12 @@ toggle_full_profile_from_block() {
     load_installed_map "$PROFILE_STATUS_FILE" installed_profiles_map
 
     if [ "${installed_profiles_map[$profile_key]:-}" = "1" ]; then
-        dialog --yesno "Profil '$profile_key' ist aktuell installiert. Möchten Sie das gesamte Profil jetzt deinstallieren?" 8 80
+        dialog --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" --yesno "Profil '$profile_key' ist aktuell installiert. Möchten Sie das gesamte Profil jetzt deinstallieren?" 8 80
         if [ $? -eq 0 ]; then
             uninstall_profile "$profile_key"
         fi
     else
-        dialog --yesno "Profil '$profile_key' ist aktuell nicht installiert. Möchten Sie das gesamte Profil jetzt installieren?" 8 80
+        dialog --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" --yesno "Profil '$profile_key' ist aktuell nicht installiert. Möchten Sie das gesamte Profil jetzt installieren?" 8 80
         if [ $? -eq 0 ]; then
             install_profile "$profile_key"
         fi
@@ -2912,12 +2926,12 @@ toggle_tool_group_bulk() {
     done
 
     if [ "$has_tools" -eq 0 ]; then
-        dialog --msgbox "Für diesen Block sind aktuell keine Tools definiert." 8 60
+        dialog --ok-label "${TXT_OK_LABEL:-✔  OK}" --msgbox "Für diesen Block sind aktuell keine Tools definiert." 8 60
         return 0
     fi
 
     if [ "$all_installed" -eq 1 ]; then
-        dialog --yesno "Block '$group_title' ist aktuell installiert. Möchten Sie alle enthaltenen Tools jetzt deinstallieren?" 9 90
+        dialog --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" --yesno "Block '$group_title' ist aktuell installiert. Möchten Sie alle enthaltenen Tools jetzt deinstallieren?" 9 90
         if [ $? -eq 0 ]; then
             for tool_key in $tool_list; do
                 [ -n "$tool_key" ] || continue
@@ -2964,6 +2978,7 @@ show_profile_block_detail_menu() {
         fi
         if [ "$has_special_tools" -eq 1 ]; then
             dialog --clear --backtitle "$APP_TITLE" \
+            --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
             --title "PROFILBLOCK: $profile_key" --menu "Wählen Sie Block oder Gesamtprofil:" 24 96 10 \
             "1" "Gesamtes Profil installieren/deinstallieren" \
             "2" "Kernmodule (wichtig)" \
@@ -2971,15 +2986,16 @@ show_profile_block_detail_menu() {
             "4" "Integrationen / Optional" \
             "5" "${special_label} (Einzeltools)" \
             "6" "${special_label} komplett installieren/deinstallieren" \
-            "7" "Zurück" 2> /tmp/profile_block_choice
+            "7" "${TXT_BACK_ITEM:-Zurück}" 2> /tmp/profile_block_choice
         else
             dialog --clear --backtitle "$APP_TITLE" \
+            --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
             --title "PROFILBLOCK: $profile_key" --menu "Wählen Sie Block oder Gesamtprofil:" 22 90 8 \
             "1" "Gesamtes Profil installieren/deinstallieren" \
             "2" "Kernmodule (wichtig)" \
             "3" "Erweiterte Module" \
             "4" "Integrationen / Optional" \
-            "5" "Zurück" 2> /tmp/profile_block_choice
+            "5" "${TXT_BACK_ITEM:-Zurück}" 2> /tmp/profile_block_choice
         fi
 
         if [ $? -ne 0 ]; then
@@ -3023,6 +3039,7 @@ show_profile_block_browser() {
     done
 
     dialog --clear --backtitle "$APP_TITLE" \
+    --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
     --title "PROFILBLÖCKE & EINZELTOOLS" --menu "Wählen Sie einen Profilblock aus:" 26 100 14 \
     "${options[@]}" 2> /tmp/profile_block_profile_choice
 
@@ -3035,10 +3052,11 @@ show_profile_block_browser() {
 
 show_profile_management_hub() {
     dialog --clear --backtitle "$APP_TITLE" \
+    --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
     --title "PROFIL-MANAGEMENT" --menu "Wählen Sie eine Ansicht:" 18 90 6 \
     "1" "Schnellansicht: komplette Profile" \
     "2" "Blockansicht: Profilblöcke + Einzeltools" \
-    "3" "Zurück" 2> /tmp/profile_management_hub_choice
+    "3" "${TXT_BACK_ITEM:-Zurück}" 2> /tmp/profile_management_hub_choice
 
     if [ $? -ne 0 ]; then
         return 0

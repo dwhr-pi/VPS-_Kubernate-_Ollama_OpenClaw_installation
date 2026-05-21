@@ -23,6 +23,7 @@ OPENMANUS_MIN_FREE_GB="${OPENMANUS_MIN_FREE_GB:-12}"
 OPENMANUS_RECOMMENDED_FREE_GB="${OPENMANUS_RECOMMENDED_FREE_GB:-25}"
 OPENMANUS_INSTALL_FLASH_ATTN="${OPENMANUS_INSTALL_FLASH_ATTN:-0}"
 OPENMANUS_SKIP_TORCH="${OPENMANUS_SKIP_TORCH:-0}"
+OPENMANUS_APT_PACKAGES="${OPENMANUS_APT_PACKAGES:-git python3 python3-venv python3-pip python3-dev build-essential}"
 
 get_free_gb_for_path() {
     local path_to_check="${1:-/opt}"
@@ -95,6 +96,31 @@ OpenManus-Installationshinweis:
 EOF
 }
 
+ensure_openmanus_system_dependencies() {
+    local missing_packages=()
+    local package
+
+    if ! command -v apt-get >/dev/null 2>&1; then
+        echo -e "${YELLOW}apt-get nicht gefunden. Stelle bitte sicher, dass Python venv/pip fuer dein System installiert sind.${NC}"
+        return 0
+    fi
+
+    for package in $OPENMANUS_APT_PACKAGES; do
+        if ! dpkg -s "$package" >/dev/null 2>&1; then
+            missing_packages+=("$package")
+        fi
+    done
+
+    if [ "${#missing_packages[@]}" -eq 0 ]; then
+        echo -e "${GREEN}OpenManus-Systemabhaengigkeiten sind vorhanden.${NC}"
+        return 0
+    fi
+
+    echo -e "${BLUE}Installiere fehlende OpenManus-Systemabhaengigkeiten: ${missing_packages[*]}${NC}"
+    sudo apt-get update
+    sudo apt-get install -y "${missing_packages[@]}"
+}
+
 echo -e "${BLUE}Starte Installation von OpenManus...${NC}"
 FREE_GB_BEFORE="$(get_free_gb_for_path /opt)"
 echo -e "${BLUE}Freier WSL-/Linux-Dateisystemspeicher vor OpenManus: ${FREE_GB_BEFORE:-unbekannt} GB${NC}"
@@ -106,6 +132,8 @@ fi
 if [ -n "${FREE_GB_BEFORE:-}" ] && [ "$FREE_GB_BEFORE" -lt "$OPENMANUS_RECOMMENDED_FREE_GB" ]; then
     echo -e "${YELLOW}Warnung: Nur ${FREE_GB_BEFORE} GB frei. Empfohlen sind ${OPENMANUS_RECOMMENDED_FREE_GB} GB, besonders wenn Torch/CUDA-Pakete installiert werden.${NC}"
 fi
+
+ensure_openmanus_system_dependencies
 
 # 1. OpenManus aus GitHub klonen
 if [ -d "$OPENMANUS_DIR" ]; then
