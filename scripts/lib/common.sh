@@ -133,6 +133,93 @@ require_command() {
   fi
 }
 
+append_unique_package() {
+  local package_name="$1"
+  local existing
+
+  [ -n "$package_name" ] || return 0
+
+  for existing in "${REQUIRED_BASE_APT_PACKAGES[@]:-}"; do
+    if [ "$existing" = "$package_name" ]; then
+      return 0
+    fi
+  done
+
+  REQUIRED_BASE_APT_PACKAGES+=("$package_name")
+}
+
+ensure_base_apt_packages() {
+  local missing_packages=()
+  local package_name
+
+  [ "${AUTO_INSTALL_TOOL_BASE_DEPS:-true}" = "true" ] || return 0
+  command -v apt-get >/dev/null 2>&1 || return 0
+
+  for package_name in "$@"; do
+    append_unique_package "$package_name"
+  done
+
+  for package_name in "${REQUIRED_BASE_APT_PACKAGES[@]:-}"; do
+    if ! dpkg -s "$package_name" >/dev/null 2>&1; then
+      missing_packages+=("$package_name")
+    fi
+  done
+
+  [ "${#missing_packages[@]}" -gt 0 ] || return 0
+
+  log_info "Installiere fehlende Basis-/Build-Abhaengigkeiten: ${missing_packages[*]}"
+  log_warn "Primaerquellen bleiben GitHub; apt installiert hier nur notwendige Systempakete."
+  sudo apt-get update
+  sudo apt-get install -y "${missing_packages[@]}"
+}
+
+infer_and_install_base_packages_for_current_script() {
+  local script_path="${1:-${0:-}}"
+  local script_text
+  local inferred_packages=()
+
+  [ "${AUTO_INSTALL_TOOL_BASE_DEPS:-true}" = "true" ] || return 0
+  [ -n "$script_path" ] && [ -f "$script_path" ] || return 0
+  case "$(basename "$script_path")" in
+    *_install.sh)
+      ;;
+    *)
+      return 0
+      ;;
+  esac
+
+  script_text="$(cat "$script_path" 2>/dev/null || true)"
+  [ -n "$script_text" ] || return 0
+
+  if grep -Eq 'git[[:space:]]+clone|git[[:space:]]+-C|github\.com' <<<"$script_text"; then
+    inferred_packages+=("git")
+  fi
+  if grep -Eq 'python3?[[:space:]]+-m[[:space:]]+venv|virtualenv|source .*/\.?venv/bin/activate' <<<"$script_text"; then
+    inferred_packages+=("python3" "python3-venv" "python3-pip")
+  fi
+  if grep -Eq 'pip3?([[:space:]]|$)|python3?[[:space:]]+-m[[:space:]]+pip' <<<"$script_text"; then
+    inferred_packages+=("python3" "python3-pip")
+  fi
+  if grep -Eq 'npm[[:space:]]|pnpm[[:space:]]|corepack|yarn[[:space:]]' <<<"$script_text"; then
+    inferred_packages+=("nodejs" "npm")
+  fi
+  if grep -Eq 'build-essential|node-gyp|prebuild-install|gcc|g\+\+|make([[:space:]]|$)|cmake|pkg-config' <<<"$script_text"; then
+    inferred_packages+=("build-essential" "pkg-config")
+  fi
+  if grep -Eq 'cmake' <<<"$script_text"; then
+    inferred_packages+=("cmake")
+  fi
+  if grep -Eq 'go[[:space:]]+(build|install|test)|GOBIN|go install' <<<"$script_text"; then
+    inferred_packages+=("golang-go")
+  fi
+  if grep -Eq 'cargo[[:space:]]+(build|install)|rustup' <<<"$script_text"; then
+    inferred_packages+=("cargo")
+  fi
+
+  [ "${#inferred_packages[@]}" -gt 0 ] || return 0
+  ensure_base_apt_packages "${inferred_packages[@]}"
+}
+
 status_add() {
   local file="$1"
   local value="$2"
@@ -215,6 +302,7 @@ append_log() {
 
 begin_measurement() {
   ensure_user_workspace
+  infer_and_install_base_packages_for_current_script "${0:-}"
   export CURRENT_OPERATION_ID="$1"
   export CURRENT_OPERATION_TITLE="$2"
   export CURRENT_OPERATION_START_TS="$(date +%s)"

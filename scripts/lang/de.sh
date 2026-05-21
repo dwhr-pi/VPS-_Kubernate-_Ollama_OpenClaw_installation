@@ -18,6 +18,8 @@ TXT_STARTUP_LANGUAGE_PROMPT_NO="Weiter"
 # - Wählen Sie Ihr Ziel-System oder eine Aktion:
 TXT_OK_LABEL="✔  OK"
 TXT_CANCEL_LABEL="🚪 Beenden"
+TXT_BACK_LABEL="↩ Zurück"
+TXT_BACK_ITEM="Zurück"
 TXT_MENU_TITLE="HAUPTMENÜ"
 TXT_MENU_PROMPT="Wählen Sie Ihr Ziel-System oder eine Aktion:"
 

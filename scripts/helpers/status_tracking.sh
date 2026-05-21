@@ -233,6 +233,104 @@ status_tracking_record_tool_exit() {
     return "$exit_code"
 }
 
+status_tracking_is_tool_install_script() {
+    case "$(basename "${0:-}")" in
+        *_install.sh)
+            return 0
+            ;;
+        *)
+            return 1
+            ;;
+    esac
+}
+
+status_tracking_add_unique_package() {
+    local package_name="$1"
+    local existing
+
+    [ -n "$package_name" ] || return 0
+
+    for existing in "${STATUS_TRACKING_REQUIRED_APT_PACKAGES[@]:-}"; do
+        if [ "$existing" = "$package_name" ]; then
+            return 0
+        fi
+    done
+
+    STATUS_TRACKING_REQUIRED_APT_PACKAGES+=("$package_name")
+}
+
+status_tracking_infer_base_packages_from_script() {
+    local script_path="${1:-}"
+    local script_text
+
+    STATUS_TRACKING_REQUIRED_APT_PACKAGES=()
+
+    [ -n "$script_path" ] && [ -f "$script_path" ] || return 0
+    script_text="$(cat "$script_path" 2>/dev/null || true)"
+    [ -n "$script_text" ] || return 0
+
+    if printf '%s\n' "$script_text" | grep -Eq 'git[[:space:]]+clone|git[[:space:]]+-C|github\.com'; then
+        status_tracking_add_unique_package "git"
+    fi
+
+    if printf '%s\n' "$script_text" | grep -Eq 'python3?[[:space:]]+-m[[:space:]]+venv|virtualenv|source .*/venv/bin/activate|source .*/\.venv/bin/activate'; then
+        status_tracking_add_unique_package "python3"
+        status_tracking_add_unique_package "python3-venv"
+        status_tracking_add_unique_package "python3-pip"
+    fi
+
+    if printf '%s\n' "$script_text" | grep -Eq 'pip3?([[:space:]]|$)|python3?[[:space:]]+-m[[:space:]]+pip'; then
+        status_tracking_add_unique_package "python3"
+        status_tracking_add_unique_package "python3-pip"
+    fi
+
+    if printf '%s\n' "$script_text" | grep -Eq 'build-essential|node-gyp|prebuild-install|gcc|g\+\+|make([[:space:]]|$)|cmake|pkg-config'; then
+        status_tracking_add_unique_package "build-essential"
+        status_tracking_add_unique_package "pkg-config"
+    fi
+
+    if printf '%s\n' "$script_text" | grep -Eq 'cmake'; then
+        status_tracking_add_unique_package "cmake"
+    fi
+
+    if printf '%s\n' "$script_text" | grep -Eq 'npm[[:space:]]|pnpm[[:space:]]|corepack|yarn[[:space:]]'; then
+        status_tracking_add_unique_package "nodejs"
+        status_tracking_add_unique_package "npm"
+    fi
+
+    if printf '%s\n' "$script_text" | grep -Eq 'go[[:space:]]+(build|install|test)|GOBIN|go install'; then
+        status_tracking_add_unique_package "golang-go"
+    fi
+
+    if printf '%s\n' "$script_text" | grep -Eq 'cargo[[:space:]]+(build|install)|rustup'; then
+        status_tracking_add_unique_package "cargo"
+    fi
+}
+
+status_tracking_install_missing_base_packages() {
+    local missing_packages=()
+    local package_name
+
+    [ "${AUTO_INSTALL_TOOL_BASE_DEPS:-true}" = "true" ] || return 0
+    status_tracking_is_tool_install_script || return 0
+    command -v apt-get >/dev/null 2>&1 || return 0
+
+    status_tracking_infer_base_packages_from_script "${0:-}"
+
+    for package_name in "${STATUS_TRACKING_REQUIRED_APT_PACKAGES[@]:-}"; do
+        if ! dpkg -s "$package_name" >/dev/null 2>&1; then
+            missing_packages+=("$package_name")
+        fi
+    done
+
+    [ "${#missing_packages[@]}" -gt 0 ] || return 0
+
+    echo -e "\033[0;34mBasis-Abhaengigkeiten fuer frisches Ubuntu erkannt: ${missing_packages[*]}\033[0m"
+    echo -e "\033[1;33mHinweis: Primaerquellen bleiben GitHub; apt installiert hier nur notwendige System-/Build-Werkzeuge.\033[0m"
+    sudo apt-get update
+    sudo apt-get install -y "${missing_packages[@]}"
+}
+
 init_profile_tracking() {
     CURRENT_PROFILE_KEY="$1"
     normalize_status_file "$PROFILE_STATUS_FILE" "${PROFILE_KEYS[@]}"
@@ -256,6 +354,7 @@ init_tool_tracking() {
     CURRENT_TOOL_TRACKING_RECORDED=0
     status_tracking_ensure_metrics
     status_tracking_print_space_summary "${CURRENT_TOOL_TRACKING_FREE_KB_BEFORE:-0}"
+    status_tracking_install_missing_base_packages
     trap status_tracking_record_tool_exit EXIT
 }
 

@@ -43,6 +43,7 @@ install_git_python_tool() {
   local extra_cmd="${4:-}"
   begin_measurement "tool_install_${tool_name}" "Tool installieren: ${tool_name}"
   if ensure_user_workspace && require_disk_mb 1024 /; then
+    ensure_base_apt_packages git python3 python3-venv python3-pip python3-dev build-essential pkg-config
     sudo mkdir -p "$(dirname "$install_dir")"
     sudo chown -R "$USER":"$USER" "$(dirname "$install_dir")"
     if [ ! -d "$install_dir/.git" ]; then
@@ -90,6 +91,7 @@ install_git_node_tool() {
   local extra_cmd="${4:-npm install}"
   begin_measurement "tool_install_${tool_name}" "Tool installieren: ${tool_name}"
   if ensure_user_workspace && require_disk_mb 1024 /; then
+    ensure_base_apt_packages git nodejs npm build-essential pkg-config
     sudo mkdir -p "$(dirname "$install_dir")"
     sudo chown -R "$USER":"$USER" "$(dirname "$install_dir")"
     if [ ! -d "$install_dir/.git" ]; then
@@ -125,8 +127,7 @@ install_git_docker_tool() {
   local compose_content="$4"
   begin_measurement "tool_install_${tool_name}" "Tool installieren: ${tool_name}"
   if ensure_user_workspace && require_disk_mb 2048 /; then
-    sudo apt-get update
-    sudo apt-get install -y docker.io docker-compose-plugin
+    ensure_base_apt_packages git docker.io docker-compose-plugin
     sudo systemctl enable --now docker || true
     sudo mkdir -p "$install_dir"
     sudo chown -R "$USER":"$USER" "$install_dir"
