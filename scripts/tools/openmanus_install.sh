@@ -29,6 +29,57 @@ get_free_gb_for_path() {
     df -BG "$path_to_check" 2>/dev/null | awk 'NR==2 {gsub("G","",$4); print $4}'
 }
 
+format_kb_human_openmanus() {
+    local value_kb="${1:-0}"
+    awk -v kb="$value_kb" 'BEGIN { printf "%.1f GB", kb / 1024 / 1024 }'
+}
+
+is_wsl_openmanus() {
+    grep -qiE 'microsoft|wsl' /proc/version 2>/dev/null || [ -n "${WSL_DISTRO_NAME:-}" ]
+}
+
+get_windows_host_free_kb_openmanus() {
+    local free_bytes
+    local drive_name="${WINDOWS_HOST_DRIVE:-C}"
+
+    is_wsl_openmanus || return 0
+    command -v powershell.exe >/dev/null 2>&1 || return 0
+
+    free_bytes="$(powershell.exe -NoProfile -Command "(Get-PSDrive -Name '${drive_name}').Free" 2>/dev/null | tr -d '\r' | awk 'NF {print; exit}')"
+    case "$free_bytes" in
+        ''|*[!0-9]*)
+            return 0
+            ;;
+    esac
+
+    echo $((free_bytes / 1024))
+}
+
+check_windows_host_space_openmanus() {
+    local windows_free_kb
+    local min_free_kb
+    local recommended_free_kb
+
+    windows_free_kb="$(get_windows_host_free_kb_openmanus)"
+    [ -n "${windows_free_kb:-}" ] || return 0
+
+    min_free_kb=$((OPENMANUS_MIN_FREE_GB * 1024 * 1024))
+    recommended_free_kb=$((OPENMANUS_RECOMMENDED_FREE_GB * 1024 * 1024))
+
+    echo -e "${BLUE}Freier Windows-Host-Speicher (${WINDOWS_HOST_DRIVE:-C}:): $(format_kb_human_openmanus "$windows_free_kb")${NC}"
+    echo -e "${YELLOW}Hinweis: Unter WSL kann Linux viel freien Speicher melden, obwohl die Windows-Partition fast voll ist.${NC}"
+
+    if [ "$windows_free_kb" -lt "$min_free_kb" ]; then
+        echo -e "${RED}Zu wenig freier Windows-Host-Speicher fuer OpenManus. Frei: $(format_kb_human_openmanus "$windows_free_kb"), mindestens ${OPENMANUS_MIN_FREE_GB} GB, empfohlen ${OPENMANUS_RECOMMENDED_FREE_GB} GB.${NC}"
+        echo -e "${RED}Installation abgebrochen, damit die WSL-VHDX/Windows-Partition nicht voll laeuft.${NC}"
+        exit 1
+    fi
+
+    if [ "$windows_free_kb" -lt "$recommended_free_kb" ]; then
+        echo -e "${YELLOW}Warnung: Windows-Host-Speicher liegt unter der Empfehlung (${OPENMANUS_RECOMMENDED_FREE_GB} GB). Torch/CUDA-Pakete koennen schnell mehrere GB belegen.${NC}"
+    fi
+}
+
 print_openmanus_repair_hint() {
     cat <<'EOF'
 
@@ -46,7 +97,8 @@ EOF
 
 echo -e "${BLUE}Starte Installation von OpenManus...${NC}"
 FREE_GB_BEFORE="$(get_free_gb_for_path /opt)"
-echo -e "${BLUE}Freier Speicher vor OpenManus: ${FREE_GB_BEFORE:-unbekannt} GB${NC}"
+echo -e "${BLUE}Freier Linux-/WSL-Speicher vor OpenManus: ${FREE_GB_BEFORE:-unbekannt} GB${NC}"
+check_windows_host_space_openmanus
 if [ -n "${FREE_GB_BEFORE:-}" ] && [ "$FREE_GB_BEFORE" -lt "$OPENMANUS_MIN_FREE_GB" ]; then
     echo -e "${RED}Zu wenig freier Speicher fuer OpenManus. Mindestens ${OPENMANUS_MIN_FREE_GB} GB, empfohlen ${OPENMANUS_RECOMMENDED_FREE_GB} GB.${NC}"
     exit 1
@@ -112,5 +164,6 @@ deactivate
 echo -e "${YELLOW}Hinweis: OpenManus Konfiguration muss eventuell manuell angepasst werden.${NC}"
 
 echo -e "${GREEN}OpenManus Installation abgeschlossen.${NC}"
-echo -e "${BLUE}Freier Speicher nach OpenManus: $(get_free_gb_for_path /opt) GB${NC}"
+echo -e "${BLUE}Freier Linux-/WSL-Speicher nach OpenManus: $(get_free_gb_for_path /opt) GB${NC}"
+check_windows_host_space_openmanus
 mark_current_tool_installed

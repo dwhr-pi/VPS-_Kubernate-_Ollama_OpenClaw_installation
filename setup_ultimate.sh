@@ -272,6 +272,17 @@ BIOINFORMATIK_REQUIRED_GB="15-60"
 MOLEKUELSIMULATION_REQUIRED_GB="20-120"
 ROBOTIK_LABOR_REQUIRED_GB="12-60"
 MATERIALWISSENSCHAFT_REQUIRED_GB="15-80"
+MATHEMATIK_SIMULATION_REQUIRED_GB="5-20"
+ASTRONOMIE_SPACE_AI_REQUIRED_GB="10-40"
+MEDIZINISCHE_LITERATUR_RECHERCHE_REQUIRED_GB="8-30"
+UMWELT_KLIMA_ENERGIE_REQUIRED_GB="8-30"
+PERSONAL_ASSISTANT_LOCAL_FIRST_REQUIRED_GB="15-50"
+VOICE_COMMAND_CENTER_REQUIRED_GB="10-40"
+KNOWLEDGE_LIBRARIAN_REQUIRED_GB="15-80"
+WEB_APP_BUILDER_REQUIRED_GB="8-25"
+ZERO_TRUST_REMOTE_ACCESS_REQUIRED_GB="3-10"
+KUBERNETES_GPU_ORCHESTRATOR_REQUIRED_GB="20-80"
+STORAGE_NAS_BACKUP_REQUIRED_GB="20-200"
 MARKETING_REQUIRED_GB="8-20"
 RECHT_STEUER_REQUIRED_GB="6-15"
 AGENT_ORCHESTRATOR_REQUIRED_GB="10-25"
@@ -388,6 +399,38 @@ get_free_disk_gb() {
         printf '%s' $((free_kb / 1024 / 1024))
     else
         printf '0'
+    fi
+}
+
+is_wsl_environment() {
+    grep -qi microsoft /proc/version 2>/dev/null || grep -qi microsoft /proc/sys/kernel/osrelease 2>/dev/null
+}
+
+get_windows_host_free_kb() {
+    local drive_name="${WINDOWS_HOST_DRIVE:-C}"
+    local free_bytes
+
+    command -v powershell.exe >/dev/null 2>&1 || return 0
+    free_bytes="$(powershell.exe -NoProfile -Command "(Get-PSDrive -Name '${drive_name}').Free" 2>/dev/null | tr -d '\r' | awk 'NF {print int($1); exit}')"
+    if [ -n "$free_bytes" ] && [ "$free_bytes" -gt 0 ] 2>/dev/null; then
+        printf '%s' $((free_bytes / 1024))
+    fi
+}
+
+show_wsl_windows_space_warning() {
+    local windows_free_kb
+    local absolute_min_kb
+
+    is_wsl_environment || return 0
+    windows_free_kb="$(get_windows_host_free_kb)"
+    [ -n "$windows_free_kb" ] || return 0
+
+    echo -e "${YELLOW}Freier Windows-Host-Speicher (${WINDOWS_HOST_DRIVE:-C}:):${NC} $(format_kb_human "$windows_free_kb")"
+    echo -e "${YELLOW}Hinweis:${NC} Unter WSL koennen Linux- und Windows-Anzeige abweichen. Entscheidend fuer die echte SSD-Fuellung ist auch der Windows-Host-Speicher."
+
+    absolute_min_kb=$(( ${MIN_FREE_GB_ABSOLUTE:-50} * 1024 * 1024 ))
+    if [ "$windows_free_kb" -lt "$absolute_min_kb" ] 2>/dev/null; then
+        echo -e "${RED}Warnung:${NC} Windows meldet weniger als ${MIN_FREE_GB_ABSOLUTE:-50} GB frei. Grosse Installationen koennen scheitern oder Windows/WSL instabil machen."
     fi
 }
 
@@ -532,7 +575,8 @@ begin_operation_measurement() {
     ACTIVE_OPERATION_TITLE="$2"
     ACTIVE_OPERATION_STARTED_AT="$(date +%s)"
     ACTIVE_OPERATION_FREE_KB_BEFORE="$(get_free_disk_kb)"
-    echo -e "${YELLOW}Freier Speicher vor Start:${NC} $(format_kb_human "${ACTIVE_OPERATION_FREE_KB_BEFORE:-0}")"
+    echo -e "${YELLOW}Freier Linux-/WSL-Speicher vor Start:${NC} $(format_kb_human "${ACTIVE_OPERATION_FREE_KB_BEFORE:-0}")"
+    show_wsl_windows_space_warning
 }
 
 end_operation_measurement() {
@@ -671,6 +715,17 @@ get_profile_required_gb() {
         "Molekuelsimulation") echo "${MOLEKUELSIMULATION_REQUIRED_GB} GB" ;;
         "Robotik_Labor") echo "${ROBOTIK_LABOR_REQUIRED_GB} GB" ;;
         "Materialwissenschaft") echo "${MATERIALWISSENSCHAFT_REQUIRED_GB} GB" ;;
+        "Mathematik_Simulation") echo "${MATHEMATIK_SIMULATION_REQUIRED_GB} GB" ;;
+        "Astronomie_Space_AI") echo "${ASTRONOMIE_SPACE_AI_REQUIRED_GB} GB" ;;
+        "Medizinische_Literatur_Recherche") echo "${MEDIZINISCHE_LITERATUR_RECHERCHE_REQUIRED_GB} GB" ;;
+        "Umwelt_Klima_Energie") echo "${UMWELT_KLIMA_ENERGIE_REQUIRED_GB} GB" ;;
+        "Personal_Assistant_Local_First") echo "${PERSONAL_ASSISTANT_LOCAL_FIRST_REQUIRED_GB} GB" ;;
+        "Voice_Command_Center") echo "${VOICE_COMMAND_CENTER_REQUIRED_GB} GB" ;;
+        "Knowledge_Librarian") echo "${KNOWLEDGE_LIBRARIAN_REQUIRED_GB} GB" ;;
+        "Web_App_Builder") echo "${WEB_APP_BUILDER_REQUIRED_GB} GB" ;;
+        "Zero_Trust_Remote_Access") echo "${ZERO_TRUST_REMOTE_ACCESS_REQUIRED_GB} GB" ;;
+        "Kubernetes_GPU_Orchestrator") echo "${KUBERNETES_GPU_ORCHESTRATOR_REQUIRED_GB} GB" ;;
+        "Storage_NAS_Backup") echo "${STORAGE_NAS_BACKUP_REQUIRED_GB} GB" ;;
         "Texter_Werbung_Marketing") echo "${MARKETING_REQUIRED_GB} GB" ;;
         "Rechtsberatung_Steuerrecht") echo "${RECHT_STEUER_REQUIRED_GB} GB" ;;
         "Agent_Orchestrator") echo "${AGENT_ORCHESTRATOR_REQUIRED_GB} GB" ;;
@@ -1726,7 +1781,7 @@ fi
 
 # Profil-Definitionen mit Beschreibungen
 declare -A PROFILES
-PROFILE_KEYS=("Programmierer" "Repo_Maintainer" "Agent_Orchestrator" "LLM_Builder" "Research_Agent" "KI_Forschung" "Physik" "Chemie" "Biologie" "Bioinformatik" "Molekuelsimulation" "Robotik_Labor" "Materialwissenschaft" "Data_Engineering" "Document_AI" "Memory_Import_Export" "Personal_Knowledge_OS" "Next_Level_Persona_System" "Texter_Werbung_Marketing" "Rechtsberatung_Steuerrecht" "DevOps_SRE" "Security_Analyst" "Ethical_HackerGPT" "Compliance_Privacy" "Audio" "Voice_Assistant" "Jarvis_FritzBox_Alexa_Home_Assistant" "Media_Musik" "Content_Automation" "Image_Generation" "Video_Generation" "Video_Generation_ComfyUI_Wan" "GameDev_3D_Studio_NEXTLEVEL" "CAD_Konstrukteur" "Architektur_3D_BIM" "Robotertechnik_Anlagensteuerung" "OpenHiggsStack_AI_Cinema_Studio" "Visual_Creator" "Trading_AI" "Web3_Crypto_Tools")
+PROFILE_KEYS=("Programmierer" "Repo_Maintainer" "Repo_Maintainer_Agent" "Agent_Orchestrator" "LLM_Builder" "Research_Agent" "KI_Forschung" "Physik" "Chemie" "Biologie" "Bioinformatik" "Molekuelsimulation" "Robotik_Labor" "Materialwissenschaft" "Mathematik_Simulation" "Astronomie_Space_AI" "Medizinische_Literatur_Recherche" "Umwelt_Klima_Energie" "Data_Engineering" "Document_AI" "Knowledge_Librarian" "Memory_Import_Export" "Personal_Knowledge_OS" "Personal_Assistant_Local_First" "Next_Level_Persona_System" "Texter_Werbung_Marketing" "Rechtsberatung_Steuerrecht" "DevOps_SRE" "Security_Analyst" "Ethical_HackerGPT" "Compliance_Privacy" "Zero_Trust_Remote_Access" "Audio" "Voice_Assistant" "Voice_Command_Center" "Jarvis_FritzBox_Alexa_Home_Assistant" "Media_Musik" "Content_Automation" "Image_Generation" "Video_Generation" "Video_Generation_ComfyUI_Wan" "GameDev_3D_Studio_NEXTLEVEL" "CAD_Konstrukteur" "Architektur_3D_BIM" "Robotertechnik_Anlagensteuerung" "OpenHiggsStack_AI_Cinema_Studio" "Visual_Creator" "Web_App_Builder" "Kubernetes_GPU_Orchestrator" "Storage_NAS_Backup" "Trading_AI" "Web3_Crypto_Tools")
 PROFILES["Programmierer"]="Tools für Entwicklung, Code-Generierung (DeepSeek Coder), Git-Integration, Huginn, Clawhub CLI. Ideal für Entwickler und Automatisierungsexperten."
 PROFILES["Media_Musik"]="Tools für Audio/Video (FFmpeg), Audio-AI, Alexa-Integration, Clawbake. Für Content Creator und Medienproduzenten."
 PROFILES["KI_Forschung"]="Spezialisierte Bibliotheken für Reinforcement Learning (OpenClaw RL), erweiterte LLM-Modelle (Gemini-1.5-Pro), Flowise/LangFlow. Für KI-Wissenschaftler und Forscher."
@@ -1737,6 +1792,17 @@ PROFILES["Bioinformatik"]="Science-Lab-Profil fuer Sequenzanalyse, Varianten, Pi
 PROFILES["Molekuelsimulation"]="Science-Lab-Profil fuer Molekulardynamik, OpenMM/GROMACS/LAMMPS-nahe Workflows, CUDA/ROCm-Erkennung und GPU-Batchjobs."
 PROFILES["Robotik_Labor"]="Science-Lab-Profil fuer sichere Laborrobotik, ROS-2-nahe Planung, Sensorintegration, Simulation-first und menschliche Freigabe."
 PROFILES["Materialwissenschaft"]="Science-Lab-Profil fuer Materials Informatics, Struktur- und Simulationsdaten, pymatgen/ASE-nahe Analysen und Dashboards."
+PROFILES["Mathematik_Simulation"]="Profil fuer Formeln, Optimierung, numerische Simulation, JupyterLab und lokale KI-gestuetzte Erklaerungen."
+PROFILES["Astronomie_Space_AI"]="Profil fuer FITS-Dateien, Teleskopdaten, Raumfahrt-Recherche, Bildauswertung, JupyterLab und Paper-Analyse."
+PROFILES["Medizinische_Literatur_Recherche"]="Lokales Rechercheprofil fuer medizinische Literatur und Evidenznotizen. Keine Diagnose und keine Therapieentscheidung."
+PROFILES["Umwelt_Klima_Energie"]="Profil fuer Klima-, Wetter-, PV-, Batterie-, Energie- und Smart-Home-Auswertungen mit Dashboards."
+PROFILES["Personal_Assistant_Local_First"]="Lokaler persoenlicher Assistent mit Ollama, OpenClaw, RAG, Open WebUI, n8n und sicheren Freigabegrenzen."
+PROFILES["Voice_Command_Center"]="Lokale Sprachsteuerung mit STT/TTS, Home Assistant, Node-RED und Bestaetigungslogik fuer riskante Aktionen."
+PROFILES["Knowledge_Librarian"]="Lokale Wissensverwaltung fuer PDF, Markdown, Office, Scans, Paperless, Docling, Tika, Suche und RAG."
+PROFILES["Web_App_Builder"]="Profil fuer lokale WebUIs, Dashboards, Admin-Panels, Vite/React-nahe Entwicklung und DevSecOps-Checks."
+PROFILES["Zero_Trust_Remote_Access"]="Profil fuer Tailscale, Cloudflare Tunnel, Firewall, Auth und sichere Remote-Zugriffe ohne offene Admin-Ports."
+PROFILES["Kubernetes_GPU_Orchestrator"]="Experimentelles Profil fuer GPU-/Render-/LLM-/Science-Worker mit Monitoring und Kubernetes-Offloading."
+PROFILES["Storage_NAS_Backup"]="Profil fuer Modelle, Medien, Dokumente, MinIO, NAS, Restic, BorgBackup, Rclone und Restore-Tests."
 PROFILES["Texter_Werbung_Marketing"]="Tools für Content-Generierung, SEO-Analyse, Social Media, Textproduktion, n8n, Activepieces. Optimiert für Marketingexperten und Texter, die ihre Inhalte mit KI verbessern möchten."
 PROFILES["Rechtsberatung_Steuerrecht"]="Tools für Web-Search & Fetch, PDF-Reader/Document-Parser, Zotero. Für die Analyse von Rechtsdokumenten und Steuerrecht, unterstützt durch spezialisierte KI-Agenten."
 PROFILES["Agent_Orchestrator"]="Koordiniert Agentenrollen mit LangGraph, CrewAI, AutoGen und Memory-Bausteinen für Routing und Ergebnis-Synchronisierung."
@@ -2576,6 +2642,54 @@ PROFILE_EXTENDED_TOOLS["Materialwissenschaft"]="$SCIENCE_EXTENDED_TOOLS"
 PROFILE_INTEGRATION_TOOLS["Materialwissenschaft"]="$SCIENCE_INTEGRATION_TOOLS"
 PROFILE_SPECIAL_TOOLS["Materialwissenschaft"]="Ollama OpenClaw JupyterLab Docling Apache_Tika Whisper_CPP"
 PROFILE_SPECIAL_LABELS["Materialwissenschaft"]="Materialwissenschaft Science Lab"
+
+PROFILE_CORE_TOOLS["Mathematik_Simulation"]="Ollama OpenClaw JupyterLab"
+PROFILE_EXTENDED_TOOLS["Mathematik_Simulation"]="Grafana Prometheus"
+PROFILE_INTEGRATION_TOOLS["Mathematik_Simulation"]="Kubernetes"
+
+PROFILE_CORE_TOOLS["Astronomie_Space_AI"]="Ollama OpenClaw JupyterLab Docling"
+PROFILE_EXTENDED_TOOLS["Astronomie_Space_AI"]="Grafana Prometheus"
+PROFILE_INTEGRATION_TOOLS["Astronomie_Space_AI"]="Kubernetes"
+
+PROFILE_CORE_TOOLS["Medizinische_Literatur_Recherche"]="Ollama OpenClaw Docling Apache_Tika Paperless_NGX Qdrant"
+PROFILE_EXTENDED_TOOLS["Medizinische_Literatur_Recherche"]="Meilisearch Pandoc"
+PROFILE_INTEGRATION_TOOLS["Medizinische_Literatur_Recherche"]=""
+
+PROFILE_CORE_TOOLS["Umwelt_Klima_Energie"]="Home_Assistant Grafana Prometheus Netdata JupyterLab"
+PROFILE_EXTENDED_TOOLS["Umwelt_Klima_Energie"]="n8n Node_RED"
+PROFILE_INTEGRATION_TOOLS["Umwelt_Klima_Energie"]="Mosquitto"
+
+PROFILE_CORE_TOOLS["Personal_Assistant_Local_First"]="Ollama OpenClaw Open_WebUI Qdrant n8n"
+PROFILE_EXTENDED_TOOLS["Personal_Assistant_Local_First"]="Paperless_NGX Docling"
+PROFILE_INTEGRATION_TOOLS["Personal_Assistant_Local_First"]="Tailscale"
+
+PROFILE_CORE_TOOLS["Voice_Command_Center"]="Whisper_CPP Faster_Whisper Piper Coqui_TTS"
+PROFILE_EXTENDED_TOOLS["Voice_Command_Center"]="Home_Assistant Node_RED"
+PROFILE_INTEGRATION_TOOLS["Voice_Command_Center"]="Mosquitto"
+
+PROFILE_CORE_TOOLS["Knowledge_Librarian"]="Paperless_NGX Docling Apache_Tika Qdrant Meilisearch Pandoc"
+PROFILE_EXTENDED_TOOLS["Knowledge_Librarian"]="Stirling_PDF"
+PROFILE_INTEGRATION_TOOLS["Knowledge_Librarian"]="MinIO"
+
+PROFILE_CORE_TOOLS["Web_App_Builder"]="GitHub_CLI Pre_Commit Gitleaks Semgrep Trivy"
+PROFILE_EXTENDED_TOOLS["Web_App_Builder"]="Playwright Puppeteer"
+PROFILE_INTEGRATION_TOOLS["Web_App_Builder"]="Tailscale Cloudflared"
+
+PROFILE_CORE_TOOLS["Repo_Maintainer_Agent"]="GitHub_CLI Pre_Commit Gitleaks Semgrep Trivy"
+PROFILE_EXTENDED_TOOLS["Repo_Maintainer_Agent"]="Release_Please Changelog_Generator"
+PROFILE_INTEGRATION_TOOLS["Repo_Maintainer_Agent"]="Act"
+
+PROFILE_CORE_TOOLS["Zero_Trust_Remote_Access"]="Tailscale Cloudflared UFW CrowdSec Fail2Ban"
+PROFILE_EXTENDED_TOOLS["Zero_Trust_Remote_Access"]="Authentik Authelia"
+PROFILE_INTEGRATION_TOOLS["Zero_Trust_Remote_Access"]="Prometheus Grafana"
+
+PROFILE_CORE_TOOLS["Kubernetes_GPU_Orchestrator"]="Prometheus Grafana Node_Exporter cAdvisor"
+PROFILE_EXTENDED_TOOLS["Kubernetes_GPU_Orchestrator"]="K3s"
+PROFILE_INTEGRATION_TOOLS["Kubernetes_GPU_Orchestrator"]="Tailscale"
+
+PROFILE_CORE_TOOLS["Storage_NAS_Backup"]="Restic BorgBackup Rclone MinIO"
+PROFILE_EXTENDED_TOOLS["Storage_NAS_Backup"]="Grafana Prometheus"
+PROFILE_INTEGRATION_TOOLS["Storage_NAS_Backup"]="Tailscale"
 
 PROFILE_CORE_TOOLS["Texter_Werbung_Marketing"]="n8n Activepieces LangChain ChromaDB Playwright"
 PROFILE_EXTENDED_TOOLS["Texter_Werbung_Marketing"]="Browser_Tool Firecrawl File_System_Tool Weaviate Qdrant Stable_Diffusion_WebUI"

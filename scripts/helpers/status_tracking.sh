@@ -121,6 +121,48 @@ status_tracking_free_kb() {
     df -Pk "$HOME" 2>/dev/null | awk 'NR==2 {print $4}'
 }
 
+status_tracking_format_kb() {
+    local kb="${1:-0}"
+    if [ "$kb" -ge 1048576 ] 2>/dev/null; then
+        awk -v value="$kb" 'BEGIN {printf "%.1f GB", value/1048576}'
+    elif [ "$kb" -ge 1024 ] 2>/dev/null; then
+        awk -v value="$kb" 'BEGIN {printf "%.1f MB", value/1024}'
+    else
+        printf '%s KB' "$kb"
+    fi
+}
+
+status_tracking_is_wsl() {
+    grep -qi microsoft /proc/version 2>/dev/null || grep -qi microsoft /proc/sys/kernel/osrelease 2>/dev/null
+}
+
+status_tracking_windows_host_free_kb() {
+    local drive_name="${WINDOWS_HOST_DRIVE:-C}"
+    local free_bytes
+
+    command -v powershell.exe >/dev/null 2>&1 || return 0
+    free_bytes="$(powershell.exe -NoProfile -Command "(Get-PSDrive -Name '${drive_name}').Free" 2>/dev/null | tr -d '\r' | awk 'NF {print int($1); exit}')"
+    if [ -n "$free_bytes" ] && [ "$free_bytes" -gt 0 ] 2>/dev/null; then
+        printf '%s' $((free_bytes / 1024))
+    fi
+}
+
+status_tracking_print_space_summary() {
+    local linux_free_kb="$1"
+    local windows_free_kb
+
+    echo "Freier Linux-/WSL-Speicher vor Tool-Skript ${CURRENT_TOOL_KEY}: $(status_tracking_format_kb "${linux_free_kb:-0}")"
+    if status_tracking_is_wsl; then
+        windows_free_kb="$(status_tracking_windows_host_free_kb)"
+        if [ -n "$windows_free_kb" ]; then
+            echo "Freier Windows-Host-Speicher (${WINDOWS_HOST_DRIVE:-C}:): $(status_tracking_format_kb "$windows_free_kb")"
+            if [ "$windows_free_kb" -lt $((50 * 1024 * 1024)) ] 2>/dev/null; then
+                echo "Warnung: Windows meldet weniger als 50 GB frei. Grosse Installationen koennen scheitern oder Windows/WSL instabil machen."
+            fi
+        fi
+    fi
+}
+
 status_tracking_metric_prefix() {
     printf '%s' "$1" | tr '[:lower:]- /.' '[:upper:]____'
 }
@@ -212,7 +254,7 @@ init_tool_tracking() {
     CURRENT_TOOL_TRACKING_FREE_KB_BEFORE="$(status_tracking_free_kb)"
     CURRENT_TOOL_TRACKING_RECORDED=0
     status_tracking_ensure_metrics
-    echo "Freier Speicher vor Tool-Skript ${CURRENT_TOOL_KEY}: ${CURRENT_TOOL_TRACKING_FREE_KB_BEFORE} KB"
+    status_tracking_print_space_summary "${CURRENT_TOOL_TRACKING_FREE_KB_BEFORE:-0}"
     trap status_tracking_record_tool_exit EXIT
 }
 
