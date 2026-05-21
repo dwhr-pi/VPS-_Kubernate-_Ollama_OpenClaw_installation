@@ -46,6 +46,23 @@ Diese Matrix fasst den aktuellen Ausbauzustand als modulare Plattform zusammen. 
 | `Document_Intelligence` | Knowledge | OCR, Tika, Docling, Paperless | mittel | MiniPC, VPS | sensible Dokumente nur lokal |
 | `Personal_Knowledge_Memory` | Knowledge | private Memory-/RAG-Schicht | mittel | MiniPC | Sync, Backups und Verschluesselung einplanen |
 | `OSINT_Research` | Knowledge | legale Recherche, Archivierung, Suchindexe | niedrig bis mittel | VPS, Workstation | kein Doxxing, keine Intrusion, keine Credential-Suche |
+| `Knowledge_Librarian` | Knowledge | PDF, Markdown, Office, Scans, Paperless, Docling, lokale Suche | mittel | MiniPC, NAS, Workstation | Dokumente und Indizes lokal schuetzen |
+
+## Wissenschaft und Forschung
+
+| Profil | Kategorie | Fokus | Reifegrad | Hardware | Hinweise |
+|---|---|---|---|---|---|
+| `Physik` | Science | Simulation, Messdaten, Paper, JupyterLab | mittel | Workstation, GPU optional | Ergebnisse validieren |
+| `Chemie` | Science | Molekueldaten, Paper, Laborberichte | mittel | Workstation | keine Gefahrstoffanleitungen |
+| `Biologie` | Science | Omics, Mikroskopie, Sensorik | mittel | Workstation, MiniPC | keine medizinische Diagnose |
+| `Bioinformatik` | Science | Sequenzen, Varianten, Pipelines | mittel | Workstation, Kubernetes optional | Studiendaten pseudonymisieren |
+| `Molekuelsimulation` | Science / HPC | OpenMM/GROMACS/LAMMPS-nahe Analyse | experimentell | GPU-Workstation | hoher Speicher-/GPU-Bedarf |
+| `Robotik_Labor` | Science / Robotics | Laborautomation, ROS-nahe Simulation, Sensorik | experimentell | MiniPC, Edge, Workstation | Realhardware nur mit Freigabe |
+| `Materialwissenschaft` | Science | Materials Informatics, Strukturen, Simulation | mittel | Workstation, GPU optional | Materialeigenschaften fachlich validieren |
+| `Mathematik_Simulation` | Science | Formeln, Optimierung, numerische Simulation | mittel | MiniPC, Workstation | Modellannahmen dokumentieren |
+| `Astronomie_Space_AI` | Science | FITS, Teleskopdaten, Raumfahrt-Recherche | mittel | Workstation | Standort-/Beobachtungsdaten schuetzen |
+| `Medizinische_Literatur_Recherche` | Science / Medical | Paper, Evidenznotizen, Dokumentanalyse | mittel | MiniPC, Workstation | keine Diagnose, keine Therapieentscheidung |
+| `Umwelt_Klima_Energie` | Science / Energy | Klima, Wetter, PV, Batterie, Verbrauch | mittel | MiniPC, Smart Home | keine kritische Schaltung ohne Freigabe |
 
 ## IoT, Media und Spezialpfade
 
@@ -53,10 +70,18 @@ Diese Matrix fasst den aktuellen Ausbauzustand als modulare Plattform zusammen. 
 |---|---|---|---|---|---|
 | `Robotics_IoT_Edge_AI` | Smart Home / IoT | Home Assistant, MQTT, Zigbee, ESPHome | mittel | MiniPC, Edge, VPS | lokale Netze und Kameradaten schuetzen |
 | `Smart_Home_Automation` | Smart Home / IoT | Node-RED, Mosquitto, Zigbee2MQTT | mittel | MiniPC | Reverse Proxy und Tunnel bewusst haerten |
+| `Personal_Assistant_Local_First` | Assistant | lokaler Jarvis, RAG, n8n, Open WebUI | mittel | MiniPC, Workstation | Aktionen brauchen Rollen und Freigabe |
+| `Boardroom` | Assistant | strategische Entscheidungsrunde mit Rollen, Peer-Review und Chairman-Verdict | niedrig | MiniPC, Workstation | nur Vorschlag/Review, keine automatische Aktion |
+| `Voice_Command_Center` | Voice / Smart Home | STT, TTS, Home Assistant, Node-RED | mittel | MiniPC, Mikrofon-Setup | kritische Befehle nur mit Bestaetigung |
 | `Image_Generation_Studio` | Media | ComfyUI, Forge, Upscaling, Cleanup | mittel | GPU-Workstation | Modellrechte, VRAM und SSD einkalkulieren |
 | `Video_Generation_Studio` | Media | Interpolation, Upscaling, Video-KI | niedrig bis mittel | starke GPU | hoher VRAM-/SSD-Bedarf |
 | `Voice_Clone_TTS_Studio` | Media / Voice | TTS, STT, Voiceover, Voice-Clone | niedrig bis mittel | GPU optional | Ethik, Rechte und Einwilligung beachten |
 | `Web3_Crypto_Agent` | Web3 Safe | Analyse, Recherche, RPC-Tooling | niedrig bis mittel | VPS, Workstation | keine Live-Orders oder Seeds als Default |
+| `Web_App_Builder` | Coding / Apps | Vite/React, Dashboards, Admin-Panels | mittel | WSL2, Workstation | keine Secrets ins Frontend |
+| `Repo_Maintainer_Agent` | Coding / Ops | Repo-Pflege, Registry-Checks, lokale CI, Release-Hygiene | mittel | WSL2, VPS | keine automatischen Force-Pushes |
+| `Zero_Trust_Remote_Access` | Security | Tailscale, Cloudflare Tunnel, UFW, CrowdSec | mittel | MiniPC, VPS | Standard: nicht oeffentlich |
+| `Kubernetes_GPU_Orchestrator` | Ops / GPU | GPU-Worker, Render, LLM, Science-Batches | experimentell | GPU-Workstation, K3s | Secrets und Worker isolieren |
+| `Storage_NAS_Backup` | Storage / Backup | Restic, Borg, Rclone, MinIO, NAS | mittel | MiniPC, NAS, VPS | Restore-Tests sind Pflicht |
 
 ## Bewusst zurueckgestellt
 

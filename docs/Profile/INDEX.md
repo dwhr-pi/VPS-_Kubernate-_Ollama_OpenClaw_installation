@@ -125,6 +125,19 @@ Dieses Verzeichnis enthält die aktuell gepflegten, aus dem Repository abgeleite
 | `Cyber_Security_AI` | defensive Security-AI fuer Findings, Hardening und SBOM | `Cyber_Security_AI.md` |
 | `Anti_Virus` | lokale Datei-, Malware- und Quarantaene-Hygiene | `Anti_Virus.md` |
 | `Jarvis_FritzBox_Alexa_Home_Assistant` | Fritz!Box-/Alexa-/Home-Assistant-Brain fuer Telefonie und Smart Home | `Jarvis_FritzBox_Alexa_Home_Assistant.md` |
+| `Mathematik_Simulation` | Formeln, Optimierung, numerische Simulation und JupyterLab | `Mathematik_Simulation.md` |
+| `Astronomie_Space_AI` | FITS, Teleskopdaten, Raumfahrt-Recherche und Bildauswertung | `Astronomie_Space_AI.md` |
+| `Medizinische_Literatur_Recherche` | lokale Paper- und Dokumentanalyse ohne Diagnose-/Therapieanspruch | `Medizinische_Literatur_Recherche.md` |
+| `Umwelt_Klima_Energie` | Klima-, Wetter-, Energie-, PV- und Smart-Home-Auswertung | `Umwelt_Klima_Energie.md` |
+| `Personal_Assistant_Local_First` | lokaler persoenlicher Assistent mit Ollama, OpenClaw, RAG und n8n | `Personal_Assistant_Local_First.md` |
+| `Boardroom` | Entscheidungsrunde mit CFO, Operator, Vertriebler, Mentor, Skeptiker und Chairman-Verdict | `Boardroom.md` |
+| `Voice_Command_Center` | lokale Sprachsteuerung mit STT, TTS, Home Assistant und Freigabe-Gate | `Voice_Command_Center.md` |
+| `Knowledge_Librarian` | Dokument-, PDF-, Scan- und Wissensverwaltung mit lokaler Suche/RAG | `Knowledge_Librarian.md` |
+| `Web_App_Builder` | lokale Dashboards, WebUIs, Admin-Panels und App-Entwicklung | `Web_App_Builder.md` |
+| `Repo_Maintainer_Agent` | Repo-Pflege, Doku-Checks, lokale CI, Registry- und Release-Hygiene | `Repo_Maintainer_Agent.md` |
+| `Zero_Trust_Remote_Access` | Tailscale, Cloudflare Tunnel, Firewall und sichere Remote-Freigaben | `Zero_Trust_Remote_Access.md` |
+| `Kubernetes_GPU_Orchestrator` | GPU-/Render-/LLM-/Science-Worker mit Monitoring und Kubernetes-Pfad | `Kubernetes_GPU_Orchestrator.md` |
+| `Storage_NAS_Backup` | Backups, Modelle, Medien, MinIO, Restic, Borg und Rclone | `Storage_NAS_Backup.md` |
 
 ## Bewusst zurueckgestellt
 

@@ -10,6 +10,28 @@ Das Repository entwickelt sich von einer reinen Tool-Sammlung zu einer modularen
 
 Die zugehoerige Architektur-Dokumentation findest du in [docs/ARCHITECTURE_LLMOPS_PLATFORM.md](docs/ARCHITECTURE_LLMOPS_PLATFORM.md).
 
+## Quickstarts
+
+| Ziel | Einstieg |
+|---|---|
+| Minimal lokal | `bash install.sh` starten und nur Basis/Programmierer waehlen |
+| MiniPC + Ollama + OpenClaw | `Programmierer`, `RAG_Wissensdatenbank`, `Monitoring_Observability` |
+| Medien/GPU | `Image_Generation_Studio`, `Video_Generation_Studio`, `Render_Farm_GPU_Workstation` |
+| Smart Home/Jarvis | `Smart_Home_Automation`, `Voice_Command_Center`, `Personal_Assistant_Local_First` |
+| Wissenschaft | `Physik`, `Bioinformatik`, `Molekuelsimulation`, `Mathematik_Simulation` |
+| Security | `Security_DevSecOps`, `Zero_Trust_Remote_Access`, `Anti_Virus` |
+| Kubernetes/VPS | `DevOps_SRE`, `Kubernetes_GPU_Orchestrator`, `Storage_NAS_Backup` |
+
+Wichtige Uebersichten:
+
+- [Setup Review und Verbesserungsplan](docs/SETUP_REVIEW_AND_IMPROVEMENT_PLAN.md)
+- [Profilmatrix](docs/PROFILE_MATRIX.md)
+- [Toolmatrix](docs/TOOL_MATRIX.md)
+- [Portmatrix](docs/PORT_MATRIX.md)
+- [Sicherheitsmodell](docs/SECURITY_MODEL.md)
+- [Secret Handling](docs/SECRET_HANDLING.md)
+- [Remote Access Entscheidungshilfe](docs/REMOTE_ACCESS_DECISION_TREE.md)
+
 ## 🟡 Gegenwärtiger Status
 
 - `MiniPC`-Setup ist aktuell der stabilste abgeschlossene Pfad.
@@ -20,7 +42,7 @@ Die zugehoerige Architektur-Dokumentation findest du in [docs/ARCHITECTURE_LLMOP
 - Ebenfalls neu ist das modulare [Next Level Persona System](docs/Profil/Next_Level_Persona_System.md) fuer persistente Persona-, Memory- und Modus-Workflows mit sicheren Disclosure-Defaults.
 - Fuer laenger laufende Baustellen und Chat-Uebergaenge gibt es jetzt zusaetzlich eine kleine dauerhafte Projekt-Erinnerung unter [docs/SETUP_MEMORY.md](docs/SETUP_MEMORY.md).
 - Die aktuelle Review- und Prioritaetenliste liegt in [docs/SETUP_REVIEW_AND_NEXT_STEPS.md](docs/SETUP_REVIEW_AND_NEXT_STEPS.md).
-- Neue modulare Profilbausteine: `Prompt_Generator_Studio`, `Memory_Import_Export`, `Self_Learning_Agent_Lab`, `Home_Network_Security`, `Android_App_Builder`, `AI_Dashboard_Builder`, `Render_Farm_GPU_Workstation`, `GameDev_3D_Studio_NEXTLEVEL`, `CAD_Konstrukteur`, `Architektur_3D_BIM`, `Robotertechnik_Anlagensteuerung`, `Physik`, `Chemie`, `Biologie`, `Bioinformatik`, `Molekuelsimulation`, `Robotik_Labor`, `Materialwissenschaft`, `Legal_Safe_Creator`, `Cyber_Security_AI` und `Anti_Virus`.
+- Neue modulare Profilbausteine: `Prompt_Generator_Studio`, `Memory_Import_Export`, `Self_Learning_Agent_Lab`, `Boardroom`, `Home_Network_Security`, `Android_App_Builder`, `AI_Dashboard_Builder`, `Render_Farm_GPU_Workstation`, `GameDev_3D_Studio_NEXTLEVEL`, `CAD_Konstrukteur`, `Architektur_3D_BIM`, `Robotertechnik_Anlagensteuerung`, `Physik`, `Chemie`, `Biologie`, `Bioinformatik`, `Molekuelsimulation`, `Robotik_Labor`, `Materialwissenschaft`, `Legal_Safe_Creator`, `Cyber_Security_AI` und `Anti_Virus`.
 
 ## 🚀 Schnelle Installation (One-Liner)
 
@@ -32,6 +54,10 @@ curl -sSL https://raw.githubusercontent.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenC
 ```
 
 Dieser Befehl lädt das `install.sh` Skript herunter und führt es aus. Das Skript klont dieses Repository und startet das interaktive Setup-Menü, das dich durch die weiteren Schritte führt.
+
+## Boardroom-Profil
+
+Das [Boardroom-Profil](docs/Profile/Boardroom.md) hilft bei strategischen Entscheidungen im Setup. Es simuliert CFO, Operator, Vertriebler, Mentor und Skeptiker und erzeugt danach ein Chairman-Verdict. Aktivierung zum Beispiel mit: `Boardroom rufen: Soll ich X oder Y fuer unser Setup nutzen?`
 
 **Wichtig für Einsteiger:** Während der Installation wirst du mehrfach nach einem Passwort gefragt. Gemeint ist dabei das `sudo`-Passwort deines Linux-Benutzers, also das Passwort des Ubuntu-/Linux-Users innerhalb von WSL oder auf deinem Server.
 
