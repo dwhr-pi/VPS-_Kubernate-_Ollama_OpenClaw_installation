@@ -30,8 +30,8 @@ Diese Matrix fasst den aktuellen Ausbauzustand als modulare Plattform zusammen. 
 | Profil | Kategorie | Fokus | Reifegrad | Hardware | Hinweise |
 |---|---|---|---|---|---|
 | `NoCode_LowCode_AI` | Automation | n8n, Activepieces, Node-RED, Flowise, LangFlow | mittel | VPS, MiniPC | Connector-Credentials strikt trennen |
-| `Browser_Automation_Agent` | Automation | Playwright, Puppeteer, kontrolliertes Web-Testing | mittel | WSL2, Workstation | Crawling nur rechtskonform und bewusst |
-| `Local_AI_App_Builder` | Apps | Appsmith, Budibase, NocoDB, Directus, Open WebUI | mittel | MiniPC, VPS | interne Apps default nur lokal |
+| `Browser_Automation_Agent` | Automation | Playwright, Puppeteer, GBOX, kontrolliertes Web-/Desktop-/Android-Testing | mittel | WSL2, Workstation | Crawling und Device-Automation nur rechtskonform und bewusst |
+| `Local_AI_App_Builder` | Apps | Appsmith, Budibase, NocoDB, Directus, Open WebUI, GBOX | mittel | MiniPC, VPS | interne Apps default nur lokal |
 | `UI-UX-Designer-Penpot-AI` | Apps / Design | Penpot, Design-Systeme, Prototyping, Design-to-Code | mittel | MiniPC, VPS, Workstation | Web-UI und MCP nur lokal oder privat freigeben |
 | `Email_Office_Automation` | Office | DMS, PDF, OCR, Nextcloud, Office-Workflows | mittel | MiniPC, VPS | Mail- und Dokumentdaten lokal halten |
 | `Office_Productivity` | Office | Paperless, PDF, OCR, Wissensdokumente | mittel | MiniPC, VPS | gute Basis, aber kein Mailstack |
@@ -91,7 +91,7 @@ Diese Profile wurden geprueft, aber in diesem Schritt nicht als eigene Top-Level
 - `Meeting_Assistant`
 - `Legal_Tax_Document_AI`
 - `Health_Fitness_Knowledge`
-- `Android_App_AI_Dev`
+- `Android_App_AI_Dev` / `myBox` mit `gbox`
 - `Desktop_App_AI_Dev`
 - `Dataset_Curation_Labeling`
 

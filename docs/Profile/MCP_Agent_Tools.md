@@ -15,6 +15,7 @@ Toolserver- und MCP-Schicht für Agenten, UI und sichere Integrationen.
 - Browser Tool
 - File System Tool
 - Firecrawl
+- GBOX MCP fuer Android-/Device-nahe Agentensteuerung
 
 ## Installation
 ```bash
@@ -39,6 +40,7 @@ scripts/profiles/MCP_Agent_Tools_install.sh
 ## Sicherheitshinweise
 - Shell-MCP nur mit expliziter Freigabe und Safe-Mode
 - Dateisystem- und Browser-MCP nie offen ins Internet stellen
+- GBOX MCP nur lokal oder hinter privatem Zugriff betreiben; Testgeraete und Testkonten bevorzugen
 
 ## Start / Stop / Status Befehle
 ```bash

@@ -11,10 +11,12 @@ Lokale KI-Apps, interne Dashboards und kleine Werkzeuge mit Low-Code-Backends un
 - `nocodb`
 - `directus`
 - `open_webui`
+- `gbox` fuer myBox-nahe UI-/Device-Tests mit Agenten
 
 ## Optionale / noch nicht sauber verdrahtete Tools
 
 - spaeter sinnvoll: `Streamlit`, `Gradio`, `FastAPI`, `Electron`, `Tauri`
+- myBox-Dashboard- und Companion-App-Tests ueber `Android_App_Builder`
 
 ## Hardware / Plattform
 

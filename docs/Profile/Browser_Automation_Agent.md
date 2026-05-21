@@ -9,6 +9,7 @@ Kontrollierte Browser-Automation fuer Tests, Screenshots, UI-Pruefungen und lega
 - `playwright`
 - `puppeteer`
 - `open_webui`
+- `gbox` fuer Android-/Desktop-/Browser-nahe Agentenumgebungen
 
 ## Optionale / noch nicht sauber verdrahtete Tools
 
@@ -25,6 +26,7 @@ Kontrollierte Browser-Automation fuer Tests, Screenshots, UI-Pruefungen und lega
 
 - keine ungefragte Account- oder Formularautomation
 - Scraping, Login-Flows und Erfassung personenbezogener Daten nur mit klarer Rechtsgrundlage
+- GBOX-Device-Automation zuerst nur mit Testgeraeten und Testkonten
 
 ## Quickstart
 

@@ -15,8 +15,8 @@ Wichtig zur Zaehlung:
 | Runtime | `ollama`, `docker`, `docker_compose_plugin`, `k3s` | lokale und serverseitige Laufzeit |
 | Gateway / UI | `litellm`, `open_webui`, `langfuse` | Modellzugang, Telemetrie, UI |
 | Coding / Agenten | `openclaw`, `aider`, `openhands`, `continue_dev`, `langgraph`, `crewai`, `autogen` | Coding, Orchestrierung, Agenten |
-| RAG / Dokumente | `qdrant`, `chromadb`, `lightrag`, `llamaindex`, `docling`, `apache_tika`, `paperless_ngx` | Wissensspeicher und Dokument-Pipelines |
-| Monitoring | `prometheus`, `grafana`, `loki`, `healthchecks`, `uptime_kuma`, `netdata` | Metriken, Logs, Hostzustand |
+| RAG / Dokumente | `qdrant`, `chromadb`, `lightrag`, `llamaindex`, `haystack`, `docling`, `apache_tika`, `paperless_ngx` | Wissensspeicher und Dokument-Pipelines |
+| Monitoring | `prometheus`, `grafana`, `loki`, `healthchecks`, `uptime_kuma`, `netdata`, `node_exporter`, `cadvisor` | Metriken, Logs, Hostzustand |
 | Security | `trivy`, `gitleaks`, `semgrep`, `syft`, `grype`, `fail2ban`, `crowdsec`, `tailscale`, `cloudflared` | defensives Hardening, privater Remote-Zugriff, veröffentlichte Tunnel und Scans |
 
 ## Optional
@@ -24,10 +24,10 @@ Wichtig zur Zaehlung:
 | Gruppe | Tools | Einsatz |
 |---|---|---|
 | No-Code / Low-Code | `n8n`, `activepieces`, `node_red`, `flowise`, `langflow`, `appsmith`, `budibase`, `nocodb`, `directus` | interne Apps, Automatisierung, Daten-Frontends |
-| Office / Knowledge | `nextcloud`, `stirling_pdf`, `pandoc`, `meilisearch`, `jupyterlab`, `duckdb`, `metabase`, `minio` | DMS, Berichte, Suche, Notiz-/Dateischicht |
+| Office / Knowledge | `nextcloud`, `stirling_pdf`, `pandoc`, `meilisearch`, `searxng`, `jupyterlab`, `duckdb`, `metabase`, `minio` | DMS, Berichte, Suche, Notiz-/Dateischicht |
 | DevOps | `github_cli`, `act`, `pre_commit`, `release_please`, `ansible`, `opentofu`, `argocd_cli`, `grafana_alloy`, `restic`, `rclone`, `borgbackup` | Repo-, Release- und Plattformpflege |
-| Browser / Research | `playwright`, `puppeteer` | kontrollierte Browser-Tests und Web-Analysen |
-| Web-Automation | `huginn` | Event-Automation, Agentenketten und Webhook-Routing mit eigener `.env`-Vorlage |
+| Browser / Research | `playwright`, `puppeteer`, `gbox` | kontrollierte Browser-/Desktop-/Android-Tests und Web-Analysen |
+| Web-Automation | `huginn`, `firecrawl` | Event-Automation, Agentenketten, Webhook-Routing und Webquellen-Connectoren |
 | Smart Home / Edge | `home_assistant`, `mosquitto`, `zigbee2mqtt`, `esphome` | lokale IoT- und Sensor-Workflows |
 
 ## Experimental
@@ -37,6 +37,7 @@ Wichtig zur Zaehlung:
 | `openmanus`, `clawhub`, `clawhub_cli` | mehrere GitHub-Quellen, Build-/Netzwerkfragilitaet moeglich |
 | `video`- und `voice-clone`-nahe Toolketten | hoher Ressourcenbedarf, heterogene Upstreams |
 | `flowise` und `langflow` parallel | funktional sinnvoll, aber Port- und Bedienkonzept noch nicht vereinheitlicht |
+| `gbox` | vielversprechende Android-/Browser-/Desktop-/MCP-Agentenumgebung, aber Login-/Cloud-/Device-Zugriffe muessen sauber begrenzt werden |
 
 ## High-Risk
 
@@ -54,7 +55,6 @@ Diese Kandidaten sind fachlich sinnvoll, aber in diesem Repo noch nicht sauber a
 - `browser-use`
 - `SWE-agent`
 - `Tabby`
-- `Haystack`
 - `Typesense`
 - `detect-secrets`
 - `OpenBao`

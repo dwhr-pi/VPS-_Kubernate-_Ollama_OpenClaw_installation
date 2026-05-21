@@ -31,6 +31,7 @@ Wichtige Uebersichten:
 - [Sicherheitsmodell](docs/SECURITY_MODEL.md)
 - [Secret Handling](docs/SECRET_HANDLING.md)
 - [Remote Access Entscheidungshilfe](docs/REMOTE_ACCESS_DECISION_TREE.md)
+- [myBox + GBOX Integration](docs/myBOX_GBOX_INTEGRATION.md)
 
 ## 🟡 Gegenwärtiger Status
 
