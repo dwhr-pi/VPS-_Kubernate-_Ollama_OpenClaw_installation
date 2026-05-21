@@ -23,7 +23,7 @@ OPENMANUS_MIN_FREE_GB="${OPENMANUS_MIN_FREE_GB:-12}"
 OPENMANUS_RECOMMENDED_FREE_GB="${OPENMANUS_RECOMMENDED_FREE_GB:-25}"
 OPENMANUS_INSTALL_FLASH_ATTN="${OPENMANUS_INSTALL_FLASH_ATTN:-0}"
 OPENMANUS_SKIP_TORCH="${OPENMANUS_SKIP_TORCH:-0}"
-OPENMANUS_APT_PACKAGES="${OPENMANUS_APT_PACKAGES:-git python3 python3-venv python3-pip python3-dev build-essential}"
+OPENMANUS_APT_PACKAGES="${OPENMANUS_APT_PACKAGES:-git python3 python3-venv python3.12-venv python3-pip python3-dev build-essential}"
 
 get_free_gb_for_path() {
     local path_to_check="${1:-/opt}"
@@ -150,6 +150,10 @@ fi
 
 # 2. Python-Abhängigkeiten installieren
 echo -e "${BLUE}Installiere Python-Abhängigkeiten für OpenManus...${NC}"
+if [ -d venv ] && [ ! -f venv/bin/activate ]; then
+    echo -e "${YELLOW}Unvollständige OpenManus-venv gefunden. Entferne defekte venv und erstelle sie neu.${NC}"
+    rm -rf venv
+fi
 python3 -m venv venv
 source venv/bin/activate
 python -m pip install --upgrade pip setuptools wheel
