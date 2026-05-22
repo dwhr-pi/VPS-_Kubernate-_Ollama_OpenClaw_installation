@@ -66,18 +66,13 @@ Die meisten KI-Dienste und externen Integrationen erfordern API-Keys. Diese soll
     4.  Aktiviere "Enable Dynamic DNS" und kopiere den generierten **Update Key**.
 *   **Konfiguration:** Das Setup-Skript wird dich nach diesem Key fragen, wenn du das Hybrid- oder Standalone MiniPC Setup wählst. Er wird in einem Skript auf deinem MiniPC hinterlegt.
 
-### 1.5 Kimi 2 API-Key (Moonshot AI)
+### 1.5 Kimi / Moonshot API-Key
 
-*   **Zweck:** Ermöglicht die Nutzung des Kimi 2 KI-Agenten von Moonshot AI für intelligente Interaktionen und Aufgaben.
-*   **Bezug:**
-    1.  Besuche die [Moonshot AI Website](https://www.moonshot.ai/) und registriere dich.
-    2.  Navigiere zu den API-Key-Einstellungen und generiere einen neuen API-Key.
-    3.  Kopiere den generierten API-Key.
-*   **Konfiguration:** Der Kimi 2 API-Key muss in der Konfigurationsdatei von Kimi 2 oder als Umgebungsvariable hinterlegt werden. Das Installationsskript wird dich gegebenenfalls zur Eingabe auffordern oder die Konfigurationsdatei zur Bearbeitung öffnen.
-    ```ini
-    # Beispiel für Umgebungsvariable oder Konfigurationsdatei
-    KIMI_API_KEY="DEIN_KIMI_API_KEY_HIER"
-    ```
+*   **Zweck:** Nur erforderlich, wenn du Kimi/Moonshot über einen externen API-Zugang nutzt. Die lokale Kimi-Integration im Setup klont derzeit primär das GitHub-Referenz-/Dokumentationsrepo und erzwingt keine Python-Abhängigkeiten.
+*   **Erhalt:** Registriere dich bei Moonshot AI bzw. dem von dir bewusst gewählten API-Anbieter und erstelle dort einen API-Key.
+*   **Konfiguration:** API-Keys gehören in den Benutzer-Workspace, eine lokale \.env-Datei oder sichere Umgebungsvariablen. Sie werden nicht vom Installer ins Repository geschrieben.
+*   **Kostenhinweis:** Externe Kimi-/Moonshot-APIs können kostenpflichtig sein. Prüfe Limits und Billing, bevor du Agenten automatisiert darauf zugreifen lässt.
+
 
 ### 1.6 Hugging Face API Token (für Huge Facing - Online-Modelle und Inference API)
 

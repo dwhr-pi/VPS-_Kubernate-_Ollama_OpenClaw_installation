@@ -73,7 +73,7 @@ Das Profil-Management (Option 9 im Hauptmenü) ermöglicht die Installation und 
 Das Tool-Management (Option 8 im Hauptmenü) ermöglicht die Installation und Deinstallation einzelner Tools. Hier eine Übersicht der verfügbaren Tools:
 
 *   **Ollama:** Lokales LLM-Backend. Du kannst über den Ollama Modell-Manager (Option 2 im Hauptmenü) spezifische Modelle installieren und verwalten.
-*   **OpenManus:** Ein KI-Agenten-Framework für automatisierte Aufgaben wie Web-Recherche und Datenanalyse.
+*   **OpenManus:** GitHub-basierte Agenten-/Automationsbasis. Der Installer prüft Python-venv, Torch und problematische optionale Pakete wie `flash-attn` vorsichtig, statt unfertige Builds blind zu erzwingen.
 *   **OpenClaw:** Ein KI-Agenten-Framework mit Reinforcement Learning (RL) und Skill-Integration (z.B. `gcali` für Google Kalender). Nutze den OpenClaw Konfigurations-Manager (Option 3) für die `.env` und `config.json`.
 *   **Clawhub:** Zentraler Server für die Orchestrierung und Verwaltung von KI-Agenten und deren Interaktionen.
 *   **Clawhub CLI:** Ein Kommandozeilen-Tool zur Interaktion mit Clawhub-Diensten.
@@ -86,7 +86,7 @@ Das Tool-Management (Option 8 im Hauptmenü) ermöglicht die Installation und De
 *   **Pipedream:** Eine Serverless-Plattform zur Integration von APIs und Diensten (Self-Hosted Option ist komplex und wird auf die offizielle Doku verwiesen).
 *   **Huginn:** Ein Open-Source-Agentensystem, das Aktionen im Web automatisiert und Ereignisse überwacht (wird auch im Programmierer-Profil installiert).
 *   **Zenbot-trader:** Eine Plattform für automatisierten Krypto-Handel mit Backtesting, Sim-Trading und Live-Trading.
-*   **Kimi 2:** KI-Agent von Moonshot AI für intelligente Interaktionen und Aufgaben.
+*   **Kimi 2:** GitHub-Referenz/Dokumentationsbasis für Kimi-/Moonshot-Workflows. Falls Upstream kein `requirements.txt` oder `pyproject.toml` liefert, wird keine Python-Installation erzwungen.
 *   **Huge Facing (Hugging Face):** Integration von Hugging Face Modellen, entweder lokal über Ollama oder über die Hugging Face Inference API. Ermöglicht den Zugriff auf eine riesige Bibliothek von vortrainierten KI-Modellen.
 
 ## 4. Konfiguration und API-Keys

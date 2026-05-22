@@ -556,7 +556,7 @@ Das Setup bietet eine breite Palette an Tools, die du nach Bedarf installieren u
 
 *   **Ollama:** Lokales LLM-Backend mit flexiblem Modell-Management (z.B. `llama3.2:1b`, `deepseek-coder`, `mistral`). Dient als leistungsstarke lokale KI-Engine für schnelle und datenschutzsensible Anfragen.
 *   **Google Gemini:** Primäres Cloud-LLM mit Fallback zu Ollama. Bietet Zugang zu den neuesten und leistungsstärksten KI-Modellen von Google, mit Ollama als zuverlässiger Notlösung.
-*   **OpenManus:** KI-Agenten-Framework für automatisierte Aufgaben. Ermöglicht die Erstellung und Ausführung intelligenter Agenten, die komplexe Aufgaben selbstständig erledigen.
+*   **OpenManus:** GitHub-basierte Agenten-/Automationsbasis. Der Installer prüft Python-venv, Torch und optionale Build-Fallen wie `flash-attn` vorsichtig und bricht mit Reparaturhinweisen ab, statt kaputte venvs stehenzulassen.
 *   **OpenClaw:** KI-Agenten-Framework mit Reinforcement Learning (RL) und Skill-Integration (z.B. `gcali` für Google Kalender). Eine erweiterte Plattform für lernende KI-Agenten, die sich an neue Situationen anpassen können.
 *   **Clawhub CLI:** Kommandozeilen-Tool zur Interaktion mit Clawhub-Diensten. Vereinfacht die Verwaltung und Steuerung deiner Clawhub-basierten KI-Dienste über die Kommandozeile.
 *   **Clawhub:** Zentraler Server für die Orchestrierung und Verwaltung von KI-Agenten und deren Interaktionen. Bietet eine zentrale Schnittstelle für die Kommunikation und Koordination deiner KI-Agenten.
@@ -570,7 +570,7 @@ Das Setup bietet eine breite Palette an Tools, die du nach Bedarf installieren u
 *   **Huginn:** Open-Source-Agentensystem, das Aktionen im Web automatisiert (ideal für Programmierer-Profil). Ermöglicht das Sammeln, Filtern und Reagieren auf Informationen aus dem Internet.
 *   **FFmpeg:** CLI-Werkzeug für Audio- und Videoverarbeitung. Unterstützt Medienprofile bei Konvertierung, Extraktion und Transcoding.
 *   **Zenbot-trader:** Plattform für automatisierten Krypto-Handel. Ein leistungsstarkes Tool für algorithmischen Handel auf verschiedenen Kryptowährungsbörsen.
-*   **Kimi 2:** KI-Agent von Moonshot AI für intelligente Interaktionen und Aufgaben. Ein fortschrittlicher KI-Assistent, der komplexe Anfragen verstehen und bearbeiten kann.
+*   **Kimi 2:** Lokale GitHub-Referenz/Dokumentationsbasis für Kimi-/Moonshot-Workflows. Der Installer erzwingt keine `requirements.txt`, wenn Upstream aktuell keine Python-Projektstruktur bereitstellt.
 *   **Hugging Face:** Integration von Hugging Face Modellen, entweder lokal über Ollama oder über die Hugging Face Inference API. Ermöglicht den Zugriff auf eine riesige Bibliothek von vortrainierten KI-Modellen.
 *   **Zotero:** Literatur- und Quellenverwaltung für Recherche- und Dokumentations-Workflows, besonders relevant für Rechts- und Wissensprofile.
 *   **Home Assistant Core:** Smart Home Automatisierung. Die zentrale Steuerung für dein Smart Home, die eine Vielzahl von Geräten und Diensten integriert.
@@ -681,7 +681,7 @@ Wichtige Grenze:
 │   │       ├── .env.template
 │   │       └── config.json.template
 │   └── tools/                  # Verzeichnis für Tool-Installations-/Deinstallationsskripte
-│       ├── openmanus_install.sh       # Installiert OpenManus aus GitHub und richtet die Python-Abhängigkeiten ein
+│       ├── openmanus_install.sh       # Installiert OpenManus aus GitHub mit venv-/Torch-/flash-attn-Schutzlogik
 │       ├── openmanus_uninstall.sh     # Entfernt die OpenManus Installation wieder vom System
 │       ├── openclaw_install.sh        # Installiert OpenClaw und baut das Projekt mit pnpm
 │       ├── openclaw_uninstall.sh      # Entfernt die OpenClaw Installation vollständig

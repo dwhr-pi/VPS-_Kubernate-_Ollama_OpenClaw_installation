@@ -13,7 +13,7 @@ Diese Roadmap priorisiert Konsistenz, Sicherheit und belastbare Installationspfa
 ## P1: Coding-, Sandbox- und Browser-Pfade
 
 - `Programmierer`, `AI_Project_Manager`, `Browser_Automation_Agent` und `Repo_Maintainer` funktional durchtesten
-- `Clawhub`, `Clawhub CLI`, `OpenManus`, `OpenHands`, `Aider` und `Playwright` auf WSL2 und VPS sauber abklopfen
+- `Clawhub`, `Clawhub CLI`, `OpenHands`, `Aider` und `Playwright` auf WSL2 und VPS weiter abklopfen. `OpenManus` hat inzwischen eine robustere venv-/Torch-/flash-attn-Installationslogik, bleibt aber abhängig vom aktuellen Upstream-Stand.
 - gemeinsame Status-/Repair-/Dry-Run-Schnittstelle fuer Tool-Skripte definieren
 - Ressourcenchecks fuer grosse Node-/Python-Builds vereinheitlichen
 
