@@ -19,7 +19,8 @@ SMTP_PASSWORD_FILE="$MAIL_CONFIG_DIR/smtp_password"
 MSMTPRC_FILE="$HOME/.msmtprc"
 MSMTP_LOG_FILE="$MAIL_CONFIG_DIR/msmtp.log"
 TEST_MAIL_FILE="$MAIL_CONFIG_DIR/last_test_mail.txt"
-DEFAULT_TEST_TO="ai-chat-to-markdown@web.de"
+# shellcheck disable=SC1091
+source "$INSTALL_DIR/scripts/lib/mail_crypto.sh"
 
 ensure_mail_workspace() {
     mkdir -p "$MAIL_CONFIG_DIR"
@@ -34,31 +35,17 @@ load_mail_settings() {
     SMTP_TLS_STARTTLS="${SMTP_TLS_STARTTLS:-on}"
     SMTP_TLS="${SMTP_TLS:-on}"
     MSMTP_ACCOUNT="${MSMTP_ACCOUNT:-default}"
-    DEFAULT_EMAIL_TO="${DEFAULT_EMAIL_TO:-$DEFAULT_TEST_TO}"
+    DEFAULT_EMAIL_TO="${DEFAULT_EMAIL_TO:-}"
+    load_secure_mail_settings
 
-    if [ -f "$MAIL_SETTINGS_FILE" ]; then
-        # shellcheck disable=SC1090
-        source "$MAIL_SETTINGS_FILE"
+    if [ -n "${DEFAULT_EMAIL_TO:-}" ] && [ -f "$MAIL_SETTINGS_FILE" ] && ! grep -q '^DEFAULT_EMAIL_TO_ENC=' "$MAIL_SETTINGS_FILE"; then
+        echo -e "${YELLOW}Migriere Diagnose-Empfaenger aus Klartext in verschluesselte lokale Config...${NC}" >&2
+        write_secure_mail_settings
     fi
 }
 
 write_mail_settings() {
-    ensure_mail_workspace
-    cat > "$MAIL_SETTINGS_FILE" <<EOF
-# OpenClaw Diagnose-Mail Einstellungen
-# Keine Passwoerter oder Tokens in diese Datei schreiben.
-# Das SMTP-/App-Passwort liegt getrennt in:
-# $SMTP_PASSWORD_FILE
-
-MAIL_FROM="${MAIL_FROM}"
-SMTP_HOST="${SMTP_HOST}"
-SMTP_PORT="${SMTP_PORT}"
-SMTP_TLS="${SMTP_TLS}"
-SMTP_TLS_STARTTLS="${SMTP_TLS_STARTTLS}"
-MSMTP_ACCOUNT="${MSMTP_ACCOUNT}"
-DEFAULT_EMAIL_TO="${DEFAULT_EMAIL_TO}"
-EOF
-    chmod 600 "$MAIL_SETTINGS_FILE" 2>/dev/null || true
+    write_secure_mail_settings
 }
 
 write_msmtprc() {
@@ -104,7 +91,7 @@ edit_mail_settings_dialog() {
     "TLS:" 4 1 "$SMTP_TLS" 4 28 60 10 \
     "STARTTLS:" 5 1 "$SMTP_TLS_STARTTLS" 5 28 60 10 \
     "msmtp Account:" 6 1 "$MSMTP_ACCOUNT" 6 28 60 40 \
-    "Test-Empfaenger:" 7 1 "$DEFAULT_EMAIL_TO" 7 28 60 120 \
+    "Diagnose-Empfaenger:" 7 1 "$DEFAULT_EMAIL_TO" 7 28 60 120 \
     2> "$tmp_form"
 
     if [ $? -ne 0 ]; then
@@ -121,7 +108,7 @@ edit_mail_settings_dialog() {
     SMTP_TLS="${values[3]:-on}"
     SMTP_TLS_STARTTLS="${values[4]:-on}"
     MSMTP_ACCOUNT="${values[5]:-default}"
-    DEFAULT_EMAIL_TO="${values[6]:-$DEFAULT_TEST_TO}"
+    DEFAULT_EMAIL_TO="${values[6]:-}"
 
     if [ -z "$MAIL_FROM" ]; then
         dialog --msgbox "Absenderadresse darf nicht leer sein." 8 70
@@ -132,7 +119,7 @@ edit_mail_settings_dialog() {
     write_msmtprc
     ensure_mail_tools
 
-    dialog --msgbox "E-Mail-Einstellungen wurden gespeichert.\n\nPasswort bitte separat ueber den Passwort-Menuepunkt setzen.\n\nWichtig: Beim E-Mail-Anbieter muss SMTP/IMAP bzw. Drittanbieter-App-Zugriff aktiviert sein." 13 90
+    dialog --msgbox "E-Mail-Einstellungen wurden gespeichert.\n\nDer Diagnose-Empfaenger steht verschluesselt in:\n$MAIL_SETTINGS_FILE\n\nPasswort bitte separat ueber den Passwort-Menuepunkt setzen.\n\nWichtig: Beim E-Mail-Anbieter muss SMTP/IMAP bzw. Drittanbieter-App-Zugriff aktiviert sein." 16 95
 }
 
 edit_password_dialog() {
@@ -169,16 +156,25 @@ send_test_mail() {
         return 1
     fi
 
+    if [ -z "${DEFAULT_EMAIL_TO:-}" ]; then
+        dialog --msgbox "Bitte zuerst einen Diagnose-Empfaenger eintragen." 8 76
+        return 1
+    fi
+
     write_msmtprc
     ensure_mail_workspace
+    local report_id
+    report_id="$(make_diagnostic_report_id "mailtest" "$(date '+%Y%m%d_%H%M%S')")"
     cat > "$TEST_MAIL_FILE" <<EOF
 From: ${MAIL_FROM}
 To: ${DEFAULT_EMAIL_TO}
-Subject: OpenClaw Diagnose-Mailtest
+Subject: [OpenClaw Ultimate Setup][Report:${report_id}] Diagnose-Mailtest
 Content-Type: text/plain; charset=UTF-8
 
 OpenClaw Diagnose-Mailtest
 Datum: $(date '+%Y-%m-%d %H:%M:%S')
+Produkt: ${OPENCLAW_PRODUCT_ID}
+Report-ID: ${report_id}
 
 Diese Testmail enthaelt bewusst keine Installationslogs und keine Diagnoseberichte.
 Sie dient nur zur Pruefung von SMTP, Absenderadresse und Zustellung.
@@ -211,7 +207,11 @@ show_status() {
     echo "MAIL_FROM=${MAIL_FROM:-nicht gesetzt}"
     echo "SMTP_HOST=${SMTP_HOST:-nicht gesetzt}"
     echo "SMTP_PORT=${SMTP_PORT:-nicht gesetzt}"
-    echo "DEFAULT_EMAIL_TO=${DEFAULT_EMAIL_TO:-nicht gesetzt}"
+    if [ -n "${DEFAULT_EMAIL_TO:-}" ]; then
+        echo "DEFAULT_EMAIL_TO=gesetzt (verschluesselt gespeichert)"
+    else
+        echo "DEFAULT_EMAIL_TO=nicht gesetzt"
+    fi
     echo
     command -v msmtp >/dev/null 2>&1 && echo "msmtp: $(command -v msmtp)" || echo "msmtp: fehlt"
     command -v mail >/dev/null 2>&1 && echo "mail:  $(command -v mail)" || echo "mail: fehlt"
@@ -227,7 +227,7 @@ main_menu() {
 
     while true; do
         dialog --clear --backtitle "OpenClaw Ultimate Setup" \
-        --cancel-label "Zurueck" \
+        --cancel-label "↩ Zurück" \
         --title "E-MAIL-DIAGNOSE" \
         --menu "Konfiguration fuer Diagnoseberichte per E-Mail. Keine Secrets im Repo." 22 100 6 \
         "1" ".env-aehnliche SMTP-Einstellungen bearbeiten" \

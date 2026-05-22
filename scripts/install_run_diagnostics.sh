@@ -5,10 +5,13 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 USER_WORKSPACE_DIR="${USER_WORKSPACE_DIR:-$HOME/.openclaw_ultimate_user_data}"
 INSTALL_LOG_DIR="${INSTALL_LOG_DIR:-$USER_WORKSPACE_DIR/install_logs}"
 REPORT_DIR="${REPORT_DIR:-$USER_WORKSPACE_DIR/diagnostic_reports}"
-DEFAULT_EMAIL_TO="${DEFAULT_EMAIL_TO:-ai-chat-to-markdown@web.de}"
+MAIL_SETTINGS_FILE="${MAIL_SETTINGS_FILE:-$USER_WORKSPACE_DIR/mail/mail_settings.env}"
+# shellcheck disable=SC1091
+source "$ROOT_DIR/scripts/lib/mail_crypto.sh"
+load_secure_mail_settings
 LIMIT="${LIMIT:-40}"
 EMAIL_MODE="never"
-EMAIL_TO="$DEFAULT_EMAIL_TO"
+EMAIL_TO="${DEFAULT_EMAIL_TO:-}"
 
 usage() {
   cat <<'EOF'
@@ -32,10 +35,11 @@ while [ "$#" -gt 0 ]; do
       ;;
     --email|--send-email)
       EMAIL_MODE="always"
-      EMAIL_TO="${2:-$DEFAULT_EMAIL_TO}"
       if [ "${2:-}" != "" ] && [[ "${2:-}" != --* ]]; then
+        EMAIL_TO="$2"
         shift 2
       else
+        EMAIL_TO="${DEFAULT_EMAIL_TO:-}"
         shift
       fi
       ;;
@@ -54,7 +58,8 @@ done
 mkdir -p "$REPORT_DIR"
 REPORT_FILE="$REPORT_DIR/$(date '+%Y%m%d_%H%M%S')_install_run_diagnostics.md"
 PATTERN='Hinweis:|Warnung:|Fehler:|ERROR:|Error:|error|failed|fatal|Traceback|Exception|Permission denied|No space left|ENOSPC|ECONNRESET|EAI_AGAIN|ERR_SOCKET_TIMEOUT|ELIFECYCLE|rake aborted!|LoadError|ConnectionError|not found|No such file'
-MAIL_SETTINGS_FILE="${MAIL_SETTINGS_FILE:-$USER_WORKSPACE_DIR/mail/mail_settings.env}"
+REPORT_TIMESTAMP="$(date '+%Y%m%d_%H%M%S')"
+REPORT_ID="$(make_diagnostic_report_id "install-run" "$REPORT_TIMESTAMP")"
 
 redact() {
   sed -E \
@@ -87,12 +92,9 @@ infer_status() {
 send_report_email() {
   local report_file="$1"
   local recipient="$2"
-  local subject="[OpenClaw Setup] Installationslauf-Diagnose $(date '+%Y-%m-%d %H:%M')"
+  local subject="[OpenClaw Ultimate Setup][Report:${REPORT_ID}] Installationslauf-Diagnose $(date '+%Y-%m-%d %H:%M')"
 
-  if [ -f "$MAIL_SETTINGS_FILE" ]; then
-    # shellcheck disable=SC1090
-    source "$MAIL_SETTINGS_FILE"
-  fi
+  load_secure_mail_settings
 
   if command -v msmtp >/dev/null 2>&1 && [ -n "${MAIL_FROM:-}" ]; then
     {
@@ -130,6 +132,8 @@ list_recent_logs() {
   echo "# Installationslauf-Diagnose"
   echo
   echo "- Datum: $(date '+%Y-%m-%d %H:%M:%S')"
+  echo "- Produkt: $OPENCLAW_PRODUCT_ID"
+  echo "- Report-ID: $REPORT_ID"
   echo "- Repo: $ROOT_DIR"
   echo "- Installationslogs: $INSTALL_LOG_DIR"
   echo "- Limit: $LIMIT Logs"
@@ -302,7 +306,9 @@ echo "Installationslauf-Diagnose erstellt: $REPORT_FILE"
 sed -n '1,80p' "$REPORT_FILE"
 
 if [ "$EMAIL_MODE" = "always" ]; then
-  if send_report_email "$REPORT_FILE" "$EMAIL_TO"; then
+  if [ -z "${EMAIL_TO:-}" ]; then
+    echo "Kein Diagnose-Empfaenger konfiguriert. Bericht bleibt lokal: $REPORT_FILE"
+  elif send_report_email "$REPORT_FILE" "$EMAIL_TO"; then
     echo "Installationslauf-Diagnose wurde an $EMAIL_TO uebergeben."
   else
     echo "E-Mail-Versand fehlgeschlagen. Vollbericht bleibt lokal: $REPORT_FILE"

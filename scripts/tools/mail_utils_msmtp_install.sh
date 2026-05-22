@@ -82,8 +82,9 @@ fi
 if [ ! -f "$MAIL_SETTINGS_TEMPLATE" ]; then
     cat > "$MAIL_SETTINGS_TEMPLATE" <<'EOF'
 # OpenClaw Diagnose-Mail Einstellungen
-# Diese Datei bei Bedarf nach ~/.openclaw_ultimate_user_data/mail/mail_settings.env kopieren.
-# Keine Passwoerter oder Tokens in diese Datei schreiben.
+# Diese Datei dient nur als Hinweis. Nutze bevorzugt das Setup-Menue, damit der
+# Diagnose-Empfaenger verschluesselt als DEFAULT_EMAIL_TO_ENC gespeichert wird.
+# Keine Passwoerter, Tokens oder Empfaengeradressen im Klartext ins Repo schreiben.
 
 MAIL_FROM="deine-adresse@web.de"
 MSMTP_ACCOUNT="default"
@@ -136,13 +137,14 @@ Wichtig beim E-Mail-Anbieter:
 Testversand:
 
 ```bash
-printf "From: deine-adresse@web.de\nTo: ai-chat-to-markdown@web.de\nSubject: OpenClaw Diagnose Mailtest\n\nOpenClaw Mailtest\n" | msmtp -a default -f deine-adresse@web.de ai-chat-to-markdown@web.de
+# Empfaenger ueber das Setup-Menue verschluesselt konfigurieren, dann:
+bash ~/openclaw_ultimate_setup/scripts/mail_config_manager.sh
 ```
 
 Diagnosebericht senden:
 
 ```bash
-bash ~/openclaw_ultimate_setup/scripts/tool_log_diagnostics.sh --tool Huginn --email ai-chat-to-markdown@web.de
+bash ~/openclaw_ultimate_setup/scripts/tool_log_diagnostics.sh --tool Huginn --email
 ```
 EOF
 

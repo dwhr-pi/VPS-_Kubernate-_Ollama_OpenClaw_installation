@@ -13,8 +13,11 @@ NC="\033[0m"
 USER_WORKSPACE_DIR="${USER_WORKSPACE_DIR:-$HOME/.openclaw_ultimate_user_data}"
 INSTALL_LOG_DIR="${INSTALL_LOG_DIR:-$USER_WORKSPACE_DIR/install_logs}"
 REPORT_DIR="${REPORT_DIR:-$USER_WORKSPACE_DIR/diagnostic_reports}"
-DEFAULT_EMAIL_TO="${DEFAULT_EMAIL_TO:-ai-chat-to-markdown@web.de}"
 MAIL_SETTINGS_FILE="${MAIL_SETTINGS_FILE:-$USER_WORKSPACE_DIR/mail/mail_settings.env}"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck disable=SC1091
+source "$SCRIPT_DIR/lib/mail_crypto.sh"
+load_secure_mail_settings
 LINE_COUNT="${LINE_COUNT:-220}"
 TOOL_NAME=""
 LOG_FILE=""
@@ -33,8 +36,8 @@ Nutzung:
   bash scripts/tool_log_diagnostics.sh
   bash scripts/tool_log_diagnostics.sh --tool Huginn
   bash scripts/tool_log_diagnostics.sh --log /pfad/zum/log.log
-  bash scripts/tool_log_diagnostics.sh --tool Huginn --email ai-chat-to-markdown@web.de
-  bash scripts/tool_log_diagnostics.sh --log /pfad/zum/log.log --email-now ai-chat-to-markdown@web.de
+  bash scripts/tool_log_diagnostics.sh --tool Huginn --email
+  bash scripts/tool_log_diagnostics.sh --log /pfad/zum/log.log --email-now
   bash scripts/tool_log_diagnostics.sh --tool Huginn --no-email
 
 Fuer mehrere Logs eines Installationslaufs:
@@ -45,9 +48,10 @@ Fuer mehrere Logs eines Installationslaufs:
 Optionen:
   --tool NAME       Toolname im Lognamen, z. B. Huginn, Clawhub_CLI, OpenManus
   --log PFAD        konkreten Log auswerten
-  --email ADRESSE   nach Terminalausgabe E-Mail-Versand an Adresse anbieten
-  --email-now ADRESSE
-                   Diagnosebericht ohne weitere Rueckfrage an Adresse senden
+  --email [ADRESSE] nach Terminalausgabe E-Mail-Versand anbieten
+  --email-now [ADRESSE]
+                   Diagnosebericht ohne weitere Rueckfrage senden
+                   Ohne ADRESSE wird die lokal verschluesselte Config genutzt.
   --no-email        keine E-Mail-Abfrage
   --lines ZAHL      Anzahl gefilterter Treffer
   --no-color        Ausgabe ohne ANSI-Farben
@@ -76,14 +80,24 @@ parse_args() {
                 shift 2
                 ;;
             --email)
-                EMAIL_TO="${2:-$DEFAULT_EMAIL_TO}"
+                if [ "${2:-}" != "" ] && [[ "${2:-}" != --* ]]; then
+                    EMAIL_TO="$2"
+                    shift 2
+                else
+                    EMAIL_TO="${DEFAULT_EMAIL_TO:-}"
+                    shift
+                fi
                 EMAIL_MODE="ask"
-                shift 2
                 ;;
             --email-now|--send-email)
-                EMAIL_TO="${2:-$DEFAULT_EMAIL_TO}"
+                if [ "${2:-}" != "" ] && [[ "${2:-}" != --* ]]; then
+                    EMAIL_TO="$2"
+                    shift 2
+                else
+                    EMAIL_TO="${DEFAULT_EMAIL_TO:-}"
+                    shift
+                fi
                 EMAIL_MODE="always"
-                shift 2
                 ;;
             --no-email)
                 EMAIL_MODE="never"
@@ -148,6 +162,7 @@ redact_sensitive_output() {
 create_report() {
     local log_file="$1"
     local report_file="$2"
+    local report_id="$3"
     local found_matches="true"
 
     mkdir -p "$REPORT_DIR"
@@ -156,7 +171,10 @@ create_report() {
         echo "# Tool-Logdiagnose"
         echo
         echo "- Datum: $(date '+%Y-%m-%d %H:%M:%S')"
+        echo "- Produkt: $OPENCLAW_PRODUCT_ID"
+        echo "- Report-ID: $report_id"
         echo "- Tool: ${TOOL_NAME:-automatisch / alle Tools}"
+        echo "- Log-Datei: $(basename "$log_file")"
         echo "- Log: $log_file"
         echo "- Install-Log-Verzeichnis: $INSTALL_LOG_DIR"
         echo
@@ -192,15 +210,13 @@ print_report() {
 send_report_email() {
     local report_file="$1"
     local recipient="$2"
+    local report_id="$3"
     local subject
     local from_header=()
 
-    subject="[OpenClaw Setup] Tool-Logdiagnose ${TOOL_NAME:-all_tools} $(date '+%Y-%m-%d %H:%M')"
+    subject="[OpenClaw Ultimate Setup][Tool:${TOOL_NAME:-all_tools}][Report:${report_id}] Tool-Logdiagnose $(date '+%Y-%m-%d %H:%M')"
 
-    if [ -f "$MAIL_SETTINGS_FILE" ]; then
-        # shellcheck disable=SC1090
-        source "$MAIL_SETTINGS_FILE"
-    fi
+    load_secure_mail_settings
 
     if [ -n "${MAIL_FROM:-}" ]; then
         from_header=("From: ${MAIL_FROM}")
@@ -248,20 +264,24 @@ send_report_email() {
 
 maybe_send_email() {
     local report_file="$1"
-    if [ -f "$MAIL_SETTINGS_FILE" ]; then
-        # shellcheck disable=SC1090
-        source "$MAIL_SETTINGS_FILE"
-    fi
+    local report_id="$2"
+    load_secure_mail_settings
 
-    local recipient="${EMAIL_TO:-$DEFAULT_EMAIL_TO}"
+    local recipient="${EMAIL_TO:-${DEFAULT_EMAIL_TO:-}}"
     local answer
 
     if [ "$EMAIL_MODE" = "never" ]; then
         return 0
     fi
 
+    if [ -z "$recipient" ]; then
+        echo -e "${YELLOW}Kein Diagnose-Empfaenger konfiguriert. Nutze 'E-Mail-Diagnose Konfiguration' im Setup-Menue.${NC}"
+        echo -e "${YELLOW}Bericht bleibt lokal:${NC} $report_file"
+        return 0
+    fi
+
     if [ "$EMAIL_MODE" = "always" ]; then
-        if send_report_email "$report_file" "$recipient"; then
+        if send_report_email "$report_file" "$recipient" "$report_id"; then
             echo -e "${GREEN}Diagnosebericht wurde an ${recipient} uebergeben.${NC}"
         else
             echo -e "${YELLOW}Diagnosebericht konnte nicht per E-Mail versendet werden. Datei bleibt lokal erhalten:${NC} $report_file"
@@ -273,7 +293,7 @@ maybe_send_email() {
     read -r -p "Diagnosebericht per E-Mail an ${recipient} senden? [j/N]: " answer || true
     case "$answer" in
         j|J|ja|JA|yes|YES|y|Y)
-            if send_report_email "$report_file" "$recipient"; then
+            if send_report_email "$report_file" "$recipient" "$report_id"; then
                 echo -e "${GREEN}Diagnosebericht wurde an ${recipient} uebergeben.${NC}"
             else
                 echo -e "${YELLOW}Diagnosebericht konnte nicht per E-Mail versendet werden. Datei bleibt lokal erhalten:${NC} $report_file"
@@ -286,7 +306,7 @@ maybe_send_email() {
 }
 
 main() {
-    local report_file timestamp safe_name
+    local report_file timestamp safe_name inferred_tool report_id
 
     parse_args "$@"
     strip_colors_if_needed
@@ -310,14 +330,21 @@ main() {
         exit 1
     fi
 
+    if [ -z "$TOOL_NAME" ]; then
+        inferred_tool="$(infer_tool_name_from_log_path "$LOG_FILE")"
+        TOOL_NAME="${inferred_tool:-}"
+    fi
+
     timestamp="$(date '+%Y%m%d_%H%M%S')"
     safe_name="$(safe_report_name)"
+    report_id="$(make_diagnostic_report_id "${TOOL_NAME:-all_tools}" "$timestamp")"
     report_file="$REPORT_DIR/${timestamp}_${safe_name}_diagnostics.md"
 
     echo -e "${GREEN}Ausgewerteter Log:${NC} $LOG_FILE"
-    create_report "$LOG_FILE" "$report_file"
+    echo -e "${GREEN}Report-ID:${NC} $report_id"
+    create_report "$LOG_FILE" "$report_file" "$report_id"
     print_report "$report_file"
-    maybe_send_email "$report_file"
+    maybe_send_email "$report_file" "$report_id"
 }
 
 main "$@"

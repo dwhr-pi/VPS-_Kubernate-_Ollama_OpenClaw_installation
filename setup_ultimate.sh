@@ -1158,7 +1158,7 @@ run_install_log_diagnostics_now() {
 
     clear
     if [ "$email_mode" = "email" ]; then
-        bash "$diagnostics_script" --log "$log_file" --email-now "${DEFAULT_DIAGNOSTIC_EMAIL_TO:-ai-chat-to-markdown@web.de}"
+        bash "$diagnostics_script" --log "$log_file" --email-now
     else
         bash "$diagnostics_script" --log "$log_file" --no-email
     fi
