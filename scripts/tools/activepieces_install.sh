@@ -28,6 +28,38 @@ if command -v apt-get >/dev/null 2>&1; then
     sudo apt-get install -y git ca-certificates curl build-essential unzip
 fi
 
+ensure_node22_for_activepieces() {
+    local node_major=""
+
+    if command -v node >/dev/null 2>&1; then
+        node_major="$(node -p 'process.versions.node.split(".")[0]' 2>/dev/null || true)"
+    fi
+
+    if [ -n "$node_major" ] && [ "$node_major" -ge 22 ] 2>/dev/null; then
+        return 0
+    fi
+
+    echo -e "${YELLOW}Activepieces benoetigt fuer native Abhaengigkeiten eine moderne Node/V8-Toolchain. Gefunden: Node ${node_major:-nicht vorhanden}. Installiere Node.js 22 als System-Build-Abhaengigkeit.${NC}"
+    echo -e "${YELLOW}Hinweis: Activepieces selbst bleibt GitHub-Quelle; Node.js ist hier notwendige Runtime-/Build-Basis.${NC}"
+
+    if ! command -v apt-get >/dev/null 2>&1; then
+        echo -e "${RED}Fehler: apt-get fehlt. Bitte Node.js 22 manuell bereitstellen.${NC}"
+        return 1
+    fi
+
+    curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
+    sudo apt-get install -y nodejs
+    hash -r 2>/dev/null || true
+
+    node_major="$(node -p 'process.versions.node.split(".")[0]' 2>/dev/null || true)"
+    if [ -z "$node_major" ] || [ "$node_major" -lt 22 ] 2>/dev/null; then
+        echo -e "${RED}Fehler: Node.js 22 konnte nicht bereitgestellt werden. Aktuell: $(node --version 2>/dev/null || echo fehlt)${NC}"
+        return 1
+    fi
+}
+
+ensure_node22_for_activepieces || exit 1
+
 install_bun_from_github() {
     local arch
     local bun_zip

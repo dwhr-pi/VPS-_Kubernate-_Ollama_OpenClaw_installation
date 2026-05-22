@@ -160,6 +160,10 @@ ensure_base_apt_packages() {
   done
 
   for package_name in "${REQUIRED_BASE_APT_PACKAGES[@]:-}"; do
+    if [ "$package_name" = "docker-compose-plugin" ]; then
+      log_warn "docker-compose-plugin wird nicht direkt per Ubuntu-apt installiert; Docker Compose wird bei Bedarf als CLI-Plugin aus GitHub bereitgestellt."
+      continue
+    fi
     if ! dpkg -s "$package_name" >/dev/null 2>&1; then
       missing_packages+=("$package_name")
     fi

@@ -318,6 +318,10 @@ status_tracking_install_missing_base_packages() {
     status_tracking_infer_base_packages_from_script "${0:-}"
 
     for package_name in "${STATUS_TRACKING_REQUIRED_APT_PACKAGES[@]:-}"; do
+        if [ "$package_name" = "docker-compose-plugin" ]; then
+            echo -e "\033[1;33mHinweis: docker-compose-plugin wird nicht direkt per Ubuntu-apt installiert; Docker Compose wird bei Bedarf als CLI-Plugin aus GitHub bereitgestellt.\033[0m"
+            continue
+        fi
         if ! dpkg -s "$package_name" >/dev/null 2>&1; then
             missing_packages+=("$package_name")
         fi

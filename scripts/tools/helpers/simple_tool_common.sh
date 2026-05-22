@@ -127,7 +127,7 @@ ensure_docker_compose_available() {
 
   ensure_base_apt_packages git docker.io ca-certificates curl
 
-  if docker compose version >/dev/null 2>&1; then
+  if docker compose version >/dev/null 2>&1 || sudo docker compose version >/dev/null 2>&1; then
     return 0
   fi
 
@@ -151,7 +151,40 @@ ensure_docker_compose_available() {
   sudo curl -fsSL "$compose_url" -o "$plugin_dir/docker-compose"
   sudo chmod 0755 "$plugin_dir/docker-compose"
 
-  docker compose version >/dev/null 2>&1
+  docker compose version >/dev/null 2>&1 || sudo docker compose version >/dev/null 2>&1
+}
+
+run_docker_compose() {
+  if docker compose version >/dev/null 2>&1; then
+    docker compose "$@"
+  else
+    sudo docker compose "$@"
+  fi
+}
+
+clone_or_update_github_source() {
+  local repo_url="$1"
+  local target_dir="$2"
+
+  if [ -d "$target_dir/.git" ]; then
+    if git -C "$target_dir" fetch origin --prune && git -C "$target_dir" pull --ff-only; then
+      return 0
+    fi
+    log_warn "Git-Update fuer $target_dir fehlgeschlagen. Lokale Kopie wird neu geklont."
+    rm -rf "$target_dir"
+  elif [ -e "$target_dir" ]; then
+    log_warn "Unvollstaendige Quelle unter $target_dir gefunden. Raeume vor neuem Clone auf."
+    rm -rf "$target_dir"
+  fi
+
+  log_info "Klone Quelle aus GitHub: $repo_url"
+  if git clone --depth 1 --filter=blob:none "$repo_url" "$target_dir"; then
+    return 0
+  fi
+
+  log_warn "Erster Clone-Versuch fehlgeschlagen. Versuche erneut mit HTTP/1.1 gegen HTTP/2-Abbrueche."
+  rm -rf "$target_dir"
+  git -c http.version=HTTP/1.1 clone --depth 1 --filter=blob:none "$repo_url" "$target_dir"
 }
 
 install_git_docker_tool() {
@@ -165,14 +198,13 @@ install_git_docker_tool() {
     sudo systemctl enable --now docker || true
     sudo mkdir -p "$install_dir"
     sudo chown -R "$USER":"$USER" "$install_dir"
-    if [ ! -d "$install_dir/source/.git" ]; then
-      git clone "$repo_url" "$install_dir/source"
-    else
-      git -C "$install_dir/source" fetch origin --prune
-      git -C "$install_dir/source" pull --ff-only || true
+    if ! clone_or_update_github_source "$repo_url" "$install_dir/source"; then
+      log_error "GitHub-Clone fuer ${tool_name} ist fehlgeschlagen. Docker Compose wird nicht gestartet."
+      end_measurement "failed"
+      return 1
     fi
     printf '%s\n' "$compose_content" > "$install_dir/docker-compose.yml"
-    (cd "$install_dir" && docker compose up -d)
+    (cd "$install_dir" && run_docker_compose up -d)
     mark_tool_installed "$tool_name"
     log_success "${tool_name} installiert."
     end_measurement "success"
@@ -187,7 +219,7 @@ uninstall_git_docker_tool() {
   local install_dir="$2"
   begin_measurement "tool_uninstall_${tool_name}" "Tool deinstallieren: ${tool_name}"
   if [ -f "$install_dir/docker-compose.yml" ]; then
-    (cd "$install_dir" && docker compose down -v) || true
+    (cd "$install_dir" && run_docker_compose down -v) || true
   fi
   rm -rf "$install_dir"
   mark_tool_removed "$tool_name"
