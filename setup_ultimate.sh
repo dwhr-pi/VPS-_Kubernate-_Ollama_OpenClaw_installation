@@ -699,6 +699,27 @@ show_operation_intro() {
     sleep 4
 }
 
+show_tool_action_plan_intro() {
+    local context_label="$1"
+    local uninstall_items="$2"
+    local install_items="$3"
+
+    clear
+    echo
+    echo -e "${YELLOW}Willkommen im ${APP_TITLE}.${NC}"
+    echo -e "${YELLOW}Es startet jetzt: Tool-Management fuer ${context_label}${NC}"
+    echo
+    echo -e "${YELLOW}Was passiert:${NC} Das Setup fuehrt ausgewaehlte Tool-Aenderungen in einer sicheren Reihenfolge aus."
+    echo -e "${YELLOW}Geplante Reihenfolge:${NC}"
+    echo -e "${YELLOW}1. Deinstallationen zuerst:${NC} ${uninstall_items:-${GREEN}(keine)${NC}}"
+    echo -e "${YELLOW}2. Installationen danach:${NC} ${install_items:-${GREEN}(keine)${NC}}"
+    echo
+    echo -e "${YELLOW}Warum diese Reihenfolge:${NC} So wird Speicherplatz vor neuen Downloads, Builds und Container-Images freigegeben."
+    echo -e "${YELLOW}Hinweis:${NC} Bei mehreren Tools erscheinen danach die einzelnen Installationsseiten mit Dauer- und Speicherhinweisen."
+    echo
+    sleep 4
+}
+
 get_profile_required_gb() {
     local profile_key="$1"
 
@@ -1694,12 +1715,10 @@ run_ordered_tool_actions() {
         return 0
     fi
 
-    echo
-    echo -e "${BLUE}Geplante Reihenfolge fuer ${context_label}:${NC}"
-    echo -e "${YELLOW}1. Deinstallationen zuerst:${NC} ${uninstall_queue_ref[*]:-(keine)}"
-    echo -e "${YELLOW}2. Installationen danach:${NC} ${install_queue_ref[*]:-(keine)}"
-    echo -e "${YELLOW}So wird Speicherplatz vor neuen Downloads, Builds und Container-Images freigegeben.${NC}"
-    echo
+    show_tool_action_plan_intro \
+        "$context_label" \
+        "${uninstall_queue_ref[*]}" \
+        "${install_queue_ref[*]}"
 
     for tool_key in "${uninstall_queue_ref[@]}"; do
         [ -n "$tool_key" ] || continue

@@ -25,20 +25,46 @@ echo -e "${YELLOW}Primaerquelle: ${ACTIVEPIECES_REPO_URL}${NC}"
 
 if command -v apt-get >/dev/null 2>&1; then
     sudo apt-get update
-    sudo apt-get install -y git ca-certificates curl build-essential
+    sudo apt-get install -y git ca-certificates curl build-essential unzip
 fi
 
-if ! command -v pnpm >/dev/null 2>&1; then
-    echo -e "${YELLOW}pnpm fehlt. Aktiviere pnpm ueber Corepack/NPM als Build-Werkzeug.${NC}"
-    if command -v corepack >/dev/null 2>&1; then
-        corepack enable
-        corepack prepare pnpm@latest --activate
-    elif command -v npm >/dev/null 2>&1; then
-        sudo npm install -g pnpm
-    else
-        echo -e "${RED}Fehler: Weder pnpm noch corepack/npm gefunden.${NC}"
+install_bun_from_github() {
+    local arch
+    local bun_zip
+    local tmp_dir
+    local bun_url
+
+    arch="$(uname -m)"
+    case "$arch" in
+        x86_64|amd64)
+            bun_zip="bun-linux-x64-baseline.zip"
+            ;;
+        aarch64|arm64)
+            bun_zip="bun-linux-aarch64.zip"
+            ;;
+        *)
+            echo -e "${RED}Fehler: Bun GitHub-Release fuer Architektur '$arch' ist im Installer nicht hinterlegt.${NC}"
+            return 1
+            ;;
+    esac
+
+    bun_url="https://github.com/oven-sh/bun/releases/latest/download/${bun_zip}"
+    tmp_dir="$(mktemp -d)"
+    echo -e "${YELLOW}Bun fehlt. Installiere Bun als Build-Werkzeug aus GitHub-Release:${NC} $bun_url"
+    curl -fsSL "$bun_url" -o "$tmp_dir/bun.zip"
+    unzip -q "$tmp_dir/bun.zip" -d "$tmp_dir"
+    sudo mkdir -p /opt/bun
+    sudo cp "$tmp_dir"/*/bun /opt/bun/bun
+    sudo chmod 0755 /opt/bun/bun
+    sudo ln -sf /opt/bun/bun /usr/local/bin/bun
+    rm -rf "$tmp_dir"
+}
+
+if ! command -v bun >/dev/null 2>&1; then
+    install_bun_from_github || {
+        echo -e "${RED}Fehler: Bun konnte nicht installiert werden. Activepieces verlangt laut Upstream Bun.${NC}"
         exit 1
-    fi
+    }
 fi
 
 clone_activepieces() {
@@ -86,18 +112,24 @@ if [ ! -f package.json ]; then
     exit 1
 fi
 
-# 2. Abhängigkeiten installieren mit pnpm
-echo -e "${BLUE}Installiere Abhängigkeiten für Activepieces mit pnpm...${NC}"
-if ! pnpm install; then
-    echo -e "${RED}Fehler: pnpm install für Activepieces fehlgeschlagen.${NC}"
+export NPM_TOKEN="${NPM_TOKEN:-}"
+
+# 2. Abhängigkeiten installieren mit Bun
+echo -e "${BLUE}Installiere Abhängigkeiten für Activepieces mit Bun...${NC}"
+if ! bun install; then
+    echo -e "${RED}Fehler: bun install für Activepieces fehlgeschlagen.${NC}"
     exit 1
 fi
 
 # 3. Activepieces bauen
-echo -e "${BLUE}Baue Activepieces mit pnpm...${NC}"
-if ! pnpm build; then
-    echo -e "${RED}Fehler: pnpm build für Activepieces fehlgeschlagen.${NC}"
-    exit 1
+echo -e "${BLUE}Baue Activepieces mit Bun...${NC}"
+if bun run | grep -qE '(^|[[:space:]])build([[:space:]]|$)'; then
+    if ! bun run build; then
+        echo -e "${RED}Fehler: bun run build für Activepieces fehlgeschlagen.${NC}"
+        exit 1
+    fi
+else
+    echo -e "${YELLOW}Hinweis: Kein root-build Script gefunden. Abhaengigkeiten wurden installiert, Start/Build kann projektbezogen erfolgen.${NC}"
 fi
 
 # 4. Konfiguration und Start (Platzhalter)
