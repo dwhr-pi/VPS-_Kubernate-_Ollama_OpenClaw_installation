@@ -46,9 +46,44 @@ fi
 
 echo -e "${BLUE}Baue Act CLI...${NC}"
 cd "$ACT_DIR"
-if ! go build -o act ./cmd/act; then
+
+build_act_from_source() {
+    local target
+    local build_targets=(
+        "."
+        "./cmd"
+        "./cmd/act"
+    )
+
+    for target in "${build_targets[@]}"; do
+        if go list "$target" >/dev/null 2>&1; then
+            echo -e "${BLUE}Versuche Go-Build-Ziel: ${target}${NC}"
+            if go build -o act "$target"; then
+                return 0
+            fi
+        fi
+    done
+
+    echo -e "${YELLOW}Bekannte Build-Ziele haben nicht gepasst. Suche nach main-Packages...${NC}"
+    while IFS= read -r target; do
+        [ -n "$target" ] || continue
+        echo -e "${BLUE}Versuche gefundenes main-Package: ${target}${NC}"
+        if go build -o act "$target"; then
+            return 0
+        fi
+    done < <(go list ./... 2>/dev/null | while IFS= read -r package_name; do
+        if [ "$(go list -f '{{.Name}}' "$package_name" 2>/dev/null)" = "main" ]; then
+            printf '%s\n' "$package_name"
+        fi
+    done)
+
+    return 1
+}
+
+if ! build_act_from_source; then
     echo -e "${RED}Fehler: Act konnte nicht aus dem GitHub-Quellcode gebaut werden.${NC}"
-    echo -e "${YELLOW}Hinweis: Prüfe, ob die Ubuntu-Go-Version für den aktuellen Act-Upstream ausreicht.${NC}"
+    echo -e "${YELLOW}Hinweis: Der aktuelle Act-Upstream hat offenbar eine geaenderte Go-Struktur oder benoetigt eine neuere Go-Toolchain.${NC}"
+    echo -e "${YELLOW}Debug-Hinweis: Im Repository kannst du mit 'go list ./...' die verfuegbaren Go-Packages pruefen.${NC}"
     exit 1
 fi
 

@@ -425,7 +425,7 @@ show_wsl_windows_space_warning() {
     windows_free_kb="$(get_windows_host_free_kb)"
     [ -n "$windows_free_kb" ] || return 0
 
-    echo -e "${YELLOW}Freier Windows-Host-Speicher (${WINDOWS_HOST_DRIVE:-C}:):${NC} $(format_kb_human "$windows_free_kb")"
+    echo -e "${YELLOW}Freier Windows-Host-Speicher (${WINDOWS_HOST_DRIVE:-C}:):${NC} ${GREEN}$(format_kb_human "$windows_free_kb")${NC}"
     echo -e "${YELLOW}Hinweis:${NC} Die WSL-Zahl oben ist die freie Kapazitaet im Linux-Dateisystem bzw. Mountpoint, nicht automatisch die freie Kapazitaet deiner gesamten Windows-Festplatten. Wenn WSL auf ${WINDOWS_HOST_DRIVE:-C}: liegt, begrenzt der Windows-Host-Speicher praktisch, wie stark die WSL-VHDX noch wachsen kann."
 
     absolute_min_kb=$(( ${MIN_FREE_GB_ABSOLUTE:-50} * 1024 * 1024 ))
