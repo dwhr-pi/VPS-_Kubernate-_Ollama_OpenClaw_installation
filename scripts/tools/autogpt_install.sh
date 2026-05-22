@@ -15,6 +15,8 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 INSTALL_DIR="${INSTALL_DIR:-$(cd "$SCRIPT_DIR/../.." && pwd)}"
 # shellcheck disable=SC1091
 source "$INSTALL_DIR/scripts/helpers/status_tracking.sh"
+# shellcheck disable=SC1091
+source "$INSTALL_DIR/scripts/tools/helpers/simple_tool_common.sh"
 init_tool_tracking "AutoGPT"
 
 AUTOGPT_DIR="/opt/autogpt"
@@ -56,17 +58,7 @@ else
 fi
 
 echo -e "${BLUE}Prüfe Docker-Abhängigkeiten für AutoGPT...${NC}"
-if ! command -v docker >/dev/null 2>&1; then
-    echo -e "${YELLOW}Docker nicht gefunden, installiere docker.io...${NC}"
-    sudo apt update
-    sudo apt install -y docker.io
-fi
-
-if ! sudo docker compose version >/dev/null 2>&1; then
-    echo -e "${YELLOW}Docker Compose Plugin nicht gefunden, installiere docker-compose-plugin...${NC}"
-    sudo apt update
-    sudo apt install -y docker-compose-plugin
-fi
+ensure_docker_compose_available
 
 if ! command -v make >/dev/null 2>&1; then
     echo -e "${YELLOW}make nicht gefunden, installiere build-essential...${NC}"

@@ -120,6 +120,40 @@ uninstall_git_node_tool() {
   end_measurement "success"
 }
 
+ensure_docker_compose_available() {
+  local arch
+  local compose_url
+  local plugin_dir="/usr/local/lib/docker/cli-plugins"
+
+  ensure_base_apt_packages git docker.io ca-certificates curl
+
+  if docker compose version >/dev/null 2>&1; then
+    return 0
+  fi
+
+  arch="$(uname -m)"
+  case "$arch" in
+    x86_64|amd64)
+      arch="x86_64"
+      ;;
+    aarch64|arm64)
+      arch="aarch64"
+      ;;
+    *)
+      log_error "Docker Compose GitHub-Release fuer Architektur '$arch' ist im Installer nicht hinterlegt."
+      return 1
+      ;;
+  esac
+
+  compose_url="https://github.com/docker/compose/releases/latest/download/docker-compose-linux-${arch}"
+  log_warn "docker-compose-plugin ist nicht auf jedem Ubuntu-Repo verfuegbar. Installiere Docker Compose als CLI-Plugin aus GitHub: ${compose_url}"
+  sudo mkdir -p "$plugin_dir"
+  sudo curl -fsSL "$compose_url" -o "$plugin_dir/docker-compose"
+  sudo chmod 0755 "$plugin_dir/docker-compose"
+
+  docker compose version >/dev/null 2>&1
+}
+
 install_git_docker_tool() {
   local tool_name="$1"
   local repo_url="$2"
@@ -127,7 +161,7 @@ install_git_docker_tool() {
   local compose_content="$4"
   begin_measurement "tool_install_${tool_name}" "Tool installieren: ${tool_name}"
   if ensure_user_workspace && require_disk_mb 2048 /; then
-    ensure_base_apt_packages git docker.io docker-compose-plugin
+    ensure_docker_compose_available
     sudo systemctl enable --now docker || true
     sudo mkdir -p "$install_dir"
     sudo chown -R "$USER":"$USER" "$install_dir"
