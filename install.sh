@@ -394,7 +394,28 @@ if [ -d "$INSTALL_DIR" ]; then
                 exit 1
             fi
         else
+            LOCAL_SHA_BEFORE="$(git rev-parse --short HEAD)"
+            REMOTE_SHA_BEFORE="$(git rev-parse --short origin/main)"
+            BEHIND_BEFORE="$(git rev-list --count HEAD..origin/main)"
+            AHEAD_BEFORE="$(git rev-list --count origin/main..HEAD)"
+            if [ "$BEHIND_BEFORE" -gt 0 ] && [ "$AHEAD_BEFORE" -eq 0 ]; then
+                echo -e "${YELLOW}Vor Update: lokaler Stand war ${BEHIND_BEFORE} Commit(s) hinter origin/main.${NC}"
+            elif [ "$BEHIND_BEFORE" -eq 0 ] && [ "$AHEAD_BEFORE" -eq 0 ]; then
+                echo -e "${GREEN}Vor Update: lokaler Stand war bereits aktuell (${LOCAL_SHA_BEFORE}).${NC}"
+            else
+                echo -e "${YELLOW}Vor Update: lokaler Stand wich von origin/main ab (lokal ${LOCAL_SHA_BEFORE}, remote ${REMOTE_SHA_BEFORE}; ahead ${AHEAD_BEFORE}, behind ${BEHIND_BEFORE}).${NC}"
+            fi
             git pull --ff-only origin main
+            echo -e "${GREEN}Update ausgefuehrt.${NC}"
+            LOCAL_SHA_AFTER="$(git rev-parse --short HEAD)"
+            REMOTE_SHA_AFTER="$(git rev-parse --short origin/main)"
+            BEHIND_AFTER="$(git rev-list --count HEAD..origin/main)"
+            AHEAD_AFTER="$(git rev-list --count origin/main..HEAD)"
+            if [ "$LOCAL_SHA_AFTER" = "$REMOTE_SHA_AFTER" ]; then
+                echo -e "${GREEN}Nach Update: lokaler Stand ist jetzt aktuell bei ${LOCAL_SHA_AFTER}.${NC}"
+            else
+                echo -e "${YELLOW}Nach Update: lokaler Stand ist noch nicht identisch mit origin/main (lokal ${LOCAL_SHA_AFTER}, remote ${REMOTE_SHA_AFTER}; ahead ${AHEAD_AFTER}, behind ${BEHIND_AFTER}).${NC}"
+            fi
         fi
     else
         echo -e "${RED}${TXT_REMOTE_MAIN_MISSING}${NC}"

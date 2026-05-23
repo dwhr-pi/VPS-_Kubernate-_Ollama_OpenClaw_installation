@@ -446,6 +446,20 @@ format_duration_human() {
     fi
 }
 
+format_duration_hhmmss() {
+    local total_seconds="${1:-}"
+
+    if ! [[ "$total_seconds" =~ ^[0-9]+$ ]]; then
+        printf '%s' "--:--:--"
+        return 0
+    fi
+
+    printf '%02d:%02d:%02d' \
+        "$((total_seconds / 3600))" \
+        "$(((total_seconds % 3600) / 60))" \
+        "$((total_seconds % 60))"
+}
+
 highlight_time_value() {
     local value="$1"
     printf '%b%s%b' "$WHITE" "$value" "$NC"
@@ -468,6 +482,17 @@ format_kb_human() {
     fi
 }
 
+format_kb_mb_value() {
+    local total_kb="${1:-}"
+
+    if ! [[ "$total_kb" =~ ^-?[0-9]+$ ]]; then
+        printf '%s' "--.- MB"
+        return 0
+    fi
+
+    awk -v kb="$total_kb" 'BEGIN {printf "%.1f MB", kb/1024}'
+}
+
 get_last_success_metric_field() {
     local operation_id="$1"
     local field_index="$2"
@@ -485,6 +510,120 @@ get_last_success_metric_field() {
             }
         }
     ' "$METRICS_HISTORY_FILE"
+}
+
+get_operation_metric_summary_plain() {
+    local operation_id="$1"
+    local duration_seconds
+    local delta_kb
+
+    duration_seconds="$(get_last_success_metric_field "$operation_id" 5)"
+    delta_kb="$(get_last_success_metric_field "$operation_id" 8)"
+
+    printf '%s | %s' "$(format_duration_hhmmss "$duration_seconds")" "$(format_kb_mb_value "$delta_kb")"
+}
+
+summarize_operation_metrics_plain() {
+    local operation_kind="$1"
+    shift
+    local total_seconds=0
+    local total_kb=0
+    local missing_duration=0
+    local missing_storage=0
+    local item
+    local operation_id
+    local duration_seconds
+    local delta_kb
+
+    for item in "$@"; do
+        [ -n "$item" ] || continue
+        operation_id="${operation_kind}_${item}"
+        duration_seconds="$(get_last_success_metric_field "$operation_id" 5)"
+        delta_kb="$(get_last_success_metric_field "$operation_id" 8)"
+
+        if [[ "$duration_seconds" =~ ^[0-9]+$ ]]; then
+            total_seconds=$((total_seconds + duration_seconds))
+        else
+            missing_duration=1
+        fi
+
+        if [[ "$delta_kb" =~ ^-?[0-9]+$ ]]; then
+            total_kb=$((total_kb + delta_kb))
+        else
+            missing_storage=1
+        fi
+    done
+
+    if [ "$missing_duration" -eq 1 ]; then
+        printf '%s' "--:--:--"
+    else
+        format_duration_hhmmss "$total_seconds"
+    fi
+    printf ' | '
+    if [ "$missing_storage" -eq 1 ]; then
+        printf '%s' "--.- MB"
+    else
+        format_kb_mb_value "$total_kb"
+    fi
+}
+
+summarize_tool_batch_metrics_plain() {
+    local -n uninstall_ref="$1"
+    local -n install_ref="$2"
+    local total_seconds=0
+    local total_kb=0
+    local missing_duration=0
+    local missing_storage=0
+    local item
+    local operation_id
+    local duration_seconds
+    local delta_kb
+
+    for item in "${uninstall_ref[@]}"; do
+        [ -n "$item" ] || continue
+        operation_id="tool_uninstall_${item}"
+        duration_seconds="$(get_last_success_metric_field "$operation_id" 5)"
+        delta_kb="$(get_last_success_metric_field "$operation_id" 8)"
+        if [[ "$duration_seconds" =~ ^[0-9]+$ ]]; then
+            total_seconds=$((total_seconds + duration_seconds))
+        else
+            missing_duration=1
+        fi
+        if [[ "$delta_kb" =~ ^-?[0-9]+$ ]]; then
+            total_kb=$((total_kb + delta_kb))
+        else
+            missing_storage=1
+        fi
+    done
+
+    for item in "${install_ref[@]}"; do
+        [ -n "$item" ] || continue
+        operation_id="tool_install_${item}"
+        duration_seconds="$(get_last_success_metric_field "$operation_id" 5)"
+        delta_kb="$(get_last_success_metric_field "$operation_id" 8)"
+        if [[ "$duration_seconds" =~ ^[0-9]+$ ]]; then
+            total_seconds=$((total_seconds + duration_seconds))
+        else
+            missing_duration=1
+        fi
+        if [[ "$delta_kb" =~ ^-?[0-9]+$ ]]; then
+            total_kb=$((total_kb + delta_kb))
+        else
+            missing_storage=1
+        fi
+    done
+
+    if [ "$missing_duration" -eq 1 ]; then
+        printf '%s' "--:--:--"
+    else
+        format_duration_hhmmss "$total_seconds"
+    fi
+    printf ' | '
+    if [ "$missing_storage" -eq 1 ]; then
+        printf '%s' "--.- MB"
+    else
+        format_kb_mb_value "$total_kb"
+    fi
 }
 
 get_operation_duration_estimate_label() {
@@ -703,6 +842,17 @@ show_tool_action_plan_intro() {
     local context_label="$1"
     local uninstall_items="$2"
     local install_items="$3"
+    local -a uninstall_array=()
+    local -a install_array=()
+    local uninstall_summary
+    local install_summary
+    local combined_summary
+
+    read -r -a uninstall_array <<< "$uninstall_items"
+    read -r -a install_array <<< "$install_items"
+    uninstall_summary="$(summarize_operation_metrics_plain "tool_uninstall" "${uninstall_array[@]}")"
+    install_summary="$(summarize_operation_metrics_plain "tool_install" "${install_array[@]}")"
+    combined_summary="$(summarize_tool_batch_metrics_plain uninstall_array install_array)"
 
     clear
     echo
@@ -713,6 +863,12 @@ show_tool_action_plan_intro() {
     echo -e "${YELLOW}Geplante Reihenfolge:${NC}"
     echo -e "${YELLOW}1. Deinstallationen zuerst:${NC} ${uninstall_items:-${GREEN}(keine)${NC}}"
     echo -e "${YELLOW}2. Installationen danach:${NC} ${install_items:-${GREEN}(keine)${NC}}"
+    echo
+    echo -e "${YELLOW}Ermittelte Werte:${NC}"
+    echo -e "${YELLOW}Deinstallationen gesamt:${NC} ${uninstall_summary}"
+    echo -e "${YELLOW}Installationen gesamt:${NC} ${install_summary}"
+    echo -e "${YELLOW}Geplante Aenderungen gesamt:${NC} ${combined_summary}"
+    echo -e "${YELLOW}Fehlende Werte:${NC} Zeit ${WHITE}--:--:--${NC}, Speicher ${WHITE}--.- MB${NC}"
     echo
     echo -e "${YELLOW}Warum diese Reihenfolge:${NC} So wird Speicherplatz vor neuen Downloads, Builds und Container-Images freigegeben."
     echo -e "${YELLOW}Hinweis:${NC} Bei mehreren Tools erscheinen danach die einzelnen Installationsseiten mit Dauer- und Speicherhinweisen."
@@ -1917,16 +2073,20 @@ show_profile_management_menu() {
     PROFILE_MENU_OPTIONS=()
     for profile_key in "${PROFILE_KEYS[@]}"; do
         local profile_status_text="Nicht installiert"
+        local profile_metric_summary
+        local profile_storage_summary
         if [ -n "$profile_key" ] && [ "${INSTALLED_PROFILES_MAP[$profile_key]:-}" = "1" ]; then
             profile_status_text="Installiert"
         fi
-        PROFILE_MENU_OPTIONS+=("$profile_key" "[$profile_status_text] ${PROFILES[$profile_key]}")
+        profile_metric_summary="$(get_operation_metric_summary_plain "profile_install_${profile_key}")"
+        profile_storage_summary="$(printf '%s' "$profile_metric_summary" | awk -F'|' '{gsub(/^ +| +$/, "", $2); print $2}')"
+        PROFILE_MENU_OPTIONS+=("$profile_key" "[$profile_status_text] ${profile_metric_summary} | Speicher gesamt: ${profile_storage_summary} | ${PROFILES[$profile_key]}")
     done
 
     while true; do
         dialog --clear --backtitle "$APP_TITLE" \
         --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
-        --title "PROFIL-MANAGEMENT" --menu "Wählen Sie ein Profil für die Detailansicht. Dort können Sie das Gesamtprofil oder einzelne enthaltene Tools installieren bzw. deinstallieren:" 28 108 18 \
+        --title "PROFIL-MANAGEMENT" --menu "Wählen Sie ein Profil. Format je Profil: Zeit hh:mm:ss | Speicher MB. Fehlende Werte: --:--:-- | --.- MB. In der Detailansicht können Gesamtprofil oder Einzeltools verwaltet werden:" 28 120 18 \
         "${PROFILE_MENU_OPTIONS[@]}" \
         "ZURUECK" "${TXT_BACK_ITEM:-Zurück} zum Profil-Hub" 2> /tmp/profile_selection
 
@@ -1949,10 +2109,14 @@ show_profile_management_menu() {
         PROFILE_MENU_OPTIONS=()
         for profile_key in "${PROFILE_KEYS[@]}"; do
             local refreshed_status_text="Nicht installiert"
+            local refreshed_metric_summary
+            local refreshed_storage_summary
             if [ -n "$profile_key" ] && [ "${INSTALLED_PROFILES_MAP[$profile_key]:-}" = "1" ]; then
                 refreshed_status_text="Installiert"
             fi
-            PROFILE_MENU_OPTIONS+=("$profile_key" "[$refreshed_status_text] ${PROFILES[$profile_key]}")
+            refreshed_metric_summary="$(get_operation_metric_summary_plain "profile_install_${profile_key}")"
+            refreshed_storage_summary="$(printf '%s' "$refreshed_metric_summary" | awk -F'|' '{gsub(/^ +| +$/, "", $2); print $2}')"
+            PROFILE_MENU_OPTIONS+=("$profile_key" "[$refreshed_status_text] ${refreshed_metric_summary} | Speicher gesamt: ${refreshed_storage_summary} | ${PROFILES[$profile_key]}")
         done
     done
 }
@@ -2567,16 +2731,20 @@ show_tool_management_menu() {
     TOOL_CHECKLIST_OPTIONS=()
     for tool_key in "${TOOL_KEYS[@]}"; do
         STATUS="off"
+        local tool_metric_summary
+        local tool_storage_summary
         if [ -n "$tool_key" ] && [ "${INSTALLED_TOOLS_MAP[$tool_key]:-}" = "1" ]; then
             STATUS="on"
             installed_tool_count=$((installed_tool_count + 1))
         fi
-        TOOL_CHECKLIST_OPTIONS+=("$tool_key" "${TOOLS[$tool_key]}" "$STATUS")
+        tool_metric_summary="$(get_operation_metric_summary_plain "tool_install_${tool_key}")"
+        tool_storage_summary="$(printf '%s' "$tool_metric_summary" | awk -F'|' '{gsub(/^ +| +$/, "", $2); print $2}')"
+        TOOL_CHECKLIST_OPTIONS+=("$tool_key" "${tool_metric_summary} | Speicher gesamt: ${tool_storage_summary} | ${TOOLS[$tool_key]}" "$STATUS")
     done
 
     dialog --clear --backtitle "$APP_TITLE" \
     --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
-    --title "TOOL-MANAGEMENT (${installed_tool_count}/${total_tool_count} installiert)" --checklist "(*) = behalten oder installieren. Leer = bei installierten Tools deinstallieren. Ausführung: erst Deinstallationen, danach Installationen. Gesamt: ${total_tool_count} | Installiert: ${installed_tool_count}" 32 110 24 \
+    --title "TOOL-MANAGEMENT (${installed_tool_count}/${total_tool_count} installiert)" --checklist "(*) = behalten oder installieren. Format je Tool: Zeit hh:mm:ss | Speicher MB. Fehlende Werte: --:--:-- | --.- MB. Ausführung: erst Deinstallationen, danach Installationen. Gesamt: ${total_tool_count} | Installiert: ${installed_tool_count}" 32 120 24 \
     "${TOOL_CHECKLIST_OPTIONS[@]}" 2> /tmp/tool_selection
 
     if [ $? -ne 0 ]; then
