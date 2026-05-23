@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
-ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
-source "$ROOT_DIR/scripts/tools/helpers/simple_tool_common.sh"
-install_apt_tool "Tesseract" tesseract-ocr
+
+echo "Tesseract OCR ist als Basis-/Systemtool registriert."
+echo "Installation bewusst ueber apt: sudo apt install -y tesseract-ocr tesseract-ocr-deu tesseract-ocr-eng"
+echo "Primaerquellen-Regel: apt ist hier fuer System-/OCR-Basisabhaengigkeiten erlaubt."
+

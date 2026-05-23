@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
-ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
-source "$ROOT_DIR/scripts/tools/helpers/simple_tool_common.sh"
-install_apt_tool "Syncthing" syncthing
+
+echo "Syncthing ist als geplantes Sync-Tool registriert."
+echo "Primaerquelle: https://github.com/syncthing/syncthing"
+echo "Kein automatischer Start: Kopplung von Geraeten und Web-GUI-Absicherung muessen bewusst erfolgen."
+

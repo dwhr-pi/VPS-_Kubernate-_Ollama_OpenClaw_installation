@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
-ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
-source "$ROOT_DIR/scripts/tools/helpers/simple_tool_common.sh"
-uninstall_apt_tool "Syncthing" syncthing
+
+echo "Syncthing wird nicht automatisch entfernt."
+echo "Vor Entfernung Sync-Ziele und lokale Ordner pruefen."
+
