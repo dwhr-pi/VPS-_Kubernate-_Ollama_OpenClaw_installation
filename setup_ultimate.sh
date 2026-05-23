@@ -493,23 +493,59 @@ format_kb_mb_value() {
     awk -v kb="$total_kb" 'BEGIN {printf "%.1f MB", kb/1024}'
 }
 
+declare -A METRIC_CACHE_DURATION_SECONDS
+declare -A METRIC_CACHE_DELTA_KB
+METRIC_CACHE_LOADED=0
+
+load_metric_cache_once() {
+    local timestamp
+    local operation_id
+    local operation_title
+    local status
+    local duration_seconds
+    local free_kb_before
+    local free_kb_after
+    local delta_kb
+
+    if [ "${METRIC_CACHE_LOADED:-0}" = "1" ]; then
+        return 0
+    fi
+
+    METRIC_CACHE_DURATION_SECONDS=()
+    METRIC_CACHE_DELTA_KB=()
+    ensure_user_workspace
+    if [ -f "$METRICS_HISTORY_FILE" ]; then
+        while IFS=$'\t' read -r timestamp operation_id operation_title status duration_seconds free_kb_before free_kb_after delta_kb; do
+            [ "$operation_id" != "operation_id" ] || continue
+            [ "$status" = "success" ] || continue
+            [ -n "$operation_id" ] || continue
+            METRIC_CACHE_DURATION_SECONDS["$operation_id"]="$duration_seconds"
+            METRIC_CACHE_DELTA_KB["$operation_id"]="$delta_kb"
+        done < "$METRICS_HISTORY_FILE"
+    fi
+    METRIC_CACHE_LOADED=1
+}
+
+invalidate_metric_cache() {
+    METRIC_CACHE_LOADED=0
+}
+
 get_last_success_metric_field() {
     local operation_id="$1"
     local field_index="$2"
 
-    ensure_user_workspace
-    [ -f "$METRICS_HISTORY_FILE" ] || return 1
-
-    awk -F'\t' -v opid="$operation_id" -v field="$field_index" '
-        NR > 1 && $2 == opid && $4 == "success" {
-            value = $field
-        }
-        END {
-            if (value != "") {
-                print value
-            }
-        }
-    ' "$METRICS_HISTORY_FILE"
+    load_metric_cache_once
+    case "$field_index" in
+        5)
+            printf '%s' "${METRIC_CACHE_DURATION_SECONDS[$operation_id]:-}"
+            ;;
+        8)
+            printf '%s' "${METRIC_CACHE_DELTA_KB[$operation_id]:-}"
+            ;;
+        *)
+            return 1
+            ;;
+    esac
 }
 
 get_operation_metric_summary_plain() {
@@ -791,6 +827,7 @@ end_operation_measurement() {
         "${ACTIVE_OPERATION_FREE_KB_BEFORE:-0}" \
         "${free_kb_after:-0}" \
         "$delta_kb" >> "$METRICS_HISTORY_FILE"
+    invalidate_metric_cache
 
     ensure_metrics_config
     metric_prefix="LAST_$(operation_id_to_metric_prefix "${ACTIVE_OPERATION_ID:-unknown}")"
