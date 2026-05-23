@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
-ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
-source "$ROOT_DIR/scripts/lib/common.sh"
-for s in appsmith budibase nocodb directus open_webui; do [ -f "$ROOT_DIR/scripts/tools/${s}_install.sh" ] && bash "$ROOT_DIR/scripts/tools/${s}_install.sh"; done
-mark_profile_installed "Local_AI_App_Builder"
+
+echo "Profil Local_AI_App_Builder ist als planned registriert."
+echo "Keine globalen Node-/Desktop-Stacks werden ungefragt installiert."
+echo "Empfohlene Bausteine: Node.js LTS, pnpm/Corepack, Vite, React, Playwright, Tauri/Electron optional."
+

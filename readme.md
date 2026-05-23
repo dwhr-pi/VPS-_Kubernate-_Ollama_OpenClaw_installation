@@ -1,5 +1,23 @@
 # VPS- Kubernate- Ollama & OpenClaw installation - Ultimate Setup V11.17
 
+## Aktuelle Governance-Dokumente
+
+- [Setup Review und naechste Schritte](docs/SETUP_REVIEW_AND_NEXT_STEPS.md)
+- [Setup Review 2026 - Next Actions](docs/SETUP_REVIEW_2026_NEXT_ACTIONS.md)
+- [Installationspfade](docs/INSTALLATION_PATHS.md)
+- [Installation Wizard](docs/INSTALLATION_WIZARD.md)
+- [Recommended First Install](docs/RECOMMENDED_FIRST_INSTALL.md)
+- [Profile Packages](docs/PROFILE_PACKAGES.md)
+- [Tested Status Matrix](docs/TESTED_STATUS_MATRIX.md)
+- [Security Baseline](docs/SECURITY_BASELINE.md)
+- [GitHub Tool Sources](docs/GITHUB_TOOL_SOURCES.md)
+- [WSL2/OpenClaw/Ollama Troubleshooting](docs/TROUBLESHOOTING_WSL2_OPENCLAW_OLLAMA.md)
+- [WSL2 Troubleshooting](docs/TROUBLESHOOTING_WSL2.md)
+- [OpenClaw Troubleshooting](docs/TROUBLESHOOTING_OPENCLAW.md)
+- [Ollama Troubleshooting](docs/TROUBLESHOOTING_OLLAMA.md)
+
+Neue Profile ab `11.17` sind bewusst als `planned` registriert. Sie sind sichtbar, aber starten keine schweren Toolchains ohne explizite Tool-Auswahl.
+
 Dies ist das ultimative Setup für ein hybrides KI- und Smart-Home-System, das deinen Letsung MiniPC (WSL2) und mehrere kostenlose VPS kombiniert. Es integriert eine Vielzahl von Tools und KI-Agenten, die direkt aus GitHub-Quellen kompiliert oder lokal aufgebaut werden.
 
 ## 🧱 Zielbild
@@ -27,6 +45,8 @@ Wichtige Uebersichten:
 - [Setup Review und Verbesserungsplan](docs/SETUP_REVIEW_AND_IMPROVEMENT_PLAN.md)
 - [Profilmatrix](docs/PROFILE_MATRIX.md)
 - [Toolmatrix](docs/TOOL_MATRIX.md)
+- [Tool Deployment Matrix](docs/TOOL_DEPLOYMENT_MATRIX.md)
+- [GitHub Tool Sources](docs/GITHUB_TOOL_SOURCES.md)
 - [Portmatrix](docs/PORT_MATRIX.md)
 - [Sicherheitsmodell](docs/SECURITY_MODEL.md)
 - [Secret Handling](docs/SECRET_HANDLING.md)

@@ -166,6 +166,25 @@ Diese Pfade wurden geprueft, aber wegen Profilueberlappung oder noch fehlender s
 | `Personal_Knowledge_OS` | persönliche Wissensdatenbank und Sync | `Personal_Knowledge_OS.md` |
 | `Repo_Maintainer` | Repo-Pflege, Lints, Releases, Actions | `Repo_Maintainer.md` |
 
+## Geplante 11.17-Dachprofile
+
+Diese Profile sind bewusst als Dachprofile registriert. Spezialnamen werden in `profiles.json` als Alias gefuehrt, damit das Setup nicht mit Dubletten ueberlaedt.
+
+| Profil | Zweck | Datei |
+|---|---|---|
+| `Local_AI_Office_Suite` | lokale Office-, PDF-, OCR- und Dokumenten-KI | `Local_AI_Office_Suite.md` |
+| `Android_AI_App_Lab` | Android-Building, Analyse, adb/apktool/jadx und myBOX-Ideen | `Android_AI_App_Lab.md` |
+| `Privacy_First_Cloud_Sync` | Cloud-/WebDAV-/Sync-/Backup-Pfade mit Datenschutzfokus | `Privacy_First_Cloud_Sync.md` |
+| `Personal_Memory_Knowledge_OS` | lokale Memory-, Import-/Export- und RAG-Zentrale | `Personal_Memory_Knowledge_OS.md` |
+| `AI_Testing_QA_Lab` | Tests fuer Agenten, Prompts, Modelle und Setup-Skripte | `AI_Testing_QA_Lab.md` |
+| `Model_Router_Cost_Control` | Modellrouting, Kostenkontrolle und Fallback-Logik | `Model_Router_Cost_Control.md` |
+| `Voice_Transcription_Callcenter` | lokale STT/TTS-, Callcenter- und Sprachprotokoll-Pipelines | `Voice_Transcription_Callcenter.md` |
+| `Network_HomeLab_ZeroTrust` | Heimnetz, DNS, Tailscale, Cloudflare Access und Monitoring | `Network_HomeLab_ZeroTrust.md` |
+| `Data_Scraping_Browser_Agents` | Browser-Automation, Crawling, Firecrawl/Playwright mit Rate-Limits | `Data_Scraping_Browser_Agents.md` |
+| `Legal_Compliance_Safety_Review` | Datenschutz, Lizenzen, Urheberrecht, Secret- und Compliance-Checks | `Legal_Compliance_Safety_Review.md` |
+| `Prompt_Generator_Allround` | Prompt-Werkstatt fuer Text, Medien, Coding und Agenten | `Prompt_Generator_Allround.md` |
+| `Local_AI_App_Builder` | lokale Dashboards, Desktop-Apps, React/Vite/Tauri/Electron | `Local_AI_App_Builder.md` |
+
 ## Begleitdateien
 
 | Datei | Zweck |

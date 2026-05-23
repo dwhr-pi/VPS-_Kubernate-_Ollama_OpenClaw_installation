@@ -2,6 +2,8 @@
 
 Diese Matrix beantwortet die praktische Frage: Welche Tools gehoeren eher auf den MiniPC zuhause, welche auf eine VPS, welche in K3s und welche laufen eigenstaendig mit Web-UI, Desktopfenster oder App-Anbindung?
 
+Neue Profile ab 11.17 werden zuerst als Dachprofile geplant. Spezialnamen wie `PiHole_DNS_Security` oder `React_Dashboard_Builder` sind Aliasziele und werden erst zu eigenen Deployments, wenn eigene Installer und Healthchecks existieren.
+
 Legende:
 
 - `Empfohlen`: guter Standardort

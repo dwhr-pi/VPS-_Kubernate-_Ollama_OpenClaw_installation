@@ -2,6 +2,8 @@
 
 Diese Matrix zeigt die derzeit sinnvoll verdrahteten Toolgruppen. Sie ist bewusst kompakter als `scripts/tools/` und unterscheidet zwischen `Core`, `Optional`, `Experimental` und `High-Risk`.
 
+Die bevorzugten Primaerquellen sind in `docs/GITHUB_TOOL_SOURCES.md` dokumentiert. Ein Tool gilt erst dann als installierbar, wenn Quelle, Installer, Uninstaller, Healthcheck, Ressourcenhinweis und sichere Defaults vorhanden sind.
+
 Wichtig zur Zaehlung:
 
 - die automatische Live-Zaehlung erfolgt im Setup unter `Tool-Management`

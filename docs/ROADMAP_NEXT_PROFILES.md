@@ -23,3 +23,14 @@
 - Render-Farm/GPU-Workstation nur nach Hardware-Check.
 - Android-App-Builder erst nach SDK-/Gradle-Doctor.
 - Legal-Safe-Creator fuer Creator-Workflows erweitern.
+# 11.17 Planned Profile Roadmap
+
+Prioritaet fuer die naechsten stabilen Ausbauschritte:
+
+1. `AI_Testing_QA_Lab`: Shell-/Profil-/Prompt-Tests zuerst stabilisieren.
+2. `Local_AI_Office_Suite`: LibreOffice CLI, Pandoc, Tesseract und Docling als risikoarme lokale Tools.
+3. `Model_Router_Cost_Control`: LiteLLM/Ollama/Open-WebUI mit Kosten- und Provider-Sperren.
+4. `Personal_Memory_Knowledge_OS`: Memory-Import nur lokal und mit Loesch-/Exportpfad.
+5. `Network_HomeLab_ZeroTrust`: Tailscale/cloudflared/Uptime Kuma ohne offene Admin-Ports.
+
+Schwere oder riskante Profile wie Android SDK, Nextcloud, Headscale, MobSF, scancode-toolkit und Browserless bleiben `planned` oder `experimental`, bis Installationspfad und Healthchecks getestet sind.

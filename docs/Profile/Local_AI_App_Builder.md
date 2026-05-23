@@ -1,35 +1,42 @@
-# Profil: Local_AI_App_Builder
+# Local_AI_App_Builder
+
+Status: planned  
+Kategorie: Entwicklung, Dashboard, Desktop  
+Installationsart: lokal-first, WSL2/Linux, optional Desktop-Bruecke zu Windows
 
 ## Zweck
 
-Lokale KI-Apps, interne Dashboards und kleine Werkzeuge mit Low-Code-Backends und Open-WebUI-naher Benutzeroberflaeche.
+Dieses Profil buendelt lokale App-Entwicklung fuer Dashboards, Admin-UIs, Companion-Apps und Setup-Frontends.
 
-## Installierbare Kern-Tools
+## Varianten
 
-- `appsmith`
-- `budibase`
-- `nocodb`
-- `directus`
-- `open_webui`
-- `gbox` fuer myBox-nahe UI-/Device-Tests mit Agenten
+- `Desktop_App_Builder`: lokale Desktoptools und kleine Helferapps
+- `Electron_Tauri_App_Builder`: Desktop-Apps mit Tauri oder Electron
+- `React_Dashboard_Builder`: WebUIs mit React/Vite/Playwright
 
-## Optionale / noch nicht sauber verdrahtete Tools
+## Toolbasis
 
-- spaeter sinnvoll: `Streamlit`, `Gradio`, `FastAPI`, `Electron`, `Tauri`
-- myBox-Dashboard- und Companion-App-Tests ueber `Android_App_Builder`
+| Tool | Aufgabe | Status |
+|---|---|---|
+| Node.js LTS | Runtime und Build | stabil |
+| pnpm/Corepack | Paketmanagement | stabil |
+| Vite/React | Dashboards | empfohlen |
+| Playwright | UI-Tests | empfohlen |
+| Tauri | leichte Desktop-Apps | optional |
+| Electron | Desktop-Apps mit Webstack | optional/schwerer |
+| shadcn/ui | UI-Bausteine | optional |
 
-## Hardware / Plattform
+## Safe Defaults
 
-- gut fuer `MiniPC`, `WSL2`, `VPS`
-- CPU-lastig, kaum GPU-Bedarf
+- Keine Admin-Oberflaechen automatisch auf `0.0.0.0`.
+- `.env.example` statt echter Secrets.
+- Lokale Ports dokumentieren und nach Installation pruefen.
 
-## Risiken und Grenzen
+## Beispielworkflow
 
-- App-Builder erzeugen schnell viele UIs, Ports und Rollenmodelle
-- interne Apps default nur lokal oder hinter Auth freigeben
+1. OpenClaw nimmt eine Dashboard-Idee auf.
+2. Ollama erzeugt Komponentenentwurf und Datenmodell.
+3. Vite/React erstellt lokale UI.
+4. Playwright prueft Kernpfade.
+5. Das Setup verlinkt nur localhost oder Tailnet.
 
-## Quickstart
-
-```bash
-bash scripts/profiles/Local_AI_App_Builder_install.sh
-```

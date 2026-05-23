@@ -1,5 +1,5 @@
 {
-  "version": "11.16",
+  "version": "11.17",
   "description": "Zentrale Tool-Registry. Dateiname .yml, Inhalt absichtlich als JSON-kompatibles YAML fuer einfache Bash/Python-Auswertung.",
   "tools": [
     { "id": "ollama", "name": "Ollama", "category": "runtime", "install_script": "scripts/tools/ollama_install.sh", "uninstall_script": "scripts/tools/ollama_uninstall.sh", "ports": [11434], "check_type": "port", "check_value": "11434", "safety": "Lokaler Modellserver, grosse Modelldownloads brauchen SSD-Speicher." },
