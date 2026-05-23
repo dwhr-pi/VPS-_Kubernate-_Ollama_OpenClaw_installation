@@ -567,6 +567,51 @@ summarize_operation_metrics_plain() {
     fi
 }
 
+summarize_operation_metrics_with_missing_plain() {
+    local operation_kind="$1"
+    shift
+    local total_seconds=0
+    local total_kb=0
+    local missing_duration=0
+    local missing_storage=0
+    local item
+    local operation_id
+    local duration_seconds
+    local delta_kb
+
+    for item in "$@"; do
+        [ -n "$item" ] || continue
+        operation_id="${operation_kind}_${item}"
+        duration_seconds="$(get_last_success_metric_field "$operation_id" 5)"
+        delta_kb="$(get_last_success_metric_field "$operation_id" 8)"
+
+        if [[ "$duration_seconds" =~ ^[0-9]+$ ]]; then
+            total_seconds=$((total_seconds + duration_seconds))
+        else
+            missing_duration=$((missing_duration + 1))
+        fi
+
+        if [[ "$delta_kb" =~ ^-?[0-9]+$ ]]; then
+            total_kb=$((total_kb + delta_kb))
+        else
+            missing_storage=$((missing_storage + 1))
+        fi
+    done
+
+    if [ "$missing_duration" -gt 0 ]; then
+        printf '%s' "--:--:--"
+    else
+        format_duration_hhmmss "$total_seconds"
+    fi
+    printf ' | '
+    if [ "$missing_storage" -gt 0 ]; then
+        printf '%s' "--.- MB"
+    else
+        format_kb_mb_value "$total_kb"
+    fi
+    printf ' (fehlend: Zeit %s, Speicher %s)' "$missing_duration" "$missing_storage"
+}
+
 summarize_tool_batch_metrics_plain() {
     local -n uninstall_ref="$1"
     local -n install_ref="$2"
@@ -934,12 +979,26 @@ show_profile_action_intro() {
     local required_gb
     local extra_notes
     local duration_label
+    local profile_tools_total_summary
+    local profile_tool
+    local -a profile_tool_array=()
     local operation_id="profile_${operation_kind}_${profile_key}"
 
     required_gb="$(get_profile_required_gb "$profile_key")"
     extra_notes="Je nach Profil werden mehrere Einzeltools nacheinander installiert oder entfernt. Das kann laenger dauern als bei einem Einzeltool."
     duration_label="$(get_operation_duration_estimate_label "$operation_id" "${SETUP_DOWNLOAD_TIME_ESTIMATE} Download + ${SETUP_INSTALL_TIME_ESTIMATE} Installation/Anpassung je nach Profilgroesse")"
     required_gb="$(get_operation_storage_estimate_label "$operation_id" "$required_gb")"
+
+    for profile_tool in ${PROFILE_CORE_TOOLS[$profile_key]:-} ${PROFILE_EXTENDED_TOOLS[$profile_key]:-} ${PROFILE_INTEGRATION_TOOLS[$profile_key]:-} ${PROFILE_SPECIAL_TOOLS[$profile_key]:-}; do
+        [ -n "$profile_tool" ] || continue
+        profile_tool_array+=("$profile_tool")
+    done
+    if [ ${#profile_tool_array[@]} -gt 0 ]; then
+        profile_tools_total_summary="$(summarize_operation_metrics_with_missing_plain "tool_install" "${profile_tool_array[@]}")"
+        extra_notes="${extra_notes} Ermittelte Summe der zugeordneten Einzeltools: ${profile_tools_total_summary}."
+    else
+        extra_notes="${extra_notes} Ermittelte Summe der zugeordneten Einzeltools: --:--:-- | --.- MB (fehlend: Zeit 0, Speicher 0), da fuer dieses Profil keine Einzeltool-Liste hinterlegt ist."
+    fi
 
     case "$profile_key" in
         "Trading_AI"|"Web3_Crypto_Tools")
@@ -2069,6 +2128,8 @@ show_profile_management_menu() {
 
     declare -A INSTALLED_PROFILES_MAP
     load_installed_map "$PROFILE_STATUS_FILE" INSTALLED_PROFILES_MAP
+    local profile_menu_total_summary
+    profile_menu_total_summary="$(summarize_operation_metrics_with_missing_plain "profile_install" "${PROFILE_KEYS[@]}")"
 
     PROFILE_MENU_OPTIONS=()
     for profile_key in "${PROFILE_KEYS[@]}"; do
@@ -2086,7 +2147,7 @@ show_profile_management_menu() {
     while true; do
         dialog --clear --backtitle "$APP_TITLE" \
         --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
-        --title "PROFIL-MANAGEMENT" --menu "Wählen Sie ein Profil. Format je Profil: Zeit hh:mm:ss | Speicher MB. Fehlende Werte: --:--:-- | --.- MB. In der Detailansicht können Gesamtprofil oder Einzeltools verwaltet werden:" 28 120 18 \
+        --title "PROFIL-MANAGEMENT" --menu "Wählen Sie ein Profil. Format je Profil: Zeit hh:mm:ss | Speicher MB. Fehlende Werte: --:--:-- | --.- MB. Ermittelte Summe aller Profil-Installationen: ${profile_menu_total_summary}. In der Detailansicht können Gesamtprofil oder Einzeltools verwaltet werden:" 28 120 18 \
         "${PROFILE_MENU_OPTIONS[@]}" \
         "ZURUECK" "${TXT_BACK_ITEM:-Zurück} zum Profil-Hub" 2> /tmp/profile_selection
 
@@ -2106,6 +2167,7 @@ show_profile_management_menu() {
             return 0
         fi
         load_installed_map "$PROFILE_STATUS_FILE" INSTALLED_PROFILES_MAP
+        profile_menu_total_summary="$(summarize_operation_metrics_with_missing_plain "profile_install" "${PROFILE_KEYS[@]}")"
         PROFILE_MENU_OPTIONS=()
         for profile_key in "${PROFILE_KEYS[@]}"; do
             local refreshed_status_text="Nicht installiert"
@@ -2725,8 +2787,10 @@ show_tool_management_menu() {
     declare -A INSTALLED_TOOLS_MAP
     local total_tool_count=0
     local installed_tool_count=0
+    local tool_menu_total_summary
     load_installed_map "$TOOL_STATUS_FILE" INSTALLED_TOOLS_MAP
     total_tool_count="${#TOOL_KEYS[@]}"
+    tool_menu_total_summary="$(summarize_operation_metrics_with_missing_plain "tool_install" "${TOOL_KEYS[@]}")"
 
     TOOL_CHECKLIST_OPTIONS=()
     for tool_key in "${TOOL_KEYS[@]}"; do
@@ -2744,7 +2808,7 @@ show_tool_management_menu() {
 
     dialog --clear --backtitle "$APP_TITLE" \
     --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
-    --title "TOOL-MANAGEMENT (${installed_tool_count}/${total_tool_count} installiert)" --checklist "(*) = behalten oder installieren. Format je Tool: Zeit hh:mm:ss | Speicher MB. Fehlende Werte: --:--:-- | --.- MB. Ausführung: erst Deinstallationen, danach Installationen. Gesamt: ${total_tool_count} | Installiert: ${installed_tool_count}" 32 120 24 \
+    --title "TOOL-MANAGEMENT (${installed_tool_count}/${total_tool_count} installiert)" --checklist "(*) = behalten oder installieren. Format je Tool: Zeit hh:mm:ss | Speicher MB. Fehlende Werte: --:--:-- | --.- MB. Ermittelte Summe aller Tool-Installationen: ${tool_menu_total_summary}. Ausführung: erst Deinstallationen, danach Installationen. Gesamt: ${total_tool_count} | Installiert: ${installed_tool_count}" 32 120 24 \
     "${TOOL_CHECKLIST_OPTIONS[@]}" 2> /tmp/tool_selection
 
     if [ $? -ne 0 ]; then
@@ -3015,6 +3079,10 @@ show_tool_group_checklist() {
     local options=()
     local tool_key
     local status
+    local group_metric_summary
+    local tool_metric_summary
+    local tool_storage_summary
+    local -a group_tool_array=()
     declare -A installed_map
 
     ensure_user_workspace
@@ -3023,21 +3091,25 @@ show_tool_group_checklist() {
 
     for tool_key in $tool_list; do
         [ -n "$tool_key" ] || continue
+        group_tool_array+=("$tool_key")
         status="off"
         if [ "${installed_map[$tool_key]:-}" = "1" ]; then
             status="on"
         fi
-        options+=("$tool_key" "${TOOLS[$tool_key]}" "$status")
+        tool_metric_summary="$(get_operation_metric_summary_plain "tool_install_${tool_key}")"
+        tool_storage_summary="$(printf '%s' "$tool_metric_summary" | awk -F'|' '{gsub(/^ +| +$/, "", $2); print $2}')"
+        options+=("$tool_key" "${tool_metric_summary} | Speicher gesamt: ${tool_storage_summary} | ${TOOLS[$tool_key]}" "$status")
     done
 
     if [ ${#options[@]} -eq 0 ]; then
         dialog --msgbox "${TXT_NO_TOOLS_DEFINED:-Für diesen Block sind aktuell keine Einzeltools definiert.}" 8 60
         return 0
     fi
+    group_metric_summary="$(summarize_operation_metrics_with_missing_plain "tool_install" "${group_tool_array[@]}")"
 
     dialog --clear --backtitle "$APP_TITLE" \
     --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
-    --title "$group_title" --checklist "(*) = behalten oder installieren. Leer = bei installierten Tools deinstallieren. Ausführung: erst Deinstallationen, danach Installationen." 28 110 18 \
+    --title "$group_title" --checklist "(*) = behalten oder installieren. Leer = bei installierten Tools deinstallieren. Format je Tool: Zeit hh:mm:ss | Speicher MB. Fehlende Werte: --:--:-- | --.- MB. Ermittelte Summe dieses Blocks: ${group_metric_summary}. Ausführung: erst Deinstallationen, danach Installationen." 28 120 18 \
     "${options[@]}" 2> /tmp/profile_block_tools_selection
 
     if [ $? -ne 0 ]; then
