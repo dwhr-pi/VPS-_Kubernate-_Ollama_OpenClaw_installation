@@ -155,9 +155,10 @@ ensure_docker_compose_available() {
 }
 
 run_docker_compose() {
-  if docker compose version >/dev/null 2>&1; then
+  if docker compose version >/dev/null 2>&1 && docker info >/dev/null 2>&1; then
     docker compose "$@"
   else
+    log_warn "Docker-Daemon ist fuer den aktuellen User nicht direkt nutzbar. Verwende sudo docker compose."
     sudo docker compose "$@"
   fi
 }

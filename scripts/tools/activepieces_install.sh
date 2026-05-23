@@ -155,13 +155,14 @@ fi
 
 # 3. Activepieces bauen
 echo -e "${BLUE}Baue Activepieces mit Bun...${NC}"
-if bun run | grep -qE '(^|[[:space:]])build([[:space:]]|$)'; then
+if node -e 'const scripts=require("./package.json").scripts||{}; process.exit(Object.prototype.hasOwnProperty.call(scripts,"build") ? 0 : 1)' >/dev/null 2>&1; then
     if ! bun run build; then
         echo -e "${RED}Fehler: bun run build für Activepieces fehlgeschlagen.${NC}"
         exit 1
     fi
 else
-    echo -e "${YELLOW}Hinweis: Kein root-build Script gefunden. Abhaengigkeiten wurden installiert, Start/Build kann projektbezogen erfolgen.${NC}"
+    echo -e "${YELLOW}Hinweis: Der aktuelle Activepieces-Upstream definiert keinen root-build Script in package.json.${NC}"
+    echo -e "${YELLOW}Abhaengigkeiten wurden installiert; Start/Build muss projektbezogen nach Upstream-Dokumentation erfolgen.${NC}"
 fi
 
 # 4. Konfiguration und Start (Platzhalter)

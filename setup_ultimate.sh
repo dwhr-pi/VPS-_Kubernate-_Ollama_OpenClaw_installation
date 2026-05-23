@@ -4,7 +4,7 @@
 # Beschreibung: Dies ist das Hauptinstallationsskript für die ultimative KI-Infrastruktur.
 # Es bietet eine interaktive Menüführung zur Installation, Deinstallation und Verwaltung verschiedener KI-Tools, Profile und Systemkomponenten.
 # Das Skript unterstützt hybride Setups (MiniPC + Multi-VPS), Standalone-Installationen und bietet Funktionen wie Auto-Updates, Ollama-Modellverwaltung und OpenClaw-Konfiguration.
-# Version: V11.16
+# Version: V11.17
 #
 
 # Farben & UI
@@ -14,7 +14,7 @@ RED="\033[0;31m"
 YELLOW="\033[1;33m"
 WHITE="\033[1;37m"
 NC="\033[0m"
-APP_VERSION="11.16"
+APP_VERSION="11.17"
 APP_TITLE="OpenClaw & AI Infrastructure - Ultimate Setup V${APP_VERSION}"
 
 # Installationsverzeichnis
