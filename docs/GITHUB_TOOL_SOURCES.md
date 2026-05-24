@@ -31,6 +31,7 @@ Diese Datei dokumentiert die bevorzugten Primaerquellen. Systempakete aus `apt` 
 | Stirling PDF | `github.com/Stirling-Tools/Stirling-PDF` | empfohlen | Lokale PDF-Werkzeuge. |
 | n8n | `github.com/n8n-io/n8n` | empfohlen | Build aus Source ist speicherintensiv. |
 | Activepieces | `github.com/activepieces/activepieces` | optional | Upstream nutzt Bun; kein pnpm erzwingen. |
+| Airbyte | `github.com/airbytehq/airbyte`, `github.com/airbytehq/abctl` | optional/schwer | Aktueller lokaler Installationspfad laeuft ueber `abctl local install`; alter Docker-Compose-Pfad mit `airbyte/webapp:latest` ist nicht mehr geeignet. |
 | Node-RED | `github.com/node-red/node-red` | empfohlen | Lokale Automation. |
 | ComfyUI | `github.com/comfyanonymous/ComfyUI` | empfohlen/GPU | Modellcache gross. |
 | Blender | `github.com/blender/blender` | empfohlen | Build sehr schwer; Binary/apt nur bewusst dokumentieren. |
@@ -58,4 +59,3 @@ Diese Datei dokumentiert die bevorzugten Primaerquellen. Systempakete aus `apt` 
 - Tools mit offensiver Security-Automation.
 - Tools mit unklarer Lizenzlage.
 - Tools, die Admin-Ports oeffnen oder Cloudkosten erzeugen, ohne ausdrueckliche Konfiguration.
-
