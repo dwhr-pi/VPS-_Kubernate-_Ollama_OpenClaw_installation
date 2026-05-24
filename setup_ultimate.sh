@@ -2159,8 +2159,11 @@ show_profile_management_menu() {
     normalize_status_file "$PROFILE_STATUS_FILE" "${PROFILE_KEYS[@]}"
 
     if ! is_base_install_ready; then
-        echo -e "${YELLOW}Hinweis: Ollama und/oder OpenClaw sind aktuell noch nicht vollständig installiert.${NC}"
-        echo -e "${YELLOW}Die Profilverwaltung kann trotzdem geöffnet werden. Einige Profile benötigen für die volle Funktion aber die Basis-Installation.${NC}"
+        dialog --clear --backtitle "$APP_TITLE" \
+        --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
+        --title "BASIS-INSTALLATION FEHLT" \
+        --msgbox "Hinweis: Ollama und/oder OpenClaw sind aktuell noch nicht vollständig installiert.\n\nDie Profilverwaltung kann trotzdem geöffnet werden. Einige Profile benötigen für die volle Funktion aber die Basis-Installation.\n\nEmpfehlung: Öffne zuerst die Basis-Installation, wenn Profile direkt mit Ollama/OpenClaw arbeiten sollen.\n\nDrücke Enter, um die Profilverwaltung trotzdem zu öffnen." 14 86
+        reset_terminal_display
     fi
 
     declare -A INSTALLED_PROFILES_MAP
@@ -2177,14 +2180,13 @@ show_profile_management_menu() {
             profile_status_text="Installiert"
         fi
         profile_metric_summary="$(get_operation_metric_summary_plain "profile_install_${profile_key}")"
-        profile_storage_summary="$(printf '%s' "$profile_metric_summary" | awk -F'|' '{gsub(/^ +| +$/, "", $2); print $2}')"
-        PROFILE_MENU_OPTIONS+=("$profile_key" "[$profile_status_text] ${profile_metric_summary} | Speicher gesamt: ${profile_storage_summary} | ${PROFILES[$profile_key]}")
+        PROFILE_MENU_OPTIONS+=("$profile_key" "[$profile_status_text] ${profile_metric_summary} | ${PROFILES[$profile_key]}")
     done
 
     while true; do
         dialog --clear --backtitle "$APP_TITLE" \
         --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
-        --title "PROFIL-MANAGEMENT" --menu "Wählen Sie ein Profil. Format je Profil: Zeit hh:mm:ss | Speicher MB. Fehlende Werte: --:--:-- | --.- MB. Ermittelte Summe aller Profil-Installationen: ${profile_menu_total_summary}. In der Detailansicht können Gesamtprofil oder Einzeltools verwaltet werden:" 28 120 18 \
+        --title "PROFIL-MANAGEMENT" --menu "Wählen Sie ein Profil.\n\nSpalten: Status | Zeit hh:mm:ss | Gesamtspeicher MB | Beschreibung\nFehlende Werte: --:--:-- | --.- MB\nErmittelte Summe aller Profil-Installationen: ${profile_menu_total_summary}\n\nIn der Detailansicht können Gesamtprofil oder Einzeltools verwaltet werden:" 30 120 18 \
         "${PROFILE_MENU_OPTIONS[@]}" \
         "ZURUECK" "${TXT_BACK_ITEM:-Zurück} zum Profil-Hub" 2> /tmp/profile_selection
 
@@ -2214,8 +2216,7 @@ show_profile_management_menu() {
                 refreshed_status_text="Installiert"
             fi
             refreshed_metric_summary="$(get_operation_metric_summary_plain "profile_install_${profile_key}")"
-            refreshed_storage_summary="$(printf '%s' "$refreshed_metric_summary" | awk -F'|' '{gsub(/^ +| +$/, "", $2); print $2}')"
-            PROFILE_MENU_OPTIONS+=("$profile_key" "[$refreshed_status_text] ${refreshed_metric_summary} | Speicher gesamt: ${refreshed_storage_summary} | ${PROFILES[$profile_key]}")
+            PROFILE_MENU_OPTIONS+=("$profile_key" "[$refreshed_status_text] ${refreshed_metric_summary} | ${PROFILES[$profile_key]}")
         done
     done
 }
@@ -2839,13 +2840,12 @@ show_tool_management_menu() {
             installed_tool_count=$((installed_tool_count + 1))
         fi
         tool_metric_summary="$(get_operation_metric_summary_plain "tool_install_${tool_key}")"
-        tool_storage_summary="$(printf '%s' "$tool_metric_summary" | awk -F'|' '{gsub(/^ +| +$/, "", $2); print $2}')"
-        TOOL_CHECKLIST_OPTIONS+=("$tool_key" "${tool_metric_summary} | Speicher gesamt: ${tool_storage_summary} | ${TOOLS[$tool_key]}" "$STATUS")
+        TOOL_CHECKLIST_OPTIONS+=("$tool_key" "${tool_metric_summary} | ${TOOLS[$tool_key]}" "$STATUS")
     done
 
     dialog --clear --backtitle "$APP_TITLE" \
     --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
-    --title "TOOL-MANAGEMENT (${installed_tool_count}/${total_tool_count} installiert)" --checklist "(*) = behalten oder installieren. Format je Tool: Zeit hh:mm:ss | Speicher MB. Fehlende Werte: --:--:-- | --.- MB. Ermittelte Summe aller Tool-Installationen: ${tool_menu_total_summary}. Ausführung: erst Deinstallationen, danach Installationen. Gesamt: ${total_tool_count} | Installiert: ${installed_tool_count}" 32 120 24 \
+    --title "TOOL-MANAGEMENT (${installed_tool_count}/${total_tool_count} installiert)" --checklist "(*) = behalten oder installieren.\n\nSpalten: Auswahl | Tool | Zeit hh:mm:ss | Gesamtspeicher MB | Beschreibung\nFehlende Werte: --:--:-- | --.- MB\nErmittelte Summe aller Tool-Installationen: ${tool_menu_total_summary}\nAusführung: erst Deinstallationen, danach Installationen.\nGesamt: ${total_tool_count} | Installiert: ${installed_tool_count}" 34 120 24 \
     "${TOOL_CHECKLIST_OPTIONS[@]}" 2> /tmp/tool_selection
 
     if [ $? -ne 0 ]; then
