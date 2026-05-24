@@ -173,6 +173,8 @@ Hinweis zur erweiterten Installationsueberwachung: Wenn sie aktiv ist, bietet de
 
 Vor jedem Tool-Schritt zeigt die erweiterte Installationsueberwachung jetzt ausserdem eine Vorschau auf die naechsten geplanten Tools. Dort kannst du mit `[N]` den aktuellen Schritt ausfuehren, mit `[S]` genau dieses Tool ueberspringen oder mit `[Z]` den gesamten Batch abbrechen. Das hilft besonders bei langen Source-Builds wie Blender, Airbyte, n8n oder grossen Docker-/Kubernetes-Tools.
 
+Die Tool- und Profiluebersichten koennen je nach WSL-/Datentraegerzustand spuerbar laden, besonders wenn Zeit- und Speicherwerte angezeigt werden. Vor dem Oeffnen erscheint deshalb optional ein Lade-Hinweis mit kurzer Fortschrittsanzeige. In `Optionen -> Installationsueberwachung konfigurieren` kannst du sowohl diesen Lade-Hinweis als auch die Anzeige der Zeit-/Speicherwerte in Tool- und Profiluebersichten an- oder abschalten.
+
 Schnelle Log- und Speicherdiagnose:
 
 ```bash

@@ -372,6 +372,22 @@ set_log_cleanup_mode() {
     load_setup_language
 }
 
+set_overview_metrics_mode() {
+    local enabled="$1"
+
+    enabled="$(normalize_setup_boolean "$enabled")"
+    persist_setup_preference "OVERVIEW_METRICS_ENABLED" "$enabled"
+    load_setup_language
+}
+
+set_menu_loading_notice_mode() {
+    local enabled="$1"
+
+    enabled="$(normalize_setup_boolean "$enabled")"
+    persist_setup_preference "MENU_LOADING_NOTICE_ENABLED" "$enabled"
+    load_setup_language
+}
+
 set_log_cleanup_number_preference() {
     local key="$1"
     local value="$2"
@@ -1217,6 +1233,8 @@ maybe_cleanup_logs_before_operation() {
 show_installation_monitoring_menu() {
     local monitoring_state
     local cleanup_state
+    local overview_metrics_state
+    local loading_notice_state
     local separator_line="${TXT_SEPARATOR_LINE:-────────────────────────────────────────────────────────}"
 
     while true; do
@@ -1231,26 +1249,39 @@ show_installation_monitoring_menu() {
         else
             cleanup_state="inaktiv"
         fi
+        if is_preference_enabled "${OVERVIEW_METRICS_ENABLED:-true}"; then
+            overview_metrics_state="aktiv"
+        else
+            overview_metrics_state="inaktiv"
+        fi
+        if is_preference_enabled "${MENU_LOADING_NOTICE_ENABLED:-true}"; then
+            loading_notice_state="aktiv"
+        else
+            loading_notice_state="inaktiv"
+        fi
 
         dialog --clear --backtitle "$APP_TITLE" \
         --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
-        --title "INSTALLATIONSÜBERWACHUNG" --menu "Zusätzliche Überwachung, Logansicht und sichere Log-Aufräumung." 34 112 16 \
+        --title "INSTALLATIONSÜBERWACHUNG" --menu "Zusätzliche Überwachung, Logansicht und sichere Log-Aufräumung." 38 112 18 \
         "1" "Erweiterte Installationsüberwachung umschalten (aktuell: ${monitoring_state})" \
         "────────" "$separator_line" \
-        "2" "Log-Verzeichnis anzeigen" \
-        "3" "Letzte Installations-Logs anzeigen" \
-        "4" "Letzte Messwerte anzeigen" \
+        "2" "Zeit-/Speicherwerte in Tool-/Profilübersichten umschalten (aktuell: ${overview_metrics_state})" \
+        "3" "Lade-Hinweis vor Tool-/Profilübersichten umschalten (aktuell: ${loading_notice_state})" \
         "─────────" "$separator_line" \
-        "5" "Log-Aufräumung vor Installationen umschalten (aktuell: ${cleanup_state})" \
-        "6" "Log-Aufräumung Trockenlauf anzeigen" \
-        "7" "Alte Logs jetzt löschen" \
-        "8" "Alte Fehler-Logs jetzt löschen" \
-        "9" "Aufbewahrung einstellen (Tage/neueste Dateien)" \
+        "4" "Log-Verzeichnis anzeigen" \
+        "5" "Letzte Installations-Logs anzeigen" \
+        "6" "Letzte Messwerte anzeigen" \
         "──────────" "$separator_line" \
-        "10" "Installationslauf-Diagnose erstellen" \
-        "11" "Abhängigkeiten-/Speicher-Snapshot erstellen" \
+        "7" "Log-Aufräumung vor Installationen umschalten (aktuell: ${cleanup_state})" \
+        "8" "Log-Aufräumung Trockenlauf anzeigen" \
+        "9" "Alte Logs jetzt löschen" \
+        "10" "Alte Fehler-Logs jetzt löschen" \
+        "11" "Aufbewahrung einstellen (Tage/neueste Dateien)" \
         "───────────" "$separator_line" \
-        "12" "${TXT_BACK_ITEM:-Zurück}" 2> /tmp/install_monitoring_choice
+        "12" "Installationslauf-Diagnose erstellen" \
+        "13" "Abhängigkeiten-/Speicher-Snapshot erstellen" \
+        "────────────" "$separator_line" \
+        "14" "${TXT_BACK_ITEM:-Zurück}" 2> /tmp/install_monitoring_choice
 
         if [ $? -ne 0 ]; then
             return 0
@@ -1272,6 +1303,26 @@ show_installation_monitoring_menu() {
                 read -p "Drücken Sie Enter..."
                 ;;
             2)
+                if is_preference_enabled "${OVERVIEW_METRICS_ENABLED:-true}"; then
+                    set_overview_metrics_mode "false"
+                    echo -e "${GREEN}Zeit-/Speicherwerte in Tool-/Profilübersichten wurden deaktiviert.${NC}"
+                else
+                    set_overview_metrics_mode "true"
+                    echo -e "${GREEN}Zeit-/Speicherwerte in Tool-/Profilübersichten wurden aktiviert.${NC}"
+                fi
+                read -p "Drücken Sie Enter..."
+                ;;
+            3)
+                if is_preference_enabled "${MENU_LOADING_NOTICE_ENABLED:-true}"; then
+                    set_menu_loading_notice_mode "false"
+                    echo -e "${GREEN}Lade-Hinweis vor Tool-/Profilübersichten wurde deaktiviert.${NC}"
+                else
+                    set_menu_loading_notice_mode "true"
+                    echo -e "${GREEN}Lade-Hinweis vor Tool-/Profilübersichten wurde aktiviert.${NC}"
+                fi
+                read -p "Drücken Sie Enter..."
+                ;;
+            4)
                 clear
                 echo
                 echo -e "${YELLOW}Log-Verzeichnis für Installations- und Deinstallationsläufe:${NC}"
@@ -1279,13 +1330,13 @@ show_installation_monitoring_menu() {
                 echo
                 read -p "Drücken Sie Enter..."
                 ;;
-            3)
+            5)
                 show_recent_install_logs
                 ;;
-            4)
+            6)
                 show_recent_measurements
                 ;;
-            5)
+            7)
                 if is_preference_enabled "${LOG_CLEANUP_BEFORE_OPERATION:-false}"; then
                     set_log_cleanup_mode "false"
                     echo -e "${GREEN}Automatische Log-Aufräumung vor Installationen wurde deaktiviert.${NC}"
@@ -1296,42 +1347,42 @@ show_installation_monitoring_menu() {
                 fi
                 read -p "Drücken Sie Enter..."
                 ;;
-            6)
+            8)
                 clear
                 run_setup_log_cleanup "dry-run"
                 echo
                 read -p "Drücken Sie Enter..."
                 ;;
-            7)
+            9)
                 clear
                 echo -e "${YELLOW}Alte Logs werden jetzt anhand der aktuellen Aufbewahrungsregeln gelöscht.${NC}"
                 run_setup_log_cleanup "apply"
                 echo
                 read -p "Drücken Sie Enter..."
                 ;;
-            8)
+            10)
                 clear
                 echo -e "${YELLOW}Alte Fehler-Logs werden jetzt anhand der aktuellen Aufbewahrungsregeln gelöscht.${NC}"
                 run_setup_log_cleanup "apply" "true"
                 echo
                 read -p "Drücken Sie Enter..."
                 ;;
-            9)
+            11)
                 show_log_cleanup_settings_menu
                 ;;
-            10)
+            12)
                 clear
                 bash "$INSTALL_DIR/scripts/install_run_diagnostics.sh"
                 echo
                 read -p "Installationslauf-Diagnose abgeschlossen. Drücken Sie Enter..."
                 ;;
-            11)
+            13)
                 clear
                 bash "$INSTALL_DIR/scripts/dependency_snapshot.sh"
                 echo
                 read -p "Abhängigkeiten-/Speicher-Snapshot abgeschlossen. Drücken Sie Enter..."
                 ;;
-            12)
+            14)
                 return 0
                 ;;
         esac
@@ -1626,6 +1677,35 @@ format_tool_queue_preview() {
     else
         printf '%s' "$preview"
     fi
+}
+
+show_management_loading_notice() {
+    local target_label="$1"
+    local detail_text="$2"
+
+    load_setup_language
+    if ! is_preference_enabled "${MENU_LOADING_NOTICE_ENABLED:-true}"; then
+        return 0
+    fi
+
+    if ! dialog --clear --backtitle "$APP_TITLE" \
+        --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
+        --title "ANSICHT WIRD VORBEREITET" \
+        --yesno "Die Ansicht '${target_label}' wird jetzt vorbereitet.\n\n${detail_text}\n\nDas Laden kann je nach WSL-/Datentraegerzustand einige Sekunden bis mehrere Minuten dauern. Wenn Zeit- und Speicherwerte aktiv sind, werden Messwerte aus der lokalen Summary-Datei gelesen.\n\nFortfahren?" 15 92; then
+        return 1
+    fi
+
+    (
+        for percent in 0 20 45 70 90 100; do
+            echo "$percent"
+            sleep 0.05
+        done
+    ) | dialog --clear --backtitle "$APP_TITLE" \
+        --title "LADE ${target_label}" \
+        --gauge "Bereite Menueeintraege, Status und optionale Messwerte vor..." 8 78 0
+
+    reset_terminal_display
+    return 0
 }
 
 confirm_tool_batch_step() {
@@ -2317,7 +2397,18 @@ show_profile_management_menu() {
     declare -A INSTALLED_PROFILES_MAP
     load_installed_map "$PROFILE_STATUS_FILE" INSTALLED_PROFILES_MAP
     local profile_menu_total_summary
-    profile_menu_total_summary="$(summarize_operation_metrics_with_missing_plain "profile_install" "${PROFILE_KEYS[@]}")"
+    local profile_menu_prompt
+    local overview_metrics_enabled="false"
+    if is_preference_enabled "${OVERVIEW_METRICS_ENABLED:-true}"; then
+        overview_metrics_enabled="true"
+    fi
+    if [ "$overview_metrics_enabled" = "true" ]; then
+        profile_menu_total_summary="$(summarize_operation_metrics_with_missing_plain "profile_install" "${PROFILE_KEYS[@]}")"
+        profile_menu_prompt="Wählen Sie ein Profil.\n\nSpalten: Status | Zeit hh:mm:ss | Gesamtspeicher MB | Beschreibung\nFehlende Werte: --:--:-- | --.- MB\nErmittelte Summe aller Profil-Installationen: ${profile_menu_total_summary}\n\nIn der Detailansicht können Gesamtprofil oder Einzeltools verwaltet werden:"
+    else
+        profile_menu_total_summary=""
+        profile_menu_prompt="Wählen Sie ein Profil.\n\nZeit- und Speicherwerte sind in den Optionen deaktiviert, damit diese Übersicht schneller lädt.\n\nIn der Detailansicht können Gesamtprofil oder Einzeltools verwaltet werden:"
+    fi
 
     PROFILE_MENU_OPTIONS=()
     for profile_key in "${PROFILE_KEYS[@]}"; do
@@ -2327,14 +2418,18 @@ show_profile_management_menu() {
         if [ -n "$profile_key" ] && [ "${INSTALLED_PROFILES_MAP[$profile_key]:-}" = "1" ]; then
             profile_status_text="Installiert"
         fi
-        profile_metric_summary="$(get_operation_metric_summary_plain "profile_install_${profile_key}")"
-        PROFILE_MENU_OPTIONS+=("$profile_key" "[$profile_status_text] ${profile_metric_summary} | ${PROFILES[$profile_key]}")
+        if [ "$overview_metrics_enabled" = "true" ]; then
+            profile_metric_summary="$(get_operation_metric_summary_plain "profile_install_${profile_key}")"
+            PROFILE_MENU_OPTIONS+=("$profile_key" "[$profile_status_text] ${profile_metric_summary} | ${PROFILES[$profile_key]}")
+        else
+            PROFILE_MENU_OPTIONS+=("$profile_key" "[$profile_status_text] ${PROFILES[$profile_key]}")
+        fi
     done
 
     while true; do
         dialog --clear --backtitle "$APP_TITLE" \
         --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
-        --title "PROFIL-MANAGEMENT" --menu "Wählen Sie ein Profil.\n\nSpalten: Status | Zeit hh:mm:ss | Gesamtspeicher MB | Beschreibung\nFehlende Werte: --:--:-- | --.- MB\nErmittelte Summe aller Profil-Installationen: ${profile_menu_total_summary}\n\nIn der Detailansicht können Gesamtprofil oder Einzeltools verwaltet werden:" 30 120 18 \
+        --title "PROFIL-MANAGEMENT" --menu "$profile_menu_prompt" 30 120 18 \
         "${PROFILE_MENU_OPTIONS[@]}" \
         "ZURUECK" "${TXT_BACK_ITEM:-Zurück} zum Profil-Hub" 2> /tmp/profile_selection
 
@@ -2354,7 +2449,10 @@ show_profile_management_menu() {
             return 0
         fi
         load_installed_map "$PROFILE_STATUS_FILE" INSTALLED_PROFILES_MAP
-        profile_menu_total_summary="$(summarize_operation_metrics_with_missing_plain "profile_install" "${PROFILE_KEYS[@]}")"
+        if [ "$overview_metrics_enabled" = "true" ]; then
+            profile_menu_total_summary="$(summarize_operation_metrics_with_missing_plain "profile_install" "${PROFILE_KEYS[@]}")"
+            profile_menu_prompt="Wählen Sie ein Profil.\n\nSpalten: Status | Zeit hh:mm:ss | Gesamtspeicher MB | Beschreibung\nFehlende Werte: --:--:-- | --.- MB\nErmittelte Summe aller Profil-Installationen: ${profile_menu_total_summary}\n\nIn der Detailansicht können Gesamtprofil oder Einzeltools verwaltet werden:"
+        fi
         PROFILE_MENU_OPTIONS=()
         for profile_key in "${PROFILE_KEYS[@]}"; do
             local refreshed_status_text="Nicht installiert"
@@ -2363,8 +2461,12 @@ show_profile_management_menu() {
             if [ -n "$profile_key" ] && [ "${INSTALLED_PROFILES_MAP[$profile_key]:-}" = "1" ]; then
                 refreshed_status_text="Installiert"
             fi
-            refreshed_metric_summary="$(get_operation_metric_summary_plain "profile_install_${profile_key}")"
-            PROFILE_MENU_OPTIONS+=("$profile_key" "[$refreshed_status_text] ${refreshed_metric_summary} | ${PROFILES[$profile_key]}")
+            if [ "$overview_metrics_enabled" = "true" ]; then
+                refreshed_metric_summary="$(get_operation_metric_summary_plain "profile_install_${profile_key}")"
+                PROFILE_MENU_OPTIONS+=("$profile_key" "[$refreshed_status_text] ${refreshed_metric_summary} | ${PROFILES[$profile_key]}")
+            else
+                PROFILE_MENU_OPTIONS+=("$profile_key" "[$refreshed_status_text] ${PROFILES[$profile_key]}")
+            fi
         done
     done
 }
@@ -2974,9 +3076,19 @@ show_tool_management_menu() {
     local total_tool_count=0
     local installed_tool_count=0
     local tool_menu_total_summary
+    local tool_menu_prompt
+    local overview_metrics_enabled="false"
     load_installed_map "$TOOL_STATUS_FILE" INSTALLED_TOOLS_MAP
     total_tool_count="${#TOOL_KEYS[@]}"
-    tool_menu_total_summary="$(summarize_operation_metrics_with_missing_plain "tool_install" "${TOOL_KEYS[@]}")"
+    if is_preference_enabled "${OVERVIEW_METRICS_ENABLED:-true}"; then
+        overview_metrics_enabled="true"
+        tool_menu_total_summary="$(summarize_operation_metrics_with_missing_plain "tool_install" "${TOOL_KEYS[@]}")"
+        tool_menu_prompt="(*) = behalten oder installieren.\n\nSpalten: Auswahl | Tool | Zeit hh:mm:ss | Gesamtspeicher MB | Beschreibung\nFehlende Werte: --:--:-- | --.- MB\nErmittelte Summe aller Tool-Installationen: ${tool_menu_total_summary}\nAusführung: erst Deinstallationen, danach Installationen.\nGesamt: ${total_tool_count} | Installiert: ${installed_tool_count}"
+    else
+        overview_metrics_enabled="false"
+        tool_menu_total_summary=""
+        tool_menu_prompt="(*) = behalten oder installieren.\n\nZeit- und Speicherwerte sind in den Optionen deaktiviert, damit diese Übersicht schneller lädt.\nAusführung: erst Deinstallationen, danach Installationen.\nGesamt: ${total_tool_count} | Installiert: ${installed_tool_count}"
+    fi
 
     TOOL_CHECKLIST_OPTIONS=()
     for tool_key in "${TOOL_KEYS[@]}"; do
@@ -2987,13 +3099,22 @@ show_tool_management_menu() {
             STATUS="on"
             installed_tool_count=$((installed_tool_count + 1))
         fi
-        tool_metric_summary="$(get_operation_metric_summary_plain "tool_install_${tool_key}")"
-        TOOL_CHECKLIST_OPTIONS+=("$tool_key" "${tool_metric_summary} | ${TOOLS[$tool_key]}" "$STATUS")
+        if [ "$overview_metrics_enabled" = "true" ]; then
+            tool_metric_summary="$(get_operation_metric_summary_plain "tool_install_${tool_key}")"
+            TOOL_CHECKLIST_OPTIONS+=("$tool_key" "${tool_metric_summary} | ${TOOLS[$tool_key]}" "$STATUS")
+        else
+            TOOL_CHECKLIST_OPTIONS+=("$tool_key" "${TOOLS[$tool_key]}" "$STATUS")
+        fi
     done
+    if [ "$overview_metrics_enabled" != "true" ]; then
+        tool_menu_prompt="(*) = behalten oder installieren.\n\nZeit- und Speicherwerte sind in den Optionen deaktiviert, damit diese Übersicht schneller lädt.\nAusführung: erst Deinstallationen, danach Installationen.\nGesamt: ${total_tool_count} | Installiert: ${installed_tool_count}"
+    else
+        tool_menu_prompt="(*) = behalten oder installieren.\n\nSpalten: Auswahl | Tool | Zeit hh:mm:ss | Gesamtspeicher MB | Beschreibung\nFehlende Werte: --:--:-- | --.- MB\nErmittelte Summe aller Tool-Installationen: ${tool_menu_total_summary}\nAusführung: erst Deinstallationen, danach Installationen.\nGesamt: ${total_tool_count} | Installiert: ${installed_tool_count}"
+    fi
 
     dialog --clear --backtitle "$APP_TITLE" \
     --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
-    --title "TOOL-MANAGEMENT (${installed_tool_count}/${total_tool_count} installiert)" --checklist "(*) = behalten oder installieren.\n\nSpalten: Auswahl | Tool | Zeit hh:mm:ss | Gesamtspeicher MB | Beschreibung\nFehlende Werte: --:--:-- | --.- MB\nErmittelte Summe aller Tool-Installationen: ${tool_menu_total_summary}\nAusführung: erst Deinstallationen, danach Installationen.\nGesamt: ${total_tool_count} | Installiert: ${installed_tool_count}" 34 120 24 \
+    --title "TOOL-MANAGEMENT (${installed_tool_count}/${total_tool_count} installiert)" --checklist "$tool_menu_prompt" 34 120 24 \
     "${TOOL_CHECKLIST_OPTIONS[@]}" 2> /tmp/tool_selection
 
     if [ $? -ne 0 ]; then
@@ -3266,6 +3387,8 @@ show_tool_group_checklist() {
     local status
     local group_metric_summary
     local tool_metric_summary
+    local group_prompt
+    local overview_metrics_enabled="false"
     local -a group_tool_array=()
     declare -A installed_map
 
@@ -3280,19 +3403,29 @@ show_tool_group_checklist() {
         if [ "${installed_map[$tool_key]:-}" = "1" ]; then
             status="on"
         fi
-        tool_metric_summary="$(get_operation_metric_summary_plain "tool_install_${tool_key}")"
-        options+=("$tool_key" "${tool_metric_summary} | ${TOOLS[$tool_key]}" "$status")
+        if is_preference_enabled "${OVERVIEW_METRICS_ENABLED:-true}"; then
+            overview_metrics_enabled="true"
+            tool_metric_summary="$(get_operation_metric_summary_plain "tool_install_${tool_key}")"
+            options+=("$tool_key" "${tool_metric_summary} | ${TOOLS[$tool_key]}" "$status")
+        else
+            options+=("$tool_key" "${TOOLS[$tool_key]}" "$status")
+        fi
     done
 
     if [ ${#options[@]} -eq 0 ]; then
         dialog --msgbox "${TXT_NO_TOOLS_DEFINED:-Für diesen Block sind aktuell keine Einzeltools definiert.}" 8 60
         return 0
     fi
-    group_metric_summary="$(summarize_operation_metrics_with_missing_plain "tool_install" "${group_tool_array[@]}")"
+    if [ "$overview_metrics_enabled" = "true" ]; then
+        group_metric_summary="$(summarize_operation_metrics_with_missing_plain "tool_install" "${group_tool_array[@]}")"
+        group_prompt="(*) = behalten oder installieren. Leer = bei installierten Tools deinstallieren.\n\nSpalten: Auswahl | Tool | Zeit hh:mm:ss | Gesamtspeicher MB | Beschreibung\nFehlende Werte: --:--:-- | --.- MB\nErmittelte Summe dieses Blocks: ${group_metric_summary}\nAusführung: erst Deinstallationen, danach Installationen."
+    else
+        group_prompt="(*) = behalten oder installieren. Leer = bei installierten Tools deinstallieren.\n\nZeit- und Speicherwerte sind in den Optionen deaktiviert, damit diese Übersicht schneller lädt.\nAusführung: erst Deinstallationen, danach Installationen."
+    fi
 
     dialog --clear --backtitle "$APP_TITLE" \
     --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
-    --title "$group_title" --checklist "(*) = behalten oder installieren. Leer = bei installierten Tools deinstallieren.\n\nSpalten: Auswahl | Tool | Zeit hh:mm:ss | Gesamtspeicher MB | Beschreibung\nFehlende Werte: --:--:-- | --.- MB\nErmittelte Summe dieses Blocks: ${group_metric_summary}\nAusführung: erst Deinstallationen, danach Installationen." 28 120 18 \
+    --title "$group_title" --checklist "$group_prompt" 28 120 18 \
     "${options[@]}" 2> /tmp/profile_block_tools_selection
 
     if [ $? -ne 0 ]; then
@@ -3699,10 +3832,14 @@ while true; do
             read -p "Ruflo-Aktion abgeschlossen. Drücken Sie Enter..."
             ;;
         8)
-            show_tool_management_menu
+            if show_management_loading_notice "Tool-Management" "Es werden Toolstatus, Auswahloptionen und optional die letzten Zeit-/Speicherwerte vorbereitet."; then
+                show_tool_management_menu
+            fi
             ;;
         9)
-            show_profile_management_hub
+            if show_management_loading_notice "Profil-Management" "Es werden Profilstatus, Profilbloecke und optional die letzten Zeit-/Speicherwerte vorbereitet."; then
+                show_profile_management_hub
+            fi
             ;;
         10)
             dialog --clear --backtitle "$APP_TITLE" \
