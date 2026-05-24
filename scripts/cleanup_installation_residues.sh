@@ -69,6 +69,8 @@ if ! $CLEAN_APT && ! $CLEAN_DOCKER && ! $CLEAN_CACHES; then
 fi
 
 ensure_user_workspace
+USER_DIAGNOSTIC_DIR="${USER_DIAGNOSTIC_DIR:-${USER_WORKSPACE_DIR}/diagnostic_reports}"
+mkdir -p "$USER_DIAGNOSTIC_DIR"
 REPORT_FILE="$USER_DIAGNOSTIC_DIR/$(date +%Y%m%d_%H%M%S)_cleanup_installation_residues.md"
 
 write_report() {
