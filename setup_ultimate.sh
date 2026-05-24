@@ -1235,44 +1235,56 @@ show_installation_monitoring_menu() {
     local cleanup_state
     local overview_metrics_state
     local loading_notice_state
+    local monitoring_mark
+    local cleanup_mark
+    local overview_metrics_mark
+    local loading_notice_mark
     local separator_line="${TXT_SEPARATOR_LINE:-────────────────────────────────────────────────────────}"
 
     while true; do
         if is_preference_enabled "${INSTALL_MONITORING_VERBOSE:-false}"; then
             monitoring_state="aktiv"
+            monitoring_mark="(*)"
         else
             monitoring_state="inaktiv"
+            monitoring_mark="( )"
         fi
 
         if is_preference_enabled "${LOG_CLEANUP_BEFORE_OPERATION:-false}"; then
             cleanup_state="aktiv"
+            cleanup_mark="(*)"
         else
             cleanup_state="inaktiv"
+            cleanup_mark="( )"
         fi
         if is_preference_enabled "${OVERVIEW_METRICS_ENABLED:-true}"; then
             overview_metrics_state="aktiv"
+            overview_metrics_mark="(*)"
         else
             overview_metrics_state="inaktiv"
+            overview_metrics_mark="( )"
         fi
         if is_preference_enabled "${MENU_LOADING_NOTICE_ENABLED:-true}"; then
             loading_notice_state="aktiv"
+            loading_notice_mark="(*)"
         else
             loading_notice_state="inaktiv"
+            loading_notice_mark="( )"
         fi
 
         dialog --clear --backtitle "$APP_TITLE" \
         --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
         --title "INSTALLATIONSÜBERWACHUNG" --menu "Zusätzliche Überwachung, Logansicht und sichere Log-Aufräumung." 40 112 20 \
-        "1" "Erweiterte Installationsüberwachung umschalten (aktuell: ${monitoring_state})" \
+        "1" "${monitoring_mark} Erweiterte Installationsüberwachung umschalten (aktuell: ${monitoring_state})" \
         "────────" "$separator_line" \
-        "2" "Zeit-/Speicherwerte in Tool-/Profilübersichten umschalten (aktuell: ${overview_metrics_state})" \
-        "3" "Lade-Hinweis vor Tool-/Profilübersichten umschalten (aktuell: ${loading_notice_state})" \
+        "2" "${overview_metrics_mark} Zeit-/Speicherwerte in Tool-/Profilübersichten umschalten (aktuell: ${overview_metrics_state})" \
+        "3" "${loading_notice_mark} Lade-Hinweis vor Tool-/Profilübersichten umschalten (aktuell: ${loading_notice_state})" \
         "─────────" "$separator_line" \
         "4" "Log-Verzeichnis anzeigen" \
         "5" "Letzte Installations-Logs anzeigen" \
         "6" "Letzte Messwerte anzeigen" \
         "──────────" "$separator_line" \
-        "7" "Log-Aufräumung vor Installationen umschalten (aktuell: ${cleanup_state})" \
+        "7" "${cleanup_mark} Log-Aufräumung vor Installationen umschalten (aktuell: ${cleanup_state})" \
         "8" "Log-Aufräumung Trockenlauf anzeigen" \
         "9" "Alte Logs jetzt löschen" \
         "10" "Alte Fehler-Logs jetzt löschen" \
