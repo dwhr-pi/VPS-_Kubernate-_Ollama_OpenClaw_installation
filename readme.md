@@ -1,5 +1,18 @@
 # VPS- Kubernate- Ollama & OpenClaw installation - Ultimate Setup V11.17
 
+## Inhaltsverzeichnis
+
+- [Aktuelle Governance-Dokumente](#aktuelle-governance-dokumente)
+- [Zielbild](#-zielbild)
+- [Quickstarts](#quickstarts)
+- [Setup-Skripte schnell finden](#setup-skripte-schnell-finden)
+- [Gegenwärtiger Status](#-gegenwärtiger-status)
+- [Schnelle Installation](#-schnelle-installation-one-liner)
+- [Boardroom-Profil](#boardroom-profil)
+- [Neue Übersichten und Doctor-Skripte](#-neue-übersichten-und-doctor-skripte)
+- [Tool-Quellen und GitHub-Regel](#tool-quellen-und-github-regel)
+- [Optionale Profile](#optionale-profile)
+
 ## Aktuelle Governance-Dokumente
 
 - [Setup Review und naechste Schritte](docs/SETUP_REVIEW_AND_NEXT_STEPS.md)
@@ -39,6 +52,23 @@ Die zugehoerige Architektur-Dokumentation findest du in [docs/ARCHITECTURE_LLMOP
 | Wissenschaft | `Physik`, `Bioinformatik`, `Molekuelsimulation`, `Mathematik_Simulation` |
 | Security | `Security_DevSecOps`, `Zero_Trust_Remote_Access`, `Anti_Virus` |
 | Kubernetes/VPS | `DevOps_SRE`, `Kubernetes_GPU_Orchestrator`, `Storage_NAS_Backup` |
+
+## Setup-Skripte schnell finden
+
+| Zweck | Datei / Kommando |
+|---|---|
+| Interaktives Hauptsetup starten | `bash install.sh` oder `bash setup_ultimate.sh` |
+| Setup ohne Systemupdates aktualisieren | `bash scripts/update_setup_only.sh` |
+| Nur auf Setup-Updates prüfen | `bash scripts/check_setup_updates.sh` |
+| Letzte Logs und Fehler prüfen | `bash scripts/last_install_log.sh --failed` |
+| Installationsdiagnose erstellen | `bash scripts/install_run_diagnostics.sh` |
+| Abhängigkeiten-/Speicher-Snapshot | `bash scripts/dependency_snapshot.sh` |
+| Tool-Registry prüfen | `bash scripts/check_tools.sh` |
+| Profile prüfen | `bash scripts/check_profiles.sh` |
+| Ports prüfen | `bash scripts/check_ports.sh` |
+| Config prüfen | `bash scripts/validate_config.sh` |
+| Tool-Installer | `scripts/tools/<tool>_install.sh` |
+| Profil-Installer | `scripts/profiles/<profil>_install.sh` |
 
 Wichtige Uebersichten:
 
@@ -141,6 +171,8 @@ Für veröffentlichte, aber abgesicherte öffentliche Dienste ist zusätzlich `c
 
 Hinweis zur erweiterten Installationsueberwachung: Wenn sie aktiv ist, bietet der Nach-Schritt-Dialog direkte Sofortaktionen an. `[L]` zeigt das letzte Log, `[D]` erstellt eine Diagnose im Terminal und `[E]` sendet die Diagnose per konfigurierter E-Mail-Ausgabe. Wenn waehrend eines Installations-/Deinstallations-Batches ein Fehler auftritt, bricht `[Z]` bzw. `[z]` den laufenden Batch ab und fuehrt zurueck ins Setup statt blind mit dem naechsten Tool weiterzumachen.
 
+Vor jedem Tool-Schritt zeigt die erweiterte Installationsueberwachung jetzt ausserdem eine Vorschau auf die naechsten geplanten Tools. Dort kannst du mit `[N]` den aktuellen Schritt ausfuehren, mit `[S]` genau dieses Tool ueberspringen oder mit `[Z]` den gesamten Batch abbrechen. Das hilft besonders bei langen Source-Builds wie Blender, Airbyte, n8n oder grossen Docker-/Kubernetes-Tools.
+
 Schnelle Log- und Speicherdiagnose:
 
 ```bash
@@ -157,12 +189,23 @@ Vor und nach Tool-Installationen werden Speicherwerte gemessen. Die Historie lie
 
 Die Tool-Quellenpolitik steht ebenfalls in `setup_metrics.conf`: Standardmaessig sollen Primaertools aus GitHub kommen, waehrend Systemabhaengigkeiten wie `apt` erlaubt bleiben. Mit `STRICT_GITHUB_TOOL_SOURCES=true` kann das Setup Tool-Installer ohne erkannte GitHub-Quelle blockieren; bewusste Ausnahmen sind mit `ALLOW_NON_GITHUB_TOOL_SOURCE=1` moeglich.
 
+## Tool-Quellen und GitHub-Regel
+
+Die zentrale Uebersicht steht in [docs/GITHUB_TOOL_SOURCES.md](docs/GITHUB_TOOL_SOURCES.md). Kurzfassung:
+
+- `n8n` wird aktuell aus dem GitHub-Monorepo `github.com/n8n-io/n8n` geklont und lokal gebaut.
+- `Airbyte` nutzt GitHub-Quellen fuer Airbyte und `abctl`, die lokale Installation laeuft aber ueber `abctl` und kann Container-Komponenten nachladen.
+- `Blender` und `FFmpeg` werden jetzt ebenfalls aus GitHub-Quellen gebaut. Achtung: Besonders Blender ist ein sehr grosser Source-Build und kann ueber Upstream-Skripte weitere Build-Abhaengigkeiten nachladen.
+- `apt` bleibt fuer Basis-/Build-Abhaengigkeiten erlaubt, zum Beispiel `git`, `curl`, `python3-venv`, `build-essential`, Docker oder Systembibliotheken.
+
 Alte Fehlerlogs koennen gezielt rotiert werden:
 
 ```bash
 bash scripts/cleanup_setup_logs.sh --dry-run --failed-only
 bash scripts/cleanup_setup_logs.sh --apply --failed-only
 ```
+
+## Optionale Profile
 
 ## Optional: OpenHiggsStack / AI Cinema Studio
 

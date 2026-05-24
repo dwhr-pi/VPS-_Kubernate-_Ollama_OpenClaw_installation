@@ -32,6 +32,7 @@ USER_CUSTOM_SOURCE_DIR="$USER_WORKSPACE_DIR/custom_sources"
 USER_DIALOGRC_FILE="$USER_WORKSPACE_DIR/dialogrc"
 METRICS_CONFIG_FILE="$USER_WORKSPACE_DIR/setup_metrics.conf"
 METRICS_HISTORY_FILE="$USER_METRICS_LOG_DIR/operation_history.tsv"
+METRICS_SUMMARY_FILE="$USER_METRICS_LOG_DIR/operation_summary.tsv"
 PROFILE_STATUS_FILE="$USER_WORKSPACE_DIR/installed_profiles.txt"
 TOOL_STATUS_FILE="$USER_WORKSPACE_DIR/installed_tools.txt"
 SETUP_PREFERENCES_FILE="$USER_WORKSPACE_DIR/setup_preferences.conf"
@@ -190,6 +191,9 @@ EOF
 
     if [ ! -f "$METRICS_HISTORY_FILE" ]; then
         printf 'timestamp\toperation_id\toperation_title\tstatus\tduration_seconds\tfree_kb_before\tfree_kb_after\tdelta_kb\n' > "$METRICS_HISTORY_FILE"
+    fi
+    if [ ! -f "$METRICS_SUMMARY_FILE" ]; then
+        printf 'operation_id\tduration_seconds\tdelta_kb\ttimestamp\n' > "$METRICS_SUMMARY_FILE"
     fi
 
     touch "$PROFILE_STATUS_FILE" "$TOOL_STATUS_FILE"
@@ -497,6 +501,29 @@ declare -A METRIC_CACHE_DURATION_SECONDS
 declare -A METRIC_CACHE_DELTA_KB
 METRIC_CACHE_LOADED=0
 
+rebuild_metric_summary_cache() {
+    ensure_user_workspace
+    if [ ! -f "$METRICS_HISTORY_FILE" ]; then
+        printf 'operation_id\tduration_seconds\tdelta_kb\ttimestamp\n' > "$METRICS_SUMMARY_FILE"
+        return 0
+    fi
+
+    awk -F'\t' '
+        NR == 1 && $2 == "operation_id" { next }
+        $4 == "success" && $2 != "" {
+            duration[$2] = $5
+            delta[$2] = $8
+            ts[$2] = $1
+        }
+        END {
+            print "operation_id\tduration_seconds\tdelta_kb\ttimestamp"
+            for (id in duration) {
+                print id "\t" duration[id] "\t" delta[id] "\t" ts[id]
+            }
+        }
+    ' "$METRICS_HISTORY_FILE" > "$METRICS_SUMMARY_FILE"
+}
+
 load_metric_cache_once() {
     local timestamp
     local operation_id
@@ -514,14 +541,17 @@ load_metric_cache_once() {
     METRIC_CACHE_DURATION_SECONDS=()
     METRIC_CACHE_DELTA_KB=()
     ensure_user_workspace
-    if [ -f "$METRICS_HISTORY_FILE" ]; then
-        while IFS=$'\t' read -r timestamp operation_id operation_title status duration_seconds free_kb_before free_kb_after delta_kb; do
+    if [ ! -s "$METRICS_SUMMARY_FILE" ] || [ "$(wc -l < "$METRICS_SUMMARY_FILE" 2>/dev/null || echo 0)" -le 1 ]; then
+        rebuild_metric_summary_cache
+    fi
+
+    if [ -f "$METRICS_SUMMARY_FILE" ]; then
+        while IFS=$'\t' read -r operation_id duration_seconds delta_kb timestamp; do
             [ "$operation_id" != "operation_id" ] || continue
-            [ "$status" = "success" ] || continue
             [ -n "$operation_id" ] || continue
             METRIC_CACHE_DURATION_SECONDS["$operation_id"]="$duration_seconds"
             METRIC_CACHE_DELTA_KB["$operation_id"]="$delta_kb"
-        done < "$METRICS_HISTORY_FILE"
+        done < "$METRICS_SUMMARY_FILE"
     fi
     METRIC_CACHE_LOADED=1
 }
@@ -807,6 +837,7 @@ end_operation_measurement() {
     local delta_kb
     local metric_prefix
     local tmp_metrics_file
+    local tmp_metrics_summary_file
 
     [ -n "${ACTIVE_OPERATION_STARTED_AT:-}" ] || return 0
     LAST_OPERATION_LOG_FILE="${ACTIVE_OPERATION_LOG_FILE:-}"
@@ -827,6 +858,17 @@ end_operation_measurement() {
         "${ACTIVE_OPERATION_FREE_KB_BEFORE:-0}" \
         "${free_kb_after:-0}" \
         "$delta_kb" >> "$METRICS_HISTORY_FILE"
+
+    if [ "$operation_status" = "success" ]; then
+        tmp_metrics_summary_file="$(mktemp)"
+        awk -F'\t' -v id="${ACTIVE_OPERATION_ID:-unbekannt}" 'BEGIN {OFS=FS} NR == 1 || $1 != id {print}' "$METRICS_SUMMARY_FILE" > "$tmp_metrics_summary_file" 2>/dev/null || printf 'operation_id\tduration_seconds\tdelta_kb\ttimestamp\n' > "$tmp_metrics_summary_file"
+        printf '%s\t%s\t%s\t%s\n' \
+            "${ACTIVE_OPERATION_ID:-unbekannt}" \
+            "$duration_seconds" \
+            "$delta_kb" \
+            "$(date '+%Y-%m-%d %H:%M:%S')" >> "$tmp_metrics_summary_file"
+        mv "$tmp_metrics_summary_file" "$METRICS_SUMMARY_FILE"
+    fi
     invalidate_metric_cache
 
     ensure_metrics_config
@@ -1490,6 +1532,7 @@ handle_manual_tool_post_action() {
     local tool_key="$1"
     local action_label="$2"
     local operation_status="${3:-success}"
+    local upcoming_preview="${4:-}"
     local current_log_file="${LAST_OPERATION_LOG_FILE:-}"
     local next_choice
     local prompt_text
@@ -1514,12 +1557,17 @@ handle_manual_tool_post_action() {
     if [ -n "$current_log_file" ]; then
         echo -e "${YELLOW}Logdatei:${NC} $current_log_file"
     fi
+    if [ -n "$upcoming_preview" ]; then
+        echo -e "${YELLOW}Als Nächstes geplant:${NC} $upcoming_preview"
+    else
+        echo -e "${YELLOW}Als Nächstes geplant:${NC} (keine weiteren Tools in diesem Batch)"
+    fi
 
     while true; do
         if [ "$operation_status" = "failed" ]; then
-            prompt_text="Zurück ins Setup [Z], weiter [N], Log [L], Diagnose [D] oder Diagnose per E-Mail [E]? "
+            prompt_text="Zurück ins Setup [Z], weiter/nächstes Tool [N], Log [L], Diagnose [D] oder Diagnose per E-Mail [E]? "
         else
-            prompt_text="Weiter [N], zurück ins Setup [Z], Log anzeigen [L], Diagnose [D] oder Diagnose per E-Mail [E]? "
+            prompt_text="Weiter/nächstes Tool [N], zurück ins Setup [Z], Log anzeigen [L], Diagnose [D] oder Diagnose per E-Mail [E]? "
         fi
         read -r -p "$prompt_text" next_choice
         case "$(printf '%s' "${next_choice:-$default_choice}" | tr '[:lower:]' '[:upper:]')" in
@@ -1547,6 +1595,76 @@ handle_manual_tool_post_action() {
     done
 
     LAST_OPERATION_LOG_FILE=""
+}
+
+format_tool_queue_preview() {
+    local max_items="${1:-6}"
+    shift || true
+    local item
+    local count=0
+    local preview=""
+    local remaining=0
+
+    for item in "$@"; do
+        [ -n "$item" ] || continue
+        if [ "$count" -lt "$max_items" ]; then
+            if [ -n "$preview" ]; then
+                preview="${preview}, ${item}"
+            else
+                preview="$item"
+            fi
+        else
+            remaining=$((remaining + 1))
+        fi
+        count=$((count + 1))
+    done
+
+    if [ "$count" -eq 0 ]; then
+        printf '%s' ""
+    elif [ "$remaining" -gt 0 ]; then
+        printf '%s (+%s weitere)' "$preview" "$remaining"
+    else
+        printf '%s' "$preview"
+    fi
+}
+
+confirm_tool_batch_step() {
+    local action_label="$1"
+    local tool_key="$2"
+    local upcoming_preview="$3"
+    local step_choice
+
+    if ! is_preference_enabled "${INSTALL_MONITORING_MANUAL_FLOW:-false}"; then
+        return 0
+    fi
+
+    echo
+    echo -e "${YELLOW}Naechster Batch-Schritt:${NC} ${action_label} ${tool_key}"
+    if [ -n "$upcoming_preview" ]; then
+        echo -e "${YELLOW}Danach geplant:${NC} $upcoming_preview"
+    else
+        echo -e "${YELLOW}Danach geplant:${NC} (keine weiteren Tools in diesem Batch)"
+    fi
+
+    while true; do
+        read -r -p "Ausfuehren [N], dieses Tool ueberspringen [S] oder Batch abbrechen [Z]? " step_choice
+        case "$(printf '%s' "${step_choice:-N}" | tr '[:lower:]' '[:upper:]')" in
+            N|"")
+                return 0
+                ;;
+            S)
+                echo -e "${YELLOW}${action_label} ${tool_key} wurde uebersprungen.${NC}"
+                return 2
+                ;;
+            Z)
+                TOOL_BATCH_ABORT_REQUESTED=1
+                return 1
+                ;;
+            *)
+                echo -e "${YELLOW}Bitte N, S oder Z eingeben.${NC}"
+                ;;
+        esac
+    done
 }
 
 handle_manual_profile_post_action() {
@@ -1961,6 +2079,10 @@ run_ordered_tool_actions() {
     local -n uninstall_queue_ref="$2"
     local -n install_queue_ref="$3"
     local tool_key
+    local step_rc
+    local upcoming_preview
+    local -a remaining_tools=()
+    local index
 
     if [ "${#uninstall_queue_ref[@]}" -eq 0 ] && [ "${#install_queue_ref[@]}" -eq 0 ]; then
         echo -e "${YELLOW}Keine Tool-Aenderungen fuer ${context_label} ausgewaehlt.${NC}"
@@ -1972,18 +2094,44 @@ run_ordered_tool_actions() {
         "${uninstall_queue_ref[*]}" \
         "${install_queue_ref[*]}"
 
-    for tool_key in "${uninstall_queue_ref[@]}"; do
+    for index in "${!uninstall_queue_ref[@]}"; do
+        tool_key="${uninstall_queue_ref[$index]}"
         [ -n "$tool_key" ] || continue
+        remaining_tools=("${uninstall_queue_ref[@]:$((index + 1))}" "${install_queue_ref[@]}")
+        upcoming_preview="$(format_tool_queue_preview 6 "${remaining_tools[@]}")"
+        confirm_tool_batch_step "Deinstallation" "$tool_key" "$upcoming_preview"
+        step_rc=$?
+        if [ "$step_rc" -eq 2 ]; then
+            continue
+        elif [ "$step_rc" -ne 0 ]; then
+            echo -e "${YELLOW}Batch wurde vor '${tool_key}' abgebrochen. Rueckkehr ins Setup.${NC}"
+            return 1
+        fi
+        TOOL_BATCH_UPCOMING_PREVIEW="$upcoming_preview"
         uninstall_tool "$tool_key"
+        TOOL_BATCH_UPCOMING_PREVIEW=""
         if [ "${TOOL_BATCH_ABORT_REQUESTED:-0}" = "1" ]; then
             echo -e "${YELLOW}Batch wurde auf Wunsch nach '${tool_key}' abgebrochen. Rueckkehr ins Setup.${NC}"
             return 1
         fi
     done
 
-    for tool_key in "${install_queue_ref[@]}"; do
+    for index in "${!install_queue_ref[@]}"; do
+        tool_key="${install_queue_ref[$index]}"
         [ -n "$tool_key" ] || continue
+        remaining_tools=("${install_queue_ref[@]:$((index + 1))}")
+        upcoming_preview="$(format_tool_queue_preview 6 "${remaining_tools[@]}")"
+        confirm_tool_batch_step "Installation" "$tool_key" "$upcoming_preview"
+        step_rc=$?
+        if [ "$step_rc" -eq 2 ]; then
+            continue
+        elif [ "$step_rc" -ne 0 ]; then
+            echo -e "${YELLOW}Batch wurde vor '${tool_key}' abgebrochen. Rueckkehr ins Setup.${NC}"
+            return 1
+        fi
+        TOOL_BATCH_UPCOMING_PREVIEW="$upcoming_preview"
         install_tool "$tool_key"
+        TOOL_BATCH_UPCOMING_PREVIEW=""
         if [ "${TOOL_BATCH_ABORT_REQUESTED:-0}" = "1" ]; then
             echo -e "${YELLOW}Batch wurde auf Wunsch nach '${tool_key}' abgebrochen. Rueckkehr ins Setup.${NC}"
             return 1
@@ -2789,7 +2937,7 @@ install_tool() {
         end_operation_measurement "failed"
         echo -e "${RED}Fehler bei der Installation von Tool \'$TOOL_KEY\'.${NC}"
     fi
-    handle_manual_tool_post_action "$TOOL_KEY" "Installation" "$operation_status"
+    handle_manual_tool_post_action "$TOOL_KEY" "Installation" "$operation_status" "${TOOL_BATCH_UPCOMING_PREVIEW:-}"
 }
 
 # Funktion zum Deinstallieren eines Tools
@@ -2811,7 +2959,7 @@ uninstall_tool() {
         end_operation_measurement "failed"
         echo -e "${RED}Fehler bei der Deinstallation von Tool \'$TOOL_KEY\'.${NC}"
     fi
-    handle_manual_tool_post_action "$TOOL_KEY" "Deinstallation" "$operation_status"
+    handle_manual_tool_post_action "$TOOL_KEY" "Deinstallation" "$operation_status" "${TOOL_BATCH_UPCOMING_PREVIEW:-}"
 }
 
 # Funktion zum Anzeigen des Tool-Management-Menüs
@@ -3118,7 +3266,6 @@ show_tool_group_checklist() {
     local status
     local group_metric_summary
     local tool_metric_summary
-    local tool_storage_summary
     local -a group_tool_array=()
     declare -A installed_map
 
@@ -3134,8 +3281,7 @@ show_tool_group_checklist() {
             status="on"
         fi
         tool_metric_summary="$(get_operation_metric_summary_plain "tool_install_${tool_key}")"
-        tool_storage_summary="$(printf '%s' "$tool_metric_summary" | awk -F'|' '{gsub(/^ +| +$/, "", $2); print $2}')"
-        options+=("$tool_key" "${tool_metric_summary} | Speicher gesamt: ${tool_storage_summary} | ${TOOLS[$tool_key]}" "$status")
+        options+=("$tool_key" "${tool_metric_summary} | ${TOOLS[$tool_key]}" "$status")
     done
 
     if [ ${#options[@]} -eq 0 ]; then
@@ -3146,7 +3292,7 @@ show_tool_group_checklist() {
 
     dialog --clear --backtitle "$APP_TITLE" \
     --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
-    --title "$group_title" --checklist "(*) = behalten oder installieren. Leer = bei installierten Tools deinstallieren. Format je Tool: Zeit hh:mm:ss | Speicher MB. Fehlende Werte: --:--:-- | --.- MB. Ermittelte Summe dieses Blocks: ${group_metric_summary}. Ausführung: erst Deinstallationen, danach Installationen." 28 120 18 \
+    --title "$group_title" --checklist "(*) = behalten oder installieren. Leer = bei installierten Tools deinstallieren.\n\nSpalten: Auswahl | Tool | Zeit hh:mm:ss | Gesamtspeicher MB | Beschreibung\nFehlende Werte: --:--:-- | --.- MB\nErmittelte Summe dieses Blocks: ${group_metric_summary}\nAusführung: erst Deinstallationen, danach Installationen." 28 120 18 \
     "${options[@]}" 2> /tmp/profile_block_tools_selection
 
     if [ $? -ne 0 ]; then

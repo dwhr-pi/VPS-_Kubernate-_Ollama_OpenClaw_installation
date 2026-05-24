@@ -30,6 +30,9 @@ Wichtig: Ein Tool kann trotzdem GitHub als Primaerquelle haben, aber beim Build 
 | AutoGPT | `github.com/significant-gravitas/autogpt` oder konfigurierter Fork | Upstream-Docker-Build zieht Docker-Basisimages, Container-Pakete und Debian/Alpine-Abhaengigkeiten. BuildKit ist erforderlich. | GitHub-basiert, aber nicht rein direkter GitHub-Build. |
 | Airbyte | `github.com/airbytehq/airbyte` und `github.com/airbytehq/abctl` | `abctl local install` nutzt Container/Kubernetes-Komponenten und kann Images nachladen. | GitHub-basiert, aber Container-orchestriert. |
 | Apache Tika | `github.com/apache/tika` | Je nach Installer kann der Betrieb ueber Docker/Java-Artefakte laufen. | GitHub-basiert mit Laufzeit-Abhaengigkeiten. |
+| Blender | `github.com/blender/blender` | Der Installer klont Blender aus GitHub und baut lokal. Blender-Upstream kann beim `make update` zusaetzliche Build-Abhaengigkeiten nachladen. | GitHub-Source-Build, sehr schwer. |
+| FFmpeg | `github.com/FFmpeg/FFmpeg` | Der Installer klont FFmpeg aus GitHub und baut lokal nach `/opt/ffmpeg-github`. | GitHub-Source-Build. |
+| n8n | `github.com/n8n-io/n8n` | Der aktuelle Installer klont das GitHub-Monorepo und baut mit `pnpm`; npm/pnpm laden dabei Paketmanager-Abhaengigkeiten nach. | Direkter GitHub-Source-Pfad mit Paketmanager-Abhaengigkeiten. |
 | Docker / Container-Basis | Offizielle Paketquelle oder GitHub-Release, je nach System | Docker Hub/Base-Images, OS-Pakete im Container. | System-/Runtime-Abhaengigkeit, keine App-Quelle. |
 | Go, Python, Node, Bun, Java | Offizielle Sprach-/Runtime-Quellen oder Systempakete | Paketmanager-Abhaengigkeiten wie npm, pip, cargo, apt. | Build-Werkzeug, nicht Ziel-App. |
 | `apt`-Pakete | Ubuntu/Debian-Repositories | Systembibliotheken, Compiler, `python3-venv`, `git`, `curl`, `build-essential`, `docker.io`. | Erlaubte Basisversorgung. |
