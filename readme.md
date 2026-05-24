@@ -24,6 +24,7 @@
 - [Tested Status Matrix](docs/TESTED_STATUS_MATRIX.md)
 - [Security Baseline](docs/SECURITY_BASELINE.md)
 - [GitHub Tool Sources](docs/GITHUB_TOOL_SOURCES.md)
+- [Integritaetspruefung und automatisierter Support](docs/SETUP_INTEGRITY_AND_SUPPORT_TUTORIAL.md)
 - [WSL2/OpenClaw/Ollama Troubleshooting](docs/TROUBLESHOOTING_WSL2_OPENCLAW_OLLAMA.md)
 - [WSL2 Troubleshooting](docs/TROUBLESHOOTING_WSL2.md)
 - [OpenClaw Troubleshooting](docs/TROUBLESHOOTING_OPENCLAW.md)
@@ -184,6 +185,8 @@ Vor jedem Tool-Schritt zeigt die erweiterte Installationsueberwachung jetzt auss
 Die Tool- und Profiluebersichten koennen je nach WSL-/Datentraegerzustand spuerbar laden, besonders wenn Zeit- und Speicherwerte angezeigt werden. Vor dem Oeffnen erscheint deshalb optional ein Lade-Hinweis mit kurzer Fortschrittsanzeige. In `Optionen -> Installationsueberwachung konfigurieren` kannst du sowohl diesen Lade-Hinweis als auch die Anzeige der Zeit-/Speicherwerte in Tool- und Profiluebersichten an- oder abschalten.
 
 Diagnoseberichte enthalten zusaetzlich eine Repo-Herkunftspruefung. Dabei wird `git remote get-url origin` gegen das erwartete Original `https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation` geprueft. Wenn das Setup aus einem Fork oder einer unbekannten Quelle stammt, wird dies im Bericht und damit auch in Diagnose-E-Mails klar als Support-Hinweis markiert: Selbstheilung via Original-Update kann Fork-Manipulationen nicht sicher reparieren.
+
+Das geplante Verfahren fuer signierte Hash-Manifeste, Public-Key-Pruefung und automatisierten Support ueber Ollama/OpenClaw ist in [docs/SETUP_INTEGRITY_AND_SUPPORT_TUTORIAL.md](docs/SETUP_INTEGRITY_AND_SUPPORT_TUTORIAL.md) beschrieben.
 
 Schnelle Log- und Speicherdiagnose:
 
