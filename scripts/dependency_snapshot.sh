@@ -4,6 +4,8 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 USER_WORKSPACE_DIR="${USER_WORKSPACE_DIR:-$HOME/.openclaw_ultimate_user_data}"
 REPORT_DIR="${REPORT_DIR:-$USER_WORKSPACE_DIR/diagnostic_reports}"
+# shellcheck disable=SC1091
+source "$ROOT_DIR/scripts/lib/repo_origin_check.sh"
 mkdir -p "$REPORT_DIR"
 REPORT_FILE="$REPORT_DIR/$(date '+%Y%m%d_%H%M%S')_dependency_snapshot.md"
 
@@ -23,6 +25,8 @@ human_du() {
   echo "- Datum: $(date '+%Y-%m-%d %H:%M:%S')"
   echo "- Repo: $ROOT_DIR"
   echo
+
+  print_repo_origin_report "$ROOT_DIR"
 
   echo "## Dateisystem"
   df -h "$HOME" "$ROOT_DIR" 2>/dev/null || df -h

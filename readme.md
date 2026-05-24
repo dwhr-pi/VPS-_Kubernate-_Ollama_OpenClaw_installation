@@ -33,6 +33,14 @@ Neue Profile ab `11.17` sind bewusst als `planned` registriert. Sie sind sichtba
 
 Dies ist das ultimative Setup für ein hybrides KI- und Smart-Home-System, das deinen Letsung MiniPC (WSL2) und mehrere kostenlose VPS kombiniert. Es integriert eine Vielzahl von Tools und KI-Agenten, die direkt aus GitHub-Quellen kompiliert oder lokal aufgebaut werden.
 
+## Wichtiger Original- und Support-Hinweis
+
+Dieses Setup ist das Original-Setup des Repositories `dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation`. Auch wenn viele Bestandteile aus einfachen Linux-/Bash-Skripten bestehen, ist das Original vor nicht autorisierten Veraenderungen, Manipulationsversuchen und nicht abgestimmten Fork-Aenderungen geschuetzt.
+
+Die automatisierte Supportunterstuetzung und Selbstheilung via Update gilt nur fuer das unverfaelschte Original-Setup bzw. fuer bewusst freigegebene Aenderungen. Wenn das Setup aus einem Fork, einer unbekannten Quelle oder einer lokal manipulierten Variante stammt, erlischt diese automatisierte Supportunterstuetzung: Das Original-Update kann solche Aenderungen nicht sicher bewerten, reparieren oder verantworten.
+
+Bitte kontaktiere den Entwickler, wenn Funktionen, Anpassungen oder neue Tools gewuenscht sind. Wuensche koennen dann sauber aufgenommen, geprueft und kontrolliert in das Original-Setup integriert werden.
+
 ## 🧱 Zielbild
 
 Das Repository entwickelt sich von einer reinen Tool-Sammlung zu einer modularen **LLMOps-Plattform**:
@@ -174,6 +182,8 @@ Hinweis zur erweiterten Installationsueberwachung: Wenn sie aktiv ist, bietet de
 Vor jedem Tool-Schritt zeigt die erweiterte Installationsueberwachung jetzt ausserdem eine Vorschau auf die naechsten geplanten Tools. Dort kannst du mit `[N]` den aktuellen Schritt ausfuehren, mit `[S]` genau dieses Tool ueberspringen oder mit `[Z]` den gesamten Batch abbrechen. Das hilft besonders bei langen Source-Builds wie Blender, Airbyte, n8n oder grossen Docker-/Kubernetes-Tools.
 
 Die Tool- und Profiluebersichten koennen je nach WSL-/Datentraegerzustand spuerbar laden, besonders wenn Zeit- und Speicherwerte angezeigt werden. Vor dem Oeffnen erscheint deshalb optional ein Lade-Hinweis mit kurzer Fortschrittsanzeige. In `Optionen -> Installationsueberwachung konfigurieren` kannst du sowohl diesen Lade-Hinweis als auch die Anzeige der Zeit-/Speicherwerte in Tool- und Profiluebersichten an- oder abschalten.
+
+Diagnoseberichte enthalten zusaetzlich eine Repo-Herkunftspruefung. Dabei wird `git remote get-url origin` gegen das erwartete Original `https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation` geprueft. Wenn das Setup aus einem Fork oder einer unbekannten Quelle stammt, wird dies im Bericht und damit auch in Diagnose-E-Mails klar als Support-Hinweis markiert: Selbstheilung via Original-Update kann Fork-Manipulationen nicht sicher reparieren.
 
 Schnelle Log- und Speicherdiagnose:
 

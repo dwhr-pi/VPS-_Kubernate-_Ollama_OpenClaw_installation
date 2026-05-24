@@ -8,6 +8,8 @@ REPORT_DIR="${REPORT_DIR:-$USER_WORKSPACE_DIR/diagnostic_reports}"
 MAIL_SETTINGS_FILE="${MAIL_SETTINGS_FILE:-$USER_WORKSPACE_DIR/mail/mail_settings.env}"
 # shellcheck disable=SC1091
 source "$ROOT_DIR/scripts/lib/mail_crypto.sh"
+# shellcheck disable=SC1091
+source "$ROOT_DIR/scripts/lib/repo_origin_check.sh"
 load_secure_mail_settings
 LIMIT="${LIMIT:-40}"
 EMAIL_MODE="never"
@@ -138,6 +140,8 @@ list_recent_logs() {
   echo "- Installationslogs: $INSTALL_LOG_DIR"
   echo "- Limit: $LIMIT Logs"
   echo
+
+  print_repo_origin_report "$ROOT_DIR"
 
   echo "## Kurzfazit"
   total=0

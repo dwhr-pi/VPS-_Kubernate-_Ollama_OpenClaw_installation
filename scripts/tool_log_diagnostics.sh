@@ -17,6 +17,8 @@ MAIL_SETTINGS_FILE="${MAIL_SETTINGS_FILE:-$USER_WORKSPACE_DIR/mail/mail_settings
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck disable=SC1091
 source "$SCRIPT_DIR/lib/mail_crypto.sh"
+# shellcheck disable=SC1091
+source "$SCRIPT_DIR/lib/repo_origin_check.sh"
 load_secure_mail_settings
 LINE_COUNT="${LINE_COUNT:-220}"
 TOOL_NAME=""
@@ -178,6 +180,7 @@ create_report() {
         echo "- Log: $log_file"
         echo "- Install-Log-Verzeichnis: $INSTALL_LOG_DIR"
         echo
+        print_repo_origin_report "$SCRIPT_DIR/.."
         echo "## Gefilterte Diagnose"
         echo
     } > "$report_file"
