@@ -28,7 +28,7 @@ Wichtig: Ein Tool kann trotzdem GitHub als Primaerquelle haben, aber beim Build 
 | Tool / Bereich | Primaerquelle | Indirekte Quellen | Einordnung |
 |---|---|---|---|
 | AutoGPT | `github.com/significant-gravitas/autogpt` oder konfigurierter Fork | Upstream-Docker-Build zieht Docker-Basisimages, Container-Pakete und Debian/Alpine-Abhaengigkeiten. BuildKit ist erforderlich. | GitHub-basiert, aber nicht rein direkter GitHub-Build. |
-| Airbyte | `github.com/airbytehq/airbyte` und `github.com/airbytehq/abctl` | `abctl local install` nutzt Container/Kubernetes-Komponenten und kann Images nachladen. | GitHub-basiert, aber Container-orchestriert. |
+| Airbyte | `github.com/airbytehq/airbyte` und `github.com/airbytehq/abctl` | `abctl local install` erstellt einen eigenen lokalen `kind`/Kubernetes-Cluster und laedt viele Container-Images nach. Details: [AIRBYTE_ABCTL_KUBERNETES_NOTES.md](AIRBYTE_ABCTL_KUBERNETES_NOTES.md). | GitHub-basiert, aber Container-orchestriert und sehr speicherintensiv. |
 | Apache Tika | `github.com/apache/tika` | Je nach Installer kann der Betrieb ueber Docker/Java-Artefakte laufen. | GitHub-basiert mit Laufzeit-Abhaengigkeiten. |
 | Blender | `github.com/blender/blender` | Der Installer klont Blender aus GitHub und baut lokal. Blender-Upstream kann beim `make update` zusaetzliche Build-Abhaengigkeiten nachladen. | GitHub-Source-Build, sehr schwer. |
 | FFmpeg | `github.com/FFmpeg/FFmpeg` | Der Installer klont FFmpeg aus GitHub und baut lokal nach `/opt/ffmpeg-github`. | GitHub-Source-Build. |
@@ -59,7 +59,7 @@ Wichtig: Ein Tool kann trotzdem GitHub als Primaerquelle haben, aber beim Build 
 | Stirling PDF | `github.com/Stirling-Tools/Stirling-PDF` | empfohlen | Lokale PDF-Werkzeuge. |
 | n8n | `github.com/n8n-io/n8n` | empfohlen | Build aus Source ist speicherintensiv. |
 | Activepieces | `github.com/activepieces/activepieces` | optional | Upstream nutzt Bun; kein pnpm erzwingen. |
-| Airbyte | `github.com/airbytehq/airbyte`, `github.com/airbytehq/abctl` | optional/sehr schwer | Aktueller lokaler Installationspfad laeuft ueber `abctl local install`; alter Docker-Compose-Pfad mit `airbyte/webapp:latest` ist nicht mehr geeignet. Vor dem Image-Pull sollten unter WSL mindestens ca. 32 GB Linux-/WSL-Speicher und ca. 20 GB Windows-Host-Speicher frei sein, besser deutlich mehr. |
+| Airbyte | `github.com/airbytehq/airbyte`, `github.com/airbytehq/abctl` | optional/sehr schwer | Aktueller lokaler Installationspfad laeuft ueber `abctl local install`; alter Docker-Compose-Pfad mit `airbyte/webapp:latest` ist nicht mehr geeignet. `abctl` erzeugt lokal einen eigenen `kind`-Cluster, nicht automatisch den spaeteren Setup-K3s-Cluster. Vor dem Image-Pull sollten unter WSL mindestens ca. 32 GB Linux-/WSL-Speicher und ca. 20 GB Windows-Host-Speicher frei sein, besser deutlich mehr. |
 | Node-RED | `github.com/node-red/node-red` | empfohlen | Lokale Automation. |
 | ComfyUI | `github.com/comfyanonymous/ComfyUI` | empfohlen/GPU | Modellcache gross. |
 | Blender | `github.com/blender/blender` | empfohlen | Build sehr schwer; Binary/apt nur bewusst dokumentieren. |

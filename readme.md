@@ -6,6 +6,7 @@
 - [Zielbild](#-zielbild)
 - [Quickstarts](#quickstarts)
 - [Setup-Skripte schnell finden](#setup-skripte-schnell-finden)
+- [Speicherplatz und Bereinigung](#speicherplatz-und-bereinigung)
 - [Gegenwärtiger Status](#-gegenwärtiger-status)
 - [Schnelle Installation](#-schnelle-installation-one-liner)
 - [Boardroom-Profil](#boardroom-profil)
@@ -24,6 +25,7 @@
 - [Tested Status Matrix](docs/TESTED_STATUS_MATRIX.md)
 - [Security Baseline](docs/SECURITY_BASELINE.md)
 - [GitHub Tool Sources](docs/GITHUB_TOOL_SOURCES.md)
+- [Airbyte, abctl und Kubernetes](docs/AIRBYTE_ABCTL_KUBERNETES_NOTES.md)
 - [Integritaetspruefung und automatisierter Support](docs/SETUP_INTEGRITY_AND_SUPPORT_TUTORIAL.md)
 - [WSL2/OpenClaw/Ollama Troubleshooting](docs/TROUBLESHOOTING_WSL2_OPENCLAW_OLLAMA.md)
 - [WSL2 Troubleshooting](docs/TROUBLESHOOTING_WSL2.md)
@@ -72,6 +74,8 @@ Die zugehoerige Architektur-Dokumentation findest du in [docs/ARCHITECTURE_LLMOP
 | Letzte Logs und Fehler prüfen | `bash scripts/last_install_log.sh --failed` |
 | Installationsdiagnose erstellen | `bash scripts/install_run_diagnostics.sh` |
 | Abhängigkeiten-/Speicher-Snapshot | `bash scripts/dependency_snapshot.sh` |
+| Installationsreste/Caches anzeigen | `bash scripts/cleanup_installation_residues.sh --dry-run --all` |
+| Installationsreste/Caches bereinigen | `bash scripts/cleanup_installation_residues.sh --apply --all` |
 | Tool-Registry prüfen | `bash scripts/check_tools.sh` |
 | Profile prüfen | `bash scripts/check_profiles.sh` |
 | Ports prüfen | `bash scripts/check_ports.sh` |
@@ -86,11 +90,27 @@ Wichtige Uebersichten:
 - [Toolmatrix](docs/TOOL_MATRIX.md)
 - [Tool Deployment Matrix](docs/TOOL_DEPLOYMENT_MATRIX.md)
 - [GitHub Tool Sources](docs/GITHUB_TOOL_SOURCES.md)
+- [Airbyte, abctl und Kubernetes](docs/AIRBYTE_ABCTL_KUBERNETES_NOTES.md)
 - [Portmatrix](docs/PORT_MATRIX.md)
 - [Sicherheitsmodell](docs/SECURITY_MODEL.md)
 - [Secret Handling](docs/SECRET_HANDLING.md)
 - [Remote Access Entscheidungshilfe](docs/REMOTE_ACCESS_DECISION_TREE.md)
 - [myBox + GBOX Integration](docs/myBOX_GBOX_INTEGRATION.md)
+
+## Speicherplatz und Bereinigung
+
+Das Setup misst bei Tool-Installationen weiterhin Speicherwerte, auch wenn die Anzeige dieser Werte in den Tool-/Profiluebersichten deaktiviert ist. Die Anzeige kann Zeit kosten; die Messung selbst bleibt fuer Protokolle und Diagnose aktiv.
+
+Alle Tool-Installer, die die gemeinsame Ressourcenpruefung nutzen, warnen unter WSL jetzt zusaetzlich bei niedrigem Windows-Host-Speicher auf `C:`. Schwere Installer koennen daraus eine harte Mindestanforderung machen. Airbyte ist ein solcher Sonderfall, weil `abctl local install` viele Container-Images fuer einen eigenen lokalen `kind`/Kubernetes-Cluster nachlaedt.
+
+Nach Installations- und Deinstallationslaeufen kannst du kontrolliert Platz zurueckholen:
+
+```bash
+bash scripts/cleanup_installation_residues.sh --dry-run --all
+bash scripts/cleanup_installation_residues.sh --apply --all
+```
+
+Der Trockenlauf loescht nichts. Die Bereinigung entfernt nur Paket-/Build-Caches, ungenutzte apt-Abhaengigkeiten und Docker-Zwischenreste nach Sicherheitsabfrage. Modelle, Projektordner und `/opt`-Toolverzeichnisse werden nicht automatisch geloescht.
 
 ## 🟡 Gegenwärtiger Status
 
@@ -194,6 +214,7 @@ Schnelle Log- und Speicherdiagnose:
 bash scripts/last_install_log.sh --failed
 bash scripts/last_install_log.sh --diagnostics
 bash scripts/last_install_log.sh --snapshot
+bash scripts/cleanup_installation_residues.sh --dry-run --all
 ```
 
 `--failed` zeigt die letzten erkannten Fehlerlogs, `--diagnostics` erstellt einen Bericht ueber den letzten Installationslauf und `--snapshot` schreibt einen Abhaengigkeiten-/Speicher-Snapshot nach `~/.openclaw_ultimate_user_data/diagnostic_reports`. Das hilft besonders nach grossen Tool-Installationen, weil Deinstallationen nicht automatisch alle Systempakete, Python-venvs, npm/pnpm-Caches, Docker-/Podman-Images, Modellordner oder Build-Caches entfernen.
@@ -210,6 +231,7 @@ Die zentrale Uebersicht steht in [docs/GITHUB_TOOL_SOURCES.md](docs/GITHUB_TOOL_
 
 - `n8n` wird aktuell aus dem GitHub-Monorepo `github.com/n8n-io/n8n` geklont und lokal gebaut.
 - `Airbyte` nutzt GitHub-Quellen fuer Airbyte und `abctl`, die lokale Installation laeuft aber ueber `abctl` und kann sehr viele Container-/Kubernetes-Komponenten nachladen. Unter WSL sollte Airbyte nicht mit knappem Host-Speicher gestartet werden; 2-3 GB frei sind dafuer praktisch zu wenig.
+- Details zu Airbytes eigenem lokalen `kind`/Kubernetes-Cluster stehen in [docs/AIRBYTE_ABCTL_KUBERNETES_NOTES.md](docs/AIRBYTE_ABCTL_KUBERNETES_NOTES.md).
 - `Blender` und `FFmpeg` werden jetzt ebenfalls aus GitHub-Quellen gebaut. Achtung: Besonders Blender ist ein sehr grosser Source-Build und kann ueber Upstream-Skripte weitere Build-Abhaengigkeiten nachladen.
 - `apt` bleibt fuer Basis-/Build-Abhaengigkeiten erlaubt, zum Beispiel `git`, `curl`, `python3-venv`, `build-essential`, Docker oder Systembibliotheken.
 

@@ -1262,7 +1262,7 @@ show_installation_monitoring_menu() {
 
         dialog --clear --backtitle "$APP_TITLE" \
         --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
-        --title "INSTALLATIONSÜBERWACHUNG" --menu "Zusätzliche Überwachung, Logansicht und sichere Log-Aufräumung." 38 112 18 \
+        --title "INSTALLATIONSÜBERWACHUNG" --menu "Zusätzliche Überwachung, Logansicht und sichere Log-Aufräumung." 40 112 20 \
         "1" "Erweiterte Installationsüberwachung umschalten (aktuell: ${monitoring_state})" \
         "────────" "$separator_line" \
         "2" "Zeit-/Speicherwerte in Tool-/Profilübersichten umschalten (aktuell: ${overview_metrics_state})" \
@@ -1281,7 +1281,10 @@ show_installation_monitoring_menu() {
         "12" "Installationslauf-Diagnose erstellen" \
         "13" "Abhängigkeiten-/Speicher-Snapshot erstellen" \
         "────────────" "$separator_line" \
-        "14" "${TXT_BACK_ITEM:-Zurück}" 2> /tmp/install_monitoring_choice
+        "14" "Installationsreste/Caches Trockenlauf anzeigen" \
+        "15" "Installationsreste/Caches bereinigen (mit Sicherheitsabfrage)" \
+        "─────────────" "$separator_line" \
+        "16" "${TXT_BACK_ITEM:-Zurück}" 2> /tmp/install_monitoring_choice
 
         if [ $? -ne 0 ]; then
             return 0
@@ -1383,6 +1386,18 @@ show_installation_monitoring_menu() {
                 read -p "Abhängigkeiten-/Speicher-Snapshot abgeschlossen. Drücken Sie Enter..."
                 ;;
             14)
+                clear
+                bash "$INSTALL_DIR/scripts/cleanup_installation_residues.sh" --dry-run --all
+                echo
+                read -p "Trockenlauf abgeschlossen. Drücken Sie Enter..."
+                ;;
+            15)
+                clear
+                bash "$INSTALL_DIR/scripts/cleanup_installation_residues.sh" --apply --all
+                echo
+                read -p "Bereinigung abgeschlossen oder abgebrochen. Drücken Sie Enter..."
+                ;;
+            16)
                 return 0
                 ;;
         esac
