@@ -59,7 +59,7 @@ Wichtig: Ein Tool kann trotzdem GitHub als Primaerquelle haben, aber beim Build 
 | Stirling PDF | `github.com/Stirling-Tools/Stirling-PDF` | empfohlen | Lokale PDF-Werkzeuge. |
 | n8n | `github.com/n8n-io/n8n` | empfohlen | Build aus Source ist speicherintensiv. |
 | Activepieces | `github.com/activepieces/activepieces` | optional | Upstream nutzt Bun; kein pnpm erzwingen. |
-| Airbyte | `github.com/airbytehq/airbyte`, `github.com/airbytehq/abctl` | optional/schwer | Aktueller lokaler Installationspfad laeuft ueber `abctl local install`; alter Docker-Compose-Pfad mit `airbyte/webapp:latest` ist nicht mehr geeignet. |
+| Airbyte | `github.com/airbytehq/airbyte`, `github.com/airbytehq/abctl` | optional/sehr schwer | Aktueller lokaler Installationspfad laeuft ueber `abctl local install`; alter Docker-Compose-Pfad mit `airbyte/webapp:latest` ist nicht mehr geeignet. Vor dem Image-Pull sollten unter WSL mindestens ca. 32 GB Linux-/WSL-Speicher und ca. 20 GB Windows-Host-Speicher frei sein, besser deutlich mehr. |
 | Node-RED | `github.com/node-red/node-red` | empfohlen | Lokale Automation. |
 | ComfyUI | `github.com/comfyanonymous/ComfyUI` | empfohlen/GPU | Modellcache gross. |
 | Blender | `github.com/blender/blender` | empfohlen | Build sehr schwer; Binary/apt nur bewusst dokumentieren. |

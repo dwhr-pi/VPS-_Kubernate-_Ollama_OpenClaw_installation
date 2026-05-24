@@ -16,10 +16,55 @@ LOCAL_GO_BIN="$LOCAL_GO_ROOT/bin/go"
 AIRBYTE_PORT="${AIRBYTE_PORT:-8003}"
 AIRBYTE_HOST="${AIRBYTE_HOST:-localhost}"
 AIRBYTE_GO_VERSION="${AIRBYTE_GO_VERSION:-1.24.4}"
+AIRBYTE_MIN_FREE_MB="${AIRBYTE_MIN_FREE_MB:-32768}"
+AIRBYTE_RECOMMENDED_FREE_MB="${AIRBYTE_RECOMMENDED_FREE_MB:-65536}"
+AIRBYTE_MIN_WINDOWS_FREE_MB="${AIRBYTE_MIN_WINDOWS_FREE_MB:-20480}"
 
 begin_measurement "tool_install_${TOOL_NAME}" "Tool installieren: ${TOOL_NAME}"
 
-if ! ensure_user_workspace || ! require_disk_mb 8192 /; then
+get_free_mb_for_path() {
+  local path="${1:-/}"
+  df -Pm "$path" 2>/dev/null | awk 'NR==2 {print $4}'
+}
+
+get_windows_host_free_mb() {
+  local win_path="/mnt/c"
+  [ -d "$win_path" ] || return 0
+  df -Pm "$win_path" 2>/dev/null | awk 'NR==2 {print $4}'
+}
+
+airbyte_confirm_heavy_install() {
+  local linux_free_mb
+  local windows_free_mb
+
+  linux_free_mb="$(get_free_mb_for_path /)"
+  windows_free_mb="$(get_windows_host_free_mb || true)"
+
+  log_warn "Airbyte ist sehr schwergewichtig: abctl startet lokal einen kind/Kubernetes-Cluster und zieht viele Container-Images."
+  log_info "Freier Linux-/WSL-Speicher: ${linux_free_mb:-unbekannt} MB"
+  if [ -n "$windows_free_mb" ]; then
+    log_info "Freier Windows-Host-Speicher (C:): ${windows_free_mb} MB"
+  fi
+  log_info "Mindestempfehlung fuer Airbyte: ${AIRBYTE_MIN_FREE_MB} MB Linux/WSL frei, besser ${AIRBYTE_RECOMMENDED_FREE_MB} MB oder mehr."
+  log_info "Unter WSL sollte der Windows-Host zusaetzlich mindestens ${AIRBYTE_MIN_WINDOWS_FREE_MB} MB frei haben, weil Docker/WSL-VHDX waehrend Image-Pulls wachsen kann."
+
+  if [ -n "$linux_free_mb" ] && [ "$linux_free_mb" -lt "$AIRBYTE_MIN_FREE_MB" ]; then
+    log_error "Zu wenig freier Linux-/WSL-Speicher fuer Airbyte. Installation wird vor dem Image-Pull abgebrochen."
+    return 1
+  fi
+
+  if [ -n "$windows_free_mb" ] && [ "$windows_free_mb" -lt "$AIRBYTE_MIN_WINDOWS_FREE_MB" ]; then
+    log_error "Zu wenig freier Windows-Host-Speicher fuer Airbyte unter WSL. Installation wird vor dem Image-Pull abgebrochen."
+    log_warn "Hinweis: Airbyte kann lange bei 'Pulling images' stehen und danach durch Speicher-/VHDX-Grenzen abbrechen."
+    return 1
+  fi
+
+  if [ -n "$linux_free_mb" ] && [ "$linux_free_mb" -lt "$AIRBYTE_RECOMMENDED_FREE_MB" ]; then
+    log_warn "Der freie Linux-/WSL-Speicher liegt unter der Empfehlung. Airbyte kann trotzdem starten, aber Pulls und Builds koennen lange dauern oder abbrechen."
+  fi
+}
+
+if ! ensure_user_workspace || ! require_disk_mb "$AIRBYTE_MIN_FREE_MB" / || ! airbyte_confirm_heavy_install; then
   end_measurement "failed"
   exit 1
 fi
@@ -121,7 +166,6 @@ fi
 chmod +x "$ABCTL_BIN"
 "$ABCTL_BIN" version || true
 
-log_warn "Airbyte ist schwergewichtig: abctl startet lokal kind/Kubernetes-Container und benoetigt mehrere GB RAM/SSD."
 log_info "Installiere/aktualisiere Airbyte lokal auf http://${AIRBYTE_HOST}:${AIRBYTE_PORT}"
 
 ABCTL_CMD=("$ABCTL_BIN" local install --host "$AIRBYTE_HOST" --port "$AIRBYTE_PORT" --low-resource-mode --no-browser --insecure-cookies)
