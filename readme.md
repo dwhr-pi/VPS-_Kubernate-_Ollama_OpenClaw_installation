@@ -209,7 +209,7 @@ Die Tool-Quellenpolitik steht ebenfalls in `setup_metrics.conf`: Standardmaessig
 Die zentrale Uebersicht steht in [docs/GITHUB_TOOL_SOURCES.md](docs/GITHUB_TOOL_SOURCES.md). Kurzfassung:
 
 - `n8n` wird aktuell aus dem GitHub-Monorepo `github.com/n8n-io/n8n` geklont und lokal gebaut.
-- `Airbyte` nutzt GitHub-Quellen fuer Airbyte und `abctl`, die lokale Installation laeuft aber ueber `abctl` und kann Container-Komponenten nachladen.
+- `Airbyte` nutzt GitHub-Quellen fuer Airbyte und `abctl`, die lokale Installation laeuft aber ueber `abctl` und kann sehr viele Container-/Kubernetes-Komponenten nachladen. Unter WSL sollte Airbyte nicht mit knappem Host-Speicher gestartet werden; 2-3 GB frei sind dafuer praktisch zu wenig.
 - `Blender` und `FFmpeg` werden jetzt ebenfalls aus GitHub-Quellen gebaut. Achtung: Besonders Blender ist ein sehr grosser Source-Build und kann ueber Upstream-Skripte weitere Build-Abhaengigkeiten nachladen.
 - `apt` bleibt fuer Basis-/Build-Abhaengigkeiten erlaubt, zum Beispiel `git`, `curl`, `python3-venv`, `build-essential`, Docker oder Systembibliotheken.
 
