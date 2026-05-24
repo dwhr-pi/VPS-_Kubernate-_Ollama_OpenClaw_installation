@@ -86,10 +86,14 @@ if [ ! -f ".env" ] && [ -f ".env.default" ]; then
     cp .env.default .env
 fi
 
-echo -e "${BLUE}Starte AutoGPT Plattform per Docker Compose...${NC}"
-sudo docker compose up -d
+echo -e "${BLUE}Starte AutoGPT Plattform per Docker Compose mit BuildKit...${NC}"
+echo -e "${YELLOW}Hinweis: AutoGPT wird aus GitHub geklont, der Upstream-Docker-Build zieht jedoch Basis-Images und Container-Abhaengigkeiten.${NC}"
+echo -e "${YELLOW}BuildKit wird benoetigt, weil AutoGPT Dockerfile-Features wie RUN --mount=type=cache nutzt.${NC}"
+sudo env DOCKER_BUILDKIT=1 COMPOSE_DOCKER_CLI_BUILD=1 docker compose up -d
 if [ $? -ne 0 ]; then
     echo -e "${RED}Fehler: AutoGPT Docker Compose Start fehlgeschlagen.${NC}"
+    echo -e "${YELLOW}Reparaturhinweis: Pruefe, ob der Docker-Daemon laeuft und BuildKit verfuegbar ist.${NC}"
+    echo -e "${YELLOW}Der typische Fehler lautet: 'the --mount option requires BuildKit'.${NC}"
     exit 1
 fi
 

@@ -9,6 +9,31 @@ Diese Datei dokumentiert die bevorzugten Primaerquellen. Systempakete aus `apt` 
 - Docker-Images duerfen nur genutzt werden, wenn Source-Repository, Compose-Datei und Security-Hinweise dokumentiert sind.
 - Installer muessen vor grossen Downloads Speicherplatz, RAM, OS/WSL und vorhandene Versionen anzeigen.
 
+## Wo ist notiert, wenn ein Tool nicht direkt nur ueber GitHub installiert wird?
+
+Die Information steht an mehreren Stellen, weil Policy, Registry und echte Installationslogik unterschiedliche Aufgaben haben:
+
+| Ort | Bedeutung |
+|---|---|
+| `docs/GITHUB_TOOL_SOURCES.md` | Zentrale Policy und bekannte Ausnahmen fuer Primaerquellen. |
+| `config/tools.yml` | Maschinenlesbare Tool-Registry fuer Menues, Checks und Installer-Zuordnung. |
+| `scripts/tools/<tool>_install.sh` | Verbindliche technische Wahrheit, welche Quellen der Installer wirklich nutzt. |
+| `bash scripts/check_tools.sh --strict-sources` | Zeigt Tools ohne maschinenlesbare Primaerquellen-Zuordnung. |
+| `docs/CUSTOM_SOURCES_AND_BUILDS.md` | Dokumentiert lokale Overrides, eigene Forks und bewusst abweichende Quellen. |
+
+Wichtig: Ein Tool kann trotzdem GitHub als Primaerquelle haben, aber beim Build indirekt weitere Quellen nutzen. Das ist besonders bei Docker-Compose-, Container- und Sprach-Toolchain-Projekten normal. Solche Faelle muessen im Installer klar angesagt werden.
+
+## Bekannte indirekte oder nicht rein direkte GitHub-Pfade
+
+| Tool / Bereich | Primaerquelle | Indirekte Quellen | Einordnung |
+|---|---|---|---|
+| AutoGPT | `github.com/significant-gravitas/autogpt` oder konfigurierter Fork | Upstream-Docker-Build zieht Docker-Basisimages, Container-Pakete und Debian/Alpine-Abhaengigkeiten. BuildKit ist erforderlich. | GitHub-basiert, aber nicht rein direkter GitHub-Build. |
+| Airbyte | `github.com/airbytehq/airbyte` und `github.com/airbytehq/abctl` | `abctl local install` nutzt Container/Kubernetes-Komponenten und kann Images nachladen. | GitHub-basiert, aber Container-orchestriert. |
+| Apache Tika | `github.com/apache/tika` | Je nach Installer kann der Betrieb ueber Docker/Java-Artefakte laufen. | GitHub-basiert mit Laufzeit-Abhaengigkeiten. |
+| Docker / Container-Basis | Offizielle Paketquelle oder GitHub-Release, je nach System | Docker Hub/Base-Images, OS-Pakete im Container. | System-/Runtime-Abhaengigkeit, keine App-Quelle. |
+| Go, Python, Node, Bun, Java | Offizielle Sprach-/Runtime-Quellen oder Systempakete | Paketmanager-Abhaengigkeiten wie npm, pip, cargo, apt. | Build-Werkzeug, nicht Ziel-App. |
+| `apt`-Pakete | Ubuntu/Debian-Repositories | Systembibliotheken, Compiler, `python3-venv`, `git`, `curl`, `build-essential`, `docker.io`. | Erlaubte Basisversorgung. |
+
 ## Empfohlene Quellen
 
 | Tool | GitHub / Quelle | Status | Hinweise |
