@@ -1667,7 +1667,7 @@ handle_manual_tool_post_action() {
                 run_install_log_diagnostics_now "$current_log_file" "email"
                 ;;
             *)
-                echo -e "${YELLOW}Bitte N, Z, L, D oder E eingeben.${NC}"
+                echo -e "${YELLOW}Bitte nur: N, Z, L, D oder E eingeben.${NC}"
                 ;;
         esac
     done
@@ -1768,7 +1768,7 @@ confirm_tool_batch_step() {
                 return 1
                 ;;
             *)
-                echo -e "${YELLOW}Bitte N, S oder Z eingeben.${NC}"
+                echo -e "${YELLOW}Bitte nur: N, S oder Z eingeben.${NC}"
                 ;;
         esac
     done
@@ -1812,7 +1812,7 @@ handle_manual_profile_post_action() {
                 run_install_log_diagnostics_now "$current_log_file" "email"
                 ;;
             *)
-                echo -e "${YELLOW}Bitte N, Z, L, D oder E eingeben.${NC}"
+                echo -e "${YELLOW}Bitte nur: N, Z, L, D oder E eingeben.${NC}"
                 ;;
         esac
     done
