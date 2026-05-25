@@ -15,10 +15,16 @@ TOOL_DIR="/opt/comfyui"
 source "$INSTALL_DIR/scripts/helpers/status_tracking.sh"
 # shellcheck disable=SC1091
 source "$INSTALL_DIR/scripts/lib/common.sh"
+# shellcheck disable=SC1091
+source "$INSTALL_DIR/scripts/lib/resource_check.sh"
 REPO_URL="${COMFYUI_REPO_URL:-$(get_custom_repo_url "COMFYUI" "https://github.com/comfyanonymous/ComfyUI.git")}"
 init_tool_tracking "ComfyUI"
 
 echo -e "${BLUE}Starte Installation von ComfyUI...${NC}"
+echo -e "${YELLOW}ComfyUI installiert PyTorch/CUDA-nahe Pakete und kann ohne Modelle bereits viele GB belegen.${NC}"
+echo -e "${YELLOW}Mindestprüfung: 40 GB freier Linux-/WSL-Speicher, unter WSL zusätzlich 30 GB Windows-Host-Speicher auf C:.${NC}"
+REQUIRE_WINDOWS_HOST_FREE_MB="${COMFYUI_MIN_WINDOWS_HOST_FREE_MB:-30720}"
+require_disk_mb "${COMFYUI_MIN_FREE_MB:-40960}" "/"
 
 sudo apt-get update
 sudo apt-get install -y git python3 python3-venv python3-pip build-essential
@@ -37,9 +43,16 @@ if [ ! -d venv ]; then
 fi
 # shellcheck disable=SC1091
 source venv/bin/activate
-pip install --upgrade pip setuptools wheel
+export PIP_NO_CACHE_DIR=1
+pip install --no-cache-dir --upgrade pip setuptools wheel
 if [ -f requirements.txt ]; then
-    pip install -r requirements.txt || true
+    if ! pip install --no-cache-dir -r requirements.txt; then
+        echo -e "${RED}Fehler: pip install fuer ComfyUI ist fehlgeschlagen.${NC}"
+        echo -e "${YELLOW}Typische Ursache bei WSL: zu wenig freier Linux-/Windows-Host-Speicher waehrend PyTorch/CUDA-Pakete entpackt werden.${NC}"
+        echo -e "${YELLOW}Aufraeumen: bash scripts/cleanup_installation_residues.sh --apply --all und ggf. sudo rm -rf /opt/comfyui/venv${NC}"
+        deactivate || true
+        exit 1
+    fi
 fi
 deactivate
 
