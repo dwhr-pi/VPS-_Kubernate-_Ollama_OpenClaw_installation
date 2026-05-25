@@ -16,9 +16,12 @@ LOCAL_GO_BIN="$LOCAL_GO_ROOT/bin/go"
 AIRBYTE_PORT="${AIRBYTE_PORT:-8003}"
 AIRBYTE_HOST="${AIRBYTE_HOST:-localhost}"
 AIRBYTE_GO_VERSION="${AIRBYTE_GO_VERSION:-1.24.4}"
+AIRBYTE_ABCTL_REF="${AIRBYTE_ABCTL_REF:-v0.30.4}"
 AIRBYTE_MIN_FREE_MB="${AIRBYTE_MIN_FREE_MB:-32768}"
 AIRBYTE_RECOMMENDED_FREE_MB="${AIRBYTE_RECOMMENDED_FREE_MB:-65536}"
 AIRBYTE_MIN_WINDOWS_FREE_MB="${AIRBYTE_MIN_WINDOWS_FREE_MB:-20480}"
+AIRBYTE_K8S_NAMESPACE="${AIRBYTE_K8S_NAMESPACE:-airbyte-abctl}"
+AIRBYTE_K8S_CONTEXT="${AIRBYTE_K8S_CONTEXT:-kind-airbyte-abctl}"
 
 begin_measurement "tool_install_${TOOL_NAME}" "Tool installieren: ${TOOL_NAME}"
 
@@ -64,6 +67,78 @@ airbyte_confirm_heavy_install() {
   fi
 }
 
+airbyte_docker_cmd() {
+  if docker info >/dev/null 2>&1; then
+    echo "docker"
+    return 0
+  fi
+  if command -v sudo >/dev/null 2>&1 && sudo docker info >/dev/null 2>&1; then
+    echo "sudo docker"
+    return 0
+  fi
+  return 1
+}
+
+airbyte_print_deployment_hint() {
+  log_warn "Airbyte/abctl startet einen lokalen kind/Kubernetes-Cluster und installiert Airbyte per Helm."
+  log_warn "Readiness-/Liveness-Probe-Warnungen sind am Anfang moeglich, besonders unter WSL, bei wenig RAM oder langsamer Platte."
+  log_warn "Wenn die gleiche Worker-Meldung lange wiederholt wird, ist meist ein Pod abgestuerzt, zu langsam gestartet oder durch Speicher-/Image-Pull-Probleme blockiert."
+}
+
+airbyte_diagnose_deployment() {
+  local docker_cmd
+
+  log_warn "Airbyte-Diagnose: sammle lokale Hinweise zum abctl/kind-Deployment."
+
+  if docker_cmd="$(airbyte_docker_cmd)"; then
+    log_info "Docker Speicheruebersicht:"
+    # shellcheck disable=SC2086
+    $docker_cmd system df || true
+    log_info "Docker Container mit Airbyte/kind-Bezug:"
+    # shellcheck disable=SC2086
+    $docker_cmd ps -a --format 'table {{.Names}}\t{{.Status}}\t{{.Image}}' | grep -Ei 'airbyte|kind|abctl|temporal' || true
+  else
+    log_warn "Docker ist fuer die Diagnose nicht nutzbar."
+  fi
+
+  if command -v kubectl >/dev/null 2>&1; then
+    log_info "Kubernetes Pods im Airbyte-Namespace:"
+    kubectl --context "$AIRBYTE_K8S_CONTEXT" -n "$AIRBYTE_K8S_NAMESPACE" get pods -o wide 2>/dev/null || kubectl get pods -A 2>/dev/null | grep -i airbyte || true
+    log_info "Kubernetes Events mit Airbyte-Bezug:"
+    kubectl --context "$AIRBYTE_K8S_CONTEXT" -n "$AIRBYTE_K8S_NAMESPACE" get events --sort-by=.lastTimestamp 2>/dev/null | tail -n 40 || true
+    log_info "Kurze Worker-Pod-Logs, falls vorhanden:"
+    kubectl --context "$AIRBYTE_K8S_CONTEXT" -n "$AIRBYTE_K8S_NAMESPACE" logs -l app.kubernetes.io/name=worker --tail=80 2>/dev/null || \
+      kubectl --context "$AIRBYTE_K8S_CONTEXT" -n "$AIRBYTE_K8S_NAMESPACE" logs -l airbyte=worker --tail=80 2>/dev/null || true
+  else
+    log_warn "kubectl ist nicht installiert. Nutze bei Bedarf: $ABCTL_BIN local status oder Docker/kind-Diagnose."
+  fi
+
+  log_warn "Wenn Airbyte haengen bleibt: erst Speicher freigeben, dann alte Airbyte/kind-Reste pruefen."
+  log_warn "Sicherer erster Schritt: bash scripts/cleanup_installation_residues.sh --dry-run --all"
+  log_warn "Riskanter und nur nach Sichtpruefung: alte /opt-Airbyte-Reste ueber Optionen -> Installationsueberwachung -> /opt-Toolreste bereinigen."
+}
+
+airbyte_classify_abctl_failure() {
+  local install_log="$1"
+
+  [ -f "$install_log" ] || return 0
+
+  if grep -qi "TLS handshake timeout" "$install_log"; then
+    log_error "Erkannt: Kubernetes/API-Server TLS handshake timeout waehrend Helm-Installation."
+    log_warn "Das passt zu einem ueberlasteten oder langsam reagierenden lokalen kind-Cluster, haeufig durch WSL-/Docker-I/O, wenig RAM, knappen Windows-Host-Speicher oder sehr lange Image-Pulls."
+  fi
+
+  if grep -qiE "Readiness probe failed|Liveness probe failed|Reason: Unhealthy" "$install_log"; then
+    log_error "Erkannt: wiederholte Readiness-/Liveness-Probe-Fehler im Airbyte-Worker."
+    log_warn "Einige Probe-Warnungen beim Start sind normal. Viele Wiederholungen bis Count 30 deuten aber auf einen Worker hin, der intern nicht stabil auf Port 9000 hochkommt."
+  fi
+
+  if grep -qi "A new release of abctl is available" "$install_log"; then
+    log_error "Erkannt: abctl meldet, dass die verwendete Version veraltet ist."
+    log_warn "Der Installer baut abctl deshalb standardmaessig vom GitHub-Release-Tag ${AIRBYTE_ABCTL_REF}. Bei Bedarf kann AIRBYTE_ABCTL_REF angepasst werden."
+  fi
+}
+
 if ! ensure_user_workspace || ! require_disk_mb "$AIRBYTE_MIN_FREE_MB" / || ! airbyte_confirm_heavy_install; then
   end_measurement "failed"
   exit 1
@@ -90,6 +165,9 @@ sudo chown -R "$USER":"$USER" "$INSTALL_ROOT"
 
 clone_or_update_github_source "https://github.com/airbytehq/airbyte.git" "$AIRBYTE_SOURCE_DIR"
 clone_or_update_github_source "https://github.com/airbytehq/abctl.git" "$ABCTL_SOURCE_DIR"
+
+log_info "Setze abctl-Quelle auf GitHub-Ref: ${AIRBYTE_ABCTL_REF}"
+(cd "$ABCTL_SOURCE_DIR" && git fetch --tags --force && git checkout "$AIRBYTE_ABCTL_REF")
 
 go_supports_tool_directive() {
   local go_bin="$1"
@@ -167,14 +245,28 @@ chmod +x "$ABCTL_BIN"
 "$ABCTL_BIN" version || true
 
 log_info "Installiere/aktualisiere Airbyte lokal auf http://${AIRBYTE_HOST}:${AIRBYTE_PORT}"
+airbyte_print_deployment_hint
 
 ABCTL_CMD=("$ABCTL_BIN" local install --host "$AIRBYTE_HOST" --port "$AIRBYTE_PORT" --low-resource-mode --no-browser --insecure-cookies)
+ABCTL_INSTALL_LOG="$(mktemp)"
+log_info "abctl Installationsausgabe wird zusaetzlich analysiert: ${ABCTL_INSTALL_LOG}"
 
+install_exit=0
 if docker info >/dev/null 2>&1; then
-  "${ABCTL_CMD[@]}"
+  "${ABCTL_CMD[@]}" 2>&1 | tee "$ABCTL_INSTALL_LOG"
+  install_exit=${PIPESTATUS[0]}
 else
   log_warn "Docker-Daemon ist fuer den aktuellen User nicht direkt nutzbar. Verwende sudo fuer abctl."
-  sudo "${ABCTL_CMD[@]}"
+  sudo "${ABCTL_CMD[@]}" 2>&1 | tee "$ABCTL_INSTALL_LOG"
+  install_exit=${PIPESTATUS[0]}
+fi
+
+if [ "$install_exit" -ne 0 ]; then
+  log_error "Airbyte/abctl Installation ist fehlgeschlagen oder wurde durch wiederholte Kubernetes-Probe-Fehler beendet."
+  airbyte_classify_abctl_failure "$ABCTL_INSTALL_LOG"
+  airbyte_diagnose_deployment
+  end_measurement "failed"
+  exit "$install_exit"
 fi
 
 log_info "Airbyte-Zugangsdaten koennen mit folgendem Befehl angezeigt werden:"

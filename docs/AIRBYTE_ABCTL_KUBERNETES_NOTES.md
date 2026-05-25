@@ -6,6 +6,9 @@ Der aktuelle Installer nutzt:
 
 - Airbyte-Quelle: <https://github.com/airbytehq/airbyte>
 - Airbyte-CLI/Installer: <https://github.com/airbytehq/abctl>
+- abctl-Ref: standardmaessig `v0.30.4`, anpassbar ueber `AIRBYTE_ABCTL_REF`
+
+Der abctl-Build wird bewusst auf einen GitHub-Release-Tag gesetzt. Ein Build direkt von einem beliebigen Branch kann Versionswerte wie `v0.0.0-...` erzeugen und Airbyte selbst meldet dann unter Umstaenden ein veraltetes `abctl`.
 
 ## Was `abctl local install` wirklich macht
 
@@ -54,6 +57,42 @@ Der Airbyte-Installer bricht vor `abctl local install` ab, wenn zu wenig Speiche
 - empfohlen sind eher 64 GB freier Speicher
 
 Diese Pruefung verhindert, dass Airbyte die WSL oder Windows-Partition waehrend des Image-Pulls vollschreibt.
+
+## Wiederholte Readiness-/Liveness-Probe-Warnungen
+
+Beim Start kann `abctl` Meldungen wie diese ausgeben:
+
+```text
+Readiness probe failed: Get "http://10.244.x.x:9000/": connect: connection refused
+Liveness probe failed: Get "http://10.244.x.x:9000/": connect: connection refused
+```
+
+Einige Warnungen direkt nach dem Start sind normal, weil Kubernetes Pods schon prueft, waehrend Airbyte-Komponenten noch hochfahren. Wenn die gleiche Worker-Meldung jedoch lange wiederholt wird, ist das meist ein Hinweis auf:
+
+- zu wenig freier Speicher oder RAM
+- sehr langsame WSL-/Docker-Image-Pulls
+- einen abgestuerzten Worker-Pod
+- einen alten oder teilweise kaputten `kind`-/Airbyte-Rest
+- Port- oder Netzwerkprobleme im lokalen Cluster
+
+Der Installer gibt vor `abctl local install` deshalb einen Hinweis aus und sammelt bei einem Abbruch automatisch Docker-/Kubernetes-Diagnosen, soweit `docker` und `kubectl` verfuegbar sind.
+
+Nuetzliche manuelle Diagnosebefehle:
+
+```bash
+docker system df
+docker ps -a --format 'table {{.Names}}\t{{.Status}}\t{{.Image}}' | grep -Ei 'airbyte|kind|abctl|temporal'
+kubectl --context kind-airbyte-abctl -n airbyte-abctl get pods -o wide
+kubectl --context kind-airbyte-abctl -n airbyte-abctl get events --sort-by=.lastTimestamp | tail -n 40
+```
+
+Wenn Airbyte nach einem Fehlversuch erneut installiert werden soll, zuerst Speicher freigeben und alte Reste nur bewusst entfernen. Docker-Volumes werden vom Cleanup-Skript absichtlich nicht automatisch geloescht.
+
+Der Installer klassifiziert diese Fehler inzwischen automatisch, wenn `abctl` abbricht:
+
+- `TLS handshake timeout`: lokaler Kubernetes-/kind-API-Server reagiert zu langsam oder ist ueberlastet
+- `Readiness probe failed` / `Liveness probe failed`: Airbyte-Komponente startet nicht stabil genug
+- `A new release of abctl is available`: verwendeter abctl-Build ist nicht auf dem erwarteten Release-Stand
 
 ## Spaetere Integration in den Setup-Kubernetes-Pfad
 
