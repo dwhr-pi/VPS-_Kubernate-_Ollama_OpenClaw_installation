@@ -835,6 +835,130 @@ get_default_tool_storage_label() {
     esac
 }
 
+get_tool_install_measured_mb() {
+    local tool_key="$1"
+    local delta_kb
+
+    delta_kb="$(get_last_success_metric_field "tool_install_${tool_key}" 8)"
+    if [[ "$delta_kb" =~ ^[0-9]+$ ]] && [ "$delta_kb" -gt 0 ] 2>/dev/null; then
+        printf '%s' "$(( (delta_kb + 1023) / 1024 ))"
+    fi
+}
+
+get_tool_install_fallback_min_free_mb() {
+    local tool_key="$1"
+
+    case "$tool_key" in
+        "Airbyte")
+            printf '32768'
+            ;;
+        "ComfyUI"|"Stable_Diffusion_WebUI"|"Stable_Diffusion_WebUI_Forge"|"InvokeAI"|"Fooocus"|"Blender"|"AnimateDiff"|"RealESRGAN"|"GFPGAN"|"Wan_Video"|"SVD"*|*"Video"*|*"Image"*)
+            printf '40960'
+            ;;
+        "AutoGPT"|"OpenHands"|"Activepieces"|"n8n"|"Clawhub"|"Clawhub_CLI"|"OpenManus"|"Kimi"*|"Ruflo")
+            printf '16384'
+            ;;
+        "Ollama"|"Open_WebUI"|"Qdrant"|"ChromaDB"|"Meilisearch"|"Paperless"*|"Nextcloud")
+            printf '8192'
+            ;;
+        "Docker"|"K3s"|"Kubernetes"*|"Grafana"|"Prometheus"|"Loki")
+            printf '8192'
+            ;;
+        *)
+            printf '4096'
+            ;;
+    esac
+}
+
+get_tool_install_min_free_mb() {
+    local tool_key="$1"
+    local measured_mb
+    local fallback_mb
+    local measured_guard_mb
+
+    measured_mb="$(get_tool_install_measured_mb "$tool_key")"
+    fallback_mb="$(get_tool_install_fallback_min_free_mb "$tool_key")"
+
+    if [[ "$measured_mb" =~ ^[0-9]+$ ]] && [ "$measured_mb" -gt 0 ] 2>/dev/null; then
+        measured_guard_mb=$((measured_mb + (measured_mb / 2) + 1024))
+        if [ "$measured_guard_mb" -lt 2048 ] 2>/dev/null; then
+            measured_guard_mb=2048
+        fi
+        if [ "$measured_guard_mb" -gt "$fallback_mb" ] 2>/dev/null; then
+            printf '%s' "$measured_guard_mb"
+        else
+            printf '%s' "$fallback_mb"
+        fi
+    else
+        printf '%s' "$fallback_mb"
+    fi
+}
+
+get_tool_install_windows_min_free_mb() {
+    local linux_min_mb="${1:-4096}"
+
+    if [ "$linux_min_mb" -ge 40960 ] 2>/dev/null; then
+        printf '30720'
+    elif [ "$linux_min_mb" -ge 20480 ] 2>/dev/null; then
+        printf '20480'
+    elif [ "$linux_min_mb" -ge 8192 ] 2>/dev/null; then
+        printf '10240'
+    else
+        printf '5120'
+    fi
+}
+
+preflight_tool_install_storage() {
+    local tool_key="$1"
+    local min_mb
+    local min_kb
+    local free_kb
+    local measured_mb
+    local fallback_mb
+    local windows_min_mb
+    local windows_min_kb
+    local windows_free_kb
+
+    min_mb="$(get_tool_install_min_free_mb "$tool_key")"
+    fallback_mb="$(get_tool_install_fallback_min_free_mb "$tool_key")"
+    measured_mb="$(get_tool_install_measured_mb "$tool_key")"
+    min_kb=$((min_mb * 1024))
+    free_kb="$(get_free_disk_kb)"
+    free_kb="${free_kb:-0}"
+
+    echo -e "${YELLOW}Speicherplatz-Wache fuer ${tool_key}:${NC} mindestens $(format_kb_human "$min_kb") freier Linux-/WSL-Speicher vor dem Start."
+    if [[ "$measured_mb" =~ ^[0-9]+$ ]] && [ "$measured_mb" -gt 0 ] 2>/dev/null; then
+        echo -e "${YELLOW}Vorlage:${NC} letzte erfolgreiche Messung ${measured_mb} MB; Mindestwert mit Sicherheitsaufschlag und Tool-Fallback ${fallback_mb} MB."
+    else
+        echo -e "${YELLOW}Vorlage:${NC} noch kein erfolgreicher Messwert vorhanden; nutze konservativen Tool-Fallback ${fallback_mb} MB."
+    fi
+    echo -e "${YELLOW}Aktuell frei Linux/WSL:${NC} $(format_kb_human "$free_kb")"
+
+    if [ "$free_kb" -lt "$min_kb" ] 2>/dev/null; then
+        echo -e "${RED}Abbruch vor der Installation:${NC} Fuer ${tool_key} sind mindestens $(format_kb_human "$min_kb") frei empfohlen, aktuell sind nur $(format_kb_human "$free_kb") frei."
+        echo -e "${YELLOW}Tipp:${NC} Erst Speicher freigeben, z. B. mit: bash scripts/cleanup_installation_residues.sh --apply --all"
+        return 1
+    fi
+
+    if is_wsl_environment; then
+        windows_min_mb="$(get_tool_install_windows_min_free_mb "$min_mb")"
+        windows_min_kb=$((windows_min_mb * 1024))
+        windows_free_kb="$(get_windows_host_free_kb)"
+        if [ -n "$windows_free_kb" ]; then
+            echo -e "${YELLOW}Aktuell frei Windows-Host (${WINDOWS_HOST_DRIVE:-C}:):${NC} ${GREEN}$(format_kb_human "$windows_free_kb")${NC}"
+            if [ "$windows_free_kb" -lt "$windows_min_kb" ] 2>/dev/null; then
+                echo -e "${RED}Abbruch vor der Installation:${NC} Unter WSL sollte ${WINDOWS_HOST_DRIVE:-C}: fuer ${tool_key} mindestens $(format_kb_human "$windows_min_kb") frei haben, aktuell sind nur $(format_kb_human "$windows_free_kb") frei."
+                echo -e "${YELLOW}Grund:${NC} Die WSL-VHDX waechst auf dem Windows-Host. Wenn ${WINDOWS_HOST_DRIVE:-C}: voll laeuft, koennen Downloads, pip/npm/pnpm oder Docker-Images mit I/O-Fehlern abbrechen."
+                return 1
+            fi
+        else
+            echo -e "${YELLOW}Hinweis:${NC} Windows-Host-Speicher konnte nicht ermittelt werden. Linux-/WSL-Pruefung wurde trotzdem ausgefuehrt."
+        fi
+    fi
+
+    return 0
+}
+
 begin_operation_measurement() {
     ensure_user_workspace
     ACTIVE_OPERATION_ID="$1"
@@ -3087,6 +3211,12 @@ install_tool() {
     maybe_cleanup_logs_before_operation
     begin_operation_measurement "tool_install_${TOOL_KEY}" "Tool installieren: ${TOOL_KEY}"
     echo -e "${BLUE}Installiere Tool: ${TOOL_KEY}...${NC}"
+    if ! preflight_tool_install_storage "$TOOL_KEY"; then
+        end_operation_measurement "failed"
+        echo -e "${RED}Tool '${TOOL_KEY}' wurde vor dem Start wegen zu wenig freiem Speicher nicht installiert.${NC}"
+        handle_manual_tool_post_action "$TOOL_KEY" "Installation" "$operation_status" "${TOOL_BATCH_UPCOMING_PREVIEW:-}"
+        return 1
+    fi
     if [ "$TOOL_KEY" = "Huginn" ]; then
         echo -e "${YELLOW}Huginn nutzt die Benutzerkonfiguration aus ~/.openclaw_ultimate_user_data/huginn/.${NC}"
         echo -e "${YELLOW}Dort liegen HUGINN_REPO_REF, Datenbankauswahl und .env.template bewusst ausserhalb des Repos.${NC}"
