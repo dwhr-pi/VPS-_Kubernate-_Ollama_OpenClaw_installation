@@ -913,6 +913,49 @@ end_operation_measurement() {
     unset ACTIVE_OPERATION_ID ACTIVE_OPERATION_TITLE ACTIVE_OPERATION_STARTED_AT ACTIVE_OPERATION_FREE_KB_BEFORE ACTIVE_OPERATION_LOG_FILE
 }
 
+record_menu_load_measurement() {
+    local operation_id="$1"
+    local operation_title="$2"
+    local started_at="$3"
+    local free_kb_before="$4"
+    local ended_at
+    local free_kb_after
+    local duration_seconds
+    local delta_kb
+    local tmp_metrics_summary_file
+
+    [ -n "$started_at" ] || return 0
+    ensure_user_workspace
+    ensure_metrics_config
+
+    ended_at="$(date +%s)"
+    free_kb_after="$(get_free_disk_kb)"
+    free_kb_after="${free_kb_after:-0}"
+    free_kb_before="${free_kb_before:-$free_kb_after}"
+    duration_seconds=$((ended_at - started_at))
+    delta_kb=$((free_kb_before - free_kb_after))
+
+    printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n' \
+        "$(date '+%Y-%m-%d %H:%M:%S')" \
+        "$operation_id" \
+        "$operation_title" \
+        "success" \
+        "$duration_seconds" \
+        "$free_kb_before" \
+        "$free_kb_after" \
+        "$delta_kb" >> "$METRICS_HISTORY_FILE"
+
+    tmp_metrics_summary_file="$(mktemp)"
+    awk -F'\t' -v id="$operation_id" 'BEGIN {OFS=FS} NR == 1 || $1 != id {print}' "$METRICS_SUMMARY_FILE" > "$tmp_metrics_summary_file" 2>/dev/null || printf 'operation_id\tduration_seconds\tdelta_kb\ttimestamp\n' > "$tmp_metrics_summary_file"
+    printf '%s\t%s\t%s\t%s\n' \
+        "$operation_id" \
+        "$duration_seconds" \
+        "$delta_kb" \
+        "$(date '+%Y-%m-%d %H:%M:%S')" >> "$tmp_metrics_summary_file"
+    mv "$tmp_metrics_summary_file" "$METRICS_SUMMARY_FILE"
+    invalidate_metric_cache
+}
+
 show_recent_measurements() {
     ensure_user_workspace
     local white="$WHITE"
@@ -2318,7 +2361,7 @@ fi
 
 # Profil-Definitionen mit Beschreibungen
 declare -A PROFILES
-PROFILE_KEYS=("Programmierer" "Repo_Maintainer" "Repo_Maintainer_Agent" "Agent_Orchestrator" "LLM_Builder" "Research_Agent" "KI_Forschung" "Physik" "Chemie" "Biologie" "Bioinformatik" "Molekuelsimulation" "Robotik_Labor" "Materialwissenschaft" "Mathematik_Simulation" "Astronomie_Space_AI" "Medizinische_Literatur_Recherche" "Umwelt_Klima_Energie" "Data_Engineering" "Document_AI" "Knowledge_Librarian" "Memory_Import_Export" "Personal_Knowledge_OS" "Personal_Assistant_Local_First" "Next_Level_Persona_System" "Texter_Werbung_Marketing" "Rechtsberatung_Steuerrecht" "DevOps_SRE" "Security_Analyst" "Ethical_HackerGPT" "Compliance_Privacy" "Zero_Trust_Remote_Access" "Audio" "Voice_Assistant" "Voice_Command_Center" "Jarvis_FritzBox_Alexa_Home_Assistant" "Media_Musik" "Content_Automation" "Image_Generation" "Video_Generation" "Video_Generation_ComfyUI_Wan" "GameDev_3D_Studio_NEXTLEVEL" "CAD_Konstrukteur" "Architektur_3D_BIM" "Robotertechnik_Anlagensteuerung" "OpenHiggsStack_AI_Cinema_Studio" "Visual_Creator" "Web_App_Builder" "Kubernetes_GPU_Orchestrator" "Storage_NAS_Backup" "Trading_AI" "Web3_Crypto_Tools")
+PROFILE_KEYS=("Programmierer" "Repo_Maintainer" "Repo_Maintainer_Agent" "Agent_Orchestrator" "LLM_Builder" "Research_Agent" "KI_Forschung" "Physik" "Chemie" "Biologie" "Bioinformatik" "Molekuelsimulation" "Robotik_Labor" "Materialwissenschaft" "Mathematik_Simulation" "Astronomie_Space_AI" "Medizinische_Literatur_Recherche" "Umwelt_Klima_Energie" "Data_Engineering" "Document_AI" "Knowledge_Librarian" "Memory_Import_Export" "Personal_Knowledge_OS" "Personal_Assistant_Local_First" "Next_Level_Persona_System" "Texter_Werbung_Marketing" "Rechtsberatung_Steuerrecht" "DevOps_SRE" "Security_Analyst" "Ethical_HackerGPT" "Compliance_Privacy" "Zero_Trust_Remote_Access" "Audio" "Voice_Assistant" "Voice_Command_Center" "Jarvis_FritzBox_Alexa_Home_Assistant" "Media_Musik" "Content_Automation" "Image_Generation" "Video_Generation" "Video_Generation_ComfyUI_Wan" "GameDev_3D_Studio_NEXTLEVEL" "OpenHiggsStack_AI_Cinema_Studio" "Visual_Creator" "Web_App_Builder" "Kubernetes_GPU_Orchestrator" "Storage_NAS_Backup" "Trading_AI" "Web3_Crypto_Tools")
 PROFILES["Programmierer"]="Tools für Entwicklung, Code-Generierung (DeepSeek Coder), Git-Integration, Huginn, Clawhub CLI. Ideal für Entwickler und Automatisierungsexperten."
 PROFILES["Media_Musik"]="Tools für Audio/Video (FFmpeg), Audio-AI, Alexa-Integration, Clawbake. Für Content Creator und Medienproduzenten."
 PROFILES["KI_Forschung"]="Spezialisierte Bibliotheken für Reinforcement Learning (OpenClaw RL), erweiterte LLM-Modelle (Gemini-1.5-Pro), Flowise/LangFlow. Für KI-Wissenschaftler und Forscher."
@@ -2502,7 +2545,7 @@ show_profile_management_menu() {
 
 declare -A TOOLS
 declare -A TOOL_SCRIPT_NAMES
-TOOL_KEYS=("Ollama" "OpenClaw" "Ruflo" "Act" "Actionlint" "Activepieces" "Agent_Router" "Ahrefs" "AI_Powered_Law_Firms" "Aider" "Airbyte" "Airtable" "AnimateDiff" "Ansible" "Apache_Tika" "ArgoCD_CLI" "Authentik" "Authelia" "AutoGen" "AutoGPT" "Axolotl" "Backtest_Workflow" "Blender" "BPM_Analyzer" "Browser_Tool" "Buffer_API" "CAD_Konstrukteur" "Architektur_3D_BIM" "cAdvisor" "Changelog_Generator" "ChromaDB" "Clawbake" "Clawhub" "Clawhub_CLI" "Code_Sandbox" "ComfyUI" "Continue_Dev" "ControlNet" "Coqui_TTS" "CrewAI" "Data_Juicer" "dbt" "Deadline_Checker" "Demucs" "Docker" "Docker_Compose_Plugin" "Docling" "Drafting_Agent" "DuckDB" "ElevenLabs" "Emotion_Tagging" "EnviroLLM" "Ethers_JS" "EULLM" "Exchange_APIs" "Fail2Ban" "Fail2Ban_Analyzer" "Faster_Whisper" "FFmpeg" "File_System_Tool" "FinGPT" "FinRAG" "FinRobot" "Firecrawl" "Flowise" "Flux_CLI" "Fooocus" "Foundry" "GFPGAN" "GameDev_3D_Studio" "GitHub_API_Tooling" "GitHub_CLI" "GitHub_Research" "Gitleaks" "Google_Analytics_API" "Grafana" "Grafana_Alloy" "Grype" "Guardrails_AI" "Hadolint" "Hardhat" "Healthchecks" "Helm" "Home_Assistant" "Hook_Detection" "HubSpot" "Huge_Facing" "Huginn" "Image_Upscaler_Pipeline" "InvokeAI" "Joplin_CLI" "JupyterLab" "K3s" "K9s" "Kimi2" "Kubectl" "Kubectx_Kubens" "Kubernetes" "Kustomize" "LangChain" "LangFlow" "Langfuse" "LangGraph" "Lawfirm" "LibreOffice_Headless" "librosa" "LiteLLM" "Llama_CPP" "Llama_CPP_Toolchain" "LLaMA_Factory" "LlamaIndex" "Loki" "Make" "Mail_Utils_MSMTP" "Markdownlint_CLI" "Marker" "MCPO" "Meilisearch" "Memory_Policies" "Meta_Ads_API" "Metabase" "MinIO" "MLflow" "Mosquitto" "Music2P_Pipeline" "MusicGen" "n8n" "NATS" "Neo4j" "Netdata" "Nikto" "Nmap" "Node_Exporter" "Node_Red" "Notion" "OCRmyPDF" "OPA" "Open_WebUI" "OpenClaw_RL" "OpenCode" "OpenHands" "OpenLIT" "OpenManus" "OpenTelemetry" "OpenTofu" "openWakeWord" "Pandoc" "Paperless_NGX" "PDF_Parser" "Pgvector" "Pipedream" "Piper" "Playwright" "Podman" "Postgres" "Pre_Commit" "Prefect" "Prometheus" "Promptfoo" "Puppeteer" "pydub" "Qdrant" "RabbitMQ" "Ray" "Rclone" "RealESRGAN" "Redis" "Release_Please" "Rembg" "Repo_Comparison" "Restic" "Rhasspy" "RIFE" "Riffusion" "Risk_Agent" "Risk_Scoring" "Risk_Strategy_Analyzer" "Robotertechnik_Anlagensteuerung" "Runway_API" "Security_Workflow" "Semgrep" "SEMrush" "ShellCheck" "Shfmt" "SQLite" "SQLite_Vec" "Stable_Diffusion_WebUI" "Stable_Diffusion_WebUI_Forge" "Stirling_PDF" "Suno_API" "Supabase" "SVD" "Syft" "Syncthing" "Tax_Calculator" "Tax_Law_Agent" "Tesseract" "Thumbnail_Pipeline" "TikTok_Ads_API" "TikTok_Score" "Trend_Monitor" "Trivy" "TruffleHog" "Udio_API" "Unsloth" "Unstructured" "Upload_Automation" "Uptime_Kuma" "Vault" "Velero" "vLLM" "Voice_Assistant_Runtime" "VS_Code_Server" "Weaviate" "Web3_APIs" "Web3_Py" "Weights_and_Biases" "Whisper" "Whisper_CPP" "Wyoming" "YT_DLP" "Zapier" "Zenbot_API" "Zenbot_trader" "Zotero")
+TOOL_KEYS=("Ollama" "OpenClaw" "Ruflo" "Act" "Actionlint" "Activepieces" "Agent_Router" "Ahrefs" "AI_Powered_Law_Firms" "Aider" "Airbyte" "Airtable" "AnimateDiff" "Ansible" "Apache_Tika" "ArgoCD_CLI" "Authentik" "Authelia" "AutoGen" "AutoGPT" "Axolotl" "Backtest_Workflow" "Blender" "BPM_Analyzer" "Browser_Tool" "Buffer_API" "cAdvisor" "Changelog_Generator" "ChromaDB" "Clawbake" "Clawhub" "Clawhub_CLI" "Code_Sandbox" "ComfyUI" "Continue_Dev" "ControlNet" "Coqui_TTS" "CrewAI" "Data_Juicer" "dbt" "Deadline_Checker" "Demucs" "Docker" "Docker_Compose_Plugin" "Docling" "Drafting_Agent" "DuckDB" "ElevenLabs" "Emotion_Tagging" "EnviroLLM" "Ethers_JS" "EULLM" "Exchange_APIs" "Fail2Ban" "Fail2Ban_Analyzer" "Faster_Whisper" "FFmpeg" "File_System_Tool" "FinGPT" "FinRAG" "FinRobot" "Firecrawl" "Flowise" "Flux_CLI" "Fooocus" "Foundry" "GFPGAN" "GitHub_API_Tooling" "GitHub_CLI" "GitHub_Research" "Gitleaks" "Google_Analytics_API" "Grafana" "Grafana_Alloy" "Grype" "Guardrails_AI" "Hadolint" "Hardhat" "Healthchecks" "Helm" "Home_Assistant" "Hook_Detection" "HubSpot" "Huge_Facing" "Huginn" "Image_Upscaler_Pipeline" "InvokeAI" "Joplin_CLI" "JupyterLab" "K3s" "K9s" "Kimi2" "Kubectl" "Kubectx_Kubens" "Kubernetes" "Kustomize" "LangChain" "LangFlow" "Langfuse" "LangGraph" "Lawfirm" "LibreOffice_Headless" "librosa" "LiteLLM" "Llama_CPP" "Llama_CPP_Toolchain" "LLaMA_Factory" "LlamaIndex" "Loki" "Make" "Mail_Utils_MSMTP" "Markdownlint_CLI" "Marker" "MCPO" "Meilisearch" "Memory_Policies" "Meta_Ads_API" "Metabase" "MinIO" "MLflow" "Mosquitto" "Music2P_Pipeline" "MusicGen" "n8n" "NATS" "Neo4j" "Netdata" "Nikto" "Nmap" "Node_Exporter" "Node_Red" "Notion" "OCRmyPDF" "OPA" "Open_WebUI" "OpenClaw_RL" "OpenCode" "OpenHands" "OpenLIT" "OpenManus" "OpenTelemetry" "OpenTofu" "openWakeWord" "Pandoc" "Paperless_NGX" "PDF_Parser" "Pgvector" "Pipedream" "Piper" "Playwright" "Podman" "Postgres" "Pre_Commit" "Prefect" "Prometheus" "Promptfoo" "Puppeteer" "pydub" "Qdrant" "RabbitMQ" "Ray" "Rclone" "RealESRGAN" "Redis" "Release_Please" "Rembg" "Repo_Comparison" "Restic" "Rhasspy" "RIFE" "Riffusion" "Risk_Agent" "Risk_Scoring" "Risk_Strategy_Analyzer" "Runway_API" "Security_Workflow" "Semgrep" "SEMrush" "ShellCheck" "Shfmt" "SQLite" "SQLite_Vec" "Stable_Diffusion_WebUI" "Stable_Diffusion_WebUI_Forge" "Stirling_PDF" "Suno_API" "Supabase" "SVD" "Syft" "Syncthing" "Tax_Calculator" "Tax_Law_Agent" "Tesseract" "Thumbnail_Pipeline" "TikTok_Ads_API" "TikTok_Score" "Trend_Monitor" "Trivy" "TruffleHog" "Udio_API" "Unsloth" "Unstructured" "Upload_Automation" "Uptime_Kuma" "Vault" "Velero" "vLLM" "Voice_Assistant_Runtime" "VS_Code_Server" "Weaviate" "Web3_APIs" "Web3_Py" "Weights_and_Biases" "Whisper" "Whisper_CPP" "Wyoming" "YT_DLP" "Zapier" "Zenbot_API" "Zenbot_trader" "Zotero")
 TOOLS["Ollama"]="Lokales LLM-Backend. Du kannst über den Ollama Modell-Manager spezifische Modelle installieren und verwalten. Für weitere Informationen zu den Modellen siehe in der Online-Dokumentation nach."
 TOOLS["Ruflo"]="Ruflo/claude-flow-nahe CLI fuer Agenten-Orchestrierung und Hive-Mind-Workflows. Installation nutzt GitHub, Node.js und pnpm; Build-Skripte werden nur nach gezielter Freigabe erlaubt."
 TOOLS["Authentik"]="Optionaler Identity Provider fuer OIDC/OAuth2, SSO und zentrale Logins vor internen Webdiensten. Bereitet nur sichere lokale Vorlagen vor."
@@ -2659,10 +2702,6 @@ TOOLS["RIFE"]="Frame-Interpolation für Video- und Render-Workflows."
 TOOLS["Fooocus"]="Einsteigerfreundlicher Bildgenerator auf Stable-Diffusion-Basis."
 TOOLS["InvokeAI"]="Lokale Bildgenerierungsplattform mit Modell- und Workflowverwaltung."
 TOOLS["Blender"]="3D-, Render- und Asset-Werkzeug für Game-, Video- und Kreativprofile."
-TOOLS["CAD_Konstrukteur"]="Lokaler CAD-/3D-Druck-Baukasten mit FreeCAD, CadQuery, OpenSCAD, Blender-Preview, Ollama-CAD-Code und OpenClaw-Agentenprompt."
-TOOLS["Architektur_3D_BIM"]="Lokales Architektur-/BIM-/CAD-/3D-Rendering-Profil mit FreeCAD, Blender, Bonsai, IFCOpenShell, QGIS, ComfyUI, n8n und OpenClaw-Agenten."
-TOOLS["GameDev_3D_Studio"]="Lokales AI Game Studio mit Godot 4.x, Demo-Bibliothek, Blender-/ComfyUI-Asset-Pipeline, Ollama-NPCs, OpenClaw Game Master, n8n, Multiplayer und Renderfarm."
-TOOLS["Robotertechnik_Anlagensteuerung"]="Simulation-first-Baukasten fuer ROS 2, Gazebo, MoveIt 2, Anlagenmonitoring, MQTT/OPC UA/Modbus und sichere OpenClaw-Diagnose-/Freigabeagenten."
 TOOLS["Foundry"]="Toolchain für EVM-Smart-Contracts, Tests und RPC-Workflows."
 TOOLS["Hardhat"]="JavaScript/TypeScript-Toolchain für Smart-Contract-Entwicklung."
 TOOLS["Ethers_JS"]="JavaScript-Bibliothek für RPC-, Wallet- und Contract-Zugriffe."
@@ -2884,10 +2923,6 @@ TOOL_SCRIPT_NAMES["RIFE"]="rife"
 TOOL_SCRIPT_NAMES["Fooocus"]="fooocus"
 TOOL_SCRIPT_NAMES["InvokeAI"]="invokeai"
 TOOL_SCRIPT_NAMES["Blender"]="blender"
-TOOL_SCRIPT_NAMES["CAD_Konstrukteur"]="cad_konstrukteur"
-TOOL_SCRIPT_NAMES["Architektur_3D_BIM"]="architektur_3d_bim"
-TOOL_SCRIPT_NAMES["GameDev_3D_Studio"]="gamedev_3d_studio"
-TOOL_SCRIPT_NAMES["Robotertechnik_Anlagensteuerung"]="robotertechnik_anlagensteuerung"
 TOOL_SCRIPT_NAMES["Foundry"]="foundry"
 TOOL_SCRIPT_NAMES["Hardhat"]="hardhat"
 TOOL_SCRIPT_NAMES["Ethers_JS"]="ethers_js"
@@ -3093,6 +3128,10 @@ uninstall_tool() {
 
 # Funktion zum Anzeigen des Tool-Management-Menüs
 show_tool_management_menu() {
+    local tool_menu_started_at
+    local tool_menu_free_kb_before
+    tool_menu_started_at="$(date +%s)"
+    tool_menu_free_kb_before="$(get_free_disk_kb)"
     TOOL_BATCH_ABORT_REQUESTED=0
     sync_core_tool_status
     ensure_user_workspace
@@ -3137,6 +3176,12 @@ show_tool_management_menu() {
         tool_menu_prompt="(*) = behalten oder installieren.\n\nZeit- und Speicherwerte sind in den Optionen deaktiviert, damit diese Übersicht schneller lädt.\nAusführung: erst Deinstallationen, danach Installationen.\nGesamt: ${total_tool_count} | Installiert: ${installed_tool_count}"
     else
         tool_menu_prompt="(*) = behalten oder installieren.\n\nSpalten: Auswahl | Tool | Zeit hh:mm:ss | Gesamtspeicher MB | Beschreibung\nFehlende Werte: --:--:-- | --.- MB\nErmittelte Summe aller Tool-Installationen: ${tool_menu_total_summary}\nAusführung: erst Deinstallationen, danach Installationen.\nGesamt: ${total_tool_count} | Installiert: ${installed_tool_count}"
+    fi
+
+    if [ "$overview_metrics_enabled" = "true" ]; then
+        record_menu_load_measurement "menu_load_tool_management_metrics_on" "Tool-Menue laden (Zeit-/Speicherwerte aktiv)" "$tool_menu_started_at" "$tool_menu_free_kb_before"
+    else
+        record_menu_load_measurement "menu_load_tool_management_metrics_off" "Tool-Menue laden (Zeit-/Speicherwerte inaktiv)" "$tool_menu_started_at" "$tool_menu_free_kb_before"
     fi
 
     dialog --clear --backtitle "$APP_TITLE" \
@@ -3358,28 +3403,28 @@ PROFILE_CORE_TOOLS["Video_Generation"]="ComfyUI Stable_Diffusion_WebUI_Forge SVD
 PROFILE_EXTENDED_TOOLS["Video_Generation"]="ControlNet"
 PROFILE_INTEGRATION_TOOLS["Video_Generation"]="YT_DLP Thumbnail_Pipeline"
 
-PROFILE_CORE_TOOLS["GameDev_3D_Studio_NEXTLEVEL"]="GameDev_3D_Studio Blender ComfyUI Ollama OpenClaw n8n FFmpeg"
+PROFILE_CORE_TOOLS["GameDev_3D_Studio_NEXTLEVEL"]="Blender ComfyUI Ollama OpenClaw n8n FFmpeg"
 PROFILE_EXTENDED_TOOLS["GameDev_3D_Studio_NEXTLEVEL"]="Whisper_CPP Faster_Whisper Piper Coqui_TTS Qdrant ChromaDB"
 PROFILE_INTEGRATION_TOOLS["GameDev_3D_Studio_NEXTLEVEL"]="Kubernetes K3s Cloudflared Tailscale GitHub_CLI Prometheus Grafana"
-PROFILE_SPECIAL_TOOLS["GameDev_3D_Studio_NEXTLEVEL"]="GameDev_3D_Studio Blender ComfyUI Ollama OpenClaw n8n FFmpeg"
+PROFILE_SPECIAL_TOOLS["GameDev_3D_Studio_NEXTLEVEL"]="Blender ComfyUI Ollama OpenClaw n8n FFmpeg"
 PROFILE_SPECIAL_LABELS["GameDev_3D_Studio_NEXTLEVEL"]="AI Game Studio komplett"
 
-PROFILE_CORE_TOOLS["CAD_Konstrukteur"]="CAD_Konstrukteur Blender Ollama OpenClaw n8n"
+PROFILE_CORE_TOOLS["CAD_Konstrukteur"]="Blender Ollama OpenClaw n8n"
 PROFILE_EXTENDED_TOOLS["CAD_Konstrukteur"]="Whisper_CPP Faster_Whisper Qdrant ChromaDB"
 PROFILE_INTEGRATION_TOOLS["CAD_Konstrukteur"]="Cloudflared Tailscale GitHub_CLI Kubernetes K3s"
-PROFILE_SPECIAL_TOOLS["CAD_Konstrukteur"]="CAD_Konstrukteur Blender Ollama OpenClaw n8n"
+PROFILE_SPECIAL_TOOLS["CAD_Konstrukteur"]="Blender Ollama OpenClaw n8n"
 PROFILE_SPECIAL_LABELS["CAD_Konstrukteur"]="CAD Konstrukteur komplett"
 
-PROFILE_CORE_TOOLS["Architektur_3D_BIM"]="Architektur_3D_BIM CAD_Konstrukteur Blender ComfyUI Ollama OpenClaw n8n"
+PROFILE_CORE_TOOLS["Architektur_3D_BIM"]="Blender ComfyUI Ollama OpenClaw n8n"
 PROFILE_EXTENDED_TOOLS["Architektur_3D_BIM"]="Qdrant ChromaDB Prometheus Grafana"
 PROFILE_INTEGRATION_TOOLS["Architektur_3D_BIM"]="Cloudflared Tailscale GitHub_CLI Kubernetes K3s"
-PROFILE_SPECIAL_TOOLS["Architektur_3D_BIM"]="Architektur_3D_BIM CAD_Konstrukteur Blender ComfyUI Ollama OpenClaw n8n"
+PROFILE_SPECIAL_TOOLS["Architektur_3D_BIM"]="Blender ComfyUI Ollama OpenClaw n8n"
 PROFILE_SPECIAL_LABELS["Architektur_3D_BIM"]="Architektur BIM komplett"
 
-PROFILE_CORE_TOOLS["Robotertechnik_Anlagensteuerung"]="Robotertechnik_Anlagensteuerung Ollama OpenClaw n8n Mosquitto Node_Red Home_Assistant"
+PROFILE_CORE_TOOLS["Robotertechnik_Anlagensteuerung"]="Ollama OpenClaw n8n Mosquitto Node_Red Home_Assistant"
 PROFILE_EXTENDED_TOOLS["Robotertechnik_Anlagensteuerung"]="Whisper_CPP Prometheus Grafana"
 PROFILE_INTEGRATION_TOOLS["Robotertechnik_Anlagensteuerung"]="Kubernetes K3s Cloudflared Tailscale"
-PROFILE_SPECIAL_TOOLS["Robotertechnik_Anlagensteuerung"]="Robotertechnik_Anlagensteuerung Ollama OpenClaw n8n Mosquitto Node_Red Home_Assistant Prometheus Grafana"
+PROFILE_SPECIAL_TOOLS["Robotertechnik_Anlagensteuerung"]="Ollama OpenClaw n8n Mosquitto Node_Red Home_Assistant Prometheus Grafana"
 PROFILE_SPECIAL_LABELS["Robotertechnik_Anlagensteuerung"]="Robotik & Anlagensteuerung komplett"
 
 PROFILE_CORE_TOOLS["Image_Generation"]="ComfyUI Stable_Diffusion_WebUI_Forge Fooocus InvokeAI RealESRGAN"
