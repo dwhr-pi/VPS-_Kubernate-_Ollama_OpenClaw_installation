@@ -10,6 +10,7 @@ CLEAN_APT=false
 CLEAN_DOCKER=false
 CLEAN_DOCKER_VOLUMES=false
 CLEAN_CACHES=false
+CLEAN_OPT_TOOLS=false
 SHOW_OPT=true
 YES=false
 
@@ -28,12 +29,14 @@ Optionen:
   --docker               Docker-Container, dangling Images und Build-Cache bereinigen
   --docker-volumes       Docker-Volumes bereinigen (riskant, nur explizit)
   --caches               Paket-/Build-Caches im Home-Verzeichnis bereinigen
+  --opt-tools            Bekannte /opt-Toolreste einzeln per Ja/Nein entfernen
   --no-opt-report        /opt-Verzeichnisgroessen nicht anzeigen
   -h, --help             Hilfe anzeigen
 
 Empfohlen:
   bash scripts/cleanup_installation_residues.sh --dry-run --all
   bash scripts/cleanup_installation_residues.sh --apply --all
+  bash scripts/cleanup_installation_residues.sh --apply --opt-tools
 EOF
 }
 
@@ -51,6 +54,7 @@ while [ $# -gt 0 ]; do
     --docker) CLEAN_DOCKER=true ;;
     --docker-volumes) CLEAN_DOCKER=true; CLEAN_DOCKER_VOLUMES=true ;;
     --caches) CLEAN_CACHES=true ;;
+    --opt-tools) CLEAN_OPT_TOOLS=true ;;
     --no-opt-report) SHOW_OPT=false ;;
     -h|--help) usage; exit 0 ;;
     *)
@@ -62,7 +66,7 @@ while [ $# -gt 0 ]; do
   shift
 done
 
-if ! $CLEAN_APT && ! $CLEAN_DOCKER && ! $CLEAN_CACHES; then
+if ! $CLEAN_APT && ! $CLEAN_DOCKER && ! $CLEAN_CACHES && ! $CLEAN_OPT_TOOLS; then
   CLEAN_APT=true
   CLEAN_DOCKER=true
   CLEAN_CACHES=true
@@ -97,6 +101,21 @@ run_or_show() {
   fi
 }
 
+confirm_step() {
+  local prompt="$1"
+  local answer
+
+  if ! $APPLY || $YES; then
+    return 0
+  fi
+
+  read -r -p "$prompt [j/N]: " answer
+  case "${answer,,}" in
+    j|ja|y|yes) return 0 ;;
+    *) return 1 ;;
+  esac
+}
+
 cache_dir_size() {
   local dir="$1"
   if [ -e "$dir" ]; then
@@ -111,11 +130,34 @@ remove_cache_dir() {
   case "$dir" in
     "$HOME"/.cache/*|"$HOME"/.npm/*|"$HOME"/.local/share/pnpm/*|"$HOME"/.pnpm-store|"$HOME"/.bun/install/cache|"$HOME"/.cargo/registry|"$HOME"/.cargo/git)
       if [ -e "$dir" ]; then
-        run_or_show "Cache entfernen: $dir ($(cache_dir_size "$dir"))" rm -rf "$dir"
+        if confirm_step "Cache wirklich entfernen: $dir ($(cache_dir_size "$dir"))?"; then
+          run_or_show "Cache entfernen: $dir ($(cache_dir_size "$dir"))" rm -rf "$dir"
+        else
+          echo "    Uebersprungen: $dir"
+        fi
       fi
       ;;
     *)
       echo "Ueberspringe unsicheren Cache-Pfad: $dir"
+      ;;
+  esac
+}
+
+remove_opt_tool_dir() {
+  local dir="$1"
+
+  case "$dir" in
+    /opt/containerd|/opt/clawhub|/opt/bun|/opt/actionlint|/opt/comfyui|/opt/autogpt|/opt/aider|/opt/airbyte|/opt/openmanus|/opt/activepieces|/opt/apache_tika|/opt/kimi2|/opt/ruflo)
+      if [ -e "$dir" ]; then
+        if confirm_step "/opt-Toolrest wirklich entfernen: $dir ($(cache_dir_size "$dir"))?"; then
+          run_or_show "/opt-Toolrest entfernen: $dir ($(cache_dir_size "$dir"))" sudo rm -rf "$dir"
+        else
+          echo "    Uebersprungen: $dir"
+        fi
+      fi
+      ;;
+    *)
+      echo "Ueberspringe unsicheren /opt-Pfad: $dir"
       ;;
   esac
 }
@@ -139,7 +181,8 @@ confirm_apply() {
 
   echo
   echo "Sicherheitsabfrage: Diese Bereinigung kann Paket-Caches, Docker-Zwischenimages und ungenutzte Abhaengigkeiten entfernen."
-  echo "Modelle, Projektordner und /opt-Tool-Verzeichnisse werden NICHT automatisch geloescht."
+  echo "Modelle und Projektordner werden NICHT geloescht."
+  echo "/opt-Tool-Verzeichnisse werden nur mit --opt-tools und jeweils eigener Ja/Nein-Abfrage geloescht."
   read -r -p "Tippe BEREINIGEN zum Fortfahren: " answer
   if [ "$answer" != "BEREINIGEN" ]; then
     echo "Abgebrochen. Es wurde nichts geloescht."
@@ -223,6 +266,35 @@ main() {
 
     echo
     echo "Nicht automatisch geloescht: Ollama-Modelle, HuggingFace-Modelle, Projektordner und /opt-Tools."
+  fi
+
+  if $CLEAN_OPT_TOOLS; then
+    echo
+    echo "Bekannte /opt-Toolreste:"
+    echo "Docker-Volumes werden bewusst nicht geloescht. Fuer Volumes: --docker-volumes explizit setzen."
+    write_report ""
+    write_report "## Bekannte /opt-Toolreste"
+    local opt_dirs=(
+      "/opt/containerd"
+      "/opt/clawhub"
+      "/opt/bun"
+      "/opt/actionlint"
+      "/opt/comfyui"
+      "/opt/autogpt"
+      "/opt/aider"
+      "/opt/airbyte"
+      "/opt/openmanus"
+      "/opt/activepieces"
+      "/opt/apache_tika"
+      "/opt/kimi2"
+      "/opt/ruflo"
+    )
+    local opt_dir
+    for opt_dir in "${opt_dirs[@]}"; do
+      echo "  - $opt_dir: $(cache_dir_size "$opt_dir")"
+      write_report "- $opt_dir: $(cache_dir_size "$opt_dir")"
+      remove_opt_tool_dir "$opt_dir"
+    done
   fi
 
   if $SHOW_OPT && [ -d /opt ]; then
