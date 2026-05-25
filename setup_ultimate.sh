@@ -1441,7 +1441,7 @@ show_installation_monitoring_menu() {
 
         dialog --clear --backtitle "$APP_TITLE" \
         --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
-        --title "INSTALLATIONSÜBERWACHUNG" --menu "Zusätzliche Überwachung, Logansicht und sichere Log-Aufräumung." 40 112 20 \
+        --title "INSTALLATIONSÜBERWACHUNG" --menu "Zusätzliche Überwachung, Logansicht und sichere Log-Aufräumung." 42 112 22 \
         "1" "${monitoring_mark} Erweiterte Installationsüberwachung umschalten (aktuell: ${monitoring_state})" \
         "────────" "$separator_line" \
         "2" "${overview_metrics_mark} Zeit-/Speicherwerte in Tool-/Profilübersichten umschalten (aktuell: ${overview_metrics_state})" \
@@ -1463,7 +1463,10 @@ show_installation_monitoring_menu() {
         "14" "Installationsreste/Caches Trockenlauf anzeigen" \
         "15" "Installationsreste/Caches bereinigen (mit Sicherheitsabfrage)" \
         "─────────────" "$separator_line" \
-        "16" "${TXT_BACK_ITEM:-Zurück}" 2> /tmp/install_monitoring_choice
+        "16" "/opt-Toolreste Trockenlauf anzeigen" \
+        "17" "/opt-Toolreste bereinigen (jedes Verzeichnis Ja/Nein)" \
+        "──────────────" "$separator_line" \
+        "18" "${TXT_BACK_ITEM:-Zurück}" 2> /tmp/install_monitoring_choice
 
         if [ $? -ne 0 ]; then
             return 0
@@ -1577,6 +1580,19 @@ show_installation_monitoring_menu() {
                 read -p "Bereinigung abgeschlossen oder abgebrochen. Drücken Sie Enter..."
                 ;;
             16)
+                clear
+                bash "$INSTALL_DIR/scripts/cleanup_installation_residues.sh" --dry-run --opt-tools
+                echo
+                read -p "Trockenlauf abgeschlossen. Drücken Sie Enter..."
+                ;;
+            17)
+                clear
+                echo -e "${YELLOW}/opt-Toolreste werden jetzt einzeln abgefragt. Docker-Volumes bleiben geschützt.${NC}"
+                bash "$INSTALL_DIR/scripts/cleanup_installation_residues.sh" --apply --opt-tools
+                echo
+                read -p "Bereinigung abgeschlossen oder abgebrochen. Drücken Sie Enter..."
+                ;;
+            18)
                 return 0
                 ;;
         esac
