@@ -3258,6 +3258,9 @@ uninstall_tool() {
     maybe_cleanup_logs_before_operation
     begin_operation_measurement "tool_uninstall_${TOOL_KEY}" "Tool deinstallieren: ${TOOL_KEY}"
     echo -e "${BLUE}Deinstalliere Tool: ${TOOL_KEY}...${NC}"
+    echo -e "${YELLOW}Achtung:${NC} Die Deinstallation entfernt in der Regel nur das Tool selbst."
+    echo -e "${YELLOW}Hinweis:${NC} Abhängigkeiten, Build-Apps, Paket-Caches und andere Zusätze bleiben erhalten."
+    echo -e "${YELLOW}Aufräumen:${NC} Bitte danach in den Optionen unter Installationsüberwachung die Installationsreste-/Cache-Bereinigung prüfen."
     run_tool_script "$TOOL_KEY" "uninstall"
     if [ $? -eq 0 ]; then
         remove_exact_line "$TOOL_STATUS_FILE" "$TOOL_KEY"
