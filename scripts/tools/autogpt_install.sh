@@ -91,11 +91,14 @@ echo -e "${YELLOW}Hinweis: AutoGPT wird aus GitHub geklont, der Upstream-Docker-
 echo -e "${YELLOW}BuildKit wird benoetigt, weil AutoGPT Dockerfile-Features wie RUN --mount=type=cache nutzt.${NC}"
 echo -e "${YELLOW}Hinweis zu pip/Poetry-Warnungen:${NC} Falls waehrend des Docker-Builds 'Running pip as root' erscheint, betrifft das den Container-Build."
 echo -e "${YELLOW}Der AutoGPT-Installer installiert Poetry/Python-Pakete nicht global per pip auf dem WSL-Host.${NC}"
+echo -e "${YELLOW}Hinweis zu Prisma/Poetry:${NC} Meldungen wie 'Generated Prisma Client Python' oder 'gen-prisma-stub ... not installed as a script' stammen aus dem AutoGPT-Backend-Build."
+echo -e "${YELLOW}Solange der Docker-Compose-Start am Ende erfolgreich ist, sind diese Prisma-/Poetry-Zeilen Warnungen des Upstream-Builds und kein separater Setup-Abbruch.${NC}"
 sudo env DOCKER_BUILDKIT=1 COMPOSE_DOCKER_CLI_BUILD=1 docker compose up -d
 if [ $? -ne 0 ]; then
     echo -e "${RED}Fehler: AutoGPT Docker Compose Start fehlgeschlagen.${NC}"
     echo -e "${YELLOW}Reparaturhinweis: Pruefe, ob der Docker-Daemon laeuft und BuildKit verfuegbar ist.${NC}"
     echo -e "${YELLOW}Der typische Fehler lautet: 'the --mount option requires BuildKit'.${NC}"
+    echo -e "${YELLOW}Wenn der letzte sichtbare Block Prisma/Poetry nennt, bitte die Zeilen danach pruefen: Prisma-Generierung allein ist meist nicht der eigentliche Fehler.${NC}"
     exit 1
 fi
 
