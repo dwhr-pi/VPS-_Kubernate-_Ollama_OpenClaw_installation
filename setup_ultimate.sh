@@ -1342,21 +1342,19 @@ run_bash_script() {
     fi
 
     ensure_user_workspace
-    ACTIVE_OPERATION_LOG_FILE=""
+    operation_slug="$(printf '%s' "${ACTIVE_OPERATION_ID:-$(basename "$script_path" .sh)}" | tr -cs '[:alnum:]_.-' '_')"
+    timestamp_slug="$(date +%Y%m%d_%H%M%S)"
+    ACTIVE_OPERATION_LOG_FILE="$USER_INSTALL_LOG_DIR/${timestamp_slug}_${operation_slug}.log"
+    mkdir -p "$USER_INSTALL_LOG_DIR"
 
     if is_preference_enabled "${INSTALL_MONITORING_VERBOSE:-false}" || is_preference_enabled "${INSTALL_MONITORING_MANUAL_FLOW:-false}"; then
-        operation_slug="$(printf '%s' "${ACTIVE_OPERATION_ID:-$(basename "$script_path" .sh)}" | tr -cs '[:alnum:]_.-' '_')"
-        timestamp_slug="$(date +%Y%m%d_%H%M%S)"
-        ACTIVE_OPERATION_LOG_FILE="$USER_INSTALL_LOG_DIR/${timestamp_slug}_${operation_slug}.log"
-
         echo -e "${YELLOW}Erweiterte Installationsüberwachung ist aktiv.${NC}"
         echo -e "${YELLOW}Logdatei:${NC} ${ACTIVE_OPERATION_LOG_FILE}"
-        bash "$script_path" "$@" 2>&1 | tee "$ACTIVE_OPERATION_LOG_FILE"
-        script_rc=${PIPESTATUS[0]}
     else
-        bash "$script_path" "$@"
-        script_rc=$?
+        echo -e "${YELLOW}Installationsprotokoll:${NC} ${ACTIVE_OPERATION_LOG_FILE}"
     fi
+    bash "$script_path" "$@" 2>&1 | tee "$ACTIVE_OPERATION_LOG_FILE"
+    script_rc=${PIPESTATUS[0]}
 
     reset_terminal_display
     return $script_rc
