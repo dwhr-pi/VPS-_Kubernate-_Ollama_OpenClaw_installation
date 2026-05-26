@@ -6,7 +6,13 @@ TOOL_DESCRIPTION="Open-Source Coding-Assistant-Workspace von Continue für IDE- 
 TOOL_MODULE_TYPE="Coding-Assistant-Scaffold"
 TOOL_GIT_REPO="https://github.com/continuedev/continue.git"
 TOOL_APT_PACKAGES="git nodejs npm"
-TOOL_POST_INSTALL='if [ -f package.json ]; then npm install || true; fi'
+TOOL_POST_INSTALL='if [ -f package.json ]; then
+  echo "Continue.dev: installiere Node-Abhaengigkeiten mit npm."
+  echo "Hinweis: npm-Warnungen zu deprecated Paketen oder npm audit stammen aus dem Upstream-Abhaengigkeitsbaum."
+  echo "Sie sind kein Installationsabbruch, solange npm install mit Exitcode 0 endet."
+  npm install
+  echo "Optionaler Audit-Hinweis: Details koennen spaeter manuell mit npm audit in /opt/continue_dev geprueft werden."
+fi'
 TOOL_PROMPT_EXAMPLE='# Beispielprompts für Continue.dev
 
 ```txt
