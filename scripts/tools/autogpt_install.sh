@@ -89,6 +89,8 @@ fi
 echo -e "${BLUE}Starte AutoGPT Plattform per Docker Compose mit BuildKit...${NC}"
 echo -e "${YELLOW}Hinweis: AutoGPT wird aus GitHub geklont, der Upstream-Docker-Build zieht jedoch Basis-Images und Container-Abhaengigkeiten.${NC}"
 echo -e "${YELLOW}BuildKit wird benoetigt, weil AutoGPT Dockerfile-Features wie RUN --mount=type=cache nutzt.${NC}"
+echo -e "${YELLOW}Hinweis zu pip/Poetry-Warnungen:${NC} Falls waehrend des Docker-Builds 'Running pip as root' erscheint, betrifft das den Container-Build."
+echo -e "${YELLOW}Der AutoGPT-Installer installiert Poetry/Python-Pakete nicht global per pip auf dem WSL-Host.${NC}"
 sudo env DOCKER_BUILDKIT=1 COMPOSE_DOCKER_CLI_BUILD=1 docker compose up -d
 if [ $? -ne 0 ]; then
     echo -e "${RED}Fehler: AutoGPT Docker Compose Start fehlgeschlagen.${NC}"
