@@ -21,6 +21,7 @@ init_tool_tracking "AutoGPT"
 
 AUTOGPT_DIR="/opt/autogpt"
 AUTOGPT_PLATFORM_DIR="$AUTOGPT_DIR/autogpt_platform"
+AUTOGPT_BUILDX_VERSION="${AUTOGPT_BUILDX_VERSION:-v0.34.1}"
 AUTOGPT_REPOS=(
     "${AUTOGPT_REPO_URL:-}"
     "https://github.com/significant-gravitas/autogpt.git"
@@ -54,6 +55,63 @@ run_autogpt_compose_buildkit() {
     else
         env DOCKER_BUILDKIT=1 COMPOSE_DOCKER_CLI_BUILD=1 docker compose "$@"
     fi
+}
+
+ensure_autogpt_buildx_plugin() {
+    local arch
+    local buildx_url
+    local tmp_file
+    local plugin_dir="/usr/local/lib/docker/cli-plugins"
+    local plugin_path="$plugin_dir/docker-buildx"
+    local plugin_dir_alt="/usr/local/libexec/docker/cli-plugins"
+    local plugin_path_alt="$plugin_dir_alt/docker-buildx"
+
+    if docker buildx version >/dev/null 2>&1 && sudo docker buildx version >/dev/null 2>&1; then
+        echo -e "${GREEN}Docker Buildx Plugin ist vorhanden: $(docker buildx version 2>/dev/null | head -n 1)${NC}"
+        return 0
+    fi
+
+    echo -e "${YELLOW}Docker Compose meldet ohne Buildx haeufig: 'Docker Compose requires buildx plugin to be installed'.${NC}"
+    echo -e "${BLUE}Installiere Docker Buildx Plugin aus GitHub-Quelle: https://github.com/docker/buildx (${AUTOGPT_BUILDX_VERSION})${NC}"
+
+    if ! command -v curl >/dev/null 2>&1; then
+        sudo apt-get update
+        sudo apt-get install -y curl ca-certificates
+    fi
+
+    arch="$(uname -m)"
+    case "$arch" in
+        x86_64|amd64) arch="amd64" ;;
+        aarch64|arm64) arch="arm64" ;;
+        armv7l) arch="arm-v7" ;;
+        armv6l) arch="arm-v6" ;;
+        *)
+            echo -e "${RED}Fehler: Keine Buildx-Binary-Architektur fuer '$arch' hinterlegt.${NC}"
+            return 1
+            ;;
+    esac
+
+    buildx_url="https://github.com/docker/buildx/releases/download/${AUTOGPT_BUILDX_VERSION}/buildx-${AUTOGPT_BUILDX_VERSION}.linux-${arch}"
+    tmp_file="$(mktemp)"
+    curl -fsSL "$buildx_url" -o "$tmp_file"
+    sudo mkdir -p "$plugin_dir"
+    sudo install -m 0755 "$tmp_file" "$plugin_path"
+    sudo mkdir -p "$plugin_dir_alt"
+    sudo install -m 0755 "$tmp_file" "$plugin_path_alt"
+    rm -f "$tmp_file"
+
+    if ! docker buildx version >/dev/null 2>&1 && sudo docker buildx version >/dev/null 2>&1; then
+        echo -e "${YELLOW}Buildx ist nur mit sudo sichtbar. Das ist fuer diesen Installer ausreichend, solange Docker Compose ebenfalls per sudo laeuft.${NC}"
+        return 0
+    fi
+
+    if docker buildx version >/dev/null 2>&1 || sudo docker buildx version >/dev/null 2>&1; then
+        echo -e "${GREEN}Docker Buildx Plugin installiert: $(sudo docker buildx version 2>/dev/null | head -n 1)${NC}"
+        return 0
+    fi
+
+    echo -e "${RED}Fehler: Docker Buildx Plugin konnte nicht aktiviert werden.${NC}"
+    return 1
 }
 
 verify_autogpt_buildkit() {
@@ -131,6 +189,11 @@ sudo usermod -aG docker "$USER" >/dev/null 2>&1 || true
 
 if ! docker_info_available_for_autogpt; then
     echo -e "${RED}Fehler: Docker-Daemon ist nicht erreichbar. AutoGPT benoetigt Docker Compose.${NC}"
+    exit 1
+fi
+
+if ! ensure_autogpt_buildx_plugin; then
+    echo -e "${RED}Fehler: AutoGPT kann ohne Docker Buildx Plugin nicht zuverlaessig gebaut werden.${NC}"
     exit 1
 fi
 
