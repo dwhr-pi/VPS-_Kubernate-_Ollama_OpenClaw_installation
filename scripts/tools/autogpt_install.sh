@@ -21,6 +21,7 @@ init_tool_tracking "AutoGPT"
 
 AUTOGPT_DIR="/opt/autogpt"
 AUTOGPT_PLATFORM_DIR="$AUTOGPT_DIR/autogpt_platform"
+AUTOGPT_INSTALLER_REVISION="2026-05-27-buildx-preflight"
 AUTOGPT_BUILDX_VERSION="${AUTOGPT_BUILDX_VERSION:-v0.34.1}"
 AUTOGPT_REPOS=(
     "${AUTOGPT_REPO_URL:-}"
@@ -141,6 +142,7 @@ EOF
 }
 
 echo -e "${BLUE}Starte Installation von AutoGPT...${NC}"
+echo -e "${YELLOW}AutoGPT-Installer-Revision:${NC} ${AUTOGPT_INSTALLER_REVISION}"
 
 AUTOGPT_REPO_URL=""
 for repo in "${AUTOGPT_REPOS[@]}"; do
