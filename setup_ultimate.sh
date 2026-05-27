@@ -2441,6 +2441,8 @@ is_base_install_ready() {
 
 sync_core_tool_status() {
     local status_changed=0
+    local tool_key
+    local install_path
 
     ensure_user_workspace
     normalize_status_file "$TOOL_STATUS_FILE" "${TOOL_KEYS[@]}"
@@ -2472,6 +2474,28 @@ sync_core_tool_status() {
             status_changed=1
         fi
     fi
+
+    # Reparatur fuer Tools, die real unter /opt vorhanden sind, aber durch
+    # alte Installer/abgebrochene Menues noch nicht im Statusfile stehen. Ohne
+    # diese Nachsynchronisierung kann ein Abwaehlen im Tool-Menue keine
+    # Deinstallation planen, weil das Setup das Tool nicht als installiert kennt.
+    while IFS='|' read -r tool_key install_path; do
+        [ -n "$tool_key" ] || continue
+        [ -n "$install_path" ] || continue
+        if [ -e "$install_path" ] && ! grep -Fxq "$tool_key" "$TOOL_STATUS_FILE" 2>/dev/null; then
+            append_unique_line "$TOOL_STATUS_FILE" "$tool_key"
+            status_changed=1
+        fi
+    done <<'EOF'
+AutoGPT|/opt/autogpt/autogpt_platform
+Airbyte|/opt/airbyte
+Clawhub|/opt/clawhub
+ComfyUI|/opt/comfyui
+Continue_Dev|/opt/continue_dev
+OpenManus|/opt/openmanus
+Activepieces|/opt/activepieces
+Apache_Tika|/opt/apache_tika
+EOF
 
     if [ "$status_changed" -eq 1 ]; then
         echo -e "${BLUE}Hinweis: Der Tool-Status fuer vorhandene Kern- und Zusatzinstallationen wurde aus dem System nachsynchronisiert.${NC}"
