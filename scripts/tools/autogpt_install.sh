@@ -26,6 +26,61 @@ AUTOGPT_REPOS=(
     "https://github.com/significant-gravitas/autogpt.git"
     "https://github.com/dwhr-pi/AutoGPT.git"
 )
+AUTOGPT_DOCKER_NEEDS_SUDO=false
+
+docker_info_available_for_autogpt() {
+    if docker info >/dev/null 2>&1; then
+        AUTOGPT_DOCKER_NEEDS_SUDO=false
+        return 0
+    fi
+    if sudo docker info >/dev/null 2>&1; then
+        AUTOGPT_DOCKER_NEEDS_SUDO=true
+        return 0
+    fi
+    return 1
+}
+
+run_autogpt_docker_buildkit() {
+    if $AUTOGPT_DOCKER_NEEDS_SUDO; then
+        sudo env DOCKER_BUILDKIT=1 docker "$@"
+    else
+        env DOCKER_BUILDKIT=1 docker "$@"
+    fi
+}
+
+run_autogpt_compose_buildkit() {
+    if $AUTOGPT_DOCKER_NEEDS_SUDO; then
+        sudo env DOCKER_BUILDKIT=1 COMPOSE_DOCKER_CLI_BUILD=1 docker compose "$@"
+    else
+        env DOCKER_BUILDKIT=1 COMPOSE_DOCKER_CLI_BUILD=1 docker compose "$@"
+    fi
+}
+
+verify_autogpt_buildkit() {
+    local tmp_dir
+
+    tmp_dir="$(mktemp -d)"
+    cat > "$tmp_dir/Dockerfile" <<'EOF'
+# syntax=docker/dockerfile:1
+FROM alpine:3.20
+RUN --mount=type=cache,target=/tmp/autogpt-buildkit-cache echo buildkit-ok
+EOF
+
+    echo -e "${BLUE}Pruefe Docker BuildKit mit kleinem Test-Build...${NC}"
+    if run_autogpt_docker_buildkit build -q "$tmp_dir" >/dev/null; then
+        rm -rf "$tmp_dir"
+        echo -e "${GREEN}Docker BuildKit ist aktiv und kann RUN --mount=type=cache verarbeiten.${NC}"
+        return 0
+    fi
+
+    rm -rf "$tmp_dir"
+    echo -e "${RED}Fehler: Docker BuildKit ist nicht aktiv oder nicht nutzbar.${NC}"
+    echo -e "${YELLOW}AutoGPT benoetigt BuildKit, weil der Upstream-Docker-Build RUN --mount=type=cache verwendet.${NC}"
+    echo -e "${YELLOW}Ohne diesen Test wuerde der grosse Build spaeter mit 'the --mount option requires BuildKit' abbrechen.${NC}"
+    echo -e "${YELLOW}Reparaturhinweis:${NC} Docker-Daemon/Compose pruefen und BuildKit aktivieren. Danach Docker neu starten und AutoGPT erneut starten."
+    echo -e "${YELLOW}WSL-Hinweis:${NC} Wenn Docker gerade installiert wurde, kann ein Neustart der Shell oder von WSL/Docker noetig sein."
+    return 1
+}
 
 echo -e "${BLUE}Starte Installation von AutoGPT...${NC}"
 
@@ -74,6 +129,11 @@ fi
 sudo systemctl enable --now docker >/dev/null 2>&1 || true
 sudo usermod -aG docker "$USER" >/dev/null 2>&1 || true
 
+if ! docker_info_available_for_autogpt; then
+    echo -e "${RED}Fehler: Docker-Daemon ist nicht erreichbar. AutoGPT benoetigt Docker Compose.${NC}"
+    exit 1
+fi
+
 if [ ! -d "$AUTOGPT_PLATFORM_DIR" ]; then
     echo -e "${RED}Fehler: AutoGPT Plattform-Verzeichnis nicht gefunden: $AUTOGPT_PLATFORM_DIR${NC}"
     exit 1
@@ -93,7 +153,11 @@ echo -e "${YELLOW}Hinweis zu pip/Poetry-Warnungen:${NC} Falls waehrend des Docke
 echo -e "${YELLOW}Der AutoGPT-Installer installiert Poetry/Python-Pakete nicht global per pip auf dem WSL-Host.${NC}"
 echo -e "${YELLOW}Hinweis zu Prisma/Poetry:${NC} Meldungen wie 'Generated Prisma Client Python' oder 'gen-prisma-stub ... not installed as a script' stammen aus dem AutoGPT-Backend-Build."
 echo -e "${YELLOW}Solange der Docker-Compose-Start am Ende erfolgreich ist, sind diese Prisma-/Poetry-Zeilen Warnungen des Upstream-Builds und kein separater Setup-Abbruch.${NC}"
-sudo env DOCKER_BUILDKIT=1 COMPOSE_DOCKER_CLI_BUILD=1 docker compose up -d
+if ! verify_autogpt_buildkit; then
+    exit 1
+fi
+
+run_autogpt_compose_buildkit up -d
 if [ $? -ne 0 ]; then
     echo -e "${RED}Fehler: AutoGPT Docker Compose Start fehlgeschlagen.${NC}"
     echo -e "${YELLOW}Reparaturhinweis: Pruefe, ob der Docker-Daemon laeuft und BuildKit verfuegbar ist.${NC}"
