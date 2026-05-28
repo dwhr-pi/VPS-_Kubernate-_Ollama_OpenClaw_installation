@@ -66,6 +66,19 @@ Stub-Installer markieren diese Profile als ausgewaehlt, starten aber keine schwe
 | Local_Search_Engine | planned | Meilisearch, SearXNG, DuckDB, Apache Tika, Qdrant |
 | Knowledge_Graph_Researcher | experimental | Neo4j optional, Qdrant, LlamaIndex, Docling |
 | Personal_Wiki_Agent | planned | Markdown, Qdrant, ChromaDB, DuckDB, Open WebUI |
+
+## myNextCloud AI Mapping
+
+| Profil | Tier | Status | Kern-Tools |
+|---|---|---|---|
+| mynextcloud_ai | recommended | planned | myNextCloud Server, Ollama, OpenClaw, n8n, Whisper.cpp/faster-whisper |
+| mynextcloud_admin | recommended | planned | check_upstream.sh, backup_mynextcloud.sh, setup_env.sh, Home Assistant optional |
+| mynextcloud_android | advanced | planned | myNextCloud Mobile, Android Studio, Gradle, upstream sync, Branding-Check |
+| mynextcloud_security | recommended | planned | Gitleaks, Trivy, ClamAV/YARA optional, lokale Hash-Pruefung |
+| mynextcloud_automation | recommended | planned | n8n, OpenClaw Agents, Ollama, Webhooks, Rate-Limits |
+| mynextcloud_homeassistant | recommended | planned | Home Assistant, Tailscale, Cloudflare Access, n8n notifications |
+
+Hinweis: Diese Profile sind bewusst nicht als schwere Auto-Installer freigeschaltet. Server-, Android- und Workflow-Schritte bleiben manuell bestaetigt und dokumentiert.
 | Long_Term_Memory_Curator | planned | Qdrant, ChromaDB, DuckDB, Open WebUI Memory |
 | AI_Video_Pipeline_Manager | experimental | ComfyUI, FFmpeg, Whisper.cpp, RealESRGAN, RIFE optional |
 | ComfyUI_Workflow_Studio | experimental | ComfyUI, ComfyUI Manager optional, FFmpeg, Forge optional |

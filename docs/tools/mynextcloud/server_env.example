@@ -1,0 +1,22 @@
+# myNextCloud Server environment example
+# Copy this file to the server fork as .env.example or use scripts/mynextcloud/setup_env.sh.
+# Do not commit real secrets.
+
+MYNEXTCLOUD_DOMAIN=
+MYNEXTCLOUD_DATA_DIR=
+MYNEXTCLOUD_DB_TYPE=postgres
+MYNEXTCLOUD_DB_HOST=
+MYNEXTCLOUD_DB_NAME=
+MYNEXTCLOUD_DB_USER=
+MYNEXTCLOUD_DB_PASSWORD=
+
+OLLAMA_BASE_URL=http://127.0.0.1:11434
+OLLAMA_MODEL=llama3.2:1b
+
+OPENCLAW_GATEWAY_URL=ws://127.0.0.1:18789
+OPENCLAW_GATEWAY_TOKEN=
+
+N8N_WEBHOOK_BASE_URL=
+WHISPER_ENDPOINT=
+HOME_ASSISTANT_URL=
+HOME_ASSISTANT_TOKEN=

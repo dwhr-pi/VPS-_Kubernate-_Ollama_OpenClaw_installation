@@ -171,6 +171,19 @@ Advanced:
 - Storage und Secrets vor App-Deployment klaeren
 - Auto-Updates nur mit Rollback
 
+## myNextCloud AI
+
+| Baustein | MiniPC/WSL2 | VPS | Raspberry Pi | Kubernetes | Risiko |
+|---|---|---|---|---|---|
+| myNextCloud Server Dev | geeignet | geeignet | eingeschraenkt | spaeter | mittel |
+| myNextCloud Mobile Build | Windows/Android Studio empfohlen | nein | nein | nein | mittel |
+| Ollama Datei-KI | geeignet bei lokalem Modell | nur mit privatem Zugriff | extern anbinden | spaeter | mittel |
+| n8n Workflows | optional | geeignet mit Auth | eingeschraenkt | spaeter | mittel |
+| Cloudflare Access | geeignet | geeignet | geeignet | geeignet | niedrig-mittel |
+| Tailscale Admin-Zugriff | empfohlen | empfohlen | empfohlen | empfohlen | niedrig |
+
+Default: documentation-first. Keine automatische Nextcloud-, Android-, n8n- oder Cloudflare-Installation ohne explizite Bestaetigung.
+
 ## Desktop- und App-Anbindung
 
 | Bereich | Windows/Desktop | Android/Mobile |

@@ -2,6 +2,9 @@
 
 ## V11.18
 
+- myNextCloud AI documentation-first Integration ergaenzt: Profile, Tool-Doku, Upstream-Sync, Branding-/Lizenzcheck, Cloudflare/Tailscale, n8n/Ollama/OpenClaw/Whisper/Home-Assistant-Konzepte.
+- sichere Helper-Skripte unter `scripts/mynextcloud/` ergaenzt; schreibende Aktionen laufen nur mit `--apply`.
+- JSON-Profile fuer `myNextCloud_File_Agent`, `myNextCloud_Admin_Agent` und Android-Branding/Build-Checks angelegt.
 - 36 neue documentation-first Profile fuer LLMOps, Automatisierung, RAG, Medien, Security, Hardware/Homelab und Alltag ergaenzt.
 - neue Review-Dokumente: Scorecard, Missing-Profiles/Tools-Review, Profilstatus, Hardware-Entscheidungsbaum, Risiko-Level und sichere Installationspfade.
 - neuer nicht-destruktiver Systemprofil-Detector `scripts/system_profile_detect.sh` fuer WSL2, RAM, Swap, Speicher, Node, Docker/Podman, systemd und GPU-Hinweise.

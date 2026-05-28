@@ -1,0 +1,31 @@
+{
+  "name": "myNextCloud_Android_Branding_Agent",
+  "display_name": "myNextCloud Mobile",
+  "description": "Profil fuer Android-Fork-Build, Branding-Pruefung, Package-Name-Planung und Release-Checklisten.",
+  "provider": "ollama",
+  "model": "llama3.2:1b",
+  "base_url": "http://127.0.0.1:11434",
+  "tasks": [
+    "Branding-Stellen im Android-Fork auflisten",
+    "App-Name myNextCloud Mobile pruefen",
+    "Package-Name-Aenderung vorbereiten",
+    "F-Droid-/Google-Play-Risiken dokumentieren",
+    "Windows-11-WSL2-Android-Studio-Buildchecklisten erstellen"
+  ],
+  "allowed_tools": [
+    "scripts/mynextcloud/sync_upstream_android.sh",
+    "git_status_read",
+    "gradle_dry_run",
+    "local_file_read"
+  ],
+  "storage_locations": {
+    "android_fork": "MYNEXTCLOUD_ANDROID_REPO",
+    "reports": "~/.openclaw_ultimate_user_data/reports/mynextcloud_android"
+  },
+  "security_rules": [
+    "Keine Play-Store-Veroeffentlichung automatisieren",
+    "Keine Signing-Keys ins Repo schreiben",
+    "Nextcloud-Logos und Markenassets nicht als eigenes Branding verwenden",
+    "Upstream-Diffs vor Merge manuell pruefen"
+  ]
+}

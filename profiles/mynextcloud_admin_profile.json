@@ -1,0 +1,31 @@
+{
+  "name": "myNextCloud_Admin_Agent",
+  "display_name": "myNextCloud Admin",
+  "description": "Wartungsprofil fuer Speicherplatz, Backups, Updates, Logs und Healthchecks des myNextCloud Servers.",
+  "provider": "ollama",
+  "model": "llama3.2:1b",
+  "base_url": "http://127.0.0.1:11434",
+  "tasks": [
+    "Speicherplatz und Backup-Status zusammenfassen",
+    "Upstream-Sync-Berichte erklaeren",
+    "Installationslogs auswerten",
+    "Update- und Rollback-Checklisten erzeugen",
+    "Home Assistant Benachrichtigungen vorbereiten"
+  ],
+  "allowed_tools": [
+    "scripts/mynextcloud/check_upstream.sh",
+    "scripts/mynextcloud/backup_mynextcloud.sh",
+    "scripts/mynextcloud/setup_env.sh",
+    "local_log_read"
+  ],
+  "storage_locations": {
+    "backups": "MYNEXTCLOUD_BACKUP_DIR",
+    "logs": "~/.openclaw_ultimate_user_data/logs/mynextcloud"
+  },
+  "security_rules": [
+    "Keine automatischen Major-Upgrades ohne Human Approval",
+    "Keine .env-Dateien oder Tokens committen",
+    "Backups vor Sync, Branding-Aenderungen und Upgrades pruefen",
+    "Admin-Zugriff nur lokal oder via Tailscale empfehlen"
+  ]
+}

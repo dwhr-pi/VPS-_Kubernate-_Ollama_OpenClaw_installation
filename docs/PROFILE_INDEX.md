@@ -110,3 +110,16 @@ Diese Profile sind documentation-first. Sie werden erst als installierbare Menue
 | [Household_Admin_Assistant](Profile/Household_Admin_Assistant.md) | planned | Alltagspost, Aufgaben und Fristen lokal verwalten. |
 | [Finance_Budget_Tracker](Profile/Finance_Budget_Tracker.md) | planned | Lokale Budgetanalyse ohne Finanzaktionen. |
 | [Email_Response_Agent](Profile/Email_Response_Agent.md) | planned | E-Mail-Entwuerfe mit manueller Sendefreigabe. |
+
+## myNextCloud AI Profile
+
+Diese Profile sind documentation-first und binden die vorbereiteten Forks `myNextCloud Server` und `myNextCloud Mobile` an Ollama, OpenClaw, n8n, Whisper, Home Assistant, Cloudflare Access und optional Tailscale an.
+
+| Profil | Status | Zweck |
+|---|---|---|
+| [mynextcloud_ai](Profile/mynextcloud_ai.md) | planned | Lokale Datei-KI, Summaries, Tags, Whisper/Ollama-Workflows. |
+| [mynextcloud_admin](Profile/mynextcloud_admin.md) | planned | Wartung, Backups, Updates, Speicherplatz- und Logberichte. |
+| [mynextcloud_android](Profile/mynextcloud_android.md) | planned | Android-Fork, Branding, Build- und Release-Checks. |
+| [mynextcloud_security](Profile/mynextcloud_security.md) | planned | Defensive Upload-, Hash-, Rechte- und App-Store-Pruefung. |
+| [mynextcloud_automation](Profile/mynextcloud_automation.md) | planned | n8n/OpenClaw/Home-Assistant-Automationen mit Human Approval. |
+| [mynextcloud_homeassistant](Profile/mynextcloud_homeassistant.md) | planned | Home-Assistant-Benachrichtigungen, Snapshots und Statuskacheln. |

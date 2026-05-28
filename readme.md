@@ -5,6 +5,7 @@
 - [Aktuelle Governance-Dokumente](#aktuelle-governance-dokumente)
 - [Zielbild](#-zielbild)
 - [Quickstarts](#quickstarts)
+- [myNextCloud AI](#mynextcloud-ai)
 - [Setup-Skripte schnell finden](#setup-skripte-schnell-finden)
 - [Speicherplatz und Bereinigung](#speicherplatz-und-bereinigung)
 - [Gegenwärtiger Status](#-gegenwärtiger-status)
@@ -31,6 +32,7 @@
 - [WSL2 Troubleshooting](docs/TROUBLESHOOTING_WSL2.md)
 - [OpenClaw Troubleshooting](docs/TROUBLESHOOTING_OPENCLAW.md)
 - [Ollama Troubleshooting](docs/TROUBLESHOOTING_OLLAMA.md)
+- [myNextCloud AI Integration](docs/tools/mynextcloud/README.md)
 
 Neue Profile ab `11.17` sind bewusst als `planned` registriert. Sie sind sichtbar, aber starten keine schweren Toolchains ohne explizite Tool-Auswahl.
 
@@ -63,6 +65,22 @@ Die zugehoerige Architektur-Dokumentation findest du in [docs/ARCHITECTURE_LLMOP
 | Wissenschaft | `Physik`, `Bioinformatik`, `Molekuelsimulation`, `Mathematik_Simulation` |
 | Security | `Security_DevSecOps`, `Zero_Trust_Remote_Access`, `Anti_Virus` |
 | Kubernetes/VPS | `DevOps_SRE`, `Kubernetes_GPU_Orchestrator`, `Storage_NAS_Backup` |
+| myNextCloud AI | documentation-first: `docs/Profile/mynextcloud_ai.md`, `docs/tools/mynextcloud/README.md` |
+
+## myNextCloud AI
+
+`myNextCloud AI` integriert die vorbereiteten Forks [myNextCloud Server](https://github.com/dwhr-pi/myNextCloud-server) und [myNextCloud Mobile](https://github.com/dwhr-pi/myNexcloud-for-android) als sichere, lokale Datei-KI-Erweiterung fuer Ollama, OpenClaw, n8n, Whisper, Home Assistant, Cloudflare Access und optional Tailscale.
+
+Rechtlicher Hinweis: Fork based on Nextcloud. Not affiliated with or endorsed by Nextcloud GmbH. AGPL/GPL/MIT-Lizenztexte und Copyright-Hinweise bleiben erhalten. Offizielle Nextcloud-Logos, Icons und Markenhinweise duerfen nicht als eigenes Branding uebernommen werden.
+
+Einstieg:
+
+- Profil: [docs/Profile/mynextcloud_ai.md](docs/Profile/mynextcloud_ai.md)
+- Tool-Doku: [docs/tools/mynextcloud/README.md](docs/tools/mynextcloud/README.md)
+- Branding/Lizenz: [docs/tools/mynextcloud/legal_branding_checklist.md](docs/tools/mynextcloud/legal_branding_checklist.md)
+- Fork-Review: [docs/tools/mynextcloud/fork_review.md](docs/tools/mynextcloud/fork_review.md)
+- Upstream-Sync: [docs/tools/mynextcloud/upstream_sync.md](docs/tools/mynextcloud/upstream_sync.md)
+- Sichere Env-Vorlage: [docs/tools/mynextcloud/server_env.example](docs/tools/mynextcloud/server_env.example)
 
 ## Setup-Skripte schnell finden
 
