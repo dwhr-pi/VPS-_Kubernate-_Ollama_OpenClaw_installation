@@ -6,6 +6,7 @@
 - [Zielbild](#-zielbild)
 - [Quickstarts](#quickstarts)
 - [myNextCloud AI](#mynextcloud-ai)
+- [Next-Level Review](#next-level-review)
 - [Setup-Skripte schnell finden](#setup-skripte-schnell-finden)
 - [Speicherplatz und Bereinigung](#speicherplatz-und-bereinigung)
 - [Gegenwärtiger Status](#-gegenwärtiger-status)
@@ -33,6 +34,11 @@
 - [OpenClaw Troubleshooting](docs/TROUBLESHOOTING_OPENCLAW.md)
 - [Ollama Troubleshooting](docs/TROUBLESHOOTING_OLLAMA.md)
 - [myNextCloud AI Integration](docs/tools/mynextcloud/README.md)
+- [Setup Review 2026 Next Level](docs/SETUP_REVIEW_2026_NEXT_LEVEL.md)
+- [Profile Gap Analysis](docs/PROFILE_GAP_ANALYSIS.md)
+- [Tool Gap Analysis](docs/TOOL_GAP_ANALYSIS.md)
+- [Low Resource Mode](docs/LOW_RESOURCE_MODE.md)
+- [Installation Decision Tree](docs/INSTALLATION_DECISION_TREE.md)
 
 Neue Profile ab `11.17` sind bewusst als `planned` registriert. Sie sind sichtbar, aber starten keine schweren Toolchains ohne explizite Tool-Auswahl.
 
@@ -81,6 +87,10 @@ Einstieg:
 - Fork-Review: [docs/tools/mynextcloud/fork_review.md](docs/tools/mynextcloud/fork_review.md)
 - Upstream-Sync: [docs/tools/mynextcloud/upstream_sync.md](docs/tools/mynextcloud/upstream_sync.md)
 - Sichere Env-Vorlage: [docs/tools/mynextcloud/server_env.example](docs/tools/mynextcloud/server_env.example)
+
+## Next-Level Review
+
+Die naechste Ausbaustufe wird ueber [docs/SETUP_REVIEW_2026_NEXT_LEVEL.md](docs/SETUP_REVIEW_2026_NEXT_LEVEL.md), [docs/PROFILE_GAP_ANALYSIS.md](docs/PROFILE_GAP_ANALYSIS.md), [docs/TOOL_GAP_ANALYSIS.md](docs/TOOL_GAP_ANALYSIS.md) und [docs/Profile/Next_Level_Profile_Backlog.md](docs/Profile/Next_Level_Profile_Backlog.md) gesteuert. Neue Profile bleiben zuerst `documentation-first`, bis Installer, Uninstaller, Doctor, Statuscheck, Portdoku und Ressourcenwerte vorhanden sind.
 
 ## Setup-Skripte schnell finden
 

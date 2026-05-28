@@ -1,0 +1,70 @@
+{
+  "status": "documentation-first",
+  "activation_rule": "Only activate as setup menu entries after docs, registry, tool mapping, resource estimates, ports, installer, uninstaller, doctor and status check exist.",
+  "profiles": {
+    "betrieb_infrastruktur": [
+      "Backup_Disaster_Recovery",
+      "Secrets_Key_Management",
+      "Update_Patch_Manager",
+      "Service_Status_Control_Center",
+      "Resource_Cost_Optimizer",
+      "Multi_Node_Cluster_Manager",
+      "Edge_Device_Manager",
+      "VPS_Hardening_Baseline"
+    ],
+    "ki_agenten_llmops": [
+      "MCP_Server_Hub",
+      "Agent_Router_Orchestrator",
+      "Local_Model_Benchmark_Lab",
+      "Prompt_Evaluation_Lab",
+      "Synthetic_Data_Generator",
+      "Fine_Tuning_LoRA_Lab",
+      "Dataset_Curation_Studio",
+      "Model_Context_Protocol_Tools",
+      "AI_Audit_Log_Inspector"
+    ],
+    "rag_wissen_dokumente": [
+      "Document_Intelligence_OCR",
+      "Personal_Knowledge_Vault",
+      "Nextcloud_Knowledge_Hub",
+      "Local_Search_Engine",
+      "PDF_Table_Extractor",
+      "Research_Assistant_Deep_Search"
+    ],
+    "automation": [
+      "Workflow_Automation_Hub",
+      "N8N_Agent_Automation",
+      "Home_Assistant_Automation_Lab",
+      "Email_Notification_Center",
+      "Webhook_API_Gateway"
+    ],
+    "security": [
+      "Blue_Team_Defense_Lab",
+      "OSINT_Research_Lab",
+      "Network_Traffic_Analyzer",
+      "PiHole_Adware_Malware_Check",
+      "Container_Security_Scanner",
+      "Dependency_Vulnerability_Scanner",
+      "Log_Threat_Detection"
+    ],
+    "medien_android_smart_home": [
+      "Stable_Diffusion_Image_Lab",
+      "AI_Video_Pipeline",
+      "Suno_Music_Prompt_Studio",
+      "Blender_Automation_Studio",
+      "Unreal_Unity_AI_Bridge",
+      "Asset_Generation_Factory",
+      "Android_Firewall_Builder",
+      "Android_App_Clone_Lab",
+      "MicroG_Compatibility_Lab",
+      "MyBox_Container_App",
+      "Mobile_Remote_Control_Client",
+      "APK_Build_Signing_Release",
+      "FritzBox_Mesh_Optimizer",
+      "Tailscale_Private_Network",
+      "Cloudflare_Access_Tunnel",
+      "Voice_Assistant_Local_First",
+      "Smart_Home_Security_Audit"
+    ]
+  }
+}

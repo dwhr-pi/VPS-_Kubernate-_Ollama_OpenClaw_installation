@@ -2,6 +2,9 @@
 
 ## V11.18
 
+- Next-Level Review-Paket ergaenzt: Setup-Bewertung, Profil-/Tool-Gap-Analyse, Entscheidungsbaum, Low-Resource-Modus, Backup/Restore, Remote-Safe-Defaults, WSL2-, Node/pnpm-, Ollama-, Agent-Routing- und MCP-Guides.
+- Geplante Next-Level-Profile als documentation-first Backlog dokumentiert, ohne sie als schwere Auto-Installer zu aktivieren.
+- CI-Workflow `.github/workflows/ci.yml` und `scripts/next_level_dry_run_check.sh` fuer Bash-Syntax, Shellcheck, shfmt, Markdown, Secret-Scan, Registry-Sync und Dry-Run-Sicherheitschecks ergaenzt.
 - myNextCloud AI documentation-first Integration ergaenzt: Profile, Tool-Doku, Upstream-Sync, Branding-/Lizenzcheck, Cloudflare/Tailscale, n8n/Ollama/OpenClaw/Whisper/Home-Assistant-Konzepte.
 - sichere Helper-Skripte unter `scripts/mynextcloud/` ergaenzt; schreibende Aktionen laufen nur mit `--apply`.
 - JSON-Profile fuer `myNextCloud_File_Agent`, `myNextCloud_Admin_Agent` und Android-Branding/Build-Checks angelegt.

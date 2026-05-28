@@ -20,3 +20,15 @@
 - Shell-Zugriff nur lokal und protokolliert.
 - Keine destruktiven Befehle ohne explizite Freigabe.
 - Kein automatisches Ausfuehren von Code aus unbekannten Repositories.
+# Next-Level Safe Defaults
+
+Diese Regeln gelten fuer neue Profile, Tools und Installer:
+
+- Keine Secrets, Tokens, Private Keys oder echte `.env` ins Repository.
+- `.env.example` bleibt Vorlage; echte `.env` gehoert nach `~/.openclaw_ultimate_user_data`.
+- Dienste binden standardmaessig an `127.0.0.1`.
+- Oeffentlicher Zugriff nur per Tailscale, Cloudflare Access oder bewusst gehärtetem Reverse Proxy.
+- Keine Docker-Socket-, Kubernetes-Dashboard-, Datenbank- oder Admin-UI-Freigabe ins oeffentliche Internet.
+- Schwere Tools brauchen Speicher/RAM/Swap-Preflight und explizite Zustimmung.
+- Security-, Trading-, Robotik-, Smart-Home- und Browser-Agenten brauchen Human Approval fuer schreibende oder externe Aktionen.
+- Forks oder manipulierte Setup-Kopien erhalten keine automatische Selbstheilung ohne Herkunfts-/Integritaetspruefung.

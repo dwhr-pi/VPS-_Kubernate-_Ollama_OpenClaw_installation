@@ -123,3 +123,9 @@ Diese Profile sind documentation-first und binden die vorbereiteten Forks `myNex
 | [mynextcloud_security](Profile/mynextcloud_security.md) | planned | Defensive Upload-, Hash-, Rechte- und App-Store-Pruefung. |
 | [mynextcloud_automation](Profile/mynextcloud_automation.md) | planned | n8n/OpenClaw/Home-Assistant-Automationen mit Human Approval. |
 | [mynextcloud_homeassistant](Profile/mynextcloud_homeassistant.md) | planned | Home-Assistant-Benachrichtigungen, Snapshots und Statuskacheln. |
+
+## Next-Level Backlog
+
+| Profilgruppe | Status | Datei |
+|---|---|---|
+| Betrieb, LLMOps, RAG, Automation, Security, Medien, Android, Netzwerk | documentation-first | [Next_Level_Profile_Backlog](Profile/Next_Level_Profile_Backlog.md) |

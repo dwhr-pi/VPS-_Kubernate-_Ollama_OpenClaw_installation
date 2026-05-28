@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  repo-health:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install check tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y shellcheck shfmt
+          npm install -g markdownlint-cli markdown-link-check
+
+      - name: Bash syntax
+        run: |
+          bash -n install.sh setup_ultimate.sh
+          find scripts -name '*.sh' -print0 | xargs -0 -n1 bash -n
+
+      - name: ShellCheck
+        run: |
+          find scripts -name '*.sh' -print0 | xargs -0 shellcheck
+
+      - name: shfmt check
+        run: |
+          find scripts -name '*.sh' -print0 | xargs -0 shfmt -d -i 2 -ci
+
+      - name: Markdownlint
+        run: |
+          markdownlint readme.md docs/**/*.md || true
+
+      - name: Markdown links
+        run: |
+          markdown-link-check readme.md || true
+
+      - name: Secret scan
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Config validation
+        run: |
+          bash scripts/validate_config.sh
+
+      - name: Registry sync
+        run: |
+          bash scripts/check_profile_registry_sync.sh
+
+      - name: Setup dry-run safety
+        run: |
+          bash scripts/next_level_dry_run_check.sh
