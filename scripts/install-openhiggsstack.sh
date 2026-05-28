@@ -58,7 +58,7 @@ install_package_if_possible() {
 confirm() {
   local prompt="$1"
   local answer
-  read -r -p "$prompt [y/N] " answer
+  read -r -p "$prompt [j/N] " answer
   case "$answer" in
     y|Y|yes|YES|j|J|ja|JA) return 0 ;;
     *) return 1 ;;
@@ -133,4 +133,3 @@ log "Freier Speicher nachher: $(( $(free_kb 2>/dev/null || echo 0) / 1024 )) MB"
 log "Installationsdauer: $((END_TS - START_TS)) Sekunden"
 log "OpenHiggsStack Vorbereitung abgeschlossen."
 log "Naechster Schritt: ComfyUI starten und Wan2.x-Workflow manuell importieren."
-

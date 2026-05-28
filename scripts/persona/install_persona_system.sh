@@ -34,9 +34,9 @@ ask_toggle() {
         *) current_value="true" ;;
       esac
     else
-      read -r -p "$prompt [y/N]: " answer || true
+      read -r -p "$prompt [j/N]: " answer || true
       case "${answer:-}" in
-        y|Y|yes|YES) current_value="true" ;;
+        y|Y|yes|YES|j|J|ja|JA) current_value="true" ;;
         *) current_value="false" ;;
       esac
     fi

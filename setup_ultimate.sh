@@ -931,7 +931,7 @@ confirm_heavy_or_experimental_tool() {
 
     reset_terminal_display
     echo -e "${YELLOW}Sicherheitsabfrage:${NC} ${tool_key} ist schwer/experimentell oder kann grosse Downloads, Docker-Images, GPU-/Kubernetes-/Monorepo-Builds oder viele Abhaengigkeiten ausloesen."
-    echo -e "${YELLOW}Dieses Tool wird nicht automatisch installiert. Fortfahren? [y/N]${NC}"
+    echo -e "${YELLOW}Dieses Tool wird nicht automatisch installiert. Fortfahren? [j/N]${NC}"
     read -r answer </dev/tty || answer=""
     case "$answer" in
         y|Y|j|J|yes|YES|ja|JA)
