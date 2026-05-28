@@ -14,6 +14,7 @@ err() {
 
 echo "Next-Level Dry-Run Check"
 echo "Repo: $ROOT_DIR"
+echo "Modus: ${NEXT_LEVEL_FULL:-0} (NEXT_LEVEL_FULL=1 aktiviert langsame Vollchecks)"
 
 for file in readme.md install.sh setup_ultimate.sh config/profiles.yml config/tools.yml config/ports.yml; do
   [ -e "$ROOT_DIR/$file" ] || err "Pflichtdatei fehlt: $file"
@@ -25,7 +26,7 @@ else
   echo "OK: keine offensichtlichen .env/pem/id_rsa Dateien auf maxdepth 3"
 fi
 
-if grep -RInE '0\.0\.0\.0|--host[ =]0\.0\.0\.0' "$ROOT_DIR/config" "$ROOT_DIR/docs" "$ROOT_DIR/scripts" 2>/dev/null | grep -v '127.0.0.1' | head -20; then
+if grep -RInm 20 -E '0\.0\.0\.0|--host[ =]0\.0\.0\.0' "$ROOT_DIR/config" "$ROOT_DIR/docs" "$ROOT_DIR/scripts" 2>/dev/null | grep -v '127.0.0.1'; then
   warn "Bitte pruefen: moegliche offene Bindings gefunden"
 else
   echo "OK: keine offensichtlichen offenen Bindings in config/docs/scripts"
@@ -36,15 +37,21 @@ if command -v bash >/dev/null 2>&1; then
 fi
 
 if [ -x "$ROOT_DIR/scripts/check_profile_registry_sync.sh" ]; then
-  bash "$ROOT_DIR/scripts/check_profile_registry_sync.sh" || warn "Registry-Sync meldet Hinweise"
+  if command -v timeout >/dev/null 2>&1; then
+    timeout 60 bash "$ROOT_DIR/scripts/check_profile_registry_sync.sh" || warn "Registry-Sync meldet Hinweise oder Timeout"
+  else
+    warn "timeout nicht verfuegbar; Registry-Sync im schnellen Dry-Run uebersprungen"
+  fi
 else
   warn "Registry-Sync-Skript nicht ausfuehrbar oder fehlt"
 fi
 
-if command -v shellcheck >/dev/null 2>&1; then
+if [ "${NEXT_LEVEL_FULL:-0}" = "1" ] && command -v shellcheck >/dev/null 2>&1; then
   find "$ROOT_DIR/scripts" -name "*.sh" -print0 | xargs -0 shellcheck || err "shellcheck meldet Fehler"
-else
+elif [ "${NEXT_LEVEL_FULL:-0}" = "1" ]; then
   warn "shellcheck nicht installiert"
+else
+  warn "Shellcheck-Vollscan im schnellen Dry-Run uebersprungen. Fuer Vollscan: NEXT_LEVEL_FULL=1 bash scripts/next_level_dry_run_check.sh"
 fi
 
 if [ "$fail" -ne 0 ]; then
