@@ -28,6 +28,7 @@
 - [Security Baseline](docs/SECURITY_BASELINE.md)
 - [GitHub Tool Sources](docs/GITHUB_TOOL_SOURCES.md)
 - [AI-ContentMultiplier Workflow](docs/tools/ai-content-multiplier/README.md)
+- [Stalwart Mail Integration](tools/mail/README.md)
 - [Airbyte, abctl und Kubernetes](docs/AIRBYTE_ABCTL_KUBERNETES_NOTES.md)
 - [Integritaetspruefung und automatisierter Support](docs/SETUP_INTEGRITY_AND_SUPPORT_TUTORIAL.md)
 - [Forks, Support und sichere Rueckfuehrung](docs/FORK_SUPPORT_AND_UPSTREAM_GOVERNANCE.md)

@@ -44,6 +44,7 @@ Dieser Index ordnet Profile nach Themen und Betriebsrisiko. Die technische Quell
 - `Local_AI_App_Builder` - beta
 - `AI_Dashboard_Builder` - beta
 - `Email_Office_Automation` - beta
+- `Mail_Admin_Agent` - planned
 - `Android_App_Builder` - planned
 - `AI_ContentMultiplier_Workflow` - planned/workflow
 

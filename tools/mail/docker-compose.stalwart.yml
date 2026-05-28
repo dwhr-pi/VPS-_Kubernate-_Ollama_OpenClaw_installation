@@ -1,0 +1,25 @@
+services:
+  stalwart:
+    image: stalwartlabs/stalwart:latest
+    container_name: stalwart-mail
+    restart: unless-stopped
+    ports:
+      - "25:25"
+      - "465:465"
+      - "587:587"
+      - "993:993"
+      - "995:995"
+      - "127.0.0.1:8080:8080"
+      # Optional ManageSieve, nur wenn bewusst genutzt:
+      # - "4190:4190"
+    volumes:
+      - ./data/stalwart:/opt/stalwart
+      - ./config/stalwart.toml:/opt/stalwart/etc/config.toml:ro
+    environment:
+      - TZ=Europe/Berlin
+    networks:
+      - mail
+
+networks:
+  mail:
+    driver: bridge

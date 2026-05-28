@@ -21,3 +21,6 @@ tokens/
 secrets/
 .openclaw_ultimate_user_data/
 cloudflared.deb
+tools/mail/secrets/
+tools/mail/data/
+tools/mail/backups/

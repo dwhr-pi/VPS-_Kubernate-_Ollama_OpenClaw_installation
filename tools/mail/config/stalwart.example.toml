@@ -1,0 +1,38 @@
+# Stalwart Beispielkonfiguration fuer das Ultimate KI Setup
+# Achtung: Dieses Beispiel ist nicht produktionsfertig.
+# Keine Passwoerter, Tokens oder DKIM Private Keys in Git speichern.
+
+[server]
+hostname = "mail.example.tld"
+
+[server.listener.smtp]
+bind = "[::]:25"
+protocol = "smtp"
+
+[server.listener.submission]
+bind = "[::]:587"
+protocol = "smtp"
+
+[server.listener.imaps]
+bind = "[::]:993"
+protocol = "imap"
+
+[server.listener.webadmin]
+bind = "127.0.0.1:8080"
+protocol = "http"
+
+[security]
+# Admin-Webinterface nicht oeffentlich freigeben.
+admin_access = "vpn_or_localhost_only"
+
+[mail]
+default_domain = "example.tld"
+catch_all_enabled = false
+open_relay = false
+
+[ai_integration]
+enabled = false
+mode = "draft_only"
+provider = "ollama"
+base_url = "http://127.0.0.1:11434"
+model = "llama3.2:1b"

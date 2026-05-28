@@ -39,6 +39,10 @@ Primaerquellen und GitHub-Referenzen sind gesammelt in `docs/GITHUB_TOOL_SOURCES
 - `nocodb`
 - `ai_content_multiplier` - optionaler OpenClaw/n8n Workflow, siehe [AI-ContentMultiplier](tools/ai-content-multiplier/README.md)
 
+## Mail und Domains
+
+- `stalwart_mail` - optionaler selbst gehosteter Mailserver-Kern mit KI-faehiger Integrationsschicht, siehe [Stalwart Mail](../tools/mail/README.md)
+
 ## Security
 
 - `trivy`
@@ -94,5 +98,6 @@ Primaerquellen und GitHub-Referenzen sind gesammelt in `docs/GITHUB_TOOL_SOURCES
 | AdGuard Home | `github.com/AdguardTeam/AdGuardHome` | DNS-Schutz | optional |
 | OpenTelemetry Collector | `github.com/open-telemetry/opentelemetry-collector` | Observability-Pipeline | optional |
 | AI-ContentMultiplier | `C:\Users\danie\Documents\GitHub\content-multiplier` | URL/PDF/Web/YouTube/LinkedIn zu Content-Entwuerfen via OpenClaw/n8n | optional, workflow-first |
+| Stalwart Mail | `github.com/stalwartlabs/stalwart` | Selbst gehosteter Mailserver fuer eigene Domains mit OpenClaw/Ollama-Admin-Agent | optional, sicherheitskritisch |
 
 Neue Tools werden nur dann als installierbar markiert, wenn Installer, Healthcheck und sichere Defaults vorhanden sind.
