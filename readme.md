@@ -42,6 +42,10 @@
 - [Profile Authoring Standard](docs/PROFILE_AUTHORING_STANDARD.md)
 - [Tool Lifecycle Standard](docs/TOOL_LIFECYCLE_STANDARD.md)
 - [Menu Structure Next Level](docs/MENU_STRUCTURE_NEXT_LEVEL.md)
+- [Secrets and Keys](docs/SECRETS_AND_KEYS.md)
+- [Cloudflare and Tailscale Access](docs/CLOUDFLARE_TAILSCALE_ACCESS_GUIDE.md)
+- [Local First Cost Control](docs/LOCAL_FIRST_COST_CONTROL.md)
+- [Known Issues](docs/KNOWN_ISSUES.md)
 
 Neue Profile ab `11.17` sind bewusst als `planned` registriert. Sie sind sichtbar, aber starten keine schweren Toolchains ohne explizite Tool-Auswahl.
 
@@ -96,6 +100,8 @@ Einstieg:
 Die naechste Ausbaustufe wird ueber [docs/SETUP_REVIEW_2026_NEXT_LEVEL.md](docs/SETUP_REVIEW_2026_NEXT_LEVEL.md), [docs/PROFILE_GAP_ANALYSIS.md](docs/PROFILE_GAP_ANALYSIS.md), [docs/TOOL_GAP_ANALYSIS.md](docs/TOOL_GAP_ANALYSIS.md) und [docs/Profile/Next_Level_Profile_Backlog.md](docs/Profile/Next_Level_Profile_Backlog.md) gesteuert. Neue Profile bleiben zuerst `documentation-first`, bis Installer, Uninstaller, Doctor, Statuscheck, Portdoku und Ressourcenwerte vorhanden sind.
 
 Neue Profile und Tools folgen den Standards [docs/PROFILE_AUTHORING_STANDARD.md](docs/PROFILE_AUTHORING_STANDARD.md), [docs/TOOL_LIFECYCLE_STANDARD.md](docs/TOOL_LIFECYCLE_STANDARD.md) und [docs/MENU_STRUCTURE_NEXT_LEVEL.md](docs/MENU_STRUCTURE_NEXT_LEVEL.md). Der schnelle Audit laeuft mit `bash scripts/next_level_dry_run_check.sh`; ein Tool-Lifecycle-Ueberblick ist mit `bash scripts/check_tool_lifecycle.sh` moeglich.
+
+Weitere Betriebsleitplanken: [docs/SECRETS_AND_KEYS.md](docs/SECRETS_AND_KEYS.md), [docs/LOCAL_FIRST_COST_CONTROL.md](docs/LOCAL_FIRST_COST_CONTROL.md), [docs/CLOUDFLARE_TAILSCALE_ACCESS_GUIDE.md](docs/CLOUDFLARE_TAILSCALE_ACCESS_GUIDE.md) und [docs/KNOWN_ISSUES.md](docs/KNOWN_ISSUES.md).
 
 ## Setup-Skripte schnell finden
 

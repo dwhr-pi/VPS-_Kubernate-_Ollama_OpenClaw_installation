@@ -51,9 +51,19 @@ jobs:
         run: |
           bash scripts/check_profile_registry_sync.sh
 
+      - name: Matrix checks
+        run: |
+          bash scripts/profile_matrix_check.sh
+          bash scripts/tool_registry_check.sh
+
       - name: Tool lifecycle audit
         run: |
           bash scripts/check_tool_lifecycle.sh
+
+      - name: Security scan wrappers
+        run: |
+          bash scripts/secret_scan.sh || true
+          bash scripts/security_scan.sh || true
 
       - name: Setup dry-run safety
         run: |

@@ -5,6 +5,8 @@
 - Next-Level Review-Paket ergaenzt: Setup-Bewertung, Profil-/Tool-Gap-Analyse, Entscheidungsbaum, Low-Resource-Modus, Backup/Restore, Remote-Safe-Defaults, WSL2-, Node/pnpm-, Ollama-, Agent-Routing- und MCP-Guides.
 - Profil-, Tool-Lifecycle- und Menuestruktur-Standards ergaenzt; schneller Lifecycle-Audit `scripts/check_tool_lifecycle.sh` in Dry-Run und CI eingebunden.
 - Safe-Default-Bindings gehaertet: OpenClaw-/Profil-Templates sowie ArchiveBox/Vault-Beispiele binden nun standardmaessig an `127.0.0.1` statt `0.0.0.0`.
+- Secrets-/Keys-, GPU-, VPS-, Cloudflare/Tailscale-, Local-First-Kosten- und Known-Issues-Dokumente ergaenzt.
+- Minimale sichere Wrapper fuer Preflight, Secret-Scan, Security-Scan, Profile-Matrix-Check und Tool-Registry-Check ergaenzt.
 - Geplante Next-Level-Profile als documentation-first Backlog dokumentiert, ohne sie als schwere Auto-Installer zu aktivieren.
 - CI-Workflow `.github/workflows/ci.yml` und `scripts/next_level_dry_run_check.sh` fuer Bash-Syntax, Shellcheck, shfmt, Markdown, Secret-Scan, Registry-Sync und Dry-Run-Sicherheitschecks ergaenzt.
 - myNextCloud AI documentation-first Integration ergaenzt: Profile, Tool-Doku, Upstream-Sync, Branding-/Lizenzcheck, Cloudflare/Tailscale, n8n/Ollama/OpenClaw/Whisper/Home-Assistant-Konzepte.

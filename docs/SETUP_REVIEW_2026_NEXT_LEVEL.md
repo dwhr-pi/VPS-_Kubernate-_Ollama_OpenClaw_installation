@@ -68,3 +68,5 @@ Prioritaet `optional/heavy`: Kubernetes, K3s, Podman, OpenHands, Nextcloud, Comf
 - Fuer jedes Tool eine kleine Lifecycle-Datei oder Funktionen in `scripts/tools/` nachziehen.
 - `scripts/next_level_dry_run_check.sh` im CI laufen lassen.
 - Schwere Tools in Menues als `[schwer]`, `[GPU]`, `[VPS]`, `[experimental]` markieren.
+- `scripts/preflight.sh`, `scripts/secret_scan.sh`, `scripts/security_scan.sh`, `scripts/profile_matrix_check.sh` und `scripts/tool_registry_check.sh` als sichere Validation-Wrapper verwenden.
+- Neue Tool-Kandidaten erst als `planned`/`optional` in `docs/TOOL_GAP_ANALYSIS.md` dokumentieren, bevor Installer entstehen.

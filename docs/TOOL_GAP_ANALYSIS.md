@@ -13,6 +13,22 @@ Neue Tools werden nicht blind installiert. Sie werden zuerst als optionale Kandi
 | filebrowser/filebrowser | https://github.com/filebrowser/filebrowser | leichte Datei-Web-UI | optional |
 | AUTOMATIC1111/stable-diffusion-webui | https://github.com/AUTOMATIC1111/stable-diffusion-webui | Bildgenerierung | optional/gpu |
 | invoke-ai/InvokeAI | https://github.com/invoke-ai/InvokeAI | Bildgenerierung UI/API | optional/gpu |
+| getsops/sops | https://github.com/getsops/sops | verschluesselte Konfiguration | planned |
+| FiloSottile/age | https://github.com/FiloSottile/age | lokale Verschluesselung | planned |
+| sigstore/cosign | https://github.com/sigstore/cosign | Signaturen/Supply Chain | planned |
+| hadolint/hadolint | https://github.com/hadolint/hadolint | Dockerfile Linting | optional |
+| dotenv-linter/dotenv-linter | https://github.com/dotenv-linter/dotenv-linter | `.env` Formatpruefung | planned |
+| open-telemetry/opentelemetry-collector | https://github.com/open-telemetry/opentelemetry-collector | Telemetrie-Sammlung | optional |
+| grafana/tempo | https://github.com/grafana/tempo | Tracing Backend | optional |
+| mudler/LocalAI | https://github.com/mudler/LocalAI | lokales OpenAI-kompatibles Gateway | optional |
+| OpenInterpreter/open-interpreter | https://github.com/OpenInterpreter/open-interpreter | lokaler Interpreter-Agent | experimental |
+| backstage/backstage | https://github.com/backstage/backstage | Developer Portal | planned |
+| mkdocs/mkdocs | https://github.com/mkdocs/mkdocs | Dokumentationsseite | optional |
+| squidfunk/mkdocs-material | https://github.com/squidfunk/mkdocs-material | MkDocs Theme | optional |
+| mermaid-js/mermaid | https://github.com/mermaid-js/mermaid | Diagramme | optional |
+| FFmpeg/FFmpeg | https://github.com/FFmpeg/FFmpeg | Medienverarbeitung | optional |
+| yt-dlp/yt-dlp | https://github.com/yt-dlp/yt-dlp | Medien-Download eigener/erlaubter Quellen | optional |
+| openai/whisper | https://github.com/openai/whisper | Transkription | optional |
 
 ## Schwer / experimentell
 
@@ -25,6 +41,10 @@ Neue Tools werden nicht blind installiert. Sie werden zuerst als optionale Kandi
 | k3s-io/k3s | https://github.com/k3s-io/k3s | Cluster-Komplexitaet | optional/vps |
 | containers/podman | https://github.com/containers/podman | Runtime-Aenderung | optional |
 | coqui-ai/TTS | https://github.com/coqui-ai/TTS | Python-Versionen, grosse Modelle | optional/experimental |
+| ml-explore/mlx-examples | https://github.com/ml-explore/mlx-examples | Apple-MLX Beispiele, nicht WSL2-fokussiert | documentation-only |
+| huggingface/transformers | https://github.com/huggingface/transformers | Modellbibliothek, grosse Abhaengigkeiten | optional/heavy |
+| huggingface/diffusers | https://github.com/huggingface/diffusers | Bild-/Video-Diffusion, GPU sinnvoll | optional/gpu |
+| postgres/postgres | https://github.com/postgres/postgres | Datenbank-Source, besser Paket/Container nutzen | documentation-only |
 
 ## Schon vorhanden oder naheliegend vorhanden
 
