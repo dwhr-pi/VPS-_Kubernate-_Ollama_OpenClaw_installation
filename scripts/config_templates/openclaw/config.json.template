@@ -6,8 +6,8 @@
   "server": {
     "_comment_4": "Port, auf dem OpenClaw läuft. Standard ist 3000. Kann durch PORT in .env überschrieben werden.",
     "port": 3000,
-    "_comment_5": "Host, auf dem OpenClaw lauscht. Für alle Schnittstellen '0.0.0.0' verwenden. Kann durch HOST in .env überschrieben werden.",
-    "host": "0.0.0.0",
+    "_comment_5": "Host, auf dem OpenClaw lauscht. Safe default ist '127.0.0.1'. Remotezugriff nur via Tailscale/Cloudflare Access oder bewusst gehaertetem Reverse Proxy.",
+    "host": "127.0.0.1",
     "_comment_6": "Deine öffentliche Domain für OpenClaw. Wird für externe Zugriffe und Callbacks benötigt. Kann durch DOMAIN in .env überschrieben werden.",
     "domain": "https://botsoft.uk"
   },

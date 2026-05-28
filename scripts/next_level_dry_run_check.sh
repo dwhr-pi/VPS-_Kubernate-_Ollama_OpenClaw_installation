@@ -36,7 +36,7 @@ if command -v bash >/dev/null 2>&1; then
   bash -n "$ROOT_DIR/install.sh" "$ROOT_DIR/setup_ultimate.sh" || err "bash -n fuer Hauptskripte fehlgeschlagen"
 fi
 
-if [ -x "$ROOT_DIR/scripts/check_profile_registry_sync.sh" ]; then
+if [ -f "$ROOT_DIR/scripts/check_profile_registry_sync.sh" ]; then
   if command -v timeout >/dev/null 2>&1; then
     timeout 60 bash "$ROOT_DIR/scripts/check_profile_registry_sync.sh" || warn "Registry-Sync meldet Hinweise oder Timeout"
   else
@@ -44,6 +44,16 @@ if [ -x "$ROOT_DIR/scripts/check_profile_registry_sync.sh" ]; then
   fi
 else
   warn "Registry-Sync-Skript nicht ausfuehrbar oder fehlt"
+fi
+
+if [ -f "$ROOT_DIR/scripts/check_tool_lifecycle.sh" ]; then
+  if command -v timeout >/dev/null 2>&1; then
+    timeout 45 bash "$ROOT_DIR/scripts/check_tool_lifecycle.sh" || warn "Tool-Lifecycle-Audit meldet Hinweise oder Timeout"
+  else
+    warn "timeout nicht verfuegbar; Tool-Lifecycle-Audit im schnellen Dry-Run uebersprungen"
+  fi
+else
+  warn "Tool-Lifecycle-Audit fehlt oder ist nicht ausfuehrbar"
 fi
 
 if [ "${NEXT_LEVEL_FULL:-0}" = "1" ] && command -v shellcheck >/dev/null 2>&1; then

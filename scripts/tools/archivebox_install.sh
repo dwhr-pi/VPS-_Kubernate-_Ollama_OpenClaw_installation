@@ -12,7 +12,7 @@ COMPOSE_YAML='services:
       - "127.0.0.1:8000:8000"
     volumes:
       - ./data:/data
-    command: server --quick-init 0.0.0.0:8000
+    command: server --quick-init 127.0.0.1:8000
 '
 TOOL_DESCRIPTION="Self-Hosted Archivierungsdienst für Webseiten, Snapshots und Recherche-Quellen."
 TOOL_PROMPT_EXAMPLE='Lokale Quellen für sichere Recherche archivieren, ohne Inhalte in fremde Dienste hochzuladen.'

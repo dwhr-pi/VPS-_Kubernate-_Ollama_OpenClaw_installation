@@ -10,7 +10,7 @@ COMPOSE_YAML='services:
       - IPC_LOCK
     environment:
       VAULT_DEV_ROOT_TOKEN_ID: change-me
-      VAULT_DEV_LISTEN_ADDRESS: 0.0.0.0:8200
+      VAULT_DEV_LISTEN_ADDRESS: 127.0.0.1:8200
     ports:
       - "8200:8200"'
 TOOL_DESCRIPTION="Lokale Vault-Instanz für Secrets-Management und sichere Profileingaben."

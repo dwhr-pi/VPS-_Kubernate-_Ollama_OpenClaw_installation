@@ -51,6 +51,10 @@ jobs:
         run: |
           bash scripts/check_profile_registry_sync.sh
 
+      - name: Tool lifecycle audit
+        run: |
+          bash scripts/check_tool_lifecycle.sh
+
       - name: Setup dry-run safety
         run: |
           bash scripts/next_level_dry_run_check.sh
