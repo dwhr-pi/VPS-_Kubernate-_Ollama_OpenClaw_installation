@@ -45,6 +45,7 @@ Dieser Index ordnet Profile nach Themen und Betriebsrisiko. Die technische Quell
 - `AI_Dashboard_Builder` - beta
 - `Email_Office_Automation` - beta
 - `Android_App_Builder` - planned
+- `AI_ContentMultiplier_Workflow` - planned/workflow
 
 ## High-Risk nur bewusst
 
@@ -67,65 +68,4 @@ Diese Profile sind sichtbar und registry-seitig vorbereitet, installieren aber k
 | [Network_HomeLab_ZeroTrust](Profile/Network_HomeLab_ZeroTrust.md) | planned | Heimnetz, Zero Trust, DNS-Schutz und Monitoring. |
 | [Data_Scraping_Browser_Agents](Profile/Data_Scraping_Browser_Agents.md) | planned | Browser-Automation, Crawling und Rate-Limit-konforme Extraktion. |
 | [Legal_Compliance_Safety_Review](Profile/Legal_Compliance_Safety_Review.md) | planned | Datenschutz-, Lizenz- und Sicherheitsreview ohne Rechtsberatung. |
-
-## Neue Dachprofile ab 11.18
-
-Diese Profile sind documentation-first. Sie werden erst als installierbare Menuepunkte empfohlen, wenn Installer, Checks, Speicherwerte und Sicherheitsgates vorhanden sind.
-
-| Profil | Status | Zweck |
-|---|---|---|
-| [LLMOps_Control_Center](Profile/LLMOps_Control_Center.md) | planned | Zentrale Uebersicht fuer LLM-Routing, Monitoring und Kosten. |
-| [Local_Model_Lifecycle_Manager](Profile/Local_Model_Lifecycle_Manager.md) | planned | Lokale Modelle verwalten, pruefen und kontrolliert entfernen. |
-| [Model_Downloader_Quantizer](Profile/Model_Downloader_Quantizer.md) | experimental | Modellquellen, Quantisierung und Lizenzpfade planen. |
-| [Prompt_Testing_Benchmark_Lab](Profile/Prompt_Testing_Benchmark_Lab.md) | planned | Prompts, Agenten und Modelle reproduzierbar testen. |
-| [Agent_Safety_Policy_Manager](Profile/Agent_Safety_Policy_Manager.md) | planned | Tool-Gates, Policies und Human-Approval-Regeln verwalten. |
-| [Multi_Agent_Router](Profile/Multi_Agent_Router.md) | experimental | Mehrere Agenten mit Grenzen und Logging koordinieren. |
-| [N8N_AI_Automation_Engineer](Profile/N8N_AI_Automation_Engineer.md) | optional | n8n-Workflows mit KI sicher planen. |
-| [Home_Assistant_Agent_Builder](Profile/Home_Assistant_Agent_Builder.md) | optional | Smart-Home-Agenten mit Freigabe-Gates vorbereiten. |
-| [Webhook_API_Integrator](Profile/Webhook_API_Integrator.md) | planned | Webhooks und APIs mit Signaturen und Rate-Limits verbinden. |
-| [Personal_Command_Center](Profile/Personal_Command_Center.md) | planned | Lokale Kommandozentrale fuer Alltag und Setup-Status. |
-| [Notification_Router](Profile/Notification_Router.md) | planned | Setup-, Monitoring- und Agentenmeldungen sicher routen. |
-| [PDF_OCR_Document_Pipeline](Profile/PDF_OCR_Document_Pipeline.md) | optional | Lokale PDF-/OCR-/Dokumentenpipeline. |
-| [Local_Search_Engine](Profile/Local_Search_Engine.md) | planned | Lokale Suche ueber Dokumente, Notizen und Logs. |
-| [Knowledge_Graph_Researcher](Profile/Knowledge_Graph_Researcher.md) | experimental | Wissensgraphen und Graph-RAG vorbereiten. |
-| [Personal_Wiki_Agent](Profile/Personal_Wiki_Agent.md) | planned | Markdown-/Wiki-Wissen lokal strukturieren. |
-| [Long_Term_Memory_Curator](Profile/Long_Term_Memory_Curator.md) | planned | Langzeit-Memory kuratieren und schuetzen. |
-| [AI_Video_Pipeline_Manager](Profile/AI_Video_Pipeline_Manager.md) | experimental | Lokale Video-KI-Pipelines planen. |
-| [ComfyUI_Workflow_Studio](Profile/ComfyUI_Workflow_Studio.md) | experimental | ComfyUI-Workflows, Nodes und Modellordner verwalten. |
-| [Music_Prompt_Producer](Profile/Music_Prompt_Producer.md) | planned | Lizenzsichere Musikprompt- und Audioideen. |
-| [Voice_Clone_TTS_Lab](Profile/Voice_Clone_TTS_Lab.md) | experimental | TTS-/Voice-Tests mit Einwilligungsregeln. |
-| [Asset_Library_Manager](Profile/Asset_Library_Manager.md) | planned | Medien-, Modell- und Promptassets organisieren. |
-| [Android_Network_Monitor](Profile/Android_Network_Monitor.md) | planned | Android-Netzwerkverhalten eigener Testgeraete pruefen. |
-| [PiHole_Domain_Intelligence](Profile/PiHole_Domain_Intelligence.md) | optional | DNS-Logs und Domainlisten defensiv auswerten. |
-| [Firewall_Rule_Assistant](Profile/Firewall_Rule_Assistant.md) | optional | Firewall-Regeln planen und Risiken markieren. |
-| [Vulnerability_Report_Writer](Profile/Vulnerability_Report_Writer.md) | planned | Security-Findings defensiv priorisieren. |
-| [Backup_Disaster_Recovery_Auditor](Profile/Backup_Disaster_Recovery_Auditor.md) | optional | Backup- und Restore-Faehigkeit pruefen. |
-| [MiniPC_Optimizer](Profile/MiniPC_Optimizer.md) | stable-doc | MiniPC/WSL2 ressourcenschonend betreiben. |
-| [WSL2_Recovery_Doctor](Profile/WSL2_Recovery_Doctor.md) | stable-doc | WSL2-, Docker-, Git- und Speicherprobleme diagnostizieren. |
-| [GPU_Render_Node](Profile/GPU_Render_Node.md) | experimental | GPU-Render- und Inferenzknoten planen. |
-| [Kubernetes_Node_Planner](Profile/Kubernetes_Node_Planner.md) | experimental | K3s/Kubernetes-Knoten sicher vorbereiten. |
-| [Storage_Cleanup_Manager](Profile/Storage_Cleanup_Manager.md) | stable-doc | Caches und Toolreste kontrolliert bereinigen. |
-| [Legal_Document_Checker](Profile/Legal_Document_Checker.md) | planned | Dokumente auf Struktur und Risiken pruefen. |
-| [Contract_Risk_Reviewer](Profile/Contract_Risk_Reviewer.md) | planned | Vertragspflichten, Fristen und Risiken extrahieren. |
-| [Household_Admin_Assistant](Profile/Household_Admin_Assistant.md) | planned | Alltagspost, Aufgaben und Fristen lokal verwalten. |
-| [Finance_Budget_Tracker](Profile/Finance_Budget_Tracker.md) | planned | Lokale Budgetanalyse ohne Finanzaktionen. |
-| [Email_Response_Agent](Profile/Email_Response_Agent.md) | planned | E-Mail-Entwuerfe mit manueller Sendefreigabe. |
-
-## myNextCloud AI Profile
-
-Diese Profile sind documentation-first und binden die vorbereiteten Forks `myNextCloud Server` und `myNextCloud Mobile` an Ollama, OpenClaw, n8n, Whisper, Home Assistant, Cloudflare Access und optional Tailscale an.
-
-| Profil | Status | Zweck |
-|---|---|---|
-| [mynextcloud_ai](Profile/mynextcloud_ai.md) | planned | Lokale Datei-KI, Summaries, Tags, Whisper/Ollama-Workflows. |
-| [mynextcloud_admin](Profile/mynextcloud_admin.md) | planned | Wartung, Backups, Updates, Speicherplatz- und Logberichte. |
-| [mynextcloud_android](Profile/mynextcloud_android.md) | planned | Android-Fork, Branding, Build- und Release-Checks. |
-| [mynextcloud_security](Profile/mynextcloud_security.md) | planned | Defensive Upload-, Hash-, Rechte- und App-Store-Pruefung. |
-| [mynextcloud_automation](Profile/mynextcloud_automation.md) | planned | n8n/OpenClaw/Home-Assistant-Automationen mit Human Approval. |
-| [mynextcloud_homeassistant](Profile/mynextcloud_homeassistant.md) | planned | Home-Assistant-Benachrichtigungen, Snapshots und Statuskacheln. |
-
-## Next-Level Backlog
-
-| Profilgruppe | Status | Datei |
-|---|---|---|
-| Betrieb, LLMOps, RAG, Automation, Security, Medien, Android, Netzwerk | documentation-first | [Next_Level_Profile_Backlog](Profile/Next_Level_Profile_Backlog.md) |
+| [AI_ContentMultiplier_Workflow](Profile/AI_ContentMultiplier_Workflow.md) | planned | Content-Repurposing aus URL/PDF/Web/YouTube/LinkedIn ueber OpenClaw, n8n und Ollama. |

@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: homecluster-node-labels
+  namespace: kube-system
+data:
+  notes: |
+    Beispielbefehle:
+
+    kubectl label node GPU_NODE_NAME ai.daniel/gpu=true
+    kubectl label node HOME_WATCHER_NODE ai.daniel/watcher=true
+
+    GPU Workloads sollten nodeSelector oder nodeAffinity nutzen:
+    ai.daniel/gpu: "true"

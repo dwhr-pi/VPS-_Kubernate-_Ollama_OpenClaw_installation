@@ -33,6 +33,7 @@ Wichtig: Ein Tool kann trotzdem GitHub als Primaerquelle haben, aber beim Build 
 | Blender | `github.com/blender/blender` | Der Installer klont Blender aus GitHub und baut lokal. Blender-Upstream kann beim `make update` zusaetzliche Build-Abhaengigkeiten nachladen. | GitHub-Source-Build, sehr schwer. |
 | FFmpeg | `github.com/FFmpeg/FFmpeg` | Der Installer klont FFmpeg aus GitHub und baut lokal nach `/opt/ffmpeg-github`. | GitHub-Source-Build. |
 | n8n | `github.com/n8n-io/n8n` | Der aktuelle Installer klont das GitHub-Monorepo und baut mit `pnpm`; npm/pnpm laden dabei Paketmanager-Abhaengigkeiten nach. | Direkter GitHub-Source-Pfad mit Paketmanager-Abhaengigkeiten. |
+| AI-ContentMultiplier | `github.com/dwhr-pi/content-multiplier` | Der Installer behandelt das Tool als Workflow-Repository und bereitet nur lokale Konfiguration/Ausgaben vor; Firecrawl und Cloud-Modelle bleiben optionale externe Dienste. | GitHub-basierter Workflow, keine schwere Autoinstallation. |
 | Docker / Container-Basis | Offizielle Paketquelle oder GitHub-Release, je nach System | Docker Hub/Base-Images, OS-Pakete im Container. | System-/Runtime-Abhaengigkeit, keine App-Quelle. |
 | Go, Python, Node, Bun, Java | Offizielle Sprach-/Runtime-Quellen oder Systempakete | Paketmanager-Abhaengigkeiten wie npm, pip, cargo, apt. | Build-Werkzeug, nicht Ziel-App. |
 | `apt`-Pakete | Ubuntu/Debian-Repositories | Systembibliotheken, Compiler, `python3-venv`, `git`, `curl`, `build-essential`, `docker.io`. | Erlaubte Basisversorgung. |
@@ -58,6 +59,7 @@ Wichtig: Ein Tool kann trotzdem GitHub als Primaerquelle haben, aber beim Build 
 | Paperless-ngx | `github.com/paperless-ngx/paperless-ngx` | optional/schwer | Dokumentenarchiv, meist service-lastig. |
 | Stirling PDF | `github.com/Stirling-Tools/Stirling-PDF` | empfohlen | Lokale PDF-Werkzeuge. |
 | n8n | `github.com/n8n-io/n8n` | empfohlen | Build aus Source ist speicherintensiv. |
+| AI-ContentMultiplier | `github.com/dwhr-pi/content-multiplier` | optional/workflow | URL/PDF/Web/YouTube/LinkedIn zu Content-Entwuerfen via OpenClaw/n8n; lokal-first mit Ollama. |
 | Activepieces | `github.com/activepieces/activepieces` | optional | Upstream nutzt Bun; kein pnpm erzwingen. |
 | Airbyte | `github.com/airbytehq/airbyte`, `github.com/airbytehq/abctl` | optional/sehr schwer | Aktueller lokaler Installationspfad laeuft ueber `abctl local install`; alter Docker-Compose-Pfad mit `airbyte/webapp:latest` ist nicht mehr geeignet. `abctl` erzeugt lokal einen eigenen `kind`-Cluster, nicht automatisch den spaeteren Setup-K3s-Cluster. Vor dem Image-Pull sollten unter WSL mindestens ca. 32 GB Linux-/WSL-Speicher und ca. 20 GB Windows-Host-Speicher frei sein, besser deutlich mehr. |
 | Node-RED | `github.com/node-red/node-red` | empfohlen | Lokale Automation. |

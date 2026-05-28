@@ -1,0 +1,51 @@
+services:
+  reverse-proxy:
+    image: caddy:2
+    container_name: vps_reverse_proxy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - control
+
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: vps_n8n
+    restart: unless-stopped
+    environment:
+      - N8N_HOST=n8n.example.tld
+      - N8N_PROTOCOL=https
+      - N8N_PORT=5678
+      - WEBHOOK_URL=https://n8n.example.tld/
+    ports:
+      - "127.0.0.1:5678:5678"
+    volumes:
+      - n8n_data:/home/node/.n8n
+    networks:
+      - control
+
+  uptime-kuma:
+    image: louislam/uptime-kuma:latest
+    container_name: vps_uptime_kuma
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3004:3001"
+    volumes:
+      - uptime_kuma:/app/data
+    networks:
+      - control
+
+networks:
+  control:
+    driver: bridge
+
+volumes:
+  caddy_data:
+  caddy_config:
+  n8n_data:
+  uptime_kuma:

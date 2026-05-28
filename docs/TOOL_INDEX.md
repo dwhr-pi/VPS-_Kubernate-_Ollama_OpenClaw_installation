@@ -37,6 +37,7 @@ Primaerquellen und GitHub-Referenzen sind gesammelt in `docs/GITHUB_TOOL_SOURCES
 - `appsmith`
 - `budibase`
 - `nocodb`
+- `ai_content_multiplier` - optionaler OpenClaw/n8n Workflow, siehe [AI-ContentMultiplier](tools/ai-content-multiplier/README.md)
 
 ## Security
 
@@ -92,5 +93,6 @@ Primaerquellen und GitHub-Referenzen sind gesammelt in `docs/GITHUB_TOOL_SOURCES
 | Headscale | `github.com/juanfont/headscale` | Self-hosted Tailscale-Controlplane | optional |
 | AdGuard Home | `github.com/AdguardTeam/AdGuardHome` | DNS-Schutz | optional |
 | OpenTelemetry Collector | `github.com/open-telemetry/opentelemetry-collector` | Observability-Pipeline | optional |
+| AI-ContentMultiplier | `C:\Users\danie\Documents\GitHub\content-multiplier` | URL/PDF/Web/YouTube/LinkedIn zu Content-Entwuerfen via OpenClaw/n8n | optional, workflow-first |
 
 Neue Tools werden nur dann als installierbar markiert, wenn Installer, Healthcheck und sichere Defaults vorhanden sind.

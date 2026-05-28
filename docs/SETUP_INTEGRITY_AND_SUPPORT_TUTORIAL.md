@@ -72,6 +72,10 @@ Selbstheilung: deaktiviert
 Empfehlung: Fork manuell pruefen oder mit Original abgleichen
 ```
 
+Weitere Details zu genehmigten Forks, eigenen Support-Branches, signierten
+Support-Freigaben, Patch-Auslieferung und sicherer Rueckfuehrung in `main`
+stehen in [Forks, Support und sichere Rueckfuehrung](FORK_SUPPORT_AND_UPSTREAM_GOVERNANCE.md).
+
 ## Schritt 1: Repo-Herkunft pruefen
 
 Bereits vorgesehen ist eine Herkunftspruefung ueber:

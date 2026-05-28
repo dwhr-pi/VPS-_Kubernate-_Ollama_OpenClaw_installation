@@ -4,9 +4,8 @@
 
 - [Aktuelle Governance-Dokumente](#aktuelle-governance-dokumente)
 - [Zielbild](#-zielbild)
+- [Empfohlener Start: HE vorne, Oracle steuert, Pi weckt, RTX rechnet](#empfohlener-start-he-vorne-oracle-steuert-pi-weckt-rtx-rechnet)
 - [Quickstarts](#quickstarts)
-- [myNextCloud AI](#mynextcloud-ai)
-- [Next-Level Review](#next-level-review)
 - [Setup-Skripte schnell finden](#setup-skripte-schnell-finden)
 - [Speicherplatz und Bereinigung](#speicherplatz-und-bereinigung)
 - [Gegenwärtiger Status](#-gegenwärtiger-status)
@@ -19,6 +18,7 @@
 ## Aktuelle Governance-Dokumente
 
 - [Setup Review und naechste Schritte](docs/SETUP_REVIEW_AND_NEXT_STEPS.md)
+- [Einsteiger-Tutorial: HE/Oracle/Homecluster](docs/architecture/he-oracle-homecluster.md)
 - [Setup Review 2026 - Next Actions](docs/SETUP_REVIEW_2026_NEXT_ACTIONS.md)
 - [Installationspfade](docs/INSTALLATION_PATHS.md)
 - [Installation Wizard](docs/INSTALLATION_WIZARD.md)
@@ -27,41 +27,14 @@
 - [Tested Status Matrix](docs/TESTED_STATUS_MATRIX.md)
 - [Security Baseline](docs/SECURITY_BASELINE.md)
 - [GitHub Tool Sources](docs/GITHUB_TOOL_SOURCES.md)
+- [AI-ContentMultiplier Workflow](docs/tools/ai-content-multiplier/README.md)
 - [Airbyte, abctl und Kubernetes](docs/AIRBYTE_ABCTL_KUBERNETES_NOTES.md)
 - [Integritaetspruefung und automatisierter Support](docs/SETUP_INTEGRITY_AND_SUPPORT_TUTORIAL.md)
+- [Forks, Support und sichere Rueckfuehrung](docs/FORK_SUPPORT_AND_UPSTREAM_GOVERNANCE.md)
 - [WSL2/OpenClaw/Ollama Troubleshooting](docs/TROUBLESHOOTING_WSL2_OPENCLAW_OLLAMA.md)
 - [WSL2 Troubleshooting](docs/TROUBLESHOOTING_WSL2.md)
 - [OpenClaw Troubleshooting](docs/TROUBLESHOOTING_OPENCLAW.md)
 - [Ollama Troubleshooting](docs/TROUBLESHOOTING_OLLAMA.md)
-- [myNextCloud AI Integration](docs/tools/mynextcloud/README.md)
-- [Setup Review 2026 Next Level](docs/SETUP_REVIEW_2026_NEXT_LEVEL.md)
-- [Profile Gap Analysis](docs/PROFILE_GAP_ANALYSIS.md)
-- [Tool Gap Analysis](docs/TOOL_GAP_ANALYSIS.md)
-- [Low Resource Mode](docs/LOW_RESOURCE_MODE.md)
-- [Installation Decision Tree](docs/INSTALLATION_DECISION_TREE.md)
-- [Profile Authoring Standard](docs/PROFILE_AUTHORING_STANDARD.md)
-- [Tool Lifecycle Standard](docs/TOOL_LIFECYCLE_STANDARD.md)
-- [Menu Structure Next Level](docs/MENU_STRUCTURE_NEXT_LEVEL.md)
-- [Secrets and Keys](docs/SECRETS_AND_KEYS.md)
-- [Cloudflare and Tailscale Access](docs/CLOUDFLARE_TAILSCALE_ACCESS_GUIDE.md)
-- [Local First Cost Control](docs/LOCAL_FIRST_COST_CONTROL.md)
-- [Known Issues](docs/KNOWN_ISSUES.md)
-- [Setup Audit](docs/SETUP_AUDIT.md)
-- [Setup Review and Roadmap](docs/SETUP_REVIEW_AND_ROADMAP.md)
-- [Setup Review and Roadmap Addendum](docs/SETUP_REVIEW_AND_ROADMAP_ADDENDUM_2026.md)
-- [Tools Catalog](docs/TOOLS_CATALOG.md)
-- [Recommended Tools](docs/RECOMMENDED_TOOLS.md)
-- [OpenClaw Integration](docs/OPENCLAW_INTEGRATION.md)
-- [n8n Git Install](docs/N8N_GIT_INSTALL.md)
-- [Kubernetes Optional](docs/KUBERNETES_OPTIONAL.md)
-- [Quickstart](docs/QUICKSTART.md)
-- [Architecture](docs/ARCHITECTURE.md)
-- [Security Model](docs/SECURITY_MODEL.md)
-- [Profiles Overview](docs/PROFILES_OVERVIEW.md)
-- [Tool Integration Matrix](docs/TOOL_INTEGRATION_MATRIX.md)
-- [Troubleshooting](docs/TROUBLESHOOTING.md)
-- [Troubleshooting Next Level](docs/TROUBLESHOOTING_NEXT_LEVEL.md)
-- [Contribution and Branch Protection](docs/GITHUB_CONTRIBUTION_AND_BRANCH_PROTECTION.md)
 
 Neue Profile ab `11.17` sind bewusst als `planned` registriert. Sie sind sichtbar, aber starten keine schweren Toolchains ohne explizite Tool-Auswahl.
 
@@ -74,6 +47,30 @@ Dieses Setup ist das Original-Setup des Repositories `dwhr-pi/VPS-_Kubernate-_Ol
 Die automatisierte Supportunterstuetzung und Selbstheilung via Update gilt nur fuer das unverfaelschte Original-Setup bzw. fuer bewusst freigegebene Aenderungen. Wenn das Setup aus einem Fork, einer unbekannten Quelle oder einer lokal manipulierten Variante stammt, erlischt diese automatisierte Supportunterstuetzung: Das Original-Update kann solche Aenderungen nicht sicher bewerten, reparieren oder verantworten.
 
 Bitte kontaktiere den Entwickler, wenn Funktionen, Anpassungen oder neue Tools gewuenscht sind. Wuensche koennen dann sauber aufgenommen, geprueft und kontrolliert in das Original-Setup integriert werden.
+
+Forks bleiben technisch moeglich, erhalten aber nicht automatisch denselben Supportstatus. Genehmigte Forks oder eigene Support-Branches koennen kontrolliert zugelassen werden, wenn Herkunft, Branch, Manifest und Support-Freigabe pruefbar sind. Der empfohlene Ablauf fuer Fork-Support, signierte Patches und sichere Rueckfuehrung in `main` ist in [Forks, Support und sichere Rueckfuehrung](docs/FORK_SUPPORT_AND_UPSTREAM_GOVERNANCE.md) dokumentiert.
+
+## Empfohlener Start: HE vorne, Oracle steuert, Pi weckt, RTX rechnet
+
+Der neue sichere Standardpfad ist:
+
+```text
+Internet
+-> Hurricane Electric / eigene Domain / IPv6
+-> Oracle VPS als Control Node / DMZ
+-> WireGuard ins Heimnetz
+-> Raspberry Pi 5 oder Mini-PC als Heimnetz-Waechter
+-> Wake-on-LAN fuer RTX-/Ollama-/OpenClaw-/ComfyUI-/Whisper-Server
+-> K3s/Kubernetes Worker Nodes zuhause
+```
+
+Cloudflare ist nicht mehr Pflichtbestandteil. Cloudflare bleibt optional fuer
+Access, Tunnel, Zero Trust oder zusaetzlichen Bot-/DDoS-Schutz. Der Einstieg fuer
+Einsteiger ist jetzt bewusst in [docs/architecture/he-oracle-homecluster.md](docs/architecture/he-oracle-homecluster.md) beschrieben.
+
+Wichtig: Ollama, OpenClaw Gateway, Kubernetes API, Home Assistant, NAS,
+Datenbanken, ComfyUI und Whisper APIs duerfen nicht direkt oeffentlich erreichbar
+sein. Diese Dienste gehoeren hinter WireGuard oder in ein internes Netz.
 
 ## 🧱 Zielbild
 
@@ -94,36 +91,6 @@ Die zugehoerige Architektur-Dokumentation findest du in [docs/ARCHITECTURE_LLMOP
 | Wissenschaft | `Physik`, `Bioinformatik`, `Molekuelsimulation`, `Mathematik_Simulation` |
 | Security | `Security_DevSecOps`, `Zero_Trust_Remote_Access`, `Anti_Virus` |
 | Kubernetes/VPS | `DevOps_SRE`, `Kubernetes_GPU_Orchestrator`, `Storage_NAS_Backup` |
-| myNextCloud AI | documentation-first: `docs/Profile/mynextcloud_ai.md`, `docs/tools/mynextcloud/README.md` |
-
-## myNextCloud AI
-
-`myNextCloud AI` integriert die vorbereiteten Forks [myNextCloud Server](https://github.com/dwhr-pi/myNextCloud-server) und [myNextCloud Mobile](https://github.com/dwhr-pi/myNexcloud-for-android) als sichere, lokale Datei-KI-Erweiterung fuer Ollama, OpenClaw, n8n, Whisper, Home Assistant, Cloudflare Access und optional Tailscale.
-
-Rechtlicher Hinweis: Fork based on Nextcloud. Not affiliated with or endorsed by Nextcloud GmbH. AGPL/GPL/MIT-Lizenztexte und Copyright-Hinweise bleiben erhalten. Offizielle Nextcloud-Logos, Icons und Markenhinweise duerfen nicht als eigenes Branding uebernommen werden.
-
-Einstieg:
-
-- Profil: [docs/Profile/mynextcloud_ai.md](docs/Profile/mynextcloud_ai.md)
-- Tool-Doku: [docs/tools/mynextcloud/README.md](docs/tools/mynextcloud/README.md)
-- Branding/Lizenz: [docs/tools/mynextcloud/legal_branding_checklist.md](docs/tools/mynextcloud/legal_branding_checklist.md)
-- Fork-Review: [docs/tools/mynextcloud/fork_review.md](docs/tools/mynextcloud/fork_review.md)
-- Upstream-Sync: [docs/tools/mynextcloud/upstream_sync.md](docs/tools/mynextcloud/upstream_sync.md)
-- Sichere Env-Vorlage: [docs/tools/mynextcloud/server_env.example](docs/tools/mynextcloud/server_env.example)
-
-## Next-Level Review
-
-Die naechste Ausbaustufe wird ueber [docs/SETUP_REVIEW_2026_NEXT_LEVEL.md](docs/SETUP_REVIEW_2026_NEXT_LEVEL.md), [docs/PROFILE_GAP_ANALYSIS.md](docs/PROFILE_GAP_ANALYSIS.md), [docs/TOOL_GAP_ANALYSIS.md](docs/TOOL_GAP_ANALYSIS.md) und [docs/Profile/Next_Level_Profile_Backlog.md](docs/Profile/Next_Level_Profile_Backlog.md) gesteuert. Neue Profile bleiben zuerst `documentation-first`, bis Installer, Uninstaller, Doctor, Statuscheck, Portdoku und Ressourcenwerte vorhanden sind.
-
-Neue Profile und Tools folgen den Standards [docs/PROFILE_AUTHORING_STANDARD.md](docs/PROFILE_AUTHORING_STANDARD.md), [docs/TOOL_LIFECYCLE_STANDARD.md](docs/TOOL_LIFECYCLE_STANDARD.md) und [docs/MENU_STRUCTURE_NEXT_LEVEL.md](docs/MENU_STRUCTURE_NEXT_LEVEL.md). Der schnelle Audit laeuft mit `bash scripts/next_level_dry_run_check.sh`; ein Tool-Lifecycle-Ueberblick ist mit `bash scripts/check_tool_lifecycle.sh` moeglich.
-
-Weitere Betriebsleitplanken: [docs/SECRETS_AND_KEYS.md](docs/SECRETS_AND_KEYS.md), [docs/LOCAL_FIRST_COST_CONTROL.md](docs/LOCAL_FIRST_COST_CONTROL.md), [docs/CLOUDFLARE_TAILSCALE_ACCESS_GUIDE.md](docs/CLOUDFLARE_TAILSCALE_ACCESS_GUIDE.md) und [docs/KNOWN_ISSUES.md](docs/KNOWN_ISSUES.md).
-
-Neue kompakte Einstiegsdokumente: [docs/SETUP_AUDIT.md](docs/SETUP_AUDIT.md), [docs/TOOLS_CATALOG.md](docs/TOOLS_CATALOG.md), [docs/OPENCLAW_INTEGRATION.md](docs/OPENCLAW_INTEGRATION.md), [docs/N8N_GIT_INSTALL.md](docs/N8N_GIT_INSTALL.md) und [docs/KUBERNETES_OPTIONAL.md](docs/KUBERNETES_OPTIONAL.md). Sichere Wrapper liegen unter `scripts/setup.sh`, `scripts/preflight.sh`, `scripts/check_models.sh`, `scripts/backup.sh` und `scripts/update_all.sh`.
-
-Die aktuelle Roadmap und die empfohlenen Toolpfade stehen in [docs/SETUP_REVIEW_AND_ROADMAP.md](docs/SETUP_REVIEW_AND_ROADMAP.md) und [docs/RECOMMENDED_TOOLS.md](docs/RECOMMENDED_TOOLS.md). Neue Profile bleiben `documentation-first`, bis Installer, Doctor, Statuscheck und Ressourcenwerte vorhanden sind.
-
-Beitraege laufen bevorzugt ueber Forks, Feature-Branches und Pull Requests. Details stehen in [CONTRIBUTING.md](CONTRIBUTING.md), [SECURITY.md](SECURITY.md) und [docs/GITHUB_CONTRIBUTION_AND_BRANCH_PROTECTION.md](docs/GITHUB_CONTRIBUTION_AND_BRANCH_PROTECTION.md).
 
 ## Setup-Skripte schnell finden
 
@@ -975,25 +942,3 @@ Wichtige Ergänzung:
 *   **Registry-System:** Die neuen Dateien unter `config/` sind die Zielstruktur für künftige automatische Menü-Generierung, aber noch nicht jede Stelle des Hauptmenüs liest bereits daraus.
 
 Wir wünschen dir viel Erfolg bei der Einrichtung deines intelligenten, automatisierten Systems!
-# OpenClaw Ultimate KI Setup
-
-## Aktuelle Review- und sichere Installationspfade
-
-- [Setup Scorecard](docs/SETUP_SCORECARD.md)
-- [Setup Health Review](docs/SETUP_HEALTH_REVIEW.md)
-- [Safe Defaults](docs/SAFE_DEFAULTS.md)
-- [GitHub Tool Candidates Review](docs/GITHUB_TOOL_CANDIDATES_REVIEW.md)
-- [Hardware Decision Tree](docs/HARDWARE_DECISION_TREE.md)
-- [Installation Risk Levels](docs/INSTALLATION_RISK_LEVELS.md)
-- [Recommended Minimal Setup](docs/RECOMMENDED_MINIMAL_SETUP.md)
-- [Recommended Advanced Setup](docs/RECOMMENDED_ADVANCED_SETUP.md)
-- [Recommended GPU Setup](docs/RECOMMENDED_GPU_SETUP.md)
-- [WSL2 Safe Install Path](docs/WSL2_SAFE_INSTALL_PATH.md)
-- [VPS Safe Install Path](docs/VPS_SAFE_INSTALL_PATH.md)
-- [Security Hardening Checklist](docs/SECURITY_HARDENING_CHECKLIST.md)
-
-Schneller Systemcheck vor schweren Installationen:
-
-```bash
-bash scripts/system_profile_detect.sh
-```
