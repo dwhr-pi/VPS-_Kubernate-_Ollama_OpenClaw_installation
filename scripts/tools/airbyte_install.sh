@@ -20,6 +20,9 @@ AIRBYTE_ABCTL_REF="${AIRBYTE_ABCTL_REF:-v0.30.4}"
 AIRBYTE_MIN_FREE_MB="${AIRBYTE_MIN_FREE_MB:-32768}"
 AIRBYTE_RECOMMENDED_FREE_MB="${AIRBYTE_RECOMMENDED_FREE_MB:-65536}"
 AIRBYTE_MIN_WINDOWS_FREE_MB="${AIRBYTE_MIN_WINDOWS_FREE_MB:-20480}"
+AIRBYTE_MIN_MEMORY_MB="${AIRBYTE_MIN_MEMORY_MB:-8192}"
+AIRBYTE_RECOMMENDED_MEMORY_MB="${AIRBYTE_RECOMMENDED_MEMORY_MB:-12288}"
+AIRBYTE_ABCTL_TIMEOUT_MIN="${AIRBYTE_ABCTL_TIMEOUT_MIN:-120}"
 AIRBYTE_K8S_NAMESPACE="${AIRBYTE_K8S_NAMESPACE:-airbyte-abctl}"
 AIRBYTE_K8S_CONTEXT="${AIRBYTE_K8S_CONTEXT:-kind-airbyte-abctl}"
 
@@ -36,20 +39,30 @@ get_windows_host_free_mb() {
   df -Pm "$win_path" 2>/dev/null | awk 'NR==2 {print $4}'
 }
 
+get_mem_available_mb() {
+  awk '/^MemAvailable:/ {printf "%d\n", $2 / 1024}' /proc/meminfo 2>/dev/null
+}
+
 airbyte_confirm_heavy_install() {
   local linux_free_mb
   local windows_free_mb
+  local mem_available_mb
 
   linux_free_mb="$(get_free_mb_for_path /)"
   windows_free_mb="$(get_windows_host_free_mb || true)"
+  mem_available_mb="$(get_mem_available_mb || true)"
 
   log_warn "Airbyte ist sehr schwergewichtig: abctl startet lokal einen kind/Kubernetes-Cluster und zieht viele Container-Images."
   log_info "Freier Linux-/WSL-Speicher: ${linux_free_mb:-unbekannt} MB"
   if [ -n "$windows_free_mb" ]; then
     log_info "Freier Windows-Host-Speicher (C:): ${windows_free_mb} MB"
   fi
+  if [ -n "$mem_available_mb" ]; then
+    log_info "Verfuegbarer RAM laut Linux/WSL: ${mem_available_mb} MB"
+  fi
   log_info "Mindestempfehlung fuer Airbyte: ${AIRBYTE_MIN_FREE_MB} MB Linux/WSL frei, besser ${AIRBYTE_RECOMMENDED_FREE_MB} MB oder mehr."
   log_info "Unter WSL sollte der Windows-Host zusaetzlich mindestens ${AIRBYTE_MIN_WINDOWS_FREE_MB} MB frei haben, weil Docker/WSL-VHDX waehrend Image-Pulls wachsen kann."
+  log_info "RAM-Empfehlung fuer Airbyte/kind: mindestens ${AIRBYTE_MIN_MEMORY_MB} MB verfuegbar, besser ${AIRBYTE_RECOMMENDED_MEMORY_MB} MB oder mehr."
 
   if [ -n "$linux_free_mb" ] && [ "$linux_free_mb" -lt "$AIRBYTE_MIN_FREE_MB" ]; then
     log_error "Zu wenig freier Linux-/WSL-Speicher fuer Airbyte. Installation wird vor dem Image-Pull abgebrochen."
@@ -62,8 +75,18 @@ airbyte_confirm_heavy_install() {
     return 1
   fi
 
+  if [ -n "$mem_available_mb" ] && [ "$mem_available_mb" -lt "$AIRBYTE_MIN_MEMORY_MB" ]; then
+    log_error "Zu wenig verfuegbarer RAM fuer Airbyte/kind. Installation wird vor dem Helm-Deployment abgebrochen."
+    log_warn "Airbyte startet viele Pods. Unter WSL fuehren knapper RAM oder aggressive Speicherbegrenzungen oft zu Readiness-/Liveness-Probe-Schleifen."
+    return 1
+  fi
+
   if [ -n "$linux_free_mb" ] && [ "$linux_free_mb" -lt "$AIRBYTE_RECOMMENDED_FREE_MB" ]; then
     log_warn "Der freie Linux-/WSL-Speicher liegt unter der Empfehlung. Airbyte kann trotzdem starten, aber Pulls und Builds koennen lange dauern oder abbrechen."
+  fi
+
+  if [ -n "$mem_available_mb" ] && [ "$mem_available_mb" -lt "$AIRBYTE_RECOMMENDED_MEMORY_MB" ]; then
+    log_warn "Der verfuegbare RAM liegt unter der Empfehlung. Airbyte kann trotzdem starten, aber Helm/Pods koennen sehr lange haengen."
   fi
 }
 
@@ -128,9 +151,21 @@ airbyte_classify_abctl_failure() {
     log_warn "Das passt zu einem ueberlasteten oder langsam reagierenden lokalen kind-Cluster, haeufig durch WSL-/Docker-I/O, wenig RAM, knappen Windows-Host-Speicher oder sehr lange Image-Pulls."
   fi
 
+  if grep -qi "context deadline exceeded" "$install_log"; then
+    log_error "Erkannt: Helm/Kubernetes context deadline exceeded."
+    log_warn "Das bedeutet: abctl hat zu lange auf gesunde Airbyte-Pods gewartet. In WSL ist das meist RAM-/I/O-/Docker-Last oder ein bereits halb angelegter kind-Cluster."
+  fi
+
   if grep -qiE "Readiness probe failed|Liveness probe failed|Reason: Unhealthy" "$install_log"; then
-    log_error "Erkannt: wiederholte Readiness-/Liveness-Probe-Fehler im Airbyte-Worker."
-    log_warn "Einige Probe-Warnungen beim Start sind normal. Viele Wiederholungen bis Count 30 deuten aber auf einen Worker hin, der intern nicht stabil auf Port 9000 hochkommt."
+    log_error "Erkannt: wiederholte Readiness-/Liveness-Probe-Fehler in Airbyte-Pods."
+    log_warn "Einige Probe-Warnungen beim Start sind normal. Viele Wiederholungen deuten aber auf Pods hin, die intern nicht stabil hochkommen."
+  fi
+
+  if grep -qi "workload-api-server" "$install_log"; then
+    log_error "Erkannt: Airbyte workload-api-server wurde nicht gesund."
+    log_warn "Typisches Muster: Probe auf /health/liveness an Port 8085 liefert 'connection refused'."
+    log_warn "Das ist kein GitHub-/abctl-Buildfehler, sondern ein lokales Airbyte/kind-Runtime-Problem."
+    log_warn "Empfohlen: Airbyte deinstallieren, Docker/kind-Reste pruefen, Speicher freigeben und erst dann neu versuchen."
   fi
 
   if grep -qi "A new release of abctl is available" "$install_log"; then
@@ -250,18 +285,34 @@ airbyte_print_deployment_hint
 ABCTL_CMD=("$ABCTL_BIN" local install --host "$AIRBYTE_HOST" --port "$AIRBYTE_PORT" --low-resource-mode --no-browser --insecure-cookies)
 ABCTL_INSTALL_LOG="$(mktemp)"
 log_info "abctl Installationsausgabe wird zusaetzlich analysiert: ${ABCTL_INSTALL_LOG}"
+log_info "Maximale abctl-Laufzeit fuer diese Installation: ${AIRBYTE_ABCTL_TIMEOUT_MIN} Minuten."
+log_info "Anpassbar bei Bedarf: AIRBYTE_ABCTL_TIMEOUT_MIN=180 bash scripts/tools/airbyte_install.sh"
 
 install_exit=0
+ABCTL_RUN_CMD=("${ABCTL_CMD[@]}")
+if command -v timeout >/dev/null 2>&1; then
+  ABCTL_RUN_CMD=(timeout "${AIRBYTE_ABCTL_TIMEOUT_MIN}m" "${ABCTL_CMD[@]}")
+else
+  log_warn "timeout ist nicht verfuegbar. abctl kann bei Probe-Schleifen laenger laufen als gewuenscht."
+fi
+
 if docker info >/dev/null 2>&1; then
-  "${ABCTL_CMD[@]}" 2>&1 | tee "$ABCTL_INSTALL_LOG"
+  "${ABCTL_RUN_CMD[@]}" 2>&1 | tee "$ABCTL_INSTALL_LOG"
   install_exit=${PIPESTATUS[0]}
 else
   log_warn "Docker-Daemon ist fuer den aktuellen User nicht direkt nutzbar. Verwende sudo fuer abctl."
-  sudo "${ABCTL_CMD[@]}" 2>&1 | tee "$ABCTL_INSTALL_LOG"
+  if command -v timeout >/dev/null 2>&1; then
+    sudo timeout "${AIRBYTE_ABCTL_TIMEOUT_MIN}m" "${ABCTL_CMD[@]}" 2>&1 | tee "$ABCTL_INSTALL_LOG"
+  else
+    sudo "${ABCTL_CMD[@]}" 2>&1 | tee "$ABCTL_INSTALL_LOG"
+  fi
   install_exit=${PIPESTATUS[0]}
 fi
 
 if [ "$install_exit" -ne 0 ]; then
+  if [ "$install_exit" -eq 124 ]; then
+    log_error "Airbyte/abctl wurde nach ${AIRBYTE_ABCTL_TIMEOUT_MIN} Minuten beendet, um eine stundenlange Probe-Schleife zu vermeiden."
+  fi
   log_error "Airbyte/abctl Installation ist fehlgeschlagen oder wurde durch wiederholte Kubernetes-Probe-Fehler beendet."
   airbyte_classify_abctl_failure "$ABCTL_INSTALL_LOG"
   airbyte_diagnose_deployment

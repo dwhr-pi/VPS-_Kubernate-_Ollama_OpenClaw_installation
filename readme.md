@@ -914,3 +914,25 @@ Wichtige Ergänzung:
 *   **Registry-System:** Die neuen Dateien unter `config/` sind die Zielstruktur für künftige automatische Menü-Generierung, aber noch nicht jede Stelle des Hauptmenüs liest bereits daraus.
 
 Wir wünschen dir viel Erfolg bei der Einrichtung deines intelligenten, automatisierten Systems!
+# OpenClaw Ultimate KI Setup
+
+## Aktuelle Review- und sichere Installationspfade
+
+- [Setup Scorecard](docs/SETUP_SCORECARD.md)
+- [Setup Health Review](docs/SETUP_HEALTH_REVIEW.md)
+- [Safe Defaults](docs/SAFE_DEFAULTS.md)
+- [GitHub Tool Candidates Review](docs/GITHUB_TOOL_CANDIDATES_REVIEW.md)
+- [Hardware Decision Tree](docs/HARDWARE_DECISION_TREE.md)
+- [Installation Risk Levels](docs/INSTALLATION_RISK_LEVELS.md)
+- [Recommended Minimal Setup](docs/RECOMMENDED_MINIMAL_SETUP.md)
+- [Recommended Advanced Setup](docs/RECOMMENDED_ADVANCED_SETUP.md)
+- [Recommended GPU Setup](docs/RECOMMENDED_GPU_SETUP.md)
+- [WSL2 Safe Install Path](docs/WSL2_SAFE_INSTALL_PATH.md)
+- [VPS Safe Install Path](docs/VPS_SAFE_INSTALL_PATH.md)
+- [Security Hardening Checklist](docs/SECURITY_HARDENING_CHECKLIST.md)
+
+Schneller Systemcheck vor schweren Installationen:
+
+```bash
+bash scripts/system_profile_detect.sh
+```

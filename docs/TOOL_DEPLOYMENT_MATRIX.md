@@ -88,7 +88,7 @@ Legende:
 | Whisper.cpp | Empfohlen | Empfohlen | Optional | Optional | CLI | nein | indirekt | lokale STT |
 | faster-whisper | Optional | Empfohlen | Optional | Optional GPU | CLI/API | nein | indirekt | GPU hilfreich |
 | Piper | Empfohlen | Empfohlen | Optional | Optional | CLI/API | nein | indirekt | lokale TTS |
-| Coqui TTS | Optional | Optional GPU | Nicht empfohlen klein | Advanced | CLI/API | optional | indirekt | Rechte/Stimmen beachten |
+| Coqui TTS | Optional nur mit Python 3.9-3.11 | Optional GPU | Nicht empfohlen klein | Advanced | CLI/API | optional | indirekt | Python 3.12 inkompatibel; Piper bevorzugen |
 | Aider | Empfohlen | Empfohlen | Optional | Optional | Terminal | nein | nein | Coding-Agent, Git sauber halten |
 | OpenHands | Optional | Optional | Optional mit Sandbox | Advanced | Web/Container | ja | Browser | sehr kontrolliert nutzen |
 | Continue.dev | Empfohlen Desktop | Optional | Nicht sinnvoll | Nicht sinnvoll | IDE-Erweiterung | nein | nein | VS Code/JetBrains |
@@ -98,6 +98,21 @@ Legende:
 | Promptfoo | Empfohlen | Empfohlen | Optional | Optional | CLI/Web optional | optional | nein | Eval-Daten schuetzen |
 | Flowise | Optional | Empfohlen | Optional mit Auth | Optional | nein | ja | Browser | visuelle LLM-Flows |
 | LangFlow | Optional | Empfohlen | Optional mit Auth | Optional | nein | ja | Browser | Python-nahe LLM-Flows |
+
+## Ergaenzte Tool-Bewertung ab 11.18
+
+| Tool/Baustein | MiniPC/WSL2 | VPS | GPU/Server | Status | Hinweis |
+|---|---|---|---|---|---|
+| LocalAI | Optional kleine Modelle | Optional | Empfohlen bei Ressourcen | optional | OpenAI-kompatibel, aber Speicherbedarf pruefen. |
+| OSV-Scanner | Empfohlen | Empfohlen | Empfohlen | optional | Leichter Vulnerability-Check fuer Dependencies. |
+| Lynis | Optional | Empfohlen | Empfohlen | optional | Host-Hardening-Audit, keine Auto-Fixes. |
+| Glances | Empfohlen | Empfohlen | Optional | optional | Leichtes Systemmonitoring fuer MiniPC/WSL2. |
+| Kopia | Optional | Optional | Optional | optional | Backup-Alternative, erst nach Restore-Test. |
+| Cline/Roo Code | Desktop | Nicht sinnvoll | Nicht sinnvoll | documentation-only | IDE-Erweiterungen, nicht als Serverdienst. |
+| Devcontainer-Vorlage | Empfohlen | Optional | Optional | documentation-only | Projektvorlage statt globaler Installer. |
+| bats-core | Empfohlen | Empfohlen | Empfohlen | optional | Shell-Tests fuer Setup-Skripte. |
+| Browserless | Nicht empfohlen klein | Optional mit Auth | Optional | experimental | Browser-Service nie offen betreiben. |
+| Headscale | Nicht empfohlen fuer Einsteiger | Optional | Optional | experimental | Tailscale-Alternative mit Admin-Aufwand. |
 
 ## Standalone-MiniPC-Empfehlung
 

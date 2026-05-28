@@ -54,9 +54,17 @@ Der Airbyte-Installer bricht vor `abctl local install` ab, wenn zu wenig Speiche
 
 - mindestens 32 GB freier Linux-/WSL-Speicher
 - unter WSL mindestens 20 GB freier Windows-Host-Speicher auf `C:`
+- mindestens 8 GB verfuegbarer RAM laut Linux/WSL
 - empfohlen sind eher 64 GB freier Speicher
+- empfohlen sind eher 12 GB oder mehr verfuegbarer RAM
 
 Diese Pruefung verhindert, dass Airbyte die WSL oder Windows-Partition waehrend des Image-Pulls vollschreibt.
+
+Zusaetzlich hat `abctl local install` ein Schutz-Zeitlimit. Standardmaessig wird nach 120 Minuten abgebrochen, damit eine haengende Kubernetes-Probe-Schleife nicht mehrere Stunden laeuft. Bei sehr langsamen Rechnern kann das bewusst verlaengert werden:
+
+```bash
+AIRBYTE_ABCTL_TIMEOUT_MIN=180 bash scripts/tools/airbyte_install.sh
+```
 
 ## Wiederholte Readiness-/Liveness-Probe-Warnungen
 
@@ -65,6 +73,7 @@ Beim Start kann `abctl` Meldungen wie diese ausgeben:
 ```text
 Readiness probe failed: Get "http://10.244.x.x:9000/": connect: connection refused
 Liveness probe failed: Get "http://10.244.x.x:9000/": connect: connection refused
+Readiness probe failed: Get "http://10.244.x.x:8085/health/liveness": connect: connection refused
 ```
 
 Einige Warnungen direkt nach dem Start sind normal, weil Kubernetes Pods schon prueft, waehrend Airbyte-Komponenten noch hochfahren. Wenn die gleiche Worker-Meldung jedoch lange wiederholt wird, ist das meist ein Hinweis auf:
@@ -91,7 +100,9 @@ Wenn Airbyte nach einem Fehlversuch erneut installiert werden soll, zuerst Speic
 Der Installer klassifiziert diese Fehler inzwischen automatisch, wenn `abctl` abbricht:
 
 - `TLS handshake timeout`: lokaler Kubernetes-/kind-API-Server reagiert zu langsam oder ist ueberlastet
+- `context deadline exceeded`: Helm hat zu lange auf gesunde Airbyte-Pods gewartet
 - `Readiness probe failed` / `Liveness probe failed`: Airbyte-Komponente startet nicht stabil genug
+- `workload-api-server` mit Port `8085`: lokales Airbyte/kind-Runtime-Problem, kein GitHub- oder abctl-Buildfehler
 - `A new release of abctl is available`: verwendeter abctl-Build ist nicht auf dem erwarteten Release-Stand
 
 ## Spaetere Integration in den Setup-Kubernetes-Pfad

@@ -3,6 +3,32 @@
 Stand: 2026-05-23  
 Zielbild: Base System -> Runtime -> Model Gateway -> Agent Layer -> Memory/RAG -> Tool Layer -> UI -> Monitoring -> Security.
 
+Update 2026-05-28: Neue documentation-first Profile und Review-Dokumente wurden ergaenzt. Sie sind absichtlich nicht automatisch als schwere Installationspfade aktiviert, damit WSL2/MiniPC-Systeme stabil bleiben.
+
+Neue Review-Dokumente:
+
+- `docs/SETUP_SCORECARD.md`
+- `docs/SETUP_HEALTH_REVIEW.md`
+- `docs/SAFE_DEFAULTS.md`
+- `docs/GITHUB_TOOL_CANDIDATES_REVIEW.md`
+- `docs/MISSING_PROFILES_REVIEW.md`
+- `docs/MISSING_TOOLS_REVIEW.md`
+- `docs/PROFILE_STATUS_MATRIX.md`
+- `docs/HARDWARE_DECISION_TREE.md`
+- `docs/INSTALLATION_RISK_LEVELS.md`
+- `docs/RECOMMENDED_MINIMAL_SETUP.md`
+- `docs/RECOMMENDED_ADVANCED_SETUP.md`
+- `docs/RECOMMENDED_GPU_SETUP.md`
+- `docs/WSL2_SAFE_INSTALL_PATH.md`
+- `docs/VPS_SAFE_INSTALL_PATH.md`
+- `docs/SECURITY_HARDENING_CHECKLIST.md`
+
+Neuer nicht-destruktiver Systemcheck:
+
+```bash
+bash scripts/system_profile_detect.sh
+```
+
 ## Was bereits gut funktioniert
 
 - Das Repository ist modular aufgebaut: Profile, Tools, Ports, Doku und Skripte sind getrennt.

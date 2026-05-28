@@ -1,5 +1,20 @@
 # Changelog
 
+## V11.18
+
+- 36 neue documentation-first Profile fuer LLMOps, Automatisierung, RAG, Medien, Security, Hardware/Homelab und Alltag ergaenzt.
+- neue Review-Dokumente: Scorecard, Missing-Profiles/Tools-Review, Profilstatus, Hardware-Entscheidungsbaum, Risiko-Level und sichere Installationspfade.
+- neuer nicht-destruktiver Systemprofil-Detector `scripts/system_profile_detect.sh` fuer WSL2, RAM, Swap, Speicher, Node, Docker/Podman, systemd und GPU-Hinweise.
+- Airbyte-Installer um RAM-Pruefung, abctl-Zeitlimit und bessere Klassifikation fuer `workload-api-server`/`context deadline exceeded` erweitert.
+- Setup-Update-Ausgabe unterscheidet lokale `M`-Aenderungen von gruen dargestellten, tatsaechlich aktualisierten Dateien.
+- Coqui_TTS-Installer prueft jetzt Python 3.9-3.11, bricht unter Python 3.12 klar ab und bleibt in Profilen optional, damit Piper/Whisper weiter installiert werden koennen.
+- Fehlender generischer `scripts/profile_pack_installer.sh` fuer einfache Profilpakete ergaenzt.
+- `docs/SETUP_HEALTH_REVIEW.md`, `docs/GITHUB_TOOL_CANDIDATES_REVIEW.md` und `docs/SAFE_DEFAULTS.md` ergaenzt.
+- `setup_ultimate.sh` fragt bei schweren/experimentellen Tools explizit nach Zustimmung, bevor Installationen starten.
+- `scripts/check_profile_registry_sync.sh` meldet jetzt fehlende Docs/Installer/Uninstaller, Legacy-Gruppen und unbekannte Profil-Tools.
+- `scripts/doctor.sh` prueft zusaetzlich Docker/Podman, Node/pnpm/corepack, Python/venv/pipx, GitHub CLI, OpenClaw-Workspace, Speicher, Ports, Markdown und Registry-Sync.
+- GitHub Actions Workflow `.github/workflows/repo-health.yml` fuer Shellcheck, shfmt, Secret-Scan, Markdown-Linkcheck und Registry-/Config-Checks angelegt.
+
 ## V11.16
 
 - neue Review- und Roadmap-Doku
