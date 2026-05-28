@@ -908,6 +908,42 @@ get_tool_install_windows_min_free_mb() {
     fi
 }
 
+is_heavy_or_experimental_tool() {
+    local tool_key="$1"
+
+    case "$tool_key" in
+        "Airbyte"|"Activepieces"|"AutoGPT"|"OpenHands"|"n8n"|"Nextcloud"|"ComfyUI"|"Stable_Diffusion_WebUI"|"Stable_Diffusion_WebUI_Forge"|"InvokeAI"|"Fooocus"|"vLLM"|"K3s"|"Kubernetes"|"Docker"|"Docker_Compose_Plugin"|"Coqui_TTS"|"Android"*|"MobSF"|"Blender"|"AnimateDiff")
+            return 0
+            ;;
+        *)
+            return 1
+            ;;
+    esac
+}
+
+confirm_heavy_or_experimental_tool() {
+    local tool_key="$1"
+    local answer
+
+    if ! is_heavy_or_experimental_tool "$tool_key"; then
+        return 0
+    fi
+
+    reset_terminal_display
+    echo -e "${YELLOW}Sicherheitsabfrage:${NC} ${tool_key} ist schwer/experimentell oder kann grosse Downloads, Docker-Images, GPU-/Kubernetes-/Monorepo-Builds oder viele Abhaengigkeiten ausloesen."
+    echo -e "${YELLOW}Dieses Tool wird nicht automatisch installiert. Fortfahren? [y/N]${NC}"
+    read -r answer </dev/tty || answer=""
+    case "$answer" in
+        y|Y|j|J|yes|YES|ja|JA)
+            return 0
+            ;;
+        *)
+            echo -e "${YELLOW}Installation von ${tool_key} abgebrochen. Es wurde nichts installiert.${NC}"
+            return 1
+            ;;
+    esac
+}
+
 preflight_tool_install_storage() {
     local tool_key="$1"
     local min_mb
@@ -3246,6 +3282,11 @@ install_tool() {
     fi
 
     show_tool_action_intro "$TOOL_KEY" "installieren" "install"
+    if ! confirm_heavy_or_experimental_tool "$TOOL_KEY"; then
+        operation_status="skipped"
+        handle_manual_tool_post_action "$TOOL_KEY" "Installation" "$operation_status" "${TOOL_BATCH_UPCOMING_PREVIEW:-}"
+        return 1
+    fi
     maybe_cleanup_logs_before_operation
     begin_operation_measurement "tool_install_${TOOL_KEY}" "Tool installieren: ${TOOL_KEY}"
     echo -e "${BLUE}Installiere Tool: ${TOOL_KEY}...${NC}"

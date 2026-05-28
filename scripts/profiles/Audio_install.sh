@@ -17,7 +17,11 @@ echo -e "${BLUE}Starte Installation des Audio-Profils...${NC}"
 for tool_script in whisper_install.sh ffmpeg_install.sh librosa_install.sh pydub_install.sh piper_install.sh coqui_tts_install.sh voice_assistant_runtime_install.sh; do
     if [ -f "$INSTALL_DIR/scripts/tools/$tool_script" ]; then
         echo -e "${BLUE}Installiere ${tool_script%.sh} als Teil des Audio-Profils...${NC}"
-        bash "$INSTALL_DIR/scripts/tools/$tool_script"
+        if [ "$tool_script" = "coqui_tts_install.sh" ]; then
+            bash "$INSTALL_DIR/scripts/tools/$tool_script" || echo -e "${YELLOW}Coqui_TTS ist optional/experimental und wurde uebersprungen. Piper bleibt der stabile lokale TTS-Pfad.${NC}"
+        else
+            bash "$INSTALL_DIR/scripts/tools/$tool_script"
+        fi
     else
         echo -e "${YELLOW}${tool_script} nicht gefunden. Überspringe diesen Baustein.${NC}"
     fi
