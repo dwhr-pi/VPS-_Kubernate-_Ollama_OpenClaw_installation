@@ -2,6 +2,9 @@
 
 ## V11.18
 
+- Setup Review/Roadmap, Recommended Tools, Quickstart, Architecture, Security Model, Profiles Overview, Tool Integration Matrix, Troubleshooting und VPS/Homelab/K3s Guide ergaenzt.
+- Neue documentation-first Profile fuer Sysadmin/DevOps, Blue Team, Codex-Agenten, n8n, Home Assistant, Media, Image/Video, Kubernetes, Local-First Privacy, Android und Monitoring ergaenzt.
+- `scripts/doctor.sh` um read-only Checks fuer Go/Make/Helm/kubectl, Podman/k3s, Git-Status, installierte Profile/Tools, RAM/Speicher und gefaehrliche Rechte erweitert.
 - Kompaktes Setup-Audit, Tools-Katalog, OpenClaw-/n8n-/Kubernetes-Doku, Security/Backup/Secrets-Doku sowie sichere Config- und Script-Wrapper ergaenzt.
 - Fehlende documentation-first Profile fuer Bild/Video, DevOps/Kubernetes, Security/Privacy, Home Assistant, n8n Automation, Local Memory, Android, Business Office, Legal Checker und System Doctor angelegt.
 - Next-Level Review-Paket ergaenzt: Setup-Bewertung, Profil-/Tool-Gap-Analyse, Entscheidungsbaum, Low-Resource-Modus, Backup/Restore, Remote-Safe-Defaults, WSL2-, Node/pnpm-, Ollama-, Agent-Routing- und MCP-Guides.

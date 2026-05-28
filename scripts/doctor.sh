@@ -24,12 +24,24 @@ if command_exists_fast docker; then
     timeout 5 docker info >/dev/null 2>&1 && echo "OK docker nutzbar" || echo "Hinweis: docker gefunden, aber fuer aktuellen User nicht direkt nutzbar"
 fi
 command_exists_fast podman && echo "OK podman gefunden" || echo "Hinweis: podman nicht gefunden"
+if command_exists_fast podman; then
+    timeout 5 podman info >/dev/null 2>&1 && echo "OK podman nutzbar" || echo "Hinweis: podman gefunden, aber nicht nutzbar"
+fi
+if command_exists_fast k3s; then
+    timeout 5 k3s --version | head -n 1 || true
+else
+    echo "Hinweis: k3s nicht gefunden"
+fi
 command_exists_fast node && timeout 3 node --version || echo "Hinweis: node nicht gefunden"
 command_exists_fast pnpm && timeout 3 pnpm --version || echo "Hinweis: pnpm nicht gefunden"
 command_exists_fast corepack && timeout 3 corepack --version || echo "Hinweis: corepack nicht gefunden"
 command_exists_fast python3 && timeout 3 python3 --version || echo "Hinweis: python3 nicht gefunden"
 command_exists_fast pipx && timeout 3 pipx --version || echo "Hinweis: pipx nicht gefunden"
 command_exists_fast gh && timeout 3 gh --version | head -n 1 || echo "Hinweis: GitHub CLI nicht gefunden"
+command_exists_fast go && timeout 3 go version || echo "Hinweis: go nicht gefunden"
+command_exists_fast make && timeout 3 make --version | head -n 1 || echo "Hinweis: make nicht gefunden"
+command_exists_fast helm && timeout 3 helm version --short || echo "Hinweis: helm nicht gefunden"
+command_exists_fast kubectl && timeout 3 kubectl version --client=true 2>/dev/null | head -n 1 || echo "Hinweis: kubectl nicht gefunden"
 python3 -m venv --help >/dev/null 2>&1 && echo "OK python venv verfuegbar" || echo "Hinweis: python3-venv fehlt oder ist defekt"
 
 if grep -qiE "microsoft|wsl" /proc/version 2>/dev/null || [ -n "${WSL_DISTRO_NAME:-}" ]; then
@@ -65,9 +77,32 @@ fi
 section "Speicher"
 free_mb="$(df -Pm / 2>/dev/null | awk 'NR==2 {print $4}')"
 echo "Freier Linux-/WSL-Speicher: ${free_mb:-unbekannt} MB"
+if command_exists_fast free; then
+    free -h || true
+fi
 if [ -n "${free_mb:-}" ] && [ "$free_mb" -lt 20480 ] 2>/dev/null; then
     echo "WARNUNG: Weniger als 20 GB frei. Schwere Installationen vermeiden."
 fi
+
+section "Git und Installationsstatus"
+if command_exists_fast git; then
+    timeout 20 git status --short --untracked-files=no || echo "Hinweis: Git-Status nicht verfuegbar oder Timeout"
+fi
+if [ -f installed_profiles.txt ]; then
+    echo "Installierte Profile:"
+    sed -n '1,40p' installed_profiles.txt
+else
+    echo "Hinweis: installed_profiles.txt nicht gefunden"
+fi
+if [ -f installed_tools.txt ]; then
+    echo "Installierte Tools:"
+    sed -n '1,40p' installed_tools.txt
+else
+    echo "Hinweis: installed_tools.txt nicht gefunden"
+fi
+
+section "Gefaehrliche Rechte"
+timeout 20 find . -path ./.git -prune -o -type f -perm -0002 -print | head -n 20 || echo "Hinweis: Rechtepruefung Timeout oder nicht verfuegbar"
 
 section "Ports"
 bash scripts/check_ports.sh || echo "WARNUNG: Portcheck meldet Probleme"
