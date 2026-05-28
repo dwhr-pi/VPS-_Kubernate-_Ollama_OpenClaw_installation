@@ -1,0 +1,15 @@
+# Model catalog draft. Real installed model list should be generated locally.
+default_local_model: llama3.2:1b
+providers:
+  ollama:
+    base_url: http://127.0.0.1:11434
+    preferred: true
+  cloud_optional:
+    enabled_by_default: false
+models:
+  - name: llama3.2:1b
+    use: smoke-tests, low-resource prompts
+    status: recommended
+  - name: llama3:latest
+    use: better local quality when available
+    status: optional

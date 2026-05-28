@@ -2,6 +2,8 @@
 
 ## V11.18
 
+- Kompaktes Setup-Audit, Tools-Katalog, OpenClaw-/n8n-/Kubernetes-Doku, Security/Backup/Secrets-Doku sowie sichere Config- und Script-Wrapper ergaenzt.
+- Fehlende documentation-first Profile fuer Bild/Video, DevOps/Kubernetes, Security/Privacy, Home Assistant, n8n Automation, Local Memory, Android, Business Office, Legal Checker und System Doctor angelegt.
 - Next-Level Review-Paket ergaenzt: Setup-Bewertung, Profil-/Tool-Gap-Analyse, Entscheidungsbaum, Low-Resource-Modus, Backup/Restore, Remote-Safe-Defaults, WSL2-, Node/pnpm-, Ollama-, Agent-Routing- und MCP-Guides.
 - Profil-, Tool-Lifecycle- und Menuestruktur-Standards ergaenzt; schneller Lifecycle-Audit `scripts/check_tool_lifecycle.sh` in Dry-Run und CI eingebunden.
 - Safe-Default-Bindings gehaertet: OpenClaw-/Profil-Templates sowie ArchiveBox/Vault-Beispiele binden nun standardmaessig an `127.0.0.1` statt `0.0.0.0`.

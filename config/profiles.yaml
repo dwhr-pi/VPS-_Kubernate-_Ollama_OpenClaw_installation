@@ -1,0 +1,4 @@
+# Compatibility alias for config/profiles.yml.
+# Keep config/profiles.yml as the primary registry until the project migrates.
+primary_registry: config/profiles.yml
+status: alias

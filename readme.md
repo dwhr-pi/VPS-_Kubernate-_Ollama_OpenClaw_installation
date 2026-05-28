@@ -46,6 +46,11 @@
 - [Cloudflare and Tailscale Access](docs/CLOUDFLARE_TAILSCALE_ACCESS_GUIDE.md)
 - [Local First Cost Control](docs/LOCAL_FIRST_COST_CONTROL.md)
 - [Known Issues](docs/KNOWN_ISSUES.md)
+- [Setup Audit](docs/SETUP_AUDIT.md)
+- [Tools Catalog](docs/TOOLS_CATALOG.md)
+- [OpenClaw Integration](docs/OPENCLAW_INTEGRATION.md)
+- [n8n Git Install](docs/N8N_GIT_INSTALL.md)
+- [Kubernetes Optional](docs/KUBERNETES_OPTIONAL.md)
 
 Neue Profile ab `11.17` sind bewusst als `planned` registriert. Sie sind sichtbar, aber starten keine schweren Toolchains ohne explizite Tool-Auswahl.
 
@@ -102,6 +107,8 @@ Die naechste Ausbaustufe wird ueber [docs/SETUP_REVIEW_2026_NEXT_LEVEL.md](docs/
 Neue Profile und Tools folgen den Standards [docs/PROFILE_AUTHORING_STANDARD.md](docs/PROFILE_AUTHORING_STANDARD.md), [docs/TOOL_LIFECYCLE_STANDARD.md](docs/TOOL_LIFECYCLE_STANDARD.md) und [docs/MENU_STRUCTURE_NEXT_LEVEL.md](docs/MENU_STRUCTURE_NEXT_LEVEL.md). Der schnelle Audit laeuft mit `bash scripts/next_level_dry_run_check.sh`; ein Tool-Lifecycle-Ueberblick ist mit `bash scripts/check_tool_lifecycle.sh` moeglich.
 
 Weitere Betriebsleitplanken: [docs/SECRETS_AND_KEYS.md](docs/SECRETS_AND_KEYS.md), [docs/LOCAL_FIRST_COST_CONTROL.md](docs/LOCAL_FIRST_COST_CONTROL.md), [docs/CLOUDFLARE_TAILSCALE_ACCESS_GUIDE.md](docs/CLOUDFLARE_TAILSCALE_ACCESS_GUIDE.md) und [docs/KNOWN_ISSUES.md](docs/KNOWN_ISSUES.md).
+
+Neue kompakte Einstiegsdokumente: [docs/SETUP_AUDIT.md](docs/SETUP_AUDIT.md), [docs/TOOLS_CATALOG.md](docs/TOOLS_CATALOG.md), [docs/OPENCLAW_INTEGRATION.md](docs/OPENCLAW_INTEGRATION.md), [docs/N8N_GIT_INSTALL.md](docs/N8N_GIT_INSTALL.md) und [docs/KUBERNETES_OPTIONAL.md](docs/KUBERNETES_OPTIONAL.md). Sichere Wrapper liegen unter `scripts/setup.sh`, `scripts/preflight.sh`, `scripts/check_models.sh`, `scripts/backup.sh` und `scripts/update_all.sh`.
 
 ## Setup-Skripte schnell finden
 

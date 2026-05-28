@@ -1,0 +1,4 @@
+# Compatibility alias for config/tools.yml.
+# Keep config/tools.yml as the primary registry until the project migrates.
+primary_registry: config/tools.yml
+status: alias
