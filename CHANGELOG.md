@@ -2,6 +2,8 @@
 
 ## V11.18
 
+- GitHub Contribution-Dateien ergaenzt: `CONTRIBUTING.md`, `SECURITY.md`, `CODE_OF_CONDUCT.md`, `CODEOWNERS`, PR-Template und Issue-Templates.
+- Branch-Protection- und PR-Prozess in `docs/GITHUB_CONTRIBUTION_AND_BRANCH_PROTECTION.md` dokumentiert.
 - Setup Review/Roadmap, Recommended Tools, Quickstart, Architecture, Security Model, Profiles Overview, Tool Integration Matrix, Troubleshooting und VPS/Homelab/K3s Guide ergaenzt.
 - Neue documentation-first Profile fuer Sysadmin/DevOps, Blue Team, Codex-Agenten, n8n, Home Assistant, Media, Image/Video, Kubernetes, Local-First Privacy, Android und Monitoring ergaenzt.
 - `scripts/doctor.sh` um read-only Checks fuer Go/Make/Helm/kubectl, Podman/k3s, Git-Status, installierte Profile/Tools, RAM/Speicher und gefaehrliche Rechte erweitert.

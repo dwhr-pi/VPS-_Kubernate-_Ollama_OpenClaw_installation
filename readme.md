@@ -61,6 +61,7 @@
 - [Tool Integration Matrix](docs/TOOL_INTEGRATION_MATRIX.md)
 - [Troubleshooting](docs/TROUBLESHOOTING.md)
 - [Troubleshooting Next Level](docs/TROUBLESHOOTING_NEXT_LEVEL.md)
+- [Contribution and Branch Protection](docs/GITHUB_CONTRIBUTION_AND_BRANCH_PROTECTION.md)
 
 Neue Profile ab `11.17` sind bewusst als `planned` registriert. Sie sind sichtbar, aber starten keine schweren Toolchains ohne explizite Tool-Auswahl.
 
@@ -121,6 +122,8 @@ Weitere Betriebsleitplanken: [docs/SECRETS_AND_KEYS.md](docs/SECRETS_AND_KEYS.md
 Neue kompakte Einstiegsdokumente: [docs/SETUP_AUDIT.md](docs/SETUP_AUDIT.md), [docs/TOOLS_CATALOG.md](docs/TOOLS_CATALOG.md), [docs/OPENCLAW_INTEGRATION.md](docs/OPENCLAW_INTEGRATION.md), [docs/N8N_GIT_INSTALL.md](docs/N8N_GIT_INSTALL.md) und [docs/KUBERNETES_OPTIONAL.md](docs/KUBERNETES_OPTIONAL.md). Sichere Wrapper liegen unter `scripts/setup.sh`, `scripts/preflight.sh`, `scripts/check_models.sh`, `scripts/backup.sh` und `scripts/update_all.sh`.
 
 Die aktuelle Roadmap und die empfohlenen Toolpfade stehen in [docs/SETUP_REVIEW_AND_ROADMAP.md](docs/SETUP_REVIEW_AND_ROADMAP.md) und [docs/RECOMMENDED_TOOLS.md](docs/RECOMMENDED_TOOLS.md). Neue Profile bleiben `documentation-first`, bis Installer, Doctor, Statuscheck und Ressourcenwerte vorhanden sind.
+
+Beitraege laufen bevorzugt ueber Forks, Feature-Branches und Pull Requests. Details stehen in [CONTRIBUTING.md](CONTRIBUTING.md), [SECURITY.md](SECURITY.md) und [docs/GITHUB_CONTRIBUTION_AND_BRANCH_PROTECTION.md](docs/GITHUB_CONTRIBUTION_AND_BRANCH_PROTECTION.md).
 
 ## Setup-Skripte schnell finden
 

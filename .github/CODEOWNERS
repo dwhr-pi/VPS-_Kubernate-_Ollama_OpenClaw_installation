@@ -1,0 +1,8 @@
+# Default code owners
+* @dwhr-pi
+
+# Security-sensitive areas
+/scripts/security/ @dwhr-pi
+/scripts/tools/ @dwhr-pi
+/config/ @dwhr-pi
+/.github/ @dwhr-pi
