@@ -99,5 +99,6 @@ Primaerquellen und GitHub-Referenzen sind gesammelt in `docs/GITHUB_TOOL_SOURCES
 | OpenTelemetry Collector | `github.com/open-telemetry/opentelemetry-collector` | Observability-Pipeline | optional |
 | AI-ContentMultiplier | `C:\Users\danie\Documents\GitHub\content-multiplier` | URL/PDF/Web/YouTube/LinkedIn zu Content-Entwuerfen via OpenClaw/n8n | optional, workflow-first |
 | Stalwart Mail | `github.com/stalwartlabs/stalwart` | Selbst gehosteter Mailserver fuer eigene Domains mit OpenClaw/Ollama-Admin-Agent | optional, sicherheitskritisch |
+| AutoGPT | `github.com/significant-gravitas/autogpt` | Agentenplattform; schwere Docker-Compose-Builds | experimental/heavy, siehe [AutoGPT Build Troubleshooting](AUTOGPT_BUILD_TROUBLESHOOTING.md) |
 
 Neue Tools werden nur dann als installierbar markiert, wenn Installer, Healthcheck und sichere Defaults vorhanden sind.

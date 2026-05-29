@@ -3,6 +3,7 @@
 # AUTOGPT_INSTALL.SH - Installation von AutoGPT
 # AutoGPT ist eine Agenten-Plattform von Significant Gravitas.
 # ==============================================================================
+set -o pipefail
 
 # Farben
 GREEN="\033[0;32m"
@@ -21,7 +22,7 @@ init_tool_tracking "AutoGPT"
 
 AUTOGPT_DIR="/opt/autogpt"
 AUTOGPT_PLATFORM_DIR="$AUTOGPT_DIR/autogpt_platform"
-AUTOGPT_INSTALLER_REVISION="2026-05-27-buildx-preflight"
+AUTOGPT_INSTALLER_REVISION="2026-05-29-frontend-build-diagnostics"
 AUTOGPT_BUILDX_VERSION="${AUTOGPT_BUILDX_VERSION:-v0.34.1}"
 AUTOGPT_REPOS=(
     "${AUTOGPT_REPO_URL:-}"
@@ -141,6 +142,38 @@ EOF
     return 1
 }
 
+analyze_autogpt_compose_failure() {
+    local log_file="$1"
+
+    echo -e "${RED}AutoGPT Docker Compose Build/Start ist fehlgeschlagen.${NC}"
+
+    if grep -Eqi 'target frontend|frontend build|pnpm build|Linting and checking validity of types|ELIFECYCLE|NEXT_PUBLIC_PW_TEST' "$log_file"; then
+        echo -e "${YELLOW}Erkannt: Der Fehler liegt sehr wahrscheinlich im AutoGPT-Frontend-Build.${NC}"
+        echo -e "${YELLOW}Typisches Muster:${NC} Docker/BuildKit baut Backend-/Worker-Images erfolgreich, danach bricht Next.js/pnpm im Frontend ab."
+        echo -e "${YELLOW}Wichtig:${NC} Edge-Runtime- und Tailwind-Warnungen koennen vorher erscheinen, sind aber nicht zwingend der eigentliche Abbruch."
+        echo -e "${YELLOW}Der entscheidende Block ist meist:${NC} 'Linting and checking validity of types' gefolgt von 'ELIFECYCLE Command failed with exit code 1'."
+        echo -e "${YELLOW}Das ist dann kein Prisma-, Pip-root- oder BuildKit-Fehler, sondern ein Upstream-Frontend-Buildproblem oder ein Ressourcen-/Timeoutproblem im AutoGPT-Frontend.${NC}"
+        echo -e "${BLUE}Naechste Diagnose:${NC}"
+        echo "  cd ${AUTOGPT_PLATFORM_DIR}"
+        echo "  DOCKER_BUILDKIT=1 COMPOSE_DOCKER_CLI_BUILD=1 docker compose build frontend --progress=plain"
+        echo -e "${YELLOW}Wenn der Build wieder erst nach langer Zeit scheitert, bitte die Zeilen direkt vor dem finalen ELIFECYCLE-Fehler sichern.${NC}"
+    fi
+
+    if grep -Eqi 'current commit information was not captured|git rev-parse --is-inside-work-tree' "$log_file"; then
+        echo -e "${YELLOW}Hinweis:${NC} 'current commit information was not captured' ist normalerweise nur eine Docker/Git-Metadatenwarnung und nicht der eigentliche Abbruch."
+    fi
+
+    if grep -Eqi 'Edge Runtime|process\\.version|process\\.versions' "$log_file"; then
+        echo -e "${YELLOW}Hinweis:${NC} Supabase/Edge-Runtime-Warnungen wurden erkannt. Diese Warnungen koennen laut Log vor dem Abbruch erscheinen; fatal ist erst der spaetere pnpm/ELIFECYCLE-Exit."
+    fi
+
+    if grep -Eqi 'the --mount option requires BuildKit|requires BuildKit' "$log_file"; then
+        echo -e "${RED}Erkannt: BuildKit-Problem. BuildKit/Buildx erneut pruefen.${NC}"
+    fi
+
+    echo -e "${BLUE}Weitere Hinweise:${NC} docs/AUTOGPT_BUILD_TROUBLESHOOTING.md"
+}
+
 echo -e "${BLUE}Starte Installation von AutoGPT...${NC}"
 echo -e "${YELLOW}AutoGPT-Installer-Revision:${NC} ${AUTOGPT_INSTALLER_REVISION}"
 
@@ -222,14 +255,16 @@ if ! verify_autogpt_buildkit; then
     exit 1
 fi
 
-run_autogpt_compose_buildkit up -d
-if [ $? -ne 0 ]; then
-    echo -e "${RED}Fehler: AutoGPT Docker Compose Start fehlgeschlagen.${NC}"
+AUTOGPT_COMPOSE_LOG="$(mktemp)"
+if ! run_autogpt_compose_buildkit up -d 2>&1 | tee "$AUTOGPT_COMPOSE_LOG"; then
+    analyze_autogpt_compose_failure "$AUTOGPT_COMPOSE_LOG"
     echo -e "${YELLOW}Reparaturhinweis: Pruefe, ob der Docker-Daemon laeuft und BuildKit verfuegbar ist.${NC}"
     echo -e "${YELLOW}Der typische Fehler lautet: 'the --mount option requires BuildKit'.${NC}"
     echo -e "${YELLOW}Wenn der letzte sichtbare Block Prisma/Poetry nennt, bitte die Zeilen danach pruefen: Prisma-Generierung allein ist meist nicht der eigentliche Fehler.${NC}"
+    rm -f "$AUTOGPT_COMPOSE_LOG"
     exit 1
 fi
+rm -f "$AUTOGPT_COMPOSE_LOG"
 
 echo -e "${GREEN}AutoGPT Installation abgeschlossen.${NC}"
 echo -e "${YELLOW}Die Plattform liegt unter ${AUTOGPT_DIR}.${NC}"
