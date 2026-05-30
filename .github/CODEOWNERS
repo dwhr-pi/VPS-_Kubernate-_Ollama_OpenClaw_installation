@@ -4,5 +4,8 @@
 # Security-sensitive areas
 /scripts/security/ @dwhr-pi
 /scripts/tools/ @dwhr-pi
+/scripts/wireguard/ @dwhr-pi
+/scripts/home-watcher/ @dwhr-pi
+/tools/mail/ @dwhr-pi
 /config/ @dwhr-pi
 /.github/ @dwhr-pi

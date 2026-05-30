@@ -18,6 +18,7 @@
 ## Aktuelle Governance-Dokumente
 
 - [Setup Review und naechste Schritte](docs/SETUP_REVIEW_AND_NEXT_STEPS.md)
+- [Contribution und Branch-Schutz](docs/GITHUB_CONTRIBUTION_AND_BRANCH_PROTECTION.md)
 - [Einsteiger-Tutorial: HE/Oracle/Homecluster](docs/architecture/he-oracle-homecluster.md)
 - [Setup Review 2026 - Next Actions](docs/SETUP_REVIEW_2026_NEXT_ACTIONS.md)
 - [Installationspfade](docs/INSTALLATION_PATHS.md)

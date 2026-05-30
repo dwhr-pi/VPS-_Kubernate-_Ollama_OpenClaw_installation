@@ -22,14 +22,16 @@ Was aendert dieser PR?
 - [ ] Keine echten Secrets/API-Keys/Tokens enthalten
 - [ ] Keine produktive `.env` enthalten
 - [ ] Keine offenen Admin-Ports eingefuehrt
-- [ ] Schreibende/gefährliche Aktionen brauchen Human Approval
+- [ ] Schreibende/gefaehrliche Aktionen brauchen Human Approval
 - [ ] Schwere Tools bleiben opt-in
+- [ ] Cloudflare ist optional, nicht Pflichtpfad
 
 ## Tests
 
 - [ ] `bash -n` fuer geaenderte Skripte
 - [ ] `bash scripts/validate_config.sh || true`
-- [ ] `bash scripts/next_level_dry_run_check.sh || true`
+- [ ] `bash scripts/check_tools.sh || true`
+- [ ] `bash scripts/check_profiles.sh || true`
 - [ ] Doku-Links manuell geprueft
 
 ## Offene Punkte

@@ -7,6 +7,7 @@
 - HE/Oracle/WireGuard/Homecluster-Zielarchitektur als Einsteiger-Tutorial, Security-Doku, K3s-Hinweise, Wake-on-LAN-Skripte und sichere Beispiel-Stacks ergaenzt.
 - Stalwart Mail als optionalen Mailserver-Kern mit HE-DNS-Doku, Oracle-VPS-Hardening, OpenClaw/Ollama-Mail-Agent, Control-Panel-Plan und sicheren Setup-Wrappern ergaenzt.
 - AutoGPT-Installer um Diagnose fuer Frontend-`pnpm build`/`ELIFECYCLE`-Fehler, Edge-Runtime-Warnungen und Docker-Git-Metadatenwarnungen erweitert.
+- GitHub Contribution-, Security-, CODEOWNERS-, PR-/Issue-Template- und Branch-Protection-Dokumentation professionalisiert.
 
 ## V11.16
 

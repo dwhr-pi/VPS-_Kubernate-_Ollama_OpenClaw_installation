@@ -73,3 +73,17 @@ Nutze stattdessen:
 - Sicherheitsmodell respektieren
 - neue Integrationen dokumentieren
 - keine schweren Installer ohne Opt-in einfuehren
+
+## Branch-Schutz fuer Maintainer
+
+Fuer produktive Nutzung wird empfohlen, `main` mit GitHub Branch Protection zu
+schuetzen:
+
+- direkte Pushes auf `main` deaktivieren
+- Pull Requests verlangen
+- mindestens ein Review verlangen
+- CI/Checks optional oder verpflichtend machen
+- Force-Push verbieten
+- Branch-Loeschung verhindern
+
+Details stehen in [docs/GITHUB_CONTRIBUTION_AND_BRANCH_PROTECTION.md](docs/GITHUB_CONTRIBUTION_AND_BRANCH_PROTECTION.md).
