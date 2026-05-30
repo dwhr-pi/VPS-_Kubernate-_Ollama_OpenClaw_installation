@@ -2,6 +2,18 @@
 
 Leitfaden fuer piper guide. Enthalten: Zweck, Setup-Hinweise, Sicherheitsregeln, Speicherorte unter `~/.openclaw_ultimate_user_data/voice_studio/` und keine Rohdaten im Repo.
 
+## Warum Piper der Standard ist
+
+Piper ist der empfohlene Start fuer lokale Sprachausgabe:
+
+- CPU-tauglich
+- schnell
+- gut fuer Home Assistant
+- weniger Python-/CUDA-Abhaengigkeiten
+- geeignet fuer MiniPC, WSL2 und VPS
+
+Wenn Coqui TTS unter Ubuntu 24.04 wegen Python 3.12 abbricht, ist Piper der richtige Fallback. Coqui/XTTS sollte erst getestet werden, wenn Python 3.9, 3.10 oder 3.11 mit `venv` verfuegbar ist.
+
 ## Ressourcenklassen
 
 | Klasse | CPU | RAM | VRAM | Speicherplatz | Nutzung |

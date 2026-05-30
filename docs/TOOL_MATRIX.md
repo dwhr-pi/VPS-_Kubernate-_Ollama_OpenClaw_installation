@@ -88,7 +88,7 @@ Sie sind gute Kandidaten fuer die naechste Ausbaustufe, sollten aber erst mit kl
 | Tool | Quelle | Status | Ressourcen | Installationsart | Hinweis |
 | --- | --- | --- | --- | --- | --- |
 | Piper | https://github.com/rhasspy/piper | optional/stable | light | binary/manual | Standard fuer lokale schnelle TTS und Home Assistant. |
-| Coqui TTS / XTTS v2 | https://github.com/coqui-ai/TTS | optional/experimental | gpu-heavy | venv/source | Hochwertige Stimmen und Voice-Cloning; Python-Kompatibilitaet pruefen. |
+| Coqui TTS / XTTS v2 | https://github.com/coqui-ai/TTS | experimental | gpu-heavy | venv/source | Benoetigt Python `>=3.9,<3.12`; Ubuntu 24.04/Python 3.12 wird bewusst abgebrochen. Piper ist der stabile Fallback. |
 | StyleTTS2 | https://github.com/yl4579/StyleTTS2 | planned | gpu-heavy | source | Emotionale Stimmen, keine Auto-Installation. |
 | OpenVoice | https://github.com/myshell-ai/OpenVoice | planned | gpu-heavy | source | Voice Transfer und Voice-Cloning nur mit Einwilligung. |
 | RVC | https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI | planned | gpu-heavy | source | Gesangsstimmen und Voice Conversion. |

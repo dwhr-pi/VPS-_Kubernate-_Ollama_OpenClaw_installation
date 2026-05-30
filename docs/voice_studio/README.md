@@ -2,6 +2,21 @@
 
 Strukturierter Einstieg fuer TTS, Voice-Cloning, Training, Dataset-Management und mehrsprachige Stimmen. Nur eigene oder freigegebene Stimmen verwenden.
 
+## Startempfehlung: erst Piper, Coqui nur optional
+
+Piper ist der stabile lokale Standardpfad fuer Text-to-Speech. Es ist schnell, CPU-tauglich und deutlich unproblematischer auf Ubuntu 24.04/WSL2.
+
+Coqui TTS / XTTS bleibt `experimental`, weil das PyPI-Paket `TTS==0.22.0` Python `>=3.9,<3.12` benoetigt. Ubuntu 24.04 liefert standardmaessig Python 3.12; damit bricht die Installation korrekt vor dem `pip install` ab.
+
+Der Installer prueft vor Installationsbeginn:
+
+- kompatibles Python: `python3.9`, `python3.10` oder `python3.11` mit `venv`
+- Linux-/WSL-Speicher
+- Windows-Host-Speicher auf `C:` bei WSL
+- vorhandene inkompatible Coqui-venv
+
+Wenn kein kompatibles Python gefunden wird, ist das kein kaputtes Setup. Es bedeutet: Coqui ist fuer dieses System nicht freigegeben; nutze Piper oder installiere bewusst ein kompatibles Python ausserhalb des Standard-`python3`.
+
 ## Ressourcenklassen
 
 | Klasse | CPU | RAM | VRAM | Speicherplatz | Nutzung |

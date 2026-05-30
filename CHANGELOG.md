@@ -40,3 +40,9 @@
 - Media-Profile nach `docs/profiles/media/`, Agenten nach `docs/agents/media/`, Workflows nach `docs/workflows/media/` und Tutorials nach `docs/tutorials/media/` gespiegelt.
 - `config/tools.yml` um strukturierte Kategorien `voice_tools`, `singing_tools`, `avatar_tools`, `audio_tools` und `broadcast_tools` erweitert.
 - Sichere Stub-Installer unter `scripts/tools/media/` angelegt; sie dokumentieren den geplanten Installationspfad, starten aber keine schweren Builds.
+## 2026-05-30 - Coqui TTS Python-Kompatibilitaet dokumentiert
+
+- Coqui TTS in `config/tools.yml` als `experimental` mit Python-Anforderung `>=3.9,<3.12` markiert.
+- Ubuntu-24.04-/Python-3.12-Abbruch als erwarteten Schutz dokumentiert.
+- Piper als stabilen lokalen TTS-Fallback in Voice-Studio-Doku hervorgehoben.
+- Neue Kompatibilitaetsseite `docs/voice_studio/COQUI_TTS_COMPATIBILITY.md` ergaenzt.

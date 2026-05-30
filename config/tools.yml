@@ -646,15 +646,23 @@
     {
       "id": "coqui_tts",
       "name": "Coqui TTS",
-      "category": "media",
+      "category": "Voice Studio / TTS",
       "install_script": "scripts/tools/coqui_tts_install.sh",
       "uninstall_script": "scripts/tools/coqui_tts_uninstall.sh",
       "ports": [],
-      "check_type": "command",
-      "check_value": "python3",
-      "safety": "Modelle und Stimmrechte beachten.",
+      "check_type": "python-version-range",
+      "check_value": "python3.9|python3.10|python3.11 with venv",
+      "safety": "Experimental: Python 3.9-3.11 erforderlich; Stimmeinwilligung, KI-Kennzeichnung und lokale Ablage beachten.",
       "source": "https://github.com/coqui-ai/TTS",
-      "security_note": " Voice-Studio-Nutzung: Rechte, Einwilligung und Kennzeichnung beachten."
+      "security_note": "Coqui TTS/XTTS bleibt optional/experimental. Keine fremden Stimmen ohne Einwilligung verwenden. Unter Ubuntu 24.04/Python 3.12 bricht der Installer vor pip install ab; stabilerer lokaler TTS-Pfad: Piper.",
+      "status": "experimental",
+      "resource_class": "gpu-heavy",
+      "install_mode": "venv",
+      "python_requirement": ">=3.9,<3.12",
+      "ubuntu_2404_note": "Ubuntu 24.04 ships Python 3.12 by default; Coqui TTS PyPI package TTS==0.22.0 does not support it. Use Python 3.9, 3.10 or 3.11, or prefer Piper.",
+      "fallback": "piper",
+      "auto_install": false,
+      "updated": "2026-05-30"
     },
     {
       "id": "demucs",
