@@ -69,3 +69,13 @@ Vor groesseren Installationen zuerst Port- und Ressourcenpruefung laufen lassen:
 ```bash
 bash scripts/operations/check_port_conflicts.sh
 ```
+# Zusatz: Sicherheitskritische Ports
+
+| Port | Dienst | Freigabe |
+|---|---|---|
+| 11434 | Ollama | niemals oeffentlich |
+| 18789 | OpenClaw Gateway | niemals oeffentlich |
+| 6443 | Kubernetes API | nur VPN/Admin |
+| 8123 | Home Assistant | nur VPN/Reverse Proxy mit Auth |
+| 8188 | ComfyUI | nur lokal/VPN |
+| 25/465/587/993/995 | Mailserver | nur nach Hardening |

@@ -73,3 +73,59 @@ Diese Kandidaten sind fachlich sinnvoll, aber in diesem Repo noch nicht sauber a
 Sie sind gute Kandidaten fuer die naechste Ausbaustufe, sollten aber erst mit klarer Install-/Uninstall-/Status-Logik nachgezogen werden.
 
 `Tailscale` ist bewusst bereits integriert, weil es direkt zur Sicherheitsgrundregel des Repos passt: Admin-Zugriffe nach Moeglichkeit privat statt ueber offene Web-Panels oder rohe Host-Ports.
+# Zusatz: Job Queue und planned Tools 2026
+
+| Tool | Status | Risiko | Quelle |
+|---|---|---|---|
+| job_queue | beta | niedrig | lokale Bash/JSONL-Implementierung |
+| queue_manager | planned | niedrig | `https://github.com/rq/rq` als moeglicher Startpunkt |
+| bullmq | planned | mittel | `https://github.com/taskforcesh/bullmq` |
+| celery | planned | mittel | `https://github.com/celery/celery` |
+| rq | planned | niedrig | `https://github.com/rq/rq` |
+| modelcontextprotocol_servers | planned | mittel | `https://github.com/modelcontextprotocol/servers` |
+## Voice Studio Tool-Erweiterung 2026
+
+| Tool | Quelle | Status | Ressourcen | Installationsart | Hinweis |
+| --- | --- | --- | --- | --- | --- |
+| Piper | https://github.com/rhasspy/piper | optional/stable | light | binary/manual | Standard fuer lokale schnelle TTS und Home Assistant. |
+| Coqui TTS / XTTS v2 | https://github.com/coqui-ai/TTS | optional/experimental | gpu-heavy | venv/source | Hochwertige Stimmen und Voice-Cloning; Python-Kompatibilitaet pruefen. |
+| StyleTTS2 | https://github.com/yl4579/StyleTTS2 | planned | gpu-heavy | source | Emotionale Stimmen, keine Auto-Installation. |
+| OpenVoice | https://github.com/myshell-ai/OpenVoice | planned | gpu-heavy | source | Voice Transfer und Voice-Cloning nur mit Einwilligung. |
+| RVC | https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI | planned | gpu-heavy | source | Gesangsstimmen und Voice Conversion. |
+| Seed-VC | https://github.com/Plachtaa/seed-vc | planned | gpu-heavy | source | Moderne Voice Conversion, experimentell. |
+| DiffSinger | https://github.com/openvpi/DiffSinger | planned | gpu-heavy | source | KI-Gesang und virtuelle Saenger. |
+| OpenUtau | https://github.com/stakira/OpenUtau | planned | medium | manual | Gesangsproduktion und virtuelle Saenger. |
+| NNSVS | https://github.com/nnsvs/nnsvs | planned | gpu-heavy | source | Eigenes Singer-Training, fortgeschritten. |
+| UVR5 | https://github.com/Anjok07/ultimatevocalremovergui | planned | gpu-heavy | source | Stimm-/Instrumententrennung fuer Datenvorbereitung. |
+| Audacity | https://github.com/audacity/audacity | optional | medium | manual | Schnitt, Reinigung und Dataset-Vorbereitung. |
+| FFmpeg | https://github.com/FFmpeg/FFmpeg | stable | light | apt/binary | Export, Mixdown, Normalisierung und Formatwandlung. |
+
+Rechtsregel: Nur eigene Stimmen oder Stimmen mit dokumentierter Einwilligung verwenden. KI-Stimmen und KI-Gesang muessen bei Veroeffentlichung gekennzeichnet werden.
+## AI Media Production Tool-Erweiterung 2026
+
+| Tool | Quelle | Status | Ressourcen | Zweck |
+| --- | --- | --- | --- | --- |
+| Fish Speech | https://github.com/fishaudio/fish-speech | planned | gpu-heavy | Multilinguales TTS und Voice-Experimente. |
+| MeloTTS | https://github.com/myshell-ai/MeloTTS | planned | medium | Mehrsprachiges TTS fuer Moderation und Broadcast. |
+| Kokoro TTS | https://github.com/hexgrad/kokoro | planned | light | Leichtes lokales TTS. |
+| Spark-TTS | https://github.com/SparkAudio/Spark-TTS | planned | gpu-heavy | Kontrollierte Stimmerzeugung. |
+| Hallo2 | https://github.com/fudan-generative-vision/hallo2 | planned | gpu-heavy | Lange hochaufloesende Portraitanimation. |
+| MuseTalk | https://github.com/TMElyralab/MuseTalk | planned | gpu-heavy | Hochwertige Lip-Synchronisation. |
+| LivePortrait | https://github.com/KlingAIResearch/LivePortrait | planned | gpu-heavy | Portraitanimation und Motion-Retargeting. |
+| SadTalker | https://github.com/OpenTalker/SadTalker | planned | gpu-heavy | Talking-Head-Video aus Bild und Audio. |
+| EMO | https://github.com/HumanAIGC/EMO | planned/research | gpu-heavy | Expressive Audio-to-Video-Portraits. |
+| SkyReels-A1 | https://github.com/SkyworkAI/SkyReels-A1 | planned | gpu-heavy | Expressive Portraitanimation mit Video-Diffusion. |
+| Wav2Lip | https://github.com/Rudrabha/Wav2Lip | planned | medium | Klassisches LipSync-Toolkit. |
+
+Diese Tools werden nicht automatisch installiert. Vor Tests sind Lizenz, Modellgewichte, VRAM, Einwilligung echter Personen und Kennzeichnungspflichten zu pruefen.
+## Strukturierte Media-Tool-Kategorien
+
+Die Registry `config/tools.yml` enthaelt jetzt zusaetzliche Kategorien fuer das Media Studio:
+
+- `voice_tools`: Piper, XTTS/CoquiTTS, OpenVoice, StyleTTS2, MeloTTS, FishSpeech, KokoroTTS.
+- `singing_tools`: RVC, SeedVC, DiffSinger, OpenUtau, NNSVS.
+- `avatar_tools`: Hallo2, MuseTalk, SadTalker, LivePortrait, Wav2Lip, EMO, SkyReels.
+- `audio_tools`: FFmpeg, Audacity, UVR5, ClearerVoice Studio.
+- `broadcast_tools`: OBS, Whisper, FasterWhisper, SubtitleEdit.
+
+Alle Kategorien sind als Katalog-/Menuevorbereitung gedacht. Schwere Tools bleiben `planned` oder `optional` und werden nicht automatisch installiert.

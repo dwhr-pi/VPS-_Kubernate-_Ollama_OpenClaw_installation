@@ -3976,7 +3976,8 @@ show_main_menu() {
     "11" "${TXT_MENU_11:-System-Check & Port-Analyse}" \
     "12" "${TXT_MENU_12:-OpenClaw starten (Dev-Modus)}" \
     "13" "${TXT_MENU_13:-Home Assistant starten}" \
-    "14" "${TXT_MENU_14:-Installierte Dienste starten}" 2> /tmp/menu_choice
+    "14" "${TXT_MENU_14:-Installierte Dienste starten}" \
+    "15" "${TXT_MENU_15:-MEDIA STUDIO: Voice, Singer, Choir, Avatar, Film}" 2> /tmp/menu_choice
 
     dialog_rc=$?
     if [ $dialog_rc -eq 3 ]; then
@@ -4043,6 +4044,29 @@ while true; do
         3)
             run_bash_script "$INSTALL_DIR/scripts/openclaw_config_manager.sh"
             read -p "OpenClaw Konfiguration abgeschlossen. Drücken Sie Enter..."
+            ;;
+        15)
+            clear
+            echo -e "${YELLOW}MEDIA STUDIO${NC}"
+            echo
+            echo "1 Voice Studio"
+            echo "2 AI Singer Studio"
+            echo "3 Choir Studio"
+            echo "4 Broadcasting Studio"
+            echo "5 Podcast Studio"
+            echo "6 Audiobook Studio"
+            echo "7 Avatar Studio"
+            echo "8 Film Studio"
+            echo "9 Dubbing Studio"
+            echo "10 Virtual Human Studio"
+            echo
+            echo -e "${YELLOW}Sicherheitsmodus:${NC} Diese Kategorie ist documentation-first. Schwere Voice-, Avatar-, LipSync- und Render-Tools werden nicht automatisch installiert."
+            echo -e "${YELLOW}Doku:${NC} $INSTALL_DIR/docs/media_studio/SETUP_MENU.md"
+            echo
+            if [ -f "$INSTALL_DIR/docs/media_studio/SETUP_MENU.md" ]; then
+                sed -n '1,120p' "$INSTALL_DIR/docs/media_studio/SETUP_MENU.md"
+            fi
+            read -p "MEDIA STUDIO Übersicht angezeigt. Drücken Sie Enter..."
             ;;
         4)
             show_operation_intro \

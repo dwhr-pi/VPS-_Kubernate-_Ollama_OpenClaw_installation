@@ -96,3 +96,53 @@ Diese Profile wurden geprueft, aber in diesem Schritt nicht als eigene Top-Level
 - `Dataset_Curation_Labeling`
 
 Sie bleiben sinnvolle Ausbaupfade, sollten aber erst nach stabilerer Tool-/Installationsabdeckung separat verdrahtet werden.
+# Zusatz: Planned Profile 2026
+
+Neue Profile unter `docs/Profile/` sind standardmaessig `planned` oder `beta`.
+Sie starten keine schweren Installer automatisch.
+
+| Profil | Status | Schwerpunkt |
+|---|---|---|
+| Job_Queue_Manager | beta | lokale Job Queue |
+| DNS_DDoS_Hardening | planned | HE DNS, DDoS, VPS Hardening |
+| Mailserver_AI_Assistant | planned | Stalwart/OpenClaw/Ollama Mail |
+| Codex_Queue_Worker | planned | Codex-Auftraege seriell |
+| Memory_Import_Export | planned | Memory/RAG Governance |
+## Voice Studio Erweiterung 2026
+
+| Profil | Status | Ressourcen | Zielgeraet | Zweck |
+| --- | --- | --- | --- | --- |
+| Voice_Studio | planned | medium | WSL2, MiniPC, VPS | Zentrales Studio fuer TTS, Voice-Over, Sprecherrollen und lokale Audio-Workflows. |
+| AI_Singer | planned | gpu-heavy | GPU Workstation | KI-Gesang, Singer-Training und Song-Demos. |
+| AI_Choir | planned | gpu-heavy | GPU Workstation | SATB-Chor, grosse Layer-Arrangements und Chor-Demos. |
+| Voice_Clone | planned | gpu-heavy | GPU Workstation | Voice-Cloning nur fuer eigene oder freigegebene Stimmen. |
+| Podcast_Studio | planned | medium | WSL2, MiniPC, VPS | Podcast-Skript, Sprecherrollen, TTS-Drafts und Export. |
+| Audiobook_Studio | planned | medium | WSL2, MiniPC, VPS | Hoerbuchproduktion mit Kapiteln, Rollenstimmen und Queue. |
+| Voice_Assistant | beta | medium | Home Server, MiniPC | Lokaler Sprachassistent, Piper als Standard, Home Assistant optional. |
+| Dubbing_Studio | planned | gpu-heavy | GPU Workstation | Synchronisation, Voice-Over und Mehrsprecher-Dubbing mit Freigabe. |
+| Voice_Laboratory | planned | gpu-heavy | GPU Workstation | Experimentelles Labor fuer neue Voice-, Singing- und Chor-Modelle. |
+
+Alle Voice-Studio-Profile sind read-only-first und installieren schwere Komponenten nicht automatisch. Rohaufnahmen, Stimmmodelle und Datasets gehoeren nach `~/.openclaw_ultimate_user_data/voice_studio/`, nicht ins Repository.
+## AI Media Production Studio 2026
+
+| Profil | Status | Ressourcen | Zielgeraet | Zweck |
+| --- | --- | --- | --- | --- |
+| AI_Actor | planned | gpu-heavy | GPU Workstation | Virtueller Schauspieler fuer Dialoge, Monologe und Emotionen. |
+| AI_Actress | planned | gpu-heavy | GPU Workstation | Virtuelle Schauspielerin fuer Dialoge, Monologe und Emotionen. |
+| AI_News_Anchor | planned | heavy | Gaming PC / VPS-Orchestrierung | Nachrichtensprecher fuer News, Wetter, Sport und Technik-News. |
+| AI_Moderator | planned | heavy | Gaming PC | Moderator fuer Shows, Livestreams und Tutorials. |
+| AI_Podcast_Host | planned | medium | WSL2 / MiniPC / VPS | Podcast-Host mit Skript, Rollenstimme und Show Notes. |
+| AI_Radio_Host | planned | medium | WSL2 / MiniPC | Radio-Host fuer Ansagen, Sendungen und Jingles. |
+| AI_Documentary_Narrator | planned | medium | WSL2 / MiniPC | Dokumentationssprecher mit ruhigem Stil. |
+| AI_Audiobook_Narrator | planned | medium | WSL2 / MiniPC | Hoerbuchsprecher fuer Kapitel und Rollenstimmen. |
+| AI_Dubbing_Artist | planned | gpu-heavy | GPU Workstation | Synchronsprecher fuer Dubbing, Voice-Over und LipSync. |
+| AI_Comedian | planned | medium | WSL2 / MiniPC | Comedy-Rolle fuer Sketche und Pointen. |
+| AI_Sports_Commentator | planned | medium | WSL2 / MiniPC | Energiegeladener Sportkommentator. |
+| AI_Interviewer | planned | medium | WSL2 / MiniPC | Interviewrolle fuer Podcasts und Expertenformate. |
+| AI_Influencer | planned | heavy | Gaming PC | Virtuelle Content-Persona mit Kennzeichnungspflicht. |
+| AI_Virtual_Human | planned | gpu-heavy | RTX Workstation | Vollstaendige virtuelle Person mit Stimme, Avatar und Rollenprofil. |
+| AI_Film_Director | planned | medium | WSL2 / VPS / GPU | Regieprofil fuer Drehbuch, Storyboard und Schnitt. |
+| AI_Casting_Director | planned | medium | WSL2 / MiniPC | Rollenbibliothek, Casting und Stimmenauswahl. |
+| AI_Voice_Director | planned | medium | WSL2 / MiniPC | Sprecherfuehrung, Emotion, Timing, Dubbing und Chor. |
+
+Alle Profile sind documentation-first. Avatar-, LipSync- und Deepfake-nahe Workflows benoetigen Einwilligung, KI-Kennzeichnung und manuelle Freigabe.

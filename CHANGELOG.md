@@ -22,3 +22,21 @@
 ## V11.15
 
 - Registry-Grundlagen, Audit-Doku, Matrixen und zusätzliche Studio-Profile
+## 2026-05-30 - Voice Studio und AI Singer erweitert
+
+- Neue Voice-Profile fuer Voice Studio, AI Singer, AI Choir, Voice Clone, Podcast, Hoerbuch, Dubbing und Voice Laboratory ergaenzt.
+- Voice-Studio-Tools als GitHub-/Open-Source-Quellen registriert: StyleTTS2, OpenVoice, RVC, Seed-VC, DiffSinger, OpenUtau, NNSVS, UVR5 und Audacity.
+- AI Choir System, Trainings-Tutorials, VoiceStudioAgent und n8n/Home-Assistant-Workflow-Vorlagen dokumentiert.
+- Sicherheitsregeln ergaenzt: nur eigene oder freigegebene Stimmen, Kennzeichnung von KI-Stimmen, keine Rohdaten oder Modelle im Repo, keine automatische Veroeffentlichung.
+## 2026-05-30 - AI Media Production Studio erweitert
+
+- Neue Profile fuer virtuelle Personen, Broadcast-Rollen, Dubbing, Podcast, Radio, Filmregie, Casting und Voice Direction ergaenzt.
+- Character Library, AI Actor Studio, Broadcast Studio, Newsroom, Film Studio, Dubbing Studio, LipSync Studio und Ressourcenklassen dokumentiert.
+- Avatar-, LipSync- und TTS-Tools als geplante GitHub-Quellen registriert: Fish Speech, MeloTTS, Kokoro TTS, Spark-TTS, Hallo2, MuseTalk, LivePortrait, SadTalker, EMO, SkyReels-A1 und Wav2Lip.
+- Sicherheitsregeln fuer KI-Kennzeichnung, Einwilligung echter Personen, DSGVO-nahe Ablage und keine automatische Veroeffentlichung ergaenzt.
+## 2026-05-30 - Media Studio Unterverzeichnisse strukturiert
+
+- Neue Dokumentationsstruktur fuer Media, Voice, Singer, Choir, Broadcasting, Film, Avatar, Agenten, Workflows und Tutorials angelegt.
+- Media-Profile nach `docs/profiles/media/`, Agenten nach `docs/agents/media/`, Workflows nach `docs/workflows/media/` und Tutorials nach `docs/tutorials/media/` gespiegelt.
+- `config/tools.yml` um strukturierte Kategorien `voice_tools`, `singing_tools`, `avatar_tools`, `audio_tools` und `broadcast_tools` erweitert.
+- Sichere Stub-Installer unter `scripts/tools/media/` angelegt; sie dokumentieren den geplanten Installationspfad, starten aber keine schweren Builds.

@@ -41,6 +41,12 @@ scripts/profiles/Voice_Assistant_install.sh
 ## Sicherheitshinweise
 - Audio- und Raumdaten lokal halten
 - Mikrofonfreigaben und Netzwerkzugriffe bewusst prüfen
+- Piper bleibt der Standard fuer lokale Sprachausgabe; Coqui/OpenVoice/RVC nur optional und nicht automatisch aktivieren.
+- Keine fremden Stimmen ohne Einwilligung als Assistenzstimme verwenden.
+
+## Voice-Studio-Erweiterung
+
+Dieses Profil ist Teil der Voice-Studio-Gruppe. Fuer einfache Home-Assistant-Ausgaben reicht Piper. Fuer hochwertige Stimmen, Voice-Cloning oder Dubbing bitte die Profile `Voice_Studio`, `Voice_Clone` und `Dubbing_Studio` lesen und die Sicherheitsregeln beachten.
 
 ## Start / Stop / Status Befehle
 ```bash

@@ -21,6 +21,9 @@
 - [Beginner Guide](docs/BEGINNER_GUIDE.md)
 - [Priority Install Paths](docs/PRIORITY_INSTALL_PATHS.md)
 - [Decision Matrix](docs/DECISION_MATRIX.md)
+- [Job Queue Agent Worker](docs/JOB_QUEUE_AGENT_WORKER.md)
+- [Supply Chain Security](docs/SUPPLY_CHAIN_SECURITY.md)
+- [MCP Toolserver Guide](docs/MCP_TOOLSERVER_GUIDE.md)
 - [Setup Review und naechste Schritte](docs/SETUP_REVIEW_AND_NEXT_STEPS.md)
 - [Automated Setup Review 2026](docs/SETUP_REVIEW_2026_AUTOMATED.md)
 - [Missing Tools and Profiles](docs/MISSING_TOOLS_AND_PROFILES.md)
@@ -950,3 +953,16 @@ Wichtige Ergänzung:
 *   **Registry-System:** Die neuen Dateien unter `config/` sind die Zielstruktur für künftige automatische Menü-Generierung, aber noch nicht jede Stelle des Hauptmenüs liest bereits daraus.
 
 Wir wünschen dir viel Erfolg bei der Einrichtung deines intelligenten, automatisierten Systems!
+## AI Media Studio
+
+Die Media-/Voice-/Avatar-Erweiterungen sind jetzt strukturiert einsortiert:
+
+- `docs/media_studio/` fuer Audio-, Video-, Podcast-, Hoerbuch-, TV- und Streaming-Pipelines.
+- `docs/voice_studio/` fuer TTS, Voice-Cloning, Training, Datasets, XTTS, OpenVoice, StyleTTS2 und Piper.
+- `docs/voice_studio/singer/` fuer RVC, Seed-VC, DiffSinger, OpenUtau, NNSVS und AI-Singer-Training.
+- `docs/choir_system/` fuer SATB, Gregorian, Celtic, Epic und EDM Choir.
+- `docs/broadcasting/` fuer Newsroom, News Anchor, Wetter, Sport, Radio, Podcast und Talkshow.
+- `docs/film_studio/` fuer Schauspieler, Regie, Casting, Skripte und Movie Pipeline.
+- `docs/avatar_studio/` fuer Hallo2, MuseTalk, LivePortrait, SadTalker, Wav2Lip, SkyReels und EMO.
+
+Alle schweren Media-Tools sind `planned` oder `optional`. Es gibt keine automatische Installation von Voice-Cloning-, Avatar-, LipSync- oder GPU-Render-Tools ohne spaetere explizite Bestaetigung, Ressourcencheck und Sicherheitspruefung.
