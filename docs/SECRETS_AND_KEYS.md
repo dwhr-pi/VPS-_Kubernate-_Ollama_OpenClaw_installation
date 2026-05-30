@@ -26,3 +26,11 @@ Keine echten Secrets ins Repository. Dazu zaehlen API-Keys, Tokens, Private Keys
 - Kostenwarnung vor Cloud-/Video-/LLM-APIs anzeigen.
 - Tokens nie in Logs ausgeben.
 - Forks ohne Integritaetspruefung nicht automatisch selbstheilen.
+
+## Local First Vault Optionen 2026
+
+- SOPS + age fuer Git-nahe verschluesselte Konfiguration.
+- pass fuer einfache lokale Secrets.
+- OpenBao oder Infisical nur optional/serverseitig nach Backup- und Zugriffskonzept.
+- Doppler CLI bleibt optional und cloud-nah; keine Pflicht.
+- Doctor soll pruefen, ob .env versehentlich im Repo liegt und ob Beispielwerte Platzhalter bleiben.

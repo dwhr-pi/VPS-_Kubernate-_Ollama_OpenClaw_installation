@@ -49,3 +49,12 @@ Weitere Details:
 - [Hurricane Electric DNS/DDOS Guide](HURRICANE_ELECTRIC_DNS_DDOS_GUIDE.md)
 - [Port Security Matrix](PORT_SECURITY_MATRIX.md)
 - [HE/Oracle/Homecluster Start](architecture/he-oracle-homecluster.md)
+
+## Next Improvements Security Baseline
+
+- .env bleibt ausserhalb des Repos; im Repo nur .env.example.
+- Keine Tokens in Logs, Markdown-Beispielen oder Queue-Kommandos.
+- bash scripts/check_secrets.sh vor Commits ausfuehren.
+- bash scripts/check_resource_budget.sh vor schweren Installationen ausfuehren.
+- Admin-Panels nie oeffentlich ohne Auth, VPN oder Reverse Proxy Hardening freigeben.
+- Mailserver braucht SPF, DKIM, DMARC, PTR/rDNS, Rate-Limits und Backup-/Restore-Test.

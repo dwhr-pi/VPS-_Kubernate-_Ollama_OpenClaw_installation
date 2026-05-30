@@ -39,3 +39,10 @@ Nicht oeffentlich:
 - ComfyUI
 - Stalwart Admin
 - Datenbanken
+
+## Next Improvements: DNS und DDoS Checks
+
+- HE ist DNS-/IPv6-/Domain-Einstieg, aber kein vollstaendiger DDoS-Schutz.
+- Oracle VPS braucht Firewall, Rate-Limits, Reverse Proxy, CrowdSec/Fail2ban und Monitoring.
+- Mailserver braucht MX, SPF, DKIM, DMARC und PTR/rDNS.
+- Nutze bash scripts/check_mail_dns.sh example.tld fuer erste DNS-Sichtpruefung.

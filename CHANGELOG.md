@@ -46,3 +46,11 @@
 - Ubuntu-24.04-/Python-3.12-Abbruch als erwarteten Schutz dokumentiert.
 - Piper als stabilen lokalen TTS-Fallback in Voice-Studio-Doku hervorgehoben.
 - Neue Kompatibilitaetsseite `docs/voice_studio/COQUI_TTS_COMPATIBILITY.md` ergaenzt.
+
+## 2026-05-30 - Next Improvements Audit Queue Checks
+
+- Audit docs/SETUP_AUDIT_2026_NEXT_IMPROVEMENTS.md ergaenzt.
+- Neue planned/documentation-first Profile fuer Queue, MCP Gateway, Secrets, Observability, RAG, Backup, Netzwerk, Mail, Android und Model Router ergaenzt.
+- Tool-Katalog um GitHub-Kandidaten mit Status, Ressourcen, Risiko, Ports, Secrets, Doctor und Uninstaller-Spalten erweitert.
+- SQLite-basierte Queue-Minimalvariante unter scripts/queue/ vorbereitet.
+- Neue Checks fuer Secrets, Ressourcenbudget, Queue, Mail-DNS und Observability angelegt.

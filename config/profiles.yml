@@ -1225,7 +1225,7 @@
     },
     {
       "id": "Model_Router_Cost_Control",
-      "category": "llmops",
+      "category": "LLMOps / Gateway",
       "status": "planned",
       "tier": "recommended",
       "doc": "docs/Profile/Model_Router_Cost_Control.md",
@@ -1234,10 +1234,18 @@
       "tools": [
         "litellm",
         "ollama",
-        "open_webui",
-        "langfuse",
-        "openlit"
-      ]
+        "llama_cpp",
+        "vllm",
+        "localai",
+        "open_webui"
+      ],
+      "name": "Model Router Cost Control",
+      "resource_class": "medium",
+      "recommended_device": "MiniPC / WSL2 / VPS",
+      "install_mode": "documentation-first",
+      "auto_install": false,
+      "description": "Lokale und externe Modelle intelligent auswaehlen: Kostenlimit, Fallback, API-Key-Rotation, Rate-Limits und lokale Prioritaet.",
+      "updated": "2026-05-30"
     },
     {
       "id": "Voice_Transcription_Callcenter",
@@ -2918,6 +2926,197 @@
       "auto_install": false,
       "description": "Voice Director fuer Sprecher, Emotion, Timing, Dubbing und Chor.",
       "doc": "docs/Profile/AI_Voice_Director.md",
+      "updated": "2026-05-30"
+    },
+    {
+      "id": "Queue_Worker_Orchestrator",
+      "name": "Queue Worker Orchestrator",
+      "category": "Betrieb / Queue",
+      "status": "planned",
+      "resource_class": "light",
+      "recommended_device": "MiniPC / WSL2 / VPS",
+      "tools": [
+        "job_queue",
+        "redis",
+        "rabbitmq",
+        "celery",
+        "rq",
+        "bullmq"
+      ],
+      "install_mode": "documentation-first",
+      "auto_install": false,
+      "description": "Zentrale Warteschlange fuer Codex-, OpenClaw- und Agenten-Auftraege mit Limits, Retry, Pause/Resume und Logging.",
+      "doc": "docs/Profile/Queue_Worker_Orchestrator.md",
+      "updated": "2026-05-30"
+    },
+    {
+      "id": "MCP_Server_Gateway",
+      "name": "MCP Server Gateway",
+      "category": "MCP / Toolserver",
+      "status": "planned",
+      "resource_class": "medium",
+      "recommended_device": "MiniPC / WSL2 / VPS",
+      "tools": [
+        "modelcontextprotocol_servers",
+        "mcp_filesystem_server",
+        "mcp_git_server",
+        "mcp_postgres_server",
+        "mcp_sqlite_server",
+        "browsermcp",
+        "docker_mcp_registry"
+      ],
+      "install_mode": "documentation-first",
+      "auto_install": false,
+      "description": "Zentrale und sichere Verwaltung von MCP-Servern fuer OpenClaw/Ollama/Agenten.",
+      "doc": "docs/Profile/MCP_Server_Gateway.md",
+      "updated": "2026-05-30"
+    },
+    {
+      "id": "Secrets_Vault_Local_First",
+      "name": "Secrets Vault Local First",
+      "category": "Security / Secrets",
+      "status": "planned",
+      "resource_class": "medium",
+      "recommended_device": "MiniPC / WSL2 / VPS",
+      "tools": [
+        "sops",
+        "age",
+        "openbao",
+        "infisical",
+        "pass"
+      ],
+      "install_mode": "documentation-first",
+      "auto_install": false,
+      "description": "Lokale und optionale Vault-gestuetzte Verwaltung von API-Keys, SSH-Keys und Tokens.",
+      "doc": "docs/Profile/Secrets_Vault_Local_First.md",
+      "updated": "2026-05-30"
+    },
+    {
+      "id": "Observability_AI_Control_Tower",
+      "name": "Observability AI Control Tower",
+      "category": "Monitoring / Observability",
+      "status": "planned",
+      "resource_class": "medium",
+      "recommended_device": "MiniPC / WSL2 / VPS",
+      "tools": [
+        "grafana",
+        "prometheus",
+        "loki",
+        "cadvisor",
+        "node_exporter",
+        "netdata",
+        "glances"
+      ],
+      "install_mode": "documentation-first",
+      "auto_install": false,
+      "description": "Zentrales Dashboard fuer CPU, RAM, Swap, GPU, Queue, Ollama, OpenClaw, n8n, Docker und K3s.",
+      "doc": "docs/Profile/Observability_AI_Control_Tower.md",
+      "updated": "2026-05-30"
+    },
+    {
+      "id": "RAG_Document_Intelligence",
+      "name": "RAG Document Intelligence",
+      "category": "RAG / Dokumente",
+      "status": "planned",
+      "resource_class": "medium",
+      "recommended_device": "MiniPC / WSL2 / VPS",
+      "tools": [
+        "docling",
+        "unstructured",
+        "apache_tika",
+        "marker",
+        "stirling_pdf",
+        "paperless_ngx",
+        "meilisearch"
+      ],
+      "install_mode": "documentation-first",
+      "auto_install": false,
+      "description": "Lokale Dokumenten-KI fuer OCR, PDF, Markdown, Office, E-Mail, Nextcloud und Low-Resource-Modus.",
+      "doc": "docs/Profile/RAG_Document_Intelligence.md",
+      "updated": "2026-05-30"
+    },
+    {
+      "id": "Backup_Disaster_Recovery",
+      "name": "Backup Disaster Recovery",
+      "category": "Backup / Recovery",
+      "status": "planned",
+      "resource_class": "medium",
+      "recommended_device": "MiniPC / WSL2 / VPS",
+      "tools": [
+        "restic",
+        "borgbackup",
+        "rclone",
+        "kopia",
+        "litestream"
+      ],
+      "install_mode": "documentation-first",
+      "auto_install": false,
+      "description": "Backups und Restore-Tests fuer Repo, Configs, Modelle, Datenbanken, n8n, OpenClaw, Nextcloud und Mailserver.",
+      "doc": "docs/Profile/Backup_Disaster_Recovery.md",
+      "updated": "2026-05-30"
+    },
+    {
+      "id": "Network_DNS_DDoS_Hardening",
+      "name": "Network DNS DDoS Hardening",
+      "category": "Security / Netzwerk",
+      "status": "planned",
+      "resource_class": "medium",
+      "recommended_device": "MiniPC / WSL2 / VPS",
+      "tools": [
+        "crowdsec",
+        "fail2ban",
+        "ufw",
+        "caddy",
+        "traefik",
+        "pihole",
+        "adguard_home",
+        "blocky"
+      ],
+      "install_mode": "documentation-first",
+      "auto_install": false,
+      "description": "Hurricane Electric DNS, eigene Domains, VPS, Mailserver, Reverse Proxy, Firewall und realistische DDoS-Haertung.",
+      "doc": "docs/Profile/Network_DNS_DDoS_Hardening.md",
+      "updated": "2026-05-30"
+    },
+    {
+      "id": "Mail_AI_Operations",
+      "name": "Mail AI Operations",
+      "category": "Mail / Automation",
+      "status": "planned",
+      "resource_class": "medium",
+      "recommended_device": "MiniPC / WSL2 / VPS",
+      "tools": [
+        "stalwart_mail",
+        "rspamd",
+        "clamav",
+        "opendkim",
+        "opendmarc"
+      ],
+      "install_mode": "documentation-first",
+      "auto_install": false,
+      "description": "Stalwart-Mailserver, IMAP/SMTP, eigene Domains, Spamfilter, KI-Antwortentwuerfe und n8n/OpenClaw-Automation.",
+      "doc": "docs/Profile/Mail_AI_Operations.md",
+      "updated": "2026-05-30"
+    },
+    {
+      "id": "Android_AI_Lab",
+      "name": "Android AI Lab",
+      "category": "Android / Mobile",
+      "status": "planned",
+      "resource_class": "heavy",
+      "recommended_device": "VPS / Home Server / Workstation",
+      "tools": [
+        "android_sdk",
+        "gradle",
+        "fastlane",
+        "jadx",
+        "apktool",
+        "mitmproxy"
+      ],
+      "install_mode": "documentation-first",
+      "auto_install": false,
+      "description": "Android-App-Builds, APK-Signierung, Firewall-App, myBOX/GBox-Alternative und Play-Console-Checkliste.",
+      "doc": "docs/Profile/Android_AI_Lab.md",
       "updated": "2026-05-30"
     }
   ]

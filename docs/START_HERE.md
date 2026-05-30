@@ -27,3 +27,14 @@ HE vorne, Oracle steuert, Pi weckt, RTX rechnet.
 - Datenbanken
 - ComfyUI
 - Whisper
+
+## Startpfade 2026 Next Improvements
+
+- MiniPC lokal: Low Resource Mode, Piper, Ollama klein, Queue default 1.
+- WSL2 lokal: Windows-C:-Speicher, Python-Versionen, Docker optional, keine schweren Builds parallel.
+- Oracle VPS: Control Node, WireGuard, Mail-DNS, Monitoring, keine sensiblen Heimdienste oeffentlich.
+- Hurricane Electric DNS/Domain: DNS bewusst setzen, keine Wildcards ohne Schutz, rDNS fuer Mail beachten.
+- Home Assistant zuhause: nur ueber VPN/Reverse Proxy mit Auth, keine offenen Admin-Panels.
+- GPU Workstation: Media-/Avatar-/vLLM-/RVC-Jobs ueber Queue starten.
+- Low Resource Mode: Glances/Netdata statt vollem Grafana-Stack, SQLite-Queue statt Redis/RabbitMQ.
+- Security First Mode: Secrets extern, Ports minimal, check_secrets/check_ports/check_resource_budget vor Installationen.

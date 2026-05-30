@@ -966,3 +966,7 @@ Die Media-/Voice-/Avatar-Erweiterungen sind jetzt strukturiert einsortiert:
 - `docs/avatar_studio/` fuer Hallo2, MuseTalk, LivePortrait, SadTalker, Wav2Lip, SkyReels und EMO.
 
 Alle schweren Media-Tools sind `planned` oder `optional`. Es gibt keine automatische Installation von Voice-Cloning-, Avatar-, LipSync- oder GPU-Render-Tools ohne spaetere explizite Bestaetigung, Ressourcencheck und Sicherheitspruefung.
+
+## Start Here
+
+Der empfohlene Einstieg liegt in [docs/START_HERE.md](docs/START_HERE.md). Dort sind MiniPC, WSL2, Oracle VPS, Hurricane Electric DNS, Home Assistant, GPU Workstation, Low Resource Mode und Security First Mode getrennt beschrieben.
