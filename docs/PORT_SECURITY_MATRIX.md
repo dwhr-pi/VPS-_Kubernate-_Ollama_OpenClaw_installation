@@ -1,23 +1,22 @@
 # Port Security Matrix
 
-Technische Quelle: `config/ports.yml`.
+| Port | Dienst | Oeffentlich? | Hinweis |
+|---|---|---|---|
+| 22/tcp | SSH | nur Allowlist/VPN | `ufw limit`, Key-only |
+| 25/tcp | SMTP | ja, Mailserver | nur Mailserver, kein Relay |
+| 80/tcp | HTTP | ja | Redirect/ACME/Proxy |
+| 443/tcp | HTTPS | ja | Reverse Proxy |
+| 465/tcp | SMTPS | optional | Mailclient |
+| 587/tcp | Submission | ja | Auth erforderlich |
+| 993/tcp | IMAPS | ja | TLS |
+| 995/tcp | POP3S | optional | TLS |
+| 4190/tcp | ManageSieve | optional/VPN | nur wenn gebraucht |
+| 11434/tcp | Ollama | nein | nur lokal/VPN |
+| 18789/tcp | OpenClaw Gateway | nein | nur lokal/VPN |
+| 6443/tcp | Kubernetes API | nein | nur VPN/Admin |
+| 8123/tcp | Home Assistant | nein | nur VPN/Proxy mit Auth |
+| 8188/tcp | ComfyUI | nein | nur lokal/VPN |
+| 5678/tcp | n8n | nur Proxy/Auth | kein offenes Admin |
 
-## Grundregel
-
-Alle lokalen Dienste sollten standardmaessig nur auf `127.0.0.1`, LAN oder Tailnet erreichbar sein. Oeffentliche Freigabe nur bewusst ueber Tailscale, Cloudflare Tunnel oder Reverse Proxy mit Auth.
-
-| Port | Dienst | Risiko | Empfehlung |
-|---:|---|---|---|
-| 3000 | Open WebUI/OpenClaw-nahe UIs | Prompts, Modelle, Logins | nicht oeffentlich ohne Auth |
-| 3001 | Grafana | Infrastrukturdetails | starkes Admin-Passwort, Reverse Proxy |
-| 3002 | Huginn | Automationsdaten | lokal/Tailnet, keine Default-User |
-| 4000 | LiteLLM | API-Gateway und Keys | Keys nur User-Workspace |
-| 5432 | PostgreSQL | Datenbank | nie oeffentlich, lokal binden |
-| 5678 | n8n | Credentials und Automationen | nur mit Auth und Backup |
-| 6333 | Qdrant | Dokument-/Embeddingdaten | lokal oder Auth-Proxy |
-| 7700 | Meilisearch | Suchindexe | Master-Key und lokale Bindung |
-| 7860/8188 | SD/ComfyUI | GPU-Workflows, Uploads | nicht oeffentlich |
-| 8123 | Home Assistant | Smart Home | nur LAN/Tailnet, MFA |
-| 9090 | Prometheus | Metriken | intern halten |
-| 11434 | Ollama | Modellserver | lokal binden |
-| 19999 | Netdata | Host-Telemetrie | intern oder Auth |
+Grundregel: Nur Reverse Proxy, WireGuard und echte Mailports duerfen bewusst
+oeffentlich sein. Alles andere bleibt intern.

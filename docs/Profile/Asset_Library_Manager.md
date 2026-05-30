@@ -1,27 +1,33 @@
 # Asset_Library_Manager
 
 ## Zweck
-Medien-, Modell-, Prompt- und Projektassets lokal ordnen und wiederauffindbar machen.
 
-## Typische Aufgaben
-- Ordnerstruktur fuer Modelle, Bilder, Videos und Prompts definieren.
-- Lizenzen, Quellen und Speicherbedarf erfassen.
-- Deduplizierung und Backups planen.
+Assets, Metadaten, Lizenzen und Projektablage.
+
+## Status
+
+- Installationsreife: planned
+- Ressourcenklasse: medium
+- Empfohlene Geraete: Home Server
 
 ## Empfohlene Tools
-Meilisearch, DuckDB, rclone, restic, FFmpeg, Paperless-ngx optional.
 
-## Hardwarebedarf und Status
-Hardware: mittel. Status: planned. Installationsart: local, Home-Server.
+- nextcloud
+- syncthing
 
-## Datenschutz und Sicherheit
-Assets koennen Rechte-, Personen- oder Kundendaten enthalten. Lizenzstatus immer dokumentieren.
+## Sicherheitsregeln
+
+- Keine schweren Installer automatisch starten.
+- Secrets nur unter `~/.openclaw_ultimate_user_data` speichern.
+- Remotezugriff bevorzugt ueber WireGuard/Tailscale/Allowlist.
+- Schreibende Agentenaktionen brauchen Human Approval.
+
+## Installationshinweis
+
+Dieses Profil ist zuerst als Planungs- und Auswahlprofil gedacht. Einzelne Tools muessen bewusst im Setup-Menue ausgewaehlt werden.
 
 ## Beispiel-Prompt
-`Erstelle eine lokale Asset-Struktur fuer ComfyUI, Videos, Prompts und Lizenznachweise.`
 
-## Modelle
-Ollama: `llama3.1:8b`, `qwen2.5:7b`.
-
-## Grenzen
-Keine automatische Veroeffentlichung oder Cloud-Synchronisierung.
+```text
+Pruefe das Profil Asset_Library_Manager fuer mein System. Erstelle einen sicheren Installationsplan mit Ressourcencheck, aber starte keine schweren Installer automatisch.
+```

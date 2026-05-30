@@ -34,3 +34,16 @@ Prioritaet fuer die naechsten stabilen Ausbauschritte:
 5. `Network_HomeLab_ZeroTrust`: Tailscale/cloudflared/Uptime Kuma ohne offene Admin-Ports.
 
 Schwere oder riskante Profile wie Android SDK, Nextcloud, Headscale, MobSF, scancode-toolkit und Browserless bleiben `planned` oder `experimental`, bis Installationspfad und Healthchecks getestet sind.
+# Roadmap Zusatz 2026
+
+Neue planned Profilgruppen:
+
+- Plattform/Betrieb: Queue Manager, LLMOps Control Plane, Wake-on-LAN, Update/Rollback
+- KI/Agenten: Codex Worker, OpenClaw Task Queue, MCP Hub, RAG Document Factory
+- Sicherheit: HE DNS Hardening, Firewall/IDS/IPS, Secrets Vault, Mail Security
+- Medien: AI Content Multiplier, Render Queue, ComfyUI Workflow Manager
+- Alltag: Home Assistant Agent, Local Voice Assistant, Email Assistant
+- Entwicklung: Repo Auditor, Issue Triage, CI/CD Builder, Docs Automation
+
+Alle neuen Profile bleiben zunaechst `planned` und starten keine schweren
+Installer automatisch.

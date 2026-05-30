@@ -100,3 +100,52 @@ Hinweis: Diese Profile sind bewusst nicht als schwere Auto-Installer freigeschal
 | Household_Admin_Assistant | planned | Paperless-ngx, Stirling PDF, Open WebUI, Qdrant |
 | Finance_Budget_Tracker | planned | DuckDB, LibreOffice CLI, Pandoc, local LLM |
 | Email_Response_Agent | planned | Open WebUI, msmtp optional, n8n optional, Paperless-ngx |
+
+
+## Planned Profile Erweiterung 2026
+
+| Profil | Status | Ressourcen | Zielgeraet | Tools |
+|---|---|---|---|---|
+| [Queue_Job_Manager](Profile/Queue_Job_Manager.md) | planned | medium | WSL2, Oracle VPS, Home Server | queue_manager, redis, n8n |
+| [LLMOps_Control_Plane](Profile/LLMOps_Control_Plane.md) | planned | medium | Oracle VPS, Kubernetes | litellm, langfuse, openlit, prometheus |
+| [Kubernetes_Hybrid_Master](Profile/Kubernetes_Hybrid_Master.md) | planned | heavy | Oracle VPS, Kubernetes, Home Server | k3s, helm, grafana |
+| [Wake_On_LAN_Orchestrator](Profile/Wake_On_LAN_Orchestrator.md) | planned | light | Raspberry Pi, Home Server | wireguard, home_assistant |
+| [Resource_Scheduler](Profile/Resource_Scheduler.md) | planned | medium | WSL2, GPU Workstation, Home Server | queue_manager, prometheus, node_exporter |
+| [Cost_Control_Budget_Guard](Profile/Cost_Control_Budget_Guard.md) | planned | light | WSL2, Oracle VPS | litellm, openlit |
+| [Supply_Chain_Security](Profile/Supply_Chain_Security.md) | planned | medium | WSL2, Oracle VPS | gitleaks, trivy, syft, grype, cosign, sops, age |
+| [Disaster_Recovery_Backup](Profile/Disaster_Recovery_Backup.md) | planned | medium | Oracle VPS, Home Server | restic, borgbackup, kopia, rclone |
+| [Update_Rollback_Manager](Profile/Update_Rollback_Manager.md) | planned | medium | WSL2, Oracle VPS | github_cli, gitleaks |
+| [Codex_Local_Worker](Profile/Codex_Local_Worker.md) | planned | medium | WSL2, Home Server | openclaw, aider, opencode |
+| [OpenClaw_Task_Queue](Profile/OpenClaw_Task_Queue.md) | planned | medium | Oracle VPS, Home Server | openclaw, queue_manager, n8n |
+| [Agent_Evaluation_Lab](Profile/Agent_Evaluation_Lab.md) | planned | medium | WSL2, Home Server | promptfoo, deepeval, langfuse |
+| [Prompt_Testing_Evals](Profile/Prompt_Testing_Evals.md) | planned | light | WSL2, Oracle VPS | promptfoo |
+| [MCP_Server_Hub](Profile/MCP_Server_Hub.md) | planned | medium | WSL2, Oracle VPS | mcpo, openclaw |
+| [Tool_Registry_Manager](Profile/Tool_Registry_Manager.md) | planned | light | WSL2 | github_cli |
+| [Memory_Governance](Profile/Memory_Governance.md) | planned | medium | WSL2, Home Server | qdrant, chromadb, lightrag |
+| [Persona_Governance](Profile/Persona_Governance.md) | planned | light | WSL2 | openclaw |
+| [RAG_Document_Factory](Profile/RAG_Document_Factory.md) | planned | medium | WSL2, Home Server | docling, apache_tika, qdrant, llamaindex |
+| [DDoS_Hardening_HE_DNS](Profile/DDoS_Hardening_HE_DNS.md) | planned | medium | Oracle VPS | crowdsec, fail2ban, ddclient_he, caddy |
+| [Firewall_IDS_IPS](Profile/Firewall_IDS_IPS.md) | planned | medium | Oracle VPS, Home Server | ufw, crowdsec, suricata, wazuh |
+| [Secrets_Vault](Profile/Secrets_Vault.md) | planned | medium | WSL2, Oracle VPS | sops, age, vaultwarden |
+| [Zero_Trust_Admin_Access](Profile/Zero_Trust_Admin_Access.md) | planned | medium | Oracle VPS, Home Server | wireguard, tailscale, headscale |
+| [Mail_Security_Gateway](Profile/Mail_Security_Gateway.md) | planned | medium | Oracle VPS | stalwart_mail, rspamd, opendkim, opendmarc |
+| [Android_Security_Lab](Profile/Android_Security_Lab.md) | planned | medium | WSL2, Android | gitleaks, trivy |
+| [Home_Network_Defense](Profile/Home_Network_Defense.md) | planned | medium | Raspberry Pi, Home Server | pihole, adguard_home, crowdsec |
+| [AI_Content_Multiplier](Profile/AI_Content_Multiplier.md) | planned | light | WSL2, Home Server | ai_content_multiplier |
+| [Suno_Prompt_Studio](Profile/Suno_Prompt_Studio.md) | planned | light | WSL2 | ffmpeg |
+| [Video_Render_Queue](Profile/Video_Render_Queue.md) | planned | gpu-heavy | GPU Workstation | queue_manager, comfyui, ffmpeg, blender |
+| [ComfyUI_Workflow_Manager](Profile/ComfyUI_Workflow_Manager.md) | planned | gpu-heavy | GPU Workstation | comfyui, queue_manager |
+| [Asset_Library_Manager](Profile/Asset_Library_Manager.md) | planned | medium | Home Server | nextcloud, syncthing |
+| [Voice_TTS_STT_Studio](Profile/Voice_TTS_STT_Studio.md) | planned | heavy | GPU Workstation, Home Server | whisper_cpp, faster_whisper, piper, coqui_tts |
+| [Music_Mastering_AI](Profile/Music_Mastering_AI.md) | planned | heavy | GPU Workstation | ffmpeg, demucs |
+| [Jarvis_Home_Command_Center](Profile/Jarvis_Home_Command_Center.md) | planned | medium | Home Server, Raspberry Pi | home_assistant, mosquitto, openclaw |
+| [FritzBox_Mesh_Diagnostics](Profile/FritzBox_Mesh_Diagnostics.md) | planned | light | WSL2, Raspberry Pi | nmap |
+| [Home_Assistant_Agent](Profile/Home_Assistant_Agent.md) | planned | medium | Home Server | home_assistant, openclaw |
+| [Local_Voice_Assistant](Profile/Local_Voice_Assistant.md) | planned | medium | Raspberry Pi, Home Server | whisper_cpp, piper, home_assistant |
+| [Email_Assistant](Profile/Email_Assistant.md) | planned | medium | Oracle VPS, WSL2 | stalwart_mail, openclaw |
+| [Calendar_Task_Assistant](Profile/Calendar_Task_Assistant.md) | planned | light | WSL2, Home Server | radicale |
+| [Repo_Auditor](Profile/Repo_Auditor.md) | planned | light | WSL2 | gitleaks, trivy, semgrep |
+| [Issue_Triage_Agent](Profile/Issue_Triage_Agent.md) | planned | light | WSL2, Oracle VPS | github_cli, openclaw |
+| [CI_CD_Builder](Profile/CI_CD_Builder.md) | planned | medium | WSL2, Oracle VPS | github_cli, act, shellcheck, shfmt |
+| [WebApp_Builder](Profile/WebApp_Builder.md) | planned | medium | WSL2 | node_red, appsmith, budibase |
+| [Docs_Automation_Agent](Profile/Docs_Automation_Agent.md) | planned | light | WSL2 | github_cli |

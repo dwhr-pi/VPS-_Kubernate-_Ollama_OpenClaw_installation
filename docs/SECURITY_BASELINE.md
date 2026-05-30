@@ -32,3 +32,20 @@ Diese Regeln gelten fuer neue Profile, Tools und Installer:
 - Schwere Tools brauchen Speicher/RAM/Swap-Preflight und explizite Zustimmung.
 - Security-, Trading-, Robotik-, Smart-Home- und Browser-Agenten brauchen Human Approval fuer schreibende oder externe Aktionen.
 - Forks oder manipulierte Setup-Kopien erhalten keine automatische Selbstheilung ohne Herkunfts-/Integritaetspruefung.
+# Zusatz 2026: HE/Oracle/WireGuard Standard
+
+Cloudflare ist nicht mehr Pflichtbestandteil. Der empfohlene Standard ist:
+
+- Hurricane Electric DNS/DDNS
+- Oracle VPS als Control Node/DMZ
+- WireGuard ins Heimnetz
+- Raspberry Pi/Mini-PC als Heimnetz-Waechter
+- CrowdSec/Fail2Ban/UFW oder nftables
+
+Admin-Panels und sensible APIs duerfen nicht direkt oeffentlich erreichbar sein.
+
+Weitere Details:
+
+- [Hurricane Electric DNS/DDOS Guide](HURRICANE_ELECTRIC_DNS_DDOS_GUIDE.md)
+- [Port Security Matrix](PORT_SECURITY_MATRIX.md)
+- [HE/Oracle/Homecluster Start](architecture/he-oracle-homecluster.md)

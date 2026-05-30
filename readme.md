@@ -17,7 +17,13 @@
 
 ## Aktuelle Governance-Dokumente
 
+- [START HERE](docs/START_HERE.md)
+- [Beginner Guide](docs/BEGINNER_GUIDE.md)
+- [Priority Install Paths](docs/PRIORITY_INSTALL_PATHS.md)
+- [Decision Matrix](docs/DECISION_MATRIX.md)
 - [Setup Review und naechste Schritte](docs/SETUP_REVIEW_AND_NEXT_STEPS.md)
+- [Automated Setup Review 2026](docs/SETUP_REVIEW_2026_AUTOMATED.md)
+- [Missing Tools and Profiles](docs/MISSING_TOOLS_AND_PROFILES.md)
 - [Contribution und Branch-Schutz](docs/GITHUB_CONTRIBUTION_AND_BRANCH_PROTECTION.md)
 - [Einsteiger-Tutorial: HE/Oracle/Homecluster](docs/architecture/he-oracle-homecluster.md)
 - [Setup Review 2026 - Next Actions](docs/SETUP_REVIEW_2026_NEXT_ACTIONS.md)
