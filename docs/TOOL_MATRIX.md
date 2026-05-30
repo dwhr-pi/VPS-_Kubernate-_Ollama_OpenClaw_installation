@@ -129,3 +129,6 @@ Die Registry `config/tools.yml` enthaelt jetzt zusaetzliche Kategorien fuer das 
 - `broadcast_tools`: OBS, Whisper, FasterWhisper, SubtitleEdit.
 
 Alle Kategorien sind als Katalog-/Menuevorbereitung gedacht. Schwere Tools bleiben `planned` oder `optional` und werden nicht automatisch installiert.
+## dbt Installationshinweis
+
+`dbt-core` wird aus der GitHub-Quelle `https://github.com/dbt-labs/dbt-core.git` geklont, aber aus dem Unterordner `core` installiert. Der Repository-Root ist ein Monorepo/Flat-Layout und darf nicht direkt per `pip install -e` installiert werden. Details: [DBT_INSTALLATION_NOTES.md](DBT_INSTALLATION_NOTES.md).

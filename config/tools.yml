@@ -3636,6 +3636,23 @@
       "description": "Documentation-first registry entry for profile mapping consistency.",
       "security_note": "Keine automatische Installation; Nutzung nur nach Doctor-/Preflight-Pruefung.",
       "updated": "2026-05-30"
+    },
+    {
+      "id": "dbt",
+      "name": "dbt Core",
+      "category": "Data Engineering",
+      "source": "https://github.com/dbt-labs/dbt-core",
+      "status": "optional",
+      "resource_class": "medium",
+      "risk": "medium",
+      "install_mode": "git-subdirectory-venv",
+      "install_script": "scripts/tools/dbt_install.sh",
+      "uninstall_script": "scripts/tools/dbt_uninstall.sh",
+      "check_type": "command",
+      "check_value": "dbt",
+      "description": "dbt-core fuer Analytics Engineering; aus GitHub geklont und aus dem Unterordner core installiert.",
+      "security_note": "Adapter und Datenbank-Secrets separat bewusst konfigurieren; keine Credentials ins Repo.",
+      "updated": "2026-05-30"
     }
   ],
   "voice_tools": [

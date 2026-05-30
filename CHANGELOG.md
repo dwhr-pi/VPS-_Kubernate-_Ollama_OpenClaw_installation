@@ -54,3 +54,8 @@
 - Tool-Katalog um GitHub-Kandidaten mit Status, Ressourcen, Risiko, Ports, Secrets, Doctor und Uninstaller-Spalten erweitert.
 - SQLite-basierte Queue-Minimalvariante unter scripts/queue/ vorbereitet.
 - Neue Checks fuer Secrets, Ressourcenbudget, Queue, Mail-DNS und Observability angelegt.
+## 2026-05-30 - dbt Installer auf GitHub-Unterordner korrigiert
+
+- `scripts/tools/dbt_install.sh` installiert dbt-core nicht mehr aus dem Repository-Root, sondern aus dem Unterordner `core`.
+- Der bekannte setuptools-Fehler `Multiple top-level packages discovered in a flat-layout` wird dadurch vermieden.
+- `docs/DBT_INSTALLATION_NOTES.md` mit Ursache, Korrektur und Adapter-Hinweis ergaenzt.
