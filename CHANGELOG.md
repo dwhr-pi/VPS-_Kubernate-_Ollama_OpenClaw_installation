@@ -59,3 +59,9 @@
 - `scripts/tools/dbt_install.sh` installiert dbt-core nicht mehr aus dem Repository-Root, sondern aus dem Unterordner `core`.
 - Der bekannte setuptools-Fehler `Multiple top-level packages discovered in a flat-layout` wird dadurch vermieden.
 - `docs/DBT_INSTALLATION_NOTES.md` mit Ursache, Korrektur und Adapter-Hinweis ergaenzt.
+## 2026-05-30 - Next Level Profile und Codex Task Queue
+
+- Neue planned/documentation-first Profile fuer Betrieb, KI/Agenten, Security, Infrastruktur, Medien, Android und Projektsteuerung ergaenzt.
+- `docs/CODEX_TASK_QUEUE.md` und TSV-basierte Minimalqueue unter `scripts/queue/` angelegt.
+- Next-Level-Dokumente fuer Setup Review, Missing Profiles/Tools, Deployment Matrix, Security, HE/Oracle-DDoS, Backup/Restore, Beginner Wizard und Test Matrix ergaenzt.
+- Security-Wrapper `scripts/security/scan_secrets.sh` und `scripts/security/scan_supply_chain.sh` ergaenzt.

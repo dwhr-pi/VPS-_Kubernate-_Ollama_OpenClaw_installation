@@ -1,0 +1,42 @@
+name: Next Level Health
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  health:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install lightweight check tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y shellcheck
+
+      - name: Shell syntax
+        run: |
+          find scripts -name '*.sh' -print0 | xargs -0 -n1 bash -n
+
+      - name: ShellCheck
+        run: |
+          shellcheck scripts/check_secrets.sh scripts/check_resource_budget.sh scripts/queue/*.sh scripts/security/scan_*.sh
+
+      - name: Registry checks
+        run: |
+          bash scripts/check_profiles.sh
+          bash scripts/check_tools.sh
+          bash scripts/check_ports.sh
+          bash scripts/validate_config.sh
+
+      - name: Secret scan safe mode
+        run: |
+          bash scripts/security/scan_secrets.sh
+
+      - name: Queue status
+        run: |
+          bash scripts/queue/queue_status.sh
+

@@ -3118,6 +3118,697 @@
       "description": "Android-App-Builds, APK-Signierung, Firewall-App, myBOX/GBox-Alternative und Play-Console-Checkliste.",
       "doc": "docs/Profile/Android_AI_Lab.md",
       "updated": "2026-05-30"
+    },
+    {
+      "id": "Job_Queue_Orchestrator",
+      "name": "Job Queue Orchestrator",
+      "category": "Core / Betrieb",
+      "status": "planned",
+      "resource_class": "light",
+      "recommended_device": "WSL2 / MiniPC / Oracle VPS",
+      "tools": [
+        "job_queue",
+        "redis",
+        "rq",
+        "celery",
+        "bullmq"
+      ],
+      "install_mode": "documentation-first",
+      "auto_install": false,
+      "description": "FIFO-/Prioritaetsqueue fuer Codex-, OpenClaw-, n8n- und Setup-Jobs.",
+      "doc": "docs/Profile/Job_Queue_Orchestrator.md",
+      "updated": "2026-05-30"
+    },
+    {
+      "id": "Resource_Governor",
+      "name": "Resource Governor",
+      "category": "Core / Betrieb",
+      "status": "planned",
+      "resource_class": "light",
+      "recommended_device": "WSL2 / MiniPC / Oracle VPS",
+      "tools": [
+        "check_resource_budget",
+        "job_queue"
+      ],
+      "install_mode": "documentation-first",
+      "auto_install": false,
+      "description": "CPU/RAM/Disk/GPU-Limits und Low-Resource-Schutz.",
+      "doc": "docs/Profile/Resource_Governor.md",
+      "updated": "2026-05-30"
+    },
+    {
+      "id": "Backup_Restore_Manager",
+      "name": "Backup Restore Manager",
+      "category": "Core / Betrieb",
+      "status": "planned",
+      "resource_class": "medium",
+      "recommended_device": "WSL2 / MiniPC / Oracle VPS",
+      "tools": [
+        "restic",
+        "borgbackup",
+        "rclone",
+        "kopia",
+        "litestream"
+      ],
+      "install_mode": "documentation-first",
+      "auto_install": false,
+      "description": "Backup- und Restore-Manager fuer Configs, Modelle, Datenbanken und States.",
+      "doc": "docs/Profile/Backup_Restore_Manager.md",
+      "updated": "2026-05-30"
+    },
+    {
+      "id": "Disaster_Recovery",
+      "name": "Disaster Recovery",
+      "category": "Core / Betrieb",
+      "status": "planned",
+      "resource_class": "medium",
+      "recommended_device": "WSL2 / MiniPC / Oracle VPS",
+      "tools": [
+        "restic",
+        "rclone",
+        "kopia"
+      ],
+      "install_mode": "documentation-first",
+      "auto_install": false,
+      "description": "Wiederanlaufplaene, Restore-Tests und Notfallchecklisten.",
+      "doc": "docs/Profile/Disaster_Recovery.md",
+      "updated": "2026-05-30"
+    },
+    {
+      "id": "Offline_First_Documentation",
+      "name": "Offline First Documentation",
+      "category": "Core / Betrieb",
+      "status": "planned",
+      "resource_class": "light",
+      "recommended_device": "WSL2 / MiniPC / Oracle VPS",
+      "tools": [
+        "mkdocs",
+        "pandoc"
+      ],
+      "install_mode": "documentation-first",
+      "auto_install": false,
+      "description": "Offline nutzbare Doku fuer Einsteiger, Recovery und Airgapped-Szenarien.",
+      "doc": "docs/Profile/Offline_First_Documentation.md",
+      "updated": "2026-05-30"
+    },
+    {
+      "id": "Update_And_Migration_Manager",
+      "name": "Update And Migration Manager",
+      "category": "Core / Betrieb",
+      "status": "planned",
+      "resource_class": "medium",
+      "recommended_device": "WSL2 / MiniPC / Oracle VPS",
+      "tools": [
+        "git",
+        "renovate",
+        "act"
+      ],
+      "install_mode": "documentation-first",
+      "auto_install": false,
+      "description": "Updates, Migrationen, Rollback und Changelog-gesteuerte Tests.",
+      "doc": "docs/Profile/Update_And_Migration_Manager.md",
+      "updated": "2026-05-30"
+    },
+    {
+      "id": "Config_Policy_Manager",
+      "name": "Config Policy Manager",
+      "category": "Core / Betrieb",
+      "status": "planned",
+      "resource_class": "light",
+      "recommended_device": "WSL2 / MiniPC / Oracle VPS",
+      "tools": [
+        "sops",
+        "age",
+        "gitleaks"
+      ],
+      "install_mode": "documentation-first",
+      "auto_install": false,
+      "description": "Policy fuer Configs, .env.example, Secrets und sichere Defaults.",
+      "doc": "docs/Profile/Config_Policy_Manager.md",
+      "updated": "2026-05-30"
+    },
+    {
+      "id": "RAG_Quality_Auditor",
+      "name": "RAG Quality Auditor",
+      "category": "KI / Agenten",
+      "status": "planned",
+      "resource_class": "medium",
+      "recommended_device": "WSL2 / MiniPC / Oracle VPS",
+      "tools": [
+        "qdrant",
+        "chromadb",
+        "meilisearch",
+        "llamaindex"
+      ],
+      "install_mode": "documentation-first",
+      "auto_install": false,
+      "description": "Qualitaet, Quellen, Recall und Halluzinationsrisiko von RAG-Systemen pruefen.",
+      "doc": "docs/Profile/RAG_Quality_Auditor.md",
+      "updated": "2026-05-30"
+    },
+    {
+      "id": "Prompt_Testing_Lab",
+      "name": "Prompt Testing Lab",
+      "category": "KI / Agenten",
+      "status": "planned",
+      "resource_class": "light",
+      "recommended_device": "WSL2 / MiniPC / Oracle VPS",
+      "tools": [
+        "promptfoo",
+        "pytest"
+      ],
+      "install_mode": "documentation-first",
+      "auto_install": false,
+      "description": "Prompt-Versionierung, Regressionstests und erwartete Antworten.",
+      "doc": "docs/Profile/Prompt_Testing_Lab.md",
+      "updated": "2026-05-30"
+    },
+    {
+      "id": "Multi_Agent_Scheduler",
+      "name": "Multi Agent Scheduler",
+      "category": "KI / Agenten",
+      "status": "planned",
+      "resource_class": "medium",
+      "recommended_device": "WSL2 / MiniPC / Oracle VPS",
+      "tools": [
+        "job_queue",
+        "langgraph",
+        "crewai",
+        "autogen"
+      ],
+      "install_mode": "documentation-first",
+      "auto_install": false,
+      "description": "Mehragenten-Auftraege seriell oder limitiert planen.",
+      "doc": "docs/Profile/Multi_Agent_Scheduler.md",
+      "updated": "2026-05-30"
+    },
+    {
+      "id": "Local_Memory_Governance",
+      "name": "Local Memory Governance",
+      "category": "KI / Agenten",
+      "status": "planned",
+      "resource_class": "light",
+      "recommended_device": "WSL2 / MiniPC / Oracle VPS",
+      "tools": [
+        "qdrant",
+        "chromadb",
+        "gitleaks"
+      ],
+      "install_mode": "documentation-first",
+      "auto_install": false,
+      "description": "Regeln fuer lokale Memories, Loeschung, Export und Datenschutz.",
+      "doc": "docs/Profile/Local_Memory_Governance.md",
+      "updated": "2026-05-30"
+    },
+    {
+      "id": "Dataset_Curator",
+      "name": "Dataset Curator",
+      "category": "KI / Agenten",
+      "status": "planned",
+      "resource_class": "medium",
+      "recommended_device": "WSL2 / MiniPC / Oracle VPS",
+      "tools": [
+        "docling",
+        "unstructured",
+        "duckdb"
+      ],
+      "install_mode": "documentation-first",
+      "auto_install": false,
+      "description": "Datasets kuratieren, bereinigen, labeln und dokumentieren.",
+      "doc": "docs/Profile/Dataset_Curator.md",
+      "updated": "2026-05-30"
+    },
+    {
+      "id": "Secrets_Audit",
+      "name": "Secrets Audit",
+      "category": "Security",
+      "status": "planned",
+      "resource_class": "light",
+      "recommended_device": "WSL2 / MiniPC / Oracle VPS",
+      "tools": [
+        "gitleaks",
+        "trufflehog",
+        "sops",
+        "age"
+      ],
+      "install_mode": "documentation-first",
+      "auto_install": false,
+      "description": "Secrets in Repo und User-Workspace pruefen, ohne Werte auszugeben.",
+      "doc": "docs/Profile/Secrets_Audit.md",
+      "updated": "2026-05-30"
+    },
+    {
+      "id": "Vulnerability_Scanner",
+      "name": "Vulnerability Scanner",
+      "category": "Security",
+      "status": "planned",
+      "resource_class": "medium",
+      "recommended_device": "WSL2 / MiniPC / Oracle VPS",
+      "tools": [
+        "trivy",
+        "grype",
+        "syft",
+        "semgrep",
+        "openscap",
+        "lynis"
+      ],
+      "install_mode": "documentation-first",
+      "auto_install": false,
+      "description": "Schwachstellen-, SBOM- und Container-/Filesystem-Scans.",
+      "doc": "docs/Profile/Vulnerability_Scanner.md",
+      "updated": "2026-05-30"
+    },
+    {
+      "id": "DDoS_Protection_HE_Oracle",
+      "name": "DDoS Protection HE Oracle",
+      "category": "Security",
+      "status": "planned",
+      "resource_class": "medium",
+      "recommended_device": "WSL2 / MiniPC / Oracle VPS",
+      "tools": [
+        "crowdsec",
+        "fail2ban",
+        "ufw",
+        "caddy",
+        "traefik"
+      ],
+      "install_mode": "documentation-first",
+      "auto_install": false,
+      "description": "Hurricane Electric plus Oracle VPS Firewall, Rate-Limits und realistische DDoS-Haertung.",
+      "doc": "docs/Profile/DDoS_Protection_HE_Oracle.md",
+      "updated": "2026-05-30"
+    },
+    {
+      "id": "Safe_Agent_Sandbox",
+      "name": "Safe Agent Sandbox",
+      "category": "Security",
+      "status": "planned",
+      "resource_class": "medium",
+      "recommended_device": "WSL2 / MiniPC / Oracle VPS",
+      "tools": [
+        "podman",
+        "docker",
+        "firejail"
+      ],
+      "install_mode": "documentation-first",
+      "auto_install": false,
+      "description": "Sichere Ausfuehrung von Agenten mit minimalen Rechten und klaren Schreibfreigaben.",
+      "doc": "docs/Profile/Safe_Agent_Sandbox.md",
+      "updated": "2026-05-30"
+    },
+    {
+      "id": "K3s_HomeCluster_Manager",
+      "name": "K3s HomeCluster Manager",
+      "category": "Infrastruktur",
+      "status": "planned",
+      "resource_class": "heavy",
+      "recommended_device": "WSL2 / MiniPC / Oracle VPS",
+      "tools": [
+        "k3s",
+        "helm",
+        "kubectl",
+        "kustomize"
+      ],
+      "install_mode": "documentation-first",
+      "auto_install": false,
+      "description": "K3s Homecluster, Worker, Labels, Network Policies und GPU-Nodes.",
+      "doc": "docs/Profile/K3s_HomeCluster_Manager.md",
+      "updated": "2026-05-30"
+    },
+    {
+      "id": "Wake_On_LAN_Controller",
+      "name": "Wake On LAN Controller",
+      "category": "Infrastruktur",
+      "status": "planned",
+      "resource_class": "light",
+      "recommended_device": "WSL2 / MiniPC / Oracle VPS",
+      "tools": [
+        "wakeonlan",
+        "wireguard",
+        "home_assistant"
+      ],
+      "install_mode": "documentation-first",
+      "auto_install": false,
+      "description": "On-Demand GPU-/Ollama-/ComfyUI-Server per Wake-on-LAN starten.",
+      "doc": "docs/Profile/Wake_On_LAN_Controller.md",
+      "updated": "2026-05-30"
+    },
+    {
+      "id": "GPU_Workload_Scheduler",
+      "name": "GPU Workload Scheduler",
+      "category": "Infrastruktur",
+      "status": "planned",
+      "resource_class": "gpu-heavy",
+      "recommended_device": "RTX Workstation / Kubernetes GPU",
+      "tools": [
+        "job_queue",
+        "nvidia_smi",
+        "k3s"
+      ],
+      "install_mode": "documentation-first",
+      "auto_install": false,
+      "description": "GPU-Jobs fuer Modelle, Media und Render kontrolliert einplanen.",
+      "doc": "docs/Profile/GPU_Workload_Scheduler.md",
+      "updated": "2026-05-30"
+    },
+    {
+      "id": "Storage_Backup_NAS",
+      "name": "Storage Backup NAS",
+      "category": "Infrastruktur",
+      "status": "planned",
+      "resource_class": "medium",
+      "recommended_device": "WSL2 / MiniPC / Oracle VPS",
+      "tools": [
+        "restic",
+        "borgbackup",
+        "rclone",
+        "syncthing"
+      ],
+      "install_mode": "documentation-first",
+      "auto_install": false,
+      "description": "NAS-/Storage-Backups, Sync, Verschluesselung und Restore-Test.",
+      "doc": "docs/Profile/Storage_Backup_NAS.md",
+      "updated": "2026-05-30"
+    },
+    {
+      "id": "Reverse_Proxy_Gateway",
+      "name": "Reverse Proxy Gateway",
+      "category": "Infrastruktur",
+      "status": "planned",
+      "resource_class": "medium",
+      "recommended_device": "WSL2 / MiniPC / Oracle VPS",
+      "tools": [
+        "caddy",
+        "traefik",
+        "nginx_proxy_manager"
+      ],
+      "install_mode": "documentation-first",
+      "auto_install": false,
+      "description": "Reverse Proxy mit Auth, TLS, Rate-Limits und internen Admin-Grenzen.",
+      "doc": "docs/Profile/Reverse_Proxy_Gateway.md",
+      "updated": "2026-05-30"
+    },
+    {
+      "id": "DNS_DDNS_Hurricane_Electric",
+      "name": "DNS DDNS Hurricane Electric",
+      "category": "Infrastruktur",
+      "status": "planned",
+      "resource_class": "light",
+      "recommended_device": "WSL2 / MiniPC / Oracle VPS",
+      "tools": [
+        "ddclient",
+        "wireguard"
+      ],
+      "install_mode": "documentation-first",
+      "auto_install": false,
+      "description": "HE DNS/DDNS, Domains, IPv6 und Oracle-VPS-DMZ-Pfad.",
+      "doc": "docs/Profile/DNS_DDNS_Hurricane_Electric.md",
+      "updated": "2026-05-30"
+    },
+    {
+      "id": "Monitoring_Alerting_NOC",
+      "name": "Monitoring Alerting NOC",
+      "category": "Infrastruktur",
+      "status": "planned",
+      "resource_class": "medium",
+      "recommended_device": "WSL2 / MiniPC / Oracle VPS",
+      "tools": [
+        "glances",
+        "netdata",
+        "prometheus",
+        "grafana",
+        "loki",
+        "uptime_kuma"
+      ],
+      "install_mode": "documentation-first",
+      "auto_install": false,
+      "description": "NOC-Dashboard fuer Status, Alerts, Logs und Ressourcen.",
+      "doc": "docs/Profile/Monitoring_Alerting_NOC.md",
+      "updated": "2026-05-30"
+    },
+    {
+      "id": "Music_Production_Studio",
+      "name": "Music Production Studio",
+      "category": "Medien / Creator",
+      "status": "planned",
+      "resource_class": "medium",
+      "recommended_device": "WSL2 / MiniPC / Oracle VPS",
+      "tools": [
+        "ffmpeg",
+        "audacity",
+        "musicgen",
+        "demucs"
+      ],
+      "install_mode": "documentation-first",
+      "auto_install": false,
+      "description": "Musikproduktion, Stems, Prompting, Mastering und Export.",
+      "doc": "docs/Profile/Music_Production_Studio.md",
+      "updated": "2026-05-30"
+    },
+    {
+      "id": "Video_Pipeline_Manager",
+      "name": "Video Pipeline Manager",
+      "category": "Medien / Creator",
+      "status": "planned",
+      "resource_class": "gpu-heavy",
+      "recommended_device": "RTX Workstation / Kubernetes GPU",
+      "tools": [
+        "ffmpeg",
+        "comfyui",
+        "blender"
+      ],
+      "install_mode": "documentation-first",
+      "auto_install": false,
+      "description": "Video-Pipeline fuer Schnitt, Render, ComfyUI und Queue-Jobs.",
+      "doc": "docs/Profile/Video_Pipeline_Manager.md",
+      "updated": "2026-05-30"
+    },
+    {
+      "id": "Image_Model_Manager",
+      "name": "Image Model Manager",
+      "category": "Medien / Creator",
+      "status": "planned",
+      "resource_class": "gpu-heavy",
+      "recommended_device": "RTX Workstation / Kubernetes GPU",
+      "tools": [
+        "comfyui",
+        "stable_diffusion_webui_forge"
+      ],
+      "install_mode": "documentation-first",
+      "auto_install": false,
+      "description": "Bildmodelle, Speicherorte, Lizenzhinweise und Modellverwaltung.",
+      "doc": "docs/Profile/Image_Model_Manager.md",
+      "updated": "2026-05-30"
+    },
+    {
+      "id": "ComfyUI_Workflow_Library",
+      "name": "ComfyUI Workflow Library",
+      "category": "Medien / Creator",
+      "status": "planned",
+      "resource_class": "gpu-heavy",
+      "recommended_device": "RTX Workstation / Kubernetes GPU",
+      "tools": [
+        "comfyui",
+        "job_queue"
+      ],
+      "install_mode": "documentation-first",
+      "auto_install": false,
+      "description": "ComfyUI-Workflows katalogisieren und nur bewusst ausfuehren.",
+      "doc": "docs/Profile/ComfyUI_Workflow_Library.md",
+      "updated": "2026-05-30"
+    },
+    {
+      "id": "Voice_Studio_Whisper_TTS",
+      "name": "Voice Studio Whisper TTS",
+      "category": "Medien / Creator",
+      "status": "planned",
+      "resource_class": "medium",
+      "recommended_device": "WSL2 / MiniPC / Oracle VPS",
+      "tools": [
+        "piper",
+        "whisper_cpp",
+        "faster_whisper",
+        "coqui_tts"
+      ],
+      "install_mode": "documentation-first",
+      "auto_install": false,
+      "description": "Voice Studio mit STT/TTS, Piper-Default und Coqui experimental.",
+      "doc": "docs/Profile/Voice_Studio_Whisper_TTS.md",
+      "updated": "2026-05-30"
+    },
+    {
+      "id": "Android_Remote_Control",
+      "name": "Android Remote Control",
+      "category": "Android / Mobile",
+      "status": "planned",
+      "resource_class": "medium",
+      "recommended_device": "WSL2 / MiniPC / Oracle VPS",
+      "tools": [
+        "tailscale",
+        "wireguard",
+        "home_assistant"
+      ],
+      "install_mode": "documentation-first",
+      "auto_install": false,
+      "description": "Mobile Steuerung von OpenClaw/HomeLab ueber sichere Tunnel.",
+      "doc": "docs/Profile/Android_Remote_Control.md",
+      "updated": "2026-05-30"
+    },
+    {
+      "id": "APK_Build_Test_Lab",
+      "name": "APK Build Test Lab",
+      "category": "Android / Mobile",
+      "status": "planned",
+      "resource_class": "heavy",
+      "recommended_device": "WSL2 / MiniPC / Oracle VPS",
+      "tools": [
+        "android_sdk",
+        "gradle",
+        "fastlane",
+        "jadx",
+        "apktool"
+      ],
+      "install_mode": "documentation-first",
+      "auto_install": false,
+      "description": "APK-Build, Tests, Signing und Analyse fuer eigene Apps.",
+      "doc": "docs/Profile/APK_Build_Test_Lab.md",
+      "updated": "2026-05-30"
+    },
+    {
+      "id": "Mobile_Device_Firewall",
+      "name": "Mobile Device Firewall",
+      "category": "Android / Mobile",
+      "status": "planned",
+      "resource_class": "medium",
+      "recommended_device": "WSL2 / MiniPC / Oracle VPS",
+      "tools": [
+        "mitmproxy",
+        "wireguard"
+      ],
+      "install_mode": "documentation-first",
+      "auto_install": false,
+      "description": "Mobile Firewall-/Traffic-Konzepte nur fuer eigene Geraete.",
+      "doc": "docs/Profile/Mobile_Device_Firewall.md",
+      "updated": "2026-05-30"
+    },
+    {
+      "id": "myBOX_Android_Container",
+      "name": "myBOX Android Container",
+      "category": "Android / Mobile",
+      "status": "planned",
+      "resource_class": "heavy",
+      "recommended_device": "WSL2 / MiniPC / Oracle VPS",
+      "tools": [
+        "android_sdk",
+        "gradle"
+      ],
+      "install_mode": "documentation-first",
+      "auto_install": false,
+      "description": "myBOX/GBox-nahe Container-App-Konzepte, documentation-first.",
+      "doc": "docs/Profile/myBOX_Android_Container.md",
+      "updated": "2026-05-30"
+    },
+    {
+      "id": "MicroG_Compatibility_Lab",
+      "name": "MicroG Compatibility Lab",
+      "category": "Android / Mobile",
+      "status": "planned",
+      "resource_class": "medium",
+      "recommended_device": "WSL2 / MiniPC / Oracle VPS",
+      "tools": [
+        "android_sdk",
+        "gradle"
+      ],
+      "install_mode": "documentation-first",
+      "auto_install": false,
+      "description": "MicroG-Kompatibilitaet, Push-/Login-Checks und Datenschutz.",
+      "doc": "docs/Profile/MicroG_Compatibility_Lab.md",
+      "updated": "2026-05-30"
+    },
+    {
+      "id": "Codex_Task_Queue",
+      "name": "Codex Task Queue",
+      "category": "Dokumentation / Projektsteuerung",
+      "status": "planned",
+      "resource_class": "light",
+      "recommended_device": "WSL2 / MiniPC / Oracle VPS",
+      "tools": [
+        "job_queue"
+      ],
+      "install_mode": "documentation-first",
+      "auto_install": false,
+      "description": "Auftragswarteschlange fuer Codex-Auftraege, FIFO, Logs und Retry.",
+      "doc": "docs/Profile/Codex_Task_Queue.md",
+      "updated": "2026-05-30"
+    },
+    {
+      "id": "Project_Roadmap_Manager",
+      "name": "Project Roadmap Manager",
+      "category": "Dokumentation / Projektsteuerung",
+      "status": "planned",
+      "resource_class": "light",
+      "recommended_device": "WSL2 / MiniPC / Oracle VPS",
+      "tools": [
+        "git",
+        "github_cli"
+      ],
+      "install_mode": "documentation-first",
+      "auto_install": false,
+      "description": "Roadmap, Milestones, Status und naechste sichere Schritte.",
+      "doc": "docs/Profile/Project_Roadmap_Manager.md",
+      "updated": "2026-05-30"
+    },
+    {
+      "id": "Decision_Log_Boardroom",
+      "name": "Decision Log Boardroom",
+      "category": "Dokumentation / Projektsteuerung",
+      "status": "planned",
+      "resource_class": "light",
+      "recommended_device": "WSL2 / MiniPC / Oracle VPS",
+      "tools": [
+        "git",
+        "markdownlint_cli"
+      ],
+      "install_mode": "documentation-first",
+      "auto_install": false,
+      "description": "Entscheidungslog fuer Architektur, Risiken und Freigaben.",
+      "doc": "docs/Profile/Decision_Log_Boardroom.md",
+      "updated": "2026-05-30"
+    },
+    {
+      "id": "Install_Test_Matrix",
+      "name": "Install Test Matrix",
+      "category": "Dokumentation / Projektsteuerung",
+      "status": "planned",
+      "resource_class": "light",
+      "recommended_device": "WSL2 / MiniPC / Oracle VPS",
+      "tools": [
+        "check_tools",
+        "check_profiles",
+        "check_ports"
+      ],
+      "install_mode": "documentation-first",
+      "auto_install": false,
+      "description": "Testmatrix fuer Installer, Profile, Ports und Ressourcen.",
+      "doc": "docs/Profile/Install_Test_Matrix.md",
+      "updated": "2026-05-30"
+    },
+    {
+      "id": "Beginner_Wizard_Profile",
+      "name": "Beginner Wizard Profile",
+      "category": "Dokumentation / Projektsteuerung",
+      "status": "planned",
+      "resource_class": "light",
+      "recommended_device": "WSL2 / MiniPC / Oracle VPS",
+      "tools": [
+        "doctor",
+        "check_resource_budget"
+      ],
+      "install_mode": "documentation-first",
+      "auto_install": false,
+      "description": "Einsteigerpfad fuer sichere Minimalinstallation und Verstaendnis.",
+      "doc": "docs/Profile/Beginner_Wizard_Profile.md",
+      "updated": "2026-05-30"
     }
   ]
 }

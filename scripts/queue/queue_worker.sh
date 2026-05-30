@@ -5,6 +5,11 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=queue_common.sh
 source "$SCRIPT_DIR/queue_common.sh"
 
+if [[ "${QUEUE_MODE:-}" == "tsv" || -f "${QUEUE_FILE:-$QUEUE_HOME/jobs.tsv}" ]]; then
+  "$SCRIPT_DIR/queue_run_next.sh"
+  exit $?
+fi
+
 init_queue_db
 
 if ! resource_guard_ok; then
@@ -39,4 +44,3 @@ else
   echo "Job $job_id fehlgeschlagen (Exit $rc). Log: $log_path"
   exit "$rc"
 fi
-

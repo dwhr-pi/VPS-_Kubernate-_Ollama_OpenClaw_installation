@@ -10,7 +10,17 @@ section() {
 
 command_exists_fast() {
     local cmd="$1"
-    [ -x "/usr/bin/$cmd" ] || [ -x "/usr/local/bin/$cmd" ] || timeout 2 bash -lc "command -v '$cmd' >/dev/null 2>&1"
+    command -v "$cmd" >/dev/null 2>&1
+}
+
+run_version_if_exists() {
+    local cmd="$1"
+    shift
+    if command_exists_fast "$cmd"; then
+        timeout 3 "$cmd" "$@" || echo "Hinweis: $cmd gefunden, aber Versionsabfrage fehlgeschlagen"
+    else
+        echo "Hinweis: $cmd nicht gefunden"
+    fi
 }
 
 section "Registry"
@@ -32,16 +42,21 @@ if command_exists_fast k3s; then
 else
     echo "Hinweis: k3s nicht gefunden"
 fi
-command_exists_fast node && timeout 3 node --version || echo "Hinweis: node nicht gefunden"
-command_exists_fast pnpm && timeout 3 pnpm --version || echo "Hinweis: pnpm nicht gefunden"
-command_exists_fast corepack && timeout 3 corepack --version || echo "Hinweis: corepack nicht gefunden"
-command_exists_fast python3 && timeout 3 python3 --version || echo "Hinweis: python3 nicht gefunden"
-command_exists_fast pipx && timeout 3 pipx --version || echo "Hinweis: pipx nicht gefunden"
-command_exists_fast gh && timeout 3 gh --version | head -n 1 || echo "Hinweis: GitHub CLI nicht gefunden"
-command_exists_fast go && timeout 3 go version || echo "Hinweis: go nicht gefunden"
-command_exists_fast make && timeout 3 make --version | head -n 1 || echo "Hinweis: make nicht gefunden"
-command_exists_fast helm && timeout 3 helm version --short || echo "Hinweis: helm nicht gefunden"
-command_exists_fast kubectl && timeout 3 kubectl version --client=true 2>/dev/null | head -n 1 || echo "Hinweis: kubectl nicht gefunden"
+if command_exists_fast node; then
+    run_version_if_exists node --version
+    run_version_if_exists pnpm --version
+    run_version_if_exists corepack --version
+else
+    echo "Hinweis: node nicht gefunden"
+    echo "Hinweis: pnpm/corepack werden uebersprungen, weil Node fehlt oder nur Windows-Shims vorhanden sind"
+fi
+run_version_if_exists python3 --version
+run_version_if_exists pipx --version
+if command_exists_fast gh; then timeout 3 gh --version | sed -n '1p' || true; else echo "Hinweis: GitHub CLI nicht gefunden"; fi
+run_version_if_exists go version
+if command_exists_fast make; then timeout 3 make --version | sed -n '1p' || true; else echo "Hinweis: make nicht gefunden"; fi
+run_version_if_exists helm version --short
+if command_exists_fast kubectl; then timeout 3 kubectl version --client=true 2>/dev/null | sed -n '1p' || true; else echo "Hinweis: kubectl nicht gefunden"; fi
 python3 -m venv --help >/dev/null 2>&1 && echo "OK python venv verfuegbar" || echo "Hinweis: python3-venv fehlt oder ist defekt"
 
 if grep -qiE "microsoft|wsl" /proc/version 2>/dev/null || [ -n "${WSL_DISTRO_NAME:-}" ]; then
@@ -102,34 +117,42 @@ else
 fi
 
 section "Gefaehrliche Rechte"
-timeout 20 find . -path ./.git -prune -o -type f -perm -0002 -print | head -n 20 || echo "Hinweis: Rechtepruefung Timeout oder nicht verfuegbar"
+rights_tmp="$(mktemp)"
+timeout 20 find . -path ./.git -prune -o -type f -perm -0002 -print > "$rights_tmp" 2>/dev/null || true
+if [ -s "$rights_tmp" ]; then
+    sed -n '1,20p' "$rights_tmp"
+else
+    echo "OK: Keine world-writable Dateien in schneller Stichprobe gefunden"
+fi
+rm -f "$rights_tmp"
 
 section "Ports"
 bash scripts/check_ports.sh || echo "WARNUNG: Portcheck meldet Probleme"
 
 section "Markdown"
-if command_exists_fast npx; then
-    timeout 60 npx --yes markdown-link-check readme.md >/tmp/openclaw_markdown_links.txt 2>&1 && echo "OK README Links" || echo "Hinweis: markdown-link-check fuer README meldet Hinweise oder ist nicht verfuegbar"
+if command_exists_fast node && command_exists_fast npx; then
+    timeout 30 npx --yes markdown-link-check readme.md >/tmp/openclaw_markdown_links.txt 2>&1 && echo "OK README Links" || echo "Hinweis: markdown-link-check fuer README meldet Hinweise oder ist nicht verfuegbar"
 else
-    echo "Hinweis: npx fehlt; Markdown-Linkcheck uebersprungen"
+    echo "Hinweis: node/npx fehlt; Markdown-Linkcheck uebersprungen"
 fi
 
 section "Registry Sync"
-bash scripts/check_profile_registry_sync.sh || echo "WARNUNG: Profile/Tools Registry-Sync meldet Hinweise oder Fehler"
+if command_exists_fast git && git status --short >/tmp/openclaw_doctor_git_status.txt 2>&1; then
+    timeout 20 bash scripts/check_profile_registry_sync.sh || echo "WARNUNG: Profile/Tools Registry-Sync meldet Hinweise, Fehler oder Timeout"
+else
+    if grep -qi "dubious ownership" /tmp/openclaw_doctor_git_status.txt 2>/dev/null; then
+        echo "Hinweis: Git meldet dubious ownership auf diesem Windows/WSL-Pfad. Registry-Sync uebersprungen."
+        echo "Optionaler manueller Fix: git config --global --add safe.directory $ROOT_DIR"
+    else
+        echo "Hinweis: Git-Status nicht verfuegbar; Registry-Sync uebersprungen."
+    fi
+fi
 
 section "Secret-Hygiene"
-if command_exists_fast git; then
-    secret_scan_status=0
-    timeout 20 git grep -nE '(sk-[A-Za-z0-9_-]{20,}|BEGIN (RSA|OPENSSH|EC) PRIVATE KEY|password *= *[^<\"'\"' ]{8,})' -- ':!*.png' ':!*.jpg' ':!*.svg' >/tmp/openclaw_secret_scan.txt 2>/dev/null || secret_scan_status=$?
-    if [ "$secret_scan_status" -eq 0 ]; then
-        echo "WARNUNG: Moegliche Secrets gefunden. Details:"
-        cat /tmp/openclaw_secret_scan.txt
-        exit 1
-    elif [ "$secret_scan_status" -eq 124 ]; then
-        echo "Hinweis: Secret-Scan wurde nach 20 Sekunden abgebrochen. Fuer tiefe Pruefung bitte gitleaks nutzen."
-    else
-        echo "OK: Keine offensichtlichen Secrets im Git-Textbestand gefunden."
-    fi
+if [ -x scripts/check_secrets.sh ]; then
+    timeout 45 bash scripts/check_secrets.sh --dry-run || echo "WARNUNG: Secret-Check meldet Hinweise oder Timeout"
+else
+    echo "Hinweis: scripts/check_secrets.sh fehlt"
 fi
 
 section "Fertig"
