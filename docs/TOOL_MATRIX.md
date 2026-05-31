@@ -132,3 +132,19 @@ Alle Kategorien sind als Katalog-/Menuevorbereitung gedacht. Schwere Tools bleib
 ## dbt Installationshinweis
 
 `dbt-core` wird aus der GitHub-Quelle `https://github.com/dbt-labs/dbt-core.git` geklont, aber aus dem Unterordner `core` installiert. Der Repository-Root ist ein Monorepo/Flat-Layout und darf nicht direkt per `pip install -e` installiert werden. Details: [DBT_INSTALLATION_NOTES.md](DBT_INSTALLATION_NOTES.md).
+
+## Next-Level-Ergaenzungen 2026-05-31
+
+| Tool | Kategorie | Status | Ressourcen | Installationsrisiko | Auto-Install |
+| --- | --- | --- | --- | --- | --- |
+| PaddleOCR | RAG / OCR | planned/manual | medium | medium | nein |
+| LiveKit | Voice / Realtime | planned/manual | high | medium | nein |
+| Asterisk | Voice / Telefonie | planned/manual | high | medium | nein |
+| Beszel | Monitoring | planned/manual | low | low | nein |
+| Zeek | Security | planned/manual | high | high | nein |
+| Falco | Security | planned/manual | high | high | nein |
+| Stalwart | Mail | planned/manual | medium | high | nein |
+| Sieve | Mail | planned/manual | low | medium | nein |
+
+Diese Ergaenzungen sind bewusst dokumentations- und registry-first. Sie duerfen erst installierbar werden, wenn `check`, `install`, `uninstall`, `doctor`, Ressourcenpruefung und Port-/Secret-Hinweise vorhanden sind.
+

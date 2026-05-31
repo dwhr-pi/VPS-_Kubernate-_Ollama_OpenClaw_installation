@@ -69,3 +69,17 @@ Wichtige Werte:
 
 Job-Kommandos duerfen keine API-Keys oder Tokens enthalten. Secrets gehoeren in
 lokale `.env`-Dateien ausserhalb des Repositories.
+
+## Next-Level-Hinweis 2026-05-31
+
+Die Queue ist der bevorzugte Schutzpfad fuer lange oder schwere Aufgaben wie n8n-Builds, Airbyte, ComfyUI, Medienpipelines, Kubernetes-Deployments, Modell-Downloads, Voice-/Callcenter-Stacks und Security-Scans.
+
+Standard:
+
+- MiniPC/WSL2: maximal 1 Job gleichzeitig.
+- Oracle VPS: 1 bis 2 leichte Jobs, schwere Jobs nur nach Ressourcenpruefung.
+- RTX/GPU-Workstation: 1 schwerer GPU-Job oder mehrere leichte CPU-Jobs.
+- Raspberry Pi: nur Watcher-, Wake-on-LAN- und leichte Diagnosejobs.
+
+Schwere Profile sollen im Setup nicht direkt gestartet werden. Sie sollen entweder `planned/manual` bleiben oder ueber die Queue mit Logdatei, Timeout, Retry-Zaehler und Resource-Budget laufen.
+

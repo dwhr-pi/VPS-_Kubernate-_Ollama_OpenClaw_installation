@@ -3809,6 +3809,155 @@
       "description": "Einsteigerpfad fuer sichere Minimalinstallation und Verstaendnis.",
       "doc": "docs/Profile/Beginner_Wizard_Profile.md",
       "updated": "2026-05-30"
+    },
+    {
+      "id": "AI_Model_Router_Gateway",
+      "name": "AI Model Router Gateway",
+      "category": "KI / Agenten",
+      "status": "planned",
+      "resource_class": "medium",
+      "recommended_device": "WSL2 / MiniPC / Oracle VPS / GPU Server",
+      "tools": [
+        "litellm",
+        "ollama",
+        "localai",
+        "vllm",
+        "llama_cpp"
+      ],
+      "install_mode": "documentation-first",
+      "auto_install": false,
+      "description": "Routing zwischen lokalen und optionalen Cloud-Modellen mit Fallbacks, Kostenlimits und Local-first-Policy.",
+      "doc": "docs/Profile/AI_Model_Router_Gateway.md",
+      "updated": "2026-05-31"
+    },
+    {
+      "id": "Voice_AI_Callcenter",
+      "name": "Voice AI Callcenter",
+      "category": "Kommunikation / Voice",
+      "status": "planned",
+      "resource_class": "medium",
+      "recommended_device": "MiniPC / Oracle VPS / GPU Workstation",
+      "tools": [
+        "whisper_cpp",
+        "faster_whisper",
+        "piper",
+        "livekit",
+        "asterisk"
+      ],
+      "install_mode": "documentation-first",
+      "auto_install": false,
+      "description": "STT/TTS, Telefonie-Workflows, Support-Agenten und lokale Sprachassistenten mit manueller Freigabe.",
+      "doc": "docs/Profile/Voice_AI_Callcenter.md",
+      "updated": "2026-05-31"
+    },
+    {
+      "id": "Email_AI_Office",
+      "name": "Email AI Office",
+      "category": "Kommunikation / Mail",
+      "status": "planned",
+      "resource_class": "medium",
+      "recommended_device": "Oracle VPS / Home Server",
+      "tools": [
+        "stalwart",
+        "rspamd",
+        "mailpit",
+        "snappymail",
+        "sieve"
+      ],
+      "install_mode": "documentation-first",
+      "auto_install": false,
+      "description": "Eigener Mailserver plus KI-gestuetzte Sortierung, Antwortentwuerfe, Spampruefung und Wissensablage.",
+      "doc": "docs/Profile/Email_AI_Office.md",
+      "updated": "2026-05-31"
+    },
+    {
+      "id": "Observability_Control_Tower",
+      "name": "Observability Control Tower",
+      "category": "Monitoring / Betrieb",
+      "status": "planned",
+      "resource_class": "medium",
+      "recommended_device": "Oracle VPS / Home Server / Kubernetes",
+      "tools": [
+        "prometheus",
+        "grafana",
+        "loki",
+        "uptime_kuma",
+        "netdata",
+        "beszel",
+        "glances"
+      ],
+      "install_mode": "documentation-first",
+      "auto_install": false,
+      "description": "Zentrales Monitoring fuer VPS, Pi, MiniPC, GPU-Server, Kubernetes, Dienste und Agenten.",
+      "doc": "docs/Profile/Observability_Control_Tower.md",
+      "updated": "2026-05-31"
+    },
+    {
+      "id": "Security_BlueTeam_SOC",
+      "name": "Security BlueTeam SOC",
+      "category": "Security",
+      "status": "planned",
+      "resource_class": "heavy",
+      "recommended_device": "Oracle VPS / Home Server / Kubernetes",
+      "tools": [
+        "wazuh",
+        "suricata",
+        "zeek",
+        "trivy",
+        "grype",
+        "falco",
+        "crowdsec"
+      ],
+      "install_mode": "documentation-first",
+      "auto_install": false,
+      "description": "Defensive Sicherheitsueberwachung, Loganalyse, IDS und Schwachstellenpruefung fuer eigene Systeme.",
+      "doc": "docs/Profile/Security_BlueTeam_SOC.md",
+      "updated": "2026-05-31"
+    },
+    {
+      "id": "Network_DDNS_ZeroTrust",
+      "name": "Network DDNS ZeroTrust",
+      "category": "Netzwerk / Zero Trust",
+      "status": "planned",
+      "resource_class": "medium",
+      "recommended_device": "Oracle VPS / Raspberry Pi / Home Server",
+      "tools": [
+        "wireguard",
+        "headscale",
+        "ddclient",
+        "caddy",
+        "traefik",
+        "nginx_proxy_manager",
+        "authelia",
+        "authentik"
+      ],
+      "install_mode": "documentation-first",
+      "auto_install": false,
+      "description": "Hurricane Electric DDNS, WireGuard/Headscale, Reverse Proxy und geschuetzte Admin-Zugaenge.",
+      "doc": "docs/Profile/Network_DDNS_ZeroTrust.md",
+      "updated": "2026-05-31"
+    },
+    {
+      "id": "Media_Music_Video_Studio",
+      "name": "Media Music Video Studio",
+      "category": "Medien / Creator",
+      "status": "planned",
+      "resource_class": "gpu-heavy",
+      "recommended_device": "GPU Workstation / RTX Server",
+      "tools": [
+        "comfyui",
+        "invokeai",
+        "automatic1111",
+        "krita_ai_diffusion",
+        "blender",
+        "ffmpeg",
+        "audacity"
+      ],
+      "install_mode": "documentation-first",
+      "auto_install": false,
+      "description": "Lokale Audio-, Video- und Bildpipelines fuer Creator-Workflows; schwere Komponenten nur mit Opt-in.",
+      "doc": "docs/Profile/Media_Music_Video_Studio.md",
+      "updated": "2026-05-31"
     }
   ]
 }

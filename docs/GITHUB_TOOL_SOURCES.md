@@ -91,3 +91,19 @@ Wichtig: Ein Tool kann trotzdem GitHub als Primaerquelle haben, aber beim Build 
 - Tools mit offensiver Security-Automation.
 - Tools mit unklarer Lizenzlage.
 - Tools, die Admin-Ports oeffnen oder Cloudkosten erzeugen, ohne ausdrueckliche Konfiguration.
+
+## 2026-05-31: Next-Level Tool-Kandidaten
+
+| Tool | GitHub-Quelle | Zweck | Status | Risiko |
+| --- | --- | --- | --- | --- |
+| PaddleOCR | https://github.com/PaddlePaddle/PaddleOCR | OCR fuer Bilder, Scans und Dokumentenpipelines | planned/manual | medium |
+| LiveKit | https://github.com/livekit/livekit | Realtime Audio/Video fuer Voice-Agenten und Callcenter | planned/manual | medium |
+| Asterisk | https://github.com/asterisk/asterisk | SIP/Telefonie-Kern fuer IVR und Callcenter | planned/manual | medium |
+| Beszel | https://github.com/henrygd/beszel | Leichtes Server-Monitoring | planned/manual | low |
+| Zeek | https://github.com/zeek/zeek | Netzwerk-Monitoring und Protokollanalyse | planned/manual | high |
+| Falco | https://github.com/falcosecurity/falco | Runtime-Security fuer Container, Linux und Kubernetes | planned/manual | high |
+| Stalwart | https://github.com/stalwartlabs/stalwart | Mailserver-Kern fuer eigene Domains | planned/manual | high |
+| Sieve | https://github.com/stalwartlabs/stalwart | Mailfilter-Regeln und Agenten-Workflows | planned/manual | medium |
+
+Sicherheitsregel: Diese Tools werden nicht automatisch installiert. Vor produktiver Nutzung muessen Lizenz, Release-Quelle, Ports, Secrets, Ressourcenbedarf und Update-/Rollback-Pfad geprueft werden.
+

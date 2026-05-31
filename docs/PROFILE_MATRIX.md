@@ -146,3 +146,18 @@ Alle Voice-Studio-Profile sind read-only-first und installieren schwere Komponen
 | AI_Voice_Director | planned | medium | WSL2 / MiniPC | Sprecherfuehrung, Emotion, Timing, Dubbing und Chor. |
 
 Alle Profile sind documentation-first. Avatar-, LipSync- und Deepfake-nahe Workflows benoetigen Einwilligung, KI-Kennzeichnung und manuelle Freigabe.
+
+## Next-Level-Ergaenzungen 2026-05-31
+
+| Profil | Zweck | Status | Ressourcen | Zielhost |
+| --- | --- | --- | --- | --- |
+| AI_Model_Router_Gateway | Modellrouting, Fallbacks, Kostenkontrolle, Local-first | planned | medium | WSL2, MiniPC, Oracle VPS, GPU Server |
+| Voice_AI_Callcenter | STT/TTS, Telefonie, Support-Agenten | planned | medium | MiniPC, Oracle VPS, GPU Workstation |
+| Email_AI_Office | Mailserver plus KI-Sortierung und Antwortentwuerfe | planned | medium | Oracle VPS, Home Server |
+| Observability_Control_Tower | Monitoring fuer Dienste, Hosts, Queue und Agenten | planned | medium | Oracle VPS, Home Server, Kubernetes |
+| Security_BlueTeam_SOC | Defensive Logs, IDS, Schwachstellenanalyse | planned | heavy | Oracle VPS, Home Server, Kubernetes |
+| Network_DDNS_ZeroTrust | HE/DDNS, VPN, Reverse Proxy, Zero Trust | planned | medium | Oracle VPS, Raspberry Pi, Home Server |
+| Media_Music_Video_Studio | Audio-/Video-/Bildpipelines mit GPU-Opt-in | planned | gpu-heavy | RTX/GPU Workstation |
+
+Alle Profile bleiben `documentation-first`, bis sichere Installer, Uninstaller, Doctor-Checks und Rollback-Pfade existieren.
+
