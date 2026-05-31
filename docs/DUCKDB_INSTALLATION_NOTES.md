@@ -28,6 +28,8 @@ Ziel: /opt/duckdb
 Symlink: /usr/local/bin/duckdb
 ```
 
+Der Installer benoetigt `curl` und `unzip`. Falls diese Werkzeuge fehlen, installiert das Setup sie vor dem Download automatisch ueber `apt`.
+
 Die Version kann bewusst ueberschrieben werden:
 
 ```bash
@@ -60,4 +62,3 @@ bash scripts/tools/duckdb_uninstall.sh
 ```
 
 Lokale `.duckdb`-Datenbanken werden dabei nicht geloescht.
-

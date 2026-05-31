@@ -16,6 +16,8 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 INSTALL_DIR="${INSTALL_DIR:-$(cd "$SCRIPT_DIR/../.." && pwd)}"
 # shellcheck disable=SC1091
 source "$INSTALL_DIR/scripts/helpers/status_tracking.sh"
+# shellcheck source=../lib/git_target_repair.sh
+source "$INSTALL_DIR/scripts/lib/git_target_repair.sh"
 init_tool_tracking "Flowise"
 
 FLOWISE_DIR="/opt/flowise"
@@ -27,6 +29,7 @@ echo -e "${YELLOW}GitHub-Quelle: ${FLOWISE_REPO_URL}${NC}"
 
 # 1. Flowise aus GitHub klonen
 if [ -d "$FLOWISE_DIR" ]; then
+    repair_git_target_for_clone "$FLOWISE_DIR" "$FLOWISE_REPO_URL" "Flowise"
     if [ -d "$FLOWISE_DIR/.git" ]; then
         echo -e "${YELLOW}Flowise Verzeichnis $FLOWISE_DIR existiert bereits. Aktualisiere Repository...${NC}"
         cd "$FLOWISE_DIR"
@@ -35,11 +38,9 @@ if [ -d "$FLOWISE_DIR" ]; then
             exit 1
         fi
     else
-        echo -e "${RED}Fehler: $FLOWISE_DIR existiert, ist aber kein Git-Repository.${NC}"
-        echo -e "${YELLOW}Das passiert haeufig nach einem abgebrochenen Clone. Bitte manuell pruefen und erst dann entfernen:${NC}"
-        echo -e "${YELLOW}  sudo rm -rf $FLOWISE_DIR${NC}"
-        echo -e "${YELLOW}Danach den Installer erneut starten. Das Setup loescht diesen Ordner nicht automatisch.${NC}"
-        exit 1
+        echo -e "${YELLOW}Flowise Zielordner wurde repariert. Klone neu...${NC}"
+        GIT_TERMINAL_PROMPT=0 git clone "$FLOWISE_REPO_URL" "$FLOWISE_DIR"
+        cd "$FLOWISE_DIR"
     fi
 else
     echo -e "${BLUE}Klone Flowise in $FLOWISE_DIR...${NC}"

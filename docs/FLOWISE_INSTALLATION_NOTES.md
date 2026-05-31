@@ -40,13 +40,21 @@ Dann findet `pnpm install` keine `package.json` und meldet:
 ERR_PNPM_NO_PKG_MANIFEST No package.json found
 ```
 
-Der neue Installer bricht in diesem Fall vor `pnpm install` ab und fordert zur manuellen Pruefung auf. Wenn der Ordner wirklich nur ein kaputter Clone-Rest ist, kann er manuell entfernt werden:
+Der neue Installer nutzt die zentrale Git-Reparaturlogik. Ein leerer oder unvollstaendiger Zielordner wird nicht blind geloescht, sondern unter
+
+```text
+~/.openclaw_ultimate_user_data/setup_repair_backups/
+```
+
+gesichert. Danach wird Flowise erneut aus der korrekten GitHub-Quelle geklont.
+
+Wenn du einen kaputten Ordner bewusst selbst entfernen willst:
 
 ```bash
 sudo rm -rf /opt/flowise
 ```
 
-Danach den Installer erneut starten.
+Das ist aber nicht mehr der Standardpfad des Installers.
 
 ## Ressourcenhinweis
 

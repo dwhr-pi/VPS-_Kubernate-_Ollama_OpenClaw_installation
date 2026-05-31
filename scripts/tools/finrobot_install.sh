@@ -8,6 +8,11 @@ source "$SCRIPT_DIR/helpers/simple_tool_common.sh"
 TOOL_NAME="FinRobot"
 INSTALL_DIR="${FINROBOT_INSTALL_DIR:-/opt/finrobot}"
 REPO_URL="$(get_custom_repo_url "FINROBOT" "https://github.com/AI4Finance-Foundation/FinRobot.git")"
+CPYTHON_VERSION="${FINROBOT_CPYTHON_VERSION:-3.11.9}"
+CPYTHON_REPO_URL="${FINROBOT_CPYTHON_REPO_URL:-https://github.com/python/cpython.git}"
+CPYTHON_BASE_DIR="${FINROBOT_CPYTHON_BASE_DIR:-/opt/openclaw-python}"
+CPYTHON_PREFIX="${CPYTHON_BASE_DIR}/python-${CPYTHON_VERSION}"
+CPYTHON_BIN="${CPYTHON_PREFIX}/bin/python3.11"
 
 usage() {
   cat <<'USAGE'
@@ -26,6 +31,8 @@ Umgebungsvariablen:
   FINROBOT_PYTHON_BIN   Expliziter Python-Pfad, z. B. /usr/bin/python3.11
   FINROBOT_INSTALL_DIR  Installationsziel, Standard: /opt/finrobot
   FINROBOT_REPO_URL     Alternative GitHub-Quelle
+  FINROBOT_CPYTHON_VERSION  CPython-Version fuer lokalen Build, Standard: 3.11.9
+  FINROBOT_CPYTHON_BASE_DIR Build-/Installationsbasis, Standard: /opt/openclaw-python
 USAGE
 }
 
@@ -91,6 +98,81 @@ System-Python nicht beschaedigt wird.
 EOF
 }
 
+print_python_build_notice() {
+  local default_version="unbekannt"
+  if command -v python3 >/dev/null 2>&1; then
+    default_version="$(python_version_text python3 2>/dev/null || true)"
+  fi
+
+  cat <<EOF
+Kein vorhandenes kompatibles Python fuer FinRobot gefunden.
+
+FinRobot benoetigt Python >=3.10 und <3.12.
+Gefundenes Standard-python3: ${default_version}
+
+Das Setup baut jetzt ein isoliertes CPython ${CPYTHON_VERSION} aus GitHub und
+installiert es unter:
+
+  ${CPYTHON_PREFIX}
+
+/usr/bin/python3 bleibt unveraendert.
+EOF
+}
+
+build_local_cpython() {
+  local src_dir="${CPYTHON_BASE_DIR}/src/cpython-${CPYTHON_VERSION}"
+  local jobs
+  jobs="$(nproc 2>/dev/null || printf '2')"
+
+  log_finrobot "Kein kompatibles Python gefunden. Baue isoliertes CPython ${CPYTHON_VERSION} fuer FinRobot." >&2
+  log_finrobot "Quelle: ${CPYTHON_REPO_URL} Tag v${CPYTHON_VERSION}" >&2
+  log_finrobot "Ziel:   ${CPYTHON_PREFIX}" >&2
+  log_finrobot "Hinweis: Das System-Python wird nicht ersetzt." >&2
+
+  if [ "${DRY_RUN:-0}" = "1" ]; then
+    run_cmd ensure_base_apt_packages git build-essential pkg-config libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev curl libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev uuid-dev >&2
+    run_cmd sudo mkdir -p "$CPYTHON_BASE_DIR/src" >&2
+    run_cmd sudo chown -R "$USER:$USER" "$CPYTHON_BASE_DIR" >&2
+    run_cmd git clone --depth 1 --branch "v${CPYTHON_VERSION}" "$CPYTHON_REPO_URL" "$src_dir" >&2
+    run_cmd bash -lc "cd '$src_dir' && ./configure --prefix='$CPYTHON_PREFIX' --with-ensurepip=install" >&2
+    run_cmd bash -lc "cd '$src_dir' && make -j '$jobs'" >&2
+    run_cmd bash -lc "cd '$src_dir' && sudo make altinstall" >&2
+    printf '%s\n' "$CPYTHON_BIN"
+    return 0
+  fi
+
+  ensure_base_apt_packages git build-essential pkg-config libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev curl libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev uuid-dev
+  sudo mkdir -p "$CPYTHON_BASE_DIR/src"
+  sudo chown -R "$USER":"$USER" "$CPYTHON_BASE_DIR"
+
+  if [ -x "$CPYTHON_BIN" ] && python_version_ok "$CPYTHON_BIN"; then
+    log_finrobot "Isoliertes CPython ist bereits vorhanden: $CPYTHON_BIN ($(python_version_text "$CPYTHON_BIN"))" >&2
+    printf '%s\n' "$CPYTHON_BIN"
+    return 0
+  fi
+
+  if [ ! -d "$src_dir/.git" ]; then
+    git clone --depth 1 --branch "v${CPYTHON_VERSION}" "$CPYTHON_REPO_URL" "$src_dir"
+  else
+    git -C "$src_dir" fetch --depth 1 origin "v${CPYTHON_VERSION}"
+    git -C "$src_dir" checkout "v${CPYTHON_VERSION}"
+  fi
+
+  (
+    cd "$src_dir"
+    ./configure --prefix="$CPYTHON_PREFIX" --with-ensurepip=install
+    make -j "$jobs"
+    sudo make altinstall
+  )
+
+  if ! [ -x "$CPYTHON_BIN" ] || ! python_version_ok "$CPYTHON_BIN"; then
+    log_finrobot "Fehler: Gebautes CPython ist nicht nutzbar oder nicht kompatibel: $CPYTHON_BIN" >&2
+    return 1
+  fi
+
+  printf '%s\n' "$CPYTHON_BIN"
+}
+
 run_cmd() {
   if [ "${DRY_RUN:-0}" = "1" ]; then
     printf '[dry-run] %q ' "$@"
@@ -125,15 +207,13 @@ main() {
     shift
   done
 
-  local python_bin=""
-  if ! python_bin="$(find_compatible_python)"; then
-    print_python_help >&2
-    exit 1
-  fi
-
-  log_finrobot "FinRobot-kompatibles Python gefunden: $python_bin ($(python_version_text "$python_bin"))"
-
   if [ "$mode" = "check" ]; then
+    local check_python_bin=""
+    if ! check_python_bin="$(find_compatible_python)"; then
+      print_python_help >&2
+      exit 1
+    fi
+    log_finrobot "FinRobot-kompatibles Python gefunden: $check_python_bin ($(python_version_text "$check_python_bin"))"
     if [ -x "$INSTALL_DIR/.venv/bin/python" ]; then
       log_finrobot "FinRobot-Venv vorhanden: $INSTALL_DIR/.venv"
     else
@@ -144,12 +224,23 @@ main() {
 
   begin_measurement "tool_install_${TOOL_NAME}" "Tool installieren: ${TOOL_NAME}"
 
-  if ! ensure_user_workspace || ! require_disk_mb 1024 /; then
+  if ! ensure_user_workspace || ! require_disk_mb 4096 /; then
     end_measurement "failed"
     return 1
   fi
 
-  ensure_base_apt_packages git python3-venv python3-pip python3-dev build-essential pkg-config
+  local python_bin=""
+  if ! python_bin="$(find_compatible_python)"; then
+    print_python_build_notice
+    if ! python_bin="$(build_local_cpython)"; then
+      end_measurement "failed"
+      return 1
+    fi
+  fi
+
+  log_finrobot "FinRobot-kompatibles Python wird verwendet: $python_bin ($(python_version_text "$python_bin" 2>/dev/null || printf 'dry-run'))"
+
+  ensure_base_apt_packages git build-essential pkg-config
 
   log_finrobot "Installiere FinRobot aus GitHub: $REPO_URL"
   log_finrobot "Ziel: $INSTALL_DIR"

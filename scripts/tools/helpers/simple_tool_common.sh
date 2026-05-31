@@ -6,6 +6,8 @@ HELPER_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$HELPER_DIR/../../lib/common.sh"
 # shellcheck source=../../lib/resource_check.sh
 source "$HELPER_DIR/../../lib/resource_check.sh"
+# shellcheck source=../../lib/git_target_repair.sh
+source "$HELPER_DIR/../../lib/git_target_repair.sh"
 
 install_apt_tool() {
   local tool_name="$1"
@@ -46,12 +48,7 @@ install_git_python_tool() {
     ensure_base_apt_packages git python3 python3-venv python3-pip python3-dev build-essential pkg-config
     sudo mkdir -p "$(dirname "$install_dir")"
     sudo chown -R "$USER":"$USER" "$(dirname "$install_dir")"
-    if [ ! -d "$install_dir/.git" ]; then
-      git clone "$repo_url" "$install_dir"
-    else
-      git -C "$install_dir" fetch origin --prune
-      git -C "$install_dir" pull --ff-only || true
-    fi
+    clone_or_update_git_target "$tool_name" "$repo_url" "$install_dir"
     python3 -m venv "$install_dir/.venv"
     # shellcheck disable=SC1091
     source "$install_dir/.venv/bin/activate"
@@ -94,12 +91,7 @@ install_git_node_tool() {
     ensure_base_apt_packages git nodejs npm build-essential pkg-config
     sudo mkdir -p "$(dirname "$install_dir")"
     sudo chown -R "$USER":"$USER" "$(dirname "$install_dir")"
-    if [ ! -d "$install_dir/.git" ]; then
-      git clone "$repo_url" "$install_dir"
-    else
-      git -C "$install_dir" fetch origin --prune
-      git -C "$install_dir" pull --ff-only || true
-    fi
+    clone_or_update_git_target "$tool_name" "$repo_url" "$install_dir"
     bash -lc "cd '$install_dir' && $extra_cmd"
     mark_tool_installed "$tool_name"
     log_success "${tool_name} installiert."
@@ -125,7 +117,25 @@ ensure_docker_compose_available() {
   local compose_url
   local plugin_dir="/usr/local/lib/docker/cli-plugins"
 
-  ensure_base_apt_packages git docker.io ca-certificates curl
+  ensure_base_apt_packages git ca-certificates curl
+
+  if docker version >/dev/null 2>&1 || sudo docker version >/dev/null 2>&1; then
+    log_info "Docker ist bereits vorhanden."
+  elif apt-cache policy docker-ce 2>/dev/null | grep -q 'Candidate: [0-9]'; then
+    log_warn "Docker.com-Repository erkannt. Installiere Docker Engine aus docker-ce-Paketen statt Ubuntu docker.io."
+    sudo apt-get update
+    sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+  else
+    if dpkg -s containerd.io >/dev/null 2>&1; then
+      log_error "containerd.io ist installiert, aber docker-ce ist nicht als apt-Kandidat verfuegbar."
+      log_error "Ubuntu docker.io wuerde mit containerd.io kollidieren. Docker wird nicht automatisch installiert."
+      log_error "Bitte Docker-Repository reparieren oder Docker bewusst manuell installieren."
+      return 1
+    fi
+    log_warn "Kein Docker.com-Repository erkannt. Verwende Ubuntu docker.io als Fallback."
+    sudo apt-get update
+    sudo apt-get install -y docker.io
+  fi
 
   if docker compose version >/dev/null 2>&1 || sudo docker compose version >/dev/null 2>&1; then
     return 0
@@ -166,6 +176,8 @@ run_docker_compose() {
 clone_or_update_github_source() {
   local repo_url="$1"
   local target_dir="$2"
+
+  repair_git_target_for_clone "$target_dir" "$repo_url" "GitHub_Source"
 
   if [ -d "$target_dir/.git" ]; then
     if git -C "$target_dir" fetch origin --prune && git -C "$target_dir" pull --ff-only; then

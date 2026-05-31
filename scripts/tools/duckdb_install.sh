@@ -6,6 +6,17 @@ DUCKDB_VERSION="${DUCKDB_VERSION:-v1.1.3}"
 INSTALL_DIR="${DUCKDB_INSTALL_DIR:-/opt/duckdb}"
 BIN_LINK="${DUCKDB_BIN_LINK:-/usr/local/bin/duckdb}"
 RELEASE_BASE="https://github.com/duckdb/duckdb/releases/download"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+if [ -f "$SCRIPT_DIR/helpers/simple_tool_common.sh" ]; then
+  # shellcheck source=helpers/simple_tool_common.sh
+  source "$SCRIPT_DIR/helpers/simple_tool_common.sh"
+else
+  ensure_base_apt_packages() {
+    sudo apt-get update
+    sudo apt-get install -y "$@"
+  }
+fi
 
 usage() {
   cat <<'USAGE'
@@ -121,14 +132,10 @@ main() {
     exit 0
   fi
 
-  command -v curl >/dev/null 2>&1 || {
-    log "Fehler: curl fehlt. Bitte zuerst curl installieren." >&2
-    exit 1
-  }
-  command -v unzip >/dev/null 2>&1 || {
-    log "Fehler: unzip fehlt. Bitte zuerst unzip installieren." >&2
-    exit 1
-  }
+  if ! command -v curl >/dev/null 2>&1 || ! command -v unzip >/dev/null 2>&1; then
+    log "Installiere benoetigte Basiswerkzeuge fuer DuckDB: curl unzip"
+    ensure_base_apt_packages curl unzip
+  fi
 
   curl -fsSL "$url" -o "$archive"
   sudo mkdir -p "$INSTALL_DIR"
