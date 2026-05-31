@@ -452,7 +452,11 @@
       "ports": [],
       "check_type": "command",
       "check_value": "duckdb",
-      "safety": "Lokale Analyse ohne offenem Server."
+      "source": "https://github.com/duckdb/duckdb",
+      "install_mode": "github-release-binary",
+      "resource_class": "low",
+      "status": "stable",
+      "safety": "Lokale Analyse ohne offenem Server. Nicht via apt installieren; Ubuntu noble liefert kein offizielles duckdb-Paket."
     },
     {
       "id": "metabase",

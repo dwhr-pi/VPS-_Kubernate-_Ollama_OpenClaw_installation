@@ -1,5 +1,11 @@
 # Docs Changelog
 
+## 2026-05-31
+
+- DuckDB-Installer von `apt install duckdb` auf offizielles GitHub-Release-Binary umgestellt, weil Ubuntu 24.04/Noble kein `duckdb`-Paket in den Standard-Repositories bereitstellt.
+- DuckDB-Registry um Quelle, Installationsmodus, Ressourcenklasse und Sicherheitsnotiz ergaenzt.
+- DuckDB-Installationshinweise mit Dry-Run, Check, Ressourcenbedarf und Deinstallation dokumentiert.
+
 ## 2026-05-28
 
 - Setup Review and Roadmap angelegt.
