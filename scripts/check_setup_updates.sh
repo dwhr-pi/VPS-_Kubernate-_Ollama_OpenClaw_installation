@@ -5,6 +5,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 INSTALL_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 GREEN="\033[0;32m"
+LIGHT_GREEN="\033[1;32m"
 BLUE="\033[0;34m"
 RED="\033[0;31m"
 YELLOW="\033[1;33m"
@@ -14,22 +15,23 @@ echo -e "${BLUE}Pruefe auf Setup-Updates...${NC}"
 
 print_colored_git_status() {
     local line
+    local status
     while IFS= read -r line; do
         [ -n "$line" ] || continue
-        case "$line" in
-            "?? "*)
-                echo -e "${BLUE}${line}${NC}"
-                ;;
-            *"M "*|*" M"*)
-                echo -e "${YELLOW}${line}${NC}"
-                ;;
-            "A "*|" A "*)
-                echo -e "${GREEN}${line}${NC}"
-                ;;
-            *)
-                echo -e "${YELLOW}${line}${NC}"
-                ;;
-        esac
+        status="${line:0:2}"
+        if [ "$status" = "??" ]; then
+            echo -e "${BLUE}${line}${NC}"
+        elif [[ "$status" == *D* ]]; then
+            echo -e "${RED}${line}${NC}"
+        elif [[ "$status" == *R* ]]; then
+            echo -e "${YELLOW}${line}${NC}"
+        elif [[ "$status" == *A* ]]; then
+            echo -e "${LIGHT_GREEN}${line}${NC}"
+        elif [[ "$status" == *M* ]]; then
+            echo -e "${GREEN}${line}${NC}"
+        else
+            echo -e "${YELLOW}${line}${NC}"
+        fi
     done
 }
 

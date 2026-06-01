@@ -15,22 +15,23 @@ echo -e "${BLUE}Starte reines Setup-Update...${NC}"
 
 print_colored_git_status() {
     local line
+    local status
     while IFS= read -r line; do
         [ -n "$line" ] || continue
-        case "$line" in
-            "?? "*)
-                echo -e "${BLUE}${line}${NC}"
-                ;;
-            *"M "*|*" M"*)
-                echo -e "${YELLOW}${line}${NC}"
-                ;;
-            "A "*|" A "*)
-                echo -e "${GREEN}${line}${NC}"
-                ;;
-            *)
-                echo -e "${YELLOW}${line}${NC}"
-                ;;
-        esac
+        status="${line:0:2}"
+        if [ "$status" = "??" ]; then
+            echo -e "${BLUE}${line}${NC}"
+        elif [[ "$status" == *D* ]]; then
+            echo -e "${RED}${line}${NC}"
+        elif [[ "$status" == *R* ]]; then
+            echo -e "${YELLOW}${line}${NC}"
+        elif [[ "$status" == *A* ]]; then
+            echo -e "${LIGHT_GREEN}${line}${NC}"
+        elif [[ "$status" == *M* ]]; then
+            echo -e "${GREEN}${line}${NC}"
+        else
+            echo -e "${YELLOW}${line}${NC}"
+        fi
     done
 }
 
@@ -83,7 +84,7 @@ print_updated_files_between() {
             D$'\t'*|D" "*)
                 echo -e "${RED}${line}${NC}"
                 ;;
-            R$'\t'*|R" "*)
+            R*)
                 echo -e "${YELLOW}${line}${NC}"
                 ;;
             *)
