@@ -21,6 +21,8 @@
 - Docker/Compose-Helfer vermeidet jetzt den Konflikt `docker.io` gegen `containerd.io`: Docker.com-Pakete werden bevorzugt, Ubuntu `docker.io` nur als Fallback genutzt.
 - Docker-/containerd-Konflikt dokumentiert.
 - Grype-Installer von `apt install grype` auf offizielles GitHub-Release mit SHA256-Pruefung umgestellt.
+- Helm-Installer von `apt install helm` auf offizielles Helm-Release mit GitHub-Versionsermittlung und SHA256-Pruefung umgestellt.
+- Huginn-Installer prueft lokale MySQL/MariaDB-Verfuegbarkeit jetzt vor dem langen Bundler-Schritt und kann MariaDB nur mit bewusstem `HUGINN_AUTO_INSTALL_LOCAL_DB=true` vorbereiten.
 
 ## 2026-05-28
 

@@ -1255,8 +1255,9 @@
       ],
       "check_type": "port",
       "check_value": "3002",
-      "safety": "Web-Agenten und Mail-/Webhook-Zugangsdaten nur im Benutzer-Workspace konfigurieren.",
-      "source": "https://github.com/huginn/huginn"
+      "safety": "Web-Agenten und Mail-/Webhook-Zugangsdaten nur im Benutzer-Workspace konfigurieren. Lokale MariaDB wird nur mit HUGINN_AUTO_INSTALL_LOCAL_DB=true vorbereitet; keine DB-Passwoerter ins Repo schreiben.",
+      "source": "https://github.com/huginn/huginn",
+      "database_note": "mysql2 oder postgresql; lokaler mysql2-Pfad braucht laufenden MySQL-/MariaDB-Dienst oder bewusstes Opt-in."
     },
     {
       "id": "forgejo",
@@ -3211,17 +3212,19 @@
       "name": "Helm",
       "source": "https://github.com/helm/helm",
       "category": "Kubernetes / CLI",
-      "status": "planned",
-      "resource_class": "medium",
+      "status": "optional",
+      "resource_class": "low",
       "risk": "medium",
-      "install_mode": "manual",
-      "install_script": "scripts/tools/planned_tool_stub_install.sh",
-      "uninstall_script": "scripts/tools/planned_tool_stub_uninstall.sh",
-      "check_type": "documentation",
-      "check_value": "https://github.com/helm/helm",
-      "description": "Documentation-first registry entry for profile mapping consistency.",
-      "security_note": "Keine automatische Installation; Nutzung nur nach Doctor-/Preflight-Pruefung.",
-      "updated": "2026-05-30"
+      "install_mode": "official-release-checksum",
+      "auto_install": false,
+      "install_script": "scripts/tools/helm_install.sh",
+      "uninstall_script": "scripts/tools/helm_uninstall.sh",
+      "check_type": "command",
+      "check_value": "helm",
+      "supported_arch": "linux_amd64, linux_arm64, linux_arm",
+      "description": "Helm CLI fuer Kubernetes-Charts; wird nicht via apt installiert, sondern aus offiziellen Helm-Releases mit SHA256-Pruefung bezogen.",
+      "security_note": "Kubeconfig und Cluster-Secrets niemals ins Repo schreiben; Helm-Charts vor Installation pruefen und Kubernetes API nicht oeffentlich freigeben.",
+      "updated": "2026-06-01"
     },
     {
       "id": "mcpo",

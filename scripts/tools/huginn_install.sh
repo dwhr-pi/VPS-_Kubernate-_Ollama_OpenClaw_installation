@@ -32,6 +32,7 @@ HUGINN_DISABLE_GMAIL_XOAUTH_ON_NET_IMAP_FAILURE="${HUGINN_DISABLE_GMAIL_XOAUTH_O
 HUGINN_ENABLE_MYSQL2_RUBY32_COMPAT="${HUGINN_ENABLE_MYSQL2_RUBY32_COMPAT:-true}"
 HUGINN_ENABLE_PG_RUBY32_COMPAT="${HUGINN_ENABLE_PG_RUBY32_COMPAT:-true}"
 HUGINN_SKIP_SYSTEM_PACKAGES="${HUGINN_SKIP_SYSTEM_PACKAGES:-false}"
+HUGINN_AUTO_INSTALL_LOCAL_DB="${HUGINN_AUTO_INSTALL_LOCAL_DB:-false}"
 HUGINN_ENABLE_RBENV_FOR_MASTER="${HUGINN_ENABLE_RBENV_FOR_MASTER:-true}"
 HUGINN_MASTER_RUBY_VERSION="${HUGINN_MASTER_RUBY_VERSION:-3.4.9}"
 HUGINN_RBENV_ROOT="${HUGINN_RBENV_ROOT:-$HOME/.rbenv-openclaw-huginn}"
@@ -490,6 +491,78 @@ mysql_service_available_for_huginn() {
     fi
 
     [ -S /var/run/mysqld/mysqld.sock ]
+}
+
+start_mysql_service_for_huginn() {
+    if command -v systemctl >/dev/null 2>&1 && [ -d /run/systemd/system ]; then
+        sudo systemctl enable mariadb >/dev/null 2>&1 || sudo systemctl enable mysql >/dev/null 2>&1 || true
+        sudo systemctl start mariadb >/dev/null 2>&1 || sudo systemctl start mysql >/dev/null 2>&1
+        return $?
+    fi
+
+    if command -v service >/dev/null 2>&1; then
+        sudo service mariadb start >/dev/null 2>&1 || sudo service mysql start >/dev/null 2>&1
+        return $?
+    fi
+
+    return 1
+}
+
+prepare_mysql_database_for_huginn() {
+    local db_user db_password db_name db_name_ident db_user_literal db_user_ident db_password_literal
+
+    if [ "$(current_database_adapter)" != "mysql2" ]; then
+        return 0
+    fi
+
+    if ! mysql_local_socket_expected; then
+        echo -e "${YELLOW}MySQL/MariaDB ist auf einen externen Host konfiguriert. Lokale DB-Vorbereitung wird uebersprungen.${NC}"
+        return 0
+    fi
+
+    if mysql_service_available_for_huginn; then
+        return 0
+    fi
+
+    if [ "$HUGINN_AUTO_INSTALL_LOCAL_DB" != "true" ]; then
+        print_huginn_mysql_service_guidance
+        echo -e "${YELLOW}Dieser Check laeuft jetzt vor dem langen Bundler-Schritt, damit Huginn nicht erst spaet scheitert.${NC}"
+        echo -e "${YELLOW}Wenn das Setup MariaDB bewusst lokal installieren und starten soll, setze:${NC}"
+        echo "  HUGINN_AUTO_INSTALL_LOCAL_DB=true bash scripts/tools/huginn_install.sh"
+        return 1
+    fi
+
+    db_user="$(current_database_username)"
+    db_password="$(current_database_password)"
+    db_name="$(current_database_name)"
+
+    if [ -z "$db_user" ] || [ -z "$db_password" ] || [ -z "$db_name" ]; then
+        echo -e "${RED}Fehler: MySQL/MariaDB-Konfiguration ist unvollstaendig. DATABASE_NAME, DATABASE_USERNAME und DATABASE_PASSWORD muessen gesetzt sein.${NC}"
+        return 1
+    fi
+
+    echo -e "${GREEN}Bereite lokale MariaDB-Datenbank fuer Huginn vor...${NC}"
+    sudo apt-get install -y mariadb-server mariadb-client libmysqlclient-dev
+
+    if ! start_mysql_service_for_huginn; then
+        echo -e "${RED}Fehler: MariaDB/MySQL-Dienst konnte nicht gestartet werden.${NC}"
+        return 1
+    fi
+
+    db_name_ident="$(printf "%s" "$db_name" | sed 's/`/``/g')"
+    db_user_ident="$(printf "%s" "$db_user" | sed 's/`/``/g')"
+    db_user_literal="$(printf "%s" "$db_user" | sed "s/'/''/g")"
+    db_password_literal="$(printf "%s" "$db_password" | sed "s/'/''/g")"
+
+    sudo mysql <<SQL
+CREATE DATABASE IF NOT EXISTS \`${db_name_ident}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE USER IF NOT EXISTS '${db_user_literal}'@'localhost' IDENTIFIED BY '${db_password_literal}';
+ALTER USER '${db_user_literal}'@'localhost' IDENTIFIED BY '${db_password_literal}';
+GRANT ALL PRIVILEGES ON \`${db_name_ident}\`.* TO '${db_user_literal}'@'localhost';
+FLUSH PRIVILEGES;
+SQL
+
+    echo -e "${GREEN}MariaDB-Datenbank fuer Huginn ist vorbereitet. Datenbankname: ${db_name}.${NC}"
 }
 
 postgresql_local_expected() {
@@ -1634,6 +1707,13 @@ apply_huginn_web_request_faraday_fix
 apply_huginn_mysql_reconnect_deprecation_fix
 chmod o-rwx .env 2>/dev/null || true
 
+if database_config_complete; then
+    prepare_mysql_database_for_huginn
+    prepare_postgresql_database_for_huginn
+else
+    echo -e "${YELLOW}Hinweis: Huginn-Datenbankkonfiguration ist noch nicht vollstaendig. Bundler darf weiter vorbereiten, die DB-Initialisierung stoppt spaeter mit Reparaturhinweisen.${NC}"
+fi
+
 echo -e "${GREEN}4/5: Installiere Ruby Gems mit Bundler...${NC}"
 if ! command -v bundle >/dev/null 2>&1; then
     sudo gem install bundler
@@ -1767,6 +1847,7 @@ if ! database_config_complete; then
 fi
 
 echo -e "${GREEN}5/5: Initialisiere Datenbank...${NC}"
+prepare_mysql_database_for_huginn
 prepare_postgresql_database_for_huginn
 if ! mysql_service_available_for_huginn; then
     print_huginn_mysql_service_guidance
