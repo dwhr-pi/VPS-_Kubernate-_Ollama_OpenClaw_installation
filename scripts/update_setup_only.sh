@@ -5,6 +5,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 INSTALL_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 GREEN="\033[0;32m"
+LIGHT_GREEN="\033[1;32m"
 BLUE="\033[0;34m"
 RED="\033[0;31m"
 YELLOW="\033[1;33m"
@@ -72,8 +73,31 @@ print_updated_files_between() {
     echo -e "${GREEN}Durch dieses Update aktualisierte Dateien:${NC}"
     while IFS= read -r line; do
         [ -n "$line" ] || continue
-        echo -e "${GREEN}${line}${NC}"
+        case "$line" in
+            A$'\t'*|A" "*)
+                echo -e "${LIGHT_GREEN}${line}${NC}"
+                ;;
+            M$'\t'*|M" "*)
+                echo -e "${GREEN}${line}${NC}"
+                ;;
+            D$'\t'*|D" "*)
+                echo -e "${RED}${line}${NC}"
+                ;;
+            R$'\t'*|R" "*)
+                echo -e "${YELLOW}${line}${NC}"
+                ;;
+            *)
+                echo -e "${GREEN}${line}${NC}"
+                ;;
+        esac
     done <<< "$changed"
+    echo
+    echo -e "${BLUE}Legende:${NC}"
+    echo -e "${GREEN}  M = Modified / geaendert durch das Update${NC}"
+    echo -e "${LIGHT_GREEN}  A = Added / neu hinzugefuegt durch das Update${NC}"
+    echo -e "${RED}  D = Deleted / durch das Update entfernt${NC}"
+    echo -e "${YELLOW}  R = Renamed / durch das Update umbenannt${NC}"
+    echo -e "${YELLOW}Hinweis: Diese gruenen Eintraege zeigen Remote-Update-Aenderungen zwischen altem und neuem Commit, nicht lokale uncommitted Aenderungen.${NC}"
 }
 
 if ! command -v git >/dev/null 2>&1; then
