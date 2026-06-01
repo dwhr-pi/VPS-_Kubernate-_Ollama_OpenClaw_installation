@@ -23,6 +23,7 @@
 - Grype-Installer von `apt install grype` auf offizielles GitHub-Release mit SHA256-Pruefung umgestellt.
 - Helm-Installer von `apt install helm` auf offizielles Helm-Release mit GitHub-Versionsermittlung und SHA256-Pruefung umgestellt.
 - Huginn-Installer prueft lokale MySQL/MariaDB-Verfuegbarkeit jetzt vor dem langen Bundler-Schritt und kann MariaDB nur mit bewusstem `HUGINN_AUTO_INSTALL_LOCAL_DB=true` vorbereiten.
+- JupyterLab-Installer nutzt standardmaessig ein stabiles PyPI/venv-Setup statt GitHub-Editable-Source-Build; Source-Build bleibt optional und prueft Node.js 20.19+/22.12+ vorab.
 
 ## 2026-05-28
 

@@ -440,8 +440,11 @@
       "uninstall_script": "scripts/tools/jupyterlab_uninstall.sh",
       "ports": [],
       "check_type": "command",
-      "check_value": "jupyter",
-      "safety": "Notebook-Tokens und Daten schuetzen."
+      "check_value": "jupyter-lab-openclaw",
+      "source": "https://github.com/jupyterlab/jupyterlab",
+      "install_mode": "pypi-venv-default-source-optional",
+      "resource_class": "medium",
+      "safety": "Notebook-Tokens und Daten schuetzen. Standardinstallation nutzt venv/PyPI; GitHub-Source-Build nur bewusst mit JUPYTERLAB_INSTALL_MODE=source und Node.js 20.19+ oder 22.12+."
     },
     {
       "id": "duckdb",
