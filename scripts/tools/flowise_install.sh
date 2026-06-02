@@ -22,10 +22,95 @@ init_tool_tracking "Flowise"
 
 FLOWISE_DIR="/opt/flowise"
 FLOWISE_REPO_URL="${FLOWISE_REPO_URL:-https://github.com/FlowiseAI/Flowise.git}"
+FLOWISE_MIN_LINUX_DISK_MB="${FLOWISE_MIN_LINUX_DISK_MB:-8192}"
+FLOWISE_MIN_WINDOWS_C_MB="${FLOWISE_MIN_WINDOWS_C_MB:-20480}"
+FLOWISE_MIN_RAM_MB="${FLOWISE_MIN_RAM_MB:-4096}"
+
+fail_with_hint() {
+    echo -e "${RED}Fehler: $1${NC}"
+    shift || true
+    for hint in "$@"; do
+        echo -e "${YELLOW}${hint}${NC}"
+    done
+    exit 1
+}
+
+available_mb_for_path() {
+    local path="$1"
+    df -Pm "$path" 2>/dev/null | awk 'NR==2 {print $4}'
+}
+
+available_ram_mb() {
+    awk '/MemAvailable:/ {print int($2 / 1024)}' /proc/meminfo 2>/dev/null || echo 0
+}
+
+is_wsl2() {
+    grep -qiE 'microsoft|wsl' /proc/version 2>/dev/null
+}
+
+require_min_mb() {
+    local label="$1"
+    local actual="$2"
+    local required="$3"
+    if [ "${actual:-0}" -lt "$required" ]; then
+        fail_with_hint "${label} zu niedrig fuer Flowise." \
+            "${label}: ${actual:-0} MB verfuegbar, erforderlich: ${required} MB." \
+            "Flowise ist ein groesseres Node/pnpm-Projekt; der Build soll nicht erst nach langer Laufzeit abbrechen."
+    fi
+}
+
+prepare_flowise_node_environment() {
+    local node_bin="${FLOWISE_NODE_BIN:-}"
+    local node_version
+    local node_major
+
+    if [ -n "$node_bin" ]; then
+        [ -x "$node_bin" ] || fail_with_hint "FLOWISE_NODE_BIN ist nicht ausfuehrbar: $node_bin" \
+            "Bitte auf ein Node-20.x-Binary zeigen lassen, z. B. FLOWISE_NODE_BIN=/pfad/zu/node."
+        export PATH="$(dirname "$node_bin"):$PATH"
+    else
+        command -v node >/dev/null 2>&1 || fail_with_hint "Node.js wurde nicht gefunden." \
+            "Flowise benoetigt Node.js 20.x." \
+            "Installiere Node 20 bewusst separat oder setze FLOWISE_NODE_BIN=/pfad/zu/node20."
+        node_bin="$(command -v node)"
+    fi
+
+    node_version="$("$node_bin" -p 'process.versions.node' 2>/dev/null || true)"
+    node_major="${node_version%%.*}"
+    if [ "$node_major" != "20" ] && [ "${FLOWISE_ALLOW_NODE_MISMATCH:-false}" != "true" ]; then
+        fail_with_hint "Flowise erwartet Node.js 20.x, gefunden wurde Node ${node_version:-unbekannt} (${node_bin})." \
+            "Der Installer startet deshalb keinen langen pnpm-Build mit inkompatibler Node-Version." \
+            "Nutze Node 20.x und starte erneut, z. B. FLOWISE_NODE_BIN=/pfad/zu/node20 bash scripts/tools/flowise_install.sh" \
+            "Nur wenn du das Risiko bewusst tragen willst: FLOWISE_ALLOW_NODE_MISMATCH=true setzen."
+    fi
+
+    command -v pnpm >/dev/null 2>&1 || fail_with_hint "pnpm wurde nicht gefunden." \
+        "Aktiviere pnpm z. B. mit Corepack fuer deine Node-20-Umgebung: corepack enable && corepack prepare pnpm@latest --activate"
+}
+
+preflight_flowise_resources() {
+    local linux_disk_mb
+    local windows_c_mb
+    local ram_mb
+
+    linux_disk_mb="$(available_mb_for_path /)"
+    ram_mb="$(available_ram_mb)"
+    echo -e "${YELLOW}Flowise Preflight: Linux-/WSL-Speicher frei: ${linux_disk_mb:-0} MB, RAM verfuegbar: ${ram_mb:-0} MB.${NC}"
+    require_min_mb "Linux-/WSL-Speicher" "${linux_disk_mb:-0}" "$FLOWISE_MIN_LINUX_DISK_MB"
+    require_min_mb "RAM" "${ram_mb:-0}" "$FLOWISE_MIN_RAM_MB"
+
+    if is_wsl2 && [ -d /mnt/c ] && [ "${FLOWISE_SKIP_WINDOWS_DISK_CHECK:-false}" != "true" ]; then
+        windows_c_mb="$(available_mb_for_path /mnt/c)"
+        echo -e "${YELLOW}Flowise Preflight: Windows-C:-Speicher frei: ${windows_c_mb:-0} MB.${NC}"
+        require_min_mb "Windows-C:-Speicher" "${windows_c_mb:-0}" "$FLOWISE_MIN_WINDOWS_C_MB"
+    fi
+}
 
 echo -e "${BLUE}Starte Installation von Flowise...${NC}"
 echo -e "${YELLOW}Hinweis: Flowise ist ein Node/pnpm-Projekt. Unter WSL2/MiniPC vorher RAM, Swap und freien Windows-C:-Speicher pruefen.${NC}"
 echo -e "${YELLOW}GitHub-Quelle: ${FLOWISE_REPO_URL}${NC}"
+preflight_flowise_resources
+prepare_flowise_node_environment
 
 # 1. Flowise aus GitHub klonen
 if [ -d "$FLOWISE_DIR" ]; then

@@ -40,6 +40,20 @@ log_finrobot() {
   printf '%s\n' "$*"
 }
 
+ensure_sudo_ready_for_long_build() {
+  if [ "${DRY_RUN:-0}" = "1" ]; then
+    run_cmd sudo -v >&2
+    return 0
+  fi
+
+  log_finrobot "Pruefe sudo-Berechtigung vor dem langen CPython-Build." >&2
+  log_finrobot "Hinweis: Wenn das Passwort falsch eingegeben wird, bricht der Installer jetzt sofort ab und nicht erst nach dem Build." >&2
+  if ! sudo -v; then
+    log_finrobot "Fehler: sudo-Authentifizierung fehlgeschlagen. Bitte Tastaturlayout/CapsLock pruefen und erneut starten." >&2
+    return 1
+  fi
+}
+
 python_version_ok() {
   "$1" - <<'PY'
 import sys
@@ -131,19 +145,21 @@ build_local_cpython() {
 
   if [ "${DRY_RUN:-0}" = "1" ]; then
     run_cmd ensure_base_apt_packages git build-essential pkg-config libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev curl libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev uuid-dev >&2
+    run_cmd sudo -v >&2
     run_cmd sudo mkdir -p "$CPYTHON_BASE_DIR/src" >&2
     run_cmd sudo chown -R "$USER:$USER" "$CPYTHON_BASE_DIR" >&2
     run_cmd git clone --depth 1 --branch "v${CPYTHON_VERSION}" "$CPYTHON_REPO_URL" "$src_dir" >&2
     run_cmd bash -lc "cd '$src_dir' && ./configure --prefix='$CPYTHON_PREFIX' --with-ensurepip=install" >&2
     run_cmd bash -lc "cd '$src_dir' && make -j '$jobs'" >&2
-    run_cmd bash -lc "cd '$src_dir' && sudo make altinstall" >&2
+    run_cmd bash -lc "cd '$src_dir' && make altinstall" >&2
     printf '%s\n' "$CPYTHON_BIN"
     return 0
   fi
 
-  ensure_base_apt_packages git build-essential pkg-config libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev curl libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev uuid-dev
-  sudo mkdir -p "$CPYTHON_BASE_DIR/src"
-  sudo chown -R "$USER":"$USER" "$CPYTHON_BASE_DIR"
+  ensure_base_apt_packages git build-essential pkg-config libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev curl libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev uuid-dev >&2
+  ensure_sudo_ready_for_long_build
+  sudo mkdir -p "$CPYTHON_BASE_DIR/src" >&2
+  sudo chown -R "$USER":"$USER" "$CPYTHON_BASE_DIR" >&2
 
   if [ -x "$CPYTHON_BIN" ] && python_version_ok "$CPYTHON_BIN"; then
     log_finrobot "Isoliertes CPython ist bereits vorhanden: $CPYTHON_BIN ($(python_version_text "$CPYTHON_BIN"))" >&2
@@ -152,18 +168,18 @@ build_local_cpython() {
   fi
 
   if [ ! -d "$src_dir/.git" ]; then
-    git clone --depth 1 --branch "v${CPYTHON_VERSION}" "$CPYTHON_REPO_URL" "$src_dir"
+    git clone --depth 1 --branch "v${CPYTHON_VERSION}" "$CPYTHON_REPO_URL" "$src_dir" >&2
   else
-    git -C "$src_dir" fetch --depth 1 origin "v${CPYTHON_VERSION}"
-    git -C "$src_dir" checkout "v${CPYTHON_VERSION}"
+    git -C "$src_dir" fetch --depth 1 origin "v${CPYTHON_VERSION}" >&2
+    git -C "$src_dir" checkout "v${CPYTHON_VERSION}" >&2
   fi
 
   (
     cd "$src_dir"
     ./configure --prefix="$CPYTHON_PREFIX" --with-ensurepip=install
     make -j "$jobs"
-    sudo make altinstall
-  )
+    make altinstall
+  ) >&2
 
   if ! [ -x "$CPYTHON_BIN" ] || ! python_version_ok "$CPYTHON_BIN"; then
     log_finrobot "Fehler: Gebautes CPython ist nicht nutzbar oder nicht kompatibel: $CPYTHON_BIN" >&2

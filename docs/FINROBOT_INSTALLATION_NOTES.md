@@ -29,6 +29,18 @@ Binary: /opt/openclaw-python/python-3.11.9/bin/python3.11
 
 Dieses Python wird nur fuer die FinRobot-Venv genutzt. `/usr/bin/python3` bleibt unveraendert.
 
+## Sudo-Pruefung vor langem Build
+
+Der CPython-Build kann einige Minuten dauern. Der Installer prueft deshalb
+`sudo` jetzt direkt vor dem Build mit `sudo -v`. Wenn das Passwort falsch
+eingegeben wird, etwa durch CapsLock oder Tastaturlayout, bricht der Installer
+sofort ab und nicht erst nach `make`.
+
+Nach dem Anlegen und Uebergeben von `/opt/openclaw-python` an den aktuellen
+Benutzer laeuft `make altinstall` ohne spaetes `sudo`. Dadurch bleibt der
+isolierte Python-Pfad sicher vom System-Python getrennt, aber der Build scheitert
+nicht mehr erst ganz am Ende an einer abgelaufenen sudo-Sitzung.
+
 Beispiel:
 
 ```bash

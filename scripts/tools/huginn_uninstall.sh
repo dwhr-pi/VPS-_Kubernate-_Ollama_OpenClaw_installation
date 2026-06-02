@@ -51,7 +51,7 @@ prompt_yes_no() {
         return
     fi
 
-    read -r -p "$prompt_text [ja/Nein] (Standard: ${normalized_default}): " answer
+    read -r -p "$prompt_text [(j)a/(N)ein] (Standard: ${normalized_default}): " answer
     case "$answer" in
         ja|JA|j|J|yes|YES|y|Y) return 0 ;;
         nein|NEIN|n|N|no|NO) return 1 ;;
@@ -282,7 +282,7 @@ fi
 
 if [ "$HUGINN_UNINSTALL_ASSUME_YES" != "true" ] && [ -t 0 ]; then
     echo
-    read -r -p "Huginn jetzt wirklich deinstallieren? [ja/Nein]: " confirm_uninstall
+    read -r -p "Huginn jetzt wirklich deinstallieren? [(j)a/(N)ein]: " confirm_uninstall
     case "$confirm_uninstall" in
         ja|JA|j|J|yes|YES|y|Y)
             ;;

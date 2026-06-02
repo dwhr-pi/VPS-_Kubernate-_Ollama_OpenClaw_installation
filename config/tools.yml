@@ -850,7 +850,7 @@
       "install_mode": "git-pnpm",
       "resource_class": "medium",
       "status": "optional",
-      "safety": "Workflow-Designer nur intern oder via Auth freigeben. Die oeffentliche GitHub-Quelle ist FlowiseAI/Flowise; FlowiseAI/FlowiseChatbot ist nicht oeffentlich erreichbar und darf nicht verwendet werden."
+      "safety": "Workflow-Designer nur intern oder via Auth freigeben. Die oeffentliche GitHub-Quelle ist FlowiseAI/Flowise; FlowiseAI/FlowiseChatbot ist nicht oeffentlich erreichbar und darf nicht verwendet werden. Flowise benoetigt Node.js 20.x; der Installer bricht bei Node 18/inkompatibler Node-Version vor dem langen pnpm-Build ab."
     },
     {
       "id": "langflow",

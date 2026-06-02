@@ -9,12 +9,17 @@
 - FinRAG-Installer um Python-Kompatibilitaetspruefung ergaenzt: FinRAG benoetigt Python `>=3.10,<3.12`; Ubuntu 24.04 Python 3.12 wird jetzt vor dem pip-Build sauber abgefangen.
 - FinRAG-Installationshinweise mit sicherem Python-3.10/3.11-Pfad dokumentiert.
 - FinRAG-Installer kann bei fehlendem Python 3.10/3.11 jetzt isoliertes CPython 3.11 aus `python/cpython` nach `/opt/openclaw-python` bauen, ohne `/usr/bin/python3` zu ersetzen.
+- FinRAG-CPython-Build prueft `sudo` jetzt vor dem langen Build und fuehrt `make altinstall` im benutzereigenen `/opt/openclaw-python` ohne spaetes sudo aus.
+- FinRAG-CPython-Build trennt Logausgaben jetzt sauber vom Rueckgabewert, damit `python_bin` nicht durch Build-Logs verunreinigt wird.
 - FinRobot-Installer um dieselbe Python-Kompatibilitaetspruefung ergaenzt: FinRobot benoetigt Python `>=3.10,<3.12`; Ubuntu 24.04 Python 3.12 wird jetzt vor dem pip-Build sauber abgefangen.
 - FinRobot-Installationshinweise mit sicherem Python-3.10/3.11-Pfad dokumentiert.
 - FinRobot-Installer kann bei fehlendem Python 3.10/3.11 jetzt isoliertes CPython 3.11 aus `python/cpython` nach `/opt/openclaw-python` bauen, ohne `/usr/bin/python3` zu ersetzen.
+- FinRobot-CPython-Build nutzt dieselbe fruehe sudo-Pruefung und vermeidet ein spaetes `sudo make altinstall`.
+- FinRobot-CPython-Build leitet Build-Logs auf stderr, sodass stdout nur den Python-Pfad enthaelt.
 - Flowise-Installer von der falschen Quelle `FlowiseAI/FlowiseChatbot` auf die oeffentliche Quelle `FlowiseAI/Flowise` umgestellt.
 - Flowise-Clone non-interactive gemacht (`GIT_TERMINAL_PROMPT=0`), damit bei falscher URL keine GitHub-Username-/Passwortabfrage mehr erscheint.
 - Flowise-Installer bricht jetzt bei kaputtem/leerem Zielordner oder fehlender `package.json` ab, statt nach fehlgeschlagenem Clone trotzdem `pnpm install` zu starten.
+- Flowise-Installer prueft jetzt vor dem langen pnpm-Build Node.js 20.x, pnpm, RAM sowie Linux-/WSL- und Windows-C:-Speicher. Inkompatibles Node 18.x wird frueh mit klarer Anleitung abgefangen, statt spaeter mit `Terminated` oder Engine-Warnungen auszusteigen.
 - Zentrale Git-Zielordner-Reparatur eingefuehrt: abgebrochene Clone-Reste oder falsche Git-Origins werden automatisch nach `~/.openclaw_ultimate_user_data/setup_repair_backups/` gesichert und anschliessend sauber neu geklont.
 - Flux CLI Installer von `curl | bash` auf direkten GitHub-Release-Download mit SHA256-Pruefung umgestellt.
 - Flux CLI Architekturhinweise fuer Intel/AMD `amd64`, ARM64 und 32-bit ARM dokumentiert.

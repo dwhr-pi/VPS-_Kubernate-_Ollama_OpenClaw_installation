@@ -62,10 +62,34 @@ Flowise ist ein Node/pnpm-Projekt.
 
 | Bereich | Empfehlung |
 | --- | --- |
+| Node.js | Node 20.x erforderlich; Node 18 fuehrt zu `Unsupported engine` und darf nicht fuer den Build genutzt werden |
+| pnpm | Muss zur Node-20-Umgebung passen |
 | RAM | 4 GB Minimum, 8 GB+ empfohlen |
-| Speicher | mehrere GB fuer Repository, pnpm-Cache und Build |
-| Windows/WSL2 | Windows-C:-Speicher beachten |
+| Speicher | mindestens 8 GB Linux-/WSL-Speicher fuer Repository, pnpm-Cache und Build |
+| Windows/WSL2 | mindestens 20 GB freier Windows-C:-Speicher empfohlen, falls die WSL-Distro auf C: liegt |
 | Ports | Flowise typischerweise lokal binden und nur ueber Auth/Reverse Proxy freigeben |
+
+Der Installer prueft diese Werte vor dem Build. Wenn Node 18.x gefunden wird, bricht er bewusst ab, weil Flowise aktuell Node 20.x erwartet und der Build sonst erst nach langer Laufzeit fehlschlagen oder beendet werden kann.
+
+Wenn eine passende Node-20-Installation bereits separat vorhanden ist:
+
+```bash
+FLOWISE_NODE_BIN=/pfad/zu/node20 bash scripts/tools/flowise_install.sh
+```
+
+Nur fuer bewusste Tests kann die Node-Pruefung uebergangen werden:
+
+```bash
+FLOWISE_ALLOW_NODE_MISMATCH=true bash scripts/tools/flowise_install.sh
+```
+
+Das wird nicht empfohlen, weil genau dadurch lange Builds mit spaetem Abbruch entstehen koennen.
+
+Unter WSL2 kann die Windows-C:-Pruefung nur bewusst uebersprungen werden:
+
+```bash
+FLOWISE_SKIP_WINDOWS_DISK_CHECK=true bash scripts/tools/flowise_install.sh
+```
 
 ## Sicherheitsregel
 
