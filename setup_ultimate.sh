@@ -858,6 +858,9 @@ get_tool_install_fallback_min_free_mb() {
         "AutoGPT"|"OpenHands"|"Activepieces"|"n8n"|"Clawhub"|"Clawhub_CLI"|"OpenManus"|"Kimi"*|"Ruflo")
             printf '16384'
             ;;
+        "FinRobot"|"FinRAG")
+            printf '20480'
+            ;;
         "Ollama"|"Open_WebUI"|"Qdrant"|"ChromaDB"|"Meilisearch"|"Paperless"*|"Nextcloud")
             printf '8192'
             ;;
@@ -912,7 +915,7 @@ is_heavy_or_experimental_tool() {
     local tool_key="$1"
 
     case "$tool_key" in
-        "Airbyte"|"Activepieces"|"AutoGPT"|"OpenHands"|"n8n"|"Nextcloud"|"ComfyUI"|"Stable_Diffusion_WebUI"|"Stable_Diffusion_WebUI_Forge"|"InvokeAI"|"Fooocus"|"vLLM"|"K3s"|"Kubernetes"|"Docker"|"Docker_Compose_Plugin"|"Coqui_TTS"|"Android"*|"MobSF"|"Blender"|"AnimateDiff")
+        "Airbyte"|"Activepieces"|"AutoGPT"|"OpenHands"|"n8n"|"Nextcloud"|"ComfyUI"|"Stable_Diffusion_WebUI"|"Stable_Diffusion_WebUI_Forge"|"InvokeAI"|"Fooocus"|"vLLM"|"K3s"|"Kubernetes"|"Docker"|"Docker_Compose_Plugin"|"Coqui_TTS"|"FinRobot"|"FinRAG"|"Android"*|"MobSF"|"Blender"|"AnimateDiff")
             return 0
             ;;
         *)

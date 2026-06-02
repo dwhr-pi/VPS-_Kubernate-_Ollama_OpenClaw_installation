@@ -16,6 +16,8 @@
 - FinRobot-Installer kann bei fehlendem Python 3.10/3.11 jetzt isoliertes CPython 3.11 aus `python/cpython` nach `/opt/openclaw-python` bauen, ohne `/usr/bin/python3` zu ersetzen.
 - FinRobot-CPython-Build nutzt dieselbe fruehe sudo-Pruefung und vermeidet ein spaetes `sudo make altinstall`.
 - FinRobot-CPython-Build leitet Build-Logs auf stderr, sodass stdout nur den Python-Pfad enthaelt.
+- FinRobot-Installer bricht bei zu wenig Windows-C:-Speicher unter WSL2 jetzt vor dem pip-Schritt ab und installiert auf x86_64 CPU-only PyTorch vorab, damit pip nicht unnoetig CUDA-/NVIDIA-Gigabyte laedt.
+- Zentrale Setup-Speicherplatz-Wache markiert FinRobot und FinRAG jetzt als schwere Python/ML-Tools mit mindestens 20 GB freiem Linux-/WSL- und Windows-C:-Speicher, statt den generischen 4-GB-Fallback zu verwenden.
 - Flowise-Installer von der falschen Quelle `FlowiseAI/FlowiseChatbot` auf die oeffentliche Quelle `FlowiseAI/Flowise` umgestellt.
 - Flowise-Clone non-interactive gemacht (`GIT_TERMINAL_PROMPT=0`), damit bei falscher URL keine GitHub-Username-/Passwortabfrage mehr erscheint.
 - Flowise-Installer bricht jetzt bei kaputtem/leerem Zielordner oder fehlender `package.json` ab, statt nach fehlgeschlagenem Clone trotzdem `pnpm install` zu starten.

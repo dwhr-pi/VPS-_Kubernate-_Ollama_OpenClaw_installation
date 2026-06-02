@@ -4171,7 +4171,7 @@
       "source": "https://github.com/AI4Finance-Foundation/FinRAG",
       "category": "RAG / Finance",
       "status": "optional",
-      "resource_class": "medium",
+      "resource_class": "heavy",
       "risk": "medium",
       "install_mode": "git-venv-auto-cpython311-build",
       "auto_install": false,
@@ -4181,8 +4181,8 @@
       "check_value": "/opt/finrag/.venv",
       "python_requires": ">=3.10,<3.12; auto-build isolated CPython 3.11 under /opt/openclaw-python if missing",
       "description": "Finanz-RAG-Komponente; nutzt Python 3.10/3.11 oder baut isoliertes CPython 3.11 aus python/cpython, ohne System-Python zu ersetzen.",
-      "security_note": "Keine Finanzdaten oder API-Keys ins Repo schreiben; Installation nur mit kompatiblem Python und bewusster Datenquelle.",
-      "updated": "2026-05-31"
+      "security_note": "Keine Finanzdaten oder API-Keys ins Repo schreiben; Installation nur mit kompatiblem Python und bewusster Datenquelle. Unter WSL mindestens 20 GB Windows-C:-Speicher einplanen.",
+      "updated": "2026-06-02"
     },
     {
       "id": "finrobot",
@@ -4190,7 +4190,7 @@
       "source": "https://github.com/AI4Finance-Foundation/FinRobot",
       "category": "Finance AI / Agents",
       "status": "optional",
-      "resource_class": "medium",
+      "resource_class": "heavy",
       "risk": "medium",
       "install_mode": "git-venv-auto-cpython311-build",
       "auto_install": false,
@@ -4200,8 +4200,8 @@
       "check_value": "/opt/finrobot/.venv",
       "python_requires": ">=3.10,<3.12; auto-build isolated CPython 3.11 under /opt/openclaw-python if missing",
       "description": "Finanz-Agenten/RAG-Komponente; nutzt Python 3.10/3.11 oder baut isoliertes CPython 3.11 aus python/cpython, ohne System-Python zu ersetzen.",
-      "security_note": "Keine Finanzdaten oder API-Keys ins Repo schreiben; Installation nur mit kompatiblem Python und bewusster Datenquelle.",
-      "updated": "2026-05-31"
+      "security_note": "Keine Finanzdaten oder API-Keys ins Repo schreiben; Installation nur mit kompatiblem Python und bewusster Datenquelle. FinRobot zieht viele ML-Abhaengigkeiten; unter WSL mindestens 20 GB Windows-C:-Speicher einplanen.",
+      "updated": "2026-06-02"
     },
     {
       "id": "flux_cli",

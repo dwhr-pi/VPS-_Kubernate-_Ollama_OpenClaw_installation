@@ -60,9 +60,34 @@ bash scripts/tools/finrobot_install.sh --dry-run
 | --- | --- |
 | Python | 3.10 oder 3.11 |
 | RAM | 4 GB Minimum, 8 GB+ empfohlen |
-| Speicher | 4 GB+ fuer CPython-Build, Quelle, Venv und Abhaengigkeiten |
+| Linux-/WSL-Speicher | mindestens 20 GB frei |
+| Windows-C:-Speicher bei WSL2 | mindestens 20 GB frei, 50 GB empfohlen |
+| pip-Cache | standardmaessig deaktiviert, damit grosse Wheels nicht doppelt Speicher verbrauchen |
+| PyTorch | CPU-only PyTorch wird auf x86_64 vorab installiert, damit pip keine CUDA-/NVIDIA-Wheels zieht |
 | Ports | keine Standardports |
 | WSL2 | geeignet, wenn Python 3.10/3.11 vorhanden ist |
+
+## Fehlerbild: `Input/output error` bei pip
+
+Wenn Windows-C: fast voll ist, kann pip nach grossen Downloads mit einem I/O-Fehler abbrechen:
+
+```text
+ERROR: Could not install packages due to an OSError: [Errno 5] Input/output error
+```
+
+Im beobachteten Log waren nur ca. 5,4 GB auf Windows C: frei. Gleichzeitig wurden grosse CUDA-/NVIDIA-Wheels geladen, z. B. `nvidia_cublas_cu12`, `nvidia_cudnn_cu12`, `nvidia_cusparse_cu12` und `triton`. Unter WSL kann das die VHDX wachsen lassen, obwohl Linux selbst noch viel freien Speicher meldet.
+
+Der Installer bricht deshalb jetzt bei zu wenig Windows-C:-Speicher vor dem pip-Schritt ab. Zusaetzlich wird auf Intel/AMD `x86_64` zuerst CPU-only PyTorch installiert:
+
+```bash
+pip install --index-url https://download.pytorch.org/whl/cpu torch
+```
+
+Dadurch sollen unnoetige CUDA-Gigabyte auf WSL/MiniPC vermieden werden. Wenn du bewusst GPU-/CUDA-Abhaengigkeiten testen willst:
+
+```bash
+FINROBOT_PREINSTALL_CPU_TORCH=false bash scripts/tools/finrobot_install.sh
+```
 
 ## Warum kein automatisches Python-Downgrade?
 
