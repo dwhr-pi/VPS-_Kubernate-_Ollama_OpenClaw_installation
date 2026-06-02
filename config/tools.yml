@@ -669,7 +669,7 @@
       "ubuntu_2404_note": "Ubuntu 24.04 ships Python 3.12 by default; Coqui TTS PyPI package TTS==0.22.0 does not support it. Use Python 3.9, 3.10 or 3.11, or prefer Piper.",
       "fallback": "piper",
       "auto_install": false,
-      "updated": "2026-05-30"
+      "updated": "2026-06-02"
     },
     {
       "id": "demucs",
@@ -3667,7 +3667,7 @@
       "uninstall_script": "scripts/tools/dbt_uninstall.sh",
       "check_type": "command",
       "check_value": "dbt",
-      "description": "dbt-core fuer Analytics Engineering; aus GitHub geklont und aus dem Unterordner core installiert.",
+      "description": "dbt-core fuer Analytics Engineering; aus GitHub geklont und standardmaessig auf stabilen Tag v1.11.11 gepinnt, weil main ein wechselndes Fusion-/Alpha-Layout enthalten kann.",
       "security_note": "Adapter und Datenbank-Secrets separat bewusst konfigurieren; keine Credentials ins Repo.",
       "updated": "2026-05-30"
     },

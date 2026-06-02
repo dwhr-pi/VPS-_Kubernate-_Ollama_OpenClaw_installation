@@ -13,6 +13,11 @@ CPYTHON_REPO_URL="${FINROBOT_CPYTHON_REPO_URL:-https://github.com/python/cpython
 CPYTHON_BASE_DIR="${FINROBOT_CPYTHON_BASE_DIR:-/opt/openclaw-python}"
 CPYTHON_PREFIX="${CPYTHON_BASE_DIR}/python-${CPYTHON_VERSION}"
 CPYTHON_BIN="${CPYTHON_PREFIX}/bin/python3.11"
+FINROBOT_MIN_LINUX_FREE_MB="${FINROBOT_MIN_LINUX_FREE_MB:-20480}"
+FINROBOT_MIN_WINDOWS_FREE_MB="${FINROBOT_MIN_WINDOWS_FREE_MB:-20480}"
+FINROBOT_RECOMMENDED_WINDOWS_FREE_MB="${FINROBOT_RECOMMENDED_WINDOWS_FREE_MB:-51200}"
+FINROBOT_PIP_NO_CACHE="${FINROBOT_PIP_NO_CACHE:-true}"
+FINROBOT_PREINSTALL_CPU_TORCH="${FINROBOT_PREINSTALL_CPU_TORCH:-true}"
 
 usage() {
   cat <<'USAGE'
@@ -33,6 +38,9 @@ Umgebungsvariablen:
   FINROBOT_REPO_URL     Alternative GitHub-Quelle
   FINROBOT_CPYTHON_VERSION  CPython-Version fuer lokalen Build, Standard: 3.11.9
   FINROBOT_CPYTHON_BASE_DIR Build-/Installationsbasis, Standard: /opt/openclaw-python
+  FINROBOT_MIN_LINUX_FREE_MB   Mindestfreier Linux-/WSL-Speicher, Standard: 20480
+  FINROBOT_MIN_WINDOWS_FREE_MB Mindestfreier Windows-C:-Speicher bei WSL, Standard: 20480
+  FINROBOT_PREINSTALL_CPU_TORCH CPU-only PyTorch vorinstallieren, Standard: true
 USAGE
 }
 
@@ -198,6 +206,71 @@ run_cmd() {
   fi
 }
 
+free_mb_for_path() {
+  df -Pm "${1:-/}" 2>/dev/null | awk 'NR==2 {print $4}'
+}
+
+is_wsl2() {
+  grep -qiE 'microsoft|wsl' /proc/version 2>/dev/null
+}
+
+require_min_free_mb() {
+  local label="$1"
+  local actual="$2"
+  local required="$3"
+
+  if [ -z "${actual:-}" ]; then
+    log_finrobot "Warnung: ${label} konnte nicht ermittelt werden."
+    return 0
+  fi
+
+  if [ "$actual" -lt "$required" ]; then
+    log_finrobot "Fehler: ${label} ist zu niedrig fuer FinRobot."
+    log_finrobot "${label}: ${actual} MB frei, erforderlich: ${required} MB."
+    log_finrobot "FinRobot zieht viele Python-/ML-Abhaengigkeiten. Bei zu wenig Speicher endet pip oft mit Input/output error."
+    return 1
+  fi
+}
+
+preflight_finrobot_resources() {
+  local linux_free_mb
+  local windows_free_mb
+
+  linux_free_mb="$(free_mb_for_path / || true)"
+  log_finrobot "Freier Linux-/WSL-Speicher: ${linux_free_mb:-unbekannt} MB"
+  require_min_free_mb "Linux-/WSL-Speicher" "${linux_free_mb:-}" "$FINROBOT_MIN_LINUX_FREE_MB"
+
+  if is_wsl2 && [ -d /mnt/c ]; then
+    windows_free_mb="$(free_mb_for_path /mnt/c || true)"
+    log_finrobot "Freier Windows-Host-Speicher (C:): ${windows_free_mb:-unbekannt} MB"
+    require_min_free_mb "Windows-C:-Speicher" "${windows_free_mb:-}" "$FINROBOT_MIN_WINDOWS_FREE_MB"
+    if [ -n "${windows_free_mb:-}" ] && [ "$windows_free_mb" -lt "$FINROBOT_RECOMMENDED_WINDOWS_FREE_MB" ]; then
+      log_finrobot "Warnung: Empfohlen sind ${FINROBOT_RECOMMENDED_WINDOWS_FREE_MB} MB Windows-C:-Speicher, damit WSL-VHDX, pip und ML-Wheels nicht kollidieren."
+    fi
+  fi
+}
+
+preinstall_cpu_torch_if_safe() {
+  local arch
+  arch="$(uname -m)"
+
+  if [ "$FINROBOT_PREINSTALL_CPU_TORCH" != "true" ]; then
+    log_finrobot "CPU-only PyTorch Vorinstallation wurde deaktiviert."
+    return 0
+  fi
+
+  case "$arch" in
+    x86_64|amd64)
+      log_finrobot "Installiere CPU-only PyTorch vorab, damit pip keine grossen CUDA-/NVIDIA-Wheels fuer FinRobot zieht."
+      pip install --index-url https://download.pytorch.org/whl/cpu torch
+      ;;
+    *)
+      log_finrobot "Warnung: CPU-only PyTorch Vorinstallation ist fuer Architektur '$arch' nicht automatisch hinterlegt."
+      log_finrobot "Der Installer faehrt fort, kann aber je nach pip-Aufloesung grosse ML-Abhaengigkeiten laden."
+      ;;
+  esac
+}
+
 main() {
   local mode="install"
   DRY_RUN=0
@@ -240,7 +313,7 @@ main() {
 
   begin_measurement "tool_install_${TOOL_NAME}" "Tool installieren: ${TOOL_NAME}"
 
-  if ! ensure_user_workspace || ! require_disk_mb 4096 /; then
+  if ! ensure_user_workspace || ! require_disk_mb "$FINROBOT_MIN_LINUX_FREE_MB" / || ! preflight_finrobot_resources; then
     end_measurement "failed"
     return 1
   fi
@@ -284,7 +357,11 @@ main() {
   "$python_bin" -m venv "$INSTALL_DIR/.venv"
   # shellcheck disable=SC1091
   source "$INSTALL_DIR/.venv/bin/activate"
+  if [ "$FINROBOT_PIP_NO_CACHE" = "true" ]; then
+    export PIP_NO_CACHE_DIR=1
+  fi
   pip install --upgrade pip setuptools wheel
+  preinstall_cpu_torch_if_safe
   pip install -e "$INSTALL_DIR"
   deactivate || true
 
