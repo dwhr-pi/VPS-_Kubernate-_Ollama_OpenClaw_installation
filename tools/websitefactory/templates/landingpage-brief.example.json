@@ -1,0 +1,16 @@
+{
+  "businessName": "Herr Tech",
+  "industry": "Eventtechnik und Live-Kommunikation",
+  "audience": "B2B Veranstalter, Agenturen, Messe-Teams",
+  "style": "modern, dark, energetic",
+  "pages": 3,
+  "cta": "Jetzt Event anfragen",
+  "colors": [
+    "#0f172a",
+    "#22c55e",
+    "#e2e8f0"
+  ],
+  "language": "de",
+  "offer": "LED-Waende, Livestreaming, Buehnentechnik, Hybrid-Events",
+  "prompt": "Erstelle eine hochwertige Event-Landingpage fuer Herr Tech mit starkem Hero, Leistungssektionen, Trust-Elementen und Kontakt-CTA."
+}

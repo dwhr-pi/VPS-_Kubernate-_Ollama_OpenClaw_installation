@@ -1,0 +1,19 @@
+{
+  "name": "websitefactory",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "WebsiteFactory / WebBuild-Agent prototype for Ultimate KI Setup",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "create": "node src/cli.mjs create",
+    "queue:add": "node src/cli.mjs queue-add",
+    "queue:status": "node src/cli.mjs queue-status",
+    "queue:worker": "node src/queue-worker.mjs",
+    "preview": "bash scripts/run-preview.sh",
+    "check": "bash scripts/check-build.sh",
+    "screenshot": "bash scripts/screenshot.sh"
+  }
+}
