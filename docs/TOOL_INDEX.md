@@ -38,6 +38,7 @@ Primaerquellen und GitHub-Referenzen sind gesammelt in `docs/GITHUB_TOOL_SOURCES
 - `budibase`
 - `nocodb`
 - `ai_content_multiplier` - optionaler OpenClaw/n8n Workflow, siehe [AI-ContentMultiplier](tools/ai-content-multiplier/README.md)
+- `websitefactory` - optionaler Website-/Landingpage-Workflow mit Ollama-Default, siehe [WebsiteFactory](tools/websitefactory.md)
 
 ## Mail und Domains
 

@@ -1450,6 +1450,20 @@
       "safety": "Workflow-Tool fuer URL/PDF/Web/YouTube/LinkedIn zu Content-Entwuerfen. Standard ist Ollama lokal; Firecrawl und Cloud-Modelle nur mit bewusst gesetzten lokalen Keys. Kein Auto-Publishing."
     },
     {
+      "id": "websitefactory",
+      "name": "WebsiteFactory / WebBuild-Agent",
+      "category": "workflow",
+      "source": "local-tool + https://github.com/withastro/astro",
+      "install_script": "scripts/tools/websitefactory_install.sh",
+      "uninstall_script": "scripts/tools/websitefactory_uninstall.sh",
+      "ports": [],
+      "check_type": "path",
+      "check_value": "~/.openclaw_ultimate_user_data/websitefactory",
+      "status": "optional",
+      "resource_class": "medium",
+      "safety": "Lokaler Website-Workflow mit Ollama als Standard. Keine API-Keys im Repo, keine automatische Veroeffentlichung, Build-Queue nur seriell mit einem Job gleichzeitig."
+    },
+    {
       "id": "stalwart_mail",
       "name": "Stalwart Mail",
       "category": "mail",

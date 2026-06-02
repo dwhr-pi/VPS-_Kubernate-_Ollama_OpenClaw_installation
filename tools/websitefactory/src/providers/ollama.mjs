@@ -2,6 +2,7 @@ export async function tryGeneratePlanWithOllama(brief, env = process.env) {
   const baseUrl = env.OLLAMA_BASE_URL || "http://127.0.0.1:11434";
   const model = env.WEBSITEFACTORY_OLLAMA_MODEL || "qwen2.5-coder";
   const provider = env.WEBSITEFACTORY_PROVIDER || "ollama";
+  const timeoutMs = Number(env.WEBSITEFACTORY_OLLAMA_TIMEOUT_MS || 10000);
 
   if (provider !== "ollama") {
     return null;
@@ -21,9 +22,12 @@ export async function tryGeneratePlanWithOllama(brief, env = process.env) {
   ].join("\n");
 
   try {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
     const response = await fetch(`${baseUrl}/api/chat`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      signal: controller.signal,
       body: JSON.stringify({
         model,
         stream: false,
@@ -33,6 +37,7 @@ export async function tryGeneratePlanWithOllama(brief, env = process.env) {
         ]
       })
     });
+    clearTimeout(timer);
 
     if (!response.ok) return null;
     const payload = await response.json();
