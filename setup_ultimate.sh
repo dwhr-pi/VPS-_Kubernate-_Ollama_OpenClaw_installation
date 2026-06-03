@@ -355,6 +355,25 @@ is_preference_enabled() {
     esac
 }
 
+overview_metrics_allowed_for_count() {
+    local item_count="${1:-0}"
+    local max_items="${OVERVIEW_METRICS_MAX_ITEMS:-80}"
+
+    if ! is_preference_enabled "${OVERVIEW_METRICS_ENABLED:-false}"; then
+        return 1
+    fi
+
+    if is_preference_enabled "${OVERVIEW_METRICS_FORCE:-false}"; then
+        return 0
+    fi
+
+    if [ "$item_count" -gt "$max_items" ] 2>/dev/null; then
+        return 1
+    fi
+
+    return 0
+}
+
 set_installation_monitoring_mode() {
     local enabled="$1"
 
@@ -1461,7 +1480,7 @@ show_installation_monitoring_menu() {
             cleanup_state="inaktiv"
             cleanup_mark="( )"
         fi
-        if is_preference_enabled "${OVERVIEW_METRICS_ENABLED:-true}"; then
+        if is_preference_enabled "${OVERVIEW_METRICS_ENABLED:-false}"; then
             overview_metrics_state="aktiv"
             overview_metrics_mark="(*)"
         else
@@ -1481,7 +1500,7 @@ show_installation_monitoring_menu() {
         --title "INSTALLATIONSÜBERWACHUNG" --menu "Zusätzliche Überwachung, Logansicht und sichere Log-Aufräumung." 42 112 22 \
         "1" "${monitoring_mark} Erweiterte Installationsüberwachung umschalten (aktuell: ${monitoring_state})" \
         "────────" "$separator_line" \
-        "2" "${overview_metrics_mark} Zeit-/Speicherwerte in Tool-/Profilübersichten umschalten (aktuell: ${overview_metrics_state})" \
+        "2" "${overview_metrics_mark} Zeit-/Speicherwerte in Tool-/Profilübersichten umschalten (aktuell: ${overview_metrics_state}, große Listen bleiben automatisch schnell)" \
         "3" "${loading_notice_mark} Lade-Hinweis vor Tool-/Profilübersichten umschalten (aktuell: ${loading_notice_state})" \
         "─────────" "$separator_line" \
         "4" "Log-Verzeichnis anzeigen" \
@@ -1525,7 +1544,7 @@ show_installation_monitoring_menu() {
                 read -p "Drücken Sie Enter..."
                 ;;
             2)
-                if is_preference_enabled "${OVERVIEW_METRICS_ENABLED:-true}"; then
+                if is_preference_enabled "${OVERVIEW_METRICS_ENABLED:-false}"; then
                     set_overview_metrics_mode "false"
                     echo -e "${GREEN}Zeit-/Speicherwerte in Tool-/Profilübersichten wurden deaktiviert.${NC}"
                 else
@@ -2670,7 +2689,7 @@ show_profile_management_menu() {
     local profile_menu_total_summary
     local profile_menu_prompt
     local overview_metrics_enabled="false"
-    if is_preference_enabled "${OVERVIEW_METRICS_ENABLED:-true}"; then
+    if overview_metrics_allowed_for_count "${#PROFILE_KEYS[@]}"; then
         overview_metrics_enabled="true"
     fi
     if [ "$overview_metrics_enabled" = "true" ]; then
@@ -2678,7 +2697,7 @@ show_profile_management_menu() {
         profile_menu_prompt="Wählen Sie ein Profil.\n\nSpalten: Status | Zeit hh:mm:ss | Gesamtspeicher MB | Beschreibung\nFehlende Werte: --:--:-- | --.- MB\nErmittelte Summe aller Profil-Installationen: ${profile_menu_total_summary}\n\nIn der Detailansicht können Gesamtprofil oder Einzeltools verwaltet werden:"
     else
         profile_menu_total_summary=""
-        profile_menu_prompt="Wählen Sie ein Profil.\n\nZeit- und Speicherwerte sind in den Optionen deaktiviert, damit diese Übersicht schneller lädt.\n\nIn der Detailansicht können Gesamtprofil oder Einzeltools verwaltet werden:"
+        profile_menu_prompt="Wählen Sie ein Profil.\n\nZeit- und Speicherwerte sind deaktiviert oder wegen der großen Liste automatisch im Schnellmodus ausgeblendet.\n\nIn der Detailansicht können Gesamtprofil oder Einzeltools verwaltet werden:"
     fi
 
     PROFILE_MENU_OPTIONS=()
@@ -3361,14 +3380,14 @@ show_tool_management_menu() {
     local overview_metrics_enabled="false"
     load_installed_map "$TOOL_STATUS_FILE" INSTALLED_TOOLS_MAP
     total_tool_count="${#TOOL_KEYS[@]}"
-    if is_preference_enabled "${OVERVIEW_METRICS_ENABLED:-true}"; then
+    if overview_metrics_allowed_for_count "${#TOOL_KEYS[@]}"; then
         overview_metrics_enabled="true"
         tool_menu_total_summary="$(summarize_operation_metrics_with_missing_plain "tool_install" "${TOOL_KEYS[@]}")"
         tool_menu_prompt="(*) = behalten oder installieren.\n\nSpalten: Auswahl | Tool | Zeit hh:mm:ss | Gesamtspeicher MB | Beschreibung\nFehlende Werte: --:--:-- | --.- MB\nErmittelte Summe aller Tool-Installationen: ${tool_menu_total_summary}\nAusführung: erst Deinstallationen, danach Installationen.\nGesamt: ${total_tool_count} | Installiert: ${installed_tool_count}"
     else
         overview_metrics_enabled="false"
         tool_menu_total_summary=""
-        tool_menu_prompt="(*) = behalten oder installieren.\n\nZeit- und Speicherwerte sind in den Optionen deaktiviert, damit diese Übersicht schneller lädt.\nAusführung: erst Deinstallationen, danach Installationen.\nGesamt: ${total_tool_count} | Installiert: ${installed_tool_count}"
+        tool_menu_prompt="(*) = behalten oder installieren.\n\nZeit- und Speicherwerte sind deaktiviert oder wegen der großen Liste automatisch im Schnellmodus ausgeblendet.\nAusführung: erst Deinstallationen, danach Installationen.\nGesamt: ${total_tool_count} | Installiert: ${installed_tool_count}"
     fi
 
     TOOL_CHECKLIST_OPTIONS=()
@@ -3388,7 +3407,7 @@ show_tool_management_menu() {
         fi
     done
     if [ "$overview_metrics_enabled" != "true" ]; then
-        tool_menu_prompt="(*) = behalten oder installieren.\n\nZeit- und Speicherwerte sind in den Optionen deaktiviert, damit diese Übersicht schneller lädt.\nAusführung: erst Deinstallationen, danach Installationen.\nGesamt: ${total_tool_count} | Installiert: ${installed_tool_count}"
+        tool_menu_prompt="(*) = behalten oder installieren.\n\nZeit- und Speicherwerte sind deaktiviert oder wegen der großen Liste automatisch im Schnellmodus ausgeblendet.\nAusführung: erst Deinstallationen, danach Installationen.\nGesamt: ${total_tool_count} | Installiert: ${installed_tool_count}"
     else
         tool_menu_prompt="(*) = behalten oder installieren.\n\nSpalten: Auswahl | Tool | Zeit hh:mm:ss | Gesamtspeicher MB | Beschreibung\nFehlende Werte: --:--:-- | --.- MB\nErmittelte Summe aller Tool-Installationen: ${tool_menu_total_summary}\nAusführung: erst Deinstallationen, danach Installationen.\nGesamt: ${total_tool_count} | Installiert: ${installed_tool_count}"
     fi
@@ -3677,6 +3696,7 @@ show_tool_group_checklist() {
     local group_prompt
     local overview_metrics_enabled="false"
     local -a group_tool_array=()
+    local group_tool_count=0
     declare -A installed_map
 
     ensure_user_workspace
@@ -3685,13 +3705,20 @@ show_tool_group_checklist() {
 
     for tool_key in $tool_list; do
         [ -n "$tool_key" ] || continue
+        group_tool_count=$((group_tool_count + 1))
+    done
+    if overview_metrics_allowed_for_count "$group_tool_count"; then
+        overview_metrics_enabled="true"
+    fi
+
+    for tool_key in $tool_list; do
+        [ -n "$tool_key" ] || continue
         group_tool_array+=("$tool_key")
         status="off"
         if [ "${installed_map[$tool_key]:-}" = "1" ]; then
             status="on"
         fi
-        if is_preference_enabled "${OVERVIEW_METRICS_ENABLED:-true}"; then
-            overview_metrics_enabled="true"
+        if [ "$overview_metrics_enabled" = "true" ]; then
             tool_metric_summary="$(get_operation_metric_summary_plain "tool_install_${tool_key}")"
             options+=("$tool_key" "${tool_metric_summary} | ${TOOLS[$tool_key]}" "$status")
         else
@@ -3707,7 +3734,7 @@ show_tool_group_checklist() {
         group_metric_summary="$(summarize_operation_metrics_with_missing_plain "tool_install" "${group_tool_array[@]}")"
         group_prompt="(*) = behalten oder installieren. Leer = bei installierten Tools deinstallieren.\n\nSpalten: Auswahl | Tool | Zeit hh:mm:ss | Gesamtspeicher MB | Beschreibung\nFehlende Werte: --:--:-- | --.- MB\nErmittelte Summe dieses Blocks: ${group_metric_summary}\nAusführung: erst Deinstallationen, danach Installationen."
     else
-        group_prompt="(*) = behalten oder installieren. Leer = bei installierten Tools deinstallieren.\n\nZeit- und Speicherwerte sind in den Optionen deaktiviert, damit diese Übersicht schneller lädt.\nAusführung: erst Deinstallationen, danach Installationen."
+        group_prompt="(*) = behalten oder installieren. Leer = bei installierten Tools deinstallieren.\n\nZeit- und Speicherwerte sind deaktiviert oder wegen der Listengröße automatisch im Schnellmodus ausgeblendet.\nAusführung: erst Deinstallationen, danach Installationen."
     fi
 
     dialog --clear --backtitle "$APP_TITLE" \
