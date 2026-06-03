@@ -54,6 +54,34 @@ check_npm_registry() {
     exit 1
 }
 
+ensure_bun_prerequisites() {
+    local missing_packages=()
+    local package
+
+    for package in curl ca-certificates unzip; do
+        case "$package" in
+            curl)
+                command -v curl >/dev/null 2>&1 || missing_packages+=("$package")
+                ;;
+            unzip)
+                command -v unzip >/dev/null 2>&1 || missing_packages+=("$package")
+                ;;
+            ca-certificates)
+                dpkg -s ca-certificates >/dev/null 2>&1 || missing_packages+=("$package")
+                ;;
+        esac
+    done
+
+    if [ "${#missing_packages[@]}" -eq 0 ]; then
+        return 0
+    fi
+
+    echo -e "${YELLOW}Installiere fehlende Bun-Basisabhaengigkeiten: ${missing_packages[*]}${NC}"
+    echo -e "${YELLOW}Primaerquelle fuer Clawhub bleibt GitHub; apt installiert hier nur notwendige Systempakete wie unzip.${NC}"
+    sudo apt-get update
+    sudo apt-get install -y "${missing_packages[@]}"
+}
+
 project_prefers_bun() {
     [ -f "package.json" ] || return 1
     grep -q 'only-allow bun' package.json 2>/dev/null && return 0
@@ -67,7 +95,7 @@ ensure_bun_runtime() {
         return 0
     fi
 
-    require_command curl "Bitte curl installieren oder bun manuell bereitstellen."
+    ensure_bun_prerequisites
     echo -e "${YELLOW}Hinweis: Clawhub nutzt Bun als Paketmanager. Installiere bun fuer den aktuellen Benutzer...${NC}"
     curl -fsSL https://bun.sh/install | bash
     export PATH="$HOME/.bun/bin:$PATH"
