@@ -22,14 +22,143 @@ init_tool_tracking "AutoGPT"
 
 AUTOGPT_DIR="/opt/autogpt"
 AUTOGPT_PLATFORM_DIR="$AUTOGPT_DIR/autogpt_platform"
-AUTOGPT_INSTALLER_REVISION="2026-05-29-frontend-build-diagnostics"
+AUTOGPT_INSTALLER_REVISION="2026-06-03-resource-and-rabbitmq-diagnostics"
 AUTOGPT_BUILDX_VERSION="${AUTOGPT_BUILDX_VERSION:-v0.34.1}"
+AUTOGPT_MIN_LINUX_DISK_MB="${AUTOGPT_MIN_LINUX_DISK_MB:-40960}"
+AUTOGPT_MIN_WINDOWS_C_MB="${AUTOGPT_MIN_WINDOWS_C_MB:-51200}"
+AUTOGPT_MIN_DOCKER_ROOT_MB="${AUTOGPT_MIN_DOCKER_ROOT_MB:-40960}"
+AUTOGPT_MIN_RAM_SWAP_MB="${AUTOGPT_MIN_RAM_SWAP_MB:-8192}"
+AUTOGPT_RECOMMENDED_RAM_SWAP_MB="${AUTOGPT_RECOMMENDED_RAM_SWAP_MB:-12288}"
 AUTOGPT_REPOS=(
     "${AUTOGPT_REPO_URL:-}"
     "https://github.com/significant-gravitas/autogpt.git"
     "https://github.com/dwhr-pi/AutoGPT.git"
 )
 AUTOGPT_DOCKER_NEEDS_SUDO=false
+
+is_wsl_for_autogpt() {
+    grep -qiE 'microsoft|wsl' /proc/version 2>/dev/null
+}
+
+get_available_mb_for_path() {
+    local path="$1"
+    df -Pm "$path" 2>/dev/null | awk 'NR==2 {print $4}'
+}
+
+get_windows_c_free_mb_for_autogpt() {
+    if ! command -v powershell.exe >/dev/null 2>&1; then
+        return 1
+    fi
+    powershell.exe -NoProfile -Command "[int]((Get-PSDrive C).Free/1MB)" 2>/dev/null | tr -d '\r'
+}
+
+get_ram_swap_available_mb_for_autogpt() {
+    awk '
+        /MemAvailable:/ {mem=$2}
+        /SwapFree:/ {swap=$2}
+        END {printf "%d\n", (mem + swap) / 1024}
+    ' /proc/meminfo 2>/dev/null
+}
+
+get_docker_root_dir_for_autogpt() {
+    if $AUTOGPT_DOCKER_NEEDS_SUDO; then
+        sudo docker info -f '{{.DockerRootDir}}' 2>/dev/null
+    else
+        docker info -f '{{.DockerRootDir}}' 2>/dev/null
+    fi
+}
+
+check_autogpt_resource_preflight() {
+    local linux_free_mb
+    local windows_free_mb
+    local docker_root
+    local docker_root_free_mb
+    local ram_swap_mb
+    local failed=false
+
+    if [ "${AUTOGPT_SKIP_RESOURCE_PREFLIGHT:-0}" = "1" ]; then
+        echo -e "${YELLOW}AutoGPT-Ressourcenpruefung wird per AUTOGPT_SKIP_RESOURCE_PREFLIGHT=1 uebersprungen.${NC}"
+        return 0
+    fi
+
+    echo -e "${BLUE}Pruefe Ressourcen vor AutoGPT-Build und Docker-Compose-Start...${NC}"
+    echo -e "${YELLOW}AutoGPT ist schwergewichtig: Build und Start ziehen viele Images, erstellen Volumes und starten RabbitMQ, Redis, Supabase, Frontend und Worker.${NC}"
+
+    linux_free_mb="$(get_available_mb_for_path "$AUTOGPT_DIR" || true)"
+    if [ -z "$linux_free_mb" ]; then
+        linux_free_mb="$(get_available_mb_for_path / || true)"
+    fi
+    if [ -n "$linux_free_mb" ]; then
+        echo -e "${BLUE}Freier Linux-/WSL-Speicher:${NC} ${linux_free_mb} MB"
+        if [ "$linux_free_mb" -lt "$AUTOGPT_MIN_LINUX_DISK_MB" ]; then
+            echo -e "${RED}Fehler: Zu wenig freier Linux-/WSL-Speicher fuer AutoGPT.${NC}"
+            echo -e "${YELLOW}Mindestens ${AUTOGPT_MIN_LINUX_DISK_MB} MB empfohlen, besser 81920 MB oder mehr.${NC}"
+            failed=true
+        fi
+    else
+        echo -e "${YELLOW}Warnung: Freier Linux-/WSL-Speicher konnte nicht ermittelt werden.${NC}"
+    fi
+
+    if is_wsl_for_autogpt; then
+        windows_free_mb="$(get_windows_c_free_mb_for_autogpt || true)"
+        if [ -n "$windows_free_mb" ]; then
+            echo -e "${BLUE}Freier Windows-Host-Speicher C:${NC} ${windows_free_mb} MB"
+            if [ "$windows_free_mb" -lt "$AUTOGPT_MIN_WINDOWS_C_MB" ]; then
+                echo -e "${RED}Fehler: Windows C: hat zu wenig freien Speicher fuer AutoGPT unter WSL.${NC}"
+                echo -e "${YELLOW}Mindestens ${AUTOGPT_MIN_WINDOWS_C_MB} MB empfohlen, weil Docker-/WSL-VHDX und Images stark wachsen koennen.${NC}"
+                failed=true
+            fi
+        else
+            echo -e "${YELLOW}Warnung: Windows-C:-Speicher konnte unter WSL nicht ermittelt werden.${NC}"
+        fi
+    fi
+
+    docker_root="$(get_docker_root_dir_for_autogpt || true)"
+    if [ -n "$docker_root" ]; then
+        docker_root_free_mb="$(get_available_mb_for_path "$docker_root" || true)"
+        if [ -n "$docker_root_free_mb" ]; then
+            echo -e "${BLUE}Freier Docker-Root-Speicher (${docker_root}):${NC} ${docker_root_free_mb} MB"
+            if [ "$docker_root_free_mb" -lt "$AUTOGPT_MIN_DOCKER_ROOT_MB" ]; then
+                echo -e "${RED}Fehler: Docker-Root hat zu wenig freien Speicher fuer AutoGPT.${NC}"
+                echo -e "${YELLOW}Mindestens ${AUTOGPT_MIN_DOCKER_ROOT_MB} MB empfohlen. RabbitMQ/Supabase koennen sonst nach erfolgreichem Build beim Start abbrechen.${NC}"
+                failed=true
+            fi
+        fi
+    else
+        echo -e "${YELLOW}Warnung: Docker-Root-Verzeichnis konnte nicht ermittelt werden.${NC}"
+    fi
+
+    ram_swap_mb="$(get_ram_swap_available_mb_for_autogpt || true)"
+    if [ -n "$ram_swap_mb" ]; then
+        echo -e "${BLUE}Verfuegbarer RAM+Swap laut Linux/WSL:${NC} ${ram_swap_mb} MB"
+        if [ "$ram_swap_mb" -lt "$AUTOGPT_MIN_RAM_SWAP_MB" ]; then
+            echo -e "${RED}Fehler: Zu wenig RAM+Swap fuer AutoGPT.${NC}"
+            echo -e "${YELLOW}Mindestens ${AUTOGPT_MIN_RAM_SWAP_MB} MB erforderlich, besser ${AUTOGPT_RECOMMENDED_RAM_SWAP_MB} MB oder mehr.${NC}"
+            failed=true
+        elif [ "$ram_swap_mb" -lt "$AUTOGPT_RECOMMENDED_RAM_SWAP_MB" ]; then
+            echo -e "${YELLOW}Warnung: RAM+Swap liegt unter der Empfehlung von ${AUTOGPT_RECOMMENDED_RAM_SWAP_MB} MB. Build oder RabbitMQ-Start koennen instabil werden.${NC}"
+        fi
+    else
+        echo -e "${YELLOW}Warnung: RAM+Swap konnte nicht ermittelt werden.${NC}"
+    fi
+
+    echo -e "${BLUE}Docker-Speicheruebersicht:${NC}"
+    if $AUTOGPT_DOCKER_NEEDS_SUDO; then
+        sudo docker system df || true
+    else
+        docker system df || true
+    fi
+
+    if $failed; then
+        echo -e "${RED}AutoGPT wird vor dem grossen Build/Start abgebrochen, weil die Ressourcenpruefung fehlgeschlagen ist.${NC}"
+        echo -e "${YELLOW}Reparaturideen: Windows-C:-Speicher freigeben, Docker-Images/Build-Cache bewusst bereinigen, WSL-VHDX/Datentraeger pruefen oder mehr RAM/Swap bereitstellen.${NC}"
+        echo -e "${YELLOW}Nur fuer bewusste Tests kann AUTOGPT_SKIP_RESOURCE_PREFLIGHT=1 gesetzt werden.${NC}"
+        return 1
+    fi
+
+    echo -e "${GREEN}AutoGPT-Ressourcenpruefung bestanden.${NC}"
+    return 0
+}
 
 docker_info_available_for_autogpt() {
     if docker info >/dev/null 2>&1; then
@@ -147,7 +276,22 @@ analyze_autogpt_compose_failure() {
 
     echo -e "${RED}AutoGPT Docker Compose Build/Start ist fehlgeschlagen.${NC}"
 
-    if grep -Eqi 'target frontend|frontend build|pnpm build|Linting and checking validity of types|ELIFECYCLE|NEXT_PUBLIC_PW_TEST' "$log_file"; then
+    if grep -Eqi 'dependency failed to start: container rabbitmq exited|rabbitmq.*exited|Container rabbitmq.*Error|rabbitmq.*Error' "$log_file"; then
+        echo -e "${YELLOW}Erkannt: Der AutoGPT-Build ist sehr wahrscheinlich durchgelaufen, aber der Compose-Start ist an RabbitMQ gescheitert.${NC}"
+        echo -e "${YELLOW}Wichtig:${NC} Das ist kein Frontend-ELIFECYCLE-Fehler, wenn vorher die Frontend-Image-Erstellung abgeschlossen wurde."
+        echo -e "${YELLOW}Typisches Muster:${NC} Docker baut Images erfolgreich, danach meldet Compose: 'dependency failed to start: container rabbitmq exited (1)'."
+        echo -e "${BLUE}Naechste Diagnose:${NC}"
+        echo "  cd ${AUTOGPT_PLATFORM_DIR}"
+        echo "  docker compose ps rabbitmq"
+        echo "  docker compose logs --tail=200 rabbitmq"
+        echo "  docker compose ps"
+        echo "  docker system df"
+        echo -e "${YELLOW}Wenn Docker nur mit sudo nutzbar ist, dieselben Befehle mit 'sudo' davor ausfuehren.${NC}"
+        echo -e "${YELLOW}Hauefige Ursachen:${NC} zu wenig Docker-/WSL-/Windows-C:-Speicher, korrupte oder alte RabbitMQ-Volumes, Portkonflikte bei 5672/15672, Ressourcenknappheit oder ein fehlerhafter RabbitMQ-Startzustand."
+        echo -e "${YELLOW}Sicherheits-/Datenhinweis:${NC} Volumes nicht blind loeschen. Erst Logs pruefen und Backups beachten, weil dort Laufzeitdaten liegen koennen."
+    fi
+
+    if grep -Eqi 'target frontend: failed to solve|frontend: failed to solve|ELIFECYCLE.*Command failed|Linting and checking validity of types.*ELIFECYCLE' "$log_file"; then
         echo -e "${YELLOW}Erkannt: Der Fehler liegt sehr wahrscheinlich im AutoGPT-Frontend-Build.${NC}"
         echo -e "${YELLOW}Typisches Muster:${NC} Docker/BuildKit baut Backend-/Worker-Images erfolgreich, danach bricht Next.js/pnpm im Frontend ab."
         echo -e "${YELLOW}Wichtig:${NC} Edge-Runtime- und Tailwind-Warnungen koennen vorher erscheinen, sind aber nicht zwingend der eigentliche Abbruch."
@@ -164,7 +308,7 @@ analyze_autogpt_compose_failure() {
     fi
 
     if grep -Eqi 'Edge Runtime|process\\.version|process\\.versions' "$log_file"; then
-        echo -e "${YELLOW}Hinweis:${NC} Supabase/Edge-Runtime-Warnungen wurden erkannt. Diese Warnungen koennen laut Log vor dem Abbruch erscheinen; fatal ist erst der spaetere pnpm/ELIFECYCLE-Exit."
+        echo -e "${YELLOW}Hinweis:${NC} Supabase/Edge-Runtime-Warnungen wurden erkannt. Diese Warnungen sind nicht automatisch fatal; entscheidend ist der spaetere konkrete Abbruch wie Frontend-ELIFECYCLE, BuildKit-Fehler oder RabbitMQ-Startfehler."
     fi
 
     if grep -Eqi 'the --mount option requires BuildKit|requires BuildKit' "$log_file"; then
@@ -227,6 +371,10 @@ if ! docker_info_available_for_autogpt; then
     exit 1
 fi
 
+if ! check_autogpt_resource_preflight; then
+    exit 1
+fi
+
 if ! ensure_autogpt_buildx_plugin; then
     echo -e "${RED}Fehler: AutoGPT kann ohne Docker Buildx Plugin nicht zuverlaessig gebaut werden.${NC}"
     exit 1
@@ -258,8 +406,7 @@ fi
 AUTOGPT_COMPOSE_LOG="$(mktemp)"
 if ! run_autogpt_compose_buildkit up -d 2>&1 | tee "$AUTOGPT_COMPOSE_LOG"; then
     analyze_autogpt_compose_failure "$AUTOGPT_COMPOSE_LOG"
-    echo -e "${YELLOW}Reparaturhinweis: Pruefe, ob der Docker-Daemon laeuft und BuildKit verfuegbar ist.${NC}"
-    echo -e "${YELLOW}Der typische Fehler lautet: 'the --mount option requires BuildKit'.${NC}"
+    echo -e "${YELLOW}Reparaturhinweis:${NC} Bitte zuerst den oben erkannten konkreten Fehler pruefen. AutoGPT kann sowohl beim Build als auch beim anschliessenden Compose-Start scheitern."
     echo -e "${YELLOW}Wenn der letzte sichtbare Block Prisma/Poetry nennt, bitte die Zeilen danach pruefen: Prisma-Generierung allein ist meist nicht der eigentliche Fehler.${NC}"
     rm -f "$AUTOGPT_COMPOSE_LOG"
     exit 1
