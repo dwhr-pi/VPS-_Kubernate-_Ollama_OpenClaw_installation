@@ -6,7 +6,7 @@ TOOL_DESCRIPTION="GitHub-basierte llama.cpp-Toolchain für GGUF-Export, Quantisi
 TOOL_MODULE_TYPE="GGUF- und Quantisierungs-Toolchain"
 TOOL_GIT_REPO="https://github.com/ggml-org/llama.cpp.git"
 TOOL_APT_PACKAGES="git build-essential cmake ninja-build python3"
-TOOL_POST_INSTALL='cmake -S . -B build -G Ninja && cmake --build build -j\"$(nproc)\"'
+TOOL_POST_INSTALL='cmake -S . -B build -G Ninja && cmake --build build --parallel "$(nproc)"'
 TOOL_RUN_SCRIPT='#!/bin/bash
 set -euo pipefail
 echo "Beispiel: ./build/bin/llama-quantize ./modell.gguf ./modell-q4_k_m.gguf Q4_K_M"'

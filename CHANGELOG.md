@@ -13,6 +13,7 @@
 - Clawhub-Installer installiert fehlende Bun-Basisabhaengigkeiten wie `unzip`, bevor `bun.sh/install` gestartet wird.
 - Docker-Stack-Installer wie Langfuse, LiteLLM und Open WebUI fallen bei fehlender Docker-Socket-Berechtigung jetzt auf `sudo docker compose` zurueck.
 - Docker-Compose-Stack-Helper gibt seine Revision im Installationslog aus, damit alte WSL-Kopien sofort erkennbar sind.
+- Llama_CPP_Toolchain nutzt fuer den CMake-Build jetzt `--parallel "$(nproc)"`, damit keine quotierte `-j`-Zahl an CMake uebergeben wird.
 - GitHub Contribution-, Security-, CODEOWNERS-, PR-/Issue-Template- und Branch-Protection-Dokumentation professionalisiert.
 - WebsiteFactory / WebBuild-Agent als neuer lokaler Workflow-Prototyp ergaenzt: Astro/Tailwind-Projektgenerator, Ollama-Default, JSON-Queue, Queue-Worker, Setup-Wrapper und Beispielbriefing.
 
