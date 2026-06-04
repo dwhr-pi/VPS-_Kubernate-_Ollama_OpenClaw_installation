@@ -65,7 +65,7 @@ EOF
         bash -lc "cd '$TOOL_DIR' && ${TOOL_POST_INSTALL}"
     fi
 
-    docker compose -f "$TOOL_DIR/docker-compose.yml" up -d
+    run_docker_compose_tool -f "$TOOL_DIR/docker-compose.yml" up -d
     mark_current_tool_installed
     echo -e "${GREEN}${TOOL_NAME} wurde erfolgreich installiert.${NC}"
 }
@@ -80,7 +80,7 @@ uninstall_github_docker_stack_tool() {
 
     echo -e "${BLUE}Starte Deinstallation von ${TOOL_NAME}...${NC}"
     if [ -f "$TOOL_DIR/docker-compose.yml" ]; then
-        docker compose -f "$TOOL_DIR/docker-compose.yml" down -v || true
+        run_docker_compose_tool -f "$TOOL_DIR/docker-compose.yml" down -v || true
     fi
     sudo rm -rf "$TOOL_DIR"
     mark_current_tool_removed

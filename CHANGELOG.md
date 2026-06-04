@@ -11,6 +11,7 @@
 - AutoGPT-Installer prueft vor dem schweren Build/Start jetzt Linux-/WSL-Speicher, Windows-C:-Speicher, Docker-Root-Speicher sowie RAM+Swap.
 - Tool- und Profiluebersichten starten jetzt standardmaessig im Schnellmodus; Zeit-/Speichermesswerte werden bei grossen Listen automatisch ausgeblendet.
 - Clawhub-Installer installiert fehlende Bun-Basisabhaengigkeiten wie `unzip`, bevor `bun.sh/install` gestartet wird.
+- Docker-Stack-Installer wie Langfuse, LiteLLM und Open WebUI fallen bei fehlender Docker-Socket-Berechtigung jetzt auf `sudo docker compose` zurueck.
 - GitHub Contribution-, Security-, CODEOWNERS-, PR-/Issue-Template- und Branch-Protection-Dokumentation professionalisiert.
 - WebsiteFactory / WebBuild-Agent als neuer lokaler Workflow-Prototyp ergaenzt: Astro/Tailwind-Projektgenerator, Ollama-Default, JSON-Queue, Queue-Worker, Setup-Wrapper und Beispielbriefing.
 

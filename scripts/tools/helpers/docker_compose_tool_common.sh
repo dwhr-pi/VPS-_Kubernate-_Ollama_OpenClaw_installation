@@ -14,7 +14,7 @@ HELPER_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$HELPER_DIR/../../helpers/status_tracking.sh"
 
 ensure_docker_compose() {
-    if command -v docker >/dev/null 2>&1 && docker compose version >/dev/null 2>&1; then
+    if command -v docker >/dev/null 2>&1 && { docker compose version >/dev/null 2>&1 || sudo docker compose version >/dev/null 2>&1; }; then
         return 0
     fi
 
@@ -22,10 +22,28 @@ ensure_docker_compose() {
     curl -fsSL https://get.docker.com | sh
     sudo usermod -aG docker "$USER" || true
 
-    if ! command -v docker >/dev/null 2>&1 || ! docker compose version >/dev/null 2>&1; then
+    if ! command -v docker >/dev/null 2>&1 || ! { docker compose version >/dev/null 2>&1 || sudo docker compose version >/dev/null 2>&1; }; then
         echo -e "${RED}Fehler: Docker Compose konnte nicht bereitgestellt werden.${NC}"
         exit 1
     fi
+}
+
+run_docker_compose_tool() {
+    if docker compose version >/dev/null 2>&1 && docker info >/dev/null 2>&1; then
+        docker compose "$@"
+        return $?
+    fi
+
+    if sudo docker compose version >/dev/null 2>&1 && sudo docker info >/dev/null 2>&1; then
+        echo -e "${YELLOW}Docker-Daemon ist fuer den aktuellen User nicht direkt nutzbar. Verwende sudo docker compose.${NC}"
+        echo -e "${YELLOW}Hinweis:${NC} Nach 'sudo usermod -aG docker $USER' ist meist eine neue Shell/WSL-Sitzung noetig, bis Docker ohne sudo funktioniert."
+        sudo docker compose "$@"
+        return $?
+    fi
+
+    echo -e "${RED}Fehler: Docker-Daemon ist nicht erreichbar oder die Berechtigung auf /var/run/docker.sock fehlt.${NC}"
+    echo -e "${YELLOW}Reparaturhinweis:${NC} Docker starten, User-Gruppe pruefen oder den Installer erneut aus einer neuen Shell starten."
+    return 1
 }
 
 install_docker_compose_tool() {
@@ -53,7 +71,7 @@ ${TOOL_ENV_FILE_CONTENT}
 EOF
     fi
 
-    docker compose -f "$TOOL_DIR/docker-compose.yml" up -d
+    run_docker_compose_tool -f "$TOOL_DIR/docker-compose.yml" up -d
 
     if [ -n "${TOOL_PROMPT_EXAMPLE:-}" ]; then
         cat > "$TOOL_DIR/PROMPT_EXAMPLES.md" <<EOF
@@ -78,7 +96,7 @@ uninstall_docker_compose_tool() {
     echo -e "${BLUE}Starte Deinstallation von ${TOOL_NAME}...${NC}"
 
     if [ -f "$TOOL_DIR/docker-compose.yml" ] && command -v docker >/dev/null 2>&1; then
-        docker compose -f "$TOOL_DIR/docker-compose.yml" down -v || true
+        run_docker_compose_tool -f "$TOOL_DIR/docker-compose.yml" down -v || true
     fi
 
     sudo rm -rf "$TOOL_DIR"
