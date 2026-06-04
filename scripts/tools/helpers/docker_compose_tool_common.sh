@@ -8,12 +8,15 @@ BLUE='\033[0;34m'
 RED='\033[0;31m'
 YELLOW='\033[1;33m'
 NC='\033[0m'
+DOCKER_COMPOSE_TOOL_HELPER_REVISION="2026-06-04-sudo-docker-compose-fallback"
 
 HELPER_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck disable=SC1091
 source "$HELPER_DIR/../../helpers/status_tracking.sh"
 
 ensure_docker_compose() {
+    echo -e "${YELLOW}Docker-Compose-Helper-Revision:${NC} ${DOCKER_COMPOSE_TOOL_HELPER_REVISION}"
+
     if command -v docker >/dev/null 2>&1 && { docker compose version >/dev/null 2>&1 || sudo docker compose version >/dev/null 2>&1; }; then
         return 0
     fi
