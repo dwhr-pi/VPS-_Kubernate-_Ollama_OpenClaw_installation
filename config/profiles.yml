@@ -3958,6 +3958,31 @@
       "description": "Lokale Audio-, Video- und Bildpipelines fuer Creator-Workflows; schwere Komponenten nur mit Opt-in.",
       "doc": "docs/Profile/Media_Music_Video_Studio.md",
       "updated": "2026-05-31"
+    },
+    {
+      "id": "Ultimate_JARVIS",
+      "name": "Ultimate JARVIS",
+      "category": "Assistant / Operating Profile",
+      "status": "planned",
+      "resource_class": "heavy",
+      "recommended_device": "MiniPC, Home Server, GPU Workstation, optional K3s",
+      "tools": [
+        "ollama",
+        "openclaw",
+        "qdrant",
+        "postgres",
+        "whisper_cpp",
+        "piper",
+        "playwright",
+        "prometheus",
+        "grafana",
+        "home_assistant"
+      ],
+      "install_mode": "documentation-first",
+      "auto_install": false,
+      "description": "Lokaler JARVIS-aehnlicher KI-Assistent mit OpenClaw-Orchestrierung, Ollama, Memory/RAG, Voice, Monitoring und sicheren Tool-Freigaben.",
+      "doc": "docs/Profile/Ultimate_JARVIS.md",
+      "updated": "2026-06-05"
     }
   ]
 }

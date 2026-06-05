@@ -71,6 +71,7 @@ Diese Matrix fasst den aktuellen Ausbauzustand als modulare Plattform zusammen. 
 | `Robotics_IoT_Edge_AI` | Smart Home / IoT | Home Assistant, MQTT, Zigbee, ESPHome | mittel | MiniPC, Edge, VPS | lokale Netze und Kameradaten schuetzen |
 | `Smart_Home_Automation` | Smart Home / IoT | Node-RED, Mosquitto, Zigbee2MQTT | mittel | MiniPC | Reverse Proxy und Tunnel bewusst haerten |
 | `Personal_Assistant_Local_First` | Assistant | lokaler Jarvis, RAG, n8n, Open WebUI | mittel | MiniPC, Workstation | Aktionen brauchen Rollen und Freigabe |
+| `Ultimate_JARVIS` | Assistant / Operating Profile | OpenClaw-Orchestrierung, Ollama, Voice, Memory, RAG, Monitoring, Smart Home | planned | MiniPC, Home Server, GPU-Workstation, K3s optional | documentation-first; keine automatische Komplettinstallation |
 | `Boardroom` | Assistant | strategische Entscheidungsrunde mit Rollen, Peer-Review und Chairman-Verdict | niedrig | MiniPC, Workstation | nur Vorschlag/Review, keine automatische Aktion |
 | `Voice_Command_Center` | Voice / Smart Home | STT, TTS, Home Assistant, Node-RED | mittel | MiniPC, Mikrofon-Setup | kritische Befehle nur mit Bestaetigung |
 | `Image_Generation_Studio` | Media | ComfyUI, Forge, Upscaling, Cleanup | mittel | GPU-Workstation | Modellrechte, VRAM und SSD einkalkulieren |

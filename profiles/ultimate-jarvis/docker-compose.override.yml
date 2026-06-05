@@ -1,0 +1,7 @@
+# Documentation-first placeholder for Ultimate JARVIS.
+# Do not run this file directly as a production stack.
+#
+# Real services should be enabled step by step through the normal setup tools
+# and bound to 127.0.0.1 unless intentionally protected by VPN/reverse proxy.
+
+services: {}
