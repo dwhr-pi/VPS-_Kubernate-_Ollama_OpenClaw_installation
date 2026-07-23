@@ -9,7 +9,8 @@
 - [Setup-Skripte schnell finden](#setup-skripte-schnell-finden)
 - [Speicherplatz und Bereinigung](#speicherplatz-und-bereinigung)
 - [Gegenwärtiger Status](#-gegenwärtiger-status)
-- [Schnelle Installation](#-schnelle-installation-one-liner)
+- [Schnelle Installation (One-Liner)](#-schnelle-installation-one-liner)
+Dokumentation
 - [Boardroom-Profil](#boardroom-profil)
 - [Neue Übersichten und Doctor-Skripte](#-neue-übersichten-und-doctor-skripte)
 - [Tool-Quellen und GitHub-Regel](#tool-quellen-und-github-regel)
@@ -173,6 +174,108 @@ curl -sSL https://raw.githubusercontent.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenC
 ```
 
 Dieser Befehl lädt das `install.sh` Skript herunter und führt es aus. Das Skript klont dieses Repository und startet das interaktive Setup-Menü, das dich durch die weiteren Schritte führt.
+
+## 🔄 Setup erneut starten
+
+Wenn du das Setup-Menü erneut starten möchtest, navigiere in das Installationsverzeichnis (standardmäßig `~/openclaw_ultimate_setup`) und führe das Hauptskript aus:
+
+```bash
+cd ~/openclaw_ultimate_setup
+bash ./setup_ultimate.sh
+```
+## 🔁 Setup aktualisieren oder lokal entfernen
+
+Wenn es Änderungen im Repository gab und du dein bestehendes Setup aktualisieren möchtest, wird jetzt bewusst ein **harter Repo-Abgleich** empfohlen. So bleiben keine alten Setup-Dateien halb stehen, während dein ausgelagerter Benutzer-Workspace erhalten bleibt:
+
+```bash
+cd ~/openclaw_ultimate_setup
+git status --short
+git fetch origin --prune
+git checkout main 2>/dev/null || git checkout -b main --track origin/main
+git reset --hard origin/main
+git clean -fd
+printf '\nDas Repository ist jetzt aktualisiert.\n'
+printf 'Du kannst die aktuelle Terminal-Ausgabe jetzt in Ruhe lesen oder kopieren.\n'
+read -rp "Drücke Enter, um danach das Setup-Menü zu starten ... "
+bash ./setup_ultimate.sh
+```
+
+Wenn du vor dem Neustart des Menüs den angezeigten Stand erst prüfen möchtest, ist diese kleine Pause bewusst hilfreich. So kannst du z. B. Git-Meldungen, Versionsstände oder Warnungen noch lesen und direkt aus dem Terminal kopieren, bevor das interaktive Setup weiterläuft.
+
+Wichtig:
+
+- Die Pause erscheint nur dann, wenn der harte Repo-Abgleich erfolgreich war.
+- `git reset --hard origin/main` und `git clean -fd` verwerfen lokale Änderungen und ungetrackte Zusatzdateien **im Setup-Repository**.
+- Dein ausgelagerter Benutzer-Workspace unter `~/.openclaw_ultimate_user_data` bleibt dabei erhalten.
+- Die neueren Update-Skripte legen vor dem harten Abgleich zusätzlich eine Sicherung der verworfenen Repo-Differenzen unter `~/.openclaw_ultimate_user_data/repo_update_backups` an.
+
+Wenn dabei vorher lokale Änderungen in Dateien wie `install.sh` oder `setup_ultimate.sh` auftauchen, ist das gerade der Grund für den harten Abgleich: Das Repo soll vollständig auf `origin/main` zurück, statt nur teilweise über `git pull` aktualisiert zu werden.
+
+In diesem Fall gibt es jetzt zwei sichere Wege:
+
+- im Menü den Punkt `Setup-Repository hart reparieren / auf GitHub main zurücksetzen` verwenden
+- oder den One-Liner-Installer erneut starten, der bei vorhandenem Repo jetzt ebenfalls den harten Abgleich verwendet
+
+Wichtig dabei:
+
+- Es werden nur Dateien im Setup-Repository zurückgesetzt.
+- Dein ausgelagerter Benutzer-Workspace unter `~/.openclaw_ultimate_user_data` bleibt erhalten.
+- Vor dem harten Abgleich legt der Installer jetzt zusätzlich eine Sicherung des Repo-Zustands unter `~/.openclaw_ultimate_user_data/repo_update_backups` an.
+
+Alternativ kannst du im Menü den Punkt `Setup-Update + System-Update (Repo, OS & pnpm)` nutzen. Dieser zieht den aktuellen Repository-Stand direkt im Setup-Verzeichnis und aktualisiert danach Ubuntu sowie `pnpm`.
+
+Wenn danach trotzdem noch ein älterer Setup-Stand angezeigt wird, sollte zuerst geprüft werden, ob wirklich das richtige Repository-Verzeichnis verwendet wird. Ein normaler `git pull` ist dafür nicht mehr der empfohlene Weg.
+
+Prüfen:
+
+```bash
+cd ~/openclaw_ultimate_setup
+git status
+```
+
+Wenn du den harten Repo-Abgleich lieber manuell ausführen möchtest, kannst du das Setup so direkt auf den aktuellen GitHub-Stand zurücksetzen:
+
+```bash
+cd ~/openclaw_ultimate_setup
+git fetch origin --prune
+git reset --hard origin/main
+printf '\nDas Repository wurde hart auf GitHub main zurückgesetzt.\n'
+printf 'Du kannst die aktuelle Terminal-Ausgabe jetzt in Ruhe lesen oder kopieren.\n'
+read -rp "Drücke Enter, um danach das Setup-Menü zu starten ... "
+bash ./setup_ultimate.sh
+```
+
+Dafür gibt es jetzt auch direkt im Menü einen eigenen Punkt:
+
+- `Setup-Repository hart reparieren / auf GitHub main zurücksetzen`
+
+Dieser Weg ist hilfreich, wenn trotz normalem `git pull` noch ein älterer Setup-Stand angezeigt wird.
+
+Wenn du ganz sauber neu anfangen willst, ist auch das weiterhin möglich:
+
+```bash
+cd ~
+rm -rf ~/openclaw_ultimate_setup
+curl -sSL https://raw.githubusercontent.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation/main/install.sh | bash
+```
+
+Wenn du das lokale Setup wieder entfernen möchtest, hast du zwei saubere Wege:
+
+1. Zuerst im Menü `Tools: Installieren & Deinstallieren` und `Profile: Installieren & Deinstallieren` alle gewünschten Komponenten wieder abwählen.
+2. Danach das lokale Arbeitsverzeichnis entfernen:
+
+```bash
+cd ~
+rm -rf ~/openclaw_ultimate_setup
+```
+
+Wenn du zusätzlich lokal installierte Komponenten wie `Home Assistant`, `Ollama` oder einzelne Tools vollständig entfernen willst, nutze die jeweiligen `*_uninstall.sh` Skripte im Menü oder direkt unter `scripts/tools/`.
+
+Wenn du zusätzlich den ausgelagerten Benutzer-Workspace mit sensiblen Daten entfernen möchtest, kannst du das entweder im Menü über `Benutzer-Workspace verwalten` tun oder manuell:
+
+```bash
+rm -rf ~/.openclaw_ultimate_user_data
+```
 
 ## Boardroom-Profil
 
@@ -529,108 +632,6 @@ Für produktionsnähere Self-Hosted-Setups:
 - `Monitoring_Observability`
 - `Backup_Recovery`
 
-## 🔄 Setup erneut starten
-
-Wenn du das Setup-Menü erneut starten möchtest, navigiere in das Installationsverzeichnis (standardmäßig `~/openclaw_ultimate_setup`) und führe das Hauptskript aus:
-
-```bash
-cd ~/openclaw_ultimate_setup
-bash ./setup_ultimate.sh
-```
-
-## 🔁 Setup aktualisieren oder lokal entfernen
-
-Wenn es Änderungen im Repository gab und du dein bestehendes Setup aktualisieren möchtest, wird jetzt bewusst ein **harter Repo-Abgleich** empfohlen. So bleiben keine alten Setup-Dateien halb stehen, während dein ausgelagerter Benutzer-Workspace erhalten bleibt:
-
-```bash
-cd ~/openclaw_ultimate_setup
-git status --short
-git fetch origin --prune
-git checkout main 2>/dev/null || git checkout -b main --track origin/main
-git reset --hard origin/main
-git clean -fd
-printf '\nDas Repository ist jetzt aktualisiert.\n'
-printf 'Du kannst die aktuelle Terminal-Ausgabe jetzt in Ruhe lesen oder kopieren.\n'
-read -rp "Drücke Enter, um danach das Setup-Menü zu starten ... "
-bash ./setup_ultimate.sh
-```
-
-Wenn du vor dem Neustart des Menüs den angezeigten Stand erst prüfen möchtest, ist diese kleine Pause bewusst hilfreich. So kannst du z. B. Git-Meldungen, Versionsstände oder Warnungen noch lesen und direkt aus dem Terminal kopieren, bevor das interaktive Setup weiterläuft.
-
-Wichtig:
-
-- Die Pause erscheint nur dann, wenn der harte Repo-Abgleich erfolgreich war.
-- `git reset --hard origin/main` und `git clean -fd` verwerfen lokale Änderungen und ungetrackte Zusatzdateien **im Setup-Repository**.
-- Dein ausgelagerter Benutzer-Workspace unter `~/.openclaw_ultimate_user_data` bleibt dabei erhalten.
-- Die neueren Update-Skripte legen vor dem harten Abgleich zusätzlich eine Sicherung der verworfenen Repo-Differenzen unter `~/.openclaw_ultimate_user_data/repo_update_backups` an.
-
-Wenn dabei vorher lokale Änderungen in Dateien wie `install.sh` oder `setup_ultimate.sh` auftauchen, ist das gerade der Grund für den harten Abgleich: Das Repo soll vollständig auf `origin/main` zurück, statt nur teilweise über `git pull` aktualisiert zu werden.
-
-In diesem Fall gibt es jetzt zwei sichere Wege:
-
-- im Menü den Punkt `Setup-Repository hart reparieren / auf GitHub main zurücksetzen` verwenden
-- oder den One-Liner-Installer erneut starten, der bei vorhandenem Repo jetzt ebenfalls den harten Abgleich verwendet
-
-Wichtig dabei:
-
-- Es werden nur Dateien im Setup-Repository zurückgesetzt.
-- Dein ausgelagerter Benutzer-Workspace unter `~/.openclaw_ultimate_user_data` bleibt erhalten.
-- Vor dem harten Abgleich legt der Installer jetzt zusätzlich eine Sicherung des Repo-Zustands unter `~/.openclaw_ultimate_user_data/repo_update_backups` an.
-
-Alternativ kannst du im Menü den Punkt `Setup-Update + System-Update (Repo, OS & pnpm)` nutzen. Dieser zieht den aktuellen Repository-Stand direkt im Setup-Verzeichnis und aktualisiert danach Ubuntu sowie `pnpm`.
-
-Wenn danach trotzdem noch ein älterer Setup-Stand angezeigt wird, sollte zuerst geprüft werden, ob wirklich das richtige Repository-Verzeichnis verwendet wird. Ein normaler `git pull` ist dafür nicht mehr der empfohlene Weg.
-
-Prüfen:
-
-```bash
-cd ~/openclaw_ultimate_setup
-git status
-```
-
-Wenn du den harten Repo-Abgleich lieber manuell ausführen möchtest, kannst du das Setup so direkt auf den aktuellen GitHub-Stand zurücksetzen:
-
-```bash
-cd ~/openclaw_ultimate_setup
-git fetch origin --prune
-git reset --hard origin/main
-printf '\nDas Repository wurde hart auf GitHub main zurückgesetzt.\n'
-printf 'Du kannst die aktuelle Terminal-Ausgabe jetzt in Ruhe lesen oder kopieren.\n'
-read -rp "Drücke Enter, um danach das Setup-Menü zu starten ... "
-bash ./setup_ultimate.sh
-```
-
-Dafür gibt es jetzt auch direkt im Menü einen eigenen Punkt:
-
-- `Setup-Repository hart reparieren / auf GitHub main zurücksetzen`
-
-Dieser Weg ist hilfreich, wenn trotz normalem `git pull` noch ein älterer Setup-Stand angezeigt wird.
-
-Wenn du ganz sauber neu anfangen willst, ist auch das weiterhin möglich:
-
-```bash
-cd ~
-rm -rf ~/openclaw_ultimate_setup
-curl -sSL https://raw.githubusercontent.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation/main/install.sh | bash
-```
-
-Wenn du das lokale Setup wieder entfernen möchtest, hast du zwei saubere Wege:
-
-1. Zuerst im Menü `Tools: Installieren & Deinstallieren` und `Profile: Installieren & Deinstallieren` alle gewünschten Komponenten wieder abwählen.
-2. Danach das lokale Arbeitsverzeichnis entfernen:
-
-```bash
-cd ~
-rm -rf ~/openclaw_ultimate_setup
-```
-
-Wenn du zusätzlich lokal installierte Komponenten wie `Home Assistant`, `Ollama` oder einzelne Tools vollständig entfernen willst, nutze die jeweiligen `*_uninstall.sh` Skripte im Menü oder direkt unter `scripts/tools/`.
-
-Wenn du zusätzlich den ausgelagerten Benutzer-Workspace mit sensiblen Daten entfernen möchtest, kannst du das entweder im Menü über `Benutzer-Workspace verwalten` tun oder manuell:
-
-```bash
-rm -rf ~/.openclaw_ultimate_user_data
-```
 
 ## 📖 Dokumentation
 
