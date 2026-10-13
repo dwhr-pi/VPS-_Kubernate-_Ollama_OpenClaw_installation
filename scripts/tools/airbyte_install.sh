@@ -26,8 +26,6 @@ AIRBYTE_ABCTL_TIMEOUT_MIN="${AIRBYTE_ABCTL_TIMEOUT_MIN:-120}"
 AIRBYTE_K8S_NAMESPACE="${AIRBYTE_K8S_NAMESPACE:-airbyte-abctl}"
 AIRBYTE_K8S_CONTEXT="${AIRBYTE_K8S_CONTEXT:-kind-airbyte-abctl}"
 
-begin_measurement "tool_install_${TOOL_NAME}" "Tool installieren: ${TOOL_NAME}"
-
 get_free_mb_for_path() {
   local path="${1:-/}"
   df -Pm "$path" 2>/dev/null | awk 'NR==2 {print $4}'
@@ -76,7 +74,9 @@ airbyte_confirm_heavy_install() {
   fi
 
   if [ -n "$mem_available_mb" ] && [ "$mem_available_mb" -lt "$AIRBYTE_MIN_MEMORY_MB" ]; then
-    log_error "Zu wenig verfuegbarer RAM fuer Airbyte/kind. Installation wird vor dem Helm-Deployment abgebrochen."
+    log_error "Zu wenig verfuegbarer RAM fuer Airbyte/kind. Installation wird vor Paketinstallation und Deployment abgebrochen."
+    log_info "Es fehlen $((AIRBYTE_MIN_MEMORY_MB - mem_available_mb)) MB verfuegbarer RAM. Swap wird hier nicht als RAM angerechnet."
+    log_info "Andere Anwendungen schliessen und WSL-RAM-Limit passend zum physischen Host pruefen; danach --check erneut starten."
     log_warn "Airbyte startet viele Pods. Unter WSL fuehren knapper RAM oder aggressive Speicherbegrenzungen oft zu Readiness-/Liveness-Probe-Schleifen."
     return 1
   fi
@@ -174,7 +174,22 @@ airbyte_classify_abctl_failure() {
   fi
 }
 
-if ! ensure_user_workspace || ! require_disk_mb "$AIRBYTE_MIN_FREE_MB" / || ! airbyte_confirm_heavy_install; then
+case "${1:-}" in
+  --check|--dry-run)
+    airbyte_confirm_heavy_install
+    exit $?
+    ;;
+  "") ;;
+  *) log_error "Unbekannte Option: $1. Erlaubt: --check, --dry-run oder ohne Option installieren."; exit 2 ;;
+esac
+
+# Check host resources before measurements can trigger dependency installation.
+if ! airbyte_confirm_heavy_install; then
+  exit 1
+fi
+# Explicit dependencies below avoid installing an obsolete system Go by inference.
+AUTO_INSTALL_TOOL_BASE_DEPS=false begin_measurement "tool_install_${TOOL_NAME}" "Tool installieren: ${TOOL_NAME}"
+if ! ensure_user_workspace || ! require_disk_mb "$AIRBYTE_MIN_FREE_MB" /; then
   end_measurement "failed"
   exit 1
 fi
@@ -185,7 +200,7 @@ log_info "Primaerquellen:"
 log_info "  Airbyte: https://github.com/airbytehq/airbyte.git"
 log_info "  abctl:   https://github.com/airbytehq/abctl.git"
 
-ensure_base_apt_packages git docker.io ca-certificates curl build-essential make tar
+ensure_base_apt_packages git ca-certificates curl build-essential make tar
 ensure_docker_compose_available
 sudo systemctl enable --now docker || true
 

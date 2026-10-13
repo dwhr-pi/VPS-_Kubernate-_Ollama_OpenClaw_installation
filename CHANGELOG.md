@@ -2,6 +2,50 @@
 
 ## Unreleased
 
+- Kustomize ersetzt apt durch GitHub-Release v5.8.2 mit SHA256 fuer amd64/arm64; Dry-Run, Client-Test und Binary-Deinstallation ergaenzt, Registry verdrahtet.
+
+- Mosquitto entfernt die ungenutzte WebSocket-Freigabe 9001, bindet MQTT an localhost und erlaubt MOSQUITTO_HOST_PORT. Neue Config verweigert anonyme Clients; bestehende Config bleibt erhalten.
+
+- MusicGen: Python 3.10/3.11, FFmpeg-Entwicklungspakete fuer PyAV, GitHub-Tag v1.3.0, fruehe Disk-Sperre und Backup inkompatibler venv.
+
+- Node Exporter nutzt standardmaessig rprivate statt rslave fuer WSL-kompatible Root-Mounts und bindet 9100 an localhost. Git-Docker-Helfer setzt bei Compose-Fehler keinen Installiert-Status.
+
+- OpenTelemetry nutzt den Docker-Compose-sudo-Fallback, prueft Speicher vor Installation, bindet neue OTLP-Ports an localhost und erhaelt bestehende Konfigurationen. Kein automatischer Docker-/Gruppenumbau.
+
+- Promptfoo prueft Node >=22.22.0 und den Upstream-CI-Pin npm 11.11.0 vor Installation; npm ci, Build und CLI-Smoke-Test muessen erfolgreich sein. Keine apt-Node-Installation und kein fehlerverdeckender npm-Fallback.
+
+- Puppeteer prueft Node >=22.12.0 vor Installation, stellt unzip vor Chrome-Download bereit und testet Paket/Browserdatei; Node-Helfer erzwingt Engine-Anforderungen.
+
+- RIFE prueft Python 3.10/3.11 vor Installation, sichert inkompatible .venv und verhindert den NumPy-Source-Build unter Python 3.12; CPU-PyTorch als Standard, GPU-Quelle optional.
+
+- Syft ersetzt den fehlenden apt-Pfad durch feste Anchore-GitHub-Releases mit SHA256 fuer amd64/arm64; Binary-Deinstallation, Doku und Registry angepasst.
+
+- Velero-404 behoben: korrekte versionsgebundene GitHub-Assets, SHA256 aus CHECKSUM, amd64/arm64 und CLI-Dry-Run; Registry ergaenzt.
+
+- Stable Diffusion WebUI prueft Python 3.10/3.11, sichert inkompatible venv und nutzt Upstream-Vorbereitung; fehlgeschlagene Pillow-/tokenizers-Installationen werden nicht mehr als Erfolg gemeldet.
+
+- Forge ersetzt den fehlerhaften Repo-Root-Editable-Install durch Upstream-`launch.py --exit`, Python-3.10/3.11-Pruefung und separate venv; alte `.venv` bleibt erhalten.
+
+- K9s verwendet feste offizielle GitHub-Releases mit SHA256-Pruefung statt Ubuntu-apt; Binary-Deinstallation und Registry ergaenzt.
+
+- Kubectl ersetzt den fehlenden Ubuntu-apt-Pfad durch offizielle, SHA256-gepruefte Releases fuer amd64/arm64; Registry und Binary-Deinstallation angepasst.
+
+- Kubectx/Kubens entfernt den geprueften `/opt/kubectx`-Ordner mit sudo; Fehler werden als fehlgeschlagene Deinstallation erfasst.
+
+- n8n prueft Node >=22.22.0 vor Clone/Basisinstallation, respektiert die pnpm-Version des Checkouts und aktiviert strikte Engine-/Lockfile-Pruefung. Mosquitto/Node-RED als Nutzer des gemeinsamen sudo-Deinstallationsfixes dokumentiert.
+
+- Airbyte prueft Ressourcen vor apt/Messwertinitialisierung, bietet `--check`/`--dry-run` und zeigt fehlenden RAM; Docker wird ueber den gemeinsamen Helfer statt als festes `docker.io` bereitgestellt.
+
+- Supabase startet Compose ueber den sudo-faehigen Docker-Helfer; vorhandene `.env` bleibt erhalten und Docker-Paketfamilien werden nicht mehr fest erzwungen.
+
+- Whisper.cpp verwendet einen CMake-CPU-Build mit expliziten Compiler-/CMake-Abhaengigkeiten, zwei Build-Jobs und CLI-Smoke-Test statt des Node-Installationshelfers.
+
+- Zotero und zentrale Basisabhaengigkeiten warten begrenzt auf apt/dpkg-Sperren; leere Paketnamen loesen keine Paketinstallation mehr aus.
+
+- Gemeinsame Git/Docker-Deinstallation (u. a. Metabase) entfernt gepruefte `/opt`-Toolordner mit sudo und meldet Stop-/Loeschfehler statt Erfolg.
+
+- AutoGPT prueft Host-Speicher und RAM/Swap vor Clone und Docker-Installation; `--check`/`--dry-run` bieten eine reine Host-Pruefung mit konkreten Fehlmengen.
+
 - Governance-Dokument fuer Fork-Support, genehmigte Support-Branches, signierte Support-Freigaben und sichere Rueckfuehrung in `main` ergaenzt.
 - README und Integritaets-Tutorial auf das neue Fork-/Support-Modell verlinkt.
 - HE/Oracle/WireGuard/Homecluster-Zielarchitektur als Einsteiger-Tutorial, Security-Doku, K3s-Hinweise, Wake-on-LAN-Skripte und sichere Beispiel-Stacks ergaenzt.

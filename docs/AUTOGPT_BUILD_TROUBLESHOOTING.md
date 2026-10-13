@@ -4,6 +4,35 @@ Diese Seite erklaert haeufige AutoGPT-Buildfehler im Ultimate KI Setup.
 
 ## Preflight: Speicherplatz und RAM
 
+Die Host-Pruefung laeuft bereits vor Git-Clone und Docker-/Paketinstallation.
+Nach Bereitstellung von Docker folgt eine zweite Pruefung inklusive Docker-Root.
+Eine reine Host-Pruefung ohne Installation ist moeglich:
+
+```bash
+bash scripts/tools/autogpt_install.sh --check
+# Gleiche Host-Pruefung, ohne Installation:
+bash scripts/tools/autogpt_install.sh --dry-run
+```
+
+Diese Befehle pruefen keinen Docker-Start und garantieren keinen erfolgreichen
+Build. Die Status-Helfer koennen lokale Status-/Logdateien im User-Workspace anlegen.
+
+### Abbruch aus dem Protokoll vom 8. Juni 2026
+
+Der Abbruch ist ein beabsichtigter Ressourcenschutz, kein Docker-Buildfehler:
+39019 MB auf Windows C: liegen 12181 MB unter dem Setup-Grenzwert von 51200 MB.
+4315 MB verfuegbarer RAM plus Swap liegen 3877 MB unter 8192 MB.
+Diese Werte sind konservative Setup-Grenzen, keine garantierten Upstream-Minima.
+
+1. Auf Windows C: ausreichend Platz freigeben. Der grosse freie Linux-Wert
+   ersetzt den Host-Speicher fuer eine dort gespeicherte WSL-VHDX nicht.
+2. Andere speicherintensive Anwendungen schliessen und `free -h` in WSL pruefen.
+3. Falls WSL begrenzt ist, die Windows-Datei `%UserProfile%\.wslconfig` pruefen.
+   RAM-Zuweisung muss zum physischen Host passen; Swap ersetzt keinen echten RAM.
+   Mehr Swap benoetigt wiederum Datentraegerplatz.
+4. Nach manuellen Anpassungen `--check` erneut ausfuehren. Das Setup aendert
+   weder WSL-Grenzen noch Swap automatisch und loescht keine Docker-Daten.
+
 Der AutoGPT-Installer prueft vor dem grossen Docker-Build und vor
 `docker compose up -d` jetzt automatisch:
 

@@ -1,5 +1,26 @@
 # Airbyte Systemvoraussetzungen
 
+## Fruehe Pruefung ohne Installation
+
+```bash
+bash scripts/tools/airbyte_install.sh --check
+# Gleiche Host-Pruefung ohne Installation:
+bash scripts/tools/airbyte_install.sh --dry-run
+```
+
+Die Ressourcenpruefung laeuft jetzt vor Messwertinitialisierung, apt,
+Git-Clone und abctl-Build. Die Messwertinitialisierung fordert fuer Airbyte
+keine automatisch abgeleiteten Build-Pakete mehr an; die notwendigen Pakete
+werden nach erfolgreicher Pruefung explizit bereitgestellt.
+
+Das Protokoll vom 8. Juni 2026 zeigt einen beabsichtigten Schutzabbruch:
+3356 MB verfuegbarer RAM liegen 4836 MB unter dem Setup-Grenzwert von 8192 MB.
+Linux- und Windows-Speicherplatz bestanden die Pruefung in diesem Log.
+Swap zaehlt hier nicht als RAM. Andere Anwendungen schliessen, das WSL-RAM-Limit
+passend zum physischen Host pruefen oder Airbyte auf einem ausreichend
+ausgestatteten Host betreiben. Danach `--check` erneut ausfuehren.
+Der Installer aendert keine WSL-Limits und setzt den RAM-Schutz nicht ausser Kraft.
+
 Airbyte ist in diesem Setup ein schwergewichtiges Tool. `abctl local install`
 startet lokal einen kind/Kubernetes-Cluster, installiert Airbyte per Helm und
 zieht viele Container-Images. Es ist deshalb nicht mit leichten CLI-Tools wie

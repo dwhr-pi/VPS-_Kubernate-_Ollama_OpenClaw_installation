@@ -1,6 +1,9 @@
 #!/bin/bash
 # Gemeinsame Hilfsfunktionen für robuste Statusdateien und direkte Script-Aufrufe.
 
+# shellcheck source=../lib/apt_lock_wait.sh
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")/../lib" && pwd)/apt_lock_wait.sh"
+
 STATUS_HELPER_ROOT="${HOME}/.openclaw_ultimate_user_data"
 PROFILE_STATUS_FILE="$STATUS_HELPER_ROOT/installed_profiles.txt"
 TOOL_STATUS_FILE="$STATUS_HELPER_ROOT/installed_tools.txt"
@@ -318,6 +321,7 @@ status_tracking_install_missing_base_packages() {
     status_tracking_infer_base_packages_from_script "${0:-}"
 
     for package_name in "${STATUS_TRACKING_REQUIRED_APT_PACKAGES[@]:-}"; do
+        [ -n "$package_name" ] || continue
         if [ "$package_name" = "docker-compose-plugin" ]; then
             echo -e "\033[1;33mHinweis: docker-compose-plugin wird nicht direkt per Ubuntu-apt installiert; Docker Compose wird bei Bedarf als CLI-Plugin aus GitHub bereitgestellt.\033[0m"
             continue
@@ -331,8 +335,8 @@ status_tracking_install_missing_base_packages() {
 
     echo -e "\033[0;34mBasis-Abhaengigkeiten fuer frisches Ubuntu erkannt: ${missing_packages[*]}\033[0m"
     echo -e "\033[1;33mHinweis: Primaerquellen bleiben GitHub; apt installiert hier nur notwendige System-/Build-Werkzeuge.\033[0m"
-    sudo apt-get update
-    sudo apt-get install -y "${missing_packages[@]}"
+    run_apt_with_lock_wait update || return $?
+    run_apt_with_lock_wait install -y "${missing_packages[@]}"
 }
 
 init_profile_tracking() {

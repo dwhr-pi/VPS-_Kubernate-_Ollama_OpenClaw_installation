@@ -217,7 +217,11 @@ install_git_docker_tool() {
       return 1
     fi
     printf '%s\n' "$compose_content" > "$install_dir/docker-compose.yml"
-    (cd "$install_dir" && run_docker_compose up -d)
+    if ! (cd "$install_dir" && run_docker_compose up -d); then
+      log_error "Docker Compose fuer ${tool_name} fehlgeschlagen. Kein Installiert-Status gesetzt."
+      end_measurement "failed"
+      return 1
+    fi
     mark_tool_installed "$tool_name"
     log_success "${tool_name} installiert."
     end_measurement "success"
@@ -227,14 +231,44 @@ install_git_docker_tool() {
   fi
 }
 
+validate_git_docker_uninstall_dir() {
+  local install_dir="$1"
+  local resolved_dir
+  # Only direct tool directories under /opt are eligible for privileged removal.
+  if ! [[ "$install_dir" =~ ^/opt/[a-zA-Z0-9][a-zA-Z0-9_.-]*$ ]] || [ -L "$install_dir" ]; then
+    log_error "Unsicheres Deinstallationsziel abgelehnt: $install_dir"
+    return 1
+  fi
+  resolved_dir="$(realpath -m -- "$install_dir")" || return 1
+  if [ "$resolved_dir" != "$install_dir" ]; then
+    log_error "Deinstallationsziel verweist auf einen anderen Pfad: $install_dir"
+    return 1
+  fi
+}
+
 uninstall_git_docker_tool() {
   local tool_name="$1"
   local install_dir="$2"
   begin_measurement "tool_uninstall_${tool_name}" "Tool deinstallieren: ${tool_name}"
-  if [ -f "$install_dir/docker-compose.yml" ]; then
-    (cd "$install_dir" && run_docker_compose down -v) || true
+  if ! validate_git_docker_uninstall_dir "$install_dir"; then
+    end_measurement "failed"
+    return 1
   fi
-  rm -rf "$install_dir"
+  if [ -f "$install_dir/docker-compose.yml" ]; then
+    if ! (cd "$install_dir" && run_docker_compose down -v); then
+      log_error "${tool_name}: Docker-Stack konnte nicht gestoppt werden. Installationsdaten bleiben erhalten."
+      end_measurement "failed"
+      return 1
+    fi
+  fi
+  if [ -e "$install_dir" ]; then
+    log_info "Entferne geprueftes Tool-Verzeichnis mit sudo: $install_dir"
+    if ! sudo rm -rf --one-file-system -- "$install_dir"; then
+      log_error "${tool_name}: Verzeichnis konnte nicht entfernt werden. sudo-Rechte pruefen und Deinstallation erneut starten."
+      end_measurement "failed"
+      return 1
+    fi
+  fi
   mark_tool_removed "$tool_name"
   log_success "${tool_name} entfernt."
   end_measurement "success"

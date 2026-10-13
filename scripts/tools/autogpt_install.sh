@@ -22,7 +22,7 @@ init_tool_tracking "AutoGPT"
 
 AUTOGPT_DIR="/opt/autogpt"
 AUTOGPT_PLATFORM_DIR="$AUTOGPT_DIR/autogpt_platform"
-AUTOGPT_INSTALLER_REVISION="2026-06-03-resource-and-rabbitmq-diagnostics"
+AUTOGPT_INSTALLER_REVISION="2026-10-13-early-resource-preflight"
 AUTOGPT_BUILDX_VERSION="${AUTOGPT_BUILDX_VERSION:-v0.34.1}"
 AUTOGPT_MIN_LINUX_DISK_MB="${AUTOGPT_MIN_LINUX_DISK_MB:-40960}"
 AUTOGPT_MIN_WINDOWS_C_MB="${AUTOGPT_MIN_WINDOWS_C_MB:-51200}"
@@ -69,6 +69,7 @@ get_docker_root_dir_for_autogpt() {
 }
 
 check_autogpt_resource_preflight() {
+    local phase="${1:-full}"
     local linux_free_mb
     local windows_free_mb
     local docker_root
@@ -81,7 +82,7 @@ check_autogpt_resource_preflight() {
         return 0
     fi
 
-    echo -e "${BLUE}Pruefe Ressourcen vor AutoGPT-Build und Docker-Compose-Start...${NC}"
+    echo -e "${BLUE}Pruefe AutoGPT-Ressourcen (${phase})...${NC}"
     echo -e "${YELLOW}AutoGPT ist schwergewichtig: Build und Start ziehen viele Images, erstellen Volumes und starten RabbitMQ, Redis, Supabase, Frontend und Worker.${NC}"
 
     linux_free_mb="$(get_available_mb_for_path "$AUTOGPT_DIR" || true)"
@@ -106,6 +107,7 @@ check_autogpt_resource_preflight() {
             if [ "$windows_free_mb" -lt "$AUTOGPT_MIN_WINDOWS_C_MB" ]; then
                 echo -e "${RED}Fehler: Windows C: hat zu wenig freien Speicher fuer AutoGPT unter WSL.${NC}"
                 echo -e "${YELLOW}Mindestens ${AUTOGPT_MIN_WINDOWS_C_MB} MB empfohlen, weil Docker-/WSL-VHDX und Images stark wachsen koennen.${NC}"
+                echo "Es fehlen $((AUTOGPT_MIN_WINDOWS_C_MB - windows_free_mb)) MB auf Windows C:."
                 failed=true
             fi
         else
@@ -113,6 +115,7 @@ check_autogpt_resource_preflight() {
         fi
     fi
 
+    if [ "$phase" = "full" ]; then
     docker_root="$(get_docker_root_dir_for_autogpt || true)"
     if [ -n "$docker_root" ]; then
         docker_root_free_mb="$(get_available_mb_for_path "$docker_root" || true)"
@@ -127,6 +130,7 @@ check_autogpt_resource_preflight() {
     else
         echo -e "${YELLOW}Warnung: Docker-Root-Verzeichnis konnte nicht ermittelt werden.${NC}"
     fi
+    fi
 
     ram_swap_mb="$(get_ram_swap_available_mb_for_autogpt || true)"
     if [ -n "$ram_swap_mb" ]; then
@@ -134,6 +138,8 @@ check_autogpt_resource_preflight() {
         if [ "$ram_swap_mb" -lt "$AUTOGPT_MIN_RAM_SWAP_MB" ]; then
             echo -e "${RED}Fehler: Zu wenig RAM+Swap fuer AutoGPT.${NC}"
             echo -e "${YELLOW}Mindestens ${AUTOGPT_MIN_RAM_SWAP_MB} MB erforderlich, besser ${AUTOGPT_RECOMMENDED_RAM_SWAP_MB} MB oder mehr.${NC}"
+            echo "Es fehlen $((AUTOGPT_MIN_RAM_SWAP_MB - ram_swap_mb)) MB verfuegbarer RAM+Swap."
+            echo "Schliesse andere Anwendungen und pruefe unter WSL die Speicher-/Swap-Grenzen in der Windows-Datei ~/.wslconfig."
             failed=true
         elif [ "$ram_swap_mb" -lt "$AUTOGPT_RECOMMENDED_RAM_SWAP_MB" ]; then
             echo -e "${YELLOW}Warnung: RAM+Swap liegt unter der Empfehlung von ${AUTOGPT_RECOMMENDED_RAM_SWAP_MB} MB. Build oder RabbitMQ-Start koennen instabil werden.${NC}"
@@ -142,17 +148,20 @@ check_autogpt_resource_preflight() {
         echo -e "${YELLOW}Warnung: RAM+Swap konnte nicht ermittelt werden.${NC}"
     fi
 
+    if [ "$phase" = "full" ]; then
     echo -e "${BLUE}Docker-Speicheruebersicht:${NC}"
     if $AUTOGPT_DOCKER_NEEDS_SUDO; then
         sudo docker system df || true
     else
         docker system df || true
     fi
+    fi
 
     if $failed; then
         echo -e "${RED}AutoGPT wird vor dem grossen Build/Start abgebrochen, weil die Ressourcenpruefung fehlgeschlagen ist.${NC}"
         echo -e "${YELLOW}Reparaturideen: Windows-C:-Speicher freigeben, Docker-Images/Build-Cache bewusst bereinigen, WSL-VHDX/Datentraeger pruefen oder mehr RAM/Swap bereitstellen.${NC}"
         echo -e "${YELLOW}Nur fuer bewusste Tests kann AUTOGPT_SKIP_RESOURCE_PREFLIGHT=1 gesetzt werden.${NC}"
+        echo "Details: docs/AUTOGPT_BUILD_TROUBLESHOOTING.md; erneut pruefen: bash scripts/tools/autogpt_install.sh --check"
         return 1
     fi
 
@@ -320,6 +329,19 @@ analyze_autogpt_compose_failure() {
 
 echo -e "${BLUE}Starte Installation von AutoGPT...${NC}"
 echo -e "${YELLOW}AutoGPT-Installer-Revision:${NC} ${AUTOGPT_INSTALLER_REVISION}"
+
+# Host checks must run before clone, apt and Docker setup.
+case "${1:-}" in
+    --check|--dry-run)
+        check_autogpt_resource_preflight host
+        exit $?
+        ;;
+    "") ;;
+    *) echo "Unbekannte Option: $1. Erlaubt: --check, --dry-run oder ohne Option installieren."; exit 2 ;;
+esac
+if ! check_autogpt_resource_preflight host; then
+    exit 1
+fi
 
 AUTOGPT_REPO_URL=""
 for repo in "${AUTOGPT_REPOS[@]}"; do

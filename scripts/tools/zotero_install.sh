@@ -36,8 +36,8 @@ if ! command -v apt-get >/dev/null 2>&1; then
     exit 1
 fi
 
-sudo apt-get update
-sudo apt-get install -y curl xz-utils file desktop-file-utils
+run_apt_with_lock_wait update
+run_apt_with_lock_wait install -y curl xz-utils file desktop-file-utils
 
 echo -e "${BLUE}Lade Zotero von der offiziellen Download-Quelle herunter...${NC}"
 curl -fL "$ZOTERO_DOWNLOAD_URL" -o "$ZOTERO_ARCHIVE"

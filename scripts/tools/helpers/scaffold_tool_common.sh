@@ -106,7 +106,12 @@ EOF
         chmod +x "$TOOL_DIR/run.sh"
     fi
 
-    if [ -n "${TOOL_POST_INSTALL:-}" ]; then
+    if [ -n "${TOOL_POST_INSTALL_FUNCTION:-}" ]; then
+        if ! declare -F "$TOOL_POST_INSTALL_FUNCTION" >/dev/null || ! "$TOOL_POST_INSTALL_FUNCTION"; then
+            echo -e "${RED}Fehler: Nachinstallation von ${TOOL_NAME} fehlgeschlagen.${NC}"
+            return 1
+        fi
+    elif [ -n "${TOOL_POST_INSTALL:-}" ]; then
         bash -lc "cd '$TOOL_DIR' && ${TOOL_POST_INSTALL}"
     fi
 

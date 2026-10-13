@@ -2,6 +2,8 @@
 set -euo pipefail
 
 SCRIPT_LIB_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=apt_lock_wait.sh
+source "$SCRIPT_LIB_DIR/apt_lock_wait.sh"
 REPO_ROOT="$(cd "$SCRIPT_LIB_DIR/../.." && pwd)"
 USER_WORKSPACE_DIR="${HOME}/.openclaw_ultimate_user_data"
 USER_STATUS_DIR="${USER_WORKSPACE_DIR}/status"
@@ -160,6 +162,7 @@ ensure_base_apt_packages() {
   done
 
   for package_name in "${REQUIRED_BASE_APT_PACKAGES[@]:-}"; do
+    [ -n "$package_name" ] || continue
     if [ "$package_name" = "docker-compose-plugin" ]; then
       log_warn "docker-compose-plugin wird nicht direkt per Ubuntu-apt installiert; Docker Compose wird bei Bedarf als CLI-Plugin aus GitHub bereitgestellt."
       continue
@@ -173,8 +176,8 @@ ensure_base_apt_packages() {
 
   log_info "Installiere fehlende Basis-/Build-Abhaengigkeiten: ${missing_packages[*]}"
   log_warn "Primaerquellen bleiben GitHub; apt installiert hier nur notwendige Systempakete."
-  sudo apt-get update
-  sudo apt-get install -y "${missing_packages[@]}"
+  run_apt_with_lock_wait update || return $?
+  run_apt_with_lock_wait install -y "${missing_packages[@]}"
 }
 
 infer_and_install_base_packages_for_current_script() {
