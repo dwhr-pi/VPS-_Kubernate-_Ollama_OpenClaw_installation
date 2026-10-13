@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Tool-Menue entfernt veraltete Ollama-Haekchen aus beiden Statusdateien, wenn kein ausfuehrbarer Ollama-Befehl vorhanden ist; verhindert Wiederherstellung durch Legacy-Statusmigration.
+
 - Kustomize ersetzt apt durch GitHub-Release v5.8.2 mit SHA256 fuer amd64/arm64; Dry-Run, Client-Test und Binary-Deinstallation ergaenzt, Registry verdrahtet.
 
 - Mosquitto entfernt die ungenutzte WebSocket-Freigabe 9001, bindet MQTT an localhost und erlaubt MOSQUITTO_HOST_PORT. Neue Config verweigert anonyme Clients; bestehende Config bleibt erhalten.

@@ -2497,6 +2497,26 @@ is_base_install_ready() {
     return 0
 }
 
+sync_ollama_tool_status() {
+    local binary status_file
+    OLLAMA_STATUS_CHANGED=0
+    binary="$(command -v ollama 2>/dev/null || true)"
+    if [ -n "$binary" ] && [ -f "$binary" ] && [ -x "$binary" ]; then
+        if ! grep -Fxq "Ollama" "$TOOL_STATUS_FILE" 2>/dev/null; then
+            append_unique_line "$TOOL_STATUS_FILE" "Ollama"
+            OLLAMA_STATUS_CHANGED=1
+        fi
+    else
+        # Clear both status locations, otherwise legacy migration can restore a stale entry.
+        for status_file in "$TOOL_STATUS_FILE" "$USER_STATUS_DIR/installed_tools.txt"; do
+            if grep -Fxq "Ollama" "$status_file" 2>/dev/null; then
+                remove_exact_line "$status_file" "Ollama"
+                OLLAMA_STATUS_CHANGED=1
+            fi
+        done
+    fi
+}
+
 sync_core_tool_status() {
     local status_changed=0
     local tool_key
@@ -2505,12 +2525,8 @@ sync_core_tool_status() {
     ensure_user_workspace
     normalize_status_file "$TOOL_STATUS_FILE" "${TOOL_KEYS[@]}"
 
-    if command -v ollama >/dev/null 2>&1; then
-        if ! grep -Fxq "Ollama" "$TOOL_STATUS_FILE" 2>/dev/null; then
-            append_unique_line "$TOOL_STATUS_FILE" "Ollama"
-            status_changed=1
-        fi
-    fi
+    sync_ollama_tool_status
+    if [ "$OLLAMA_STATUS_CHANGED" -eq 1 ]; then status_changed=1; fi
 
     if [ -d /opt/openclaw ] && [ -f /opt/openclaw/package.json ]; then
         if ! grep -Fxq "OpenClaw" "$TOOL_STATUS_FILE" 2>/dev/null; then
@@ -2556,7 +2572,7 @@ Apache_Tika|/opt/apache_tika
 EOF
 
     if [ "$status_changed" -eq 1 ]; then
-        echo -e "${BLUE}Hinweis: Der Tool-Status fuer vorhandene Kern- und Zusatzinstallationen wurde aus dem System nachsynchronisiert.${NC}"
+        echo -e "${BLUE}Hinweis: Der Tool-Status wurde mit dem System abgeglichen; veraltete Ollama-Markierungen wurden gegebenenfalls entfernt.${NC}"
     fi
 }
 
