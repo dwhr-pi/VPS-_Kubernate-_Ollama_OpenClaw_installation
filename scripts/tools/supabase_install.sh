@@ -10,6 +10,31 @@ TOOL_DESCRIPTION="Self-Hosted Supabase als Daten-, Auth-, Realtime- und Storage-
 TOOL_MODULE_TYPE="Backend-Platform-Scaffold"
 TOOL_GIT_REPO="https://github.com/supabase/supabase.git"
 TOOL_APT_PACKAGES="git"
+pull_supabase_images() (
+    local attempt rc pull_log
+    pull_log="$(mktemp)" || return 1
+    trap 'rm -f -- "$pull_log"' EXIT
+    for attempt in 1 2 3; do
+        echo "Supabase: Image-Download, Versuch ${attempt}/3 (ein Image gleichzeitig)."
+        if run_docker_compose --parallel 1 pull 2>&1 | tee "$pull_log"; then
+            return 0
+        else
+            rc="${PIPESTATUS[0]}"
+            if [ "$rc" -eq 0 ]; then return 1; fi
+        fi
+        if ! grep -Eqi 'connection reset by peer|TLS handshake timeout|i/o timeout|unexpected EOF|context deadline exceeded|temporary failure in name resolution|net/http: request canceled' "$pull_log"; then
+            log_error 'Supabase-Pull fehlgeschlagen: kein erkannter temporaerer Netzwerkfehler. Docker-Ausgabe pruefen; kein automatischer Neuversuch.'
+            return "$rc"
+        fi
+        if [ "$attempt" -eq 3 ]; then
+            log_error 'Supabase: Image-Download nach drei Netzwerkfehlern abgebrochen. Verbindung/VPN/Proxy/Registry pruefen und spaeter erneut starten. Kein Docker-Prune noetig.'
+            return "$rc"
+        fi
+        echo "Temporaerer Netzwerkfehler. Neuer Versuch in $((attempt * 5)) Sekunden; vorhandene Image-Layer bleiben erhalten."
+        sleep "$((attempt * 5))" || return 1
+    done
+)
+
 start_supabase_stack() {
     if [ ! -d "$TOOL_DIR/docker" ]; then
         log_error "Supabase: docker-Verzeichnis fehlt. Git-Quelle/Upstream-Layout pruefen."
@@ -26,7 +51,8 @@ start_supabase_stack() {
             cp .env.example .env || exit 1
             chmod 600 .env || exit 1
         fi
-        run_docker_compose up -d
+        pull_supabase_images || exit 1
+        run_docker_compose up -d --pull never
     )
 }
 TOOL_POST_INSTALL_FUNCTION="start_supabase_stack"
@@ -36,5 +62,5 @@ TOOL_PROMPT_EXAMPLE='# Beispielprompts für Supabase
 Richte ein self-hosted Backend für Auth, Postgres, Storage und Realtime ein und erkläre, wie es mit Open WebUI, LiteLLM und RAG-Diensten zusammenspielt.
 ```'
 TOOL_OPENCLAW_NOTE="Supabase ist hier als größeres Backend-Modul gedacht. Die Self-Hosted-Struktur folgt dem offiziellen GitHub-Repo und bleibt dadurch nah am Upstream."
-source "$(dirname "$0")/helpers/scaffold_tool_common.sh"
+source "$SCRIPT_DIR/helpers/scaffold_tool_common.sh"
 install_scaffold_tool

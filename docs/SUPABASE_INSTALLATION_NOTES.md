@@ -25,3 +25,33 @@ Eine bestehende `/opt/supabase/docker/.env` wird nicht ueberschrieben.
 Fehlt sie, wird `.env.example` kopiert und mit Dateirechten 600 versehen.
 Die Upstream-Vorlage muss vor produktiver Nutzung mit eigenen Zugangsdaten
 und dem passenden Netzwerkzugriff konfiguriert werden.
+
+## Download-Abbruch: connection reset by peer
+
+Im Protokoll vom 14. Oktober 2026 wird die HTTPS-Verbindung beim Image-Download
+zurueckgesetzt. Das beweist keinen Speicherfehler; moegliche Ursachen sind
+Netzwerk, Proxy/VPN, Registry/CDN oder eine Zwischenstelle. Aus dem Log allein
+laesst sich der Verursacher nicht bestimmen.
+
+Der Installer fuehrt jetzt vor dem Start `docker compose --parallel 1 pull`
+ueber den bestehenden sudo-Fallback aus. Laut
+[Docker-Dokumentation](https://docs.docker.com/reference/cli/docker/compose/#configuring-parallelism)
+werden damit Images nacheinander gezogen. Einzelne Layer eines Images koennen
+weiterhin parallel geladen werden; globale Daemon-Einstellungen werden nicht
+geaendert.
+
+Bei erkannten Netzwerkfehlern gibt es maximal drei Versuche, mit 5 und 10
+Sekunden Pause. Andere Fehler, beispielsweise fehlende Rechte, fehlender
+Speicher oder falsche Image-Namen, werden nicht automatisch wiederholt.
+Nach erfolgreichem Pull folgt `up -d --pull never`; so gibt es keinen zweiten
+ungeplanten Pull waehrend des Starts. Kein Installiert-Status bei Pull-Fehlern.
+
+Vorhandene Layer bleiben erhalten, aber Docker muss unvollstaendige Downloads
+gegebenenfalls erneut laden. Es gibt kein garantiertes bytegenaues Resume.
+Nicht `/opt/supabase`, Volumes oder Docker-Caches loeschen, nur weil der Download
+abgebrochen ist. Bestehende `.env` bleibt erhalten. Nach Pruefung der Verbindung
+kann der aktualisierte Installer bewusst erneut gestartet werden.
+
+TODO: echter Zielsystemtest, Zeitlimit pro Pull, Ressourcen-Preflight und
+Pruefung der Gesundheitszustaende aller Supabase-Dienste. Ein erfolgreicher
+Compose-Start ist noch kein vollstaendiger Funktionstest.

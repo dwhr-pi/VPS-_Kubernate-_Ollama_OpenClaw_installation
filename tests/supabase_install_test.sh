@@ -8,7 +8,8 @@ ensure_docker_compose_available() { return 0; }
 cd() { :; }
 cp() { echo copied-template; }
 chmod() { [[ "$*" == '600 .env' ]]; }
-run_docker_compose() { [[ "$*" == 'up -d' ]]; echo compose-wrapper; return "$compose_result"; }
+pull_supabase_images() { return 0; }
+run_docker_compose() { [[ "$*" == 'up -d --pull never' ]]; echo compose-wrapper; return "$compose_result"; }
 function [ {
     if [[ "$1" == '!' ]]; then
         shift

@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Supabase laedt Images seriell und wiederholt erkannte Netzwerkabbrueche maximal dreimal mit Backoff; Start erst nach erfolgreichem Pull, keine Cache-/Datenloeschung.
+
 - Whisper_CPP-Deinstallation nutzt nach fester Pfadpruefung sudo statt des unprivilegierten Node-Helfers; Dry-Run, Fehlerstatus und Regressionstest ergaenzt.
 
 - Tool-Menue entfernt veraltete Ollama-Haekchen aus beiden Statusdateien, wenn kein ausfuehrbarer Ollama-Befehl vorhanden ist; verhindert Wiederherstellung durch Legacy-Statusmigration.
