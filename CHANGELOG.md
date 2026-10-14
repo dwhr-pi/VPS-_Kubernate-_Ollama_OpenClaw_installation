@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Whisper_CPP-Deinstallation nutzt nach fester Pfadpruefung sudo statt des unprivilegierten Node-Helfers; Dry-Run, Fehlerstatus und Regressionstest ergaenzt.
+
 - Tool-Menue entfernt veraltete Ollama-Haekchen aus beiden Statusdateien, wenn kein ausfuehrbarer Ollama-Befehl vorhanden ist; verhindert Wiederherstellung durch Legacy-Statusmigration.
 
 - Kustomize ersetzt apt durch GitHub-Release v5.8.2 mit SHA256 fuer amd64/arm64; Dry-Run, Client-Test und Binary-Deinstallation ergaenzt, Registry verdrahtet.
