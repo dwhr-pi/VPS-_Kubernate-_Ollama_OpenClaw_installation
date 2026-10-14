@@ -6,6 +6,12 @@ Primaerquellen und GitHub-Referenzen sind gesammelt in `docs/GITHUB_TOOL_SOURCES
 
 ## Runtime und Gateway
 
+- [Automaton: Conway-Agenten, Wallet-Risiken und Zenbot-Integrationsplan](tools/automaton.md) (`planned`, keine Runtime-Installation)
+
+Embedded/IoT: [Embedded Debug HIL: GDB, OpenOCD, pyOCD und Agenten](tools/embedded-debug-hil.md).
+
+- [FreeLLMAPI: optionaler Router und Claude-Code-Tutorial](tools/freellmapi.md)
+
 - `ollama`
 - `openclaw`
 - `litellm`

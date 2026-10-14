@@ -2182,7 +2182,8 @@ show_options_menu() {
         "15" "${TXT_OPTIONS_15:-Tooldiagnose / letzter Fehlerbericht}" \
         "16" "E-Mail-Diagnose konfigurieren / Testmail senden" \
         "17" "Installationslauf-Diagnose erstellen" \
-        "18" "Abhängigkeiten-/Speicher-Snapshot erstellen" 2> /tmp/options_choice
+        "18" "Abhängigkeiten-/Speicher-Snapshot erstellen" \
+        "19" "Verschluesselter ENV-Tresor / Zugangsdaten verwalten" 2> /tmp/options_choice
 
         if [ $? -ne 0 ]; then
             return 0
@@ -2286,6 +2287,14 @@ show_options_menu() {
             18)
                 bash "$INSTALL_DIR/scripts/dependency_snapshot.sh"
                 read -p "Abhängigkeiten-/Speicher-Snapshot abgeschlossen. Drücken Sie Enter..."
+                ;;
+            19)
+                if command -v python3 >/dev/null 2>&1; then
+                    python3 "$INSTALL_DIR/scripts/security/env_vault.py" menu
+                else
+                    echo "Python 3.10+ fehlt. Siehe docs/ENV_VAULT.md."
+                fi
+                read -r -p "ENV-Tresor geschlossen. Druecken Sie Enter..."
                 ;;
             ────────*)
                 continue
@@ -2782,6 +2791,12 @@ show_profile_management_menu() {
 declare -A TOOLS
 declare -A TOOL_SCRIPT_NAMES
 TOOL_KEYS=("Ollama" "OpenClaw" "Ruflo" "Act" "Actionlint" "Activepieces" "Agent_Router" "Ahrefs" "AI_Powered_Law_Firms" "Aider" "Airbyte" "Airtable" "AnimateDiff" "Ansible" "Apache_Tika" "ArgoCD_CLI" "Authentik" "Authelia" "AutoGen" "AutoGPT" "Axolotl" "Backtest_Workflow" "Blender" "BPM_Analyzer" "Browser_Tool" "Buffer_API" "cAdvisor" "Changelog_Generator" "ChromaDB" "Clawbake" "Clawhub" "Clawhub_CLI" "Code_Sandbox" "ComfyUI" "Continue_Dev" "ControlNet" "Coqui_TTS" "CrewAI" "Data_Juicer" "dbt" "Deadline_Checker" "Demucs" "Docker" "Docker_Compose_Plugin" "Docling" "Drafting_Agent" "DuckDB" "ElevenLabs" "Emotion_Tagging" "EnviroLLM" "Ethers_JS" "EULLM" "Exchange_APIs" "Fail2Ban" "Fail2Ban_Analyzer" "Faster_Whisper" "FFmpeg" "File_System_Tool" "FinGPT" "FinRAG" "FinRobot" "Firecrawl" "Flowise" "Flux_CLI" "Fooocus" "Foundry" "GFPGAN" "GitHub_API_Tooling" "GitHub_CLI" "GitHub_Research" "Gitleaks" "Google_Analytics_API" "Grafana" "Grafana_Alloy" "Grype" "Guardrails_AI" "Hadolint" "Hardhat" "Healthchecks" "Helm" "Home_Assistant" "Hook_Detection" "HubSpot" "Huge_Facing" "Huginn" "Image_Upscaler_Pipeline" "InvokeAI" "Joplin_CLI" "JupyterLab" "K3s" "K9s" "Kimi2" "Kubectl" "Kubectx_Kubens" "Kubernetes" "Kustomize" "LangChain" "LangFlow" "Langfuse" "LangGraph" "Lawfirm" "LibreOffice_Headless" "librosa" "LiteLLM" "Llama_CPP" "Llama_CPP_Toolchain" "LLaMA_Factory" "LlamaIndex" "Loki" "Make" "Mail_Utils_MSMTP" "Markdownlint_CLI" "Marker" "MCPO" "Meilisearch" "Memory_Policies" "Meta_Ads_API" "Metabase" "MinIO" "MLflow" "Mosquitto" "Music2P_Pipeline" "MusicGen" "n8n" "NATS" "Neo4j" "Netdata" "Nikto" "Nmap" "Node_Exporter" "Node_Red" "Notion" "OCRmyPDF" "OPA" "Open_WebUI" "OpenClaw_RL" "OpenCode" "OpenHands" "OpenLIT" "OpenManus" "OpenTelemetry" "OpenTofu" "openWakeWord" "Pandoc" "Paperless_NGX" "PDF_Parser" "Pgvector" "Pipedream" "Piper" "Playwright" "Podman" "Postgres" "Pre_Commit" "Prefect" "Prometheus" "Promptfoo" "Puppeteer" "pydub" "Qdrant" "RabbitMQ" "Ray" "Rclone" "RealESRGAN" "Redis" "Release_Please" "Rembg" "Repo_Comparison" "Restic" "Rhasspy" "RIFE" "Riffusion" "Risk_Agent" "Risk_Scoring" "Risk_Strategy_Analyzer" "Runway_API" "Security_Workflow" "Semgrep" "SEMrush" "ShellCheck" "Shfmt" "SQLite" "SQLite_Vec" "Stable_Diffusion_WebUI" "Stable_Diffusion_WebUI_Forge" "Stirling_PDF" "Suno_API" "Supabase" "SVD" "Syft" "Syncthing" "Tax_Calculator" "Tax_Law_Agent" "Tesseract" "Thumbnail_Pipeline" "TikTok_Ads_API" "TikTok_Score" "Trend_Monitor" "Trivy" "TruffleHog" "Udio_API" "Unsloth" "Unstructured" "Upload_Automation" "Uptime_Kuma" "Vault" "Velero" "vLLM" "Voice_Assistant_Runtime" "VS_Code_Server" "Weaviate" "Web3_APIs" "Web3_Py" "Weights_and_Biases" "Whisper" "Whisper_CPP" "Wyoming" "YT_DLP" "Zapier" "Zenbot_API" "Zenbot_trader" "Zotero")
+TOOL_KEYS+=("FreeLLMAPI")
+TOOL_KEYS+=("Automaton")
+TOOLS["Automaton"]="Conway Automaton: planned/high-risk; nur Offline-Review, kein Runtime-Installer. Laborplanung 2 vCPU/4 GiB RAM/10 GiB Disk, ungemessen. Keine Wallets, Zahlungen, Live-Trades oder Replikation. Doku: docs/tools/automaton.md"
+TOOL_KEYS+=("Embedded_Debug_HIL")
+TOOLS["Embedded_Debug_HIL"]="Embedded/GDB/HIL: Offline-Registerbericht und Anleitung. Live-Adapter planned; kein Flashen/USB-Zugriff. 256 MiB RAM/100 MiB Planungsreserve nur fuer Offline-Tool, keine GPU. Doku: docs/tools/embedded-debug-hil.md"
+TOOLS["FreeLLMAPI"]="Optional/experimental: API-Router, 512 MiB RAM/2 GiB Disk Planungsreserve; Docker separat, localhost 3011. Cloud/Katalog-Datenschutz beachten; Start nur mit FREELLMAPI_ENABLE_DOCKER=1. Doku: docs/tools/freellmapi.md"
 TOOLS["Ollama"]="Lokales LLM-Backend. Du kannst über den Ollama Modell-Manager spezifische Modelle installieren und verwalten. Für weitere Informationen zu den Modellen siehe in der Online-Dokumentation nach."
 TOOLS["Ruflo"]="Ruflo/claude-flow-nahe CLI fuer Agenten-Orchestrierung und Hive-Mind-Workflows. Installation nutzt GitHub, Node.js und pnpm; Build-Skripte werden nur nach gezielter Freigabe erlaubt."
 TOOLS["Authentik"]="Optionaler Identity Provider fuer OIDC/OAuth2, SSO und zentrale Logins vor internen Webdiensten. Bereitet nur sichere lokale Vorlagen vor."
@@ -3101,6 +3116,9 @@ TOOL_SCRIPT_NAMES["Axolotl"]="axolotl"
 TOOL_SCRIPT_NAMES["Data_Juicer"]="data_juicer"
 TOOL_SCRIPT_NAMES["Llama_CPP_Toolchain"]="llama_cpp_toolchain"
 TOOL_SCRIPT_NAMES["LiteLLM"]="litellm"
+TOOL_SCRIPT_NAMES["FreeLLMAPI"]="freellmapi"
+TOOL_SCRIPT_NAMES["Automaton"]="automaton"
+TOOL_SCRIPT_NAMES["Embedded_Debug_HIL"]="embedded_debug_hil"
 TOOL_SCRIPT_NAMES["Open_WebUI"]="open_webui"
 TOOL_SCRIPT_NAMES["Langfuse"]="langfuse"
 TOOL_SCRIPT_NAMES["OpenLIT"]="openlit"

@@ -4,6 +4,25 @@ Diese Datei dokumentiert die bevorzugten Primaerquellen. Systempakete aus `apt` 
 
 ## Grundregel
 
+Automaton: [Conway-Research/automaton](https://github.com/Conway-Research/automaton), MIT,
+gepruefter Commit `d8f816881fd24b6f5e3d616e59edec387a447667`.
+Nur documentation-first registriert; die Installationsskripte sperren Runtime-Aktionen.
+Kein apt-/npm-/Docker-Download. Spaeterer Source-Build gesondert zu auditieren.
+Siehe [Automaton und Zenbot](tools/automaton.md).
+
+Embedded Debug HIL nutzt eigene Offline-Integrationsdateien. Fuer spaetere
+Debugger-Installationen sind [OpenOCD (offizieller Read-only-Mirror)](https://github.com/openocd-org/openocd),
+[pyOCD](https://github.com/pyocd/pyOCD) und [pygdbmi](https://github.com/cs01/pygdbmi)
+die Kandidaten. Kein Clone/Build/Paketdownload erfolgt automatisch. Architektur,
+Commit-/Release-Pin, Lizenz und Hardwaretest bleiben vor Freigabe zu pruefen.
+Siehe [HIL-Anleitung](tools/embedded-debug-hil.md).
+
+FreeLLMAPI: [tashfeenahmed/freellmapi](https://github.com/tashfeenahmed/freellmapi), MIT.
+Der optionale Installer verwendet das Upstream-GHCR-Image `ghcr.io/tashfeenahmed/freellmapi:v0.14.2`,
+nicht apt, keinen Source-Build und keinen `curl|bash`-Installer.
+Versionstag statt `latest`; Digest-/Signaturpruefung und echter Installationslauf bleiben TODO.
+Siehe [Tutorial und Sicherheitsgrenzen](tools/freellmapi.md).
+
 - Primaerquelle fuer Tools: GitHub-Repository oder offizielles GitHub-Release.
 - `apt` ist Basisversorgung, nicht bevorzugter App-Kanal.
 - Docker-Images duerfen nur genutzt werden, wenn Source-Repository, Compose-Datei und Security-Hinweise dokumentiert sind.

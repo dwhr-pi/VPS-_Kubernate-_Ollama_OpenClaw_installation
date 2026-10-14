@@ -3,6 +3,16 @@
   "description": "Zentrale Profil-Registry. Dateiname .yml, Inhalt absichtlich als JSON-kompatibles YAML fuer einfache Bash/Python-Auswertung.",
   "profiles": [
     {
+      "id": "Embedded_Debug_HIL",
+      "category": "Embedded / IoT",
+      "status": "planned",
+      "resource_class": "light",
+      "doc": "docs/Profile/Embedded_Debug_HIL.md",
+      "install": "scripts/tools/embedded_debug_hil_install.sh",
+      "uninstall": "scripts/tools/embedded_debug_hil_uninstall.sh",
+      "tools": ["embedded_debug_hil"]
+    },
+    {
       "id": "Programmierer",
       "category": "kern",
       "doc": "docs/Profile/Programmierer.md",

@@ -23,6 +23,18 @@ Wichtig zur Zaehlung:
 
 ## Optional
 
+| Tool | Status | Quelle | Sicherheitsgrenze |
+|---|---|---|---|
+| [Automaton](tools/automaton.md) | planned / high-risk | Conway-Research/automaton, MIT | Nur Offline-Review-Prototyp; keine Runtime, Wallet, Signaturen, Zahlungen oder Live-Trades |
+
+| Tool | Status | Quelle / Funktionsumfang |
+|---|---|---|
+| [Embedded_Debug_HIL](tools/embedded-debug-hil.md) | Live-Adapter planned; Offline-Prototyp vorhanden | OpenOCD/pyOCD/pygdbmi als GitHub-Kandidaten, keine automatische Installation; Board-/Probe-Freigabe erforderlich |
+
+| Tool | Status | Quelle / Installation | Ressourcen / Sicherheit |
+|---|---|---|---|
+| [FreeLLMAPI](tools/freellmapi.md) | experimental, optional | GitHub `tashfeenahmed/freellmapi`, GHCR `v0.14.2` | Planungsreserve 512 MiB RAM/2 GiB Disk, nur localhost:3011; explizites Docker-Opt-in, kein Gratis-/Offline-Versprechen |
+
 | Gruppe | Tools | Einsatz |
 |---|---|---|
 | No-Code / Low-Code | `n8n`, `activepieces`, `node_red`, `flowise`, `langflow`, `appsmith`, `budibase`, `nocodb`, `directus` | interne Apps, Automatisierung, Daten-Frontends |

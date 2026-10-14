@@ -1,0 +1,14 @@
+{
+  "status": "planned",
+  "mode": "offline-only",
+  "hardware_access": false,
+  "listen_host": "127.0.0.1",
+  "gdb_port": 3333,
+  "max_parallel_jobs": 1,
+  "max_attempts": 3,
+  "session_timeout_seconds": 120,
+  "snapshot_max_bytes": 65536,
+  "allowed_operations": ["offline_report"],
+  "require_explicit_session_approval": ["connect", "read_registers", "read_memory", "halt", "breakpoint", "step", "resume", "reset", "flash"],
+  "forbidden_operations": ["arbitrary_shell", "arbitrary_gdb", "mass_erase", "readout_protection_change", "option_bytes", "efuse_write", "secure_boot_disable"]
+}

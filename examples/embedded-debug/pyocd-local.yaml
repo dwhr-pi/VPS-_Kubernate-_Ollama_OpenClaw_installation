@@ -1,0 +1,4 @@
+# Additional board/probe selection must be reviewed manually.
+serve_local_only: true
+gdbserver_port: 3333
+persist: false

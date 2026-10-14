@@ -1,6 +1,8 @@
 {
   "version": "11.16",
   "ports": [
+    { "port": 3333, "service": "embedded_debug_hil", "label": "GDB OpenOCD/pyOCD optional; nur Loopback, standardmaessig nicht gestartet" },
+    { "port": 3011, "service": "freellmapi", "label": "FreeLLMAPI optional; nur 127.0.0.1" },
     { "port": 1880, "service": "node_red", "label": "Node-RED" },
     { "port": 1883, "service": "mosquitto", "label": "Mosquitto MQTT" },
     { "port": 3000, "service": "open_webui", "label": "Open WebUI" },

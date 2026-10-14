@@ -14,6 +14,15 @@ mkdir -p "$TARGET_DIR"
 log_info "Erstelle lokales Backup unter: $TARGET_DIR"
 
 rsync -a --delete "${REPO_ROOT}/" "${TARGET_DIR}/repo/" --exclude ".git" --exclude "node_modules" || true
-rsync -a --delete "${USER_WORKSPACE_DIR}/" "${TARGET_DIR}/user_workspace/" --exclude "backups" || true
+rsync -a --delete "${USER_WORKSPACE_DIR}/" "${TARGET_DIR}/user_workspace/" --exclude "backups" --exclude "/env/" || true
+
+# The encrypted vault lives under backups, which is intentionally excluded above.
+VAULT_FILE="${USER_WORKSPACE_DIR}/backups/credentials/env-vault.age"
+if [ -f "$VAULT_FILE" ] && [ ! -L "$VAULT_FILE" ]; then
+  mkdir -m 700 -p "$TARGET_DIR/credentials"
+  cp "$VAULT_FILE" "$TARGET_DIR/credentials/env-vault.age"
+  chmod 600 "$TARGET_DIR/credentials/env-vault.age"
+fi
+log_warn "ENV-Tresor verschluesselt gesichert, sofern vorhanden. Generierte env/-Dateien sind ausgeschlossen; andere Workspace-Daten koennen weiterhin Secrets enthalten."
 
 log_success "Backup abgeschlossen: $TARGET_DIR"

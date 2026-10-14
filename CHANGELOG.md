@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+- Automaton von Conway Research als planned/high-risk im Tool-Menue registriert: Offline-Vorschlagspruefer, gesperrte Runtime-Aktionen, Quellenstand und Zenbot/OpenClaw-Integrationsplan. Wallet-Speicherung und Survival-Behauptungen korrigiert; keine Keys, Zahlungen oder WSL-Eingriffe.
+
+- Embedded_Debug_HIL als geplantes Tool/Profil mit nutzbarem Offline-Registerbericht, PATH-Doctor, Agentenregeln und lokalen OpenOCD-/pyOCD-Beispielen. Live-MCP, Hardwarezugriff und Source-Installer bewusst noch nicht freigegeben; keine Flash-/Reset-Automatik.
+
+- FreeLLMAPI optional/experimental im Tool-Menue, Registry und Portmatrix: GHCR v0.14.2, localhost 3011, explizites Docker-Opt-in, private User-ENV und datenbewahrende Deinstallation. Tutorial fuer Claude Code/OpenClaw mit Kosten-, Datenschutz- und Offline-Grenzen; kein automatischer Client-Umbau.
+
+- Lokaler age-verschluesselter ENV-Tresor im User-Backupverzeichnis, Optionen-Menue 19, Tool-/Feldzuordnungen und standardmaessige Vorschau; generierte Klartext-ENV nicht im normalen Workspace-Backup, verschluesselter Tresor separat enthalten.
+
 - Node Exporter korrigiert erneut: kein Root-Mount im Standardprofil, weil Docker rprivate beim Root-Bind ablehnen kann. Begrenzte /proc-/sys-Collector-Auswahl; root/rslave nur explizit.
 
 - OpenTelemetry bietet fehlende Docker-/Compose-Pakete nach explizitem Opt-in an; vorhandene Clients werden nicht durch zweite Engines ersetzt, Paketfamilien und --no-remove schuetzen vor Konfliktbereinigung.

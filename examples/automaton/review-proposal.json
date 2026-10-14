@@ -1,0 +1,8 @@
+{
+  "action": "backtest_report",
+  "max_turns": 10,
+  "retry_limit": 2,
+  "requires_network": false,
+  "requires_signing": false,
+  "requires_write": false
+}

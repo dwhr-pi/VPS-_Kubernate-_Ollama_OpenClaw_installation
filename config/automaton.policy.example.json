@@ -1,0 +1,19 @@
+{
+  "status": "documentation-first",
+  "runtime_enabled": false,
+  "note": "Integrationsentwurf, KEINE vom Upstream geladene Konfiguration. Kein Sandbox-Ersatz.",
+  "max_parallel_jobs": 1,
+  "max_turns": 10,
+  "retry_limit": 2,
+  "job_timeout_seconds": 600,
+  "cloud_budget": 0,
+  "transaction_budget": 0,
+  "allow_wallet_import": false,
+  "allow_signing": false,
+  "allow_live_trading": false,
+  "allow_self_modification": false,
+  "allow_replication": false,
+  "allow_provisioning": false,
+  "allow_hardware_access": false,
+  "allow_network": false
+}

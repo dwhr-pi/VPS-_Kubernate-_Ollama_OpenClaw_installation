@@ -2,6 +2,12 @@
 
 ## Next-Level Mapping
 
+`Web3_Crypto_Agent` -> `automaton` nur als optionale Forschungsreferenz (`planned`),
+kein Eintrag als automatisch installierte Profilabhaengigkeit. Runtime/Signer gesperrt.
+
+`Embedded_Debug_HIL` -> `embedded_debug_hil`: Offline-Register-Snapshots,
+GitHub-Kandidaten OpenOCD/pyOCD/pygdbmi; Live-Hardware-Adapter weiterhin `planned`.
+
 | Profil | Zweck | Tools | Risiko | Ressourcen | Status | Zielhost |
 | --- | --- | --- | --- | --- | --- | --- |
 | Job_Queue_Orchestrator | Jobs seriell/limitiert ausfuehren | job_queue, Redis/RQ optional | medium | low | planned | WSL2/MiniPC/VPS |

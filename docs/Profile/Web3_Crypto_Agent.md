@@ -36,6 +36,9 @@ scripts/profiles/Web3_Crypto_Agent_install.sh
 - Storage: gering
 
 ## Sicherheitshinweise
+- [Automaton von Conway Research](../tools/automaton.md) ist optional `planned`:
+  nur Offline-Review, keine automatische Profilabhaengigkeit, keine Uebergabe
+  vorhandener Wallet-Schluessel und kein autonomes Trading.
 - Keine Haftung für Verluste oder sonstige verursachte Schäden.
 - Das Profil ist für Monitoring, Analyse und Simulation gedacht, nicht für autonome Finanzentscheidungen.
 - keine Seed-Phrases

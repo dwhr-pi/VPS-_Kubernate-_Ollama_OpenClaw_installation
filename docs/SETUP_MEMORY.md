@@ -2,6 +2,13 @@
 
 Diese Datei dient als dauerhafte Projekt-Erinnerung fuer spaetere Chats und Folgearbeiten am Setup.
 
+## Automaton, 2026-10-14
+
+- Conway-Research/automaton als planned/high-risk registriert; nur Offline-Review-Prototyp.
+- Wallet-Datei upstream nicht mit verschluesseltem Tresor verwechseln; keine Zenbot-Seeds importieren.
+- Install/Run/Update/Uninstall gesperrt; bestehende Wallets/WSL bleiben unangetastet.
+- Details und offene Freigabekriterien: [Automaton](tools/automaton.md).
+
 ## Stand 2026-05-11
 
 ## Stand 2026-05-16

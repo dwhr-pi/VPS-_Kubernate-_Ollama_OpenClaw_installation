@@ -2,6 +2,11 @@
 
 ## Grundregel
 
+Neu: [ENV-Tresor mit Masterpassphrase](ENV_VAULT.md), erreichbar unter
+Setup -> Optionen -> 19. Verschluesselter Tresor im Backupverzeichnis,
+ENV-Vorschau ohne Werte und Schreiben erst nach Freigabe. Keine gemeinsame
+Master-Zugangsdaten fuer alle Programme: die Passphrase schuetzt getrennte Werte.
+
 Keine echten Secrets ins Repository. Dazu zaehlen API-Keys, Tokens, Private Keys, `.env`, SSH-Keys, Cloudflare Tokens, Tailscale Auth Keys, Home Assistant Tokens und Datenbankpasswoerter.
 
 ## Pfade

@@ -4,6 +4,10 @@ Diese Matrix fasst den aktuellen Ausbauzustand als modulare Plattform zusammen. 
 
 ## Kern- und Plattformprofile
 
+Embedded/IoT: [Embedded_Debug_HIL](Profile/Embedded_Debug_HIL.md), `planned`,
+Offline-Prototyp nutzbar; lokale Workstation/RPi als spaeterer Probe-Host,
+Oracle VPS nur fuer Auftragsplanung, kein oeffentlicher Debug-Port.
+
 | Profil | Kategorie | Fokus | Reifegrad | Hardware | Hinweise |
 |---|---|---|---|---|---|
 | `Programmierer` | Core / Coding | lokaler Coding- und Agenten-Stack | hoch | WSL2, VPS, Workstation | aktueller Hauptfokus bei den Funktionstests |

@@ -20,6 +20,10 @@ repo_update_backups/
 tokens/
 secrets/
 .openclaw_ultimate_user_data/
+env-vault.age
+.vault.lock
+.automaton/
+wallet.json
 cloudflared.deb
 tools/mail/secrets/
 tools/mail/data/

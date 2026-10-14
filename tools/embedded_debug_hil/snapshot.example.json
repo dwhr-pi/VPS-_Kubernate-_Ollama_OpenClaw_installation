@@ -1,0 +1,10 @@
+{
+  "architecture": "cortex-m",
+  "board": "DEMO_BOARD_NOT_REAL_HARDWARE",
+  "firmware_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+  "registers": {
+    "pc": "0x00000000",
+    "sp": "0x00000000",
+    "lr": "0x00000000"
+  }
+}

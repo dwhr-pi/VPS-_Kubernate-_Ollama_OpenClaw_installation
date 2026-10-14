@@ -18,6 +18,14 @@ Dokumentation
 
 ## Aktuelle Governance-Dokumente
 
+- [Automaton / Conway: sicherer Forschungspfad fuer Zenbot und Web3](docs/tools/automaton.md) (planned, kein Wallet-/Agentenstart)
+
+- [Embedded Debug HIL: sichere Agenten-Diagnose mit GDB/OpenOCD](docs/tools/embedded-debug-hil.md)
+
+- [FreeLLMAPI optional: Claude Code, lokale Modelle und API-Fallbacks](docs/tools/freellmapi.md)
+
+- [Zugangsdaten-Tresor und ENV automatisch ausfuellen](docs/ENV_VAULT.md)
+
 - [START HERE](docs/START_HERE.md)
 - [Beginner Guide](docs/BEGINNER_GUIDE.md)
 - [Priority Install Paths](docs/PRIORITY_INSTALL_PATHS.md)

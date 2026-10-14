@@ -4,6 +4,12 @@ Diese Roadmap priorisiert Konsistenz, Sicherheit und belastbare Installationspfa
 
 ## P0: Security und Konsistenz
 
+- Automaton: documentation-first/Offline-Review vorhanden; vor Runtime-Freigabe
+  isolierte Sandbox, Wallet-/Signer-Trennung, Budget-/Netzwerkgrenzen, Build-Audit
+  und exakter Zenbot-Vertrag nachweisen. Keine automatische Wallet-/Cloud-Initialisierung.
+
+- Embedded_Debug_HIL: vor Live-Adapter Board/Probe/Architektur festlegen, Sitzungsgenehmigung technisch erzwingen, GDB/MI-Allowlist implementieren, exklusive Probe-Locks und HIL-Smoke-Tests auf entkoppelter Laborhardware nachweisen. Offline-Prototyp ist vorhanden.
+
 - `config/tools.yml`, `config/profiles.yml` und `config/ports.yml` als verbindliche zentrale Wahrheit halten
 - Compose- und Stack-Dateien auf `.env` statt `.env.example` umstellen
 - Standardports nur lokal binden, externe Freigabe nur ueber Tunnel oder Reverse Proxy
