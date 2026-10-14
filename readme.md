@@ -18,6 +18,19 @@ Dokumentation
 
 ## Aktuelle Governance-Dokumente
 
+- [Audio-Deepfakes: defensive Pruefung, Stimmen entfernen und Grenzen](docs/media_studio/AUDIO_DEEPFAKE_REVIEW.md)
+
+- [Lokaler Social-Avatar-Stack: Veo/fal-Alternativen und sichere Workflows](docs/media_studio/SOCIAL_AVATAR_AUTOMATION.md)
+
+- [Hugging Face: Video-Trainingsdaten, Rechte, Streaming und Speicherbudget](docs/media_studio/VIDEO_TRAINING_DATASETS.md)
+
+- [Hoerbuch, Dubbing, SFX und Video: Tool-Katalog](docs/media_studio/AUDIO_VIDEO_TOOL_CATALOG.md)
+- [Karaoke: Instrumentalspur, Zeitstempel, Uebersetzung und Offline-Konverter](docs/media_studio/KARAOKE_SUBTITLES_GUIDE.md)
+
+- [Agentic Coding verstehen: Einstieg, Tools, Praxis und Automaton](docs/AGENTIC_CODING_GUIDE.md)
+
+- [Lokale Personalakten mit Paperless und KI: sicherer Einstieg](docs/tools/personnel-documents.md) (Prototyp, keine Compliance-Garantie)
+
 - [Automaton / Conway: sicherer Forschungspfad fuer Zenbot und Web3](docs/tools/automaton.md) (planned, kein Wallet-/Agentenstart)
 
 - [Embedded Debug HIL: sichere Agenten-Diagnose mit GDB/OpenOCD](docs/tools/embedded-debug-hil.md)

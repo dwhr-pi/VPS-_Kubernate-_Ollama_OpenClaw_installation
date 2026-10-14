@@ -1,8 +1,13 @@
 # Profile Index
 
+- [Audio_Postproduction_Local_First](Profile/Audio_Postproduction_Local_First.md):
+  planned, getrennte Hoerbuch-/Dubbing-/Karaoke-/MIDI-Pfade.
+
 Dieser Index ordnet Profile nach Themen und Betriebsrisiko. Die technische Quelle bleibt `config/profiles.yml`.
 
 ## Core und LLMOps
+
+- [Agentic_Coding_Local_First](Profile/Agentic_Coding_Local_First.md) - planned; Einsteigerpfad ohne Sammelinstallation, Automaton separat gesperrt
 
 - `Programmierer` - stable
 - `LLM_Builder` - stable

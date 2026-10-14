@@ -1,6 +1,10 @@
 # Automaton von Conway Research
 
 **Status im Ultimate KI Setup: planned / documentation-first, hohes Risiko.**
+
+Zum Unterschied zwischen einem allgemeinen Automaten-/Workflow-Prinzip und
+diesem konkreten Conway-Projekt sowie zur begrenzten Repo-Entwicklung siehe
+den [Agentic-Coding-Leitfaden](../AGENTIC_CODING_GUIDE.md).
 Im Tool-Menue vorhanden, aber Runtime-Installation, Agentenstart, Update und
 Deinstallation sind bewusst gesperrt. Implementiert ist nur ein lokaler
 Offline-Vorschlagspruefer. Er startet weder Automaton noch Zenbot oder Ollama.

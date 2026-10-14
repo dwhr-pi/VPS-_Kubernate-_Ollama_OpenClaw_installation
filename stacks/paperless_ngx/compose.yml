@@ -1,0 +1,43 @@
+x-logging: &bounded-logs
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+services:
+  redis:
+    logging: *bounded-logs
+    image: redis:7
+    restart: unless-stopped
+  db:
+    logging: *bounded-logs
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: paperless
+      POSTGRES_USER: paperless
+      POSTGRES_PASSWORD: ${PAPERLESS_DBPASS:?Privates Datenbankpasswort erforderlich}
+    volumes:
+      - ./database:/var/lib/postgresql/data
+  webserver:
+    logging: *bounded-logs
+    image: ${PAPERLESS_IMAGE:?Gepruefte Paperless-Version erforderlich}
+    restart: unless-stopped
+    depends_on:
+      - db
+      - redis
+    ports:
+      - "127.0.0.1:8010:8000"
+    environment:
+      PAPERLESS_REDIS: redis://redis:6379
+      PAPERLESS_DBHOST: db
+      PAPERLESS_DBUSER: paperless
+      PAPERLESS_DBPASS: ${PAPERLESS_DBPASS:?Privates Datenbankpasswort erforderlich}
+      PAPERLESS_DBNAME: paperless
+      PAPERLESS_SECRET_KEY: ${PAPERLESS_SECRET_KEY:?Privater Django-Schluessel erforderlich}
+      PAPERLESS_OCR_LANGUAGE: deu+eng
+      PAPERLESS_URL: http://localhost:8010
+    volumes:
+      - ./data:/usr/src/paperless/data
+      - ./media:/usr/src/paperless/media
+      - ./consume:/usr/src/paperless/consume
+      - ./export:/usr/src/paperless/export

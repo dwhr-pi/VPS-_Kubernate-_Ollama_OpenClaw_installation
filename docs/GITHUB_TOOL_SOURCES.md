@@ -1,8 +1,44 @@
 # GitHub Tool Sources
 
+Defensiver Audio-Pfad: [pyannote/pyannote-audio](https://github.com/pyannote/pyannote-audio),
+[Rikorose/DeepFilterNet](https://github.com/Rikorose/DeepFilterNet),
+[facebookresearch/audioseal](https://github.com/facebookresearch/audioseal), alle planned.
+[Fachliche Grenzen und bestehende Tools](media_studio/AUDIO_DEEPFAKE_REVIEW.md);
+Demucs-Meta-Repo archiviert, keine automatische Fork-Migration.
+
+[Social-Avatar-Quellen](media_studio/SOCIAL_AVATAR_AUTOMATION.md): CogVideoX,
+LTX-Video, SD.Next, Pinokio, Windmill, TGI, fal-SDK und Google-GenAI-SDK.
+SDK auf GitHub bedeutet nicht, dass Veo/fal lokal selbsthostbar sind.
+
+Dataset-Werkzeuge, nur planned:
+[huggingface/datasets](https://github.com/huggingface/datasets),
+[huggingface/huggingface_hub](https://github.com/huggingface/huggingface_hub),
+[iejMac/video2dataset](https://github.com/iejMac/video2dataset).
+[Quellen-/Rechte-/Budgetleitfaden](media_studio/VIDEO_TRAINING_DATASETS.md).
+
+[Audio-/Video-Quellen](media_studio/AUDIO_VIDEO_TOOL_CATALOG.md):
+20 Kandidaten mit direkten Upstream-Links, alle planned/documentation-first.
+Karaoke_Formats ist eigene Repository-Logik, keine fremde Paketinstallation.
+
 Diese Datei dokumentiert die bevorzugten Primaerquellen. Systempakete aus `apt` bleiben fuer Compiler, Libraries, Python-venv, Git, curl, Docker-Basis oder vergleichbare Build-Abhaengigkeiten erlaubt.
 
 ## Grundregel
+
+Agentic-Coding-Quellen und konkrete Installationsgrenzen:
+[Tool-Leitfaden](tools/agentic-coding.md). Aider, Continue, OpenHands, LangGraph,
+CrewAI und AutoGen behalten ihre vorhandenen Installer. OpenCode wird unter
+der aktuellen Quelle [anomalyco/opencode](https://github.com/anomalyco/opencode)
+gefuehrt, bleibt aber planned; kein automatisches Aktivieren des alten Scaffolds.
+[microsoft/agent-framework](https://github.com/microsoft/agent-framework) ist neu
+als planned/MIT registriert, ohne Download oder Provideraktivierung.
+
+Personalakten-Workflow: [paperless-ngx/paperless-ngx](https://github.com/paperless-ngx/paperless-ngx)
+(GPL-3.0), [ollama/ollama](https://github.com/ollama/ollama),
+[tesseract-ocr/tesseract](https://github.com/tesseract-ocr/tesseract).
+`Personnel_Documents_AI` ist eigener Integrationscode, kein fingiertes Upstream-Projekt.
+Der neue Paperless-Installer verwendet offizielle GHCR-Images mit expliziter Version,
+keinen apt-App-Download; keine automatische Docker-Engine-/Modellinstallation.
+Siehe [Tutorial](tools/personnel-documents.md).
 
 Automaton: [Conway-Research/automaton](https://github.com/Conway-Research/automaton), MIT,
 gepruefter Commit `d8f816881fd24b6f5e3d616e59edec387a447667`.

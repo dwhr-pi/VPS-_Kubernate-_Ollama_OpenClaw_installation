@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "template_only": true,
+  "dataset_id": "HuggingFaceFV/finevideo",
+  "dataset_revision": null,
+  "source_card": "https://huggingface.co/datasets/HuggingFaceFV/finevideo",
+  "rights_review": "pending",
+  "attribution_review": "pending",
+  "consent_review": "pending",
+  "target_model_and_revision": null,
+  "library_versions": {},
+  "max_items": 1,
+  "max_download_bytes": null,
+  "max_runtime_seconds": null,
+  "minimum_free_disk_bytes": null,
+  "max_parallel_jobs": 1,
+  "private_cache_path": null,
+  "private_output_path": null,
+  "network_enabled": false,
+  "training_enabled": false,
+  "automatic_uploads": false
+}

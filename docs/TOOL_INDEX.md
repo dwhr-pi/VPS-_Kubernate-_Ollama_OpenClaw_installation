@@ -1,6 +1,23 @@
 # Tool Index
 
+[Audio-Review und Redaktion](media_studio/AUDIO_DEEPFAKE_REVIEW.md):
+pyannote_audio, deepfilternet, audioseal planned; getrennte Aufgaben,
+kein universeller Deepfake-Detektor.
+
+[Social-Avatar-Stack](media_studio/SOCIAL_AVATAR_AUTOMATION.md): CogVideoX,
+LTX_Video, TGI, Pinokio, SD_Next, Windmill sowie optionale Fal_Client/Veo_API
+als planned registriert. Bestehende Bausteine nicht dupliziert.
+
+[HF_Datasets, HF_Hub und Video2Dataset](media_studio/VIDEO_TRAINING_DATASETS.md):
+planned, Quellen/Datensaetze/Streaminggrenzen und private Cacheplanung.
+
+[Audio-/Video-Erweiterung](media_studio/AUDIO_VIDEO_TOOL_CATALOG.md):
+20 neue planned-Kandidaten und die eigene experimentelle Offline-CLI
+[Karaoke_Formats](media_studio/KARAOKE_SUBTITLES_GUIDE.md).
+
 Die technische Quelle ist `config/tools.yml`. Diese Seite fasst die wichtigsten Tool-Familien zusammen.
+
+[Agentic Coding: Clients, Frameworks und Automaton richtig einordnen](tools/agentic-coding.md).
 
 Primaerquellen und GitHub-Referenzen sind gesammelt in `docs/GITHUB_TOOL_SOURCES.md`. `apt` bleibt fuer Basis-/Build-Abhaengigkeiten erlaubt, aber Tools sollen nach Moeglichkeit aus GitHub-Quellen oder offiziellen GitHub-Releases nachvollziehbar sein.
 
@@ -18,6 +35,8 @@ Embedded/IoT: [Embedded Debug HIL: GDB, OpenOCD, pyOCD und Agenten](tools/embedd
 - `open_webui`
 
 ## RAG und Dokumente
+
+- [Lokale Personalakten: Paperless + Personnel_Documents_AI](tools/personnel-documents.md), ohne globale RAG-Freigabe
 
 - `qdrant`
 - `chromadb`

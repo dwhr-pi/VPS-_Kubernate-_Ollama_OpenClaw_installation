@@ -3,6 +3,41 @@
   "description": "Zentrale Profil-Registry. Dateiname .yml, Inhalt absichtlich als JSON-kompatibles YAML fuer einfache Bash/Python-Auswertung.",
   "profiles": [
     {
+      "id": "Audio_Postproduction_Local_First",
+      "category": "Media / Audio",
+      "status": "planned",
+      "resource_class": "medium",
+      "doc": "docs/Profile/Audio_Postproduction_Local_First.md",
+      "install": "scripts/profiles/Audio_Postproduction_Local_First_install.sh",
+      "uninstall": "scripts/profiles/Audio_Postproduction_Local_First_uninstall.sh",
+      "tools": ["ffmpeg", "faster_whisper", "demucs", "subtitleedit", "karaoke_formats"],
+      "optional_tools": ["piper", "coqui_tts", "alexandria_audiobook", "qwen3_tts", "whisperx", "aegisub", "basic_pitch", "sfizz", "propainter", "vidubb", "pyannote_audio", "deepfilternet", "audioseal"],
+      "security_note": "Keine Sammelinstallation. Rechte, Stimmeinwilligung und Ressourcen pro Job pruefen; kein Cloud-Upload oder automatisches Publizieren."
+    },
+    {
+      "id": "Agentic_Coding_Local_First",
+      "category": "Development / Agents",
+      "status": "planned",
+      "resource_class": "medium",
+      "doc": "docs/Profile/Agentic_Coding_Local_First.md",
+      "install": "scripts/profiles/Agentic_Coding_Local_First_install.sh",
+      "uninstall": "scripts/profiles/Agentic_Coding_Local_First_uninstall.sh",
+      "tools": ["aider", "ollama"],
+      "optional_tools": ["opencode", "openhands", "continue_dev", "langgraph", "crewai", "autogen", "agent_framework", "automaton", "cline", "qwen_code"],
+      "security_note": "Keine automatische Toolinstallation. Ein Job, begrenzte Iterationen, manuelles Review; Automaton-Runtime weiterhin gesperrt."
+    },
+    {
+      "id": "Personalakten_Local_First",
+      "category": "HR / Documents",
+      "status": "planned",
+      "resource_class": "medium",
+      "doc": "docs/Profile/Personalakten_Local_First.md",
+      "install": "scripts/tools/personnel_documents_install.sh",
+      "uninstall": "scripts/tools/personnel_documents_uninstall.sh",
+      "tools": ["personnel_documents", "paperless_ngx", "ollama", "tesseract"],
+      "security_note": "Nur Plan/Vorschlag; keine automatische Profilinstallation, Personalentscheidung, Aktenaenderung oder globale RAG-Freigabe."
+    },
+    {
       "id": "Embedded_Debug_HIL",
       "category": "Embedded / IoT",
       "status": "planned",
@@ -2849,6 +2884,7 @@
       "status": "planned",
       "resource_class": "heavy",
       "recommended_device": "WSL2 / MiniPC / VPS",
+      "optional_tools": ["cogvideox", "ltx_video", "comfyui", "n8n", "activepieces", "huginn", "windmill", "fal_client", "veo_api", "wan21", "comfyui_gguf", "wanvideo_wrapper", "supir", "film"],
       "tools": [
         "piper",
         "coqui_tts",
@@ -3337,6 +3373,7 @@
       "status": "planned",
       "resource_class": "medium",
       "recommended_device": "WSL2 / MiniPC / Oracle VPS",
+      "optional_tools": ["hf_datasets", "hf_hub", "video2dataset"],
       "tools": [
         "docling",
         "unstructured",

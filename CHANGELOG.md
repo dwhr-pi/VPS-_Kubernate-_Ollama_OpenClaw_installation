@@ -2,6 +2,31 @@
 
 ## Unreleased
 
+- Defensiver Audio-Review: drei planned-Kandidaten und bestehende Audioquellen
+  verknuepft, Originalerhalt, Separation/Diarisierung und Wasserzeichen-Grenzen
+  dokumentiert. Fehlerhafte Ausloeschungs-/Echtheitsversprechen korrigiert;
+  keine Herkunftsverschleierung, Modellinstallation oder Audioverarbeitung.
+
+- Social-Avatar-Stack: acht geplante Tool-/Cloud-Kandidaten, bestehendes
+  AI_Influencer-Profil und AvatarAgent erweitert. Lokaler Einsteigerleitfaden,
+  Lizenz-/Ressourcengrenzen, Workflowvertrag und inaktive Budgetvorlage.
+  Keine Installation, Cloud-Fallbacks oder automatische Veroeffentlichung.
+
+- Hugging-Face-Video-Datenpfad: HF_Datasets/HF_Hub/Video2Dataset planned in
+  Registry/Menue; Dataset_Curator optional erweitert. Quellenkatalog,
+  Streaming-/Lizenz-/Speicherwarnungen und inaktives Freigabeprotokoll ergaenzt.
+  Keine Installation, Downloads oder Trainingsstarts.
+
+- Audio-/Video-Nachbearbeitung: 20 planned-Kandidaten, Quellen-/Ressourcenkatalog,
+  Hoerbuch-/Dubbing-/Karaoke-/MIDI-Leitfaeden und planned-Profil. Offline-SRT/LRC-
+  Konverter mit explizitem Export; keine Modell-/Runtime-Installation.
+
+- Agentic-Coding-Leitfaden, Auftragsvorlagen und planned-Profil ergaenzt; vorhandene Coding-Tools mit Quellen/Doku verknuepft. Microsoft Agent Framework als optionaler planned-Kandidat, AutoGen-Maintenance-Hinweis, aktuelle OpenCode-Quelle. Keine Autonomie-/Kosten-/Stabilitaetsgarantie, keine Aufhebung der Automaton-Sperren.
+
+- Personalaktenpfade werden vom allgemeinen unverschluesselten Workspace-Backup ausgeschlossen und mit Warnung ausgewiesen; separater verschluesselter Akten-Backupjob ist vor Produktivbetrieb verpflichtend einzuplanen.
+
+- Personalakten_Local_First (planned) und Personnel_Documents_AI (experimental): Offline-Validierung und explizite lokale Ollama-Vorschlaege, kein Paperless-Schreiben/RAG. Paperless-Installer ohne feste Passwoerter, localhost-Bindung, private ENV/DB-Volumes, Opt-in und datenbewahrendem Stop; /opt-Altinstallationen brauchen bewusste Migration. Datenschutz-/GoBD-/ACL-/Restore-Grenzen dokumentiert.
+
 - Automaton von Conway Research als planned/high-risk im Tool-Menue registriert: Offline-Vorschlagspruefer, gesperrte Runtime-Aktionen, Quellenstand und Zenbot/OpenClaw-Integrationsplan. Wallet-Speicherung und Survival-Behauptungen korrigiert; keine Keys, Zahlungen oder WSL-Eingriffe.
 
 - Embedded_Debug_HIL als geplantes Tool/Profil mit nutzbarem Offline-Registerbericht, PATH-Doctor, Agentenregeln und lokalen OpenOCD-/pyOCD-Beispielen. Live-MCP, Hardwarezugriff und Source-Installer bewusst noch nicht freigegeben; keine Flash-/Reset-Automatik.

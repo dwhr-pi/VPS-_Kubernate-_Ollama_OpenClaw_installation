@@ -1,6 +1,10 @@
 # Text To Avatar
 
 ## Ziel
+
+Konkreter [Social-Content-Workflowvertrag](Social_Avatar_Content.md) und
+[Tool-/Lizenz-/Ressourcenleitfaden](../../media_studio/SOCIAL_AVATAR_AUTOMATION.md).
+Vorlage ist planned, keine direkt ausfuehrbare Avatar-Pipeline.
 Workflow-Vorlage fuer text to avatar.
 
 ## Ablauf

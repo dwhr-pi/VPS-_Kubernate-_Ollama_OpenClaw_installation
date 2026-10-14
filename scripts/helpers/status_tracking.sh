@@ -16,6 +16,15 @@ TOOL_KEYS=("Ollama" "OpenClaw" "Act" "Actionlint" "Activepieces" "Agent_Router" 
 
 TOOL_KEYS+=("FreeLLMAPI")
 TOOL_KEYS+=("Automaton")
+TOOL_KEYS+=("Microsoft_Agent_Framework")
+TOOL_KEYS+=("Karaoke_Formats")
+TOOL_KEYS+=("Cline" "Qwen_Code" "Wan21" "ComfyUI_GGUF" "WanVideoWrapper" "SUPIR" "FILM")
+TOOL_KEYS+=("Pyannote_Audio" "DeepFilterNet" "AudioSeal")
+TOOL_KEYS+=("HF_Datasets" "HF_Hub" "Video2Dataset")
+TOOL_KEYS+=("CogVideoX" "LTX_Video" "TGI" "Pinokio" "SD_Next" "Windmill" "Fal_Client" "Veo_API")
+PROFILE_KEYS+=("Audio_Postproduction_Local_First")
+TOOL_KEYS+=("Alexandria_Audiobook" "Qwen3_TTS" "ChatTTS" "AudioLDM2" "AudioGen" "Stable_Audio_Open" "Moshi" "MOSS_TTS" "YuE" "ACE_Step_15" "WhisperX" "Aegisub" "Basic_Pitch" "Sfizz" "AIDA_X" "ProPainter" "Kiwi_Edit" "VOID_Model" "Just_Dub_It" "ViDubb")
+TOOL_KEYS+=("Personnel_Documents_AI")
 TOOL_KEYS+=("Embedded_Debug_HIL")
 
 append_unique_line() {

@@ -1,6 +1,33 @@
 # Profile Tool Mapping
 
+`Audio_Postproduction_Local_First` -> optional `pyannote_audio`,
+`deepfilternet`, `audioseal` fuer getrennte defensive Analyse-/Redaktionsschritte.
+[Audio-Review](media_studio/AUDIO_DEEPFAKE_REVIEW.md); keine automatische Installation.
+
+`AI_Influencer` -> vorhandene TTS/Avatar/FFmpeg-Bausteine; optional
+`cogvideox`, `ltx_video`, `comfyui`, ein Orchestrator aus
+`n8n`/`activepieces`/`huginn`/`windmill`.
+`fal_client` und `veo_api` nur gesperrte Cloud-Kandidaten.
+[Social-Workflow](media_studio/SOCIAL_AVATAR_AUTOMATION.md), kein Autopublishing.
+
+`Dataset_Curator` -> bestehende Dokumenttools plus optional
+`hf_datasets`, `hf_hub`, `video2dataset` (planned).
+[Video-Datenpfad](media_studio/VIDEO_TRAINING_DATASETS.md); keine automatische Installation.
+
+`Audio_Postproduction_Local_First` -> `ffmpeg`, `faster_whisper`, `demucs`,
+`subtitleedit`, `karaoke_formats`; Erweiterungen und Ressourcen im
+[Profil](Profile/Audio_Postproduction_Local_First.md). Keine automatische Toolinstallation.
+
 ## Next-Level Mapping
+
+`Agentic_Coding_Local_First` -> ein Coding-Client (`aider` als Beispiel), optional
+`ollama`; Alternativen `continue_dev`, `opencode`, `openhands`. Orchestrierung
+`langgraph`/`crewai`/`agent_framework` separat pruefen. `autogen` im Maintenance Mode,
+`automaton` nur Forschungsreferenz. Keine Sammelinstallation dieser Tools.
+
+`Personalakten_Local_First` -> `personnel_documents`, optional `paperless_ngx`,
+`ollama`, `tesseract`; Profil geplant, keine automatische Abhaengigkeitsinstallation.
+Paperless-Container bringt OCR mit; keine doppelte Tesseract-Installation notwendig.
 
 `Web3_Crypto_Agent` -> `automaton` nur als optionale Forschungsreferenz (`planned`),
 kein Eintrag als automatisch installierte Profilabhaengigkeit. Runtime/Signer gesperrt.

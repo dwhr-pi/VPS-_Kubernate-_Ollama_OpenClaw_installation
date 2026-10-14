@@ -1,5 +1,40 @@
 # Tool Matrix
 
+| Defensive Audio-Kandidaten | Stand | Grenze |
+|---|---|---|
+| Pyannote_Audio | planned | Diarisierung, keine Echtheits-/Identitaetsentscheidung |
+| DeepFilterNet | planned | Rauschminderung, keine Deepfake-Entfernung |
+| AudioSeal | planned | Eigene Wasserzeichen, kein universeller Detektor |
+
+[Quellen, vorhandene Audio-Tools und Workflow](media_studio/AUDIO_DEEPFAKE_REVIEW.md).
+
+## Social-Avatar-Kandidaten
+
+| Gruppe | Neue Eintraege | Status / Grenze |
+|---|---|---|
+| Video / WebUI | CogVideoX, LTX_Video, SD_Next | planned / gpu-heavy |
+| Desktop / Workflows | Pinokio, Windmill | planned; Skript-/Lizenzgrenzen pruefen |
+| LLM-Inferenz | TGI | planned, Maintenance Mode |
+| Externe APIs | Fal_Client, Veo_API | planned, Cloud-Aufrufe/Uploads gesperrt |
+
+[Quellen, Lizenzkorrekturen, vorhandene Alternativen und Workflow](media_studio/SOCIAL_AVATAR_AUTOMATION.md).
+
+| Neue Dataset-Tools | Status | Integration |
+|---|---|---|
+| HF_Datasets / hf_datasets | planned | Datenbibliothek; kein Trainer |
+| HF_Hub / hf_hub | planned | Hub-Client/CLI; keine unbeschraenkten Downloads |
+| Video2Dataset / video2dataset | planned / heavy | genehmigte URL-Listen; keine autonome Beschaffung |
+
+[Details und Primaerquellen](media_studio/VIDEO_TRAINING_DATASETS.md).
+Gemeinsame Guards liefern keine Installations-/Download-/Trainingsfreigabe.
+
+## Audio-/Video-Erweiterung (Documentation First)
+
+[20 Kandidaten mit GitHub-Quelle und Ressourcenklasse](media_studio/AUDIO_VIDEO_TOOL_CATALOG.md)
+sind als planned in Registry und Tool-Menue verdrahtet; gemeinsame Guards,
+keine Downloads/Starts. [Karaoke_Formats](media_studio/KARAOKE_SUBTITLES_GUIDE.md)
+ist eigene experimentelle Repository-CLI, kein ASR-/TTS-Modell.
+
 Diese Matrix zeigt die derzeit sinnvoll verdrahteten Toolgruppen. Sie ist bewusst kompakter als `scripts/tools/` und unterscheidet zwischen `Core`, `Optional`, `Experimental` und `High-Risk`.
 
 Die bevorzugten Primaerquellen sind in `docs/GITHUB_TOOL_SOURCES.md` dokumentiert. Ein Tool gilt erst dann als installierbar, wenn Quelle, Installer, Uninstaller, Healthcheck, Ressourcenhinweis und sichere Defaults vorhanden sind.
@@ -22,6 +57,17 @@ Wichtig zur Zaehlung:
 | Security | `trivy`, `gitleaks`, `semgrep`, `syft`, `grype`, `fail2ban`, `crowdsec`, `tailscale`, `cloudflared` | defensives Hardening, privater Remote-Zugriff, veröffentlichte Tunnel und Scans |
 
 ## Optional
+
+| Toolgruppe | Stand / Anleitung |
+|---|---|
+| Aider, Continue, OpenCode, OpenHands, LangGraph, CrewAI, AutoGen | [Agentic-Coding-Tools](tools/agentic-coding.md): vorhandene Eintraege dokumentiert, nicht pauschal neu installiert/getestet |
+| Microsoft_Agent_Framework | neu `planned`, Registrierung/Plan ohne Runtime; AutoGen-Nachfolge nicht automatisch migrieren |
+| Automaton | bleibt `planned/high-risk`, nur Offline-Vorschlagspruefer; kein freier Coding-/Wallet-Loop |
+
+| Tool | Status | Zweck | Schutz |
+|---|---|---|---|
+| [Personnel_Documents_AI](tools/personnel-documents.md) | experimental | Lokaler JSON-/Ollama-Vorschlag | keine automatischen Aktenaenderungen; menschliche Pruefung |
+| Paperless_NGX | neuer Installer experimental | bestehendes DMS/OCR | localhost 8010, private ENV, Docker-Opt-in, Legacy-Migrationssperre |
 
 | Tool | Status | Quelle | Sicherheitsgrenze |
 |---|---|---|---|

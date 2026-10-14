@@ -1,5 +1,22 @@
 # AI Media Production Studio
 
+[Audio-Deepfakes: Original sichern, isolieren und Redaktion pruefen](AUDIO_DEEPFAKE_REVIEW.md).
+Keine Herkunftsverschleierung oder automatische Echtheitsentscheidung.
+
+[Social-Media-Avatare: lokaler Stack, optionale Cloud, Freigaben](SOCIAL_AVATAR_AUTOMATION.md).
+
+## Einstieg: Hoerbuch, Dubbing und Karaoke
+
+[Video-Trainingsdaten und Hugging Face](VIDEO_TRAINING_DATASETS.md):
+vor Download zuerst Inferenz/Fine-Tuning unterscheiden, Rechte und Speicherbudget pruefen.
+
+1. [Tools und reale Installationsgrenzen](AUDIO_VIDEO_TOOL_CATALOG.md)
+2. [Hoerbuch, Synchronisation, SFX und Video-Bearbeitung](AUDIO_DUBBING_PRODUCTION_GUIDE.md)
+3. [Karaoke, Untertitel und SRT/LRC-Konverter](KARAOKE_SUBTITLES_GUIDE.md)
+4. [MIDI, Sampling und Audio-Plugins](MIDI_SAMPLING_GUIDE.md)
+
+Die neuen KI-Kandidaten sind planned, keine fertig installierte Produktionssuite.
+
 Zentrale Uebersicht fuer Audio, Video, Podcast, Hoerbuch, TV-Studio, YouTube- und Streaming-Pipelines. Schwere Tools bleiben planned und starten nie automatisch.
 
 ## Ressourcenklassen

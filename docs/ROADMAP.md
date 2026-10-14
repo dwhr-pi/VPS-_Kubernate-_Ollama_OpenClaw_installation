@@ -1,8 +1,43 @@
 # Roadmap
 
+## Defensiver Audio-Review
+
+- Drei geplante Kandidaten, bestehende Audio-Tools und Grenzen dokumentiert.
+- Vor Aktivierung: Modell-/Versionspins, Telemetrie-/Gatingpruefung, Ressourcen-
+  und Ausgabegrenzen, Original-/Hashjournal, lokale Adapter und Smoke-Tests.
+- Keine automatischen Echtheitsurteile oder Verarbeitung zur Herkunftsverschleierung.
+
+## Social-Avatar-Automation
+
+- Acht Kandidaten planned registriert; AI_Influencer/AvatarAgent und Workflowdoku erweitert.
+- Vor Aktivierung: versionsgepinnte Adapter, harte GPU-/SSD-/Kostenlimits,
+  gemeinsame Worker-Sperre, begrenzte Retries und Freigabebelege implementieren.
+- AnimateDiff-Legacy-Menue/Installer mit Registry konsolidieren; keine automatische Uminstallation.
+- Keine Reichweiten-/Einkommensgarantie, keine automatische Cloud-Nutzung oder Publikation.
+
+## Video-Trainingsdaten
+
+- HF Datasets/Hub und video2dataset planned registriert, Dataset_Curator erweitert.
+- Vor Aktivierung: Versionen/Revisionen pinnen, Medienrechte/Attribution pruefen,
+  private Cachepfade und harte Byte-/Zeit-/SSDlimits implementieren.
+- Modellbezogene Clip-/Caption-Adapter, Split-/Leakage-Tests und begrenzte
+  GPU-Trainings-Smoke-Tests fehlen noch; keine automatischen Downloads/Uploads.
+
+## Audio-/Video-Nachbearbeitung
+
+- Ein planned-Profil und 20 Tool-Kandidaten registriert; SRT/LRC-Konverter offline nutzbar.
+- Vor echten Installern: Release/Commit und Code-/Gewichtslizenz pinnen,
+  Python/CUDA/RAM/SSD/VRAM messen; pro Tool Preflight, Smoke-Test und Uninstaller.
+- OpenClaw/n8n-Adapter, Alignment, Medien-Rendering und GPU-Queue-Limits
+  noch implementieren/testen. Kein automatisches Veroeffentlichen.
+
 Diese Roadmap priorisiert Konsistenz, Sicherheit und belastbare Installationspfade vor weiterer Funktionsbreite.
 
 ## P0: Security und Konsistenz
+
+- Personalakten_Local_First: ACL-/Negativtests, Legacy-Paperless-Migration,
+  verschluesselter Restore-Test und fachliches Datenschutz-/Loeschkonzept vor
+  echten Akten. Lokaler Vorschlagsprototyp ist keine Produktionsfreigabe.
 
 - Automaton: documentation-first/Offline-Review vorhanden; vor Runtime-Freigabe
   isolierte Sandbox, Wallet-/Signer-Trennung, Budget-/Netzwerkgrenzen, Build-Audit
@@ -17,6 +52,12 @@ Diese Roadmap priorisiert Konsistenz, Sicherheit und belastbare Installationspfa
 - Profil- und Tool-Doku strikt mit den echten Skripten synchronisieren
 
 ## P1: Coding-, Sandbox- und Browser-Pfade
+
+- Agentic_Coding_Local_First: Aufgabenvorlage und Anleitung vorhanden. Vor
+  Runner-Freigabe Client-/Modell-Smoke-Test, exklusive Queue-Locks, feste
+  erlaubte Task-IDs, harte Limits und unabhaengige Abnahmetests nachweisen.
+- AutoGen-Nachfolge Microsoft Agent Framework nur als Kandidat registriert;
+  bestehende Anwendungen nicht automatisch migrieren. Automaton bleibt gesperrt.
 
 - `Programmierer`, `AI_Project_Manager`, `Browser_Automation_Agent` und `Repo_Maintainer` funktional durchtesten
 - `Clawhub`, `Clawhub CLI`, `OpenHands`, `Aider` und `Playwright` auf WSL2 und VPS weiter abklopfen. `OpenManus` hat inzwischen eine robustere venv-/Torch-/flash-attn-Installationslogik, bleibt aber abhängig vom aktuellen Upstream-Stand.

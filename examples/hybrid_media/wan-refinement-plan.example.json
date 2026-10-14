@@ -1,0 +1,23 @@
+{
+  "template_only": true,
+  "format": "design_plan_not_comfyui_workflow",
+  "execution_enabled": false,
+  "cloud_enabled": false,
+  "automatic_downloads": false,
+  "max_parallel_gpu_jobs": 1,
+  "max_attempts": 3,
+  "monthly_cloud_budget_eur": 0,
+  "per_job_cloud_budget_eur": 0,
+  "publishing_enabled": false,
+  "workflow_commit": null,
+  "model_revision": null,
+  "compatible_node_path": null,
+  "stages": [
+    "approved_source_or_small_base_video",
+    "visual_and_resource_review",
+    "optional_spatial_refinement",
+    "temporal_consistency_review",
+    "optional_frame_interpolation",
+    "approved_export_with_provenance"
+  ]
+}

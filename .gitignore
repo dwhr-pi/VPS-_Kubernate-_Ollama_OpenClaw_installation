@@ -24,6 +24,8 @@ env-vault.age
 .vault.lock
 .automaton/
 wallet.json
+personnel-data/
+hr-data/
 cloudflared.deb
 tools/mail/secrets/
 tools/mail/data/

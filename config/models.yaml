@@ -1,4 +1,7 @@
 # Model catalog draft. Real installed model list should be generated locally.
+# Separate inactive candidate catalog: config/model_candidates.json
+# Guide: docs/media_studio/HYBRID_MODELS_AND_WAN.md
+# Candidates are not loaded, downloaded or routed by this draft.
 default_local_model: llama3.2:1b
 providers:
   ollama:

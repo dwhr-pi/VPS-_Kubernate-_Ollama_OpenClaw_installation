@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "catalog_only": true,
+  "active": false,
+  "network_enabled": false,
+  "cloud_enabled": false,
+  "automatic_downloads": false,
+  "description": "Quellenkatalog, keine aktive Ollama-/OpenClaw-/LiteLLM-Konfiguration. Konkrete Revisionen/Kompatibilitaet vor Nutzung pruefen.",
+  "families": [
+    {
+      "id": "deepseek",
+      "name": "DeepSeek",
+      "source": "https://github.com/deepseek-ai/DeepSeek-R1",
+      "example_checkpoint": "deepseek-ai/DeepSeek-R1-Distill-Qwen-7B",
+      "license_note": "MIT fuer R1-Veröffentlichung; Basis-/Distill- und Variantenbedingungen getrennt pruefen",
+      "recommended_path": "local-small-or-optional-cloud",
+      "status": "planned",
+      "automatic_download": false,
+      "revision": null
+    },
+    {
+      "id": "qwen",
+      "name": "Qwen",
+      "source": "https://huggingface.co/Qwen/Qwen2.5-Coder-7B-Instruct",
+      "example_checkpoint": "Qwen/Qwen2.5-Coder-7B-Instruct",
+      "license_note": "Apache-2.0 fuer diesen Checkpoint, nicht pauschal jede Qwen-Generation",
+      "recommended_path": "local-small-or-optional-cloud",
+      "status": "planned",
+      "automatic_download": false,
+      "revision": null
+    },
+    {
+      "id": "wan",
+      "name": "Wan",
+      "source": "https://github.com/Wan-Video/Wan2.1",
+      "example_checkpoint": "Wan-AI/Wan2.1-T2V-1.3B",
+      "license_note": "Wan2.1 laut Repo Apache-2.0; jede andere Generation separat pruefen",
+      "recommended_path": "local-gpu-video",
+      "status": "planned",
+      "automatic_download": false,
+      "revision": null
+    },
+    {
+      "id": "glm",
+      "name": "Z.ai GLM",
+      "source": "https://huggingface.co/zai-org/GLM-5",
+      "example_checkpoint": "zai-org/GLM-5",
+      "license_note": "GLM-5-Gewichtskarte MIT, GitHub-Code Apache-2.0; nicht jede Variante gleichsetzen",
+      "recommended_path": "server-or-optional-cloud",
+      "status": "planned",
+      "automatic_download": false,
+      "revision": null
+    },
+    {
+      "id": "kimi",
+      "name": "Kimi",
+      "source": "https://huggingface.co/moonshotai/Kimi-K2.6",
+      "example_checkpoint": "moonshotai/Kimi-K2.6",
+      "license_note": "Modified MIT laut Karte, Bedingungen und Third-Party Notices pruefen",
+      "recommended_path": "server-or-optional-cloud",
+      "status": "planned",
+      "automatic_download": false,
+      "revision": null
+    },
+    {
+      "id": "doubao",
+      "name": "Doubao / ByteDance",
+      "source": "https://docs.volcengine.com/docs/ark?lang=zh",
+      "example_checkpoint": null,
+      "license_note": "Proprietaerer Dienstpfad; keine generelle offene Doubao-Gewichtsfreigabe verifiziert",
+      "recommended_path": "optional-cloud-only",
+      "status": "planned",
+      "automatic_download": false,
+      "revision": null
+    }
+  ]
+}

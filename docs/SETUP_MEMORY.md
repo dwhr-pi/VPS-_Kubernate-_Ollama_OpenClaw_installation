@@ -1,6 +1,53 @@
 # Setup Memory
 
+## Defensiver Audio-Review, 2026-10-14
+
+- Pyannote_Audio, DeepFilterNet, AudioSeal neu planned, keine Runtime.
+- Demucs/UVR5/Audacity/RVC nicht dupliziert, Quellen/Doku ergaenzt.
+- Exakte Signalkomponente fuer Subtraktion erforderlich: Hintergrund abziehen
+  laesst Stimme uebrig, Prompt/neu erzeugte Stimme ist keine exakte Referenz.
+- Keine allgemeine 8-kHz-/Tiefpass-/RVC-Echtheitsreparatur; kein Wasserzeichen-
+  entfernen, kein unkritisches Fake-/Echturteil. Originale und Arbeitskopien trennen.
+- Python/OpenClaw/n8n nur Workflowvertrag, keine Installation oder WSL-Aenderung.
+
+## Social-Avatar-Stack, 2026-10-14
+
+- CogVideoX/LTX_Video/SD_Next/Pinokio/Windmill/TGI und Fal_Client/Veo_API
+  planned; gemeinsame nicht-installierende Guards. Keine WSL-/Runtime-Aenderung.
+- Vorhandenes AI_Influencer-Profil erweitert; kein Doppelprofil.
+- Veo/fal sind externe Dienste, SDK != lokales Modell. Windmill nicht pauschal
+  MIT/Apache, TGI Maintenance Mode, Pinokio keine Container-Sandbox.
+- Social-Workflow und JSON-Vorlage sind Entwuerfe, Limits nicht durchgesetzt,
+  Cloud/Uploads/Publikation deaktiviert. AnimateDiff-Legacy-Registry-Luecke bleibt TODO.
+
+## Hugging-Face-Videodaten, 2026-10-14
+
+- HF_Datasets, HF_Hub, Video2Dataset als planned, keine automatische Installation.
+- Vorhandenes Dataset_Curator-Profil erweitert; kein neues Doppelprofil.
+- FineVideo/VIDGEN-1M/Panda-70M/MiraData/VALID mit Primaerquellen und Grenzen
+  in media_studio/VIDEO_TRAINING_DATASETS.md. VALID nur historische Karte verifiziert.
+- Streaming ist kein hartes Byte-Limit; FineVideo ist nicht automatisch ein
+  universeller T2V-Trainingsinput. Panda-Lizenz nichtkommerziell/Forschung.
+- Beispiel-Freigabeprotokoll ist inaktiv. Keine Dataset-/Modelldownloads,
+  keine Trainingsjobs, keine WSL-Eingriffe oder GitHub-Publikation.
+
+## Audio-/Video-Erweiterung, 2026-10-14
+
+- 20 planned-Kandidaten mit gemeinsamem nicht-installierendem Guard; Tool-Menue/Registry synchron ergaenzt.
+- Audio_Postproduction_Local_First bleibt planned. Bestehende TTS-/ASR-/FFmpeg-Tools wiederverwenden.
+- Eigene Karaoke_Formats-CLI konvertiert nur Basis-SRT/LRC offline; kein Alignment,
+  kein ASR, keine Uebersetzung. Export nur mit --apply in neue Datei ausserhalb Git.
+- Produktions-/Karaoke-/MIDI-Leitfaeden korrigieren Lizenz-, GPU- und Timing-Versprechen.
+- Keine WSL-Aenderung, keine Installation, keine Gewichte, keine Publikation.
+
 Diese Datei dient als dauerhafte Projekt-Erinnerung fuer spaetere Chats und Folgearbeiten am Setup.
+
+## Agentic Coding, 2026-10-14
+
+- [Einsteiger-Leitfaden](AGENTIC_CODING_GUIDE.md), Aufgabenvorlagen und planned-Profil ergaenzt.
+- Vorhandene Coding-Tools dokumentiert, nicht neu installiert. Microsoft Agent Framework nur als Kandidat registriert; AutoGen-Upstream Maintenance Mode, keine automatische Migration.
+- Allgemeines Automatenprinzip nicht mit Conway Automaton gleichsetzen. Automaton-Runtime und Wallet-Funktionen bleiben gesperrt.
+- Keine WSL-/Runtime-Aenderungen; Queue-Locks, harte Limits und Client-Tests bleiben Voraussetzung fuer autonome Ausfuehrung.
 
 ## Automaton, 2026-10-14
 

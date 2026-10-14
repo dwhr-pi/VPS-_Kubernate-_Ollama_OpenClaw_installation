@@ -1,8 +1,26 @@
 # Profile Matrix
 
+[AI_Influencer](Profile/AI_Influencer.md) bleibt planned:
+lokaler Social-Avatar-Pfad, manuelle Abnahme/Publikation, Cloud optional und gesperrt.
+
+Video-Erweiterung fuer [Dataset_Curator](Profile/Dataset_Curator.md):
+planned; HF_Datasets/HF_Hub/Video2Dataset nur optional, nicht automatisch installieren.
+
+| Profil | Status | Tools / Grenze |
+|---|---|---|
+| [Audio_Postproduction_Local_First](Profile/Audio_Postproduction_Local_First.md) | planned | FFmpeg, ASR, Demucs, Subtitle Edit, eigene Format-CLI; TTS/Video nur optional, keine Sammelinstallation |
+
 Diese Matrix fasst den aktuellen Ausbauzustand als modulare Plattform zusammen. Sie trennt bewusst zwischen produktionsnahen Kernpfaden, spezialisierten Studios und Profilen mit erhoehter Risiko- oder Governance-Last.
 
 ## Kern- und Plattformprofile
+
+| Profil | Stand | Einstieg |
+|---|---|---|
+| [Agentic_Coding_Local_First](Profile/Agentic_Coding_Local_First.md) | planned / documentation-first | ein Client, freigegebene Tests, begrenzte Schleife, menschliches Review; keine automatische Toolinstallation |
+
+| Profil | Tools | Status | Ressourcen / Sicherheit |
+|---|---|---|---|
+| [Personalakten_Local_First](Profile/Personalakten_Local_First.md) | Personnel_Documents_AI, Paperless, Ollama, Tesseract | planned | Paperless 2 GiB RAM/10 GiB Disk Reserve, LLM separat; autorisierte Daten, kein autonomes Schreiben/RAG |
 
 Embedded/IoT: [Embedded_Debug_HIL](Profile/Embedded_Debug_HIL.md), `planned`,
 Offline-Prototyp nutzbar; lokale Workstation/RPi als spaeterer Probe-Host,

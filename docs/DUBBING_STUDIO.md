@@ -1,5 +1,10 @@
 # Dubbing Studio
 
+[Konkrete Schritte und Grenzen](media_studio/AUDIO_DUBBING_PRODUCTION_GUIDE.md)
+und [Karaoke/Untertitelformate](media_studio/KARAOKE_SUBTITLES_GUIDE.md).
+Alle folgenden Faehigkeiten/Sprachen sind Ziele und modellabhaengig,
+keine Zusage einer bereits implementierten Komplettpipeline.
+
 ## Funktionen
 - Film synchronisieren.
 - Stimmen austauschen.

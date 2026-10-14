@@ -1,6 +1,27 @@
 # Tools Catalog
 
+[Defensiver Audio-Review](media_studio/AUDIO_DEEPFAKE_REVIEW.md):
+Pyannote_Audio, DeepFilterNet und AudioSeal neu planned; Demucs/UVR5/Audacity/RVC
+wiederverwenden, keine neue automatische Installation oder Deepfake-Entfernung versprechen.
+
+[Social-Avatar-Stack und lokale Alternativen](media_studio/SOCIAL_AVATAR_AUTOMATION.md):
+acht neue planned-Eintraege, darunter zwei rein optionale Cloud-Clients;
+ComfyUI/n8n/Avatar-Tools wiederverwenden, keine automatische Publikation.
+
+[Video-Datensaetze und Werkzeuge](media_studio/VIDEO_TRAINING_DATASETS.md):
+HF_Datasets, HF_Hub und Video2Dataset sind planned; keine automatische
+Installation, Medien-/Modelldownloads oder Trainingsstarts.
+
+[Hoerbuch/Dubbing/SFX/MIDI/Video-Katalog](media_studio/AUDIO_VIDEO_TOOL_CATALOG.md):
+20 geplante GitHub-Kandidaten, Lizenz-/Modellgrenzen und Ressourcen.
+Eigene [Karaoke-Format-CLI](media_studio/KARAOKE_SUBTITLES_GUIDE.md) separat getestet;
+keine Modellinstallation.
+
 Dieser Katalog bewertet Tools fuer das Ultimate KI Setup. Statuswerte: `Pflicht`, `Optional`, `Experimentell`.
+
+Agentic-Coding-Erweiterung: [Clients, Frameworks und tatsaechlicher Setup-Stand](tools/agentic-coding.md).
+Microsoft Agent Framework ist neu **planned/documentation-first**, nicht installiert.
+Automaton bleibt ein gesperrter Forschungspfad, keine Voraussetzung fuer Coding-Agenten.
 
 ## KI / LLM
 

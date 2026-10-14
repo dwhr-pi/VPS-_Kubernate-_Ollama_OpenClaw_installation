@@ -1,5 +1,9 @@
 # AUDIOBOOK PIPELINE
 
+Konkreter Einstieg: [Produktionsleitfaden](AUDIO_DUBBING_PRODUCTION_GUIDE.md)
+und [TTS-/Dubbing-Katalog](AUDIO_VIDEO_TOOL_CATALOG.md).
+Die folgende Pipeline ist ein Entwurf, kein automatisch ausfuehrbarer Workflow.
+
 Workflow-Dokument fuer audiobook pipeline. Nutzt Character Library, Voice Studio, Avatar Studio, Job Queue und manuelle Freigabe.
 
 ## Ressourcenklassen

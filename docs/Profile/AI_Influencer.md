@@ -8,6 +8,10 @@
 
 ## Zweck
 
+[Lokaler Social-Avatar-Workflow und Toolstack](../media_studio/SOCIAL_AVATAR_AUTOMATION.md).
+CogVideoX/LTX optional; Veo/fal nur als gesperrter Cloud-Integrationsplan.
+Keine Einkommens-/Reichweitengarantie und kein automatischer Publisher.
+
 Virtuelle Content-Persona fuer Social Clips und Moderation.
 
 ## Rollenstil / Emotionen
