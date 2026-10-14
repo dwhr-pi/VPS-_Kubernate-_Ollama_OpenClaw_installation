@@ -30,6 +30,49 @@ check_node_tool_runtime() {
     fi
 }
 
+check_node_runtime_disk() {
+    local free_mb windows_mb
+    free_mb="$(df -Pm "$HOME" | awk 'NR==2 {print $4}')" || return 1
+    if ! [[ "$free_mb" =~ ^[0-9]+$ ]] || ((free_mb < 4096)); then
+        echo 'Fehler: Mindestens 4 GiB freie Reserve im Benutzer-Dateisystem fuer Runtime-Downloads erforderlich.' >&2; return 1
+    fi
+    if [ -n "${WSL_DISTRO_NAME:-}" ] && [ -d /mnt/c ]; then
+        windows_mb="$(df -Pm /mnt/c | awk 'NR==2 {print $4}')" || return 1
+        if ! [[ "$windows_mb" =~ ^[0-9]+$ ]] || ((windows_mb < 10240)); then
+            echo 'Fehler: Windows-C: braucht mindestens 10 GiB Reserve vor Runtime-Downloads.' >&2; return 1
+        fi
+    fi
+}
+
+ensure_node_tool_runtime() {
+    if check_node_tool_runtime >/dev/null 2>&1; then return 0; fi
+    if [ "${EUID:-0}" -eq 0 ]; then
+        echo 'Fehler: Installer ohne sudo als normaler Benutzer starten; kein nvm fuer root.' >&2; return 1
+    fi
+    export NVM_DIR="${NVM_DIR:-$HOME/.nvm}"
+    if ! declare -F nvm >/dev/null && [ -s "$NVM_DIR/nvm.sh" ]; then
+        source "$NVM_DIR/nvm.sh" --no-use || return 1
+    fi
+    if declare -F nvm >/dev/null; then
+        if nvm use 22 >/dev/null 2>&1 && check_node_tool_runtime >/dev/null 2>&1; then return 0; fi
+    fi
+    check_node_runtime_disk || return 1
+    if ! declare -F nvm >/dev/null; then
+        if [ -e "$NVM_DIR" ] || [ -L "$NVM_DIR" ]; then
+            echo 'Fehler: NVM_DIR existiert ohne nutzbares nvm.sh. Manuell pruefen; kein Ueberschreiben.' >&2; return 1
+        fi
+        run_apt_with_lock_wait update || return 1
+        run_apt_with_lock_wait install -y git curl ca-certificates tar xz-utils || return 1
+        echo 'Installiere nvm v0.40.8 aus GitHub im Benutzerkonto. Keine Shellprofil-Aenderung.'
+        GIT_TERMINAL_PROMPT=0 git clone --depth 1 --branch v0.40.8 https://github.com/nvm-sh/nvm.git "$NVM_DIR" || return 1
+        source "$NVM_DIR/nvm.sh" --no-use || return 1
+    fi
+    echo 'Stelle Node 22 samt npm ueber nvm bereit (nur Binary, kein Source-Build).'
+    if ! nvm install -b 22 || ! nvm use 22 || ! check_node_tool_runtime; then
+        echo 'Fehler: Node/npm-Bereitstellung fehlgeschlagen. nvm-Ausgabe, npm-prefix und Netzwerk pruefen.' >&2; return 1
+    fi
+}
+
 install_node_tool() {
     : "${TOOL_NAME:?TOOL_NAME ist erforderlich}"
     : "${TOOL_KEY:?TOOL_KEY ist erforderlich}"

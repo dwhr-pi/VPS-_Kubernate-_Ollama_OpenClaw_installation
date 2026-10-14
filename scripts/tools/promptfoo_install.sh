@@ -29,6 +29,27 @@ check_promptfoo_runtime() {
     fi
 }
 
+prepare_promptfoo_runtime() {
+    local prefix="${OPENCLAW_USER_DATA_DIR:-$HOME/.openclaw_ultimate_user_data}/runtimes/promptfoo-npm-11.11.0"
+    if check_promptfoo_runtime >/dev/null 2>&1; then return 0; fi
+    ensure_node_tool_runtime || return 1
+    if check_promptfoo_runtime >/dev/null 2>&1; then return 0; fi
+    # Install npm privately instead of replacing the npm of another tool/runtime.
+    if [ "${EUID:-0}" -eq 0 ]; then
+        echo 'Fehler: Promptfoo als normaler Benutzer starten, nicht mit sudo.' >&2; return 1
+    fi
+    check_node_runtime_disk || return 1
+    if [ -L "$prefix" ]; then echo 'Fehler: Promptfoo-npm-Pfad ist ein Symlink.' >&2; return 1; fi
+    if [ ! -f "$prefix/node_modules/npm/bin/npm-cli.js" ]; then
+        mkdir -p "$prefix" || return 1
+        echo 'Installiere privates npm 11.11.0 fuer Promptfoo; System-npm bleibt unveraendert.'
+        npm install --prefix "$prefix" --no-save --package-lock=false --ignore-scripts npm@11.11.0 || return 1
+    fi
+    export PATH="$prefix/node_modules/.bin:$PATH"
+    hash -r
+    check_promptfoo_runtime
+}
+
 build_promptfoo_from_source() (
     cd "$TOOL_DIR" || return 1
     if [ ! -f package.json ] || [ ! -f package-lock.json ]; then
@@ -53,8 +74,12 @@ promptfoo_main() {
     local mode="${1:-install}"
     case "$mode" in install|--check|--dry-run) ;; *) echo 'Aufruf: promptfoo_install.sh [--check|--dry-run]' >&2; return 2 ;; esac
     echo 'Promptfoo: GitHub-Source-Build; Node >=22.22.0, npm 11.11.0. Kein Dienststart, keine Cloud-Abfragen.'
-    check_promptfoo_runtime || return 1
-    if [ "$mode" != install ]; then
+    if [ "$mode" = --dry-run ]; then
+        echo 'Plan: Node-Runtime ueber nvm bereitstellen, falls noetig; npm 11.11.0 privat im User-Workspace. Kein Download/Build/nvm-Wechsel.'
+        return 0
+    fi
+    if [ "$mode" = --check ]; then
+        check_promptfoo_runtime || return 1
         echo 'Runtime-Pruefung bestanden. Kein Clone, Paketdownload oder Build ausgefuehrt.'
         return 0
     fi
@@ -63,6 +88,7 @@ promptfoo_main() {
         echo "Fehler: $TOOL_DIR ist kein sicherer Git-Checkout. Inhalte sichern und manuell pruefen; keine automatische Loeschung." >&2
         return 1
     fi
+    prepare_promptfoo_runtime || return 1
     AUTO_INSTALL_TOOL_BASE_DEPS=false init_tool_tracking "$TOOL_KEY"
     if ! command -v git >/dev/null || ! command -v make >/dev/null ||
        ! command -v g++ >/dev/null || ! command -v python3 >/dev/null; then

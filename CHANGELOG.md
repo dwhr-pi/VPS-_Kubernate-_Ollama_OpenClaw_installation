@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+- Node Exporter korrigiert erneut: kein Root-Mount im Standardprofil, weil Docker rprivate beim Root-Bind ablehnen kann. Begrenzte /proc-/sys-Collector-Auswahl; root/rslave nur explizit.
+
+- OpenTelemetry bietet fehlende Docker-/Compose-Pakete nach explizitem Opt-in an; vorhandene Clients werden nicht durch zweite Engines ersetzt, Paketfamilien und --no-remove schuetzen vor Konfliktbereinigung.
+
+- Promptfoo nutzt gemeinsame Node/nvm-Bereitstellung mit Puppeteer und installiert npm 11.11.0 bei Bedarf privat im User-Workspace statt System-npm zu ersetzen; Dry-Run bleibt ohne Installation.
+
+- Puppeteer laedt vorhandenes nvm oder stellt bei Bedarf nvm v0.40.8/Node 22 samt npm im Benutzerkonto bereit; kein System-Node-Ersatz, keine Downloads im Dry-Run.
+
+- RIFE kann fehlendes Python nach Opt-in und Disk-Pruefung als isoliertes CPython 3.11.17 aus GitHub bauen; Dry-Run ohne Build, explizite Interpretervorgaben bleiben verbindlich.
+
 - Supabase laedt Images seriell und wiederholt erkannte Netzwerkabbrueche maximal dreimal mit Backoff; Start erst nach erfolgreichem Pull, keine Cache-/Datenloeschung.
 
 - Whisper_CPP-Deinstallation nutzt nach fester Pfadpruefung sudo statt des unprivilegierten Node-Helfers; Dry-Run, Fehlerstatus und Regressionstest ergaenzt.

@@ -24,6 +24,52 @@ check_opentelemetry_disk() {
     fi
 }
 
+install_opentelemetry_docker_packages() {
+    command -v apt-get >/dev/null || { echo 'Fehler: Docker-Paketbereitstellung unterstuetzt nur apt-Systeme.' >&2; return 1; }
+    run_apt_with_lock_wait update || return 1
+    local -a packages
+    if command -v docker >/dev/null 2>&1; then
+        if dpkg -s docker-ce-cli >/dev/null 2>&1; then
+            packages=(docker-compose-plugin)
+        elif dpkg -s docker.io >/dev/null 2>&1; then
+            packages=(docker-compose-v2)
+        else
+            echo 'Fehler: Vorhandener Docker-Client stammt nicht aus einer bekannten apt-Paketfamilie. Docker Desktop/Compose-Integration manuell pruefen; keine zweite Engine.' >&2
+            return 1
+        fi
+    elif LC_ALL=C apt-cache policy docker-ce 2>/dev/null | grep -q 'Candidate: [0-9]'; then
+        packages=(docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin)
+    else
+        if dpkg -s containerd.io >/dev/null 2>&1 || dpkg -s docker-ce-cli >/dev/null 2>&1; then
+            echo 'Fehler: Docker-CE/containerd.io vorhanden, aber kein passendes Docker-Repository. Kein Wechsel zu docker.io.' >&2; return 1
+        fi
+        packages=(docker.io docker-compose-v2)
+    fi
+    echo "Docker-Abhaengigkeiten: ${packages[*]}. Keine Paketentfernung, kein Gruppenumbau."
+    run_apt_with_lock_wait --no-remove install -y "${packages[@]}" || return 1
+}
+
+prepare_opentelemetry_docker() {
+    if command -v docker >/dev/null 2>&1 && docker compose version >/dev/null 2>&1; then return 0; fi
+    local answer=""
+    echo 'Docker/Compose fehlt im PATH. Eine lokale Engine-Installation kann Dienste starten und Firewall-Regeln beeinflussen.'
+    echo 'Unter WSL: Bei Docker Desktop zuerst dessen WSL-Integration pruefen, statt eine zweite Engine zu installieren.'
+    if [ "${OPENTELEMETRY_INSTALL_DOCKER:-0}" != 1 ]; then
+        if [ -t 0 ]; then
+            read -r -p 'Docker-Abhaengigkeiten lokal ueber apt bereitstellen? [(j)a/(N)ein]: ' answer || return 1
+        fi
+        if ! [[ "$answer" =~ ^[Jj]([Aa])?$ ]]; then
+            echo 'Keine Docker-Installation ausgefuehrt. Fuer bewusstes Opt-in: OPENTELEMETRY_INSTALL_DOCKER=1 bash scripts/tools/opentelemetry_install.sh' >&2
+            return 1
+        fi
+    fi
+    install_opentelemetry_docker_packages || return 1
+    hash -r
+    if ! command -v docker >/dev/null 2>&1 || ! docker compose version; then
+        echo 'Fehler: Docker/Compose weiterhin nicht im PATH nutzbar. Paketinstallation und PATH pruefen.' >&2; return 1
+    fi
+}
+
 start_opentelemetry_stack() {
     local compose_file="$1"
     run_docker_compose_tool -f "$compose_file" config --quiet || return 1
@@ -39,15 +85,17 @@ install_opentelemetry() {
     local mode="${1:-install}"
     case "$mode" in install|--check|--dry-run) ;; *) echo 'Aufruf: opentelemetry_install.sh [--check|--dry-run]' >&2; return 2 ;; esac
     check_opentelemetry_disk || return 1
-    if ! command -v docker >/dev/null 2>&1; then
-        echo 'Fehler: Docker fehlt. Docker bewusst separat einrichten; keine automatische Installation oder Gruppen-/Socket-Aenderung.' >&2
-        return 1
+    if [[ "$mode" == --dry-run ]]; then
+        echo 'Plan: Docker/Compose pruefen, fehlende Pakete nur nach Opt-in bereitstellen, danach Collector starten. Kein sudo/Download/Start im Dry-Run.'
+        return 0
     fi
-    if [[ "$mode" != install ]]; then
+    if [[ "$mode" == --check ]]; then
+        if ! command -v docker >/dev/null 2>&1; then echo 'Fehler: Docker fehlt im PATH. Normalen Installationslauf fuer gefuehrte Bereitstellung waehlen.' >&2; return 1; fi
         docker compose version || return 1
         echo 'Speicher/Compose-Pruefung bestanden. Kein Download oder Start; Daemon-Rechte werden beim echten Lauf geprueft.'
         return 0
     fi
+    prepare_opentelemetry_docker || return 1
     run_docker_compose_tool version || return 1
     AUTO_INSTALL_TOOL_BASE_DEPS=false init_tool_tracking "OpenTelemetry"
 

@@ -18,7 +18,8 @@ for test_node in v18.19.1 v22.21.0 invalid; do
 done
 test_node=v22.22.0
 for test_npm in 9.2.0 10.9.0 11.6.2 12.0.0 invalid; do
-    if promptfoo_main --dry-run >/dev/null 2>&1; then exit 1; fi
+    if promptfoo_main --check >/dev/null 2>&1; then exit 1; fi
+    promptfoo_main --dry-run >/dev/null
 done
 test_npm=11.11.0
 promptfoo_main --check >/dev/null

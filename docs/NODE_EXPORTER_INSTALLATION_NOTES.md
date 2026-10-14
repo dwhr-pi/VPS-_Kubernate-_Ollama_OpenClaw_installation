@@ -16,22 +16,33 @@ bash scripts/tools/node_exporter_install.sh
 ```
 
 Der Dry-Run zeigt ausschliesslich die geplante Compose-Datei. Standard ist
-`/:/host:ro,rprivate`. Es gibt kein `mount --make-rshared /`, keine automatische
-Aenderung am Host und keinen privileged Container. Der Root-Mount bleibt jedoch
-ein weitreichender Lesezugriff auf Hostdaten und muss bewusst erlaubt werden.
+`NODE_EXPORTER_MOUNT_MODE=limited`: nur `/proc` und `/sys` read-only, kein
+Root-Mount und kein privileged Container. Ausgewaehlt werden CPU, RAM, Load,
+Kernelstatistiken, VM-, Netzwerk- und Blockgeraete-I/O-Metriken. Andere
+Collector sind deaktiviert; insbesondere **keine Dateisystem-Kapazitaeten**.
+Blockgeraete-I/O ist kein Ersatz fuer freien Speicherplatz.
+Es gibt kein `mount --make-rshared /` und keinen automatischen Mount-Umbau.
 Der Installationslauf ersetzt wie bisher die erzeugte Compose-Datei unter
 `/opt/node_exporter`; eigene Anpassungen vor erneutem Lauf sichern.
 
-Mit rprivate werden nachtraegliche Mount-Aenderungen nicht propagiert.
-Zusatzlaufwerke/Mountpoints gegebenenfalls gezielt read-only einbinden und
-Metriken kontrollieren. Auf geeignetem echtem Linux ist bewusst moeglich:
+Der Log vom 14. Oktober 2026 zeigt, dass Docker auch den zuvor vorgeschlagenen
+Root-Mount mit rprivate ablehnt: Der Root-Bind umfasst das Daemon-Datenverzeichnis
+`/var/lib/docker` und verlangt daher rslave/rshared. Die vorherige Korrektur
+war fuer diese Umgebung nicht ausreichend. rprivate ist als Option entfernt.
+
+Auf einem geeigneten echten Linux-Host ist fuer vollstaendigeres Host-Monitoring
+bewusst das [Upstream-Root-Mount-Profil](https://github.com/prometheus/node_exporter#docker) moeglich:
 
 ```bash
-NODE_EXPORTER_MOUNT_PROPAGATION=rslave bash scripts/tools/node_exporter_install.sh
+NODE_EXPORTER_MOUNT_MODE=root bash scripts/tools/node_exporter_install.sh --dry-run
+NODE_EXPORTER_MOUNT_MODE=root bash scripts/tools/node_exporter_install.sh
 ```
 
-Diese Option repariert keinen inkompatiblen Host. Bei erneutem Mount-Fehler
-den Standard verwenden, statt die Root-Mount-Propagation blind zu veraendern.
+Das Root-Profil verwendet rslave und liest weitreichende Hostdaten. Es repariert
+keinen inkompatiblen Host. Bei erneutem Mount-Fehler den Standard limited nutzen,
+statt die Root-Mount-Propagation zu veraendern. Bereits gesetzte
+`NODE_EXPORTER_MOUNT_PROPAGATION=rprivate` entfernen; sie wird bewusst abgelehnt.
+Die alte rslave-Variable allein aktiviert keinen Root-Mount mehr.
 
 ## Zugriff und Messgrenzen
 

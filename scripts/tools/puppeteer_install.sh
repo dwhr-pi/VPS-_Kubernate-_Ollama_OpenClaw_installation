@@ -21,13 +21,25 @@ puppeteer_smoke_test() {
 }
 TOOL_POST_INSTALL_FUNCTION=puppeteer_smoke_test
 
+prepare_puppeteer_runtime() {
+    ensure_node_tool_runtime
+}
+
 puppeteer_main() {
     case "${1:-install}" in
-        --check|--dry-run)
+        --check)
             check_node_tool_runtime || return 1
             echo "Puppeteer ${PUPPETEER_VERSION}: unzip vor Chrome-Download; Paket-/Browserdatei-Smoke-Test nach Installation."
             ;;
-        install) install_node_tool ;;
+        --dry-run)
+            if ! check_node_tool_runtime >/dev/null 2>&1; then
+                echo 'Plan: vorhandenes nvm laden oder nvm v0.40.8 aus GitHub bereitstellen; Node 22 mit npm im Benutzerkonto aktivieren.'
+            fi
+            echo "Plan: Puppeteer ${PUPPETEER_VERSION}, unzip und Browserdatei-Test. Kein Download, sudo oder nvm-Wechsel im Dry-Run."
+            ;;
+        install)
+            prepare_puppeteer_runtime || return 1
+            install_node_tool ;;
         *) echo 'Optionen: --check, --dry-run oder ohne Option installieren.' >&2; return 2 ;;
     esac
 }

@@ -17,23 +17,27 @@ ist entfernt. Upstream-Overrides und Lockfile bleiben unveraendert.
 
 ## Vorbereiten und installieren
 
-Eine passende Node-Version bewusst in der eigenen Benutzerumgebung aktivieren,
-beispielsweise ueber ein bereits eingerichtetes nvm. Nicht `/usr/bin/node`
-ueberschreiben und npm nicht mit sudo in die Systeminstallation installieren.
-Erst nach Aktivierung der gewuenschten Node-Version:
+Als normaler Benutzer starten, nicht mit sudo. Der echte Installer verwendet
+eine passende Runtime weiter oder laedt/richtet nvm und Node 22 im Benutzerkonto
+ein. System-Node bleibt erhalten. Promptfoo und Puppeteer verwenden denselben
+Runtime-Helfer. nvm wird nicht bei jedem Tool erneut geklont.
 
 ```bash
-node --version
-npm install -g npm@11.11.0
-npm --version
-bash scripts/tools/promptfoo_install.sh --check
 bash scripts/tools/promptfoo_install.sh --dry-run
 bash scripts/tools/promptfoo_install.sh
-node /opt/promptfoo/dist/src/entrypoint.js --version
 ```
 
-Check/Dry-Run pruefen nur die Runtime, nicht die Vollstaendigkeit einer bereits
-installierten Toolchain. Sie klonen nichts, installieren nichts und bauen nicht.
+Check prueft nur die aktuell sichtbare Runtime und scheitert bei fehlenden
+Voraussetzungen. Dry-Run beschreibt auch deren Bereitstellung, installiert
+aber nichts und aktiviert kein nvm. Beide sind kein vollstaendiger Tool-Test.
+
+Weicht npm ab, wird `npm@11.11.0` ohne Lifecycle-Skripte privat unter
+`~/.openclaw_ultimate_user_data/runtimes/promptfoo-npm-11.11.0` installiert.
+Das globale npm bleibt erhalten. Nur im Installer-Prozess wird dieser private
+Paketmanager im PATH bevorzugt, einschliesslich verschachtelter Build-Aufrufe.
+Der Ordner bleibt fuer weitere Laeufe erhalten; eine kaputte private npm-
+Installation wird als Fehler gemeldet, nicht blind geloescht.
+
 Der echte Installer klont GitHub, installiert Abhaengigkeiten mit
 `npm ci --engine-strict`, baut und prueft die CLI. Native Module koennen
 Build-Werkzeuge/Python benoetigen; apt dient nur diesen Systemabhaengigkeiten.
@@ -47,7 +51,9 @@ Teilprozess bis zu 8 GiB Node-Heap. Das ist keine RAM-Mindestgarantie.
 Fuer den Source-Build konservativ 12-16 GiB RAM und mindestens 20 GiB freien
 Speicher einplanen (Setup-Empfehlung, kein offizielles Minimum). Unter WSL
 zusaetzlich freien Speicher auf dem Windows-Datentraeger pruefen. Diese
-Empfehlung ist noch keine automatische Ressourcen-Sperre in diesem Installer.
+Empfehlung ist noch keine automatische Ressourcen-Sperre fuer den Source-Build.
+Vor neuen Runtime-Downloads gelten 4 GiB Benutzer-Dateisystem-Reserve und bei
+erkennbarer WSL 10 GiB Windows-C:-Reserve, wie beim Puppeteer-Runtime-Helfer.
 
 Es werden weder ein Webserver noch Evaluierungen gestartet. Secrets und private
 Testdaten ausserhalb des Repositories speichern. Cloud-Evaluierungen koennen
@@ -59,6 +65,7 @@ persoenlichen Datensaetze ablegen, vorher sichern.
 
 ```bash
 bash tests/promptfoo_install_test.sh
+bash tests/promptfoo_runtime_setup_test.sh
 bash -n scripts/tools/promptfoo_install.sh
 ```
 

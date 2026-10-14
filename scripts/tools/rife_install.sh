@@ -3,6 +3,7 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 source "$ROOT_DIR/scripts/lib/common.sh"
 source "$ROOT_DIR/scripts/tools/helpers/simple_tool_common.sh"
+source "$ROOT_DIR/scripts/lib/isolated_cpython.sh"
 
 rife_python_ok() {
   "$1" -c 'import sys; sys.exit(0 if (3,10) <= sys.version_info[:2] < (3,12) else 1)' >/dev/null 2>&1
@@ -41,14 +42,32 @@ rife_main() {
   local mode="${1:-install}" python_bin dir=/opt/rife
   local torch_index="${RIFE_TORCH_INDEX_URL:-https://download.pytorch.org/whl/cpu}"
   case "$mode" in install|--check|--dry-run) ;; *) log_error "Unbekannte Option: $mode"; return 2 ;; esac
-  python_bin="$(rife_find_python)" || return 1
+  python_bin=""
+  if ! python_bin="$(rife_find_python)"; then
+    # An explicitly requested interpreter must never be silently replaced.
+    [ -z "${RIFE_PYTHON_BIN:-}" ] || return 1
+    if [ "$mode" = --check ]; then return 1; fi
+    if [ "$mode" = --dry-run ]; then
+      log_info 'Plan: Nach Heavy-Opt-in/Speicherpruefung CPython 3.11.17 aus GitHub isoliert bauen; kein Build im Dry-Run.'
+      return 0
+    fi
+  fi
   log_info "RIFE-Python: $python_bin; PyTorch-Quelle: $torch_index"
   if [ "$mode" != install ]; then
     log_info 'Plan: GitHub-Quelle, kompatible .venv, NumPy nur als Wheel; keine Modell-Downloads.'; return 0
   fi
   confirm_heavy_install RIFE || return 0
   AUTO_INSTALL_TOOL_BASE_DEPS=false begin_measurement tool_install_RIFE 'RIFE mit kompatiblem Python'
-  if ! require_disk_mb 40960 /opt || ! ensure_base_apt_packages git ca-certificates libgl1 libglib2.0-0 ||
+  if ! REQUIRE_WINDOWS_HOST_FREE_MB=20480 require_disk_mb 40960 /opt; then
+    end_measurement failed; return 1
+  fi
+  if [ -z "$python_bin" ]; then
+    if ! python_bin="$(build_isolated_cpython311)" || ! rife_python_ok "$python_bin"; then
+      log_error 'RIFE: Isoliertes Python konnte nicht bereitgestellt werden.'
+      end_measurement failed; return 1
+    fi
+  fi
+  if ! ensure_base_apt_packages git ca-certificates libgl1 libglib2.0-0 ||
      ! sudo mkdir -p "$dir" || ! sudo chown "$USER:$USER" "$dir" ||
      ! clone_or_update_git_target RIFE https://github.com/hzwer/ECCV2022-RIFE.git "$dir" ||
      ! rife_prepare_venv "$python_bin" "$dir"; then

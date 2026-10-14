@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+set -euo pipefail
+repo_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+source "$repo_dir/scripts/tools/opentelemetry_install.sh"
+docker_present=false compose_present=false installs=0 package_rc=0
+command() {
+    if [[ "$*" == '-v docker' ]]; then [[ "$docker_present" == true ]]; else builtin command "$@"; fi
+}
+docker() { [[ "$*" == 'compose version' && "$compose_present" == true ]]; }
+install_opentelemetry_docker_packages() {
+    installs=$((installs + 1))
+    [[ "$package_rc" == 0 ]] || return 1
+    docker_present=true compose_present=true
+}
+check_opentelemetry_disk() { return 0; }
+OPENTELEMETRY_INSTALL_DOCKER=0
+if prepare_opentelemetry_docker </dev/null >/dev/null 2>&1; then exit 1; fi
+[[ "$installs" == 0 ]]
+OPENTELEMETRY_INSTALL_DOCKER=1
+install_opentelemetry --dry-run >/dev/null
+if install_opentelemetry --check >/dev/null 2>&1; then exit 1; fi
+[[ "$installs" == 0 ]]
+prepare_opentelemetry_docker >/dev/null
+[[ "$installs" == 1 && "$docker_present" == true && "$compose_present" == true ]]
+prepare_opentelemetry_docker
+[[ "$installs" == 1 ]]
+compose_present=false package_rc=1
+if prepare_opentelemetry_docker >/dev/null 2>&1; then exit 1; fi
+[[ "$installs" == 2 ]]
+echo 'PASS: consent required, dry-run/check do not install, existing Docker reused and dependency failure stops.'

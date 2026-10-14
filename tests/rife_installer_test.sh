@@ -30,3 +30,33 @@ backups=("$temp_env"/venv-backup.*/.venv/marker)
 rife_python_ok "$temp_env/.venv/bin/python"
 rife_prepare_venv fake_python "$temp_env"
 echo 'PASS: RIFE Python rejection, non-install modes, venv backup and reuse.'
+
+# Exercise missing-Python orchestration without downloading or building anything.
+unset RIFE_PYTHON_BIN
+rife_find_python() { return 1; }
+calls="$temp_env/calls"
+build_isolated_cpython311() { echo build >> "$calls"; echo /mock/python3.11; }
+rife_main --dry-run >/dev/null
+[[ ! -e "$calls" ]]
+if rife_main --check >/dev/null; then exit 1; fi
+[[ ! -e "$calls" ]]
+RIFE_PYTHON_BIN=/bad/explicit
+if rife_main --dry-run >/dev/null 2>&1; then exit 1; fi
+[[ ! -e "$calls" ]]
+unset RIFE_PYTHON_BIN
+confirm_heavy_install() { return 0; }
+begin_measurement() { :; }
+end_measurement() { echo "$1" >> "$temp_env/status"; }
+require_disk_mb() { return "$disk_rc"; }
+ensure_base_apt_packages() { return 0; }
+sudo() { return 0; }
+clone_or_update_git_target() { return 1; }
+rife_python_ok() { [[ "$1" == /mock/python3.11 ]]; }
+USER=testuser disk_rc=1
+if rife_main >/dev/null; then exit 1; fi
+[[ ! -e "$calls" ]]
+disk_rc=0
+if rife_main >/dev/null; then exit 1; fi
+[[ "$(< "$calls")" == build ]]
+grep -Fxq failed "$temp_env/status"
+echo 'PASS: missing Python plans a build, explicit override rejects, disk gate precedes mocked build.'

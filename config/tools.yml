@@ -1276,7 +1276,7 @@
       ],
       "check_type": "port",
       "check_value": "9100",
-      "safety": "localhost:9100; read-only Root-Mount mit rprivate als Standard. Docker-Daemon-Host wird gemessen; rslave nur bewusst auf kompatiblem Linux."
+      "safety": "localhost:9100; Standard limited mit /proc und /sys read-only, keine Dateisystem-Kapazitaeten. Root-Mount mit rslave nur nach explizitem Opt-in."
     },
     {
       "id": "cadvisor",
