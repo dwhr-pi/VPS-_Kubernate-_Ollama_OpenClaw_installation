@@ -1,5 +1,21 @@
 # Setup Memory
 
+## ComfyUI-GGUF Pfaderkennung, 2026-10-16
+
+- COMFYUI_ROOT vor Registrierung vor eindeutiger fester Kandidatenliste;
+  venv/.venv erkennen, bei Mehrdeutigkeit expliziten Override verlangen.
+- Markerpfad vor Lesen pruefen; keine rekursive Suche/Imports/Rechteaenderungen.
+  Fehlende Basisdateien konkret nennen. ComfyUI bleibt separate schwere Auswahl.
+
+## HF Hub GitHub-Client/CLI, 2026-10-16
+
+- 2.2.0, Pin acfdf30d99441317270cca6e9362dd7f9ff47c55; eigene venv/bin/hf,
+  getrennt von Datasets-venv. hf-xet nur Wheel, keine Extras/Transfers/Logins.
+- >=1 GiB gesamt, >=512 MiB verfuegbar, 2 GiB Disk/WSL-Hostreserve.
+  Python 3.10-3.13, Linux x86_64/ARM64 vorgesehen, echte Pakettests offen.
+- Doctor nur Metadaten/Entrypoint/pip check; keine CLI-/Hub-Ausfuehrung.
+  Deaktivierung erhaelt Daten/Token; native CLI ist keine technische Sandbox.
+
 ## HF Datasets GitHub-Basispaket, 2026-10-16
 
 - 5.1.0, Pin efe6ea4f88260b1a5066f28a9c90d82365a29f42, private venv;

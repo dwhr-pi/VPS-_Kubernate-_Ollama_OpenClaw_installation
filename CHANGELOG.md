@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+- ComfyUI-GGUF: eindeutige bekannte ComfyUI-Pfade und venv/.venv erkennen,
+  registrierte Ziel-/Python-Pfade wiederverwenden. Mehrdeutige Funde abbrechen;
+  fehlende Basisdateien konkret nennen, keine ungefragte schwere Basisinstallation.
+
+- HF_Hub: eigener GitHub-Client-/CLI-Installer fuer 2.2.0 in privater venv
+  statt Planned-Guard. Ressourcen/ensurepip, Lock/Logs, hf-Entrypoint-Metadaten;
+  hf-xet nur Wheel. Kein Docker, Login, Transfer oder Cloudjob beim Installieren.
+
 - HF_Datasets: eigener GitHub-Source-Installer fuer 5.1.0 in privater venv
   statt documentation-first-Guard. Ressourcen/ensurepip, Lock/Logs und
   datenerhaltende Deaktivierung; Wheels fuer Arrow/NumPy/pandas, keine

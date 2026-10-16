@@ -86,10 +86,12 @@ Fehlt ein passendes Wheel, stoppt pip statt eines schweren C/C++-Source-Builds.
 Kein Fallback auf Docker, CUDA oder Systempakete fuer Arrow.
 Andere kleinere Abhaengigkeiten koennen Buildcode ausfuehren.
 
-Es werden **keine Extras** wie Audio/Torch/Tests/Dev installiert. `HF_Hub` bleibt
-als separater Setup-Menuepfad vorerst planned; das benoetigte Python-Paket
+Es werden **keine Extras** wie Audio/Torch/Tests/Dev installiert. [HF_Hub](hf-hub.md)
+hat inzwischen einen eigenen optionalen GitHub-Client-/CLI-Installer in separater
+venv; das hier benoetigte Python-Paket
 `huggingface-hub` wird jedoch als Bibliotheksabhaengigkeit in dieser venv installiert.
-Das ist keine Login-/Token-/Downloadfreigabe fuer dessen CLI.
+Das ist keine Login-/Token-/Downloadfreigabe fuer dessen CLI. Der separate
+Hub-Installer veraendert diese Datasets-venv nicht.
 
 Vor Downloads: RAM-/Disk-Pruefung. Pro Tool nur eine Operation via Lock,
 private Logs, Diskmessung vor/nach Paketaufbau. Konsistente Installation wird

@@ -34,7 +34,7 @@
 | Neue Dataset-Tools | Status | Integration |
 |---|---|---|
 | [HF_Datasets / hf_datasets](tools/hf-datasets.md) | experimental, GitHub-Basispaket | Private venv; keine Datensatz-/Modell-Downloads oder Decoder; kein Trainer |
-| HF_Hub / hf_hub | planned | Hub-Client/CLI; keine unbeschraenkten Downloads |
+| [HF_Hub / hf_hub](tools/hf-hub.md) | experimental, GitHub-Client/CLI | Private venv; keine automatischen Logins, Transfers oder Cloudjobs |
 | Video2Dataset / video2dataset | planned / heavy | genehmigte URL-Listen; keine autonome Beschaffung |
 
 [Details und Primaerquellen](media_studio/VIDEO_TRAINING_DATASETS.md).

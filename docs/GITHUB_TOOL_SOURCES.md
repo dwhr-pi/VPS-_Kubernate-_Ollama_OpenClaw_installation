@@ -52,7 +52,8 @@ LTX-Video, SD.Next, Pinokio, Windmill, TGI, fal-SDK und Google-GenAI-SDK.
 SDK auf GitHub bedeutet nicht, dass Veo/fal lokal selbsthostbar sind.
 
 Dataset-Werkzeuge: HF_Datasets hat einen [gepinnten GitHub-Basispaketinstaller](tools/hf-datasets.md),
-HF_Hub/Video2Dataset bleiben planned:
+[HF_Hub](tools/hf-hub.md) hat ebenfalls einen eigenen GitHub-Installer ohne
+Docker/Transfers; nur Video2Dataset bleibt planned:
 [huggingface/datasets](https://github.com/huggingface/datasets),
 [huggingface/huggingface_hub](https://github.com/huggingface/huggingface_hub),
 [iejMac/video2dataset](https://github.com/iejMac/video2dataset).

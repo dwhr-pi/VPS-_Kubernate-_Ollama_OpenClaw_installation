@@ -44,14 +44,15 @@ Ohne eindeutige Dataset-ID, Karte und Rechtebeleg keine Registrierung als Traini
 | Menue / Registry-ID | GitHub-Quelle | Aufgabe | Ressourcen / Risiko |
 |---|---|---|---|
 | HF_Datasets / `hf_datasets` | [huggingface/datasets](https://github.com/huggingface/datasets), [GitHub-Installer](../tools/hf-datasets.md) | experimental: Basispaket in privater venv; keine Decoder/Datensatz-Downloads | medium; spaetere Daten/Cache separat begrenzen |
-| HF_Hub / `hf_hub` | [huggingface/huggingface_hub](https://github.com/huggingface/huggingface_hub) | Hub-Client und hf-CLI; Revisionen und Dateiauswahl | light fuer Client, Downloads unbegrenzt ohne externe Limits |
+| HF_Hub / `hf_hub` | [huggingface/huggingface_hub](https://github.com/huggingface/huggingface_hub), [GitHub-Installer](../tools/hf-hub.md) | experimental: privater Hub-Client und hf-CLI; kein Login/Transfer beim Installieren | light fuer Client, Downloads unbegrenzt ohne externe Limits |
 | Video2Dataset / `video2dataset` | [iejMac/video2dataset](https://github.com/iejMac/video2dataset) | Genehmigte Video-URLs laden, verarbeiten und paketieren | heavy; Netzwerk/CPU/SSD, unzuverlaessige und nicht vertrauenswuerdige Quellen |
 
 Bibliothekscode: Datasets/Hub Apache-2.0, video2dataset MIT laut Upstream.
 Diese Lizenzen gelten nicht automatisch fuer heruntergeladene Medien.
 HF_Datasets hat einen eigenen experimentellen GitHub-Installer fuer 5.1.0;
 er richtet nur das Basispaket ein, keine Datensaetze, Modelle oder Trainings.
-HF_Hub und Video2Dataset bleiben **planned/documentation-first**.
+HF_Hub hat einen eigenen experimentellen GitHub-Client-/CLI-Installer fuer 2.2.0.
+Video2Dataset bleibt **planned/documentation-first**.
 Keine Docker-Pflicht und keine neuen Listener/Ports.
 
 Fuer HF_Datasets zuerst den eigenen Plan lesen:
@@ -60,7 +61,13 @@ Fuer HF_Datasets zuerst den eigenen Plan lesen:
 bash scripts/tools/hf_datasets_install.sh --dry-run
 ```
 
-HF_Hub und Video2Dataset verwenden weiterhin gemeinsame sichere Guards:
+Fuer HF_Hub gilt ebenfalls ein eigener Plan ohne Dateiuebertragung:
+
+```bash
+bash scripts/tools/hf_hub_install.sh --dry-run
+```
+
+Nur Video2Dataset verwendet weiterhin den gemeinsamen sicheren Guard:
 
 ```bash
 bash scripts/tools/video_dataset_candidate_install.sh --dry-run
