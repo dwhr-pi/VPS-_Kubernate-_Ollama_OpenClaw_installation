@@ -180,6 +180,36 @@ Die Bash-Checks zeigen nur die Registrierung, nicht eine erkannte
 Windows-Installation. Installation/Update/Uninstall aus dem Linux-Menue
 geben bewusst keinen falschen Erfolg aus.
 
+### Download direkt aus dem Setup oeffnen
+
+Bei **Qwen_Desktop installieren/aktualisieren** zeigt das Setup die vollstaendige
+[offizielle Download-URL](https://github.com/QwenLM/qwen-code/releases/tag/desktop-latest)
+und fragt interaktiv:
+
+```text
+Offizielle Windows-Downloadseite jetzt im Browser oeffnen? [(j)a/(N)ein]:
+```
+
+Mit `j` wird unter WSL der Windows-Standardbrowser ueber PowerShell beziehungsweise
+`cmd.exe` geoeffnet. Enter/`N` oeffnet nichts. Funktioniert die WSL-Windows-
+Integration nicht, bleibt der Link zum manuellen Oeffnen sichtbar. Auf einem
+Linux-Desktop wird optional `xdg-open` genutzt; auf einem headless VPS nur der Link.
+Keine Installation oder Aenderung der WSL-/Browserkonfiguration.
+
+Ohne interaktives Terminal wird nicht gefragt und kein Browser automatisch
+geoeffnet. Fuer eine ausdrueckliche Browseranforderung:
+
+```bash
+bash scripts/tools/qwen_desktop_install.sh --open-download
+```
+
+Die Seite kontaktiert GitHub ueber deinen Browser; das Setup laedt keine EXE
+herunter und startet keinen Installer. Windows-Asset selbst auswaehlen und
+wie oben beschrieben pruefen. Install/Update behalten Exit-Code 2, weil das
+Oeffnen der Downloadseite **keine erfolgreiche Installation** bedeutet.
+`--open-download` meldet nur den Erfolg der Browser-Uebergabe. Dry-Run,
+Status, Doctor und Deinstallation oeffnen niemals einen Browser.
+
 Offen: echter Windows-Installations-Smoke-Test, Publisher-Pin, ARM64-Paket,
 versionsbezogene GUI-Provider-Tests und eng begrenzter OpenClaw/n8n-Adapter.
 Quelle/Download verifiziert ist nicht dasselbe wie lokal installiert/getestet.

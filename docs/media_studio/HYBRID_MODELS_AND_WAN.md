@@ -32,9 +32,9 @@ Keine automatische Toolinstallation, Modelldownloads oder Agentenstarts.
 
 | Tool / ID | GitHub | Rolle |
 |---|---|---|
-| Cline / `cline` | [cline/cline](https://github.com/cline/cline) | Coding-Agent, Aktionen einzeln freigeben |
+| Cline / `cline` | [cline/cline](https://github.com/cline/cline) | [Eigener GitHub-VSIX-Paketinstaller](../tools/cline.md), Editor-Installation separat; Aktionen einzeln freigeben |
 | Qwen_Code / `qwen_code` | [QwenLM/qwen-code](https://github.com/QwenLM/qwen-code) | CLI; [eigener Windows-Desktop-Einstieg](../tools/qwen-desktop-windows.md) separat |
-| Wan21 / `wan21` | [Wan-Video/Wan2.1](https://github.com/Wan-Video/Wan2.1) | Modell-/Inferenzcode, nicht alle Wan-Versionen |
+| Wan21 / `wan21` | [Wan-Video/Wan2.1](https://github.com/Wan-Video/Wan2.1) | [Eigener GitHub-Quellinstaller](../tools/wan21.md), schwere GPU-Pakete separat; keine Gewichte/Renderjobs |
 | ComfyUI_GGUF / `comfyui_gguf` | [city96/ComfyUI-GGUF](https://github.com/city96/ComfyUI-GGUF) | quantisierte native ComfyUI-Modellpfade |
 | WanVideoWrapper / `wanvideo_wrapper` | [kijai/ComfyUI-WanVideoWrapper](https://github.com/kijai/ComfyUI-WanVideoWrapper) | eigener Wan-Node-/Modellpfad |
 | SUPIR / `supir` | [Fanghua-Yu/SUPIR](https://github.com/Fanghua-Yu/SUPIR) | Bildrestaurierung, kein universeller Videorefiner |
@@ -45,14 +45,19 @@ Continue und Cline sind unterschiedliche Coding-Oberflaechen. Qwen Code hat
 CLI und Desktop, Qwen Chat/Studio und QwenWork sind davon zu unterscheiden.
 Alle Lizenzen/Gewichte, Nodes und Programme vor Produktivnutzung konkret pruefen.
 
-Gemeinsamer Guard, kein echter Installer:
+Fuer die weiterhin geplanten Medienkandidaten gilt der gemeinsame Guard,
+kein echter Installer. Cline hat inzwischen den oben verlinkten VSIX-Paketpfad,
+Qwen Code einen [eigenen Source-Installer](../tools/qwen-code.md).
+Wan21 hat ebenfalls einen eigenen [Source-/GPU-Paketpfad](../tools/wan21.md)
+ohne Docker; sein Quellmarker ist kein vollstaendiger Modellfunktionstest.
 
 ```bash
 bash scripts/tools/hybrid_media_candidate_install.sh --dry-run
 ```
 
-Install/Update/Uninstall ohne Plan liefern Exit-Code 2, Checks nur Registrierungsstatus.
-Reale Installer, Pins, Preflight und Smoke-Tests fehlen noch.
+Beim gemeinsamen Guard liefern Install/Update/Uninstall ohne Plan Exit-Code 2,
+Checks nur Registrierungsstatus. Fuer dessen Medienkandidaten fehlen reale
+Installer, Pins, Preflight und Smoke-Tests weiterhin.
 
 ## Wan-Grafik: Konzept, kein ausfuehrbarer Graph
 

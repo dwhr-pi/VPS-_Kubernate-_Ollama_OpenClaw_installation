@@ -7,9 +7,9 @@ Installer baut nur CLI-Code; kein Login, Agent, Modell oder Dienst startet.
 ## Voraussetzungen
 
 - Linux/WSL als normaler Benutzer, nicht mit `sudo` bauen.
-- Node **22.x**, npm, Git, flock, Corepack und **pnpm 11.24.0**.
-- `COREPACK_ENABLE_NETWORK=0 corepack pnpm --version` muss bereits lokal
-  `11.24.0` liefern. Keine globale Runtime-Aktualisierung durch den Installer.
+- Git und flock; fuer den Build Node **22.22+ innerhalb 22.x**, npm >=10,
+  Corepack und **pnpm 11.24.0**. Fehlende Laufzeiten werden bei ausdruecklicher
+  Installation/Repair jetzt **privat** bereitgestellt, nicht global ersetzt.
 - Planungsreserve: **8 GiB Gesamt-RAM und 10 GiB freier Linux-Speicher**, unter
   WSL zusaetzlich **10 GiB auf Windows C:**. Keine gemessenen Mindestwerte;
   freien RAM und Last separat pruefen, andere schwere Jobs vorher beenden.
@@ -17,6 +17,50 @@ Installer baut nur CLI-Code; kein Login, Agent, Modell oder Dienst startet.
 
 Andere Tools koennen andere pnpm-Versionen verlangen. Versionen pro Projekt
 verwalten, nicht wahllos global ersetzen. Keine automatische Profilinstallation.
+
+## Automatische private Laufzeiten
+
+Erkennbar an `Qwen-Code-Runtime: 2026-10-16-private-node-corepack-bootstrap`.
+Der fruehere Abbruch `node fehlt; separat einrichten` wird damit ersetzt.
+Nach Ressourcenpruefung, Lock und privatem Buildlog:
+
+1. Passendes Node/npm weiterverwenden oder ueber den vorhandenen GitHub-nvm-
+   Helfer bereitstellen: nvm v0.40.8, offizielles Node-22-Binary mit npm und
+   nvm-Checksumpruefung. Patchversion beim Download aufgeloest, kein Source-Build.
+2. Fehlendes Corepack **0.34.0** per npm in privatem Prefix installieren,
+   mit `--global=false --ignore-scripts`. Kein `corepack enable` am System-Node.
+3. pnpm **11.24.0 samt SHA-512-Referenz aus dem gepinnten Upstream-Manifest**
+   ausschliesslich im privaten Corepack-Cache bereitstellen.
+
+```text
+~/.openclaw_ultimate_user_data/tools/qwen_code/runtime/nvm/
+~/.openclaw_ultimate_user_data/tools/qwen_code/runtime/corepack/
+~/.openclaw_ultimate_user_data/tools/qwen_code/runtime/corepack-cache/
+```
+
+Beachtet `OPENCLAW_USER_DATA_DIR`. `COREPACK_HOME` zeigt immer auf diesen Cache;
+Corepacks `install --global` aendert **nur dessen private Default-Version**,
+nicht System-Shims oder die Corepack-Einstellungen anderer Tools. Kein Umbau
+von System-Node, `~/.nvm`, globalem pnpm, Shellprofilen oder Automaton-pnpm 10.
+Keine andere Anwendung auf pnpm 11 migrieren. Corepack/Paketmanager kommen aus
+der offiziellen npm-Registry, der App-Quellcode weiterhin aus GitHub.
+
+Ressourcen pruefen vor Downloads. Fuer ein frisches nvm kann der gemeinsame
+Helfer `git`, `curl`, `ca-certificates`, `tar`, `xz-utils` per apt einrichten
+und sudo verlangen; kein apt-Node. Native Compiler/Python bleiben separat.
+Doctor/Status/Dry-Run laden nichts nach. Die Versionspruefungen haben
+`COREPACK_ENABLE_NETWORK=0`; nur die ausdrueckliche Runtime-Vorbereitung darf
+den privaten pnpm-Cache fuellen. Deaktivierung behaelt die privaten Laufzeiten.
+
+Automatische Runtime-Downloads deaktivieren:
+
+```bash
+QWEN_CODE_AUTO_RUNTIME=0 bash scripts/tools/qwen_code_install.sh
+```
+
+Ohne passende Laufzeiten/privaten Cache wird dann abgebrochen. Bei vorhandenen
+Laufzeiten bleiben die ausdruecklichen GitHub-/Paketdownloads fuer den Build
+erlaubt. Ein Bootstrap-Fehler stoppt vor Clone/Build und neuem Erfolgsmarker.
 
 ## Installation
 
@@ -39,6 +83,8 @@ Build im gepinnten Checkout: `pnpm install --frozen-lockfile`,
 `BUILD_SANDBOX=0`, `QWEN_SANDBOX=false`, `QWEN_SKIP_PREPARE=1`, `HUSKY=0`,
 `COREPACK_ENABLE_NETWORK=0`, `PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1` und
 `PUPPETEER_SKIP_DOWNLOAD=1`; `QWEN_HOME` zeigt auf privates `build-home`.
+Die Buildphase erzwingt Corepacks Projekt-Pin und Strict-Modus;
+`COREPACK_ENABLE_AUTO_PIN=0` verhindert automatisches Umschreiben des Manifests.
 Kein `build:all`, `build:sandbox`, `build-and-start`, Desktop-/Android-Build
 oder globales `npm install -g`. Kein Docker/Podman.
 
@@ -95,6 +141,9 @@ pruefen; kein Reset/Loeschen. Deaktivierung verschiebt Code nach
 
 ## Testgrenzen
 
+15 Offline-Pruefungen fuer Bootstrap, Abbrueche, Dry-Run, Registry und Doku
+bestanden; Node/nvm/Corepack werden dabei simuliert, kein echter Download.
+
 Kein echter pnpm-Build, Login, Modellaufruf oder WSL-Eingriff durch Codex.
 Linux-/WSL-Build und native Abhaengigkeiten auf x86_64/ARM bleiben praktisch zu
 testen, bevor der Installer als stabil gelten kann.
@@ -102,3 +151,5 @@ testen, bevor der Installer als stabil gelten kann.
 Primaerquellen: [Manifest](https://github.com/QwenLM/qwen-code/blob/v0.25.1/package.json),
 [Build](https://github.com/QwenLM/qwen-code/blob/v0.25.1/scripts/build.js),
 [Prepare](https://github.com/QwenLM/qwen-code/blob/v0.25.1/scripts/prepare.js).
+Corepack: [Manifest 0.34.0](https://github.com/nodejs/corepack/blob/v0.34.0/package.json)
+und [private Cache-/Netzwerk-Einstellungen](https://github.com/nodejs/corepack/blob/v0.34.0/README.md#environment-variables).

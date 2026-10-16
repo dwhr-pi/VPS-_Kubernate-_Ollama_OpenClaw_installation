@@ -1,5 +1,10 @@
 # GitHub Tool Sources
 
+[Wan21](tools/wan21.md): GitHub Wan-Video/Wan2.1, Commit
+`9737cba9c1c3c4d04b33fcad41c111989865d315`, ohne Docker. Standard nur Quellen;
+GPU-Pakete doppelt opt-in aus PyPI/PyTorch, Modellgewichte separat. Keine
+automatische Inferenz oder Treiberinstallation.
+
 Qwen_Desktop und Qwen_Code: [offizieller Code](https://github.com/QwenLM/qwen-code),
 [Desktop-Releases](https://github.com/QwenLM/qwen-code/releases/tag/desktop-latest).
 [Windows-Einstieg](tools/qwen-desktop-windows.md), kein Community-Web-Wrapper.
@@ -7,6 +12,10 @@ Qwen_Desktop und Qwen_Code: [offizieller Code](https://github.com/QwenLM/qwen-co
 `c1a8218f38203e272e6e965778ed6a2795cfeed7`, pnpm 11.24.0/Corepack,
 Node 22.x; keine Container-, Login- oder Agenteninitialisierung.
 [Cline/Wan/GGUF/Wrapper/SUPIR/FILM-Quellen](media_studio/HYBRID_MODELS_AND_WAN.md).
+
+[Cline-VSIX](tools/cline.md): offizielles GitHub-Release v4.1.25,
+fester SHA-256-Hash und Extension-Metadatenpruefung. Kein Docker/Marketplace-
+Download; Paketbereitstellung ist getrennt von der manuellen Editorinstallation.
 
 Defensiver Audio-Pfad: [pyannote/pyannote-audio](https://github.com/pyannote/pyannote-audio),
 [Rikorose/DeepFilterNet](https://github.com/Rikorose/DeepFilterNet),
@@ -26,7 +35,9 @@ Dataset-Werkzeuge, nur planned:
 
 [Audio-/Video-Quellen](media_studio/AUDIO_VIDEO_TOOL_CATALOG.md):
 20 Kandidaten mit direkten Upstream-Links, alle planned/documentation-first.
-Karaoke_Formats ist eigene Repository-Logik, keine fremde Paketinstallation.
+Karaoke_Formats ist eigene Repository-Logik: optionaler privater CLI-Starter
+aus dem vorhandenen GitHub-Setup-Checkout mit SHA-256-Pruefung, kein weiterer
+Clone, Docker oder fremdes Paket. Nach Setup-Updates den Tool-Starter aktualisieren.
 
 Diese Datei dokumentiert die bevorzugten Primaerquellen. Systempakete aus `apt` bleiben fuer Compiler, Libraries, Python-venv, Git, curl, Docker-Basis oder vergleichbare Build-Abhaengigkeiten erlaubt.
 

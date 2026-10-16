@@ -2,6 +2,35 @@
 
 ## Unreleased
 
+- Wan21: eigener gepinnter GitHub-Quellinstaller statt Hybrid-Platzhalter,
+  ohne Docker/Modelle. Schwere CUDA-12.8-/PyTorch-/Flash-Attention-Pakete
+  nur mit doppeltem Opt-in und Preflight; Quell- und Runtime-Marker getrennt.
+  Offline-Doctor, Lock/Logs und datenerhaltende Deaktivierung.
+
+- Cline: Hybrid-Platzhalter durch eigenen GitHub-Release-VSIX-Pfad ersetzt,
+  v4.1.25 mit SHA-256/Publisher-Pruefung, Lock, Logs und Offline-Doctor.
+  Paketbereitstellung ohne Docker; Editor-Installation separat und klar
+  vom Paketstatus getrennt, keine IDE-/Provider-/Agentenaktionen.
+
+- Qwen_Desktop: offizielle Windows-Downloadseite nach freiwilliger
+  [(j)a/(N)ein]-Bestaetigung im Browser oeffnen; explizit --open-download
+  moeglich. Kein Download/Installerstart oder falscher Installationsstatus.
+
+- Karaoke_Formats: bisher ins Leere laufende Menue-Installation durch privaten
+  CLI-Starter aus dem vorhandenen GitHub-Setup-Checkout ersetzt. Ohne Docker,
+  Pakete oder zweiten Clone; SHA-256, Disk-Reserve, Operations-Lock, Logs,
+  Offline-Status/Doctor und datenerhaltende Deinstallation.
+
+- Microsoft_Agent_Framework: geplanten Platzhalter durch optionalen GitHub-
+  Source-Installer fuer Python-Core 1.22.0 ersetzt. Private venv, fester Commit,
+  Ressourcencheck, Lock, Logs und Offline-Doctor; kein Docker/Agentenstart.
+  Deinstallation deaktiviert die Erfolgsmarkierung und erhaelt Daten/venv.
+
+- Qwen_Code: fehlendes Node/npm privat via GitHub-nvm bereitstellen, Corepack
+  0.34.0 in privatem npm-Prefix und pnpm 11.24.0 mit Upstream-Hash im eigenen
+  Corepack-Cache. Kein globales Update, Login, Agent oder Docker. Opt-out:
+  QWEN_CODE_AUTO_RUNTIME=0; Doctor/Dry-Run ohne Downloads.
+
 - Automaton: private automatische Node-22/npm- und pnpm-10.28.1-Bereitstellung
   nach Ressourcencheck/Lock, nur bei ausdruecklicher Installation/Repair.
   Kein System-Node-/globales pnpm-Update, keine Downloads bei Status/Doctor,

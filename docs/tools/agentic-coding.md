@@ -16,7 +16,7 @@ fuer diesen Leitfaden ausgefuehrt.
 | `langgraph` | [langchain-ai/langgraph](https://github.com/langchain-ai/langgraph) | explizite Workflows/Zustandsgraphen | vorhandener Python-Paket-Installer; nicht automatisch GitHub-Source-Build, kein fertiger Coding-Agent |
 | `crewai` | [crewAIInc/crewAI](https://github.com/crewAIInc/crewAI) | Rollen-/Multi-Agent-Orchestrierung | vorhandener Installer, Ende-zu-Ende-Integration und Rechtekonzept nicht nachgewiesen |
 | `autogen` | [microsoft/autogen](https://github.com/microsoft/autogen) | vorhandene Multi-Agent-Anwendungen | Upstream Maintenance Mode; bestehende Projekte erhalten, Migration gesondert planen |
-| `agent_framework` | [microsoft/agent-framework](https://github.com/microsoft/agent-framework) | optionaler Orchestrierungs-Kandidat | **neu planned**, nur Registrierung/Plan, kein Download/Build/Start; Python/.NET, kein fertiger Repo-Coder |
+| `agent_framework` | [microsoft/agent-framework](https://github.com/microsoft/agent-framework) | optionale Python-Orchestrierungsbibliothek | **experimental**, gepinnter GitHub-Core-Source-Installer in eigener venv, kein Docker/Start; [Anleitung](microsoft-agent-framework.md) |
 | `automaton` | [Conway-Research/automaton](https://github.com/Conway-Research/automaton) | autonome Runtime als Forschungsreferenz | **planned/high-risk**, nur eigener Offline-Vorschlagspruefer; Runtime/Wallet/Signieren/Cloud/Replikation gesperrt |
 
 Die Quellen wurden fuer die Dokumentation geprueft, aber weder deren Lizenzen
@@ -59,10 +59,10 @@ bash scripts/tools/agent_framework_status.sh
 bash scripts/profiles/Agentic_Coding_Local_First_install.sh --dry-run
 ```
 
-Die Framework-Pruefung liefert `installed: false`, `scope: registration_only`.
-Ein normaler Install-/Update-/Uninstall-Aufruf endet mit Exit-Code 2,
-ohne Download oder Statusmarkierung. Ein Doctor-Ergebnis prueft hier nur die
-Registrierung, keine SDK-/Modellfunktion. Es werden keine Ports geoeffnet.
+Der Framework-Dry-Run beschreibt den GitHub-Python-Core-Installer ohne Downloads.
+Ein normaler Install-Aufruf installiert jetzt bewusst das SDK. Status und
+Doctor pruefen die vorhandene Installation offline, aber keine Modellfunktion.
+Es werden keine Ports geoeffnet. Das Gesamtprofil bleibt weiterhin planned.
 
 ## Ressourcen und offene Aufgaben
 
@@ -74,5 +74,6 @@ Kein automatischer Import aller ENV-Tresorwerte in einen Coding-Agenten.
 
 Offen: versionsgebundene SDK-/Source-Pfade, einheitliche Dry-Runs fuer die
 aelteren Installer, echte Client-/Ollama-Smoke-Tests, getestete Sandboxes und
-Queue-Locks. Microsoft Agent Framework bleibt bis dahin documentation-first.
+Queue-Integration. Microsoft Agent Framework hat nun einen optionalen
+Source-Installer mit eigenem Operations-Lock; Modell-/Agentenbetrieb bleibt separat.
 Die [Automaton-Integration](automaton.md) behielt ihre separaten Schutzsperren.

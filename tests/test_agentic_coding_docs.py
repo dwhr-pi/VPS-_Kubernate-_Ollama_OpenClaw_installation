@@ -24,7 +24,8 @@ class AgenticCodingDocs(unittest.TestCase):
             self.assertTrue(tool['source'].startswith('https://github.com/'), tid)
             self.assertTrue((ROOT / tool['doc']).is_file(), tid)
         framework = next(t for t in entries if t['id'] == 'agent_framework')
-        self.assertEqual(framework['status'], 'planned')
+        self.assertEqual(framework['status'], 'experimental')
+        self.assertFalse(framework['auto_install'])
         self.assertEqual(framework['ports'], [])
         for field in ('install_script', 'uninstall_script', 'update_script', 'doctor_script'):
             self.assertTrue((ROOT / framework[field]).is_file())
@@ -40,7 +41,8 @@ class AgenticCodingDocs(unittest.TestCase):
 
     def test_local_markdown_links(self):
         files = ('docs/AGENTIC_CODING_GUIDE.md', 'docs/tools/agentic-coding.md',
-                 'docs/Profile/Agentic_Coding_Local_First.md', 'docs/tools/automaton.md')
+                 'docs/Profile/Agentic_Coding_Local_First.md', 'docs/tools/automaton.md',
+                 'docs/tools/microsoft-agent-framework.md')
         for relative in files:
             doc = ROOT / relative
             for link in re.findall(r'\]\(([^)]+)\)', doc.read_text(encoding='utf-8')):
@@ -71,10 +73,10 @@ class AgenticPlannedGuards(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertFalse(json.loads(result.stdout)['installed'])
 
-    def test_framework_runtime_actions_blocked(self):
+    def test_framework_agent_start_blocked(self):
         for action in ('install', 'update', 'uninstall'):
             with self.subTest(action=action):
-                result = self.invoke(f'scripts/tools/agent_framework_{action}.sh', [])
+                result = self.invoke(f'scripts/tools/agent_framework_{action}.sh', ['start'])
                 self.assertEqual(result.returncode, 2, result.stderr)
 
     def test_profile_plan_is_not_installation(self):

@@ -3,6 +3,8 @@ set -euo pipefail
 QWEN_CODE_REPO_ROOT="$(cd "${BASH_SOURCE[0]%/*}/../../.." && pwd)"
 QWEN_CODE_SOURCE_URL=https://github.com/QwenLM/qwen-code.git
 QWEN_CODE_SOURCE_COMMIT=c1a8218f38203e272e6e965778ed6a2795cfeed7
+QWEN_CODE_RUNTIME_REVISION=2026-10-16-private-node-corepack-bootstrap
+QWEN_CODE_PNPM_SPEC=pnpm@11.24.0+sha512.bd27e345e976dcb0be0b7a1228217b049a817e21b1f355c90dbe7dc46671895a8bc1e6d06c24554505ea93ea0b45f489a27ec1bfbc8de6a9659fca0f16fa0000
 
 qwen_code_paths() {
     local root="${OPENCLAW_USER_DATA_DIR:-$HOME/.openclaw_ultimate_user_data}" path
@@ -12,7 +14,11 @@ qwen_code_paths() {
     QWEN_CODE_SOURCE_DIR="$QWEN_CODE_BASE/source"
     QWEN_CODE_MARKER="$QWEN_CODE_BASE/source-built"
     QWEN_CODE_LOG_DIR="$root/install_logs"
-    local -a paths=("$root" "$QWEN_CODE_BASE" "$QWEN_CODE_SOURCE_DIR" "$QWEN_CODE_MARKER" "$QWEN_CODE_LOG_DIR" "$QWEN_CODE_BASE/operation.lock" "$QWEN_CODE_BASE/build-home") resolved=()
+    QWEN_CODE_NVM_DIR="$QWEN_CODE_BASE/runtime/nvm"
+    QWEN_CODE_COREPACK_DIR="$QWEN_CODE_BASE/runtime/corepack"
+    export COREPACK_HOME="$QWEN_CODE_BASE/runtime/corepack-cache"
+    export COREPACK_ENV_FILE=0 COREPACK_ENABLE_AUTO_PIN=0 COREPACK_DEFAULT_TO_LATEST=0
+    local -a paths=("$root" "$QWEN_CODE_BASE" "$QWEN_CODE_SOURCE_DIR" "$QWEN_CODE_MARKER" "$QWEN_CODE_LOG_DIR" "$QWEN_CODE_BASE/operation.lock" "$QWEN_CODE_BASE/build-home" "$QWEN_CODE_NVM_DIR" "$QWEN_CODE_NVM_DIR/nvm.sh" "$QWEN_CODE_COREPACK_DIR" "$QWEN_CODE_COREPACK_DIR/node_modules" "$QWEN_CODE_COREPACK_DIR/node_modules/.bin" "$QWEN_CODE_COREPACK_DIR/node_modules/corepack" "$COREPACK_HOME") resolved=()
     local index=0
     mapfile -t resolved < <(realpath -m -- "${paths[@]}")
     [[ "${#resolved[@]}" == "${#paths[@]}" ]] || return 1
@@ -24,17 +30,97 @@ qwen_code_paths() {
     done
 }
 
-qwen_code_runtime_check() {
+qwen_code_require_base_tools() {
     local program
-    for program in node npm pnpm corepack git flock; do
+    for program in git flock; do
         command -v "$program" >/dev/null || { echo "Qwen Code: $program fehlt; separat einrichten." >&2; return 1; }
     done
-    node -e 'if(Number(process.versions.node.split(".")[0])!==22)process.exit(1)' || {
-        echo 'Qwen Code: fuer diesen Buildpfad Node 22.x verwenden; System-Node wird nicht ersetzt.' >&2; return 1;
+}
+
+qwen_code_node_compatible() {
+    local version
+    command -v node >/dev/null && command -v npm >/dev/null || return 1
+    node -e 'const [a,b]=process.versions.node.split(".").map(Number);if(a!==22||b<22)process.exit(1)' || return 1
+    version="$(npm --version)" || return 1
+    [[ "$version" =~ ^([0-9]+)\. ]] && ((BASH_REMATCH[1] >= 10))
+}
+
+qwen_code_activate_private_node() {
+    [[ -s "$QWEN_CODE_NVM_DIR/nvm.sh" && -d "$QWEN_CODE_NVM_DIR/.git" && ! -L "$QWEN_CODE_NVM_DIR/.git" ]] || return 1
+    [[ "$(git -C "$QWEN_CODE_NVM_DIR" remote get-url origin)" == https://github.com/nvm-sh/nvm.git ]] || return 1
+    git -C "$QWEN_CODE_NVM_DIR" diff --quiet HEAD -- nvm.sh || return 1
+    export NVM_DIR="$QWEN_CODE_NVM_DIR"
+    # shellcheck disable=SC1090
+    source "$NVM_DIR/nvm.sh" --no-use || return 1
+    nvm use 22 >/dev/null 2>&1
+}
+
+qwen_code_activate_private_tools() {
+    local binary="$QWEN_CODE_COREPACK_DIR/node_modules/.bin/corepack"
+    [[ -f "$binary" && "$(realpath -m -- "$binary")" == "$QWEN_CODE_COREPACK_DIR/node_modules/corepack/dist/corepack.js" ]] || return 1
+    export PATH="$QWEN_CODE_COREPACK_DIR/node_modules/.bin:$PATH"
+    hash -r
+    [[ "$(COREPACK_ENABLE_NETWORK=0 corepack --version)" == 0.34.0 ]]
+}
+
+qwen_code_tools_compatible() {
+    command -v pnpm >/dev/null && command -v corepack >/dev/null || return 1
+    [[ "$(COREPACK_ENABLE_PROJECT_SPEC=0 COREPACK_ENABLE_NETWORK=0 pnpm --version)" == 11.24.0 &&
+       "$(COREPACK_ENABLE_PROJECT_SPEC=0 COREPACK_ENABLE_NETWORK=0 corepack pnpm --version)" == 11.24.0 ]]
+}
+
+qwen_code_runtime_check() {
+    qwen_code_require_base_tools || return 1
+    if [[ -s "$QWEN_CODE_NVM_DIR/nvm.sh" ]] || ! qwen_code_node_compatible >/dev/null 2>&1; then
+        qwen_code_activate_private_node || true
+    fi
+    qwen_code_node_compatible || { echo 'Qwen Code: Node 22.22+/npm >=10 fehlt; Installation/Repair nutzen. Kein Download bei diesem Check.' >&2; return 1; }
+    qwen_code_activate_private_tools || true
+    qwen_code_tools_compatible || { echo 'Qwen Code: pnpm 11.24.0/Corepack-Cache fehlt; Installation/Repair nutzen. Kein Download bei diesem Check.' >&2; return 1; }
+}
+
+qwen_code_load_node_helper() {
+    # shellcheck disable=SC1091
+    source "$QWEN_CODE_REPO_ROOT/scripts/tools/helpers/node_tool_common.sh"
+    # Bound only inside qwen_code_main's installation subshell.
+    check_node_tool_runtime() { qwen_code_node_compatible; }
+}
+
+qwen_code_install_private_tools() {
+    mkdir -p "$QWEN_CODE_COREPACK_DIR" || return 1
+    npm install --prefix "$QWEN_CODE_COREPACK_DIR" --global=false --ignore-scripts \
+        --no-audit --no-fund --package-lock=false --engine-strict \
+        --registry=https://registry.npmjs.org corepack@0.34.0 || return 1
+    qwen_code_activate_private_tools
+}
+
+qwen_code_cache_package_manager() {
+    # --global changes only this tool's private COREPACK_HOME/default, not system shims.
+    COREPACK_ENABLE_PROJECT_SPEC=0 COREPACK_ENABLE_NETWORK=1 corepack install --global "$QWEN_CODE_PNPM_SPEC"
+}
+
+qwen_code_prepare_runtime() {
+    if qwen_code_runtime_check >/dev/null 2>&1; then return 0; fi
+    [[ "${QWEN_CODE_AUTO_RUNTIME:-1}" == 1 ]] || {
+        echo 'Qwen Code: automatischer Runtime-Download durch QWEN_CODE_AUTO_RUNTIME=0 deaktiviert.' >&2; return 1;
     }
-    [[ "$(pnpm --version)" == 11.24.0 && "$(COREPACK_ENABLE_NETWORK=0 corepack pnpm --version)" == 11.24.0 ]] || {
-        echo 'Qwen Code: pnpm 11.24.0 laut gepinntem packageManager erforderlich; kein globales Update.' >&2; return 1;
-    }
+    qwen_code_require_base_tools || return 1
+    if ! qwen_code_node_compatible >/dev/null 2>&1; then
+        echo "Qwen Code: stelle Node 22/npm privat via GitHub-nvm bereit: $QWEN_CODE_NVM_DIR"
+        qwen_code_load_node_helper || return 1
+        export NVM_DIR="$QWEN_CODE_NVM_DIR"
+        TOOL_NAME=Qwen_Code
+        TOOL_NODE_MIN_VERSION=22.22.0
+        if [[ ! -s "$NVM_DIR/nvm.sh" ]]; then unset -f nvm 2>/dev/null || true; fi
+        ensure_node_tool_runtime || return 1
+        qwen_code_node_compatible || return 1
+    fi
+    if ! qwen_code_tools_compatible; then
+        if ! qwen_code_activate_private_tools; then qwen_code_install_private_tools || return 1; fi
+        echo 'Qwen Code: stelle pnpm 11.24.0 im privaten Corepack-Cache bereit.'
+        qwen_code_cache_package_manager || return 1
+    fi
+    qwen_code_runtime_check
 }
 
 qwen_code_require_user() {
@@ -81,11 +167,12 @@ qwen_code_smoke() (
 
 qwen_code_build() (
     local mode="$1" mount="$QWEN_CODE_BASE" log before started
+    qwen_code_require_base_tools || return 1
     while [[ ! -d "$mount" ]]; do mount="${mount%/*}"; [[ -n "$mount" ]] || mount=/; done
     qwen_code_resources "$mount" || return 1
     qwen_code_lock || return 1
     if [[ -e "$QWEN_CODE_SOURCE_DIR" ]]; then qwen_code_verify_source || return 1; fi
-    if [[ "$mode" == install ]] && qwen_code_is_built; then
+    if [[ "$mode" == install ]] && qwen_code_is_built && qwen_code_runtime_check >/dev/null 2>&1; then
         qwen_code_smoke || return 1
         echo 'Qwen Code Source-Build bereits vorhanden; kein Agent gestartet.'; return 0
     fi
@@ -96,6 +183,11 @@ qwen_code_build() (
     exec > >(tee -a "$log") 2>&1
     trap 'rc=$?; printf "Qwen Code Build Exit=%s Dauer=%ss Disk-vorher-KiB=%s\n" "$rc" "$((SECONDS-started))" "$before"; df -Pk "$mount"; exit "$rc"' EXIT
     echo "Qwen Code GitHub-Source $QWEN_CODE_SOURCE_COMMIT; kein Docker, Login- oder Agentenstart."
+    qwen_code_prepare_runtime || { echo 'Qwen Code: Runtime-Bereitstellung fehlgeschlagen; kein neuer Erfolgsmarker.' >&2; return 1; }
+    if [[ "$mode" == install ]] && qwen_code_is_built; then
+        qwen_code_smoke || return 1
+        echo 'Qwen Code: private Runtime wiederhergestellt, vorhandenen Build geprueft.'; return 0
+    fi
     if [[ ! -e "$QWEN_CODE_SOURCE_DIR" ]]; then
         git init "$QWEN_CODE_SOURCE_DIR" || return 1
         git -C "$QWEN_CODE_SOURCE_DIR" remote add origin "$QWEN_CODE_SOURCE_URL" || return 1
@@ -110,6 +202,7 @@ qwen_code_build() (
         # Pinned dependency lifecycle scripts may run; never invoke the agent entry point.
         export BUILD_SANDBOX=0 QWEN_SANDBOX=false QWEN_SKIP_PREPARE=1 HUSKY=0
         export PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 PUPPETEER_SKIP_DOWNLOAD=1 COREPACK_ENABLE_NETWORK=0
+        export COREPACK_ENABLE_PROJECT_SPEC=1 COREPACK_ENABLE_STRICT=1
         export QWEN_HOME="$QWEN_CODE_BASE/build-home"
         pnpm install --frozen-lockfile && pnpm run build --cli-only && pnpm run bundle
     ) || { echo 'Qwen Code Build fehlgeschlagen. Privates Log, Node/pnpm und native Build-Werkzeuge pruefen.' >&2; return 1; }
@@ -120,6 +213,7 @@ qwen_code_build() (
 
 qwen_code_main() (
     umask 077
+    echo "Qwen-Code-Runtime: $QWEN_CODE_RUNTIME_REVISION"
     local mode="${1:---dry-run}"
     case "$mode" in
         --dry-run|--plan|plan) mode=plan ;; --check|check|--status|status) mode=status ;;
@@ -150,6 +244,5 @@ qwen_code_main() (
         rm -f -- "$QWEN_CODE_MARKER" || return 1
         echo 'Build deaktiviert, Quellcode gesichert. Keine Prozesse, Logins oder Runtime-Daten angefasst.'; return 0
     fi
-    qwen_code_runtime_check || return 1
     qwen_code_build "$mode"
 )

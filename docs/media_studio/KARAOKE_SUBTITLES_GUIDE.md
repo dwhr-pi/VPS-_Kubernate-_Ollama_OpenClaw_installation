@@ -42,9 +42,71 @@ Exportformat; ein passender Exporter/Adapter ist erforderlich.
 ## 3. Der neue Offline-Konverter im Repository
 
 Python 3.10+ reicht, keine externe Bibliothek, GPU, API oder Modelle.
-Es wird keine neue Runtime-/Workspace-Struktur angelegt. Ausgaben nur in
+Beim direkten Aufruf wird kein Workspace angelegt. Der optionale Installer
+legt lediglich einen privaten Starter und seine Registrierung an. Ausgaben nur in
 einen von dir explizit gewaehlten, bereits existierenden privaten Exportordner
 ausserhalb des Repositories; vorhandene Dateien werden nicht ueberschrieben.
+
+### Im Setup installieren, ohne Docker
+
+`Karaoke_Formats` ist **eigener Code in unserem GitHub-Setup**, kein fremdes
+Projekt und kein Container. Die bisherige Meldung war eine fehlende
+Installationsaktion: Das Menue leitete `install` an den reinen Konverter weiter.
+Jetzt richtet das Menue einen privaten Starter aus dem vorhandenen Checkout ein.
+Ein zusaetzlicher Clone oder Download waere hier eine unnoetige zweite Kopie.
+Ein Setup-Update von GitHub liefert den neuen Quellcode; lokale Aenderungen
+sind noch keine Veroeffentlichung auf GitHub.
+
+```bash
+# Im aktuellen GitHub-Setup-Verzeichnis, ohne sudo:
+bash scripts/tools/karaoke_formats_install.sh --dry-run
+bash scripts/tools/karaoke_formats_install.sh
+bash scripts/tools/karaoke_formats_doctor.sh
+bash scripts/tools/karaoke_formats_status.sh
+
+# Installierten Starter offline pruefen:
+"$HOME/.openclaw_ultimate_user_data/tools/karaoke_formats/bin/karaoke-formats" plan
+"$HOME/.openclaw_ultimate_user_data/tools/karaoke_formats/bin/karaoke-formats" \
+  check --from srt --input examples/karaoke_formats/demo.srt
+```
+
+Voraussetzungen: Python 3.10+ und fuer die Shell-Starter Bash, keine pip-/npm-
+Pakete, GPU, Modelle oder Dienste. Python 3.12 von Ubuntu 24.04 passt.
+Fehlt Python, dieses Basiswerkzeug bewusst separat installieren. Unsere
+vorsichtige Disk-Reserve: 64 MiB am Ziel, unter WSL zusaetzlich 1 GiB auf C:.
+Dies sind Setup-Grenzen, keine gemessenen Mindestanforderungen. Keine schwere
+RAM-/GPU-Installation: nur kleine Textdateien, Eingaben auf 2 MiB begrenzt.
+MiniPC, RPi, VPS und GPU-PC nutzen denselben CPU-Konverter; K3s ist unnoetig.
+
+Unter `~/.openclaw_ultimate_user_data/tools/karaoke_formats/` liegen
+`bin/karaoke-formats` und `installed.json`; Protokolle stehen in `install_logs/`
+des privaten User-Workspace. `OPENCLAW_USER_DATA_DIR` kann den absoluten
+Workspace ausserhalb des Repos aendern. Symlink-/unaufgeloeste Pfade werden
+abgelehnt. Der SHA-256-gepruefte Starter verweist auf diesen Checkout: wird
+er verschoben oder der Konverter aktualisiert, Update erneut aufrufen.
+Status/Doctor pruefen Quelle und Starter offline, ohne Daten anzulegen.
+
+```bash
+bash scripts/tools/karaoke_formats_update.sh
+# Gleichbedeutend fuer eine Reparatur:
+bash scripts/tools/karaoke_formats_install.sh --repair
+bash scripts/tools/karaoke_formats_uninstall.sh
+```
+
+Installation ist idempotent. Ein Operations-Lock verhindert parallele
+Aenderungen; nach einem harten Prozessabbruch einen verwaisten Lock erst
+nach Pruefung laufender Prozesse manuell entfernen. Fremde Starter und
+fremde Registrierungen werden nicht automatisch ueberschrieben. Repair/Update
+kann einen registrierten Starter erneuern. Deinstallation entfernt nur den
+unveraenderten Starter und seine Registrierung, keine Quellen, Logs, Medien
+oder Exporte. Es gibt keine automatische PATH-/Shellprofil-Aenderung.
+Unter Windows kann man den Starter auch mit `python -I -B <Starterpfad>`
+aufrufen; die Shell-Menueintegration ist fuer Linux/WSL vorgesehen. Codex
+installiert dabei nichts in einer vorhandenen WSL.
+
+Die `install`/`update`/`uninstall`-Modi von `formats.py` selbst bleiben
+absichtlich gesperrt: Installationen laufen ausschliesslich ueber die
+Setup-Skripte beziehungsweise deren `manage.py`, Konvertierungen separat.
 
 ```bash
 # Offline pruefen, nur Anzahl der Bloecke ausgeben:

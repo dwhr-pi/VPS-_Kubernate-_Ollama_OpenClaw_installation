@@ -2,6 +2,10 @@
 import json
 from pathlib import Path
 import re
+import os
+import shutil
+import subprocess
+import tempfile
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -57,6 +61,108 @@ class QwenCodeTests(unittest.TestCase):
             for link in re.findall(r'\]\(([^)]+)\)', doc.read_text(encoding='utf-8')):
                 if '://' not in link and not link.startswith('#'):
                     self.assertTrue((doc.parent / link.split('#')[0]).exists(), link)
+
+
+class QwenCodeBootstrapTests(unittest.TestCase):
+    def shell(self, script):
+        bash = 'C:/Program Files/Git/bin/bash.exe' if os.name == 'nt' else shutil.which('bash')
+        if not bash or not Path(bash).exists():
+            self.skipTest('Bash unavailable')
+        with tempfile.TemporaryDirectory() as temp:
+            workspace = Path(temp) / 'private'
+            path = str(workspace).replace('\\', '/')
+            if os.name == 'nt':
+                path = '/' + path[0].lower() + path[2:]
+            prefix = ('source scripts/tools/helpers/qwen_code_common.sh\n'
+                      f'export OPENCLAW_USER_DATA_DIR="{path}"\n')
+            result = subprocess.run([bash, '--noprofile', '--norc', '-c', prefix + script],
+                                    cwd=ROOT, capture_output=True, text=True, timeout=45)
+            self.assertFalse(workspace.exists())
+            return result
+
+    def mocks(self):
+        return r'''
+qwen_code_paths
+qwen_code_require_base_tools() { :; }
+qwen_code_node_compatible() { [[ "${NODE_READY:-0}" == 1 ]]; }
+qwen_code_tools_compatible() { [[ "${TOOLS_READY:-0}" == 1 && "${CACHE_READY:-0}" == 1 ]]; }
+qwen_code_activate_private_node() { return 1; }
+qwen_code_activate_private_tools() { [[ "${TOOLS_READY:-0}" == 1 ]]; }
+qwen_code_load_node_helper() {
+    ensure_node_tool_runtime() {
+        [[ "$NVM_DIR" == "$OPENCLAW_USER_DATA_DIR/tools/qwen_code/runtime/nvm" ]] || return 90
+        echo NODE_BOOTSTRAP
+        [[ "${FAIL_NODE:-0}" != 1 ]] || return 1
+        NODE_READY=1
+    }
+}
+qwen_code_install_private_tools() {
+    echo COREPACK_BOOTSTRAP
+    [[ "${FAIL_TOOLS:-0}" != 1 ]] || return 1
+    TOOLS_READY=1
+}
+qwen_code_cache_package_manager() {
+    [[ "$COREPACK_HOME" == "$OPENCLAW_USER_DATA_DIR/tools/qwen_code/runtime/corepack-cache" ]] || return 91
+    [[ "$QWEN_CODE_PNPM_SPEC" == pnpm@11.24.0+sha512.* ]] || return 92
+    echo PNPM_CACHE
+    [[ "${FAIL_CACHE:-0}" != 1 ]] || return 1
+    CACHE_READY=1
+}
+'''
+
+    def test_missing_tools_prepared_once(self):
+        result = self.shell(self.mocks() + 'qwen_code_prepare_runtime\nqwen_code_prepare_runtime')
+        self.assertEqual(result.returncode, 0, result.stderr)
+        for value in ('NODE_BOOTSTRAP', 'COREPACK_BOOTSTRAP', 'PNPM_CACHE'):
+            self.assertEqual(result.stdout.count(value), 1)
+
+    def test_compatible_runtime_untouched(self):
+        result = self.shell(self.mocks() + 'NODE_READY=1; TOOLS_READY=1; CACHE_READY=1; qwen_code_prepare_runtime')
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(result.stdout, '')
+
+    def test_only_missing_cache_is_prepared(self):
+        result = self.shell(self.mocks() + 'NODE_READY=1; TOOLS_READY=1; qwen_code_prepare_runtime')
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertNotIn('BOOTSTRAP', result.stdout)
+        self.assertIn('PNPM_CACHE', result.stdout)
+
+    def test_opt_out(self):
+        result = self.shell(self.mocks() + 'export QWEN_CODE_AUTO_RUNTIME=0; qwen_code_prepare_runtime')
+        self.assertNotEqual(result.returncode, 0)
+        self.assertEqual(result.stdout, '')
+
+    def test_node_failure_stops_tools(self):
+        result = self.shell(self.mocks() + 'FAIL_NODE=1; qwen_code_prepare_runtime')
+        self.assertNotEqual(result.returncode, 0)
+        self.assertNotIn('COREPACK_BOOTSTRAP', result.stdout)
+
+    def test_corepack_failure_stops_cache(self):
+        result = self.shell(self.mocks() + 'NODE_READY=1; FAIL_TOOLS=1; qwen_code_prepare_runtime')
+        self.assertNotEqual(result.returncode, 0)
+        self.assertNotIn('PNPM_CACHE', result.stdout)
+
+    def test_cache_failure_stops(self):
+        result = self.shell(self.mocks() + 'NODE_READY=1; TOOLS_READY=1; FAIL_CACHE=1; qwen_code_prepare_runtime && echo UNEXPECTED')
+        self.assertNotEqual(result.returncode, 0)
+        self.assertNotIn('UNEXPECTED', result.stdout)
+
+    def test_check_never_installs(self):
+        result = self.shell(self.mocks() + 'qwen_code_runtime_check')
+        self.assertNotEqual(result.returncode, 0)
+        self.assertEqual(result.stdout, '')
+
+    def test_dry_run_no_install(self):
+        result = self.shell('qwen_code_main --dry-run')
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn('2026-10-16-private-node-corepack-bootstrap', result.stdout)
+
+    def test_cache_and_prefix_contract(self):
+        helper = (ROOT / 'scripts/tools/helpers/qwen_code_common.sh').read_text()
+        self.assertIn('--prefix "$QWEN_CODE_COREPACK_DIR" --global=false --ignore-scripts', helper)
+        self.assertIn('corepack@0.34.0', helper)
+        self.assertIn('export COREPACK_HOME="$QWEN_CODE_BASE/runtime/corepack-cache"', helper)
+        self.assertIn('COREPACK_ENABLE_PROJECT_SPEC=0 COREPACK_ENABLE_NETWORK=0 corepack pnpm --version', helper)
 
 
 if __name__ == '__main__':

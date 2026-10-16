@@ -39,7 +39,7 @@ class QwenDesktopDocs(unittest.TestCase):
         entries = json.loads((ROOT / 'config/tools.yml').read_text(encoding='utf-8'))['tools']
         for tid in ('cline', 'qwen_code', 'wan21', 'comfyui_gguf', 'wanvideo_wrapper', 'supir', 'film'):
             tool, = [t for t in entries if t['id'] == tid]
-            self.assertEqual(tool['status'], 'experimental' if tid == 'qwen_code' else 'planned')
+            self.assertEqual(tool['status'], 'experimental' if tid in ('qwen_code', 'cline', 'wan21', 'comfyui_gguf') else 'planned')
             self.assertTrue((ROOT / tool['doc']).is_file())
 
     def test_profile_optional(self):
@@ -78,6 +78,86 @@ class QwenDesktopDocs(unittest.TestCase):
                 if code == 0:
                     self.assertFalse(json.loads(result.stdout)['installed'])
             self.assertFalse(home.exists())
+
+
+@unittest.skipUnless(BASH and Path(BASH).exists(), 'Git Bash/bash unavailable')
+class QwenDesktopDownload(unittest.TestCase):
+    def invoke_mock(self, code):
+        return subprocess.run([str(BASH), '--noprofile', '--norc', '-c',
+                               'source scripts/tools/helpers/qwen_desktop_common.sh\n' + code],
+                              cwd=ROOT, capture_output=True, text=True, timeout=30)
+
+    def test_confirmed_prompt_opens_mock_only(self):
+        result = self.invoke_mock('''
+qwen_desktop_can_prompt() { return 0; }
+qwen_desktop_open_download() { echo MOCK_BROWSER; }
+qwen_desktop_main install <<< j
+''')
+        self.assertEqual(result.returncode, 2)
+        self.assertEqual(result.stdout.strip(), 'MOCK_BROWSER')
+        self.assertIn('[(j)a/(N)ein]', result.stderr)
+
+    def test_default_no_and_noninteractive_never_open(self):
+        for answer in ('', 'N', 'nein'):
+            result = self.invoke_mock('''
+qwen_desktop_can_prompt() { return 0; }
+qwen_desktop_open_download() { echo UNEXPECTED_BROWSER; }
+qwen_desktop_main install <<< ''' + repr(answer) + '\n')
+            self.assertEqual(result.returncode, 2)
+            self.assertNotIn('UNEXPECTED_BROWSER', result.stdout)
+        result = self.invoke_mock('''
+qwen_desktop_can_prompt() { return 1; }
+qwen_desktop_open_download() { echo UNEXPECTED_BROWSER; }
+qwen_desktop_main update
+''')
+        self.assertEqual(result.returncode, 2)
+        self.assertNotIn('UNEXPECTED_BROWSER', result.stdout)
+        self.assertIn('--open-download', result.stderr)
+
+    def test_explicit_option_dispatches_mock(self):
+        result = self.invoke_mock('''
+qwen_desktop_open_download() { echo MOCK_BROWSER; }
+qwen_desktop_main --open-download
+''')
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn('MOCK_BROWSER', result.stdout)
+        self.assertIn('https://github.com/QwenLM/qwen-code/releases/tag/desktop-latest', result.stdout)
+
+    def test_read_only_and_uninstall_never_open(self):
+        for mode in ('--dry-run', 'status', 'doctor', 'uninstall'):
+            result = self.invoke_mock('''
+qwen_desktop_open_download() { echo UNEXPECTED_BROWSER; }
+qwen_desktop_main ''' + mode)
+            self.assertEqual(result.returncode, 2 if mode == 'uninstall' else 0)
+            self.assertNotIn('UNEXPECTED_BROWSER', result.stdout)
+
+    def test_wsl_fixed_url_via_mock_powershell(self):
+        result = self.invoke_mock('''
+export WSL_DISTRO_NAME=synthetic
+powershell.exe() { printf 'MOCK_PS:%s\\n' "$@"; }
+qwen_desktop_open_download
+''')
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("Start-Process 'https://github.com/QwenLM/qwen-code/releases/tag/desktop-latest'", result.stdout)
+        self.assertIn('-NoProfile', result.stdout)
+
+    def test_mock_fallback_and_failure(self):
+        result = self.invoke_mock('''
+export WSL_DISTRO_NAME=synthetic
+powershell.exe() { return 42; }
+cmd.exe() { printf 'MOCK_CMD:%s\\n' "$@"; }
+qwen_desktop_open_download
+''')
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn('MOCK_CMD:start', result.stdout)
+        result = self.invoke_mock('''
+export WSL_DISTRO_NAME=synthetic
+powershell.exe() { return 42; }
+cmd.exe() { return 43; }
+qwen_desktop_main --open-download
+''')
+        self.assertEqual(result.returncode, 1)
+        self.assertIn('manuell oeffnen', result.stderr)
 
 
 @unittest.skipUnless(os.name == 'nt' and POWERSHELL, 'Windows PowerShell unavailable')

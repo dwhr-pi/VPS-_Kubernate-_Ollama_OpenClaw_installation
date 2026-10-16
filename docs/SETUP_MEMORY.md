@@ -1,5 +1,54 @@
 # Setup Memory
 
+## Wan21 GitHub-Quellinstallation, 2026-10-16
+
+- Wan-Video/Wan2.1 auf Commit 9737cba9c1c3c4d04b33fcad41c111989865d315
+  ohne Docker; source-ready prueft nur saubere Quellen/Syntax.
+- WAN21_INSTALL_RUNTIME=1 und INSTALL_HEAVY_TOOLS=1 fuer experimentelle
+  private CUDA-Pakete, nach GPU/nvcc/Ressourcenchecks. Keine Gewichte/Starts.
+- Kein SDPA-Fallback versprechen: Upstream-Modell ruft flash_attention direkt.
+  Doctor nur Metadaten, echter CUDA-/RTX-5080-Renderpfad weiter ungetestet.
+- Keine WSL-Eingriffe durch Codex; Uninstall erhaelt Quelle/venv/Modelle.
+
+## Cline GitHub-VSIX, 2026-10-16
+
+- Eigener optionaler Paketinstaller statt Hybrid-Guard: offizielles VSIX
+  v4.1.25 mit festem Release-Hash, kein Docker oder schwerer Source-Build.
+- release-ready/package_ready pruefen nur die Paketbereitstellung; niemals
+  als Nachweis einer installierten Windows-/WSL-Extension ausgeben.
+- Manuelle VSIX-Installation im gewuenschten Editorprofil dokumentiert.
+  Kein code-Aufruf, Login, Agent, API, Modell oder WSL-Eingriff durch Codex.
+
+## Karaoke Formats Installation, 2026-10-16
+
+- Eigener SRT/LRC-Konverter erhielt einen privaten Installer fuer einen Starter
+  aus dem vorhandenen GitHub-Checkout; keine separate Kopie, kein Docker/pip.
+- SHA-256-Pruefung erkennt geaenderte/fehlende Quelle; Tool-Update erneuert
+  den Starter. Lock, private Logs, Disk-Reserve und Offline-Doctor integriert.
+- Keine Medienverarbeitung/Downloads/WSL-Eingriffe beim Entwickeln. Uninstall
+  entfernt nur verwalteten Starter und Registrierung, keine Medien/Quellen.
+
+## Microsoft Agent Framework GitHub-Source, 2026-10-16
+
+- Planungs-Platzhalter durch optionalen Python-Core-Installer ersetzt:
+  1.22.0, Commit 17b1a14bd5b4c774c18d5b827b4f5b97bed3cbee,
+  python/packages/core aus GitHub, private venv, PyPI-Abhaengigkeiten.
+- Ressourcenpruefung vor Downloads, Operations-Lock, private Logs,
+  Offline-Status/Doctor und datenerhaltende Deaktivierung.
+- Kein Docker, Modell-/Providerstart, .NET, AutoGen-Migration oder WSL-Eingriff.
+  Nur Offline-/Mocktests; realer Source-Build und Ollama-Integration noch offen.
+
+## Qwen Code Runtime-Bootstrap, 2026-10-16
+
+- Abbruch wegen fehlendem Node durch private Bereitstellung bei ausdruecklicher
+  Installation/Repair ersetzen. Node 22.22+/npm >=10 via vorhandenem GitHub-nvm.
+- Corepack 0.34.0 privat per npm, pnpm 11.24.0 samt Upstream-SHA-512 im
+  tools/qwen_code/runtime/corepack-cache; keine globalen Shims/Profile aendern.
+- Vor Downloads Ressourcen/Lock/Log, Pruefungen mit Corepack-Netzwerk aus.
+  QWEN_CODE_AUTO_RUNTIME=0 sperrt Bootstrap. Kein echter Download, WSL-Zugriff,
+  Login, Agentenstart oder Modellabruf durch Codex. Revision:
+  2026-10-16-private-node-corepack-bootstrap.
+
 ## Automaton Runtime-Bootstrap, 2026-10-16
 
 - Automaton fehlte Node: Node/npm ueber vorhandenen GitHub-nvm-Helfer privat
