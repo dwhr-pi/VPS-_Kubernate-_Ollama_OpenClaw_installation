@@ -7,7 +7,8 @@
 | Cline | experimental, optionales GitHub-VSIX; Editor-Installation separat | [Paket bereitstellen und in VS Code installieren](tools/cline.md) |
 | Qwen_Code | experimental, optionaler GitHub-CLI-Source-Build ohne Docker | [Installation, Ressourcen und sichere Nutzung](tools/qwen-code.md) |
 | Wan21 | experimental / gpu-heavy, GitHub-Source; GPU-Pakete separat opt-in | [Installation und Modellgrenzen](tools/wan21.md) |
-| ComfyUI_GGUF, WanVideoWrapper, SUPIR, FILM | planned / gpu-heavy | [Versionen/8K-/VRAM-Grenzen](media_studio/HYBRID_MODELS_AND_WAN.md) |
+| ComfyUI_GGUF | experimental / gpu-heavy, GitHub-Custom-Node ohne Docker | [Einbindung in vorhandenes ComfyUI](tools/comfyui-gguf.md) |
+| WanVideoWrapper, SUPIR, FILM | planned / gpu-heavy | [Versionen/8K-/VRAM-Grenzen](media_studio/HYBRID_MODELS_AND_WAN.md) |
 
 | Defensive Audio-Kandidaten | Stand | Grenze |
 |---|---|---|

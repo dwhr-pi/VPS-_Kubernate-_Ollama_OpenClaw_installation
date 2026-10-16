@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- ComfyUI_GGUF: eigener gepinnter GitHub-Custom-Node-Installer statt Hybrid-
+  Platzhalter, ohne Docker. Vorhandenes ComfyUI/venv pruefen, gguf bei Bedarf
+  ohne Upgrade bestehender Pakete ergaenzen, verwalteter Node-Link; keine
+  Modelle/Serverstarts. Source-only, Lock/Logs, Offline-Doctor und sicherer Unlink.
+
 - Wan21: eigener gepinnter GitHub-Quellinstaller statt Hybrid-Platzhalter,
   ohne Docker/Modelle. Schwere CUDA-12.8-/PyTorch-/Flash-Attention-Pakete
   nur mit doppeltem Opt-in und Preflight; Quell- und Runtime-Marker getrennt.

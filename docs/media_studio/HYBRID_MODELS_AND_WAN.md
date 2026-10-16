@@ -35,7 +35,7 @@ Keine automatische Toolinstallation, Modelldownloads oder Agentenstarts.
 | Cline / `cline` | [cline/cline](https://github.com/cline/cline) | [Eigener GitHub-VSIX-Paketinstaller](../tools/cline.md), Editor-Installation separat; Aktionen einzeln freigeben |
 | Qwen_Code / `qwen_code` | [QwenLM/qwen-code](https://github.com/QwenLM/qwen-code) | CLI; [eigener Windows-Desktop-Einstieg](../tools/qwen-desktop-windows.md) separat |
 | Wan21 / `wan21` | [Wan-Video/Wan2.1](https://github.com/Wan-Video/Wan2.1) | [Eigener GitHub-Quellinstaller](../tools/wan21.md), schwere GPU-Pakete separat; keine Gewichte/Renderjobs |
-| ComfyUI_GGUF / `comfyui_gguf` | [city96/ComfyUI-GGUF](https://github.com/city96/ComfyUI-GGUF) | quantisierte native ComfyUI-Modellpfade |
+| ComfyUI_GGUF / `comfyui_gguf` | [city96/ComfyUI-GGUF](https://github.com/city96/ComfyUI-GGUF) | [Eigener GitHub-Node-Installer](../tools/comfyui-gguf.md) fuer vorhandenes ComfyUI; keine Gewichte/Neustarts |
 | WanVideoWrapper / `wanvideo_wrapper` | [kijai/ComfyUI-WanVideoWrapper](https://github.com/kijai/ComfyUI-WanVideoWrapper) | eigener Wan-Node-/Modellpfad |
 | SUPIR / `supir` | [Fanghua-Yu/SUPIR](https://github.com/Fanghua-Yu/SUPIR) | Bildrestaurierung, kein universeller Videorefiner |
 | FILM / `film` | [google-research/frame-interpolation](https://github.com/google-research/frame-interpolation) | Frame-Interpolation; Repo archiviert |
@@ -50,6 +50,8 @@ kein echter Installer. Cline hat inzwischen den oben verlinkten VSIX-Paketpfad,
 Qwen Code einen [eigenen Source-Installer](../tools/qwen-code.md).
 Wan21 hat ebenfalls einen eigenen [Source-/GPU-Paketpfad](../tools/wan21.md)
 ohne Docker; sein Quellmarker ist kein vollstaendiger Modellfunktionstest.
+ComfyUI-GGUF hat einen eigenen Node-Installer; er prueft die bestehende
+ComfyUI-venv und benoetigt keine neue ComfyUI-/Docker-Installation.
 
 ```bash
 bash scripts/tools/hybrid_media_candidate_install.sh --dry-run

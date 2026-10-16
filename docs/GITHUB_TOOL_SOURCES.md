@@ -1,5 +1,10 @@
 # GitHub Tool Sources
 
+[ComfyUI-GGUF](tools/comfyui-gguf.md): city96/ComfyUI-GGUF,
+Commit `6ea2651e7df66d7585f6ffee804b20e92fb38b8a`, privater Checkout mit
+verwaltetem custom_nodes-Link. Ohne Docker; fehlendes gguf kommt aus PyPI
+in die vorhandene ComfyUI-venv, bestehende Paketversionen bleiben fixiert.
+
 [Wan21](tools/wan21.md): GitHub Wan-Video/Wan2.1, Commit
 `9737cba9c1c3c4d04b33fcad41c111989865d315`, ohne Docker. Standard nur Quellen;
 GPU-Pakete doppelt opt-in aus PyPI/PyTorch, Modellgewichte separat. Keine

@@ -1,5 +1,14 @@
 # Setup Memory
 
+## ComfyUI-GGUF GitHub-Node, 2026-10-16
+
+- Eigener Source-Installer fuer city96/ComfyUI-GGUF, Pin
+  6ea2651e7df66d7585f6ffee804b20e92fb38b8a, ohne Docker/Modelle.
+- Vorhandenes ComfyUI voraussetzen; gguf in dessen venv, bestehende
+  Paketversionen per Constraints erhalten. Node-Link erst nach Paketpruefung.
+- Source-only ohne Integration moeglich; Uninstall entfernt nur eigenen
+  Node-Link/Marker, nicht Quelle/Pakete/Modelle. Keine WSL-/ComfyUI-Liveeingriffe.
+
 ## Wan21 GitHub-Quellinstallation, 2026-10-16
 
 - Wan-Video/Wan2.1 auf Commit 9737cba9c1c3c4d04b33fcad41c111989865d315
