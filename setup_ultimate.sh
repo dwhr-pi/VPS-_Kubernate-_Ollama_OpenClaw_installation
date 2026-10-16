@@ -2872,7 +2872,7 @@ TOOLS["ViDubb"]="planned/heavy: Dubbing-Projekt; Provider, Lip-Sync und lokale B
 TOOLS["Microsoft_Agent_Framework"]="Orchestrierungs-Kandidat planned, keine Installation. AutoGen-Nachfolge gesondert pruefen; RAM/Modelle projektabhaengig. Siehe docs/tools/agentic-coding.md"
 TOOL_KEYS+=("Personnel_Documents_AI")
 TOOLS["Personnel_Documents_AI"]="Personalakten: experimenteller lokaler Metadaten-Vorschlag, keine automatische Aktenaenderung. Paperless 2 GiB RAM/10 GiB Disk Reserve; LLM separat. Doku: docs/tools/personnel-documents.md"
-TOOLS["Automaton"]="Conway Automaton: planned/high-risk; nur Offline-Review, kein Runtime-Installer. Laborplanung 2 vCPU/4 GiB RAM/10 GiB Disk, ungemessen. Keine Wallets, Zahlungen, Live-Trades oder Replikation. Doku: docs/tools/automaton.md"
+TOOLS["Automaton"]="Conway Automaton: optionaler GitHub-Source-Build ohne Docker, experimental/high-risk. Node 22.x/pnpm 10.28.1, 4 GiB RAM/10 GiB Disk Planungsreserve. Kein Start, keine Wallets/Zahlungen/Replikation. Doku: docs/tools/automaton.md"
 TOOL_KEYS+=("Embedded_Debug_HIL")
 TOOLS["Embedded_Debug_HIL"]="Embedded/GDB/HIL: Offline-Registerbericht und Anleitung. Live-Adapter planned; kein Flashen/USB-Zugriff. 256 MiB RAM/100 MiB Planungsreserve nur fuer Offline-Tool, keine GPU. Doku: docs/tools/embedded-debug-hil.md"
 TOOLS["FreeLLMAPI"]="GitHub-Source ohne Docker: Node 22.22+/24, npm >=10; Buildreserve 2 GiB RAM/4 GiB Disk. Kein automatischer Serverstart; localhost 3011. Doku: docs/tools/freellmapi.md"

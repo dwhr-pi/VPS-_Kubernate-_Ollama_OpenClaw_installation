@@ -1,19 +1,20 @@
 # Automaton von Conway Research
 
-**Status im Ultimate KI Setup: planned / documentation-first, hohes Risiko.**
+**Status: optionaler GitHub-Source-Build, experimental / hohes Risiko, ohne Docker.**
 
 Zum Unterschied zwischen einem allgemeinen Automaten-/Workflow-Prinzip und
 diesem konkreten Conway-Projekt sowie zur begrenzten Repo-Entwicklung siehe
 den [Agentic-Coding-Leitfaden](../AGENTIC_CODING_GUIDE.md).
-Im Tool-Menue vorhanden, aber Runtime-Installation, Agentenstart, Update und
-Deinstallation sind bewusst gesperrt. Implementiert ist nur ein lokaler
-Offline-Vorschlagspruefer. Er startet weder Automaton noch Zenbot oder Ollama.
+Im Tool-Menue kann jetzt der gepinnte Quellcode gebaut werden. Build und
+Agentenbetrieb sind strikt getrennt: kein automatischer Start, Wallet-Zugriff,
+Provisionieren, Autostart oder Docker. Der bisherige Offline-Vorschlagspruefer
+bleibt unabhaengig davon erhalten und startet weder Automaton noch Zenbot/Ollama.
 
 ## Herkunft und gepruefter Stand
 
 - [Conway-Research/automaton](https://github.com/Conway-Research/automaton), MIT.
 - [Conway](https://conway.tech) ist das zugehoerige Ecosystem, keine Garantie fuer kostenlose Infrastruktur.
-- Quellcodepruefung vom 14.10.2026, Commit `d8f816881fd24b6f5e3d616e59edec387a447667`.
+- Quellcode/Buildmanifest und GitHub-HEAD am 16.10.2026 erneut geprueft: Commit `d8f816881fd24b6f5e3d616e59edec387a447667`.
 - Paketversion dort `0.2.1`; ein Paketversionsfeld ist kein Beleg fuer ein gleichnamiges Release-Tag.
 
 Upstream beschreibt eine autonome Runtime mit Wallet-Initialisierung,
@@ -42,24 +43,106 @@ Belege: [Wallet-Speicherung](https://github.com/Conway-Research/automaton/blob/d
 Es wurde keine unabhaengige Erfolgsquote ermittelt; Zahlen wie 10/10 oder 2/10
 werden nicht als Testergebnis uebernommen.
 
-## Sicherer Einstieg: nur Offline-Review
+## Schritt 1: Voraussetzungen pruefen
+
+Als normaler Benutzer auf Linux/WSL, nicht mit `sudo`, im Setup-Verzeichnis:
+
+```bash
+node --version
+pnpm --version
+git --version
+command -v flock
+bash scripts/tools/automaton_install.sh --dry-run
+```
+
+Dieser Installer verlangt bewusst Node **22.x** und exakt **pnpm 10.28.1**.
+Upstream verlangt mindestens Node 20; 22.x ist unser eingegrenzter Buildpfad,
+keine Zusage fuer alle neueren Versionen. Fehlende Runtimes werden nicht
+automatisch global ersetzt. Fuer native SQLite-/esbuild-Abhaengigkeiten koennen
+Python 3, C/C++-Compiler und make notwendig sein. Bei fehlenden Prebuilds
+zuerst diese System-/Build-Werkzeuge einrichten; kein Docker erforderlich.
+
+Planungsreserve: **4 GiB RAM und 10 GiB freier Datentraegerplatz**, unter WSL
+zusaetzlich **10 GiB auf Windows C:**. Das sind konservative Setup-Grenzen,
+keine gemessenen Upstream-Mindestwerte. Der RAM-Check misst Gesamt-RAM, nicht
+die garantierte freie Reserve; andere grosse Jobs vorher beenden.
+Lokale Modelle brauchen zusaetzliche Ressourcen und werden nicht geladen.
+
+## Schritt 2: Aus GitHub installieren
+
+```bash
+bash scripts/tools/automaton_install.sh
+bash scripts/tools/automaton_status.sh
+bash scripts/tools/automaton_doctor.sh
+```
+
+Nur nach deiner ausdruecklichen Menue-/CLI-Auswahl: gepinnten Commit von
+GitHub holen, `pnpm install --frozen-lockfile`, `pnpm run build`, Syntax und
+SQLite-In-Memory-Smoke-Test pruefen. Keine Ausfuehrung von `dist/index.js`,
+auch nicht mit `--status`: Upstream-Status kann eine Datenbank oeffnen.
+Paketabhaengigkeiten/native Prebuilds kommen zusaetzlich von den im Lockfile
+referenzierten Registries/Hosts; GitHub-Quelle bedeutet nicht ausschliesslich
+GitHub-Netzwerkverkehr. Lifecycle-Skripte fuer native Pakete laufen beim Build.
+Nur auf einem vertrauenswuerdigen Laborhost ohne produktive Schluessel bauen;
+der Build selbst ist keine OS-Sandbox und kein vollstaendiger Supply-Chain-Audit.
+
+Privates Ziel (alternativ ueber `OPENCLAW_USER_DATA_DIR`):
+
+```text
+~/.openclaw_ultimate_user_data/tools/automaton/source/
+~/.openclaw_ultimate_user_data/tools/automaton/source-built
+~/.openclaw_ultimate_user_data/install_logs/*_automaton_source_*.log
+```
+
+Der Marker wird erst nach erfolgreichem Build/Smoke-Test geschrieben und vor
+erneutem Build entfernt. Wiederholte Installation prueft einen vorhandenen
+Build statt ihn erneut zu bauen. Quelle, Commit, lokale Aenderungen und ein
+Lock werden geprueft. Ein kaputter Checkout wird nicht blind geloescht;
+erst sichern/pruefen. Keine globalen CLI-Symlinks, Ports oder Dienste.
+
+**Die Installation macht Automaton nicht zu einem sicher eingeschraenkten
+Agenten.** `--run`, `--init`, `--setup` und `--provision` bleiben im Setup
+gesperrt. Auch ohne Docker koennen solche separat gestarteten Upstream-Befehle
+Wallets/Signaturen, Cloudzugriffe und Ausgaben ausloesen. Diese Anleitung gibt
+dafuer keine Startfreigabe und importiert keine bestehende Zenbot-Wallet.
+
+## Schritt 3: Reparatur oder Deaktivierung
+
+```bash
+# Bewusst denselben gepinnten Stand neu bauen, kein ungepruefter main-Pull:
+bash scripts/tools/automaton_update.sh
+bash scripts/tools/automaton_install.sh --repair
+
+# Code datenerhaltend nach source.disabled.<Zeit>.<PID> verschieben:
+bash scripts/tools/automaton_uninstall.sh
+```
+
+Update ist derzeit ein Rebuild des geprueften Commits, kein Versionssprung.
+Abweichende/lokal geaenderte Quellen werden nicht ueberschrieben. Deaktivierung
+loescht nur den Buildmarker, erhaelt den Code und beendet keine Prozesse.
+Wallets, `~/.automaton`, ENV-Dateien und bestehende Installationen ausserhalb
+dieses privaten Ziels werden nicht angefasst. Ein manuell separat gestarteter
+Agent muss vor Wartung vom Betreiber gestoppt werden.
+
+## Optional: nur Offline-Review
 
 Im Repository-Root, mit vorhandenem Python 3:
 
 ```bash
-bash scripts/tools/automaton_install.sh --dry-run
-bash scripts/tools/automaton_doctor.sh
+python3 tools/automaton/review.py plan
+python3 tools/automaton/review.py doctor
 python3 tools/automaton/review.py review examples/automaton/review-proposal.json
 ```
 
-Erwartung: Status `planned`, `installed: false` bzw. Entscheidung
+Nur fuer diesen separaten Python-Pruefer: Status `planned`, `installed: false` bzw. Entscheidung
 `manual_review_required`, niemals eine Ausfuehrungsfreigabe.
-Ein normaler Installationsaufruf endet mit Exit-Code `2`, ohne Nebenwirkungen.
-Das ist eine beabsichtigte Schutzsperre, kein fehlgeschlagener Wallet-Setupversuch.
+Diese Werte beurteilen nur Integrationsbeispiele, niemals den Source-Build.
+`review.py install` bleibt gesperrt; die echte Quellcodeinstallation erfolgt
+jetzt durch das Bash-Skript oben.
 
 | Exit-Code | Bedeutung |
 |---|---|
-| 0 | Integrationsdateien/Vorschlag geprueft; kein Agent installiert oder ausgefuehrt |
+| 0 | Gewaehlte Pruefung/Build erfolgreich; kein Agent gestartet |
 | 1 | Vorschlag ungueltig, zu weitreichend oder Datei nicht lesbar |
 | 2 | Runtime-Aktion absichtlich gesperrt oder CLI falsch aufgerufen |
 
@@ -73,7 +156,7 @@ oder den ENV-Tresor. Keine Netzwerkabfrage, keine Signatur und keine Shell-Ausfu
 |---|---|
 | Eigener Offline-Pruefer | Python 3, keine GPU/Node/Docker; kleine JSON-Dateien bis 64 KiB |
 | Spaeteres Automaton-Labor | vorsichtige Reserve: 2 vCPU, 4 GiB RAM, 10 GiB Disk; nicht gemessen, keine Upstream-Mindestwerte |
-| Upstream-Build | Node >=20, pnpm 10.28.1 laut Paketmanifest; native SQLite-Abhaengigkeit kann Build-Werkzeuge benoetigen |
+| GitHub-Source-Build | Setup: Node 22.x, pnpm 10.28.1; native SQLite-Abhaengigkeit kann Build-Werkzeuge benoetigen |
 | Lokale LLMs | RAM/VRAM und Modellplatz kommen separat hinzu; keine Modell-Downloads hier |
 | WSL2 | spaeteres isoliertes Labor moeglich, aber kein Zugriff durch diesen Auftrag; Host-SSD als Engpass pruefen |
 | Oracle VPS | nur separates Labor, keine Admin-/Cloud-Keys des Control Nodes bereitstellen |
@@ -183,12 +266,18 @@ keine pauschalen DACH-Anmeldeformulare oder Haftungsausschluesse aus dem Prompt 
 
 1. Exakte Zenbot-/Zentrade-Version und read-only Datenschnittstelle pruefen.
 2. Abhaengigkeiten, Supply Chain und Pinning am genannten Commit auditieren.
-3. Isolierten Build ohne Wallet-/Provisionierungsstart nachweisen; kein `curl|sh`.
+3. Echten Labor-Build auf Linux/WSL und ARM pruefen; bisher keine Live-Installation durch Codex, kein `curl|sh`.
 4. Technische Grenzen fuer Netzwerk, Signer, Cloudbudget, Prozesslaufzeit und Dateizugriff testen.
 5. Ollama-only-Pfad ohne Cloud-Fallback und getrennte Testchain pruefen.
-6. Danach erst einen separaten opt-in Runtime-Installer planen; kein automatischer Produktionsstart.
+6. Danach erst eine separate opt-in Ausfuehrungsbruecke planen; Source-Build ist keine Betriebsfreigabe.
 
 Reproduzierbarer Offline-Test:
+
+Stand 16.10.2026: die 12 Python-Review-/Registry-Tests sowie Dry-Run,
+Start-Sperre und simulierte Fetch-/Commit-Fehler wurden geprueft. Der kombinierte
+Build-/Deaktivierungs-Mocktest erreicht auf diesem Windows-Testhost das
+Zeitlimit und ist noch nicht als bestanden bestaetigt. Kein echter
+pnpm-Install/Build, keine Wallet-/Cloud-/Agentenausfuehrung durch Codex.
 
 ```bash
 python3 -m unittest discover -s tests -p test_automaton.py -v

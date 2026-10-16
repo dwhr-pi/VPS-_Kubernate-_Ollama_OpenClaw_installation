@@ -6,6 +6,8 @@ import json
 import os
 from pathlib import Path
 import re
+import shutil
+import subprocess
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -90,7 +92,9 @@ class AutomatonTests(unittest.TestCase):
     def test_registry_and_menu(self):
         tools = json.loads((ROOT / "config/tools.yml").read_text(encoding="utf-8"))["tools"]
         tool, = [entry for entry in tools if entry["id"] == "automaton"]
-        self.assertEqual(tool["status"], "planned")
+        self.assertEqual(tool["status"], "experimental")
+        self.assertEqual(tool["install_mode"], "source")
+        self.assertEqual(tool["check_type"], "path")
         self.assertEqual(tool["risk"], "high")
         self.assertEqual(tool["source_commit"], review.SOURCE_COMMIT)
         self.assertEqual(tool["ports"], [])
@@ -107,6 +111,114 @@ class AutomatonTests(unittest.TestCase):
         for link in re.findall(r'\]\(([^)]+)\)', doc.read_text(encoding="utf-8")):
             if "://" not in link and not link.startswith("#"):
                 self.assertTrue((doc.parent / link.split("#")[0]).exists(), link)
+
+
+class AutomatonSourceTests(unittest.TestCase):
+    def shell(self, script, workspace):
+        bash = 'C:/Program Files/Git/bin/bash.exe' if os.name == 'nt' else shutil.which('bash')
+        if not bash or not Path(bash).exists():
+            self.skipTest('Bash unavailable')
+        path = str(workspace).replace('\\', '/')
+        if os.name == 'nt':
+            path = '/' + path[0].lower() + path[2:]
+        prefix = ('source scripts/tools/helpers/automaton_common.sh\n'
+                  f'export OPENCLAW_USER_DATA_DIR="{path}"\n')
+        return subprocess.run([bash, '--noprofile', '--norc', '-c', prefix + script],
+                              cwd=ROOT, capture_output=True, text=True, timeout=120)
+
+    def mocks(self):
+        return r'''
+automaton_require_user() { :; }
+automaton_runtime_check() { :; }
+automaton_resources() { :; }
+flock() { :; }
+df() { printf 'Filesystem Blocks Used Available Capacity Mount\nfixture 100 1 99 1%% /\n'; }
+docker() { echo FORBIDDEN_DOCKER; return 99; }
+node() {
+    case "$*" in --check*|-e*) return 0 ;; *) echo FORBIDDEN_ENTRY; return 99 ;; esac
+}
+git() {
+    case "$*" in
+        init*) mkdir -p "$AUTOMATON_SOURCE_DIR/.git"; echo INIT ;;
+        *'remote add origin'*) : ;;
+        *'fetch --depth 1'*) [[ "${FAIL_FETCH:-0}" == 0 ]] ;;
+        *'checkout --detach'*)
+            printf '{}' > "$AUTOMATON_SOURCE_DIR/package.json"
+            printf 'fixture' > "$AUTOMATON_SOURCE_DIR/pnpm-lock.yaml"
+            printf 'fixture' > "$AUTOMATON_SOURCE_DIR/pnpm-workspace.yaml" ;;
+        *'remote get-url origin') echo "$AUTOMATON_SOURCE_URL" ;;
+        *'rev-parse HEAD') echo "${MOCK_COMMIT:-$AUTOMATON_SOURCE_COMMIT}" ;;
+        *'status --porcelain'*) if [[ "${DIRTY:-0}" == 1 ]]; then echo ' M file'; fi ;;
+        *) echo UNEXPECTED_GIT; return 99 ;;
+    esac
+}
+pnpm() {
+    echo "PNPM $*"
+    [[ "${FAIL_PNPM:-0}" == 0 ]] || return 1
+    if [[ "$*" == 'run build' ]]; then
+        mkdir -p dist packages/cli/dist
+        printf '// fixture' > dist/index.js
+        printf '// fixture' > packages/cli/dist/index.js
+    fi
+}
+'''
+
+    def test_plan_and_start_guard_have_no_side_effects(self):
+        with tempfile.TemporaryDirectory() as temp:
+            workspace = Path(temp) / 'private'
+            result = self.shell('automaton_main --dry-run', workspace)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertIn('ohne Docker', result.stdout)
+            self.assertFalse(workspace.exists())
+            result = self.shell('automaton_main --run', workspace)
+            self.assertEqual(result.returncode, 2)
+            self.assertFalse(workspace.exists())
+
+    def test_mocked_install_rebuild_failure_and_preserving_uninstall(self):
+        with tempfile.TemporaryDirectory() as temp:
+            workspace = Path(temp) / 'private'
+            data = workspace / 'tools/automaton/runtime-data'
+            data.mkdir(parents=True)
+            (data / 'fixture.txt').write_text('preserve')
+            script = self.mocks() + r'''
+automaton_main install
+automaton_main install
+automaton_main status
+export DIRTY=1
+if automaton_main update; then exit 90; fi
+unset DIRTY
+export FAIL_PNPM=1
+if automaton_main update; then exit 91; fi
+[[ ! -f "$OPENCLAW_USER_DATA_DIR/tools/automaton/source-built" ]] || exit 92
+unset FAIL_PNPM
+automaton_main install
+automaton_main uninstall
+'''
+            result = self.shell(script, workspace)
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            self.assertEqual(result.stdout.count('INIT'), 1)
+            self.assertEqual(result.stdout.count('PNPM run build'), 2)
+            self.assertNotIn('FORBIDDEN', result.stdout)
+            base = workspace / 'tools/automaton'
+            self.assertFalse((base / 'source-built').exists())
+            self.assertFalse((base / 'source').exists())
+            self.assertEqual(len(list(base.glob('source.disabled.*'))), 1)
+            self.assertEqual((data / 'fixture.txt').read_text(), 'preserve')
+            self.assertTrue(list((workspace / 'install_logs').glob('*.log')))
+
+    def test_failed_fetch_never_invokes_pnpm(self):
+        with tempfile.TemporaryDirectory() as temp:
+            workspace = Path(temp) / 'private'
+            result = self.shell(self.mocks() + 'export FAIL_FETCH=1; automaton_main install', workspace)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertNotIn('PNPM ', result.stdout)
+            self.assertFalse((workspace / 'tools/automaton/source-built').exists())
+
+    def test_commit_mismatch_never_invokes_pnpm(self):
+        with tempfile.TemporaryDirectory() as temp:
+            result = self.shell(self.mocks() + 'export MOCK_COMMIT=wrong; automaton_main install', Path(temp) / 'private')
+            self.assertNotEqual(result.returncode, 0)
+            self.assertNotIn('PNPM ', result.stdout)
 
 
 if __name__ == "__main__":

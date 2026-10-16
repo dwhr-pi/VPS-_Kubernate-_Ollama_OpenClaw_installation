@@ -68,7 +68,7 @@ Wichtig zur Zaehlung:
 |---|---|
 | Aider, Continue, OpenCode, OpenHands, LangGraph, CrewAI, AutoGen | [Agentic-Coding-Tools](tools/agentic-coding.md): vorhandene Eintraege dokumentiert, nicht pauschal neu installiert/getestet |
 | Microsoft_Agent_Framework | neu `planned`, Registrierung/Plan ohne Runtime; AutoGen-Nachfolge nicht automatisch migrieren |
-| Automaton | bleibt `planned/high-risk`, nur Offline-Vorschlagspruefer; kein freier Coding-/Wallet-Loop |
+| Automaton | optionaler GitHub-Source-Build, `experimental/high-risk`; kein freier Coding-/Wallet-Loop |
 
 | Tool | Status | Zweck | Schutz |
 |---|---|---|---|
@@ -77,7 +77,7 @@ Wichtig zur Zaehlung:
 
 | Tool | Status | Quelle | Sicherheitsgrenze |
 |---|---|---|---|
-| [Automaton](tools/automaton.md) | planned / high-risk | Conway-Research/automaton, MIT | Nur Offline-Review-Prototyp; keine Runtime, Wallet, Signaturen, Zahlungen oder Live-Trades |
+| [Automaton](tools/automaton.md) | experimental / high-risk | Conway-Research/automaton, MIT, gepinnter Source-Build ohne Docker | Node 22.x/pnpm 10.28.1, Reserve 4 GiB RAM/10 GiB Disk; kein Agentenstart, Wallet, Signaturen, Zahlungen oder Live-Trades |
 
 | Tool | Status | Quelle / Funktionsumfang |
 |---|---|---|

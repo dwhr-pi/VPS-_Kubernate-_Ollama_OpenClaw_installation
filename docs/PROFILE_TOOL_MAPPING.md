@@ -35,7 +35,7 @@
 `ollama`, `tesseract`; Profil geplant, keine automatische Abhaengigkeitsinstallation.
 Paperless-Container bringt OCR mit; keine doppelte Tesseract-Installation notwendig.
 
-`Web3_Crypto_Agent` -> `automaton` nur als optionale Forschungsreferenz (`planned`),
+`Web3_Crypto_Agent` -> `automaton` nur als optionale Forschungsreferenz (Source-Build `experimental`),
 kein Eintrag als automatisch installierte Profilabhaengigkeit. Runtime/Signer gesperrt.
 
 `Embedded_Debug_HIL` -> `embedded_debug_hil`: Offline-Register-Snapshots,

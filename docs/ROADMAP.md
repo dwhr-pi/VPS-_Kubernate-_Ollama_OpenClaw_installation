@@ -48,7 +48,7 @@ Diese Roadmap priorisiert Konsistenz, Sicherheit und belastbare Installationspfa
   verschluesselter Restore-Test und fachliches Datenschutz-/Loeschkonzept vor
   echten Akten. Lokaler Vorschlagsprototyp ist keine Produktionsfreigabe.
 
-- Automaton: documentation-first/Offline-Review vorhanden; vor Runtime-Freigabe
+- Automaton: optionaler GitHub-Source-Build ohne Docker und Offline-Review vorhanden; vor Runtime-Freigabe
   isolierte Sandbox, Wallet-/Signer-Trennung, Budget-/Netzwerkgrenzen, Build-Audit
   und exakter Zenbot-Vertrag nachweisen. Keine automatische Wallet-/Cloud-Initialisierung.
 
@@ -66,7 +66,7 @@ Diese Roadmap priorisiert Konsistenz, Sicherheit und belastbare Installationspfa
   Runner-Freigabe Client-/Modell-Smoke-Test, exklusive Queue-Locks, feste
   erlaubte Task-IDs, harte Limits und unabhaengige Abnahmetests nachweisen.
 - AutoGen-Nachfolge Microsoft Agent Framework nur als Kandidat registriert;
-  bestehende Anwendungen nicht automatisch migrieren. Automaton bleibt gesperrt.
+  bestehende Anwendungen nicht automatisch migrieren. Automaton-Start/Signer bleiben gesperrt; Source-Build optional.
 
 - `Programmierer`, `AI_Project_Manager`, `Browser_Automation_Agent` und `Repo_Maintainer` funktional durchtesten
 - `Clawhub`, `Clawhub CLI`, `OpenHands`, `Aider` und `Playwright` auf WSL2 und VPS weiter abklopfen. `OpenManus` hat inzwischen eine robustere venv-/Torch-/flash-attn-Installationslogik, bleibt aber abhängig vom aktuellen Upstream-Stand.

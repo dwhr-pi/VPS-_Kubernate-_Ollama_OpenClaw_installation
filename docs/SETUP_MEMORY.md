@@ -1,5 +1,14 @@
 # Setup Memory
 
+## Automaton Source, 2026-10-16
+
+- Optionaler GitHub-Source-Build am Commit d8f816881fd24b6f5e3d616e59edec387a447667,
+  Node 22.x/pnpm 10.28.1, ohne Docker. Kein Runtime-/Wallet-/Provisionierungsstart.
+- Privater User-Workspace, Buildmarker, Lock, Log und Ressourcenchecks;
+  Rebuild statt blindem main-Update, Code bei Deaktivierung erhalten.
+- Offline-review.py bleibt separat und erlaubt keine Ausfuehrung.
+- Keine produktiven Wallets, WSL-Eingriffe, globalen CLI- oder Dienstinstallationen.
+
 ## FreeLLMAPI Source, 2026-10-16
 
 - Installer baut GitHub v0.14.2 / 57c0669233bbe0c70a0f9f9927613192be948773

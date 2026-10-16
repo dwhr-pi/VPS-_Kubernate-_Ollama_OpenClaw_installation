@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Automaton: optionaler gepinnter GitHub-Source-Build ohne Docker mit pnpm,
+  Ressourcenchecks, privatem Buildlog, Lock und datenerhaltender Deaktivierung.
+  Kein Agentenstart, Wallet-Zugriff, globale CLI oder Dienst; Offline-Review bleibt separat.
+
 - FreeLLMAPI auf gepinnten GitHub-Source-Build ohne Docker umgestellt:
   npm ci/build, lokaler SQLite-Smoke-Test, Lock/Logs/Ressourcenchecks.
   Start separat im Vordergrund mit localhost-Zwang und sicher gelesenem ENV;

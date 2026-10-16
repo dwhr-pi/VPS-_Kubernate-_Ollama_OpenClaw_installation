@@ -104,9 +104,10 @@ Korrekturschleife unseres Setups.
 
 ### Wo steht Automaton bei uns?
 
-`Automaton` bleibt **planned/high-risk**. Nutzbar ist nur unser
-[Offline-Vorschlagspruefer](tools/automaton.md), nicht die autonome Runtime.
-Er validiert einen Vorschlag und fordert manuelle Pruefung. Er schreibt keinen
+`Automaton` bietet einen optionalen **experimental/high-risk GitHub-Source-Build
+ohne Docker**, jedoch keinen automatischen Agentenstart. Der separate
+[Offline-Vorschlagspruefer](tools/automaton.md) validiert weiterhin nur
+einen Vorschlag und fordert manuelle Pruefung. Er schreibt keinen
 Code und fuehrt keine Tests, Shellbefehle oder Transaktionen aus.
 
 ```bash

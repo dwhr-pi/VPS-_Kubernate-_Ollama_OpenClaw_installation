@@ -3,6 +3,8 @@
 [Tutorial, Upstream-Pruefung und Sicherheitsgrenzen](../../docs/tools/automaton.md).
 
 Dies ist **nicht** der Conway-Automaton-Quellcode und kein autonomer Agent.
+Der optionale GitHub-Source-Installer liegt in `scripts/tools/automaton_install.sh`.
+Er baut separat unter dem privaten User-Workspace, ohne Docker oder Agentenstart.
 `review.py` prueft ausschliesslich strukturierte Vorschlaege offline, ohne
 Shell, Netzwerk, Walletzugriff oder Ausfuehrungsfreigabe.
 

@@ -47,8 +47,10 @@ Siehe [Tutorial](tools/personnel-documents.md).
 
 Automaton: [Conway-Research/automaton](https://github.com/Conway-Research/automaton), MIT,
 gepruefter Commit `d8f816881fd24b6f5e3d616e59edec387a447667`.
-Nur documentation-first registriert; die Installationsskripte sperren Runtime-Aktionen.
-Kein apt-/npm-/Docker-Download. Spaeterer Source-Build gesondert zu auditieren.
+Optionaler experimental Source-Build ohne Docker: gepinnter GitHub-Checkout,
+pnpm 10.28.1 mit Frozen-Lockfile, Node 22.x. Paket-/native Build-Abhaengigkeiten
+werden bei expliziter Installation zusaetzlich geladen. Kein Agentenstart,
+Wallet-Zugriff oder apt-Installer; vollstaendiger Supply-Chain-Audit bleibt offen.
 Siehe [Automaton und Zenbot](tools/automaton.md).
 
 Embedded Debug HIL nutzt eigene Offline-Integrationsdateien. Fuer spaetere

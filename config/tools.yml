@@ -983,7 +983,7 @@
       "source_commit": "d8f816881fd24b6f5e3d616e59edec387a447667",
       "license": "MIT; Cloud-/Modellbedingungen separat",
       "category": "Web3 / Agent Research",
-      "status": "planned",
+      "status": "experimental",
       "resource_class": "medium",
       "risk": "high",
       "install_mode": "source",
@@ -991,11 +991,11 @@
       "uninstall_script": "scripts/tools/automaton_uninstall.sh",
       "update_script": "scripts/tools/automaton_update.sh",
       "doctor_script": "scripts/tools/automaton_doctor.sh",
-      "check_type": "command",
-      "check_value": "conway-automaton",
+      "check_type": "path",
+      "check_value": "~/.openclaw_ultimate_user_data/tools/automaton/source-built",
       "ports": [],
       "doc": "docs/tools/automaton.md",
-      "description": "Documentation-first: nur Offline-Review-Prototyp. Runtime-Installation und Agentenstart gesperrt.",
+      "description": "Optionaler GitHub-Source-Build ohne Docker: Node 22.x, pnpm 10.28.1; 4 GiB RAM/10 GiB Disk Planungsreserve. Kein Agentenstart.",
       "security_note": "Keine Wallet-Erzeugung, Keys, Signaturen, Zahlungen, Live-Trades oder Replikation. Upstream wallet.json enthaelt unverschluesselte Schluesseldaten. Kein Zugriff auf vorhandene Zenbot-Wallet."
     },
     {

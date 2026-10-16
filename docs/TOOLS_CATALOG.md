@@ -26,7 +26,7 @@ Dieser Katalog bewertet Tools fuer das Ultimate KI Setup. Statuswerte: `Pflicht`
 
 Agentic-Coding-Erweiterung: [Clients, Frameworks und tatsaechlicher Setup-Stand](tools/agentic-coding.md).
 Microsoft Agent Framework ist neu **planned/documentation-first**, nicht installiert.
-Automaton bleibt ein gesperrter Forschungspfad, keine Voraussetzung fuer Coding-Agenten.
+Automaton bietet einen optionalen GitHub-Source-Build ohne Docker; Start und Wallet-Aktionen bleiben gesperrt. Keine Voraussetzung fuer Coding-Agenten.
 
 ## KI / LLM
 
