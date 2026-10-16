@@ -123,6 +123,26 @@ cg_installed() {
         cg_source_ok && cg_dependency_ok
 }
 
+cg_activate() {
+    rm -f -- "$CG_MARKER"
+    cg_install_dependency || return 1
+    if [[ -e "$CG_TARGET" || -L "$CG_TARGET" ]]; then
+        [[ -L "$CG_TARGET" && "$(readlink -- "$CG_TARGET")" == "$CG_SOURCE" ]] || return 1
+    else ln -s -- "$CG_SOURCE" "$CG_TARGET" || return 1; fi
+    printf '%s\n' "$CG_COMMIT" "$CG_TARGET" "$CG_PYTHON" > "$CG_MARKER"
+    echo 'ComfyUI-GGUF integriert. ComfyUI selbst nach Beendigung laufender Jobs neu starten; hier kein automatischer Start/Neustart.'
+}
+
+cg_deactivate() {
+    # Recheck ownership of the one link immediately before unlinking it.
+    if [[ -e "$CG_TARGET" || -L "$CG_TARGET" ]]; then
+        [[ -L "$CG_TARGET" && "$(readlink -- "$CG_TARGET")" == "$CG_SOURCE" ]] || return 1
+        rm -- "$CG_TARGET" || return 1
+    fi
+    rm -f -- "$CG_MARKER" "$CG_SOURCE_MARKER"
+    echo 'Verwalteten Node-Link deaktiviert; Quellcode, Python-Pakete, Modelle, Workflows und Logs bleiben erhalten.'
+}
+
 comfyui_gguf_main() (
     set -euo pipefail
     umask 077
@@ -169,21 +189,11 @@ comfyui_gguf_main() (
     echo "ComfyUI-GGUF-Installer: 2026-10-16-github-custom-node; Aktion: $mode; Modus: $install_mode"
     trap 'rc=$?; if ((rc != 0)); then echo "GGUF-Fehler ($rc). Quelle/Daten erhalten. Log: $log; nach Behebung --repair verwenden."; fi' EXIT
     if [[ "$mode" == uninstall || "$mode" == --uninstall ]]; then
-        # Recheck ownership of the one link immediately before unlinking it.
-        if [[ -e "$CG_TARGET" || -L "$CG_TARGET" ]]; then
-            [[ -L "$CG_TARGET" && "$(readlink -- "$CG_TARGET")" == "$CG_SOURCE" ]] || return 1
-            rm -- "$CG_TARGET"
-        fi
-        rm -f -- "$CG_MARKER" "$CG_SOURCE_MARKER"
-        echo 'Verwalteten Node-Link deaktiviert; Quellcode, Python-Pakete, Modelle, Workflows und Logs bleiben erhalten.'; return 0
+        cg_deactivate; return 0
     fi
     cg_fetch_source
     if [[ "$install_mode" == source ]]; then
         echo 'Nur GitHub-Quellen bereitgestellt; keine neue Einbindung/Paketinstallation. Bestehende Einbindungen bleiben erhalten.'; return 0
     fi
-    rm -f -- "$CG_MARKER"
-    cg_install_dependency
-    if [[ ! -L "$CG_TARGET" ]]; then ln -s -- "$CG_SOURCE" "$CG_TARGET"; fi
-    printf '%s\n' "$CG_COMMIT" "$CG_TARGET" "$CG_PYTHON" > "$CG_MARKER"
-    echo 'ComfyUI-GGUF integriert. ComfyUI selbst nach Beendigung laufender Jobs neu starten; hier kein automatischer Start/Neustart.'
+    cg_activate
 )
