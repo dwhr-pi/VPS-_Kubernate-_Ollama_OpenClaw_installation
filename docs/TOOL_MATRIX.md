@@ -26,7 +26,8 @@
 | Gruppe | Neue Eintraege | Status / Grenze |
 |---|---|---|
 | Video / WebUI | CogVideoX, LTX_Video, SD_Next | planned / gpu-heavy |
-| Desktop / Workflows | Pinokio, Windmill | planned; Skript-/Lizenzgrenzen pruefen |
+| Desktop | [Pinokio](tools/pinokio.md) | planned/manual-desktop; GitHub v8.2.0, Browser und Wartepause, kein Docker |
+| Workflows | Windmill | planned; Skript-/Lizenzgrenzen pruefen |
 | LLM-Inferenz | [TGI](tools/tgi.md) | experimental: GitHub-Quellen/optionaler nativer Launcher, kein kompletter Inferenzserver; Maintenance Mode |
 | Externe APIs | Fal_Client, Veo_API | planned, Cloud-Aufrufe/Uploads gesperrt |
 

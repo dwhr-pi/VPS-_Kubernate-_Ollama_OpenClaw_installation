@@ -52,7 +52,9 @@ LTX-Video, SD.Next, Pinokio, Windmill, TGI, fal-SDK und Google-GenAI-SDK.
 
 [TGI](tools/tgi.md) besitzt inzwischen einen gepinnten GitHub-Quellinstaller
 und optionalen nativen Launcher-Build ohne Docker. Das ist noch keine
-vollstaendige Inferenzlaufzeit; die anderen Social-Kandidaten bleiben planned.
+vollstaendige Inferenzlaufzeit. [Pinokio](tools/pinokio.md) hat einen nativen
+GitHub-Release-Assistenten v8.2.0 mit manueller Desktop-Installation, ohne Docker.
+Die anderen Social-Kandidaten bleiben documentation-first.
 SDK auf GitHub bedeutet nicht, dass Veo/fal lokal selbsthostbar sind.
 
 Dataset-Werkzeuge: HF_Datasets hat einen [gepinnten GitHub-Basispaketinstaller](tools/hf-datasets.md),

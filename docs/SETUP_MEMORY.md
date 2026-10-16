@@ -1,5 +1,14 @@
 # Setup Memory
 
+## Pinokio nativer GitHub-Release, 2026-10-16
+
+- Eigene Menueverdrahtung und Wrapper; v8.2.0, Windows Pinokio.exe mit
+  dokumentiertem GitHub-SHA256. Keine Docker-/WSL-Installation.
+- Browserfreigabe, Enter-Pause und manuelle Bestaetigung; ausstehend Exit 3,
+  kein automatisch gesetzter Installationsmarker oder ausgefuehrter Installer.
+- Desktop-App-Skripte sind keine Sandbox; Modelle, Queue-Integration und
+  technische Installationserkennung bleiben gesondert zu pruefen.
+
 ## TGI GitHub-Quellen und optionaler Launcher, 2026-10-16
 
 - Release v3.3.7, Pin dfb3fbe78e0d1d69251bd33065591c61bafdfaa8. Cargo-Workspace

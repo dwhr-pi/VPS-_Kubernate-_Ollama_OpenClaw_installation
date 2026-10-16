@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Pinokio: eigener nativer GitHub-Release-Downloadassistent v8.2.0 statt
+  Social-Platzhalter; Browser nur mit Freigabe, Wartepause und manuelle
+  Bestaetigung ohne falschen Installationsnachweis. Windows-Hash dokumentiert.
+
 - TGI: gepinnte GitHub-Quellinstallation ohne Docker, optional nativer
   Launcher-Build mit doppeltem Opt-in, Lock/Logs/Ressourcen und Hashchecks.
   Maintenance Mode und fehlende Router-/Python-/GPU-Inferenzlaufzeit klar getrennt.

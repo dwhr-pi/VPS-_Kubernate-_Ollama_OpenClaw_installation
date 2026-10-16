@@ -9,6 +9,9 @@ Ergaenzung 16.10.2026: [TGI](../tools/tgi.md) besitzt einen eigenen
 GitHub-Quellinstaller ohne Docker und einen optionalen nativen Launcher-Build.
 Dieser startet weiterhin keine Inferenz und macht die Gesamtpipeline nicht betriebsbereit.
 
+[Pinokio](../tools/pinokio.md) besitzt jetzt einen nativen GitHub-Release-
+Downloadassistenten mit Browserfreigabe und manueller Wartepause, ohne Docker.
+
 ## 1. Den Toolstack richtig verstehen
 
 | Ebene | Beispiel aus dem Video | Lokaler Pfad / Grenze |
@@ -38,7 +41,7 @@ Docker/K3s sind optional; ein lokaler GPU-Worker reicht zum Einstieg.
 | CogVideoX / `cogvideox` | [zai-org/CogVideo](https://github.com/zai-org/CogVideo) | Video-Modellpfad; fruehere THUDM-URL leitet um | gpu-heavy |
 | LTX_Video / `ltx_video` | [Lightricks/LTX-Video](https://github.com/Lightricks/LTX-Video) | Video-Modellfamilie; Generation/Trainer/Adapter konkret auswaehlen | gpu-heavy |
 | SD_Next / `sdnext` | [vladmandic/sdnext](https://github.com/vladmandic/sdnext) | optionale generative WebUI; kein notwendiger Zusatz zu ComfyUI | gpu-heavy |
-| Pinokio / `pinokio` | [pinokiocomputer/pinokio](https://github.com/pinokiocomputer/pinokio) | optionaler Desktop-Launcher, fremde Skripte pruefen | medium |
+| Pinokio / `pinokio` | [pinokiocomputer/pinokio](https://github.com/pinokiocomputer/pinokio), [Anleitung](../tools/pinokio.md) | manual-desktop: GitHub-Release v8.2.0, Browser und Wartepause; keine automatische Installation | medium |
 | Windmill / `windmill` | [windmill-labs/windmill](https://github.com/windmill-labs/windmill) | Entwickler-Workflows mit separaten Workern/DB planen | medium |
 | TGI / `tgi` | [huggingface/text-generation-inference](https://github.com/huggingface/text-generation-inference), [GitHub-Installer](../tools/tgi.md) | experimental: Quellen, nativer Launcher separat opt-in; KEIN kompletter Inferenzserver; Maintenance Mode | gpu-heavy fuer spaetere Inferenz |
 | Fal_Client / `fal_client` | [fal-ai/fal](https://github.com/fal-ai/fal) | optionaler Cloud-Client; Dienstkosten/Uploads gesperrt | light, Cloud |
@@ -46,7 +49,8 @@ Docker/K3s sind optional; ein lokaler GPU-Worker reicht zum Einstieg.
 
 TGI hat jetzt einen eigenen gepinnten GitHub-Quellinstaller ohne Docker und
 einen optionalen nativen Launcher-Build. Python-/Router-/GPU-Laufzeit bleiben offen.
-Die anderen sieben: **planned/documentation-first**, Risiko high, keine aktiven Ports,
+Pinokio: **planned/manual-desktop**, keine automatische Installationserkennung.
+Die anderen sechs: **planned/documentation-first**, Risiko high, keine aktiven Ports,
 keine automatischen Installationen. Fuer sie fehlen Source-/Release-Pins, Smoke-Tests,
 Preflight, Update-/Rollback und sichere Deinstallation fehlen noch.
 Ressourcenklasse beschreibt nicht die gesamten externen Cloud-Rechenkosten.
