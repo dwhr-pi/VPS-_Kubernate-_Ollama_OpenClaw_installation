@@ -129,6 +129,7 @@ class AutomatonSourceTests(unittest.TestCase):
     def mocks(self):
         return r'''
 automaton_require_user() { :; }
+automaton_require_base_tools() { :; }
 automaton_runtime_check() { :; }
 automaton_resources() { :; }
 flock() { :; }
@@ -219,6 +220,85 @@ automaton_main uninstall
             result = self.shell(self.mocks() + 'export MOCK_COMMIT=wrong; automaton_main install', Path(temp) / 'private')
             self.assertNotEqual(result.returncode, 0)
             self.assertNotIn('PNPM ', result.stdout)
+
+
+class AutomatonBootstrapTests(unittest.TestCase):
+    shell = AutomatonSourceTests.shell
+
+    def mocks(self):
+        return r'''
+automaton_paths
+automaton_require_base_tools() { :; }
+automaton_node_compatible() { [[ "${NODE_READY:-0}" == 1 ]]; }
+automaton_pnpm_compatible() { [[ "${PNPM_READY:-0}" == 1 ]]; }
+automaton_activate_private_node() { return 1; }
+automaton_activate_private_pnpm() { [[ "${PNPM_READY:-0}" == 1 ]]; }
+automaton_load_node_helper() {
+    ensure_node_tool_runtime() {
+        [[ "$NVM_DIR" == "$OPENCLAW_USER_DATA_DIR/tools/automaton/runtime/nvm" ]] || return 90
+        echo NODE_BOOTSTRAP
+        [[ "${FAIL_NODE:-0}" != 1 ]] || return 1
+        NODE_READY=1
+    }
+}
+automaton_install_private_pnpm() {
+    echo PNPM_BOOTSTRAP
+    [[ "${FAIL_PNPM_BOOTSTRAP:-0}" != 1 ]] || return 1
+    PNPM_READY=1
+}
+'''
+
+    def run_fixture(self, script):
+        with tempfile.TemporaryDirectory() as temp:
+            workspace = Path(temp) / 'private'
+            result = self.shell(self.mocks() + script, workspace)
+            self.assertFalse(workspace.exists())
+            return result
+
+    def test_missing_runtimes_prepared_once(self):
+        result = self.run_fixture('automaton_prepare_runtime\nautomaton_prepare_runtime')
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(result.stdout.count('NODE_BOOTSTRAP'), 1)
+        self.assertEqual(result.stdout.count('PNPM_BOOTSTRAP'), 1)
+
+    def test_compatible_runtimes_untouched(self):
+        result = self.run_fixture('NODE_READY=1; PNPM_READY=1; automaton_prepare_runtime')
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertNotIn('BOOTSTRAP', result.stdout)
+
+    def test_missing_pnpm_does_not_replace_node(self):
+        result = self.run_fixture('NODE_READY=1; automaton_prepare_runtime')
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertNotIn('NODE_BOOTSTRAP', result.stdout)
+        self.assertIn('PNPM_BOOTSTRAP', result.stdout)
+
+    def test_opt_out_prevents_downloads(self):
+        result = self.run_fixture('export AUTOMATON_AUTO_RUNTIME=0; automaton_prepare_runtime')
+        self.assertNotEqual(result.returncode, 0)
+        self.assertNotIn('BOOTSTRAP', result.stdout)
+
+    def test_failed_node_prevents_pnpm(self):
+        result = self.run_fixture('FAIL_NODE=1; automaton_prepare_runtime')
+        self.assertNotEqual(result.returncode, 0)
+        self.assertNotIn('PNPM_BOOTSTRAP', result.stdout)
+
+    def test_failed_pnpm_stops(self):
+        result = self.run_fixture('NODE_READY=1; FAIL_PNPM_BOOTSTRAP=1; automaton_prepare_runtime && echo UNEXPECTED')
+        self.assertNotEqual(result.returncode, 0)
+        self.assertNotIn('UNEXPECTED', result.stdout)
+
+    def test_runtime_check_never_downloads(self):
+        result = self.run_fixture('automaton_runtime_check')
+        self.assertNotEqual(result.returncode, 0)
+        self.assertNotIn('BOOTSTRAP', result.stdout)
+
+    def test_private_pnpm_install_contract(self):
+        helper = (ROOT / 'scripts/tools/helpers/automaton_common.sh').read_text()
+        for value in ('--prefix "$AUTOMATON_PNPM_DIR"', '--global=false', '--ignore-scripts',
+                      'pnpm@10.28.1', '2026-10-16-private-node-pnpm-bootstrap'):
+            self.assertIn(value, helper)
+        self.assertLess(helper.index('automaton_resources "$mount"'), helper.index('automaton_prepare_runtime ||'))
+        self.assertNotIn('npm install -g', helper)
 
 
 if __name__ == "__main__":

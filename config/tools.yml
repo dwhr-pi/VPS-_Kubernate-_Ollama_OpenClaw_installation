@@ -996,7 +996,7 @@
       "check_value": "~/.openclaw_ultimate_user_data/tools/automaton/source-built",
       "ports": [],
       "doc": "docs/tools/automaton.md",
-      "description": "Optionaler GitHub-Source-Build ohne Docker: Node 22.x, pnpm 10.28.1; 4 GiB RAM/10 GiB Disk Planungsreserve. Kein Agentenstart.",
+      "description": "Optionaler GitHub-Source-Build ohne Docker; fehlendes Node/npm und pnpm 10.28.1 werden privat bereitgestellt, keine globalen Updates. 4 GiB RAM/10 GiB Disk Planungsreserve; kein Agentenstart.",
       "security_note": "Keine Wallet-Erzeugung, Keys, Signaturen, Zahlungen, Live-Trades oder Replikation. Upstream wallet.json enthaelt unverschluesselte Schluesseldaten. Kein Zugriff auf vorhandene Zenbot-Wallet."
     },
     {
@@ -1038,7 +1038,7 @@
       "check_value": "~/.openclaw_ultimate_user_data/tools/freellmapi/source-built",
       "ports": [3011],
       "doc": "docs/tools/freellmapi.md",
-      "description": "GitHub-Source v0.14.2 mit Commit-Pin, npm ci/build ohne Docker; Node 22.22+/24, npm >=10; Buildreserve 2 GiB RAM/4 GiB Disk. Installation startet keinen Server.",
+      "description": "GitHub-Source v0.14.2 mit Commit-Pin, npm ci/build ohne Docker; fehlendes Node/npm privat ueber GitHub-nvm bereitstellen, System-Node bleibt erhalten. Buildreserve 2 GiB RAM/4 GiB Disk; kein Serverstart.",
       "security_note": "Start separat mit FREELLMAPI_ENABLE_NETWORK=1, nur 127.0.0.1:3011. Externe Katalogkontakte moeglich; native-data getrennt von alten Containerdaten, kein automatischer ENV-/Client-/Service-Umbau."
     },
     {

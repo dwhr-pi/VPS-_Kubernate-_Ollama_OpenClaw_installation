@@ -10,6 +10,10 @@ kann eine andere Installation die neuen Dateien verwenden.
 
 Der neue Installer meldet zu Beginn:
 `FreeLLMAPI-Installer: 2026-10-16-github-source-no-docker`.
+Die erweiterte Runtime-Bereitstellung meldet zusaetzlich
+`FreeLLMAPI-Runtime: 2026-10-16-private-node-bootstrap`.
+Nur die erste Zeile mit anschliessendem `node fehlt` stammt noch vom
+Source-Installer ohne automatischen Node-Bootstrap.
 Fehlt diese Zeile und erscheint stattdessen die Docker-Sperre, wird noch der
 alte Helfer ausgefuehrt. Nicht durch Setzen des Docker-Flags umgehen.
 Rein lesende Diagnose im tatsaechlich gestarteten Setup-Verzeichnis:
@@ -19,7 +23,7 @@ pwd
 git remote -v
 git log -1 --oneline
 git status --short
-grep -nE 'INSTALLER_REVISION|ENABLE_DOCKER' scripts/tools/helpers/freellmapi_common.sh
+grep -nE 'INSTALLER_REVISION|RUNTIME_REVISION|ENABLE_DOCKER' scripts/tools/helpers/freellmapi_common.sh
 bash scripts/tools/freellmapi_install.sh --dry-run
 ```
 
@@ -49,9 +53,9 @@ nicht mit sudo/root und nicht mit ungeprueften Fremdquellen bauen.
 
 | Bereich | Vorgabe dieses Installers |
 |---|---|
-| Ziel | Linux/WSL mit bewusst bereitgestellter Laufzeit; keine WSL-Aenderung durch Codex |
-| Node | vorhandenes 22.22+ innerhalb 22.x oder 24.x |
-| npm | >=10, zum vorhandenen Node passend |
+| Ziel | Linux/WSL; Bereitstellung nur bei ausdruecklicher Installation/Repair, keine WSL-Aenderung durch Codex |
+| Node | kompatibles vorhandenes 22.22+ innerhalb 22.x oder 24.x weiterverwenden; sonst private Node-22-Runtime automatisch bereitstellen |
+| npm | >=10, mit Node geliefert; kein separates globales npm-Update |
 | Werkzeuge | Git, Python 3, flock; fuer Healthcheck curl |
 | RAM | 2 GiB Build-Planungsreserve, vorhandener RAM wird geprueft; kein gemessener Mindestwert |
 | SSD | 4 GiB freie Reserve am Source-Datentraeger; WSL zusaetzlich 10 GiB Windows-Hostreserve ueber vorhandenen Check |
@@ -60,8 +64,36 @@ nicht mit sudo/root und nicht mit ungeprueften Fremdquellen bauen.
 | Netzwerk | Clone/npm brauchen Internet, Serverkontakte separat freigeben |
 | Adresse | ausschliesslich `127.0.0.1:3011`, kein Container-Port |
 
-Der Installer installiert **kein Node, npm, Python, Compiler, Docker oder
-Systemdienst**. Fehlende Voraussetzungen ergeben einen klaren Abbruch.
+Fehlendes/inkompatibles Node/npm wird bei **Installation oder Repair** ueber
+den vorhandenen nvm-Helfer bereitgestellt: nvm `v0.40.8` aus GitHub, offizielles
+Node-22-Binary samt npm und nvm-Download-/Checksumpruefung. Kein Docker,
+`curl|bash`, Node-Source-Build oder Ersetzen des System-Node.
+Der zuletzt verfuegbare kompatible 22.x-Stand wird beim Download aufgeloest;
+das ist kein Patchversions-Pin. Bereits passende Runtimes werden nicht aktualisiert.
+
+Privates Ziel: `~/.openclaw_ultimate_user_data/tools/freellmapi/runtime/nvm`
+(beachtet `OPENCLAW_USER_DATA_DIR`). Dein normales `~/.nvm`, `/usr/bin/node`,
+globale npm-Pakete und Shellprofile werden nicht umgebaut. NVM wird nur fuer
+den jeweiligen Installer-/Startprozess aktiviert. Doctor/Start aktivieren eine
+bereits vorhandene private Runtime, **laden aber nie selbst etwas herunter**.
+Deaktivierung des Tools behaelt die private Runtime zur Wiederverwendung.
+
+Der gemeinsame Helfer kann fuer einen frischen nvm-Download unter Ubuntu
+`git`, `curl`, `ca-certificates`, `tar` und `xz-utils` per apt einrichten;
+dafuer kann sudo abgefragt werden. Das ist keine apt-Node-Installation.
+Python, flock, Compiler, Docker und Systemdienste werden nicht automatisch
+eingerichtet. Bootstrap-Fehler stoppen vor Clone/npm-Build; Ressourcenpruefung,
+Lock und privates Installationsprotokoll gelten auch fuer die Bereitstellung.
+
+Automatische Bereitstellung bewusst deaktivieren:
+
+```bash
+FREELLMAPI_AUTO_NODE=0 bash scripts/tools/freellmapi_install.sh
+```
+
+Ohne passende vorhandene/private Runtime bricht dieser Aufruf ohne Runtime-
+Download ab. Dry-Run und Status laden grundsaetzlich nichts herunter.
+Die Source-Installation selbst braucht weiterhin Internet fuer GitHub/npm.
 ARM64/x86_64 haengen auch von den nativen Addons ab; kein pauschales
 Plattformversprechen ohne echten Buildtest. Der bestehende RAM-Check misst
 Gesamt-RAM; freie RAM-/Swap-Last vor grossem Build zusaetzlich kontrollieren.
@@ -86,7 +118,8 @@ Ein Lock verhindert parallele Builds/Starts. Belegter Port blockiert den
 Build/Start; keine fremden Prozesse werden beendet.
 
 Installation:
-1. Ressourcen, Laufzeiten, Zielpfade und Port pruefen.
+1. Ressourcen, Zielpfade, Lock und Port pruefen; passende Laufzeit aktivieren
+   oder fehlendes Node/npm privat bereitstellen und protokollieren.
 2. Gepinnten GitHub-Tag klonen und Commit/Origin kontrollieren.
 3. `npm ci --include=dev --no-audit --no-fund` mit Upstream-Lockfile.
 4. `npm run build` fuer Server/CLI/UI.

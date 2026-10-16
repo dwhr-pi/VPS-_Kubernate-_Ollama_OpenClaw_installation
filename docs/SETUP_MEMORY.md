@@ -1,5 +1,27 @@
 # Setup Memory
 
+## Automaton Runtime-Bootstrap, 2026-10-16
+
+- Automaton fehlte Node: Node/npm ueber vorhandenen GitHub-nvm-Helfer privat
+  unter tools/automaton/runtime/nvm bereitstellen. pnpm@10.28.1 separat per
+  npm --prefix unter runtime/pnpm, ohne globales Update/Lifecycle-Skripte.
+- Nur Installation/Repair nach Ressourcen/Lock/Log, opt-out
+  AUTOMATON_AUTO_RUNTIME=0; Status/Doctor ohne Downloads, kein Agentenstart.
+- System-Node, ~/.nvm, Shellprofile, Wallets und WSL durch Codex unveraendert.
+  Revision 2026-10-16-private-node-pnpm-bootstrap. Kein echter Runtime-Download.
+
+## FreeLLMAPI privater Node-Bootstrap, 2026-10-16
+
+- Neuer Source-Installer erreicht, aber Node fehlte: automatischen Bootstrap
+  nur in expliziter Installation/Repair ergaenzt. Runtime-Revision:
+  2026-10-16-private-node-bootstrap; Source-Revision bleibt erkennbar.
+- Vorhandenen node_tool_common-Helfer nutzen, private NVM_DIR unter
+  tools/freellmapi/runtime/nvm, strenge FreeLLMAPI-Node/npm-Kompatibilitaet.
+- nvm v0.40.8 GitHub; Node-22-Binary/npm offiziell, kein System-Node-Austausch.
+  Laufzeit bei spaeterem Start aktivieren, nicht erneut installieren.
+- FREELLMAPI_AUTO_NODE=0 verhindert Bootstrap. Kein echter Download/Build,
+  WSL-Zugriff oder Service-Start durch Codex; Tests verwenden Stubs.
+
 ## Qwen Code / alte FreeLLMAPI-Meldung, 2026-10-16
 
 - GitHub-main enthielt bei erneuter Onlinepruefung noch den alten FreeLLMAPI-

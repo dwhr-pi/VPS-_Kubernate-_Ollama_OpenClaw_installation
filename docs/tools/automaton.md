@@ -57,8 +57,10 @@ bash scripts/tools/automaton_install.sh --dry-run
 
 Dieser Installer verlangt bewusst Node **22.x** und exakt **pnpm 10.28.1**.
 Upstream verlangt mindestens Node 20; 22.x ist unser eingegrenzter Buildpfad,
-keine Zusage fuer alle neueren Versionen. Fehlende Runtimes werden nicht
-automatisch global ersetzt. Fuer native SQLite-/esbuild-Abhaengigkeiten koennen
+keine Zusage fuer alle neueren Versionen. Fehlt `node` oder `pnpm` bei den
+Versionsabfragen oben, ist jetzt keine manuelle globale Installation noetig:
+der ausdruecklich gestartete Installer stellt fehlende/passende Runtimes
+**privat** bereit. Fuer native SQLite-/esbuild-Abhaengigkeiten koennen
 Python 3, C/C++-Compiler und make notwendig sein. Bei fehlenden Prebuilds
 zuerst diese System-/Build-Werkzeuge einrichten; kein Docker erforderlich.
 
@@ -67,6 +69,47 @@ zusaetzlich **10 GiB auf Windows C:**. Das sind konservative Setup-Grenzen,
 keine gemessenen Upstream-Mindestwerte. Der RAM-Check misst Gesamt-RAM, nicht
 die garantierte freie Reserve; andere grosse Jobs vorher beenden.
 Lokale Modelle brauchen zusaetzliche Ressourcen und werden nicht geladen.
+
+### Private Node-/pnpm-Bereitstellung
+
+Erkennbar an `Automaton-Runtime: 2026-10-16-private-node-pnpm-bootstrap`.
+Bei Installation/Repair werden nach Ressourcencheck, Lock und privatem Buildlog:
+
+1. Kompatibles Node 22.x/npm >=10 und pnpm 10.28.1 weiterverwendet.
+2. Fehlendes/inkompatibles Node/npm ueber den vorhandenen GitHub-nvm-Helfer
+   bereitgestellt: nvm v0.40.8 aus GitHub, offizielles Node-22-Binary mit npm.
+   nvm uebernimmt die Download-/Checksumpruefung; kein Node-Source-Build.
+3. Fehlendes/falsches pnpm als **pnpm@10.28.1** per npm in einem privaten Prefix
+   installiert, mit `--global=false --ignore-scripts`. Quelle ist die offizielle
+   npm-Registry, kein globales Update und keine Corepack-Aktivierung erforderlich.
+
+```text
+~/.openclaw_ultimate_user_data/tools/automaton/runtime/nvm/
+~/.openclaw_ultimate_user_data/tools/automaton/runtime/pnpm/
+```
+
+Beachtet `OPENCLAW_USER_DATA_DIR`. Kein Umbau von System-Node, normalem
+`~/.nvm`, globalem pnpm oder Shellprofilen. Die PATH-Aktivierung gilt nur im
+jeweiligen Installer-/Doctor-Prozess; spaetere Doctor-Aufrufe koennen die
+private Runtime wiederverwenden, aber nie herunterladen. Status und Dry-Run
+installieren nichts. Deaktivierung behaelt Runtime und Daten.
+
+Fuer frisches nvm kann der gemeinsame Helfer `git`, `curl`, `ca-certificates`,
+`tar` und `xz-utils` per apt einrichten; dafuer kann sudo abgefragt werden.
+Keine apt-Node-Installation, kein Docker, kein `curl|bash`, kein Wallet-/Agentenstart.
+Git/flock und gegebenenfalls native Build-Werkzeuge muessen verfuegbar sein.
+Der Node-22-Patchstand wird beim Download aufgeloest, nicht fest gepinnt;
+bereits kompatible Versionen werden nicht automatisch aktualisiert.
+
+Optional jeden automatischen Runtime-Download verhindern:
+
+```bash
+AUTOMATON_AUTO_RUNTIME=0 bash scripts/tools/automaton_install.sh
+```
+
+Dann wird ohne passende vorhandene/private Versionen sauber abgebrochen.
+Das sperrt keine ausdrueckliche Source-/Paketinstallation bei vorhandenen
+Runtimes. Jeder Runtime-Fehler stoppt vor Source-Build/Erfolgsmarker.
 
 ## Schritt 2: Aus GitHub installieren
 
@@ -273,11 +316,11 @@ keine pauschalen DACH-Anmeldeformulare oder Haftungsausschluesse aus dem Prompt 
 
 Reproduzierbarer Offline-Test:
 
-Stand 16.10.2026: die 12 Python-Review-/Registry-Tests sowie Dry-Run,
-Start-Sperre und simulierte Fetch-/Commit-Fehler wurden geprueft. Der kombinierte
-Build-/Deaktivierungs-Mocktest erreicht auf diesem Windows-Testhost das
-Zeitlimit und ist noch nicht als bestanden bestaetigt. Kein echter
-pnpm-Install/Build, keine Wallet-/Cloud-/Agentenausfuehrung durch Codex.
+Stand 16.10.2026: 24 Offline-Tests in zwei Teillaeufen bestanden: 12 fuer
+Review/Registry, 8 fuer Runtime-Bootstrap und dessen Grenzen, 4 fuer Source-
+Build/Fehler/Deaktivierung einschliesslich Dry-Run und Start-Sperre. Git/npm/
+nvm/pnpm sind dabei simuliert. Kein echter Runtime-Download oder pnpm-Build,
+keine Wallet-/Cloud-/Agentenausfuehrung durch Codex.
 
 ```bash
 python3 -m unittest discover -s tests -p test_automaton.py -v

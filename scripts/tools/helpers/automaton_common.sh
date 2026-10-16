@@ -3,6 +3,7 @@ set -euo pipefail
 AUTOMATON_REPO_ROOT="$(cd "${BASH_SOURCE[0]%/*}/../../.." && pwd)"
 AUTOMATON_SOURCE_URL=https://github.com/Conway-Research/automaton.git
 AUTOMATON_SOURCE_COMMIT=d8f816881fd24b6f5e3d616e59edec387a447667
+AUTOMATON_RUNTIME_REVISION=2026-10-16-private-node-pnpm-bootstrap
 
 automaton_paths() {
     local root="${OPENCLAW_USER_DATA_DIR:-$HOME/.openclaw_ultimate_user_data}" path
@@ -12,7 +13,9 @@ automaton_paths() {
     AUTOMATON_SOURCE_DIR="$AUTOMATON_BASE/source"
     AUTOMATON_MARKER="$AUTOMATON_BASE/source-built"
     AUTOMATON_LOG_DIR="$root/install_logs"
-    local -a paths=("$root" "$AUTOMATON_BASE" "$AUTOMATON_SOURCE_DIR" "$AUTOMATON_MARKER" "$AUTOMATON_LOG_DIR" "$AUTOMATON_BASE/operation.lock") resolved=()
+    AUTOMATON_NVM_DIR="$AUTOMATON_BASE/runtime/nvm"
+    AUTOMATON_PNPM_DIR="$AUTOMATON_BASE/runtime/pnpm"
+    local -a paths=("$root" "$AUTOMATON_BASE" "$AUTOMATON_SOURCE_DIR" "$AUTOMATON_MARKER" "$AUTOMATON_LOG_DIR" "$AUTOMATON_BASE/operation.lock" "$AUTOMATON_NVM_DIR" "$AUTOMATON_NVM_DIR/nvm.sh" "$AUTOMATON_PNPM_DIR" "$AUTOMATON_PNPM_DIR/node_modules" "$AUTOMATON_PNPM_DIR/node_modules/.bin" "$AUTOMATON_PNPM_DIR/node_modules/pnpm") resolved=()
     local index=0
     mapfile -t resolved < <(realpath -m -- "${paths[@]}")
     [[ "${#resolved[@]}" == "${#paths[@]}" ]] || return 1
@@ -24,17 +27,91 @@ automaton_paths() {
     done
 }
 
-automaton_runtime_check() {
+automaton_require_base_tools() {
     local program
-    for program in node pnpm git flock; do
+    for program in git flock; do
         command -v "$program" >/dev/null || { echo "Automaton: $program fehlt; separat einrichten." >&2; return 1; }
     done
-    node -e 'if(Number(process.versions.node.split(".")[0])!==22)process.exit(1)' || {
-        echo 'Automaton: fuer diesen Buildpfad Node 22.x verwenden; System-Node wird nicht ersetzt.' >&2; return 1;
+}
+
+automaton_node_compatible() {
+    local version
+    command -v node >/dev/null && command -v npm >/dev/null || return 1
+    node -e 'if(Number(process.versions.node.split(".")[0])!==22)process.exit(1)' || return 1
+    version="$(npm --version)" || return 1
+    [[ "$version" =~ ^([0-9]+)\. ]] && ((BASH_REMATCH[1] >= 10))
+}
+
+automaton_activate_private_node() {
+    [[ -s "$AUTOMATON_NVM_DIR/nvm.sh" && -d "$AUTOMATON_NVM_DIR/.git" && ! -L "$AUTOMATON_NVM_DIR/.git" ]] || return 1
+    [[ "$(git -C "$AUTOMATON_NVM_DIR" remote get-url origin)" == https://github.com/nvm-sh/nvm.git ]] || return 1
+    git -C "$AUTOMATON_NVM_DIR" diff --quiet HEAD -- nvm.sh || return 1
+    export NVM_DIR="$AUTOMATON_NVM_DIR"
+    # shellcheck disable=SC1090
+    source "$NVM_DIR/nvm.sh" --no-use || return 1
+    nvm use 22 >/dev/null 2>&1
+}
+
+automaton_activate_private_pnpm() {
+    local binary="$AUTOMATON_PNPM_DIR/node_modules/.bin/pnpm"
+    [[ -f "$binary" && "$(realpath -m -- "$binary")" == "$AUTOMATON_PNPM_DIR/node_modules/pnpm/bin/pnpm.cjs" ]] || return 1
+    export PATH="$AUTOMATON_PNPM_DIR/node_modules/.bin:$PATH"
+    hash -r
+}
+
+automaton_pnpm_compatible() {
+    command -v pnpm >/dev/null && [[ "$(COREPACK_ENABLE_NETWORK=0 pnpm --version)" == 10.28.1 ]]
+}
+
+automaton_runtime_check() {
+    automaton_require_base_tools || return 1
+    if [[ -s "$AUTOMATON_NVM_DIR/nvm.sh" ]] || ! automaton_node_compatible >/dev/null 2>&1; then
+        automaton_activate_private_node || true
+    fi
+    automaton_node_compatible || { echo 'Automaton: Node 22.x/npm >=10 fehlt; Installation/Repair nutzen. Dieser Check laedt nichts herunter.' >&2; return 1; }
+    automaton_activate_private_pnpm || true
+    automaton_pnpm_compatible || {
+        echo 'Automaton: pnpm 10.28.1 fehlt; Installation/Repair nutzen. Kein Download bei Status/Doctor.' >&2; return 1;
     }
-    [[ "$(pnpm --version)" == 10.28.1 ]] || {
-        echo 'Automaton: pnpm 10.28.1 laut gepinntem packageManager erforderlich; kein globales Update.' >&2; return 1;
+}
+
+automaton_load_node_helper() {
+    # shellcheck disable=SC1091
+    source "$AUTOMATON_REPO_ROOT/scripts/tools/helpers/node_tool_common.sh"
+    # Bound only inside automaton_main's installation subshell.
+    check_node_tool_runtime() { automaton_node_compatible; }
+}
+
+automaton_install_private_pnpm() {
+    mkdir -p "$AUTOMATON_PNPM_DIR" || return 1
+    npm install --prefix "$AUTOMATON_PNPM_DIR" --global=false --ignore-scripts \
+        --no-audit --no-fund --package-lock=false --engine-strict \
+        --registry=https://registry.npmjs.org pnpm@10.28.1
+}
+
+automaton_prepare_runtime() {
+    if automaton_runtime_check >/dev/null 2>&1; then return 0; fi
+    [[ "${AUTOMATON_AUTO_RUNTIME:-1}" == 1 ]] || {
+        echo 'Automaton: automatische Node/pnpm-Bereitstellung durch AUTOMATON_AUTO_RUNTIME=0 deaktiviert.' >&2; return 1;
     }
+    automaton_require_base_tools || return 1
+    if ! automaton_node_compatible >/dev/null 2>&1; then
+        echo "Automaton: stelle Node 22/npm privat via GitHub-nvm bereit: $AUTOMATON_NVM_DIR"
+        automaton_load_node_helper || return 1
+        export NVM_DIR="$AUTOMATON_NVM_DIR"
+        TOOL_NAME=Automaton
+        TOOL_NODE_MIN_VERSION=22.0.0
+        if [[ ! -s "$NVM_DIR/nvm.sh" ]]; then unset -f nvm 2>/dev/null || true; fi
+        ensure_node_tool_runtime || return 1
+        automaton_node_compatible || return 1
+    fi
+    automaton_activate_private_pnpm || true
+    if ! automaton_pnpm_compatible; then
+        echo "Automaton: installiere pnpm 10.28.1 privat, ohne globales Update: $AUTOMATON_PNPM_DIR"
+        automaton_install_private_pnpm || return 1
+        automaton_activate_private_pnpm || return 1
+    fi
+    automaton_runtime_check
 }
 
 automaton_require_user() {
@@ -82,11 +159,12 @@ automaton_smoke() (
 
 automaton_build() (
     local mode="$1" mount="$AUTOMATON_BASE" log before started
+    automaton_require_base_tools || return 1
     while [[ ! -d "$mount" ]]; do mount="${mount%/*}"; [[ -n "$mount" ]] || mount=/; done
     automaton_resources "$mount" || return 1
     automaton_lock || return 1
     if [[ -e "$AUTOMATON_SOURCE_DIR" ]]; then automaton_verify_source || return 1; fi
-    if [[ "$mode" == install ]] && automaton_is_built; then
+    if [[ "$mode" == install ]] && automaton_is_built && automaton_runtime_check >/dev/null 2>&1; then
         automaton_smoke || return 1
         echo 'Automaton Source-Build bereits vorhanden; kein Agent gestartet.'; return 0
     fi
@@ -97,6 +175,11 @@ automaton_build() (
     exec > >(tee -a "$log") 2>&1
     trap 'rc=$?; printf "Automaton Build Exit=%s Dauer=%ss Disk-vorher-KiB=%s\n" "$rc" "$((SECONDS-started))" "$before"; df -Pk "$mount"; exit "$rc"' EXIT
     echo "Automaton GitHub-Source $AUTOMATON_SOURCE_COMMIT; kein Docker, Wallet- oder Agentenstart."
+    automaton_prepare_runtime || { echo 'Automaton: Runtime-Bereitstellung fehlgeschlagen; Build gestoppt, kein neuer Erfolgsmarker.' >&2; return 1; }
+    if [[ "$mode" == install ]] && automaton_is_built; then
+        automaton_smoke || return 1
+        echo 'Automaton: Runtime wiederhergestellt, vorhandenen Build geprueft.'; return 0
+    fi
     if [[ ! -e "$AUTOMATON_SOURCE_DIR" ]]; then
         git init "$AUTOMATON_SOURCE_DIR" || return 1
         git -C "$AUTOMATON_SOURCE_DIR" remote add origin "$AUTOMATON_SOURCE_URL" || return 1
@@ -118,6 +201,7 @@ automaton_build() (
 
 automaton_main() (
     umask 077
+    echo "Automaton-Runtime: $AUTOMATON_RUNTIME_REVISION"
     local mode="${1:---dry-run}"
     case "$mode" in
         --dry-run|--plan|plan) mode=plan ;; --check|check|--status|status) mode=status ;;
@@ -148,6 +232,5 @@ automaton_main() (
         rm -f -- "$AUTOMATON_MARKER" || return 1
         echo 'Build deaktiviert, Quellcode gesichert. Keine Prozesse, Wallets oder Runtime-Daten angefasst.'; return 0
     fi
-    automaton_runtime_check || return 1
     automaton_build "$mode"
 )

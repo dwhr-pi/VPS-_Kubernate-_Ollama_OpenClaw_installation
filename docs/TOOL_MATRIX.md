@@ -78,7 +78,7 @@ Wichtig zur Zaehlung:
 
 | Tool | Status | Quelle | Sicherheitsgrenze |
 |---|---|---|---|
-| [Automaton](tools/automaton.md) | experimental / high-risk | Conway-Research/automaton, MIT, gepinnter Source-Build ohne Docker | Node 22.x/pnpm 10.28.1, Reserve 4 GiB RAM/10 GiB Disk; kein Agentenstart, Wallet, Signaturen, Zahlungen oder Live-Trades |
+| [Automaton](tools/automaton.md) | experimental / high-risk | Conway-Research/automaton, MIT, gepinnter Source-Build ohne Docker | Node/npm und pnpm 10.28.1 bei Bedarf privat bereitstellen; Reserve 4 GiB RAM/10 GiB Disk; kein Agentenstart, Wallet, Signaturen, Zahlungen oder Live-Trades |
 
 | Tool | Status | Quelle / Funktionsumfang |
 |---|---|---|
@@ -86,7 +86,7 @@ Wichtig zur Zaehlung:
 
 | Tool | Status | Quelle / Installation | Ressourcen / Sicherheit |
 |---|---|---|---|
-| [FreeLLMAPI](tools/freellmapi.md) | experimental, optional | GitHub `tashfeenahmed/freellmapi`, Source-Build `v0.14.2`, ohne Docker | Build-Planungsreserve 2 GiB RAM/4 GiB Disk; Node 22.22+/24, npm >=10. Start separat, nur localhost:3011; kein Gratis-/Offline-Versprechen |
+| [FreeLLMAPI](tools/freellmapi.md) | experimental, optional | GitHub `tashfeenahmed/freellmapi`, Source-Build `v0.14.2`, ohne Docker | Buildreserve 2 GiB RAM/4 GiB Disk; fehlendes Node/npm privat via GitHub-nvm, System-Node erhalten. Start separat, nur localhost:3011; kein Gratis-/Offline-Versprechen |
 
 | Gruppe | Tools | Einsatz |
 |---|---|---|

@@ -39,6 +39,7 @@ class FreeLLMAPISource(unittest.TestCase):
     def mocks(self):
         return r'''
 freellmapi_require_user() { :; }
+freellmapi_require_base_tools() { :; }
 freellmapi_require_runtime() { :; }
 freellmapi_port_free() { :; }
 freellmapi_resources() { :; }
@@ -158,6 +159,83 @@ npm() {
         result = self.run_shell(self.mocks() + 'unset FREELLMAPI_ENABLE_NETWORK; freellmapi_main start')
         self.assertEqual(result.returncode, 2)
         self.assertFalse(self.workspace.exists())
+
+
+@unittest.skipUnless(BASH and Path(BASH).exists(), 'Git Bash/bash unavailable')
+class FreeLLMAPIBootstrap(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.workspace = Path(self.temp.name) / 'workspace'
+
+    run_shell = FreeLLMAPISource.run_shell
+
+    def mocks(self):
+        return r'''
+freellmapi_paths
+freellmapi_require_base_tools() { :; }
+freellmapi_node_compatible() { [[ "${READY:-0}" == 1 ]]; }
+freellmapi_activate_private_node() { return 1; }
+freellmapi_load_node_helper() {
+    echo HELPER_LOADED
+    ensure_node_tool_runtime() {
+        [[ "$NVM_DIR" == "$OPENCLAW_USER_DATA_DIR/tools/freellmapi/runtime/nvm" ]] || return 90
+        [[ "$TOOL_NAME" == FreeLLMAPI && "$TOOL_NODE_MIN_VERSION" == 22.22.0 ]] || return 91
+        echo BOOTSTRAP_CALLED
+        [[ "${FAIL_BOOTSTRAP:-0}" != 1 ]] || return 1
+        READY=1
+    }
+}
+'''
+
+    def test_missing_node_provisions_once_in_private_directory(self):
+        result = self.run_shell(self.mocks() + 'freellmapi_prepare_runtime\nfreellmapi_prepare_runtime')
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(result.stdout.count('BOOTSTRAP_CALLED'), 1)
+        self.assertFalse(self.workspace.exists())
+
+    def test_compatible_runtime_is_not_replaced(self):
+        result = self.run_shell(self.mocks() + 'READY=1; freellmapi_prepare_runtime')
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertNotIn('HELPER_LOADED', result.stdout)
+
+    def test_opt_out_stops_without_provisioning(self):
+        result = self.run_shell(self.mocks() + 'export FREELLMAPI_AUTO_NODE=0; freellmapi_prepare_runtime')
+        self.assertNotEqual(result.returncode, 0)
+        self.assertNotIn('HELPER_LOADED', result.stdout)
+        self.assertFalse(self.workspace.exists())
+
+    def test_failed_bootstrap_stops(self):
+        result = self.run_shell(self.mocks() + 'FAIL_BOOTSTRAP=1; freellmapi_prepare_runtime && echo UNEXPECTED_CONTINUATION')
+        self.assertNotEqual(result.returncode, 0)
+        self.assertNotIn('UNEXPECTED_CONTINUATION', result.stdout)
+
+    def test_runtime_check_does_not_install(self):
+        result = self.run_shell(self.mocks() + 'freellmapi_require_runtime')
+        self.assertNotEqual(result.returncode, 0)
+        self.assertNotIn('HELPER_LOADED', result.stdout)
+        self.assertFalse(self.workspace.exists())
+
+    def test_later_process_activates_private_runtime_without_installing(self):
+        nvm = self.workspace / 'tools/freellmapi/runtime/nvm'
+        (nvm / '.git').mkdir(parents=True)
+        (nvm / 'nvm.sh').write_text('nvm() { [[ "$*" == "use 22" ]] || return 1; READY=1; }\n')
+        result = self.run_shell(r'''
+freellmapi_paths
+freellmapi_require_base_tools() { :; }
+freellmapi_node_compatible() { [[ "${READY:-0}" == 1 ]]; }
+freellmapi_load_node_helper() { echo FORBIDDEN_BOOTSTRAP; return 99; }
+git() {
+    case "$*" in
+        *'remote get-url origin') echo https://github.com/nvm-sh/nvm.git ;;
+        *'diff --quiet HEAD -- nvm.sh') return 0 ;;
+        *) return 99 ;;
+    esac
+}
+freellmapi_require_runtime
+''')
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertNotIn('FORBIDDEN_BOOTSTRAP', result.stdout)
 
 
 class FreeLLMAPIConfig(unittest.TestCase):

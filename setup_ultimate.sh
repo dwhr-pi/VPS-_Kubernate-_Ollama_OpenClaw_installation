@@ -2872,10 +2872,10 @@ TOOLS["ViDubb"]="planned/heavy: Dubbing-Projekt; Provider, Lip-Sync und lokale B
 TOOLS["Microsoft_Agent_Framework"]="Orchestrierungs-Kandidat planned, keine Installation. AutoGen-Nachfolge gesondert pruefen; RAM/Modelle projektabhaengig. Siehe docs/tools/agentic-coding.md"
 TOOL_KEYS+=("Personnel_Documents_AI")
 TOOLS["Personnel_Documents_AI"]="Personalakten: experimenteller lokaler Metadaten-Vorschlag, keine automatische Aktenaenderung. Paperless 2 GiB RAM/10 GiB Disk Reserve; LLM separat. Doku: docs/tools/personnel-documents.md"
-TOOLS["Automaton"]="Conway Automaton: optionaler GitHub-Source-Build ohne Docker, experimental/high-risk. Node 22.x/pnpm 10.28.1, 4 GiB RAM/10 GiB Disk Planungsreserve. Kein Start, keine Wallets/Zahlungen/Replikation. Doku: docs/tools/automaton.md"
+TOOLS["Automaton"]="Conway Automaton: GitHub-Source ohne Docker, experimental/high-risk. Fehlendes Node/npm und pnpm 10.28.1 privat bereitstellen; 4 GiB RAM/10 GiB Disk Planungsreserve. Kein Start, keine Wallets/Zahlungen/Replikation. Doku: docs/tools/automaton.md"
 TOOL_KEYS+=("Embedded_Debug_HIL")
 TOOLS["Embedded_Debug_HIL"]="Embedded/GDB/HIL: Offline-Registerbericht und Anleitung. Live-Adapter planned; kein Flashen/USB-Zugriff. 256 MiB RAM/100 MiB Planungsreserve nur fuer Offline-Tool, keine GPU. Doku: docs/tools/embedded-debug-hil.md"
-TOOLS["FreeLLMAPI"]="GitHub-Source ohne Docker: Node 22.22+/24, npm >=10; Buildreserve 2 GiB RAM/4 GiB Disk. Kein automatischer Serverstart; localhost 3011. Doku: docs/tools/freellmapi.md"
+TOOLS["FreeLLMAPI"]="GitHub-Source ohne Docker: fehlendes Node/npm wird privat ueber GitHub-nvm bereitgestellt; kein System-Node-Umbau. Buildreserve 2 GiB RAM/4 GiB Disk. Kein Serverstart; localhost 3011. Doku: docs/tools/freellmapi.md"
 TOOLS["Ollama"]="Lokales LLM-Backend. Du kannst über den Ollama Modell-Manager spezifische Modelle installieren und verwalten. Für weitere Informationen zu den Modellen siehe in der Online-Dokumentation nach."
 TOOLS["Ruflo"]="Ruflo/claude-flow-nahe CLI fuer Agenten-Orchestrierung und Hive-Mind-Workflows. Installation nutzt GitHub, Node.js und pnpm; Build-Skripte werden nur nach gezielter Freigabe erlaubt."
 TOOLS["Authentik"]="Optionaler Identity Provider fuer OIDC/OAuth2, SSO und zentrale Logins vor internen Webdiensten. Bereitet nur sichere lokale Vorlagen vor."

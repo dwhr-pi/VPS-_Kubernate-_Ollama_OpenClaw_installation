@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+- Automaton: private automatische Node-22/npm- und pnpm-10.28.1-Bereitstellung
+  nach Ressourcencheck/Lock, nur bei ausdruecklicher Installation/Repair.
+  Kein System-Node-/globales pnpm-Update, keine Downloads bei Status/Doctor,
+  kein Agentenstart. Mit AUTOMATON_AUTO_RUNTIME=0 deaktivierbar.
+
+- FreeLLMAPI: fehlendes/inkompatibles Node/npm bei expliziter Installation oder
+  Repair automatisch privat ueber vorhandenen GitHub-nvm-Helfer bereitstellen.
+  Ressourcen/Lock/Log vor Bootstrap; kompatible Runtimes weiterverwenden,
+  Status/Doctor/Start ohne Downloads, System-Node/Shellprofile unveraendert.
+
 - Qwen_Code vom allgemeinen Hybrid-Platzhalter auf eigenen gepinnten GitHub-
   CLI-Source-Build ohne Docker umgestellt; kein Login/Start/Modell-Download.
 - FreeLLMAPI-Installer gibt Source-Revision aus; Tutorial zum Erkennen des
