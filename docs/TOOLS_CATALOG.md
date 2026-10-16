@@ -1,5 +1,10 @@
 # Tools Catalog
 
+[Qwen Desktop fuer Windows](tools/qwen-desktop-windows.md) mit eigenem
+Menueeintrag und manuellem offiziellen Download, keine WSL-Installation.
+[Modellfamilien und Wan-Refinement](media_studio/HYBRID_MODELS_AND_WAN.md)
+trennen Modelle, APIs, Coding-Clients und ungepruefte ComfyUI-Graphen.
+
 [Defensiver Audio-Review](media_studio/AUDIO_DEEPFAKE_REVIEW.md):
 Pyannote_Audio, DeepFilterNet und AudioSeal neu planned; Demucs/UVR5/Audacity/RVC
 wiederverwenden, keine neue automatische Installation oder Deepfake-Entfernung versprechen.

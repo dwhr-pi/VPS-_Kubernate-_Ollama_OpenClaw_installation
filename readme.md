@@ -18,6 +18,9 @@ Dokumentation
 
 ## Aktuelle Governance-Dokumente
 
+- [Qwen Desktop unter Windows: Download, Installation und erster Coding-Auftrag](docs/tools/qwen-desktop-windows.md)
+- [DeepSeek/Qwen/Wan/GLM/Kimi/Doubao: lokaler Einstieg und Grenzen](docs/media_studio/HYBRID_MODELS_AND_WAN.md)
+
 - [Audio-Deepfakes: defensive Pruefung, Stimmen entfernen und Grenzen](docs/media_studio/AUDIO_DEEPFAKE_REVIEW.md)
 
 - [Lokaler Social-Avatar-Stack: Veo/fal-Alternativen und sichere Workflows](docs/media_studio/SOCIAL_AVATAR_AUTOMATION.md)

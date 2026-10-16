@@ -1,5 +1,27 @@
 # Setup Memory
 
+## FreeLLMAPI Source, 2026-10-16
+
+- Installer baut GitHub v0.14.2 / 57c0669233bbe0c70a0f9f9927613192be948773
+  ohne Docker; npm-Abhaengigkeiten aus Upstream-Lockfile. Keine Engine-/Node-Installation.
+- Build und Start getrennt: FREELLMAPI_ENABLE_NETWORK=1 nur vor nativem
+  Vordergrundstart, HOST 127.0.0.1 erzwungen, native-data separat von altem data/.
+- Private ENV nicht als Shell laden, keine Keys erzeugen/rotieren/importieren.
+  Port/Lock/Commit/Origin/dirty-Source pruefen, kein automatisches Kill/Reset.
+- Nur Offline-Mocktests, kein Live-Build/Routerstart oder WSL-Eingriff.
+
+## Qwen Desktop / Modellpfad, 2026-10-15
+
+- Qwen_Desktop ist Qwen Code Desktop, nicht Qwen Chat/Studio oder QwenWork.
+  Offiziellen desktop-latest-Einstieg und desktop-v0.25.2-x64-Asset verifiziert.
+- Eigener planned/manual-windows-Menueeintrag, optionale Profilreferenz,
+  Anleitung docs/tools/qwen-desktop-windows.md. PowerShell prueft nur
+  lokalen Installer-Hash/Authenticode, installiert/startet nichts.
+- Unterbrochenen Hybrid-Katalog mit HYBRID_MODELS_AND_WAN.md vervollstaendigt:
+  sechs Modellfamilien, sieben geplante Tools; keine geaenderten Modelldefaults.
+- Keine Downloader, keine Keys, keine WSL-/Docker-/Service-/Treiber-Aenderung,
+  keine Publikation. Provider-/Desktop-Livetests fehlen noch.
+
 ## Defensiver Audio-Review, 2026-10-14
 
 - Pyannote_Audio, DeepFilterNet, AudioSeal neu planned, keine Runtime.

@@ -1,5 +1,7 @@
 # AI Media Production Studio
 
+[Modellfamilien, Wan/GGUF und High-Res-Grenzen](HYBRID_MODELS_AND_WAN.md).
+
 [Audio-Deepfakes: Original sichern, isolieren und Redaktion pruefen](AUDIO_DEEPFAKE_REVIEW.md).
 Keine Herkunftsverschleierung oder automatische Echtheitsentscheidung.
 

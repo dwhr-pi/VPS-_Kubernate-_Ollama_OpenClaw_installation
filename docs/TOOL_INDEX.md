@@ -1,5 +1,12 @@
 # Tool Index
 
+**[Qwen_Desktop fuer Windows](tools/qwen-desktop-windows.md)**:
+offizielle Qwen-Code-GUI, getrennt von Qwen_Code CLI und Qwen Chat/Studio.
+Manueller Installationspfad, lokaler PowerShell-Pruefhelfer, keine WSL-Pflicht.
+
+[Hybrider Modell-/Medienpfad](media_studio/HYBRID_MODELS_AND_WAN.md):
+Cline, Qwen_Code, Wan21, ComfyUI_GGUF, WanVideoWrapper, SUPIR und FILM planned.
+
 [Audio-Review und Redaktion](media_studio/AUDIO_DEEPFAKE_REVIEW.md):
 pyannote_audio, deepfilternet, audioseal planned; getrennte Aufgaben,
 kein universeller Deepfake-Detektor.

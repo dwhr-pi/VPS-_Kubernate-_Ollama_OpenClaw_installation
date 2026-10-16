@@ -1,5 +1,10 @@
 # GitHub Tool Sources
 
+Qwen_Desktop und Qwen_Code: [offizieller Code](https://github.com/QwenLM/qwen-code),
+[Desktop-Releases](https://github.com/QwenLM/qwen-code/releases/tag/desktop-latest).
+[Windows-Einstieg](tools/qwen-desktop-windows.md), kein Community-Web-Wrapper.
+[Cline/Wan/GGUF/Wrapper/SUPIR/FILM-Quellen](media_studio/HYBRID_MODELS_AND_WAN.md).
+
 Defensiver Audio-Pfad: [pyannote/pyannote-audio](https://github.com/pyannote/pyannote-audio),
 [Rikorose/DeepFilterNet](https://github.com/Rikorose/DeepFilterNet),
 [facebookresearch/audioseal](https://github.com/facebookresearch/audioseal), alle planned.
@@ -54,9 +59,9 @@ Commit-/Release-Pin, Lizenz und Hardwaretest bleiben vor Freigabe zu pruefen.
 Siehe [HIL-Anleitung](tools/embedded-debug-hil.md).
 
 FreeLLMAPI: [tashfeenahmed/freellmapi](https://github.com/tashfeenahmed/freellmapi), MIT.
-Der optionale Installer verwendet das Upstream-GHCR-Image `ghcr.io/tashfeenahmed/freellmapi:v0.14.2`,
-nicht apt, keinen Source-Build und keinen `curl|bash`-Installer.
-Versionstag statt `latest`; Digest-/Signaturpruefung und echter Installationslauf bleiben TODO.
+Der optionale Installer klont Tag `v0.14.2` und prueft Commit
+`57c0669233bbe0c70a0f9f9927613192be948773`; npm ci/build statt Container.
+Keine Engine, apt-App oder `curl|bash`; echte Plattform-/Provider-Tests bleiben TODO.
 Siehe [Tutorial und Sicherheitsgrenzen](tools/freellmapi.md).
 
 - Primaerquelle fuer Tools: GitHub-Repository oder offizielles GitHub-Release.

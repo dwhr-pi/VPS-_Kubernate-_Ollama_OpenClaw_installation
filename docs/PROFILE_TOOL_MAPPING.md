@@ -1,5 +1,11 @@
 # Profile Tool Mapping
 
+`Agentic_Coding_Local_First` -> optional `qwen_desktop` (Windows-GUI),
+`qwen_code` (CLI), `cline`; jeweils eigene Freigabe, keine Sammelinstallation.
+[Qwen-Windows-Anleitung](tools/qwen-desktop-windows.md).
+`AI_Influencer` -> optional `wan21`, `comfyui_gguf`, `wanvideo_wrapper`,
+`supir`, `film`; [Kompatibilitaetsgrenzen](media_studio/HYBRID_MODELS_AND_WAN.md).
+
 `Audio_Postproduction_Local_First` -> optional `pyannote_audio`,
 `deepfilternet`, `audioseal` fuer getrennte defensive Analyse-/Redaktionsschritte.
 [Audio-Review](media_studio/AUDIO_DEEPFAKE_REVIEW.md); keine automatische Installation.

@@ -1,222 +1,232 @@
-# FreeLLMAPI: optionaler Router fuer Coding-Agenten
+# FreeLLMAPI aus GitHub installieren, ohne Docker
 
-Status: **experimental / optional**, kein Bestandteil der Basisinstallation.
-Upstream: [tashfeenahmed/freellmapi](https://github.com/tashfeenahmed/freellmapi), MIT.
-Stand der Pruefung: 14.10.2026, Server `v0.14.2`, CLI-Paket `0.8.1`.
-Die Integrationsskripte sind vorbereitet; ein echter Docker-/Provider-Test steht aus.
+Status: **experimental / optional**. Geprueft am 16.10.2026.
+Quelle: [tashfeenahmed/freellmapi](https://github.com/tashfeenahmed/freellmapi),
+Tag `v0.14.2`, Commit `57c0669233bbe0c70a0f9f9927613192be948773`.
+[Upstream-Produktionsbuild](https://github.com/tashfeenahmed/freellmapi/blob/v0.14.2/docs/en/install/01-install.md).
 
-## Was macht das Tool?
+## Was wurde korrigiert?
 
-FreeLLMAPI vermittelt API-Anfragen an konfigurierte Modelle. Claude Code kann
-die Anthropic-kompatible Schnittstelle verwenden; andere Clients nutzen die
-OpenAI-kompatible API. Modell-Fallbacks koennen Ausfaelle abfangen, ersetzen
-aber weder Provider-Limits noch eine Kostenkontrolle. Claude Code bleibt dabei
-ein eigener Client: Ein lokales Modell wird nicht zum Claude-Modell.
-Siehe [Client-Dokumentation](https://github.com/tashfeenahmed/freellmapi/blob/v0.14.2/docs/en/clients/01-agent-clients.md).
+Der Installer verwendet jetzt **GitHub-Quellcode und npm**, keine Images,
+keine Container und keinen Compose-Helper. `FREELLMAPI_ENABLE_DOCKER=1`
+wird nicht mehr benoetigt oder ausgewertet. Installation bedeutet hier:
+Quellcode holen, Abhaengigkeiten/Server/CLI/Dashboard bauen und lokal pruefen.
+Sie startet keinen Server und erzeugt keine Schluessel.
 
-**Nicht versprechen:** unbegrenzt kostenlose Tokens, garantierte Modellqualitaet,
-eine feste Anzahl verfuegbarer Gratis-Endpunkte oder garantierten Betrieb mit
-40 MB RAM. Free-Tier-Verfuegbarkeit, Konten und Nutzungsbedingungen aendern sich.
-OpenRouter und andere Cloud-Anbieter sind nicht grundsaetzlich kostenlos.
+GitHub ist die Primaerquelle; npm laedt die im Upstream-Lockfile festgelegten
+Bibliotheken. "Aus GitHub" bedeutet nicht, dass saemtliche Abhaengigkeiten
+ausschliesslich von GitHub geladen werden.
+`npm ci` darf native Lifecycle-Skripte ausfuehren. Nur als normaler Benutzer,
+nicht mit sudo/root und nicht mit ungeprueften Fremdquellen bauen.
 
 ## Voraussetzungen und Ressourcen
 
-| Punkt | Dieses Setup |
+| Bereich | Vorgabe dieses Installers |
 |---|---|
-| Host | Linux/WSL2 mit bereits bewusst eingerichteter Docker Engine und Compose v2 |
-| CPU | amd64 oder arm64 laut Upstream; konkrete Images hier nicht ausgefuehrt |
-| RAM | 512 MiB Planungsreserve nur fuer den Router; Last und weitere Dienste zusaetzlich einplanen |
-| Disk | 2 GiB Linux-Reserve, unter WSL mindestens 10 GiB Windows-Host-Reserve |
-| GPU | fuer Router nicht erforderlich; lokale Modelle separat dimensionieren |
-| Host-Node | fuer Container nicht erforderlich; optionale CLI braucht Node >=20.18 und <25 sowie npm >=10 |
-| Port | ausschliesslich `127.0.0.1:3011`, Container intern `3001`; Grafana belegt bereits Host-Port 3001 |
+| Ziel | Linux/WSL mit bewusst bereitgestellter Laufzeit; keine WSL-Aenderung durch Codex |
+| Node | vorhandenes 22.22+ innerhalb 22.x oder 24.x |
+| npm | >=10, zum vorhandenen Node passend |
+| Werkzeuge | Git, Python 3, flock; fuer Healthcheck curl |
+| RAM | 2 GiB Build-Planungsreserve, vorhandener RAM wird geprueft; kein gemessener Mindestwert |
+| SSD | 4 GiB freie Reserve am Source-Datentraeger; WSL zusaetzlich 10 GiB Windows-Hostreserve ueber vorhandenen Check |
+| Native Addons | better-sqlite3/sharp; wenn kein passendes Binary vorhanden ist, koennen Compiler/Make/Python benoetigt werden |
+| GPU | Router braucht keine; lokale Modelle separat dimensionieren |
+| Netzwerk | Clone/npm brauchen Internet, Serverkontakte separat freigeben |
+| Adresse | ausschliesslich `127.0.0.1:3011`, kein Container-Port |
 
-RAM-/Disk-Werte sind konservative Setup-Planungswerte, keine gemessenen
-Upstream-Mindestwerte. Der Installer prueft den vorhandenen RAM und die Disk;
-er installiert weder Docker noch Node und veraendert keine Gruppen/Sockets.
-CLI-Node 22 mit passendem npm ist ein sinnvoller vorhandener Laufzeitpfad.
-Siehe [Upstream-Installation](https://github.com/tashfeenahmed/freellmapi/blob/v0.14.2/docs/en/install/01-install.md).
+Der Installer installiert **kein Node, npm, Python, Compiler, Docker oder
+Systemdienst**. Fehlende Voraussetzungen ergeben einen klaren Abbruch.
+ARM64/x86_64 haengen auch von den nativen Addons ab; kein pauschales
+Plattformversprechen ohne echten Buildtest. Der bestehende RAM-Check misst
+Gesamt-RAM; freie RAM-/Swap-Last vor grossem Build zusaetzlich kontrollieren.
 
-## Schritt 1: erst den Plan ansehen
+## 1. Plan und Source-Installation
 
-Diese Befehle sind fuer den Nutzer auf dem Zielsystem bestimmt; sie werden durch
-das Hinzufuegen der Integration nicht ausgefuehrt. Im Repository-Root starten:
+Im bestehenden Repository auf dem Zielsystem bewusst ausfuehren:
 
 ```bash
 bash scripts/tools/freellmapi_install.sh --dry-run
-docker compose version
-docker info
+bash scripts/tools/freellmapi_install.sh
+bash scripts/tools/freellmapi_status.sh
 ```
 
-Im Tool-Menue heisst der neue Eintrag `FreeLLMAPI`. Ohne explizites Opt-in
-startet auch die Menueauswahl keinen Download oder Container.
+Es wird in `~/.openclaw_ultimate_user_data/tools/freellmapi/source`
+geklont. `OPENCLAW_USER_DATA_DIR` kann einen anderen privaten, absoluten,
+symlinkfreien User-Datenpfad waehlen. Keine Runtime-Daten im Git-Repository.
 
-## Schritt 2: private ENV vorbereiten
+Der Clone muss exakt zum Tag/Commit und zur offiziellen Origin passen.
+Vorhandene lokale Aenderungen werden nicht zurueckgesetzt/ueberschrieben.
+Ein Lock verhindert parallele Builds/Starts. Belegter Port blockiert den
+Build/Start; keine fremden Prozesse werden beendet.
+
+Installation:
+1. Ressourcen, Laufzeiten, Zielpfade und Port pruefen.
+2. Gepinnten GitHub-Tag klonen und Commit/Origin kontrollieren.
+3. `npm ci --include=dev --no-audit --no-fund` mit Upstream-Lockfile.
+4. `npm run build` fuer Server/CLI/UI.
+5. Server-Syntax, UI-Artefakt und native SQLite-In-Memory-Verbindung pruefen.
+6. Erst dann erfolgreichen Build markieren.
+
+Wiederholtes Installieren eines vollstaendigen Builds prueft ihn erneut,
+ohne automatisch neu zu installieren. Update/Repair baut bewusst neu.
+Logs: `~/.openclaw_ultimate_user_data/install_logs/*_freellmapi_source_*.log`,
+privat; Exit-Code, Dauer und freier Speicher vorher/nachher werden notiert.
+Bei Fehlern bleibt Source zur Diagnose erhalten, aber kein neuer Erfolgsmarker.
+Die private Runtime-ENV wird beim Build nicht geladen.
+
+## 2. Private ENV erst vor dem Serverstart
 
 Vorlage: [config/freellmapi.env.example](../../config/freellmapi.env.example).
-Die echte Datei gehoert nach
-`~/.openclaw_ultimate_user_data/env/freellmapi/.env`, Dateirechte `0600`.
-`ENCRYPTION_KEY` muss ein eigener, kryptografisch zufaelliger Wert aus genau
-64 Hex-Zeichen sein, beispielsweise lokal im Passwortmanager erzeugt.
-Keine Beispielzeichenfolge als echten Schluessel verwenden.
+Echte Datei:
+`~/.openclaw_ultimate_user_data/env/freellmapi/.env`, Besitzer nur du,
+Linux-Dateirechte `0600`. `ENCRYPTION_KEY` muss genau 64 Hex-Zeichen enthalten,
+kryptografisch zufaellig im Passwortmanager/auf dem eigenen Rechner erzeugt.
+Nicht aus Doku kopieren, nicht in Git/Logs speichern.
 
-Mit dem [ENV-Tresor](../ENV_VAULT.md), sofern age und Python eingerichtet sind:
+Der vorhandene [ENV-Tresor](../ENV_VAULT.md) kann das erledigen:
 
 ```bash
-# init nur beim ersten Anlegen des Tresors:
-python3 scripts/security/env_vault.py init
+# Bestehenden Tresor verwenden, NICHT erneut initialisieren:
 python3 scripts/security/env_vault.py set freellmapi_encryption_key
 python3 scripts/security/env_vault.py bind freellmapi ENCRYPTION_KEY freellmapi_encryption_key
 python3 scripts/security/env_vault.py render freellmapi
 python3 scripts/security/env_vault.py render freellmapi --apply
 ```
 
-Der Wert wird verdeckt abgefragt, nicht als Kommandoargument uebergeben.
-Bestehenden Tresor nicht neu initialisieren. Bei Speichervorgaengen die gewollte
-Masterpassphrase verwenden. Alternativ die Vorlage manuell ausserhalb des Repos
-bearbeiten und die Rechte setzen. Provider-Schluessel erst spaeter bewusst im
-Router hinterlegen; das Setup importiert nicht automatisch alle Tresorwerte.
+Die Eingabe ist verdeckt. Ohne bestehenden Tresor dessen Anleitung zuerst lesen.
+Der neue Launcher liest nur `ENCRYPTION_KEY`, `FREELLMAPI_CONTEXT_HANDOFF`
+und `FREELLMAPI_UPDATE_CHECK`, kein Shell-`source`.
+Doppelte/unbekannte Eintraege werden abgelehnt, ohne deren Werte auszugeben.
+HOST/PORT/DB/NODE_OPTIONS nicht in diese Datei schreiben.
+Provider-Keys spaeter bewusst im Router verwalten, nicht alle Tresorwerte importieren.
 
-## Schritt 3: bewusst starten und pruefen
+## 3. Server bewusst nativ starten
 
 ```bash
-FREELLMAPI_ENABLE_DOCKER=1 bash scripts/tools/freellmapi_install.sh
 bash scripts/tools/freellmapi_doctor.sh
+FREELLMAPI_ENABLE_NETWORK=1 bash scripts/tools/freellmapi_start.sh
 ```
 
-Dashboard: `http://127.0.0.1:3011`. Erstzugang nach der Upstream-Anleitung
-einrichten. Admin-Passwort und Wiederherstellungscodes wie Secrets behandeln.
-Kein Admin-Panel ins Internet weiterleiten; Fernadministration nur ueber einen
-bewusst eingerichteten privaten VPN-/SSH-Zugang.
-
-`doctor`, `status` und `--check` pruefen nur `/api/ping`, weder Authentifizierung
-noch Modellantworten. Ein erfolgreicher Ping ist kein Sicherheitsnachweis.
-Containerdaten liegen unter `~/.openclaw_ultimate_user_data/tools/freellmapi/`.
-Das Setup-Menue protokolliert den Aufruf im vorhandenen Installationslog.
-Direkte Skriptaufrufe geben Diagnosen auf dem Terminal aus; keine Secrets mitloggen.
-
-## Schritt 4: Modellpfad bewusst waehlen
-
-Im Dashboard zuerst einen Provider bzw. Custom-Provider und ein verfuegbares
-Modell waehlen. Modell-IDs aus dem eigenen Katalog nehmen, nicht aus alten Videos.
-Gratis-Kontingente und kostenpflichtige Modelle getrennt freigeben.
-Vor dem ersten Test pruefen, welche Quelltexte und personenbezogenen Daten an
-welchen Anbieter gehen duerfen. Provider-Keys werden fuer dessen API verwendet;
-sie bleiben nicht ausschliesslich im Router.
-
-Ollama, LM Studio oder llama.cpp koennen ueber einen passenden
-OpenAI-kompatiblen Endpunkt angebunden werden. **Container-localhost ist nicht
-Host-localhost:** `http://127.0.0.1:11434/v1` im Container erreicht kein Ollama
-auf dem Host. Auch `host.docker.internal` macht einen ausschliesslich an
-Host-Loopback gebundenen Dienst nicht automatisch erreichbar.
-Nicht einfach Ollama auf `0.0.0.0` oeffnen! Fuer diesen Fall eine native lokale
-Router-Installation oder eine separat abgesicherte private Netzverbindung planen.
-Die Compose-Vorlage fuegt absichtlich keine Hostnetz-/Firewall-Ausnahme hinzu.
-
-**Kein Offline-Versprechen:** Der Router synchronisiert extern einen Katalog.
-`FREELLMAPI_UPDATE_CHECK=off` deaktiviert nicht diese Katalogkontakte.
-Strikt offline erfordert gesonderte Netzwerk-/Quellcodepruefung und einen Test
-unter ausgehend gesperrtem Netz; das wird hier nicht automatisch eingerichtet.
-Siehe [Katalog-Synchronisation](https://github.com/tashfeenahmed/freellmapi/blob/v0.14.2/server/src/services/catalog-sync.ts).
-
-## Schritt 5: Claude Code verbinden
-
-Nur mit bereits installiertem Claude Code und geeigneter Node/npm-Laufzeit.
-Die optionale CLI stammt aus dem npm-Paket des GitHub-Projekts, nicht aus apt;
-`npx` laedt und fuehrt dieses Paket aus. Versionspruefung/Review vorher bewusst
-vornehmen. Server-Release und CLI-Version sind verschieden.
+Der Prozess laeuft **im Vordergrund**; mit `Ctrl+C` bewusst stoppen.
+Kein Autostart, kein systemd, kein Hintergrundprozess/PID-Kill implementiert.
+In einem zweiten Terminal kann man pruefen:
 
 ```bash
-read -r -s -p 'Unified API-Key aus deinem Router: ' FREELLMAPI_API_KEY
+# Fuer expliziten HTTP-Test (check/status pruefen nur Build-Artefakte):
+bash scripts/tools/freellmapi_start.sh --health
+```
+
+Dashboard: `http://127.0.0.1:3011`. `FREELLMAPI_HOST_PORT` kann bei Bedarf
+vor dem Aufruf einen anderen lokalen Port waehlen; Clients konsistent anpassen.
+Erstzugang nach Upstream einrichten. Setup-/Passwort-Reset-Codes aus dem
+Terminal wie Secrets behandeln; nicht in Support-Logs veroeffentlichen.
+
+`status`/`--check` pruefen nur Build-Marker/Artefakte. Doctor prueft zusaetzlich
+Laufzeiten und ENV, startet nichts. `--health` ist ein ausdruecklicher lokaler
+HTTP-Ping, kein Auth-/Modell-/Fallback-Test und kein Identitaetsbeweis des Dienstes.
+
+Der Python-Launcher erzwingt `HOST=127.0.0.1`, Produktionsmodus und
+DB unter `tools/freellmapi/native-data/freeapi.db`. Er uebernimmt keine
+beliebigen Prozess-/Node-/Startup-Konfigurationen aus der Umgebung.
+Kein Fallback auf `0.0.0.0`, kein Shellcode aus ENV.
+
+## 4. Kein Offline-/Gratisversprechen
+
+Beim Serverstart koennen Katalog-, Discovery- und Providerkontakte erfolgen.
+`FREELLMAPI_ENABLE_NETWORK=1` ist dafuer bewusste Zustimmung, keine Garantie,
+dass nur ein bestimmter Provider kontaktiert wird.
+`FREELLMAPI_UPDATE_CHECK=off` deaktiviert nicht die Katalog-Synchronisation.
+[Upstream-Katalogcode](https://github.com/tashfeenahmed/freellmapi/blob/v0.14.2/server/src/services/catalog-sync.ts).
+Echten Offlinebetrieb mit Egress-Sperre separat auditieren/testen.
+
+Free-Tier-Quoten, Preise und Modellverfuegbarkeit aendern sich.
+Keine garantierten 40 MB RAM oder unbegrenzten Gratis-Tokens.
+Klar freigeben, welche Dateien/Prompts an welchen Provider duerfen.
+Context-Handoff bleibt `off`; Wechsel koennen Informationen zu anderen
+Anbietern tragen, ohne gleiche Antwortqualitaet zu garantieren.
+
+## 5. Ollama, Coding-Clients, OpenClaw und n8n
+
+Beim nativen Router auf **demselben Host** kann ein dort erreichbares Ollama
+als Custom Provider `http://127.0.0.1:11434/v1` dienen.
+Container-Clients wie n8n haben dagegen einen eigenen localhost.
+Keine Ollama- oder Router-Bindung auf alle Interfaces als schnelle Loesung.
+
+OpenAI-kompatible Clients verwenden typischerweise
+`http://127.0.0.1:3011/v1`, vorhandene Modell-ID und Router-Key.
+Fuer Claude Code beschreibt Upstream eine Anthropic-kompatible Basisadresse
+ohne `/v1`. Das Setup aendert Clients nicht automatisch.
+Die **mitgebaute GitHub-CLI** statt eines Docker-/npx-Downloads verwenden:
+
+```bash
+read -r -s -p 'Unified API-Key aus dem Router: ' FREELLMAPI_API_KEY
 printf '\n'
 export FREELLMAPI_API_KEY
-export FREELLMAPI_URL=http://127.0.0.1:3011
-npx --yes freellmapi@0.8.1 setup-claude --url http://127.0.0.1:3011 --dry-run
+node "$HOME/.openclaw_ultimate_user_data/tools/freellmapi/source/cli/dist/index.js" \
+  setup-claude --url http://127.0.0.1:3011 --dry-run
+unset FREELLMAPI_API_KEY
 ```
 
-**Achtung:** Die Upstream-Vorschau zeigt Konfigurationsdiffs; diese koennen den
-Unified API-Key enthalten. Nicht aufzeichnen, hochladen oder in Issues einfuegen.
-Nach lokaler Pruefung ohne `--dry-run` wiederholen, wenn die dauerhafte
-Client-Aenderung gewollt ist. Vorhandene Client-Konfiguration vorher sichern.
-Claude Code verwendet die Router-Basisadresse **ohne `/v1`**.
+Pfad bei abweichendem User-Datenverzeichnis anpassen. Upstream-Vorschauen
+koennen Keys in Diffs zeigen: nicht aufzeichnen/teilen. Vor echter
+Client-Aenderung Backup und manuelle Freigabe.
+[Client-Doku](https://github.com/tashfeenahmed/freellmapi/blob/v0.14.2/docs/en/clients/01-agent-clients.md),
+[CLI-Quelle](https://github.com/tashfeenahmed/freellmapi/blob/v0.14.2/cli/README.md).
+OpenClaw read-only-first, keine zusaetzlichen Shell-/Schreibrechte durch
+Providerwechsel. n8n-Secrets in dessen Credential Store, nicht in Export-JSON.
+
+## 6. Alte Docker-Installationen nicht vermischen
+
+Die alte [Compose-Vorlage](../../stacks/freellmapi/compose.yml) bleibt nur
+als historische/optionale Referenz, wird vom Installer nicht mehr verwendet.
+Es gibt keinen automatischen Docker-Stop, keine Container-/Volume-Loeschung
+und keine Migration. Alte `data/` und `compose.yml` bleiben unveraendert.
+
+Vor Umstieg alten Router selbst mit dessen bisheriger Betriebsart stoppen.
+Ist Port 3011 belegt, startet/baut die native Integration nicht weiter.
+Native Daten liegen absichtlich unter **native-data/**; alter Adminzugang,
+Provider-Keys und Unified Key erscheinen dort nicht automatisch.
+
+Gewollte Migration separat planen: alten Router sauber stoppen, SQLite
+konsistent sichern, DB samt Sidecars und bisherigem ENCRYPTION_KEY
+verschluesselt sichern, Wiederherstellung isoliert testen. Keinen neuen
+Verschluesselungskey fuer eine alte Datenbank verwenden. Keine laufende
+SQLite-Datei blind kopieren oder Datenbank/Key automatisch rotieren.
+
+## 7. Update / Reparatur / Deaktivierung
 
 ```bash
-# Nach Ende der Konfiguration/Client-Sitzung:
-unset FREELLMAPI_API_KEY FREELLMAPI_URL
+# Vordergrundprozess zuerst bewusst mit Ctrl+C stoppen:
+bash scripts/tools/freellmapi_update.sh
+bash scripts/tools/freellmapi_install.sh --repair
+bash scripts/tools/freellmapi_uninstall.sh
 ```
 
-Umgebungsvariablen sind kein vollwertiger Tresor: Kindprozesse und privilegierte
-Benutzer koennen darauf zugreifen. Keine Schluessel als Argument oder in der
-Shell-History speichern. Hinweise zu CLI-Generatoren und dem alternativen
-temporaren `launch`-Modus stehen in der
-[CLI-Anleitung](https://github.com/tashfeenahmed/freellmapi/blob/v0.14.2/cli/README.md).
+Update bleibt bei dem im Setup gepinnten Commit. Eine neue Upstream-Version
+braucht bewusste Pin-/Build-/Lizenzpruefung, kein `git pull latest`.
+Build/Start/Deaktivierung nutzen denselben Lock.
+Deinstallation benennt nur den sauberen Source-Ordner in
+`source.disabled.<Zeit>.<PID>` um; keine rekursive Loeschung.
+ENV, native-data, alte Containerdaten und Code bleiben erhalten.
+Manuelle Source-Aenderungen blockieren auch diese Aktion.
 
-## Weitere Clients, OpenClaw und n8n
-
-Die Upstream-CLI dokumentiert `setup-cline`, `setup-continue`, `setup-aider`
-und `setup-openclaw`. Erst mit `--dry-run` pruefen; das Setup veraendert diese
-Clients nicht automatisch. OpenAI-kompatible Clients verwenden normalerweise
-`http://127.0.0.1:3011/v1`, eine gueltige Modell-ID und den Unified API-Key.
-
-OpenClaw bleibt read-only-first: Providerwechsel geben keine Schreib-, Shell-
-oder Versandberechtigung. Unbekannte Modell-Tool-Calling-Faehigkeiten erst mit
-harmlosen Testaufgaben pruefen. Fuer n8n einen HTTP-/OpenAI-kompatiblen
-Workflow mit Zugangsdaten im n8n-Credential-Store anlegen, niemals mit Key im
-Workflow-Export. Laeuft n8n selbst im Container, gilt erneut: dessen localhost
-ist nicht der Host. Keine pauschalen Portfreigaben als Abkuerzung.
-
-Context-Handoff bleibt im Beispiel `off`. Optional `on_model_switch` erst nach
-Datenschutzpruefung aktivieren: Zusammenfassungen koennen Kontext an einen
-anderen Provider uebertragen und erhalten keinen vollstaendigen internen
-Modellzustand. Ein erfolgreicher Fallback garantiert keine gleiche Antwortqualitaet.
-
-## Windows, Linux, macOS und Android
-
-Upstream bietet Desktop-/Installationswege fuer Windows, macOS und Linux.
-Fuer einen lokalen Arbeitsplatz kann der native Weg einfacher sein, wenn der
-Router ausschliesslich lokale Host-Loopback-Modelle erreichen soll. Offizielle
-Releases und Plattformhinweise verwenden; dieses Setup automatisiert die native
-Desktop-Installation nicht. Android/Termux ist ein gesonderter experimenteller
-Weg, keine hier getestete Android-App. Niemals das Admin-Panel nur fuer einen
-Handy-Homescreen-Link oeffentlich machen; Zugriff ausschliesslich privat absichern.
-
-## Update, Deinstallation, Backup und Fehler
-
-```bash
-# Bleibt beim hier geprueften Versionstag; kein automatisches latest:
-FREELLMAPI_ENABLE_DOCKER=1 bash scripts/tools/freellmapi_update.sh
-FREELLMAPI_ENABLE_DOCKER=1 bash scripts/tools/freellmapi_uninstall.sh
-```
-
-Update/Installation ueberschreiben keine abweichende Runtime-Compose-Datei.
-Bei neuer Setup-Version zuerst Diff und Backup pruefen; manuelle Migration bleibt
-bei Abweichungen erforderlich. Deinstallation stoppt/entfernt Container und
-Netzwerk, **nicht ENV, Datenbank oder Schluessel**; kein `down -v`.
-
-Vor Updates den Router stoppen und Datenverzeichnis plus ENCRYPTION_KEY/ENV
-zusammen verschluesselt sichern. SQLite nicht unkoordiniert im laufenden Betrieb
-kopieren. Restore in isolierter Testumgebung pruefen. Schluesselverlust macht
-verschluesselte Provider-Keys unbrauchbar; Key nicht einfach austauschen.
-
-| Fehler | Sichere Reaktion |
+| Fehler | Sicherer naechster Schritt |
 |---|---|
-| Opt-in fehlt | Doku lesen; FREELLMAPI_ENABLE_DOCKER=1 nur bewusst setzen |
-| ENV/Key/Rechte fehlen | Vorlage/Tresor pruefen; chmod 600 auf der privaten ENV |
-| Docker-Zugriff fehlt | bestehende Docker-Einrichtung pruefen; kein chmod 666 am Socket |
-| Port belegt | Belegung pruefen; FREELLMAPI_HOST_PORT bewusst aendern und Clients anpassen |
-| Ping scheitert | lokale Compose-Logs pruefen; Container kann bereits laufen; keine privaten Logs teilen |
-| 401/429/Modell fehlt | Key, Providerquota und Live-Katalog pruefen, nicht Limits umgehen |
+| Node/npm fehlt oder unpassend | passende Laufzeit bewusst separat einrichten; kein System-Node-Umbau |
+| SQLite-Smoke-Test scheitert | native Abhaengigkeiten/Node-ABI und Buildlog pruefen |
+| Git-Ziel kaputt, fremd oder dirty | sichern/pruefen, nicht automatisch loeschen/resetten |
+| Port oder Lock belegt | eigenen laufenden Dienst/Build bewusst beenden |
+| ENV ungueltig | drei erlaubte Schluessel, Rechte/Besitz/Format pruefen |
+| HTTP-Ping scheitert | Routerstart und lokales Terminal pruefen, keine Secrets teilen |
+| 401/429/Modell fehlt | Router-Key, Modell/Provider und Quota pruefen; keine Limit-Umgehung |
 
-Offen: echter Linux-/ARM-/WSL-Lauf, Image-Digest/Signatur, Auth-/Fallback-Smoke-Test,
-Ressourcenmessung, kontrollierter Offline-Test und Client-/Restore-Integration.
-
-## Reproduzierbare Offline-Tests
+## Tests und offene Punkte
 
 ```bash
 python3 -m unittest discover -s tests -p test_freellmapi.py -v
 ```
 
-Die Tests verwenden temporaere Verzeichnisse und simulierte Docker-Aufrufe:
-Dry-Run ohne Schreibzugriff, Opt-in-Sperre, Wiederholung, fehlgeschlagener Pull,
-Healthcheck-Fehler, Erhalt persoenlicher Dateien, Registry-/Menueverdrahtung und
-lokale Doku-Links. Sie ersetzen keinen echten Installations-/Authentifizierungstest.
+Nur temporaere Dateien und simulierte Git/npm/Node-Aufrufe, keine echte
+Installation/Provider-/WSL-Tests. Offen: realer Linux-/ARM-Build,
+Auth-/Fallback-/Lasttest, verschluesselter Restore und optionaler
+systemd-user-Betrieb. Der Server wurde durch diese Repo-Aenderung nicht gestartet.

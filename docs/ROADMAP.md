@@ -1,5 +1,14 @@
 # Roadmap
 
+## Qwen Desktop / hybrider Modellpfad
+
+- Qwen_Desktop: nativer manueller Windows-GUI-Pfad, Download/Hash/Signatur,
+  Projekt-/Provider-/Freigabeschritte dokumentiert; PowerShell-Pruefhelfer.
+- Cline/Qwen_Code/Wan21/ComfyUI_GGUF/WanVideoWrapper/SUPIR/FILM planned;
+  Modellfamilien nur inaktiv katalogisiert. Keine 8K-/Kosten-/VRAM-Garantie.
+- Offen: Desktop-Smoke-Test/Publisher-Pin, versionsgepinnte ComfyUI-Graphen
+  und echte lokale/Cloud-Budgetdurchsetzung. Keine automatische WSL-Aenderung.
+
 ## Defensiver Audio-Review
 
 - Drei geplante Kandidaten, bestehende Audio-Tools und Grenzen dokumentiert.

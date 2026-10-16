@@ -2797,6 +2797,9 @@ TOOL_KEYS+=("FreeLLMAPI")
 TOOL_KEYS+=("Automaton")
 TOOL_KEYS+=("Microsoft_Agent_Framework")
 TOOL_KEYS+=("Karaoke_Formats")
+TOOL_KEYS+=("Qwen_Desktop")
+TOOLS["Qwen_Desktop"]="Qwen Code Desktop: Windows-GUI, manuelle Installation aus offiziellem Desktop-Release; keine WSL. Anleitung: docs/tools/qwen-desktop-windows.md"
+TOOL_SCRIPT_NAMES["Qwen_Desktop"]="qwen_desktop"
 TOOL_KEYS+=("Cline" "Qwen_Code" "Wan21" "ComfyUI_GGUF" "WanVideoWrapper" "SUPIR" "FILM")
 TOOLS["Cline"]="planned: Coding-Agent mit Datei-/Terminalrechten; Default Freigabe vor Aenderungen, kein Auto-Approve. docs/media_studio/HYBRID_MODELS_AND_WAN.md"
 TOOL_SCRIPT_NAMES["Cline"]="hybrid_media_candidate"
@@ -2872,7 +2875,7 @@ TOOLS["Personnel_Documents_AI"]="Personalakten: experimenteller lokaler Metadate
 TOOLS["Automaton"]="Conway Automaton: planned/high-risk; nur Offline-Review, kein Runtime-Installer. Laborplanung 2 vCPU/4 GiB RAM/10 GiB Disk, ungemessen. Keine Wallets, Zahlungen, Live-Trades oder Replikation. Doku: docs/tools/automaton.md"
 TOOL_KEYS+=("Embedded_Debug_HIL")
 TOOLS["Embedded_Debug_HIL"]="Embedded/GDB/HIL: Offline-Registerbericht und Anleitung. Live-Adapter planned; kein Flashen/USB-Zugriff. 256 MiB RAM/100 MiB Planungsreserve nur fuer Offline-Tool, keine GPU. Doku: docs/tools/embedded-debug-hil.md"
-TOOLS["FreeLLMAPI"]="Optional/experimental: API-Router, 512 MiB RAM/2 GiB Disk Planungsreserve; Docker separat, localhost 3011. Cloud/Katalog-Datenschutz beachten; Start nur mit FREELLMAPI_ENABLE_DOCKER=1. Doku: docs/tools/freellmapi.md"
+TOOLS["FreeLLMAPI"]="GitHub-Source ohne Docker: Node 22.22+/24, npm >=10; Buildreserve 2 GiB RAM/4 GiB Disk. Kein automatischer Serverstart; localhost 3011. Doku: docs/tools/freellmapi.md"
 TOOLS["Ollama"]="Lokales LLM-Backend. Du kannst über den Ollama Modell-Manager spezifische Modelle installieren und verwalten. Für weitere Informationen zu den Modellen siehe in der Online-Dokumentation nach."
 TOOLS["Ruflo"]="Ruflo/claude-flow-nahe CLI fuer Agenten-Orchestrierung und Hive-Mind-Workflows. Installation nutzt GitHub, Node.js und pnpm; Build-Skripte werden nur nach gezielter Freigabe erlaubt."
 TOOLS["Authentik"]="Optionaler Identity Provider fuer OIDC/OAuth2, SSO und zentrale Logins vor internen Webdiensten. Bereitet nur sichere lokale Vorlagen vor."

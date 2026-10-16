@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+- FreeLLMAPI auf gepinnten GitHub-Source-Build ohne Docker umgestellt:
+  npm ci/build, lokaler SQLite-Smoke-Test, Lock/Logs/Ressourcenchecks.
+  Start separat im Vordergrund mit localhost-Zwang und sicher gelesenem ENV;
+  alte Containerdaten bleiben unberuehrt, keine automatische Migration.
+
+- Qwen_Desktop (Qwen Code Desktop) als manueller Windows-GUI-Pfad ergaenzt:
+  offizieller Desktop-Download, sichere Erstnutzung, lokaler Hash-/Signaturcheck.
+  CLI/Chat/Studio/QwenWork getrennt, keine pauschale Open-Source-/Free-Tier-Zusage.
+- Hybrid-Katalog fuer Modellfamilien/Wan und sieben geplante Tools
+  vervollstaendigt; keine aktiven Modelldownloads, 8K- oder VRAM-Versprechen.
+
 - Defensiver Audio-Review: drei planned-Kandidaten und bestehende Audioquellen
   verknuepft, Originalerhalt, Separation/Diarisierung und Wasserzeichen-Grenzen
   dokumentiert. Fehlerhafte Ausloeschungs-/Echtheitsversprechen korrigiert;

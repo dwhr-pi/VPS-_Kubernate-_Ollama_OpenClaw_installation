@@ -1,5 +1,11 @@
 # Tool Matrix
 
+| Neuer Pfad | Status | Einstieg |
+|---|---|---|
+| Qwen_Desktop | planned / manual-windows | [Windows-GUI, Release und lokale Installerpruefung](tools/qwen-desktop-windows.md) |
+| Cline, Qwen_Code | planned | [Coding-/Hybridpfad](media_studio/HYBRID_MODELS_AND_WAN.md) |
+| Wan21, ComfyUI_GGUF, WanVideoWrapper, SUPIR, FILM | planned / gpu-heavy | [Versionen/8K-/VRAM-Grenzen](media_studio/HYBRID_MODELS_AND_WAN.md) |
+
 | Defensive Audio-Kandidaten | Stand | Grenze |
 |---|---|---|
 | Pyannote_Audio | planned | Diarisierung, keine Echtheits-/Identitaetsentscheidung |
@@ -79,7 +85,7 @@ Wichtig zur Zaehlung:
 
 | Tool | Status | Quelle / Installation | Ressourcen / Sicherheit |
 |---|---|---|---|
-| [FreeLLMAPI](tools/freellmapi.md) | experimental, optional | GitHub `tashfeenahmed/freellmapi`, GHCR `v0.14.2` | Planungsreserve 512 MiB RAM/2 GiB Disk, nur localhost:3011; explizites Docker-Opt-in, kein Gratis-/Offline-Versprechen |
+| [FreeLLMAPI](tools/freellmapi.md) | experimental, optional | GitHub `tashfeenahmed/freellmapi`, Source-Build `v0.14.2`, ohne Docker | Build-Planungsreserve 2 GiB RAM/4 GiB Disk; Node 22.22+/24, npm >=10. Start separat, nur localhost:3011; kein Gratis-/Offline-Versprechen |
 
 | Gruppe | Tools | Einsatz |
 |---|---|---|

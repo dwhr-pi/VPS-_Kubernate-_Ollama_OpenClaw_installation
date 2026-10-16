@@ -4,7 +4,7 @@
 |---|---|---|---|
 | 8010/tcp | Paperless-ngx | nein | neue Vorlage nur 127.0.0.1; Altinstallationen separat pruefen, kein automatischer Schutz vorhandener Akten |
 | 3333/tcp | optionaler GDB-Server | nein | nur Loopback nach Hardwarefreigabe; ohne eigene Authentifizierung niemals oeffentlich; Tcl 6666/Telnet 4444 deaktiviert lassen |
-| 3011/tcp | FreeLLMAPI | nein | ausschliesslich 127.0.0.1; Container intern 3001; Admin-/Providerzugang privat halten |
+| 3011/tcp | FreeLLMAPI | nein | nativer Source-Server ausschliesslich 127.0.0.1; Build startet keinen Listener; Admin-/Providerzugang privat halten |
 | 22/tcp | SSH | nur Allowlist/VPN | `ufw limit`, Key-only |
 | 25/tcp | SMTP | ja, Mailserver | nur Mailserver, kein Relay |
 | 80/tcp | HTTP | ja | Redirect/ACME/Proxy |

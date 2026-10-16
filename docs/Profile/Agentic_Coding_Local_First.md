@@ -1,5 +1,10 @@
 # Agentic Coding Local First
 
+Windows-GUI als optionale Alternative:
+[Qwen Code Desktop](../tools/qwen-desktop-windows.md).
+Eigenstaendiger Menueeintrag Qwen_Desktop, keine WSL-/CLI-Pflicht.
+Qwen_Code und Cline separat geplant; niemals Auto-Approve voraussetzen.
+
 Status: **planned / documentation-first**, keine automatische Installation.
 Zielgruppe: Einsteiger und Entwickler mit einem freigegebenen Testrepository.
 

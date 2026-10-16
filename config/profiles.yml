@@ -23,7 +23,7 @@
       "install": "scripts/profiles/Agentic_Coding_Local_First_install.sh",
       "uninstall": "scripts/profiles/Agentic_Coding_Local_First_uninstall.sh",
       "tools": ["aider", "ollama"],
-      "optional_tools": ["opencode", "openhands", "continue_dev", "langgraph", "crewai", "autogen", "agent_framework", "automaton", "cline", "qwen_code"],
+      "optional_tools": ["opencode", "openhands", "continue_dev", "langgraph", "crewai", "autogen", "agent_framework", "automaton", "cline", "qwen_code", "qwen_desktop"],
       "security_note": "Keine automatische Toolinstallation. Ein Job, begrenzte Iterationen, manuelles Review; Automaton-Runtime weiterhin gesperrt."
     },
     {
