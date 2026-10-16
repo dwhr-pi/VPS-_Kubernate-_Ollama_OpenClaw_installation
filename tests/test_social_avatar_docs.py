@@ -28,7 +28,7 @@ class SocialAvatarDocs(unittest.TestCase):
             self.assertTrue(tool['source'].startswith('https://github.com/'))
             self.assertEqual(keys.count(tool['name']), 1, tid)
             self.assertIn('"' + tool['name'] + '"', status)
-            script = 'tgi' if tid == 'tgi' else 'social_media_candidate'
+            script = tid if tid in ('tgi', 'pinokio') else 'social_media_candidate'
             self.assertIn('TOOL_SCRIPT_NAMES["' + tool['name'] + '"]="' + script + '"', menu)
             for field in ('doc', 'install_script', 'uninstall_script', 'update_script', 'doctor_script'):
                 self.assertTrue((ROOT / tool[field]).is_file())

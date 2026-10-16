@@ -2830,8 +2830,8 @@ TOOLS["LTX_Video"]="planned/model: LTX-Video-Generierung; kein pauschaler Adapte
 TOOL_SCRIPT_NAMES["LTX_Video"]="social_media_candidate"
 TOOLS["TGI"]="experimental: GitHub-Quellen ohne Docker, nativer Launcher-Build separat opt-in. KEIN kompletter Inferenzserver; Maintenance Mode. docs/tools/tgi.md"
 TOOL_SCRIPT_NAMES["TGI"]="tgi"
-TOOLS["Pinokio"]="planned/desktop: Desktop-Skript-Launcher; keine Container-Sandbox, Skripte koennen beliebige Befehle ausfuehren. Keine Installation. docs/media_studio/SOCIAL_AVATAR_AUTOMATION.md"
-TOOL_SCRIPT_NAMES["Pinokio"]="social_media_candidate"
+TOOLS["Pinokio"]="Manueller nativer GitHub-Release v8.2.0: Browser-Download mit Wartepause; kein Docker/WSL, keine Sandbox. docs/tools/pinokio.md"
+TOOL_SCRIPT_NAMES["Pinokio"]="pinokio"
 TOOLS["SD_Next"]="planned/local: Generative WebUI als optionale Alternative; Modell-/Extension-Lizenzen separat pruefen. Keine Installation. docs/media_studio/SOCIAL_AVATAR_AUTOMATION.md"
 TOOL_SCRIPT_NAMES["SD_Next"]="social_media_candidate"
 TOOLS["Windmill"]="planned/local: Workflow-/Skriptplattform; AGPL-/Commercial-/Artefaktbedingungen pruefen, keine MIT-Pauschalaussage. Keine Installation. docs/media_studio/SOCIAL_AVATAR_AUTOMATION.md"
@@ -3467,6 +3467,14 @@ install_tool() {
         end_operation_measurement "skipped"
         operation_status="skipped"
         echo -e "${YELLOW}Qwen Desktop: manuelle Windows-Installation verschoben/nicht bestaetigt. Kein Fehler.${NC}"
+    elif [ "$TOOL_KEY" = "Pinokio" ] && [ "$tool_rc" -eq 0 ]; then
+        end_operation_measurement "success"
+        operation_status="success"
+        echo -e "${GREEN}Pinokio: Desktop-Installation manuell bestaetigt; kein automatisch gepruefter Installationsstatus.${NC}"
+    elif [ "$TOOL_KEY" = "Pinokio" ] && [ "$tool_rc" -eq 3 ]; then
+        end_operation_measurement "skipped"
+        operation_status="skipped"
+        echo -e "${YELLOW}Pinokio: Desktop-Installation verschoben/nicht bestaetigt. Kein Fehler.${NC}"
     elif [ "$tool_rc" -eq 0 ]; then
         append_unique_line "$TOOL_STATUS_FILE" "$TOOL_KEY"
         end_operation_measurement "success"
