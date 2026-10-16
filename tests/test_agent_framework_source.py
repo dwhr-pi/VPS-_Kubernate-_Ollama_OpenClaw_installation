@@ -74,6 +74,73 @@ exit "$rc"
         result = self.run_bash('bash scripts/tools/agent_framework_install.sh start')
         self.assertEqual(result.returncode, 2, result.stderr)
 
+    def test_ready_python_never_uses_sudo(self):
+        result = self.run_bash('''
+source scripts/tools/helpers/agent_framework_common.sh
+af_venv_ready() { return 0; }
+sudo() { exit 99; }
+af_prepare_venv /mock/python
+''')
+        self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_missing_venv_repairs_versioned_package_and_rechecks(self):
+        result = self.run_bash('''
+source scripts/tools/helpers/agent_framework_common.sh
+af_venv_ready() { test -f "$HOME/repaired"; }
+af_venv_package() { echo python3.12-venv; }
+sudo() {
+    printf '%s\\n' "$*" >> "$HOME/apt-calls"
+    case "$*" in *'install -y --no-install-recommends python3.12-venv') touch "$HOME/repaired" ;; esac
+    return 0
+}
+af_prepare_venv /mock/python
+grep -q '^ -v$\\|^-v$' "$HOME/apt-calls"
+grep -q 'apt-get.*update' "$HOME/apt-calls"
+grep -q 'install -y --no-install-recommends python3.12-venv' "$HOME/apt-calls"
+''')
+        self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_repair_opt_out_and_custom_python_never_use_sudo(self):
+        for policy in ('AGENT_FRAMEWORK_AUTO_VENV=0', 'af_venv_package() { return 1; }'):
+            with self.subTest(policy=policy):
+                result = self.run_bash('''
+source scripts/tools/helpers/agent_framework_common.sh
+af_venv_ready() { return 1; }
+sudo() { exit 99; }
+''' + policy + '\naf_prepare_venv /mock/python\n')
+                self.assertEqual(result.returncode, 1, result.stderr)
+
+    def test_sudo_failure_stops_before_apt(self):
+        result = self.run_bash('''
+source scripts/tools/helpers/agent_framework_common.sh
+af_venv_ready() { return 1; }
+af_venv_package() { echo python3.12-venv; }
+sudo() { [[ "$1" == -v ]] && return 1; exit 99; }
+af_prepare_venv /mock/python
+''')
+        self.assertEqual(result.returncode, 1, result.stderr)
+        self.assertIn('sudo-Freigabe fehlgeschlagen', result.stderr)
+
+    def test_failed_apt_or_failed_recheck_cannot_continue(self):
+        for rc in (0, 42):
+            result = self.run_bash('''
+source scripts/tools/helpers/agent_framework_common.sh
+af_venv_ready() { return 1; }
+af_venv_package() { echo python3.12-venv; }
+sudo() { [[ "$1" == -v ]] && return 0; return ''' + str(rc) + '''; }
+af_prepare_venv /mock/python
+''')
+            self.assertNotEqual(result.returncode, 0, result.stderr)
+
+    def test_bootstrap_before_clone_and_not_in_read_only_actions(self):
+        text = (ROOT / HELPER).read_text(encoding='utf-8')
+        main = text.split('agent_framework_main() (', 1)[1]
+        self.assertLess(main.index('af_prepare_venv "$python"'), main.index('af_install_source "$python"'))
+        self.assertGreater(main.index('af_prepare_venv "$python"'), main.index('af_probe >/dev/null 2>&1'))
+        self.assertIn('dpkg-query -S "$executable"', text)
+        self.assertIn('sys.prefix == sys.base_prefix', text)
+        self.assertNotIn('--clear', text)
+
     def test_unsafe_paths_rejected(self):
         result = self.run_bash('OPENCLAW_USER_DATA_DIR=/ bash scripts/tools/agent_framework_install.sh --dry-run')
         self.assertNotEqual(result.returncode, 0)

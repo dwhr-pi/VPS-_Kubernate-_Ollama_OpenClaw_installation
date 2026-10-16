@@ -1,5 +1,53 @@
 # Setup Memory
 
+## Qwen Desktop manuelle Uebergabe, 2026-10-16
+
+- Install/Update warten interaktiv nach Browserangebot auf Enter und
+  [(j)a/(N)ein]-Abschlussbestaetigung. Keine automatische Windows-Installation.
+- Exit 0 bestaetigt manuell, 3 verschoben/EOF, 1 Browserfehler. Tools-Menue
+  behandelt 3 als skipped, 0 ohne automatisch verifizierten Installiert-Haken.
+- --open-download bleibt reine Browser-Uebergabe ohne Wartephase.
+
+## Agent Framework venv-Reparatur, 2026-10-16
+
+- Import von venv allein erkennt fehlendes ensurepip unter Ubuntu nicht.
+- Vor Clone/Build gezielt pythonX.Y-venv fuer paketverwaltetes System-Python
+  nach sudo-Freigabe installieren; bestehender APT-Lock-Helper, Opt-out
+  AGENT_FRAMEWORK_AUTO_VENV=0. Keine Reparatur von Custom-Python via apt.
+- Partial-venv und Quelle bleiben erhalten; --repair vervollstaendigt sie.
+- Nur Offline-Mocks testen; keine WSL-/Systeminstallation durch Codex.
+
+## Pyannote Audio GitHub/CPU, 2026-10-16
+
+- Release 4.0.4, Commit 78c0d16a5f558adb1024d112e6857b3204b450b3,
+  eigener GitHub-Source-Installer ohne Docker; source-ready ist kein Modelltest.
+- Optional CPU-Pakete nur PYANNOTE_AUDIO_INSTALL_RUNTIME=1 und
+  INSTALL_HEAVY_TOOLS=1, private venv, Torch/Audio 2.10.0, TorchCodec 0.10.0.
+- Keine Imports von Pipeline/torch bei Checks, Modelle/Token separat.
+  Telemetrie-Flags bei spaeterer Nutzung explizit setzen. Keine Echtheitsbewertung.
+- Keine WSL-/Medienzugriffe durch Codex. Deaktivierung erhaelt alle Daten.
+
+## FILM GitHub-Quellen, 2026-10-16
+
+- google-research/frame-interpolation auf Pin
+  69f8708f08e62c2edf46a27616a4bfcf083e2076, Source-only ohne Docker.
+- Upstream archiviert; TensorFlow 2.6.2/Legacy-CUDA nicht ungeprueft auf
+  Ubuntu 24.04 oder RTX 5080 installieren. Quellmarker ist kein Inferenztest.
+- Original-CLI kann vorhandene Ausgabeframes entfernen: eigene neue
+  Jobordner und Originalkopien fuer spaetere manuelle Tests voraussetzen.
+- Keine Live-WSL-/TensorFlow-/Modell-/Videoaktionen. Uninstall nur Marker.
+
+## SUPIR GitHub-Quellen, 2026-10-16
+
+- Fanghua-Yu/SUPIR master, Commit bda91af2000042f8bedfec8897d92917e67c1d88,
+  eigener Source-only-Installer ohne Docker. Marker ist keine GPU-Laufzeit.
+- FastAPI 0.95.1 verlangt Pydantic <2, Gradio 4.16.0 >=2; automatische
+  Legacy-Pakete nicht freigeben. Keine Python-3.8-/Conda-/Modellinstallation.
+- SUPIR Software License Agreement mit kommerziellen Einschraenkungen
+  klar dokumentieren, nicht pauschal als MIT/Apache behandeln.
+- Offline-Syntax/Pin-Checks, Lock/Logs, Deaktivierung ohne Datenloeschung.
+  Keine Eingriffe in WSL oder laufende Dienste durch Codex.
+
 ## ComfyUI-GGUF GitHub-Node, 2026-10-16
 
 - Eigener Source-Installer fuer city96/ComfyUI-GGUF, Pin

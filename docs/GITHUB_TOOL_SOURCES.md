@@ -1,5 +1,19 @@
 # GitHub Tool Sources
 
+[Pyannote_Audio](tools/pyannote-audio.md): GitHub-Release 4.0.4,
+Commit `78c0d16a5f558adb1024d112e6857b3204b450b3`, MIT-Code. Ohne Docker;
+CPU-Pakete privat aus PyTorch/PyPI nur mit doppeltem Opt-in. Keine Modelle,
+Tokens, Pipeline-Imports oder Audio-/Echtheitsbewertung bei der Installation.
+
+[FILM](tools/film.md): google-research/frame-interpolation, Commit
+`69f8708f08e62c2edf46a27616a4bfcf083e2076`, Apache-2.0 Code. Archivierter
+Upstream; nur Quellen ohne Docker, keine Legacy-TensorFlow-/Modellinstallation.
+
+[SUPIR](tools/supir.md): Fanghua-Yu/SUPIR, Commit
+`bda91af2000042f8bedfec8897d92917e67c1d88` (master), nur Quellen ohne Docker.
+Eigener Lizenzvertrag mit kommerziellen Einschraenkungen. Automatische
+Legacy-Paketinstallation wegen FastAPI-/Gradio-Pydantic-Konflikt gesperrt.
+
 [ComfyUI-GGUF](tools/comfyui-gguf.md): city96/ComfyUI-GGUF,
 Commit `6ea2651e7df66d7585f6ffee804b20e92fb38b8a`, privater Checkout mit
 verwaltetem custom_nodes-Link. Ohne Docker; fehlendes gguf kommt aus PyPI
@@ -24,7 +38,9 @@ Download; Paketbereitstellung ist getrennt von der manuellen Editorinstallation.
 
 Defensiver Audio-Pfad: [pyannote/pyannote-audio](https://github.com/pyannote/pyannote-audio),
 [Rikorose/DeepFilterNet](https://github.com/Rikorose/DeepFilterNet),
-[facebookresearch/audioseal](https://github.com/facebookresearch/audioseal), alle planned.
+[facebookresearch/audioseal](https://github.com/facebookresearch/audioseal).
+DeepFilterNet/AudioSeal bleiben planned; Pyannote_Audio hat inzwischen den
+oben verlinkten optionalen GitHub-Source-/CPU-Paketpfad ohne Modelle/Audioaktionen.
 [Fachliche Grenzen und bestehende Tools](media_studio/AUDIO_DEEPFAKE_REVIEW.md);
 Demucs-Meta-Repo archiviert, keine automatische Fork-Migration.
 

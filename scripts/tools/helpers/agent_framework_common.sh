@@ -25,13 +25,61 @@ af_python() {
     local candidate
     for candidate in "${AGENT_FRAMEWORK_PYTHON_BIN:-python3}"; do
         command -v "$candidate" >/dev/null && "$candidate" -I -c \
-            'import sys, venv; assert (3, 10) <= sys.version_info < (3, 16)' && {
+            'import sys; assert (3, 10) <= sys.version_info < (3, 16)' && {
             command -v "$candidate"; return 0;
         }
     done
     echo 'Python 3.10-3.15 mit venv erforderlich; Ubuntu 24.04 Python 3.12 passt.' >&2
     echo 'Basis ggf. separat einrichten: sudo apt-get install python3 python3-venv git util-linux' >&2
     return 1
+}
+
+af_venv_ready() {
+    "$1" -I -c 'import venv, ensurepip; ensurepip.version()' >/dev/null 2>&1
+}
+
+af_venv_package() (
+    local info version executable ID='' ID_LIKE=''
+    [[ -r /etc/os-release ]] || return 1
+    # shellcheck source=/dev/null
+    source /etc/os-release
+    case " $ID $ID_LIKE " in
+        *' ubuntu '*|*' debian '*) ;;
+        *) return 1 ;;
+    esac
+    command -v apt-get >/dev/null && command -v dpkg-query >/dev/null || return 1
+    info="$("$1" -I -c 'import os, sys; assert sys.prefix == sys.base_prefix; print("%d.%d" % sys.version_info[:2]); print(os.path.realpath(sys.executable))')" || return 1
+    version="${info%%$'\n'*}"
+    executable="${info#*$'\n'}"
+    [[ "$version" =~ ^3\.(10|11|12|13|14|15)$ && "$executable" == "/usr/bin/python$version" ]] || return 1
+    dpkg-query -S "$executable" >/dev/null 2>&1 || return 1
+    printf 'python%s-venv\n' "$version"
+)
+
+af_prepare_venv() {
+    local python="$1" package
+    af_venv_ready "$python" && return 0
+    if [[ "${AGENT_FRAMEWORK_AUTO_VENV:-1}" != 1 ]]; then
+        echo 'venv/ensurepip fehlt. Automatische Paket-Reparatur ist deaktiviert (AGENT_FRAMEWORK_AUTO_VENV).' >&2
+        return 1
+    fi
+    package="$(af_venv_package "$python")" || {
+        echo 'venv/ensurepip fehlt. Automatische Reparatur nur fuer paketverwaltetes Debian-/Ubuntu-Python unter /usr/bin; eigenes Python separat reparieren.' >&2
+        return 1
+    }
+    echo "Fehlende Python-Basisabhaengigkeit: $package. Installiere gezielt via apt; Framework bleibt GitHub-Quelle."
+    command -v sudo >/dev/null && sudo -v || {
+        echo 'sudo-Freigabe fehlgeschlagen. Benutzerpasswort/CapsLock pruefen; keine Installation ausgefuehrt.' >&2
+        return 1
+    }
+    # shellcheck source=../../lib/apt_lock_wait.sh
+    source "$AF_REPO_ROOT/scripts/lib/apt_lock_wait.sh"
+    run_apt_with_lock_wait update || return 1
+    run_apt_with_lock_wait install -y --no-install-recommends "$package" || return 1
+    af_venv_ready "$python" || {
+        echo 'venv/ensurepip ist weiterhin nicht verfuegbar; Abbruch vor GitHub-Download/Build.' >&2
+        return 1
+    }
 }
 
 af_source_ok() {
@@ -74,7 +122,7 @@ af_install_source() {
     fi
     rm -f -- "$AF_MARKER"
     "$python" -I -m venv "$AF_VENV" || {
-        echo 'venv fehlgeschlagen. Unter Ubuntu python3-venv installieren; kein System-Python ersetzen.' >&2; return 1;
+        echo 'venv fehlgeschlagen. Quelle und Umgebung bleiben erhalten; Log pruefen und --repair erneut aufrufen. Kein System-Python ersetzen.' >&2; return 1;
     }
     # GitHub provides the SDK source; PyPI supplies build/runtime dependencies.
     "$AF_VENV/bin/python" -I -m pip --isolated install --index-url https://pypi.org/simple \
@@ -131,7 +179,7 @@ agent_framework_main() (
     flock -n 9 || { echo 'Agent Framework: andere Operation aktiv.' >&2; return 1; }
     log="$(mktemp "$AF_LOGS/agent_framework_$(date +%Y%m%d_%H%M%S)_XXXXXX.log")"
     exec > >(tee -a "$log") 2>&1
-    echo "Agent-Framework-Installer: 2026-10-16-github-python-core; Aktion: $action"
+    echo "Agent-Framework-Installer: 2026-10-16-github-python-core-venv-repair; Aktion: $action"
     echo "Quelle: $AF_URL; Commit: $AF_COMMIT; Version: $AF_VERSION"
     trap 'rc=$?; if ((rc != 0)); then echo "Fehler ($rc). Quelle/Daten erhalten; Log: $log. Nach Behebung --repair aufrufen."; fi' EXIT
     if [[ "$action" == uninstall || "$action" == --uninstall ]]; then
@@ -142,6 +190,7 @@ agent_framework_main() (
     if [[ "$action" == install ]] && af_probe >/dev/null 2>&1; then
         echo 'Gepinnte Installation bereits konsistent; nichts erneut installiert.'; return 0
     fi
+    af_prepare_venv "$python" || return 1
     echo 'Update baut denselben geprueften Pin; kein automatisches latest/main-Upgrade.'
     af_install_source "$python"
 )

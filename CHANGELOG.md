@@ -2,6 +2,29 @@
 
 ## Unreleased
 
+- Qwen Desktop: nach Browser-Uebergabe auf Enter und manuelle Abschlussbestaetigung
+  warten. Tools-Menue unterscheidet bestaetigt/verschoben/Browserfehler, statt
+  erfolgreiche Browser-Uebergaben pauschal als Installationsfehler zu melden.
+
+- Microsoft Agent Framework: venv/ensurepip vor GitHub-Download pruefen;
+  fehlendes versioniertes Ubuntu-/Debian-venv-Paket mit sudo und APT-Sperrenschutz
+  nachinstallieren. Repair erhaelt Quellen/venv; System-Python bleibt unveraendert.
+
+- Pyannote_Audio: eigener GitHub-Source-Installer fuer Release 4.0.4 statt
+  Audio-Review-Platzhalter; optionale private CPU-Laufzeit mit Torch/Audio/
+  Codec-Pins, Ressourcencheck und doppeltem Opt-in. Keine Modelle/Token/
+  Pipeline-/Audioaktionen; Offline-Doctor, Telemetrie-Hinweise und Marker-Deaktivierung.
+
+- FILM: eigener gepinnter GitHub-Quellinstaller statt Hybrid-Platzhalter,
+  ohne Docker. Archivierten TensorFlow-2.6.2-Pfad und Ausgabe-Loeschverhalten
+  dokumentiert; keine blinde Runtime-/Modellinstallation. Offline-Pruefungen,
+  Disk-Reserve, Lock/Logs und datenerhaltende Deaktivierung.
+
+- SUPIR: eigener gepinnter GitHub-Quellinstaller statt Hybrid-Platzhalter,
+  ohne Docker/Modelle. Lizenzgrenzen und belegten Pydantic-Konflikt dokumentiert;
+  keine blinde Legacy-/GPU-Paketinstallation. Source-Status, Offline-Doctor,
+  Disk-Reserve, Lock/Logs und datenerhaltende Deaktivierung.
+
 - ComfyUI_GGUF: eigener gepinnter GitHub-Custom-Node-Installer statt Hybrid-
   Platzhalter, ohne Docker. Vorhandenes ComfyUI/venv pruefen, gguf bei Bedarf
   ohne Upgrade bestehender Pakete ergaenzen, verwalteter Node-Link; keine

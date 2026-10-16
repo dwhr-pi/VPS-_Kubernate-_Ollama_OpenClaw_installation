@@ -22,6 +22,8 @@ cg_paths() {
         }
     done
     case "$CG_COMFY/" in "$CG_ROOT/"*) echo 'ComfyUI muss ausserhalb des Setup-Repos liegen.' >&2; return 1 ;; esac
+    case "$CG_COMFY/" in "$CG_BASE/"*) echo 'ComfyUI darf nicht innerhalb des GGUF-Tool-Workspaces liegen.' >&2; return 1 ;; esac
+    case "$CG_BASE/" in "$CG_COMFY/custom_nodes/"*) echo 'Privater GGUF-Workspace darf nicht in custom_nodes liegen.' >&2; return 1 ;; esac
     if [[ -f "$CG_MARKER" && "$(<"$CG_MARKER")" != "$(printf '%s\n' "$CG_COMMIT" "$CG_TARGET" "$CG_PYTHON")" ]]; then
         echo 'GGUF-Registrierung gehoert zu anderem Ziel/Python oder ist abweichend. Zuerst mit bisherigen Pfaden pruefen/deaktivieren.' >&2; return 1
     fi

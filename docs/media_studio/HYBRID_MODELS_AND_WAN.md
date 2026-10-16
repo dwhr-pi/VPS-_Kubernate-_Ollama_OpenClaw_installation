@@ -37,8 +37,8 @@ Keine automatische Toolinstallation, Modelldownloads oder Agentenstarts.
 | Wan21 / `wan21` | [Wan-Video/Wan2.1](https://github.com/Wan-Video/Wan2.1) | [Eigener GitHub-Quellinstaller](../tools/wan21.md), schwere GPU-Pakete separat; keine Gewichte/Renderjobs |
 | ComfyUI_GGUF / `comfyui_gguf` | [city96/ComfyUI-GGUF](https://github.com/city96/ComfyUI-GGUF) | [Eigener GitHub-Node-Installer](../tools/comfyui-gguf.md) fuer vorhandenes ComfyUI; keine Gewichte/Neustarts |
 | WanVideoWrapper / `wanvideo_wrapper` | [kijai/ComfyUI-WanVideoWrapper](https://github.com/kijai/ComfyUI-WanVideoWrapper) | eigener Wan-Node-/Modellpfad |
-| SUPIR / `supir` | [Fanghua-Yu/SUPIR](https://github.com/Fanghua-Yu/SUPIR) | Bildrestaurierung, kein universeller Videorefiner |
-| FILM / `film` | [google-research/frame-interpolation](https://github.com/google-research/frame-interpolation) | Frame-Interpolation; Repo archiviert |
+| SUPIR / `supir` | [Fanghua-Yu/SUPIR](https://github.com/Fanghua-Yu/SUPIR) | [Eigene GitHub-Quellinstallation](../tools/supir.md); Runtime-Konflikt/Lizenz beachten, kein universeller Videorefiner |
+| FILM / `film` | [google-research/frame-interpolation](https://github.com/google-research/frame-interpolation) | [Eigener GitHub-Quellinstaller](../tools/film.md); archivierter TensorFlow-Pfad, keine automatische Runtime |
 
 RIFE, ComfyUI, Continue und Ollama sind schon registriert; keine Doppelinstallation.
 Continue und Cline sind unterschiedliche Coding-Oberflaechen. Qwen Code hat
@@ -52,6 +52,10 @@ Wan21 hat ebenfalls einen eigenen [Source-/GPU-Paketpfad](../tools/wan21.md)
 ohne Docker; sein Quellmarker ist kein vollstaendiger Modellfunktionstest.
 ComfyUI-GGUF hat einen eigenen Node-Installer; er prueft die bestehende
 ComfyUI-venv und benoetigt keine neue ComfyUI-/Docker-Installation.
+SUPIR hat einen eigenen Source-only-Installer. Die Legacy-GPU-Laufzeit ist
+wegen Paketkonflikten nicht freigegeben; kommerzielle Lizenzgrenzen beachten.
+FILM hat einen eigenen Source-only-Installer ohne Docker. Der archivierte
+TensorFlow-/CUDA-Pfad ist nicht automatisch als lauffertig eingerichtet.
 
 ```bash
 bash scripts/tools/hybrid_media_candidate_install.sh --dry-run

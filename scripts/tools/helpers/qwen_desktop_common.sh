@@ -28,12 +28,30 @@ qwen_desktop_offer_download() {
         printf 'Offizielle Windows-Downloadseite jetzt im Browser oeffnen? [(j)a/(N)ein]: ' >&2
         if IFS= read -r answer; then
             case "$answer" in
-                j|J|ja|Ja|JA) qwen_desktop_open_download || true ;;
+                j|J|ja|Ja|JA) qwen_desktop_open_download || return 1 ;;
             esac
         fi
     else
         echo 'Browser manuell oeffnen: bash scripts/tools/qwen_desktop_install.sh --open-download' >&2
     fi
+}
+
+qwen_desktop_wait_for_user() {
+    local answer
+    qwen_desktop_can_prompt || return 3
+    echo 'Setup pausiert: Windows-Installer im Browser herunterladen, pruefen und manuell ausfuehren.' >&2
+    printf 'Erst wenn du fertig bist oder spaeter fortfahren moechtest: Enter druecken ... ' >&2
+    IFS= read -r answer || return 3
+    printf 'Windows-Installation/Aktualisierung erfolgreich abgeschlossen? [(j)a/(N)ein]: ' >&2
+    IFS= read -r answer || return 3
+    case "$answer" in
+        j|J|ja|Ja|JA)
+            echo 'Windows-Installation vom Benutzer bestaetigt. Keine automatische Windows-Pruefung; Setup wird fortgesetzt.' >&2
+            return 0 ;;
+        *)
+            echo 'Windows-Installation verschoben/nicht bestaetigt. Kein Installationsfehler; Setup wird fortgesetzt.' >&2
+            return 3 ;;
+    esac
 }
 
 qwen_desktop_main() {
@@ -45,9 +63,8 @@ qwen_desktop_main() {
             qwen_desktop_open_download ;;
         install|update)
             printf '%s\n' 'Qwen Code Desktop wird nativ unter Windows manuell installiert, nicht in WSL.' "Download: $QWEN_DESKTOP_DOWNLOAD_URL" 'Anleitung: docs/tools/qwen-desktop-windows.md' >&2
-            qwen_desktop_offer_download
-            echo 'Keine Installation/Aktualisierung ausgefuehrt. Ein geoeffneter Browser ist kein Installationsnachweis.' >&2
-            return 2 ;;
+            qwen_desktop_offer_download || return 1
+            qwen_desktop_wait_for_user ;;
         *)
             printf '%s\n' 'Qwen Code Desktop wird nativ unter Windows manuell installiert, nicht in WSL.' 'Download: https://github.com/QwenLM/qwen-code/releases/tag/desktop-latest' 'Anleitung: docs/tools/qwen-desktop-windows.md' 'Keine Installation, Aktualisierung, Deinstallation oder Datenloeschung ausgefuehrt.' >&2
             return 2 ;;

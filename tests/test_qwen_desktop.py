@@ -39,7 +39,7 @@ class QwenDesktopDocs(unittest.TestCase):
         entries = json.loads((ROOT / 'config/tools.yml').read_text(encoding='utf-8'))['tools']
         for tid in ('cline', 'qwen_code', 'wan21', 'comfyui_gguf', 'wanvideo_wrapper', 'supir', 'film'):
             tool, = [t for t in entries if t['id'] == tid]
-            self.assertEqual(tool['status'], 'experimental' if tid in ('qwen_code', 'cline', 'wan21', 'comfyui_gguf') else 'planned')
+            self.assertEqual(tool['status'], 'experimental' if tid in ('qwen_code', 'cline', 'wan21', 'comfyui_gguf', 'supir', 'film') else 'planned')
             self.assertTrue((ROOT / tool['doc']).is_file())
 
     def test_profile_optional(self):
@@ -67,8 +67,8 @@ class QwenDesktopDocs(unittest.TestCase):
     def test_shell_guards_no_installation(self):
         with tempfile.TemporaryDirectory() as temp:
             home = Path(temp) / 'unused-home'
-            for mode, args, code in (('install', [], 2), ('uninstall', [], 2),
-                                     ('update', [], 2), ('install', ['--dry-run'], 0),
+            for mode, args, code in (('install', [], 3), ('uninstall', [], 2),
+                                     ('update', [], 3), ('install', ['--dry-run'], 0),
                                      ('doctor', [], 0)):
                 result = subprocess.run([str(BASH), '--noprofile', '--norc',
                                          'scripts/tools/qwen_desktop_' + mode + '.sh', *args],
@@ -91,11 +91,39 @@ class QwenDesktopDownload(unittest.TestCase):
         result = self.invoke_mock('''
 qwen_desktop_can_prompt() { return 0; }
 qwen_desktop_open_download() { echo MOCK_BROWSER; }
-qwen_desktop_main install <<< j
+qwen_desktop_main install <<< $'j\\n\\nj'
 ''')
-        self.assertEqual(result.returncode, 2)
+        self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(result.stdout.strip(), 'MOCK_BROWSER')
         self.assertIn('[(j)a/(N)ein]', result.stderr)
+        self.assertIn('Setup pausiert', result.stderr)
+        self.assertIn('vom Benutzer bestaetigt', result.stderr)
+
+    def test_pause_eof_or_declined_completion_is_deferred(self):
+        for answers in ('j', 'j\n\nN', 'j\n\n'):
+            result = self.invoke_mock('''
+qwen_desktop_can_prompt() { return 0; }
+qwen_desktop_open_download() { echo MOCK_BROWSER; }
+qwen_desktop_main update <<< ''' + "$'" + answers.replace('\n', '\\n') + "'\n")
+            self.assertEqual(result.returncode, 3, result.stderr)
+            self.assertIn('Setup pausiert', result.stderr)
+            self.assertNotIn('vom Benutzer bestaetigt', result.stderr)
+
+    def test_browser_failure_stops_before_confirmation(self):
+        result = self.invoke_mock('''
+qwen_desktop_can_prompt() { return 0; }
+qwen_desktop_open_download() { return 1; }
+qwen_desktop_main install <<< $'j\\n\\nj'
+''')
+        self.assertEqual(result.returncode, 1, result.stderr)
+        self.assertNotIn('vom Benutzer bestaetigt', result.stderr)
+
+    def test_menu_manual_completion_not_registered_as_verified(self):
+        text = (ROOT / 'setup_ultimate.sh').read_text(encoding='utf-8')
+        branch = text.split('if [ "$TOOL_KEY" = "Qwen_Desktop" ] && [ "$tool_rc" -eq 0 ]; then', 1)[1]
+        branch = branch.split('elif [ "$tool_rc" -eq 0 ]; then', 1)[0]
+        self.assertNotIn('append_unique_line', branch)
+        self.assertIn('operation_status="skipped"', branch)
 
     def test_default_no_and_noninteractive_never_open(self):
         for answer in ('', 'N', 'nein'):
@@ -103,14 +131,14 @@ qwen_desktop_main install <<< j
 qwen_desktop_can_prompt() { return 0; }
 qwen_desktop_open_download() { echo UNEXPECTED_BROWSER; }
 qwen_desktop_main install <<< ''' + repr(answer) + '\n')
-            self.assertEqual(result.returncode, 2)
+            self.assertEqual(result.returncode, 3)
             self.assertNotIn('UNEXPECTED_BROWSER', result.stdout)
         result = self.invoke_mock('''
 qwen_desktop_can_prompt() { return 1; }
 qwen_desktop_open_download() { echo UNEXPECTED_BROWSER; }
 qwen_desktop_main update
 ''')
-        self.assertEqual(result.returncode, 2)
+        self.assertEqual(result.returncode, 3)
         self.assertNotIn('UNEXPECTED_BROWSER', result.stdout)
         self.assertIn('--open-download', result.stderr)
 

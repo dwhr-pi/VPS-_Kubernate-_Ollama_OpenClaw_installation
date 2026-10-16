@@ -33,7 +33,7 @@ qualifizierte Audioforensik hinzuziehen, nicht nur einen LLM-Bericht.
 | [Demucs](https://github.com/facebookresearch/demucs) | bereits registriert | Musik-Stems; kein generischer Sprach-/Deepfake-Detektor |
 | [UVR5](https://github.com/Anjok07/ultimatevocalremovergui) | bereits planned | Separation mit ausgewaehlten Modellen; Gewichte/Lizenzen einzeln pruefen |
 | [RVC](https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI) | bereits planned | Autorisierte Voice Conversion, keine Rueckgewinnung einer echten Originalstimme |
-| Pyannote_Audio / `pyannote_audio`: [pyannote/pyannote-audio](https://github.com/pyannote/pyannote-audio) | neu planned | Zeitbereiche "wer spricht wann"; keine Echtheits- oder Identitaetsgarantie |
+| Pyannote_Audio / `pyannote_audio`: [pyannote/pyannote-audio](https://github.com/pyannote/pyannote-audio) | experimental, eigener [GitHub-Installer](../tools/pyannote-audio.md) | Quellen und optionale private CPU-Pakete; keine Modelle/Audioaktionen oder Echtheits-/Identitaetsgarantie |
 | DeepFilterNet / `deepfilternet`: [Rikorose/DeepFilterNet](https://github.com/Rikorose/DeepFilterNet) | neu planned | Rauschunterdrueckung; keine universelle Trennung konkurrierender Sprecher |
 | AudioSeal / `audioseal`: [facebookresearch/audioseal](https://github.com/facebookresearch/audioseal) | neu planned | AudioSeal-Wasserzeichenerkennung; kein universeller Deepfake-Detektor |
 
@@ -56,17 +56,20 @@ waehlen; HF-Token nur falls erforderlich, read-only und ausserhalb Git.
 AudioSeal dokumentiert MIT fuer Code/Gewichte; konkrete Revision pruefen.
 Andere Wasserzeichen-/Detektorsysteme werden damit nicht allgemein erfasst.
 
-Die drei neuen Tools bleiben planned, ohne aktive Ports. Im Menue fuehren
-sie nur zu gemeinsamen nicht-installierenden Guards:
+DeepFilterNet und AudioSeal bleiben planned, ohne aktive Ports. Fuer sie gilt
+weiterhin der gemeinsame nicht-installierende Guard. Pyannote_Audio hat jetzt
+einen eigenen GitHub-Installer ohne Docker; Details/Opt-ins siehe oben.
 
 ```bash
 bash scripts/tools/audio_review_candidate_install.sh --dry-run
 bash scripts/tools/audio_review_candidate_doctor.sh
 ```
 
-Check/Doctor melden nur Registrierungsstatus, keinen Audiobefund.
-Install/Update/Uninstall ohne Plan liefern Exit-Code 2; keine Datenloeschung.
-Echte Installer, Modellpins, Preflight und Smoke-Tests bleiben TODO.
+Beim gemeinsamen Guard melden Check/Doctor nur Registrierungsstatus, keinen
+Audiobefund. Install/Update/Uninstall ohne Plan liefern dort Exit-Code 2;
+keine Datenloeschung. Fuer DeepFilterNet/AudioSeal bleiben echte Installer,
+Modellpins, Preflight und Smoke-Tests TODO. Pyannote hat eigene Source-/CPU-
+Checks, aber noch keinen bestaetigten Decoder-/Modell-/Diarisierungstest.
 
 ## 3. Einsteigerablauf: Original zuerst schuetzen
 

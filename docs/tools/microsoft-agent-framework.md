@@ -19,12 +19,26 @@ koennen Kompilierung erfordern; ein ARM-Ende-zu-Ende-Test steht aus.
 Erforderlich: Linux, normaler Benutzer, Git, flock/util-linux und Python
 3.10 bis 3.15 mit venv. Python 3.11+ bevorzugen; Ubuntu 24.04 mit Python 3.12
 passt, ein isolierter Python-3.11-Build ist hier **nicht** notwendig.
-Fehlende Basiswerkzeuge unter Ubuntu bewusst separat installieren:
+Der Installer prueft vor dem GitHub-Download auch `ensurepip`. Fehlt es bei
+einem paketverwalteten Ubuntu-/Debian-Python unter `/usr/bin`, installiert er
+gezielt das passende Paket, z. B. `python3.12-venv`, nach `sudo`-Freigabe.
+APT-Sperren (etwa unattended-upgrades) werden mit begrenzter Wartezeit behandelt;
+Sperrdateien werden nicht geloescht. Andere Basiswerkzeuge separat installieren:
 
 ```bash
 sudo apt-get update
 sudo apt-get install git util-linux python3 python3-venv
 ```
+
+Zum Abschalten dieser automatischen Basisreparatur:
+
+```bash
+AGENT_FRAMEWORK_AUTO_VENV=0 bash scripts/tools/agent_framework_install.sh
+```
+
+Eigene Python-Builds und fremde virtuelle Umgebungen werden nicht per apt
+repariert. Hier muss `venv`/`ensurepip` zum gewaehlten Interpreter passen.
+Dry-Run, Status, Doctor und Deaktivierung installieren niemals Systempakete.
 
 Nur Systemwerkzeuge kommen dabei aus apt. Das Framework selbst kommt aus
 GitHub; Build- und Laufzeitabhaengigkeiten kommen aus PyPI. Vollstaendig
@@ -92,6 +106,12 @@ nicht vollstaendig mit Hashes verriegelt: reproduzierbarer Dependency-Lock
 bleibt offen. Ein Build fuehrt fremden Build-Code aus, daher kein sudo verwenden.
 
 Bei Fehlern bleibt die Erfolgsmarkierung aus; Log und Quellen bleiben erhalten.
+Beim Fehler `ensurepip is not available` reicht nach dem Setup-Update der
+oben gezeigte `--repair`-Aufruf: Er installiert das fehlende venv-Systempaket,
+verwendet den vorhandenen sauberen GitHub-Checkout erneut und vervollstaendigt
+die angefangene venv ohne `--clear`/Loeschung. Das sudo-Passwort ist das
+Linux-Benutzerpasswort; Eingabe bleibt unsichtbar. Bei Ablehnung CapsLock und
+Tastaturlayout pruefen. Es wird kein Passwort gespeichert.
 Fremde, unvollstaendige oder veraenderte Quellordner werden nicht geloescht
 oder ueberschrieben. Diese nach manueller Pruefung sichern/umbenennen und
 erneut installieren. Es gibt noch keinen transaktionalen venv-Rollback.

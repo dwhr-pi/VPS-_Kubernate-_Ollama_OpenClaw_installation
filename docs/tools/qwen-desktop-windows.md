@@ -177,8 +177,8 @@ Eine GUI-Deinstallation ersetzt keine Widerrufung verwendeter API-Keys.
 Im Ultimate-Setup ist `qwen_desktop` **planned/manual-windows**:
 sichtbarer Menueeintrag, keine automatische Windows-/WSL-Installation.
 Die Bash-Checks zeigen nur die Registrierung, nicht eine erkannte
-Windows-Installation. Installation/Update/Uninstall aus dem Linux-Menue
-geben bewusst keinen falschen Erfolg aus.
+Windows-Installation. Eine manuelle Bestaetigung ist kein automatisch
+gepruefter Windows-Installationsnachweis und setzt deshalb keinen Installiert-Haken.
 
 ### Download direkt aus dem Setup oeffnen
 
@@ -205,8 +205,26 @@ bash scripts/tools/qwen_desktop_install.sh --open-download
 
 Die Seite kontaktiert GitHub ueber deinen Browser; das Setup laedt keine EXE
 herunter und startet keinen Installer. Windows-Asset selbst auswaehlen und
-wie oben beschrieben pruefen. Install/Update behalten Exit-Code 2, weil das
-Oeffnen der Downloadseite **keine erfolgreiche Installation** bedeutet.
+wie oben beschrieben pruefen. Danach wartet das Setup auf dich:
+
+1. Windows-Installation im Browser herunterladen, pruefen und abschliessen.
+2. Zum Setup-Terminal zurueckkehren und **Enter** druecken. Bis dahin werden
+   keine weiteren Tools aus der aktuellen Auswahl installiert.
+3. Die Frage **Windows-Installation/Aktualisierung erfolgreich abgeschlossen?
+   [(j)a/(N)ein]** beantworten. `j` bestaetigt den manuellen Abschluss;
+   Enter/`N` verschiebt ihn, ohne im Tools-Menue einen Installationsfehler zu melden.
+
+Es gibt keinen automatischen Zeitablauf und das Setup startet keine Windows-EXE.
+Auch wenn du den Browser nicht oeffnen laesst, kannst du die Installation manuell
+ueber den Link erledigen und anschliessend bestaetigen. Ein Browserfehler bleibt
+ein echter Fehler. Ohne interaktives Terminal wird weder gewartet noch eine
+Installation als erledigt ausgegeben.
+
+Exit-Codes fuer direkte Skriptaufrufe: `0` manuell bestaetigter Abschluss,
+`3` verschoben/nicht bestaetigt (auch bei Eingabeende), `1` Browserfehler;
+`2` bleibt fuer nicht unterstuetzte Aktionen wie die Linux-Deinstallation.
+Das Tools-Menue setzt bei manueller Bestaetigung bewusst keinen automatisch
+geprueften Installiert-Status. Ein Browserstart allein reicht weiterhin nicht.
 `--open-download` meldet nur den Erfolg der Browser-Uebergabe. Dry-Run,
 Status, Doctor und Deinstallation oeffnen niemals einen Browser.
 

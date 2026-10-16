@@ -2811,13 +2811,13 @@ TOOLS["ComfyUI_GGUF"]="GitHub-Custom-Node ohne Docker fuer vorhandenes ComfyUI; 
 TOOL_SCRIPT_NAMES["ComfyUI_GGUF"]="comfyui_gguf"
 TOOLS["WanVideoWrapper"]="planned: Eigener Wan-ComfyUI-Wrapper mit versionsabhaengigen Nodes und Block-Swap-Optionen. docs/media_studio/HYBRID_MODELS_AND_WAN.md"
 TOOL_SCRIPT_NAMES["WanVideoWrapper"]="hybrid_media_candidate"
-TOOLS["SUPIR"]="planned: Bildrestaurierung/Detail-Synthese, kein nativer 8K-Video-Generator; Lizenz/Gewichte separat pruefen. docs/media_studio/HYBRID_MODELS_AND_WAN.md"
-TOOL_SCRIPT_NAMES["SUPIR"]="hybrid_media_candidate"
-TOOLS["FILM"]="planned: Zwischenbild-Interpolation; Upstream archiviert, kein garantierter Video-Deflicker. docs/media_studio/HYBRID_MODELS_AND_WAN.md"
-TOOL_SCRIPT_NAMES["FILM"]="hybrid_media_candidate"
+TOOLS["SUPIR"]="GitHub-Quellinstallation ohne Docker; keine fertige GPU-Laufzeit wegen Legacy-Paketkonflikt. Lizenz mit kommerziellen Einschraenkungen beachten; keine Modelle/Starts. docs/tools/supir.md"
+TOOL_SCRIPT_NAMES["SUPIR"]="supir"
+TOOLS["FILM"]="GitHub-Quellinstallation ohne Docker; archivierter TensorFlow-Upstream, keine fertige GPU-Laufzeit. Keine Modelle/Interpolation/Frame-Loeschung. docs/tools/film.md"
+TOOL_SCRIPT_NAMES["FILM"]="film"
 TOOL_KEYS+=("Pyannote_Audio" "DeepFilterNet" "AudioSeal")
-TOOLS["Pyannote_Audio"]="planned: Sprecher-Diarisierung/Zeitbereiche; keine Zuverlaessigkeitsgarantie fuer Sprecheridentitaet oder Deepfake-Erkennung. Keine Installation. docs/media_studio/AUDIO_DEEPFAKE_REVIEW.md"
-TOOL_SCRIPT_NAMES["Pyannote_Audio"]="audio_review_candidate"
+TOOLS["Pyannote_Audio"]="GitHub-Quellinstaller ohne Docker, optional private CPU-Pakete mit doppeltem Opt-in. Keine Modelle/Token/Audioverarbeitung oder Deepfake-/Identitaetsbewertung. docs/tools/pyannote-audio.md"
+TOOL_SCRIPT_NAMES["Pyannote_Audio"]="pyannote_audio"
 TOOLS["DeepFilterNet"]="planned: Rauschminderung fuer freigegebene Arbeitskopien; keine Deepfake-Entfernung oder Authentizitaetspruefung. Keine Installation. docs/media_studio/AUDIO_DEEPFAKE_REVIEW.md"
 TOOL_SCRIPT_NAMES["DeepFilterNet"]="audio_review_candidate"
 TOOLS["AudioSeal"]="planned: Pruefung eigener AudioSeal-Wasserzeichen; kein universeller Deepfake-Detektor, kein Entfernen von Herkunftshinweisen. Keine Installation. docs/media_studio/AUDIO_DEEPFAKE_REVIEW.md"
@@ -3427,6 +3427,7 @@ PY
 install_tool() {
     local TOOL_KEY="$1"
     local operation_status="failed"
+    local tool_rc=0
     if [ "$TOOL_KEY" = "Huginn" ]; then
         reset_terminal_display
         echo -e "${YELLOW}Huginn Vorbereitung: Zuerst Version und Datenbank auswählen, danach startet die Installation.${NC}"
@@ -3457,8 +3458,16 @@ install_tool() {
         echo -e "${YELLOW}Huginn nutzt die Benutzerkonfiguration aus ~/.openclaw_ultimate_user_data/huginn/.${NC}"
         echo -e "${YELLOW}Dort liegen HUGINN_REPO_REF, Datenbankauswahl und .env.template bewusst ausserhalb des Repos.${NC}"
     fi
-    run_tool_script "$TOOL_KEY" "install"
-    if [ $? -eq 0 ]; then
+    run_tool_script "$TOOL_KEY" "install" || tool_rc=$?
+    if [ "$TOOL_KEY" = "Qwen_Desktop" ] && [ "$tool_rc" -eq 0 ]; then
+        end_operation_measurement "success"
+        operation_status="success"
+        echo -e "${GREEN}Qwen Desktop: Windows-Installation manuell bestaetigt; kein automatisch gepruefter Installationsstatus.${NC}"
+    elif [ "$TOOL_KEY" = "Qwen_Desktop" ] && [ "$tool_rc" -eq 3 ]; then
+        end_operation_measurement "skipped"
+        operation_status="skipped"
+        echo -e "${YELLOW}Qwen Desktop: manuelle Windows-Installation verschoben/nicht bestaetigt. Kein Fehler.${NC}"
+    elif [ "$tool_rc" -eq 0 ]; then
         append_unique_line "$TOOL_STATUS_FILE" "$TOOL_KEY"
         end_operation_measurement "success"
         operation_status="success"

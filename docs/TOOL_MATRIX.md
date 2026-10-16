@@ -8,11 +8,13 @@
 | Qwen_Code | experimental, optionaler GitHub-CLI-Source-Build ohne Docker | [Installation, Ressourcen und sichere Nutzung](tools/qwen-code.md) |
 | Wan21 | experimental / gpu-heavy, GitHub-Source; GPU-Pakete separat opt-in | [Installation und Modellgrenzen](tools/wan21.md) |
 | ComfyUI_GGUF | experimental / gpu-heavy, GitHub-Custom-Node ohne Docker | [Einbindung in vorhandenes ComfyUI](tools/comfyui-gguf.md) |
-| WanVideoWrapper, SUPIR, FILM | planned / gpu-heavy | [Versionen/8K-/VRAM-Grenzen](media_studio/HYBRID_MODELS_AND_WAN.md) |
+| SUPIR | experimental / gpu-heavy, GitHub-Quellen; Runtime nicht freigegeben | [Lizenz, Paketkonflikt und Installation](tools/supir.md) |
+| FILM | experimental / gpu-heavy, archivierter GitHub-Upstream; nur Quellen | [Installation und sichere Interpolationsplanung](tools/film.md) |
+| WanVideoWrapper | planned / gpu-heavy | [Versionen/8K-/VRAM-Grenzen](media_studio/HYBRID_MODELS_AND_WAN.md) |
 
 | Defensive Audio-Kandidaten | Stand | Grenze |
 |---|---|---|
-| Pyannote_Audio | planned | Diarisierung, keine Echtheits-/Identitaetsentscheidung |
+| Pyannote_Audio | experimental, GitHub-Quellen; CPU-Pakete doppelt opt-in | [Installation](tools/pyannote-audio.md); Diarisierung, keine Echtheits-/Identitaetsentscheidung |
 | DeepFilterNet | planned | Rauschminderung, keine Deepfake-Entfernung |
 | AudioSeal | planned | Eigene Wasserzeichen, kein universeller Detektor |
 
