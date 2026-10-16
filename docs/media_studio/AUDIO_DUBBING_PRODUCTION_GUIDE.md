@@ -46,7 +46,9 @@ brauchen zusaetzliche akzeptierte Nutzungsbedingungen oder Tokens.
 Whispers Uebersetzungsmodus ist nicht automatisch ein Deutsch-/Japanisch-
 Uebersetzer; Sprachen und konkrete Pipeline getrennt auswaehlen.
 
-ViDubb und Just-Dub-It sind Kandidaten. Cloud-Provider, benoetigte Checkpoints,
+[ViDubb](../tools/vidubb.md) hat einen GitHub-Quellinstaller ohne Docker,
+aber noch keine sichere betriebsbereite Dubbing-Laufzeit. Just-Dub-It bleibt
+Kandidat. Cloud-Provider, benoetigte Checkpoints,
 Lip-Sync-Umfang und Modellgeneration vorab pruefen. Dubbing bedeutet nicht
 automatisch Lip-Sync, und neue Dialoglaengen passen nicht immer zur Szene.
 Wav2Lip/GFPGAN sind kein beliebig kombinierbares, garantiert lizenzfreies

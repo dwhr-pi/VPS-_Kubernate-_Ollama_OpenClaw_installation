@@ -5,6 +5,10 @@ Produktionspipeline.** Keine Installation, WSL-Aenderung, Cloud-Anfrage oder
 Veroeffentlichung durch diese Erweiterung. Der beworbene Workshop/Erfolg
 wurde nicht geprueft: Views, Follower, Einkommen und Rentabilitaet sind nicht garantiert.
 
+Ergaenzung 16.10.2026: [TGI](../tools/tgi.md) besitzt einen eigenen
+GitHub-Quellinstaller ohne Docker und einen optionalen nativen Launcher-Build.
+Dieser startet weiterhin keine Inferenz und macht die Gesamtpipeline nicht betriebsbereit.
+
 ## 1. Den Toolstack richtig verstehen
 
 | Ebene | Beispiel aus dem Video | Lokaler Pfad / Grenze |
@@ -36,12 +40,14 @@ Docker/K3s sind optional; ein lokaler GPU-Worker reicht zum Einstieg.
 | SD_Next / `sdnext` | [vladmandic/sdnext](https://github.com/vladmandic/sdnext) | optionale generative WebUI; kein notwendiger Zusatz zu ComfyUI | gpu-heavy |
 | Pinokio / `pinokio` | [pinokiocomputer/pinokio](https://github.com/pinokiocomputer/pinokio) | optionaler Desktop-Launcher, fremde Skripte pruefen | medium |
 | Windmill / `windmill` | [windmill-labs/windmill](https://github.com/windmill-labs/windmill) | Entwickler-Workflows mit separaten Workern/DB planen | medium |
-| TGI / `tgi` | [huggingface/text-generation-inference](https://github.com/huggingface/text-generation-inference) | Maintenance Mode, kein bevorzugter neuer Standard | gpu-heavy |
+| TGI / `tgi` | [huggingface/text-generation-inference](https://github.com/huggingface/text-generation-inference), [GitHub-Installer](../tools/tgi.md) | experimental: Quellen, nativer Launcher separat opt-in; KEIN kompletter Inferenzserver; Maintenance Mode | gpu-heavy fuer spaetere Inferenz |
 | Fal_Client / `fal_client` | [fal-ai/fal](https://github.com/fal-ai/fal) | optionaler Cloud-Client; Dienstkosten/Uploads gesperrt | light, Cloud |
 | Veo_API / `veo_api` | [googleapis/python-genai](https://github.com/googleapis/python-genai) | Google-SDK als moeglicher Client, kein lokaler Veo-Download | light, Cloud |
 
-Alle acht: **planned/documentation-first**, Risiko high, keine aktiven Ports,
-keine automatischen Installationen. Source-/Release-Pins, Smoke-Tests,
+TGI hat jetzt einen eigenen gepinnten GitHub-Quellinstaller ohne Docker und
+einen optionalen nativen Launcher-Build. Python-/Router-/GPU-Laufzeit bleiben offen.
+Die anderen sieben: **planned/documentation-first**, Risiko high, keine aktiven Ports,
+keine automatischen Installationen. Fuer sie fehlen Source-/Release-Pins, Smoke-Tests,
 Preflight, Update-/Rollback und sichere Deinstallation fehlen noch.
 Ressourcenklasse beschreibt nicht die gesamten externen Cloud-Rechenkosten.
 Die gemeinsamen Guards verhindern eine falsche Installations-Erfolgsmeldung:

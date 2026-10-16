@@ -23,14 +23,15 @@ class MediaCatalog(unittest.TestCase):
         status = (ROOT / 'scripts/helpers/status_tracking.sh').read_text(encoding='utf-8')
         for tid in IDS:
             tool, = [t for t in entries if t['id'] == tid]
-            self.assertEqual(tool['status'], 'planned')
+            self.assertEqual(tool['status'], 'experimental' if tid == 'vidubb' else 'planned')
             self.assertEqual(tool['ports'], [])
             self.assertTrue(tool['source'].startswith('https://github.com/'))
             for field in ('doc', 'install_script', 'uninstall_script', 'update_script', 'doctor_script'):
                 self.assertTrue((ROOT / tool[field]).is_file(), (tid, field))
             self.assertIn('"' + tool['name'] + '"', menu)
             self.assertIn('"' + tool['name'] + '"', status)
-            self.assertIn('TOOL_SCRIPT_NAMES["' + tool['name'] + '"]="media_candidate"', menu)
+            script = 'vidubb' if tid == 'vidubb' else 'media_candidate'
+            self.assertIn('TOOL_SCRIPT_NAMES["' + tool['name'] + '"]="' + script + '"', menu)
             if tid in ('propainter', 'void_model', 'kiwi_edit', 'yue'):
                 self.assertEqual(tool['resource_class'], 'gpu-heavy')
 

@@ -102,6 +102,72 @@ test ! -e "$COMFYUI_ROOT"
         result = self.invoke('cg_comfy_preflight')
         self.assertEqual(result.returncode, 1)
         self.assertIn('ComfyUI fehlt', result.stderr)
+        self.assertIn('main.py', result.stderr)
+        self.assertIn('COMFYUI_GGUF_MODE=source', result.stderr)
+
+    def test_explicit_root_does_not_fall_back(self):
+        result = self.invoke('''
+cg_candidate_paths() { echo /must-not-be-used; }
+cg_paths
+test "$CG_COMFY" = "$COMFYUI_ROOT"
+''')
+        self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_auto_root_and_dotvenv_without_running_python(self):
+        result = self.invoke('''
+mkdir -p "$CG_COMFY/comfy" "$CG_COMFY/.venv/bin"
+touch "$CG_COMFY/main.py"
+printf '#!/usr/bin/env bash\\nexit 99\\n' > "$CG_COMFY/.venv/bin/python"
+chmod +x "$CG_COMFY/.venv/bin/python"
+FOUND_ROOT="$CG_COMFY"
+cg_candidate_paths() { printf '%s\\n' "$FOUND_ROOT"; }
+unset COMFYUI_ROOT
+cg_paths
+test "$CG_COMFY" = "$FOUND_ROOT"
+test "$CG_PYTHON" = "$FOUND_ROOT/.venv/bin/python"
+test ! -e "$CG_BASE"
+''')
+        self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_ambiguous_roots_rejected(self):
+        result = self.invoke('''
+mkdir -p "$CG_COMFY/comfy" "$CG_COMFY/other/comfy"
+touch "$CG_COMFY/main.py" "$CG_COMFY/other/main.py"
+FIRST="$CG_COMFY"
+cg_candidate_paths() { printf '%s\\n' "$FIRST" "$FIRST/other"; }
+unset COMFYUI_ROOT
+if cg_paths; then exit 99; fi
+test ! -e "$CG_BASE"
+''')
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn('Mehrere ComfyUI-Installationen', result.stderr)
+
+    def test_ambiguous_venvs_rejected(self):
+        result = self.invoke('''
+mkdir -p "$CG_COMFY/venv/bin" "$CG_COMFY/.venv/bin"
+for env in venv .venv; do
+    printf '#!/usr/bin/env bash\\nexit 99\\n' > "$CG_COMFY/$env/bin/python"
+    chmod +x "$CG_COMFY/$env/bin/python"
+done
+if cg_paths; then exit 99; fi
+''')
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn('Mehrere ComfyUI-venvs', result.stderr)
+
+    def test_registered_paths_reused_without_overrides_or_scan(self):
+        result = self.invoke('''
+mkdir -p "$CG_BASE"
+SAVED_COMFY="$CG_COMFY"
+SAVED_PYTHON="$CG_COMFY/.venv/bin/python"
+printf '%s\\n' "$CG_COMMIT" "$CG_TARGET" "$SAVED_PYTHON" > "$CG_MARKER"
+unset COMFYUI_ROOT COMFYUI_GGUF_PYTHON_BIN
+cg_candidate_paths() { echo SCAN_MUST_NOT_RUN >&2; return 99; }
+cg_paths
+test "$CG_COMFY" = "$SAVED_COMFY"
+test "$CG_PYTHON" = "$SAVED_PYTHON"
+''')
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertNotIn('SCAN_MUST_NOT_RUN', result.stderr)
 
     def test_doctor_missing_fails(self):
         result = self.invoke('comfyui_gguf_main doctor')

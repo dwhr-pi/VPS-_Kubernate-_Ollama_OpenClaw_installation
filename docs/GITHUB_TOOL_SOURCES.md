@@ -49,6 +49,10 @@ Demucs-Meta-Repo archiviert, keine automatische Fork-Migration.
 
 [Social-Avatar-Quellen](media_studio/SOCIAL_AVATAR_AUTOMATION.md): CogVideoX,
 LTX-Video, SD.Next, Pinokio, Windmill, TGI, fal-SDK und Google-GenAI-SDK.
+
+[TGI](tools/tgi.md) besitzt inzwischen einen gepinnten GitHub-Quellinstaller
+und optionalen nativen Launcher-Build ohne Docker. Das ist noch keine
+vollstaendige Inferenzlaufzeit; die anderen Social-Kandidaten bleiben planned.
 SDK auf GitHub bedeutet nicht, dass Veo/fal lokal selbsthostbar sind.
 
 Dataset-Werkzeuge: HF_Datasets hat einen [gepinnten GitHub-Basispaketinstaller](tools/hf-datasets.md),
@@ -60,7 +64,9 @@ Docker/Transfers; nur Video2Dataset bleibt planned:
 [Quellen-/Rechte-/Budgetleitfaden](media_studio/VIDEO_TRAINING_DATASETS.md).
 
 [Audio-/Video-Quellen](media_studio/AUDIO_VIDEO_TOOL_CATALOG.md):
-20 Kandidaten mit direkten Upstream-Links, alle planned/documentation-first.
+20 Kandidaten mit direkten Upstream-Links. [ViDubb](tools/vidubb.md) besitzt
+einen gepinnten GitHub-Sparse-Quellinstaller ohne Docker; Laufzeit noch offen.
+Die anderen 19 Kandidaten bleiben planned/documentation-first.
 Karaoke_Formats ist eigene Repository-Logik: optionaler privater CLI-Starter
 aus dem vorhandenen GitHub-Setup-Checkout mit SHA-256-Pruefung, kein weiterer
 Clone, Docker oder fremdes Paket. Nach Setup-Updates den Tool-Starter aktualisieren.

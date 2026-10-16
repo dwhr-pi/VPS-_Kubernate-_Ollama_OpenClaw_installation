@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+- TGI: gepinnte GitHub-Quellinstallation ohne Docker, optional nativer
+  Launcher-Build mit doppeltem Opt-in, Lock/Logs/Ressourcen und Hashchecks.
+  Maintenance Mode und fehlende Router-/Python-/GPU-Inferenzlaufzeit klar getrennt.
+
+- ViDubb: gepinnter GitHub-Sparse-Quellinstaller ohne Docker; keine .env/
+  Medien/Gewichte im Arbeitsbaum, kein Import/Paket-/Appstart. Legacy-Pins,
+  Importinstallationen, oeffentliches Gradio und loeschende Verarbeitung
+  dokumentiert: Quellinstallation ist noch keine betriebsbereite Dubbing-Laufzeit.
+
 - ComfyUI-GGUF: eindeutige bekannte ComfyUI-Pfade und venv/.venv erkennen,
   registrierte Ziel-/Python-Pfade wiederverwenden. Mehrdeutige Funde abbrechen;
   fehlende Basisdateien konkret nennen, keine ungefragte schwere Basisinstallation.

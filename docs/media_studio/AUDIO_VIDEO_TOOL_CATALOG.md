@@ -1,7 +1,8 @@
 # Hoerbuch, Dubbing, SFX, MIDI und Video-Editing
 
-Quellenpruefung: 14.10.2026. Neue Kandidaten sind **planned/documentation-first**,
-nicht installiert oder als Kombination getestet. Gemeinsame Guard-Skripte
+Quellenpruefung: 14.10.2026, ViDubb-Quellpfad ergaenzt am 16.10.2026.
+Mit Ausnahme der [ViDubb-Quellinstallation](../tools/vidubb.md) sind die neuen
+Kandidaten **planned/documentation-first**, nicht installiert oder als Kombination getestet. Gemeinsame Guard-Skripte
 verhindern Downloads, Builds, Starts und Loeschungen. Keine neuen Ports.
 Code, Gewichte, Trainingsdaten und Plugin-SDKs haben unterschiedliche Lizenzen.
 Eine GitHub-Quelle allein ist keine Freigabe fuer kommerzielle Produktion.
@@ -16,7 +17,9 @@ Config-, Tool- und Portchecks wurden ausgefuehrt; keine Modell-/GPU-Tests.
 ShellCheck war nicht verfuegbar. Die globale Profilpruefung meldet eine
 bereits unabhaengig fehlende Datei: `docs/Profile/Embedded_Debug_HIL.md`.
 
-Die Kandidaten haben noch keine echten toolbezogenen Installer, Smoke-Tests,
+ViDubb besitzt jetzt einen eigenen gepinnten Sparse-Quellinstaller ohne Docker,
+aber noch keine sichere Dubbing-Laufzeit. Die anderen Kandidaten haben noch
+keine echten toolbezogenen Installer, Smoke-Tests,
 Update-/Rollback- oder Deinstallationspfade. Die Guard-Dateien sind bewusst
 kein Ersatz dafuer. Erst nach Release-/Lizenz-/Hardwarepruefung implementieren.
 
@@ -41,7 +44,7 @@ kein Ersatz dafuer. Erst nach Release-/Lizenz-/Hardwarepruefung implementieren.
 | `kiwi_edit` (Kiwi_Edit) | [showlab/Kiwi-Edit](https://github.com/showlab/Kiwi-Edit) | Anweisungs-/Referenz-basiertes Video-Editing; Forschungspfad. | gpu-heavy | planned / high |
 | `void_model` (VOID_Model) | [Netflix/void-model](https://github.com/Netflix/void-model) | Interaktionsbewusstes Entfernen; externe Modell-/API-Abhaengigkeiten pruefen. | gpu-heavy | planned / high |
 | `just_dub_it` (Just_Dub_It) | [justdubit/just-dub-it](https://github.com/justdubit/just-dub-it) | Audio-visuelle Dubbing-Forschung; keine beliebige LTX/Wan-Kompatibilitaet annehmen. | gpu-heavy | planned / high |
-| `vidubb` (ViDubb) | [medahmedkrichen/ViDubb](https://github.com/medahmedkrichen/ViDubb) | Dubbing-Projekt; Provider, Lip-Sync und lokale Betriebsfaehigkeit noch auditieren. | heavy | planned / high |
+| `vidubb` (ViDubb) | [medahmedkrichen/ViDubb](https://github.com/medahmedkrichen/ViDubb), [Quellinstaller](../tools/vidubb.md) | Gepinnter Sparse-Quellcheckout ohne Docker; Dubbing-Laufzeit wegen Legacy-/Import-/Loeschrisiken noch NICHT betriebsbereit. | heavy fuer spaetere Laufzeit | experimental/source-only / high |
 
 Alle Eintraege haben Registry-, Menue-, Quellen- und Doku-Verknuepfungen.
 Die gemeinsamen Install/Update/Uninstall-Guards liefern Exit-Code 2 statt

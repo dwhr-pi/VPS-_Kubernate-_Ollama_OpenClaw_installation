@@ -14,6 +14,50 @@ sein, um die vom Plugin verwendeten Custom Ops zu unterstuetzen; ein genauer
 getesteter ComfyUI/Node-Versionssatz steht noch aus.
 [Upstream-Installationshinweise](https://github.com/city96/ComfyUI-GGUF#installation).
 
+### Meldung: ComfyUI fehlt/unvollstaendig
+
+Das Protokoll allein beweist nicht, ob ComfyUI wirklich fehlt oder nur an einem
+anderen Pfad liegt. GGUF ist ein Plugin, kein eigenstaendiger Bildgenerator.
+Der Installer installiert daher nicht ungefragt das schwere ComfyUI/PyTorch.
+
+Die neue Erkennung verwendet zuerst ein ausdrueckliches `COMFYUI_ROOT`, sonst
+das Ziel einer bestehenden GGUF-Registrierung. Ohne beides prueft sie nur diese
+festen Pfade, ohne Laufwerks-/Netzwerksuche:
+
+```text
+/opt/comfyui
+/opt/ComfyUI
+<User-Workspace>/tools/comfyui/source
+<User-Workspace>/tools/comfyui
+~/ComfyUI
+```
+
+Ein Kandidat muss `main.py` und `comfy/` enthalten. Nur ein eindeutiger Treffer
+wird gewaehlt; bei mehreren Treffern muss der Benutzer den Pfad setzen.
+Python wird aus `venv/bin/python` oder `.venv/bin/python` erkannt; mehrere
+Umgebungen brauchen ebenfalls eine ausdrueckliche Auswahl. Es wird zur
+Pfaderkennung kein Interpreter gestartet. Bestehende Registrierungen merken
+bereits Ziel und Python; Status/Doctor/Update verwenden diese wieder.
+
+Wenn ComfyUI wirklich fehlt: zuerst **ComfyUI** im Tools-Menue bewusst installieren,
+danach **ComfyUI_GGUF**. Der vorhandene ComfyUI-Installer verlangt erheblich mehr
+Speicher (derzeit 40 GiB Linux / 30 GiB Windows-C: unter WSL); diese Pruefung nicht
+umgehen. Wenn es vorhanden ist, den Ordner **mit** `main.py` angeben, nicht den
+Elternordner. Fehlende Dateien, fehlender Interpreter und Rechteprobleme werden
+getrennt gemeldet. Ein Ordnername allein belegt keine fertige Installation.
+
+```bash
+COMFYUI_ROOT=/ABSOLUTER/PFAD/ComfyUI \
+  bash scripts/tools/comfyui_gguf_install.sh --dry-run
+# Nach Pruefung denselben Aufruf ohne --dry-run bewusst ausfuehren.
+```
+
+Fuer einen Sonderpfad wie einen anderen Stack-Checkout immer `COMFYUI_ROOT`
+explizit setzen. Native Windows-Portable-/Conda-Pfade sind damit nicht automatisch
+unterstuetzt. Keine automatischen Rechteaenderungen, Ordnerloeschungen oder
+Downloads von ComfyUI/Modellen. Nur Quellcode ohne Basisinstallation ist mit
+`COMFYUI_GGUF_MODE=source` moeglich, aber noch keine aktive Erweiterung.
+
 Benutzer braucht Schreibrechte in `custom_nodes`; **nicht mit sudo starten**.
 ComfyUI und Installer muessen unter einem Benutzer laufen, der auf den privaten
 Node-Quellordner zugreifen darf. Keine automatischen Besitzer-/Rechteaenderungen.

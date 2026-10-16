@@ -22,13 +22,14 @@ class SocialAvatarDocs(unittest.TestCase):
         keys = re.findall(r'"([^"]+)"', ' '.join(key_lines))
         for tid in IDS:
             tool, = [t for t in tools if t['id'] == tid]
-            self.assertEqual(tool['status'], 'planned')
+            self.assertEqual(tool['status'], 'experimental' if tid == 'tgi' else 'planned')
             self.assertFalse(tool['auto_install'])
             self.assertEqual(tool['ports'], [])
             self.assertTrue(tool['source'].startswith('https://github.com/'))
             self.assertEqual(keys.count(tool['name']), 1, tid)
             self.assertIn('"' + tool['name'] + '"', status)
-            self.assertIn('TOOL_SCRIPT_NAMES["' + tool['name'] + '"]="social_media_candidate"', menu)
+            script = 'tgi' if tid == 'tgi' else 'social_media_candidate'
+            self.assertIn('TOOL_SCRIPT_NAMES["' + tool['name'] + '"]="' + script + '"', menu)
             for field in ('doc', 'install_script', 'uninstall_script', 'update_script', 'doctor_script'):
                 self.assertTrue((ROOT / tool[field]).is_file())
             if tid in ('fal_client', 'veo_api'):

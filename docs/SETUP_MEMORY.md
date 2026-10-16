@@ -1,5 +1,21 @@
 # Setup Memory
 
+## TGI GitHub-Quellen und optionaler Launcher, 2026-10-16
+
+- Release v3.3.7, Pin dfb3fbe78e0d1d69251bd33065591c61bafdfaa8. Cargo-Workspace
+  nennt upstream 3.3.6-dev0; kein erfundener Binary-Versioncheck.
+- Standard Quellen; TGI_BUILD_LAUNCHER=1 plus INSTALL_HEAVY_TOOLS=1 baut nur
+  Rust-Launcher privat mit einem Job/locked. Router/Python-Shard/GPU noch offen.
+- Keine Modelle/Server/Treiber/WSL-Aktionen; Marker-Deaktivierung erhaelt Daten.
+
+## ViDubb GitHub-Quellen, 2026-10-16
+
+- Pin 6a90ea25fd14d7cb241f1c5759fc9f4b8b93f49d; Sparse-/Partial-Fetch, kein
+  Upstream-.env-/Medien-/Gewichtscheckout. Nur AST/Quellchecks, kein Import.
+- Laufzeit nicht eingerichtet: alte TensorFlow/TTS-Pins, pip beim Import,
+  share=True und loeschende Arbeitsablaeufe. VIDUBB_INSTALL_RUNTIME=1 gesperrt.
+- Quellmarker/Lock/Logs und datenerhaltende Deaktivierung; WSL unberuehrt.
+
 ## ComfyUI-GGUF Pfaderkennung, 2026-10-16
 
 - COMFYUI_ROOT vor Registrierung vor eindeutiger fester Kandidatenliste;

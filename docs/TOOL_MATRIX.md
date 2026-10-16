@@ -10,6 +10,7 @@
 | ComfyUI_GGUF | experimental / gpu-heavy, GitHub-Custom-Node ohne Docker | [Einbindung in vorhandenes ComfyUI](tools/comfyui-gguf.md) |
 | SUPIR | experimental / gpu-heavy, GitHub-Quellen; Runtime nicht freigegeben | [Lizenz, Paketkonflikt und Installation](tools/supir.md) |
 | FILM | experimental / gpu-heavy, archivierter GitHub-Upstream; nur Quellen | [Installation und sichere Interpolationsplanung](tools/film.md) |
+| ViDubb | experimental, GitHub-Sparse-Quellinstallation; Dubbing-Laufzeit NICHT betriebsbereit | [Quellinstaller und notwendiger Sicherheitsumbau](tools/vidubb.md) |
 | WanVideoWrapper | planned / gpu-heavy | [Versionen/8K-/VRAM-Grenzen](media_studio/HYBRID_MODELS_AND_WAN.md) |
 
 | Defensive Audio-Kandidaten | Stand | Grenze |
@@ -26,7 +27,7 @@
 |---|---|---|
 | Video / WebUI | CogVideoX, LTX_Video, SD_Next | planned / gpu-heavy |
 | Desktop / Workflows | Pinokio, Windmill | planned; Skript-/Lizenzgrenzen pruefen |
-| LLM-Inferenz | TGI | planned, Maintenance Mode |
+| LLM-Inferenz | [TGI](tools/tgi.md) | experimental: GitHub-Quellen/optionaler nativer Launcher, kein kompletter Inferenzserver; Maintenance Mode |
 | Externe APIs | Fal_Client, Veo_API | planned, Cloud-Aufrufe/Uploads gesperrt |
 
 [Quellen, Lizenzkorrekturen, vorhandene Alternativen und Workflow](media_studio/SOCIAL_AVATAR_AUTOMATION.md).
