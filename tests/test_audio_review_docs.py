@@ -21,7 +21,7 @@ class AudioReviewDocs(unittest.TestCase):
         keys = re.findall(r'"([^"]+)"', ' '.join(re.findall(r'^TOOL_KEYS\+?=\((.*?)\)', menu, re.MULTILINE)))
         for tid in IDS:
             tool, = [t for t in tools if t['id'] == tid]
-            self.assertEqual(tool['status'], 'experimental' if tid == 'pyannote_audio' else 'planned')
+            self.assertEqual(tool['status'], 'experimental')
             self.assertFalse(tool['auto_install'])
             self.assertEqual(tool['ports'], [])
             self.assertTrue(tool['source'].startswith('https://github.com/'))
@@ -29,7 +29,7 @@ class AudioReviewDocs(unittest.TestCase):
                 self.assertTrue((ROOT / tool[field]).is_file())
             self.assertEqual(keys.count(tool['name']), 1)
             self.assertIn('"' + tool['name'] + '"', status)
-            script_name = 'pyannote_audio' if tid == 'pyannote_audio' else 'audio_review_candidate'
+            script_name = tid
             self.assertIn('TOOL_SCRIPT_NAMES["' + tool['name'] + '"]="' + script_name + '"', menu)
 
     def test_existing_tools_not_duplicated(self):

@@ -1,5 +1,39 @@
 # Setup Memory
 
+## HF Datasets GitHub-Basispaket, 2026-10-16
+
+- 5.1.0, Pin efe6ea4f88260b1a5066f28a9c90d82365a29f42, private venv;
+  keine Decoder-/Torch-/Training-Extras und keine Daten-/Modell-/Token-Aktionen.
+- >=2 GiB gesamt, >=1 GiB verfuegbar, 4 GiB Disk/WSL-Hostreserve. Python
+  3.10-3.13, Linux x86_64/ARM64-Wheel-Pfad; echte Pakettests noch offen.
+- PyArrow/NumPy/pandas nur Wheels; HF-Hub-Bibliothek als Abhaengigkeit,
+  separater HF_Hub-Menuepfad bleibt planned. Bestehende ensurepip-Reparatur genutzt.
+
+## AudioSeal GitHub-CPU-Paket, 2026-10-16
+
+- AudioSeal 0.2.0, Pin e63a8a0e5cdf7bb797159c92ba15961557fe9bd2; private
+  Python-venv, Torch 2.10.0+cpu, keine Dev-/CUDA-/Modell-/Audioaktionen.
+- >=6 GiB gesamt, >=4 GiB verfuegbar, 8 GiB Disk/WSL-Hostreserve. Linux x86_64,
+  Python 3.10-3.13. Wiederverwendete sichere ensurepip-Reparatur nur bei Installation.
+- Checkpoint-Loader nutzt weights_only=False; nur vertrauenswuerdige Gewichte,
+  kein universeller Deepfake-Detektor. Nur Offline-Tests; kein echter Pakettest.
+
+## DeepFilterNet GitHub-Rust-CPU, 2026-10-16
+
+- v0.5.6, Commit 978576aa8400552a4ce9730838c635aa30db5e61; native deep-filter-CLI
+  aus libDF, kein Docker/Python/PyTorch. Cargo.lock, ein Buildjob.
+- Mitgeliefertes DFN3-ONNX-Modell aus GitHub eingebettet, kein separater
+  Modell-/Audio-/Mikrofon-/Dienststart. Kein Deepfake-/Authentizitaetsdetektor.
+- >=6 GiB Gesamt-RAM, >=4 GiB verfuegbar, 8 GiB Disk/WSL-Hostreserve;
+  Toolchain separat, echte Linux-/ARM-Buildtests offen. Nur Offline-Mocks.
+
+## Qwen Code RAM-Budget, 2026-10-16
+
+- Alte 8192-MB-Pruefung las MemTotal, nicht freien RAM. Neue lokale
+  Planungsregel: >=7168 MiB gesamt und >=5120 MiB MemAvailable, vor Downloads.
+- Upstream-Build behielt 4096-MiB-Node-Heap; pnpm child-concurrency=1,
+  network-concurrency=4. Kein belegtes Minimum/Erfolgsgarantie, keine WSL-Aenderung.
+
 ## Qwen Desktop manuelle Uebergabe, 2026-10-16
 
 - Install/Update warten interaktiv nach Browserangebot auf Enter und

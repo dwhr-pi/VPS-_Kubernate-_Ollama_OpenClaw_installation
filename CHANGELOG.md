@@ -2,6 +2,25 @@
 
 ## Unreleased
 
+- HF_Datasets: eigener GitHub-Source-Installer fuer 5.1.0 in privater venv
+  statt documentation-first-Guard. Ressourcen/ensurepip, Lock/Logs und
+  datenerhaltende Deaktivierung; Wheels fuer Arrow/NumPy/pandas, keine
+  schweren Extras, Datensatz-/Modell-Downloads oder Trainingsjobs.
+
+- AudioSeal: eigener gepinnter GitHub-Paketinstaller mit privater CPU-venv
+  statt planned-Guard; Ressourcen/venv-Reparatur, Lock/Logs, Metadatenchecks
+  und datenbewahrende Deaktivierung. Kein Docker, Modell-/Audiozugriff oder
+  Echtheitsurteil; unsicheres Checkpoint-Unpickling dokumentiert.
+
+- DeepFilterNet: eigener GitHub-Rust-CPU-Installer fuer v0.5.6 statt
+  documentation-first-Guard; kein Docker/Python. Ein Buildjob, Lock/Logs,
+  Ressourcenpruefung, Binary-Hash/Versioncheck, datenbewahrende Deaktivierung.
+  GitHub-Modell wird eingebettet, keine Audiobearbeitung beim Installieren.
+
+- Qwen Code: Gesamt-RAM und aktuell verfuegbaren RAM getrennt pruefen;
+  8-GB-Geraeteklasse ab 7168 MiB gesamt und 5120 MiB verfuegbar zulassen.
+  pnpm-Installationsparallelitaet begrenzen; Disk-/WSL-Reserven bleiben erhalten.
+
 - Qwen Desktop: nach Browser-Uebergabe auf Enter und manuelle Abschlussbestaetigung
   warten. Tools-Menue unterscheidet bestaetigt/verschoben/Browserfehler, statt
   erfolgreiche Browser-Uebergaben pauschal als Installationsfehler zu melden.

@@ -34,8 +34,8 @@ qualifizierte Audioforensik hinzuziehen, nicht nur einen LLM-Bericht.
 | [UVR5](https://github.com/Anjok07/ultimatevocalremovergui) | bereits planned | Separation mit ausgewaehlten Modellen; Gewichte/Lizenzen einzeln pruefen |
 | [RVC](https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI) | bereits planned | Autorisierte Voice Conversion, keine Rueckgewinnung einer echten Originalstimme |
 | Pyannote_Audio / `pyannote_audio`: [pyannote/pyannote-audio](https://github.com/pyannote/pyannote-audio) | experimental, eigener [GitHub-Installer](../tools/pyannote-audio.md) | Quellen und optionale private CPU-Pakete; keine Modelle/Audioaktionen oder Echtheits-/Identitaetsgarantie |
-| DeepFilterNet / `deepfilternet`: [Rikorose/DeepFilterNet](https://github.com/Rikorose/DeepFilterNet) | neu planned | Rauschunterdrueckung; keine universelle Trennung konkurrierender Sprecher |
-| AudioSeal / `audioseal`: [facebookresearch/audioseal](https://github.com/facebookresearch/audioseal) | neu planned | AudioSeal-Wasserzeichenerkennung; kein universeller Deepfake-Detektor |
+| DeepFilterNet / `deepfilternet`: [Rikorose/DeepFilterNet](https://github.com/Rikorose/DeepFilterNet) | experimental, [GitHub-Rust-Build](../tools/deepfilternet.md) | CPU-CLI, eingebettetes Modell; keine universelle Trennung konkurrierender Sprecher |
+| AudioSeal / `audioseal`: [facebookresearch/audioseal](https://github.com/facebookresearch/audioseal) | experimental, [GitHub-CPU-Paketinstaller](../tools/audioseal.md) | Keine Modelle/Audioaktionen beim Installieren; kein universeller Deepfake-Detektor |
 
 Code, Gewichte und Rechte am Eingangsmaterial getrennt pruefen.
 BS-Roformer bezeichnet eine Modellfamilie; ein Dateiname allein belegt
@@ -56,19 +56,23 @@ waehlen; HF-Token nur falls erforderlich, read-only und ausserhalb Git.
 AudioSeal dokumentiert MIT fuer Code/Gewichte; konkrete Revision pruefen.
 Andere Wasserzeichen-/Detektorsysteme werden damit nicht allgemein erfasst.
 
-DeepFilterNet und AudioSeal bleiben planned, ohne aktive Ports. Fuer sie gilt
-weiterhin der gemeinsame nicht-installierende Guard. Pyannote_Audio hat jetzt
-einen eigenen GitHub-Installer ohne Docker; Details/Opt-ins siehe oben.
+AudioSeal hat einen eigenen GitHub-Paketinstaller mit privater CPU-venv.
+DeepFilterNet hat einen eigenen GitHub-Rust-Installer ohne Docker; Pyannote_Audio
+einen eigenen Source-/CPU-Installer. Details und Grenzen siehe die Tool-Anleitungen.
+Keines der Tools oeffnet automatisch Ports.
 
 ```bash
 bash scripts/tools/audio_review_candidate_install.sh --dry-run
 bash scripts/tools/audio_review_candidate_doctor.sh
 ```
 
-Beim gemeinsamen Guard melden Check/Doctor nur Registrierungsstatus, keinen
-Audiobefund. Install/Update/Uninstall ohne Plan liefern dort Exit-Code 2;
-keine Datenloeschung. Fuer DeepFilterNet/AudioSeal bleiben echte Installer,
-Modellpins, Preflight und Smoke-Tests TODO. Pyannote hat eigene Source-/CPU-
+Der alte gemeinsame Guard bleibt fuer Legacy-Aufrufe nicht-installierend,
+ist aber keinem dieser drei Tools mehr im Menue zugeordnet. Er meldet nur
+Registrierungsstatus, keinen Audiobefund; Aktionen liefern dort Exit-Code 2.
+AudioSeal prueft Paketmetadaten ohne Modellimport; Modellpins und Audio-Smoke-
+Tests bleiben offen. Sein Checkpoint-Loader kann Pickle-Code ausfuehren: nur
+vertrauenswuerdige Gewichte verwenden. DeepFilterNet hat Build-/Hashchecks,
+aber noch keinen bestaetigten Audio-Ende-zu-Ende-Test. Pyannote hat eigene Source-/CPU-
 Checks, aber noch keinen bestaetigten Decoder-/Modell-/Diarisierungstest.
 
 ## 3. Einsteigerablauf: Original zuerst schuetzen

@@ -14,14 +14,14 @@ TOOLS = {'hf_datasets': 'HF_Datasets', 'hf_hub': 'HF_Hub', 'video2dataset': 'Vid
 
 
 class VideoDatasetsDocs(unittest.TestCase):
-    def test_registry_stays_planned(self):
+    def test_registry_explicit_source_or_planned(self):
         tools = json.loads((ROOT / 'config/tools.yml').read_text(encoding='utf-8'))['tools']
         for tid in TOOLS:
             tool, = [t for t in tools if t['id'] == tid]
-            self.assertEqual(tool['status'], 'planned')
+            self.assertEqual(tool['status'], 'experimental' if tid == 'hf_datasets' else 'planned')
             self.assertFalse(tool['auto_install'])
             self.assertEqual(tool['ports'], [])
-            self.assertEqual(tool['install_mode'], 'documentation-first')
+            self.assertEqual(tool['install_mode'], 'source' if tid == 'hf_datasets' else 'documentation-first')
             self.assertTrue(tool['source'].startswith('https://github.com/'))
             for field in ('doc', 'install_script', 'uninstall_script', 'update_script', 'doctor_script'):
                 self.assertTrue((ROOT / tool[field]).is_file(), (tid, field))
@@ -32,7 +32,8 @@ class VideoDatasetsDocs(unittest.TestCase):
         for name in TOOLS.values():
             self.assertIn('"' + name + '"', menu)
             self.assertIn('"' + name + '"', status)
-            self.assertIn('TOOL_SCRIPT_NAMES["' + name + '"]="video_dataset_candidate"', menu)
+            script = 'hf_datasets' if name == 'HF_Datasets' else 'video_dataset_candidate'
+            self.assertIn('TOOL_SCRIPT_NAMES["' + name + '"]="' + script + '"', menu)
 
     def test_existing_profile_reused(self):
         profiles = json.loads((ROOT / 'config/profiles.yml').read_text(encoding='utf-8'))['profiles']

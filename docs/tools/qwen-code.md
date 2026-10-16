@@ -10,9 +10,11 @@ Installer baut nur CLI-Code; kein Login, Agent, Modell oder Dienst startet.
 - Git und flock; fuer den Build Node **22.22+ innerhalb 22.x**, npm >=10,
   Corepack und **pnpm 11.24.0**. Fehlende Laufzeiten werden bei ausdruecklicher
   Installation/Repair jetzt **privat** bereitgestellt, nicht global ersetzt.
-- Planungsreserve: **8 GiB Gesamt-RAM und 10 GiB freier Linux-Speicher**, unter
+- Planungsreserve: **7168 MiB Gesamt-RAM und 5120 MiB aktuell verfuegbarer RAM**,
+  empfohlen mindestens 8 GiB Gesamt-RAM; **10 GiB freier Linux-Speicher**, unter
   WSL zusaetzlich **10 GiB auf Windows C:**. Keine gemessenen Mindestwerte;
-  freien RAM und Last separat pruefen, andere schwere Jobs vorher beenden.
+  beide RAM-Werte werden vor Downloads geprueft. Andere schwere Jobs vorher
+  beenden. Swap ersetzt diese RAM-Reserve nicht.
 - Native Pakete koennen Python 3, make und einen C/C++-Compiler benoetigen.
 
 Andere Tools koennen andere pnpm-Versionen verlangen. Versionen pro Projekt
@@ -20,7 +22,28 @@ verwalten, nicht wahllos global ersetzen. Keine automatische Profilinstallation.
 
 ## Automatische private Laufzeiten
 
-Erkennbar an `Qwen-Code-Runtime: 2026-10-16-private-node-corepack-bootstrap`.
+### Abbruch bei 7769 statt 8192 MB
+
+Die alte Meldung meinte Gesamt-RAM (`MemTotal`), nicht freien RAM. Ein
+8-GB-System bzw. eine VM kann weniger als 8192 MiB nutzbar melden. Die starre
+8-GiB-Grenze war unsere Planungsreserve, kein belegtes Upstream-Minimum.
+Jetzt sind mindestens 7168 MiB gesamt **und** 5120 MiB `MemAvailable` erforderlich.
+7769 MiB gesamt allein beweisen also noch nicht, dass die Installation klappt.
+Das ist eine konservative Setup-Regel, kein gemessener Mindestbedarf.
+
+Der [gepruefte Build](https://github.com/QwenLM/qwen-code/blob/c1a8218f38203e272e6e965778ed6a2795cfeed7/package.json)
+setzt 4096 MiB Node-Heap; weitere Prozesse brauchen zusaetzlichen Speicher.
+pnpm installiert mit einem parallelen Child-Prozess und maximal vier
+Netzwerkverbindungen. Das begrenzt nicht saemtliche Unterprozesse des Builds.
+Keine automatische Swap-/WSL-Konfigurationsaenderung. Bei cgroup-/Containerlimits
+ist `/proc/meminfo` nicht zwingend das tatsaechliche Prozessbudget; der Installer
+ist fuer den direkten Linux-/WSL-Aufruf vorgesehen. Build kann weiterhin an
+Speicherdruck scheitern; keine Wiederholungsschleife oder automatisches OOM-Retry.
+
+Nach Aktualisierung des Setups die Installation erneut bewusst auswaehlen.
+Dry-Run zeigt nur die Regeln und fuehrt keinen Ressourcen-/Build-Test aus.
+
+Erkennbar an `Qwen-Code-Runtime: 2026-10-16-private-node-corepack-bootstrap-ram-budget`.
 Der fruehere Abbruch `node fehlt; separat einrichten` wird damit ersetzt.
 Nach Ressourcenpruefung, Lock und privatem Buildlog:
 

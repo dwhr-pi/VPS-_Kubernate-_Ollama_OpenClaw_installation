@@ -3,7 +3,7 @@ set -euo pipefail
 QWEN_CODE_REPO_ROOT="$(cd "${BASH_SOURCE[0]%/*}/../../.." && pwd)"
 QWEN_CODE_SOURCE_URL=https://github.com/QwenLM/qwen-code.git
 QWEN_CODE_SOURCE_COMMIT=c1a8218f38203e272e6e965778ed6a2795cfeed7
-QWEN_CODE_RUNTIME_REVISION=2026-10-16-private-node-corepack-bootstrap
+QWEN_CODE_RUNTIME_REVISION=2026-10-16-private-node-corepack-bootstrap-ram-budget
 QWEN_CODE_PNPM_SPEC=pnpm@11.24.0+sha512.bd27e345e976dcb0be0b7a1228217b049a817e21b1f355c90dbe7dc46671895a8bc1e6d06c24554505ea93ea0b45f489a27ec1bfbc8de6a9659fca0f16fa0000
 
 qwen_code_paths() {
@@ -127,10 +127,28 @@ qwen_code_require_user() {
     [[ "$EUID" != 0 ]] || { echo 'Qwen Code als normaler Benutzer bauen, nicht sudo/root.' >&2; return 1; }
 }
 
+qwen_code_ram_budget() {
+    local total="$1" available="$2"
+    [[ "$total" =~ ^[0-9]+$ && "$available" =~ ^[0-9]+$ ]] || {
+        echo 'Qwen Code: RAM-Messwerte fehlen/ungueltig; kein Build gestartet.' >&2; return 1;
+    }
+    echo "Qwen Code RAM (MiB): gesamt=$total, aktuell verfuegbar=$available; Reserve: gesamt >=7168, verfuegbar >=5120."
+    if ((total < 7168 || available < 5120)); then
+        echo 'Qwen Code: zu wenig RAM fuer den Source-Build. Andere schwere Jobs beenden oder auf groesserem Buildhost bauen. Kein automatischer Swap-/WSL-Umbau.' >&2
+        return 1
+    fi
+    if ((total < 8192)); then
+        echo 'Hinweis: 8-GB-Geraeteklasse unter 8192 MiB nutzbarem RAM; Grenzfall, kein garantierter Build-Erfolg.'
+    fi
+}
+
 qwen_code_resources() {
     # shellcheck disable=SC1091
     source "$QWEN_CODE_REPO_ROOT/scripts/lib/resource_check.sh"
-    require_ram_mb 8192 || return 1
+    local total available
+    total="$(snapshot_ram_mb)"
+    available="$(awk '/^MemAvailable:/ {printf "%d\n", $2/1024}' /proc/meminfo)"
+    qwen_code_ram_budget "$total" "$available" || return 1
     REQUIRE_WINDOWS_HOST_FREE_MB=10240 require_disk_mb 10240 "$1"
 }
 
@@ -204,7 +222,7 @@ qwen_code_build() (
         export PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 PUPPETEER_SKIP_DOWNLOAD=1 COREPACK_ENABLE_NETWORK=0
         export COREPACK_ENABLE_PROJECT_SPEC=1 COREPACK_ENABLE_STRICT=1
         export QWEN_HOME="$QWEN_CODE_BASE/build-home"
-        pnpm install --frozen-lockfile && pnpm run build --cli-only && pnpm run bundle
+        pnpm install --frozen-lockfile --child-concurrency=1 --network-concurrency=4 && pnpm run build --cli-only && pnpm run bundle
     ) || { echo 'Qwen Code Build fehlgeschlagen. Privates Log, Node/pnpm und native Build-Werkzeuge pruefen.' >&2; return 1; }
     qwen_code_smoke || { echo 'Qwen Code: Build/Syntax-Test fehlgeschlagen.' >&2; return 1; }
     printf '%s\n' "$QWEN_CODE_SOURCE_COMMIT" > "$QWEN_CODE_MARKER" || return 1
@@ -224,7 +242,7 @@ qwen_code_main() (
     qwen_code_paths || return 1
     if [[ "$mode" == plan ]]; then
         echo "Qwen Code: GitHub $QWEN_CODE_SOURCE_COMMIT, pnpm 11.24.0, Node 22.x; ohne Docker."
-        echo 'Planungsreserve: 8 GiB RAM/10 GiB Disk, WSL-Hostreserve 10 GiB. Kein Download/Start im Dry-Run.'; return 0
+        echo 'Planungsreserve: RAM gesamt >=7168 MiB und aktuell verfuegbar >=5120 MiB; empfohlen >=8 GiB. Disk/WSL-Hostreserve je 10 GiB. Kein Download/Start im Dry-Run.'; return 0
     fi
     if [[ "$mode" == status || "$mode" == doctor ]]; then
         qwen_code_is_built && qwen_code_verify_source || { echo 'Qwen Code: kein verifizierter Source-Build vorhanden.' >&2; return 1; }

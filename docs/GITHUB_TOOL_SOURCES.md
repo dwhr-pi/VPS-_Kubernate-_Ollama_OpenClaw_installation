@@ -39,7 +39,10 @@ Download; Paketbereitstellung ist getrennt von der manuellen Editorinstallation.
 Defensiver Audio-Pfad: [pyannote/pyannote-audio](https://github.com/pyannote/pyannote-audio),
 [Rikorose/DeepFilterNet](https://github.com/Rikorose/DeepFilterNet),
 [facebookresearch/audioseal](https://github.com/facebookresearch/audioseal).
-DeepFilterNet/AudioSeal bleiben planned; Pyannote_Audio hat inzwischen den
+[AudioSeal](tools/audioseal.md) hat einen gepinnten GitHub-Paketbuild mit
+privatem PyTorch-CPU-Pfad, ohne Modelle/Audioaktionen. [DeepFilterNet](tools/deepfilternet.md) hat einen
+gepinnten nativen GitHub-Rust-CPU-Build mit eingebettetem Modell und ohne Docker.
+Pyannote_Audio hat inzwischen den
 oben verlinkten optionalen GitHub-Source-/CPU-Paketpfad ohne Modelle/Audioaktionen.
 [Fachliche Grenzen und bestehende Tools](media_studio/AUDIO_DEEPFAKE_REVIEW.md);
 Demucs-Meta-Repo archiviert, keine automatische Fork-Migration.
@@ -48,7 +51,8 @@ Demucs-Meta-Repo archiviert, keine automatische Fork-Migration.
 LTX-Video, SD.Next, Pinokio, Windmill, TGI, fal-SDK und Google-GenAI-SDK.
 SDK auf GitHub bedeutet nicht, dass Veo/fal lokal selbsthostbar sind.
 
-Dataset-Werkzeuge, nur planned:
+Dataset-Werkzeuge: HF_Datasets hat einen [gepinnten GitHub-Basispaketinstaller](tools/hf-datasets.md),
+HF_Hub/Video2Dataset bleiben planned:
 [huggingface/datasets](https://github.com/huggingface/datasets),
 [huggingface/huggingface_hub](https://github.com/huggingface/huggingface_hub),
 [iejMac/video2dataset](https://github.com/iejMac/video2dataset).

@@ -15,8 +15,8 @@
 | Defensive Audio-Kandidaten | Stand | Grenze |
 |---|---|---|
 | Pyannote_Audio | experimental, GitHub-Quellen; CPU-Pakete doppelt opt-in | [Installation](tools/pyannote-audio.md); Diarisierung, keine Echtheits-/Identitaetsentscheidung |
-| DeepFilterNet | planned | Rauschminderung, keine Deepfake-Entfernung |
-| AudioSeal | planned | Eigene Wasserzeichen, kein universeller Detektor |
+| [DeepFilterNet](tools/deepfilternet.md) | experimental, GitHub Rust-CPU-Build | Rauschminderung, eingebettetes Modell; keine Deepfake-Entfernung |
+| [AudioSeal](tools/audioseal.md) | experimental, GitHub CPU-Paketbuild | Private venv, keine automatischen Modelle/Audioaktionen; kein universeller Detektor |
 
 [Quellen, vorhandene Audio-Tools und Workflow](media_studio/AUDIO_DEEPFAKE_REVIEW.md).
 
@@ -33,7 +33,7 @@
 
 | Neue Dataset-Tools | Status | Integration |
 |---|---|---|
-| HF_Datasets / hf_datasets | planned | Datenbibliothek; kein Trainer |
+| [HF_Datasets / hf_datasets](tools/hf-datasets.md) | experimental, GitHub-Basispaket | Private venv; keine Datensatz-/Modell-Downloads oder Decoder; kein Trainer |
 | HF_Hub / hf_hub | planned | Hub-Client/CLI; keine unbeschraenkten Downloads |
 | Video2Dataset / video2dataset | planned / heavy | genehmigte URL-Listen; keine autonome Beschaffung |
 

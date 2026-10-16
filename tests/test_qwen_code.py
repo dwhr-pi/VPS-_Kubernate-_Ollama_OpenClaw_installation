@@ -45,7 +45,7 @@ class QwenCodeTests(unittest.TestCase):
         helper = (ROOT / 'scripts/tools/helpers/qwen_code_common.sh').read_text()
         self.assertLess(helper.index('rm -f -- "$QWEN_CODE_MARKER"'), helper.index('pnpm install'))
         self.assertLess(helper.index('qwen_code_smoke || {'), helper.index('> "$QWEN_CODE_MARKER"'))
-        for value in ('flock -n 9', 'require_ram_mb 8192', 'require_disk_mb 10240', 'source.disabled.'):
+        for value in ('flock -n 9', 'qwen_code_ram_budget', 'require_disk_mb 10240', 'source.disabled.'):
             self.assertIn(value, helper)
         self.assertNotIn('rm -rf', helper)
 
@@ -64,6 +64,22 @@ class QwenCodeTests(unittest.TestCase):
 
 
 class QwenCodeBootstrapTests(unittest.TestCase):
+    def test_ram_budget(self):
+        for total, available, expected in ((7769, 6000, 0), (7769, 5120, 0),
+                                         (7769, 5119, 1), (7167, 6000, 1),
+                                         (16384, 2000, 1), ('unknown', 6000, 1),
+                                         (8192, '', 1)):
+            with self.subTest(total=total, available=available):
+                result = self.shell(f'qwen_code_ram_budget "{total}" "{available}"')
+                self.assertEqual(result.returncode, expected, result.stderr)
+
+    def test_resource_guards(self):
+        helper = (ROOT / 'scripts/tools/helpers/qwen_code_common.sh').read_text()
+        self.assertIn('/^MemAvailable:/', helper)
+        self.assertIn('--child-concurrency=1 --network-concurrency=4', helper)
+        self.assertLess(helper.index('qwen_code_resources "$mount"'),
+                        helper.index('qwen_code_prepare_runtime ||'))
+
     def shell(self, script):
         bash = 'C:/Program Files/Git/bin/bash.exe' if os.name == 'nt' else shutil.which('bash')
         if not bash or not Path(bash).exists():

@@ -39,21 +39,28 @@ Cakeify-/Crush-/Lighting-Angebote einzeln pruefen: solche Namen koennen
 fertige LoRA-Gewichte, Workflow-Beispiele oder Spaces meinen statt Rohdaten.
 Ohne eindeutige Dataset-ID, Karte und Rechtebeleg keine Registrierung als Trainingsdaten.
 
-## 3. Neue geplante Werkzeuge
+## 3. Optionale Werkzeuge
 
 | Menue / Registry-ID | GitHub-Quelle | Aufgabe | Ressourcen / Risiko |
 |---|---|---|---|
-| HF_Datasets / `hf_datasets` | [huggingface/datasets](https://github.com/huggingface/datasets) | Lesen, Filtern, Streaming; kein Videomodell-Trainer | medium; Cache/Decoder koennen RAM und Disk belasten |
+| HF_Datasets / `hf_datasets` | [huggingface/datasets](https://github.com/huggingface/datasets), [GitHub-Installer](../tools/hf-datasets.md) | experimental: Basispaket in privater venv; keine Decoder/Datensatz-Downloads | medium; spaetere Daten/Cache separat begrenzen |
 | HF_Hub / `hf_hub` | [huggingface/huggingface_hub](https://github.com/huggingface/huggingface_hub) | Hub-Client und hf-CLI; Revisionen und Dateiauswahl | light fuer Client, Downloads unbegrenzt ohne externe Limits |
 | Video2Dataset / `video2dataset` | [iejMac/video2dataset](https://github.com/iejMac/video2dataset) | Genehmigte Video-URLs laden, verarbeiten und paketieren | heavy; Netzwerk/CPU/SSD, unzuverlaessige und nicht vertrauenswuerdige Quellen |
 
 Bibliothekscode: Datasets/Hub Apache-2.0, video2dataset MIT laut Upstream.
 Diese Lizenzen gelten nicht automatisch fuer heruntergeladene Medien.
-Alle drei Eintraege sind **planned/documentation-first**, nicht installiert.
-Quelle ist dokumentiert, aber noch kein getesteter Source-Installer vorhanden.
+HF_Datasets hat einen eigenen experimentellen GitHub-Installer fuer 5.1.0;
+er richtet nur das Basispaket ein, keine Datensaetze, Modelle oder Trainings.
+HF_Hub und Video2Dataset bleiben **planned/documentation-first**.
 Keine Docker-Pflicht und keine neuen Listener/Ports.
 
-Das Menue zeigt den konkreten Namen, verwendet aber gemeinsame sichere Guards:
+Fuer HF_Datasets zuerst den eigenen Plan lesen:
+
+```bash
+bash scripts/tools/hf_datasets_install.sh --dry-run
+```
+
+HF_Hub und Video2Dataset verwenden weiterhin gemeinsame sichere Guards:
 
 ```bash
 bash scripts/tools/video_dataset_candidate_install.sh --dry-run
@@ -74,7 +81,8 @@ Erfolgsmeldung. Sie deinstallieren insbesondere keine schon vorhandenen HF-Paket
 4. Metadaten/Dateiliste, Shard-Groessen und Schema ansehen. Ein paar Zeilen
    koennen in einem grossen Parquet-/TAR-Shard liegen.
 5. Privaten Cache-/Medienordner ausserhalb Git festlegen und ein hartes
-   Byte-/Zeit-/Dateilimit planen. Die Setup-Guards implementieren keinen Downloader.
+   Byte-/Zeit-/Dateilimit planen. Auch der HF-Datasets-Paketinstaller implementiert
+   keinen budgetierten Downloader; Guards starten ebenfalls keine Datenaktionen.
 6. Zunaechst ein genehmigtes Beispiel manuell pruefen. Keine Vollspiegelung,
    kein rekursives Crawling und keine fremden Download-Skripte blind starten.
 7. Erst danach in modellbezogene Clips/Captions konvertieren, Split und
