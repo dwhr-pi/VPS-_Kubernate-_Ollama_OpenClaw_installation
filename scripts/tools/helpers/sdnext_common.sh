@@ -52,12 +52,11 @@ PY
 
 sn_venv_ok() {
     [[ -x "$SN_VENV/bin/python" && -f "$SN_VENV/pyvenv.cfg" ]] || return 1
-    "$SN_PYTHON" -I -B - "$SN_VENV/pyvenv.cfg" <<'PY'
+    "$SN_PYTHON" -I -B - "$SN_VENV/pyvenv.cfg" <<'PY' || return 1
 from pathlib import Path
 import sys
 assert 'include-system-site-packages = false' in Path(sys.argv[1]).read_text()
 PY
-    [[ $? -eq 0 ]] || return 1
     "$SN_VENV/bin/python" -I -B -c 'import sys, ssl, ensurepip; assert (3,10) <= sys.version_info < (3,14); assert sys.prefix != sys.base_prefix'
 }
 

@@ -1,5 +1,29 @@
 # Tool Matrix
 
+Moshi: [GitHub-Python-Basispaket 0.2.13](tools/moshi.md), experimental,
+Monorepo-Unterordner `moshi/`, private venv ohne Docker/Modelle/Server.
+
+Stable Audio Open: [GitHub-Basispaket stable-audio-tools 0.0.20](tools/stable-audio-open.md),
+experimental; private Python-3.10-venv, ohne Docker/GPU-Runtime/Modelle.
+
+AudioGen: [AudioCraft 1.3.0 aus GitHub](tools/audiogen.md), experimental,
+private Basis-venv ohne Docker; Runtime und Modelle nicht installiert.
+
+AudioLDM2: [gepinntes GitHub-Basispaket ohne Docker](tools/audioldm2.md),
+--no-deps, noch keine Audio-Laufzeit. Legacy-Pins, share=True und
+widerspruechliche Lizenzangaben vor Vollbetrieb pruefen.
+
+ChatTTS: [GitHub-Paket ohne Docker](tools/chattts.md), standardmaessig
+ohne Runtime; Core-Abhaengigkeiten doppelt opt-in. Modell laut Upstream
+nichtkommerziell, keine automatische WebUI oder Sprachgenerierung.
+
+Qwen3_TTS: [GitHub-Paketinstallation ohne Docker](tools/qwen3-tts.md),
+standardmaessig ohne Runtime-Abhaengigkeiten; Runtime doppelt opt-in,
+keine Modell-/Demo-/Trainingsstarts.
+
+Alexandria_Audiobook: [GitHub-Quellinstaller und private venv](tools/alexandria-audiobook.md)
+ohne Docker, experimental. Keine GPU-/Modellinstallation oder Hoerbuchbereitschaft.
+
 | Neuer Pfad | Status | Einstieg |
 |---|---|---|
 | Microsoft_Agent_Framework | experimental, optionaler GitHub-Python-Core-Installer ohne Docker | [Installation, Grenzen und Doctor](tools/microsoft-agent-framework.md) |
@@ -25,11 +49,13 @@
 
 | Gruppe | Neue Eintraege | Status / Grenze |
 |---|---|---|
-| Video / WebUI | CogVideoX, LTX_Video, SD_Next | planned / gpu-heavy |
+| Video / WebUI | CogVideoX, LTX_Video | planned / gpu-heavy |
+| WebUI | [SD_Next](tools/sdnext.md) | experimental: GitHub-Quelle + venv ohne Docker; Runtime separat |
 | Desktop | [Pinokio](tools/pinokio.md) | planned/manual-desktop; GitHub v8.2.0, Browser und Wartepause, kein Docker |
-| Workflows | Windmill | planned; Skript-/Lizenzgrenzen pruefen |
+| Workflows | [Windmill](tools/windmill.md) | experimental; GitHub-Quelle, optional Linux-amd64-Release mit Lizenz-Opt-in/SHA256, kein Docker/Dienststart |
 | LLM-Inferenz | [TGI](tools/tgi.md) | experimental: GitHub-Quellen/optionaler nativer Launcher, kein kompletter Inferenzserver; Maintenance Mode |
-| Externe APIs | Fal_Client, Veo_API | planned, Cloud-Aufrufe/Uploads gesperrt |
+| Externe API-Clients | [Fal_Client](tools/fal-client.md) | experimental; GitHub-Python-SDK ohne Docker, keine Cloudtests |
+| Externe API-Clients | [Veo_API](tools/veo-api.md) | experimental; google-genai 2.31.0 aus GitHub ohne Docker; kein lokales Veo/API-Test |
 
 [Quellen, Lizenzkorrekturen, vorhandene Alternativen und Workflow](media_studio/SOCIAL_AVATAR_AUTOMATION.md).
 

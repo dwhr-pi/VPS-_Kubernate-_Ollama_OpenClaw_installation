@@ -12,6 +12,19 @@ Dieser startet weiterhin keine Inferenz und macht die Gesamtpipeline nicht betri
 [Pinokio](../tools/pinokio.md) besitzt jetzt einen nativen GitHub-Release-
 Downloadassistenten mit Browserfreigabe und manueller Wartepause, ohne Docker.
 
+[SD.Next](../tools/sdnext.md) hat einen gepinnten GitHub-Quellinstaller mit
+privater Python-venv ohne Docker. Laufzeitpakete und WebUI-Start bleiben separat.
+
+[Windmill](../tools/windmill.md) hat einen GitHub-Quellinstaller und optional
+ein hashgeprueftes natives Linux-amd64-Release ohne Docker. DB/Worker bleiben
+separat; die fertige Binary hat andere Lizenzbedingungen als ein AGPL-Source-Build.
+
+[Fal_Client](../tools/fal-client.md) installiert jetzt das gepinnte Python-
+Clientpaket aus GitHub in privater venv, ohne Docker und ohne Cloud-/Uploadtest.
+
+[Veo_API](../tools/veo-api.md) installiert nun google-genai 2.31.0 aus GitHub,
+ohne Docker, API-/Login-/Generierungstest oder lokale Veo-Modellinstallation.
+
 ## 1. Den Toolstack richtig verstehen
 
 | Ebene | Beispiel aus dem Video | Lokaler Pfad / Grenze |
@@ -40,17 +53,21 @@ Docker/K3s sind optional; ein lokaler GPU-Worker reicht zum Einstieg.
 |---|---|---|---|
 | CogVideoX / `cogvideox` | [zai-org/CogVideo](https://github.com/zai-org/CogVideo) | Video-Modellpfad; fruehere THUDM-URL leitet um | gpu-heavy |
 | LTX_Video / `ltx_video` | [Lightricks/LTX-Video](https://github.com/Lightricks/LTX-Video) | Video-Modellfamilie; Generation/Trainer/Adapter konkret auswaehlen | gpu-heavy |
-| SD_Next / `sdnext` | [vladmandic/sdnext](https://github.com/vladmandic/sdnext) | optionale generative WebUI; kein notwendiger Zusatz zu ComfyUI | gpu-heavy |
+| SD_Next / `sdnext` | [vladmandic/sdnext](https://github.com/vladmandic/sdnext), [Installer](../tools/sdnext.md) | experimental: gepinnte Quellen + venv; keine betriebsbereite WebUI/Modelle | gpu-heavy |
 | Pinokio / `pinokio` | [pinokiocomputer/pinokio](https://github.com/pinokiocomputer/pinokio), [Anleitung](../tools/pinokio.md) | manual-desktop: GitHub-Release v8.2.0, Browser und Wartepause; keine automatische Installation | medium |
-| Windmill / `windmill` | [windmill-labs/windmill](https://github.com/windmill-labs/windmill) | Entwickler-Workflows mit separaten Workern/DB planen | medium |
+| Windmill / `windmill` | [windmill-labs/windmill](https://github.com/windmill-labs/windmill), [Installer](../tools/windmill.md) | experimental: Quellen, natives Release optional mit Lizenzfreigabe; DB/Worker separat | medium |
 | TGI / `tgi` | [huggingface/text-generation-inference](https://github.com/huggingface/text-generation-inference), [GitHub-Installer](../tools/tgi.md) | experimental: Quellen, nativer Launcher separat opt-in; KEIN kompletter Inferenzserver; Maintenance Mode | gpu-heavy fuer spaetere Inferenz |
-| Fal_Client / `fal_client` | [fal-ai/fal](https://github.com/fal-ai/fal) | optionaler Cloud-Client; Dienstkosten/Uploads gesperrt | light, Cloud |
-| Veo_API / `veo_api` | [googleapis/python-genai](https://github.com/googleapis/python-genai) | Google-SDK als moeglicher Client, kein lokaler Veo-Download | light, Cloud |
+| Fal_Client / `fal_client` | [fal-ai/fal](https://github.com/fal-ai/fal), [Installer](../tools/fal-client.md) | experimental: lokales Clientpaket 1.0.3, keine API-Anfragen/Uploads durch Installer | light, Cloud |
+| Veo_API / `veo_api` | [googleapis/python-genai](https://github.com/googleapis/python-genai), [Installer](../tools/veo-api.md) | experimental: gepinntes Google-SDK in privater venv, kein lokaler Veo-Download | light, Cloud |
 
 TGI hat jetzt einen eigenen gepinnten GitHub-Quellinstaller ohne Docker und
 einen optionalen nativen Launcher-Build. Python-/Router-/GPU-Laufzeit bleiben offen.
 Pinokio: **planned/manual-desktop**, keine automatische Installationserkennung.
-Die anderen sechs: **planned/documentation-first**, Risiko high, keine aktiven Ports,
+SD.Next: **experimental**, Quellen/venv ohne Runtime- oder Serverstart.
+Windmill: **experimental**, Quellen/Binary getrennt von DB und Workflow-Betrieb.
+Fal_Client: **experimental**, nur Clientinstallation, keine Cloudfreigabe oder Selfhosting.
+Veo_API: **experimental**, lokales SDK ohne Nachweis der Cloud-Modellverfuegbarkeit.
+Die anderen zwei: **planned/documentation-first**, Risiko high, keine aktiven Ports,
 keine automatischen Installationen. Fuer sie fehlen Source-/Release-Pins, Smoke-Tests,
 Preflight, Update-/Rollback und sichere Deinstallation fehlen noch.
 Ressourcenklasse beschreibt nicht die gesamten externen Cloud-Rechenkosten.

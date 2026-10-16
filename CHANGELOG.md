@@ -2,6 +2,50 @@
 
 ## Unreleased
 
+- Moshi: gepinnter GitHub-Installer fuer Python-Paket 0.2.13 aus dem
+  Monorepo-Unterordner, private Basis-venv ohne Docker. Ressourcen-/Pfadschutz,
+  Logs, Status/Doctor und Dokumentation; keine Modelle/Server/Mikrofonaufnahme.
+
+- Stable Audio Open: GitHub-Installer fuer stable-audio-tools 0.0.20 mit
+  Python-3.10-Pruefung, privater Basis-venv, Ressourcen-/Pfadschutz und Logs.
+  Kein Docker, GPU-/Modell-Download oder automatischer WebUI-/Trainingstart.
+
+- AudioGen: eigener GitHub-Installer fuer AudioCraft 1.3.0 in privater venv,
+  ohne Docker. Basispaket ohne Legacy-Runtime/Modelle; klare Statusmeldung,
+  Ressourcen-/Pfadschutz, Lifecycle-Skripte, Dokumentation und Offline-Tests.
+
+- AudioLDM2: gepinntes GitHub-Basispaket ohne Docker und ohne Runtime-
+  Abhaengigkeiten. Legacy-NumPy/Gradio, share=True-WebUI und Lizenzwiderspruch
+  dokumentiert; keine CLI-/Modell-/Inferenztests oder Ports.
+
+- ChatTTS: gepinnter GitHub-Paketinstaller ohne Docker, Standard --no-deps;
+  Core-Runtime doppelt opt-in mit Torch-/torchaudio-Constraints.
+  Modelllizenz nichtkommerziell und oeffentlicher WebUI-Default dokumentiert.
+
+- Qwen3_TTS: gepinntes GitHub-Paket in privater venv ohne Docker,
+  standardmaessig --no-deps. Runtime doppelt opt-in, vorhandenes Torch/
+  torchaudio durch Constraints geschuetzt. Keine Modelle/Generierung/Training.
+
+- Alexandria_Audiobook: gepinnte GitHub-Quellen und private Python-venv
+  ohne Docker statt Medien-Platzhalter; keine Modelle/Adapter/Torch-/Pinokio-
+  Installer ausgefuehrt. GPU-Laufzeit/Erststart und Ressourcen dokumentiert.
+
+- Veo_API: eigener GitHub-Installer fuer google-genai 2.31.0 in privater
+  venv ohne Docker, mit Ressourcenwache/Lock/Logs und Metadaten-Doctor.
+  Kein lokales Veo, keine Keys, Cloud-/Upload-/Videogenerierungstests.
+
+- Fal_Client: eigener GitHub-Installer fuer fal-client 1.0.3 aus dem
+  Monorepo-Unterordner in privater Python-venv ohne Docker. Ressourcen/
+  Lock/Logs, Metadatenpruefung ohne SDK-Import und ohne API-/Uploadtest.
+
+- Windmill: gepinnter GitHub-Quellinstaller ohne Docker; optional natives
+  Linux-amd64-Release mit Lizenz-Opt-in, SHA256-/ELF-Pruefung. Kein DB-/
+  Server-/Workerstart. Loopback-Default explizit dokumentiert, Daten erhalten.
+
+- SD.Next: eigener gepinnter GitHub-Quellinstaller mit privater Python-venv
+  ohne Docker statt Social-Guard. Lock/Logs/Diskwache, datenbewahrende
+  Deaktivierung und Doku zum separaten, schweren WebUI-Erststart.
+
 - Pinokio: eigener nativer GitHub-Release-Downloadassistent v8.2.0 statt
   Social-Platzhalter; Browser nur mit Freigabe, Wartepause und manuelle
   Bestaetigung ohne falschen Installationsnachweis. Windows-Hash dokumentiert.

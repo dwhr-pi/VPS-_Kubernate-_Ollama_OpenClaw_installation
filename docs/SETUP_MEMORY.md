@@ -1,5 +1,106 @@
 # Setup Memory
 
+## Moshi GitHub-Basispaket (16.10.2026)
+
+Eigene Lifecycle-Skripte ersetzen media_candidate. Moshi 0.2.13, Pin
+e6a55d2722a65870ef52a6c9f6ecfc0e90f38362, Paket aus `source/moshi/`.
+Private Basis-venv --no-deps; Ressourcencheck, Lock, Logs, kein Docker.
+Kein Modell-/GPU-Paketdownload, Serverstart oder Mikrofonzugriff.
+Nur Offline-Tests; WSL unveraendert, kein Inferenz-Bereitschaftseintrag.
+
+## Stable Audio Open GitHub-Basispaket (16.10.2026)
+
+Eigenes Lifecycle ersetzt media_candidate. stable-audio-tools 0.0.20 ist
+auf 3241adba4fc2a85cf5b29d9eb68d42f40a28e820 gepinnt. Upstream verlangt
+Python >=3.10,<3.11; kein Python-3.12-Bypass. Private venv --no-deps,
+Ressourcenchecks, Lock und Logs; keine Docker-/GPU-/Modellinstallation.
+Nur Offline-Tests; WSL unveraendert, kein Inferenz-Bereitschaftseintrag.
+
+## AudioGen GitHub-Basispaket (16.10.2026)
+
+Eigene Lifecycle-Skripte ersetzen media_candidate fuer AudioGen. AudioCraft
+v1.3.0 ist auf Commit 72cb16f9fb239e9cf03f7bd997198c7d7a67a01c gepinnt.
+Private venv, --no-deps, Ressourcencheck, Lock und Logs; kein Docker,
+Modellzugriff oder Generierung. Legacy-Runtime bleibt separat ungetestet.
+Keine Aenderung an MusicGen oder an der WSL des Benutzers.
+
+## AudioLDM2 GitHub-Basispaket, 2026-10-16
+
+- b5786c5dc0ae8f766337fdc1b67ab6046586d14d / 0.1.0, private venv, --no-deps.
+- Keine automatische Runtime: NumPy<=1.23.5, Gradio<4, ungepinnter Diffusers-
+  Branch und alter CUDA-Zusatzindex. Python 3.12 nur fuer Paketvorbereitung.
+- LICENSE CC BY-NC-SA 4.0 vs setup.py MIT; kein kommerzieller Freigabeschluss.
+- app.py share=True wird nicht ausgefuehrt. Metadaten statt Paket-/Torch-
+  Import; kein Modell-/Audio-/WebUI-Start, Uninstall nur Marker.
+
+## ChatTTS GitHub-Paket und Core-Runtime, 2026-10-16
+
+- Pin 77b89ee281cd479f5b1a787ada330dc975ca1f2a. setup.py-Version 0.0.0
+  explizit ueber CHTTS_VER; keine behauptete offizielle Release-Version.
+- Standard --no-deps, Core-Runtime separat doppelt opt-in mit vorhandenen
+  Torch/torchaudio-Builds als Constraints. Keine Demo-/Pynini-Gesamtinstallation.
+- Code AGPLv3+, Modell laut README CC BY-NC 4.0. Keine Modell-/Inferenz-
+  oder WebUI-Starts; WebUI-Default 0.0.0.0, spaeter explizit localhost nutzen.
+
+## Qwen3-TTS GitHub-Paket und getrennte Runtime, 2026-10-16
+
+- Pin 022e286b98fbec7e1e916cb940cdf532cd9f488e / qwen-tts 0.1.1.
+  Standard --no-deps in privater venv; keine volle Inferenzbereitschaft.
+- Runtime: QWEN3_TTS_INSTALL_RUNTIME=1 + INSTALL_HEAVY_TOOLS=1 und
+  bereits passende Torch/torchaudio-Metadaten; exakte Builds als Constraints.
+- Package-Doctor nur Metadaten, Runtime zusaetzlich pip check. Kein Import,
+  Modell-/Token-/Demo-/Trainingszugriff; offline nur im Installer-Unterprozess.
+
+## Alexandria Audiobook GitHub-Vorbereitung, 2026-10-16
+
+- Pin be6343d95d94db5f88973aa25575a390f3ce46aa. Sparse-Quellen ohne
+  Gewichte/Referenzaudios/config.json/builtin_lora, private Python-venv.
+- Kein Docker, Pinokio-Install/Reset, App-Import, Torch-/Modell-/Trainingsstart.
+  AST/Pin/venv statt Inferenztest; Ressourcenreserve nur fuer Vorbereitung.
+- app/app.py nutzt ALEXANDRIA_HOST/ALEXANDRIA_PORT, privat 127.0.0.1:4200.
+  Runtime, GPU-Pins, Modellfreigabe, Queue und Exporttest bleiben offen.
+
+## Veo_API Google-SDK aus GitHub, 2026-10-16
+
+- googleapis/python-genai v2.31.0 / 6bbead9ec73eee0b2557c4bf07406d3574b01533.
+  Repository-Root in privater venv; nur SDK-Basis, keine Tokenizer-/Torch-Extras.
+- Eigene Menueverdrahtung/Wrapper, Metadaten/Quellursprung statt SDK-Import.
+  Keine Google-Keys/ADC/Login/Cloudauftraege; kein lokales Veo-Modell.
+- SDK-Pin fest, PyPI-Abhaengigkeiten noch ohne vollstaendigen Hash-Lock.
+  Uninstall deaktiviert nur Marker, Daten/venv/Zugangsdaten bleiben erhalten.
+
+## Fal_Client GitHub-Python-SDK, 2026-10-16
+
+- Tag fal_client_v1.0.3, Pin 80ddb1d8f2f4b0a28a0323fd3c1d96e34c849eb5.
+  Nur projects/fal_client, nicht Monorepo-Root oder fal-Deployment-SDK.
+- Private venv, SCM-Versionswert fuer flachen Checkout explizit, Abhaengigkeiten
+  als Wheels von PyPI. Keine Docker-/WSL-Aktionen oder API-/Uploadtests.
+- Doctor: Version/Quellursprung/venv/pip check, kein SDK-Import oder Tokenlesen.
+  1 GiB RAM gesamt/512 MiB frei, 2 GiB Disk/messbare Windows-C:-Reserve.
+- Client ist keine lokale fal-Plattform und keine Cloud-Kostensperre.
+
+## Windmill nativ aus GitHub, 2026-10-16
+
+- v1.837.0 / 1fe3858a6d51949327046117d9ce4c10467a3000. Sparse-Quellen
+  ohne Upstream-.env/Hooks/Agent-Konfigurationen, Lock/Log/Diskwache.
+- Optional WINDMILL_INSTALL_BINARY=1 + WINDMILL_ACCEPT_RELEASE_TERMS=1:
+  Linux-amd64-Datei aus GitHub mit SHA256/ELF, nicht ausgefuehrt.
+- Release-Binary enthaelt laut Upstream auch proprietaere Komponenten;
+  kein als rein AGPL bezeichneter Ersatz fuer einen eigenen Source-Build.
+- Kein PostgreSQL/Server/Workerstart, keine Ports/Secrets, keine WSL-Aktion.
+  SERVER_BIND_ADDR=127.0.0.1 vor spaeterem manuellen Start zwingend beachten.
+
+## SD.Next GitHub-Quelle und private venv, 2026-10-16
+
+- Pin b7dcb0ce870181a40d1246fde1febbff5593a750, kein automatisches latest.
+  Eigener Installer/Update/Doctor/Status und Menue, keine Docker-Aufrufe.
+- Python 3.10-3.13, ensurepip/venv vorab pruefen. 2 GiB Disk, 4 GiB
+  messbare Windows-C:-Reserve nur fuer Quellen/venv.
+- Upstream installer.py installiert schon beim Import Pakete; --test ist
+  ein Modelltest. Kein Upstream-Import/Launcherstart durch unseren Installer.
+- Runtime nicht nachgewiesen, keine Modelle/Submodule/Treiber/Ports;
+  Uninstall entfernt nur Marker, nicht Daten.
+
 ## Pinokio nativer GitHub-Release, 2026-10-16
 
 - Eigene Menueverdrahtung und Wrapper; v8.2.0, Windows Pinokio.exe mit

@@ -1,7 +1,14 @@
 # Hoerbuch, Dubbing, SFX, MIDI und Video-Editing
 
 Quellenpruefung: 14.10.2026, ViDubb-Quellpfad ergaenzt am 16.10.2026.
-Mit Ausnahme der [ViDubb-Quellinstallation](../tools/vidubb.md) sind die neuen
+Mit Ausnahme der [ViDubb-Quellinstallation](../tools/vidubb.md) und der
+[Alexandria-Quell-/venv-Vorbereitung](../tools/alexandria-audiobook.md) sowie dem
+[Qwen3-TTS-Paketinstaller](../tools/qwen3-tts.md) und
+[ChatTTS-Paketinstaller](../tools/chattts.md) und dem
+[AudioLDM2-Basispaket](../tools/audioldm2.md) und dem
+[AudioGen-/AudioCraft-Basispaket](../tools/audiogen.md) sowie dem
+[Stable-Audio-Open-Basispaket](../tools/stable-audio-open.md) und dem
+[Moshi-Basispaket](../tools/moshi.md) sind die neuen
 Kandidaten **planned/documentation-first**, nicht installiert oder als Kombination getestet. Gemeinsame Guard-Skripte
 verhindern Downloads, Builds, Starts und Loeschungen. Keine neuen Ports.
 Code, Gewichte, Trainingsdaten und Plugin-SDKs haben unterschiedliche Lizenzen.
@@ -18,20 +25,24 @@ ShellCheck war nicht verfuegbar. Die globale Profilpruefung meldet eine
 bereits unabhaengig fehlende Datei: `docs/Profile/Embedded_Debug_HIL.md`.
 
 ViDubb besitzt jetzt einen eigenen gepinnten Sparse-Quellinstaller ohne Docker,
-aber noch keine sichere Dubbing-Laufzeit. Die anderen Kandidaten haben noch
+aber noch keine sichere Dubbing-Laufzeit. Alexandria hat einen eigenen
+Quell-/venv-Installer ohne Docker, noch keine betriebsbereite GPU-Laufzeit.
+Qwen3-TTS, ChatTTS, AudioLDM2, AudioGen, Stable Audio Open und Moshi haben ebenfalls
+eigene Paketinstaller, aber keine damit automatisch betriebsbereite Inferenz.
+Die weiterhin als planned markierten Kandidaten haben noch
 keine echten toolbezogenen Installer, Smoke-Tests,
 Update-/Rollback- oder Deinstallationspfade. Die Guard-Dateien sind bewusst
 kein Ersatz dafuer. Erst nach Release-/Lizenz-/Hardwarepruefung implementieren.
 
 | Registry-ID / Name | GitHub-Quelle | Aufgabe / Grenze | Ressourcenklasse | Status / Risiko |
 |---|---|---|---|---|
-| `alexandria_audiobook` (Alexandria_Audiobook) | [Finrandojin/alexandria-audiobook](https://github.com/Finrandojin/alexandria-audiobook) | Mehrstimmige Hoerbuecher auf Qwen3-TTS; MP3/M4B laut Upstream. | gpu-heavy | planned / high |
-| `qwen3_tts` (Qwen3_TTS) | [QwenLM/Qwen3-TTS](https://github.com/QwenLM/Qwen3-TTS) | TTS, Voice Design und autorisiertes Voice Cloning; keine ASR. | gpu-heavy | planned / high |
-| `chattts` (ChatTTS) | [2noise/ChatTTS](https://github.com/2noise/ChatTTS) | Dialog-TTS, primaer Chinesisch/Englisch; Modelllizenz nichtkommerziell. | medium | planned / high |
-| `audioldm2` (AudioLDM2) | [haoheliu/AudioLDM2](https://github.com/haoheliu/AudioLDM2) | Text-to-Audio/SFX; keine beliebige Dauer oder perfekten Loops garantiert. | gpu-heavy | planned / high |
-| `audiogen` (AudioGen) | [facebookresearch/audiocraft](https://github.com/facebookresearch/audiocraft) | AudioCraft-SFX-Modell; Gewichte CC-BY-NC 4.0. | gpu-heavy | planned / high |
-| `stable_audio_open` (Stable_Audio_Open) | [Stability-AI/stable-audio-tools](https://github.com/Stability-AI/stable-audio-tools) | Text-to-Audio; konkrete Gewichte und deren Lizenz getrennt pruefen. | gpu-heavy | planned / high |
-| `moshi` (Moshi) | [kyutai-labs/moshi](https://github.com/kyutai-labs/moshi) | Full-duplex Sprachdialog; kein Hoerbuch-/Musik-Allrounder. | gpu-heavy | planned / high |
+| `alexandria_audiobook` (Alexandria_Audiobook) | [Finrandojin/alexandria-audiobook](https://github.com/Finrandojin/alexandria-audiobook), [Installer](../tools/alexandria-audiobook.md) | GitHub-Quellen + private venv ohne Docker; TTS-/GPU-Laufzeit separat. | gpu-heavy | experimental / high |
+| `qwen3_tts` (Qwen3_TTS) | [QwenLM/Qwen3-TTS](https://github.com/QwenLM/Qwen3-TTS), [Installer](../tools/qwen3-tts.md) | GitHub-Paket ohne Runtime als Standard, Runtime doppelt opt-in; keine Modelle/Inferenz. | gpu-heavy | experimental / high |
+| `chattts` (ChatTTS) | [2noise/ChatTTS](https://github.com/2noise/ChatTTS), [Installer](../tools/chattts.md) | GitHub-Paket ohne Runtime als Standard; Core-Runtime doppelt opt-in, kein Modell. Modell nichtkommerziell. | medium | experimental / high |
+| `audioldm2` (AudioLDM2) | [haoheliu/AudioLDM2](https://github.com/haoheliu/AudioLDM2), [Installer](../tools/audioldm2.md) | GitHub-Paket --no-deps ohne Docker; Legacy-Runtime/Modelle fehlen, Lizenzwiderspruch. | gpu-heavy | experimental / high |
+| `audiogen` (AudioGen) | [facebookresearch/audiocraft](https://github.com/facebookresearch/audiocraft) | [GitHub-Basispaket](../tools/audiogen.md), ohne Runtime/Modelle; Gewichte CC-BY-NC 4.0. | gpu-heavy | experimental / high |
+| `stable_audio_open` (Stable_Audio_Open) | [Stability-AI/stable-audio-tools](https://github.com/Stability-AI/stable-audio-tools), [Installer](../tools/stable-audio-open.md) | GitHub-Basispaket 0.0.20, Python 3.10; ohne Docker, GPU-Runtime/Modelle. | gpu-heavy | experimental / high |
+| `moshi` (Moshi) | [kyutai-labs/moshi](https://github.com/kyutai-labs/moshi), [Installer](../tools/moshi.md) | GitHub-Python-Basispaket 0.2.13; ohne Docker/Modelle/Server/Mikrofonzugriff. | gpu-heavy | experimental / high |
 | `moss_tts` (MOSS_TTS) | [OpenMOSS/MOSS-TTS](https://github.com/OpenMOSS/MOSS-TTS) | TTS-/Sound-Familie; Faehigkeiten pro Modellvariante pruefen. | gpu-heavy | planned / high |
 | `yue` (YuE) | [multimodal-art-projection/YuE](https://github.com/multimodal-art-projection/YuE) | Musik/Gesang; Upstream-Generation YuE/YuE2 genau pinnen. | gpu-heavy | planned / high |
 | `ace_step_15` (ACE_Step_15) | [ace-step/ACE-Step-1.5](https://github.com/ace-step/ACE-Step-1.5) | Musikgenerierung; Hardware-/Modellpfad separat testen. | gpu-heavy | planned / high |

@@ -1,5 +1,38 @@
 # GitHub Tool Sources
 
+Moshi: [kyutai-labs/moshi](https://github.com/kyutai-labs/moshi/tree/e6a55d2722a65870ef52a6c9f6ecfc0e90f38362),
+Pin `e6a55d2722a65870ef52a6c9f6ecfc0e90f38362`, Python-Paket 0.2.13
+aus Unterordner `moshi/`. [Installer ohne Docker](tools/moshi.md);
+Python MIT, Rust Apache-2.0, Modellkarten/CC-BY 4.0 separat pruefen.
+
+Stable Audio Open: [Stability-AI/stable-audio-tools](https://github.com/Stability-AI/stable-audio-tools/tree/3241adba4fc2a85cf5b29d9eb68d42f40a28e820),
+Paket 0.0.20, Pin `3241adba4fc2a85cf5b29d9eb68d42f40a28e820`.
+MIT-Code; Modelllizenz separat. [GitHub-Installer](tools/stable-audio-open.md)
+ohne Docker; Python 3.10 ist erforderlich.
+
+AudioGen: [facebookresearch/audiocraft](https://github.com/facebookresearch/audiocraft/tree/v1.3.0),
+Commit `72cb16f9fb239e9cf03f7bd997198c7d7a67a01c`; MIT-Code,
+CC-BY-NC-4.0-Gewichte. [Nativer Basispaket-Installer](tools/audiogen.md), keine Docker-/Modellinstallation.
+
+[AudioLDM2](tools/audioldm2.md): haoheliu/AudioLDM2,
+b5786c5dc0ae8f766337fdc1b67ab6046586d14d / Paket 0.1.0. GitHub --no-deps
+in privater venv, keine Docker-/Legacy-Runtime-/Modell-/WebUI-Aktion.
+LICENSE nennt CC BY-NC-SA 4.0, setup.py MIT: nicht pauschal kommerziell freigeben.
+
+[ChatTTS](tools/chattts.md): 2noise/ChatTTS,
+77b89ee281cd479f5b1a787ada330dc975ca1f2a. Code AGPLv3+, Modell CC BY-NC 4.0.
+Setup.py-Default 0.0.0 explizit statt geerbtem CHTTS_VER, massgeblich Commit.
+GitHub-Paket in privater venv ohne Docker, keine Gewichte/WebUI.
+
+[Qwen3_TTS](tools/qwen3-tts.md): QwenLM/Qwen3-TTS,
+022e286b98fbec7e1e916cb940cdf532cd9f488e / qwen-tts 0.1.1.
+Private venv, standardmaessig --no-deps; Runtime separat mit Torch-Constraints
+und doppeltem Opt-in. Keine Modelle/Flash-Attention/Demo oder Docker.
+
+[Alexandria_Audiobook](tools/alexandria-audiobook.md): Finrandojin/alexandria-audiobook,
+Pin be6343d95d94db5f88973aa25575a390f3ce46aa. GitHub-Quellen und private venv
+ohne Docker; Qwen-/GPU-Laufzeit und Modelle separat. Keine Pinokio-Install-/Reset-Aktion.
+
 [Pyannote_Audio](tools/pyannote-audio.md): GitHub-Release 4.0.4,
 Commit `78c0d16a5f558adb1024d112e6857b3204b450b3`, MIT-Code. Ohne Docker;
 CPU-Pakete privat aus PyTorch/PyPI nur mit doppeltem Opt-in. Keine Modelle,
@@ -55,6 +88,17 @@ und optionalen nativen Launcher-Build ohne Docker. Das ist noch keine
 vollstaendige Inferenzlaufzeit. [Pinokio](tools/pinokio.md) hat einen nativen
 GitHub-Release-Assistenten v8.2.0 mit manueller Desktop-Installation, ohne Docker.
 Die anderen Social-Kandidaten bleiben documentation-first.
+Ausnahme [SD.Next](tools/sdnext.md): gepinnter GitHub-Checkout und private
+Python-venv ohne Docker, noch keine betriebsbereite Inferenzlaufzeit.
+[Windmill](tools/windmill.md): GitHub v1.837.0, gepinnte Quellen, optional
+hashgepruefte Linux-amd64-Datei. Release-CE-Bedingungen von AGPL-Source trennen;
+kein Docker und kein automatischer Datenbank-/Server-/Workerstart.
+[Fal_Client](tools/fal-client.md): fal-ai/fal, Tag fal_client_v1.0.3,
+Installation nur aus projects/fal_client in privater venv; PyPI nur fuer
+Build-/Runtime-Abhaengigkeiten. Kein Docker, kein fal-Deployment-SDK/Cloudtest.
+[Veo_API](tools/veo-api.md): googleapis/python-genai v2.31.0 aus GitHub in
+privater venv, Abhaengigkeiten als PyPI-Wheels. Kein Docker/SDK-Import/ADC-
+Login/Cloudtest; Veo selbst bleibt externes Modell.
 SDK auf GitHub bedeutet nicht, dass Veo/fal lokal selbsthostbar sind.
 
 Dataset-Werkzeuge: HF_Datasets hat einen [gepinnten GitHub-Basispaketinstaller](tools/hf-datasets.md),
