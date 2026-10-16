@@ -1,5 +1,8 @@
 # Tools Catalog
 
+[Qwen Code CLI aus GitHub](tools/qwen-code.md): optionaler Source-Build
+v0.25.1 ohne Docker, getrennt vom Windows-Desktop und ohne Agentenstart.
+
 [Qwen Desktop fuer Windows](tools/qwen-desktop-windows.md) mit eigenem
 Menueeintrag und manuellem offiziellen Download, keine WSL-Installation.
 [Modellfamilien und Wan-Refinement](media_studio/HYBRID_MODELS_AND_WAN.md)

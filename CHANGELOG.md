@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Qwen_Code vom allgemeinen Hybrid-Platzhalter auf eigenen gepinnten GitHub-
+  CLI-Source-Build ohne Docker umgestellt; kein Login/Start/Modell-Download.
+- FreeLLMAPI-Installer gibt Source-Revision aus; Tutorial zum Erkennen des
+  alten Docker-Skripts ergaenzt. Lokale Aenderungen sind noch kein GitHub-Update.
+
 - Automaton: optionaler gepinnter GitHub-Source-Build ohne Docker mit pnpm,
   Ressourcenchecks, privatem Buildlog, Lock und datenerhaltender Deaktivierung.
   Kein Agentenstart, Wallet-Zugriff, globale CLI oder Dienst; Offline-Review bleibt separat.

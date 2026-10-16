@@ -4,6 +4,7 @@ FREELLMAPI_REPO_ROOT="$(cd "${BASH_SOURCE[0]%/*}/../../.." && pwd)"
 FREELLMAPI_SOURCE_URL=https://github.com/tashfeenahmed/freellmapi.git
 FREELLMAPI_SOURCE_TAG=v0.14.2
 FREELLMAPI_SOURCE_COMMIT=57c0669233bbe0c70a0f9f9927613192be948773
+FREELLMAPI_INSTALLER_REVISION=2026-10-16-github-source-no-docker
 
 freellmapi_paths() {
     local root="${OPENCLAW_USER_DATA_DIR:-$HOME/.openclaw_ultimate_user_data}"
@@ -144,6 +145,7 @@ freellmapi_build() (
 
 freellmapi_main() (
     umask 077
+    echo "FreeLLMAPI-Installer: $FREELLMAPI_INSTALLER_REVISION"
     local mode="${1:---dry-run}"
     case "$mode" in
         --status|--check) mode=status ;; --repair) mode=update ;;

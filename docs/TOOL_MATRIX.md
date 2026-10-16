@@ -3,7 +3,8 @@
 | Neuer Pfad | Status | Einstieg |
 |---|---|---|
 | Qwen_Desktop | planned / manual-windows | [Windows-GUI, Release und lokale Installerpruefung](tools/qwen-desktop-windows.md) |
-| Cline, Qwen_Code | planned | [Coding-/Hybridpfad](media_studio/HYBRID_MODELS_AND_WAN.md) |
+| Cline | planned | [Coding-/Hybridpfad](media_studio/HYBRID_MODELS_AND_WAN.md) |
+| Qwen_Code | experimental, optionaler GitHub-CLI-Source-Build ohne Docker | [Installation, Ressourcen und sichere Nutzung](tools/qwen-code.md) |
 | Wan21, ComfyUI_GGUF, WanVideoWrapper, SUPIR, FILM | planned / gpu-heavy | [Versionen/8K-/VRAM-Grenzen](media_studio/HYBRID_MODELS_AND_WAN.md) |
 
 | Defensive Audio-Kandidaten | Stand | Grenze |

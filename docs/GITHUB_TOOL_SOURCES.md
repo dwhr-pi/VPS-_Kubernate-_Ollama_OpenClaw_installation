@@ -3,6 +3,9 @@
 Qwen_Desktop und Qwen_Code: [offizieller Code](https://github.com/QwenLM/qwen-code),
 [Desktop-Releases](https://github.com/QwenLM/qwen-code/releases/tag/desktop-latest).
 [Windows-Einstieg](tools/qwen-desktop-windows.md), kein Community-Web-Wrapper.
+[Qwen_Code CLI Source-Build](tools/qwen-code.md): v0.25.1, Commit
+`c1a8218f38203e272e6e965778ed6a2795cfeed7`, pnpm 11.24.0/Corepack,
+Node 22.x; keine Container-, Login- oder Agenteninitialisierung.
 [Cline/Wan/GGUF/Wrapper/SUPIR/FILM-Quellen](media_studio/HYBRID_MODELS_AND_WAN.md).
 
 Defensiver Audio-Pfad: [pyannote/pyannote-audio](https://github.com/pyannote/pyannote-audio),

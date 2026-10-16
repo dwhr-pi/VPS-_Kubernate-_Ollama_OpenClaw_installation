@@ -5,7 +5,9 @@ offizielle Qwen-Code-GUI, getrennt von Qwen_Code CLI und Qwen Chat/Studio.
 Manueller Installationspfad, lokaler PowerShell-Pruefhelfer, keine WSL-Pflicht.
 
 [Hybrider Modell-/Medienpfad](media_studio/HYBRID_MODELS_AND_WAN.md):
-Cline, Qwen_Code, Wan21, ComfyUI_GGUF, WanVideoWrapper, SUPIR und FILM planned.
+Cline, Wan21, ComfyUI_GGUF, WanVideoWrapper, SUPIR und FILM planned.
+[Qwen_Code CLI](tools/qwen-code.md) hat einen optionalen GitHub-Source-Build
+ohne Docker; kein automatischer Agentenstart oder Login.
 
 [Audio-Review und Redaktion](media_studio/AUDIO_DEEPFAKE_REVIEW.md):
 pyannote_audio, deepfilternet, audioseal planned; getrennte Aufgaben,

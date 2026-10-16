@@ -1,5 +1,31 @@
 # FreeLLMAPI aus GitHub installieren, ohne Docker
 
+## Alte Docker-Meldung trotz Korrektur?
+
+Am 16.10.2026 enthielt GitHub `main` noch den Docker-Helfer mit
+`FREELLMAPI_ENABLE_DOCKER=1`; der neue Source-Installer lag nur im Windows-
+Arbeitsverzeichnis. Eine lokale Bearbeitung ist **keine Veroeffentlichung**.
+Erst nach Commit/Review/Veroeffentlichung und erfolgreichem Setup-Update
+kann eine andere Installation die neuen Dateien verwenden.
+
+Der neue Installer meldet zu Beginn:
+`FreeLLMAPI-Installer: 2026-10-16-github-source-no-docker`.
+Fehlt diese Zeile und erscheint stattdessen die Docker-Sperre, wird noch der
+alte Helfer ausgefuehrt. Nicht durch Setzen des Docker-Flags umgehen.
+Rein lesende Diagnose im tatsaechlich gestarteten Setup-Verzeichnis:
+
+```bash
+pwd
+git remote -v
+git log -1 --oneline
+git status --short
+grep -nE 'INSTALLER_REVISION|ENABLE_DOCKER' scripts/tools/helpers/freellmapi_common.sh
+bash scripts/tools/freellmapi_install.sh --dry-run
+```
+
+Lokale Abweichungen vor einem Update sichern/pruefen, kein `reset --hard` oder
+blindes Ueberschreiben. Codex greift fuer diese Diagnose nicht auf deine WSL zu.
+
 Status: **experimental / optional**. Geprueft am 16.10.2026.
 Quelle: [tashfeenahmed/freellmapi](https://github.com/tashfeenahmed/freellmapi),
 Tag `v0.14.2`, Commit `57c0669233bbe0c70a0f9f9927613192be948773`.

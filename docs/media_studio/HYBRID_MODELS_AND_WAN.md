@@ -25,8 +25,10 @@ Verfuegbarkeitsgrenzen; kein stiller Wechsel auf Bezahlmodelle.
 
 ## Welche Tools sind dazugekommen?
 
-Alle nachfolgenden Eintraege sind **planned/documentation-first**,
-ohne Download, Start, neue Ports oder automatische Toolinstallation.
+Die nachfolgenden Eintraege bleiben **planned/documentation-first**, ausser
+Qwen_Code: dafuer gibt es jetzt einen ausdruecklich waehlbaren
+[GitHub-Source-Installer ohne Docker](../tools/qwen-code.md).
+Keine automatische Toolinstallation, Modelldownloads oder Agentenstarts.
 
 | Tool / ID | GitHub | Rolle |
 |---|---|---|

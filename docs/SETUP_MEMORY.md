@@ -1,5 +1,16 @@
 # Setup Memory
 
+## Qwen Code / alte FreeLLMAPI-Meldung, 2026-10-16
+
+- GitHub-main enthielt bei erneuter Onlinepruefung noch den alten FreeLLMAPI-
+  Docker-Helfer. Lokale Bearbeitung ist nicht Veroeffentlichung/Verteilung.
+  Neuer Helfer meldet Revision 2026-10-16-github-source-no-docker.
+- Qwen_Code eigener optionaler Source-Installer v0.25.1 am Commit
+  c1a8218f38203e272e6e965778ed6a2795cfeed7; kein Hybrid-Platzhalter mehr.
+- pnpm 11.24.0/Corepack, Node 22.x, CLI-Build/Bundle ohne Docker-/Sandboxbuild,
+  Login/Agent/Modelldownload. 8 GiB RAM/10 GiB Disk Planungsreserve.
+- Aenderungen nur im Windows-Repo; keine WSL-/Runtime-Eingriffe, kein Push.
+
 ## Automaton Source, 2026-10-16
 
 - Optionaler GitHub-Source-Build am Commit d8f816881fd24b6f5e3d616e59edec387a447667,
