@@ -8,7 +8,18 @@ Mit Ausnahme der [ViDubb-Quellinstallation](../tools/vidubb.md) und der
 [AudioLDM2-Basispaket](../tools/audioldm2.md) und dem
 [AudioGen-/AudioCraft-Basispaket](../tools/audiogen.md) sowie dem
 [Stable-Audio-Open-Basispaket](../tools/stable-audio-open.md) und dem
-[Moshi-Basispaket](../tools/moshi.md) sind die neuen
+[Moshi-Basispaket](../tools/moshi.md) und den
+[Just-Dub-It-Basispaketen](../tools/just-dub-it.md) sowie der
+[VOID-Quellinstallation](../tools/void-model.md) und dem
+[Kiwi-Edit-Basispaket](../tools/kiwi-edit.md) sowie der
+[ProPainter-Quellinstallation](../tools/propainter.md) und der
+[AIDA-X-Quellinstallation mit optionalem Build](../tools/aida-x.md) sowie der
+[Sfizz-Engine mit optionalem Renderer-Build](../tools/sfizz.md) und dem
+[Basic-Pitch-GitHub-Paket](../tools/basic-pitch.md) und dem
+[Aegisub-Quellinstaller mit optionalem Meson-Build](../tools/aegisub.md) sowie dem
+[WhisperX-GitHub-Paket](../tools/whisperx.md) und dem
+[ACE-Step-1.5-GitHub-Basispaket](../tools/ace-step-15.md) und der
+[YuE-v1-Quellinstallation](../tools/yue.md) sind die neuen
 Kandidaten **planned/documentation-first**, nicht installiert oder als Kombination getestet. Gemeinsame Guard-Skripte
 verhindern Downloads, Builds, Starts und Loeschungen. Keine neuen Ports.
 Code, Gewichte, Trainingsdaten und Plugin-SDKs haben unterschiedliche Lizenzen.
@@ -27,8 +38,12 @@ bereits unabhaengig fehlende Datei: `docs/Profile/Embedded_Debug_HIL.md`.
 ViDubb besitzt jetzt einen eigenen gepinnten Sparse-Quellinstaller ohne Docker,
 aber noch keine sichere Dubbing-Laufzeit. Alexandria hat einen eigenen
 Quell-/venv-Installer ohne Docker, noch keine betriebsbereite GPU-Laufzeit.
-Qwen3-TTS, ChatTTS, AudioLDM2, AudioGen, Stable Audio Open und Moshi haben ebenfalls
+Qwen3-TTS, ChatTTS, AudioLDM2, AudioGen, Stable Audio Open, Moshi und Just Dub It haben ebenfalls
 eigene Paketinstaller, aber keine damit automatisch betriebsbereite Inferenz.
+VOID hat einen eigenen gepinnten Sparse-Quellinstaller ohne Pakete/Modelle.
+ProPainter ebenso, mit S-Lab-Lizenzbestaetigung fuer nichtkommerzielle Nutzung.
+AIDA-X bereitet gepinnte GitHub-Quellen vor und bietet einen optionalen nativen Standalone-Build.
+Kiwi Edit installiert das GitHub-Basispaket diffsynth ohne Runtime/Modelle.
 Die weiterhin als planned markierten Kandidaten haben noch
 keine echten toolbezogenen Installer, Smoke-Tests,
 Update-/Rollback- oder Deinstallationspfade. Die Guard-Dateien sind bewusst
@@ -44,17 +59,17 @@ kein Ersatz dafuer. Erst nach Release-/Lizenz-/Hardwarepruefung implementieren.
 | `stable_audio_open` (Stable_Audio_Open) | [Stability-AI/stable-audio-tools](https://github.com/Stability-AI/stable-audio-tools), [Installer](../tools/stable-audio-open.md) | GitHub-Basispaket 0.0.20, Python 3.10; ohne Docker, GPU-Runtime/Modelle. | gpu-heavy | experimental / high |
 | `moshi` (Moshi) | [kyutai-labs/moshi](https://github.com/kyutai-labs/moshi), [Installer](../tools/moshi.md) | GitHub-Python-Basispaket 0.2.13; ohne Docker/Modelle/Server/Mikrofonzugriff. | gpu-heavy | experimental / high |
 | `moss_tts` (MOSS_TTS) | [OpenMOSS/MOSS-TTS](https://github.com/OpenMOSS/MOSS-TTS) | TTS-/Sound-Familie; Faehigkeiten pro Modellvariante pruefen. | gpu-heavy | planned / high |
-| `yue` (YuE) | [multimodal-art-projection/YuE](https://github.com/multimodal-art-projection/YuE) | Musik/Gesang; Upstream-Generation YuE/YuE2 genau pinnen. | gpu-heavy | planned / high |
-| `ace_step_15` (ACE_Step_15) | [ace-step/ACE-Step-1.5](https://github.com/ace-step/ACE-Step-1.5) | Musikgenerierung; Hardware-/Modellpfad separat testen. | gpu-heavy | planned / high |
-| `whisperx` (WhisperX) | [m-bain/whisperX](https://github.com/m-bain/whisperX) | ASR, Alignment und optionale Diarisierung; Gesang manuell nachkorrigieren. | heavy | planned / high |
-| `aegisub` (Aegisub) | [TypesettingTools/Aegisub](https://github.com/TypesettingTools/Aegisub) | ASS-Untertitel und Karaoke-Timing im Editor. | light | planned / high |
-| `basic_pitch` (Basic_Pitch) | [spotify/basic-pitch](https://github.com/spotify/basic-pitch) | Audio-zu-MIDI; keine perfekte Mehrinstrument-Transkription. | medium | planned / high |
-| `sfizz` (Sfizz) | [sfztools/sfizz](https://github.com/sfztools/sfizz) | SFZ-Sampler-Laufzeit; Samples sind keine MIDI-Dateien. | light | planned / high |
-| `aida_x` (AIDA_X) | [AidaDSP/AIDA-X](https://github.com/AidaDSP/AIDA-X) | Amp-Modell-Player; Capture/Training ist separater Workflow. | medium | planned / high |
-| `propainter` (ProPainter) | [sczhou/ProPainter](https://github.com/sczhou/ProPainter) | Maskenbasiertes Video-Inpainting; kein fehlerfreier Universal-Editor. | gpu-heavy | planned / high |
-| `kiwi_edit` (Kiwi_Edit) | [showlab/Kiwi-Edit](https://github.com/showlab/Kiwi-Edit) | Anweisungs-/Referenz-basiertes Video-Editing; Forschungspfad. | gpu-heavy | planned / high |
-| `void_model` (VOID_Model) | [Netflix/void-model](https://github.com/Netflix/void-model) | Interaktionsbewusstes Entfernen; externe Modell-/API-Abhaengigkeiten pruefen. | gpu-heavy | planned / high |
-| `just_dub_it` (Just_Dub_It) | [justdubit/just-dub-it](https://github.com/justdubit/just-dub-it) | Audio-visuelle Dubbing-Forschung; keine beliebige LTX/Wan-Kompatibilitaet annehmen. | gpu-heavy | planned / high |
+| `yue` (YuE) | [multimodal-art-projection/YuE](https://github.com/multimodal-art-projection/YuE) | Gepinnte YuE-v1-Quellen ohne Docker; Runtime/Modelle separat, kein YuE2-Wechsel. | gpu-heavy | experimental / high |
+| `ace_step_15` (ACE_Step_15) | [ace-step/ACE-Step-1.5](https://github.com/ace-step/ACE-Step-1.5) | Gepinntes GitHub-Basispaket ohne Docker; Runtime/Modelle separat. | gpu-heavy | experimental / high |
+| `whisperx` (WhisperX) | [m-bain/whisperX](https://github.com/m-bain/whisperX) | Eigenes GitHub-Basispaket; Runtime separat opt-in, keine automatische Transkription. | heavy | experimental / high |
+| `aegisub` (Aegisub) | [TypesettingTools/Aegisub](https://github.com/TypesettingTools/Aegisub) | Gepinnte GitHub-Quellen; optionaler privater Meson-Build ohne Docker. | medium | experimental / high |
+| `basic_pitch` (Basic_Pitch) | [spotify/basic-pitch](https://github.com/spotify/basic-pitch) | Audio-zu-MIDI; eigenes GitHub-Basispaket, optionale Runtime, ohne Docker. | medium | experimental / high |
+| `sfizz` (Sfizz) | [sfztools/sfizz](https://github.com/sfztools/sfizz) | Gepinnte Engine-Quellen; optional sfizz_render ohne Docker, keine DAW-Plugins. | medium | experimental / archiviert / high |
+| `aida_x` (AIDA_X) | [AidaDSP/AIDA-X](https://github.com/AidaDSP/AIDA-X), [Installer](../tools/aida-x.md) | GitHub-Quelle 1.1.0, Standalone-Build optional ohne Docker; kein Audio-/DAW-Start. | medium | experimental / high |
+| `propainter` (ProPainter) | [sczhou/ProPainter](https://github.com/sczhou/ProPainter), [Installer](../tools/propainter.md) | GitHub-Sparse-Quellinstallation ohne Docker/Pakete/Modelle. S-Lab-Lizenz nichtkommerziell. | gpu-heavy | experimental / high |
+| `kiwi_edit` (Kiwi_Edit) | [showlab/Kiwi-Edit](https://github.com/showlab/Kiwi-Edit), [Installer](../tools/kiwi-edit.md) | GitHub-Basispaket diffsynth 2.0.4 ohne Docker/Runtime/Modelle. Remote-Code-/Lizenzgrenzen beachten. | gpu-heavy | experimental / high |
+| `void_model` (VOID_Model) | [Netflix/void-model](https://github.com/Netflix/void-model), [Installer](../tools/void-model.md) | GitHub-Sparse-Quellinstallation ohne Docker/Pakete/Modelle. Notebook 40 GB+ VRAM, Maskenpipeline teils Gemini. | gpu-heavy | experimental / high |
+| `just_dub_it` (Just_Dub_It) | [justdubit/just-dub-it](https://github.com/justdubit/just-dub-it), [Installer](../tools/just-dub-it.md) | Archiviert; GitHub-Basispakete ohne Docker/Runtime/Modelle, Lizenz-Opt-in. | gpu-heavy | experimental / high |
 | `vidubb` (ViDubb) | [medahmedkrichen/ViDubb](https://github.com/medahmedkrichen/ViDubb), [Quellinstaller](../tools/vidubb.md) | Gepinnter Sparse-Quellcheckout ohne Docker; Dubbing-Laufzeit wegen Legacy-/Import-/Loeschrisiken noch NICHT betriebsbereit. | heavy fuer spaetere Laufzeit | experimental/source-only / high |
 
 Alle Eintraege haben Registry-, Menue-, Quellen- und Doku-Verknuepfungen.

@@ -1,5 +1,67 @@
 # GitHub Tool Sources
 
+YuE: [multimodal-art-projection/YuE, YuE-v1](https://github.com/multimodal-art-projection/YuE/tree/6d4f0b1f8ce6a55fb2392e959394c46e07ee334d),
+Commit `6d4f0b1f8ce6a55fb2392e959394c46e07ee334d`, Apache-2.0.
+main enthaelt YuE2, nicht die hier registrierte Generation. [Quellinstallation
+und Runtime-Grenzen](tools/yue.md); kein automatischer xcodec-/Modell-Download.
+
+ACE_Step_15: [ace-step/ACE-Step-1.5, Tag v0.1.8](https://github.com/ace-step/ACE-Step-1.5/tree/v0.1.8),
+Commit `dce621408bee8c31b4fcf4811682eb9359e1bc94`, Python-Paket ace-step
+1.5.0, MIT. [Installer ohne Docker und Runtime-Grenzen](tools/ace-step-15.md).
+Hatchling als Build-Abhaengigkeit kommt von PyPI; GPU-Pakete werden nicht aufgeloest.
+
+WhisperX: [m-bain/whisperX v3.8.6](https://github.com/m-bain/whisperX/tree/v3.8.6),
+Commit `3ccc17b8de34f305300f8a3fd3c9f76ba820c0d0`, BSD-2-Clause.
+Das GitHub-Repo enthaelt ein VAD-Gewicht. Build-/optionale Runtime-Pakete
+kommen aus PyPI; Torch/Audio/Vision werden vorher bewusst eingerichtet.
+[Installation und Modellgrenzen](tools/whisperx.md).
+
+Aegisub: [TypesettingTools/Aegisub v3.5.1](https://github.com/TypesettingTools/Aegisub/releases/tag/v3.5.1),
+Commit `088ca6caa878209e279871f8897273f49342372b`, BSD-3-Clause plus
+Komponentenlizenzen in LICENCE. [Installation ohne Docker](tools/aegisub.md).
+Meson nutzt im optionalen Build vorhandene Systembibliotheken, keine Wrap-Downloads.
+
+Basic_Pitch: [spotify/basic-pitch v0.4.0](https://github.com/spotify/basic-pitch/tree/v0.4.0),
+Commit `9991303bba609a3b93089d13ec80d1d495083596`, Apache-2.0.
+GitHub-Quellpaket inklusive kleiner Inferenzmodelle; Python-Build-/optionale
+Runtime-Abhaengigkeiten von PyPI. [Installer und Grenzen](tools/basic-pitch.md).
+
+Sfizz: [sfztools/sfizz, Release 1.2.3](https://github.com/sfztools/sfizz/releases/tag/1.2.3),
+Commit `4e70dc0bef53b41f2853ed46e26f5911114c92d0`, BSD-2-Clause,
+archivierte Engine. Sechs GitHub-Unterprojekte mit festen Pins im
+[Installer-Manifest](../scripts/tools/helpers/sfizz_common.sh); kein Docker.
+[Installation und Grenzen](tools/sfizz.md).
+
+AIDA-X: [AidaDSP/AIDA-X 1.1.0](https://github.com/AidaDSP/AIDA-X/tree/1.1.0),
+Pin `1027cdd1756505fd2ab1a4adb91a394a3af9df57`, GPL-3.0-or-later.
+[Nativer GitHub-Installer](tools/aida-x.md), acht gepinnte GitHub-Unterprojekte,
+Standalone-Build optional; kein Docker oder Audio-Start.
+
+ProPainter: [sczhou/ProPainter](https://github.com/sczhou/ProPainter/tree/e870e79321c31b733e2031af5aa2fb1fe3ac7eec),
+Pin `e870e79321c31b733e2031af5aa2fb1fe3ac7eec`.
+[Sparse-Quellinstaller ohne Docker](tools/propainter.md), S-Lab License 1.0
+nichtkommerziell; keine Modelle oder Inferenz installiert/gestartet.
+
+Kiwi Edit: [showlab/Kiwi-Edit](https://github.com/showlab/Kiwi-Edit/tree/178f3f4f8221d7598fcc21875c847d6cf6323c4e),
+Pin `178f3f4f8221d7598fcc21875c847d6cf6323c4e`, Paket diffsynth 2.0.4.
+[GitHub-Installer ohne Docker](tools/kiwi-edit.md); Root MIT,
+Paketmetadaten Apache-2.0 und Modellbedingungen getrennt pruefen.
+
+VOID: [Netflix/void-model](https://github.com/Netflix/void-model/tree/e3914f8f551dd4b880661991fd6b28cd1699a97a),
+Pin `e3914f8f551dd4b880661991fd6b28cd1699a97a`, Code Apache-2.0.
+[GitHub-Sparse-Quellinstaller](tools/void-model.md), ohne Docker/Paket-/Modell-
+Download oder Gemini-Aufruf; Modellbedingungen und GPU-Stack separat pruefen.
+
+Just Dub It: [justdubit/just-dub-it](https://github.com/justdubit/just-dub-it/tree/fa4d8f8911036ba79a62f97e7e62581e39441d56),
+archiviert, Pin `fa4d8f8911036ba79a62f97e7e62581e39441d56`.
+[GitHub-Installer ohne Docker](tools/just-dub-it.md) fuer ltx-core/ltx-pipelines
+0.1.0; LTX-2 Community License und Modellbedingungen separat pruefen.
+
+Personnel_Documents_AI stammt aus dem [Setup-Repository](https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation),
+nicht aus Paperless selbst. Der [private CLI-Starter](tools/personnel-documents.md)
+nutzt den vorhandenen GitHub-Checkout mit SHA-256-Pruefung, ohne Docker oder
+erneuten Download. Paperless und Ollama sind separate optionale Bausteine.
+
 Moshi: [kyutai-labs/moshi](https://github.com/kyutai-labs/moshi/tree/e6a55d2722a65870ef52a6c9f6ecfc0e90f38362),
 Pin `e6a55d2722a65870ef52a6c9f6ecfc0e90f38362`, Python-Paket 0.2.13
 aus Unterordner `moshi/`. [Installer ohne Docker](tools/moshi.md);

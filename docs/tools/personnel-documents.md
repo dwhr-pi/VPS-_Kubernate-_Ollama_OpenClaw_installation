@@ -53,9 +53,46 @@ python3 tools/personnel_documents/pipeline.py validate \
 
 Erwartung: `human_review_required: true`, `applied: false`. Kein Netzwerk,
 keine Installation und keine echten Personalunterlagen.
-Die Install-/Update-/Uninstall-Wrapper des neuen Tools liefern ohne Dry-Run
-bewusst Exit-Code 2: der Prototyp wird direkt aus dem Repository verwendet und
-installiert weder Paperless noch Modelle oder Python-Abhaengigkeiten.
+Der Installer richtet jetzt einen privaten CLI-Starter aus dem vorhandenen
+GitHub-Setup-Checkout ein, ohne Docker oder erneuten Download. Das ist keine
+Installation von Paperless oder einem fertigen Personalakten-System.
+
+```bash
+bash scripts/tools/personnel_documents_install.sh
+bash scripts/tools/personnel_documents_status.sh
+bash scripts/tools/personnel_documents_doctor.sh
+python3 -I -B "$HOME/.openclaw_ultimate_user_data/tools/personnel_documents/bin/personnel-documents-ai" \
+  validate --input examples/personnel_documents/proposal.json
+bash scripts/tools/personnel_documents_update.sh
+bash scripts/tools/personnel_documents_install.sh --repair
+```
+
+Der private Starter liegt unter `${OPENCLAW_USER_DATA_DIR:-$HOME/.openclaw_ultimate_user_data}/tools/personnel_documents/bin/`.
+Unter Linux ist er auch direkt ausfuehrbar; der Ordner wird nicht automatisch
+in den PATH eingetragen. Pipeline und synthetische Pruefdatei bleiben im
+GitHub-Checkout und werden ueber SHA-256 geprueft. Deshalb den Checkout nicht
+entfernen; nach einem Update geaenderter Quellen den Starter bewusst mit
+`personnel_documents_update.sh` aktualisieren. Kein eigener Fork/Clone und
+kein Ersetzen lokal geaenderter Starter oder fremder Registrierungen.
+
+Voraussetzung: Python 3.10+, 64 MiB freier Zielspeicher und bei erkanntem
+WSL-C:-Mount 1 GiB freie Host-Reserve. Keine venv/pip-/Modell-/Docker- oder
+Systeminstallation. Install/Update/Uninstall haben eine Verzeichnissperre
+und private Logs im User-Workspace unter `install_logs/`, mit vorher/nachher
+gemessenem Speicherplatz. Ein verwaistes Lock nach Abbruch erst nach
+Prozesspruefung manuell entfernen. Logs enthalten keine Dokumentinhalte.
+Status/Doctor pruefen Starter/Pruefsummen ohne Netzwerk oder Inferenz;
+`installed` bedeutet nur CLI-Starter, nicht Paperless-/HR-Produktionsreife.
+
+```bash
+bash scripts/tools/personnel_documents_uninstall.sh
+```
+
+Entfernt nur den eigenen unveraenderten Starter und seine Registrierung.
+Quellcode, Logs, eigene Dateien, Akten, Paperless und Ollama bleiben erhalten.
+Der Paperless-Docker-Pfad unten ist ein separates optionales Tool und wird
+durch diesen Installer nicht gestartet. Ein nativer Paperless-Vollinstaller
+ist damit nicht umgesetzt.
 
 ## Schritt 2: optional lokale KI pruefen
 

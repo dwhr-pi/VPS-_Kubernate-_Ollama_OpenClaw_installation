@@ -2,6 +2,54 @@
 
 ## Unreleased
 
+- YuE: eigener gepinnter GitHub-Quellinstaller fuer YuE-v1 ohne Docker.
+  Keine stille Migration zu YuE2/main, Python-/GPU-Pakete oder Modelle.
+  Ressourcen-/Pfadschutz, Lifecycle, Dokumentation und Offline-Tests ergaenzt.
+
+- ACE_Step_15: GitHub-Basispaketinstallation statt Medien-Guard, ohne Docker.
+  Fester Commit, private venv, Sparse-Checkout, Ressourcen-/Pfadschutz,
+  Lifecycle und Offline-Tests. GPU-Runtime/Modelle bewusst nicht installiert.
+
+- WhisperX: eigener GitHub-Installer 3.8.6 statt Medien-Guard, ohne Docker.
+  Private venv, optionale Runtime mit festgehaltenem Torch-Stack,
+  Ressourcen-/Pfadschutz, Logs, Lifecycle und Offline-Tests. Keine Inferenz.
+
+- Aegisub: eigener GitHub-Quellinstaller 3.5.1 ohne Docker, optionaler
+  privater Meson/Ninja-Build mit Ressourcen-/Pfadschutz und deaktiviertem
+  Update-Checker. Lifecycle, Dokumentation und Offline-Tests ergaenzt.
+
+- Basic_Pitch: GitHub-Installer 0.4.0 statt documentation-first-Guard,
+  ohne Docker. Private venv, optionale Runtime mit doppeltem Opt-in,
+  Ressourcen-/Pfadschutz, Lifecycle, Logs und Offline-Tests.
+
+- Sfizz: GitHub-Engine 1.2.3 samt sechs gepinnten Unterprojekten statt
+  documentation-first-Guard, ohne Docker. Optionaler privater Renderer-Build,
+  Ressourcen-/Pfadschutz, Logs und Offline-Tests; keine DAW-/Audiostarts.
+
+- AIDA_X: gepinnte GitHub-Quellen 1.1.0 samt Unterprojekten und optionalem
+  privaten Standalone-CMake-Build ohne Docker; Ressourcen-/Pfadschutz,
+  ELF-/Hashstatus und Offline-Tests. Kein Audio-/DAW-/Systeminstallationsstart.
+
+- ProPainter: gepinnter GitHub-Sparse-Quellinstaller ohne Docker/Pakete/Modelle,
+  mit S-Lab-Lizenz-Opt-in, Lifecycle, Disk-/Pfadschutz, Logs und Offline-Tests.
+  Nicht betriebsbereite Inferenz und automatische Upstream-Gewichtsdownloads dokumentiert.
+
+- Kiwi_Edit: gepinntes GitHub-Basispaket diffsynth 2.0.4 in privater venv,
+  ohne Docker/Runtime/Modelle; Sparse-Checkout, Ressourcen-/Pfadschutz,
+  Lifecycle und Tests. Remote-Code-/GPU-/Lizenzgrenzen dokumentiert.
+
+- VOID_Model: gepinnter GitHub-Sparse-Quellinstaller ohne Docker statt
+  Medien-Guard; Lifecycle, Disk-/Pfadschutz, Logs und Offline-Tests.
+  Keine Pakete/Modelle/Inferenz; GPU-Bedarf und Gemini-Grenze dokumentiert.
+
+- Just_Dub_It: gepinnte GitHub-Basispakete ltx-core/ltx-pipelines ohne Docker,
+  mit Python-3.12-Pruefung, Archiv-Hinweis und Lizenz-Opt-in. Kein Modell-,
+  GPU-/Dubbing-Start; Lifecycle, Dokumentation und Offline-Tests ergaenzt.
+
+- Personnel_Documents_AI: privater CLI-Starter aus dem GitHub-Setup-Checkout
+  statt Installations-Guard. Ohne Docker/Paketdownload, mit SHA-256-Pruefung,
+  Diskcheck, Lock, Logs und erhaltender Deinstallation; kein Paperless-Start.
+
 - Moshi: gepinnter GitHub-Installer fuer Python-Paket 0.2.13 aus dem
   Monorepo-Unterordner, private Basis-venv ohne Docker. Ressourcen-/Pfadschutz,
   Logs, Status/Doctor und Dokumentation; keine Modelle/Server/Mikrofonaufnahme.

@@ -1,5 +1,100 @@
 # Setup Memory
 
+## YuE: GitHub statt Medien-Guard (18.10.2026)
+
+YuE-v1 bewusst auf Commit gepinnt: main enthaelt inzwischen YuE2.
+Eigener Sparse-Quellinstaller ohne Docker, GPU-/Python-Pakete, Tokenizer
+oder Modelle. AST-/Pin-/Pfadpruefung, Ressourcencheck, Logs und Lifecycle.
+Keine Benutzer-WSL oder Inferenz fuer die Entwicklung. [Details](tools/yue.md).
+
+## ACE-Step 1.5: GitHub statt Medien-Guard (18.10.2026)
+
+Eigener gepinnter Sparse-Quell-/venv-Installer fuer ace-step 1.5.0 aus
+Git-Tag v0.1.8. Beide Wheel-Pakete acestep/openrouter und erforderliche
+UI-JS-Dateien bleiben erhalten, Modelle/Medien/Secrets ausgeschlossen.
+Keine GPU-Runtime, CUDA-/Treiber-/Systeminstallation, Dienste oder Modelle.
+Nur Offline-Tests, Benutzer-WSL unveraendert. [Details](tools/ace-step-15.md).
+
+## WhisperX: GitHub statt Medien-Guard (18.10.2026)
+
+Release 3.8.6, private venv ohne Docker. Basispaket --no-deps; optionale
+Runtime braucht doppeltes Opt-in, ffmpeg, vorhandene Torch-/Audio-/Vision-
+Wheels und Ressourcenreserven. Kein HF-Login, keine Audioverarbeitung,
+ASR-/Alignment- oder Diarisierungsdownloads. VAD-Gewicht im Repo enthalten.
+Nur Offline-Tests; Benutzer-WSL nicht betreten. [Details](tools/whisperx.md).
+
+## Aegisub: GitHub statt Medien-Guard (18.10.2026)
+
+Eigener Lifecycle mit Pin auf 3.5.1. Standard nur Quellen, optionaler
+Meson/Ninja-Build mit AEGISUB_BUILD=1 und einem Job. Private Installation,
+kein sudo, keine Wrap-Downloads; LuaJIT/wxWidgets/Medienbibliotheken separat
+einrichten. Update-Checker deaktiviert, keine GUI gestartet. Nur Offline-Tests,
+keine WSL-Aenderungen. [Details](tools/aegisub.md).
+
+## Basic Pitch: GitHub statt Medien-Guard (18.10.2026)
+
+Release 0.4.0 mit festem Commit, private venv, keine Docker-Nutzung.
+Basispaket ohne Runtime-Abhaengigkeiten; optionale Runtime doppelt opt-in
+mit Python 3.10/3.11, RAM-/Disk-/Windows-C:-Pruefung. Kleine Modelle aus
+dem GitHub-Repo enthalten, kein Audio-/MIDI-Test oder Dienststart.
+Dokumentation: [Basic Pitch](tools/basic-pitch.md). Keine WSL-Aenderungen
+oder echte Installation bei der Entwicklung.
+
+## Sfizz: GitHub statt Platzhalter (18.10.2026)
+
+Eigener Lifecycle fuer Engine 1.2.3 und sechs gepinnte GitHub-Unterprojekte.
+Default nur Quellen; SFIZZ_BUILD=1 baut optional sfizz_render mit einem Job.
+Archiviertes Upstream, keine sfizz-ui-/DAW-Plugins. Status trennt Quellen,
+ELF-/Hashpruefung und fehlenden Audiotest. Keine WSL-/Audio-/Systeminstallation
+bei der Entwicklung; nur synthetische Offline-Tests. Details: [Sfizz](tools/sfizz.md).
+
+## AIDA-X GitHub/nativer Build (18.10.2026)
+
+media_candidate ersetzt; Release 1.1.0/1027cdd1756505fd2ab1a4adb91a394a3af9df57.
+Quellen plus 8 gepinnte GitHub-Unterprojekte, optional AIDA_X_BUILD=1:
+privater CMake-Standalone-Build mit 1-2 Jobs, Ressourcencheck/Lock/Logs.
+Keine apt-/Docker-Installation, kein System-/Plugin-/Audio-Start.
+Native-Artefaktstatus ist kein Audiotest. Nur Offline-Tests, WSL unveraendert.
+
+## ProPainter GitHub-Quellinstaller (18.10.2026)
+
+media_candidate ersetzt; Quellpin e870e79321c31b733e2031af5aa2fb1fe3ac7eec.
+Sparse-Quellen, S-Lab-Lizenz-Opt-in, AST ohne Import, Diskcheck/Lock/Logs.
+Kein pip-Paketroot, kein Docker/Python-/Modell-Download oder Inferenzstart.
+source_ready ist keine Inferenzfreigabe. Nur Offline-Tests, kein WSL-Zugriff.
+
+## Kiwi Edit GitHub-Basispaket (18.10.2026)
+
+media_candidate ersetzt durch privaten diffsynth-2.0.4-Basisinstaller,
+GitHub-Pin 178f3f4f8221d7598fcc21875c847d6cf6323c4e. Sparse-Quellen,
+--no-deps, Ressourcen-/Pfadschutz, Lock und Logs. Kein Docker/Modell-/Demo-
+oder Remote-Code-Start; MIT/Apache-Metadatenabweichung dokumentiert.
+Nur Offline-Tests; keine WSL-Aenderungen oder Inferenzbereitschaft behauptet.
+
+## VOID GitHub-Quellinstallation (18.10.2026)
+
+Eigene Lifecycle-Skripte statt media_candidate. Netflix/void-model ist
+auf e3914f8f551dd4b880661991fd6b28cd1699a97a gepinnt; Sparse-Quellen ohne
+Modelle/Medien/.env/Notebooks, Syntaxcheck ohne Import, Diskcheck/Lock/Logs.
+Kein installierbarer Paket-Root, kein Docker, pip, Modell- oder Gemini-Aufruf.
+Nur Quellvorbereitung: source_ready ist nicht runtime_ready. Kein WSL-Zugriff.
+
+## Just Dub It GitHub-Basispakete (18.10.2026)
+
+Archiviertes Ursprungsrepo bleibt explizit gepinnt auf
+fa4d8f8911036ba79a62f97e7e62581e39441d56, kein stiller LTX-2.3-Wechsel.
+Private Python-3.12-venv installiert beide lokalen LTX-Pakete --no-deps.
+Lizenz-Opt-in, Ressourcen-/Pfadschutz, Logs und Lifecycle; keine Modelle,
+GPU-Runtime oder Dubbing-Ausfuehrung. Nur Offline-Tests, kein WSL-Zugriff.
+
+## Personnel Documents CLI-Starter (18.10.2026)
+
+Install/Update/Repair verwalten jetzt einen privaten CLI-Starter aus dem
+GitHub-Setup-Checkout statt Exit-Code-2-Guard. Kein Docker/Paketdownload,
+Paperless-Start oder echter Aktenzugriff. Checksummen fuer Pipeline und
+synthetische Pruefdatei, Diskcheck, Lock und private Logs. Deinstallation
+entfernt nur eigenen Starter/Registrierung; Quelldateien und Daten bleiben.
+
 ## Moshi GitHub-Basispaket (16.10.2026)
 
 Eigene Lifecycle-Skripte ersetzen media_candidate. Moshi 0.2.13, Pin

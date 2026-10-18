@@ -1,5 +1,47 @@
 # Tool Matrix
 
+YuE: [GitHub-Quellinstaller fuer YuE-v1](tools/yue.md), ohne Docker.
+Experimental/gpu-heavy, keine Python-/GPU-Runtime oder Modellinstallation.
+YuE2 auf main wird nicht ungefragt unter demselben Menuepunkt installiert.
+
+ACE_Step_15: [GitHub-Basispaket ace-step 1.5.0](tools/ace-step-15.md),
+ohne Docker, private venv. Experimental/gpu-heavy; Runtime, Modelle und
+GUI/API bleiben separat, keine automatisch betriebsbereite Musikgenerierung.
+
+WhisperX: [GitHub-Paket 3.8.6](tools/whisperx.md), private venv ohne Docker.
+Experimental/heavy, Basis --no-deps. Runtime mit explizitem Opt-in und
+vorhandenem Torch-Stack; keine automatische Transkription oder Diarisierung.
+
+Aegisub: [GitHub-Quellen 3.5.1 und optionaler Meson-Build](tools/aegisub.md),
+ohne Docker. Experimental; private Installation statt Systemeingriff,
+vorhandene Build-Abhaengigkeiten erforderlich. Kein GUI-/Audiotest.
+
+Basic_Pitch: [Basic Pitch 0.4.0 aus GitHub](tools/basic-pitch.md), private
+venv ohne Docker. Experimental; Standard --no-deps, Runtime separat opt-in.
+Paket-/Abhaengigkeitsstatus sind kein Audio-zu-MIDI-Qualitaetstest.
+
+Sfizz: [GitHub-Engine 1.2.3 und optionaler Renderer-Build](tools/sfizz.md),
+ohne Docker, experimental/archiviert. Quellenstatus und Buildstatus getrennt;
+keine DAW-Plugin-Installation oder automatische Audioausgabe.
+
+AIDA_X: [GitHub-Quellen 1.1.0](tools/aida-x.md), optional nativer
+Standalone-CMake-Build ohne Docker, 1 Build-Job; kein Audio-/DAW-Test.
+
+ProPainter: [GitHub-Quellinstaller](tools/propainter.md) ohne Docker/
+Pakete/Modelle; S-Lab-Lizenzbestaetigung, keine fertige Inferenz-Laufzeit.
+
+Kiwi_Edit: [GitHub-Basispaket diffsynth 2.0.4](tools/kiwi-edit.md),
+private venv ohne Docker/Runtime/Modelle; Remote-Code und Lizenzen separat pruefen.
+
+VOID_Model: [GitHub-Quellinstallation](tools/void-model.md) ohne Docker,
+Pakete/Modelle oder Cloud-Aufrufe; nicht betriebsbereit. GPU-/Gemini-Grenzen beachten.
+
+Just_Dub_It: [archivierte GitHub-Basispakete](tools/just-dub-it.md),
+Python 3.12, LTX-2-Lizenz-Opt-in; kein Docker, Modelle oder Dubbing-Start.
+
+Personnel_Documents_AI: [privater GitHub-Checkout-Starter](tools/personnel-documents.md),
+Python 3.10+, ohne Docker/Paketdownload; kein fertiges HR-/Paperless-System.
+
 Moshi: [GitHub-Python-Basispaket 0.2.13](tools/moshi.md), experimental,
 Monorepo-Unterordner `moshi/`, private venv ohne Docker/Modelle/Server.
 
