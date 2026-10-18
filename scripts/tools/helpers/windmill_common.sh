@@ -99,6 +99,8 @@ wm_fetch() {
 
 wm_deactivate() {
     rm -f -- "$WM_MARKER" "$WM_BINARY_MARKER"
+    source "$WM_ROOT/scripts/helpers/native_tool_status.sh"
+    native_tool_sync_status Windmill "${OPENCLAW_USER_DATA_DIR:-$HOME/.openclaw_ultimate_user_data}" || return 1
     echo 'Windmill-Quellregistrierung deaktiviert; Quelle, Binary, eigene Daten und Logs bleiben erhalten.'
 }
 
@@ -190,7 +192,9 @@ windmill_main() (
         if [[ "${WINDMILL_INSTALL_BINARY:-0}" == 1 ]]; then
             REQUIRE_WINDOWS_HOST_FREE_MB=4096 require_disk_mb 4096 "$mount"
         else REQUIRE_WINDOWS_HOST_FREE_MB=2048 require_disk_mb 2048 "$mount"; fi
-    elif [[ ! -d "$WM_BASE" ]]; then echo 'Nicht eingerichtet; nichts deaktiviert.'; return 0; fi
+    elif [[ ! -d "$WM_BASE" ]]; then
+        wm_deactivate; return $?
+    fi
     mkdir -p "$WM_BASE" "$WM_LOGS"
     exec 9>"$WM_BASE/operation.lock"
     flock -n 9 || { echo 'Andere Windmill-Operation aktiv.' >&2; return 1; }

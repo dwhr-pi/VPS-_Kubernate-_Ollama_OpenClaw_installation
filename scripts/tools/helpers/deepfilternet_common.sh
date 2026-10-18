@@ -84,10 +84,56 @@ df_finish() {
     echo 'Modell aus GitHub eingebettet. Keine Audios, Mikrofone, Dienste oder Ports gestartet.'
 }
 
+df_install_base_packages() {
+    source "$DF_ROOT/scripts/lib/apt_lock_wait.sh"
+    run_apt_with_lock_wait update || return $?
+    run_apt_with_lock_wait install -y "$@"
+}
+
+df_prepare_build_tools() {
+    local program package answer="" consent="${DEEPFILTERNET_INSTALL_BUILD_DEPS:-ask}"
+    local -a missing=()
+    # rustup commonly installs here without changing the current menu's PATH.
+    if [[ -x "$HOME/.cargo/bin/cargo" && -x "$HOME/.cargo/bin/rustc" ]]; then
+        export PATH="$HOME/.cargo/bin:$PATH"
+    fi
+    for program in git cargo rustc cc timeout sha256sum flock; do
+        command -v "$program" >/dev/null && continue
+        case "$program" in
+            cargo|rustc|git) package="$program" ;;
+            cc) package=build-essential ;;
+            timeout|sha256sum) package=coreutils ;;
+            flock) package=util-linux ;;
+        esac
+        [[ " ${missing[*]} " == *" $package "* ]] || missing+=("$package")
+    done
+    ((${#missing[@]})) || return 0
+    echo "Fehlende DeepFilterNet-Build-Werkzeuge: ${missing[*]}"
+    echo 'Nur Basiswerkzeuge via apt; DeepFilterNet selbst bleibt ein gepinnter GitHub-Build ohne Docker.'
+    command -v apt-get >/dev/null || { echo 'Keine apt-Paketverwaltung; Build-Werkzeuge separat einrichten.' >&2; return 1; }
+    case "$consent" in
+        1) ;;
+        ask)
+            if [[ -t 0 ]]; then
+                read -r -p 'Fehlende Basiswerkzeuge jetzt installieren (sudo)? [(j)a/(N)ein]: ' answer || return 1
+            fi
+            [[ "$answer" == j || "$answer" == J ]] || {
+                echo 'Nicht installiert. Fuer bewusste Freigabe DEEPFILTERNET_INSTALL_BUILD_DEPS=1 setzen.' >&2; return 1;
+            } ;;
+        0) echo 'Automatische Basisinstallation deaktiviert.' >&2; return 1 ;;
+        *) echo 'DEEPFILTERNET_INSTALL_BUILD_DEPS: ask, 0 oder 1 erwartet.' >&2; return 2 ;;
+    esac
+    df_install_base_packages "${missing[@]}" || return $?
+    hash -r
+    for program in git cargo rustc cc timeout sha256sum flock; do
+        command -v "$program" >/dev/null || { echo "Nach Basisinstallation fehlt weiterhin: $program" >&2; return 1; }
+    done
+}
+
 deepfilternet_main() (
     set -euo pipefail
     umask 077
-    local mode="${1:-install}" program log
+    local mode="${1:-install}" log
     df_paths || return 1
     case "$mode" in
         --dry-run|--plan|plan|--help)
@@ -108,11 +154,9 @@ deepfilternet_main() (
     if [[ "$mode" == uninstall || "$mode" == --uninstall ]]; then
         [[ -d "$DF_BASE" ]] || { echo 'Nicht eingerichtet; nichts deaktiviert.'; return 0; }
     else
-        for program in git cargo rustc cc timeout sha256sum flock; do
-            command -v "$program" >/dev/null || { echo "DeepFilterNet: $program fehlt. Basis-/Rust-Werkzeuge separat einrichten, siehe docs/tools/deepfilternet.md." >&2; return 1; }
-        done
         if [[ "$mode" == install ]] && df_probe >/dev/null 2>&1; then echo 'Verifizierter Build bereits vorhanden; nichts installiert.'; return 0; fi
         df_resources || return 1
+        df_prepare_build_tools || return $?
     fi
     mkdir -p "$DF_BASE" "$DF_LOGS"
     exec 9>"$DF_BASE/operation.lock"

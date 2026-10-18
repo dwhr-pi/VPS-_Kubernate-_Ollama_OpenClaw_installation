@@ -1,5 +1,16 @@
 # Profile Tool Mapping
 
+## Getrennte Coding-Agenten
+
+`Claude_Code_Agent` -> `claude_code`.
+`Gemini_Code_Agent` -> `gemini_cli`.
+`Jarvis_Core` -> keine eigene Coding-CLI; Offline-Routingplan.
+`Ollama_Coder` -> `ollama`, `aider`.
+`OpenClaw_Runtime` -> `openclaw`.
+`Kubernetes_Agent_Scaling` -> `k3s`.
+`MCP_Tool_Layer` -> `mcp_filesystem`, `mcp_git`.
+[GitHub-Quellpfade und Runtime-Grenzen](agents/coding-agent-profiles.md).
+
 `Agentic_Coding_Local_First` -> optional `qwen_desktop` (Windows-GUI),
 `qwen_code` (CLI), `cline`; jeweils eigene Freigabe, keine Sammelinstallation.
 [Qwen-Windows-Anleitung](tools/qwen-desktop-windows.md).

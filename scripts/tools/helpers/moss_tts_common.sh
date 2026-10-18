@@ -125,6 +125,8 @@ mt_install_package() {
 
 mt_deactivate() {
     rm -f -- "$MT_MARKER"
+    source "$MT_ROOT/scripts/helpers/native_tool_status.sh"
+    native_tool_sync_status MOSS_TTS "${OPENCLAW_USER_DATA_DIR:-$HOME/.openclaw_ultimate_user_data}" || return 1
     echo 'MOSS-TTS-Setup-Marker deaktiviert; Quelle, venv, eigene Daten, Cache, Token und Logs bleiben erhalten.'
 }
 
@@ -160,7 +162,7 @@ moss_tts_main() (
         mt_preflight || return 1
         if [[ "$mode" == install ]] && mt_probe >/dev/null 2>&1; then echo 'MOSS-TTS-Basispaket bereits konsistent; keine Installation.'; return 0; fi
         mt_resources || return 1
-    elif [[ ! -d "$MT_BASE" ]]; then echo 'Nicht eingerichtet; nichts deaktiviert.'; return 0; fi
+    elif [[ ! -d "$MT_BASE" ]]; then mt_deactivate; return $?; fi
     mkdir -p "$MT_BASE" "$MT_LOGS"
     exec 9>"$MT_BASE/operation.lock"
     flock -n 9 || { echo 'Andere MOSS-TTS-Operation aktiv.' >&2; return 1; }
@@ -173,5 +175,7 @@ moss_tts_main() (
     mt_fetch
     df -Pk "$MT_BASE"
     mt_install_package
+    source "$MT_ROOT/scripts/helpers/native_tool_status.sh"
+    native_tool_sync_status MOSS_TTS "${OPENCLAW_USER_DATA_DIR:-$HOME/.openclaw_ultimate_user_data}"
     df -Pk "$MT_BASE"
 )

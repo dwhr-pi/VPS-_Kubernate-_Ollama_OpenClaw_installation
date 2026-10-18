@@ -3,6 +3,104 @@
   "description": "Zentrale Profil-Registry. Dateiname .yml, Inhalt absichtlich als JSON-kompatibles YAML fuer einfache Bash/Python-Auswertung.",
   "profiles": [
     {
+      "id": "Claude_Code_Agent",
+      "category": "Development / Separated Agents",
+      "status": "planned",
+      "auto_install": false,
+      "resource_class": "medium",
+      "doc": "docs/Profile/Claude_Code_Agent.md",
+      "install": "scripts/profiles/Claude_Code_Agent_install.sh",
+      "uninstall": "scripts/profiles/Claude_Code_Agent_uninstall.sh",
+      "tools": [
+        "claude_code"
+      ],
+      "security_note": "Nur Profilvorlagen, keine automatische Tool-/Cloud-/Runtime-Installation. Deklarative Policy ist keine Sandbox."
+    },
+    {
+      "id": "Gemini_Code_Agent",
+      "category": "Development / Separated Agents",
+      "status": "planned",
+      "auto_install": false,
+      "resource_class": "medium",
+      "doc": "docs/Profile/Gemini_Code_Agent.md",
+      "install": "scripts/profiles/Gemini_Code_Agent_install.sh",
+      "uninstall": "scripts/profiles/Gemini_Code_Agent_uninstall.sh",
+      "tools": [
+        "gemini_cli"
+      ],
+      "security_note": "Nur Profilvorlagen, keine automatische Tool-/Cloud-/Runtime-Installation. Deklarative Policy ist keine Sandbox."
+    },
+    {
+      "id": "Jarvis_Core",
+      "category": "Development / Separated Agents",
+      "status": "planned",
+      "auto_install": false,
+      "resource_class": "light",
+      "doc": "docs/Profile/Jarvis_Core.md",
+      "install": "scripts/profiles/Jarvis_Core_install.sh",
+      "uninstall": "scripts/profiles/Jarvis_Core_uninstall.sh",
+      "tools": [],
+      "security_note": "Nur Profilvorlagen, keine automatische Tool-/Cloud-/Runtime-Installation. Deklarative Policy ist keine Sandbox."
+    },
+    {
+      "id": "Ollama_Coder",
+      "category": "Development / Separated Agents",
+      "status": "planned",
+      "auto_install": false,
+      "resource_class": "heavy",
+      "doc": "docs/Profile/Ollama_Coder.md",
+      "install": "scripts/profiles/Ollama_Coder_install.sh",
+      "uninstall": "scripts/profiles/Ollama_Coder_uninstall.sh",
+      "tools": [
+        "ollama",
+        "aider"
+      ],
+      "security_note": "Nur Profilvorlagen, keine automatische Tool-/Cloud-/Runtime-Installation. Deklarative Policy ist keine Sandbox."
+    },
+    {
+      "id": "OpenClaw_Runtime",
+      "category": "Development / Separated Agents",
+      "status": "planned",
+      "auto_install": false,
+      "resource_class": "medium",
+      "doc": "docs/Profile/OpenClaw_Runtime.md",
+      "install": "scripts/profiles/OpenClaw_Runtime_install.sh",
+      "uninstall": "scripts/profiles/OpenClaw_Runtime_uninstall.sh",
+      "tools": [
+        "openclaw"
+      ],
+      "security_note": "Nur Profilvorlagen, keine automatische Tool-/Cloud-/Runtime-Installation. Deklarative Policy ist keine Sandbox."
+    },
+    {
+      "id": "Kubernetes_Agent_Scaling",
+      "category": "Development / Separated Agents",
+      "status": "planned",
+      "auto_install": false,
+      "resource_class": "heavy",
+      "doc": "docs/Profile/Kubernetes_Agent_Scaling.md",
+      "install": "scripts/profiles/Kubernetes_Agent_Scaling_install.sh",
+      "uninstall": "scripts/profiles/Kubernetes_Agent_Scaling_uninstall.sh",
+      "tools": [
+        "k3s"
+      ],
+      "security_note": "Nur Profilvorlagen, keine automatische Tool-/Cloud-/Runtime-Installation. Deklarative Policy ist keine Sandbox."
+    },
+    {
+      "id": "MCP_Tool_Layer",
+      "category": "Development / Separated Agents",
+      "status": "planned",
+      "auto_install": false,
+      "resource_class": "light",
+      "doc": "docs/Profile/MCP_Tool_Layer.md",
+      "install": "scripts/profiles/MCP_Tool_Layer_install.sh",
+      "uninstall": "scripts/profiles/MCP_Tool_Layer_uninstall.sh",
+      "tools": [
+        "mcp_filesystem",
+        "mcp_git"
+      ],
+      "security_note": "Nur Profilvorlagen, keine automatische Tool-/Cloud-/Runtime-Installation. Deklarative Policy ist keine Sandbox."
+    },
+    {
       "id": "Audio_Postproduction_Local_First",
       "category": "Media / Audio",
       "status": "planned",

@@ -12,5 +12,7 @@ python3 tools/embedded_debug_hil/hil.py report tools/embedded_debug_hil/snapshot
 ```
 
 Die JSON-Datei enthaelt ausschliesslich synthetische Demonstrationswerte.
-Vollstaendige [Anleitung](../../docs/tools/embedded-debug-hil.md) und
-[Agentenregeln](../../docs/agents/EmbeddedDebugAgent.md).
+Vollstaendige [Anleitung und Sicherheitsgrenzen](../../docs/tools/embedded-debug-hil.md).
+Der Setup-Installer kann separat eine private pygdbmi-Basis aus gepinnten
+GitHub-Quellen einrichten, ohne Docker. Die Befehle dieses Offline-Prototyps
+installieren keinen Hardware-Stack; `report` bleibt ohne pygdbmi nutzbar.

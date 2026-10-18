@@ -1,5 +1,13 @@
 # Windmill nativ aus GitHub installieren
 
+## Menue-Status
+
+Ein vorhandener `source-ready`-Marker registriert die vorbereitete
+Quellinstallation im Tools-Menue, auch nach einer direkten Skriptinstallation.
+Damit kann sie dort wieder abgewaehlt/deaktiviert werden. Dies bestaetigt keinen
+laufenden Server/Worker. Deaktivierung entfernt Marker und beide Statuszeilen;
+erhaltene Quellen/Binaries allein registrieren das Tool nicht erneut.
+
 Stand 16.10.2026. [Upstream](https://github.com/windmill-labs/windmill),
 [Release v1.837.0](https://github.com/windmill-labs/windmill/releases/tag/v1.837.0),
 Quell-Pin `1fe3858a6d51949327046117d9ce4c10467a3000`.

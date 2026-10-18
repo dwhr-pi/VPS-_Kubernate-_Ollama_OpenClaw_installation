@@ -4,6 +4,11 @@ Dieses Dokument beschreibt die Agentenrollen fuer das Profil `Ultimate_JARVIS`.
 
 ## Rollen
 
+Coding-Erweiterungen werden **nicht in Jarvis eingebaut**, sondern als
+[getrennte Profile](coding-agent-profiles.md) vorbereitet: Claude-Code-Agent,
+Gemini-Code-Agent und Ollama-Coder. Jarvis-Core waehlt nur die Rolle;
+OpenClaw, MCP und Kubernetes bleiben getrennte Infrastruktur-Layer.
+
 - JARVIS Core: plant, delegiert und fragt bei riskanten Aktionen nach.
 - Research Agent: recherchiert und dokumentiert Quellen.
 - Coding Agent: erstellt Code, Tests und Refactorings.

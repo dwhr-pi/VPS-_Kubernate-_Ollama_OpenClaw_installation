@@ -1,5 +1,17 @@
 # Tool Matrix
 
+Embedded_Debug_HIL: [private pygdbmi-Basis aus GitHub](tools/embedded-debug-hil.md),
+experimental/light, ohne Docker. Hardware-/MCP-Adapter weiterhin planned;
+keine Debuggerinstallation, USB-Verbindung oder Boardaktion.
+
+MOSS_TTS: [gepinntes GitHub-Basispaket](tools/moss-tts.md), ohne Docker.
+Experimental/gpu-heavy: Checkout und private Basis-venv, keine fertige
+TTS-Laufzeit, Modelle oder Inferenz. Eigenstaendige Lifecycle-Skripte im Menue.
+
+Claude_Code/Gemini_CLI: [getrennte Coding-Agenten-Profile und GitHub-Quellvorbereitung](agents/coding-agent-profiles.md).
+Ohne Docker, keine CLI gebaut/gestartet. Claude-Code-Repository ist
+proprietaeres Referenzmaterial, Gemini CLI ist Open Source. Quellstatus ist kein Runtime-Status.
+
 YuE: [GitHub-Quellinstaller fuer YuE-v1](tools/yue.md), ohne Docker.
 Experimental/gpu-heavy, keine Python-/GPU-Runtime oder Modellinstallation.
 YuE2 auf main wird nicht ungefragt unter demselben Menuepunkt installiert.

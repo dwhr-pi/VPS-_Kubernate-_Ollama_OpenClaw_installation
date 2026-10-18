@@ -1,5 +1,13 @@
 # Wan2.1 aus GitHub, ohne Docker
 
+## Menue-Status
+
+Das Tools-Menue gleicht die Registrierung mit `source-ready` ab, ohne Git,
+GPU oder Netzwerk abzufragen. Registrierung bedeutet vorbereitete Quellen,
+nicht fertige Inferenz. Deaktivierung entfernt den Eintrag aus beiden
+Statusdateien; erhaltene Quellen allein markieren Wan21 nicht als installiert.
+Eine leere Hauptstatusdatei wird nicht erneut aus der alten Kopie importiert.
+
 ## Zuerst: Was wird installiert?
 
 `Wan21` verwendet jetzt einen eigenen **experimentellen GitHub-Installer**, nicht

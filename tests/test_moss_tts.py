@@ -44,6 +44,11 @@ class Contract(unittest.TestCase):
     def test_menu_doc_links(self):
         menu = (ROOT / "setup_ultimate.sh").read_text(encoding="utf-8")
         self.assertIn('TOOL_SCRIPT_NAMES["MOSS_TTS"]="moss_tts"', menu)
+        self.assertNotIn('TOOL_SCRIPT_NAMES["MOSS_TTS"]="media_candidate"', menu)
+        tool, = [t for t in json.loads((ROOT / 'config/tools.yml').read_text(encoding='utf-8'))['tools'] if t['id'] == 'moss_tts']
+        for action in ('install', 'uninstall', 'update', 'doctor'):
+            self.assertEqual(tool[action + '_script'], 'scripts/tools/moss_tts_' + action + '.sh')
+        self.assertTrue(tool['check_value'].endswith('/source-built'))
         doc = ROOT / "docs/tools/moss-tts.md"
         for link in re.findall(r"\]\(([^)]+)\)", doc.read_text(encoding="utf-8")):
             if "://" not in link and not link.startswith("#"):
@@ -190,8 +195,14 @@ test "$rc" = 42 && test ! -e "$MT_MARKER"
         r = self.shell("""
 mkdir -p "$MT_SOURCE" "$MT_VENV"
 touch "$MT_MARKER" "$MT_SOURCE/own-file" "$MT_VENV/own-file"
+mkdir -p "$OPENCLAW_USER_DATA_DIR/status"
+printf 'MOSS_TTS\\nOther\\n' > "$OPENCLAW_USER_DATA_DIR/installed_tools.txt"
+printf 'MOSS_TTS\\nOther\\n' > "$OPENCLAW_USER_DATA_DIR/status/installed_tools.txt"
 mt_deactivate
 test ! -e "$MT_MARKER" && test -f "$MT_SOURCE/own-file" && test -f "$MT_VENV/own-file"
+! grep -Fxq MOSS_TTS "$OPENCLAW_USER_DATA_DIR/installed_tools.txt"
+! grep -Fxq MOSS_TTS "$OPENCLAW_USER_DATA_DIR/status/installed_tools.txt"
+grep -Fxq Other "$OPENCLAW_USER_DATA_DIR/installed_tools.txt"
 """)
         self.assertEqual(r.returncode, 0, r.stderr)
 

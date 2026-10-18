@@ -24,9 +24,11 @@ TOOL_KEYS+=("Pyannote_Audio" "DeepFilterNet" "AudioSeal")
 TOOL_KEYS+=("HF_Datasets" "HF_Hub" "Video2Dataset")
 TOOL_KEYS+=("CogVideoX" "LTX_Video" "TGI" "Pinokio" "SD_Next" "Windmill" "Fal_Client" "Veo_API")
 PROFILE_KEYS+=("Audio_Postproduction_Local_First")
+PROFILE_KEYS+=("Claude_Code_Agent" "Gemini_Code_Agent" "Jarvis_Core" "Ollama_Coder" "OpenClaw_Runtime" "Kubernetes_Agent_Scaling" "MCP_Tool_Layer")
 TOOL_KEYS+=("Alexandria_Audiobook" "Qwen3_TTS" "ChatTTS" "AudioLDM2" "AudioGen" "Stable_Audio_Open" "Moshi" "MOSS_TTS" "YuE" "ACE_Step_15" "WhisperX" "Aegisub" "Basic_Pitch" "Sfizz" "AIDA_X" "ProPainter" "Kiwi_Edit" "VOID_Model" "Just_Dub_It" "ViDubb")
 TOOL_KEYS+=("Personnel_Documents_AI")
 TOOL_KEYS+=("Embedded_Debug_HIL")
+TOOL_KEYS+=("Claude_Code" "Gemini_CLI")
 
 append_unique_line() {
     local file_path="$1"

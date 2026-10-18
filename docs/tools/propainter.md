@@ -13,8 +13,24 @@ Kommerzielle Nutzung muss mit den Rechteinhabern gesondert geklaert werden.
 GitHub-Verfuegbarkeit bedeutet keine pauschale Open-Source-/kommerzielle
 Freigabe. Auch Gewichte und Drittbestandteile separat pruefen.
 
+Install/Update/Repair zeigen vor dem GitHub-Download den vollstaendigen
+englischen Lizenztext aus [der lokalen Kopie](../../licenses/propainter/S-Lab-1.0.txt)
+des oben genannten Pins an. Danach fragt das Setup:
+`Lizenz akzeptieren und fortfahren? [(j)a/(N)ein = ablehnen]:`.
+Nur `j`/`ja` (oder `akzeptieren`) erlaubt diesen Aufruf. Enter, Nein,
+unbekannte Antworten oder EOF brechen vor dem Download ab. Die Entscheidung
+wird nicht dauerhaft gespeichert und erteilt keine kommerzielle Erlaubnis.
+
+Ohne interaktives Terminal wird nicht gewartet und nicht automatisch
+zugestimmt. `PROPAINTER_ACCEPT_LICENSE=1` bleibt eine ausdrueckliche
+nichtinteraktive Freigabe; auch dann wird der Text zuerst angezeigt.
+Mit `0` wird abgelehnt. Status, Doctor, Dry-Run und Deaktivierung verlangen
+keine Annahme. Fehlt die lokale Lizenzkopie, wird sicher abgebrochen.
+
 ```bash
 bash scripts/tools/propainter_install.sh --dry-run
+# Interaktiv: vollstaendigen Text lesen und akzeptieren oder ablehnen:
+bash scripts/tools/propainter_install.sh
 # Erst nach eigener Pruefung der Lizenzbedingungen:
 PROPAINTER_ACCEPT_LICENSE=1 bash scripts/tools/propainter_install.sh
 bash scripts/tools/propainter_status.sh

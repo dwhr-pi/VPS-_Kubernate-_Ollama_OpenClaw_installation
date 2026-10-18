@@ -1,0 +1,189 @@
+{
+  "version": 1,
+  "description": "Getrennte Rollen. Deklarative Policy, kein Sicherheits-Sandbox- oder Runtime-Adapter.",
+  "providers": {
+    "claude_code": {
+      "github": "https://github.com/anthropics/claude-code.git",
+      "commit": "dd6bee38458cc3e6dc5f2b16eca1f0f364619ad8",
+      "scope": "github-reference-material-not-cli",
+      "license": "Proprietaer; Anthropic Commercial Terms"
+    },
+    "gemini_cli": {
+      "github": "https://github.com/google-gemini/gemini-cli.git",
+      "commit": "ed96faedfd5571f055c44f2c9509d62321d1138d",
+      "scope": "github-source-not-built",
+      "license": "Apache-2.0; Abhaengigkeiten separat"
+    }
+  },
+  "profiles": [
+    {
+      "id": "Claude_Code_Agent",
+      "name": "Claude-Code-Agent",
+      "purpose": "Planung, Refactoring, Architektur und Dokumentation",
+      "cloud": true,
+      "status": "planned",
+      "resource_class": "medium",
+      "tools": [
+        "claude_code"
+      ],
+      "policy": {
+        "read_only": true,
+        "max_parallel_jobs": 1,
+        "max_fix_rounds": 3,
+        "timeout_seconds": 900,
+        "execute": false,
+        "cloud_default": false,
+        "write_requires_approval": true,
+        "network_requires_approval": true,
+        "deploy_requires_approval": true
+      }
+    },
+    {
+      "id": "Gemini_Code_Agent",
+      "name": "Gemini-Code-Agent",
+      "purpose": "Recherche, Multimodalitaet und Google-Oekosystem",
+      "cloud": true,
+      "status": "planned",
+      "resource_class": "medium",
+      "tools": [
+        "gemini_cli"
+      ],
+      "policy": {
+        "read_only": true,
+        "max_parallel_jobs": 1,
+        "max_fix_rounds": 3,
+        "timeout_seconds": 900,
+        "execute": false,
+        "cloud_default": false,
+        "write_requires_approval": true,
+        "network_requires_approval": true,
+        "deploy_requires_approval": true
+      }
+    },
+    {
+      "id": "Jarvis_Core",
+      "name": "Jarvis-Core",
+      "purpose": "Orchestrierung, Rollenwahl und Routing, keine eingebetteten Coding-Clients",
+      "cloud": false,
+      "status": "planned",
+      "resource_class": "light",
+      "tools": [],
+      "policy": {
+        "read_only": true,
+        "max_parallel_jobs": 1,
+        "max_fix_rounds": 3,
+        "timeout_seconds": 900,
+        "execute": false,
+        "cloud_default": false,
+        "write_requires_approval": true,
+        "network_requires_approval": true,
+        "deploy_requires_approval": true
+      }
+    },
+    {
+      "id": "Ollama_Coder",
+      "name": "Ollama-Coder",
+      "purpose": "Lokales Coding mit vorhandenem Ollama und separat gewaehltem Modell",
+      "cloud": false,
+      "status": "planned",
+      "resource_class": "heavy",
+      "tools": [
+        "ollama",
+        "aider"
+      ],
+      "policy": {
+        "read_only": true,
+        "max_parallel_jobs": 1,
+        "max_fix_rounds": 3,
+        "timeout_seconds": 900,
+        "execute": false,
+        "cloud_default": false,
+        "write_requires_approval": true,
+        "network_requires_approval": true,
+        "deploy_requires_approval": true
+      }
+    },
+    {
+      "id": "OpenClaw_Runtime",
+      "name": "OpenClaw",
+      "purpose": "Separat freizugebende Agent Runtime, keine automatische Ausfuehrung",
+      "cloud": false,
+      "status": "planned",
+      "resource_class": "medium",
+      "tools": [
+        "openclaw"
+      ],
+      "policy": {
+        "read_only": true,
+        "max_parallel_jobs": 1,
+        "max_fix_rounds": 3,
+        "timeout_seconds": 900,
+        "execute": false,
+        "cloud_default": false,
+        "write_requires_approval": true,
+        "network_requires_approval": true,
+        "deploy_requires_approval": true
+      }
+    },
+    {
+      "id": "Kubernetes_Agent_Scaling",
+      "name": "Kubernetes",
+      "purpose": "Optionale Skalierung isolierter Worker, nicht fuer das Minimalsetup erforderlich",
+      "cloud": false,
+      "status": "planned",
+      "resource_class": "heavy",
+      "tools": [
+        "k3s"
+      ],
+      "policy": {
+        "read_only": true,
+        "max_parallel_jobs": 1,
+        "max_fix_rounds": 3,
+        "timeout_seconds": 900,
+        "execute": false,
+        "cloud_default": false,
+        "write_requires_approval": true,
+        "network_requires_approval": true,
+        "deploy_requires_approval": true
+      }
+    },
+    {
+      "id": "MCP_Tool_Layer",
+      "name": "MCP",
+      "purpose": "Separater Tool-Layer mit expliziter Allowlist und minimalen Rechten",
+      "cloud": false,
+      "status": "planned",
+      "resource_class": "light",
+      "tools": [
+        "mcp_filesystem",
+        "mcp_git"
+      ],
+      "policy": {
+        "read_only": true,
+        "max_parallel_jobs": 1,
+        "max_fix_rounds": 3,
+        "timeout_seconds": 900,
+        "execute": false,
+        "cloud_default": false,
+        "write_requires_approval": true,
+        "network_requires_approval": true,
+        "deploy_requires_approval": true
+      }
+    }
+  ],
+  "routes": {
+    "planning": "Claude_Code_Agent",
+    "refactoring": "Claude_Code_Agent",
+    "architecture": "Claude_Code_Agent",
+    "documentation": "Claude_Code_Agent",
+    "research": "Gemini_Code_Agent",
+    "multimodal": "Gemini_Code_Agent",
+    "google": "Gemini_Code_Agent",
+    "coding": "Ollama_Coder",
+    "local": "Ollama_Coder",
+    "orchestrate": "Jarvis_Core",
+    "runtime": "OpenClaw_Runtime",
+    "scale": "Kubernetes_Agent_Scaling",
+    "tools": "MCP_Tool_Layer"
+  }
+}

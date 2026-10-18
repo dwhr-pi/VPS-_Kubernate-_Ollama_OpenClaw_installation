@@ -2,6 +2,46 @@
 
 ## Unreleased
 
+- Medien-Toolstatus: gemeinsame Marker-Erkennung fuer Basis-/Quellinstaller
+  statt fehlender installed_tools-Eintraege. Gesamt-/Gruppenauswahl und
+  Gruppenaktionen synchronisieren beide Listen; Batch statt Einzel-Rewrites,
+  Registry-Checks auf Erfolgsmarker vereinheitlicht. Kein Loeschen von Nutzdaten.
+
+- Embedded_Debug_HIL: expliziter GitHub-Basisinstaller fuer pygdbmi 0.11.0.0
+  in privater venv ohne Docker statt documentation-first-Sperre. Quellpin,
+  Preflight, Lock, Logs, Metadaten-Doctor und Statusabgleich; kein Live-Hardwarezugriff.
+
+- Just_Dub_It: vollstaendige gepinnte LTX-2-Lizenz inklusive Attachment A
+  lokal anzeigen und vor Download akzeptieren/ablehnen lassen. Standard/EOF
+  ist Ablehnung, keine Annahmespeicherung. GitHub-Basispakete ohne Docker.
+
+- ProPainter: vollstaendige gepinnte S-Lab-Lizenz vor Download anzeigen und
+  interaktiv akzeptieren/ablehnen lassen; Standard/EOF ist Ablehnung.
+  Explizite nichtinteraktive Freigabe bleibt moeglich; keine Annahmespeicherung.
+
+- MOSS_TTS: vorhandenen gepinnten GitHub-Basisinstaller statt Medien-Guard
+  in Registry und Menue verdrahtet, ohne Docker. Eigene Doku, transparenter
+  Basis-/Laufzeitstatus und markerbasierter Menue-Abgleich ergaenzt.
+
+- Stable Audio Open: kompatibles Python 3.10 automatisch erkennen; falls es
+  fehlt, bestaetigten privaten CPython-3.10.22-GitHub-Build anbieten. Gepinnter
+  Commit, Ressourcenpruefung, ein Buildjob; kein System-Python-Austausch.
+
+- Wan21/Windmill: markerbasierter schneller Menue-Abgleich und Austragung aus
+  beiden Statusdateien; leere Hauptliste nicht aus alter Kopie wiederbeleben.
+  DeepFilterNet erkennt Benutzer-Cargo und bietet fehlende Build-Werkzeuge
+  nach Ressourcenpruefung mit expliziter Zustimmung an; GitHub statt Docker.
+
+- Speicherplatz-Rollback im zentralen Tool-Menue: nur explizit freigegebene,
+  neu angelegte private Tool-Verzeichnisse bei belegtem Platzfehler entfernen.
+  Bestehende Installationen, Erfolg, Vorab-Ablehnung und gemeinsame Plugin-Daten
+  bleiben geschuetzt. Journal, Sperre, Opt-out und synthetische Tests ergaenzt.
+
+- Sieben getrennte Coding-/Infrastruktur-Profile statt Einbau in Jarvis:
+  Vorlageninstallation, Offline-Routingplan mit lokalem Default, explizite
+  Cloud-Freigabe und gepinnte GitHub-Quellvorbereitung ohne Docker.
+  Claude-Code-Referenzmaterial ist keine baubare Open-Source-CLI.
+
 - YuE: eigener gepinnter GitHub-Quellinstaller fuer YuE-v1 ohne Docker.
   Keine stille Migration zu YuE2/main, Python-/GPU-Pakete oder Modelle.
   Ressourcen-/Pfadschutz, Lifecycle, Dokumentation und Offline-Tests ergaenzt.

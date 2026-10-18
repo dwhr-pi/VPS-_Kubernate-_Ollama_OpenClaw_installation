@@ -25,8 +25,14 @@ Unsere konservativen **Build-Reserven**, keine gemessenen Upstream-Minima:
 | Kubernetes | kein Deployment/Daemon; CLI spaeter nur in einem begrenzten privaten Worker betreiben |
 
 Linux als normaler Benutzer, Git, flock, SHA-256, timeout, C-Linker und
-**Rust/Cargo** erforderlich. Diese Basiswerkzeuge kommen nicht automatisch mit.
-Unter Ubuntu/Debian bei Bedarf bewusst selbst einrichten:
+**Rust/Cargo** erforderlich. Vorhandenes Rust unter `~/.cargo/bin` wird auch
+ohne Shell-Neustart erkannt. Fehlen Build-Werkzeuge, bietet der Installer unter
+Ubuntu/Debian deren Einrichtung nach Ressourcenpruefung mit `[(j)a/(N)ein]` an.
+Ohne Bestaetigung wird nichts installiert. Fuer bewusst freigegebene,
+nichtinteraktive Aufrufe: `DEEPFILTERNET_INSTALL_BUILD_DEPS=1`; mit `0` sperren.
+Nur Basis-/Build-Werkzeuge kommen dabei via apt (mit Sperrwartezeit),
+DeepFilterNet selbst weiterhin aus GitHub, ohne Docker. Dry-Run/Status/Doctor/
+Deaktivierung installieren keine Abhaengigkeiten. Alternativ manuell:
 
 ```bash
 sudo apt-get update

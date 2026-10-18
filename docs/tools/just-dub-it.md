@@ -13,8 +13,25 @@ das ist keine Versionsnummer des Dubbing-Modells.
 
 ## Bewusste Basisinstallation
 
+Install/Update/Repair zeigen vor jedem Download den vollstaendigen englischen
+Lizenztext des gepinnten Stands einschliesslich **Attachment A** an:
+[lokale Lizenzkopie](../../licenses/just-dub-it/LTX-2-Community.txt).
+Danach erscheint `Lizenz akzeptieren und fortfahren? [(j)a/(N)ein = ablehnen]:`.
+`j`/`ja` oder `akzeptieren` bestaetigen nur diesen Aufruf. Enter, unbekannte
+Antworten, Nein oder EOF brechen vor Download/Installation ab. Die Zustimmung
+wird nicht dauerhaft gespeichert und ersetzt keine eigene Lizenzpruefung.
+Der lange Text bleibt im Terminal zum Zurueckscrollen und im Menue-Log lesbar.
+
+Ohne interaktives Terminal erfolgt keine automatische Zustimmung.
+`JUST_DUB_IT_ACCEPT_LICENSE=1` bleibt eine bewusst gesetzte nichtinteraktive
+Freigabe; der Text wird auch dann angezeigt. Mit `0` ablehnen. Fehlt die
+Lizenzkopie, wird auch mit `1` abgebrochen. Status/Doctor/Dry-Run/Deaktivierung
+verlangen keine Annahme. Keine automatische Annahme anderer Modelllizenzen.
+
 ```bash
 bash scripts/tools/just_dub_it_install.sh --dry-run
+# Interaktiv: vollstaendige Lizenz lesen, dann akzeptieren oder ablehnen:
+bash scripts/tools/just_dub_it_install.sh
 # Erst Lizenz/Archivstatus pruefen und Bedingungen selbst akzeptieren:
 JUST_DUB_IT_ACCEPT_LICENSE=1 bash scripts/tools/just_dub_it_install.sh
 bash scripts/tools/just_dub_it_status.sh

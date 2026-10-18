@@ -160,7 +160,11 @@ wan21_main() (
         else
             REQUIRE_WINDOWS_HOST_FREE_MB=1024 require_disk_mb 512 "$mount"
         fi
-    elif [[ ! -d "$WAN21_BASE" ]]; then echo 'Wan21 nicht eingerichtet; nichts deaktiviert.'; return 0; fi
+    elif [[ ! -d "$WAN21_BASE" ]]; then
+        source "$WAN21_ROOT/scripts/helpers/native_tool_status.sh"
+        native_tool_sync_status Wan21 "${OPENCLAW_USER_DATA_DIR:-$HOME/.openclaw_ultimate_user_data}"
+        echo 'Wan21 nicht eingerichtet; Status bereinigt.'; return 0
+    fi
     mkdir -p "$WAN21_BASE" "$WAN21_LOGS"
     exec 9>"$WAN21_BASE/operation.lock"
     flock -n 9 || { echo 'Wan21: andere Operation aktiv.' >&2; return 1; }
@@ -170,6 +174,8 @@ wan21_main() (
     trap 'rc=$?; if ((rc != 0)); then echo "Wan21-Fehler ($rc). Dateien erhalten. Log: $log; nach Behebung --repair verwenden."; fi' EXIT
     if [[ "$mode" == uninstall || "$mode" == --uninstall ]]; then
         rm -f -- "$WAN21_MARKER" "$WAN21_RUNTIME_MARKER"
+        source "$WAN21_ROOT/scripts/helpers/native_tool_status.sh"
+        native_tool_sync_status Wan21 "${OPENCLAW_USER_DATA_DIR:-$HOME/.openclaw_ultimate_user_data}" || return 1
         echo 'Setup-Markierungen deaktiviert; Quelle, venv, Modelle, Exporte und Logs bleiben erhalten.'; return 0
     fi
     wan21_fetch_source

@@ -3,6 +3,36 @@ set -euo pipefail
 PP_ROOT="$(cd "${BASH_SOURCE[0]%/*}/../../.." && pwd)"
 PP_URL=https://github.com/sczhou/ProPainter.git
 PP_COMMIT=e870e79321c31b733e2031af5aa2fb1fe3ac7eec
+PP_LICENSE_FILE="$PP_ROOT/licenses/propainter/S-Lab-1.0.txt"
+
+pp_read_license_choice() {
+    [[ -t 0 ]] || return 1
+    read -r -p 'Lizenz akzeptieren und fortfahren? [(j)a/(N)ein = ablehnen]: ' PP_LICENSE_ANSWER
+}
+
+pp_confirm_license() {
+    local PP_LICENSE_ANSWER=""
+    [[ -f "$PP_LICENSE_FILE" && ! -L "$PP_LICENSE_FILE" && -s "$PP_LICENSE_FILE" ]] || {
+        echo 'ProPainter-Lizenztext fehlt oder ist unsicher; Installation abgebrochen.' >&2; return 2;
+    }
+    printf '\n--- ProPainter: vollstaendiger Lizenztext ---\n'
+    printf 'Quelle: https://github.com/sczhou/ProPainter/blob/%s/LICENSE\n\n' "$PP_COMMIT"
+    cat -- "$PP_LICENSE_FILE" || return 2
+    printf '\n--- Ende Lizenztext ---\n'
+    case "${PROPAINTER_ACCEPT_LICENSE:-ask}" in
+        1) echo 'Lizenzannahme explizit durch PROPAINTER_ACCEPT_LICENSE=1 bestaetigt.'; return 0 ;;
+        0) echo 'Lizenz abgelehnt (PROPAINTER_ACCEPT_LICENSE=0); nichts heruntergeladen.' >&2; return 2 ;;
+        ask) ;;
+        *) echo 'PROPAINTER_ACCEPT_LICENSE: nur 0 oder 1 setzen, andernfalls fuer Rueckfrage weglassen.' >&2; return 2 ;;
+    esac
+    if pp_read_license_choice; then
+        case "$PP_LICENSE_ANSWER" in
+            j|J|ja|Ja|JA|akzeptieren) echo 'Lizenz fuer diesen Aufruf akzeptiert.'; return 0 ;;
+        esac
+    fi
+    echo 'Lizenz nicht akzeptiert; Installation abgebrochen, kein Download. Nichtinteraktiv nur nach eigener Pruefung PROPAINTER_ACCEPT_LICENSE=1 setzen.' >&2
+    return 2
+}
 
 pp_paths() {
     local root="${OPENCLAW_USER_DATA_DIR:-$HOME/.openclaw_ultimate_user_data}" path index=0
@@ -142,8 +172,8 @@ propainter_main() (
     if [[ "$mode" != uninstall && "$mode" != --uninstall && "${PROPAINTER_INSTALL_RUNTIME:-0}" != 0 ]]; then
         echo 'ProPainter-Laufzeit nicht freigegeben: Ungepinnte Torch-/Video-Abhaengigkeiten und automatische Gewichtsdownloads bei Inferenz separat pruefen. Siehe docs/tools/propainter.md.' >&2; return 2
     fi
-    if [[ "$mode" != uninstall && "$mode" != --uninstall && "${PROPAINTER_ACCEPT_LICENSE:-0}" != 1 ]]; then
-        echo 'ProPainter: S-Lab License 1.0, standardmaessig nur nichtkommerziell. Erst docs/tools/propainter.md und Lizenz pruefen; danach PROPAINTER_ACCEPT_LICENSE=1 setzen.' >&2; return 2;
+    if [[ "$mode" != uninstall && "$mode" != --uninstall ]]; then
+        pp_confirm_license || return $?
     fi
     [[ "$(uname -s)" == Linux && "$EUID" != 0 ]] || { echo 'Als normaler Linux-Benutzer ohne sudo aufrufen.' >&2; return 1; }
     for program in git python3 flock; do command -v "$program" >/dev/null || { echo "ProPainter: $program fehlt; Basis separat einrichten." >&2; return 1; }; done

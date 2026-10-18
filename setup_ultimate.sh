@@ -19,7 +19,7 @@ APP_TITLE="OpenClaw & AI Infrastructure - Ultimate Setup V${APP_VERSION}"
 
 # Installationsverzeichnis
 INSTALL_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-USER_WORKSPACE_DIR="${HOME}/.openclaw_ultimate_user_data"
+USER_WORKSPACE_DIR="${OPENCLAW_USER_DATA_DIR:-${HOME}/.openclaw_ultimate_user_data}"
 USER_STATUS_DIR="$USER_WORKSPACE_DIR/status"
 USER_OPENCLAW_TEMPLATE_DIR="$USER_WORKSPACE_DIR/openclaw"
 USER_PROFILE_SOURCE_DIR="$USER_WORKSPACE_DIR/profil_quellen"
@@ -48,6 +48,7 @@ fi
 
 source "$INSTALL_DIR/scripts/lang/common.sh"
 load_setup_language
+source "$INSTALL_DIR/scripts/helpers/native_tool_status.sh"
 
 ensure_user_workspace() {
     ensure_setup_preferences
@@ -61,13 +62,13 @@ ensure_user_workspace() {
     mkdir -p "$USER_METRICS_LOG_DIR"
     mkdir -p "$USER_INSTALL_LOG_DIR"
     mkdir -p "$USER_CUSTOM_SOURCE_DIR"
-    touch "$PROFILE_STATUS_FILE" "$TOOL_STATUS_FILE"
-
-    if [ ! -s "$TOOL_STATUS_FILE" ] && [ -s "$USER_STATUS_DIR/installed_tools.txt" ]; then
+    # Migrate only a missing primary file. Empty means intentionally no tools.
+    if [ ! -f "$TOOL_STATUS_FILE" ] && [ -s "$USER_STATUS_DIR/installed_tools.txt" ]; then
         cp "$USER_STATUS_DIR/installed_tools.txt" "$TOOL_STATUS_FILE"
-    elif [ ! -s "$USER_STATUS_DIR/installed_tools.txt" ] && [ -s "$TOOL_STATUS_FILE" ]; then
+    elif [ ! -f "$USER_STATUS_DIR/installed_tools.txt" ] && [ -s "$TOOL_STATUS_FILE" ]; then
         cp "$TOOL_STATUS_FILE" "$USER_STATUS_DIR/installed_tools.txt"
     fi
+    touch "$PROFILE_STATUS_FILE" "$TOOL_STATUS_FILE"
 
     if [ ! -s "$PROFILE_STATUS_FILE" ] && [ -s "$USER_STATUS_DIR/installed_profiles.txt" ]; then
         cp "$USER_STATUS_DIR/installed_profiles.txt" "$PROFILE_STATUS_FILE"
@@ -2534,6 +2535,7 @@ sync_core_tool_status() {
     ensure_user_workspace
     normalize_status_file "$TOOL_STATUS_FILE" "${TOOL_KEYS[@]}"
 
+    native_tool_sync_all "$USER_WORKSPACE_DIR" || return 1
     sync_ollama_tool_status
     if [ "$OLLAMA_STATUS_CHANGED" -eq 1 ]; then status_changed=1; fi
 
@@ -2633,6 +2635,14 @@ PROFILES["Rechtsberatung_Steuerrecht"]="Tools für Web-Search & Fetch, PDF-Reade
 PROFILES["Agent_Orchestrator"]="Koordiniert Agentenrollen mit LangGraph, CrewAI, AutoGen und Memory-Bausteinen für Routing und Ergebnis-Synchronisierung."
 PROFILES["Audio"]="Verarbeitet Sprache und Audio mit Speech-to-Text, Text-to-Speech und Cleanup-Bausteinen wie Whisper, Piper und Coqui TTS."
 PROFILE_KEYS+=("Audio_Postproduction_Local_First")
+PROFILE_KEYS+=("Claude_Code_Agent" "Gemini_Code_Agent" "Jarvis_Core" "Ollama_Coder" "OpenClaw_Runtime" "Kubernetes_Agent_Scaling" "MCP_Tool_Layer")
+PROFILES["Claude_Code_Agent"]="planned: getrennte Rollen-/Policy-Vorlage, keine Tool-/Cloud-/Agentenausfuehrung. Claude-Code-Agent"
+PROFILES["Gemini_Code_Agent"]="planned: getrennte Rollen-/Policy-Vorlage, keine Tool-/Cloud-/Agentenausfuehrung. Gemini-Code-Agent"
+PROFILES["Jarvis_Core"]="planned: getrennte Rollen-/Policy-Vorlage, keine Tool-/Cloud-/Agentenausfuehrung. Jarvis-Core"
+PROFILES["Ollama_Coder"]="planned: getrennte Rollen-/Policy-Vorlage, keine Tool-/Cloud-/Agentenausfuehrung. Ollama-Coder"
+PROFILES["OpenClaw_Runtime"]="planned: getrennte Rollen-/Policy-Vorlage, keine Tool-/Cloud-/Agentenausfuehrung. OpenClaw"
+PROFILES["Kubernetes_Agent_Scaling"]="planned: getrennte Rollen-/Policy-Vorlage, keine Tool-/Cloud-/Agentenausfuehrung. Kubernetes"
+PROFILES["MCP_Tool_Layer"]="planned: getrennte Rollen-/Policy-Vorlage, keine Tool-/Cloud-/Agentenausfuehrung. MCP"
 PROFILES["Audio_Postproduction_Local_First"]="planned: Hoerbuch, Dubbing, SFX, MIDI und Karaoke; keine automatische Toolinstallation."
 PROFILES["Content_Automation"]="Automatisiert Content-Pipelines von Skript über Voiceover und Videoschnitt bis zu Upload-Workflows."
 PROFILES["Research_Agent"]="Analysiert Repositories, Dokumentation und neue Tools, um das Setup gezielt weiterzuentwickeln."
@@ -2849,6 +2859,11 @@ TOOL_SCRIPT_NAMES["Video2Dataset"]="video_dataset_candidate"
 TOOLS["Karaoke_Formats"]="experimental/light: privater Offline-SRT/LRC-Starter aus GitHub-Setup-Checkout, ohne Docker/Paketdownload. Python 3.10+, 64 MiB freie Disk; keine ASR."
 TOOL_SCRIPT_NAMES["Karaoke_Formats"]="karaoke_formats"
 TOOL_KEYS+=("Alexandria_Audiobook" "Qwen3_TTS" "ChatTTS" "AudioLDM2" "AudioGen" "Stable_Audio_Open" "Moshi" "MOSS_TTS" "YuE" "ACE_Step_15" "WhisperX" "Aegisub" "Basic_Pitch" "Sfizz" "AIDA_X" "ProPainter" "Kiwi_Edit" "VOID_Model" "Just_Dub_It" "ViDubb")
+TOOL_KEYS+=("Claude_Code" "Gemini_CLI")
+TOOLS["Claude_Code"]="experimental: GitHub-Referenzmaterial, KEINE CLI-Installation; proprietaere Distribution separat. Ohne Docker."
+TOOLS["Gemini_CLI"]="experimental: gepinnte GitHub-Quellen, keine gebaute CLI. Ohne Docker, Cloud/Login getrennt."
+TOOL_SCRIPT_NAMES["Claude_Code"]="claude_code"
+TOOL_SCRIPT_NAMES["Gemini_CLI"]="gemini_cli"
 TOOLS["Alexandria_Audiobook"]="experimental: gepinnte GitHub-Quellen + private Python-venv ohne Docker. Qwen3-TTS/GPU-Laufzeit und Modelle separat; noch nicht betriebsbereit. docs/tools/alexandria-audiobook.md"
 TOOLS["Qwen3_TTS"]="experimental: qwen-tts 0.1.1 aus GitHub, standardmaessig ohne Runtime-Abhaengigkeiten. Runtime doppelt opt-in; keine Modelle/Demo/Training. docs/tools/qwen3-tts.md"
 TOOLS["ChatTTS"]="experimental: GitHub-Paket ohne Docker, standardmaessig ohne Runtime; doppelt opt-in fuer Abhaengigkeiten. Keine Modelle/WebUI; Modell nichtkommerziell. docs/tools/chattts.md"
@@ -2856,7 +2871,7 @@ TOOLS["AudioLDM2"]="experimental: GitHub-Paket 0.1.0 ohne Docker/Runtime-Abhaeng
 TOOLS["AudioGen"]="experimental: AudioCraft 1.3.0 aus GitHub ohne Docker; Basispaket ohne Runtime/Modelle. Gewichte nichtkommerziell. docs/tools/audiogen.md"
 TOOLS["Stable_Audio_Open"]="experimental: stable-audio-tools 0.0.20 aus GitHub ohne Docker; Python 3.10, Basispaket ohne GPU-Runtime/Modelle. docs/tools/stable-audio-open.md"
 TOOLS["Moshi"]="experimental: Moshi 0.2.13 aus GitHub-Unterordner moshi, private Basis-venv ohne Docker. Keine Runtime/Modelle, kein Server/Mikrofonzugriff. docs/tools/moshi.md"
-TOOLS["MOSS_TTS"]="planned/gpu-heavy: TTS-/Sound-Familie; Faehigkeiten pro Modellvariante pruefen. Kein automatischer Installer. docs/media_studio/AUDIO_VIDEO_TOOL_CATALOG.md"
+TOOLS["MOSS_TTS"]="experimental: gepinnter GitHub-Checkout + private Basis-venv ohne Docker. Modelle/GPU-Runtime fehlen noch; keine Inferenz. docs/tools/moss-tts.md"
 TOOLS["YuE"]="experimental/gpu-heavy: gepinnte YuE-v1-GitHub-Quellen ohne Docker. Kein YuE2-Wechsel; Python-/GPU-Runtime, xcodec und Modelle separat. docs/tools/yue.md"
 TOOLS["ACE_Step_15"]="experimental/gpu-heavy: GitHub-Basispaket ace-step 1.5.0 ohne Docker, Python 3.11/3.12. Keine GPU-Runtime/Modelle/WebUI; separat einrichten. docs/tools/ace-step-15.md"
 TOOLS["WhisperX"]="experimental/heavy: GitHub-Paket 3.8.6 ohne Docker, private venv. Basis --no-deps; Runtime doppelt opt-in, Torch separat. Keine Transkription/ASR-Modelldownloads. docs/tools/whisperx.md"
@@ -2874,7 +2889,7 @@ TOOL_KEYS+=("Personnel_Documents_AI")
 TOOLS["Personnel_Documents_AI"]="Personalakten: privater CLI-Starter aus GitHub-Setup-Checkout ohne Docker/Pakete. Python 3.10+, 64 MiB freie Disk; Paperless/LLM separat, keine automatische Aktenaenderung. docs/tools/personnel-documents.md"
 TOOLS["Automaton"]="Conway Automaton: GitHub-Source ohne Docker, experimental/high-risk. Fehlendes Node/npm und pnpm 10.28.1 privat bereitstellen; 4 GiB RAM/10 GiB Disk Planungsreserve. Kein Start, keine Wallets/Zahlungen/Replikation. Doku: docs/tools/automaton.md"
 TOOL_KEYS+=("Embedded_Debug_HIL")
-TOOLS["Embedded_Debug_HIL"]="Embedded/GDB/HIL: Offline-Registerbericht und Anleitung. Live-Adapter planned; kein Flashen/USB-Zugriff. 256 MiB RAM/100 MiB Planungsreserve nur fuer Offline-Tool, keine GPU. Doku: docs/tools/embedded-debug-hil.md"
+TOOLS["Embedded_Debug_HIL"]="experimental: pygdbmi-Basis aus gepinntem GitHub-Stand, private venv ohne Docker. Offline-Berichte im Repo; Live-/MCP-/USB-Adapter weiterhin planned. 512 MiB RAM/Disk. docs/tools/embedded-debug-hil.md"
 TOOLS["FreeLLMAPI"]="GitHub-Source ohne Docker: fehlendes Node/npm wird privat ueber GitHub-nvm bereitgestellt; kein System-Node-Umbau. Buildreserve 2 GiB RAM/4 GiB Disk. Kein Serverstart; localhost 3011. Doku: docs/tools/freellmapi.md"
 TOOLS["Ollama"]="Lokales LLM-Backend. Du kannst über den Ollama Modell-Manager spezifische Modelle installieren und verwalten. Für weitere Informationen zu den Modellen siehe in der Online-Dokumentation nach."
 TOOLS["Ruflo"]="Ruflo/claude-flow-nahe CLI fuer Agenten-Orchestrierung und Hive-Mind-Workflows. Installation nutzt GitHub, Node.js und pnpm; Build-Skripte werden nur nach gezielter Freigabe erlaubt."
@@ -3205,7 +3220,7 @@ TOOL_SCRIPT_NAMES["AudioLDM2"]="audioldm2"
 TOOL_SCRIPT_NAMES["AudioGen"]="audiogen"
 TOOL_SCRIPT_NAMES["Stable_Audio_Open"]="stable_audio_open"
 TOOL_SCRIPT_NAMES["Moshi"]="moshi"
-TOOL_SCRIPT_NAMES["MOSS_TTS"]="media_candidate"
+TOOL_SCRIPT_NAMES["MOSS_TTS"]="moss_tts"
 TOOL_SCRIPT_NAMES["YuE"]="yue"
 TOOL_SCRIPT_NAMES["ACE_Step_15"]="ace_step_15"
 TOOL_SCRIPT_NAMES["WhisperX"]="whisperx"
@@ -3358,7 +3373,11 @@ run_tool_script() {
         return 1
     fi
 
-    run_bash_script "$INSTALL_DIR/scripts/tools/${script_name}_${action}.sh"
+    if [ "$action" = "install" ]; then
+        run_bash_script "$INSTALL_DIR/scripts/tools/run_install_transaction.sh" "$tool_key" "$INSTALL_DIR/scripts/tools/${script_name}_${action}.sh"
+    else
+        run_bash_script "$INSTALL_DIR/scripts/tools/${script_name}_${action}.sh"
+    fi
 }
 
 remove_tool_from_autostart_script() {
@@ -3451,6 +3470,7 @@ install_tool() {
     if ! preflight_tool_install_storage "$TOOL_KEY"; then
         end_operation_measurement "failed"
         echo -e "${RED}Tool '${TOOL_KEY}' wurde vor dem Start wegen zu wenig freiem Speicher nicht installiert.${NC}"
+        echo -e "${YELLOW}Kein Installer gestartet: nichts zurueckzurollen. Bereits installierte Tools bleiben unveraendert.${NC}"
         handle_manual_tool_post_action "$TOOL_KEY" "Installation" "$operation_status" "${TOOL_BATCH_UPCOMING_PREVIEW:-}"
         return 1
     fi
@@ -3459,6 +3479,11 @@ install_tool() {
         echo -e "${YELLOW}Dort liegen HUGINN_REPO_REF, Datenbankauswahl und .env.template bewusst ausserhalb des Repos.${NC}"
     fi
     run_tool_script "$TOOL_KEY" "install" || tool_rc=$?
+    if [ "$tool_rc" -eq 0 ]; then
+        if native_tool_marker "$TOOL_KEY" >/dev/null; then
+            native_tool_sync_status "$TOOL_KEY" "$USER_WORKSPACE_DIR" || tool_rc=$?
+        fi
+    fi
     if [ "$TOOL_KEY" = "Qwen_Desktop" ] && [ "$tool_rc" -eq 0 ]; then
         end_operation_measurement "success"
         operation_status="success"
@@ -3527,6 +3552,18 @@ install_tool() {
         end_operation_measurement "success"
         operation_status="success"
         echo -e "${GREEN}ProPainter: GitHub-Quellen vorbereitet, nicht betriebsbereit. Runtime/Modelle fehlen; keine Videobearbeitung oder Gewichtsdownloads gestartet.${NC}"
+    elif { [ "$TOOL_KEY" = "Claude_Code" ] || [ "$TOOL_KEY" = "Gemini_CLI" ]; } && [ "$tool_rc" -eq 0 ]; then
+        end_operation_measurement "success"
+        operation_status="success"
+        echo -e "${GREEN}GitHub-Quellen/Referenzmaterial vorbereitet; keine lauffaehige CLI installiert, kein Login oder Cloud-/Agentenstart.${NC}"
+    elif [ "$TOOL_KEY" = "Embedded_Debug_HIL" ] && [ "$tool_rc" -eq 0 ]; then
+        end_operation_measurement "success"
+        operation_status="success"
+        echo -e "${GREEN}Embedded Debug HIL: pygdbmi-Basis aus GitHub eingerichtet, ohne Docker. Kein GDB/OpenOCD, USB-Zugriff, MCP-Server oder Hardwaretest.${NC}"
+    elif [ "$TOOL_KEY" = "MOSS_TTS" ] && [ "$tool_rc" -eq 0 ]; then
+        end_operation_measurement "success"
+        operation_status="success"
+        echo -e "${GREEN}MOSS-TTS: GitHub-Checkout und Basis-Metadatenpaket eingerichtet. Keine fertige TTS-Laufzeit: Modelle/Runtime fehlen, keine Inferenz oder WebUI gestartet.${NC}"
     elif [ "$TOOL_KEY" = "YuE" ] && [ "$tool_rc" -eq 0 ]; then
         end_operation_measurement "success"
         operation_status="success"
@@ -3581,6 +3618,7 @@ uninstall_tool() {
     run_tool_script "$TOOL_KEY" "uninstall"
     if [ $? -eq 0 ]; then
         remove_exact_line "$TOOL_STATUS_FILE" "$TOOL_KEY"
+        remove_exact_line "$USER_STATUS_DIR/installed_tools.txt" "$TOOL_KEY"
         remove_tool_from_autostart_script "$TOOL_KEY"
         end_operation_measurement "success"
         operation_status="success"
@@ -3932,6 +3970,7 @@ show_tool_group_checklist() {
     declare -A installed_map
 
     ensure_user_workspace
+    native_tool_sync_all "$USER_WORKSPACE_DIR" || return 1
     normalize_status_file "$TOOL_STATUS_FILE" "${TOOL_KEYS[@]}"
     load_installed_map "$TOOL_STATUS_FILE" installed_map
 
@@ -4035,6 +4074,7 @@ toggle_tool_group_bulk() {
     declare -A installed_map
 
     ensure_user_workspace
+    native_tool_sync_all "$USER_WORKSPACE_DIR" || return 1
     normalize_status_file "$TOOL_STATUS_FILE" "${TOOL_KEYS[@]}"
     load_installed_map "$TOOL_STATUS_FILE" installed_map
 

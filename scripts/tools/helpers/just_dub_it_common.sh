@@ -4,6 +4,36 @@ JD_ROOT="$(cd "${BASH_SOURCE[0]%/*}/../../.." && pwd)"
 JD_URL=https://github.com/justdubit/just-dub-it.git
 JD_COMMIT=fa4d8f8911036ba79a62f97e7e62581e39441d56
 JD_VERSION=0.1.0
+JD_LICENSE_FILE="$JD_ROOT/licenses/just-dub-it/LTX-2-Community.txt"
+
+jd_read_license_choice() {
+    [[ -t 0 ]] || return 1
+    read -r -p 'Lizenz akzeptieren und fortfahren? [(j)a/(N)ein = ablehnen]: ' JD_LICENSE_ANSWER
+}
+
+jd_confirm_license() {
+    local JD_LICENSE_ANSWER=""
+    [[ -f "$JD_LICENSE_FILE" && ! -L "$JD_LICENSE_FILE" && -s "$JD_LICENSE_FILE" ]] || {
+        echo 'Just Dub It-Lizenztext fehlt oder ist unsicher; Installation abgebrochen.' >&2; return 2;
+    }
+    printf '\n--- Just Dub It: vollstaendiger Lizenztext einschliesslich Anhang ---\n'
+    printf 'Quelle: https://github.com/justdubit/just-dub-it/blob/%s/LICENSE\n\n' "$JD_COMMIT"
+    cat -- "$JD_LICENSE_FILE" || return 2
+    printf '\n--- Ende Lizenztext ---\n'
+    case "${JUST_DUB_IT_ACCEPT_LICENSE:-ask}" in
+        1) echo 'Lizenzannahme explizit durch JUST_DUB_IT_ACCEPT_LICENSE=1 bestaetigt.'; return 0 ;;
+        0) echo 'Lizenz abgelehnt (JUST_DUB_IT_ACCEPT_LICENSE=0); nichts heruntergeladen.' >&2; return 2 ;;
+        ask) ;;
+        *) echo 'JUST_DUB_IT_ACCEPT_LICENSE: nur 0 oder 1 setzen, andernfalls fuer Rueckfrage weglassen.' >&2; return 2 ;;
+    esac
+    if jd_read_license_choice; then
+        case "$JD_LICENSE_ANSWER" in
+            j|J|ja|Ja|JA|akzeptieren) echo 'Lizenz fuer diesen Aufruf akzeptiert.'; return 0 ;;
+        esac
+    fi
+    echo 'Lizenz nicht akzeptiert; Installation abgebrochen, kein Download. Nichtinteraktiv nur nach eigener Pruefung JUST_DUB_IT_ACCEPT_LICENSE=1 setzen.' >&2
+    return 2
+}
 
 jd_paths() {
     local root="${OPENCLAW_USER_DATA_DIR:-$HOME/.openclaw_ultimate_user_data}" path
@@ -155,8 +185,8 @@ just_dub_it_main() (
     if [[ "$mode" != uninstall && "$mode" != --uninstall && "${JUST_DUB_IT_INSTALL_RUNTIME:-0}" != 0 ]]; then
         echo 'Automatische GPU-Runtime nicht freigegeben: Archivierte LTX-2-Pipeline braucht separat gepruefte Torch-/CUDA-Pakete, Modelle und Lizenzen. Siehe docs/tools/just-dub-it.md.' >&2; return 2;
     fi
-    if [[ "$mode" != uninstall && "$mode" != --uninstall && "${JUST_DUB_IT_ACCEPT_LICENSE:-0}" != 1 ]]; then
-        echo 'Archivierte Quelle unter LTX-2 Community License. Erst docs/tools/just-dub-it.md und Upstream-Lizenz pruefen; danach JUST_DUB_IT_ACCEPT_LICENSE=1 setzen.' >&2; return 2;
+    if [[ "$mode" != uninstall && "$mode" != --uninstall ]]; then
+        jd_confirm_license || return $?
     fi
     [[ "$(uname -s)" == Linux && "$EUID" != 0 ]] || { echo 'Als normaler Linux-Benutzer ohne sudo aufrufen.' >&2; return 1; }
     for program in git flock; do command -v "$program" >/dev/null || { echo "Just Dub It: $program fehlt; Basis separat einrichten." >&2; return 1; }; done

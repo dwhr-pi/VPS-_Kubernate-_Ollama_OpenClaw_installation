@@ -1,5 +1,13 @@
 # Setup Memory
 
+## Getrennte Coding-Agenten (18.10.2026)
+
+Sieben Profile trennen Claude/Gemini/Ollama, Jarvis-Routing und OpenClaw/MCP/
+Kubernetes-Layer. Private Vorlageninstallation ist implementiert, der
+Routingplan ist offline und fuehrt nichts aus. Kein Jarvis-Runtime-Eingriff.
+GitHub-Quellvorbereitung fuer zwei Clients, ohne Docker; Claude-CLI nicht
+aus dem proprietaeren Referenzrepo baubar. [Details](agents/coding-agent-profiles.md).
+
 ## YuE: GitHub statt Medien-Guard (18.10.2026)
 
 YuE-v1 bewusst auf Commit gepinnt: main enthaelt inzwischen YuE2.

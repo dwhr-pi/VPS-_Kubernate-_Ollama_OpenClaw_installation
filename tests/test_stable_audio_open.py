@@ -75,6 +75,74 @@ test ! -e "$SA_BASE"
 """)
         self.assertEqual(r.returncode, 0, r.stderr)
 
+    def test_explicit_bad_python_is_not_replaced(self):
+        r = self.shell('''
+SA_PYTHON=missing_python310
+build_private_cpython310() { exit 99; }
+sa_select_python
+''')
+        self.assertEqual(r.returncode, 1, r.stderr)
+
+    def test_compatible_interpreter_reused(self):
+        r = self.shell('''
+unset STABLE_AUDIO_OPEN_PYTHON_BIN
+private_cpython310_ok() { [[ "$1" == python3.10 ]]; }
+command() { [[ "$1" == -v ]] && return 0; builtin command "$@"; }
+build_private_cpython310() { exit 99; }
+sa_select_python
+[[ "$SA_PYTHON" == python3.10 ]]
+''')
+        self.assertEqual(r.returncode, 0, r.stderr)
+
+    def test_python_build_disabled_and_noninteractive_default(self):
+        for policy in ('0', 'ask'):
+            r = self.shell('''
+unset STABLE_AUDIO_OPEN_PYTHON_BIN
+private_cpython310_ok() { return 1; }
+sa_python_build_resources() { exit 99; }
+build_private_cpython310() { exit 99; }
+STABLE_AUDIO_OPEN_BUILD_PYTHON=''' + policy + ''' sa_select_python </dev/null
+''')
+            self.assertEqual(r.returncode, 1, r.stderr)
+
+    def test_authorized_build_passes_selected_path(self):
+        r = self.shell('''
+unset STABLE_AUDIO_OPEN_PYTHON_BIN
+private_cpython310_ok() { [[ "$1" == "$SA_BASE/runtime/test-python" ]]; }
+sa_python_build_resources() { return 0; }
+build_private_cpython310() { printf '%s\\n' "$SA_BASE/runtime/test-python"; }
+STABLE_AUDIO_OPEN_BUILD_PYTHON=1 sa_select_python
+[[ "$SA_PYTHON" == "$SA_BASE/runtime/test-python" ]]
+''')
+        self.assertEqual(r.returncode, 0, r.stderr)
+
+    def test_low_resources_prevent_python_download(self):
+        r = self.shell('''
+unset STABLE_AUDIO_OPEN_PYTHON_BIN
+private_cpython310_ok() { return 1; }
+sa_python_build_resources() { return 1; }
+build_private_cpython310() { exit 99; }
+STABLE_AUDIO_OPEN_BUILD_PYTHON=1 sa_select_python
+''')
+        self.assertEqual(r.returncode, 1, r.stderr)
+
+    def test_python_clone_failure_propagates_without_build(self):
+        r = self.shell('''
+private_cpython310_base_deps() { return 0; }
+git() { return 42; }
+make() { exit 99; }
+build_private_cpython310 "$SA_BASE"
+''')
+        self.assertEqual(r.returncode, 42, r.stderr)
+
+    def test_existing_incomplete_python_not_overwritten(self):
+        r = self.shell('''
+mkdir -p "$SA_BASE/runtime/python-3.10.22"
+private_cpython310_base_deps() { exit 99; }
+build_private_cpython310 "$SA_BASE"
+''')
+        self.assertEqual(r.returncode, 1, r.stderr)
+
     def test_status_missing(self):
         r = self.shell('stable_audio_open_main status; test ! -e "$SA_BASE"')
         self.assertEqual(r.returncode, 0, r.stderr)

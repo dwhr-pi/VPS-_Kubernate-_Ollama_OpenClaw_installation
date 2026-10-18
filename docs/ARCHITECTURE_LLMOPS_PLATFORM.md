@@ -2,6 +2,11 @@
 
 ## Zielbild
 
+Ergaenzung: [getrennte Coding-Agenten-Profile](agents/coding-agent-profiles.md).
+Jarvis-Core uebernimmt nur Rollenwahl/Routing, Claude/Gemini/Ollama bleiben
+getrennte Worker. OpenClaw ist die optionale Runtime, MCP der Tool-Layer,
+Kubernetes nur optional fuer Skalierung. Noch kein ausfuehrender Adapter.
+
 Diese Architektur transformiert das Setup von einer Sammlung einzelner Tools zu einer modularen, reproduzierbaren und sicheren LLMOps-Plattform für lokale und hybride KI-Agenten.
 
 ```mermaid

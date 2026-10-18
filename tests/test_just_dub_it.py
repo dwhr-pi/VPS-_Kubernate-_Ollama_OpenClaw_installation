@@ -64,7 +64,7 @@ source {HELPER}
 jd_paths
 """
             return subprocess.run([str(BASH), "--noprofile", "--norc", "-c", prefix + code],
-                                  cwd=ROOT, capture_output=True, text=True, timeout=90)
+                                  cwd=ROOT, capture_output=True, text=True, encoding="utf-8", timeout=90)
 
     def test_dry_run_no_files(self):
         r = self.shell("""
@@ -81,6 +81,48 @@ test ! -e "$JD_BASE"
         self.assertFalse(state["installed"])
         self.assertFalse(state["runtime_dependencies"])
         self.assertFalse(state["inference_tested"])
+
+    def test_interactive_acceptance_after_complete_license(self):
+        r = self.shell('''
+unset JUST_DUB_IT_ACCEPT_LICENSE
+jd_read_license_choice() { JD_LICENSE_ANSWER=ja; }
+jd_confirm_license
+''')
+        self.assertEqual(r.returncode, 0, r.stderr)
+        license_text = (ROOT / 'licenses/just-dub-it/LTX-2-Community.txt').read_text(encoding='utf-8')
+        self.assertIn(license_text.strip(), r.stdout)
+        self.assertLess(r.stdout.index('obtaining a separate commercial license'), r.stdout.index('fuer diesen Aufruf akzeptiert'))
+
+    def test_license_rejects_empty_invalid_no_and_eof(self):
+        for body in ('JD_LICENSE_ANSWER=""', 'JD_LICENSE_ANSWER=nein', 'JD_LICENSE_ANSWER=unknown', 'return 1'):
+            r = self.shell('unset JUST_DUB_IT_ACCEPT_LICENSE\njd_read_license_choice() { ' + body + '; }\njd_confirm_license')
+            self.assertEqual(r.returncode, 2, r.stderr)
+
+    def test_noninteractive_explicit_acceptance_displays_attachment(self):
+        r = self.shell('''
+jd_read_license_choice() { exit 99; }
+JUST_DUB_IT_ACCEPT_LICENSE=1 jd_confirm_license
+''')
+        self.assertEqual(r.returncode, 0, r.stderr)
+        self.assertIn('ATTACHMENT A: Use Restrictions', r.stdout)
+
+    def test_explicit_rejection_never_prompts(self):
+        r = self.shell('''
+jd_read_license_choice() { exit 99; }
+JUST_DUB_IT_ACCEPT_LICENSE=0 jd_confirm_license
+''')
+        self.assertEqual(r.returncode, 2, r.stderr)
+
+    def test_noninteractive_unset_is_rejection(self):
+        r = self.shell('unset JUST_DUB_IT_ACCEPT_LICENSE\njd_confirm_license </dev/null')
+        self.assertEqual(r.returncode, 2, r.stderr)
+
+    def test_missing_license_blocks_even_explicit_acceptance(self):
+        r = self.shell('''
+JD_LICENSE_FILE="$JD_BASE/missing-license"
+JUST_DUB_IT_ACCEPT_LICENSE=1 jd_confirm_license
+''')
+        self.assertEqual(r.returncode, 2, r.stderr)
 
     def test_api_actions_rejected(self):
         for action, expected in (("doctor", 1), ("login", 2), ("upload", 2), ("subscribe", 2)):

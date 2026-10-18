@@ -10,7 +10,9 @@ Keine automatische Installation beim Start des Setups.
 
 ```bash
 bash scripts/tools/stable_audio_open_install.sh --dry-run
-# Nur mit bereits vorhandenem Python 3.10:
+# Automatische Auswahl; fehlendes Python wird zum privaten Build angeboten:
+bash scripts/tools/stable_audio_open_install.sh
+# Alternativ vorhandenen Interpreter explizit festlegen:
 STABLE_AUDIO_OPEN_PYTHON_BIN=python3.10 bash scripts/tools/stable_audio_open_install.sh
 bash scripts/tools/stable_audio_open_status.sh
 bash scripts/tools/stable_audio_open_doctor.sh
@@ -18,13 +20,40 @@ bash scripts/tools/stable_audio_open_install.sh --repair
 bash scripts/tools/stable_audio_open_update.sh
 ```
 
-Ohne Variable wird `python3.10` gesucht. Der gepinnte
+Ohne Variable werden das private CPython, `python3.10` und ein kompatibles
+`python3` geprueft, einschliesslich venv/ensurepip/SSL. Der gepinnte
 [pyproject.toml](https://github.com/Stability-AI/stable-audio-tools/blob/3241adba4fc2a85cf5b29d9eb68d42f40a28e820/pyproject.toml)
 verlangt **Python >=3.10,<3.11**. Python 3.11 und Ubuntu-24.04-Python 3.12
 werden deshalb abgelehnt, auch bei der Basisinstallation. Kein
 `--ignore-requires-python`, kein Austausch des System-Python, keine
-ungefragte Fremd-Python-/apt-Installation. Fehlt Python 3.10 oder dessen
-venv/ensurepip/SSL-Unterstuetzung, stoppt der Installer mit einem Hinweis.
+ungefragte Fremd-Python-/apt-Installation. Ein explizit gesetzter unpassender
+Interpreter wird nicht still ersetzt.
+
+### Fehlendes Python automatisch vorbereiten
+
+Der Installer bietet bei fehlendem Python einen bestaetigten Quellbuild von
+[CPython 3.10.22](https://github.com/python/cpython/releases/tag/v3.10.22) an,
+fest gepinnt auf `acb4dc12b6df8615af7b43120ef601e04072f7d2`.
+`STABLE_AUDIO_OPEN_BUILD_PYTHON=1` gibt diesen Build bewusst auch ohne Rueckfrage
+frei; `0` sperrt ihn. Ohne Terminal und ohne Freigabe wird nichts gebaut.
+Dry-Run, Status, Doctor und Deaktivierung bauen niemals Python.
+
+Ziel: `tools/stable_audio_open/runtime/python-3.10.22/` innerhalb des privaten
+User-Workspace. Keine /usr/bin-Aenderung, kein globaler PATH, kein Docker.
+`make altinstall` laeuft ohne sudo; sudo wird nur fuer eventuell fehlende
+Ubuntu-/Debian-Buildbibliotheken benoetigt und vor dem langen Build geprueft.
+Andere Distributionen muessen fehlende Bibliotheken selbst bereitstellen.
+
+Buildreserve: 4 GiB Gesamt-RAM, 2 GiB aktuell frei, 8 GiB Disk und unter WSL
+8 GiB Windows-Host-Reserve. Ein Buildjob, optional `CPYTHON_BUILD_JOBS=2`.
+Ressourcenchecks und Tool-Lock laufen vor Download/Build. Diagnosequellen und
+Logs bleiben bei Fehlern erhalten. Unvollstaendige vorhandene Python-Ziele
+werden nicht ueberschrieben; nach manueller Pruefung erneut versuchen.
+Ein passender bereits installierter Interpreter wird ohne Neubau verwendet.
+
+Python 3.10 ist eine alte Kompatibilitaetslinie; dieser Pin ist keine Zusage
+zukuenftiger Sicherheitswartung. Eine Migration des Audio-Pakets auf neuere
+Python-Versionen bleibt separat zu testen.
 
 Anwendung aus GitHub, lokale Paketinstallation mit `--no-deps` in privater
 venv. **Nur Basispaket, noch keine funktionsfaehige Audiogenerierung.**

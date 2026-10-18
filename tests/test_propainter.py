@@ -84,6 +84,48 @@ propainter_main install
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertIn('nichtkommerziell', result.stdout)
 
+    def test_license_acceptance_displays_full_text_first(self):
+        result = self.shell('''
+unset PROPAINTER_ACCEPT_LICENSE
+pp_read_license_choice() { PP_LICENSE_ANSWER=ja; }
+pp_confirm_license
+''')
+        self.assertEqual(result.returncode, 0, result.stderr)
+        text = (ROOT / 'licenses/propainter/S-Lab-1.0.txt').read_text()
+        self.assertIn(text.strip(), result.stdout)
+        self.assertLess(result.stdout.index('S-Lab License 1.0'), result.stdout.index('fuer diesen Aufruf akzeptiert'))
+
+    def test_license_rejection_blank_and_invalid_fail_closed(self):
+        for answer in ('nein', '', 'yes', 'unexpected'):
+            result = self.shell('''
+unset PROPAINTER_ACCEPT_LICENSE
+pp_read_license_choice() { PP_LICENSE_ANSWER="''' + answer + '''"; }
+pp_confirm_license
+''')
+            self.assertEqual(result.returncode, 2, result.stderr)
+
+    def test_explicit_license_acceptance_still_displays_text(self):
+        result = self.shell('''
+pp_read_license_choice() { exit 99; }
+PROPAINTER_ACCEPT_LICENSE=1 pp_confirm_license
+''')
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn('THIS SOFTWARE IS PROVIDED', result.stdout)
+
+    def test_explicit_license_rejection_does_not_prompt(self):
+        result = self.shell('''
+pp_read_license_choice() { exit 99; }
+PROPAINTER_ACCEPT_LICENSE=0 pp_confirm_license
+''')
+        self.assertEqual(result.returncode, 2, result.stderr)
+
+    def test_missing_license_cannot_be_accepted(self):
+        result = self.shell('''
+PP_LICENSE_FILE="$PP_BASE/missing-license"
+PROPAINTER_ACCEPT_LICENSE=1 pp_confirm_license
+''')
+        self.assertEqual(result.returncode, 2, result.stderr)
+
     def test_source_syntax_without_import(self):
         result = self.shell('''
 mkdir -p "$PP_SOURCE/model"

@@ -1,5 +1,21 @@
 # GitHub Tool Sources
 
+Embedded_Debug_HIL: [cs01/pygdbmi v0.11.0.0](https://github.com/cs01/pygdbmi/tree/52a17f1d8651e941b8551a44a03d181d605e1e56),
+Commit `52a17f1d8651e941b8551a44a03d181d605e1e56`, MIT.
+[Basisinstaller](tools/embedded-debug-hil.md) ohne Docker, keine GDB-Prozesse
+oder Hardware-/USB-/MCP-Aktionen. OpenOCD/pyOCD sind separate geplante Komponenten.
+
+MOSS_TTS: [OpenMOSS/MOSS-TTS](https://github.com/OpenMOSS/MOSS-TTS/tree/934d6826b084c46a0d033402174d5f8ac4ed2519),
+Commit `934d6826b084c46a0d033402174d5f8ac4ed2519`, Basis-Metadatenpaket 0.1.0,
+Code Apache-2.0. [Installationsumfang](tools/moss-tts.md): kein Docker,
+keine Runtime-/Modellinstallation, Modelllizenzen separat pruefen.
+
+Getrennte Coding-Agenten: [Quellpins und Lizenzgrenzen](agents/coding-agent-profiles.md).
+Claude Code: anthropics/claude-code `dd6bee38458cc3e6dc5f2b16eca1f0f364619ad8`,
+proprietaeres Referenzmaterial, keine CLI-Source-Installation.
+Gemini CLI: google-gemini/gemini-cli `ed96faedfd5571f055c44f2c9509d62321d1138d`,
+Apache-2.0-Quellen, separater Build erforderlich. Keine Docker-Nutzung.
+
 YuE: [multimodal-art-projection/YuE, YuE-v1](https://github.com/multimodal-art-projection/YuE/tree/6d4f0b1f8ce6a55fb2392e959394c46e07ee334d),
 Commit `6d4f0b1f8ce6a55fb2392e959394c46e07ee334d`, Apache-2.0.
 main enthaelt YuE2, nicht die hier registrierte Generation. [Quellinstallation

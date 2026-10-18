@@ -4,6 +4,7 @@ SA_ROOT="$(cd "${BASH_SOURCE[0]%/*}/../../.." && pwd)"
 SA_URL=https://github.com/Stability-AI/stable-audio-tools.git
 SA_COMMIT=3241adba4fc2a85cf5b29d9eb68d42f40a28e820
 SA_VERSION=0.0.20
+source "$SA_ROOT/scripts/lib/private_cpython310.sh"
 
 sa_paths() {
     local root="${OPENCLAW_USER_DATA_DIR:-$HOME/.openclaw_ultimate_user_data}" path
@@ -17,7 +18,7 @@ sa_paths() {
     SA_PYTHON="${STABLE_AUDIO_OPEN_PYTHON_BIN:-python3.10}"
     # Allow the normal venv Python symlink, not redirecting directories.
     local index=0
-    local -a paths=("$root" "$SA_BASE" "$SA_SOURCE" "$SA_SOURCE/.git" "$SA_VENV" "$SA_VENV/bin" "$SA_VENV/pyvenv.cfg" "$SA_MARKER" "$SA_LOGS" "$SA_BASE/operation.lock") resolved=()
+    local -a paths=("$root" "$SA_BASE" "$SA_SOURCE" "$SA_SOURCE/.git" "$SA_VENV" "$SA_VENV/bin" "$SA_VENV/pyvenv.cfg" "$SA_MARKER" "$SA_LOGS" "$SA_BASE/operation.lock" "$SA_BASE/runtime" "$SA_BASE/runtime/python-3.10.22" "$SA_BASE/runtime/python-3.10.22/bin") resolved=()
     mapfile -t resolved < <(realpath -m -- "${paths[@]}")
     [[ "${#resolved[@]}" == "${#paths[@]}" ]] || return 1
     for path in "${paths[@]}"; do
@@ -95,6 +96,49 @@ sa_prepare_python() {
     }
 }
 
+sa_python_build_resources() {
+    source "$SA_ROOT/scripts/lib/resource_check.sh"
+    require_ram_mb 4096 || return 1
+    local available
+    available="$(awk '/^MemAvailable:/ {printf "%d\n", $2/1024}' /proc/meminfo)"
+    [[ "$available" =~ ^[0-9]+$ && "$available" -ge 2048 ]] || {
+        echo 'CPython-Build: mindestens 2048 MiB aktuell freien RAM freimachen.' >&2; return 1;
+    }
+    REQUIRE_WINDOWS_HOST_FREE_MB=8192 require_disk_mb 8192 "$SA_BASE"
+}
+
+sa_select_python() {
+    local candidate answer="" consent="${STABLE_AUDIO_OPEN_BUILD_PYTHON:-ask}"
+    if [[ -n "${STABLE_AUDIO_OPEN_PYTHON_BIN:-}" ]]; then
+        command -v "$SA_PYTHON" >/dev/null && private_cpython310_ok "$SA_PYTHON" || {
+            echo 'Explizites STABLE_AUDIO_OPEN_PYTHON_BIN ist nicht nutzbar (Python 3.10 + venv/SSL erforderlich). Keine automatische Ersetzung.' >&2; return 1;
+        }
+        return 0
+    fi
+    for candidate in "$SA_BASE/runtime/python-3.10.22/bin/python3.10" python3.10 python3; do
+        if command -v "$candidate" >/dev/null && private_cpython310_ok "$candidate" >/dev/null 2>&1; then
+            SA_PYTHON="$candidate"
+            return 0
+        fi
+    done
+    echo 'Python 3.10 fehlt. Optional isoliertes CPython 3.10.22 aus GitHub bauen; System-Python bleibt unveraendert.'
+    case "$consent" in
+        1) ;;
+        ask)
+            if [[ -t 0 ]]; then
+                read -r -p 'CPython bauen (zeit-/speicherintensiv; ggf. sudo fuer Buildbibliotheken)? [(j)a/(N)ein]: ' answer || return 1
+            fi
+            [[ "$answer" == j || "$answer" == J ]] || {
+                echo 'Build nicht freigegeben. STABLE_AUDIO_OPEN_BUILD_PYTHON=1 erlaubt den Build, =0 sperrt ihn.' >&2; return 1;
+            } ;;
+        0) echo 'Privater Python-Build deaktiviert.' >&2; return 1 ;;
+        *) echo 'STABLE_AUDIO_OPEN_BUILD_PYTHON: ask, 0 oder 1 erwartet.' >&2; return 2 ;;
+    esac
+    sa_python_build_resources || return 1
+    SA_PYTHON="$(build_private_cpython310 "$SA_BASE")" || return $?
+    private_cpython310_ok "$SA_PYTHON"
+}
+
 sa_fetch() {
     if [[ -e "$SA_SOURCE" ]]; then
         sa_source_ok || { echo 'Stable Audio Open-Quelle fremd/unvollstaendig/veraendert; manuell sichern, kein Reset.' >&2; return 1; }
@@ -139,6 +183,7 @@ stable_audio_open_main() (
         --dry-run|--plan|plan|--help)
             echo "Stable Audio Open $SA_VERSION: GitHub $SA_URL; Commit $SA_COMMIT; private Basis-venv ohne Docker."
             echo 'Reserve: 1 GiB gesamt, 512 MiB verfuegbar, 2 GiB Disk/Windows-C:. Nur Paket --no-deps, keine betriebsbereite Audio-Laufzeit.'
+            echo 'Fehlendes Python 3.10: GitHub-Build nur bestaetigt oder STABLE_AUDIO_OPEN_BUILD_PYTHON=1; zusaetzlich 4 GiB RAM/2 GiB frei/8 GiB Disk, ein Buildjob.'
             echo 'Dry-Run ohne Download, Installation, API-/Token-/Uploadzugriff.'; return 0 ;;
         status|--status)
             if sa_probe >/dev/null 2>&1; then echo '{"installed":true,"scope":"github-base-package","runtime_dependencies":false,"models_checked":false,"inference_tested":false}'
@@ -156,8 +201,6 @@ stable_audio_open_main() (
     [[ "$(uname -s)" == Linux && "$EUID" != 0 ]] || { echo 'Als normaler Linux-Benutzer ohne sudo aufrufen.' >&2; return 1; }
     for program in git flock; do command -v "$program" >/dev/null || { echo "Stable Audio Open: $program fehlt; Basis separat einrichten." >&2; return 1; }; done
     if [[ "$mode" != uninstall && "$mode" != --uninstall ]]; then
-        command -v "$SA_PYTHON" >/dev/null || { echo 'Stable Audio Open: Python 3.10 fehlt; STABLE_AUDIO_OPEN_PYTHON_BIN auf vorhandenes Python 3.10 setzen; kein System-Python ersetzt.' >&2; return 1; }
-        sa_preflight || return 1
         if [[ "$mode" == install ]] && sa_probe >/dev/null 2>&1; then echo 'Stable Audio Open-Basispaket bereits konsistent; keine Installation.'; return 0; fi
         sa_resources || return 1
     elif [[ ! -d "$SA_BASE" ]]; then echo 'Nicht eingerichtet; nichts deaktiviert.'; return 0; fi
@@ -166,9 +209,11 @@ stable_audio_open_main() (
     flock -n 9 || { echo 'Andere Stable Audio Open-Operation aktiv.' >&2; return 1; }
     log="$(mktemp "$SA_LOGS/stable_audio_open_$(date +%Y%m%d_%H%M%S)_XXXXXX.log")"
     exec > >(tee -a "$log") 2>&1
-    echo "Stable Audio Open-Installer: 2026-10-16-github-base-package; Aktion: $mode; Pin: $SA_COMMIT"
+    echo "Stable Audio Open-Installer: 2026-10-18-private-python310; Aktion: $mode; Pin: $SA_COMMIT"
     trap 'rc=$?; if ((rc != 0)); then echo "Stable Audio Open-Fehler ($rc); Dateien erhalten. Log: $log. Nach Behebung --repair verwenden."; fi' EXIT
     if [[ "$mode" == uninstall || "$mode" == --uninstall ]]; then sa_deactivate; return 0; fi
+    sa_select_python || return $?
+    sa_preflight || return 1
     sa_prepare_python
     sa_fetch
     df -Pk "$SA_BASE"

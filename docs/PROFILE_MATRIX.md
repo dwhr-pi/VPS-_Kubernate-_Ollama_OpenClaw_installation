@@ -1,5 +1,20 @@
 # Profile Matrix
 
+## Getrennte Coding-Agenten
+
+Profilinstallation richtet nur Vorlagen ein, nicht die Runtime.
+[Architektur und Installation](agents/coding-agent-profiles.md).
+
+| Profil | Rolle | Status |
+|---|---|---|
+| [Claude-Code-Agent](Profile/Claude_Code_Agent.md) | Planung, Refactoring, Architektur und Dokumentation | planned / Vorlage |
+| [Gemini-Code-Agent](Profile/Gemini_Code_Agent.md) | Recherche, Multimodalitaet und Google-Oekosystem | planned / Vorlage |
+| [Jarvis-Core](Profile/Jarvis_Core.md) | Orchestrierung, Rollenwahl und Routing, keine eingebetteten Coding-Clients | planned / Vorlage |
+| [Ollama-Coder](Profile/Ollama_Coder.md) | Lokales Coding mit vorhandenem Ollama und separat gewaehltem Modell | planned / Vorlage |
+| [OpenClaw](Profile/OpenClaw_Runtime.md) | Separat freizugebende Agent Runtime, keine automatische Ausfuehrung | planned / Vorlage |
+| [Kubernetes](Profile/Kubernetes_Agent_Scaling.md) | Optionale Skalierung isolierter Worker, nicht fuer das Minimalsetup erforderlich | planned / Vorlage |
+| [MCP](Profile/MCP_Tool_Layer.md) | Separater Tool-Layer mit expliziter Allowlist und minimalen Rechten | planned / Vorlage |
+
 [AI_Influencer](Profile/AI_Influencer.md) bleibt planned:
 lokaler Social-Avatar-Pfad, manuelle Abnahme/Publikation, Cloud optional und gesperrt.
 
