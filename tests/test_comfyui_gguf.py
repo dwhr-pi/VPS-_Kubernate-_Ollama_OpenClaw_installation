@@ -98,6 +98,31 @@ test ! -e "$COMFYUI_ROOT"
         self.assertNotIn('UNEXPECTED_NETWORK', result.stdout)
         self.assertIn('"integrated":false', result.stdout)
 
+    def test_base_check_missing_custom_path_does_not_offer_wrong_base_target(self):
+        r = self.invoke('git() { exit 99; }; comfyui_gguf_main --check-base')
+        self.assertEqual(r.returncode, 1, r.stderr)
+
+    def test_base_check_does_not_confuse_bad_venv_with_missing_source(self):
+        r = self.invoke('''
+mkdir -p "$CG_COMFY/comfy" "$CG_COMFY/custom_nodes"
+touch "$CG_COMFY/main.py"
+git() { exit 99; }
+cg_comfy_preflight() { return 1; }
+comfyui_gguf_main --check-base
+''')
+        self.assertEqual(r.returncode, 1, r.stderr)
+
+    def test_base_check_success_does_not_create_plugin_workspace(self):
+        r = self.invoke('''
+mkdir -p "$CG_COMFY/comfy" "$CG_COMFY/custom_nodes"
+touch "$CG_COMFY/main.py"
+git() { exit 99; }
+cg_comfy_preflight() { return 0; }
+comfyui_gguf_main --check-base
+test ! -e "$CG_BASE"
+''')
+        self.assertEqual(r.returncode, 0, r.stderr)
+
     def test_missing_comfy_blocks(self):
         result = self.invoke('cg_comfy_preflight')
         self.assertEqual(result.returncode, 1)

@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- ComfyUI_GGUF: gefuehrter Menue-Schritt bei fehlender ComfyUI-Basis mit
+  expliziter separater Basisinstallation, Source-only oder Abbruch (Standard).
+  Lokaler Basischeck und erneute Pruefung; keine stille schwere Installation.
+
 - Medien-Toolstatus: gemeinsame Marker-Erkennung fuer Basis-/Quellinstaller
   statt fehlender installed_tools-Eintraege. Gesamt-/Gruppenauswahl und
   Gruppenaktionen synchronisieren beide Listen; Batch statt Einzel-Rewrites,

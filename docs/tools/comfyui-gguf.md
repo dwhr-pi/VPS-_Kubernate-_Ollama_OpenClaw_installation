@@ -16,6 +16,25 @@ getesteter ComfyUI/Node-Versionssatz steht noch aus.
 
 ### Meldung: ComfyUI fehlt/unvollstaendig
 
+Im Tools-Menue gibt es jetzt einen gefuehrten Abhaengigkeitsschritt:
+`1` ruft nach ausdruecklicher Auswahl den separaten ComfyUI-Menueinstaller
+mit dessen eigenen Warnungen, Ressourcenpruefungen und Logs auf. Danach wird
+die Basis erneut geprueft, bevor GGUF weiterlaeuft. Keine automatische
+Installation im Hintergrund. Der GGUF-Mess-/Transaktionslauf beginnt erst
+nach diesem Schritt, nicht verschachtelt mit dem Basisinstallationslauf.
+`2` waehlt nur GitHub-Quellen ohne aktive Integration. Enter/Nein/EOF brechen
+ab. Ohne interaktives Terminal wird keine Basisinstallation angenommen.
+
+Ein ausdrueckliches fremdes `COMFYUI_ROOT` wird nicht durch eine Installation
+nach /opt/comfyui ersetzt. Fehler an venv/Rechten oder uneindeutigen Pfaden
+bieten keine automatische Neuinstallation an. Bestehende Dateien werden
+durch den Abhaengigkeitshelfer nicht entfernt oder umgebogen.
+Direkte GGUF-Skriptaufrufe bleiben streng; der gefuehrte Schritt gilt fuer
+das Setup-Menue. `--check-base` prueft nur lokal: Exit 3 bei fehlenden
+Basisdateien am Standardziel /opt/comfyui, Exit 1 bei anderen Zielpfaden oder
+Voraussetzungen, Exit 0 bei bestandener
+Basispruefung. Keine Downloads oder Verzeichniserzeugung durch diesen Check.
+
 Das Protokoll allein beweist nicht, ob ComfyUI wirklich fehlt oder nur an einem
 anderen Pfad liegt. GGUF ist ein Plugin, kein eigenstaendiger Bildgenerator.
 Der Installer installiert daher nicht ungefragt das schwere ComfyUI/PyTorch.

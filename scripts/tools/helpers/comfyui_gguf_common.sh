@@ -123,6 +123,7 @@ cg_comfy_preflight() {
         echo 'ComfyUI_GGUF ist nur eine Erweiterung, kein eigenstaendiges ComfyUI.' >&2
         echo 'Falls ComfyUI bereits existiert: COMFYUI_ROOT=/absoluter/pfad/ComfyUI setzen (Ordner mit main.py, nicht dessen Elternordner).' >&2
         echo 'Falls nicht installiert: zuerst ComfyUI im Tools-Menue bewusst installieren; dann ComfyUI_GGUF erneut waehlen.' >&2
+        echo 'Im Tools-Menue wird eine separate Basisinstallation oder Source-only-Auswahl angeboten; Standard ist Abbrechen.' >&2
         echo 'Nur Quellcode ohne Integration: COMFYUI_GGUF_MODE=source bash scripts/tools/comfyui_gguf_install.sh' >&2
         echo 'Keine automatische ComfyUI-/PyTorch-/Treiberinstallation oder Datenloeschung.' >&2
         return 1
@@ -227,6 +228,15 @@ comfyui_gguf_main() (
             echo "Modus: $install_mode; ComfyUI: $CG_COMFY; Python: $CG_PYTHON"
             echo "Node-Link: $CG_TARGET -> $CG_SOURCE"
             echo 'Kein Download im Dry-Run. Keine Modelle, Treiber, ComfyUI-/Serverstarts.'; return 0 ;;
+        --check-base)
+            if [[ ! -f "$CG_COMFY/main.py" || ! -d "$CG_COMFY/comfy" || ! -d "$CG_COMFY/custom_nodes" ]]; then
+                cg_comfy_preflight || :
+                # The separate base installer only owns the /opt/comfyui target.
+                [[ "$CG_COMFY" == /opt/comfyui ]] && return 3
+                return 1
+            fi
+            cg_comfy_preflight
+            return $? ;;
         status|--status)
             if cg_installed >/dev/null 2>&1; then echo '{"integrated":true,"inference_tested":false}'; else echo '{"integrated":false,"inference_tested":false}'; fi
             return 0 ;;
@@ -259,7 +269,7 @@ comfyui_gguf_main() (
     flock -n 9 || { echo 'Andere GGUF-Operation aktiv.' >&2; return 1; }
     log="$(mktemp "$CG_LOGS/comfyui_gguf_$(date +%Y%m%d_%H%M%S)_XXXXXX.log")"
     exec > >(tee -a "$log") 2>&1
-    echo "ComfyUI-GGUF-Installer: 2026-10-16-github-custom-node-path-detection; Aktion: $mode; Modus: $install_mode"
+    echo "ComfyUI-GGUF-Installer: 2026-10-19-guided-base-check; Aktion: $mode; Modus: $install_mode"
     trap 'rc=$?; if ((rc != 0)); then echo "GGUF-Fehler ($rc). Quelle/Daten erhalten. Log: $log; nach Behebung --repair verwenden."; fi' EXIT
     if [[ "$mode" == uninstall || "$mode" == --uninstall ]]; then
         cg_deactivate; return 0

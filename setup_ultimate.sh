@@ -49,6 +49,7 @@ fi
 source "$INSTALL_DIR/scripts/lang/common.sh"
 load_setup_language
 source "$INSTALL_DIR/scripts/helpers/native_tool_status.sh"
+source "$INSTALL_DIR/scripts/helpers/comfyui_gguf_dependency.sh"
 
 ensure_user_workspace() {
     ensure_setup_preferences
@@ -3445,6 +3446,8 @@ PY
 # Funktion zum Installieren eines Tools
 install_tool() {
     local TOOL_KEY="$1"
+    local COMFYUI_GGUF_MODE="${COMFYUI_GGUF_MODE:-integrate}"
+    export COMFYUI_GGUF_MODE
     local operation_status="failed"
     local tool_rc=0
     if [ "$TOOL_KEY" = "Huginn" ]; then
@@ -3461,6 +3464,12 @@ install_tool() {
     show_tool_action_intro "$TOOL_KEY" "installieren" "install"
     if ! confirm_heavy_or_experimental_tool "$TOOL_KEY"; then
         operation_status="skipped"
+        handle_manual_tool_post_action "$TOOL_KEY" "Installation" "$operation_status" "${TOOL_BATCH_UPCOMING_PREVIEW:-}"
+        return 1
+    fi
+    if [ "$TOOL_KEY" = ComfyUI_GGUF ] && ! gguf_prepare_dependency; then
+        operation_status="skipped"
+        echo 'GGUF-Voraussetzung nicht bereit oder nicht freigegeben; GGUF-Installer nicht gestartet.'
         handle_manual_tool_post_action "$TOOL_KEY" "Installation" "$operation_status" "${TOOL_BATCH_UPCOMING_PREVIEW:-}"
         return 1
     fi
@@ -3484,7 +3493,11 @@ install_tool() {
             native_tool_sync_status "$TOOL_KEY" "$USER_WORKSPACE_DIR" || tool_rc=$?
         fi
     fi
-    if [ "$TOOL_KEY" = "Qwen_Desktop" ] && [ "$tool_rc" -eq 0 ]; then
+    if [ "$TOOL_KEY" = ComfyUI_GGUF ] && [ "$COMFYUI_GGUF_MODE" = source ] && [ "$tool_rc" -eq 0 ]; then
+        end_operation_measurement "success"
+        operation_status="success"
+        echo 'GGUF-GitHub-Quellen vorbereitet; keine neue aktive Integration registriert. Bestehende Integrationen bleiben erhalten.'
+    elif [ "$TOOL_KEY" = "Qwen_Desktop" ] && [ "$tool_rc" -eq 0 ]; then
         end_operation_measurement "success"
         operation_status="success"
         echo -e "${GREEN}Qwen Desktop: Windows-Installation manuell bestaetigt; kein automatisch gepruefter Installationsstatus.${NC}"
