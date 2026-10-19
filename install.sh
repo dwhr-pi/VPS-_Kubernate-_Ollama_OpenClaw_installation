@@ -258,7 +258,7 @@ apply_install_language() {
             TXT_NO_TTY="Fehler: Kein interaktives Terminal gefunden. Bitte starten Sie das Skript in einer normalen Shell."
             TXT_GIT_NOT_INSTALLED="Git ist nicht installiert. Installiere Git..."
             TXT_GIT_INSTALL_FAILED="Fehler: Git konnte nicht installiert werden. Bitte manuell installieren."
-            TXT_PRIVATE_REPO_QUESTION="Ist Ihr GitHub-Repository privat? (j/N): "
+            TXT_PRIVATE_REPO_QUESTION="Ist Ihr GitHub-Repository privat (J) oder ein Oeffentliches (n)? "
             TXT_PRIVATE_REPO_INFO="Für private Repositories benötigen Sie ein GitHub Personal Access Token (PAT)."
             TXT_PRIVATE_REPO_GUIDE="Anleitung zur Erstellung: docs/PRIVATE_REPO_GUIDE.md im geklonten Repo."
             TXT_PAT_PROMPT="Bitte geben Sie Ihr GitHub Personal Access Token ein: "
