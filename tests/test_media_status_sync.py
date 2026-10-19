@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 BASH = 'C:/Program Files/Git/bin/bash.exe' if os.name == 'nt' else shutil.which('bash')
 REPORTED = ('ChatTTS', 'AudioLDM2', 'AudioGen', 'Moshi', 'MOSS_TTS', 'YuE',
             'ACE_Step_15', 'WhisperX', 'Aegisub', 'Basic_Pitch', 'Sfizz',
-            'AIDA_X', 'Kiwi_Edit', 'VOID_Model', 'Just_Dub_It')
+            'AIDA_X', 'Kiwi_Edit', 'VOID_Model', 'Just_Dub_It', 'Claude_Code', 'Gemini_CLI')
 
 
 @unittest.skipUnless(BASH, 'Bash unavailable')
@@ -70,6 +70,35 @@ for file in "$root/installed_tools.txt" "$root/status/installed_tools.txt"; do
     test "$other" = 1
 done
 test -d "$root/tools/chattts"
+''')
+        self.assertEqual(r.returncode, 0, r.stderr)
+
+    def test_coding_sources_register_in_both_lists_and_deactivate(self):
+        r = self.shell('''
+mkdir -p "$root/tools/claude_code" "$root/tools/gemini_cli/source" "$root/status"
+printf 'Other\\n"Claude_Code"\\r\\nClaude_Code\\nGemini_CLI\\n' > "$root/installed_tools.txt"
+printf 'Other\\n' > "$root/status/installed_tools.txt"
+printf '{"commit":"fixture","runtime_ready":false}\\n' > "$root/tools/claude_code/source-ready.json"
+# An incomplete clone without marker must not count as installed.
+native_tool_sync_all "$root"
+for file in "$root/installed_tools.txt" "$root/status/installed_tools.txt"; do
+    test "$(grep -Fxc Claude_Code "$file")" = 1
+    ! grep -Fxq Gemini_CLI "$file"
+    grep -Fxq Other "$file"
+done
+printf '{"commit":"fixture","runtime_ready":false}\\n' > "$root/tools/gemini_cli/source-ready.json"
+native_tool_sync_status Gemini_CLI "$root"
+for file in "$root/installed_tools.txt" "$root/status/installed_tools.txt"; do
+    test "$(grep -Fxc Gemini_CLI "$file")" = 1
+done
+rm -- "$root/tools/claude_code/source-ready.json" "$root/tools/gemini_cli/source-ready.json"
+native_tool_sync_all "$root"
+for file in "$root/installed_tools.txt" "$root/status/installed_tools.txt"; do
+    ! grep -Fxq Claude_Code "$file"
+    ! grep -Fxq Gemini_CLI "$file"
+    grep -Fxq Other "$file"
+done
+test -d "$root/tools/gemini_cli/source"
 ''')
         self.assertEqual(r.returncode, 0, r.stderr)
 

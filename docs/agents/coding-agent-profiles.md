@@ -90,6 +90,15 @@ unbegrenzte Cloud-Nutzung. Keine Google-Anmeldung oder API-Aufrufe im Installer.
 
 `update` bleibt auf dem Pin. `--repair` verwirft keine lokalen Aenderungen.
 Uninstall entfernt nur `source-ready.json`; Quellen bleiben erhalten.
+Seit 19.10.2026 synchronisiert das Tools-Menue auch `Claude_Code` und
+`Gemini_CLI` anhand ihrer nichtleeren `source-ready.json`-Marker. Bestehende
+Vorbereitungen werden beim naechsten Menueaufruf in beide Setup-Statuslisten
+uebernommen, ohne erneuten Download. Nach Markerentfernung verschwinden die
+Eintraege wieder; blosse Quellordner reichen nicht als Installationsnachweis.
+Der Menuehaken bedeutet hier nur **GitHub-Quellen/Referenzmaterial vorbereitet**,
+nicht CLI gebaut, authentifiziert oder betriebsbereit. Fuer die ausfuehrliche
+Pin-/Quellpruefung den jeweiligen Doctor verwenden. Extern installierte CLIs
+ohne Setup-Marker werden dadurch nicht als setupverwaltet ausgegeben.
 `source_ready` und erfolgreiches Doctor bedeuten nicht lauffaehige CLI.
 Direkte Skriptaufrufe geben Status aus; beim Menueaufruf protokolliert der
 bestehende Setup-Logger. Der neue Helfer gibt Git-stderr bewusst nicht aus,
