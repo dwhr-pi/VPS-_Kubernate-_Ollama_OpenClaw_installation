@@ -32,8 +32,25 @@ Linux x86_64/ARM64, Git, flock und vorhandenes Python 3.10-3.12 mit
 SSL/venv/ensurepip werden vorausgesetzt. Upstream unterstuetzt weitere
 Python-Versionen; unser automatischer Pfad ist bewusst enger. Ubuntu 3.12 passt.
 Alternativ `QWEN3_TTS_PYTHON_BIN=python3.11` vor den Installer setzen.
-Fehlendes venv-Paket separat passend zur Python-Version einrichten;
-kein System-Python-, Treiber- oder apt-Umbau durch diesen Installer.
+Bei fehlendem venv/ensurepip bietet der Installer seit 19.10.2026 das
+versionspassende Ubuntu-Paket an, beispielsweise `python3.12-venv`.
+Abfrage: `[(j)a/(N)ein]`, Standard Nein. Ohne Terminal keine Installation.
+Ausdrueckliches nichtinteraktives Opt-in:
+
+```bash
+QWEN3_TTS_INSTALL_VENV_DEPS=1 bash scripts/tools/qwen3_tts_install.sh --repair
+```
+
+`QWEN3_TTS_INSTALL_VENV_DEPS=0` deaktiviert die Paketinstallation.
+Nur das zum gewaehlten System-Python unter `/usr/bin/python3.X` passende
+Paket wird angeboten. Private Interpreter, aktive venvs und SSL-/Versionsfehler
+erfordern separate Pruefung; es wird kein System-Python ersetzt.
+Speicherpruefung, Sperre und aktuelles Tool-Log kommen vor der Reparatur.
+APT wartet begrenzt auf Paketverwaltungssperren, ohne Sperrdateien zu loeschen.
+Nach der Paketinstallation wird venv/ensurepip erneut geprueft; bei Fehlern
+kein Clone/Build. Qwen3-TTS bleibt aus GitHub, ohne Docker. Die Zustimmung
+gilt nicht fuer Torch, Modelle oder die optionale schwere Laufzeit.
+Vorhandene fremde/beschaedigte venvs werden nicht automatisch geloescht.
 
 Basispaket-Reserve: 1 GiB RAM gesamt, mindestens 512 MiB verfuegbar und
 2 GiB freie Linux-Disk sowie unter WSL soweit messbare Windows-C:-Reserve.

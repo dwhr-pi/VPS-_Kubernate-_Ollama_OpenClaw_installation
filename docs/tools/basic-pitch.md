@@ -31,10 +31,33 @@ Keine weiteren Modellpacks oder Trainingsdaten werden heruntergeladen.
 Quell-/Build-Code ist Fremdcode und muss vor Ausfuehrung geprueft werden.
 
 Normaler Linux-Benutzer, Bash, Git, Python 3.10-3.12, venv/ensurepip/SSL,
-flock, realpath und uebliche GNU-Werkzeuge werden benoetigt. Bei fehlendem
-ensurepip das zur ausgewaehlten Python-Version passende venv-Paket separat
-einrichten. Keine apt-/Docker-/System-Python-Installation durch den Helper.
+flock, realpath und uebliche GNU-Werkzeuge werden benoetigt.
+Keine Docker-Installation oder Ersetzung des System-Python durch den Helper.
 Die Basisinstallation ist noch **nicht fuer Inferenz betriebsbereit**.
+
+### Fehlendes venv/ensurepip reparieren
+
+Seit 19.10.2026 bietet der Installer das versionspassende Ubuntu-Paket an,
+beispielsweise `python3.12-venv`. Abfrage: `[(j)a/(N)ein]`, Standard Nein.
+Ohne Terminal keine Installation; ausdrueckliches nichtinteraktives Opt-in:
+
+```bash
+BASIC_PITCH_INSTALL_VENV_DEPS=1 bash scripts/tools/basic_pitch_install.sh --repair
+```
+
+`BASIC_PITCH_INSTALL_VENV_DEPS=0` deaktiviert die Paketinstallation.
+Nur das zum gewaehlten System-Python unter `/usr/bin/python3.X` passende
+Paket wird angeboten. Private Interpreter, aktive venvs und SSL-/Versionsfehler
+erfordern separate Pruefung; kein System-Python wird ersetzt.
+Speicherpruefung, Sperre und aktuelles Tool-Log kommen vor der Reparatur.
+APT wartet begrenzt auf Paketverwaltungssperren, ohne Sperrdateien zu loeschen.
+Nach Paketinstallation wird venv/ensurepip erneut geprueft; bei Fehlern
+kein Clone/Build. Basic Pitch bleibt aus GitHub, ohne Docker. Die Zustimmung
+gibt keine TensorFlow-Laufzeit oder Audioverarbeitung frei. Die Runtime lehnt
+Python 3.12 weiterhin vor Downloads ab.
+Vorhandene fremde/beschaedigte venvs werden nicht automatisch geloescht.
+Die Workspace-Rollback-Logik bleibt unveraendert; gemeinsam genutzte
+venv-Systempakete werden darueber nicht automatisch entfernt.
 
 ## Optionale Runtime fuer lokale Transkription
 

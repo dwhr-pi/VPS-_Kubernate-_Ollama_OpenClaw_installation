@@ -2,6 +2,79 @@
 
 ## Unreleased
 
+- Claude Code/Gemini CLI: vorhandene source-ready.json-Marker in die zentrale
+  Menue-Statussynchronisierung aufnehmen; beide Statuslisten aktualisieren und
+  nach Deaktivierung bereinigen. Quellvorbereitung bleibt von CLI-Bereitschaft getrennt.
+
+- Embedded Debug HIL: fehlendes ensurepip/venv im aktuellen Tool-Log pruefen
+  und nach Zustimmung das versionspassende Ubuntu-Paket einrichten; APT-
+  Sperrenschutz und Nachpruefung vor Clone, weiterhin keine Hardwareaktionen.
+
+- Just Dub It: fehlendes ensurepip/venv nach separater Zustimmung durch
+  python3.12-venv ergaenzen; APT-Sperrenschutz und Nachpruefung vor GitHub-Clone.
+  Vollstaendige Lizenzanzeige und ausdrueckliche Lizenzannahme bleiben erhalten.
+
+- Kiwi Edit: fehlendes ensurepip/venv nach Zustimmung durch versionspassendes
+  Ubuntu-Paket ergaenzen; APT-Sperrenschutz und Nachpruefung vor GitHub-Clone.
+  Sparse-Checkout, Speicherwache und Workspace-Rollback bleiben unveraendert.
+
+- Basic Pitch: fehlendes ensurepip/venv nach Zustimmung durch versionspassendes
+  Ubuntu-Paket ergaenzen; APT-Sperrenschutz und Nachpruefung vor GitHub-Clone.
+  Runtime-Python-Grenzen, Speicherwache und Workspace-Rollback bleiben erhalten.
+
+- WhisperX: fehlendes ensurepip/venv nach Zustimmung durch versionspassendes
+  Ubuntu-Paket ergaenzen; APT-Sperrenschutz und Nachpruefung vor GitHub-Clone.
+  Workspace-Rollback und getrennte Runtime-Freigabe bleiben unveraendert.
+
+- ACE-Step 1.5: fehlendes ensurepip/venv nach Zustimmung durch versionspassendes
+  Ubuntu-Paket fuer Python 3.11/3.12 ergaenzen; APT-Sperrenschutz und Nachpruefung
+  vor GitHub-Clone, unveraenderte Workspace-Rollback- und GPU-Schutzlogik.
+
+- MOSS-TTS: fehlendes ensurepip/venv nach Zustimmung durch versionspassendes
+  Ubuntu-Paket ergaenzen; APT-Sperrenschutz und Nachpruefung vor GitHub-Clone.
+  Keine GPU-Runtime-/Modellfreigabe oder System-Python-Ersetzung.
+
+- Moshi: fehlendes ensurepip/venv nach Zustimmung durch versionspassendes
+  Ubuntu-Paket ergaenzen; APT-Sperrenschutz und Nachpruefung vor GitHub-Clone.
+  Keine GPU-Runtime-/Modellfreigabe oder System-Python-Ersetzung.
+
+- AudioGen: fehlendes ensurepip/venv nach Zustimmung durch versionspassendes
+  Ubuntu-Paket ergaenzen; APT-Sperrenschutz und Nachpruefung vor GitHub-Clone.
+  AudioCraft-Legacy-Runtime bleibt gesperrt, kein System-Python-Tausch.
+
+- AudioLDM2: fehlendes ensurepip/venv nach Zustimmung durch versionspassendes
+  Ubuntu-Paket ergaenzen; APT-Sperrenschutz und Nachpruefung vor GitHub-Clone.
+  Legacy-Runtime bleibt gesperrt, kein System-Python-Tausch oder Modellstart.
+
+- ChatTTS: fehlendes ensurepip/venv nach Zustimmung durch versionspassendes
+  Ubuntu-Paket ergaenzen; APT-Sperrenschutz und Nachpruefung vor GitHub-Clone.
+  Keine automatische schwere Laufzeit, Modelle oder System-Python-Ersetzung.
+
+- Qwen3-TTS: versionspassendes Ubuntu-venv-Paket bei fehlendem ensurepip nach
+  Zustimmung anbieten; APT-Sperrenschutz und erneute Modulpruefung vor Clone.
+  GitHub-Pin, private venv und getrennte Freigabe schwerer Laufzeit bleiben erhalten.
+
+- Alexandria Audiobook: fehlendes ensurepip/venv nach Zustimmung durch das
+  versionspassende Ubuntu-Paket ergaenzen; aktuelle Logs, APT-Sperrenschutz
+  und erneute Pruefung vor GitHub-Clone. Keine Docker-/Modellinstallation.
+
+- Veo API SDK: versionspassendes Ubuntu-venv-Paket bei fehlendem ensurepip
+  nach Zustimmung anbieten; APT-Sperrenschutz, aktuelles Log und erneute
+  Modulpruefung vor Clone/Build. Kein System-Python-Tausch oder Videojob.
+
+- Fal Client: fehlendes venv/ensurepip nach ausdruecklicher Zustimmung durch
+  versionspassendes Ubuntu-Systempaket ergaenzen; APT-Sperrenschutz und erneute
+  Importpruefung vor GitHub-Clone, kein System-Python-Tausch oder Cloud-Aufruf.
+
+- SD.Next: fehlendes ensurepip/venv vor dem Clone erkennen und nach expliziter
+  Zustimmung das versionspassende Ubuntu-venv-Paket mit APT-Sperrenschutz
+  einrichten; Python-Pruefung im aktuellen Tool-Log, kein System-Python-Tausch.
+
+- Installationslogs vor Speicherplatz-Vorpruefung erstellen; Abbruchgrund und
+  Messwerte dem aktuellen Versuch zuordnen, Installer-Ausgabe anhaengen.
+  Kein Rueckgriff auf alte Logs; Schreibfehler/volle Log-Datentraeger sichtbar
+  melden. DeepFilterNet-Doku zum Erhalt gemeinsam genutzter Basiswerkzeuge.
+
 - ComfyUI_GGUF: gefuehrter Menue-Schritt bei fehlender ComfyUI-Basis mit
   expliziter separater Basisinstallation, Source-only oder Abbruch (Standard).
   Lokaler Basischeck und erneute Pruefung; keine stille schwere Installation.

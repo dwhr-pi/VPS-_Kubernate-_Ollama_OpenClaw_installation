@@ -41,8 +41,25 @@ Fuer ein anderes vorhandenes Python:
 AUDIOLDM2_PYTHON_BIN=python3.11 bash scripts/tools/audioldm2_install.sh
 ```
 
-Fehlendes venv-Paket separat passend zur Version einrichten. Kein
-automatisches apt/sudo oder Ersetzen des System-Python.
+Bei fehlendem venv/ensurepip bietet der Installer seit 19.10.2026 das
+versionspassende Ubuntu-Paket an, beispielsweise `python3.12-venv`.
+Abfrage: `[(j)a/(N)ein]`, Standard Nein. Ohne Terminal keine Installation.
+Ausdrueckliches nichtinteraktives Opt-in:
+
+```bash
+AUDIOLDM2_INSTALL_VENV_DEPS=1 bash scripts/tools/audioldm2_install.sh --repair
+```
+
+`AUDIOLDM2_INSTALL_VENV_DEPS=0` deaktiviert die Paketinstallation.
+Nur das zum gewaehlten System-Python unter `/usr/bin/python3.X` passende
+Paket wird angeboten. Private Interpreter, aktive venvs und SSL-/Versionsfehler
+erfordern separate Pruefung; kein System-Python wird ersetzt.
+Speicherpruefung, Sperre und aktuelles Tool-Log kommen vor der Reparatur.
+APT wartet begrenzt auf Paketverwaltungssperren, ohne Sperrdateien zu loeschen.
+Nach Paketinstallation wird venv/ensurepip erneut geprueft; bei Fehlern
+kein Clone/Build. AudioLDM2 bleibt aus GitHub, ohne Docker. Die Zustimmung
+hebt die Sperre der Legacy-Runtime nicht auf und startet keine Modelle.
+
 Reserve: 1 GiB RAM gesamt, 512 MiB aktuell verfuegbar, 2 GiB freie Disk
 und unter WSL soweit messbare Windows-C:-Reserve. Das ist kein Modellbudget.
 Lock/Logs und Vorher-/Nachher-Diskmessung sind integriert. Dry-Run ohne

@@ -50,6 +50,7 @@ source "$INSTALL_DIR/scripts/lang/common.sh"
 load_setup_language
 source "$INSTALL_DIR/scripts/helpers/native_tool_status.sh"
 source "$INSTALL_DIR/scripts/helpers/comfyui_gguf_dependency.sh"
+source "$INSTALL_DIR/scripts/helpers/operation_log.sh"
 
 ensure_user_workspace() {
     ensure_setup_preferences
@@ -1023,10 +1024,11 @@ begin_operation_measurement() {
     ensure_user_workspace
     ACTIVE_OPERATION_ID="$1"
     ACTIVE_OPERATION_TITLE="$2"
+    start_operation_log "$ACTIVE_OPERATION_ID" || return 1
     ACTIVE_OPERATION_STARTED_AT="$(date +%s)"
     ACTIVE_OPERATION_FREE_KB_BEFORE="$(get_free_disk_kb)"
-    echo -e "${YELLOW}Freier WSL-/Linux-Dateisystemspeicher vor Start:${NC} $(format_kb_human "${ACTIVE_OPERATION_FREE_KB_BEFORE:-0}")"
-    show_wsl_windows_space_warning
+    append_operation_note "Freier WSL-/Linux-Dateisystemspeicher vor Start: $(format_kb_human "${ACTIVE_OPERATION_FREE_KB_BEFORE:-0}")" || return 1
+    capture_operation_output show_wsl_windows_space_warning
 }
 
 end_operation_measurement() {
@@ -1048,6 +1050,7 @@ end_operation_measurement() {
     ACTIVE_OPERATION_FREE_KB_BEFORE="${ACTIVE_OPERATION_FREE_KB_BEFORE:-$free_kb_after}"
     duration_seconds=$((ended_at - ACTIVE_OPERATION_STARTED_AT))
     delta_kb=$((ACTIVE_OPERATION_FREE_KB_BEFORE - free_kb_after))
+    append_operation_note "Ergebnis: Status=$operation_status; Dauer=${duration_seconds}s; Linux-frei-vorher-KiB=${ACTIVE_OPERATION_FREE_KB_BEFORE}; Linux-frei-nachher-KiB=$free_kb_after" || true
 
     printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n' \
         "$(date '+%Y-%m-%d %H:%M:%S')" \
@@ -1393,19 +1396,15 @@ run_bash_script() {
     local script_path="$1"
     shift || true
     local script_rc
-    local operation_slug
-    local timestamp_slug
-
-    if [ ! -f "$script_path" ]; then
-        echo -e "${RED}Fehler: Skript nicht gefunden: $script_path${NC}"
-        return 1
+    ensure_user_workspace
+    if [ -z "${ACTIVE_OPERATION_STARTED_AT:-}" ] || [ -z "${ACTIVE_OPERATION_LOG_FILE:-}" ] || [ ! -f "$ACTIVE_OPERATION_LOG_FILE" ]; then
+        start_operation_log "${ACTIVE_OPERATION_ID:-$(basename "$script_path" .sh)}" || return 1
     fi
 
-    ensure_user_workspace
-    operation_slug="$(printf '%s' "${ACTIVE_OPERATION_ID:-$(basename "$script_path" .sh)}" | tr -cs '[:alnum:]_.-' '_')"
-    timestamp_slug="$(date +%Y%m%d_%H%M%S)"
-    ACTIVE_OPERATION_LOG_FILE="$USER_INSTALL_LOG_DIR/${timestamp_slug}_${operation_slug}.log"
-    mkdir -p "$USER_INSTALL_LOG_DIR"
+    if [ ! -f "$script_path" ]; then
+        append_operation_note "Fehler: Skript nicht gefunden: $script_path" || true
+        return 1
+    fi
 
     if is_preference_enabled "${INSTALL_MONITORING_VERBOSE:-false}" || is_preference_enabled "${INSTALL_MONITORING_MANUAL_FLOW:-false}"; then
         echo -e "${YELLOW}Erweiterte Installationsüberwachung ist aktiv.${NC}"
@@ -1413,8 +1412,8 @@ run_bash_script() {
     else
         echo -e "${YELLOW}Installationsprotokoll:${NC} ${ACTIVE_OPERATION_LOG_FILE}"
     fi
-    bash "$script_path" "$@" 2>&1 | tee "$ACTIVE_OPERATION_LOG_FILE"
-    script_rc=${PIPESTATUS[0]}
+    script_rc=0
+    capture_operation_output bash "$script_path" "$@" || script_rc=$?
 
     reset_terminal_display
     return $script_rc
@@ -1751,7 +1750,8 @@ resolve_install_log_file() {
         return 0
     fi
 
-    find_latest_install_log_file
+    # Historical logs remain available only through the explicit log-history menu.
+    return 0
 }
 
 show_install_log_tail_now() {
@@ -3446,10 +3446,13 @@ PY
 # Funktion zum Installieren eines Tools
 install_tool() {
     local TOOL_KEY="$1"
+    LAST_OPERATION_LOG_FILE=""
+    ACTIVE_OPERATION_LOG_FILE=""
     local COMFYUI_GGUF_MODE="${COMFYUI_GGUF_MODE:-integrate}"
     export COMFYUI_GGUF_MODE
     local operation_status="failed"
     local tool_rc=0
+    local storage_rc=0
     if [ "$TOOL_KEY" = "Huginn" ]; then
         reset_terminal_display
         echo -e "${YELLOW}Huginn Vorbereitung: Zuerst Version und Datenbank auswählen, danach startet die Installation.${NC}"
@@ -3474,11 +3477,17 @@ install_tool() {
         return 1
     fi
     maybe_cleanup_logs_before_operation
-    begin_operation_measurement "tool_install_${TOOL_KEY}" "Tool installieren: ${TOOL_KEY}"
+    begin_operation_measurement "tool_install_${TOOL_KEY}" "Tool installieren: ${TOOL_KEY}" || return 1
     echo -e "${BLUE}Installiere Tool: ${TOOL_KEY}...${NC}"
-    if ! preflight_tool_install_storage "$TOOL_KEY"; then
+    capture_operation_output preflight_tool_install_storage "$TOOL_KEY" || storage_rc=$?
+    if [ "$storage_rc" -ne 0 ]; then
+        if [ "$storage_rc" -eq 74 ]; then
+            append_operation_note "Installation $TOOL_KEY abgebrochen: aktuelle Logdatei nicht vollstaendig beschreibbar. Kein Tool-Installer gestartet." || true
+        else
+            append_operation_note "Installation $TOOL_KEY abgebrochen: Speicherplatzmangel laut Vorpruefung. Kein Tool-Installer gestartet; keine Deinstallation/Bereinigung ausgefuehrt." || true
+        fi
         end_operation_measurement "failed"
-        echo -e "${RED}Tool '${TOOL_KEY}' wurde vor dem Start wegen zu wenig freiem Speicher nicht installiert.${NC}"
+        echo -e "${RED}Tool '${TOOL_KEY}' wurde vor dem Start wegen fehlendem Speicher oder fehlgeschlagener Protokollierung nicht installiert; Details siehe aktuelle Meldungen.${NC}"
         echo -e "${YELLOW}Kein Installer gestartet: nichts zurueckzurollen. Bereits installierte Tools bleiben unveraendert.${NC}"
         handle_manual_tool_post_action "$TOOL_KEY" "Installation" "$operation_status" "${TOOL_BATCH_UPCOMING_PREVIEW:-}"
         return 1

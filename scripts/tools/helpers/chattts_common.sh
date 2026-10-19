@@ -132,10 +132,60 @@ ct_resources() {
     REQUIRE_WINDOWS_HOST_FREE_MB=2048 require_disk_mb 2048 "$mount"
 }
 
+ct_python_core_ok() {
+    "$CT_PYTHON" -I -B -c 'import sys, ssl; assert (3,10) <= sys.version_info < (3,13)'
+}
+
+ct_python_venv_ok() {
+    "$CT_PYTHON" -I -B -c 'import venv, ensurepip' >/dev/null 2>&1
+}
+
+ct_venv_package() {
+    "$CT_PYTHON" -I -B - <<'PY'
+from pathlib import Path
+import sys
+expected = Path('/usr/bin/python%d.%d' % sys.version_info[:2])
+assert sys.prefix == sys.base_prefix, 'Keine Paket-Reparatur innerhalb einer venv'
+assert Path(sys.executable).resolve() == expected.resolve(), 'Kein Ubuntu-Systeminterpreter'
+assert (3, 10) <= sys.version_info < (3, 13)
+print('python%d.%d-venv' % sys.version_info[:2])
+PY
+}
+
+ct_install_venv_package() {
+    # shellcheck source=../../lib/apt_lock_wait.sh
+    source "$CT_ROOT/scripts/lib/apt_lock_wait.sh"
+    run_apt_with_lock_wait update || return 1
+    run_apt_with_lock_wait install -y --no-install-recommends "$1"
+}
+
 ct_prepare_python() {
-    "$CT_PYTHON" -I -B -c 'import venv, ensurepip, ssl' || {
-        echo 'venv/ensurepip/SSL fehlt. Zum ausgewaehlten Python passendes venv-Paket separat einrichten, dann --repair; kein System-Python ersetzt.' >&2; return 1;
+    local package answer='' policy="${CHATTTS_INSTALL_VENV_DEPS:-ask}"
+    ct_python_core_ok || { echo 'ChatTTS: Python 3.10-3.12 mit SSL erforderlich; CHATTTS_PYTHON_BIN pruefen.' >&2; return 1; }
+    ct_python_venv_ok && return 0
+    echo 'ChatTTS: Dem gewaehlten Python fehlt venv/ensurepip.'
+    package="$(ct_venv_package)" || {
+        echo 'Privates/fremdes Python: dessen venv/ensurepip separat reparieren oder CHATTTS_PYTHON_BIN passend setzen; kein System-Python ersetzt.' >&2; return 1;
     }
+    command -v apt-get >/dev/null && command -v sudo >/dev/null || {
+        echo "Keine apt/sudo-Reparatur verfuegbar. $package separat einrichten." >&2; return 1;
+    }
+    echo "Notwendiges Systempaket: $package. ChatTTS selbst bleibt aus GitHub, ohne Docker."
+    case "$policy" in
+        1) ;;
+        ask)
+            if [[ -t 0 ]]; then
+                read -r -p "$package mit sudo installieren? [(j)a/(N)ein]: " answer || answer=''
+            fi
+            [[ "$answer" == j || "$answer" == J ]] || {
+                echo 'Nicht installiert. Nach Zustimmung CHATTTS_INSTALL_VENV_DEPS=1 mit --repair verwenden.' >&2; return 1;
+            } ;;
+        0) echo 'Installation von venv-Systempaketen deaktiviert.' >&2; return 1 ;;
+        *) echo 'CHATTTS_INSTALL_VENV_DEPS: nur ask, 0 oder 1 erlaubt.' >&2; return 2 ;;
+    esac
+    ct_install_venv_package "$package" || { echo "Installation von $package fehlgeschlagen; kein Clone/Build." >&2; return 1; }
+    ct_python_venv_ok || { echo "venv/ensurepip fehlt weiterhin fuer $CT_PYTHON; kein Clone/Build." >&2; return 1; }
+    echo 'venv/ensurepip verfuegbar; kein System-Python ersetzt.'
 }
 
 ct_fetch() {
@@ -229,10 +279,10 @@ chattts_main() (
     flock -n 9 || { echo 'Andere ChatTTS-Operation aktiv.' >&2; return 1; }
     log="$(mktemp "$CT_LOGS/chattts_$(date +%Y%m%d_%H%M%S)_XXXXXX.log")"
     exec > >(tee -a "$log") 2>&1
-    echo "ChatTTS-Installer: 2026-10-16-github-base-package; Aktion: $mode; Pin: $CT_COMMIT"
+    echo "ChatTTS-Installer: 2026-10-19-venv-dependency-repair; Aktion: $mode; Pin: $CT_COMMIT"
     trap 'rc=$?; if ((rc != 0)); then echo "ChatTTS-Fehler ($rc); Dateien erhalten. Log: $log. Nach Behebung --repair verwenden."; fi' EXIT
     if [[ "$mode" == uninstall || "$mode" == --uninstall ]]; then ct_deactivate; return 0; fi
-    ct_prepare_python
+    ct_prepare_python || return 1
     ct_fetch
     df -Pk "$CT_BASE"
     ct_install_package

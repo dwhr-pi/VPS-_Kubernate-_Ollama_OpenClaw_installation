@@ -31,6 +31,27 @@ venv/ensurepip/SSL wird fuer diesen Basisweg akzeptiert; Ubuntu 24.04 mit
 Python 3.12 passt. Bei Bedarf `MOSS_TTS_PYTHON_BIN=/pfad/zum/python` setzen.
 Keine Umgehung von Python-Anforderungen, kein System-Python-Austausch.
 
+### Fehlendes venv/ensurepip reparieren
+
+Seit 19.10.2026 bietet der Installer das versionspassende Ubuntu-Paket an,
+beispielsweise `python3.12-venv`. Abfrage: `[(j)a/(N)ein]`, Standard Nein.
+Ohne Terminal keine Installation; ausdrueckliches nichtinteraktives Opt-in:
+
+```bash
+MOSS_TTS_INSTALL_VENV_DEPS=1 bash scripts/tools/moss_tts_install.sh --repair
+```
+
+`MOSS_TTS_INSTALL_VENV_DEPS=0` deaktiviert die Paketinstallation.
+Nur das zum gewaehlten System-Python unter `/usr/bin/python3.X` passende
+Paket wird angeboten. Private Interpreter, aktive venvs und SSL-/Versionsfehler
+erfordern separate Pruefung; kein System-Python wird ersetzt.
+Speicherpruefung, Sperre und aktuelles Tool-Log kommen vor der Reparatur.
+APT wartet begrenzt auf Paketverwaltungssperren, ohne Sperrdateien zu loeschen.
+Nach Paketinstallation wird venv/ensurepip erneut geprueft; bei Fehlern
+kein Clone/Build. MOSS-TTS bleibt aus GitHub, ohne Docker. Die Zustimmung
+gibt keine GPU-Runtime, Submodule, Modelle oder Dienste frei.
+Vorhandene fremde/beschaedigte venvs werden nicht automatisch geloescht.
+
 Voraussetzungen: Linux x86_64/ARM64, normaler Benutzer, Git, Bash, flock,
 realpath. Konservative Basisreserve: 1 GiB Gesamt-RAM, 512 MiB aktuell frei,
 2 GiB freie Disk und unter messbarem WSL-Host 2 GiB Windows-Host-Reserve.

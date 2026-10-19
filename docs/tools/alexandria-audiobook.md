@@ -47,9 +47,26 @@ Ubuntu-Python 3.12 passt zur Vorbereitung. Alternativ bewusst:
 ALEXANDRIA_PYTHON_BIN=python3.11 bash scripts/tools/alexandria_audiobook_install.sh
 ```
 
-Fehlendes venv/ensurepip ueber das zur Python-Version passende Ubuntu-venv-Paket
-separat einrichten. Kein System-Python wird ersetzt; fremde/beschaedigte
-Checkouts oder venvs erst sichern und pruefen, nichts wird automatisch geloescht.
+Bei fehlendem venv/ensurepip bietet der Installer seit 19.10.2026 das
+versionspassende Ubuntu-Paket an, beispielsweise `python3.12-venv`.
+Abfrage: `[(j)a/(N)ein]`, Standard Nein. Ohne Terminal keine Installation.
+Ausdrueckliches nichtinteraktives Opt-in:
+
+```bash
+ALEXANDRIA_INSTALL_VENV_DEPS=1 bash scripts/tools/alexandria_audiobook_install.sh --repair
+```
+
+`ALEXANDRIA_INSTALL_VENV_DEPS=0` deaktiviert diese Paketinstallation.
+Nur das gewaehlte System-Python unter `/usr/bin/python3.X` wird so ergaenzt;
+private Interpreter und aktive venvs muessen separat repariert werden.
+SSL- und Versionsfehler werden nicht durch ein venv-Paket kaschiert.
+Speicherpruefung, Installationssperre und aktuelles Tool-Log kommen vorher.
+APT wartet begrenzt auf Paketverwaltungssperren, ohne Sperrdateien zu loeschen.
+Nach Paketinstallation wird venv/ensurepip erneut geprueft; bei Fehlern kein
+Clone/Build. APT dient nur dieser Systemvoraussetzung. Alexandria bleibt am
+GitHub-Pin, ohne Docker, automatische Modelle oder GPU-Pakete.
+Kein System-Python wird ersetzt; fremde/beschaedigte Checkouts oder venvs
+erst sichern und pruefen, nichts wird automatisch geloescht.
 
 ## 2. GPU-Laufzeit separat einrichten
 

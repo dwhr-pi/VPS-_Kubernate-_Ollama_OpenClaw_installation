@@ -91,6 +91,62 @@ PY
     "$AA_VENV/bin/python" -I -B -c 'import sys, ssl, ensurepip; assert (3,10) <= sys.version_info < (3,13); assert sys.prefix != sys.base_prefix'
 }
 
+aa_python_core_ok() {
+    "$AA_PYTHON" -I -B -c 'import sys, ssl; assert (3,10) <= sys.version_info < (3,13)'
+}
+
+aa_python_venv_ok() {
+    "$AA_PYTHON" -I -B -c 'import venv, ensurepip' >/dev/null 2>&1
+}
+
+aa_venv_package() {
+    "$AA_PYTHON" -I -B - <<'PY'
+from pathlib import Path
+import sys
+expected = Path('/usr/bin/python%d.%d' % sys.version_info[:2])
+assert sys.prefix == sys.base_prefix, 'Keine Paket-Reparatur innerhalb einer venv'
+assert Path(sys.executable).resolve() == expected.resolve(), 'Kein Ubuntu-Systeminterpreter'
+assert (3, 10) <= sys.version_info < (3, 13)
+print('python%d.%d-venv' % sys.version_info[:2])
+PY
+}
+
+aa_install_venv_package() {
+    # shellcheck source=../../lib/apt_lock_wait.sh
+    source "$AA_ROOT/scripts/lib/apt_lock_wait.sh"
+    run_apt_with_lock_wait update || return 1
+    run_apt_with_lock_wait install -y --no-install-recommends "$1"
+}
+
+aa_prepare_python() {
+    local package answer='' policy="${ALEXANDRIA_INSTALL_VENV_DEPS:-ask}"
+    aa_python_core_ok || { echo 'Alexandria: Python 3.10-3.12 mit SSL erforderlich; ALEXANDRIA_PYTHON_BIN pruefen.' >&2; return 1; }
+    aa_python_venv_ok && return 0
+    echo 'Alexandria: Dem gewaehlten Python fehlt venv/ensurepip.'
+    package="$(aa_venv_package)" || {
+        echo 'Privates/fremdes Python: dessen venv/ensurepip separat reparieren oder ALEXANDRIA_PYTHON_BIN passend setzen; kein System-Python ersetzt.' >&2; return 1;
+    }
+    command -v apt-get >/dev/null && command -v sudo >/dev/null || {
+        echo "Keine apt/sudo-Reparatur verfuegbar. $package separat einrichten." >&2; return 1;
+    }
+    echo "Notwendiges Systempaket: $package. Alexandria selbst bleibt aus GitHub, ohne Docker."
+    case "$policy" in
+        1) ;;
+        ask)
+            if [[ -t 0 ]]; then
+                read -r -p "$package mit sudo installieren? [(j)a/(N)ein]: " answer || answer=''
+            fi
+            [[ "$answer" == j || "$answer" == J ]] || {
+                echo 'Nicht installiert. Nach Zustimmung ALEXANDRIA_INSTALL_VENV_DEPS=1 mit --repair verwenden.' >&2; return 1;
+            } ;;
+        0) echo 'Installation von venv-Systempaketen deaktiviert.' >&2; return 1 ;;
+        *) echo 'ALEXANDRIA_INSTALL_VENV_DEPS: nur ask, 0 oder 1 erlaubt.' >&2; return 2 ;;
+    esac
+    aa_install_venv_package "$package" || { echo "Installation von $package fehlgeschlagen; kein Clone/Build." >&2; return 1; }
+    aa_python_venv_ok || { echo "venv/ensurepip fehlt weiterhin fuer $AA_PYTHON; kein Clone/Build." >&2; return 1; }
+    echo 'venv/ensurepip verfuegbar; kein System-Python ersetzt.'
+}
+
 aa_fetch() {
     if [[ -e "$AA_SOURCE" ]]; then
         aa_source_ok || { echo 'Alexandria-Quelle fremd/unvollstaendig/veraendert oder voller Checkout; manuell sichern. Kein Reset/Loeschen.' >&2; return 1; }
@@ -144,9 +200,6 @@ alexandria_audiobook_main() (
     [[ "$(uname -s)" == Linux && "$EUID" != 0 ]] || { echo 'Als normaler Linux-Benutzer ohne sudo aufrufen.' >&2; return 1; }
     for program in git "$AA_PYTHON" flock; do command -v "$program" >/dev/null || { echo "Alexandria: $program fehlt; Basis separat einrichten." >&2; return 1; }; done
     if [[ "$mode" != uninstall && "$mode" != --uninstall ]]; then
-        "$AA_PYTHON" -I -B -c 'import sys, venv, ensurepip, ssl; assert (3,10) <= sys.version_info < (3,13)' || {
-            echo 'Alexandria: vorhandenes Python 3.10-3.12 mit venv/ensurepip verwenden. ALEXANDRIA_PYTHON_BIN setzen; kein System-Python-Umbau.' >&2; return 1;
-        }
         mount="$AA_BASE"
         while [[ ! -d "$mount" ]]; do mount="${mount%/*}"; [[ -n "$mount" ]] || mount=/; done
         # shellcheck source=../../lib/resource_check.sh
@@ -158,9 +211,10 @@ alexandria_audiobook_main() (
     flock -n 9 || { echo 'Andere Alexandria-Operation aktiv.' >&2; return 1; }
     log="$(mktemp "$AA_LOGS/alexandria_audiobook_$(date +%Y%m%d_%H%M%S)_XXXXXX.log")"
     exec > >(tee -a "$log") 2>&1
-    echo "Alexandria-Installer: 2026-10-16-github-sparse-source-venv; Aktion: $mode; Pin: $AA_COMMIT"
+    echo "Alexandria-Installer: 2026-10-19-venv-dependency-repair; Aktion: $mode; Pin: $AA_COMMIT"
     trap 'rc=$?; if ((rc != 0)); then echo "Alexandria-Fehler ($rc); Dateien erhalten. Log: $log. Nach Pruefung --repair verwenden."; fi' EXIT
     if [[ "$mode" == uninstall || "$mode" == --uninstall ]]; then aa_deactivate; return 0; fi
+    aa_prepare_python || return 1
     df -Pk "$AA_BASE"
     aa_fetch
     df -Pk "$AA_BASE"

@@ -45,7 +45,8 @@ Distribution, Version, lokalen Quellursprung und `pip check`, ohne
 - Normaler Linux-Benutzer; automatischer Wheel-Pfad fuer x86_64 oder ARM64.
 - Vorhandenes Python 3.10-3.13 mit SSL, venv und ensurepip. Upstream
   unterstuetzt weitere Versionen; unser automatischer Pfad ist bewusst enger.
-- Git, flock und Coreutils; keine automatische Systempaket-/Docker-Installation.
+- Git, flock und Coreutils; keine Docker-Installation. Fehlende venv-Systempakete
+  nur nach ausdruecklicher Zustimmung, siehe unten.
 - 1 GiB RAM gesamt, mindestens 512 MiB verfuegbar, 2 GiB freie Linux-Disk
   und unter WSL soweit messbar 2 GiB Windows-C:-Reserve.
 
@@ -55,8 +56,25 @@ Ubuntu-Python 3.12 passt. Einen anderen vorhandenen Interpreter bewusst waehlen:
 VEO_API_PYTHON_BIN=python3.11 bash scripts/tools/veo_api_install.sh
 ```
 
-Fehlendes venv/ensurepip erfordert das zur Python-Version passende
-Ubuntu-venv-Paket, separat eingerichtet. Das Setup ersetzt kein System-Python.
+Fehlendes venv/ensurepip bietet der Installer seit 19.10.2026 als gezielte
+Reparatur an, beispielsweise `python3.12-venv`. Abfrage: `[(j)a/(N)ein]`,
+Standard Nein. Ohne Terminal keine Installation; ausdrueckliches Opt-in:
+
+```bash
+VEO_API_INSTALL_VENV_DEPS=1 bash scripts/tools/veo_api_install.sh --repair
+```
+
+`VEO_API_INSTALL_VENV_DEPS=0` sperrt die Paketinstallation. Nur das zum
+ausgewaehlten System-Python unter `/usr/bin/python3.X` passende Paket wird
+angeboten. Private Interpreter, aktive venvs sowie SSL-/Versionsfehler werden
+nicht durch Installation eines fremden venv-Pakets repariert.
+Ressourcenpruefung, Sperre und aktuelles Tool-Log kommen vor der Reparatur.
+APT wartet begrenzt auf Paketverwaltungssperren; keine Sperrdateien werden
+geloescht. Paket- oder Nachpruefungsfehler stoppen vor Clone/Build.
+Das Setup ersetzt kein System-Python; Quellen und bestehende venvs werden
+nicht automatisch geloescht. APT dient nur der Systemvoraussetzung, das SDK
+kommt weiterhin aus GitHub. Keine Google-API-Abfragen, Uploads oder Videojobs.
+
 Fehlende Wheels fuehren zum Abbruch, nicht zum ungefragten nativen Grossbuild.
 MiniPC, RPi5 und Oracle VPS koennen als Clienthost dienen, sofern die
 Python-/Wheel-Voraussetzungen passen. RTX-Workstation/Dual-Xeon haben keinen

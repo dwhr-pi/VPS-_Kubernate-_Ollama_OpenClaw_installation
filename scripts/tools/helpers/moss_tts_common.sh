@@ -89,10 +89,60 @@ mt_resources() {
     REQUIRE_WINDOWS_HOST_FREE_MB=2048 require_disk_mb 2048 "$mount"
 }
 
+mt_python_core_ok() {
+    "$MT_PYTHON" -I -B -c 'import sys, ssl; assert (3,10) <= sys.version_info < (3,13)'
+}
+
+mt_python_venv_ok() {
+    "$MT_PYTHON" -I -B -c 'import venv, ensurepip' >/dev/null 2>&1
+}
+
+mt_venv_package() {
+    "$MT_PYTHON" -I -B - <<'PY'
+from pathlib import Path
+import sys
+expected = Path('/usr/bin/python%d.%d' % sys.version_info[:2])
+assert sys.prefix == sys.base_prefix, 'Keine Paket-Reparatur innerhalb einer venv'
+assert Path(sys.executable).resolve() == expected.resolve(), 'Kein Ubuntu-Systeminterpreter'
+assert (3, 10) <= sys.version_info < (3, 13)
+print('python%d.%d-venv' % sys.version_info[:2])
+PY
+}
+
+mt_install_venv_package() {
+    # shellcheck source=../../lib/apt_lock_wait.sh
+    source "$MT_ROOT/scripts/lib/apt_lock_wait.sh"
+    run_apt_with_lock_wait update || return 1
+    run_apt_with_lock_wait install -y --no-install-recommends "$1"
+}
+
 mt_prepare_python() {
-    "$MT_PYTHON" -I -B -c 'import venv, ensurepip, ssl' || {
-        echo 'venv/ensurepip/SSL fehlt. Zum ausgewaehlten Python passendes venv-Paket separat einrichten, dann --repair; kein System-Python ersetzt.' >&2; return 1;
+    local package answer='' policy="${MOSS_TTS_INSTALL_VENV_DEPS:-ask}"
+    mt_python_core_ok || { echo 'MOSS-TTS: Python 3.10-3.12 mit SSL erforderlich; MOSS_TTS_PYTHON_BIN pruefen.' >&2; return 1; }
+    mt_python_venv_ok && return 0
+    echo 'MOSS-TTS: Dem gewaehlten Python fehlt venv/ensurepip.'
+    package="$(mt_venv_package)" || {
+        echo 'Privates/fremdes Python: dessen venv/ensurepip separat reparieren oder MOSS_TTS_PYTHON_BIN passend setzen; kein System-Python ersetzt.' >&2; return 1;
     }
+    command -v apt-get >/dev/null && command -v sudo >/dev/null || {
+        echo "Keine apt/sudo-Reparatur verfuegbar. $package separat einrichten." >&2; return 1;
+    }
+    echo "Notwendiges Systempaket: $package. MOSS-TTS selbst bleibt aus GitHub, ohne Docker."
+    case "$policy" in
+        1) ;;
+        ask)
+            if [[ -t 0 ]]; then
+                read -r -p "$package mit sudo installieren? [(j)a/(N)ein]: " answer || answer=''
+            fi
+            [[ "$answer" == j || "$answer" == J ]] || {
+                echo 'Nicht installiert. Nach Zustimmung MOSS_TTS_INSTALL_VENV_DEPS=1 mit --repair verwenden.' >&2; return 1;
+            } ;;
+        0) echo 'Installation von venv-Systempaketen deaktiviert.' >&2; return 1 ;;
+        *) echo 'MOSS_TTS_INSTALL_VENV_DEPS: nur ask, 0 oder 1 erlaubt.' >&2; return 2 ;;
+    esac
+    mt_install_venv_package "$package" || { echo "Installation von $package fehlgeschlagen; kein Clone/Build." >&2; return 1; }
+    mt_python_venv_ok || { echo "venv/ensurepip fehlt weiterhin fuer $MT_PYTHON; kein Clone/Build." >&2; return 1; }
+    echo 'venv/ensurepip verfuegbar; kein System-Python ersetzt.'
 }
 
 mt_fetch() {
@@ -168,10 +218,10 @@ moss_tts_main() (
     flock -n 9 || { echo 'Andere MOSS-TTS-Operation aktiv.' >&2; return 1; }
     log="$(mktemp "$MT_LOGS/moss_tts_$(date +%Y%m%d_%H%M%S)_XXXXXX.log")"
     exec > >(tee -a "$log") 2>&1
-    echo "MOSS-TTS-Installer: 2026-10-16-github-base-package; Aktion: $mode; Pin: $MT_COMMIT"
+    echo "MOSS-TTS-Installer: 2026-10-19-venv-dependency-repair; Aktion: $mode; Pin: $MT_COMMIT"
     trap 'rc=$?; if ((rc != 0)); then echo "MOSS-TTS-Fehler ($rc); Dateien erhalten. Log: $log. Nach Behebung --repair verwenden."; fi' EXIT
     if [[ "$mode" == uninstall || "$mode" == --uninstall ]]; then mt_deactivate; return 0; fi
-    mt_prepare_python
+    mt_prepare_python || return 1
     mt_fetch
     df -Pk "$MT_BASE"
     mt_install_package

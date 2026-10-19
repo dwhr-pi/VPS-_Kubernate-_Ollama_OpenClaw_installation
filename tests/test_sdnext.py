@@ -70,6 +70,83 @@ test ! -e "$SN_BASE"
 """)
         self.assertEqual(result.returncode, 0, result.stderr)
 
+    def test_missing_ensurepip_without_consent(self):
+        result = self.shell("""
+sn_python_core_ok() { return 0; }
+sn_python_venv_ok() { return 1; }
+sn_venv_package() { echo python3.12-venv; }
+command() { return 0; }
+sn_install_venv_package() { echo UNEXPECTED_INSTALL; return 99; }
+if sn_prepare_python; then exit 99; fi
+""")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertNotIn("UNEXPECTED_INSTALL", result.stdout)
+        self.assertIn("Nicht installiert", result.stderr)
+
+    def test_explicit_consent_installs_matching_package_and_rechecks(self):
+        result = self.shell("""
+sn_python_core_ok() { return 0; }
+sn_python_venv_ok() { [[ "${repaired:-0}" == 1 ]]; }
+sn_venv_package() { echo python3.12-venv; }
+command() { return 0; }
+sn_install_venv_package() { [[ "$1" == python3.12-venv ]] || return 99; repaired=1; }
+SDNEXT_INSTALL_VENV_DEPS=1 sn_prepare_python
+""")
+        self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_package_failure_stops(self):
+        result = self.shell("""
+sn_python_core_ok() { return 0; }
+sn_python_venv_ok() { return 1; }
+sn_venv_package() { echo python3.12-venv; }
+command() { return 0; }
+sn_install_venv_package() { return 42; }
+SDNEXT_INSTALL_VENV_DEPS=1 sn_prepare_python
+""")
+        self.assertEqual(result.returncode, 1, result.stderr)
+        self.assertIn("fehlgeschlagen", result.stderr)
+
+    def test_custom_interpreter_not_repaired_with_apt(self):
+        result = self.shell("""
+sn_python_core_ok() { return 0; }
+sn_python_venv_ok() { return 1; }
+sn_venv_package() { return 1; }
+sn_install_venv_package() { echo UNEXPECTED_INSTALL; return 99; }
+SDNEXT_INSTALL_VENV_DEPS=1 sn_prepare_python
+""")
+        self.assertEqual(result.returncode, 1, result.stderr)
+        self.assertNotIn("UNEXPECTED_INSTALL", result.stdout)
+
+    def test_working_python_needs_no_packages(self):
+        result = self.shell("""
+sn_python_core_ok() { return 0; }
+sn_python_venv_ok() { return 0; }
+sn_venv_package() { echo UNEXPECTED_PROBE; return 99; }
+sn_prepare_python
+""")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertNotIn("UNEXPECTED_PROBE", result.stdout)
+
+    def test_package_success_without_ensurepip_still_fails(self):
+        result = self.shell("""
+sn_python_core_ok() { return 0; }
+sn_python_venv_ok() { return 1; }
+sn_venv_package() { echo python3.12-venv; }
+command() { return 0; }
+sn_install_venv_package() { return 0; }
+SDNEXT_INSTALL_VENV_DEPS=1 sn_prepare_python
+""")
+        self.assertEqual(result.returncode, 1, result.stderr)
+        self.assertIn("fehlt weiterhin", result.stderr)
+
+    def test_dependency_preparation_after_guard_and_log_before_clone(self):
+        helper = (ROOT / HELPER).read_text()
+        main = helper.split('sdnext_main() (', 1)[1]
+        self.assertLess(main.index('require_disk_mb 2048'), main.index('sn_prepare_python'))
+        self.assertLess(main.index('exec > >(tee'), main.index('sn_prepare_python'))
+        self.assertLess(main.index('flock -n 9'), main.index('sn_prepare_python'))
+        self.assertLess(main.index('sn_prepare_python'), main.index('sn_fetch'))
+
     def test_status_no_install(self):
         result = self.shell("""
 sdnext_main status

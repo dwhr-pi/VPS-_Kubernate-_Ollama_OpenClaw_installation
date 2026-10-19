@@ -41,8 +41,25 @@ Voraussetzungen: normaler Linux-Benutzer, x86_64/ARM64, Git, flock,
 Python 3.10-3.12 mit SSL/venv/ensurepip. Ubuntu 3.12 passt zum Paketpfad;
 das ist noch keine Zusage fuer alle optionalen Textnormalisierungs-Pakete.
 Alternativ `CHATTTS_PYTHON_BIN=python3.11` vor den Installer setzen.
-Fehlendes Python-venv-Paket separat passend zur Version einrichten,
-kein automatisches apt/sudo oder Ersetzen des System-Python.
+Bei fehlendem venv/ensurepip bietet der Installer seit 19.10.2026 das
+versionspassende Ubuntu-Paket an, beispielsweise `python3.12-venv`.
+Abfrage: `[(j)a/(N)ein]`, Standard Nein. Ohne Terminal keine Installation.
+Ausdrueckliches nichtinteraktives Opt-in:
+
+```bash
+CHATTTS_INSTALL_VENV_DEPS=1 bash scripts/tools/chattts_install.sh --repair
+```
+
+`CHATTTS_INSTALL_VENV_DEPS=0` deaktiviert die Paketinstallation.
+Nur das zum gewaehlten System-Python unter `/usr/bin/python3.X` passende
+Paket wird angeboten. Private Interpreter, aktive venvs und SSL-/Versionsfehler
+erfordern separate Pruefung; kein System-Python wird ersetzt.
+Speicherpruefung, Sperre und aktuelles Tool-Log kommen vor der Reparatur.
+APT wartet begrenzt auf Paketverwaltungssperren, ohne Sperrdateien zu loeschen.
+Nach Paketinstallation wird venv/ensurepip erneut geprueft; bei Fehlern
+kein Clone/Build. ChatTTS bleibt aus GitHub, ohne Docker. Die Zustimmung
+gilt nicht fuer Torch, Modelle oder die optionale schwere Laufzeit.
+Vorhandene fremde/beschaedigte venvs werden nicht automatisch geloescht.
 
 Reserve Basispaket: 1 GiB RAM gesamt, 512 MiB aktuell verfuegbar, 2 GiB
 freie Linux-Disk sowie unter WSL soweit messbar Windows-C:-Reserve.

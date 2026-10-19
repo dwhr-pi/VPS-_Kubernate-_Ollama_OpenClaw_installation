@@ -22,7 +22,30 @@ Voraussetzungen: normaler Linux-Benutzer, Bash, Git, flock, realpath,
 Python 3.10.1-3.12 mit venv, ensurepip und SSL. `KIWI_EDIT_PYTHON_BIN`
 waehlt einen vorhandenen Interpreter. Python 3.12 ist fuer das Basispaket
 zugelassen, nicht als Zusage fuer die gesamten Upstream-GPU-Wheels.
-Keine System-Python-/apt-/Conda-Installation oder globalen Python-Pakete.
+Kein System-Python-Austausch, keine Conda-Installation oder globalen Python-Pakete.
+
+### Fehlendes venv/ensurepip reparieren
+
+Seit 19.10.2026 bietet der Installer das versionspassende Ubuntu-Paket an,
+beispielsweise `python3.12-venv`. Abfrage: `[(j)a/(N)ein]`, Standard Nein.
+Ohne Terminal keine Installation; ausdrueckliches nichtinteraktives Opt-in:
+
+```bash
+KIWI_EDIT_INSTALL_VENV_DEPS=1 bash scripts/tools/kiwi_edit_install.sh --repair
+```
+
+`KIWI_EDIT_INSTALL_VENV_DEPS=0` deaktiviert die Paketinstallation.
+Nur das zum gewaehlten System-Python unter `/usr/bin/python3.X` passende
+Paket wird angeboten. Private Interpreter, aktive venvs und SSL-/Versionsfehler
+erfordern separate Pruefung; kein System-Python wird ersetzt.
+Speicherpruefung, Sperre und aktuelles Tool-Log kommen vor der Reparatur.
+APT wartet begrenzt auf Paketverwaltungssperren, ohne Sperrdateien zu loeschen.
+Nach Paketinstallation wird venv/ensurepip erneut geprueft; bei Fehlern
+kein Clone/Build. Kiwi Edit bleibt aus GitHub, ohne Docker. Die Zustimmung
+gibt keine GPU-Runtime, Modelle oder Videoskripte frei.
+Vorhandene fremde/beschaedigte venvs werden nicht automatisch geloescht.
+Die Workspace-Rollback-Logik bleibt unveraendert; gemeinsam genutzte
+venv-Systempakete werden darueber nicht automatisch entfernt.
 
 Die Anwendung wird aus GitHub bezogen und mit `--no-deps` in einer
 privaten venv installiert. **Nur Basispaket, nicht betriebsbereit fuer

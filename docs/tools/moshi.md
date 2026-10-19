@@ -30,9 +30,30 @@ Doctor prueft Pin/Paketmetadaten ohne Moshi-/Torch-Import oder Modellzugriff.
 Voraussetzungen: normaler Linux-Benutzer auf x86_64/ARM64, Bash, Git, flock,
 realpath, Python 3.10-3.12 mit venv, ensurepip und SSL. Ubuntu-Python 3.12
 passt zur Basisinstallation. `MOSHI_PYTHON_BIN` waehlt einen vorhandenen
-Interpreter; keine automatische apt-/Python-Installation, kein Systemumbau.
+Interpreter; kein Ersetzen des System-Python oder Treiberumbau.
 Upstream erlaubt Python >=3.10,<3.15, dieser Installer begrenzt den
 Basispfad konservativ auf 3.10-3.12. GPU-Kompatibilitaet folgt daraus nicht.
+
+### Fehlendes venv/ensurepip reparieren
+
+Seit 19.10.2026 bietet der Installer das versionspassende Ubuntu-Paket an,
+beispielsweise `python3.12-venv`. Abfrage: `[(j)a/(N)ein]`, Standard Nein.
+Ohne Terminal keine Installation; ausdrueckliches nichtinteraktives Opt-in:
+
+```bash
+MOSHI_INSTALL_VENV_DEPS=1 bash scripts/tools/moshi_install.sh --repair
+```
+
+`MOSHI_INSTALL_VENV_DEPS=0` deaktiviert die Paketinstallation.
+Nur das zum gewaehlten System-Python unter `/usr/bin/python3.X` passende
+Paket wird angeboten. Private Interpreter, aktive venvs und SSL-/Versionsfehler
+erfordern separate Pruefung; kein System-Python wird ersetzt.
+Speicherpruefung, Sperre und aktuelles Tool-Log kommen vor der Reparatur.
+APT wartet begrenzt auf Paketverwaltungssperren, ohne Sperrdateien zu loeschen.
+Nach Paketinstallation wird venv/ensurepip erneut geprueft; bei Fehlern
+kein Clone/Build. Moshi bleibt aus GitHub, ohne Docker. Die Zustimmung
+gibt keine GPU-Runtime, Modelle, Dienste oder Mikrofonzugriffe frei.
+Vorhandene fremde/beschaedigte venvs werden nicht automatisch geloescht.
 
 ## Pfade und Ressourcen
 

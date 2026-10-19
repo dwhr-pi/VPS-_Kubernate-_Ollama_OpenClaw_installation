@@ -140,10 +140,60 @@ wx_resources() {
     REQUIRE_WINDOWS_HOST_FREE_MB=2048 require_disk_mb 2048 "$mount"
 }
 
+wx_python_core_ok() {
+    "$WX_PYTHON" -I -B -c 'import sys, ssl; assert (3,10) <= sys.version_info < (3,14)'
+}
+
+wx_python_venv_ok() {
+    "$WX_PYTHON" -I -B -c 'import venv, ensurepip' >/dev/null 2>&1
+}
+
+wx_venv_package() {
+    "$WX_PYTHON" -I -B - <<'PY'
+from pathlib import Path
+import sys
+expected = Path('/usr/bin/python%d.%d' % sys.version_info[:2])
+assert sys.prefix == sys.base_prefix, 'Keine Paket-Reparatur innerhalb einer venv'
+assert Path(sys.executable).resolve() == expected.resolve(), 'Kein Ubuntu-Systeminterpreter'
+assert (3, 10) <= sys.version_info < (3, 14)
+print('python%d.%d-venv' % sys.version_info[:2])
+PY
+}
+
+wx_install_venv_package() {
+    # shellcheck source=../../lib/apt_lock_wait.sh
+    source "$WX_ROOT/scripts/lib/apt_lock_wait.sh"
+    run_apt_with_lock_wait update || return 1
+    run_apt_with_lock_wait install -y --no-install-recommends "$1"
+}
+
 wx_prepare_python() {
-    "$WX_PYTHON" -I -B -c 'import venv, ensurepip, ssl' || {
-        echo 'venv/ensurepip/SSL fehlt. Zum ausgewaehlten Python passendes venv-Paket separat einrichten, dann --repair; kein System-Python ersetzt.' >&2; return 1;
+    local package answer='' policy="${WHISPERX_INSTALL_VENV_DEPS:-ask}"
+    wx_python_core_ok || { echo 'WhisperX: Python 3.10-3.13 mit SSL erforderlich; WHISPERX_PYTHON_BIN pruefen.' >&2; return 1; }
+    wx_python_venv_ok && return 0
+    echo 'WhisperX: Dem gewaehlten Python fehlt venv/ensurepip.'
+    package="$(wx_venv_package)" || {
+        echo 'Privates/fremdes Python: dessen venv/ensurepip separat reparieren oder WHISPERX_PYTHON_BIN passend setzen; kein System-Python ersetzt.' >&2; return 1;
     }
+    command -v apt-get >/dev/null && command -v sudo >/dev/null || {
+        echo "Keine apt/sudo-Reparatur verfuegbar. $package separat einrichten." >&2; return 1;
+    }
+    echo "Notwendiges Systempaket: $package. WhisperX selbst bleibt aus GitHub, ohne Docker."
+    case "$policy" in
+        1) ;;
+        ask)
+            if [[ -t 0 ]]; then
+                read -r -p "$package mit sudo installieren? [(j)a/(N)ein]: " answer || answer=''
+            fi
+            [[ "$answer" == j || "$answer" == J ]] || {
+                echo 'Nicht installiert. Nach Zustimmung WHISPERX_INSTALL_VENV_DEPS=1 mit --repair verwenden.' >&2; return 1;
+            } ;;
+        0) echo 'Installation von venv-Systempaketen deaktiviert.' >&2; return 1 ;;
+        *) echo 'WHISPERX_INSTALL_VENV_DEPS: nur ask, 0 oder 1 erlaubt.' >&2; return 2 ;;
+    esac
+    wx_install_venv_package "$package" || { echo "Installation von $package fehlgeschlagen; kein Clone/Build." >&2; return 1; }
+    wx_python_venv_ok || { echo "venv/ensurepip fehlt weiterhin fuer $WX_PYTHON; kein Clone/Build." >&2; return 1; }
+    echo 'venv/ensurepip verfuegbar; kein System-Python ersetzt.'
 }
 
 wx_fetch() {
@@ -234,7 +284,7 @@ whisperx_main() (
     flock -n 9 || { echo 'Andere WhisperX-Operation aktiv.' >&2; return 1; }
     log="$(mktemp "$WX_LOGS/whisperx_$(date +%Y%m%d_%H%M%S)_XXXXXX.log")"
     exec > >(tee -a "$log") 2>&1
-    echo "WhisperX-Installer: 2026-10-18-github-base-package; Aktion: $mode; Pin: $WX_COMMIT"
+    echo "WhisperX-Installer: 2026-10-19-venv-dependency-repair; Aktion: $mode; Pin: $WX_COMMIT"
     trap 'rc=$?; if ((rc != 0)); then echo "WhisperX-Fehler ($rc); Dateien erhalten. Log: $log. Nach Behebung --repair verwenden."; fi' EXIT
     if [[ "$mode" == uninstall || "$mode" == --uninstall ]]; then wx_deactivate; return 0; fi
     wx_prepare_python || return 1

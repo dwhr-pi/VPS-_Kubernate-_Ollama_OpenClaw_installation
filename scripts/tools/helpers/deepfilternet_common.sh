@@ -167,6 +167,7 @@ deepfilternet_main() (
     trap 'rc=$?; if ((rc != 0)); then echo "DeepFilterNet-Fehler ($rc); Daten erhalten. Log: $log. Nach Behebung --repair verwenden."; fi' EXIT
     if [[ "$mode" == uninstall || "$mode" == --uninstall ]]; then
         rm -f -- "$DF_MARKER"
+        echo 'Gemeinsam genutzte Basis-/Buildwerkzeuge (Git, Cargo, Rust, Compiler usw.) werden nicht entfernt.'
         echo 'Setup-Marker deaktiviert; Quelle, Binary, Modelle, Audio und Logs bleiben erhalten.'; return 0
     fi
     df_fetch

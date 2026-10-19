@@ -30,10 +30,31 @@ bash scripts/tools/embedded_debug_hil_uninstall.sh
 
 Normaler Linux-Benutzer, Bash, Git, flock, realpath, Python 3.10-3.12 mit
 venv/ensurepip/SSL. Interpreterwahl: `EMBEDDED_DEBUG_HIL_PYTHON_BIN`.
-Kein Austausch des System-Python und keine automatische apt-Einrichtung.
+Kein Austausch des System-Python und keine ungefragte apt-Einrichtung.
 Konservative Basisreserve: 512 MiB Gesamt-RAM und freie Disk, unter WSL
 zusaetzlich 1024 MiB freier Windows-Host-Speicher. Kein GPU-Bedarf fuer
 diese Bibliothek; Werte sind keine Hardware-/Firmware-Buildzusage.
+
+### Fehlendes venv/ensurepip reparieren
+
+Seit 19.10.2026 bietet der Installer das versionspassende Ubuntu-Paket an,
+beispielsweise `python3.12-venv`. Abfrage: `[(j)a/(N)ein]`, Standard Nein.
+Ohne Terminal keine Installation; ausdrueckliches nichtinteraktives Opt-in:
+
+```bash
+EMBEDDED_DEBUG_HIL_INSTALL_VENV_DEPS=1 bash scripts/tools/embedded_debug_hil_install.sh --repair
+```
+
+`EMBEDDED_DEBUG_HIL_INSTALL_VENV_DEPS=0` deaktiviert die Paketinstallation.
+Nur das zum gewaehlten System-Python unter `/usr/bin/python3.X` passende
+Paket wird angeboten. Private Interpreter, aktive venvs und SSL-/Versionsfehler
+erfordern separate Pruefung; kein System-Python wird ersetzt.
+Speicherpruefung, Sperre und aktuelles Tool-Log kommen vor der Reparatur.
+APT wartet begrenzt auf Paketverwaltungssperren, ohne Sperrdateien zu loeschen.
+Nach Paketinstallation wird venv/ensurepip erneut geprueft; bei Fehlern
+kein Clone/Build. pygdbmi bleibt am GitHub-Pin, ohne Docker. Die Zustimmung
+gibt keine Debugger, Hardwarezugriffe oder Dienste frei.
+Vorhandene fremde/beschaedigte venvs werden nicht automatisch geloescht.
 
 Ziel: `${OPENCLAW_USER_DATA_DIR:-$HOME/.openclaw_ultimate_user_data}/tools/embedded_debug_hil/`
 mit `source/`, `venv/`, `operation.lock`, `source-built`.

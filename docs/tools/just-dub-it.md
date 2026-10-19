@@ -44,7 +44,30 @@ Voraussetzungen: normaler Linux-Benutzer, Bash, Git, flock, realpath und
 **Python 3.12** mit venv, ensurepip und SSL. `JUST_DUB_IT_PYTHON_BIN`
 waehlt einen vorhandenen Interpreter. Die beiden gepinnten Pakete verlangen
 Python >=3.12; der Installer begrenzt den Basispfad auf 3.12. Kein
-System-Python-Austausch und keine automatische apt-/Python-Installation.
+System-Python-Austausch oder automatische Installation eines anderen Python.
+
+### Fehlendes venv/ensurepip reparieren
+
+Seit 19.10.2026 bietet der Installer fuer ein passendes Ubuntu-System-Python
+das Paket `python3.12-venv` an. Abfrage: `[(j)a/(N)ein]`, Standard Nein.
+Ohne Terminal keine Installation. Nach eigener Lizenzpruefung und bewusster
+Zustimmung zu beiden Schritten ist nichtinteraktiv moeglich:
+
+```bash
+JUST_DUB_IT_ACCEPT_LICENSE=1 JUST_DUB_IT_INSTALL_VENV_DEPS=1 \
+  bash scripts/tools/just_dub_it_install.sh --repair
+```
+
+`JUST_DUB_IT_INSTALL_VENV_DEPS=0` deaktiviert die Paketinstallation.
+Die venv-Zustimmung ersetzt keine Lizenzannahme. Lizenzfreigabe,
+Speicherpruefung, Sperre und aktuelles Tool-Log kommen vor der Reparatur.
+Nur das passende System-Python unter `/usr/bin/python3.12` wird so ergaenzt;
+private Interpreter, aktive venvs und SSL-/Versionsfehler erfordern separate
+Pruefung. APT wartet begrenzt auf Paketverwaltungssperren, ohne Sperrdateien
+zu loeschen. Nach Paketinstallation wird venv/ensurepip erneut geprueft;
+bei Fehlern kein Clone/Build. Just Dub It bleibt am GitHub-Pin, ohne Docker.
+Keine GPU-Runtime oder Modelle werden dadurch freigegeben. Vorhandene
+fremde/beschaedigte venvs werden nicht automatisch geloescht.
 
 Der Root ist ein uv-Workspace ohne eigenes installierbares Projekt.
 Deshalb werden **beide lokalen Unterpakete**

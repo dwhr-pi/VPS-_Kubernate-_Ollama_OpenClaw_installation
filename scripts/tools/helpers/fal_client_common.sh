@@ -89,10 +89,60 @@ fc_resources() {
     REQUIRE_WINDOWS_HOST_FREE_MB=2048 require_disk_mb 2048 "$mount"
 }
 
+fc_python_core_ok() {
+    "$FC_PYTHON" -I -B -c 'import sys, ssl; assert (3,10) <= sys.version_info < (3,14)'
+}
+
+fc_python_venv_ok() {
+    "$FC_PYTHON" -I -B -c 'import venv, ensurepip' >/dev/null 2>&1
+}
+
+fc_venv_package() {
+    "$FC_PYTHON" -I -B - <<'PY'
+from pathlib import Path
+import sys
+expected = Path('/usr/bin/python%d.%d' % sys.version_info[:2])
+assert sys.prefix == sys.base_prefix, 'Keine Paket-Reparatur innerhalb einer venv'
+assert Path(sys.executable).resolve() == expected.resolve(), 'Kein Ubuntu-Systeminterpreter'
+assert (3, 10) <= sys.version_info < (3, 14)
+print('python%d.%d-venv' % sys.version_info[:2])
+PY
+}
+
+fc_install_venv_package() {
+    # shellcheck source=../../lib/apt_lock_wait.sh
+    source "$FC_ROOT/scripts/lib/apt_lock_wait.sh"
+    run_apt_with_lock_wait update || return 1
+    run_apt_with_lock_wait install -y --no-install-recommends "$1"
+}
+
 fc_prepare_python() {
-    "$FC_PYTHON" -I -B -c 'import venv, ensurepip, ssl' || {
-        echo 'venv/ensurepip/SSL fehlt. Zum ausgewaehlten Python passendes venv-Paket separat einrichten, dann --repair; kein System-Python ersetzt.' >&2; return 1;
+    local package answer='' policy="${FAL_CLIENT_INSTALL_VENV_DEPS:-ask}"
+    fc_python_core_ok || { echo 'Fal Client: Python 3.10-3.13 mit SSL erforderlich; FAL_CLIENT_PYTHON_BIN pruefen.' >&2; return 1; }
+    fc_python_venv_ok && return 0
+    echo 'Fal Client: Dem gewaehlten Python fehlt venv/ensurepip.'
+    package="$(fc_venv_package)" || {
+        echo 'Privates/fremdes Python: dessen venv/ensurepip separat reparieren oder FAL_CLIENT_PYTHON_BIN passend setzen; kein System-Python ersetzt.' >&2; return 1;
     }
+    command -v apt-get >/dev/null && command -v sudo >/dev/null || {
+        echo "Keine apt/sudo-Reparatur verfuegbar. $package separat einrichten." >&2; return 1;
+    }
+    echo "Notwendiges Systempaket: $package. Fal Client selbst bleibt aus GitHub, ohne Docker."
+    case "$policy" in
+        1) ;;
+        ask)
+            if [[ -t 0 ]]; then
+                read -r -p "$package mit sudo installieren? [(j)a/(N)ein]: " answer || answer=''
+            fi
+            [[ "$answer" == j || "$answer" == J ]] || {
+                echo 'Nicht installiert. Nach Zustimmung FAL_CLIENT_INSTALL_VENV_DEPS=1 mit --repair verwenden.' >&2; return 1;
+            } ;;
+        0) echo 'Installation von venv-Systempaketen deaktiviert.' >&2; return 1 ;;
+        *) echo 'FAL_CLIENT_INSTALL_VENV_DEPS: nur ask, 0 oder 1 erlaubt.' >&2; return 2 ;;
+    esac
+    fc_install_venv_package "$package" || { echo "Installation von $package fehlgeschlagen; kein Clone/Build." >&2; return 1; }
+    fc_python_venv_ok || { echo "venv/ensurepip fehlt weiterhin fuer $FC_PYTHON; kein Clone/Build." >&2; return 1; }
+    echo 'venv/ensurepip verfuegbar; kein System-Python ersetzt.'
 }
 
 fc_fetch() {
@@ -165,10 +215,10 @@ fal_client_main() (
     flock -n 9 || { echo 'Andere Fal-Client-Operation aktiv.' >&2; return 1; }
     log="$(mktemp "$FC_LOGS/fal_client_$(date +%Y%m%d_%H%M%S)_XXXXXX.log")"
     exec > >(tee -a "$log") 2>&1
-    echo "Fal-Client-Installer: 2026-10-16-github-base-package; Aktion: $mode; Pin: $FC_COMMIT"
+    echo "Fal-Client-Installer: 2026-10-19-venv-dependency-repair; Aktion: $mode; Pin: $FC_COMMIT"
     trap 'rc=$?; if ((rc != 0)); then echo "Fal-Client-Fehler ($rc); Dateien erhalten. Log: $log. Nach Behebung --repair verwenden."; fi' EXIT
     if [[ "$mode" == uninstall || "$mode" == --uninstall ]]; then fc_deactivate; return 0; fi
-    fc_prepare_python
+    fc_prepare_python || return 1
     fc_fetch
     df -Pk "$FC_BASE"
     fc_install_package

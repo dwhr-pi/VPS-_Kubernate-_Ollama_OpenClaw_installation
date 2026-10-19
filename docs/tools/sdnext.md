@@ -1,5 +1,23 @@
 # SD.Next aus GitHub, ohne Docker
 
+## Fehlendes ensurepip / venv (19.10.2026)
+
+Fehlt `ensurepip`, bietet der Installer bei einem passenden Ubuntu-System-Python
+das versionsgenaue Paket an, beispielsweise `python3.12-venv`.
+Abfrage: `[(j)a/(N)ein]`, Standard Nein. Ohne Terminal erfolgt keine Installation.
+Alternativ ist `SDNEXT_INSTALL_VENV_DEPS=1` die ausdrueckliche Zustimmung;
+`0` deaktiviert die Paketinstallation. Diese Zustimmung gilt nur fuer das
+notwendige Systempaket, nicht fuer Modelle, PyTorch oder Dienste.
+
+Speicherpruefung, eigenes aktuelles Log und Installationssperre erfolgen zuvor.
+APT wartet begrenzt auf Paketverwaltungssperren; Fehler stoppen vor dem Clone.
+Nach der Paketinstallation werden `venv` und `ensurepip` erneut geprueft.
+SD.Next selbst bleibt am GitHub-Pin, ohne Docker. Kein System-Python wird ersetzt.
+Bei einem privaten Python oder einer bereits aktiven venv wird nicht versucht,
+ein unpassendes Ubuntu-Paket nachzuinstallieren. Dort den Interpreter separat
+reparieren oder `SDNEXT_PYTHON_BIN` passend setzen. Vorhandene unvollstaendige
+SD.Next-venvs werden weiterhin nicht automatisch geloescht.
+
 Stand: 16.10.2026. Quelle: [vladmandic/sdnext](https://github.com/vladmandic/sdnext).
 Unser fester Quellstand ist
 `b7dcb0ce870181a40d1246fde1febbff5593a750` vom 11.10.2026.

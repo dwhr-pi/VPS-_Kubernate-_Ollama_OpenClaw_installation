@@ -49,8 +49,24 @@ FAL_CLIENT_PYTHON_BIN=python3.11 bash scripts/tools/fal_client_install.sh
 ```
 
 Ubuntu-Python 3.12 passt zum gewaehlten Setup-Pfad. Bei fehlendem venv/ensurepip
-das zum ausgewaehlten Python passende Ubuntu-venv-Paket separat einrichten.
-Kein System-Python wird ersetzt, kein sudo/apt automatisch ausgefuehrt.
+bietet der Installer seit 19.10.2026 das versionspassende Ubuntu-Paket an,
+beispielsweise `python3.12-venv`. Zustimmung: `[(j)a/(N)ein]`, Standard Nein.
+Ohne Terminal wird nichts installiert. Fuer ausdrueckliches nichtinteraktives
+Opt-in ist folgender Aufruf moeglich:
+
+```bash
+FAL_CLIENT_INSTALL_VENV_DEPS=1 bash scripts/tools/fal_client_install.sh --repair
+```
+
+Mit `FAL_CLIENT_INSTALL_VENV_DEPS=0` bleibt die Paketinstallation gesperrt.
+Nur ein passendes System-Python unter `/usr/bin/python3.X` wird so ergaenzt;
+private Interpreter und aktive venvs erfordern separate Reparatur.
+SSL-/Versionsfehler werden nicht durch Installation eines venv-Pakets kaschiert.
+Ressourcenpruefung, Installationssperre und aktuelles Tool-Log kommen vorher.
+APT wartet begrenzt auf Paketverwaltungssperren, entfernt keine Sperrdateien
+und stoppt bei Fehlern. Danach wird venv/ensurepip erneut geprueft, erst dann
+folgt der GitHub-Clone. Kein System-Python wird ersetzt, kein Cloud-Auftrag
+ausgefuehrt. APT dient nur dieser Systemvoraussetzung; der Client bleibt aus GitHub.
 Fremde oder beschaedigte venv-Verzeichnisse erst sichern und separat pruefen.
 
 ## 2. Ressourcen und Wiederholbarkeit

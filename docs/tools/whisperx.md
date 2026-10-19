@@ -35,8 +35,30 @@ Voraussetzungen: normaler Linux-Benutzer, Bash, Git, Python **3.10-3.13**,
 venv/ensurepip/SSL, flock, realpath und uebliche GNU-Werkzeuge.
 Ubuntu-Python **3.12** passt zum Basispaket. Bei Bedarf
 `WHISPERX_PYTHON_BIN` auf ein vorhandenes passendes Python setzen.
-Bei fehlendem ensurepip das passende venv-Systempaket separat einrichten;
-kein System-Python-/WSL-/Swap-Umbau oder automatischer apt-Aufruf.
+Kein System-Python-Austausch, WSL- oder Swap-Umbau.
+
+### Fehlendes venv/ensurepip reparieren
+
+Seit 19.10.2026 bietet der Installer das versionspassende Ubuntu-Paket an,
+beispielsweise `python3.12-venv`. Abfrage: `[(j)a/(N)ein]`, Standard Nein.
+Ohne Terminal keine Installation; ausdrueckliches nichtinteraktives Opt-in:
+
+```bash
+WHISPERX_INSTALL_VENV_DEPS=1 bash scripts/tools/whisperx_install.sh --repair
+```
+
+`WHISPERX_INSTALL_VENV_DEPS=0` deaktiviert die Paketinstallation.
+Nur das zum gewaehlten System-Python unter `/usr/bin/python3.X` passende
+Paket wird angeboten. Private Interpreter, aktive venvs und SSL-/Versionsfehler
+erfordern separate Pruefung; kein System-Python wird ersetzt.
+Speicherpruefung, Sperre und aktuelles Tool-Log kommen vor der Reparatur.
+APT wartet begrenzt auf Paketverwaltungssperren, ohne Sperrdateien zu loeschen.
+Nach Paketinstallation wird venv/ensurepip erneut geprueft; bei Fehlern
+kein Clone/Build. WhisperX bleibt aus GitHub, ohne Docker. Die Zustimmung
+gibt keine Runtime, weiteren Modelle oder Audioverarbeitung frei.
+Vorhandene fremde/beschaedigte venvs werden nicht automatisch geloescht.
+Die Workspace-Rollback-Logik bleibt unveraendert; gemeinsam genutzte
+venv-Systempakete werden darueber nicht automatisch entfernt.
 
 ## Optionale Runtime
 

@@ -60,8 +60,8 @@ hil_resources() {
 }
 
 hil_preflight() {
-    "$HIL_PYTHON" -I -B -c 'import sys, venv, ensurepip, ssl; assert (3,10) <= sys.version_info < (3,13)' || {
-        echo 'Python 3.10-3.12 mit venv/ensurepip/SSL erforderlich; EMBEDDED_DEBUG_HIL_PYTHON_BIN setzen.' >&2; return 1;
+    "$HIL_PYTHON" -I -B -c 'import sys, ssl; assert (3,10) <= sys.version_info < (3,13)' || {
+        echo 'Python 3.10-3.12 mit SSL erforderlich; EMBEDDED_DEBUG_HIL_PYTHON_BIN setzen.' >&2; return 1;
     }
     if [[ -e "$HIL_VENV" ]]; then
         [[ -f "$HIL_VENV/pyvenv.cfg" ]] || { echo 'Fremde venv bleibt erhalten.' >&2; return 1; }
@@ -71,6 +71,60 @@ import sys
 assert 'include-system-site-packages = false' in Path(sys.argv[1]).read_text()
 PY
     fi
+}
+
+hil_python_venv_ok() {
+    "$HIL_PYTHON" -I -B -c 'import venv, ensurepip' >/dev/null 2>&1
+}
+
+hil_venv_package() {
+    "$HIL_PYTHON" -I -B - <<'PY'
+from pathlib import Path
+import sys
+expected = Path('/usr/bin/python%d.%d' % sys.version_info[:2])
+assert sys.prefix == sys.base_prefix, 'Keine Paket-Reparatur innerhalb einer venv'
+assert Path(sys.executable).resolve() == expected.resolve(), 'Kein Ubuntu-Systeminterpreter'
+assert (3, 10) <= sys.version_info < (3, 13)
+print('python%d.%d-venv' % sys.version_info[:2])
+PY
+}
+
+hil_install_venv_package() {
+    # shellcheck source=../../lib/apt_lock_wait.sh
+    source "$HIL_REPO_ROOT/scripts/lib/apt_lock_wait.sh"
+    run_apt_with_lock_wait update || return 1
+    run_apt_with_lock_wait install -y --no-install-recommends "$1"
+}
+
+hil_prepare_python() {
+    local package answer='' policy="${EMBEDDED_DEBUG_HIL_INSTALL_VENV_DEPS:-ask}"
+    "$HIL_PYTHON" -I -B -c 'import sys, ssl; assert (3,10) <= sys.version_info < (3,13)' || {
+        echo 'HIL: Python 3.10-3.12 mit SSL erforderlich; EMBEDDED_DEBUG_HIL_PYTHON_BIN pruefen.' >&2; return 1;
+    }
+    hil_python_venv_ok && return 0
+    echo 'HIL: Dem gewaehlten Python fehlt venv/ensurepip.'
+    package="$(hil_venv_package)" || {
+        echo 'Privates/fremdes Python: dessen venv/ensurepip separat reparieren oder EMBEDDED_DEBUG_HIL_PYTHON_BIN passend setzen; kein System-Python ersetzt.' >&2; return 1;
+    }
+    command -v apt-get >/dev/null && command -v sudo >/dev/null || {
+        echo "Keine apt/sudo-Reparatur verfuegbar. $package separat einrichten." >&2; return 1;
+    }
+    echo "Notwendiges Systempaket: $package. pygdbmi selbst bleibt aus GitHub, ohne Docker."
+    case "$policy" in
+        1) ;;
+        ask)
+            if [[ -t 0 ]]; then
+                read -r -p "$package mit sudo installieren? [(j)a/(N)ein]: " answer || answer=''
+            fi
+            [[ "$answer" == j || "$answer" == J ]] || {
+                echo 'Nicht installiert. Nach Zustimmung EMBEDDED_DEBUG_HIL_INSTALL_VENV_DEPS=1 mit --repair verwenden.' >&2; return 1;
+            } ;;
+        0) echo 'Installation von venv-Systempaketen deaktiviert.' >&2; return 1 ;;
+        *) echo 'EMBEDDED_DEBUG_HIL_INSTALL_VENV_DEPS: nur ask, 0 oder 1 erlaubt.' >&2; return 2 ;;
+    esac
+    hil_install_venv_package "$package" || { echo "Installation von $package fehlgeschlagen; kein Clone/Build." >&2; return 1; }
+    hil_python_venv_ok || { echo "venv/ensurepip fehlt weiterhin fuer $HIL_PYTHON; kein Clone/Build." >&2; return 1; }
+    echo 'venv/ensurepip verfuegbar; kein System-Python ersetzt.'
 }
 
 hil_fetch() {
@@ -137,9 +191,10 @@ hil_main() (
     flock -n 9 || { echo 'Andere HIL-Operation aktiv.' >&2; return 1; }
     log="$(mktemp "$HIL_LOGS/embedded_debug_hil_$(date +%Y%m%d_%H%M%S)_XXXXXX.log")" || return 1
     exec > >(tee -a "$log") 2>&1
-    echo "HIL-Installer: 2026-10-19-github-pygdbmi-base; Aktion $mode; Pin $HIL_COMMIT"
+    echo "HIL-Installer: 2026-10-19-venv-dependency-repair; Aktion $mode; Pin $HIL_COMMIT"
     if [[ "$mode" == uninstall || "$mode" == --uninstall ]]; then hil_deactivate; return $?; fi
     if [[ "$mode" == install ]] && hil_probe >/dev/null 2>&1; then echo 'Basis bereits konsistent; kein Neubau.'; return 0; fi
+    hil_prepare_python || { echo "HIL-Python-Vorbereitung fehlgeschlagen; kein Clone/Build. Log: $log" >&2; return 1; }
     df -Pk "$HIL_BASE"
     hil_fetch || return $?
     hil_install_package || { echo "HIL-Installation fehlgeschlagen; Dateien erhalten. Nach Pruefung --repair. Log: $log" >&2; return 1; }

@@ -109,6 +109,21 @@ Spuren veraendern. Keine Herkunftsverschleierung oder Umgehung von Detektoren.
 
 ## Update, Fehler und Deaktivierung
 
+**Basiswerkzeuge werden nicht deinstalliert.** Git, Cargo, Rust, Compiler,
+coreutils und util-linux koennen von anderen Programmen verwendet werden.
+Die vorhandene Deinstallation deaktiviert nur den Setup-Marker; auch
+Buildreste, Quellcode, Binary, eingebettetes Modell und Logs bleiben erhalten.
+Sie ist deshalb keine Speicherplatzbereinigung. Keine automatische apt-
+Entfernung oder Leerung gemeinsam genutzter Cargo-Caches.
+
+Bei Speicherplatzabbruch im Setup-Menue wird jetzt bereits vor der
+Vorpruefung ein eigenes Log fuer diesen Versuch angelegt. Grenzwerte,
+Messwerte, Abbruchgrund und Abschlussstatus stehen im selben Log wie die
+nachfolgenden Installer-Ausgaben. Es wird nicht auf einen aelteren Lauf
+zurueckgegriffen. Ist das Log-Dateisystem selbst voll/nicht beschreibbar,
+wird dies am Bildschirm gemeldet; eine dauerhaft gespeicherte Fehlermeldung
+kann bei komplett vollem Datentraeger nicht garantiert werden.
+
 ```bash
 bash scripts/tools/deepfilternet_install.sh --repair
 bash scripts/tools/deepfilternet_update.sh

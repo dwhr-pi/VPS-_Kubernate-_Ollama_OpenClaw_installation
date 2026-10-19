@@ -38,8 +38,21 @@ class Contract(unittest.TestCase):
             self.assertIn(required, text)
         for forbidden in ("import ChatTTS", "from_pretrained(", "import torch",
                           "docker compose", "rm -rf", "[dev]", "af_prepare_venv",
-                          "run_apt_with_lock_wait", "gcloud auth", "Client("):
+                          "gcloud auth", "Client("):
             self.assertNotIn(forbidden, text)
+
+    def test_dependency_order_and_scope(self):
+        text = (ROOT / HELPER).read_text()
+        main = text.split('chattts_main() (', 1)[1]
+        for guard in ('ct_resources', 'ct_runtime_preflight', 'flock -n 9', 'exec > >(tee'):
+            self.assertLess(main.index(guard), main.index('ct_prepare_python'))
+        self.assertLess(main.index('ct_prepare_python'), main.index('ct_fetch'))
+        self.assertIn('ct_prepare_python || return 1', main)
+        self.assertIn('sys.prefix == sys.base_prefix', text)
+        self.assertIn('Path(sys.executable).resolve() == expected.resolve()', text)
+        self.assertIn('assert (3, 10) <= sys.version_info < (3, 13)', text)
+        self.assertIn('run_apt_with_lock_wait update || return 1', text)
+        self.assertIn('install -y --no-install-recommends "$1"', text)
 
     def test_menu_doc_links(self):
         menu = (ROOT / "setup_ultimate.sh").read_text(encoding="utf-8")
@@ -71,6 +84,42 @@ chattts_main --dry-run
 test ! -e "$CT_BASE"
 """)
         self.assertEqual(r.returncode, 0, r.stderr)
+
+    def test_python_dependency_decisions(self):
+        cases = (
+            ('ask', 'return 0', 'return 1', 'echo python3.12-venv', 'return 0', 1, False),
+            ('0', 'return 0', 'return 1', 'echo python3.12-venv', 'return 0', 1, False),
+            ('invalid', 'return 0', 'return 1', 'echo python3.12-venv', 'return 0', 2, False),
+            ('1', 'return 1', 'return 1', 'echo python3.12-venv', 'return 0', 1, False),
+            ('1', 'return 0', 'return 1', 'return 1', 'return 0', 1, False),
+            ('1', 'return 0', 'return 0', 'echo python3.12-venv', 'return 0', 0, False),
+            ('1', 'return 0', 'return 1', 'echo python3.12-venv', 'return 42', 1, True),
+            ('1', 'return 0', 'return 1', 'echo python3.12-venv', 'return 0', 1, True),
+            ('1', 'return 0', '[[ "${repaired:-0}" == 1 ]]', 'echo python3.12-venv', 'repaired=1', 0, True),
+        )
+        for policy, core, venv, package, install, expected, called in cases:
+            with self.subTest(policy=policy, core=core, venv=venv, install=install):
+                r = self.shell(f'''
+ct_python_core_ok() {{ {core}; }}
+ct_python_venv_ok() {{ {venv}; }}
+ct_venv_package() {{ {package}; }}
+command() {{ return 0; }}
+ct_install_venv_package() {{
+    [[ "$1" == python3.12-venv ]] || return 99
+    echo MOCK_PACKAGE_INSTALL
+    {install};
+}}
+CHATTTS_INSTALL_VENV_DEPS={policy} ct_prepare_python
+''')
+                self.assertEqual(r.returncode, expected, r.stderr)
+                self.assertEqual('MOCK_PACKAGE_INSTALL' in r.stdout, called)
+
+    def test_read_only_actions_never_prepare_dependencies(self):
+        for action, expected in (('--dry-run', 0), ('status', 0), ('doctor', 1)):
+            with self.subTest(action=action):
+                r = self.shell('ct_prepare_python() { echo UNEXPECTED_REPAIR; return 99; }; chattts_main ' + action)
+                self.assertEqual(r.returncode, expected, r.stderr)
+                self.assertNotIn('UNEXPECTED_REPAIR', r.stdout)
 
     def test_status_missing(self):
         r = self.shell('chattts_main status; test ! -e "$CT_BASE"')

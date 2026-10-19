@@ -38,7 +38,28 @@ vorhandenen Interpreter. Python 3.12 gilt hier nur fuer das Basispaket.
 Basisreserve: 1 GiB Gesamt-RAM, 512 MiB aktuell frei, 2 GiB freie Disk und
 bei messbarem WSL-Host ebenfalls 2 GiB Windows-C:-Reserve. Das sind keine
 ausreichenden Ressourcen fuer spaetere GPU-Inferenz. Vorher/nachher wird
-der Dateisystemplatz protokolliert. Keine automatische Basis-/GPU-Installation.
+der Dateisystemplatz protokolliert. Keine ungefragte Basis-/GPU-Installation.
+
+### Fehlendes venv/ensurepip reparieren
+
+Seit 19.10.2026 bietet der Installer das versionspassende Ubuntu-Paket an,
+beispielsweise `python3.12-venv`. Abfrage: `[(j)a/(N)ein]`, Standard Nein.
+Ohne Terminal keine Installation; ausdrueckliches nichtinteraktives Opt-in:
+
+```bash
+AUDIOGEN_INSTALL_VENV_DEPS=1 bash scripts/tools/audiogen_install.sh --repair
+```
+
+`AUDIOGEN_INSTALL_VENV_DEPS=0` deaktiviert die Paketinstallation.
+Nur das zum gewaehlten System-Python unter `/usr/bin/python3.X` passende
+Paket wird angeboten. Private Interpreter, aktive venvs und SSL-/Versionsfehler
+erfordern separate Pruefung; kein System-Python wird ersetzt.
+Speicherpruefung, Sperre und aktuelles Tool-Log kommen vor der Reparatur.
+APT wartet begrenzt auf Paketverwaltungssperren, ohne Sperrdateien zu loeschen.
+Nach Paketinstallation wird venv/ensurepip erneut geprueft; bei Fehlern
+kein Clone/Build. AudioGen bleibt aus GitHub, ohne Docker. Die Zustimmung
+hebt die Sperre der Legacy-Runtime nicht auf und startet keine Modelle.
+Vorhandene fremde/beschaedigte venvs werden nicht automatisch geloescht.
 
 ## Laufzeit bleibt ein offener Integrationsschritt
 

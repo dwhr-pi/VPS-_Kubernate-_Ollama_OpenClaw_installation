@@ -30,8 +30,30 @@ keine Netzwerksandbox; Upstream-Buildcode vor Ausfuehrung pruefen.
 Voraussetzungen: normaler Linux-Benutzer, Bash, Git, Python **3.11 oder 3.12**,
 venv/ensurepip/SSL, flock, realpath und uebliche GNU-Werkzeuge.
 `ACE_STEP_15_PYTHON_BIN` kann auf ein vorhandenes passendes Python zeigen.
-Bei fehlendem ensurepip das passende venv-Paket separat einrichten.
-Kein System-Python-, apt-, Treiber-, CUDA- oder WSL-Umbau.
+Kein System-Python-Austausch, Treiber-, CUDA- oder WSL-Umbau.
+
+### Fehlendes venv/ensurepip reparieren
+
+Seit 19.10.2026 bietet der Installer das versionspassende Ubuntu-Paket an,
+beispielsweise `python3.12-venv`. Abfrage: `[(j)a/(N)ein]`, Standard Nein.
+Ohne Terminal keine Installation; ausdrueckliches nichtinteraktives Opt-in:
+
+```bash
+ACE_STEP_15_INSTALL_VENV_DEPS=1 bash scripts/tools/ace_step_15_install.sh --repair
+```
+
+`ACE_STEP_15_INSTALL_VENV_DEPS=0` deaktiviert die Paketinstallation.
+Nur das zum gewaehlten System-Python unter `/usr/bin/python3.X` passende
+Paket wird angeboten. Python 3.10/3.13, private Interpreter, aktive venvs
+und SSL-Fehler werden nicht durch Installation eines fremden venv-Pakets
+repariert. Speicherpruefung, Sperre und aktuelles Tool-Log kommen vorher.
+APT wartet begrenzt auf Paketverwaltungssperren, ohne Sperrdateien zu loeschen.
+Nach Paketinstallation wird venv/ensurepip erneut geprueft; bei Fehlern
+kein Clone/Build. ACE-Step bleibt aus GitHub, ohne Docker. Die Zustimmung
+gibt keine GPU-Runtime oder Modelle frei und ersetzt kein System-Python.
+Vorhandene fremde/beschaedigte venvs werden nicht automatisch geloescht.
+Die vorhandene Workspace-Rollback-Logik bleibt unveraendert; gemeinsam
+genutzte Systempakete werden dadurch nicht automatisch entfernt.
 
 ## Was danach noch fehlt
 

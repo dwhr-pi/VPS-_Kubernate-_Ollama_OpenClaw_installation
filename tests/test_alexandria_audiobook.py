@@ -38,6 +38,19 @@ class Registry(unittest.TestCase):
                           "bash webui.sh", "import installer", "import torch", "submodule update"):
             self.assertNotIn(forbidden, helper)
 
+    def test_dependency_order_and_scope(self):
+        text = (ROOT / HELPER).read_text()
+        main = text.split('alexandria_audiobook_main() (', 1)[1]
+        for guard in ('require_disk_mb 2048', 'flock -n 9', 'exec > >(tee'):
+            self.assertLess(main.index(guard), main.index('aa_prepare_python'))
+        self.assertLess(main.index('aa_prepare_python'), main.index('aa_fetch'))
+        self.assertIn('aa_prepare_python || return 1', main)
+        self.assertIn('sys.prefix == sys.base_prefix', text)
+        self.assertIn('Path(sys.executable).resolve() == expected.resolve()', text)
+        self.assertIn('assert (3, 10) <= sys.version_info < (3, 13)', text)
+        self.assertIn('run_apt_with_lock_wait update || return 1', text)
+        self.assertIn('install -y --no-install-recommends "$1"', text)
+
     def test_docs_menu(self):
         menu = (ROOT / "setup_ultimate.sh").read_text(encoding="utf-8")
         self.assertIn('TOOL_SCRIPT_NAMES["Alexandria_Audiobook"]="alexandria_audiobook"', menu)
@@ -69,6 +82,42 @@ alexandria_audiobook_main --dry-run
 test ! -e "$AA_BASE"
 """)
         self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_python_dependency_decisions(self):
+        cases = (
+            ('ask', 'return 0', 'return 1', 'echo python3.12-venv', 'return 0', 1, False),
+            ('0', 'return 0', 'return 1', 'echo python3.12-venv', 'return 0', 1, False),
+            ('invalid', 'return 0', 'return 1', 'echo python3.12-venv', 'return 0', 2, False),
+            ('1', 'return 1', 'return 1', 'echo python3.12-venv', 'return 0', 1, False),
+            ('1', 'return 0', 'return 1', 'return 1', 'return 0', 1, False),
+            ('1', 'return 0', 'return 0', 'echo python3.12-venv', 'return 0', 0, False),
+            ('1', 'return 0', 'return 1', 'echo python3.12-venv', 'return 42', 1, True),
+            ('1', 'return 0', 'return 1', 'echo python3.12-venv', 'return 0', 1, True),
+            ('1', 'return 0', '[[ "${repaired:-0}" == 1 ]]', 'echo python3.12-venv', 'repaired=1', 0, True),
+        )
+        for policy, core, venv, package, install, expected, called in cases:
+            with self.subTest(policy=policy, core=core, venv=venv, install=install):
+                result = self.shell(f'''
+aa_python_core_ok() {{ {core}; }}
+aa_python_venv_ok() {{ {venv}; }}
+aa_venv_package() {{ {package}; }}
+command() {{ return 0; }}
+aa_install_venv_package() {{
+    [[ "$1" == python3.12-venv ]] || return 99
+    echo MOCK_PACKAGE_INSTALL
+    {install};
+}}
+ALEXANDRIA_INSTALL_VENV_DEPS={policy} aa_prepare_python
+''')
+                self.assertEqual(result.returncode, expected, result.stderr)
+                self.assertEqual('MOCK_PACKAGE_INSTALL' in result.stdout, called)
+
+    def test_read_only_actions_never_prepare_dependencies(self):
+        for action, expected in (('--dry-run', 0), ('status', 0), ('doctor', 1)):
+            with self.subTest(action=action):
+                result = self.shell('aa_prepare_python() { echo UNEXPECTED_REPAIR; return 99; }; alexandria_audiobook_main ' + action)
+                self.assertEqual(result.returncode, expected, result.stderr)
+                self.assertNotIn('UNEXPECTED_REPAIR', result.stdout)
 
     def test_status_no_install(self):
         result = self.shell("""

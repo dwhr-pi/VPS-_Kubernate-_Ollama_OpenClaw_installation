@@ -91,10 +91,60 @@ ke_resources() {
     REQUIRE_WINDOWS_HOST_FREE_MB=2048 require_disk_mb 2048 "$mount"
 }
 
+ke_python_core_ok() {
+    "$KE_PYTHON" -I -B -c 'import sys, ssl; assert (3,10,1) <= sys.version_info < (3,13)'
+}
+
+ke_python_venv_ok() {
+    "$KE_PYTHON" -I -B -c 'import venv, ensurepip' >/dev/null 2>&1
+}
+
+ke_venv_package() {
+    "$KE_PYTHON" -I -B - <<'PY'
+from pathlib import Path
+import sys
+expected = Path('/usr/bin/python%d.%d' % sys.version_info[:2])
+assert sys.prefix == sys.base_prefix, 'Keine Paket-Reparatur innerhalb einer venv'
+assert Path(sys.executable).resolve() == expected.resolve(), 'Kein Ubuntu-Systeminterpreter'
+assert (3, 10, 1) <= sys.version_info < (3, 13)
+print('python%d.%d-venv' % sys.version_info[:2])
+PY
+}
+
+ke_install_venv_package() {
+    # shellcheck source=../../lib/apt_lock_wait.sh
+    source "$KE_ROOT/scripts/lib/apt_lock_wait.sh"
+    run_apt_with_lock_wait update || return 1
+    run_apt_with_lock_wait install -y --no-install-recommends "$1"
+}
+
 ke_prepare_python() {
-    "$KE_PYTHON" -I -B -c 'import venv, ensurepip, ssl' || {
-        echo 'venv/ensurepip/SSL fehlt. Zum ausgewaehlten Python passendes venv-Paket separat einrichten, dann --repair; kein System-Python ersetzt.' >&2; return 1;
+    local package answer='' policy="${KIWI_EDIT_INSTALL_VENV_DEPS:-ask}"
+    ke_python_core_ok || { echo 'Kiwi Edit: Python 3.10.1-3.12 mit SSL erforderlich; KIWI_EDIT_PYTHON_BIN pruefen.' >&2; return 1; }
+    ke_python_venv_ok && return 0
+    echo 'Kiwi Edit: Dem gewaehlten Python fehlt venv/ensurepip.'
+    package="$(ke_venv_package)" || {
+        echo 'Privates/fremdes Python: dessen venv/ensurepip separat reparieren oder KIWI_EDIT_PYTHON_BIN passend setzen; kein System-Python ersetzt.' >&2; return 1;
     }
+    command -v apt-get >/dev/null && command -v sudo >/dev/null || {
+        echo "Keine apt/sudo-Reparatur verfuegbar. $package separat einrichten." >&2; return 1;
+    }
+    echo "Notwendiges Systempaket: $package. Kiwi Edit selbst bleibt aus GitHub, ohne Docker."
+    case "$policy" in
+        1) ;;
+        ask)
+            if [[ -t 0 ]]; then
+                read -r -p "$package mit sudo installieren? [(j)a/(N)ein]: " answer || answer=''
+            fi
+            [[ "$answer" == j || "$answer" == J ]] || {
+                echo 'Nicht installiert. Nach Zustimmung KIWI_EDIT_INSTALL_VENV_DEPS=1 mit --repair verwenden.' >&2; return 1;
+            } ;;
+        0) echo 'Installation von venv-Systempaketen deaktiviert.' >&2; return 1 ;;
+        *) echo 'KIWI_EDIT_INSTALL_VENV_DEPS: nur ask, 0 oder 1 erlaubt.' >&2; return 2 ;;
+    esac
+    ke_install_venv_package "$package" || { echo "Installation von $package fehlgeschlagen; kein Clone/Build." >&2; return 1; }
+    ke_python_venv_ok || { echo "venv/ensurepip fehlt weiterhin fuer $KE_PYTHON; kein Clone/Build." >&2; return 1; }
+    echo 'venv/ensurepip verfuegbar; kein System-Python ersetzt.'
 }
 
 ke_sparse_patterns() {
@@ -213,10 +263,10 @@ kiwi_edit_main() (
     flock -n 9 || { echo 'Andere Kiwi Edit-Operation aktiv.' >&2; return 1; }
     log="$(mktemp "$KE_LOGS/kiwi_edit_$(date +%Y%m%d_%H%M%S)_XXXXXX.log")"
     exec > >(tee -a "$log") 2>&1
-    echo "Kiwi Edit-Installer: 2026-10-18-github-base-package; Aktion: $mode; Pin: $KE_COMMIT"
+    echo "Kiwi Edit-Installer: 2026-10-19-venv-dependency-repair; Aktion: $mode; Pin: $KE_COMMIT"
     trap 'rc=$?; if ((rc != 0)); then echo "Kiwi Edit-Fehler ($rc); Dateien erhalten. Log: $log. Nach Behebung --repair verwenden."; fi' EXIT
     if [[ "$mode" == uninstall || "$mode" == --uninstall ]]; then ke_deactivate; return 0; fi
-    ke_prepare_python
+    ke_prepare_python || return 1
     ke_fetch
     df -Pk "$KE_BASE"
     ke_install_package
