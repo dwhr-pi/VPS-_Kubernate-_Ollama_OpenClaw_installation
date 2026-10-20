@@ -33,6 +33,9 @@ bestimmt. Sie startet selbst keine Programme oder Automation.
    Repository. Halte Claude Code, Anthropic_CLI/ant, SDKs, Plugins und
    eigenstaendige quelloffene Alternativen auseinander. Keine Leaks oder
    Drittanbieter-Repackages als lizenzierte Originaldistribution ausgeben.
+   Erhalte und pruefe die Spalte `Offizielle Webseite` in den aktuellen
+   Anbietertabellen; Homepage, API-Base-URL und Key-Verwaltung nicht
+   verwechseln. Fuer mehrdeutige Platzhalter keine Domain erfinden.
 7. Aktualisiere ausschliesslich die betroffene Dokumentation unter
    `docs/_API-Keys/`, `docs/tools/claude-code.md` und bei Bedarf deren
    Navigationslinks/Changelog. Aendere keine Installer, Keys, Endpunkte,

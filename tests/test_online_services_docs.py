@@ -3,12 +3,64 @@ import ast
 from pathlib import Path
 import re
 import unittest
+from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 DIRECTORY = ROOT / "docs/_API-Keys/OnlineOnKeyServices"
 
 
 class OnlineServicesDocs(unittest.TestCase):
+    def test_provider_tables_have_consistent_official_website_columns(self):
+        documents = {
+            "PROVIDER_KEY_CATALOG.md": 5,
+            "FREE_TIERS_AND_TRIAL_CREDITS.md": 1,
+            "API_KEY_GUIDE.md": 1,
+            "OnlineOnKeyServices/README.md": 1,
+        }
+        for relative, expected_tables in documents.items():
+            lines = (DIRECTORY.parent / relative).read_text(encoding="utf-8").splitlines()
+            found = 0
+            for index, header in enumerate(lines):
+                if not header.startswith("|") or "Offizielle Webseite" not in header:
+                    continue
+                found += 1
+                columns = [cell.strip() for cell in header.strip("|").split("|")]
+                website_column = columns.index("Offizielle Webseite")
+                for row in lines[index + 2:]:
+                    if not row.startswith("|"):
+                        break
+                    cells = [cell.strip() for cell in row.strip("|").split("|")]
+                    self.assertEqual(len(cells), len(columns), (relative, row))
+                    website = cells[website_column]
+                    links = re.findall(r"\]\(([^)]+)\)", website)
+                    if not links:
+                        self.assertIn("festgelegt", website, (relative, row))
+                    for link in links:
+                        parsed = urlsplit(link)
+                        self.assertEqual(parsed.scheme, "https", link)
+                        self.assertIsNone(parsed.username, link)
+                        self.assertIsNone(parsed.password, link)
+                        self.assertFalse(parsed.query, link)
+                        self.assertNotIn(parsed.hostname, ("localhost", "127.0.0.1"), link)
+            self.assertEqual(found, expected_tables, relative)
+
+    def test_homepages_do_not_replace_warnings_or_api_credentials(self):
+        catalog = (DIRECTORY.parent / "PROVIDER_KEY_CATALOG.md").read_text(encoding="utf-8")
+        for term in ("https://openai.com/", "https://www.anthropic.com/", "https://ai.google.dev/",
+                     "https://www.moonshot.ai/", "https://huggingface.co/", "https://openrouter.ai/"):
+            self.assertIn(term, catalog)
+        for prefix in ("| EULLM |", "| AI Gateway |", "| OIDC |"):
+            row = next(line for line in catalog.splitlines() if line.startswith(prefix))
+            website = row.split("|")[2]
+            self.assertNotIn("https://", website)
+            self.assertIn("festgelegt", website)
+        token = (DIRECTORY / "token8341.md").read_text(encoding="utf-8")
+        self.assertIn("kein bestaetigter API-Endpunkt", token)
+        self.assertIn("https://www.token8341.com/", token)
+        router = (DIRECTORY / "openrouter.md").read_text(encoding="utf-8")
+        self.assertIn("**Offizielle Webseite:**", router)
+        self.assertIn("https://openrouter.ai/api/v1", router)
+
     def test_all_local_links_resolve(self):
         for doc in DIRECTORY.parent.rglob("*.md"):
             for target in re.findall(r"\]\(([^)]+)\)", doc.read_text(encoding="utf-8")):

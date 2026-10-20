@@ -12,7 +12,8 @@ oder Dienste aktiviert. Ein dokumentierter Zugang ist keine Cloud-Freigabe.
 - [Datierte Quellenberichte](reviews/README.md): Befunde und Original-Links bleiben erhalten.
 
 - [API-Key-Katalog aller im Setup dokumentierten Anbieter und Dienste](PROVIDER_KEY_CATALOG.md):
-  Variablennamen, Zweck, lokale Zugänge, OAuth und Connector-Grenzen.
+  offizielle Webseiten direkt in den Tabellen, Variablennamen, Zweck,
+  lokale Zugänge, OAuth und Connector-Grenzen.
 - [API-Key Guide, Ports und Sicherheit](API_KEY_GUIDE.md): formatierte Anleitung,
   aus `docs/API_KEY_GUIDE.md` in dieses Verzeichnis verschoben.
 

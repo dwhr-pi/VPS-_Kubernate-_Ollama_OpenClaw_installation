@@ -5,6 +5,11 @@ mehrere KI-Modelle verschiedener Anbieter.** Statt fuer jedes Modell einen
 eigenen Zugang und eine eigene Abrechnung einzurichten, waehlt dein Client
 ueber den Modellnamen den gewuenschten Dienst hinter diesem Gateway.
 
+**Anbieter-Webseite laut Betreiberauftritt:**
+[TokenWorks / token8341.com](https://www.token8341.com/).
+Dies ist kein bestaetigter API-Endpunkt und hebt die unten dokumentierten
+Widersprueche oder Sicherheitswarnungen nicht auf.
+
 ```text
 Dein KI-Client -> token8341-Key + gemeinsamer API-Endpunkt
               -> DeepSeek | Qwen | Kimi | GLM | MiniMax | gpt-oss-120b

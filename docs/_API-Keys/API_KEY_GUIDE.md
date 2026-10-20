@@ -124,17 +124,20 @@ Historische Upstream-Defaults können von den Setup-Zuordnungen abweichen.
 
 ### 3.1 Wichtige Ports
 
-| Dienst | Setup-Port / Referenz | Hinweis |
-|---|---|---|
-| Ollama | 11434 | Nur lokal |
-| OpenClaw Gateway | 18789 laut Haupt-ENV-Vorlage | Tatsächliche Runtime prüfen; Legacy-Vorlage nennt auch 3000 |
-| FreeLLMAPI | 3011 | Nur Loopback, eigene Client-Authentifizierung |
-| Home Assistant | 8123 | Nicht offen ins Internet |
-| n8n | 5678 | Credentials und Admin-Zugriff schützen |
-| Open WebUI | 3000 | Keine öffentliche Standardfreigabe |
-| Grafana | 3001 | Nicht mit Upstream-Default verwechseln |
-| Huginn | 3002 | Registry-Zuordnung |
-| ComfyUI | 8188 | GPU-/Dateizugriff schützen |
+| Dienst | Offizielle Webseite | Setup-Port / Referenz | Hinweis |
+|---|---|---|---|
+| Ollama | [ollama.com](https://ollama.com/) | 11434 | Nur lokal |
+| OpenClaw Gateway | [openclaw.ai](https://openclaw.ai/) | 18789 laut Haupt-ENV-Vorlage | Tatsächliche Runtime prüfen; Legacy-Vorlage nennt auch 3000 |
+| FreeLLMAPI | [Offizielles GitHub-Projekt](https://github.com/tashfeenahmed/freellmapi) | 3011 | Nur Loopback, eigene Client-Authentifizierung |
+| Home Assistant | [home-assistant.io](https://www.home-assistant.io/) | 8123 | Nicht offen ins Internet |
+| n8n | [n8n.io](https://n8n.io/) | 5678 | Credentials und Admin-Zugriff schützen |
+| Open WebUI | [openwebui.com](https://openwebui.com/) | 3000 | Keine öffentliche Standardfreigabe |
+| Grafana | [grafana.com](https://grafana.com/) | 3001 | Nicht mit Upstream-Default verwechseln |
+| Huginn | [Offizielles GitHub-Projekt](https://github.com/huginn/huginn) | 3002 | Registry-Zuordnung |
+| ComfyUI | [comfy.org](https://comfy.org/) | 8188 | GPU-/Dateizugriff schützen |
+
+Die Links zeigen Anbieter-/Projektinformationen, nicht deine lokalen
+Admin-Oberflaechen. Keine Ports oder externen Freigaben werden dadurch geaendert.
 
 Portkonflikte vor Start prüfen. Keine pauschale Portfreigabe für alle Tools.
 

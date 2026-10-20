@@ -14,10 +14,13 @@ Kein Installer, Docker-Container, Konto, API-Key oder Cloud-Fallback wird durch
 diese Dokumentation angelegt oder aktiviert. Ollama bleibt der lokale Standard.
 Ein API-Schluessel ist keine Flatrate und kein Zugang zu jedem existierenden Modell.
 
-| Dienst | Zweck | Einordnung |
-|---|---|---|
-| [token8341 / TokenWorks](token8341.md) | Ein Zugang zu mehreren Modellen, etwa DeepSeek, Qwen, Kimi, GLM und MiniMax laut Katalog | Externer Aggregator; widerspruechliche Betreiber-/Endpunktangaben vor Nutzung klaeren |
-| [OpenRouter](openrouter.md) | Gemeinsame API, Modellauswahl und konfigurierbares Routing zu Modellprovidern | Externer Aggregator; Modell, Provider, Preise und Datenschutz separat pruefen |
+| Dienst / unsere Anleitung | Offizielle Webseite | Zweck | Einordnung |
+|---|---|---|---|
+| [token8341 / TokenWorks](token8341.md) | [token8341.com](https://www.token8341.com/) | Ein Zugang zu mehreren Modellen, etwa DeepSeek, Qwen, Kimi, GLM und MiniMax laut Katalog | Externer Aggregator; widerspruechliche Betreiber-/Endpunktangaben vor Nutzung klaeren |
+| [OpenRouter](openrouter.md) | [openrouter.ai](https://openrouter.ai/) | Gemeinsame API, Modellauswahl und konfigurierbares Routing zu Modellprovidern | Externer Aggregator; Modell, Provider, Preise und Datenschutz separat pruefen |
+
+Die Webseiten sind Produkt-/Anbieterseiten, keine bestaetigten API-Base-URLs.
+Insbesondere bei token8341 bleibt die dokumentierte Endpunktwarnung bestehen.
 
 Beide sind im Grundprinzip vergleichbar, aber nicht technisch, rechtlich oder
 wirtschaftlich gleichzusetzen. Konto und Schluessel sind nicht austauschbar.

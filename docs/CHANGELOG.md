@@ -1,5 +1,14 @@
 # Docs Changelog
 
+## 2026-10-21 Offizielle Anbieter-Webseiten
+
+- Direkte Anbieter-/Projektlinks in den API-Key-Katalog, Free-Tier-Vergleich,
+  OnlineOnKeyServices und die Diensttabelle im API-Key Guide aufgenommen.
+- Produktseiten von API-Endpunkten, Key-Verwaltung und lokalen Admin-Panels
+  getrennt; mehrdeutige Connector-Platzhalter nicht mit erfundenen Domains belegt.
+- Historische Quellenberichte unveraendert erhalten; kuenftige Quellenpruefung
+  um den Erhalt der offiziellen Webseiten-Spalte ergaenzt.
+
 ## 2026-10-21 Free-Tier-Quellen und Claude-Code-Lizenz
 
 - Konkrete GitHub-Listen, Anbieter-Primaerquellen und eigene datierte Auswertung

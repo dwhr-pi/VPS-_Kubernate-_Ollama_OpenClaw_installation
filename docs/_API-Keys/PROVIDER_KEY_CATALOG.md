@@ -10,6 +10,12 @@ keine Prüfung privater ENV-Dateien und keine Aktivierung externer Dienste.**
 Die Auflistung beschreibt deklarierte Variablen und Credential-Arten, nicht
 lokal vorhandene Konten oder nachgewiesen funktionierende Integrationen.
 
+Die Spalte **Offizielle Webseite** fuehrt direkt zur Anbieter- oder
+Projektseite, nicht zu einem API-Endpunkt. Links ergaenzt am 21.10.2026.
+Bei Projekten ohne eigene Produktseite ist das offizielle GitHub-Repository
+als solches benannt. Nicht eindeutig zugeordnete Platzhalter erhalten keine
+erratene Domain. Eine Webseite belegt keine API-Freigabe oder kostenlose Nutzung.
+
 ## Quellen und Verbindlichkeit
 
 - [OpenClaw-Vorlage](../../scripts/config_templates/openclaw/.env.template)
@@ -28,18 +34,18 @@ und Endpunkte vor Nutzung beim gewählten Anbieter prüfen.
 
 ## 1. Modellanbieter und Modellzugänge
 
-| Anbieter / Zugang | Im Setup deklarierter Schlüssel | Zweck und Grenze |
-|---|---|---|
-| OpenAI | `OPENAI_API_KEY` | Direkter externer Modellzugang; nicht mit einem fremden OpenAI-kompatiblen Dienst verwechseln |
-| Anthropic / Claude | `ANTHROPIC_API_KEY` | Direkter Claude-API-Zugang; ein Claude-Chat-Abo ist kein allgemeiner API-Key |
-| WebsiteFactory / Claude | `CLAUDE_API_KEY` | Eigener Vorlagenname dieses Tools, kein garantierter SDK-Alias |
-| Google Gemini | `GEMINI_API_KEY`, optional `GOOGLE_API_KEY` | Je Client passenden Namen verwenden; nicht Kalender-OAuth |
-| Kimi / Moonshot | `KIMI_API_KEY` | Projektspezifisches Vorlagenfeld; tatsächlichen API-Client prüfen |
-| Z.AI / GLM | `ZAI_API_KEY` | Optionales Provider-Feld der OpenClaw-Vorlage |
-| MiniMax | `MINIMAX_API_KEY` | Optionaler externer Zugang, Modell-/Produktfreigabe prüfen |
-| Synthetic | `SYNTHETIC_API_KEY` | Optionaler Provider-/Gateway-Zugang |
-| EULLM | `EULLM_API_KEY` plus `EULLM_BASE_URL` | Juristischer Connector-Platzhalter; kein eindeutig festgelegter Anbieter und kein Funktionsnachweis |
-| Hugging Face | `HF_TOKEN` | Hub, geschützte Modelle/Datensätze oder Inferenz nach Berechtigung; kein Pflicht-Key für alle öffentlichen Downloads |
+| Anbieter / Zugang | Offizielle Webseite | Im Setup deklarierter Schlüssel | Zweck und Grenze |
+|---|---|---|---|
+| OpenAI | [openai.com](https://openai.com/) | `OPENAI_API_KEY` | Direkter externer Modellzugang; nicht mit einem fremden OpenAI-kompatiblen Dienst verwechseln |
+| Anthropic / Claude | [anthropic.com](https://www.anthropic.com/) | `ANTHROPIC_API_KEY` | Direkter Claude-API-Zugang; ein Claude-Chat-Abo ist kein allgemeiner API-Key |
+| WebsiteFactory / Claude | [Anthropic](https://www.anthropic.com/) (Modellanbieter) | `CLAUDE_API_KEY` | Eigener Vorlagenname dieses Tools, kein garantierter SDK-Alias |
+| Google Gemini | [Google AI for Developers](https://ai.google.dev/) | `GEMINI_API_KEY`, optional `GOOGLE_API_KEY` | Je Client passenden Namen verwenden; nicht Kalender-OAuth |
+| Kimi / Moonshot | [Moonshot AI](https://www.moonshot.ai/) | `KIMI_API_KEY` | Projektspezifisches Vorlagenfeld; tatsächlichen API-Client prüfen |
+| Z.AI / GLM | [z.ai](https://z.ai/) | `ZAI_API_KEY` | Optionales Provider-Feld der OpenClaw-Vorlage |
+| MiniMax | [minimax.io](https://www.minimax.io/) | `MINIMAX_API_KEY` | Optionaler externer Zugang, Modell-/Produktfreigabe prüfen |
+| Synthetic | [synthetic.new](https://synthetic.new/) | `SYNTHETIC_API_KEY` | Optionaler Provider-/Gateway-Zugang |
+| EULLM | Nicht eindeutig festgelegt | `EULLM_API_KEY` plus `EULLM_BASE_URL` | Juristischer Connector-Platzhalter; kein eindeutig festgelegter Anbieter und kein Funktionsnachweis |
+| Hugging Face | [huggingface.co](https://huggingface.co/) | `HF_TOKEN` | Hub, geschützte Modelle/Datensätze oder Inferenz nach Berechtigung; kein Pflicht-Key für alle öffentlichen Downloads |
 
 Die OpenClaw-Vorlage enthält außerdem `OPENAI_API_KEY_1`,
 `ANTHROPIC_API_KEY_1`, `GEMINI_API_KEY_1` sowie `OPENAI_API_KEYS`,
@@ -51,13 +57,13 @@ Einzelschlüsselfeld kopieren. Live-Modus-Felder sind
 
 ## 2. Ein Schlüssel für mehrere Anbieter / lokale Router
 
-| Dienst | Schlüssel / Credential | Einordnung |
-|---|---|---|
-| [OpenRouter](OnlineOnKeyServices/openrouter.md) | `OPENROUTER_API_KEY` | Externer Aggregator; eigener Key, Modell-ID und Budget |
-| [token8341](OnlineOnKeyServices/token8341.md) | `TOKEN8341_API_KEY` | Dokumentierter Integrationsname; Endpunktwidersprüche vor Nutzung klären |
-| AI Gateway | `AI_GATEWAY_API_KEY` | Optionales, nicht eindeutig an einen Betreiber gebundenes Feld; Anbieter und Client explizit festlegen |
-| FreeLLMAPI | `FREELLMAPI_API_KEY` | In der Client-Konfiguration lokaler Unified Key, kein Ersatz für Router-Upstream-Keys |
-| LiteLLM / LocalAI / Open WebUI | Eigene dienst-/versionsabhängige Tokens | Kein einheitlicher Schlüsselname durch diesen Katalog zugesichert |
+| Dienst | Offizielle Webseite | Schlüssel / Credential | Einordnung |
+|---|---|---|---|
+| [OpenRouter](OnlineOnKeyServices/openrouter.md) | [openrouter.ai](https://openrouter.ai/) | `OPENROUTER_API_KEY` | Externer Aggregator; eigener Key, Modell-ID und Budget |
+| [token8341](OnlineOnKeyServices/token8341.md) | [TokenWorks](https://www.token8341.com/) | `TOKEN8341_API_KEY` | Dokumentierter Integrationsname; Endpunktwidersprüche vor Nutzung klären |
+| AI Gateway | Kein bestimmter Betreiber festgelegt | `AI_GATEWAY_API_KEY` | Optionales, nicht eindeutig an einen Betreiber gebundenes Feld; Anbieter und Client explizit festlegen |
+| FreeLLMAPI | [Offizielles GitHub-Projekt](https://github.com/tashfeenahmed/freellmapi) | `FREELLMAPI_API_KEY` | In der Client-Konfiguration lokaler Unified Key, kein Ersatz für Router-Upstream-Keys |
+| LiteLLM / LocalAI / Open WebUI | [LiteLLM](https://www.litellm.ai/), [LocalAI](https://localai.io/), [Open WebUI](https://openwebui.com/) | Eigene dienst-/versionsabhängige Tokens | Kein einheitlicher Schlüsselname durch diesen Katalog zugesichert |
 
 Die [OnlineOnKeyServices-Übersicht](OnlineOnKeyServices/README.md) beschreibt
 das Aggregator-Prinzip. Ein Aggregator-Key ist kein Gratiszugang zu allen
@@ -69,54 +75,54 @@ keine vermeintlich unterstützten ENV-Namen erfunden.
 
 ## 3. Recherche, Sprache, Audio und Video
 
-| Dienst | Deklarierter Name | Zweck / Statusgrenze |
-|---|---|---|
-| Brave Search | `BRAVE_API_KEY` | Externe Websuche |
-| Perplexity | `PERPLEXITY_API_KEY` | Externe Recherche-/Modell-API |
-| Firecrawl | `FIRECRAWL_API_KEY` | Externer Crawl-/Extraktionszugang; lokale Variante separat prüfen |
-| ElevenLabs | `ELEVENLABS_API_KEY`, `XI_API_KEY` | Voice-Zugang; Alias nur verwenden, wenn der Client ihn unterstützt |
-| Deepgram | `DEEPGRAM_API_KEY` | Externe Speech-API |
-| Runway | `RUNWAY_API_KEY` | API-Connector-Vorlage, keine lokale Videomodellinstallation |
-| Suno | `SUNO_API_KEY` | Connector-Feld; offizielle API-Verfügbarkeit und Nutzungsrechte separat prüfen |
-| Udio | `UDIO_API_KEY` | Connector-Feld; kein Nachweis einer offiziellen öffentlichen API |
-| fal / Veo | Vom gewählten SDK unterstützte Credentials | Basis-SDK-Installation erzeugt weder Key noch Cloud-Freigabe; siehe [Fal Client](../tools/fal-client.md) und [Veo API](../tools/veo-api.md) |
-| Weights & Biases | `WANDB_API_KEY` | Optionales externes Trainingstracking; nicht für lokalen Modellbetrieb nötig |
+| Dienst | Offizielle Webseite | Deklarierter Name | Zweck / Statusgrenze |
+|---|---|---|---|
+| Brave Search | [Brave Search API](https://brave.com/search/api/) | `BRAVE_API_KEY` | Externe Websuche |
+| Perplexity | [perplexity.ai](https://www.perplexity.ai/) | `PERPLEXITY_API_KEY` | Externe Recherche-/Modell-API |
+| Firecrawl | [firecrawl.dev](https://www.firecrawl.dev/) | `FIRECRAWL_API_KEY` | Externer Crawl-/Extraktionszugang; lokale Variante separat prüfen |
+| ElevenLabs | [elevenlabs.io](https://elevenlabs.io/) | `ELEVENLABS_API_KEY`, `XI_API_KEY` | Voice-Zugang; Alias nur verwenden, wenn der Client ihn unterstützt |
+| Deepgram | [deepgram.com](https://deepgram.com/) | `DEEPGRAM_API_KEY` | Externe Speech-API |
+| Runway | [runway.com](https://runway.com/) | `RUNWAY_API_KEY` | API-Connector-Vorlage, keine lokale Videomodellinstallation |
+| Suno | [suno.com](https://suno.com/) | `SUNO_API_KEY` | Connector-Feld; offizielle API-Verfügbarkeit und Nutzungsrechte separat prüfen |
+| Udio | [udio.com](https://www.udio.com/) | `UDIO_API_KEY` | Connector-Feld; kein Nachweis einer offiziellen öffentlichen API |
+| fal / Veo | [fal.ai](https://fal.ai/), [Google DeepMind Veo](https://deepmind.google/models/veo/) | Vom gewählten SDK unterstützte Credentials | Basis-SDK-Installation erzeugt weder Key noch Cloud-Freigabe; siehe [Fal Client](../tools/fal-client.md) und [Veo API](../tools/veo-api.md) |
+| Weights & Biases | [wandb.ai](https://wandb.ai/) | `WANDB_API_KEY` | Optionales externes Trainingstracking; nicht für lokalen Modellbetrieb nötig |
 
 ## 4. Business-, Marketing- und Dokumenten-Connectoren
 
-| Integration | Deklarierter Name / Zugang | Hinweis |
-|---|---|---|
-| Ahrefs | `AHREFS_API_KEY` | Connector, Konto-/API-Berechtigung erforderlich |
-| Semrush | `SEMRUSH_API_KEY` | Connector-Vorlage |
-| Airtable | `AIRTABLE_API_KEY` | Historischer Connector-Name; aktuelle Credential-Art und Clientunterstützung prüfen |
-| Notion | `NOTION_API_KEY` | Integrationstoken, nur freigegebene Seiten |
-| HubSpot | `HUBSPOT_ACCESS_TOKEN` | Zugriff auf explizit freigegebene CRM-Daten |
-| Buffer | `BUFFER_ACCESS_TOKEN` | Social-Connector; keine automatische Veröffentlichung |
-| TikTok Ads | `TIKTOK_ADS_ACCESS_TOKEN` | Werbekonto-Rechte und Budget separat freigeben |
-| Paperless-ngx | Persönlicher API-Token; `PAPERLESS_SECRET_KEY` ist dagegen ein App-Secret | Nicht verwechseln; Zugriff auf Personalakten streng begrenzen |
-| Zotero | Bibliotheksbezogener API-Key nach Integration | Lokale Literaturverwaltung benötigt keinen API-Key |
-| n8n / Activepieces | Eigene Plattform-Tokens plus Credentials je Verbindung | Plattform-Key ersetzt weder Modell-Key noch OAuth |
+| Integration | Offizielle Webseite | Deklarierter Name / Zugang | Hinweis |
+|---|---|---|---|
+| Ahrefs | [ahrefs.com](https://ahrefs.com/) | `AHREFS_API_KEY` | Connector, Konto-/API-Berechtigung erforderlich |
+| Semrush | [semrush.com](https://www.semrush.com/) | `SEMRUSH_API_KEY` | Connector-Vorlage |
+| Airtable | [airtable.com](https://www.airtable.com/) | `AIRTABLE_API_KEY` | Historischer Connector-Name; aktuelle Credential-Art und Clientunterstützung prüfen |
+| Notion | [notion.com](https://www.notion.com/) | `NOTION_API_KEY` | Integrationstoken, nur freigegebene Seiten |
+| HubSpot | [hubspot.com](https://www.hubspot.com/) | `HUBSPOT_ACCESS_TOKEN` | Zugriff auf explizit freigegebene CRM-Daten |
+| Buffer | [buffer.com](https://buffer.com/) | `BUFFER_ACCESS_TOKEN` | Social-Connector; keine automatische Veröffentlichung |
+| TikTok Ads | [TikTok for Business](https://ads.tiktok.com/) | `TIKTOK_ADS_ACCESS_TOKEN` | Werbekonto-Rechte und Budget separat freigeben |
+| Paperless-ngx | [Offizielles GitHub-Projekt](https://github.com/paperless-ngx/paperless-ngx) | Persönlicher API-Token; `PAPERLESS_SECRET_KEY` ist dagegen ein App-Secret | Nicht verwechseln; Zugriff auf Personalakten streng begrenzen |
+| Zotero | [zotero.org](https://www.zotero.org/) | Bibliotheksbezogener API-Key nach Integration | Lokale Literaturverwaltung benötigt keinen API-Key |
+| n8n / Activepieces | [n8n](https://n8n.io/), [Activepieces](https://www.activepieces.com/) | Eigene Plattform-Tokens plus Credentials je Verbindung | Plattform-Key ersetzt weder Modell-Key noch OAuth |
 
 ## 5. Bots, OAuth und Infrastruktur
 
-| Integration | Schlüssel / Feld | Abgrenzung |
-|---|---|---|
-| Telegram | `TELEGRAM_BOT_TOKEN` | Botzugang |
-| Discord | `DISCORD_BOT_TOKEN` | Botzugang, minimale Serverrechte |
-| Slack | `SLACK_BOT_TOKEN`, `SLACK_APP_TOKEN` | Unterschiedliche Tokenrollen |
-| Mattermost / Zalo | `MATTERMOST_BOT_TOKEN`, `ZALO_BOT_TOKEN` | Channel-Credentials |
-| Twitch | `OPENCLAW_TWITCH_ACCESS_TOKEN` | OAuth-Token, Ablauf und Scopes beachten |
-| Google Kalender | `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, OAuth-Tokens | Client-ID ist nicht geheim; OAuth ist kein Gemini-Key |
-| OpenClaw Gateway | `OPENCLAW_GATEWAY_TOKEN`, optional `OPENCLAW_GATEWAY_PASSWORD` | Lokale Runtime-Authentifizierung, kein Modellanbieter |
-| Cloudflare | `CLOUDFLARE_TUNNEL_TOKEN` oder passende Tunnel-Credentials | Legacy: `CLOUDFLARE_TUNNEL_ID`, `CLOUDFLARE_TUNNEL_SECRET`; ID ist kein Secret |
-| Tailscale | `TAILSCALE_AUTHKEY` | Geräteaufnahme, kein Inferenzzugang |
-| Hurricane Electric DDNS | Record-Update-Key | Kein globaler Provider-Key; nicht in Request-Logs offenlegen |
-| Home Assistant | Langzeit-Zugriffstoken nach Integration | Lokale Smart-Home-Rechte, keine Cloud-Pflicht |
-| GitHub | PAT / OAuth / GitHub-App-Token nach Client | Öffentliche GitHub-Quellcode-Clones brauchen normalerweise keinen Key |
-| OIDC | `OIDC_CLIENT_SECRET` | Identitätsprovider, kein Modellanbieter |
-| Authentik / Penpot | `AUTHENTIK_SECRET_KEY`, `PENPOT_SECRET_KEY` | Anwendungsgeheimnisse, keine Benutzer-API-Tokens |
-| Legacy-OpenClaw / Datenbanken | `JWT_SECRET`, `ADMIN_PASSWORD`, `DB_CONNECTION_STRING` | App-/Admin-/DB-Zugang, kann Secrets enthalten; nur bei tatsächlichem Verbraucher |
-| Börsen / Automaton / Web3 | Börsen-Credentials, Wallet-Private-Key / Seed | Kein LLM-Key; keine Übergabe an Modellrouter, keine Live-Trades als Standard |
+| Integration | Offizielle Webseite | Schlüssel / Feld | Abgrenzung |
+|---|---|---|---|
+| Telegram | [telegram.org](https://telegram.org/) | `TELEGRAM_BOT_TOKEN` | Botzugang |
+| Discord | [discord.com](https://discord.com/) | `DISCORD_BOT_TOKEN` | Botzugang, minimale Serverrechte |
+| Slack | [slack.com](https://slack.com/) | `SLACK_BOT_TOKEN`, `SLACK_APP_TOKEN` | Unterschiedliche Tokenrollen |
+| Mattermost / Zalo | [Mattermost](https://mattermost.com/), [Zalo](https://zalo.me/) | `MATTERMOST_BOT_TOKEN`, `ZALO_BOT_TOKEN` | Channel-Credentials |
+| Twitch | [twitch.tv](https://www.twitch.tv/) | `OPENCLAW_TWITCH_ACCESS_TOKEN` | OAuth-Token, Ablauf und Scopes beachten |
+| Google Kalender | [Google Calendar](https://workspace.google.com/products/calendar/) | `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, OAuth-Tokens | Client-ID ist nicht geheim; OAuth ist kein Gemini-Key |
+| OpenClaw Gateway | [openclaw.ai](https://openclaw.ai/) | `OPENCLAW_GATEWAY_TOKEN`, optional `OPENCLAW_GATEWAY_PASSWORD` | Lokale Runtime-Authentifizierung, kein Modellanbieter |
+| Cloudflare | [cloudflare.com](https://www.cloudflare.com/) | `CLOUDFLARE_TUNNEL_TOKEN` oder passende Tunnel-Credentials | Legacy: `CLOUDFLARE_TUNNEL_ID`, `CLOUDFLARE_TUNNEL_SECRET`; ID ist kein Secret |
+| Tailscale | [tailscale.com](https://tailscale.com/) | `TAILSCALE_AUTHKEY` | Geräteaufnahme, kein Inferenzzugang |
+| Hurricane Electric DDNS | [Hurricane Electric DNS](https://dns.he.net/) | Record-Update-Key | Kein globaler Provider-Key; nicht in Request-Logs offenlegen |
+| Home Assistant | [home-assistant.io](https://www.home-assistant.io/) | Langzeit-Zugriffstoken nach Integration | Lokale Smart-Home-Rechte, keine Cloud-Pflicht |
+| GitHub | [github.com](https://github.com/) | PAT / OAuth / GitHub-App-Token nach Client | Öffentliche GitHub-Quellcode-Clones brauchen normalerweise keinen Key |
+| OIDC | Kein bestimmter Identitaetsanbieter festgelegt | `OIDC_CLIENT_SECRET` | Identitätsprovider, kein Modellanbieter |
+| Authentik / Penpot | [Authentik](https://goauthentik.io/), [Penpot](https://penpot.app/) | `AUTHENTIK_SECRET_KEY`, `PENPOT_SECRET_KEY` | Anwendungsgeheimnisse, keine Benutzer-API-Tokens |
+| Legacy-OpenClaw / Datenbanken | [OpenClaw](https://openclaw.ai/); Datenbankprodukt nicht festgelegt | `JWT_SECRET`, `ADMIN_PASSWORD`, `DB_CONNECTION_STRING` | App-/Admin-/DB-Zugang, kann Secrets enthalten; nur bei tatsächlichem Verbraucher |
+| Börsen / Automaton / Web3 | [Automaton: offizielles GitHub-Projekt](https://github.com/Conway-Research/automaton); Boerse nicht festgelegt | Börsen-Credentials, Wallet-Private-Key / Seed | Kein LLM-Key; keine Übergabe an Modellrouter, keine Live-Trades als Standard |
 
 ## 6. Was braucht keinen externen Anbieter-Key?
 

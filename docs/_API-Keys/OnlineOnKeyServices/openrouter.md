@@ -8,6 +8,9 @@ Kredit-Modell nicht fuer jeden dahinterliegenden Anbieter einen eigenen Key
 verwalten. OpenRouter ist ein Gateway, nicht selbst ein Sprachmodell.
 Siehe [offizieller Quickstart](https://openrouter.ai/docs/quickstart).
 
+**Offizielle Webseite:** [openrouter.ai](https://openrouter.ai/).
+Die Produktseite ist nicht mit der API-Base-URL gleichzusetzen.
+
 ```text
 Vorhandener Client -> OpenRouter-Key + https://openrouter.ai/api/v1
                    -> gewaehltes Modell -> zulaessiger Modellprovider
