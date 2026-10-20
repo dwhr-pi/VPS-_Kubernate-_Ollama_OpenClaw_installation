@@ -10,6 +10,12 @@ import subprocess
 from find_skills import checked, git, operation, resources
 
 TOOLS = {
+    "colibri": {
+        "name": "Colibri", "url": "https://github.com/JustVugg/colibri.git",
+        "pin": "e0db083cdc9e563e0766cc6fc661ef23c32298e0",
+        "module": "c/coli",
+        "files": ("LICENSE", "README.md", "pyproject.toml", "c/Makefile", "c/coli"),
+    },
     "hf_accelerate": {
         "name": "HF_Accelerate", "url": "https://github.com/huggingface/accelerate.git",
         "pin": "abe3749c6274b2ffc9a99cc57ca72ff8bca72ab8",

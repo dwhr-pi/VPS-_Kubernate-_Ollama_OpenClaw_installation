@@ -2,6 +2,7 @@
 
 | Werkzeug | Quelle | Zweck | Einordnung |
 |---|---|---|---|
+| [Colibri](tools/colibri.md) | [JustVugg/colibri](https://github.com/JustVugg/colibri) | SSD-Expert-Streaming fuer MoE | experimental, medium/high je Modell, Risiko high; nur GitHub-Quellen, Apache-2.0, keine Ports/Secrets; Doctor/Deaktivierung vorhanden |
 | [Hyperfine](tools/local-ai-benchmarks.md) | [sharkdp/hyperfine](https://github.com/sharkdp/hyperfine) | Wiederholte CLI-Laufzeitmessung | experimental, optionaler GitHub-Quellcheckout, keine gebaute CLI |
 | llama-bench | [ggml-org/llama.cpp](https://github.com/ggml-org/llama.cpp) | PP/TG-Tests | Vorhandenes llama.cpp nutzen, kein doppelter Installer |
 | Ollama-Benchmark-Helfer | scripts/benchmarks/ollama_benchmark.py in diesem GitHub-Projekt | Lokale API-Timings/offline JSON-Auswertung | Keine Installation noetig, Lasttest explizit freigeben |

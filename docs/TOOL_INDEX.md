@@ -1,5 +1,9 @@
 # Tool Index
 
+**[Colibri: Letsung MiniPC und RTX 5080](tools/colibri.md)**:
+MoE-Expert-Streaming von SSD, Grenzen und sicherer Versuchsplan.
+Optionaler gepinnter GitHub-Quellcheckout, keine gebaute Runtime/Modelle, kein Docker.
+
 **[Lokale KI-Benchmarks](tools/local-ai-benchmarks.md)**:
 llama-bench aus vorhandenem llama.cpp, neuer Ollama-Messhelfer mit explizitem
 Lasttest-Opt-in und Hyperfine als optionaler GitHub-Quellcheckout.

@@ -2,6 +2,7 @@
 
 | Werkzeug | Umfang | Status | Ports / Secrets |
 |---|---|---|---|
+| [Colibri](tools/colibri.md) | Gepinnte GitHub-Quellen; MiniPC-/RTX-Test und Runtime separat | experimental, optional | keine beim Installer; manueller Upstream-Server 127.0.0.1:8000 |
 | [Hyperfine](tools/local-ai-benchmarks.md) | Gepinnte GitHub-Quellen, Rust-Build separat | experimental | keine beim Installer |
 | Ollama-Benchmark-Helfer | Plan/offline Analyse; lokale Messung nur --execute --confirm-local-model | experimental, Repo-CLI | nur bestehender Loopback-Server, keine Keys |
 | llama-bench | Teil vorhandenen llama.cpp-Quellbaums, keine doppelte Registrierung | Runtime/Build separat pruefen | kein Server |

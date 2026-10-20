@@ -1,5 +1,10 @@
 # GitHub Tool Sources
 
+Colibri: [JustVugg/colibri](https://github.com/JustVugg/colibri/tree/e0db083cdc9e563e0766cc6fc661ef23c32298e0),
+Commit `e0db083cdc9e563e0766cc6fc661ef23c32298e0`, Apache-2.0.
+[MiniPC-/RTX-Anleitung](tools/colibri.md): nur Quellcheckout, kein Docker,
+Upstream-Bootstrap, Modell-Download oder Serverstart durch den Installer.
+
 Hyperfine: [sharkdp/hyperfine](https://github.com/sharkdp/hyperfine/tree/c5161524980522320c7d3425e714cc0965a869a5),
 Commit `c5161524980522320c7d3425e714cc0965a869a5`, MIT OR Apache-2.0.
 [Messanleitung](tools/local-ai-benchmarks.md): nur GitHub-Quellen im Installer,

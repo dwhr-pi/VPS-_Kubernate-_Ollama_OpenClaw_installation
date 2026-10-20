@@ -1,5 +1,13 @@
 # Docs Changelog
 
+## 2026-10-20 Colibri / MiniPC und RTX
+
+- Colibri optional und experimentell als gepinnten GitHub-Quellcheckout mit
+  Status, Doctor, Dry-Run, Logs und Sperre registriert; kein Docker/Bootstrap.
+- SSD-Expert-Streaming von Quantisierung unterschieden; Hardware-/RAM-/Disk-
+  Grenzen, WSL-Hostkapazitaet und manuellen Test-/Buildpfad dokumentiert.
+- Keine Modell-, Laufzeit-, Dienst- oder Treiberinstallation ausgefuehrt.
+
 ## 2026-10-20 Lokale KI-Benchmarks
 
 - Anleitung mit PP/TG/TTFT-Abgrenzung, Ergebnisvorlage und differenzierter

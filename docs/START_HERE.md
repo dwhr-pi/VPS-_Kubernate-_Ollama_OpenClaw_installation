@@ -1,5 +1,8 @@
 # START HERE
 
+[Colibri: grosse Modelle auf MiniPC und RTX 5080?](tools/colibri.md)
+erklaert SSD-Streaming und den optionalen GitHub-Quellinstaller ohne Docker/Modelle.
+
 [Lokale KI-Leistung messen](tools/local-ai-benchmarks.md):
 reproduzierbare Benchmarks statt Schaetzungen aus Gaming-Scores.
 

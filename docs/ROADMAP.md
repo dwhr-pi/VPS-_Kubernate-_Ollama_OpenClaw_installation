@@ -1,5 +1,13 @@
 # Roadmap
 
+## Colibri auf MiniPC / RTX 5080
+
+- Gepinnter GitHub-Quellcheckout, Status/Doctor und
+  [SSD-Streaming-Anleitung](tools/colibri.md) vorhanden; kein Docker.
+- Offen: Letsung-Hardwaredaten, explizit freigegebener Runtime-Build,
+  Format-/Modellwahl mit Diskbudget und reale CPU-/GPU-/Qualitaetsmessungen.
+- Keine automatische Modell-, MCP-, Server- oder WSL-Einrichtung.
+
 ## Lokale KI-Benchmarks
 
 - Reproduzierbare PP/TG-/Wall-/Ladezeit-Messung, Ergebnisvorlage und

@@ -1,5 +1,8 @@
 # Unified Memory, VRAM und Offloading im Ultimate KI Setup
 
+[Colibri auf Letsung MiniPC und RTX 5080](../tools/colibri.md):
+SSD-Expert-Streaming separat von Quantisierung bewerten, kein zusaetzlicher RAM.
+
 Nach der Speicherplanung: [Leistung reproduzierbar messen](../tools/local-ai-benchmarks.md).
 Der Speicherrechner liefert keine gemessenen Tokens/s.
 
