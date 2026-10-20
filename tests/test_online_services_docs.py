@@ -10,10 +10,10 @@ DIRECTORY = ROOT / "docs/_API-Keys/OnlineOnKeyServices"
 
 class OnlineServicesDocs(unittest.TestCase):
     def test_all_local_links_resolve(self):
-        for doc in (DIRECTORY.parent / "README.md", *DIRECTORY.glob("*.md")):
+        for doc in DIRECTORY.parent.rglob("*.md"):
             for target in re.findall(r"\]\(([^)]+)\)", doc.read_text(encoding="utf-8")):
                 if "://" not in target and not target.startswith("#"):
-                    self.assertTrue((doc.parent / target.split("#")[0]).is_file(), (doc.name, target))
+                    self.assertTrue((doc.parent / target.split("#")[0]).exists(), (doc.name, target))
 
     def test_index_and_move(self):
         index = (ROOT / "docs/TOOL_INDEX.md").read_text(encoding="utf-8")
@@ -24,6 +24,39 @@ class OnlineServicesDocs(unittest.TestCase):
             self.assertTrue((DIRECTORY / (name + ".md")).is_file())
             self.assertIn("_API-Keys/OnlineOnKeyServices/" + name + ".md", index)
         self.assertNotIn("(tools/token8341.md)", index)
+
+    def test_key_guide_moved_and_menu_updated(self):
+        self.assertFalse((ROOT / "docs/API_KEY_GUIDE.md").exists())
+        target = "docs/_API-Keys/API_KEY_GUIDE.md"
+        self.assertTrue((ROOT / target).is_file())
+        setup = (ROOT / "setup_ultimate.sh").read_text(encoding="utf-8")
+        self.assertIn('$INSTALL_DIR/' + target, setup)
+        self.assertNotIn('$INSTALL_DIR/docs/API_KEY_GUIDE.md', setup)
+
+    def test_guide_headings_are_outside_code_blocks(self):
+        guide = (DIRECTORY.parent / "API_KEY_GUIDE.md").read_text(encoding="utf-8")
+        self.assertTrue(guide.startswith("# API-Key Guide"))
+        inside = False
+        headings = []
+        for line in guide.splitlines():
+            if line.startswith("```"):
+                inside = not inside
+            elif line.startswith("#") and not inside:
+                headings.append(line)
+        self.assertFalse(inside, "Unclosed fenced code block")
+        for heading in ("## 1.", "## 2.", "## 3.", "### 3.3 Nginx Rate Limiting"):
+            self.assertTrue(any(line.startswith(heading) for line in headings), heading)
+        self.assertNotIn("sudo ufw allow 3000", guide)
+
+    def test_catalog_covers_declared_template_credentials(self):
+        catalog = (DIRECTORY.parent / "PROVIDER_KEY_CATALOG.md").read_text(encoding="utf-8")
+        for path in (ROOT / ".env.example",
+                     ROOT / "scripts/config_templates/openclaw/.env.template",
+                     ROOT / "tools/websitefactory/.env.example"):
+            text = path.read_text(encoding="utf-8")
+            for name in re.findall(r"^\s*#?\s*([A-Z][A-Z0-9_]*)=", text, re.M):
+                if any(part in name for part in ("KEY", "TOKEN", "SECRET", "PASSWORD")):
+                    self.assertIn("`" + name + "`", catalog, (path.name, name))
 
     def test_purpose_before_status(self):
         for name in ("token8341", "openrouter"):

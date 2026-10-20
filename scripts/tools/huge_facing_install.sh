@@ -32,7 +32,7 @@ echo -e "   Beispiel: ${GREEN}ollama pull <modellname> ${NC} (z.B. ${GREEN}ollam
 
 echo -e "\n${BLUE}2. Hugging Face Inference API für Online-Modelle nutzen:${NC}"
 echo -e "   Für den Zugriff auf eine breite Palette von Modellen, die auf Hugging Face gehostet werden, kannst du die Inference API verwenden."
-echo -e "   Dafür benötigst du einen Hugging Face API Token. Details zur Beschaffung und Konfiguration findest du in der ${GREEN}API_KEY_GUIDE.md${NC} (Abschnitt 1.6)."
+echo -e "   Dafür benötigst du einen Hugging Face API Token. Details zur Beschaffung und Konfiguration findest du in der ${GREEN}docs/_API-Keys/API_KEY_GUIDE.md${NC} (Abschnitt 1.6)."
 echo -e "   Tools wie OpenClaw können so konfiguriert werden, dass sie diese API nutzen."
 
 echo -e "\n${YELLOW}Bitte beachte, dass die tatsächliche Nutzung der Modelle eine separate Konfiguration in den jeweiligen Tools erfordert.${NC}"

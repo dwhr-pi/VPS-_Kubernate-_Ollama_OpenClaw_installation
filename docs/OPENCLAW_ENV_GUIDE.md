@@ -59,7 +59,7 @@ rm -rf ~/.openclaw_ultimate_user_data
 
 Die wichtigsten Begleitseiten dazu sind:
 
-- [docs/API_KEY_GUIDE.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/API_KEY_GUIDE.md:1)
+- [API-Key Guide](_API-Keys/API_KEY_GUIDE.md)
 - [docs/CLOUDFLARE_TUNNEL_GUIDE.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/CLOUDFLARE_TUNNEL_GUIDE.md:1)
 - [docs/PRIVATE_REPO_GUIDE.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/PRIVATE_REPO_GUIDE.md:1)
 

@@ -8,7 +8,7 @@ Die Inhalte in diesem Verzeichnis wurden daher aus folgenden Quellen zusammengef
 
 - `readme.md`
 - `docs/setup_guide.md`
-- `docs/API_KEY_GUIDE.md`
+- `docs/_API-Keys/API_KEY_GUIDE.md`
 - `scripts/profiles/*.sh`
 - `scripts/tools/*.sh`
 - `scripts/base_install.sh`

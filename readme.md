@@ -659,7 +659,7 @@ Für produktionsnähere Self-Hosted-Setups:
 
 ## 📖 Dokumentation
 
-Eine detaillierte Anleitung zur Konfiguration, API-Keys, Port-Analyse und den verschiedenen Setup-Optionen findest du in der `docs/API_KEY_GUIDE.md`, `docs/setup_guide.md`, `docs/DNS_DDoS_GUIDE.md`, [docs/OPENCLAW_ENV_GUIDE.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/OPENCLAW_ENV_GUIDE.md:1) und [docs/ARCHITECTURE_LLMOPS_PLATFORM.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/ARCHITECTURE_LLMOPS_PLATFORM.md:1) innerhalb dieses Repositorys.
+Eine detaillierte Anleitung zur Konfiguration, API-Keys, Port-Analyse und den verschiedenen Setup-Optionen findest du in der `docs/_API-Keys/API_KEY_GUIDE.md`, `docs/setup_guide.md`, `docs/DNS_DDoS_GUIDE.md`, [docs/OPENCLAW_ENV_GUIDE.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/OPENCLAW_ENV_GUIDE.md:1) und [docs/ARCHITECTURE_LLMOPS_PLATFORM.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/ARCHITECTURE_LLMOPS_PLATFORM.md:1) innerhalb dieses Repositorys.
 
 Zusätzliche Hilfen:
 
@@ -909,7 +909,7 @@ Wichtige Grenze:
 │       ├── LLM_Builder_install.sh
 │       └── LLM_Builder_uninstall.sh
 ├── docs/
-│   ├── API_KEY_GUIDE.md        # Detaillierte Anleitung für API-Keys, Ports und Fallback-Routing
+│   ├── _API-Keys/             # API-Key-Katalog, Guide und OnlineOnKeyServices
 │   ├── INSTALLATION_BENCHMARKS.md # Editierbare Schätzwerte für Downloadzeit, Installationszeit und GB-Bedarf
 │   ├── ARCHITECTURE_LLMOPS_PLATFORM.md # Neue Layer-Architektur für die produktionsreife LLMOps-Plattform
 │   ├── OLLAMA_MODEL_CATALOG.md # Kuratierter Ollama-Modellkatalog mit Größen- und RAM-Hinweisen

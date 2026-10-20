@@ -1,5 +1,14 @@
 # Docs Changelog
 
+## 2026-10-20 API-Key-Dokumentation
+
+- API-Key Guide nach `docs/_API-Keys/API_KEY_GUIDE.md` verschoben, aeusseren
+  Codeblock entfernt und Abschnitte, Tabellen sowie Codebeispiele formatiert.
+- Zentralen Katalog deklarierter Anbieter- und Dienstzugangsdaten ergaenzt;
+  keine echten Secrets ausgelesen oder erzeugt, keine Cloud-Dienste aktiviert.
+- Setup-Menue, Vorlagenkommentare und Dokumentationsverweise auf neuen Pfad
+  angepasst; historische Ports und unsichere pauschale Freigabe korrigiert.
+
 ## 2026-05-31
 
 - DuckDB-Installer von `apt install duckdb` auf offizielles GitHub-Release-Binary umgestellt, weil Ubuntu 24.04/Noble kein `duckdb`-Paket in den Standard-Repositories bereitstellt.

@@ -41,7 +41,7 @@
 
 ## Port- und Dienst-Inkonsistenzen
 
-- `docs/API_KEY_GUIDE.md` listet kritische Ports `3000`, `5678`, `7860`, `8123`, `11434`, `27017`.
+- `docs/_API-Keys/API_KEY_GUIDE.md` listet kritische Ports `3000`, `5678`, `7860`, `8123`, `11434`, `27017`.
 - `scripts/port_check.sh` prüft aktuell nur `11434`, `18789`, `8123`, `8080`.
 - `3000` als Kollisionsport für OpenClaw, Flowise, Activepieces, Huginn und Zenbot wird nicht script-seitig geprüft.
 

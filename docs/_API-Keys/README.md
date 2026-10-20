@@ -7,6 +7,11 @@ oder Dienste aktiviert. Ein dokumentierter Zugang ist keine Cloud-Freigabe.
 
 ## Navigation
 
+- [API-Key-Katalog aller im Setup dokumentierten Anbieter und Dienste](PROVIDER_KEY_CATALOG.md):
+  Variablennamen, Zweck, lokale Zugänge, OAuth und Connector-Grenzen.
+- [API-Key Guide, Ports und Sicherheit](API_KEY_GUIDE.md): formatierte Anleitung,
+  aus `docs/API_KEY_GUIDE.md` in dieses Verzeichnis verschoben.
+
 - [OnlineOnKeyServices](OnlineOnKeyServices/README.md): ein API-Schluessel fuer
   mehrere KI-Modelle, ohne Installation des Anbieterdienstes.
 - [OpenRouter](OnlineOnKeyServices/openrouter.md): eigener Anbieter-Key,
@@ -18,9 +23,6 @@ oder Dienste aktiviert. Ein dokumentierter Zugang ist keine Cloud-Freigabe.
 - [Secrets und Keys](../SECRETS_AND_KEYS.md): gemeinsame Sicherheitsregeln.
 - [ENV-Tresor](../ENV_VAULT.md): verschluesselte lokale Verwaltung und
   kontrolliertes Ausfuellen von ENV-Dateien.
-- [Aelterer API-Key Guide](../API_KEY_GUIDE.md): weitere Integrationen;
-  historische Pfad-/Providerbeispiele vor Nutzung mit aktueller Tool-Doku
-  abgleichen, nicht ungeprueft als heutige Konfiguration uebernehmen.
 
 ## Schluesselarten auseinanderhalten
 

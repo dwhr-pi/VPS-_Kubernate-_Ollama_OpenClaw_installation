@@ -23,7 +23,7 @@ Bevor du mit der Installation beginnst, stelle sicher, dass die folgenden Voraus
 *   **GitHub-Konto:** Für den Zugriff auf die Installationsskripte und die Projekt-Repositories.
 *   **GitHub Personal Access Token (PAT):** Erforderlich, wenn du das Setup aus einem privaten Repository installierst (siehe `PRIVATE_REPO_GUIDE.md`).
 *   **Cloud-Konten:** Konten bei Oracle Cloud (für Free Tier VPS), Google Cloud (für Gemini API, Google Calendar API), Cloudflare (für Tunnel, DNS) und Hurricane Electric (für dynamisches DNS).
-*   **API-Keys:** Alle notwendigen API-Keys müssen bereitgehalten werden (siehe `API_KEY_GUIDE.md`).
+*   **API-Keys:** Alle notwendigen API-Keys müssen bereitgehalten werden (siehe [API-Key Guide](_API-Keys/API_KEY_GUIDE.md)).
 
 ## 3. Der Installationsprozess
 
@@ -91,7 +91,7 @@ Das Tool-Management (Option 8 im Hauptmenü) ermöglicht die Installation und De
 
 ## 4. Konfiguration und API-Keys
 
-Die detaillierte Konfiguration von API-Keys, Port-Einstellungen und Fallback-Routing zwischen Gemini und Ollama ist im `API_KEY_GUIDE.md` beschrieben. Bitte lies diese Datei sorgfältig durch, bevor du mit der Konfiguration beginnst. Informationen zur DNS-Umstellung und zum DDoS-Schutz findest du in `DNS_DDoS_GUIDE.md`.
+Die detaillierte Konfiguration von API-Keys, Port-Einstellungen und Fallback-Routing zwischen Gemini und Ollama ist im [API-Key Guide](_API-Keys/API_KEY_GUIDE.md) beschrieben. Bitte lies diese Datei sorgfältig durch, bevor du mit der Konfiguration beginnst. Informationen zur DNS-Umstellung und zum DDoS-Schutz findest du in `DNS_DDoS_GUIDE.md`.
 
 ## 5. Multi-VPS-Strategie
 
@@ -103,7 +103,7 @@ Um die Ressourcen optimal zu nutzen und die Stabilität zu erhöhen, wird eine M
 
 ## 6. Fehlerbehebung und Support
 
-Sollten während der Installation oder Konfiguration Probleme auftreten, konsultiere bitte zuerst die `API_KEY_GUIDE.md`, `DNS_DDoS_GUIDE.md` und die `PRIVATE_REPO_GUIDE.md`. Bei weiteren Fragen oder Problemen kannst du Issues im GitHub-Repository erstellen.
+Sollten während der Installation oder Konfiguration Probleme auftreten, konsultiere bitte zuerst die [API-Key Guide](_API-Keys/API_KEY_GUIDE.md), `DNS_DDoS_GUIDE.md` und die `PRIVATE_REPO_GUIDE.md`. Bei weiteren Fragen oder Problemen kannst du Issues im GitHub-Repository erstellen.
 
 Wir wünschen dir viel Erfolg bei der Einrichtung deines intelligenten, automatisierten Systems!
 ```

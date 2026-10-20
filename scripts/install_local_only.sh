@@ -85,6 +85,6 @@ echo -e "${GREEN}Cloudflared installiert. Die Tunnel-Konfiguration ist als manue
 # 3. gcali Skill Integration (OpenClaw)
 echo -e "${GREEN}3/3: Integriere gcali Skill in OpenClaw...${NC}"
 echo -e "${YELLOW}Hinweis: gcali Skill-Dateien müssen manuell in /opt/openclaw/skills/gcali kopiert werden.${NC}"
-echo -e "${YELLOW}Folgen Sie den Anweisungen im API_KEY_GUIDE.md für die Google Kalender API-Einrichtung.${NC}"
+echo -e "${YELLOW}Folgen Sie den Anweisungen im docs/_API-Keys/API_KEY_GUIDE.md für die Google Kalender API-Einrichtung.${NC}"
 
 echo -e "${GREEN}Standalone MiniPC-Setup abgeschlossen. Bitte prüfen Sie die Konfigurationen und starten Sie OpenClaw/Home Assistant neu.${NC}"
