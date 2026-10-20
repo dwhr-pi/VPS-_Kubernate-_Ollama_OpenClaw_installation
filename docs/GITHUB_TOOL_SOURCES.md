@@ -1,5 +1,11 @@
 # GitHub Tool Sources
 
+Find_Skills: [vercel-labs/skills](https://github.com/vercel-labs/skills/tree/a80e4c9d12d607631249d4d7d059f835d4b2f13a),
+Commit `a80e4c9d12d607631249d4d7d059f835d4b2f13a`, MIT.
+[Installationsumfang](tools/find-skills.md): SKILL.md und Lizenz nach Zustimmung;
+keine Docker-/npm-/Agentenausfuehrung. Vercel Skills CLI und skills.sh werden
+separat erklaert, nicht als bereits installierte CLI gemeldet.
+
 Embedded_Debug_HIL: [cs01/pygdbmi v0.11.0.0](https://github.com/cs01/pygdbmi/tree/52a17f1d8651e941b8551a44a03d181d605e1e56),
 Commit `52a17f1d8651e941b8551a44a03d181d605e1e56`, MIT.
 [Basisinstaller](tools/embedded-debug-hil.md) ohne Docker, keine GDB-Prozesse

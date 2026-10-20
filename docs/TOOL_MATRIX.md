@@ -1,5 +1,9 @@
 # Tool Matrix
 
+| Tool | Quelle | Status | Ressourcen | Ports / Secrets | Installation |
+|---|---|---|---|---|---|
+| [Find_Skills](tools/find-skills.md) | vercel-labs/skills, a80e4c9d12d607631249d4d7d059f835d4b2f13a, MIT | experimental / optional | low; 256 MiB Disk/RAM-Reserve, keine GPU | keine / keine fuer Kopie | GitHub-Skill nach Zustimmung; keine gebaute CLI, kein Docker |
+
 Embedded_Debug_HIL: [private pygdbmi-Basis aus GitHub](tools/embedded-debug-hil.md),
 experimental/light, ohne Docker. Hardware-/MCP-Adapter weiterhin planned;
 keine Debuggerinstallation, USB-Verbindung oder Boardaktion.

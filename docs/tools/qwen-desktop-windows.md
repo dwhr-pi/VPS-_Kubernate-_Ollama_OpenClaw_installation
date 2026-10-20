@@ -1,5 +1,9 @@
 # Qwen Desktop unter Windows: der richtige Einstieg
 
+Ergaenzung: [find-skills unter Windows](find-skills.md#5-qwen-code-desktop-unter-windows).
+Skill-Unterstuetzung ist versionsabhaengig; Qwen Code nicht mit dem separaten
+Qwen-Chatprodukt verwechseln.
+
 Geprueft am **15.10.2026**. Im Setup heisst der Eintrag **Qwen_Desktop**
 und meint **Qwen Code Desktop**, die grafische Coding-Anwendung des
 offiziellen Projekts [QwenLM/qwen-code](https://github.com/QwenLM/qwen-code).

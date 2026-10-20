@@ -1,5 +1,12 @@
 # Roadmap
 
+## Find_Skills / Agent-Skills
+
+- GitHub-Skill-Kopierinstaller mit Pin, Zustimmungsdialog, Hash-/Besitzpruefung,
+  Doctor, Lock und aktuellen Logs umgesetzt; keine Agenten-/npm-Ausfuehrung.
+- Offen: freiwilliger echter Claude-/Qwen-Desktop-Smoke-Test und gepruefter
+  separater Vercel-CLI-Source-Build. Popularitaetszahlen sind kein Sicherheitsfilter.
+
 ## Qwen Desktop / hybrider Modellpfad
 
 - Qwen_Desktop: nativer manueller Windows-GUI-Pfad, Download/Hash/Signatur,

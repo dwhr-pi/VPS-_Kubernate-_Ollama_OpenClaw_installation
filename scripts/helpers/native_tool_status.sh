@@ -3,7 +3,7 @@
 NATIVE_TOOL_STATUS_KEYS=(Wan21 Windmill DeepFilterNet MOSS_TTS Embedded_Debug_HIL
     ChatTTS AudioLDM2 AudioGen Moshi YuE ACE_Step_15 WhisperX Aegisub Basic_Pitch
     Sfizz AIDA_X Kiwi_Edit VOID_Model Just_Dub_It Stable_Audio_Open ProPainter
-    Alexandria_Audiobook Qwen3_TTS Claude_Code Gemini_CLI)
+    Alexandria_Audiobook Qwen3_TTS Claude_Code Gemini_CLI Find_Skills)
 
 native_tool_marker() {
     local marker
@@ -33,6 +33,7 @@ native_tool_marker() {
         Qwen3_TTS) marker=qwen3_tts/source-built ;;
         Claude_Code) marker=claude_code/source-ready.json ;;
         Gemini_CLI) marker=gemini_cli/source-ready.json ;;
+        Find_Skills) marker=find_skills/source-ready.json ;;
         *) return 2 ;;
     esac
     NATIVE_TOOL_MARKER="$marker"

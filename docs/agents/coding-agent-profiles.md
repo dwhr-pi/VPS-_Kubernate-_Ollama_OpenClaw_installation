@@ -1,5 +1,9 @@
 # Getrennte Coding-Agenten statt Einbau in Jarvis
 
+Optionaler Skill-Layer: [find-skills fuer Claude Code und Qwen Code](../tools/find-skills.md).
+Separater GitHub-Kopierinstaller nach Zustimmung; kein Einbau in Jarvis,
+keine automatische Cloud-, CLI- oder Agentenausfuehrung.
+
 ## Rollen und Architektur
 
 | Profil | Verantwortung | Kein Bestandteil dieser Rolle |

@@ -1,5 +1,9 @@
 # Tools Catalog
 
+| Tool | GitHub | Zweck | Status | Ressourcen | Risiko | Ports / Secrets | Doctor / Uninstaller |
+|---|---|---|---|---|---|---|---|
+| [Find_Skills](tools/find-skills.md) | [vercel-labs/skills](https://github.com/vercel-labs/skills) | Skill-Finder fuer Claude Code oder Qwen Code | experimental, optional | low, keine GPU | high: fremde Agentenanweisungen | keine fuer Kopie | vorhanden; nur eigene unveraenderte Skill-Dateien |
+
 [Qwen Code CLI aus GitHub](tools/qwen-code.md): optionaler Source-Build
 v0.25.1 ohne Docker, getrennt vom Windows-Desktop und ohne Agentenstart.
 

@@ -1,5 +1,14 @@
 # Docs Changelog
 
+## 2026-10-20 Find_Skills
+
+- Vercel find-skills als optionales experimentelles Tool mit GitHub-Pin,
+  Kopierinstaller, Doctor, Update und sicherer Deinstallation aufgenommen.
+- Keine Docker-/npm-/Agentenausfuehrung; Zustimmung vor Skill-Aktivierung,
+  Besitznachweis/Hashes, Lock, Ressourcenpruefung, aktuelle Logs und Kopierrollback.
+- Anleitung mit drei Prompts, GitHub-/npm-Unterscheidung, Windows/Qwen-Code-
+  Hinweisen und Korrektur unbelegter automatischer Sicherheitsfilter ergaenzt.
+
 ## 2026-10-20 API-Key-Dokumentation
 
 - API-Key Guide nach `docs/_API-Keys/API_KEY_GUIDE.md` verschoben, aeusseren

@@ -1,5 +1,9 @@
 # Tool Index
 
+**[Find_Skills: Skill-Suche fuer Claude Code und Qwen Code](tools/find-skills.md)**:
+gepinnt aus GitHub ohne Docker/npm-Build, Zustimmung vor Aktivierung,
+Doctor und Deinstallation. Drei Promptvorlagen und Windows-Anleitung.
+
 **[Alle API-Schluessel](_API-Keys/README.md)** und
 **[OnlineOnKeyServices](_API-Keys/OnlineOnKeyServices/README.md): externe API-Dienste ohne Setup-Installation.**
 [token8341 / TokenWorks](_API-Keys/OnlineOnKeyServices/token8341.md) und
