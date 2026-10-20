@@ -1,5 +1,21 @@
 # Roadmap
 
+## Unified Memory / Offloading
+
+- Hardware-UMA, Managed Memory und explizites Offloading dokumentiert;
+  WSL-/HIP-/Backendgrenzen und Offline-Gewichtsrechner ergaenzt.
+- HF_Accelerate/DeepSpeed mit optionalem GitHub-Quellinstaller und Doctor.
+- Offen: separate versions-/hardwaregepruefte Runtime-Integration, Benchmarks
+  mit KV-Cache/Ladepeaks und OOM-Tests. Keine automatischen Treiber-/Swap-Aenderungen.
+
+## REA / Eigene lokale Apps
+
+- Gepinnter GitHub-Quellinstaller mit optionalem Build, Ressourcen- und
+  Offline-Pruefungen; keine automatische MCP-/Debugger-/Analysefreigabe.
+- Tutorial fuer Anforderungen, Steckbrief, eigene Implementierung und Abnahme.
+- Offen: echter Source-Build-/MCP-Smoke-Test auf freigegebenen Testsystemen,
+  native Windows-Buildvalidierung und clientspezifische Tool-Allowlist.
+
 ## Find_Skills / Agent-Skills
 
 - GitHub-Skill-Kopierinstaller mit Pin, Zustimmungsdialog, Hash-/Besitzpruefung,

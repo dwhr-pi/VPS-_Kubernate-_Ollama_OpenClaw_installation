@@ -1,5 +1,8 @@
 # Lokale Modelle, optionale Cloud und Wan
 
+[VRAM/RAM-Offloading und Speicherplanung](../memory/UNIFIED_MEMORY_AND_OFFLOADING.md):
+kein UMA-Umbau per Software; ComfyUI-Flags/Block-Swapping versionsabhaengig.
+
 Quellenstand: 15.10.2026. Inaktiver Quellenkatalog:
 [config/model_candidates.json](../../config/model_candidates.json).
 Kein Modell wird daraus geladen, heruntergeladen oder automatisch geroutet.

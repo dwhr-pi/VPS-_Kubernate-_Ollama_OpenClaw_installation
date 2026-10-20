@@ -1,5 +1,16 @@
 # Tools Catalog
 
+| Tool | GitHub | Zweck | Status | Risiko / Umfang |
+|---|---|---|---|---|
+| HF_Accelerate | [huggingface/accelerate](https://github.com/huggingface/accelerate) | Modell-Dispatch/CPU-GPU-Offload | experimental | GitHub-Quellen, keine Torch-/Runtimeinstallation |
+| DeepSpeed | [deepspeedai/DeepSpeed](https://github.com/deepspeedai/DeepSpeed) | Spezielle Trainings-/Inferenzoptimierung | experimental | GitHub-Quellen; Runtime heavy/manuell |
+
+[Anleitung, Ressourcen und Offline-Rechner](memory/UNIFIED_MEMORY_AND_OFFLOADING.md).
+
+| Tool | GitHub | Zweck | Status | Risiko | Doctor / Uninstaller |
+|---|---|---|---|---|---|
+| [REA](tools/rea.md) | [morluto/rea](https://github.com/morluto/rea) | Autorisierte Softwareanalyse als optionaler Helfer fuer eigene Implementierung | experimental, GitHub-Quellen/opt-in Build | high: weitreichende Analyse-/Runtime-Faehigkeiten | Offline-Quell-/Buildpruefung; Setupregistrierung deaktivieren, Nutzdaten erhalten |
+
 | Tool | GitHub | Zweck | Status | Ressourcen | Risiko | Ports / Secrets | Doctor / Uninstaller |
 |---|---|---|---|---|---|---|---|
 | [Find_Skills](tools/find-skills.md) | [vercel-labs/skills](https://github.com/vercel-labs/skills) | Skill-Finder fuer Claude Code oder Qwen Code | experimental, optional | low, keine GPU | high: fremde Agentenanweisungen | keine fuer Kopie | vorhanden; nur eigene unveraenderte Skill-Dateien |

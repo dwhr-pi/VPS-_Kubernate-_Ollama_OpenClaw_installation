@@ -58,9 +58,10 @@ def digest(path):
 
 
 def git(source, *args):
-    result = subprocess.run(["git", "-C", str(source), *args], check=True,
+    result = subprocess.run(["git", "-c", "core.hooksPath=" + os.devnull,
+                             "-c", "credential.helper=", "-C", str(source), *args], check=True,
                             capture_output=True, text=True, timeout=180,
-                            env={**os.environ, "GIT_TERMINAL_PROMPT": "0"})
+                            env={**os.environ, "GIT_TERMINAL_PROMPT": "0", "GIT_LFS_SKIP_SMUDGE": "1"})
     return result.stdout.strip()
 
 
@@ -132,13 +133,13 @@ class Tee:
 
 
 @contextmanager
-def operation(base, mode):
+def operation(base, mode, tool="Find_Skills"):
     base.mkdir(parents=True, exist_ok=True, mode=0o700)
     logs = checked(base.parent.parent / "install_logs")
     logs.mkdir(parents=True, exist_ok=True, mode=0o700)
-    fd, path = tempfile.mkstemp(prefix="find_skills_" + mode + "_", suffix=".log", dir=logs)
+    fd, path = tempfile.mkstemp(prefix=tool.lower() + "_" + mode + "_", suffix=".log", dir=logs)
     with os.fdopen(fd, "w", encoding="utf-8") as log, redirect_stdout(Tee(sys.stdout, log)):
-        print("Find_Skills:", mode, "Pin:", COMMIT, "Log:", path)
+        print(tool + ":", mode, "Log:", path)
         lock = checked(base / "operation.lock")
         locked = False
         started = time.monotonic()
@@ -258,6 +259,7 @@ def main(argv=None):
         print(json.dumps({"installed": installed, "agent": agent, "cli_built": False}))
         return 0 if installed or opts.mode == "status" else 1
     with operation(base, opts.mode.replace("--", "")):
+        print("GitHub-Pin:", COMMIT)
         if opts.mode == "uninstall":
             if record:
                 target = target_for(record["agent"])

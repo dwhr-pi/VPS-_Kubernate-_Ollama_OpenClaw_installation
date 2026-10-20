@@ -1,5 +1,24 @@
 # Docs Changelog
 
+## 2026-10-20 Speicherarchitektur und Offloading
+
+- UMA, CUDA Unified Memory, AMD HIP/HMM und explizites Modell-Offloading
+  mit primaerquellenbasierten Grenzen fuer WSL und dedizierte GPUs dokumentiert.
+- HF_Accelerate und DeepSpeed als experimentelle GitHub-Quellwerkzeuge
+  aufgenommen; keine Runtime-, Modell-, Treiber-, Swap- oder Dockerinstallation.
+- Offline-Gewichtsrechner mit getrennter RAM-/VRAM- bzw. einmaliger UMA-
+  Budgetierung, manuellen Reserven und ausdruecklich ohne Laufgarantie ergaenzt.
+
+## 2026-10-20 REA / Eigene App statt Abo
+
+- REA als optionales experimentelles Tool mit GitHub-Pin, Quellinstaller,
+  separatem Source-Build-Opt-in, Status und Doctor aufgenommen; kein Docker.
+- MCP-/Skill-/Engine-Aktivierung und Untersuchungen bleiben manuell freizugeben.
+- Deutschsprachiges Tutorial mit Analyse-/Bau-Prompts, Windows/Qwen-Hinweisen,
+  Steckbrief/Abnahme sowie differenzierten Rechte- und Datenschutzgrenzen ergaenzt.
+- Eindeutige Logs, Lock und Ressourcenpruefung; Setup-Deinstallation
+  deaktiviert nur eigenen Marker und erhaelt Quellen, Ergebnisse und manuelle Konfiguration.
+
 ## 2026-10-20 Find_Skills
 
 - Vercel find-skills als optionales experimentelles Tool mit GitHub-Pin,

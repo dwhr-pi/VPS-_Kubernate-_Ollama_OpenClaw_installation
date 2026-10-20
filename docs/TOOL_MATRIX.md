@@ -1,5 +1,14 @@
 # Tool Matrix
 
+| Tool | Status | Lizenz | Source-Reserve | Ports/Keys | Doctor / Deaktivierung |
+|---|---|---|---|---|---|
+| [HF_Accelerate](memory/UNIFIED_MEMORY_AND_OFFLOADING.md) | experimental, source-only | Apache-2.0 | 1 GiB Disk | keine | vorhanden, Quellen/Logs bleiben |
+| [DeepSpeed](memory/UNIFIED_MEMORY_AND_OFFLOADING.md) | experimental, source-only; heavy-runtime separat | Apache-2.0 | 1 GiB Disk | keine | vorhanden, Quellen/Logs bleiben |
+
+| Tool | Quelle | Status | Ressourcen | Ports / Secrets | Umfang |
+|---|---|---|---|---|---|
+| [REA](tools/rea.md) | morluto/rea, 1629266e3c08c90fed6bba5383528af7986a12b7, MIT | experimental / optional | 1 GiB Source-Reserve; optionaler Build 8 GiB Disk / 2 GiB verfuegbarer RAM | keine bei Vorbereitung | GitHub-Checkout, optionaler Build; kein Docker, MCP/Analyse separat |
+
 | Tool | Quelle | Status | Ressourcen | Ports / Secrets | Installation |
 |---|---|---|---|---|---|
 | [Find_Skills](tools/find-skills.md) | vercel-labs/skills, a80e4c9d12d607631249d4d7d059f835d4b2f13a, MIT | experimental / optional | low; 256 MiB Disk/RAM-Reserve, keine GPU | keine / keine fuer Kopie | GitHub-Skill nach Zustimmung; keine gebaute CLI, kein Docker |

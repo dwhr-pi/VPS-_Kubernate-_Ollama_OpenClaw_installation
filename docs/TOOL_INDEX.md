@@ -1,5 +1,13 @@
 # Tool Index
 
+**[Unified Memory, VRAM und Offloading](memory/UNIFIED_MEMORY_AND_OFFLOADING.md)**:
+NVIDIA/AMD/Apple sauber unterscheiden, Offline-Speicherrechner sowie optionale
+GitHub-Quellinstaller fuer HF_Accelerate und DeepSpeed. Kein Docker/Treiberumbau.
+
+**[REA: eigene lokale App statt Abo](tools/rea.md)**:
+gepinnt aus GitHub ohne Docker, Source-Build nur mit Opt-in und keine
+automatische MCP-Einrichtung. [Tutorial mit Analyse-/Bau-Prompts](tutorials/own-app-with-rea.md).
+
 **[Find_Skills: Skill-Suche fuer Claude Code und Qwen Code](tools/find-skills.md)**:
 gepinnt aus GitHub ohne Docker/npm-Build, Zustimmung vor Aktivierung,
 Doctor und Deinstallation. Drei Promptvorlagen und Windows-Anleitung.

@@ -1,5 +1,9 @@
 # Qwen Desktop unter Windows: der richtige Einstieg
 
+Optional: [REA als separat freizugebender MCP-Baustein](rea.md#4-windows-und-qwen-code-desktop)
+und [eigene Apps entwickeln](../tutorials/own-app-with-rea.md).
+Quellcheckout ist keine fertige MCP-Integration; keine automatische WSL-Einrichtung.
+
 Ergaenzung: [find-skills unter Windows](find-skills.md#5-qwen-code-desktop-unter-windows).
 Skill-Unterstuetzung ist versionsabhaengig; Qwen Code nicht mit dem separaten
 Qwen-Chatprodukt verwechseln.

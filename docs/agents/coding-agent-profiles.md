@@ -1,5 +1,9 @@
 # Getrennte Coding-Agenten statt Einbau in Jarvis
 
+Optionaler Analysebaustein: [REA](../tools/rea.md) und
+[App-Steckbrief/Bau-Tutorial](../tutorials/own-app-with-rea.md).
+GitHub-Installation und MCP-Freigabe bleiben getrennt; keine automatische Zielanalyse.
+
 Optionaler Skill-Layer: [find-skills fuer Claude Code und Qwen Code](../tools/find-skills.md).
 Separater GitHub-Kopierinstaller nach Zustimmung; kein Einbau in Jarvis,
 keine automatische Cloud-, CLI- oder Agentenausfuehrung.

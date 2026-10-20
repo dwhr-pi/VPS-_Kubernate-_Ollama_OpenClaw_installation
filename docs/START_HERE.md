@@ -1,5 +1,8 @@
 # START HERE
 
+[Speicherplanung: UMA, VRAM und Offloading](memory/UNIFIED_MEMORY_AND_OFFLOADING.md)
+erklaert RAM-/GPU-Budgets, WSL-Grenzen und den Offline-Rechner ohne Systemaenderungen.
+
 Wenn du neu startest, beginne hier.
 
 ## Merksatz

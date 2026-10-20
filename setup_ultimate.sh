@@ -2864,6 +2864,14 @@ TOOL_KEYS+=("Claude_Code" "Gemini_CLI")
 TOOL_KEYS+=("Find_Skills")
 TOOLS["Find_Skills"]="experimental/light: Vercel find-skills aus gepinntem GitHub-Commit; Skill-Aktivierung erst nach Zustimmung. Keine npm-CLI, kein Docker. docs/tools/find-skills.md"
 TOOL_SCRIPT_NAMES["Find_Skills"]="find_skills"
+TOOL_KEYS+=("REA")
+TOOLS["REA"]="experimental: GitHub-Quellen, optionaler Source-Build mit REA_BUILD=1 und INSTALL_HEAVY_TOOLS=1. Kein Docker, kein MCP-/Analyse-Start. docs/tools/rea.md"
+TOOL_SCRIPT_NAMES["REA"]="rea"
+TOOL_KEYS+=("HF_Accelerate" "DeepSpeed")
+TOOLS["HF_Accelerate"]="experimental: gepinnte GitHub-Quellen fuer CPU/GPU-Offloading; keine Torch-/Runtime-/Treiberinstallation. docs/memory/UNIFIED_MEMORY_AND_OFFLOADING.md"
+TOOLS["DeepSpeed"]="experimental/heavy-runtime: nur gepinnte GitHub-Quellen; keine CUDA-Extensions, Modelle oder Dienste. docs/memory/UNIFIED_MEMORY_AND_OFFLOADING.md"
+TOOL_SCRIPT_NAMES["HF_Accelerate"]="hf_accelerate"
+TOOL_SCRIPT_NAMES["DeepSpeed"]="deepspeed"
 TOOLS["Claude_Code"]="experimental: GitHub-Referenzmaterial, KEINE CLI-Installation; proprietaere Distribution separat. Ohne Docker."
 TOOLS["Gemini_CLI"]="experimental: gepinnte GitHub-Quellen, keine gebaute CLI. Ohne Docker, Cloud/Login getrennt."
 TOOL_SCRIPT_NAMES["Claude_Code"]="claude_code"

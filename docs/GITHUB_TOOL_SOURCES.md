@@ -1,5 +1,17 @@
 # GitHub Tool Sources
 
+HF_Accelerate: [huggingface/accelerate](https://github.com/huggingface/accelerate/tree/abe3749c6274b2ffc9a99cc57ca72ff8bca72ab8),
+Commit `abe3749c6274b2ffc9a99cc57ca72ff8bca72ab8`, Apache-2.0, Entwicklungsstand.
+DeepSpeed: [deepspeedai/DeepSpeed](https://github.com/deepspeedai/DeepSpeed/tree/3133d9d689a67ab1d4feebf8166f19ee28cace6a),
+Commit `3133d9d689a67ab1d4feebf8166f19ee28cace6a`, Apache-2.0.
+[Umfang](memory/UNIFIED_MEMORY_AND_OFFLOADING.md): nur Quellcheckout,
+keine Modelle, Treiber, Torch- oder GPU-Runtime, kein Docker.
+
+REA: [morluto/rea](https://github.com/morluto/rea/tree/1629266e3c08c90fed6bba5383528af7986a12b7),
+Commit `1629266e3c08c90fed6bba5383528af7986a12b7`, Quellversion 6.7.0, MIT.
+[Installationsumfang](tools/rea.md): GitHub-Quellen, optionaler Source-Build;
+keine automatische MCP-Registrierung, Engine-Installation oder Zielanalyse.
+
 Find_Skills: [vercel-labs/skills](https://github.com/vercel-labs/skills/tree/a80e4c9d12d607631249d4d7d059f835d4b2f13a),
 Commit `a80e4c9d12d607631249d4d7d059f835d4b2f13a`, MIT.
 [Installationsumfang](tools/find-skills.md): SKILL.md und Lizenz nach Zustimmung;
