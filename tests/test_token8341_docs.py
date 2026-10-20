@@ -22,6 +22,7 @@ class Token8341Docs(unittest.TestCase):
         tree = ast.parse(examples[0])
         self.assertIn('timeout=30.0, max_retries=0', examples[0])
         self.assertIn('TOKEN8341_ALLOW_CLOUD', examples[0])
+        self.assertIn('http_client=DefaultHttpx2Client(follow_redirects=False)', examples[0])
         self.assertNotIn('os.environ["OPENAI_API_KEY"]', examples[0])
         calls = [node.func.attr for node in ast.walk(tree)
                  if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute)]
@@ -43,6 +44,26 @@ class Token8341Docs(unittest.TestCase):
                        "keine zutreffende pauschale Rechtsbewertung", "keine geprueften"):
             self.assertIn(phrase.lower(), text.lower())
         self.assertIn("nicht aktiviert", text)
+
+    def test_research_distinguishes_evidence_from_unverified_community_claims(self):
+        text = DOC.read_text(encoding="utf-8")
+        for phrase in ("## Recherche und Quellenbewertung", "keine konkret pruefbaren Reddit-",
+                       "Unser eigenes Repository", "nicht belegt", "kein gemessener token8341-Vorfall",
+                       "Unabhaengigkeit nicht verifiziert", "kein Nachweis eines Ausfalls"):
+            self.assertIn(phrase, text)
+        for source in ("https://developer.cloud.tencent.com/article/2695833",
+                       "https://blog.51cto.com/u_12227/14914057",
+                       "https://www.scamadviser.com/check-website/token8341.com",
+                       "https://token8341.com/fa/terms"):
+            self.assertIn("](" + source + ")", text)
+
+    def test_host_uncertainty_does_not_enable_cloud_or_automatic_fallback(self):
+        text = DOC.read_text(encoding="utf-8")
+        self.assertIn("TOKEN8341_ALLOW_CLOUD=0", text)
+        self.assertIn("Keine Keys auf Hosts verteilen", text)
+        self.assertIn("Host-Allowlist und Redirect-Sperre", text)
+        self.assertIn("www.token8341.com/v1", text)
+        self.assertIn("api.token8341.com/v1", text)
 
 
 if __name__ == "__main__":

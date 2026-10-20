@@ -1,5 +1,13 @@
 # Docs Changelog
 
+## 2026-10-20 token8341 / Recherche und Quellenkritik
+
+- Betreiberwidersprueche von allgemeinen Cloud-/Retry-/Kompatibilitaetsrisiken
+  getrennt; keine unbelegten Reddit- oder GitHub-Issue-Berichte uebernommen.
+- Externe Fundstellen und ihre Abruf-/Unabhaengigkeitsgrenzen dokumentiert;
+  Freigabecheckliste und explizite Redirect-Sperre im inaktiven Beispiel ergaenzt.
+- Keine Keys, Testanfragen, Konten, Zahlungen oder Runtime-Aenderungen.
+
 ## 2026-10-20 Projektweiter Audit und Queue-Sicherheit
 
 - Offline-Projektcheck, semantische Registry-Validierung und Python-CI-Regression

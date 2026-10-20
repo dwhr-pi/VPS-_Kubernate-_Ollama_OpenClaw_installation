@@ -22,6 +22,11 @@ Diese Seite ist keine Empfehlung, Sicherheitszertifizierung oder Partnerschaft.
 Keine Installation, Anmeldung, Zahlung, API-Abfrage oder Cluster-Aenderung wurde
 fuer diese Dokumentation ausgefuehrt. Ollama bleibt der lokale Standard.
 
+**Recherche-Ergebnis:** Die widerspruechlichen Betreiberangaben sind von
+allgemeinen Gateway-Risiken zu unterscheiden. Konkrete Reddit-/GitHub-Issue-
+Berichte zu diesen Problemen konnten nicht verifiziert werden. Siehe
+[Recherche und Quellenbewertung](#recherche-und-quellenbewertung).
+
 ## Einordnung und Nutzen
 
 TokenWorks bietet laut [API-Dokumentation](https://www.token8341.com/en/docs)
@@ -71,7 +76,10 @@ Keine globale Umstellung von `OPENAI_BASE_URL` oder bestehenden Agenten.
 ### Python: nur Client initialisieren
 
 Voraussetzung ist ein separat eingerichtetes `openai`-SDK in einer privaten
-Umgebung. Das Beispiel installiert nichts und sendet **keine Anfrage**.
+Umgebung mit `DefaultHttpx2Client` (HTTPX2-Pfad). Bei aelteren SDK-Versionen
+den dort unterstuetzten HTTP-Client bewusst pruefen, nicht automatisch upgraden
+oder den Redirect-Schutz weglassen. Das Beispiel installiert nichts und sendet
+**keine Anfrage**.
 `base_url` ist ein SDK-Parameter; siehe auch die
 [offizielle OpenAI-Dokumentation zum Parameter](https://developers.openai.com/api/docs/guides/private-link#6-update-application-base-urls).
 Dieser Verweis bestaetigt nicht den Drittanbieter oder dessen Kompatibilitaet.
@@ -79,7 +87,7 @@ Dieser Verweis bestaetigt nicht den Drittanbieter oder dessen Kompatibilitaet.
 ```python
 import os
 from urllib.parse import urlsplit
-from openai import OpenAI
+from openai import DefaultHttpx2Client, OpenAI
 
 if os.environ.get("TOKEN8341_ALLOW_CLOUD") != "1":
     raise SystemExit("Cloud-Nutzung nicht freigegeben.")
@@ -92,10 +100,21 @@ if (url.scheme != "https" or url.hostname != "www.token8341.com"
 key = os.environ["TOKEN8341_API_KEY"]
 if not key.strip():
     raise SystemExit("Separater Anbieter-Key fehlt.")
-client = OpenAI(base_url=base_url, api_key=key, timeout=30.0, max_retries=0)
+client = OpenAI(
+    base_url=base_url, api_key=key, timeout=30.0, max_retries=0,
+    http_client=DefaultHttpx2Client(follow_redirects=False),
+)
 # Kein API-Aufruf. Spaetere Tests nur mit synthetischen Daten und Kostenlimit.
 client.close()
 ```
+
+`follow_redirects=False` unterbindet automatische HTTP-Umleitungen im
+dedizierten Transport. Der Parameter wird auch in der
+[offiziellen OpenAI-Dokumentation fuer einen separaten HTTP-Client](https://developers.openai.com/api/docs/guides/workload-identity-federation/x509)
+verwendet; daraus folgt keine Unterstuetzung von OpenAI-mTLS oder
+Workload-Identity durch token8341. Keine TLS-Verifikation abschalten.
+Eine 3xx-Antwort ist hier ein Klaerungsbedarf, keine Aufforderung, den Key
+an den Inhalt eines `Location`-Headers weiterzugeben.
 
 Der Host ist absichtlich auf die dokumentierte Variante begrenzt. Nach
 Bestaetigung eines anderen Hosts die Allowlist bewusst aendern, nicht umgehen.
@@ -201,6 +220,87 @@ eigene Buchhaltung, Verarbeitungsorte, Unterauftragnehmer und SLA schriftlich
 klaeren. Die API-Doku beschreibt zudem nutzeruebergreifendes Prompt-Caching:
 Isolation, Cache-Keys, Speicherfristen und Loeschung gesondert pruefen.
 HTTPS schuetzt Transport, nicht vor Einsicht durch den verarbeitenden Anbieter.
+
+## Recherche und Quellenbewertung
+
+**Recherche am 20.10.2026:** Gesucht wurde unter anderem nach
+`"token8341" reddit`, `site:reddit.com "token8341.com"`,
+`site:github.com "token8341" "issue"`, `"SiCore" "TokenWorks"`
+und nach den beiden Hostnamen. Es wurden **keine konkret pruefbaren Reddit-
+oder unabhaengigen GitHub-Issue-Berichte** ueber die hier genannten Probleme
+verifiziert. Das bedeutet nicht, dass solche Beitraege ausgeschlossen sind:
+Suchindex, Zugriff und Sichtbarkeit sind begrenzt. Unser eigenes Repository
+ist keine unabhaengige Bestaetigung seiner eigenen Doku.
+
+Die Aussage, r/LocalLLaMA, r/SelfHosted oder r/Kubernetes diskutierten gerade
+diesen Anbieter und seine Kostenprobleme, wird ohne konkreten Thread nicht
+als Tatsache uebernommen. Treffer zu anderen Firmen oder Krypto-Projekten mit
+dem Namen "TokenWorks" sind ebenfalls kein Beleg zu `token8341.com`.
+
+### Nachvollziehbare Widersprueche auf den Betreiberseiten
+
+| Punkt | Quellen und Beobachtung | Was daraus folgt |
+|---|---|---|
+| API-Host | [Englische API-Doku](https://www.token8341.com/en/docs), Abschnitt Base URL: `https://www.token8341.com/v1`; [arabische Betreiberseite](https://token8341.com/ar), Python-Beispiel: `https://api.token8341.com/v1` | Abweichung erneut nachvollziehbar. Keine der Seiten beweist durch sich allein, welcher Host fuer deinen Account freigegeben ist. |
+| Rechenzentren | Die arabische Seite nennt Horinger, Hami und Zhongwei; die [Hindi-Preisseite](https://www.token8341.com/hi/pricing), FAQ, nennt Horinger, Ulanqab und Zhongwei | Keine einheitliche Standortangabe und keine requestbezogene Verarbeitungszusage. |
+| Eigenbetrieb oder Weiterleitung | Standort-/Eigenhardwarewerbung steht neben [AGB, Abschnitte 1 und 5](https://token8341.com/fa/terms), die Upstream-Inferenz und moegliche alternative Retry-Kanaele beschreiben | Klaerungsbedarf, aber kein logischer Beweis fuer Betrug: Eigenhardware und Upstream-Zugriff koennen nebeneinander existieren. |
+
+Die AGB-Seite unter `/fa/terms` lieferte beim Abruf englischen Text mit Stand
+08.10.2026. Die frueher verlinkten englischen Terms-/About-Seiten liessen sich
+bei dieser erneuten Recherche nicht verlaesslich abrufen. Das ist eine
+Abrufgrenze, kein Nachweis eines Ausfalls der eigentlichen API.
+Es wurden keine API-Hosts mit einem Key oder durch Testanfragen ausprobiert.
+
+### Was ausserhalb der Betreiberwebsite gefunden wurde
+
+| Fundstelle | Datum / Art | Aussagekraft |
+|---|---|---|
+| [Tencent Cloud Developer Community: API-Proxy-Erfahrungsbeitrag](https://developer.cloud.tencent.com/article/2695833) | Veroeffentlicht 23.06.2026; namentliche positive Erwaehnung im Suchindex | Beim Seitenabruf waren Titel/Metadaten, aber kein vollstaendiger Artikeltext lesbar. Keine unabhaengige Messreihe oder Bestaetigung der Host-/Standortfrage verifiziert. Ein Community-Beitrag ist keine Tencent-Produktempfehlung. |
+| [51CTO: Multi-Modell-Integration versus Einzelanbieter](https://blog.51cto.com/u_12227/14914057) | Im Suchindex als Wiederveroeffentlichung eines Beitrags vom 06.09.2026 mit token8341-Beispielen gefuehrt | Werbender Erfahrungs-/Vergleichstext, im Direktabruf nicht vollstaendig lesbar; Messdaten und Unabhaengigkeit nicht verifiziert. Keine verlaessliche Grundlage fuer eine Kosten- oder SLA-Zusage. |
+| [ScamAdviser: token8341.com](https://www.scamadviser.com/check-website/token8341.com) | Automatisierte Domainbewertung, am Recherchetag abgerufen | Die gelesene Darstellung kombinierte "Likely Safe" mit "Trust Score 0". Daraus weder Seriositaet noch Betrug ableiten. Domain-/TLS-Signale sind kein Audit von Inferenz, Abrechnung oder Datenschutz. |
+
+**Fazit zur Quellenlage:** Externe Erwaehnungen existieren, aber die gefundenen
+Beitraege klaeren die konkreten Widersprueche nicht. Werbeton oder aehnliche
+Formulierungen beweisen umgekehrt keine bezahlte Werbung oder Fake-Bewertungen.
+Eine belastbare unabhaengige technische Untersuchung wurde hier nicht gefunden.
+
+### Allgemeine Gateway-Risiken, keine belegten Vorfaelle
+
+- **Lokal versus Cloud:** Ein lokales UI oder ein Kubernetes-Client kann Daten
+  absichtlich an einen externen Dienst senden. Das ist eine Architekturentscheidung,
+  kein token8341-spezifischer Fehler. Unser lokaler Ollama-Pfad bleibt getrennt;
+  externe Weiterleitung erfolgt nur ueber einen bewusst freigegebenen Client/Router.
+- **Verschachtelte Retries:** Client, FreeLLMAPI/Agent und Anbieter koennen jeweils
+  Wiederholungen ausloesen. Die AGB nennen moegliche Anbieter-Retries; sie erklaeren
+  nicht eindeutig die Abrechnung jedes abgebrochenen Streaming-Versuchs.
+  Die Behauptung "abgebrochene Streams werden immer mehrfach berechnet" ist
+  daher **nicht belegt**. Ein Client-Timeout beweist auch keinen Upstream-Abbruch.
+- **Kostenverstaerkung als Rechenbeispiel:** Drei unabhaengige Schichten mit je
+  maximal zwei Versuchen koennen bis zu acht Upstream-Versuche verursachen.
+  Das ist kein gemessener token8341-Vorfall und keine Behauptung ueber achtfaches
+  Billing. `max_retries=0` im SDK begrenzt nicht automatisch andere Schichten.
+- **Kompatibilitaetsgrenzen:** Modell-IDs, Kontextfenster, Tools, Streaming und
+  Prompt-Semantik muessen je Modell getestet werden. Ein in token8341 nachgewiesener
+  Parameterverlust oder eine Verfaelschung lokaler Ollama-Prompts ist durch die
+  Recherche nicht belegt. "OpenAI-kompatibel" ersetzt keinen solchen Funktionstest.
+
+### Vor Freigabe schriftlich klaeren
+
+1. Vollstaendige HTTPS-Basis-URL einschliesslich API-Pfad fuer den eigenen Account
+   bestaetigen lassen. Konto ueber die bekannte Anbieteradresse oeffnen, nicht
+   ueber fremde Suchanzeigen oder ungepruefte Community-Links anmelden.
+2. **Keine Keys auf Hosts verteilen und keine automatischen Redirects verfolgen.**
+   Host-Allowlist und Redirect-Sperre in jeder beteiligten Client-/Router-Schicht
+   pruefen. Eine bestaetigte weitere Subdomain bewusst einzeln freigeben.
+3. Tatsaechliche Verarbeitungsorte, Rolle eigener Hardware und eingesetzte
+   Upstream-Anbieter, Cache-Isolation und Loeschfristen schriftlich erfragen.
+4. Kostenregeln fuer Timeouts, Stream-Abbruch, Anbieter-Retries, Usage-Messung und
+   Erstattungen sowie ein serverseitiges Budgetlimit bestaetigen lassen.
+5. Erst danach einen einzelnen synthetischen Test freigeben; Request-ID,
+   Versuchszahl und abgerechnete Usage ohne Inhalte/Secrets abgleichen.
+
+Bis zur Klaerung bleibt `TOKEN8341_ALLOW_CLOUD=0`. Diese Recherche liefert
+weder eine Produktempfehlung noch eine automatische Integrationsfreigabe.
 
 ## Datenschutz und EU AI Act
 
