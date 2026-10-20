@@ -106,7 +106,6 @@ Um die Ressourcen optimal zu nutzen und die Stabilität zu erhöhen, wird eine M
 Sollten während der Installation oder Konfiguration Probleme auftreten, konsultiere bitte zuerst die [API-Key Guide](_API-Keys/API_KEY_GUIDE.md), `DNS_DDoS_GUIDE.md` und die `PRIVATE_REPO_GUIDE.md`. Bei weiteren Fragen oder Problemen kannst du Issues im GitHub-Repository erstellen.
 
 Wir wünschen dir viel Erfolg bei der Einrichtung deines intelligenten, automatisierten Systems!
-```
 # Zusätzliche Hinweise
 
 ## sudo Passwort
@@ -123,4 +122,4 @@ Wenn `pnpm` beim OpenClaw-Build z. B. `@discordjs/opus@0.10.0` als ignoriertes B
 
 ## Cloudflare Tunnel
 
-Für die Schritt-für-Schritt-Erstellung des benötigten Tunnel-Tokens siehe [CLOUDFLARE_TUNNEL_GUIDE.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/CLOUDFLARE_TUNNEL_GUIDE.md:1).
+Für die Schritt-für-Schritt-Erstellung des benötigten Tunnel-Tokens siehe [CLOUDFLARE_TUNNEL_GUIDE.md](CLOUDFLARE_TUNNEL_GUIDE.md).

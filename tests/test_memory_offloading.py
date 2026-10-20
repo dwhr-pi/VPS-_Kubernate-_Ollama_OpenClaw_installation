@@ -103,6 +103,25 @@ class OffloadSources(unittest.TestCase):
             self.assertEqual(sources.main([key, "--dry-run"]), 0)
             self.assertFalse(sources.paths(key)[0].exists())
 
+    def test_unknown_flags_are_not_swallowed_by_dry_run(self):
+        with mock.patch.object(sys, "stderr", io.StringIO()):
+            with self.assertRaises(SystemExit) as error:
+                sources.main(["colibri", "--dry-run", "--unknown-option"])
+        self.assertEqual(error.exception.code, 2)
+        self.assertFalse(sources.paths("colibri")[0].exists())
+
+    def test_conflicting_actions_are_rejected_before_writes(self):
+        with mock.patch.object(sys, "stderr", io.StringIO()):
+            with self.assertRaises(SystemExit) as error:
+                sources.main(["colibri", "update", "--uninstall"])
+        self.assertEqual(error.exception.code, 2)
+        self.assertFalse(sources.paths("colibri")[0].exists())
+
+    def test_update_and_deactivation_dry_runs_remain_read_only(self):
+        for action in ("update", "uninstall"):
+            self.assertEqual(sources.main(["colibri", action, "--dry-run"]), 0)
+        self.assertFalse(sources.paths("colibri")[0].exists())
+
     def test_real_marker_only_after_source_preparation(self):
         for key in sources.TOOLS:
             _, _, marker, spec = self.install(key)

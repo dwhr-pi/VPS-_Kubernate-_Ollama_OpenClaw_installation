@@ -42,8 +42,8 @@ scripts/profiles/Trading_Crypto_Web3_install.sh
 - keine autonomen Kauf-/Verkaufsentscheidungen durch LLMs oder Agenten zulassen
 - empfohlen sind Analyse, Backtesting, Alerts und Simulation statt Live-Execution
 - Trenne Analyse und Ausführung bewusst:
-  - [Trading_Analysis.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/Profile/Trading_Analysis.md:1)
-  - [Trading_Execution_Manual_Mode.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/Profile/Trading_Execution_Manual_Mode.md:1)
+  - [Trading_Analysis.md](Trading_Analysis.md)
+  - [Trading_Execution_Manual_Mode.md](Trading_Execution_Manual_Mode.md)
 
 ## Start / Stop / Status Befehle
 ```bash

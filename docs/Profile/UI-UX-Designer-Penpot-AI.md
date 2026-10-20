@@ -52,7 +52,7 @@ Penpot besitzt einen offiziellen MCP-Server. Damit können `Codex`, `OpenClaw` o
 
 Mehr dazu:
 
-- [Penpot-MCP-Integration.md](/C:/Users/danie/Documents/GitHub/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/Profil/Penpot-MCP-Integration.md)
+- [Penpot-MCP-Integration.md](../Profil/Penpot-MCP-Integration.md)
 
 ## Sicherheits- und Ressourcenhinweise
 

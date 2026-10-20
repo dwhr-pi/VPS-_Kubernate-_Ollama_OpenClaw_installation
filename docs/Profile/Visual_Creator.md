@@ -2,7 +2,7 @@
 
 ## Überblick
 
-Dieses Profil wurde aus der fachlichen Quelle [Visual_Creator.doc.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/Profil/Visual_Creator.doc.md:1), `readme.md` und den vorhandenen Tool-Skripten zusammengeführt.
+Dieses Profil wurde aus der fachlichen Quelle [Visual_Creator.doc.md](../Profil/Visual_Creator.doc.md), `readme.md` und den vorhandenen Tool-Skripten zusammengeführt.
 Es beschreibt ein OpenClaw- und Ollama-kompatibles Kreativprofil für Bild- und Video-Generierung, Prompting und Asset-Produktion.
 
 ## Installierter Stack

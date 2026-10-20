@@ -205,7 +205,7 @@ Die großen Datenmengen entstehen meist erst durch:
 
 Richtwerte für lokale Modellgrößen findest du in:
 
-- [docs/OLLAMA_MODEL_CATALOG.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/OLLAMA_MODEL_CATALOG.md:1)
+- [docs/OLLAMA_MODEL_CATALOG.md](OLLAMA_MODEL_CATALOG.md)
 
 ## Für eigene Tools und Hauptprogramme
 

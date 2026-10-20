@@ -2,7 +2,7 @@
 
 ## Überblick
 
-Dieses Profil wurde aus der fachlichen Quelle [Rechtsberatung_Steuerrecht.doc.md](/C:/Users/danie/Documents/GitHub/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/Profil/Rechtsberatung_Steuerrecht.doc.md:1), `readme.md`, `docs/setup_guide.md` und `scripts/profiles/Rechtsberatung_Steuerrecht_install.sh` zusammengeführt.
+Dieses Profil wurde aus der fachlichen Quelle [Rechtsberatung_Steuerrecht.doc.md](../Profil/Rechtsberatung_Steuerrecht.doc.md), `readme.md`, `docs/setup_guide.md` und `scripts/profiles/Rechtsberatung_Steuerrecht_install.sh` zusammengeführt.
 Es beschreibt ein OpenClaw- und Ollama-kompatibles Legal-Profil fuer strukturierte Fallanalyse, Dokumentenauswertung, RAG und fachgebietsbezogene Assistenz in echten Rechtsgebieten.
 
 ## Installierter Stack

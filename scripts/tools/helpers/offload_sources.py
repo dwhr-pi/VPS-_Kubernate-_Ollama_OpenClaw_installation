@@ -76,13 +76,17 @@ def main(argv=None):
     parser.add_argument("tool", choices=TOOLS)
     parser.add_argument("action", nargs="?", default="install",
                         choices=("install", "update", "repair", "uninstall", "status", "check", "doctor", "plan"))
-    args = list(sys.argv[1:] if argv is None else argv)
-    if "--dry-run" in args and args:
-        args = [args[0], "plan"]
-    elif len(args) > 1:
-        args[1] = {"--check": "check", "--repair": "repair", "--uninstall": "uninstall",
-                   "--status": "status"}.get(args[1], args[1])
-    opts = parser.parse_args(args)
+    parser.add_argument("--dry-run", action="store_true")
+    modes = parser.add_mutually_exclusive_group()
+    for mode in ("check", "repair", "uninstall", "status"):
+        modes.add_argument("--" + mode, dest="override", action="store_const", const=mode)
+    opts = parser.parse_args(argv)
+    if opts.override:
+        if opts.action not in ("install", opts.override):
+            parser.error("Widerspruechliche Aktionen; keine Aenderung ausgefuehrt.")
+        opts.action = opts.override
+    if opts.dry_run:
+        opts.action = "plan"
     spec = TOOLS[opts.tool]
     base, source, marker = paths(opts.tool)
     record = {"commit": spec["pin"], "scope": "github-source", "runtime_ready": False}

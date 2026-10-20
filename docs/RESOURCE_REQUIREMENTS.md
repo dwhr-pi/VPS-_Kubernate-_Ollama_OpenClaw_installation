@@ -31,7 +31,7 @@ Diese Seite beschreibt praxisnahe Mindestanforderungen für Profile und ausgewä
 
 ## Vor und nach Installationen
 
-Die neue Lib [scripts/lib/resource_check.sh](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/scripts/lib/resource_check.sh:1) stellt bereit:
+Die neue Lib [scripts/lib/resource_check.sh](../scripts/lib/resource_check.sh) stellt bereit:
 
 - freier Speicher
 - RAM

@@ -11,7 +11,7 @@
 
 ### Secrets
 
-- nutze [configs/.env.example](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/configs/.env.example:1) als Vorlage
+- nutze [configs/.env.example](../configs/.env.example) als Vorlage
 - echte Werte nur lokal eintragen
 - optional später `age` oder `sops` ergänzen
 

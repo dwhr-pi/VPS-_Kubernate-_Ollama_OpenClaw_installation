@@ -270,7 +270,7 @@ Praxisfolge:
 - funktionieren öffentliche Subdomains noch?
 - wurden versehentlich Cloudflare-spezifische Schutzannahmen vergessen?
 
-Für ein konkretes Beispiel auf dein Setup bezogen siehe auch die Beispielsektion `botsoft.uk` in [docs/DNS_DDoS_GUIDE.md](/C:/Users/danie/.codex/worktrees/50f5/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/DNS_DDoS_GUIDE.md:1).
+Für ein konkretes Beispiel auf dein Setup bezogen siehe auch die Beispielsektion `botsoft.uk` in [docs/DNS_DDoS_GUIDE.md](DNS_DDoS_GUIDE.md).
 
 ## Praktische Zuordnung
 

@@ -1,5 +1,9 @@
 # Queue and Resource Limits
 
+Aktueller Umfang und Grenzen: [Codex Task Queue](CODEX_TASK_QUEUE.md).
+Start-Gates sind keine harten Ressourcenlimits; nicht alle schweren Installer
+sind bereits global durch eine Queue erzwungen.
+
 ## Default
 
 - Max parallel Jobs: 1
@@ -7,7 +11,8 @@
 - Status: queued, running, done, failed, cancelled
 - Logpfad: `~/.openclaw/job-queue/logs/`
 - Minimalformat: TSV unter `~/.openclaw/job-queue/jobs.tsv`
-- SQLite bleibt optional fuer spaetere Ausbaustufen.
+- SQLite ist als optionaler Legacy-Pfad vorhanden; nicht gleichzeitig mit TSV
+  unter abweichenden Queue-Konfigurationen betreiben.
 
 ## Befehle
 

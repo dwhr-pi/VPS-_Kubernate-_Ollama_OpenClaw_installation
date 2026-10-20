@@ -11,10 +11,15 @@ from pathlib import Path
 
 ports = json.loads(Path("config/ports.yml").read_text(encoding="utf-8"))["ports"]
 seen = defaultdict(list)
-for item in ports:
-    seen[int(item["port"])].append(item.get("service", "unknown"))
-
 failed = False
+for item in ports:
+    port = item.get("port")
+    if type(port) is not int or not 1 <= port <= 65535:
+        failed = True
+        print("FEHLER: Port muss eine ganze Zahl zwischen 1 und 65535 sein.")
+        continue
+    seen[port].append(item.get("service", "unknown"))
+
 for port, services in sorted(seen.items()):
     if len(services) > 1:
         failed = True

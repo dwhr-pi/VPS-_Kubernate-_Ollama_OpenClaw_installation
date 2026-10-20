@@ -2,7 +2,7 @@
 
 ## Überblick
 
-Dieses Profil wurde aus der fachlichen Quelle [Texter_Werbung_Marketing.doc.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/Profil/Texter_Werbung_Marketing.doc.md:1), `readme.md`, `docs/setup_guide.md` und `scripts/profiles/Texter_Werbung_Marketing_install.sh` zusammengeführt.
+Dieses Profil wurde aus der fachlichen Quelle [Texter_Werbung_Marketing.doc.md](../Profil/Texter_Werbung_Marketing.doc.md), `readme.md`, `docs/setup_guide.md` und `scripts/profiles/Texter_Werbung_Marketing_install.sh` zusammengeführt.
 Es beschreibt ein OpenClaw- und Ollama-kompatibles Marketingprofil für Conversion Copy, Social Content, Funnel-Workflows, Recherche und agentische Kampagnenautomatisierung.
 
 ## Installierter Stack

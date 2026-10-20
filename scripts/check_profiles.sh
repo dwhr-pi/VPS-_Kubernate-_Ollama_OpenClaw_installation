@@ -11,9 +11,14 @@ from pathlib import Path
 profiles = json.loads(Path("config/profiles.yml").read_text(encoding="utf-8"))["profiles"]
 tools = {t["id"] for t in json.loads(Path("config/tools.yml").read_text(encoding="utf-8"))["tools"]}
 failed = False
+ids = set()
 
 for profile in profiles:
     pid = profile["id"]
+    if pid in ids:
+        failed = True
+        print(f"DOPPELT Profil-ID: {pid}")
+    ids.add(pid)
     for key in ["doc", "install", "uninstall"]:
         value = profile.get(key)
         if value and not Path(value).exists():

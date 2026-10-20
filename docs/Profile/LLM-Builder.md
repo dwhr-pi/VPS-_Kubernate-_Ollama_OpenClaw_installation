@@ -2,7 +2,7 @@
 
 ## Überblick
 
-Dieses Profil wurde aus der fachlichen Quelle [LLM-Builder.doc.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/Profil/LLM-Builder.doc.md:1), `readme.md` und den vorhandenen Tool-Skripten zusammengeführt.
+Dieses Profil wurde aus der fachlichen Quelle [LLM-Builder.doc.md](../Profil/LLM-Builder.doc.md), `readme.md` und den vorhandenen Tool-Skripten zusammengeführt.
 Es beschreibt ein realistisches lokales Modellbau-Setup für Fine-Tuning, GGUF-Export, Quantisierung und die spätere Nutzung mit Ollama.
 
 Wichtig:

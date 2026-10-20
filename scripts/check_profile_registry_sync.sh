@@ -49,6 +49,10 @@ for profile in profiles:
     for key in ("doc", "install", "uninstall"):
         value = profile.get(key)
         if not value:
+            if (key in ("install", "uninstall") and
+                    profile.get("install_mode") == "documentation-first" and
+                    profile.get("auto_install") is False):
+                continue
             errors.append(f"{pid}: Feld {key} fehlt")
             continue
         if not os.path.exists(os.path.join(root, value)):

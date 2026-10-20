@@ -886,9 +886,9 @@ Fuer Huginn gibt es aktuell drei sinnvolle DB-Pfade:
 
 ### Wichtige Dateien
 
-- [scripts/tools/huginn_install.sh](/C:/Users/danie/Documents/GitHub/VPS,_Kubernate,_Ollama_OpenClaw_installation/scripts/tools/huginn_install.sh:1)
-- [docs/HUGINN_ENV_GUIDE.md](/C:/Users/danie/Documents/GitHub/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/HUGINN_ENV_GUIDE.md:1)
-- [scripts/config_templates/huginn/.env.template](/C:/Users/danie/Documents/GitHub/VPS,_Kubernate,_Ollama_OpenClaw_installation/scripts/config_templates/huginn/.env.template:1)
+- [scripts/tools/huginn_install.sh](../scripts/tools/huginn_install.sh)
+- [docs/HUGINN_ENV_GUIDE.md](HUGINN_ENV_GUIDE.md)
+- Die fruehere Huginn-ENV-Vorlage ist nicht mehr vorhanden; aktuelle Parameter siehe [HUGINN_ENV_GUIDE.md](HUGINN_ENV_GUIDE.md). Keine Datei oder Zugangsdaten aus einem alten Worktree uebernehmen.
 
 ### Hinweis fuer Folge-Chats
 

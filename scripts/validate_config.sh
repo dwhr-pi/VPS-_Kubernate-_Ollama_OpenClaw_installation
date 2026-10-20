@@ -19,3 +19,5 @@ for file in ["config/tools.yml", "config/profiles.yml", "config/ports.yml"]:
 
 raise SystemExit(0 if ok else 1)
 PY
+
+python3 -B scripts/quality/repository_audit.py --section registry

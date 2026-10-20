@@ -19,7 +19,8 @@ jobs:
 
       - name: Bash syntax
         run: |
-          bash -n install.sh setup_ultimate.sh
+          bash -n install.sh
+          bash -n setup_ultimate.sh
           find scripts -name '*.sh' -print0 | xargs -0 -n1 bash -n
 
       - name: ShellCheck

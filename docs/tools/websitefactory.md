@@ -70,5 +70,5 @@ bash scripts/tools/websitefactory_install.sh
 
 ## Quellcode
 
-- [WebsiteFactory Tool](C:/Users/danie/Documents/GitHub/VPS-_Kubernate-_Ollama_OpenClaw_installation/tools/websitefactory)
-- [Setup-Wrapper](C:/Users/danie/Documents/GitHub/VPS-_Kubernate-_Ollama_OpenClaw_installation/scripts/tools/websitefactory_install.sh)
+- [WebsiteFactory Tool](../../tools/websitefactory/README.md)
+- [Setup-Wrapper](../../scripts/tools/websitefactory_install.sh)

@@ -1,5 +1,16 @@
 # Docs Changelog
 
+## 2026-10-20 Projektweiter Audit und Queue-Sicherheit
+
+- Offline-Projektcheck, semantische Registry-Validierung und Python-CI-Regression
+  ergaenzt; documentation-first-Profile ohne Installer korrekt behandelt.
+- Persoenliche Worktree-Links portabel gemacht, veraltete README-Verweise und
+  offenen Markdown-Fence korrigiert; aktuellen Audit mit Restarbeiten verlinkt.
+- Queue-Worker-/Metadatensperren, backend-konsistentes Pause/Resume, Exit-Codes,
+  Disk-Gate und schreibfreie Statusabfrage eingebaut; keine Rohkommandos im Status.
+- Quellinstaller-Argumentpruefung und Ignore-/Zeilenendenregeln verbessert.
+- Keine Installation, WSL-Aenderung, Modell-Downloads oder automatischen Upgrades.
+
 ## 2026-10-20 Colibri / MiniPC und RTX
 
 - Colibri optional und experimentell als gepinnten GitHub-Quellcheckout mit

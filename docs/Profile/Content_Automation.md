@@ -2,7 +2,7 @@
 
 ## Überblick
 
-Dieses Profil wurde aus der fachlichen Quelle [Content_Automation.doc.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/Profil/Content_Automation.doc.md:1), `readme.md` und den vorhandenen Tool-Skripten zusammengeführt.
+Dieses Profil wurde aus der fachlichen Quelle [Content_Automation.doc.md](../Profil/Content_Automation.doc.md), `readme.md` und den vorhandenen Tool-Skripten zusammengeführt.
 Es beschreibt ein OpenClaw- und Ollama-kompatibles Profil für automatisierte Content-Pipelines von Skript über Audio und Video bis zum Upload.
 
 ## Installierter Stack

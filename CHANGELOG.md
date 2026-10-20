@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Projektweiter Offline-Audit mit Registry-/Link-/Python-Pruefung und CI-
+  Regressionstests; persoenliche Dokumentationspfade repariert, Queue-Sperren,
+  Dry-Run, Exit-Codes und schreibfreie Statusabfrage ergaenzt. Umfang und offene
+  Punkte: [Audit 20.10.2026](docs/PROJECT_AUDIT_2026_10_20.md).
+
 - Anbieter-Dokumentation nach docs/_API-Keys/OnlineOnKeyServices verschoben;
   zentrale API-Key-Uebersicht angelegt und beide Uebersichten in FreeLLMAPI
   verlinkt. Keine echten Credentials oder automatische Cloud-Freigabe.

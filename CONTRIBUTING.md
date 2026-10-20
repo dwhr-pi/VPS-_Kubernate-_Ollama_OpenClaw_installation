@@ -11,6 +11,15 @@ Pull Requests sind willkommen. Dieses Projekt nutzt bevorzugt das klassische Git
 
 Direkte Pushes auf `main` sollen moeglichst vermieden werden.
 
+## Vor dem Pull Request
+
+Zuerst `python3 -B scripts/quality/repository_audit.py` ausfuehren.
+[Pruefumfang, Fixture-Tests und CI-Grenzen](docs/REPOSITORY_QUALITY.md)
+beschreiben die folgenden Checks. Installer oder persoenliche WSL-/Produktiv-
+Systeme nicht als Testumgebung verwenden. Quellcheckout, erfolgreicher Build und
+getestete Runtime sind getrennte Statusangaben; fehlende Metadaten nicht als
+`stable` auffuellen. Keine echten Zugangsdaten oder lokalen Worktree-Pfade in Doku.
+
 ## Empfohlene Branch-Namen
 
 - `feature/<name>` fuer Features

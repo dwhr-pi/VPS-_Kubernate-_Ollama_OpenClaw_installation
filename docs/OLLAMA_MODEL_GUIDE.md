@@ -20,9 +20,9 @@ Hinweis:
 - lokale Experimente für RAG und Agenten
 - Mistral-Modelle fuer lokale Agenten, Coding und OpenClaw
 
-Die kuratierte Übersicht findest du in [docs/OLLAMA_MODEL_CATALOG.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/OLLAMA_MODEL_CATALOG.md:1).
+Die kuratierte Übersicht findest du in [docs/OLLAMA_MODEL_CATALOG.md](OLLAMA_MODEL_CATALOG.md).
 
-Eine eigene Einordnung speziell fuer Mistral AI steht in [docs/MISTRAL_AI_INTEGRATION.md](/C:/Users/danie/Documents/GitHub/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/MISTRAL_AI_INTEGRATION.md:1).
+Eine eigene Einordnung speziell fuer Mistral AI steht in [docs/MISTRAL_AI_INTEGRATION.md](MISTRAL_AI_INTEGRATION.md).
 
 Die Messwerte landen hier:
 

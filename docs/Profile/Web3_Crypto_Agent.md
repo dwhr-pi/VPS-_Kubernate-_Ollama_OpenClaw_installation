@@ -46,8 +46,8 @@ scripts/profiles/Web3_Crypto_Agent_install.sh
 - kein Live-Trading als Default
 - keine AI-gesteuerte automatische Orderausführung ohne ausdrückliche manuelle Kontrolle
 - Empfohlene Trennung:
-  - [Trading_Analysis.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/Profile/Trading_Analysis.md:1)
-  - [Trading_Execution_Manual_Mode.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/Profile/Trading_Execution_Manual_Mode.md:1)
+  - [Trading_Analysis.md](Trading_Analysis.md)
+  - [Trading_Execution_Manual_Mode.md](Trading_Execution_Manual_Mode.md)
 
 ## Start / Stop / Status Befehle
 ```bash

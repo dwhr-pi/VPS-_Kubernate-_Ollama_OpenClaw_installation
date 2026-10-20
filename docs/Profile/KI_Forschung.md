@@ -2,7 +2,7 @@
 
 ## Überblick
 
-Dieses Profil wurde aus der fachlichen Quelle [KI_Forschung.doc.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/Profil/KI_Forschung.doc.md:1), `readme.md`, `docs/setup_guide.md` und `scripts/profiles/KI_Forschung_install.sh` zusammengeführt.
+Dieses Profil wurde aus der fachlichen Quelle [KI_Forschung.doc.md](../Profil/KI_Forschung.doc.md), `readme.md`, `docs/setup_guide.md` und `scripts/profiles/KI_Forschung_install.sh` zusammengeführt.
 Es beschreibt ein OpenClaw- und Ollama-kompatibles Forschungsprofil für Recherche, Paper-Analyse, Hypothesenbildung, RAG und experimentelle Agenten-Workflows.
 
 ## Installierter Stack

@@ -1,0 +1,29 @@
+name: Offline Regression
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fixtures:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+      PYTHONUTF8: "1"
+      GIT_TERMINAL_PROMPT: "0"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Static repository checks (no installers or services)
+        run: python -B scripts/quality/repository_audit.py
+      - name: Offline Python fixture regressions
+        run: python -B -m unittest discover -s tests -p 'test_*.py' -v

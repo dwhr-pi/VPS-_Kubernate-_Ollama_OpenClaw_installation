@@ -18,6 +18,9 @@ Dokumentation
 
 ## Aktuelle Governance-Dokumente
 
+- [Aktueller Gesamtaudit und priorisierte Restarbeiten](docs/PROJECT_AUDIT_2026_10_20.md)
+- [Projekt offline pruefen: Umfang, Befehle und Grenzen](docs/REPOSITORY_QUALITY.md)
+
 - [Qwen Desktop unter Windows: Download, Installation und erster Coding-Auftrag](docs/tools/qwen-desktop-windows.md)
 - [DeepSeek/Qwen/Wan/GLM/Kimi/Doubao: lokaler Einstieg und Grenzen](docs/media_studio/HYBRID_MODELS_AND_WAN.md)
 
@@ -34,7 +37,7 @@ Dokumentation
 
 - [Lokale Personalakten mit Paperless und KI: sicherer Einstieg](docs/tools/personnel-documents.md) (Prototyp, keine Compliance-Garantie)
 
-- [Automaton / Conway: sicherer Forschungspfad fuer Zenbot und Web3](docs/tools/automaton.md) (planned, kein Wallet-/Agentenstart)
+- [Automaton / Conway: sicherer Forschungspfad fuer Zenbot und Web3](docs/tools/automaton.md) (experimenteller Quellpfad, kein automatischer Wallet-/Agentenstart)
 
 - [Embedded Debug HIL: sichere Agenten-Diagnose mit GDB/OpenOCD](docs/tools/embedded-debug-hil.md)
 
@@ -149,7 +152,7 @@ Die zugehoerige Architektur-Dokumentation findest du in [docs/ARCHITECTURE_LLMOP
 
 Wichtige Uebersichten:
 
-- [Setup Review und Verbesserungsplan](docs/SETUP_REVIEW_AND_IMPROVEMENT_PLAN.md)
+- [Setup Review und Verbesserungsplan](docs/SETUP_REVIEW_AND_NEXT_STEPS.md)
 - [Profilmatrix](docs/PROFILE_MATRIX.md)
 - [Toolmatrix](docs/TOOL_MATRIX.md)
 - [Tool Deployment Matrix](docs/TOOL_DEPLOYMENT_MATRIX.md)
@@ -157,8 +160,8 @@ Wichtige Uebersichten:
 - [Airbyte, abctl und Kubernetes](docs/AIRBYTE_ABCTL_KUBERNETES_NOTES.md)
 - [Portmatrix](docs/PORT_MATRIX.md)
 - [Sicherheitsmodell](docs/SECURITY_MODEL.md)
-- [Secret Handling](docs/SECRET_HANDLING.md)
-- [Remote Access Entscheidungshilfe](docs/REMOTE_ACCESS_DECISION_TREE.md)
+- [Secret Handling](docs/SECRETS_AND_KEYS.md)
+- [Remote Access Entscheidungshilfe](docs/REMOTE_ACCESS_DNS_GUIDE.md)
 - [myBox + GBOX Integration](docs/myBOX_GBOX_INTEGRATION.md)
 
 ## Speicherplatz und Bereinigung
@@ -623,7 +626,7 @@ Empfohlen fuer VPS oder spaeteres Multi-Node-Sandboxing:
 6. `Langfuse`
 7. `Grafana`, `Prometheus`, `Loki`
 
-Fuer einen vorkonfigurierten Plattform-Stack liegt jetzt auch ein Compose-Stack unter [stacks/llmops-platform/docker-compose.yml](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/stacks/llmops-platform/docker-compose.yml:1).
+Fuer einen vorkonfigurierten Plattform-Stack liegt jetzt auch ein Compose-Stack unter [stacks/llmops-platform/docker-compose.yml](stacks/llmops-platform/docker-compose.yml).
 
 ### Quickstart GPU Workstation
 
@@ -659,18 +662,18 @@ Für produktionsnähere Self-Hosted-Setups:
 
 ## 📖 Dokumentation
 
-Eine detaillierte Anleitung zur Konfiguration, API-Keys, Port-Analyse und den verschiedenen Setup-Optionen findest du in der `docs/_API-Keys/API_KEY_GUIDE.md`, `docs/setup_guide.md`, `docs/DNS_DDoS_GUIDE.md`, [docs/OPENCLAW_ENV_GUIDE.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/OPENCLAW_ENV_GUIDE.md:1) und [docs/ARCHITECTURE_LLMOPS_PLATFORM.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/ARCHITECTURE_LLMOPS_PLATFORM.md:1) innerhalb dieses Repositorys.
+Eine detaillierte Anleitung zur Konfiguration, API-Keys, Port-Analyse und den verschiedenen Setup-Optionen findest du in der `docs/_API-Keys/API_KEY_GUIDE.md`, `docs/setup_guide.md`, `docs/DNS_DDoS_GUIDE.md`, [docs/OPENCLAW_ENV_GUIDE.md](docs/OPENCLAW_ENV_GUIDE.md) und [docs/ARCHITECTURE_LLMOPS_PLATFORM.md](docs/ARCHITECTURE_LLMOPS_PLATFORM.md) innerhalb dieses Repositorys.
 
 Zusätzliche Hilfen:
 
 *   `docs/CLOUDFLARE_TUNNEL_GUIDE.md` erklärt Schritt für Schritt, wie du den benötigten Cloudflare-Tunnel und Token anlegst.
 *   `docs/WSL_SETUP_GUIDE.md` erklärt WSL unter Windows, Ubuntu-24.04 bzw. andere Linux-Distributionen, sowie Deinstallation und komplettes Zurücksetzen.
 *   `docs/INSTALLATION_BENCHMARKS.md` beschreibt die editierbaren Installations-Schätzwerte und verweist auf `~/.openclaw_ultimate_user_data/setup_metrics.conf`.
-*   [docs/OLLAMA_MODEL_CATALOG.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/OLLAMA_MODEL_CATALOG.md:1) listet empfohlene lokale Modelle, Coding-Modelle und EU-nahe Modelle mit Groessen- und RAM-Hinweisen.
-*   [docs/REPO_SYNC_AND_RECOVERY.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/REPO_SYNC_AND_RECOVERY.md:1) beschreibt saubere Sync-, Backup- und Wiederherstellungswege zwischen Windows, Ubuntu/WSL und Codex-Worktrees.
-*   [docs/ROADMAP.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/ROADMAP.md:1) zeigt die naechsten Ausbauphasen der Plattform.
-*   [docs/SECURITY_HARDENING.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/SECURITY_HARDENING.md:1) fasst Härtung, Agentenrisiken, Tunnel-Absicherung und Secret-Hygiene kompakt zusammen.
-*   [docs/PROFILE_MATRIX.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/PROFILE_MATRIX.md:1), [docs/TOOL_MATRIX.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/TOOL_MATRIX.md:1) und [docs/PORT_MATRIX.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/PORT_MATRIX.md:1) geben die aktuelle Betriebsübersicht.
+*   [docs/OLLAMA_MODEL_CATALOG.md](docs/OLLAMA_MODEL_CATALOG.md) listet empfohlene lokale Modelle, Coding-Modelle und EU-nahe Modelle mit Groessen- und RAM-Hinweisen.
+*   [docs/REPO_SYNC_AND_RECOVERY.md](docs/REPO_SYNC_AND_RECOVERY.md) beschreibt saubere Sync-, Backup- und Wiederherstellungswege zwischen Windows, Ubuntu/WSL und Codex-Worktrees.
+*   [docs/ROADMAP.md](docs/ROADMAP.md) zeigt die naechsten Ausbauphasen der Plattform.
+*   [docs/SECURITY_HARDENING.md](docs/SECURITY_HARDENING.md) fasst Härtung, Agentenrisiken, Tunnel-Absicherung und Secret-Hygiene kompakt zusammen.
+*   [docs/PROFILE_MATRIX.md](docs/PROFILE_MATRIX.md), [docs/TOOL_MATRIX.md](docs/TOOL_MATRIX.md) und [docs/PORT_MATRIX.md](docs/PORT_MATRIX.md) geben die aktuelle Betriebsübersicht.
 *   sensible und bearbeitbare Setup-Dateien liegen jetzt außerhalb des Repos in `~/.openclaw_ultimate_user_data`.
 *   über `Benutzer-Workspace verwalten` kannst du diese ausgelagerten Dateien anzeigen, neu aus dem Repo kopieren oder vollständig löschen.
 *   das Setup zeichnet für wichtige Vorgänge jetzt zusätzlich reale Messwerte in `~/.openclaw_ultimate_user_data/metrics_logs/operation_history.tsv` auf.
@@ -680,15 +683,15 @@ Zusätzliche Hilfen:
 
 Zusaetzlich zu den fachlichen Profilen gibt es jetzt eine zweite Ebene fuer den produktionsnahen Plattformbetrieb:
 
-- [docs/Profile/llmops.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/Profile/llmops.md:1)
-- [docs/Profile/rag_knowledge_base.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/Profile/rag_knowledge_base.md:1)
-- [docs/Profile/openwebui_frontend.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/Profile/openwebui_frontend.md:1)
-- [docs/Profile/mcp_toolserver.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/Profile/mcp_toolserver.md:1)
-- [docs/Profile/ai_security_guardrails.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/Profile/ai_security_guardrails.md:1)
-- [docs/Profile/sandbox_coding_agent.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/Profile/sandbox_coding_agent.md:1)
-- [docs/Profile/database_backend.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/Profile/database_backend.md:1)
-- [docs/Profile/monitoring_observability.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/Profile/monitoring_observability.md:1)
-- [docs/Profile/backup_storage.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/Profile/backup_storage.md:1)
+- [docs/Profile/llmops.md](docs/Profile/llmops.md)
+- [docs/Profile/rag_knowledge_base.md](docs/Profile/rag_knowledge_base.md)
+- [docs/Profile/openwebui_frontend.md](docs/Profile/openwebui_frontend.md)
+- [docs/Profile/mcp_toolserver.md](docs/Profile/mcp_toolserver.md)
+- [docs/Profile/ai_security_guardrails.md](docs/Profile/ai_security_guardrails.md)
+- [docs/Profile/sandbox_coding_agent.md](docs/Profile/sandbox_coding_agent.md)
+- [docs/Profile/database_backend.md](docs/Profile/database_backend.md)
+- [docs/Profile/monitoring_observability.md](docs/Profile/monitoring_observability.md)
+- [docs/Profile/backup_storage.md](docs/Profile/backup_storage.md)
 
 Zusätzlich gibt es zwei Profil-Verzeichnisse:
 
@@ -712,7 +715,7 @@ Zusätzlich wurden spezialisierte Ausbauprofile ergänzt:
 *   `Game_Dev_AI`
 *   `Education_Tutor`
 
-Die gesammelte Uebersicht steht in [docs/Profile/INDEX.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/Profile/INDEX.md:1).
+Die gesammelte Uebersicht steht in [docs/Profile/INDEX.md](docs/Profile/INDEX.md).
 
 ## 🛠️ Enthaltene Komponenten & Tools
 
@@ -751,7 +754,7 @@ Zusätzlich im neuen Ausbau:
 *   **Automation / UI:** `Node-RED`, `Mosquitto`, `Zigbee2MQTT`, `ESPHome`, `Appsmith`, `Budibase`, `NocoDB`, `Directus`
 *   **Media / Studio:** `GFPGAN`, `Rembg`, `faster-whisper`, `Blender`
 
-Die aktuelle kuratierte Toolübersicht steht in [docs/TOOL_MATRIX.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/TOOL_MATRIX.md:1).
+Die aktuelle kuratierte Toolübersicht steht in [docs/TOOL_MATRIX.md](docs/TOOL_MATRIX.md).
 
 ## 👤 Profil-Management
 

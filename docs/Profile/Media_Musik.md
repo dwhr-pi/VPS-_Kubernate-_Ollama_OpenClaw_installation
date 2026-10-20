@@ -2,7 +2,7 @@
 
 ## Überblick
 
-Dieses Profil wurde aus der fachlichen Quelle [Media_Musik.doc.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/Profil/Media_Musik.doc.md:1), `readme.md`, `docs/setup_guide.md` und `scripts/profiles/Media_Musik_install.sh` zusammengeführt.
+Dieses Profil wurde aus der fachlichen Quelle [Media_Musik.doc.md](../Profil/Media_Musik.doc.md), `readme.md`, `docs/setup_guide.md` und `scripts/profiles/Media_Musik_install.sh` zusammengeführt.
 Es beschreibt ein OpenClaw- und Ollama-kompatibles Kreativprofil für Musik, Audioanalyse, Prompt-Design, Remix-Workflows und Medienproduktion.
 
 ## Installierter Stack

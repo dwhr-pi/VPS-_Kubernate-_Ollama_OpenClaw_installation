@@ -26,6 +26,11 @@ env-vault.age
 wallet.json
 personnel-data/
 hr-data/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+node_modules/
 cloudflared.deb
 tools/mail/secrets/
 tools/mail/data/

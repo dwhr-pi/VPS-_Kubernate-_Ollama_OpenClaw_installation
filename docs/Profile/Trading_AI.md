@@ -2,7 +2,7 @@
 
 ## Überblick
 
-Dieses Profil wurde aus der fachlichen Quelle [Trading_AI.doc.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/Profil/Trading_AI.doc.md:1), `readme.md` und den vorhandenen Tool-Skripten zusammengeführt.
+Dieses Profil wurde aus der fachlichen Quelle [Trading_AI.doc.md](../Profil/Trading_AI.doc.md), `readme.md` und den vorhandenen Tool-Skripten zusammengeführt.
 Es beschreibt ein OpenClaw- und Ollama-kompatibles Tradingprofil für Marktanalyse, Strategieprüfung und Bot-unterstützte Entscheidungsprozesse.
 
 ## Installierter Stack
@@ -102,5 +102,5 @@ Diese GitHub-Stapel sind im Setup als optionale Module für Analyse, RAG und lok
 - Empfohlen sind Marktanalyse, historische Tests, Paper-Trading und Risikoauswertung statt echter Ausführung.
 - Seed-Phrases, Private Keys und echte Exchange-Secrets gehören niemals ins Repository.
 - Empfohlene sichere Lesepfade:
-  - [Trading_Analysis.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/Profile/Trading_Analysis.md:1)
-  - [Trading_Execution_Manual_Mode.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/Profile/Trading_Execution_Manual_Mode.md:1)
+  - [Trading_Analysis.md](Trading_Analysis.md)
+  - [Trading_Execution_Manual_Mode.md](Trading_Execution_Manual_Mode.md)

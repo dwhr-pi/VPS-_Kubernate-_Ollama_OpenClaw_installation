@@ -2,7 +2,7 @@
 
 ## Überblick
 
-Dieses Profil wurde aus der fachlichen Quelle [Audio.doc.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/Profil/Audio.doc.md:1), `readme.md` und den vorhandenen Tool-Skripten zusammengeführt.
+Dieses Profil wurde aus der fachlichen Quelle [Audio.doc.md](../Profil/Audio.doc.md), `readme.md` und den vorhandenen Tool-Skripten zusammengeführt.
 Es beschreibt ein OpenClaw- und Ollama-kompatibles Audioprofil für Transkription, Sprachverarbeitung und Audio-Bereinigung.
 
 ## Installierter Stack

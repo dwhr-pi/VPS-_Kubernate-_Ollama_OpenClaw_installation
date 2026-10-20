@@ -1,10 +1,18 @@
 #!/usr/bin/env bash
 set -euo pipefail
+if [[ "${1:-}" == --dry-run ]]; then
+  echo "Plan: einen TSV-Auftrag einreihen; keine Aenderung."
+  exit 0
+fi
 
 QUEUE_HOME="${QUEUE_HOME:-$HOME/.openclaw/job-queue}"
 QUEUE_FILE="${QUEUE_FILE:-$QUEUE_HOME/jobs.tsv}"
 QUEUE_LOG_DIR="${QUEUE_LOG_DIR:-$QUEUE_HOME/logs}"
 CONFIG_FILE="$QUEUE_HOME/config.env"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=queue_lock.sh
+source "$SCRIPT_DIR/queue_lock.sh"
+queue_lock_state
 mkdir -p "$QUEUE_HOME" "$QUEUE_LOG_DIR"
 
 if [[ ! -f "$CONFIG_FILE" ]]; then
@@ -35,7 +43,11 @@ esac
 touch "$QUEUE_FILE"
 job_id="$(date +%Y%m%d%H%M%S)-$$"
 command_text="$*"
-safe_command="${command_text//$'\t'/ }"
-printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\n' "$job_id" "queued" "$priority" "0" "1" "${DEFAULT_TIMEOUT_SECONDS:-3600}" "$safe_command" >> "$QUEUE_FILE"
+if [[ "$command_text" == *$'\n'* || "$command_text" == *$'\r'* || "$command_text" == *$'\t'* ||
+      ! "${DEFAULT_TIMEOUT_SECONDS:-3600}" =~ ^[1-9][0-9]{0,5}$ ]]; then
+  echo "Fehler: Queue-Kommandos muessen einzeilig sein; Timeout muss eine positive Zahl sein." >&2
+  exit 1
+fi
+printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\n' "$job_id" "queued" "$priority" "0" "1" "${DEFAULT_TIMEOUT_SECONDS:-3600}" "$command_text" >> "$QUEUE_FILE"
 echo "Job eingereiht: $job_id ($priority)"
 

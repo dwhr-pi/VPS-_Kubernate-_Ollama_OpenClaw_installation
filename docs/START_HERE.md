@@ -1,5 +1,8 @@
 # START HERE
 
+[Aktueller Projektaudit](PROJECT_AUDIT_2026_10_20.md) und
+[Projekt ohne Installation pruefen](REPOSITORY_QUALITY.md).
+
 [Colibri: grosse Modelle auf MiniPC und RTX 5080?](tools/colibri.md)
 erklaert SSD-Streaming und den optionalen GitHub-Quellinstaller ohne Docker/Modelle.
 

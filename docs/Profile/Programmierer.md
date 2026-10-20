@@ -2,7 +2,7 @@
 
 ## Überblick
 
-Dieses Profil wurde aus der fachlichen Quelle [Programmierer.doc.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/Profil/Programmierer.doc.md:1), `readme.md`, `docs/setup_guide.md` und `scripts/profiles/Programmierer_install.sh` zusammengeführt.
+Dieses Profil wurde aus der fachlichen Quelle [Programmierer.doc.md](../Profil/Programmierer.doc.md), `readme.md`, `docs/setup_guide.md` und `scripts/profiles/Programmierer_install.sh` zusammengeführt.
 Es beschreibt ein OpenClaw- und Ollama-kompatibles Multi-Agent-Setup für Entwicklung, Debugging, Architektur, Sicherheit und DevOps.
 
 ## Installierter Stack

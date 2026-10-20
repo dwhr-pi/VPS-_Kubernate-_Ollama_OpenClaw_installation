@@ -2,14 +2,14 @@
 
 ## Überblick
 
-Dieses Profil wurde aus der fachlichen Quelle [Security_Analyst.doc.md](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/Profil/Security_Analyst.doc.md:1), `readme.md`, `docs/setup_guide.md` und den vorhandenen Skripten zusammengeführt.
+Dieses Profil wurde aus der fachlichen Quelle [Security_Analyst.doc.md](../Profil/Security_Analyst.doc.md), `readme.md`, `docs/setup_guide.md` und den vorhandenen Skripten zusammengeführt.
 Es beschreibt ein OpenClaw- und Ollama-kompatibles Sicherheitsprofil für Exposure-Checks, Portanalyse, Logs und Hardening.
 
 ## Installierter Stack
 
 - Basis: `curl`, `git`, `python3`, `python3-pip`
 - Bereits im Projekt vorhanden oder nutzbar:
-  - [scripts/port_check.sh](/C:/Users/danie/.codex/worktrees/967e/VPS,_Kubernate,_Ollama_OpenClaw_installation/scripts/port_check.sh:1)
+  - [scripts/port_check.sh](../../scripts/port_check.sh)
   - OpenClaw-Konfiguration und Port-/Dienstprüfung
   - Kubernetes-/K3s-bezogene Setup-Dateien
   - Nmap

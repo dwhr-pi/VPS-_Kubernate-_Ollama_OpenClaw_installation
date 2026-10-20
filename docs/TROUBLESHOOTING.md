@@ -232,7 +232,7 @@ bundle install
 - `master` benoetigt aktuell Ruby `>= 3.4.0`; das Setup nutzt dafuer bei Bedarf einen getrennten rbenv-Pfad unter `~/.rbenv-openclaw-huginn`, damit der stabile `v2022.08.18`-Pfad nicht kaputtgeht
 - die Auswahl liegt in `~/.openclaw_ultimate_user_data/huginn/install_settings.env`, die bearbeitbare Huginn-`.env.template` in `~/.openclaw_ultimate_user_data/huginn/.env.template`
 - eine ausfuehrliche Einordnung der Varianten `Release-Tag`, `master/main`, `Commit SHA` und `eigener Fork` steht hier:
-  - [HUGINN_REPO_REF_GUIDE.md](/C:/Users/danie/Documents/GitHub/VPS,_Kubernate,_Ollama_OpenClaw_installation/docs/HUGINN_REPO_REF_GUIDE.md)
+  - [HUGINN_REPO_REF_GUIDE.md](HUGINN_REPO_REF_GUIDE.md)
 
 ### Neuesten Huginn-Installationslog automatisch auswerten
 
