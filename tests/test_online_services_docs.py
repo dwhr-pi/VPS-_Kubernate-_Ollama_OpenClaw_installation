@@ -1,0 +1,68 @@
+"""Offline documentation checks; no SDK imports, keys, HTTP or cluster actions."""
+import ast
+from pathlib import Path
+import re
+import unittest
+
+ROOT = Path(__file__).resolve().parents[1]
+DIRECTORY = ROOT / "docs/tools/OnlineServices"
+
+
+class OnlineServicesDocs(unittest.TestCase):
+    def test_all_local_links_resolve(self):
+        for doc in DIRECTORY.glob("*.md"):
+            for target in re.findall(r"\]\(([^)]+)\)", doc.read_text(encoding="utf-8")):
+                if "://" not in target and not target.startswith("#"):
+                    self.assertTrue((doc.parent / target.split("#")[0]).is_file(), (doc.name, target))
+
+    def test_index_and_move(self):
+        index = (ROOT / "docs/TOOL_INDEX.md").read_text(encoding="utf-8")
+        self.assertFalse((ROOT / "docs/tools/token8341.md").exists())
+        for name in ("README", "token8341", "openrouter"):
+            self.assertTrue((DIRECTORY / (name + ".md")).is_file())
+            self.assertIn("tools/OnlineServices/" + name + ".md", index)
+        self.assertNotIn("(tools/token8341.md)", index)
+
+    def test_purpose_before_status(self):
+        for name in ("token8341", "openrouter"):
+            text = (DIRECTORY / (name + ".md")).read_text(encoding="utf-8")
+            self.assertLess(text.index("Sinn und Zweck"), text.index("Pruefstand"))
+            self.assertIn("API-Schluessel", text[:600])
+
+    def test_freellmapi_support_is_versioned_and_qualified(self):
+        for name in ("token8341", "openrouter"):
+            text = (DIRECTORY / (name + ".md")).read_text(encoding="utf-8")
+            self.assertIn("## Verwendung in FreeLLMAPI", text)
+            self.assertIn("57c0669233bbe0c70a0f9f9927613192be948773", text)
+            self.assertIn("http://127.0.0.1:3011/v1", text)
+            self.assertIn("Unified Key", text)
+        token = (DIRECTORY / "token8341.md").read_text(encoding="utf-8")
+        router = (DIRECTORY / "openrouter.md").read_text(encoding="utf-8")
+        self.assertIn("Custom (OpenAI-compatible)", token)
+        self.assertIn("kein eigener", token)
+        self.assertIn("bereits eingebaut", router)
+        self.assertIn("kein Live-Nachweis", router)
+        self.assertIn("nicht gratis", router)
+        self.assertIn("echte Chat-Anfrage", token)
+        main = (ROOT / "docs/tools/freellmapi.md").read_text(encoding="utf-8")
+        for name in ("token8341", "openrouter"):
+            self.assertIn("OnlineServices/" + name + ".md#verwendung-in-freellmapi", main)
+
+    def test_openrouter_examples_are_not_executed_or_enabled(self):
+        text = (DIRECTORY / "openrouter.md").read_text(encoding="utf-8")
+        code, = re.findall(r"```python\n(.*?)\n```", text, re.S)
+        tree = ast.parse(code)
+        self.assertIn('timeout=30.0, max_retries=0', code)
+        self.assertNotIn('os.environ["OPENAI_API_KEY"]', code)
+        self.assertFalse(any(isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute)
+                             and n.func.attr == "create" for n in ast.walk(tree)))
+        env, = re.findall(r"```dotenv\n(.*?)\n```", text, re.S)
+        values = dict(line.split("=", 1) for line in env.splitlines())
+        self.assertEqual(values["OPENROUTER_API_KEY"], "")
+        self.assertEqual(values["OPENROUTER_ALLOW_CLOUD"], "0")
+        self.assertIn('secretKeyRef:', text)
+        self.assertIn('value: "0"', text)
+
+
+if __name__ == "__main__":
+    unittest.main()

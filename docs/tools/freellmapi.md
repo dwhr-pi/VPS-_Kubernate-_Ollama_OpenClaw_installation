@@ -1,5 +1,15 @@
 # FreeLLMAPI aus GitHub installieren, ohne Docker
 
+## Externe Aggregatoren als Upstream
+
+[OpenRouter](OnlineServices/openrouter.md#verwendung-in-freellmapi) ist am
+verwendeten Pin als Provider eingebaut.
+[token8341](OnlineServices/token8341.md#verwendung-in-freellmapi) kann
+grundsaetzlich ueber Custom (OpenAI-compatible) angeschlossen werden;
+Host und Kompatibilitaet sind vor Nutzung zu bestaetigen. Die Anbieterkeys
+gehoeren in den Router, der lokale Unified Key in den Client. Das ist keine
+kostenlose Cloud-Freigabe oder bestaetigte Live-Integration.
+
 ## Alte Docker-Meldung trotz Korrektur?
 
 Am 16.10.2026 enthielt GitHub `main` noch den Docker-Helfer mit

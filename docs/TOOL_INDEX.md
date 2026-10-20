@@ -1,5 +1,11 @@
 # Tool Index
 
+**[OnlineServices](tools/OnlineServices/README.md): externe API-Dienste ohne Setup-Installation.**
+[token8341 / TokenWorks](tools/OnlineServices/token8341.md) und
+[OpenRouter](tools/OnlineServices/openrouter.md): ein API-Schluessel fuer mehrere
+Modelle; Konfiguration, Kosten und Datenschutzgrenzen. Kein Installer und kein
+automatisch aktivierter Cloud-Fallback.
+
 **[Qwen_Desktop fuer Windows](tools/qwen-desktop-windows.md)**:
 offizielle Qwen-Code-GUI, getrennt von Qwen_Code CLI und Qwen Chat/Studio.
 Manueller Installationspfad, lokaler PowerShell-Pruefhelfer, keine WSL-Pflicht.

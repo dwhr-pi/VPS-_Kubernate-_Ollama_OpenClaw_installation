@@ -2,6 +2,18 @@
 
 ## Unreleased
 
+- FreeLLMAPI-Anbindung fuer OnlineServices dokumentiert: OpenRouter als am Pin
+  eingebauter Provider, token8341 als bedingt nutzbarer Custom-Endpunkt; getrennte
+  Keys, Modellwahl, Discovery-/Probe-Kosten und doppelte Routingebenen erklaert.
+
+- Externe KI-Dienste unter docs/tools/OnlineServices gesammelt: token8341
+  verschoben, Zweck "ein Key fuer mehrere Modelle" vorangestellt und OpenRouter
+  mit Vergleich, Konfiguration, Kosten-/Datenschutzgrenzen dokumentiert.
+
+- token8341/TokenWorks als optionale Cloud-Dokumentation aufgenommen: getrennte
+  Konfiguration, SDK-/Kubernetes-Beispiele ohne API-Aufruf, Betreiberwidersprueche,
+  Kosten-/Zahlungspruefung und differenzierte DSGVO-/AI-Act-Hinweise. Kein Installer.
+
 - Claude Code/Gemini CLI: vorhandene source-ready.json-Marker in die zentrale
   Menue-Statussynchronisierung aufnehmen; beide Statuslisten aktualisieren und
   nach Deaktivierung bereinigen. Quellvorbereitung bleibt von CLI-Bereitschaft getrennt.
