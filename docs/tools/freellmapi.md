@@ -1,14 +1,23 @@
 # FreeLLMAPI aus GitHub installieren, ohne Docker
 
+## API-Schluessel und Online-Dienste
+
+- [Alle API-Schluessel: Dokumentation und Verwaltung](../_API-Keys/README.md)
+- [OnlineOnKeyServices: ein Schluessel fuer mehrere KI-Modelle](../_API-Keys/OnlineOnKeyServices/README.md)
+
+Diese Uebersichten enthalten keine echten Zugangsdaten. Anbieter-Keys bleiben
+vom lokalen FreeLLMAPI Unified Key und der ENV-Tresor-Passphrase getrennt.
+
 ## Externe Aggregatoren als Upstream
 
-[OpenRouter](OnlineServices/openrouter.md#verwendung-in-freellmapi) ist am
-verwendeten Pin als Provider eingebaut.
-[token8341](OnlineServices/token8341.md#verwendung-in-freellmapi) kann
-grundsaetzlich ueber Custom (OpenAI-compatible) angeschlossen werden;
-Host und Kompatibilitaet sind vor Nutzung zu bestaetigen. Die Anbieterkeys
-gehoeren in den Router, der lokale Unified Key in den Client. Das ist keine
-kostenlose Cloud-Freigabe oder bestaetigte Live-Integration.
+Die Uebersicht [OnlineOnKeyServices](../_API-Keys/OnlineOnKeyServices/README.md)
+buendelt externe Dienste nach dem Prinzip "ein API-Schluessel fuer mehrere
+KI-Modelle". Dort findest du die Anbieterbeschreibungen und ihre jeweilige
+FreeLLMAPI-Anbindung: eingebauter Provider oder bedingt nutzbarer Custom-
+Endpunkt, einschliesslich Konfiguration, Kosten und Datenschutzgrenzen.
+Host und Kompatibilitaet vor Nutzung pruefen. Die Anbieterkeys gehoeren in
+den Router, der lokale Unified Key in den Client. Der Verweis aktiviert
+keinen Cloud-Fallback und ist kein Nachweis einer getesteten Live-Integration.
 
 ## Alte Docker-Meldung trotz Korrektur?
 

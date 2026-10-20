@@ -1,8 +1,9 @@
 # Tool Index
 
-**[OnlineServices](tools/OnlineServices/README.md): externe API-Dienste ohne Setup-Installation.**
-[token8341 / TokenWorks](tools/OnlineServices/token8341.md) und
-[OpenRouter](tools/OnlineServices/openrouter.md): ein API-Schluessel fuer mehrere
+**[Alle API-Schluessel](_API-Keys/README.md)** und
+**[OnlineOnKeyServices](_API-Keys/OnlineOnKeyServices/README.md): externe API-Dienste ohne Setup-Installation.**
+[token8341 / TokenWorks](_API-Keys/OnlineOnKeyServices/token8341.md) und
+[OpenRouter](_API-Keys/OnlineOnKeyServices/openrouter.md): ein API-Schluessel fuer mehrere
 Modelle; Konfiguration, Kosten und Datenschutzgrenzen. Kein Installer und kein
 automatisch aktivierter Cloud-Fallback.
 

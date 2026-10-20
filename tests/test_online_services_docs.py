@@ -5,12 +5,12 @@ import re
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
-DIRECTORY = ROOT / "docs/tools/OnlineServices"
+DIRECTORY = ROOT / "docs/_API-Keys/OnlineOnKeyServices"
 
 
 class OnlineServicesDocs(unittest.TestCase):
     def test_all_local_links_resolve(self):
-        for doc in DIRECTORY.glob("*.md"):
+        for doc in (DIRECTORY.parent / "README.md", *DIRECTORY.glob("*.md")):
             for target in re.findall(r"\]\(([^)]+)\)", doc.read_text(encoding="utf-8")):
                 if "://" not in target and not target.startswith("#"):
                     self.assertTrue((doc.parent / target.split("#")[0]).is_file(), (doc.name, target))
@@ -19,8 +19,10 @@ class OnlineServicesDocs(unittest.TestCase):
         index = (ROOT / "docs/TOOL_INDEX.md").read_text(encoding="utf-8")
         self.assertFalse((ROOT / "docs/tools/token8341.md").exists())
         for name in ("README", "token8341", "openrouter"):
+            self.assertFalse((ROOT / "docs/tools/OnlineServices" / (name + ".md")).exists())
+        for name in ("README", "token8341", "openrouter"):
             self.assertTrue((DIRECTORY / (name + ".md")).is_file())
-            self.assertIn("tools/OnlineServices/" + name + ".md", index)
+            self.assertIn("_API-Keys/OnlineOnKeyServices/" + name + ".md", index)
         self.assertNotIn("(tools/token8341.md)", index)
 
     def test_purpose_before_status(self):
@@ -45,8 +47,19 @@ class OnlineServicesDocs(unittest.TestCase):
         self.assertIn("nicht gratis", router)
         self.assertIn("echte Chat-Anfrage", token)
         main = (ROOT / "docs/tools/freellmapi.md").read_text(encoding="utf-8")
+        self.assertIn("[OnlineOnKeyServices](../_API-Keys/OnlineOnKeyServices/README.md)", main)
         for name in ("token8341", "openrouter"):
-            self.assertIn("OnlineServices/" + name + ".md#verwendung-in-freellmapi", main)
+            self.assertNotIn("../_API-Keys/OnlineOnKeyServices/" + name + ".md", main)
+
+    def test_freellmapi_links_both_key_overviews(self):
+        doc = ROOT / "docs/tools/freellmapi.md"
+        text = doc.read_text(encoding="utf-8")
+        for target in ("../_API-Keys/README.md", "../_API-Keys/OnlineOnKeyServices/README.md"):
+            self.assertIn("](" + target + ")", text)
+            self.assertTrue((doc.parent / target).is_file())
+        overview = (DIRECTORY.parent / "README.md").read_text(encoding="utf-8")
+        self.assertIn("keine echten Schluessel", overview)
+        self.assertIn("ENV-Tresor", overview)
 
     def test_openrouter_examples_are_not_executed_or_enabled(self):
         text = (DIRECTORY / "openrouter.md").read_text(encoding="utf-8")

@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Anbieter-Dokumentation nach docs/_API-Keys/OnlineOnKeyServices verschoben;
+  zentrale API-Key-Uebersicht angelegt und beide Uebersichten in FreeLLMAPI
+  verlinkt. Keine echten Credentials oder automatische Cloud-Freigabe.
+
 - FreeLLMAPI-Anbindung fuer OnlineServices dokumentiert: OpenRouter als am Pin
   eingebauter Provider, token8341 als bedingt nutzbarer Custom-Endpunkt; getrennte
   Keys, Modellwahl, Discovery-/Probe-Kosten und doppelte Routingebenen erklaert.

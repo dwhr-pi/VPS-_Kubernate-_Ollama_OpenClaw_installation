@@ -15,7 +15,7 @@ API-Aggregator, nicht selbst ein Sprachmodell. Ein Schluessel bedeutet
 **nicht**, dass alle Modelle kostenlos, unbegrenzt oder jederzeit verfuegbar
 sind. Angebot, Modell-ID, Freischaltung und Kosten bleiben zu pruefen.
 Hier wird nichts installiert: du bindest bei Bedarf einen Online-Dienst
-in einen bereits vorhandenen Client ein. [Uebersicht OnlineServices](README.md).
+in einen bereits vorhandenen Client ein. [Uebersicht OnlineOnKeyServices](README.md).
 
 Pruefstand: **20.10.2026**. Status: **documentation-first, nicht aktiviert**.
 Diese Seite ist keine Empfehlung, Sicherheitszertifizierung oder Partnerschaft.
@@ -148,7 +148,7 @@ Zusammen mit der vom Anbieter beworbenen Chat-Completions-Kompatibilitaet
 ergibt sich ein Integrationspfad, keine Garantie fuer alle Modelle/Funktionen.
 
 Nach bewusster Einrichtung und Start des lokalen
-[FreeLLMAPI-Routers](../freellmapi.md) ueber dessen Keys-Seite konfigurieren:
+[FreeLLMAPI-Routers](../../tools/freellmapi.md) ueber dessen Keys-Seite konfigurieren:
 
 | Feld / Schritt | Wert oder Handlung |
 |---|---|
@@ -263,6 +263,7 @@ Gesamtbudget nicht. Usage/Kosten abgleichen; 401/402/404 nicht blind wiederholen
 429/5xx nur begrenzt nach eigener Freigabe behandeln. Logs ohne Keys oder Inhalte.
 Kein Provider-Healthcheck oder Kubernetes-Deploy ist Bestandteil der Dokumentation.
 
-Verwandt: [OpenRouter](openrouter.md), [FreeLLMAPI](../freellmapi.md),
+Verwandt: [Alle API-Schluessel](../README.md), [OpenRouter](openrouter.md),
+[FreeLLMAPI](../../tools/freellmapi.md),
 [Coding-Agenten und lokale Routinggrenzen](../../agents/coding-agent-profiles.md),
 [Secrets und Keys](../../SECRETS_AND_KEYS.md).

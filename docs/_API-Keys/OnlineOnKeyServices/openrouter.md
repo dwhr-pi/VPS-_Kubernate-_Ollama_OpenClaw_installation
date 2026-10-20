@@ -137,7 +137,7 @@ OpenRouter-spezifischen Headers. Das ist bestaetigte Code-Unterstuetzung,
 **kein Live-Nachweis fuer dein Konto oder ein bestimmtes Modell**.
 
 Nach bewusster Einrichtung und Start von
-[FreeLLMAPI](../freellmapi.md) ueber dessen Keys-Seite vorgehen:
+[FreeLLMAPI](../../tools/freellmapi.md) ueber dessen Keys-Seite vorgehen:
 
 1. Den eingebauten Provider **OpenRouter** waehlen.
 2. Deinen separaten OpenRouter-Key dort hinterlegen, nicht den lokalen
@@ -237,5 +237,6 @@ Vertrauenspunkt, Abhaengigkeit von mehreren Beteiligten, variable Kosten und
 zusatzliche Datenschutz-/Routingpruefungen. Keine technische oder juristische
 Freigabe durch diese Dokumentation; kein API-Livetest wurde ausgefuehrt.
 
-Verwandt: [OnlineServices](README.md), [token8341](token8341.md),
-[FreeLLMAPI](../freellmapi.md), [Secrets und Keys](../../SECRETS_AND_KEYS.md).
+Verwandt: [OnlineOnKeyServices](README.md), [Alle API-Schluessel](../README.md),
+[token8341](token8341.md), [FreeLLMAPI](../../tools/freellmapi.md),
+[Secrets und Keys](../../SECRETS_AND_KEYS.md).

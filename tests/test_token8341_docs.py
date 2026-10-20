@@ -5,7 +5,7 @@ import re
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
-DOC = ROOT / "docs/tools/OnlineServices/token8341.md"
+DOC = ROOT / "docs/_API-Keys/OnlineOnKeyServices/token8341.md"
 
 
 class Token8341Docs(unittest.TestCase):
@@ -14,7 +14,7 @@ class Token8341Docs(unittest.TestCase):
         for target in re.findall(r"\]\(([^)]+)\)", text):
             if "://" not in target and not target.startswith("#"):
                 self.assertTrue((DOC.parent / target.split("#")[0]).is_file(), target)
-        self.assertIn("tools/OnlineServices/token8341.md", (ROOT / "docs/TOOL_INDEX.md").read_text(encoding="utf-8"))
+        self.assertIn("_API-Keys/OnlineOnKeyServices/token8341.md", (ROOT / "docs/TOOL_INDEX.md").read_text(encoding="utf-8"))
 
     def test_python_example_syntax_without_execution(self):
         examples = re.findall(r"```python\n(.*?)\n```", DOC.read_text(encoding="utf-8"), re.S)

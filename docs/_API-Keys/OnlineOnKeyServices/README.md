@@ -1,4 +1,4 @@
-# OnlineServices: externe KI-Dienste ohne Setup-Installation
+# OnlineOnKeyServices: ein API-Schluessel fuer mehrere Modelle
 
 **Ein API-Schluessel, ein zentraler Zugang, mehrere KI-Modelle:**
 API-Aggregatoren vermitteln zwischen deinem vorhandenen Client und
@@ -23,4 +23,5 @@ Die jeweiligen Seiten beschreiben Einrichtung und Grenzen am Setup-Pin.
 Ein Client auf WSL, einem VPS oder Kubernetes macht Cloud-Inferenz nicht lokal.
 Private Daten und Geheimnisse duerfen nicht durch einen stillen Fallback abfliessen.
 
-Zurueck zum [Tool-Index](../../TOOL_INDEX.md).
+Zurueck zu [Allen API-Schluesseln](../README.md),
+[FreeLLMAPI](../../tools/freellmapi.md) oder dem [Tool-Index](../../TOOL_INDEX.md).
