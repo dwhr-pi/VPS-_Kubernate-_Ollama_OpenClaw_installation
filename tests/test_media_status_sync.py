@@ -35,6 +35,21 @@ class MediaStatus(unittest.TestCase):
         for name, marker in mappings.items():
             self.assertEqual(registry[name]['check_value'], '~/.openclaw_ultimate_user_data/tools/' + marker, name)
 
+    def test_anthropic_cli_requires_marker_and_nonempty_binary(self):
+        r = self.shell('''
+mkdir -p "$root/tools/anthropic_cli/bin"
+printf 'synthetic-marker\n' > "$root/tools/anthropic_cli/build-ready.json"
+native_tool_sync_status Anthropic_CLI "$root"
+! grep -Fxq Anthropic_CLI "$root/installed_tools.txt"
+printf 'synthetic-binary\n' > "$root/tools/anthropic_cli/bin/ant"
+native_tool_sync_status Anthropic_CLI "$root"
+grep -Fxq Anthropic_CLI "$root/installed_tools.txt"
+rm "$root/tools/anthropic_cli/bin/ant"
+native_tool_sync_status Anthropic_CLI "$root"
+! grep -Fxq Anthropic_CLI "$root/installed_tools.txt"
+''')
+        self.assertEqual(r.returncode, 0, r.stderr)
+
     def test_all_markers_enable_uninstall_and_removed_markers_stay_removed(self):
         r = self.shell('''
 mkdir -p "$root/status"
@@ -49,6 +64,8 @@ for tool in "${NATIVE_TOOL_STATUS_KEYS[@]}"; do
 done
 mkdir -p "${dirs[@]}"
 for marker in "${markers[@]}"; do printf 'synthetic-pin\n' > "$marker"; done
+mkdir -p "$root/tools/anthropic_cli/bin"
+printf 'synthetic-binary\n' > "$root/tools/anthropic_cli/bin/ant"
 native_tool_sync_all "$root"
 for file in "$root/installed_tools.txt" "$root/status/installed_tools.txt"; do
     mapfile -t entries < "$file"

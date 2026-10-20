@@ -2861,9 +2861,15 @@ TOOLS["Karaoke_Formats"]="experimental/light: privater Offline-SRT/LRC-Starter a
 TOOL_SCRIPT_NAMES["Karaoke_Formats"]="karaoke_formats"
 TOOL_KEYS+=("Alexandria_Audiobook" "Qwen3_TTS" "ChatTTS" "AudioLDM2" "AudioGen" "Stable_Audio_Open" "Moshi" "MOSS_TTS" "YuE" "ACE_Step_15" "WhisperX" "Aegisub" "Basic_Pitch" "Sfizz" "AIDA_X" "ProPainter" "Kiwi_Edit" "VOID_Model" "Just_Dub_It" "ViDubb")
 TOOL_KEYS+=("Claude_Code" "Gemini_CLI")
+TOOL_KEYS+=("Anthropic_CLI")
+TOOLS["Anthropic_CLI"]="experimental: offizielle MIT-Claude-API-CLI ant aus GitHub bauen (Go >=1.25); nicht Claude Code. Kein Docker/Login/API-Aufruf. docs/tools/anthropic-cli.md"
+TOOL_SCRIPT_NAMES["Anthropic_CLI"]="anthropic_cli"
 TOOL_KEYS+=("Find_Skills")
 TOOLS["Find_Skills"]="experimental/light: Vercel find-skills aus gepinntem GitHub-Commit; Skill-Aktivierung erst nach Zustimmung. Keine npm-CLI, kein Docker. docs/tools/find-skills.md"
 TOOL_SCRIPT_NAMES["Find_Skills"]="find_skills"
+TOOL_KEYS+=("YouTube_Agent_Skill")
+TOOLS["YouTube_Agent_Skill"]="experimental/light: 11 YouTube-Skills und 6 Python-Helfer aus GitHub nach Zustimmung kopieren. Kein Docker/MCP/Login/Upload. docs/tools/youtube-agent-skill.md"
+TOOL_SCRIPT_NAMES["YouTube_Agent_Skill"]="youtube_agent_skill"
 TOOL_KEYS+=("REA")
 TOOLS["REA"]="experimental: GitHub-Quellen, optionaler Source-Build mit REA_BUILD=1 und INSTALL_HEAVY_TOOLS=1. Kein Docker, kein MCP-/Analyse-Start. docs/tools/rea.md"
 TOOL_SCRIPT_NAMES["REA"]="rea"

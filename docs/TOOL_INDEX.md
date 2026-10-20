@@ -1,5 +1,20 @@
 # Tool Index
 
+**[Claude Code: Coding-Agent, GitHub und Lizenzgrenze](tools/claude-code.md)**:
+kein vollstaendiger Open-Source-Originalagent; `ant`, Plugins und alternative
+Coding-Clients klar getrennt.
+
+**[Free Tiers, Trial-Credits und GitHub-Quellen](_API-Keys/FREE_TIERS_AND_TRIAL_CREDITS.md)**:
+eigene Anbieter-Auswertung, Primaerbelege und datierte woechentliche Nachpruefung.
+
+**[YouTube_Agent_Skill: Medien- und Content-Produktion](tools/youtube-agent-skill.md)**:
+elf Skills, sechs lokale Python-Helfer, MIT. GitHub-Kopie fuer Claude Code
+nach Zustimmung, optional projektlokal; kein Docker, MCP, Login oder Upload.
+
+**[Anthropic_CLI / ant: offizielle Open-Source-Claude-API-CLI](tools/anthropic-cli.md)**:
+MIT, gepinnter GitHub-Source-Build mit vorhandenem Go >=1.25, kein Docker.
+Getrennt von Claude Code; keine automatische Anmeldung oder API-Nutzung.
+
 **[Colibri: Letsung MiniPC und RTX 5080](tools/colibri.md)**:
 MoE-Expert-Streaming von SSD, Grenzen und sicherer Versuchsplan.
 Optionaler gepinnter GitHub-Quellcheckout, keine gebaute Runtime/Modelle, kein Docker.

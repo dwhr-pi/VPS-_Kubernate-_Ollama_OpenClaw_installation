@@ -2,6 +2,8 @@
 
 | Werkzeug | Umfang | Status | Ports / Secrets |
 |---|---|---|---|
+| [YouTube_Agent_Skill](tools/youtube-agent-skill.md) | Elf Claude-Skills aus gepinntem GitHub-Commit, sechs Python-Helfer, MIT | experimental, optional, low; Risiko high | keine Ports/Keys; kein Docker/MCP/Login/Upload |
+| [Anthropic_CLI / ant](tools/anthropic-cli.md) | Gepinnter GitHub-Go-Build, MIT; kein Claude-Code-Ersatz | experimental, optional | keine Ports; kein Key/Cloud-Aufruf beim Build |
 | [Colibri](tools/colibri.md) | Gepinnte GitHub-Quellen; MiniPC-/RTX-Test und Runtime separat | experimental, optional | keine beim Installer; manueller Upstream-Server 127.0.0.1:8000 |
 | [Hyperfine](tools/local-ai-benchmarks.md) | Gepinnte GitHub-Quellen, Rust-Build separat | experimental | keine beim Installer |
 | Ollama-Benchmark-Helfer | Plan/offline Analyse; lokale Messung nur --execute --confirm-local-model | experimental, Repo-CLI | nur bestehender Loopback-Server, keine Keys |

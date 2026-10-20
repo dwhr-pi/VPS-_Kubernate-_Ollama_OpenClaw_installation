@@ -4,9 +4,16 @@
 
 - [Alle API-Schluessel: Dokumentation und Verwaltung](../_API-Keys/README.md)
 - [OnlineOnKeyServices: ein Schluessel fuer mehrere KI-Modelle](../_API-Keys/OnlineOnKeyServices/README.md)
+- [Free Tiers und Trial-Credits: gepruefte GitHub-/Anbieterquellen](../_API-Keys/FREE_TIERS_AND_TRIAL_CREDITS.md)
 
 Diese Uebersichten enthalten keine echten Zugangsdaten. Anbieter-Keys bleiben
 vom lokalen FreeLLMAPI Unified Key und der ENV-Tresor-Passphrase getrennt.
+
+Ein registrierter Provider ist kein Beleg fuer ein weiterhin kostenloses
+Kontingent. Die verlinkte Auswertung nennt Bedingungen, Ablauf und Quellen;
+insbesondere Cerebras nicht als dauerhaftes Free Tier und Together nicht als
+allgemeines kostenloses Signup-Trial einplanen. Keine automatische
+Provider-/Key-/Fallback-Aenderung durch diese Dokumentation.
 
 ## Externe Aggregatoren als Upstream
 

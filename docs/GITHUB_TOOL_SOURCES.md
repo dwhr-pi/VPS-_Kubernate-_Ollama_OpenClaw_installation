@@ -1,5 +1,16 @@
 # GitHub Tool Sources
 
+YouTube_Agent_Skill: [Jakeschincariol/youtube-agent-skill](https://github.com/Jakeschincariol/youtube-agent-skill/tree/a2feb2104981a375ffd4f87ee04f4f5344ac43c6),
+MIT, Pin `a2feb2104981a375ffd4f87ee04f4f5344ac43c6`.
+[Installation und Tutorial](tools/youtube-agent-skill.md): elf Skills inklusive
+sechs Python-Helfern unveraendert nach Zustimmung kopieren; kein MCP-Server,
+Docker, YouTube-Login, Agentenstart oder Upload.
+
+Anthropic_CLI / ant: [anthropics/anthropic-cli](https://github.com/anthropics/anthropic-cli/tree/78ab237474e7c34983d77f6f41fcd1152f32a7ce),
+MIT, Pin `78ab237474e7c34983d77f6f41fcd1152f32a7ce`.
+[Build und API-Grenzen](tools/anthropic-cli.md): Go >=1.25 am Pin,
+privates Binary statt Docker, keine Anmeldung/API-/Agentenausfuehrung.
+
 Colibri: [JustVugg/colibri](https://github.com/JustVugg/colibri/tree/e0db083cdc9e563e0766cc6fc661ef23c32298e0),
 Commit `e0db083cdc9e563e0766cc6fc661ef23c32298e0`, Apache-2.0.
 [MiniPC-/RTX-Anleitung](tools/colibri.md): nur Quellcheckout, kein Docker,

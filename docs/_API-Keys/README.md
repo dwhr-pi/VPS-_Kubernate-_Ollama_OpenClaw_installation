@@ -7,6 +7,10 @@ oder Dienste aktiviert. Ein dokumentierter Zugang ist keine Cloud-Freigabe.
 
 ## Navigation
 
+- [Kostenlose LLM-Zugaenge, Free Tiers und Trial-Credits](FREE_TIERS_AND_TRIAL_CREDITS.md):
+  konkrete GitHub-/Primaerquellen, eigene Bewertung und woechentliche Nachpruefung.
+- [Datierte Quellenberichte](reviews/README.md): Befunde und Original-Links bleiben erhalten.
+
 - [API-Key-Katalog aller im Setup dokumentierten Anbieter und Dienste](PROVIDER_KEY_CATALOG.md):
   Variablennamen, Zweck, lokale Zugänge, OAuth und Connector-Grenzen.
 - [API-Key Guide, Ports und Sicherheit](API_KEY_GUIDE.md): formatierte Anleitung,

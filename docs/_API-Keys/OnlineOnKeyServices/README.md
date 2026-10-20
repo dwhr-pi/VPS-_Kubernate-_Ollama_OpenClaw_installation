@@ -5,6 +5,10 @@ API-Aggregatoren vermitteln zwischen deinem vorhandenen Client und
 unterschiedlichen Modellanbietern. Du waehlst ein Modell per Modell-ID;
 der Aggregator vereinheitlicht Zugang und Abrechnung.
 
+[Free Tiers, Trial-Credits und Quellenpruefung](../FREE_TIERS_AND_TRIAL_CREDITS.md)
+trennen echte Freikontingente, einmalige Aktionen und bezahlten Zugang.
+Ein Key-Verzeichnis liefert keine fremden Keys oder Garantie kostenloser Nutzung.
+
 Diese Kategorie enthaelt **Online-Dienste, keine installierbaren Setup-Tools**.
 Kein Installer, Docker-Container, Konto, API-Key oder Cloud-Fallback wird durch
 diese Dokumentation angelegt oder aktiviert. Ollama bleibt der lokale Standard.

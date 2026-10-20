@@ -59,6 +59,11 @@ Deinstallation deaktiviert nur die Registrierung, nicht die eigentlichen Dateien
 
 ## GitHub-Quellen der Coding-Clients
 
+[Claude Code: Coding-Agent und Open-Source-Grenze](../tools/claude-code.md)
+fasst die erneut gepruefte Lizenz, den tatsaechlichen Checkout-Umfang und
+eigenstaendige quelloffene Alternativen zusammen. Ein oeffentliches
+GitHub-Repository ist keine Open-Source-Lizenz und kein fertiger CLI-Build.
+
 ```bash
 bash scripts/tools/gemini_cli_install.sh --dry-run
 bash scripts/tools/gemini_cli_install.sh
@@ -87,6 +92,11 @@ Ein Git-Clone installiert daher keinen funktionsfaehigen Claude-Client.
 Unter der Vorgabe "nur GitHub" wird keine andere proprietaere Distribution
 heimlich von npm, claude.ai oder Docker nachgeladen. Eine bereits bewusst
 installierte CLI kann spaeter als separater Adapter eingebunden werden.
+
+Davon getrennt gibt es die offizielle **MIT-lizenzierte Claude-API-CLI `ant`**
+aus `anthropics/anthropic-cli`. Sie wird als eigener Eintrag
+[Anthropic_CLI aus GitHub](../tools/anthropic-cli.md) angeboten und ist kein
+automatischer Ersatz fuer den Coding-Agenten oder dieses Rollenprofil.
 
 Gemini CLI ist quelloffen; ein nativer Build benoetigt zusaetzlich einen
 passenden Node-/npm-Stack und Registry-Abhaengigkeiten. Das bleibt ein eigener

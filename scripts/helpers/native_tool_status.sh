@@ -3,7 +3,7 @@
 NATIVE_TOOL_STATUS_KEYS=(Wan21 Windmill DeepFilterNet MOSS_TTS Embedded_Debug_HIL
     ChatTTS AudioLDM2 AudioGen Moshi YuE ACE_Step_15 WhisperX Aegisub Basic_Pitch
     Sfizz AIDA_X Kiwi_Edit VOID_Model Just_Dub_It Stable_Audio_Open ProPainter
-    Alexandria_Audiobook Qwen3_TTS Claude_Code Gemini_CLI Find_Skills REA HF_Accelerate DeepSpeed Hyperfine Colibri)
+    Alexandria_Audiobook Qwen3_TTS Claude_Code Gemini_CLI Find_Skills REA HF_Accelerate DeepSpeed Hyperfine Colibri Anthropic_CLI YouTube_Agent_Skill)
 
 native_tool_marker() {
     local marker
@@ -32,8 +32,10 @@ native_tool_marker() {
         Alexandria_Audiobook) marker=alexandria_audiobook/source-ready ;;
         Qwen3_TTS) marker=qwen3_tts/source-built ;;
         Claude_Code) marker=claude_code/source-ready.json ;;
+        Anthropic_CLI) marker=anthropic_cli/build-ready.json ;;
         Gemini_CLI) marker=gemini_cli/source-ready.json ;;
         Find_Skills) marker=find_skills/source-ready.json ;;
+        YouTube_Agent_Skill) marker=youtube_agent_skill/skills-ready.json ;;
         REA) marker=rea/source-ready.json ;;
         HF_Accelerate) marker=hf_accelerate/source-ready.json ;;
         DeepSpeed) marker=deepspeed/source-ready.json ;;
@@ -56,6 +58,12 @@ native_tool_sync_selected() {
         managed["$tool"]=1
         marker="$root/tools/$NATIVE_TOOL_MARKER"
         if [[ -f "$marker" && ! -L "$marker" && -s "$marker" && ! -L "$root/tools" && ! -L "${marker%/*}" ]]; then
+            if [[ "$tool" == Anthropic_CLI ]]; then
+                if [[ -L "$root/tools/anthropic_cli/bin" ]]; then continue; fi
+                if [[ ! -f "$root/tools/anthropic_cli/bin/ant" || -L "$root/tools/anthropic_cli/bin/ant" || ! -s "$root/tools/anthropic_cli/bin/ant" ]]; then
+                    if [[ ! -f "$root/tools/anthropic_cli/bin/ant.exe" || -L "$root/tools/anthropic_cli/bin/ant.exe" || ! -s "$root/tools/anthropic_cli/bin/ant.exe" ]]; then continue; fi
+                fi
+            fi
             present["$tool"]=1
         fi
     done

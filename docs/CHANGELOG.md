@@ -1,5 +1,33 @@
 # Docs Changelog
 
+## 2026-10-21 Free-Tier-Quellen und Claude-Code-Lizenz
+
+- Konkrete GitHub-Listen, Anbieter-Primaerquellen und eigene datierte Auswertung
+  unter docs/_API-Keys/ ergaenzt; Quellenhistorie und Pruefanweisung erhalten.
+- Cerebras-Trial, Together-Prepaid und NVIDIA-Rate-Limit-Trial von fortlaufenden
+  Free Tiers getrennt; keine Account-/Key-/Inferenztests oder Kostenversprechen.
+- Coding-Agent Claude Code anhand Originallizenz erneut eingeordnet; kein
+  falscher Open-Source-Build oder stiller Austausch gegen die API-CLI ant.
+- Woechentliche Codex-Thread-Auswertung separat vom Installer; kein Git-Pull,
+  WSL-Zugriff oder automatisches Veroeffentlichen.
+
+## 2026-10-21 YouTube Agent Skill
+
+- Elf Upstream-Skills und sechs Python-Helfer als optionales MIT-GitHub-Paket
+  aufgenommen; keine falsche MCP-/YouTube-Such-/Upload-Integration.
+- Aktivierung nach Zustimmung global oder projektlokal, bestehende voice.md
+  erhalten; Pin-/Hash-Doctor, Dry-Run, Repair, eigene Logs und sicherer Uninstaller.
+- Claude-Code-Nutzung, Windows-Pfad, lokale Medienpipeline und Grenzen fuer
+  Qwen/Hermes/OpenClaw/Ollama dokumentiert. Keine Agenten oder Helfer gestartet.
+
+## 2026-10-21 Anthropic_CLI / ant
+
+- Offizielle MIT-Claude-API-CLI aus anthropics/anthropic-cli als getrenntes
+  Tool aufgenommen; Claude Code und dessen Lizenz unveraendert eingeordnet.
+- Gepinnten GitHub-Go-Build, Status/Doctor, Dry-Run, Repair und hashgeschuetzte
+  Deinstallation ergaenzt; kein Docker, CLI-Start, Login oder API-Aufruf.
+- Go >=1.25 gemaess go.mod beruecksichtigt; kein automatischer Toolchain-Download.
+
 ## 2026-10-20 token8341 / Recherche und Quellenkritik
 
 - Betreiberwidersprueche von allgemeinen Cloud-/Retry-/Kompatibilitaetsrisiken
