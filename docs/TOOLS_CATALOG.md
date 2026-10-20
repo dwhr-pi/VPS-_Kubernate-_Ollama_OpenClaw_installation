@@ -1,5 +1,11 @@
 # Tools Catalog
 
+| Werkzeug | Quelle | Zweck | Einordnung |
+|---|---|---|---|
+| [Hyperfine](tools/local-ai-benchmarks.md) | [sharkdp/hyperfine](https://github.com/sharkdp/hyperfine) | Wiederholte CLI-Laufzeitmessung | experimental, optionaler GitHub-Quellcheckout, keine gebaute CLI |
+| llama-bench | [ggml-org/llama.cpp](https://github.com/ggml-org/llama.cpp) | PP/TG-Tests | Vorhandenes llama.cpp nutzen, kein doppelter Installer |
+| Ollama-Benchmark-Helfer | scripts/benchmarks/ollama_benchmark.py in diesem GitHub-Projekt | Lokale API-Timings/offline JSON-Auswertung | Keine Installation noetig, Lasttest explizit freigeben |
+
 | Tool | GitHub | Zweck | Status | Risiko / Umfang |
 |---|---|---|---|---|
 | HF_Accelerate | [huggingface/accelerate](https://github.com/huggingface/accelerate) | Modell-Dispatch/CPU-GPU-Offload | experimental | GitHub-Quellen, keine Torch-/Runtimeinstallation |

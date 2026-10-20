@@ -1,5 +1,13 @@
 # Roadmap
 
+## Lokale KI-Benchmarks
+
+- Reproduzierbare PP/TG-/Wall-/Ladezeit-Messung, Ergebnisvorlage und
+  Offline-Analyse von Ollama-JSON; lokale Lasttests nur explizit freigegeben.
+- Hyperfine-Quellinstaller; llama-bench als Teil vorhandenen llama.cpp.
+- Offen: echter GPU-/CPU-Smoke-Test, gepruefter Hyperfine-Build, separater
+  Streaming-TTFT-Sampler und versionsgebundene ComfyUI-Workflow-Benchmarks.
+
 ## Unified Memory / Offloading
 
 - Hardware-UMA, Managed Memory und explizites Offloading dokumentiert;

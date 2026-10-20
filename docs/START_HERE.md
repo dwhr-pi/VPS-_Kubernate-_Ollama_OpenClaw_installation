@@ -1,5 +1,8 @@
 # START HERE
 
+[Lokale KI-Leistung messen](tools/local-ai-benchmarks.md):
+reproduzierbare Benchmarks statt Schaetzungen aus Gaming-Scores.
+
 [Speicherplanung: UMA, VRAM und Offloading](memory/UNIFIED_MEMORY_AND_OFFLOADING.md)
 erklaert RAM-/GPU-Budgets, WSL-Grenzen und den Offline-Rechner ohne Systemaenderungen.
 

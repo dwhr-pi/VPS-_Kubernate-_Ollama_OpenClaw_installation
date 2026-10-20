@@ -1,5 +1,14 @@
 # Docs Changelog
 
+## 2026-10-20 Lokale KI-Benchmarks
+
+- Anleitung mit PP/TG/TTFT-Abgrenzung, Ergebnisvorlage und differenzierter
+  Einordnung klassischer PC-/Procyon-Scores ergaenzt.
+- Offline-Ollama-Timinganalyse und sequenziellen lokalen Messhelfer mit
+  explizitem Opt-in, Loopback-/Redirect-/Proxygrenzen und privaten Berichten eingebaut.
+- Hyperfine als gepinnten GitHub-Quellcheckout registriert, kein Docker/Rust-
+  Bootstrap; vorhandenes llama.cpp/llama-bench nicht dupliziert.
+
 ## 2026-10-20 Speicherarchitektur und Offloading
 
 - UMA, CUDA Unified Memory, AMD HIP/HMM und explizites Modell-Offloading

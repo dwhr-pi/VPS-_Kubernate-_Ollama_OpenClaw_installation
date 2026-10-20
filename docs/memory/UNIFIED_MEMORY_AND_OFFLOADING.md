@@ -1,5 +1,8 @@
 # Unified Memory, VRAM und Offloading im Ultimate KI Setup
 
+Nach der Speicherplanung: [Leistung reproduzierbar messen](../tools/local-ai-benchmarks.md).
+Der Speicherrechner liefert keine gemessenen Tokens/s.
+
 **Zweck:** Groessere lokale Modelle sinnvoll planen, ohne RAM, VRAM und
 SSD-Speicher gleichzusetzen. Software kann Teile einer Berechnung auslagern;
 sie verwandelt einen PC mit dedizierter Grafikkarte **nicht in echte UMA**.

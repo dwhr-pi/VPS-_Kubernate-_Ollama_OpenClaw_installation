@@ -3,7 +3,7 @@
 NATIVE_TOOL_STATUS_KEYS=(Wan21 Windmill DeepFilterNet MOSS_TTS Embedded_Debug_HIL
     ChatTTS AudioLDM2 AudioGen Moshi YuE ACE_Step_15 WhisperX Aegisub Basic_Pitch
     Sfizz AIDA_X Kiwi_Edit VOID_Model Just_Dub_It Stable_Audio_Open ProPainter
-    Alexandria_Audiobook Qwen3_TTS Claude_Code Gemini_CLI Find_Skills REA HF_Accelerate DeepSpeed)
+    Alexandria_Audiobook Qwen3_TTS Claude_Code Gemini_CLI Find_Skills REA HF_Accelerate DeepSpeed Hyperfine)
 
 native_tool_marker() {
     local marker
@@ -37,6 +37,7 @@ native_tool_marker() {
         REA) marker=rea/source-ready.json ;;
         HF_Accelerate) marker=hf_accelerate/source-ready.json ;;
         DeepSpeed) marker=deepspeed/source-ready.json ;;
+        Hyperfine) marker=hyperfine/source-ready.json ;;
         *) return 2 ;;
     esac
     NATIVE_TOOL_MARKER="$marker"

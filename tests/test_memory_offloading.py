@@ -85,7 +85,7 @@ class OffloadSources(unittest.TestCase):
     def fixture(self, key):
         base, source, marker = sources.paths(key)
         spec = sources.TOOLS[key]
-        for name in ("LICENSE", "setup.py", spec["module"]):
+        for name in spec.get("files", ("LICENSE", "setup.py", spec["module"])):
             path = source / name
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_text("fixture", encoding="utf-8")

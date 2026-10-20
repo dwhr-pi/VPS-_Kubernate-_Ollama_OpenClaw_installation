@@ -1,5 +1,9 @@
 # Tool Index
 
+**[Lokale KI-Benchmarks](tools/local-ai-benchmarks.md)**:
+llama-bench aus vorhandenem llama.cpp, neuer Ollama-Messhelfer mit explizitem
+Lasttest-Opt-in und Hyperfine als optionaler GitHub-Quellcheckout.
+
 **[Unified Memory, VRAM und Offloading](memory/UNIFIED_MEMORY_AND_OFFLOADING.md)**:
 NVIDIA/AMD/Apple sauber unterscheiden, Offline-Speicherrechner sowie optionale
 GitHub-Quellinstaller fuer HF_Accelerate und DeepSpeed. Kein Docker/Treiberumbau.

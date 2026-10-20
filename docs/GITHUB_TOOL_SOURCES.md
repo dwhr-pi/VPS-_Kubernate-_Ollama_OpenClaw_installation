@@ -1,5 +1,10 @@
 # GitHub Tool Sources
 
+Hyperfine: [sharkdp/hyperfine](https://github.com/sharkdp/hyperfine/tree/c5161524980522320c7d3425e714cc0965a869a5),
+Commit `c5161524980522320c7d3425e714cc0965a869a5`, MIT OR Apache-2.0.
+[Messanleitung](tools/local-ai-benchmarks.md): nur GitHub-Quellen im Installer,
+keine Rust-/Dockerinstallation oder automatisch ausgefuehrten Lasttests.
+
 HF_Accelerate: [huggingface/accelerate](https://github.com/huggingface/accelerate/tree/abe3749c6274b2ffc9a99cc57ca72ff8bca72ab8),
 Commit `abe3749c6274b2ffc9a99cc57ca72ff8bca72ab8`, Apache-2.0, Entwicklungsstand.
 DeepSpeed: [deepspeedai/DeepSpeed](https://github.com/deepspeedai/DeepSpeed/tree/3133d9d689a67ab1d4feebf8166f19ee28cace6a),

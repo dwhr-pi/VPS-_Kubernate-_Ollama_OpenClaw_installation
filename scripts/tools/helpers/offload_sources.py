@@ -1,4 +1,4 @@
-"""Optional pinned source checkouts; no Python packages, drivers or models installed."""
+"""Optional pinned source checkouts; no dependencies, builds, drivers or models."""
 import argparse
 import json
 import os
@@ -20,6 +20,12 @@ TOOLS = {
         "pin": "3133d9d689a67ab1d4feebf8166f19ee28cace6a",
         "module": "deepspeed/__init__.py",
     },
+    "hyperfine": {
+        "name": "Hyperfine", "url": "https://github.com/sharkdp/hyperfine.git",
+        "pin": "c5161524980522320c7d3425e714cc0965a869a5",
+        "module": "src/main.rs",
+        "files": ("LICENSE-MIT", "LICENSE-APACHE", "Cargo.toml", "Cargo.lock", "src/main.rs"),
+    },
 }
 
 
@@ -37,7 +43,7 @@ def verify(source, spec):
             git(source, "remote", "get-url", "origin") != spec["url"] or
             git(source, "status", "--porcelain", "--untracked-files=all")):
         raise ValueError("Fremde/veraenderte Quelle; kein Reset oder latest-Pull.")
-    for name in ("LICENSE", "setup.py", spec["module"]):
+    for name in spec.get("files", ("LICENSE", "setup.py", spec["module"])):
         if not checked(source / name).is_file():
             raise ValueError("Quellbestand unvollstaendig: " + name)
 
@@ -113,7 +119,7 @@ def main(argv=None):
         finally:
             if Path(pending).exists():
                 Path(pending).unlink()
-        print("GitHub-Quellen vorbereitet. Keine importierbare Runtime installiert oder getestet.")
+        print("GitHub-Quellen vorbereitet. Keine gebaute/installierte Runtime getestet.")
     return 0
 
 
