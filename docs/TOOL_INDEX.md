@@ -1,5 +1,12 @@
 # Tool Index
 
+**[Manus-Interview: lokaler Entwicklungsablauf](tutorials/manus-development-workflow.md)**:
+Quellen, Tests, Browser-Vorschau und Freigabe statt eines angeblichen Manus-Klons.
+Neu: [Black und mypy](tools/dev-quality.md) optional aus gepinntem GitHub-Stand,
+privates Python-venv, kein Docker oder automatische Projektformatierung.
+Ergaenzung: [30 offizielle Werkzeugquellen](tutorials/manus-development-sources.md)
+mit uv, Coverage.py, Hypothesis, Web-/CI-Bausteinen und korrigierter Playwright-Action.
+
 **[Claude Code: Coding-Agent, GitHub und Lizenzgrenze](tools/claude-code.md)**:
 kein vollstaendiger Open-Source-Originalagent; `ant`, Plugins und alternative
 Coding-Clients klar getrennt.

@@ -1,5 +1,27 @@
 # Docs Changelog
 
+## 2026-10-21 Ergaenzte Werkzeugquellen aus dem Manus-Interview
+
+- Alle 30 nachgereichten offiziellen GitHub-Quellen thematisch dokumentiert;
+  umgezogene Coverage.py-/Uvicorn-/React-Repositories samt alten URLs erhalten.
+- Archivierte Playwright GitHub Action als deprecated gekennzeichnet und auf
+  die offizielle CLI-/CI-Anleitung verwiesen; keine alte Action neu aktiviert.
+- uv, pre-commit, Coverage.py, Hypothesis, ASGI-/Frontend- und CI-Komponenten
+  mit Umsetzungsstand und Sicherheitsgrenzen eingeordnet. Keine Installation,
+  neuen Platzhalter, Hooks, Runner oder WSL-/Cloud-Aktionen.
+
+## 2026-10-21 Manus-Interview: lokale Entwicklungsqualitaet
+
+- Interview als Entwicklungsprozess eingeordnet, nicht als offizielles
+  quelloffenes Manus-Paket oder nachgewiesene interne Toolliste.
+- Black 26.10.1 und mypy 2.4.0 mit festen GitHub-Commits optional im Menue
+  registriert: privates venv, Erfolgsmarker, Hashpruefung, Logs/Lock und Rollback
+  nur des neuen venvs. Keine Systeminstallation, Docker oder Projektlaeufe.
+- Anleitung zu pytest/Ruff, Frameworkauswahl, Loopback-Vorschau, Browserchecks,
+  Queue und Agentenrollen inklusive Automaton; Beispiel-pyproject ergaenzt.
+- Transitive PyPI-Abhaengigkeiten und Grenzen vorhandener Installer transparent
+  dokumentiert; keine WSL-/Runtime-/Cloud-Aktion bei der Entwicklung.
+
 ## 2026-10-21 Anthropic CLI: Go-Download-Diagnose v2
 
 - Validierte HTTP(S)-Proxys ohne Zugangsdaten fuer Go beruecksichtigen;

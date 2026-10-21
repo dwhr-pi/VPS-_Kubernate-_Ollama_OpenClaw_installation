@@ -2870,6 +2870,11 @@ TOOL_SCRIPT_NAMES["Find_Skills"]="find_skills"
 TOOL_KEYS+=("YouTube_Agent_Skill")
 TOOLS["YouTube_Agent_Skill"]="experimental/light: 11 YouTube-Skills und 6 Python-Helfer aus GitHub nach Zustimmung kopieren. Kein Docker/MCP/Login/Upload. docs/tools/youtube-agent-skill.md"
 TOOL_SCRIPT_NAMES["YouTube_Agent_Skill"]="youtube_agent_skill"
+TOOL_KEYS+=("Black" "Mypy")
+TOOLS["Black"]="experimental/light: Python-Formatierer aus gepinntem GitHub-Stand, privates venv, kein Docker/Autoformat. docs/tools/dev-quality.md"
+TOOLS["Mypy"]="experimental/light: Python-Typpruefung aus gepinntem GitHub-Stand, privates venv, kein Projektstart. docs/tools/dev-quality.md"
+TOOL_SCRIPT_NAMES["Black"]="black"
+TOOL_SCRIPT_NAMES["Mypy"]="mypy"
 TOOL_KEYS+=("REA")
 TOOLS["REA"]="experimental: GitHub-Quellen, optionaler Source-Build mit REA_BUILD=1 und INSTALL_HEAVY_TOOLS=1. Kein Docker, kein MCP-/Analyse-Start. docs/tools/rea.md"
 TOOL_SCRIPT_NAMES["REA"]="rea"

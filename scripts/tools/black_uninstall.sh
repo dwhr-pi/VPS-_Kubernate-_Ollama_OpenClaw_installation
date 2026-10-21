@@ -1,7 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -euo pipefail
-TOOL_NAME="Black"
-TOOL_KEY="Black"
-TOOL_SLUG="black"
-source "$(dirname "$0")/helpers/python_tool_common.sh"
-uninstall_python_tool
+ROOT="$(cd "${BASH_SOURCE[0]%/*}/../.." && pwd)"
+exec "${DEV_QUALITY_PYTHON_BIN:-python3}" -B "$ROOT/scripts/tools/helpers/dev_quality.py" black uninstall "$@"
