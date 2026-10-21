@@ -1,18 +1,22 @@
 """Pinned official Go archive bootstrap inside a tool workspace, without sudo."""
 import hashlib
 import errno
+import http.client
 import json
 import os
 from pathlib import Path, PurePosixPath
 import platform
 import re
 import shutil
+import socket
+import ssl
 import stat
 import tarfile
 import tempfile
 import time
-from urllib.error import URLError
-from urllib.request import HTTPRedirectHandler, ProxyHandler, Request, build_opener
+from urllib.error import HTTPError, URLError
+from urllib.parse import urlsplit
+from urllib.request import HTTPRedirectHandler, ProxyHandler, Request, build_opener, getproxies
 import zipfile
 
 from find_skills import checked
@@ -51,39 +55,154 @@ def digest(path):
     return checksum.hexdigest()
 
 
-class NoRedirect(HTTPRedirectHandler):
+def proxy_settings():
+    mode = os.environ.get("ANTHROPIC_CLI_GO_PROXY_MODE", "auto")
+    if mode not in ("auto", "direct"):
+        raise ValueError("ANTHROPIC_CLI_GO_PROXY_MODE: nur auto oder direct.")
+    if mode == "direct":
+        return {}
+    settings = getproxies()
+    result = {}
+    for scheme in ("http", "https"):
+        value = settings.get(scheme)
+        if not value:
+            continue
+        try:
+            parsed = urlsplit(value)
+            valid = (parsed.scheme in ("http", "https") and parsed.hostname and
+                     parsed.username is None and parsed.password is None and
+                     parsed.path in ("", "/") and not parsed.query and not parsed.fragment and
+                     (parsed.port is None or 1 <= parsed.port <= 65535))
+        except ValueError:
+            valid = False
+        if not valid:
+            raise ValueError("Go-Proxy nicht uebernommen: nur HTTP(S)-Proxy ohne Zugangsdaten/Pfadparameter erlaubt. Keine Proxy-Werte im Log; alternativ geprueftes lokales Go-Archiv verwenden.")
+        result[scheme] = value
+    if settings.get("no"):
+        result["no"] = settings["no"]
+    return result
+
+
+def network_environment():
+    proxies = proxy_settings()
+    return {name: proxies[key] for key, name in (("http", "HTTP_PROXY"), ("https", "HTTPS_PROXY"), ("no", "NO_PROXY")) if key in proxies}
+
+
+class OfficialRedirect(HTTPRedirectHandler):
+    max_redirections = 2
+    max_repeats = 1
+
+    def __init__(self, urls):
+        self.urls = frozenset(urls)
+
     def redirect_request(self, req, fp, code, msg, headers, newurl):
-        return None
+        if req.full_url not in self.urls or newurl not in self.urls:
+            raise ValueError("Go-Download: Umleitung ausserhalb der zwei offiziellen Archiv-URLs gesperrt.")
+        return super().redirect_request(req, fp, code, msg, headers, newurl)
+
+
+def download_error(error, phase):
+    """Use fixed diagnostics only: exception text/HTTP bodies may contain credentials."""
+    if isinstance(error, HTTPError):
+        code = error.code
+        return "HTTP " + str(code), code in (404, 408, 429, 500, 502, 503, 504)
+    reason = error.reason if isinstance(error, URLError) else error
+    # SSL error numbers are not filesystem errno values (e.g. SSL_ERROR_SSL=1).
+    if isinstance(reason, ssl.SSLCertVerificationError):
+        return "TLS-Zertifikatspruefung fehlgeschlagen; TLS bleibt aktiviert", False
+    if isinstance(reason, ssl.SSLError):
+        return "TLS-Verbindungsfehler", False
+    number = getattr(reason, "errno", None)
+    if number in (errno.ENOSPC, errno.EDQUOT):
+        return "Speicherplatzmangel beim Go-Download", False
+    if isinstance(reason, PermissionError) or number in (errno.EACCES, errno.EPERM):
+        return "Schreib-/Zugriffsrechte fehlen", False
+    if isinstance(reason, socket.gaierror):
+        return "DNS-Aufloesung fehlgeschlagen", True
+    if isinstance(reason, TimeoutError):
+        return "Zeitlimit bei Verbindung oder Lesen erreicht", True
+    if isinstance(reason, ConnectionRefusedError):
+        return "Verbindung abgelehnt", True
+    if isinstance(reason, (ConnectionError, http.client.HTTPException)):
+        return "Verbindung/HTTP-Datenstrom abgebrochen", True
+    if phase in ("Dateianlage", "Schreiben"):
+        return "Lokales Schreiben fehlgeschlagen", False
+    return "Netzwerk-/Transportfehler ohne sichere Detailangabe", True
+
+
+def verify_archive(path, expected_hash, expected_size):
+    if path.stat().st_size != expected_size or digest(path) != expected_hash:
+        raise ValueError("Go-Archiv-Pruefsumme/Groesse stimmt nicht; kein Entpacken oder Ausfuehren.")
 
 
 def download(filename, destination, expected_hash, expected_size):
-    url = "https://dl.google.com/go/" + filename
-    print("Go-Download:", url, "Bytes:", expected_size, "SHA256:", expected_hash)
-    # Do not inherit proxy credentials or send keys; no redirects or retries.
-    opener = build_opener(ProxyHandler({}), NoRedirect())
-    checksum, total, started = hashlib.sha256(), 0, time.monotonic()
-    try:
-        with opener.open(Request(url, headers={"User-Agent": "OpenClaw-Setup-Go-Bootstrap"}), timeout=60) as response:
-            if response.status != 200 or response.geturl() != url:
-                raise ValueError("Unerwartete Go-Downloadantwort.")
-            with checked(destination).open("xb") as output:
-                while True:
-                    if time.monotonic() - started > 600:
-                        raise ValueError("Go-Download-Zeitlimit erreicht.")
-                    chunk = response.read(1024**2)
-                    if not chunk:
-                        break
-                    total += len(chunk)
-                    if total > expected_size:
-                        raise ValueError("Go-Archiv groesser als gepruefte Metadaten.")
-                    checksum.update(chunk)
-                    output.write(chunk)
-    except (OSError, URLError) as error:
-        if getattr(error, "errno", None) in (errno.ENOSPC, errno.EDQUOT):
-            raise ValueError("Speicherplatzmangel beim Go-Download; Staging wird entfernt, keine Toolchain aktiviert.") from None
-        raise ValueError("Offizieller Go-Download fehlgeschlagen; keine Systemaenderung. Netzwerk/Proxy/Schreibrechte pruefen oder Go separat bereitstellen.") from None
-    if total != expected_size or checksum.hexdigest() != expected_hash:
-        raise ValueError("Go-Archiv-Pruefsumme/Groesse stimmt nicht; kein Entpacken oder Ausfuehren.")
+    destination = checked(destination)
+    if destination.exists():
+        raise ValueError("Go-Downloadziel bereits vorhanden; nichts ueberschreiben.")
+    local = os.environ.get("ANTHROPIC_CLI_GO_ARCHIVE", "")
+    if local:
+        source = Path(local)
+        if not source.is_absolute():
+            raise ValueError("ANTHROPIC_CLI_GO_ARCHIVE muss eine absolute Archivdatei sein.")
+        source = checked(source)
+        verify_archive(source, expected_hash, expected_size)
+        print("Verwende gewaehltes lokales Go-Archiv; SHA256/Groesse geprueft. Kein Archiv-Download.")
+        try:
+            with source.open("rb") as incoming, destination.open("xb") as output:
+                shutil.copyfileobj(incoming, output, 1024**2)
+        except OSError as error:
+            detail, _ = download_error(error, "Schreiben")
+            raise ValueError("Lokales Go-Archiv konnte nicht kopiert werden: " + detail) from None
+        verify_archive(destination, expected_hash, expected_size)
+        return
+    urls = ("https://dl.google.com/go/" + filename, "https://go.dev/dl/" + filename)
+    proxies = proxy_settings()
+    opener = build_opener(ProxyHandler(proxies), OfficialRedirect(urls))
+    print("Go-Download: 2026-10-21-network-diagnostics-v2; Proxy-Modus:",
+          os.environ.get("ANTHROPIC_CLI_GO_PROXY_MODE", "auto"),
+          "Proxy vorhanden:", bool(proxies.get("http") or proxies.get("https")), flush=True)
+    print("Bytes:", expected_size, "SHA256:", expected_hash, "Maximal 2 offizielle Zugangswege; Gesamtbudget 600s.")
+    started = time.monotonic()
+    for attempt, url in enumerate(urls, 1):
+        total, phase, created = 0, "Verbindung", False
+        print("Go-Download Versuch", str(attempt) + "/2:", url, flush=True)
+        try:
+            remaining = 600 - (time.monotonic() - started)
+            if remaining <= 0:
+                raise ValueError("Go-Download-Gesamtzeitlimit erreicht.")
+            with opener.open(Request(url, headers={"User-Agent": "OpenClaw-Setup-Go-Bootstrap"}), timeout=min(30, remaining)) as response:
+                if response.status != 200 or response.geturl() not in urls:
+                    raise ValueError("Unerwartete Go-Downloadantwort; kein unbekannter Host erlaubt.")
+                phase = "Dateianlage"
+                with destination.open("xb") as output:
+                    created = True
+                    while True:
+                        if time.monotonic() - started > 600:
+                            raise ValueError("Go-Download-Gesamtzeitlimit erreicht.")
+                        phase = "Lesen"
+                        chunk = response.read(1024**2)
+                        if not chunk:
+                            break
+                        total += len(chunk)
+                        if total > expected_size:
+                            raise ValueError("Go-Archiv groesser als gepruefte Metadaten.")
+                        phase = "Schreiben"
+                        output.write(chunk)
+            verify_archive(destination, expected_hash, expected_size)
+            print("Go-Download erfolgreich; SHA256/Groesse geprueft, Bytes:", total, flush=True)
+            return
+        except (OSError, URLError, http.client.HTTPException) as error:
+            detail, retryable = download_error(error, phase)
+            print("Go-Download fehlgeschlagen; Phase:", phase, "Kategorie:", detail,
+                  "Bytes:", total, "Versuch:", attempt, flush=True)
+            if created:
+                destination.unlink()
+            if retryable and attempt < len(urls) and time.monotonic() - started < 600:
+                print("Versuche einmal den zweiten offiziellen Zugang; gleiche Version/Pruefsumme, kein fremder Mirror.", flush=True)
+                continue
+            raise ValueError("Offizieller Go-Download fehlgeschlagen: " + detail +
+                             "; Phase=" + phase + "; Bytes=" + str(total) +
+                             ". Keine Systemaenderung; alternativ ANTHROPIC_CLI_GO_ARCHIVE verwenden.") from None
 
 
 def relative(name):

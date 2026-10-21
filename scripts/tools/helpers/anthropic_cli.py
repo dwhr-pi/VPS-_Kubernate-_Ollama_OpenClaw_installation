@@ -81,6 +81,7 @@ def build_env(base):
                GOPROXY="https://proxy.golang.org", GOSUMDB="sum.golang.org", CGO_ENABLED="0",
                GOMAXPROCS="2", GOMEMLIMIT="768MiB", GOFLAGS="", GOTELEMETRY="off",
                AWS_EC2_METADATA_DISABLED="true", OTEL_SDK_DISABLED="true")
+    env.update(private_go.network_environment())
     return env
 
 
@@ -195,7 +196,7 @@ def main(argv=None):
         print(json.dumps({"installed": ready, "scope": "github-source-built", "api_tested": False}))
         return 0 if ready or opts.action == "status" else 1
     with operation(base, opts.action, tool="Anthropic_CLI"):
-        print("Anthropic_CLI-Installer: 2026-10-21-private-go-bootstrap")
+        print("Anthropic_CLI-Installer: 2026-10-21-private-go-bootstrap-download-v2")
         print("Quelle:", URL, "Pin:", PIN)
         record = read_record(marker)
         if record:

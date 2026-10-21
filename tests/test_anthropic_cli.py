@@ -27,6 +27,12 @@ class AnthropicCLI(unittest.TestCase):
                                 ANTHROPIC_API_KEY="DO_NOT_INHERIT", AWS_SECRET_ACCESS_KEY="DO_NOT_INHERIT")
         patch.start()
         self.addCleanup(patch.stop)
+        proxies = mock.patch.object(cli.private_go, "getproxies", return_value={})
+        proxies.start()
+        self.addCleanup(proxies.stop)
+        proxy_mode = mock.patch.dict(os.environ, {"ANTHROPIC_CLI_GO_PROXY_MODE": "auto"})
+        proxy_mode.start()
+        self.addCleanup(proxy_mode.stop)
         self.output = io.StringIO()
         capture = redirect_stdout(self.output)
         capture.__enter__()
@@ -89,6 +95,17 @@ class AnthropicCLI(unittest.TestCase):
             self.assertIn(argument, build)
         self.assertTrue(all(command[0] == "fixture-go" for command in self.commands))
         self.assertNotIn("DO_NOT_INHERIT", self.output.getvalue())
+
+    def test_build_inherits_only_validated_credential_free_proxies(self):
+        self.base.mkdir(parents=True)
+        with mock.patch.object(cli.private_go, "getproxies", return_value={"https": "http://localhost:3128"}):
+            env = cli.build_env(self.base)
+        self.assertEqual(env["HTTPS_PROXY"], "http://localhost:3128")
+        self.assertNotIn("ANTHROPIC_API_KEY", env)
+        with mock.patch.object(cli.private_go, "getproxies", return_value={"https": "http://user:secret@localhost:3128"}):
+            with self.assertRaises(ValueError) as caught:
+                cli.build_env(self.base)
+        self.assertNotIn("secret", str(caught.exception))
 
     def test_source_only_has_no_cli_or_installed_marker(self):
         self.assertEqual(self.invoke("install", "--source-only"), 0)

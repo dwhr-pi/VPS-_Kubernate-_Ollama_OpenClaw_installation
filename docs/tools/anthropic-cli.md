@@ -53,7 +53,7 @@ GitHub geladen wird oder dass der Build ohne Netzwerk moeglich sein muss.
 
 Der alte Installer brach bei fehlendem Go ab, obwohl die Speicherpruefung
 erfolgreich war. Die korrigierte Revision meldet im aktuellen Log:
-`Anthropic_CLI-Installer: 2026-10-21-private-go-bootstrap`.
+`Anthropic_CLI-Installer: 2026-10-21-private-go-bootstrap-download-v2`.
 Nach Uebernahme dieser Korrektur kann der normale Installationsaufruf oder
 `--repair` den fehlenden Build-Unterbau automatisch bereitstellen.
 Eine lokale Repository-Aenderung ist noch keine Veroeffentlichung auf GitHub.
@@ -82,13 +82,59 @@ gebautes Go. Ein Go-Source-Build wuerde seinerseits eine Bootstrap-Toolchain
 benoetigen und waere hier unnoetig schwer.
 
 Vor Entpacken/Ausfuehren werden gepinnte Groesse und SHA-256 kontrolliert.
-Keine HTTP-Umleitungen, Credential-Header, geerbten Proxy-Credentials oder
-automatischen Wiederholungsschleifen. Archive duerfen nur regulaere Dateien
+Keine Credential-Header oder geerbten Proxy-Credentials. Umleitungen sind nur
+zwischen den zwei exakten offiziellen HTTPS-Archiv-URLs erlaubt; keine fremden
+Mirrors oder unbegrenzten Wiederholungen. Archive duerfen nur regulaere Dateien
 unter `go/` enthalten; Pfadausbrueche, Links und Spezialdateien werden
 abgewiesen. Entpackgrenze: 1 GiB / 60.000 Eintraege. Vor Wiederverwendung
 wird der gesamte private Dateibestand mit seinem Hashmanifest verglichen;
 veraenderte oder unbekannte Toolchains werden nicht ueberschrieben.
 Das ersetzt keine Betriebssystem-Sandbox.
+
+### Go-Download scheitert trotz ausreichender Disk
+
+Das Log vom 21.10.2026 um 02:52 zeigt bereits den privaten Go-Bootstrap;
+die aeltere pauschale Fehlermeldung beweist weder Speicherplatzmangel noch einen
+bestimmten Netzwerkfehler. Ein reiner HEAD-Aufruf von diesem Windows-Rechner
+lieferte am 21.10.2026 fuer das Linux-amd64-Archiv HTTP 200 und die erwarteten
+70.588.678 Bytes. Das ist kein Download- oder Verbindungstest aus deiner WSL.
+Es wurde weder ein Go-Archiv heruntergeladen noch eine Installation gestartet.
+
+Die neue Revision protokolliert Versuch, Phase, gelesene Bytes und Fehlerklasse:
+DNS, Zeitlimit, HTTP-Status, TLS/Zertifikate, Schreibrechte oder Speicherplatz.
+Rohmeldungen, Proxy-Zugangsdaten und HTTP-Antwortinhalte werden nicht ausgegeben.
+Die tatsaechliche Ursache deiner WSL-Verbindung bleibt bis zum neuen Log offen.
+
+Der erste Versuch nutzt `https://dl.google.com/go/<Archiv>`. Bei geeigneten
+Transportfehlern wird einmal `https://go.dev/dl/<Archiv>` versucht. Dieser zweite
+Zugang leitet normalerweise wieder auf denselben Google-Host um: **kein
+unabhaengiger Mirror und keine Garantie bei einer Google-Netzsperre**.
+Socket-Zeitlimit maximal 30 Sekunden; Zeitbudget 600 Sekunden, geprueft zwischen
+Lesevorgaengen. Ein bereits laufender Socket-Aufruf kann das Budget um sein
+Zeitlimit ueberschreiten. Bei TLS-, Rechte-, Disk- oder Integritaetsfehlern wird
+nicht auf andere Quellen ausgewichen. TLS-Pruefung bleibt immer eingeschaltet.
+
+Im Standardmodus `auto` werden vorhandene HTTP(S)-Proxy-Einstellungen ohne
+Benutzername/Passwort validiert und fuer Archiv- und Go-Moduldownloads verwendet.
+Der vorherige Bootstrap ignorierte Proxys vollstaendig. Proxy-Werte erscheinen
+nicht im Log. Bei authentifizierten oder ungueltigen Proxy-URLs wird abgebrochen,
+nicht stillschweigend direkt verbunden. Ein bewusster Direktzugriff ist moeglich:
+
+```bash
+ANTHROPIC_CLI_GO_PROXY_MODE=direct bash scripts/tools/anthropic_cli_install.sh --repair
+```
+
+Alternativ ein vorher manuell von der [offiziellen Go-Downloadseite](https://go.dev/dl/)
+geladenes, zur Zielplattform passendes Archiv angeben. Kein Entpacken notwendig:
+
+```bash
+ANTHROPIC_CLI_GO_ARCHIVE=/absoluter/pfad/go1.27.3.linux-amd64.tar.gz bash scripts/tools/anthropic_cli_install.sh --repair
+```
+
+Der Installer prueft die gepinnte Groesse und SHA-256 vor und nach dem Kopieren;
+die ausgewaehlte Quelldatei bleibt erhalten. Relative Pfade und Links werden
+abgewiesen. Dies ersetzt nur den Toolchain-Download, nicht GitHub-Zugriff und
+Go-Moduldownloads fuer den anschliessenden Build. Kein API-Key erforderlich.
 
 Bewusst keinen automatischen Go-Download zulassen:
 

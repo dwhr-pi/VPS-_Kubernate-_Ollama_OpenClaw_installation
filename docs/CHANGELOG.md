@@ -1,5 +1,16 @@
 # Docs Changelog
 
+## 2026-10-21 Anthropic CLI: Go-Download-Diagnose v2
+
+- Validierte HTTP(S)-Proxys ohne Zugangsdaten fuer Go beruecksichtigen;
+  bewusster Direktmodus und hashgeprueftes lokales Archiv als Alternative.
+- Maximal zwei offizielle Archiv-Zugangswege mit festen Pins und Zeitbudget;
+  keine fremden Mirrors, TLS-Abschaltung oder Credential-Weitergabe.
+- DNS, HTTP, TLS, Zeitlimit, Rechte und volle Disk im aktuellen Log unterscheiden;
+  Teil-Downloads nur im eigenen Staging entfernen. Offline-Regressionstests ergaenzt.
+- Offizielles Archiv per Windows-HEAD erreichbar; konkrete WSL-Ursache weiter offen.
+  Kein WSL-Zugriff, echter Archiv-Download oder Livebuild bei dieser Korrektur.
+
 ## 2026-10-21 Anthropic CLI: privater Go-Bootstrap
 
 - Abbruch bei fehlendem/zu altem Go behoben: vorhandenes Go >=1.25 bevorzugen,
