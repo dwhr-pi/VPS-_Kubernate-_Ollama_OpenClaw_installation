@@ -1,5 +1,7 @@
 # Sprachen, Shells und Infrastruktur: weitere Quellen aus dem Manus-Interview
 
+Konkrete Umsetzung: [Skill, Go-/Rust-CI, Deployment und Praesentation](manus-ci-cd-deployment.md).
+
 **Sinn und Zweck:** Die passenden lokalen Pruefwerkzeuge fuer ein konkretes
 Agentenprojekt finden, statt jede Sprache und jede Infrastruktur zu installieren.
 Diese Ergaenzung ordnet die **62 GitHub-Repositories** aus der neuen Nutzerquelle
@@ -14,11 +16,16 @@ Korrekturen unten wurden anhand der verlinkten Primaerquellen geprueft.
 Keine pauschale Erreichbarkeits-, Lizenz-, Funktions- oder Sicherheitsgarantie.
 Lizenzen, Pins, Toolchains und Plattformen vor einer Installation einzeln pruefen.
 
-**Nur Quellen und Anleitung:** Keine neuen Installer oder Installed-Marker,
-keine Programme installiert, kein Docker-/WSL-Zugriff, keine Shellprofile,
+**Urspruenglicher Quellenkatalog:** Keine neuen Installer oder Installed-Marker
+im ersten Dokumentationsschritt; keine Programme installiert, kein Docker-/WSL-Zugriff, keine Shellprofile,
 Git-Hooks, Runner, Datenbanken, Cluster oder Cloud-Ressourcen eingerichtet.
 Bestehende Tools und Installer werden hier nicht automatisch migriert.
 Die im Text genannten Befehle sind Beispiele nach gesonderter Freigabe.
+
+**Jetzt als Tools ergaenzt:** [SQLFluff, Bats_Core und Invoke_Build](../tools/language-quality-tools.md)
+mit gepinnten GitHub-Installern, Menue, Status, Doctor und Deinstallation.
+Die verlinkte Seite trennt neue Tools, vorhandene Eintraege und verbleibende TODOs.
+Keine neuen Installer fuer reine Bibliotheken oder Workflow-Actions vortaeuschen.
 
 ## JavaScript und TypeScript
 

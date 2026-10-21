@@ -1,5 +1,7 @@
 # Entwicklungswerkzeuge: ergaenzte Quellen aus dem Manus-Interview
 
+Anwendung: [Skill, CI/CD-Beispiele und Deployment](manus-ci-cd-deployment.md).
+
 Fortsetzung: [Sprachen, Shells und Infrastruktur](manus-language-infrastructure-sources.md)
 mit 62 GitHub-Referenzen, Mirror-/Lizenzgrenzen und getrennten Freigaben fuer
 Tests, Container, Cluster, SQL und Cloud.

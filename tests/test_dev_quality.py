@@ -52,7 +52,7 @@ class DevQuality(unittest.TestCase):
             python.write_bytes(b"fake python; never executed")
         if "install" in command:
             self.assertIn("--only-binary=:all:", command)
-            self.assertTrue(Path(command[-1], "LICENSE").is_file())
+            self.assertTrue(any(Path(command[-1], name).is_file() for name in ("LICENSE", "LICENSE.md")))
         return subprocess.CompletedProcess(command, 0, "")
 
     def invoke(self, tool="black", action="install", *args):
@@ -82,7 +82,7 @@ class DevQuality(unittest.TestCase):
             self.assertEqual(data["commit"], dev.TOOLS[tool]["pin"])
             self.assertFalse(data["project_tested"])
             self.assertTrue(dev.python_in(dev.record_ok(base, marker, dev.TOOLS[tool])).is_file())
-            self.assertEqual((source / "LICENSE").read_text(), "fixture source")
+            self.assertEqual((source / dev.TOOLS[tool]["files"][0]).read_text(), "fixture source")
             self.assertEqual(list(base.glob("build-source-*")), [])
             self.assertEqual(list(base.glob("marker-*")), [])
             self.assertFalse((base / "operation.lock").exists())

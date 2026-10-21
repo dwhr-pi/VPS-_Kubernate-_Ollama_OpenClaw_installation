@@ -1,0 +1,18 @@
+# Copy deliberately into the reviewed Go project's root as Dockerfile.
+# Both image arguments must be trusted digest-pinned references.
+ARG GO_BUILDER
+ARG RUNTIME_IMAGE
+FROM --platform=$BUILDPLATFORM ${GO_BUILDER} AS build
+WORKDIR /src
+COPY go.mod go.sum ./
+RUN go mod download
+COPY . .
+ARG TARGETOS
+ARG TARGETARCH
+RUN CGO_ENABLED=0 GOTOOLCHAIN=local GOOS=$TARGETOS GOARCH=$TARGETARCH \
+    go build -mod=readonly -trimpath -ldflags="-s -w" -o /out/server ./cmd/server
+FROM ${RUNTIME_IMAGE}
+COPY --from=build /out/server /server
+USER 65532:65532
+EXPOSE 8080
+ENTRYPOINT ["/server"]

@@ -1,4 +1,4 @@
-"""Optional Black/mypy builds from pinned GitHub sources; no project execution."""
+"""Optional quality-tool builds from pinned GitHub sources; no project execution."""
 import argparse
 import hashlib
 import json
@@ -14,6 +14,10 @@ from find_skills import checked, operation, resources
 from offload_sources import fetch, verify
 
 TOOLS = {
+    "sqlfluff": {"name": "SQLFluff", "url": "https://github.com/sqlfluff/sqlfluff.git",
+                 "pin": "7f5ad66db2fe906827280fd6dfef6eb83565b4e8", "version": "3.5.0",
+                 "module": "src/sqlfluff/__init__.py", "python_max": (3, 13),
+                 "files": ("LICENSE.md", "pyproject.toml", "src/sqlfluff/__init__.py")},
     "black": {"name": "Black", "url": "https://github.com/psf/black.git",
               "pin": "258e7dbf348bc23cb70b8cdf693481c04634ebcc", "version": "26.10.1",
               "module": "src/black/__init__.py",
@@ -123,7 +127,9 @@ def install(tool, base, source, marker, spec):
         print("Bereits installiert; derselbe Pin, kein automatisches latest-Upgrade.")
         return
     budget(base)
-    if not (3, 10) <= sys.version_info[:2] <= (3, 15):
+    if not (3, 10) <= sys.version_info[:2] <= spec.get("python_max", (3, 15)):
+        if tool == "sqlfluff":
+            raise ValueError("SQLFluff: Python 3.10-3.13 mit venv/ensurepip/SSL erforderlich; DEV_QUALITY_PYTHON_BIN setzen.")
         raise ValueError("Python 3.10-3.15 mit venv/ensurepip/SSL erforderlich; DEV_QUALITY_PYTHON_BIN setzen.")
     env = build_env(base, tool, spec)
     run([sys.executable, "-I", "-c", "import venv, ensurepip, ssl"], base, env, 30)

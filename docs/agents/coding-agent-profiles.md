@@ -1,5 +1,9 @@
 # Getrennte Coding-Agenten statt Einbau in Jarvis
 
+[Gemini-Interview: Werkzeuge und offizielle GitHub-Quellen](../tutorials/gemini-development-tooling.md)
+ordnet Projektbibliotheken, lokale Entwicklung und Google-Cloud-Funktionen ein.
+Der vorhandene Gemini-Quellcheckout ist weiterhin keine gebaute CLI.
+
 Optionaler Analysebaustein: [REA](../tools/rea.md) und
 [App-Steckbrief/Bau-Tutorial](../tutorials/own-app-with-rea.md).
 GitHub-Installation und MCP-Freigabe bleiben getrennt; keine automatische Zielanalyse.

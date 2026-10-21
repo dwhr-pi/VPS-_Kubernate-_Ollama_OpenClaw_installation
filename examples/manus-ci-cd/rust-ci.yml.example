@@ -1,0 +1,53 @@
+name: Rust CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+  workflow_call:
+permissions:
+  contents: read
+concurrency:
+  group: rust-ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      CARGO_BUILD_JOBS: '2'
+      CARGO_INCREMENTAL: '0'
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - name: Require an exact project toolchain pin
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -I - <<'PY'
+          import os, re, tomllib
+          from pathlib import Path
+          data = tomllib.loads(Path('rust-toolchain.toml').read_text())
+          channel = data['toolchain']['channel']
+          if not re.fullmatch(r'[0-9]+\.[0-9]+\.[0-9]+', channel):
+              raise SystemExit('Pin a reviewed exact Rust x.y.z in rust-toolchain.toml')
+          with open(os.environ['GITHUB_ENV'], 'a') as output:
+              output.write('RUSTUP_TOOLCHAIN=' + channel + '\n')
+          PY
+      - name: Prepare project toolchain on this disposable runner
+        run: rustup toolchain install "$RUSTUP_TOOLCHAIN" --profile minimal --component rustfmt --component clippy
+      - name: Format, lint, test and build
+        shell: bash
+        run: |
+          set -euo pipefail
+          cargo fmt --all -- --check
+          cargo clippy --locked --all-targets -- -D warnings
+          cargo test --locked --all-targets
+          cargo build --locked --release --bin app
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: rust-build-${{ github.sha }}
+          path: target/release/app
+          retention-days: 7
+          if-no-files-found: error

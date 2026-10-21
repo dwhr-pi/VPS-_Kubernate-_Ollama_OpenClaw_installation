@@ -1,0 +1,129 @@
+{
+  "title": "Technologie & Tooling",
+  "date": "2026-10-21",
+  "slides": [
+    {
+      "kind": "cover",
+      "title": "Technologie\n& Tooling",
+      "subtitle": "Ein überprüfbarer Entwicklungsablauf\nfür das Ultimate KI Setup",
+      "note": "Quellenübersichten aus den vom Nutzer bereitgestellten Manus-Interviews. Keine Aussage über die tatsächliche interne Manus-Runtime. Stand 21.10.2026.",
+      "sources": ["docs/tutorials/manus-development-workflow.md"]
+    },
+    {
+      "title": "Der wiederverwendbare Ablauf",
+      "items": [
+        ["01  Auftrag eingrenzen", "Projektordner, Git-Stand und erlaubte Aktionen klären."],
+        ["02  Kleinen Patch liefern", "Vorhandene Werkzeuge und Tests verwenden."],
+        ["03  Prüfen und berichten", "Echte Exit-Codes erfassen. Nach drei Korrekturrunden stoppen."]
+      ],
+      "note": "Der Skill agentic-project-delivery ist im Repository abgelegt, aber nicht global installiert. Die Rundengrenze ist eine Agentenanweisung, keine technische Sandbox.",
+      "sources": ["skills/agentic-project-delivery/SKILL.md"]
+    },
+    {
+      "title": "Python und Webentwicklung",
+      "items": [
+        ["Python", "pytest für Verhalten, Black oder Ruff für Formatierung, mypy für Typen."],
+        ["JavaScript / TypeScript", "ESLint, Prettier, Vitest und ein passendes Projekt-Lockfile."],
+        ["Vorschau", "Vite auf Loopback; Playwright für vereinbarte Browserprüfungen."]
+      ],
+      "note": "Black und mypy haben optionale GitHub-Installer. Andere Projekte sind Referenzen oder bereits vorhandene Bausteine; die Auflistung installiert sie nicht. Ruff-Linting kann Black ergänzen, konkurrierende Formatierer vermeiden.",
+      "sources": ["docs/tutorials/manus-development-sources.md", "docs/tools/dev-quality.md"]
+    },
+    {
+      "title": "Kompilierte Sprachen",
+      "items": [
+        ["Go", "go.mod, vet, Race-Tests und ein nachvollziehbares Binary."],
+        ["Rust", "Exakte Toolchain, Cargo.lock, rustfmt, Clippy und Tests."],
+        ["C / C++", "Gewählter Compiler, CMake/CTest und passende Sanitizer."]
+      ],
+      "note": "Kein Compiler wird hier installiert. Compilerfamilie, ABI, Architektur und Abhängigkeiten projektspezifisch prüfen. Cargo-Buildscripts und prozedurale Makros können Code ausführen.",
+      "sources": ["docs/tutorials/manus-language-infrastructure-sources.md"]
+    },
+    {
+      "title": "Shells, Daten und Infrastruktur",
+      "items": [
+        ["Bash / PowerShell", "ShellCheck und Bats; PSScriptAnalyzer und Pester."],
+        ["SQL", "Dialekt, Migrationen und synthetische Testdaten trennen."],
+        ["Infrastruktur", "Manifeste zuerst prüfen. Cloud- und Clusteraktionen separat freigeben."]
+      ],
+      "note": "bash -x führt Skripte aus und kann Secrets loggen. EXPLAIN ANALYZE führt SQL tatsächlich aus. Terraform plan/test und serverseitiger Kubernetes-Dry-Run sind nicht generell offline oder nebenwirkungsfrei.",
+      "sources": ["docs/tutorials/manus-language-infrastructure-sources.md", "https://www.postgresql.org/docs/current/sql-explain.html"]
+    },
+    {
+      "kind": "code",
+      "title": "Go: CI vor dem Release",
+      "code": "gofmt  →  Formatprüfung\ngo mod verify\ngo vet ./...\ngo test -race -count=1 ...\ngo build -trimpath ...",
+      "aside": "Projekt-Go aus go.mod\nRead-only Repository-Token\n20 Minuten Joblimit\nBinary und Coverage als Artefakt",
+      "note": "Der vollständige Workflow enthält SHA-gepinnte Actions, keine gespeicherten Checkout-Credentials und ein Projektlayout mit ./cmd/server. Race-Tests benötigen einen passenden Compiler. Kein Live-CI-Lauf ausgeführt.",
+      "sources": ["examples/manus-ci-cd/go-ci.yml.example", "https://docs.github.com/en/actions/tutorials/build-and-test-code/go"]
+    },
+    {
+      "kind": "code",
+      "title": "Rust: reproduzierbare Prüfungen",
+      "code": "rust-toolchain.toml: x.y.z\ncargo fmt --all -- --check\ncargo clippy --locked ...\ncargo test --locked ...\ncargo build --locked --release",
+      "aside": "Genaues Toolchain-Pin\nCargo.lock im Projekt\nKeine blinde all-features-Matrix\nRelease-Binary als Artefakt",
+      "note": "x.y.z beschreibt das Format und ist kein gültiger Versionswert. Das konkrete Projekt setzt eine geprüfte numerische Version ein. --locked verhindert Lockfile-Änderungen, nicht Netzwerk oder Codeausführung. Der Workflow erwartet ein Binary namens app.",
+      "sources": ["examples/manus-ci-cd/rust-ci.yml.example", "https://github.com/rust-lang/cargo"]
+    },
+    {
+      "title": "Manuell freigegebener Image-Release",
+      "items": [
+        ["Eingang", "Nur main, manueller Aufruf und aktiviertes Release-Tor."],
+        ["Prüfung", "Go-CI erneut ausführen; geschütztes Environment abwarten."],
+        ["Ausgabe", "Image nach GHCR, Digest im Bericht. Kein Kubernetes-Rollout."]
+      ],
+      "note": "Das release-Environment muss außerhalb des YAML mit echten Schutzregeln konfiguriert werden. environment: release allein erzwingt keine Reviewer. Nur der Publish-Job erhält packages:write. Keine Kubeconfig wird verwendet.",
+      "sources": ["examples/manus-ci-cd/go-release.yml.example", "https://docs.github.com/en/actions/reference/security/secure-use"]
+    },
+    {
+      "title": "Container als Auslieferungsformat",
+      "items": [
+        ["Kleines Laufzeitimage", "Multi-Stage-Build, geprüfte Basis-Digests, Non-Root-Nutzer."],
+        ["Kontrollierter Inhalt", "Kein .env, Wallet oder privater Datenbestand im Build-Kontext."],
+        ["Nachweis zum Digest", "Image testen und scannen; SBOM und Provenance zuordnen."]
+      ],
+      "note": "Die Nutzerregel bleibt: Tools aus GitHub statt per Docker installieren. Hier ist ein Container nur ein optionales Release-Format eigener Anwendungen. Go ohne CGO ist nicht mit einer dynamisch gelinkten Rust-Binary gleichzusetzen. Docker-Socket nicht an Agenten geben.",
+      "sources": ["examples/manus-ci-cd/Dockerfile.go.example", "https://docs.docker.com/build/building/best-practices/"]
+    },
+    {
+      "title": "Kubernetes mit eingeschränkten Rechten",
+      "items": [
+        ["Pod", "Non-Root, read-only Root-FS, keine Zusatz-Capabilities."],
+        ["Betrieb", "Requests/Limits sowie getrennte Startup-, Readiness- und Liveness-Probes."],
+        ["Netz", "ClusterIP und gezielte NetworkPolicy statt öffentlicher Ports."]
+      ],
+      "note": "Das Musterimage ist bewusst ungültig und muss ersetzt werden. Ressourcenwerte sind Beispiele. NetworkPolicy benötigt Unterstützung des CNI. /healthz und /readyz müssen existieren; DNS und Datenbankzugriffe bei Bedarf gezielt erlauben. Keine Clusteraktion wurde ausgeführt.",
+      "sources": ["examples/manus-ci-cd/kubernetes.yml.example", "https://kubernetes.io/docs/concepts/security/pod-security-standards/", "https://kubernetes.io/docs/concepts/workloads/pods/probes/"]
+    },
+    {
+      "title": "Agentenrollen und Freigaben",
+      "items": [
+        ["Jarvis / OpenClaw", "Abgegrenzte Aufgaben und freigegebene Queue koordinieren."],
+        ["Lokaler Coder / gewählte CLI", "Patch, vereinbarte Tests und Ergebnisbericht liefern."],
+        ["Automaton", "Gleiche Grenzen: keine implizite Wallet, Replikation oder Autoinstallation."]
+      ],
+      "note": "Rollenteilung ist ein Konzept, keine eingerichtete Runtime-Verbindung. Skill-Aktivierung erweitert keine Rechte. WSL-Verbot und separate Freigaben für Paketinstallation, Cloud, Commit/Push und Deployment bleiben wirksam.",
+      "sources": ["skills/agentic-project-delivery/SKILL.md", "docs/tutorials/manus-ci-cd-deployment.md"]
+    },
+    {
+      "title": "Quellen und Lizenzgrenzen",
+      "items": [
+        ["Offizielle Werkzeugquellen", "Kein Beleg für die interne Manus-Architektur."],
+        ["Lizenzen am Pin prüfen", "Terraform Business Source License ist nicht Catch2 Boost License."],
+        ["Prüflücken offenhalten", "Einige Metadatenabfragen waren begrenzt; keine pauschale Freigabe."]
+      ],
+      "note": "Die Quellenkataloge erhalten alte und aktuelle Repository-Ziele. Die alte Playwright GitHub Action ist archiviert; die CLI ist die dokumentierte Alternative. OpenTofu ist eine gesondert zu prüfende MPL-2.0-Alternative zu Terraform. Keine Rechtsberatung oder Lizenzfreigabe.",
+      "sources": ["docs/tutorials/manus-development-sources.md", "docs/tutorials/manus-language-infrastructure-sources.md", "https://github.com/hashicorp/terraform/blob/main/LICENSE", "https://github.com/microsoft/playwright-github-action#readme"]
+    },
+    {
+      "title": "Nächste Schritte im Zielprojekt",
+      "items": [
+        ["1  Skill bewusst verwenden", "Ordner, Aufgabe und erlaubte Checks festlegen."],
+        ["2  Eine CI-Vorlage anpassen", "Paketpfade, Toolchain und echte Ergebnisse prüfen."],
+        ["3  Release separat freigeben", "Erst Image-Digest, dann geprüfter Manifest-/GitOps-Review."]
+      ],
+      "note": "Die Beispiele bleiben unter examples/ inaktiv. Kein automatischer Rollout, keine echten Schlüssel und keine global installierten Skills. Ein GitOps-Merge kann bei aktiviertem Auto-Sync ausrollen; Regeln vorher prüfen.",
+      "sources": ["examples/manus-ci-cd/README.md", "docs/tutorials/manus-ci-cd-deployment.md"]
+    }
+  ]
+}

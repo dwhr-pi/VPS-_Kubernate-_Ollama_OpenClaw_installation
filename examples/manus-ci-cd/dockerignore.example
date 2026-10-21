@@ -1,0 +1,13 @@
+.git
+.env
+.env.*
+!.env.example
+**/*.pem
+**/*.key
+**/secrets
+**/wallet.json
+**/node_modules
+dist
+target
+coverage.out
+image-metadata.json

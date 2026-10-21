@@ -1,5 +1,18 @@
 # Tool Index
 
+**[SQLFluff, Bats_Core und Invoke_Build](tools/language-quality-tools.md)**:
+neue optionale GitHub-Installer ohne Docker, mit Speicherwache, Logging,
+Rollback fuer neue Dateien, Status/Doctor und sicherer Deinstallation.
+
+**[Gemini-Interview: Entwicklungswerkzeuge und GitHub-Quellen](tutorials/gemini-development-tooling.md)**:
+Python, JS/TS, Go, C/C++, Rust, Shells, SQL und Infrastruktur separat eingeordnet.
+Vorhandene Gemini CLI bereitet nur gepinnte GitHub-Quellen vor, keine Runtime;
+kein Docker, automatischer Cloud-Aufruf oder Masseninstallation.
+
+**[Wiederverwendbarer Entwicklungs-Skill und Go-/Rust-CI/CD](tutorials/manus-ci-cd-deployment.md)**:
+Repository-Skill, inaktive Actions-Vorlagen, manueller Image-Release und
+Deployment-Best-Practices. Dazu eine editierbare Technologie-/Tooling-Praesentation.
+
 **[Manus-Interview: lokaler Entwicklungsablauf](tutorials/manus-development-workflow.md)**:
 Quellen, Tests, Browser-Vorschau und Freigabe statt eines angeblichen Manus-Klons.
 Neu: [Black und mypy](tools/dev-quality.md) optional aus gepinntem GitHub-Stand,

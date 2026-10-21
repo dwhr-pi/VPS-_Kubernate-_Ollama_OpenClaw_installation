@@ -2875,6 +2875,13 @@ TOOLS["Black"]="experimental/light: Python-Formatierer aus gepinntem GitHub-Stan
 TOOLS["Mypy"]="experimental/light: Python-Typpruefung aus gepinntem GitHub-Stand, privates venv, kein Projektstart. docs/tools/dev-quality.md"
 TOOL_SCRIPT_NAMES["Black"]="black"
 TOOL_SCRIPT_NAMES["Mypy"]="mypy"
+TOOL_KEYS+=("SQLFluff" "Bats_Core" "Invoke_Build")
+TOOLS["SQLFluff"]="experimental/light: SQL-Linter aus GitHub im privaten venv; kein Docker/DB-Zugriff. docs/tools/language-quality-tools.md"
+TOOLS["Bats_Core"]="experimental/light: Bash-Testwerkzeug aus GitHub; keine Projekttests im Installer. docs/tools/language-quality-tools.md"
+TOOLS["Invoke_Build"]="experimental/light: PowerShell-Buildskripte aus GitHub; keine Buildtasks im Installer. docs/tools/language-quality-tools.md"
+TOOL_SCRIPT_NAMES["SQLFluff"]="sqlfluff"
+TOOL_SCRIPT_NAMES["Bats_Core"]="bats_core"
+TOOL_SCRIPT_NAMES["Invoke_Build"]="invoke_build"
 TOOL_KEYS+=("REA")
 TOOLS["REA"]="experimental: GitHub-Quellen, optionaler Source-Build mit REA_BUILD=1 und INSTALL_HEAVY_TOOLS=1. Kein Docker, kein MCP-/Analyse-Start. docs/tools/rea.md"
 TOOL_SCRIPT_NAMES["REA"]="rea"

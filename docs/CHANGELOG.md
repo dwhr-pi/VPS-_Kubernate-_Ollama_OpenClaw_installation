@@ -1,5 +1,35 @@
 # Docs Changelog
 
+## 2026-10-21 Sprachwerkzeuge als nutzbare Setup-Tools
+
+- SQLFluff 3.5.0, Bats_Core 1.13.0 und Invoke_Build 5.14.22 als optionale
+  experimentelle Tools aus festen GitHub-Commits registriert, ohne Docker.
+- Menue, native Statusmarker, Install/Update/Repair/Uninstall und Doctor/Check
+  integriert; keine erfolgreichen Marker vor abgeschlossener Vorbereitung.
+- Speicherwache, Locks, eigene Logs, Rollback neuer Umgebungen/Checkouts und
+  Schutz veraenderter Dateien; keine Projekttests oder Buildtasks im Installer.
+- Bestehende Integrationen nicht dupliziert; verbleibende Quellen mit klaren
+  TODOs statt pauschal behaupteten 62 fertigen Installern dokumentiert.
+
+## 2026-10-21 Gemini-Interview und Entwicklungswerkzeuge
+
+- Eigene Gemini-Anleitung mit offiziellen GitHub-Quellen, Ressourcenhinweisen
+  und lokalem Entwicklungsablauf ergaenzt; nicht Manus zugeschrieben.
+- Gemini-CLI-Quellcheckout von lauffaehiger CLI, Cloud-Modellen und Canvas
+  unterschieden; keine neue Installation oder Runtime-Bereitschaft behauptet.
+- Projektbibliotheken, alternative Frameworks und Infrastruktur getrennt;
+  keine Docker-, WSL-, Cloud- oder Masseninstallationsaktion.
+
+## 2026-10-21 Wiederverwendbare Faehigkeit, CI/CD und Praesentation
+
+- Repository-Skill agentic-project-delivery ohne globale Aktivierung ergaenzt.
+- Go-/Rust-CI sowie manuell freizugebenden Go-Image-Release als inaktive Beispiele
+  mit festen Action-Commits angelegt; keine Live-CI, Docker- oder Clusteraktion.
+- Container-/Kubernetes-Muster und Best Practices mit echten Freigabegrenzen,
+  absichtlich nicht startfertigem Image-Platzhalter und getrenntem Rollout.
+- Technologie-/Tooling-Praesentation mit editierbaren Texten, Quellen in den
+  Sprecherhinweisen und versionierten Folieninhalten ergaenzt.
+
 ## 2026-10-21 Sprach-, Shell- und Infrastrukturquellen
 
 - Neue Nutzerquelle mit 62 GitHub-Repositories in zehn Stacks dokumentiert;

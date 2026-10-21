@@ -1,0 +1,70 @@
+name: Manual Go image release
+on:
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: Publish the reviewed main commit to GHCR (not a Kubernetes rollout)
+        required: true
+        default: false
+        type: boolean
+permissions:
+  contents: read
+concurrency:
+  group: manual-go-release
+  cancel-in-progress: false
+jobs:
+  verify:
+    if: github.ref == 'refs/heads/main' && inputs.publish && vars.ENABLE_MANUS_RELEASE == 'true'
+    uses: ./.github/workflows/go-ci.yml
+  publish:
+    needs: verify
+    if: github.ref == 'refs/heads/main' && inputs.publish && vars.ENABLE_MANUS_RELEASE == 'true'
+    environment: release
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - name: Require reviewed digest-pinned base images
+        env:
+          GO_BUILDER: ${{ vars.GO_BUILDER_IMAGE }}
+          RUNTIME_IMAGE: ${{ vars.RUNTIME_IMAGE }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$GO_BUILDER" =~ @sha256:[a-f0-9]{64}$ ]]
+          [[ "$RUNTIME_IMAGE" =~ @sha256:[a-f0-9]{64}$ ]]
+          test -f Dockerfile
+          docker buildx version
+      - name: Login only after tests and environment approval
+        env:
+          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GHCR_USER: ${{ github.actor }}
+        run: printf '%s' "$GHCR_TOKEN" | docker login ghcr.io --username "$GHCR_USER" --password-stdin
+      - name: Build and publish exact commit
+        env:
+          GO_BUILDER: ${{ vars.GO_BUILDER_IMAGE }}
+          RUNTIME_IMAGE: ${{ vars.RUNTIME_IMAGE }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          image="ghcr.io/${GITHUB_REPOSITORY,,}:${GITHUB_SHA}"
+          docker buildx build --file Dockerfile --tag "$image" \
+            --build-arg "GO_BUILDER=$GO_BUILDER" --build-arg "RUNTIME_IMAGE=$RUNTIME_IMAGE" \
+            --provenance=mode=min --sbom=true --metadata-file image-metadata.json --push .
+          python3 -I - <<'PY'
+          import json, os, re
+          from pathlib import Path
+          digest = json.loads(Path('image-metadata.json').read_text())['containerimage.digest']
+          if not re.fullmatch(r'sha256:[a-f0-9]{64}', digest):
+              raise SystemExit('Unexpected image digest; check release before rollout')
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as out:
+              out.write('Published digest: `' + digest + '`\n\nNo Kubernetes rollout performed.\n')
+          PY
+      - name: Logout
+        if: always()
+        run: docker logout ghcr.io

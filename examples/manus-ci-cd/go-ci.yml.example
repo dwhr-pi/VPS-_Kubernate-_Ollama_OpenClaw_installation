@@ -1,0 +1,56 @@
+name: Go CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+  workflow_call:
+permissions:
+  contents: read
+concurrency:
+  group: go-ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      GOTOOLCHAIN: local
+      GOFLAGS: -mod=readonly
+      GOMAXPROCS: '2'
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6; checked 2026-10-21
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6
+        with:
+          go-version-file: go.mod
+          cache: false
+      - name: Format check without writing
+        shell: bash
+        run: |
+          set -euo pipefail
+          mapfile -d '' files < <(git ls-files -z -- '*.go')
+          if ((${#files[@]})); then
+            output="$(gofmt -l "${files[@]}")"
+            if [[ -n "$output" ]]; then printf '%s\n' "$output"; exit 1; fi
+          fi
+      - name: Dependencies, analysis, race tests and build
+        shell: bash
+        run: |
+          set -euo pipefail
+          go mod download
+          go mod verify
+          go vet ./...
+          go test -race -count=1 -coverprofile=coverage.out ./...
+          mkdir -p dist
+          go build -trimpath -o dist/server ./cmd/server
+      - name: Reviewed build output (no credentials or source tree)
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: go-build-${{ github.sha }}
+          path: |
+            dist/server
+            coverage.out
+          retention-days: 7
+          if-no-files-found: error

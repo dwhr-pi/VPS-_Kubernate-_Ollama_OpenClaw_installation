@@ -13,6 +13,9 @@ Die unten verlinkten Open-Source-Projekte sind eigenstaendige Alternativen.
 
 ## Einordnung und GitHub-Quellen
 
+Neu: [Wiederverwendbarer Skill, Go-/Rust-CI und Deployment](manus-ci-cd-deployment.md)
+mit konkreten, inaktiven Pipeline-Beispielen und einer Praesentation.
+
 Weitere Stacks: [Sprachen, Shells und Infrastruktur](manus-language-infrastructure-sources.md)
 fuer JS/TS, Go, C/C++, Rust, Bash, PowerShell, SQL, Container, Kubernetes und IaC.
 Quellenangaben sind keine neuen Installationen oder Systemfreigaben.
