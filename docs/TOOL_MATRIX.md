@@ -1,5 +1,17 @@
 # Tool Matrix
 
+[62 Sprach-/Shell-/Infrastrukturquellen im Setup pruefen](tools/development-toolchain-check.md):
+Hauptmenue 16 oder Zusatzschaltflaeche im Tools-Menue 8.
+Die [Praesentation](presentations/technology-tooling-overview.pptx) ist dort
+mit einer textlichen Folienzuordnung eingebunden.
+
+| Werkzeug | Umfang | Status | Ports / Secrets |
+|---|---|---|---|
+| [SQLFluff](tools/language-quality-tools.md) | Gepinnter GitHub-Build in privatem venv; Check/Doctor/Uninstall | experimental, optional | keine |
+| [Bats_Core](tools/language-quality-tools.md) | Gepinnte GitHub-Skripte mit Syntaxpruefung; kein Testlauf | experimental, optional | keine |
+| [Invoke_Build](tools/language-quality-tools.md) | Gepinnte GitHub-Skripte mit Syntaxpruefung; keine Buildtasks | experimental, optional | keine |
+
+
 | Werkzeug | Umfang | Status | Ports / Secrets |
 |---|---|---|---|
 | [YouTube_Agent_Skill](tools/youtube-agent-skill.md) | Elf Claude-Skills aus gepinntem GitHub-Commit, sechs Python-Helfer, MIT | experimental, optional, low; Risiko high | keine Ports/Keys; kein Docker/MCP/Login/Upload |

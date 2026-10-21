@@ -18,6 +18,10 @@ Dokumentation
 
 ## Aktuelle Governance-Dokumente
 
+- [62 Sprach-/Shell-/Infrastrukturquellen im Setup pruefen](docs/tools/development-toolchain-check.md): Hauptmenue 16 oder Zusatzschaltflaeche im Tools-Menue 8.
+- [Neue Tools: SQLFluff, Bats_Core und Invoke_Build](docs/tools/language-quality-tools.md), auch in der [Tools-Gesamtuebersicht](docs/TOOLS_CATALOG.md).
+- [Technologie-/Tooling-Praesentation](docs/presentations/technology-tooling-overview.pptx) und [textliche Folienzuordnung](docs/tools/development-toolchain-check.md#praesentation-mit-eingearbeitet).
+
 - [Aktueller Gesamtaudit und priorisierte Restarbeiten](docs/PROJECT_AUDIT_2026_10_20.md)
 - [Projekt offline pruefen: Umfang, Befehle und Grenzen](docs/REPOSITORY_QUALITY.md)
 

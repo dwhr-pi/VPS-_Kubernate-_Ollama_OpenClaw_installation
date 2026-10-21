@@ -1,0 +1,1405 @@
+{
+  "schema_version": 1,
+  "description": "62 Quellen: Offline-Vorpruefung, keine Installation oder Runtime-Zusage. Budgets sind konservative Orientierung, keine Messwerte; Voraussetzungen sind nicht vollstaendig.",
+  "tools": [
+    {
+      "name": "Node.js",
+      "repo": "nodejs/node",
+      "group": "JavaScript und TypeScript",
+      "purpose": "JS-Laufzeit",
+      "note": "Version projektbezogen waehlen; kein globales Upgrade",
+      "id": "node_js",
+      "source": "https://github.com/nodejs/node",
+      "registry_id": null,
+      "kind": "toolchain",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "python3",
+          "python"
+        ],
+        [
+          "make"
+        ],
+        [
+          "c++",
+          "g++",
+          "clang++"
+        ]
+      ],
+      "disk_mb": 16384,
+      "ram_mb": 4096
+    },
+    {
+      "name": "TypeScript",
+      "repo": "microsoft/TypeScript",
+      "group": "JavaScript und TypeScript",
+      "purpose": "Typen und Build",
+      "note": "tsc --noEmit fuer Typpruefung; kein Funktionstest",
+      "id": "typescript",
+      "source": "https://github.com/microsoft/TypeScript",
+      "registry_id": null,
+      "kind": "project",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "node"
+        ],
+        [
+          "npm",
+          "pnpm"
+        ]
+      ],
+      "disk_mb": 1024,
+      "ram_mb": 512
+    },
+    {
+      "name": "Prettier",
+      "repo": "prettier/prettier",
+      "group": "JavaScript und TypeScript",
+      "purpose": "Formatierung",
+      "note": "Zunaechst --check; Schreibmodus aendert Dateien",
+      "id": "prettier",
+      "source": "https://github.com/prettier/prettier",
+      "registry_id": null,
+      "kind": "project",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "node"
+        ],
+        [
+          "npm",
+          "pnpm"
+        ]
+      ],
+      "disk_mb": 1024,
+      "ram_mb": 512
+    },
+    {
+      "name": "ESLint",
+      "repo": "eslint/eslint",
+      "group": "JavaScript und TypeScript",
+      "purpose": "Statische Regeln",
+      "note": "Konfiguration und Plugins koennen Code ausfuehren",
+      "id": "eslint",
+      "source": "https://github.com/eslint/eslint",
+      "registry_id": null,
+      "kind": "project",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "node"
+        ],
+        [
+          "npm",
+          "pnpm"
+        ]
+      ],
+      "disk_mb": 1024,
+      "ram_mb": 512
+    },
+    {
+      "name": "Vitest",
+      "repo": "vitest-dev/vitest",
+      "group": "JavaScript und TypeScript",
+      "purpose": "Unit-/Integrationstests",
+      "note": "Testcode ausfuehren, kein nebenwirkungsfreier Check",
+      "id": "vitest",
+      "source": "https://github.com/vitest-dev/vitest",
+      "registry_id": null,
+      "kind": "project",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "node"
+        ],
+        [
+          "npm",
+          "pnpm"
+        ]
+      ],
+      "disk_mb": 1024,
+      "ram_mb": 512
+    },
+    {
+      "name": "Vite",
+      "repo": "vitejs/vite",
+      "group": "JavaScript und TypeScript",
+      "purpose": "Dev-Server und Build",
+      "note": "Nur 127.0.0.1; festen freien Port nutzen",
+      "id": "vite",
+      "source": "https://github.com/vitejs/vite",
+      "registry_id": null,
+      "kind": "project",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "node"
+        ],
+        [
+          "npm",
+          "pnpm"
+        ]
+      ],
+      "disk_mb": 1024,
+      "ram_mb": 512
+    },
+    {
+      "name": "Playwright",
+      "repo": "microsoft/playwright",
+      "group": "JavaScript und TypeScript",
+      "purpose": "Browser-/E2E-Tests",
+      "note": "Browserdownload und RAM/Disk separat freigeben",
+      "id": "playwright",
+      "source": "https://github.com/microsoft/playwright",
+      "registry_id": "playwright",
+      "kind": "cli",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "node"
+        ],
+        [
+          "npm",
+          "pnpm"
+        ]
+      ],
+      "disk_mb": 1024,
+      "ram_mb": 512
+    },
+    {
+      "name": "pnpm",
+      "repo": "pnpm/pnpm",
+      "group": "JavaScript und TypeScript",
+      "purpose": "JS-Paketverwaltung",
+      "note": "Version und Lockfile festlegen, Lifecycle-Skripte pruefen",
+      "id": "pnpm",
+      "source": "https://github.com/pnpm/pnpm",
+      "registry_id": null,
+      "kind": "cli",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "node"
+        ],
+        [
+          "npm",
+          "pnpm"
+        ]
+      ],
+      "disk_mb": 1024,
+      "ram_mb": 512
+    },
+    {
+      "name": "Go",
+      "repo": "golang/go",
+      "group": "Go",
+      "purpose": "Module, Build, Test, vet, Benchmarks",
+      "note": "Toolchain/Module pinnen; Downloads und Testcode beachten",
+      "id": "go",
+      "source": "https://github.com/golang/go",
+      "registry_id": null,
+      "kind": "toolchain",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "go"
+        ]
+      ],
+      "disk_mb": 16384,
+      "ram_mb": 4096
+    },
+    {
+      "name": "golang/tools",
+      "repo": "golang/tools",
+      "group": "Go",
+      "purpose": "gopls und Editorwerkzeuge",
+      "note": "gopls ist ein Teilprojekt, kein eigener Go-Compiler",
+      "id": "golang_tools",
+      "source": "https://github.com/golang/tools",
+      "registry_id": null,
+      "kind": "cli",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "go"
+        ]
+      ],
+      "disk_mb": 1024,
+      "ram_mb": 512
+    },
+    {
+      "name": "Delve",
+      "repo": "go-delve/delve",
+      "group": "Go",
+      "purpose": "Debugging",
+      "note": "Zugriff auf Prozessspeicher; kein oeffentlicher Debug-Port",
+      "id": "delve",
+      "source": "https://github.com/go-delve/delve",
+      "registry_id": null,
+      "kind": "cli",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "go"
+        ]
+      ],
+      "disk_mb": 1024,
+      "ram_mb": 512
+    },
+    {
+      "name": "golangci-lint",
+      "repo": "golangci/golangci-lint",
+      "group": "Go",
+      "purpose": "Zusaetzliche Linter",
+      "note": "Version und Regeln zur Go-Version passend festlegen",
+      "id": "golangci_lint",
+      "source": "https://github.com/golangci/golangci-lint",
+      "registry_id": null,
+      "kind": "cli",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "go"
+        ]
+      ],
+      "disk_mb": 1024,
+      "ram_mb": 512
+    },
+    {
+      "name": "Actions Checkout",
+      "repo": "actions/checkout",
+      "group": "Go",
+      "purpose": "CI-Checkout",
+      "note": "Workflow-Action, kein lokaler Installer",
+      "id": "actions_checkout",
+      "source": "https://github.com/actions/checkout",
+      "registry_id": null,
+      "kind": "workflow",
+      "requirements": [
+        [
+          "git"
+        ]
+      ],
+      "disk_mb": 0,
+      "ram_mb": 0
+    },
+    {
+      "name": "Actions Setup Go",
+      "repo": "actions/setup-go",
+      "group": "Go",
+      "purpose": "Go in CI bereitstellen",
+      "note": "Kann Laufzeiten laden; keine Freigabe fuer lokale Systeminstallation",
+      "id": "actions_setup_go",
+      "source": "https://github.com/actions/setup-go",
+      "registry_id": null,
+      "kind": "workflow",
+      "requirements": [
+        [
+          "git"
+        ]
+      ],
+      "disk_mb": 0,
+      "ram_mb": 0
+    },
+    {
+      "name": "GCC GitHub-Mirror",
+      "repo": "gcc-mirror/gcc",
+      "group": "C und C++",
+      "purpose": "Compilerquellen",
+      "note": "Mirror, nicht pauschal GitHub als fuehrendes GNU-Repository ausgeben",
+      "id": "gcc_github_mirror",
+      "source": "https://github.com/gcc-mirror/gcc",
+      "registry_id": null,
+      "kind": "toolchain",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "c++",
+          "g++",
+          "clang++"
+        ],
+        [
+          "cmake"
+        ]
+      ],
+      "disk_mb": 16384,
+      "ram_mb": 4096
+    },
+    {
+      "name": "LLVM",
+      "repo": "llvm/llvm-project",
+      "group": "C und C++",
+      "purpose": "Clang, clang-format, clang-tidy, LLDB",
+      "note": "Monorepo und potenziell sehr schwerer Build",
+      "id": "llvm",
+      "source": "https://github.com/llvm/llvm-project",
+      "registry_id": null,
+      "kind": "toolchain",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "c++",
+          "g++",
+          "clang++"
+        ],
+        [
+          "cmake"
+        ]
+      ],
+      "disk_mb": 16384,
+      "ram_mb": 4096
+    },
+    {
+      "name": "CMake",
+      "repo": "kitware/cmake",
+      "group": "C und C++",
+      "purpose": "Buildsystem und CTest",
+      "note": "CMake-Konfiguration kann bereits Programme starten/Dependencies laden",
+      "id": "cmake",
+      "source": "https://github.com/kitware/cmake",
+      "registry_id": null,
+      "kind": "cli",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "c++",
+          "g++",
+          "clang++"
+        ],
+        [
+          "cmake"
+        ]
+      ],
+      "disk_mb": 1024,
+      "ram_mb": 512
+    },
+    {
+      "name": "GoogleTest",
+      "repo": "google/googletest",
+      "group": "C und C++",
+      "purpose": "C++-Tests",
+      "note": "Projektbibliothek, kein globaler Dienst",
+      "id": "googletest",
+      "source": "https://github.com/google/googletest",
+      "registry_id": null,
+      "kind": "project",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "c++",
+          "g++",
+          "clang++"
+        ],
+        [
+          "cmake"
+        ]
+      ],
+      "disk_mb": 1024,
+      "ram_mb": 512
+    },
+    {
+      "name": "Catch2",
+      "repo": "catchorg/Catch2",
+      "group": "C und C++",
+      "purpose": "Alternative C++-Tests",
+      "note": "Lizenz BSL-1.0 bedeutet hier Boost Software License",
+      "id": "catch2",
+      "source": "https://github.com/catchorg/Catch2",
+      "registry_id": null,
+      "kind": "project",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "c++",
+          "g++",
+          "clang++"
+        ],
+        [
+          "cmake"
+        ]
+      ],
+      "disk_mb": 1024,
+      "ram_mb": 512
+    },
+    {
+      "name": "rustup",
+      "repo": "rust-lang/rustup",
+      "group": "Rust",
+      "purpose": "Toolchains verwalten",
+      "note": "Kann Compiler/Komponenten laden und Profile veraendern",
+      "id": "rustup",
+      "source": "https://github.com/rust-lang/rustup",
+      "registry_id": null,
+      "kind": "toolchain",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "cargo"
+        ],
+        [
+          "rustc"
+        ]
+      ],
+      "disk_mb": 16384,
+      "ram_mb": 4096
+    },
+    {
+      "name": "Cargo",
+      "repo": "rust-lang/cargo",
+      "group": "Rust",
+      "purpose": "Paketverwaltung und Build",
+      "note": "build.rs und prozedurale Makros fuehren Code aus",
+      "id": "cargo",
+      "source": "https://github.com/rust-lang/cargo",
+      "registry_id": null,
+      "kind": "toolchain",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "cargo"
+        ],
+        [
+          "rustc"
+        ]
+      ],
+      "disk_mb": 16384,
+      "ram_mb": 4096
+    },
+    {
+      "name": "rustfmt",
+      "repo": "rust-lang/rustfmt",
+      "group": "Rust",
+      "purpose": "Formatierung",
+      "note": "--check vor schreibender Formatierung",
+      "id": "rustfmt",
+      "source": "https://github.com/rust-lang/rustfmt",
+      "registry_id": null,
+      "kind": "toolchain",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "cargo"
+        ],
+        [
+          "rustc"
+        ]
+      ],
+      "disk_mb": 16384,
+      "ram_mb": 4096
+    },
+    {
+      "name": "Clippy",
+      "repo": "rust-lang/rust-clippy",
+      "group": "Rust",
+      "purpose": "Rust-Linting",
+      "note": "Baut Projektbestandteile; keine reine Textsuche",
+      "id": "clippy",
+      "source": "https://github.com/rust-lang/rust-clippy",
+      "registry_id": null,
+      "kind": "toolchain",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "cargo"
+        ],
+        [
+          "rustc"
+        ]
+      ],
+      "disk_mb": 16384,
+      "ram_mb": 4096
+    },
+    {
+      "name": "rust-analyzer",
+      "repo": "rust-lang/rust-analyzer",
+      "group": "Rust",
+      "purpose": "Editor-/Sprachserver",
+      "note": "Projekt- und Buildscript-Vertrauen beachten",
+      "id": "rust_analyzer",
+      "source": "https://github.com/rust-lang/rust-analyzer",
+      "registry_id": null,
+      "kind": "cli",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "cargo"
+        ],
+        [
+          "rustc"
+        ]
+      ],
+      "disk_mb": 1024,
+      "ram_mb": 512
+    },
+    {
+      "name": "ShellCheck",
+      "repo": "koalaman/shellcheck",
+      "group": "Bash",
+      "purpose": "Statische Shellanalyse",
+      "note": "Vorhandener Setup-Baustein, keine Funktionsgarantie",
+      "id": "shellcheck",
+      "source": "https://github.com/koalaman/shellcheck",
+      "registry_id": "shellcheck",
+      "kind": "cli",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "bash"
+        ]
+      ],
+      "disk_mb": 1024,
+      "ram_mb": 512
+    },
+    {
+      "name": "shfmt",
+      "repo": "mvdan/sh",
+      "group": "Bash",
+      "purpose": "Shellformatierung",
+      "note": "Vorhandener Setup-Baustein; zuerst Diff-/Pruefmodus",
+      "id": "shfmt",
+      "source": "https://github.com/mvdan/sh",
+      "registry_id": "shfmt",
+      "kind": "cli",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "bash"
+        ]
+      ],
+      "disk_mb": 1024,
+      "ram_mb": 512
+    },
+    {
+      "name": "Bats-core",
+      "repo": "bats-core/bats-core",
+      "group": "Bash",
+      "purpose": "Verhaltenstests",
+      "note": "Tests brauchen Mocks fuer Dateisystem/Netz/Systemaktionen",
+      "id": "bats_core",
+      "source": "https://github.com/bats-core/bats-core",
+      "registry_id": "bats_core",
+      "kind": "cli",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "bash"
+        ]
+      ],
+      "disk_mb": 1024,
+      "ram_mb": 512
+    },
+    {
+      "name": "BashDB",
+      "repo": "Trepan-Debuggers/bashdb",
+      "group": "Bash",
+      "purpose": "Optionaler Debugger",
+      "note": "Fuehrt das debuggete Skript aus; nicht nur Syntaxanalyse",
+      "id": "bashdb",
+      "source": "https://github.com/Trepan-Debuggers/bashdb",
+      "registry_id": null,
+      "kind": "cli",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "bash"
+        ],
+        [
+          "make"
+        ],
+        [
+          "autoconf"
+        ]
+      ],
+      "disk_mb": 1024,
+      "ram_mb": 512
+    },
+    {
+      "name": "PowerShell",
+      "repo": "PowerShell/PowerShell",
+      "group": "PowerShell",
+      "purpose": "Plattformuebergreifende Shell",
+      "note": "PowerShell 7+ nicht mit Windows PowerShell 5.1 gleichsetzen",
+      "id": "powershell",
+      "source": "https://github.com/PowerShell/PowerShell",
+      "registry_id": null,
+      "kind": "toolchain",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "dotnet"
+        ]
+      ],
+      "disk_mb": 16384,
+      "ram_mb": 4096
+    },
+    {
+      "name": "VS-Code-PowerShell",
+      "repo": "PowerShell/vscode-powershell",
+      "group": "PowerShell",
+      "purpose": "Editor und Debugging",
+      "note": "Optionale Erweiterung, keine Pflicht fuer Coding-Agenten",
+      "id": "vs_code_powershell",
+      "source": "https://github.com/PowerShell/vscode-powershell",
+      "registry_id": null,
+      "kind": "extension",
+      "requirements": [
+        [
+          "git"
+        ]
+      ],
+      "disk_mb": 0,
+      "ram_mb": 0
+    },
+    {
+      "name": "PSScriptAnalyzer",
+      "repo": "PowerShell/PSScriptAnalyzer",
+      "group": "PowerShell",
+      "purpose": "Statische Regeln",
+      "note": "Version und Regelsatz projektbezogen festlegen",
+      "id": "psscriptanalyzer",
+      "source": "https://github.com/PowerShell/PSScriptAnalyzer",
+      "registry_id": null,
+      "kind": "cli",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "pwsh"
+        ]
+      ],
+      "disk_mb": 1024,
+      "ram_mb": 512
+    },
+    {
+      "name": "Pester",
+      "repo": "pester/Pester",
+      "group": "PowerShell",
+      "purpose": "Tests und Mocks",
+      "note": "Skripte/Module ausfuehren; Seiteneffekte mocken",
+      "id": "pester",
+      "source": "https://github.com/pester/Pester",
+      "registry_id": null,
+      "kind": "cli",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "pwsh"
+        ]
+      ],
+      "disk_mb": 1024,
+      "ram_mb": 512
+    },
+    {
+      "name": "Invoke-Build",
+      "repo": "nightroman/Invoke-Build",
+      "group": "PowerShell",
+      "purpose": "Optionale Buildablaeufe",
+      "note": "Build-Tasks koennen echte Systemaenderungen enthalten",
+      "id": "invoke_build",
+      "source": "https://github.com/nightroman/Invoke-Build",
+      "registry_id": "invoke_build",
+      "kind": "cli",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "pwsh"
+        ]
+      ],
+      "disk_mb": 1024,
+      "ram_mb": 512
+    },
+    {
+      "name": "PostgreSQL GitHub-Mirror",
+      "repo": "postgres/postgres",
+      "group": "SQL und Datenbanken",
+      "purpose": "DBMS/psql-Quellen",
+      "note": "Mirror; kein automatisch gestarteter Datenbankdienst",
+      "id": "postgres",
+      "source": "https://github.com/postgres/postgres",
+      "registry_id": "postgres",
+      "kind": "runtime",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "cc",
+          "gcc",
+          "clang"
+        ],
+        [
+          "make"
+        ],
+        [
+          "bison"
+        ],
+        [
+          "flex"
+        ]
+      ],
+      "disk_mb": 1024,
+      "ram_mb": 512
+    },
+    {
+      "name": "Flyway",
+      "repo": "flyway/flyway",
+      "group": "SQL und Datenbanken",
+      "purpose": "Schema-Migrationen",
+      "note": "Editionen/Module getrennt lizenzieren; Migrationen veraendern Datenbanken",
+      "id": "flyway",
+      "source": "https://github.com/flyway/flyway",
+      "registry_id": null,
+      "kind": "cli",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "java"
+        ],
+        [
+          "mvn"
+        ]
+      ],
+      "disk_mb": 1024,
+      "ram_mb": 512
+    },
+    {
+      "name": "SQLFluff",
+      "repo": "sqlfluff/sqlfluff",
+      "group": "SQL und Datenbanken",
+      "purpose": "SQL-Linting/Formatierung",
+      "note": "Dialekt und Templater festlegen; Plugins/Templater pruefen",
+      "id": "sqlfluff",
+      "source": "https://github.com/sqlfluff/sqlfluff",
+      "registry_id": "sqlfluff",
+      "kind": "cli",
+      "requirements": [
+        [
+          "git"
+        ]
+      ],
+      "disk_mb": 2048,
+      "ram_mb": 512
+    },
+    {
+      "name": "dbt Core",
+      "repo": "dbt-labs/dbt-core",
+      "group": "SQL und Datenbanken",
+      "purpose": "Analytische Datenmodelle",
+      "note": "Adresse leitet aktuell auf dbt-labs/dbt weiter; Layout/Paketpfad am Pin pruefen",
+      "id": "dbt",
+      "source": "https://github.com/dbt-labs/dbt-core",
+      "registry_id": "dbt",
+      "kind": "cli",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "python3",
+          "python"
+        ]
+      ],
+      "disk_mb": 1024,
+      "ram_mb": 512
+    },
+    {
+      "name": "pgTAP",
+      "repo": "theory/pgtap",
+      "group": "SQL und Datenbanken",
+      "purpose": "PostgreSQL-nahe Tests",
+      "note": "Extension/Testinstallation und DB-Rechte separat freigeben",
+      "id": "pgtap",
+      "source": "https://github.com/theory/pgtap",
+      "registry_id": null,
+      "kind": "project",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "pg_config"
+        ],
+        [
+          "make"
+        ]
+      ],
+      "disk_mb": 1024,
+      "ram_mb": 512
+    },
+    {
+      "name": "Docker CLI",
+      "repo": "docker/cli",
+      "group": "Docker und Container: Referenz, keine Installation",
+      "purpose": "Container-Bedienung",
+      "note": "CLI allein ist kein Daemon; kein Socket-Zugriff hier",
+      "id": "docker_cli",
+      "source": "https://github.com/docker/cli",
+      "registry_id": null,
+      "kind": "cli",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "go"
+        ]
+      ],
+      "disk_mb": 1024,
+      "ram_mb": 512
+    },
+    {
+      "name": "Compose",
+      "repo": "docker/compose",
+      "group": "Docker und Container: Referenz, keine Installation",
+      "purpose": "Dienstkonfiguration",
+      "note": "Kein automatisches compose up/down",
+      "id": "compose",
+      "source": "https://github.com/docker/compose",
+      "registry_id": null,
+      "kind": "cli",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "go"
+        ]
+      ],
+      "disk_mb": 1024,
+      "ram_mb": 512
+    },
+    {
+      "name": "Buildx",
+      "repo": "docker/buildx",
+      "group": "Docker und Container: Referenz, keine Installation",
+      "purpose": "Erweiterte Builds",
+      "note": "Kann Builder anlegen und Ressourcen verbrauchen",
+      "id": "buildx",
+      "source": "https://github.com/docker/buildx",
+      "registry_id": null,
+      "kind": "cli",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "go"
+        ]
+      ],
+      "disk_mb": 1024,
+      "ram_mb": 512
+    },
+    {
+      "name": "BuildKit",
+      "repo": "moby/buildkit",
+      "group": "Docker und Container: Referenz, keine Installation",
+      "purpose": "Buildengine",
+      "note": "Build-Daemon und Buildcode brauchen eigene Freigabe",
+      "id": "buildkit",
+      "source": "https://github.com/moby/buildkit",
+      "registry_id": null,
+      "kind": "runtime",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "go"
+        ]
+      ],
+      "disk_mb": 1024,
+      "ram_mb": 512
+    },
+    {
+      "name": "Hadolint",
+      "repo": "hadolint/hadolint",
+      "group": "Docker und Container: Referenz, keine Installation",
+      "purpose": "Dockerfile-Linting",
+      "note": "Quell-/Binary-Nutzung ohne Docker moeglich, hier kein Installer",
+      "id": "hadolint",
+      "source": "https://github.com/hadolint/hadolint",
+      "registry_id": null,
+      "kind": "cli",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "ghc"
+        ],
+        [
+          "cabal",
+          "stack"
+        ]
+      ],
+      "disk_mb": 1024,
+      "ram_mb": 512
+    },
+    {
+      "name": "Setup Buildx Action",
+      "repo": "docker/setup-buildx-action",
+      "group": "Docker und Container: Referenz, keine Installation",
+      "purpose": "Builder in CI vorbereiten",
+      "note": "Keine neue Workflow-Aktivierung",
+      "id": "setup_buildx_action",
+      "source": "https://github.com/docker/setup-buildx-action",
+      "registry_id": null,
+      "kind": "workflow",
+      "requirements": [
+        [
+          "git"
+        ]
+      ],
+      "disk_mb": 0,
+      "ram_mb": 0
+    },
+    {
+      "name": "Build Push Action",
+      "repo": "docker/build-push-action",
+      "group": "Docker und Container: Referenz, keine Installation",
+      "purpose": "Images bauen/veroeffentlichen",
+      "note": "Push und Registry-Zugriff separat freigeben",
+      "id": "build_push_action",
+      "source": "https://github.com/docker/build-push-action",
+      "registry_id": null,
+      "kind": "workflow",
+      "requirements": [
+        [
+          "git"
+        ]
+      ],
+      "disk_mb": 0,
+      "ram_mb": 0
+    },
+    {
+      "name": "Login Action",
+      "repo": "docker/login-action",
+      "group": "Docker und Container: Referenz, keine Installation",
+      "purpose": "Registry-Anmeldung",
+      "note": "Keine Anmeldung oder Schluesselverwendung hier",
+      "id": "login_action",
+      "source": "https://github.com/docker/login-action",
+      "registry_id": null,
+      "kind": "workflow",
+      "requirements": [
+        [
+          "git"
+        ]
+      ],
+      "disk_mb": 0,
+      "ram_mb": 0
+    },
+    {
+      "name": "kubectl",
+      "repo": "kubernetes/kubectl",
+      "group": "Kubernetes",
+      "purpose": "Clusterverwaltung",
+      "note": "Issue-Tracker/Code-Mirror; Source-Build nicht pauschal aus diesem Root ableiten",
+      "id": "kubectl",
+      "source": "https://github.com/kubernetes/kubectl",
+      "registry_id": "kubectl",
+      "kind": "cli",
+      "requirements": [
+        [
+          "bash"
+        ],
+        [
+          "curl"
+        ],
+        [
+          "sha256sum"
+        ]
+      ],
+      "disk_mb": 1024,
+      "ram_mb": 512
+    },
+    {
+      "name": "kind",
+      "repo": "kubernetes-sigs/kind",
+      "group": "Kubernetes",
+      "purpose": "Lokale/CI-Testcluster",
+      "note": "Braucht Container-Runtime und Node-Images; kein Docker-freier Kubernetes-Ersatz",
+      "id": "kind",
+      "source": "https://github.com/kubernetes-sigs/kind",
+      "registry_id": null,
+      "kind": "runtime",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "go"
+        ]
+      ],
+      "disk_mb": 1024,
+      "ram_mb": 512
+    },
+    {
+      "name": "Helm",
+      "repo": "helm/helm",
+      "group": "Kubernetes",
+      "purpose": "Charts rendern/verwalten",
+      "note": "Vorhandener Setup-Eintrag; Rendern von Installieren unterscheiden",
+      "id": "helm",
+      "source": "https://github.com/helm/helm",
+      "registry_id": "helm",
+      "kind": "cli",
+      "requirements": [
+        [
+          "bash"
+        ],
+        [
+          "curl"
+        ],
+        [
+          "tar"
+        ]
+      ],
+      "disk_mb": 1024,
+      "ram_mb": 512
+    },
+    {
+      "name": "Kustomize",
+      "repo": "kubernetes-sigs/kustomize",
+      "group": "Kubernetes",
+      "purpose": "Manifeste zusammensetzen",
+      "note": "Vorhandener Setup-Eintrag; Remote-Basen/Plugins gesondert pruefen",
+      "id": "kustomize",
+      "source": "https://github.com/kubernetes-sigs/kustomize",
+      "registry_id": "kustomize",
+      "kind": "cli",
+      "requirements": [
+        [
+          "bash"
+        ],
+        [
+          "curl"
+        ],
+        [
+          "tar"
+        ]
+      ],
+      "disk_mb": 1024,
+      "ram_mb": 512
+    },
+    {
+      "name": "Kubeconform",
+      "repo": "yannh/kubeconform",
+      "group": "Kubernetes",
+      "purpose": "Schemapruefung",
+      "note": "Schemaquellen/Downloads pinnen; keine Laufzeitgarantie",
+      "id": "kubeconform",
+      "source": "https://github.com/yannh/kubeconform",
+      "registry_id": null,
+      "kind": "cli",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "go"
+        ]
+      ],
+      "disk_mb": 1024,
+      "ram_mb": 512
+    },
+    {
+      "name": "KubeLinter",
+      "repo": "stackrox/kube-linter",
+      "group": "Kubernetes",
+      "purpose": "Manifestregeln",
+      "note": "Keine vollstaendige Cluster-/Security-Pruefung",
+      "id": "kubelinter",
+      "source": "https://github.com/stackrox/kube-linter",
+      "registry_id": null,
+      "kind": "cli",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "go"
+        ]
+      ],
+      "disk_mb": 1024,
+      "ram_mb": 512
+    },
+    {
+      "name": "Skaffold",
+      "repo": "GoogleContainerTools/skaffold",
+      "group": "Kubernetes",
+      "purpose": "Build-/Deploy-Schleifen",
+      "note": "Deployment ist nicht automatisch freigegeben",
+      "id": "skaffold",
+      "source": "https://github.com/GoogleContainerTools/skaffold",
+      "registry_id": null,
+      "kind": "cli",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "go"
+        ]
+      ],
+      "disk_mb": 1024,
+      "ram_mb": 512
+    },
+    {
+      "name": "Argo CD",
+      "repo": "argoproj/argo-cd",
+      "group": "Kubernetes",
+      "purpose": "GitOps",
+      "note": "CLI-Eintrag vorhanden; Controller/Sync separat freigeben",
+      "id": "argocd_cli",
+      "source": "https://github.com/argoproj/argo-cd",
+      "registry_id": "argocd_cli",
+      "kind": "cli",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "go"
+        ]
+      ],
+      "disk_mb": 1024,
+      "ram_mb": 512
+    },
+    {
+      "name": "Flux",
+      "repo": "fluxcd/flux2",
+      "group": "Kubernetes",
+      "purpose": "Alternative GitOps-Implementierung",
+      "note": "CLI-Eintrag vorhanden; kein automatisches Bootstrap/Sync",
+      "id": "flux_cli",
+      "source": "https://github.com/fluxcd/flux2",
+      "registry_id": "flux_cli",
+      "kind": "cli",
+      "requirements": [
+        [
+          "bash"
+        ],
+        [
+          "curl"
+        ],
+        [
+          "tar"
+        ]
+      ],
+      "disk_mb": 1024,
+      "ram_mb": 512
+    },
+    {
+      "name": "Terraform",
+      "repo": "hashicorp/terraform",
+      "group": "Terraform und IaC",
+      "purpose": "Infrastruktur deklarieren",
+      "note": "Business Source License; nicht pauschal Open Source nennen",
+      "id": "terraform",
+      "source": "https://github.com/hashicorp/terraform",
+      "registry_id": null,
+      "kind": "cli",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "go"
+        ]
+      ],
+      "disk_mb": 1024,
+      "ram_mb": 512
+    },
+    {
+      "name": "Terraform Language Server",
+      "repo": "hashicorp/terraform-ls",
+      "group": "Terraform und IaC",
+      "purpose": "Editorunterstuetzung",
+      "note": "Separates Projekt, Lizenz am gewaehlten Pin pruefen",
+      "id": "terraform_language_server",
+      "source": "https://github.com/hashicorp/terraform-ls",
+      "registry_id": null,
+      "kind": "cli",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "go"
+        ]
+      ],
+      "disk_mb": 1024,
+      "ram_mb": 512
+    },
+    {
+      "name": "TFLint",
+      "repo": "terraform-linters/tflint",
+      "group": "Terraform und IaC",
+      "purpose": "IaC-Regeln",
+      "note": "Plugins/Provider koennen Downloads/Codeausfuehrung bedeuten",
+      "id": "tflint",
+      "source": "https://github.com/terraform-linters/tflint",
+      "registry_id": null,
+      "kind": "cli",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "go"
+        ]
+      ],
+      "disk_mb": 1024,
+      "ram_mb": 512
+    },
+    {
+      "name": "Checkov",
+      "repo": "bridgecrewio/checkov",
+      "group": "Terraform und IaC",
+      "purpose": "IaC-Sicherheitschecks",
+      "note": "Lokal konfigurieren; Cloud-/Upload-Funktionen nicht implizit freigeben",
+      "id": "checkov",
+      "source": "https://github.com/bridgecrewio/checkov",
+      "registry_id": null,
+      "kind": "cli",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "python3",
+          "python"
+        ]
+      ],
+      "disk_mb": 1024,
+      "ram_mb": 512
+    },
+    {
+      "name": "terraform-docs",
+      "repo": "terraform-docs/terraform-docs",
+      "group": "Terraform und IaC",
+      "purpose": "Moduldokumentation",
+      "note": "Schreibende Ausgabe bewusst aktivieren",
+      "id": "terraform_docs",
+      "source": "https://github.com/terraform-docs/terraform-docs",
+      "registry_id": null,
+      "kind": "cli",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "go"
+        ]
+      ],
+      "disk_mb": 1024,
+      "ram_mb": 512
+    },
+    {
+      "name": "Terratest",
+      "repo": "gruntwork-io/terratest",
+      "group": "Terraform und IaC",
+      "purpose": "Infrastruktur-Integrationstests",
+      "note": "Kann reale Ressourcen, Kosten und Cleanup verursachen",
+      "id": "terratest",
+      "source": "https://github.com/gruntwork-io/terratest",
+      "registry_id": null,
+      "kind": "project",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "go"
+        ]
+      ],
+      "disk_mb": 1024,
+      "ram_mb": 512
+    },
+    {
+      "name": "Setup Terraform Action",
+      "repo": "hashicorp/setup-terraform",
+      "group": "Terraform und IaC",
+      "purpose": "Laufzeit in CI",
+      "note": "Keine lokale Terraform-Installation oder CI-Aktivierung hier",
+      "id": "setup_terraform_action",
+      "source": "https://github.com/hashicorp/setup-terraform",
+      "registry_id": null,
+      "kind": "cli",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "go"
+        ]
+      ],
+      "disk_mb": 1024,
+      "ram_mb": 512
+    }
+  ]
+}

@@ -100,6 +100,13 @@ bleiben erhalten. Es wird kein `rm -rf /opt/...` ausgefuehrt.
 
 ## Was mit den anderen Quellen passiert
 
+**Jetzt alle 62 Quellen im Setup pruefen:** Hauptmenue **16** oder Tools-Menue
+**8**, Schaltflaeche **62 Quellen pruefen**. Der
+[neue Pruefkatalog samt Praesentation](development-toolchain-check.md) zeigt
+pro Quelle Voraussetzungen, bestehende Adapter und noch fehlende Integration.
+Die Vorpruefung ist damit umgesetzt; nicht vorhandene Build-Installer werden
+aber weiterhin nicht als installierbar ausgegeben.
+
 | Gruppe aus dem Katalog | Behandlung |
 |---|---|
 | Playwright, ShellCheck, shfmt, PostgreSQL, dbt, kubectl, Helm, Kustomize, Argo-CD-CLI, Flux-CLI | Bereits registriert; kein doppelter Eintrag und keine Behauptung, dass deren bestehende Installer alle GitHub-Source-Builds sind |

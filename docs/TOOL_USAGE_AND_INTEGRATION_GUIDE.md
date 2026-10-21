@@ -1,5 +1,9 @@
 # Tool Usage and Integration Guide
 
+[Sprachen/Shells/Infrastruktur: 62 Quellen im Setup pruefen](tools/development-toolchain-check.md)
+und [SQLFluff, Bats_Core, Invoke_Build installieren/pruefen](tools/language-quality-tools.md).
+Im Hauptmenue Punkt 16 oder im Tools-Menue die Schaltflaeche "62 Quellen pruefen" nutzen.
+
 Diese Datei beschreibt die grundsaetzliche Nutzungskategorie der Tools. Ziel: Ein Tool soll nicht nur installiert sein, sondern auch klar als Dienst, CLI, Web-UI, Desktopprogramm, Bibliothek oder Integrationsbaustein verstanden werden.
 
 ## Tool-Kategorien

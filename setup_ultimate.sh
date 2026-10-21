@@ -3747,10 +3747,16 @@ show_tool_management_menu() {
 
     dialog --clear --backtitle "$APP_TITLE" \
     --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
+    --extra-button --extra-label "62 Quellen pruefen" \
     --title "TOOL-MANAGEMENT (${installed_tool_count}/${total_tool_count} installiert)" --checklist "$tool_menu_prompt" 34 120 24 \
     "${TOOL_CHECKLIST_OPTIONS[@]}" 2> /tmp/tool_selection
 
-    if [ $? -ne 0 ]; then
+    local tool_dialog_rc=$?
+    if [ "$tool_dialog_rc" -eq 3 ]; then
+        show_development_toolchain_check
+        return 0
+    fi
+    if [ "$tool_dialog_rc" -ne 0 ]; then
         return 0
     fi
 
@@ -4289,6 +4295,22 @@ show_profile_management_hub() {
 
 # --- Hauptmenü ---
 
+show_development_toolchain_check() {
+    local report check_rc
+    report="$(mktemp "${TMPDIR:-/tmp}/openclaw-tool-preflight.XXXXXX")" || return 1
+    if run_bash_script "$INSTALL_DIR/scripts/check_development_toolchains.sh" > "$report" 2>&1; then
+        check_rc=0
+    else
+        check_rc=$?
+        printf '\nPruefer konnte nicht abgeschlossen werden (Exit %s).\n' "$check_rc" >> "$report"
+    fi
+    dialog --clear --backtitle "$APP_TITLE" \
+        --title "62 Werkzeugquellen: lokale Vorpruefung, keine Installation" \
+        --textbox "$report" 30 110 || true
+    rm -f -- "$report"
+    return "$check_rc"
+}
+
 show_main_menu() {
     local dialog_rc
     local menu_height=23
@@ -4329,6 +4351,7 @@ show_main_menu() {
     "7" "${TXT_MENU_7:-Ruflo: Installation & Management}" \
     "──────────" "${TXT_SEPARATOR_LINE:-────────────────────────────────────────────────────────}" \
     "8" "${TXT_MENU_8:-Tools: Installieren & Deinstallieren}" \
+    "16" "62 Werkzeugquellen: Installationsvoraussetzungen pruefen" \
     "9" "${TXT_MENU_9:-Profile: Blöcke, Gesamtprofile & Einzeltools}" \
     "───────────" "${TXT_SEPARATOR_LINE:-────────────────────────────────────────────────────────}" \
     "10" "${TXT_MENU_10:-Dokumentation & API-Key Guide}" \
@@ -4497,6 +4520,9 @@ while true; do
             run_bash_script "$INSTALL_DIR/scripts/ruflo_install.sh"
             if [ $? -eq 0 ]; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
             read -p "Ruflo-Aktion abgeschlossen. Drücken Sie Enter..."
+            ;;
+        16)
+            show_development_toolchain_check || true
             ;;
         8)
             if show_management_loading_notice "Tool-Management" "Es werden Toolstatus, Auswahloptionen und optional die letzten Zeit-/Speicherwerte vorbereitet."; then

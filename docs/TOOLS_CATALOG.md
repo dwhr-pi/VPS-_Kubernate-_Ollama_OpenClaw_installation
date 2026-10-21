@@ -1,5 +1,26 @@
 # Tools Catalog
 
+## Sprachen, Shells und Infrastruktur
+
+**[Alle 62 Quellen direkt im Setup pruefen](tools/development-toolchain-check.md)**:
+Hauptmenue **16** oder Tools-Menue **8**, Schaltflaeche **62 Quellen pruefen**.
+Lokale Voraussetzungen und vorhandene Installer sichtbar machen, ohne Installation.
+[Vollstaendige Werkzeuguebersicht](tutorials/manus-language-infrastructure-sources.md).
+[Praesentation mit 13 Folien](presentations/technology-tooling-overview.pptx) und
+[textliche Zuordnung](tools/development-toolchain-check.md#praesentation-mit-eingearbeitet).
+
+| Neues Tool im Menue | Zweck | Installation und Pruefung |
+|---|---|---|
+| SQLFluff | SQL-Linting/Formatierung | [GitHub-Installer und Status](tools/language-quality-tools.md), privates venv |
+| Bats_Core | Bash-Verhaltenstests | [GitHub-Installer und Status](tools/language-quality-tools.md), private Skripte |
+| Invoke_Build | PowerShell-Buildablaeufe | [GitHub-Installer und Status](tools/language-quality-tools.md), private Skripte |
+
+Alle drei optional/experimental, keine Docker-Installation oder automatische
+Projektausfuehrung. Weitere Quellen erscheinen im Pruefkatalog mit ihrem
+tatsaechlichen Umsetzungsstand, nicht als faelschlich fertig installierte Tools.
+
+## Weitere Tools
+
 | Werkzeug | Quelle | Zweck | Einordnung |
 |---|---|---|---|
 | [YouTube_Agent_Skill](tools/youtube-agent-skill.md) | [Jakeschincariol/youtube-agent-skill](https://github.com/Jakeschincariol/youtube-agent-skill) | Elf Content-Skills und sechs Python-Helfer, MIT | experimental, optional, low; Risiko high: Agentenanweisungen; keine Ports/Keys, GitHub-Kopie nach Zustimmung; Doctor/Uninstaller vorhanden |

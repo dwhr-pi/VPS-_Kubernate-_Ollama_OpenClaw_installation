@@ -1,5 +1,18 @@
 # Docs Changelog
 
+## 2026-10-21 Alle 62 Quellen im Setup pruefen und Praesentation einordnen
+
+- Maschinenlesbaren Katalog mit allen 62 Quellen in zehn Stacks hinzugefuegt;
+  lokale Voraussetzungen, Ressourcen und echte Registry-Adapter lesend pruefen.
+- Hauptmenue 16 und Zusatzschaltflaeche im Tools-Menue: keine Toolstarts,
+  Netzwerkanfragen, Installationen oder erfolgreichen Installed-Marker.
+- Neue Tools auch in TOOLS_CATALOG und TOOL_MATRIX aufgenommen, nicht nur im
+  Tool-Index; README und Nutzungsanleitung verlinken die Uebersichten.
+- Nutzer-Praesentation mit 13 Folien gelesen, Identitaet zur vorhandenen
+  Repository-Fassung bestaetigt und Folien textlich dem Setup zugeordnet.
+- Vorpruefung ohne Build-/Versionsgarantie; fehlende Build-/Lifecycle-Adapter
+  bleiben sichtbar und werden nicht durch fingierte Installer ersetzt.
+
 ## 2026-10-21 Sprachwerkzeuge als nutzbare Setup-Tools
 
 - SQLFluff 3.5.0, Bats_Core 1.13.0 und Invoke_Build 5.14.22 als optionale

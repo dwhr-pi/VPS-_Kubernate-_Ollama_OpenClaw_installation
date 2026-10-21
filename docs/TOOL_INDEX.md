@@ -1,5 +1,10 @@
 # Tool Index
 
+**[62 Werkzeugquellen: Vorpruefung direkt im Setup](tools/development-toolchain-check.md)**:
+Hauptmenue 16 oder Zusatzschaltflaeche im Tools-Menue 8; fehlende Voraussetzungen,
+echte Adapter und Projekt-/CI-Bausteine unterscheiden. Die vorhandene
+[Praesentation](presentations/technology-tooling-overview.pptx) ist mit Textzuordnung eingebunden.
+
 **[SQLFluff, Bats_Core und Invoke_Build](tools/language-quality-tools.md)**:
 neue optionale GitHub-Installer ohne Docker, mit Speicherwache, Logging,
 Rollback fuer neue Dateien, Status/Doctor und sicherer Deinstallation.
