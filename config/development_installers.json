@@ -1,0 +1,2427 @@
+{
+  "schema_version": 1,
+  "description": "Explicit per-source private installation recipes. No live-build guarantee; inspect plan and upstream requirements. HEAD resolved once to immutable commit, updates require explicit ref.",
+  "recipes": {
+    "golang_tools": {
+      "mode": "existing",
+      "scripts": {
+        "install": "scripts/tools/gopls_install.sh",
+        "uninstall": "scripts/tools/gopls_uninstall.sh",
+        "update": "scripts/tools/gopls_update.sh",
+        "status": "scripts/tools/gopls_doctor.sh"
+      }
+    },
+    "delve": {
+      "mode": "existing",
+      "scripts": {
+        "install": "scripts/tools/delve_install.sh",
+        "uninstall": "scripts/tools/delve_uninstall.sh",
+        "update": "scripts/tools/delve_update.sh",
+        "status": "scripts/tools/delve_doctor.sh"
+      }
+    },
+    "golangci_lint": {
+      "mode": "existing",
+      "scripts": {
+        "install": "scripts/tools/golangci_lint_install.sh",
+        "uninstall": "scripts/tools/golangci_lint_uninstall.sh",
+        "update": "scripts/tools/golangci_lint_update.sh",
+        "status": "scripts/tools/golangci_lint_doctor.sh"
+      }
+    },
+    "bats_core": {
+      "mode": "existing",
+      "scripts": {
+        "install": "scripts/tools/bats_core_install.sh",
+        "uninstall": "scripts/tools/bats_core_uninstall.sh",
+        "update": "scripts/tools/bats_core_update.sh",
+        "status": "scripts/tools/bats_core_doctor.sh"
+      }
+    },
+    "invoke_build": {
+      "mode": "existing",
+      "scripts": {
+        "install": "scripts/tools/invoke_build_install.sh",
+        "uninstall": "scripts/tools/invoke_build_uninstall.sh",
+        "update": "scripts/tools/invoke_build_update.sh",
+        "status": "scripts/tools/invoke_build_doctor.sh"
+      }
+    },
+    "sqlfluff": {
+      "mode": "existing",
+      "scripts": {
+        "install": "scripts/tools/sqlfluff_install.sh",
+        "uninstall": "scripts/tools/sqlfluff_uninstall.sh",
+        "update": "scripts/tools/sqlfluff_update.sh",
+        "status": "scripts/tools/sqlfluff_doctor.sh"
+      }
+    },
+    "kubeconform": {
+      "mode": "existing",
+      "scripts": {
+        "install": "scripts/tools/kubeconform_install.sh",
+        "uninstall": "scripts/tools/kubeconform_uninstall.sh",
+        "update": "scripts/tools/kubeconform_update.sh",
+        "status": "scripts/tools/kubeconform_doctor.sh"
+      }
+    },
+    "kubelinter": {
+      "mode": "existing",
+      "scripts": {
+        "install": "scripts/tools/kubelinter_install.sh",
+        "uninstall": "scripts/tools/kubelinter_uninstall.sh",
+        "update": "scripts/tools/kubelinter_update.sh",
+        "status": "scripts/tools/kubelinter_doctor.sh"
+      }
+    },
+    "tflint": {
+      "mode": "existing",
+      "scripts": {
+        "install": "scripts/tools/tflint_install.sh",
+        "uninstall": "scripts/tools/tflint_uninstall.sh",
+        "update": "scripts/tools/tflint_update.sh",
+        "status": "scripts/tools/tflint_doctor.sh"
+      }
+    },
+    "terraform_docs": {
+      "mode": "existing",
+      "scripts": {
+        "install": "scripts/tools/terraform_docs_install.sh",
+        "uninstall": "scripts/tools/terraform_docs_uninstall.sh",
+        "update": "scripts/tools/terraform_docs_update.sh",
+        "status": "scripts/tools/terraform_docs_doctor.sh"
+      }
+    },
+    "actions_checkout": {
+      "mode": "workflow-package",
+      "ref": "HEAD",
+      "requirements": [
+        [
+          "git"
+        ]
+      ],
+      "steps": [],
+      "artifacts": [
+        [
+          "source/action.yml",
+          "source/action.yaml"
+        ],
+        [
+          "payload/workflow-reference.json"
+        ]
+      ],
+      "disk_mb": 1024,
+      "ram_mb": 128
+    },
+    "actions_setup_go": {
+      "mode": "workflow-package",
+      "ref": "HEAD",
+      "requirements": [
+        [
+          "git"
+        ]
+      ],
+      "steps": [],
+      "artifacts": [
+        [
+          "source/action.yml",
+          "source/action.yaml"
+        ],
+        [
+          "payload/workflow-reference.json"
+        ]
+      ],
+      "disk_mb": 1024,
+      "ram_mb": 128
+    },
+    "setup_buildx_action": {
+      "mode": "workflow-package",
+      "ref": "HEAD",
+      "requirements": [
+        [
+          "git"
+        ]
+      ],
+      "steps": [],
+      "artifacts": [
+        [
+          "source/action.yml",
+          "source/action.yaml"
+        ],
+        [
+          "payload/workflow-reference.json"
+        ]
+      ],
+      "disk_mb": 1024,
+      "ram_mb": 128
+    },
+    "build_push_action": {
+      "mode": "workflow-package",
+      "ref": "HEAD",
+      "requirements": [
+        [
+          "git"
+        ]
+      ],
+      "steps": [],
+      "artifacts": [
+        [
+          "source/action.yml",
+          "source/action.yaml"
+        ],
+        [
+          "payload/workflow-reference.json"
+        ]
+      ],
+      "disk_mb": 1024,
+      "ram_mb": 128
+    },
+    "login_action": {
+      "mode": "workflow-package",
+      "ref": "HEAD",
+      "requirements": [
+        [
+          "git"
+        ]
+      ],
+      "steps": [],
+      "artifacts": [
+        [
+          "source/action.yml",
+          "source/action.yaml"
+        ],
+        [
+          "payload/workflow-reference.json"
+        ]
+      ],
+      "disk_mb": 1024,
+      "ram_mb": 128
+    },
+    "setup_terraform_action": {
+      "mode": "workflow-package",
+      "ref": "HEAD",
+      "requirements": [
+        [
+          "git"
+        ]
+      ],
+      "steps": [],
+      "artifacts": [
+        [
+          "source/action.yml",
+          "source/action.yaml"
+        ],
+        [
+          "payload/workflow-reference.json"
+        ]
+      ],
+      "disk_mb": 1024,
+      "ram_mb": 128
+    },
+    "node_js": {
+      "mode": "native-build",
+      "ref": "HEAD",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "python3"
+        ],
+        [
+          "make"
+        ],
+        [
+          "c++",
+          "g++",
+          "clang++"
+        ]
+      ],
+      "steps": [
+        {
+          "cwd": "source",
+          "argv": [
+            "./configure",
+            "--prefix={prefix}"
+          ]
+        },
+        {
+          "cwd": "source",
+          "argv": [
+            "make",
+            "-j2"
+          ]
+        },
+        {
+          "cwd": "source",
+          "argv": [
+            "make",
+            "install"
+          ]
+        }
+      ],
+      "artifacts": [
+        [
+          "payload/bin/node"
+        ],
+        [
+          "payload/lib/node_modules/npm/bin/npm-cli.js"
+        ]
+      ],
+      "disk_mb": 24576,
+      "ram_mb": 4096,
+      "heavy": true
+    },
+    "go": {
+      "mode": "toolchain-build",
+      "ref": "HEAD",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "go"
+        ],
+        [
+          "bash"
+        ],
+        [
+          "cc",
+          "gcc",
+          "clang"
+        ]
+      ],
+      "steps": [
+        {
+          "cwd": "source/src",
+          "argv": [
+            "bash",
+            "make.bash"
+          ]
+        }
+      ],
+      "artifacts": [
+        [
+          "source/bin/go"
+        ],
+        [
+          "source/bin/gofmt"
+        ]
+      ],
+      "disk_mb": 16384,
+      "ram_mb": 4096,
+      "bootstrap_go": true,
+      "heavy": true
+    },
+    "gcc_github_mirror": {
+      "mode": "native-build",
+      "ref": "HEAD",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "make"
+        ],
+        [
+          "cc",
+          "gcc",
+          "clang"
+        ],
+        [
+          "c++",
+          "g++",
+          "clang++"
+        ]
+      ],
+      "steps": [
+        {
+          "cwd": "build",
+          "argv": [
+            "{source}/configure",
+            "--prefix={prefix}",
+            "--disable-multilib",
+            "--disable-bootstrap",
+            "--enable-languages=c,c++"
+          ]
+        },
+        {
+          "cwd": "build",
+          "argv": [
+            "make",
+            "-j2"
+          ]
+        },
+        {
+          "cwd": "build",
+          "argv": [
+            "make",
+            "install"
+          ]
+        }
+      ],
+      "artifacts": [
+        [
+          "payload/bin/gcc"
+        ],
+        [
+          "payload/bin/g++"
+        ]
+      ],
+      "disk_mb": 65536,
+      "ram_mb": 8192,
+      "heavy": true
+    },
+    "llvm": {
+      "mode": "native-build",
+      "ref": "HEAD",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "cmake"
+        ],
+        [
+          "c++",
+          "g++",
+          "clang++"
+        ],
+        [
+          "make"
+        ]
+      ],
+      "steps": [
+        {
+          "cwd": "source",
+          "argv": [
+            "cmake",
+            "-S",
+            "{job}/source/llvm",
+            "-B",
+            "{job}/build",
+            "-DCMAKE_BUILD_TYPE=Release",
+            "-DCMAKE_INSTALL_PREFIX={prefix}",
+            "-DLLVM_ENABLE_PROJECTS=clang;clang-tools-extra;lldb",
+            "-DLLVM_INCLUDE_TESTS=OFF",
+            "-DLLVM_INCLUDE_BENCHMARKS=OFF"
+          ]
+        },
+        {
+          "cwd": "source",
+          "argv": [
+            "cmake",
+            "--build",
+            "{job}/build",
+            "--parallel",
+            "2"
+          ]
+        },
+        {
+          "cwd": "source",
+          "argv": [
+            "cmake",
+            "--install",
+            "{job}/build"
+          ]
+        }
+      ],
+      "artifacts": [
+        [
+          "payload/bin/clang"
+        ],
+        [
+          "payload/bin/clang-format"
+        ],
+        [
+          "payload/bin/clang-tidy"
+        ],
+        [
+          "payload/bin/lldb"
+        ]
+      ],
+      "disk_mb": 98304,
+      "ram_mb": 8192,
+      "heavy": true
+    },
+    "cmake": {
+      "mode": "native-build",
+      "ref": "HEAD",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "make"
+        ],
+        [
+          "c++",
+          "g++",
+          "clang++"
+        ]
+      ],
+      "steps": [
+        {
+          "cwd": "source",
+          "argv": [
+            "./bootstrap",
+            "--prefix={prefix}",
+            "--parallel=2"
+          ]
+        },
+        {
+          "cwd": "source",
+          "argv": [
+            "make",
+            "-j2"
+          ]
+        },
+        {
+          "cwd": "source",
+          "argv": [
+            "make",
+            "install"
+          ]
+        }
+      ],
+      "artifacts": [
+        [
+          "payload/bin/cmake"
+        ]
+      ],
+      "disk_mb": 8192,
+      "ram_mb": 2048
+    },
+    "googletest": {
+      "mode": "native-build",
+      "ref": "HEAD",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "cmake"
+        ],
+        [
+          "c++",
+          "g++",
+          "clang++"
+        ],
+        [
+          "make"
+        ]
+      ],
+      "steps": [
+        {
+          "cwd": "source",
+          "argv": [
+            "cmake",
+            "-S",
+            "{job}/source",
+            "-B",
+            "{job}/build",
+            "-DCMAKE_BUILD_TYPE=Release",
+            "-DCMAKE_INSTALL_PREFIX={prefix}",
+            "-DBUILD_GMOCK=ON"
+          ]
+        },
+        {
+          "cwd": "source",
+          "argv": [
+            "cmake",
+            "--build",
+            "{job}/build",
+            "--parallel",
+            "2"
+          ]
+        },
+        {
+          "cwd": "source",
+          "argv": [
+            "cmake",
+            "--install",
+            "{job}/build"
+          ]
+        }
+      ],
+      "artifacts": [
+        [
+          "payload/include/gtest/gtest.h"
+        ],
+        [
+          "payload/lib/libgtest.a",
+          "payload/lib64/libgtest.a"
+        ]
+      ],
+      "disk_mb": 8192,
+      "ram_mb": 2048
+    },
+    "catch2": {
+      "mode": "native-build",
+      "ref": "HEAD",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "cmake"
+        ],
+        [
+          "c++",
+          "g++",
+          "clang++"
+        ],
+        [
+          "make"
+        ]
+      ],
+      "steps": [
+        {
+          "cwd": "source",
+          "argv": [
+            "cmake",
+            "-S",
+            "{job}/source",
+            "-B",
+            "{job}/build",
+            "-DCMAKE_BUILD_TYPE=Release",
+            "-DCMAKE_INSTALL_PREFIX={prefix}",
+            "-DCATCH_BUILD_TESTING=OFF"
+          ]
+        },
+        {
+          "cwd": "source",
+          "argv": [
+            "cmake",
+            "--build",
+            "{job}/build",
+            "--parallel",
+            "2"
+          ]
+        },
+        {
+          "cwd": "source",
+          "argv": [
+            "cmake",
+            "--install",
+            "{job}/build"
+          ]
+        }
+      ],
+      "artifacts": [
+        [
+          "payload/include/catch2/catch_all.hpp"
+        ],
+        [
+          "payload/lib/libCatch2.a",
+          "payload/lib64/libCatch2.a"
+        ]
+      ],
+      "disk_mb": 8192,
+      "ram_mb": 2048
+    },
+    "rustup": {
+      "mode": "cargo-build",
+      "ref": "HEAD",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "cargo"
+        ],
+        [
+          "rustc"
+        ],
+        [
+          "cc",
+          "gcc",
+          "clang"
+        ]
+      ],
+      "steps": [
+        {
+          "cwd": "source",
+          "argv": [
+            "cargo",
+            "build",
+            "--locked",
+            "--release",
+            "-p",
+            "rustup",
+            "--bin",
+            "rustup-init"
+          ]
+        }
+      ],
+      "artifacts": [
+        [
+          "target/release/rustup-init"
+        ]
+      ],
+      "disk_mb": 16384,
+      "ram_mb": 4096,
+      "heavy": true
+    },
+    "cargo": {
+      "mode": "cargo-build",
+      "ref": "HEAD",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "cargo"
+        ],
+        [
+          "rustc"
+        ],
+        [
+          "cc",
+          "gcc",
+          "clang"
+        ]
+      ],
+      "steps": [
+        {
+          "cwd": "source",
+          "argv": [
+            "cargo",
+            "build",
+            "--locked",
+            "--release",
+            "-p",
+            "cargo",
+            "--bin",
+            "cargo"
+          ]
+        }
+      ],
+      "artifacts": [
+        [
+          "target/release/cargo"
+        ]
+      ],
+      "disk_mb": 16384,
+      "ram_mb": 4096,
+      "heavy": true
+    },
+    "rustfmt": {
+      "mode": "cargo-build",
+      "ref": "HEAD",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "cargo"
+        ],
+        [
+          "rustc"
+        ],
+        [
+          "cc",
+          "gcc",
+          "clang"
+        ]
+      ],
+      "steps": [
+        {
+          "cwd": "source",
+          "argv": [
+            "cargo",
+            "build",
+            "--locked",
+            "--release",
+            "-p",
+            "rustfmt-nightly",
+            "--bin",
+            "rustfmt",
+            "--bin",
+            "cargo-fmt"
+          ]
+        }
+      ],
+      "artifacts": [
+        [
+          "target/release/rustfmt"
+        ],
+        [
+          "target/release/cargo-fmt"
+        ]
+      ],
+      "disk_mb": 16384,
+      "ram_mb": 4096,
+      "heavy": true
+    },
+    "clippy": {
+      "mode": "cargo-build",
+      "ref": "HEAD",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "cargo"
+        ],
+        [
+          "rustc"
+        ],
+        [
+          "cc",
+          "gcc",
+          "clang"
+        ]
+      ],
+      "steps": [
+        {
+          "cwd": "source",
+          "argv": [
+            "cargo",
+            "build",
+            "--locked",
+            "--release",
+            "-p",
+            "clippy",
+            "--bin",
+            "clippy-driver",
+            "--bin",
+            "cargo-clippy"
+          ]
+        }
+      ],
+      "artifacts": [
+        [
+          "target/release/clippy-driver"
+        ],
+        [
+          "target/release/cargo-clippy"
+        ]
+      ],
+      "disk_mb": 16384,
+      "ram_mb": 4096,
+      "heavy": true
+    },
+    "rust_analyzer": {
+      "mode": "cargo-build",
+      "ref": "HEAD",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "cargo"
+        ],
+        [
+          "rustc"
+        ],
+        [
+          "cc",
+          "gcc",
+          "clang"
+        ]
+      ],
+      "steps": [
+        {
+          "cwd": "source",
+          "argv": [
+            "cargo",
+            "build",
+            "--locked",
+            "--release",
+            "-p",
+            "rust-analyzer",
+            "--bin",
+            "rust-analyzer"
+          ]
+        }
+      ],
+      "artifacts": [
+        [
+          "target/release/rust-analyzer"
+        ]
+      ],
+      "disk_mb": 16384,
+      "ram_mb": 4096,
+      "heavy": true
+    },
+    "bashdb": {
+      "mode": "native-build",
+      "ref": "HEAD",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "bash"
+        ],
+        [
+          "make"
+        ],
+        [
+          "autoconf"
+        ],
+        [
+          "automake"
+        ]
+      ],
+      "steps": [
+        {
+          "cwd": "source",
+          "argv": [
+            "autoreconf",
+            "-fi"
+          ]
+        },
+        {
+          "cwd": "source",
+          "argv": [
+            "./configure",
+            "--prefix={prefix}"
+          ]
+        },
+        {
+          "cwd": "source",
+          "argv": [
+            "make",
+            "-j2"
+          ]
+        },
+        {
+          "cwd": "source",
+          "argv": [
+            "make",
+            "install"
+          ]
+        }
+      ],
+      "artifacts": [
+        [
+          "payload/bin/bashdb"
+        ]
+      ],
+      "disk_mb": 2048,
+      "ram_mb": 512
+    },
+    "powershell": {
+      "mode": "powershell-build",
+      "ref": "HEAD",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "pwsh"
+        ],
+        [
+          "dotnet"
+        ]
+      ],
+      "steps": [
+        {
+          "cwd": "source",
+          "argv": [
+            "pwsh",
+            "-NoProfile",
+            "-NonInteractive",
+            "-Command",
+            "$ErrorActionPreference='Stop'; Import-Module ./build.psm1; Start-PSBuild -Configuration Release -Output $env:DEVTOOLS_PREFIX/pwsh"
+          ]
+        }
+      ],
+      "artifacts": [
+        [
+          "payload/pwsh"
+        ],
+        [
+          "payload/System.Management.Automation.dll"
+        ]
+      ],
+      "disk_mb": 24576,
+      "ram_mb": 4096,
+      "heavy": true
+    },
+    "psscriptanalyzer": {
+      "mode": "powershell-module",
+      "ref": "HEAD",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "pwsh"
+        ],
+        [
+          "dotnet"
+        ]
+      ],
+      "steps": [
+        {
+          "cwd": "source",
+          "argv": [
+            "pwsh",
+            "-NoProfile",
+            "-NonInteractive",
+            "-File",
+            "./build.ps1",
+            "-PSVersion",
+            "7",
+            "-Configuration",
+            "Release"
+          ]
+        }
+      ],
+      "artifacts": [
+        [
+          "source/out/**/PSScriptAnalyzer.psd1"
+        ],
+        [
+          "source/out/**/Microsoft.Windows.PowerShell.ScriptAnalyzer.dll"
+        ]
+      ],
+      "disk_mb": 8192,
+      "ram_mb": 2048
+    },
+    "pester": {
+      "mode": "powershell-module",
+      "ref": "HEAD",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "pwsh"
+        ],
+        [
+          "dotnet"
+        ]
+      ],
+      "steps": [
+        {
+          "cwd": "source",
+          "argv": [
+            "pwsh",
+            "-NoProfile",
+            "-NonInteractive",
+            "-File",
+            "./build.ps1",
+            "-Clean",
+            "-Inline",
+            "-Configuration",
+            "Release"
+          ]
+        }
+      ],
+      "artifacts": [
+        [
+          "source/bin/Pester.psd1"
+        ],
+        [
+          "source/bin/**/Pester.dll"
+        ]
+      ],
+      "disk_mb": 8192,
+      "ram_mb": 2048
+    },
+    "vs_code_powershell": {
+      "mode": "editor-package",
+      "ref": "HEAD",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "node"
+        ],
+        [
+          "npm"
+        ],
+        [
+          "dotnet"
+        ],
+        [
+          "pwsh"
+        ]
+      ],
+      "steps": [
+        {
+          "cwd": "source",
+          "argv": [
+            "npm",
+            "ci",
+            "--ignore-scripts"
+          ]
+        },
+        {
+          "cwd": "source",
+          "argv": [
+            "npm",
+            "run",
+            "compile"
+          ]
+        },
+        {
+          "cwd": "source",
+          "argv": [
+            "npm",
+            "run",
+            "package"
+          ]
+        }
+      ],
+      "artifacts": [
+        [
+          "source/out/*.vsix"
+        ]
+      ],
+      "disk_mb": 8192,
+      "ram_mb": 2048
+    },
+    "flyway": {
+      "mode": "java-package",
+      "ref": "HEAD",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "java"
+        ],
+        [
+          "mvn"
+        ]
+      ],
+      "steps": [
+        {
+          "cwd": "source",
+          "argv": [
+            "mvn",
+            "-B",
+            "-DskipTests",
+            "-DskipITs=true",
+            "-pl",
+            "flyway-commandline",
+            "-am",
+            "package"
+          ]
+        }
+      ],
+      "artifacts": [
+        [
+          "source/flyway-commandline/target/*.jar"
+        ]
+      ],
+      "disk_mb": 16384,
+      "ram_mb": 4096
+    },
+    "pgtap": {
+      "mode": "postgres-extension-package",
+      "ref": "HEAD",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "make"
+        ],
+        [
+          "pg_config"
+        ]
+      ],
+      "steps": [
+        {
+          "cwd": "source",
+          "argv": [
+            "make",
+            "-j2"
+          ]
+        },
+        {
+          "cwd": "source",
+          "argv": [
+            "make",
+            "install",
+            "DESTDIR={prefix}"
+          ]
+        }
+      ],
+      "artifacts": [
+        [
+          "payload/**/extension/pgtap.control"
+        ],
+        [
+          "payload/**/extension/pgtap--*.sql"
+        ]
+      ],
+      "disk_mb": 2048,
+      "ram_mb": 512
+    },
+    "docker_cli": {
+      "mode": "go-build",
+      "ref": "HEAD",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "go"
+        ]
+      ],
+      "steps": [
+        {
+          "cwd": "source",
+          "argv": [
+            "go",
+            "mod",
+            "download"
+          ]
+        },
+        {
+          "cwd": "source",
+          "argv": [
+            "go",
+            "mod",
+            "verify"
+          ]
+        },
+        {
+          "cwd": "source",
+          "argv": [
+            "go",
+            "build",
+            "-mod=readonly",
+            "-trimpath",
+            "-p=2",
+            "-o",
+            "{prefix}/bin/docker",
+            "./cmd/docker"
+          ]
+        }
+      ],
+      "artifacts": [
+        [
+          "payload/bin/docker"
+        ]
+      ],
+      "disk_mb": 8192,
+      "ram_mb": 2048
+    },
+    "compose": {
+      "mode": "go-build",
+      "ref": "HEAD",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "go"
+        ]
+      ],
+      "steps": [
+        {
+          "cwd": "source",
+          "argv": [
+            "go",
+            "mod",
+            "download"
+          ]
+        },
+        {
+          "cwd": "source",
+          "argv": [
+            "go",
+            "mod",
+            "verify"
+          ]
+        },
+        {
+          "cwd": "source",
+          "argv": [
+            "go",
+            "build",
+            "-mod=readonly",
+            "-trimpath",
+            "-p=2",
+            "-o",
+            "{prefix}/bin/docker-compose",
+            "./cmd"
+          ]
+        }
+      ],
+      "artifacts": [
+        [
+          "payload/bin/docker-compose"
+        ]
+      ],
+      "disk_mb": 8192,
+      "ram_mb": 2048
+    },
+    "buildx": {
+      "mode": "go-build",
+      "ref": "HEAD",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "go"
+        ]
+      ],
+      "steps": [
+        {
+          "cwd": "source",
+          "argv": [
+            "go",
+            "mod",
+            "download"
+          ]
+        },
+        {
+          "cwd": "source",
+          "argv": [
+            "go",
+            "mod",
+            "verify"
+          ]
+        },
+        {
+          "cwd": "source",
+          "argv": [
+            "go",
+            "build",
+            "-mod=readonly",
+            "-trimpath",
+            "-p=2",
+            "-o",
+            "{prefix}/bin/docker-buildx",
+            "./cmd/buildx"
+          ]
+        }
+      ],
+      "artifacts": [
+        [
+          "payload/bin/docker-buildx"
+        ]
+      ],
+      "disk_mb": 8192,
+      "ram_mb": 2048
+    },
+    "buildkit": {
+      "mode": "go-build",
+      "ref": "HEAD",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "go"
+        ]
+      ],
+      "steps": [
+        {
+          "cwd": "source",
+          "argv": [
+            "go",
+            "mod",
+            "download"
+          ]
+        },
+        {
+          "cwd": "source",
+          "argv": [
+            "go",
+            "mod",
+            "verify"
+          ]
+        },
+        {
+          "cwd": "source",
+          "argv": [
+            "go",
+            "build",
+            "-mod=readonly",
+            "-trimpath",
+            "-p=2",
+            "-o",
+            "{prefix}/bin/buildctl",
+            "./cmd/buildctl"
+          ]
+        },
+        {
+          "cwd": "source",
+          "argv": [
+            "go",
+            "build",
+            "-mod=readonly",
+            "-trimpath",
+            "-p=2",
+            "-o",
+            "{prefix}/bin/buildkitd",
+            "./cmd/buildkitd"
+          ]
+        }
+      ],
+      "artifacts": [
+        [
+          "payload/bin/buildctl"
+        ],
+        [
+          "payload/bin/buildkitd"
+        ]
+      ],
+      "disk_mb": 8192,
+      "ram_mb": 2048
+    },
+    "kind": {
+      "mode": "go-build",
+      "ref": "HEAD",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "go"
+        ]
+      ],
+      "steps": [
+        {
+          "cwd": "source",
+          "argv": [
+            "go",
+            "mod",
+            "download"
+          ]
+        },
+        {
+          "cwd": "source",
+          "argv": [
+            "go",
+            "mod",
+            "verify"
+          ]
+        },
+        {
+          "cwd": "source",
+          "argv": [
+            "go",
+            "build",
+            "-mod=readonly",
+            "-trimpath",
+            "-p=2",
+            "-o",
+            "{prefix}/bin/kind",
+            "."
+          ]
+        }
+      ],
+      "artifacts": [
+        [
+          "payload/bin/kind"
+        ]
+      ],
+      "disk_mb": 8192,
+      "ram_mb": 2048
+    },
+    "skaffold": {
+      "mode": "go-build",
+      "ref": "HEAD",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "go"
+        ]
+      ],
+      "steps": [
+        {
+          "cwd": "source",
+          "argv": [
+            "go",
+            "mod",
+            "download"
+          ]
+        },
+        {
+          "cwd": "source",
+          "argv": [
+            "go",
+            "mod",
+            "verify"
+          ]
+        },
+        {
+          "cwd": "source",
+          "argv": [
+            "go",
+            "build",
+            "-mod=readonly",
+            "-trimpath",
+            "-p=2",
+            "-o",
+            "{prefix}/bin/skaffold",
+            "./cmd/skaffold"
+          ]
+        }
+      ],
+      "artifacts": [
+        [
+          "payload/bin/skaffold"
+        ]
+      ],
+      "disk_mb": 8192,
+      "ram_mb": 2048
+    },
+    "terraform": {
+      "mode": "go-build",
+      "ref": "HEAD",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "go"
+        ]
+      ],
+      "steps": [
+        {
+          "cwd": "source",
+          "argv": [
+            "go",
+            "mod",
+            "download"
+          ]
+        },
+        {
+          "cwd": "source",
+          "argv": [
+            "go",
+            "mod",
+            "verify"
+          ]
+        },
+        {
+          "cwd": "source",
+          "argv": [
+            "go",
+            "build",
+            "-mod=readonly",
+            "-trimpath",
+            "-p=2",
+            "-o",
+            "{prefix}/bin/terraform",
+            "."
+          ]
+        }
+      ],
+      "artifacts": [
+        [
+          "payload/bin/terraform"
+        ]
+      ],
+      "disk_mb": 8192,
+      "ram_mb": 2048
+    },
+    "terraform_language_server": {
+      "mode": "go-build",
+      "ref": "HEAD",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "go"
+        ]
+      ],
+      "steps": [
+        {
+          "cwd": "source",
+          "argv": [
+            "go",
+            "mod",
+            "download"
+          ]
+        },
+        {
+          "cwd": "source",
+          "argv": [
+            "go",
+            "mod",
+            "verify"
+          ]
+        },
+        {
+          "cwd": "source",
+          "argv": [
+            "go",
+            "build",
+            "-mod=readonly",
+            "-trimpath",
+            "-p=2",
+            "-o",
+            "{prefix}/bin/terraform-ls",
+            "."
+          ]
+        }
+      ],
+      "artifacts": [
+        [
+          "payload/bin/terraform-ls"
+        ]
+      ],
+      "disk_mb": 8192,
+      "ram_mb": 2048
+    },
+    "shfmt": {
+      "mode": "go-build",
+      "ref": "HEAD",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "go"
+        ]
+      ],
+      "steps": [
+        {
+          "cwd": "source",
+          "argv": [
+            "go",
+            "mod",
+            "download"
+          ]
+        },
+        {
+          "cwd": "source",
+          "argv": [
+            "go",
+            "mod",
+            "verify"
+          ]
+        },
+        {
+          "cwd": "source",
+          "argv": [
+            "go",
+            "build",
+            "-mod=readonly",
+            "-trimpath",
+            "-p=2",
+            "-o",
+            "{prefix}/bin/shfmt",
+            "./cmd/shfmt"
+          ]
+        }
+      ],
+      "artifacts": [
+        [
+          "payload/bin/shfmt"
+        ]
+      ],
+      "disk_mb": 8192,
+      "ram_mb": 2048
+    },
+    "helm": {
+      "mode": "go-build",
+      "ref": "HEAD",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "go"
+        ]
+      ],
+      "steps": [
+        {
+          "cwd": "source",
+          "argv": [
+            "go",
+            "mod",
+            "download"
+          ]
+        },
+        {
+          "cwd": "source",
+          "argv": [
+            "go",
+            "mod",
+            "verify"
+          ]
+        },
+        {
+          "cwd": "source",
+          "argv": [
+            "go",
+            "build",
+            "-mod=readonly",
+            "-trimpath",
+            "-p=2",
+            "-o",
+            "{prefix}/bin/helm",
+            "./cmd/helm"
+          ]
+        }
+      ],
+      "artifacts": [
+        [
+          "payload/bin/helm"
+        ]
+      ],
+      "disk_mb": 8192,
+      "ram_mb": 2048
+    },
+    "kustomize": {
+      "mode": "go-build",
+      "ref": "HEAD",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "go"
+        ]
+      ],
+      "steps": [
+        {
+          "cwd": "source/kustomize",
+          "argv": [
+            "go",
+            "mod",
+            "download"
+          ]
+        },
+        {
+          "cwd": "source/kustomize",
+          "argv": [
+            "go",
+            "mod",
+            "verify"
+          ]
+        },
+        {
+          "cwd": "source/kustomize",
+          "argv": [
+            "go",
+            "build",
+            "-mod=readonly",
+            "-trimpath",
+            "-p=2",
+            "-o",
+            "{prefix}/bin/kustomize",
+            "."
+          ]
+        }
+      ],
+      "artifacts": [
+        [
+          "payload/bin/kustomize"
+        ]
+      ],
+      "disk_mb": 8192,
+      "ram_mb": 2048
+    },
+    "argocd_cli": {
+      "mode": "go-build",
+      "ref": "HEAD",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "go"
+        ]
+      ],
+      "steps": [
+        {
+          "cwd": "source",
+          "argv": [
+            "go",
+            "mod",
+            "download"
+          ]
+        },
+        {
+          "cwd": "source",
+          "argv": [
+            "go",
+            "mod",
+            "verify"
+          ]
+        },
+        {
+          "cwd": "source",
+          "argv": [
+            "go",
+            "build",
+            "-mod=readonly",
+            "-trimpath",
+            "-p=2",
+            "-o",
+            "{prefix}/bin/argocd",
+            "./cmd"
+          ]
+        }
+      ],
+      "artifacts": [
+        [
+          "payload/bin/argocd"
+        ]
+      ],
+      "disk_mb": 8192,
+      "ram_mb": 2048
+    },
+    "flux_cli": {
+      "mode": "go-build",
+      "ref": "HEAD",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "go"
+        ]
+      ],
+      "steps": [
+        {
+          "cwd": "source",
+          "argv": [
+            "go",
+            "mod",
+            "download"
+          ]
+        },
+        {
+          "cwd": "source",
+          "argv": [
+            "go",
+            "mod",
+            "verify"
+          ]
+        },
+        {
+          "cwd": "source",
+          "argv": [
+            "go",
+            "build",
+            "-mod=readonly",
+            "-trimpath",
+            "-p=2",
+            "-o",
+            "{prefix}/bin/flux",
+            "./cmd/flux"
+          ]
+        }
+      ],
+      "artifacts": [
+        [
+          "payload/bin/flux"
+        ]
+      ],
+      "disk_mb": 8192,
+      "ram_mb": 2048
+    },
+    "shellcheck": {
+      "mode": "haskell-build",
+      "ref": "HEAD",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "ghc"
+        ],
+        [
+          "cabal"
+        ]
+      ],
+      "steps": [
+        {
+          "cwd": "source",
+          "argv": [
+            "cabal",
+            "v2-update"
+          ]
+        },
+        {
+          "cwd": "source",
+          "argv": [
+            "cabal",
+            "v2-install",
+            "exe:shellcheck",
+            "--installdir={prefix}/bin",
+            "--install-method=copy",
+            "--overwrite-policy=never"
+          ]
+        }
+      ],
+      "artifacts": [
+        [
+          "payload/bin/shellcheck"
+        ]
+      ],
+      "disk_mb": 16384,
+      "ram_mb": 4096,
+      "heavy": true
+    },
+    "hadolint": {
+      "mode": "haskell-build",
+      "ref": "HEAD",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "ghc"
+        ],
+        [
+          "cabal"
+        ]
+      ],
+      "steps": [
+        {
+          "cwd": "source",
+          "argv": [
+            "cabal",
+            "v2-update"
+          ]
+        },
+        {
+          "cwd": "source",
+          "argv": [
+            "cabal",
+            "v2-install",
+            "exe:hadolint",
+            "--installdir={prefix}/bin",
+            "--install-method=copy",
+            "--overwrite-policy=never"
+          ]
+        }
+      ],
+      "artifacts": [
+        [
+          "payload/bin/hadolint"
+        ]
+      ],
+      "disk_mb": 16384,
+      "ram_mb": 4096,
+      "heavy": true
+    },
+    "kubectl": {
+      "mode": "native-build",
+      "ref": "HEAD",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "go"
+        ],
+        [
+          "make"
+        ],
+        [
+          "bash"
+        ]
+      ],
+      "steps": [
+        {
+          "cwd": "source",
+          "argv": [
+            "make",
+            "WHAT=cmd/kubectl",
+            "KUBE_BUILD_PLATFORMS=linux/amd64"
+          ]
+        }
+      ],
+      "artifacts": [
+        [
+          "source/_output/local/bin/linux/amd64/kubectl"
+        ]
+      ],
+      "source": "https://github.com/kubernetes/kubernetes",
+      "disk_mb": 24576,
+      "ram_mb": 4096,
+      "heavy": true,
+      "platform": "linux-amd64"
+    },
+    "postgres": {
+      "mode": "native-build",
+      "ref": "HEAD",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "make"
+        ],
+        [
+          "bison"
+        ],
+        [
+          "flex"
+        ],
+        [
+          "pkg-config"
+        ],
+        [
+          "cc",
+          "gcc",
+          "clang"
+        ]
+      ],
+      "steps": [
+        {
+          "cwd": "source",
+          "argv": [
+            "./configure",
+            "--prefix={prefix}"
+          ]
+        },
+        {
+          "cwd": "source",
+          "argv": [
+            "make",
+            "-j2"
+          ]
+        },
+        {
+          "cwd": "source",
+          "argv": [
+            "make",
+            "install"
+          ]
+        }
+      ],
+      "artifacts": [
+        [
+          "payload/bin/psql"
+        ],
+        [
+          "payload/bin/postgres"
+        ]
+      ],
+      "disk_mb": 16384,
+      "ram_mb": 2048
+    },
+    "terratest": {
+      "mode": "go-library",
+      "ref": "HEAD",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "go"
+        ]
+      ],
+      "steps": [
+        {
+          "cwd": "source",
+          "argv": [
+            "go",
+            "mod",
+            "download"
+          ]
+        },
+        {
+          "cwd": "source",
+          "argv": [
+            "go",
+            "mod",
+            "verify"
+          ]
+        },
+        {
+          "cwd": "source",
+          "argv": [
+            "go",
+            "build",
+            "-mod=readonly",
+            "-p=2",
+            "./modules/..."
+          ]
+        }
+      ],
+      "artifacts": [
+        [
+          "source/go.mod"
+        ],
+        [
+          "source/go.sum"
+        ]
+      ],
+      "disk_mb": 16384,
+      "ram_mb": 4096,
+      "heavy": true
+    },
+    "checkov": {
+      "mode": "python-package",
+      "ref": "HEAD",
+      "requirements": [
+        [
+          "git"
+        ]
+      ],
+      "steps": [
+        {
+          "cwd": "source",
+          "argv": [
+            "{python}",
+            "-m",
+            "venv",
+            "{prefix}/venv"
+          ]
+        },
+        {
+          "cwd": "source",
+          "argv": [
+            "{prefix}/venv/bin/python",
+            "-m",
+            "pip",
+            "install",
+            "{source}/."
+          ]
+        }
+      ],
+      "artifacts": [
+        [
+          "payload/venv/bin/checkov"
+        ]
+      ],
+      "disk_mb": 8192,
+      "ram_mb": 2048
+    },
+    "dbt": {
+      "mode": "python-package",
+      "ref": "HEAD",
+      "requirements": [
+        [
+          "git"
+        ]
+      ],
+      "steps": [
+        {
+          "cwd": "source",
+          "argv": [
+            "{python}",
+            "-m",
+            "venv",
+            "{prefix}/venv"
+          ]
+        },
+        {
+          "cwd": "source",
+          "argv": [
+            "{prefix}/venv/bin/python",
+            "-m",
+            "pip",
+            "install",
+            "{source}/core"
+          ]
+        }
+      ],
+      "artifacts": [
+        [
+          "payload/venv/bin/dbt"
+        ]
+      ],
+      "disk_mb": 8192,
+      "ram_mb": 2048,
+      "source": "https://github.com/dbt-labs/dbt"
+    },
+    "playwright": {
+      "mode": "node-package",
+      "ref": "HEAD",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "node"
+        ],
+        [
+          "npm"
+        ]
+      ],
+      "steps": [
+        {
+          "cwd": "source",
+          "argv": [
+            "npm",
+            "ci",
+            "--ignore-scripts"
+          ]
+        },
+        {
+          "cwd": "source",
+          "argv": [
+            "npm",
+            "run",
+            "build"
+          ]
+        }
+      ],
+      "artifacts": [
+        [
+          "source/packages/playwright-core/lib/server/playwright.js"
+        ],
+        [
+          "source/packages/playwright/cli.js"
+        ]
+      ],
+      "disk_mb": 8192,
+      "ram_mb": 2048
+    },
+    "typescript": {
+      "mode": "node-package",
+      "ref": "HEAD",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "node"
+        ],
+        [
+          "npm"
+        ]
+      ],
+      "steps": [
+        {
+          "cwd": "source",
+          "argv": [
+            "npm",
+            "ci",
+            "--ignore-scripts"
+          ]
+        },
+        {
+          "cwd": "source",
+          "argv": [
+            "npm",
+            "run",
+            "build:compiler"
+          ]
+        }
+      ],
+      "artifacts": [
+        [
+          "source/built/local/tsc/tsc.js",
+          "source/built/local/tsc.js"
+        ]
+      ],
+      "disk_mb": 8192,
+      "ram_mb": 2048
+    },
+    "eslint": {
+      "mode": "node-package",
+      "ref": "HEAD",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "node"
+        ],
+        [
+          "npm"
+        ]
+      ],
+      "steps": [
+        {
+          "cwd": "source",
+          "argv": [
+            "npm",
+            "ci",
+            "--ignore-scripts"
+          ]
+        }
+      ],
+      "artifacts": [
+        [
+          "source/bin/eslint.js"
+        ],
+        [
+          "source/lib/api.js"
+        ]
+      ],
+      "disk_mb": 4096,
+      "ram_mb": 1024
+    },
+    "prettier": {
+      "mode": "node-package",
+      "ref": "HEAD",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "node"
+        ],
+        [
+          "corepack"
+        ]
+      ],
+      "steps": [
+        {
+          "cwd": "source",
+          "argv": [
+            "corepack",
+            "yarn",
+            "install",
+            "--immutable"
+          ]
+        },
+        {
+          "cwd": "source",
+          "argv": [
+            "corepack",
+            "yarn",
+            "build"
+          ]
+        }
+      ],
+      "artifacts": [
+        [
+          "source/dist/bin/prettier.cjs"
+        ]
+      ],
+      "disk_mb": 8192,
+      "ram_mb": 2048
+    },
+    "vitest": {
+      "mode": "node-package",
+      "ref": "HEAD",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "node"
+        ],
+        [
+          "corepack"
+        ]
+      ],
+      "steps": [
+        {
+          "cwd": "source",
+          "argv": [
+            "corepack",
+            "pnpm",
+            "install",
+            "--frozen-lockfile"
+          ]
+        },
+        {
+          "cwd": "source",
+          "argv": [
+            "corepack",
+            "pnpm",
+            "run",
+            "build"
+          ]
+        }
+      ],
+      "artifacts": [
+        [
+          "source/packages/vitest/dist/cli.js"
+        ]
+      ],
+      "disk_mb": 16384,
+      "ram_mb": 4096,
+      "heavy": true
+    },
+    "vite": {
+      "mode": "node-package",
+      "ref": "HEAD",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "node"
+        ],
+        [
+          "corepack"
+        ]
+      ],
+      "steps": [
+        {
+          "cwd": "source",
+          "argv": [
+            "corepack",
+            "pnpm",
+            "install",
+            "--frozen-lockfile"
+          ]
+        },
+        {
+          "cwd": "source",
+          "argv": [
+            "corepack",
+            "pnpm",
+            "run",
+            "build"
+          ]
+        }
+      ],
+      "artifacts": [
+        [
+          "source/packages/vite/dist/node/index.js"
+        ]
+      ],
+      "disk_mb": 16384,
+      "ram_mb": 4096,
+      "heavy": true
+    },
+    "pnpm": {
+      "mode": "node-package",
+      "ref": "HEAD",
+      "requirements": [
+        [
+          "git"
+        ],
+        [
+          "node"
+        ],
+        [
+          "corepack"
+        ]
+      ],
+      "steps": [
+        {
+          "cwd": "source",
+          "argv": [
+            "corepack",
+            "pnpm",
+            "install",
+            "--frozen-lockfile"
+          ]
+        },
+        {
+          "cwd": "source",
+          "argv": [
+            "corepack",
+            "pnpm",
+            "run",
+            "compile"
+          ]
+        }
+      ],
+      "artifacts": [
+        [
+          "source/pnpm/bin/pnpm.cjs"
+        ],
+        [
+          "source/pnpm/dist/pnpm.cjs"
+        ]
+      ],
+      "disk_mb": 16384,
+      "ram_mb": 4096,
+      "heavy": true
+    }
+  }
+}

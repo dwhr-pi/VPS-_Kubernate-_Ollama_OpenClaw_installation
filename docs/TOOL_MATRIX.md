@@ -4,8 +4,10 @@
 [Gopls, Delve, GolangCI_Lint, Kubeconform, KubeLinter, TFLint und Terraform_Docs](tools/development-go-tools.md)
 sind als weitere optionale GitHub-Go-Builds mit Doctor und Deinstallation integriert.
 
-[62 Sprach-/Shell-/Infrastrukturquellen im Setup pruefen](tools/development-toolchain-check.md):
+[62 Sprach-/Shell-/Infrastrukturquellen installieren / verwalten](tools/development-toolchain-check.md):
 Hauptmenue 16 oder Zusatzschaltflaeche im Tools-Menue 8.
+52 neue private Build-/Paketrezepte, zehn bestehende Adapter; experimentell,
+kein Nachweis von 62 Livebuilds. CI-Actions/Editor-Pakete nicht automatisch aktiviert.
 Die [Praesentation](presentations/technology-tooling-overview.pptx) ist dort
 mit einer textlichen Folienzuordnung eingebunden.
 

@@ -11,12 +11,14 @@ Audit-Dateipruefung, keine Rechtsberatung oder automatische Datenbearbeitung.
 Jetzt zusaetzlich sieben [echte Go-Build-Installer](tools/development-go-tools.md)
 fuer Gopls, Delve, GolangCI_Lint, Kubeconform, KubeLinter, TFLint und Terraform_Docs.
 
-**[Alle 62 Quellen direkt im Setup pruefen](tools/development-toolchain-check.md)**:
-Hauptmenue **16** oder Tools-Menue **8**, Schaltflaeche **62 Quellen pruefen**.
-Lokale Voraussetzungen und vorhandene Installer sichtbar machen, ohne Installation.
+**[Alle 62 Quellen installieren / verwalten](tools/development-toolchain-check.md)**:
+Hauptmenue **16** oder Tools-Menue **8**, Schaltflaeche **62 Quellen verwalten**.
+52 neue private Build-/Paketrezepte plus zehn bestehende Adapter; einzeln
+auswaehlbar mit Plan, Installation, Status, Update und Deinstallation.
+Experimentell, keine 62 bestaetigten Livebuilds; Actions/VSIX nicht automatisch aktiviert.
 [Vollstaendige Werkzeuguebersicht](tutorials/manus-language-infrastructure-sources.md).
 [Praesentation mit 13 Folien](presentations/technology-tooling-overview.pptx) und
-[textliche Zuordnung](tools/development-toolchain-check.md#praesentation-mit-eingearbeitet).
+[Quellen und Einordnung](tools/development-toolchain-check.md#quellen-und-praesentation).
 
 | Neues Tool im Menue | Zweck | Installation und Pruefung |
 |---|---|---|

@@ -100,29 +100,27 @@ bleiben erhalten. Es wird kein `rm -rf /opt/...` ausgefuehrt.
 
 ## Was mit den anderen Quellen passiert
 
-**Jetzt alle 62 Quellen im Setup pruefen:** Hauptmenue **16** oder Tools-Menue
-**8**, Schaltflaeche **62 Quellen pruefen**. Der
-[neue Pruefkatalog samt Praesentation](development-toolchain-check.md) zeigt
-pro Quelle Voraussetzungen, bestehende Adapter und noch fehlende Integration.
-Die Vorpruefung ist damit umgesetzt; nicht vorhandene Build-Installer werden
-aber weiterhin nicht als installierbar ausgegeben.
+**Aktualisiert 21.10.2026:** Hauptmenue **16** oder Tools-Menue **8**,
+Schaltflaeche **62 Quellen verwalten**, oeffnet jetzt auch den
+[Installations-/Lifecycle-Einstieg](development-toolchain-check.md).
+52 neue private Build-/Paketrezepte und zehn vorhandene Adapter sind einzeln
+auswaehlbar. Neue Rezepte bleiben experimentell, nicht als live gebaut bestaetigt.
 
 | Gruppe aus dem Katalog | Behandlung |
 |---|---|
 | Playwright, ShellCheck, shfmt, PostgreSQL, dbt, kubectl, Helm, Kustomize, Argo-CD-CLI, Flux-CLI | Bereits registriert; kein doppelter Eintrag und keine Behauptung, dass deren bestehende Installer alle GitHub-Source-Builds sind |
-| Node/Go/Rust und Compiler wie GCC/LLVM | Toolchains sind keine kleinen Einzelpakete; vorhandene private Tool-Bootstraps nicht global umstellen, eigenstaendige Installer bleiben TODO |
-| TypeScript, Prettier, ESLint, Vitest, Vite, pnpm | Projektlokale Versionen/Lockfiles vorsehen; dedizierte Setup-Installer bleiben TODO |
+| Node/Go/Rust und Compiler wie GCC/LLVM | Private Buildrezepte; Bootstrap-Toolchains/SDKs und grosse Reserven noetig, keine Systemumstellung |
+| TypeScript, Prettier, ESLint, Vitest, Vite, pnpm | Private JS-Build-/Paketrezepte; Versions-/Lockfile-Voraussetzungen pruefen |
 | GoogleTest, Catch2, pgTAP, Terratest | Projekt-/Datenbankbibliotheken, keine pauschale globale Installation |
 | Actions Checkout/Setup Go/Setup Terraform sowie Docker-CI-Actions | Workflow-Bausteine, keine lokalen Programme; Beispiele bleiben inaktiv |
 | Docker CLI/Compose/Buildx/BuildKit, kind, Skaffold, GitOps-Controller | Keine automatische Runtime-, Cluster- oder Dienstbereitstellung |
 | Delve, golangci-lint, gopls, Kubeconform, KubeLinter, TFLint, terraform-docs | [Jetzt als sieben echte GitHub-Go-Builds integriert](development-go-tools.md), einschliesslich Doctor/Uninstall |
-| rust-analyzer, BashDB, Pester, PSScriptAnalyzer, Hadolint, Checkov, Flyway, terraform-ls | Weitere CLI-Kandidaten; eigene Build-/Lifecycle-Integration noch offen |
+| rust-analyzer, BashDB, Pester, PSScriptAnalyzer, Hadolint, Checkov, Flyway, terraform-ls | Jetzt private Build-/Paketrezepte im 62er-Einstieg, ohne Runtime-Start |
 | Terraform und OpenTofu | Lizenz-/State-Grenzen beibehalten; kein automatisches Infrastruktur-Upgrade |
 | VS-Code-PowerShell | Editor-Erweiterung, nicht ungefragt im Editor aktivieren |
 
-Damit sind nicht alle 62 Quellen als neue Installer umgesetzt. Neben den hier
-beschriebenen drei Werkzeugen sind jetzt sieben Go-Builds integriert.
-Die [zentrale 62er-Tabelle](../DEVELOPMENT_TOOLS_OVERVIEW.md) zeigt pro Quelle
-den echten Installations-/Projektweg und weiterhin offene Integrationen.
+Die [zentrale 62er-Tabelle](../DEVELOPMENT_TOOLS_OVERVIEW.md) zeigt jetzt fuer
+alle Quellen den ausgewaehlten Adapter/Paketweg. Actions sind lokale Pakete,
+Bibliotheken und VSIX werden nicht automatisch in Zielsystemen aktiviert.
 Bei dieser Aenderung wurden keine Werkzeuge installiert, kein Livebuild
 durchgefuehrt und weder WSL noch Docker oder Cloud angesprochen.

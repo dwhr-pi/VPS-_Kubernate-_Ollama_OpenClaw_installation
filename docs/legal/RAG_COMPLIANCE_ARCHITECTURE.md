@@ -9,18 +9,31 @@ werden nicht in Systembeschreibungen uebernommen.
 
 ```mermaid
 flowchart TD
-    A[Zweck, Betreiberrolle und Jurisdiktionen] --> B[Fachliche Rechts- und Datenfreigabe]
-    B --> C[Freigegebene Quelle mit Rechte- und Herkunftsmetadaten]
-    C --> D[PII-Pruefung und Qualitaetskontrolle vor Embedding]
-    D --> E[Lokaler Index mit mandantenbezogenen Retrieval-Rechten]
-    E --> F[Antwort mit erlaubten Quellen und menschlicher Pruefung]
-    E --> G[Loeschplan ueber Dokumente, Chunks, Cache, Exporte und Backups]
-    G --> H[Separate bestaetigte Ausfuehrung und Erfolgskontrolle]
-    H --> I[Minimierter Auditnachweis mit unabhaengigem Anker]
-    J[Offline-CLI dieses Repositories] -. prueft nur Metadaten/Beispiele .-> A
-    J -. plant, loescht nicht .-> G
-    J -. Konsistenz statt Echtheitsgarantie .-> I
+    A["Zweck, Betreiberrolle und Jurisdiktionen"] --> B["Fachliche Rechts- und Datenfreigabe"]
+    B --> C["Freigegebene Quelle mit Rechte- und Herkunftsmetadaten"]
+    C --> D["PII-Pruefung und Qualitaetskontrolle vor Embedding"]
+    D --> E["Lokaler Index mit mandantenbezogenen Retrieval-Rechten"]
+    E --> F["Antwort mit erlaubten Quellen und menschlicher Pruefung"]
+    E --> G["Loeschplan ueber Dokumente, Chunks, Cache, Exporte und Backups"]
+    G --> H["Separate bestaetigte Ausfuehrung und Erfolgskontrolle"]
+    H --> I["Minimierter Auditnachweis mit unabhaengigem Anker"]
+    J["Offline-CLI dieses Repositories"] -.->|"prueft nur Metadaten/Beispiele"| A
+    J -.->|"plant, loescht nicht"| G
+    J -.->|"Konsistenz statt Echtheitsgarantie"| I
 ```
+
+### Ablauf als Text
+
+1. Zweck, Betreiberrolle und betroffene Rechtsraeume bestimmen und fachlich freigeben.
+2. Freigegebene Quellen mit Rechte-/Herkunftsmetadaten erfassen und vor dem
+   Embedding auf personenbezogene Inhalte und Verarbeitungsqualitaet pruefen.
+3. Den lokalen Index mit mandantenbezogenen Zugriffsrechten verwenden;
+   Antworten auf erlaubte Quellen begrenzen und menschlich pruefen.
+4. Loeschungen ueber Dokumente, Chunks, Caches, Exporte und Backups planen.
+   Eine tatsaechliche Ausfuehrung braucht gesonderte Bestaetigung und Erfolgskontrolle.
+5. Minimierte Auditnachweise mit unabhaengigem Anker vorsehen. Die Offline-CLI
+   prueft nur Metadaten/Beispiele, plant ohne zu loeschen und prueft Konsistenz,
+   nicht die Echtheit der Nachweise.
 
 Keine dieser Pfeilverbindungen ist bereits ein aktiver Open-WebUI-/Qdrant-/
 PostgreSQL-Adapter. Der Prototyp verbindet sich nicht mit laufenden Systemen.

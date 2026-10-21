@@ -19,6 +19,7 @@ LABELS = {
     "project": "PROJEKTABHAENGIGKEIT",
     "workflow": "CI-WORKFLOW-BAUSTEIN",
     "extension": "EDITOR-ERWEITERUNG",
+    "build-recipe": "BUILD-/PAKETREZEPT VORHANDEN",
 }
 REVIEWED = {"sqlfluff", "bats_core", "invoke_build", "golang_tools", "delve",
             "golangci_lint", "kubeconform", "kubelinter", "tflint", "terraform_docs"}
@@ -91,6 +92,12 @@ def executable_present(name):
 
 
 def adapter_for(row, registry, root=ROOT):
+    recipes_path = root / "config/development_installers.json"
+    if recipes_path.is_file():
+        recipe = json.loads(recipes_path.read_text(encoding="utf-8"))["recipes"].get(row["id"])
+        if recipe and recipe["mode"] != "existing":
+            return {"path": "scripts/install_development_toolchain.sh", "mode": recipe["mode"],
+                    "reviewed": False, "recipe": recipe}
     registered = next((tool for tool in registry if tool.get("id") == row.get("registry_id")), None)
     if not registered:
         return None
@@ -105,7 +112,9 @@ def adapter_for(row, registry, root=ROOT):
 
 def inspect(row, registry, budget, available, root=ROOT):
     adapter = adapter_for(row, registry, root)
-    missing = [" oder ".join(group) for group in row["requirements"]
+    recipe = adapter.get("recipe") if adapter else None
+    requirements = recipe["requirements"] if recipe else row["requirements"]
+    missing = [" oder ".join(group) for group in requirements
                if not any(available(name) for name in group)]
     warnings = ["Versionen, transitive Pakete, Lizenz und echter Build noch ungeprueft."]
     blockers = []
@@ -121,22 +130,29 @@ def inspect(row, registry, budget, available, root=ROOT):
         # The installer is already executed with this interpreter, so it does
         # not need another Python found through PATH.
         missing = [value for value in missing if value != "python3 oder python"]
-    if row["kind"] not in ("project", "workflow", "extension"):
-        if budget["disk_mb"] < row["disk_mb"]:
-            blockers.append("Ziel-Disk unter Reserve: " + str(row["disk_mb"]) + " MiB.")
-        if budget["ram_mb"] is not None and budget["ram_mb"] < row["ram_mb"]:
-            blockers.append("Verfuegbarer RAM unter Richtwert: " + str(row["ram_mb"]) + " MiB.")
-        if budget["windows_c_mb"] is not None and budget["windows_c_mb"] < row["disk_mb"]:
+    if row["kind"] not in ("project", "workflow", "extension") or recipe:
+        disk = max(row["disk_mb"], recipe.get("disk_mb", 1024) if recipe else 0)
+        ram = max(row["ram_mb"], recipe.get("ram_mb", 512) if recipe else 0)
+        if budget["disk_mb"] < disk:
+            blockers.append("Ziel-Disk unter Reserve: " + str(disk) + " MiB.")
+        if budget["ram_mb"] is not None and budget["ram_mb"] < ram:
+            blockers.append("Verfuegbarer RAM unter Richtwert: " + str(ram) + " MiB.")
+        if budget["windows_c_mb"] is not None and budget["windows_c_mb"] < disk:
             blockers.append("Windows-C: unter Reserve; WSL-Zahl allein reicht nicht.")
     if budget["ram_mb"] is None:
         warnings.append("Verfuegbarer RAM nicht ermittelt.")
     if row.get("go_min"):
         warnings.append("Go-Version >= " + row["go_min"] + " wird erst im echten Installer geprueft.")
-    if row.get("heavy") and os.environ.get("INSTALL_HEAVY_TOOLS") != "1":
+    if (row.get("heavy") or recipe and recipe.get("heavy")) and os.environ.get("INSTALL_HEAVY_TOOLS") != "1":
         blockers.append("Schwerer Build: INSTALL_HEAVY_TOOLS=1 fehlt.")
     if budget["wsl_detected"]:
         warnings.append("Tatsaechlicher VHDX-Speicherort unbekannt; /mnt/c ist nur ein konservativer Hinweis.")
-    if row["kind"] in ("project", "workflow", "extension"):
+    if recipe:
+        warnings.append("Neues privates Rezept; noch kein echter Upstream-Build-/Runtime-Nachweis. Ausfuehrung auf Linux/macOS.")
+        if os.name == "nt":
+            blockers.append("Neue Buildrezepte nicht nativ unter Windows ausfuehren; WSL wird nicht gestartet.")
+        status = "blocked" if missing or blockers else "build-recipe"
+    elif row["kind"] in ("project", "workflow", "extension"):
         status = row["kind"]
     elif not adapter:
         status = "no-installer"
@@ -147,7 +163,7 @@ def inspect(row, registry, budget, available, root=ROOT):
         status = "blocked" if missing or blockers else "preflight-ok"
     return {**row, "status": status, "label": LABELS[status], "missing": missing,
             "blockers": blockers, "warnings": warnings, "adapter": adapter,
-            "installation_tested": False, "can_attempt_setup": status == "preflight-ok"}
+            "installation_tested": False, "can_attempt_setup": status in ("preflight-ok", "build-recipe")}
 
 
 def report(rows, budget, registry, root=ROOT):

@@ -1,5 +1,36 @@
 # Docs Changelog
 
+## 2026-10-21 Alle 62 Werkzeugquellen: Installations-/Lifecycle-Einstieg
+
+- Hauptmenue 16 und Zusatzschaltflaeche im Tools-Menue bieten jetzt A-Z-Auswahl,
+  Installationsplan, Install/Status/Doctor/Update/Uninstall fuer alle 62 Quellen.
+- 52 neue private GitHub-Build-/Paketrezepte, zehn bisherige private Adapter.
+  Auch bisherige Hinweis-Installer werden im neuen Einstieg durch Builds ersetzt.
+- Erfolgsnachweis erst nach Build und Artefaktpruefung; eigener aktueller Log,
+  globaler Job-Lock, Speicher-/RAM-Wache und Rollback nur neuer Jobdateien.
+- Bibliotheken, Action-/VSIX-/pgTAP-/PowerShell-Pakete korrekt getrennt;
+  keine automatische CI-/Editor-/DB-/Daemon-/Cluster-Aktivierung.
+- Neue Rezepte experimentell, synthetische Lifecycle-Tests statt 62 bestaetigter
+  Upstream-Livebuilds. Keine Installation/Downloads in der Nutzer-WSL ausgefuehrt.
+- Pruefung: 47 Development-Tests bestanden; nach Ergaenzung der privaten
+  Toolchain-Erkennung alle 14 Lifecycle-Tests erneut bestanden. Shell-Syntax
+  und Diff-Check ohne Fehler; Repository-Audit 0 Fehler / 971 bestehende Hinweise.
+
+## 2026-10-21 RAG-Architektur: GitHub-Diagrammdarstellung
+
+- Mermaid-Knoten und Kantenbeschriftungen explizit gequotet; Sonderzeichen
+  werden nicht als ungeschuetzte Syntax behandelt.
+- Vollstaendigen Textablauf als diagrammunabhaengige Lesealternative ergaenzt.
+- Strukturtest fuer gequotete Beschriftungen und Textalternative; kein Ersatz
+  fuer den abschliessenden GitHub-Rendercheck nach Veroeffentlichung.
+
+## 2026-10-21 Tools-Uebersicht wieder alphabetisch
+
+- Ollama/OpenClaw/Ruflo bleiben am Anfang; alle weiteren Tool-Eintraege werden
+  beim Menueaufruf ohne Beachtung der Gross-/Kleinschreibung A-Z sortiert.
+- Auch spaeter angehaengte Tools werden einsortiert; Installationsstatus,
+  Tool-IDs und Installer bleiben unveraendert.
+
 ## 2026-10-21 Zeitliche Rechtsfassungen und Osteuropa
 
 - Offline-Befehl `temporal-context` mit Intervall-, Wissensdatum-, Jurisdiktions-

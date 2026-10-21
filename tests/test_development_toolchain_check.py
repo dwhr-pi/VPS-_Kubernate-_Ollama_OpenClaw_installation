@@ -52,22 +52,27 @@ class DevelopmentToolchainCheckTests(unittest.TestCase):
         self.assertEqual(result["status"], "blocked")
         self.assertIn("git", result["missing"])
 
-    def test_no_adapter_does_not_become_installable_when_all_commands_exist(self):
+    def test_new_recipe_is_available_without_claiming_a_tested_installation(self):
         result = self.inspect("bashdb")
-        self.assertEqual(result["status"], "no-installer")
-        self.assertFalse(result["can_attempt_setup"])
-        self.assertIsNone(result["adapter"])
+        self.assertIn(result["status"], ("build-recipe", "blocked"))
+        self.assertFalse(result["installation_tested"])
+        self.assertEqual(result["adapter"]["mode"], "native-build")
 
-    def test_existing_legacy_adapter_is_not_declared_verified(self):
+    def test_legacy_helm_is_replaced_in_62_catalog_by_private_github_build(self):
         result = self.inspect("helm")
-        self.assertEqual(result["status"], "registered-review")
-        self.assertFalse(result["can_attempt_setup"])
+        self.assertIn(result["status"], ("build-recipe", "blocked"))
+        self.assertFalse(result["installation_tested"])
+        self.assertEqual(result["adapter"]["mode"], "go-build")
         self.assertIsNotNone(result["adapter"])
 
     def test_project_workflow_extension_are_not_global_programs(self):
-        for key, kind in (("googletest", "project"), ("actions_checkout", "workflow"), ("vs_code_powershell", "extension")):
-            self.assertEqual(self.inspect(key)["status"], kind)
-            self.assertFalse(self.inspect(key)["can_attempt_setup"])
+        for key, kind, mode in (("googletest", "project", "native-build"),
+                                ("actions_checkout", "workflow", "workflow-package"),
+                                ("vs_code_powershell", "extension", "editor-package")):
+            result = self.inspect(key)
+            self.assertEqual(result["kind"], kind)
+            self.assertEqual(result["adapter"]["mode"], mode)
+            self.assertFalse(result["installation_tested"])
 
     def test_low_disk_ram_and_windows_host_are_visible(self):
         self.budget.update(disk_mb=1, ram_mb=1, windows_c_mb=1, wsl_detected=True)
@@ -121,8 +126,8 @@ class DevelopmentToolchainCheckTests(unittest.TestCase):
 
     def test_setup_has_explicit_paths_and_button_never_processes_tool_selection(self):
         setup = (ROOT / "setup_ultimate.sh").read_text(encoding="utf-8")
-        self.assertIn('"16" "62 Werkzeugquellen: Installationsvoraussetzungen pruefen"', setup)
-        self.assertIn('--extra-label "62 Quellen pruefen"', setup)
+        self.assertIn('"16" "62 Werkzeugquellen: installieren / verwalten"', setup)
+        self.assertIn('--extra-label "62 Quellen verwalten"', setup)
         branch = setup.split('if [ "$tool_dialog_rc" -eq 3 ]; then', 1)[1].split("fi", 1)[0]
         self.assertIn("show_development_toolchain_check", branch)
         self.assertIn("return 0", branch)

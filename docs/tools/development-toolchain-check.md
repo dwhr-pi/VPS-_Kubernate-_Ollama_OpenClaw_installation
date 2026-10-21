@@ -1,109 +1,162 @@
-# 62 Werkzeugquellen im Setup pruefen
+# 62 Werkzeugquellen installieren und verwalten
 
-## Wo finde ich die Uebersicht?
+Stand: 21.10.2026. Der bisherige reine Pruefbericht ist um einen
+**auswaehlbaren Installations-/Lifecycle-Einstieg fuer alle 62 Quellen** erweitert.
+[Zentrale Tabelle](../DEVELOPMENT_TOOLS_OVERVIEW.md), [Buildrezepte](../../config/development_installers.json).
 
-**[Zentrale Tabelle mit allen 62 Werkzeugen und ihren Installationswegen](../DEVELOPMENT_TOOLS_OVERVIEW.md)**.
-Zusaetzlich zu SQLFluff/Bats/Invoke-Build sind jetzt
-[sieben GitHub-Go-Build-Adapter](development-go-tools.md) integriert.
+## Im Setup
 
-**Setup-Hauptmenue, Punkt 16: "62 Werkzeugquellen:
-Installationsvoraussetzungen pruefen"**. Alternativ im Tools-Menue (Punkt 8)
-die Zusatzschaltflaeche **"62 Quellen pruefen"** waehlen. Diese Schaltflaeche
-installiert/deinstalliert keine angehakten Tools und uebernimmt keine Auswahl.
-Der Bericht laesst sich im Setup scrollen. Der naechste Aufruf prueft erneut.
+Hauptmenue **16: 62 Werkzeugquellen: installieren / verwalten** oder im
+Tools-Menue **8** die Schaltflaeche **62 Quellen verwalten**.
 
-Die vom Nutzer erneut gelieferte Uebersicht mit zehn Stacks ist vollstaendig
-als maschinenlesbarer [Pruefkatalog](../../config/development_toolchains.json)
-erfasst. Die 62 Zeilen sind keine 62 neuen installierten Programme.
-Quellen und Sicherheitsgrenzen bleiben im
-[ausfuehrlichen Quellenkatalog](../tutorials/manus-language-infrastructure-sources.md).
-Die [Tools-Gesamtuebersicht](../TOOLS_CATALOG.md) und die
-[Tool-Matrix](../TOOL_MATRIX.md) verlinken jetzt auch die drei neuen Installer.
+1. Zuerst den Installationsplan waehlen und Quelle, Voraussetzungen, Paketart
+   und Speicherbudget lesen.
+2. Installation waehlen und genau ein Werkzeug aus der A-Z-Liste auswaehlen.
+3. Buildcode/Dependencies und Lizenz bewusst freigeben; schwere Builds
+   erfordern zusaetzlich `INSTALL_HEAVY_TOOLS=1` in der Setup-Umgebung.
+4. Ergebnis mit Logpfad lesen. Danach Status pruefen; ohne Artefaktnachweis
+   wird keine neue Installation als erfolgreich gemeldet.
 
-## Was prueft das Setup?
+Der Einstieg bleibt separat von den bisherigen Tool-Haekchen. Er uebernimmt
+keine Auswahl des Tools-Menues und aktiviert keine Dienste, Cluster oder CI.
+Private Builds der 52 ergaenzten Rezepte aendern nicht die alten systemweiten
+Installationen gleichnamiger Programme. Zehn bereits vorhandene private
+Adapter werden explizit weiterverwendet; ihre eigenen Regeln bleiben bestehen.
 
-Alle Eintraege werden ohne Download, Toolstart oder Authentifizierung bewertet:
+## Was bedeutet hier installierbar?
 
-- Vorhandener echter Installationsadapter in der zentralen Registry;
-  Platzhalter und reine Planned-Eintraege gelten nicht als fertiger Installer.
-- Lokal auffindbare Grundwerkzeuge wie Git, Node, Go, Cargo, Bash und PowerShell.
-  Diese werden nur im PATH gesucht, nicht gestartet; Versionen bleiben ungeprueft.
-- Freier Platz am vorgesehenen User-Datenpfad, verfuegbarer RAM soweit lokal
-  ermittelbar und bei bereits erkanntem WSL der freie Platz von `/mnt/c`.
-- Bei den neuen Installern zusaetzlich passende aktuelle Python-Version
-  und bei SQLFluff Auffindbarkeit von `venv`, `ensurepip` und `ssl`.
-- Abgrenzung von Projektbibliotheken, Workflow-Actions, Editor-Erweiterungen,
-  Toolchains und eigenstaendigen CLIs. Kein erfundener globaler Bibliotheksdienst.
+| Art | Tatsachliches Ergebnis |
+|---|---|
+| CLI/Compiler | Binary oder interpretierter CLI-Einstieg samt Build-/Paketdateien im privaten Workspace |
+| JS-/Python-Paket | Gebaute Dateien bzw. private venv; keine globale npm-/pip-Installation |
+| C++-Bibliothek | Installierte Header/Bibliotheken mit privatem CMake-Prefix |
+| Go-Bibliothek Terratest | Lokaler Quellstand, verifizierte Module und erfolgreicher Bibliotheksbuild; keine Infrastrukturtests |
+| PowerShell-Modul | Gebautes Modul mit Manifest/DLL; kein automatischer Import |
+| VS-Code-PowerShell | Gebautes VSIX-Paket; Editorinstallation bewusst separat |
+| pgTAP | Extension-Dateien per DESTDIR im privaten Ziel; kein CREATE EXTENSION oder DB-Zugriff |
+| GitHub Action | Lokaler Quellcheckout und auf Commit fixierte `uses`-Referenz; keine aktive Workflow-Datei |
 
-Die Ressourcenwerte sind konservative **Richtwerte, keine Buildmessungen**.
-Netzwerkzugang, Paketverfuegbarkeit, Lizenzfreigabe, Architektur, Versionen,
-Compiler-ABI und alle transitiven Dependencies sind damit nicht nachgewiesen.
-Der Python-Modultest ist kein vollstaendiger venv-/SSL-Funktionstest.
-Unter WSL ist der tatsaechliche VHDX-Speicherort nicht automatisch bekannt.
-Windows-System32-/WindowsApps-WSL-Launcher zaehlen nicht als natives Bash.
-Es wird keine WSL-Distro gestartet und keine Docker-/Cluster-API angesprochen.
+**Kein 62er-Massenbuild und keine Garantie fuer 62 erfolgreiche Livebuilds.**
+Alle 52 neuen Rezepte sind experimentell: Buildpfade koennen sich upstream
+aendern, SDKs/Systembibliotheken oder passende Compiler koennen fehlen.
+Die Tests verwenden synthetische Buildausgaben, nicht echte Upstream-Builds.
+Ein vorhandenes Rezept ist nicht dasselbe wie ein erfolgreich gebautes,
+gestartetes oder sicherheitsgeprueftes Programm.
 
-| Ergebnis | Bedeutung | Naechster Schritt |
-|---|---|---|
-| VORPRUEFUNG OK | Einer der zehn neuen Installer und lokale Basisvoraussetzungen vorhanden | Bewusst im Tools-Menue installieren; echter Lauf kann noch fehlschlagen |
-| VORAUSSETZUNGEN FEHLEN | Bei einem der neuen Installer fehlen Werkzeuge, Opt-in, Module oder Reserven | Genannten Hinderungsgrund beheben; erneut pruefen |
-| INSTALLER VORHANDEN / PRUEFEN | Bestehender Registry-Adapter gefunden, hier nicht als neuer Source-Build verifiziert | Installationsweg und jeweilige Tool-Doku pruefen; keine GitHub-only-Zusage |
-| KEIN SETUP-INSTALLER | Quelle erfasst, aber kein fertiger Setup-Adapter vorhanden | Bericht nennt Quelle und Voraussetzungen, nicht faelschlich "installierbar" |
-| PROJEKTABHAENGIGKEIT | Beispielsweise GoogleTest oder ein JS-Projektpaket | Im konkreten Projekt pinnen/einrichten |
-| CI-WORKFLOW-BAUSTEIN | Beispielsweise actions/setup-go | Inaktive CI-Vorlage pruefen, nicht lokal installieren |
-| EDITOR-ERWEITERUNG | Beispielsweise VS-Code-PowerShell | Bewusst im passenden Editor einrichten |
+## Direkt auf dem vorgesehenen Linux-Host
 
-Fehlende Basiswerkzeuge werden auch bei Quellen ohne Adapter aufgefuehrt.
-Ein gefundenes `docker`, `kubectl` oder `go` waere kein Nachweis fuer einen
-erreichbaren Daemon/Cluster oder eine passende Compiler-Version.
-Es entstehen keine Installed-Marker und keine automatischen Tool-Haekchen.
+Python 3.10+ und die im Plan genannten Werkzeuge muessen vorhanden sein.
+Der Installer fuehrt keine apt-/sudo-Systeminstallation aus. Node/Go/Rust/
+.NET/Haskell koennen zum Bauen ihres eigenen Nachfolgers eine bereits
+vorhandene Bootstrap-Toolchain benoetigen; Rust-Compilerwerkzeuge teilweise
+genau passende Nightly-/rustc-dev-Komponenten. Nicht alle Komponenten werden
+durch Installation eines einzelnen Compilers automatisch bereitgestellt.
 
-## Direkte Pruefung ohne Setup-Menue
+Erfolgreiche private Node-/Go-/CMake-/Cargo-/PowerShell-Builds aus diesem
+Einstieg werden fuer nachfolgende neue Rezepte automatisch im Prozess-PATH
+beruecksichtigt. Es wird kein globaler PATH und kein Shellprofil geaendert.
+Die downloadfreie Vorpruefung sucht weiterhin im aktuellen PATH; dort kann
+eine private Toolchain noch als fehlend erscheinen, obwohl der Build sie erkennt.
 
 ```bash
-bash scripts/check_development_toolchains.sh
+bash scripts/install_development_toolchain.sh list
+bash scripts/install_development_toolchain.sh plan --tool bashdb
+bash scripts/install_development_toolchain.sh install --tool bashdb --accept-build-risk
+bash scripts/install_development_toolchain.sh status --tool bashdb
+bash scripts/install_development_toolchain.sh doctor --tool bashdb
+bash scripts/install_development_toolchain.sh update --tool bashdb --ref TAG_ODER_COMMIT --accept-build-risk
+bash scripts/install_development_toolchain.sh uninstall --tool bashdb
+```
+
+Die neuen Rezepte sind fuer Linux/macOS ausgelegt, nicht vollstaendig auf
+beiden Plattformen live getestet. Das kubectl-Source-Buildrezept ist vorerst
+**Linux amd64** und nutzt `kubernetes/kubernetes`, nicht den
+`kubernetes/kubectl`-Code-Mirror. Fuer dbt wird das kanonische
+`dbt-labs/dbt`-Repository verwendet; der erwartete Python-Paketpfad wird
+nicht still durch ein beliebiges Root-Paket ersetzt.
+
+Nativ unter Windows bleiben Listen, Plan und Offline-Vorpruefung moeglich:
+
+```powershell
+py -3 -I -B scripts/quality/development_install.py list
+py -3 -I -B scripts/quality/development_install.py plan --tool llvm
+py -3 -I -B scripts/quality/development_toolchains.py --json
+```
+
+Windows startet **keine WSL-Distro**. Diese Aenderung am Setup hat keine
+Installation auf deinem Linux-/WSL-System ausgefuehrt.
+
+## Sicherheit, Speicher und Fehler
+
+Neue Ziele: `$OPENCLAW_USER_DATA_DIR/development-tools/<id>/generation-.../`
+oder standardmaessig `~/.openclaw_ultimate_user_data/development-tools/`.
+`installed.json` benennt die aktive Generation, Quelle, Commit und
+SHA256-Pruefwerte. Die Generation bleibt an ihrem Ort, damit eingebaute
+absolute Prefix-Pfade nicht durch nachtraegliches Verschieben brechen.
+
+- Primaerquelle ist GitHub; Paketregistries fuer Buildabhaengigkeiten bleiben
+  erforderlich. Buildhooks fuehren fremden Code mit Benutzerrechten aus:
+  privater Workspace ist **keine Sicherheits-Sandbox**.
+- Vor dem ersten Download und jeder Buildphase werden Disk/RAM-Reserven
+  geprueft; unter bereits laufendem WSL konservativ zusaetzlich `/mnt/c`.
+  Der tatsaechliche VHDX-Speicherort wird nicht automatisch ermittelt.
+- GCC/LLVM/Node/Rust und weitere schwere Builds brauchen bewusstes Opt-in.
+  LLVM reserviert 96 GiB Disk; Werte sind Planungsbudgets, keine Messwerte.
+- Ein globaler Lock verhindert parallele Jobs dieses Einstiegs. Compiler
+  bekommen grundsaetzlich zwei Buildprozesse; Upstream-Subprozesse koennen
+  trotzdem weitere Ressourcen benoetigen. Pro Buildphase maximal zwei Stunden.
+- Erst nach erfolgreichen Kommandos und vorhandenen, nichtleeren Artefakten
+  entsteht ein Erfolgsnachweis. `runtime_tested=false` bleibt sichtbar.
+- Bei Fehler/Speicherabbruch werden nur die neue Generation und deren Caches
+  entfernt. Bestehende aktive Installation und deren Nachweis bleiben erhalten.
+  Es wird nicht pauschal alles deinstalliert.
+- Jeder neue Rezeptlauf hat ein eigenes Log unter `development-tools/logs/`,
+  auch ein Speicherabbruch vor dem Clone. Buildausgabe steht dort; das Setup
+  zeigt Ergebnis und Logpfad. Alte Logs werden nicht als aktueller Lauf ausgegeben.
+- Deinstallation prueft Besitzmarker und Artefakthashes und entfernt nur die
+  aktive eigene Generation. Geaenderte Artefakte werden nicht still geloescht.
+  Logs, Basiswerkzeuge und vorherige erfolgreiche Update-Generationen bleiben
+  erhalten; es gibt keine automatische Systembereinigung.
+
+Bei einer Erstinstallation ohne `--ref` wird der damalige GitHub-HEAD einmal
+auf einen Commit aufgeloest und im Nachweis festgehalten. Das ist **kein vorab
+fachlich freigegebener Pin**. Fuer reproduzierbare Freigaben vorher einen
+geprueften Tag/Commit im Plan festlegen und explizit `--ref` verwenden.
+Ein weiterer Install-/Update-Aufruf ohne neue Referenz behaelt den vorhandenen
+Stand. Die zehn bisherigen Adapter haben weiterhin ihre eigenen festen Pins;
+dort wird `--ref` nicht durchgereicht.
+
+## Vorpruefung und Exitcodes
+
+Der [Offline-Pruefer](../../scripts/check_development_toolchains.sh) bleibt
+downloadfrei. Er beruecksichtigt jetzt auch neue Rezepte und deren
+Voraussetzungen, ohne einen Build zu behaupten:
+
+```bash
 bash scripts/check_development_toolchains.sh --list
-bash scripts/check_development_toolchains.sh --tool sqlfluff
-bash scripts/check_development_toolchains.sh --group Go
+bash scripts/check_development_toolchains.sh --tool bashdb
 bash scripts/check_development_toolchains.sh --json
 ```
 
-Windows nativ, ohne Bash oder WSL:
+`BUILD-/PAKETREZEPT VORHANDEN` bedeutet nur: ein neuer Adapter und lokal
+erkennbare Voraussetzungen sind vorhanden. `VORAUSSETZUNGEN FEHLEN` benennt
+fehlende Werkzeuge/Reserven/Opt-ins oder die Windows-Plattformgrenze.
+Versionen und transitive Bibliotheken bleiben bis zum Build ungeprueft.
+Installations-Exit 0 bedeutet Artefakte bereitgestellt, nicht Runtime/Deployment
+getestet; Status liefert JSON, Doctor Exit 1 bei fehlendem/ungueltigem Nachweis.
+Der Offline-Pruefer liefert standardmaessig Exit 0 fuer einen erzeugten Bericht,
+mit `--strict` Exit 1 bei offenen Voraussetzungen.
 
-```powershell
-py -3 -I -B scripts/quality/development_toolchains.py --list
-py -3 -I -B scripts/quality/development_toolchains.py --tool invoke_build
-```
+## Quellen und Praesentation
 
-Python 3.10+ verwenden. Auf Wunsch Ausgabe selbst in eine Berichtdatei umleiten;
-der CLI-Pruefer schreibt standardmaessig nichts. Das Setup-Menue verwendet
-eine eigene temporaere Berichtdatei und entfernt sie nach der Anzeige.
-Exit 0 bedeutet standardmaessig: Bericht erfolgreich erstellt, **nicht alle
-62 Tools installierbar**. `--strict` liefert Exit 1, wenn bei nicht
-projektgebundenen Quellen ein gepruefter Adapter oder Voraussetzungen fehlen;
-Ungueltige Argumente/Katalogdaten liefern Exit 2.
+Die [Technologie-/Tooling-Praesentation](../presentations/technology-tooling-overview.pptx)
+mit **13 Folien** bleibt als Quellenmaterial verlinkt:
+[lesbare Folienquelle](../presentations/technology-tooling-overview.json).
+Sie ersetzt keinen Buildnachweis.
 
-## Praesentation mit eingearbeitet
-
-Die mitgelieferte [Technologie-/Tooling-Praesentation](../presentations/technology-tooling-overview.pptx)
-enthaelt 13 Folien. Sie ist bytegleich mit der bereits versionierten Fassung;
-keine zweite oder stillschweigend geaenderte Datei wird angelegt.
-Lesbare Folieninhalte und Quellen: [Folienquelle](../presentations/technology-tooling-overview.json).
-
-| Folien | Inhalt | Bezug zum Setup |
-|---|---|---|
-| 1-2 | Technologieuebersicht und wiederverwendbarer Ablauf | [Repository-Skill](../../skills/agentic-project-delivery/SKILL.md), keine globale Aktivierung |
-| 3 | Python, JS/TS, Vite und Playwright | JS-/TS-Gruppe im Pruefkatalog; Python-Ergaenzungen Black/mypy/pytest getrennt, nicht in die Zahl 62 eingerechnet |
-| 4 | Go, Rust und C/C++ | Drei vollstaendige Gruppen im Pruefkatalog; grosse Toolchains nicht still installieren |
-| 5 | Shells, SQL und Infrastruktur | Bats, Invoke-Build und SQLFluff als neue Installer; Pester/Analyzer als eigene Kandidaten |
-| 6-7 | Go-/Rust-CI | [Inaktive Beispiele](../../examples/manus-ci-cd/README.md), kein automatischer Workflow-Lauf |
-| 8-10 | Image-Release, Container und Kubernetes | Container-/Kubernetes-Gruppen pruefen; keine Installation per Docker und kein Rollout |
-| 11 | Agentenrollen und Automaton | [Coding-Agenten](../agents/coding-agent-profiles.md); keine impliziten Wallet-/Shellrechte |
-| 12 | Quellen und Lizenzgrenzen | Hinweise des Katalogs beibehalten; Terraform BSL nicht mit Catch2 Boost verwechseln |
-| 13 | Projektbezogene naechste Schritte | Erst Vorpruefung, dann bewusste Installation und Test im Zielprojekt |
-
-Diese Einbindung ist eine Dokumentations- und Prueffunktion. **Noch fehlende
-Build-/Lifecycle-Adapter sind dadurch nicht automatisch implementiert.**
-Die Quellen sind jetzt alle im Setup pruefbar, ihre Installationsluecken bleiben
-im Bericht sichtbar. Insbesondere werden weder Container-Controller noch
-Compiler oder Projekt-Dependencies als erfolgreich installiert vorgetaeuscht.
+Buildreferenzen: [Node BUILDING](https://github.com/nodejs/node/blob/main/BUILDING.md),
+[PowerShell](https://github.com/PowerShell/PowerShell/blob/master/build.psm1),
+[PSScriptAnalyzer](https://github.com/PowerShell/PSScriptAnalyzer#building),
+[Pester Build](https://github.com/pester/Pester/blob/main/build.ps1),
+[VS-Code-PowerShell](https://github.com/PowerShell/vscode-powershell/blob/main/docs/development.md).
+Weitere offizielle Quellen stehen in der zentralen Tabelle.

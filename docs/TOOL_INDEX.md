@@ -8,9 +8,11 @@ kein Datenbankzugriff und keine Rechtsfreigabe. [DSB-Template](legal/templates/D
 Quellen, Zweck und konkreter Installer/Projektweg pro Eintrag.
 Neu: [sieben weitere GitHub-Go-Builds](tools/development-go-tools.md), nicht nur Vorpruefungen.
 
-**[62 Werkzeugquellen: Vorpruefung direkt im Setup](tools/development-toolchain-check.md)**:
+**[62 Werkzeugquellen: Installation und Verwaltung direkt im Setup](tools/development-toolchain-check.md)**:
 Hauptmenue 16 oder Zusatzschaltflaeche im Tools-Menue 8; fehlende Voraussetzungen,
-echte Adapter und Projekt-/CI-Bausteine unterscheiden. Die vorhandene
+52 neue private Build-/Paketrezepte und zehn bestehende Adapter. Plan, Installation,
+Status, Update und Deinstallation; CI-/Editor-Pakete ohne automatische Aktivierung.
+Neue Rezepte sind experimentell, keine 62 erfolgreichen Livebuilds. Die vorhandene
 [Praesentation](presentations/technology-tooling-overview.pptx) ist mit Textzuordnung eingebunden.
 
 **[SQLFluff, Bats_Core und Invoke_Build](tools/language-quality-tools.md)**:

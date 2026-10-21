@@ -2,8 +2,11 @@
 
 Konkrete Umsetzung: [Skill, Go-/Rust-CI, Deployment und Praesentation](manus-ci-cd-deployment.md).
 
-**Im Setup pruefbar:** [Alle 62 Quellen: Voraussetzungen und Installer](../tools/development-toolchain-check.md),
+**Im Setup installierbar/verwalten:** [Alle 62 Quellen: Voraussetzungen und Installer](../tools/development-toolchain-check.md),
 Hauptmenue 16 oder Zusatzschaltflaeche im Tools-Menue 8.
+52 neue experimentelle private Build-/Paketrezepte plus zehn vorhandene Adapter;
+keine automatischen Dienste oder aktivierten CI-/Editor-Pakete. Die folgende
+Quelleneinordnung ist kein Nachweis von 62 erfolgreichen Livebuilds.
 
 **Direkte Werkzeugtabelle:** [alle 62 Eintraege mit konkretem Setup-/Projektweg](../DEVELOPMENT_TOOLS_OVERVIEW.md).
 Jetzt auch [sieben weitere echte GitHub-Go-Build-Installer](../tools/development-go-tools.md),

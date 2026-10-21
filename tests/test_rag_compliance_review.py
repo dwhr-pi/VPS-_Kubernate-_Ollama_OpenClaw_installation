@@ -260,6 +260,18 @@ class RAGComplianceReviewTests(unittest.TestCase):
         self.assertIsNone(sources["ru_pravo"]["reviewed_on"])
         self.assertTrue({"ua_rada", "pl_isap", "cz_esbirka", "sk_slovlex"} <= sources.keys())
 
+    def test_architecture_diagram_uses_quoted_labels_and_has_text_fallback(self):
+        text = (ROOT / "docs/legal/RAG_COMPLIANCE_ARCHITECTURE.md").read_text(encoding="utf-8")
+        blocks = re.findall(r"^```mermaid\n(.*?)^```", text, re.M | re.S)
+        self.assertEqual(len(blocks), 1)
+        diagram = blocks[0]
+        self.assertTrue(diagram.startswith("flowchart TD\n"))
+        self.assertEqual(len(re.findall(r'\["[^"\n]+"\]', diagram)), 10)
+        self.assertEqual(len(re.findall(r'-.->\|"[^"\n]+"\|', diagram)), 3)
+        self.assertNotRegex(diagram, r"\[[^\"\n]")
+        self.assertIn("### Ablauf als Text", text)
+        self.assertIn("plant ohne zu loeschen", text)
+
     def test_all_local_legal_documentation_links_exist(self):
         for path in (ROOT / "docs/legal").rglob("*.md"):
             for target in re.findall(r"\]\(([^)]+)\)", path.read_text(encoding="utf-8")):

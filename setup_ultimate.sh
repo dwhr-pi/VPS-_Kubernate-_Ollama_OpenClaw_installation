@@ -3702,6 +3702,22 @@ uninstall_tool() {
     handle_manual_tool_post_action "$TOOL_KEY" "Deinstallation" "$operation_status" "${TOOL_BATCH_UPCOMING_PREVIEW:-}"
 }
 
+sort_tool_menu_keys() {
+    local key
+    local -a pinned=() remaining=() sorted=()
+    for key in "${TOOL_KEYS[@]}"; do
+        case "$key" in
+            Ollama|OpenClaw|Ruflo) pinned+=("$key") ;;
+            *) remaining+=("$key") ;;
+        esac
+    done
+    # Keep core entries first; include all subsequently registered tools in A-Z order.
+    if ((${#remaining[@]})); then
+        mapfile -t sorted < <(printf '%s\n' "${remaining[@]}" | LC_ALL=C sort -f -s)
+    fi
+    TOOL_KEYS=("${pinned[@]}" "${sorted[@]}")
+}
+
 # Funktion zum Anzeigen des Tool-Management-Menüs
 show_tool_management_menu() {
     local tool_menu_started_at
@@ -3709,6 +3725,7 @@ show_tool_management_menu() {
     tool_menu_started_at="$(date +%s)"
     tool_menu_free_kb_before="$(get_free_disk_kb)"
     TOOL_BATCH_ABORT_REQUESTED=0
+    sort_tool_menu_keys
     sync_core_tool_status
     ensure_user_workspace
     normalize_status_file "$TOOL_STATUS_FILE" "${TOOL_KEYS[@]}"
@@ -3762,7 +3779,7 @@ show_tool_management_menu() {
 
     dialog --clear --backtitle "$APP_TITLE" \
     --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
-    --extra-button --extra-label "62 Quellen pruefen" \
+    --extra-button --extra-label "62 Quellen verwalten" \
     --title "TOOL-MANAGEMENT (${installed_tool_count}/${total_tool_count} installiert)" --checklist "$tool_menu_prompt" 34 120 24 \
     "${TOOL_CHECKLIST_OPTIONS[@]}" 2> /tmp/tool_selection
 
@@ -4310,7 +4327,7 @@ show_profile_management_hub() {
 
 # --- Hauptmenü ---
 
-show_development_toolchain_check() {
+show_development_toolchain_report() {
     local report check_rc
     report="$(mktemp "${TMPDIR:-/tmp}/openclaw-tool-preflight.XXXXXX")" || return 1
     if run_bash_script "$INSTALL_DIR/scripts/check_development_toolchains.sh" > "$report" 2>&1; then
@@ -4324,6 +4341,66 @@ show_development_toolchain_check() {
         --textbox "$report" 30 110 || true
     rm -f -- "$report"
     return "$check_rc"
+}
+
+show_development_toolchain_check() {
+    local action tool line id name mode report rc ref
+    local -a tool_options command
+    while true; do
+        action=$(dialog --clear --backtitle "$APP_TITLE" --title "62 Werkzeugquellen: Installation und Pruefung" \
+            --menu "GitHub-basierte Builds/Pakete ohne Docker. Ein Werkzeug pro Vorgang.\nKeine Dienste, Cluster, CI-Workflows oder Editor-Erweiterungen automatisch aktivieren." \
+            20 100 7 \
+            check "Alle 62 Quellen lokal vorpruefen" \
+            plan "Installationsplan / Voraussetzungen eines Werkzeugs" \
+            install "Ein Werkzeug bauen oder Paket bereitstellen" \
+            status "Installationsnachweis eines Werkzeugs pruefen" \
+            update "Bewusst anderen Tag/Commit installieren" \
+            uninstall "Eigene Installation deinstallieren" \
+            back "Zurueck" 3>&1 1>&2 2>&3) || return 0
+        [[ "$action" == back ]] && return 0
+        if [[ "$action" == check ]]; then
+            show_development_toolchain_report || true
+            continue
+        fi
+        tool_options=()
+        while IFS='|' read -r id name mode; do
+            [[ "$id" =~ ^[a-z0-9_]+$ ]] || continue
+            tool_options+=("$id" "$name [$mode]")
+        done < <(run_bash_script "$INSTALL_DIR/scripts/install_development_toolchain.sh" list)
+        if ((${#tool_options[@]} == 0)); then
+            dialog --msgbox "Installationskatalog konnte nicht gelesen werden. Keine Installation gestartet." 8 85
+            continue
+        fi
+        tool=$(dialog --clear --backtitle "$APP_TITLE" --title "Werkzeug waehlen: $action" \
+            --menu "Die Liste ist A-Z sortiert. Paketarten sind keine globalen Dienste." \
+            30 110 20 "${tool_options[@]}" 3>&1 1>&2 2>&3) || continue
+        command=("$INSTALL_DIR/scripts/install_development_toolchain.sh" "$action" --tool "$tool")
+        if [[ "$action" == install || "$action" == update ]]; then
+            report="$(mktemp "${TMPDIR:-/tmp}/openclaw-build-plan.XXXXXX")" || return 1
+            run_bash_script "$INSTALL_DIR/scripts/install_development_toolchain.sh" plan --tool "$tool" > "$report" 2>&1
+            dialog --title "Buildplan und Voraussetzungen: $tool" --textbox "$report" 30 110 || true
+            rm -f -- "$report"
+            dialog --defaultno --yes-label "(j)a" --no-label "(N)ein" --yesno \
+                "GitHub-Code und Buildhooks fuer $tool ausfuehren?\nDependencies koennen Paketregistries kontaktieren. Voraussetzungen/Lizenz bitte pruefen.\nPrivate Installation; keine Sandbox. Schwere Builds brauchen INSTALL_HEAVY_TOOLS=1.\nSystemwerkzeuge werden nicht ersetzt. Jetzt bewusst fortfahren?" 14 100 || continue
+            command+=(--accept-build-risk)
+        fi
+        if [[ "$action" == update ]]; then
+            ref=$(dialog --inputbox "Neuen Tag/Commit angeben. Leer: vorhandener Stand bleibt erhalten.\nBei bestehenden Adaptern verwaltet der jeweilige Installer seinen Pin." \
+                11 100 "" 3>&1 1>&2 2>&3) || continue
+            [[ -n "$ref" ]] && command+=(--ref "$ref")
+        fi
+        if [[ "$action" == uninstall ]]; then
+            dialog --defaultno --yes-label "(j)a" --no-label "(N)ein" --yesno \
+                "Eigene Installation von $tool entfernen? Basiswerkzeuge und Logs bleiben erhalten." 10 95 || continue
+        fi
+        report="$(mktemp "${TMPDIR:-/tmp}/openclaw-development-action.XXXXXX")" || return 1
+        dialog --title "Development: $tool" --infobox \
+            "Aktion $action laeuft. Quellbuilds koennen lange dauern.\nDas aktuelle Buildlog wird im Ergebnis genannt; bitte keinen zweiten Job starten." 9 95
+        if run_bash_script "${command[@]}" > "$report" 2>&1; then rc=0; else rc=$?; fi
+        printf '\nAktion: %s | Werkzeug: %s | Exit: %s\n' "$action" "$tool" "$rc" >> "$report"
+        dialog --title "Development: $tool / $action (Exit $rc)" --textbox "$report" 30 110 || true
+        rm -f -- "$report"
+    done
 }
 
 show_rag_compliance_review() {
@@ -4383,7 +4460,7 @@ show_main_menu() {
     "7" "${TXT_MENU_7:-Ruflo: Installation & Management}" \
     "──────────" "${TXT_SEPARATOR_LINE:-────────────────────────────────────────────────────────}" \
     "8" "${TXT_MENU_8:-Tools: Installieren & Deinstallieren}" \
-    "16" "62 Werkzeugquellen: Installationsvoraussetzungen pruefen" \
+    "16" "62 Werkzeugquellen: installieren / verwalten" \
     "18" "Recht und RAG-Compliance: Offline-Pruefung" \
     "9" "${TXT_MENU_9:-Profile: Blöcke, Gesamtprofile & Einzeltools}" \
     "───────────" "${TXT_SEPARATOR_LINE:-────────────────────────────────────────────────────────}" \

@@ -4,9 +4,11 @@
 [Sieben neue Go-CLI-Builds aus GitHub](tools/development-go-tools.md) sind optional
 im Tools-Menue verfuegbar; reine Projektbibliotheken bleiben projektgebunden.
 
-[Sprachen/Shells/Infrastruktur: 62 Quellen im Setup pruefen](tools/development-toolchain-check.md)
+[Sprachen/Shells/Infrastruktur: 62 Quellen installieren / verwalten](tools/development-toolchain-check.md)
 und [SQLFluff, Bats_Core, Invoke_Build installieren/pruefen](tools/language-quality-tools.md).
-Im Hauptmenue Punkt 16 oder im Tools-Menue die Schaltflaeche "62 Quellen pruefen" nutzen.
+Im Hauptmenue Punkt 16 oder im Tools-Menue die Schaltflaeche "62 Quellen verwalten" nutzen.
+52 neue experimentelle private Build-/Paketrezepte plus zehn vorhandene Adapter;
+Plan, Installation, Status, Update und Deinstallation je Quelle. Kein pauschaler Livebuild-Nachweis.
 
 Diese Datei beschreibt die grundsaetzliche Nutzungskategorie der Tools. Ziel: Ein Tool soll nicht nur installiert sein, sondern auch klar als Dienst, CLI, Web-UI, Desktopprogramm, Bibliothek oder Integrationsbaustein verstanden werden.
 

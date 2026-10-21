@@ -108,5 +108,7 @@ am Pin, statt eigenmaechtig auf latest zu wechseln.
 - TFLint laedt keine Plugins und fuehrt kein Terraform aus.
 - terraform-docs schreibt keine Projektdokumentation im Installer.
 
-Die [zentrale Tabelle aller 62 Quellen](../DEVELOPMENT_TOOLS_OVERVIEW.md) trennt
-diese Build-Adapter von weiter offenen Toolchains, Bibliotheken und CI-Actions.
+Die [zentrale Tabelle aller 62 Quellen](../DEVELOPMENT_TOOLS_OVERVIEW.md) und der
+[neue Installations-/Lifecycle-Einstieg](development-toolchain-check.md) bieten
+zusaetzlich 52 private Build-/Paketrezepte. Bibliotheken und CI-Actions bleiben
+als Paketarten getrennt; keine automatische Runtime-/Workflow-Aktivierung.

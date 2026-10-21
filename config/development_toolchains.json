@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "description": "62 Quellen: Offline-Vorpruefung, keine Installation oder Runtime-Zusage. Budgets sind konservative Orientierung, keine Messwerte; Voraussetzungen sind nicht vollstaendig.",
+  "description": "62 Quellen: Offline-Vorpruefung plus separater expliziter Installations-/Lifecycle-Einstieg. Build-/Paketrezepte in development_installers.json; experimentell, keine Livebuild-Garantie.",
   "tools": [
     {
       "name": "Node.js",
@@ -302,7 +302,7 @@
       "repo": "actions/checkout",
       "group": "Go",
       "purpose": "CI-Checkout",
-      "note": "Workflow-Action, kein lokaler Installer",
+      "note": "Lokal versioniertes Action-Paket mit Commit-Referenz; keine Workflow-Aktivierung.",
       "id": "actions_checkout",
       "source": "https://github.com/actions/checkout",
       "registry_id": null,
@@ -320,7 +320,7 @@
       "repo": "actions/setup-go",
       "group": "Go",
       "purpose": "Go in CI bereitstellen",
-      "note": "Kann Laufzeiten laden; keine Freigabe fuer lokale Systeminstallation",
+      "note": "Lokal versioniertes Action-Paket mit Commit-Referenz; keine Workflow-Aktivierung.",
       "id": "actions_setup_go",
       "source": "https://github.com/actions/setup-go",
       "registry_id": null,
@@ -898,7 +898,7 @@
     {
       "name": "Docker CLI",
       "repo": "docker/cli",
-      "group": "Docker und Container: Referenz, keine Installation",
+      "group": "Docker und Container: private Werkzeuge ohne Daemonstart",
       "purpose": "Container-Bedienung",
       "note": "CLI allein ist kein Daemon; kein Socket-Zugriff hier",
       "id": "docker_cli",
@@ -919,7 +919,7 @@
     {
       "name": "Compose",
       "repo": "docker/compose",
-      "group": "Docker und Container: Referenz, keine Installation",
+      "group": "Docker und Container: private Werkzeuge ohne Daemonstart",
       "purpose": "Dienstkonfiguration",
       "note": "Kein automatisches compose up/down",
       "id": "compose",
@@ -940,7 +940,7 @@
     {
       "name": "Buildx",
       "repo": "docker/buildx",
-      "group": "Docker und Container: Referenz, keine Installation",
+      "group": "Docker und Container: private Werkzeuge ohne Daemonstart",
       "purpose": "Erweiterte Builds",
       "note": "Kann Builder anlegen und Ressourcen verbrauchen",
       "id": "buildx",
@@ -961,7 +961,7 @@
     {
       "name": "BuildKit",
       "repo": "moby/buildkit",
-      "group": "Docker und Container: Referenz, keine Installation",
+      "group": "Docker und Container: private Werkzeuge ohne Daemonstart",
       "purpose": "Buildengine",
       "note": "Build-Daemon und Buildcode brauchen eigene Freigabe",
       "id": "buildkit",
@@ -982,9 +982,9 @@
     {
       "name": "Hadolint",
       "repo": "hadolint/hadolint",
-      "group": "Docker und Container: Referenz, keine Installation",
+      "group": "Docker und Container: private Werkzeuge ohne Daemonstart",
       "purpose": "Dockerfile-Linting",
-      "note": "Quell-/Binary-Nutzung ohne Docker moeglich, hier kein Installer",
+      "note": "Privater Haskell-Source-Build ohne Docker; keine Dockerfile-Ausfuehrung.",
       "id": "hadolint",
       "source": "https://github.com/hadolint/hadolint",
       "registry_id": null,
@@ -1007,9 +1007,9 @@
     {
       "name": "Setup Buildx Action",
       "repo": "docker/setup-buildx-action",
-      "group": "Docker und Container: Referenz, keine Installation",
+      "group": "Docker und Container: private Werkzeuge ohne Daemonstart",
       "purpose": "Builder in CI vorbereiten",
-      "note": "Keine neue Workflow-Aktivierung",
+      "note": "Lokal versioniertes Action-Paket mit Commit-Referenz; keine Workflow-Aktivierung.",
       "id": "setup_buildx_action",
       "source": "https://github.com/docker/setup-buildx-action",
       "registry_id": null,
@@ -1025,9 +1025,9 @@
     {
       "name": "Build Push Action",
       "repo": "docker/build-push-action",
-      "group": "Docker und Container: Referenz, keine Installation",
+      "group": "Docker und Container: private Werkzeuge ohne Daemonstart",
       "purpose": "Images bauen/veroeffentlichen",
-      "note": "Push und Registry-Zugriff separat freigeben",
+      "note": "Lokal versioniertes Action-Paket mit Commit-Referenz; keine Workflow-Aktivierung.",
       "id": "build_push_action",
       "source": "https://github.com/docker/build-push-action",
       "registry_id": null,
@@ -1043,9 +1043,9 @@
     {
       "name": "Login Action",
       "repo": "docker/login-action",
-      "group": "Docker und Container: Referenz, keine Installation",
+      "group": "Docker und Container: private Werkzeuge ohne Daemonstart",
       "purpose": "Registry-Anmeldung",
-      "note": "Keine Anmeldung oder Schluesselverwendung hier",
+      "note": "Lokal versioniertes Action-Paket mit Commit-Referenz; keine Workflow-Aktivierung.",
       "id": "login_action",
       "source": "https://github.com/docker/login-action",
       "registry_id": null,
@@ -1399,7 +1399,7 @@
       "repo": "hashicorp/setup-terraform",
       "group": "Terraform und IaC",
       "purpose": "Laufzeit in CI",
-      "note": "Keine lokale Terraform-Installation oder CI-Aktivierung hier",
+      "note": "Lokal versioniertes Action-Paket mit Commit-Referenz; keine Workflow-Aktivierung.",
       "id": "setup_terraform_action",
       "source": "https://github.com/hashicorp/setup-terraform",
       "registry_id": null,
