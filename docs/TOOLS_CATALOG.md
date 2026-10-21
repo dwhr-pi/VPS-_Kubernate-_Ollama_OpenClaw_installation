@@ -1,5 +1,10 @@
 # Tools Catalog
 
+**[RAG Compliance Review / Rechtsquellen](legal/README.md)** ist als
+Repository-Werkzeug ohne Installation nutzbar: Hauptmenue 18 oder
+`bash scripts/check_rag_compliance.sh`. Quellenpflege, Loeschplan und
+Audit-Dateipruefung, keine Rechtsberatung oder automatische Datenbearbeitung.
+
 ## Sprachen, Shells und Infrastruktur
 
 **[Zentrale Tabelle: alle 62 Werkzeuge, Quellen und Installationswege](DEVELOPMENT_TOOLS_OVERVIEW.md)**.

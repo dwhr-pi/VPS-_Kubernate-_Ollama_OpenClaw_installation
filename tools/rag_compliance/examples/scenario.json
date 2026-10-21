@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "jurisdictions": ["Germany", "EU"],
+  "features": {
+    "personal_data": true,
+    "special_category_data": false,
+    "external_provider": false,
+    "employment_decisions": false,
+    "automated_decisions": false,
+    "synthetic_media": false,
+    "training_data": false,
+    "public_release": false
+  },
+  "controls": {
+    "lawful_basis_reviewed": false,
+    "retrieval_acl": true,
+    "pii_quality_review": false,
+    "deletion_mapping": true,
+    "backup_retention_plan": false,
+    "minimal_logs": true,
+    "transfer_review": false,
+    "human_approval": true,
+    "license_review": false,
+    "transparency_review": false
+  }
+}

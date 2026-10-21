@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "records": [
+    {
+      "sequence": 1,
+      "occurred_at": "2026-10-21T08:00:01Z",
+      "action": "deletion_requested",
+      "documents": 2,
+      "vectors": 8,
+      "previous_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "record_hash": "6bd34ff8336a8b1f1b41a693ad14d58a21982b4d8c4fa81e20f68c353c9a129c"
+    },
+    {
+      "sequence": 2,
+      "occurred_at": "2026-10-21T08:00:02Z",
+      "action": "review_required",
+      "documents": 2,
+      "vectors": 8,
+      "previous_hash": "6bd34ff8336a8b1f1b41a693ad14d58a21982b4d8c4fa81e20f68c353c9a129c",
+      "record_hash": "b5cb42d6061455ff3b5acdf1ca9b6cadc167d335239739e487c50702e1161e80"
+    }
+  ]
+}

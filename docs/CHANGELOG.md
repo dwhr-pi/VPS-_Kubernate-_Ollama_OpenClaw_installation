@@ -1,5 +1,31 @@
 # Docs Changelog
 
+## 2026-10-21 Zeitliche Rechtsfassungen und Osteuropa
+
+- Offline-Befehl `temporal-context` mit Intervall-, Wissensdatum-, Jurisdiktions-
+  und Mandanten-/Rollenfiltern sowie synthetischem historischem Beispiel.
+- Amtliche Einstiegspunkte fuer RU/UA/PL/CZ/SK im Quellen-Doctor; russische
+  Portale mit Abruf-Timeout bleiben offene Pruefluecken.
+- Aktualisierungskonzept mit Quarantaene, Freigabe und versioniertem Index;
+  keine automatische Rechtsbewertung, Cloud-/Modell-/WSL-Aktion oder Scheduler.
+
+## 2026-10-21 Internationale Rechtsquellen und begrenzter RAG-Review
+
+- Nutzeranlage fachlich eingeordnet: keine weltweite Legal-Assurance-Zusage,
+  keine garantierte Anonymisierung, Trigger-Immutabilitaet oder Beweissicherheit.
+- Quellenregister mit Pruefdatum/Abrufluecken und Abdeckungsmatrix fuer
+  193 UN-Mitglieder plus zwei Beobachterstaaten; nationale Rechtspruefung offen.
+- Aktuellen Kommissionsueberblick einschliesslich AI Omnibus und Colorado
+  SB26-189 beruecksichtigt; historische Entwuerfe/freiwillige Standards getrennt.
+- Offline-CLI fuer Quellenfristen, Szenarien, Loeschplaene und kanonische
+  Audit-Konsistenz implementiert; Setup-Hauptmenue 18, keine Installation.
+- Master-Prompt, Architektur-/Risikoanalyse, Komponentenmatrix und DSB-Template
+  ergaenzt. Kein SQL-Trigger-Bypass, Re-Hash-Reparatur, Docker-/Runner-Setup,
+  Datenbankzugriff, echte Schluessel oder aktive Hintergrundaktualisierung.
+- Validierung: 22 neue Offline-Tests erfolgreich, Audit-Beispiel ueber echten
+  CLI-Einstieg geprueft, Setup/Wrapper syntaktisch gueltig, Projektaudit ohne
+  Fehler (971 bestehende Hinweise). Keine produktive Rechts-/RAG-Freigabe.
+
 ## 2026-10-21 Fortsetzung: sieben echte Go-Installer und zentrale Werkzeugtabelle
 
 - Gespeicherten vorherigen Auftrag geprueft: 62er-Vorpruefung und Menue waren

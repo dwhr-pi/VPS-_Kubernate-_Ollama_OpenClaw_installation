@@ -1,5 +1,8 @@
 # Lokale Personalakten und Dokumenten-KI
 
+Ergaenzung: [RAG-Datenschutz, Rechtsquellen und DSB-Uebergabe](../legal/README.md).
+Die neuen Pruefvorlagen aendern die fehlende Produktivfreigabe dieses Prototyps nicht.
+
 Stand: 14.10.2026. Profil `Personalakten_Local_First`: **planned**.
 Vorschlags-CLI und neuer Paperless-Installationspfad: **experimental**, nicht
 fuer echte Personalakten freigegeben. Kein fertiger Factorial-Nachbau und keine

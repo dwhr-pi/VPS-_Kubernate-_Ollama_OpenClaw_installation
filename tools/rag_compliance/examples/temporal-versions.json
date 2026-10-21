@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "records": [
+    {
+      "source_id": "synthetic-demo", "version_id": "v1", "chunk_id": "section-a",
+      "jurisdiction": "RU", "tenant": "demo", "allowed_roles": ["reviewer"],
+      "valid_from": "2025-01-01", "valid_until": "2026-01-01",
+      "recorded_on": "2025-01-02", "review_state": "approved", "law_status": "REPEALED"
+    },
+    {
+      "source_id": "synthetic-demo", "version_id": "v2", "chunk_id": "section-a",
+      "jurisdiction": "RU", "tenant": "demo", "allowed_roles": ["reviewer"],
+      "valid_from": "2026-01-01", "valid_until": null,
+      "recorded_on": "2026-01-03", "review_state": "approved", "law_status": "ACTIVE"
+    }
+  ]
+}

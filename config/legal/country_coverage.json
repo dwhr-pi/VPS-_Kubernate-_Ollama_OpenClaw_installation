@@ -1,0 +1,987 @@
+{
+  "schema_version": 1,
+  "coverage_date": "2026-10-21",
+  "scope": "193 UN members plus two UN non-member observer states; not a complete list of territories, subnational jurisdictions or applicable laws",
+  "membership_sources": [
+    "https://www.un.org/en/about-us/member-states",
+    "https://research.un.org/en/unmembers/observers"
+  ],
+  "national_law_review_complete": false,
+  "countries": [
+    {
+      "name": "Afghanistan",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Albania",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Algeria",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Andorra",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Angola",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Antigua and Barbuda",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Argentina",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Armenia",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Australia",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Austria",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Azerbaijan",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Bahamas (The)",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Bahrain",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Bangladesh",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Barbados",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Belarus",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Belgium",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Belize",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Benin",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Bhutan",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Bolivia (Plurinational State of)",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Bosnia and Herzegovina",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Botswana",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Brazil",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Brunei Darussalam",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Bulgaria",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Burkina Faso",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Burundi",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Cabo Verde",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Cambodia",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Cameroon",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Canada",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Central African Republic",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Chad",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Chile",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "China (the People's Republic of)",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Colombia",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Comoros",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Congo",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Costa Rica",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Côte D'Ivoire",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Croatia",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Cuba",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Cyprus",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Czechia",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Democratic People's Republic of Korea",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Democratic Republic of the Congo",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Denmark",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Djibouti",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Dominica",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Dominican Republic",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Ecuador",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Egypt",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "El Salvador",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Equatorial Guinea",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Eritrea",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Estonia",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Eswatini",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Ethiopia",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Fiji",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Finland",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "France",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Gabon",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Gambia (Republic of The)",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Georgia",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Germany",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Ghana",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Greece",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Grenada",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Guatemala",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Guinea",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Guinea Bissau",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Guyana",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Haiti",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Honduras",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Hungary",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Iceland",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "India",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Indonesia",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Iran (Islamic Republic of)",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Iraq",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Ireland",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Israel",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Italy",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Jamaica",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Japan",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Jordan",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Kazakhstan",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Kenya",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Kiribati",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Kuwait",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Kyrgyzstan",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Lao People’s Democratic Republic",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Latvia",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Lebanon",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Lesotho",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Liberia",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Libya",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Liechtenstein",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Lithuania",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Luxembourg",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Madagascar",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Malawi",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Malaysia",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Maldives",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Mali",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Malta",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Marshall Islands",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Mauritania",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Mauritius",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Mexico",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Micronesia (Federated States of)",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Monaco",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Mongolia",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Montenegro",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Morocco",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Mozambique",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Myanmar",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Namibia",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Naoero",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Nepal",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Netherlands (Kingdom of the)",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "New Zealand",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Nicaragua",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Niger",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Nigeria",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "North Macedonia",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Norway",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Oman",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Pakistan",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Palau",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Panama",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Papua New Guinea",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Paraguay",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Peru",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Philippines",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Poland",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Portugal",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Qatar",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Republic of Korea",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Republic of Moldova",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Romania",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Russian Federation",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Rwanda",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Saint Kitts and Nevis",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Saint Lucia",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Saint Vincent and the Grenadines",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Samoa",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "San Marino",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Sao Tome and Principe",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Saudi Arabia",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Senegal",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Serbia",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Seychelles",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Sierra Leone",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Singapore",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Slovakia",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Slovenia",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Solomon Islands",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Somalia",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "South Africa",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "South Sudan",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Spain",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Sri Lanka",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Sudan",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Suriname",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Sweden",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Switzerland",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Syrian Arab Republic",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Tajikistan",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Thailand",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Timor-Leste",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Togo",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Tonga",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Trinidad and Tobago",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Tunisia",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Türkiye",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Turkmenistan",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Tuvalu",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Uganda",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Ukraine",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "United Arab Emirates",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "United Kingdom of Great Britain and Northern Ireland",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "United Republic of Tanzania",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "United States of America",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Uruguay",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Uzbekistan",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Vanuatu",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Venezuela, Bolivarian Republic of",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Viet Nam",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Yemen",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Zambia",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Zimbabwe",
+      "un_status": "member",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "Holy See",
+      "un_status": "observer",
+      "legal_review": "not_reviewed"
+    },
+    {
+      "name": "State of Palestine",
+      "un_status": "observer",
+      "legal_review": "not_reviewed"
+    }
+  ]
+}

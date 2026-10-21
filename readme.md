@@ -18,6 +18,8 @@ Dokumentation
 
 ## Aktuelle Governance-Dokumente
 
+- [Recht, weltweite Laenderabdeckung und RAG-Datenschutz](docs/legal/README.md): Quellenregister, begrenzte Offline-Pruefung im Hauptmenue 18, Master-Prompt und DSB-Template; keine Compliance-Garantie.
+
 - [Alle 62 Werkzeuge mit konkretem Installations-/Projektweg](docs/DEVELOPMENT_TOOLS_OVERVIEW.md).
 - [Sieben weitere GitHub-Go-Build-Installer](docs/tools/development-go-tools.md): Gopls, Delve, GolangCI_Lint, Kubeconform, KubeLinter, TFLint und Terraform_Docs.
 

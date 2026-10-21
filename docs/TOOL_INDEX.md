@@ -1,5 +1,9 @@
 # Tool Index
 
+**[RAG Compliance Review](legal/README.md)**: lokale Repository-CLI fuer Quellenfristen,
+Szenario-/Loeschplanung und Audit-Konsistenz. Hauptmenue 18; kein Docker,
+kein Datenbankzugriff und keine Rechtsfreigabe. [DSB-Template](legal/templates/DSB_HANDOVER.md).
+
 **[Sprach-/Shell-/Infrastrukturwerkzeuge: zentrale 62er-Tabelle](DEVELOPMENT_TOOLS_OVERVIEW.md)**:
 Quellen, Zweck und konkreter Installer/Projektweg pro Eintrag.
 Neu: [sieben weitere GitHub-Go-Builds](tools/development-go-tools.md), nicht nur Vorpruefungen.

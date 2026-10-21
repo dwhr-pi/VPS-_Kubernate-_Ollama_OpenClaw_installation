@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "scope_confirmed": false,
+  "legal_review_complete": false,
+  "stores": [
+    {"store": "documents", "items": 2, "legal_hold": false, "retention_reviewed": true},
+    {"store": "embeddings", "items": 8, "legal_hold": false, "retention_reviewed": true},
+    {"store": "backups", "items": 1, "legal_hold": true, "retention_reviewed": false}
+  ]
+}

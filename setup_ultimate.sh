@@ -4326,6 +4326,23 @@ show_development_toolchain_check() {
     return "$check_rc"
 }
 
+show_rag_compliance_review() {
+    local report check_rc
+    report="$(mktemp "${TMPDIR:-/tmp}/openclaw-legal-review.XXXXXX")" || return 1
+    printf '%s\n\n' "Keine Rechtsfreigabe. Dokumentation: docs/legal/README.md" > "$report"
+    if run_bash_script "$INSTALL_DIR/scripts/check_rag_compliance.sh" doctor >> "$report" 2>&1; then
+        check_rc=0
+    else
+        check_rc=$?
+        printf '\nPruefung nicht abgeschlossen (Exit %s).\n' "$check_rc" >> "$report"
+    fi
+    dialog --clear --backtitle "$APP_TITLE" \
+        --title "Recht / RAG: Quellenpflege, keine Compliance-Garantie" \
+        --textbox "$report" 30 110 || true
+    rm -f -- "$report"
+    return "$check_rc"
+}
+
 show_main_menu() {
     local dialog_rc
     local menu_height=23
@@ -4367,6 +4384,7 @@ show_main_menu() {
     "──────────" "${TXT_SEPARATOR_LINE:-────────────────────────────────────────────────────────}" \
     "8" "${TXT_MENU_8:-Tools: Installieren & Deinstallieren}" \
     "16" "62 Werkzeugquellen: Installationsvoraussetzungen pruefen" \
+    "18" "Recht und RAG-Compliance: Offline-Pruefung" \
     "9" "${TXT_MENU_9:-Profile: Blöcke, Gesamtprofile & Einzeltools}" \
     "───────────" "${TXT_SEPARATOR_LINE:-────────────────────────────────────────────────────────}" \
     "10" "${TXT_MENU_10:-Dokumentation & API-Key Guide}" \
@@ -4538,6 +4556,9 @@ while true; do
             ;;
         16)
             show_development_toolchain_check || true
+            ;;
+        18)
+            show_rag_compliance_review || true
             ;;
         8)
             if show_management_loading_notice "Tool-Management" "Es werden Toolstatus, Auswahloptionen und optional die letzten Zeit-/Speicherwerte vorbereitet."; then

@@ -1,5 +1,9 @@
 # Legal Compliance Safety Review
 
+Neu: [internationale Rechtsquellen, Laenderabdeckung und RAG-Pruefhilfe](../legal/README.md)
+mit Offline-CLI im Hauptmenue 18 und DSB-Template. Keine globale Aktivierung
+oder automatische rechtliche Freigabe durch dieses Profil.
+
 Status: `planned`  
 Hardwarebedarf: `low` bis `medium`  
 Installationsart: lokal, CI, WSL2, VPS
