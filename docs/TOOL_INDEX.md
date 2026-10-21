@@ -12,7 +12,7 @@ elf Skills, sechs lokale Python-Helfer, MIT. GitHub-Kopie fuer Claude Code
 nach Zustimmung, optional projektlokal; kein Docker, MCP, Login oder Upload.
 
 **[Anthropic_CLI / ant: offizielle Open-Source-Claude-API-CLI](tools/anthropic-cli.md)**:
-MIT, gepinnter GitHub-Source-Build mit vorhandenem Go >=1.25, kein Docker.
+MIT, gepinnter GitHub-Source-Build; Go >=1.25 verwenden oder privat bereitstellen, kein Docker.
 Getrennt von Claude Code; keine automatische Anmeldung oder API-Nutzung.
 
 **[Colibri: Letsung MiniPC und RTX 5080](tools/colibri.md)**:

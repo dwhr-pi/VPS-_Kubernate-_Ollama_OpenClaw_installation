@@ -1,5 +1,16 @@
 # Docs Changelog
 
+## 2026-10-21 Anthropic CLI: privater Go-Bootstrap
+
+- Abbruch bei fehlendem/zu altem Go behoben: vorhandenes Go >=1.25 bevorzugen,
+  andernfalls offizielles Go 1.27.3 privat und SHA256-geprueft bereitstellen.
+- Gepinnte Linux/macOS/Windows-Archive fuer amd64/arm64, Groessen-/Pfadpruefung,
+  Besitzmanifest und Rollback des neuen Download-/Entpack-Stagings ergaenzt.
+- Opt-out --no-go-bootstrap / ANTHROPIC_CLI_GO_BOOTSTRAP=0; source-only,
+  Dry-Run, Status und Uninstall laden keine Toolchain nach.
+- Kein sudo/apt/Docker, System-Go-/PATH-Umbau, Go-/ant-Livebuild oder WSL-Zugriff
+  bei der Entwicklung; Fehler und Disk-Werte im aktuellen Vorgangslog.
+
 ## 2026-10-21 Offizielle Anbieter-Webseiten
 
 - Direkte Anbieter-/Projektlinks in den API-Key-Katalog, Free-Tier-Vergleich,

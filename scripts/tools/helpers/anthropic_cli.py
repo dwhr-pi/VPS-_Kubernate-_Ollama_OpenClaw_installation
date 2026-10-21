@@ -12,6 +12,7 @@ import tempfile
 
 from find_skills import checked, operation, resources
 from offload_sources import fetch, verify
+import private_go
 
 URL = "https://github.com/anthropics/anthropic-cli.git"
 PIN = "78ab237474e7c34983d77f6f41fcd1152f32a7ce"
@@ -91,15 +92,35 @@ def run(go, args, source, env, capture=False, timeout=1800):
         raise ValueError("Go-Pruefung/Build fehlgeschlagen oder Timeout; siehe aktuelles Log.") from None
 
 
-def go_tool(base):
-    go = shutil.which("go")
-    if not go:
-        raise ValueError("Go >=1.25 fehlt. Vorhandene Go-Toolchain separat einrichten; --source-only bereitet nur Quellen vor.")
+def go_tool(base, allow_bootstrap=True):
     env = build_env(base)
-    version = run(go, ["version"], base, env, capture=True, timeout=15).stdout.strip()
-    match = re.fullmatch(r"go version go(\d+)\.(\d+)(?:\.\d+)? [a-z0-9]+/[a-z0-9]+", version)
-    if not match or tuple(map(int, match.groups())) < (1, 25):
-        raise ValueError("Dieser Pin braucht Go >=1.25; kein automatischer Toolchain-Download.")
+    policy = os.environ.get("ANTHROPIC_CLI_GO_BOOTSTRAP", "1")
+    if policy not in ("0", "1"):
+        raise ValueError("ANTHROPIC_CLI_GO_BOOTSTRAP: nur 0 oder 1.")
+    go = shutil.which("go")
+    if go:
+        try:
+            version = run(go, ["version"], base, env, capture=True, timeout=15).stdout.strip()
+            match = re.fullmatch(r"go version go(\d+)\.(\d+)(?:\.\d+)? [a-z0-9]+/[a-z0-9]+", version)
+            if match and tuple(map(int, match.groups())) >= (1, 25):
+                print("Vorhandene Go-Toolchain wird verwendet:", go)
+                return go, env
+        except ValueError:
+            pass
+        print("Vorhandenes Go fehlt, ist nicht nutzbar oder zu alt; kein System-Upgrade.")
+    if not allow_bootstrap or policy == "0":
+        raise ValueError("Go >=1.25 fehlt oder ist unbrauchbar; privater Go-Bootstrap deaktiviert. Go separat bereitstellen oder --source-only verwenden.")
+
+    def validate(binary, root, key):
+        local = {**env, "GOROOT": str(root)}
+        actual = run(str(binary), ["version"], base, local, capture=True, timeout=15).stdout.strip()
+        expected = "go version " + private_go.VERSION + " " + key.replace("-", "/")
+        if actual != expected:
+            raise ValueError("Privates Go meldet unerwartete Version/Architektur; keine Aktivierung.")
+
+    go, root = private_go.ensure(base, validate)
+    env["GOROOT"] = str(root)
+    env["PATH"] = str(Path(go).parent) + os.pathsep + env.get("PATH", "")
     return go, env
 
 
@@ -144,6 +165,7 @@ def main(argv=None):
                         choices=("install", "update", "repair", "uninstall", "doctor", "check", "status", "plan"))
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--source-only", action="store_true")
+    parser.add_argument("--no-go-bootstrap", action="store_true", help="Kein privates Go nachladen")
     modes = parser.add_mutually_exclusive_group()
     for mode in ("repair", "uninstall", "check", "status"):
         modes.add_argument("--" + mode, dest="override", action="store_const", const=mode)
@@ -155,7 +177,9 @@ def main(argv=None):
     base, source, binary, marker = paths()
     if opts.dry_run or opts.action == "plan":
         print("Anthropic_CLI / ant:", opts.action, URL, PIN, "Ziel:", binary)
-        print("Nur Quellen" if opts.source_only else "GitHub-Source-Build mit vorhandenem Go >=1.25; 4 GiB Disk-Reserve.")
+        print("Nur Quellen; kein Go-Download" if opts.source_only else "GitHub-Source-Build, 4 GiB Disk-Reserve; Go >=1.25 verwenden oder offizielles privates " + private_go.VERSION + " bereitstellen.")
+        if opts.no_go_bootstrap or os.environ.get("ANTHROPIC_CLI_GO_BOOTSTRAP") == "0":
+            print("Privater Go-Bootstrap deaktiviert.")
         print("Kein Docker, Login, CLI-Start, API-Aufruf oder Modell-Download. Uninstall entfernt nur eigene CLI/Build-Marker.")
         return 0
     if opts.action in ("status", "check", "doctor"):
@@ -171,6 +195,7 @@ def main(argv=None):
         print(json.dumps({"installed": ready, "scope": "github-source-built", "api_tested": False}))
         return 0 if ready or opts.action == "status" else 1
     with operation(base, opts.action, tool="Anthropic_CLI"):
+        print("Anthropic_CLI-Installer: 2026-10-21-private-go-bootstrap")
         print("Quelle:", URL, "Pin:", PIN)
         record = read_record(marker)
         if record:
@@ -182,7 +207,7 @@ def main(argv=None):
                 if binary.exists():
                     binary.unlink()
                 marker.unlink()
-            print("Eigene CLI/Registrierung entfernt; Quellen, Go-Cache, Logs und Zugangsdaten bleiben erhalten.")
+            print("Eigene CLI/Registrierung entfernt; Quellen, private Go-Toolchain, Go-Cache, Logs und Zugangsdaten bleiben erhalten.")
             return 0
         if record and binary.exists():
             source_ok(source)
@@ -191,7 +216,7 @@ def main(argv=None):
         if record:
             marker.unlink()
         budget(base, opts.source_only)
-        go, env = go_tool(base) if not opts.source_only else (None, None)
+        go, env = go_tool(base, allow_bootstrap=not opts.no_go_bootstrap) if not opts.source_only else (None, None)
         fetch(base, source, SPEC)
         source_ok(source)
         if opts.source_only:

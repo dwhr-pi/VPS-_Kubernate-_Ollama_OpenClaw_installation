@@ -46,7 +46,7 @@
       "doc": "docs/tools/anthropic-cli.md",
       "license": "MIT; API/Modelle separat",
       "description": "Offizielle Open-Source-Claude-API-CLI ant, getrennt von Claude Code. Privater Go-Build aus GitHub, kein Docker.",
-      "security_note": "Go >=1.25 vorhanden vorausgesetzt; keine Systeminstallation, Authentifizierung, CLI-Ausfuehrung oder Cloud-Abfrage. Go-Module koennen beim Build geladen werden."
+      "security_note": "Go >=1.25 verwenden oder isoliertes offizielles Go 1.27.3 mit SHA256-Pruefung bereitstellen; mit --no-go-bootstrap abschaltbar. Keine Systeminstallation, Authentifizierung, CLI-Ausfuehrung oder Cloud-Inferenz. Go-Module koennen beim Build geladen werden."
     },
     {
       "id": "colibri",

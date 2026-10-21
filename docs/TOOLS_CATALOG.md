@@ -3,7 +3,7 @@
 | Werkzeug | Quelle | Zweck | Einordnung |
 |---|---|---|---|
 | [YouTube_Agent_Skill](tools/youtube-agent-skill.md) | [Jakeschincariol/youtube-agent-skill](https://github.com/Jakeschincariol/youtube-agent-skill) | Elf Content-Skills und sechs Python-Helfer, MIT | experimental, optional, low; Risiko high: Agentenanweisungen; keine Ports/Keys, GitHub-Kopie nach Zustimmung; Doctor/Uninstaller vorhanden |
-| [Anthropic_CLI / ant](tools/anthropic-cli.md) | [anthropics/anthropic-cli](https://github.com/anthropics/anthropic-cli) | Offizielle Claude-API-CLI, MIT | experimental, medium, Risiko high; GitHub-Go-Build, kein Docker; keine Ports, API-Secrets nur bei bewusster Nutzung; Doctor/Uninstall vorhanden |
+| [Anthropic_CLI / ant](tools/anthropic-cli.md) | [anthropics/anthropic-cli](https://github.com/anthropics/anthropic-cli) | Offizielle Claude-API-CLI, MIT | experimental, medium, Risiko high; GitHub-Go-Build, fehlendes Go privat aus offizieller Quelle mit SHA256; kein Docker; keine Ports, API-Secrets nur bei bewusster Nutzung; Doctor/Uninstall vorhanden |
 | [Colibri](tools/colibri.md) | [JustVugg/colibri](https://github.com/JustVugg/colibri) | SSD-Expert-Streaming fuer MoE | experimental, medium/high je Modell, Risiko high; nur GitHub-Quellen, Apache-2.0, keine Ports/Secrets; Doctor/Deaktivierung vorhanden |
 | [Hyperfine](tools/local-ai-benchmarks.md) | [sharkdp/hyperfine](https://github.com/sharkdp/hyperfine) | Wiederholte CLI-Laufzeitmessung | experimental, optionaler GitHub-Quellcheckout, keine gebaute CLI |
 | llama-bench | [ggml-org/llama.cpp](https://github.com/ggml-org/llama.cpp) | PP/TG-Tests | Vorhandenes llama.cpp nutzen, kein doppelter Installer |

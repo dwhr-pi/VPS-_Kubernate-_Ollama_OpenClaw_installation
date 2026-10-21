@@ -124,18 +124,105 @@ class AnthropicCLI(unittest.TestCase):
     def test_no_go_fails_before_clone_and_logs_current_attempt(self):
         with mock.patch.object(cli, "budget"), mock.patch.object(cli.shutil, "which", return_value=None), \
                 mock.patch.object(cli, "fetch") as fetch, self.assertRaisesRegex(ValueError, "Go >=1.25 fehlt"):
-            cli.main(["install"])
+            cli.main(["install", "--no-go-bootstrap"])
         fetch.assert_not_called()
         self.assertFalse(self.marker.exists())
         log, = (self.root / "install_logs").glob("anthropic_cli_install_*.log")
         self.assertIn("Go >=1.25 fehlt", log.read_text())
+
+    def test_missing_go_bootstrap_builds_with_private_go_without_global_path_change(self):
+        before = os.environ.get("PATH")
+        root = self.base / "toolchain/fixture/go"
+        go_binary = root / "bin" / ("go.exe" if os.name == "nt" else "go")
+        key = "windows-amd64" if os.name == "nt" else "linux-amd64"
+
+        def ensure(base, validate):
+            root.mkdir(parents=True)
+            validate(go_binary, root, key)
+            return str(go_binary), root
+
+        def process(command, **kwargs):
+            if command[1:] == ["version"]:
+                return subprocess.CompletedProcess(command, 0, "go version " + cli.private_go.VERSION + " " + key.replace("-", "/"))
+            self.assertEqual(kwargs["env"]["GOROOT"], str(root))
+            self.assertEqual(command[0], str(go_binary))
+            return self.process(command, **kwargs)
+
+        with mock.patch.object(cli, "fetch", side_effect=self.fetch), mock.patch.object(cli, "verify"), \
+                mock.patch.object(cli, "budget"), mock.patch.object(cli.shutil, "which", return_value=None), \
+                mock.patch.object(cli.private_go, "ensure", side_effect=ensure) as bootstrap, \
+                mock.patch.object(cli.subprocess, "run", side_effect=process):
+            self.assertEqual(cli.main(["install"]), 0)
+        bootstrap.assert_called_once()
+        self.assertEqual(os.environ.get("PATH"), before)
+        self.assertTrue(self.marker.exists())
+
+    def test_old_go_falls_back_to_private_toolchain(self):
+        self.base.mkdir(parents=True)
+        root = self.base / "toolchain/fixture/go"
+        binary = str(root / "bin/go")
+        with mock.patch.object(cli.shutil, "which", return_value="fixture-old-go"), \
+                mock.patch.object(cli.subprocess, "run", return_value=subprocess.CompletedProcess([], 0, "go version go1.24.9 linux/amd64")), \
+                mock.patch.object(cli.private_go, "ensure", return_value=(binary, root)) as bootstrap:
+            actual, env = cli.go_tool(self.base)
+        self.assertEqual(actual, binary)
+        self.assertEqual(env["GOROOT"], str(root))
+        self.assertTrue(env["PATH"].startswith(str(root / "bin") + os.pathsep))
+        bootstrap.assert_called_once()
+
+    def test_failed_bootstrap_logs_current_failure_without_installed_marker(self):
+        with mock.patch.object(cli, "budget"), mock.patch.object(cli.shutil, "which", return_value=None), \
+                mock.patch.object(cli.private_go, "ensure", side_effect=ValueError("Go-Archiv-Pruefsumme fixture")), \
+                mock.patch.object(cli, "fetch") as fetch, self.assertRaises(ValueError):
+            cli.main(["install"])
+        fetch.assert_not_called()
+        self.assertFalse(self.marker.exists())
+        log, = (self.root / "install_logs").glob("anthropic_cli_install_*.log")
+        self.assertIn("Go-Archiv-Pruefsumme fixture", log.read_text())
+        self.assertIn("2026-10-21-private-go-bootstrap", log.read_text())
+
+    def test_bootstrap_can_be_disabled_by_environment(self):
+        self.base.mkdir(parents=True)
+        with mock.patch.dict(os.environ, ANTHROPIC_CLI_GO_BOOTSTRAP="0"), \
+                mock.patch.object(cli.shutil, "which", return_value=None), \
+                mock.patch.object(cli.private_go, "ensure") as bootstrap, self.assertRaisesRegex(ValueError, "deaktiviert"):
+            cli.go_tool(self.base)
+        bootstrap.assert_not_called()
+
+    def test_source_only_and_dry_run_never_bootstrap(self):
+        with mock.patch.object(cli.private_go, "ensure", side_effect=AssertionError("no bootstrap")):
+            self.assertEqual(self.invoke("install", "--source-only"), 0)
+            self.assertEqual(cli.main(["install", "--dry-run"]), 0)
+
+    def test_unexpected_private_go_version_never_fetches_or_registers_cli(self):
+        root = self.base / "toolchain/fixture/go"
+        def ensure(base, validate):
+            validate(root / "bin/go", root, "linux-amd64")
+            raise AssertionError("Unexpected version must not be accepted")
+        with mock.patch.object(cli, "budget"), mock.patch.object(cli.shutil, "which", return_value=None), \
+                mock.patch.object(cli.private_go, "ensure", side_effect=ensure), \
+                mock.patch.object(cli.subprocess, "run", side_effect=self.process), \
+                mock.patch.object(cli, "fetch") as fetch, self.assertRaisesRegex(ValueError, "Version/Architektur"):
+            cli.main(["install"])
+        fetch.assert_not_called()
+        self.assertFalse(self.marker.exists())
+
+    def test_uninstall_never_bootstraps_or_removes_private_go(self):
+        self.invoke()
+        private = self.base / "toolchain/fixture/go/bin/go"
+        private.parent.mkdir(parents=True)
+        private.write_bytes(b"keep private build dependency")
+        with mock.patch.object(cli.private_go, "ensure", side_effect=AssertionError("no bootstrap")):
+            self.assertEqual(cli.main(["uninstall"]), 0)
+        self.assertEqual(private.read_bytes(), b"keep private build dependency")
+        self.assertFalse(self.marker.exists())
 
     def test_old_go_is_rejected_without_toolchain_download(self):
         self.base.mkdir(parents=True)
         with mock.patch.object(cli.shutil, "which", return_value="fixture-go"), \
                 mock.patch.object(cli.subprocess, "run", return_value=subprocess.CompletedProcess([], 0, "go version go1.24.9 linux/amd64")), \
                 self.assertRaisesRegex(ValueError, "Go >=1.25"):
-            cli.go_tool(self.base)
+            cli.go_tool(self.base, allow_bootstrap=False)
 
     def test_low_disk_is_logged_before_fetch(self):
         with mock.patch.object(cli, "budget", side_effect=ValueError("Speicherplatzmangel")), \
@@ -222,6 +309,9 @@ class AnthropicCLI(unittest.TestCase):
         doc = (ROOT / row["doc"]).read_text(encoding="utf-8")
         for phrase in ("MIT", "Nicht mit Claude Code", "Go >=1.25", "api_tested=false", "Kein Docker", "proxy.golang.org"):
             self.assertIn(phrase.lower(), doc.lower())
+        self.assertIn("--no-go-bootstrap", doc)
+        self.assertIn(cli.private_go.VERSION[2:], doc)
+        self.assertNotIn("Go >=1.25 vorhanden vorausgesetzt", row["security_note"])
 
     def test_empty_artifact_is_not_registered(self):
         original = self.process

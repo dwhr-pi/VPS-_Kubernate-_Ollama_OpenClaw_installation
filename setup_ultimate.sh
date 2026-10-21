@@ -2862,7 +2862,7 @@ TOOL_SCRIPT_NAMES["Karaoke_Formats"]="karaoke_formats"
 TOOL_KEYS+=("Alexandria_Audiobook" "Qwen3_TTS" "ChatTTS" "AudioLDM2" "AudioGen" "Stable_Audio_Open" "Moshi" "MOSS_TTS" "YuE" "ACE_Step_15" "WhisperX" "Aegisub" "Basic_Pitch" "Sfizz" "AIDA_X" "ProPainter" "Kiwi_Edit" "VOID_Model" "Just_Dub_It" "ViDubb")
 TOOL_KEYS+=("Claude_Code" "Gemini_CLI")
 TOOL_KEYS+=("Anthropic_CLI")
-TOOLS["Anthropic_CLI"]="experimental: offizielle MIT-Claude-API-CLI ant aus GitHub bauen (Go >=1.25); nicht Claude Code. Kein Docker/Login/API-Aufruf. docs/tools/anthropic-cli.md"
+TOOLS["Anthropic_CLI"]="experimental: MIT-Claude-API-CLI ant aus GitHub bauen; fehlendes Go privat und SHA256-geprueft bereitstellen. Nicht Claude Code; kein Docker/Login/API-Aufruf. docs/tools/anthropic-cli.md"
 TOOL_SCRIPT_NAMES["Anthropic_CLI"]="anthropic_cli"
 TOOL_KEYS+=("Find_Skills")
 TOOLS["Find_Skills"]="experimental/light: Vercel find-skills aus gepinntem GitHub-Commit; Skill-Aktivierung erst nach Zustimmung. Keine npm-CLI, kein Docker. docs/tools/find-skills.md"
