@@ -6,6 +6,8 @@ Neu: [Black und mypy](tools/dev-quality.md) optional aus gepinntem GitHub-Stand,
 privates Python-venv, kein Docker oder automatische Projektformatierung.
 Ergaenzung: [30 offizielle Werkzeugquellen](tutorials/manus-development-sources.md)
 mit uv, Coverage.py, Hypothesis, Web-/CI-Bausteinen und korrigierter Playwright-Action.
+Weitere [62 Sprach-, Shell- und Infrastrukturquellen](tutorials/manus-language-infrastructure-sources.md)
+mit Terraform-/OpenTofu-Lizenzgrenze und ohne Container-/Cluster-Installation.
 
 **[Claude Code: Coding-Agent, GitHub und Lizenzgrenze](tools/claude-code.md)**:
 kein vollstaendiger Open-Source-Originalagent; `ant`, Plugins und alternative

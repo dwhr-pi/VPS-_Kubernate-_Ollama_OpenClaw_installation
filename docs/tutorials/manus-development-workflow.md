@@ -13,6 +13,10 @@ Die unten verlinkten Open-Source-Projekte sind eigenstaendige Alternativen.
 
 ## Einordnung und GitHub-Quellen
 
+Weitere Stacks: [Sprachen, Shells und Infrastruktur](manus-language-infrastructure-sources.md)
+fuer JS/TS, Go, C/C++, Rust, Bash, PowerShell, SQL, Container, Kubernetes und IaC.
+Quellenangaben sind keine neuen Installationen oder Systemfreigaben.
+
 Die nachgereichten **30 offiziellen Werkzeug-Repositories** sind im
 [vollstaendigen Quellenkatalog](manus-development-sources.md) nach Themen
 aufgeschluesselt, einschliesslich uv, pre-commit, Coverage.py, Hypothesis,

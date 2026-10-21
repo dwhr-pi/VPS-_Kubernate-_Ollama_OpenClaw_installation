@@ -1,5 +1,9 @@
 # Entwicklungswerkzeuge: ergaenzte Quellen aus dem Manus-Interview
 
+Fortsetzung: [Sprachen, Shells und Infrastruktur](manus-language-infrastructure-sources.md)
+mit 62 GitHub-Referenzen, Mirror-/Lizenzgrenzen und getrennten Freigaben fuer
+Tests, Container, Cluster, SQL und Cloud.
+
 **Sinn und Zweck:** Nachschlagewerk fuer die 30 nachgereichten GitHub-Quellen:
 Python-Projekte isolieren, Code pruefen, Webanwendungen lokal anzeigen und
 reproduzierbare CI-Pruefungen vorbereiten. Die Links verweisen auf die jeweiligen

@@ -1,5 +1,14 @@
 # Docs Changelog
 
+## 2026-10-21 Sprach-, Shell- und Infrastrukturquellen
+
+- Neue Nutzerquelle mit 62 GitHub-Repositories in zehn Stacks dokumentiert;
+  keine 62 neuen Installer, keine Docker-/WSL-/Cloud-Aktion.
+- GCC-/PostgreSQL-/kubectl-Mirrors, dbt-Redirect und Terraform Business Source
+  versus OpenTofu/MPL beziehungsweise Catch2/Boost-Lizenz eingeordnet.
+- SQL ANALYZE, serverseitigen Dry-Run, Debugger, Buildhooks und IaC-Tests nicht
+  als nebenwirkungsfreie Checks ausgegeben. GitHub-API-403-Pruefluecke benannt.
+
 ## 2026-10-21 Ergaenzte Werkzeugquellen aus dem Manus-Interview
 
 - Alle 30 nachgereichten offiziellen GitHub-Quellen thematisch dokumentiert;
