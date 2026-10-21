@@ -20,7 +20,8 @@ LABELS = {
     "workflow": "CI-WORKFLOW-BAUSTEIN",
     "extension": "EDITOR-ERWEITERUNG",
 }
-REVIEWED = {"sqlfluff", "bats_core", "invoke_build"}
+REVIEWED = {"sqlfluff", "bats_core", "invoke_build", "golang_tools", "delve",
+            "golangci_lint", "kubeconform", "kubelinter", "tflint", "terraform_docs"}
 
 
 def load_catalog(root=ROOT):
@@ -73,7 +74,9 @@ def resources():
 
 
 def executable_present(name):
-    path = shutil.which(name)
+    overrides = {"go": "DEV_GO_BIN", "bash": "BATS_BASH_BIN", "pwsh": "INVOKE_BUILD_PWSH_BIN"}
+    variable = overrides.get(name)
+    path = shutil.which(os.environ.get(variable, name) if variable else name)
     if not path:
         return False
     # Do not mistake Windows' compatibility launcher for native Bash.
@@ -127,6 +130,10 @@ def inspect(row, registry, budget, available, root=ROOT):
             blockers.append("Windows-C: unter Reserve; WSL-Zahl allein reicht nicht.")
     if budget["ram_mb"] is None:
         warnings.append("Verfuegbarer RAM nicht ermittelt.")
+    if row.get("go_min"):
+        warnings.append("Go-Version >= " + row["go_min"] + " wird erst im echten Installer geprueft.")
+    if row.get("heavy") and os.environ.get("INSTALL_HEAVY_TOOLS") != "1":
+        blockers.append("Schwerer Build: INSTALL_HEAVY_TOOLS=1 fehlt.")
     if budget["wsl_detected"]:
         warnings.append("Tatsaechlicher VHDX-Speicherort unbekannt; /mnt/c ist nur ein konservativer Hinweis.")
     if row["kind"] in ("project", "workflow", "extension"):
@@ -195,6 +202,8 @@ def main(argv=None):
                 print("  Fehlende lokale Werkzeuge:", ", ".join(row["missing"]))
             for item in row["blockers"]:
                 print("  Hinderungsgrund:", item)
+            for item in row["warnings"]:
+                print("  Hinweis:", item)
             print("  Grenze:", row["note"])
         print("\nZusammenfassung:", json.dumps(result["counts"], ensure_ascii=True))
         print("Anleitung: docs/tools/development-toolchain-check.md")

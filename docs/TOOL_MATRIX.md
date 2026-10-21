@@ -1,5 +1,9 @@
 # Tool Matrix
 
+[Zentrale 62er-Werkzeugtabelle mit Installationswegen](DEVELOPMENT_TOOLS_OVERVIEW.md).
+[Gopls, Delve, GolangCI_Lint, Kubeconform, KubeLinter, TFLint und Terraform_Docs](tools/development-go-tools.md)
+sind als weitere optionale GitHub-Go-Builds mit Doctor und Deinstallation integriert.
+
 [62 Sprach-/Shell-/Infrastrukturquellen im Setup pruefen](tools/development-toolchain-check.md):
 Hauptmenue 16 oder Zusatzschaltflaeche im Tools-Menue 8.
 Die [Praesentation](presentations/technology-tooling-overview.pptx) ist dort

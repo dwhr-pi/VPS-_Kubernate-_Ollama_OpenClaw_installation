@@ -1,5 +1,9 @@
 # Tool Usage and Integration Guide
 
+[Zentrale Werkzeugtabelle mit allen 62 Installations-/Projektwegen](DEVELOPMENT_TOOLS_OVERVIEW.md).
+[Sieben neue Go-CLI-Builds aus GitHub](tools/development-go-tools.md) sind optional
+im Tools-Menue verfuegbar; reine Projektbibliotheken bleiben projektgebunden.
+
 [Sprachen/Shells/Infrastruktur: 62 Quellen im Setup pruefen](tools/development-toolchain-check.md)
 und [SQLFluff, Bats_Core, Invoke_Build installieren/pruefen](tools/language-quality-tools.md).
 Im Hauptmenue Punkt 16 oder im Tools-Menue die Schaltflaeche "62 Quellen pruefen" nutzen.

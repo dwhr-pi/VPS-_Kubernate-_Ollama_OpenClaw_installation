@@ -6,6 +6,7 @@ import json
 import os
 from pathlib import Path
 import shutil
+import stat
 import subprocess
 import sys
 import tempfile
@@ -21,8 +22,13 @@ AGENTS = {"claude-code": ".claude", "qwen-code": ".qwen"}
 def checked(path):
     path = Path(os.path.abspath(path))
     for item in (path, *path.parents):
-        if item.is_symlink() or (item.exists() and
-                getattr(item.stat(), "st_file_attributes", 0) & 0x400):
+        try:
+            info = item.lstat()
+        except FileNotFoundError:
+            continue
+        # lstat detects broken links/reparse points without three separate
+        # filesystem calls for every component of every checked file.
+        if stat.S_ISLNK(info.st_mode) or getattr(info, "st_file_attributes", 0) & 0x400:
             raise ValueError("Symlink/Junction im Zielpfad; nichts veraendert.")
     if path == REPO or REPO in path.parents:
         raise ValueError("Nutzerdaten/Skills duerfen nicht im Setup-Repository liegen.")

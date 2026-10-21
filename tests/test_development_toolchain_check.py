@@ -39,7 +39,8 @@ class DevelopmentToolchainCheckTests(unittest.TestCase):
 
     def test_reviewed_adapters_only_ever_promise_preflight(self):
         for key in check.REVIEWED:
-            with mock.patch.object(check.sys, "version_info", (3, 12)), \
+            with mock.patch.dict(os.environ, INSTALL_HEAVY_TOOLS="1"), \
+                    mock.patch.object(check.sys, "version_info", (3, 12)), \
                     mock.patch.object(check.importlib.util, "find_spec", return_value=object()):
                 result = self.inspect(key)
             self.assertEqual(result["status"], "preflight-ok")
@@ -52,7 +53,7 @@ class DevelopmentToolchainCheckTests(unittest.TestCase):
         self.assertIn("git", result["missing"])
 
     def test_no_adapter_does_not_become_installable_when_all_commands_exist(self):
-        result = self.inspect("delve")
+        result = self.inspect("bashdb")
         self.assertEqual(result["status"], "no-installer")
         self.assertFalse(result["can_attempt_setup"])
         self.assertIsNone(result["adapter"])
@@ -99,7 +100,7 @@ class DevelopmentToolchainCheckTests(unittest.TestCase):
             with mock.patch.dict(os.environ, OPENCLAW_USER_DATA_DIR=str(target)), \
                     mock.patch.object(check, "resources", return_value=self.budget), \
                     mock.patch.object(check, "executable_present", return_value=False):
-                for args in (("--list",), ("--json", "--tool", "delve"), ("--tool", "delve", "--strict")):
+                for args in (("--list",), ("--json", "--tool", "bashdb"), ("--tool", "bashdb", "--strict")):
                     out = io.StringIO()
                     with redirect_stdout(out):
                         rc = check.main(args)
@@ -140,6 +141,42 @@ class DevelopmentToolchainCheckTests(unittest.TestCase):
         for target in re.findall(r"\]\(([^)]+)\)", content):
             if "://" not in target and not target.startswith("#"):
                 self.assertTrue((doc.parent / target.split("#")[0]).exists(), target)
+
+    def test_central_table_lists_all_62_sources_and_new_installer_links(self):
+        doc = ROOT / "docs/DEVELOPMENT_TOOLS_OVERVIEW.md"
+        content = doc.read_text(encoding="utf-8")
+        rows = re.findall(r"^\| .*https://github.com/.*$", content, re.MULTILINE)
+        self.assertEqual(len(rows), 62)
+        for row in self.rows:
+            self.assertIn("](" + row["source"] + ")", content)
+        for name in ("docs/TOOLS_CATALOG.md", "docs/TOOL_INDEX.md", "docs/TOOL_MATRIX.md", "readme.md"):
+            self.assertIn("DEVELOPMENT_TOOLS_OVERVIEW.md", (ROOT / name).read_text(encoding="utf-8"))
+        for target in re.findall(r"\]\(([^)]+)\)", content):
+            if "://" not in target and not target.startswith("#"):
+                self.assertTrue((doc.parent / target.split("#")[0]).exists(), target)
+
+    def test_go_build_metadata_and_heavy_gate_match_installer_recipes(self):
+        recipes = json.loads((ROOT / "config/development_go_tools.json").read_text())["tools"]
+        for recipe in recipes:
+            row, = [row for row in self.rows if row.get("registry_id") == recipe["id"]]
+            self.assertEqual(row["go_min"], recipe["go_min"])
+            self.assertEqual(row["disk_mb"], recipe["disk_mb"])
+            self.assertEqual(row["heavy"], recipe["heavy"])
+            with mock.patch.dict(os.environ, INSTALL_HEAVY_TOOLS="0"):
+                result = check.inspect(row, self.registry, self.budget, lambda name: True)
+            if recipe["heavy"]:
+                self.assertEqual(result["status"], "blocked")
+                self.assertTrue(any("INSTALL_HEAVY_TOOLS" in item for item in result["blockers"]))
+
+    def test_terraform_setup_is_workflow_not_missing_cli_installer(self):
+        row, = [row for row in self.rows if row["repo"] == "hashicorp/setup-terraform"]
+        self.assertEqual(row["kind"], "workflow")
+
+    def test_preflight_uses_same_explicit_toolchain_paths_as_installers(self):
+        with mock.patch.dict(os.environ, DEV_GO_BIN="explicit-go"), \
+                mock.patch.object(check.shutil, "which", return_value="explicit-go") as which:
+            self.assertTrue(check.executable_present("go"))
+            which.assert_called_once_with("explicit-go")
 
 
 if __name__ == "__main__":

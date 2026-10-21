@@ -2,6 +2,10 @@
 
 ## Sprachen, Shells und Infrastruktur
 
+**[Zentrale Tabelle: alle 62 Werkzeuge, Quellen und Installationswege](DEVELOPMENT_TOOLS_OVERVIEW.md)**.
+Jetzt zusaetzlich sieben [echte Go-Build-Installer](tools/development-go-tools.md)
+fuer Gopls, Delve, GolangCI_Lint, Kubeconform, KubeLinter, TFLint und Terraform_Docs.
+
 **[Alle 62 Quellen direkt im Setup pruefen](tools/development-toolchain-check.md)**:
 Hauptmenue **16** oder Tools-Menue **8**, Schaltflaeche **62 Quellen pruefen**.
 Lokale Voraussetzungen und vorhandene Installer sichtbar machen, ohne Installation.

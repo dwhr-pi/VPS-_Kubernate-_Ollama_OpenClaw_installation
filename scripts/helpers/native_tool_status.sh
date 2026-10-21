@@ -2,7 +2,7 @@
 # Menu registration describes prepared sources/builds, not service readiness.
 NATIVE_TOOL_STATUS_KEYS=(Wan21 Windmill DeepFilterNet MOSS_TTS Embedded_Debug_HIL
     ChatTTS AudioLDM2 AudioGen Moshi YuE ACE_Step_15 WhisperX Aegisub Basic_Pitch
-    Sfizz AIDA_X Kiwi_Edit VOID_Model Just_Dub_It Stable_Audio_Open ProPainter Black Mypy SQLFluff Bats_Core Invoke_Build
+    Sfizz AIDA_X Kiwi_Edit VOID_Model Just_Dub_It Stable_Audio_Open ProPainter Black Mypy SQLFluff Bats_Core Invoke_Build Gopls Delve GolangCI_Lint Kubeconform KubeLinter TFLint Terraform_Docs
     Alexandria_Audiobook Qwen3_TTS Claude_Code Gemini_CLI Find_Skills REA HF_Accelerate DeepSpeed Hyperfine Colibri Anthropic_CLI YouTube_Agent_Skill)
 
 native_tool_marker() {
@@ -41,6 +41,13 @@ native_tool_marker() {
         SQLFluff) marker=sqlfluff/build-ready.json ;;
         Bats_Core) marker=bats_core/scripts-ready.json ;;
         Invoke_Build) marker=invoke_build/scripts-ready.json ;;
+        Gopls) marker=gopls/build-ready.json ;;
+        Delve) marker=delve/build-ready.json ;;
+        GolangCI_Lint) marker=golangci_lint/build-ready.json ;;
+        Kubeconform) marker=kubeconform/build-ready.json ;;
+        KubeLinter) marker=kubelinter/build-ready.json ;;
+        TFLint) marker=tflint/build-ready.json ;;
+        Terraform_Docs) marker=terraform_docs/build-ready.json ;;
         REA) marker=rea/source-ready.json ;;
         HF_Accelerate) marker=hf_accelerate/source-ready.json ;;
         DeepSpeed) marker=deepspeed/source-ready.json ;;

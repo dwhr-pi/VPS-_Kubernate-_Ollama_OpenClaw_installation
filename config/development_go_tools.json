@@ -1,0 +1,166 @@
+{
+  "schema_version": 1,
+  "tools": [
+    {
+      "id": "gopls",
+      "name": "Gopls",
+      "repo": "golang/tools",
+      "tag": "gopls/v0.18.1",
+      "module_dir": "gopls",
+      "package": ".",
+      "pin": "0b62b3fcb903046d1ed6e0c50a94871e9fdcae2a",
+      "go_min": "1.23.4",
+      "entry": "gopls/main.go",
+      "url": "https://github.com/golang/tools.git",
+      "license": "BSD-3-Clause",
+      "binary": "gopls",
+      "heavy": false,
+      "disk_mb": 4096,
+      "ram_mb": 1024,
+      "files": [
+        "LICENSE",
+        "gopls/go.mod",
+        "gopls/go.sum",
+        "gopls/main.go"
+      ]
+    },
+    {
+      "id": "delve",
+      "name": "Delve",
+      "repo": "go-delve/delve",
+      "tag": "v1.24.0",
+      "module_dir": ".",
+      "package": "./cmd/dlv",
+      "pin": "0b7bffc7d40411f8361e10009e73fb9c9b318fb6",
+      "go_min": "1.21",
+      "entry": "cmd/dlv/main.go",
+      "url": "https://github.com/go-delve/delve.git",
+      "license": "MIT",
+      "binary": "dlv",
+      "heavy": false,
+      "disk_mb": 4096,
+      "ram_mb": 1024,
+      "files": [
+        "LICENSE",
+        "go.mod",
+        "go.sum",
+        "cmd/dlv/main.go"
+      ]
+    },
+    {
+      "id": "golangci_lint",
+      "name": "GolangCI_Lint",
+      "repo": "golangci/golangci-lint",
+      "tag": "v2.1.6",
+      "module_dir": ".",
+      "package": "./cmd/golangci-lint",
+      "pin": "eabc2638a66daf5bb6c6fb052a32fa3ef7b6600d",
+      "go_min": "1.23.0",
+      "entry": "cmd/golangci-lint/main.go",
+      "url": "https://github.com/golangci/golangci-lint.git",
+      "license": "GPL-3.0",
+      "binary": "golangci-lint",
+      "heavy": true,
+      "disk_mb": 8192,
+      "ram_mb": 2048,
+      "files": [
+        "LICENSE",
+        "go.mod",
+        "go.sum",
+        "cmd/golangci-lint/main.go"
+      ]
+    },
+    {
+      "id": "kubeconform",
+      "name": "Kubeconform",
+      "repo": "yannh/kubeconform",
+      "tag": "v0.6.7",
+      "module_dir": ".",
+      "package": "./cmd/kubeconform",
+      "pin": "1bd44986dd3d281725afab6b173770ec86b454fc",
+      "go_min": "1.22",
+      "entry": "cmd/kubeconform/main.go",
+      "url": "https://github.com/yannh/kubeconform.git",
+      "license": "Apache-2.0",
+      "binary": "kubeconform",
+      "heavy": false,
+      "disk_mb": 4096,
+      "ram_mb": 1024,
+      "files": [
+        "LICENSE",
+        "go.mod",
+        "go.sum",
+        "cmd/kubeconform/main.go"
+      ]
+    },
+    {
+      "id": "kubelinter",
+      "name": "KubeLinter",
+      "repo": "stackrox/kube-linter",
+      "tag": "v0.7.1",
+      "module_dir": ".",
+      "package": "./cmd/kube-linter",
+      "pin": "00ad4327e3ad9e86f6956feca92917be049bcb9f",
+      "go_min": "1.22.5",
+      "entry": "cmd/kube-linter/kube-linter.go",
+      "url": "https://github.com/stackrox/kube-linter.git",
+      "license": "Apache-2.0",
+      "binary": "kube-linter",
+      "heavy": true,
+      "disk_mb": 8192,
+      "ram_mb": 2048,
+      "files": [
+        "LICENSE",
+        "go.mod",
+        "go.sum",
+        "cmd/kube-linter/kube-linter.go"
+      ]
+    },
+    {
+      "id": "tflint",
+      "name": "TFLint",
+      "repo": "terraform-linters/tflint",
+      "tag": "v0.57.0",
+      "module_dir": ".",
+      "package": ".",
+      "pin": "e352b5712a786958c94553e0859043b2a958e4b9",
+      "go_min": "1.24.1",
+      "entry": "main.go",
+      "url": "https://github.com/terraform-linters/tflint.git",
+      "license": "MPL-2.0",
+      "binary": "tflint",
+      "heavy": false,
+      "disk_mb": 4096,
+      "ram_mb": 1024,
+      "files": [
+        "LICENSE",
+        "go.mod",
+        "go.sum",
+        "main.go"
+      ]
+    },
+    {
+      "id": "terraform_docs",
+      "name": "Terraform_Docs",
+      "repo": "terraform-docs/terraform-docs",
+      "tag": "v0.20.0",
+      "module_dir": ".",
+      "package": ".",
+      "pin": "cf462c5da36feb66051cf0a6f1124594ed9adc7c",
+      "go_min": "1.23.0",
+      "entry": "main.go",
+      "url": "https://github.com/terraform-docs/terraform-docs.git",
+      "license": "MIT",
+      "binary": "terraform-docs",
+      "heavy": false,
+      "disk_mb": 4096,
+      "ram_mb": 1024,
+      "files": [
+        "LICENSE",
+        "go.mod",
+        "go.sum",
+        "main.go"
+      ]
+    }
+  ]
+}

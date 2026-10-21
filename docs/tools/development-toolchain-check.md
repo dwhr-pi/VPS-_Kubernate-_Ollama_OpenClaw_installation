@@ -2,6 +2,10 @@
 
 ## Wo finde ich die Uebersicht?
 
+**[Zentrale Tabelle mit allen 62 Werkzeugen und ihren Installationswegen](../DEVELOPMENT_TOOLS_OVERVIEW.md)**.
+Zusaetzlich zu SQLFluff/Bats/Invoke-Build sind jetzt
+[sieben GitHub-Go-Build-Adapter](development-go-tools.md) integriert.
+
 **Setup-Hauptmenue, Punkt 16: "62 Werkzeugquellen:
 Installationsvoraussetzungen pruefen"**. Alternativ im Tools-Menue (Punkt 8)
 die Zusatzschaltflaeche **"62 Quellen pruefen"** waehlen. Diese Schaltflaeche
@@ -26,7 +30,7 @@ Alle Eintraege werden ohne Download, Toolstart oder Authentifizierung bewertet:
   Diese werden nur im PATH gesucht, nicht gestartet; Versionen bleiben ungeprueft.
 - Freier Platz am vorgesehenen User-Datenpfad, verfuegbarer RAM soweit lokal
   ermittelbar und bei bereits erkanntem WSL der freie Platz von `/mnt/c`.
-- Bei den drei neuen Installern zusaetzlich passende aktuelle Python-Version
+- Bei den neuen Installern zusaetzlich passende aktuelle Python-Version
   und bei SQLFluff Auffindbarkeit von `venv`, `ensurepip` und `ssl`.
 - Abgrenzung von Projektbibliotheken, Workflow-Actions, Editor-Erweiterungen,
   Toolchains und eigenstaendigen CLIs. Kein erfundener globaler Bibliotheksdienst.
@@ -41,8 +45,8 @@ Es wird keine WSL-Distro gestartet und keine Docker-/Cluster-API angesprochen.
 
 | Ergebnis | Bedeutung | Naechster Schritt |
 |---|---|---|
-| VORPRUEFUNG OK | Einer der drei neuen Installer und lokale Basisvoraussetzungen vorhanden | Bewusst im Tools-Menue installieren; echter Lauf kann noch fehlschlagen |
-| VORAUSSETZUNGEN FEHLEN | Bei einem der drei Installer fehlen Werkzeuge, Module oder Reserven | Genannten Hinderungsgrund beheben; erneut pruefen |
+| VORPRUEFUNG OK | Einer der zehn neuen Installer und lokale Basisvoraussetzungen vorhanden | Bewusst im Tools-Menue installieren; echter Lauf kann noch fehlschlagen |
+| VORAUSSETZUNGEN FEHLEN | Bei einem der neuen Installer fehlen Werkzeuge, Opt-in, Module oder Reserven | Genannten Hinderungsgrund beheben; erneut pruefen |
 | INSTALLER VORHANDEN / PRUEFEN | Bestehender Registry-Adapter gefunden, hier nicht als neuer Source-Build verifiziert | Installationsweg und jeweilige Tool-Doku pruefen; keine GitHub-only-Zusage |
 | KEIN SETUP-INSTALLER | Quelle erfasst, aber kein fertiger Setup-Adapter vorhanden | Bericht nennt Quelle und Voraussetzungen, nicht faelschlich "installierbar" |
 | PROJEKTABHAENGIGKEIT | Beispielsweise GoogleTest oder ein JS-Projektpaket | Im konkreten Projekt pinnen/einrichten |

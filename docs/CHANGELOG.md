@@ -1,5 +1,24 @@
 # Docs Changelog
 
+## 2026-10-21 Fortsetzung: sieben echte Go-Installer und zentrale Werkzeugtabelle
+
+- Gespeicherten vorherigen Auftrag geprueft: 62er-Vorpruefung und Menue waren
+  vorhanden, aber weitere Build-Adapter fehlten tatsaechlich noch.
+- Gopls, Delve, GolangCI_Lint, Kubeconform, KubeLinter, TFLint und Terraform_Docs
+  als gepinnte GitHub-Go-Builds in Registry, Menue und Status integriert.
+- Vorhandene Go-Version am Pin pruefen, private Wegwerf-Caches, begrenzte
+  Parallelitaet, Hashnachweise, aktuelle Logs und Rollback; kein Docker,
+  System-Go-Bootstrap oder automatischer Programmstart.
+- Zentrale Tabelle mit allen 62 Quellen angelegt und in README, Tools Catalog,
+  Tool Index, Matrix und Pruefanleitung verlinkt.
+- Terraform-Setup-Action korrekt als CI-Baustein statt CLI klassifiziert;
+  noch offene Adapter nicht als fertig umgesetzt ausgegeben.
+- Gezielte Validierung: 16 Go-Lifecycle-Fixtures, 18 Pruefkatalog-Tests und
+  20 bestehende Skill-Tests erfolgreich; 44 Shell-Dateien syntaktisch geprueft.
+  Projektaudit: keine Fehler, 971 bestehende Hinweise. Ein groesserer
+  Sammellauf erreichte sein Zeitlimit und wird nicht als bestanden ausgegeben.
+  Keine echten Tool-Builds, Installationen, WSL-Aktionen oder Pushes.
+
 ## 2026-10-21 Alle 62 Quellen im Setup pruefen und Praesentation einordnen
 
 - Maschinenlesbaren Katalog mit allen 62 Quellen in zehn Stacks hinzugefuegt;

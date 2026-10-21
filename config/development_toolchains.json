@@ -236,7 +236,7 @@
       "note": "gopls ist ein Teilprojekt, kein eigener Go-Compiler",
       "id": "golang_tools",
       "source": "https://github.com/golang/tools",
-      "registry_id": null,
+      "registry_id": "gopls",
       "kind": "cli",
       "requirements": [
         [
@@ -246,8 +246,10 @@
           "go"
         ]
       ],
-      "disk_mb": 1024,
-      "ram_mb": 512
+      "disk_mb": 4096,
+      "ram_mb": 1024,
+      "go_min": "1.23.4",
+      "heavy": false
     },
     {
       "name": "Delve",
@@ -257,7 +259,7 @@
       "note": "Zugriff auf Prozessspeicher; kein oeffentlicher Debug-Port",
       "id": "delve",
       "source": "https://github.com/go-delve/delve",
-      "registry_id": null,
+      "registry_id": "delve",
       "kind": "cli",
       "requirements": [
         [
@@ -267,8 +269,10 @@
           "go"
         ]
       ],
-      "disk_mb": 1024,
-      "ram_mb": 512
+      "disk_mb": 4096,
+      "ram_mb": 1024,
+      "go_min": "1.21",
+      "heavy": false
     },
     {
       "name": "golangci-lint",
@@ -278,7 +282,7 @@
       "note": "Version und Regeln zur Go-Version passend festlegen",
       "id": "golangci_lint",
       "source": "https://github.com/golangci/golangci-lint",
-      "registry_id": null,
+      "registry_id": "golangci_lint",
       "kind": "cli",
       "requirements": [
         [
@@ -288,8 +292,10 @@
           "go"
         ]
       ],
-      "disk_mb": 1024,
-      "ram_mb": 512
+      "disk_mb": 8192,
+      "ram_mb": 2048,
+      "go_min": "1.23.0",
+      "heavy": true
     },
     {
       "name": "Actions Checkout",
@@ -1153,7 +1159,7 @@
       "note": "Schemaquellen/Downloads pinnen; keine Laufzeitgarantie",
       "id": "kubeconform",
       "source": "https://github.com/yannh/kubeconform",
-      "registry_id": null,
+      "registry_id": "kubeconform",
       "kind": "cli",
       "requirements": [
         [
@@ -1163,8 +1169,10 @@
           "go"
         ]
       ],
-      "disk_mb": 1024,
-      "ram_mb": 512
+      "disk_mb": 4096,
+      "ram_mb": 1024,
+      "go_min": "1.22",
+      "heavy": false
     },
     {
       "name": "KubeLinter",
@@ -1174,7 +1182,7 @@
       "note": "Keine vollstaendige Cluster-/Security-Pruefung",
       "id": "kubelinter",
       "source": "https://github.com/stackrox/kube-linter",
-      "registry_id": null,
+      "registry_id": "kubelinter",
       "kind": "cli",
       "requirements": [
         [
@@ -1184,8 +1192,10 @@
           "go"
         ]
       ],
-      "disk_mb": 1024,
-      "ram_mb": 512
+      "disk_mb": 8192,
+      "ram_mb": 2048,
+      "go_min": "1.22.5",
+      "heavy": true
     },
     {
       "name": "Skaffold",
@@ -1303,7 +1313,7 @@
       "note": "Plugins/Provider koennen Downloads/Codeausfuehrung bedeuten",
       "id": "tflint",
       "source": "https://github.com/terraform-linters/tflint",
-      "registry_id": null,
+      "registry_id": "tflint",
       "kind": "cli",
       "requirements": [
         [
@@ -1313,8 +1323,10 @@
           "go"
         ]
       ],
-      "disk_mb": 1024,
-      "ram_mb": 512
+      "disk_mb": 4096,
+      "ram_mb": 1024,
+      "go_min": "1.24.1",
+      "heavy": false
     },
     {
       "name": "Checkov",
@@ -1346,7 +1358,7 @@
       "note": "Schreibende Ausgabe bewusst aktivieren",
       "id": "terraform_docs",
       "source": "https://github.com/terraform-docs/terraform-docs",
-      "registry_id": null,
+      "registry_id": "terraform_docs",
       "kind": "cli",
       "requirements": [
         [
@@ -1356,8 +1368,10 @@
           "go"
         ]
       ],
-      "disk_mb": 1024,
-      "ram_mb": 512
+      "disk_mb": 4096,
+      "ram_mb": 1024,
+      "go_min": "1.23.0",
+      "heavy": false
     },
     {
       "name": "Terratest",
@@ -1389,17 +1403,14 @@
       "id": "setup_terraform_action",
       "source": "https://github.com/hashicorp/setup-terraform",
       "registry_id": null,
-      "kind": "cli",
+      "kind": "workflow",
       "requirements": [
         [
           "git"
-        ],
-        [
-          "go"
         ]
       ],
-      "disk_mb": 1024,
-      "ram_mb": 512
+      "disk_mb": 0,
+      "ram_mb": 0
     }
   ]
 }

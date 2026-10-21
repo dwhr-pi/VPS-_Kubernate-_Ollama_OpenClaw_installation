@@ -1,5 +1,9 @@
 # Tool Index
 
+**[Sprach-/Shell-/Infrastrukturwerkzeuge: zentrale 62er-Tabelle](DEVELOPMENT_TOOLS_OVERVIEW.md)**:
+Quellen, Zweck und konkreter Installer/Projektweg pro Eintrag.
+Neu: [sieben weitere GitHub-Go-Builds](tools/development-go-tools.md), nicht nur Vorpruefungen.
+
 **[62 Werkzeugquellen: Vorpruefung direkt im Setup](tools/development-toolchain-check.md)**:
 Hauptmenue 16 oder Zusatzschaltflaeche im Tools-Menue 8; fehlende Voraussetzungen,
 echte Adapter und Projekt-/CI-Bausteine unterscheiden. Die vorhandene

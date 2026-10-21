@@ -5,6 +5,10 @@ Konkrete Umsetzung: [Skill, Go-/Rust-CI, Deployment und Praesentation](manus-ci-
 **Im Setup pruefbar:** [Alle 62 Quellen: Voraussetzungen und Installer](../tools/development-toolchain-check.md),
 Hauptmenue 16 oder Zusatzschaltflaeche im Tools-Menue 8.
 
+**Direkte Werkzeugtabelle:** [alle 62 Eintraege mit konkretem Setup-/Projektweg](../DEVELOPMENT_TOOLS_OVERVIEW.md).
+Jetzt auch [sieben weitere echte GitHub-Go-Build-Installer](../tools/development-go-tools.md),
+statt diese CLIs nur als TODO im Quellenkatalog stehen zu lassen.
+
 **Sinn und Zweck:** Die passenden lokalen Pruefwerkzeuge fuer ein konkretes
 Agentenprojekt finden, statt jede Sprache und jede Infrastruktur zu installieren.
 Diese Ergaenzung ordnet die **62 GitHub-Repositories** aus der neuen Nutzerquelle

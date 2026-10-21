@@ -115,12 +115,14 @@ aber weiterhin nicht als installierbar ausgegeben.
 | GoogleTest, Catch2, pgTAP, Terratest | Projekt-/Datenbankbibliotheken, keine pauschale globale Installation |
 | Actions Checkout/Setup Go/Setup Terraform sowie Docker-CI-Actions | Workflow-Bausteine, keine lokalen Programme; Beispiele bleiben inaktiv |
 | Docker CLI/Compose/Buildx/BuildKit, kind, Skaffold, GitOps-Controller | Keine automatische Runtime-, Cluster- oder Dienstbereitstellung |
-| Delve, golangci-lint, gopls, rust-analyzer, BashDB, Pester, PSScriptAnalyzer, Hadolint, Kubeconform, KubeLinter, TFLint, Checkov, terraform-docs, Flyway, terraform-ls | Sinnvolle weitere CLI-Kandidaten, aber eigene Pin-/Build-/Lifecycle-Integration und Tests noch TODO |
+| Delve, golangci-lint, gopls, Kubeconform, KubeLinter, TFLint, terraform-docs | [Jetzt als sieben echte GitHub-Go-Builds integriert](development-go-tools.md), einschliesslich Doctor/Uninstall |
+| rust-analyzer, BashDB, Pester, PSScriptAnalyzer, Hadolint, Checkov, Flyway, terraform-ls | Weitere CLI-Kandidaten; eigene Build-/Lifecycle-Integration noch offen |
 | Terraform und OpenTofu | Lizenz-/State-Grenzen beibehalten; kein automatisches Infrastruktur-Upgrade |
 | VS-Code-PowerShell | Editor-Erweiterung, nicht ungefragt im Editor aktivieren |
 
-Damit sind nicht alle 62 Quellen als neue Installer umgesetzt. Die neuen
-drei Werkzeuge sind separat nutzbar; der restliche Katalog bleibt transparent
-als vorhandene Integration, Projektabhaengigkeit, Referenz oder TODO markiert.
+Damit sind nicht alle 62 Quellen als neue Installer umgesetzt. Neben den hier
+beschriebenen drei Werkzeugen sind jetzt sieben Go-Builds integriert.
+Die [zentrale 62er-Tabelle](../DEVELOPMENT_TOOLS_OVERVIEW.md) zeigt pro Quelle
+den echten Installations-/Projektweg und weiterhin offene Integrationen.
 Bei dieser Aenderung wurden keine Werkzeuge installiert, kein Livebuild
 durchgefuehrt und weder WSL noch Docker oder Cloud angesprochen.

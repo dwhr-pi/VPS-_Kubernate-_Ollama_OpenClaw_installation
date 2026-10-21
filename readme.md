@@ -18,6 +18,9 @@ Dokumentation
 
 ## Aktuelle Governance-Dokumente
 
+- [Alle 62 Werkzeuge mit konkretem Installations-/Projektweg](docs/DEVELOPMENT_TOOLS_OVERVIEW.md).
+- [Sieben weitere GitHub-Go-Build-Installer](docs/tools/development-go-tools.md): Gopls, Delve, GolangCI_Lint, Kubeconform, KubeLinter, TFLint und Terraform_Docs.
+
 - [62 Sprach-/Shell-/Infrastrukturquellen im Setup pruefen](docs/tools/development-toolchain-check.md): Hauptmenue 16 oder Zusatzschaltflaeche im Tools-Menue 8.
 - [Neue Tools: SQLFluff, Bats_Core und Invoke_Build](docs/tools/language-quality-tools.md), auch in der [Tools-Gesamtuebersicht](docs/TOOLS_CATALOG.md).
 - [Technologie-/Tooling-Praesentation](docs/presentations/technology-tooling-overview.pptx) und [textliche Folienzuordnung](docs/tools/development-toolchain-check.md#praesentation-mit-eingearbeitet).
