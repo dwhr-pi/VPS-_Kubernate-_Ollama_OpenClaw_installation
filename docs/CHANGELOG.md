@@ -1,5 +1,14 @@
 # Docs Changelog
 
+## 2026-10-22 Webinar-Werkzeuge als native GitHub-Releaseinstaller
+
+- Marp CLI 4.5.1, listmonk 6.2.0 und Mautic 7.2.1 im Tools-Menue/Registry
+  mit SHA256-geprueften offiziellen Releasepaketen statt Docker aufgenommen.
+- Plattformwahl, Download-/Entpacklimits, privater Programmordner, aktuelles
+  Operationslog, Hashinventar, Status/Doctor und geschuetzte Deinstallation.
+- Keine automatischen DB-/SMTP-/PHP-/Webserver-/Cron-/Kampagnenaktionen;
+  Anwendungspakete sind nicht gleich eingerichtete Marketingdienste.
+
 ## 2026-10-22 Anpassbare Video-Rezepte vor der Generierung
 
 - Arcads-/Umnik-Nutzerquellen mit Abrufluecken und GitHub-Toolstack dokumentiert;

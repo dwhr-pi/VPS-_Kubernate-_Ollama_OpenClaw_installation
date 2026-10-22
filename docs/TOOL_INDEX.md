@@ -1,5 +1,9 @@
 # Tool Index
 
+**[Marp / Listmonk / Mautic](tools/webinar-tools.md)**: installierbare gepinnte
+GitHub-Releasepakete ohne Docker. Programmdateien und konfigurierte Dienste
+werden ausdruecklich unterschieden.
+
 **[Media Workflow Plan](media_studio/EDITABLE_VIDEO_WORKFLOWS.md)**:
 tools/media_workflow/plan.py prueft editierbare Video-Rezepte offline.
 Kein Menue-Installer, Renderworker oder generierter Film.

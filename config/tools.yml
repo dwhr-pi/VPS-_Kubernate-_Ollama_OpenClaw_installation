@@ -3,6 +3,42 @@
   "description": "Zentrale Tool-Registry. Dateiname .yml, Inhalt absichtlich als JSON-kompatibles YAML fuer einfache Bash/Python-Auswertung.",
   "tools": [
     {
+      "id": "marp", "name": "Marp", "category": "Webinar / Presentations",
+      "source": "https://github.com/marp-team/marp-cli", "version": "4.5.1",
+      "status": "experimental", "auto_install": false, "install_mode": "github-release",
+      "resource_class": "light", "risk": "medium", "license": "MIT", "ports": [],
+      "install_script": "scripts/tools/marp_install.sh", "update_script": "scripts/tools/marp_update.sh",
+      "uninstall_script": "scripts/tools/marp_uninstall.sh", "doctor_script": "scripts/tools/marp_doctor.sh",
+      "check_type": "path", "check_value": "~/.openclaw_ultimate_user_data/tools/marp/release-ready.json",
+      "doc": "docs/tools/webinar-tools.md",
+      "description": "Marp CLI 4.5.1 aus offiziellem SHA256-geprueftem GitHub-Release; kein Node/npm oder Docker erforderlich.",
+      "security_note": "Nur privates Programm; Browser fuer PDF/PPTX separat. Kein globaler PATH oder Server. Update bleibt gepinnt."
+    },
+    {
+      "id": "listmonk", "name": "Listmonk", "category": "Webinar / Marketing",
+      "source": "https://github.com/knadh/listmonk", "version": "6.2.0",
+      "status": "experimental", "auto_install": false, "install_mode": "github-release",
+      "resource_class": "medium", "risk": "high", "license": "AGPL-3.0", "ports": [],
+      "install_script": "scripts/tools/listmonk_install.sh", "update_script": "scripts/tools/listmonk_update.sh",
+      "uninstall_script": "scripts/tools/listmonk_uninstall.sh", "doctor_script": "scripts/tools/listmonk_doctor.sh",
+      "check_type": "path", "check_value": "~/.openclaw_ultimate_user_data/tools/listmonk/release-ready.json",
+      "doc": "docs/tools/webinar-tools.md",
+      "description": "Native listmonk-Binary aus offiziellem SHA256-geprueftem GitHub-Release, ohne Docker.",
+      "security_note": "PostgreSQL/SMTP/Consent separat; keine DB-Initialisierung, Dienstaktivierung oder Kampagne. Beta wird nicht automatisch gewaehlt."
+    },
+    {
+      "id": "mautic", "name": "Mautic", "category": "Webinar / Marketing",
+      "source": "https://github.com/mautic/mautic", "version": "7.2.1",
+      "status": "experimental", "auto_install": false, "install_mode": "github-release",
+      "resource_class": "medium", "risk": "high", "license": "GPL-3.0-or-later", "ports": [],
+      "install_script": "scripts/tools/mautic_install.sh", "update_script": "scripts/tools/mautic_update.sh",
+      "uninstall_script": "scripts/tools/mautic_uninstall.sh", "doctor_script": "scripts/tools/mautic_doctor.sh",
+      "check_type": "path", "check_value": "~/.openclaw_ultimate_user_data/tools/mautic/release-ready.json",
+      "doc": "docs/tools/webinar-tools.md",
+      "description": "Vollstaendiges Mautic-Releasepaket inklusive vendor von GitHub, SHA256-geprueft, kein Docker/Composer-Build.",
+      "security_note": "Nur Anwendungsdateien. PHP/DB/Webserver/SMTP separat pruefen und konfigurieren; keine Migration, Cronjobs oder Mailaktionen."
+    },
+    {
       "id": "gopls",
       "name": "Gopls",
       "source": "https://github.com/golang/tools.git",

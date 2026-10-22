@@ -1,5 +1,9 @@
 # Tools Catalog
 
+**[Marp, listmonk und Mautic](tools/webinar-tools.md)**: eigene GitHub-Release-
+Installer ohne Docker im Tools-Menue; SHA256, Status/Doctor, Rollback und
+geschuetzte Deinstallation. Kein Datenbank-, Webserver- oder Kampagnenstart.
+
 **[Bearbeitbare Video-Workflows](media_studio/EDITABLE_VIDEO_WORKFLOWS.md)**:
 UGC-/Foto-Rezepte und Standardbibliothek-Planer ohne API, GPU oder Docker.
 Storyboard/Freigabe/Renderadapter getrennt; keine fertige Arcads-/Umnik-Kopie.
