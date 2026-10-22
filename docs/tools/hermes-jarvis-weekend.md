@@ -14,6 +14,18 @@ keine automatische Migration ihrer Daten oder Schluessel.
 
 ## Quelle und Pruefumfang
 
+Ergaenzung: [JARVIS-Dashboard mit Sprache und sicherer Einrichtung](jarvis-hermes-dashboard.md)
+ordnet das weitere Instagram-Reel ein: GitHub-Source-Weg, SSH-/OAuth-Grenzen,
+Browser-Voice, ElevenLabs, Freigaben und ein wiederverwendbarer Setup-Prompt.
+Keine automatische Installation oder Filmstimmen-Uebernahme.
+Der [30-Minuten-Express-Arbeitsplan](jarvis-hermes-dashboard.md#jarvis-in-30-minuten-express-setup-als-arbeitsplan)
+fasst Voraussetzungen, Etappen und die gepruefte Uebergabe zusammen;
+Zeitfenster sind keine Fertigstellungszusage.
+
+Die [zusaetzliche Till-Schaefer-Quelle](jarvis-hermes-dashboard.md#weitere-quelle-till-schaefer)
+ist ebenfalls eingeordnet: Hermes-Anleitung statt belegtem eigenem
+Jarvis-Repository, mit getrennten Cloud-/Memory- und Sicherheitsgrenzen.
+
 - Nutzerquelle: [Instagram-Reel von @alan.buildz](https://www.instagram.com/reel/Dc4WnCDtbsm/).
   Der eingefuegte Text nennt Alan Langhammer und den 04.09.2026. Der direkte
   Reel-Abruf war gedrosselt; Urheberschaft, Datum und Video-Inhalt wurden

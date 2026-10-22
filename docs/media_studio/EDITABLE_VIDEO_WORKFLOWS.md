@@ -60,6 +60,84 @@ gepruefte Releases/Commits verwenden, isolierte Umgebungen vorsehen und
 vorhandene Paketstaende nicht ungefragt aktualisieren. **Dieser Beitrag
 installiert keine Tools, Gewichte, Custom Nodes oder Treiber.**
 
+## Architektur: drei getrennte Ebenen
+
+```text
+1. Bedienung: Rezeptdatei / ComfyUI-Oberflaeche / spaeter eigenes Formular
+      -> Eingaben bearbeiten und als neue Revision pruefen
+2. Steuerung: Mensch, optional Agent / OpenMontage / Node-RED
+      -> Arbeitsschritte planen, Freigaben und Ressourcen kontrollieren
+3. Verarbeitung: ComfyUI + passendes Videomodell, optional TTS/LipSync
+      -> einzelne Clips erzeugen -> FFmpeg oder optionale Komposition
+```
+
+Diese Grafik ist eine **Zielarchitektur**, keine bereits verbundene App.
+Der [Offline-Planer](../../tools/media_workflow/plan.py) prueft heute nur
+Rezeptdaten. [OpenMontage](../tools/openmontage.md) ist separat integrierbar;
+es ersetzt weder das Videomodell noch einen noch fehlenden Rezept-Adapter.
+Ein Coding-Agent kann beim Vorbereiten helfen, ist aber keine Voraussetzung
+fuer den manuellen Ablauf. Keine dieser Ebenen verlangt grundsaetzlich Docker.
+
+Der MiniPC kann Briefing und Bedienoberflaeche uebernehmen, waehrend der
+RTX-Rechner spaeter rendert. Diese Aufteilung benoetigt eine bewusst
+eingerichtete, zugriffsgeschuetzte Verbindung und Dateifreigabe; der Planer
+uebertraegt nichts. Kein ComfyUI-Port sollte dafuer ungeschuetzt ins Internet.
+
+### Welche Einstellungen lassen sich vorher aendern?
+
+Die Feldnamen beziehen sich auf die beiden vorhandenen JSON-Beispiele,
+nicht auf eine behauptete Arcads- oder Umnik-Schnittstelle.
+
+| Wunsch | Im jetzigen Rezept | Was noch separat erforderlich ist |
+|---|---|---|
+| Werbetext, Hook, Sprache | `script` als Freitext | Textpruefung; ein Sprachwahlfeld ist nicht implementiert |
+| Produktfoto oder Avatar | `scenes[].source` | Eigene Datei bereitstellen; Upload, Rechte und Bildinhalt werden nicht automatisch geprueft |
+| Statische Szene, Fotoanimation oder sprechender Avatar | `scenes[].kind` | Passender Graph/Adapter; die Auswahl allein startet kein Modell |
+| Bewegung, Kamera und Stil | `scenes[].prompt` | Modellabhaengige Umsetzung; ein Textwunsch garantiert keine exakte Kamerafahrt |
+| Zufallsstart | `seed` | Gleicher Seed allein garantiert bei anderem Modell/Graph keine identische Ausgabe |
+| Szenenreihenfolge und Dauer | Reihenfolge in `scenes`, jeweils `seconds` | Audiolaenge messen und beim spaeteren Schnitt abstimmen |
+| Seitenformat und Bildrate | `canvas.width`, `canvas.height`, `canvas.fps` | Unterstuetzte Modellabmessungen pruefen; Rezeptvalidierung ist keine GPU-Kompatibilitaetspruefung |
+| Kein Ton, eigene Aufnahme oder TTS | `audio.mode`, dazu `source` oder `voice_ref` | Datei bzw. freigegebene Stimme und separater Audio-Adapter |
+| Musik, Untertitel, Uebergaenge, Exportcodec | Noch keine eigenen Rezeptfelder | In Montage/Schnitt konfigurieren; nicht als bereits unterstuetzte JSON-Felder erfinden |
+
+### Bedienablauf: erst bearbeiten, dann bewusst rechnen lassen
+
+1. Ein Beispielrezept als eigenes Projekt vorbereiten und nur eigene oder
+   freigegebene Medien referenzieren. Zunaechst kurze Szenen planen.
+2. Text, Bildreferenzen, Bewegung, Ton und Dauer bearbeiten. Den unten
+   beschriebenen Offline-Planer ausfuehren und offene Punkte lesen.
+3. Storyboard und vorhandene Medien manuell ansehen. Eine **generierte**
+   Audio-/Videovorschau ist bereits ein eigener Inferenzauftrag und braucht
+   Ressourcen und Freigabe; sie ist nicht Teil der Offline-Pruefung.
+4. Fuer einen spaeter implementierten Renderpfad genau die gepruefte Revision
+   samt Assets, Modell und Graph freigeben. Nach Aenderungen erneut pruefen.
+5. Clips nacheinander erzeugen, ansehen und erst danach montieren/exportieren.
+   Keine automatische Veroeffentlichung oder Wiederholung ohne Limit.
+
+**Heute sofort nutzbar:** Rezept bearbeiten und offline pruefen. **Manuell
+moeglich bei separat eingerichteten Tools:** ComfyUI-Graph bedienen und Clips
+montieren. **Noch zu entwickeln:** ein gemeinsames Formular mit sicherer
+Queue, Freigabe und durchgaengigem Render-Adapter. Der Eintrag im Tools-Menue
+allein bedeutet nicht, dass diese Gesamtintegration bereits funktioniert.
+
+### Briefing fuer einen Coding-Agenten ohne Renderfreigabe
+
+```text
+Plane ein kurzes Video anhand meines Angebots und meiner freigegebenen Assets.
+Nutze examples/media-workflow/ugc-ad.json oder photo-trend.json als Schema.
+Liefere zuerst Skript, Szenenplan und einen passenden JSON-Rezeptentwurf.
+Kennzeichne fehlende Assets, Lizenzen und noch nicht implementierte Einstellungen.
+Keine erfundenen Testimonials, Produktmerkmale oder Identitaetsgarantien.
+Fuehre hoechstens die lokale Offline-Rezeptpruefung aus.
+Keine Installation, Modellabfrage, Vorschaugenerierung, Queue-Einreichung,
+Cloud-Uebertragung oder Veroeffentlichung. Warte auf meine separate Freigabe.
+```
+
+Ein solcher Prompt ist eine Arbeitsanweisung, keine technische Sandbox.
+Zugriffsrechte, Netzwerkregeln und Joblimits muessen ausserhalb des Prompts
+durchgesetzt werden. Lokale Verarbeitung spart moegliche API-Gebuehren,
+aber nicht Strom, Speicherplatz, Einrichtungszeit oder Lizenzpruefungen.
+
 ## Zwei bearbeitbare Rezepte
 
 ### A. UGC-/Produktwerbung nach dem Arcads-Prinzip

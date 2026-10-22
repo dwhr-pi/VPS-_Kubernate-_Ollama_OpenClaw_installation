@@ -2,6 +2,12 @@
 
 Workflow-Dokument fuer video pipeline. Nutzt Character Library, Voice Studio, Avatar Studio, Job Queue und manuelle Freigabe.
 
+Fuer einen konkreten, vor der Generierung bearbeitbaren Ablauf siehe
+[Editierbare Video-Workflows](EDITABLE_VIDEO_WORKFLOWS.md): Arcads-/Umnik-
+Einordnung, Architektur, Eingabefelder, zwei Beispielrezepte und Offline-Pruefung.
+Die dort beschriebenen offenen Adapter und Freigaben sind kein bereits
+automatisch verbundener Renderdienst.
+
 ## Ressourcenklassen
 
 | Klasse | CPU | RAM | VRAM | Speicherplatz | Nutzung |

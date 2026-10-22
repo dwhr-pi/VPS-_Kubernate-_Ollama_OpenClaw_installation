@@ -8,6 +8,7 @@ ROOT = Path(__file__).resolve().parents[1]
 GUIDE = ROOT / "docs/tools/hermes-jarvis-weekend.md"
 SKILL = ROOT / "skills/kundenanfrage-entwurf/SKILL.md"
 BRIEF = ROOT / "examples/hermes-jarvis/briefing.md"
+DASHBOARD = ROOT / "docs/tools/jarvis-hermes-dashboard.md"
 
 
 class HermesJarvisDocsTests(unittest.TestCase):
@@ -20,7 +21,7 @@ class HermesJarvisDocsTests(unittest.TestCase):
             self.assertIn(text, doc)
 
     def test_local_links_resolve(self):
-        for path in (GUIDE, SKILL, BRIEF):
+        for path in (GUIDE, SKILL, BRIEF, DASHBOARD):
             for target in re.findall(r"\]\(([^)]+)\)", path.read_text(encoding="utf-8")):
                 if not target.startswith(("https://", "http://", "#")):
                     self.assertTrue((path.parent / target.split("#")[0]).resolve().exists(), (path, target))
@@ -56,10 +57,38 @@ class HermesJarvisDocsTests(unittest.TestCase):
             self.assertIn(text, brief)
 
     def test_fences_and_no_credential_samples(self):
-        for path in (GUIDE, SKILL, BRIEF):
+        for path in (GUIDE, SKILL, BRIEF, DASHBOARD):
             text = path.read_text(encoding="utf-8")
             self.assertEqual(len(re.findall(r"^```", text, re.M)) % 2, 0)
             self.assertNotRegex(text, r"TELEGRAM_BOT_TOKEN=\d+:|API_SERVER_KEY=\S+|sk-[a-zA-Z0-9]{15,}")
+
+    def test_dashboard_source_scope_and_secret_boundaries(self):
+        doc = DASHBOARD.read_text(encoding="utf-8")
+        for text in ("https://www.instagram.com/reel/DdJaffWsN-4/", "gedrosselt",
+                     "ungepruefte Nutzerquelle", "Keine Audiodateien",
+                     "private Schluessel", "kein bereits vorhandenes JARVIS-Dashboard",
+                     "keine Zusicherung", "kein Beleg fuer mehrere aktive Agenten",
+                     "https://learn.chatgpt.com/docs/auth", "voice-cloning/instant-voice-cloning"):
+            self.assertIn(text, doc)
+        self.assertIn("jarvis-hermes-dashboard.md", GUIDE.read_text(encoding="utf-8"))
+
+    def test_express_setup_has_bounded_plan_and_honest_handover(self):
+        doc = DASHBOARD.read_text(encoding="utf-8")
+        for text in ("## Jarvis in 30 Minuten: Express-Setup als Arbeitsplan",
+                     "keine gemessenen", "Minute 0-10", "Minute 10-20",
+                     "Minute 20-30", "Private Schluessel bleiben auf dem Client",
+                     "Das Drive-Paket ist\nkeine Voraussetzung",
+                     "### Erwartete Uebergabe", "keinen Installer"):
+            self.assertIn(text, doc)
+
+    def test_till_source_not_mistaken_for_installable_repository(self):
+        doc = DASHBOARD.read_text(encoding="utf-8")
+        for text in ("https://till-schaefer.de/github/jarvis",
+                     "https://github.com/till-schaefer/jarvis", "**404**",
+                     "kein verifizierter Schnellstart", "Supabase und Voyage AI",
+                     "Prompt-Verbot ist keine Zugriffskontrolle",
+                     "keine Datenbank angelegt"):
+            self.assertIn(text, doc)
 
 
 if __name__ == "__main__":

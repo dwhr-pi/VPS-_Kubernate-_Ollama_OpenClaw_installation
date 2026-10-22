@@ -1,5 +1,37 @@
 # Docs Changelog
 
+## 2026-10-22 Till-Schaefer-Jarvis-Quelle geprueft
+
+- Erreichbare Hermes-Anleitung mit Quellenlink und Bezug zum bestehenden
+  Jarvis-Leitfaden dokumentiert; angebliches eigenes Repository liefert 404.
+- Unbelegte Python-Schnellstartbefehle nicht uebernommen. Externe Dienste,
+  Memory-Erweiterung und Freigaben von lokaler Datenhaltung unterschieden.
+- Keine Installation, SQL-/Cloud-Aktion oder Automation ausgefuehrt.
+
+## 2026-10-22 JARVIS-Express-Anleitung ergaenzt
+
+- Nachgereichte 30-Minuten-Vorlage in den vorhandenen Hermes-Leitfaden
+  eingeordnet: Voraussetzungen, Planungsfenster und gepruefte Uebergabe.
+- Dashboard, Kanaele und Autostart nicht als garantiert fertig ausgegeben;
+  private Schluessel und ungepruefte Stimmenpakete bleiben ausgeschlossen.
+- Nur Dokumentation, kein Installations- oder Kontoauftrag ausgefuehrt.
+
+## 2026-10-22 JARVIS-Dashboard und Sprache mit Hermes
+
+- Weiteres Instagram-Reel mit Abrufgrenze, GitHub-Source-Weg, Architektur,
+  sicherem Setup-Prompt und Abnahme fuer Browser-/Sprachbetrieb eingeordnet.
+- Keine Schluessel im Chat, keine garantierte Abo-/Modellverfuegbarkeit,
+  keine ungepruefte Filmstimmenkopie oder pauschale Rausch-Empfehlung.
+- Keine Installation, Kontoanbindung, Audio-Uebertragung oder Dienstaktivierung.
+
+## 2026-10-22 Bearbeitbaren Videoablauf konkretisiert
+
+- Arcads-/Umnik-Anleitung um drei Architekturebenen, vorhandene Rezeptfelder,
+  Bedienablauf und ein begrenztes Coding-Agent-Briefing ergaenzt.
+- Offline-Pruefung, kostenpflichtige/rechenintensive Vorschau und spaeterer
+  Renderpfad getrennt; fehlende Adapter und MiniPC-/RTX-Verbindung benannt.
+- Aus der Video-Pipeline verlinkt; keine Installation oder Generierung gestartet.
+
 ## 2026-10-22 OpenMontage aus GitHub integrieren
 
 - Gepinnter GitHub-Kerninstaller mit privater Python-venv, Wheel-Installation,

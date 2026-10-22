@@ -8,6 +8,9 @@ OpenClaw-Migration, Kontoverbindung oder Erweiterung der Jarvis-Core-Rechte.
 
 ## Rollen
 
+[Dashboard- und Sprachkonzept mit Hermes](../tools/jarvis-hermes-dashboard.md):
+sicherer Einrichtungsablauf und Briefing, kein bereits gestarteter Dienst.
+
 Coding-Erweiterungen werden **nicht in Jarvis eingebaut**, sondern als
 [getrennte Profile](coding-agent-profiles.md) vorbereitet: Claude-Code-Agent,
 Gemini-Code-Agent und Ollama-Coder. Jarvis-Core waehlt nur die Rolle;
