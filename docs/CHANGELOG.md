@@ -1,5 +1,18 @@
 # Docs Changelog
 
+## 2026-10-22 Claude-Interview und Qwen-Desktop-/Ollama-Leitfaden
+
+- Eigenen Claude-Bereich mit Quellen, Go-Kurzworkflow und fehlenden
+  Zehn-Folien-/Skill-Originalen ergaenzt; keine interne Sandbox vorgetaeuscht.
+- break-system-packages nicht als Installer-Standard uebernommen;
+  private Umgebungen und konkrete Pruefgrenzen dokumentiert.
+- Windows-Leitfaden fuer separat installierten Claude Code mit lokalem
+  Ollama, temporaeren Prozessvariablen und Wiederherstellung ergaenzt.
+- Qwen Desktop, Qwen-Modell, Claude-Code-Client und ant klar getrennt;
+  widerspruechliche Upstream-Angaben zu Toolwahl/Modellpicker benannt.
+- Keine Installation, WSL-/Firewall-Aenderung, Modellanfrage, aktive CI,
+  globale Skill-Aktivierung oder GitHub-Veroeffentlichung.
+
 ## 2026-10-22 Qwen-Interview: Quellen und Beispielreview
 
 - Eigenen Bereich mit Qwen-Code-/Desktop-Verweisen und Quellenabgleich ergaenzt;

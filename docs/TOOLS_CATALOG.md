@@ -1,5 +1,9 @@
 # Tools Catalog
 
+**[Claude-AI-Interview: Quellen und lokale Coding-Clients](tutorials/claude-development-tooling.md)**:
+Werkzeug-/Artefaktabgleich und [Windows-Leitfaden fuer Qwen Desktop, Claude Code und Ollama](tutorials/qwen-desktop-claude-local.md).
+Getrennte Clients, temporaere Prozessvariablen und klare Lizenz-/Funktionsgrenzen.
+
 **[Qwen AI: Interview und Review der Entwicklungsbeispiele](tutorials/qwen-development-tooling.md)**:
 Quellenkorrekturen, vorhandene Qwen-Code-/Desktop-Wege, CI-/Containerbefunde
 und neun HTML-Folien als mitgelieferter Quelltext, nicht als gepruefte Runtime.

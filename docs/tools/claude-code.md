@@ -1,5 +1,8 @@
 # Claude Code: Coding-Agent, GitHub und Open-Source-Grenze
 
+Ergaenzung: [Claude-Interview](../tutorials/claude-development-tooling.md) und
+[Qwen Desktop / Claude Code mit lokalen Modellen unter Windows](../tutorials/qwen-desktop-claude-local.md).
+
 **Claude Code ist der Coding-Agent mit dem Befehl `claude`:** Er kann Code
 lesen, Dateien bearbeiten, Tests und Terminalwerkzeuge verwenden.
 Ein API-Client wie `ant` ist nicht dasselbe Produkt.

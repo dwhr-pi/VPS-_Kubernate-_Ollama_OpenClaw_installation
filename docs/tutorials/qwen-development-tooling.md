@@ -1,5 +1,8 @@
 # Qwen-AI-Interview: Entwicklungswerkzeuge, Quellen und Beispielpruefung
 
+Weiterfuehrend: [Claude-Interview](claude-development-tooling.md) und
+[Qwen Desktop, Claude Code und lokale Modelle unter Windows](qwen-desktop-claude-local.md).
+
 Stand: **22.10.2026**. Grundlage ist das vom Nutzer bereitgestellte Qwen-Interview.
 Eigener Bereich neben [Gemini](gemini-development-tooling.md),
 [Perplexity](perplexity-development-tooling.md), [Grok](grok-development-tooling.md),

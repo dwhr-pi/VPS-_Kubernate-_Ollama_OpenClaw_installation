@@ -1,5 +1,9 @@
 # Tool Index
 
+**[Claude-Interview und Qwen-Desktop-Anbindung](tutorials/claude-development-tooling.md)**:
+Quellen, fehlende Originalartefakte und lokaler Windows-Testweg fuer einen
+separaten Claude-Code-Client; keine eingebettete Desktop-Integration vorgetaeuscht.
+
 **[Qwen-Interview: Toolauswahl, Quellen und Beispielgrenzen](tutorials/qwen-development-tooling.md)**:
 Go-/Rust-CI, Backup-/Container-/Kubernetes-Befunde und bestehende Repository-Skills;
 keine neue Qwen-Installation, globale Skill-Aktivierung oder Cloud-Veroeffentlichung.

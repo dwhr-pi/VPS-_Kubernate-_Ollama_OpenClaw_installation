@@ -1,5 +1,8 @@
 # Qwen Desktop unter Windows: der richtige Einstieg
 
+Neu: [Claude Code und lokale Modelle parallel zu Qwen Desktop nutzen](../tutorials/qwen-desktop-claude-local.md).
+Separater Client, keine vollstaendige eingebettete Claude-Code-Integration nachgewiesen.
+
 Ergaenzung: [Qwen-Interview, Toolquellen und Beispielpruefung](../tutorials/qwen-development-tooling.md).
 
 Optional: [REA als separat freizugebender MCP-Baustein](rea.md#4-windows-und-qwen-code-desktop)
