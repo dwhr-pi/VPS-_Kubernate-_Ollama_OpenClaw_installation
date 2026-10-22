@@ -1,5 +1,18 @@
 # Docs Changelog
 
+## 2026-10-22 ChatGPT-Interview: Quellen, Plattformen und Nachweise
+
+- Eigenen Bereich mit allen 90 eindeutigen GitHub-Repository-URLs ohne
+  Trackingparameter und zugehoeriger Quellen-Fixture ergaenzt.
+- Behauptete Sandbox/PATH-Checks und fehlende PPTX-/ZIP-Originale nicht
+  mit vorhandenen Artefakten oder lokalen Erfolgen gleichgesetzt.
+- Piper-Entwicklungswechsel/Lizenzgrenze, Demucs-Archivierung, Prisma-Redirect,
+  FFmpeg-Mirror und DCGM-Voraussetzungen dokumentiert.
+- Kleines SQL-Konfigurationsbeispiel nur in SQLite-In-Memory getestet;
+  keine Live-Modellstatusabfrage oder SQL-Server-Installation.
+- Plattformmatrix und bestehende Skills wiederverwendet; keine neuen
+  Installer, WSL-Aktion, aktive CI, Modellabfrage oder Veroeffentlichung.
+
 ## 2026-10-22 Claude-Interview und Qwen-Desktop-/Ollama-Leitfaden
 
 - Eigenen Claude-Bereich mit Quellen, Go-Kurzworkflow und fehlenden

@@ -1,5 +1,9 @@
 # Tool Index
 
+**[ChatGPT: Interview und Quellenkatalog](tutorials/chatgpt-development-tooling.md)**:
+vollstaendige deduplizierte Herkunftsliste, Code-/CI-Grenzen, Plattformmatrix
+und vorhandene Skills statt neuer Masseninstallation.
+
 **[Claude-Interview und Qwen-Desktop-Anbindung](tutorials/claude-development-tooling.md)**:
 Quellen, fehlende Originalartefakte und lokaler Windows-Testweg fuer einen
 separaten Claude-Code-Client; keine eingebettete Desktop-Integration vorgetaeuscht.

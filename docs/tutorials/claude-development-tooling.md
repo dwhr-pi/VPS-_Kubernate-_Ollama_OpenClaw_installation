@@ -1,5 +1,7 @@
 # Claude-AI-Interview: Werkzeugquellen und lokale Coding-Clients
 
+Weiterer Interview-Abgleich: [ChatGPT](chatgpt-development-tooling.md).
+
 Stand: **22.10.2026**. Grundlage ist das vom Nutzer bereitgestellte Claude-
 Interview. Eigener Bereich neben [Qwen](qwen-development-tooling.md),
 [Gemini](gemini-development-tooling.md), [Perplexity](perplexity-development-tooling.md),

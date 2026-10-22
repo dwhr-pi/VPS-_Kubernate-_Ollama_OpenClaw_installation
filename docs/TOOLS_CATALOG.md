@@ -1,5 +1,10 @@
 # Tools Catalog
 
+**[ChatGPT-Interview: Entwicklungswerkzeuge und Nachweise](tutorials/chatgpt-development-tooling.md)**:
+90 [GitHub-Quellen zum Nachlesen](tutorials/chatgpt-tooling-sources.md),
+Wartungs-/Lizenzkorrekturen, Plattformmatrix und isoliert getestetes SQL-Beispiel.
+Keine neue ChatGPT-Installation oder vorgetaeuschte PPTX-/Skill-Datei.
+
 **[Claude-AI-Interview: Quellen und lokale Coding-Clients](tutorials/claude-development-tooling.md)**:
 Werkzeug-/Artefaktabgleich und [Windows-Leitfaden fuer Qwen Desktop, Claude Code und Ollama](tutorials/qwen-desktop-claude-local.md).
 Getrennte Clients, temporaere Prozessvariablen und klare Lizenz-/Funktionsgrenzen.
