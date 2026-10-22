@@ -1,5 +1,8 @@
 # STREAMING PIPELINE
 
+[Webinar-Gesamtleitfaden](../tutorials/webinar-stack.md): OBS-Ausgangssignal,
+Streamingbackend, interaktive Konferenz und transparentes Replay unterscheiden.
+
 Workflow-Dokument fuer streaming pipeline. Nutzt Character Library, Voice Studio, Avatar Studio, Job Queue und manuelle Freigabe.
 
 ## Ressourcenklassen

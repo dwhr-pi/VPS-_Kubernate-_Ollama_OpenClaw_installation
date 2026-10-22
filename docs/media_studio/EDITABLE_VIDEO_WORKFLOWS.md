@@ -1,5 +1,9 @@
 # Video-Workflows vor dem Rendern bearbeiten
 
+[OpenMontage](../tools/openmontage.md) ergaenzt Produktionsplanung und
+optionale Komposition. Eigener Kerninstaller ohne Docker; keine automatisch
+fertige Anbindung dieses Rezeptplaners an OpenMontage oder ComfyUI.
+
 Stand: **22.10.2026**. Arcads-/Umnik-Nutzerquellen, lokale Umsetzung und
 ausfuehrbarer **Offline-Planer**, keine fertige Videogenerierungs-App.
 

@@ -1,5 +1,12 @@
 # Tool Index
 
+**[OpenMontage](tools/openmontage.md)**: GitHub-Commit plus Python-Kernumgebung
+installierbar, kein Docker. Remotion optional; HyperFrames nicht automatisch
+installiert. Status/Doctor unterscheiden Kernpakete von Renderbereitschaft.
+
+**[Webinar-Gesamtleitfaden](tutorials/webinar-stack.md)**: Zweck, Open-Source-
+Quellen, fuenf Phasen, Ubuntu-/Windows-Installationspfad und ehrliche Betriebsgrenzen.
+
 **[Marp / Listmonk / Mautic](tools/webinar-tools.md)**: installierbare gepinnte
 GitHub-Releasepakete ohne Docker. Programmdateien und konfigurierte Dienste
 werden ausdruecklich unterschieden.

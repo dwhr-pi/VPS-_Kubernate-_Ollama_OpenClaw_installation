@@ -1,5 +1,23 @@
 # Docs Changelog
 
+## 2026-10-22 OpenMontage aus GitHub integrieren
+
+- Gepinnter GitHub-Kerninstaller mit privater Python-venv, Wheel-Installation,
+  Import-/Paketcheck, Log, Status/Doctor, Rollback und geschuetztem Lifecycle.
+- Remotion optional aus gepinntem Composer-Projekt mit npm-Lock und eigener
+  Lizenzfreigabe; kein pauschales make setup oder npx-latest-HyperFrames.
+- Quellen-/Budget-/Qwen-/Wan-/LTX-Grenzen dokumentiert, eigene QWEN.md-Vorlage
+  ohne globale Aktivierung. Kein Agent, Backlot, Browser, Modell oder Film gestartet.
+
+## 2026-10-22 Webinar-Gesamtablauf dokumentiert
+
+- Nutzertext als zusammenhaengenden Leitfaden fuer Inhalt, Folien, Landingpage,
+  Anmeldung, Medien, Mailstrecken, Live/Replay und Traffic eingeordnet.
+- Bestehende Ubuntu-/Windows-Installer verlinkt; Mautic-Lizenz und listmonk-
+  Quelle korrigiert. Docker bleibt optional, keine neue Deployment-Aktion.
+- Formular-UI nicht als Backend, OBS nicht als Streamingserver, Replay nicht
+  als Live-Chat und Selfhosting nicht als Compliance-Nachweis ausgegeben.
+
 ## 2026-10-22 Plattformauswahl und Tool-Trennlinie
 
 - Tools-Schaltflaeche Ubuntu / Windows fuer Marp, listmonk und Mautic;

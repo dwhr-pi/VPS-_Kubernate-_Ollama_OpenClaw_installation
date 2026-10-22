@@ -66,6 +66,8 @@ mkdir -p "${dirs[@]}"
 for marker in "${markers[@]}"; do printf 'synthetic-pin\n' > "$marker"; done
 mkdir -p "$root/tools/anthropic_cli/bin"
 printf 'synthetic-binary\n' > "$root/tools/anthropic_cli/bin/ant"
+mkdir -p "$root/tools/openmontage/venv/bin"
+printf 'synthetic-python\n' > "$root/tools/openmontage/venv/bin/python"
 native_tool_sync_all "$root"
 for file in "$root/installed_tools.txt" "$root/status/installed_tools.txt"; do
     mapfile -t entries < "$file"

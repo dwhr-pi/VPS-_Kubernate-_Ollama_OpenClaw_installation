@@ -1,5 +1,11 @@
 # AI Media Production Studio
 
+[OpenMontage: Produktionsplanung und Composer](../tools/openmontage.md):
+GitHub-Kerninstaller, optionale Remotion-Pakete, Qwen-Vorlage und Freigabegrenzen.
+
+[Webinar: Folien, Aufnahme, Live/Replay und Teilnehmerkommunikation](../tutorials/webinar-stack.md).
+Gesamtablauf mit den vorhandenen Tools, kein automatisch eingerichteter Funnel.
+
 [Video-Workflows vor dem Rendern bearbeiten](EDITABLE_VIDEO_WORKFLOWS.md):
 Arcads-/Umnik-Einordnung, zwei editierbare Rezepte und lokaler Offline-Planer;
 noch keine fertige Generierungs-App oder automatische Renderfreigabe.

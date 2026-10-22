@@ -3,6 +3,19 @@
   "description": "Zentrale Tool-Registry. Dateiname .yml, Inhalt absichtlich als JSON-kompatibles YAML fuer einfache Bash/Python-Auswertung.",
   "tools": [
     {
+      "id": "openmontage", "name": "OpenMontage", "category": "Media / Production",
+      "source": "https://github.com/calesthio/OpenMontage.git",
+      "source_commit": "c8066452325cb57c8fc1ba8c2a71b6e8842e6b65",
+      "status": "experimental", "auto_install": false, "install_mode": "github-python-core",
+      "resource_class": "medium", "risk": "high", "license": "AGPL-3.0", "ports": [],
+      "install_script": "scripts/tools/openmontage_install.sh", "update_script": "scripts/tools/openmontage_update.sh",
+      "uninstall_script": "scripts/tools/openmontage_uninstall.sh", "doctor_script": "scripts/tools/openmontage_doctor.sh",
+      "check_type": "path", "check_value": "~/.openclaw_ultimate_user_data/tools/openmontage/core-ready.json",
+      "doc": "docs/tools/openmontage.md",
+      "description": "Gepinnte GitHub-Quellen und private Python-Kernumgebung; Remotion optional mit separater Lizenzfreigabe. Ohne Docker.",
+      "security_note": "Kein make setup/npx latest, Agent, Keyzugriff, Backlot-Server, Browser, Modelle, Cloud-Aufruf oder Rendering. PyPI-Wheels fuer Python-Abhaengigkeiten; Remotion optional via npm-Lock."
+    },
+    {
       "id": "marp", "name": "Marp", "category": "Webinar / Presentations",
       "source": "https://github.com/marp-team/marp-cli", "version": "4.5.1",
       "status": "experimental", "auto_install": false, "install_mode": "github-release",

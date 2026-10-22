@@ -1,5 +1,8 @@
 # Marp, listmonk und Mautic ohne Docker installieren
 
+[Webinar-Stack: von Inhalt und Anmeldung bis Replay und Teilnehmerkommunikation](../tutorials/webinar-stack.md)
+ordnet die drei Programme in einen vollstaendigen, schrittweisen Ablauf ein.
+
 Stand: 22.10.2026. Eigene Installer im Tools-Menue: **Marp**, **Listmonk**,
 **Mautic**. Offizielle, fest gepinnte GitHub-Release-Artefakte mit SHA256 und
 exakter Downloadgroesse; keine Container, globalen npm-Pakete oder Systemupdates.

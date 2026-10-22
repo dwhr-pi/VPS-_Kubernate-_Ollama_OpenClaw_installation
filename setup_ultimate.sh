@@ -2911,6 +2911,9 @@ TOOL_KEYS+=("Colibri")
 TOOLS["Colibri"]="experimental: GitHub-Quellen fuer MoE-SSD-Streaming; keine gebaute Runtime/Modelle. MiniPC/RTX-Einordnung: docs/tools/colibri.md"
 TOOL_SCRIPT_NAMES["Colibri"]="colibri"
 TOOL_KEYS+=("Agentic_OS")
+TOOL_KEYS+=("OpenMontage")
+TOOLS["OpenMontage"]="experimental: GitHub-Kernumgebung fuer agentische Videoproduktion; kein Film-/Agenten-/Serverstart. Remotion optional, Lizenz separat. docs/tools/openmontage.md"
+TOOL_SCRIPT_NAMES["OpenMontage"]="openmontage"
 TOOL_KEYS+=("Marp" "Listmonk" "Mautic")
 TOOLS["Marp"]="Markdown-Praesentationen; offizielles GitHub-Release ohne Docker. docs/tools/webinar-tools.md"
 TOOLS["Listmonk"]="Newsletter/Kampagnen; native GitHub-Binary, PostgreSQL/SMTP separat. Kein Dienststart. docs/tools/webinar-tools.md"
@@ -3567,6 +3570,10 @@ install_tool() {
         end_operation_measurement "success"
         operation_status="success"
         echo 'GGUF-GitHub-Quellen vorbereitet; keine neue aktive Integration registriert. Bestehende Integrationen bleiben erhalten.'
+    elif [ "$TOOL_KEY" = "OpenMontage" ] && [ "$tool_rc" -eq 0 ]; then
+        end_operation_measurement "success"
+        operation_status="success"
+        echo 'OpenMontage: GitHub-Kernumgebung installiert/geprueft. Noch kein fertiger Renderer, Agent, Modell oder Film. Remotion-Status und Doku pruefen.'
     elif [ "$TOOL_KEY" = "Qwen_Desktop" ] && [ "$tool_rc" -eq 0 ]; then
         end_operation_measurement "success"
         operation_status="success"

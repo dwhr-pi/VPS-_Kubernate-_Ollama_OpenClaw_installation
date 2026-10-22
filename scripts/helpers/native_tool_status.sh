@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Menu registration describes prepared sources/builds, not service readiness.
-NATIVE_TOOL_STATUS_KEYS=(Wan21 Windmill DeepFilterNet MOSS_TTS Embedded_Debug_HIL
+NATIVE_TOOL_STATUS_KEYS=(OpenMontage Wan21 Windmill DeepFilterNet MOSS_TTS Embedded_Debug_HIL
     ChatTTS AudioLDM2 AudioGen Moshi YuE ACE_Step_15 WhisperX Aegisub Basic_Pitch
     Sfizz AIDA_X Kiwi_Edit VOID_Model Just_Dub_It Stable_Audio_Open ProPainter Black Mypy SQLFluff Bats_Core Invoke_Build Gopls Delve GolangCI_Lint Kubeconform KubeLinter TFLint Terraform_Docs
     Alexandria_Audiobook Qwen3_TTS Claude_Code Gemini_CLI Find_Skills REA HF_Accelerate DeepSpeed Hyperfine Colibri Anthropic_CLI YouTube_Agent_Skill)
@@ -8,6 +8,7 @@ NATIVE_TOOL_STATUS_KEYS=(Wan21 Windmill DeepFilterNet MOSS_TTS Embedded_Debug_HI
 native_tool_marker() {
     local marker
     case "$1" in
+        OpenMontage) marker=openmontage/core-ready.json ;;
         Wan21) marker=wan21/source-ready ;;
         Windmill) marker=windmill/source-ready ;;
         DeepFilterNet) marker=deepfilternet/source-built ;;
@@ -77,6 +78,12 @@ native_tool_sync_selected() {
                 fi
             fi
             present["$tool"]=1
+            if [[ "$tool" == OpenMontage ]]; then
+                if [[ -L "$root/tools/openmontage/venv" || ! -d "$root/tools/openmontage/venv" ]] ||
+                   [[ ! -f "$root/tools/openmontage/venv/bin/python" && ! -f "$root/tools/openmontage/venv/Scripts/python.exe" ]]; then
+                    unset 'present[$tool]'
+                fi
+            fi
         fi
     done
     # One pass per status file, rather than rewriting both for every tool.

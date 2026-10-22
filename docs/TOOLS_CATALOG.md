@@ -1,5 +1,13 @@
 # Tools Catalog
 
+**[OpenMontage: GitHub-Kerninstaller und optionale Komposition](tools/openmontage.md)**:
+Private Python-Umgebung im Tools-Menue, Remotion optional mit Lizenzfreigabe;
+Qwen-Einstiegsvorlage, keine automatische Cloud-, Modell- oder Filmproduktion.
+
+**[Webinar-Stack fuer Coaches und eigene Inhalte](tutorials/webinar-stack.md)**:
+Gesamtablauf mit Marp, listmonk oder Mautic; Registrierungsbackend, Mail-
+Zeitsteuerung und Streaming als gesondert abzunehmende Integrationen.
+
 **[Marp, listmonk und Mautic](tools/webinar-tools.md)**: eigene GitHub-Release-
 Installer ohne Docker im Tools-Menue; SHA256, Status/Doctor, Rollback und
 geschuetzte Deinstallation. Kein Datenbank-, Webserver- oder Kampagnenstart.

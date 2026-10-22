@@ -1,5 +1,8 @@
 # START HERE
 
+[Webinar-Stack mit deinem KI-Setup](tutorials/webinar-stack.md):
+Skript, Marp-Folien, Anmeldung, Mailstrecken und Live/Replay, ohne Docker-Pflicht.
+
 [Hermes-/Jarvis-Wochenendleitfaden](tools/hermes-jarvis-weekend.md):
 optional und getrennt vom Kernsetup, mit Briefing und Kundenanfragen-Entwurf.
 
