@@ -1,5 +1,10 @@
 # Qwen Desktop unter Windows: der richtige Einstieg
 
+**Zusaetzliche Wahl im Setup:** [Qwen_Desktop_Build: nativer GitHub-/Tauri-Build
+fuer Windows und Linux](github-gap-tools.md#qwen-code-desktop-download-oder-eigener-build).
+Der bisherige Eintrag **Qwen_Desktop** bleibt der manuelle Windows-Download.
+Build und Download sind getrennte Alternativen, keine doppelte Pflichtinstallation.
+
 Neu: [Claude Code und lokale Modelle parallel zu Qwen Desktop nutzen](../tutorials/qwen-desktop-claude-local.md).
 Separater Client, keine vollstaendige eingebettete Claude-Code-Integration nachgewiesen.
 

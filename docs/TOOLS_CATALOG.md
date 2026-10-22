@@ -1,5 +1,10 @@
 # Tools Catalog
 
+**[Neue GitHub-Ergaenzungen am Ende der Tools-Liste](tools/github-gap-tools.md)**:
+Qwen Desktop wahlweise als Linux-/Windows-Source-Build, eindeutig benannter
+Hermes_Agent_Jarvis-Core sowie weitere Medien-/UI-Quellinstallationen und
+Workflow-Einstiege. Keine neue A-Z-Sortierung dieser Ergaenzungsgruppe.
+
 **[Concat](tools/concat.md), [Remotion](tools/remotion.md) und
 [HyperFrames](tools/hyperframes.md)** haben eigene Tools-Menueeintraege:
 GitHub-AppImage bzw. gepinnte Source-Builds ohne Docker, mit Status/Doctor,

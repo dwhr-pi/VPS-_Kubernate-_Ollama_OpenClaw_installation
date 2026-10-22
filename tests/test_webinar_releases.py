@@ -27,6 +27,73 @@ finally:
 
 
 class WebinarReleaseTests(unittest.TestCase):
+    def test_host_shortage_reports_required_free_and_missing_space(self):
+        unit = 1024**2
+        target = type("Disk", (), {"free": 976824 * unit})()
+        host = type("Disk", (), {"free": 13251 * unit})()
+        with patch.dict(os.environ, {"WSL_DISTRO_NAME": "fixture"}), \
+                patch.object(w.Path, "exists", return_value=True), \
+                patch.object(w.shutil, "disk_usage", side_effect=[target, host]), \
+                contextlib.redirect_stdout(io.StringIO()):
+            with self.assertRaises(ValueError) as error:
+                w.reserve(Path("fixture"), {"reserve_mb": 20480})
+        message = str(error.exception)
+        for text in ("20480 MiB", "20.0 GiB", "13251 MiB", "7229 MiB",
+                     "Kein Download/Build", "keine neuen Programmdateien"):
+            self.assertIn(text, message)
+
+    def test_marp_prompt_is_a_complete_visible_line_before_reading(self):
+        with tempfile.TemporaryDirectory() as tmp, patch.dict(os.environ, {"MARP_INSTALL_RUNTIME_LIBS": "ask"}), \
+                patch.object(w.platform, "system", return_value="Linux"), \
+                patch.object(w.sys.stdin, "isatty", return_value=True), \
+                patch.object(w.subprocess, "run", return_value=subprocess.CompletedProcess([], 0, "ok", "")) as run, \
+                contextlib.redirect_stdout(io.StringIO()) as output:
+            distro = Path(tmp) / "os-release"
+            distro.write_text("ID=ubuntu\n")
+            def answer(*args):
+                self.assertEqual(args, ())
+                text = output.getvalue()
+                self.assertIn("[(j)a/(N)ein]\n", text)
+                self.assertTrue(text.endswith("Paketinstallation.\n"))
+                return "ja"
+            with patch.object(w, "OS_RELEASE", distro), patch("builtins.input", side_effect=answer):
+                self.assertTrue(w.repair_marp_runtime(
+                    "error while loading shared libraries: libatomic.so.1: cannot open shared object file", Path(tmp)))
+            self.assertEqual(run.call_args.args[0][-1], "libatomic1")
+            self.assertIn("Marp-Laufzeitreparatur: freigegeben", output.getvalue())
+            self.assertIn("sudo kann", output.getvalue())
+
+    def test_marp_eof_or_decline_does_not_install(self):
+        for response in ("", "n", EOFError()):
+            with self.subTest(response=response), tempfile.TemporaryDirectory() as tmp, \
+                    patch.dict(os.environ, {"MARP_INSTALL_RUNTIME_LIBS": "ask"}), \
+                    patch.object(w.platform, "system", return_value="Linux"), \
+                    patch.object(w.sys.stdin, "isatty", return_value=True), \
+                    patch.object(w.subprocess, "run") as run, contextlib.redirect_stdout(io.StringIO()) as output:
+                distro = Path(tmp) / "os-release"
+                distro.write_text("ID=debian\n")
+                mock_input = patch("builtins.input", side_effect=response) if isinstance(response, Exception) else patch("builtins.input", return_value=response)
+                with patch.object(w, "OS_RELEASE", distro), mock_input:
+                    self.assertFalse(w.repair_marp_runtime(
+                        "error while loading shared libraries: libatomic.so.1: cannot open shared object file", Path(tmp)))
+                run.assert_not_called()
+                self.assertIn("Marp-Laufzeitreparatur: nicht freigegeben", output.getvalue())
+
+    def test_marp_noninteractive_ask_does_not_read_or_install(self):
+        with tempfile.TemporaryDirectory() as tmp, patch.dict(os.environ, {"MARP_INSTALL_RUNTIME_LIBS": "ask"}), \
+                patch.object(w.platform, "system", return_value="Linux"), \
+                patch.object(w.sys.stdin, "isatty", return_value=False), \
+                patch("builtins.input") as prompt, patch.object(w.subprocess, "run") as run, \
+                contextlib.redirect_stdout(io.StringIO()) as output:
+            distro = Path(tmp) / "os-release"
+            distro.write_text("ID=ubuntu\n")
+            with patch.object(w, "OS_RELEASE", distro):
+                self.assertFalse(w.repair_marp_runtime(
+                    "error while loading shared libraries: libatomic.so.1: cannot open shared object file", Path(tmp)))
+            prompt.assert_not_called()
+            run.assert_not_called()
+            self.assertIn("Kein interaktives Eingabeterminal", output.getvalue())
+
     def test_marp_loader_stderr_reaches_current_operation_log(self):
         failure = subprocess.CompletedProcess([], 127, "", "marp: error while loading shared libraries: libatomic.so.1: cannot open shared object file: No such file or directory\n")
         with tempfile.TemporaryDirectory() as tmp, patch.dict(os.environ, {

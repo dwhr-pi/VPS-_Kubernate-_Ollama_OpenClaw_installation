@@ -7,6 +7,12 @@ oder Dienste aktiviert. Ein dokumentierter Zugang ist keine Cloud-Freigabe.
 
 ## Navigation
 
+- [API-Schluessel erhalten: Registrierung, Gratis-Kontingente, Zahlung und Identitaet](REGISTRATION_BILLING_AND_IDENTITY.md):
+  konkrete Key-Wege, Kreditkarte/PayPal/Klarna/Krypto, Mindestkauf,
+  Trial-Ablauf und belegte bzw. offene Identitaetspruefungen.
+- [Weitere Dienst-Tokens: Business, Bots, OAuth und lokale Server](SERVICE_TOKEN_REGISTRATION.md):
+  nicht jede Webseite verkauft Modellguthaben; Token-/Tarifgrenzen getrennt.
+
 - [Kostenlose LLM-Zugaenge, Free Tiers und Trial-Credits](FREE_TIERS_AND_TRIAL_CREDITS.md):
   konkrete GitHub-/Primaerquellen, eigene Bewertung und woechentliche Nachpruefung.
 - [Datierte Quellenberichte](reviews/README.md): Befunde und Original-Links bleiben erhalten.

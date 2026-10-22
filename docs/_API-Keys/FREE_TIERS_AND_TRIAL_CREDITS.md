@@ -1,5 +1,12 @@
 # Kostenlose LLM-Zugaenge: Quellen, Trial-Credits und eigene Auswertung
 
+**Ergaenzung vom 23.10.2026:** [Key-Erhalt, Mindestkaeufe,
+Zahlungsmittel und Identitaetspruefung](REGISTRATION_BILLING_AND_IDENTITY.md)
+sowie [weiterer Dienstzugang](SERVICE_TOKEN_REGISTRATION.md).
+Der unten datierte Vergleich vom 21.10. bleibt nachvollziehbar erhalten;
+neu gelesene Belege und offene Punkte stehen im
+[Bericht vom 23.10.](reviews/2026-10-23-registration-billing.md).
+
 **Zweck:** Nachlesbar unterscheiden, welche Modellanbieter ein begrenztes
 Free Tier, einmaliges Trial oder nur bezahlten Zugang anbieten und wie das
 zu Ollama, OpenClaw und FreeLLMAPI passt. **Keine echten API-Keys auflisten.**

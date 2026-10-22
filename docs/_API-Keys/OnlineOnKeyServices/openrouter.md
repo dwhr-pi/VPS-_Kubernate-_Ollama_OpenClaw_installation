@@ -243,3 +243,9 @@ Freigabe durch diese Dokumentation; kein API-Livetest wurde ausgefuehrt.
 Verwandt: [OnlineOnKeyServices](README.md), [Alle API-Schluessel](../README.md),
 [token8341](token8341.md), [FreeLLMAPI](../../tools/freellmapi.md),
 [Secrets und Keys](../../SECRETS_AND_KEYS.md).
+## Registrierung, Zahlung und Identitaetsnachweise
+
+[Aktuell recherchierter Leitfaden](../REGISTRATION_BILLING_AND_IDENTITY.md):
+offizieller Key-Weg, Free-Modell-Zugang, Mindestkauf versus 10-USD-Limitschwelle,
+Karte/USDC, PayPal-Status und offene KYC-Fragen. Die dortigen Quellen und
+Pruefgrenzen beachten; kein Checkout oder Accounttest wurde durchgefuehrt.

@@ -32,7 +32,7 @@ class HermesJarvisDocsTests(unittest.TestCase):
 
     def test_no_runtime_claims_or_remote_execution_one_liners(self):
         doc = GUIDE.read_text(encoding="utf-8")
-        for text in ("Kein Hermes-Installer im Tools-Menue", "kein Dienststart",
+        for text in ("Hermes_Agent_Jarvis", "kein Dienststart",
                      "keine globale", "nicht den Livebetrieb", "nicht technische Isolation",
                      "CORS ersetzt", "Offline-TTS", "kein dauerhafter Pin"):
             self.assertIn(text, doc)

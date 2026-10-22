@@ -1,5 +1,48 @@
 # Docs Changelog
 
+## 2026-10-23: Hermes-Python vor dem Quellcheckout pruefen
+
+- Fehlendes Python 3.14 kann nach ausdruecklicher Zustimmung ueber vorhandenes uv
+  privat im Hermes-Workspace bereitgestellt werden; kein System-Python-/PATH-Umbau.
+- Ohne Freigabe Abbruch vor Hermes-Download; Rollback und Deinstallation erfassen
+  die neue private Laufzeit. Vorhandene externe Basiswerkzeuge bleiben erhalten.
+- Offline-Tests pruefen Ablehnung, nichtinteraktive Ausfuehrung und private Zielpfade.
+
+## 2026-10-23: Qwen-Desktop-Speicherabbruch nachvollziehbar
+
+- Bestehende 20-GiB-Grenze beibehalten; Speicherfehler nennt nun Bedarf,
+  freien Platz und Fehlbetrag statt einer allgemeinen Host-Fehlermeldung.
+- Installer-/Manifestpfad im aktuellen Log; veraltete laufende Menueinstanz
+  versus aktuelle Dateien dokumentiert. Abbruch vor Download ist kein Build-Rollback.
+- Regression fuer 13.251 MiB Host-Speicher bei grosszuegigem WSL-Dateisystem.
+
+## 2026-10-23: API-Key-Registrierung, Zahlung und Identitaet
+
+- Zwei neue Leitfaeden unter docs/_API-Keys: Key-Ausgabewege, Free Tier
+  versus Trial, Mindesteinzahlungen/Abos, Kreditkarte/PayPal/Klarna/Krypto,
+  Identitaetsnachweise und getrennte lokale/OAuth-/Business-Zugaenge.
+- Oeffentliche Primaerbelege mit Datum; ungeklaerte Konto-/Checkout-Felder
+  ausdruecklich UB statt einer unbelegten Gratis-/KYC-Freiheitszusage.
+- Katalog, Navigation und Nachpruefanweisung verlinkt, datierten Befund
+  erhalten. Keine Keys, Konten, Zahlungen oder neue Hintergrundjobs erzeugt.
+
+## 2026-10-23: Sichtbare Marp-Reparaturfreigabe
+
+- Bestaetigungsfrage mit vollstaendigen, sofort ausgegebenen Logzeilen;
+  Warten auf Eingabe, Freigabe/Ablehnung und sudo-Hinweis sichtbar.
+- Nichtinteraktive Eingabe und EOF bleiben ohne explizite Freigabe gesperrt.
+- libatomic1-Reparatur und anschliessende GitHub-Marp-Pruefung dokumentiert.
+
+## 2026-10-23: GitHub-Ergaenzungen am Ende der Tools-Liste
+
+- Qwen Code Desktop: separater optionaler Tauri-Source-Build fuer Linux und
+  natives Windows; bisheriger manueller Windows-Download bleibt erhalten.
+- Hermes_Agent_Jarvis: eindeutige Nous-Research-Quelle, privater gepinnter
+  Python-3.14-Core ohne Agenten-/Dashboard-/Dienststart.
+- Weitere konkret benannte Luecken-Tools als gepinnte GitHub-Quellinstallationen
+  mit ehrlichem Umfang und Lifecycle; WebsiteFactory/ContentMultiplier erreichbar.
+- Bestehende A-Z-Liste und Ruflo-Trennlinie erhalten; neue Gruppe angehaengt.
+
 ## 2026-10-22 Marp-Exit-127 und sichtbare Loader-Diagnose
 
 - stdout/stderr und Exit-Code des Versionsaufrufs im aktuellen Log statt

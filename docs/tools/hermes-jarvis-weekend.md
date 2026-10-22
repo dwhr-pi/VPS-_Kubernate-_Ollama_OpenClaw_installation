@@ -34,8 +34,9 @@ Jarvis-Repository, mit getrennten Cloud-/Memory- und Sicherheitsgrenzen.
   MIT-Lizenz laut Repository. Produktangaben wurden gegen die unten direkt
   verlinkten Upstream-Seiten geprueft, nicht gegen Werbeversprechen.
 - Hier hinzugefuegt: Leitfaden, eigenes Briefing, eigener Entwurfs-Skill und
-  Offline-Tests. **Kein Hermes-Installer im Tools-Menue**, keine globale
-  Skill-Aktivierung, keine Kontoverbindung und kein Dienststart.
+  Offline-Tests. Neu im Tools-Menue: **Hermes_Agent_Jarvis** als eigener
+  [gepinnt gebauter Python-Core aus GitHub](github-gap-tools.md#eindeutige-jarvis-quelle-hermes-agent-von-nous-research).
+  Es erfolgt keine globale Skill-Aktivierung, keine Kontoverbindung und kein Dienststart.
 
 ## Was an der Vorlage zu korrigieren ist
 

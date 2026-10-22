@@ -56,6 +56,26 @@ done
 ''')
         self.assertEqual(output.splitlines(), ["RC=2"] * 3)
 
+    def test_qwen_linux_build_uses_separate_helper(self):
+        output = self.run_bash('''
+INSTALL_DIR="/setup with spaces"
+GAP_TOOLS_PYTHON_BIN=fake_python
+fake_python() { printf '%s\\n' "$@"; }
+run_webinar_platform_action ubuntu qwen_desktop_build plan
+''')
+        self.assertEqual(output.splitlines(), ["-B", "/setup with spaces/scripts/tools/helpers/gap_tools.py", "qwen_desktop_build", "plan"])
+
+    def test_qwen_windows_build_uses_separate_native_launcher(self):
+        output = self.run_bash('''
+INSTALL_DIR="/setup with spaces"
+wslpath() { printf '%s\\n' 'C:\\Setup with spaces\\scripts\\windows\\qwen_desktop_build.ps1'; }
+powershell.exe() { printf '%s\\n' "$@"; }
+python3() { return 99; }
+run_webinar_platform_action windows qwen_desktop_build status
+''')
+        self.assertEqual(output.splitlines(), ["-NoProfile", "-NonInteractive", "-File",
+            "C:\\Setup with spaces\\scripts\\windows\\qwen_desktop_build.ps1", "-Action", "status"])
+
     def test_cancel_platform_and_decline_confirmation_do_nothing(self):
         output = self.run_bash('''
 APP_TITLE=Test
@@ -129,6 +149,28 @@ show_webinar_platform_menu
 
 @unittest.skipUnless(POWERSHELL and sys.platform == "win32", "Native Windows PowerShell unavailable")
 class WindowsWebinarLauncherTests(unittest.TestCase):
+    def test_qwen_plan_works_without_python_and_uses_windows_target(self):
+        result = subprocess.run([POWERSHELL, "-NoProfile", "-NonInteractive", "-File",
+                                 str(ROOT / "scripts/windows/qwen_desktop_build.ps1"),
+                                 "-Action", "plan", "-PythonBin", "absent.exe"],
+                                capture_output=True, text=True, timeout=30, check=True)
+        plan = json.loads(result.stdout)
+        self.assertEqual(plan["target"], "native-windows")
+        self.assertEqual(plan["tool"], "qwen_desktop_build")
+        self.assertFalse(plan["network"])
+        self.assertFalse(plan["executed"])
+        self.assertRegex(plan["pin"], r"^[a-f0-9]{40}$")
+
+    def test_qwen_status_ignores_inherited_linux_user_path(self):
+        result = subprocess.run([POWERSHELL, "-NoProfile", "-NonInteractive", "-File",
+                                 str(ROOT / "scripts/windows/qwen_desktop_build.ps1"),
+                                 "-Action", "status", "-PythonBin", sys.executable],
+                                capture_output=True, text=True, timeout=30, check=True,
+                                env={**os.environ, "OPENCLAW_USER_DATA_DIR": "/home/ubuntu/not-a-windows-path"})
+        status = json.loads(result.stdout)
+        self.assertEqual(status["scope"], "desktop-build")
+        self.assertFalse(status["runtime_tested"])
+
     def test_plan_without_python_or_file_changes(self):
         result = subprocess.run([POWERSHELL, "-NoProfile", "-NonInteractive", "-File", str(PS_SCRIPT),
                                  "-Tool", "mautic", "-Action", "plan", "-PythonBin", "absent.exe"],

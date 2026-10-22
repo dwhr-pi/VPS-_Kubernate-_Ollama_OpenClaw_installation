@@ -1,5 +1,12 @@
 # API-Key-Katalog des Ultimate KI Setups
 
+**Neu, recherchiert am 23.10.2026:** [So erhaeltst du die API-Schluessel,
+Freikontingente, Zahlungsarten und Identitaetsanforderungen](REGISTRATION_BILLING_AND_IDENTITY.md).
+Fuer Business-Connectoren, Bots und eigene Server:
+[Dienst-Tokens und OAuth](SERVICE_TOKEN_REGISTRATION.md).
+Offene Checkout-/KYC-Fragen sind dort ausdruecklich als UB markiert,
+nicht als kostenlose oder ausweisfreie Freigabe.
+
 **Zweck:** Alle im Repository dokumentierten Modellanbieter- und Dienstzugänge
 an einer Stelle finden. Ein Anbieter-Key kann mehrere Modelle freischalten;
 es gibt normalerweise keinen eigenen Key je Modell. Lokal geladene Modelle

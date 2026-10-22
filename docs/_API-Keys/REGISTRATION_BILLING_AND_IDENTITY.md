@@ -1,0 +1,177 @@
+# API-Schluessel erhalten: Freikontingente, Bezahlung und Identitaet
+
+**Recherche: 23.10.2026.** Bezug sind die Webseiten unseres
+[Anbieter-Katalogs](PROVIDER_KEY_CATALOG.md) und der
+[Free-Tier-Uebersicht](FREE_TIERS_AND_TRIAL_CREDITS.md).
+Diese Seite beschreibt den manuellen Weg zu eigenen berechtigten Zugaengen.
+Keine Konten angelegt, Keys erzeugt, Zahlungsmittel hinterlegt, Ausweise
+hochgeladen oder kostenpflichtigen API-Aufrufe ausgefuehrt.
+
+## Was die Angaben bedeuten
+
+- **Free Tier:** erneuerbares kostenloses Kontingent; Limits und Modelle beachten.
+- **Trial:** einmaliges oder befristetes Guthaben, kein dauerhaftes Gratisangebot.
+- **0 USD Einzahlung:** fuer den beschriebenen kostenlosen Einstieg keine
+  Guthabenbuchung; bedeutet nicht automatisch, dass kein Zahlungsmittel verlangt wird.
+- **UB:** in den ausgewerteten oeffentlichen Primaerquellen nicht belastbar
+  bestaetigt. Weder ein Ja noch ein Nein; vor Anmeldung/Zahlung beim Anbieter klaeren.
+- **Nicht genannt:** die gepruefte Zahlungsseite fuehrt diese Zahlungsart nicht
+  auf. Keine Garantie, dass sie fuer alle Laender und Sondervertraege ausgeschlossen ist.
+- **KYC/Identitaetspruefung:** Ausweis, Selfie oder Unternehmensnachweis.
+  E-Mail, Telefonnummer, 2FA, Rechnungsadresse, Kartenpruefung und 3-D Secure
+  sind davon zu unterscheiden.
+
+**Kein oeffentlicher Ausweis-Hinweis ist kein Beweis fuer einen Zugang ohne
+Ausweis.** Sicherheits-/Missbrauchspruefungen koennen spaeter folgen.
+Region, Privat-/Firmenkonto, Produkt und Kontostand koennen Bedingungen aendern.
+Eine Chat-Mitgliedschaft, ein Coding-Abo und ein allgemeiner API-Zugang sind
+nicht automatisch dasselbe Produkt.
+
+Die Kostenangaben sind Originalwaehrungen, keine tagesaktuellen EUR-Umrechnungen.
+Steuern/Gebuehren koennen hinzukommen. Ein Betrag fuer einen hoeheren Nutzungstarif
+ist nicht automatisch die Mindestaufladung jeder einzelnen Transaktion.
+
+## 1. Modellanbieter und Aggregatoren
+
+Die verlinkte Konsole ist der Einstieg. Nach dem Login die richtige
+Organisation bzw. das Projekt waehlen, einen getrennten Key anlegen und ihn
+direkt im externen User-Workspace/ENV-Tresor hinterlegen. Keine Screenshots
+oder Schluessel in Git, Chat oder Diagnoseprotokolle kopieren.
+
+| Anbieter | So erhaeltst du den Zugang | Kostenloser Umfang / Karte zum Testen | Einzahlung bzw. bezahlter Einstieg | Primaerbelege |
+|---|---|---|---|---|
+| OpenAI | [API-Plattform](https://platform.openai.com/): Projekt waehlen, API Keys, neuen Secret Key erstellen | Kein allgemein garantiertes Signup-Guthaben aus der geprueften Quelle ableitbar; ChatGPT-Free ist kein API-Guthaben | Paid-Build-Tier ab insgesamt **5 USD gekauften Credits**; Mindest-Einzelaufladung und Zahlungsmittel im API-Billing bestaetigen, nicht mit dieser Tarifeinstufung gleichsetzen | [Key-Quickstart](https://developers.openai.com/api/docs/quickstart), [Tarifeinstufung](https://developers.openai.com/api/docs/guides/rate-limits) |
+| Anthropic / Claude | [Claude Console](https://platform.claude.com/): Organisation/Workspace, API Keys, Create Key | Etwaige Trial-/Evaluation-Freigabe kontobezogen pruefen; kein festes Gratisguthaben zugesichert | API/Playground ueber Prepaid-Credits; aktuell verlangter Kaufbetrag im Billing, **UB** fuer eine universelle Mindesteinzahlung | [API-Billing](https://support.claude.com/en/articles/8977456-how-do-i-pay-for-my-claude-api-usage), [API-Preise](https://platform.claude.com/docs/en/about-claude/pricing) |
+| Google Gemini Developer API | [AI Studio](https://aistudio.google.com/): anmelden, API Keys, Projekt anlegen/waehlen, Create API key | Free Tier fuer bestimmte Modelle ohne verknuepftes Paid-Billing nutzbar; keine Einzahlung fuer diesen Weg; Verfuegbarkeit/Accountanforderungen pruefen | Bei Zuweisung zum Prepay-Modell mindestens **5 USD**; manche Konten bieten Postpay. Kein identischer Zahlungsweg fuer jedes Konto | [API-Keys](https://ai.google.dev/gemini-api/docs/api-key), [Billing](https://ai.google.dev/gemini-api/docs/billing), [Free-/Paid-Modelle](https://ai.google.dev/gemini-api/docs/pricing) |
+| Mistral | [Studio](https://console.mistral.ai/): Konto aktivieren, API Keys, Key erstellen und Ablauf setzen | Free mode laut Quickstart **ohne Kreditkarte**, mit Nutzungs-/Ratenlimits; **0 USD** Einzahlung | Bezahlte Nutzung separat aktivieren; Mindestbetrag **UB** | [Aktivierung und Key](https://docs.mistral.ai/getting-started/quickstarts/studio/activate-and-generate-api-key), [Abrechnung](https://docs.mistral.ai/admin/billing-usage/subscriptions) |
+| Groq | [Groq Console](https://console.groq.com/keys): anmelden, Create API Key | Free Plan mit modellabhaengigen Limits; keine Gebuehren innerhalb dieses Plans. Kartenzwang fuer Registrierung in den hier gelesenen Primarseiten **UB** | Developer wird nutzungsabhaengig abgerechnet; Rechnungs-/Abbuchtarife sind keine geforderte Vorauszahlung. Kein fixer Mindestkauf aus den Quellen ableitbar | [Key-Quickstart](https://console.groq.com/docs/quickstart), [Free-Plan-FAQ](https://community.groq.com/t/do-i-get-charged-for-anything-on-the-groq-free-plan/832), [Billing](https://console.groq.com/docs/billing-faqs) |
+| Cerebras | [Cloud Console](https://cloud.cerebras.ai/): Konto/Projekt, verifiziertes Zahlungsmittel hinterlegen, API Keys anlegen | **5 USD Trial**, **30 Tage**; verifiziertes Zahlungsmittel erforderlich. Ohne dieses bleiben API und Playground inaktiv | **Keine Einzahlung fuer das Trial** laut FAQ; spaeter Credits kaufen. Mindestkauf danach **UB** | [Trial-Bedingungen](https://inference-docs.cerebras.ai/support/rate-limits), [Konto/Billing](https://inference-docs.cerebras.ai/console/account-billing) |
+| Together AI | [Together](https://api.together.ai/): Konto, Billing, Credits kaufen, API Keys | **Kein kostenloses Standard-Trial** laut Credit-Dokumentation | Erster Credit-Kauf mindestens **15 USD**; gueltige Karte muss auch bei ACH hinterlegt bleiben | [Credits](https://docs.together.ai/docs/billing-credits), [Zahlungsarten](https://docs.together.ai/docs/billing-payment-methods) |
+| NVIDIA API Catalog / NIM | [build.nvidia.com](https://build.nvidia.com/): anmelden, Modell oeffnen, Get API Key/Generate Key nach Kontofreigabe | Rate-limitierte Erprobung; keine allgemeine feste Credit-/Tokenzusage. Konkrete Registrierungs-/Kartenpflicht im Konto pruefen | Kein allgemeiner Einzahlungsbetrag fuer diesen Testweg belegt; kommerzielle Bereitstellung getrennt | [Offizieller Quickstart](https://docs.api.nvidia.com/nim/docs/api-quickstart) |
+| Cloudflare Workers AI | [Cloudflare Dashboard](https://dash.cloudflare.com/): Account waehlen, API Tokens mit Workers-AI-Berechtigung erzeugen; Account-ID notieren | **10.000 Neurons pro Tag** im Free-Kontingent, **0 USD** Einzahlung fuer die Freimenge; keine pauschale Tokenumrechnung | Mehrverbrauch/weitere Dienste nach Tarif; nicht versehentlich Workers Paid aktivieren | [REST-Tokenweg](https://developers.cloudflare.com/workers-ai/get-started/rest-api/), [Preise](https://developers.cloudflare.com/workers-ai/platform/pricing/) |
+| OpenRouter | [Keys](https://openrouter.ai/settings/keys): Konto, Create Key, eigenen Namen und Kostenlimit setzen | Kostenlose Modellrouten mit begrenzten Requests; kein festes Signup-Dollar-Guthaben versprochen. Kein Kauf fuer die kostenlose Route eingeplant | AGB nennen mindestens **5 USD je Credit-Kauf**, Gebuehren zusaetzlich; **10 USD gekaufte Credits** sind eine separate Bedingung fuer das erhoehte Free-Modell-Tageslimit | [Quickstart](https://openrouter.ai/docs/quickstart), [AGB](https://openrouter.ai/terms), [Limits](https://openrouter.ai/pricing), [Support](https://openrouter.ai/support) |
+| token8341 / TokenWorks | Nur von [offizieller Startseite](https://www.token8341.com/) ins eigene Dashboard: registrieren, API-Key-Verwaltung; Endpunkt dort bestaetigen | Betreiber wirbt mit **0,5 CNY Trial**, ohne Kreditkarte. Werbeangabe, nicht persoenlich eingeloest | Erste Aufladung ab **5 CNY** fuer beworbenen **5-CNY-Bonus**. Das ist eine Bonusschwelle, kein Beleg fuer den kleinsten erlaubten Kauf | [Betreiberangabe](https://www.token8341.com/en), [unsere Endpunkt-/Trust-Pruefung](OnlineOnKeyServices/token8341.md) |
+| DeepSeek direkt | [DeepSeek Platform](https://platform.deepseek.com/): Konto, API keys, neuen Key erstellen; Balance/Top up separat pruefen | Kostenlose Chat-Nutzung nicht auf API uebertragen; aktuelles Standard-API-Startguthaben **UB** | Prepaid/Balance; universeller Mindestbetrag **UB**. Im Netz genannte 2 USD sind hier nicht als aktuell primaer bestaetigt eingetragen | [Offizieller Key-Verweis](https://api-docs.deepseek.com/), [Hilfe](https://api-docs.deepseek.com/faq/) |
+| Qwen ueber Alibaba Cloud Model Studio | [Model Studio](https://www.alibabacloud.com/help/en/model-studio/get-api-key): Cloud-Konto, Region/Workspace waehlen, API-Key erstellen; nicht Qwen-Chat-Login verwenden | Ausgewaehlte Modelle in **Singapore/International**, modellabhaengige Freiquota, meist **1 Mio. Tokens je teilnehmendem Modell**, **90 Tage**; Kontoinformationen erforderlich | Feste Mindesteinzahlung/Kartenpflicht fuer jedes Land **UB**. **Free Quota Only einschalten**: standardmaessig aus, sonst PAYG nach Verbrauch/Ablauf moeglich | [Key-Anleitung](https://www.alibabacloud.com/help/en/model-studio/get-api-key), [Freiquota und Voraussetzungen](https://www.alibabacloud.com/help/en/model-studio/new-free-quota) |
+| Kimi / Moonshot | [Kimi API Platform](https://platform.kimi.ai/): anmelden, API Keys, Key erzeugen; alte Moonshot-Dokuseite leitet auf diese Plattform | Allgemeines Trial und Kartenfreiheit **UB**; Kimi-Chat-/Coding-Abo nicht als Standard-API-Guthaben einplanen | Aktueller Mindestkauf und etwaige Konto-/Laenderbedingungen **UB**, vor Bestellung im Billing klaeren | [Offizieller Quickstart](https://platform.kimi.ai/docs/overview) |
+| Z.AI / GLM | [Z.AI](https://z.ai/): Open Platform, API Keys, **Standard API Key** erstellen; Billing bei Bedarf aufladen | Ein bestimmtes kostenloses API-Modell bzw. Guthaben nur nach aktueller Modell-/Preisliste; keine pauschale Gratisfreigabe bestaetigt | Mindestaufladung **UB**; GLM Coding Plan ist ein getrenntes Produkt mit eigenem Einsatzbereich | [Key-Anleitung](https://docs.z.ai/guides/overview/quick-start), [Preise](https://docs.z.ai/guides/overview/pricing) |
+| MiniMax | [MiniMax Open Platform](https://platform.minimax.io/): Konto/erforderliche Verifizierung, Standard-API-Key fuer PAYG oder getrennten Subscription Key erzeugen | Kein universelles aktuelles Startguthaben aus dem Vertrag ableitbar; Programme/Grants sind gesondert | Balance/Resource Pack bzw. Token-Abo; Mindestbetrag/Methoden produktabhaengig und **UB** vor Checkout | [Offizieller Bezahldienst-Vertrag](https://platform.minimax.io/protocol/paid-agreement), [Developer Programme](https://platform.minimax.io/contact-us) |
+| Synthetic | [Synthetic](https://synthetic.new/): registrieren, Konto-/API-Key-Verwaltung suchen; genaue aktuelle Menuefolge hinter Login nicht verifiziert | Kein allgemeines Free Tier auf der gelesenen Preisseite bestaetigt | Go **9 USD/Monat**, Standard **30 USD/Monat**, Big **90 USD/Monat** laut Preisseite; **Abo**, nicht Mindesteinzahlung. Zusatznutzung gesondert | [Tarife](https://synthetic.new/pricing); genauer Key-/Checkoutweg **offen** |
+| Hugging Face | [Settings/Tokens](https://huggingface.co/settings/tokens): New token, moeglichst fine-grained und minimale Rechte; E-Mail/Modellfreigabe beachten | Kostenloser Hub-Account/Token ist kein kostenloses Compute-Budget: aktuelle Tabelle nennt fuer **Free Users keine monatlichen Inference-Provider-Credits** | Credits kaufen oder PRO; PRO enthaelt **2 USD/Monat** Compute-Credits, ist selbst kostenpflichtig. Mindestkauf **UB** | [Tokens](https://huggingface.co/docs/hub/security-tokens), [Inference-Billing](https://huggingface.co/docs/inference-providers/pricing), [Zahlung](https://huggingface.co/docs/hub/billing) |
+
+**Zu OpenRouter:** Free-Modellbeschreibung und allgemein formulierte AGB
+(Credit-Kauf fuer API-Zugriff) sind nicht vollstaendig deckungsgleich.
+Vor Nutzung die konkrete kostenlose Route und Kontofreigabe pruefen;
+keine allgemeine Zusage, dass jeder Key ohne Hinterlegung sofort funktioniert.
+
+## 2. Suche, Sprache, Audio und Video
+
+| Dienst | Key erhalten | Gratis / Kreditkarte zum Testen | Einzahlung bzw. Kostenweg | Primaerbelege |
+|---|---|---|---|---|
+| Brave Search | [API-Dashboard](https://api-dashboard.search.brave.com/): registrieren, Produkt/Plan aktivieren, API Key erzeugen | **5 USD Credits monatlich** laut Preisseite; **Karte zur Missbrauchsabwehr erforderlich**, auch nicht mit einem kartenfreien Trial verwechseln | Prepaid; nur selbst gekaufte Credits werden belastet. Mindestkauf **UB**; 5 USD Gratis-Credits sind keine verlangte Einzahlung | [Preise und Karten-FAQ](https://brave.com/search/api/) |
+| Perplexity | [API Console](https://console.perplexity.ai/): Projekt einrichten, Billing, API keys, Generate API Key; Adminrechte erforderlich | Kein allgemeines aktuelles Gratis-API-Guthaben belegt; alte Pro-5-USD-Angabe nicht als heutiger Standard uebernehmen. Karte fuer Payment-Setup beschrieben | Credits vorab kaufen; Kartenhinterlegung selbst wird laut Anleitung nicht berechnet. Mindestkauf **UB** | [Projekt/Billing/Key](https://docs.perplexity.ai/docs/getting-started/projects), [Key-Verwaltung](https://docs.perplexity.ai/docs/admin/api-key-management) |
+| Firecrawl | [Firecrawl](https://www.firecrawl.dev/): Sign up/Get started, Dashboard, eigenen API Key kopieren/erstellen | Preisseite aktuell **1.000 Credits pro Monat**, **ohne Karte**; Free-Plan-Limits beachten, **0 USD** Einzahlung | Bezahlte Abos/Mehrverbrauch separat; Jahresanzeige nicht als monatliche Abbuchung lesen. Kein pauschaler Mindest-Prepaidkauf belegt | [Offizielle Free-/Paid-Preise](https://www.firecrawl.dev/pricing) |
+| ElevenLabs | [ElevenLabs](https://elevenlabs.io/): anmelden, API-Key-Einstellungen gemaess Authentifizierungsseite, eigenen eingeschraenkten Key erzeugen | Free-/PAYG-Einstieg angeboten; Freimenge modell-/produktabhaengig, nicht pauschal in Minuten umrechnen. Kartenpflicht fuer jeden Free-Account **UB** | Abo oder PAYG; erforderlicher Erstbetrag **UB**. Instant/Professional Voice Cloning und Nutzungsrechte getrennt pruefen | [API-Authentifizierung](https://elevenlabs.io/docs/api-reference/authentication), [API-Preise](https://elevenlabs.io/pricing/api), [Billing](https://elevenlabs.io/docs/overview/administration/billing) |
+| Deepgram | [Deepgram](https://deepgram.com/): Sign up, Console, Projekt/API Keys; Rolle/Berechtigungen einschraenken | **200 USD Start-Credits**, **keine Kreditkarte erforderlich** laut Preis-Seite | PAYG ohne Mindestabnahme laut Preisseite; das ist kein Beleg fuer einen bestimmten manuellen Top-up-Mindestbetrag | [Offizielle Preise/Signup](https://deepgram.com/pricing); genaue aktuelle Console-Menuefolge nicht hinter Login geprueft |
+| Runway Dev | [Developer Portal](https://dev.runway.com/): Account/Projekt, API key, Billing-Credits; projektgebundene Keys einzeln widerrufen | Kein generelles kostenloses Video-API-Kontingent zugesichert; Web-App-Free-Credits nicht uebertragen | Setup-Anleitung verlangt mindestens **10 USD**, **0,01 USD pro Credit**. Spezielle Produkt-Trials nicht auf alle Endpunkte uebertragen | [Projekt, Key, Mindestkauf](https://docs.dev.runwayml.com/guides/setup/), [Preise](https://docs.dev.runwayml.com/guides/pricing/) |
+| fal | [Dashboard/Keys](https://fal.ai/dashboard/keys): Create Key, Namen und geeignete Rechte waehlen, einmalig kopieren | Free Credits/Coupons moeglich, aber grantabhaengiger Ablauf; keine garantierte Standard-Summe oder Kartenfreiheit belegt | Credits im Billing; universeller Mindestkauf und konkrete Zahlungsarten **UB** | [Key-Anleitung](https://fal.ai/docs/documentation/setting-up/authentication), [Billing-/Credit-FAQ](https://fal.ai/docs/documentation/model-apis/faq) |
+| Google Veo | Erst Produktweg waehlen: Gemini API in AI Studio **oder** Vertex AI; beim AI-Studio-Weg Gemini-Key, bei Vertex passende Cloud-/IAM-Authentifizierung | Nicht aus Gemini-Text-Free-Tier eine kostenlose Veo-API ableiten; je Veo-Modell nachsehen | Gemini-Paid-Billing bzw. eigenes Vertex-Billing; keine allgemeine Veo-Mindesteinzahlung fuer beide Wege zugesichert | [Gemini-Modellpreise](https://ai.google.dev/gemini-api/docs/pricing), [Gemini-Billing](https://ai.google.dev/gemini-api/docs/billing) |
+| Suno / Udio | **Kein bestaetigter allgemeiner oeffentlicher Key-Ausgabepfad** fuer unsere Connector-Felder; ausschliesslich offiziellen Support nach API/Partnerzugang fragen | Kostenlose Web-Erzeugungen sind keine bestaetigte API-Freiquota | Keine Einzahlung an einen vermeintlichen API-Reseller nur wegen dieser ENV-Felder; API-Mindestbetrag **UB** | [Suno-Hilfe](https://help.suno.com/), [Udio](https://www.udio.com/); keine offizielle universelle API-Freigabe aus diesen Seiten belegt |
+| Weights & Biases | Im W&B-Konto persoenliche API-Keys suchen; [bisheriger Authorize-Einstieg](https://wandb.ai/authorize) leitet beim Abruf zu CoreWeave Forge weiter | Tracking-/Team-/Compute-Tarif unterscheiden; kostenlose aktuelle API-Mengen/Kartenfreiheit **UB** | Kein bestaetigter allgemeiner Einzahlungsbetrag; aktuelle Kontozuordnung zuerst pruefen | [Offizieller Einstieg](https://wandb.ai/); Weiterleitung ist kein erfolgreich gepruefter Key-Erhalt |
+
+## 3. Zahlungsmittel: Kredit-/Debitkarte, PayPal, Klarna, Krypto
+
+Diese Tabelle betrifft **den oben genannten API-/Compute-Weg**, nicht
+App-Store-Abos, Creator-Auszahlungen oder Boersen. Auszahlungen ueber Stripe
+sind kein Beleg, dass ein API-Anbieter PayPal-Zahlungen annimmt. Auch ein
+Stripe-Checkout bietet nicht automatisch Klarna oder alle Stripe-Zahlarten an.
+
+| Anbieter / API-Weg | Karte | PayPal | Klarna | Krypto | Andere belegte Wege / Quelle |
+|---|---|---|---|---|---|
+| OpenAI API | UB fuer konkrete aktuelle Kaufbedingungen in der ausgewaehlten API-Dokumentation | UB | UB | UB | Im [API-Billing](https://platform.openai.com/) selbst pruefen; ChatGPT-Zahlungsarten nicht uebertragen |
+| Anthropic API | Kredit-/Debitkarte belegt | **Nein**, explizit nicht akzeptiert | Nicht genannt | Nicht genannt | ACH fuer berechtigte monatliche API-Rechnungsaccounts, nicht pauschal fuer jeden Prepaid-Key; [Zahlungs-FAQ](https://support.claude.com/en/articles/9402418-why-was-my-card-declined) |
+| Gemini / Veo in AI Studio | Akzeptiertes Cloud-Billing-Zahlungsmittel bei Paid erforderlich; konkrete Karte/Region pruefen | UB | UB | UB | [Billing](https://ai.google.dev/gemini-api/docs/billing); Free-Projekt nicht unnoetig auf Paid umstellen |
+| Mistral | Fuer Free mode nicht erforderlich; Paid-Methoden UB | UB | UB | UB | [Free-Aktivierung](https://docs.mistral.ai/getting-started/quickstarts/studio/activate-and-generate-api-key) |
+| Groq | Kreditkarten belegt | Nicht genannt | Nicht genannt | Nicht genannt | **SEPA-Lastschrift** und US-Bankkonto aufgefuehrt; [Billing-FAQ](https://console.groq.com/docs/billing-faqs) |
+| Cerebras | Verifiziertes Zahlungsmittel Pflicht; genaue Typen UB | UB | UB | UB | [Trial-FAQ](https://inference-docs.cerebras.ai/support/rate-limits) |
+| Together AI | Kredit-/Debitkarte; **keine Prepaid-Karten** | Nicht aufgefuehrt | Nicht aufgefuehrt | Nicht aufgefuehrt | ACH/US-Bankkonto zusaetzlich; gueltige Karte muss hinterlegt bleiben; [Zahlungsseite](https://docs.together.ai/docs/billing-payment-methods) |
+| NVIDIA Catalog / Cloudflare Workers AI | UB fuer konkrete Paid-Zahlung; fuer Free-/Testweg siehe Abschnitt 1 | UB | UB | UB | Keine Aussage zu Cloudflare-Tunnel-/Enterprise-Vertraegen aus AI-Free-Quota ableiten |
+| OpenRouter | Kredit-/Debitkarte belegt | Support: **in Arbeit**, nicht als verfuegbar bestaetigt | Nicht genannt | **USDC belegt**, nicht beliebige Coins/Netzwerke | AliPay; [Preise](https://openrouter.ai/pricing), [Support](https://openrouter.ai/support). Krypto-Guthabenkauf laut AGB nicht erstattbar |
+| token8341 | Fuer beworbenes Trial nicht erforderlich; bezahlte Kartenannahme UB | UB | UB | UB | Homepage sagt nur mehrere Zahlarten; keine Vermutung zu Alipay/WeChat als Bestaetigung ausgeben |
+| DeepSeek / Alibaba Model Studio / Kimi / Z.AI / MiniMax / Synthetic | Je Anbieter/Region/Produkt **UB** | UB je Anbieter | UB je Anbieter | UB je Anbieter | Die jeweiligen offiziellen Konsolen verwenden; keine regionale Zahlart ungeprueft auf die internationale Plattform uebertragen |
+| Hugging Face Compute | Laut Billing **nur Kreditkarten** im direkten Compute-Zahlungsweg | Nein fuer diesen Weg | Nein fuer diesen Weg | Nein fuer diesen Weg | AWS-Marketplace-Abrechnung fuer passende Organisationsangebote getrennt; [Billing](https://huggingface.co/docs/hub/billing) |
+| Brave / Perplexity | Karte in den oben verlinkten API-Seiten beschrieben | UB | UB | UB | Brave: Karte zur Missbrauchsabwehr; Perplexity: Registrierung der Karte ist noch kein Credit-Kauf |
+| Firecrawl | Fuer Free Plan keine Karte; bezahlte Methoden UB | UB | UB | UB | [Preis-Seite](https://www.firecrawl.dev/pricing) |
+| ElevenLabs | Kreditkarte belegt | Nicht genannt | Nicht genannt | Nicht genannt | Apple Pay, Google Pay, UPI nur Indien; keine generelle Prepaid-Kartenunterstuetzung; [Billing](https://elevenlabs.io/docs/overview/administration/billing) |
+| Deepgram / Runway / fal / W&B | Konkrete vollstaendige Zahlartenliste fuer jeden Dienst **UB** | UB je Dienst | UB je Dienst | UB je Dienst | Runway beschreibt Stripe, was allein keine einzelne Zahlart beweist; offizielle Billing-/Preisquellen siehe Abschnitt 2 |
+| Suno / Udio API | UB | UB | UB | UB | Schon der allgemeine offizielle API-Zugang ist offen; keine Web-Abo-Zahlarten als API-Beleg verwenden |
+
+**Ohne Kreditkarte und ohne Einzahlung:** primaer den belegten Free-Weg von
+Mistral, Firecrawl oder Deepgram betrachten. Das ist keine Empfehlung, dort
+sensible Daten zu verarbeiten, und keine Zusage eines ausweisfreien Kontos.
+OpenRouter dokumentiert USDC als Alternative fuer den bezahlten Einstieg.
+Fuer **Klarna** wurde in dieser Recherche keine ausdrueckliche Zusage eines
+hier beschriebenen direkten KI-API-Kaufs gefunden; offen ist nicht verboten.
+
+## 4. Werden Ausweis, Selfie oder weitere Nachweise verlangt?
+
+| Anbietergruppe | Bestaetigter Befund | Was vor Nutzung noch zu klaeren ist |
+|---|---|---|
+| Anthropic / Claude | Offizielle Verifizierungsseite beschreibt fallabhaengige Identitaetspruefung; amtlicher Lichtbildausweis, ggf. Live-Selfie; Organisationen ggf. Firmenangaben | Kein Schluss, dass jeder API-Key diese Pruefung benoetigt; Anlass und Kontofreigabe im eigenen Konto pruefen. [Identitaetspruefung](https://support.claude.com/en/articles/14328960-identity-verification-on-claude) |
+| OpenAI | Fuer bestimmte Trusted-Access-Produkte werden Identitaet und Freigabe geprueft | Das belegt **keine allgemeine Ausweispflicht fuer jeden Standard-API-Key** und keine allgemeine Befreiung. [Trusted Access](https://learn.chatgpt.com/docs/cyber-safety); aktuelle konto-/modellspezifische Verifizierung offen |
+| Cerebras | **Verifiziertes Zahlungsmittel** fuer Trial bestaetigt | Ausweis-/Selfiepflicht nicht damit gleichsetzen; allgemeine KYC-Pflicht **UB** |
+| Brave | Kartenpruefung zur Missbrauchsabwehr beschrieben | Kein daraus belegter Ausweiszwang; weitere Pruefungen **UB** |
+| Alibaba Model Studio | Ausgefuellte Kontoinformationen vor Aktivierung verlangt | Weiterfuehrende Identitaets-, Zahlungs- oder Firmenpruefung je Land/Kontotyp klaeren. International und Festland-China nicht gleichsetzen |
+| MiniMax | Vertrag verlangt die jeweils erforderliche Kontoverifizierung vor Kauf/Nutzung | Welche Dokumente bei welchem Produkt/Konto verlangt werden, **UB** |
+| DeepSeek | Hilfe fuehrt Real-Name-Verification-Themen auf | Die dynamischen Hilfetexte lieferten hier keine verlaessliche allgemeine Regel fuer internationale Nutzer; konkrete Pflicht, Dokumente und Region **offen** |
+| Google Gemini, Mistral, Groq, NVIDIA, Cloudflare, OpenRouter, token8341, Kimi, Z.AI, Synthetic, Hugging Face, Perplexity, Firecrawl, ElevenLabs, Deepgram, Runway, fal und W&B | In den fuer diese Seite gelesenen Key-/Billing-Quellen keine fuer alle genannten Konten belastbare allgemeine Ja-/Nein-Regel zur Ausweispflicht | **UB je Anbieter**, keine Zusage ohne KYC. E-Mail/Telefon/2FA, Karten-3DS, Modellfreigabe, Alterspruefung, Voice-Cloning-Einwilligung und Firmenverifizierung koennen zusaetzlich relevant sein |
+
+Nachweise nur im verifizierten offiziellen Kontofluss an die dort genannten
+Verifizierungsstellen uebermitteln. Keine Dokumente an inoffizielle
+Key-Verkaeufer, vermeintliche Support-DMs, Modellrouter oder Coding-Agenten geben.
+Die Verwendung von Krypto beseitigt keine KYC-/Kontopruefpflicht.
+
+## 5. Business-Connectoren, Bots, OAuth und lokale Tokens
+
+Fuer die restlichen Webseiten des Katalogs gilt die
+[ergänzende Anleitung fuer Dienst-Tokens](SERVICE_TOKEN_REGISTRATION.md).
+Dort stehen Key-/OAuth-Wege, Tarifgrenzen und die noch offenen Zahlungs-/
+Identitaetsfragen. Lokale Anwendungsschluessel werden nicht bei einem
+Cloud-Modellanbieter gekauft.
+
+## 6. Sicherer Ablauf fuer dein Setup
+
+1. Zuerst Anbieter, Region und konkretes Produkt waehlen. Freikontingent,
+   Ablauf und Datenverwendung lesen; im Zweifel noch keine Zahlung ausloesen.
+2. Beim offiziellen Anbieter anmelden, eigenes Projekt und minimal berechtigten
+   Key erstellen. Bei unbekannter Menuefolge nur im offiziellen Hilfebereich suchen.
+3. Falls noetig: Mindestkauf, tatsaechlichen Gesamtpreis, Steuern, Rueckzahlung,
+   automatische Verlaengerung und Identitaetsanforderungen vor Bestaetigung lesen.
+4. Auto-Reload und kostenpflichtigen Fallback **nicht standardmaessig aktivieren**.
+   Kostenwarnungen sind keine Garantie eines harten Ausgabenstopps.
+5. Nur den benoetigten Key im [ENV-Tresor](../ENV_VAULT.md) bzw. externen
+   User-Workspace speichern; Namen gemaess [Katalog](PROVIDER_KEY_CATALOG.md)
+   und konkretem Client verwenden. Router-Upstream-Key und lokaler Unified Key trennen.
+6. Einen echten Test erst nach eigener Cloud-/Kostenfreigabe durchfuehren;
+   kleinen Token-/Request-/Retry-Rahmen setzen und Abrechnung kontrollieren.
+
+## 7. Pruefluecken und Aktualisierung
+
+Anmeldungen, Checkout, Kartenannahme, Auszahlung, Trial-Einloesung und
+Identitaetspruefungen wurden **nicht live getestet**. Explizite UB-Felder
+bleiben offen, auch wenn ein Blog eine Zahl oder Zahlart nennt.
+Ein 404/403, Redirect oder ein leer gerendertes Dashboard ist kein Beleg
+dafuer, dass ein Dienst nicht existiert oder eine Zahlart ablehnt.
+
+Die alte Deepgram-Key-Hilfeseite und einzelne MiniMax-/Synthetic-Hilfewege
+waren nicht verlaesslich abrufbar; deren Portalfolgen sind deshalb nicht
+als komplett verifiziert dargestellt. Perplexity-/fal-Dokumente wurden ueber
+die funktionierenden aktuellen Dokumentationspfade gelesen.
+W&B-Authorize leitete zu CoreWeave Forge weiter; genaue Kontoumstellung offen.
+
+[Datierter Befund](reviews/2026-10-23-registration-billing.md).
+Bei der naechsten Anbieterpruefung **auch diese Seiten** und nicht nur
+Tokenpreise nachsehen. Vor einer Einzahlung erneut im eigenen Konto pruefen.
+Es wird durch diese Dokumentation kein weiterer Hintergrundjob eingerichtet.
+
+Zur [API-Key-Uebersicht](README.md).

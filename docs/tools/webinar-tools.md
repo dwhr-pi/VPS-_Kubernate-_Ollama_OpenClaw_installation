@@ -130,6 +130,29 @@ Symlinks, `LD_LIBRARY_PATH`-Umleitung oder Docker-/npm-Ausweichinstallation.
 Browser-/Sandbox-Fehler beim spaeteren Export sind ein anderer Test und
 werden nicht durch Abschalten der Browser-Sandbox kaschiert.
 
+### Log endet nach dem Reparaturvorschlag
+
+Beim gemeldeten Fehler `libatomic.so.1` fehlt **libatomic1**, nicht freier
+Speicher. Falls das Log nach dem apt-Vorschlag endet, ist damit noch keine
+erfolgreiche Reparatur belegt. Der Installer gibt die Bestaetigungsfrage
+jetzt als vollstaendige, sofort ausgegebene Logzeilen aus und zeigt an,
+dass er auf eine Antwort mit Enter wartet. `j` oder `ja` bestaetigt, Enter
+ohne Antwort lehnt ab. Die Entscheidung wird ebenfalls protokolliert.
+Ohne interaktives Eingabeterminal wird nicht gewartet oder still zugestimmt.
+Nach Zustimmung kann **sudo separat nach dem Benutzerpasswort fragen**;
+Passwoerter gehoeren weder ins Log noch in den Chat.
+
+Alternativ die im konkreten Fehler genannte Bibliothek bewusst separat
+einrichten und danach Marp erneut im Tools-Menue installieren:
+
+```bash
+sudo apt-get -o DPkg::Lock::Timeout=300 install --no-remove --no-install-recommends libatomic1
+bash scripts/tools/marp_install.sh --repair
+```
+
+Oder den oben dokumentierten Weg mit `MARP_INSTALL_RUNTIME_LIBS=1` verwenden.
+Marp selbst kommt weiterhin aus dem geprueften GitHub-Release, nicht aus Docker.
+
 Die Reparaturlogik wurde mit synthetischen Loader-/apt-Ausgaben getestet;
 keine Paketinstallation oder Live-Ausfuehrung auf deinem WSL-System hier.
 

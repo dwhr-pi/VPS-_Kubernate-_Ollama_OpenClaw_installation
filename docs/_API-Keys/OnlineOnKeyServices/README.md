@@ -32,3 +32,10 @@ Private Daten und Geheimnisse duerfen nicht durch einen stillen Fallback abflies
 
 Zurueck zu [Allen API-Schluesseln](../README.md),
 [FreeLLMAPI](../../tools/freellmapi.md) oder dem [Tool-Index](../../TOOL_INDEX.md).
+
+## Anmeldung und Bezahlung
+
+[Offizielle Key-Wege, kostenlose Kontingente, Mindesteinzahlungen,
+Kreditkarte/PayPal/Klarna/Krypto und Identitaetspruefungen](../REGISTRATION_BILLING_AND_IDENTITY.md)
+fuer OpenRouter, token8341 und die weiteren Anbieter. Ungeklaerte
+Checkout-/Accountbedingungen sind keine bestaetigte Freigabe.

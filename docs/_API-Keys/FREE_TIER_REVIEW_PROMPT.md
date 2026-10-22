@@ -6,6 +6,8 @@ bestimmt. Sie startet selbst keine Programme oder Automation.
 ## Auftrag
 
 1. Lies `docs/_API-Keys/FREE_TIERS_AND_TRIAL_CREDITS.md`, diese Anweisung,
+   `docs/_API-Keys/REGISTRATION_BILLING_AND_IDENTITY.md`,
+   `docs/_API-Keys/SERVICE_TOKEN_REGISTRATION.md`,
    den neuesten Bericht in `docs/_API-Keys/reviews/` und die relevante
    FreeLLMAPI-/Coding-Agent-Dokumentation. Ermittle das tatsaechliche
    Windows-Repository, arbeite nicht in WSL oder einem Ersatz-Checkout.
@@ -29,6 +31,14 @@ bestimmt. Sie startet selbst keine Programme oder Automation.
    tatsaechlichen Setup-Pin. Ungeklaertes ausdruecklich `unverified` nennen.
    Nicht dokumentierte Zahlen nicht schaetzen. Reine Bezahlangebote nicht
    als Free Tier einsortieren.
+   Pruefe auch den offiziellen Key-Ausgabeweg, ob ein Zahlungsmittel schon
+   fuer das Trial erforderlich ist, Mindesteinzahlung versus Tarif-/Bonus-
+   schwelle, Kredit-/Debitkarte, PayPal, Klarna und konkrete Kryptowaerung/
+   Netzwerk. Stripe allein belegt keine bestimmte freigeschaltete Zahlart.
+   Trenne Ausweis/Selfie/Firmennachweis von Telefon/E-Mail/2FA/Karten-3DS;
+   fehlende oeffentliche KYC-Regeln sind keine Ausweisfreiheitszusage.
+   UB-Felder nicht ohne neuen Primaerbeleg in Ja/Nein umwandeln. Fuer weitere
+   Dienst-Tokens Tarif, OAuth-Freigabe und lokale App-Secrets auseinanderhalten.
 6. Pruefe Claude Codes Lizenz und baubaren Quellumfang erneut am Original-
    Repository. Halte Claude Code, Anthropic_CLI/ant, SDKs, Plugins und
    eigenstaendige quelloffene Alternativen auseinander. Keine Leaks oder

@@ -4,6 +4,11 @@ Die neuen Eintraege stehen im **Tools-Menue am Ende**, nach dem bisherigen
 A-Z-Bereich. Die bisherige Trennlinie nach Ruflo bleibt erhalten. Bereits
 vorhandene Medien-Eintraege werden dort nicht doppelt angezeigt.
 Alle Wege sind optional und **ohne Docker**.
+Fuer Qwen Desktop Build gibt es ausserdem im Tools-Menue unter
+**Ubuntu / Windows** die ausdrueckliche Zielauswahl. Windows-Builds starten
+in nativem Windows-Python/PowerShell und aendern nicht den Linux-Status.
+Die benoetigte MSVC-Developer-Umgebung muss dort bereits verfuegbar sein;
+andernfalls den unten beschriebenen Developer-PowerShell-Weg nutzen.
 
 ## Qwen Code Desktop: Download oder eigener Build
 
@@ -18,8 +23,9 @@ beschreibt eine **Tauri-2-Anwendung**, nicht einen zweiten unabhaengigen
 Qwen-Client. Sie buendelt Node, CLI und Web Shell.
 Der Installer folgt dem [offiziellen Buildworkflow](https://github.com/QwenLM/qwen-code/blob/bf66a26c978dac68af31fbc093eb53044e204b24/.github/workflows/desktop-release.yml):
 frozen pnpm-Installation, Desktop npm ci, build:runtime und Tauri-Build.
-Es wird bewusst ein **lokales unsigniertes Executable ohne Release-Bundle**
-gebaut: keine fremden Signierschluessel, kein Windows-Setup automatisch gestartet.
+Es wird ein **lokales unsigniertes Paket** gebaut: Linux-AppImage oder
+Windows-NSIS-Installer, ohne Updater-Signatur. Keine fremden Signierschluessel
+und kein Windows-Setup werden automatisch verwendet beziehungsweise gestartet.
 
 Voraussetzungen: Git, **Node 22**, npm, Corepack (pnpm-Version aus package.json),
 Rust/Cargo und tar. Ubuntu braucht die Tauri-/GTK-/WebKit-Entwicklungsbibliotheken,
@@ -30,6 +36,31 @@ PATH liegt. Basiswerkzeuge werden nicht still systemweit nachinstalliert.
 Planungsreserve: **20 GiB freier Zielspeicher** und unter WSL auch auf C:;
 unter Linux mindestens **6 GiB verfuegbarer RAM**, besser mehr. Der Build kann
 lange dauern. Eine Reserve garantiert nicht, dass jeder Build hineinpasst.
+
+### Abbruch bei 12,9 GiB auf C: trotz 953 GiB unter WSL
+
+Der Build verlangt **20 GiB = 20.480 MiB** sowohl am Ziel als auch beim
+geprueften Windows-Host-Pfad. Bei **13.251 MiB** auf C: fehlen mindestens
+**7.229 MiB**, also rund **7,1 GiB**. Die freie Kapazitaet im Linux-Dateisystem
+ersetzt diese Host-Reserve nicht. Reserve nicht herabsetzen, um den Build
+auf einer fast vollen Windows-Platte zu erzwingen.
+
+Wenn die Menue-Vorpruefung gleichzeitig nur **4 GiB / 4096 MB** nennt,
+laeuft vermutlich noch ein aelterer Setup-Prozess oder eine andere Kopie.
+Im aktuellen setup_ultimate.sh ist der Qwen-Desktop-Fallback bereits
+20.480 MiB. **Setup vollstaendig beenden und aus dem aktualisierten
+Projektverzeichnis neu starten**; ein Dateiaustausch laedt bereits im
+laufenden Bash-Prozess definierte Funktionen nicht automatisch neu.
+Das aktuelle Operationslog nennt nun auch Installerdatei und Manifestpfad.
+
+Unterhalb der Reserve wird **vor Download und Build** abgebrochen. Es gibt
+dann keine neuen Qwen-Programmdateien zurueckzurollen; das aktuelle Log und
+ein gegebenenfalls angelegter Verwaltungsordner bleiben erhalten.
+Bestehende Installationen werden nicht deinstalliert. Erst Speicher bewusst
+freigeben oder einen passend dimensionierten Installations-/WSL-Speicherweg
+einrichten; keine automatische Datenloeschung oder WSL-Verschiebung.
+
+### Build starten
 
 Linux/Ubuntu/WSL (baut eine **Linux-Anwendung**, Anzeige spaeter z. B. ueber WSLg):
 
@@ -49,8 +80,12 @@ Natives Windows, im Repository-Verzeichnis, vorhandenes Python >=3.10:
 
 Ziel unter dem jeweiligen Benutzerprofil:
 `~/.openclaw_ultimate_user_data/tools/qwen_desktop_build/runtime/`.
-Executable: `packages/desktop/src-tauri/target/release/qwen-code-desktop`
-(Windows: `.exe`). Der gepackte CLI-/Node-Bestand liegt unter
+Paket: `packages/desktop/src-tauri/target/release/bundle/appimage/*.AppImage`
+oder unter Windows `packages/desktop/src-tauri/target/release/bundle/nsis/*.exe`.
+Das Paket erst nach eigener Pruefung manuell starten/installieren. Windows kann
+wegen fehlender Herausgebersignatur eine Warnung zeigen; nicht blind uebergehen.
+Das rohe Build-Executable neben `bundle/` ist kein eigenstaendig portables Paket.
+Der gepackte CLI-/Node-Bestand liegt unter
 `packages/desktop/runtime/qwen-code/`. Es erfolgt kein globaler PATH-Eintrag,
 kein Desktop-Shortcut und kein GUI-/Daemonstart. Erst beim bewussten Start
 gelten die Upstream-Laufzeitfunktionen, einschliesslich Updatepruefungen und
@@ -68,7 +103,30 @@ eigentlichen Core-Abhaengigkeiten; die aelteren Python-Versionen im Metadatenfel
 dienen laut Upstream dem Upgrade bestehender Installationen.
 Ein vorhandenes `uv` ist erforderlich. Bei abweichendem Programmpfad:
 `HERMES_PYTHON_BIN=/absoluter/pfad/python3.14` setzen.
-Kein Python-Download, kein Ersetzen des System-Python und keine Cloud-Extras.
+Fehlt Python 3.14, bietet der Installer nach Bestaetigung eine private Laufzeit
+unter `runtime/.python/` an. Dazu verwendet das vorhandene `uv` die
+[Astral-python-build-standalone-Distributionen von GitHub](https://docs.astral.sh/uv/guides/install-python/),
+nicht Docker und nicht ein ersetztes Ubuntu-System-Python.
+`--no-bin` verhindert globale Python-Launcher; der globale PATH bleibt unveraendert.
+Die Pruefung erfolgt vor dem Hermes-Quellcheckout. Ablehnung, EOF oder fehlendes
+Terminal ohne ausdrueckliche Freigabe fuehren zu einem klar protokollierten Abbruch.
+Eine ausdruecklich gesetzte, aber unpassende `HERMES_PYTHON_BIN` wird nicht ersetzt.
+
+Fuer einen bewusst freigegebenen Python-Download ohne interaktive Rueckfrage:
+
+```bash
+HERMES_INSTALL_PYTHON=1 bash scripts/tools/hermes_agent_jarvis_install.sh
+```
+
+`HERMES_INSTALL_PYTHON=0` verbietet diesen Download. Das vorhandene `uv` bleibt
+Voraussetzung. Ein aelteres `uv`, das `--no-bin` nicht kennt, muss separat
+aktualisiert werden; der Installer umgeht diese Schutzoption nicht.
+Der Download waehlt die von dieser uv-Version angebotene CPython-3.14-Patchversion,
+nicht einen separat festgelegten Python-Artefakt-Pin. Version und Downloadausgabe
+stehen im aktuellen Operationslog. System-Python und Cloud-Extras bleiben unberuehrt.
+Die private Laufzeit wird bei fehlgeschlagener Neuinstallation mit zurueckgerollt
+und bei regulaerer Deinstallation zusammen mit dem unveraenderten Tool entfernt.
+Extern bereitgestelltes Python und `uv` bleiben erhalten.
 
 ```bash
 bash scripts/tools/hermes_agent_jarvis_install.sh --dry-run
@@ -92,7 +150,8 @@ gebautes Dashboard. [Quelleneinordnung und Dashboard-Konzept](jarvis-hermes-dash
 
 Diese Eintraege besitzen jetzt eigene gepinnte **GitHub-Quellinstaller**,
 Status-/Check-/Doctor-, Update- und Deinstallationsskripte. Umfang `source`
-bedeutet **vollstaendiger Quellcheckout, keine einsatzbereite Anwendung**.
+bedeutet **gepinntes Hauptrepository, keine einsatzbereite Anwendung**.
+Submodule und grosse Git-LFS-Inhalte werden nicht automatisch nachgeladen.
 Die Benennung im Menue sagt das ausdruecklich. Keine Gewichte, keine pip-/GPU-
 Runtime, kein Link in vorhandenes ComfyUI, keine Aufnahme oder Verarbeitung.
 

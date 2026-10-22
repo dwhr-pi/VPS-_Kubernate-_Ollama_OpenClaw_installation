@@ -14,16 +14,16 @@ keine tatsaechlich installierte Software, Downloads, Builds, Provider oder Diens
 
 | Messwert | Anzahl |
 |---|---|
-| Gelesene Markdown-Dateien (Bericht selbst ausgenommen) | 955 |
-| Registry-Eintraege | 362 |
-| Explizite Tools-Menueeintraege | 299 |
-| Registry ohne Tools-Menueeintrag | 164 |
+| Gelesene Markdown-Dateien (Bericht selbst ausgenommen) | 956 |
+| Registry-Eintraege | 366 |
+| Explizite Tools-Menueeintraege | 312 |
+| Registry ohne Tools-Menueeintrag | 155 |
 | Tools-Menue ohne Registry-Zuordnung | 101 |
-| Registry mit bekanntem Installationsplatzhalter | 160 |
+| Registry mit bekanntem Installationsplatzhalter | 149 |
 | Rezepte im separaten Entwicklungskatalog | 62 |
 | Quellen im Entwicklungskatalog | 62 |
-| Eindeutige GitHub-Repositories in der Dokumentation | 515 |
-| GitHub-Referenzen ohne direkte Quellenzuordnung | 242 |
+| Eindeutige GitHub-Repositories in der Dokumentation | 517 |
+| GitHub-Referenzen ohne direkte Quellenzuordnung | 241 |
 
 ## So sind die Ergebnisse zu lesen
 
@@ -67,8 +67,6 @@ keine tatsaechlich installierte Software, Downloads, Builds, Provider oder Diens
 | reuse | scripts/tools/reuse_install.sh | Skript vorhanden; Runtime ungeprueft |
 | scancode_toolkit | scripts/tools/scancode_toolkit_install.sh | Skript vorhanden; Runtime ungeprueft |
 | gbox | scripts/tools/gbox_install.sh | Skript vorhanden; Runtime ungeprueft |
-| ai_content_multiplier | scripts/tools/ai_content_multiplier_install.sh | Skript vorhanden; Runtime ungeprueft |
-| websitefactory | scripts/tools/websitefactory_install.sh | Skript vorhanden; Runtime ungeprueft |
 | stalwart_mail | scripts/tools/stalwart_mail_install.sh | Skript vorhanden; Runtime ungeprueft |
 | queue_manager | scripts/tools/queue_manager_install.sh | Skript vorhanden; Runtime ungeprueft |
 | tasktiger | scripts/tools/planned_tool_stub_install.sh | Platzhalter |
@@ -133,26 +131,19 @@ keine tatsaechlich installierte Software, Downloads, Builds, Provider oder Diens
 | mcp_memory_server | scripts/tools/planned_tool_stub_install.sh | Platzhalter |
 | styletts2 | scripts/tools/planned_tool_stub_install.sh | Platzhalter |
 | openvoice | scripts/tools/planned_tool_stub_install.sh | Platzhalter |
-| rvc | scripts/tools/planned_tool_stub_install.sh | Platzhalter |
 | seed_vc | scripts/tools/planned_tool_stub_install.sh | Platzhalter |
 | diffsinger | scripts/tools/planned_tool_stub_install.sh | Platzhalter |
 | openutau | scripts/tools/planned_tool_stub_install.sh | Platzhalter |
 | nnsvs | scripts/tools/planned_tool_stub_install.sh | Platzhalter |
-| audacity | scripts/tools/planned_tool_stub_install.sh | Platzhalter |
-| uvr5 | scripts/tools/planned_tool_stub_install.sh | Platzhalter |
 | fish_speech | scripts/tools/planned_tool_stub_install.sh | Platzhalter |
 | melotts | scripts/tools/planned_tool_stub_install.sh | Platzhalter |
 | kokoro_tts | scripts/tools/planned_tool_stub_install.sh | Platzhalter |
 | spark_tts | scripts/tools/planned_tool_stub_install.sh | Platzhalter |
 | hallo2 | scripts/tools/planned_tool_stub_install.sh | Platzhalter |
-| musetalk | scripts/tools/planned_tool_stub_install.sh | Platzhalter |
-| liveportrait | scripts/tools/planned_tool_stub_install.sh | Platzhalter |
-| sadtalker | scripts/tools/planned_tool_stub_install.sh | Platzhalter |
 | emo_avatar | scripts/tools/planned_tool_stub_install.sh | Platzhalter |
 | skyreels_a1 | scripts/tools/planned_tool_stub_install.sh | Platzhalter |
 | wav2lip | scripts/tools/planned_tool_stub_install.sh | Platzhalter |
 | clearer_voice_studio | scripts/tools/planned_tool_stub_install.sh | Platzhalter |
-| obs | scripts/tools/planned_tool_stub_install.sh | Platzhalter |
 | subtitleedit | scripts/tools/planned_tool_stub_install.sh | Platzhalter |
 | openbao | scripts/tools/planned_tool_stub_install.sh | Platzhalter |
 | infisical | scripts/tools/planned_tool_stub_install.sh | Platzhalter |
@@ -315,6 +306,10 @@ keine tatsaechlich installierte Software, Downloads, Builds, Provider oder Diens
 
 | ID | Tools-Menue | Status / Modus | Installationsskript / Umfang |
 |---|---|---|---|
+| qwen_desktop_build | Qwen_Desktop_Build | experimental / github-desktop-build | scripts/tools/qwen_desktop_build_install.sh: Skript vorhanden; Runtime ungeprueft |
+| hermes_agent_jarvis | Hermes_Agent_Jarvis | experimental / github-python-package | scripts/tools/hermes_agent_jarvis_install.sh: Skript vorhanden; Runtime ungeprueft |
+| gradio | Gradio | experimental / github-source | scripts/tools/gradio_install.sh: Skript vorhanden; Runtime ungeprueft |
+| streamlit | Streamlit | experimental / github-source | scripts/tools/streamlit_install.sh: Skript vorhanden; Runtime ungeprueft |
 | concat | Concat | experimental / github-release-appimage | scripts/tools/concat_install.sh: Skript vorhanden; Runtime ungeprueft |
 | remotion | Remotion | experimental / github-source-build | scripts/tools/remotion_install.sh: Skript vorhanden; Runtime ungeprueft |
 | hyperframes | HyperFrames | experimental / github-source-build | scripts/tools/hyperframes_install.sh: Skript vorhanden; Runtime ungeprueft |
@@ -350,14 +345,14 @@ keine tatsaechlich installierte Software, Downloads, Builds, Provider oder Diens
 | qwen_code | Qwen_Code | experimental / source | scripts/tools/qwen_code_install.sh: Skript vorhanden; Runtime ungeprueft |
 | wan21 | Wan21 | experimental / source | scripts/tools/wan21_install.sh: Skript vorhanden; Runtime ungeprueft |
 | comfyui_gguf | ComfyUI_GGUF | experimental / source | scripts/tools/comfyui_gguf_install.sh: Skript vorhanden; Runtime ungeprueft |
-| wanvideo_wrapper | WanVideoWrapper | planned / documentation-first | scripts/tools/hybrid_media_candidate_install.sh: Platzhalter |
+| wanvideo_wrapper | WanVideoWrapper | experimental / github-source | scripts/tools/wanvideowrapper_install.sh: Skript vorhanden; Runtime ungeprueft |
 | supir | SUPIR | experimental / source | scripts/tools/supir_install.sh: Skript vorhanden; Runtime ungeprueft |
 | film | FILM | experimental / source | scripts/tools/film_install.sh: Skript vorhanden; Runtime ungeprueft |
 | pyannote_audio | Pyannote_Audio | experimental / source | scripts/tools/pyannote_audio_install.sh: Skript vorhanden; Runtime ungeprueft |
 | deepfilternet | DeepFilterNet | experimental / source | scripts/tools/deepfilternet_install.sh: Skript vorhanden; Runtime ungeprueft |
 | audioseal | AudioSeal | experimental / source | scripts/tools/audioseal_install.sh: Skript vorhanden; Runtime ungeprueft |
-| cogvideox | CogVideoX, LTX_Video | planned / documentation-first | scripts/tools/social_media_candidate_install.sh: Platzhalter |
-| ltx_video | CogVideoX, LTX_Video | planned / documentation-first | scripts/tools/social_media_candidate_install.sh: Platzhalter |
+| cogvideox | CogVideoX | experimental / github-source | scripts/tools/cogvideox_install.sh: Skript vorhanden; Runtime ungeprueft |
+| ltx_video | LTX_Video | experimental / github-source | scripts/tools/ltx_video_install.sh: Skript vorhanden; Runtime ungeprueft |
 | tgi | TGI | experimental / source | scripts/tools/tgi_install.sh: Skript vorhanden; Runtime ungeprueft |
 | pinokio | Pinokio | planned / manual-desktop | scripts/tools/pinokio_install.sh: Skript vorhanden; Runtime ungeprueft |
 | sdnext | SD_Next | experimental / source | scripts/tools/sdnext_install.sh: Skript vorhanden; Runtime ungeprueft |
@@ -366,7 +361,7 @@ keine tatsaechlich installierte Software, Downloads, Builds, Provider oder Diens
 | veo_api | Veo_API | experimental / source | scripts/tools/veo_api_install.sh: Skript vorhanden; Runtime ungeprueft |
 | hf_datasets | HF_Datasets | experimental / source | scripts/tools/hf_datasets_install.sh: Skript vorhanden; Runtime ungeprueft |
 | hf_hub | HF_Hub | experimental / source | scripts/tools/hf_hub_install.sh: Skript vorhanden; Runtime ungeprueft |
-| video2dataset | Video2Dataset | planned / documentation-first | scripts/tools/video_dataset_candidate_install.sh: Platzhalter |
+| video2dataset | Video2Dataset | experimental / github-source | scripts/tools/video2dataset_install.sh: Skript vorhanden; Runtime ungeprueft |
 | karaoke_formats | Karaoke_Formats | experimental / source | scripts/tools/karaoke_formats_install.sh: Skript vorhanden; Runtime ungeprueft |
 | alexandria_audiobook | Alexandria_Audiobook | experimental / source | scripts/tools/alexandria_audiobook_install.sh: Skript vorhanden; Runtime ungeprueft |
 | qwen3_tts | Qwen3_TTS | experimental / source | scripts/tools/qwen3_tts_install.sh: Skript vorhanden; Runtime ungeprueft |
@@ -510,8 +505,8 @@ keine tatsaechlich installierte Software, Downloads, Builds, Provider oder Diens
 | reuse | nein | nicht angegeben / nicht angegeben | scripts/tools/reuse_install.sh: Skript vorhanden; Runtime ungeprueft |
 | scancode_toolkit | nein | nicht angegeben / nicht angegeben | scripts/tools/scancode_toolkit_install.sh: Skript vorhanden; Runtime ungeprueft |
 | gbox | nein | nicht angegeben / nicht angegeben | scripts/tools/gbox_install.sh: Skript vorhanden; Runtime ungeprueft |
-| ai_content_multiplier | nein | nicht angegeben / nicht angegeben | scripts/tools/ai_content_multiplier_install.sh: Skript vorhanden; Runtime ungeprueft |
-| websitefactory | nein | optional / nicht angegeben | scripts/tools/websitefactory_install.sh: Skript vorhanden; Runtime ungeprueft |
+| ai_content_multiplier | AI_ContentMultiplier | nicht angegeben / nicht angegeben | scripts/tools/ai_content_multiplier_install.sh: Skript vorhanden; Runtime ungeprueft |
+| websitefactory | WebsiteFactory | optional / nicht angegeben | scripts/tools/websitefactory_install.sh: Skript vorhanden; Runtime ungeprueft |
 | stalwart_mail | nein | nicht angegeben / nicht angegeben | scripts/tools/stalwart_mail_install.sh: Skript vorhanden; Runtime ungeprueft |
 | queue_manager | nein | planned / nicht angegeben | scripts/tools/queue_manager_install.sh: Skript vorhanden; Runtime ungeprueft |
 | tasktiger | nein | planned / nicht angegeben | scripts/tools/planned_tool_stub_install.sh: Platzhalter |
@@ -583,26 +578,26 @@ keine tatsaechlich installierte Software, Downloads, Builds, Provider oder Diens
 | mcp_memory_server | nein | planned / manual | scripts/tools/planned_tool_stub_install.sh: Platzhalter |
 | styletts2 | nein | planned / source | scripts/tools/planned_tool_stub_install.sh: Platzhalter |
 | openvoice | nein | planned / source | scripts/tools/planned_tool_stub_install.sh: Platzhalter |
-| rvc | nein | planned / source | scripts/tools/planned_tool_stub_install.sh: Platzhalter |
+| rvc | RVC | experimental / github-source | scripts/tools/rvc_install.sh: Skript vorhanden; Runtime ungeprueft |
 | seed_vc | nein | planned / source | scripts/tools/planned_tool_stub_install.sh: Platzhalter |
 | diffsinger | nein | planned / source | scripts/tools/planned_tool_stub_install.sh: Platzhalter |
 | openutau | nein | planned / manual | scripts/tools/planned_tool_stub_install.sh: Platzhalter |
 | nnsvs | nein | planned / source | scripts/tools/planned_tool_stub_install.sh: Platzhalter |
-| audacity | nein | optional / manual | scripts/tools/planned_tool_stub_install.sh: Platzhalter |
-| uvr5 | nein | planned / source | scripts/tools/planned_tool_stub_install.sh: Platzhalter |
+| audacity | Audacity | experimental / github-source | scripts/tools/audacity_install.sh: Skript vorhanden; Runtime ungeprueft |
+| uvr5 | UVR5 | experimental / github-source | scripts/tools/uvr5_install.sh: Skript vorhanden; Runtime ungeprueft |
 | fish_speech | nein | planned / source | scripts/tools/planned_tool_stub_install.sh: Platzhalter |
 | melotts | nein | planned / source | scripts/tools/planned_tool_stub_install.sh: Platzhalter |
 | kokoro_tts | nein | planned / python | scripts/tools/planned_tool_stub_install.sh: Platzhalter |
 | spark_tts | nein | planned / source | scripts/tools/planned_tool_stub_install.sh: Platzhalter |
 | hallo2 | nein | planned / source | scripts/tools/planned_tool_stub_install.sh: Platzhalter |
-| musetalk | nein | planned / source | scripts/tools/planned_tool_stub_install.sh: Platzhalter |
-| liveportrait | nein | planned / source | scripts/tools/planned_tool_stub_install.sh: Platzhalter |
-| sadtalker | nein | planned / source | scripts/tools/planned_tool_stub_install.sh: Platzhalter |
+| musetalk | MuseTalk | experimental / github-source | scripts/tools/musetalk_install.sh: Skript vorhanden; Runtime ungeprueft |
+| liveportrait | LivePortrait | experimental / github-source | scripts/tools/liveportrait_install.sh: Skript vorhanden; Runtime ungeprueft |
+| sadtalker | SadTalker | experimental / github-source | scripts/tools/sadtalker_install.sh: Skript vorhanden; Runtime ungeprueft |
 | emo_avatar | nein | planned / source | scripts/tools/planned_tool_stub_install.sh: Platzhalter |
 | skyreels_a1 | nein | planned / source | scripts/tools/planned_tool_stub_install.sh: Platzhalter |
 | wav2lip | nein | planned / source | scripts/tools/planned_tool_stub_install.sh: Platzhalter |
 | clearer_voice_studio | nein | planned / source | scripts/tools/planned_tool_stub_install.sh: Platzhalter |
-| obs | nein | optional / manual | scripts/tools/planned_tool_stub_install.sh: Platzhalter |
+| obs | OBS | experimental / github-source | scripts/tools/obs_install.sh: Skript vorhanden; Runtime ungeprueft |
 | subtitleedit | nein | optional / manual | scripts/tools/planned_tool_stub_install.sh: Platzhalter |
 | openbao | nein | planned / manual | scripts/tools/planned_tool_stub_install.sh: Platzhalter |
 | infisical | nein | planned / manual | scripts/tools/planned_tool_stub_install.sh: Platzhalter |
@@ -777,7 +772,7 @@ mit --format json sind alle Fundstellen verfuegbar. Leere Zuordnung ist keine In
 | [anchore/grype](https://github.com/anchore/grype) | Menue: Grype; Registry: grype | [docs/GITHUB_TOOL_CANDIDATES_REVIEW.md](GITHUB_TOOL_CANDIDATES_REVIEW.md), [docs/GITHUB_TOOL_SOURCES.md](GITHUB_TOOL_SOURCES.md), [docs/GRYPE_INSTALLATION_NOTES.md](GRYPE_INSTALLATION_NOTES.md) |
 | [anchore/syft](https://github.com/anchore/syft) | Menue: Syft; Registry: syft | [docs/GITHUB_TOOL_CANDIDATES_REVIEW.md](GITHUB_TOOL_CANDIDATES_REVIEW.md), [docs/GITHUB_TOOL_SOURCES.md](GITHUB_TOOL_SOURCES.md), [docs/SYFT_INSTALLATION_NOTES.md](SYFT_INSTALLATION_NOTES.md) |
 | [anil-matcha/open-generative-ai](https://github.com/anil-matcha/open-generative-ai) | Keine direkte Zuordnung; manuell pruefen | [docs/Profile/OpenHiggsStack_AI_Cinema_Studio.md](Profile/OpenHiggsStack_AI_Cinema_Studio.md) |
-| [anjok07/ultimatevocalremovergui](https://github.com/anjok07/ultimatevocalremovergui) | Registry: uvr5 | [docs/TOOL_MATRIX.md](TOOL_MATRIX.md), [docs/media_studio/AUDIO_DEEPFAKE_REVIEW.md](media_studio/AUDIO_DEEPFAKE_REVIEW.md) |
+| [anjok07/ultimatevocalremovergui](https://github.com/anjok07/ultimatevocalremovergui) | Menue: UVR5; Registry: uvr5 | [docs/TOOL_MATRIX.md](TOOL_MATRIX.md), [docs/media_studio/AUDIO_DEEPFAKE_REVIEW.md](media_studio/AUDIO_DEEPFAKE_REVIEW.md), [docs/tools/github-gap-tools.md](tools/github-gap-tools.md) |
 | [anomalyco/opencode](https://github.com/anomalyco/opencode) | Registry: opencode | [docs/GITHUB_TOOL_SOURCES.md](GITHUB_TOOL_SOURCES.md), [docs/tools/agentic-coding.md](tools/agentic-coding.md), [docs/tools/claude-code.md](tools/claude-code.md) |
 | [anthropics/anthropic-cli](https://github.com/anthropics/anthropic-cli) | Registry: anthropic_cli | [docs/GITHUB_TOOL_SOURCES.md](GITHUB_TOOL_SOURCES.md), [docs/TOOLS_CATALOG.md](TOOLS_CATALOG.md), [docs/tools/anthropic-cli.md](tools/anthropic-cli.md) |
 | [anthropics/claude-code](https://github.com/anthropics/claude-code) | Registry: claude_code | [docs/_API-Keys/reviews/2026-10-21.md](_API-Keys/reviews/2026-10-21.md), [docs/agents/coding-agent-profiles.md](agents/coding-agent-profiles.md), [docs/tools/anthropic-cli.md](tools/anthropic-cli.md) |
@@ -793,7 +788,7 @@ mit --format json sind alle Fundstellen verfuegbar. Leere Zuordnung ist keine In
 | [astral-sh/ruff-action](https://github.com/astral-sh/ruff-action) | Keine direkte Zuordnung; manuell pruefen | [docs/tutorials/manus-development-sources.md](tutorials/manus-development-sources.md) |
 | [astral-sh/uv](https://github.com/astral-sh/uv) | Keine direkte Zuordnung; manuell pruefen | [docs/tutorials/chatgpt-tooling-sources.md](tutorials/chatgpt-tooling-sources.md), [docs/tutorials/manus-development-sources.md](tutorials/manus-development-sources.md), [docs/tutorials/perplexity-development-tooling.md](tutorials/perplexity-development-tooling.md) |
 | [asvspoof-challenge/asvspoof5](https://github.com/asvspoof-challenge/asvspoof5) | Keine direkte Zuordnung; manuell pruefen | [docs/media_studio/AUDIO_DEEPFAKE_REVIEW.md](media_studio/AUDIO_DEEPFAKE_REVIEW.md) |
-| [audacity/audacity](https://github.com/audacity/audacity) | Registry: audacity | [docs/TOOL_MATRIX.md](TOOL_MATRIX.md), [docs/media_studio/AUDIO_DEEPFAKE_REVIEW.md](media_studio/AUDIO_DEEPFAKE_REVIEW.md) |
+| [audacity/audacity](https://github.com/audacity/audacity) | Menue: Audacity; Registry: audacity | [docs/TOOL_MATRIX.md](TOOL_MATRIX.md), [docs/media_studio/AUDIO_DEEPFAKE_REVIEW.md](media_studio/AUDIO_DEEPFAKE_REVIEW.md), [docs/tools/github-gap-tools.md](tools/github-gap-tools.md) |
 | [authelia/authelia](https://github.com/authelia/authelia) | Keine direkte Zuordnung; manuell pruefen | [docs/AUTH_OIDC_HELM_SECRETS_GUIDE.md](AUTH_OIDC_HELM_SECRETS_GUIDE.md), [docs/RECOMMENDED_TOOLS.md](RECOMMENDED_TOOLS.md) |
 | [automatic1111/stable-diffusion-webui](https://github.com/automatic1111/stable-diffusion-webui) | Menue: Stable_Diffusion_WebUI; Registry: automatic1111 | [docs/Profil/Interior_RoomGPT_Designer.md](Profil/Interior_RoomGPT_Designer.md), [docs/STABLE_DIFFUSION_WEBUI_INSTALLATION_NOTES.md](STABLE_DIFFUSION_WEBUI_INSTALLATION_NOTES.md), [docs/TOOL_GAP_ANALYSIS.md](TOOL_GAP_ANALYSIS.md) |
 | [axolotl-ai-cloud/axolotl](https://github.com/axolotl-ai-cloud/axolotl) | Menue: Axolotl | [docs/Profil/LLM-Builder.doc.md](Profil/LLM-Builder.doc.md) |
@@ -867,7 +862,7 @@ mit --format json sind alle Fundstellen verfuegbar. Leere Zuordnung ist keine In
 | [dtolnay/rust-toolchain](https://github.com/dtolnay/rust-toolchain) | Keine direkte Zuordnung; manuell pruefen | [docs/tutorials/perplexity-development-tooling.md](tutorials/perplexity-development-tooling.md) |
 | [dtolnay/thiserror](https://github.com/dtolnay/thiserror) | Keine direkte Zuordnung; manuell pruefen | [docs/tutorials/gemini-development-tooling.md](tutorials/gemini-development-tooling.md), [docs/tutorials/qwen-development-tooling.md](tutorials/qwen-development-tooling.md) |
 | [duckdb/duckdb](https://github.com/duckdb/duckdb) | Menue: DuckDB; Registry: duckdb | [docs/DUCKDB_INSTALLATION_NOTES.md](DUCKDB_INSTALLATION_NOTES.md) |
-| [dwhr-pi/content-multiplier](https://github.com/dwhr-pi/content-multiplier) | Registry: ai_content_multiplier | [docs/GITHUB_TOOL_SOURCES.md](GITHUB_TOOL_SOURCES.md) |
+| [dwhr-pi/content-multiplier](https://github.com/dwhr-pi/content-multiplier) | Menue: AI_ContentMultiplier; Registry: ai_content_multiplier | [docs/GITHUB_TOOL_SOURCES.md](GITHUB_TOOL_SOURCES.md) |
 | [dwhr-pi/mynexcloud-for-android](https://github.com/dwhr-pi/mynexcloud-for-android) | Keine direkte Zuordnung; manuell pruefen | [docs/tools/mynextcloud/README.md](tools/mynextcloud/README.md), [docs/tools/mynextcloud/fork_review.md](tools/mynextcloud/fork_review.md), [docs/tools/mynextcloud/install_android_build.md](tools/mynextcloud/install_android_build.md) |
 | [dwhr-pi/mynextcloud-server](https://github.com/dwhr-pi/mynextcloud-server) | Keine direkte Zuordnung; manuell pruefen | [docs/tools/mynextcloud/README.md](tools/mynextcloud/README.md), [docs/tools/mynextcloud/fork_review.md](tools/mynextcloud/fork_review.md), [docs/tools/mynextcloud/install_server_vps.md](tools/mynextcloud/install_server_vps.md) |
 | [dwhr-pi/vps-_kubernate-_ollama_openclaw_installation](https://github.com/dwhr-pi/vps-_kubernate-_ollama_openclaw_installation) | Registry: karaoke_formats; Registry: personnel_documents | [docs/FORK_SUPPORT_AND_UPSTREAM_GOVERNANCE.md](FORK_SUPPORT_AND_UPSTREAM_GOVERNANCE.md), [docs/GITHUB_TOOL_SOURCES.md](GITHUB_TOOL_SOURCES.md), [docs/PRIVATE_REPO_GUIDE.md](PRIVATE_REPO_GUIDE.md) |
@@ -935,7 +930,7 @@ mit --format json sind alle Fundstellen verfuegbar. Leere Zuordnung ist keine In
 | [google/googletest](https://github.com/google/googletest) | 62er-Katalog: googletest | [docs/DEVELOPMENT_TOOLS_OVERVIEW.md](DEVELOPMENT_TOOLS_OVERVIEW.md), [docs/tutorials/chatgpt-tooling-sources.md](tutorials/chatgpt-tooling-sources.md), [docs/tutorials/manus-language-infrastructure-sources.md](tutorials/manus-language-infrastructure-sources.md) |
 | [googleapis/python-genai](https://github.com/googleapis/python-genai) | Registry: veo_api | [docs/media_studio/SOCIAL_AVATAR_AUTOMATION.md](media_studio/SOCIAL_AVATAR_AUTOMATION.md), [docs/tools/veo-api.md](tools/veo-api.md) |
 | [googlecontainertools/skaffold](https://github.com/googlecontainertools/skaffold) | 62er-Katalog: skaffold | [docs/DEVELOPMENT_TOOLS_OVERVIEW.md](DEVELOPMENT_TOOLS_OVERVIEW.md), [docs/tutorials/manus-language-infrastructure-sources.md](tutorials/manus-language-infrastructure-sources.md) |
-| [gradio-app/gradio](https://github.com/gradio-app/gradio) | Keine direkte Zuordnung; manuell pruefen | [docs/media_studio/EDITABLE_VIDEO_WORKFLOWS.md](media_studio/EDITABLE_VIDEO_WORKFLOWS.md), [docs/tutorials/gemini-development-tooling.md](tutorials/gemini-development-tooling.md) |
+| [gradio-app/gradio](https://github.com/gradio-app/gradio) | Menue: Gradio; Registry: gradio | [docs/media_studio/EDITABLE_VIDEO_WORKFLOWS.md](media_studio/EDITABLE_VIDEO_WORKFLOWS.md), [docs/tools/github-gap-tools.md](tools/github-gap-tools.md), [docs/tutorials/gemini-development-tooling.md](tutorials/gemini-development-tooling.md) |
 | [grafana/grafana](https://github.com/grafana/grafana) | Registry: grafana | [docs/RECOMMENDED_TOOLS.md](RECOMMENDED_TOOLS.md), [docs/TOOLS_CATALOG.md](TOOLS_CATALOG.md) |
 | [grafana/loki](https://github.com/grafana/loki) | Registry: loki; Registry: promtail | [docs/RECOMMENDED_TOOLS.md](RECOMMENDED_TOOLS.md), [docs/TOOLS_CATALOG.md](TOOLS_CATALOG.md) |
 | [grafana/tempo](https://github.com/grafana/tempo) | Keine direkte Zuordnung; manuell pruefen | [docs/TOOL_GAP_ANALYSIS.md](TOOL_GAP_ANALYSIS.md) |
@@ -965,7 +960,7 @@ mit --format json sind alle Fundstellen verfuegbar. Leere Zuordnung ist keine In
 | [humanaigc/emo](https://github.com/humanaigc/emo) | Registry: emo_avatar | [docs/TOOL_MATRIX.md](TOOL_MATRIX.md), [docs/VIDEO_AVATAR_SYSTEMS.md](VIDEO_AVATAR_SYSTEMS.md) |
 | [hypothesisworks/hypothesis](https://github.com/hypothesisworks/hypothesis) | Keine direkte Zuordnung; manuell pruefen | [docs/tutorials/grok-development-tooling.md](tutorials/grok-development-tooling.md), [docs/tutorials/manus-development-sources.md](tutorials/manus-development-sources.md) |
 | [hzwer/eccv2022-rife](https://github.com/hzwer/eccv2022-rife) | Menue: RIFE; Registry: rife | [docs/RIFE_INSTALLATION_NOTES.md](RIFE_INSTALLATION_NOTES.md) |
-| [iejmac/video2dataset](https://github.com/iejmac/video2dataset) | Registry: video2dataset | [docs/GITHUB_TOOL_SOURCES.md](GITHUB_TOOL_SOURCES.md), [docs/media_studio/VIDEO_TRAINING_DATASETS.md](media_studio/VIDEO_TRAINING_DATASETS.md) |
+| [iejmac/video2dataset](https://github.com/iejmac/video2dataset) | Menue: Video2Dataset; Registry: video2dataset | [docs/GITHUB_TOOL_SOURCES.md](GITHUB_TOOL_SOURCES.md), [docs/media_studio/VIDEO_TRAINING_DATASETS.md](media_studio/VIDEO_TRAINING_DATASETS.md), [docs/tools/github-gap-tools.md](tools/github-gap-tools.md) |
 | [infiniflow/ragflow](https://github.com/infiniflow/ragflow) | Keine direkte Zuordnung; manuell pruefen | [docs/TOOL_GAP_ANALYSIS.md](TOOL_GAP_ANALYSIS.md) |
 | [infisical/infisical](https://github.com/infisical/infisical) | Registry: infisical | [docs/TOOLS_CATALOG.md](TOOLS_CATALOG.md) |
 | [invoke-ai/invokeai](https://github.com/invoke-ai/invokeai) | Menue: InvokeAI; Registry: invokeai | [docs/TOOL_GAP_ANALYSIS.md](TOOL_GAP_ANALYSIS.md) |
@@ -984,9 +979,9 @@ mit --format json sind alle Fundstellen verfuegbar. Leere Zuordnung ist keine In
 | [justvugg/colibri](https://github.com/justvugg/colibri) | Registry: colibri | [docs/GITHUB_TOOL_SOURCES.md](GITHUB_TOOL_SOURCES.md), [docs/TOOLS_CATALOG.md](TOOLS_CATALOG.md), [docs/tools/colibri.md](tools/colibri.md) |
 | [k3d-io/k3d](https://github.com/k3d-io/k3d) | Keine direkte Zuordnung; manuell pruefen | [docs/tutorials/perplexity-development-tooling.md](tutorials/perplexity-development-tooling.md) |
 | [k3s-io/k3s](https://github.com/k3s-io/k3s) | Registry: k3s | [docs/RECOMMENDED_TOOLS.md](RECOMMENDED_TOOLS.md), [docs/TOOL_GAP_ANALYSIS.md](TOOL_GAP_ANALYSIS.md), [docs/tutorials/gemini-development-tooling.md](tutorials/gemini-development-tooling.md) |
-| [kijai/comfyui-wanvideowrapper](https://github.com/kijai/comfyui-wanvideowrapper) | Registry: wanvideo_wrapper | [docs/media_studio/HYBRID_MODELS_AND_WAN.md](media_studio/HYBRID_MODELS_AND_WAN.md) |
+| [kijai/comfyui-wanvideowrapper](https://github.com/kijai/comfyui-wanvideowrapper) | Menue: WanVideoWrapper; Registry: wanvideo_wrapper | [docs/media_studio/HYBRID_MODELS_AND_WAN.md](media_studio/HYBRID_MODELS_AND_WAN.md), [docs/tools/github-gap-tools.md](tools/github-gap-tools.md) |
 | [kitware/cmake](https://github.com/kitware/cmake) | 62er-Katalog: cmake | [docs/DEVELOPMENT_TOOLS_OVERVIEW.md](DEVELOPMENT_TOOLS_OVERVIEW.md), [docs/tutorials/chatgpt-tooling-sources.md](tutorials/chatgpt-tooling-sources.md), [docs/tutorials/gemini-development-tooling.md](tutorials/gemini-development-tooling.md) |
-| [klingairesearch/liveportrait](https://github.com/klingairesearch/liveportrait) | Registry: liveportrait | [docs/TOOL_MATRIX.md](TOOL_MATRIX.md), [docs/VIDEO_AVATAR_SYSTEMS.md](VIDEO_AVATAR_SYSTEMS.md) |
+| [klingairesearch/liveportrait](https://github.com/klingairesearch/liveportrait) | Keine direkte Zuordnung; manuell pruefen | [docs/TOOL_MATRIX.md](TOOL_MATRIX.md), [docs/VIDEO_AVATAR_SYSTEMS.md](VIDEO_AVATAR_SYSTEMS.md) |
 | [kludex/starlette](https://github.com/kludex/starlette) | Keine direkte Zuordnung; manuell pruefen | [docs/tutorials/grok-development-tooling.md](tutorials/grok-development-tooling.md), [docs/tutorials/manus-development-sources.md](tutorials/manus-development-sources.md) |
 | [kludex/uvicorn](https://github.com/kludex/uvicorn) | Keine direkte Zuordnung; manuell pruefen | [docs/tutorials/manus-development-sources.md](tutorials/manus-development-sources.md) |
 | [knadh/listmonk](https://github.com/knadh/listmonk) | Registry: listmonk | [docs/tools/webinar-tools.md](tools/webinar-tools.md), [docs/tutorials/webinar-stack.md](tutorials/webinar-stack.md) |
@@ -997,6 +992,7 @@ mit --format json sind alle Fundstellen verfuegbar. Leere Zuordnung ist keine In
 | [kubernetes/ingress-nginx](https://github.com/kubernetes/ingress-nginx) | Keine direkte Zuordnung; manuell pruefen | [docs/tutorials/qwen-development-tooling.md](tutorials/qwen-development-tooling.md) |
 | [kubernetes/kubectl](https://github.com/kubernetes/kubectl) | 62er-Katalog: kubectl | [docs/DEVELOPMENT_TOOLS_OVERVIEW.md](DEVELOPMENT_TOOLS_OVERVIEW.md), [docs/tutorials/chatgpt-tooling-sources.md](tutorials/chatgpt-tooling-sources.md), [docs/tutorials/manus-language-infrastructure-sources.md](tutorials/manus-language-infrastructure-sources.md) |
 | [kubernetes/kubernetes](https://github.com/kubernetes/kubernetes) | Menue: Kubectl; Registry: kubectl | [docs/KUBECTL_INSTALLATION_NOTES.md](KUBECTL_INSTALLATION_NOTES.md), [docs/TOOL_GAP_ANALYSIS.md](TOOL_GAP_ANALYSIS.md), [docs/tutorials/chatgpt-tooling-sources.md](tutorials/chatgpt-tooling-sources.md) |
+| [kwaivgi/liveportrait](https://github.com/kwaivgi/liveportrait) | Menue: LivePortrait; Registry: liveportrait | [docs/tools/github-gap-tools.md](tools/github-gap-tools.md) |
 | [kyutai-labs/moshi](https://github.com/kyutai-labs/moshi) | Registry: moshi | [docs/GITHUB_TOOL_SOURCES.md](GITHUB_TOOL_SOURCES.md), [docs/media_studio/AUDIO_VIDEO_TOOL_CATALOG.md](media_studio/AUDIO_VIDEO_TOOL_CATALOG.md), [docs/tools/moshi.md](tools/moshi.md) |
 | [kyverno/kyverno](https://github.com/kyverno/kyverno) | Keine direkte Zuordnung; manuell pruefen | [docs/tutorials/perplexity-development-tooling.md](tutorials/perplexity-development-tooling.md) |
 | [labstack/echo](https://github.com/labstack/echo) | Keine direkte Zuordnung; manuell pruefen | [docs/tutorials/gemini-development-tooling.md](tutorials/gemini-development-tooling.md) |
@@ -1006,7 +1002,7 @@ mit --format json sind alle Fundstellen verfuegbar. Leere Zuordnung ist keine In
 | [langfuse/langfuse](https://github.com/langfuse/langfuse) | Menue: Langfuse; Registry: langfuse | [docs/RECOMMENDED_TOOLS.md](RECOMMENDED_TOOLS.md) |
 | [langgenius/dify](https://github.com/langgenius/dify) | Keine direkte Zuordnung; manuell pruefen | [docs/RECOMMENDED_TOOLS.md](RECOMMENDED_TOOLS.md), [docs/tutorials/manus-interview-2026-10-22.md](tutorials/manus-interview-2026-10-22.md) |
 | [lightricks/ltx-2](https://github.com/lightricks/ltx-2) | Keine direkte Zuordnung; manuell pruefen | [docs/tools/just-dub-it.md](tools/just-dub-it.md) |
-| [lightricks/ltx-video](https://github.com/lightricks/ltx-video) | Registry: ltx_video | [docs/media_studio/SOCIAL_AVATAR_AUTOMATION.md](media_studio/SOCIAL_AVATAR_AUTOMATION.md), [docs/media_studio/VIDEO_TRAINING_DATASETS.md](media_studio/VIDEO_TRAINING_DATASETS.md), [docs/tutorials/chatgpt-tooling-sources.md](tutorials/chatgpt-tooling-sources.md) |
+| [lightricks/ltx-video](https://github.com/lightricks/ltx-video) | Menue: LTX_Video; Registry: ltx_video | [docs/media_studio/SOCIAL_AVATAR_AUTOMATION.md](media_studio/SOCIAL_AVATAR_AUTOMATION.md), [docs/media_studio/VIDEO_TRAINING_DATASETS.md](media_studio/VIDEO_TRAINING_DATASETS.md), [docs/tools/github-gap-tools.md](tools/github-gap-tools.md) |
 | [lincolnloop/python-qrcode](https://github.com/lincolnloop/python-qrcode) | Keine direkte Zuordnung; manuell pruefen | [docs/tutorials/meta-development-tooling.md](tutorials/meta-development-tooling.md) |
 | [liquibase/liquibase](https://github.com/liquibase/liquibase) | Keine direkte Zuordnung; manuell pruefen | [docs/tutorials/perplexity-development-tooling.md](tutorials/perplexity-development-tooling.md) |
 | [livekit/livekit](https://github.com/livekit/livekit) | Registry: livekit | [docs/GITHUB_TOOL_SOURCES.md](GITHUB_TOOL_SOURCES.md) |
@@ -1017,7 +1013,7 @@ mit --format json sind alle Fundstellen verfuegbar. Leere Zuordnung ist keine In
 | [louislam/uptime-kuma](https://github.com/louislam/uptime-kuma) | Menue: Uptime_Kuma | [docs/GITHUB_TOOL_CANDIDATES_REVIEW.md](GITHUB_TOOL_CANDIDATES_REVIEW.md), [docs/GITHUB_TOOL_SOURCES.md](GITHUB_TOOL_SOURCES.md), [docs/RECOMMENDED_TOOLS.md](RECOMMENDED_TOOLS.md) |
 | [m-bain/whisperx](https://github.com/m-bain/whisperx) | Registry: whisperx | [docs/GITHUB_TOOL_SOURCES.md](GITHUB_TOOL_SOURCES.md), [docs/media_studio/AUDIO_VIDEO_TOOL_CATALOG.md](media_studio/AUDIO_VIDEO_TOOL_CATALOG.md), [docs/tools/whisperx.md](tools/whisperx.md) |
 | [mariadb/server](https://github.com/mariadb/server) | Keine direkte Zuordnung; manuell pruefen | [docs/tutorials/chatgpt-tooling-sources.md](tutorials/chatgpt-tooling-sources.md) |
-| [marp-team/marp-cli](https://github.com/marp-team/marp-cli) | Registry: marp | [docs/tools/webinar-tools.md](tools/webinar-tools.md), [docs/tutorials/webinar-stack.md](tutorials/webinar-stack.md) |
+| [marp-team/marp-cli](https://github.com/marp-team/marp-cli) | Menue: Marp; Registry: marp | [docs/tools/webinar-tools.md](tools/webinar-tools.md), [docs/tutorials/webinar-stack.md](tutorials/webinar-stack.md) |
 | [mastra-ai/mastra](https://github.com/mastra-ai/mastra) | Keine direkte Zuordnung; manuell pruefen | [docs/tutorials/grok-development-tooling.md](tutorials/grok-development-tooling.md) |
 | [matplotlib/matplotlib](https://github.com/matplotlib/matplotlib) | Keine direkte Zuordnung; manuell pruefen | [docs/tutorials/gemini-development-tooling.md](tutorials/gemini-development-tooling.md), [docs/tutorials/meta-development-tooling.md](tutorials/meta-development-tooling.md) |
 | [mautic/mautic](https://github.com/mautic/mautic) | Registry: mautic | [docs/tools/webinar-tools.md](tools/webinar-tools.md), [docs/tutorials/webinar-stack.md](tutorials/webinar-stack.md) |
@@ -1079,12 +1075,12 @@ mit --format json sind alle Fundstellen verfuegbar. Leere Zuordnung ist keine In
 | [node-red/node-red](https://github.com/node-red/node-red) | Registry: node_red | [docs/GITHUB_TOOL_SOURCES.md](GITHUB_TOOL_SOURCES.md), [docs/RECOMMENDED_TOOLS.md](RECOMMENDED_TOOLS.md), [docs/media_studio/EDITABLE_VIDEO_WORKFLOWS.md](media_studio/EDITABLE_VIDEO_WORKFLOWS.md) |
 | [nodejs/corepack](https://github.com/nodejs/corepack) | Keine direkte Zuordnung; manuell pruefen | [docs/tools/qwen-code.md](tools/qwen-code.md) |
 | [nodejs/node](https://github.com/nodejs/node) | 62er-Katalog: node_js | [docs/DEVELOPMENT_TOOLS_OVERVIEW.md](DEVELOPMENT_TOOLS_OVERVIEW.md), [docs/tools/development-toolchain-check.md](tools/development-toolchain-check.md), [docs/tutorials/chatgpt-tooling-sources.md](tutorials/chatgpt-tooling-sources.md) |
-| [nousresearch/hermes-agent](https://github.com/nousresearch/hermes-agent) | Keine direkte Zuordnung; manuell pruefen | [docs/tools/hermes-jarvis-weekend.md](tools/hermes-jarvis-weekend.md), [docs/tools/jarvis-hermes-dashboard.md](tools/jarvis-hermes-dashboard.md) |
+| [nousresearch/hermes-agent](https://github.com/nousresearch/hermes-agent) | Menue: Hermes_Agent_Jarvis; Registry: hermes_agent_jarvis | [docs/tools/github-gap-tools.md](tools/github-gap-tools.md), [docs/tools/hermes-jarvis-weekend.md](tools/hermes-jarvis-weekend.md), [docs/tools/jarvis-hermes-dashboard.md](tools/jarvis-hermes-dashboard.md) |
 | [numpy/numpy](https://github.com/numpy/numpy) | Keine direkte Zuordnung; manuell pruefen | [docs/tutorials/chatgpt-tooling-sources.md](tutorials/chatgpt-tooling-sources.md), [docs/tutorials/manus-development-workflow.md](tutorials/manus-development-workflow.md), [docs/tutorials/meta-development-tooling.md](tutorials/meta-development-tooling.md) |
 | [nutlope/roomgpt](https://github.com/nutlope/roomgpt) | Keine direkte Zuordnung; manuell pruefen | [docs/Profil/Interior_RoomGPT_Designer.md](Profil/Interior_RoomGPT_Designer.md) |
 | [nvidia/dcgm](https://github.com/nvidia/dcgm) | Keine direkte Zuordnung; manuell pruefen | [docs/tutorials/chatgpt-development-tooling.md](tutorials/chatgpt-development-tooling.md), [docs/tutorials/chatgpt-tooling-sources.md](tutorials/chatgpt-tooling-sources.md) |
 | [nvm-sh/nvm](https://github.com/nvm-sh/nvm) | Keine direkte Zuordnung; manuell pruefen | [docs/PUPPETEER_INSTALLATION_NOTES.md](PUPPETEER_INSTALLATION_NOTES.md) |
-| [obsproject/obs-studio](https://github.com/obsproject/obs-studio) | Registry: obs | [docs/tutorials/webinar-stack.md](tutorials/webinar-stack.md) |
+| [obsproject/obs-studio](https://github.com/obsproject/obs-studio) | Menue: OBS; Registry: obs | [docs/tools/github-gap-tools.md](tools/github-gap-tools.md), [docs/tutorials/webinar-stack.md](tutorials/webinar-stack.md) |
 | [ohf-voice/piper1-gpl](https://github.com/ohf-voice/piper1-gpl) | Keine direkte Zuordnung; manuell pruefen | [docs/tutorials/chatgpt-development-tooling.md](tutorials/chatgpt-development-tooling.md) |
 | [ollama/ollama](https://github.com/ollama/ollama) | Keine direkte Zuordnung; manuell pruefen | [docs/GITHUB_TOOL_SOURCES.md](GITHUB_TOOL_SOURCES.md), [docs/TOOLS_CATALOG.md](TOOLS_CATALOG.md), [docs/_API-Keys/FREE_TIERS_AND_TRIAL_CREDITS.md](_API-Keys/FREE_TIERS_AND_TRIAL_CREDITS.md) |
 | [open-policy-agent/gatekeeper](https://github.com/open-policy-agent/gatekeeper) | Keine direkte Zuordnung; manuell pruefen | [docs/tutorials/perplexity-development-tooling.md](tutorials/perplexity-development-tooling.md) |
@@ -1103,7 +1099,7 @@ mit --format json sind alle Fundstellen verfuegbar. Leere Zuordnung ist keine In
 | [openmoss/moss-tts](https://github.com/openmoss/moss-tts) | Registry: moss_tts | [docs/GITHUB_TOOL_SOURCES.md](GITHUB_TOOL_SOURCES.md), [docs/media_studio/AUDIO_VIDEO_TOOL_CATALOG.md](media_studio/AUDIO_VIDEO_TOOL_CATALOG.md), [docs/tools/moss-tts.md](tools/moss-tts.md) |
 | [openocd-org/openocd](https://github.com/openocd-org/openocd) | Keine direkte Zuordnung; manuell pruefen | [docs/GITHUB_TOOL_SOURCES.md](GITHUB_TOOL_SOURCES.md), [docs/tools/embedded-debug-hil.md](tools/embedded-debug-hil.md) |
 | [openscad/openscad](https://github.com/openscad/openscad) | Keine direkte Zuordnung; manuell pruefen | [docs/Profile/CAD_Konstrukteur.md](Profile/CAD_Konstrukteur.md) |
-| [opentalker/sadtalker](https://github.com/opentalker/sadtalker) | Registry: sadtalker | [docs/TOOL_MATRIX.md](TOOL_MATRIX.md), [docs/VIDEO_AVATAR_SYSTEMS.md](VIDEO_AVATAR_SYSTEMS.md) |
+| [opentalker/sadtalker](https://github.com/opentalker/sadtalker) | Menue: SadTalker; Registry: sadtalker | [docs/TOOL_MATRIX.md](TOOL_MATRIX.md), [docs/VIDEO_AVATAR_SYSTEMS.md](VIDEO_AVATAR_SYSTEMS.md), [docs/tools/github-gap-tools.md](tools/github-gap-tools.md) |
 | [opentofu/opentofu](https://github.com/opentofu/opentofu) | Menue: OpenTofu | [docs/tutorials/chatgpt-tooling-sources.md](tutorials/chatgpt-tooling-sources.md), [docs/tutorials/gemini-development-tooling.md](tutorials/gemini-development-tooling.md), [docs/tutorials/manus-language-infrastructure-sources.md](tutorials/manus-language-infrastructure-sources.md) |
 | [openvpi/diffsinger](https://github.com/openvpi/diffsinger) | Registry: diffsinger | [docs/TOOL_MATRIX.md](TOOL_MATRIX.md) |
 | [oven-sh/bun](https://github.com/oven-sh/bun) | Menue: Activepieces | [docs/tutorials/gemini-development-tooling.md](tutorials/gemini-development-tooling.md) |
@@ -1156,7 +1152,7 @@ mit --format json sind alle Fundstellen verfuegbar. Leere Zuordnung ist keine In
 | [pytorch/pytorch](https://github.com/pytorch/pytorch) | Keine direkte Zuordnung; manuell pruefen | [docs/tutorials/chatgpt-tooling-sources.md](tutorials/chatgpt-tooling-sources.md), [docs/tutorials/gemini-development-tooling.md](tutorials/gemini-development-tooling.md), [docs/tutorials/meta-development-tooling.md](tutorials/meta-development-tooling.md) |
 | [pytorch/torchcodec](https://github.com/pytorch/torchcodec) | Keine direkte Zuordnung; manuell pruefen | [docs/tools/pyannote-audio.md](tools/pyannote-audio.md) |
 | [qdrant/qdrant](https://github.com/qdrant/qdrant) | Registry: qdrant | [docs/GITHUB_TOOL_SOURCES.md](GITHUB_TOOL_SOURCES.md), [docs/RECOMMENDED_TOOLS.md](RECOMMENDED_TOOLS.md), [docs/SETUP_REVIEW_2026_NEXT_ACTIONS.md](SETUP_REVIEW_2026_NEXT_ACTIONS.md) |
-| [qwenlm/qwen-code](https://github.com/qwenlm/qwen-code) | Registry: qwen_code; Registry: qwen_desktop | [docs/GITHUB_TOOL_SOURCES.md](GITHUB_TOOL_SOURCES.md), [docs/media_studio/HYBRID_MODELS_AND_WAN.md](media_studio/HYBRID_MODELS_AND_WAN.md), [docs/tools/claude-code.md](tools/claude-code.md) |
+| [qwenlm/qwen-code](https://github.com/qwenlm/qwen-code) | Menue: Qwen_Desktop_Build; Registry: qwen_code; Registry: qwen_desktop; Registry: qwen_desktop_build | [docs/GITHUB_TOOL_SOURCES.md](GITHUB_TOOL_SOURCES.md), [docs/media_studio/HYBRID_MODELS_AND_WAN.md](media_studio/HYBRID_MODELS_AND_WAN.md), [docs/tools/claude-code.md](tools/claude-code.md) |
 | [qwenlm/qwen3-tts](https://github.com/qwenlm/qwen3-tts) | Registry: qwen3_tts | [docs/media_studio/AUDIO_VIDEO_TOOL_CATALOG.md](media_studio/AUDIO_VIDEO_TOOL_CATALOG.md), [docs/tools/qwen3-tts.md](tools/qwen3-tts.md) |
 | [rabbitmq/rabbitmq-server](https://github.com/rabbitmq/rabbitmq-server) | Registry: rabbitmq | [docs/TOOLS_CATALOG.md](TOOLS_CATALOG.md) |
 | [raffiihza/free-llm-coding-credits](https://github.com/raffiihza/free-llm-coding-credits) | Keine direkte Zuordnung; manuell pruefen | [docs/_API-Keys/FREE_TIERS_AND_TRIAL_CREDITS.md](_API-Keys/FREE_TIERS_AND_TRIAL_CREDITS.md), [docs/_API-Keys/reviews/2026-10-21.md](_API-Keys/reviews/2026-10-21.md) |
@@ -1180,7 +1176,7 @@ mit --format json sind alle Fundstellen verfuegbar. Leere Zuordnung ist keine In
 | [rust-lang/rustfmt](https://github.com/rust-lang/rustfmt) | 62er-Katalog: rustfmt | [docs/DEVELOPMENT_TOOLS_OVERVIEW.md](DEVELOPMENT_TOOLS_OVERVIEW.md), [docs/tutorials/manus-language-infrastructure-sources.md](tutorials/manus-language-infrastructure-sources.md), [docs/tutorials/perplexity-development-tooling.md](tutorials/perplexity-development-tooling.md) |
 | [rust-lang/rustup](https://github.com/rust-lang/rustup) | 62er-Katalog: rustup | [docs/DEVELOPMENT_TOOLS_OVERVIEW.md](DEVELOPMENT_TOOLS_OVERVIEW.md), [docs/tutorials/claude-development-tooling.md](tutorials/claude-development-tooling.md), [docs/tutorials/manus-language-infrastructure-sources.md](tutorials/manus-language-infrastructure-sources.md) |
 | [ruvnet/ruflo](https://github.com/ruvnet/ruflo) | Keine direkte Zuordnung; manuell pruefen | [docs/tools/ruflo.md](tools/ruflo.md) |
-| [rvc-project/retrieval-based-voice-conversion-webui](https://github.com/rvc-project/retrieval-based-voice-conversion-webui) | Registry: rvc | [docs/TOOL_MATRIX.md](TOOL_MATRIX.md), [docs/media_studio/AUDIO_DEEPFAKE_REVIEW.md](media_studio/AUDIO_DEEPFAKE_REVIEW.md) |
+| [rvc-project/retrieval-based-voice-conversion-webui](https://github.com/rvc-project/retrieval-based-voice-conversion-webui) | Menue: RVC; Registry: rvc | [docs/TOOL_MATRIX.md](TOOL_MATRIX.md), [docs/media_studio/AUDIO_DEEPFAKE_REVIEW.md](media_studio/AUDIO_DEEPFAKE_REVIEW.md), [docs/tools/github-gap-tools.md](tools/github-gap-tools.md) |
 | [scanny/python-pptx](https://github.com/scanny/python-pptx) | Keine direkte Zuordnung; manuell pruefen | [docs/tutorials/meta-development-tooling.md](tutorials/meta-development-tooling.md) |
 | [scikit-learn/scikit-learn](https://github.com/scikit-learn/scikit-learn) | Keine direkte Zuordnung; manuell pruefen | [docs/tutorials/gemini-development-tooling.md](tutorials/gemini-development-tooling.md), [docs/tutorials/meta-development-tooling.md](tutorials/meta-development-tooling.md) |
 | [scipy/scipy](https://github.com/scipy/scipy) | Keine direkte Zuordnung; manuell pruefen | [docs/tutorials/meta-development-tooling.md](tutorials/meta-development-tooling.md) |
@@ -1211,7 +1207,7 @@ mit --format json sind alle Fundstellen verfuegbar. Leere Zuordnung ist keine In
 | [stalwartlabs/stalwart](https://github.com/stalwartlabs/stalwart) | Registry: sieve; Registry: stalwart; Registry: stalwart_mail | [docs/GITHUB_TOOL_SOURCES.md](GITHUB_TOOL_SOURCES.md), [docs/TOOLS_CATALOG.md](TOOLS_CATALOG.md), [docs/TOOL_INDEX.md](TOOL_INDEX.md) |
 | [statsmodels/statsmodels](https://github.com/statsmodels/statsmodels) | Keine direkte Zuordnung; manuell pruefen | [docs/tutorials/meta-development-tooling.md](tutorials/meta-development-tooling.md) |
 | [stirling-tools/stirling-pdf](https://github.com/stirling-tools/stirling-pdf) | Menue: Stirling_PDF | [docs/GITHUB_TOOL_CANDIDATES_REVIEW.md](GITHUB_TOOL_CANDIDATES_REVIEW.md), [docs/GITHUB_TOOL_SOURCES.md](GITHUB_TOOL_SOURCES.md), [docs/SETUP_REVIEW_2026_NEXT_ACTIONS.md](SETUP_REVIEW_2026_NEXT_ACTIONS.md) |
-| [streamlit/streamlit](https://github.com/streamlit/streamlit) | Keine direkte Zuordnung; manuell pruefen | [docs/tutorials/gemini-development-tooling.md](tutorials/gemini-development-tooling.md) |
+| [streamlit/streamlit](https://github.com/streamlit/streamlit) | Menue: Streamlit; Registry: streamlit | [docs/tools/github-gap-tools.md](tools/github-gap-tools.md), [docs/tutorials/gemini-development-tooling.md](tutorials/gemini-development-tooling.md) |
 | [sveltejs/svelte](https://github.com/sveltejs/svelte) | Keine direkte Zuordnung; manuell pruefen | [docs/tutorials/chatgpt-tooling-sources.md](tutorials/chatgpt-tooling-sources.md), [docs/tutorials/gemini-development-tooling.md](tutorials/gemini-development-tooling.md) |
 | [swatinem/rust-cache](https://github.com/swatinem/rust-cache) | Keine direkte Zuordnung; manuell pruefen | [docs/tutorials/perplexity-development-tooling.md](tutorials/perplexity-development-tooling.md) |
 | [swe-agent/swe-agent](https://github.com/swe-agent/swe-agent) | Registry: swe_agent | [docs/RECOMMENDED_TOOLS.md](RECOMMENDED_TOOLS.md) |
@@ -1232,9 +1228,10 @@ mit --format json sind alle Fundstellen verfuegbar. Leere Zuordnung ist keine In
 | [testcontainers/testcontainers-go](https://github.com/testcontainers/testcontainers-go) | Keine direkte Zuordnung; manuell pruefen | [docs/tutorials/perplexity-development-tooling.md](tutorials/perplexity-development-tooling.md) |
 | [testcontainers/testcontainers-python](https://github.com/testcontainers/testcontainers-python) | Keine direkte Zuordnung; manuell pruefen | [docs/tutorials/perplexity-development-tooling.md](tutorials/perplexity-development-tooling.md) |
 | [theory/pgtap](https://github.com/theory/pgtap) | 62er-Katalog: pgtap | [docs/DEVELOPMENT_TOOLS_OVERVIEW.md](DEVELOPMENT_TOOLS_OVERVIEW.md), [docs/tutorials/manus-language-infrastructure-sources.md](tutorials/manus-language-infrastructure-sources.md) |
+| [thudm/cogvideo](https://github.com/thudm/cogvideo) | Menue: CogVideoX; Registry: cogvideox | [docs/tools/github-gap-tools.md](tools/github-gap-tools.md) |
 | [till-schaefer/jarvis](https://github.com/till-schaefer/jarvis) | Keine direkte Zuordnung; manuell pruefen | [docs/tools/jarvis-hermes-dashboard.md](tools/jarvis-hermes-dashboard.md) |
 | [tmc/langchaingo](https://github.com/tmc/langchaingo) | Keine direkte Zuordnung; manuell pruefen | [docs/tutorials/meta-development-tooling.md](tutorials/meta-development-tooling.md) |
-| [tmelyralab/musetalk](https://github.com/tmelyralab/musetalk) | Registry: musetalk | [docs/TOOL_MATRIX.md](TOOL_MATRIX.md), [docs/VIDEO_AVATAR_SYSTEMS.md](VIDEO_AVATAR_SYSTEMS.md), [docs/media_studio/EDITABLE_VIDEO_WORKFLOWS.md](media_studio/EDITABLE_VIDEO_WORKFLOWS.md) |
+| [tmelyralab/musetalk](https://github.com/tmelyralab/musetalk) | Menue: MuseTalk; Registry: musetalk | [docs/TOOL_MATRIX.md](TOOL_MATRIX.md), [docs/VIDEO_AVATAR_SYSTEMS.md](VIDEO_AVATAR_SYSTEMS.md), [docs/media_studio/EDITABLE_VIDEO_WORKFLOWS.md](media_studio/EDITABLE_VIDEO_WORKFLOWS.md) |
 | [tokio-rs/axum](https://github.com/tokio-rs/axum) | Keine direkte Zuordnung; manuell pruefen | [docs/tutorials/gemini-development-tooling.md](tutorials/gemini-development-tooling.md), [docs/tutorials/perplexity-development-tooling.md](tutorials/perplexity-development-tooling.md) |
 | [tokio-rs/tokio](https://github.com/tokio-rs/tokio) | Keine direkte Zuordnung; manuell pruefen | [docs/tutorials/gemini-development-tooling.md](tutorials/gemini-development-tooling.md), [docs/tutorials/perplexity-development-tooling.md](tutorials/perplexity-development-tooling.md) |
 | [traefik/traefik](https://github.com/traefik/traefik) | Registry: traefik | [docs/RECOMMENDED_TOOLS.md](RECOMMENDED_TOOLS.md), [docs/TOOLS_CATALOG.md](TOOLS_CATALOG.md) |
@@ -1266,7 +1263,7 @@ mit --format json sind alle Fundstellen verfuegbar. Leere Zuordnung ist keine In
 | [yannh/kubeconform](https://github.com/yannh/kubeconform) | 62er-Katalog: kubeconform; Registry: kubeconform | [docs/DEVELOPMENT_TOOLS_OVERVIEW.md](DEVELOPMENT_TOOLS_OVERVIEW.md), [docs/tools/development-go-tools.md](tools/development-go-tools.md), [docs/tutorials/claude-development-tooling.md](tutorials/claude-development-tooling.md) |
 | [yl4579/styletts2](https://github.com/yl4579/styletts2) | Registry: styletts2 | [docs/TOOL_MATRIX.md](TOOL_MATRIX.md) |
 | [yt-dlp/yt-dlp](https://github.com/yt-dlp/yt-dlp) | Keine direkte Zuordnung; manuell pruefen | [docs/TOOL_GAP_ANALYSIS.md](TOOL_GAP_ANALYSIS.md) |
-| [zai-org/cogvideo](https://github.com/zai-org/cogvideo) | Registry: cogvideox | [docs/media_studio/SOCIAL_AVATAR_AUTOMATION.md](media_studio/SOCIAL_AVATAR_AUTOMATION.md), [docs/media_studio/VIDEO_TRAINING_DATASETS.md](media_studio/VIDEO_TRAINING_DATASETS.md) |
+| [zai-org/cogvideo](https://github.com/zai-org/cogvideo) | Keine direkte Zuordnung; manuell pruefen | [docs/media_studio/SOCIAL_AVATAR_AUTOMATION.md](media_studio/SOCIAL_AVATAR_AUTOMATION.md), [docs/media_studio/VIDEO_TRAINING_DATASETS.md](media_studio/VIDEO_TRAINING_DATASETS.md) |
 | [zai-org/glm-5](https://github.com/zai-org/glm-5) | Keine direkte Zuordnung; manuell pruefen | [docs/media_studio/HYBRID_MODELS_AND_WAN.md](media_studio/HYBRID_MODELS_AND_WAN.md) |
 | [zeek/zeek](https://github.com/zeek/zeek) | Registry: zeek | [docs/GITHUB_TOOL_SOURCES.md](GITHUB_TOOL_SOURCES.md) |
 

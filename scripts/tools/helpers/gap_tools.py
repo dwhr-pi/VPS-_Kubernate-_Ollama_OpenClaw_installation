@@ -6,8 +6,10 @@ import os
 from pathlib import Path
 import platform
 import shutil
+import stat
 import subprocess
 import sys
+import tempfile
 
 from find_skills import checked, git, operation
 from webinar_releases import reserve
@@ -26,19 +28,24 @@ def paths(key):
 
 def inventory(root):
     result = {}
-    # rglob does not follow directory symlinks; record venv links without reading targets.
-    for path in sorted(root.rglob("*")):
-        name = path.relative_to(root).as_posix()
-        if path.is_symlink():
-            result[name] = "link:" + os.readlink(path)
-        elif path.is_file():
-            digest = hashlib.sha256()
-            with path.open("rb") as stream:
-                for chunk in iter(lambda: stream.read(1024 * 1024), b""):
-                    digest.update(chunk)
-            result[name] = digest.hexdigest()
-        elif not path.is_dir():
-            raise ValueError("Spezialdatei im privaten Tool-Verzeichnis.")
+    # Do not traverse venv symlinks or Windows pnpm junctions into other trees.
+    for parent, directories, files in os.walk(root, followlinks=False):
+        for item in sorted(directories + files):
+            path = Path(parent) / item
+            name = path.relative_to(root).as_posix()
+            info = path.lstat()
+            if stat.S_ISLNK(info.st_mode) or getattr(info, "st_file_attributes", 0) & 0x400:
+                result[name] = "link:" + os.readlink(path)
+                if item in directories:
+                    directories.remove(item)
+            elif stat.S_ISREG(info.st_mode):
+                digest = hashlib.sha256()
+                with path.open("rb") as stream:
+                    for chunk in iter(lambda: stream.read(1024 * 1024), b""):
+                        digest.update(chunk)
+                result[name] = digest.hexdigest()
+            elif not stat.S_ISDIR(info.st_mode):
+                raise ValueError("Spezialdatei im privaten Tool-Verzeichnis.")
     return result
 
 
@@ -116,15 +123,48 @@ def qwen_build(runtime, env):
     run(corepack + ["pnpm", "install", "--frozen-lockfile", "--prefer-offline", "--reporter=append-only"], runtime, env)
     run(npm + ["ci", "--workspaces=false", "--no-audit"], desktop, env)
     run(npm + ["run", "build:runtime", "--workspaces=false"], desktop, env)
-    # Local unsigned executable: do not need or request upstream release signing keys.
-    run(npm + ["run", "tauri", "--workspaces=false", "--", "build", "--no-bundle"], desktop, env)
+    # Local unsigned packages: disable updater signatures, never request upstream keys.
+    bundle = "nsis" if os.name == "nt" else "appimage"
+    run(npm + ["run", "tauri", "--workspaces=false", "--", "build", "--bundles", bundle,
+               "--config", json.dumps({"bundle": {"createUpdaterArtifacts": False}})], desktop, env)
     entry = "packages/desktop/src-tauri/target/release/qwen-code-desktop" + (".exe" if os.name == "nt" else "")
-    return [entry, "packages/desktop/runtime/qwen-code/manifest.json"]
+    bundles = list((desktop / "src-tauri/target/release/bundle" / bundle).glob("*.exe" if os.name == "nt" else "*.AppImage"))
+    if len(bundles) != 1:
+        raise ValueError("Erwartetes Desktop-Paket fehlt oder ist nicht eindeutig.")
+    return [entry, "packages/desktop/runtime/qwen-code/manifest.json", bundles[0].relative_to(runtime).as_posix()]
 
 
-def hermes_build(runtime, env):
-    python = os.environ.get("HERMES_PYTHON_BIN") or executable("python3.14" if os.name != "nt" else "python")
-    run([python, "-I", "-c", "import sys,ssl; assert sys.version_info[:2] == (3,14), 'Hermes-Pin braucht Python 3.14'"], runtime, env)
+def hermes_python(runtime, env):
+    uv = executable("uv")
+    python = os.environ.get("HERMES_PYTHON_BIN") or shutil.which("python3.14")
+    if not python:
+        policy = os.environ.get("HERMES_INSTALL_PYTHON", "ask")
+        if policy not in ("ask", "0", "1"):
+            raise ValueError("HERMES_INSTALL_PYTHON: nur ask, 0 oder 1.")
+        print("Hermes: Python 3.14 fehlt. uv kann eine private Astral-python-build-standalone-Laufzeit von GitHub laden.")
+        print("Ziel:", runtime / ".python", "; kein System-Python-/PATH-Umbau; Entfernung mit diesem Tool.", flush=True)
+        accepted = policy == "1"
+        if policy == "ask" and sys.stdin.isatty():
+            print("Privates Python 3.14 herunterladen und installieren? [(j)a/(N)ein]", flush=True)
+            try:
+                accepted = input().strip().lower() in ("j", "ja", "y", "yes")
+            except EOFError:
+                accepted = False
+        print("Privater Python-Download:", "freigegeben" if accepted else "nicht freigegeben", flush=True)
+        if not accepted:
+            raise ValueError("Python 3.14 fehlt; HERMES_PYTHON_BIN auf vorhandenes Python 3.14 setzen oder HERMES_INSTALL_PYTHON=1 bewusst erlauben. Kein Hermes-Quellcode geladen.")
+        env["UV_PYTHON_INSTALL_DIR"] = str(runtime / ".python")
+        run([uv, "python", "install", "3.14", "--no-bin", "--no-config"], runtime, env)
+        python = run([uv, "python", "find", "3.14", "--managed-python", "--no-python-downloads", "--no-config"], runtime, env)
+        candidate = Path(python)
+        if not candidate.is_absolute() or not candidate.is_file() or not candidate.resolve().is_relative_to((runtime / ".python").resolve()):
+            raise ValueError("uv lieferte keinen privaten Python-Pfad im Tool-Workspace.")
+    run([python, "-I", "-c", "import sys,ssl; assert sys.version_info[:2] == (3,14), 'Hermes-Pin braucht Python 3.14'; print(sys.version)"], runtime, env)
+    return python
+
+
+def hermes_build(runtime, env, python=None):
+    python = python or hermes_python(runtime, env)
     run([executable("uv"), "sync", "--frozen", "--no-dev", "--no-default-groups",
          "--no-python-downloads", "--python", python], runtime, env)
     vpython = runtime / ".venv" / ("Scripts/python.exe" if os.name == "nt" else "bin/python")
@@ -164,6 +204,8 @@ def install(runtime, marker, base, spec):
     reserve(base, spec)
     runtime.mkdir(mode=0o700)
     try:
+        env = build_env(runtime) if spec["mode"] != "source" else None
+        python = hermes_python(runtime, env) if spec["mode"] == "python-package" else None
         git(runtime, "init", "--initial-branch=main")
         git(runtime, "remote", "add", "origin", "https://github.com/" + spec["repo"] + ".git")
         git(runtime, "fetch", "--depth=1", "origin", spec["pin"])
@@ -177,15 +219,23 @@ def install(runtime, marker, base, spec):
             if len(entries) < 2:
                 raise ValueError("Quellcheckout enthaelt keine README/Lizenzdatei.")
         if spec["mode"] != "source":
-            env = build_env(runtime)
-            entries = qwen_build(runtime, env) if spec["mode"] == "desktop-build" else hermes_build(runtime, env)
+            entries = qwen_build(runtime, env) if spec["mode"] == "desktop-build" else hermes_build(runtime, env, python)
+            for name in (".build-home", ".build-temp"):
+                shutil.rmtree(checked(runtime / name))
         for name in entries:
             if not checked(runtime / name).is_file():
                 raise ValueError("Erwartetes Artefakt fehlt: " + name)
         record = dict(repo=spec["repo"], pin=spec["pin"], mode=spec["mode"], entries=entries,
                       installed=True, runtime_tested=False, files=inventory(runtime))
-        with marker.open("x", encoding="utf-8") as stream:
-            json.dump(record, stream)
+        descriptor, pending = tempfile.mkstemp(prefix="ready-pending-", dir=base)
+        try:
+            with os.fdopen(descriptor, "w", encoding="utf-8") as stream:
+                json.dump(record, stream)
+                stream.flush()
+                os.fsync(stream.fileno())
+            os.replace(pending, marker)
+        finally:
+            Path(pending).unlink(missing_ok=True)
         print("Installationsumfang:", spec["mode"], "Ziel:", runtime)
         print("Keine GUI/Agenten, Anmeldung, Modelle, Dienste oder Docker gestartet.")
         if spec["mode"] == "source":
@@ -227,6 +277,9 @@ def main(argv=None):
         print(json.dumps(dict(installed=ready, scope=spec["mode"], runtime_tested=False)))
         return 0 if ready or opts.action == "status" else 1
     with operation(base, opts.action, tool=spec["name"]):
+        print("GitHub-Tool-Installer: 2026-10-23-hermes-private-python")
+        print("Installerdatei:", Path(__file__).resolve())
+        print("Quellenmanifest:", MANIFEST, "Mindestreserve MiB:", spec["reserve_mb"])
         print("GitHub:", spec["repo"], "Pin:", spec["pin"], "Umfang:", spec["mode"])
         if opts.action == "uninstall":
             if runtime.exists() or marker.exists():

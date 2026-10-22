@@ -1,5 +1,9 @@
 # Tool Index
 
+**[GitHub-Ergaenzungen am Listenende](tools/github-gap-tools.md)**:
+Qwen Desktop Build fuer Linux/natives Windows, Hermes_Agent_Jarvis und weitere
+Luecken-Tools. Build/Paket, Quellinstallation und Workflow getrennt gekennzeichnet.
+
 **[Concat](tools/concat.md)**: GitHub-AppImage mit SHA256 fuer Linux/WSL.
 **[Remotion](tools/remotion.md)** und **[HyperFrames](tools/hyperframes.md)**:
 eigene gepinnte GitHub-Source-Builds und Lifecycle-Skripte im Tools-Menue,

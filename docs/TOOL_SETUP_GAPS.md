@@ -1,6 +1,6 @@
 # Welche dokumentierten Tools fehlen im Setup?
 
-Stand: **22.10.2026**, lokaler Repository-Abgleich. **Nicht alles aus der
+Stand: **23.10.2026**, lokaler Repository-Abgleich. **Nicht alles aus der
 Dokumentation ist als installierbares Tool im Setup umgesetzt.** Die
 frueheren Hinweise auf Anleitung, Quelle oder planned waren keine fertige
 Integration. Das betrifft auch mehrfach gewuenschte Komponenten.
@@ -11,21 +11,28 @@ GitHub-Quellen der Markdown-Dokumentation, einschliesslich Fundstellen.
 
 ## Konkrete Luecken und unterschiedliche Integrationsgrade
 
+Neu: [GitHub-Ergaenzungen am Ende der Tools-Liste](tools/github-gap-tools.md).
+Die Gruppe wird vorerst nicht nach A-Z sortiert. Qwen Desktop besitzt jetzt
+zusaetzlich einen echten nativen Linux-/Windows-Buildweg; der manuelle
+Windows-Download bleibt erhalten. Weitere Quellinstallationen sind bewusst
+**nicht** mit vollstaendiger Runtime-Bereitschaft gleichgesetzt.
+
 | Werkzeug / Bereich | Tatsaechlicher Stand im Repository | Wo suchen / was fehlt? |
 |---|---|---|
-| Hermes Agent / JARVIS | Anleitung, Briefing und Skill-Vorlagen; kein eigener Hermes-Menueinstaller oder Registry-Eintrag | [Hermes-Leitfaden](tools/hermes-jarvis-weekend.md), [Dashboard-Konzept](tools/jarvis-hermes-dashboard.md); GitHub-Installer, Status und Lifecycle fehlen |
+| Hermes Agent / JARVIS | Jetzt eigener Eintrag **Hermes_Agent_Jarvis**, gepinnte GitHub-Core-Installation mit uv/Python 3.14 | [Installation](tools/github-gap-tools.md); kein fertiges Dashboard, kein Agenten-/Dienststart; Till-Webseite ist keine separate verifizierte Jarvis-Codebasis |
 | Concat | Jetzt eigener Registry-/Menueeintrag und GitHub-AppImage-Installer mit SHA256 | [Concat](tools/concat.md); GUI, Modelle und Export separat testen |
-| Gradio / Streamlit | Als Oberflaechenbausteine dokumentiert, keine eigenen Tools-Menueinstaller | [Video-Workflow](media_studio/EDITABLE_VIDEO_WORKFLOWS.md), [Gemini-Quellen](tutorials/gemini-development-tooling.md); Projektabhaengigkeit ist nicht automatisch eigenes Setup-Tool |
+| Gradio / Streamlit | Jetzt eigene Menueeintraege mit gepinnten GitHub-Quellinstallern und Lifecycle | [Installation und Grenzen](tools/github-gap-tools.md); Python-/Frontend-Build und App-Einrichtung fehlen noch |
 | HyperFrames | Jetzt eigener gepinnter Source-Build und Menue-/Registry-Eintrag | [HyperFrames](tools/hyperframes.md); Node/Bun, Buildreserve und Renderabnahme erforderlich |
 | Remotion | Jetzt eigener gepinnter Source-Build, unabhaengig vom optionalen OpenMontage-Composer | [Remotion](tools/remotion.md); Lizenzfreigabe, Node/Bun und Renderabnahme getrennt |
-| WanVideoWrapper / CogVideoX / LTX_Video / Video2Dataset | Menue und Registry vorhanden, Installationsaktionen zeigen auf Kandidaten-Guards | Kein echter toolbezogener Installer; Eintrag vorhanden bedeutet hier noch nicht installierbar |
-| MuseTalk / LivePortrait / SadTalker / RVC / UVR5 / Audacity / OBS | Registry-Eintraege mit gemeinsamem planned-Platzhalter, keine entsprechenden expliziten Tools-Menueeintraege | Nicht betriebsbereit integriert; ein Registry-Label ersetzt keinen Installer |
-| WebsiteFactory / AI-ContentMultiplier | Repository-Werkzeuge und Registry vorhanden, nicht in der expliziten Tools-Liste | [WebsiteFactory](tools/websitefactory.md), [ContentMultiplier](tools/ai-content-multiplier/README.md); Projekt-/Workflow-Einstieg von Menueintegration unterscheiden |
+| WanVideoWrapper / CogVideoX / LTX_Video / Video2Dataset | Kandidaten-Guards durch eigene gepinnte GitHub-Quellinstaller ersetzt, Gruppe am Listenende | [Details](tools/github-gap-tools.md); keine ComfyUI-Integration, GPU-Runtime oder Modelle installiert |
+| MuseTalk / LivePortrait / SadTalker / RVC / UVR5 / Audacity / OBS | Jetzt explizite Menueeintraege und eigene gepinnte GitHub-Quellinstaller statt planned-Platzhalter | [Details](tools/github-gap-tools.md); reine Quellen, keine gebauten GUI-/GPU-Anwendungen |
+| WebsiteFactory / AI-ContentMultiplier | Bestehende Workflow-Installer jetzt in der expliziten Tools-Liste angehaengt | [WebsiteFactory](tools/websitefactory.md), [ContentMultiplier](tools/ai-content-multiplier/README.md); Einrichtung ist kein Dienststart, Deinstallation standardmaessig Vorschau/Abmeldung ohne Projektloeschung |
 | Entwicklungswerkzeuge aus der 62er-Liste | Separater Katalog mit Rezepten; nicht alle als Einzelzeile der Haupt-Tools-Liste | Hauptmenue **16**, oder Hauptmenue **8** und **62 Quellen verwalten**; [Anleitung](tools/development-toolchain-check.md) |
 | API-Anbieter, z. B. OpenRouter/token8341/ElevenLabs | Externe Dienste, keine lokal zu installierenden Modelle/Programme | [API-Key-Uebersicht](_API-Keys/README.md); bewusste Konfiguration statt Scheininstallation |
 
-Die genannten Luecken werden hier **nicht** durch neue Schein-Installer oder
-erfolgreich endende Platzhalter kaschiert. Ein vollstaendiger neuer Installer
+Die verbleibenden Runtime-Luecken werden **nicht** durch neue Schein-Installer
+oder erfolgreich endende Platzhalter kaschiert. Quellinstaller laden und
+pruefen echte Revisionen, behaupten aber keine fertige Anwendung. Ein neuer Installer
 braucht Quellen-/Lizenzpruefung, Ressourcenwache, isolierten Installationsweg,
 ehrliche Statuspruefung, Logs, Update und sichere Deinstallation. Diese
 Pruefung installiert nichts und schaltet keine bestehenden Kanaele frei.

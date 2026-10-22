@@ -372,3 +372,9 @@ Verwandt: [Alle API-Schluessel](../README.md), [OpenRouter](openrouter.md),
 [FreeLLMAPI](../../tools/freellmapi.md),
 [Coding-Agenten und lokale Routinggrenzen](../../agents/coding-agent-profiles.md),
 [Secrets und Keys](../../SECRETS_AND_KEYS.md).
+## Registrierung, Zahlung und Identitaetsnachweise
+
+[Aktuell recherchierter Leitfaden](../REGISTRATION_BILLING_AND_IDENTITY.md):
+Key-Verwaltung, beworbenes 0,5-CNY-Trial, 5-CNY-Bonusschwelle und noch
+unbestaetigte Zahlungsarten/KYC-Bedingungen. Diese Registrierungshinweise
+heben die hier dokumentierten Endpunkt-/Trust-Widersprueche nicht auf.

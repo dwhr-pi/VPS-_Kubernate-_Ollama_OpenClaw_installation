@@ -3,6 +3,10 @@
 Stand: **22.10.2026**. Anleitung und umsetzbares Briefing, keine hier
 ausgefuehrte Installation und kein bereits vorhandenes JARVIS-Dashboard.
 
+Neu im Tools-Menue: [Hermes_Agent_Jarvis als GitHub-Core-Installation](github-gap-tools.md#eindeutige-jarvis-quelle-hermes-agent-von-nous-research).
+Eindeutige Nous-Research-Laufzeit, nicht ein zweites Jarvis-Projekt oder ein
+fertig installiertes Dashboard; standardmaessig kein Agenten-/Dienststart.
+
 **Sinn und Zweck:** Eine persoenliche, deutschsprachige Bedienoberflaeche
 fuer Hermes Agent: sprechen oder schreiben, Aufgaben planen lassen und
 Werkzeuge gezielt freigeben. Der animierte Kern ist eine Statusanzeige,

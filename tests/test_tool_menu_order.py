@@ -28,15 +28,20 @@ class ToolMenuOrderTests(unittest.TestCase):
         for array in re.findall(r"^TOOL_KEYS\+?=\(([^\n]*)\)", setup, re.M):
             names.extend(shlex.split(array))
         pinned = [name for name in names if name in {"Ollama", "OpenClaw", "Ruflo"}]
-        remaining = [name for name in names if name not in pinned]
+        append_order = shlex.split(re.search(r"local -a append_order=\(([^\n]*)\)", setup).group(1))
+        appended = [name for name in append_order if name in names]
+        remaining = [name for name in names if name not in pinned and name not in appended]
         result = self.run_sort(names)
         # LC_ALL=C sort -f folds ASCII letters to uppercase, including around underscores.
-        self.assertEqual(result, pinned + sorted(remaining, key=str.upper))
+        self.assertEqual(result, pinned + sorted(remaining, key=str.upper) + appended)
         self.assertCountEqual(result, names)
         self.assertGreater(len(result), 250)
         self.assertIn("ACE_Step_15", result)
         self.assertIn("Act", result)
         self.assertIn("YouTube_Agent_Skill", result)
+        self.assertEqual(len(result), len(set(result)))
+        self.assertIn("Hermes_Agent_Jarvis", appended)
+        self.assertLess(result.index("Qwen_Desktop_Build"), result.index("Gradio"))
         menu = setup.split("show_tool_management_menu() {", 1)[1]
         self.assertLess(menu.index("sort_tool_menu_keys"), menu.index('for tool_key in "${TOOL_KEYS[@]}"'))
 

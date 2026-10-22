@@ -72,6 +72,16 @@ mkdir -p "$root/tools/concat/runtime" "$root/tools/remotion/runtime/packages/cli
 printf 'synthetic-appimage\n' > "$root/tools/concat/runtime/Concat.AppImage"
 printf 'synthetic-remotion\n' > "$root/tools/remotion/runtime/packages/cli/dist/index.js"
 printf 'synthetic-hyperframes\n' > "$root/tools/hyperframes/runtime/packages/cli/dist/cli.js"
+for slug in gradio streamlit wanvideowrapper cogvideox ltx_video video2dataset musetalk liveportrait sadtalker rvc uvr5 audacity obs; do
+    mkdir -p "$root/tools/$slug/runtime/.git"
+    printf 'synthetic-source\n' > "$root/tools/$slug/runtime/.git/HEAD"
+done
+mkdir -p "$root/tools/qwen_desktop_build/runtime/packages/desktop/runtime/qwen-code" "$root/tools/qwen_desktop_build/runtime/packages/desktop/src-tauri/target/release"
+printf 'synthetic-runtime\n' > "$root/tools/qwen_desktop_build/runtime/packages/desktop/runtime/qwen-code/manifest.json"
+printf 'synthetic-binary\n' > "$root/tools/qwen_desktop_build/runtime/packages/desktop/src-tauri/target/release/qwen-code-desktop"
+mkdir -p "$root/tools/hermes_agent_jarvis/runtime/.venv/bin"
+printf 'synthetic-package\n' > "$root/tools/hermes_agent_jarvis/runtime/pyproject.toml"
+printf 'synthetic-cli\n' > "$root/tools/hermes_agent_jarvis/runtime/.venv/bin/hermes"
 native_tool_sync_all "$root"
 for file in "$root/installed_tools.txt" "$root/status/installed_tools.txt"; do
     mapfile -t entries < "$file"

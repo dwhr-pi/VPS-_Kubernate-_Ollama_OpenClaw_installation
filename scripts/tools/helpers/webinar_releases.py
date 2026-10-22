@@ -181,12 +181,21 @@ def reserve(base, spec):
     free = shutil.disk_usage(base).free
     print("Freier Zielspeicher MiB:", free // 1024**2, "Mindestreserve MiB:", spec["reserve_mb"])
     if free < required:
-        raise ValueError("Speicherplatzmangel vor Download; keine Paketdateien installiert.")
+        missing_mb = (required - free + 1024**2 - 1) // 1024**2
+        raise ValueError("Speicherplatzmangel vor Download: erforderlich " + str(spec["reserve_mb"]) +
+                         " MiB, vorhanden " + str(free // 1024**2) + " MiB, fehlend mindestens " +
+                         str(missing_mb) + " MiB. Kein Download/Build gestartet; vorhandene Installationen bleiben erhalten.")
     if os.environ.get("WSL_DISTRO_NAME") and Path("/mnt/c").exists():
         free = shutil.disk_usage("/mnt/c").free
         print("Freier Windows-C:-Speicher MiB:", free // 1024**2)
         if free < required:
-            raise ValueError("Windows-Host-Speicherplatzmangel vor Download.")
+            missing_mb = (required - free + 1024**2 - 1) // 1024**2
+            raise ValueError("Windows-Host-Speicherplatzmangel vor Download: erforderlich " +
+                             str(spec["reserve_mb"]) + " MiB (" + str(spec["reserve_mb"] / 1024) +
+                             " GiB), vorhanden " + str(free // 1024**2) +
+                             " MiB, fehlend mindestens " + str(missing_mb) +
+                             " MiB. Freier Linux-/WSL-Speicher ersetzt keinen freien Windows-Host-Speicher. "
+                             "Kein Download/Build gestartet; keine neuen Programmdateien zu entfernen.")
 
 
 def process_diagnostics(result):
@@ -224,11 +233,23 @@ def repair_marp_runtime(diagnostic, cwd):
     policy = os.environ.get("MARP_INSTALL_RUNTIME_LIBS", "ask")
     if policy not in ("ask", "0", "1"):
         raise ValueError("MARP_INSTALL_RUNTIME_LIBS: nur ask, 0 oder 1.")
-    accepted = policy == "1" or (policy == "ask" and sys.stdin.isatty() and
-                input("Erkannte Laufzeitpakete installieren? [(j)a/(N)ein]: ").strip().lower() == "j")
+    accepted = policy == "1"
+    if policy == "ask":
+        if sys.stdin.isatty():
+            # A complete flushed line stays visible through setup log/terminal pipes.
+            print("Erkannte Laufzeitpakete installieren? [(j)a/(N)ein]", flush=True)
+            print("Warte auf Ihre Eingabe und Enter; ohne Zustimmung keine Paketinstallation.", flush=True)
+            try:
+                accepted = input().strip().lower() in ("j", "ja", "y", "yes")
+            except EOFError:
+                print("Eingabe beendet; Reparatur nicht freigegeben.", flush=True)
+        else:
+            print("Kein interaktives Eingabeterminal: keine Rueckfrage oder automatische Reparatur.", flush=True)
+    print("Marp-Laufzeitreparatur: " + ("freigegeben" if accepted else "nicht freigegeben"), flush=True)
     if not accepted:
         print("Reparatur nicht freigegeben. Befehl separat ausfuehren oder MARP_INSTALL_RUNTIME_LIBS=1 setzen, dann erneut installieren.")
         return False
+    print("Starte gezielte Paketinstallation; sudo kann am Terminal nach Ihrem Passwort fragen.", flush=True)
     result = subprocess.run(prefix + apt, cwd=cwd, capture_output=True, text=True,
                             check=False, timeout=600)
     process_diagnostics(result)

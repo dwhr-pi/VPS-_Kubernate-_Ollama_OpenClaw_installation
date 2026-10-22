@@ -872,6 +872,9 @@ get_tool_install_fallback_min_free_mb() {
     local tool_key="$1"
 
     case "$tool_key" in
+        "Qwen_Desktop_Build") printf '20480' ;;
+        "Hermes_Agent_Jarvis") printf '4096' ;;
+        "Gradio"|"Streamlit"|"WanVideoWrapper"|"CogVideoX"|"LTX_Video"|"Video2Dataset"|"MuseTalk"|"LivePortrait"|"SadTalker"|"RVC"|"UVR5"|"Audacity"|"OBS") printf '2048' ;;
         "Concat") printf '2048' ;;
         "Remotion") printf '16384' ;;
         "HyperFrames") printf '12288' ;;
@@ -941,7 +944,7 @@ is_heavy_or_experimental_tool() {
     local tool_key="$1"
 
     case "$tool_key" in
-        "Remotion"|"HyperFrames") return 0 ;;
+        "Qwen_Desktop_Build"|"Hermes_Agent_Jarvis"|"Remotion"|"HyperFrames") return 0 ;;
         "Airbyte"|"Activepieces"|"AutoGPT"|"OpenHands"|"n8n"|"Nextcloud"|"ComfyUI"|"Stable_Diffusion_WebUI"|"Stable_Diffusion_WebUI_Forge"|"InvokeAI"|"Fooocus"|"vLLM"|"K3s"|"Kubernetes"|"Docker"|"Docker_Compose_Plugin"|"Coqui_TTS"|"FinRobot"|"FinRAG"|"Android"*|"MobSF"|"Blender"|"AnimateDiff")
             return 0
             ;;
@@ -1009,7 +1012,7 @@ preflight_tool_install_storage() {
     if is_wsl_environment; then
         windows_min_mb="$(get_tool_install_windows_min_free_mb "$min_mb")"
         case "$tool_key" in
-            Concat|Remotion|HyperFrames) windows_min_mb="$min_mb" ;;
+            Qwen_Desktop_Build|Hermes_Agent_Jarvis|Gradio|Streamlit|WanVideoWrapper|CogVideoX|LTX_Video|Video2Dataset|MuseTalk|LivePortrait|SadTalker|RVC|UVR5|Audacity|OBS|Concat|Remotion|HyperFrames) windows_min_mb="$min_mb" ;;
         esac
         windows_min_kb=$((windows_min_mb * 1024))
         windows_free_kb="$(get_windows_host_free_kb)"
