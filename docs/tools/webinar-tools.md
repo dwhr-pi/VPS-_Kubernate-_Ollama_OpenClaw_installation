@@ -17,6 +17,22 @@ beide Programme werden nicht automatisch miteinander verbunden.
 
 ## Installation und Pruefung
 
+In **Tools: Installieren & Deinstallieren** oeffnet die Schaltflaeche
+**Ubuntu / Windows** eine Setupauswahl fuer diese drei Webinar-Werkzeuge.
+Erst Zielplattform, dann Werkzeug und Aktion waehlen. Standard ist Ubuntu/WSL
+und anschliessend ein schreibfreier Plan; abbrechen startet nichts.
+Installieren, Update und Entfernen haben eine zusaetzliche Zielbestaetigung.
+Die normale Tool-Checkliste bleibt fuer Ubuntu/WSL; Windows-Installationen
+werden dort nicht faelschlich als Linux-Installation angehakt.
+
+Unter WSL kann die Windows-Auswahl den nativen PowerShell-Einstieg ueber
+vorhandenes Windows-Interop ausfuehren. Sie startet keine WSL-Distro und
+wechselt bei fehlendem Interop nicht stillschweigend auf ein anderes Ziel.
+Stattdessen wird der entsprechende manuelle Windows-Befehl angezeigt.
+Windows-Status liegt im Windows-Benutzerverzeichnis, Ubuntu-Status im
+Linux-Benutzerverzeichnis. Status/Doctor und Entfernen deshalb ebenfalls
+ueber die passende Plattformauswahl aufrufen.
+
 Im Tools-Menue die drei Programme einzeln waehlen. Unter Ubuntu/Linux auch:
 
 ```bash
@@ -30,10 +46,17 @@ Native Windows-Installation derselben Programme ohne WSL mit vorhandenem
 Python >=3.10, vom Setup-Verzeichnis aus:
 
 ```powershell
-python -B scripts/tools/helpers/webinar_releases.py marp install
-python -B scripts/tools/helpers/webinar_releases.py listmonk install
-python -B scripts/tools/helpers/webinar_releases.py mautic install
+.\scripts\windows\webinar_tools.ps1 -Tool marp -Action plan
+.\scripts\windows\webinar_tools.ps1 -Tool marp -Action install
+.\scripts\windows\webinar_tools.ps1 -Tool listmonk -Action install
+.\scripts\windows\webinar_tools.ps1 -Tool mautic -Action install
 ```
+
+Bei Bedarf `-PythonBin C:\Pfad\python.exe` angeben. Der Plan braucht kein
+Python, macht keine Netzwerkaufrufe und installiert nichts. Bei echten
+Aktionen wird ein vorhandenes natives Windows-Python >=3.10 geprueft;
+ein Windows-Python-Bootstrap erfolgt nicht. Es wird kein Ausfuehrungsrichtlinien-
+Bypass gesetzt. Eine lokale Richtliniensperre muss bewusst geprueft werden.
 
 Kein Python-Bootstrap. Marp: Linux amd64/arm64 und Windows amd64.
 listmonk: Linux und Windows amd64/arm64. Mautic: plattformneutrales PHP-

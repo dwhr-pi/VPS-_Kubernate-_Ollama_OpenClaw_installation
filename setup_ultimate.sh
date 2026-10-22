@@ -51,6 +51,7 @@ load_setup_language
 source "$INSTALL_DIR/scripts/helpers/native_tool_status.sh"
 source "$INSTALL_DIR/scripts/helpers/comfyui_gguf_dependency.sh"
 source "$INSTALL_DIR/scripts/helpers/operation_log.sh"
+source "$INSTALL_DIR/scripts/helpers/webinar_platform_menu.sh"
 
 ensure_user_workspace() {
     ensure_setup_preferences
@@ -3774,6 +3775,9 @@ show_tool_management_menu() {
         else
             TOOL_CHECKLIST_OPTIONS+=("$tool_key" "${TOOLS[$tool_key]}" "$STATUS")
         fi
+        if [ "$tool_key" = "Ruflo" ]; then
+            TOOL_CHECKLIST_OPTIONS+=("__TOOLS_SEPARATOR__" "---------------- Weitere Tools A-Z ----------------" "off")
+        fi
     done
     if [ "$overview_metrics_enabled" != "true" ]; then
         tool_menu_prompt="(*) = behalten oder installieren.\n\nZeit- und Speicherwerte sind deaktiviert oder wegen der großen Liste automatisch im Schnellmodus ausgeblendet.\nAusführung: erst Deinstallationen, danach Installationen.\nGesamt: ${total_tool_count} | Installiert: ${installed_tool_count}"
@@ -3790,10 +3794,15 @@ show_tool_management_menu() {
     dialog --clear --backtitle "$APP_TITLE" \
     --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
     --extra-button --extra-label "62 Quellen verwalten" \
+    --help-button --help-label "Ubuntu / Windows" \
     --title "TOOL-MANAGEMENT (${installed_tool_count}/${total_tool_count} installiert)" --checklist "$tool_menu_prompt" 34 120 24 \
     "${TOOL_CHECKLIST_OPTIONS[@]}" 2> /tmp/tool_selection
 
     local tool_dialog_rc=$?
+    if [ "$tool_dialog_rc" -eq 2 ]; then
+        show_webinar_platform_menu
+        return 0
+    fi
     if [ "$tool_dialog_rc" -eq 3 ]; then
         show_development_toolchain_check
         return 0
@@ -3802,7 +3811,7 @@ show_tool_management_menu() {
         return 0
     fi
 
-    mapfile -t SELECTED_TOOLS_ARRAY < <(tr ' ' '\n' < /tmp/tool_selection | tr -d '"' | sed '/^$/d')
+    mapfile -t SELECTED_TOOLS_ARRAY < <(tr ' ' '\n' < /tmp/tool_selection | tr -d '"' | sed '/^$/d; /^__TOOLS_SEPARATOR__$/d')
 
     local -a tools_to_uninstall=()
     local -a tools_to_install=()

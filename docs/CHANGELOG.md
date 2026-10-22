@@ -1,5 +1,14 @@
 # Docs Changelog
 
+## 2026-10-22 Plattformauswahl und Tool-Trennlinie
+
+- Tools-Schaltflaeche Ubuntu / Windows fuer Marp, listmonk und Mautic;
+  separate Ziel-/Werkzeug-/Aktionsauswahl mit Plan als Standard.
+- Nativer PowerShell-Einstieg ohne WSL-Start, Docker oder Python-Bootstrap;
+  Windows- und Linux-Installationsstatus bleiben getrennt.
+- Trennlinie hinter Ruflo vor den A-Z-Tools wiederhergestellt; kein echter
+  Tool-Eintrag und keine Installationsaktion fuer die Trennzeile.
+
 ## 2026-10-22 Webinar-Werkzeuge als native GitHub-Releaseinstaller
 
 - Marp CLI 4.5.1, listmonk 6.2.0 und Mautic 7.2.1 im Tools-Menue/Registry
