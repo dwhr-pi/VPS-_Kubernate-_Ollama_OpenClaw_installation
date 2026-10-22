@@ -29,7 +29,9 @@ im Ausgangstext bedeutet hier **keine** eingerichtete Update-Automation.
 |---|---|
 | OpenMontage | GitHub-Checkout auf festem Commit, private Python-venv, Kernabhaengigkeiten, Import-/Paketpruefung, eigener Installationsmarker |
 | Remotion-Composer | Optional aus dem gepinnten OpenMontage-Unterprojekt, npm ci mit Lockfile und ohne Lifecycle-Skripte; separate Lizenzfreigabe |
-| HyperFrames | Upstream-Integrationspfad dokumentiert, hier **nicht automatisch installiert**; kein npx-latest-Aufruf |
+| HyperFrames | Eigener [GitHub-Source-Build](hyperframes.md) im Tools-Menue; von OpenMontage **nicht automatisch installiert** und nicht per npx latest nachgeladen |
+| Concat | Eigener [GitHub-AppImage-Installer](concat.md) fuer manuellen Videoschnitt, kein automatisch verbundener Adapter |
+| Remotion separat | Eigener [GitHub-Source-Build](remotion.md), getrennt vom OpenMontage-Composer und dessen npm-Version |
 | FFmpeg/ffprobe, Piper | Bereits vorhandene Setup-Bausteine; nicht erneut global installiert, Stimme/Modell und Runtime separat pruefen |
 | Coding-Agent | Vorhandenen Client bewusst waehlen; keine automatische Anmeldung, Skill-Aktivierung oder Agentenstart |
 | Cloudanbieter | Keine Accounts/Keys/Probeaufrufe oder Bilder-/Videouploads durch den Installer |
@@ -67,6 +69,33 @@ venv/ensurepip/SSL. Ein anderes vorhandenes Python ueber
 `OPENMONTAGE_PYTHON_BIN=/absoluter/pfad/python3` bestimmen. Zum Ausfuehren
 des Installers selbst gegebenenfalls `OPENMONTAGE_INSTALLER_PYTHON_BIN`
 setzen. Fehlende Systempakete werden nicht ungefragt nachinstalliert.
+
+### Fehler: No module named ensurepip
+
+Das Log vom 22.10.2026 scheitert an der Python-Vorpruefung, **nicht** an der
+Speicherwache. Bei Ubuntu-System-Python ermittelt der Installer jetzt das
+passende versionsbezogene Paket, zeigt einen Reparaturbefehl und fragt nach
+Zustimmung, etwa fuer `python3.12-venv` bei Python 3.12. Apt wartet begrenzt
+auf eine aktive Paketverwaltung; keine Locks loeschen oder Updateprozesse beenden.
+
+Interaktiv das Basispaket bewusst bestaetigen. Nichtinteraktiv nach eigener
+Pruefung oder nach separat erfolgter Reparatur:
+
+```bash
+OPENMONTAGE_INSTALL_PYTHON_VENV=1 bash scripts/tools/openmontage_install.sh --repair
+```
+
+`OPENMONTAGE_INSTALL_PYTHON_VENV=0` verbietet diese Paketinstallation.
+Bei anderem Python-Pfad oder anderen Distributionen wird kein Ubuntu-Paket
+automatisch geraten; kompatibles `OPENMONTAGE_PYTHON_BIN` waehlen. Kein
+System-Python-Ersatz und kein get-pip-Workaround. Apt kann passende
+System-Abhaengigkeiten mit aktualisieren;
+dies wird vor der Zustimmung angezeigt. Paketentfernungen sind gesperrt.
+Das gemeinsame venv-
+Basispaket bleibt bei Deinstallation erhalten. Erst nach erfolgreicher
+erneuter Vorpruefung werden Quellen und private Umgebung eingerichtet.
+Schlaegt apt wegen Paketlisten/Netzwerk fehl, das aktuelle Log pruefen und
+Paketverwaltung separat reparieren; keine Erfolgsmeldung vortaeuschen.
 
 Ziel: `~/.openclaw_ultimate_user_data/tools/openmontage/` beziehungsweise
 das externe `OPENCLAW_USER_DATA_DIR`:
@@ -129,9 +158,10 @@ Browser-/Codec-/Renderabnahme.
 HyperFrames ([heygen-com/hyperframes](https://github.com/heygen-com/hyperframes))
 ist ein weiterer Upstream-Renderer, nicht Voraussetzung fuer
 die Kerninstallation. Den im Makefile vorgesehenen Cache-Warmup/latest-
-Download fuehrt unser Setup nicht aus. Fuer einen spaeteren separaten
-Installer fehlen hier noch gepruefter Versionspin, Abhaengigkeits- und
-Render-Smoke-Test. Kein vorgetaeuschter HyperFrames-Menueeintrag.
+Download fuehrt unser Setup nicht aus. Stattdessen gibt es jetzt einen
+separaten [HyperFrames-Installer](hyperframes.md) mit Pin, Paketbuild und
+Artefaktpruefung. Er wird nicht automatisch mit OpenMontage verbunden;
+der funktionale Browser-/Render-Smoke-Test bleibt gesondert erforderlich.
 
 ## Qwen Code Desktop statt Claude Code
 

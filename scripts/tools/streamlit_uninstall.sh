@@ -1,7 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
+# Primaerquelle: https://github.com/streamlit/streamlit; Umfang siehe --dry-run.
 set -euo pipefail
-TOOL_NAME="Streamlit"
-TOOL_KEY="Streamlit"
-TOOL_SLUG="streamlit"
-source "$(dirname "$0")/helpers/python_tool_common.sh"
-uninstall_python_tool
+ROOT="$(cd "${BASH_SOURCE[0]%/*}/../.." && pwd)"
+exec "${GAP_TOOLS_PYTHON_BIN:-python3}" -B "$ROOT/scripts/tools/helpers/gap_tools.py" streamlit uninstall "$@"

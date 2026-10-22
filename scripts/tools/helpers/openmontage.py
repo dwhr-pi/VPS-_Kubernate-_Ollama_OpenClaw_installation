@@ -5,6 +5,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import re
 import shutil
 import subprocess
 import sys
@@ -131,6 +132,45 @@ def install_remotion(base, source):
         raise
 
 
+def prepare_python(interpreter, base):
+    probe = "import sys,venv,ensurepip,ssl; assert sys.version_info >= (3,10)"
+    try:
+        command([interpreter, "-I", "-c", probe], base, 30)
+        return
+    except subprocess.CalledProcessError:
+        pass
+    details = subprocess.run([str(interpreter), "-I", "-c",
+                              "import sys,json; print(json.dumps([sys.executable, list(sys.version_info[:2])]))"],
+                             capture_output=True, text=True, check=True, timeout=15)
+    executable, version = json.loads(details.stdout)
+    if version < [3, 10] or not re.fullmatch(r"/usr/bin/python3(?:\.\d+)?", executable):
+        raise ValueError("OPENMONTAGE_PYTHON_BIN braucht Python >=3.10 mit venv/ensurepip/SSL; "
+                         "fremde Python-Installation wird nicht per apt veraendert.")
+    release = Path("/etc/os-release")
+    distro = release.read_text(encoding="utf-8") if release.is_file() else ""
+    if not re.search(r'^ID=(?:"?)(ubuntu|debian)(?:"?)$', distro, re.M):
+        raise ValueError("venv/ensurepip/SSL fehlt. Zum gewaehlten Python passendes venv-Paket "
+                         "einrichten oder OPENMONTAGE_PYTHON_BIN setzen; danach --repair.")
+    package = "python" + ".".join(map(str, version)) + "-venv"
+    print("Python-Vorpruefung fehlgeschlagen: venv/ensurepip/SSL pruefen.")
+    print("Passendes Ubuntu-/Debian-Basispaket:", package)
+    print("Reparatur: sudo apt-get -o DPkg::Lock::Timeout=300 install --no-remove --no-install-recommends " + package)
+    print("Kein Austausch des System-Python-Befehls; apt kann passende System-Abhaengigkeiten aktualisieren.")
+    print("Gemeinsames Basispaket wird bei Deinstallation nicht entfernt.")
+    policy = os.environ.get("OPENMONTAGE_INSTALL_PYTHON_VENV", "ask")
+    if policy not in ("ask", "0", "1"):
+        raise ValueError("OPENMONTAGE_INSTALL_PYTHON_VENV: nur ask, 0 oder 1.")
+    accepted = policy == "1" or (policy == "ask" and sys.stdin.isatty() and
+               input("Passendes venv-Basispaket jetzt installieren? [(j)a/(N)ein]: ").strip().lower() == "j")
+    if not accepted:
+        raise ValueError("venv-Reparatur nicht freigegeben. Obigen Befehl separat ausfuehren oder "
+                         "OPENMONTAGE_INSTALL_PYTHON_VENV=1 setzen; danach --repair. Keine Quellen installiert.")
+    command(["sudo", "apt-get", "-o", "DPkg::Lock::Timeout=300", "install",
+             "--no-remove", "--no-install-recommends", "-y", package], base, 600)
+    command([interpreter, "-I", "-c", probe], base, 30)
+    print("Python-Vorpruefung nach venv-Reparatur erfolgreich.")
+
+
 def install(base, source, venv, marker, with_remotion=False):
     reserve(base)
     if marker.exists():
@@ -148,7 +188,7 @@ def install(base, source, venv, marker, with_remotion=False):
     if venv.exists():
         raise ValueError("Unverwaltete Python-Umgebung vorhanden; erst sichern/pruefen.")
     interpreter = os.environ.get("OPENMONTAGE_PYTHON_BIN", sys.executable)
-    command([interpreter, "-I", "-c", "import sys,venv,ensurepip,ssl; assert sys.version_info >= (3,10)"], base, 30)
+    prepare_python(interpreter, base)
     created_source = created_venv = created_remotion = False
     try:
         created_source = fetch(base, source)
@@ -235,6 +275,6 @@ def main(argv=None):
 if __name__ == "__main__":
     try:
         raise SystemExit(main())
-    except (ValueError, OSError, KeyError, TypeError, SyntaxError, subprocess.SubprocessError):
-        print("OpenMontage fehlgeschlagen; aktuelles Operationslog pruefen. Kein Film oder Dienst gestartet.", file=sys.stderr)
+    except (ValueError, OSError, KeyError, TypeError, SyntaxError, subprocess.SubprocessError) as error:
+        print("OpenMontage fehlgeschlagen:", error, "Aktuelles Operationslog pruefen; kein Film oder Dienst gestartet.", file=sys.stderr)
         raise SystemExit(1)

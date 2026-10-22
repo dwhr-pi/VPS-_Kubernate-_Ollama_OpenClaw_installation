@@ -1,5 +1,9 @@
 # START HERE
 
+[Welche Tools fehlen im Setup?](TOOL_SETUP_GAPS.md) und
+[vollstaendiger statischer Abgleich](TOOL_SETUP_AUDIT.md): Dokumentation,
+Registry, Menue und Runtime sind nicht gleichbedeutend.
+
 [Webinar-Stack mit deinem KI-Setup](tutorials/webinar-stack.md):
 Skript, Marp-Folien, Anmeldung, Mailstrecken und Live/Replay, ohne Docker-Pflicht.
 

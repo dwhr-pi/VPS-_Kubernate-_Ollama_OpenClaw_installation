@@ -1,0 +1,155 @@
+# GitHub-Ergaenzungen: Qwen Desktop, Hermes/Jarvis und Medienquellen
+
+Die neuen Eintraege stehen im **Tools-Menue am Ende**, nach dem bisherigen
+A-Z-Bereich. Die bisherige Trennlinie nach Ruflo bleibt erhalten. Bereits
+vorhandene Medien-Eintraege werden dort nicht doppelt angezeigt.
+Alle Wege sind optional und **ohne Docker**.
+
+## Qwen Code Desktop: Download oder eigener Build
+
+**Qwen_Desktop** bleibt der bisherige manuelle Windows-Download mit Browser
+und Bestaetigungspause: [Windows-Anleitung](qwen-desktop-windows.md).
+**Qwen_Desktop_Build** ist dagegen ein nativer Build aus
+[QwenLM/qwen-code](https://github.com/QwenLM/qwen-code), Pin
+`bf66a26c978dac68af31fbc093eb53044e204b24`.
+
+Die [offizielle Desktop-Anleitung](https://github.com/QwenLM/qwen-code/blob/bf66a26c978dac68af31fbc093eb53044e204b24/packages/desktop/README.md)
+beschreibt eine **Tauri-2-Anwendung**, nicht einen zweiten unabhaengigen
+Qwen-Client. Sie buendelt Node, CLI und Web Shell.
+Der Installer folgt dem [offiziellen Buildworkflow](https://github.com/QwenLM/qwen-code/blob/bf66a26c978dac68af31fbc093eb53044e204b24/.github/workflows/desktop-release.yml):
+frozen pnpm-Installation, Desktop npm ci, build:runtime und Tauri-Build.
+Es wird bewusst ein **lokales unsigniertes Executable ohne Release-Bundle**
+gebaut: keine fremden Signierschluessel, kein Windows-Setup automatisch gestartet.
+
+Voraussetzungen: Git, **Node 22**, npm, Corepack (pnpm-Version aus package.json),
+Rust/Cargo und tar. Ubuntu braucht die Tauri-/GTK-/WebKit-Entwicklungsbibliotheken,
+insbesondere `libwebkit2gtk-4.1-dev`, GTK3 und `librsvg2-dev` samt pkg-config.
+Windows braucht die Visual-Studio-C++-Buildtools, Rust-MSVC und WebView2 zur
+spaeteren Nutzung. In einer **Developer PowerShell** starten, damit `cl` im
+PATH liegt. Basiswerkzeuge werden nicht still systemweit nachinstalliert.
+Planungsreserve: **20 GiB freier Zielspeicher** und unter WSL auch auf C:;
+unter Linux mindestens **6 GiB verfuegbarer RAM**, besser mehr. Der Build kann
+lange dauern. Eine Reserve garantiert nicht, dass jeder Build hineinpasst.
+
+Linux/Ubuntu/WSL (baut eine **Linux-Anwendung**, Anzeige spaeter z. B. ueber WSLg):
+
+```bash
+bash scripts/tools/qwen_desktop_build_install.sh --dry-run
+bash scripts/tools/qwen_desktop_build_install.sh
+bash scripts/tools/qwen_desktop_build_status.sh
+```
+
+Natives Windows, im Repository-Verzeichnis, vorhandenes Python >=3.10:
+
+```powershell
+.\scripts\windows\qwen_desktop_build.ps1 -Action plan
+.\scripts\windows\qwen_desktop_build.ps1 -Action install
+.\scripts\windows\qwen_desktop_build.ps1 -Action status
+```
+
+Ziel unter dem jeweiligen Benutzerprofil:
+`~/.openclaw_ultimate_user_data/tools/qwen_desktop_build/runtime/`.
+Executable: `packages/desktop/src-tauri/target/release/qwen-code-desktop`
+(Windows: `.exe`). Der gepackte CLI-/Node-Bestand liegt unter
+`packages/desktop/runtime/qwen-code/`. Es erfolgt kein globaler PATH-Eintrag,
+kein Desktop-Shortcut und kein GUI-/Daemonstart. Erst beim bewussten Start
+gelten die Upstream-Laufzeitfunktionen, einschliesslich Updatepruefungen und
+moeglicher Modellverbindungen. `QWEN_DESKTOP_DISABLE_UPDATES=1` bei Bedarf
+auch fuer diesen separaten Start setzen. Login und Modellwahl erfolgen dort,
+nicht waehrend des Builds. **Build erfolgreich ist noch kein GUI-Funktionstest.**
+
+## Eindeutige Jarvis-Quelle: Hermes Agent von Nous Research
+
+**Hermes_Agent_Jarvis** installiert den Core aus
+[NousResearch/hermes-agent](https://github.com/NousResearch/hermes-agent),
+Pin `484de065a821b4245697351d08327b465ffd41ba`, mit `uv sync --frozen`
+in dessen privater `.venv`. Der aktuelle Pin braucht **Python 3.14** fuer seine
+eigentlichen Core-Abhaengigkeiten; die aelteren Python-Versionen im Metadatenfeld
+dienen laut Upstream dem Upgrade bestehender Installationen.
+Ein vorhandenes `uv` ist erforderlich. Bei abweichendem Programmpfad:
+`HERMES_PYTHON_BIN=/absoluter/pfad/python3.14` setzen.
+Kein Python-Download, kein Ersetzen des System-Python und keine Cloud-Extras.
+
+```bash
+bash scripts/tools/hermes_agent_jarvis_install.sh --dry-run
+bash scripts/tools/hermes_agent_jarvis_install.sh
+bash scripts/tools/hermes_agent_jarvis_status.sh
+```
+
+Ziel: `~/.openclaw_ultimate_user_data/tools/hermes_agent_jarvis/runtime/`.
+Das CLI liegt dort unter `.venv/bin/hermes` (Windows: `.venv/Scripts/hermes.exe`).
+Die Paketmetadaten werden geprueft, **kein Hermes-Befehl oder Agent gestartet**.
+Konfiguration, Modellzugriff, OAuth, Werkzeuge, Telegram, Scheduler und echte
+Anfragen sind getrennte, bewusst auszufuehrende Schritte.
+
+**Nicht verwechseln:** Till Schaefers Jarvis-Webseite ist eine Anleitung auf
+Hermes-Basis, kein hier verifiziertes eigenstaendiges Jarvis-Quellrepository.
+Es gibt daher keinen erfundenen `till-schaefer/jarvis`-Installer und kein fertig
+gebautes Dashboard. [Quelleneinordnung und Dashboard-Konzept](jarvis-hermes-dashboard.md),
+[Hermes-Leitfaden](hermes-jarvis-weekend.md).
+
+## Weitere Eintraege der Lueckenuebersicht
+
+Diese Eintraege besitzen jetzt eigene gepinnte **GitHub-Quellinstaller**,
+Status-/Check-/Doctor-, Update- und Deinstallationsskripte. Umfang `source`
+bedeutet **vollstaendiger Quellcheckout, keine einsatzbereite Anwendung**.
+Die Benennung im Menue sagt das ausdruecklich. Keine Gewichte, keine pip-/GPU-
+Runtime, kein Link in vorhandenes ComfyUI, keine Aufnahme oder Verarbeitung.
+
+| Menueeintrag | Offizielle GitHub-Quelle | Noch separat erforderlich |
+|---|---|---|
+| Gradio | [gradio-app/gradio](https://github.com/gradio-app/gradio) | Python-/Frontend-Build und App-Konfiguration |
+| Streamlit | [streamlit/streamlit](https://github.com/streamlit/streamlit) | Python-/Frontend-Build und eigene App |
+| WanVideoWrapper | [kijai/ComfyUI-WanVideoWrapper](https://github.com/kijai/ComfyUI-WanVideoWrapper) | Passendes ComfyUI, Node-Integration, Runtime/Modelle |
+| CogVideoX | [THUDM/CogVideo](https://github.com/THUDM/CogVideo) | Modellgeneration, Python/Torch/GPU, Gewichte |
+| LTX_Video | [Lightricks/LTX-Video](https://github.com/Lightricks/LTX-Video) | Passende Modellgeneration und Runtime/Gewichte |
+| Video2Dataset | [iejMac/video2dataset](https://github.com/iejMac/video2dataset) | Python-Pakete, FFmpeg, rechtmaessige Datenquellen |
+| MuseTalk | [TMElyralab/MuseTalk](https://github.com/TMElyralab/MuseTalk) | GPU-Umgebung/Modelle und Medienfreigabe |
+| LivePortrait | [KwaiVGI/LivePortrait](https://github.com/KwaiVGI/LivePortrait) | GPU-Umgebung/Modelle und Einwilligungen |
+| SadTalker | [OpenTalker/SadTalker](https://github.com/OpenTalker/SadTalker) | Legacy-Python-/GPU-Umgebung und Modelle |
+| RVC | [RVC-Project/Voice-Conversion-WebUI](https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI) | Runtime, eigene/freigegebene Stimmen und Modelle |
+| UVR5 | [Anjok07/ultimatevocalremovergui](https://github.com/Anjok07/ultimatevocalremovergui) | GUI-/Audioabhaengigkeiten und Modelle |
+| Audacity | [audacity/audacity](https://github.com/audacity/audacity) | Nativer C++-/GUI-Build oder separates Release |
+| OBS | [obsproject/obs-studio](https://github.com/obsproject/obs-studio) | Nativer C++-/GUI-Build/Plugins oder separates Release |
+
+Alle geprueften Revisionen stehen in
+[`gap_tools.json`](../../scripts/tools/helpers/gap_tools.json). Die Quellaufnahme
+ist keine rechtliche Freigabe: Code-, Modell- und Medienlizenzen gesondert lesen.
+Beispiel mit `musetalk`, analog fuer die anderen Slugs:
+
+```bash
+bash scripts/tools/musetalk_install.sh --dry-run
+bash scripts/tools/musetalk_install.sh
+bash scripts/tools/musetalk_doctor.sh
+bash scripts/tools/musetalk_uninstall.sh
+```
+
+**WebsiteFactory** und **AI_ContentMultiplier** verweisen auf die bestehenden
+Workflow-Einrichtungen, nicht auf einen neuen KI-Dienst. Sie werden ebenfalls
+angehaengt. Ihre Konfiguration liegt ausserhalb des Repos; bestehende Inhalte
+bleiben erhalten. Ihre bisherige Deinstallation ist standardmaessig nur eine
+Vorschau/Abmeldung, kein Loeschen der Projekte oder Nutzerdaten.
+Siehe [WebsiteFactory](websitefactory.md) und
+[ContentMultiplier](ai-content-multiplier/README.md).
+Die **62 Werkzeugquellen** bleiben im eigenen Untermenue erreichbar
+(Tools: **62 Quellen verwalten**), ohne 62 doppelte Checkboxen zu erzeugen.
+API-Anbieter bleiben Konfigurationen, keine lokalen Scheininstallationen.
+
+## Status, Logs und Entfernung
+
+Neue GitHub-Installationen schreiben `ready.json` erst nach erfolgreichem
+Checkout beziehungsweise Build und Artefaktpruefung. `--status` ist lesend;
+`check` prueft Pin und Hauptartefakte, `doctor` den gesamten Dateibestand.
+Update und Reparatur bleiben beim gleichen Pin. Ein vorhandener fremder oder
+unvollstaendiger Ordner wird nicht ueberschrieben. Fehler werden im jeweils
+neuen Operationslog unter `~/.openclaw_ultimate_user_data/install_logs/`
+mitprotokolliert; nur neu erzeugte Dateien dieses Versuchs werden zurueckgerollt.
+Bei veraenderten oder ergaenzten Dateien verweigert die Deinstallation die
+Loeschung und fordert eine manuelle Sicherung. Projekte, Hermes-Gedaechtnis
+ausserhalb des verwalteten Ordners, Modelle und Basiswerkzeuge bleiben erhalten.
+Builds koennen Paketmanager-/Cargo-Caches ausserhalb des Tool-Ordners erzeugen;
+das ist keine vollstaendige Sandbox. Buildskripte koennen Code ausfuehren und
+Netzwerkverbindungen aufbauen. Keine privaten Schluessel fuer den Build eingeben.
+
+Die Integration wird offline getestet. Vollstaendige Linux-/Windows-Builds,
+GUI-Funktion und GPU-Ablaeufe muessen auf dem Zielsystem separat abgenommen werden.

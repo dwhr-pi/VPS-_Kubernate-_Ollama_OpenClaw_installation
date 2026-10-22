@@ -1,5 +1,15 @@
 # Tool Index
 
+**[Concat](tools/concat.md)**: GitHub-AppImage mit SHA256 fuer Linux/WSL.
+**[Remotion](tools/remotion.md)** und **[HyperFrames](tools/hyperframes.md)**:
+eigene gepinnte GitHub-Source-Builds und Lifecycle-Skripte im Tools-Menue,
+kein Docker. Browser/Codecs/Rendering separat pruefen; keine versteckten npx-Downloads.
+
+**[Fehlende Integrationen und tatsaechliche Einstiegspunkte](TOOL_SETUP_GAPS.md)**:
+Hermes, Concat, Oberflaechen-/Medienbausteine und Registry-/Menueabweichungen.
+[Kompletter statischer Abgleich](TOOL_SETUP_AUDIT.md), reproduzierbar mit
+`python -B scripts/audit_tool_coverage.py`. Kein Live-Installationsnachweis.
+
 **[OpenMontage](tools/openmontage.md)**: GitHub-Commit plus Python-Kernumgebung
 installierbar, kein Docker. Remotion optional; HyperFrames nicht automatisch
 installiert. Status/Doctor unterscheiden Kernpakete von Renderbereitschaft.
@@ -148,26 +158,30 @@ offizielle Qwen-Code-GUI, getrennt von Qwen_Code CLI und Qwen Chat/Studio.
 Manueller Installationspfad, lokaler PowerShell-Pruefhelfer, keine WSL-Pflicht.
 
 [Hybrider Modell-/Medienpfad](media_studio/HYBRID_MODELS_AND_WAN.md):
-Cline, Wan21, ComfyUI_GGUF, WanVideoWrapper, SUPIR und FILM planned.
+Cline, Wan21, ComfyUI_GGUF, SUPIR und FILM haben eigene Installer mit
+unterschiedlichem Paket-/Quellumfang; WanVideoWrapper bleibt ein Guard.
 [Qwen_Code CLI](tools/qwen-code.md) hat einen optionalen GitHub-Source-Build
 ohne Docker; kein automatischer Agentenstart oder Login.
 
 [Audio-Review und Redaktion](media_studio/AUDIO_DEEPFAKE_REVIEW.md):
-pyannote_audio, deepfilternet, audioseal planned; getrennte Aufgaben,
-kein universeller Deepfake-Detektor.
+Pyannote_Audio, DeepFilterNet und AudioSeal haben eigene GitHub-Installer;
+getrennte Aufgaben und Runtime-Grenzen, kein universeller Deepfake-Detektor.
 
 [Social-Avatar-Stack](media_studio/SOCIAL_AVATAR_AUTOMATION.md): CogVideoX,
-LTX_Video, TGI, Pinokio, SD_Next, Windmill sowie optionale Fal_Client/Veo_API
-als planned registriert. Bestehende Bausteine nicht dupliziert.
+LTX_Video bleiben Kandidaten-Guards. TGI, SD_Next, Windmill und optionale
+Fal_Client/Veo_API besitzen eigene Source-/Paketpfade; Pinokio ist manuell.
 
 [HF_Datasets, HF_Hub und Video2Dataset](media_studio/VIDEO_TRAINING_DATASETS.md):
-planned, Quellen/Datensaetze/Streaminggrenzen und private Cacheplanung.
+HF_Datasets/HF_Hub mit eigenen GitHub-Paketinstallern; Video2Dataset bleibt
+documentation-first. Datensaetze und Trainingsjobs werden nicht automatisch gestartet.
 
 [Audio-/Video-Erweiterung](media_studio/AUDIO_VIDEO_TOOL_CATALOG.md):
-20 neue planned-Kandidaten und die eigene experimentelle Offline-CLI
+Quell-/Basispaketinstaller mit getrennten Runtime-Grenzen und die Offline-CLI
 [Karaoke_Formats](media_studio/KARAOKE_SUBTITLES_GUIDE.md).
 
-Die technische Quelle ist `config/tools.yml`. Diese Seite fasst die wichtigsten Tool-Familien zusammen.
+`config/tools.yml` ist die Registry; die tatsaechliche Tools-Menueauswahl und
+Skriptzuordnung stehen separat in `setup_ultimate.sh`. Diese Seite fasst
+Tool-Familien zusammen, ersetzt aber weder den Abgleich noch einen Funktionstest.
 
 [Agentic Coding: Clients, Frameworks und Automaton richtig einordnen](tools/agentic-coding.md).
 
@@ -175,7 +189,7 @@ Primaerquellen und GitHub-Referenzen sind gesammelt in `docs/GITHUB_TOOL_SOURCES
 
 ## Runtime und Gateway
 
-- [Automaton: Conway-Agenten, Wallet-Risiken und Zenbot-Integrationsplan](tools/automaton.md) (`planned`, keine Runtime-Installation)
+- [Automaton: Conway-Agenten, Wallet-Risiken und Zenbot-Integrationsplan](tools/automaton.md) (optionaler GitHub-Source-Build; kein Agenten-/Walletstart)
 
 Embedded/IoT: [Embedded Debug HIL: GDB, OpenOCD, pyOCD und Agenten](tools/embedded-debug-hil.md).
 

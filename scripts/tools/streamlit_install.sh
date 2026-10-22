@@ -1,10 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
+# Primaerquelle: https://github.com/streamlit/streamlit; Umfang siehe --dry-run.
 set -euo pipefail
-TOOL_NAME="Streamlit"
-TOOL_KEY="Streamlit"
-TOOL_SLUG="streamlit"
-TOOL_PACKAGES="streamlit"
-TOOL_DESCRIPTION="Schnelles Python-UI-Framework für interne Dashboards, Prototypen und lokale KI-Apps."
-TOOL_OPENCLAW_NOTE="Nützlich für App-Builder, BI-Profile und lokale Agenten-Frontends."
-source "$(dirname "$0")/helpers/python_tool_common.sh"
-install_python_tool
+ROOT="$(cd "${BASH_SOURCE[0]%/*}/../.." && pwd)"
+exec "${GAP_TOOLS_PYTHON_BIN:-python3}" -B "$ROOT/scripts/tools/helpers/gap_tools.py" streamlit install "$@"

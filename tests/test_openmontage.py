@@ -42,6 +42,44 @@ def fake_command(args, cwd, timeout=900):
 
 
 class OpenMontageTests(unittest.TestCase):
+    def test_missing_ensurepip_offers_matching_venv_without_fetch(self):
+        details = subprocess.CompletedProcess([], 0, '["/usr/bin/python3.12", [3,12]]', "")
+        with tempfile.TemporaryDirectory() as tmp, patch.dict(os.environ, {"OPENMONTAGE_INSTALL_PYTHON_VENV": "0"}), \
+                patch.object(m, "command", side_effect=subprocess.CalledProcessError(1, "probe")) as command, \
+                patch.object(m.subprocess, "run", return_value=details), \
+                patch.object(m.Path, "is_file", return_value=True), \
+                patch.object(m.Path, "read_text", return_value="ID=ubuntu\n"), \
+                contextlib.redirect_stdout(io.StringIO()) as out:
+            with self.assertRaisesRegex(ValueError, "nicht freigegeben"):
+                m.prepare_python("/usr/bin/python3", Path(tmp))
+            self.assertIn("python3.12-venv", out.getvalue())
+            self.assertIn("Kein Austausch des System-Python-Befehls", out.getvalue())
+            self.assertIn("System-Abhaengigkeiten aktualisieren", out.getvalue())
+            self.assertEqual(command.call_count, 1)
+
+    def test_approved_venv_repair_waits_for_apt_lock_and_rechecks(self):
+        details = subprocess.CompletedProcess([], 0, '["/usr/bin/python3.12", [3,12]]', "")
+        with tempfile.TemporaryDirectory() as tmp, patch.dict(os.environ, {"OPENMONTAGE_INSTALL_PYTHON_VENV": "1"}), \
+                patch.object(m, "command", side_effect=[subprocess.CalledProcessError(1, "probe"), None, None]) as command, \
+                patch.object(m.subprocess, "run", return_value=details), \
+                patch.object(m.Path, "is_file", return_value=True), \
+                patch.object(m.Path, "read_text", return_value="ID=ubuntu\n"), \
+                contextlib.redirect_stdout(io.StringIO()):
+            m.prepare_python("/usr/bin/python3", Path(tmp))
+            apt = command.call_args_list[1].args[0]
+            self.assertEqual(apt, ["sudo", "apt-get", "-o", "DPkg::Lock::Timeout=300", "install",
+                                   "--no-remove", "--no-install-recommends", "-y", "python3.12-venv"])
+            self.assertIn("ensurepip", command.call_args_list[2].args[0][-1])
+
+    def test_custom_python_never_triggers_system_apt_repair(self):
+        details = subprocess.CompletedProcess([], 0, '["/opt/custom/bin/python3", [3,12]]', "")
+        with tempfile.TemporaryDirectory() as tmp, patch.dict(os.environ, {"OPENMONTAGE_INSTALL_PYTHON_VENV": "1"}), \
+                patch.object(m, "command", side_effect=subprocess.CalledProcessError(1, "probe")) as command, \
+                patch.object(m.subprocess, "run", return_value=details):
+            with self.assertRaisesRegex(ValueError, "fremde Python"):
+                m.prepare_python("/opt/custom/bin/python3", Path(tmp))
+            self.assertEqual(command.call_count, 1)
+
     def test_plan_never_fetches_or_creates_files(self):
         with tempfile.TemporaryDirectory() as tmp, patch.dict(os.environ, {"OPENCLAW_USER_DATA_DIR": tmp}), \
                 patch.object(m, "command", side_effect=AssertionError("execute")), \

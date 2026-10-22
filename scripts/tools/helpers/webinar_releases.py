@@ -5,6 +5,7 @@ import json
 import os
 from pathlib import Path, PurePosixPath
 import platform
+import re
 import shutil
 import stat
 import subprocess
@@ -43,6 +44,13 @@ SPECS = {
         "license": "GPL-3.0-or-later", "reserve_mb": 2048,
         "artifacts": {"any": ("7.2.1.zip", 105311972, "5c86cf1fe8b4f9818232ce8bb755760f502d47846706e9164d144865d031ecbd")},
     },
+}
+
+OS_RELEASE = Path("/etc/os-release")
+MARP_RUNTIME_PACKAGES = {
+    "libatomic.so.1": "libatomic1",
+    "libstdc++.so.6": "libstdc++6",
+    "libgcc_s.so.1": "libgcc-s1",
 }
 
 
@@ -181,6 +189,82 @@ def reserve(base, spec):
             raise ValueError("Windows-Host-Speicherplatzmangel vor Download.")
 
 
+def process_diagnostics(result):
+    parts = []
+    for label in ("stdout", "stderr"):
+        output = getattr(result, label, "") or ""
+        if isinstance(output, bytes):
+            output = output.decode("utf-8", errors="replace")
+        parts.append(output)
+        if output.strip():
+            print("Programm-" + label + ":\n" + output[-16384:], flush=True)
+    return "\n".join(parts)
+
+
+def repair_marp_runtime(diagnostic, cwd):
+    missing = set(re.findall(
+        r"error while loading shared libraries:\s*([A-Za-z0-9_.+-]+):\s*cannot open shared object file",
+        diagnostic))
+    if not missing or not missing <= MARP_RUNTIME_PACKAGES.keys():
+        print("Keine eindeutige freigegebene Laufzeitbibliothek erkannt; keine automatische Paketinstallation.")
+        return False
+    distro = OS_RELEASE.read_text(encoding="utf-8") if OS_RELEASE.is_file() else ""
+    if platform.system() != "Linux" or not re.search(r'^ID="?(?:ubuntu|debian)"?$', distro, re.M):
+        print("Laufzeitbibliothek fehlt:", ", ".join(sorted(missing)),
+              "- Pakete fuer dieses Betriebssystem separat pruefen.")
+        return False
+    packages = sorted({MARP_RUNTIME_PACKAGES[name] for name in missing})
+    apt = ["apt-get", "-o", "DPkg::Lock::Timeout=300", "install", "--no-remove",
+           "--no-install-recommends", "-y", *packages]
+    prefix = [] if getattr(os, "geteuid", lambda: -1)() == 0 else ["sudo"]
+    print("Fehlende Marp-Laufzeitbibliotheken:", ", ".join(sorted(missing)))
+    print("Gezielte Reparatur:", " ".join(prefix + apt))
+    print("Nur gemeinsame Systembibliotheken; kein Node/npm, Browser oder Docker.")
+    print("Apt kann Paketabhaengigkeiten aktualisieren. Bibliotheken bleiben bei Deinstallation erhalten.")
+    policy = os.environ.get("MARP_INSTALL_RUNTIME_LIBS", "ask")
+    if policy not in ("ask", "0", "1"):
+        raise ValueError("MARP_INSTALL_RUNTIME_LIBS: nur ask, 0 oder 1.")
+    accepted = policy == "1" or (policy == "ask" and sys.stdin.isatty() and
+                input("Erkannte Laufzeitpakete installieren? [(j)a/(N)ein]: ").strip().lower() == "j")
+    if not accepted:
+        print("Reparatur nicht freigegeben. Befehl separat ausfuehren oder MARP_INSTALL_RUNTIME_LIBS=1 setzen, dann erneut installieren.")
+        return False
+    result = subprocess.run(prefix + apt, cwd=cwd, capture_output=True, text=True,
+                            check=False, timeout=600)
+    process_diagnostics(result)
+    if result.returncode != 0:
+        raise ValueError("Marp-Laufzeitreparatur fehlgeschlagen (apt Exit " + str(result.returncode) +
+                         "); obige Ausgabe pruefen. Keine Sperrdateien loeschen.")
+    return True
+
+
+def verify_binary_version(binary, key, spec):
+    # Loader failures are actionable diagnostics, not just a hidden CalledProcessError.
+    for attempt in range(2):
+        try:
+            result = subprocess.run([str(binary), "--version"], capture_output=True,
+                                    text=True, check=False, timeout=60)
+        except OSError as error:
+            print("Programmeinstieg nicht startbar:", error)
+            raise ValueError("Architektur, ELF-Loader und Ausfuehrungsrechte pruefen; kein Installationsnachweis erstellt.") from error
+        diagnostic = process_diagnostics(result)
+        if result.returncode == 0:
+            if spec["version"] not in diagnostic:
+                raise ValueError("Programm meldet nicht die gepruefte Version.")
+            print("Versionspruefung erfolgreich:", spec["version"])
+            return
+        print("Versionspruefung fehlgeschlagen; Exit:", result.returncode)
+        if key == "marp" and result.returncode == 127 and attempt == 0:
+            if repair_marp_runtime(diagnostic, binary.parent):
+                print("Laufzeitreparatur beendet; Marp-Version wird erneut geprueft.")
+                continue
+        if key == "marp":
+            print("Exit 127 kann auf Bibliotheken/Loader hinweisen; massgeblich ist die obige stderr-Ausgabe.")
+            print("Keine blinde glibc-Ersetzung, Browserinstallation, Docker- oder npm-Ausweichinstallation.")
+        raise ValueError(spec["name"] + " --version fehlgeschlagen (Exit " + str(result.returncode) +
+                         "); Programm-stderr/stdout im aktuellen Log pruefen.")
+
+
 def install(key, base, app, marker, spec):
     if marker.exists():
         validate_record(app, marker, spec, full=True)
@@ -210,10 +294,7 @@ def install(key, base, app, marker, spec):
                 raise ValueError("Release-Programmeinstieg nicht eindeutig.")
             binary = matches[0]
             binary.chmod(0o755)
-            result = subprocess.run([str(binary), "--version"], capture_output=True, text=True, check=True, timeout=60)
-            if spec["version"] not in result.stdout + result.stderr:
-                raise ValueError("Programm meldet nicht die gepruefte Version.")
-            print("Versionspruefung erfolgreich:", spec["version"])
+            verify_binary_version(binary, key, spec)
             entry = binary.relative_to(unpacked).as_posix()
         record = {"repo": spec["repo"], "version": spec["version"], "artifact_sha256": expected,
                   "scope": "official-github-release", "entry": entry, "hashes": inventory(unpacked),
@@ -281,6 +362,6 @@ def main(argv=None):
 if __name__ == "__main__":
     try:
         sys.exit(main())
-    except (ValueError, OSError, KeyError, TypeError, subprocess.SubprocessError, tarfile.TarError, zipfile.BadZipFile):
-        print("Installation fehlgeschlagen; Details im aktuellen Installationslog. Keine Dienste/DB-Aktionen ausgefuehrt.", file=sys.stderr)
+    except (ValueError, OSError, KeyError, TypeError, subprocess.SubprocessError, tarfile.TarError, zipfile.BadZipFile) as error:
+        print("Installation fehlgeschlagen:", error, "Details im aktuellen Installationslog; keine Dienste/DB-Aktionen ausgefuehrt.", file=sys.stderr)
         sys.exit(1)

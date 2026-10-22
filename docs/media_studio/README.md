@@ -1,5 +1,9 @@
 # AI Media Production Studio
 
+[Concat](../tools/concat.md), [Remotion](../tools/remotion.md) und
+[HyperFrames](../tools/hyperframes.md): eigene Tools-Menueinstaller fuer
+GitHub-AppImage bzw. Source-Build ohne Docker; GUI-/Renderabnahme separat.
+
 [OpenMontage: Produktionsplanung und Composer](../tools/openmontage.md):
 GitHub-Kerninstaller, optionale Remotion-Pakete, Qwen-Vorlage und Freigabegrenzen.
 

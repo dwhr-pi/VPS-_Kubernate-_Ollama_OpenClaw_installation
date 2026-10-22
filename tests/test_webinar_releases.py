@@ -27,6 +27,100 @@ finally:
 
 
 class WebinarReleaseTests(unittest.TestCase):
+    def test_marp_loader_stderr_reaches_current_operation_log(self):
+        failure = subprocess.CompletedProcess([], 127, "", "marp: error while loading shared libraries: libatomic.so.1: cannot open shared object file: No such file or directory\n")
+        with tempfile.TemporaryDirectory() as tmp, patch.dict(os.environ, {
+                "OPENCLAW_USER_DATA_DIR": tmp, "MARP_INSTALL_RUNTIME_LIBS": "0"}), \
+                patch.object(w, "host_key", return_value="linux-amd64"), patch.object(w, "reserve"), \
+                patch.object(w, "download"), patch.object(w.platform, "system", return_value="Linux"), \
+                patch.object(w.subprocess, "run", return_value=failure) as run, \
+                contextlib.redirect_stdout(io.StringIO()):
+            distro = Path(tmp) / "os-release"
+            distro.write_text("ID=ubuntu\n")
+            def unpack(archive, dest):
+                (dest / "marp").write_bytes(b"synthetic-binary")
+            with patch.object(w, "OS_RELEASE", distro), patch.object(w, "unpack", side_effect=unpack):
+                with self.assertRaisesRegex(ValueError, "Exit 127"):
+                    w.main(["marp", "install"])
+            self.assertEqual(run.call_count, 1)
+            base, app, marker = w.paths("marp")
+            self.assertFalse(app.exists())
+            self.assertFalse(marker.exists())
+            self.assertFalse(list(base.glob("release-stage-*")))
+            log = next((Path(tmp) / "install_logs").glob("marp_install_*.log"))
+            text = log.read_text(encoding="utf-8")
+            self.assertIn("libatomic.so.1", text)
+            self.assertIn("libatomic1", text)
+            self.assertIn("Programm-stderr", text)
+            self.assertIn("Rollback", text)
+
+    def test_approved_marp_repair_installs_only_recognized_package_then_rechecks(self):
+        failed = subprocess.CompletedProcess([], 127, "", "error while loading shared libraries: libatomic.so.1: cannot open shared object file")
+        fixed = subprocess.CompletedProcess([], 0, "Marp CLI v4.5.1", "")
+        apt = subprocess.CompletedProcess([], 0, "library installed", "")
+        with tempfile.TemporaryDirectory() as tmp, patch.dict(os.environ, {"MARP_INSTALL_RUNTIME_LIBS": "1"}), \
+                patch.object(w.platform, "system", return_value="Linux"), \
+                patch.object(w.subprocess, "run", side_effect=[failed, apt, fixed]) as run, \
+                contextlib.redirect_stdout(io.StringIO()) as output:
+            distro = Path(tmp) / "os-release"
+            distro.write_text('ID="ubuntu"\n')
+            with patch.object(w, "OS_RELEASE", distro):
+                w.verify_binary_version(Path(tmp) / "marp", "marp", w.SPECS["marp"])
+            commands = [call.args[0] for call in run.call_args_list]
+            self.assertEqual(commands[0][-1], "--version")
+            self.assertEqual(commands[2][-1], "--version")
+            self.assertIn("DPkg::Lock::Timeout=300", commands[1])
+            self.assertIn("--no-remove", commands[1])
+            self.assertEqual(commands[1][-1], "libatomic1")
+            self.assertNotIn("nodejs", commands[1])
+            self.assertIn("Versionspruefung erfolgreich", output.getvalue())
+
+    def test_unknown_library_glibc_or_nonloader_error_never_installs_packages(self):
+        for code, diagnostic in ((127, "error while loading shared libraries: libunknown.so.9: cannot open shared object file"),
+                                 (127, "version `GLIBC_2.99' not found"),
+                                 (1, "a JavaScript application error")):
+            with self.subTest(diagnostic=diagnostic), tempfile.TemporaryDirectory() as tmp, \
+                    patch.dict(os.environ, {"MARP_INSTALL_RUNTIME_LIBS": "1"}), \
+                    patch.object(w.subprocess, "run", return_value=subprocess.CompletedProcess([], code, "", diagnostic)) as run, \
+                    contextlib.redirect_stdout(io.StringIO()):
+                with self.assertRaises(ValueError):
+                    w.verify_binary_version(Path(tmp) / "marp", "marp", w.SPECS["marp"])
+                self.assertEqual(run.call_count, 1)
+
+    def test_marp_repair_is_bounded_and_never_marks_wrong_version_success(self):
+        failed = subprocess.CompletedProcess([], 127, "", "error while loading shared libraries: libatomic.so.1: cannot open shared object file")
+        with tempfile.TemporaryDirectory() as tmp, patch.object(w.subprocess, "run", return_value=failed) as run, \
+                patch.object(w, "repair_marp_runtime", return_value=True) as repair, \
+                contextlib.redirect_stdout(io.StringIO()):
+            with self.assertRaises(ValueError):
+                w.verify_binary_version(Path(tmp) / "marp", "marp", w.SPECS["marp"])
+            self.assertEqual(run.call_count, 2)
+            self.assertEqual(repair.call_count, 1)
+        with tempfile.TemporaryDirectory() as tmp, \
+                patch.object(w.subprocess, "run", return_value=subprocess.CompletedProcess([], 0, "4.0.0", "")), \
+                contextlib.redirect_stdout(io.StringIO()):
+            with self.assertRaisesRegex(ValueError, "Version"):
+                w.verify_binary_version(Path(tmp) / "marp", "marp", w.SPECS["marp"])
+
+    def test_other_tools_do_not_trigger_marp_apt_repair(self):
+        with tempfile.TemporaryDirectory() as tmp, \
+                patch.object(w.subprocess, "run", return_value=subprocess.CompletedProcess([], 127, "", "loader failure")), \
+                patch.object(w, "repair_marp_runtime") as repair, contextlib.redirect_stdout(io.StringIO()):
+            with self.assertRaises(ValueError):
+                w.verify_binary_version(Path(tmp) / "listmonk", "listmonk", w.SPECS["listmonk"])
+            repair.assert_not_called()
+
+    def test_failed_apt_does_not_report_repaired(self):
+        with tempfile.TemporaryDirectory() as tmp, patch.dict(os.environ, {"MARP_INSTALL_RUNTIME_LIBS": "1"}), \
+                patch.object(w.platform, "system", return_value="Linux"), \
+                patch.object(w.subprocess, "run", return_value=subprocess.CompletedProcess([], 100, "", "apt failed")), \
+                contextlib.redirect_stdout(io.StringIO()) as output:
+            distro = Path(tmp) / "os-release"
+            distro.write_text("ID=debian\n")
+            with patch.object(w, "OS_RELEASE", distro), self.assertRaisesRegex(ValueError, "apt Exit 100"):
+                w.repair_marp_runtime("error while loading shared libraries: libstdc++.so.6: cannot open shared object file", Path(tmp))
+            self.assertIn("apt failed", output.getvalue())
+
     def test_registry_and_menu(self):
         registry = json.loads((ROOT / "config/tools.yml").read_text(encoding="utf-8"))
         menu = (ROOT / "setup_ultimate.sh").read_text(encoding="utf-8")

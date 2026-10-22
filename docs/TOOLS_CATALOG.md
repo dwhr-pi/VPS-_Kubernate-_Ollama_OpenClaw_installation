@@ -1,5 +1,16 @@
 # Tools Catalog
 
+**[Concat](tools/concat.md), [Remotion](tools/remotion.md) und
+[HyperFrames](tools/hyperframes.md)** haben eigene Tools-Menueeintraege:
+GitHub-AppImage bzw. gepinnte Source-Builds ohne Docker, mit Status/Doctor,
+Rollback und geschuetzter Deinstallation. Keine automatische Renderbereitschaft.
+OpenMontage bietet jetzt eine zustimmungspflichtige Ubuntu-venv-Reparatur.
+
+**[Was fehlt im Setup? Konkrete Luecken und Einstiegspunkte](TOOL_SETUP_GAPS.md)**
+und [vollstaendiger Registry-/Menue-/Dokumentationsabgleich](TOOL_SETUP_AUDIT.md).
+Dokumentiert, registriert, im Menue sichtbar und betriebsbereit installiert
+sind unterschiedliche Zustaende. Die folgenden Themenlisten sind keine Live-Statusanzeige.
+
 **[OpenMontage: GitHub-Kerninstaller und optionale Komposition](tools/openmontage.md)**:
 Private Python-Umgebung im Tools-Menue, Remotion optional mit Lizenzfreigabe;
 Qwen-Einstiegsvorlage, keine automatische Cloud-, Modell- oder Filmproduktion.
@@ -136,26 +147,30 @@ Menueeintrag und manuellem offiziellen Download, keine WSL-Installation.
 trennen Modelle, APIs, Coding-Clients und ungepruefte ComfyUI-Graphen.
 
 [Defensiver Audio-Review](media_studio/AUDIO_DEEPFAKE_REVIEW.md):
-Pyannote_Audio, DeepFilterNet und AudioSeal neu planned; Demucs/UVR5/Audacity/RVC
-wiederverwenden, keine neue automatische Installation oder Deepfake-Entfernung versprechen.
+Pyannote_Audio, DeepFilterNet und AudioSeal haben eigene GitHub-Installer mit
+unterschiedlichem Quell-/Build-/Paketumfang. UVR5/Audacity/RVC bleiben Registry-
+Platzhalter. Keine fertige gemeinsame Pipeline oder Deepfake-Entfernung versprechen.
 
 [Social-Avatar-Stack und lokale Alternativen](media_studio/SOCIAL_AVATAR_AUTOMATION.md):
-acht neue planned-Eintraege, darunter zwei rein optionale Cloud-Clients;
-ComfyUI/n8n/Avatar-Tools wiederverwenden, keine automatische Publikation.
+CogVideoX/LTX_Video bleiben Guards. TGI, SD_Next, Windmill, Fal_Client und
+Veo_API haben eigene Source-/Paketwege; Pinokio einen manuellen Desktop-Pfad.
+Das ist keine betriebsbereite Avatar-Pipeline oder automatische Publikation.
 
 [Video-Datensaetze und Werkzeuge](media_studio/VIDEO_TRAINING_DATASETS.md):
-HF_Datasets, HF_Hub und Video2Dataset sind planned; keine automatische
-Installation, Medien-/Modelldownloads oder Trainingsstarts.
+HF_Datasets und HF_Hub haben eigene GitHub-Paketinstaller. Video2Dataset
+bleibt documentation-first; keine automatischen Medien-/Modelldownloads oder Trainingsstarts.
 
 [Hoerbuch/Dubbing/SFX/MIDI/Video-Katalog](media_studio/AUDIO_VIDEO_TOOL_CATALOG.md):
-20 geplante GitHub-Kandidaten, Lizenz-/Modellgrenzen und Ressourcen.
+Quell-/Basispaketinstaller und optionale Builds mit Lizenz-/Modellgrenzen;
+die konkreten Umfaenge stehen auf den jeweiligen Toolseiten.
 Eigene [Karaoke-Format-CLI](media_studio/KARAOKE_SUBTITLES_GUIDE.md) separat getestet;
 keine Modellinstallation.
 
 Dieser Katalog bewertet Tools fuer das Ultimate KI Setup. Statuswerte: `Pflicht`, `Optional`, `Experimentell`.
 
 Agentic-Coding-Erweiterung: [Clients, Frameworks und tatsaechlicher Setup-Stand](tools/agentic-coding.md).
-Microsoft Agent Framework ist neu **planned/documentation-first**, nicht installiert.
+Microsoft Agent Framework hat einen GitHub-Python-Core-Installer; Agenten,
+Provider und Dienste werden dadurch nicht automatisch eingerichtet.
 Automaton bietet einen optionalen GitHub-Source-Build ohne Docker; Start und Wallet-Aktionen bleiben gesperrt. Keine Voraussetzung fuer Coding-Agenten.
 
 ## KI / LLM

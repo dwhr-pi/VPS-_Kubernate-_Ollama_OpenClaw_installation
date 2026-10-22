@@ -1,5 +1,36 @@
 # Docs Changelog
 
+## 2026-10-22 Marp-Exit-127 und sichtbare Loader-Diagnose
+
+- stdout/stderr und Exit-Code des Versionsaufrufs im aktuellen Log statt
+  versteckter CalledProcessError-Ausgabe. Speicherpruefung nicht als Ursache ausgegeben.
+- Gezielt erkannte libatomic/libstdc++/libgcc-Laufzeitluecken unter Ubuntu/
+  Debian nur nach Zustimmung reparieren; apt-Lockwartezeit, keine Entfernungen.
+- Ein Versions-Retry, Marker erst nach Erfolg, Rollback neuer Release-Dateien;
+  keine blinde GLIBC-/Browser-/Node-/Docker-Ausweichinstallation.
+
+## 2026-10-22 Concat, Remotion, HyperFrames und OpenMontage-venv
+
+- Drei echte eigene Tools-Menue-/Registry-Eintraege mit GitHub-Lifecycle:
+  Concat-AppImage 0.2.8 mit SHA256; Remotion 4.0.538 und HyperFrames 0.8.186
+  mit gepinntem Source-Build, privatem Build-Home und Lockfile.
+- Marker erst nach Artefakten, gemeinsamer Build-Lock, Ressourcenwache,
+  aktuelle Logs, Rollback und Deinstallation nur unveraenderter Runtime.
+- Remotion-Lizenztext vor Zustimmung; keine Docker-/Modell-/Browser-/
+  MCP-/Cloud-/Dienst-/Renderaktion. Runtime-Abnahme bleibt gesondert.
+- OpenMontage diagnostiziert fehlendes ensurepip und bietet nach Zustimmung
+  das zum Ubuntu-System-Python passende venv-Paket mit apt-Lockwartezeit an.
+  Kein System-Python-Ersatz, Basispaket bleibt bei Deinstallation erhalten.
+
+## 2026-10-22 Dokumentation gegen Setup abgeglichen
+
+- Wiederholbarer Offline-Abgleich fuer Registry, explizite Tools-Menues,
+  separaten 62er-Katalog und GitHub-Referenzen aller Markdown-Dokumente.
+- Vollbericht und konkrete Luecken dokumentiert; Hermes/Concat und reine
+  Kandidaten nicht als fertig integriert dargestellt. Keine Masseninstallation.
+- Veraltete planned-Kurztexte fuer Medien/HF/Audio/Agent Framework/Automaton
+  korrigiert; Menuesichtbarkeit und Runtime-Nachweis getrennt.
+
 ## 2026-10-22 Till-Schaefer-Jarvis-Quelle geprueft
 
 - Erreichbare Hermes-Anleitung mit Quellenlink und Bezug zum bestehenden

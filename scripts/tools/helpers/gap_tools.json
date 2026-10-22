@@ -1,0 +1,107 @@
+{
+  "qwen_desktop_build": {
+    "name": "Qwen_Desktop_Build",
+    "repo": "QwenLM/qwen-code",
+    "pin": "bf66a26c978dac68af31fbc093eb53044e204b24",
+    "mode": "desktop-build",
+    "reserve_mb": 20480
+  },
+  "hermes_agent_jarvis": {
+    "name": "Hermes_Agent_Jarvis",
+    "repo": "NousResearch/hermes-agent",
+    "pin": "484de065a821b4245697351d08327b465ffd41ba",
+    "mode": "python-package",
+    "reserve_mb": 4096
+  },
+  "gradio": {
+    "name": "Gradio",
+    "repo": "gradio-app/gradio",
+    "pin": "15199c0faf5fa2a477ab9cf25178010ce8bc480e",
+    "mode": "source",
+    "reserve_mb": 2048
+  },
+  "streamlit": {
+    "name": "Streamlit",
+    "repo": "streamlit/streamlit",
+    "pin": "767e44ece700929e2ac08796500c5ec04c07a42a",
+    "mode": "source",
+    "reserve_mb": 2048
+  },
+  "wanvideowrapper": {
+    "name": "WanVideoWrapper",
+    "repo": "kijai/ComfyUI-WanVideoWrapper",
+    "pin": "088128b224242e110d3906c6750e9a3a348a659b",
+    "mode": "source",
+    "reserve_mb": 2048
+  },
+  "cogvideox": {
+    "name": "CogVideoX",
+    "repo": "THUDM/CogVideo",
+    "pin": "7a1af7154511e0ce4e4be8d62faa8c5e5a3532d2",
+    "mode": "source",
+    "reserve_mb": 2048
+  },
+  "ltx_video": {
+    "name": "LTX_Video",
+    "repo": "Lightricks/LTX-Video",
+    "pin": "4b2d053057623ddd4d0a1d3e9cd28890e9ef487f",
+    "mode": "source",
+    "reserve_mb": 2048
+  },
+  "video2dataset": {
+    "name": "Video2Dataset",
+    "repo": "iejMac/video2dataset",
+    "pin": "28e7d1c851a2298f3a75375f6e324950405987e7",
+    "mode": "source",
+    "reserve_mb": 2048
+  },
+  "musetalk": {
+    "name": "MuseTalk",
+    "repo": "TMElyralab/MuseTalk",
+    "pin": "0a89dec45a0192b824e3cf4daf96c239440c5ed8",
+    "mode": "source",
+    "reserve_mb": 2048
+  },
+  "liveportrait": {
+    "name": "LivePortrait",
+    "repo": "KwaiVGI/LivePortrait",
+    "pin": "9b294b3d0536135442ea73cb01e6cb3ca7029dd3",
+    "mode": "source",
+    "reserve_mb": 2048
+  },
+  "sadtalker": {
+    "name": "SadTalker",
+    "repo": "OpenTalker/SadTalker",
+    "pin": "cd4c0465ae0b54a6f85af57f5c65fec9fe23e7f8",
+    "mode": "source",
+    "reserve_mb": 2048
+  },
+  "rvc": {
+    "name": "RVC",
+    "repo": "RVC-Project/Retrieval-based-Voice-Conversion-WebUI",
+    "pin": "81eed5e8f68b6bed1789f682fe78cdd324495afc",
+    "mode": "source",
+    "reserve_mb": 2048
+  },
+  "uvr5": {
+    "name": "UVR5",
+    "repo": "Anjok07/ultimatevocalremovergui",
+    "pin": "a5f88453bfb2b38b05a965bcf67727243e0cbf19",
+    "mode": "source",
+    "reserve_mb": 2048
+  },
+  "audacity": {
+    "name": "Audacity",
+    "repo": "audacity/audacity",
+    "pin": "f515da46486301d48db89f195729ef0c87980668",
+    "mode": "source",
+    "reserve_mb": 2048
+  },
+  "obs": {
+    "name": "OBS",
+    "repo": "obsproject/obs-studio",
+    "pin": "7fc60ea38122e84681767c100d0ef3a82fe2dcf4",
+    "mode": "source",
+    "reserve_mb": 2048
+  }
+}

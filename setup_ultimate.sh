@@ -872,6 +872,9 @@ get_tool_install_fallback_min_free_mb() {
     local tool_key="$1"
 
     case "$tool_key" in
+        "Concat") printf '2048' ;;
+        "Remotion") printf '16384' ;;
+        "HyperFrames") printf '12288' ;;
         "Airbyte")
             printf '32768'
             ;;
@@ -938,6 +941,7 @@ is_heavy_or_experimental_tool() {
     local tool_key="$1"
 
     case "$tool_key" in
+        "Remotion"|"HyperFrames") return 0 ;;
         "Airbyte"|"Activepieces"|"AutoGPT"|"OpenHands"|"n8n"|"Nextcloud"|"ComfyUI"|"Stable_Diffusion_WebUI"|"Stable_Diffusion_WebUI_Forge"|"InvokeAI"|"Fooocus"|"vLLM"|"K3s"|"Kubernetes"|"Docker"|"Docker_Compose_Plugin"|"Coqui_TTS"|"FinRobot"|"FinRAG"|"Android"*|"MobSF"|"Blender"|"AnimateDiff")
             return 0
             ;;
@@ -1004,6 +1008,9 @@ preflight_tool_install_storage() {
 
     if is_wsl_environment; then
         windows_min_mb="$(get_tool_install_windows_min_free_mb "$min_mb")"
+        case "$tool_key" in
+            Concat|Remotion|HyperFrames) windows_min_mb="$min_mb" ;;
+        esac
         windows_min_kb=$((windows_min_mb * 1024))
         windows_free_kb="$(get_windows_host_free_kb)"
         if [ -n "$windows_free_kb" ]; then
@@ -2912,6 +2919,13 @@ TOOLS["Colibri"]="experimental: GitHub-Quellen fuer MoE-SSD-Streaming; keine geb
 TOOL_SCRIPT_NAMES["Colibri"]="colibri"
 TOOL_KEYS+=("Agentic_OS")
 TOOL_KEYS+=("OpenMontage")
+TOOL_KEYS+=("Concat" "Remotion" "HyperFrames")
+TOOLS["Concat"]="experimental: offizielles GitHub-AppImage 0.2.8 mit SHA256, ohne Docker/Rust-Build. Kein GUI-/Modell-/MCP-Start. docs/tools/concat.md"
+TOOLS["Remotion"]="experimental: GitHub-Source-Build, eigene Lizenzfreigabe; Node >=22/Bun 1.4.3, 4 GiB RAM/16 GiB Disk. Kein Browser/Render. docs/tools/remotion.md"
+TOOLS["HyperFrames"]="experimental: GitHub-Source-Build; Node >=22/Bun 1.4.4, 4 GiB RAM/12 GiB Disk. Kein Studio/Browser/Render. docs/tools/hyperframes.md"
+TOOL_SCRIPT_NAMES["Concat"]="concat"
+TOOL_SCRIPT_NAMES["Remotion"]="remotion"
+TOOL_SCRIPT_NAMES["HyperFrames"]="hyperframes"
 TOOLS["OpenMontage"]="experimental: GitHub-Kernumgebung fuer agentische Videoproduktion; kein Film-/Agenten-/Serverstart. Remotion optional, Lizenz separat. docs/tools/openmontage.md"
 TOOL_SCRIPT_NAMES["OpenMontage"]="openmontage"
 TOOL_KEYS+=("Marp" "Listmonk" "Mautic")
@@ -3570,6 +3584,14 @@ install_tool() {
         end_operation_measurement "success"
         operation_status="success"
         echo 'GGUF-GitHub-Quellen vorbereitet; keine neue aktive Integration registriert. Bestehende Integrationen bleiben erhalten.'
+    elif [[ "$TOOL_KEY" =~ ^(Qwen_Desktop_Build|Hermes_Agent_Jarvis|Gradio|Streamlit|WanVideoWrapper|CogVideoX|LTX_Video|Video2Dataset|MuseTalk|LivePortrait|SadTalker|RVC|UVR5|Audacity|OBS)$ ]] && [ "$tool_rc" -eq 0 ]; then
+        end_operation_measurement "success"
+        operation_status="success"
+        echo "${TOOL_KEY}: Installationsumfang siehe aktuelles Log/Status. Quellen sind keine fertige Runtime; Build/Paket ohne GUI-/Agenten-/Modellstart."
+    elif [[ "$TOOL_KEY" =~ ^(Concat|Remotion|HyperFrames)$ ]] && [ "$tool_rc" -eq 0 ]; then
+        end_operation_measurement "success"
+        operation_status="success"
+        echo "${TOOL_KEY}: GitHub-Paket/Build installiert und Artefakte geprueft. GUI, Browser, Codecs und Rendering separat abnehmen; kein Dienst gestartet."
     elif [ "$TOOL_KEY" = "OpenMontage" ] && [ "$tool_rc" -eq 0 ]; then
         end_operation_measurement "success"
         operation_status="success"
@@ -3720,20 +3742,68 @@ uninstall_tool() {
     handle_manual_tool_post_action "$TOOL_KEY" "Deinstallation" "$operation_status" "${TOOL_BATCH_UPCOMING_PREVIEW:-}"
 }
 
+TOOL_KEYS+=("Qwen_Desktop_Build" "Hermes_Agent_Jarvis" "Gradio" "Streamlit" "MuseTalk" "LivePortrait" "SadTalker" "RVC" "UVR5" "Audacity" "OBS" "WebsiteFactory" "AI_ContentMultiplier")
+TOOLS["Qwen_Desktop_Build"]="Qwen Code Desktop: optionaler Tauri-GitHub-Build fuer Linux/natives Windows; ohne Docker. docs/tools/github-gap-tools.md"
+TOOL_SCRIPT_NAMES["Qwen_Desktop_Build"]="qwen_desktop_build"
+TOOLS["Hermes_Agent_Jarvis"]="Hermes Agent (Nous Research), Jarvis-Basis: GitHub/Python 3.14, kein fertiges Dashboard; ohne Docker. docs/tools/github-gap-tools.md"
+TOOL_SCRIPT_NAMES["Hermes_Agent_Jarvis"]="hermes_agent_jarvis"
+TOOLS["Gradio"]="GitHub-Quellen (kein fertiger Runtime-/Modell-Build); ohne Docker. docs/tools/github-gap-tools.md"
+TOOL_SCRIPT_NAMES["Gradio"]="gradio"
+TOOLS["Streamlit"]="GitHub-Quellen (kein fertiger Runtime-/Modell-Build); ohne Docker. docs/tools/github-gap-tools.md"
+TOOL_SCRIPT_NAMES["Streamlit"]="streamlit"
+TOOLS["WanVideoWrapper"]="GitHub-Quellen (kein fertiger Runtime-/Modell-Build); ohne Docker. docs/tools/github-gap-tools.md"
+TOOL_SCRIPT_NAMES["WanVideoWrapper"]="wanvideowrapper"
+TOOLS["CogVideoX"]="GitHub-Quellen (kein fertiger Runtime-/Modell-Build); ohne Docker. docs/tools/github-gap-tools.md"
+TOOL_SCRIPT_NAMES["CogVideoX"]="cogvideox"
+TOOLS["LTX_Video"]="GitHub-Quellen (kein fertiger Runtime-/Modell-Build); ohne Docker. docs/tools/github-gap-tools.md"
+TOOL_SCRIPT_NAMES["LTX_Video"]="ltx_video"
+TOOLS["Video2Dataset"]="GitHub-Quellen (kein fertiger Runtime-/Modell-Build); ohne Docker. docs/tools/github-gap-tools.md"
+TOOL_SCRIPT_NAMES["Video2Dataset"]="video2dataset"
+TOOLS["MuseTalk"]="GitHub-Quellen (kein fertiger Runtime-/Modell-Build); ohne Docker. docs/tools/github-gap-tools.md"
+TOOL_SCRIPT_NAMES["MuseTalk"]="musetalk"
+TOOLS["LivePortrait"]="GitHub-Quellen (kein fertiger Runtime-/Modell-Build); ohne Docker. docs/tools/github-gap-tools.md"
+TOOL_SCRIPT_NAMES["LivePortrait"]="liveportrait"
+TOOLS["SadTalker"]="GitHub-Quellen (kein fertiger Runtime-/Modell-Build); ohne Docker. docs/tools/github-gap-tools.md"
+TOOL_SCRIPT_NAMES["SadTalker"]="sadtalker"
+TOOLS["RVC"]="GitHub-Quellen (kein fertiger Runtime-/Modell-Build); ohne Docker. docs/tools/github-gap-tools.md"
+TOOL_SCRIPT_NAMES["RVC"]="rvc"
+TOOLS["UVR5"]="GitHub-Quellen (kein fertiger Runtime-/Modell-Build); ohne Docker. docs/tools/github-gap-tools.md"
+TOOL_SCRIPT_NAMES["UVR5"]="uvr5"
+TOOLS["Audacity"]="GitHub-Quellen (kein fertiger Runtime-/Modell-Build); ohne Docker. docs/tools/github-gap-tools.md"
+TOOL_SCRIPT_NAMES["Audacity"]="audacity"
+TOOLS["OBS"]="GitHub-Quellen (kein fertiger Runtime-/Modell-Build); ohne Docker. docs/tools/github-gap-tools.md"
+TOOL_SCRIPT_NAMES["OBS"]="obs"
+TOOLS["WebsiteFactory"]="Repository-Workflow vorbereiten, kein Webserver/Deploy; docs/tools/websitefactory.md"
+TOOL_SCRIPT_NAMES["WebsiteFactory"]="websitefactory"
+TOOLS["AI_ContentMultiplier"]="GitHub-Workflow vorbereiten, kein Publishing/Agentenstart; docs/tools/ai-content-multiplier/README.md"
+TOOL_SCRIPT_NAMES["AI_ContentMultiplier"]="ai_content_multiplier"
+
 sort_tool_menu_keys() {
     local key
-    local -a pinned=() remaining=() sorted=()
+    local -a pinned=() remaining=() sorted=() appended=()
+    local -a append_order=("Qwen_Desktop_Build" "Hermes_Agent_Jarvis" "Gradio" "Streamlit" "WanVideoWrapper" "CogVideoX" "LTX_Video" "Video2Dataset" "MuseTalk" "LivePortrait" "SadTalker" "RVC" "UVR5" "Audacity" "OBS" "Concat" "Remotion" "HyperFrames" "WebsiteFactory" "AI_ContentMultiplier")
+    local candidate append_match
     for key in "${TOOL_KEYS[@]}"; do
+        append_match=0
+        for candidate in "${append_order[@]}"; do
+            if [[ "$key" == "$candidate" ]]; then append_match=1; break; fi
+        done
+        if [[ "$append_match" == 1 ]]; then continue; fi
         case "$key" in
             Ollama|OpenClaw|Ruflo) pinned+=("$key") ;;
             *) remaining+=("$key") ;;
         esac
     done
-    # Keep core entries first; include all subsequently registered tools in A-Z order.
+    # Preserve the established A-Z list, but keep requested gap tools appended.
     if ((${#remaining[@]})); then
         mapfile -t sorted < <(printf '%s\n' "${remaining[@]}" | LC_ALL=C sort -f -s)
     fi
-    TOOL_KEYS=("${pinned[@]}" "${sorted[@]}")
+    for candidate in "${append_order[@]}"; do
+        for key in "${TOOL_KEYS[@]}"; do
+            if [[ "$key" == "$candidate" ]]; then appended+=("$key"); break; fi
+        done
+    done
+    TOOL_KEYS=("${pinned[@]}" "${sorted[@]}" "${appended[@]}")
 }
 
 # Funktion zum Anzeigen des Tool-Management-Menüs

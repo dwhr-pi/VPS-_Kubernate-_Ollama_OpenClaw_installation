@@ -5,7 +5,7 @@ ordnet die drei Programme in einen vollstaendigen, schrittweisen Ablauf ein.
 
 Stand: 22.10.2026. Eigene Installer im Tools-Menue: **Marp**, **Listmonk**,
 **Mautic**. Offizielle, fest gepinnte GitHub-Release-Artefakte mit SHA256 und
-exakter Downloadgroesse; keine Container, globalen npm-Pakete oder Systemupdates.
+exakter Downloadgroesse; keine Container, globalen npm-Pakete oder ungefragten Systemupdates.
 
 | Tool / Version | Aufgabe | Lizenz / Quelle | Was installiert wird |
 |---|---|---|---|
@@ -77,6 +77,61 @@ Struktur geprueft, nicht durch Start von PHP, Webserver oder Installationswizard
 Marketingplattform. `service_configured` bleibt false; bei listmonk/Mautic
 auch `runtime_ready`. Marp ist als CLI vorbereitet; PDF-/PPTX-Export benoetigt
 einen passenden vorhandenen Browser, der nicht automatisch installiert wird.
+
+## Marp: Versionsaufruf bricht mit Exit 127 ab
+
+Das Nutzerlog vom **22.10.2026, 21:42** zeigt einen Abbruch bei `marp --version`,
+nicht bei der Speicherwache. Der bisherige Installer unterdrueckte dabei
+die aufgefangene stderr-Ausgabe. Aus Exit 127 allein laesst sich deshalb
+keine bestimmte fehlende Bibliothek auf deinem Rechner sicher bestimmen.
+
+Das SHA256-gepruefte Linux-amd64-Release wurde hier **ohne Ausfuehrung** im
+Speicher auf seine ELF-Abhaengigkeiten untersucht: Es benoetigt unter anderem
+`libatomic.so.1`, `libstdc++.so.6` und `libgcc_s.so.1`. Standalone bedeutet
+also kein separates Node/npm, aber nicht unabhaengig von Systembibliotheken.
+[Offizielles Release](https://github.com/marp-team/marp-cli/releases/tag/v4.5.1),
+[Standalone-Buildskript](https://github.com/marp-team/marp-cli/blob/v4.5.1/scripts/standalone/build.mjs).
+
+Der korrigierte Installer schreibt stdout, stderr und Exit-Code jetzt in
+das **aktuelle** Operationslog, bevor er einen Fehler meldet. Bei einer
+eindeutigen Loader-Meldung kann er auf Ubuntu/Debian gezielt anbieten:
+
+| Fehlende Bibliothek | Freigegebenes Laufzeitpaket |
+|---|---|
+| `libatomic.so.1` | `libatomic1` |
+| `libstdc++.so.6` | `libstdc++6` |
+| `libgcc_s.so.1` | `libgcc-s1` |
+
+Nur ein tatsaechlich genanntes Paket wird angeboten, keine pauschale
+Installation aller Bibliotheken. Zustimmung mit `[(j)a/(N)ein]`; apt wartet
+begrenzt auf eine aktive Paketverwaltung. Paketentfernungen sind gesperrt,
+passende Systemabhaengigkeiten koennen mit aktualisiert werden. Diese
+gemeinsamen Bibliotheken bleiben bei Marp-Deinstallation erhalten.
+
+Danach erfolgt **genau ein erneuter Versionsversuch**. Erst wenn dieser
+erfolgreich ist und die gepinnte Version meldet, wird der Marker erstellt.
+Bei weiterem Fehler wird abgebrochen und nur der neue Stage-Bestand entfernt.
+Ein erfolgreich installiertes System-Basispaket wird dabei nicht wieder
+automatisch entfernt, da andere Programme es verwenden koennen.
+
+Erneut im Tools-Menue installieren oder, nach bewusster Freigabe des
+beschriebenen Paketpfads, nichtinteraktiv:
+
+```bash
+MARP_INSTALL_RUNTIME_LIBS=1 bash scripts/tools/marp_install.sh --repair
+```
+
+`MARP_INSTALL_RUNTIME_LIBS=0` verbietet die Reparatur; Standard `ask` fragt
+nur bei interaktivem Terminal. Ohne Zustimmung bleibt der gezielte Befehl
+im Log zur separaten Ausfuehrung. Unbekannte Bibliotheken, GLIBC-/GLIBCXX-
+Versionskonflikte, Architektur-/Loaderfehler und andere Exit-Codes loesen
+**keine** automatische apt-Reparatur aus. Keine glibc-Ersetzung, geratenen
+Symlinks, `LD_LIBRARY_PATH`-Umleitung oder Docker-/npm-Ausweichinstallation.
+Browser-/Sandbox-Fehler beim spaeteren Export sind ein anderer Test und
+werden nicht durch Abschalten der Browser-Sandbox kaschiert.
+
+Die Reparaturlogik wurde mit synthetischen Loader-/apt-Ausgaben getestet;
+keine Paketinstallation oder Live-Ausfuehrung auf deinem WSL-System hier.
 
 ## Nach der Paketinstallation
 

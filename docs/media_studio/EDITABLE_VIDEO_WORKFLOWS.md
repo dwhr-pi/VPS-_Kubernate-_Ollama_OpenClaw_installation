@@ -4,6 +4,11 @@
 optionale Komposition. Eigener Kerninstaller ohne Docker; keine automatisch
 fertige Anbindung dieses Rezeptplaners an OpenMontage oder ComfyUI.
 
+Fuer Schnitt/Komposition stehen jetzt eigene Installer fuer
+[Concat](../tools/concat.md), [Remotion](../tools/remotion.md) und
+[HyperFrames](../tools/hyperframes.md) bereit. Der Rezept-Adapter bleibt
+separat zu entwickeln; keine automatische Uebergabe oder Generierung.
+
 Stand: **22.10.2026**. Arcads-/Umnik-Nutzerquellen, lokale Umsetzung und
 ausfuehrbarer **Offline-Planer**, keine fertige Videogenerierungs-App.
 
