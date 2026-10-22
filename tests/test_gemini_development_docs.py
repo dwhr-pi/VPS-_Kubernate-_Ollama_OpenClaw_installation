@@ -8,9 +8,44 @@ import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
 DOC = ROOT / "docs/tutorials/gemini-development-tooling.md"
+SKILL = ROOT / "skills/tech-stack-architect/SKILL.md"
 
 
 class GeminiDevelopmentDocsTests(unittest.TestCase):
+    def test_second_interview_skill_metadata_and_links(self):
+        content = SKILL.read_text(encoding="utf-8")
+        fields = dict(line.split(": ", 1) for line in
+                      content.split("---", 2)[1].strip().splitlines())
+        self.assertEqual(set(fields), {"name", "description"})
+        self.assertEqual(fields["name"], SKILL.parent.name)
+        self.assertRegex(fields["name"], r"^[a-z0-9-]{1,63}$")
+        for target in re.findall(r"\]\(([^)]+)\)", content):
+            if "://" not in target and not target.startswith("#"):
+                self.assertTrue((SKILL.parent / target.split("#")[0]).is_file(), target)
+
+    def test_new_sources_and_missing_html_are_explicit(self):
+        content = DOC.read_text(encoding="utf-8")
+        for repo in ("streamlit/streamlit", "gradio-app/gradio", "reflex-dev/reflex",
+                     "labstack/echo", "spf13/cobra", "bheisler/criterion.rs",
+                     "docker/cli", "docker/compose", "helm/helm",
+                     "kubernetes-sigs/kustomize", "canonical/microk8s"):
+            self.assertIn("](https://github.com/" + repo + ")", content)
+        self.assertIn("zehnteilige HTML-Deck fehlt", content)
+        self.assertIn("keine hier registrierten Slash-Befehle", content)
+        self.assertFalse((ROOT / ".github/workflows/tech-stack-architect.yml").exists())
+
+    def test_second_interview_is_discoverable_and_tables_balanced(self):
+        for name in ("docs/TOOLS_CATALOG.md", "docs/TOOL_INDEX.md"):
+            self.assertIn("tech-stack-architect", (ROOT / name).read_text(encoding="utf-8"))
+        columns = None
+        for line in DOC.read_text(encoding="utf-8").splitlines():
+            if line.startswith("|"):
+                if columns is None:
+                    columns = line.count("|")
+                self.assertEqual(line.count("|"), columns, line)
+            else:
+                columns = None
+
     def test_scope_is_explicit(self):
         content = DOC.read_text(encoding="utf-8")
         for phrase in (

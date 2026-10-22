@@ -1,5 +1,29 @@
 # Tool Index
 
+**[Qwen-Interview: Toolauswahl, Quellen und Beispielgrenzen](tutorials/qwen-development-tooling.md)**:
+Go-/Rust-CI, Backup-/Container-/Kubernetes-Befunde und bestehende Repository-Skills;
+keine neue Qwen-Installation, globale Skill-Aktivierung oder Cloud-Veroeffentlichung.
+
+**[Perplexity-Interview: Quellen und Pruefgrenzen](tutorials/perplexity-development-tooling.md)**:
+Werkzeugrollen, zitierte Belege, fehlende Originalartefakte und wiederverwendbare
+Quellenpruefung im vorhandenen Skill sprach-infra-tooling.
+
+**[Gemini-Ergaenzung vom 22.10.2026](tutorials/gemini-development-tooling.md#zweites-interview-vom-22102026-neue-quellen-und-konkrete-vorlagen)**:
+zusaetzliche GitHub-Quellen, tech-stack-architect und Abgleich der mitgelieferten
+CI-/Deployment-Beispiele. Projektlokaler Skill, keine globalen Slash-Befehle.
+
+**[Grok: Interview und nachvollziehbare Werkzeugpruefung](tutorials/grok-development-tooling.md)**:
+Originalquellen, lokale Pruefgrenzen und Repository-Skill sandbox-tooling-overview;
+Quellenreferenzen und vorhandene Installer klar getrennt.
+
+**[Meta AI: Interview, Toolquellen und Bootstrap-Skill](tutorials/meta-development-tooling.md)**:
+datierte Quellen-/Faehigkeitseinordnung, Unterschiede der vier Starter-Kits,
+CI-/Deployment-Korrekturen und eigener nicht global installierter Repository-Skill.
+
+**[Manus: Toolauswahl und Skill sprach-infra-tooling](tutorials/manus-interview-2026-10-22.md)**:
+Interview-Ergaenzung vom 22.10.2026, Quellen-/Datenflussmatrix und Repository-Skill;
+vorhandene CI-/Deployment-Beispiele und Praesentation bleiben verlinkt.
+
 **[RAG Compliance Review](legal/README.md)**: lokale Repository-CLI fuer Quellenfristen,
 Szenario-/Loeschplanung und Audit-Konsistenz. Hauptmenue 18; kein Docker,
 kein Datenbankzugriff und keine Rechtsfreigabe. [DSB-Template](legal/templates/DSB_HANDOVER.md).

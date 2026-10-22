@@ -13,6 +13,10 @@ Die unten verlinkten Open-Source-Projekte sind eigenstaendige Alternativen.
 
 ## Einordnung und GitHub-Quellen
 
+Ergaenzung vom 22.10.2026: [Toolauswahl und weiterer Manus-Interviewabgleich](manus-interview-2026-10-22.md)
+mit dem separaten Repository-Skill `sprach-infra-tooling`. Vorhandene CI-Beispiele
+und Folien werden weiterverwendet; Manus-interne Links sind keine lokalen Artefakte.
+
 Neu: [Wiederverwendbarer Skill, Go-/Rust-CI und Deployment](manus-ci-cd-deployment.md)
 mit konkreten, inaktiven Pipeline-Beispielen und einer Praesentation.
 

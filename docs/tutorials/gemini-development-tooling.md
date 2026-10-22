@@ -1,5 +1,14 @@
 # Gemini-Interview: Entwicklungswerkzeuge und GitHub-Quellen
 
+Ergaenzender Quellenabgleich: [Perplexity-Interview](perplexity-development-tooling.md).
+
+Ergaenzt am **22.10.2026** um das zweite Nutzerinterview, die Skill-Vorlage
+tech-stack-architect und den Abgleich seiner CI-/Deployment-Beispiele.
+
+Weitere Interviews bleiben getrennt: [Meta AI](meta-development-tooling.md) und
+[Manus](manus-interview-2026-10-22.md) sowie [Grok](grok-development-tooling.md).
+Keine gegenseitige Zuschreibung interner Tools.
+
 ## Sinn und Zweck
 
 Diese Anleitung uebertraegt das vom Nutzer bereitgestellte **Gemini-Interview**
@@ -174,3 +183,124 @@ Keine API-Keys im Git, keine ungeprueften Interview-Anweisungen als Systemrechte
 - Der [wiederverwendbare Entwicklungs-Skill](../../skills/agentic-project-delivery/SKILL.md)
   kann den Ablauf beschreiben; er erzwingt keine Sandbox und ist hier nicht
   global aktiviert.
+
+## Zweites Interview vom 22.10.2026: neue Quellen und konkrete Vorlagen
+
+Das neue Interview beschreibt Programmierhilfe, Interpreter, Canvas/Widgets,
+Git-Anleitungen und eine zehnteilige HTML-Praesentation. Es enthaelt eine
+Skill-Definition und zwei YAML-Beispiele als Text. Eine HTML-Datei oder ein
+verwendbarer Download wurde jedoch nicht mitgeliefert. Diese Unterscheidung
+bleibt wichtig: generierter Quelltext ist kein bestandener Laufzeittest.
+
+### Zusaetzliche Werkzeugquellen
+
+Die folgenden Quellen ergaenzen die Tabellen oben. Bibliotheken sind nicht
+automatisch neue Setup-Installer; vorhandene Rezepte stehen im
+[62er-Installationsweg](../tools/development-toolchain-check.md). Keine Pakete
+werden aus diesem Tutorial heraus installiert und keine Installed-Marker gesetzt.
+
+| Werkzeug | Quelle | Zweck und Grenze |
+|---|---|---|
+| Streamlit | [streamlit/streamlit](https://github.com/streamlit/streamlit) | Python-Datenapps; lokal betreibbar, kein automatisch gestartetes Dashboard |
+| Gradio | [gradio-app/gradio](https://github.com/gradio-app/gradio) | Modell-/Funktions-UIs; keine oeffentlichen Share-Links oder Uploads ohne Freigabe |
+| Reflex | [reflex-dev/reflex](https://github.com/reflex-dev/reflex) | Webanwendungen mit Python; generierter Frontend-Stack und Buildbedarf separat pruefen |
+| Echo | [labstack/echo](https://github.com/labstack/echo) | Go-Webframework als Alternative, kein Pflichtzusatz zu Gin/Chi |
+| Cobra | [spf13/cobra](https://github.com/spf13/cobra) | Go-CLI-Bibliothek, keine eigenstaendige Agenten-Runtime |
+| Criterion.rs | [bheisler/criterion.rs](https://github.com/bheisler/criterion.rs) | Rust-Benchmarks; Messaufbau und Streuung dokumentieren, kein LLM-Qualitaetsscore |
+| Docker CLI / Compose | [docker/cli](https://github.com/docker/cli), [docker/compose](https://github.com/docker/compose) | Quellprojekte getrennt von Moby; keine Docker-Installation aus dieser Anleitung |
+| Helm / Kustomize | [helm/helm](https://github.com/helm/helm), [kubernetes-sigs/kustomize](https://github.com/kubernetes-sigs/kustomize) | Manifest-/Paketwerkzeuge; Rendering und Cluster-Aenderung unterscheiden |
+
+PostgreSQL und SQLite bleiben offiziell bezeichnete GitHub-Mirrors; ein Mirror
+ist nicht automatisch das primaere Entwicklungs-Hosting. Rust-Compiler und
+Cargo sind getrennte Quellprojekte, nicht ausschliesslich rust-lang/rust.
+Die im Interview verwendete Prisma-Adresse verweist auf die bereits oben
+dokumentierte neue Quelle. Alte URLs als Herkunftshinweis erhalten, nicht
+als unabhaengige neue Programme zaehlen.
+
+### Wiederverwendbarer Skill: tech-stack-architect
+
+Die mitgelieferte Markdown-Definition dient als Grundlage fuer unseren
+[Repository-Skill tech-stack-architect](../../skills/tech-stack-architect/SKILL.md).
+Er unterstuetzt Architekturentscheidungen und die Vorbereitung von Go-/Rust-CI
+und Deployment-Dateien. Die Beispiele werden aus dem vorhandenen
+[CI/CD-Verzeichnis](../../examples/manus-ci-cd/README.md) wiederverwendet.
+
+Die Namen `/ci-cd`, `/dockerize` und `/k8s-manifest` aus dem Interview sind
+**keine hier registrierten Slash-Befehle**. Sie beschreiben moegliche Aufgaben.
+Auch `/skill-creator` ist kein automatisch aktivierter Gemini-Befehl unseres
+Installers. Der neue Skill ist projektlokal dokumentiert, nicht global installiert.
+
+Anders als die Vorlage verspricht er keine ungepruefte Produktionsreife und
+verbietet nicht jeden Platzhalter: ungepruefte Image-Digests, Secrets, Domains
+und Clusterziele muessen deutlich als fehlende Eingaben markiert bleiben,
+statt angeblich fertige Werte zu erfinden.
+
+### CI-Korrekturen gegenueber den Interviewbeispielen
+
+- Die Go-Beispiele pinnen alte Sprach-/Linterversionen. Fuer ein Zielprojekt
+  kompatible, gepflegte Versionen anhand seiner Manifeste waehlen; diese Werte
+  nicht ungeprueft als aktuelle Empfehlung uebernehmen.
+- Ein Push nach main ist keine menschliche Release-Freigabe. Das Beispiel
+  veroeffentlicht automatisch Images; wir verwenden stattdessen den bereits
+  vorhandenen manuellen Release-Weg. Keine neue aktive Workflow-Datei anlegen.
+- GHCR-Publishing braucht passende Paket-Schreibrechte. Diese nur dem
+  Publish-Job geben, nicht pauschal PR-/Testjobs. Repository-Voreinstellungen
+  nicht als garantierte Rechte voraussetzen:
+  [GitHub: GITHUB_TOKEN und minimale Rechte](https://docs.github.com/en/actions/tutorials/authenticate-with-github_token).
+- Actions-Tags und Rust stable sind veraenderlich. Workflow-Zeitlimit,
+  nachvollziehbare Pins und Lockfiles beruecksichtigen. Im Rust-Kurzbeispiel
+  ist nur der abschliessende Build explizit gelockt, nicht der Testlauf.
+- Der Rust-Release-Job baut lediglich ein Binary: Ohne Upload-/Publish-Schritt
+  entsteht daraus kein dauerhaft bereitgestelltes Release-Artefakt. Die
+  vorhandene Vorlage enthaelt dagegen einen Artefaktschritt.
+- Das Go-Interview aktiviert Caching; unsere vorhandene Vorlage verwendet
+  ausdruecklich cache: false. Buildx-/Cache-/Image-Push-Schritte aus dem
+  Interview sind hier nicht neu implementiert oder ausgefuehrt.
+
+### Container und Kubernetes: wichtige Grenzen
+
+Ein non-root Anwendungsprozess mit USER 10001 bedeutet nicht automatisch
+Rootless Docker. Rootless betrifft auch den Daemon und seine User-Namespace-
+Ausfuehrung: [offizielle Docker-Erklaerung](https://docs.docker.com/engine/security/rootless/).
+
+Requests und Limits verhindern OOM-Kills nicht: Requests dienen der
+Ressourcenplanung, ein ueberschrittenes Speicherlimit kann zur Beendigung
+fuehren. CPU-Limits koennen drosseln. Werte unter realer Last messen, statt
+"strikte Limits" als Ausfallschutz zu versprechen:
+[Kubernetes-Ressourcenverwaltung](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/).
+
+Rust-gnu-Binaries passen nicht ungeprueft in Alpine/musl oder scratch. libc,
+TLS-Zertifikate und dynamische Bibliotheken muessen zum Ziel passen.
+Groessenoptimierung mit opt-level=z/LTO kann andere Leistungsziele verschlechtern;
+Stripping entfernt Debug-Informationen. Vorher messen und Debug-Artefakte planen.
+Read-only Root-FS braucht passende beschreibbare Temp-/Datenpfade; Probes,
+Graceful Shutdown und Zeitbudgets sind anwendungsbezogen zu testen.
+
+### KI-Toolauswahl: Korrekturen der Empfehlungen
+
+| Interviewempfehlung | Einordnung fuer uns |
+|---|---|
+| vLLM / SGLang als leistungsfaehige Server | Quellen und Auswahlgrenzen im [Grok-Abgleich](grok-development-tooling.md); kein pauschaler Speed-Vergleich ohne Messung |
+| OpenHands / Claude Code | [OpenHands-Quelle](https://github.com/OpenHands/OpenHands) und [Claude-Code-Lizenzgrenze](../tools/claude-code.md) getrennt betrachten; keine identische Open-Source-/Installationszusage |
+| Jan / LM Studio beide als Open Source | [Jan](https://github.com/janhq/jan) ist ein eigenes Quellprojekt. [LM-Studio-Dokumentation](https://lmstudio.ai/docs/app) beschreibt lokale Nutzung, belegt aber nicht die pauschale Open-Source-Aussage des Interviews |
+| Suno / MusicGen | Suno als Cloud-Dienst nicht mit dem [AudioCraft-/MusicGen-Quellprojekt](https://github.com/facebookresearch/audiocraft) gleichsetzen; Code- und Modelllizenzen sowie kommerzielle Nutzbarkeit getrennt pruefen |
+| k3s / microk3s | Gemeint sind wahrscheinlich [K3s](https://github.com/k3s-io/k3s) oder [MicroK8s](https://github.com/canonical/microk8s); microk3s ist keine hier belegte offizielle Projektbezeichnung |
+
+ComfyUI, Ollama, Open WebUI und OpenClaw nicht wegen Formulierungen wie
+"ultimative Wahl" oder "voll ausgestattetste" mehrfach installieren. Bestehende
+Integration, Hardware, Datenfluss, Lizenz, Kosten und eigene Tests entscheiden.
+GitHub als Quelle bedeutet weiterhin nicht, dass ein Projekt Docker-frei
+startet oder eine Cloud-Modell-API lokal wird.
+
+### Praesentation und Pruefgrenzen
+
+Das angekuendigte zehnteilige HTML-Deck fehlt im Anhang. Die bestehende
+[13-Folien-Praesentation](../presentations/technology-tooling-overview.pptx)
+bleibt unveraendert und wird nicht als Gemini-HTML-Original ausgegeben.
+Kein Gemini-Login, Modellaufruf, Live-CI, Container-/Clusterstart oder WSL-Zugriff
+wurde fuer diese Ergaenzung ausgefuehrt.
+
+Pruefung: sieben Gemini-Tests sowie 38 Grok-/Meta-/Manus-Regressionstests
+bestanden; Diff-Pruefung ohne Fehler. Der Standard-Skillvalidator konnte
+wegen fehlendem PyYAML nicht starten. Skill-Metadaten, Quellenzuordnung und
+lokale Verweise wurden durch die Offline-Tests geprueft; kein Paket nachinstalliert.

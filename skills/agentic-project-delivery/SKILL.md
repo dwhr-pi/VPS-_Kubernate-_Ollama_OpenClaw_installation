@@ -11,6 +11,10 @@ Auftrag, ein Projekt zu bauen, Cloud-Dienste aufzurufen oder etwas zu deployen.
 
 ## Arbeitsablauf
 
+Wenn zuerst Werkzeuge/Sprachen ausgewaehlt werden muessen, nutze den separaten
+[Auswahl-Skill](../sprach-infra-tooling/SKILL.md). Dieser Umsetzungs-Skill bleibt
+fuer die danach freigegebene Projektarbeit zustaendig.
+
 1. Lies Auftrag, Projektregeln, Git-Status und vorhandene Tests. Bestimme einen
    konkreten Projektordner, Zielstack und die tatsaechlich freigegebenen Aktionen.
    Erhalte unabhaengige Nutzer-Aenderungen; arbeite nicht in einer anderen Kopie.

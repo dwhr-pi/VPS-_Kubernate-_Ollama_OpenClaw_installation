@@ -9,6 +9,11 @@ erforderlich. Fuer eigene Projekte ist der Ablauf unabhaengig vom Modell nutzbar
 
 ## 1. Wiederverwendbare Faehigkeit
 
+Fuer vorgelagerte Recherche/Toolauswahl gibt es seit 22.10.2026 zusaetzlich
+[sprach-infra-tooling](../../skills/sprach-infra-tooling/SKILL.md).
+Der [neue Interviewabgleich](manus-interview-2026-10-22.md) erklaert die
+Abgrenzung zum Umsetzungs-Skill sowie die nicht vorliegenden Manus-Originaldateien.
+
 Der neue Repository-Skill
 [agentic-project-delivery](../../skills/agentic-project-delivery/SKILL.md)
 enthaelt den konkreten Ablauf und verweist nur bei Bedarf auf Quellen und

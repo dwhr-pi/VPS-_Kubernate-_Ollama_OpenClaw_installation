@@ -1,5 +1,8 @@
 # Qwen Code aus GitHub installieren, ohne Docker
 
+Ergaenzende Anleitung: [Qwen-AI-Interview und Entwicklungswerkzeuge](../tutorials/qwen-development-tooling.md).
+Chat-Aussagen ueber Sandbox-Funktionen sind kein Nachweis lokaler CLI-Faehigkeiten.
+
 Qwen Code ist ein Terminal-Coding-Agent, nicht das Modell selbst und nicht die
 [Windows-Desktop-App](qwen-desktop-windows.md). Optional/experimental. Der
 Installer baut nur CLI-Code; kein Login, Agent, Modell oder Dienst startet.

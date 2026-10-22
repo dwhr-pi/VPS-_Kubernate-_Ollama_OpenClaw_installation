@@ -1,5 +1,33 @@
 # Tools Catalog
 
+**[Qwen AI: Interview und Review der Entwicklungsbeispiele](tutorials/qwen-development-tooling.md)**:
+Quellenkorrekturen, vorhandene Qwen-Code-/Desktop-Wege, CI-/Containerbefunde
+und neun HTML-Folien als mitgelieferter Quelltext, nicht als gepruefte Runtime.
+
+**[Perplexity AI: Interview, Quellenpruefung und Toolauswahl](tutorials/perplexity-development-tooling.md)**:
+konsolidierte Quellen, Python-/Testcontainers-Korrekturen und vorhandene
+CI-/Skill-Wege statt vorgetaeuschter Dateien oder Masseninstallation.
+
+**[Gemini: zweites Interview und Architektur-Skill](tutorials/gemini-development-tooling.md#zweites-interview-vom-22102026-neue-quellen-und-konkrete-vorlagen)**:
+Streamlit-/Gradio-/Reflex-Quellen, CI-/Deployment-Korrekturen und
+Repository-Skill [tech-stack-architect](../skills/tech-stack-architect/SKILL.md).
+Kein aktiver Workflow, kein vorgetaeuschtes HTML-Deck und keine Installation.
+
+**[Grok-Interview: Werkzeugquellen und Faehigkeitsnachweise](tutorials/grok-development-tooling.md)**:
+Python-Quellenkorrekturen, TGI-Wartungsstatus und KI-Stack-Abgleich;
+eigener Repository-Skill [sandbox-tooling-overview](../skills/sandbox-tooling-overview/SKILL.md)
+mit Berichtsvorlage. Keine Grok-Sandbox oder neuen Installer vorgetaeuscht.
+
+**[Meta-AI-Interview: Entwicklungswerkzeuge und Quellen](tutorials/meta-development-tooling.md)**:
+eigener Bereich fuer Python-/Web-/Systems-Entwicklung, Starter-Kit-Abgleich und
+den Repository-Skill [fullstack-project-bootstrapper](../skills/fullstack-project-bootstrapper/SKILL.md).
+Keine Meta-Sandbox, fehlenden Originalartefakte oder Docker-Installationen vorgetaeuscht.
+
+**[Manus-Interview vom 22.10.2026: Toolauswahl und Quellenabgleich](tutorials/manus-interview-2026-10-22.md)**:
+neuer Repository-Skill [sprach-infra-tooling](../skills/sprach-infra-tooling/SKILL.md),
+Briefing und begruendete lokale/Cloud-Toolauswahl. Bestehende Go-/Rust-CI und
+13-Folien-Praesentation weiterverwendet; keine globale Skill- oder Toolinstallation.
+
 **[RAG Compliance Review / Rechtsquellen](legal/README.md)** ist als
 Repository-Werkzeug ohne Installation nutzbar: Hauptmenue 18 oder
 `bash scripts/check_rag_compliance.sh`. Quellenpflege, Loeschplan und

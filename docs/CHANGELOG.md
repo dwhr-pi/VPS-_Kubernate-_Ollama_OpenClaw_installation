@@ -1,5 +1,80 @@
 # Docs Changelog
 
+## 2026-10-22 Qwen-Interview: Quellen und Beispielreview
+
+- Eigenen Bereich mit Qwen-Code-/Desktop-Verweisen und Quellenabgleich ergaenzt;
+  echte YAML-/HTML-Textartefakte von nicht nachgewiesenen Laufzeitergebnissen getrennt.
+- Go-Community-Layout, begrenztes project-template, Compose-Produktionswarnung,
+  ingress-nginx-Wartungsende und sqlite-vss-Wartung eingeordnet.
+- CI-Pins, externer Codecov-Upload, fehlendes Coverage-Release-Gate und
+  Container-/PDB-/Backup-/Rust-Fehlerbehandlung als konkrete Review-Punkte dokumentiert.
+- Neun HTML-Folien als gelieferten Quelltext benannt, nicht ausgefuehrt oder
+  als bestehende 13-Folien-PPTX ausgegeben; vorhandene Skills wiederverwendet.
+- Keine Installer-Aenderung, WSL-Aktion, Tool-/Modellinstallation, aktive CI,
+  globale Skill-Aktivierung oder Veroeffentlichung.
+
+## 2026-10-22 Perplexity-Interview: Quellenkritik und Entwicklungsablauf
+
+- Eigenen Interview-Bereich mit konsolidierten Primaerquellen ergaenzt;
+  interne Laufzeit-/Konnektorbehauptungen nicht als geprueftes Inventar ausgegeben.
+- Fehlende Workflows und PPTX benannt; zwoelf behauptete versus elf aufgelistete
+  Folien eingeordnet, vorhandene Praesentation nicht umetikettiert.
+- Python-/Dev-Abhaengigkeiten, TestClient/HTTPX, Testcontainers-Sprachen,
+  kubectl-Mirror und setup-go-Caching korrigiert beziehungsweise abgegrenzt.
+- Quellenreview als Referenz im bestehenden Skill sprach-infra-tooling ergaenzt;
+  keine weitere redundante Skill-Kopie oder globale Aktivierung.
+- Aktionsgrenzen fuer Terraform, SQL, Formatierer, Cluster und Tracing dokumentiert.
+  Keine Installation, WSL-/Cloud-Modellaktion, aktive CI oder Veroeffentlichung.
+
+## 2026-10-22 Zweites Gemini-Interview: Architektur und CI-Abgleich
+
+- Bestehenden Gemini-Bereich erweitert statt weitere parallele Anleitung;
+  Quellen fuer Datenapps, Echo, Cobra, Criterion und Infrastruktur ergaenzt.
+- Mitgelieferte Skill-Definition zu eigenem Repository-Skill tech-stack-architect
+  angepasst, ohne globale Aktivierung oder erfundene Slash-Befehle.
+- Automatischen GHCR-Push, Tokenrechte, alte Pins, Rust-Artefakte und Caching
+  gegen bestehende inaktive CI-/Release-Vorlagen abgegrenzt.
+- OOM-/Rootless-Aussagen sowie LM Studio, Suno/MusicGen und microk3s eingeordnet.
+- Fehlendes HTML-Deck transparent benannt; bestehende Praesentation unveraendert.
+  Keine Installation, WSL-/Clusteraktion, aktive CI oder Cloud-Modellabfrage.
+
+## 2026-10-22 Grok-Interview: Quellen und Faehigkeitsnachweise
+
+- Grok separat dokumentiert; Laufzeitversionen, fehlender Original-Skill und
+  fehlendes Neun-Folien-Deck nicht als lokal bestaetigte Artefakte ausgegeben.
+- Beautiful-Soup-Upstream auf Launchpad und Starlette-Redirect korrigiert;
+  TGI-Wartungsmodus anhand des offiziellen README eingeordnet.
+- SGLang, Pydantic AI und Mastra als Quellenreferenzen, nicht als neue Installer;
+  vorhandene CI-/Deployment-Vorlagen bleiben inaktiv und unveraendert.
+- Eigener Repository-Skill sandbox-tooling-overview mit Beleg-/Statusvorlage;
+  keine globale Aktivierung, Toolinstallation, WSL-Aktion oder Veroeffentlichung.
+
+## 2026-10-22 Meta-AI-Interview: eigener Quellen- und Entwicklungsbereich
+
+- Vollstaendigen Nutzertext ausgewertet; angebliche Sandbox, Paketliste,
+  Pipeline-Dateien und 12-Folien-Deck nicht als vorhandene Artefakte ausgegeben.
+- Python-/Web-/Systems-Quellen und lokales Pruefmodell dokumentiert;
+  Python-3.9-Lebenszyklus und Unterschiede von Simulation/Build/Live-Test erklaert.
+- Vier Starter-Kits an ihren Original-READMEs abgeglichen: unterschiedliche
+  Komponenten und Ports, kein pauschaler Docker-freier Installationsweg.
+- Eigenen Repository-Skill fullstack-project-bootstrapper erstellt; vorhandene
+  Go-/Rust-CI und Deployment-/Praesentationsbausteine verlinkt, nicht dupliziert.
+- Read-only Root-FS, Healthchecks, Rust-Linking, CI-Rechte und aktuelles S3-Locking
+  eingeordnet; Rankings/Preisversprechen ohne Nachweis nicht uebernommen.
+- Keine globale Skill-/Toolinstallation, WSL-/Docker-/Clusteraktion, aktive CI,
+  Modellabfrage oder GitHub-Veroeffentlichung.
+## 2026-10-22 Manus-Interview: wiederverwendbare Toolauswahl
+
+- Neuen Interviewtext datiert eingeordnet; fremder Manus-Skillpfad und
+  manus-resource-Link nicht als heruntergeladene Originalartefakte ausgegeben.
+- Repository-Skill sprach-infra-tooling mit Briefing und CI-/Deployment-Referenz;
+  bestehender agentic-project-delivery bleibt separater Umsetzungs-Skill.
+- Toolauswahl nach sieben Kriterien, Primaerquellen und Lizenz-/Datenflussgrenzen;
+  keine erfundenen Installer fuer Cloud-Produkte oder neuen Installed-Marker.
+- Vorhandene Go-/Rust-CI und 13-Folien-Praesentation weiterverwendet, nicht dupliziert.
+  Deaktiviertes Go-Caching und Grenzen von Cargo.lock ausdruecklich dokumentiert.
+- Keine globale Skill-Aktivierung, WSL-/Toolinstallation, Workflow-Aktivierung,
+  Cloud-Modellabfrage, Container-/Clusteraktion oder GitHub-Push.
 ## 2026-10-21 Alle 62 Werkzeugquellen: Installations-/Lifecycle-Einstieg
 
 - Hauptmenue 16 und Zusatzschaltflaeche im Tools-Menue bieten jetzt A-Z-Auswahl,
