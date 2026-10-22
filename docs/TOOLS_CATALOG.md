@@ -1,5 +1,27 @@
 # Tools Catalog
 
+**[Bearbeitbare Video-Workflows](media_studio/EDITABLE_VIDEO_WORKFLOWS.md)**:
+UGC-/Foto-Rezepte und Standardbibliothek-Planer ohne API, GPU oder Docker.
+Storyboard/Freigabe/Renderadapter getrennt; keine fertige Arcads-/Umnik-Kopie.
+
+**[Hermes Agent: Jarvis-Wochenendleitfaden](tools/hermes-jarvis-weekend.md)**:
+Gepruefte Einordnung der Nutzerquelle, GitHub-Source-Weg ohne Docker,
+Briefing und eigener Kundenanfragen-Skill. Getrennte optionale Laufzeit,
+kein neuer Menue-Installer oder automatisch aktivierter Gateway.
+
+**[Notion-Recherche und lokaler Review-Export](tools/notion-research.md)**:
+Repository-CLI ohne Paketinstallation. Plan standardmaessig offline;
+explizite API-Leseabrufe nur fuer freigegebene Inhalte, kein globaler notion.site-Crawler
+und keine automatische RAG-/Skill-Uebernahme.
+
+**[Agentic_OS: optionaler Evaluationskandidat](tools/agentic-os.md)**:
+FastAPI-/JavaScript-Agenten-Dashboard, kein Next.js-OS und vorerst kein Kernbestandteil.
+Gepinnter GitHub-Quellcheckout im Tools-Menue, keine Runtime-/Scheduler-Aktivierung.
+
+**[Ruflo: Instagram-/Notion-Quellen und bestehende Integration](tools/ruflo.md)**:
+Originalverweise mit Abrufgrenzen, Upstream-Abgleich und ehrlicher Umfang des
+vorhandenen GitHub-Installers; kein automatischer Agenten-/MCP-Start.
+
 **[ChatGPT-Interview: Entwicklungswerkzeuge und Nachweise](tutorials/chatgpt-development-tooling.md)**:
 90 [GitHub-Quellen zum Nachlesen](tutorials/chatgpt-tooling-sources.md),
 Wartungs-/Lizenzkorrekturen, Plattformmatrix und isoliert getestetes SQL-Beispiel.

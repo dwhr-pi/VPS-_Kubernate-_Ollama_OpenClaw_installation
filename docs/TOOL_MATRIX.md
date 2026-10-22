@@ -1,5 +1,8 @@
 # Tool Matrix
 
+[Agentic_OS](tools/agentic-os.md): optional/experimental, nur gepinnte Quellen,
+runtime_ready=false, keine Ports/Keys/Jobs. Dashboard-Runtime nicht eingerichtet.
+
 [Zentrale 62er-Werkzeugtabelle mit Installationswegen](DEVELOPMENT_TOOLS_OVERVIEW.md).
 [Gopls, Delve, GolangCI_Lint, Kubeconform, KubeLinter, TFLint und Terraform_Docs](tools/development-go-tools.md)
 sind als weitere optionale GitHub-Go-Builds mit Doctor und Deinstallation integriert.

@@ -1,5 +1,9 @@
 # GitHub Tool Sources
 
+Agentic_OS: [modimihir07/agentic-os](https://github.com/modimihir07/agentic-os/tree/9dfcc24b0c97dca4ce5cc567fc5d1ac198df3ab6),
+MIT, Pin 9dfcc24b0c97dca4ce5cc567fc5d1ac198df3ab6.
+[Evaluationsvermerk und Source-only-Installer](tools/agentic-os.md), keine Runtime.
+
 YouTube_Agent_Skill: [Jakeschincariol/youtube-agent-skill](https://github.com/Jakeschincariol/youtube-agent-skill/tree/a2feb2104981a375ffd4f87ee04f4f5344ac43c6),
 MIT, Pin `a2feb2104981a375ffd4f87ee04f4f5344ac43c6`.
 [Installation und Tutorial](tools/youtube-agent-skill.md): elf Skills inklusive

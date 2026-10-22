@@ -1,5 +1,9 @@
 # Social-Media-Content mit lokalen KI-Avataren
 
+[Bearbeitbare Arcads-/Umnik-aehnliche Workflows](EDITABLE_VIDEO_WORKFLOWS.md)
+mit Rezeptvorlagen und Offline-Pruefplaner. Keine behauptete 1:1-Kopie der
+Anbieter oder schon betriebsbereite Renderpipeline.
+
 Quellenstand: 14.10.2026. **Integrationsplan, keine fertig ausfuehrbare
 Produktionspipeline.** Keine Installation, WSL-Aenderung, Cloud-Anfrage oder
 Veroeffentlichung durch diese Erweiterung. Der beworbene Workshop/Erfolg

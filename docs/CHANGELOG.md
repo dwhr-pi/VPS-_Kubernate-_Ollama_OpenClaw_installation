@@ -1,5 +1,56 @@
 # Docs Changelog
 
+## 2026-10-22 Anpassbare Video-Rezepte vor der Generierung
+
+- Arcads-/Umnik-Nutzerquellen mit Abrufluecken und GitHub-Toolstack dokumentiert;
+  keine 1:1-Rekonstruktion oder erfundene Kenntnis der Anbieter-Backends.
+- UGC-/Foto-Rezepte und begrenzter Offline-Planer mit Revisionshash, Szenen-
+  budgets und offenen Freigaben; kein Assetzugriff, Renderjob oder Download.
+- Lizenzen von n8n, XTTS und InsightFace sowie lokale Ressourcen-/Datenfluss-
+  Grenzen eingeordnet. Formular, Worker und ComfyUI-Submit-Adapter bleiben offen.
+
+## 2026-10-22 Hermes-/Jarvis-Wochenendanleitung eingeordnet
+
+- Nutzertext mit offiziellen Hermes-Quellen abgeglichen; Reel-Abruf gedrosselt.
+- GitHub-Source-Weg ohne Docker, getrennte Profile, Memory-/Plattformgrenzen,
+  Datenfluesse, Telegram-/API-/TTS-Risiken und Abnahmeschritte dokumentiert.
+- Eigenes Briefing und Kundenanfragen-Entwurfs-Skill als Repository-Vorlagen;
+  kein globaler Skill, neuer Menue-Installer, Dienst, Account oder WSL-Start.
+
+## 2026-10-22 Notion-Recherche und begrenzter Review-Export
+
+- Themen fuer Agenten-/Prompt-/Architektur-Recherche, offizielle Einstiegspunkte
+  und API-Grenzen dokumentiert: keine globale notion.site-Suche mit einem Token.
+- Fehlerhaftes Nutzerbeispiel durch Standardbibliothek-CLI mit read-only API-
+  Routen, Version 2026-03-11, Pagination, Rekursion, Limits, Timeout und 429-Retry ersetzt.
+- Standardaufruf ist ein schreibfreier Plan; Cloud-Abruf verlangt --fetch.
+  Keine Token-Defaults, Redirects, API-Antwortkoerper in Fehlerlogs oder Media-Downloads.
+- UUID-Dateinamen, neue atomare Review-Verzeichnisse und Provenienz-/SHA256-
+  Manifest; keine direkte RAG-Indizierung, Skill-Ausfuehrung oder Notion-Schreibaktion.
+- Synthetisches Offline-Beispiel und Tests; kein Notion-Konto/-Key, echter
+  API-Abruf, Scheduler, WSL-Zugriff oder Installer eingerichtet.
+
+## 2026-10-22 Agentic_OS: optionaler Source-only-Evaluationskandidat
+
+- Im Tools-Menue und Registry aufgenommen, ausdruecklich experimental und
+  kein Kernbestandteil; Python/FastAPI mit JavaScript-SPA statt Next.js korrigiert.
+- Bestehenden gepinnten Source-only-Lifecycle wiederverwendet: Commit/Origin/
+  Quellpruefung, Ressourcenwache, Logs, Marker erst nach Erfolg und Deaktivierung
+  ohne Loeschen von Quellen/Daten; runtime_ready bleibt false.
+- Upstream-Nachinstallationen, Port-Prozess-Kill, Schedulerstart und Hermes-Key-
+  Uebernahme dokumentiert. Keine fremden install.sh/start.sh ausgefuehrt.
+- Keine Installation in der Nutzerumgebung, WSL-/Docker-/Clusteraktion,
+  Agenten-/Modell-/Cron-Aktivierung, Keyuebernahme oder Veroeffentlichung.
+
+## 2026-10-22 Ruflo: Instagram-/Notion-Quellen
+
+- Beide Nutzerquellen mit datierten Abrufgrenzen und primaerem Ruflo-Repository
+  dokumentiert; keine Inhaltskenntnis des nicht abrufbaren Reels/Notion-Texts erfunden.
+- Plugin-/CLI-Initialisierung sowie vorhandenen Installer und Pfadstatus
+  eingeordnet; globale Laufzeiten und ungepinnte Buildschritte transparent benannt.
+- Keine Installer-/Registry-Aenderung, Installation, WSL-Aktion, Hook-/MCP-
+  Aktivierung, Agenten-/Modellaufruf oder Veroeffentlichung.
+
 ## 2026-10-22 ChatGPT-Interview: Quellen, Plattformen und Nachweise
 
 - Eigenen Bereich mit allen 90 eindeutigen GitHub-Repository-URLs ohne

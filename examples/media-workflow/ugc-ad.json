@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "project": "produkt-demo-entwurf",
+  "workflow": "ugc_ad",
+  "script": "Hier steht dein eigener, sachlich gepruefter Werbetext. Keine erfundenen Kundenbewertungen.",
+  "seed": 42,
+  "canvas": {"width": 480, "height": 832, "fps": 16},
+  "audio": {"mode": "tts", "voice_ref": "eigene-freigegebene-stimme"},
+  "scenes": [
+    {"id": "hook", "kind": "talking_head", "source": "assets/avatar.png", "prompt": "Ruhige Praesentation durch eine einwilligende erwachsene Person.", "seconds": 4},
+    {"id": "produkt", "kind": "image_to_video", "source": "assets/produkt.png", "prompt": "Langsame Kamerabewegung, Produktform und Aufschrift erhalten.", "seconds": 3}
+  ],
+  "rights": {"assets_confirmed": false, "voice_confirmed": false, "commercial_use": true}
+}

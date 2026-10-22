@@ -1,5 +1,9 @@
 # AI Media Production Studio
 
+[Video-Workflows vor dem Rendern bearbeiten](EDITABLE_VIDEO_WORKFLOWS.md):
+Arcads-/Umnik-Einordnung, zwei editierbare Rezepte und lokaler Offline-Planer;
+noch keine fertige Generierungs-App oder automatische Renderfreigabe.
+
 [Modellfamilien, Wan/GGUF und High-Res-Grenzen](HYBRID_MODELS_AND_WAN.md).
 
 [Audio-Deepfakes: Original sichern, isolieren und Redaktion pruefen](AUDIO_DEEPFAKE_REVIEW.md).

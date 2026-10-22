@@ -1,5 +1,11 @@
 # START HERE
 
+[Hermes-/Jarvis-Wochenendleitfaden](tools/hermes-jarvis-weekend.md):
+optional und getrennt vom Kernsetup, mit Briefing und Kundenanfragen-Entwurf.
+
+[Agentic_OS: nur optional evaluieren](tools/agentic-os.md), nicht als neue
+Kernplattform. Im Tools-Menue nur gepinnte GitHub-Quellen ohne Dashboardstart.
+
 [Aktueller Projektaudit](PROJECT_AUDIT_2026_10_20.md) und
 [Projekt ohne Installation pruefen](REPOSITORY_QUALITY.md).
 

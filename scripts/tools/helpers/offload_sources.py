@@ -10,6 +10,14 @@ import subprocess
 from find_skills import checked, git, operation, resources
 
 TOOLS = {
+    "agentic_os": {
+        "name": "Agentic_OS", "url": "https://github.com/modimihir07/agentic-os.git",
+        "pin": "9dfcc24b0c97dca4ce5cc567fc5d1ac198df3ab6",
+        "module": "server.py",
+        "files": ("LICENSE", "README.md", "server.py", "requirements.txt",
+                  "dashboard/index.html", "scheduler/scheduler.py", "start.sh"),
+        "plan_note": "Evaluationskandidat, nur Quellen. Kein Dashboard, Scheduler, Agent, Keyzugriff oder Bootstrap. 1 GiB Disk-Reserve.",
+    },
     "colibri": {
         "name": "Colibri", "url": "https://github.com/JustVugg/colibri.git",
         "pin": "e0db083cdc9e563e0766cc6fc661ef23c32298e0",
@@ -92,7 +100,7 @@ def main(argv=None):
     record = {"commit": spec["pin"], "scope": "github-source", "runtime_ready": False}
     if opts.action == "plan":
         print(spec["name"], spec["url"], spec["pin"], "Ziel:", source)
-        print("Nur Quellen: keine pip-/Torch-/CUDA-/ROCm-/Modellinstallation. 1 GiB Disk-Reserve.")
+        print(spec.get("plan_note", "Nur Quellen: keine pip-/Torch-/CUDA-/ROCm-/Modellinstallation. 1 GiB Disk-Reserve."))
         return 0
     if opts.action in ("status", "doctor", "check"):
         ready = False

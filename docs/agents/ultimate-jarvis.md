@@ -2,6 +2,10 @@
 
 Dieses Dokument beschreibt die Agentenrollen fuer das Profil `Ultimate_JARVIS`.
 
+[Hermes als optionale getrennte Jarvis-Laufzeit](../tools/hermes-jarvis-weekend.md):
+Wochenendleitfaden, Briefing, Entwurfs-Skill und Abnahme. Keine automatische
+OpenClaw-Migration, Kontoverbindung oder Erweiterung der Jarvis-Core-Rechte.
+
 ## Rollen
 
 Coding-Erweiterungen werden **nicht in Jarvis eingebaut**, sondern als

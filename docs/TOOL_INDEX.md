@@ -1,5 +1,26 @@
 # Tool Index
 
+**[Media Workflow Plan](media_studio/EDITABLE_VIDEO_WORKFLOWS.md)**:
+tools/media_workflow/plan.py prueft editierbare Video-Rezepte offline.
+Kein Menue-Installer, Renderworker oder generierter Film.
+
+**[Hermes / Jarvis-Wochenende](tools/hermes-jarvis-weekend.md)**:
+Anleitung mit Briefing- und Entwurfs-Skill, Quellen und Sicherheitsabnahme.
+Repository-Vorlagen, keine behauptete Hermes-Installation oder Dienstaktivierung.
+
+**[Notion Research](tools/notion-research.md)**: direkt vom Setup-Root mit
+python -B scripts/notion_research.py nutzbar; keine neue Toolinstallation.
+Seiten-/Data-Source-/Titelsuche mit explizitem --fetch oder Offline-JSON;
+begrenzt, read-only und ausschliesslich in neue Review-Snapshots.
+
+**[Agentic_OS](tools/agentic-os.md)**: experimenteller GitHub-Quellcheckout mit
+Status/Doctor/Update/Deaktivierung. Nur isoliert evaluieren; kein Ersatz fuer
+OpenClaw/Ollama/Open WebUI und kein automatisch gestartetes Dashboard.
+
+**[Ruflo: Nutzerquellen, Agentenkoordination und Installergrenzen](tools/ruflo.md)**:
+Reel und Notion verlinkt, Inhalte noch nicht auslesbar; vorhandener Source-Build
+mit Systemabhaengigkeiten statt einer vorgetaeuschten neuen Privatinstallation.
+
 **[ChatGPT: Interview und Quellenkatalog](tutorials/chatgpt-development-tooling.md)**:
 vollstaendige deduplizierte Herkunftsliste, Code-/CI-Grenzen, Plattformmatrix
 und vorhandene Skills statt neuer Masseninstallation.

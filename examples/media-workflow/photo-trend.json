@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "project": "foto-bewegung-entwurf",
+  "workflow": "photo_trend",
+  "script": "Eigenes Foto mit langsamer Kamerabewegung; kein Gesichtertausch.",
+  "seed": 123,
+  "canvas": {"width": 480, "height": 832, "fps": 16},
+  "audio": {"mode": "none"},
+  "scenes": [
+    {"id": "bewegung", "kind": "image_to_video", "source": "assets/eigenes-foto.png", "prompt": "Langsamer seitlicher Kameraschwenk. Keine neuen Personen oder Produktdetails erfinden.", "seconds": 3}
+  ],
+  "rights": {"assets_confirmed": false, "voice_confirmed": false, "commercial_use": false}
+}
