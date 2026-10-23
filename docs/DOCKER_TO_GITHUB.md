@@ -7,7 +7,8 @@ vor. Ein zusaetzlicher GitHub-Clone machte diese Image-Installationen nicht zu
 nativen Builds. Die folgende Liste ist eine statische Pfadaufnahme, kein Scan
 deiner installierten Container.
 
-**18 native Build-/Paketrezepte sind jetzt implementiert; 25 native Umstellungen
+**37 native Build-/Paketrezepte sind jetzt implementiert (36 GitHub, eine
+freigegebene Codeberg-Ausnahme); 6 native Umstellungen
 sind noch offen.** Alle 43 Einstiegspunkte haben keinen automatischen Image-
 Fallback mehr. Bei offenen Faellen liefert Installation/Update einen Fehler mit
 Begruendung statt Quellen als fertige Anwendung zu zaehlen. Das ist eine bewusst
@@ -24,49 +25,49 @@ Rechercheziele, keine bereits verifizierten Buildvertraege.
 
 | Tool / Slug | Bisherige Imagequelle | Neue native Route / offener Schritt | Quelle |
 |---|---|---|---|
-| Airbyte (`airbyte`) | `abctl / kind / Helm-Images` | **OFFEN:** abctl startet kind/Kubernetes mit Images; native Plattform samt Konnektoren braucht einen separaten Integrationspfad. | [Upstream](https://github.com/airbytehq/airbyte) |
-| Apache Tika (`apache_tika`) | `apache/tika:latest` | **OFFEN:** Native Gesamtpaketierung, Laufzeitabhaengigkeiten und Datenmigration noch nicht verifiziert; kein Docker-Fallback. | [Upstream](https://github.com/apache/tika) |
-| Appsmith (`appsmith`) | `appsmith/appsmith-ce:latest` | **OFFEN:** Native Gesamtpaketierung, Laufzeitabhaengigkeiten und Datenmigration noch nicht verifiziert; kein Docker-Fallback. | [Upstream](https://github.com/appsmithorg/appsmith) |
-| ArchiveBox (`archivebox`) | `archivebox/archivebox:latest` | **OFFEN:** Native Gesamtpaketierung, Laufzeitabhaengigkeiten und Datenmigration noch nicht verifiziert; kein Docker-Fallback. | [Upstream](https://github.com/ArchiveBox/ArchiveBox) |
-| Argilla (`argilla`) | `argilla/argilla-quickstart:latest` | **OFFEN:** Native Gesamtpaketierung, Laufzeitabhaengigkeiten und Datenmigration noch nicht verifiziert; kein Docker-Fallback. | [Upstream](https://github.com/argilla-io/argilla) |
-| Budibase (`budibase`) | `budibase/budibase:latest` | **OFFEN:** Native Gesamtpaketierung, Laufzeitabhaengigkeiten und Datenmigration noch nicht verifiziert; kein Docker-Fallback. | [Upstream](https://github.com/Budibase/budibase) |
-| Caddy (`caddy`) | `caddy:2-alpine` | Rezept: go; 4096 MiB Startreserve | [Upstream](https://github.com/caddyserver/caddy) |
-| cAdvisor (`cadvisor`) | `gcr.io/cadvisor/cadvisor:latest` | Rezept: go; 8192 MiB Startreserve | [Upstream](https://github.com/google/cadvisor) |
-| Changedetection_IO (`changedetection_io`) | `lscr.io/linuxserver/changedetection.io:latest` | Rezept: python; 8192 MiB Startreserve | [Upstream](https://github.com/dgtlmoon/changedetection.io) |
-| CrowdSec (`crowdsec`) | `crowdsecurity/crowdsec:latest` | Rezept: make; 16384 MiB Startreserve | [Upstream](https://github.com/crowdsecurity/crowdsec) |
-| Directus (`directus`) | `directus/directus:latest` | **OFFEN:** Native Gesamtpaketierung, Laufzeitabhaengigkeiten und Datenmigration noch nicht verifiziert; kein Docker-Fallback. | [Upstream](https://github.com/directus/directus) |
-| Forgejo (`forgejo`) | `codeberg.org/forgejo/forgejo:10` | **OFFEN:** Autoritative Quelle Codeberg; GitHub-Mirror nicht als verifizierten Ersatz behaupten. | [Upstream](https://github.com/forgejo/forgejo) |
-| Grafana (`grafana`) | `grafana/grafana:latest` | **OFFEN:** Frontend, Wire-Codegenerierung und Backend gemeinsam bauen; Backend allein ist kein Grafana. | [Upstream](https://github.com/grafana/grafana) |
-| Grafana Alloy (`grafana_alloy`) | `grafana/alloy:latest` | **OFFEN:** Make-Ziel laedt Beyla-Binaries; Source-only-Vertrag erfordert separaten Beyla-Build. | [Upstream](https://github.com/grafana/alloy) |
-| Healthchecks (`healthchecks`) | `postgres:16, lscr.io/linuxserver/healthchecks:latest` | Rezept: requirements; 8192 MiB Startreserve | [Upstream](https://github.com/healthchecks/healthchecks) |
-| Home Assistant (`home_assistant`) | `ghcr.io/home-assistant/home-assistant:stable` | **OFFEN:** Core-Paketierung, aktuelle Python-Version, Frontend und native Integrationen separat abnehmen. | [Upstream](https://github.com/home-assistant/core) |
-| Langfuse (`langfuse`) | `postgres:16, ghcr.io/langfuse/langfuse:latest` | **OFFEN:** Versionskohaerente Web-/Worker-Builds, ClickHouse, PostgreSQL, Redis und S3 samt Migration fehlen. | [Upstream](https://github.com/langfuse/langfuse) |
-| LiteLLM (`litellm`) | `ghcr.io/berriai/litellm:main-latest` | Rezept: python; 8192 MiB Startreserve | [Upstream](https://github.com/BerriAI/litellm) |
-| Loki (`loki`) | `grafana/loki:latest` | Rezept: go; 16384 MiB Startreserve | [Upstream](https://github.com/grafana/loki) |
-| Meilisearch (`meilisearch`) | `getmeili/meilisearch:latest` | Rezept: rust; 24576 MiB Startreserve | [Upstream](https://github.com/meilisearch/meilisearch) |
-| Metabase (`metabase`) | `metabase/metabase:latest` | **OFFEN:** Native Gesamtpaketierung, Laufzeitabhaengigkeiten und Datenmigration noch nicht verifiziert; kein Docker-Fallback. | [Upstream](https://github.com/metabase/metabase) |
-| MinIO (`minio`) | `quay.io/minio/minio:latest` | Rezept: go; 8192 MiB Startreserve | [Upstream](https://github.com/minio/minio) |
-| Mosquitto (`mosquitto`) | `eclipse-mosquitto:2` | Rezept: cmake; 4096 MiB Startreserve | [Upstream](https://github.com/eclipse-mosquitto/mosquitto) |
-| Neo4j (`neo4j`) | `neo4j:5` | **OFFEN:** Native Gesamtpaketierung, Laufzeitabhaengigkeiten und Datenmigration noch nicht verifiziert; kein Docker-Fallback. | [Upstream](https://github.com/neo4j/neo4j) |
-| Netdata (`netdata`) | `netdata/netdata:latest` | **OFFEN:** Native Bibliotheken, Plugins und Hostberechtigungen ohne privilegierten Auto-Installer planen. | [Upstream](https://github.com/netdata/netdata) |
-| Nextcloud (`nextcloud`) | `nextcloud:latest` | **OFFEN:** Native Gesamtpaketierung, Laufzeitabhaengigkeiten und Datenmigration noch nicht verifiziert; kein Docker-Fallback. | [Upstream](https://github.com/nextcloud/server) |
-| NocoDB (`nocodb`) | `nocodb/nocodb:latest` | **OFFEN:** Native Gesamtpaketierung, Laufzeitabhaengigkeiten und Datenmigration noch nicht verifiziert; kein Docker-Fallback. | [Upstream](https://github.com/nocodb/nocodb) |
-| Node Exporter (`node_exporter`) | `prom/node-exporter:latest` | Rezept: go; 4096 MiB Startreserve | [Upstream](https://github.com/prometheus/node_exporter) |
-| Node-RED (`node_red`) | `nodered/node-red:latest` | Rezept: npm; 8192 MiB Startreserve | [Upstream](https://github.com/node-red/node-red) |
-| Open WebUI (`open_webui`) | `ghcr.io/open-webui/open-webui:main` | **OFFEN:** Frontend/Backend-Paket und Datenmigration separat auf demselben Pin integrieren. | [Upstream](https://github.com/open-webui/open-webui) |
-| Penpot (`penpot`) | `stacks/penpot/docker-compose.penpot.yml` | **OFFEN:** Frontend, Backend, Exporter und externe Datendienste gemeinsam nativ bauen und abnehmen. | [Upstream](https://github.com/penpot/penpot) |
-| Prometheus (`prometheus`) | `prom/prometheus:latest` | Rezept: make; 16384 MiB Startreserve | [Upstream](https://github.com/prometheus/prometheus) |
-| Promtail (`promtail`) | `grafana/promtail:latest` | **OFFEN:** EOL seit 2026-03-02; keine neue Installation. Alloy-Migration getrennt pruefen. | [Upstream](https://github.com/grafana/loki) |
-| Qdrant (`qdrant`) | `qdrant/qdrant:latest` | Rezept: rust; 24576 MiB Startreserve | [Upstream](https://github.com/qdrant/qdrant) |
-| Rhasspy (`rhasspy`) | `rhasspy/rhasspy:latest` | **OFFEN:** Native Gesamtpaketierung, Laufzeitabhaengigkeiten und Datenmigration noch nicht verifiziert; kein Docker-Fallback. | [Upstream](https://github.com/rhasspy/rhasspy) |
-| SearXNG (`searxng`) | `docker.io/valkey/valkey:8-alpine, docker.io/searxng/searxng:latest` | Rezept: python; 8192 MiB Startreserve | [Upstream](https://github.com/searxng/searxng) |
-| Stirling PDF (`stirling_pdf`) | `frooodle/s-pdf:latest` | **OFFEN:** Native Gesamtpaketierung, Laufzeitabhaengigkeiten und Datenmigration noch nicht verifiziert; kein Docker-Fallback. | [Upstream](https://github.com/Stirling-Tools/Stirling-PDF) |
-| Uptime Kuma (`uptime_kuma`) | `louislam/uptime-kuma:latest` | Rezept: npm; 8192 MiB Startreserve | [Upstream](https://github.com/louislam/uptime-kuma) |
-| Vault (`vault`) | `hashicorp/vault:1.17` | **OFFEN:** Native Gesamtpaketierung, Laufzeitabhaengigkeiten und Datenmigration noch nicht verifiziert; kein Docker-Fallback. | [Upstream](https://github.com/hashicorp/vault) |
-| Vikunja (`vikunja`) | `vikunja/vikunja:latest` | **OFFEN:** Native Gesamtpaketierung, Laufzeitabhaengigkeiten und Datenmigration noch nicht verifiziert; kein Docker-Fallback. | [Upstream](https://github.com/go-vikunja/vikunja) |
-| Watchtower (`watchtower`) | `containrrr/watchtower:latest` | **OFFEN:** Container-Updatewerkzeug braucht weiterhin eine Container-Runtime; kein sinnvoller Docker-freier Dienst. | [Upstream](https://github.com/containrrr/watchtower) |
-| Weaviate (`weaviate`) | `semitechnologies/weaviate:latest` | Rezept: go; 16384 MiB Startreserve | [Upstream](https://github.com/weaviate/weaviate) |
-| Zigbee2MQTT (`zigbee2mqtt`) | `koenkk/zigbee2mqtt:latest` | Rezept: pnpm; 8192 MiB Startreserve | [Upstream](https://github.com/Koenkk/zigbee2mqtt) |
+| Airbyte (`airbyte`) | `` | **OFFEN:** abctl startet kind/Kubernetes mit Images; native Plattform samt Konnektoren braucht einen separaten Integrationspfad. | [Quelle](https://github.com/airbytehq/airbyte) |
+| Apache Tika (`apache_tika`) | `apache/tika:latest` | Rezept: pipeline; 16384 MiB Startreserve | [Quelle](https://github.com/apache/tika/tree/205414aec2c6a97e27cf657fbf565cb656ac8d1a) |
+| Appsmith (`appsmith`) | `appsmith/appsmith-ce:latest` | Rezept: pipeline; 49152 MiB Startreserve | [Quelle](https://github.com/appsmithorg/appsmith/tree/dc5c6df034b3f402caf84661d0f22001ea277ce6) |
+| ArchiveBox (`archivebox`) | `archivebox/archivebox:latest` | Rezept: python; 8192 MiB Startreserve | [Quelle](https://github.com/ArchiveBox/ArchiveBox/tree/d950dace5ef226634b86ebe43c7001aa7e076cbf) |
+| Argilla (`argilla`) | `argilla/argilla-quickstart:latest` | Rezept: python; 16384 MiB Startreserve | [Quelle](https://github.com/argilla-io/argilla/tree/5338519accb13ae422f8bf9c0642651c249c49af) |
+| Budibase (`budibase`) | `budibase/budibase:latest` | Rezept: pipeline; 32768 MiB Startreserve | [Quelle](https://github.com/Budibase/budibase/tree/897c4bc213fe423ce58c15c2de7574c0e4ba0112) |
+| Caddy (`caddy`) | `caddy:2-alpine` | Rezept: go; 4096 MiB Startreserve | [Quelle](https://github.com/caddyserver/caddy/tree/2b47a1849f86389825623d6d36ee528da8b9e5fb) |
+| cAdvisor (`cadvisor`) | `gcr.io/cadvisor/cadvisor:latest` | Rezept: go; 8192 MiB Startreserve | [Quelle](https://github.com/google/cadvisor/tree/c57813afc32715351dff34ab76a6164bcb0e5c9d) |
+| Changedetection_IO (`changedetection_io`) | `lscr.io/linuxserver/changedetection.io:latest` | Rezept: python; 8192 MiB Startreserve | [Quelle](https://github.com/dgtlmoon/changedetection.io/tree/2bd1a87403b83eb6f37f9f23c04ee2555baccba0) |
+| CrowdSec (`crowdsec`) | `crowdsecurity/crowdsec:latest` | Rezept: make; 16384 MiB Startreserve | [Quelle](https://github.com/crowdsecurity/crowdsec/tree/725b6659dee54dd7a5f314e587b99512531e4237) |
+| Directus (`directus`) | `directus/directus:latest` | Rezept: pnpm; 24576 MiB Startreserve | [Quelle](https://github.com/directus/directus/tree/b3ce03c18673230913bdfdf14907eb13e6865178) |
+| Forgejo (`forgejo`) | `codeberg.org/forgejo/forgejo:10` | Rezept: pipeline; 16384 MiB Startreserve | [Quelle](https://codeberg.org/forgejo/forgejo/src/commit/0d791421f85ca13a63b665053d81ea765fbbc571) |
+| Grafana (`grafana`) | `grafana/grafana:latest` | Rezept: pipeline; 32768 MiB Startreserve | [Quelle](https://github.com/grafana/grafana/tree/9641b46829cb0172875ea6dd323bcec88fcf2cda) |
+| Grafana Alloy (`grafana_alloy`) | `grafana/alloy:latest` | **OFFEN:** Make-Ziel laedt Beyla-Binaries; Source-only-Vertrag erfordert separaten Beyla-Build. | [Quelle](https://github.com/grafana/alloy) |
+| Healthchecks (`healthchecks`) | `postgres:16, lscr.io/linuxserver/healthchecks:latest` | Rezept: requirements; 8192 MiB Startreserve | [Quelle](https://github.com/healthchecks/healthchecks/tree/59caeef534d5f8151fd42da529c08fad6c719be2) |
+| Home Assistant (`home_assistant`) | `ghcr.io/home-assistant/home-assistant:stable` | Rezept: python; 16384 MiB Startreserve | [Quelle](https://github.com/home-assistant/core/tree/3b4094800ac6c7906ded4081895fe7dce487a542) |
+| Langfuse (`langfuse`) | `postgres:16, ghcr.io/langfuse/langfuse:latest` | **OFFEN:** Versionskohaerente Web-/Worker-Builds, ClickHouse, PostgreSQL, Redis und S3 samt Migration fehlen. | [Quelle](https://github.com/langfuse/langfuse) |
+| LiteLLM (`litellm`) | `ghcr.io/berriai/litellm:main-latest` | Rezept: python; 8192 MiB Startreserve | [Quelle](https://github.com/BerriAI/litellm/tree/f2118fc7670ba3fa736d9b8f4deef9077a45a720) |
+| Loki (`loki`) | `grafana/loki:latest` | Rezept: go; 16384 MiB Startreserve | [Quelle](https://github.com/grafana/loki/tree/518630ab23d6b0fa51135fbaa1d3f66fbb2e4cd5) |
+| Meilisearch (`meilisearch`) | `getmeili/meilisearch:latest` | Rezept: rust; 24576 MiB Startreserve | [Quelle](https://github.com/meilisearch/meilisearch/tree/7b6f9f39bd91b04d4551673780cfeb31cb3f5e7b) |
+| Metabase (`metabase`) | `metabase/metabase:latest` | Rezept: pipeline; 32768 MiB Startreserve | [Quelle](https://github.com/metabase/metabase/tree/0a34a97ceb26ae6bce05ebbbfc39a32d268233f5) |
+| MinIO (`minio`) | `quay.io/minio/minio:latest` | Rezept: go; 8192 MiB Startreserve | [Quelle](https://github.com/minio/minio/tree/7aac2a2c5b7c882e68c1ce017d8256be2feea27f) |
+| Mosquitto (`mosquitto`) | `eclipse-mosquitto:2` | Rezept: cmake; 4096 MiB Startreserve | [Quelle](https://github.com/eclipse-mosquitto/mosquitto/tree/83f2620f0b955b89aadce32cceb96a8e81950f5e) |
+| Neo4j (`neo4j`) | `neo4j:5` | Rezept: pipeline; 49152 MiB Startreserve | [Quelle](https://github.com/neo4j/neo4j/tree/2994b43b44f35bf6520bd2667ab181bb76a45585) |
+| Netdata (`netdata`) | `netdata/netdata:latest` | Rezept: cmake; 16384 MiB Startreserve | [Quelle](https://github.com/netdata/netdata/tree/4ca8ebf9c40a2e36b42b0255269a2a97948c752b) |
+| Nextcloud (`nextcloud`) | `nextcloud:latest` | Rezept: pipeline; 24576 MiB Startreserve | [Quelle](https://github.com/nextcloud/server/tree/a6daedfcc625ccde0f712f72b1cd005a1706635c) |
+| NocoDB (`nocodb`) | `nocodb/nocodb:latest` | **OFFEN:** Native Gesamtpaketierung, Laufzeitabhaengigkeiten und Datenmigration noch nicht verifiziert; kein Docker-Fallback. | [Quelle](https://github.com/nocodb/nocodb) |
+| Node Exporter (`node_exporter`) | `prom/node-exporter:latest` | Rezept: go; 4096 MiB Startreserve | [Quelle](https://github.com/prometheus/node_exporter/tree/b9e296a911c8beaf89177362e75cc80bfa89eb7e) |
+| Node-RED (`node_red`) | `nodered/node-red:latest` | Rezept: npm; 8192 MiB Startreserve | [Quelle](https://github.com/node-red/node-red/tree/df0a87cce1a243e21a2e0eb0fdbdbb8c4732392f) |
+| Open WebUI (`open_webui`) | `ghcr.io/open-webui/open-webui:main` | Rezept: python; 24576 MiB Startreserve | [Quelle](https://github.com/open-webui/open-webui/tree/91ea4e3421d1d8069f13d4a463fcb5986d94ea60) |
+| Penpot (`penpot`) | `` | **OFFEN:** Frontend, Backend, Exporter und externe Datendienste gemeinsam nativ bauen und abnehmen. | [Quelle](https://github.com/penpot/penpot) |
+| Prometheus (`prometheus`) | `prom/prometheus:latest` | Rezept: make; 16384 MiB Startreserve | [Quelle](https://github.com/prometheus/prometheus/tree/a2fda0ef4638518a6a6fb27fc48be88fbd732f4b) |
+| Promtail (`promtail`) | `grafana/promtail:latest` | Rezept: go; 16384 MiB Startreserve; nur freigegebener EOL-Archivbuild | [Quelle](https://github.com/grafana/loki/tree/1906dc2b29e1f1ffc37d9a6c9375d1590d7078a7) |
+| Qdrant (`qdrant`) | `qdrant/qdrant:latest` | Rezept: rust; 24576 MiB Startreserve | [Quelle](https://github.com/qdrant/qdrant/tree/222b2e44ab1c3f17e8246396ead6558e45041df7) |
+| Rhasspy (`rhasspy`) | `rhasspy/rhasspy:latest` | **OFFEN:** Native Gesamtpaketierung, Laufzeitabhaengigkeiten und Datenmigration noch nicht verifiziert; kein Docker-Fallback. | [Quelle](https://github.com/rhasspy/rhasspy) |
+| SearXNG (`searxng`) | `docker.io/valkey/valkey:8-alpine, docker.io/searxng/searxng:latest` | Rezept: python; 8192 MiB Startreserve | [Quelle](https://github.com/searxng/searxng/tree/81371861f67226091d1c4df2e3908a11d3b54eb9) |
+| Stirling PDF (`stirling_pdf`) | `frooodle/s-pdf:latest` | Rezept: pipeline; 24576 MiB Startreserve | [Quelle](https://github.com/Stirling-Tools/Stirling-PDF/tree/5c59188758c14efb9c5df1bd28e1e9ed568c6e45) |
+| Uptime Kuma (`uptime_kuma`) | `louislam/uptime-kuma:latest` | Rezept: npm; 8192 MiB Startreserve | [Quelle](https://github.com/louislam/uptime-kuma/tree/0c287ac4b3a6723c56ab7d8d731017e58deff533) |
+| Vault (`vault`) | `hashicorp/vault:1.17` | Rezept: go; 24576 MiB Startreserve | [Quelle](https://github.com/hashicorp/vault/tree/9f51d2357f65b0c6e842d61fb144b605a0bc78ae) |
+| Vikunja (`vikunja`) | `vikunja/vikunja:latest` | Rezept: pipeline; 16384 MiB Startreserve | [Quelle](https://github.com/go-vikunja/vikunja/tree/0dc0adac052327e921ad8f136642479807bd61e3) |
+| Watchtower (`watchtower`) | `containrrr/watchtower:latest` | Rezept: go; 4096 MiB Startreserve | [Quelle](https://github.com/containrrr/watchtower/tree/ca0e86e824ec05389ab972ea97d04d4bf0476e90) |
+| Weaviate (`weaviate`) | `semitechnologies/weaviate:latest` | Rezept: go; 16384 MiB Startreserve | [Quelle](https://github.com/weaviate/weaviate/tree/1baf16202f883ad7410eaa9e4c01e214635d32ad) |
+| Zigbee2MQTT (`zigbee2mqtt`) | `koenkk/zigbee2mqtt:latest` | Rezept: pnpm; 8192 MiB Startreserve | [Quelle](https://github.com/Koenkk/zigbee2mqtt/tree/344b6e03b43644c97154a72ca9eae17193c553a2) |
 
 ## Installation und Status
 
@@ -114,7 +115,8 @@ Log; keine stille apt-, Docker-, globale Paketmanager- oder System-Python-Instal
 Go verwendet `GOTOOLCHAIN=local`, Rust eine vorhandene Toolchain. Ein abweichendes
 vorhandenes Python ist mit `NATIVE_SOURCE_PYTHON_BIN` waehlbar.
 
-Primaerprogramme werden aus GitHub-Quellen gebaut, nicht als fertige Images
+Primaerprogramme werden aus GitHub-Quellen (Forgejo: freigegebenes Codeberg)
+gebaut, nicht als fertige Images
 oder Release-Binaries ersetzt. Prometheus baut auch seinen promu-Helfer aus
 Go-Quellen, statt den Binary-Download aus Makefile.common zu verwenden. npm/pnpm,
 Cargo, Go und Python beziehen weitere Abhaengigkeiten aus ihren offiziellen
@@ -124,7 +126,7 @@ Buildumgebungen erben keine Provider-/AWS-Schluessel; Docker/Podman/sudo-Aufrufe
 ueber PATH werden gesperrt. Das ersetzt keine Sicherheits-Sandbox gegen
 boesartigen Buildcode oder absolute Programmpfade.
 
-Speicherreserve je Rezept: 4 bis 24 GiB. Unter WSL wird auch C: geprueft; freie
+Speicherreserve je Rezept: 4 bis 48 GiB. Unter WSL wird auch C: geprueft; freie
 Linux-Kapazitaet ersetzt die Hostreserve nicht. Bei den zuletzt gemeldeten 8 GiB
 auf C: werden zahlreiche Builds weiterhin korrekt blockiert. Reserven nicht
 pauschal senken. Genuegend zusaetzlichen Puffer einplanen. Bei Fehlern werden
@@ -173,35 +175,132 @@ Node Exporter bei manuellem Start ausdruecklich an `127.0.0.1:9100` binden.
   nicht implementiert.
 - Airbyte ist mit abctl/kind keine containerfreie Plattform; CLI-Build allein
   waere keine native Airbyte-Installation. Deshalb offen statt Schein-Erfolg.
-- Forgejo nutzt autoritativ Codeberg. Keine beliebige GitHub-Kopie als offizielle
-  Quelle ausgeben. Eine Quellen-Ausnahme oder ein verifizierter Mirror braucht
-  eine getrennte Entscheidung.
-- Promtail ist EOL; neue Installation bleibt gesperrt. Alloy braucht vor seiner
-  Umstellung insbesondere einen Source-Build fuer eingebettete Beyla-Komponenten.
+- Forgejo nutzt nach ausdruecklicher Nutzerfreigabe die offizielle Codeberg-Quelle.
+  Das Rezept baut Release 17.0.0 mit Frontend, eingebetteten Assets und SQLite.
+  Der Commit wurde ueber die offizielle Codeberg-API aufgeloest, nicht ueber
+  einen GitHub-Mirror. Ein Git/TLS-Verbindungsfehler bleibt ein Fehler im Log;
+  die Quelle wird dann nicht stillschweigend gewechselt.
+- Promtail ist EOL; nur ein ausdruecklich freigegebener Archivbuild ist moeglich,
+  kein automatisch gestarteter Produktivdienst. Alloy braucht insbesondere einen
+  Source-Build fuer eingebettete Beyla-Komponenten.
 - Vorhandene `stacks/`, Kubernetes-Images, Compose-Vorlagen und historische
   Docker-Helper bleiben als explizite Container-Alternativen im Repository.
   Die 43 umgestellten Tool-Wrapper rufen sie nicht mehr auf. Ein gesamthaft
   Docker-freies Kubernetes-/Profil-System ist **nicht** behauptet.
 
+## Zusaetzliche Buildumfaenge und Grenzen
+
+Die folgenden Wege wurden um echte Build-/Paketbefehle ergaenzt; ein reiner
+Git-Clone reicht fuer keinen Buildmarker. Die Tabelle oben und das Manifest
+unterscheiden verfuegbare Rezepte weiterhin von offenen Migrationen.
+
+- Apache Tika baut die Server-Distribution einschliesslich Bibliotheken als ZIP.
+  Die einzelne Server-JAR ohne `lib/` waere kein vollstaendiges Paket.
+- Appsmith baut Client, RTS, MCP und Java-Server. Budibase baut seinen Workspace
+  mit Server, Worker, Builder und Client. MongoDB/CouchDB, Redis, S3, Reverse
+  Proxy und Prozessverwaltung werden nicht stillschweigend eingerichtet.
+- Argilla baut das Frontend in das statische Verzeichnis seines Serverpakets,
+  bevor dieses lokal installiert wird. Keine Default-Benutzer, Suchindizes oder
+  Datenbankmigrationen. Redis und Elasticsearch/OpenSearch separat bereitstellen.
+- ArchiveBox installiert das Python-Paket aus dem Checkout, ohne `init`/`setup`,
+  Browserinstallation oder Archivierungsauftrag. Der Pin verlangt Python >=3.13.
+- Directus baut API und Admin-App mit dem gepinnten pnpm. Keine DB-Migration.
+  Die Upstream-Lizenz vor kommerziellem Betrieb gesondert pruefen.
+- Grafana baut Wire-Code, OSS-Backend und Produktionsfrontend gemeinsam. Der
+  Frontend-Build benoetigt erheblich RAM; die Vorpruefung verlangt 12 GiB.
+- Home Assistant ist ein Core-Paket, kein OS/Supervisor. Der Pin verlangt
+  Python >=3.14.2. Zusaetzliche Integrationen, Frontend und Hardware separat
+  pruefen; kein Zugriff auf USB, Bluetooth oder das Heimnetz beim Pakettest.
+- Open WebUI baut das Frontend per `npm ci` und paketiert es mit dem Backend.
+  Der Upstream-Hatch-Hook mit `npm install --force` wird dabei deaktiviert.
+  Python 3.11/3.12 und Node 18 bis 22 sind am Pin erforderlich. Pyodide-Assets
+  sind Buildabhaengigkeiten, keine heruntergeladenen Sprachmodelle.
+- Metabase baut die OSS-Uberjar inklusive Frontend; Neo4j die Community-
+  Distribution. Bestehende Datenbanken werden weder gestartet noch geoeffnet.
+- Nextcloud baut PHP-Abhaengigkeiten und beide Frontends. `nextcloud/3rdparty`
+  wird ausschliesslich am Gitlink-Commit des Server-Checkouts geholt. Composer
+  prueft die vorhandenen PHP-Erweiterungen; kein `occ install` oder `upgrade`.
+- Netdata wird als nativer Agent/API mit DBEngine gebaut, **ohne Dashboard**,
+  ML/eBPF oder privilegierte Zusatzplugins. So entfaellt der sonstige Dashboard-
+  Download von `app.netdata.cloud`. Die Cloud-Protokollquellen kommen aus dem
+  gepinnten GitHub-Submodul; keine Cloud-Registrierung oder Hostrechte-Erweiterung.
+- Stirling PDF baut die Core-Variante mit Frontend. Vorhandenes JDK 25, Gradle
+  9.7.1 und Go Task sind erforderlich; automatische JDK-Downloads sind gesperrt.
+  OCR-/Office-Hilfsprogramme und Dienste bleiben separate Voraussetzungen.
+- Vault wird als Server/CLI **ohne eingebettete Web-UI** gebaut. Die BUSL-1.1-
+  Lizenz bleibt verbindlich; kein Init, Unseal oder Dev-Server.
+- Vikunja baut zuerst das Frontend und bettet es in das Go-Backend ein. Ein
+  vorhandener C-Compiler ist wegen CGO erforderlich; kein Platzhalter-Frontend.
+- Watchtower kommt als selbst gebautes GitHub-Go-Binary. **Es benoetigt im
+  Betrieb weiterhin die Docker-API.** Der Build greift nicht auf einen Socket
+  zu und aktualisiert keine Container. Nicht fuer einen Docker-freien Host gedacht.
+
+### Promtail nur als Archivbuild
+
+Promtail hat seit dem 02.03.2026 keinen Support mehr. Der gepinnte Archivstand
+`v3.5.11` ist kein Sicherheitsupdate und keine Empfehlung fuer neue Dienste.
+Der Installer verweigert den Build ohne ausdrueckliche Bestaetigung:
+
+```bash
+bash scripts/tools/promtail_install.sh --dry-run
+# Only for an explicitly reviewed archival/migration build, not production deployment.
+NATIVE_ALLOW_EOL_PROMTAIL=1 bash scripts/tools/promtail_install.sh
+```
+
+### Herkunft und Paketmanager
+
+Alle 43 angefragten Programme stehen jetzt auch in `config/tools.yml`, nicht
+nur in einzelnen Skriptdateien. Neu ergaenzte Rezepte verwenden unveraenderliche
+GitHub-Commits; mehrere davon sind Entwicklungsstaende. Vorhandene passende
+Toolchains sind Voraussetzung, kein automatisches System-Upgrade. npm/pnpm/yarn,
+Maven, Clojure, Gradle, Cargo und uv duerfen ihre normalen Buildabhaengigkeiten
+beziehen. Das ist keine Zusicherung, dass jede transitive Bibliothek aus
+GitHub-Quellcode kompiliert wird. Source-available-Lizenzen werden durch einen
+GitHub-Download nicht zu freien Open-Source-Lizenzen.
+
+Forgejo verwendet nach Nutzerfreigabe vom 23.10.2026 die offizielle Codeberg-
+Quelle als ausdrueckliche Ausnahme. `source_verified: true` und
+`source_exception` kennzeichnen dies in der Registry; der Installer erlaubt
+keine beliebigen zusaetzlichen Quellenhosts.
+
 ## Tests und verbleibende Arbeit
 
 [Offline-Fixtures](../tests/test_native_github_tools.py) pruefen alle Rezepte mit
 gemockten Compilern, 258 Lifecycle-Wrapper, Fehlerlogging, Rollback, Idempotenz,
-Marker, Dateigrenzen und die 25 expliziten Blocker. Das sind keine 18 realen
+Marker, Dateigrenzen und die expliziten Blocker. Das sind keine realen
 Linux-Builds. Kein Tool, Container oder Dienst wurde auf dem Nutzersystem gestartet.
 
-Noch offen: die 25 oben benannten Paket-/Runtime-Migrationen; reale Builds der
-18 Rezepte auf isoliertem Ubuntu; dazu je Dienst Konfiguration, Betrieb, Restore
+Noch offen: Airbyte, Grafana Alloy, Langfuse, NocoDB, Penpot und Rhasspy;
+reale Builds der verfuegbaren Rezepte auf isoliertem Ubuntu; dazu je Dienst Konfiguration, Betrieb, Restore
 und Upgrade. Erst nach diesen Nachweisen als einsatzbereit einstufen.
 
-Lokaler Nachweis: 17 neue Migrations-Fixtures, 8 bestehende native Status-/
-Build-Dependency-Fixtures und 13 Repository-Audit-Fixtures bestanden (38 gesamt).
-Alle 258 Lifecycle-Wrapper sowie Menue, Statushelper, OpenHands-Scaffold und
-drei Shelltests wurden mit nativem Bash geparst (264 Dateien). Die drei angepassten
-Shell-Vertragstests bestanden; JSON, lokale Links und `git diff --check` ebenfalls.
-Kein vollstaendiger Repo-Testlauf, kein echter Ubuntu-Build oder Runtime-Start.
+Die aktualisierten Offline-Vertragstests pruefen zusaetzlich Mehrkomponenten-
+Artefakte, Python-Vorpruefung, Promtail-Freigabe und falsche Submodul-Pins.
+Die frueheren Fixture-/Shell-Nachweise ersetzen keine Abnahme dieser neuen
+Compilerlaeufe. Kein vollstaendiger Repo-Testlauf, Ubuntu-Build oder Runtime-Start.
+
+Lokaler Nachweis dieses Schritts: 23 Migrations-Vertragstests, 8 native
+Status-/Buildabhaengigkeits-Tests und 13 Repository-Audit-Fixtures bestanden
+(44 Python-Tests). Die drei Shell-Vertragstests fuer Node Exporter, Mosquitto
+und Airbyte bestanden ebenfalls. Forgejos Quellenpruefung wurde mit aktivierter
+strikter GitHub-Regel getestet: Nur die explizit hinterlegte Codeberg-Ausnahme
+wird akzeptiert. Ein erster Testlauf fand einen Toolchain-Vorpruefungsfehler;
+nach Korrektur bestand der erneute Lauf.
+Alle 258 Lifecycle-Einstiege und `setup_ultimate.sh` bestanden die Bash-
+Syntaxpruefung (259 Dateien); `git diff --check` war ebenfalls fehlerfrei.
 
 Weitere offizielle Einordnung:
 [Airbyte/abctl und Docker](https://docs.airbyte.com/platform/using-airbyte/getting-started/oss-quickstart),
 [Forgejo-Quellen und Releases](https://forgejo.org/download/),
 [Promtail EOL](https://grafana.com/docs/loki/latest/send-data/promtail/).
+
+## Primaerquellen fuer ergaenzte Buildvertraege
+
+Die Quelllinks in der Tabelle zeigen bei verfuegbaren Rezepten direkt auf den
+geprueften Commit. Insbesondere wurden die Paketdefinitionen und Builddateien
+(Makefile, pom.xml, pyproject.toml, package.json beziehungsweise build.gradle)
+gelesen, nicht nur die Startseite. Weitere relevante Originalquellen:
+
+- [Hatch: Build-Hooks abschalten](https://hatch.pypa.io/latest/config/build/#environment-variables)
+- [Forgejo 17.0.0: offizieller Release-Commit](https://codeberg.org/forgejo/forgejo/src/commit/0d791421f85ca13a63b665053d81ea765fbbc571)
+- [Netdata: Dashboard-Download im Build](https://github.com/netdata/netdata/blob/4ca8ebf9c40a2e36b42b0255269a2a97948c752b/packaging/cmake/Modules/NetdataDashboard.cmake)

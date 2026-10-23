@@ -1,7 +1,8 @@
 # START HERE
 
 [Docker-Installer durch native GitHub-Builds ersetzen](DOCKER_TO_GITHUB.md):
-43 Pfade inventarisiert, 18 Buildrezepte und 25 explizite offene Migrationen.
+Alle 43 Pfade registriert, 37 Buildrezepte und 6 explizite offene Migrationen.
+Forgejo verwendet nach Freigabe die offizielle Codeberg-Quelle statt GitHub.
 Kein automatisches Entfernen bestehender Container/Volumes.
 
 [P0-Codepaket: Update, PAT und datenerhaltender Compose-Uninstall](P0_SAFETY_CHANGES.md):

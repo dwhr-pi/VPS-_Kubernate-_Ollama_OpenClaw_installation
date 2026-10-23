@@ -21,19 +21,62 @@ for key, item in TOOLS.items():
     if not re.fullmatch(r"[a-z0-9_]+", key):
         raise ValueError("Ungueltiger nativer Tool-Schluessel.")
     if recipe:
+        host = recipe.get("source_host", "github.com")
+        if host != "github.com" and not (key == "forgejo" and host == "codeberg.org" and recipe["repo"] == "forgejo/forgejo"):
+            raise ValueError("Nicht freigegebene Quellen-Ausnahme.")
         if (not re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", recipe["repo"]) or
                 not re.fullmatch(r"[0-9a-f]{40}", recipe["pin"]) or
-                recipe["kind"] not in ("go", "rust", "cmake", "make", "python", "requirements", "npm", "pnpm") or
+                recipe["kind"] not in ("go", "rust", "cmake", "make", "python", "requirements", "npm", "pnpm", "pipeline") or
                 not isinstance(recipe["disk_mb"], int) or recipe["disk_mb"] < 1024):
             raise ValueError("Ungueltiges natives Buildrezept.")
         for field in ("artifact", "entry", "assets", "assets_script", "module_dir", "package", "binary"):
             value = recipe.get(field)
             if value and (Path(value).is_absolute() or ".." in Path(value).parts or "\\" in value or ":" in value or value.startswith("-")):
                 raise ValueError("Buildrezept enthaelt unsicheren Pfad.")
+        for value in recipe.get("artifacts", []) + recipe.get("artifact_globs", []):
+            if not isinstance(value, str) or not value or Path(value).is_absolute() or ".." in Path(value).parts or "\\" in value or ":" in value:
+                raise ValueError("Unsicherer Pipeline-Artefaktpfad.")
+        for step in recipe.get("steps", []):
+            cwd = step.get("cwd", ".")
+            args = step.get("args", [])
+            if (not isinstance(cwd, str) or Path(cwd).is_absolute() or ".." in Path(cwd).parts or
+                    "\\" in cwd or ":" in cwd or not args or
+                    any(not isinstance(arg, str) for arg in args) or
+                    args[0] not in ("go", "make", "npm", "pnpm", "yarn", "mvn", "java", "bun", "clojure", "composer", "php", "gradle")):
+                raise ValueError("Ungueltiger Pipeline-Buildschritt.")
+        for dependency in recipe.get("sources", []):
+            if (not re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", dependency["repo"]) or
+                    not re.fullmatch(r"[0-9a-f]{40}", dependency["pin"]) or
+                    not re.fullmatch(r"[A-Za-z0-9_./-]+", dependency["path"]) or
+                    Path(dependency["path"]).is_absolute() or ".." in Path(dependency["path"]).parts):
+                raise ValueError("Ungueltige abhaengige GitHub-Quelle.")
 
 
 def recipe_hash(spec):
     return hashlib.sha256(json.dumps(spec["recipe"], sort_keys=True).encode()).hexdigest()
+
+
+def source_origin(recipe):
+    return "https://" + recipe.get("source_host", "github.com") + "/" + recipe["repo"] + ".git"
+
+
+def fetch_source(checkout, marker, prefix, spec, recipe):
+    if recipe.get("source_host", "github.com") == "github.com":
+        common.install(checkout, marker, prefix, spec)
+        return
+    # The only approved non-GitHub primary source is Forgejo's authoritative repository.
+    if checkout.exists():
+        raise ValueError("Vorhandene Quellen bleiben unangetastet.")
+    checkout.mkdir(mode=0o700)
+    common.git(checkout, "init", "--initial-branch=main")
+    common.git(checkout, "remote", "add", "origin", source_origin(recipe))
+    common.git(checkout, "fetch", "--depth=1", "origin", recipe["pin"])
+    common.git(checkout, "checkout", "--detach", "FETCH_HEAD")
+    if common.git(checkout, "rev-parse", "HEAD") != recipe["pin"]:
+        raise ValueError("Offizieller Codeberg-Pin stimmt nicht.")
+    marker.write_text(json.dumps(dict(source=source_origin(recipe), commit=recipe["pin"],
+                                      scope="source-only", installed=False)), encoding="utf-8")
+    print("Freigegebene Quellen-Ausnahme: offizielles Forgejo auf Codeberg; noch KEIN Buildnachweis.")
 
 
 def paths(key):
@@ -49,6 +92,8 @@ def run(args, cwd, env):
 
 
 def requirements(spec):
+    if spec["recipe"].get("tools"):
+        return spec["recipe"]["tools"]
     kind = spec["recipe"]["kind"]
     return {
         "go": ["go"], "rust": ["cargo", "rustc", "cc", "pkg-config"],
@@ -56,6 +101,7 @@ def requirements(spec):
         "python": ["uv"], "requirements": ["uv"],
         "npm": ["node", "npm"], "pnpm": ["node", "pnpm"],
         "make": spec["recipe"].get("tools", ["make"]),
+        "pipeline": [],
     }[kind]
 
 
@@ -63,14 +109,26 @@ def preflight(outer, spec):
     if platform.system() != "Linux":
         raise ValueError("Native Builds derzeit fuer Ubuntu/WSL Linux; kein Windows-Crossbuild.")
     common.reserve(outer, {"reserve_mb": spec["recipe"]["disk_mb"]})
+    acknowledgement = spec["recipe"].get("eol_ack")
+    if acknowledgement and os.environ.get(acknowledgement) != "1":
+        raise ValueError("EOL-Archivbuild nicht freigegeben. " + acknowledgement + "=1 nur nach Lesen der Migrationsdokumentation setzen.")
     for name in ["git"] + requirements(spec):
         common.executable(name)
     info = Path("/proc/meminfo")
     if info.is_file():
         memory = dict(line.split(":", 1) for line in info.read_text().splitlines())
-        minimum = 4096 if spec["recipe"]["disk_mb"] >= 16384 else 2048
+        minimum = spec["recipe"].get("ram_mb", 4096 if spec["recipe"]["disk_mb"] >= 16384 else 2048)
         if int(memory["MemAvailable"].split()[0]) < minimum * 1024:
             raise ValueError("Zu wenig verfuegbarer RAM: mindestens " + str(minimum) + " MiB fuer diesen Build.")
+    recipe = spec["recipe"]
+    if recipe.get("python_min"):
+        python = os.environ.get("NATIVE_SOURCE_PYTHON_BIN", sys.executable)
+        lower = tuple(recipe["python_min"])
+        upper = tuple(recipe.get("python_max", [99]))
+        common.run([python, "-I", "-c", "import sys; assert " + repr(lower) +
+                    " <= sys.version_info[:3] < " + repr(upper) +
+                    ", 'Python-Version ausserhalb des gepinnten Buildvertrags'"], Path.cwd(),
+                   {name: value for name, value in os.environ.items() if name in ("PATH", "LANG", "LC_ALL")})
 
 
 def environment(prefix):
@@ -91,6 +149,10 @@ def environment(prefix):
                RUSTUP_HOME=str(Path.home() / ".rustup"), UV_PYTHON_DOWNLOADS="never",
                COREPACK_ENABLE_NETWORK="0", HF_HUB_OFFLINE="1", TRANSFORMERS_OFFLINE="1",
                GRADIO_ANALYTICS_ENABLED="False", npm_config_fund="false", npm_config_audit="false")
+    env.update(GRADLE_USER_HOME=str(work / ".build-home/gradle"),
+               npm_config_cache=str(work / ".build-home/npm-cache"),
+               YARN_ENABLE_TELEMETRY="0", NX_DAEMON="false", NX_CLOUD="false",
+               NEXT_TELEMETRY_DISABLED="1", DO_NOT_TRACK="1")
     return env
 
 
@@ -99,9 +161,19 @@ def build(prefix, spec):
     kind = recipe["kind"]
     checkout = prefix / "source"
     env = environment(prefix)
+    substitutions = dict(prefix=str(prefix), source=str(checkout), cache=str(prefix / "_build"))
+    env.update({name: value.format_map(substitutions) for name, value in recipe.get("build_env", {}).items()})
     binary = prefix / "bin" / recipe.get("binary", "unused")
     binary.parent.mkdir(mode=0o700)
     artifacts = []
+    if recipe.get("node_min"):
+        upper = recipe.get("node_max", 999)
+        run(["node", "-e", "const v=+process.versions.node.split('.')[0]; if(v < " +
+             str(recipe["node_min"]) + " || v > " + str(upper) + ") process.exit(1)"], checkout, env)
+    if recipe.get("manager"):
+        manager, version = recipe["manager"]
+        if run([manager, "--version"], checkout, env) != version:
+            raise ValueError("Vorhandener Paketmanager abweichend: " + manager + " " + version + " erforderlich.")
     if kind == "go":
         env["CGO_ENABLED"] = "0"
         module = checkout / recipe.get("module_dir", ".")
@@ -124,7 +196,7 @@ def build(prefix, spec):
     elif kind == "cmake":
         run(["cmake", "-S", str(checkout), "-B", str(prefix / "cmake-build"),
              "-DCMAKE_BUILD_TYPE=Release", "-DCMAKE_INSTALL_PREFIX=" + str(prefix / "app"),
-             "-DWITH_DOCS=OFF", "-DWITH_TESTS=OFF"], prefix, env)
+             "-DWITH_DOCS=OFF", "-DWITH_TESTS=OFF"] + recipe.get("cmake_options", []), prefix, env)
         run(["cmake", "--build", str(prefix / "cmake-build"), "--parallel", "2"], prefix, env)
         run(["cmake", "--install", str(prefix / "cmake-build")], prefix, env)
         artifacts = [recipe["artifact"]]
@@ -154,16 +226,39 @@ def build(prefix, spec):
         artifacts = ["source/" + recipe["entry"], "source/package.json"]
         if recipe.get("assets"):
             artifacts.append("source/" + recipe["assets"])
+    elif kind == "pipeline":
+        for step in recipe["steps"]:
+            args = [arg.format_map(substitutions) for arg in step["args"]]
+            run(args, common.checked(checkout / step.get("cwd", ".")), env)
+        artifacts = list(recipe["artifacts"])
+        for pattern in recipe.get("artifact_globs", []):
+            matches = sorted(path.relative_to(prefix).as_posix() for path in prefix.glob(pattern) if path.is_file())
+            if not matches:
+                raise ValueError("Buildausgabe fehlt: " + pattern)
+            artifacts.extend(matches)
+        if artifacts:
+            binary = prefix / artifacts[0]
     elif kind in ("python", "requirements"):
+        for step in recipe.get("steps", []):
+            run([arg.format_map(substitutions) for arg in step["args"]],
+                common.checked(checkout / step.get("cwd", ".")), env)
+        module = checkout / recipe.get("module_dir", ".")
         python = os.environ.get("NATIVE_SOURCE_PYTHON_BIN", sys.executable)
         venv = prefix / "venv"
         run(["uv", "venv", "--python", python, "--no-python-downloads", str(venv)], prefix, env)
         vpython = venv / "bin/python"
         pip = ["uv", "pip", "install", "--python", str(vpython), "--index-url", "https://pypi.org/simple"]
-        if (checkout / "requirements.txt").is_file():
-            run(pip + ["-r", str(checkout / "requirements.txt")], prefix, env)
+        if spec["id"] == "open_webui":
+            run(["npm", "ci", "--no-audit", "--no-fund"], checkout, env)
+            run(["npm", "run", "build"], checkout, env)
+            if not (checkout / "build/index.html").is_file():
+                raise ValueError("Open-WebUI-Frontend fehlt; kein Backend-only-Erfolg.")
+            # The upstream hook runs npm install --force; use the lockfile build above instead.
+            env["HATCH_BUILD_NO_HOOKS"] = "true"
+        if (module / "requirements.txt").is_file():
+            run(pip + ["-r", str(module / "requirements.txt")], prefix, env)
         if kind == "python":
-            local = str(checkout) + ("[" + recipe["extras"] + "]" if recipe.get("extras") else "")
+            local = str(module) + ("[" + recipe["extras"] + "]" if recipe.get("extras") else "")
             if spec["id"] == "searxng":
                 run(pip + ["setuptools", "wheel"], prefix, env)
                 run(pip + ["--no-build-isolation", local], prefix, env)
@@ -177,6 +272,8 @@ def build(prefix, spec):
         resolved = run(["uv", "pip", "freeze", "--python", str(vpython)], prefix, env)
         (prefix / "resolved-requirements.txt").write_text(resolved + "\n", encoding="utf-8")
         artifacts.append("resolved-requirements.txt")
+        for entry in recipe.get("artifacts", []):
+            artifacts.append(entry)
     else:
         raise ValueError("Unbekanntes Buildrezept.")
     for name in artifacts:
@@ -193,8 +290,13 @@ def validate(prefix, marker, spec, full=False):
     if record.get("recipe_hash") != recipe_hash(spec) or record.get("application_tested") is not False:
         raise ValueError("Native Buildmarkierung passt nicht; kein Ueberschreiben/Loeschen.")
     repo = spec["recipe"]["repo"]
-    if common.git(prefix / "source", "rev-parse", "HEAD") != spec["recipe"]["pin"] or common.git(prefix / "source", "remote", "get-url", "origin") != "https://github.com/" + repo + ".git":
+    if common.git(prefix / "source", "rev-parse", "HEAD") != spec["recipe"]["pin"] or common.git(prefix / "source", "remote", "get-url", "origin") != source_origin(spec["recipe"]):
         raise ValueError("GitHub-Quellidentitaet stimmt nicht.")
+    for dependency in spec["recipe"].get("sources", []):
+        path = common.checked(prefix / "source" / dependency["path"])
+        if (common.git(path, "rev-parse", "HEAD") != dependency["pin"] or
+                common.git(path, "remote", "get-url", "origin") != "https://github.com/" + dependency["repo"] + ".git"):
+            raise ValueError("Abhaengige GitHub-Quelle stimmt nicht.")
     files = record.get("files", {})
     if not record.get("artifacts") or not files:
         raise ValueError("Buildartefakte fehlen im Nachweis.")
@@ -225,7 +327,17 @@ def install(outer, prefix, marker, spec):
     try:
         recipe = spec["recipe"]
         source_spec = dict(name=spec["name"], repo=recipe["repo"], pin=recipe["pin"], mode="source", reserve_mb=recipe["disk_mb"])
-        common.install(prefix / "source", prefix / "source-ready.json", prefix, source_spec)
+        fetch_source(prefix / "source", prefix / "source-ready.json", prefix, source_spec, recipe)
+        for index, dependency in enumerate(recipe.get("sources", [])):
+            path = common.checked(prefix / "source" / dependency["path"])
+            entry = common.git(prefix / "source", "ls-tree", "HEAD", "--", dependency["path"])
+            if not entry.startswith("160000 commit " + dependency["pin"] + "\t"):
+                raise ValueError("Submodul-Pin passt nicht zum uebergeordneten GitHub-Commit.")
+            if path.exists():
+                path.rmdir()  # Only the empty gitlink directory in this new checkout may be removed.
+            common.install(path, prefix / ("dependency-" + str(index) + ".json"), prefix,
+                           dict(name=dependency["repo"], repo=dependency["repo"], pin=dependency["pin"],
+                                mode="source", reserve_mb=recipe["disk_mb"]))
         artifacts = build(prefix, spec)
         if spec["id"] == "mosquitto":
             (prefix / "mosquitto.conf.example").write_text(
@@ -235,7 +347,8 @@ def install(outer, prefix, marker, spec):
             "# Nativer Build, kein gestarteter Dienst\n\n"
             "Konfiguration, Authentifizierung, localhost/VPN-Bindung und Datenmigration separat pruefen.\n"
             "Keine alten /opt-Containerdaten automatisch verwenden oder loeschen.\n"
-            "Siehe docs/DOCKER_TO_GITHUB.md im Setup-Repository.\n", encoding="utf-8")
+            "Siehe docs/DOCKER_TO_GITHUB.md im Setup-Repository.\n\n" +
+            recipe.get("note", "") + "\n", encoding="utf-8")
         files = common.inventory(prefix)
         record = dict(recipe_hash=recipe_hash(spec), commit=recipe["pin"], scope="native-github-build",
                       application_tested=False, artifacts=artifacts, files=files)
@@ -283,7 +396,8 @@ def main(argv=None):
             except (ValueError, OSError, subprocess.SubprocessError, KeyError, TypeError):
                 pass
         print(json.dumps(dict(installed=ready, scope="native-github-build" if ready else "absent",
-                              application_tested=False, blocked_reason=spec["blocked_reason"])))
+                              application_tested=False, blocked_reason=spec["blocked_reason"],
+                              build_note=(spec.get("recipe") or {}).get("note", ""))))
         return 0 if ready or args.action == "status" else 1
     with common.operation(outer, args.action, tool=spec["name"].replace(" ", "_")):
         print("GitHub-native-Umstellung:", args.tool, "Manifest:", MANIFEST)

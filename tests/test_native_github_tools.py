@@ -46,9 +46,9 @@ class NativeGithubTests(unittest.TestCase):
         with patch.object(tool, "preflight"), patch.object(tool.common, "install", side_effect=self.source), patch.object(tool, "build", side_effect=self.build), redirect_stdout(io.StringIO()):
             tool.install(self.outer, self.prefix, self.marker, self.spec)
 
-    def test_inventory_has_43_paths_and_18_honest_build_recipes(self):
+    def test_inventory_has_43_paths_and_37_honest_build_recipes(self):
         self.assertEqual(len(tool.TOOLS), 43)
-        self.assertEqual(sum(bool(s["recipe"]) for s in tool.TOOLS.values()), 18)
+        self.assertEqual(sum(bool(s["recipe"]) for s in tool.TOOLS.values()), 37)
         for key, spec in tool.TOOLS.items():
             self.assertEqual(key, spec["id"])
             if spec["recipe"]:
@@ -184,7 +184,7 @@ class NativeGithubTests(unittest.TestCase):
                 checkout = prefix / "source"
                 checkout.mkdir()
                 recipe = spec["recipe"]
-                (checkout / "package.json").write_text(json.dumps({"packageManager": "pnpm@11.26.0"}))
+                (checkout / "package.json").write_text(json.dumps({"packageManager": "pnpm@" + recipe.get("package_manager", "11.26.0")}))
                 (checkout / "Makefile.common").write_text("PROMU_VERSION ?= 0.20.0")
                 commands = []
                 def run(args, cwd, env):
@@ -193,7 +193,9 @@ class NativeGithubTests(unittest.TestCase):
                     if command[:3] == ["rustc", "--print", "sysroot"]:
                         return str(prefix)
                     if command == ["pnpm", "--version"]:
-                        return "11.26.0"
+                        return recipe.get("package_manager", recipe.get("manager", ["pnpm", "11.26.0"])[1])
+                    if recipe.get("manager") and command == [recipe["manager"][0], "--version"]:
+                        return recipe["manager"][1]
                     expected = []
                     if recipe.get("binary"):
                         expected += ["bin/" + recipe["binary"], "source/target/release/" + recipe["binary"]]
@@ -202,6 +204,8 @@ class NativeGithubTests(unittest.TestCase):
                     for key in ("entry", "assets"):
                         if recipe.get(key):
                             expected.append("source/" + recipe[key])
+                    expected += recipe.get("artifacts", [])
+                    expected += [pattern.replace("*", "fixture") for pattern in recipe.get("artifact_globs", [])]
                     expected += ["venv/pyvenv.cfg"]
                     for name in expected:
                         path = prefix / name
@@ -216,6 +220,12 @@ class NativeGithubTests(unittest.TestCase):
                     self.assertFalse(any(arg in command for arg in ("start", "serve", "up", "setup", "publish", "push")))
                 if spec["id"] == "prometheus":
                     self.assertIn(["go", "install", "github.com/prometheus/promu@v0.20.0"], commands)
+                if spec["id"] == "open_webui":
+                    self.assertLess(commands.index(["npm", "ci", "--no-audit", "--no-fund"]),
+                                    next(i for i, args in enumerate(commands) if args[:3] == ["uv", "pip", "install"]))
+                if spec["id"] == "argilla":
+                    self.assertIn(["npm", "exec", "--", "nuxt", "generate"], commands)
+                    self.assertTrue(any(str(checkout / "argilla-server") + "[postgresql]" in args for args in commands))
 
     def test_environment_excludes_credentials_and_blocks_container_fallback(self):
         self.prefix.mkdir(parents=True)
@@ -239,12 +249,68 @@ class NativeGithubTests(unittest.TestCase):
 
     def test_registry_uses_build_markers_and_never_calls_blocked_recipe_ready(self):
         entries = json.loads((ROOT / "config/tools.yml").read_text(encoding="utf-8"))["tools"]
+        self.assertTrue(set(tool.TOOLS).issubset({item["id"] for item in entries}))
         for item in entries:
             spec = tool.TOOLS.get(item["id"])
             if not spec:
                 continue
             self.assertEqual(item["check_value"], "~/.openclaw_ultimate_user_data/tools/" + spec["id"] + "/native-github/build-ready.json")
             self.assertEqual(item["status"], "experimental" if spec["recipe"] else "planned")
+
+    def test_eol_archive_requires_explicit_ack_before_fetch(self):
+        with patch.object(tool.platform, "system", return_value="Linux"), patch.object(tool.common, "reserve"), patch.object(tool.common, "install") as install, patch.dict(os.environ, {"NATIVE_ALLOW_EOL_PROMTAIL": "0"}), redirect_stdout(io.StringIO()):
+            with self.assertRaisesRegex(ValueError, "EOL-Archivbuild"):
+                tool.main(["promtail", "install"])
+        install.assert_not_called()
+        self.assertFalse(tool.paths("promtail")[1].exists())
+
+    def test_python_version_check_is_before_fetch_and_does_not_expose_keys(self):
+        with patch.object(tool.platform, "system", return_value="Linux"), patch.object(tool.common, "reserve"), patch.object(tool.common, "executable"), patch.object(tool.common, "install") as install, patch.object(tool.common, "run", side_effect=ValueError("Python-Version")) as run, patch.dict(os.environ, {"OPENAI_API_KEY": "fixture-secret"}), redirect_stdout(io.StringIO()):
+            with self.assertRaisesRegex(ValueError, "Python-Version"):
+                tool.main(["home_assistant", "install"])
+        install.assert_not_called()
+        self.assertNotIn("OPENAI_API_KEY", run.call_args.args[2])
+
+    def test_submodule_pin_mismatch_rolls_back_without_fetching_dependency(self):
+        spec = tool.TOOLS["nextcloud"]
+        outer, prefix, marker = tool.paths("nextcloud")
+        outer.mkdir(parents=True)
+        keep = outer / "legacy-data"
+        keep.write_text("preserve")
+        with patch.object(tool, "preflight"), patch.object(tool.common, "install", side_effect=self.source) as install, patch.object(tool.common, "git", return_value="160000 commit " + "0" * 40 + "\t3rdparty"), patch.object(tool, "build") as build, redirect_stdout(io.StringIO()):
+            with self.assertRaisesRegex(ValueError, "Submodul-Pin"):
+                tool.install(outer, prefix, marker, spec)
+        self.assertEqual(install.call_count, 1)
+        build.assert_not_called()
+        self.assertFalse(prefix.exists())
+        self.assertEqual(keep.read_text(), "preserve")
+
+    def test_missing_pipeline_output_is_failure_not_source_only_success(self):
+        self.prefix.mkdir(parents=True)
+        (self.prefix / "source").mkdir()
+        spec = tool.TOOLS["apache_tika"]
+        with patch.object(tool, "run", return_value=""):
+            with self.assertRaisesRegex(ValueError, "Buildartefakt fehlt"):
+                tool.build(self.prefix, spec)
+        self.assertFalse(self.marker.exists())
+
+    def test_every_recipe_declares_its_toolchain_without_key_errors(self):
+        for spec in tool.TOOLS.values():
+            if spec["recipe"]:
+                self.assertTrue(tool.requirements(spec), spec["id"])
+
+    def test_official_codeberg_exception_does_not_mark_a_clone_as_installed(self):
+        self.prefix.mkdir(parents=True)
+        spec = tool.TOOLS["forgejo"]
+        source_marker = self.prefix / "source-ready.json"
+        with patch.object(tool.common, "git", return_value=spec["recipe"]["pin"]) as git, patch.object(tool.common, "install") as github, redirect_stdout(io.StringIO()):
+            tool.fetch_source(self.prefix / "source", source_marker, self.prefix, {}, spec["recipe"])
+        github.assert_not_called()
+        self.assertTrue(any(call.args[1:] == ("remote", "add", "origin", "https://codeberg.org/forgejo/forgejo.git") for call in git.call_args_list))
+        record = json.loads(source_marker.read_text())
+        self.assertFalse(record["installed"])
+        self.assertEqual(record["scope"], "source-only")
+        self.assertFalse(self.marker.exists())
 
 
 if __name__ == "__main__":

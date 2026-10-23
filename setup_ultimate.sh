@@ -872,6 +872,25 @@ get_tool_install_fallback_min_free_mb() {
     local tool_key="$1"
 
     case "$tool_key" in
+        "Forgejo") printf '16384' ;;
+        "Apache_Tika") printf '16384' ;;
+        "Appsmith") printf '49152' ;;
+        "ArchiveBox") printf '8192' ;;
+        "Argilla") printf '16384' ;;
+        "Budibase") printf '32768' ;;
+        "Directus") printf '24576' ;;
+        "Grafana") printf '32768' ;;
+        "Home_Assistant") printf '16384' ;;
+        "Metabase") printf '32768' ;;
+        "Neo4j") printf '49152' ;;
+        "Netdata") printf '16384' ;;
+        "Nextcloud") printf '24576' ;;
+        "Open_WebUI") printf '24576' ;;
+        "Promtail") printf '16384' ;;
+        "Stirling_PDF") printf '24576' ;;
+        "Vault") printf '24576' ;;
+        "Vikunja") printf '16384' ;;
+        "Watchtower") printf '4096' ;;
         "Caddy") printf '4096' ;;
         "cAdvisor") printf '8192' ;;
         "Changedetection_IO") printf '8192' ;;
@@ -1031,7 +1050,7 @@ preflight_tool_install_storage() {
     if is_wsl_environment; then
         windows_min_mb="$(get_tool_install_windows_min_free_mb "$min_mb")"
         case "$tool_key" in
-            "Caddy"|"cAdvisor"|"Changedetection_IO"|"CrowdSec"|"Healthchecks"|"LiteLLM"|"Loki"|"Meilisearch"|"MinIO"|"Mosquitto"|"Node_Exporter"|"Node_Red"|"Prometheus"|"Qdrant"|"SearXNG"|"Uptime_Kuma"|"Weaviate"|"Zigbee2MQTT") windows_min_mb="$min_mb" ;;
+            "Apache_Tika"|"Appsmith"|"ArchiveBox"|"Argilla"|"Budibase"|"Forgejo"|"Caddy"|"cAdvisor"|"Changedetection_IO"|"CrowdSec"|"Directus"|"Grafana"|"Healthchecks"|"Home_Assistant"|"LiteLLM"|"Loki"|"Meilisearch"|"Metabase"|"MinIO"|"Mosquitto"|"Neo4j"|"Netdata"|"Nextcloud"|"Node_Exporter"|"Node_Red"|"Open_WebUI"|"Prometheus"|"Promtail"|"Qdrant"|"SearXNG"|"Stirling_PDF"|"Uptime_Kuma"|"Vault"|"Vikunja"|"Watchtower"|"Weaviate"|"Zigbee2MQTT") windows_min_mb="$min_mb" ;;
             Qwen_Desktop_Build|Hermes_Agent_Jarvis|Gradio|Streamlit|WanVideoWrapper|CogVideoX|LTX_Video|Video2Dataset|MuseTalk|LivePortrait|SadTalker|RVC|UVR5|Audacity|OBS|Concat|Remotion|HyperFrames) windows_min_mb="$min_mb" ;;
         esac
         windows_min_kb=$((windows_min_mb * 1024))
@@ -1405,6 +1424,27 @@ validate_tool_source_policy() {
     [ "$action" = "install" ] || return 0
     [ "${GITHUB_TOOL_SOURCES_PREFERRED:-true}" = "true" ] || return 0
     [ -f "$script_path" ] || return 0
+
+    # Only the explicitly approved Forgejo source exception may bypass GitHub preference.
+    if [ "$tool_key" = "Forgejo" ] && [ "$script_name" = "forgejo" ]; then
+        if "${NATIVE_GITHUB_PYTHON_BIN:-python3}" -I -c '
+import json, sys
+registry = json.load(open(sys.argv[1], encoding="utf-8"))["tools"]
+manifest = json.load(open(sys.argv[2], encoding="utf-8"))["tools"]
+entry = next(item for item in registry if item["id"] == "forgejo")
+recipe = next(item for item in manifest if item["id"] == "forgejo")["recipe"]
+assert entry.get("source_verified") is True
+assert entry.get("source_exception") == "user-approved-official-codeberg-2026-10-23"
+assert entry["source"] == "https://codeberg.org/forgejo/forgejo.git"
+assert recipe["source_host"] == "codeberg.org" and recipe["repo"] == "forgejo/forgejo"
+assert entry["source_commit"] == recipe["pin"]
+' "$INSTALL_DIR/config/tools.yml" "$INSTALL_DIR/config/docker_to_github.json"; then
+            echo -e "${YELLOW}Quellenpruefung:${NC} Forgejo: freigegebene offizielle Codeberg-Quelle, Commit gepinnt."
+            return 0
+        fi
+        echo -e "${RED}Abbruch: Forgejo-Quellen-Ausnahme oder Pin ungueltig.${NC}"
+        return 1
+    fi
 
     if grep -Eq 'github\.com|raw\.githubusercontent\.com' "$script_path"; then
         echo -e "${YELLOW}Quellenpruefung:${NC} GitHub-Quelle im Installer erkannt."
@@ -4616,15 +4656,15 @@ show_main_menu() {
 # Native migration metadata overrides older Docker descriptions only.
 TOOLS["Airbyte"]="Native Umstellung OFFEN; kein Docker-Fallback. docs/DOCKER_TO_GITHUB.md"
 TOOL_SCRIPT_NAMES["Airbyte"]="airbyte"
-TOOLS["Apache_Tika"]="Native Umstellung OFFEN; kein Docker-Fallback. docs/DOCKER_TO_GITHUB.md"
+TOOLS["Apache_Tika"]="GitHub-Source-Build ohne Image-Installation; kein Dienststart. docs/DOCKER_TO_GITHUB.md"
 TOOL_SCRIPT_NAMES["Apache_Tika"]="apache_tika"
-TOOLS["Appsmith"]="Native Umstellung OFFEN; kein Docker-Fallback. docs/DOCKER_TO_GITHUB.md"
+TOOLS["Appsmith"]="GitHub-Source-Build ohne Image-Installation; kein Dienststart. docs/DOCKER_TO_GITHUB.md"
 TOOL_SCRIPT_NAMES["Appsmith"]="appsmith"
-TOOLS["ArchiveBox"]="Native Umstellung OFFEN; kein Docker-Fallback. docs/DOCKER_TO_GITHUB.md"
+TOOLS["ArchiveBox"]="GitHub-Source-Build ohne Image-Installation; kein Dienststart. docs/DOCKER_TO_GITHUB.md"
 TOOL_SCRIPT_NAMES["ArchiveBox"]="archivebox"
-TOOLS["Argilla"]="Native Umstellung OFFEN; kein Docker-Fallback. docs/DOCKER_TO_GITHUB.md"
+TOOLS["Argilla"]="GitHub-Source-Build ohne Image-Installation; kein Dienststart. docs/DOCKER_TO_GITHUB.md"
 TOOL_SCRIPT_NAMES["Argilla"]="argilla"
-TOOLS["Budibase"]="Native Umstellung OFFEN; kein Docker-Fallback. docs/DOCKER_TO_GITHUB.md"
+TOOLS["Budibase"]="GitHub-Source-Build ohne Image-Installation; kein Dienststart. docs/DOCKER_TO_GITHUB.md"
 TOOL_SCRIPT_NAMES["Budibase"]="budibase"
 TOOLS["Caddy"]="GitHub-Source-Build ohne Docker; kein Dienststart. docs/DOCKER_TO_GITHUB.md"
 TOOL_SCRIPT_NAMES["Caddy"]="caddy"
@@ -4634,17 +4674,17 @@ TOOLS["Changedetection_IO"]="GitHub-Source-Build ohne Docker; kein Dienststart. 
 TOOL_SCRIPT_NAMES["Changedetection_IO"]="changedetection_io"
 TOOLS["CrowdSec"]="GitHub-Source-Build ohne Docker; kein Dienststart. docs/DOCKER_TO_GITHUB.md"
 TOOL_SCRIPT_NAMES["CrowdSec"]="crowdsec"
-TOOLS["Directus"]="Native Umstellung OFFEN; kein Docker-Fallback. docs/DOCKER_TO_GITHUB.md"
+TOOLS["Directus"]="GitHub-Source-Build ohne Image-Installation; kein Dienststart. docs/DOCKER_TO_GITHUB.md"
 TOOL_SCRIPT_NAMES["Directus"]="directus"
-TOOLS["Forgejo"]="Native Umstellung OFFEN; kein Docker-Fallback. docs/DOCKER_TO_GITHUB.md"
+TOOLS["Forgejo"]="Offizieller Codeberg-Source-Build (freigegebene Ausnahme); kein Docker. docs/DOCKER_TO_GITHUB.md"
 TOOL_SCRIPT_NAMES["Forgejo"]="forgejo"
-TOOLS["Grafana"]="Native Umstellung OFFEN; kein Docker-Fallback. docs/DOCKER_TO_GITHUB.md"
+TOOLS["Grafana"]="GitHub-Source-Build ohne Image-Installation; kein Dienststart. docs/DOCKER_TO_GITHUB.md"
 TOOL_SCRIPT_NAMES["Grafana"]="grafana"
 TOOLS["Grafana_Alloy"]="Native Umstellung OFFEN; kein Docker-Fallback. docs/DOCKER_TO_GITHUB.md"
 TOOL_SCRIPT_NAMES["Grafana_Alloy"]="grafana_alloy"
 TOOLS["Healthchecks"]="GitHub-Source-Build ohne Docker; kein Dienststart. docs/DOCKER_TO_GITHUB.md"
 TOOL_SCRIPT_NAMES["Healthchecks"]="healthchecks"
-TOOLS["Home_Assistant"]="Native Umstellung OFFEN; kein Docker-Fallback. docs/DOCKER_TO_GITHUB.md"
+TOOLS["Home_Assistant"]="GitHub-Source-Build ohne Image-Installation; kein Dienststart. docs/DOCKER_TO_GITHUB.md"
 TOOL_SCRIPT_NAMES["Home_Assistant"]="home_assistant"
 TOOLS["Langfuse"]="Native Umstellung OFFEN; kein Docker-Fallback. docs/DOCKER_TO_GITHUB.md"
 TOOL_SCRIPT_NAMES["Langfuse"]="langfuse"
@@ -4654,17 +4694,17 @@ TOOLS["Loki"]="GitHub-Source-Build ohne Docker; kein Dienststart. docs/DOCKER_TO
 TOOL_SCRIPT_NAMES["Loki"]="loki"
 TOOLS["Meilisearch"]="GitHub-Source-Build ohne Docker; kein Dienststart. docs/DOCKER_TO_GITHUB.md"
 TOOL_SCRIPT_NAMES["Meilisearch"]="meilisearch"
-TOOLS["Metabase"]="Native Umstellung OFFEN; kein Docker-Fallback. docs/DOCKER_TO_GITHUB.md"
+TOOLS["Metabase"]="GitHub-Source-Build ohne Image-Installation; kein Dienststart. docs/DOCKER_TO_GITHUB.md"
 TOOL_SCRIPT_NAMES["Metabase"]="metabase"
 TOOLS["MinIO"]="GitHub-Source-Build ohne Docker; kein Dienststart. docs/DOCKER_TO_GITHUB.md"
 TOOL_SCRIPT_NAMES["MinIO"]="minio"
 TOOLS["Mosquitto"]="GitHub-Source-Build ohne Docker; kein Dienststart. docs/DOCKER_TO_GITHUB.md"
 TOOL_SCRIPT_NAMES["Mosquitto"]="mosquitto"
-TOOLS["Neo4j"]="Native Umstellung OFFEN; kein Docker-Fallback. docs/DOCKER_TO_GITHUB.md"
+TOOLS["Neo4j"]="GitHub-Source-Build ohne Image-Installation; kein Dienststart. docs/DOCKER_TO_GITHUB.md"
 TOOL_SCRIPT_NAMES["Neo4j"]="neo4j"
-TOOLS["Netdata"]="Native Umstellung OFFEN; kein Docker-Fallback. docs/DOCKER_TO_GITHUB.md"
+TOOLS["Netdata"]="GitHub-Source-Build ohne Image-Installation; kein Dienststart. docs/DOCKER_TO_GITHUB.md"
 TOOL_SCRIPT_NAMES["Netdata"]="netdata"
-TOOLS["Nextcloud"]="Native Umstellung OFFEN; kein Docker-Fallback. docs/DOCKER_TO_GITHUB.md"
+TOOLS["Nextcloud"]="GitHub-Source-Build ohne Image-Installation; kein Dienststart. docs/DOCKER_TO_GITHUB.md"
 TOOL_SCRIPT_NAMES["Nextcloud"]="nextcloud"
 TOOLS["NocoDB"]="Native Umstellung OFFEN; kein Docker-Fallback. docs/DOCKER_TO_GITHUB.md"
 TOOL_SCRIPT_NAMES["NocoDB"]="nocodb"
@@ -4672,13 +4712,13 @@ TOOLS["Node_Exporter"]="GitHub-Source-Build ohne Docker; kein Dienststart. docs/
 TOOL_SCRIPT_NAMES["Node_Exporter"]="node_exporter"
 TOOLS["Node_Red"]="GitHub-Source-Build ohne Docker; kein Dienststart. docs/DOCKER_TO_GITHUB.md"
 TOOL_SCRIPT_NAMES["Node_Red"]="node_red"
-TOOLS["Open_WebUI"]="Native Umstellung OFFEN; kein Docker-Fallback. docs/DOCKER_TO_GITHUB.md"
+TOOLS["Open_WebUI"]="GitHub-Source-Build ohne Image-Installation; kein Dienststart. docs/DOCKER_TO_GITHUB.md"
 TOOL_SCRIPT_NAMES["Open_WebUI"]="open_webui"
 TOOLS["Penpot"]="Native Umstellung OFFEN; kein Docker-Fallback. docs/DOCKER_TO_GITHUB.md"
 TOOL_SCRIPT_NAMES["Penpot"]="penpot"
 TOOLS["Prometheus"]="GitHub-Source-Build ohne Docker; kein Dienststart. docs/DOCKER_TO_GITHUB.md"
 TOOL_SCRIPT_NAMES["Prometheus"]="prometheus"
-TOOLS["Promtail"]="Native Umstellung OFFEN; kein Docker-Fallback. docs/DOCKER_TO_GITHUB.md"
+TOOLS["Promtail"]="GitHub-Archivbuild nur nach EOL-Freigabe; kein Produktivstart. docs/DOCKER_TO_GITHUB.md"
 TOOL_SCRIPT_NAMES["Promtail"]="promtail"
 TOOLS["Qdrant"]="GitHub-Source-Build ohne Docker; kein Dienststart. docs/DOCKER_TO_GITHUB.md"
 TOOL_SCRIPT_NAMES["Qdrant"]="qdrant"
@@ -4686,15 +4726,15 @@ TOOLS["Rhasspy"]="Native Umstellung OFFEN; kein Docker-Fallback. docs/DOCKER_TO_
 TOOL_SCRIPT_NAMES["Rhasspy"]="rhasspy"
 TOOLS["SearXNG"]="GitHub-Source-Build ohne Docker; kein Dienststart. docs/DOCKER_TO_GITHUB.md"
 TOOL_SCRIPT_NAMES["SearXNG"]="searxng"
-TOOLS["Stirling_PDF"]="Native Umstellung OFFEN; kein Docker-Fallback. docs/DOCKER_TO_GITHUB.md"
+TOOLS["Stirling_PDF"]="GitHub-Source-Build ohne Image-Installation; kein Dienststart. docs/DOCKER_TO_GITHUB.md"
 TOOL_SCRIPT_NAMES["Stirling_PDF"]="stirling_pdf"
 TOOLS["Uptime_Kuma"]="GitHub-Source-Build ohne Docker; kein Dienststart. docs/DOCKER_TO_GITHUB.md"
 TOOL_SCRIPT_NAMES["Uptime_Kuma"]="uptime_kuma"
-TOOLS["Vault"]="Native Umstellung OFFEN; kein Docker-Fallback. docs/DOCKER_TO_GITHUB.md"
+TOOLS["Vault"]="GitHub-Source-Build ohne Image-Installation; kein Dienststart. docs/DOCKER_TO_GITHUB.md"
 TOOL_SCRIPT_NAMES["Vault"]="vault"
-TOOLS["Vikunja"]="Native Umstellung OFFEN; kein Docker-Fallback. docs/DOCKER_TO_GITHUB.md"
+TOOLS["Vikunja"]="GitHub-Source-Build ohne Image-Installation; kein Dienststart. docs/DOCKER_TO_GITHUB.md"
 TOOL_SCRIPT_NAMES["Vikunja"]="vikunja"
-TOOLS["Watchtower"]="Native Umstellung OFFEN; kein Docker-Fallback. docs/DOCKER_TO_GITHUB.md"
+TOOLS["Watchtower"]="GitHub-Source-Build; Betrieb benoetigt weiterhin Docker-API. docs/DOCKER_TO_GITHUB.md"
 TOOL_SCRIPT_NAMES["Watchtower"]="watchtower"
 TOOLS["Weaviate"]="GitHub-Source-Build ohne Docker; kein Dienststart. docs/DOCKER_TO_GITHUB.md"
 TOOL_SCRIPT_NAMES["Weaviate"]="weaviate"

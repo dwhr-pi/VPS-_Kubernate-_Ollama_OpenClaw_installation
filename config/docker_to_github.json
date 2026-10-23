@@ -22,8 +22,39 @@
         "apache/tika:latest"
       ],
       "previous_installer": "scripts/tools/apache_tika_install.sh",
-      "recipe": null,
-      "blocked_reason": "Native Gesamtpaketierung, Laufzeitabhaengigkeiten und Datenmigration noch nicht verifiziert; kein Docker-Fallback."
+      "recipe": {
+        "repo": "apache/tika",
+        "pin": "205414aec2c6a97e27cf657fbf565cb656ac8d1a",
+        "kind": "pipeline",
+        "disk_mb": 16384,
+        "tools": [
+          "java",
+          "javac",
+          "mvn"
+        ],
+        "steps": [
+          {
+            "cwd": ".",
+            "args": [
+              "mvn",
+              "--batch-mode",
+              "--no-transfer-progress",
+              "-Dmaven.repo.local={cache}/m2",
+              "-Pfast",
+              "-DskipTests",
+              "-pl",
+              "tika-server/tika-server-standard",
+              "-am",
+              "package"
+            ]
+          }
+        ],
+        "artifacts": [
+          "source/tika-server/tika-server-standard/target/tika-server-standard-4.2.0-SNAPSHOT.zip"
+        ],
+        "note": "Komplette Tika-Server-ZIP mit lib-Abhaengigkeiten, nicht nur eine einzelne unvollstaendige JAR. Entpacken/Serverkonfiguration separat."
+      },
+      "blocked_reason": null
     },
     {
       "id": "appsmith",
@@ -34,8 +65,94 @@
         "appsmith/appsmith-ce:latest"
       ],
       "previous_installer": "scripts/tools/appsmith_install.sh",
-      "recipe": null,
-      "blocked_reason": "Native Gesamtpaketierung, Laufzeitabhaengigkeiten und Datenmigration noch nicht verifiziert; kein Docker-Fallback."
+      "recipe": {
+        "repo": "appsmithorg/appsmith",
+        "pin": "dc5c6df034b3f402caf84661d0f22001ea277ce6",
+        "kind": "pipeline",
+        "disk_mb": 49152,
+        "ram_mb": 20480,
+        "node_min": 24,
+        "node_max": 24,
+        "manager": [
+          "yarn",
+          "3.5.1"
+        ],
+        "tools": [
+          "java",
+          "javac",
+          "mvn",
+          "node",
+          "yarn",
+          "cc",
+          "make",
+          "python3"
+        ],
+        "build_env": {
+          "HUSKY": "0",
+          "CYPRESS_INSTALL_BINARY": "0",
+          "REACT_APP_ENVIRONMENT": "PRODUCTION"
+        },
+        "steps": [
+          {
+            "cwd": "app/client",
+            "args": [
+              "yarn",
+              "install",
+              "--immutable"
+            ]
+          },
+          {
+            "cwd": "app/client",
+            "args": [
+              "yarn",
+              "run",
+              "build"
+            ]
+          },
+          {
+            "cwd": "app/client",
+            "args": [
+              "yarn",
+              "workspace",
+              "appsmith-rts",
+              "run",
+              "build"
+            ]
+          },
+          {
+            "cwd": "app/client",
+            "args": [
+              "yarn",
+              "workspace",
+              "appsmith-mcp",
+              "run",
+              "build"
+            ]
+          },
+          {
+            "cwd": "app/server",
+            "args": [
+              "mvn",
+              "--batch-mode",
+              "--no-transfer-progress",
+              "-Dmaven.repo.local={cache}/m2",
+              "-DskipTests",
+              "-DskipDockerBuild=true",
+              "package"
+            ]
+          }
+        ],
+        "artifacts": [
+          "source/app/client/build/index.html"
+        ],
+        "artifact_globs": [
+          "source/app/client/packages/rts/dist/*.js",
+          "source/app/client/packages/mcp/dist/*.js",
+          "source/app/server/appsmith-server/target/*.jar"
+        ],
+        "note": "Client, RTS, MCP und Java-Server aus einem GitHub-Pin; MongoDB, Redis, Reverse Proxy und Dienstkonfiguration separat. Kein Container-Image-Build."
+      },
+      "blocked_reason": null
     },
     {
       "id": "archivebox",
@@ -46,8 +163,21 @@
         "archivebox/archivebox:latest"
       ],
       "previous_installer": "scripts/tools/archivebox_install.sh",
-      "recipe": null,
-      "blocked_reason": "Native Gesamtpaketierung, Laufzeitabhaengigkeiten und Datenmigration noch nicht verifiziert; kein Docker-Fallback."
+      "recipe": {
+        "repo": "ArchiveBox/ArchiveBox",
+        "pin": "d950dace5ef226634b86ebe43c7001aa7e076cbf",
+        "kind": "python",
+        "disk_mb": 8192,
+        "distribution": "archivebox",
+        "python_min": [
+          3,
+          13,
+          0
+        ],
+        "entry": "archivebox/__main__.py",
+        "note": "Python-Paket aus lokalem GitHub-Checkout; Browser und Archivierungsprogramme separat, kein archivebox init oder setup."
+      },
+      "blocked_reason": null
     },
     {
       "id": "argilla",
@@ -58,8 +188,64 @@
         "argilla/argilla-quickstart:latest"
       ],
       "previous_installer": "scripts/tools/argilla_install.sh",
-      "recipe": null,
-      "blocked_reason": "Native Gesamtpaketierung, Laufzeitabhaengigkeiten und Datenmigration noch nicht verifiziert; kein Docker-Fallback."
+      "recipe": {
+        "repo": "argilla-io/argilla",
+        "pin": "5338519accb13ae422f8bf9c0642651c249c49af",
+        "kind": "python",
+        "disk_mb": 16384,
+        "ram_mb": 4096,
+        "distribution": "argilla-server",
+        "module_dir": "argilla-server",
+        "python_min": [
+          3,
+          11,
+          0
+        ],
+        "python_max": [
+          3,
+          14,
+          0
+        ],
+        "node_min": 20,
+        "node_max": 22,
+        "tools": [
+          "uv",
+          "node",
+          "npm",
+          "cc",
+          "pkg-config"
+        ],
+        "extras": "postgresql",
+        "build_env": {
+          "DIST_FOLDER": "{source}/argilla-server/src/argilla_server/static"
+        },
+        "steps": [
+          {
+            "cwd": "argilla-frontend",
+            "args": [
+              "npm",
+              "ci",
+              "--no-audit",
+              "--no-fund"
+            ]
+          },
+          {
+            "cwd": "argilla-frontend",
+            "args": [
+              "npm",
+              "exec",
+              "--",
+              "nuxt",
+              "generate"
+            ]
+          }
+        ],
+        "artifacts": [
+          "source/argilla-server/src/argilla_server/static/index.html"
+        ],
+        "note": "Argilla-Server mit aus demselben Pin gebautem Frontend; Redis, Elasticsearch/OpenSearch und Datenbank separat. Keine Default-Benutzer oder Migration."
+      },
+      "blocked_reason": null
     },
     {
       "id": "budibase",
@@ -70,8 +256,59 @@
         "budibase/budibase:latest"
       ],
       "previous_installer": "scripts/tools/budibase_install.sh",
-      "recipe": null,
-      "blocked_reason": "Native Gesamtpaketierung, Laufzeitabhaengigkeiten und Datenmigration noch nicht verifiziert; kein Docker-Fallback."
+      "recipe": {
+        "repo": "Budibase/budibase",
+        "pin": "897c4bc213fe423ce58c15c2de7574c0e4ba0112",
+        "kind": "pipeline",
+        "disk_mb": 32768,
+        "ram_mb": 8192,
+        "node_min": 22,
+        "node_max": 22,
+        "manager": [
+          "yarn",
+          "1.22.22"
+        ],
+        "tools": [
+          "node",
+          "yarn",
+          "cc",
+          "make",
+          "python3"
+        ],
+        "build_env": {
+          "HUSKY": "0",
+          "CYPRESS_INSTALL_BINARY": "0"
+        },
+        "steps": [
+          {
+            "cwd": ".",
+            "args": [
+              "yarn",
+              "install",
+              "--frozen-lockfile",
+              "--non-interactive"
+            ]
+          },
+          {
+            "cwd": ".",
+            "args": [
+              "yarn",
+              "run",
+              "build"
+            ]
+          }
+        ],
+        "artifacts": [
+          "source/packages/server/dist/index.js",
+          "source/packages/worker/dist/index.js"
+        ],
+        "artifact_globs": [
+          "source/packages/server/builder/*.html",
+          "source/packages/client/dist/*.js"
+        ],
+        "note": "Workspace-Quellbuild inklusive Server, Worker, Builder und Client; CouchDB, Redis, S3 und Routing bleiben separate Betriebsabnahme. Kein yarn setup/dev."
+      },
+      "blocked_reason": null
     },
     {
       "id": "caddy",
@@ -175,8 +412,20 @@
         "directus/directus:latest"
       ],
       "previous_installer": "scripts/tools/directus_install.sh",
-      "recipe": null,
-      "blocked_reason": "Native Gesamtpaketierung, Laufzeitabhaengigkeiten und Datenmigration noch nicht verifiziert; kein Docker-Fallback."
+      "recipe": {
+        "repo": "directus/directus",
+        "pin": "b3ce03c18673230913bdfdf14907eb13e6865178",
+        "kind": "pnpm",
+        "disk_mb": 24576,
+        "ram_mb": 8192,
+        "node_min": 26,
+        "node_max": 26,
+        "package_manager": "12.4.1",
+        "entry": "api/dist/index.js",
+        "assets": "app/dist/index.html",
+        "note": "pnpm-Workspace inklusive API und Admin-App; keine Datenbankinitialisierung oder Migration. Directus-Lizenz gesondert pruefen."
+      },
+      "blocked_reason": null
     },
     {
       "id": "forgejo",
@@ -187,8 +436,56 @@
         "codeberg.org/forgejo/forgejo:10"
       ],
       "previous_installer": "scripts/tools/forgejo_install.sh",
-      "recipe": null,
-      "blocked_reason": "Autoritative Quelle Codeberg; GitHub-Mirror nicht als verifizierten Ersatz behaupten."
+      "recipe": {
+        "repo": "forgejo/forgejo",
+        "source_host": "codeberg.org",
+        "pin": "0d791421f85ca13a63b665053d81ea765fbbc571",
+        "kind": "pipeline",
+        "disk_mb": 16384,
+        "ram_mb": 4096,
+        "node_min": 20,
+        "tools": [
+          "go",
+          "cc",
+          "make",
+          "node",
+          "npm"
+        ],
+        "build_env": {
+          "CGO_ENABLED": "1"
+        },
+        "steps": [
+          {
+            "cwd": ".",
+            "args": [
+              "npm",
+              "ci",
+              "--no-audit",
+              "--no-fund"
+            ]
+          },
+          {
+            "cwd": ".",
+            "args": [
+              "make",
+              "build",
+              "TAGS=bindata sqlite sqlite_unlock_notify",
+              "EXECUTABLE=forgejo",
+              "FORGEJO_VERSION=17.0.0"
+            ]
+          }
+        ],
+        "artifacts": [
+          "source/forgejo",
+          "source/public/assets/js/index.js",
+          "source/public/assets/css/index.css"
+        ],
+        "probe": [
+          "--version"
+        ],
+        "note": "Nutzerfreigabe 23.10.2026: offizielle Codeberg-Quelle, Release 17.0.0 am unveraenderlichen Commit; Frontend, eingebettete Assets und SQLite. Kein Serverstart oder DB-/Repo-Migration."
+      },
+      "blocked_reason": null
     },
     {
       "id": "grafana",
@@ -199,8 +496,70 @@
         "grafana/grafana:latest"
       ],
       "previous_installer": "scripts/tools/grafana_install.sh",
-      "recipe": null,
-      "blocked_reason": "Frontend, Wire-Codegenerierung und Backend gemeinsam bauen; Backend allein ist kein Grafana."
+      "recipe": {
+        "repo": "grafana/grafana",
+        "pin": "9641b46829cb0172875ea6dd323bcec88fcf2cda",
+        "kind": "pipeline",
+        "disk_mb": 32768,
+        "ram_mb": 12288,
+        "node_min": 22,
+        "node_max": 24,
+        "manager": [
+          "yarn",
+          "4.18.1"
+        ],
+        "tools": [
+          "go",
+          "cc",
+          "make",
+          "node",
+          "yarn"
+        ],
+        "build_env": {
+          "CGO_ENABLED": "1"
+        },
+        "steps": [
+          {
+            "cwd": ".",
+            "args": [
+              "yarn",
+              "install",
+              "--immutable"
+            ]
+          },
+          {
+            "cwd": ".",
+            "args": [
+              "make",
+              "gen-go"
+            ]
+          },
+          {
+            "cwd": ".",
+            "args": [
+              "make",
+              "build-go"
+            ]
+          },
+          {
+            "cwd": ".",
+            "args": [
+              "yarn",
+              "run",
+              "build"
+            ]
+          }
+        ],
+        "artifacts": [
+          "source/bin/grafana",
+          "source/conf/defaults.ini"
+        ],
+        "artifact_globs": [
+          "source/public/build/*.js"
+        ],
+        "note": "Wire-Generierung, OSS-Backend und Produktionsfrontend; keine Enterprise- oder Katalogplugin-Downloads, kein Serverstart."
+      },
+      "blocked_reason": null
     },
     {
       "id": "grafana_alloy",
@@ -243,8 +602,21 @@
         "ghcr.io/home-assistant/home-assistant:stable"
       ],
       "previous_installer": "scripts/tools/home_assistant_install.sh",
-      "recipe": null,
-      "blocked_reason": "Core-Paketierung, aktuelle Python-Version, Frontend und native Integrationen separat abnehmen."
+      "recipe": {
+        "repo": "home-assistant/core",
+        "pin": "3b4094800ac6c7906ded4081895fe7dce487a542",
+        "kind": "python",
+        "disk_mb": 16384,
+        "distribution": "homeassistant",
+        "python_min": [
+          3,
+          14,
+          2
+        ],
+        "entry": "homeassistant/__main__.py",
+        "note": "Home Assistant Core, nicht OS/Supervisor; Integrationsabhaengigkeiten und Geraetezugriff separat."
+      },
+      "blocked_reason": null
     },
     {
       "id": "langfuse",
@@ -330,8 +702,50 @@
         "metabase/metabase:latest"
       ],
       "previous_installer": "scripts/tools/metabase_install.sh",
-      "recipe": null,
-      "blocked_reason": "Native Gesamtpaketierung, Laufzeitabhaengigkeiten und Datenmigration noch nicht verifiziert; kein Docker-Fallback."
+      "recipe": {
+        "repo": "metabase/metabase",
+        "pin": "0a34a97ceb26ae6bce05ebbbfc39a32d268233f5",
+        "kind": "pipeline",
+        "disk_mb": 32768,
+        "ram_mb": 12288,
+        "node_min": 22,
+        "manager": [
+          "bun",
+          "1.3.14"
+        ],
+        "tools": [
+          "java",
+          "clojure",
+          "node",
+          "bun",
+          "uv"
+        ],
+        "build_env": {
+          "MB_EDITION": "oss"
+        },
+        "steps": [
+          {
+            "cwd": ".",
+            "args": [
+              "bun",
+              "install",
+              "--frozen-lockfile"
+            ]
+          },
+          {
+            "cwd": ".",
+            "args": [
+              "clojure",
+              "-X:drivers:build:build/all"
+            ]
+          }
+        ],
+        "artifacts": [
+          "source/target/uberjar/metabase.jar"
+        ],
+        "note": "OSS-Uberjar inklusive Frontend und Python-Buildressourcen; kein Metabase-Start und keine Anwendungsdatenbank."
+      },
+      "blocked_reason": null
     },
     {
       "id": "minio",
@@ -386,8 +800,40 @@
         "neo4j:5"
       ],
       "previous_installer": "scripts/tools/neo4j_install.sh",
-      "recipe": null,
-      "blocked_reason": "Native Gesamtpaketierung, Laufzeitabhaengigkeiten und Datenmigration noch nicht verifiziert; kein Docker-Fallback."
+      "recipe": {
+        "repo": "neo4j/neo4j",
+        "pin": "2994b43b44f35bf6520bd2667ab181bb76a45585",
+        "kind": "pipeline",
+        "disk_mb": 49152,
+        "ram_mb": 8192,
+        "tools": [
+          "java",
+          "javac",
+          "mvn"
+        ],
+        "steps": [
+          {
+            "cwd": ".",
+            "args": [
+              "mvn",
+              "--batch-mode",
+              "--no-transfer-progress",
+              "-Dmaven.repo.local={cache}/m2",
+              "-DskipTests",
+              "-pl",
+              "packaging/standalone/standalone-community",
+              "-am",
+              "package"
+            ]
+          }
+        ],
+        "artifacts": [],
+        "artifact_globs": [
+          "source/packaging/standalone/target/neo4j-community-*.tar.gz"
+        ],
+        "note": "Community-Distributionsarchiv aus Maven-Reaktor; bestehende Graphdaten werden weder geoeffnet noch migriert."
+      },
+      "blocked_reason": null
     },
     {
       "id": "netdata",
@@ -398,8 +844,46 @@
         "netdata/netdata:latest"
       ],
       "previous_installer": "scripts/tools/netdata_install.sh",
-      "recipe": null,
-      "blocked_reason": "Native Bibliotheken, Plugins und Hostberechtigungen ohne privilegierten Auto-Installer planen."
+      "recipe": {
+        "repo": "netdata/netdata",
+        "pin": "4ca8ebf9c40a2e36b42b0255269a2a97948c752b",
+        "kind": "cmake",
+        "disk_mb": 16384,
+        "tools": [
+          "cmake",
+          "make",
+          "cc",
+          "c++",
+          "pkg-config",
+          "protoc",
+          "gzip"
+        ],
+        "artifact": "app/usr/sbin/netdata",
+        "probe": [
+          "-v"
+        ],
+        "sources": [
+          {
+            "path": "src/aclk/aclk-schemas",
+            "repo": "netdata/aclk-schemas",
+            "pin": "ec319a14394436f62663548d32eb320eeddd264a"
+          }
+        ],
+        "cmake_options": [
+          "-DDEFAULT_FEATURE_STATE=OFF",
+          "-DENABLE_DASHBOARD=OFF",
+          "-DENABLE_DBENGINE=ON",
+          "-DENABLE_LIBBACKTRACE=OFF",
+          "-DENABLE_PLUGIN_GO=OFF",
+          "-DENABLE_PLUGIN_OTEL=OFF",
+          "-DENABLE_PLUGIN_EBPF=OFF",
+          "-DENABLE_ML=OFF",
+          "-DENABLE_SENTRY=OFF",
+          "-DENABLE_WEBRTC=OFF"
+        ],
+        "note": "Nativer Monitoring-Agent/API mit DBEngine, ohne Web-Dashboard, Cloud-Anmeldung, ML/eBPF oder privilegierte Zusatzplugins. Dashboard-Download von app.netdata.cloud bewusst deaktiviert."
+      },
+      "blocked_reason": null
     },
     {
       "id": "nextcloud",
@@ -410,8 +894,76 @@
         "nextcloud:latest"
       ],
       "previous_installer": "scripts/tools/nextcloud_install.sh",
-      "recipe": null,
-      "blocked_reason": "Native Gesamtpaketierung, Laufzeitabhaengigkeiten und Datenmigration noch nicht verifiziert; kein Docker-Fallback."
+      "recipe": {
+        "repo": "nextcloud/server",
+        "pin": "a6daedfcc625ccde0f712f72b1cd005a1706635c",
+        "kind": "pipeline",
+        "disk_mb": 24576,
+        "ram_mb": 8192,
+        "node_min": 24,
+        "node_max": 24,
+        "tools": [
+          "php",
+          "composer",
+          "node",
+          "npm"
+        ],
+        "sources": [
+          {
+            "path": "3rdparty",
+            "repo": "nextcloud/3rdparty",
+            "pin": "9a181f79a2ad8fa3be4b24a6bfbc0af57ed51e49"
+          }
+        ],
+        "steps": [
+          {
+            "cwd": ".",
+            "args": [
+              "composer",
+              "install",
+              "--no-dev",
+              "--no-interaction",
+              "--prefer-dist"
+            ]
+          },
+          {
+            "cwd": ".",
+            "args": [
+              "composer",
+              "check-platform-reqs",
+              "--no-dev"
+            ]
+          },
+          {
+            "cwd": ".",
+            "args": [
+              "npm",
+              "ci",
+              "--no-audit",
+              "--no-fund"
+            ]
+          },
+          {
+            "cwd": ".",
+            "args": [
+              "npm",
+              "run",
+              "build"
+            ]
+          }
+        ],
+        "artifacts": [
+          "source/occ",
+          "source/index.php",
+          "source/3rdparty/autoload.php",
+          "source/lib/composer/autoload.php"
+        ],
+        "artifact_globs": [
+          "source/dist/*.js"
+        ],
+        "note": "PHP-Anwendung und beide Frontend-Builds; GitHub-3rdparty am Gitlink-Pin. PHP-Erweiterungen, Webserver, Cron und Datenbank separat. Kein occ install/upgrade."
+      },
+      "blocked_reason": null
     },
     {
       "id": "nocodb",
@@ -476,8 +1028,36 @@
         "ghcr.io/open-webui/open-webui:main"
       ],
       "previous_installer": "scripts/tools/open_webui_install.sh",
-      "recipe": null,
-      "blocked_reason": "Frontend/Backend-Paket und Datenmigration separat auf demselben Pin integrieren."
+      "recipe": {
+        "repo": "open-webui/open-webui",
+        "pin": "91ea4e3421d1d8069f13d4a463fcb5986d94ea60",
+        "kind": "python",
+        "disk_mb": 24576,
+        "ram_mb": 10240,
+        "distribution": "open-webui",
+        "python_min": [
+          3,
+          11,
+          0
+        ],
+        "python_max": [
+          3,
+          13,
+          0
+        ],
+        "node_min": 18,
+        "node_max": 22,
+        "tools": [
+          "uv",
+          "node",
+          "npm"
+        ],
+        "artifacts": [
+          "source/build/index.html"
+        ],
+        "note": "npm-ci-Frontend und lokales Python-Paket; Upstream-Hatch-npm-install-Hook bewusst deaktiviert, keine Modelle/DB-Migration. Pyodide-Buildassets koennen heruntergeladen werden."
+      },
+      "blocked_reason": null
     },
     {
       "id": "penpot",
@@ -528,8 +1108,20 @@
         "grafana/promtail:latest"
       ],
       "previous_installer": "scripts/tools/promtail_install.sh",
-      "recipe": null,
-      "blocked_reason": "EOL seit 2026-03-02; keine neue Installation. Alloy-Migration getrennt pruefen."
+      "recipe": {
+        "repo": "grafana/loki",
+        "pin": "1906dc2b29e1f1ffc37d9a6c9375d1590d7078a7",
+        "kind": "go",
+        "disk_mb": 16384,
+        "binary": "promtail",
+        "package": "./clients/cmd/promtail",
+        "probe": [
+          "--version"
+        ],
+        "eol_ack": "NATIVE_ALLOW_EOL_PROMTAIL",
+        "note": "Archiv-Build v3.5.11; Promtail ist seit 02.03.2026 EOL. Nur nach NATIVE_ALLOW_EOL_PROMTAIL=1, kein neuer Produktivdienst, Migration zu Alloy empfohlen."
+      },
+      "blocked_reason": null
     },
     {
       "id": "qdrant",
@@ -592,8 +1184,46 @@
         "frooodle/s-pdf:latest"
       ],
       "previous_installer": "scripts/tools/stirling_pdf_install.sh",
-      "recipe": null,
-      "blocked_reason": "Native Gesamtpaketierung, Laufzeitabhaengigkeiten und Datenmigration noch nicht verifiziert; kein Docker-Fallback."
+      "recipe": {
+        "repo": "Stirling-Tools/Stirling-PDF",
+        "pin": "5c59188758c14efb9c5df1bd28e1e9ed568c6e45",
+        "kind": "pipeline",
+        "disk_mb": 24576,
+        "ram_mb": 8192,
+        "node_min": 22,
+        "tools": [
+          "java",
+          "javac",
+          "gradle",
+          "node",
+          "npm",
+          "task"
+        ],
+        "steps": [
+          {
+            "cwd": ".",
+            "args": [
+              "gradle",
+              "--no-daemon",
+              "--max-workers=2",
+              "-Dorg.gradle.java.installations.auto-download=false",
+              "-PSTIRLING_FLAVOR=core",
+              "-PbuildWithFrontend=true",
+              ":stirling-pdf:bootJar",
+              "-x",
+              "test"
+            ]
+          }
+        ],
+        "artifacts": [
+          "source/app/core/src/main/resources/static/index.html"
+        ],
+        "artifact_globs": [
+          "source/app/core/build/libs/*.jar"
+        ],
+        "note": "Core-Variante mit React-Frontend; vorhandenes JDK 25, Gradle 9.7.1 und Go Task erforderlich. Kein automatischer JDK-Download; OCR-/Office-Werkzeuge separat."
+      },
+      "blocked_reason": null
     },
     {
       "id": "uptime_kuma",
@@ -624,8 +1254,19 @@
         "hashicorp/vault:1.17"
       ],
       "previous_installer": "scripts/tools/vault_install.sh",
-      "recipe": null,
-      "blocked_reason": "Native Gesamtpaketierung, Laufzeitabhaengigkeiten und Datenmigration noch nicht verifiziert; kein Docker-Fallback."
+      "recipe": {
+        "repo": "hashicorp/vault",
+        "pin": "9f51d2357f65b0c6e842d61fb144b605a0bc78ae",
+        "kind": "go",
+        "disk_mb": 24576,
+        "binary": "vault",
+        "package": ".",
+        "probe": [
+          "version"
+        ],
+        "note": "Vault-Server/CLI ohne eingebettete Web-UI; BUSL-1.1 pruefen. Kein Init, Unseal, Agent oder Dienststart."
+      },
+      "blocked_reason": null
     },
     {
       "id": "vikunja",
@@ -636,8 +1277,83 @@
         "vikunja/vikunja:latest"
       ],
       "previous_installer": "scripts/tools/vikunja_install.sh",
-      "recipe": null,
-      "blocked_reason": "Native Gesamtpaketierung, Laufzeitabhaengigkeiten und Datenmigration noch nicht verifiziert; kein Docker-Fallback."
+      "recipe": {
+        "repo": "go-vikunja/vikunja",
+        "pin": "0dc0adac052327e921ad8f136642479807bd61e3",
+        "kind": "pipeline",
+        "disk_mb": 16384,
+        "ram_mb": 4096,
+        "node_min": 24,
+        "manager": [
+          "pnpm",
+          "11.27.0"
+        ],
+        "tools": [
+          "go",
+          "cc",
+          "node",
+          "pnpm"
+        ],
+        "build_env": {
+          "CGO_ENABLED": "1"
+        },
+        "steps": [
+          {
+            "cwd": "frontend",
+            "args": [
+              "pnpm",
+              "install",
+              "--frozen-lockfile"
+            ]
+          },
+          {
+            "cwd": "frontend",
+            "args": [
+              "pnpm",
+              "run",
+              "build"
+            ]
+          },
+          {
+            "cwd": ".",
+            "args": [
+              "go",
+              "mod",
+              "download"
+            ]
+          },
+          {
+            "cwd": ".",
+            "args": [
+              "go",
+              "mod",
+              "verify"
+            ]
+          },
+          {
+            "cwd": ".",
+            "args": [
+              "go",
+              "build",
+              "-mod=readonly",
+              "-trimpath",
+              "-buildvcs=false",
+              "-tags",
+              "osusergo",
+              "-p=2",
+              "-o",
+              "{prefix}/bin/vikunja",
+              "."
+            ]
+          }
+        ],
+        "artifacts": [
+          "bin/vikunja",
+          "source/frontend/dist/index.html"
+        ],
+        "note": "Frontend wird vor dem Go-Backend gebaut und eingebettet; CGO-Compiler erforderlich, kein Platzhalter-Frontend."
+      },
+      "blocked_reason": null
     },
     {
       "id": "watchtower",
@@ -648,8 +1364,19 @@
         "containrrr/watchtower:latest"
       ],
       "previous_installer": "scripts/tools/watchtower_install.sh",
-      "recipe": null,
-      "blocked_reason": "Container-Updatewerkzeug braucht weiterhin eine Container-Runtime; kein sinnvoller Docker-freier Dienst."
+      "recipe": {
+        "repo": "containrrr/watchtower",
+        "pin": "ca0e86e824ec05389ab972ea97d04d4bf0476e90",
+        "kind": "go",
+        "disk_mb": 4096,
+        "binary": "watchtower",
+        "package": ".",
+        "probe": [
+          "--version"
+        ],
+        "note": "GitHub-Go-Binary; verwaltet im Betrieb weiterhin Docker ueber dessen API. Kein Daemon-/Socketzugriff beim Build."
+      },
+      "blocked_reason": null
     },
     {
       "id": "weaviate",
