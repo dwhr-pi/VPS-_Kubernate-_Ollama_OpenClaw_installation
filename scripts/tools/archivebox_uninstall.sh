@@ -1,7 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
+# Quelle: https://github.com/ArchiveBox/ArchiveBox; siehe docs/DOCKER_TO_GITHUB.md.
 set -euo pipefail
-TOOL_NAME="ArchiveBox"
-TOOL_KEY="ArchiveBox"
-TOOL_SLUG="archivebox"
-source "$(dirname "$0")/helpers/docker_compose_tool_common.sh"
-uninstall_docker_compose_tool
+ROOT="$(cd "${BASH_SOURCE[0]%/*}/../.." && pwd)"
+exec "${NATIVE_GITHUB_PYTHON_BIN:-python3}" -B "$ROOT/scripts/tools/helpers/native_github_tools.py" archivebox uninstall "$@"

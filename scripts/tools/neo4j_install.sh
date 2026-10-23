@@ -1,18 +1,5 @@
-#!/bin/bash
-TOOL_NAME="Neo4j"
-TOOL_KEY="Neo4j"
-TOOL_SLUG="neo4j"
-COMPOSE_YAML='services:
-  neo4j:
-    image: neo4j:5
-    environment:
-      NEO4J_AUTH: neo4j/change-me
-    ports:
-      - "7474:7474"
-      - "7687:7687"
-    volumes:
-      - ./data:/data'
-TOOL_DESCRIPTION="Graphdatenbank für Beziehungsanalysen, Wissensgraphen und Legal-/Research-Fälle."
-TOOL_OPENCLAW_NOTE="Kann im Rechtsprofil für Fallbeziehungen, Fristen und Risiko-Scoring dienen."
-source "$(dirname "$0")/helpers/docker_compose_tool_common.sh"
-install_docker_compose_tool
+#!/usr/bin/env bash
+# Quelle: https://github.com/neo4j/neo4j; siehe docs/DOCKER_TO_GITHUB.md.
+set -euo pipefail
+ROOT="$(cd "${BASH_SOURCE[0]%/*}/../.." && pwd)"
+exec "${NATIVE_GITHUB_PYTHON_BIN:-python3}" -B "$ROOT/scripts/tools/helpers/native_github_tools.py" neo4j install "$@"

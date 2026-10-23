@@ -1,5 +1,9 @@
 # START HERE
 
+[Docker-Installer durch native GitHub-Builds ersetzen](DOCKER_TO_GITHUB.md):
+43 Pfade inventarisiert, 18 Buildrezepte und 25 explizite offene Migrationen.
+Kein automatisches Entfernen bestehender Container/Volumes.
+
 [P0-Codepaket: Update, PAT und datenerhaltender Compose-Uninstall](P0_SAFETY_CHANGES.md):
 lokale Fixture-Tests abgeschlossen, Ubuntu-24.04-VM-Abnahme noch offen.
 

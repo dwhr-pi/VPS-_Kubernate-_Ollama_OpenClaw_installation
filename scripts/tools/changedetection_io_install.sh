@@ -1,19 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
+# Quelle: https://github.com/dgtlmoon/changedetection.io; siehe docs/DOCKER_TO_GITHUB.md.
 set -euo pipefail
-TOOL_NAME="changedetection.io"
-TOOL_KEY="Changedetection_IO"
-TOOL_SLUG="changedetection_io"
-COMPOSE_YAML='services:
-  changedetection:
-    image: lscr.io/linuxserver/changedetection.io:latest
-    container_name: changedetection_io
-    restart: unless-stopped
-    ports:
-      - "127.0.0.1:5000:5000"
-    volumes:
-      - ./data:/config
-'
-TOOL_DESCRIPTION="Self-Hosted Web-Monitoring für Änderungen, Watchlists und sichere Beobachtung externer Seiten."
-TOOL_PROMPT_EXAMPLE='Änderungen an Zielseiten überwachen und nur intern auf localhost bereitstellen.'
-source "$(dirname "$0")/helpers/docker_compose_tool_common.sh"
-install_docker_compose_tool
+ROOT="$(cd "${BASH_SOURCE[0]%/*}/../.." && pwd)"
+exec "${NATIVE_GITHUB_PYTHON_BIN:-python3}" -B "$ROOT/scripts/tools/helpers/native_github_tools.py" changedetection_io install "$@"

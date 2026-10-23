@@ -1,5 +1,9 @@
 # VPS- Kubernate- Ollama & OpenClaw installation - Ultimate Setup V11.17
 
+[Docker nach GitHub: vollstaendige Tool-Liste und Umstellungsstand](docs/DOCKER_TO_GITHUB.md):
+18 native Buildrezepte implementiert, 25 Umstellungen noch offen; kein automatischer
+Image-Fallback dieser 43 Tool-Pfade. Bestehende Container/Daten werden nicht migriert.
+
 **Neu starten:** [Aktueller Nachweisstand](docs/CURRENT_STATUS.md),
 [erste 60 Minuten ohne Installation](docs/FIRST_60_MINUTES.md) und
 [Grok-Review mit Kandidatenstatus](docs/tutorials/grok-repo-review-2026-10-23.md).

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
+# Quelle: https://github.com/crowdsecurity/crowdsec; siehe docs/DOCKER_TO_GITHUB.md.
 set -euo pipefail
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SCRIPT_DIR/helpers/simple_tool_common.sh"
-install_git_docker_tool "CrowdSec" "https://github.com/crowdsecurity/crowdsec.git" "/opt/crowdsec" $'services:\n  crowdsec:\n    image: crowdsecurity/crowdsec:latest\n    restart: unless-stopped\n    volumes:\n      - /var/log:/var/log:ro\n      - ./data:/var/lib/crowdsec/data'
+ROOT="$(cd "${BASH_SOURCE[0]%/*}/../.." && pwd)"
+exec "${NATIVE_GITHUB_PYTHON_BIN:-python3}" -B "$ROOT/scripts/tools/helpers/native_github_tools.py" crowdsec install "$@"

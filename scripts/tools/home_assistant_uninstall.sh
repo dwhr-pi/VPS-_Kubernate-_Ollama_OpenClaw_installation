@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
+# Quelle: https://github.com/home-assistant/core; siehe docs/DOCKER_TO_GITHUB.md.
 set -euo pipefail
-
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SCRIPT_DIR/helpers/simple_tool_common.sh"
-
-uninstall_git_docker_tool "Home_Assistant" "/opt/home_assistant"
+ROOT="$(cd "${BASH_SOURCE[0]%/*}/../.." && pwd)"
+exec "${NATIVE_GITHUB_PYTHON_BIN:-python3}" -B "$ROOT/scripts/tools/helpers/native_github_tools.py" home_assistant uninstall "$@"

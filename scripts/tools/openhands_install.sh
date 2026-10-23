@@ -5,13 +5,13 @@ TOOL_SLUG="openhands"
 TOOL_DESCRIPTION="Offenes Software-Engineering-Agentensystem mit stärkerer Sandbox- und Arbeitsbereichs-Ausrichtung."
 TOOL_MODULE_TYPE="Coding-Agent- und Sandbox-Scaffold"
 TOOL_GIT_REPO="https://github.com/OpenHands/OpenHands.git"
-TOOL_APT_PACKAGES="docker.io docker-compose-v2"
+TOOL_APT_PACKAGES=""
 TOOL_ENV_TEMPLATE='OPENHANDS_LLM_PROVIDER=ollama
 OPENHANDS_LLM_MODEL=devstral:24b
 OLLAMA_HOST=http://127.0.0.1:11434'
 TOOL_RUN_SCRIPT='#!/bin/bash
 set -euo pipefail
-echo "Prüfe README und Compose-Dateien im OpenHands-Repo. Für echte Sandbox-Läufe werden meist Docker und zusätzliche Konfiguration benötigt."'
+echo "GitHub-Scaffold, keine fertige Runtime. Sandbox separat pruefen; keine automatische Docker-Installation. Siehe docs/DOCKER_TO_GITHUB.md."'
 TOOL_PROMPT_EXAMPLE='# Beispielprompts für OpenHands
 
 ```txt

@@ -1,22 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
+# Quelle: https://github.com/caddyserver/caddy; siehe docs/DOCKER_TO_GITHUB.md.
 set -euo pipefail
-TOOL_NAME="Caddy"
-TOOL_KEY="Caddy"
-TOOL_SLUG="caddy"
-COMPOSE_YAML='services:
-  caddy:
-    image: caddy:2-alpine
-    container_name: caddy
-    restart: unless-stopped
-    ports:
-      - "127.0.0.1:8086:80"
-      - "127.0.0.1:2019:2019"
-    volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile
-      - ./data:/data
-      - ./config:/config
-'
-TOOL_DESCRIPTION="Reverse Proxy für lokale Dienste mit sauberer Kante zwischen internen Services und bewusster Freigabe."
-TOOL_PROMPT_EXAMPLE='Caddy als lokale Reverse-Proxy-Schicht vor UIs und Agenten-Diensten nur mit expliziter Freigabe konfigurieren.'
-source "$(dirname "$0")/helpers/docker_compose_tool_common.sh"
-install_docker_compose_tool
+ROOT="$(cd "${BASH_SOURCE[0]%/*}/../.." && pwd)"
+exec "${NATIVE_GITHUB_PYTHON_BIN:-python3}" -B "$ROOT/scripts/tools/helpers/native_github_tools.py" caddy install "$@"

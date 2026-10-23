@@ -5,9 +5,54 @@ NATIVE_TOOL_STATUS_KEYS=(Qwen_Desktop_Build Hermes_Agent_Jarvis Gradio Streamlit
     Sfizz AIDA_X Kiwi_Edit VOID_Model Just_Dub_It Stable_Audio_Open ProPainter Black Mypy SQLFluff Bats_Core Invoke_Build Gopls Delve GolangCI_Lint Kubeconform KubeLinter TFLint Terraform_Docs
     Alexandria_Audiobook Qwen3_TTS Claude_Code Gemini_CLI Find_Skills REA HF_Accelerate DeepSpeed Hyperfine Colibri Anthropic_CLI YouTube_Agent_Skill)
 
+NATIVE_TOOL_STATUS_KEYS+=("Airbyte" "Apache_Tika" "Appsmith" "ArchiveBox" "Argilla" "Budibase" "Caddy" "cAdvisor" "Changedetection_IO" "CrowdSec" "Directus" "Forgejo" "Grafana" "Grafana_Alloy" "Healthchecks" "Home_Assistant" "Langfuse" "LiteLLM" "Loki" "Meilisearch" "Metabase" "MinIO" "Mosquitto" "Neo4j" "Netdata" "Nextcloud" "NocoDB" "Node_Exporter" "Node_Red" "Open_WebUI" "Penpot" "Prometheus" "Promtail" "Qdrant" "Rhasspy" "SearXNG" "Stirling_PDF" "Uptime_Kuma" "Vault" "Vikunja" "Watchtower" "Weaviate" "Zigbee2MQTT")
+
 native_tool_marker() {
     local marker
     case "$1" in
+        "Airbyte") marker=airbyte/native-github/build-ready.json ;;
+        "Apache_Tika") marker=apache_tika/native-github/build-ready.json ;;
+        "Appsmith") marker=appsmith/native-github/build-ready.json ;;
+        "ArchiveBox") marker=archivebox/native-github/build-ready.json ;;
+        "Argilla") marker=argilla/native-github/build-ready.json ;;
+        "Budibase") marker=budibase/native-github/build-ready.json ;;
+        "Caddy") marker=caddy/native-github/build-ready.json ;;
+        "cAdvisor") marker=cadvisor/native-github/build-ready.json ;;
+        "Changedetection_IO") marker=changedetection_io/native-github/build-ready.json ;;
+        "CrowdSec") marker=crowdsec/native-github/build-ready.json ;;
+        "Directus") marker=directus/native-github/build-ready.json ;;
+        "Forgejo") marker=forgejo/native-github/build-ready.json ;;
+        "Grafana") marker=grafana/native-github/build-ready.json ;;
+        "Grafana_Alloy") marker=grafana_alloy/native-github/build-ready.json ;;
+        "Healthchecks") marker=healthchecks/native-github/build-ready.json ;;
+        "Home_Assistant") marker=home_assistant/native-github/build-ready.json ;;
+        "Langfuse") marker=langfuse/native-github/build-ready.json ;;
+        "LiteLLM") marker=litellm/native-github/build-ready.json ;;
+        "Loki") marker=loki/native-github/build-ready.json ;;
+        "Meilisearch") marker=meilisearch/native-github/build-ready.json ;;
+        "Metabase") marker=metabase/native-github/build-ready.json ;;
+        "MinIO") marker=minio/native-github/build-ready.json ;;
+        "Mosquitto") marker=mosquitto/native-github/build-ready.json ;;
+        "Neo4j") marker=neo4j/native-github/build-ready.json ;;
+        "Netdata") marker=netdata/native-github/build-ready.json ;;
+        "Nextcloud") marker=nextcloud/native-github/build-ready.json ;;
+        "NocoDB") marker=nocodb/native-github/build-ready.json ;;
+        "Node_Exporter") marker=node_exporter/native-github/build-ready.json ;;
+        "Node_Red") marker=node_red/native-github/build-ready.json ;;
+        "Open_WebUI") marker=open_webui/native-github/build-ready.json ;;
+        "Penpot") marker=penpot/native-github/build-ready.json ;;
+        "Prometheus") marker=prometheus/native-github/build-ready.json ;;
+        "Promtail") marker=promtail/native-github/build-ready.json ;;
+        "Qdrant") marker=qdrant/native-github/build-ready.json ;;
+        "Rhasspy") marker=rhasspy/native-github/build-ready.json ;;
+        "SearXNG") marker=searxng/native-github/build-ready.json ;;
+        "Stirling_PDF") marker=stirling_pdf/native-github/build-ready.json ;;
+        "Uptime_Kuma") marker=uptime_kuma/native-github/build-ready.json ;;
+        "Vault") marker=vault/native-github/build-ready.json ;;
+        "Vikunja") marker=vikunja/native-github/build-ready.json ;;
+        "Watchtower") marker=watchtower/native-github/build-ready.json ;;
+        "Weaviate") marker=weaviate/native-github/build-ready.json ;;
+        "Zigbee2MQTT") marker=zigbee2mqtt/native-github/build-ready.json ;;
         Qwen_Desktop_Build) marker=qwen_desktop_build/ready.json ;;
         Hermes_Agent_Jarvis) marker=hermes_agent_jarvis/ready.json ;;
         Gradio) marker=gradio/ready.json ;;

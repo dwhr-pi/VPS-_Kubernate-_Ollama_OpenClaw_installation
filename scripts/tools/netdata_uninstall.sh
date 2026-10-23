@@ -1,6 +1,5 @@
-#!/bin/bash
-TOOL_NAME="Netdata"
-TOOL_KEY="Netdata"
-TOOL_SLUG="netdata"
-source "$(dirname "$0")/helpers/github_docker_stack_common.sh"
-uninstall_github_docker_stack_tool
+#!/usr/bin/env bash
+# Quelle: https://github.com/netdata/netdata; siehe docs/DOCKER_TO_GITHUB.md.
+set -euo pipefail
+ROOT="$(cd "${BASH_SOURCE[0]%/*}/../.." && pwd)"
+exec "${NATIVE_GITHUB_PYTHON_BIN:-python3}" -B "$ROOT/scripts/tools/helpers/native_github_tools.py" netdata uninstall "$@"

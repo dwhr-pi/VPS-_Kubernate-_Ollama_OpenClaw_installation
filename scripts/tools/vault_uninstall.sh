@@ -1,6 +1,5 @@
-#!/bin/bash
-TOOL_NAME="Vault"
-TOOL_KEY="Vault"
-TOOL_SLUG="vault"
-source "$(dirname "$0")/helpers/docker_compose_tool_common.sh"
-uninstall_docker_compose_tool
+#!/usr/bin/env bash
+# Quelle: https://github.com/hashicorp/vault; siehe docs/DOCKER_TO_GITHUB.md.
+set -euo pipefail
+ROOT="$(cd "${BASH_SOURCE[0]%/*}/../.." && pwd)"
+exec "${NATIVE_GITHUB_PYTHON_BIN:-python3}" -B "$ROOT/scripts/tools/helpers/native_github_tools.py" vault uninstall "$@"

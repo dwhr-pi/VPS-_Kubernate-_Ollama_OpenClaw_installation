@@ -1,5 +1,8 @@
 # Welche dokumentierten Tools fehlen im Setup?
 
+[Aktueller Docker-zu-GitHub-Abgleich](DOCKER_TO_GITHUB.md): native Buildrezepte
+und noch offene Migrationen unterscheiden; Quellen allein sind keine Runtime.
+
 Stand: **23.10.2026**, lokaler Repository-Abgleich. **Nicht alles aus der
 Dokumentation ist als installierbares Tool im Setup umgesetzt.** Die
 frueheren Hinweise auf Anleitung, Quelle oder planned waren keine fertige

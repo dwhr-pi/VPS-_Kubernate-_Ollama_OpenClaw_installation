@@ -83,88 +83,164 @@
       "security_note": "Umfang vor Installation mit --dry-run pruefen. Keine Modelle, Authentifizierung, Dienste oder Docker. Update prueft denselben Pin; veraenderte Dateien werden nicht automatisch geloescht."
     },
     {
-      "id": "concat", "name": "Concat", "category": "Media / Editing",
-      "source": "https://github.com/jub0t/Concat", "version": "0.2.8",
-      "status": "experimental", "auto_install": false, "install_mode": "github-release-appimage",
-      "resource_class": "medium", "risk": "high", "license": "AGPL-3.0-or-later", "ports": [],
-      "install_script": "scripts/tools/concat_install.sh", "update_script": "scripts/tools/concat_update.sh",
-      "uninstall_script": "scripts/tools/concat_uninstall.sh", "doctor_script": "scripts/tools/concat_doctor.sh",
-      "check_type": "path", "check_value": "~/.openclaw_ultimate_user_data/tools/concat/build-ready.json",
+      "id": "concat",
+      "name": "Concat",
+      "category": "Media / Editing",
+      "source": "https://github.com/jub0t/Concat",
+      "version": "0.2.8",
+      "status": "experimental",
+      "auto_install": false,
+      "install_mode": "github-release-appimage",
+      "resource_class": "medium",
+      "risk": "high",
+      "license": "AGPL-3.0-or-later",
+      "ports": [],
+      "install_script": "scripts/tools/concat_install.sh",
+      "update_script": "scripts/tools/concat_update.sh",
+      "uninstall_script": "scripts/tools/concat_uninstall.sh",
+      "doctor_script": "scripts/tools/concat_doctor.sh",
+      "check_type": "path",
+      "check_value": "~/.openclaw_ultimate_user_data/tools/concat/build-ready.json",
       "doc": "docs/tools/concat.md",
       "description": "Offizielles GitHub-AppImage mit SHA256 und Groessenpruefung, ohne Docker oder Rust-Build.",
       "security_note": "Keine GUI, Modelle, Mikrofon, JSON-RPC oder MCP gestartet. WSLg/FUSE/Codecs separat; runtime_ready=false bis Funktionstest."
     },
     {
-      "id": "remotion", "name": "Remotion", "category": "Media / Composition",
-      "source": "https://github.com/remotion-dev/remotion.git", "version": "4.0.538",
+      "id": "remotion",
+      "name": "Remotion",
+      "category": "Media / Composition",
+      "source": "https://github.com/remotion-dev/remotion.git",
+      "version": "4.0.538",
       "source_commit": "3ab34665c49279cc35820275380983068bb1bbf9",
-      "status": "experimental", "auto_install": false, "install_mode": "github-source-build",
-      "resource_class": "heavy", "risk": "high", "license": "Remotion License", "ports": [],
-      "install_script": "scripts/tools/remotion_install.sh", "update_script": "scripts/tools/remotion_update.sh",
-      "uninstall_script": "scripts/tools/remotion_uninstall.sh", "doctor_script": "scripts/tools/remotion_doctor.sh",
-      "check_type": "path", "check_value": "~/.openclaw_ultimate_user_data/tools/remotion/build-ready.json",
+      "status": "experimental",
+      "auto_install": false,
+      "install_mode": "github-source-build",
+      "resource_class": "heavy",
+      "risk": "high",
+      "license": "Remotion License",
+      "ports": [],
+      "install_script": "scripts/tools/remotion_install.sh",
+      "update_script": "scripts/tools/remotion_update.sh",
+      "uninstall_script": "scripts/tools/remotion_uninstall.sh",
+      "doctor_script": "scripts/tools/remotion_doctor.sh",
+      "check_type": "path",
+      "check_value": "~/.openclaw_ultimate_user_data/tools/remotion/build-ready.json",
       "doc": "docs/tools/remotion.md",
       "description": "Privater gepinnter GitHub-Monorepo-Build fuer CLI und Abhaengigkeiten mit Bun-Lock; keine Docker-Installation.",
       "security_note": "Lizenztext vor Zustimmung; Node >=22/Bun 1.4.3 vorhanden, 4 GiB RAM/16 GiB Disk. Kein Browser, Cloud-Deployment, Agent oder Render."
     },
     {
-      "id": "hyperframes", "name": "HyperFrames", "category": "Media / Composition",
-      "source": "https://github.com/heygen-com/hyperframes.git", "version": "0.8.186",
+      "id": "hyperframes",
+      "name": "HyperFrames",
+      "category": "Media / Composition",
+      "source": "https://github.com/heygen-com/hyperframes.git",
+      "version": "0.8.186",
       "source_commit": "3d67fb9d10a864201db9de3214f8cd67fb6fec46",
-      "status": "experimental", "auto_install": false, "install_mode": "github-source-build",
-      "resource_class": "heavy", "risk": "high", "license": "Apache-2.0", "ports": [],
-      "install_script": "scripts/tools/hyperframes_install.sh", "update_script": "scripts/tools/hyperframes_update.sh",
-      "uninstall_script": "scripts/tools/hyperframes_uninstall.sh", "doctor_script": "scripts/tools/hyperframes_doctor.sh",
-      "check_type": "path", "check_value": "~/.openclaw_ultimate_user_data/tools/hyperframes/build-ready.json",
+      "status": "experimental",
+      "auto_install": false,
+      "install_mode": "github-source-build",
+      "resource_class": "heavy",
+      "risk": "high",
+      "license": "Apache-2.0",
+      "ports": [],
+      "install_script": "scripts/tools/hyperframes_install.sh",
+      "update_script": "scripts/tools/hyperframes_update.sh",
+      "uninstall_script": "scripts/tools/hyperframes_uninstall.sh",
+      "doctor_script": "scripts/tools/hyperframes_doctor.sh",
+      "check_type": "path",
+      "check_value": "~/.openclaw_ultimate_user_data/tools/hyperframes/build-ready.json",
       "doc": "docs/tools/hyperframes.md",
       "description": "Gepinnter privater GitHub-CLI-Build mit sequenziellen Paketbuilds und Bun-Lock, ohne Docker.",
       "security_note": "Node >=22/Bun 1.4.4 vorhanden, 4 GiB RAM/12 GiB Disk. Keine Browser/Modelle, MCP/Agenten/Cloud und kein Studio-/Renderstart."
     },
     {
-      "id": "openmontage", "name": "OpenMontage", "category": "Media / Production",
+      "id": "openmontage",
+      "name": "OpenMontage",
+      "category": "Media / Production",
       "source": "https://github.com/calesthio/OpenMontage.git",
       "source_commit": "c8066452325cb57c8fc1ba8c2a71b6e8842e6b65",
-      "status": "experimental", "auto_install": false, "install_mode": "github-python-core",
-      "resource_class": "medium", "risk": "high", "license": "AGPL-3.0", "ports": [],
-      "install_script": "scripts/tools/openmontage_install.sh", "update_script": "scripts/tools/openmontage_update.sh",
-      "uninstall_script": "scripts/tools/openmontage_uninstall.sh", "doctor_script": "scripts/tools/openmontage_doctor.sh",
-      "check_type": "path", "check_value": "~/.openclaw_ultimate_user_data/tools/openmontage/core-ready.json",
+      "status": "experimental",
+      "auto_install": false,
+      "install_mode": "github-python-core",
+      "resource_class": "medium",
+      "risk": "high",
+      "license": "AGPL-3.0",
+      "ports": [],
+      "install_script": "scripts/tools/openmontage_install.sh",
+      "update_script": "scripts/tools/openmontage_update.sh",
+      "uninstall_script": "scripts/tools/openmontage_uninstall.sh",
+      "doctor_script": "scripts/tools/openmontage_doctor.sh",
+      "check_type": "path",
+      "check_value": "~/.openclaw_ultimate_user_data/tools/openmontage/core-ready.json",
       "doc": "docs/tools/openmontage.md",
       "description": "Gepinnte GitHub-Quellen und private Python-Kernumgebung; Remotion optional mit separater Lizenzfreigabe. Ohne Docker.",
       "security_note": "Kein make setup/npx latest, Agent, Keyzugriff, Backlot-Server, Browser, Modelle, Cloud-Aufruf oder Rendering. PyPI-Wheels fuer Python-Abhaengigkeiten; Remotion optional via npm-Lock."
     },
     {
-      "id": "marp", "name": "Marp", "category": "Webinar / Presentations",
-      "source": "https://github.com/marp-team/marp-cli", "version": "4.5.1",
-      "status": "experimental", "auto_install": false, "install_mode": "github-release",
-      "resource_class": "light", "risk": "medium", "license": "MIT", "ports": [],
-      "install_script": "scripts/tools/marp_install.sh", "update_script": "scripts/tools/marp_update.sh",
-      "uninstall_script": "scripts/tools/marp_uninstall.sh", "doctor_script": "scripts/tools/marp_doctor.sh",
-      "check_type": "path", "check_value": "~/.openclaw_ultimate_user_data/tools/marp/release-ready.json",
+      "id": "marp",
+      "name": "Marp",
+      "category": "Webinar / Presentations",
+      "source": "https://github.com/marp-team/marp-cli",
+      "version": "4.5.1",
+      "status": "experimental",
+      "auto_install": false,
+      "install_mode": "github-release",
+      "resource_class": "light",
+      "risk": "medium",
+      "license": "MIT",
+      "ports": [],
+      "install_script": "scripts/tools/marp_install.sh",
+      "update_script": "scripts/tools/marp_update.sh",
+      "uninstall_script": "scripts/tools/marp_uninstall.sh",
+      "doctor_script": "scripts/tools/marp_doctor.sh",
+      "check_type": "path",
+      "check_value": "~/.openclaw_ultimate_user_data/tools/marp/release-ready.json",
       "doc": "docs/tools/webinar-tools.md",
       "description": "Marp CLI 4.5.1 aus offiziellem SHA256-geprueftem GitHub-Release; kein Node/npm oder Docker erforderlich.",
       "security_note": "Nur privates Programm; Browser fuer PDF/PPTX separat. Erkannte fehlende Ubuntu-/Debian-Laufzeitbibliotheken nur nach Zustimmung per apt, mit anschliessendem Versionscheck. Kein globales Node/npm, PATH oder Server. Update bleibt gepinnt."
     },
     {
-      "id": "listmonk", "name": "Listmonk", "category": "Webinar / Marketing",
-      "source": "https://github.com/knadh/listmonk", "version": "6.2.0",
-      "status": "experimental", "auto_install": false, "install_mode": "github-release",
-      "resource_class": "medium", "risk": "high", "license": "AGPL-3.0", "ports": [],
-      "install_script": "scripts/tools/listmonk_install.sh", "update_script": "scripts/tools/listmonk_update.sh",
-      "uninstall_script": "scripts/tools/listmonk_uninstall.sh", "doctor_script": "scripts/tools/listmonk_doctor.sh",
-      "check_type": "path", "check_value": "~/.openclaw_ultimate_user_data/tools/listmonk/release-ready.json",
+      "id": "listmonk",
+      "name": "Listmonk",
+      "category": "Webinar / Marketing",
+      "source": "https://github.com/knadh/listmonk",
+      "version": "6.2.0",
+      "status": "experimental",
+      "auto_install": false,
+      "install_mode": "github-release",
+      "resource_class": "medium",
+      "risk": "high",
+      "license": "AGPL-3.0",
+      "ports": [],
+      "install_script": "scripts/tools/listmonk_install.sh",
+      "update_script": "scripts/tools/listmonk_update.sh",
+      "uninstall_script": "scripts/tools/listmonk_uninstall.sh",
+      "doctor_script": "scripts/tools/listmonk_doctor.sh",
+      "check_type": "path",
+      "check_value": "~/.openclaw_ultimate_user_data/tools/listmonk/release-ready.json",
       "doc": "docs/tools/webinar-tools.md",
       "description": "Native listmonk-Binary aus offiziellem SHA256-geprueftem GitHub-Release, ohne Docker.",
       "security_note": "PostgreSQL/SMTP/Consent separat; keine DB-Initialisierung, Dienstaktivierung oder Kampagne. Beta wird nicht automatisch gewaehlt."
     },
     {
-      "id": "mautic", "name": "Mautic", "category": "Webinar / Marketing",
-      "source": "https://github.com/mautic/mautic", "version": "7.2.1",
-      "status": "experimental", "auto_install": false, "install_mode": "github-release",
-      "resource_class": "medium", "risk": "high", "license": "GPL-3.0-or-later", "ports": [],
-      "install_script": "scripts/tools/mautic_install.sh", "update_script": "scripts/tools/mautic_update.sh",
-      "uninstall_script": "scripts/tools/mautic_uninstall.sh", "doctor_script": "scripts/tools/mautic_doctor.sh",
-      "check_type": "path", "check_value": "~/.openclaw_ultimate_user_data/tools/mautic/release-ready.json",
+      "id": "mautic",
+      "name": "Mautic",
+      "category": "Webinar / Marketing",
+      "source": "https://github.com/mautic/mautic",
+      "version": "7.2.1",
+      "status": "experimental",
+      "auto_install": false,
+      "install_mode": "github-release",
+      "resource_class": "medium",
+      "risk": "high",
+      "license": "GPL-3.0-or-later",
+      "ports": [],
+      "install_script": "scripts/tools/mautic_install.sh",
+      "update_script": "scripts/tools/mautic_update.sh",
+      "uninstall_script": "scripts/tools/mautic_uninstall.sh",
+      "doctor_script": "scripts/tools/mautic_doctor.sh",
+      "check_type": "path",
+      "check_value": "~/.openclaw_ultimate_user_data/tools/mautic/release-ready.json",
       "doc": "docs/tools/webinar-tools.md",
       "description": "Vollstaendiges Mautic-Releasepaket inklusive vendor von GitHub, SHA256-geprueft, kein Docker/Composer-Build.",
       "security_note": "Nur Anwendungsdateien. PHP/DB/Webserver/SMTP separat pruefen und konfigurieren; keine Migration, Cronjobs oder Mailaktionen."
@@ -747,7 +823,10 @@
     },
     {
       "id": "qwen_code",
-      "disk_rollback": {"mode": "new-private-root", "directory": "qwen_code"},
+      "disk_rollback": {
+        "mode": "new-private-root",
+        "directory": "qwen_code"
+      },
       "name": "Qwen_Code",
       "source": "https://github.com/QwenLM/qwen-code",
       "source_commit": "c1a8218f38203e272e6e965778ed6a2795cfeed7",
@@ -771,7 +850,10 @@
     },
     {
       "id": "wan21",
-      "disk_rollback": {"mode": "new-private-root", "directory": "wan21"},
+      "disk_rollback": {
+        "mode": "new-private-root",
+        "directory": "wan21"
+      },
       "name": "Wan21",
       "source": "https://github.com/Wan-Video/Wan2.1",
       "category": "Hybrid Models / Video",
@@ -1433,7 +1515,10 @@
     },
     {
       "id": "yue",
-      "disk_rollback": {"mode": "new-private-root", "directory": "yue"},
+      "disk_rollback": {
+        "mode": "new-private-root",
+        "directory": "yue"
+      },
       "name": "YuE",
       "source": "https://github.com/multimodal-art-projection/YuE",
       "category": "audio",
@@ -1457,7 +1542,10 @@
     },
     {
       "id": "ace_step_15",
-      "disk_rollback": {"mode": "new-private-root", "directory": "ace_step_15"},
+      "disk_rollback": {
+        "mode": "new-private-root",
+        "directory": "ace_step_15"
+      },
       "name": "ACE_Step_15",
       "source": "https://github.com/ace-step/ACE-Step-1.5",
       "category": "audio",
@@ -1482,7 +1570,10 @@
     },
     {
       "id": "whisperx",
-      "disk_rollback": {"mode": "new-private-root", "directory": "whisperx"},
+      "disk_rollback": {
+        "mode": "new-private-root",
+        "directory": "whisperx"
+      },
       "name": "WhisperX",
       "source": "https://github.com/m-bain/whisperX",
       "category": "audio",
@@ -1507,7 +1598,10 @@
     },
     {
       "id": "aegisub",
-      "disk_rollback": {"mode": "new-private-root", "directory": "aegisub"},
+      "disk_rollback": {
+        "mode": "new-private-root",
+        "directory": "aegisub"
+      },
       "name": "Aegisub",
       "source": "https://github.com/TypesettingTools/Aegisub",
       "category": "audio",
@@ -1532,7 +1626,10 @@
     },
     {
       "id": "basic_pitch",
-      "disk_rollback": {"mode": "new-private-root", "directory": "basic_pitch"},
+      "disk_rollback": {
+        "mode": "new-private-root",
+        "directory": "basic_pitch"
+      },
       "name": "Basic_Pitch",
       "source": "https://github.com/spotify/basic-pitch",
       "category": "audio",
@@ -1557,7 +1654,10 @@
     },
     {
       "id": "sfizz",
-      "disk_rollback": {"mode": "new-private-root", "directory": "sfizz"},
+      "disk_rollback": {
+        "mode": "new-private-root",
+        "directory": "sfizz"
+      },
       "name": "Sfizz",
       "source": "https://github.com/sfztools/sfizz",
       "category": "audio",
@@ -1582,7 +1682,10 @@
     },
     {
       "id": "aida_x",
-      "disk_rollback": {"mode": "new-private-root", "directory": "aida_x"},
+      "disk_rollback": {
+        "mode": "new-private-root",
+        "directory": "aida_x"
+      },
       "name": "AIDA_X",
       "source": "https://github.com/AidaDSP/AIDA-X",
       "category": "audio",
@@ -1607,7 +1710,10 @@
     },
     {
       "id": "propainter",
-      "disk_rollback": {"mode": "new-private-root", "directory": "propainter"},
+      "disk_rollback": {
+        "mode": "new-private-root",
+        "directory": "propainter"
+      },
       "name": "ProPainter",
       "source": "https://github.com/sczhou/ProPainter",
       "category": "media",
@@ -1631,7 +1737,10 @@
     },
     {
       "id": "kiwi_edit",
-      "disk_rollback": {"mode": "new-private-root", "directory": "kiwi_edit"},
+      "disk_rollback": {
+        "mode": "new-private-root",
+        "directory": "kiwi_edit"
+      },
       "name": "Kiwi_Edit",
       "source": "https://github.com/showlab/Kiwi-Edit",
       "category": "media",
@@ -1656,7 +1765,10 @@
     },
     {
       "id": "void_model",
-      "disk_rollback": {"mode": "new-private-root", "directory": "void_model"},
+      "disk_rollback": {
+        "mode": "new-private-root",
+        "directory": "void_model"
+      },
       "name": "VOID_Model",
       "source": "https://github.com/Netflix/void-model",
       "category": "media",
@@ -1751,7 +1863,11 @@
       "id": "personnel_documents",
       "name": "Personnel_Documents_AI",
       "source": "https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation",
-      "additional_sources": ["https://github.com/paperless-ngx/paperless-ngx", "https://github.com/ollama/ollama", "https://github.com/tesseract-ocr/tesseract"],
+      "additional_sources": [
+        "https://github.com/paperless-ngx/paperless-ngx",
+        "https://github.com/ollama/ollama",
+        "https://github.com/tesseract-ocr/tesseract"
+      ],
       "auto_install": false,
       "license": "Integrationscode: Repository-Lizenz; Paperless GPL-3.0, Ollama/Tesseract separat",
       "category": "HR / Documents",
@@ -1798,7 +1914,10 @@
       "source": "https://github.com/cs01/pygdbmi",
       "source_commit": "52a17f1d8651e941b8551a44a03d181d605e1e56",
       "version": "0.11.0.0",
-      "additional_sources": ["https://github.com/openocd-org/openocd", "https://github.com/pyocd/pyOCD"],
+      "additional_sources": [
+        "https://github.com/openocd-org/openocd",
+        "https://github.com/pyocd/pyOCD"
+      ],
       "license": "pygdbmi MIT; Setup-Integration und spaetere Debugger-Lizenzen separat pruefen",
       "category": "Embedded / IoT / HIL",
       "status": "experimental",
@@ -1812,7 +1931,9 @@
       "doctor_script": "scripts/tools/embedded_debug_hil_doctor.sh",
       "check_type": "path",
       "check_value": "~/.openclaw_ultimate_user_data/tools/embedded_debug_hil/source-built",
-      "ports": [3333],
+      "ports": [
+        3333
+      ],
       "doc": "docs/tools/embedded-debug-hil.md",
       "description": "pygdbmi-Basisbibliothek aus gepinnten GitHub-Quellen in privater venv ohne Docker; eigener Offline-Snapshot-Prototyp im Setup-Repo. Live-/MCP-Adapter planned.",
       "security_note": "Keine Hardwarezugriffe implementiert. Auch Lesen/Attach/Halt braucht Board-/Sitzungsfreigabe. Port 3333 nur reserviert, nicht geoeffnet; keine autonomen Resets/Flash-/eFuse-Aktionen."
@@ -1832,7 +1953,9 @@
       "doctor_script": "scripts/tools/freellmapi_doctor.sh",
       "check_type": "path",
       "check_value": "~/.openclaw_ultimate_user_data/tools/freellmapi/source-built",
-      "ports": [3011],
+      "ports": [
+        3011
+      ],
       "doc": "docs/tools/freellmapi.md",
       "description": "GitHub-Source v0.14.2 mit Commit-Pin, npm ci/build ohne Docker; fehlendes Node/npm privat ueber GitHub-nvm bereitstellen, System-Node bleibt erhalten. Buildreserve 2 GiB RAM/4 GiB Disk; kein Serverstart.",
       "security_note": "Start separat mit FREELLMAPI_ENABLE_NETWORK=1, nur 127.0.0.1:3011. Externe Katalogkontakte moeglich; native-data getrennt von alten Containerdaten, kein automatischer ENV-/Client-/Service-Umbau."
@@ -1935,10 +2058,20 @@
       "ports": [
         4000
       ],
-      "check_type": "port",
-      "check_value": "4000",
+      "check_type": "path",
+      "check_value": "~/.openclaw_ultimate_user_data/tools/litellm/native-github/build-ready.json",
       "safety": "API-Gateway, Upstream-Keys niemals im Repo speichern.",
-      "source": "https://github.com/BerriAI/litellm"
+      "source": "https://github.com/BerriAI/litellm",
+      "update_script": "scripts/tools/litellm_update.sh",
+      "doctor_script": "scripts/tools/litellm_doctor.sh",
+      "install_mode": "github-native-build",
+      "status": "experimental",
+      "auto_install": false,
+      "doc": "docs/DOCKER_TO_GITHUB.md",
+      "description": "Nativer GitHub-Build ohne Container/Dienststart; Anwendungskonfiguration und Datenmigration separat.",
+      "security_note": "Keine automatische Aenderung alter Container, Volumes oder /opt-Daten. Nur neue native Dateien werden verwaltet.",
+      "source_commit": "f2118fc7670ba3fa736d9b8f4deef9077a45a720",
+      "updated": "2026-10-23"
     },
     {
       "id": "open_webui",
@@ -1949,10 +2082,19 @@
       "ports": [
         3000
       ],
-      "check_type": "port",
-      "check_value": "3000",
+      "check_type": "path",
+      "check_value": "~/.openclaw_ultimate_user_data/tools/open_webui/native-github/build-ready.json",
       "safety": "Web-UI nur bewusst oeffentlich freigeben.",
-      "source": "https://github.com/open-webui/open-webui"
+      "source": "https://github.com/open-webui/open-webui",
+      "update_script": "scripts/tools/open_webui_update.sh",
+      "doctor_script": "scripts/tools/open_webui_doctor.sh",
+      "install_mode": "native-migration-blocked",
+      "status": "planned",
+      "auto_install": false,
+      "doc": "docs/DOCKER_TO_GITHUB.md",
+      "description": "Native Umstellung noch offen; kein Image-Fallback und kein Schein-Erfolg. Frontend/Backend-Paket und Datenmigration separat auf demselben Pin integrieren.",
+      "security_note": "Keine automatische Aenderung alter Container, Volumes oder /opt-Daten. Nur neue native Dateien werden verwaltet.",
+      "updated": "2026-10-23"
     },
     {
       "id": "qdrant",
@@ -1963,10 +2105,20 @@
       "ports": [
         6333
       ],
-      "check_type": "port",
-      "check_value": "6333",
+      "check_type": "path",
+      "check_value": "~/.openclaw_ultimate_user_data/tools/qdrant/native-github/build-ready.json",
       "safety": "Vektor-DB mit lokalen Dokumenten absichern.",
-      "source": "https://github.com/qdrant/qdrant"
+      "source": "https://github.com/qdrant/qdrant",
+      "update_script": "scripts/tools/qdrant_update.sh",
+      "doctor_script": "scripts/tools/qdrant_doctor.sh",
+      "install_mode": "github-native-build",
+      "status": "experimental",
+      "auto_install": false,
+      "doc": "docs/DOCKER_TO_GITHUB.md",
+      "description": "Nativer GitHub-Build ohne Container/Dienststart; Anwendungskonfiguration und Datenmigration separat.",
+      "security_note": "Keine automatische Aenderung alter Container, Volumes oder /opt-Daten. Nur neue native Dateien werden verwaltet.",
+      "source_commit": "222b2e44ab1c3f17e8246396ead6558e45041df7",
+      "updated": "2026-10-23"
     },
     {
       "id": "chromadb",
@@ -2000,10 +2152,19 @@
       "ports": [
         3003
       ],
-      "check_type": "port",
-      "check_value": "3003",
+      "check_type": "path",
+      "check_value": "~/.openclaw_ultimate_user_data/tools/langfuse/native-github/build-ready.json",
       "safety": "LLM-Telemetrie enthaelt potenziell Prompt-Daten.",
-      "source": "https://github.com/langfuse/langfuse"
+      "source": "https://github.com/langfuse/langfuse",
+      "update_script": "scripts/tools/langfuse_update.sh",
+      "doctor_script": "scripts/tools/langfuse_doctor.sh",
+      "install_mode": "native-migration-blocked",
+      "status": "planned",
+      "auto_install": false,
+      "doc": "docs/DOCKER_TO_GITHUB.md",
+      "description": "Native Umstellung noch offen; kein Image-Fallback und kein Schein-Erfolg. Versionskohaerente Web-/Worker-Builds, ClickHouse, PostgreSQL, Redis und S3 samt Migration fehlen.",
+      "security_note": "Keine automatische Aenderung alter Container, Volumes oder /opt-Daten. Nur neue native Dateien werden verwaltet.",
+      "updated": "2026-10-23"
     },
     {
       "id": "openlit",
@@ -2025,10 +2186,20 @@
       "ports": [
         9090
       ],
-      "check_type": "port",
-      "check_value": "9090",
+      "check_type": "path",
+      "check_value": "~/.openclaw_ultimate_user_data/tools/prometheus/native-github/build-ready.json",
       "safety": "Prometheus nicht offen ins Internet haengen.",
-      "source": "https://github.com/prometheus/prometheus"
+      "source": "https://github.com/prometheus/prometheus",
+      "update_script": "scripts/tools/prometheus_update.sh",
+      "doctor_script": "scripts/tools/prometheus_doctor.sh",
+      "install_mode": "github-native-build",
+      "status": "experimental",
+      "auto_install": false,
+      "doc": "docs/DOCKER_TO_GITHUB.md",
+      "description": "Nativer GitHub-Build ohne Container/Dienststart; Anwendungskonfiguration und Datenmigration separat.",
+      "security_note": "Keine automatische Aenderung alter Container, Volumes oder /opt-Daten. Nur neue native Dateien werden verwaltet.",
+      "source_commit": "a2fda0ef4638518a6a6fb27fc48be88fbd732f4b",
+      "updated": "2026-10-23"
     },
     {
       "id": "grafana",
@@ -2039,10 +2210,19 @@
       "ports": [
         3001
       ],
-      "check_type": "port",
-      "check_value": "3001",
+      "check_type": "path",
+      "check_value": "~/.openclaw_ultimate_user_data/tools/grafana/native-github/build-ready.json",
       "safety": "Default-Login direkt aendern.",
-      "source": "https://github.com/grafana/grafana"
+      "source": "https://github.com/grafana/grafana",
+      "update_script": "scripts/tools/grafana_update.sh",
+      "doctor_script": "scripts/tools/grafana_doctor.sh",
+      "install_mode": "native-migration-blocked",
+      "status": "planned",
+      "auto_install": false,
+      "doc": "docs/DOCKER_TO_GITHUB.md",
+      "description": "Native Umstellung noch offen; kein Image-Fallback und kein Schein-Erfolg. Frontend, Wire-Codegenerierung und Backend gemeinsam bauen; Backend allein ist kein Grafana.",
+      "security_note": "Keine automatische Aenderung alter Container, Volumes oder /opt-Daten. Nur neue native Dateien werden verwaltet.",
+      "updated": "2026-10-23"
     },
     {
       "id": "loki",
@@ -2051,10 +2231,20 @@
       "install_script": "scripts/tools/loki_install.sh",
       "uninstall_script": "scripts/tools/loki_uninstall.sh",
       "ports": [],
-      "check_type": "command",
-      "check_value": "docker",
+      "check_type": "path",
+      "check_value": "~/.openclaw_ultimate_user_data/tools/loki/native-github/build-ready.json",
       "safety": "Logdaten koennen sensible Inhalte enthalten.",
-      "source": "https://github.com/grafana/loki"
+      "source": "https://github.com/grafana/loki",
+      "update_script": "scripts/tools/loki_update.sh",
+      "doctor_script": "scripts/tools/loki_doctor.sh",
+      "install_mode": "github-native-build",
+      "status": "experimental",
+      "auto_install": false,
+      "doc": "docs/DOCKER_TO_GITHUB.md",
+      "description": "Nativer GitHub-Build ohne Container/Dienststart; Anwendungskonfiguration und Datenmigration separat.",
+      "security_note": "Keine automatische Aenderung alter Container, Volumes oder /opt-Daten. Nur neue native Dateien werden verwaltet.",
+      "source_commit": "518630ab23d6b0fa51135fbaa1d3f66fbb2e4cd5",
+      "updated": "2026-10-23"
     },
     {
       "id": "uptime_kuma",
@@ -2065,9 +2255,20 @@
       "ports": [
         3004
       ],
-      "check_type": "port",
-      "check_value": "3004",
-      "safety": "Monitoring-Endpunkte nur intern oder via Auth freigeben."
+      "check_type": "path",
+      "check_value": "~/.openclaw_ultimate_user_data/tools/uptime_kuma/native-github/build-ready.json",
+      "safety": "Monitoring-Endpunkte nur intern oder via Auth freigeben.",
+      "update_script": "scripts/tools/uptime_kuma_update.sh",
+      "doctor_script": "scripts/tools/uptime_kuma_doctor.sh",
+      "install_mode": "github-native-build",
+      "status": "experimental",
+      "auto_install": false,
+      "doc": "docs/DOCKER_TO_GITHUB.md",
+      "description": "Nativer GitHub-Build ohne Container/Dienststart; Anwendungskonfiguration und Datenmigration separat.",
+      "security_note": "Keine automatische Aenderung alter Container, Volumes oder /opt-Daten. Nur neue native Dateien werden verwaltet.",
+      "source_commit": "0c287ac4b3a6723c56ab7d8d731017e58deff533",
+      "source": "https://github.com/louislam/uptime-kuma",
+      "updated": "2026-10-23"
     },
     {
       "id": "healthchecks",
@@ -2078,10 +2279,20 @@
       "ports": [
         8004
       ],
-      "check_type": "port",
-      "check_value": "8004",
+      "check_type": "path",
+      "check_value": "~/.openclaw_ultimate_user_data/tools/healthchecks/native-github/build-ready.json",
       "safety": "Cron- und Uptime-Metadaten schuetzen.",
-      "source": "https://github.com/healthchecks/healthchecks"
+      "source": "https://github.com/healthchecks/healthchecks",
+      "update_script": "scripts/tools/healthchecks_update.sh",
+      "doctor_script": "scripts/tools/healthchecks_doctor.sh",
+      "install_mode": "github-native-build",
+      "status": "experimental",
+      "auto_install": false,
+      "doc": "docs/DOCKER_TO_GITHUB.md",
+      "description": "Nativer GitHub-Build ohne Container/Dienststart; Anwendungskonfiguration und Datenmigration separat.",
+      "security_note": "Keine automatische Aenderung alter Container, Volumes oder /opt-Daten. Nur neue native Dateien werden verwaltet.",
+      "source_commit": "59caeef534d5f8151fd42da529c08fad6c719be2",
+      "updated": "2026-10-23"
     },
     {
       "id": "mail_utils_msmtp",
@@ -2137,10 +2348,20 @@
       "install_script": "scripts/tools/crowdsec_install.sh",
       "uninstall_script": "scripts/tools/crowdsec_uninstall.sh",
       "ports": [],
-      "check_type": "command",
-      "check_value": "crowdsec",
+      "check_type": "path",
+      "check_value": "~/.openclaw_ultimate_user_data/tools/crowdsec/native-github/build-ready.json",
       "safety": "Host-Haertung nur bewusst aktivieren.",
-      "source": "https://github.com/crowdsecurity/crowdsec"
+      "source": "https://github.com/crowdsecurity/crowdsec",
+      "update_script": "scripts/tools/crowdsec_update.sh",
+      "doctor_script": "scripts/tools/crowdsec_doctor.sh",
+      "install_mode": "github-native-build",
+      "status": "experimental",
+      "auto_install": false,
+      "doc": "docs/DOCKER_TO_GITHUB.md",
+      "description": "Nativer GitHub-Build ohne Container/Dienststart; Anwendungskonfiguration und Datenmigration separat.",
+      "security_note": "Keine automatische Aenderung alter Container, Volumes oder /opt-Daten. Nur neue native Dateien werden verwaltet.",
+      "source_commit": "725b6659dee54dd7a5f314e587b99512531e4237",
+      "updated": "2026-10-23"
     },
     {
       "id": "ufw",
@@ -2212,25 +2433,44 @@
       "ports": [
         1880
       ],
-      "check_type": "port",
-      "check_value": "1880",
+      "check_type": "path",
+      "check_value": "~/.openclaw_ultimate_user_data/tools/node_red/native-github/build-ready.json",
       "safety": "Flows koennen Automationen und Secrets enthalten.",
-      "source": "https://github.com/node-red/node-red"
+      "source": "https://github.com/node-red/node-red",
+      "update_script": "scripts/tools/node_red_update.sh",
+      "doctor_script": "scripts/tools/node_red_doctor.sh",
+      "install_mode": "github-native-build",
+      "status": "experimental",
+      "auto_install": false,
+      "doc": "docs/DOCKER_TO_GITHUB.md",
+      "description": "Nativer GitHub-Build ohne Container/Dienststart; Anwendungskonfiguration und Datenmigration separat.",
+      "security_note": "Keine automatische Aenderung alter Container, Volumes oder /opt-Daten. Nur neue native Dateien werden verwaltet.",
+      "source_commit": "df0a87cce1a243e21a2e0eb0fdbdbb8c4732392f",
+      "updated": "2026-10-23"
     },
     {
       "id": "mosquitto",
       "name": "Mosquitto",
       "category": "automation",
-      "doc": "docs/MOSQUITTO_INSTALLATION_NOTES.md",
+      "doc": "docs/DOCKER_TO_GITHUB.md",
       "install_script": "scripts/tools/mosquitto_install.sh",
       "uninstall_script": "scripts/tools/mosquitto_uninstall.sh",
       "ports": [
         1883
       ],
-      "check_type": "port",
-      "check_value": "1883",
+      "check_type": "path",
+      "check_value": "~/.openclaw_ultimate_user_data/tools/mosquitto/native-github/build-ready.json",
       "safety": "MQTT auf localhost:1883, kein WebSocket-Port 9001. Neue Config blockiert anonyme Clients; Auth/ACL manuell einrichten.",
-      "source": "https://github.com/eclipse-mosquitto/mosquitto"
+      "source": "https://github.com/eclipse-mosquitto/mosquitto",
+      "update_script": "scripts/tools/mosquitto_update.sh",
+      "doctor_script": "scripts/tools/mosquitto_doctor.sh",
+      "install_mode": "github-native-build",
+      "status": "experimental",
+      "auto_install": false,
+      "description": "Nativer GitHub-Build ohne Container/Dienststart; Anwendungskonfiguration und Datenmigration separat.",
+      "security_note": "Keine automatische Aenderung alter Container, Volumes oder /opt-Daten. Nur neue native Dateien werden verwaltet.",
+      "source_commit": "83f2620f0b955b89aadce32cceb96a8e81950f5e",
+      "updated": "2026-10-23"
     },
     {
       "id": "zigbee2mqtt",
@@ -2241,10 +2481,20 @@
       "ports": [
         8099
       ],
-      "check_type": "port",
-      "check_value": "8099",
+      "check_type": "path",
+      "check_value": "~/.openclaw_ultimate_user_data/tools/zigbee2mqtt/native-github/build-ready.json",
       "safety": "Dongle, Netzwerk und MQTT absichern.",
-      "source": "https://github.com/Koenkk/zigbee2mqtt"
+      "source": "https://github.com/Koenkk/zigbee2mqtt",
+      "update_script": "scripts/tools/zigbee2mqtt_update.sh",
+      "doctor_script": "scripts/tools/zigbee2mqtt_doctor.sh",
+      "install_mode": "github-native-build",
+      "status": "experimental",
+      "auto_install": false,
+      "doc": "docs/DOCKER_TO_GITHUB.md",
+      "description": "Nativer GitHub-Build ohne Container/Dienststart; Anwendungskonfiguration und Datenmigration separat.",
+      "security_note": "Keine automatische Aenderung alter Container, Volumes oder /opt-Daten. Nur neue native Dateien werden verwaltet.",
+      "source_commit": "344b6e03b43644c97154a72ca9eae17193c553a2",
+      "updated": "2026-10-23"
     },
     {
       "id": "esphome",
@@ -2288,9 +2538,19 @@
       "ports": [
         8081
       ],
-      "check_type": "port",
-      "check_value": "8081",
-      "safety": "PDF-Uploads nur vertrauenswuerdig."
+      "check_type": "path",
+      "check_value": "~/.openclaw_ultimate_user_data/tools/stirling_pdf/native-github/build-ready.json",
+      "safety": "PDF-Uploads nur vertrauenswuerdig.",
+      "update_script": "scripts/tools/stirling_pdf_update.sh",
+      "doctor_script": "scripts/tools/stirling_pdf_doctor.sh",
+      "install_mode": "native-migration-blocked",
+      "status": "planned",
+      "auto_install": false,
+      "doc": "docs/DOCKER_TO_GITHUB.md",
+      "description": "Native Umstellung noch offen; kein Image-Fallback und kein Schein-Erfolg. Native Gesamtpaketierung, Laufzeitabhaengigkeiten und Datenmigration noch nicht verifiziert; kein Docker-Fallback.",
+      "security_note": "Keine automatische Aenderung alter Container, Volumes oder /opt-Daten. Nur neue native Dateien werden verwaltet.",
+      "source": "https://github.com/Stirling-Tools/Stirling-PDF",
+      "updated": "2026-10-23"
     },
     {
       "id": "apache_tika",
@@ -2301,10 +2561,19 @@
       "ports": [
         9998
       ],
-      "check_type": "port",
-      "check_value": "9998",
+      "check_type": "path",
+      "check_value": "~/.openclaw_ultimate_user_data/tools/apache_tika/native-github/build-ready.json",
       "safety": "Dokumenteninhalte koennen sensibel sein.",
-      "source": "https://github.com/apache/tika"
+      "source": "https://github.com/apache/tika",
+      "update_script": "scripts/tools/apache_tika_update.sh",
+      "doctor_script": "scripts/tools/apache_tika_doctor.sh",
+      "install_mode": "native-migration-blocked",
+      "status": "planned",
+      "auto_install": false,
+      "doc": "docs/DOCKER_TO_GITHUB.md",
+      "description": "Native Umstellung noch offen; kein Image-Fallback und kein Schein-Erfolg. Native Gesamtpaketierung, Laufzeitabhaengigkeiten und Datenmigration noch nicht verifiziert; kein Docker-Fallback.",
+      "security_note": "Keine automatische Aenderung alter Container, Volumes oder /opt-Daten. Nur neue native Dateien werden verwaltet.",
+      "updated": "2026-10-23"
     },
     {
       "id": "docling",
@@ -2368,9 +2637,19 @@
       "ports": [
         3006
       ],
-      "check_type": "port",
-      "check_value": "3006",
-      "safety": "BI-Frontend mit Auth absichern."
+      "check_type": "path",
+      "check_value": "~/.openclaw_ultimate_user_data/tools/metabase/native-github/build-ready.json",
+      "safety": "BI-Frontend mit Auth absichern.",
+      "update_script": "scripts/tools/metabase_update.sh",
+      "doctor_script": "scripts/tools/metabase_doctor.sh",
+      "install_mode": "native-migration-blocked",
+      "status": "planned",
+      "auto_install": false,
+      "doc": "docs/DOCKER_TO_GITHUB.md",
+      "description": "Native Umstellung noch offen; kein Image-Fallback und kein Schein-Erfolg. Native Gesamtpaketierung, Laufzeitabhaengigkeiten und Datenmigration noch nicht verifiziert; kein Docker-Fallback.",
+      "security_note": "Keine automatische Aenderung alter Container, Volumes oder /opt-Daten. Nur neue native Dateien werden verwaltet.",
+      "source": "https://github.com/metabase/metabase",
+      "updated": "2026-10-23"
     },
     {
       "id": "airbyte",
@@ -2381,9 +2660,19 @@
       "ports": [
         8003
       ],
-      "check_type": "port",
-      "check_value": "8003",
-      "safety": "Connectoren nicht blind mit Cloud-Credentials fuettern."
+      "check_type": "path",
+      "check_value": "~/.openclaw_ultimate_user_data/tools/airbyte/native-github/build-ready.json",
+      "safety": "Connectoren nicht blind mit Cloud-Credentials fuettern.",
+      "update_script": "scripts/tools/airbyte_update.sh",
+      "doctor_script": "scripts/tools/airbyte_doctor.sh",
+      "install_mode": "native-migration-blocked",
+      "status": "planned",
+      "auto_install": false,
+      "doc": "docs/DOCKER_TO_GITHUB.md",
+      "description": "Native Umstellung noch offen; kein Image-Fallback und kein Schein-Erfolg. abctl startet kind/Kubernetes mit Images; native Plattform samt Konnektoren braucht einen separaten Integrationspfad.",
+      "security_note": "Keine automatische Aenderung alter Container, Volumes oder /opt-Daten. Nur neue native Dateien werden verwaltet.",
+      "source": "https://github.com/airbytehq/airbyte",
+      "updated": "2026-10-23"
     },
     {
       "id": "minio",
@@ -2395,10 +2684,20 @@
         9000,
         9001
       ],
-      "check_type": "port",
-      "check_value": "9000",
+      "check_type": "path",
+      "check_value": "~/.openclaw_ultimate_user_data/tools/minio/native-github/build-ready.json",
       "safety": "Objekt-Storage mit starken Schluesseln absichern.",
-      "source": "https://github.com/minio/minio"
+      "source": "https://github.com/minio/minio",
+      "update_script": "scripts/tools/minio_update.sh",
+      "doctor_script": "scripts/tools/minio_doctor.sh",
+      "install_mode": "github-native-build",
+      "status": "experimental",
+      "auto_install": false,
+      "doc": "docs/DOCKER_TO_GITHUB.md",
+      "description": "Nativer GitHub-Build ohne Container/Dienststart; Anwendungskonfiguration und Datenmigration separat.",
+      "security_note": "Keine automatische Aenderung alter Container, Volumes oder /opt-Daten. Nur neue native Dateien werden verwaltet.",
+      "source_commit": "7aac2a2c5b7c882e68c1ce017d8256be2feea27f",
+      "updated": "2026-10-23"
     },
     {
       "id": "restic",
@@ -2818,10 +3117,19 @@
       "ports": [
         8090
       ],
-      "check_type": "port",
-      "check_value": "8090",
+      "check_type": "path",
+      "check_value": "~/.openclaw_ultimate_user_data/tools/appsmith/native-github/build-ready.json",
       "safety": "Interne App-Builder nur mit Auth und lokalen Datenquellen koppeln.",
-      "source": "https://github.com/appsmithorg/appsmith"
+      "source": "https://github.com/appsmithorg/appsmith",
+      "update_script": "scripts/tools/appsmith_update.sh",
+      "doctor_script": "scripts/tools/appsmith_doctor.sh",
+      "install_mode": "native-migration-blocked",
+      "status": "planned",
+      "auto_install": false,
+      "doc": "docs/DOCKER_TO_GITHUB.md",
+      "description": "Native Umstellung noch offen; kein Image-Fallback und kein Schein-Erfolg. Native Gesamtpaketierung, Laufzeitabhaengigkeiten und Datenmigration noch nicht verifiziert; kein Docker-Fallback.",
+      "security_note": "Keine automatische Aenderung alter Container, Volumes oder /opt-Daten. Nur neue native Dateien werden verwaltet.",
+      "updated": "2026-10-23"
     },
     {
       "id": "budibase",
@@ -2832,10 +3140,19 @@
       "ports": [
         10000
       ],
-      "check_type": "port",
-      "check_value": "10000",
+      "check_type": "path",
+      "check_value": "~/.openclaw_ultimate_user_data/tools/budibase/native-github/build-ready.json",
       "safety": "Low-Code-Oberflaechen nicht ungesichert freigeben.",
-      "source": "https://github.com/Budibase/budibase"
+      "source": "https://github.com/Budibase/budibase",
+      "update_script": "scripts/tools/budibase_update.sh",
+      "doctor_script": "scripts/tools/budibase_doctor.sh",
+      "install_mode": "native-migration-blocked",
+      "status": "planned",
+      "auto_install": false,
+      "doc": "docs/DOCKER_TO_GITHUB.md",
+      "description": "Native Umstellung noch offen; kein Image-Fallback und kein Schein-Erfolg. Native Gesamtpaketierung, Laufzeitabhaengigkeiten und Datenmigration noch nicht verifiziert; kein Docker-Fallback.",
+      "security_note": "Keine automatische Aenderung alter Container, Volumes oder /opt-Daten. Nur neue native Dateien werden verwaltet.",
+      "updated": "2026-10-23"
     },
     {
       "id": "nocodb",
@@ -2846,10 +3163,19 @@
       "ports": [
         8083
       ],
-      "check_type": "port",
-      "check_value": "8083",
+      "check_type": "path",
+      "check_value": "~/.openclaw_ultimate_user_data/tools/nocodb/native-github/build-ready.json",
       "safety": "Datenbank-UI nur intern und mit Rollentrennung nutzen.",
-      "source": "https://github.com/nocodb/nocodb"
+      "source": "https://github.com/nocodb/nocodb",
+      "update_script": "scripts/tools/nocodb_update.sh",
+      "doctor_script": "scripts/tools/nocodb_doctor.sh",
+      "install_mode": "native-migration-blocked",
+      "status": "planned",
+      "auto_install": false,
+      "doc": "docs/DOCKER_TO_GITHUB.md",
+      "description": "Native Umstellung noch offen; kein Image-Fallback und kein Schein-Erfolg. Native Gesamtpaketierung, Laufzeitabhaengigkeiten und Datenmigration noch nicht verifiziert; kein Docker-Fallback.",
+      "security_note": "Keine automatische Aenderung alter Container, Volumes oder /opt-Daten. Nur neue native Dateien werden verwaltet.",
+      "updated": "2026-10-23"
     },
     {
       "id": "directus",
@@ -2860,10 +3186,19 @@
       "ports": [
         8055
       ],
-      "check_type": "port",
-      "check_value": "8055",
+      "check_type": "path",
+      "check_value": "~/.openclaw_ultimate_user_data/tools/directus/native-github/build-ready.json",
       "safety": "API-/CMS-Rechte sauber trennen.",
-      "source": "https://github.com/directus/directus"
+      "source": "https://github.com/directus/directus",
+      "update_script": "scripts/tools/directus_update.sh",
+      "doctor_script": "scripts/tools/directus_doctor.sh",
+      "install_mode": "native-migration-blocked",
+      "status": "planned",
+      "auto_install": false,
+      "doc": "docs/DOCKER_TO_GITHUB.md",
+      "description": "Native Umstellung noch offen; kein Image-Fallback und kein Schein-Erfolg. Native Gesamtpaketierung, Laufzeitabhaengigkeiten und Datenmigration noch nicht verifiziert; kein Docker-Fallback.",
+      "security_note": "Keine automatische Aenderung alter Container, Volumes oder /opt-Daten. Nur neue native Dateien werden verwaltet.",
+      "updated": "2026-10-23"
     },
     {
       "id": "home_assistant",
@@ -2874,10 +3209,19 @@
       "ports": [
         8123
       ],
-      "check_type": "port",
-      "check_value": "8123",
+      "check_type": "path",
+      "check_value": "~/.openclaw_ultimate_user_data/tools/home_assistant/native-github/build-ready.json",
       "safety": "Smart-Home-Daten nur bewusst und lokal exponieren.",
-      "source": "https://github.com/home-assistant/core"
+      "source": "https://github.com/home-assistant/core",
+      "update_script": "scripts/tools/home_assistant_update.sh",
+      "doctor_script": "scripts/tools/home_assistant_doctor.sh",
+      "install_mode": "native-migration-blocked",
+      "status": "planned",
+      "auto_install": false,
+      "doc": "docs/DOCKER_TO_GITHUB.md",
+      "description": "Native Umstellung noch offen; kein Image-Fallback und kein Schein-Erfolg. Core-Paketierung, aktuelle Python-Version, Frontend und native Integrationen separat abnehmen.",
+      "security_note": "Keine automatische Aenderung alter Container, Volumes oder /opt-Daten. Nur neue native Dateien werden verwaltet.",
+      "updated": "2026-10-23"
     },
     {
       "id": "nextcloud",
@@ -2888,9 +3232,19 @@
       "ports": [
         8082
       ],
-      "check_type": "port",
-      "check_value": "8082",
-      "safety": "Datei- und Office-Cloud nur mit TLS, Auth und Backup betreiben."
+      "check_type": "path",
+      "check_value": "~/.openclaw_ultimate_user_data/tools/nextcloud/native-github/build-ready.json",
+      "safety": "Datei- und Office-Cloud nur mit TLS, Auth und Backup betreiben.",
+      "update_script": "scripts/tools/nextcloud_update.sh",
+      "doctor_script": "scripts/tools/nextcloud_doctor.sh",
+      "install_mode": "native-migration-blocked",
+      "status": "planned",
+      "auto_install": false,
+      "doc": "docs/DOCKER_TO_GITHUB.md",
+      "description": "Native Umstellung noch offen; kein Image-Fallback und kein Schein-Erfolg. Native Gesamtpaketierung, Laufzeitabhaengigkeiten und Datenmigration noch nicht verifiziert; kein Docker-Fallback.",
+      "security_note": "Keine automatische Aenderung alter Container, Volumes oder /opt-Daten. Nur neue native Dateien werden verwaltet.",
+      "source": "https://github.com/nextcloud/server",
+      "updated": "2026-10-23"
     },
     {
       "id": "llamaindex",
@@ -2936,9 +3290,20 @@
       "ports": [
         7700
       ],
-      "check_type": "port",
-      "check_value": "7700",
-      "safety": "Suchindexe enthalten oft sensible Textfragmente."
+      "check_type": "path",
+      "check_value": "~/.openclaw_ultimate_user_data/tools/meilisearch/native-github/build-ready.json",
+      "safety": "Suchindexe enthalten oft sensible Textfragmente.",
+      "update_script": "scripts/tools/meilisearch_update.sh",
+      "doctor_script": "scripts/tools/meilisearch_doctor.sh",
+      "install_mode": "github-native-build",
+      "status": "experimental",
+      "auto_install": false,
+      "doc": "docs/DOCKER_TO_GITHUB.md",
+      "description": "Nativer GitHub-Build ohne Container/Dienststart; Anwendungskonfiguration und Datenmigration separat.",
+      "security_note": "Keine automatische Aenderung alter Container, Volumes oder /opt-Daten. Nur neue native Dateien werden verwaltet.",
+      "source_commit": "7b6f9f39bd91b04d4551673780cfeb31cb3f5e7b",
+      "source": "https://github.com/meilisearch/meilisearch",
+      "updated": "2026-10-23"
     },
     {
       "id": "promptfoo",
@@ -3040,8 +3405,18 @@
       "uninstall_script": "scripts/tools/grafana_alloy_uninstall.sh",
       "ports": [],
       "check_type": "path",
-      "check_value": "/opt/grafana-alloy",
-      "safety": "Collector-Konfigurationen koennen Telemetrie und Secrets enthalten."
+      "check_value": "~/.openclaw_ultimate_user_data/tools/grafana_alloy/native-github/build-ready.json",
+      "safety": "Collector-Konfigurationen koennen Telemetrie und Secrets enthalten.",
+      "update_script": "scripts/tools/grafana_alloy_update.sh",
+      "doctor_script": "scripts/tools/grafana_alloy_doctor.sh",
+      "install_mode": "native-migration-blocked",
+      "status": "planned",
+      "auto_install": false,
+      "doc": "docs/DOCKER_TO_GITHUB.md",
+      "description": "Native Umstellung noch offen; kein Image-Fallback und kein Schein-Erfolg. Make-Ziel laedt Beyla-Binaries; Source-only-Vertrag erfordert separaten Beyla-Build.",
+      "security_note": "Keine automatische Aenderung alter Container, Volumes oder /opt-Daten. Nur neue native Dateien werden verwaltet.",
+      "source": "https://github.com/grafana/alloy",
+      "updated": "2026-10-23"
     },
     {
       "id": "netdata",
@@ -3052,9 +3427,19 @@
       "ports": [
         19999
       ],
-      "check_type": "port",
-      "check_value": "19999",
-      "safety": "Host-Telemetrie nur intern oder mit Reverse Proxy + Auth freigeben."
+      "check_type": "path",
+      "check_value": "~/.openclaw_ultimate_user_data/tools/netdata/native-github/build-ready.json",
+      "safety": "Host-Telemetrie nur intern oder mit Reverse Proxy + Auth freigeben.",
+      "update_script": "scripts/tools/netdata_update.sh",
+      "doctor_script": "scripts/tools/netdata_doctor.sh",
+      "install_mode": "native-migration-blocked",
+      "status": "planned",
+      "auto_install": false,
+      "doc": "docs/DOCKER_TO_GITHUB.md",
+      "description": "Native Umstellung noch offen; kein Image-Fallback und kein Schein-Erfolg. Native Bibliotheken, Plugins und Hostberechtigungen ohne privilegierten Auto-Installer planen.",
+      "security_note": "Keine automatische Aenderung alter Container, Volumes oder /opt-Daten. Nur neue native Dateien werden verwaltet.",
+      "source": "https://github.com/netdata/netdata",
+      "updated": "2026-10-23"
     },
     {
       "id": "clamav",
@@ -3097,9 +3482,20 @@
       "ports": [
         8888
       ],
-      "check_type": "port",
-      "check_value": "8888",
-      "safety": "Lokale Metasuche nur intern oder hinter Auth betreiben; Suchlogs koennen sensible Interessen verraten."
+      "check_type": "path",
+      "check_value": "~/.openclaw_ultimate_user_data/tools/searxng/native-github/build-ready.json",
+      "safety": "Lokale Metasuche nur intern oder hinter Auth betreiben; Suchlogs koennen sensible Interessen verraten.",
+      "update_script": "scripts/tools/searxng_update.sh",
+      "doctor_script": "scripts/tools/searxng_doctor.sh",
+      "install_mode": "github-native-build",
+      "status": "experimental",
+      "auto_install": false,
+      "doc": "docs/DOCKER_TO_GITHUB.md",
+      "description": "Nativer GitHub-Build ohne Container/Dienststart; Anwendungskonfiguration und Datenmigration separat.",
+      "security_note": "Keine automatische Aenderung alter Container, Volumes oder /opt-Daten. Nur neue native Dateien werden verwaltet.",
+      "source_commit": "81371861f67226091d1c4df2e3908a11d3b54eb9",
+      "source": "https://github.com/searxng/searxng",
+      "updated": "2026-10-23"
     },
     {
       "id": "firecrawl",
@@ -3127,15 +3523,25 @@
       "id": "node_exporter",
       "name": "Node Exporter",
       "category": "monitoring",
-      "doc": "docs/NODE_EXPORTER_INSTALLATION_NOTES.md",
+      "doc": "docs/DOCKER_TO_GITHUB.md",
       "install_script": "scripts/tools/node_exporter_install.sh",
       "uninstall_script": "scripts/tools/node_exporter_uninstall.sh",
       "ports": [
         9100
       ],
-      "check_type": "port",
-      "check_value": "9100",
-      "safety": "localhost:9100; Standard limited mit /proc und /sys read-only, keine Dateisystem-Kapazitaeten. Root-Mount mit rslave nur nach explizitem Opt-in."
+      "check_type": "path",
+      "check_value": "~/.openclaw_ultimate_user_data/tools/node_exporter/native-github/build-ready.json",
+      "safety": "localhost:9100; Standard limited mit /proc und /sys read-only, keine Dateisystem-Kapazitaeten. Root-Mount mit rslave nur nach explizitem Opt-in.",
+      "update_script": "scripts/tools/node_exporter_update.sh",
+      "doctor_script": "scripts/tools/node_exporter_doctor.sh",
+      "install_mode": "github-native-build",
+      "status": "experimental",
+      "auto_install": false,
+      "description": "Nativer GitHub-Build ohne Container/Dienststart; Anwendungskonfiguration und Datenmigration separat.",
+      "security_note": "Keine automatische Aenderung alter Container, Volumes oder /opt-Daten. Nur neue native Dateien werden verwaltet.",
+      "source_commit": "b9e296a911c8beaf89177362e75cc80bfa89eb7e",
+      "source": "https://github.com/prometheus/node_exporter",
+      "updated": "2026-10-23"
     },
     {
       "id": "cadvisor",
@@ -3146,9 +3552,20 @@
       "ports": [
         8088
       ],
-      "check_type": "port",
-      "check_value": "8088",
-      "safety": "Container-Metriken nur lokal oder hinter Auth; Docker-Metadaten koennen intern sein."
+      "check_type": "path",
+      "check_value": "~/.openclaw_ultimate_user_data/tools/cadvisor/native-github/build-ready.json",
+      "safety": "Container-Metriken nur lokal oder hinter Auth; Docker-Metadaten koennen intern sein.",
+      "update_script": "scripts/tools/cadvisor_update.sh",
+      "doctor_script": "scripts/tools/cadvisor_doctor.sh",
+      "install_mode": "github-native-build",
+      "status": "experimental",
+      "auto_install": false,
+      "doc": "docs/DOCKER_TO_GITHUB.md",
+      "description": "Nativer GitHub-Build ohne Container/Dienststart; Anwendungskonfiguration und Datenmigration separat.",
+      "security_note": "Keine automatische Aenderung alter Container, Volumes oder /opt-Daten. Nur neue native Dateien werden verwaltet.",
+      "source_commit": "c57813afc32715351dff34ab76a6164bcb0e5c9d",
+      "source": "https://github.com/google/cadvisor",
+      "updated": "2026-10-23"
     },
     {
       "id": "postgres",
@@ -3201,9 +3618,19 @@
       "ports": [
         3005
       ],
-      "check_type": "port",
-      "check_value": "3005",
-      "safety": "Git-Server nur intern oder hinter starker Auth/Tunnel; SSH/API-Token schuetzen."
+      "check_type": "path",
+      "check_value": "~/.openclaw_ultimate_user_data/tools/forgejo/native-github/build-ready.json",
+      "safety": "Git-Server nur intern oder hinter starker Auth/Tunnel; SSH/API-Token schuetzen.",
+      "update_script": "scripts/tools/forgejo_update.sh",
+      "doctor_script": "scripts/tools/forgejo_doctor.sh",
+      "install_mode": "native-migration-blocked",
+      "status": "planned",
+      "auto_install": false,
+      "doc": "docs/DOCKER_TO_GITHUB.md",
+      "description": "Native Umstellung noch offen; kein Image-Fallback und kein Schein-Erfolg. Autoritative Quelle Codeberg; GitHub-Mirror nicht als verifizierten Ersatz behaupten.",
+      "security_note": "Keine automatische Aenderung alter Container, Volumes oder /opt-Daten. Nur neue native Dateien werden verwaltet.",
+      "source": "https://github.com/forgejo/forgejo",
+      "updated": "2026-10-23"
     },
     {
       "id": "penpot",
@@ -3219,9 +3646,19 @@
         4402,
         4403
       ],
-      "check_type": "port",
-      "check_value": "9011",
-      "safety": "Design- und MCP-Dienste nur lokal oder ueber Auth freigeben; Mailcatch nicht oeffentlich machen."
+      "check_type": "path",
+      "check_value": "~/.openclaw_ultimate_user_data/tools/penpot/native-github/build-ready.json",
+      "safety": "Design- und MCP-Dienste nur lokal oder ueber Auth freigeben; Mailcatch nicht oeffentlich machen.",
+      "update_script": "scripts/tools/penpot_update.sh",
+      "doctor_script": "scripts/tools/penpot_doctor.sh",
+      "install_mode": "native-migration-blocked",
+      "status": "planned",
+      "auto_install": false,
+      "doc": "docs/DOCKER_TO_GITHUB.md",
+      "description": "Native Umstellung noch offen; kein Image-Fallback und kein Schein-Erfolg. Frontend, Backend, Exporter und externe Datendienste gemeinsam nativ bauen und abnehmen.",
+      "security_note": "Keine automatische Aenderung alter Container, Volumes oder /opt-Daten. Nur neue native Dateien werden verwaltet.",
+      "source": "https://github.com/penpot/penpot",
+      "updated": "2026-10-23"
     },
     {
       "id": "tesseract",
@@ -3727,14 +4164,23 @@
       "name": "Caddy",
       "category": "network",
       "source": "https://github.com/caddyserver/caddy",
-      "install_script": "scripts/tools/planned_tool_stub_install.sh",
-      "uninstall_script": "scripts/tools/planned_tool_stub_uninstall.sh",
+      "install_script": "scripts/tools/caddy_install.sh",
+      "uninstall_script": "scripts/tools/caddy_uninstall.sh",
       "ports": [],
       "check_type": "path",
-      "check_value": "~/.openclaw_ultimate_user_data/tools/caddy",
-      "status": "planned",
+      "check_value": "~/.openclaw_ultimate_user_data/tools/caddy/native-github/build-ready.json",
+      "status": "experimental",
       "resource_class": "medium",
-      "safety": "TLS Reverse Proxy."
+      "safety": "TLS Reverse Proxy.",
+      "update_script": "scripts/tools/caddy_update.sh",
+      "doctor_script": "scripts/tools/caddy_doctor.sh",
+      "install_mode": "github-native-build",
+      "auto_install": false,
+      "doc": "docs/DOCKER_TO_GITHUB.md",
+      "description": "Nativer GitHub-Build ohne Container/Dienststart; Anwendungskonfiguration und Datenmigration separat.",
+      "security_note": "Keine automatische Aenderung alter Container, Volumes oder /opt-Daten. Nur neue native Dateien werden verwaltet.",
+      "source_commit": "2b47a1849f86389825623d6d36ee528da8b9e5fb",
+      "updated": "2026-10-23"
     },
     {
       "id": "traefik",
@@ -5371,14 +5817,18 @@
       "status": "planned",
       "resource_class": "medium",
       "risk": "medium",
-      "install_mode": "manual",
-      "install_script": "scripts/tools/planned_tool_stub_install.sh",
-      "uninstall_script": "scripts/tools/planned_tool_stub_uninstall.sh",
-      "check_type": "documentation",
-      "check_value": "https://github.com/neo4j/neo4j",
-      "description": "Documentation-first registry entry for profile mapping consistency.",
-      "security_note": "Keine automatische Installation; Nutzung nur nach Doctor-/Preflight-Pruefung.",
-      "updated": "2026-05-30"
+      "install_mode": "native-migration-blocked",
+      "install_script": "scripts/tools/neo4j_install.sh",
+      "uninstall_script": "scripts/tools/neo4j_uninstall.sh",
+      "check_type": "path",
+      "check_value": "~/.openclaw_ultimate_user_data/tools/neo4j/native-github/build-ready.json",
+      "description": "Native Umstellung noch offen; kein Image-Fallback und kein Schein-Erfolg. Native Gesamtpaketierung, Laufzeitabhaengigkeiten und Datenmigration noch nicht verifiziert; kein Docker-Fallback.",
+      "security_note": "Keine automatische Aenderung alter Container, Volumes oder /opt-Daten. Nur neue native Dateien werden verwaltet.",
+      "updated": "2026-10-23",
+      "update_script": "scripts/tools/neo4j_update.sh",
+      "doctor_script": "scripts/tools/neo4j_doctor.sh",
+      "auto_install": false,
+      "doc": "docs/DOCKER_TO_GITHUB.md"
     },
     {
       "id": "musicgen",
@@ -5715,33 +6165,42 @@
       "status": "planned",
       "resource_class": "low",
       "risk": "medium",
-      "install_mode": "manual",
-      "install_script": "scripts/tools/planned_tool_stub_install.sh",
-      "uninstall_script": "scripts/tools/planned_tool_stub_uninstall.sh",
-      "check_type": "documentation",
-      "check_value": "https://github.com/grafana/loki",
+      "install_mode": "native-migration-blocked",
+      "install_script": "scripts/tools/promtail_install.sh",
+      "uninstall_script": "scripts/tools/promtail_uninstall.sh",
+      "check_type": "path",
+      "check_value": "~/.openclaw_ultimate_user_data/tools/promtail/native-github/build-ready.json",
       "license": "verify upstream license before production use",
-      "description": "Documentation-first optional tool candidate.",
-      "security_note": "Keine automatische Installation; Ressourcen, Ports und Secrets vorher pruefen.",
-      "updated": "2026-05-30"
+      "description": "Native Umstellung noch offen; kein Image-Fallback und kein Schein-Erfolg. EOL seit 2026-03-02; keine neue Installation. Alloy-Migration getrennt pruefen.",
+      "security_note": "Keine automatische Aenderung alter Container, Volumes oder /opt-Daten. Nur neue native Dateien werden verwaltet.",
+      "updated": "2026-10-23",
+      "update_script": "scripts/tools/promtail_update.sh",
+      "doctor_script": "scripts/tools/promtail_doctor.sh",
+      "auto_install": false,
+      "doc": "docs/DOCKER_TO_GITHUB.md"
     },
     {
       "id": "weaviate",
       "name": "Weaviate",
       "source": "https://github.com/weaviate/weaviate",
       "category": "RAG / Vector DB",
-      "status": "planned",
+      "status": "experimental",
       "resource_class": "server",
       "risk": "high",
-      "install_mode": "manual",
-      "install_script": "scripts/tools/planned_tool_stub_install.sh",
-      "uninstall_script": "scripts/tools/planned_tool_stub_uninstall.sh",
-      "check_type": "documentation",
-      "check_value": "https://github.com/weaviate/weaviate",
+      "install_mode": "github-native-build",
+      "install_script": "scripts/tools/weaviate_install.sh",
+      "uninstall_script": "scripts/tools/weaviate_uninstall.sh",
+      "check_type": "path",
+      "check_value": "~/.openclaw_ultimate_user_data/tools/weaviate/native-github/build-ready.json",
       "license": "verify upstream license before production use",
-      "description": "Documentation-first optional tool candidate.",
-      "security_note": "Keine automatische Installation; Ressourcen, Ports und Secrets vorher pruefen.",
-      "updated": "2026-05-30"
+      "description": "Nativer GitHub-Build ohne Container/Dienststart; Anwendungskonfiguration und Datenmigration separat.",
+      "security_note": "Keine automatische Aenderung alter Container, Volumes oder /opt-Daten. Nur neue native Dateien werden verwaltet.",
+      "updated": "2026-10-23",
+      "update_script": "scripts/tools/weaviate_update.sh",
+      "doctor_script": "scripts/tools/weaviate_doctor.sh",
+      "auto_install": false,
+      "doc": "docs/DOCKER_TO_GITHUB.md",
+      "source_commit": "1baf16202f883ad7410eaa9e4c01e214635d32ad"
     },
     {
       "id": "kustomize",
