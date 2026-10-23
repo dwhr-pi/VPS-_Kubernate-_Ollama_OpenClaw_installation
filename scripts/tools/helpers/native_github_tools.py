@@ -12,6 +12,7 @@ import sys
 import tempfile
 
 import gap_tools as common
+import native_github_adapters as adapters
 
 ROOT = Path(__file__).resolve().parents[3]
 MANIFEST = ROOT / "config/docker_to_github.json"
@@ -42,7 +43,7 @@ for key, item in TOOLS.items():
             if (not isinstance(cwd, str) or Path(cwd).is_absolute() or ".." in Path(cwd).parts or
                     "\\" in cwd or ":" in cwd or not args or
                     any(not isinstance(arg, str) for arg in args) or
-                    args[0] not in ("go", "make", "npm", "pnpm", "yarn", "mvn", "java", "bun", "clojure", "composer", "php", "gradle")):
+                    args[0] not in ("go", "make", "npm", "pnpm", "yarn", "mvn", "java", "bun", "clojure", "composer", "php", "gradle", "node", "bash")):
                 raise ValueError("Ungueltiger Pipeline-Buildschritt.")
         for dependency in recipe.get("sources", []):
             if (not re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", dependency["repo"]) or
@@ -114,6 +115,7 @@ def preflight(outer, spec):
         raise ValueError("EOL-Archivbuild nicht freigegeben. " + acknowledgement + "=1 nur nach Lesen der Migrationsdokumentation setzen.")
     for name in ["git"] + requirements(spec):
         common.executable(name)
+    adapters.preflight(spec)
     info = Path("/proc/meminfo")
     if info.is_file():
         memory = dict(line.split(":", 1) for line in info.read_text().splitlines())
@@ -170,10 +172,25 @@ def build(prefix, spec):
         upper = recipe.get("node_max", 999)
         run(["node", "-e", "const v=+process.versions.node.split('.')[0]; if(v < " +
              str(recipe["node_min"]) + " || v > " + str(upper) + ") process.exit(1)"], checkout, env)
+    if recipe.get("node_exact"):
+        if run(["node", "-p", "process.versions.node"], checkout, env) != recipe["node_exact"]:
+            raise ValueError("Vorhandenes Node " + recipe["node_exact"] + " erforderlich; kein automatischer Runtime-Download.")
+    if kind == "pipeline" and "cargo" in requirements(spec):
+        selected = os.environ.get("NATIVE_SOURCE_RUST_TOOLCHAIN")
+        if selected:
+            toolchain = Path(selected)
+            if not toolchain.is_absolute() or not (toolchain / "bin/rustc").is_file():
+                raise ValueError("NATIVE_SOURCE_RUST_TOOLCHAIN muss auf eine vorhandene absolute Toolchain zeigen.")
+            env["RUSTUP_TOOLCHAIN"] = str(toolchain)
+        sysroot = run(["rustc", "--print", "sysroot"], prefix, env)
+        if not Path(sysroot).is_absolute() or not Path(sysroot).is_dir():
+            raise ValueError("Vorhandene Rust-Toolchain nicht eindeutig; kein automatischer Download.")
+        env["RUSTUP_TOOLCHAIN"] = sysroot
     if recipe.get("manager"):
         manager, version = recipe["manager"]
         if run([manager, "--version"], checkout, env) != version:
             raise ValueError("Vorhandener Paketmanager abweichend: " + manager + " " + version + " erforderlich.")
+    adapters.prepare(prefix, spec, env)
     if kind == "go":
         env["CGO_ENABLED"] = "0"
         module = checkout / recipe.get("module_dir", ".")

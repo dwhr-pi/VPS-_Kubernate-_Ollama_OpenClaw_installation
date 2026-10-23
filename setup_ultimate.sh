@@ -872,6 +872,10 @@ get_tool_install_fallback_min_free_mb() {
     local tool_key="$1"
 
     case "$tool_key" in
+        "Langfuse"|"Grafana_Alloy") printf '49152' ;;
+        "NocoDB") printf '32768' ;;
+        "Penpot") printf '65536' ;;
+        "PyAirbyte") printf '16384' ;;
         "Forgejo") printf '16384' ;;
         "Apache_Tika") printf '16384' ;;
         "Appsmith") printf '49152' ;;
@@ -1050,7 +1054,7 @@ preflight_tool_install_storage() {
     if is_wsl_environment; then
         windows_min_mb="$(get_tool_install_windows_min_free_mb "$min_mb")"
         case "$tool_key" in
-            "Apache_Tika"|"Appsmith"|"ArchiveBox"|"Argilla"|"Budibase"|"Forgejo"|"Caddy"|"cAdvisor"|"Changedetection_IO"|"CrowdSec"|"Directus"|"Grafana"|"Healthchecks"|"Home_Assistant"|"LiteLLM"|"Loki"|"Meilisearch"|"Metabase"|"MinIO"|"Mosquitto"|"Neo4j"|"Netdata"|"Nextcloud"|"Node_Exporter"|"Node_Red"|"Open_WebUI"|"Prometheus"|"Promtail"|"Qdrant"|"SearXNG"|"Stirling_PDF"|"Uptime_Kuma"|"Vault"|"Vikunja"|"Watchtower"|"Weaviate"|"Zigbee2MQTT") windows_min_mb="$min_mb" ;;
+            "PyAirbyte"|"Langfuse"|"NocoDB"|"Penpot"|"Grafana_Alloy"|"Apache_Tika"|"Appsmith"|"ArchiveBox"|"Argilla"|"Budibase"|"Forgejo"|"Caddy"|"cAdvisor"|"Changedetection_IO"|"CrowdSec"|"Directus"|"Grafana"|"Healthchecks"|"Home_Assistant"|"LiteLLM"|"Loki"|"Meilisearch"|"Metabase"|"MinIO"|"Mosquitto"|"Neo4j"|"Netdata"|"Nextcloud"|"Node_Exporter"|"Node_Red"|"Open_WebUI"|"Prometheus"|"Promtail"|"Qdrant"|"SearXNG"|"Stirling_PDF"|"Uptime_Kuma"|"Vault"|"Vikunja"|"Watchtower"|"Weaviate"|"Zigbee2MQTT") windows_min_mb="$min_mb" ;;
             Qwen_Desktop_Build|Hermes_Agent_Jarvis|Gradio|Streamlit|WanVideoWrapper|CogVideoX|LTX_Video|Video2Dataset|MuseTalk|LivePortrait|SadTalker|RVC|UVR5|Audacity|OBS|Concat|Remotion|HyperFrames) windows_min_mb="$min_mb" ;;
         esac
         windows_min_kb=$((windows_min_mb * 1024))
@@ -4654,6 +4658,9 @@ show_main_menu() {
 }
 
 # Native migration metadata overrides older Docker descriptions only.
+TOOL_KEYS+=("PyAirbyte")
+TOOLS["PyAirbyte"]="Separates GitHub-Python-SDK; kein Airbyte-Core-Ersatz. docs/DOCKER_TO_GITHUB.md"
+TOOL_SCRIPT_NAMES["PyAirbyte"]="pyairbyte"
 TOOLS["Airbyte"]="Native Umstellung OFFEN; kein Docker-Fallback. docs/DOCKER_TO_GITHUB.md"
 TOOL_SCRIPT_NAMES["Airbyte"]="airbyte"
 TOOLS["Apache_Tika"]="GitHub-Source-Build ohne Image-Installation; kein Dienststart. docs/DOCKER_TO_GITHUB.md"
@@ -4680,13 +4687,13 @@ TOOLS["Forgejo"]="Offizieller Codeberg-Source-Build (freigegebene Ausnahme); kei
 TOOL_SCRIPT_NAMES["Forgejo"]="forgejo"
 TOOLS["Grafana"]="GitHub-Source-Build ohne Image-Installation; kein Dienststart. docs/DOCKER_TO_GITHUB.md"
 TOOL_SCRIPT_NAMES["Grafana"]="grafana"
-TOOLS["Grafana_Alloy"]="Native Umstellung OFFEN; kein Docker-Fallback. docs/DOCKER_TO_GITHUB.md"
+TOOLS["Grafana_Alloy"]="Nativer GitHub-Build ohne Docker; Voraussetzungen und Umfang: docs/DOCKER_TO_GITHUB.md"
 TOOL_SCRIPT_NAMES["Grafana_Alloy"]="grafana_alloy"
 TOOLS["Healthchecks"]="GitHub-Source-Build ohne Docker; kein Dienststart. docs/DOCKER_TO_GITHUB.md"
 TOOL_SCRIPT_NAMES["Healthchecks"]="healthchecks"
 TOOLS["Home_Assistant"]="GitHub-Source-Build ohne Image-Installation; kein Dienststart. docs/DOCKER_TO_GITHUB.md"
 TOOL_SCRIPT_NAMES["Home_Assistant"]="home_assistant"
-TOOLS["Langfuse"]="Native Umstellung OFFEN; kein Docker-Fallback. docs/DOCKER_TO_GITHUB.md"
+TOOLS["Langfuse"]="Nativer GitHub-Build ohne Docker; Voraussetzungen und Umfang: docs/DOCKER_TO_GITHUB.md"
 TOOL_SCRIPT_NAMES["Langfuse"]="langfuse"
 TOOLS["LiteLLM"]="GitHub-Source-Build ohne Docker; kein Dienststart. docs/DOCKER_TO_GITHUB.md"
 TOOL_SCRIPT_NAMES["LiteLLM"]="litellm"
@@ -4706,7 +4713,7 @@ TOOLS["Netdata"]="GitHub-Source-Build ohne Image-Installation; kein Dienststart.
 TOOL_SCRIPT_NAMES["Netdata"]="netdata"
 TOOLS["Nextcloud"]="GitHub-Source-Build ohne Image-Installation; kein Dienststart. docs/DOCKER_TO_GITHUB.md"
 TOOL_SCRIPT_NAMES["Nextcloud"]="nextcloud"
-TOOLS["NocoDB"]="Native Umstellung OFFEN; kein Docker-Fallback. docs/DOCKER_TO_GITHUB.md"
+TOOLS["NocoDB"]="Nativer GitHub-Build ohne Docker; Voraussetzungen und Umfang: docs/DOCKER_TO_GITHUB.md"
 TOOL_SCRIPT_NAMES["NocoDB"]="nocodb"
 TOOLS["Node_Exporter"]="GitHub-Source-Build ohne Docker; kein Dienststart. docs/DOCKER_TO_GITHUB.md"
 TOOL_SCRIPT_NAMES["Node_Exporter"]="node_exporter"
@@ -4714,7 +4721,7 @@ TOOLS["Node_Red"]="GitHub-Source-Build ohne Docker; kein Dienststart. docs/DOCKE
 TOOL_SCRIPT_NAMES["Node_Red"]="node_red"
 TOOLS["Open_WebUI"]="GitHub-Source-Build ohne Image-Installation; kein Dienststart. docs/DOCKER_TO_GITHUB.md"
 TOOL_SCRIPT_NAMES["Open_WebUI"]="open_webui"
-TOOLS["Penpot"]="Native Umstellung OFFEN; kein Docker-Fallback. docs/DOCKER_TO_GITHUB.md"
+TOOLS["Penpot"]="Nativer GitHub-Build ohne Docker; Voraussetzungen und Umfang: docs/DOCKER_TO_GITHUB.md"
 TOOL_SCRIPT_NAMES["Penpot"]="penpot"
 TOOLS["Prometheus"]="GitHub-Source-Build ohne Docker; kein Dienststart. docs/DOCKER_TO_GITHUB.md"
 TOOL_SCRIPT_NAMES["Prometheus"]="prometheus"

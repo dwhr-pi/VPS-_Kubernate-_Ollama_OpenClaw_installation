@@ -7,9 +7,10 @@ vor. Ein zusaetzlicher GitHub-Clone machte diese Image-Installationen nicht zu
 nativen Builds. Die folgende Liste ist eine statische Pfadaufnahme, kein Scan
 deiner installierten Container.
 
-**37 native Build-/Paketrezepte sind jetzt implementiert (36 GitHub, eine
-freigegebene Codeberg-Ausnahme); 6 native Umstellungen
-sind noch offen.** Alle 43 Einstiegspunkte haben keinen automatischen Image-
+**41 der 43 angefragten nativen Build-/Paketrezepte sind implementiert
+(40 GitHub, eine freigegebene Codeberg-Ausnahme); 2 Umstellungen bleiben offen.**
+Zusaetzlich ist PyAirbyte als eigenstaendiges GitHub-Python-SDK integriert:
+insgesamt 42 Buildrezepte fuer 44 getrennte Eintraege. Alle 43 Einstiegspunkte haben keinen automatischen Image-
 Fallback mehr. Bei offenen Faellen liefert Installation/Update einen Fehler mit
 Begruendung statt Quellen als fertige Anwendung zu zaehlen. Das ist eine bewusst
 sichtbare Kompatibilitaetsaenderung, keine Behauptung von 43 fertigen Installern.
@@ -38,10 +39,10 @@ Rechercheziele, keine bereits verifizierten Buildvertraege.
 | Directus (`directus`) | `directus/directus:latest` | Rezept: pnpm; 24576 MiB Startreserve | [Quelle](https://github.com/directus/directus/tree/b3ce03c18673230913bdfdf14907eb13e6865178) |
 | Forgejo (`forgejo`) | `codeberg.org/forgejo/forgejo:10` | Rezept: pipeline; 16384 MiB Startreserve | [Quelle](https://codeberg.org/forgejo/forgejo/src/commit/0d791421f85ca13a63b665053d81ea765fbbc571) |
 | Grafana (`grafana`) | `grafana/grafana:latest` | Rezept: pipeline; 32768 MiB Startreserve | [Quelle](https://github.com/grafana/grafana/tree/9641b46829cb0172875ea6dd323bcec88fcf2cda) |
-| Grafana Alloy (`grafana_alloy`) | `grafana/alloy:latest` | **OFFEN:** Make-Ziel laedt Beyla-Binaries; Source-only-Vertrag erfordert separaten Beyla-Build. | [Quelle](https://github.com/grafana/alloy) |
+| Grafana Alloy (`grafana_alloy`) | `grafana/alloy:latest` | Rezept: pipeline; 49152 MiB Startreserve | [Quelle](https://github.com/grafana/alloy/tree/3b2a3565546bd36592dc49ca28604ad187f0fb85) |
 | Healthchecks (`healthchecks`) | `postgres:16, lscr.io/linuxserver/healthchecks:latest` | Rezept: requirements; 8192 MiB Startreserve | [Quelle](https://github.com/healthchecks/healthchecks/tree/59caeef534d5f8151fd42da529c08fad6c719be2) |
 | Home Assistant (`home_assistant`) | `ghcr.io/home-assistant/home-assistant:stable` | Rezept: python; 16384 MiB Startreserve | [Quelle](https://github.com/home-assistant/core/tree/3b4094800ac6c7906ded4081895fe7dce487a542) |
-| Langfuse (`langfuse`) | `postgres:16, ghcr.io/langfuse/langfuse:latest` | **OFFEN:** Versionskohaerente Web-/Worker-Builds, ClickHouse, PostgreSQL, Redis und S3 samt Migration fehlen. | [Quelle](https://github.com/langfuse/langfuse) |
+| Langfuse (`langfuse`) | `postgres:16, ghcr.io/langfuse/langfuse:latest` | Rezept: pipeline; 49152 MiB Startreserve | [Quelle](https://github.com/langfuse/langfuse/tree/e139e39b9ee56475c1a6df2d8ca58a3eaffc69b1) |
 | LiteLLM (`litellm`) | `ghcr.io/berriai/litellm:main-latest` | Rezept: python; 8192 MiB Startreserve | [Quelle](https://github.com/BerriAI/litellm/tree/f2118fc7670ba3fa736d9b8f4deef9077a45a720) |
 | Loki (`loki`) | `grafana/loki:latest` | Rezept: go; 16384 MiB Startreserve | [Quelle](https://github.com/grafana/loki/tree/518630ab23d6b0fa51135fbaa1d3f66fbb2e4cd5) |
 | Meilisearch (`meilisearch`) | `getmeili/meilisearch:latest` | Rezept: rust; 24576 MiB Startreserve | [Quelle](https://github.com/meilisearch/meilisearch/tree/7b6f9f39bd91b04d4551673780cfeb31cb3f5e7b) |
@@ -51,11 +52,11 @@ Rechercheziele, keine bereits verifizierten Buildvertraege.
 | Neo4j (`neo4j`) | `neo4j:5` | Rezept: pipeline; 49152 MiB Startreserve | [Quelle](https://github.com/neo4j/neo4j/tree/2994b43b44f35bf6520bd2667ab181bb76a45585) |
 | Netdata (`netdata`) | `netdata/netdata:latest` | Rezept: cmake; 16384 MiB Startreserve | [Quelle](https://github.com/netdata/netdata/tree/4ca8ebf9c40a2e36b42b0255269a2a97948c752b) |
 | Nextcloud (`nextcloud`) | `nextcloud:latest` | Rezept: pipeline; 24576 MiB Startreserve | [Quelle](https://github.com/nextcloud/server/tree/a6daedfcc625ccde0f712f72b1cd005a1706635c) |
-| NocoDB (`nocodb`) | `nocodb/nocodb:latest` | **OFFEN:** Native Gesamtpaketierung, Laufzeitabhaengigkeiten und Datenmigration noch nicht verifiziert; kein Docker-Fallback. | [Quelle](https://github.com/nocodb/nocodb) |
+| NocoDB (`nocodb`) | `nocodb/nocodb:latest` | Rezept: pipeline; 32768 MiB Startreserve | [Quelle](https://github.com/nocodb/nocodb/tree/f9731d9d7e7366328834cac29f84c94b62263009) |
 | Node Exporter (`node_exporter`) | `prom/node-exporter:latest` | Rezept: go; 4096 MiB Startreserve | [Quelle](https://github.com/prometheus/node_exporter/tree/b9e296a911c8beaf89177362e75cc80bfa89eb7e) |
 | Node-RED (`node_red`) | `nodered/node-red:latest` | Rezept: npm; 8192 MiB Startreserve | [Quelle](https://github.com/node-red/node-red/tree/df0a87cce1a243e21a2e0eb0fdbdbb8c4732392f) |
 | Open WebUI (`open_webui`) | `ghcr.io/open-webui/open-webui:main` | Rezept: python; 24576 MiB Startreserve | [Quelle](https://github.com/open-webui/open-webui/tree/91ea4e3421d1d8069f13d4a463fcb5986d94ea60) |
-| Penpot (`penpot`) | `` | **OFFEN:** Frontend, Backend, Exporter und externe Datendienste gemeinsam nativ bauen und abnehmen. | [Quelle](https://github.com/penpot/penpot) |
+| Penpot (`penpot`) | `` | Rezept: pipeline; 65536 MiB Startreserve | [Quelle](https://github.com/penpot/penpot/tree/74add0522668dffe9bb35cd18bc8a0e812372b5e) |
 | Prometheus (`prometheus`) | `prom/prometheus:latest` | Rezept: make; 16384 MiB Startreserve | [Quelle](https://github.com/prometheus/prometheus/tree/a2fda0ef4638518a6a6fb27fc48be88fbd732f4b) |
 | Promtail (`promtail`) | `grafana/promtail:latest` | Rezept: go; 16384 MiB Startreserve; nur freigegebener EOL-Archivbuild | [Quelle](https://github.com/grafana/loki/tree/1906dc2b29e1f1ffc37d9a6c9375d1590d7078a7) |
 | Qdrant (`qdrant`) | `qdrant/qdrant:latest` | Rezept: rust; 24576 MiB Startreserve | [Quelle](https://github.com/qdrant/qdrant/tree/222b2e44ab1c3f17e8246396ead6558e45041df7) |
@@ -75,7 +76,7 @@ Die bestehende Tool-Auswahl und die einzelnen Shell-Einstiege verwenden
 [`native_github_tools.py`](../scripts/tools/helpers/native_github_tools.py) und
 das [Migrationsmanifest](../config/docker_to_github.json). Bei geplanten Tools
 bleibt die eingeschraenkte Reifegradanzeige absichtlich erhalten. Direkte CLI-
-Pruefung ist fuer jeden der 43 Slugs verfuegbar:
+Pruefung ist fuer alle 43 urspruenglichen Slugs und PyAirbyte verfuegbar:
 
 ```bash
 # Read-only plan: no downloads, dependencies, host changes or service start.
@@ -86,7 +87,7 @@ bash scripts/tools/node_exporter_status.sh
 bash scripts/tools/node_exporter_doctor.sh
 bash scripts/tools/node_exporter_update.sh --dry-run
 # Example of an honestly blocked path; install itself will fail, not pull images.
-bash scripts/tools/langfuse_install.sh --dry-run
+bash scripts/tools/airbyte_install.sh --dry-run
 ```
 
 Ziel je Tool: `~/.openclaw_ultimate_user_data/tools/SLUG/native-github/`.
@@ -126,7 +127,7 @@ Buildumgebungen erben keine Provider-/AWS-Schluessel; Docker/Podman/sudo-Aufrufe
 ueber PATH werden gesperrt. Das ersetzt keine Sicherheits-Sandbox gegen
 boesartigen Buildcode oder absolute Programmpfade.
 
-Speicherreserve je Rezept: 4 bis 48 GiB. Unter WSL wird auch C: geprueft; freie
+Speicherreserve je Rezept: 4 bis 64 GiB. Unter WSL wird auch C: geprueft; freie
 Linux-Kapazitaet ersetzt die Hostreserve nicht. Bei den zuletzt gemeldeten 8 GiB
 auf C: werden zahlreiche Builds weiterhin korrekt blockiert. Reserven nicht
 pauschal senken. Genuegend zusaetzlichen Puffer einplanen. Bei Fehlern werden
@@ -181,8 +182,9 @@ Node Exporter bei manuellem Start ausdruecklich an `127.0.0.1:9100` binden.
   einen GitHub-Mirror. Ein Git/TLS-Verbindungsfehler bleibt ein Fehler im Log;
   die Quelle wird dann nicht stillschweigend gewechselt.
 - Promtail ist EOL; nur ein ausdruecklich freigegebener Archivbuild ist moeglich,
-  kein automatisch gestarteter Produktivdienst. Alloy braucht insbesondere einen
-  Source-Build fuer eingebettete Beyla-Komponenten.
+  kein automatisch gestarteter Produktivdienst. Alloy wird nativ gebaut; fuer
+  eingebettete Beyla-Komponenten sind offizielle GitHub-Release-Assets mit
+  Pruefsummen nach ausdruecklicher Nutzerfreigabe erlaubt.
 - Vorhandene `stacks/`, Kubernetes-Images, Compose-Vorlagen und historische
   Docker-Helper bleiben als explizite Container-Alternativen im Repository.
   Die 43 umgestellten Tool-Wrapper rufen sie nicht mehr auf. Ein gesamthaft
@@ -266,11 +268,11 @@ keine beliebigen zusaetzlichen Quellenhosts.
 ## Tests und verbleibende Arbeit
 
 [Offline-Fixtures](../tests/test_native_github_tools.py) pruefen alle Rezepte mit
-gemockten Compilern, 258 Lifecycle-Wrapper, Fehlerlogging, Rollback, Idempotenz,
+gemockten Compilern, 264 Lifecycle-Wrapper, Fehlerlogging, Rollback, Idempotenz,
 Marker, Dateigrenzen und die expliziten Blocker. Das sind keine realen
 Linux-Builds. Kein Tool, Container oder Dienst wurde auf dem Nutzersystem gestartet.
 
-Noch offen: Airbyte, Grafana Alloy, Langfuse, NocoDB, Penpot und Rhasspy;
+Noch offen: Airbyte Core und Rhasspy;
 reale Builds der verfuegbaren Rezepte auf isoliertem Ubuntu; dazu je Dienst Konfiguration, Betrieb, Restore
 und Upgrade. Erst nach diesen Nachweisen als einsatzbereit einstufen.
 
@@ -279,15 +281,14 @@ Artefakte, Python-Vorpruefung, Promtail-Freigabe und falsche Submodul-Pins.
 Die frueheren Fixture-/Shell-Nachweise ersetzen keine Abnahme dieser neuen
 Compilerlaeufe. Kein vollstaendiger Repo-Testlauf, Ubuntu-Build oder Runtime-Start.
 
-Lokaler Nachweis dieses Schritts: 23 Migrations-Vertragstests, 8 native
-Status-/Buildabhaengigkeits-Tests und 13 Repository-Audit-Fixtures bestanden
-(44 Python-Tests). Die drei Shell-Vertragstests fuer Node Exporter, Mosquitto
-und Airbyte bestanden ebenfalls. Forgejos Quellenpruefung wurde mit aktivierter
-strikter GitHub-Regel getestet: Nur die explizit hinterlegte Codeberg-Ausnahme
-wird akzeptiert. Ein erster Testlauf fand einen Toolchain-Vorpruefungsfehler;
-nach Korrektur bestand der erneute Lauf.
-Alle 258 Lifecycle-Einstiege und `setup_ultimate.sh` bestanden die Bash-
-Syntaxpruefung (259 Dateien); `git diff --check` war ebenfalls fehlerfrei.
+Die lokalen Offline-Tests sind kein Nachweis erfolgreicher Ubuntu-Compilerlaeufe.
+Die neu hinzugekommenen Adaptertests kontrollieren insbesondere SHA256/Laenge,
+Redirect-Hosts, vorhandene SDKs und die Trennung von Airbyte Core und PyAirbyte.
+Lokaler Nachweis der Ergaenzung: 35 Migrations-/Adaptertests, 8 Status-/Build-
+Abhaengigkeitstests und 13 Audit-Fixtures bestanden (56 Python-Tests).
+Die drei Shell-Vertraege fuer Node Exporter, Mosquitto und Airbyte bestanden.
+Die gemeinsame Bash-Syntaxpruefung erfasste 264 Lifecycle-Wrapper, das Setup und
+den Penpot-WASM-Adapter (266 Dateien). Keine realen Ubuntu-Builds oder Dienste.
 
 Weitere offizielle Einordnung:
 [Airbyte/abctl und Docker](https://docs.airbyte.com/platform/using-airbyte/getting-started/oss-quickstart),
@@ -304,3 +305,95 @@ gelesen, nicht nur die Startseite. Weitere relevante Originalquellen:
 - [Hatch: Build-Hooks abschalten](https://hatch.pypa.io/latest/config/build/#environment-variables)
 - [Forgejo 17.0.0: offizieller Release-Commit](https://codeberg.org/forgejo/forgejo/src/commit/0d791421f85ca13a63b665053d81ea765fbbc571)
 - [Netdata: Dashboard-Download im Build](https://github.com/netdata/netdata/blob/4ca8ebf9c40a2e36b42b0255269a2a97948c752b/packaging/cmake/Modules/NetdataDashboard.cmake)
+
+## Ergaenzung: Alloy, Langfuse, NocoDB, Penpot und PyAirbyte
+
+Die vier zuvor offenen Buildrezepte und das separate SDK sind experimentell.
+Buildfehler bleiben sichtbar; ein Checkout allein erzeugt keinen Buildmarker.
+Die vorhandenen System-Toolchains muessen zum gepinnten Quellstand passen.
+
+| Tool | Build und Voraussetzungen | Nicht automatisch enthalten |
+|---|---|---|
+| Grafana Alloy | Go/C-Compiler, Make, Node >=24.16.0 und npm >=11.13.0 laut gepinnter UI; 48 GiB Disk, 8 GiB verfuegbarer RAM | Collector-Start, privilegiertes eBPF, Konfigurationsmigration |
+| Langfuse | Node 24, pnpm 12.8.2, Rust/Cargo und native Compiler; Web + Worker + Rust-Addon; 48 GiB Disk, 12 GiB RAM | ClickHouse, PostgreSQL, Redis, S3, Secrets und Schema-Migration |
+| NocoDB | Vorhandenes Node exakt 24.14.0, pnpm 10.28.2; CE-API-Bibliothek, SDK und statisches Frontend; 32 GiB Disk, 8 GiB RAM | Datenbankinitialisierung, Reverse Proxy, kommerzielle Lizenzfreigabe |
+| Penpot | Vorhandenes Rust 1.99.0 mit wasm32-unknown-emscripten, Emscripten, pnpm 12.15.0, Node >=24, JDK/Clojure, jq; Backend-JAR, Frontend, WASM und Exporter; 64 GiB Disk, 16 GiB RAM | PostgreSQL, Redis, Browser fuer Exporter, TLS, Auth, Dienststart |
+| PyAirbyte | Python >=3.10,<3.13, uv; lokales GitHub-Paket in privater venv; 16 GiB Disk | Airbyte Core, Connectoren, Accounts, Datenquellen, Jobs oder MCP-Serverstart |
+
+### Bewusste GitHub-Release-Abhaengigkeiten
+
+Alloy selbst wird aus [gepinnten Quellen](https://github.com/grafana/alloy/tree/3b2a3565546bd36592dc49ca28604ad187f0fb85)
+gebaut. Nach Nutzerfreigabe vom 23.10.2026 darf der Upstream-Downloader
+Beyla v3.38.0 einbetten. Die [committete Versionsdatei](https://github.com/grafana/alloy/blob/3b2a3565546bd36592dc49ca28604ad187f0fb85/internal/component/beyla/ebpf/internal/config/gen/beyla/beyla_version.yaml)
+und der [Downloader](https://github.com/grafana/alloy/blob/3b2a3565546bd36592dc49ca28604ad187f0fb85/internal/component/beyla/ebpf/internal/config/gen/download.go)
+legen SHA256 fest und pruefen vor dem Entpacken:
+
+- amd64: `7d760a6a7905dcfc9fd0468964b19fe1728f0a83dd54115243e7346c8faf37bc`
+- arm64: `a6fc6e8402d2dd3df702711981355290175848d6bf5b4371a06c425d8bfe9586`
+
+Penpots Rust-Abhaengigkeit Skia verwendet ebenfalls ein
+[offizielles GitHub-Release-Asset](https://github.com/penpot/skia-binaries/releases/tag/0.153.3),
+kein Container-Image. Der Adapter prueft exakt 28.266.131 Bytes und SHA256
+`658b8c20466661fdbe8d8040377c223717cdefccbffba11b515b732e07c399d4`
+und uebergibt Cargo erst danach das lokale Archiv per file-URL. Der Nachweis
+bleibt in `github-build-assets.json`. Das ist kein Source-Build dieser
+transitiven Skia-Bibliothek. Die Primaranwendung Penpot wird kompiliert.
+
+### Keine globalen Toolchain-Wechsel und keine versteckten Starts
+
+Penpot ruft nicht den global veraendernden Upstream-WASM-Setupweg auf.
+`PENPOT_EMSDK_ENV=/absoluter/pfad/emsdk_env.sh` waehlt ein bereits vorhandenes
+SDK. Optional waehlt `NATIVE_SOURCE_RUST_TOOLCHAIN=/absoluter/toolchainpfad`
+eine vorhandene Rust-Toolchain. Kein rustup default/target add, kein emsdk install.
+Der Emscripten-Cache bleibt im neuen privaten Buildordner.
+
+Langfuses `DOCKER_BUILD=1` ist ausschliesslich ein Upstream-Buildschalter, der
+beim Kompilieren fehlende Laufzeit-Secrets erlaubt; er startet kein Docker und
+gehoert nicht in die spaetere Produktivkonfiguration. Prisma erzeugt nur Code,
+keine Migration oder Seeds. Der Web-Build prueft seinen OTel-Worker kurz lokal
+und beendet ihn wieder; kein dauerhaft laufender Agent oder Collector.
+
+NocoDBs private .npmrc nutzt das bereits gepruefte Node statt pnpm einen
+weiteren Node-Download ausfuehren zu lassen. Die Originaldatei bleibt als
+`upstream.npmrc.original`; der CE-Integrationsgenerator ist eine private Kopie.
+Die Development-Konfiguration mit automatischem Serverstart wird nicht genutzt.
+Der Installer prueft den getrennten `run-native.cjs` nur syntaktisch.
+Manueller Erststart kann Datenbanken initialisieren/migrieren und verlangt
+deshalb eine ausdrueckliche Freigabe nach Backup:
+
+```bash
+# First review the generated RUN_NATIVE.md and the upstream license.
+cd ~/.openclaw_ultimate_user_data/tools/nocodb/native-github
+NOCODB_ACCEPT_INITIALIZATION=1 node run-native.cjs --run
+```
+
+Der Starthelfer bindet nur 127.0.0.1 oder ::1, standardmaessig Port 8080.
+Daten liegen ausserhalb des Buildordners (standardmaessig im benachbarten data/).
+Optional: absoluter `NOCODB_DATA_DIR`, `NOCODB_PORT`, `NOCODB_BIND_HOST`.
+Authentifizierung und abgesicherten Reverse Proxy vor Zugriff konfigurieren.
+Frontend-Vendorressourcen koennen beim spaeteren Browserzugriff externe
+Verbindungen aufbauen; lokal installiert bedeutet nicht pauschal offline.
+NocoDBs Sustainable Use License ist keine pauschale OSI-Open-Source-Freigabe.
+
+### Airbyte Core bleibt getrennt; Rhasspy bleibt ein Altbestand
+
+[PyAirbyte am Pin](https://github.com/airbytehq/PyAirbyte/tree/b911c5d13e1a33219dcc537d4eb8898203a9364b)
+ist zusaetzlich unter **PyAirbyte** im Tools-Menue registriert. Es wird aus
+GitHub ohne Docker installiert, nicht als gleichwertiger Ersatz fuer die
+Airbyte-Plattform ausgegeben. Manche SDK-Connectorwege brauchen spaeter
+weiterhin Container; diese werden weder eingerichtet noch gestartet.
+
+```bash
+bash scripts/tools/pyairbyte_install.sh --dry-run
+bash scripts/tools/pyairbyte_install.sh
+bash scripts/tools/pyairbyte_doctor.sh
+```
+
+Airbyte Core verwendet fuer Plattform/Konnektoren weiterhin Container. Ein
+CLI-Build allein erfuellt keine containerfreie Plattforminstallation.
+[Rhasspy v2.5.11](https://github.com/rhasspy/rhasspy/releases/tag/v2.5.11)
+stammt von 2021. Seine Python-3.7/3.8-era Abhaengigkeiten und Audio-/STT-
+Komponenten benoetigen einen eigenen Kompatibilitaets- und Supply-Chain-Audit
+fuer Ubuntu 24.04. Ein Quellen-Clone oder Paket ohne diese Dienste wird nicht
+als funktionsfaehiger Sprachassistent markiert. Beide Pfade bleiben deshalb
+mit klarer Fehlermeldung blockiert, ohne Docker-Fallback.

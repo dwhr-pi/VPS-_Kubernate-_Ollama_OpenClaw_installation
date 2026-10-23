@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "review_date": "2026-10-23",
-  "scope": "43 direkte Image-Installationspfade; Vorlagen und OpenHands-Docker-Basisabhaengigkeit separat dokumentiert",
+  "scope": "43 ehemalige Image-Installationspfade plus separates PyAirbyte-SDK; keine Gleichsetzung mit Airbyte Core",
   "tools": [
     {
       "id": "airbyte",
@@ -570,8 +570,44 @@
         "grafana/alloy:latest"
       ],
       "previous_installer": "scripts/tools/grafana_alloy_install.sh",
-      "recipe": null,
-      "blocked_reason": "Make-Ziel laedt Beyla-Binaries; Source-only-Vertrag erfordert separaten Beyla-Build."
+      "recipe": {
+        "repo": "grafana/alloy",
+        "pin": "3b2a3565546bd36592dc49ca28604ad187f0fb85",
+        "kind": "pipeline",
+        "disk_mb": 49152,
+        "ram_mb": 8192,
+        "node_min": 24,
+        "tools": [
+          "go",
+          "cc",
+          "c++",
+          "make",
+          "node",
+          "npm"
+        ],
+        "build_env": {
+          "USE_CONTAINER": "0"
+        },
+        "steps": [
+          {
+            "cwd": ".",
+            "args": [
+              "make",
+              "alloy",
+              "USE_CONTAINER=0",
+              "RELEASE_BUILD=1"
+            ]
+          }
+        ],
+        "artifacts": [
+          "source/build/alloy"
+        ],
+        "probe": [
+          "--version"
+        ],
+        "note": "Alloy wird kompiliert, inklusive Web-UI. Freigegebene Ausnahme: eingebettetes Beyla v3.38.0 aus offiziellen GitHub-Releases; der gepinnte Upstream-Downloader verifiziert SHA256 vor dem Entpacken. Kein Docker, kein Collector-Start."
+      },
+      "blocked_reason": null
     },
     {
       "id": "healthchecks",
@@ -628,8 +664,68 @@
         "ghcr.io/langfuse/langfuse:latest"
       ],
       "previous_installer": "scripts/tools/langfuse_install.sh",
-      "recipe": null,
-      "blocked_reason": "Versionskohaerente Web-/Worker-Builds, ClickHouse, PostgreSQL, Redis und S3 samt Migration fehlen."
+      "recipe": {
+        "repo": "langfuse/langfuse",
+        "pin": "e139e39b9ee56475c1a6df2d8ca58a3eaffc69b1",
+        "kind": "pipeline",
+        "disk_mb": 49152,
+        "ram_mb": 12288,
+        "node_min": 24,
+        "node_max": 24,
+        "manager": [
+          "pnpm",
+          "12.8.2"
+        ],
+        "tools": [
+          "node",
+          "pnpm",
+          "rustc",
+          "cargo",
+          "cc",
+          "c++",
+          "cmake",
+          "pkg-config"
+        ],
+        "build_env": {
+          "DOCKER_BUILD": "1",
+          "DATABASE_URL": "postgresql://127.0.0.1:1/build_only",
+          "NODE_OPTIONS": "--max-old-space-size=8192",
+          "HUSKY": "0"
+        },
+        "steps": [
+          {
+            "cwd": ".",
+            "args": [
+              "pnpm",
+              "install",
+              "--frozen-lockfile"
+            ]
+          },
+          {
+            "cwd": ".",
+            "args": [
+              "pnpm",
+              "exec",
+              "turbo",
+              "run",
+              "build",
+              "--filter=web",
+              "--filter=worker"
+            ]
+          }
+        ],
+        "artifacts": [
+          "source/web/.next/BUILD_ID",
+          "source/web/.next/standalone/web/server.js",
+          "source/web/.next/standalone/web/otelIngestionWorker.js",
+          "source/worker/dist/index.js"
+        ],
+        "artifact_globs": [
+          "source/packages/native/*.node"
+        ],
+        "note": "Web, Worker und native Rust-Erweiterung vom gleichen Pin. DOCKER_BUILD=1 ist nur der Upstream-Buildschalter zur Konfiguration ohne Laufzeit-Secrets, kein Docker-Aufruf. Keine DB-Migration, Seeds, Services oder Modellabfragen. ClickHouse, Postgres, Redis, S3 und Laufzeit-Secrets separat."
+      },
+      "blocked_reason": null
     },
     {
       "id": "litellm",
@@ -974,8 +1070,124 @@
         "nocodb/nocodb:latest"
       ],
       "previous_installer": "scripts/tools/nocodb_install.sh",
-      "recipe": null,
-      "blocked_reason": "Native Gesamtpaketierung, Laufzeitabhaengigkeiten und Datenmigration noch nicht verifiziert; kein Docker-Fallback."
+      "recipe": {
+        "repo": "nocodb/nocodb",
+        "pin": "f9731d9d7e7366328834cac29f84c94b62263009",
+        "kind": "pipeline",
+        "disk_mb": 32768,
+        "ram_mb": 8192,
+        "node_min": 24,
+        "node_max": 24,
+        "node_exact": "24.14.0",
+        "manager": [
+          "pnpm",
+          "10.28.2"
+        ],
+        "tools": [
+          "node",
+          "pnpm",
+          "cc",
+          "make",
+          "python3"
+        ],
+        "build_env": {
+          "EE": "false",
+          "NODE_ENV": "production",
+          "NC_DISABLE_TELE": "true",
+          "HUSKY": "0",
+          "CYPRESS_INSTALL_BINARY": "0"
+        },
+        "steps": [
+          {
+            "cwd": ".",
+            "args": [
+              "pnpm",
+              "install",
+              "--frozen-lockfile",
+              "--prod=false"
+            ]
+          },
+          {
+            "cwd": ".",
+            "args": [
+              "pnpm",
+              "--filter",
+              "nocodb-sdk",
+              "run",
+              "build"
+            ]
+          },
+          {
+            "cwd": "packages/noco-integrations",
+            "args": [
+              "pnpm",
+              "install",
+              "--frozen-lockfile",
+              "--prod=false"
+            ]
+          },
+          {
+            "cwd": "packages/noco-integrations",
+            "args": [
+              "pnpm",
+              "run",
+              "build"
+            ]
+          },
+          {
+            "cwd": "packages/nocodb",
+            "args": [
+              "node",
+              "build-utils/registerIntegrations.native.cjs"
+            ]
+          },
+          {
+            "cwd": ".",
+            "args": [
+              "pnpm",
+              "install",
+              "--frozen-lockfile",
+              "--prod=false"
+            ]
+          },
+          {
+            "cwd": "packages/nocodb",
+            "args": [
+              "pnpm",
+              "exec",
+              "rspack",
+              "--config",
+              "rspack.config.js"
+            ]
+          },
+          {
+            "cwd": "packages/nc-gui",
+            "args": [
+              "pnpm",
+              "exec",
+              "nuxi",
+              "generate"
+            ]
+          },
+          {
+            "cwd": ".",
+            "args": [
+              "node",
+              "--check",
+              "{prefix}/run-native.cjs"
+            ]
+          }
+        ],
+        "artifacts": [
+          "source/packages/nocodb/dist/bundle.js",
+          "source/packages/nocodb-sdk/build/main/index.js",
+          "source/packages/nc-gui/.output/public/index.html",
+          "run-native.cjs",
+          "packaging-adapter.json"
+        ],
+        "note": "CE-Bibliothek/API und Frontend. Privates .npmrc verhindert pnpm-Node-Download; CE-Generator als private Kopie ohne Enterprise-Aktivierung. Development-Konfiguration mit Auto-Start wird nicht verwendet. Manueller Starthelfer nur loopback und erst nach ausdruecklicher Datenbank-Initialisierungsfreigabe; kein Dienststart beim Installieren."
+      },
+      "blocked_reason": null
     },
     {
       "id": "node_exporter",
@@ -1066,8 +1278,144 @@
       "repo": "penpot/penpot",
       "previous_images": [],
       "previous_installer": "scripts/tools/penpot_install.sh",
-      "recipe": null,
-      "blocked_reason": "Frontend, Backend, Exporter und externe Datendienste gemeinsam nativ bauen und abnehmen."
+      "recipe": {
+        "repo": "penpot/penpot",
+        "pin": "74add0522668dffe9bb35cd18bc8a0e812372b5e",
+        "kind": "pipeline",
+        "disk_mb": 65536,
+        "ram_mb": 16384,
+        "node_min": 24,
+        "manager": [
+          "pnpm",
+          "12.15.0"
+        ],
+        "tools": [
+          "rustc",
+          "cargo",
+          "rustup",
+          "node",
+          "pnpm",
+          "java",
+          "clojure",
+          "cc",
+          "c++",
+          "pkg-config",
+          "jq",
+          "bash"
+        ],
+        "build_env": {
+          "NODE_ENV": "production",
+          "BUILD_MODE": "release",
+          "VERSION_TAG": "git-74add0522668",
+          "PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD": "1"
+        },
+        "skia_asset": {
+          "url": "https://github.com/penpot/skia-binaries/releases/download/0.153.3/skia-binaries-b7f043e0b1e2a850e702-wasm32-unknown-emscripten-gl-svg-textlayout-binary-cache-webp-pdf-simd-ljmp-wasm.tar.gz",
+          "sha256": "658b8c20466661fdbe8d8040377c223717cdefccbffba11b515b732e07c399d4",
+          "bytes": 28266131
+        },
+        "steps": [
+          {
+            "cwd": "frontend",
+            "args": [
+              "pnpm",
+              "install",
+              "--frozen-lockfile",
+              "--prod=false"
+            ]
+          },
+          {
+            "cwd": "render-wasm",
+            "args": [
+              "pnpm",
+              "install",
+              "--frozen-lockfile",
+              "--prod=false"
+            ]
+          },
+          {
+            "cwd": ".",
+            "args": [
+              "bash",
+              "{prefix}/penpot-native-wasm.sh",
+              "{source}",
+              "{prefix}",
+              "frontend"
+            ]
+          },
+          {
+            "cwd": ".",
+            "args": [
+              "bash",
+              "{prefix}/penpot-native-wasm.sh",
+              "{source}",
+              "{prefix}",
+              "export"
+            ]
+          },
+          {
+            "cwd": "frontend",
+            "args": [
+              "pnpm",
+              "run",
+              "build:app:assets"
+            ]
+          },
+          {
+            "cwd": "frontend",
+            "args": [
+              "pnpm",
+              "run",
+              "build:app"
+            ]
+          },
+          {
+            "cwd": "backend",
+            "args": [
+              "clojure",
+              "-T:build",
+              "compile"
+            ]
+          },
+          {
+            "cwd": "backend",
+            "args": [
+              "clojure",
+              "-T:build",
+              "jar"
+            ]
+          },
+          {
+            "cwd": "exporter",
+            "args": [
+              "pnpm",
+              "install",
+              "--frozen-lockfile",
+              "--prod=false"
+            ]
+          },
+          {
+            "cwd": "exporter",
+            "args": [
+              "pnpm",
+              "run",
+              "build"
+            ]
+          }
+        ],
+        "artifacts": [
+          "source/backend/target/penpot.jar",
+          "source/frontend/resources/public/index.html",
+          "source/frontend/resources/public/js/main.js",
+          "source/frontend/resources/public/js/render-wasm.wasm",
+          "source/exporter/target/app.js",
+          "source/exporter/resources/wasm/render-wasm.wasm",
+          "github-build-assets.json",
+          "penpot-native-wasm.sh"
+        ],
+        "note": "Backend, Frontend, WASM und Exporter ohne Dienststart. Vorhandenes Rust 1.99.0 mit wasm32-unknown-emscripten und vorhandenes Emscripten-SDK (PENPOT_EMSDK_ENV) erforderlich. Keine globale Rust-Aenderung. Skia aus offiziellem GitHub-Release mit fester SHA256. PostgreSQL, Redis, Exporter-Browser, Auth und Datenmigration separat."
+      },
+      "blocked_reason": null
     },
     {
       "id": "prometheus",
@@ -1418,6 +1766,33 @@
         "package_manager": "11.26.0",
         "node_min": 22,
         "disk_mb": 8192
+      },
+      "blocked_reason": null
+    },
+    {
+      "id": "pyairbyte",
+      "name": "PyAirbyte",
+      "tool_key": "PyAirbyte",
+      "repo": "airbytehq/PyAirbyte",
+      "previous_images": [],
+      "previous_installer": null,
+      "recipe": {
+        "repo": "airbytehq/PyAirbyte",
+        "pin": "b911c5d13e1a33219dcc537d4eb8898203a9364b",
+        "kind": "python",
+        "disk_mb": 16384,
+        "python_min": [
+          3,
+          10,
+          0
+        ],
+        "python_max": [
+          3,
+          13,
+          0
+        ],
+        "distribution": "airbyte",
+        "note": "Separates Python-SDK aus GitHub, KEIN Ersatz fuer Airbyte Core. Kein Connector-Download, Account, Datenbank-Setup oder Jobstart. Manche Connector-Ausfuehrungswege benoetigen weiterhin Container; diese werden nicht eingerichtet."
       },
       "blocked_reason": null
     }

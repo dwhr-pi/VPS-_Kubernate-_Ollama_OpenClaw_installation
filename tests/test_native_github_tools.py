@@ -46,9 +46,9 @@ class NativeGithubTests(unittest.TestCase):
         with patch.object(tool, "preflight"), patch.object(tool.common, "install", side_effect=self.source), patch.object(tool, "build", side_effect=self.build), redirect_stdout(io.StringIO()):
             tool.install(self.outer, self.prefix, self.marker, self.spec)
 
-    def test_inventory_has_43_paths_and_37_honest_build_recipes(self):
-        self.assertEqual(len(tool.TOOLS), 43)
-        self.assertEqual(sum(bool(s["recipe"]) for s in tool.TOOLS.values()), 37)
+    def test_inventory_has_44_paths_and_42_honest_build_recipes(self):
+        self.assertEqual(len(tool.TOOLS), 44)
+        self.assertEqual(sum(bool(s["recipe"]) for s in tool.TOOLS.values()), 42)
         for key, spec in tool.TOOLS.items():
             self.assertEqual(key, spec["id"])
             if spec["recipe"]:
@@ -192,6 +192,8 @@ class NativeGithubTests(unittest.TestCase):
                     commands.append(command)
                     if command[:3] == ["rustc", "--print", "sysroot"]:
                         return str(prefix)
+                    if command == ["node", "-p", "process.versions.node"]:
+                        return recipe["node_exact"]
                     if command == ["pnpm", "--version"]:
                         return recipe.get("package_manager", recipe.get("manager", ["pnpm", "11.26.0"])[1])
                     if recipe.get("manager") and command == [recipe["manager"][0], "--version"]:
@@ -212,7 +214,8 @@ class NativeGithubTests(unittest.TestCase):
                         path.parent.mkdir(parents=True, exist_ok=True)
                         path.write_text("built fixture")
                     return "fixture==1"
-                with patch.object(tool, "run", side_effect=run):
+                with patch.object(tool, "run", side_effect=run), patch.object(tool.adapters, "prepare"):
+                    # Packaging adapters have separate negative/positive contract tests.
                     artifacts = tool.build(prefix, spec)
                 self.assertTrue(artifacts)
                 for command in commands:

@@ -2159,14 +2159,14 @@
       "source": "https://github.com/langfuse/langfuse.git",
       "update_script": "scripts/tools/langfuse_update.sh",
       "doctor_script": "scripts/tools/langfuse_doctor.sh",
-      "install_mode": "native-migration-blocked",
-      "status": "planned",
+      "install_mode": "github-native-build",
+      "status": "experimental",
       "auto_install": false,
       "doc": "docs/DOCKER_TO_GITHUB.md",
-      "description": "Native Migration noch offen: Versionskohaerente Web-/Worker-Builds, ClickHouse, PostgreSQL, Redis und S3 samt Migration fehlen.",
+      "description": "Web, Worker und native Rust-Erweiterung vom gleichen Pin. DOCKER_BUILD=1 ist nur der Upstream-Buildschalter zur Konfiguration ohne Laufzeit-Secrets, kein Docker-Aufruf. Keine DB-Migration, Seeds, Services oder Modellabfragen. ClickHouse, Postgres, Redis, S3 und Laufzeit-Secrets separat.",
       "security_note": "Keine Dienststarts, Datenmigration oder Legacy-Loeschung. Private Buildpfade, aktuelle Operationslogs und Rollback; Upstream-Lizenz und --dry-run pruefen.",
       "updated": "2026-10-23",
-      "source_commit": null
+      "source_commit": "e139e39b9ee56475c1a6df2d8ca58a3eaffc69b1"
     },
     {
       "id": "openlit",
@@ -2678,8 +2678,7 @@
       "description": "Native Migration noch offen: abctl startet kind/Kubernetes mit Images; native Plattform samt Konnektoren braucht einen separaten Integrationspfad.",
       "security_note": "Keine Dienststarts, Datenmigration oder Legacy-Loeschung. Private Buildpfade, aktuelle Operationslogs und Rollback; Upstream-Lizenz und --dry-run pruefen.",
       "source": "https://github.com/airbytehq/airbyte.git",
-      "updated": "2026-10-23",
-      "source_commit": null
+      "updated": "2026-10-23"
     },
     {
       "id": "minio",
@@ -3178,14 +3177,14 @@
       "source": "https://github.com/nocodb/nocodb.git",
       "update_script": "scripts/tools/nocodb_update.sh",
       "doctor_script": "scripts/tools/nocodb_doctor.sh",
-      "install_mode": "native-migration-blocked",
-      "status": "planned",
+      "install_mode": "github-native-build",
+      "status": "experimental",
       "auto_install": false,
       "doc": "docs/DOCKER_TO_GITHUB.md",
-      "description": "Native Migration noch offen: Native Gesamtpaketierung, Laufzeitabhaengigkeiten und Datenmigration noch nicht verifiziert; kein Docker-Fallback.",
+      "description": "CE-Bibliothek/API und Frontend. Privates .npmrc verhindert pnpm-Node-Download; CE-Generator als private Kopie ohne Enterprise-Aktivierung. Development-Konfiguration mit Auto-Start wird nicht verwendet. Manueller Starthelfer nur loopback und erst nach ausdruecklicher Datenbank-Initialisierungsfreigabe; kein Dienststart beim Installieren.",
       "security_note": "Keine Dienststarts, Datenmigration oder Legacy-Loeschung. Private Buildpfade, aktuelle Operationslogs und Rollback; Upstream-Lizenz und --dry-run pruefen.",
       "updated": "2026-10-23",
-      "source_commit": null
+      "source_commit": "f9731d9d7e7366328834cac29f84c94b62263009"
     },
     {
       "id": "directus",
@@ -3422,15 +3421,15 @@
       "safety": "Collector-Konfigurationen koennen Telemetrie und Secrets enthalten.",
       "update_script": "scripts/tools/grafana_alloy_update.sh",
       "doctor_script": "scripts/tools/grafana_alloy_doctor.sh",
-      "install_mode": "native-migration-blocked",
-      "status": "planned",
+      "install_mode": "github-native-build",
+      "status": "experimental",
       "auto_install": false,
       "doc": "docs/DOCKER_TO_GITHUB.md",
-      "description": "Native Migration noch offen: Make-Ziel laedt Beyla-Binaries; Source-only-Vertrag erfordert separaten Beyla-Build.",
+      "description": "Alloy wird kompiliert, inklusive Web-UI. Freigegebene Ausnahme: eingebettetes Beyla v3.38.0 aus offiziellen GitHub-Releases; der gepinnte Upstream-Downloader verifiziert SHA256 vor dem Entpacken. Kein Docker, kein Collector-Start.",
       "security_note": "Keine Dienststarts, Datenmigration oder Legacy-Loeschung. Private Buildpfade, aktuelle Operationslogs und Rollback; Upstream-Lizenz und --dry-run pruefen.",
       "source": "https://github.com/grafana/alloy.git",
       "updated": "2026-10-23",
-      "source_commit": null
+      "source_commit": "3b2a3565546bd36592dc49ca28604ad187f0fb85"
     },
     {
       "id": "netdata",
@@ -3669,15 +3668,15 @@
       "safety": "Design- und MCP-Dienste nur lokal oder ueber Auth freigeben; Mailcatch nicht oeffentlich machen.",
       "update_script": "scripts/tools/penpot_update.sh",
       "doctor_script": "scripts/tools/penpot_doctor.sh",
-      "install_mode": "native-migration-blocked",
-      "status": "planned",
+      "install_mode": "github-native-build",
+      "status": "experimental",
       "auto_install": false,
       "doc": "docs/DOCKER_TO_GITHUB.md",
-      "description": "Native Migration noch offen: Frontend, Backend, Exporter und externe Datendienste gemeinsam nativ bauen und abnehmen.",
+      "description": "Backend, Frontend, WASM und Exporter ohne Dienststart. Vorhandenes Rust 1.99.0 mit wasm32-unknown-emscripten und vorhandenes Emscripten-SDK (PENPOT_EMSDK_ENV) erforderlich. Keine globale Rust-Aenderung. Skia aus offiziellem GitHub-Release mit fester SHA256. PostgreSQL, Redis, Exporter-Browser, Auth und Datenmigration separat.",
       "security_note": "Keine Dienststarts, Datenmigration oder Legacy-Loeschung. Private Buildpfade, aktuelle Operationslogs und Rollback; Upstream-Lizenz und --dry-run pruefen.",
       "source": "https://github.com/penpot/penpot.git",
       "updated": "2026-10-23",
-      "source_commit": null
+      "source_commit": "74add0522668dffe9bb35cd18bc8a0e812372b5e"
     },
     {
       "id": "tesseract",
@@ -6754,7 +6753,6 @@
       "category": "Optional / GitHub",
       "ports": [],
       "source": "https://github.com/rhasspy/rhasspy.git",
-      "source_commit": null,
       "status": "planned",
       "auto_install": false,
       "install_mode": "native-migration-blocked",
@@ -6831,6 +6829,28 @@
       "description": "Gepinnter GitHub-Quellbuild/Paket ohne Image-Installation; Betriebsabnahme separat. GitHub-Go-Binary; verwaltet im Betrieb weiterhin Docker ueber dessen API. Kein Daemon-/Socketzugriff beim Build.",
       "security_note": "Keine Dienststarts, Datenmigration oder Legacy-Loeschung. Private Buildpfade, aktuelle Operationslogs und Rollback; Upstream-Lizenz und --dry-run pruefen.",
       "updated": "2026-10-23"
+    },
+    {
+      "id": "pyairbyte",
+      "name": "PyAirbyte",
+      "category": "data",
+      "install_script": "scripts/tools/pyairbyte_install.sh",
+      "uninstall_script": "scripts/tools/pyairbyte_uninstall.sh",
+      "ports": [],
+      "check_type": "path",
+      "check_value": "~/.openclaw_ultimate_user_data/tools/pyairbyte/native-github/build-ready.json",
+      "safety": "Separates SDK, kein Ersatz fuer Airbyte Core. Keine Konnektoren/Jobs gestartet.",
+      "source": "https://github.com/airbytehq/PyAirbyte.git",
+      "update_script": "scripts/tools/pyairbyte_update.sh",
+      "doctor_script": "scripts/tools/pyairbyte_doctor.sh",
+      "install_mode": "github-native-build",
+      "status": "experimental",
+      "auto_install": false,
+      "doc": "docs/DOCKER_TO_GITHUB.md",
+      "description": "Separates Python-SDK aus GitHub, KEIN Ersatz fuer Airbyte Core. Kein Connector-Download, Account, Datenbank-Setup oder Jobstart. Manche Connector-Ausfuehrungswege benoetigen weiterhin Container; diese werden nicht eingerichtet.",
+      "security_note": "Keine Dienststarts, Datenmigration oder Legacy-Loeschung. Private Buildpfade, aktuelle Operationslogs und Rollback; Upstream-Lizenz und --dry-run pruefen.",
+      "updated": "2026-10-23",
+      "source_commit": "b911c5d13e1a33219dcc537d4eb8898203a9364b"
     }
   ],
   "voice_tools": [

@@ -1,7 +1,7 @@
 # START HERE
 
 [Docker-Installer durch native GitHub-Builds ersetzen](DOCKER_TO_GITHUB.md):
-Alle 43 Pfade registriert, 37 Buildrezepte und 6 explizite offene Migrationen.
+Alle 43 Pfade registriert: 41 Buildrezepte, 2 offene Migrationen; PyAirbyte als separates SDK zusaetzlich.
 Forgejo verwendet nach Freigabe die offizielle Codeberg-Quelle statt GitHub.
 Kein automatisches Entfernen bestehender Container/Volumes.
 
