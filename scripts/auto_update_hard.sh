@@ -1,52 +1,22 @@
-#!/bin/bash
-# ==============================================================================
-# AUTO_UPDATE_HARD.SH - Erzwingt den Abgleich des Setup-Repositories mit origin/main
-# Achtung: Verwirft lokale Änderungen im Setup-Verzeichnis.
-# ==============================================================================
-
-set -e
-
+#!/usr/bin/env bash
+# Explicit source checkout; never reset branches or clean untracked files.
+set -Eeuo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 INSTALL_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
-
-GREEN="\033[0;32m"
-BLUE="\033[0;34m"
-RED="\033[0;31m"
-YELLOW="\033[1;33m"
-NC="\033[0m"
-
-echo -e "${YELLOW}Harter Setup-Abgleich startet...${NC}"
-echo -e "${YELLOW}Lokale Änderungen im Setup-Verzeichnis werden verworfen.${NC}"
-echo -e "${YELLOW}Der ausgelagerte Benutzer-Workspace bleibt dabei erhalten.${NC}"
-
-if ! command -v git >/dev/null 2>&1; then
-    echo -e "${RED}Fehler: git ist nicht installiert.${NC}"
-    exit 1
-fi
-
-if ! git -C "$INSTALL_DIR" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-    echo -e "${RED}Fehler: $INSTALL_DIR ist kein Git-Repository.${NC}"
-    exit 1
-fi
-
-git -C "$INSTALL_DIR" fetch origin --prune
-
-if ! git -C "$INSTALL_DIR" show-ref --verify --quiet refs/remotes/origin/main; then
-    echo -e "${RED}Fehler: Remote-Branch origin/main wurde nicht gefunden.${NC}"
-    exit 1
-fi
-
-if git -C "$INSTALL_DIR" symbolic-ref --quiet HEAD >/dev/null 2>&1; then
-    CURRENT_BRANCH="$(git -C "$INSTALL_DIR" rev-parse --abbrev-ref HEAD)"
-    if [ "$CURRENT_BRANCH" != "main" ]; then
-        git -C "$INSTALL_DIR" checkout main 2>/dev/null || git -C "$INSTALL_DIR" checkout -b main --track origin/main
-    fi
-else
-    git -C "$INSTALL_DIR" checkout -B main origin/main
-fi
-
-git -C "$INSTALL_DIR" reset --hard origin/main
-git -C "$INSTALL_DIR" clean -fd
-
-echo -e "${GREEN}Das Setup wurde hart auf origin/main zurückgesetzt.${NC}"
-echo -e "${YELLOW}Starte danach das Menü neu, damit der aktuelle Stand sicher geladen wird.${NC}"
+HELPER="$SCRIPT_DIR/lib/repo_safety.py"
+BACKUP_ROOT="${HOME}/.openclaw_ultimate_user_data/repo_update_backups"
+[[ -f "$HELPER" && ! -L "$HELPER" ]] || { echo 'Sicherer Update-Helper fehlt; Abbruch.' >&2; exit 1; }
+case "${1:---dry-run}" in
+    --dry-run)
+        [[ $# -le 1 ]] || exit 2
+        python3 -I -B "$HELPER" sync --repo "$INSTALL_DIR" --backup-root "$BACKUP_ROOT" --dry-run
+        ;;
+    --apply)
+        [[ $# == 2 && "$2" == --confirm-discard-local ]] || {
+            echo 'Explizite Freigabe --apply --confirm-discard-local erforderlich.' >&2; exit 2;
+        }
+        python3 -I -B "$HELPER" sync --repo "$INSTALL_DIR" --backup-root "$BACKUP_ROOT" \
+            --fetch --apply --confirm-discard-local
+        ;;
+    *) echo 'Nutzung: auto_update_hard.sh [--dry-run | --apply --confirm-discard-local]' >&2; exit 2 ;;
+esac

@@ -1,6 +1,19 @@
 # VPS- Kubernate- Ollama & OpenClaw installation - Ultimate Setup V11.17
 
+**Neu starten:** [Aktueller Nachweisstand](docs/CURRENT_STATUS.md),
+[erste 60 Minuten ohne Installation](docs/FIRST_60_MINUTES.md) und
+[Grok-Review mit Kandidatenstatus](docs/tutorials/grok-repo-review-2026-10-23.md).
+Offene Sicherheitsrisiken und Tests: [Audit vom 23.10.2026](docs/AUDIT_2026-10-23.md).
+Die ausfuehrliche Linkuebersicht bleibt unten zur Kompatibilitaet erhalten.
+
+**Neue getrennte Baseline:** [Ansible, Kubernetes, Monitoring, SOPS/Restic und CI](docs/PRODUCTION_BASELINE.md)
+mit kommentierten Konfigurationen und expliziten Staging-Voraussetzungen;
+keine automatische Installation oder Produktionsfreigabe.
+
 ## Inhaltsverzeichnis
+
+**Freigegebenes P0-Codepaket:** [Update-Sicherung, PAT und datenerhaltender Compose-Uninstall](docs/P0_SAFETY_CHANGES.md).
+Lokal geprueft; Ubuntu-24.04-VM-Abnahme steht noch aus. Keine Produktionsfreigabe.
 
 - [Aktuelle Governance-Dokumente](#aktuelle-governance-dokumente)
 - [Zielbild](#-zielbild)

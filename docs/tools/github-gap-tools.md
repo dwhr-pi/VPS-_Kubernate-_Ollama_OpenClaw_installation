@@ -148,6 +148,11 @@ gebautes Dashboard. [Quelleneinordnung und Dashboard-Konzept](jarvis-hermes-dash
 
 ## Weitere Eintraege der Lueckenuebersicht
 
+**MuseTalk ist eine Ausnahme zum nachfolgenden Quellenkatalog:** Standard ist
+jetzt eine getrennte private Python-/CUDA-Paketumgebung ohne Modelle/Start.
+[MuseTalk-Anleitung, Migration, 20-GiB-Reserve und Blackwell-Sperre](musetalk.md).
+Der bisherige reine Quellenweg bleibt mit `--source-only` erreichbar.
+
 Diese Eintraege besitzen jetzt eigene gepinnte **GitHub-Quellinstaller**,
 Status-/Check-/Doctor-, Update- und Deinstallationsskripte. Umfang `source`
 bedeutet **gepinntes Hauptrepository, keine einsatzbereite Anwendung**.
@@ -163,7 +168,7 @@ Runtime, kein Link in vorhandenes ComfyUI, keine Aufnahme oder Verarbeitung.
 | CogVideoX | [THUDM/CogVideo](https://github.com/THUDM/CogVideo) | Modellgeneration, Python/Torch/GPU, Gewichte |
 | LTX_Video | [Lightricks/LTX-Video](https://github.com/Lightricks/LTX-Video) | Passende Modellgeneration und Runtime/Gewichte |
 | Video2Dataset | [iejMac/video2dataset](https://github.com/iejMac/video2dataset) | Python-Pakete, FFmpeg, rechtmaessige Datenquellen |
-| MuseTalk | [TMElyralab/MuseTalk](https://github.com/TMElyralab/MuseTalk) | GPU-Umgebung/Modelle und Medienfreigabe |
+| MuseTalk | [TMElyralab/MuseTalk](https://github.com/TMElyralab/MuseTalk) | [Private Python-Runtime](musetalk.md); Modelle/Inferenz separat, Blackwell nicht freigegeben |
 | LivePortrait | [KwaiVGI/LivePortrait](https://github.com/KwaiVGI/LivePortrait) | GPU-Umgebung/Modelle und Einwilligungen |
 | SadTalker | [OpenTalker/SadTalker](https://github.com/OpenTalker/SadTalker) | Legacy-Python-/GPU-Umgebung und Modelle |
 | RVC | [RVC-Project/Voice-Conversion-WebUI](https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI) | Runtime, eigene/freigegebene Stimmen und Modelle |
@@ -174,12 +179,12 @@ Runtime, kein Link in vorhandenes ComfyUI, keine Aufnahme oder Verarbeitung.
 Alle geprueften Revisionen stehen in
 [`gap_tools.json`](../../scripts/tools/helpers/gap_tools.json). Die Quellaufnahme
 ist keine rechtliche Freigabe: Code-, Modell- und Medienlizenzen gesondert lesen.
-Beispiel mit `musetalk`, analog fuer die anderen Slugs:
+Quellenbeispiel mit `musetalk` (dessen neuer Runtime-Standard ist oben verlinkt):
 
 ```bash
-bash scripts/tools/musetalk_install.sh --dry-run
-bash scripts/tools/musetalk_install.sh
-bash scripts/tools/musetalk_doctor.sh
+bash scripts/tools/musetalk_install.sh --source-only --dry-run
+bash scripts/tools/musetalk_install.sh --source-only
+bash scripts/tools/musetalk_doctor.sh --source-only
 bash scripts/tools/musetalk_uninstall.sh
 ```
 

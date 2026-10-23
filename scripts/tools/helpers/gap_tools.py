@@ -253,6 +253,7 @@ def main(argv=None):
     parser.add_argument("tool", choices=SPECS)
     parser.add_argument("action", nargs="?", default="install", choices=("install", "update", "repair", "uninstall", "status", "check", "doctor", "plan"))
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument("--source-only", action="store_true", help="MuseTalk: nur bisherigen Quellcheckout verwalten")
     override = parser.add_mutually_exclusive_group()
     for action in ("repair", "uninstall", "status", "check"):
         override.add_argument("--" + action, dest="override", action="store_const", const=action)
@@ -261,6 +262,15 @@ def main(argv=None):
         if opts.action not in ("install", opts.override):
             parser.error("Widerspruechliche Aktionen.")
         opts.action = opts.override
+    if opts.tool == "musetalk" and not opts.source_only:
+        from musetalk_runtime import main as musetalk_main
+        return musetalk_main([opts.action] + (["--dry-run"] if opts.dry_run else []))
+    if opts.tool == "musetalk" and opts.source_only and opts.action == "uninstall" and not opts.dry_run:
+        base, _, _ = paths("musetalk")
+        if checked(base / "python-runtime").exists() or checked(base / "runtime-ready.json").exists():
+            raise ValueError("Python-Runtime vorhanden; Deinstallation ohne --source-only verwenden. Keine verwaiste Umgebung erzeugt.")
+    if opts.source_only and opts.tool != "musetalk":
+        parser.error("--source-only ist nur fuer MuseTalk vorgesehen.")
     spec = SPECS[opts.tool]
     base, runtime, marker = paths(opts.tool)
     if opts.dry_run or opts.action == "plan":

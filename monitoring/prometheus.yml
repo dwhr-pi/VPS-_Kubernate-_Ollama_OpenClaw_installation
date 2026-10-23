@@ -1,0 +1,25 @@
+global:
+  scrape_interval: 30s
+  scrape_timeout: 10s
+rule_files: [/etc/prometheus/alerts.yml]
+scrape_configs:
+  - job_name: prometheus
+    static_configs:
+      - targets: ['localhost:9090']
+  - job_name: litellm
+    metrics_path: /metrics
+    authorization:
+      type: Bearer
+      credentials_file: /run/secrets/litellm-metrics-token
+    static_configs:
+      # Must be a reachable private listener, not a host-only loopback binding.
+      - targets: ['REPLACE_PRIVATE_LITELLM_ADDRESS:4000']
+  - job_name: node
+    static_configs:
+      - targets: ['node-exporter:9100']
+  - job_name: ollama-exporter
+    metrics_path: /metrics
+    # Empty until an independently verified exporter is installed. Ollama itself
+    # is not assumed to expose Prometheus metrics on port 11434.
+    file_sd_configs:
+      - files: [/etc/prometheus/ollama-metrics.targets.json]

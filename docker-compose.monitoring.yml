@@ -1,0 +1,106 @@
+name: llmops-monitoring
+# Reviewed digests are mandatory. Never start this with floating latest tags.
+x-restricted: &restricted
+  restart: unless-stopped
+  read_only: true
+  cap_drop: [ALL]
+  security_opt: [no-new-privileges:true]
+  pids_limit: 128
+  logging:
+    driver: json-file
+    options: {max-size: 10m, max-file: '3'}
+services:
+  prometheus:
+    <<: *restricted
+    image: ${PROMETHEUS_IMAGE:?Set reviewed image@sha256 digest}
+    user: '65534:65534'
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --storage.tsdb.retention.time=7d
+      - --storage.tsdb.retention.size=2GB
+    ports: ['127.0.0.1:9091:9090']
+    extra_hosts: ['host.docker.internal:host-gateway']
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./monitoring/alerts.yml:/etc/prometheus/alerts.yml:ro
+      - ./monitoring/ollama-metrics.targets.json:/etc/prometheus/ollama-metrics.targets.json:ro
+      - prometheus-data:/prometheus
+    secrets: [litellm-metrics-token]
+    networks: [telemetry, scrape]
+    mem_limit: 1g
+    cpus: 1
+  grafana:
+    <<: *restricted
+    image: ${GRAFANA_IMAGE:?Set reviewed image@sha256 digest}
+    user: '472:472'
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD__FILE: /run/secrets/grafana-admin-password
+      GF_AUTH_ANONYMOUS_ENABLED: 'false'
+      GF_USERS_ALLOW_SIGN_UP: 'false'
+      GF_ANALYTICS_REPORTING_ENABLED: 'false'
+      GF_ANALYTICS_CHECK_FOR_UPDATES: 'false'
+      GF_SECURITY_COOKIE_SAMESITE: strict
+    ports: ['127.0.0.1:3030:3000']
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./monitoring/grafana/dashboards:/var/lib/grafana/dashboards:ro
+    tmpfs: [/tmp:size=64m,mode=1777]
+    secrets: [grafana-admin-password]
+    networks: [telemetry]
+    mem_limit: 512m
+    cpus: 1
+  loki:
+    <<: *restricted
+    image: ${LOKI_IMAGE:?Set reviewed image@sha256 digest}
+    user: '10001:10001'
+    command: [-config.file=/etc/loki/config.yml]
+    volumes:
+      - ./monitoring/loki.yml:/etc/loki/config.yml:ro
+      - loki-data:/loki
+    networks: [telemetry]
+    mem_limit: 1g
+    cpus: 1
+  alloy:
+    <<: *restricted
+    image: ${ALLOY_IMAGE:?Set reviewed image@sha256 digest}
+    user: '10001:10001'
+    command: [run, --storage.path=/var/lib/alloy, /etc/alloy/config.alloy]
+    volumes:
+      - ./monitoring/config.alloy:/etc/alloy/config.alloy:ro
+      - ${LLMOPS_LOG_DIR:?Set dedicated redacted log directory}:/var/log/llmops:ro
+      - alloy-data:/var/lib/alloy
+    networks: [telemetry]
+    mem_limit: 256m
+    cpus: 0.5
+  node-exporter:
+    <<: *restricted
+    image: ${NODE_EXPORTER_IMAGE:?Set reviewed image@sha256 digest}
+    profiles: [host-metrics]
+    user: '65534:65534'
+    command:
+      - --path.procfs=/host/proc
+      - --path.sysfs=/host/sys
+      - --path.rootfs=/host/root
+      - --collector.filesystem.mount-points-exclude=^/(dev|proc|sys|var/lib/docker)($|/)
+    # No rslave propagation: it fails on some WSL root mounts.
+    volumes: ['/proc:/host/proc:ro', '/sys:/host/sys:ro', '/:/host/root:ro']
+    networks: [telemetry]
+    mem_limit: 128m
+    cpus: 0.5
+networks:
+  telemetry:
+    internal: true
+  # Only Prometheus may reach the selected external/private scrape target.
+  scrape: {}
+volumes:
+  prometheus-data: {}
+  grafana-data: {}
+  loki-data: {}
+  alloy-data: {}
+secrets:
+  grafana-admin-password:
+    file: ${MONITORING_SECRET_DIR:?Set protected external secret directory}/grafana-admin-password
+  litellm-metrics-token:
+    file: ${MONITORING_SECRET_DIR:?Set protected external secret directory}/litellm-metrics-token

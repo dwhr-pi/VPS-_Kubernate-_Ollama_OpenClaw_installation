@@ -1,0 +1,21 @@
+groups:
+  - name: llmops-baseline
+    rules:
+      - alert: ScrapeTargetUnavailable
+        expr: up == 0
+        for: 5m
+        labels: {severity: warning}
+        annotations:
+          summary: 'Target {{ $labels.job }} unavailable'
+      - alert: HostDiskNearlyFull
+        expr: node_filesystem_avail_bytes{fstype!~"tmpfs|overlay|squashfs"} / node_filesystem_size_bytes < 0.1
+        for: 10m
+        labels: {severity: critical}
+        annotations:
+          summary: 'Less than 10 percent filesystem capacity available'
+      - alert: HostMemoryPressure
+        expr: node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes < 0.1
+        for: 10m
+        labels: {severity: warning}
+        annotations:
+          summary: 'Less than 10 percent RAM available'

@@ -1,0 +1,6 @@
+# Replace with your PUBLIC age recipient; this deliberately fails until configured.
+# Keep the private age identity outside Git and outside ordinary state backups.
+creation_rules:
+  - path_regex: '(^|/)secrets\.enc\.ya?ml$'
+    encrypted_regex: '^(data|stringData)$'
+    age: age1REPLACE_WITH_YOUR_PUBLIC_RECIPIENT

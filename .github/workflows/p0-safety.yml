@@ -1,0 +1,39 @@
+name: P0 safety - Ubuntu 24.04 x86_64
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  isolated-fixtures:
+    # GitHub-hosted disposable VM, not the operator's VPS or WSL installation.
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      GIT_TERMINAL_PROMPT: '0'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Confirm acceptance platform and parse modified entrypoints
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          test "$(uname -m)" = x86_64
+          . /etc/os-release
+          test "$ID" = ubuntu
+          test "$VERSION_ID" = 24.04
+          for script in install.sh setup_ultimate.sh scripts/auto_update_hard.sh scripts/update_setup_only.sh scripts/tools/helpers/docker_compose_tool_common.sh; do
+            bash -n "$script"
+          done
+      - name: Test backup/restore, idempotence, PAT isolation and data-preserving uninstall
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          python3 -I -B -m unittest discover -s tests -p test_p0_safety.py -v
+      - name: Preserve existing repository-audit regressions
+        shell: bash
+        run: python3 -I -B -m unittest discover -s tests -p test_repository_audit.py -v

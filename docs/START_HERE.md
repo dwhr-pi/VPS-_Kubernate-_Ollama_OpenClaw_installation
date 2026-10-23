@@ -1,5 +1,17 @@
 # START HERE
 
+[P0-Codepaket: Update, PAT und datenerhaltender Compose-Uninstall](P0_SAFETY_CHANGES.md):
+lokale Fixture-Tests abgeschlossen, Ubuntu-24.04-VM-Abnahme noch offen.
+
+Zuerst [aktuellen Nachweisstand](CURRENT_STATUS.md) und
+[erste 60 Minuten](FIRST_60_MINUTES.md) lesen. Der
+[Audit vom 23.10.2026](AUDIT_2026-10-23.md) nennt offene P0-Risiken;
+die nachstehenden Installationspfade sind keine Produktionsfreigabe.
+
+[Neue produktionsnahe Baseline](PRODUCTION_BASELINE.md): getrennte Ansible-,
+Kubernetes-, Monitoring-, SOPS-/Restic- und CI-Dateien mit Offline-Pruefungen.
+Bestehende produktive Konfigurationen werden nicht automatisch ersetzt.
+
 [Welche Tools fehlen im Setup?](TOOL_SETUP_GAPS.md) und
 [vollstaendiger statischer Abgleich](TOOL_SETUP_AUDIT.md): Dokumentation,
 Registry, Menue und Runtime sind nicht gleichbedeutend.

@@ -3,6 +3,20 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 INSTALL_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+HELPER="$SCRIPT_DIR/lib/repo_safety.py"
+[[ -f "$HELPER" && ! -L "$HELPER" ]] || { echo 'Sicherer Backup-Helper fehlt; kein Update-Fallback.' >&2; exit 1; }
+case "${1:---apply}" in
+    --dry-run)
+        [[ $# -le 1 ]] || exit 2
+        exec python3 -I -B "$HELPER" backup --repo "$INSTALL_DIR" \
+            --backup-root "$HOME/.openclaw_ultimate_user_data/repo_update_backups" --dry-run
+        ;;
+    --apply) [[ $# -le 1 ]] || exit 2 ;;
+    *) echo 'Nutzung: update_setup_only.sh [--dry-run|--apply]' >&2; exit 2 ;;
+esac
+python3 -I -B "$HELPER" check --repo "$INSTALL_DIR" >/dev/null
+for trace_name in ${!GIT_TRACE@}; do unset "$trace_name"; done
+unset GIT_CURL_VERBOSE GIT_SSL_NO_VERIFY
 
 GREEN="\033[0;32m"
 LIGHT_GREEN="\033[1;32m"
@@ -124,17 +138,11 @@ if [ -n "$REPO_STATUS" ]; then
 fi
 
 echo -e "${GREEN}Pruefe Remote-Stand...${NC}"
-git -C "$INSTALL_DIR" fetch origin --prune
+git -C "$INSTALL_DIR" fetch origin
 
 if ! git -C "$INSTALL_DIR" show-ref --verify --quiet refs/remotes/origin/main; then
     echo -e "${RED}Fehler: Remote-Branch origin/main wurde nicht gefunden.${NC}"
     exit 1
-fi
-
-CURRENT_BRANCH="$(git -C "$INSTALL_DIR" rev-parse --abbrev-ref HEAD 2>/dev/null || echo detached)"
-if [ "$CURRENT_BRANCH" != "main" ]; then
-    echo -e "${YELLOW}Aktueller Branch ist ${CURRENT_BRANCH}. Wechsle fuer das Setup-Update auf main.${NC}"
-    git -C "$INSTALL_DIR" checkout main 2>/dev/null || git -C "$INSTALL_DIR" checkout -b main --track origin/main
 fi
 
 LOCAL_SHA_FULL_BEFORE="$(git -C "$INSTALL_DIR" rev-parse HEAD)"
@@ -152,6 +160,12 @@ else
 fi
 
 echo -e "${GREEN}Führe Fast-Forward-Update aus...${NC}"
+if [ "$BEHIND_BEFORE" -eq 0 ]; then
+    echo 'Keine neuen Remote-Commits; kein Checkout und keine zusaetzliche Sicherung erforderlich.'
+    exit 0
+fi
+python3 -I -B "$HELPER" backup --repo "$INSTALL_DIR" \
+    --backup-root "$HOME/.openclaw_ultimate_user_data/repo_update_backups" --apply
 git -C "$INSTALL_DIR" pull --ff-only origin main
 echo -e "${GREEN}Update ausgefuehrt.${NC}"
 

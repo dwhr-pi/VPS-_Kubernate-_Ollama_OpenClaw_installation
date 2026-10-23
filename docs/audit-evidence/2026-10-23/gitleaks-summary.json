@@ -1,0 +1,444 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-23",
+  "repository": "dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation",
+  "head": "0305ca6fcb8c349b2ea04b83a62051acdbc83e30",
+  "scope": {
+    "working_tree_includes_preexisting_uncommitted_changes": true,
+    "local_reachable_commits": 419,
+    "shallow_repository": false,
+    "fetch_performed": false,
+    "provider_credential_validation_performed": false,
+    "secret_values_included": false,
+    "matching_source_text_included": false,
+    "author_metadata_included": false
+  },
+  "scanner": {
+    "name": "gitleaks",
+    "version": "8.30.1",
+    "github_asset": "https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_windows_x64.zip",
+    "verified_sha256": "d29144deff3a68aa93ced33dddf84b7fdc26070add4aa0f4513094c8332afc4e",
+    "independent_signature_verified": false,
+    "flags": [
+      "--redact=100",
+      "--no-banner",
+      "--no-color",
+      "--report-format=json"
+    ],
+    "history_log_options": "--all",
+    "note": "Normalized metadata only; not the original scanner JSON. Findings are not proof of valid credentials."
+  },
+  "scans": [
+    {
+      "mode": "dir",
+      "exit_code": 1,
+      "findings_count": 8,
+      "findings": [
+        {
+          "rule": "generic-api-key",
+          "file": "ansible/vps_bootstrap.yml",
+          "line": 16,
+          "commit": null,
+          "classification": "confirmed-public-checksum-not-a-credential"
+        },
+        {
+          "rule": "curl-auth-header",
+          "file": "docs/PRIVATE_REPO_GUIDE.md",
+          "line": 34,
+          "commit": null,
+          "classification": "unreviewed"
+        },
+        {
+          "rule": "generic-api-key",
+          "file": "CHANGELOG.md",
+          "line": 337,
+          "commit": null,
+          "classification": "unreviewed"
+        },
+        {
+          "rule": "generic-api-key",
+          "file": "docs/OPENCLAW_ENV_GUIDE.md",
+          "line": 130,
+          "commit": null,
+          "classification": "unreviewed"
+        },
+        {
+          "rule": "generic-api-key",
+          "file": "docs/OPENCLAW_ENV_GUIDE.md",
+          "line": 264,
+          "commit": null,
+          "classification": "unreviewed"
+        },
+        {
+          "rule": "generic-api-key",
+          "file": "docs/PRODUCTION_BASELINE_CODE.md",
+          "line": 32,
+          "commit": null,
+          "classification": "confirmed-public-checksum-not-a-credential"
+        },
+        {
+          "rule": "generic-api-key",
+          "file": "scripts/tools/helpers/freellmapi_common.sh",
+          "line": 6,
+          "commit": null,
+          "classification": "confirmed-public-source-commit-not-a-credential"
+        },
+        {
+          "rule": "generic-api-key",
+          "file": "scripts/tools/helpers/veo_api_common.sh",
+          "line": 217,
+          "commit": null,
+          "classification": "unreviewed"
+        }
+      ]
+    },
+    {
+      "mode": "git",
+      "exit_code": 1,
+      "findings_count": 31,
+      "findings": [
+        {
+          "rule": "generic-api-key",
+          "file": "scripts/tools/helpers/veo_api_common.sh",
+          "line": 217,
+          "commit": "63b7549b4090cb87450a5726e8f65e4c7af516b2",
+          "classification": "unreviewed"
+        },
+        {
+          "rule": "generic-api-key",
+          "file": "CHANGELOG.md",
+          "line": 10,
+          "commit": "cf5120b48820b61c326e80cd5f0718be1bd780be",
+          "classification": "unreviewed"
+        },
+        {
+          "rule": "generic-api-key",
+          "file": "scripts/tools/helpers/freellmapi_common.sh",
+          "line": 6,
+          "commit": "c212303863ebdee4a5e227adf5bbc28482129267",
+          "classification": "unreviewed"
+        },
+        {
+          "rule": "generic-api-key",
+          "file": "docs/OPENCLAW_ENV_GUIDE.md",
+          "line": 42,
+          "commit": "58d2b34accb12a73d6cb32fb6b3c65714837327c",
+          "classification": "unreviewed"
+        },
+        {
+          "rule": "generic-api-key",
+          "file": "docs/OPENCLAW_ENV_GUIDE.md",
+          "line": 145,
+          "commit": "58d2b34accb12a73d6cb32fb6b3c65714837327c",
+          "classification": "unreviewed"
+        },
+        {
+          "rule": "curl-auth-header",
+          "file": "_alt6/github_ready_setup/docs/PRIVATE_REPO_GUIDE.md",
+          "line": 34,
+          "commit": "2276733630381bb94be9730512f2fa53a4bbe890",
+          "classification": "unreviewed"
+        },
+        {
+          "rule": "curl-auth-header",
+          "file": "docs/PRIVATE_REPO_GUIDE.md",
+          "line": 34,
+          "commit": "905dd8f1c07d9750288efb644db556122baa7304",
+          "classification": "unreviewed"
+        },
+        {
+          "rule": "curl-auth-header",
+          "file": "_alt_(Neu)/docs/PRIVATE_REPO_GUIDE.md",
+          "line": 34,
+          "commit": "6c385c7421b6459b29b776438db22303cd484cc2",
+          "classification": "unreviewed"
+        },
+        {
+          "rule": "curl-auth-header",
+          "file": "docs/PRIVATE_REPO_GUIDE.md",
+          "line": 34,
+          "commit": "d34efbff26ef7fffc4b10a00cc96338e50862d1b",
+          "classification": "unreviewed"
+        },
+        {
+          "rule": "gcp-api-key",
+          "file": "readme.md",
+          "line": 1691,
+          "commit": "fc826e2328820e860c68f140b316befabbc14db7",
+          "classification": "unreviewed"
+        },
+        {
+          "rule": "generic-api-key",
+          "file": "OpenClaw-Confic.env.md",
+          "line": 126,
+          "commit": "3fc16f0e22f0cb331c01756a2d3ad58dd666af8b",
+          "classification": "unreviewed"
+        },
+        {
+          "rule": "generic-api-key",
+          "file": "OpenClaw-Confic.env.md",
+          "line": 229,
+          "commit": "3fc16f0e22f0cb331c01756a2d3ad58dd666af8b",
+          "classification": "unreviewed"
+        },
+        {
+          "rule": "generic-api-key",
+          "file": "OpenClaw-Confic.env.md",
+          "line": 297,
+          "commit": "3fc16f0e22f0cb331c01756a2d3ad58dd666af8b",
+          "classification": "unreviewed"
+        },
+        {
+          "rule": "telegram-bot-api-token",
+          "file": "_c.env.md",
+          "line": 67,
+          "commit": "3fc16f0e22f0cb331c01756a2d3ad58dd666af8b",
+          "classification": "unreviewed"
+        },
+        {
+          "rule": "generic-api-key",
+          "file": "_c.env.md",
+          "line": 20,
+          "commit": "3fc16f0e22f0cb331c01756a2d3ad58dd666af8b",
+          "classification": "unreviewed"
+        },
+        {
+          "rule": "generic-api-key",
+          "file": "_c.env.md",
+          "line": 81,
+          "commit": "3fc16f0e22f0cb331c01756a2d3ad58dd666af8b",
+          "classification": "unreviewed"
+        },
+        {
+          "rule": "generic-api-key",
+          "file": "_c.env.md",
+          "line": 85,
+          "commit": "3fc16f0e22f0cb331c01756a2d3ad58dd666af8b",
+          "classification": "unreviewed"
+        },
+        {
+          "rule": "notion-api-token",
+          "file": "_c.env.md",
+          "line": 91,
+          "commit": "3fc16f0e22f0cb331c01756a2d3ad58dd666af8b",
+          "classification": "unreviewed"
+        },
+        {
+          "rule": "gcp-api-key",
+          "file": "_c.env.md",
+          "line": 44,
+          "commit": "3fc16f0e22f0cb331c01756a2d3ad58dd666af8b",
+          "classification": "unreviewed"
+        },
+        {
+          "rule": "gcp-api-key",
+          "file": "_c.env.md",
+          "line": 51,
+          "commit": "3fc16f0e22f0cb331c01756a2d3ad58dd666af8b",
+          "classification": "unreviewed"
+        },
+        {
+          "rule": "gcp-api-key",
+          "file": "_c.env.md",
+          "line": 53,
+          "commit": "3fc16f0e22f0cb331c01756a2d3ad58dd666af8b",
+          "classification": "unreviewed"
+        },
+        {
+          "rule": "gcp-api-key",
+          "file": "_c.env.md",
+          "line": 56,
+          "commit": "3fc16f0e22f0cb331c01756a2d3ad58dd666af8b",
+          "classification": "unreviewed"
+        },
+        {
+          "rule": "discord-api-token",
+          "file": "_c.env.md",
+          "line": 68,
+          "commit": "3fc16f0e22f0cb331c01756a2d3ad58dd666af8b",
+          "classification": "unreviewed"
+        },
+        {
+          "rule": "generic-api-key",
+          "file": "OpenClaw_Startproblem.md",
+          "line": 70,
+          "commit": "3fc16f0e22f0cb331c01756a2d3ad58dd666af8b",
+          "classification": "unreviewed"
+        },
+        {
+          "rule": "generic-api-key",
+          "file": "OpenClaw_Startproblem.md",
+          "line": 1673,
+          "commit": "3fc16f0e22f0cb331c01756a2d3ad58dd666af8b",
+          "classification": "unreviewed"
+        },
+        {
+          "rule": "generic-api-key",
+          "file": "OpenClaw_Startproblem.md",
+          "line": 3157,
+          "commit": "3fc16f0e22f0cb331c01756a2d3ad58dd666af8b",
+          "classification": "unreviewed"
+        },
+        {
+          "rule": "generic-api-key",
+          "file": "OpenClaw_Startproblem.md",
+          "line": 3191,
+          "commit": "3fc16f0e22f0cb331c01756a2d3ad58dd666af8b",
+          "classification": "unreviewed"
+        },
+        {
+          "rule": "generic-api-key",
+          "file": "OpenClaw_Startproblem.md",
+          "line": 3300,
+          "commit": "3fc16f0e22f0cb331c01756a2d3ad58dd666af8b",
+          "classification": "unreviewed"
+        },
+        {
+          "rule": "generic-api-key",
+          "file": "OpenClaw_Startproblem.md",
+          "line": 3334,
+          "commit": "3fc16f0e22f0cb331c01756a2d3ad58dd666af8b",
+          "classification": "unreviewed"
+        },
+        {
+          "rule": "generic-api-key",
+          "file": "OpenClaw_Startproblem.md",
+          "line": 3576,
+          "commit": "3fc16f0e22f0cb331c01756a2d3ad58dd666af8b",
+          "classification": "unreviewed"
+        },
+        {
+          "rule": "generic-api-key",
+          "file": "OpenClaw_Startproblem.md",
+          "line": 3605,
+          "commit": "3fc16f0e22f0cb331c01756a2d3ad58dd666af8b",
+          "classification": "unreviewed"
+        }
+      ]
+    }
+  ],
+  "pre_commit_upstream_checks": [
+    {
+      "repository": "koalaman/shellcheck",
+      "ref": "v0.10.0",
+      "tree_api_status": 200,
+      "tree_sha": "37dfb67768db726092fde482d338943d678e6988",
+      "hook_manifest_present": false,
+      "hook_manifest_request_status": 404
+    },
+    {
+      "repository": "mvdan/sh",
+      "ref": "v3.8.0",
+      "tree_api_status": 200,
+      "tree_sha": "84baa08f139fb171b86ff7f25b834d4a3ef19c6f",
+      "hook_manifest_present": false,
+      "hook_manifest_request_status": 404
+    }
+  ],
+  "coverage": {
+    "inventoried_files_before_report": 3216,
+    "shell_paths": 1793,
+    "repository_audit": {
+      "exit_code": 0,
+      "errors": 0,
+      "warnings": 953,
+      "counts": {
+        "tools": 366,
+        "profiles": 245,
+        "ports": 44,
+        "python_files": 141,
+        "python_test_modules": 104,
+        "markdown_files": 1098
+      },
+      "warnings_by_code": {
+        "missing-doc": 256,
+        "missing-doctor_script": 276,
+        "missing-status": 145,
+        "missing-update_script": 276
+      }
+    },
+    "bash_syntax": {
+      "completed_core_checks": [
+        {
+          "file": "install.sh",
+          "exit": 0
+        },
+        {
+          "file": "setup_ultimate.sh",
+          "exit": 0
+        },
+        {
+          "file": "scripts/auto_update_hard.sh",
+          "exit": 0
+        },
+        {
+          "file": "scripts/operations/backup_run.sh",
+          "exit": 0
+        },
+        {
+          "file": "scripts/tools/helpers/docker_compose_tool_common.sh",
+          "exit": 0
+        },
+        {
+          "file": "scripts/tools/k3s_install.sh",
+          "exit": 0
+        },
+        {
+          "file": "scripts/tools/openclaw_install.sh",
+          "exit": 0
+        },
+        {
+          "file": "scripts/tools/ollama_install.sh",
+          "exit": 0
+        },
+        {
+          "file": "scripts/security/setup-ufw.sh",
+          "exit": 0
+        },
+        {
+          "file": "scripts/security/setup-fail2ban.sh",
+          "exit": 0
+        },
+        {
+          "file": "scripts/backup_stateful_services.sh",
+          "exit": 0
+        }
+      ],
+      "full_inventory_status": "incomplete-time-limits-no-success-counter",
+      "latest_full_attempt": {
+        "timeout": true,
+        "exit_code": null,
+        "reported_syntax_error_files": []
+      }
+    },
+    "shellcheck": {
+      "version": "0.11.0",
+      "full_inventory_status": "incomplete-240-second-time-limit",
+      "completed_core_files": 4,
+      "core_diagnostics": 6,
+      "setup_ultimate_status": "incomplete-15-second-time-limit"
+    },
+    "shfmt": {
+      "version": "3.14.1",
+      "mode": "read-only -l -i 2 -ci",
+      "paths_submitted": 1793,
+      "format_difference_paths": 377,
+      "files_written": false
+    },
+    "selected_python_tests": {
+      "selected": 36,
+      "passed": 30,
+      "skipped": 6,
+      "full_discovery_executed": false
+    },
+    "github_actions_executed": false,
+    "live_install_or_restore_executed": false
+  },
+  "follow_up": [
+    "Owner triage: distinguish actual exposed credentials from examples and public hashes.",
+    "Revoke or rotate actual exposed credentials before considering history cleanup.",
+    "Never test suspected credentials against any provider from this audit.",
+    "History rewrite, license selection and directory renaming require separate owner decisions.",
+    "Do not use broad Markdown/env allowlists to hide findings."
+  ]
+}

@@ -1,0 +1,153 @@
+---
+- name: Bootstrap a dedicated Ubuntu VPS
+  hosts: vps
+  become: true
+  gather_facts: true
+  serial: 1
+  vars:
+    llmops_ssh_public_key: ""
+    # Set only after independently testing the bootstrap administrator's SSH key.
+    bootstrap_key_access_confirmed: false
+    # Existing hosts/firewalls need a separate migration, never an implicit reset.
+    bootstrap_dedicated_host_confirmed: false
+    docker_architectures:
+      x86_64: amd64
+      aarch64: arm64
+    docker_key_sha256: 1500c1f56fa9e26b9b8f42452a553675796ade0807cdce11975eb98170b3a570
+  pre_tasks:
+    - name: Validate platform and explicit safety acknowledgements
+      ansible.builtin.assert:
+        that:
+          - ansible_distribution == 'Ubuntu'
+          - ansible_distribution_version in ['22.04', '24.04']
+          - ansible_architecture in docker_architectures
+          - bootstrap_key_access_confirmed | bool
+          - bootstrap_dedicated_host_confirmed | bool
+          - ansible_port | default(22) | int == 22
+          - llmops_ssh_public_key is match('^(ssh-ed25519|ssh-rsa|ecdsa-sha2-nistp[0-9]+) [A-Za-z0-9+/=]+( .*)?$')
+        fail_msg: "Dedicated Ubuntu host, tested administrator key and llmops public key required."
+    - name: Gather installed packages
+      ansible.builtin.package_facts:
+        manager: auto
+    - name: Reject conflicting Docker distributions without removing anything
+      ansible.builtin.assert:
+        that:
+          - "item not in ansible_facts.packages"
+        fail_msg: "Existing container runtime found. Plan a separate migration first."
+      loop: [docker.io, docker-compose, docker-compose-v2, podman-docker, containerd, runc]
+  tasks:
+    - name: Update packages without automatic reboot or distribution upgrade
+      ansible.builtin.apt:
+        update_cache: true
+        cache_valid_time: 3600
+        upgrade: safe
+        lock_timeout: 300
+    - name: Install bootstrap dependencies
+      ansible.builtin.apt:
+        name: [ca-certificates, curl, git, make, ufw, openssh-server, python3]
+        state: present
+        lock_timeout: 300
+    - name: Create unprivileged service account
+      ansible.builtin.user:
+        name: llmops
+        create_home: true
+        shell: /bin/bash
+        password_lock: true
+        groups: ""
+        append: false
+    - name: Protect service home
+      ansible.builtin.file:
+        path: /home/llmops
+        state: directory
+        owner: llmops
+        group: llmops
+        mode: '0700'
+    - name: Install only the supplied public key for the service account
+      ansible.posix.authorized_key:
+        user: llmops
+        key: "{{ llmops_ssh_public_key }}"
+        exclusive: true
+        manage_dir: true
+    - name: Configure SSH without changing existing administrator authorized keys
+      ansible.builtin.copy:
+        dest: /etc/ssh/sshd_config.d/00-llmops-key-only.conf
+        owner: root
+        group: root
+        mode: '0644'
+        content: |
+          PubkeyAuthentication yes
+          PasswordAuthentication no
+          KbdInteractiveAuthentication no
+          PermitRootLogin prohibit-password
+          X11Forwarding no
+      notify: Validate and reload SSH
+    - name: Inspect effective SSH settings before reloading
+      ansible.builtin.command: /usr/sbin/sshd -T
+      register: effective_sshd
+      changed_when: false
+    - name: Refuse conflicting SSH settings in older configuration files
+      ansible.builtin.assert:
+        that:
+          - "'passwordauthentication no' in effective_sshd.stdout_lines"
+          - "'kbdinteractiveauthentication no' in effective_sshd.stdout_lines"
+          - "'pubkeyauthentication yes' in effective_sshd.stdout_lines"
+          - "'port 22' in effective_sshd.stdout_lines"
+        fail_msg: "Existing sshd configuration overrides the drop-in. Review manually before reload."
+    - name: Create Docker keyring directory
+      ansible.builtin.file:
+        path: /etc/apt/keyrings
+        state: directory
+        mode: '0755'
+    - name: Download pinned official Docker signing key
+      ansible.builtin.get_url:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        dest: /etc/apt/keyrings/docker.asc
+        checksum: "sha256:{{ docker_key_sha256 }}"
+        mode: '0644'
+    - name: Configure signed Docker repository
+      ansible.builtin.apt_repository:
+        repo: "deb [arch={{ docker_architectures[ansible_architecture] }} signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+        filename: docker
+        state: present
+    - name: Install Docker and Compose plugin
+      ansible.builtin.apt:
+        name: [docker-ce, docker-ce-cli, containerd.io, docker-buildx-plugin, docker-compose-plugin]
+        state: present
+        lock_timeout: 300
+    - name: Enable Docker without granting llmops socket access
+      ansible.builtin.systemd_service:
+        name: docker
+        enabled: true
+        state: started
+    - name: Inspect existing firewall rules without changing them
+      ansible.builtin.command: ufw show added
+      register: existing_ufw
+      changed_when: false
+    - name: Refuse unexpected pre-existing firewall rules
+      ansible.builtin.assert:
+        that:
+          - "item in ['ufw allow 22/tcp', 'ufw allow 80/tcp', 'ufw allow 443/tcp']"
+        fail_msg: "Existing firewall rules need a separate migration; no reset performed."
+      loop: "{{ existing_ufw.stdout_lines | select('match', '^ufw ') | list }}"
+    - name: Permit bootstrap TCP ports before enabling firewall
+      community.general.ufw:
+        rule: allow
+        port: "{{ item }}"
+        proto: tcp
+      loop: ['22', '80', '443']
+    - name: Deny unsolicited incoming traffic
+      community.general.ufw:
+        direction: incoming
+        policy: deny
+    - name: Enable firewall without resetting existing rules
+      community.general.ufw:
+        state: enabled
+  handlers:
+    - name: Validate and reload SSH
+      ansible.builtin.command: /usr/sbin/sshd -t
+      changed_when: false
+      notify: Reload SSH
+    - name: Reload SSH
+      ansible.builtin.systemd_service:
+        name: ssh
+        state: reloaded

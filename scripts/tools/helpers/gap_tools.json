@@ -60,7 +60,7 @@
     "repo": "TMElyralab/MuseTalk",
     "pin": "0a89dec45a0192b824e3cf4daf96c239440c5ed8",
     "mode": "source",
-    "reserve_mb": 2048
+    "reserve_mb": 20480
   },
   "liveportrait": {
     "name": "LivePortrait",

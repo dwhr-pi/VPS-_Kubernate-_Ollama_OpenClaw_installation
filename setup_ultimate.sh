@@ -874,7 +874,8 @@ get_tool_install_fallback_min_free_mb() {
     case "$tool_key" in
         "Qwen_Desktop_Build") printf '20480' ;;
         "Hermes_Agent_Jarvis") printf '4096' ;;
-        "Gradio"|"Streamlit"|"WanVideoWrapper"|"CogVideoX"|"LTX_Video"|"Video2Dataset"|"MuseTalk"|"LivePortrait"|"SadTalker"|"RVC"|"UVR5"|"Audacity"|"OBS") printf '2048' ;;
+        "MuseTalk") printf '20480' ;;
+        "Gradio"|"Streamlit"|"WanVideoWrapper"|"CogVideoX"|"LTX_Video"|"Video2Dataset"|"LivePortrait"|"SadTalker"|"RVC"|"UVR5"|"Audacity"|"OBS") printf '2048' ;;
         "Concat") printf '2048' ;;
         "Remotion") printf '16384' ;;
         "HyperFrames") printf '12288' ;;
@@ -2239,14 +2240,23 @@ show_options_menu() {
                 ;;
             11)
                 show_operation_intro \
-                "Harter Setup-Abgleich mit GitHub main" \
-                "Das Setup-Repository wird zwangsweise auf origin/main zurückgesetzt. Lokale Änderungen im Setup-Verzeichnis gehen dabei verloren." \
+                "Gesicherter Setup-Abgleich mit GitHub main" \
+                "Tracking-Aenderungen werden erst nach verifizierter Sicherung und SYNC-Freigabe ersetzt. Lokale Branches und nicht kollidierende Zusatzdateien bleiben erhalten." \
                 "Meist nur wenige Minuten, abhängig von Netzwerk und Repo-Größe" \
                 "${MIN_FREE_GB_ABSOLUTE}-${MIN_FREE_GB_RECOMMENDED} GB" \
                 "Nutze diese Methode nur, wenn das normale Update nicht greift oder ein alter Setup-Stand festhaengt."
-                run_bash_script "$INSTALL_DIR/scripts/auto_update_hard.sh"
-                read -p "Harter Setup-Abgleich abgeschlossen. Drücken Sie Enter, um das Setup-Menue neu zu starten..."
-                restart_setup_menu_after_update
+                if run_bash_script "$INSTALL_DIR/scripts/auto_update_hard.sh" --dry-run; then
+                    read -r -p "Verifizierte Sicherung erstellen und lokale Tracking-Aenderungen ersetzen? Tippe SYNC: " confirm_repo_sync
+                    if [[ "$confirm_repo_sync" == SYNC ]]; then
+                        if run_bash_script "$INSTALL_DIR/scripts/auto_update_hard.sh" --apply --confirm-discard-local; then
+                            read -r -p "Gesicherter Setup-Abgleich abgeschlossen. Enter zum Neustart..."
+                            restart_setup_menu_after_update
+                        else
+                            echo 'Update fehlgeschlagen. Vorhandene Sicherungen bleiben erhalten; Log pruefen.'
+                            read -r -p "Enter zurueck..."
+                        fi
+                    fi
+                fi
                 ;;
             12)
                 show_operation_intro \
@@ -3587,7 +3597,11 @@ install_tool() {
         end_operation_measurement "success"
         operation_status="success"
         echo 'GGUF-GitHub-Quellen vorbereitet; keine neue aktive Integration registriert. Bestehende Integrationen bleiben erhalten.'
-    elif [[ "$TOOL_KEY" =~ ^(Qwen_Desktop_Build|Hermes_Agent_Jarvis|Gradio|Streamlit|WanVideoWrapper|CogVideoX|LTX_Video|Video2Dataset|MuseTalk|LivePortrait|SadTalker|RVC|UVR5|Audacity|OBS)$ ]] && [ "$tool_rc" -eq 0 ]; then
+    elif [ "$TOOL_KEY" = MuseTalk ] && [ "$tool_rc" -eq 0 ]; then
+        end_operation_measurement "success"
+        operation_status="success"
+        echo 'MuseTalk: Python-Pakete/CUDA-Smoke-Test geprueft. Keine Modelle, GUI oder Inferenz gestartet; Status und docs/tools/musetalk.md beachten.'
+    elif [[ "$TOOL_KEY" =~ ^(Qwen_Desktop_Build|Hermes_Agent_Jarvis|Gradio|Streamlit|WanVideoWrapper|CogVideoX|LTX_Video|Video2Dataset|LivePortrait|SadTalker|RVC|UVR5|Audacity|OBS)$ ]] && [ "$tool_rc" -eq 0 ]; then
         end_operation_measurement "success"
         operation_status="success"
         echo "${TOOL_KEY}: Installationsumfang siehe aktuelles Log/Status. Quellen sind keine fertige Runtime; Build/Paket ohne GUI-/Agenten-/Modellstart."
@@ -3762,7 +3776,7 @@ TOOLS["LTX_Video"]="GitHub-Quellen (kein fertiger Runtime-/Modell-Build); ohne D
 TOOL_SCRIPT_NAMES["LTX_Video"]="ltx_video"
 TOOLS["Video2Dataset"]="GitHub-Quellen (kein fertiger Runtime-/Modell-Build); ohne Docker. docs/tools/github-gap-tools.md"
 TOOL_SCRIPT_NAMES["Video2Dataset"]="video2dataset"
-TOOLS["MuseTalk"]="GitHub-Quellen (kein fertiger Runtime-/Modell-Build); ohne Docker. docs/tools/github-gap-tools.md"
+TOOLS["MuseTalk"]="GitHub + private Python/CUDA-Pakete; 20 GiB Reserve, kein Modellstart; RTX50 gesperrt. docs/tools/musetalk.md"
 TOOL_SCRIPT_NAMES["MuseTalk"]="musetalk"
 TOOLS["LivePortrait"]="GitHub-Quellen (kein fertiger Runtime-/Modell-Build); ohne Docker. docs/tools/github-gap-tools.md"
 TOOL_SCRIPT_NAMES["LivePortrait"]="liveportrait"

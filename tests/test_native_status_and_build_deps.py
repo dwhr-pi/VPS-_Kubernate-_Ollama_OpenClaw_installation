@@ -52,6 +52,28 @@ test -d "$root/tools/windmill"
         self.assertIn('native_tool_sync_status "$TOOL_KEY"', menu)
         self.assertIn('remove_exact_line "$USER_STATUS_DIR/installed_tools.txt" "$TOOL_KEY"', menu)
 
+    def test_musetalk_source_only_does_not_resurrect_runtime_status(self):
+        result = self.shell('''
+source scripts/helpers/native_tool_status.sh
+root="$HOME/private"
+mkdir -p "$root/tools/musetalk/runtime/.git" "$root/status"
+printf 'MuseTalk\nOther\n' > "$root/installed_tools.txt"
+echo source > "$root/tools/musetalk/ready.json"
+echo head > "$root/tools/musetalk/runtime/.git/HEAD"
+native_tool_sync_status MuseTalk "$root"
+! grep -Fxq MuseTalk "$root/installed_tools.txt"
+mkdir -p "$root/tools/musetalk/python-runtime/.venv/bin"
+echo python > "$root/tools/musetalk/python-runtime/.venv/bin/python"
+echo dependencies > "$root/tools/musetalk/runtime-ready.json"
+native_tool_sync_status MuseTalk "$root"
+grep -Fxq MuseTalk "$root/installed_tools.txt"
+rm "$root/tools/musetalk/runtime-ready.json"
+native_tool_sync_status MuseTalk "$root"
+! grep -Fxq MuseTalk "$root/installed_tools.txt"
+grep -Fxq Other "$root/installed_tools.txt"
+''')
+        self.assertEqual(result.returncode, 0, result.stderr)
+
     def deps(self, body):
         return self.shell('''
 source scripts/tools/helpers/deepfilternet_common.sh

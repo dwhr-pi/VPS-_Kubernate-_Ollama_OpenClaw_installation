@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: llmops
+  labels:
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/warn: restricted
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: llmops-budget
+spec:
+  hard:
+    requests.cpu: '8'
+    requests.memory: 24Gi
+    limits.cpu: '16'
+    limits.memory: 48Gi
+    requests.storage: 100Gi
+    persistentvolumeclaims: '2'
+    pods: '8'
+---
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: container-defaults
+spec:
+  limits:
+    - type: Container
+      defaultRequest:
+        cpu: 100m
+        memory: 128Mi
+        ephemeral-storage: 256Mi
+      default:
+        cpu: '1'
+        memory: 1Gi
+        ephemeral-storage: 2Gi

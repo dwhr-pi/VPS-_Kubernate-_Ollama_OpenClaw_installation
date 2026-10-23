@@ -16,7 +16,7 @@ native_tool_marker() {
         CogVideoX) marker=cogvideox/ready.json ;;
         LTX_Video) marker=ltx_video/ready.json ;;
         Video2Dataset) marker=video2dataset/ready.json ;;
-        MuseTalk) marker=musetalk/ready.json ;;
+        MuseTalk) marker=musetalk/runtime-ready.json ;;
         LivePortrait) marker=liveportrait/ready.json ;;
         SadTalker) marker=sadtalker/ready.json ;;
         RVC) marker=rvc/ready.json ;;
@@ -109,7 +109,9 @@ native_tool_sync_selected() {
                 CogVideoX) [[ -f "$root/tools/cogvideox/runtime/.git/HEAD" && ! -L "$root/tools/cogvideox/runtime" ]] || unset 'present[$tool]' ;;
                 LTX_Video) [[ -f "$root/tools/ltx_video/runtime/.git/HEAD" && ! -L "$root/tools/ltx_video/runtime" ]] || unset 'present[$tool]' ;;
                 Video2Dataset) [[ -f "$root/tools/video2dataset/runtime/.git/HEAD" && ! -L "$root/tools/video2dataset/runtime" ]] || unset 'present[$tool]' ;;
-                MuseTalk) [[ -f "$root/tools/musetalk/runtime/.git/HEAD" && ! -L "$root/tools/musetalk/runtime" ]] || unset 'present[$tool]' ;;
+                MuseTalk)
+                    [[ -f "$root/tools/musetalk/runtime/.git/HEAD" && ! -L "$root/tools/musetalk/runtime" ]] || unset 'present[$tool]'
+                    [[ -f "$root/tools/musetalk/python-runtime/.venv/bin/python" && ! -L "$root/tools/musetalk/python-runtime" ]] || unset 'present[$tool]' ;;
                 LivePortrait) [[ -f "$root/tools/liveportrait/runtime/.git/HEAD" && ! -L "$root/tools/liveportrait/runtime" ]] || unset 'present[$tool]' ;;
                 SadTalker) [[ -f "$root/tools/sadtalker/runtime/.git/HEAD" && ! -L "$root/tools/sadtalker/runtime" ]] || unset 'present[$tool]' ;;
                 RVC) [[ -f "$root/tools/rvc/runtime/.git/HEAD" && ! -L "$root/tools/rvc/runtime" ]] || unset 'present[$tool]' ;;

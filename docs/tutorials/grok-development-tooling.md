@@ -1,5 +1,9 @@
 # Grok-Interview: Werkzeugquellen und nachweisbare lokale Faehigkeiten
 
+Ergaenzung vom 23.10.2026: [Grok-Repository-Review](grok-repo-review-2026-10-23.md)
+mit priorisierten Issues, vorhanden/geplant-Abgleich, Top-20-Lifecycle-Inventar
+und sicherem 60-Minuten-Einstieg. Die folgenden Interviewquellen bleiben erhalten.
+
 Stand: **22.10.2026**. Grundlage ist das vom Nutzer bereitgestellte Grok-Interview.
 Dieser Leitfaden ergaenzt die getrennten Bereiche fuer [Meta](meta-development-tooling.md),
 [Manus](manus-interview-2026-10-22.md) und [Gemini](gemini-development-tooling.md).

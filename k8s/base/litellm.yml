@@ -1,0 +1,92 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: litellm-config
+data:
+  config.yaml: |
+    model_list:
+      - model_name: local-default
+        litellm_params:
+          model: os.environ/LITELLM_OLLAMA_MODEL
+          api_base: os.environ/OLLAMA_API_BASE
+    general_settings:
+      master_key: os.environ/LITELLM_MASTER_KEY
+    litellm_settings:
+      callbacks: [prometheus]
+      set_verbose: false
+    router_settings:
+      num_retries: 0
+      timeout: 120
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: litellm
+spec:
+  selector:
+    app: litellm
+  ports:
+    - {name: http, port: 4000, targetPort: http}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: litellm
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: litellm
+  template:
+    metadata:
+      labels:
+        app: litellm
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+        fsGroup: 10001
+        seccompProfile: {type: RuntimeDefault}
+      containers:
+        - name: litellm
+          image: litellm-runtime
+          args: [--config, /etc/litellm/config.yaml, --port, '4000', --num_workers, '1']
+          ports:
+            - {name: http, containerPort: 4000}
+          env:
+            - {name: HOME, value: /tmp}
+            - {name: OLLAMA_API_BASE, value: 'http://ollama:11434'}
+            # This model must already be present; deployment never downloads models.
+            - {name: LITELLM_OLLAMA_MODEL, value: 'ollama/REPLACE_WITH_INSTALLED_MODEL'}
+            - name: LITELLM_MASTER_KEY
+              valueFrom:
+                secretKeyRef: {name: litellm-runtime, key: master-key}
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {cpu: 250m, memory: 512Mi, ephemeral-storage: 256Mi}
+            limits: {cpu: '2', memory: 2Gi, ephemeral-storage: 1Gi}
+          startupProbe:
+            httpGet: {path: /health/liveliness, port: http}
+            failureThreshold: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet: {path: /health/readiness, port: http}
+            periodSeconds: 10
+          livenessProbe:
+            httpGet: {path: /health/liveliness, port: http}
+            periodSeconds: 30
+          volumeMounts:
+            - {name: config, mountPath: /etc/litellm, readOnly: true}
+            - {name: tmp, mountPath: /tmp}
+      volumes:
+        - name: config
+          configMap: {name: litellm-config}
+        - name: tmp
+          emptyDir: {sizeLimit: 512Mi}

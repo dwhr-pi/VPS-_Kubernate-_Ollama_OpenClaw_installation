@@ -1,0 +1,98 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ollama-headless
+spec:
+  clusterIP: None
+  selector:
+    app: ollama
+  ports:
+    - name: http
+      port: 11434
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ollama
+spec:
+  selector:
+    app: ollama
+  ports:
+    - name: http
+      port: 11434
+      targetPort: http
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: ollama
+spec:
+  serviceName: ollama-headless
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ollama
+  template:
+    metadata:
+      labels:
+        app: ollama
+    spec:
+      automountServiceAccountToken: false
+      terminationGracePeriodSeconds: 120
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+        fsGroup: 10001
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: ollama
+          image: ollama-runtime
+          args: [serve]
+          ports:
+            - name: http
+              containerPort: 11434
+          env:
+            - {name: HOME, value: /data}
+            - {name: OLLAMA_MODELS, value: /data/models}
+            - {name: OLLAMA_HOST, value: '0.0.0.0:11434'}
+            - {name: OLLAMA_CONTEXT_LENGTH, value: '4096'}
+            - {name: OLLAMA_NUM_PARALLEL, value: '1'}
+            - {name: OLLAMA_MAX_LOADED_MODELS, value: '1'}
+            - {name: OLLAMA_MAX_QUEUE, value: '16'}
+            - {name: OLLAMA_KEEP_ALIVE, value: 5m}
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: [ALL]
+          resources:
+            requests: {cpu: '1', memory: 2Gi, ephemeral-storage: 256Mi}
+            limits: {cpu: '4', memory: 8Gi, ephemeral-storage: 2Gi}
+          startupProbe:
+            httpGet: {path: /api/version, port: http}
+            periodSeconds: 10
+            failureThreshold: 60
+          readinessProbe:
+            httpGet: {path: /api/version, port: http}
+            periodSeconds: 10
+          livenessProbe:
+            httpGet: {path: /api/version, port: http}
+            periodSeconds: 30
+            failureThreshold: 5
+          volumeMounts:
+            - {name: models, mountPath: /data}
+            - {name: tmp, mountPath: /tmp}
+      volumes:
+        - name: tmp
+          emptyDir: {sizeLimit: 1Gi}
+  volumeClaimTemplates:
+    - metadata:
+        name: models
+      spec:
+        accessModes: [ReadWriteOnce]
+        resources:
+          requests:
+            storage: 50Gi

@@ -1,0 +1,32 @@
+# Install separately into namespace traefik; do not duplicate K3s's bundled controller.
+deployment:
+  replicas: 2
+ingressClass:
+  enabled: true
+  isDefaultClass: false
+providers:
+  kubernetesCRD:
+    enabled: true
+    allowCrossNamespace: false
+  kubernetesIngress:
+    enabled: true
+api:
+  dashboard: false
+ingressRoute:
+  dashboard:
+    enabled: false
+ports:
+  # HTTP is reserved for cert-manager challenges; the API ingress uses websecure.
+  websecure:
+    tls:
+      enabled: true
+service:
+  spec:
+    externalTrafficPolicy: Local
+resources:
+  requests: {cpu: 100m, memory: 128Mi}
+  limits: {cpu: '1', memory: 512Mi}
+securityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  capabilities: {drop: [ALL], add: [NET_BIND_SERVICE]}

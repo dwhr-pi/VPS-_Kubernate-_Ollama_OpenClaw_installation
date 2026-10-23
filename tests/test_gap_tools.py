@@ -115,8 +115,8 @@ class GapToolTests(unittest.TestCase):
             base, runtime, marker = tool.paths("musetalk")
             self.spec = tool.SPECS["musetalk"]
             with patch.object(tool, "git", side_effect=self.fake_git), patch.object(tool, "reserve"), redirect_stdout(io.StringIO()):
-                self.assertEqual(tool.main(["musetalk", "install"]), 0)
-                self.assertEqual(tool.main(["musetalk", "uninstall"]), 0)
+                self.assertEqual(tool.main(["musetalk", "install", "--source-only"]), 0)
+                self.assertEqual(tool.main(["musetalk", "uninstall", "--source-only"]), 0)
             self.assertFalse(marker.exists())
             self.assertFalse(runtime.exists())
             self.assertEqual(len(list((Path(temporary) / "install_logs").glob("*.log"))), 2)
@@ -124,7 +124,7 @@ class GapToolTests(unittest.TestCase):
     def test_current_failure_log_contains_disk_error(self):
         with tempfile.TemporaryDirectory() as temporary, patch.dict(os.environ, {"OPENCLAW_USER_DATA_DIR": temporary}), patch.object(tool, "reserve", side_effect=ValueError("Speicherplatzmangel fixture")), redirect_stdout(io.StringIO()):
             with self.assertRaisesRegex(ValueError, "Speicherplatzmangel"):
-                tool.main(["musetalk", "install"])
+                tool.main(["musetalk", "install", "--source-only"])
             logs = list((Path(temporary) / "install_logs").glob("*.log"))
             self.assertEqual(len(logs), 1)
             self.assertIn("Speicherplatzmangel fixture", logs[0].read_text())
@@ -231,7 +231,8 @@ class GapToolTests(unittest.TestCase):
             self.assertEqual(names.count(spec["name"]), 1, spec["name"])
             entry = next(item for item in registry if item["name"] == spec["name"])
             self.assertEqual(entry["source_commit"], spec["pin"])
-            self.assertEqual(entry["check_value"], "~/.openclaw_ultimate_user_data/tools/" + key + "/ready.json")
+            marker = "runtime-ready.json" if key == "musetalk" else "ready.json"
+            self.assertEqual(entry["check_value"], "~/.openclaw_ultimate_user_data/tools/" + key + "/" + marker)
             self.assertIn('TOOL_SCRIPT_NAMES["' + spec["name"] + '"]="' + key + '"', setup)
             for action in ("install", "update", "uninstall", "status", "check", "doctor"):
                 wrapper = (ROOT / "scripts/tools" / (key + "_" + action + ".sh")).read_text()

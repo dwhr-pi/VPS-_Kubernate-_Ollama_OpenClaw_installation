@@ -19,30 +19,105 @@ YELLOW="\033[1;33m"
 NC="\033[0m"
 
 SETUP_LANGUAGE="de"
+GIT_AUTH_DIR=""
+
+git_auth_cleanup() {
+    local rc=$?
+    if [[ -n "$GIT_AUTH_DIR" && -d "$GIT_AUTH_DIR" && ! -L "$GIT_AUTH_DIR" ]]; then
+        # Delete only files created by this invocation, never recursively.
+        rm -f -- "$GIT_AUTH_DIR/token" "$GIT_AUTH_DIR/askpass"
+        rmdir -- "$GIT_AUTH_DIR" 2>/dev/null || true
+    fi
+    GIT_AUTH_DIR=""
+    unset GITHUB_PAT
+    return "$rc"
+}
+
+git_auth_init() {
+    local old_umask restore_xtrace=0 auth_root clone_root
+    case "$-" in *x*) restore_xtrace=1; set +x ;; esac
+    export -n GITHUB_PAT
+    [[ -n "${GITHUB_PAT:-}" && "$GITHUB_PAT" != *[[:space:]]* ]] || return 1
+    old_umask=$(umask)
+    umask 077
+    GIT_AUTH_DIR=$(mktemp -d "${TMPDIR:-/tmp}/openclaw-git-auth.XXXXXXXX") || { umask "$old_umask"; return 1; }
+    auth_root=$(realpath -e -- "$GIT_AUTH_DIR") || { umask "$old_umask"; return 1; }
+    clone_root=$(realpath -m -- "$INSTALL_DIR") || { umask "$old_umask"; return 1; }
+    if [[ "$auth_root/" == "$clone_root/"* ]]; then
+        echo 'PAT-Tempverzeichnis darf nicht im zu sichernden Checkout liegen.' >&2
+        umask "$old_umask"
+        return 1
+    fi
+    printf '%s' "$GITHUB_PAT" > "$GIT_AUTH_DIR/token" || { umask "$old_umask"; return 1; }
+    cat > "$GIT_AUTH_DIR/askpass" <<'ASKPASS' || { umask "$old_umask"; return 1; }
+#!/usr/bin/env bash
+case "${1:-}" in
+    "Username for 'https://github.com':"*) printf '%s\n' x-access-token ;;
+    "Password for 'https://x-access-token@github.com':"*) cat -- "$(dirname "$0")/token" ;;
+    *) exit 1 ;;
+esac
+ASKPASS
+    chmod 700 "$GIT_AUTH_DIR/askpass" || { umask "$old_umask"; return 1; }
+    umask "$old_umask"
+    unset GITHUB_PAT
+    if ((restore_xtrace)); then set -x; fi
+}
+
+git_auth_run() (
+    set +x
+    local name
+    # Disable inherited HTTP tracing; credentials must not enter diagnostic logs.
+    for name in ${!GIT_TRACE@}; do unset "$name"; done
+    unset GIT_CURL_VERBOSE GIT_SSL_NO_VERIFY
+    if [[ -n "$GIT_AUTH_DIR" ]]; then
+        GIT_ASKPASS="$GIT_AUTH_DIR/askpass" GIT_TERMINAL_PROMPT=0 \
+            git -c credential.helper= -c credential.username=x-access-token \
+            -c credential.useHttpPath=false -c http.followRedirects=false \
+            -c http.sslVerify=true "$@"
+    else
+        git "$@"
+    fi
+)
+
+git_require_clean_origin() {
+    command -v python3 >/dev/null 2>&1 || { echo 'Python 3 fuer sichere Update-Pruefung erforderlich.' >&2; return 1; }
+    python3 -I - "$1" <<'PY'
+import subprocess, sys
+from urllib.parse import urlsplit
+result = subprocess.run(['git', '-C', sys.argv[1], 'config', '--get', 'remote.origin.url'], capture_output=True)
+if result.returncode:
+    raise SystemExit('Origin fehlt; kein automatischer Updateversuch.')
+try:
+    value = result.stdout.decode().strip()
+    if '://' in value and (urlsplit(value).username or urlsplit(value).password):
+        raise SystemExit('Origin enthaelt Zugangsdaten. Zuerst URL ohne Token setzen und Token pruefen; kein Fetch ausgefuehrt. Siehe docs/P0_SAFETY_CHANGES.md.')
+except ValueError:
+    raise SystemExit('Ungueltige Origin-URL; kein Fetch ausgefuehrt.') from None
+PY
+}
 
 create_repo_update_backup() {
     local repo_dir="$1"
-    local backup_dir="$USER_WORKSPACE_DIR/repo_update_backups"
-    local timestamp
-
-    timestamp="$(date +%Y%m%d_%H%M%S)"
-    mkdir -p "$backup_dir"
-
-    git -C "$repo_dir" status --porcelain > "$backup_dir/status_${timestamp}.txt" 2>/dev/null || true
-    git -C "$repo_dir" diff > "$backup_dir/unstaged_${timestamp}.patch" 2>/dev/null || true
-    git -C "$repo_dir" diff --cached > "$backup_dir/staged_${timestamp}.patch" 2>/dev/null || true
-    git -C "$repo_dir" ls-files --others --exclude-standard > "$backup_dir/untracked_${timestamp}.txt" 2>/dev/null || true
-
-    LAST_REPO_BACKUP_DIR="$backup_dir"
-    LAST_REPO_BACKUP_TIMESTAMP="$timestamp"
+    local helper="$repo_dir/scripts/lib/repo_safety.py"
+    [[ -f "$helper" && ! -L "$helper" ]] || { echo 'Sicherer Backup-Helper fehlt. Kein ungesicherter Update-Fallback.' >&2; return 1; }
+    LAST_REPO_BACKUP_DIR=$(python3 -I -B "$helper" backup --repo "$repo_dir" \
+        --backup-root "$USER_WORKSPACE_DIR/repo_update_backups" --apply) || return 1
 }
 
 perform_repo_hard_sync() {
     local repo_dir="$1"
 
-    create_repo_update_backup "$repo_dir"
-    git -C "$repo_dir" reset --hard origin/main
-    git -C "$repo_dir" clean -fd
+    local helper="$repo_dir/scripts/lib/repo_safety.py"
+    [[ -f "$helper" && ! -L "$helper" ]] || { echo 'Sicherer Update-Helper fehlt. Kein Reset/Clean-Fallback.' >&2; return 1; }
+    LAST_REPO_BACKUP_DIR="$USER_WORKSPACE_DIR/repo_update_backups"
+    if [[ -n "$GIT_AUTH_DIR" ]]; then
+        GIT_ASKPASS="$GIT_AUTH_DIR/askpass" GIT_TERMINAL_PROMPT=0 python3 -I -B "$helper" \
+            sync --repo "$repo_dir" --backup-root "$LAST_REPO_BACKUP_DIR" \
+            --apply --confirm-discard-local || return 1
+    else
+        python3 -I -B "$helper" sync --repo "$repo_dir" --backup-root "$LAST_REPO_BACKUP_DIR" \
+            --apply --confirm-discard-local || return 1
+    fi
 }
 
 persist_setup_language() {
@@ -322,6 +397,22 @@ select_install_language() {
     apply_install_language
 }
 
+# Source-only mode is for isolated offline tests, not the interactive bootstrap.
+if [[ -n "${BASH_SOURCE[0]:-}" && "${BASH_SOURCE[0]}" != "$0" ]]; then
+    return 0
+fi
+if [[ "${1:-}" == --dry-run && $# == 1 ]]; then
+    echo 'Dry-run: GitHub-Quellen, temporaeres Askpass bei Privat-Repo, verifizierte Sicherung vor Update. Kein Download/Install/Checkout.'
+    exit 0
+fi
+if [[ $# != 0 ]]; then
+    echo 'Nutzung: bash install.sh [--dry-run]' >&2
+    exit 2
+fi
+trap git_auth_cleanup EXIT
+trap 'exit 130' INT
+trap 'exit 143' TERM
+
 if [ ! -e "$TTY_DEVICE" ]; then
     apply_install_language
     echo -e "${RED}${TXT_NO_TTY}${NC}"
@@ -347,35 +438,28 @@ fi
 read -r -p "$TXT_PRIVATE_REPO_QUESTION" IS_PRIVATE_REPO < "$TTY_DEVICE"
 IS_PRIVATE_REPO=${IS_PRIVATE_REPO:-N}
 
-GIT_AUTH_URL="$REPO_URL"
 if [[ "$IS_PRIVATE_REPO" =~ ^([jJyYsSoO])$ ]]; then
     echo -e "${YELLOW}${TXT_PRIVATE_REPO_INFO}${NC}"
     echo -e "${YELLOW}${TXT_PRIVATE_REPO_GUIDE}${NC}"
+    # Disable shell tracing before reading secrets; never inherit export state.
+    case "$-" in *x*) set +x ;; esac
+    unset GITHUB_PAT
     read -r -s -p "$TXT_PAT_PROMPT" GITHUB_PAT < "$TTY_DEVICE"
     echo
     if [ -z "$GITHUB_PAT" ]; then
         echo -e "${RED}${TXT_PAT_MISSING}${NC}"
         exit 1
     fi
-    # URL für Authentifizierung anpassen
-    REPO_HOST=$(echo $REPO_URL | sed -e 's/^https:\/\///' -e 's/\.git$//')
-    GIT_AUTH_URL="https://${GITHUB_PAT}@${REPO_HOST}.git"
+    git_auth_init
 fi
 
 # Repository klonen
 if [ -d "$INSTALL_DIR" ]; then
     echo -e "${YELLOW}${TXT_EXISTING_DIR_UPDATE}${NC}"
     cd "$INSTALL_DIR"
-    git fetch origin --prune
+    git_require_clean_origin "$PWD"
+    git_auth_run fetch origin
     if git show-ref --verify --quiet refs/remotes/origin/main; then
-        if git symbolic-ref --quiet HEAD >/dev/null 2>&1; then
-            CURRENT_BRANCH="$(git rev-parse --abbrev-ref HEAD)"
-            if [ "$CURRENT_BRANCH" != "main" ]; then
-                git checkout main 2>/dev/null || git checkout -b main --track origin/main
-            fi
-        else
-            git checkout -B main origin/main
-        fi
         REPO_STATUS="$(git status --porcelain)"
         if [ -n "$REPO_STATUS" ]; then
             echo -e "${YELLOW}${TXT_LOCAL_CHANGES_DETECTED}${NC}"
@@ -405,7 +489,8 @@ if [ -d "$INSTALL_DIR" ]; then
             else
                 echo -e "${YELLOW}Vor Update: lokaler Stand wich von origin/main ab (lokal ${LOCAL_SHA_BEFORE}, remote ${REMOTE_SHA_BEFORE}; ahead ${AHEAD_BEFORE}, behind ${BEHIND_BEFORE}).${NC}"
             fi
-            git pull --ff-only origin main
+            create_repo_update_backup "$PWD"
+            git_auth_run pull --ff-only origin main
             echo -e "${GREEN}Update ausgefuehrt.${NC}"
             LOCAL_SHA_AFTER="$(git rev-parse --short HEAD)"
             REMOTE_SHA_AFTER="$(git rev-parse --short origin/main)"
@@ -423,11 +508,12 @@ if [ -d "$INSTALL_DIR" ]; then
     fi
 else
     echo -e "${BLUE}${TXT_CLONE_REPO}${NC}"
-    git clone "$GIT_AUTH_URL" "$INSTALL_DIR"
+    git_auth_run clone "$REPO_URL" "$INSTALL_DIR"
     cd "$INSTALL_DIR"
 fi
 
 # Haupt-Setup-Skript ausführen
+git_auth_cleanup
 find . -type f -name "*.sh" -exec chmod +x {} \; 2>/dev/null || true
 bash ./setup_ultimate.sh < "$TTY_DEVICE" > "$TTY_DEVICE" 2>&1
 

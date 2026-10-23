@@ -1,0 +1,70 @@
+name: Install scripts and production baseline
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: install-tests-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  offline-tests:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Get pinned Bats from its official GitHub repository
+        shell: bash
+        run: |
+          set -euo pipefail
+          git init "$RUNNER_TEMP/bats"
+          git -C "$RUNNER_TEMP/bats" remote add origin https://github.com/bats-core/bats-core.git
+          git -C "$RUNNER_TEMP/bats" fetch --depth=1 origin b640ec3cf2c7c9cfc9e6351479261186f76eeec8
+          git -C "$RUNNER_TEMP/bats" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/bats" rev-parse HEAD)" = b640ec3cf2c7c9cfc9e6351479261186f76eeec8
+      - name: Parse and exercise the real scripts in isolated fixtures
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash -n scripts/backup_stateful_services.sh
+          "$RUNNER_TEMP/bats/bin/bats" tests/bats/install_scripts.bats
+          python3 -B -m unittest discover -s tests -p test_production_baseline.py -v
+      - name: Render Kubernetes objects without accessing a cluster
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --location --proto '=https' --proto-redir '=https' \
+            https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv5.8.3/kustomize_v5.8.3_linux_amd64.tar.gz \
+            --output "$RUNNER_TEMP/kustomize.tar.gz"
+          printf '%s  %s\n' cb9e31198d3f63b44848bd0afc4c8efc56e6cfef9c93a4a39a211940e6decd61 \
+            "$RUNNER_TEMP/kustomize.tar.gz" | sha256sum --check --strict -
+          tar -xzf "$RUNNER_TEMP/kustomize.tar.gz" -C "$RUNNER_TEMP" kustomize
+          "$RUNNER_TEMP/kustomize" build k8s/base > "$RUNNER_TEMP/llmops-base.yml"
+          "$RUNNER_TEMP/kustomize" build k8s/overlays/production > "$RUNNER_TEMP/llmops-production.yml"
+  secret-scan:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Inspect repository files for secrets
+        uses: aquasecurity/trivy-action@8f28faec26515256b6d22074d1d2a8986f4cbd87
+        with:
+          version: v0.76.1
+          scan-type: fs
+          scan-ref: .
+          scanners: secret
+          # Report locations and rule IDs only, never matching secret content.
+          format: template
+          template: '{{ range . }}{{ $target := .Target }}{{ range .Secrets }}{{ printf "%s: %s\n" $target .RuleID }}{{ end }}{{ end }}'
+          exit-code: '1'
+          hide-progress: 'true'
+          cache: 'false'
