@@ -13,6 +13,8 @@ import tempfile
 
 import gap_tools as common
 import native_github_adapters as adapters
+import native_build_deps as build_deps
+import native_go
 
 ROOT = Path(__file__).resolve().parents[3]
 MANIFEST = ROOT / "config/docker_to_github.json"
@@ -106,22 +108,26 @@ def requirements(spec):
     }[kind]
 
 
-def preflight(outer, spec):
+def preflight(outer, spec, install_build_deps=False):
     if platform.system() != "Linux":
         raise ValueError("Native Builds derzeit fuer Ubuntu/WSL Linux; kein Windows-Crossbuild.")
     common.reserve(outer, {"reserve_mb": spec["recipe"]["disk_mb"]})
     acknowledgement = spec["recipe"].get("eol_ack")
     if acknowledgement and os.environ.get(acknowledgement) != "1":
         raise ValueError("EOL-Archivbuild nicht freigegeben. " + acknowledgement + "=1 nur nach Lesen der Migrationsdokumentation setzen.")
-    for name in ["git"] + requirements(spec):
-        common.executable(name)
-    adapters.preflight(spec)
     info = Path("/proc/meminfo")
     if info.is_file():
         memory = dict(line.split(":", 1) for line in info.read_text().splitlines())
         minimum = spec["recipe"].get("ram_mb", 4096 if spec["recipe"]["disk_mb"] >= 16384 else 2048)
         if int(memory["MemAvailable"].split()[0]) < minimum * 1024:
             raise ValueError("Zu wenig verfuegbarer RAM: mindestens " + str(minimum) + " MiB fuer diesen Build.")
+    build_deps.prepare(spec, approved=install_build_deps)
+    for name in ["git"] + requirements(spec):
+        if name == "go" and spec["recipe"].get("go_min"):
+            continue  # This versioned prerequisite is checked separately below.
+        common.executable(name)
+    native_go.prepare(outer, spec, approved=install_build_deps)
+    adapters.preflight(spec)
     recipe = spec["recipe"]
     if recipe.get("python_min"):
         python = os.environ.get("NATIVE_SOURCE_PYTHON_BIN", sys.executable)
@@ -163,6 +169,7 @@ def build(prefix, spec):
     kind = recipe["kind"]
     checkout = prefix / "source"
     env = environment(prefix)
+    native_go.activate(prefix.parent, spec, env)
     substitutions = dict(prefix=str(prefix), source=str(checkout), cache=str(prefix / "_build"))
     env.update({name: value.format_map(substitutions) for name, value in recipe.get("build_env", {}).items()})
     binary = prefix / "bin" / recipe.get("binary", "unused")
@@ -332,14 +339,14 @@ def validate(prefix, marker, spec, full=False):
     return record
 
 
-def install(outer, prefix, marker, spec):
+def install(outer, prefix, marker, spec, install_build_deps=False):
     if marker.exists():
         validate(prefix, marker, spec)
         print("Nativer gepinnter Build bereits vorhanden; kein Upgrade/Download/Start.")
         return
     if prefix.exists():
         raise ValueError("Vorhandener nativer Ordner ohne Buildnachweis; nichts ueberschreiben.")
-    preflight(outer, spec)
+    preflight(outer, spec, install_build_deps=install_build_deps)
     prefix.mkdir(mode=0o700)
     try:
         recipe = spec["recipe"]
@@ -390,6 +397,7 @@ def main(argv=None):
     parser.add_argument("tool", choices=TOOLS)
     parser.add_argument("action", nargs="?", default="install", choices=("install", "update", "repair", "uninstall", "status", "check", "doctor", "plan"))
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument("--install-build-deps", action="store_true", help="Explicit consent for approved build dependencies/private Go; no application package")
     alias = parser.add_mutually_exclusive_group()
     for action in ("repair", "uninstall", "status", "check"):
         alias.add_argument("--" + action, dest="override", action="store_const", const=action)
@@ -398,6 +406,8 @@ def main(argv=None):
         if args.action not in ("install", args.override):
             parser.error("Widerspruechliche Aktionen.")
         args.action = args.override
+    if args.install_build_deps and args.action not in ("install", "update", "repair", "plan"):
+        parser.error("--install-build-deps ist nur fuer Install/Update/Repair oder deren Plan erlaubt.")
     spec = TOOLS[args.tool]
     outer, prefix, marker = paths(args.tool)
     if args.dry_run or args.action == "plan":
@@ -427,7 +437,7 @@ def main(argv=None):
                 shutil.rmtree(common.checked(prefix))
             print("Nur eigener unveraenderter nativer Build entfernt; Legacy-Container/Volumendaten bleiben.")
         else:
-            install(outer, prefix, marker, spec)
+            install(outer, prefix, marker, spec, install_build_deps=args.install_build_deps)
     return 0
 
 

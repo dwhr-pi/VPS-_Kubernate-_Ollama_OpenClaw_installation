@@ -30,6 +30,9 @@ TOOL_KEYS+=("Personnel_Documents_AI")
 TOOL_KEYS+=("Embedded_Debug_HIL")
 TOOL_KEYS+=("Claude_Code" "Gemini_CLI")
 
+source "$(cd "${BASH_SOURCE[0]%/*}" && pwd)/native_github_menu.sh"
+register_native_github_tool_keys
+
 append_unique_line() {
     local file_path="$1"
     local value="$2"

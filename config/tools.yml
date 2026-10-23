@@ -2455,7 +2455,7 @@
       "id": "mosquitto",
       "name": "Mosquitto",
       "category": "automation",
-      "doc": "docs/DOCKER_TO_GITHUB.md",
+      "doc": "docs/tools/mosquitto.md",
       "install_script": "scripts/tools/mosquitto_install.sh",
       "uninstall_script": "scripts/tools/mosquitto_uninstall.sh",
       "ports": [
@@ -2470,7 +2470,7 @@
       "install_mode": "github-native-build",
       "status": "experimental",
       "auto_install": false,
-      "description": "Gepinnter GitHub-Quellbuild/Paket ohne Image-Installation; Betriebsabnahme separat. ",
+      "description": "GitHub-CMake-Build; unter Ubuntu 24.04 fehlende Buildwerkzeuge/Bibliotheken nur nach Zustimmung oder --install-build-deps. Kein Brokerstart.",
       "security_note": "Keine Dienststarts, Datenmigration oder Legacy-Loeschung. Private Buildpfade, aktuelle Operationslogs und Rollback; Upstream-Lizenz und --dry-run pruefen.",
       "source_commit": "83f2620f0b955b89aadce32cceb96a8e81950f5e",
       "updated": "2026-10-23"
@@ -3537,7 +3537,7 @@
       "id": "node_exporter",
       "name": "Node Exporter",
       "category": "monitoring",
-      "doc": "docs/DOCKER_TO_GITHUB.md",
+      "doc": "docs/tools/node-exporter.md",
       "install_script": "scripts/tools/node_exporter_install.sh",
       "uninstall_script": "scripts/tools/node_exporter_uninstall.sh",
       "ports": [
@@ -3551,7 +3551,7 @@
       "install_mode": "github-native-build",
       "status": "experimental",
       "auto_install": false,
-      "description": "Gepinnter GitHub-Quellbuild/Paket ohne Image-Installation; Betriebsabnahme separat. ",
+      "description": "GitHub-Source-Build mit Go >=1.26; passende vorhandene oder ausdruecklich freigegebene private Go-Toolchain. Kein Dienststart.",
       "security_note": "Keine Dienststarts, Datenmigration oder Legacy-Loeschung. Private Buildpfade, aktuelle Operationslogs und Rollback; Upstream-Lizenz und --dry-run pruefen.",
       "source_commit": "b9e296a911c8beaf89177362e75cc80bfa89eb7e",
       "source": "https://github.com/prometheus/node_exporter.git",

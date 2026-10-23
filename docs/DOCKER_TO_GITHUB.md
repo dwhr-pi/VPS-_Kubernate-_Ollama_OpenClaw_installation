@@ -72,6 +72,28 @@ Rechercheziele, keine bereits verifizierten Buildvertraege.
 
 ## Installation und Status
 
+### Sichtbarkeit im Tools-Menue
+
+Die Registry allein fuegt keine Zeile zur interaktiven Bash-Auswahlliste hinzu.
+Der Abgleich vom 23.10.2026 fand 17 fehlende Menueschluessel trotz vorhandener
+Installer: Appsmith, ArchiveBox, Argilla, Budibase, Caddy, Changedetection_IO,
+CrowdSec, Directus, Forgejo, Nextcloud, NocoDB, Penpot, Promtail, SearXNG,
+Vikunja, Watchtower und Zigbee2MQTT. Sie werden jetzt vor der Hauptschleife
+ueber eine [gemeinsame Schluesselliste](../scripts/helpers/native_github_menu.sh)
+registriert, ebenso fuer die Status-Normalisierung direkter Skriptaufrufe.
+Bestehende Schluessel werden nicht doppelt angelegt. Die etablierte A-Z-
+Sortierung, angehaengte Sondergruppe und Trennlinie nach Ruflo bleiben erhalten.
+
+Alle 43 urspruenglichen Pfade plus PyAirbyte sind damit im Tools-Menue
+adressierbar. Menueeintrag bedeutet nicht erfolgreiche Installation:
+Rhasspy/Airbyte Core bleiben blockiert, Promtail verlangt die EOL-Freigabe,
+Watchtower braucht im Betrieb weiterhin die Docker-API.
+
+Nach Uebernahme der vollstaendigen aktuellen Setup-Dateien das laufende Setup
+beenden und neu starten, dann Tools aufrufen und zum jeweiligen Namen scrollen.
+Ein bereits laufender Bash-Prozess laedt aktualisierte Listen nicht automatisch.
+Keine Tools werden durch die Menue-Ergaenzung ausgewaehlt oder installiert.
+
 Die bestehende Tool-Auswahl und die einzelnen Shell-Einstiege verwenden
 [`native_github_tools.py`](../scripts/tools/helpers/native_github_tools.py) und
 das [Migrationsmanifest](../config/docker_to_github.json). Bei geplanten Tools
@@ -113,6 +135,13 @@ beziehungsweise uv und passende native Entwicklungsbibliotheken muessen bereits
 vorhanden sein. Versionen ergeben sich aus gepinntem go.mod, Cargo-/Node- und
 Python-Metadaten. Compilerfehler/fehlende Bibliotheken bleiben Fehler im aktuellen
 Log; keine stille apt-, Docker-, globale Paketmanager- oder System-Python-Installation.
+Mosquitto bietet unter Ubuntu 24.04 zusaetzlich einen ausdruecklich freigegebenen
+apt-Schritt fuer Buildwerkzeuge/Bibliotheken an, nicht fuer den Broker selbst:
+[Mosquitto-Build und cmake-Reparatur](tools/mosquitto.md).
+Node Exporter verlangt Go >=1.26. Nach ausdruecklicher Freigabe kann der
+vorhandene private Bootstrap ein pruefsummengesichertes offizielles Go-Archiv
+bereitstellen, ohne System-Go oder globalen PATH-Wechsel:
+[Node Exporter: go fehlt](tools/node-exporter.md).
 Go verwendet `GOTOOLCHAIN=local`, Rust eine vorhandene Toolchain. Ein abweichendes
 vorhandenes Python ist mit `NATIVE_SOURCE_PYTHON_BIN` waehlbar.
 

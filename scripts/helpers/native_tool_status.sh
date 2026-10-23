@@ -5,7 +5,8 @@ NATIVE_TOOL_STATUS_KEYS=(Qwen_Desktop_Build Hermes_Agent_Jarvis Gradio Streamlit
     Sfizz AIDA_X Kiwi_Edit VOID_Model Just_Dub_It Stable_Audio_Open ProPainter Black Mypy SQLFluff Bats_Core Invoke_Build Gopls Delve GolangCI_Lint Kubeconform KubeLinter TFLint Terraform_Docs
     Alexandria_Audiobook Qwen3_TTS Claude_Code Gemini_CLI Find_Skills REA HF_Accelerate DeepSpeed Hyperfine Colibri Anthropic_CLI YouTube_Agent_Skill)
 
-NATIVE_TOOL_STATUS_KEYS+=("PyAirbyte" "Airbyte" "Apache_Tika" "Appsmith" "ArchiveBox" "Argilla" "Budibase" "Caddy" "cAdvisor" "Changedetection_IO" "CrowdSec" "Directus" "Forgejo" "Grafana" "Grafana_Alloy" "Healthchecks" "Home_Assistant" "Langfuse" "LiteLLM" "Loki" "Meilisearch" "Metabase" "MinIO" "Mosquitto" "Neo4j" "Netdata" "Nextcloud" "NocoDB" "Node_Exporter" "Node_Red" "Open_WebUI" "Penpot" "Prometheus" "Promtail" "Qdrant" "Rhasspy" "SearXNG" "Stirling_PDF" "Uptime_Kuma" "Vault" "Vikunja" "Watchtower" "Weaviate" "Zigbee2MQTT")
+source "$(cd "${BASH_SOURCE[0]%/*}" && pwd)/native_github_menu.sh"
+NATIVE_TOOL_STATUS_KEYS+=("${NATIVE_GITHUB_TOOL_KEYS[@]}")
 
 native_tool_marker() {
     local marker

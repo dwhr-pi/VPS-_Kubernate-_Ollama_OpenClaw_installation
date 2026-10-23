@@ -214,7 +214,7 @@ class NativeGithubTests(unittest.TestCase):
                         path.parent.mkdir(parents=True, exist_ok=True)
                         path.write_text("built fixture")
                     return "fixture==1"
-                with patch.object(tool, "run", side_effect=run), patch.object(tool.adapters, "prepare"):
+                with patch.object(tool, "run", side_effect=run), patch.object(tool.adapters, "prepare"), patch.object(tool.native_go, "activate"):
                     # Packaging adapters have separate negative/positive contract tests.
                     artifacts = tool.build(prefix, spec)
                 self.assertTrue(artifacts)

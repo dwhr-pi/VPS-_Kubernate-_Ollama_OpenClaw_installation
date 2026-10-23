@@ -4748,6 +4748,9 @@ TOOL_SCRIPT_NAMES["Weaviate"]="weaviate"
 TOOLS["Zigbee2MQTT"]="GitHub-Source-Build ohne Docker; kein Dienststart. docs/DOCKER_TO_GITHUB.md"
 TOOL_SCRIPT_NAMES["Zigbee2MQTT"]="zigbee2mqtt"
 
+# Ensure native migration tools are selectable, not just described in metadata.
+register_native_github_tool_keys
+
 # Hauptschleife
 while true; do
     if [ "$LANGUAGE_SELECTION_REQUIRED" = "1" ]; then

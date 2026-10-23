@@ -883,7 +883,26 @@
         "probe": [
           "-h"
         ],
-        "disk_mb": 4096
+        "disk_mb": 4096,
+        "tools": [
+          "cmake",
+          "make",
+          "cc",
+          "c++",
+          "pkg-config"
+        ],
+        "apt_build_deps": [
+          "git",
+          "cmake",
+          "build-essential",
+          "pkg-config",
+          "libssl-dev",
+          "libcjson-dev",
+          "libsqlite3-dev",
+          "libedit-dev",
+          "libmicrohttpd-dev"
+        ],
+        "note": "Mosquitto bleibt ein GitHub-CMake-Build. Unter Ubuntu 24.04 gezielte Buildpakete nur nach Bestaetigung oder --install-build-deps; keine apt-Installation des Brokers. Kein Dienststart, Port oder Legacy-Zugriff. Basiswerkzeuge bleiben bei Deinstallation erhalten."
       },
       "blocked_reason": null
     },
@@ -1207,7 +1226,13 @@
         "probe": [
           "--version"
         ],
-        "disk_mb": 4096
+        "disk_mb": 4096,
+        "go_min": [
+          1,
+          26,
+          0
+        ],
+        "note": "Go >=1.26 erforderlich. Passende vorhandene Toolchain bevorzugt; sonst nach Zustimmung privates, SHA256-geprueftes offizielles Go-Archiv. Node Exporter selbst aus GitHub gebaut. Kein systemweiter Go-/PATH-Wechsel und kein Exporter-Start. Private Basis-Toolchain bleibt bei Buildfehler/Deinstallation erhalten."
       },
       "blocked_reason": null
     },
