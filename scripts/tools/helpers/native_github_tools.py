@@ -15,6 +15,8 @@ import gap_tools as common
 import native_github_adapters as adapters
 import native_build_deps as build_deps
 import native_go
+import native_uv
+import native_node
 
 ROOT = Path(__file__).resolve().parents[3]
 MANIFEST = ROOT / "config/docker_to_github.json"
@@ -125,6 +127,10 @@ def preflight(outer, spec, install_build_deps=False):
     for name in ["git"] + requirements(spec):
         if name == "go" and spec["recipe"].get("go_min"):
             continue  # This versioned prerequisite is checked separately below.
+        if name == "uv" and spec["recipe"].get("private_uv"):
+            continue
+        if name in ("node", "pnpm") and spec["recipe"].get("private_node"):
+            continue
         common.executable(name)
     native_go.prepare(outer, spec, approved=install_build_deps)
     adapters.preflight(spec)
@@ -137,6 +143,8 @@ def preflight(outer, spec, install_build_deps=False):
                     " <= sys.version_info[:3] < " + repr(upper) +
                     ", 'Python-Version ausserhalb des gepinnten Buildvertrags'"], Path.cwd(),
                    {name: value for name, value in os.environ.items() if name in ("PATH", "LANG", "LC_ALL")})
+    native_uv.prepare(outer, spec, approved=install_build_deps)
+    native_node.prepare(outer, spec, approved=install_build_deps)
 
 
 def environment(prefix):
@@ -170,6 +178,8 @@ def build(prefix, spec):
     checkout = prefix / "source"
     env = environment(prefix)
     native_go.activate(prefix.parent, spec, env)
+    native_uv.activate(prefix.parent, spec, env)
+    native_node.activate(prefix.parent, spec, env)
     substitutions = dict(prefix=str(prefix), source=str(checkout), cache=str(prefix / "_build"))
     env.update({name: value.format_map(substitutions) for name, value in recipe.get("build_env", {}).items()})
     binary = prefix / "bin" / recipe.get("binary", "unused")
@@ -397,7 +407,7 @@ def main(argv=None):
     parser.add_argument("tool", choices=TOOLS)
     parser.add_argument("action", nargs="?", default="install", choices=("install", "update", "repair", "uninstall", "status", "check", "doctor", "plan"))
     parser.add_argument("--dry-run", action="store_true")
-    parser.add_argument("--install-build-deps", action="store_true", help="Explicit consent for approved build dependencies/private Go; no application package")
+    parser.add_argument("--install-build-deps", action="store_true", help="Explicit consent for approved build dependencies/private toolchains; no application package")
     alias = parser.add_mutually_exclusive_group()
     for action in ("repair", "uninstall", "status", "check"):
         alias.add_argument("--" + action, dest="override", action="store_const", const=action)
@@ -430,7 +440,9 @@ def main(argv=None):
         print("GitHub-native-Umstellung:", args.tool, "Manifest:", MANIFEST)
         print("Alte Container, Volumes, /opt-Installationen und Daten bleiben unberuehrt.")
         if not spec["recipe"]:
-            raise ValueError("Native Umstellung noch OFFEN: " + spec["blocked_reason"] + " Kein Docker-Fallback, kein Erfolgsmarker. Siehe docs/DOCKER_TO_GITHUB.md.")
+            raise ValueError("Native Umstellung noch OFFEN: " + spec["blocked_reason"] +
+                             " Kein Docker-Fallback, kein Erfolgsmarker. Siehe " +
+                             spec.get("blocked_doc", "docs/DOCKER_TO_GITHUB.md") + ".")
         if args.action == "uninstall":
             if prefix.exists():
                 validate(prefix, marker, spec, full=True)

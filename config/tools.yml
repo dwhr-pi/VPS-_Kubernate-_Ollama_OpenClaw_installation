@@ -2493,8 +2493,8 @@
       "install_mode": "github-native-build",
       "status": "experimental",
       "auto_install": false,
-      "doc": "docs/DOCKER_TO_GITHUB.md",
-      "description": "Gepinnter GitHub-Quellbuild/Paket ohne Image-Installation; Betriebsabnahme separat. ",
+      "doc": "docs/tools/zigbee2mqtt.md",
+      "description": "GitHub-Quellbuild; private Node-/pnpm-Basis nach Zustimmung. Kein MQTT-/USB-/Funkzugriff und kein Dienststart bei Installation.",
       "security_note": "Keine Dienststarts, Datenmigration oder Legacy-Loeschung. Private Buildpfade, aktuelle Operationslogs und Rollback; Upstream-Lizenz und --dry-run pruefen.",
       "source_commit": "344b6e03b43644c97154a72ca9eae17193c553a2",
       "updated": "2026-10-23"
@@ -3504,8 +3504,8 @@
       "install_mode": "github-native-build",
       "status": "experimental",
       "auto_install": false,
-      "doc": "docs/DOCKER_TO_GITHUB.md",
-      "description": "Gepinnter GitHub-Quellbuild/Paket ohne Image-Installation; Betriebsabnahme separat. ",
+      "doc": "docs/tools/searxng.md",
+      "description": "GitHub-Quellpaket; fehlendes uv nach Zustimmung privat aus geprueftem GitHub-Release. Kein Suchdienststart; Betriebsabnahme separat.",
       "security_note": "Keine Dienststarts, Datenmigration oder Legacy-Loeschung. Private Buildpfade, aktuelle Operationslogs und Rollback; Upstream-Lizenz und --dry-run pruefen.",
       "source_commit": "81371861f67226091d1c4df2e3908a11d3b54eb9",
       "source": "https://github.com/searxng/searxng.git",
@@ -4194,8 +4194,8 @@
       "doctor_script": "scripts/tools/caddy_doctor.sh",
       "install_mode": "github-native-build",
       "auto_install": false,
-      "doc": "docs/DOCKER_TO_GITHUB.md",
-      "description": "Gepinnter GitHub-Quellbuild/Paket ohne Image-Installation; Betriebsabnahme separat. ",
+      "doc": "docs/tools/caddy.md",
+      "description": "GitHub-Source-Build mit Go >=1.26; passende vorhandene oder ausdruecklich freigegebene private Go-Toolchain. Kein Webserverstart oder Zertifikatsabruf.",
       "security_note": "Keine Dienststarts, Datenmigration oder Legacy-Loeschung. Private Buildpfade, aktuelle Operationslogs und Rollback; Upstream-Lizenz und --dry-run pruefen.",
       "source_commit": "2b47a1849f86389825623d6d36ee528da8b9e5fb",
       "updated": "2026-10-23"
@@ -6762,10 +6762,10 @@
       "doctor_script": "scripts/tools/rhasspy_doctor.sh",
       "check_type": "path",
       "check_value": "~/.openclaw_ultimate_user_data/tools/rhasspy/native-github/build-ready.json",
-      "doc": "docs/DOCKER_TO_GITHUB.md",
-      "description": "Native Migration noch offen: Native Gesamtpaketierung, Laufzeitabhaengigkeiten und Datenmigration noch nicht verifiziert; kein Docker-Fallback.",
+      "doc": "docs/tools/rhasspy.md",
+      "description": "NICHT INSTALLIERBAR: Rhasspy 2 ist seit 06.10.2025 archiviert. Der offizielle venv-/WSL-Weg wurde fuer Ubuntu 20.04 dokumentiert; die alte Python-/Audio-/STT-Laufzeit ist fuer Ubuntu 24.04 hier nicht abgenommen.",
       "security_note": "Keine Dienststarts, Datenmigration oder Legacy-Loeschung. Private Buildpfade, aktuelle Operationslogs und Rollback; Upstream-Lizenz und --dry-run pruefen.",
-      "updated": "2026-10-23"
+      "updated": "2026-10-24"
     },
     {
       "id": "vault",
@@ -6825,8 +6825,8 @@
       "doctor_script": "scripts/tools/watchtower_doctor.sh",
       "check_type": "path",
       "check_value": "~/.openclaw_ultimate_user_data/tools/watchtower/native-github/build-ready.json",
-      "doc": "docs/DOCKER_TO_GITHUB.md",
-      "description": "Gepinnter GitHub-Quellbuild/Paket ohne Image-Installation; Betriebsabnahme separat. GitHub-Go-Binary; verwaltet im Betrieb weiterhin Docker ueber dessen API. Kein Daemon-/Socketzugriff beim Build.",
+      "doc": "docs/tools/watchtower.md",
+      "description": "Archiviertes Legacy-Projekt: GitHub-Go-Quellbuild, private Go-Basis nach Zustimmung. Betrieb benoetigt Docker; kein Dienst-/Socketzugriff bei Installation.",
       "security_note": "Keine Dienststarts, Datenmigration oder Legacy-Loeschung. Private Buildpfade, aktuelle Operationslogs und Rollback; Upstream-Lizenz und --dry-run pruefen.",
       "updated": "2026-10-23"
     },

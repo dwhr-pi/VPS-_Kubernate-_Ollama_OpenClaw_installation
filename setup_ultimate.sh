@@ -1148,7 +1148,7 @@ end_operation_measurement() {
     echo -e "${YELLOW}Messwert gespeichert:${NC} ${ACTIVE_OPERATION_TITLE:-Unbekannt} | Status: $operation_status | Dauer: ${WHITE}$(format_duration_human "$duration_seconds")${NC} | Speicher vorher: $(format_kb_human "${ACTIVE_OPERATION_FREE_KB_BEFORE:-0}") | Speicher nachher: $(format_kb_human "${free_kb_after:-0}") | Speicheränderung: $(format_kb_human "$delta_kb")"
     echo -e "${YELLOW}Messwert in Config aktualisiert:${NC} ${METRICS_CONFIG_FILE}"
     if [ -n "${LAST_OPERATION_LOG_FILE:-}" ]; then
-        echo -e "${YELLOW}Installationsprotokoll:${NC} ${LAST_OPERATION_LOG_FILE}"
+        print_operation_log_heading "$LAST_OPERATION_LOG_FILE"
     fi
 
     unset ACTIVE_OPERATION_ID ACTIVE_OPERATION_TITLE ACTIVE_OPERATION_STARTED_AT ACTIVE_OPERATION_FREE_KB_BEFORE ACTIVE_OPERATION_LOG_FILE
@@ -1483,10 +1483,8 @@ run_bash_script() {
 
     if is_preference_enabled "${INSTALL_MONITORING_VERBOSE:-false}" || is_preference_enabled "${INSTALL_MONITORING_MANUAL_FLOW:-false}"; then
         echo -e "${YELLOW}Erweiterte Installationsüberwachung ist aktiv.${NC}"
-        echo -e "${YELLOW}Logdatei:${NC} ${ACTIVE_OPERATION_LOG_FILE}"
-    else
-        echo -e "${YELLOW}Installationsprotokoll:${NC} ${ACTIVE_OPERATION_LOG_FILE}"
     fi
+    print_operation_log_heading "$ACTIVE_OPERATION_LOG_FILE"
     script_rc=0
     capture_operation_output bash "$script_path" "$@" || script_rc=$?
 
@@ -1803,7 +1801,7 @@ show_recent_install_logs() {
 
     clear
     echo
-    echo -e "${YELLOW}Installationslog:${NC} $full_path"
+    print_operation_log_heading "$full_path"
     echo
     tail -n 200 "$full_path"
     echo
@@ -1841,7 +1839,7 @@ show_install_log_tail_now() {
 
     clear
     echo
-    echo -e "${YELLOW}Installationsprotokoll:${NC} $log_file"
+    print_operation_log_heading "$log_file"
     echo
     tail -n 220 "$log_file"
     echo
@@ -4729,7 +4727,7 @@ TOOLS["Promtail"]="GitHub-Archivbuild nur nach EOL-Freigabe; kein Produktivstart
 TOOL_SCRIPT_NAMES["Promtail"]="promtail"
 TOOLS["Qdrant"]="GitHub-Source-Build ohne Docker; kein Dienststart. docs/DOCKER_TO_GITHUB.md"
 TOOL_SCRIPT_NAMES["Qdrant"]="qdrant"
-TOOLS["Rhasspy"]="Native Umstellung OFFEN; kein Docker-Fallback. docs/DOCKER_TO_GITHUB.md"
+TOOLS["Rhasspy"]="OFFEN / NICHT INSTALLIERBAR: Rhasspy 2 archiviert; Ubuntu-24.04-Runtime nicht abgenommen. docs/tools/rhasspy.md"
 TOOL_SCRIPT_NAMES["Rhasspy"]="rhasspy"
 TOOLS["SearXNG"]="GitHub-Source-Build ohne Docker; kein Dienststart. docs/DOCKER_TO_GITHUB.md"
 TOOL_SCRIPT_NAMES["SearXNG"]="searxng"

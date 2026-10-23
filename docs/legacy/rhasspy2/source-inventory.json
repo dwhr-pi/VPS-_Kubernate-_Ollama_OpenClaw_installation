@@ -1,0 +1,417 @@
+{
+  "schema_version": 1,
+  "review_date": "2026-10-24",
+  "decision": "user-approved-separate-legacy-investigation",
+  "scope": "top-level-source-metadata-only",
+  "runtime_verified": false,
+  "installation_enabled": false,
+  "repository": "https://github.com/rhasspy/rhasspy.git",
+  "commit": "083721a92a9a12396c794003a7f9ebcdd8dffa60",
+  "tree_sha": "083721a92a9a12396c794003a7f9ebcdd8dffa60",
+  "submodules": [
+    {
+      "path": "rhasspy-asr",
+      "source": "https://github.com/rhasspy/rhasspy-asr.git",
+      "commit": "d5c5d94931e7a27a5dce66dfa572ee0a0b77743d"
+    },
+    {
+      "path": "rhasspy-asr-deepspeech",
+      "source": "https://github.com/rhasspy/rhasspy-asr-deepspeech",
+      "commit": "2c36494ebc1c91674a66d322b9a2c7e0f009c937"
+    },
+    {
+      "path": "rhasspy-asr-deepspeech-hermes",
+      "source": "https://github.com/rhasspy/rhasspy-asr-deepspeech-hermes",
+      "commit": "4edc40563b7f4b9788ce177fb754ee684144a4f1"
+    },
+    {
+      "path": "rhasspy-asr-kaldi",
+      "source": "https://github.com/rhasspy/rhasspy-asr-kaldi.git",
+      "commit": "4354e7c703dd965c1fbb457f836f981192e69e59"
+    },
+    {
+      "path": "rhasspy-asr-kaldi-hermes",
+      "source": "https://github.com/rhasspy/rhasspy-asr-kaldi-hermes.git",
+      "commit": "be7190f595fc04dde7efada25efc0cd870ed812b"
+    },
+    {
+      "path": "rhasspy-asr-pocketsphinx",
+      "source": "https://github.com/rhasspy/rhasspy-asr-pocketsphinx.git",
+      "commit": "bfc756bb0200d6bdba99db1c08966e4fd7ebcd0c"
+    },
+    {
+      "path": "rhasspy-asr-pocketsphinx-hermes",
+      "source": "https://github.com/rhasspy/rhasspy-asr-pocketsphinx-hermes.git",
+      "commit": "89c33a05327ff67e24b87e2ce16412de7c6e66ab"
+    },
+    {
+      "path": "rhasspy-asr-vosk-hermes",
+      "source": "https://github.com/rhasspy/rhasspy-asr-vosk-hermes.git",
+      "commit": "94282d7265ea41302f49248072189b005c1153e2"
+    },
+    {
+      "path": "rhasspy-dialogue-hermes",
+      "source": "https://github.com/rhasspy/rhasspy-dialogue-hermes.git",
+      "commit": "0d697cb1631880688fd484177f1cdf50351f4a3e"
+    },
+    {
+      "path": "rhasspy-fuzzywuzzy",
+      "source": "https://github.com/rhasspy/rhasspy-fuzzywuzzy",
+      "commit": "203a018ac6d6b9adffc5585f44f5787aea9a624e"
+    },
+    {
+      "path": "rhasspy-fuzzywuzzy-hermes",
+      "source": "https://github.com/rhasspy/rhasspy-fuzzywuzzy-hermes/",
+      "commit": "800f664da3c8e3e372e31e29931518b874f27bae"
+    },
+    {
+      "path": "rhasspy-hermes",
+      "source": "https://github.com/rhasspy/rhasspy-hermes.git",
+      "commit": "badd69285a775f4f3d1266d83de58214aca1c08f"
+    },
+    {
+      "path": "rhasspy-homeassistant-hermes",
+      "source": "https://github.com/rhasspy/rhasspy-homeassistant-hermes",
+      "commit": "f6990128dab5a3828f7c89653e9d8d719af517ba"
+    },
+    {
+      "path": "rhasspy-microphone-cli-hermes",
+      "source": "https://github.com/rhasspy/rhasspy-microphone-cli-hermes.git",
+      "commit": "490e9b6abbdc24f85d3dcb5a41fb0c4b8870099d"
+    },
+    {
+      "path": "rhasspy-microphone-pyaudio-hermes",
+      "source": "https://github.com/rhasspy/rhasspy-microphone-pyaudio-hermes.git",
+      "commit": "2293eb502ade39f032fde96fc9d443e1d0161a5d"
+    },
+    {
+      "path": "rhasspy-nlu",
+      "source": "https://github.com/rhasspy/rhasspy-nlu.git",
+      "commit": "06d118c0ff92cec95e0e70a9c08b12b7f5202f46"
+    },
+    {
+      "path": "rhasspy-nlu-hermes",
+      "source": "https://github.com/rhasspy/rhasspy-nlu-hermes.git",
+      "commit": "09333aa928f28dba25991d3df75c96a6eb6ae5f1"
+    },
+    {
+      "path": "rhasspy-profile",
+      "source": "https://github.com/rhasspy/rhasspy-profile.git",
+      "commit": "cd45d1ad6158e7f8113c5c75e74b9e61afa1823a"
+    },
+    {
+      "path": "rhasspy-rasa-nlu-hermes",
+      "source": "https://github.com/rhasspy/rhasspy-rasa-nlu-hermes",
+      "commit": "704b2a75827d117672db4c251ee95c76df0aa5e5"
+    },
+    {
+      "path": "rhasspy-remote-http-hermes",
+      "source": "https://github.com/rhasspy/rhasspy-remote-http-hermes.git",
+      "commit": "eaca6abb11ea2f8944a706c9c7857b85e6a8de8c"
+    },
+    {
+      "path": "rhasspy-server-hermes",
+      "source": "https://github.com/rhasspy/rhasspy-server-hermes.git",
+      "commit": "ba9ce182dc2d7387f73dc3920cc2ebe88f0b6218"
+    },
+    {
+      "path": "rhasspy-silence",
+      "source": "https://github.com/rhasspy/rhasspy-silence.git",
+      "commit": "553ef198b96bf1cdef186fe63d435017644dcdb8"
+    },
+    {
+      "path": "rhasspy-snips-nlu",
+      "source": "https://github.com/rhasspy/rhasspy-snips-nlu",
+      "commit": "c46857fe5f3acf84b812853d4f5f280c534196f0"
+    },
+    {
+      "path": "rhasspy-snips-nlu-hermes",
+      "source": "https://github.com/rhasspy/rhasspy-snips-nlu-hermes",
+      "commit": "0bfd7f0d4f22a1d5c931a6b6ebde1816459ed3ce"
+    },
+    {
+      "path": "rhasspy-speakers-cli-hermes",
+      "source": "https://github.com/rhasspy/rhasspy-speakers-cli-hermes.git",
+      "commit": "1076ccd47a4d643337d9cdd6450a5675cd55fd0b"
+    },
+    {
+      "path": "rhasspy-supervisor",
+      "source": "https://github.com/rhasspy/rhasspy-supervisor.git",
+      "commit": "47d5a0aa84f7ab361592dd3ac0b4f4e7e35f602d"
+    },
+    {
+      "path": "rhasspy-tts-cli-hermes",
+      "source": "https://github.com/rhasspy/rhasspy-tts-cli-hermes.git",
+      "commit": "3adf80a50f4ba9452e93516fea7ca7eff83bd59a"
+    },
+    {
+      "path": "rhasspy-tts-larynx-hermes",
+      "source": "https://github.com/rhasspy/rhasspy-tts-larynx-hermes.git",
+      "commit": "b7536f27699c5c7aaebc8d0111d0219952c8258c"
+    },
+    {
+      "path": "rhasspy-tts-wavenet-hermes",
+      "source": "https://github.com/rhasspy/rhasspy-tts-wavenet-hermes",
+      "commit": "1fe2e2d32ef97fc0d009b8fd4a15d503b0f9bd41"
+    },
+    {
+      "path": "rhasspy-wake-pocketsphinx-hermes",
+      "source": "https://github.com/rhasspy/rhasspy-wake-pocketsphinx-hermes",
+      "commit": "a0f60d63ef28de48aba75a79eaca2ce6dbd46a0f"
+    },
+    {
+      "path": "rhasspy-wake-porcupine-hermes",
+      "source": "https://github.com/rhasspy/rhasspy-wake-porcupine-hermes.git",
+      "commit": "91af83bcd5fcbe34e3971fb802dcf0baf6cd7416"
+    },
+    {
+      "path": "rhasspy-wake-precise-hermes",
+      "source": "https://github.com/rhasspy/rhasspy-wake-precise-hermes",
+      "commit": "ee6375576a6fc8ca5f4f77b5057be23c7a07bb5b"
+    },
+    {
+      "path": "rhasspy-wake-raven",
+      "source": "https://github.com/rhasspy/rhasspy-wake-raven.git",
+      "commit": "9847924ff3ef92b3c497769e870354ddf8d6da1c"
+    },
+    {
+      "path": "rhasspy-wake-raven-hermes",
+      "source": "https://github.com/rhasspy/rhasspy-wake-raven-hermes.git",
+      "commit": "41ff418e10dcda3ed827b8a863a35b46ebda0062"
+    },
+    {
+      "path": "rhasspy-wake-snowboy-hermes",
+      "source": "https://github.com/rhasspy/rhasspy-wake-snowboy-hermes.git",
+      "commit": "72d970350f4ba7a764427724c015d1cbb18e6c67"
+    }
+  ],
+  "source_files": [
+    {
+      "path": ".gitmodules",
+      "url": "https://raw.githubusercontent.com/rhasspy/rhasspy/083721a92a9a12396c794003a7f9ebcdd8dffa60/.gitmodules",
+      "sha256_utf8": "4938a43725da7164a3bee09c8d1fd250604ae18413a09088d58c9537d99a0c4f"
+    },
+    {
+      "path": "Makefile.in",
+      "url": "https://raw.githubusercontent.com/rhasspy/rhasspy/083721a92a9a12396c794003a7f9ebcdd8dffa60/Makefile.in",
+      "sha256_utf8": "2b074e49944de06334dbd77450b6225c8250afb5e9753de814dcde53bb6e293b"
+    },
+    {
+      "path": "setup.py.in",
+      "url": "https://raw.githubusercontent.com/rhasspy/rhasspy/083721a92a9a12396c794003a7f9ebcdd8dffa60/setup.py.in",
+      "sha256_utf8": "cf6acd1b6f3ab753885cd46834faf9f748a80089c12c748576f970d059cd5aee"
+    },
+    {
+      "path": "configure.ac",
+      "url": "https://raw.githubusercontent.com/rhasspy/rhasspy/083721a92a9a12396c794003a7f9ebcdd8dffa60/configure.ac",
+      "sha256_utf8": "d0e6c4403f2ac2d3666bc5a4ceddddfbc78a8ab35b2e4efc7f332d2cd0ff9438"
+    },
+    {
+      "path": "requirements.txt",
+      "url": "https://raw.githubusercontent.com/rhasspy/rhasspy/083721a92a9a12396c794003a7f9ebcdd8dffa60/requirements.txt",
+      "sha256_utf8": "ebd2e996a55053cad4fec73f3cdd3c3e7df1d6120a194fd69742197d27dd344f"
+    },
+    {
+      "path": ".python-version",
+      "url": "https://raw.githubusercontent.com/rhasspy/rhasspy/083721a92a9a12396c794003a7f9ebcdd8dffa60/.python-version",
+      "sha256_utf8": "d0c6e5ceb9efa6e1d67eededf866d8e540b780fba2c94c2892f9161f5e0a9651"
+    }
+  ],
+  "download_templates": [
+    {
+      "line": 225,
+      "url_template": "https://github.com/rhasspy/num2words/archive/v0.5.10-sv.tar.gz",
+      "uses_plain_http": false,
+      "mutable_master": false,
+      "requires_variable_expansion": false,
+      "sha256": null,
+      "payload_verified": false
+    },
+    {
+      "line": 241,
+      "url_template": "https://github.com/synesthesiam/prebuilt-apps/releases/download/v1.0/opengrm-1.3.4_$(DOCKER_ARCH).tar.gz",
+      "uses_plain_http": false,
+      "mutable_master": false,
+      "requires_variable_expansion": true,
+      "sha256": null,
+      "payload_verified": false
+    },
+    {
+      "line": 253,
+      "url_template": "http://www.openfst.org/twiki/pub/FST/FstDownload/openfst-1.6.9.tar.gz",
+      "uses_plain_http": true,
+      "mutable_master": false,
+      "requires_variable_expansion": false,
+      "sha256": null,
+      "payload_verified": false
+    },
+    {
+      "line": 256,
+      "url_template": "http://www.opengrm.org/twiki/pub/GRM/NGramDownload/opengrm-ngram-1.3.4.tar.gz",
+      "uses_plain_http": true,
+      "mutable_master": false,
+      "requires_variable_expansion": false,
+      "sha256": null,
+      "payload_verified": false
+    },
+    {
+      "line": 272,
+      "url_template": "https://github.com/synesthesiam/prebuilt-apps/releases/download/v1.0/phonetisaurus-2019_$(DOCKER_ARCH).tar.gz",
+      "uses_plain_http": false,
+      "mutable_master": false,
+      "requires_variable_expansion": true,
+      "sha256": null,
+      "payload_verified": false
+    },
+    {
+      "line": 284,
+      "url_template": "https://github.com/synesthesiam/prebuilt-apps/raw/master/download/phonetisaurus-2019.tar.gz",
+      "uses_plain_http": false,
+      "mutable_master": true,
+      "requires_variable_expansion": false,
+      "sha256": null,
+      "payload_verified": false
+    },
+    {
+      "line": 304,
+      "url_template": "https://github.com/MycroftAI/mycroft-precise/releases/download/v0.3.0/precise-engine_0.3.0_$(PRECISE_ARCH).tar.gz",
+      "uses_plain_http": false,
+      "mutable_master": false,
+      "requires_variable_expansion": true,
+      "sha256": null,
+      "payload_verified": false
+    },
+    {
+      "line": 324,
+      "url_template": "https://github.com/Kitt-AI/snowboy/archive/v1.3.0.tar.gz",
+      "uses_plain_http": false,
+      "mutable_master": false,
+      "requires_variable_expansion": false,
+      "sha256": null,
+      "payload_verified": false
+    },
+    {
+      "line": 344,
+      "url_template": "https://github.com/synesthesiam/pocketsphinx-python/releases/download/v1.0/pocketsphinx-python.tar.gz",
+      "uses_plain_http": false,
+      "mutable_master": false,
+      "requires_variable_expansion": false,
+      "sha256": null,
+      "payload_verified": false
+    },
+    {
+      "line": 360,
+      "url_template": "https://github.com/synesthesiam/prebuilt-apps/releases/download/v1.0/kaldi-2021_$(DOCKER_ARCH).tar.gz",
+      "uses_plain_http": false,
+      "mutable_master": false,
+      "requires_variable_expansion": true,
+      "sha256": null,
+      "payload_verified": false
+    },
+    {
+      "line": 372,
+      "url_template": "https://github.com/synesthesiam/docker-kaldi/raw/master/download/kaldi-2021.tar.gz",
+      "uses_plain_http": false,
+      "mutable_master": true,
+      "requires_variable_expansion": false,
+      "sha256": null,
+      "payload_verified": false
+    },
+    {
+      "line": 388,
+      "url_template": "https://github.com/synesthesiam/prebuilt-apps/releases/download/v1.0/julius-4.5_$(DOCKER_ARCH).tar.gz",
+      "uses_plain_http": false,
+      "mutable_master": false,
+      "requires_variable_expansion": true,
+      "sha256": null,
+      "payload_verified": false
+    },
+    {
+      "line": 400,
+      "url_template": "https://github.com/synesthesiam/prebuilt-apps/raw/master/download/julius-2019.tar.gz",
+      "uses_plain_http": false,
+      "mutable_master": true,
+      "requires_variable_expansion": false,
+      "sha256": null,
+      "payload_verified": false
+    },
+    {
+      "line": 421,
+      "url_template": "https://github.com/mozilla/DeepSpeech/releases/download/v0.9.3/native_client.$(DEEPSPEECH_ARCH).cpu.linux.tar.xz",
+      "uses_plain_http": false,
+      "mutable_master": false,
+      "requires_variable_expansion": true,
+      "sha256": null,
+      "payload_verified": false
+    },
+    {
+      "line": 434,
+      "url_template": "https://github.com/synesthesiam/prebuilt-apps/releases/download/v1.0/kenlm-20210107_$(DOCKER_ARCH).tar.gz",
+      "uses_plain_http": false,
+      "mutable_master": false,
+      "requires_variable_expansion": true,
+      "sha256": null,
+      "payload_verified": false
+    },
+    {
+      "line": 449,
+      "url_template": "https://github.com/synesthesiam/prebuilt-apps/raw/master/download/kenlm-20200308.tar.gz",
+      "uses_plain_http": false,
+      "mutable_master": true,
+      "requires_variable_expansion": false,
+      "sha256": null,
+      "payload_verified": false
+    },
+    {
+      "line": 452,
+      "url_template": "https://github.com/synesthesiam/prebuilt-apps/raw/master/download/eigen-3.2.8.tar.bz2",
+      "uses_plain_http": false,
+      "mutable_master": true,
+      "requires_variable_expansion": false,
+      "sha256": null,
+      "payload_verified": false
+    },
+    {
+      "line": 468,
+      "url_template": "https://github.com/synesthesiam/prebuilt-apps/releases/download/v1.0/nanotts-20200520_$(DOCKER_ARCH).tar.gz",
+      "uses_plain_http": false,
+      "mutable_master": false,
+      "requires_variable_expansion": true,
+      "sha256": null,
+      "payload_verified": false
+    },
+    {
+      "line": 480,
+      "url_template": "https://github.com/synesthesiam/prebuilt-apps/raw/master/download/nanotts-20200520.tar.gz",
+      "uses_plain_http": false,
+      "mutable_master": true,
+      "requires_variable_expansion": false,
+      "sha256": null,
+      "payload_verified": false
+    },
+    {
+      "line": 498,
+      "url_template": "https://github.com/rhasspy/phonetisaurus-pypi/releases/download/v0.3.0/phonetisaurus-0.3.0-py3-none-$(PYTHON_LINUX)_$(LARYNX_ARCH).whl",
+      "uses_plain_http": false,
+      "mutable_master": false,
+      "requires_variable_expansion": true,
+      "sha256": null,
+      "payload_verified": false
+    },
+    {
+      "line": 501,
+      "url_template": "https://github.com/synesthesiam/prebuilt-apps/releases/download/v1.0/onnxruntime-1.6.0-cp37-cp37m-linux_armv7l.whl",
+      "uses_plain_http": false,
+      "mutable_master": false,
+      "requires_variable_expansion": false,
+      "sha256": null,
+      "payload_verified": false
+    }
+  ],
+  "limitations": [
+    "Nested submodules and transitive Python dependencies not audited",
+    "No payload, wheel, model, compiler or runtime downloaded",
+    "No signature or Ubuntu runtime verification",
+    "Null download hashes are unresolved blockers, not approved assets"
+  ]
+}

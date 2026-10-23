@@ -113,6 +113,102 @@ class NativeGoTests(unittest.TestCase):
             self.assertIn("Go-Download fehlgeschlagen", log.read_text())
         fetch.assert_not_called()
 
+    def test_watchtower_contract_checks_go_mod_minimum_and_help_not_version(self):
+        recipe = tools.TOOLS["watchtower"]["recipe"]
+        self.assertEqual(recipe["go_min"], [1, 20, 0])
+        self.assertEqual(recipe["package"], ".")
+        self.assertEqual(recipe["probe"], ["--help"])
+        self.assertEqual(go.CONTRACTS["watchtower"], ([1, 20, 0], "docs/tools/watchtower.md"))
+        self.assertIn("Archiviertes", recipe["note"])
+
+    def test_watchtower_missing_go_logs_own_command_without_fetch_or_marker(self):
+        with patch.dict(os.environ, {"OPENCLAW_USER_DATA_DIR": str(self.base)}), patch.object(tools.platform, "system", return_value="Linux"), patch.object(tools.common, "reserve"), patch.object(tools.common, "executable"), patch.object(go.private_go, "ensure") as ensure, patch.object(tools.common, "install") as fetch, redirect_stdout(io.StringIO()):
+            with self.assertRaisesRegex(ValueError, "Watchtower: Go >=1.20.0"):
+                tools.main(["watchtower", "install"])
+            self.assertFalse(tools.paths("watchtower")[2].exists())
+            log = list((self.base / "install_logs").glob("*.log"))[0]
+            self.assertIn("watchtower_install.sh --install-build-deps", log.read_text())
+        ensure.assert_not_called()
+        fetch.assert_not_called()
+
+    def test_watchtower_suitable_existing_go_is_preferred(self):
+        with patch.object(go.shutil, "which", return_value="/existing/go"), patch.object(go.common, "run", return_value="go version go1.20.14 linux/amd64"), patch.object(go.private_go, "ensure") as ensure, redirect_stdout(io.StringIO()):
+            self.assertEqual(go.select(self.base, tools.TOOLS["watchtower"]), ("/existing/go", None))
+        ensure.assert_not_called()
+
+    def test_watchtower_acceptance_activates_verified_private_go_only_for_child(self):
+        spec = tools.TOOLS["watchtower"]
+        slot = self.base / "toolchain" / (go.private_go.VERSION + "-linux-amd64")
+        root = slot / "go"
+        def ensure(base, validate):
+            slot.mkdir(parents=True, exist_ok=True)
+            validate(root / "bin/go", root, "linux-amd64")
+            return str(root / "bin/go"), root
+        before = dict(os.environ)
+        env = {"PATH": "original", "GOTOOLCHAIN": "local"}
+        with patch.object(go.private_go, "ensure", side_effect=ensure), patch.object(go.common, "run", return_value="go version " + go.private_go.VERSION + " linux/amd64"), redirect_stdout(io.StringIO()):
+            go.prepare(self.base, spec, approved=True)
+            go.activate(self.base, spec, env)
+        self.assertEqual(env["GOROOT"], str(root))
+        self.assertEqual(env["GOTOOLCHAIN"], "local")
+        self.assertEqual(dict(os.environ), before)
+
+    def test_watchtower_dry_run_never_downloads_or_creates_workspace(self):
+        with patch.dict(os.environ, {"OPENCLAW_USER_DATA_DIR": str(self.base)}), patch.object(go.private_go, "ensure") as ensure, patch.object(tools.common, "install") as fetch, redirect_stdout(io.StringIO()):
+            self.assertEqual(tools.main(["watchtower", "install", "--install-build-deps", "--dry-run"]), 0)
+            self.assertFalse(list(self.base.iterdir()))
+        ensure.assert_not_called()
+        fetch.assert_not_called()
+
+    def test_caddy_contract_uses_same_checked_go_minimum_and_version_only_probe(self):
+        recipe = tools.TOOLS["caddy"]["recipe"]
+        self.assertEqual(recipe["go_min"], [1, 26, 0])
+        self.assertEqual(recipe["package"], "./cmd/caddy")
+        self.assertEqual(recipe["probe"], ["version"])
+        self.assertEqual(go.CONTRACTS["caddy"][1], "docs/tools/caddy.md")
+
+    def test_caddy_refusal_is_logged_with_its_own_repair_command(self):
+        output = io.StringIO()
+        with patch.dict(os.environ, {"OPENCLAW_USER_DATA_DIR": str(self.base)}), patch.object(tools.platform, "system", return_value="Linux"), patch.object(tools.common, "reserve"), patch.object(tools.common, "executable"), patch.object(go.private_go, "ensure") as ensure, patch.object(tools.common, "install") as fetch, redirect_stdout(output):
+            with self.assertRaisesRegex(ValueError, "Caddy: Go >=1.26.0"):
+                tools.main(["caddy", "install"])
+            self.assertFalse(tools.paths("caddy")[2].exists())
+            log = list((self.base / "install_logs").glob("*.log"))[0]
+            self.assertIn("caddy_install.sh --install-build-deps", log.read_text())
+        ensure.assert_not_called()
+        fetch.assert_not_called()
+        self.assertNotIn("Node Exporter", output.getvalue())
+
+    def test_caddy_acceptance_validates_private_go_and_changes_only_child_path(self):
+        spec = tools.TOOLS["caddy"]
+        slot = self.base / "toolchain" / (go.private_go.VERSION + "-linux-amd64")
+        root = slot / "go"
+        def ensure(base, validate):
+            slot.mkdir(parents=True, exist_ok=True)
+            validate(root / "bin/go", root, "linux-amd64")
+            return str(root / "bin/go"), root
+        before = dict(os.environ)
+        env = {"PATH": "original", "GOTOOLCHAIN": "local"}
+        with patch.object(go.private_go, "ensure", side_effect=ensure) as bootstrap, patch.object(go.common, "run", return_value="go version " + go.private_go.VERSION + " linux/amd64"), redirect_stdout(io.StringIO()):
+            go.prepare(self.base, spec, approved=True)
+            go.activate(self.base, spec, env)
+        self.assertEqual(bootstrap.call_count, 2)
+        self.assertEqual(env["GOROOT"], str(root))
+        self.assertEqual(env["GOTELEMETRY"], "off")
+        self.assertEqual(dict(os.environ), before)
+
+    def test_caddy_existing_suitable_go_never_downloads(self):
+        with patch.object(go.shutil, "which", return_value="/existing/go"), patch.object(go.common, "run", return_value="go version go1.26.1 linux/amd64"), patch.object(go.private_go, "ensure") as ensure, redirect_stdout(io.StringIO()):
+            self.assertEqual(go.select(self.base, tools.TOOLS["caddy"]), ("/existing/go", None))
+        ensure.assert_not_called()
+
+    def test_caddy_dry_run_flag_does_not_download_or_modify_workspace(self):
+        with patch.dict(os.environ, {"OPENCLAW_USER_DATA_DIR": str(self.base)}), patch.object(go.private_go, "ensure") as ensure, patch.object(tools.common, "install") as fetch, redirect_stdout(io.StringIO()):
+            self.assertEqual(tools.main(["caddy", "install", "--install-build-deps", "--dry-run"]), 0)
+            self.assertFalse(list(self.base.iterdir()))
+        ensure.assert_not_called()
+        fetch.assert_not_called()
+
 
 if __name__ == "__main__":
     unittest.main()

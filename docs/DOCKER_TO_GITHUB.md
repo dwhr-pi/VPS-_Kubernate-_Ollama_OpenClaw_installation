@@ -142,6 +142,9 @@ Node Exporter verlangt Go >=1.26. Nach ausdruecklicher Freigabe kann der
 vorhandene private Bootstrap ein pruefsummengesichertes offizielles Go-Archiv
 bereitstellen, ohne System-Go oder globalen PATH-Wechsel:
 [Node Exporter: go fehlt](tools/node-exporter.md).
+Caddy nutzt dieselbe zustimmungspflichtige Go-Einrichtung mit eigener privater
+Toolchain und verlangt ebenfalls Go >=1.26. Kein Webserver- oder ACME-Start:
+[Caddy: go fehlt](tools/caddy.md).
 Go verwendet `GOTOOLCHAIN=local`, Rust eine vorhandene Toolchain. Ein abweichendes
 vorhandenes Python ist mit `NATIVE_SOURCE_PYTHON_BIN` waehlbar.
 
@@ -301,9 +304,12 @@ gemockten Compilern, 264 Lifecycle-Wrapper, Fehlerlogging, Rollback, Idempotenz,
 Marker, Dateigrenzen und die expliziten Blocker. Das sind keine realen
 Linux-Builds. Kein Tool, Container oder Dienst wurde auf dem Nutzersystem gestartet.
 
-Noch offen: Airbyte Core und Rhasspy;
-reale Builds der verfuegbaren Rezepte auf isoliertem Ubuntu; dazu je Dienst Konfiguration, Betrieb, Restore
-und Upgrade. Erst nach diesen Nachweisen als einsatzbereit einstufen.
+Noch offen sind Airbyte Core und Rhasspy.
+Rhasspys konkrete Archiv-/Kompatibilitaetsgruende und die verbleibende Arbeit
+stehen in der [Rhasspy-2-Einordnung](tools/rhasspy.md).
+Ausstehend sind auch reale Builds der verfuegbaren Rezepte auf isoliertem Ubuntu
+sowie je Dienst Konfiguration, Betrieb, Restore und Upgrade. Erst nach diesen
+Nachweisen als einsatzbereit einstufen.
 
 Die aktualisierten Offline-Vertragstests pruefen zusaetzlich Mehrkomponenten-
 Artefakte, Python-Vorpruefung, Promtail-Freigabe und falsche Submodul-Pins.
@@ -403,6 +409,30 @@ Authentifizierung und abgesicherten Reverse Proxy vor Zugriff konfigurieren.
 Frontend-Vendorressourcen koennen beim spaeteren Browserzugriff externe
 Verbindungen aufbauen; lokal installiert bedeutet nicht pauschal offline.
 NocoDBs Sustainable Use License ist keine pauschale OSI-Open-Source-Freigabe.
+
+### Zigbee2MQTT: fehlendes Node/pnpm gezielt bereitstellen
+
+Die [Zigbee2MQTT-Anleitung](tools/zigbee2mqtt.md) beschreibt die private
+Node-/pnpm-Basis nach Zustimmung, mit festen Versionen und SHA256-Pruefung.
+Der neue Bootstrap braucht 9216 MiB Reserve, auch auf dem WSL-Windows-Host.
+Kein Dienststart, MQTT-, USB- oder Funkzugriff; Zigbee2MQTT bleibt ein
+GitHub-Quellbuild ohne Docker.
+
+### Watchtower: fehlendes Go und Legacy-Status
+
+Die [Watchtower-Anleitung](tools/watchtower.md) erklaert die private Go-
+Einrichtung nach Zustimmung und den GitHub-Quellbuild ohne Docker.
+Das archivierte Werkzeug benoetigt im spaeteren Betrieb weiterhin Docker;
+es aktualisiert keine nativen Programme. Der Installer startet keinen
+Updater und prueft nur `--help`, nicht das am Pin ungueltige `--version`.
+
+### SearXNG: fehlendes uv gezielt bereitstellen
+
+Die [SearXNG-Anleitung](tools/searxng.md) beschreibt den zustimmungspflichtigen
+privaten uv-Bootstrap aus einem SHA256-geprueften offiziellen GitHub-Release.
+Kein System-Python-Umbau, kein Docker und kein Suchdienststart. Bei einem
+neuen Bootstrap gelten 8448 MiB statt 8192 MiB Reserve; knappen Windows-
+Hostspeicher zuerst freimachen.
 
 ### Airbyte Core bleibt getrennt; Rhasspy bleibt ein Altbestand
 

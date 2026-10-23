@@ -79,6 +79,55 @@ class NativeGithubTests(unittest.TestCase):
         self.assertEqual(len(logs), 1)
         self.assertIn("Kein Docker-Fallback", logs[0].read_text())
 
+    def test_rhasspy_blocker_is_specific_and_never_downloads_or_marks_installed(self):
+        spec = tool.TOOLS["rhasspy"]
+        self.assertIsNone(spec["recipe"])
+        self.assertIn("archiviert", spec["blocked_reason"])
+        self.assertIn("Ubuntu 24.04", spec["blocked_reason"])
+        self.assertTrue((ROOT / spec["blocked_doc"]).is_file())
+        with patch.object(tool.common, "install") as fetch, patch.object(tool, "build") as build, patch.object(tool, "preflight") as preflight, redirect_stdout(io.StringIO()):
+            with self.assertRaisesRegex(ValueError, "docs/tools/rhasspy.md"):
+                tool.main(["rhasspy", "install"])
+        fetch.assert_not_called()
+        build.assert_not_called()
+        preflight.assert_not_called()
+        self.assertFalse(tool.paths("rhasspy")[2].exists())
+        log = list((Path(self.temp.name) / "install_logs").glob("*.log"))[0].read_text()
+        self.assertIn("archiviert", log)
+        self.assertEqual(log.count("Kein Docker-Fallback"), 1)
+
+    def test_rhasspy_blocked_uninstall_preserves_legacy_data(self):
+        outer, prefix, marker = tool.paths("rhasspy")
+        outer.mkdir(parents=True)
+        keep = outer / "legacy-profile.json"
+        keep.write_text("fixture profile")
+        with redirect_stdout(io.StringIO()):
+            with self.assertRaisesRegex(ValueError, "archiviert"):
+                tool.main(["rhasspy", "uninstall"])
+        self.assertEqual(keep.read_text(), "fixture profile")
+        self.assertFalse(prefix.exists())
+        self.assertFalse(marker.exists())
+
+    def test_rhasspy_legacy_inventory_pins_sources_without_claiming_runtime(self):
+        inventory = json.loads((ROOT / "docs/legacy/rhasspy2/source-inventory.json").read_text(encoding="utf-8"))
+        self.assertFalse(inventory["runtime_verified"])
+        self.assertFalse(inventory["installation_enabled"])
+        self.assertEqual(inventory["scope"], "top-level-source-metadata-only")
+        self.assertRegex(inventory["commit"], r"^[0-9a-f]{40}$")
+        self.assertEqual(len(inventory["submodules"]), 35)
+        self.assertEqual(len({entry["path"] for entry in inventory["submodules"]}), 35)
+        for entry in inventory["submodules"]:
+            self.assertTrue(entry["source"].startswith("https://github.com/"))
+            self.assertRegex(entry["commit"], r"^[0-9a-f]{40}$")
+        for entry in inventory["source_files"]:
+            self.assertIn(inventory["commit"], entry["url"])
+            self.assertRegex(entry["sha256_utf8"], r"^[0-9a-f]{64}$")
+        self.assertTrue(any(entry["uses_plain_http"] for entry in inventory["download_templates"]))
+        self.assertTrue(any(entry["mutable_master"] for entry in inventory["download_templates"]))
+        for entry in inventory["download_templates"]:
+            self.assertFalse(entry["payload_verified"])
+            self.assertIsNone(entry["sha256"])
+
     def test_low_disk_fails_before_sources_and_keeps_legacy_data(self):
         self.outer.mkdir(parents=True)
         legacy = self.outer / "existing-data"
@@ -214,7 +263,7 @@ class NativeGithubTests(unittest.TestCase):
                         path.parent.mkdir(parents=True, exist_ok=True)
                         path.write_text("built fixture")
                     return "fixture==1"
-                with patch.object(tool, "run", side_effect=run), patch.object(tool.adapters, "prepare"), patch.object(tool.native_go, "activate"):
+                with patch.object(tool, "run", side_effect=run), patch.object(tool.adapters, "prepare"), patch.object(tool.native_go, "activate"), patch.object(tool.native_uv, "activate"), patch.object(tool.native_node, "activate"):
                     # Packaging adapters have separate negative/positive contract tests.
                     artifacts = tool.build(prefix, spec)
                 self.assertTrue(artifacts)

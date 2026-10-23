@@ -116,6 +116,83 @@ test -z "$ACTIVE_OPERATION_LOG_FILE"
         self.assertLess(install.index('begin_operation_measurement'), install.index('capture_operation_output preflight_tool_install_storage'))
         self.assertIn('capture_operation_output bash', function('run_bash_script'))
 
+    def test_tool_name_is_highlighted_on_screen_but_plain_in_log(self):
+        r = self.shell('''
+TERM=xterm-256color FORCE_COLOR=1 NO_COLOR=
+start_operation_log tool_install_Node_Exporter
+print_operation_log_heading "$ACTIVE_OPERATION_LOG_FILE"
+grep -Fxq 'Tool: Node_Exporter' "$ACTIVE_OPERATION_LOG_FILE"
+! grep -q $'\\033' "$ACTIVE_OPERATION_LOG_FILE"
+''')
+        self.assertEqual(r.returncode, 0, r.stderr)
+        self.assertEqual(r.stdout.count('Tool: \x1b[1;36mNode_Exporter\x1b[0m'), 2)
+
+    def test_redirected_output_has_plain_tool_name(self):
+        r = self.shell('''
+unset FORCE_COLOR NO_COLOR
+TERM=xterm-256color
+start_operation_log tool_install_Caddy
+''')
+        self.assertEqual(r.returncode, 0, r.stderr)
+        self.assertIn('Tool: Caddy', r.stdout)
+        self.assertNotIn('\x1b', r.stdout)
+
+    def test_no_color_and_dumb_terminal_disable_forced_color(self):
+        for setting in ('NO_COLOR=1 TERM=xterm-256color', 'NO_COLOR= TERM=dumb'):
+            r = self.shell('FORCE_COLOR=1 ' + setting + '\nprint_operation_tool_name Caddy\n')
+            self.assertEqual(r.returncode, 0, r.stderr)
+            self.assertEqual(r.stdout, 'Tool: Caddy\n')
+
+    def test_historical_log_without_tool_line_gets_colored_heading(self):
+        r = self.shell('''
+TERM=xterm-256color FORCE_COLOR=1 NO_COLOR=
+mkdir -p "$USER_INSTALL_LOG_DIR"
+file="$USER_INSTALL_LOG_DIR/historical.log"
+printf 'Vorgang: tool_install_Changedetection_IO\\nStart: old\\n' > "$file"
+print_operation_log_heading "$file"
+test "$(wc -l < "$file")" -eq 2
+! grep -q $'\\033' "$file"
+''')
+        self.assertEqual(r.returncode, 0, r.stderr)
+        self.assertIn('Tool: \x1b[1;36mChangedetection_IO\x1b[0m', r.stdout)
+
+    def test_non_tool_operations_are_not_mislabelled_and_unsafe_names_rejected(self):
+        r = self.shell('''
+start_operation_log profile_install_Programmierer
+! grep -q '^Tool:' "$ACTIVE_OPERATION_LOG_FILE"
+if operation_tool_name 'tool_install_Caddy;echo unsafe'; then exit 91; fi
+test "$(operation_tool_name tool_uninstall_AIDA_X)" = AIDA_X
+''')
+        self.assertEqual(r.returncode, 0, r.stderr)
+        self.assertNotIn('Tool:', r.stdout)
+
+    def test_tool_label_stays_visible_when_log_tail_omits_header(self):
+        r = self.shell('''
+TERM=xterm-256color FORCE_COLOR=1 NO_COLOR=
+start_operation_log tool_install_Caddy >/dev/null
+for ((i=0; i<250; i++)); do printf 'build output %s\\n' "$i"; done >> "$ACTIVE_OPERATION_LOG_FILE"
+print_operation_log_heading "$ACTIVE_OPERATION_LOG_FILE"
+tail -n 2 "$ACTIVE_OPERATION_LOG_FILE"
+''')
+        self.assertEqual(r.returncode, 0, r.stderr)
+        self.assertIn('Tool: \x1b[1;36mCaddy\x1b[0m', r.stdout)
+        self.assertIn('build output 249', r.stdout)
+
+    def test_live_history_and_post_action_views_use_tool_heading(self):
+        for name in ('run_bash_script', 'end_operation_measurement', 'show_recent_install_logs', 'show_install_log_tail_now'):
+            self.assertIn('print_operation_log_heading', function(name))
+
+    def test_native_installer_log_header_also_identifies_tool(self):
+        r = self.shell('''
+TERM=xterm-256color FORCE_COLOR=1 NO_COLOR=
+mkdir -p "$USER_INSTALL_LOG_DIR"
+file="$USER_INSTALL_LOG_DIR/native.log"
+printf 'Caddy: install Log: example.log\\nGitHub-native-Umstellung: caddy\\n' > "$file"
+print_operation_log_heading "$file"
+''')
+        self.assertEqual(r.returncode, 0, r.stderr)
+        self.assertIn('Tool: \x1b[1;36mCaddy\x1b[0m', r.stdout)
+
 
 if __name__ == '__main__':
     unittest.main()
