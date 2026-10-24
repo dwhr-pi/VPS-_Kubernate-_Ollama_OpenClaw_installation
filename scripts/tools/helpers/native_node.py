@@ -13,6 +13,7 @@ from urllib.parse import urlsplit
 from urllib.request import HTTPRedirectHandler, build_opener
 
 import gap_tools as common
+import native_build_deps as build_deps
 import webinar_releases as releases
 
 NODE = "22.23.4"
@@ -34,6 +35,67 @@ def node_ok(text):
         return False
     major, minor, _ = map(int, match.groups())
     return (major == 22 and minor >= 13) or major == 24
+
+
+def confirm(question):
+    """Flush a standalone prompt through log pipes; record only the decision."""
+    if not sys.stdin.isatty():
+        print("Kein interaktives Eingabeterminal; keine automatische Zustimmung.", flush=True)
+        return False
+    print(question + " [j/N]", flush=True)
+    print("Warte auf Eingabe und Enter. Nur j/ja/y/yes erlaubt die Aktion; Enter bedeutet Nein.", flush=True)
+    while True:
+        try:
+            answer = input().strip().lower()
+        except EOFError:
+            print("Eingabe beendet (EOF); keine Zustimmung erkannt.", flush=True)
+            return False
+        if answer in ("j", "ja", "y", "yes"):
+            print("Zustimmung erteilt.", flush=True)
+            return True
+        if answer in ("", "n", "nein", "no"):
+            print("Keine Zustimmung: " + ("leere Eingabe (Standard Nein)." if not answer else "ausdruecklich abgelehnt."), flush=True)
+            return False
+        print("Ungueltige Antwort; bitte j oder n eingeben und Enter druecken.", flush=True)
+
+
+def runtime_version(binary, base, env, allow_repair=False):
+    """Repair only the recognized libatomic loader failure after separate consent."""
+    try:
+        return common.run([str(binary), "--version"], base, env)
+    except subprocess.CalledProcessError as error:
+        diagnostic = "\n".join(
+            part.decode("utf-8", errors="replace") if isinstance(part, bytes) else part
+            for part in (error.stdout, error.stderr) if part)
+        if error.returncode != 127 or not re.search(
+                r"error while loading shared libraries:\s*libatomic\.so\.1:\s*cannot open shared object file",
+                diagnostic):
+            raise
+    apt = ["apt-get", "-o", "DPkg::Lock::Timeout=300", "install", "--no-remove",
+           "--no-install-recommends", "-y", "libatomic1"]
+    print("Zigbee2MQTT: Node/pnpm braucht die fehlende Laufzeitbibliothek libatomic.so.1 (Paket libatomic1).", flush=True)
+    print("Gezielte Reparatur: sudo " + " ".join(apt), flush=True)
+    print("Gemeinsame Systembibliothek; apt kann Abhaengigkeiten aktualisieren. "
+          "Sie bleibt bei Tool-Deinstallation erhalten; kein System-Node oder Docker.", flush=True)
+    policy = os.environ.get("ZIGBEE2MQTT_INSTALL_RUNTIME_LIBS", "ask")
+    if policy not in ("ask", "0", "1"):
+        raise ValueError("ZIGBEE2MQTT_INSTALL_RUNTIME_LIBS: nur ask, 0 oder 1.")
+    supported = build_deps.ubuntu_release() and bool(shutil.which("apt-get"))
+    accepted = allow_repair and supported and policy == "1"
+    if allow_repair and supported and policy == "ask":
+        accepted = confirm("Fehlendes libatomic1 jetzt mit apt installieren?")
+    if not accepted:
+        raise ValueError("Zigbee2MQTT: libatomic.so.1 fehlt; keine Systemreparatur freigegeben "
+                         "oder Plattform nicht Ubuntu 24.04. Bibliothek separat bereitstellen oder "
+                         "ZIGBEE2MQTT_INSTALL_RUNTIME_LIBS=1 beim Installieren bewusst setzen. "
+                         "Kein erfolgreicher Versions-/Buildnachweis.")
+    prefix = [] if getattr(os, "geteuid", lambda: -1)() == 0 else [common.executable("sudo"), "--"]
+    system_env = {key: value for key, value in os.environ.items()
+                  if key in ("PATH", "LANG", "LC_ALL", "TERM")}
+    system_env["DEBIAN_FRONTEND"] = "noninteractive"
+    common.run(prefix + apt, base, system_env)
+    # Exactly one retry; a successful apt command is not a successful runtime check.
+    return common.run([str(binary), "--version"], base, env)
 
 
 class NodeRedirect(HTTPRedirectHandler):
@@ -89,7 +151,7 @@ def select(base, spec, approved=False, allow_download=False):
     node, pnpm = shutil.which("node"), shutil.which("pnpm")
     if node and pnpm:
         try:
-            if node_ok(common.run([node, "--version"], base, env)) and common.run([pnpm, "--version"], base, env) == PNPM:
+            if node_ok(runtime_version(node, base, env, allow_download)) and runtime_version(pnpm, base, env, allow_download) == PNPM:
                 print("Zigbee2MQTT: passende vorhandene Node-/pnpm-Werkzeuge.")
                 return str(Path(node).parent), str(Path(pnpm).parent)
         except (OSError, subprocess.SubprocessError):
@@ -108,9 +170,9 @@ def select(base, spec, approved=False, allow_download=False):
         node = releases.entry_path(root, record["entry"])
         pnpm = releases.entry_path(root, record["pnpm_entry"])
         child = {**env, "PATH": str(node.parent) + os.pathsep + env.get("PATH", "")}
-        if common.run([str(node), "--version"], base, child) != "v" + NODE:
+        if runtime_version(node, base, child, allow_download) != "v" + NODE:
             raise ValueError("Private Node-Version abweichend.")
-        if common.run([str(pnpm), "--version"], base, child) != PNPM:
+        if runtime_version(pnpm, base, child, allow_download) != PNPM:
             raise ValueError("Private pnpm-Version abweichend.")
         return str(node.parent), str(pnpm.parent)
 
@@ -119,11 +181,10 @@ def select(base, spec, approved=False, allow_download=False):
         return verify(app, record)
     print("Zigbee2MQTT: passendes Node (22.13+ in Reihe 22 oder 24) / pnpm " + PNPM + " fehlt.")
     print("Gezielt erneut starten: bash scripts/tools/zigbee2mqtt_install.sh --install-build-deps")
-    if allow_download and not approved and sys.stdin.isatty():
-        try:
-            approved = input("Node von nodejs.org und pnpm aus GitHub privat bereitstellen? [j/N]: ").strip().lower() in ("j", "ja", "y", "yes")
-        except EOFError:
-            approved = False
+    if allow_download and not approved:
+        approved = confirm("Node von nodejs.org und pnpm aus GitHub privat bereitstellen?")
+    elif allow_download and approved:
+        print("Private Node/pnpm-Einrichtung durch --install-build-deps freigegeben.", flush=True)
     if not approved or not allow_download:
         raise ValueError("Zigbee2MQTT: private Node/pnpm-Einrichtung nicht freigegeben. Siehe docs/tools/zigbee2mqtt.md.")
     print("Node/pnpm-Bootstrap: 1024 MiB Puffer zusaetzlich zur Tool-Reserve.")

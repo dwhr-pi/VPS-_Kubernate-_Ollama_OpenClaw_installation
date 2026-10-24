@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+- Zigbee2MQTT-Rueckfragen sofort als eigene Zeilen ausgeben; Zustimmung,
+  leere Eingabe, Ablehnung und EOF getrennt protokollieren. Ungueltige
+  Antworten erneut abfragen; kein implizites Ja bei fehlendem Terminal.
+
+- Deutsche Repository-Frage mit ausdruecklichem `[j/N]` und oeffentlichem
+  Standard; Zigbee2MQTT-Node-/pnpm-Bootstrap diagnostiziert fehlendes libatomic1
+  und bietet eine separat freizugebende Ubuntu-24.04-Reparatur mit erneuter
+  Versionspruefung an. Keine Paketinstallation bei Status oder Dry-Run.
+
 - [Manus API-Key](docs/_API-Keys/manus.md) aufgenommen: offizieller Key-Weg,
   v2-Authentifizierung, sichere Ablage, offene API-Freikontingent-/Payment-/KYC-
   Bedingungen und Abgrenzung zu OpenManus/FreeLLMAPI. Keine Cloud-Aktivierung.

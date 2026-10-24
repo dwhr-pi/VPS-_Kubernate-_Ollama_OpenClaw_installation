@@ -4,6 +4,7 @@ import hashlib
 import io
 import os
 from pathlib import Path
+import subprocess
 import sys
 import tarfile
 import tempfile
@@ -30,6 +31,134 @@ class NativeNodeTests(unittest.TestCase):
 
     def version(self, args, *ignored):
         return "v" + node.NODE if Path(args[0]).name == "node" else node.PNPM
+
+    def test_confirmation_retries_invalid_answer_and_flushes_prompt(self):
+        with patch.object(node.sys.stdin, "isatty", return_value=True), \
+             patch("builtins.input", side_effect=["unknown", "j"]) as read, \
+             patch("builtins.print") as output:
+            self.assertTrue(node.confirm("Download?"))
+        self.assertEqual(read.call_count, 2)
+        self.assertEqual(output.call_args_list[0].args, ("Download? [j/N]",))
+        self.assertTrue(all(call.kwargs.get("flush") for call in output.call_args_list))
+
+    def test_confirmation_logs_empty_declined_and_eof_separately(self):
+        for reply, expected in (("", "leere Eingabe"), ("n", "ausdruecklich abgelehnt"),
+                                (EOFError(), "EOF")):
+            output = io.StringIO()
+            with self.subTest(reply=reply), patch.object(node.sys.stdin, "isatty", return_value=True), \
+                 patch("builtins.input", side_effect=[reply]), redirect_stdout(output):
+                self.assertFalse(node.confirm("Download?"))
+            self.assertIn(expected, output.getvalue())
+
+    def test_confirmation_without_terminal_does_not_read(self):
+        with patch("builtins.input") as read, redirect_stdout(io.StringIO()):
+            self.assertFalse(node.confirm("Download?"))
+        read.assert_not_called()
+
+    def loader_error(self):
+        return subprocess.CalledProcessError(
+            127, ["pnpm", "--version"], stderr="pnpm: error while loading shared libraries: "
+            "libatomic.so.1: cannot open shared object file: No such file or directory")
+
+    def test_libatomic_decline_logs_targeted_repair_without_apt(self):
+        output = io.StringIO()
+        with patch.object(node.common, "run", side_effect=self.loader_error()) as run, \
+             patch.object(node.build_deps, "ubuntu_release", return_value=True), \
+             patch.object(node.shutil, "which", return_value="fixture"), \
+             patch.dict(os.environ, {"ZIGBEE2MQTT_INSTALL_RUNTIME_LIBS": "ask"}), \
+             redirect_stdout(output):
+            with self.assertRaisesRegex(ValueError, "libatomic.so.1 fehlt"):
+                node.runtime_version("pnpm", self.base, {}, allow_repair=True)
+        self.assertEqual(run.call_count, 1)
+        self.assertIn("libatomic1", output.getvalue())
+        self.assertIn("--no-remove", output.getvalue())
+
+    def test_libatomic_explicit_consent_repairs_and_rechecks_once(self):
+        with patch.object(node.common, "run", side_effect=[self.loader_error(), "", node.PNPM]) as run, \
+             patch.object(node.build_deps, "ubuntu_release", return_value=True), \
+             patch.object(node.shutil, "which", return_value="fixture"), \
+             patch.object(node.os, "geteuid", return_value=0, create=True), \
+             patch.dict(os.environ, {"ZIGBEE2MQTT_INSTALL_RUNTIME_LIBS": "1", "MANUS_API_KEY": "fixture"}), \
+             redirect_stdout(io.StringIO()):
+            self.assertEqual(node.runtime_version("pnpm", self.base, {}, True), node.PNPM)
+        self.assertEqual(run.call_count, 3)
+        apt = run.call_args_list[1].args
+        self.assertEqual(apt[0][-1], "libatomic1")
+        self.assertIn("--no-install-recommends", apt[0])
+        self.assertNotIn("MANUS_API_KEY", apt[2])
+        self.assertEqual(run.call_args_list[2].args[0], ["pnpm", "--version"])
+
+    def test_status_and_unsupported_platform_never_repair(self):
+        for allow, supported in ((False, True), (True, False)):
+            with self.subTest(allow=allow, supported=supported), \
+                 patch.object(node.common, "run", side_effect=self.loader_error()) as run, \
+                 patch.object(node.build_deps, "ubuntu_release", return_value=supported), \
+                 patch.object(node.shutil, "which", return_value="fixture"), \
+                 patch.dict(os.environ, {"ZIGBEE2MQTT_INSTALL_RUNTIME_LIBS": "1"}), \
+                 redirect_stdout(io.StringIO()):
+                with self.assertRaises(ValueError):
+                    node.runtime_version("pnpm", self.base, {}, allow)
+                self.assertEqual(run.call_count, 1)
+
+    def test_unknown_loader_error_never_repairs(self):
+        error = subprocess.CalledProcessError(127, "pnpm", stderr="missing libother.so.1")
+        with patch.object(node.common, "run", side_effect=error) as run:
+            with self.assertRaises(subprocess.CalledProcessError):
+                node.runtime_version("pnpm", self.base, {}, True)
+        self.assertEqual(run.call_count, 1)
+
+    def test_interactive_libatomic_accept_and_decline(self):
+        for reply, accepted in (("j", True), ("", False), ("n", False)):
+            effects = [self.loader_error(), "", node.PNPM] if accepted else [self.loader_error()]
+            with self.subTest(reply=reply), \
+                 patch.object(node.common, "run", side_effect=effects) as run, \
+                 patch.object(node.build_deps, "ubuntu_release", return_value=True), \
+                 patch.object(node.shutil, "which", return_value="fixture"), \
+                 patch.object(node.os, "geteuid", return_value=0, create=True), \
+                 patch.object(node.sys.stdin, "isatty", return_value=True), \
+                 patch.dict(os.environ, {"ZIGBEE2MQTT_INSTALL_RUNTIME_LIBS": "ask"}), \
+                 patch("builtins.input", return_value=reply), redirect_stdout(io.StringIO()):
+                if accepted:
+                    self.assertEqual(node.runtime_version("pnpm", self.base, {}, True), node.PNPM)
+                else:
+                    with self.assertRaises(ValueError):
+                        node.runtime_version("pnpm", self.base, {}, True)
+                self.assertEqual(run.call_count, 3 if accepted else 1)
+
+    def test_loader_failure_removes_stage_and_never_marks_toolchain_ready(self):
+        def unpack_node(archive, destination, arch):
+            destination.write_bytes(b"node-fixture")
+        def unpack_pnpm(archive, destination):
+            (destination / "pnpm").write_bytes(b"pnpm-fixture")
+        with patch.object(node, "download_node"), patch.object(node.releases, "download"), \
+             patch.object(node, "unpack_node", side_effect=unpack_node), \
+             patch.object(node.releases, "unpack", side_effect=unpack_pnpm), \
+             patch.object(node.releases, "reserve"), \
+             patch.object(node.common, "run", side_effect=["v" + node.NODE, self.loader_error()]), \
+             patch.object(node.build_deps, "ubuntu_release", return_value=True), \
+             patch.dict(os.environ, {"ZIGBEE2MQTT_INSTALL_RUNTIME_LIBS": "0"}), \
+             redirect_stdout(io.StringIO()):
+            with self.assertRaisesRegex(ValueError, "libatomic.so.1 fehlt"):
+                node.prepare(self.base, self.spec, approved=True)
+        self.assertFalse(list(self.base.iterdir()))
+
+    def test_failed_apt_does_not_retry_binary(self):
+        error = subprocess.CalledProcessError(100, "apt-get")
+        with patch.object(node.common, "run", side_effect=[self.loader_error(), error]) as run, \
+             patch.object(node.build_deps, "ubuntu_release", return_value=True), \
+             patch.object(node.shutil, "which", return_value="fixture"), \
+             patch.object(node.os, "geteuid", return_value=0, create=True), \
+             patch.dict(os.environ, {"ZIGBEE2MQTT_INSTALL_RUNTIME_LIBS": "1"}), \
+             redirect_stdout(io.StringIO()):
+            with self.assertRaises(subprocess.CalledProcessError):
+                node.runtime_version("pnpm", self.base, {}, True)
+        self.assertEqual(run.call_count, 2)
+
+    def test_german_repo_prompt_has_public_default(self):
+        text = (ROOT / "install.sh").read_text(encoding="utf-8")
+        self.assertIn('TXT_PRIVATE_REPO_QUESTION="Ist Ihr GitHub-Repository privat (j) '
+                      'oder ein oeffentliches (N)? [j/N] "', text)
+        self.assertIn('IS_PRIVATE_REPO=${IS_PRIVATE_REPO:-N}', text)
 
     def bootstrap(self):
         def unpack_node(archive, destination, arch):

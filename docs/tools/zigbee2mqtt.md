@@ -25,6 +25,48 @@ Ohne Flag fragt ein interaktives Terminal nach Zustimmung. Ohne Zustimmung
 oder bei nichtinteraktiver Ausfuehrung ohne Flag erfolgt kein Download.
 Der Dry-Run bleibt auch mit Flag ohne Installation.
 
+## Fehler im Log: libatomic.so.1 fehlt (25.10.2026)
+
+### Versuch um 00:48: keine Zustimmung erkannt
+
+Dieser spaetere Versuch endet bereits vor dem Download. Er prueft deshalb
+die libatomic-Reparatur noch nicht. Das alte Log unterscheidet leere Eingabe,
+Ablehnung und EOF nicht; daraus laesst sich kein konkreter Eingabefehler ableiten.
+Die Rueckfragen stehen jetzt als sofort ausgegebene eigene Zeilen im Terminal
+und Log. Sie warten auf Enter; ungueltige Antworten werden erneut abgefragt.
+Leere Eingabe, ausdrueckliche Ablehnung, EOF und fehlendes Terminal erhalten
+unterschiedliche Meldungen. Eine leere Eingabe bleibt sicherheitshalber Nein.
+
+Beim erneuten interaktiven Aufruf die Node-/pnpm-Frage mit `j` und Enter
+beantworten. Alternativ genehmigt `--install-build-deps` gezielt diesen
+Bootstrap; die apt-Reparatur erfordert weiterhin eine separate Zustimmung.
+Bei EOF aus dem Menue den Installer direkt in einem interaktiven Terminal
+starten. Keine automatische Zustimmung und keine Deinstallation wegen Ablehnung.
+
+Im neuen Log startet Node, aber die pnpm-Binaerdatei scheitert bereits bei
+`--version` mit Exit 127. Das ist eine fehlende Systembibliothek, noch kein
+Zigbee2MQTT-Buildfehler. Der Bootstrap erkennt jetzt diese konkrete Meldung,
+zeigt den Reparaturbefehl im aktuellen Log und fragt separat mit `[j/N]`.
+Der gefuehrte apt-Weg ist auf Ubuntu 24.04 und `libatomic1` begrenzt.
+Unbekannte Loaderfehler loesen keine automatische Paketinstallation aus.
+
+Manuelle Reparatur im betroffenen Ubuntu-/WSL-System:
+
+```bash
+sudo apt-get -o DPkg::Lock::Timeout=300 install --no-remove --no-install-recommends -y libatomic1
+bash scripts/tools/zigbee2mqtt_install.sh --install-build-deps
+```
+
+Fuer bewusst nichtinteraktive Zustimmung kann beim Installer
+`ZIGBEE2MQTT_INSTALL_RUNTIME_LIBS=1` gesetzt werden; `0` lehnt ab,
+`ask` ist Standard. Das Node-/pnpm-Downloadflag allein genehmigt diese
+Systemreparatur nicht. Status-/Aktivierungspruefungen installieren nie Pakete,
+auch nicht mit gesetztem Wert `1`; Dry-Run bleibt unveraendert schreibfrei.
+Nach apt wird die Version genau einmal erneut geprueft. Ohne erfolgreiche
+Pruefung entsteht kein fertiger Toolchain-Marker. Gemeinsame Systembibliotheken
+bleiben bei Deinstallation erhalten; bestehende Daten werden nicht geloescht.
+Hier wurden weder apt noch ein echter WSL-Build ausgefuehrt.
+
 ## Versionsvertrag und Quellen
 
 Der feste [GitHub-Quellstand](https://github.com/Koenkk/zigbee2mqtt/tree/344b6e03b43644c97154a72ca9eae17193c553a2)
