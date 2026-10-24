@@ -389,14 +389,51 @@ def validate(prefix, marker, spec, full=False):
     return record
 
 
-def install(outer, prefix, marker, spec, install_build_deps=False):
+def quarantine_incomplete_caddy(outer, prefix, marker, spec):
+    outer, prefix = common.checked(outer), common.checked(prefix)
+    if spec["id"] != "caddy" or outer.name != "caddy" or prefix != outer / "native-github" or marker != prefix / "build-ready.json":
+        raise ValueError("Unvollstaendige Ordner nur am privaten Caddy-Ziel sichern.")
+    if not prefix.is_dir() or marker.exists() or marker.is_symlink():
+        raise ValueError("Caddy-Zustand geaendert/Buildmarker vorhanden; keine Verschiebung.")
+    # Same-filesystem rename preserves all unknown contents, without recursive deletion.
+    backup = common.checked(Path(tempfile.mkdtemp(prefix="native-github-incomplete-", dir=outer)))
+    saved = backup / "native-github"
+    try:
+        prefix.rename(saved)
+    except OSError:
+        backup.rmdir()  # Only the newly created empty recovery directory.
+        raise
+    print("Caddy: unvollstaendiger Altbestand unveraendert gesichert:", saved, flush=True)
+    print("Keine Altdateien geloescht/als installiert uebernommen. Sicherung bleibt auch bei erneutem Buildfehler erhalten.")
+    (backup / "RECOVERY.json").write_text(json.dumps(dict(
+        tool="caddy", original=str(prefix), saved=str(saved),
+        scope="unverified-incomplete-preserved", installed=False,
+        reason="explicit recovery after missing build marker"), indent=2), encoding="utf-8")
+    return saved
+
+
+def install(outer, prefix, marker, spec, install_build_deps=False, quarantine_incomplete=False):
     if marker.exists():
         validate(prefix, marker, spec)
         print("Nativer gepinnter Build bereits vorhanden; kein Upgrade/Download/Start.")
         return
-    if prefix.exists():
-        raise ValueError("Vorhandener nativer Ordner ohne Buildnachweis; nichts ueberschreiben.")
+    incomplete = prefix.exists()
+    if incomplete:
+        if spec["id"] != "caddy":
+            raise ValueError("Vorhandener nativer Ordner ohne Buildnachweis; nichts ueberschreiben.")
+        print("Caddy: vorhandener nativer Ordner ohne Buildnachweis; keine automatische Uebernahme/Loeschung.")
+        print("Reparatur: Altordner separat erhalten, danach neuer GitHub-Build. Kein Platzgewinn; zusaetzlicher Buildspeicher erforderlich.")
+        print("Gezielt freigeben: bash scripts/tools/caddy_install.sh --repair --quarantine-incomplete")
+        if not quarantine_incomplete and sys.stdin.isatty():
+            try:
+                quarantine_incomplete = input("Unvollstaendigen Caddy-Ordner erhalten und frisch bauen? [j/N]: ").strip().lower() in ("j", "ja", "y", "yes")
+            except EOFError:
+                quarantine_incomplete = False
+        if not quarantine_incomplete:
+            raise ValueError("Vorhandener nativer Ordner ohne Buildnachweis; Reparatur nicht freigegeben. Siehe docs/tools/caddy.md.")
     preflight(outer, spec, install_build_deps=install_build_deps)
+    if incomplete:
+        quarantine_incomplete_caddy(outer, prefix, marker, spec)
     prefix.mkdir(mode=0o700)
     try:
         recipe = spec["recipe"]
@@ -453,6 +490,7 @@ def main(argv=None):
     parser.add_argument("action", nargs="?", default="install", choices=("install", "update", "repair", "uninstall", "status", "check", "doctor", "plan"))
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--install-build-deps", action="store_true", help="Explicit consent for approved build dependencies/private toolchains; no application package")
+    parser.add_argument("--quarantine-incomplete", action="store_true", help="Caddy repair only: preserve an unmarked native directory by rename before a fresh build")
     alias = parser.add_mutually_exclusive_group()
     for action in ("repair", "uninstall", "status", "check"):
         alias.add_argument("--" + action, dest="override", action="store_const", const=action)
@@ -463,10 +501,14 @@ def main(argv=None):
         args.action = args.override
     if args.install_build_deps and args.action not in ("install", "update", "repair", "plan"):
         parser.error("--install-build-deps ist nur fuer Install/Update/Repair oder deren Plan erlaubt.")
+    if args.quarantine_incomplete and (args.tool != "caddy" or args.action not in ("repair", "plan")):
+        parser.error("--quarantine-incomplete ist nur fuer Caddy --repair oder plan erlaubt.")
     spec = TOOLS[args.tool]
     outer, prefix, marker = paths(args.tool)
     if args.dry_run or args.action == "plan":
         print(json.dumps(dict(tool=args.tool, target=str(prefix), **spec), indent=2))
+        if args.quarantine_incomplete:
+            print("Caddy-Reparaturplan: unmarkierten Altordner nach Vorpruefung im Tool-Verzeichnis erhalten/umbenennen; danach frischer GitHub-Build. Kein Platzgewinn.")
         print("Nur Plan. Kein Download/Build/Container/Hosteingriff; blocked_reason ist KEINE Installation.")
         return 0
     if args.action in ("status", "check", "doctor"):
@@ -494,7 +536,8 @@ def main(argv=None):
                 remove_native_tree(prefix)
             print("Nur eigener unveraenderter nativer Build entfernt; Legacy-Container/Volumendaten bleiben.")
         else:
-            install(outer, prefix, marker, spec, install_build_deps=args.install_build_deps)
+            install(outer, prefix, marker, spec, install_build_deps=args.install_build_deps,
+                    quarantine_incomplete=args.quarantine_incomplete)
     return 0
 
 

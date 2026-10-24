@@ -74,9 +74,7 @@ Build-/Cleanup-Fehler bleibt sichtbar und kein Erfolgsmarker wird belassen.
 Nach Uebernahme der aktualisierten Dateien kann die Installation erneut
 ausgewaehlt werden. Die bereits gepruefte private Go-Toolchain wird
 wiederverwendet. Falls der alte fehlgeschlagene Rollback einen Ordner ohne
-Buildnachweis hinterlassen hat, verweigert der Installer weiterhin bewusst
-das Ueberschreiben, auch bei `--repair`. Diesen Altbestand zuerst separat
-pruefen/sichern lassen; nicht pauschal den Tool- oder Userdatenordner loeschen.
+Buildnachweis hinterlassen hat, siehe die ausdrueckliche Reparatur unten.
 
 Die Ausgabe `unknown` von `caddy version` ist bei einem Quellen-Build ohne
 Release-Versionsstempel kein Fehlercode und kein Nachweis einer Release-
@@ -84,6 +82,54 @@ Versionsnummer. Der Installer prueft zusaetzlich Pin und Artefakt-Hashes,
 aber keine laufende Webserverinstanz. Das Log zeigt keinen Speicherabbruch.
 
 Hintergrund: [Go-Modulcache und Schreibschutz](https://go.dev/ref/mod#module-cache).
+
+## Reparatur: vorhandener nativer Ordner ohne Buildnachweis
+
+Das zweite Log vom 24.10.2026 um 04:15 zeigt einen Restordner des vorherigen
+Versuchs. Dies ist keine erneute Go-/Buildstoerung: Der Installer stoppt
+bewusst vor dem Ueberschreiben. Ein fehlender Marker wird nicht einfach
+erzeugt und eine vorhandene Binaerdatei nicht ungeprueft als installiert gewertet.
+
+Nach Uebernahme der aktualisierten Setup-Dateien ist diese gesonderte,
+datenerhaltende Reparatur moeglich:
+
+```bash
+# Preview only; no move, download or build:
+bash scripts/tools/caddy_install.sh --repair --quarantine-incomplete --dry-run
+# Explicit consent to preserve the old directory, then rebuild from GitHub:
+bash scripts/tools/caddy_install.sh --repair --quarantine-incomplete
+```
+
+Die interaktive Installation im Tools-Menue bietet dieselbe Erhaltung mit
+einer separaten Ja/Nein-Frage an. Ohne Zustimmung oder bei nichtinteraktiver
+Ausfuehrung ohne Flag bleibt der Ordner unveraendert. Ein einfacher
+`--repair` ist keine stillschweigende Freigabe zum Verschieben.
+Die Option gilt ausschliesslich fuer Caddy ohne vorhandenen Buildmarker.
+Ein vorhandener, aber ungueltiger Marker bleibt ein manueller Prueffall.
+
+Vor jeder Verschiebung laufen die normalen Speicher-/Toolchain-Pruefungen.
+Danach wird der komplette Altordner innerhalb desselben Tool-Verzeichnisses
+umbenannt, etwa nach
+`~/.openclaw_ultimate_user_data/tools/caddy/native-github-incomplete-<zufall>/native-github`.
+Das aktuelle Operationslog nennt den tatsaechlichen Sicherungspfad; daneben
+steht eine `RECOVERY.json` mit dem ausdruecklichen Status **nicht installiert**.
+Unbekannte Dateien, Konfigurationen und Verknuepfungen bleiben erhalten;
+die Reparatur fuehrt sie nicht aus und importiert keine alten Secrets.
+Die Sicherung wird nicht automatisch geloescht, auch nicht bei erneutem
+Buildfehler oder bei der Deinstallation des spaeteren neuen Builds.
+
+Anschliessend entsteht ein neuer Ordner aus dem festen GitHub-Pin. Die
+vorhandene gepruefte private Go-Toolchain bleibt am bisherigen Platz und
+wird wiederverwendet. Es wird kein Dienst gestartet. Nur ein erfolgreich
+abgeschlossener neuer Build erhaelt einen Buildmarker.
+
+**Speicher:** Das Umbenennen kopiert den Altbestand nicht, gibt aber auch
+keinen Platz frei. Bei zuletzt rund 6 GiB auf C: bleibt der Speicher knapp.
+Die normale 4-GiB-Mindestreserve wird nicht umgangen; sie garantiert nicht
+genug Platz fuer den gesamten Build. Scheitert die Vorpruefung, wird noch
+nichts verschoben. Den Sicherungsordner spaeter erst nach eigener Pruefung
+und separat freigegebener Bereinigung entfernen; keine pauschale Loeschung
+von `tools/caddy`, Toolchains oder Userdaten.
 
 ## Kein automatischer Webserverbetrieb
 
