@@ -7,6 +7,7 @@ from pathlib import Path
 import platform
 import re
 import shutil
+import stat
 import subprocess
 import sys
 import tempfile
@@ -172,6 +173,45 @@ def environment(prefix):
     return env
 
 
+def remove_native_tree(prefix, cache_only=False):
+    prefix = common.checked(prefix)
+    if not cache_only and prefix.name != "native-github":
+        raise ValueError("Entfernung nur fuer den privaten nativen Buildordner erlaubt.")
+    target = common.checked(prefix / "_build") if cache_only else prefix
+    cache = common.checked(prefix / "_build/.build-home/go-mod")
+    if cache.is_dir():
+        print("Cleanup: Schreibschutz nur im privaten Go-Modulcache aufheben:", cache)
+
+        def unlock(path):
+            info = path.lstat()
+            if stat.S_ISLNK(info.st_mode) or getattr(info, "st_file_attributes", 0) & 0x400:
+                return False  # Never chmod a symlink/junction target outside the cache.
+            common.checked(path)
+            if not (stat.S_ISREG(info.st_mode) or stat.S_ISDIR(info.st_mode)):
+                raise ValueError("Spezialdatei im privaten Go-Modulcache.")
+            if stat.S_ISREG(info.st_mode) and info.st_nlink > 1:
+                raise ValueError("Mehrfach verlinkte Cache-Datei; keine Rechteaenderung.")
+            mode = stat.S_IMODE(info.st_mode) | stat.S_IWUSR
+            if stat.S_ISDIR(info.st_mode):
+                mode |= stat.S_IRUSR | stat.S_IXUSR
+            if mode != stat.S_IMODE(info.st_mode):
+                path.chmod(mode)
+            return True
+
+        def failed_walk(error):
+            raise error
+
+        unlock(cache)
+        for parent, directories, files in os.walk(cache, topdown=True, followlinks=False, onerror=failed_walk):
+            for name in directories[:]:
+                if not unlock(Path(parent) / name):
+                    directories.remove(name)
+            for name in files:
+                unlock(Path(parent) / name)
+    if target.exists():
+        shutil.rmtree(target)
+
+
 def build(prefix, spec):
     recipe = spec["recipe"]
     kind = recipe["kind"]
@@ -315,7 +355,7 @@ def build(prefix, spec):
             raise ValueError("Erwartetes Buildartefakt fehlt: " + name)
     if recipe.get("probe"):
         run([str(binary)] + recipe["probe"], prefix, env)
-    shutil.rmtree(common.checked(prefix / "_build"))
+    remove_native_tree(prefix, cache_only=True)
     return artifacts
 
 
@@ -397,8 +437,13 @@ def install(outer, prefix, marker, spec, install_build_deps=False):
             Path(pending).unlink(missing_ok=True)
         print("Nativer GitHub-Build/Paket vorhanden. Kein Container, Dienststart, Port, Datenbank-Setup oder automatische Datenmigration.")
     except BaseException:
-        shutil.rmtree(common.checked(prefix))
-        print("Rollback: nur neuer nativer Buildordner entfernt; /opt, alte Container/Volumes, Nutzerdaten und Logs bleiben.")
+        try:
+            marker.unlink(missing_ok=True)
+            remove_native_tree(prefix)
+            print("Rollback: nur neuer nativer Buildordner entfernt; /opt, alte Container/Volumes, Nutzerdaten und Logs bleiben.")
+        except (OSError, ValueError) as cleanup_error:
+            print("Rollback unvollstaendig:", cleanup_error)
+            print("Restordner erhalten:", prefix, "; Bereinigung nicht abgeschlossen. Urspruenglicher Fehler folgt; keine sudo-/Fremddaten-Bereinigung.")
         raise
 
 
@@ -446,7 +491,7 @@ def main(argv=None):
         if args.action == "uninstall":
             if prefix.exists():
                 validate(prefix, marker, spec, full=True)
-                shutil.rmtree(common.checked(prefix))
+                remove_native_tree(prefix)
             print("Nur eigener unveraenderter nativer Build entfernt; Legacy-Container/Volumendaten bleiben.")
         else:
             install(outer, prefix, marker, spec, install_build_deps=args.install_build_deps)

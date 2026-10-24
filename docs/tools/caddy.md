@@ -52,6 +52,39 @@ betrifft nur den neu erstellten nativen Buildordner; die private Basis-
 Toolchain bleibt wie andere Basiswerkzeuge bei Fehler/Deinstallation erhalten.
 Alte Container, Volumes, `/opt`-Daten und Secrets bleiben unangetastet.
 
+## Fehler nach erfolgreichem Build: Permission denied: go.sum
+
+Im Log vom 24.10.2026 um 02:08 wurden Compiler, Modulpruefung, Build und
+Programmaufruf bereits erfolgreich durchlaufen. Erst danach kam der
+Berechtigungsfehler. Der betroffene private Go-Modulcache enthaelt
+standardmaessig schreibgeschuetzte Modulverzeichnisse; das bisherige Cleanup
+mit `shutil.rmtree` konnte daran scheitern. Auch der folgende Rollback konnte
+denselben Fehler ausloesen und damit die erste Fehlermeldung ueberdecken.
+Ohne vollstaendigen Traceback ist der konkrete betroffene Pfad im alten Log
+nicht abschliessend nachweisbar; dieser Cleanup-Fehlerpfad ist nun abgedeckt.
+
+Der Installer hebt den Schreibschutz jetzt ausschliesslich im eigenen
+`native-github/_build/.build-home/go-mod` vor dessen Entfernung auf.
+Symlinks/Junctions werden dabei nicht verfolgt. Kein `sudo`, kein rekursives
+`chmod` auf Nutzerdaten, keine Aenderung an globalen Go-Caches oder Quellen.
+Go behaelt waehrend des Builds seine standardmaessigen Cache-Rechte.
+Ein fehlschlagender Rollback wird separat protokolliert; der urspruengliche
+Build-/Cleanup-Fehler bleibt sichtbar und kein Erfolgsmarker wird belassen.
+
+Nach Uebernahme der aktualisierten Dateien kann die Installation erneut
+ausgewaehlt werden. Die bereits gepruefte private Go-Toolchain wird
+wiederverwendet. Falls der alte fehlgeschlagene Rollback einen Ordner ohne
+Buildnachweis hinterlassen hat, verweigert der Installer weiterhin bewusst
+das Ueberschreiben, auch bei `--repair`. Diesen Altbestand zuerst separat
+pruefen/sichern lassen; nicht pauschal den Tool- oder Userdatenordner loeschen.
+
+Die Ausgabe `unknown` von `caddy version` ist bei einem Quellen-Build ohne
+Release-Versionsstempel kein Fehlercode und kein Nachweis einer Release-
+Versionsnummer. Der Installer prueft zusaetzlich Pin und Artefakt-Hashes,
+aber keine laufende Webserverinstanz. Das Log zeigt keinen Speicherabbruch.
+
+Hintergrund: [Go-Modulcache und Schreibschutz](https://go.dev/ref/mod#module-cache).
+
 ## Kein automatischer Webserverbetrieb
 
 Der Installer fuehrt nach dem Build lediglich `caddy version` aus. Er
