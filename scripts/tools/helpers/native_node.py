@@ -43,7 +43,7 @@ def confirm(question):
         print("Kein interaktives Eingabeterminal; keine automatische Zustimmung.", flush=True)
         return False
     print(question + " [j/N]", flush=True)
-    print("Warte auf Eingabe und Enter. Nur j/ja/y/yes erlaubt die Aktion; Enter bedeutet Nein.", flush=True)
+    print("Warte auf Ihre Eingabe und Enter. Nur [j/ja/y/yes] erlaubt die Aktion; Nur [Enter] bedeutet: Nein.", flush=True)
     while True:
         try:
             answer = input().strip().lower()
