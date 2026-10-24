@@ -19,6 +19,14 @@ noch kein abgenommenes natives Rhasspy-2-Buildrezept fuer Ubuntu 24.04.
 Das ist eine offene Implementierung, keine erfolgreich abgeschlossene
 GitHub-Umstellung. Die Installationsmeldung nennt jetzt die konkreten Gruende.
 
+Auch das Log vom **24.10.2026 um 05:09** zeigt denselben offenen Stand.
+Es ist kein neuer Fehler durch die Caddy-/Go-Reparaturen. Der Installer
+hat weder den Rhasspy-Build gestartet noch einen fehlenden Compiler oder
+ein unpassendes Python nachgewiesen. Die rund 5,2 GiB auf C: sind knapp,
+aber nicht die Ursache dieses konkreten Abbruchs. Ein erneuter Klick auf
+Installieren oder `--install-build-deps` kann das fehlende Buildrezept nicht
+ersetzen. Die Source-only-Inventarisierung ist keine fertige Installation.
+
 Kein Download, apt/pip, Docker-Fallback, Modellstart oder Erfolgsmarker wird
 durch diesen blockierten Weg ausgefuehrt. Alte Container, `/opt/rhasspy`,
 Profile, Volumes, Secrets und Logs bleiben unangetastet. Der blockierte
@@ -87,7 +95,22 @@ eigene Quellen-, Modell-, Audio- und Datenschutzpruefungen.
 ```bash
 bash scripts/tools/rhasspy_install.sh --dry-run
 bash scripts/tools/rhasspy_status.sh
+bash scripts/tools/rhasspy_doctor.sh
 ```
+
+Nach Uebernahme der aktualisierten Dateien liefert **Doctor** zusaetzlich
+`legacy_review` mit der Einstufung `implementation-blocked`, dem bereits
+erfassten Quellcommit, der Anzahl inventarisierter Submodule und den noch
+offenen Abnahmeschritten. Fuer einige Buildwerkzeuge wird nur geprueft,
+ob sie im PATH vorhanden sind; sie werden nicht ausgefuehrt. Die angezeigte
+Python-Version gehoert zum Setup-Interpreter und ist kein Rhasspy-Test.
+Selbst wenn alle Werkzeuge vorhanden sind, bleiben `installation_enabled`
+und `runtime_verified` ausdruecklich **false**.
+
+Der Doctor liest nur lokale Metadaten. Kein Download, Build, Profilzugriff,
+Mikrofon-/USB-/MQTT-Test oder Schreibzugriff auf Userdaten wird ausgefuehrt.
+Exitcode **1** bedeutet hier weiterhin: keine freigegebene Runtime vorhanden,
+nicht: die Diagnose habe etwas installiert oder repariert.
 
 Ein ausdruecklicher Installationsversuch bleibt mit dem konkreten Blocker
 fehlgeschlagen; es wird kein Erfolg vorgetaeuscht. Mehr Speicher, cmake,

@@ -484,6 +484,28 @@ def install(outer, prefix, marker, spec, install_build_deps=False, quarantine_in
         raise
 
 
+def rhasspy_legacy_diagnostic():
+    inventory_path = ROOT / "docs/legacy/rhasspy2/source-inventory.json"
+    try:
+        inventory = json.loads(inventory_path.read_text(encoding="utf-8"))
+        reviewed = dict(available=True, commit=inventory["commit"],
+                        submodule_count=len(inventory["submodules"]), scope=inventory["scope"])
+    except (OSError, ValueError, KeyError, TypeError):
+        reviewed = dict(available=False, scope="review-metadata-unavailable")
+    # Presence checks only: do not execute legacy tools, import audio code or probe devices.
+    return dict(classification="implementation-blocked", installation_enabled=False,
+                runtime_verified=False, source_inventory=reviewed,
+                setup_interpreter=".".join(map(str, sys.version_info[:3])),
+                tool_presence={name: shutil.which(name) is not None for name in
+                               ("git", "make", "cc", "autoconf", "automake", "pkg-config")},
+                presence_is_not_compatibility_approval=True,
+                required_acceptance=["private Python/build dependency lock with verified hashes",
+                                     "review recursive sources and replace unverified HTTP/master downloads",
+                                     "isolated legacy core build and import tests",
+                                     "MQTT/audio/security/restore tests, then Ubuntu 24.04/WSL acceptance"],
+                review_doc="docs/legacy/rhasspy2/BUILD_REVIEW.md")
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("tool", choices=TOOLS)
@@ -519,14 +541,21 @@ def main(argv=None):
                 ready = True
             except (ValueError, OSError, subprocess.SubprocessError, KeyError, TypeError):
                 pass
-        print(json.dumps(dict(installed=ready, scope="native-github-build" if ready else "absent",
-                              application_tested=False, blocked_reason=spec["blocked_reason"],
-                              build_note=(spec.get("recipe") or {}).get("note", ""))))
+        report = dict(installed=ready, scope="native-github-build" if ready else "absent",
+                      application_tested=False, blocked_reason=spec["blocked_reason"],
+                      build_note=(spec.get("recipe") or {}).get("note", ""))
+        if args.tool == "rhasspy" and args.action == "doctor" and not spec["recipe"]:
+            report["legacy_review"] = rhasspy_legacy_diagnostic()
+        print(json.dumps(report))
         return 0 if ready or args.action == "status" else 1
     with common.operation(outer, args.action, tool=spec["name"].replace(" ", "_")):
         print("GitHub-native-Umstellung:", args.tool, "Manifest:", MANIFEST)
         print("Alte Container, Volumes, /opt-Installationen und Daten bleiben unberuehrt.")
         if not spec["recipe"]:
+            if args.tool == "rhasspy":
+                print("Rhasspy: Implementierungssperre, keine fehlende Basisabhaengigkeit. Kein abgenommenes natives Buildrezept vorhanden.")
+                print("Schreibgeschuetzte Diagnose: bash scripts/tools/rhasspy_doctor.sh")
+                print("Naechste Abnahmeschritte: docs/legacy/rhasspy2/BUILD_REVIEW.md; erneutes Installieren allein hilft nicht.")
             raise ValueError("Native Umstellung noch OFFEN: " + spec["blocked_reason"] +
                              " Kein Docker-Fallback, kein Erfolgsmarker. Siehe " +
                              spec.get("blocked_doc", "docs/DOCKER_TO_GITHUB.md") + ".")

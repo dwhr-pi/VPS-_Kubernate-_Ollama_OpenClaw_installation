@@ -128,6 +128,32 @@ class NativeGithubTests(unittest.TestCase):
             self.assertFalse(entry["payload_verified"])
             self.assertIsNone(entry["sha256"])
 
+    def test_rhasspy_doctor_is_offline_read_only_and_reports_missing_implementation(self):
+        output = io.StringIO()
+        with patch.object(tool.common, "operation") as operation, patch.object(tool.common, "run") as run, \
+             patch.object(tool.common, "git") as git, patch.object(tool, "build") as build, \
+             patch.object(tool.shutil, "which", return_value="/present/tool"), redirect_stdout(output):
+            self.assertEqual(tool.main(["rhasspy", "doctor"]), 1)
+        report = json.loads(output.getvalue())
+        self.assertFalse(report["installed"])
+        review = report["legacy_review"]
+        self.assertEqual(review["classification"], "implementation-blocked")
+        self.assertFalse(review["installation_enabled"])
+        self.assertFalse(review["runtime_verified"])
+        self.assertEqual(review["source_inventory"]["submodule_count"], 35)
+        self.assertTrue(all(review["tool_presence"].values()))
+        self.assertTrue(review["presence_is_not_compatibility_approval"])
+        for mocked in (operation, run, git, build):
+            mocked.assert_not_called()
+        self.assertFalse(list(Path(self.temp.name).iterdir()))
+
+    def test_rhasspy_doctor_handles_unavailable_inventory_without_enabling_install(self):
+        with patch.object(tool.Path, "read_text", side_effect=FileNotFoundError("missing inventory")):
+            report = tool.rhasspy_legacy_diagnostic()
+        self.assertFalse(report["source_inventory"]["available"])
+        self.assertFalse(report["installation_enabled"])
+        self.assertFalse(report["runtime_verified"])
+
     def test_low_disk_fails_before_sources_and_keeps_legacy_data(self):
         self.outer.mkdir(parents=True)
         legacy = self.outer / "existing-data"
