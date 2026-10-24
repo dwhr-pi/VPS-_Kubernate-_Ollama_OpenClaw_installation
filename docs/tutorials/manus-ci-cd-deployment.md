@@ -126,6 +126,11 @@ werden weder Cluster-Credentials erzeugt noch Sync/Apply/Push ausgefuehrt.
 
 ## 6. Praesentation und Quellen
 
+Weitere PDF-/PowerPoint-Varianten und der Original-Sprachenkatalog sind im
+[Quellenregister vom 24.10.2026](../sources/2026-10-24/README.md) eingeordnet.
+Die erneut gelieferte 13-Folien-Datei ist bytegleich mit der folgenden
+Praesentation und wird nicht doppelt abgelegt. Die 11-Folien-Variante bleibt separat.
+
 Die [Praesentation](../presentations/technology-tooling-overview.pptx) fasst
 Technologiestacks, Skill, CI/CD und die Freigabegrenzen zusammen.
 Die [Folieninhalte](../presentations/technology-tooling-overview.json) enthalten

@@ -7,6 +7,10 @@ Ein Prompt kann Gesetze weder vollstaendig kennen noch technisch erzwingen.
 
 ## Einstieg im Setup
 
+Nachgereichte Unterlage: [DSB-Dokumentation und fachlicher Abgleich](DSB_DOCUMENT_SOURCE_REVIEW.md).
+Das als vertraulich gekennzeichnete PDF bleibt ausserhalb des Repositorys;
+seine Aussagen sind kein Nachweis vollstaendiger Konformitaet.
+
 Hauptmenue **18: Recht und RAG-Compliance: Offline-Pruefung** zeigt offene
 Quellenpruefungen und die Laenderabdeckung. Es startet keinen Server, keinen
 Cloud-Aufruf, keine Datenbankmigration und keine automatische Loeschung.

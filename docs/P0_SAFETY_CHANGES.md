@@ -1,5 +1,8 @@
 # P0-Paket: Update, PAT und datenerhaltender Compose-Uninstall
 
+Ergaenzender [externer P0-Patchplan mit Standabgleich](sources/2026-10-24/README.md)
+fuer Kubernetes/Compose: Vorschlag, nicht Bestandteil der hier beschriebenen Freigabe.
+
 Freigegebener Umfang: Update-Sicherung, PAT-Handling und datenerhaltender
 Uninstall. Abnahmeziel: **Ubuntu 24.04 x86_64 in einer Wegwerf-VM**.
 Die bestehenden Grok-/Architekturentwuerfe bleiben davon getrennt.

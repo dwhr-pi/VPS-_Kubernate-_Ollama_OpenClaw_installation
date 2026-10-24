@@ -1,5 +1,9 @@
 # Tool Index
 
+**[Nachgereichte Unterlagen: Tooling, Praesentationen und P0-Plan](sources/2026-10-24/README.md)**:
+acht Eingaben eingeordnet; Originalquellen, Dublettenabgleich und DSB-Review
+mit bestehenden Leitfaeden verknuepft. Keine zusaetzliche Installationsfreigabe.
+
 **[GitHub-Ergaenzungen am Listenende](tools/github-gap-tools.md)**:
 Qwen Desktop Build fuer Linux/natives Windows, Hermes_Agent_Jarvis und weitere
 Luecken-Tools. Build/Paket, Quellinstallation und Workflow getrennt gekennzeichnet.

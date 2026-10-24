@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Acht nachgereichte Unterlagen zu Tooling, CI/CD, P0-Plan und DSB zugeordnet:
+  [Quellenregister](docs/sources/2026-10-24/README.md). Sechs Originaldateien
+  uebernommen, identische Praesentation wiederverwendet, vertrauliche DSB-PDF
+  nur fachlich eingeordnet. Keine Installer-, Cluster- oder Secret-Aenderung.
+
 - Delta-Audit vom 24.10.2026 mit neu geprueften Code-/Zeilenbelegen,
   anerkannten vorhandenen P0-Schutzmassnahmen, Linux-Case-Fehler im Profilindex
   und getrennten P0-P3-PR-Vorschlaegen. Nur Dokumentation, keine Laufzeit-

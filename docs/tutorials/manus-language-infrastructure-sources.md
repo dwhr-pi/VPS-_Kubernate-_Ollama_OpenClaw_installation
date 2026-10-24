@@ -1,5 +1,9 @@
 # Sprachen, Shells und Infrastruktur: weitere Quellen aus dem Manus-Interview
 
+Nachgereichte Originaldatei und PDF-/PowerPoint-Begleitmaterial:
+[Quellenregister vom 24.10.2026](../sources/2026-10-24/README.md).
+Die Quellen ergaenzen diesen Katalog; sie ersetzen keinen Buildnachweis.
+
 Konkrete Umsetzung: [Skill, Go-/Rust-CI, Deployment und Praesentation](manus-ci-cd-deployment.md).
 
 **Im Setup installierbar/verwalten:** [Alle 62 Quellen: Voraussetzungen und Installer](../tools/development-toolchain-check.md),
