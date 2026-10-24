@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- [Manus API-Key](docs/_API-Keys/manus.md) aufgenommen: offizieller Key-Weg,
+  v2-Authentifizierung, sichere Ablage, offene API-Freikontingent-/Payment-/KYC-
+  Bedingungen und Abgrenzung zu OpenManus/FreeLLMAPI. Keine Cloud-Aktivierung.
+
 - Acht nachgereichte Unterlagen zu Tooling, CI/CD, P0-Plan und DSB zugeordnet:
   [Quellenregister](docs/sources/2026-10-24/README.md). Sechs Originaldateien
   uebernommen, identische Praesentation wiederverwendet, vertrauliche DSB-PDF

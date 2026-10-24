@@ -1,5 +1,8 @@
 # API-Schluessel erhalten: Freikontingente, Bezahlung und Identitaet
 
+Nachtrag vom 24.10.2026: [Manus API-Key](manus.md) mit offiziellem
+Erstellungsweg, API-/Web-App-Abgrenzung sowie Zahlungs- und KYC-Pruefluecken.
+
 **Recherche: 23.10.2026.** Bezug sind die Webseiten unseres
 [Anbieter-Katalogs](PROVIDER_KEY_CATALOG.md) und der
 [Free-Tier-Uebersicht](FREE_TIERS_AND_TRIAL_CREDITS.md).

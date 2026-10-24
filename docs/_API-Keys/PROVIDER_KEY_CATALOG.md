@@ -82,9 +82,15 @@ keine vermeintlich unterstützten ENV-Namen erfunden.
 
 ## 3. Recherche, Sprache, Audio und Video
 
+Ergaenzung vom 24.10.2026: [Manus Agenten-/Task-API](manus.md),
+offizielle Webseite [manus.im](https://manus.im/), dokumentierter Name
+`MANUS_API_KEY`. Nur Anbieter-Dokumentation, keine bereits registrierte
+Setup-/FreeLLMAPI-Anbindung; nicht mit OpenManus verwechseln.
+
 | Dienst | Offizielle Webseite | Deklarierter Name | Zweck / Statusgrenze |
 |---|---|---|---|
 | Brave Search | [Brave Search API](https://brave.com/search/api/) | `BRAVE_API_KEY` | Externe Websuche |
+| [Manus](manus.md) | [manus.im](https://manus.im/) | `MANUS_API_KEY` (Anbietername; nur dokumentiert) | Externe Agenten-/Task-API; keine aktive Setup-/FreeLLMAPI-Integration |
 | Perplexity | [perplexity.ai](https://www.perplexity.ai/) | `PERPLEXITY_API_KEY` | Externe Recherche-/Modell-API |
 | Firecrawl | [firecrawl.dev](https://www.firecrawl.dev/) | `FIRECRAWL_API_KEY` | Externer Crawl-/Extraktionszugang; lokale Variante separat prüfen |
 | ElevenLabs | [elevenlabs.io](https://elevenlabs.io/) | `ELEVENLABS_API_KEY`, `XI_API_KEY` | Voice-Zugang; Alias nur verwenden, wenn der Client ihn unterstützt |

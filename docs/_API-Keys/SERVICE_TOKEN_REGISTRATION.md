@@ -8,6 +8,10 @@ Credential-Arten. Kein Key-Kauf macht einen beliebigen Dienst verfuegbar.
 
 ## Geltungsbereich der Kostenangaben
 
+Ergaenzung vom 24.10.2026: [Manus API-Key und Task-API](manus.md) mit
+offiziellem Erstellungsweg und getrennten Web-App-/API-Kostenbedingungen.
+Kreditkarte, PayPal, Klarna, Krypto und KYC sind dort einzeln eingeordnet.
+
 **Fuer alle externen Dienste dieser Seite:** Sofern nicht ausdruecklich
 belegt, sind Kredit-/Debitkarte, **PayPal, Klarna und Krypto**, genauer
 Mindestkauf und eine allgemeine **Ausweis-/Selfiepflicht UB**.

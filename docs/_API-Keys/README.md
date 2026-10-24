@@ -7,6 +7,9 @@ oder Dienste aktiviert. Ein dokumentierter Zugang ist keine Cloud-Freigabe.
 
 ## Navigation
 
+- [Manus API-Key](manus.md): Developers settings, Agenten-/Task-API,
+  Gratis-/Zahlungsgrenzen und sichere Ablage; kein Modellrouter oder Installer.
+
 - [API-Schluessel erhalten: Registrierung, Gratis-Kontingente, Zahlung und Identitaet](REGISTRATION_BILLING_AND_IDENTITY.md):
   konkrete Key-Wege, Kreditkarte/PayPal/Klarna/Krypto, Mindestkauf,
   Trial-Ablauf und belegte bzw. offene Identitaetspruefungen.
