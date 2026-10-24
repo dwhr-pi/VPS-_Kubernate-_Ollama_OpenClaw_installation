@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Delta-Audit vom 24.10.2026 mit neu geprueften Code-/Zeilenbelegen,
+  anerkannten vorhandenen P0-Schutzmassnahmen, Linux-Case-Fehler im Profilindex
+  und getrennten P0-P3-PR-Vorschlaegen. Nur Dokumentation, keine Laufzeit-
+  oder Secret-Aenderung: [Auditbericht](docs/AUDIT_2026-10-24.md).
+
 - Projektweiter Offline-Audit mit Registry-/Link-/Python-Pruefung und CI-
   Regressionstests; persoenliche Dokumentationspfade repariert, Queue-Sperren,
   Dry-Run, Exit-Codes und schreibfreie Statusabfrage ergaenzt. Umfang und offene
