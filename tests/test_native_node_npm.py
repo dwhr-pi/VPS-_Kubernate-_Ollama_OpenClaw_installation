@@ -28,7 +28,13 @@ class NodeNpmTests(unittest.TestCase):
             mocked.start()
             self.addCleanup(mocked.stop)
 
-    def versions(self, args, *ignored):
+    def versions(self, args, cwd, env):
+        user, global_config = Path(env["npm_config_userconfig"]), Path(env["npm_config_globalconfig"])
+        self.assertNotEqual(user.resolve(), global_config.resolve())
+        self.assertTrue(user.is_file())
+        self.assertTrue(global_config.is_file())
+        self.assertEqual(user.stat().st_size, 0)
+        self.assertEqual(global_config.stat().st_size, 0)
         return "v" + helper.node.NODE if Path(args[0]).name == "node" else helper.NPM
 
     def unpack(self, archive, payload, arch):
@@ -55,6 +61,31 @@ class NodeNpmTests(unittest.TestCase):
         fetch.assert_not_called()
         self.assertEqual(dict(os.environ), before)
         self.assertTrue(env["PATH"].endswith(os.pathsep + "original"))
+        self.assertNotEqual(env["npm_config_userconfig"], env["npm_config_globalconfig"])
+
+    def test_config_environment_drops_case_aliases_and_preserves_parent(self):
+        parent = {"PATH": "fixture", "NPM_CONFIG_USERCONFIG": "private-user-settings",
+                  "npm_config_globalconfig": os.devnull, "npm_config_userconfig": os.devnull}
+        original = dict(parent)
+        child = helper.config_environment(self.base / "config", parent)
+        self.assertEqual(parent, original)
+        self.assertNotIn("NPM_CONFIG_USERCONFIG", child)
+        self.assertNotEqual(child["npm_config_userconfig"], child["npm_config_globalconfig"])
+        self.assertEqual(child["PATH"], "fixture")
+
+    def test_existing_nonempty_config_is_never_overwritten(self):
+        directory = self.base / "config"
+        directory.mkdir()
+        existing = directory / "user.npmrc"
+        existing.write_text("fixture-do-not-read-or-replace")
+        with self.assertRaisesRegex(ValueError, "nichts ueberschreiben"):
+            helper.config_environment(directory, {})
+        self.assertEqual(existing.read_text(), "fixture-do-not-read-or-replace")
+
+    def test_reuse_of_owned_empty_configs_is_idempotent(self):
+        directory = self.base / "config"
+        first = helper.config_environment(directory, {})
+        self.assertEqual(first, helper.config_environment(directory, {}))
 
     def test_missing_pair_requires_consent(self):
         with patch.object(helper.node, "download_node") as download, redirect_stdout(io.StringIO()):

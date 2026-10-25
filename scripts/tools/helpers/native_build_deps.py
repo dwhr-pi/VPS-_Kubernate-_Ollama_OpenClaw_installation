@@ -11,6 +11,7 @@ import gap_tools as common
 # Do not allow recipes to install applications or arbitrary system packages.
 MOSQUITTO_PACKAGES = ("git", "cmake", "build-essential", "pkg-config", "libssl-dev",
                       "libcjson-dev", "libsqlite3-dev", "libedit-dev", "libmicrohttpd-dev")
+LITELLM_PACKAGES = ("build-essential", "pkg-config")
 
 
 def ubuntu_release():
@@ -30,32 +31,45 @@ def installed(package):
 
 def prepare(spec, approved=False):
     packages = spec["recipe"].get("apt_build_deps", [])
+    name, slug = "Mosquitto", "mosquitto"
+    if spec["id"] == "litellm":
+        if packages and tuple(packages) != LITELLM_PACKAGES:
+            raise ValueError("Nicht freigegebene LiteLLM-Systempaketliste; keine apt-Aktion.")
+        name, slug, packages = "LiteLLM", "litellm", LITELLM_PACKAGES
+        if all(shutil.which(tool) for tool in ("cc", "c++", "make", "pkg-config")):
+            print("LiteLLM: C/C++-Buildwerkzeuge bereits vorhanden; keine apt-Aktion.")
+            return
     if not packages:
         return
-    if spec["id"] != "mosquitto" or tuple(packages) != MOSQUITTO_PACKAGES:
+    if (spec["id"] not in ("mosquitto", "litellm") or
+            (spec["id"] == "mosquitto" and tuple(packages) != MOSQUITTO_PACKAGES)):
         raise ValueError("Nicht freigegebene Systempaketliste; keine apt-Aktion.")
     if not ubuntu_release() or not all(shutil.which(name) for name in ("apt-get", "dpkg-query")):
-        message = "Mosquitto: gefuehrter apt-Weg nur fuer Ubuntu 24.04; Buildwerkzeuge/Bibliotheken separat bereitstellen. Siehe docs/tools/mosquitto.md."
+        message = name + ": gefuehrter apt-Weg nur fuer Ubuntu 24.04; Buildwerkzeuge/Bibliotheken separat bereitstellen. Siehe docs/tools/" + slug + ".md."
         if approved:
             raise ValueError(message + " Keine Systemaenderung.")
         print(message)
         return
     missing = [package for package in packages if not installed(package)]
     if not missing:
-        print("Mosquitto: Ubuntu-Buildpakete bereits vorhanden; keine apt-Aktion.")
+        print(name + ": Ubuntu-Buildpakete bereits vorhanden; keine apt-Aktion.")
+        if slug == "litellm":
+            raise ValueError("LiteLLM: Pakete installiert, aber cc/c++/make/pkg-config fehlen im PATH; PATH/Paketinstallation separat reparieren.")
         return
-    print("Mosquitto: fehlende gemeinsame Buildpakete: " + " ".join(missing))
-    print("Nur Compiler/Bibliotheken via apt; Mosquitto selbst aus GitHub. "
+    print(name + ": fehlende gemeinsame Buildpakete: " + " ".join(missing))
+    print("Nur Compiler/Bibliotheken via apt; " + name + " selbst aus GitHub. "
           "apt kann Abhaengigkeiten aktualisieren. Basiswerkzeuge bleiben bei Deinstallation erhalten.")
-    print("Gezielt erneut starten: bash scripts/tools/mosquitto_install.sh --install-build-deps")
+    print("Gezielt erneut starten: bash scripts/tools/" + slug + "_install.sh --install-build-deps")
     if not approved and sys.stdin.isatty():
         try:
-            approved = input("Fehlende Buildpakete jetzt mit apt installieren? [j/N]: ").strip().lower() in ("j", "ja", "y", "yes")
+            print("Fehlende Buildpakete jetzt mit apt installieren? [j/N]", flush=True)
+            print("Warte auf Ihre Eingabe und Enter. Nur [j/ja/y/yes] erlaubt die Aktion; Nur [Enter] bedeutet: Nein.", flush=True)
+            approved = input().strip().lower() in ("j", "ja", "y", "yes")
         except EOFError:
             approved = False
     if not approved:
-        raise ValueError("Mosquitto: Buildabhaengigkeiten fehlen; Zustimmung nicht erteilt. "
-                         "Kein Download/Build, kein Erfolgsmarker. Siehe docs/tools/mosquitto.md.")
+        raise ValueError(name + ": Buildabhaengigkeiten fehlen; Zustimmung nicht erteilt. "
+                         "Kein Download/Build, kein Erfolgsmarker. Siehe docs/tools/" + slug + ".md.")
     # Privilege escalation is confined to the explicitly approved apt phase.
     prefix = [] if os.geteuid() == 0 else [common.executable("sudo"), "--"]
     env = {key: value for key, value in os.environ.items() if key in ("PATH", "LANG", "LC_ALL", "TERM")}
@@ -64,5 +78,7 @@ def prepare(spec, approved=False):
     common.run(prefix + ["apt-get"] + options + ["update"], Path.cwd(), env)
     common.run(prefix + ["apt-get"] + options + ["install", "--no-remove", "--no-install-recommends", "-y"] + missing, Path.cwd(), env)
     if any(not installed(package) for package in packages):
-        raise ValueError("Mosquitto: Buildpakete nach apt unvollstaendig; kein Quellen-Download.")
-    print("Mosquitto: Buildabhaengigkeiten eingerichtet; GitHub-Build folgt ohne sudo/Docker.")
+        raise ValueError(name + ": Buildpakete nach apt unvollstaendig; kein Quellen-Download.")
+    if slug == "litellm" and not all(shutil.which(tool) for tool in ("cc", "c++", "make", "pkg-config")):
+        raise ValueError("LiteLLM: Compiler/Linker nach apt nicht im PATH; kein Quellen-Download.")
+    print(name + ": Buildabhaengigkeiten eingerichtet; GitHub-Build folgt ohne sudo/Docker.")

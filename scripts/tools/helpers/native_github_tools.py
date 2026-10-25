@@ -103,6 +103,9 @@ def run(args, cwd, env):
 
 
 def requirements(spec):
+    if spec["id"] == "litellm":
+        return list(dict.fromkeys(spec["recipe"].get("tools", ["uv"]) +
+                                  ["cargo", "rustc", "cc", "c++", "make", "pkg-config"]))
     if spec["recipe"].get("tools"):
         return spec["recipe"]["tools"]
     kind = spec["recipe"]["kind"]
@@ -129,6 +132,10 @@ def preflight(outer, spec, install_build_deps=False):
         minimum = spec["recipe"].get("ram_mb", 4096 if spec["recipe"]["disk_mb"] >= 16384 else 2048)
         if int(memory["MemAvailable"].split()[0]) < minimum * 1024:
             raise ValueError("Zu wenig verfuegbarer RAM: mindestens " + str(minimum) + " MiB fuer diesen Build.")
+    if spec["id"] == "litellm":
+        # Do not install system Rust: the source build needs an existing toolchain.
+        for name in ("cargo", "rustc"):
+            common.executable(name)
     build_deps.prepare(spec, approved=install_build_deps)
     for name in ["git"] + requirements(spec):
         if name == "go" and spec["recipe"].get("go_min"):

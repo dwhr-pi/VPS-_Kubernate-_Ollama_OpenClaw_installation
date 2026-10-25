@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+- Node-RED: npm-Config-Kollision behoben. Getrennte leere User-/Global-Dateien
+  fuer Versionsprobe und Build statt doppeltem /dev/null; vorhandene npm-
+  Konfigurationen bleiben unveraendert. Probe-Staging wird auch bei Fehlern
+  entfernt; kein globales npm-Update oder Dienststart.
+
+- LiteLLM: Rust-/C/C++-Buildwerkzeuge vor Downloads pruefen, statt erst beim
+  maturin-Linkerfehler abzubrechen. Fehlende build-essential/pkg-config auf
+  Ubuntu 24.04 nur nach Zustimmung; kein apt-Rust, System-Python-Umbau oder
+  Docker. Basiswerkzeuge bleiben bei App-Deinstallation erhalten.
+
 - Statischer Kernplattform-Sicherheitsaudit mit priorisierten Dateibelegen und
   Zielarchitektur; NSA/CISA-Adminpruefblatt, PSS-/NetworkPolicy-/RBAC-Anleitung
   und getrennte Review-Beispiele. Lokaler Ressourcenplaner mit KV-/RAM-/CPU-/

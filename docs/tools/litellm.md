@@ -25,6 +25,47 @@ Aktivierung laedt keine fehlende Toolchain still herunter.
 
 ## Python, Quellen und Installationsumfang
 
+### Fehler um 21:56: linker cc not found
+
+Der Rust-/maturin-Schritt wurde gestartet, aber ein C-Compiler/Linker namens
+`cc` fehlte. Das Log zeigt keinen Speicherplatzfehler. Der neue native Buildordner
+wurde laut Log zurueckgerollt; private Toolchains und bestehende Daten bleiben.
+Python 3.12 war in diesem Versuch vorhanden und ist nicht die Fehlerursache.
+
+Die Vorpruefung verlangt jetzt fuer LiteLLM auch **cargo, rustc, cc, c++, make
+und pkg-config**, bevor weitere Quellen/Pakete geladen werden. Rust muss als
+vorhandene passende Toolchain bereitstehen; es wird nicht durch ein moeglicherweise
+zu altes apt-Rust ersetzt. Der Source-Build kann weitere versionsabhaengige
+Anforderungen melden; diese Anwesenheitspruefung ist keine Buildgarantie.
+
+Auf Ubuntu 24.04 kann das Setup nach Zustimmung fehlende **build-essential**
+und **pkg-config** via apt bereitstellen. `build-essential` liefert die C/C++-
+Compiler-/Linkerbasis samt Abhaengigkeiten. Nur diese Basiswerkzeuge kommen
+aus apt, nicht LiteLLM. Kein Docker, kein Proxy-Start, kein System-Python-Umbau.
+Vorhandene funktionierende Compiler werden bevorzugt. Wenn Pakete installiert
+sind, aber `cc` nicht im PATH liegt, wird stattdessen eine PATH-/Paketdiagnose
+ausgegeben; keine unbegrenzte Neuinstallation.
+
+Nach Uebernahme der korrigierten Setup-Dateien:
+
+```bash
+bash scripts/tools/litellm_install.sh --install-build-deps
+```
+
+Die Freigabe umfasst die benoetigten Buildabhaengigkeiten, gegebenenfalls auch
+den bereits vorhandenen privaten uv-Bootstrap. apt kann Paketabhaengigkeiten
+aktualisieren; System-Buildwerkzeuge bleiben bei LiteLLM-Deinstallation erhalten.
+Ausserhalb Ubuntu 24.04 den Compiler bewusst separat bereitstellen; keine
+automatische Distribution-/Compilerumstellung. Read-only Kontrolle:
+
+```bash
+command -v cc c++ make pkg-config cargo rustc
+```
+
+Der Name `docker_credential` in einem heruntergeladenen Rust-Paket ist fuer
+sich **kein Nachweis eines Docker-Aufrufs**. Das gepostete Log zeigt einen
+nativen Cargo-/maturin-Build; Containerstart bleibt im Installer gesperrt.
+
 Der [Quellpin](https://github.com/BerriAI/litellm/tree/f2118fc7670ba3fa736d9b8f4deef9077a45a720)
 beschreibt LiteLLM 1.108.0. Seine
 [pyproject.toml](https://github.com/BerriAI/litellm/blob/f2118fc7670ba3fa736d9b8f4deef9077a45a720/pyproject.toml)

@@ -14,6 +14,26 @@ import webinar_releases as releases
 NPM = "10.9.9"
 
 
+def config_environment(directory, env):
+    """npm rejects one file loaded twice; use distinct owned empty files."""
+    directory = common.checked(directory)
+    directory.mkdir(parents=True, exist_ok=True, mode=0o700)
+    child = {key: value for key, value in env.items()
+             if key.lower() not in ("npm_config_userconfig", "npm_config_globalconfig")}
+    for level in ("user", "global"):
+        path = common.checked(directory / (level + ".npmrc"))
+        try:
+            with path.open("x", encoding="ascii"):
+                pass
+            path.chmod(0o600)
+        except FileExistsError:
+            if path.is_symlink() or not path.is_file() or path.stat().st_size != 0:
+                raise ValueError("Private npm-Konfiguration nicht leer/regulaer; nichts ueberschreiben.")
+        child["npm_config_" + level + "config"] = str(path)
+    child.setdefault("npm_config_cache", str(directory / "cache"))
+    return child
+
+
 def unpack(archive, payload, arch):
     node.unpack_node(archive, payload / "node", arch)
     prefix = "node-v" + node.NODE + "-linux-" + arch + "/lib/node_modules/npm/"
@@ -54,15 +74,16 @@ def select(base, spec, approved=False, allow_download=False):
     if spec["id"] != "node_red" or version != node.NODE:
         raise ValueError("Nicht freigegebener privater Node/npm-Vertrag.")
     env = {k: v for k, v in os.environ.items() if k in ("PATH", "LANG", "LC_ALL")}
-    env.update(npm_config_userconfig=os.devnull, npm_config_globalconfig=os.devnull,
-               npm_config_update_notifier="false", COREPACK_ENABLE_NETWORK="0")
+    env.update(npm_config_update_notifier="false", COREPACK_ENABLE_NETWORK="0")
     binary, npm = shutil.which("node"), shutil.which("npm")
     if binary and npm:
         try:
-            child = {**env, "PATH": str(Path(binary).parent) + os.pathsep + env.get("PATH", "")}
-            if node.node_ok(common.run([binary, "--version"], base, child)) and common.run([npm, "--version"], base, child) == NPM:
-                print("Node-RED: passende vorhandene Node/npm-Basis.")
-                return str(Path(binary).parent), str(Path(npm).parent)
+            with tempfile.TemporaryDirectory(prefix="npm-probe-config-", dir=base) as temporary:
+                child = config_environment(Path(temporary), env)
+                child["PATH"] = str(Path(binary).parent) + os.pathsep + env.get("PATH", "")
+                if node.node_ok(common.run([binary, "--version"], base, child)) and common.run([npm, "--version"], base, child) == NPM:
+                    print("Node-RED: passende vorhandene Node/npm-Basis.")
+                    return str(Path(binary).parent), str(Path(npm).parent)
         except (OSError, subprocess.SubprocessError):
             pass
     key = releases.host_key()
@@ -76,13 +97,15 @@ def select(base, spec, approved=False, allow_download=False):
     def verify(payload, record):
         if record.get("artifact_sha256") != digest:
             raise ValueError("Node/npm-Archivnachweis abweichend.")
-        child = {**env, "PATH": str(payload) + os.pathsep + env.get("PATH", "")}
-        if node.runtime_version(payload / "node", base, child, allow_download,
-                                tool_name="Node-RED", policy_name="NODE_RED_INSTALL_RUNTIME_LIBS") != "v" + node.NODE:
-            raise ValueError("Private Node-Version abweichend.")
-        if node.runtime_version(payload / "npm", base, child, allow_download,
-                                tool_name="Node-RED", policy_name="NODE_RED_INSTALL_RUNTIME_LIBS") != NPM:
-            raise ValueError("Private npm-Version abweichend.")
+        with tempfile.TemporaryDirectory(prefix="npm-probe-config-", dir=base) as temporary:
+            child = config_environment(Path(temporary), env)
+            child["PATH"] = str(payload) + os.pathsep + env.get("PATH", "")
+            if node.runtime_version(payload / "node", base, child, allow_download,
+                                    tool_name="Node-RED", policy_name="NODE_RED_INSTALL_RUNTIME_LIBS") != "v" + node.NODE:
+                raise ValueError("Private Node-Version abweichend.")
+            if node.runtime_version(payload / "npm", base, child, allow_download,
+                                    tool_name="Node-RED", policy_name="NODE_RED_INSTALL_RUNTIME_LIBS") != NPM:
+                raise ValueError("Private npm-Version abweichend.")
         return str(payload), str(payload)
 
     if slot.exists():
@@ -121,5 +144,11 @@ def prepare(base, spec, approved=False):
 def activate(base, spec, env):
     paths = select(base, spec)
     if paths:
+        # Actual builds provide HOME inside their newly created _build directory.
+        directory = Path(env["HOME"]) / ".npm-config" if env.get("HOME") else base / "npm-build-config"
+        env.update(config_environment(directory, env))
+        for key in list(env):
+            if key.lower() in ("npm_config_userconfig", "npm_config_globalconfig") and key not in ("npm_config_userconfig", "npm_config_globalconfig"):
+                del env[key]
         env["PATH"] = os.pathsep.join((*dict.fromkeys(paths), env.get("PATH", "")))
         env["COREPACK_ENABLE_NETWORK"] = "0"

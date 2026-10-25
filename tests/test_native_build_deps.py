@@ -113,5 +113,71 @@ class BuildDependencies(unittest.TestCase):
         fetch.assert_not_called()
 
 
+class LiteLLMBuildDependencies(unittest.TestCase):
+    def setUp(self):
+        self.spec = tools.TOOLS['litellm']
+        for mocked in (patch.object(deps, 'ubuntu_release', return_value=True),
+                       patch.object(deps.shutil, 'which', side_effect=lambda name: None if name == 'cc' else 'fixture'),
+                       patch.object(deps.sys, 'stdin', Mock(isatty=Mock(return_value=False)))):
+            mocked.start()
+            self.addCleanup(mocked.stop)
+
+    def test_rust_and_native_compilers_are_required_up_front(self):
+        self.assertTrue({'uv', 'cargo', 'rustc', 'cc', 'c++', 'make', 'pkg-config'}.issubset(tools.requirements(self.spec)))
+
+    def test_missing_cc_requires_consent_before_any_apt(self):
+        with patch.object(deps, 'installed', return_value=False), patch.object(deps.common, 'run') as run:
+            with self.assertRaisesRegex(ValueError, 'LiteLLM.*Zustimmung'):
+                deps.prepare(self.spec)
+        run.assert_not_called()
+
+    def test_existing_native_toolchain_never_installs_packages(self):
+        with patch.object(deps.shutil, 'which', return_value='fixture'), \
+             patch.object(deps, 'installed') as installed, patch.object(deps.common, 'run') as run:
+            deps.prepare(self.spec, approved=True)
+        installed.assert_not_called()
+        run.assert_not_called()
+
+    def test_consent_installs_only_native_build_dependencies(self):
+        state = {'done': False}
+        def run(args, cwd, env):
+            self.assertNotIn('OPENAI_API_KEY', env)
+            if 'install' in args:
+                self.assertEqual(args[-2:], ['build-essential', 'pkg-config'])
+                self.assertIn('--no-remove', args)
+                self.assertNotIn('rustc', args)
+                self.assertNotIn('cargo', args)
+                state['done'] = True
+        with patch.object(deps, 'installed', side_effect=lambda name: state['done']), \
+             patch.object(deps.shutil, 'which', side_effect=lambda name: 'fixture' if state['done'] or name != 'cc' else None), \
+             patch.object(deps.os, 'geteuid', return_value=1000, create=True), \
+             patch.object(deps.common, 'run', side_effect=run) as calls:
+            deps.prepare(self.spec, approved=True)
+        self.assertEqual(calls.call_count, 2)
+
+    def test_installed_packages_but_broken_path_fails_without_apt(self):
+        with patch.object(deps, 'installed', return_value=True), patch.object(deps.common, 'run') as run:
+            with self.assertRaisesRegex(ValueError, 'PATH'):
+                deps.prepare(self.spec, approved=True)
+        run.assert_not_called()
+
+    def test_unknown_package_override_is_rejected(self):
+        with patch.object(deps.common, 'run') as run:
+            with self.assertRaisesRegex(ValueError, 'Nicht freigegebene'):
+                deps.prepare({'id': 'litellm', 'recipe': {'apt_build_deps': ['docker.io']}}, approved=True)
+        run.assert_not_called()
+
+    def test_refusal_stops_preflight_before_uv_or_source_download(self):
+        with tempfile.TemporaryDirectory() as temporary, \
+             patch.object(tools.platform, 'system', return_value='Linux'), \
+             patch.object(tools.common, 'reserve'), patch.object(tools.common, 'executable', return_value='fixture'), \
+             patch.object(deps, 'installed', return_value=False), \
+             patch.object(tools.native_uv, 'prepare') as uv, patch.object(tools.common, 'install') as source:
+            with self.assertRaisesRegex(ValueError, 'Zustimmung'):
+                tools.preflight(Path(temporary), self.spec)
+        uv.assert_not_called()
+        source.assert_not_called()
+
+
 if __name__ == "__main__":
     unittest.main()

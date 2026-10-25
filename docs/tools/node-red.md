@@ -27,6 +27,36 @@ Reihe 24, zusammen mit npm 10.9.9.
 
 ## Quellen und Paketmanager-Vertrag
 
+### Fehler um 22:25: double-loading config /dev/null
+
+Node **22.23.4** wurde erfolgreich geprueft. npm brach vor der eigentlichen
+Konfigurationsaufloesung ab, weil der Bootstrap dieselbe Datei `/dev/null`
+gleichzeitig fuer `userconfig` und `globalconfig` setzte. Das war ein Fehler
+unserer Bootstrap-Umgebung, kein nachgewiesener Node-/npm-Defekt, kein
+Speicherplatzproblem und kein Grund, eigene `.npmrc`-Dateien zu loeschen.
+
+Versionspruefungen erhalten jetzt zwei **unterschiedliche leere Dateien** in
+einem privaten temporaeren Verzeichnis. Dieses Verzeichnis wird auch nach
+Fehlern entfernt. Fuer `npm ci` und den Build liegen getrennte leere User-/Global-
+Konfigurationen im privaten `_build/.build-home/.npm-config/`-Arbeitsbereich.
+Case-Varianten geerbter Config-Pfadvariablen werden nur im Kindprozess ersetzt.
+Ein bestehender nichtleerer Konfigurationspfad wird nicht ueberschrieben.
+Persoenliche und globale `.npmrc` bleiben unangetastet; Projektkonfigurationen
+des geprueften Checkouts sind davon nicht pauschal ausgeschlossen.
+
+Nach Uebernahme der aktualisierten Skripte erneut:
+
+```bash
+bash scripts/tools/node_red_install.sh --install-build-deps
+```
+
+Ein bereits fertig validierter privater Bestand wird weiter geprueft und
+wiederverwendet. Das fehlgeschlagene Download-Staging dieses Logs wurde nicht
+als fertige Toolchain freigegeben; deshalb kann ein erneuter Download noetig
+sein. Keine globale npm-Neuinstallation, kein `npm cache clean --force` und
+kein Entfernen des Benutzerprofils erforderlich. Ein echter Node-RED-Build
+bleibt separat abzunehmen; Offline-Fixtures testen den Konfigurationsvertrag.
+
 Die [package.json am GitHub-Pin](https://github.com/node-red/node-red/blob/df0a87cce1a243e21a2e0eb0fdbdbb8c4732392f/package.json)
 beschreibt Node-RED 5.0.9 mit Node >=22.9 und einem npm-Buildskript.
 Unser privater Bootstrap verwendet **Node 22.23.4 mit gebuendeltem npm 10.9.9**
