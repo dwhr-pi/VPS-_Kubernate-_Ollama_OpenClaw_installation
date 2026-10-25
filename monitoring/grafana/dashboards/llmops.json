@@ -2,13 +2,15 @@
   "uid": "llmops-baseline",
   "title": "LLMOps: Gateway und Host",
   "schemaVersion": 39,
-  "version": 1,
+  "version": 2,
   "refresh": "30s",
   "time": {"from": "now-1h", "to": "now"},
   "panels": [
     {"id": 1, "title": "Tokens/s (LiteLLM, nur Gateway-Traffic)", "type": "timeseries", "datasource": {"type": "prometheus", "uid": "prometheus"}, "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0}, "targets": [{"refId": "A", "expr": "sum(rate(litellm_total_tokens_metric_total[5m]))"}]},
     {"id": 2, "title": "CPU ausgelastet (%)", "type": "timeseries", "datasource": {"type": "prometheus", "uid": "prometheus"}, "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0}, "targets": [{"refId": "A", "expr": "100 * (1 - avg by (instance) (rate(node_cpu_seconds_total{mode=\"idle\"}[5m])))"}]},
     {"id": 3, "title": "RAM verfuegbar (Bytes)", "type": "timeseries", "datasource": {"type": "prometheus", "uid": "prometheus"}, "gridPos": {"h": 8, "w": 12, "x": 0, "y": 8}, "targets": [{"refId": "A", "expr": "node_memory_MemAvailable_bytes"}]},
-    {"id": 4, "title": "Dateisystem frei (Bytes)", "type": "timeseries", "datasource": {"type": "prometheus", "uid": "prometheus"}, "gridPos": {"h": 8, "w": 12, "x": 12, "y": 8}, "targets": [{"refId": "A", "expr": "node_filesystem_avail_bytes{fstype!~\"tmpfs|overlay|squashfs\"}"}]}
+    {"id": 4, "title": "Dateisystem frei (Bytes)", "type": "timeseries", "datasource": {"type": "prometheus", "uid": "prometheus"}, "gridPos": {"h": 8, "w": 12, "x": 12, "y": 8}, "targets": [{"refId": "A", "expr": "node_filesystem_avail_bytes{fstype!~\"tmpfs|overlay|squashfs\"}"}]},
+    {"id": 5, "title": "Gateway p95 Gesamtlatenz (Sekunden)", "type": "timeseries", "datasource": {"type": "prometheus", "uid": "prometheus"}, "gridPos": {"h": 8, "w": 12, "x": 0, "y": 16}, "targets": [{"refId": "A", "expr": "histogram_quantile(0.95, sum by (le) (rate(litellm_request_total_latency_metric_bucket[5m])))"}]},
+    {"id": 6, "title": "Scrape-Verfuegbarkeit", "type": "timeseries", "datasource": {"type": "prometheus", "uid": "prometheus"}, "gridPos": {"h": 8, "w": 12, "x": 12, "y": 16}, "targets": [{"refId": "A", "expr": "up{job=~\"litellm|node\"}"}]}
   ]
 }

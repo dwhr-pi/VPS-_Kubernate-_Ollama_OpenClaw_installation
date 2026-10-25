@@ -19,6 +19,7 @@ import native_go
 import native_uv
 import native_node
 import native_node_npm
+import archivebox_python
 
 ROOT = Path(__file__).resolve().parents[3]
 MANIFEST = ROOT / "config/docker_to_github.json"
@@ -139,7 +140,9 @@ def preflight(outer, spec, install_build_deps=False):
     native_go.prepare(outer, spec, approved=install_build_deps)
     adapters.preflight(spec)
     recipe = spec["recipe"]
-    if recipe.get("python_min"):
+    if spec["id"] == "archivebox":
+        archivebox_python.select(outer, spec, approved=install_build_deps, allow_download=True)
+    elif recipe.get("python_min"):
         python = os.environ.get("NATIVE_SOURCE_PYTHON_BIN", sys.executable)
         lower = tuple(recipe["python_min"])
         upper = tuple(recipe.get("python_max", [99]))
@@ -322,7 +325,8 @@ def build(prefix, spec):
             run([arg.format_map(substitutions) for arg in step["args"]],
                 common.checked(checkout / step.get("cwd", ".")), env)
         module = checkout / recipe.get("module_dir", ".")
-        python = os.environ.get("NATIVE_SOURCE_PYTHON_BIN", sys.executable)
+        python = (archivebox_python.select(prefix.parent, spec) if spec["id"] == "archivebox"
+                  else os.environ.get("NATIVE_SOURCE_PYTHON_BIN", sys.executable))
         venv = prefix / "venv"
         run(["uv", "venv", "--python", python, "--no-python-downloads", str(venv)], prefix, env)
         vpython = venv / "bin/python"

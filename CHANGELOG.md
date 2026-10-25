@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+- ArchiveBox: vorhandenes Python 3.13/3.14 erkennen statt ausschliesslich den
+  Installer-Interpreter zu verwenden. Bei Bedarf private Python-3.13-Basis
+  via uv/GitHub nach Zustimmung und mit zusaetzlicher Speicherreserve;
+  kein System-Python-Umbau. Explizite Interpreter bleiben verbindlich,
+  fehlgeschlagenes neues Python-Staging wird bereinigt.
+
+- Bestehende K8s-Basis um CPU-VPS-Overlay, PVC-Retain, selektiven Agentenzugriff
+  und begrenztes lokales Gateway ergaenzt. Check-/Plan-/Apply-Automation mit
+  RAM-/Disk-/Swap-/Runtime-Gates und explizitem Kontext; Dashboard um p95-
+  Latenz ergaenzt. SOPS-/GitOps-Betriebsanleitung, keine Live-Installation.
+
 - Node-RED: private Node-22.23.4-/npm-10.9.9-Basis aus pruefsummengesichertem
   Node-Archiv nach Zustimmung, eigener Archivschutz und Kindprozess-PATH.
   Kein System-Node-Umbau, Docker, Flow- oder Dienststart; libatomic-Reparatur

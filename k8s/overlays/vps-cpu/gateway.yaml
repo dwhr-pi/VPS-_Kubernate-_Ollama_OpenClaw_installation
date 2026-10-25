@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: litellm-config
+  namespace: llmops
+data:
+  config.yaml: |
+    model_list:
+      - model_name: local-default
+        litellm_params:
+          model: os.environ/LITELLM_OLLAMA_MODEL
+          api_base: os.environ/OLLAMA_API_BASE
+    general_settings:
+      master_key: os.environ/LITELLM_MASTER_KEY
+    litellm_settings:
+      callbacks: [prometheus]
+      set_verbose: false
+      cache: false
+    router_settings:
+      num_retries: 0
+      timeout: 120

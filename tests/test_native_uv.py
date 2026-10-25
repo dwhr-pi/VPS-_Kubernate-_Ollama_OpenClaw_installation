@@ -181,6 +181,17 @@ class ArchiveBoxUvTests(NativeUvTests):
         super().setUp()
         self.spec = tools.TOOLS["archivebox"]
 
+    def test_incompatible_python_prevents_uv_download(self):
+        with patch.object(tools.platform, "system", return_value="Linux"), \
+             patch.object(tools.common, "reserve"), patch.object(tools.common, "executable"), \
+             patch.object(tools.build_deps, "prepare"), patch.object(tools.native_go, "prepare"), \
+             patch.object(tools.adapters, "preflight"), \
+             patch.object(tools.archivebox_python, "select", side_effect=ValueError("Python nicht freigegeben")), \
+             patch.object(uv, "prepare") as prepare:
+            with self.assertRaisesRegex(ValueError, "Python nicht freigegeben"):
+                tools.preflight(self.base, self.spec)
+        prepare.assert_not_called()
+
     def test_recipe_uses_checkout_settings_and_supported_python(self):
         recipe = self.spec["recipe"]
         self.assertEqual(recipe["private_uv"], uv.VERSION)

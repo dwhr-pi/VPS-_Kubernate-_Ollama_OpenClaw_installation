@@ -17,6 +17,11 @@ keine automatische Installation oder Produktionsfreigabe.
 
 ## Inhaltsverzeichnis
 
+**VPS-Auslieferung:** [Gateway, Modellcache, SOPS, Monitoring und GitOps](docs/VPS_GITOPS_DEPLOYMENT.md).
+OpenClaw/Client -> LiteLLM -> Ollama/PVC; optionales CPU-VPS-Overlay und
+abgesicherter Check-/Plan-/Apply-Pfad. Keine automatisch installierte Runtime,
+echten Secrets oder gestarteten Dienste; Staging-Abnahme vor Produktion.
+
 **Freigegebenes P0-Codepaket:** [Update-Sicherung, PAT und datenerhaltender Compose-Uninstall](docs/P0_SAFETY_CHANGES.md).
 Lokal geprueft; Ubuntu-24.04-VM-Abnahme steht noch aus. Keine Produktionsfreigabe.
 

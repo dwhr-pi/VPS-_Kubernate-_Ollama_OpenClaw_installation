@@ -1,0 +1,10 @@
+# Preserve the existing models-ollama-0 identity; do not create a second cache.
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: ollama
+  namespace: llmops
+spec:
+  persistentVolumeClaimRetentionPolicy:
+    whenDeleted: Retain
+    whenScaled: Retain
