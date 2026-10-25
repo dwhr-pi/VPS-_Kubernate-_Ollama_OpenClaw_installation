@@ -5,7 +5,7 @@ SCRIPT_LIB_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=apt_lock_wait.sh
 source "$SCRIPT_LIB_DIR/apt_lock_wait.sh"
 REPO_ROOT="$(cd "$SCRIPT_LIB_DIR/../.." && pwd)"
-USER_WORKSPACE_DIR="${HOME}/.openclaw_ultimate_user_data"
+USER_WORKSPACE_DIR="${OPENCLAW_USER_DATA_DIR:-${HOME}/.openclaw_ultimate_user_data}"
 USER_STATUS_DIR="${USER_WORKSPACE_DIR}/status"
 USER_LOG_DIR="${USER_WORKSPACE_DIR}/logs"
 USER_METRICS_DIR="${USER_WORKSPACE_DIR}/metrics_logs"

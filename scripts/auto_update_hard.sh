@@ -15,6 +15,8 @@ case "${1:---dry-run}" in
         [[ $# == 2 && "$2" == --confirm-discard-local ]] || {
             echo 'Explizite Freigabe --apply --confirm-discard-local erforderlich.' >&2; exit 2;
         }
+        python3 -I -B "$SCRIPT_DIR/operations/installation_inventory.py" export \
+            --output "$BACKUP_ROOT/installation-inventory-$(date +%Y%m%dT%H%M%S)-$$.json" --allow-workspace
         python3 -I -B "$HELPER" sync --repo "$INSTALL_DIR" --backup-root "$BACKUP_ROOT" \
             --fetch --apply --confirm-discard-local
         ;;

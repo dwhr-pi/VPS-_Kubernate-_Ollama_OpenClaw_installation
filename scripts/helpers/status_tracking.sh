@@ -4,7 +4,7 @@
 # shellcheck source=../lib/apt_lock_wait.sh
 source "$(cd "$(dirname "${BASH_SOURCE[0]}")/../lib" && pwd)/apt_lock_wait.sh"
 
-STATUS_HELPER_ROOT="${HOME}/.openclaw_ultimate_user_data"
+STATUS_HELPER_ROOT="${OPENCLAW_USER_DATA_DIR:-${HOME}/.openclaw_ultimate_user_data}"
 PROFILE_STATUS_FILE="$STATUS_HELPER_ROOT/installed_profiles.txt"
 TOOL_STATUS_FILE="$STATUS_HELPER_ROOT/installed_tools.txt"
 STATUS_HELPER_METRICS_DIR="$STATUS_HELPER_ROOT/metrics_logs"

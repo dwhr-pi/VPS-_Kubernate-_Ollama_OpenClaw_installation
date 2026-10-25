@@ -1,5 +1,9 @@
 # Masterpassphrase und automatische ENV-Verwaltung
 
+Fuer einen unabhaengigen Export von Tresor und ausgewaehlten ENV-Dateien nach
+Windows, einschliesslich isolierter Wiederherstellung und optionalem Mailversand:
+[Zugangsdaten-Backup](CREDENTIALS_BACKUP.md), **Optionen -> 21 -> 5**.
+
 ## Was ist das?
 
 Ein lokaler, mit [age](https://github.com/FiloSottile/age) verschluesselter Tresor

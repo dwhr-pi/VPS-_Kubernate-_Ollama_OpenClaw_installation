@@ -2162,13 +2162,17 @@ show_user_workspace_menu() {
         "6" "${TXT_WORKSPACE_OPTION_6:-Letzte Messwerte anzeigen}" \
         "7" "${TXT_WORKSPACE_OPTION_7:-Benutzer-Workspace komplett löschen}" \
         "8" "${TXT_WORKSPACE_OPTION_8:-Sprache ändern}" \
-        "9" "${TXT_WORKSPACE_OPTION_9:-${TXT_BACK_ITEM:-Zurück}}" 2> /tmp/user_workspace_choice
+        "9" "${TXT_WORKSPACE_OPTION_9:-${TXT_BACK_ITEM:-Zurück}}" \
+        "10" "Installationsstatus exportieren / wiederherstellen" 2> /tmp/user_workspace_choice
 
         if [ $? -ne 0 ]; then
             return 0
         fi
 
         case "$(cat /tmp/user_workspace_choice)" in
+            10)
+                run_bash_script "$INSTALL_DIR/scripts/installation_inventory_menu.sh"
+                ;;
             1)
                 clear
                 echo
@@ -2263,13 +2267,17 @@ show_options_menu() {
         "17" "Installationslauf-Diagnose erstellen" \
         "18" "Abhängigkeiten-/Speicher-Snapshot erstellen" \
         "19" "Verschluesselter ENV-Tresor / Zugangsdaten verwalten" \
-        "20" "Installations-Reset / alte Sperren freigeben (datenerhaltend)" 2> /tmp/options_choice
+        "20" "Installations-Reset / alte Sperren freigeben (datenerhaltend)" \
+        "21" "Installationsstatus / Programmliste exportieren und wiederherstellen" 2> /tmp/options_choice
 
         if [ $? -ne 0 ]; then
             return 0
         fi
 
         case "$(cat /tmp/options_choice)" in
+            21)
+                run_bash_script "$INSTALL_DIR/scripts/installation_inventory_menu.sh"
+                ;;
             20)
                 run_bash_script "$INSTALL_DIR/scripts/installation_reset_menu.sh"
                 ;;

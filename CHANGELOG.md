@@ -2,6 +2,24 @@
 
 ## Unreleased
 
+- Zugangsdaten-Backup: eigenstaendige Restore-Anleitung direkt im E-Mail-Text;
+  Windows-/WSL-/Linux-Softwarequellen, age-Entschluesselung, manuelle TAR-Ansicht
+  und kontrollierte Rueckuebernahme einzelner Dateien mit Sicherung/Rechten
+  in der Dokumentation ergaenzt. Keine automatische Aktivierung oder Mailaktion.
+
+- Getrenntes Zugangsdaten-Backup unter Optionen -> 21 -> 5: explizite
+  Dateiauswahl, passphrasegeschuetztes TAR mit age, externer Windows-Export,
+  isolierter Restore ohne aktive Konfigurationen zu ersetzen. Einstellungen
+  verschluesselt enthalten; EML-Entwurf oder bestaetigter msmtp-Versand.
+  Kein gespeichertes Passwort, kein automatischer Versand. Unsichere
+  Erinnerungsfragen und Passwort-im-Mail-Risiko ausdruecklich dokumentiert.
+
+- Installationsinventar: unabhaengiger JSON-/Markdown-Export, Importvorschau
+  und datenerhaltende Wiederherstellung anhand noch vorhandener Artefakte.
+  Automatische Programmliste im lokalen Backup und vor freigegebenem Main-
+  Abgleich; rsync-Fehler nicht mehr als Erfolg unterdruecken. Profile/fehlende
+  Tools bleiben historische Eintraege, keine erfundenen Installationen.
+
 - Datenerhaltender Installations-Reset in Optionen und Tooldiagnose: lesende
   Pruefung, explizite Legacy-Freigabe, Archiv statt Loeschung, aktuelle Logs.
   Gemeinsame Linux-flock-Koordination mit Rollback-Runner/Tooloperationen;

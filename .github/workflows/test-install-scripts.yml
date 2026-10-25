@@ -46,6 +46,12 @@ jobs:
           python3 -B tests/test_native_build_process.py -v
           python3 -B tests/test_install_rollback.py -v
           python3 -B tests/test_installation_reset.py -v
+          python3 -B tests/test_installation_inventory.py -v
+          python3 -B tests/test_credentials_backup.py -v
+          bash -n scripts/credentials_backup_menu.sh
+          bash -n scripts/installation_inventory_menu.sh
+          bash -n scripts/operations/backup_run.sh
+          bash -n scripts/auto_update_hard.sh
           bash -n scripts/installation_reset_menu.sh
           python3 -B tests/test_security_audit_docs.py -v
           node --test tests/resource_planner.test.cjs

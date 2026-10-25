@@ -17,6 +17,12 @@ keine automatische Installation oder Produktionsfreigabe.
 
 ## Inhaltsverzeichnis
 
+**Programmliste unabhaengig sichern:** [Installationsstatus-Backup, Export und Wiederherstellung](docs/INSTALLATION_STATUS_BACKUP.md).
+
+**ENV / API-Keys getrennt sichern:** [Verschluesselter TAR-Export, Wiederherstellung und optionale E-Mail](docs/CREDENTIALS_BACKUP.md), unter Optionen -> 21 -> 5.
+Optionen -> 21; JSON plus lesbare Programmliste, Vorschau vor Import.
+Keine Wiederherstellung geloeschter Programme aus blossen Statushaekchen.
+
 **Installation blockiert nach Absturz?** [Installations-Reset ohne Linux-Neuinstallation](docs/INSTALLATION_RESET.md):
 Optionen -> Installations-Reset. Prueft aktive Prozesse und archiviert nach
 Bestaetigung alte Sperren; keine Tool-/Nutzerdatenloeschung und kein Prozess-Kill.
