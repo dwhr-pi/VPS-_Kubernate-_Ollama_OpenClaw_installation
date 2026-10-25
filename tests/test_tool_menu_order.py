@@ -28,20 +28,19 @@ class ToolMenuOrderTests(unittest.TestCase):
         for array in re.findall(r"^TOOL_KEYS\+?=\(([^\n]*)\)", setup, re.M):
             names.extend(shlex.split(array))
         pinned = [name for name in names if name in {"Ollama", "OpenClaw", "Ruflo"}]
-        append_order = shlex.split(re.search(r"local -a append_order=\(([^\n]*)\)", setup).group(1))
-        appended = [name for name in append_order if name in names]
-        remaining = [name for name in names if name not in pinned and name not in appended]
+        remaining = [name for name in names if name not in pinned]
         result = self.run_sort(names)
         # LC_ALL=C sort -f folds ASCII letters to uppercase, including around underscores.
-        self.assertEqual(result, pinned + sorted(remaining, key=str.upper) + appended)
+        self.assertEqual(result, pinned + sorted(remaining, key=str.upper))
         self.assertCountEqual(result, names)
         self.assertGreater(len(result), 250)
         self.assertIn("ACE_Step_15", result)
         self.assertIn("Act", result)
         self.assertIn("YouTube_Agent_Skill", result)
         self.assertEqual(len(result), len(set(result)))
-        self.assertIn("Hermes_Agent_Jarvis", appended)
-        self.assertLess(result.index("Qwen_Desktop_Build"), result.index("Gradio"))
+        self.assertIn("Hermes_Agent_Jarvis", result)
+        self.assertLess(result.index("Gradio"), result.index("Qwen_Desktop_Build"))
+        self.assertEqual(self.run_sort(result), result)
         menu = setup.split("show_tool_management_menu() {", 1)[1]
         self.assertLess(menu.index("sort_tool_menu_keys"), menu.index('for tool_key in "${TOOL_KEYS[@]}"'))
 
@@ -51,6 +50,14 @@ class ToolMenuOrderTests(unittest.TestCase):
         self.assertEqual(self.run_sort(names), expected)
         self.assertEqual(self.run_sort(expected), expected)
         self.assertEqual(self.run_sort(["Ollama"]), ["Ollama"])
+
+    def test_formerly_appended_tools_join_the_alphabetical_list(self):
+        names = ["Ollama", "OpenClaw", "Ruflo", "Zotero", "Qwen_Desktop_Build",
+                 "Audacity", "Act", "Concat", "Gradio", "AI_ContentMultiplier"]
+        self.assertEqual(self.run_sort(names), names[:3] + sorted(names[3:], key=str.upper))
+        setup = (ROOT / "setup_ultimate.sh").read_text(encoding="utf-8")
+        self.assertIn('if [ "$tool_key" = "Ruflo" ]; then', setup)
+        self.assertIn('"__TOOLS_SEPARATOR__" "---------------- Weitere Tools A-Z ----------------"', setup)
 
 
 if __name__ == "__main__":

@@ -3858,30 +3858,18 @@ TOOL_SCRIPT_NAMES["AI_ContentMultiplier"]="ai_content_multiplier"
 
 sort_tool_menu_keys() {
     local key
-    local -a pinned=() remaining=() sorted=() appended=()
-    local -a append_order=("Qwen_Desktop_Build" "Hermes_Agent_Jarvis" "Gradio" "Streamlit" "WanVideoWrapper" "CogVideoX" "LTX_Video" "Video2Dataset" "MuseTalk" "LivePortrait" "SadTalker" "RVC" "UVR5" "Audacity" "OBS" "Concat" "Remotion" "HyperFrames" "WebsiteFactory" "AI_ContentMultiplier")
-    local candidate append_match
+    local -a pinned=() remaining=() sorted=()
     for key in "${TOOL_KEYS[@]}"; do
-        append_match=0
-        for candidate in "${append_order[@]}"; do
-            if [[ "$key" == "$candidate" ]]; then append_match=1; break; fi
-        done
-        if [[ "$append_match" == 1 ]]; then continue; fi
         case "$key" in
             Ollama|OpenClaw|Ruflo) pinned+=("$key") ;;
             *) remaining+=("$key") ;;
         esac
     done
-    # Preserve the established A-Z list, but keep requested gap tools appended.
+    # Keep core tools above the separator; sort every other tool together.
     if ((${#remaining[@]})); then
         mapfile -t sorted < <(printf '%s\n' "${remaining[@]}" | LC_ALL=C sort -f -s)
     fi
-    for candidate in "${append_order[@]}"; do
-        for key in "${TOOL_KEYS[@]}"; do
-            if [[ "$key" == "$candidate" ]]; then appended+=("$key"); break; fi
-        done
-    done
-    TOOL_KEYS=("${pinned[@]}" "${sorted[@]}" "${appended[@]}")
+    TOOL_KEYS=("${pinned[@]}" "${sorted[@]}")
 }
 
 # Funktion zum Anzeigen des Tool-Management-Menüs
