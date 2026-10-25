@@ -21,6 +21,7 @@ import native_node
 import native_node_npm
 import archivebox_python
 import native_build_process
+import litellm_rust
 
 ROOT = Path(__file__).resolve().parents[3]
 MANIFEST = ROOT / "config/docker_to_github.json"
@@ -133,11 +134,11 @@ def preflight(outer, spec, install_build_deps=False):
         if int(memory["MemAvailable"].split()[0]) < minimum * 1024:
             raise ValueError("Zu wenig verfuegbarer RAM: mindestens " + str(minimum) + " MiB fuer diesen Build.")
     if spec["id"] == "litellm":
-        # Do not install system Rust: the source build needs an existing toolchain.
-        for name in ("cargo", "rustc"):
-            common.executable(name)
+        litellm_rust.select(outer)
     build_deps.prepare(spec, approved=install_build_deps)
     for name in ["git"] + requirements(spec):
+        if spec["id"] == "litellm" and name in ("cargo", "rustc"):
+            continue  # Direct installed toolchain verified separately, independent of PATH.
         if name == "go" and spec["recipe"].get("go_min"):
             continue  # This versioned prerequisite is checked separately below.
         if name == "uv" and spec["recipe"].get("private_uv"):
@@ -234,6 +235,7 @@ def build(prefix, spec):
     kind = recipe["kind"]
     checkout = prefix / "source"
     env = environment(prefix)
+    litellm_rust.activate(prefix.parent, spec, env)
     native_go.activate(prefix.parent, spec, env)
     native_uv.activate(prefix.parent, spec, env)
     native_node.activate(prefix.parent, spec, env)

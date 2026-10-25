@@ -17,6 +17,10 @@ keine automatische Installation oder Produktionsfreigabe.
 
 ## Inhaltsverzeichnis
 
+**Installation blockiert nach Absturz?** [Installations-Reset ohne Linux-Neuinstallation](docs/INSTALLATION_RESET.md):
+Optionen -> Installations-Reset. Prueft aktive Prozesse und archiviert nach
+Bestaetigung alte Sperren; keine Tool-/Nutzerdatenloeschung und kein Prozess-Kill.
+
 **Sicherheit und Kapazitaet:** [Aktueller statischer Sicherheitsaudit mit Zielarchitektur](docs/security/SECURITY_ARCHITECTURE_AUDIT_2026-10-25.md),
 [NSA/CISA-Adminpruefblatt, NetworkPolicies, RBAC und PSS](docs/security/KUBERNETES_ADMIN_AUDIT.md)
 und [interaktiver lokaler Ressourcenplaner](docs/resource-planner/index.html)

@@ -5,9 +5,13 @@ import os
 from pathlib import Path
 import re
 import shutil
+import stat
 import subprocess
 import sys
 import uuid
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from installation_maintenance import maintenance_guard
 
 ROOT = Path(__file__).resolve().parents[2]
 OWNER = ".openclaw-install-owner"
@@ -29,7 +33,11 @@ def inspect_lock(root):
         return report
     report['state'] = 'legacy-or-unreadable-owner-manual-review-required'
     try:
-        owner = json.loads(safe(lock / 'owner.json').read_text(encoding='utf-8'))
+        owner_path = safe(lock / 'owner.json')
+        metadata = owner_path.lstat()
+        if not stat.S_ISREG(metadata.st_mode) or metadata.st_size > 16384 or metadata.st_nlink != 1:
+            return report
+        owner = json.loads(owner_path.read_text(encoding='utf-8'))
         pid = owner['pid']
         if not isinstance(pid, int) or isinstance(pid, bool) or pid <= 0:
             return report
@@ -209,38 +217,42 @@ def main(argv=None):
         if argv == ['--inspect-lock']:
             print(json.dumps(inspect_lock(root), indent=2))
             return 0
-        parent = safe(root / "install_transactions")
-        parent.mkdir(parents=True, exist_ok=True, mode=0o700)
-        lock = safe(parent / ".runner-lock")
-        try:
-            lock.mkdir(mode=0o700)
-        except FileExistsError:
-            print(json.dumps(inspect_lock(root), indent=2), flush=True)
-            raise ValueError("Andere Installation aktiv oder Abbruch-Sperre vorhanden; zuerst pruefen. "
-                             "Diagnose: python3 scripts/lib/install_rollback.py --inspect-lock; "
-                             "siehe docs/tools/cadvisor.md. Keine Sperre oder Daten geloescht.")
-        token = uuid.uuid4().hex
-        owner_path = safe(lock / 'owner.json')
-        try:
-            try:
-                identity = process_identity(os.getpid())
-            except (OSError, ValueError, IndexError):
-                identity = None
-            with owner_path.open('x', encoding='utf-8') as out:
-                json.dump({'pid': os.getpid(), 'identity': identity, 'token': token}, out)
-            owner_path.chmod(0o600)
-            return run(argv[0], argv[1], argv[2:])
-        finally:
-            # Never remove a replacement lock owned by another invocation.
-            try:
-                if json.loads(owner_path.read_text(encoding='utf-8')).get('token') == token:
-                    owner_path.unlink()
-                    lock.rmdir()
-            except (OSError, ValueError):
-                print('Rollback-Sperre nicht sicher freigebbar; Bestand erhalten, --inspect-lock verwenden.', file=sys.stderr)
+        with maintenance_guard(root):
+            return serialized_run(root, argv)
     except (OSError, ValueError, KeyError) as exc:
         print("Rollback-Schutz: " + str(exc), file=sys.stderr)
         return 1
+
+
+def serialized_run(root, argv):
+    parent = safe(root / 'install_transactions')
+    parent.mkdir(parents=True, exist_ok=True, mode=0o700)
+    lock = safe(parent / '.runner-lock')
+    try:
+        lock.mkdir(mode=0o700)
+    except FileExistsError:
+        print(json.dumps(inspect_lock(root), indent=2), flush=True)
+        raise ValueError('Andere Installation aktiv oder Abbruch-Sperre vorhanden; zuerst pruefen. '
+                         'Reset: Optionen -> Installations-Reset. Siehe docs/INSTALLATION_RESET.md. '
+                         'Keine Sperre oder Daten geloescht.')
+    token = uuid.uuid4().hex
+    owner_path = safe(lock / 'owner.json')
+    try:
+        try:
+            identity = process_identity(os.getpid())
+        except (OSError, ValueError, IndexError):
+            identity = None
+        with owner_path.open('x', encoding='utf-8') as out:
+            json.dump({'pid': os.getpid(), 'identity': identity, 'token': token, 'tool': argv[0]}, out)
+        owner_path.chmod(0o600)
+        return run(argv[0], argv[1], argv[2:])
+    finally:
+        try:
+            if json.loads(owner_path.read_text(encoding='utf-8')).get('token') == token:
+                owner_path.unlink()
+                lock.rmdir()
+        except (OSError, ValueError):
+            print('Rollback-Sperre nicht sicher freigebbar; Bestand erhalten, Installations-Reset verwenden.', file=sys.stderr)
 
 
 if __name__ == "__main__":

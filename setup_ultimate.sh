@@ -1884,7 +1884,8 @@ show_diagnostics_quick_menu() {
         "3" "Tool-Logdiagnose interaktiv starten" \
         "4" "Installationslauf-Diagnose erstellen" \
         "5" "Abhaengigkeiten-/Speicher-Snapshot erstellen" \
-        "6" "Letztes Installationsprotokoll per E-Mail senden" 2> /tmp/diagnostics_quick_choice
+        "6" "Letztes Installationsprotokoll per E-Mail senden" \
+        "7" "Installations-Reset / alte Sperren pruefen und freigeben" 2> /tmp/diagnostics_quick_choice
 
         if [ $? -ne 0 ]; then
             clear
@@ -1892,6 +1893,9 @@ show_diagnostics_quick_menu() {
         fi
 
         case "$(cat /tmp/diagnostics_quick_choice)" in
+            7)
+                run_bash_script "$INSTALL_DIR/scripts/installation_reset_menu.sh"
+                ;;
             1)
                 bash "$INSTALL_DIR/scripts/last_install_log.sh" --failed
                 read -p "Letzter Fehlerbericht angezeigt. Drücken Sie Enter..."
@@ -2258,13 +2262,17 @@ show_options_menu() {
         "16" "E-Mail-Diagnose konfigurieren / Testmail senden" \
         "17" "Installationslauf-Diagnose erstellen" \
         "18" "Abhängigkeiten-/Speicher-Snapshot erstellen" \
-        "19" "Verschluesselter ENV-Tresor / Zugangsdaten verwalten" 2> /tmp/options_choice
+        "19" "Verschluesselter ENV-Tresor / Zugangsdaten verwalten" \
+        "20" "Installations-Reset / alte Sperren freigeben (datenerhaltend)" 2> /tmp/options_choice
 
         if [ $? -ne 0 ]; then
             return 0
         fi
 
         case "$(cat /tmp/options_choice)" in
+            20)
+                run_bash_script "$INSTALL_DIR/scripts/installation_reset_menu.sh"
+                ;;
             1)
                 if show_setup_language_menu; then
                     echo -e "${GREEN}${TXT_LANGUAGE_CHANGED:-Die Setup-Sprache wurde aktualisiert.}${NC}"

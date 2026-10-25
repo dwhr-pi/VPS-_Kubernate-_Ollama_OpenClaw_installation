@@ -12,6 +12,9 @@ import sys
 import tempfile
 import time
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'lib'))
+from installation_maintenance import maintenance_guard
+
 REPO = Path(__file__).resolve().parents[3]
 SOURCE = "https://github.com/vercel-labs/skills.git"
 COMMIT = "a80e4c9d12d607631249d4d7d059f835d4b2f13a"
@@ -144,7 +147,7 @@ def operation(base, mode, tool="Find_Skills"):
     logs = checked(base.parent.parent / "install_logs")
     logs.mkdir(parents=True, exist_ok=True, mode=0o700)
     fd, path = tempfile.mkstemp(prefix=tool.lower() + "_" + mode + "_", suffix=".log", dir=logs)
-    with os.fdopen(fd, "w", encoding="utf-8") as log, redirect_stdout(Tee(sys.stdout, log)):
+    with os.fdopen(fd, "w", encoding="utf-8") as log, maintenance_guard(base.parent.parent), redirect_stdout(Tee(sys.stdout, log)):
         print(tool + ":", mode, "Log:", path)
         lock = checked(base / "operation.lock")
         locked = False

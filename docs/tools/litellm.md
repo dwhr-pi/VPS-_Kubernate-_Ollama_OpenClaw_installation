@@ -25,6 +25,50 @@ Aktivierung laedt keine fehlende Toolchain still herunter.
 
 ## Python, Quellen und Installationsumfang
 
+### Fehler um 23:08: cargo fehlt
+
+Dieser Versuch stoppt vor dem Quellen-/Paketbuild. `cargo fehlt` bedeutet
+zunaechst nur: kein Cargo im Installer-PATH. Es beweist nicht, dass unter
+`~/.rustup/toolchains/` keine Toolchain vorhanden ist. Der fruehere maturin-
+Versuch ist ebenfalls kein Nachweis einer dauerhaft installierten Cargo-Basis.
+
+Der Installer erkennt jetzt vorhandene direkte Toolchains unter
+`$RUSTUP_HOME/toolchains/` (Standard `~/.rustup/toolchains/`) und prueft
+Cargo-/Rust-Version sowie sysroot. Explizite Auswahl hat Vorrang:
+
+```bash
+# Example for Ubuntu x86_64; use the actual installed toolchain directory.
+NATIVE_SOURCE_RUST_TOOLCHAIN="$HOME/.rustup/toolchains/1.98.0-x86_64-unknown-linux-gnu" \
+  bash scripts/tools/litellm_install.sh --install-build-deps
+```
+
+Der [gepruefte rust-toolchain.toml-Pin](https://github.com/BerriAI/litellm/blob/f2118fc7670ba3fa736d9b8f4deef9077a45a720/rust-toolchain.toml)
+nennt **1.98.0**. Das Workspace-Minimum 1.88 aus Cargo.toml ist nicht derselbe
+Vertrag; hier wird bewusst die Upstream-Toolchain verwendet. Keine ungepruefte
+Ersetzung durch apt-Rust oder eine beliebige `stable`-Version.
+
+Falls Rust 1.98.0 wirklich fehlt und **rustup bereits vorhanden ist**, bewusst
+separat installieren (Netzwerk und zusaetzlicher Speicherbedarf):
+
+```bash
+rustup toolchain install 1.98.0 --profile minimal --no-self-update
+```
+
+Fehlt auch rustup, zuerst die [offizielle Rust-Installationsanleitung](https://www.rust-lang.org/tools/install)
+lesen und die Basis separat einrichten. Der LiteLLM-Installer laedt weder
+rustup noch Rust automatisch herunter; auch `--install-build-deps` erteilt
+hierfuer keine verdeckte Freigabe. Ein erfolgreicher Rust-Download ist noch
+kein erfolgreicher LiteLLM-Build. Die Verfuegbarkeit des Archivs und der echte
+Ubuntu-Build wurden hier nicht getestet.
+
+Bei Verwendung wird nur der Kindprozess-PATH erweitert; Container-/sudo-
+Guards bleiben davor. `RUSTUP_TOOLCHAIN` zeigt auf den vorhandenen absoluten
+sysroot, nicht auf einen aufzuloesenden Kanal; `RUSTUP_AUTO_INSTALL=0` bleibt
+gesetzt. Persoenliche Cargo-Registry-Zugangsdaten werden nicht uebernommen,
+Build-Caches bleiben privat. Keine Shellprofil- oder Default-Toolchain-Aenderung
+durch diesen Auswahlhelper. Vorhandene explizite, falsche Pfade werden nicht
+still ersetzt. Fuer andere Tools aendert dieser LiteLLM-spezifische Pfad nichts.
+
 ### Fehler um 21:56: linker cc not found
 
 Der Rust-/maturin-Schritt wurde gestartet, aber ein C-Compiler/Linker namens

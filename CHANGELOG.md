@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+- Datenerhaltender Installations-Reset in Optionen und Tooldiagnose: lesende
+  Pruefung, explizite Legacy-Freigabe, Archiv statt Loeschung, aktuelle Logs.
+  Gemeinsame Linux-flock-Koordination mit Rollback-Runner/Tooloperationen;
+  aktive oder unlesbare Prozesse blockieren. Kein Kill, WSL-Reset oder Purge.
+
+- LiteLLM: vorhandenes Rust/Cargo 1.98.0 anhand von Version und sysroot
+  erkennen, auch ausserhalb PATH; expliziter Toolchain-Pfad, isolierte
+  Aktivierung und konkrete Diagnose. Kein automatischer Rust-Download.
+
 - Node-RED: npm-Config-Kollision behoben. Getrennte leere User-/Global-Dateien
   fuer Versionsprobe und Build statt doppeltem /dev/null; vorhandene npm-
   Konfigurationen bleiben unveraendert. Probe-Staging wird auch bei Fehlern

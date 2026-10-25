@@ -294,7 +294,7 @@ class NativeGithubTests(unittest.TestCase):
                         path.parent.mkdir(parents=True, exist_ok=True)
                         path.write_text("built fixture")
                     return "fixture==1"
-                with patch.object(tool, "run", side_effect=run), patch.object(tool.adapters, "prepare"), patch.object(tool.native_go, "activate"), patch.object(tool.native_uv, "activate"), patch.object(tool.native_node, "activate"), patch.object(tool.native_node_npm, "activate"), patch.object(tool.archivebox_python, "select", return_value="/fixture/python3.13"):
+                with patch.object(tool, "run", side_effect=run), patch.object(tool.adapters, "prepare"), patch.object(tool.native_go, "activate"), patch.object(tool.native_uv, "activate"), patch.object(tool.native_node, "activate"), patch.object(tool.native_node_npm, "activate"), patch.object(tool.archivebox_python, "select", return_value="/fixture/python3.13"), patch.object(tool.litellm_rust, "activate"):
                     # Packaging adapters have separate negative/positive contract tests.
                     artifacts = tool.build(prefix, spec)
                 self.assertTrue(artifacts)

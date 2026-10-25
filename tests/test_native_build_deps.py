@@ -172,6 +172,7 @@ class LiteLLMBuildDependencies(unittest.TestCase):
              patch.object(tools.platform, 'system', return_value='Linux'), \
              patch.object(tools.common, 'reserve'), patch.object(tools.common, 'executable', return_value='fixture'), \
              patch.object(deps, 'installed', return_value=False), \
+             patch.object(tools.litellm_rust, 'select'), \
              patch.object(tools.native_uv, 'prepare') as uv, patch.object(tools.common, 'install') as source:
             with self.assertRaisesRegex(ValueError, 'Zustimmung'):
                 tools.preflight(Path(temporary), self.spec)

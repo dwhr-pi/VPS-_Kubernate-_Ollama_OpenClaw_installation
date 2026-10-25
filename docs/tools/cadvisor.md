@@ -80,6 +80,10 @@ auf Tool-, Cache- oder Nutzerdatenordner. Private Go-Toolchain weiterverwenden.
 Dieser Versuch wurde **vor Start des cAdvisor-Installers** blockiert. Die
 globale Menue-/Rollback-Sperre lautet standardmaessig:
 `~/.openclaw_ultimate_user_data/install_transactions/.runner-lock`.
+
+Bevorzugter Wiederanlauf im aktualisierten Setup: **Optionen -> Installations-Reset**.
+Die [Reset-Anleitung](../INSTALLATION_RESET.md) beschreibt Prozesspruefung und
+Archivierung alter Sperren ohne Linux-Neuinstallation oder Datenloeschung.
 Sie schuetzt alle Tools, nicht nur cAdvisor. Der vorherige harte WSL-Abbruch
 kann sie hinterlassen haben; eine laufende andere Installation ist ebenfalls
 moeglich. Dies ist kein neuer Speicherplatz- oder Go-Fehler.

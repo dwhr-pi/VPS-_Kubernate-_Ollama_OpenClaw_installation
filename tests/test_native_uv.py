@@ -167,6 +167,7 @@ class NativeUvTests(unittest.TestCase):
              patch.object(tools.common, "reserve"), patch.object(tools.common, "executable"), \
              patch.object(tools.build_deps, "prepare"), patch.object(tools.native_go, "prepare"), \
              patch.object(tools.adapters, "preflight"), \
+             patch.object(tools.litellm_rust, "select"), \
              patch.object(tools.common, "run", side_effect=subprocess.CalledProcessError(1, "python")), \
              patch.object(uv, "prepare") as prepare:
             with self.assertRaises(subprocess.CalledProcessError):
