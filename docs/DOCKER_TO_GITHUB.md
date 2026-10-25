@@ -428,6 +428,10 @@ Updater und prueft nur `--help`, nicht das am Pin ungueltige `--version`.
 
 ### SearXNG: fehlendes uv gezielt bereitstellen
 
+Auch [ArchiveBox](tools/archivebox.md) kann denselben privaten uv-Bootstrap
+nach Zustimmung nutzen. Vorher ist am ArchiveBox-Pin Python >=3.13 erforderlich;
+kein automatischer Python-Download. 8448 MiB Reserve bei neuer uv-Einrichtung.
+
 Die [SearXNG-Anleitung](tools/searxng.md) beschreibt den zustimmungspflichtigen
 privaten uv-Bootstrap aus einem SHA256-geprueften offiziellen GitHub-Release.
 Kein System-Python-Umbau, kein Docker und kein Suchdienststart. Bei einem

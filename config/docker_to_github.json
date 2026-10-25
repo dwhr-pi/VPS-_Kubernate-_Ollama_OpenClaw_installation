@@ -167,6 +167,7 @@
         "repo": "ArchiveBox/ArchiveBox",
         "pin": "d950dace5ef226634b86ebe43c7001aa7e076cbf",
         "kind": "python",
+        "private_uv": "0.13.5",
         "disk_mb": 8192,
         "distribution": "archivebox",
         "python_min": [

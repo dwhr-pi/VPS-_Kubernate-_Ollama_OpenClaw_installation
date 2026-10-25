@@ -12,6 +12,7 @@ import gap_tools as common
 import webinar_releases as releases
 
 VERSION = "0.13.5"
+SUPPORTED_TOOLS = {"searxng": "SearXNG", "archivebox": "ArchiveBox"}
 ARTIFACTS = {
     "linux-amd64": ("uv-x86_64-unknown-linux-gnu.tar.gz", 16682639,
                     "f68d291c75783122dad58ab77def0e13f3233f358731db5d6d7e8715603b928f"),
@@ -29,8 +30,9 @@ def select(base, spec, approved=False, allow_download=False):
     version = spec["recipe"].get("private_uv")
     if version is None:
         return None
-    if spec["id"] != "searxng" or version != VERSION:
+    if spec["id"] not in SUPPORTED_TOOLS or version != VERSION:
         raise ValueError("Nicht freigegebener privater uv-Vertrag.")
+    name = SUPPORTED_TOOLS[spec["id"]]
     env = {key: value for key, value in os.environ.items() if key in ("PATH", "LANG", "LC_ALL")}
     env.update(UV_PYTHON_DOWNLOADS="never", UV_NO_CONFIG="1")
     binary = shutil.which("uv")
@@ -40,7 +42,7 @@ def select(base, spec, approved=False, allow_download=False):
         except (OSError, subprocess.SubprocessError):
             suitable = False
         if suitable:
-            print("SearXNG: passende vorhandene uv-Version:", binary)
+            print(name + ": passende vorhandene uv-Version:", binary)
             return binary
     key = releases.host_key()
     if key not in ARTIFACTS:
@@ -64,18 +66,21 @@ def select(base, spec, approved=False, allow_download=False):
     if slot.exists():
         record = releases.validate_record(app, marker, record_spec, full=True)
         return verify(app, record)
-    print("SearXNG: uv fehlt/ist aelter als die gepruefte Baseline " + VERSION + ".")
-    print("Gezielt erneut starten: bash scripts/tools/searxng_install.sh --install-build-deps")
+    print(name + ": uv fehlt/ist aelter als die gepruefte Baseline " + VERSION + ".")
+    print("Gezielt erneut starten: bash scripts/tools/" + spec["id"] + "_install.sh --install-build-deps")
     if allow_download and not approved and sys.stdin.isatty():
         print("Privates uv aus offiziellem GitHub-Release, SHA256-geprueft; kein System-Python/PATH-Umbau.", flush=True)
+        print("uv jetzt privat bereitstellen? [j/N]", flush=True)
+        print("Warte auf Ihre Eingabe und Enter. Nur [j/ja/y/yes] erlaubt die Aktion; Nur [Enter] bedeutet: Nein.", flush=True)
         try:
-            approved = input("uv jetzt privat bereitstellen? [j/N]: ").strip().lower() in ("j", "ja", "y", "yes")
+            approved = input().strip().lower() in ("j", "ja", "y", "yes")
         except EOFError:
+            print("Eingabe beendet (EOF); keine Zustimmung erkannt.", flush=True)
             approved = False
     if not allow_download or not approved:
-        raise ValueError("SearXNG: private uv-Einrichtung nicht freigegeben. Siehe docs/tools/searxng.md.")
+        raise ValueError(name + ": private uv-Einrichtung nicht freigegeben. Siehe docs/tools/" + spec["id"] + ".md.")
     # Account for the archive/extraction before changing any toolchain files.
-    print("uv-Bootstrap: 256 MiB Puffer zusaetzlich zur SearXNG-Reserve erforderlich.")
+    print("uv-Bootstrap: 256 MiB Puffer zusaetzlich zur " + name + "-Reserve erforderlich.")
     releases.reserve(base, {"reserve_mb": spec["recipe"]["disk_mb"] + 256})
     url = "https://github.com/astral-sh/uv/releases/download/" + VERSION + "/" + filename
     print("uv-GitHub-Release:", url, "Bytes:", size, "SHA256:", digest)
@@ -100,7 +105,7 @@ def select(base, spec, approved=False, allow_download=False):
         if slot.exists():
             raise ValueError("uv-Ziel zwischenzeitlich belegt; nichts ueberschreiben.")
         bundle.rename(slot)
-    print("Private uv-Basis bereit; kein Python-Download, Server oder Suchauftrag gestartet.")
+    print(name + ": private uv-Basis bereit; kein Python-Download, Server oder Archivierungs-/Suchauftrag gestartet.")
     return str(releases.entry_path(app, record["entry"]))
 
 

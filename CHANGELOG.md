@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+- ArchiveBox an den bestehenden privaten GitHub-uv-Bootstrap angebunden:
+  Zustimmung, SHA256-/Versionspruefung, 256-MiB-Zusatzreserve und Python-Pruefung
+  vor dem Download. Kein System-Python-Umbau, Docker oder Archivstart.
+
+- Architekturreview vom 25.10.2026 mit aktuellen Codebelegen, vorhandenen
+  K8s-/Monitoring-/Secret-Schutzbausteinen, Backup-Falsch-Erfolg und einer
+  priorisierten Roadmap fuer Host, Compose, GPU und Cluster. Nur Bericht:
+  [Review](docs/ARCHITECTURE_REVIEW_2026-10-25.md), keine Runtime-Aenderung.
+
 - Zigbee2MQTT-Rueckfragen sofort als eigene Zeilen ausgeben; Zustimmung,
   leere Eingabe, Ablehnung und EOF getrennt protokollieren. Ungueltige
   Antworten erneut abfragen; kein implizites Ja bei fehlendem Terminal.

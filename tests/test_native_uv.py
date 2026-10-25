@@ -174,5 +174,44 @@ class NativeUvTests(unittest.TestCase):
         prepare.assert_not_called()
 
 
+class ArchiveBoxUvTests(NativeUvTests):
+    """Exercise the same consent, rollback and cache contract for ArchiveBox."""
+
+    def setUp(self):
+        super().setUp()
+        self.spec = tools.TOOLS["archivebox"]
+
+    def test_recipe_uses_checkout_settings_and_supported_python(self):
+        recipe = self.spec["recipe"]
+        self.assertEqual(recipe["private_uv"], uv.VERSION)
+        self.assertEqual(recipe["python_min"], [3, 13, 0])
+        self.assertEqual(recipe["repo"], "ArchiveBox/ArchiveBox")
+        self.assertEqual(recipe["kind"], "python")
+
+    def test_dry_run_with_consent_still_has_no_side_effects(self):
+        with patch.dict(os.environ, {"OPENCLAW_USER_DATA_DIR": str(self.base)}), \
+             patch.object(uv, "prepare") as prepare, \
+             patch.object(tools.common, "operation") as operation, redirect_stdout(io.StringIO()):
+            self.assertEqual(tools.main(["archivebox", "install", "--dry-run", "--install-build-deps"]), 0)
+        prepare.assert_not_called()
+        operation.assert_not_called()
+        self.assertEqual(list(self.base.iterdir()), [])
+
+    def test_messages_name_archivebox_not_searxng(self):
+        output = io.StringIO()
+        with redirect_stdout(output):
+            with self.assertRaisesRegex(ValueError, "docs/tools/archivebox.md"):
+                uv.prepare(self.base, self.spec)
+        self.assertIn("ArchiveBox", output.getvalue())
+        self.assertIn("archivebox_install.sh --install-build-deps", output.getvalue())
+        self.assertNotIn("SearXNG", output.getvalue())
+
+    def test_unapproved_recipe_cannot_enable_private_uv(self):
+        with patch.object(uv.releases, "download") as download:
+            with self.assertRaisesRegex(ValueError, "Nicht freigegebener"):
+                uv.prepare(self.base, {"id": "unreviewed", "recipe": {"private_uv": uv.VERSION}}, True)
+        download.assert_not_called()
+
+
 if __name__ == "__main__":
     unittest.main()

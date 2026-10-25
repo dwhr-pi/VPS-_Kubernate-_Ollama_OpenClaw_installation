@@ -1,5 +1,9 @@
 # Tool Index
 
+**[ArchiveBox: GitHub-Paket und private uv-Basis](tools/archivebox.md)**:
+fehlendes uv nach Zustimmung privat bereitstellen; am Quellpin ist Python
+ab 3.13 separat erforderlich. Kein Docker, Archivinitialisierung oder Crawl.
+
 **[Nachgereichte Unterlagen: Tooling, Praesentationen und P0-Plan](sources/2026-10-24/README.md)**:
 acht Eingaben eingeordnet; Originalquellen, Dublettenabgleich und DSB-Review
 mit bestehenden Leitfaeden verknuepft. Keine zusaetzliche Installationsfreigabe.
