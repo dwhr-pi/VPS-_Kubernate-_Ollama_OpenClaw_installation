@@ -213,5 +213,76 @@ class ArchiveBoxUvTests(NativeUvTests):
         download.assert_not_called()
 
 
+class ChangedetectionUvTests(NativeUvTests):
+    """Reuse all offline consent, rollback and inventory checks for this tool."""
+
+    def setUp(self):
+        super().setUp()
+        self.spec = tools.TOOLS["changedetection_io"]
+
+    def test_recipe_uses_checkout_settings_and_supported_python(self):
+        recipe = self.spec["recipe"]
+        self.assertEqual(recipe["private_uv"], uv.VERSION)
+        self.assertEqual(recipe["python_min"], [3, 11, 0])
+        self.assertEqual(recipe["repo"], "dgtlmoon/changedetection.io")
+        self.assertEqual(recipe["kind"], "python")
+        self.assertEqual(recipe["distribution"], "changedetection.io")
+
+    def test_dry_run_with_consent_still_has_no_side_effects(self):
+        with patch.dict(os.environ, {"OPENCLAW_USER_DATA_DIR": str(self.base)}), \
+             patch.object(uv, "prepare") as prepare, \
+             patch.object(tools.common, "operation") as operation, redirect_stdout(io.StringIO()):
+            self.assertEqual(tools.main(["changedetection_io", "install", "--dry-run", "--install-build-deps"]), 0)
+        prepare.assert_not_called()
+        operation.assert_not_called()
+        self.assertEqual(list(self.base.iterdir()), [])
+
+    def test_missing_uv_names_the_correct_tool_and_command(self):
+        output = io.StringIO()
+        with redirect_stdout(output):
+            with self.assertRaisesRegex(ValueError, "docs/tools/changedetection_io.md"):
+                uv.prepare(self.base, self.spec)
+        self.assertIn("Changedetection_IO", output.getvalue())
+        self.assertIn("changedetection_io_install.sh --install-build-deps", output.getvalue())
+        self.assertNotIn("SearXNG", output.getvalue())
+        self.assertNotIn("ArchiveBox", output.getvalue())
+
+
+class LiteLLMUvTests(NativeUvTests):
+    """Keep LiteLLM on the same private bootstrap safety contract."""
+
+    def setUp(self):
+        super().setUp()
+        self.spec = tools.TOOLS["litellm"]
+
+    def test_recipe_uses_checkout_settings_and_supported_python(self):
+        recipe = self.spec["recipe"]
+        self.assertEqual(recipe["private_uv"], uv.VERSION)
+        self.assertEqual(recipe["python_min"], [3, 10, 0])
+        self.assertEqual(recipe["python_max"], [3, 15, 0])
+        self.assertEqual(recipe["repo"], "BerriAI/litellm")
+        self.assertEqual(recipe["extras"], "proxy")
+        self.assertEqual(recipe["distribution"], "litellm")
+
+    def test_dry_run_with_consent_still_has_no_side_effects(self):
+        with patch.dict(os.environ, {"OPENCLAW_USER_DATA_DIR": str(self.base)}), \
+             patch.object(uv, "prepare") as prepare, \
+             patch.object(tools.common, "operation") as operation, redirect_stdout(io.StringIO()):
+            self.assertEqual(tools.main(["litellm", "install", "--dry-run", "--install-build-deps"]), 0)
+        prepare.assert_not_called()
+        operation.assert_not_called()
+        self.assertEqual(list(self.base.iterdir()), [])
+
+    def test_missing_uv_names_litellm_not_other_tools(self):
+        output = io.StringIO()
+        with redirect_stdout(output):
+            with self.assertRaisesRegex(ValueError, "docs/tools/litellm.md"):
+                uv.prepare(self.base, self.spec)
+        self.assertIn("LiteLLM", output.getvalue())
+        self.assertIn("litellm_install.sh --install-build-deps", output.getvalue())
+        self.assertNotIn("SearXNG", output.getvalue())
+        self.assertNotIn("ArchiveBox", output.getvalue())
+
+
 if __name__ == "__main__":
     unittest.main()

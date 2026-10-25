@@ -12,7 +12,12 @@ import gap_tools as common
 import webinar_releases as releases
 
 VERSION = "0.13.5"
-SUPPORTED_TOOLS = {"searxng": "SearXNG", "archivebox": "ArchiveBox"}
+SUPPORTED_TOOLS = {
+    "searxng": "SearXNG",
+    "archivebox": "ArchiveBox",
+    "changedetection_io": "Changedetection_IO",
+    "litellm": "LiteLLM",
+}
 ARTIFACTS = {
     "linux-amd64": ("uv-x86_64-unknown-linux-gnu.tar.gz", 16682639,
                     "f68d291c75783122dad58ab77def0e13f3233f358731db5d6d7e8715603b928f"),

@@ -1,5 +1,23 @@
 # Tool Index
 
+**[Node-RED: GitHub-Build und private Node/npm-Basis](tools/node-red.md)**:
+fehlendes Node/npm nach Zustimmung bereitstellen; keine Flows oder Dienste starten.
+
+**[MinIO: GitHub-Build und private Go-Basis](tools/minio.md)**:
+Go nach Zustimmung bereitstellen, keine Buckets oder Dienste starten.
+Upstream kennzeichnet den Community-Quellstand als nicht mehr gepflegt.
+
+**[LiteLLM: GitHub-Paket und privates uv](tools/litellm.md)**:
+Python >=3.10,<3.15 pruefen; uv nach Zustimmung bereitstellen, ohne Proxy-
+oder Cloudstart.
+
+**[Changedetection_IO: GitHub-Paket und private uv-Basis](tools/changedetection_io.md)**:
+uv nach Zustimmung bereitstellen, Python ab 3.11 vorab pruefen; keine Browser
+oder Watches starten.
+
+**[cAdvisor: GitHub-Build und private Go-Basis](tools/cadvisor.md)**:
+fehlendes Go nach Zustimmung bereitstellen; kein Monitoring-Dienststart.
+
 **[ArchiveBox: GitHub-Paket und private uv-Basis](tools/archivebox.md)**:
 fehlendes uv nach Zustimmung privat bereitstellen; am Quellpin ist Python
 ab 3.13 separat erforderlich. Kein Docker, Archivinitialisierung oder Crawl.

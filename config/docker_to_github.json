@@ -352,6 +352,7 @@
         "repo": "google/cadvisor",
         "pin": "c57813afc32715351dff34ab76a6164bcb0e5c9d",
         "kind": "go",
+        "go_min": [1, 25, 0],
         "package": ".",
         "module_dir": "cmd",
         "assets_script": "build/assets.sh",
@@ -376,6 +377,8 @@
         "repo": "dgtlmoon/changedetection.io",
         "pin": "2bd1a87403b83eb6f37f9f23c04ee2555baccba0",
         "kind": "python",
+        "private_uv": "0.13.5",
+        "python_min": [3, 11, 0],
         "distribution": "changedetection.io",
         "disk_mb": 8192
       },
@@ -747,6 +750,9 @@
         "repo": "BerriAI/litellm",
         "pin": "f2118fc7670ba3fa736d9b8f4deef9077a45a720",
         "kind": "python",
+        "private_uv": "0.13.5",
+        "python_min": [3, 10, 0],
+        "python_max": [3, 15, 0],
         "distribution": "litellm",
         "extras": "proxy",
         "disk_mb": 8192
@@ -863,6 +869,7 @@
         "repo": "minio/minio",
         "pin": "7aac2a2c5b7c882e68c1ce017d8256be2feea27f",
         "kind": "go",
+        "go_min": [1, 24, 8],
         "package": ".",
         "binary": "minio",
         "probe": [
@@ -1256,6 +1263,7 @@
         "repo": "node-red/node-red",
         "pin": "df0a87cce1a243e21a2e0eb0fdbdbb8c4732392f",
         "kind": "npm",
+        "private_node_npm": "22.23.4",
         "entry": "packages/node_modules/node-red/red.js",
         "assets": "packages/node_modules/@node-red/editor-client/public/red/red.min.js",
         "node_min": 22,

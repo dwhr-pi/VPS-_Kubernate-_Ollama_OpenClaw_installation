@@ -11,6 +11,8 @@ import private_go
 
 
 CONTRACTS = {
+    "minio": ([1, 24, 8], "docs/tools/minio.md"),
+    "cadvisor": ([1, 25, 0], "docs/tools/cadvisor.md"),
     "node_exporter": ([1, 26, 0], "docs/tools/node-exporter.md"),
     "caddy": ([1, 26, 0], "docs/tools/caddy.md"),
     "watchtower": ([1, 20, 0], "docs/tools/watchtower.md"),
@@ -30,6 +32,9 @@ def select(base, spec, approved=False, allow_download=False):
     if not contract or minimum != contract[0]:
         raise ValueError("Nicht freigegebener privater Go-Buildvertrag.")
     name = spec["name"]
+    if spec["id"] == "minio":
+        print("MinIO: Upstream-README am Pin kennzeichnet die Community-Quelle als nicht mehr gepflegt. "
+              "Nur Buildvorbereitung, keine Produktionsfreigabe; siehe docs/tools/minio.md.", flush=True)
     version = ".".join(map(str, minimum))
     env = {key: value for key, value in os.environ.items() if key in ("PATH", "LANG", "LC_ALL")}
     env.update(GOTOOLCHAIN="local", GOENV="off", GOWORK="off", GOTELEMETRY="off")
@@ -49,9 +54,12 @@ def select(base, spec, approved=False, allow_download=False):
               " aus offiziellem Go-Archiv mit fester SHA256 moeglich; kein apt-Go, sudo oder globaler PATH-Wechsel.")
         print("Gezielt erneut starten: bash scripts/tools/" + spec["id"] + "_install.sh --install-build-deps")
         if allow_download and not approved and sys.stdin.isatty():
+            print("Private Go-Toolchain jetzt herunterladen und einrichten? [j/N]", flush=True)
+            print("Warte auf Ihre Eingabe und Enter. Nur [j/ja/y/yes] erlaubt die Aktion; Nur [Enter] bedeutet: Nein.", flush=True)
             try:
-                approved = input("Private Go-Toolchain jetzt herunterladen und einrichten? [j/N]: ").strip().lower() in ("j", "ja", "y", "yes")
+                approved = input().strip().lower() in ("j", "ja", "y", "yes")
             except EOFError:
+                print("Eingabe beendet (EOF); keine Zustimmung erkannt.", flush=True)
                 approved = False
         if not allow_download or not approved:
             raise ValueError(name + ": Go >=" + version + " erforderlich; privater Go-Download nicht freigegeben. Siehe " + contract[1] + ".")

@@ -209,6 +209,157 @@ class NativeGoTests(unittest.TestCase):
         ensure.assert_not_called()
         fetch.assert_not_called()
 
+    def test_cadvisor_contract_matches_go_modules_and_asset_build(self):
+        recipe = tools.TOOLS["cadvisor"]["recipe"]
+        self.assertEqual(recipe["go_min"], [1, 25, 0])
+        self.assertEqual(recipe["module_dir"], "cmd")
+        self.assertEqual(recipe["assets_script"], "build/assets.sh")
+        self.assertEqual(recipe["probe"], ["--version"])
+        self.assertEqual(go.CONTRACTS["cadvisor"][1], "docs/tools/cadvisor.md")
+        self.assertFalse(go.version_ok("go version go1.24.9 linux/amd64", recipe["go_min"]))
+
+    def test_cadvisor_refusal_logs_own_command_without_fetch_or_marker(self):
+        with patch.dict(os.environ, {"OPENCLAW_USER_DATA_DIR": str(self.base)}), \
+             patch.object(tools.platform, "system", return_value="Linux"), \
+             patch.object(tools.common, "reserve"), patch.object(tools.common, "executable"), \
+             patch.object(go.private_go, "ensure") as ensure, \
+             patch.object(tools.common, "install") as fetch, redirect_stdout(io.StringIO()):
+            with self.assertRaisesRegex(ValueError, "cAdvisor: Go >=1.25.0"):
+                tools.main(["cadvisor", "install"])
+            self.assertFalse(tools.paths("cadvisor")[2].exists())
+            log = next((self.base / "install_logs").glob("*.log")).read_text()
+            self.assertIn("cadvisor_install.sh --install-build-deps", log)
+        ensure.assert_not_called()
+        fetch.assert_not_called()
+
+    def test_cadvisor_existing_go_avoids_bootstrap(self):
+        with patch.object(go.shutil, "which", return_value="/existing/go"), \
+             patch.object(go.common, "run", return_value="go version go1.25.1 linux/amd64"), \
+             patch.object(go.private_go, "ensure") as ensure, redirect_stdout(io.StringIO()):
+            self.assertEqual(go.select(self.base, tools.TOOLS["cadvisor"]), ("/existing/go", None))
+        ensure.assert_not_called()
+
+    def test_cadvisor_approval_validates_private_go_and_only_changes_child_path(self):
+        spec = tools.TOOLS["cadvisor"]
+        slot = self.base / "toolchain" / (go.private_go.VERSION + "-linux-amd64")
+        root = slot / "go"
+        def ensure(base, validate):
+            slot.mkdir(parents=True, exist_ok=True)
+            validate(root / "bin/go", root, "linux-amd64")
+            return str(root / "bin/go"), root
+        before = dict(os.environ)
+        env = {"PATH": "original", "GOTOOLCHAIN": "local"}
+        with patch.object(go.private_go, "ensure", side_effect=ensure), \
+             patch.object(go.common, "run", return_value="go version " + go.private_go.VERSION + " linux/amd64"), \
+             redirect_stdout(io.StringIO()):
+            go.prepare(self.base, spec, approved=True)
+            go.activate(self.base, spec, env)
+        self.assertEqual(env["GOROOT"], str(root))
+        self.assertEqual(env["GOTOOLCHAIN"], "local")
+        self.assertEqual(dict(os.environ), before)
+
+    def test_cadvisor_download_failure_never_fetches_sources_or_marks_success(self):
+        with patch.dict(os.environ, {"OPENCLAW_USER_DATA_DIR": str(self.base)}), \
+             patch.object(tools.platform, "system", return_value="Linux"), \
+             patch.object(tools.common, "reserve"), patch.object(tools.common, "executable"), \
+             patch.object(go.private_go, "ensure", side_effect=ValueError("Go-Download fehlgeschlagen")), \
+             patch.object(tools.common, "install") as fetch, redirect_stdout(io.StringIO()):
+            with self.assertRaisesRegex(ValueError, "Go-Download"):
+                tools.main(["cadvisor", "install", "--install-build-deps"])
+            self.assertFalse(tools.paths("cadvisor")[2].exists())
+        fetch.assert_not_called()
+
+    def test_cadvisor_dry_run_never_downloads(self):
+        with patch.dict(os.environ, {"OPENCLAW_USER_DATA_DIR": str(self.base)}), \
+             patch.object(go.private_go, "ensure") as ensure, \
+             patch.object(tools.common, "install") as fetch, redirect_stdout(io.StringIO()):
+            self.assertEqual(tools.main(["cadvisor", "install", "--install-build-deps", "--dry-run"]), 0)
+            self.assertFalse(list(self.base.iterdir()))
+        ensure.assert_not_called()
+        fetch.assert_not_called()
+
+
+class MinioGoTests(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.base = Path(self.temp.name)
+        self.spec = tools.TOOLS["minio"]
+        for mocked in (patch.object(go.shutil, "which", return_value=None),
+                       patch.object(go.private_go, "target", return_value=("linux-amd64", "fixture.tar.gz", ("fixture", 1))),
+                       patch.object(go.sys, "stdin", Mock(isatty=Mock(return_value=False)))):
+            mocked.start()
+            self.addCleanup(mocked.stop)
+
+    def test_minio_version_contract_and_version_only_probe(self):
+        recipe = self.spec["recipe"]
+        self.assertEqual(recipe["go_min"], [1, 24, 8])
+        self.assertEqual(recipe["repo"], "minio/minio")
+        self.assertEqual(recipe["package"], ".")
+        self.assertEqual(recipe["probe"], ["--version"])
+        self.assertEqual(go.CONTRACTS["minio"][1], "docs/tools/minio.md")
+        self.assertFalse(go.version_ok("go version go1.24.7 linux/amd64", recipe["go_min"]))
+
+    def test_refusal_logs_minio_and_maintenance_warning_without_fetch(self):
+        with patch.dict(os.environ, {"OPENCLAW_USER_DATA_DIR": str(self.base)}), \
+             patch.object(tools.platform, "system", return_value="Linux"), \
+             patch.object(tools.common, "reserve"), patch.object(tools.common, "executable"), \
+             patch.object(go.private_go, "ensure") as ensure, \
+             patch.object(tools.common, "install") as fetch, redirect_stdout(io.StringIO()):
+            with self.assertRaisesRegex(ValueError, "MinIO: Go >=1.24.8"):
+                tools.main(["minio", "install"])
+            self.assertFalse(tools.paths("minio")[2].exists())
+            log = next((self.base / "install_logs").glob("*.log")).read_text()
+            self.assertIn("minio_install.sh --install-build-deps", log)
+            self.assertIn("nicht mehr gepflegt", log)
+        ensure.assert_not_called()
+        fetch.assert_not_called()
+
+    def test_existing_suitable_go_is_preferred(self):
+        with patch.object(go.shutil, "which", return_value="/existing/go"), \
+             patch.object(go.common, "run", return_value="go version go1.24.8 linux/amd64"), \
+             patch.object(go.private_go, "ensure") as ensure, redirect_stdout(io.StringIO()):
+            self.assertEqual(go.select(self.base, self.spec), ("/existing/go", None))
+        ensure.assert_not_called()
+
+    def test_approval_activates_private_go_without_parent_changes(self):
+        slot = self.base / "toolchain" / (go.private_go.VERSION + "-linux-amd64")
+        root = slot / "go"
+        def ensure(base, validate):
+            slot.mkdir(parents=True, exist_ok=True)
+            validate(root / "bin/go", root, "linux-amd64")
+            return str(root / "bin/go"), root
+        before = dict(os.environ)
+        env = {"PATH": "original", "GOTOOLCHAIN": "local"}
+        with patch.object(go.private_go, "ensure", side_effect=ensure), \
+             patch.object(go.common, "run", return_value="go version " + go.private_go.VERSION + " linux/amd64"), \
+             redirect_stdout(io.StringIO()):
+            go.prepare(self.base, self.spec, approved=True)
+            go.activate(self.base, self.spec, env)
+        self.assertEqual(env["GOROOT"], str(root))
+        self.assertEqual(env["GOTOOLCHAIN"], "local")
+        self.assertEqual(dict(os.environ), before)
+
+    def test_download_failure_never_fetches_sources_or_marks_success(self):
+        with patch.dict(os.environ, {"OPENCLAW_USER_DATA_DIR": str(self.base)}), \
+             patch.object(tools.platform, "system", return_value="Linux"), \
+             patch.object(tools.common, "reserve"), patch.object(tools.common, "executable"), \
+             patch.object(go.private_go, "ensure", side_effect=ValueError("Go-Download fehlgeschlagen")), \
+             patch.object(tools.common, "install") as fetch, redirect_stdout(io.StringIO()):
+            with self.assertRaisesRegex(ValueError, "Go-Download"):
+                tools.main(["minio", "install", "--install-build-deps"])
+            self.assertFalse(tools.paths("minio")[2].exists())
+        fetch.assert_not_called()
+
+    def test_dry_run_never_downloads_or_creates_workspace(self):
+        with patch.dict(os.environ, {"OPENCLAW_USER_DATA_DIR": str(self.base)}), \
+             patch.object(go.private_go, "ensure") as ensure, \
+             patch.object(tools.common, "install") as fetch, redirect_stdout(io.StringIO()):
+            self.assertEqual(tools.main(["minio", "install", "--install-build-deps", "--dry-run"]), 0)
+            self.assertFalse(list(self.base.iterdir()))
+        ensure.assert_not_called()
+        fetch.assert_not_called()
+
 
 if __name__ == "__main__":
     unittest.main()

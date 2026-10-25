@@ -18,6 +18,7 @@ import native_build_deps as build_deps
 import native_go
 import native_uv
 import native_node
+import native_node_npm
 
 ROOT = Path(__file__).resolve().parents[3]
 MANIFEST = ROOT / "config/docker_to_github.json"
@@ -132,6 +133,8 @@ def preflight(outer, spec, install_build_deps=False):
             continue
         if name in ("node", "pnpm") and spec["recipe"].get("private_node"):
             continue
+        if name in ("node", "npm") and spec["recipe"].get("private_node_npm"):
+            continue
         common.executable(name)
     native_go.prepare(outer, spec, approved=install_build_deps)
     adapters.preflight(spec)
@@ -146,6 +149,7 @@ def preflight(outer, spec, install_build_deps=False):
                    {name: value for name, value in os.environ.items() if name in ("PATH", "LANG", "LC_ALL")})
     native_uv.prepare(outer, spec, approved=install_build_deps)
     native_node.prepare(outer, spec, approved=install_build_deps)
+    native_node_npm.prepare(outer, spec, approved=install_build_deps)
 
 
 def environment(prefix):
@@ -220,6 +224,7 @@ def build(prefix, spec):
     native_go.activate(prefix.parent, spec, env)
     native_uv.activate(prefix.parent, spec, env)
     native_node.activate(prefix.parent, spec, env)
+    native_node_npm.activate(prefix.parent, spec, env)
     substitutions = dict(prefix=str(prefix), source=str(checkout), cache=str(prefix / "_build"))
     env.update({name: value.format_map(substitutions) for name, value in recipe.get("build_env", {}).items()})
     binary = prefix / "bin" / recipe.get("binary", "unused")

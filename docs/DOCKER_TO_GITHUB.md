@@ -428,6 +428,26 @@ Updater und prueft nur `--help`, nicht das am Pin ungueltige `--version`.
 
 ### SearXNG: fehlendes uv gezielt bereitstellen
 
+[Node-RED](tools/node-red.md) besitzt einen getrennten privaten Node-/npm-
+Bootstrap mit `--install-build-deps`; kein pnpm und kein Docker-Fallback.
+Neue Basis verlangt 9216 MiB Reserve; bestehende Flows bleiben unberuehrt.
+
+[MinIO](tools/minio.md) kann bei fehlendem Go den privaten Go-Bootstrap
+mit `--install-build-deps` nutzen. Konservativ Go >=1.24.8; kein Serverstart
+oder Bucketzugriff. Wartungswarnung der Community-Quelle vor Nutzung lesen.
+
+[LiteLLM](tools/litellm.md) kann den privaten uv-Bootstrap ebenfalls nach
+Zustimmung nutzen. Python >=3.10,<3.15 vorab pruefen; 8448 MiB Reserve bei
+neuer uv-Basis. Kein Proxy-/Datenbank-/Cloudstart durch Paketinstallation.
+
+[Changedetection_IO](tools/changedetection_io.md) verwendet ebenfalls den
+privaten GitHub-uv-Bootstrap nach Zustimmung, mit Python >=3.11 vor dem Download
+und 8448 MiB Reserve bei neuer Toolchain. Keine Browser-/Watch-Aktivierung.
+
+Fuer [cAdvisor](tools/cadvisor.md) steht bei fehlendem Go nun ebenfalls der
+private Go-Bootstrap mit `--install-build-deps` zur Verfuegung. Go >=1.25.0
+am Pin, kein System-Go-Umbau und kein automatischer Monitoring-Dienststart.
+
 Auch [ArchiveBox](tools/archivebox.md) kann denselben privaten uv-Bootstrap
 nach Zustimmung nutzen. Vorher ist am ArchiveBox-Pin Python >=3.13 erforderlich;
 kein automatischer Python-Download. 8448 MiB Reserve bei neuer uv-Einrichtung.

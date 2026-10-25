@@ -2,6 +2,27 @@
 
 ## Unreleased
 
+- Node-RED: private Node-22.23.4-/npm-10.9.9-Basis aus pruefsummengesichertem
+  Node-Archiv nach Zustimmung, eigener Archivschutz und Kindprozess-PATH.
+  Kein System-Node-Umbau, Docker, Flow- oder Dienststart; libatomic-Reparatur
+  bleibt separat freizugeben.
+
+- MinIO an den privaten Go-Bootstrap angebunden, Go >=1.24.8 gemaess
+  konservativem Toolchain-Vertrag; Wartungswarnung am Quellpin sichtbar.
+  Kein System-Go-Umbau, Serverstart, Bucketzugriff oder Docker-Fallback.
+
+- LiteLLM an den vorhandenen privaten GitHub-uv-Bootstrap angebunden;
+  Python >=3.10,<3.15 vor dem Download pruefen, Zustimmung und 256-MiB-
+  Zusatzreserve. Kein Proxy, Datenbankstart oder Modell-/Provideraufruf.
+
+- Changedetection_IO an den vorhandenen privaten GitHub-uv-Bootstrap
+  angebunden; Python >=3.11 vor dem Download pruefen, Zustimmung und 256-MiB-
+  Zusatzreserve. Kein Docker, Browserdownload, Watch oder Dienststart.
+
+- cAdvisor an den privaten Go-Bootstrap angebunden, passend zur Go-1.25-
+  Mindestanforderung am GitHub-Pin. Zustimmung, Integritaets-/Versionspruefung
+  und isolierter Kindprozess-PATH; kein System-Go-Umbau oder Dienststart.
+
 - ArchiveBox an den bestehenden privaten GitHub-uv-Bootstrap angebunden:
   Zustimmung, SHA256-/Versionspruefung, 256-MiB-Zusatzreserve und Python-Pruefung
   vor dem Download. Kein System-Python-Umbau, Docker oder Archivstart.

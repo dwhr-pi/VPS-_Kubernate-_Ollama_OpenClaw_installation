@@ -59,7 +59,8 @@ def confirm(question):
         print("Ungueltige Antwort; bitte j oder n eingeben und Enter druecken.", flush=True)
 
 
-def runtime_version(binary, base, env, allow_repair=False):
+def runtime_version(binary, base, env, allow_repair=False,
+                    tool_name="Zigbee2MQTT", policy_name="ZIGBEE2MQTT_INSTALL_RUNTIME_LIBS"):
     """Repair only the recognized libatomic loader failure after separate consent."""
     try:
         return common.run([str(binary), "--version"], base, env)
@@ -73,21 +74,21 @@ def runtime_version(binary, base, env, allow_repair=False):
             raise
     apt = ["apt-get", "-o", "DPkg::Lock::Timeout=300", "install", "--no-remove",
            "--no-install-recommends", "-y", "libatomic1"]
-    print("Zigbee2MQTT: Node/pnpm braucht die fehlende Laufzeitbibliothek libatomic.so.1 (Paket libatomic1).", flush=True)
+    print(tool_name + ": Node/Paketmanager braucht die fehlende Laufzeitbibliothek libatomic.so.1 (Paket libatomic1).", flush=True)
     print("Gezielte Reparatur: sudo " + " ".join(apt), flush=True)
     print("Gemeinsame Systembibliothek; apt kann Abhaengigkeiten aktualisieren. "
           "Sie bleibt bei Tool-Deinstallation erhalten; kein System-Node oder Docker.", flush=True)
-    policy = os.environ.get("ZIGBEE2MQTT_INSTALL_RUNTIME_LIBS", "ask")
+    policy = os.environ.get(policy_name, "ask")
     if policy not in ("ask", "0", "1"):
-        raise ValueError("ZIGBEE2MQTT_INSTALL_RUNTIME_LIBS: nur ask, 0 oder 1.")
+        raise ValueError(policy_name + ": nur ask, 0 oder 1.")
     supported = build_deps.ubuntu_release() and bool(shutil.which("apt-get"))
     accepted = allow_repair and supported and policy == "1"
     if allow_repair and supported and policy == "ask":
         accepted = confirm("Fehlendes libatomic1 jetzt mit apt installieren?")
     if not accepted:
-        raise ValueError("Zigbee2MQTT: libatomic.so.1 fehlt; keine Systemreparatur freigegeben "
+        raise ValueError(tool_name + ": libatomic.so.1 fehlt; keine Systemreparatur freigegeben "
                          "oder Plattform nicht Ubuntu 24.04. Bibliothek separat bereitstellen oder "
-                         "ZIGBEE2MQTT_INSTALL_RUNTIME_LIBS=1 beim Installieren bewusst setzen. "
+                         + policy_name + "=1 beim Installieren bewusst setzen. "
                          "Kein erfolgreicher Versions-/Buildnachweis.")
     prefix = [] if getattr(os, "geteuid", lambda: -1)() == 0 else [common.executable("sudo"), "--"]
     system_env = {key: value for key, value in os.environ.items()
