@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- cAdvisor: serieller Go-Build mit weichem Prozess-GC-Budget; laufende
+  Compilerlogs, PID/Heartbeat/Exitstatus und begrenzter Rueckgabepuffer.
+  Signal-/Timeout-Fehlerpfade und WSL-Diagnose dokumentiert; kein behaupteter
+  OOM-Nachweis oder Schutz gegen einen kompletten VM-/Hostabbruch.
+
 - ArchiveBox: vorhandenes Python 3.13/3.14 erkennen statt ausschliesslich den
   Installer-Interpreter zu verwenden. Bei Bedarf private Python-3.13-Basis
   via uv/GitHub nach Zustimmung und mit zusaetzlicher Speicherreserve;

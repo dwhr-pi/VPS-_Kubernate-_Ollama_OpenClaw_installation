@@ -265,6 +265,11 @@ class NativeGithubTests(unittest.TestCase):
                 def run(args, cwd, env):
                     command = list(map(str, args))
                     commands.append(command)
+                    if spec["id"] == "cadvisor":
+                        self.assertEqual(env["GOMAXPROCS"], "1")
+                        self.assertEqual(env["GOMEMLIMIT"], "768MiB")
+                        self.assertEqual(env["GOFLAGS"], "-p=1")
+                        self.assertEqual(env["NATIVE_BUILD_STREAM"], "1")
                     if command[:3] == ["rustc", "--print", "sysroot"]:
                         return str(prefix)
                     if command == ["node", "-p", "process.versions.node"]:
@@ -293,6 +298,10 @@ class NativeGithubTests(unittest.TestCase):
                     # Packaging adapters have separate negative/positive contract tests.
                     artifacts = tool.build(prefix, spec)
                 self.assertTrue(artifacts)
+                if spec["id"] == "cadvisor":
+                    compile_command = next(args for args in commands if args[:2] == ["go", "build"])
+                    self.assertIn("-p=1", compile_command)
+                    self.assertNotIn("-p=2", compile_command)
                 for command in commands:
                     self.assertNotIn(command[0], ("docker", "podman", "sudo"))
                     self.assertFalse(any(arg in command for arg in ("start", "serve", "up", "setup", "publish", "push")))

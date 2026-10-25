@@ -21,6 +21,60 @@ Ohne Flag fragt ein interaktives Terminal mit `[j/N]`. Enter, EOF oder fehlende
 Zustimmung genehmigt keinen Download. Dry-Run bleibt auch mit Flag schreibfrei.
 Build-/Statuspruefungen laden keine Toolchain still nach.
 
+## Abbruch waehrend go build am 25.10.2026 um 04:25
+
+Das gemeldete Log endet mitten in `go build`, danach erscheint PowerShell.
+Ein Abschlussstatus, Compilerfehler oder OOM-Nachweis fehlt. Die Disk-Vorpruefung
+war erfolgreich; sie prueft weder den gesamten Windows-RAM noch spaetere
+Speicherspitzen. Ein beendeter WSL-/Shellprozess oder Speicherdruck ist moeglich,
+aber anhand dieses Logs nicht bewiesen. Kein erfolgreicher Buildnachweis.
+
+Der cAdvisor-Build verwendet jetzt **`-p=1`, `GOMAXPROCS=1` und
+`GOMEMLIMIT=768MiB`**, auch fuer Go-Unterprozesse der Asset-Erstellung.
+Das senkt die Parallelitaet. GOMEMLIMIT ist ein weiches GC-Ziel **je Prozess**,
+keine harte Grenze fuer Compiler, Linker, Windows oder die gesamte WSL-VM und
+keine Garantie gegen OOM. Siehe [Go GC Guide](https://go.dev/doc/gc-guide#Memory_limit).
+Der Build kann dadurch deutlich laenger dauern.
+
+Compiler-Ausgabe wird laufend ins aktuelle Operationslog geschrieben, nicht
+erst nach Ende des Builds gesammelt. Der Rueckgabepuffer ist begrenzt; im Log
+stehen PID, Statusmeldungen alle 30 Sekunden und der beobachtete Exitstatus.
+Signal-/Timeoutabbrueche sind Fehler, keine Installation. Ein kompletter VM-
+oder Hostabbruch kann jedoch auch den Logger toeten: danach ist weiterhin kein
+abschliessender Logeintrag garantiert. Das Setup faengt normale Installerfehler
+bereits ab; ein WSL-Abbruch kann nicht durch Bash abgefangen werden.
+
+Vor erneutem Build zuerst diagnostizieren, nicht blind Daten/Lockdateien loeschen:
+
+```powershell
+# Read-only WSL inventory in PowerShell:
+wsl --list --verbose
+wsl --status
+```
+
+```bash
+# Read-only diagnostics inside the affected Linux distribution:
+free -h
+df -h / /mnt/c
+ps -eo pid,ppid,comm,rss --sort=-rss | head -20
+dmesg -T | grep -Ei 'out of memory|oom|killed process'
+# If persistent journals exist, also inspect the previous boot:
+journalctl -k -b -1 --no-pager | grep -Ei 'out of memory|oom|killed process'
+```
+
+Kernel-Logs koennen ohne zusaetzliche Leserechte unzugaenglich und nach einem
+VM-Neustart verloren sein. Fehlende Treffer widerlegen OOM nicht. Fuer den
+naechsten Start aus PowerShell den Exitcode direkt nach dem WSL-Aufruf mit
+`$LASTEXITCODE` erfassen. Keine automatische WSL-RAM-/Swap-/Treiber-Aenderung.
+Bei OOM-Indizien zuerst parallele schwere Jobs geordnet beenden und WSL-/Host-
+RAM separat pruefen. Keine Schutzgrenze umgehen.
+
+Danach den aktualisierten Installer erneut starten. Bleibt nach dem harten
+Abbruch ein `operation.lock` oder ein nativer Ordner ohne Buildnachweis zurueck,
+blockiert das Setup absichtlich. Erst sicherstellen, dass kein Build mehr laeuft,
+Besitz und Inhalt pruefen und den Bestand sichern; kein pauschales `rm -rf`
+auf Tool-, Cache- oder Nutzerdatenordner. Private Go-Toolchain weiterverwenden.
+
 ## Version und Quellen
 
 Der [gepruefte cAdvisor-Pin](https://github.com/google/cadvisor/tree/c57813afc32715351dff34ab76a6164bcb0e5c9d)

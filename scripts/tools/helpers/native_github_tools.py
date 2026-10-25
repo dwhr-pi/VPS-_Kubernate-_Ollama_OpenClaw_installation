@@ -20,6 +20,7 @@ import native_uv
 import native_node
 import native_node_npm
 import archivebox_python
+import native_build_process
 
 ROOT = Path(__file__).resolve().parents[3]
 MANIFEST = ROOT / "config/docker_to_github.json"
@@ -96,6 +97,8 @@ def paths(key):
 def run(args, cwd, env):
     if Path(str(args[0])).name in ("docker", "podman", "sudo"):
         raise ValueError("Kein Container-/privilegierter Fallback erlaubt.")
+    if env.get("NATIVE_BUILD_STREAM") == "1":
+        return native_build_process.run(args, cwd, env)
     return common.run(args, cwd, env)
 
 
@@ -230,6 +233,10 @@ def build(prefix, spec):
     native_node_npm.activate(prefix.parent, spec, env)
     substitutions = dict(prefix=str(prefix), source=str(checkout), cache=str(prefix / "_build"))
     env.update({name: value.format_map(substitutions) for name, value in recipe.get("build_env", {}).items()})
+    if spec["id"] == "cadvisor":
+        # Soft per-process GC budget, not a hard memory limit for the entire VM.
+        env.update(GOMAXPROCS="1", GOMEMLIMIT="768MiB", GOFLAGS="-p=1", NATIVE_BUILD_STREAM="1")
+        print('cAdvisor: ressourcenschonender Build: -p=1, GOMAXPROCS=1, GOMEMLIMIT=768MiB (weiches Limit pro Go-Prozess).', flush=True)
     binary = prefix / "bin" / recipe.get("binary", "unused")
     binary.parent.mkdir(mode=0o700)
     artifacts = []
@@ -263,7 +270,8 @@ def build(prefix, spec):
             run(["bash", str(checkout / recipe["assets_script"])], checkout, env)
         run(["go", "mod", "download"], module, env)
         run(["go", "mod", "verify"], module, env)
-        run(["go", "build", "-mod=readonly", "-trimpath", "-buildvcs=false", "-p=2",
+        parallel = "-p=1" if spec["id"] == "cadvisor" else "-p=2"
+        run(["go", "build", "-mod=readonly", "-trimpath", "-buildvcs=false", parallel,
              "-o", str(binary), recipe["package"]], module, env)
         artifacts = [binary.relative_to(prefix).as_posix()]
     elif kind == "rust":
