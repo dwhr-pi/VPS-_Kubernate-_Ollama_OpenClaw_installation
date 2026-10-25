@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Rollback-Sperre: Besitzer-PID mit Boot-/Startidentitaet fuer neue Versuche,
+  rein lesendes --inspect-lock und konkrete Pfadangabe bei Konflikten.
+  Alte/unklare Sperren bleiben erhalten; manuelle Freigabe nur leerer
+  Legacy-Sperren nach Ausschluss laufender Installer dokumentiert.
+
 - cAdvisor: serieller Go-Build mit weichem Prozess-GC-Budget; laufende
   Compilerlogs, PID/Heartbeat/Exitstatus und begrenzter Rueckgabepuffer.
   Signal-/Timeout-Fehlerpfade und WSL-Diagnose dokumentiert; kein behaupteter

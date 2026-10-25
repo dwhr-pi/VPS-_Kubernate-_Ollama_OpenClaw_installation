@@ -75,6 +75,50 @@ blockiert das Setup absichtlich. Erst sicherstellen, dass kein Build mehr laeuft
 Besitz und Inhalt pruefen und den Bestand sichern; kein pauschales `rm -rf`
 auf Tool-, Cache- oder Nutzerdatenordner. Private Go-Toolchain weiterverwenden.
 
+## Rollback-Sperre am 25.10.2026 um 19:46
+
+Dieser Versuch wurde **vor Start des cAdvisor-Installers** blockiert. Die
+globale Menue-/Rollback-Sperre lautet standardmaessig:
+`~/.openclaw_ultimate_user_data/install_transactions/.runner-lock`.
+Sie schuetzt alle Tools, nicht nur cAdvisor. Der vorherige harte WSL-Abbruch
+kann sie hinterlassen haben; eine laufende andere Installation ist ebenfalls
+moeglich. Dies ist kein neuer Speicherplatz- oder Go-Fehler.
+
+Nach Uebernahme der aktualisierten Skripte rein lesend pruefen:
+
+```bash
+python3 scripts/lib/install_rollback.py --inspect-lock
+ps -eo pid,ppid,comm
+```
+
+Neue Sperren enthalten `owner.json` mit PID, Linux-Boot-ID und Prozessstartzeit.
+Das verhindert eine Verwechslung durch wiederverwendete PIDs. Die Diagnose
+meldet aktive, geaenderte oder unbekannte Besitzer, entfernt aber nichts.
+**Ein fehlender Besitzerprozess beweist nicht, dass keine verwaisten Compiler
+oder anderen Installer mehr laufen.** Alte leere Sperren haben keinen Besitzer-
+Nachweis und werden weiterhin nicht automatisch aufgehoben.
+
+Nur fuer die **alte, leere** Sperre: erst alle parallelen Setup-/Update-/Build-
+Vorgaenge pruefen und sicher beenden beziehungsweise deren Abschluss abwarten.
+Wenn sicher keine Installation mehr laeuft, kann der Nutzer bewusst ausschliesslich
+den leeren Sperrordner freigeben (Standardpfad; bei abweichendem
+`OPENCLAW_USER_DATA_DIR` den tatsaechlichen Pfad aus der Diagnose verwenden):
+
+```bash
+# Manual recovery ONLY after excluding every active installation/build.
+rmdir -- "$HOME/.openclaw_ultimate_user_data/install_transactions/.runner-lock"
+```
+
+`rmdir` entfernt keine Dateien und scheitert bei nichtleerem Ordner. Bei
+`owner.json`, unbekanntem Inhalt oder einem aktiven Besitzer **nicht** mit
+`rm -rf` nachhelfen. Dann Besitzer/Bestand gesondert pruefen. Keine Nutzerdaten,
+Journale, privaten Go-Werkzeuge oder nativen Quellordner entfernen.
+
+Anschliessend cAdvisor erneut im Setup waehlen. Eine moegliche zweite
+toolinterne `operation.lock` oder ein unvollstaendiger nativer Build ist eine
+separate Pruefung; die globale Entsperrung macht daraus keinen erfolgreichen
+Build und umgeht keine Besitzkontrolle.
+
 ## Version und Quellen
 
 Der [gepruefte cAdvisor-Pin](https://github.com/google/cadvisor/tree/c57813afc32715351dff34ab76a6164bcb0e5c9d)

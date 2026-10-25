@@ -139,6 +139,41 @@ class Rollback(unittest.TestCase):
             self.assertEqual(rb.main(["Qwen_Code", str(self.script)]), 1)
         self.assertTrue(lock.exists())
 
+    def test_lock_inspection_is_read_only_and_does_not_create_workspace(self):
+        with mock.patch.object(rb, 'run') as run:
+            self.assertEqual(rb.main(['--inspect-lock']), 0)
+        run.assert_not_called()
+        self.assertFalse(self.root.exists())
+
+    def test_legacy_lock_is_not_automatically_removed(self):
+        lock = self.root / 'install_transactions/.runner-lock'
+        lock.mkdir(parents=True)
+        report = rb.inspect_lock(self.root)
+        self.assertIn('legacy', report['state'])
+        self.assertFalse(report['automatic_recovery'])
+        self.assertEqual(list(lock.iterdir()), [])
+
+    def test_owner_identity_is_written_and_normal_completion_unlocks(self):
+        identity = {'boot_id': 'fixture', 'start_ticks': '42'}
+        def fake(_):
+            report = rb.inspect_lock(self.root)
+            self.assertEqual(report['pid'], os.getpid())
+            self.assertEqual(report['state'], 'owner-process-active')
+            return 0, False
+        with mock.patch.object(rb, 'process_identity', return_value=identity):
+            self.assertEqual(self.run_fake(fake), 0)
+        self.assertFalse((self.root / 'install_transactions/.runner-lock').exists())
+
+    def test_changed_pid_identity_does_not_unlock(self):
+        lock = self.root / 'install_transactions/.runner-lock'
+        lock.mkdir(parents=True)
+        owner = lock / 'owner.json'
+        owner.write_text(json.dumps({'pid': 123, 'identity': {'boot_id': 'old', 'start_ticks': '1'}}))
+        with mock.patch.object(rb, 'process_identity', return_value={'boot_id': 'new', 'start_ticks': '1'}):
+            report = rb.inspect_lock(self.root)
+        self.assertIn('identity-changed', report['state'])
+        self.assertTrue(owner.exists())
+
     def test_unsafe_root_rejected_without_installer(self):
         for path in (str(ROOT / "private"), str(Path(self.temp.name).anchor), str(Path(self.temp.name) / ".." / "other")):
             with mock.patch.dict(os.environ, OPENCLAW_USER_DATA_DIR=path), mock.patch.object(rb, "stream", side_effect=AssertionError("must not run")):

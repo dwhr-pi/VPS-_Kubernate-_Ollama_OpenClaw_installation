@@ -14,6 +14,40 @@ OWNER = ".openclaw-install-owner"
 DISK_ERROR = re.compile(r"no space left on device|\bENOSPC\b|disk quota exceeded|zu wenig freier (?:windows-host-)?speicher|fehler:[^\n]*windows-c:-reserve", re.I)
 
 
+def process_identity(pid):
+    """Linux identity avoids confusing PID reuse with the original installer."""
+    boot = Path('/proc/sys/kernel/random/boot_id').read_text().strip()
+    fields = Path('/proc', str(pid), 'stat').read_text().rsplit(')', 1)[1].split()
+    return {'boot_id': boot, 'start_ticks': fields[19]}
+
+
+def inspect_lock(root):
+    lock = safe(root / 'install_transactions/.runner-lock')
+    report = {'lock': str(lock), 'exists': lock.exists(), 'state': 'absent',
+              'automatic_recovery': False}
+    if not lock.exists():
+        return report
+    report['state'] = 'legacy-or-unreadable-owner-manual-review-required'
+    try:
+        owner = json.loads(safe(lock / 'owner.json').read_text(encoding='utf-8'))
+        pid = owner['pid']
+        if not isinstance(pid, int) or isinstance(pid, bool) or pid <= 0:
+            return report
+        report['pid'] = pid
+        if not owner.get('identity'):
+            report['state'] = 'owner-status-unknown'
+            return report
+        current = process_identity(pid)
+        report['state'] = ('owner-process-active' if current == owner['identity']
+                           else 'owner-identity-changed-manual-review-required')
+    except FileNotFoundError:
+        if 'pid' in report and Path('/proc/sys/kernel/random/boot_id').is_file():
+            report['state'] = 'owner-not-found-manual-review-required'
+    except (OSError, ValueError, KeyError, TypeError, IndexError):
+        pass
+    return report
+
+
 def safe(path):
     if not path.is_absolute() or ".." in path.parts:
         raise ValueError("Nicht normalisierter Installationspfad")
@@ -164,25 +198,46 @@ def run(tool, script, args=()):
 
 def main(argv=None):
     argv = sys.argv[1:] if argv is None else argv
-    if len(argv) < 2:
-        print("Aufruf: install_rollback.py TOOL INSTALL_SCRIPT [ARGS...]", file=sys.stderr)
+    if argv != ['--inspect-lock'] and len(argv) < 2:
+        print("Aufruf: install_rollback.py TOOL INSTALL_SCRIPT [ARGS...] oder --inspect-lock", file=sys.stderr)
         return 2
     try:
         # Serialize menu-driven transactions, including retries of an existing root.
         root = safe(Path(os.environ.get("OPENCLAW_USER_DATA_DIR", str(Path.home() / ".openclaw_ultimate_user_data"))))
         if root == Path(root.anchor):
             raise ValueError("User-Workspace darf keine Dateisystemwurzel sein")
+        if argv == ['--inspect-lock']:
+            print(json.dumps(inspect_lock(root), indent=2))
+            return 0
         parent = safe(root / "install_transactions")
         parent.mkdir(parents=True, exist_ok=True, mode=0o700)
         lock = safe(parent / ".runner-lock")
         try:
             lock.mkdir(mode=0o700)
         except FileExistsError:
-            raise ValueError("Andere Installation aktiv oder Abbruch-Sperre vorhanden; zuerst pruefen")
+            print(json.dumps(inspect_lock(root), indent=2), flush=True)
+            raise ValueError("Andere Installation aktiv oder Abbruch-Sperre vorhanden; zuerst pruefen. "
+                             "Diagnose: python3 scripts/lib/install_rollback.py --inspect-lock; "
+                             "siehe docs/tools/cadvisor.md. Keine Sperre oder Daten geloescht.")
+        token = uuid.uuid4().hex
+        owner_path = safe(lock / 'owner.json')
         try:
+            try:
+                identity = process_identity(os.getpid())
+            except (OSError, ValueError, IndexError):
+                identity = None
+            with owner_path.open('x', encoding='utf-8') as out:
+                json.dump({'pid': os.getpid(), 'identity': identity, 'token': token}, out)
+            owner_path.chmod(0o600)
             return run(argv[0], argv[1], argv[2:])
         finally:
-            lock.rmdir()
+            # Never remove a replacement lock owned by another invocation.
+            try:
+                if json.loads(owner_path.read_text(encoding='utf-8')).get('token') == token:
+                    owner_path.unlink()
+                    lock.rmdir()
+            except (OSError, ValueError):
+                print('Rollback-Sperre nicht sicher freigebbar; Bestand erhalten, --inspect-lock verwenden.', file=sys.stderr)
     except (OSError, ValueError, KeyError) as exc:
         print("Rollback-Schutz: " + str(exc), file=sys.stderr)
         return 1
