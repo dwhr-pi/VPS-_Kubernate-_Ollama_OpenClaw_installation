@@ -28,10 +28,12 @@ class ToolMenuOrderTests(unittest.TestCase):
         for array in re.findall(r"^TOOL_KEYS\+?=\(([^\n]*)\)", setup, re.M):
             names.extend(shlex.split(array))
         pinned = [name for name in names if name in {"Ollama", "OpenClaw", "Ruflo"}]
-        remaining = [name for name in names if name not in pinned]
+        tail = ['Comet', 'BrowserOS', 'Enki_Browser', 'Browser_Use', 'Perplexity_MCP',
+                'Perplexity_Python', 'Perplexity_Node', 'Perplexity_API_Cookbook']
+        remaining = [name for name in names if name not in pinned + tail]
         result = self.run_sort(names)
         # LC_ALL=C sort -f folds ASCII letters to uppercase, including around underscores.
-        self.assertEqual(result, pinned + sorted(remaining, key=str.upper))
+        self.assertEqual(result, pinned + sorted(remaining, key=str.upper) + tail)
         self.assertCountEqual(result, names)
         self.assertGreater(len(result), 250)
         self.assertIn("ACE_Step_15", result)
@@ -58,6 +60,12 @@ class ToolMenuOrderTests(unittest.TestCase):
         setup = (ROOT / "setup_ultimate.sh").read_text(encoding="utf-8")
         self.assertIn('if [ "$tool_key" = "Ruflo" ]; then', setup)
         self.assertIn('"__TOOLS_SEPARATOR__" "---------------- Weitere Tools A-Z ----------------"', setup)
+
+    def test_browser_research_group_stays_after_z(self):
+        tail = ['Comet', 'BrowserOS', 'Enki_Browser', 'Browser_Use', 'Perplexity_MCP',
+                'Perplexity_Python', 'Perplexity_Node', 'Perplexity_API_Cookbook']
+        names = ['Ollama', 'OpenClaw', 'Ruflo', 'Zotero', 'Act'] + tail
+        self.assertEqual(self.run_sort(names), names[:3] + ['Act', 'Zotero'] + tail)
 
 
 if __name__ == "__main__":

@@ -22,6 +22,7 @@ import native_node_npm
 import archivebox_python
 import native_build_process
 import litellm_rust
+import litellm_rust_bootstrap
 
 ROOT = Path(__file__).resolve().parents[3]
 MANIFEST = ROOT / "config/docker_to_github.json"
@@ -134,7 +135,7 @@ def preflight(outer, spec, install_build_deps=False):
         if int(memory["MemAvailable"].split()[0]) < minimum * 1024:
             raise ValueError("Zu wenig verfuegbarer RAM: mindestens " + str(minimum) + " MiB fuer diesen Build.")
     if spec["id"] == "litellm":
-        litellm_rust.select(outer)
+        litellm_rust_bootstrap.prepare(outer, spec, approved=install_build_deps)
     build_deps.prepare(spec, approved=install_build_deps)
     for name in ["git"] + requirements(spec):
         if spec["id"] == "litellm" and name in ("cargo", "rustc"):
@@ -555,6 +556,8 @@ def main(argv=None):
     outer, prefix, marker = paths(args.tool)
     if args.dry_run or args.action == "plan":
         print(json.dumps(dict(tool=args.tool, target=str(prefix), **spec), indent=2))
+        if args.tool == 'litellm':
+            print('Rust 1.98.0: vorhandene Basis bevorzugt; privater offizieller Bootstrap nur nach Zustimmung/--install-build-deps, 2048 MiB Zusatzpuffer. Kein Download in diesem Plan.')
         if args.quarantine_incomplete:
             print("Caddy-Reparaturplan: unmarkierten Altordner nach Vorpruefung im Tool-Verzeichnis erhalten/umbenennen; danach frischer GitHub-Build. Kein Platzgewinn.")
         print("Nur Plan. Kein Download/Build/Container/Hosteingriff; blocked_reason ist KEINE Installation.")

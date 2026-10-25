@@ -1,7 +1,8 @@
 # Comet, offene Browser und Perplexity fuer dieses Setup
 
-Stand: 25.10.2026. Die beiden Nutzeranhaenge wurden als Recherchematerial
-gelesen; enthaltene Installationsbefehle wurden nicht ausgefuehrt. Keine Cookies,
+Stand: 26.10.2026. Jetzt im Tools-Menue als letzte Gruppe **hinter der A-Z-Liste**
+installierbar bzw. fuer manuelle Desktop-Installation auswaehlbar. Die beiden
+Nutzeranhaenge bleiben Recherchematerial; deren Befehle wurden nicht ausgefuehrt. Keine Cookies,
 Browserprofile, Konten oder externen Recherche-APIs wurden verbunden.
 
 ## Comet ist ein Client, keine lokale Inferenz-Runtime
@@ -11,28 +12,107 @@ fuer Desktop/Mobilgeraete. Ein offizieller vollstaendiger Comet-Quellcode-/Build
 Vertrag wurde in den geprueften Quellen nicht nachgewiesen. Daher **kein
 GitHub-Source-Installer fuer Comet** und keine Gleichsetzung mit dem offenen
 Chromium-Unterbau. Fuer Comet bleibt es beim offiziellen Downloadlink.
-Konto-/Tarif-/Plattformbedingungen vor Installation dort pruefen.
+Konto-/Tarif-/Plattformbedingungen vor Installation dort pruefen. Der neue Eintrag
+**Comet** bietet wie Qwen Desktop Oeffnen der offiziellen Downloadseite, einen
+Wartepunkt und anschliessende manuelle Bestaetigung. Die EXE wird unter Windows
+heruntergeladen/geprueft/ausgefuehrt, niemals automatisch in WSL.
 
-## Verifizierte Quellreferenzen, noch keine neuen Installer
+## Neue Eintraege am Listenende
 
 | Projekt / GitHub | Rolle | Einordnung fuer den Hybridstack |
 |---|---|---|
-| [BrowserOS](https://github.com/browseros-ai/BrowserOS) | Offener agentischer Browser, als Comet-Alternative positioniert | Kandidat fuer den lokalen Desktop; kein K3s-Kernbaustein |
-| [Browser Use](https://github.com/browser-use/browser-use) | Offene Browser-Agent-Bibliothek plus getrennte Cloudangebote | Kandidat fuer isolierten Browser-Worker; kein vollstaendiger Comet-Desktop-Ersatz |
-| [Enki Browser](https://github.com/danilogiles/enki-browser) | Chromium-Browser mit eigenem Assistenten / Bring-your-own-model | Experimenteller Desktop-Kandidat, Build-/Updatevertrag separat pruefen |
-| [Perplexity MCP](https://github.com/perplexityai/modelcontextprotocol) | Offizieller MCP-Server fuer die API-Plattform | Externes Recherchetool mit separatem API-Key, kein lokales Perplexity-Modell |
-| [perplexity-py](https://github.com/perplexityai/perplexity-py) | Offizieller Python-SDK | API-Client fuer eigene Dienste; keine Cloudkostenfreiheit ableiten |
-| [perplexity-node](https://github.com/perplexityai/perplexity-node) | Offizieller Node-SDK | Gleiches API-/Datenschutzprinzip fuer JavaScript/TypeScript |
-| [api-cookbook](https://github.com/perplexityai/api-cookbook) | Offizielle Beispiele | Referenz, kein dauerhaft zu startender Dienst |
+| **Comet** / [Download](https://www.perplexity.ai/comet) | Proprietaerer Desktop-Browser | Manueller Windows-Download mit Pause/Bestaetigung; explizite Nicht-GitHub-Ausnahme |
+| **BrowserOS** / [GitHub](https://github.com/browseros-ai/BrowserOS) | Offener agentischer Desktop-Browser | Offiziellen GitHub-Release manuell fuer Windows/Linux installieren, kein Chromium-Source-Build |
+| **Enki_Browser** / [GitHub](https://github.com/danilogiles/enki-browser) | Chromium-Browser mit eigenem Assistenten | Offiziellen GitHub-Release manuell fuer Windows/Linux installieren |
+| **Browser_Use** / [GitHub](https://github.com/browser-use/browser-use) | Browser-Agent-Bibliothek | Privates Python-Paket aus GitHub mit uv-Lock; kein Browserdownload oder Agentenstart |
+| **Perplexity_MCP** / [GitHub](https://github.com/perplexityai/modelcontextprotocol) | Offizieller API-MCP-Server | Gepinnter TypeScript-Build; kein Serverstart, kein API-Key erforderlich fuer den Build |
+| **Perplexity_Python** / [GitHub](https://github.com/perplexityai/perplexity-py) | Offizieller Python-SDK | Gepinntes Bazel-Wheel mit privater Python-Umgebung; keine API-Anfrage |
+| **Perplexity_Node** / [GitHub](https://github.com/perplexityai/perplexity-node) | Offizieller Node-SDK | Gepinntes Bazel-Paket; keine API-Anfrage |
+| **Perplexity_API_Cookbook** / [GitHub](https://github.com/perplexityai/api-cookbook) | Offizielle Beispiele | Gepinnte Beispielsammlung lokal installieren; kein ausfuehrbarer Dienst, Beispiele werden nicht gestartet |
 
-Diese Tabelle fuehrt Quellen/Kandidaten auf, **nicht sieben installierte oder
-bereits im Tools-Menue installierbare Anwendungen**. Die PDF-Aussagen zu
+Die Eintraege sind jetzt separat im Setup erreichbar; **kein Download oder Build
+wurde auf deinem Produktivsystem ausgefuehrt**. Die PDF-Aussagen zu
 Browser Operator und OpenBrowser sind ohne eindeutige Quell-/Lizenzidentitaet
 nicht als Installer umgesetzt. Auch SPACE/pplx-Kernels aus dem Text sind kein
 belegter Ersatz fuer ein Browserprodukt oder eine fertige sichere Sandbox.
 Lizenzdatei, Commit, Plattform, Buildbedarf und funktionale Abnahme sind pro
-Kandidat vor einer Installerfreigabe zu dokumentieren; ein Repositorylink allein
-ist kein Sicherheits- oder Funktionsnachweis.
+Kandidat weiterhin zu beachten; ein Repositorylink oder ein erfolgreicher Build
+ist kein Sicherheits- oder vollstaendiger Funktionsnachweis.
+
+## Installation, Voraussetzungen und Lebenszyklus
+
+Die drei Desktop-Eintraege koennen die offizielle Seite nach Bestaetigung oeffnen.
+Manuell korrektes Betriebssystem/CPU waehlen, Signatur/Pruefsumme nach Upstream
+pruefen; keine Warnungen, AppArmor- oder Chromium-Sandbox deaktivieren. BrowserOS
+und Enki bieten GitHub-Releases, Comet die offizielle Herstellerseite.
+BrowserOS/Enki koennen auch auf einem Linux-Desktop manuell installiert werden;
+deren angegebener `source_commit` bezeichnet den geprueften Quellstand, **nicht**
+einen automatisch festgehaltenen EXE-/Release-Hash. Die manuell geoeffnete
+`releases/latest`-Seite kann spaeter andere Versionen anbieten.
+WSL braucht fuer einen Linux-Browser eine gesondert abgenommene grafische Umgebung.
+Keine `curl | bash`-Installation. Deinstallation in Windows unter **Einstellungen
+-> Apps** bzw. ueber den selbst gewaehlten Linux-Paketweg. Das Setup loescht keine
+Profile/Cookies und erstellt keinen automatisch verifizierten Desktop-Marker.
+Enter/Nein nach dem Wartepunkt liefert `skipped` (Exit 3), nicht einen Buildfehler.
+
+Die fuenf GitHub-Eintraege besitzen Install/Update/Uninstall/Status/Check/Doctor.
+Vorher stets einen lesenden Plan ansehen, beispielsweise:
+
+```bash
+bash scripts/tools/comet_install.sh --dry-run
+bash scripts/tools/browser_use_install.sh --dry-run
+bash scripts/tools/perplexity_mcp_install.sh --dry-run
+bash scripts/tools/perplexity_python_install.sh --dry-run
+bash scripts/tools/perplexity_node_install.sh --dry-run
+bash scripts/tools/perplexity_cookbook_install.sh --dry-run
+```
+
+Danach im Tools-Menue installieren oder dasselbe Skript ohne `--dry-run` starten.
+Fuer Desktopseiten ist `--open-download` als expliziter Browseraufruf verfuegbar.
+
+| Paket | Buildvertrag auf Linux/Ubuntu/WSL | Reserve |
+|---|---|---|
+| Browser_Use | Python >=3.11 mit SSL, uv; `uv sync --frozen --no-dev --no-default-groups`, kein Python-/Browserdownload | 4 GiB |
+| Perplexity_MCP | Node >=22, npm; `npm ci --ignore-scripts`, danach explizit `npm run build`, `node --check` | 4 GiB |
+| Perplexity_Python | Bazel 9.2.0, Python >=3.10 mit SSL, uv; upstream `bazel build //:wheel`, Wheel im privaten venv | 8 GiB |
+| Perplexity_Node | Bazel 9.2.0, Node 26, pnpm 11.17.0; frozen Install ohne Lifecycle-Hooks, upstream `bazel build //:pkg` | 8 GiB |
+| Perplexity_API_Cookbook | Git; ausschliesslich Commit-Checkout mit README/Lizenznachweis | 2 GiB |
+
+Die Voraussetzungen stammen aus den geprueften gepinnten `pyproject.toml`,
+`package.json`, `CONTRIBUTING.md`, `.bazelversion` und `BUILD.bazel` der oben
+verlinkten Repositories. Mit `BROWSER_RESEARCH_PYTHON_BIN` laesst sich ein bereits
+vorhandenes passendes Python waehlen. Kein apt-Systemumbau, globales npm/pip,
+automatischer Toolchain-Download oder Docker. Paket-/Bazel-Abhaengigkeiten werden
+beim freigegebenen Build aus ihren Upstream-Registries geladen; kein offline-
+oder vollstaendig auf GitHub begrenztes Netzwerkversprechen. Das Python-SDK-Wheel
+hat Versionsbereiche fuer Laufzeitabhaengigkeiten, keinen vollstaendigen Hash-Lock.
+
+Pins stehen in `scripts/tools/helpers/gap_tools.json`, gespiegelt in
+`config/tools.yml`. Ziel: `~/.openclaw_ultimate_user_data/tools/<id>/runtime`,
+Nachweis: `ready.json`. Update prueft denselben Pin statt blind `main/latest`.
+Doctor prueft die Dateiinventur. Geaenderte/ergaenzte Dateien blockieren die
+Deinstallation; keine alten Browser-Use-venvs, `/opt`-Installationen oder privaten
+Profile werden uebernommen/geloescht. Bei einem Fehler werden nur neu angelegte
+Runtime-Dateien des Versuchs entfernt, Logs/Basiswerkzeuge bleiben.
+
+Beispiele zum lesenden Status und zur bewussten Entfernung:
+
+```bash
+bash scripts/tools/browser_use_status.sh
+bash scripts/tools/perplexity_mcp_doctor.sh
+bash scripts/tools/perplexity_cookbook_uninstall.sh
+```
+
+Browser Use installiert noch keinen Chromium-Browser: CDP-/Browserpfad und eigene
+leere Profile anschliessend separat konfigurieren. MCP ist nach dem Build noch
+nicht in einem Client registriert; stdio statt oeffentlichem HTTP bevorzugen.
+Erst bei freigegebener Nutzung `PERPLEXITY_API_KEY` ausserhalb Git setzen;
+API-Nutzung kann Geld kosten. Kein Installer testet Modelle oder echte Suchanfragen.
+
+**Abnahmegrenze:** Quellen/Buildvertraege wurden online geprueft; lokale Offline-
+Tests pruefen Menue, Planausgaben, Lifecycle und Sicherheitsgrenzen. Die kompletten
+SDK-/Bazel-Builds, grafischen Installationen und externe API-Funktion muessen auf
+der Zielmaschine gesondert abgenommen werden. Keine pauschale Produktionsfreigabe.
 
 ## Sichere Einbindung
 

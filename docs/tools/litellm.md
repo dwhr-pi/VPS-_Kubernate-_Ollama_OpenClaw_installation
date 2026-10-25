@@ -1,8 +1,62 @@
-# LiteLLM: GitHub-Paket mit privatem uv-Bootstrap
+# LiteLLM: GitHub-Paket mit privater Buildbasis
 
 LiteLLM bietet SDK-/Proxy-Schnittstellen fuer lokale oder externe Modelle.
 Ein lokaler Proxy macht einen externen Modellanbieter nicht lokal und erzeugt
 keine kostenlosen API-Kontingente. Providerfreigaben und Budgets bleiben getrennt.
+
+## Fehler vom 26.10.2026: Rust 1.98.0 fehlt
+
+Das Log um 00:14 meldet **keine passende vorhandene Rust-Toolchain**, nicht
+Speicherplatzmangel oder einen fehlgeschlagenen LiteLLM-Paketbuild. Der
+Toolchain-Pin wurde direkt im unten verlinkten Upstream-Quellstand bestaetigt.
+Die fruehere Auswahlfunktion hat bei fehlendem Rust nur abgebrochen.
+
+Jetzt kann der Installer nach Zustimmung eine **isolierte Rust-Basis** einrichten:
+
+```bash
+# First copy/update the corrected setup scripts, then run in Ubuntu/WSL:
+bash scripts/tools/litellm_install.sh --dry-run
+bash scripts/tools/litellm_install.sh --install-build-deps
+bash scripts/tools/litellm_doctor.sh
+```
+
+Ohne Flag wird interaktiv mit `[j/N]` gefragt; Enter/EOF und nichtinteraktive
+Ausfuehrung ohne Freigabe verweigern den Download. `--install-build-deps`
+erlaubt jetzt ausdruecklich auch diese Rust-Basis, neben den dokumentierten
+Compiler-/uv-Abhaengigkeiten. Plan/Status/Doctor laden kein Rust nach.
+
+Vorhandenes passendes Rust wird weiter bevorzugt; explizite falsche
+`NATIVE_SOURCE_RUST_TOOLCHAIN`-Pfade werden niemals still ersetzt. Die neue
+Basis liegt unter `tools/litellm/toolchain/rust-1.98.0-linux-<arch>/` im externen
+User-Workspace. Eigene `HOME`-/`CARGO_HOME`-/`RUSTUP_HOME`-Verzeichnisse fuer den
+Bootstrap, `--no-modify-path`, kein sudo, kein apt-Rust, kein Shellprofil- oder
+Default-Toolchain-Wechsel. Keine Uebernahme persoenlicher Cargo-Zugangsdaten.
+
+**Offizielle Buildwerkzeug-Ausnahme:** rustup-init **1.29.2** kommt von
+`https://static.rust-lang.org/rustup/archive/1.29.2/`, nicht aus einem LiteLLM-
+Docker-Image. Groesse und fest hinterlegte SHA256 werden vor Ausfuehrung fuer
+Linux amd64/arm64 geprueft; fremde Redirect-Hosts werden blockiert. Rustup laedt
+anschliessend die genaue Version **1.98.0**, Profil `minimal`, ueber den fest
+gewaehlten offiziellen Rust-Distributionsserver und dessen Integritaetspruefung.
+Kein eigener fester SHA-Pin jedes Rust-Komponentenarchivs wird zugesichert.
+Quellen: [Rustup-Installation](https://rust-lang.github.io/rustup/installation/index.html),
+[Umgebungsvariablen](https://rust-lang.github.io/rustup/environment-variables.html).
+Die geprueften rustup-init-Digests stammen aus den offiziellen `.sha256`-Dateien
+neben den jeweiligen amd64-/arm64-Binaerdateien; sie stehen im Bootstraphelper.
+
+Rust-/Cargo-Version und sysroot werden nach Installation und nach Verschieben
+ins endgueltige Ziel erneut geprueft. Erst danach entsteht `rust-ready.json`
+mit Dateiinventur. Ein vorhandener geaenderter/unvollstaendiger privater Bestand
+wird nicht ueberschrieben. Fehler entfernen nur neues Staging/diesen neuen
+fehlgeschlagenen Slot, keine alten Tools oder Daten. Eine erfolgreiche Basis
+bleibt bei spaeterem LiteLLM-Fehler und App-Deinstallation erhalten.
+
+Startreserve mit neuem Rust: **10240 MiB** (8192 + 2048 MiB Puffer), auch auf dem
+Windows-Host unter WSL. 11,4 GiB aus dem Log koennen diese Vorpruefung erfuellen,
+sind aber keine Build-Platzgarantie. Waechter nicht abschalten; weitere
+Abhaengigkeiten/Caches koennen Platz benoetigen. Kein Dienst oder Modell gestartet.
+Offline-Fixtures pruefen Freigabe, Hashfehler, privaten Scope, Wiederverwendung
+und Rollback. Ein echter Rust-/LiteLLM-Download und Ubuntu-Build stehen noch aus.
 
 ## Fehler vom 25.10.2026: uv fehlt
 
@@ -55,9 +109,9 @@ rustup toolchain install 1.98.0 --profile minimal --no-self-update
 ```
 
 Fehlt auch rustup, zuerst die [offizielle Rust-Installationsanleitung](https://www.rust-lang.org/tools/install)
-lesen und die Basis separat einrichten. Der LiteLLM-Installer laedt weder
-rustup noch Rust automatisch herunter; auch `--install-build-deps` erteilt
-hierfuer keine verdeckte Freigabe. Ein erfolgreicher Rust-Download ist noch
+lesen und die Basis separat einrichten, **oder den oben beschriebenen privaten
+Bootstrap bewusst freigeben**. Ohne Zustimmung laedt der LiteLLM-Installer weder
+rustup noch Rust herunter. Ein erfolgreicher Rust-Download ist noch
 kein erfolgreicher LiteLLM-Build. Die Verfuegbarkeit des Archivs und der echte
 Ubuntu-Build wurden hier nicht getestet.
 
@@ -78,8 +132,8 @@ Python 3.12 war in diesem Versuch vorhanden und ist nicht die Fehlerursache.
 
 Die Vorpruefung verlangt jetzt fuer LiteLLM auch **cargo, rustc, cc, c++, make
 und pkg-config**, bevor weitere Quellen/Pakete geladen werden. Rust muss als
-vorhandene passende Toolchain bereitstehen; es wird nicht durch ein moeglicherweise
-zu altes apt-Rust ersetzt. Der Source-Build kann weitere versionsabhaengige
+passende Toolchain bereitstehen oder der private Bootstrap freigegeben werden;
+kein Ersatz durch moeglicherweise zu altes apt-Rust. Der Source-Build kann weitere versionsabhaengige
 Anforderungen melden; diese Anwesenheitspruefung ist keine Buildgarantie.
 
 Auf Ubuntu 24.04 kann das Setup nach Zustimmung fehlende **build-essential**

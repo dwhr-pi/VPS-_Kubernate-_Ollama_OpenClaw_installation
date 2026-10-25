@@ -2,6 +2,18 @@
 
 ## Unreleased
 
+- LiteLLM: fehlendes Rust 1.98.0 nach Zustimmung privat bereitstellen statt
+  dauerhaftem Vorpruefungsabbruch. Offizielles rustup-init 1.29.2 mit festen
+  SHA256/Groessen fuer Linux amd64/arm64; isolierte Rust-/Cargo-Homes,
+  Reserve, Versions-/sysroot-Nachweis und Bootstrap-Rollback. Kein System-
+  Rust/PATH-/Default-Wechsel und kein Download bei Plan/Status/Doctor.
+
+- Browser-/Perplexity-Gruppe hinter Tools A-Z: Comet mit manuellem Windows-
+  Download und Wartepunkt wie Qwen Desktop; BrowserOS/Enki mit manuellen
+  GitHub-Releases. Browser Use, Perplexity MCP und SDKs mit gepinnten privaten
+  Paket-/Buildwegen; Cookbook als lokale Beispielsammlung. Lifecycle, Status,
+  Dokumentation und Offline-Tests, kein Browser-/Serverstart oder API-Aufruf.
+
 - Zugangsdaten-Backup: eigenstaendige Restore-Anleitung direkt im E-Mail-Text;
   Windows-/WSL-/Linux-Softwarequellen, age-Entschluesselung, manuelle TAR-Ansicht
   und kontrollierte Rueckuebernahme einzelner Dateien mit Sicherung/Rechten

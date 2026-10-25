@@ -194,6 +194,72 @@ def validate(runtime, marker, spec, full=False):
     return record
 
 
+def browser_research_build(runtime, env, mode):
+    if platform.system() != 'Linux':
+        raise ValueError('Dieser Paket-Build ist fuer Linux/WSL freigegeben; Desktop-Browser separat manuell installieren.')
+    env.update(ANONYMIZED_TELEMETRY='false', BROWSER_USE_CLOUD_SYNC='false',
+               UV_PYTHON_DOWNLOADS='never', LEFTHOOK='0')
+    if mode == 'perplexity-mcp':
+        node, npm = executable('node'), node_command('npm')
+        major = int(run([node, '--version'], runtime, env).lstrip('v').split('.')[0])
+        if major < 22:
+            raise ValueError('MCP-Build: Node >=22 fuer den gepinnten Build-/Test-Toolstack erforderlich.')
+        run(npm + ['ci', '--ignore-scripts', '--no-audit', '--no-fund'], runtime, env)
+        run(npm + ['run', 'build'], runtime, env)
+        run([node, '--check', 'dist/index.js'], runtime, env)
+        return ['dist/index.js', 'dist/server.js', 'package-lock.json']
+
+    if mode in ('perplexity-python', 'perplexity-node'):
+        bazel = executable('bazel')
+        version = run([bazel, '--version'], runtime, env)
+        if version != 'bazel 9.2.0':
+            raise ValueError('SDK-Pin benoetigt Bazel 9.2.0; separat bereitstellen, kein automatischer Bootstrap.')
+        command = [bazel, '--batch', '--output_user_root=' + str(runtime / '.bazel')]
+        if mode == 'perplexity-node':
+            node = executable('node')
+            if not run([node, '--version'], runtime, env).startswith('v26.'):
+                raise ValueError('Perplexity-Node-Source-Build benoetigt Node 26 laut CONTRIBUTING.md.')
+            if run([executable('pnpm'), '--version'], runtime, env) != '11.17.0':
+                raise ValueError('Perplexity-Node-Pin benoetigt pnpm 11.17.0.')
+            run([executable('pnpm'), 'install', '--frozen-lockfile', '--ignore-scripts'], runtime, env)
+            run(command + ['build', '--jobs=2', '//:pkg'], runtime, env)
+            built = (runtime / 'bazel-bin/package').resolve()
+            if not built.is_relative_to(runtime.resolve()) or not built.is_dir():
+                raise ValueError('Bazel-Paket fehlt oder liegt ausserhalb des privaten Buildbaums.')
+            for path in built.rglob('*'):
+                if not path.resolve().is_relative_to(runtime.resolve()):
+                    raise ValueError('Externer Link im Bazel-Paket; kein Kopieren.')
+            shutil.copytree(built, runtime / 'package')
+            run([node, '--check', 'package/dist/index.js'], runtime, env)
+            return ['package/package.json', 'package/dist/index.js']
+        run(command + ['build', '--jobs=2', '//:wheel'], runtime, env)
+        wheels = list((runtime / 'bazel-bin').glob('*.whl'))
+        if len(wheels) != 1 or not wheels[0].resolve().is_relative_to(runtime.resolve()):
+            raise ValueError('Erwartetes SDK-Wheel fehlt oder ist nicht eindeutig.')
+        wheel = runtime / wheels[0].name
+        shutil.copyfile(wheels[0], wheel)
+
+    python = os.environ.get('BROWSER_RESEARCH_PYTHON_BIN') or executable('python3')
+    minimum = '(3,11)' if mode == 'browser-python' else '(3,10)'
+    run([python, '-I', '-c', 'import sys,ssl; assert sys.version_info >= ' + minimum], runtime, env)
+    uv = executable('uv')
+    if mode == 'browser-python':
+        run([uv, 'sync', '--frozen', '--no-dev', '--no-default-groups', '--no-python-downloads',
+             '--python', python], runtime, env)
+        distribution = 'browser-use'
+    else:
+        run([uv, 'venv', '--no-python-downloads', '--python', python, str(runtime / '.venv')], runtime, env)
+        run([uv, 'pip', 'install', '--python', str(runtime / '.venv/bin/python'), str(wheel)], runtime, env)
+        distribution = 'perplexityai'
+    vpython = runtime / '.venv/bin/python'
+    run([vpython, '-I', '-c', "import importlib.metadata as m; print(m.version('" + distribution + "'))"], runtime, env)
+    # Python launchers can be symlinks; record stable package metadata instead.
+    metadata = list((runtime / '.venv/lib').glob('python*/site-packages/' + distribution.replace('-', '_') + '-*.dist-info/METADATA'))
+    if len(metadata) != 1:
+        raise ValueError('Installierte Paketmetadaten fehlen/nicht eindeutig.')
+    return ['pyproject.toml', metadata[0].relative_to(runtime).as_posix()]
+
+
 def install(runtime, marker, base, spec):
     if marker.exists():
         validate(runtime, marker, spec)
@@ -219,7 +285,10 @@ def install(runtime, marker, base, spec):
             if len(entries) < 2:
                 raise ValueError("Quellcheckout enthaelt keine README/Lizenzdatei.")
         if spec["mode"] != "source":
-            entries = qwen_build(runtime, env) if spec["mode"] == "desktop-build" else hermes_build(runtime, env, python)
+            if spec['mode'] in ('browser-python', 'perplexity-python', 'perplexity-node', 'perplexity-mcp'):
+                entries = browser_research_build(runtime, env, spec['mode'])
+            else:
+                entries = qwen_build(runtime, env) if spec["mode"] == "desktop-build" else hermes_build(runtime, env, python)
             for name in (".build-home", ".build-temp"):
                 shutil.rmtree(checked(runtime / name))
         for name in entries:

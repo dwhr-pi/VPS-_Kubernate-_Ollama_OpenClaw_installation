@@ -9,6 +9,7 @@ import gap_tools as common
 
 VERSION = '1.98.0'
 GUIDANCE = ('LiteLLM: vorhandenes Rust ' + VERSION + ' mit cargo/rustc erforderlich. '
+            'Privaten Bootstrap bewusst mit bash scripts/tools/litellm_install.sh --install-build-deps freigeben. '
             'NATIVE_SOURCE_RUST_TOOLCHAIN auf den absoluten Toolchain-Ordner mit bin/cargo und bin/rustc setzen. '
             'Falls rustup bereits vorhanden ist: rustup toolchain install ' + VERSION +
             ' --profile minimal --no-self-update bewusst separat ausfuehren. '
@@ -44,6 +45,9 @@ def select(base):
         except (OSError, ValueError, subprocess.SubprocessError) as error:
             raise ValueError('LiteLLM: explizites NATIVE_SOURCE_RUST_TOOLCHAIN ungueltig; keine automatische Ersetzung. ' + GUIDANCE) from error
     candidates = []
+    private = base / 'toolchain'
+    if private.is_dir():
+        candidates.extend(private.glob('rust-' + VERSION + '-linux-*/rustup/toolchains/' + VERSION + '-*'))
     configured_home = os.environ.get('RUSTUP_HOME')
     rust_home = Path(configured_home) if configured_home else Path.home() / '.rustup'
     if rust_home.is_absolute() and (rust_home / 'toolchains').is_dir():

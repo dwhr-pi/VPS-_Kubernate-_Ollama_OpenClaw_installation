@@ -1,7 +1,8 @@
 #!/bin/bash
+# Primary source: https://github.com/browser-use/browser-use
 set -euo pipefail
 TOOL_NAME="Browser Use"
 TOOL_KEY="Browser_Use"
 TOOL_SLUG="browser_use"
-source "$(dirname "$0")/helpers/python_tool_common.sh"
-uninstall_python_tool
+ROOT="$(cd "${BASH_SOURCE[0]%/*}/../.." && pwd)"
+exec "${GAP_TOOLS_PYTHON_BIN:-python3}" -B "$ROOT/scripts/tools/helpers/gap_tools.py" browser_use uninstall "$@"

@@ -48,6 +48,9 @@ jobs:
           python3 -B tests/test_installation_reset.py -v
           python3 -B tests/test_installation_inventory.py -v
           python3 -B tests/test_credentials_backup.py -v
+          python3 -B tests/test_browser_research_tools.py -v
+          python3 -B tests/test_litellm_rust_bootstrap.py -v
+          python3 -B tests/test_tool_menu_order.py -v
           bash -n scripts/credentials_backup_menu.sh
           bash -n scripts/installation_inventory_menu.sh
           bash -n scripts/operations/backup_run.sh

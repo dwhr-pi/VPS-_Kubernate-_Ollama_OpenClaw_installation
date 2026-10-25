@@ -1,4 +1,24 @@
 {
+  "browser_use": {
+    "name": "Browser_Use", "repo": "browser-use/browser-use",
+    "pin": "3df5806a0d097a1546d92c49bcf1b28c9972c3bd", "mode": "browser-python", "reserve_mb": 4096
+  },
+  "perplexity_mcp": {
+    "name": "Perplexity_MCP", "repo": "perplexityai/modelcontextprotocol",
+    "pin": "cd1d27cffe56739819abb3e56a18e26dbd88c487", "mode": "perplexity-mcp", "reserve_mb": 4096
+  },
+  "perplexity_python": {
+    "name": "Perplexity_Python", "repo": "perplexityai/perplexity-py",
+    "pin": "1a79c5d3a7b1ef8c2dce17c0f0aa7e23f9bbdced", "mode": "perplexity-python", "reserve_mb": 8192
+  },
+  "perplexity_node": {
+    "name": "Perplexity_Node", "repo": "perplexityai/perplexity-node",
+    "pin": "40a16d2dad4a7e54fdbfb19eb296b10ab1f29721", "mode": "perplexity-node", "reserve_mb": 8192
+  },
+  "perplexity_cookbook": {
+    "name": "Perplexity_API_Cookbook", "repo": "perplexityai/api-cookbook",
+    "pin": "543c229320acf9204d47a3ff91f13349b57047be", "mode": "source", "reserve_mb": 2048
+  },
   "qwen_desktop_build": {
     "name": "Qwen_Desktop_Build",
     "repo": "QwenLM/qwen-code",

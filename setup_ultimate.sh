@@ -914,6 +914,9 @@ get_tool_install_fallback_min_free_mb() {
         "Weaviate") printf '16384' ;;
         "Zigbee2MQTT") printf '8192' ;;
         "Qwen_Desktop_Build") printf '20480' ;;
+        "Browser_Use"|"Perplexity_MCP") printf '4096' ;;
+        "Perplexity_Python"|"Perplexity_Node") printf '8192' ;;
+        "Perplexity_API_Cookbook") printf '2048' ;;
         "Hermes_Agent_Jarvis") printf '4096' ;;
         "MuseTalk") printf '20480' ;;
         "Gradio"|"Streamlit"|"WanVideoWrapper"|"CogVideoX"|"LTX_Video"|"Video2Dataset"|"LivePortrait"|"SadTalker"|"RVC"|"UVR5"|"Audacity"|"OBS") printf '2048' ;;
@@ -1428,6 +1431,13 @@ validate_tool_source_policy() {
     [ "$action" = "install" ] || return 0
     [ "${GITHUB_TOOL_SOURCES_PREFERRED:-true}" = "true" ] || return 0
     [ -f "$script_path" ] || return 0
+
+    # Comet has no verified public source build; allow only its official manual page.
+    if [[ "$tool_key" == Comet && "$script_name" == comet ]]; then
+        python3 -I -c 'import json,sys; e=next(x for x in json.load(open(sys.argv[1],encoding="utf-8"))["tools"] if x["id"]=="comet"); assert e["source"]=="https://www.perplexity.ai/comet" and e["source_verified"] is True and e["source_exception"]=="user-requested-official-comet-download"' "$INSTALL_DIR/config/tools.yml" || return 1
+        echo 'Quellenpruefung: Comet, offizielle manuelle Download-Ausnahme; kein GitHub-Source-Build.'
+        return 0
+    fi
 
     # Only the explicitly approved Forgejo source exception may bypass GitHub preference.
     if [ "$tool_key" = "Forgejo" ] && [ "$script_name" = "forgejo" ]; then
@@ -3686,10 +3696,22 @@ install_tool() {
         end_operation_measurement "success"
         operation_status="success"
         echo "${TOOL_KEY}: GitHub-Paket/Build installiert und Artefakte geprueft. GUI, Browser, Codecs und Rendering separat abnehmen; kein Dienst gestartet."
+    elif [[ "$TOOL_KEY" =~ ^(Browser_Use|Perplexity_MCP|Perplexity_Python|Perplexity_Node|Perplexity_API_Cookbook)$ ]] && [ "$tool_rc" -eq 0 ]; then
+        end_operation_measurement "success"
+        operation_status="success"
+        echo "${TOOL_KEY}: Paket/Build bzw. Cookbook-Dateien geprueft. Keine Browser, MCP-Server, Agenten oder API-Anfragen gestartet; Umfang siehe Dokumentation."
     elif [ "$TOOL_KEY" = "OpenMontage" ] && [ "$tool_rc" -eq 0 ]; then
         end_operation_measurement "success"
         operation_status="success"
         echo 'OpenMontage: GitHub-Kernumgebung installiert/geprueft. Noch kein fertiger Renderer, Agent, Modell oder Film. Remotion-Status und Doku pruefen.'
+    elif [[ "$TOOL_KEY" =~ ^(Comet|BrowserOS|Enki_Browser)$ ]] && [ "$tool_rc" -eq 0 ]; then
+        end_operation_measurement "success"
+        operation_status="success"
+        echo -e "${GREEN}${TOOL_KEY}: Desktop-Installation manuell bestaetigt; kein automatisch gepruefter Installationsstatus.${NC}"
+    elif [[ "$TOOL_KEY" =~ ^(Comet|BrowserOS|Enki_Browser)$ ]] && [ "$tool_rc" -eq 3 ]; then
+        end_operation_measurement "skipped"
+        operation_status="skipped"
+        echo -e "${YELLOW}${TOOL_KEY}: manuelle Desktop-Installation verschoben/nicht bestaetigt. Kein Fehler.${NC}"
     elif [ "$TOOL_KEY" = "Qwen_Desktop" ] && [ "$tool_rc" -eq 0 ]; then
         end_operation_measurement "success"
         operation_status="success"
@@ -3872,20 +3894,39 @@ TOOL_SCRIPT_NAMES["WebsiteFactory"]="websitefactory"
 TOOLS["AI_ContentMultiplier"]="GitHub-Workflow vorbereiten, kein Publishing/Agentenstart; docs/tools/ai-content-multiplier/README.md"
 TOOL_SCRIPT_NAMES["AI_ContentMultiplier"]="ai_content_multiplier"
 
+TOOL_KEYS+=("Comet" "BrowserOS" "Enki_Browser" "Browser_Use" "Perplexity_MCP" "Perplexity_Python" "Perplexity_Node" "Perplexity_API_Cookbook")
+TOOLS["Comet"]="Comet: offizieller Windows-Download mit Wartepunkt wie Qwen Desktop; kein Source-Build. docs/tools/comet-and-browser-research.md"
+TOOL_SCRIPT_NAMES["Comet"]="comet"
+TOOLS["BrowserOS"]="BrowserOS: manueller GitHub-Desktop-Release fuer Windows/Linux. docs/tools/comet-and-browser-research.md"
+TOOL_SCRIPT_NAMES["BrowserOS"]="browseros"
+TOOLS["Enki_Browser"]="Enki Browser: manueller GitHub-Desktop-Release fuer Windows/Linux. docs/tools/comet-and-browser-research.md"
+TOOL_SCRIPT_NAMES["Enki_Browser"]="enki_browser"
+TOOLS["Browser_Use"]="Browser Use: GitHub-Python-Paket, kein Chromium-Download/Agentenstart. docs/tools/comet-and-browser-research.md"
+TOOL_SCRIPT_NAMES["Browser_Use"]="browser_use"
+TOOLS["Perplexity_MCP"]="Perplexity MCP: GitHub-TypeScript-Build, kein Serverstart/API-Aufruf. docs/tools/comet-and-browser-research.md"
+TOOL_SCRIPT_NAMES["Perplexity_MCP"]="perplexity_mcp"
+TOOLS["Perplexity_Python"]="Perplexity Python SDK: GitHub/Bazel-Wheel im privaten Environment. docs/tools/comet-and-browser-research.md"
+TOOL_SCRIPT_NAMES["Perplexity_Python"]="perplexity_python"
+TOOLS["Perplexity_Node"]="Perplexity Node SDK: GitHub/Bazel-Paketbuild, keine API-Anfrage. docs/tools/comet-and-browser-research.md"
+TOOL_SCRIPT_NAMES["Perplexity_Node"]="perplexity_node"
+TOOLS["Perplexity_API_Cookbook"]="Perplexity API Cookbook: lokale GitHub-Beispiele, kein Dienst. docs/tools/comet-and-browser-research.md"
+TOOL_SCRIPT_NAMES["Perplexity_API_Cookbook"]="perplexity_cookbook"
+
 sort_tool_menu_keys() {
     local key
-    local -a pinned=() remaining=() sorted=()
+    local -a pinned=() remaining=() sorted=() trailing=()
     for key in "${TOOL_KEYS[@]}"; do
         case "$key" in
             Ollama|OpenClaw|Ruflo) pinned+=("$key") ;;
+            Comet|BrowserOS|Enki_Browser|Browser_Use|Perplexity_MCP|Perplexity_Python|Perplexity_Node|Perplexity_API_Cookbook) trailing+=("$key") ;;
             *) remaining+=("$key") ;;
         esac
     done
-    # Keep core tools above the separator; sort every other tool together.
+    # Keep core tools pinned; append the explicitly requested browser group after A-Z.
     if ((${#remaining[@]})); then
         mapfile -t sorted < <(printf '%s\n' "${remaining[@]}" | LC_ALL=C sort -f -s)
     fi
-    TOOL_KEYS=("${pinned[@]}" "${sorted[@]}")
+    TOOL_KEYS=("${pinned[@]}" "${sorted[@]}" "${trailing[@]}")
 }
 
 # Funktion zum Anzeigen des Tool-Management-Menüs

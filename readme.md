@@ -31,7 +31,7 @@ Bestaetigung alte Sperren; keine Tool-/Nutzerdatenloeschung und kein Prozess-Kil
 [NSA/CISA-Adminpruefblatt, NetworkPolicies, RBAC und PSS](docs/security/KUBERNETES_ADMIN_AUDIT.md)
 und [interaktiver lokaler Ressourcenplaner](docs/resource-planner/index.html)
 ([Annahmen und Grenzen](docs/resource-planner/README.md)).
-[Comet / offene Browser / Perplexity-Quellen](docs/tools/comet-and-browser-research.md)
+[Comet / offene Browser / Perplexity: Tools und Installation](docs/tools/comet-and-browser-research.md)
 sind getrennt als Recherchekandidaten dokumentiert, nicht als installierte Tools.
 
 **VPS-Auslieferung:** [Gateway, Modellcache, SOPS, Monitoring und GitOps](docs/VPS_GITOPS_DEPLOYMENT.md).

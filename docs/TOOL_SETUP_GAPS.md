@@ -15,6 +15,12 @@ GitHub-Quellen der Markdown-Dokumentation, einschliesslich Fundstellen.
 ## Konkrete Luecken und unterschiedliche Integrationsgrade
 
 Neu: [GitHub-Ergaenzungen am Ende der Tools-Liste](tools/github-gap-tools.md).
+
+Neu am Ende hinter A-Z: **Comet, BrowserOS, Enki_Browser, Browser_Use,
+Perplexity_MCP, Perplexity_Python, Perplexity_Node, Perplexity_API_Cookbook**.
+[Installationswege, Voraussetzungen und Grenzen](tools/comet-and-browser-research.md).
+Comet nutzt einen manuellen Windows-Download mit Pause wie Qwen Desktop;
+kein behaupteter Comet-Source-Build. Cookbook = lokale Beispiele, kein Dienst.
 Die Gruppe wird vorerst nicht nach A-Z sortiert. Qwen Desktop besitzt jetzt
 zusaetzlich einen echten nativen Linux-/Windows-Buildweg; der manuelle
 Windows-Download bleibt erhalten. Weitere Quellinstallationen sind bewusst
