@@ -17,6 +17,13 @@ keine automatische Installation oder Produktionsfreigabe.
 
 ## Inhaltsverzeichnis
 
+**Sicherheit und Kapazitaet:** [Aktueller statischer Sicherheitsaudit mit Zielarchitektur](docs/security/SECURITY_ARCHITECTURE_AUDIT_2026-10-25.md),
+[NSA/CISA-Adminpruefblatt, NetworkPolicies, RBAC und PSS](docs/security/KUBERNETES_ADMIN_AUDIT.md)
+und [interaktiver lokaler Ressourcenplaner](docs/resource-planner/index.html)
+([Annahmen und Grenzen](docs/resource-planner/README.md)).
+[Comet / offene Browser / Perplexity-Quellen](docs/tools/comet-and-browser-research.md)
+sind getrennt als Recherchekandidaten dokumentiert, nicht als installierte Tools.
+
 **VPS-Auslieferung:** [Gateway, Modellcache, SOPS, Monitoring und GitOps](docs/VPS_GITOPS_DEPLOYMENT.md).
 OpenClaw/Client -> LiteLLM -> Ollama/PVC; optionales CPU-VPS-Overlay und
 abgesicherter Check-/Plan-/Apply-Pfad. Keine automatisch installierte Runtime,

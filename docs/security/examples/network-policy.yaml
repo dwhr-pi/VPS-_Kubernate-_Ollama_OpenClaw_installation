@@ -1,0 +1,77 @@
+# Review against existing additive policies before any apply.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: review-default-deny
+  namespace: llmops
+spec:
+  podSelector: {}
+  policyTypes: [Ingress, Egress]
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: review-allow-dns
+  namespace: llmops
+spec:
+  podSelector: {}
+  policyTypes: [Egress]
+  egress:
+    - to:
+        - namespaceSelector:
+            matchLabels: {kubernetes.io/metadata.name: kube-system}
+          podSelector:
+            matchLabels: {k8s-app: kube-dns}
+      ports:
+        - {protocol: UDP, port: 53}
+        - {protocol: TCP, port: 53}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: review-clients-to-gateway
+  namespace: llmops
+spec:
+  podSelector:
+    matchLabels: {app: litellm}
+  policyTypes: [Ingress]
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels: {llmops-client: 'true'}
+          podSelector:
+            matchLabels: {llmops-gateway-client: 'true'}
+      ports:
+        - {protocol: TCP, port: 4000}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: review-gateway-to-ollama
+  namespace: llmops
+spec:
+  podSelector:
+    matchLabels: {app: litellm}
+  policyTypes: [Egress]
+  egress:
+    - to:
+        - podSelector:
+            matchLabels: {app: ollama}
+      ports:
+        - {protocol: TCP, port: 11434}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: review-ollama-from-gateway
+  namespace: llmops
+spec:
+  podSelector:
+    matchLabels: {app: ollama}
+  policyTypes: [Ingress]
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels: {app: litellm}
+      ports:
+        - {protocol: TCP, port: 11434}

@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- Statischer Kernplattform-Sicherheitsaudit mit priorisierten Dateibelegen und
+  Zielarchitektur; NSA/CISA-Adminpruefblatt, PSS-/NetworkPolicy-/RBAC-Anleitung
+  und getrennte Review-Beispiele. Lokaler Ressourcenplaner mit KV-/RAM-/CPU-/
+  PVC-Modell und hypothetischer Skalierung, ohne Cluster-/API-Zugriff.
+  Comet-/Perplexity-/Browserquellen als Kandidaten, nicht als neue Installer.
+
 - Rollback-Sperre: Besitzer-PID mit Boot-/Startidentitaet fuer neue Versuche,
   rein lesendes --inspect-lock und konkrete Pfadangabe bei Konflikten.
   Alte/unklare Sperren bleiben erhalten; manuelle Freigabe nur leerer

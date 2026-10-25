@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'">
+  <title>LLMOps Kapazitaetslabor</title>
+  <link rel="stylesheet" href="planner.css">
+  <script src="model.js" defer></script>
+  <script src="planner.js" defer></script>
+</head>
+<body>
+<main>
+  <header><p class="eyebrow">ULTIMATE SETUP / PLANUNGSLABOR 01</p>
+    <h1>Erst rechnen.<br>Dann skalieren.</h1>
+    <p>Ollama, OpenClaw und K3s auf einem kleinen VPS. Alle Werte sind editierbare Planungsannahmen, keine Leistungszusagen.</p>
+    <nav><a href="../security/SECURITY_ARCHITECTURE_AUDIT_2026-10-25.md">Sicherheitsaudit</a><a href="README.md">Formeln und Grenzen</a></nav>
+  </header>
+  <div class="workspace">
+    <form id="controls">
+      <fieldset><legend>01 / Modell und Anfragen</legend>
+        <label>Modellprofil<select id="profile"><option value="8">8B-Beispiel / frei editierbar</option><option value="31">Gemma 4 / 31B dense</option><option value="26">Gemma 4 / 26B MoE, Gesamtgewichte</option></select></label>
+        <label>Gesamtparameter (Milliarden)<input name="parameters" type="number" min="0.1" max="1000" step="0.1" value="8"></label>
+        <label>Gewichte / Bits<select name="bits"><option value="4">4 Bit</option><option value="8">8 Bit</option><option value="16">16 Bit</option></select></label>
+        <label>Kontext / Tokens<input name="context" type="number" min="1" max="1000000" step="1" value="4096"></label>
+        <label>KV-Cache / KiB pro Token und Slot<input name="kvKiB" type="number" min="0" max="8192" step="1" value="128"></label>
+        <label>Parallele Slots pro Pod<input name="parallel" type="number" min="1" max="128" value="1"></label>
+        <label>Runtime-RAM pro Pod / GiB<input name="runtimeGi" type="number" min="0" max="1024" step="0.1" value="1"></label>
+        <label>vCPU pro aktivem Slot<input name="cpuPerSlot" type="number" min="0.1" max="128" step="0.1" value="1"></label>
+        <label>Anfragen pro Minute<input name="rpm" type="number" min="0" max="100000" step="1" value="6"></label>
+        <label>Gemessene Bearbeitungszeit / Sekunden<input name="serviceSeconds" type="number" min="1" max="3600" value="30"></label>
+      </fieldset>
+      <fieldset><legend>02 / Homogene VPS-Nodes</legend>
+        <label>RAM pro Node / GiB<input name="ramGi" type="number" min="1" max="4096" value="16"></label>
+        <label>vCPU pro Node<input name="cpu" type="number" min="1" max="256" value="4"></label>
+        <label>Freie Disk pro Node / GiB<input name="diskGi" type="number" min="1" max="100000" value="120"></label>
+        <label>Reserviertes RAM pro Node / GiB<input name="reservedGi" type="number" min="0" max="4096" step="0.1" value="2"></label>
+        <label>Reservierte vCPU pro Node<input name="reservedCpu" type="number" min="0" max="256" step="0.05" value="0.75"></label>
+        <label>Modell-PVC pro Pod / GiB<input name="pvcGi" type="number" min="1" max="100000" value="50"></label>
+        <label>Aktuelle Nodes<input name="nodes" type="number" min="1" max="100" value="1"></label>
+        <label>Maximale Nodes<input name="maxNodes" type="number" min="1" max="100" value="4"></label>
+        <label>Maximale Ollama-Pods<input name="maxPods" type="number" min="1" max="1000" value="8"></label>
+      </fieldset>
+      <fieldset><legend>03 / Hypothetischer Regler</legend>
+        <label>Zielauslastung der Slots<select name="target"><option value="0.5">50 %</option><option value="0.7" selected>70 %</option><option value="0.85">85 %</option></select></label>
+        <label>Modell-Kaltstart / Sekunden<input name="coldSeconds" type="number" min="0" max="3600" value="60"></label>
+        <label>Node-Bereitstellung / Sekunden<input name="nodeSeconds" type="number" min="0" max="3600" value="180"></label>
+        <label class="check"><input name="autoscale" type="checkbox" checked> Hypothetische Skalierung simulieren</label>
+      </fieldset>
+      <button type="reset">Annahmen zuruecksetzen</button>
+    </form>
+    <section class="results" aria-label="Planungsergebnis">
+      <div id="status" role="status" aria-live="polite"></div>
+      <div class="metrics">
+        <article><p>RAM je Ollama-Pod</p><strong id="podRam">-</strong><small>inkl. voller Parallelitaet und Reserve</small></article>
+        <article><p>Pods pro Node</p><strong id="fit">-</strong><small>Minimum aus RAM, CPU und Disk</small></article>
+        <article><p>Gewuenschte Pods</p><strong id="wanted">-</strong><small>unter dem eingestellten Podlimit</small></article>
+        <article><p>Erforderliche Nodes</p><strong id="nodeCount">-</strong><small>Modellkopie und PVC je Replik</small></article>
+      </div>
+      <article class="chart"><p class="eyebrow">10 MINUTEN / KONSTANTE ANFRAGERATE</p><h2>Was passiert mit der Warteschlange?</h2>
+        <svg id="queueChart" viewBox="0 0 700 220" role="img" aria-label="Simulierte Queue ueber zehn Minuten"></svg>
+        <p id="summary"></p>
+      </article>
+      <article><h2>Vom Wunsch zum laufenden Pod</h2><div class="table-scroll"><table><thead><tr><th>Zeit</th><th>Nodes</th><th>Bereit</th><th>Kaltstart</th><th>Queue</th></tr></thead><tbody id="timeline"></tbody></table></div></article>
+      <article class="assumptions"><h2>Die Grenze dieses Modells</h2>
+        <p>CPU-Inferenz mit allen Gewichten im RAM. MoE nutzt die Gesamtgewichte, nicht nur aktive Parameter. KV-Cache und Bearbeitungszeit muessen am echten Modell gemessen werden.</p>
+        <p>Die Node-Reserve muss Linux/K3s, OpenClaw, LiteLLM, Ingress und Monitoring abdecken. Keine GPU-Offloading-, Prefill-, N+1-HA- oder Stromkostenprognose.</p>
+        <p>Kein echter HPA, kein Clusterzugriff, keine Modellabfrage. Der simulierte Node-Provisioner existiert nur hier. Ein einzelner VPS skaliert seine Hardware nicht selbst.</p>
+      </article>
+    </section>
+  </div>
+  <footer>LOKAL / OHNE API / OHNE TELEMETRIE / KEINE SECRETS EINGEBEN</footer>
+</main>
+</body>
+</html>

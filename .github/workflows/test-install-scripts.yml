@@ -42,6 +42,8 @@ jobs:
           python3 -B tests/test_native_uv.py -v
           python3 -B tests/test_native_build_process.py -v
           python3 -B tests/test_install_rollback.py -v
+          python3 -B tests/test_security_audit_docs.py -v
+          node --test tests/resource_planner.test.cjs
           bash -n scripts/operations/deploy_vps_baseline.sh
       - name: Render Kubernetes objects without accessing a cluster
         shell: bash
