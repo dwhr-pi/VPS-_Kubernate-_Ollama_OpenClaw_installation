@@ -70,6 +70,61 @@ def build_env(runtime):
     return env
 
 
+def remove_runtime_tree(runtime):
+    runtime = checked(runtime)
+    if runtime.name != 'runtime':
+        raise ValueError('Bereinigung nur fuer den privaten Runtime-Ordner erlaubt.')
+    if not runtime.exists():
+        return
+    print('Runtime-Bereinigung: eigenen Verzeichnis-Schreibschutz begrenzt aufheben:', runtime, flush=True)
+
+    def unlock(path):
+        info = path.lstat()
+        if stat.S_ISLNK(info.st_mode) or getattr(info, 'st_file_attributes', 0) & 0x400:
+            return False  # Never chmod or traverse a symlink/junction target.
+        checked(path)
+        if not (stat.S_ISDIR(info.st_mode) or stat.S_ISREG(info.st_mode)):
+            raise ValueError('Spezialdatei im privaten Runtime-Bestand; keine Entfernung.')
+        if hasattr(os, 'geteuid') and info.st_uid != os.geteuid():
+            raise PermissionError('Fremder Dateieigentuemer; keine automatische Rechteaenderung: ' + str(path))
+        mode = stat.S_IMODE(info.st_mode)
+        if stat.S_ISDIR(info.st_mode):
+            mode |= stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR
+        elif os.name == 'nt' and not mode & stat.S_IWUSR:
+            if info.st_nlink > 1:
+                raise ValueError('Readonly-Hardlink; keine Rechteaenderung am gemeinsamen Ziel.')
+            mode |= stat.S_IWUSR
+        if mode != stat.S_IMODE(info.st_mode):
+            path.chmod(mode)
+        return True
+
+    def failed_walk(error):
+        raise error
+
+    unlock(runtime)
+    for parent, directories, files in os.walk(runtime, topdown=True, followlinks=False, onerror=failed_walk):
+        for name in directories[:]:
+            if not unlock(Path(parent) / name):
+                directories.remove(name)
+        for name in files:
+            unlock(Path(parent) / name)
+    shutil.rmtree(runtime)
+
+
+def validate_uninstall_remainder(runtime, marker, spec):
+    record = json.loads(checked(marker).read_text(encoding='utf-8'))
+    if any(record.get(key) != spec[key] for key in ('repo', 'pin', 'mode')):
+        raise ValueError('Unbekannter Installationsnachweis; keine fortgesetzte Deinstallation.')
+    expected = record.get('files')
+    entries = record.get('entries')
+    if not isinstance(expected, dict) or not expected or not isinstance(entries, list) or not entries or any(name not in expected for name in entries):
+        raise ValueError('Unvollstaendiger Installationsnachweis; keine Entfernung.')
+    current = inventory(checked(runtime)) if runtime.exists() else {}
+    if any(name not in expected or expected[name] != value for name, value in current.items()):
+        raise ValueError('Restbestand enthaelt neue/geaenderte Dateien; vor Deinstallation sichern, nichts entfernt.')
+    print('Fortsetzung ausdruecklich freigegeben: Restbestand stimmt mit gespeichertem Inventar ueberein.', flush=True)
+
+
 def run(args, cwd, env):
     if env.get('NATIVE_BUILD_STREAM') == 'perplexity-sdk':
         program = Path(str(args[0])).name
@@ -375,7 +430,7 @@ def install(runtime, marker, base, spec, install_build_deps=False):
             print("NUR QUELLEN installiert; KEINE gebaute/einsatzbereite Anwendung oder ComfyUI-Integration.")
     except BaseException:
         # This directory was absent before this invocation; venv paths stay stable, no rename.
-        shutil.rmtree(checked(runtime))
+        remove_runtime_tree(runtime)
         marker.unlink(missing_ok=True)
         print("Rollback: nur neue Dateien dieses Versuchs entfernt; Logs/Basiswerkzeuge bleiben.")
         raise
@@ -388,6 +443,7 @@ def main(argv=None):
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument('--install-build-deps', action='store_true', help='Browser_Use/Perplexity tools: explicit consent for pinned private build prerequisites; no browser/server start')
     parser.add_argument("--source-only", action="store_true", help="MuseTalk: nur bisherigen Quellcheckout verwalten")
+    parser.add_argument('--resume-uninstall', action='store_true', help='Perplexity SDKs: explicit removal of unchanged inventoried remnants after a partial uninstall')
     override = parser.add_mutually_exclusive_group()
     for action in ("repair", "uninstall", "status", "check"):
         override.add_argument("--" + action, dest="override", action="store_const", const=action)
@@ -398,6 +454,8 @@ def main(argv=None):
         opts.action = opts.override
     if opts.install_build_deps and (opts.tool not in ('browser_use', 'perplexity_mcp', 'perplexity_python', 'perplexity_node') or opts.action not in ('install', 'update', 'repair', 'plan')):
         parser.error('--install-build-deps hier nur fuer Browser_Use/Perplexity-Builds bei Install/Update/Repair oder Plan.')
+    if opts.resume_uninstall and (opts.tool not in ('perplexity_python', 'perplexity_node') or opts.action != 'uninstall'):
+        parser.error('--resume-uninstall nur fuer ausdrueckliche Deinstallation der Perplexity SDKs.')
     if opts.tool == "musetalk" and not opts.source_only:
         from musetalk_runtime import main as musetalk_main
         return musetalk_main([opts.action] + (["--dry-run"] if opts.dry_run else []))
@@ -430,15 +488,24 @@ def main(argv=None):
         return 0 if ready or opts.action == "status" else 1
     with operation(base, opts.action, tool=spec["name"]):
         versions = {'browser_use': '2026-10-26-browser-use-explicit-local-lock', 'perplexity_mcp': '2026-10-26-perplexity-mcp-private-node-npm',
-                    'perplexity_python': '2026-10-26-perplexity-sdk-external-bazel-cache', 'perplexity_node': '2026-10-26-perplexity-sdk-external-bazel-cache'}
+                    'perplexity_python': '2026-10-26-perplexity-sdk-readonly-uninstall', 'perplexity_node': '2026-10-26-perplexity-sdk-readonly-uninstall'}
         print('GitHub-Tool-Installer:', versions.get(opts.tool, '2026-10-23-hermes-private-python'))
         print("Installerdatei:", Path(__file__).resolve())
         print("Quellenmanifest:", MANIFEST, "Mindestreserve MiB:", spec["reserve_mb"])
         print("GitHub:", spec["repo"], "Pin:", spec["pin"], "Umfang:", spec["mode"])
         if opts.action == "uninstall":
             if runtime.exists() or marker.exists():
-                validate(runtime, marker, spec, full=True)
-                shutil.rmtree(checked(runtime))
+                if opts.resume_uninstall:
+                    validate_uninstall_remainder(runtime, marker, spec)
+                else:
+                    try:
+                        validate(runtime, marker, spec, full=True)
+                    except (ValueError, OSError, KeyError, TypeError, subprocess.SubprocessError):
+                        if opts.tool in ('perplexity_python', 'perplexity_node'):
+                            print('Falls eine vorherige Deinstallation teilweise lief: bash scripts/tools/' +
+                                  opts.tool + '_uninstall.sh --resume-uninstall. Nur unveraenderte Inventarreste werden akzeptiert.', flush=True)
+                        raise
+                remove_runtime_tree(runtime)
                 marker.unlink()
             print("Privater unveraenderter Bestand entfernt; Nutzerdaten ausserhalb, Logs und Basiswerkzeuge bleiben.")
         else:

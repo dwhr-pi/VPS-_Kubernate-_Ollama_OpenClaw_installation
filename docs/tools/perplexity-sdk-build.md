@@ -24,6 +24,48 @@ bash scripts/tools/perplexity_node_doctor.sh
 Ohne Flag fragt ein interaktives Terminal `[j/N]`. Enter/EOF oder fehlende
 Zustimmung bedeutet keinen Download. Plan, Status, Check und Doctor bleiben
 lesend und laden keine fehlenden Werkzeuge nach. Logkennung fuer beide SDKs:
+`2026-10-26-perplexity-sdk-readonly-uninstall`.
+
+## Deinstallationsfehler vom 26.10.2026 um 19:45
+
+`Permission denied: package.json` trat beim Entfernen der Runtime auf.
+Bazel-Ausgaben koennen schreibgeschuetzte Dateien und Verzeichnisse enthalten,
+deren Rechte beim Kopieren erhalten bleiben. Unter Linux braucht das Loeschen
+insbesondere Schreib-/Suchrechte auf den Elternverzeichnissen; eine einzelne
+Datei auf schreibbar zu setzen reicht nicht. Fremde Eigentuemer oder andere
+Dateisystemsperren sind aus dem kurzen Log allein nicht auszuschliessen.
+
+Die korrigierte Bereinigung prueft weiterhin zuerst Pin/Quelle und Inventar.
+Erst danach erhalten eigene Verzeichnisse innerhalb von `runtime/` die
+noetigen Benutzerrechte. Unter Windows werden eigene Readonly-Dateien
+behandelt; mehrfach hart verlinkte Readonly-Dateien werden nicht umgestellt.
+Keine Verfolgung oder Rechteaenderung von Symlink-/Junction-Zielen, keine
+Spezialdateien oder fremden Eigentuemer, kein sudo, chown oder chmod 777.
+Toolchains, Logs, Konfiguration und Daten ausserhalb der Runtime bleiben bestehen.
+Der Installationsnachweis wird erst nach erfolgreichem Entfernen geloescht.
+
+Nach Uebernahme der korrigierten Setup-Dateien kann die normale Deinstallation
+erneut erfolgen. Hat der alte Versuch bereits Dateien entfernt, ist der
+vollstaendige Inventarcheck nicht mehr erfuellbar. Dann ausdruecklich fortsetzen:
+
+```bash
+bash scripts/tools/perplexity_node_uninstall.sh --resume-uninstall --dry-run
+bash scripts/tools/perplexity_node_uninstall.sh --resume-uninstall
+# Entsprechend nur bei Bedarf fuer das andere SDK:
+bash scripts/tools/perplexity_python_uninstall.sh --resume-uninstall
+```
+
+Dry-Run zeigt nur den Plan; die eigentliche Restbestandspruefung erfolgt beim
+echten Aufruf. Der Fortsetzungsmodus verlangt den vorhandenen Nachweis fuer
+genau Repo/Pin/Modus und erlaubt ausschliesslich eine unveraenderte Teilmenge
+seines gespeicherten Datei-/Linkinventars. Neue oder geaenderte Dateien,
+fehlender/fremder Nachweis: Abbruch ohne Entfernen. Fehlende Git-Dateien nach
+einer Teildeinstallation werden nicht neu geladen. Kein pauschales Loeschen
+eines Ordners ohne Besitz-/Inhaltsnachweis.
+
+Dieser Modus funktioniert auch direkt per CLI, falls das Menue die beschaedigte
+Runtime nicht mehr als installiert erkennt. Kein manuelles Loeschen des Markers
+oder der privaten Buildwerkzeuge. Die vorige Kennung war
 `2026-10-26-perplexity-sdk-external-bazel-cache`.
 
 ## Folgefehler am 26.10.2026: Bazel-Cache im Quellverzeichnis

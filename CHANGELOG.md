@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Perplexity-SDK-Deinstallation: Schreibschutz im geprueften eigenen Runtime-
+  Bestand begrenzt behandeln, keine Linkziele/fremden Eigentuemer umstellen.
+  Explizites --resume-uninstall fuer unveraenderte Inventarreste nach teilweisem
+  Abbruch; Nachweis erst nach erfolgreicher Entfernung loeschen, Toolchains behalten.
+
 - Tools-Menue wieder durchgehend A-Z unterhalb der Trennlinie sortieren,
   einschliesslich Browser-/Studien-/Perplexity-Tools; Kernbereich beibehalten.
   Nutzer meldet erfolgreiche getestete Installationen; schwergewichtige Tools
