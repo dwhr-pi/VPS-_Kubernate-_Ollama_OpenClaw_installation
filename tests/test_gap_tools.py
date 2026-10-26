@@ -237,7 +237,7 @@ class GapToolTests(unittest.TestCase):
             for action in ("install", "update", "uninstall", "status", "check", "doctor"):
                 wrapper = (ROOT / "scripts/tools" / (key + "_" + action + ".sh")).read_text()
                 self.assertIn("github.com/" + spec["repo"], wrapper)
-                expected = (key + '.py" ' if key in ('browseros_study', 'enki_browser_study') else 'gap_tools.py" ' + key + ' ')
+                expected = (key + '.py" ' if key in ('browseros_study', 'enki_browser_study', 'qwen_desktop_study') else 'gap_tools.py" ' + key + ' ')
                 self.assertIn(expected + action, wrapper)
         doc = (ROOT / "docs/tools/github-gap-tools.md").read_text(encoding="utf-8")
         for target in re.findall(r"\]\(([^)]+)\)", doc):
@@ -254,7 +254,9 @@ class GapStorageMenuTests(unittest.TestCase):
         source = (ROOT / "setup_ultimate.sh").read_text(encoding="utf-8")
         selected = [re.search(r"^" + name + r"\(\) \{\n.*?^\}", source, re.M | re.S).group()
                     for name in functions]
-        return subprocess.run([BASH, "--noprofile", "--norc", "-c", "\n".join(selected) + "\n" + command],
+        # Feed expanded function fixtures through stdin, not Windows command-line limits.
+        return subprocess.run([BASH, "--noprofile", "--norc", "-s"],
+                              input="\n".join(selected) + "\n" + command,
                               capture_output=True, text=True, timeout=30)
 
     def test_menu_fallbacks_match_all_gap_tool_reserves(self):

@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Qwen_Desktop_Study wie Enki als optionale GitHub-Quellen fuer Studienzwecke
+  und Weiterentwicklung im Setup anbieten. Separater Linux-/Windows-Build nach
+  Freigabe; Quellenstatus, Buildnachweis und Entwicklungsdaten getrennt halten.
+
 - Perplexity Python/Node SDKs: Bazel 9.2.0, Node 26, pnpm 11.17.0 und bei Python
   uv vor dem Quellcheckout pruefen und nach Zustimmung privat bereitstellen.
   Feste offizielle Hashes/Groessen, getrennte npm-Konfiguration, keine globale

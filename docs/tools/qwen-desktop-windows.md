@@ -1,5 +1,9 @@
 # Qwen Desktop unter Windows: der richtige Einstieg
 
+**Fuer Studienzwecke und Weiterentwicklung:** [Qwen_Desktop_Study](qwen-desktop-study.md)
+bietet wie Enki Quellen und einen optionalen separaten Linux-/Windows-Build.
+Quellen sind keine fertig installierte Anwendung.
+
 **Zusaetzliche Wahl im Setup:** [Qwen_Desktop_Build: nativer GitHub-/Tauri-Build
 fuer Windows und Linux](github-gap-tools.md#qwen-code-desktop-download-oder-eigener-build).
 Der bisherige Eintrag **Qwen_Desktop** bleibt der manuelle Windows-Download.

@@ -9,6 +9,12 @@ Ein API-Client wie `ant` ist nicht dasselbe Produkt.
 
 ## Lizenzpruefung vom 21.10.2026
 
+Erneut geprueft am **26.10.2026**:
+[Wochenbericht](../_API-Keys/reviews/2026-10-26.md).
+Originallizenz, README und sichtbarer Dateibaum belegen weiterhin keinen
+vollstaendigen Open-Source-Build des Coding-Agenten. Kein Leak/Repackage
+oder MIT-API-Client als Original-Agent gewertet.
+
 Das offizielle Repository ist
 [anthropics/claude-code](https://github.com/anthropics/claude-code).
 Seine [LICENSE.md](https://github.com/anthropics/claude-code/blob/main/LICENSE.md)

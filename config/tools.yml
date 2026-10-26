@@ -3,6 +3,27 @@
   "description": "Zentrale Tool-Registry. Dateiname .yml, Inhalt absichtlich als JSON-kompatibles YAML fuer einfache Bash/Python-Auswertung.",
   "tools": [
     {
+      "id": "qwen_desktop_study",
+      "name": "Qwen_Desktop_Study",
+      "category": "Desktop / Studien und Weiterentwicklung",
+      "source": "https://github.com/QwenLM/qwen-code",
+      "source_commit": "bf66a26c978dac68af31fbc093eb53044e204b24",
+      "source_verified": true,
+      "status": "experimental",
+      "auto_install": false,
+      "install_mode": "github-study-sources-optional-build",
+      "install_script": "scripts/tools/qwen_desktop_study_install.sh",
+      "update_script": "scripts/tools/qwen_desktop_study_update.sh",
+      "uninstall_script": "scripts/tools/qwen_desktop_study_uninstall.sh",
+      "doctor_script": "scripts/tools/qwen_desktop_study_doctor.sh",
+      "check_type": "path",
+      "check_value": "~/.openclaw_ultimate_user_data/tools/qwen_desktop_study/ready.json",
+      "ports": [],
+      "doc": "docs/tools/qwen-desktop-study.md",
+      "description": "GitHub-Quellen fuer Studienzwecke und Weiterentwicklung; optional separater Tauri-Build fuer Linux oder natives Windows.",
+      "security_note": "Kein Docker, Signieren, Anwendungsstart oder Authentifizieren. Quellenstatus und Buildnachweis getrennt; Entwicklungsdaten bleiben erhalten."
+    },
+    {
       "id": "enki_browser_study",
       "name": "Enki_Browser_Study",
       "category": "Browser / Studien und Weiterentwicklung",

@@ -1,5 +1,12 @@
 # API-Schluessel erhalten: Freikontingente, Bezahlung und Identitaet
 
+Wochenpruefung vom **26.10.2026**: [Quellenbericht](reviews/2026-10-26.md).
+Fuer **Ollama Cloud** fuehrt die [offizielle Cloud-Anleitung](https://docs.ollama.com/cloud)
+zur eigenen Key-Verwaltung; lokale Inferenz benoetigt keinen Cloud-Key.
+Starter-Credits sind nicht beziffert. Kartenpflicht, Mindesteinzahlung,
+PayPal/Klarna/Krypto und KYC bleiben fuer diesen Cloud-Einstieg **UB**.
+Die [Preisseite](https://ollama.com/pricing) belegt keine bestimmte Zahlart.
+
 Nachtrag vom 24.10.2026: [Manus API-Key](manus.md) mit offiziellem
 Erstellungsweg, API-/Web-App-Abgrenzung sowie Zahlungs- und KYC-Pruefluecken.
 

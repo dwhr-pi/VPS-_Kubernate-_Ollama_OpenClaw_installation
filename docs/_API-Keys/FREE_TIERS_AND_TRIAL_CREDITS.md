@@ -1,5 +1,18 @@
 # Kostenlose LLM-Zugaenge: Quellen, Trial-Credits und eigene Auswertung
 
+**Wochenpruefung vom 26.10.2026:** [Aktueller Bericht](reviews/2026-10-26.md).
+Die unten datierte Tabelle vom 21.10. bleibt als historischer Vergleich erhalten.
+Neu ergaenzt: Ollama-Cloud-Credits, Together-Datenablage und Gemini-Tarifausnahmen.
+
+| Anbieter | Offizielle Webseite | Neu dokumentierter Punkt | Primaerbeleg |
+|---|---|---|---|
+| Ollama Cloud, nicht lokal | [ollama.com](https://ollama.com/) | Free mit unbezifferten Starter-Credits, monatlicher Reset; gekaufte Credits gesondert. Keine unbegrenzte Cloud-Nutzung | [Preise](https://ollama.com/pricing) |
+| Together AI | [together.ai](https://www.together.ai/) | Inhaltsablage/Produktverbesserung und Passthrough standardmaessig aktiv; Training ist separates Opt-in. Organisations-ZDR gesondert pruefen | [Datenregeln](https://docs.together.ai/docs/privacy-and-security) |
+| Gemini | [ai.google.dev](https://ai.google.dev/) | Bezahlter Contributor-Preview erlaubt Produktverbesserung. Befristete Preise und angekuendigte Erhoehungen zum 01.12.2026 bzw. 01.01.2027 modellbezogen pruefen | [Preise](https://ai.google.dev/gemini-api/docs/pricing) |
+
+Dies ergaenzt unsere Dokumentation; der genaue Zeitpunkt einer Anbieterumstellung
+ist nicht bewiesen. Kein kostenloser Router-Katalog ersetzt die aktuellen Bedingungen.
+
 **Ergaenzung vom 23.10.2026:** [Key-Erhalt, Mindestkaeufe,
 Zahlungsmittel und Identitaetspruefung](REGISTRATION_BILLING_AND_IDENTITY.md)
 sowie [weiterer Dienstzugang](SERVICE_TOKEN_REGISTRATION.md).

@@ -1,5 +1,9 @@
 # Welche dokumentierten Tools fehlen im Setup?
 
+Ergaenzt: [Qwen_Desktop_Study](tools/qwen-desktop-study.md), im Studien-/Browserbereich
+des Tools-Menues. Quellen und optionaler Linux-/Windows-Build sind getrennt;
+kein gestarteter oder produktiv abgenommener Desktop.
+
 [Aktueller Docker-zu-GitHub-Abgleich](DOCKER_TO_GITHUB.md): native Buildrezepte
 und noch offene Migrationen unterscheiden; Quellen allein sind keine Runtime.
 

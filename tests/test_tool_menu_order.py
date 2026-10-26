@@ -28,7 +28,7 @@ class ToolMenuOrderTests(unittest.TestCase):
         for array in re.findall(r"^TOOL_KEYS\+?=\(([^\n]*)\)", setup, re.M):
             names.extend(shlex.split(array))
         pinned = [name for name in names if name in {"Ollama", "OpenClaw", "Ruflo"}]
-        tail = ['Comet', 'BrowserOS', 'BrowserOS_Study', 'Enki_Browser', 'Enki_Browser_Study', 'Browser_Use', 'Perplexity_MCP',
+        tail = ['Comet', 'BrowserOS', 'BrowserOS_Study', 'Enki_Browser', 'Enki_Browser_Study', 'Qwen_Desktop_Study', 'Browser_Use', 'Perplexity_MCP',
                 'Perplexity_Python', 'Perplexity_Node', 'Perplexity_API_Cookbook']
         remaining = [name for name in names if name not in pinned + tail]
         result = self.run_sort(names)
@@ -62,7 +62,7 @@ class ToolMenuOrderTests(unittest.TestCase):
         self.assertIn('"__TOOLS_SEPARATOR__" "---------------- Weitere Tools A-Z ----------------"', setup)
 
     def test_browser_research_group_stays_after_z(self):
-        tail = ['Comet', 'BrowserOS', 'BrowserOS_Study', 'Enki_Browser', 'Enki_Browser_Study', 'Browser_Use', 'Perplexity_MCP',
+        tail = ['Comet', 'BrowserOS', 'BrowserOS_Study', 'Enki_Browser', 'Enki_Browser_Study', 'Qwen_Desktop_Study', 'Browser_Use', 'Perplexity_MCP',
                 'Perplexity_Python', 'Perplexity_Node', 'Perplexity_API_Cookbook']
         names = ['Ollama', 'OpenClaw', 'Ruflo', 'Zotero', 'Act'] + tail
         self.assertEqual(self.run_sort(names), names[:3] + ['Act', 'Zotero'] + tail)
