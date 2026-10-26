@@ -112,6 +112,13 @@ class BrowserResearchTests(unittest.TestCase):
                     self.assertEqual(proof['origin'], 'locally-resolved')
                 else:
                     self.assertTrue(any('--batch' in command for command in calls))
+                    build = next(command for command in calls if '--batch' in command)
+                    output_root = Path(next(arg.split('=', 1)[1] for arg in build if arg.startswith('--output_user_root=')))
+                    repo_cache = Path(next(arg.split('=', 1)[1] for arg in build if arg.startswith('--repo_contents_cache=')))
+                    self.assertFalse(output_root.is_relative_to(runtime))
+                    self.assertFalse(repo_cache.is_relative_to(runtime))
+                    self.assertEqual(output_root.parent, repo_cache.parent)
+                    self.assertFalse(output_root.parent.exists())
                 self.assertFalse(any('start' in command or 'serve' in command for command in calls))
 
     @unittest.skipUnless(BASH, 'Bash unavailable')

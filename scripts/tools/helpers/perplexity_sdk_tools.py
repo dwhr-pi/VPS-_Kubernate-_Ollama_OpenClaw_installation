@@ -135,6 +135,49 @@ def environment():
     return {key: value for key, value in os.environ.items() if key in ('PATH', 'LANG', 'LC_ALL')}
 
 
+def build_artifact(runtime, env, sdk, mode):
+    if mode not in ('perplexity-python', 'perplexity-node'):
+        raise ValueError('Unbekanntes SDK-Bazel-Ziel.')
+    runtime = common.checked(runtime)
+    # Bazel 9 rejects its repo contents cache inside the main workspace.
+    with tempfile.TemporaryDirectory(prefix='sdk-bazel-', dir=runtime.parent) as directory:
+        output = common.checked(Path(directory))
+        print('SDK-Bazel: temporaerer Output/Repo-Cache ausserhalb des Quellcheckouts:', output, flush=True)
+
+        def owned(path):
+            resolved = path.resolve(strict=True)
+            if not any(resolved.is_relative_to(root.resolve()) for root in (runtime, output)):
+                raise ValueError('Externes Bazel-Artefakt ausserhalb des privaten Buildbaums; kein Kopieren.')
+            return resolved
+
+        try:
+            target = '//:pkg' if mode == 'perplexity-node' else '//:wheel'
+            common.run([sdk['bazel'], '--batch', '--output_user_root=' + str(output / 'user-root'),
+                        'build', '--repo_contents_cache=' + str(output / 'repo-contents'),
+                        '--jobs=2', target], runtime, env)
+            if mode == 'perplexity-node':
+                built = owned(runtime / 'bazel-bin/package')
+                if not built.is_dir():
+                    raise ValueError('Bazel-Paket fehlt.')
+                for path in built.rglob('*'):
+                    owned(path)
+                shutil.copytree(built, runtime / 'package')
+                return runtime / 'package'
+            wheels = list((runtime / 'bazel-bin').glob('*.whl'))
+            if len(wheels) != 1:
+                raise ValueError('Erwartetes SDK-Wheel fehlt oder ist nicht eindeutig.')
+            built = owned(wheels[0])
+            wheel = common.checked(runtime / wheels[0].name)
+            shutil.copyfile(built, wheel)
+            return wheel
+        finally:
+            # Remove only convenience links into this invocation's temporary output.
+            for name in ('bazel-bin', 'bazel-out', 'bazel-testlogs', 'bazel-' + runtime.name):
+                link = runtime / name
+                if link.is_symlink() and link.resolve().is_relative_to(output):
+                    link.unlink()
+
+
 def prepare(base, key, approved=False):
     if key not in ('perplexity_python', 'perplexity_node'):
         raise ValueError('Nicht freigegebener SDK-Bootstrap.')

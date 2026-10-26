@@ -3,6 +3,7 @@ from contextlib import redirect_stdout
 import io
 import json
 import os
+import subprocess
 from pathlib import Path
 import sys
 import tempfile
@@ -150,10 +151,93 @@ class SdkToolsTests(unittest.TestCase):
                 self.assertEqual(list(Path(directory).iterdir()), [])
 
     def test_heavy_build_streams_without_starting_a_bazel_server(self):
-        args = ['/private/bazel', '--batch', '--output_user_root=/fixture/.bazel', 'build', '--jobs=2', '//:pkg']
+        args = ['/private/bazel', '--batch', '--output_user_root=/fixture/sdk-bazel-private/user-root',
+                'build', '--repo_contents_cache=/fixture/sdk-bazel-private/repo-contents', '--jobs=2', '//:pkg']
         with patch.object(native_build_process, 'run', return_value='fixture') as run:
             self.assertEqual(tools.run(args, Path('/fixture'), {'NATIVE_BUILD_STREAM': 'perplexity-sdk'}), 'fixture')
         run.assert_called_once_with(args, Path('/fixture'), {'NATIVE_BUILD_STREAM': 'perplexity-sdk'}, timeout=14400)
+
+    def link(self, path, target):
+        try:
+            path.symlink_to(target, target_is_directory=target.is_dir())
+        except OSError as error:
+            self.skipTest('Symlink fixture unavailable: ' + str(error))
+
+    def test_bazel_cache_is_external_and_artifacts_survive_temporary_cleanup(self):
+        for mode in ('perplexity-python', 'perplexity-node'):
+            with self.subTest(mode=mode), tempfile.TemporaryDirectory() as directory:
+                base = Path(directory)
+                runtime = base / 'runtime'
+                runtime.mkdir()
+                outputs = []
+                def run(args, cwd, env):
+                    user_root = Path(next(arg.split('=', 1)[1] for arg in args if arg.startswith('--output_user_root=')))
+                    repo_cache = Path(next(arg.split('=', 1)[1] for arg in args if arg.startswith('--repo_contents_cache=')))
+                    self.assertFalse(user_root.is_relative_to(runtime))
+                    self.assertFalse(repo_cache.is_relative_to(runtime))
+                    self.assertEqual(user_root.parent, repo_cache.parent)
+                    self.assertEqual(user_root.parent.parent, base)
+                    self.assertIn('--batch', args)
+                    outputs.append(user_root.parent)
+                    binary = user_root / 'execroot/bin'
+                    binary.mkdir(parents=True)
+                    if mode == 'perplexity-node':
+                        (binary / 'package/dist').mkdir(parents=True)
+                        (binary / 'package/package.json').write_text('{}')
+                        (binary / 'package/dist/index.js').write_text('fixture SDK')
+                    else:
+                        (binary / 'sdk.whl').write_bytes(b'fixture wheel')
+                    self.link(runtime / 'bazel-bin', binary)
+                    self.link(runtime / 'bazel-out', user_root)
+                    return ''
+                with patch.object(sdk.common, 'run', side_effect=run):
+                    result = sdk.build_artifact(runtime, {}, {'bazel': '/private/bazel'}, mode)
+                self.assertTrue(result.exists())
+                if mode == 'perplexity-node':
+                    self.assertEqual((result / 'dist/index.js').read_text(), 'fixture SDK')
+                else:
+                    self.assertEqual(result.read_bytes(), b'fixture wheel')
+                self.assertFalse((runtime / 'bazel-bin').is_symlink())
+                self.assertFalse((runtime / 'bazel-out').is_symlink())
+                self.assertTrue(all(not output.exists() for output in outputs))
+
+    def test_failed_bazel_cleans_only_new_output_not_sources_or_toolchains(self):
+        with tempfile.TemporaryDirectory() as directory:
+            base = Path(directory)
+            runtime = base / 'runtime'
+            runtime.mkdir()
+            (runtime / 'notes.txt').write_text('keep sources')
+            tools = base / 'toolchain'
+            tools.mkdir()
+            (tools / 'bazel').write_text('keep toolchain')
+            def run(args, cwd, env):
+                root = Path(next(arg.split('=', 1)[1] for arg in args if arg.startswith('--output_user_root=')))
+                root.mkdir()
+                (root / 'partial-output').write_text('fixture')
+                raise subprocess.CalledProcessError(2, args)
+            with patch.object(sdk.common, 'run', side_effect=run):
+                with self.assertRaises(subprocess.CalledProcessError):
+                    sdk.build_artifact(runtime, {}, {'bazel': '/private/bazel'}, 'perplexity-python')
+            self.assertEqual(list(base.glob('sdk-bazel-*')), [])
+            self.assertEqual((runtime / 'notes.txt').read_text(), 'keep sources')
+            self.assertEqual((tools / 'bazel').read_text(), 'keep toolchain')
+
+    def test_foreign_bazel_output_is_not_copied_or_deleted(self):
+        with tempfile.TemporaryDirectory() as directory:
+            base = Path(directory)
+            runtime = base / 'runtime'
+            runtime.mkdir()
+            foreign = base / 'foreign'
+            foreign.mkdir()
+            (foreign / 'sdk.whl').write_bytes(b'not owned by this build')
+            self.link(runtime / 'bazel-bin', foreign)
+            with patch.object(sdk.common, 'run'):
+                with self.assertRaisesRegex(ValueError, 'Externes Bazel-Artefakt'):
+                    sdk.build_artifact(runtime, {}, {'bazel': '/private/bazel'}, 'perplexity-python')
+            self.assertEqual((foreign / 'sdk.whl').read_bytes(), b'not owned by this build')
+            self.assertTrue((runtime / 'bazel-bin').is_symlink())
+            self.assertFalse((runtime / 'sdk.whl').exists())
+            self.assertEqual(list(base.glob('sdk-bazel-*')), [])
 
     def test_global_bazelisk_is_not_invoked_for_discovery(self):
         with tempfile.TemporaryDirectory() as directory, patch.object(sdk.releases, 'host_key', return_value='linux-amd64'), patch.object(sdk.shutil, 'which', return_value='/global/bazel') as which, patch.object(sdk, 'probe') as probe:

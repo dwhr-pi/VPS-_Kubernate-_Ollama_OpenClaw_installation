@@ -258,7 +258,6 @@ def browser_research_build(runtime, env, mode):
         version = run([bazel, '--version'], runtime, env)
         if version != 'bazel 9.2.0':
             raise ValueError('SDK-Pin benoetigt Bazel 9.2.0; gepruefte Buildbasis stimmt nicht.')
-        command = [bazel, '--batch', '--output_user_root=' + str(runtime / '.bazel')]
         if mode == 'perplexity-node':
             node = sdk['node']
             if not run([node, '--version'], runtime, env).startswith('v26.'):
@@ -266,22 +265,10 @@ def browser_research_build(runtime, env, mode):
             if run([sdk['pnpm'], '--version'], runtime, env) != '11.17.0':
                 raise ValueError('Perplexity-Node-Pin benoetigt pnpm 11.17.0.')
             run([sdk['pnpm'], 'install', '--frozen-lockfile', '--ignore-scripts'], runtime, env)
-            run(command + ['build', '--jobs=2', '//:pkg'], runtime, env)
-            built = (runtime / 'bazel-bin/package').resolve()
-            if not built.is_relative_to(runtime.resolve()) or not built.is_dir():
-                raise ValueError('Bazel-Paket fehlt oder liegt ausserhalb des privaten Buildbaums.')
-            for path in built.rglob('*'):
-                if not path.resolve().is_relative_to(runtime.resolve()):
-                    raise ValueError('Externer Link im Bazel-Paket; kein Kopieren.')
-            shutil.copytree(built, runtime / 'package')
+            perplexity_sdk_tools.build_artifact(runtime, env, sdk, mode)
             run([node, '--check', 'package/dist/index.js'], runtime, env)
             return ['package/package.json', 'package/dist/index.js']
-        run(command + ['build', '--jobs=2', '//:wheel'], runtime, env)
-        wheels = list((runtime / 'bazel-bin').glob('*.whl'))
-        if len(wheels) != 1 or not wheels[0].resolve().is_relative_to(runtime.resolve()):
-            raise ValueError('Erwartetes SDK-Wheel fehlt oder ist nicht eindeutig.')
-        wheel = runtime / wheels[0].name
-        shutil.copyfile(wheels[0], wheel)
+        wheel = perplexity_sdk_tools.build_artifact(runtime, env, sdk, mode)
 
     python = os.environ.get('BROWSER_RESEARCH_PYTHON_BIN') or executable('python3')
     minimum = '(3,11)' if mode == 'browser-python' else '(3,10)'
@@ -443,7 +430,7 @@ def main(argv=None):
         return 0 if ready or opts.action == "status" else 1
     with operation(base, opts.action, tool=spec["name"]):
         versions = {'browser_use': '2026-10-26-browser-use-explicit-local-lock', 'perplexity_mcp': '2026-10-26-perplexity-mcp-private-node-npm',
-                    'perplexity_python': '2026-10-26-perplexity-sdk-pnpm-bundle', 'perplexity_node': '2026-10-26-perplexity-sdk-pnpm-bundle'}
+                    'perplexity_python': '2026-10-26-perplexity-sdk-external-bazel-cache', 'perplexity_node': '2026-10-26-perplexity-sdk-external-bazel-cache'}
         print('GitHub-Tool-Installer:', versions.get(opts.tool, '2026-10-23-hermes-private-python'))
         print("Installerdatei:", Path(__file__).resolve())
         print("Quellenmanifest:", MANIFEST, "Mindestreserve MiB:", spec["reserve_mb"])

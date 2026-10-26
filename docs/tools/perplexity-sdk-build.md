@@ -24,7 +24,37 @@ bash scripts/tools/perplexity_node_doctor.sh
 Ohne Flag fragt ein interaktives Terminal `[j/N]`. Enter/EOF oder fehlende
 Zustimmung bedeutet keinen Download. Plan, Status, Check und Doctor bleiben
 lesend und laden keine fehlenden Werkzeuge nach. Logkennung fuer beide SDKs:
-`2026-10-26-perplexity-sdk-pnpm-bundle`.
+`2026-10-26-perplexity-sdk-external-bazel-cache`.
+
+## Folgefehler am 26.10.2026: Bazel-Cache im Quellverzeichnis
+
+Die Protokolle ab 12:49 (Python) bzw. 16:46 (Node) bestaetigen, dass pnpm
+11.17.0 jetzt startet; beim Node-SDK war auch `pnpm install` erfolgreich.
+Beide Builds scheiterten danach mit Exit 2: Der aus `runtime/.bazel`
+abgeleitete Repository-Contents-Cache lag im Haupt-Workspace. Die OpenJDK-
+Warnung davor ist nicht der im Protokoll genannte Abbruchgrund.
+
+Jetzt liegen `--output_user_root` und der explizit gesetzte
+`--repo_contents_cache` unter einem neuen temporaeren Geschwisterverzeichnis
+`tools/<sdk>/sdk-bazel-<zufall>/`, **ausserhalb von runtime/**.
+Das folgt der [Bazel-Output-Struktur](https://bazel.build/remote/output-directories).
+Beide SDK-Ziele nutzen denselben korrigierten Helper, weiterhin mit `--batch`
+und `--jobs=2`. Kein globaler Cache-/Bazel-Reset und keine Aenderung am SDK-Pin.
+
+Wheel bzw. Node-Paket werden vor der temporaeren Bereinigung in die eigene
+Runtime kopiert. Bazel-Verweise duerfen nur in die eigene Runtime oder den
+Output dieses Versuchs zeigen; externe Artefakte werden nicht kopiert.
+Nur Convenience-Symlinks in genau diesen temporaeren Output werden entfernt.
+Bei regulaerem Erfolg/Fehler wird der neue Output bereinigt, vorhandene
+Toolchains und fremde Daten bleiben unberuehrt. Ein harter WSL-/Systemabbruch
+kann wie bei anderen temporaeren Builds Rueckstaende hinterlassen; keine
+automatische Loeschung fremder/verwaister Verzeichnisse hinzugefuegt.
+
+Nach Uebernahme der Korrektur den jeweiligen Installationsaufruf oben erneut
+ausfuehren. Kein manuelles Loeschen der geprueften Bazel-/Node-/pnpm-/uv-Slots.
+Die vorherige Kennung `2026-10-26-perplexity-sdk-pnpm-bundle` enthaelt noch
+den Cachefehler. Die Python-Gesamtdauer im Log ist kein Beleg fuer vier Stunden
+Bazel-Kompilation: Sie umfasst den gesamten Installationsversuch samt Eingaben.
 
 ## Folgefehler vom 26.10.2026 um 12:37: pnpm.mjs fehlt
 
@@ -115,7 +145,7 @@ Die gemeinsame Bibliothek bleibt bei Tool-Deinstallation erhalten.
 
 Die Buildprogramme werden ueber ermittelte Pfade aufgerufen, nicht trotz
 privater Einrichtung erneut ausschliesslich global gesucht. Bazel laeuft
-mit `--batch` ohne dauerhaft verbleibenden Bazel-Server, lokalem Output-Root
+mit `--batch` ohne dauerhaft verbleibenden Bazel-Server, getrenntem temporaerem Output-Root
 und `--jobs=2`. Ziele bleiben `//:wheel` bzw. `//:pkg`, **keine Live-API-Tests**.
 Schwere Bazel-/pnpm-/uv-Install-Schritte liefern laufende Ausgabe und PID-
 Heartbeat. Bazel-Builds haben vier Stunden, die Paket-Install-Schritte zwei
@@ -133,8 +163,12 @@ ein MCP-Server oder Proxy gestartet, keine API-Keys abgefragt und keine
 kostenpflichtigen Suchanfragen ausgefuehrt.
 
 Offline-Fixtures pruefen Freigabe, Hash-/Versionsgrenzen, gebuendelte Vorbereitung,
-private npm-Konfigurationen, Wiederverwendung und Rollback. Vollstaendige
+private npm-Konfigurationen, Wiederverwendung, Cachegrenzen, Artefaktuebernahme
+und temporaere Bereinigung/Rollback. Vollstaendige
 Ubuntu-/WSL-SDK-Builds sowie die echte API-Funktion wurden hier nicht ausgefuehrt.
+Bei der Cache-Korrektur wurden drei echte Symlink-Fixtures unter Windows
+mangels Symlink-Rechten uebersprungen; die plattformunabhaengigen Fixtures
+pruefen Cache-Lage ausserhalb des Workspaces und temporaere Bereinigung.
 Das ist keine pauschale Produktionsfreigabe.
 
 [Perplexity MCP (separat)](perplexity_mcp.md) und

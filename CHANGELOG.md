@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Perplexity Python/Node: Bazel-Output und Repo-Contents-Cache ausserhalb des
+  Quell-Workspaces in getrenntem temporaerem Buildverzeichnis anlegen.
+  Artefakte vor Bereinigung uebernehmen, externe Verweise ablehnen und nur
+  eigene temporaere Bazel-Links entfernen. Gepruefte Toolchains beibehalten.
+
 - Perplexity Python/Node: pnpm 11.17.0 als vollstaendiges GitHub-Release-Bundle
   statt einzelner Startdatei uebernehmen. dist/pnpm.mjs, Worker und weitere
   Begleitdateien bleiben erhalten und werden bei Wiederverwendung mitgeprueft.
