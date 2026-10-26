@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- LiteLLM-uv-Timeout: laufende Buildausgabe/Heartbeat statt verlorener gepufferter
+  Diagnose; begrenzte Cargo-/uv-Parallelitaet, explizites Zeitbudget und
+  Prozessgruppen-Abbruch unter Linux. Metadaten-/Freeze-Ausgaben bleiben
+  vollstaendig. Kein automatischer Retry oder falscher Erfolgsnachweis.
+
 - LiteLLM: fehlendes Rust 1.98.0 nach Zustimmung privat bereitstellen statt
   dauerhaftem Vorpruefungsabbruch. Offizielles rustup-init 1.29.2 mit festen
   SHA256/Groessen fuer Linux amd64/arm64; isolierte Rust-/Cargo-Homes,

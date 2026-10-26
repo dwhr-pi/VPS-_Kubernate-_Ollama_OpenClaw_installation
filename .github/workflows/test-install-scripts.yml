@@ -50,6 +50,7 @@ jobs:
           python3 -B tests/test_credentials_backup.py -v
           python3 -B tests/test_browser_research_tools.py -v
           python3 -B tests/test_litellm_rust_bootstrap.py -v
+          python3 -B tests/test_litellm_build_timeout.py -v
           python3 -B tests/test_tool_menu_order.py -v
           bash -n scripts/credentials_backup_menu.sh
           bash -n scripts/installation_inventory_menu.sh

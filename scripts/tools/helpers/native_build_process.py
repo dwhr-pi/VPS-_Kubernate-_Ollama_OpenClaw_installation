@@ -27,6 +27,7 @@ def run(args, cwd, env, timeout=7200, heartbeat=30):
     reader = threading.Thread(target=read, daemon=True)
     reader.start()
     deadline = time.monotonic() + timeout
+    started = time.monotonic()
     try:
         while True:
             remaining = deadline - time.monotonic()
@@ -36,7 +37,9 @@ def run(args, cwd, env, timeout=7200, heartbeat=30):
                 code = process.wait(timeout=min(heartbeat, remaining))
                 break
             except subprocess.TimeoutExpired:
-                print('Build laeuft; PID:', process.pid, '(noch kein Abschlussstatus).', flush=True)
+                print('Build laeuft; PID:', process.pid, 'Dauer:', round(time.monotonic() - started),
+                      's; Restbudget:', max(0, round(deadline - time.monotonic())),
+                      's (Prozess noch nicht beendet, kein Fortschritts-/Erfolgsnachweis).', flush=True)
         reader.join(timeout=5)
         if reader.is_alive() or errors:
             raise OSError('Build-Ausgabe nicht vollstaendig lesbar; kein Erfolgsnachweis.')
@@ -47,16 +50,21 @@ def run(args, cwd, env, timeout=7200, heartbeat=30):
         if code:
             raise subprocess.CalledProcessError(code, args, output=''.join(tail))
         return ''.join(tail).strip()
-    except BaseException:
-        if process.poll() is None:
+    except BaseException as error:
+        if process.poll() is None or reader.is_alive():
             if os.name == 'posix':
                 try:
                     os.killpg(process.pid, signal.SIGKILL)
                 except ProcessLookupError:
                     pass
             else:
-                process.kill()
+                if process.poll() is None:
+                    process.kill()
             process.wait()
+        if isinstance(error, subprocess.TimeoutExpired):
+            error.output = ''.join(tail)
+            print('Zeitlimit erreicht:', timeout, 'Sekunden. Teil-Ausgabe steht im aktuellen Log;'
+                  ' Ursache (langsamer Build/Netzwerk/Haenger) daraus pruefen, kein OOM-Nachweis.', flush=True)
         print('Build abgebrochen; PID:', process.pid, 'Exit:', process.returncode,
               '(Timeout/Signal/Fehler; kein Erfolgsnachweis).', flush=True)
         raise

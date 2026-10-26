@@ -4,6 +4,67 @@ LiteLLM bietet SDK-/Proxy-Schnittstellen fuer lokale oder externe Modelle.
 Ein lokaler Proxy macht einen externen Modellanbieter nicht lokal und erzeugt
 keine kostenlosen API-Kontingente. Providerfreigaben und Budgets bleiben getrennt.
 
+## Fehler vom 26.10.2026 um 00:42: Paketinstallation nach 7200 Sekunden abgebrochen
+
+Dieses Protokoll zeigt nun funktionierendes **Rust/Cargo 1.98.0, uv 0.13.5,
+Python 3.12.3 und installierte C/C++-Compilerbasis**. Der Abbruch erfolgt bei
+`uv pip install ... source[proxy]` nach zwei Stunden. Es ist weder ein Nachweis
+fuer erneutes Rust-Fehlen noch fuer OOM/Speicherplatzmangel. Ob ein langsamer
+Source-Build, Dependency-Aufloesung oder Netzwerkproblem ursachlich war, laesst
+sich aus der bisher gepufferten, im Timeoutfall fehlenden uv-Ausgabe nicht bestimmen.
+
+Die korrigierte LiteLLM-Paketinstallation:
+
+- uebertraegt stdout/stderr mit `--verbose` laufend in das aktuelle Operationslog;
+- zeigt PID, Laufzeit und Restbudget alle 30 Sekunden. Ein lebender Prozess ist
+  **kein** Beleg fuer Fortschritt oder einen erfolgreichen Build;
+- begrenzt Cargo- und parallele uv-Source-Builds jeweils auf 1, Downloads auf 4;
+- setzt uv-Verbindungs-/Lesetimeouts auf 20/60 Sekunden und HTTP-Retries auf 2.
+  Cargo erhaelt ebenfalls HTTP-Timeout 60 Sekunden und Retry-Limit 2;
+- beendet bei Abbruch unter Linux die eigene Build-Prozessgruppe einschliesslich
+  darin verbliebener Kindprozesse, bevor der bestehende Rollback greift;
+- puffert Metadaten/`uv pip freeze` weiterhin vollstaendig, damit die Liste
+  `resolved-requirements.txt` nicht durch den begrenzten Streaming-Rueckgabepuffer
+  abgeschnitten wird. Kein automatischer Wiederholungsversuch nach einem Timeout.
+
+Die Einstellungen orientieren sich an der
+[offiziellen uv-Referenz](https://docs.astral.sh/uv/reference/environment/).
+Die Parallelitaetsbegrenzung reduziert Last, kann den Build aber verlaengern;
+sie ist kein hartes RAM-Limit. Ein langsamer Build wird dadurch nicht garantiert
+schneller. Das Gesamtlimit bleibt standardmaessig **7200 Sekunden pro uv-Install**.
+
+Nach Uebernahme der korrigierten Dateien erneut starten. Wenn bewusst bis zu
+vier Stunden fuer den jeweiligen Installationsprozess erlaubt werden sollen:
+
+```bash
+LITELLM_BUILD_TIMEOUT_SECONDS=14400 \
+  bash scripts/tools/litellm_install.sh --install-build-deps
+```
+
+Erlaubt sind ganze Sekunden von **300 bis 21600** (maximal sechs Stunden);
+ungueltige Werte brechen vor neuen Downloads/apt-Aktionen ab. Die Variable gilt
+nur fuer LiteLLMs gestreamte `uv pip install`-Schritte, nicht fuer alle Installer
+oder Bootstrap-Schritte. Sie erhoeht keine Netzwerk-Retry-Schleifen. Nicht blind
+Zeitlimits erhoehen: zuerst die neu sichtbaren Download-/Resolver-/Compilerzeilen
+im aktuellen Log pruefen. Kein Timeout wird als Erfolg umgedeutet.
+
+Die bereits erfolgreich bereitgestellten privaten Rust-/uv-Basen bleiben
+erhalten und werden wiederverwendet. Der vorherige neue native Buildordner
+wurde laut Log zurueckgerollt; abgebrochene Source-Builds werden **nicht** automatisch
+fortgesetzt. Vor einem erneuten Versuch auf Prozesse aus dem alten, nicht
+prozessgruppenfaehigen Installer pruefen, ohne sie pauschal zu beenden:
+
+```bash
+ps -u "$USER" -o pid,ppid,etime,comm
+```
+
+Ein alter Cargo-/rustc-Prozess ist moeglich, aber aus dem Log nicht bewiesen.
+Bei unklarer Installationssperre die lesende Installations-Reset-Diagnose des
+Setups verwenden; keine WSL-Neuinstallation und kein blindes Loeschen von Locks.
+Logs koennen Pfade/Download-Metadaten enthalten: vor Weitergabe lokal pruefen.
+Die Korrektur ist mit kleinen lokalen Kindprozessen und Build-Fixtures getestet,
+nicht durch einen echten mehrstuendigen LiteLLM-Source-Build.
+
 ## Fehler vom 26.10.2026: Rust 1.98.0 fehlt
 
 Das Log um 00:14 meldet **keine passende vorhandene Rust-Toolchain**, nicht

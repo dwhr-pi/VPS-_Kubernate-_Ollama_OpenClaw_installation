@@ -101,7 +101,17 @@ def run(args, cwd, env):
         raise ValueError("Kein Container-/privilegierter Fallback erlaubt.")
     if env.get("NATIVE_BUILD_STREAM") == "1":
         return native_build_process.run(args, cwd, env)
+    if (env.get('NATIVE_BUILD_STREAM') == 'litellm' and Path(str(args[0])).name == 'uv'
+            and list(args[1:3]) == ['pip', 'install']):
+        return native_build_process.run(args, cwd, env, timeout=int(env['LITELLM_BUILD_TIMEOUT_SECONDS']))
     return common.run(args, cwd, env)
+
+
+def litellm_build_timeout():
+    value = os.environ.get('LITELLM_BUILD_TIMEOUT_SECONDS', '7200')
+    if not re.fullmatch(r'[0-9]{3,5}', value) or not 300 <= int(value) <= 21600:
+        raise ValueError('LITELLM_BUILD_TIMEOUT_SECONDS: ganze Sekunden zwischen 300 und 21600; Standard 7200.')
+    return value
 
 
 def requirements(spec):
@@ -135,6 +145,7 @@ def preflight(outer, spec, install_build_deps=False):
         if int(memory["MemAvailable"].split()[0]) < minimum * 1024:
             raise ValueError("Zu wenig verfuegbarer RAM: mindestens " + str(minimum) + " MiB fuer diesen Build.")
     if spec["id"] == "litellm":
+        litellm_build_timeout()  # Validate before downloads, apt or source checkout.
         litellm_rust_bootstrap.prepare(outer, spec, approved=install_build_deps)
     build_deps.prepare(spec, approved=install_build_deps)
     for name in ["git"] + requirements(spec):
@@ -247,6 +258,13 @@ def build(prefix, spec):
         # Soft per-process GC budget, not a hard memory limit for the entire VM.
         env.update(GOMAXPROCS="1", GOMEMLIMIT="768MiB", GOFLAGS="-p=1", NATIVE_BUILD_STREAM="1")
         print('cAdvisor: ressourcenschonender Build: -p=1, GOMAXPROCS=1, GOMEMLIMIT=768MiB (weiches Limit pro Go-Prozess).', flush=True)
+    if spec['id'] == 'litellm':
+        env.update(NATIVE_BUILD_STREAM='litellm', LITELLM_BUILD_TIMEOUT_SECONDS=litellm_build_timeout(),
+                   CARGO_BUILD_JOBS='1', UV_CONCURRENT_BUILDS='1', UV_CONCURRENT_DOWNLOADS='4',
+                   UV_HTTP_CONNECT_TIMEOUT='20', UV_HTTP_TIMEOUT='60', UV_HTTP_RETRIES='2',
+                   CARGO_HTTP_TIMEOUT='60', CARGO_NET_RETRY='2', PYTHONUNBUFFERED='1')
+        print('LiteLLM: uv-Paketinstallation mit laufender Ausgabe, PID/30s-Heartbeat und Prozessgruppen-Abbruch; Timeout:',
+              env['LITELLM_BUILD_TIMEOUT_SECONDS'], 'Sekunden. Cargo/uv-Source-Builds jeweils einfach parallel.', flush=True)
     binary = prefix / "bin" / recipe.get("binary", "unused")
     binary.parent.mkdir(mode=0o700)
     artifacts = []
@@ -349,6 +367,8 @@ def build(prefix, spec):
         run(["uv", "venv", "--python", python, "--no-python-downloads", str(venv)], prefix, env)
         vpython = venv / "bin/python"
         pip = ["uv", "pip", "install", "--python", str(vpython), "--index-url", "https://pypi.org/simple"]
+        if spec['id'] == 'litellm':
+            pip.append('--verbose')
         if spec["id"] == "open_webui":
             run(["npm", "ci", "--no-audit", "--no-fund"], checkout, env)
             run(["npm", "run", "build"], checkout, env)
