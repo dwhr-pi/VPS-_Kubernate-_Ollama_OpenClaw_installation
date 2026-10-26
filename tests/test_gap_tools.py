@@ -237,7 +237,8 @@ class GapToolTests(unittest.TestCase):
             for action in ("install", "update", "uninstall", "status", "check", "doctor"):
                 wrapper = (ROOT / "scripts/tools" / (key + "_" + action + ".sh")).read_text()
                 self.assertIn("github.com/" + spec["repo"], wrapper)
-                self.assertIn('gap_tools.py" ' + key + " " + action, wrapper)
+                expected = (key + '.py" ' if key in ('browseros_study', 'enki_browser_study') else 'gap_tools.py" ' + key + ' ')
+                self.assertIn(expected + action, wrapper)
         doc = (ROOT / "docs/tools/github-gap-tools.md").read_text(encoding="utf-8")
         for target in re.findall(r"\]\(([^)]+)\)", doc):
             if not target.startswith(("https://", "#")):

@@ -917,6 +917,8 @@ get_tool_install_fallback_min_free_mb() {
         "Browser_Use"|"Perplexity_MCP") printf '4096' ;;
         "Perplexity_Python"|"Perplexity_Node") printf '8192' ;;
         "Perplexity_API_Cookbook") printf '2048' ;;
+        "BrowserOS_Study") printf '2048' ;;
+        "Enki_Browser_Study") printf '2048' ;;
         "Hermes_Agent_Jarvis") printf '4096' ;;
         "MuseTalk") printf '20480' ;;
         "Gradio"|"Streamlit"|"WanVideoWrapper"|"CogVideoX"|"LTX_Video"|"Video2Dataset"|"LivePortrait"|"SadTalker"|"RVC"|"UVR5"|"Audacity"|"OBS") printf '2048' ;;
@@ -3894,7 +3896,11 @@ TOOL_SCRIPT_NAMES["WebsiteFactory"]="websitefactory"
 TOOLS["AI_ContentMultiplier"]="GitHub-Workflow vorbereiten, kein Publishing/Agentenstart; docs/tools/ai-content-multiplier/README.md"
 TOOL_SCRIPT_NAMES["AI_ContentMultiplier"]="ai_content_multiplier"
 
-TOOL_KEYS+=("Comet" "BrowserOS" "Enki_Browser" "Browser_Use" "Perplexity_MCP" "Perplexity_Python" "Perplexity_Node" "Perplexity_API_Cookbook")
+TOOL_KEYS+=("Comet" "BrowserOS" "BrowserOS_Study" "Enki_Browser" "Enki_Browser_Study" "Browser_Use" "Perplexity_MCP" "Perplexity_Python" "Perplexity_Node" "Perplexity_API_Cookbook")
+TOOLS["Enki_Browser_Study"]="Enki Browser: GitHub-Quellen fuer Studienzwecke/Weiterentwicklung; optionaler Paketbuild mit gepinnten Chromium-Binaries. docs/tools/enki-browser-study.md"
+TOOL_SCRIPT_NAMES["Enki_Browser_Study"]="enki_browser_study"
+TOOLS["BrowserOS_Study"]="BrowserOS: GitHub-Quellen fuer Studienzwecke/Weiterentwicklung; optional experimenteller Linux-Vollbuild. docs/tools/browseros-study.md"
+TOOL_SCRIPT_NAMES["BrowserOS_Study"]="browseros_study"
 TOOLS["Comet"]="Comet: offizieller Windows-Download mit Wartepunkt wie Qwen Desktop; kein Source-Build. docs/tools/comet-and-browser-research.md"
 TOOL_SCRIPT_NAMES["Comet"]="comet"
 TOOLS["BrowserOS"]="BrowserOS: manueller GitHub-Desktop-Release fuer Windows/Linux. docs/tools/comet-and-browser-research.md"
@@ -3918,7 +3924,7 @@ sort_tool_menu_keys() {
     for key in "${TOOL_KEYS[@]}"; do
         case "$key" in
             Ollama|OpenClaw|Ruflo) pinned+=("$key") ;;
-            Comet|BrowserOS|Enki_Browser|Browser_Use|Perplexity_MCP|Perplexity_Python|Perplexity_Node|Perplexity_API_Cookbook) trailing+=("$key") ;;
+            Comet|BrowserOS|BrowserOS_Study|Enki_Browser|Enki_Browser_Study|Browser_Use|Perplexity_MCP|Perplexity_Python|Perplexity_Node|Perplexity_API_Cookbook) trailing+=("$key") ;;
             *) remaining+=("$key") ;;
         esac
     done

@@ -1,4 +1,4 @@
-"""Private Node/npm for Node-RED; no global install or application start."""
+"""Private Node/npm for approved tools; no global install or application start."""
 import json
 import os
 from pathlib import Path, PurePosixPath
@@ -12,6 +12,10 @@ import native_node as node
 import webinar_releases as releases
 
 NPM = "10.9.9"
+SUPPORTED_TOOLS = {
+    'node_red': ('Node-RED', 'node-red', 'NODE_RED_INSTALL_RUNTIME_LIBS'),
+    'perplexity_mcp': ('Perplexity_MCP', 'perplexity_mcp', 'PERPLEXITY_MCP_INSTALL_RUNTIME_LIBS'),
+}
 
 
 def config_environment(directory, env):
@@ -71,8 +75,9 @@ def select(base, spec, approved=False, allow_download=False):
     version = spec["recipe"].get("private_node_npm")
     if version is None:
         return None
-    if spec["id"] != "node_red" or version != node.NODE:
+    if spec["id"] not in SUPPORTED_TOOLS or version != node.NODE:
         raise ValueError("Nicht freigegebener privater Node/npm-Vertrag.")
+    name, doc, policy = SUPPORTED_TOOLS[spec['id']]
     env = {k: v for k, v in os.environ.items() if k in ("PATH", "LANG", "LC_ALL")}
     env.update(npm_config_update_notifier="false", COREPACK_ENABLE_NETWORK="0")
     binary, npm = shutil.which("node"), shutil.which("npm")
@@ -82,7 +87,7 @@ def select(base, spec, approved=False, allow_download=False):
                 child = config_environment(Path(temporary), env)
                 child["PATH"] = str(Path(binary).parent) + os.pathsep + env.get("PATH", "")
                 if node.node_ok(common.run([binary, "--version"], base, child)) and common.run([npm, "--version"], base, child) == NPM:
-                    print("Node-RED: passende vorhandene Node/npm-Basis.")
+                    print(name + ': passende vorhandene Node/npm-Basis.')
                     return str(Path(binary).parent), str(Path(npm).parent)
         except (OSError, subprocess.SubprocessError):
             pass
@@ -101,22 +106,22 @@ def select(base, spec, approved=False, allow_download=False):
             child = config_environment(Path(temporary), env)
             child["PATH"] = str(payload) + os.pathsep + env.get("PATH", "")
             if node.runtime_version(payload / "node", base, child, allow_download,
-                                    tool_name="Node-RED", policy_name="NODE_RED_INSTALL_RUNTIME_LIBS") != "v" + node.NODE:
+                                    tool_name=name, policy_name=policy) != "v" + node.NODE:
                 raise ValueError("Private Node-Version abweichend.")
             if node.runtime_version(payload / "npm", base, child, allow_download,
-                                    tool_name="Node-RED", policy_name="NODE_RED_INSTALL_RUNTIME_LIBS") != NPM:
+                                    tool_name=name, policy_name=policy) != NPM:
                 raise ValueError("Private npm-Version abweichend.")
         return str(payload), str(payload)
 
     if slot.exists():
         record = releases.validate_record(app, marker, record_spec, full=True)
         return verify(app, record)
-    print("Node-RED: passende Node/npm-Basis fehlt. Siehe docs/tools/node-red.md.")
-    print("Gezielt erneut starten: bash scripts/tools/node_red_install.sh --install-build-deps")
+    print(name + ': passende Node/npm-Basis fehlt. Siehe docs/tools/' + doc + '.md.')
+    print('Gezielt erneut starten: bash scripts/tools/' + spec['id'] + '_install.sh --install-build-deps')
     if allow_download and not approved:
         approved = node.confirm("Node und gebuendeltes npm von nodejs.org privat bereitstellen?")
     if not allow_download or not approved:
-        raise ValueError("Node-RED: privater Node/npm-Download nicht freigegeben.")
+        raise ValueError(name + ': privater Node/npm-Download nicht freigegeben.')
     releases.reserve(base, {"reserve_mb": spec["recipe"]["disk_mb"] + 1024})
     url = "https://nodejs.org/dist/v" + node.NODE + "/node-v" + node.NODE + "-linux-" + arch + ".tar.gz"
     print("Node/npm-Download:", url, "Bytes:", size, "SHA256:", digest)

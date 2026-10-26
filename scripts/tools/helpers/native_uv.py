@@ -13,6 +13,8 @@ import webinar_releases as releases
 
 VERSION = "0.13.5"
 SUPPORTED_TOOLS = {
+    "browser_use": "Browser_Use",
+    "perplexity_python": "Perplexity_Python",
     "searxng": "SearXNG",
     "archivebox": "ArchiveBox",
     "changedetection_io": "Changedetection_IO",

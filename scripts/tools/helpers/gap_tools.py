@@ -71,6 +71,14 @@ def build_env(runtime):
 
 
 def run(args, cwd, env):
+    if env.get('NATIVE_BUILD_STREAM') == 'perplexity-sdk':
+        program = Path(str(args[0])).name
+        heavy = ((program == 'bazel' and 'build' in args) or
+                 (program == 'pnpm' and list(args[1:2]) == ['install']) or
+                 (program == 'uv' and list(args[1:3]) == ['pip', 'install']))
+        if heavy:
+            import native_build_process
+            return native_build_process.run(args, cwd, env, timeout=14400 if program == 'bazel' else 7200)
     print("Befehl:", " ".join(map(str, args)), flush=True)
     # Capture and print both streams so the current operation log contains build errors.
     result = subprocess.run(list(map(str, args)), cwd=cwd, env=env, capture_output=True,
@@ -194,13 +202,47 @@ def validate(runtime, marker, spec, full=False):
     return record
 
 
+def browser_use_uv_spec():
+    # Adapt the existing private prerequisite contract without adding a second installer.
+    return {'id': 'browser_use', 'recipe': {'private_uv': '0.13.5', 'disk_mb': SPECS['browser_use']['reserve_mb']}}
+
+
+def browser_use_prepare(base, approved=False):
+    if platform.system() != 'Linux':
+        raise ValueError('Browser Use Paketinstallation nur unter Linux/WSL, kein Windows-Crossbuild.')
+    python = os.environ.get('BROWSER_RESEARCH_PYTHON_BIN') or executable('python3')
+    run([python, '-I', '-c', 'import sys,ssl; assert sys.version_info >= (3,11)'], base,
+        {key: value for key, value in os.environ.items() if key in ('PATH', 'LANG', 'LC_ALL')})
+    import native_uv
+    native_uv.prepare(base, browser_use_uv_spec(), approved=approved)
+
+
+def perplexity_mcp_node_spec():
+    import native_node
+    return {'id': 'perplexity_mcp', 'recipe': {'private_node_npm': native_node.NODE,
+                                             'disk_mb': SPECS['perplexity_mcp']['reserve_mb']}}
+
+
+def perplexity_mcp_prepare(base, approved=False):
+    if platform.system() != 'Linux':
+        raise ValueError('Perplexity-MCP-Paketbuild nur Linux/WSL, kein Windows-Crossbuild.')
+    import native_node_npm
+    native_node_npm.prepare(base, perplexity_mcp_node_spec(), approved=approved)
+
+
 def browser_research_build(runtime, env, mode):
     if platform.system() != 'Linux':
         raise ValueError('Dieser Paket-Build ist fuer Linux/WSL freigegeben; Desktop-Browser separat manuell installieren.')
     env.update(ANONYMIZED_TELEMETRY='false', BROWSER_USE_CLOUD_SYNC='false',
                UV_PYTHON_DOWNLOADS='never', LEFTHOOK='0')
     if mode == 'perplexity-mcp':
-        node, npm = executable('node'), node_command('npm')
+        import native_node_npm
+        native_node_npm.activate(runtime.parent, perplexity_mcp_node_spec(), env)
+        node = shutil.which('node', path=env.get('PATH', ''))
+        npm_path = shutil.which('npm', path=env.get('PATH', ''))
+        if not node or not npm_path:
+            raise ValueError('Gepruefte Node/npm-Basis im Build-PATH nicht erreichbar; kein globaler Fallback.')
+        npm = [npm_path]
         major = int(run([node, '--version'], runtime, env).lstrip('v').split('.')[0])
         if major < 22:
             raise ValueError('MCP-Build: Node >=22 fuer den gepinnten Build-/Test-Toolstack erforderlich.')
@@ -210,18 +252,20 @@ def browser_research_build(runtime, env, mode):
         return ['dist/index.js', 'dist/server.js', 'package-lock.json']
 
     if mode in ('perplexity-python', 'perplexity-node'):
-        bazel = executable('bazel')
+        import perplexity_sdk_tools
+        sdk = perplexity_sdk_tools.activate(runtime.parent, env)
+        bazel = sdk['bazel']
         version = run([bazel, '--version'], runtime, env)
         if version != 'bazel 9.2.0':
-            raise ValueError('SDK-Pin benoetigt Bazel 9.2.0; separat bereitstellen, kein automatischer Bootstrap.')
+            raise ValueError('SDK-Pin benoetigt Bazel 9.2.0; gepruefte Buildbasis stimmt nicht.')
         command = [bazel, '--batch', '--output_user_root=' + str(runtime / '.bazel')]
         if mode == 'perplexity-node':
-            node = executable('node')
+            node = sdk['node']
             if not run([node, '--version'], runtime, env).startswith('v26.'):
                 raise ValueError('Perplexity-Node-Source-Build benoetigt Node 26 laut CONTRIBUTING.md.')
-            if run([executable('pnpm'), '--version'], runtime, env) != '11.17.0':
+            if run([sdk['pnpm'], '--version'], runtime, env) != '11.17.0':
                 raise ValueError('Perplexity-Node-Pin benoetigt pnpm 11.17.0.')
-            run([executable('pnpm'), 'install', '--frozen-lockfile', '--ignore-scripts'], runtime, env)
+            run([sdk['pnpm'], 'install', '--frozen-lockfile', '--ignore-scripts'], runtime, env)
             run(command + ['build', '--jobs=2', '//:pkg'], runtime, env)
             built = (runtime / 'bazel-bin/package').resolve()
             if not built.is_relative_to(runtime.resolve()) or not built.is_dir():
@@ -242,7 +286,14 @@ def browser_research_build(runtime, env, mode):
     python = os.environ.get('BROWSER_RESEARCH_PYTHON_BIN') or executable('python3')
     minimum = '(3,11)' if mode == 'browser-python' else '(3,10)'
     run([python, '-I', '-c', 'import sys,ssl; assert sys.version_info >= ' + minimum], runtime, env)
-    uv = executable('uv')
+    if mode in ('browser-python', 'perplexity-python'):
+        import native_uv
+        # Resolve an absolute executable: executable('uv') only searches the parent PATH.
+        uv_contract = browser_use_uv_spec() if mode == 'browser-python' else perplexity_sdk_tools.uv_spec()
+        uv = native_uv.select(runtime.parent, uv_contract)
+        env.update(UV_NO_CONFIG='1', UV_PYTHON_DOWNLOADS='never')
+    else:
+        uv = executable('uv')
     if mode == 'browser-python':
         run([uv, 'sync', '--frozen', '--no-dev', '--no-default-groups', '--no-python-downloads',
              '--python', python], runtime, env)
@@ -260,7 +311,7 @@ def browser_research_build(runtime, env, mode):
     return ['pyproject.toml', metadata[0].relative_to(runtime).as_posix()]
 
 
-def install(runtime, marker, base, spec):
+def install(runtime, marker, base, spec, install_build_deps=False):
     if marker.exists():
         validate(runtime, marker, spec)
         print("Gepinnter Bestand geprueft; kein automatisches latest-Upgrade.")
@@ -268,6 +319,13 @@ def install(runtime, marker, base, spec):
     if runtime.exists():
         raise ValueError("Vorhandener Ordner ohne Besitznachweis; nichts ueberschrieben.")
     reserve(base, spec)
+    if spec['mode'] == 'browser-python':
+        browser_use_prepare(base, approved=install_build_deps)
+    elif spec['mode'] == 'perplexity-mcp':
+        perplexity_mcp_prepare(base, approved=install_build_deps)
+    elif spec['mode'] in ('perplexity-python', 'perplexity-node'):
+        import perplexity_sdk_tools
+        perplexity_sdk_tools.prepare(base, spec['mode'].replace('-', '_'), approved=install_build_deps)
     runtime.mkdir(mode=0o700)
     try:
         env = build_env(runtime) if spec["mode"] != "source" else None
@@ -322,6 +380,7 @@ def main(argv=None):
     parser.add_argument("tool", choices=SPECS)
     parser.add_argument("action", nargs="?", default="install", choices=("install", "update", "repair", "uninstall", "status", "check", "doctor", "plan"))
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument('--install-build-deps', action='store_true', help='Browser_Use/Perplexity tools: explicit consent for pinned private build prerequisites; no browser/server start')
     parser.add_argument("--source-only", action="store_true", help="MuseTalk: nur bisherigen Quellcheckout verwalten")
     override = parser.add_mutually_exclusive_group()
     for action in ("repair", "uninstall", "status", "check"):
@@ -331,6 +390,8 @@ def main(argv=None):
         if opts.action not in ("install", opts.override):
             parser.error("Widerspruechliche Aktionen.")
         opts.action = opts.override
+    if opts.install_build_deps and (opts.tool not in ('browser_use', 'perplexity_mcp', 'perplexity_python', 'perplexity_node') or opts.action not in ('install', 'update', 'repair', 'plan')):
+        parser.error('--install-build-deps hier nur fuer Browser_Use/Perplexity-Builds bei Install/Update/Repair oder Plan.')
     if opts.tool == "musetalk" and not opts.source_only:
         from musetalk_runtime import main as musetalk_main
         return musetalk_main([opts.action] + (["--dry-run"] if opts.dry_run else []))
@@ -344,6 +405,12 @@ def main(argv=None):
     base, runtime, marker = paths(opts.tool)
     if opts.dry_run or opts.action == "plan":
         print(json.dumps(dict(tool=opts.tool, **spec, target=str(runtime)), indent=2))
+        if opts.tool == 'browser_use':
+            print('uv >=0.13.5: vorhandene Basis bevorzugt, sonst privater GitHub-Bootstrap nur nach Zustimmung; 256 MiB Zusatzreserve. Kein Python-/Chromium-Download.')
+        elif opts.tool == 'perplexity_mcp':
+            print('Node/npm: vorhandene Basis bevorzugt, sonst privates geprueftes Node-Archiv nur nach Zustimmung; 1024 MiB Zusatzreserve. Kein MCP-Start/API-Aufruf.')
+        elif opts.tool in ('perplexity_python', 'perplexity_node'):
+            print('Bazel 9.2.0 / Node 26 / pnpm 11.17.0, beim Python-SDK auch uv: privat nur nach Zustimmung, bis 1280 MiB Zusatzreserve; kein API-Test.')
         print("Nur Plan; kein Download/Build/Docker/Start.")
         return 0
     if opts.action in ("status", "check", "doctor"):
@@ -356,7 +423,9 @@ def main(argv=None):
         print(json.dumps(dict(installed=ready, scope=spec["mode"], runtime_tested=False)))
         return 0 if ready or opts.action == "status" else 1
     with operation(base, opts.action, tool=spec["name"]):
-        print("GitHub-Tool-Installer: 2026-10-23-hermes-private-python")
+        versions = {'browser_use': '2026-10-26-browser-use-private-uv', 'perplexity_mcp': '2026-10-26-perplexity-mcp-private-node-npm',
+                    'perplexity_python': '2026-10-26-perplexity-sdk-private-bazel', 'perplexity_node': '2026-10-26-perplexity-sdk-private-bazel'}
+        print('GitHub-Tool-Installer:', versions.get(opts.tool, '2026-10-23-hermes-private-python'))
         print("Installerdatei:", Path(__file__).resolve())
         print("Quellenmanifest:", MANIFEST, "Mindestreserve MiB:", spec["reserve_mb"])
         print("GitHub:", spec["repo"], "Pin:", spec["pin"], "Umfang:", spec["mode"])
@@ -367,7 +436,10 @@ def main(argv=None):
                 marker.unlink()
             print("Privater unveraenderter Bestand entfernt; Nutzerdaten ausserhalb, Logs und Basiswerkzeuge bleiben.")
         else:
-            install(runtime, marker, base, spec)
+            if opts.tool in ('browser_use', 'perplexity_mcp', 'perplexity_python', 'perplexity_node'):
+                install(runtime, marker, base, spec, install_build_deps=opts.install_build_deps)
+            else:
+                install(runtime, marker, base, spec)
     return 0
 
 

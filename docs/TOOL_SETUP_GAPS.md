@@ -21,6 +21,14 @@ Perplexity_MCP, Perplexity_Python, Perplexity_Node, Perplexity_API_Cookbook**.
 [Installationswege, Voraussetzungen und Grenzen](tools/comet-and-browser-research.md).
 Comet nutzt einen manuellen Windows-Download mit Pause wie Qwen Desktop;
 kein behaupteter Comet-Source-Build. Cookbook = lokale Beispiele, kein Dienst.
+
+**BrowserOS_Study** ist als separater GitHub-Quell-/Entwicklungsweg ergaenzt,
+mit ausdruecklich optionalem experimentellem Linux-Vollbuild fuer Studienzwecke
+und Weiterentwicklung: [Voraussetzungen und Grenzen](tools/browseros-study.md).
+
+Entsprechend **Enki_Browser_Study**: Studienquellen und optionaler Paketbuild
+mit gesonderter Zustimmung zu gepinnten Chromium-Binaries. Kein voller Chromium-
+Source-Build: [Anleitung](tools/enki-browser-study.md).
 Die Gruppe wird vorerst nicht nach A-Z sortiert. Qwen Desktop besitzt jetzt
 zusaetzlich einen echten nativen Linux-/Windows-Buildweg; der manuelle
 Windows-Download bleibt erhalten. Weitere Quellinstallationen sind bewusst

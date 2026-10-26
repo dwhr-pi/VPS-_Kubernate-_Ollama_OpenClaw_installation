@@ -2,6 +2,31 @@
 
 ## Unreleased
 
+- Perplexity Python/Node SDKs: Bazel 9.2.0, Node 26, pnpm 11.17.0 und bei Python
+  uv vor dem Quellcheckout pruefen und nach Zustimmung privat bereitstellen.
+  Feste offizielle Hashes/Groessen, getrennte npm-Konfiguration, keine globale
+  Installation oder unkontrollierte Bazelisk-Aufloesung. Kein API-Test/Serverstart.
+
+- Perplexity_MCP: fehlendes Node/npm nach Zustimmung privat aus geprueftem
+  offiziellen Node-Archiv bereitstellen. Basispruefung vor Checkout, private
+  npm-Konfigurationen und Aufloesung aus dem Kindprozess-PATH. Kein globaler
+  Umbau, Serverstart oder API-Aufruf; Node-RED-Bootstrap bleibt kompatibel.
+
+- Browser_Use: fehlendes uv nach Zustimmung privat aus fest geprueftem GitHub-
+  Release bereitstellen. Python-Pruefung vor Quellen-/Bootstrap-Download und
+  absoluter uv-Aufruf statt erneuter globaler PATH-Suche; bestehende Daten/Basis
+  bleiben erhalten. Kein Python-/Chromium-Download oder Browser-/Agentenstart.
+
+- Enki_Browser_Study: GitHub-Studienquellen und optionaler, freigegebener
+  Linux-/Windows-Paketbuild in separater Arbeitskopie. Chromium-Binaries
+  ausdruecklich gekennzeichnet, kein behaupteter Chromium-Source-Build.
+  Zweck: Studien/Weiterentwicklung; kein Signieren, Installieren oder Start.
+
+- BrowserOS_Study: separater gepinnter GitHub-Quell-Download fuer Studienzwecke
+  und Weiterentwicklung; optionaler, ausdruecklich freigegebener Linux-Vollbuild
+  mit separater Chromium-Kopie, Ressourcenwache und ohne Signieren/Upload/Start.
+  Studienquellen und Browserartefakt getrennt ausgewiesen; eigene Arbeit erhalten.
+
 - LiteLLM-uv-Timeout: laufende Buildausgabe/Heartbeat statt verlorener gepufferter
   Diagnose; begrenzte Cargo-/uv-Parallelitaet, explizites Zeitbudget und
   Prozessgruppen-Abbruch unter Linux. Metadaten-/Freeze-Ausgaben bleiben

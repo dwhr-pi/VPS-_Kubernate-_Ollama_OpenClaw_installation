@@ -15,6 +15,9 @@ from unittest.mock import patch
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'scripts/tools/helpers'))
 import gap_tools as tools
+import native_uv
+import native_node_npm
+import perplexity_sdk_tools
 
 NAMES = {'comet': 'Comet', 'browseros': 'BrowserOS', 'enki_browser': 'Enki_Browser',
          'browser_use': 'Browser_Use', 'perplexity_mcp': 'Perplexity_MCP',
@@ -57,7 +60,7 @@ class BrowserResearchTests(unittest.TestCase):
             def run(args, cwd, env):
                 calls.append(args)
                 return 'v22.23.4' if args[-1] == '--version' else ''
-            with patch.object(tools, 'run', side_effect=run):
+            with patch.object(tools, 'run', side_effect=run), patch.object(native_node_npm, 'activate'), patch.object(tools.shutil, 'which', side_effect=lambda name, **kwargs: name):
                 entries = tools.browser_research_build(Path(directory), {}, 'perplexity-mcp')
             self.assertIn('dist/index.js', entries)
             self.assertIn(['npm', 'ci', '--ignore-scripts', '--no-audit', '--no-fund'], calls)
@@ -66,7 +69,7 @@ class BrowserResearchTests(unittest.TestCase):
             self.assertNotIn(['npm', 'start'], calls)
 
     def test_sdk_bazel_missing_is_actionable_not_a_fake_success(self):
-        with patch.object(tools.platform, 'system', return_value='Linux'), patch.object(tools, 'executable', side_effect=ValueError('bazel fehlt')):
+        with patch.object(tools.platform, 'system', return_value='Linux'), patch.object(perplexity_sdk_tools, 'activate', side_effect=ValueError('bazel fehlt')):
             with self.assertRaisesRegex(ValueError, 'bazel fehlt'):
                 tools.browser_research_build(Path('/fixture'), {}, 'perplexity-python')
 
@@ -94,7 +97,7 @@ class BrowserResearchTests(unittest.TestCase):
                         metadata.mkdir(parents=True)
                         (metadata / 'METADATA').write_text('Version: 1.0')
                     return ''
-                with patch.object(tools.platform, 'system', return_value='Linux'), patch.object(tools, 'executable', side_effect=lambda x: x), patch.object(tools, 'run', side_effect=run):
+                with patch.object(tools.platform, 'system', return_value='Linux'), patch.object(tools, 'executable', side_effect=lambda x: x), patch.object(tools, 'run', side_effect=run), patch.object(native_uv, 'select', return_value='uv'), patch.object(perplexity_sdk_tools, 'activate', return_value={'bazel': 'bazel', 'node': 'node', 'pnpm': 'pnpm'}):
                     entries = tools.browser_research_build(runtime, {}, mode)
                 self.assertTrue(entries)
                 if mode == 'browser-python':

@@ -126,9 +126,9 @@ def download_node(url, target, size, expected):
         raise ValueError("Node-Archivgroesse/SHA256 stimmt nicht.")
 
 
-def unpack_node(archive, destination, arch):
+def unpack_node(archive, destination, arch, version=NODE):
     # Select only the regular Node executable; never follow npm archive links.
-    wanted = "node-v" + NODE + "-linux-" + arch + "/bin/node"
+    wanted = "node-v" + version + "-linux-" + arch + "/bin/node"
     with tarfile.open(archive, "r:gz") as bundle:
         members = [member for member in bundle.getmembers() if member.name == wanted]
         if len(members) != 1 or not members[0].isfile() or not 0 < members[0].size <= 256 * 1024**2:

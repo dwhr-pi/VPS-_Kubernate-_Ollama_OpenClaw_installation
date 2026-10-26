@@ -7,11 +7,15 @@ NATIVE_TOOL_STATUS_KEYS=(Qwen_Desktop_Build Hermes_Agent_Jarvis Gradio Streamlit
 
 source "$(cd "${BASH_SOURCE[0]%/*}" && pwd)/native_github_menu.sh"
 NATIVE_TOOL_STATUS_KEYS+=("Browser_Use" "Perplexity_MCP" "Perplexity_Python" "Perplexity_Node" "Perplexity_API_Cookbook")
+NATIVE_TOOL_STATUS_KEYS+=("BrowserOS_Study")
+NATIVE_TOOL_STATUS_KEYS+=("Enki_Browser_Study")
 NATIVE_TOOL_STATUS_KEYS+=("${NATIVE_GITHUB_TOOL_KEYS[@]}")
 
 native_tool_marker() {
     local marker
     case "$1" in
+        BrowserOS_Study) marker=browseros_study/ready.json ;;
+        Enki_Browser_Study) marker=enki_browser_study/ready.json ;;
         Browser_Use) marker=browser_use/ready.json ;;
         Perplexity_MCP) marker=perplexity_mcp/ready.json ;;
         Perplexity_Python) marker=perplexity_python/ready.json ;;
@@ -150,7 +154,7 @@ native_tool_sync_selected() {
             fi
             present["$tool"]=1
             case "$tool" in
-                Browser_Use|Perplexity_MCP|Perplexity_Python|Perplexity_Node|Perplexity_API_Cookbook)
+                Enki_Browser_Study|BrowserOS_Study|Browser_Use|Perplexity_MCP|Perplexity_Python|Perplexity_Node|Perplexity_API_Cookbook)
                     local browser_slug
                     browser_slug="${NATIVE_TOOL_MARKER%/ready.json}"
                     if ! OPENCLAW_USER_DATA_DIR="$root" "${GAP_TOOLS_PYTHON_BIN:-python3}" -B "$(cd "${BASH_SOURCE[0]%/*}/.." && pwd)/tools/helpers/gap_tools.py" "$browser_slug" check >/dev/null 2>&1; then

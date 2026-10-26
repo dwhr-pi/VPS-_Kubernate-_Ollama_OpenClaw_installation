@@ -1,4 +1,12 @@
 {
+  "enki_browser_study": {
+    "name": "Enki_Browser_Study", "repo": "danilogiles/enki-browser",
+    "pin": "fd0ce82c486bbd54b4f81186fd455c0796cf536f", "mode": "source", "reserve_mb": 2048
+  },
+  "browseros_study": {
+    "name": "BrowserOS_Study", "repo": "browseros-ai/BrowserOS",
+    "pin": "9335ee7b4472b446c7b1544f396efa0805afddcd", "mode": "source", "reserve_mb": 2048
+  },
   "browser_use": {
     "name": "Browser_Use", "repo": "browser-use/browser-use",
     "pin": "3df5806a0d097a1546d92c49bcf1b28c9972c3bd", "mode": "browser-python", "reserve_mb": 4096

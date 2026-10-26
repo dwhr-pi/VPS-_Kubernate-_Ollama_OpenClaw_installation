@@ -41,6 +41,30 @@ ist kein Sicherheits- oder vollstaendiger Funktionsnachweis.
 
 ## Installation, Voraussetzungen und Lebenszyklus
 
+Browser Use kann fehlendes uv jetzt nach Zustimmung **privat aus einem
+geprueften GitHub-Release** bereitstellen. Neuer Versuch:
+`bash scripts/tools/browser_use_install.sh --install-build-deps`.
+[Details zum uv-Fehler, Speicherpuffer und Installationsumfang](browser_use.md).
+
+Perplexity MCP bietet entsprechend einen zustimmungspflichtigen privaten
+Node/npm-Bootstrap aus dem offiziellen Node-Archiv:
+`bash scripts/tools/perplexity_mcp_install.sh --install-build-deps`.
+[Details und Grenzen](perplexity_mcp.md). Kein MCP-/HTTP-Start beim Build.
+
+Fuer **Perplexity_Python / Perplexity_Node** kann die fehlende Bazel-/Node-26-/
+pnpm-Buildbasis jetzt mit `--install-build-deps` privat vorbereitet werden,
+beim Python-SDK einschliesslich uv. [SDK-Buildanleitung](perplexity-sdk-build.md).
+
+Zusaetzlich **BrowserOS_Study**: GitHub-Quellen **fuer Studienzwecke und
+Weiterentwicklung**, wahlweise mit experimentellem Linux-Chromium-Vollbuild.
+[Anleitung, Voraussetzungen und klare Abgrenzung](browseros-study.md).
+Dieser Weg ist vom weiterhin manuellen Desktop-Release getrennt.
+
+Ebenso **Enki_Browser_Study** fuer Studienzwecke/Weiterentwicklung, mit reinem
+GitHub-Quell-Download oder ausdruecklich freigegebenem Erweiterungs-/Paketbuild
+mit gepinnten Chromium-Binaries: [Enki-Studienweg](enki-browser-study.md).
+Das ist kein vollstaendiger Chromium-Source-Build.
+
 Die drei Desktop-Eintraege koennen die offizielle Seite nach Bestaetigung oeffnen.
 Manuell korrektes Betriebssystem/CPU waehlen, Signatur/Pruefsumme nach Upstream
 pruefen; keine Warnungen, AppArmor- oder Chromium-Sandbox deaktivieren. BrowserOS
@@ -82,7 +106,7 @@ Die Voraussetzungen stammen aus den geprueften gepinnten `pyproject.toml`,
 `package.json`, `CONTRIBUTING.md`, `.bazelversion` und `BUILD.bazel` der oben
 verlinkten Repositories. Mit `BROWSER_RESEARCH_PYTHON_BIN` laesst sich ein bereits
 vorhandenes passendes Python waehlen. Kein apt-Systemumbau, globales npm/pip,
-automatischer Toolchain-Download oder Docker. Paket-/Bazel-Abhaengigkeiten werden
+ungefragter Toolchain-Download oder Docker. Paket-/Bazel-Abhaengigkeiten werden
 beim freigegebenen Build aus ihren Upstream-Registries geladen; kein offline-
 oder vollstaendig auf GitHub begrenztes Netzwerkversprechen. Das Python-SDK-Wheel
 hat Versionsbereiche fuer Laufzeitabhaengigkeiten, keinen vollstaendigen Hash-Lock.

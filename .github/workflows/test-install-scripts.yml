@@ -49,6 +49,11 @@ jobs:
           python3 -B tests/test_installation_inventory.py -v
           python3 -B tests/test_credentials_backup.py -v
           python3 -B tests/test_browser_research_tools.py -v
+          python3 -B tests/test_browser_use_uv.py -v
+          python3 -B tests/test_perplexity_mcp_node.py -v
+          python3 -B tests/test_perplexity_sdk_tools.py -v
+          python3 -B tests/test_browseros_study.py -v
+          python3 -B tests/test_enki_browser_study.py -v
           python3 -B tests/test_litellm_rust_bootstrap.py -v
           python3 -B tests/test_litellm_build_timeout.py -v
           python3 -B tests/test_tool_menu_order.py -v
