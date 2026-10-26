@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Tools-Menue wieder durchgehend A-Z unterhalb der Trennlinie sortieren,
+  einschliesslich Browser-/Studien-/Perplexity-Tools; Kernbereich beibehalten.
+  Nutzer meldet erfolgreiche getestete Installationen; schwergewichtige Tools
+  bleiben wegen Speicherplatz noch ungeprueft, keine pauschale Runtime-Freigabe.
+
 - Perplexity Python/Node: Bazel-Output und Repo-Contents-Cache ausserhalb des
   Quell-Workspaces in getrenntem temporaerem Buildverzeichnis anlegen.
   Artefakte vor Bereinigung uebernehmen, externe Verweise ablehnen und nur

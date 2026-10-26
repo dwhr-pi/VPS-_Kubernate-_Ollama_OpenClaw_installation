@@ -3,8 +3,8 @@
 Neu: [Qwen_Desktop_Study fuer Studienzwecke und Weiterentwicklung](qwen-desktop-study.md):
 GitHub-Quellen als Standard, optionaler separater Linux-/Windows-Build wie bei Enki.
 
-Die neuen Eintraege stehen im **Tools-Menue am Ende**, nach dem bisherigen
-A-Z-Bereich. Die bisherige Trennlinie nach Ruflo bleibt erhalten. Bereits
+Die neuen Eintraege stehen im **Tools-Menue alphabetisch unterhalb der
+Trennlinie**. Die bisherige Trennlinie nach Ruflo bleibt erhalten. Bereits
 vorhandene Medien-Eintraege werden dort nicht doppelt angezeigt.
 Alle Wege sind optional und **ohne Docker**.
 Fuer Qwen Desktop Build gibt es ausserdem im Tools-Menue unter

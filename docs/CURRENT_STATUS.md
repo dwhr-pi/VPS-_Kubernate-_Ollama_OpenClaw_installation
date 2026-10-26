@@ -1,5 +1,16 @@
 # Aktueller Projektstatus
 
+## Nutzer-Rueckmeldung vom 26.10.2026
+
+Der Nutzer meldet erfolgreiche Installationen der von ihm geprueften Tools.
+Schwergewichtige Tools wurden wegen des freien Speicherplatzes noch nicht
+geprueft. Eine vollstaendige Liste mit Pins/Plattform-/Funktionstests liegt
+hierzu nicht vor; keine automatische Produktionsfreigabe oder Aenderung von
+Installationsmarkern. Alle Tools unterhalb der Trennlinie sind wieder A-Z
+einsortiert, einschliesslich Browser-, Studien- und Perplexity-Eintraegen.
+
+## Dokumentierter Repository-Nachweisstand
+
 Stand: **23.10.2026**, Basis `0305ca6fcb8c349b2ea04b83a62051acdbc83e30`.
 Kanonischer Einstieg fuer den **Nachweisstand**, keine automatische Umstufung
 der Registry und keine Aussage ueber installierte Programme auf deinem Rechner.

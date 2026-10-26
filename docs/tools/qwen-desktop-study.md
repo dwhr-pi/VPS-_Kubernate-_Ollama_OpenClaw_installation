@@ -12,7 +12,7 @@ Desktop-Code: `packages/desktop`. Kein Docker und kein automatisches main-Upgrad
 
 ## Auswahl im Setup
 
-Im nachgestellten Studien-/Browserbereich der Tools steht **Qwen_Desktop_Study**:
+Im Tools-Menue unterhalb der Trennlinie alphabetisch unter **Qwen_Desktop_Study**:
 
 1. **Nur Studienquellen** (Standard): gepinnten GitHub-Checkout laden, kein Build.
 2. **Zusaetzlich Desktop bauen**: nach Zustimmung in einer separaten Kopie bauen.

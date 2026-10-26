@@ -3923,19 +3923,18 @@ TOOL_SCRIPT_NAMES["Perplexity_API_Cookbook"]="perplexity_cookbook"
 
 sort_tool_menu_keys() {
     local key
-    local -a pinned=() remaining=() sorted=() trailing=()
+    local -a pinned=() remaining=() sorted=()
     for key in "${TOOL_KEYS[@]}"; do
         case "$key" in
             Ollama|OpenClaw|Ruflo) pinned+=("$key") ;;
-            Comet|BrowserOS|BrowserOS_Study|Enki_Browser|Enki_Browser_Study|Qwen_Desktop_Study|Browser_Use|Perplexity_MCP|Perplexity_Python|Perplexity_Node|Perplexity_API_Cookbook) trailing+=("$key") ;;
             *) remaining+=("$key") ;;
         esac
     done
-    # Keep core tools pinned; append the explicitly requested browser group after A-Z.
+    # Preserve core tools above the separator; sort every remaining tool A-Z.
     if ((${#remaining[@]})); then
         mapfile -t sorted < <(printf '%s\n' "${remaining[@]}" | LC_ALL=C sort -f -s)
     fi
-    TOOL_KEYS=("${pinned[@]}" "${sorted[@]}" "${trailing[@]}")
+    TOOL_KEYS=("${pinned[@]}" "${sorted[@]}")
 }
 
 # Funktion zum Anzeigen des Tool-Management-Menüs

@@ -7,7 +7,7 @@ eigenen Bedingungen. Insbesondere nicht das ganze Paket pauschal als MIT behande
 
 ## Zwei getrennte Wege
 
-| Tool am Ende der Tools-Liste | Zweck |
+| Tool unterhalb der Trennlinie, alphabetisch einsortiert | Zweck |
 |---|---|
 | **Enki_Browser** | Bestehender manueller Desktop-Download von offiziellen GitHub-Releases |
 | **Enki_Browser_Study** | Gepinnte GitHub-Quellen fuer Studien und Weiterentwicklung; optionaler Paketbuild |

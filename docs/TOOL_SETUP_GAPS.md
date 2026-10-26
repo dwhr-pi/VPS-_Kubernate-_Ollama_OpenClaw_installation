@@ -1,6 +1,6 @@
 # Welche dokumentierten Tools fehlen im Setup?
 
-Ergaenzt: [Qwen_Desktop_Study](tools/qwen-desktop-study.md), im Studien-/Browserbereich
+Ergaenzt: [Qwen_Desktop_Study](tools/qwen-desktop-study.md), alphabetisch unterhalb der Trennlinie
 des Tools-Menues. Quellen und optionaler Linux-/Windows-Build sind getrennt;
 kein gestarteter oder produktiv abgenommener Desktop.
 
@@ -18,9 +18,9 @@ GitHub-Quellen der Markdown-Dokumentation, einschliesslich Fundstellen.
 
 ## Konkrete Luecken und unterschiedliche Integrationsgrade
 
-Neu: [GitHub-Ergaenzungen am Ende der Tools-Liste](tools/github-gap-tools.md).
+Neu: [GitHub-Ergaenzungen im alphabetischen Tools-Bereich](tools/github-gap-tools.md).
 
-Neu am Ende hinter A-Z: **Comet, BrowserOS, Enki_Browser, Browser_Use,
+Alphabetisch unterhalb der Trennlinie: **Comet, BrowserOS, Enki_Browser, Browser_Use,
 Perplexity_MCP, Perplexity_Python, Perplexity_Node, Perplexity_API_Cookbook**.
 [Installationswege, Voraussetzungen und Grenzen](tools/comet-and-browser-research.md).
 Comet nutzt einen manuellen Windows-Download mit Pause wie Qwen Desktop;
@@ -33,7 +33,7 @@ und Weiterentwicklung: [Voraussetzungen und Grenzen](tools/browseros-study.md).
 Entsprechend **Enki_Browser_Study**: Studienquellen und optionaler Paketbuild
 mit gesonderter Zustimmung zu gepinnten Chromium-Binaries. Kein voller Chromium-
 Source-Build: [Anleitung](tools/enki-browser-study.md).
-Die Gruppe wird vorerst nicht nach A-Z sortiert. Qwen Desktop besitzt jetzt
+Seit 26.10.2026 sind auch diese Eintraege wieder nach A-Z sortiert. Qwen Desktop besitzt jetzt
 zusaetzlich einen echten nativen Linux-/Windows-Buildweg; der manuelle
 Windows-Download bleibt erhalten. Weitere Quellinstallationen sind bewusst
 **nicht** mit vollstaendiger Runtime-Bereitschaft gleichgesetzt.

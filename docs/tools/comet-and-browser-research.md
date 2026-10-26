@@ -1,6 +1,6 @@
 # Comet, offene Browser und Perplexity fuer dieses Setup
 
-Stand: 26.10.2026. Jetzt im Tools-Menue als letzte Gruppe **hinter der A-Z-Liste**
+Stand: 26.10.2026. Jetzt im Tools-Menue **alphabetisch unterhalb der Trennlinie**
 installierbar bzw. fuer manuelle Desktop-Installation auswaehlbar. Die beiden
 Nutzeranhaenge bleiben Recherchematerial; deren Befehle wurden nicht ausgefuehrt. Keine Cookies,
 Browserprofile, Konten oder externen Recherche-APIs wurden verbunden.
