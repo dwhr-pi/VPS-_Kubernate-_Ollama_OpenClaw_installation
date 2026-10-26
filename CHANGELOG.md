@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Plattform-Review mit P0/P1/P2-Patchplan, vollstaendigen Registry-Matrizen,
+  readonly Inventarreporter und inaktiven Health-/CI-/K8s-Security-Beispielen.
+  Keine produktiven Deployments, Profile oder Secrets geaendert; keine neue
+  pauschale stable-/Runtime-Freigabe.
+
 - Perplexity-SDK-Deinstallation: Schreibschutz im geprueften eigenen Runtime-
   Bestand begrenzt behandeln, keine Linkziele/fremden Eigentuemer umstellen.
   Explizites --resume-uninstall fuer unveraenderte Inventarreste nach teilweisem

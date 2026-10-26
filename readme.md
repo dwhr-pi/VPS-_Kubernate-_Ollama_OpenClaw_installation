@@ -1,5 +1,8 @@
 # VPS- Kubernate- Ollama & OpenClaw installation - Ultimate Setup V11.17
 
+[Plattform-Review vom 26.10.2026: Vollinventar, P0/P1/P2-Patchplan und sichere Beispiele](docs/reviews/2026-10-26-platform-patch-plan.md).
+Statischer Nachweis fuer 385 Tools/245 Profile, keine automatische Produktionsfreigabe.
+
 [Docker nach GitHub: vollstaendige Tool-Liste und Umstellungsstand](docs/DOCKER_TO_GITHUB.md):
 41 der 43 Buildrezepte implementiert (Forgejo: freigegebenes Codeberg), 2 Umstellungen offen; PyAirbyte zusaetzlich separat; kein automatischer
 Image-Fallback dieser 43 Tool-Pfade. Bestehende Container/Daten werden nicht migriert.

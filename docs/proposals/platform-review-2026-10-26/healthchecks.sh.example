@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+# Proposal only: plan by default, bounded loopback reads only with explicit opt-in.
+set -euo pipefail
+mode=${1:---plan}
+[[ $# -le 1 ]] || exit 2
+case "$mode" in --plan|--local-live) ;; *) exit 2 ;; esac
+names=(Ollama OpenClaw LiteLLM Prometheus Grafana)
+ports=("${OLLAMA_HEALTH_PORT:-11434}" "${OPENCLAW_HEALTH_PORT:-18789}" "${LITELLM_HEALTH_PORT:-4000}" "${PROMETHEUS_HEALTH_PORT:-9090}" "${GRAFANA_HEALTH_PORT:-3001}")
+paths=(/api/tags /healthz /health/liveliness /-/ready /api/health)
+for port in "${ports[@]}"; do
+  [[ "$port" =~ ^[0-9]{1,5}$ ]] && ((10#$port >= 1 && 10#$port <= 65535)) || exit 2
+done
+if [[ "$mode" == --plan ]]; then
+  for i in "${!names[@]}"; do
+    printf '%s GET http://127.0.0.1:%s%s\n' "${names[$i]}" "${ports[$i]}" "${paths[$i]}"
+  done
+  printf '%s\n' 'Plan only. No network, model inference, credentials or services accessed.'
+  exit 0
+fi
+command -v curl >/dev/null || { printf 'curl missing\n' >&2; exit 2; }
+failed=0
+for i in "${!names[@]}"; do
+  code=000
+  if code=$(curl -q --silent --show-error --fail --noproxy '*' --proto '=http' \
+      --connect-timeout 2 --max-time 5 --max-redirs 0 --output /dev/null \
+      --write-out '%{http_code}' "http://127.0.0.1:${ports[$i]}${paths[$i]}"); then
+    if [[ "$code" == 200 ]]; then
+      printf '%s: HTTP probe passed (not an inference/auth test)\n' "${names[$i]}"
+      continue
+    fi
+  fi
+  printf '%s: HTTP probe failed\n' "${names[$i]}" >&2
+  failed=1
+done
+exit "$failed"

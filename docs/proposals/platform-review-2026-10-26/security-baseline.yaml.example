@@ -1,0 +1,89 @@
+# Proposal for a NEW staging namespace, not an overlay for existing workloads.
+# PSS version requires Kubernetes >=1.34; review the target minor before adoption.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: llmops-review
+  labels:
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/enforce-version: v1.34
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/audit-version: v1.34
+    pod-security.kubernetes.io/warn: restricted
+    pod-security.kubernetes.io/warn-version: v1.34
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: observer
+  namespace: llmops-review
+automountServiceAccountToken: false
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: observer
+  namespace: llmops-review
+rules:
+  - apiGroups: [""]
+    resources: [pods, services, events]
+    verbs: [get, list, watch]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: observer
+  namespace: llmops-review
+subjects:
+  - kind: ServiceAccount
+    name: observer
+    namespace: llmops-review
+roleRef:
+  kind: Role
+  name: observer
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny
+  namespace: llmops-review
+spec:
+  podSelector: {}
+  policyTypes: [Ingress, Egress]
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: dns-egress
+  namespace: llmops-review
+spec:
+  podSelector: {}
+  policyTypes: [Egress]
+  egress:
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system
+          podSelector:
+            matchLabels:
+              k8s-app: kube-dns
+      ports:
+        - {protocol: UDP, port: 53}
+        - {protocol: TCP, port: 53}
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: staging-budget
+  namespace: llmops-review
+spec:
+  hard:
+    requests.cpu: "4"
+    limits.cpu: "8"
+    requests.memory: 8Gi
+    limits.memory: 16Gi
+    requests.ephemeral-storage: 4Gi
+    limits.ephemeral-storage: 8Gi
+    requests.storage: 60Gi
+    pods: "8"

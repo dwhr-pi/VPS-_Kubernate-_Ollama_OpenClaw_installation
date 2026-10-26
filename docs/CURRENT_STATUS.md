@@ -1,5 +1,9 @@
 # Aktueller Projektstatus
 
+[Plattform-Review vom 26.10.2026](reviews/2026-10-26-platform-patch-plan.md):
+385 Tools, 245 Profile, vollstaendige Metadatenmatrizen und priorisierte PRs.
+Historische Nachweise unten bleiben unveraendert; keine Runtime-Freigabe daraus.
+
 ## Nutzer-Rueckmeldung vom 26.10.2026
 
 Der Nutzer meldet erfolgreiche Installationen der von ihm geprueften Tools.
