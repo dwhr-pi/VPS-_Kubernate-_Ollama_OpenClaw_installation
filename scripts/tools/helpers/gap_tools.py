@@ -295,8 +295,24 @@ def browser_research_build(runtime, env, mode):
     else:
         uv = executable('uv')
     if mode == 'browser-python':
+        lock = checked(runtime / 'uv.lock')
+        lock_origin = 'upstream' if lock.is_file() else 'locally-resolved'
+        if not lock.exists():
+            print('Browser_Use: Upstream-Pin enthaelt keine uv.lock; erzeuge lokalen Abhaengigkeits-Lock.', flush=True)
+            print('Erstaufloesung kann Paketindizes/Build-Metadaten abrufen; kein upstream-gepinnter Gesamtbestand.', flush=True)
+            run([uv, 'lock', '--no-python-downloads', '--python', python], runtime, env)
+        if not lock.is_file() or not lock.stat().st_size:
+            raise ValueError('Browser_Use: uv.lock fehlt/ist leer nach Lock-Schritt; kein Sync/Erfolgsnachweis.')
+        lock_hash = hashlib.sha256(lock.read_bytes()).hexdigest()
+        print('Browser_Use: Lock-Herkunft:', lock_origin, 'SHA256:', lock_hash, flush=True)
         run([uv, 'sync', '--frozen', '--no-dev', '--no-default-groups', '--no-python-downloads',
              '--python', python], runtime, env)
+        if hashlib.sha256(lock.read_bytes()).hexdigest() != lock_hash:
+            raise ValueError('Browser_Use: Lock waehrend frozen Sync veraendert; kein Erfolgsnachweis.')
+        # Preserve provenance separately from the upstream checkout and installation marker.
+        with checked(runtime / 'browser-use-dependency-lock.json').open('x', encoding='utf-8') as stream:
+            json.dump({'source_pin': SPECS['browser_use']['pin'], 'origin': lock_origin,
+                       'lock_file': 'uv.lock', 'sha256': lock_hash}, stream)
         distribution = 'browser-use'
     else:
         run([uv, 'venv', '--no-python-downloads', '--python', python, str(runtime / '.venv')], runtime, env)
@@ -308,7 +324,10 @@ def browser_research_build(runtime, env, mode):
     metadata = list((runtime / '.venv/lib').glob('python*/site-packages/' + distribution.replace('-', '_') + '-*.dist-info/METADATA'))
     if len(metadata) != 1:
         raise ValueError('Installierte Paketmetadaten fehlen/nicht eindeutig.')
-    return ['pyproject.toml', metadata[0].relative_to(runtime).as_posix()]
+    entries = ['pyproject.toml', metadata[0].relative_to(runtime).as_posix()]
+    if mode == 'browser-python':
+        entries += ['uv.lock', 'browser-use-dependency-lock.json']
+    return entries
 
 
 def install(runtime, marker, base, spec, install_build_deps=False):
@@ -423,8 +442,8 @@ def main(argv=None):
         print(json.dumps(dict(installed=ready, scope=spec["mode"], runtime_tested=False)))
         return 0 if ready or opts.action == "status" else 1
     with operation(base, opts.action, tool=spec["name"]):
-        versions = {'browser_use': '2026-10-26-browser-use-private-uv', 'perplexity_mcp': '2026-10-26-perplexity-mcp-private-node-npm',
-                    'perplexity_python': '2026-10-26-perplexity-sdk-private-bazel', 'perplexity_node': '2026-10-26-perplexity-sdk-private-bazel'}
+        versions = {'browser_use': '2026-10-26-browser-use-explicit-local-lock', 'perplexity_mcp': '2026-10-26-perplexity-mcp-private-node-npm',
+                    'perplexity_python': '2026-10-26-perplexity-sdk-pnpm-bundle', 'perplexity_node': '2026-10-26-perplexity-sdk-pnpm-bundle'}
         print('GitHub-Tool-Installer:', versions.get(opts.tool, '2026-10-23-hermes-private-python'))
         print("Installerdatei:", Path(__file__).resolve())
         print("Quellenmanifest:", MANIFEST, "Mindestreserve MiB:", spec["reserve_mb"])

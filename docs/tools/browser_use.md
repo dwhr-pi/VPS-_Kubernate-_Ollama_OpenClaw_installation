@@ -21,7 +21,38 @@ bash scripts/tools/browser_use_doctor.sh
 Ohne Flag fragt ein interaktives Terminal `[j/N]`; Enter/EOF oder fehlende
 Freigabe erlaubt keinen Download. Dry-Run bleibt auch mit Flag schreibfrei.
 Status/Check/Doctor/Uninstall laden nichts nach. Das neue Installationslog nennt
-`2026-10-26-browser-use-private-uv` statt nur der alten Hermes-Baseline.
+`2026-10-26-browser-use-explicit-local-lock` statt der vorherigen
+`2026-10-26-browser-use-private-uv`-Baseline.
+
+## Folgefehler vom 26.10.2026 um 12:31: uv.lock fehlt
+
+Die private uv-Basis wurde erfolgreich geprueft. Der nachfolgende Fehler
+ist ein Installerfehler, kein Speicherplatz- oder Python-Fehler: Der
+[gepruefte Quellstand](https://github.com/browser-use/browser-use/tree/3df5806a0d097a1546d92c49bcf1b28c9972c3bd)
+liefert keine `uv.lock` mit, die bisherige Installation verlangte sie aber
+mit `--frozen`. Die [Projektmetadaten am Pin](https://github.com/browser-use/browser-use/blob/3df5806a0d097a1546d92c49bcf1b28c9972c3bd/pyproject.toml)
+enthalten auch Versionsbereiche, keinen vollstaendig festgeschriebenen Gesamtbestand.
+
+Der korrigierte Ablauf erzeugt bei fehlendem Lock ausdruecklich lokal
+`uv lock --no-python-downloads --python <ausgewaehltes-python>` und prueft,
+dass eine nichtleere Lockdatei entstanden ist. Danach folgt weiterhin
+`uv sync --frozen --no-dev --no-default-groups`. Ein vorhandener Lock wird
+nicht neu aufgeloest. Herkunft und SHA256 stehen im aktuellen Installationslog
+und in `runtime/browser-use-dependency-lock.json`; Lock und Nachweis werden
+mit dem Installationsinventar geprueft. Der Sync darf den Lock nicht veraendern.
+
+**Grenze der Reproduzierbarkeit:** Die erste lokale Aufloesung haengt von den
+zu diesem Zeitpunkt verfuegbaren Paketversionen/Metadaten ab. Zwei frische
+Installationen koennen daher unterschiedliche Locks erzeugen. Kein vom
+Upstream gepruefter Gesamt-Lock und keine Bit-fuer-Bit-Reproduzierbarkeit
+versprochen. Die [uv-Dokumentation](https://docs.astral.sh/uv/concepts/projects/sync/)
+erklaert Locking und Synchronisierung.
+
+Nach Uebernahme dieser Korrektur denselben Installationsaufruf oben erneut
+verwenden; die bereits gepruefte private uv-Basis wird wiederverwendet.
+Kein manuelles Loeschen der Toolchain, kein Docker-Fallback. Bei
+Aufloesungs-/Installationsfehlern kein Erfolgsmarker; nur die neue Runtime
+wird zurueckgerollt. Ein neues Log pruefen, nicht das alte Protokoll.
 
 ## Umfang und Grenzen
 
@@ -49,7 +80,8 @@ fremde Ordner und Nutzdaten bleiben erhalten; kein falscher Installiert-Marker.
 
 Browser Use selbst bleibt aus dem gepinnten
 [GitHub-Checkout](https://github.com/browser-use/browser-use/tree/3df5806a0d097a1546d92c49bcf1b28c9972c3bd).
-Paketinstallation mit `uv sync --frozen --no-dev --no-default-groups`, ohne
+Paketinstallation nach dem oben beschriebenen Lock-Schritt mit
+`uv sync --frozen --no-dev --no-default-groups`, ohne
 Python-/Chromium-Download. Abhaengigkeiten kommen ggf. aus Upstream-Registries;
 kein Offline-/GitHub-exklusives Netzwerkversprechen. uv ist eine binaere
 Buildwerkzeug-Ausnahme, kein Browser-Use-Image oder primaeres PyPI-Paket.

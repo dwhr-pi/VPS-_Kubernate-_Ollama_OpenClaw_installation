@@ -60,6 +60,15 @@ def slot_for(base, name):
     return slot, ASSETS[host][name]
 
 
+def validate_pnpm_bundle(app):
+    # The release executable loads these sidecars relative to its own directory.
+    for relative in ('pnpm', 'dist/pnpm.mjs', 'dist/worker.js'):
+        path = common.checked(app / relative)
+        if not path.is_file() or not path.stat().st_size:
+            raise ValueError('Perplexity SDK: pnpm-Bundle unvollstaendig; fehlt/leer: ' + relative +
+                             '. Gesamtes geprueftes Release-Bundle erforderlich, keine Einzeldatei.')
+
+
 def selected(base, name, env):
     # A global "bazel" can be Bazelisk, which may download on --version.
     # Use only our hash-verified direct Bazel binary, never auto-resolve that shim.
@@ -77,6 +86,8 @@ def selected(base, name, env):
         {'repo': name, 'version': VERSIONS[name]}, full=True)
     if record.get('artifact_sha256') != sha:
         raise ValueError('Privater SDK-Archivnachweis geaendert; nichts ueberschreiben.')
+    if name == 'pnpm':
+        validate_pnpm_bundle(slot / 'app')
     binary = common.checked(slot / 'app' / name)
     probe(str(binary), name, base, env, private=True)
     return str(binary)
@@ -106,7 +117,10 @@ def install_one(base, name, env):
                 entries = [path for path in extracted.rglob('pnpm') if path.is_file()]
                 if len(entries) != 1:
                     raise ValueError('pnpm-Einstieg fehlt/nicht eindeutig.')
-                shutil.copyfile(common.checked(entries[0]), app / name)
+                payload = common.checked(entries[0].parent)
+                validate_pnpm_bundle(payload)
+                # Keep dist/, bundled dependencies and native helpers beside the launcher.
+                shutil.copytree(payload, app, dirs_exist_ok=True)
         (app / name).chmod(0o700)
         probe(str(app / name), name, base, env, private=True, repair=True)
         record = {'repo': name, 'version': VERSIONS[name], 'entry': name,

@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+- Perplexity Python/Node: pnpm 11.17.0 als vollstaendiges GitHub-Release-Bundle
+  statt einzelner Startdatei uebernehmen. dist/pnpm.mjs, Worker und weitere
+  Begleitdateien bleiben erhalten und werden bei Wiederverwendung mitgeprueft.
+  Unvollstaendige Archive vor Ausfuehrung ablehnen; Bazel-/Node-Basen erhalten.
+
+- Browser_Use: fehlende upstream uv.lock am unveraenderten GitHub-Pin lokal
+  und ausdruecklich protokolliert erzeugen, danach frozen synchronisieren.
+  Lock-Herkunft/SHA256 im Installationsnachweis erfassen, fehlende/leere oder
+  beim Sync geaenderte Locks ablehnen; erste Aufloesung nicht als vollstaendig
+  reproduzierbaren Upstream-Lock ausgeben. Private uv-Basis bleibt erhalten.
+
 - Qwen_Desktop_Study wie Enki als optionale GitHub-Quellen fuer Studienzwecke
   und Weiterentwicklung im Setup anbieten. Separater Linux-/Windows-Build nach
   Freigabe; Quellenstatus, Buildnachweis und Entwicklungsdaten getrennt halten.

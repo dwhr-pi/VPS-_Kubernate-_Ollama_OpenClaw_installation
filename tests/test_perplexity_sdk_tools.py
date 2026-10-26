@@ -1,10 +1,12 @@
 """Offline SDK prerequisite tests: no binary download, Bazel build or live API."""
 from contextlib import redirect_stdout
 import io
+import json
 import os
 from pathlib import Path
 import sys
 import tempfile
+import tarfile
 import unittest
 from unittest.mock import patch
 
@@ -81,6 +83,63 @@ class SdkToolsTests(unittest.TestCase):
                 Path(binary).write_bytes(b'corrupted')
                 with self.assertRaises(ValueError):
                     sdk.selected(base, 'bazel', {})
+
+    def pnpm_archive(self, target, files):
+        with tarfile.open(target, 'w:gz') as archive:
+            for name, data in files.items():
+                item = tarfile.TarInfo(name)
+                item.size = len(data)
+                item.mode = 0o755 if name.endswith('pnpm') else 0o644
+                archive.addfile(item, io.BytesIO(data))
+
+    def test_pnpm_retains_complete_bundle_and_verifies_sidecars_on_reuse(self):
+        for host, prefix in (('linux-amd64', ''), ('linux-arm64', 'package/')):
+            with self.subTest(host=host), tempfile.TemporaryDirectory() as directory:
+                base = Path(directory)
+                payload = {'pnpm': b'fixture executable', 'dist/pnpm.mjs': b'fixture main',
+                           'dist/worker.js': b'fixture worker',
+                           'dist/node_modules/example/index.js': b'fixture dependency',
+                           'dist/vendor/helper.node': b'fixture native helper'}
+                def download(url, path, size, digest):
+                    self.pnpm_archive(path, {prefix + name: data for name, data in payload.items()})
+                def probe(binary, name, parent, env, **kwargs):
+                    app = Path(binary).parent
+                    for relative, data in payload.items():
+                        self.assertEqual((app / relative).read_bytes(), data)
+                with patch.object(sdk.releases, 'host_key', return_value=host), patch.object(sdk.releases, 'download', side_effect=download) as fetch, patch.object(sdk, 'probe', side_effect=probe) as version, patch.object(sdk.shutil, 'which', return_value=None):
+                    binary = sdk.install_one(base, 'pnpm', {})
+                    app = Path(binary).parent
+                    proof = json.loads((app.parent / 'ready.json').read_text())
+                    self.assertEqual(set(proof['hashes']), set(payload))
+                    self.assertEqual(sdk.selected(base, 'pnpm', {}), binary)
+                    fetch.assert_called_once()
+                    version.reset_mock()
+                    (app / 'dist/worker.js').write_bytes(b'corrupted')
+                    with self.assertRaises(ValueError):
+                        sdk.selected(base, 'pnpm', {})
+                    version.assert_not_called()
+
+    def test_bad_pnpm_layout_never_runs_or_publishes_and_keeps_other_tools(self):
+        cases = ({'pnpm': b'launcher'},
+                 {'pnpm': b'launcher', 'dist/pnpm.mjs': b'main', 'dist/worker.js': b''},
+                 {'a/pnpm': b'a', 'b/pnpm': b'b'},
+                 {'../outside': b'unsafe', 'pnpm': b'launcher'})
+        for files in cases:
+            with self.subTest(files=list(files)), tempfile.TemporaryDirectory() as directory:
+                base = Path(directory)
+                existing = base / 'toolchain/bazel-existing/app/bazel'
+                existing.parent.mkdir(parents=True)
+                existing.write_bytes(b'keep previously installed tool')
+                def download(url, path, size, digest):
+                    self.pnpm_archive(path, files)
+                with patch.object(sdk.releases, 'host_key', return_value='linux-amd64'), patch.object(sdk.releases, 'download', side_effect=download), patch.object(sdk, 'probe') as probe:
+                    with self.assertRaises(ValueError):
+                        sdk.install_one(base, 'pnpm', {})
+                    probe.assert_not_called()
+                    slot, _ = sdk.slot_for(base, 'pnpm')
+                    self.assertFalse(slot.exists())
+                    self.assertEqual(list(base.glob('sdk-bootstrap-*')), [])
+                    self.assertEqual(existing.read_bytes(), b'keep previously installed tool')
 
     def test_dry_run_with_consent_never_prepares(self):
         for key in ('perplexity_python', 'perplexity_node'):

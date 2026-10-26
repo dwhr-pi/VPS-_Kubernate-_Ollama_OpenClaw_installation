@@ -81,6 +81,8 @@ class BrowserResearchTests(unittest.TestCase):
                 def run(args, cwd, env):
                     args = list(map(str, args))
                     calls.append(args)
+                    if args[:2] == ['uv', 'lock']:
+                        (runtime / 'uv.lock').write_text('version = 1\n')
                     if args[-1] == '--version':
                         return {'bazel': 'bazel 9.2.0', 'node': 'v26.0.0', 'pnpm': '11.17.0'}.get(args[0], '')
                     if args[-1] == '//:wheel':
@@ -103,6 +105,11 @@ class BrowserResearchTests(unittest.TestCase):
                 if mode == 'browser-python':
                     self.assertTrue(any('--frozen' in command for command in calls))
                     self.assertTrue(any('--no-python-downloads' in command for command in calls))
+                    self.assertIn('uv.lock', entries)
+                    self.assertLess(next(i for i, command in enumerate(calls) if command[:2] == ['uv', 'lock']),
+                                    next(i for i, command in enumerate(calls) if command[:2] == ['uv', 'sync']))
+                    proof = json.loads((runtime / 'browser-use-dependency-lock.json').read_text())
+                    self.assertEqual(proof['origin'], 'locally-resolved')
                 else:
                     self.assertTrue(any('--batch' in command for command in calls))
                 self.assertFalse(any('start' in command or 'serve' in command for command in calls))

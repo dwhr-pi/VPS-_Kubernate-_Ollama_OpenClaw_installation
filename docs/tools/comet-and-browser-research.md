@@ -24,7 +24,7 @@ heruntergeladen/geprueft/ausgefuehrt, niemals automatisch in WSL.
 | **Comet** / [Download](https://www.perplexity.ai/comet) | Proprietaerer Desktop-Browser | Manueller Windows-Download mit Pause/Bestaetigung; explizite Nicht-GitHub-Ausnahme |
 | **BrowserOS** / [GitHub](https://github.com/browseros-ai/BrowserOS) | Offener agentischer Desktop-Browser | Offiziellen GitHub-Release manuell fuer Windows/Linux installieren, kein Chromium-Source-Build |
 | **Enki_Browser** / [GitHub](https://github.com/danilogiles/enki-browser) | Chromium-Browser mit eigenem Assistenten | Offiziellen GitHub-Release manuell fuer Windows/Linux installieren |
-| **Browser_Use** / [GitHub](https://github.com/browser-use/browser-use) | Browser-Agent-Bibliothek | Privates Python-Paket aus GitHub mit uv-Lock; kein Browserdownload oder Agentenstart |
+| **Browser_Use** / [GitHub](https://github.com/browser-use/browser-use) | Browser-Agent-Bibliothek | Privates Python-Paket aus GitHub; fehlenden uv-Lock lokal erzeugen, dann frozen Sync; kein Browserdownload oder Agentenstart |
 | **Perplexity_MCP** / [GitHub](https://github.com/perplexityai/modelcontextprotocol) | Offizieller API-MCP-Server | Gepinnter TypeScript-Build; kein Serverstart, kein API-Key erforderlich fuer den Build |
 | **Perplexity_Python** / [GitHub](https://github.com/perplexityai/perplexity-py) | Offizieller Python-SDK | Gepinntes Bazel-Wheel mit privater Python-Umgebung; keine API-Anfrage |
 | **Perplexity_Node** / [GitHub](https://github.com/perplexityai/perplexity-node) | Offizieller Node-SDK | Gepinntes Bazel-Paket; keine API-Anfrage |
@@ -96,7 +96,7 @@ Fuer Desktopseiten ist `--open-download` als expliziter Browseraufruf verfuegbar
 
 | Paket | Buildvertrag auf Linux/Ubuntu/WSL | Reserve |
 |---|---|---|
-| Browser_Use | Python >=3.11 mit SSL, uv; `uv sync --frozen --no-dev --no-default-groups`, kein Python-/Browserdownload | 4 GiB |
+| Browser_Use | Python >=3.11 mit SSL, uv; falls noetig expliziter lokaler Lock, dann `uv sync --frozen --no-dev --no-default-groups`; [Grenzen](browser_use.md), kein Python-/Browserdownload | 4 GiB |
 | Perplexity_MCP | Node >=22, npm; `npm ci --ignore-scripts`, danach explizit `npm run build`, `node --check` | 4 GiB |
 | Perplexity_Python | Bazel 9.2.0, Python >=3.10 mit SSL, uv; upstream `bazel build //:wheel`, Wheel im privaten venv | 8 GiB |
 | Perplexity_Node | Bazel 9.2.0, Node 26, pnpm 11.17.0; frozen Install ohne Lifecycle-Hooks, upstream `bazel build //:pkg` | 8 GiB |

@@ -24,6 +24,34 @@ bash scripts/tools/perplexity_node_doctor.sh
 Ohne Flag fragt ein interaktives Terminal `[j/N]`. Enter/EOF oder fehlende
 Zustimmung bedeutet keinen Download. Plan, Status, Check und Doctor bleiben
 lesend und laden keine fehlenden Werkzeuge nach. Logkennung fuer beide SDKs:
+`2026-10-26-perplexity-sdk-pnpm-bundle`.
+
+## Folgefehler vom 26.10.2026 um 12:37: pnpm.mjs fehlt
+
+Bazel und Node wurden erfolgreich geprueft. Der Installer kopierte aus dem
+pnpm-Archiv jedoch nur die Datei `pnpm`, nicht deren benachbarten `dist/`-Baum.
+Die Startdatei benoetigt `dist/pnpm.mjs`; das ist kein fehlendes SDK-Modul
+und kein Anlass fuer ein globales npm/pnpm-Installieren.
+
+Das offizielle [pnpm-Release v11.17.0](https://github.com/pnpm/pnpm/releases/tag/v11.17.0)
+wird jetzt als **vollstaendiges Bundle** uebernommen: Startdatei, `dist/`,
+gebuendelte Abhaengigkeiten und native Helfer. Vor dem Versionsaufruf werden
+Startdatei, `dist/pnpm.mjs` und `dist/worker.js` auf Vorhandensein geprueft.
+Alle uebernommenen Dateien gehoeren anschliessend zur Hash-/Inventarpruefung,
+auch beim Wiederverwenden. Keine Aenderung an Versionen oder Download-SHA256.
+
+Zur Diagnose wurde das echte amd64-Release-Archiv heruntergeladen, gegen die
+bereits hinterlegte SHA256 geprueft und nur seine Dateiliste gelesen.
+Kein pnpm-/SDK-Code daraus ausgefuehrt; temporaeres Diagnosearchiv entfernt.
+Die eingebettete Node-Version einer pnpm-Distribution kann von der separat
+fuer den SDK-Build bereitgestellten Node-Version abweichen.
+
+Nach Uebernahme der korrigierten Setup-Dateien denselben Installationsaufruf
+oben wiederholen. Bereits gepruefte Bazel-/Node-Slots bleiben erhalten und
+werden erneut validiert. Das fehlgeschlagene pnpm-Staging wurde verworfen;
+kein manuelles Loeschen der funktionierenden Toolchains erforderlich.
+Ein bereits vorhandener beschaedigter Slot wird weiterhin nicht automatisch
+ueberschrieben. Die vorherige Logkennung war
 `2026-10-26-perplexity-sdk-private-bazel`.
 
 ## Gepruefte Versionen und Quellen
