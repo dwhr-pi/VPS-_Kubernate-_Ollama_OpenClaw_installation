@@ -1,5 +1,11 @@
 # Tools Catalog
 
+**[GitLab, OpenForge, GENIE.AI und MLflow](tools/gitlab-openforge-mlflow.md)**:
+Alle fuenf Nutzerquellen getrennt eingeordnet; gleichnamige Projekte sind kein
+gemeinsames Produkt. Optionaler Offline-CI-/manueller Ollama-Review als Konzept,
+keine automatische Installation, Produktivdeployments oder Modell-Downloads.
+GitLab-/Codeberg-Installationen bleiben ungeprueft.
+
 **[Neue GitHub-Ergaenzungen am Ende der Tools-Liste](tools/github-gap-tools.md)**:
 Qwen Desktop wahlweise als Linux-/Windows-Source-Build, eindeutig benannter
 Hermes_Agent_Jarvis-Core sowie weitere Medien-/UI-Quellinstallationen und

@@ -28,6 +28,10 @@ Nutzerhinweis vom 27.10.2026: **Codeberg- und GitLab-Tools sind derzeit in der
 Installation ungetestet.** Eine dokumentierte Quelle, ein vorhandenes Buildrezept
 oder bestandene Offline-/Mocktests ersetzen keinen Installationsnachweis.
 
+[GitLab, OpenForge, GENIE.AI und MLflow](tools/gitlab-openforge-mlflow.md)
+dokumentiert die konkreten Nutzerquellen und den optionalen CI-/Review-Einstieg,
+ohne diesen Installationsstatus anzuheben.
+
 Das beschreibt die fehlende Abnahme, nicht einen nachgewiesenen Fehler dieser
 Tools. Erst nach einem protokollierten Test des konkreten Pins auf der genannten
 Zielplattform darf eine Installationsfreigabe beziehungsweise ein `tested`-Status

@@ -1,5 +1,10 @@
 # START HERE
 
+[GitLab/OpenForge/GENIE.AI und MLflow](tools/gitlab-openforge-mlflow.md):
+Quellenpruefung, Namensabgrenzung und optionaler Einstieg mit Offline-CI sowie
+ausdruecklich gestartetem lokalem Ollama-Review. Keine neue Runtime aktiviert;
+GitLab- und Codeberg-Installationen weiterhin ungeprueft.
+
 [Docker-Installer durch native GitHub-Builds ersetzen](DOCKER_TO_GITHUB.md):
 Alle 43 Pfade registriert: 41 Buildrezepte, 2 offene Migrationen; PyAirbyte als separates SDK zusaetzlich.
 Forgejo verwendet nach Freigabe die offizielle Codeberg-Quelle statt GitHub.
