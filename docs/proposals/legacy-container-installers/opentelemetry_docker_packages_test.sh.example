@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+# Historical test for the retired container installer; not active CI.
+set -euo pipefail
+repo_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+eval "$(sed -n '/^install_opentelemetry_docker_packages() {/,/^}/p' "$repo_dir/scripts/tools/opentelemetry_install.sh")"
+docker_present=false ce_candidate=true ce_installed=false ubuntu_installed=false containerd_installed=false
+package_call='' install_rc=0
+command() {
+    case "$*" in '-v docker') [[ "$docker_present" == true ]] ;; '-v apt-get') return 0 ;; *) builtin command "$@" ;; esac
+}
+apt-cache() { if [[ "$ce_candidate" == true ]]; then echo 'Candidate: 5:29.0'; else echo 'Candidate: (none)'; fi; }
+dpkg() {
+    case "$2" in docker-ce-cli) [[ "$ce_installed" == true ]] ;; docker.io) [[ "$ubuntu_installed" == true ]] ;; containerd.io) [[ "$containerd_installed" == true ]] ;; *) return 1 ;; esac
+}
+run_apt_with_lock_wait() {
+    [[ "$1" == update ]] && return 0
+    package_call="$*"
+    return "$install_rc"
+}
+install_opentelemetry_docker_packages >/dev/null
+[[ "$package_call" == '--no-remove install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin' ]]
+ce_candidate=false
+install_opentelemetry_docker_packages >/dev/null
+[[ "$package_call" == '--no-remove install -y docker.io docker-compose-v2' ]]
+containerd_installed=true package_call=''
+if install_opentelemetry_docker_packages >/dev/null 2>&1; then exit 1; fi
+[[ -z "$package_call" ]]
+docker_present=true ce_installed=true
+install_opentelemetry_docker_packages >/dev/null
+[[ "$package_call" == '--no-remove install -y docker-compose-plugin' ]]
+ce_installed=false ubuntu_installed=true
+install_opentelemetry_docker_packages >/dev/null
+[[ "$package_call" == '--no-remove install -y docker-compose-v2' ]]
+ubuntu_installed=false package_call=''
+if install_opentelemetry_docker_packages >/dev/null 2>&1; then exit 1; fi
+[[ -z "$package_call" ]]
+ubuntu_installed=true install_rc=1
+if install_opentelemetry_docker_packages >/dev/null 2>&1; then exit 1; fi
+echo 'PASS: CE/Ubuntu family, plugin-only install, containerd/unknown client rejection and apt failure propagation.'

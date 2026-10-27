@@ -4709,6 +4709,12 @@ show_main_menu() {
 }
 
 # Native migration metadata overrides older Docker descriptions only.
+TOOL_SCRIPT_NAMES["OpenTelemetry"]="opentelemetry"
+TOOL_SCRIPT_NAMES["AutoGPT"]="autogpt"
+TOOL_SCRIPT_NAMES["Supabase"]="supabase"
+TOOLS["OpenTelemetry"]="GitHub-Core-Collector-Quellbuild ohne Docker oder Dienststart; Linux-Betriebsabnahme offen."
+TOOLS["AutoGPT"]="OFFEN: AutoGPT Platform hat noch keinen abgenommenen nativen Gesamtbuild; kein Docker-Fallback."
+TOOLS["Supabase"]="OFFEN: native Gesamtplattform samt Datenbank/Auth/Storage noch nicht abgenommen; kein Docker-Fallback."
 TOOL_KEYS+=("PyAirbyte")
 TOOLS["PyAirbyte"]="Separates GitHub-Python-SDK; kein Airbyte-Core-Ersatz. docs/DOCKER_TO_GITHUB.md"
 TOOL_SCRIPT_NAMES["PyAirbyte"]="pyairbyte"

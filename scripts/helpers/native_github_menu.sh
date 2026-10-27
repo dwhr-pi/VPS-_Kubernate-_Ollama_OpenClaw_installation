@@ -2,6 +2,9 @@
 # Shared menu/status allowlist for native migration tools; no installer execution.
 NATIVE_GITHUB_TOOL_KEYS=("Airbyte" "Apache_Tika" "Appsmith" "ArchiveBox" "Argilla" "Budibase" "Caddy" "cAdvisor" "Changedetection_IO" "CrowdSec" "Directus" "Forgejo" "Grafana" "Grafana_Alloy" "Healthchecks" "Home_Assistant" "Langfuse" "LiteLLM" "Loki" "Meilisearch" "Metabase" "MinIO" "Mosquitto" "Neo4j" "Netdata" "Nextcloud" "NocoDB" "Node_Exporter" "Node_Red" "Open_WebUI" "Penpot" "Prometheus" "Promtail" "Qdrant" "Rhasspy" "SearXNG" "Stirling_PDF" "Uptime_Kuma" "Vault" "Vikunja" "Watchtower" "Weaviate" "Zigbee2MQTT" "PyAirbyte")
 
+# Include newly discovered paths in the same native status dispatch.
+NATIVE_GITHUB_TOOL_KEYS+=("OpenTelemetry" "AutoGPT" "Supabase")
+
 register_native_github_tool_keys() {
     local key
     local -A seen=()

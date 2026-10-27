@@ -1,5 +1,9 @@
 # Docker-Installer auf native GitHub-Builds umstellen
 
+**Nachtrag 27.10.2026:** Weitere aktive Pfade bei OpenTelemetry, AutoGPT Platform
+und Supabase gefunden und bearbeitet. [Restliste mit Status und Grenzen](DOCKER_REMAINDER_2026-10-27.md).
+Die folgenden Zahlen beziehen sich auf die urspruenglichen 43 Pfade.
+
 Stand: 23.10.2026. **Teilweise umgesetzt, nicht vollstaendig fertig.**
 Der Skript-Abgleich fand 43 direkte/indirekte Image-Installationspfade: 32 waren
 ueber ihren Installerpfad registriert, 11 weitere lagen als alte Einzeldateien

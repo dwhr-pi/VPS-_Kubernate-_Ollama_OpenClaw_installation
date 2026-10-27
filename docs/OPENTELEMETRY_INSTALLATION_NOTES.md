@@ -1,4 +1,12 @@
-# OpenTelemetry: Docker-Rechte und Speicher
+# OpenTelemetry: nativer Build und historische Docker-Hinweise
+
+> Aktuell seit 27.10.2026: Der Tools-Installer verwendet einen
+> [nativen GitHub-Core-Build](tools/opentelemetry-native.md), ohne Docker oder
+> automatischen Collector-Start. Die folgenden Docker-Befehle und Aussagen zu
+> Opt-in, Status und Reserven dokumentieren ausschliesslich den historischen
+> Installer. `OPENTELEMETRY_INSTALL_DOCKER` aktiviert den alten Weg nicht mehr.
+
+## Historischer Stand: Docker-Rechte und Speicher
 
 ## Fehlerursache
 

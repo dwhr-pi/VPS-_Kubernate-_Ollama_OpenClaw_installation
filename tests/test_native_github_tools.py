@@ -46,9 +46,9 @@ class NativeGithubTests(unittest.TestCase):
         with patch.object(tool, "preflight"), patch.object(tool.common, "install", side_effect=self.source), patch.object(tool, "build", side_effect=self.build), redirect_stdout(io.StringIO()):
             tool.install(self.outer, self.prefix, self.marker, self.spec)
 
-    def test_inventory_has_44_paths_and_42_honest_build_recipes(self):
-        self.assertEqual(len(tool.TOOLS), 44)
-        self.assertEqual(sum(bool(s["recipe"]) for s in tool.TOOLS.values()), 42)
+    def test_inventory_has_47_paths_and_43_honest_build_recipes(self):
+        self.assertEqual(len(tool.TOOLS), 47)
+        self.assertEqual(sum(bool(s["recipe"]) for s in tool.TOOLS.values()), 43)
         for key, spec in tool.TOOLS.items():
             self.assertEqual(key, spec["id"])
             if spec["recipe"]:
@@ -78,6 +78,18 @@ class NativeGithubTests(unittest.TestCase):
         logs = list((Path(self.temp.name) / "install_logs").glob("*.log"))
         self.assertEqual(len(logs), 1)
         self.assertIn("Kein Docker-Fallback", logs[0].read_text())
+
+    def test_platform_remainders_fail_before_any_build_or_download(self):
+        for key in ('autogpt', 'supabase'):
+            with self.subTest(tool=key), patch.object(tool.common, 'install') as fetch, \
+                    patch.object(tool, 'build') as build, patch.object(tool, 'preflight') as preflight, \
+                    redirect_stdout(io.StringIO()):
+                with self.assertRaisesRegex(ValueError, 'noch OFFEN'):
+                    tool.main([key, 'install'])
+                fetch.assert_not_called()
+                build.assert_not_called()
+                preflight.assert_not_called()
+                self.assertFalse(tool.paths(key)[2].exists())
 
     def test_rhasspy_blocker_is_specific_and_never_downloads_or_marks_installed(self):
         spec = tool.TOOLS["rhasspy"]
