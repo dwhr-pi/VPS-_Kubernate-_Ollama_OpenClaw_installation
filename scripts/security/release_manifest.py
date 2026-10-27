@@ -7,6 +7,7 @@ from pathlib import Path
 import re
 import subprocess
 import sys
+import tempfile
 
 REPO = 'https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation.git'
 TAG = re.compile(r'v[0-9]+\.[0-9]+\.[0-9]+(?:-[a-zA-Z0-9.-]+)?')
@@ -38,13 +39,21 @@ def verify(directory, tag, public_key, runner=None):
     files = {name: regular(directory / name) for name in
              ('SHA256SUMS', 'SHA256SUMS.minisig', 'release.json', 'install.sh')}
     env = {name: value for name, value in os.environ.items() if name in ('PATH', 'LANG', 'LC_ALL', 'SYSTEMROOT')}
-    result = (runner or subprocess.run)(
-        ['minisign', '-Vm', str(files['SHA256SUMS']), '-p', str(key), '-x', str(files['SHA256SUMS.minisig'])],
-        env=env, capture_output=True, timeout=30, check=False)
-    if result.returncode:
-        raise ValueError('Release-Signatur ungueltig; nichts ausfuehren.')
+    # Konsistente private Kopie: keine wechselbaren Download-Dateien nach Signaturpruefung lesen.
+    payloads = {name: path.read_bytes() for name, path in files.items()}
+    with tempfile.TemporaryDirectory(prefix='openclaw-release-verify-') as temp:
+        snapshot = Path(temp)
+        for name, data in payloads.items():
+            (snapshot / name).write_bytes(data)
+        (snapshot / 'trusted.pub').write_bytes(key.read_bytes())
+        result = (runner or subprocess.run)(
+            ['minisign', '-Vm', str(snapshot / 'SHA256SUMS'), '-p', str(snapshot / 'trusted.pub'),
+             '-x', str(snapshot / 'SHA256SUMS.minisig')],
+            env=env, capture_output=True, timeout=30, check=False)
+        if result.returncode:
+            raise ValueError('Release-Signatur ungueltig; nichts ausfuehren.')
     checksums = {}
-    for line in files['SHA256SUMS'].read_text(encoding='ascii').splitlines():
+    for line in payloads['SHA256SUMS'].decode('ascii').splitlines():
         match = re.fullmatch(r'([a-f0-9]{64})  (install\.sh|release\.json)', line)
         if not match or match[2] in checksums or match[1] == '0' * 64:
             raise ValueError('Unbekannte, doppelte oder unsichere Pruefsummenzeile.')
@@ -52,9 +61,9 @@ def verify(directory, tag, public_key, runner=None):
     if set(checksums) != {'install.sh', 'release.json'}:
         raise ValueError('Unvollstaendige Release-Pruefsummen.')
     for name, digest in checksums.items():
-        if hashlib.sha256(files[name].read_bytes()).hexdigest() != digest:
+        if hashlib.sha256(payloads[name]).hexdigest() != digest:
             raise ValueError('Release-Pruefsumme stimmt nicht.')
-    data = json.loads(files['release.json'].read_text(encoding='utf-8'), object_pairs_hook=unique)
+    data = json.loads(payloads['release.json'].decode('utf-8'), object_pairs_hook=unique)
     if (not isinstance(data, dict) or set(data) != {'schema_version', 'tag', 'commit', 'repo'} or
             data['schema_version'] != 1 or data['tag'] != tag or data['repo'] != REPO or
             not isinstance(data['commit'], str) or not re.fullmatch(r'[a-f0-9]{40}', data['commit']) or

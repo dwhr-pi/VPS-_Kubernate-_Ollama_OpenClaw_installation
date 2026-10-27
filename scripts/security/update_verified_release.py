@@ -23,6 +23,10 @@ def update(repo, backup_root, manifest, *, apply=False, fetch=False):
         raise ValueError('Lokale Aenderungen bleiben erhalten; kein Release-Update.')
     if safety.git(repo, 'config', '--get', 'remote.origin.url').stdout.decode().strip() != REPO:
         raise ValueError('Abweichender Origin braucht einen separat signierten Release-Vertrag.')
+    risky = safety.git(repo, 'config', '--local', '--get-regexp',
+                       r'^(http\.|url\.|credential\.|filter\.|include|core\.sshCommand|core\.gitProxy)', allowed=(0, 1))
+    if risky.stdout.strip():
+        raise ValueError('Lokale Transport-/Filterkonfiguration separat pruefen; kein automatischer Fetch/Checkout.')
     if not apply:
         return {'status': 'planned', 'tag': manifest['tag'], 'network': False, 'checkout': False}
     if os.name != 'posix':
