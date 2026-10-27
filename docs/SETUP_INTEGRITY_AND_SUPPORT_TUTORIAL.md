@@ -1,5 +1,20 @@
 # Tutorial: Integritaetspruefung und automatisierter Support
 
+## Aktueller Stand: 27.10.2026
+
+Dieses Dokument beschreibt auch geplante Support-/Manifestverfahren. Der bereits
+implementierte Release-Pruefpfad und seine offenen Abnahmen stehen unter
+[signierte Releases](SIGNED_RELEASES.md). Ohne unabhaengigen Public Key und
+gueltige signierte Artefakte gibt es keine Release-Freigabe.
+
+Der eigene Projektcode ist nach Maintainerentscheidung unter
+[Apache-2.0](../LICENSE) ausgewiesen. [Drittlizenzen](../THIRD_PARTY_NOTICES.md)
+bleiben getrennt. Support-/Selbstheilungsregeln beschreiben betriebliche
+Freigaben, keine zusaetzlichen Lizenzbedingungen. Hashes/Signaturen erkennen
+Abweichungen beziehungsweise bestaetigen Herkunft innerhalb ihres
+Vertrauensmodells; sie machen Quellcode nicht unveraenderbar. Ein Fork oder
+lokaler Diff ist fuer sich genommen kein Nachweis eines Angriffs.
+
 Dieses Tutorial beschreibt, wie das Ultimate KI Setup gegen unbemerkte Veraenderungen abgesichert werden kann, ohne normale Weiterentwicklung und Updates zu blockieren.
 
 Ziel ist ein pruefbarer Support-Pfad:

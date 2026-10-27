@@ -1,5 +1,12 @@
 # VPS- Kubernate- Ollama & OpenClaw installation - Ultimate Setup V11.17
 
+Projektlizenz: [Apache-2.0](LICENSE). Fuer eingebundene Drittprojekte gelten deren
+eigene Bedingungen; siehe [Dritthinweise](THIRD_PARTY_NOTICES.md).
+Aktueller Codebefund: [Audit vom 27.10.2026](docs/AUDIT_2026_10.md).
+[Verzeichniszwecke](docs/DIRECTORY_LAYOUT.md),
+[Vorschlag fuer eine Kurz-README](docs/README_SHORT_PROPOSAL.md) und
+[PR-Entwurf mit Tests, Grenzen und Rollback](docs/reviews/2026-10-27-audit-quick-wins-pr.md).
+
 ## Empfohlener sicherer Einstieg
 
 Den lokal geprueften Bootstrap verwenden, nicht `curl | bash`. Der bevorzugte
@@ -160,9 +167,9 @@ Dies ist das ultimative Setup für ein hybrides KI- und Smart-Home-System, das d
 
 ## Wichtiger Original- und Support-Hinweis
 
-Dieses Setup ist das Original-Setup des Repositories `dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation`. Auch wenn viele Bestandteile aus einfachen Linux-/Bash-Skripten bestehen, ist das Original vor nicht autorisierten Veraenderungen, Manipulationsversuchen und nicht abgestimmten Fork-Aenderungen geschuetzt.
+Dieses Setup stammt aus dem Repository `dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation`. Quellcode kann veraendert werden. SHA256-Pruefsummen erkennen Abweichungen; eine Signatur kann die Herkunft gepruefter Release-Metadaten bestaetigen, wenn der Public Key unabhaengig vertraut ist. Das verhindert keine Aenderung und garantiert keine Fehlerfreiheit. Der aktuelle Freigabestand steht unter [signierte Releases](docs/SIGNED_RELEASES.md).
 
-Die automatisierte Supportunterstuetzung und Selbstheilung via Update gilt nur fuer das unverfaelschte Original-Setup bzw. fuer bewusst freigegebene Aenderungen. Wenn das Setup aus einem Fork, einer unbekannten Quelle oder einer lokal manipulierten Variante stammt, erlischt diese automatisierte Supportunterstuetzung: Das Original-Update kann solche Aenderungen nicht sicher bewerten, reparieren oder verantworten.
+Automatisierte Reparaturen sollen nur fuer eindeutig identifizierte, gepruefte Staende angeboten werden. Bei Forks, unbekannter Herkunft oder lokalen Aenderungen ist zuerst ein manueller Abgleich erforderlich; abweichender Code ist nicht automatisch ein Angriff. Diese betriebliche Supportgrenze ist keine zusaetzliche Lizenzbedingung und ersetzt keine ausdrueckliche Reparaturfreigabe.
 
 Bitte kontaktiere den Entwickler, wenn Funktionen, Anpassungen oder neue Tools gewuenscht sind. Wuensche koennen dann sauber aufgenommen, geprueft und kontrolliert in das Original-Setup integriert werden.
 
