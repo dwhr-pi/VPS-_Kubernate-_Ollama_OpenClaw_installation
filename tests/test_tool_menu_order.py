@@ -28,10 +28,12 @@ class ToolMenuOrderTests(unittest.TestCase):
         for array in re.findall(r"^TOOL_KEYS\+?=\(([^\n]*)\)", setup, re.M):
             names.extend(shlex.split(array))
         pinned = [name for name in names if name in {"Ollama", "OpenClaw", "Ruflo"}]
-        remaining = [name for name in names if name not in pinned]
+        # Explicitly requested new GitOps tools stay behind the existing Z end.
+        appended = [name for name in names if name in {"GitOps_Bootstrap", "Kubeseal", "Traefik"}]
+        remaining = [name for name in names if name not in pinned and name not in appended]
         result = self.run_sort(names)
         # LC_ALL=C sort -f folds ASCII letters to uppercase, including around underscores.
-        self.assertEqual(result, pinned + sorted(remaining, key=str.upper))
+        self.assertEqual(result, pinned + sorted(remaining, key=str.upper) + appended)
         self.assertCountEqual(result, names)
         self.assertGreater(len(result), 250)
         self.assertIn("ACE_Step_15", result)

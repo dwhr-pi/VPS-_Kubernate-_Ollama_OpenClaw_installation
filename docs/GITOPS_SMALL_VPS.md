@@ -20,8 +20,9 @@ TCP-Probes messen nur den Listener, nicht Auth, Datengesundheit oder RAG-Qualita
 kubectl kustomize k8s/gitops/memory
 ```
 
-Eigenes Deployment-Overlay: Basis referenzieren, `qdrant-runtime` durch ein aus
-gepruefter Quelle gebautes/gescanntes Image mit SHA256-Digest ersetzen und echtes
+Eigenes Deployment-Overlay: Basis referenzieren, den dort aufgeloesten Namen
+`registry.example.invalid/qdrant` durch ein aus gepruefter Quelle gebautes/
+gescanntes Image mit SHA256-Digest ersetzen und echtes
 `qdrant-auth`-SealedSecret aufnehmen. UID 10001, Config-Schema und Probeverhalten
 gegen genau dieses Image pruefen. Native GitHub-Installation ist weiterhin ueber
 den vorhandenen Qdrant-Installer moeglich; ein Kubernetes-Pod nutzt trotzdem OCI.
@@ -193,7 +194,8 @@ kein Ingress und kein Modell-, Ollama-, n8n- oder Agentenstart.
 
 Argo Core spart Web-UI/SSO-Server. Verwaltung mit freigegebener Argo-CLI im
 Core-Modus und explizitem Kontext; keine initialen Admin-Passwoerter ausgeben.
-Wiederholung nutzt gleiche Hashes und verwalteten Zustand. Fremde Installationen,
+Der Vorbereitungsnachweis ist kein Ende-zu-Ende-Test des Tunnels, der Anmeldung
+oder einer Anwendung. Wiederholung nutzt gleiche Hashes und verwalteten Zustand. Fremde Installationen,
 andere Pins/Adressen oder eine lokal geaenderte Tunnel-Unit werden abgelehnt.
 Ein Fehler kann einen teilweise eingerichteten Host hinterlassen: Logs pruefen
 und denselben Stand fortsetzen; kein destruktives automatisches Rollback.
@@ -232,11 +234,27 @@ Restore isoliert testen, Count/Collection/Embedding-Suche pruefen und RPO/RTO
 messen. Automatisierte Snapshots/Restore und Controller-Key-Backup sind noch
 als betriebliche Jobs abzunehmen, nicht allein durch einen PVC erledigt.
 
+Auch K3s selbst braucht ein Datastore-Backup. Beim hier vorgesehenen einzelnen
+Server ohne `cluster-init` ist der SQLite-Pfad relevant; konsistente Sicherung
+im geprueften Wartungsfenster planen. Der Server-Token unter
+`/var/lib/rancher/k3s/server/token` muss ebenfalls verschluesselt gesichert und
+passend wiederhergestellt werden. `k3s etcd-snapshot` ist nur fuer eingebettetes
+etcd der passende Weg, nicht fuer SQLite.
+[K3s-Backup-Vertrag](https://docs.k3s.io/datastore/backup-restore).
+
 Vor Freigabe: Helm/Kustomize rendern, kubeconform mit passenden lokalen
 CRD-Schemas, Auth-/RBAC-/CNI-Negativtests, zweite Installation/Abbruch-Fortsetzung,
 Last-/OOM-/Disk-Tests und Restore auf frischem Ziel. 512Mi-Qdrant, Core-Controller
 und nicht-root Images auf der konkreten Architektur pruefen. Diese Aenderung
 fuehrt keinen Host-/WSL-/Cluster-/Provider-/Inferenztest aus.
+
+Offline-Pruefstand: 27 gezielte GitOps-/Menue-/Sortier-Tests ohne Fehler,
+davon ein Helm-Render-Test mangels installiertem Helm uebersprungen.
+Die bestehenden nativen Build-/Status-Fixtures wurden ebenfalls ausgefuehrt;
+der alte reine A-Z-Test wurde an die ausdrueckliche neue Endgruppe angepasst.
+Registry-Check: 389 Tools/245 Profile, keine strukturellen Fehler, 813 Hinweise.
+Statischer Python-Check ohne Fehler. Keine erfolgreiche Helm-/Kustomize-
+Schemavalidierung oder Live-/Restore-Abnahme wird hier behauptet.
 
 ## Offizielle Referenzen
 

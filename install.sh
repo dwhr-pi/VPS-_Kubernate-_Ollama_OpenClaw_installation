@@ -6,6 +6,13 @@
 
 set -e
 
+# Sicherer Einstieg: den geprueften Commit verwenden, nicht erneut main beziehen.
+if [[ "${1:-}" == --verified-source ]]; then
+    [[ $# == 3 ]] || { printf 'Verifizierter Einstieg braucht Commit und Ziel.\n' >&2; exit 2; }
+    VERIFIED_ROOT="$(cd "${BASH_SOURCE[0]%/*}" && pwd)"
+    exec bash "$VERIFIED_ROOT/scripts/verified_source_install.sh" "$2" "$3"
+fi
+
 REPO_URL="https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation.git" # BITTE AN IHR REPOSITORY ANPASSEN!
 INSTALL_DIR="openclaw_ultimate_setup"
 TTY_DEVICE="/dev/tty"
