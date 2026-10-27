@@ -2,18 +2,23 @@
 
 ## Empfohlener sicherer Einstieg
 
-Den lokal geprueften Bootstrap verwenden, nicht `curl | bash`. Commit und
-Installer-SHA256 aus einer **unabhaengig verifizierten** Release-Quelle beziehen:
+Den lokal geprueften Bootstrap verwenden, nicht `curl | bash`. Der bevorzugte
+Vertrauensanker ist **Minisign mit separat bereitgestelltem oeffentlichem Schluessel**:
 
 ```bash
-bash ./verify_and_install.sh --commit DEIN_VOLLER_COMMIT \
-  --installer-sha256 DEIN_VERIFIZIERTER_SHA256 \
-  --destination "$HOME/openclaw_ultimate_setup"
+bash ./verify_release_and_install.sh --tag vX.Y.Z \
+  --public-key /absoluter/unabhaengiger/release.pub \
+  --artifacts /absoluter/pfad/release-artefakte --verify-only
 ```
 
-Der temporaere Checkout wird erst nach Hashpruefung ausgefuehrt; der Zielstand
-bleibt gepinnt, statt erneut `main` zu laden. Vorhandene Ziele/Benutzerdaten
-werden nicht ersetzt. Auch der Bootstrap selbst muss vorab vertrauenswuerdig sein.
+`vX.Y.Z` ist ein Platzhalter, kein veroeffentlichtes Release. Ohne echten Tag,
+Signatur und unabhaengigen Schluessel bleibt dieser Weg gesperrt. Erst nach
+Pruefung bewusst `--verify-only` durch `--install --destination ABS` ersetzen.
+Standard-Updates verlangen ebenfalls einen signierten Tag; kein `main`-Fallback.
+[Signaturverfahren, Updates und offene Abnahmen](docs/SIGNED_RELEASES.md).
+[P0-Teilreview vom 27.10.2026 und priorisierte Restarbeiten](docs/CODEX_REVIEW_2026-10-27.md).
+Auch Bootstrap und Python-Pruefhelfer muessen vorab vertrauenswuerdig sein.
+Der bisherige [explizite Commit-/Hash-Weg](docs/SECURE_CORE_REFACTOR.md) bleibt separat.
 [Alle fuenf Bausteine: Core-Ansible, Restic/SOPS, Limits und nativer Traefik](docs/SECURE_CORE_REFACTOR.md).
 [Ergaenzungen 27.10.: Sprachdialog, Ressourcen, read-only Metriken, Tunnel, Policies und Velero](docs/PLATFORM_GAP_IMPLEMENTATION_2026-10-27.md).
 Die spaeter dokumentierten alten One-Liner sind kein empfohlener sicherer Einstieg.

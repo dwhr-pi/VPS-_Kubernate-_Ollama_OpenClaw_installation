@@ -2,7 +2,7 @@
 # Einstieg aus einer bereits geprueften Bootstrap-Kopie; Vertrauen nie aus dem Download ableiten.
 set -Eeuo pipefail
 umask 077
-ROOT="$(cd "${BASH_SOURCE[0]%/*}" && pwd)"
+ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 tag= key= artifacts= download=0 execute=0 verify_only=0 destination="$HOME/openclaw_ultimate_setup" stage=
 die() { printf 'Release-Einstieg abgebrochen: %s\n' "$*" >&2; exit 1; }
 while (($#)); do
