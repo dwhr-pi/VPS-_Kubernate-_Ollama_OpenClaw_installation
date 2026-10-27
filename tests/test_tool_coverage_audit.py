@@ -104,6 +104,25 @@ class ToolCoverageAuditTests(unittest.TestCase):
         after = {p.relative_to(self.root): p.read_bytes() for p in self.root.rglob("*") if p.is_file()}
         self.assertEqual(before, after)
 
+    def test_native_registration_adds_allowlisted_keys_without_duplicate_existing(self):
+        setup = self.root / 'setup_ultimate.sh'
+        setup.write_text(setup.read_text() + 'register_native_github_tool_keys\n', encoding='utf-8')
+        self.write('scripts/helpers/native_github_menu.sh',
+                   'NATIVE_GITHUB_TOOL_KEYS=("Existing" "Native")\n'
+                   'NATIVE_GITHUB_TOOL_KEYS+=("Native" "Another")\n')
+        names, _ = AUDIT.menu_inventory(setup.read_text(), self.root)
+        self.assertEqual(names, ['Existing', 'OnlyMenu', 'Candidate', 'Native', 'Another'])
+        self.assertEqual(AUDIT.audit(self.root)['counts']['menu'], 5)
+
+    def test_unused_native_allowlist_does_not_change_menu_inventory(self):
+        self.write('scripts/helpers/native_github_menu.sh', 'NATIVE_GITHUB_TOOL_KEYS=("NotRegistered")\n')
+        names, _ = AUDIT.menu_inventory((self.root / 'setup_ultimate.sh').read_text(), self.root)
+        self.assertNotIn('NotRegistered', names)
+
+    def test_shell_expressions_are_not_menu_names_and_never_executed(self):
+        text = 'TOOL_KEYS=("Safe" "$(touch never-execute)" "${DYNAMIC[@]}" "`id`")\n'
+        self.assertEqual(AUDIT.menu_inventory(text)[0], ['Safe'])
+
 
 if __name__ == "__main__":
     unittest.main()

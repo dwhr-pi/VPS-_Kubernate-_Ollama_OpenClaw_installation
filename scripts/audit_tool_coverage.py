@@ -40,10 +40,23 @@ def local_file(root, relative):
     return path.resolve().is_relative_to(root.resolve()) and path.is_file()
 
 
-def menu_inventory(text):
-    names = []
-    for match in re.finditer(r"^TOOL_KEYS\+?=\(([^\n]*)\)", text, re.M):
-        names.extend(shlex.split(match[1]))
+def literal_array(text, key):
+    values = []
+    for match in re.finditer(r"^" + re.escape(key) + r"\+?=\(([^\n]*)\)", text, re.M):
+        values.extend(value for value in shlex.split(match[1]) if not any(c in value for c in ('$', '`')))
+    return values
+
+
+def menu_inventory(text, root=None):
+    names = literal_array(text, 'TOOL_KEYS')
+    if root is not None and re.search(r'^register_native_github_tool_keys\s*$', text, re.M):
+        helper = Path(root) / 'scripts/helpers/native_github_menu.sh'
+        if helper.is_file() and not helper.is_symlink():
+            # Read the known literal allowlist, never source/evaluate shell code.
+            native = literal_array(helper.read_text(encoding='utf-8'), 'NATIVE_GITHUB_TOOL_KEYS')
+            for name in native:
+                if name not in names:
+                    names.append(name)
     mappings = dict(re.findall(
         r'^TOOL_SCRIPT_NAMES\["([^"\n]+)"\]="([^"\n]+)"', text, re.M))
     return names, mappings
@@ -60,7 +73,7 @@ def script_state(root, path):
 def audit(root=ROOT):
     registry = json.loads((root / "config/tools.yml").read_text(encoding="utf-8"))["tools"]
     setup = (root / "setup_ultimate.sh").read_text(encoding="utf-8")
-    names, mappings = menu_inventory(setup)
+    names, mappings = menu_inventory(setup, root)
     chains = json.loads((root / "config/development_toolchains.json").read_text(encoding="utf-8"))["tools"]
     recipes = json.loads((root / "config/development_installers.json").read_text(encoding="utf-8"))["recipes"]
     documented = defaultdict(set)
@@ -136,7 +149,7 @@ def cell(value):
 
 def markdown(data):
     lines = ["# Dokumentation und Setup: Vollstaendigkeitsabgleich", "",
-             "Statischer Repository-Abgleich, Stand 22.10.2026. Neu erzeugen:", "",
+             "Statischer Repository-Abgleich des lokalen Standes. Zeitpunkt/Commit separat festhalten. Neu erzeugen:", "",
              "```text", "python -B scripts/audit_tool_coverage.py --output docs/TOOL_SETUP_AUDIT.md", "```", "",
              "**Nein, nicht alle dokumentierten Werkzeuge sind als installierbare Tools integriert.**",
              "Dieser Bericht liest nur Repository-Dateien, startet weder Setup noch WSL und prueft",
@@ -153,13 +166,13 @@ def markdown(data):
               "unmatched_repositories": "GitHub-Referenzen ohne direkte Quellenzuordnung"}
     lines += [f"| {labels[k]} | {v} |" for k, v in data["counts"].items()]
     lines += ["", "## So sind die Ergebnisse zu lesen", "",
-              "- Hauptmenue 8 zeigt die explizite Tools-Liste aus setup_ultimate.sh, nicht automatisch die Registry.",
+              "- Hauptmenue 8 zeigt die Tools-Liste aus setup_ultimate.sh plus der bekannten nativen Allowlist, nicht automatisch die Registry.",
               "- Die 62 Entwicklungsquellen sind separat ueber Hauptmenue 16 bzw. die Zusatzschaltflaeche im Tools-Menue erreichbar.",
               "- Registry-only bedeutet nicht automatisch fehlender Installer: alternative Skripte/Projektwege separat pruefen.",
               "- Ein vorhandenes Skript beweist weder eine vollstaendige Installation noch eine nutzbare Runtime. Source-only, VSIX, manuelle Downloads und optionale Builds bleiben unterschiedliche Modi.",
               "- Ein bekannter Platzhalter ist kein Installer. Status planned kann aber auch bei einem echten Skript veraltet sein.",
               "- GitHub-Referenzen umfassen Bibliotheken, Actions, Modelle, Mirrors und Beispiele. Nicht zugeordnete Referenzen sind Pruefkandidaten, keine automatische Liste fehlender Programme.",
-              "- Verglichen werden explizite Bash-Arrays/Mappings und direkte Quellen-URLs. Textnennungen ohne GitHub-Link, historische Umbenennungen und indirekte Helper-URLs sind nicht vollstaendig semantisch aufloesbar.",
+              "- Verglichen werden literale Bash-Arrays/Mappings, die bekannte native Menue-Ergaenzung und direkte Quellen-URLs. Andere dynamische Shell-Logik wird nicht ausgefuehrt; historische Aliase und indirekte Helper-URLs sind nicht vollstaendig semantisch aufloesbar.",
               "- Keine Installationsbereitschaft aus einem Dateinamen ableiten; diesen Bericht nicht als Live-Abnahme verwenden.", "",
               "## Registry ohne Eintrag im Tools-Menue", "", "| ID | Installationsweg | Umfang |", "|---|---|---|"]
     lines += [f"| {cell(t['id'])} | {cell(t['script'])} | {cell(t['script_state'])} |"
