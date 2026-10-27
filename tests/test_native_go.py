@@ -1,6 +1,7 @@
 """Private Go prerequisite contracts; no archive downloads or compilers."""
 from contextlib import redirect_stdout
 import io
+import copy
 import os
 from pathlib import Path
 import sys
@@ -25,6 +26,75 @@ class NativeGoTests(unittest.TestCase):
                        patch.object(go.sys, "stdin", Mock(isatty=Mock(return_value=False)))):
             mocked.start()
             self.addCleanup(mocked.stop)
+
+    def test_all_versioned_go_recipes_have_matching_explicit_contracts(self):
+        versioned = {key: item for key, item in tools.TOOLS.items()
+                     if (item.get("recipe") or {}).get("go_min") is not None}
+        self.assertEqual(set(versioned), set(go.CONTRACTS))
+        for key, spec in versioned.items():
+            with self.subTest(tool=key):
+                minimum, documentation = go.CONTRACTS[key]
+                self.assertEqual(spec["recipe"]["go_min"], minimum)
+                self.assertTrue((ROOT / documentation).is_file())
+
+    def test_kubeseal_contract_matches_pinned_recipe_without_controller_actions(self):
+        spec = tools.TOOLS["kubeseal"]
+        self.assertEqual(spec["recipe"]["pin"], "c58a60f0bd5283d28c25ad068e7c9760634be470")
+        self.assertEqual(spec["recipe"]["go_min"], [1, 27, 3])
+        self.assertEqual(spec["recipe"]["package"], "./cmd/kubeseal")
+        self.assertEqual(spec["recipe"]["probe"], ["--version"])
+
+    def test_kubeseal_rejects_unreviewed_minimum_before_toolchain_selection(self):
+        spec = copy.deepcopy(tools.TOOLS["kubeseal"])
+        spec["recipe"]["go_min"] = [1, 27, 4]
+        with patch.object(go.private_go, "ensure") as ensure, patch.object(go.common, "run") as run:
+            with self.assertRaisesRegex(ValueError, "Kubeseal: Nicht freigegebener"):
+                go.prepare(self.base, spec, approved=True)
+        ensure.assert_not_called()
+        run.assert_not_called()
+
+    def test_kubeseal_missing_go_logs_repair_without_download_or_success(self):
+        with patch.dict(os.environ, {"OPENCLAW_USER_DATA_DIR": str(self.base)}), \
+             patch.object(tools.platform, "system", return_value="Linux"), \
+             patch.object(tools.common, "reserve"), patch.object(tools.common, "executable"), \
+             patch.object(go.private_go, "ensure") as ensure, patch.object(tools.common, "install") as fetch, \
+             redirect_stdout(io.StringIO()):
+            with self.assertRaisesRegex(ValueError, "Kubeseal: Go >=1.27.3"):
+                tools.main(["kubeseal", "install"])
+            self.assertFalse(tools.paths("kubeseal")[2].exists())
+            log = list((self.base / "install_logs").glob("*.log"))[0].read_text()
+            self.assertIn("kubeseal_install.sh --install-build-deps", log)
+            self.assertNotIn("Nicht freigegebener privater Go-Buildvertrag", log)
+        ensure.assert_not_called()
+        fetch.assert_not_called()
+
+    def test_kubeseal_prefers_suitable_existing_go_without_download(self):
+        with patch.object(go.shutil, "which", return_value="/existing/go"), \
+             patch.object(go.common, "run", return_value="go version go1.27.3 linux/amd64"), \
+             patch.object(go.private_go, "ensure") as ensure, redirect_stdout(io.StringIO()):
+            self.assertEqual(go.select(self.base, tools.TOOLS["kubeseal"]), ("/existing/go", None))
+        ensure.assert_not_called()
+
+    def test_kubeseal_approved_private_go_changes_only_build_environment(self):
+        spec = tools.TOOLS["kubeseal"]
+        slot = self.base / "toolchain" / (go.private_go.VERSION + "-linux-amd64")
+        root = slot / "go"
+
+        def ensure(base, validate):
+            slot.mkdir(parents=True, exist_ok=True)
+            validate(root / "bin/go", root, "linux-amd64")
+            return str(root / "bin/go"), root
+
+        before = dict(os.environ)
+        env = {"PATH": "original", "GOTOOLCHAIN": "local"}
+        with patch.object(go.private_go, "ensure", side_effect=ensure), \
+             patch.object(go.common, "run", return_value="go version " + go.private_go.VERSION + " linux/amd64"), \
+             redirect_stdout(io.StringIO()):
+            go.prepare(self.base, spec, approved=True)
+            go.activate(self.base, spec, env)
+        self.assertEqual(env["GOROOT"], str(root))
+        self.assertEqual(env["GOTOOLCHAIN"], "local")
+        self.assertEqual(dict(os.environ), before)
 
     def test_version_contract_rejects_old_development_and_invalid_versions(self):
         for text, expected in (("go version go1.26.0 linux/amd64", True), ("go version go1.27.3 linux/arm64", True),

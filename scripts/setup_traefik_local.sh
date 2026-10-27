@@ -42,10 +42,20 @@ else
 fi
 systemctl daemon-reload
 if ((start)); then
+  command -v openssl >/dev/null || die 'OpenSSL fuer Zertifikatspruefung erforderlich.'
+  command -v ss >/dev/null || die 'ss fuer lokale Portkonfliktpruefung erforderlich.'
   for file in origin.crt origin.key; do
     [[ -f "$config/tls/$file" && ! -L "$config/tls/$file" ]] || die 'Zertifikat/Schluessel vor dem Start separat bereitstellen.'
     [[ $(stat -c %u "$config/tls/$file") == 0 && $(stat -c %a "$config/tls/$file") == 640 && $(stat -c %G "$config/tls/$file") == traefik-local ]] || die 'TLS-Dateien muessen root:traefik-local 0640 sein.'
   done
+  # Kein TLS-Start mit abgelaufenem Zertifikat oder falschem privaten Schluessel.
+  openssl x509 -in "$config/tls/origin.crt" -noout -checkend 86400 >/dev/null 2>&1 || die 'Zertifikat ungueltig oder weniger als einen Tag gueltig.'
+  cert_public=$(openssl x509 -in "$config/tls/origin.crt" -pubkey -noout | openssl pkey -pubin -outform DER | sha256sum | cut -d ' ' -f1)
+  key_public=$(openssl pkey -in "$config/tls/origin.key" -passin pass: -pubout -outform DER 2>/dev/null | sha256sum | cut -d ' ' -f1)
+  [[ "$cert_public" == "$key_public" ]] || die 'Zertifikat und Schluessel passen nicht zusammen.'
+  if ! systemctl is-active --quiet openclaw-traefik.service; then
+    [[ -z $(ss -H -ltn '( sport = :80 or sport = :443 )') ]] || die 'Port 80 oder 443 bereits belegt; keinen fremden Ingress ersetzen.'
+  fi
   systemctl enable --now openclaw-traefik.service
   systemctl is-active --quiet openclaw-traefik.service || die 'Start fehlgeschlagen; Ports/Zertifikate privat pruefen.'
 else

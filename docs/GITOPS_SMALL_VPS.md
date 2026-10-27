@@ -63,6 +63,7 @@ Dies betrifft nur Infrastruktur, nicht alle optionalen Workloads oder Modelle.
 
 [Kubeseal-CLI](../scripts/tools/kubeseal_install.sh): nativer GitHub-Go-Build,
 gepinnt auf `c58a60f0bd5283d28c25ad068e7c9760634be470`; Go >=1.27.3.
+Installation, Go-Freigabe und Fehlerbehebung: [Kubeseal-Anleitung](tools/kubeseal.md).
 Der CLI-Installer installiert keinen Controller. Dessen
 [GitOps-App-Beispiel](../k8s/gitops/platform/sealed-secrets-application.yaml.example)
 braucht ein separat geprueftes Plattform-Projekt mit CRD-/Cluster-RBAC-Rechten
@@ -143,6 +144,31 @@ konfigurierten Alertmanager. Volltext-/Prompt-Logging ist nicht aktiviert.
 [Tunnel-Unit](../systemd/openclaw-cloudflared.service).
 Neue Menueeintraege **GitOps_Bootstrap und Kubeseal stehen nach dem bisherigen
 Z-Ende**. Der Menue-Standard startet kein Infrastruktur-Apply ohne Parameter.
+
+### Menueauswahl: Planung statt fehlgeschlagener Standardinstallation
+
+Die Auswahl von `GitOps_Bootstrap` unter **Installieren** oeffnet jetzt einen
+gefuehrten Offline-Plan. Sie fragt nach dem absoluten Pfad zur eigenen geprueften
+Artefakt-JSON und der privaten IPv4-Adresse. Enter verschiebt den Schritt;
+ohne Terminal wird ebenfalls ohne Installationsversuch verschoben. Bestehende
+Artefakte, Dienste und Cluster bleiben unveraendert.
+
+Das aktuelle Operationslog meldet `Status=planned` nach validierter Planung
+oder `Status=skipped` bei Verschieben, nicht pauschal `failed`. Ungueltige
+Pins, Pfade oder Adressen bleiben echte Planungsfehler. Es gibt keinen
+Installationsmarker, keinen Installationsmesswert als Erfolg und keinen
+Rollback-Lock fuer eine reine Planung. Das Tool bleibt ohne echten Bootstrap-
+Nachweis folgerichtig **nicht installiert**. Der ausgegebene Apply-Befehl wird
+nur angezeigt, niemals automatisch ausgefuehrt. Der Menuepunkt **Update** ist
+keine Freigabe zur Cluster-Migration; den bewussten CLI-Weg unten verwenden.
+
+Das gemeldete alte Log mit Exitcode 2 bedeutete: Der damalige Menue-Wrapper
+hatte keine Parameter erhalten und brach bewusst vor dem Bootstrap ab.
+Es war weder ein GitHub-Downloadfehler noch eine fehlgeschlagene K3s-Installation.
+Mit den dort gemeldeten **9,9 GiB frei unter Windows** ist ein echter WSL-Apply
+ohnehin noch unter der verlangten **12-GiB-Hostreserve**, auch wenn die allgemeine
+4-GiB-Toolwache passiert wurde. Die Offline-Planung braucht diese Buildreserve
+nicht; Apply prueft RAM, Linux-Disk und Windows-Host-Speicher separat.
 
 Vorbereitung auf einer isolierten Ubuntu-24.04-VM bzw. systemd-faehigem WSL:
 offizielle GitHub-Versionen/volle Commits samt SHA256 fuer K3s, dessen Installer,

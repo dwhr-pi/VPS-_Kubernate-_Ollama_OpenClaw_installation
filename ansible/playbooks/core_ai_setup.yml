@@ -39,7 +39,7 @@
           - "'ollama' not in core_components or core_ollama_commit is match('^[a-f0-9]{40}$')"
           - "'openclaw' not in core_components or core_openclaw_commit is match('^[a-f0-9]{40}$')"
           - core_build_jobs | int >= 1 and core_build_jobs | int <= 2
-          - "'ollama' not in core_components or core_go_version is match('^[0-9]+\.[0-9]+\.[0-9]+$')"
+          - "'ollama' not in core_components or core_go_version is match('^[0-9]+[.][0-9]+[.][0-9]+$')"
           - core_prefix == '/opt/openclaw-core'
           - core_token_file == '/etc/openclaw-core/gateway.token'
           - core_go_bin is match('^/(usr|opt)/[A-Za-z0-9_./-]+$')
@@ -58,6 +58,12 @@
           - item not in getent_passwd or getent_passwd[item][1] | int > 0
           - item not in getent_passwd or getent_passwd[item][-1] == '/usr/sbin/nologin'
       loop: "{{ core_components | map('extract', core_users) | list + ['openclaw-core-build'] }}"
+      tags: [always]
+    - name: Vorhandenen nicht privilegierten Operator verlangen
+      ansible.builtin.assert:
+        that:
+          - core_operator in getent_passwd
+          - getent_passwd[core_operator][1] | int > 0
       tags: [always]
     - name: Benutzerdatenpfad getrennt vom Repo festlegen
       ansible.builtin.set_fact:

@@ -1,0 +1,32 @@
+[Unit]
+Description=Verschluesseltes taegliches User-Workspace-Backup
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+# Root liest auch die getrennten Dienst-UID-Verzeichnisse; niemals Repo-Code als Dienstpfad.
+User=root
+Group=root
+EnvironmentFile=/etc/openclaw-workspace-backup/native.env
+ExecStart=/usr/local/libexec/openclaw-backup/backup_user_workspace.sh
+NoNewPrivileges=yes
+# Nur zusaetzliches Lesen fuer die getrennten Dienst-UIDs, keine Verwaltungs-Capabilities.
+CapabilityBoundingSet=CAP_DAC_READ_SEARCH
+RestrictSUIDSGID=yes
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX AF_NETLINK
+ProtectSystem=strict
+ProtectHome=read-only
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+UMask=0077
+MemoryMax=768M
+CPUQuota=100%
+TimeoutStartSec=4h
+Nice=10
+IOSchedulingClass=best-effort
+IOSchedulingPriority=7
+

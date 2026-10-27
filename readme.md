@@ -1,5 +1,22 @@
 # VPS- Kubernate- Ollama & OpenClaw installation - Ultimate Setup V11.17
 
+## Empfohlener sicherer Einstieg
+
+Den lokal geprueften Bootstrap verwenden, nicht `curl | bash`. Commit und
+Installer-SHA256 aus einer **unabhaengig verifizierten** Release-Quelle beziehen:
+
+```bash
+bash ./verify_and_install.sh --commit DEIN_VOLLER_COMMIT \
+  --installer-sha256 DEIN_VERIFIZIERTER_SHA256 \
+  --destination "$HOME/openclaw_ultimate_setup"
+```
+
+Der temporaere Checkout wird erst nach Hashpruefung ausgefuehrt; der Zielstand
+bleibt gepinnt, statt erneut `main` zu laden. Vorhandene Ziele/Benutzerdaten
+werden nicht ersetzt. Auch der Bootstrap selbst muss vorab vertrauenswuerdig sein.
+[Alle fuenf Bausteine: Core-Ansible, Restic/SOPS, Limits und nativer Traefik](docs/SECURE_CORE_REFACTOR.md).
+Die spaeter dokumentierten alten One-Liner sind kein empfohlener sicherer Einstieg.
+
 [Plattform-Review vom 26.10.2026: Vollinventar, P0/P1/P2-Patchplan und sichere Beispiele](docs/reviews/2026-10-26-platform-patch-plan.md).
 Statischer Nachweis fuer 385 Tools/245 Profile, keine automatische Produktionsfreigabe.
 

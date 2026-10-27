@@ -1,0 +1,11 @@
+[Unit]
+Description=Workspace-Backup jeden Tag mit zeitlichem Versatz
+
+[Timer]
+OnCalendar=*-*-* 03:30:00 Europe/Berlin
+RandomizedDelaySec=20m
+Persistent=true
+Unit=openclaw-workspace-backup.service
+
+[Install]
+WantedBy=timers.target

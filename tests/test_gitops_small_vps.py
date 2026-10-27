@@ -104,6 +104,42 @@ class ArtifactLockTests(unittest.TestCase):
 
 
 class GitopsContractTests(unittest.TestCase):
+    def test_menu_wrapper_is_plan_only_and_can_defer_without_success_marker(self):
+        wrapper = (ROOT / 'scripts/tools/gitops_bootstrap_install.sh').read_text(encoding='utf-8')
+        self.assertIn('--interactive-plan', wrapper)
+        self.assertIn('exit 3', wrapper)
+        self.assertIn('--plan --artifacts "$artifacts" --private-address "$address"', wrapper)
+        self.assertNotRegex(wrapper, re.compile(r'^\s*(?:sudo\s+)?bash[^\n]*--apply', re.M))
+        self.assertIn('12 GiB Windows-Host-Reserve', wrapper)
+
+    @unittest.skipUnless(BASH and Path(BASH).is_file(), 'Bash erforderlich')
+    def test_menu_planning_logs_planned_skipped_or_failed_without_installing(self):
+        setup = (ROOT / 'setup_ultimate.sh').read_text(encoding='utf-8')
+        functions = '\n'.join(re.search(r'^' + name + r'\(\) \{\n.*?^\}', setup, re.M | re.S).group()
+                              for name in ('plan_gitops_bootstrap_from_setup', 'install_tool'))
+        for code, status in ((0, 'planned'), (3, 'skipped'), (1, 'failed')):
+            # Nur extrahierte Funktionen und Mocks; kein komplettes Setup starten.
+            command = '''set -euo pipefail
+INSTALL_DIR=/fixture
+begin_operation_measurement() { printf 'begin:%s\n' "$1"; }
+capture_operation_output() { printf 'wrapper:%s\n' "$3"; return MOCK_CODE; }
+end_operation_measurement() { printf 'end:%s\n' "$1"; }
+handle_manual_tool_post_action() { printf 'post:%s\n' "$3"; }
+preflight_tool_install_storage() { exit 99; }
+run_tool_script() { exit 99; }
+append_unique_line() { exit 99; }
+''' .replace('MOCK_CODE', str(code)) + functions + '''
+rc=0
+install_tool GitOps_Bootstrap || rc=$?
+printf 'rc:%s\n' "$rc"
+'''
+            result = subprocess.run([BASH, '--noprofile', '--norc', '-s'], input=command,
+                                    cwd=ROOT, capture_output=True, text=True, encoding='utf-8', timeout=30)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertEqual(result.stdout.splitlines(), [
+                'begin:tool_install_GitOps_Bootstrap', 'wrapper:--interactive-plan',
+                'end:' + status, 'post:' + status, 'rc:' + ('1' if code == 1 else '0')])
+
     def test_bootstrap_defaults_to_offline_and_requires_explicit_apply(self):
         text = (ROOT / 'scripts/bootstrap_gitops.sh').read_text(encoding='utf-8')
         self.assertIn('mode=plan', text)

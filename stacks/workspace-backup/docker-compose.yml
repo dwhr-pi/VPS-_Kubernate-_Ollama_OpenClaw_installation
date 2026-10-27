@@ -1,0 +1,43 @@
+# Optionaler Containerpfad, keine automatische Docker-Installation.
+services:
+  backup:
+    image: ${RESTIC_BACKUP_REPOSITORY:?Geprueftes Image mit Bash und Restic setzen}@sha256:${RESTIC_BACKUP_SHA256:?Verifizierten SHA256-Digest setzen}
+    # Root nur im Container; fremde Dienst-UIDs im Workspace verlangen Lese-Rechte.
+    user: '0:0'
+    read_only: true
+    cap_drop: [ALL]
+    cap_add: [DAC_READ_SEARCH]
+    security_opt: [no-new-privileges:true]
+    pids_limit: 64
+    mem_limit: 768m
+    cpus: 1.0
+    restart: 'no'
+    entrypoint: [/bin/bash, /job/backup_user_workspace.sh]
+    environment:
+      BACKUP_SOURCE: /source
+      BACKUP_SECRET_DIR: /run/backup-secrets
+      BACKUP_HOST_ID: ${BACKUP_HOST_ID:?Eindeutige Host-ID setzen}
+      RESTIC_REPOSITORY: ${RESTIC_REPOSITORY:?S3-HTTPS-Repository setzen}
+      BACKUP_TARGET_IS_EXTERNAL: ${BACKUP_TARGET_IS_EXTERNAL:-0}
+      BACKUP_ALLOW_PRUNE: ${BACKUP_ALLOW_PRUNE:-0}
+      BACKUP_DEDICATED_REPOSITORY: ${BACKUP_DEDICATED_REPOSITORY:-0}
+      RESTIC_CACHE_DIR: /cache
+    volumes:
+      - type: bind
+        source: ${USER_WORKSPACE_DIR:?Absoluten User-Workspace setzen}
+        target: /source
+        read_only: true
+        bind: {create_host_path: false}
+      - type: bind
+        source: ${BACKUP_SECRET_HOST_DIR:?Privates root-eigenes Verzeichnis ausserhalb der Quelle setzen}
+        target: /run/backup-secrets
+        read_only: true
+        bind: {create_host_path: false}
+      - type: bind
+        source: ${BACKUP_JOB_SCRIPT:?Root-eigenes installiertes Jobskript setzen}
+        target: /job/backup_user_workspace.sh
+        read_only: true
+        bind: {create_host_path: false}
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=64m
+      - /cache:rw,noexec,nosuid,size=256m

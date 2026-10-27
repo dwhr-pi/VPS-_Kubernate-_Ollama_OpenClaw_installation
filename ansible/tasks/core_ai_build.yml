@@ -21,6 +21,18 @@
   ansible.builtin.assert:
     that:
       - not core_receipt.stat.exists or (core_receipt.stat.isreg and not core_receipt.stat.islnk and core_binary.stat.isreg | default(false))
+- name: Vorhandenen Buildnachweis ohne Secrets lesen
+  ansible.builtin.slurp:
+    src: '{{ core_build_dir }}/build-ready.json'
+  register: existing_build_receipt
+  when: core_receipt.stat.exists
+- name: Fremden oder veralteten Buildnachweis ablehnen
+  ansible.builtin.assert:
+    that:
+      - (existing_build_receipt.content | b64decode | from_json).source_commit == core_pin
+      - (existing_build_receipt.content | b64decode | from_json).component == core_tool
+      - core_receipt.stat.uid == 0
+  when: core_receipt.stat.exists
 - name: Neue Komponente aus gepinntem GitHub-Commit bauen
   when: not core_receipt.stat.exists
   block:
@@ -44,6 +56,15 @@
         GIT_TERMINAL_PROMPT: '0'
         GIT_CONFIG_NOSYSTEM: '1'
         GIT_CONFIG_GLOBAL: /dev/null
+    - name: Tatsaechlich bezogenen Quellcommit kontrollieren
+      ansible.builtin.command:
+        argv: [git, -C, '{{ core_build_dir }}/source', rev-parse, HEAD]
+      register: source_head
+      changed_when: false
+      become_user: openclaw-core-build
+    - name: Abweichenden Checkout vor Build blockieren
+      ansible.builtin.assert:
+        that: source_head.stdout == core_pin
     - name: Go-Toolchain explizit pruefen
       ansible.builtin.command:
         argv: ['{{ core_go_bin }}', version]

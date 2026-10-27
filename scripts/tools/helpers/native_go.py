@@ -11,6 +11,9 @@ import private_go
 
 
 CONTRACTS = {
+    "kubeseal": ([1, 27, 3], "docs/tools/kubeseal.md"),
+    "traefik": ([1, 27, 3], "docs/tools/traefik.md"),
+    "opentelemetry": ([1, 26, 0], "docs/tools/opentelemetry-native.md"),
     "minio": ([1, 24, 8], "docs/tools/minio.md"),
     "cadvisor": ([1, 25, 0], "docs/tools/cadvisor.md"),
     "node_exporter": ([1, 26, 0], "docs/tools/node-exporter.md"),
@@ -30,7 +33,9 @@ def select(base, spec, approved=False, allow_download=False):
         return None, None
     contract = CONTRACTS.get(spec["id"])
     if not contract or minimum != contract[0]:
-        raise ValueError("Nicht freigegebener privater Go-Buildvertrag.")
+        raise ValueError(spec["name"] + ": Nicht freigegebener privater Go-Buildvertrag. "
+                         "Quellenmanifest und native_go.CONTRACTS muessen uebereinstimmen; "
+                         "kein Download oder Build gestartet.")
     name = spec["name"]
     if spec["id"] == "minio":
         print("MinIO: Upstream-README am Pin kennzeichnet die Community-Quelle als nicht mehr gepflegt. "

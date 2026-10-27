@@ -872,6 +872,8 @@ get_tool_install_fallback_min_free_mb() {
     local tool_key="$1"
 
     case "$tool_key" in
+        "Traefik") printf '16384' ;;
+        "OpenTelemetry") printf '8192' ;;
         "Langfuse"|"Grafana_Alloy") printf '49152' ;;
         "NocoDB") printf '32768' ;;
         "Penpot") printf '65536' ;;
@@ -1060,6 +1062,7 @@ preflight_tool_install_storage() {
     if is_wsl_environment; then
         windows_min_mb="$(get_tool_install_windows_min_free_mb "$min_mb")"
         case "$tool_key" in
+            "Traefik"|"OpenTelemetry") windows_min_mb="$min_mb" ;;
             "PyAirbyte"|"Langfuse"|"NocoDB"|"Penpot"|"Grafana_Alloy"|"Apache_Tika"|"Appsmith"|"ArchiveBox"|"Argilla"|"Budibase"|"Forgejo"|"Caddy"|"cAdvisor"|"Changedetection_IO"|"CrowdSec"|"Directus"|"Grafana"|"Healthchecks"|"Home_Assistant"|"LiteLLM"|"Loki"|"Meilisearch"|"Metabase"|"MinIO"|"Mosquitto"|"Neo4j"|"Netdata"|"Nextcloud"|"Node_Exporter"|"Node_Red"|"Open_WebUI"|"Prometheus"|"Promtail"|"Qdrant"|"SearXNG"|"Stirling_PDF"|"Uptime_Kuma"|"Vault"|"Vikunja"|"Watchtower"|"Weaviate"|"Zigbee2MQTT") windows_min_mb="$min_mb" ;;
             Qwen_Desktop_Build|Hermes_Agent_Jarvis|Gradio|Streamlit|WanVideoWrapper|CogVideoX|LTX_Video|Video2Dataset|MuseTalk|LivePortrait|SadTalker|RVC|UVR5|Audacity|OBS|Concat|Remotion|HyperFrames) windows_min_mb="$min_mb" ;;
         esac
@@ -1069,6 +1072,7 @@ preflight_tool_install_storage() {
             echo -e "${YELLOW}Aktuell frei Windows-Host (${WINDOWS_HOST_DRIVE:-C}:):${NC} ${GREEN}$(format_kb_human "$windows_free_kb")${NC}"
             if [ "$windows_free_kb" -lt "$windows_min_kb" ] 2>/dev/null; then
                 echo -e "${RED}Abbruch vor der Installation:${NC} Unter WSL sollte ${WINDOWS_HOST_DRIVE:-C}: fuer ${tool_key} mindestens $(format_kb_human "$windows_min_kb") frei haben, aktuell sind nur $(format_kb_human "$windows_free_kb") frei."
+                echo "Fehlend: mindestens $(((windows_min_kb - windows_free_kb + 1023) / 1024)) MiB auf dem Windows-Host. Kein Installer gestartet."
                 echo -e "${YELLOW}Grund:${NC} Die WSL-VHDX waechst auf dem Windows-Host. Wenn ${WINDOWS_HOST_DRIVE:-C}: voll laeuft, koennen Downloads, pip/npm/pnpm oder Docker-Images mit I/O-Fehlern abbrechen."
                 return 1
             fi
@@ -3625,6 +3629,21 @@ PY
 }
 
 # Funktion zum Installieren eines Tools
+plan_gitops_bootstrap_from_setup() {
+    local plan_rc=0 plan_status=failed
+    # Offline-Plan ohne Installer-Transaktion, Rollback oder Installationsmarker.
+    begin_operation_measurement "tool_install_GitOps_Bootstrap" "GitOps_Bootstrap: Offline-Plan, keine Installation" || return 1
+    capture_operation_output bash "$INSTALL_DIR/scripts/tools/gitops_bootstrap_install.sh" --interactive-plan || plan_rc=$?
+    case "$plan_rc" in
+        0) plan_status=planned ;;
+        3) plan_status=skipped ;;
+        *) plan_status=failed ;;
+    esac
+    end_operation_measurement "$plan_status"
+    handle_manual_tool_post_action GitOps_Bootstrap "Planung" "$plan_status" "${TOOL_BATCH_UPCOMING_PREVIEW:-}"
+    [[ "$plan_status" != failed ]]
+}
+
 install_tool() {
     local TOOL_KEY="$1"
     LAST_OPERATION_LOG_FILE=""
@@ -3634,6 +3653,10 @@ install_tool() {
     local operation_status="failed"
     local tool_rc=0
     local storage_rc=0
+    if [ "$TOOL_KEY" = GitOps_Bootstrap ]; then
+        plan_gitops_bootstrap_from_setup
+        return $?
+    fi
     if [ "$TOOL_KEY" = "Huginn" ]; then
         reset_terminal_display
         echo -e "${YELLOW}Huginn Vorbereitung: Zuerst Version und Datenbank auswählen, danach startet die Installation.${NC}"
@@ -4715,7 +4738,7 @@ TOOL_SCRIPT_NAMES["Traefik"]="traefik"
 TOOLS["Traefik"]="Nativer GitHub-Headless-Quellbuild; Dashboard aus, lokaler Ingress/TLS separat und bewusst einrichten."
 TOOL_KEYS+=("GitOps_Bootstrap")
 TOOL_SCRIPT_NAMES["GitOps_Bootstrap"]="gitops_bootstrap"
-TOOLS["GitOps_Bootstrap"]="Expliziter K3s/Cloudflared/Argo-Core-Bootstrap, kein Standard-Apply; docs/GITOPS_SMALL_VPS.md."
+TOOLS["GitOps_Bootstrap"]="Gefuehrter Offline-Plan; K3s/Cloudflared/Argo Core nur separat mit Apply-Freigaben. docs/GITOPS_SMALL_VPS.md."
 TOOL_SCRIPT_NAMES["Kubeseal"]="kubeseal"
 TOOLS["Kubeseal"]="GitHub-Quellbuild der Sealed-Secrets-CLI; kein Controllerstart oder Clusterzugriff."
 TOOL_SCRIPT_NAMES["OpenTelemetry"]="opentelemetry"

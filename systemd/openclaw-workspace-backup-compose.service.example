@@ -1,0 +1,12 @@
+[Unit]
+Description=Optionaler Compose-Job fuer verschluesselte Workspace-Backups
+Wants=network-online.target
+After=network-online.target docker.service
+
+[Service]
+Type=oneshot
+# Nur alternativ zur nativen Service-Datei unter dem Timer-Unitnamen installieren.
+# Compose-Konfiguration und Jobskript muessen root-eigen und nicht fremdbeschreibbar sein.
+ExecStart=/usr/bin/docker compose --env-file /etc/openclaw-workspace-backup/compose.env -f /etc/openclaw-workspace-backup/docker-compose.yml run --rm backup
+TimeoutStartSec=4h
+UMask=0077
