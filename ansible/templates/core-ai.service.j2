@@ -1,0 +1,48 @@
+[Unit]
+Description=Gepinnter nativer {{ item }}-Kerndienst
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User={{ core_users[item] }}
+Group={{ core_users[item] }}
+Environment=HOME=/var/lib/openclaw-core-{{ item }}
+StateDirectory=openclaw-core-{{ item }}
+StateDirectoryMode=0700
+# PID 1 bindet nur diesen privaten Unterordner ein; keine ACL auf dem gesamten Workspace.
+BindPaths={{ USER_WORKSPACE_DIR }}/core-services/{{ item }}:/var/lib/openclaw-core-{{ item }}
+{% if item == 'ollama' %}
+Environment=OLLAMA_HOST=127.0.0.1:11434
+Environment=OLLAMA_MODELS=/var/lib/openclaw-core-ollama/models
+Environment=OLLAMA_NUM_PARALLEL=1
+Environment=OLLAMA_MAX_LOADED_MODELS=1
+WorkingDirectory={{ core_prefix }}/ollama/{{ core_ollama_commit }}/app
+ExecStart={{ core_prefix }}/ollama/{{ core_ollama_commit }}/app/bin/ollama serve
+{% else %}
+Environment=OPENCLAW_STATE_DIR=/var/lib/openclaw-core-openclaw
+Environment=OPENCLAW_OFFLINE=1
+LoadCredential=gateway-token:{{ core_token_file }}
+WorkingDirectory={{ core_prefix }}/openclaw/{{ core_openclaw_commit }}/source
+ExecStart=/usr/local/libexec/openclaw-core-run
+{% endif %}
+Restart=on-failure
+RestartSec=10
+UMask=0077
+NoNewPrivileges=yes
+CapabilityBoundingSet=
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=/var/lib/openclaw-core-{{ item }}
+PrivateTmp=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictSUIDSGID=yes
+# Kleine Defaults; fuer Modelle nach gemessenem RAM/VRAM-Budget anpassen.
+MemoryHigh=1536M
+MemoryMax=2G
+CPUQuota=200%
+
+[Install]
+WantedBy=multi-user.target

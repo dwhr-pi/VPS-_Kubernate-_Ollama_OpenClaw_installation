@@ -1,0 +1,13 @@
+# Nur Nicht-Secrets; ausgewaehlte Commits und passende geschuetzte Toolchains eintragen.
+core_operator: ubuntu
+core_components: [ollama, openclaw]
+core_ollama_commit: REPLACE_WITH_FULL_OLLAMA_COMMIT
+core_openclaw_commit: REPLACE_WITH_FULL_OPENCLAW_COMMIT
+core_go_version: REPLACE_WITH_EXACT_GO_VERSION
+core_node_version: REPLACE_WITH_EXACT_NODE_VERSION
+core_pnpm_version: REPLACE_WITH_EXACT_PNPM_VERSION
+core_go_bin: /usr/local/bin/go
+core_node_bin: /usr/bin/node
+core_pnpm_bin: /usr/local/bin/pnpm
+core_start_services: false
+core_openclaw_config_reviewed: false

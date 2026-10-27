@@ -1,0 +1,12 @@
+# Dateien werden ausschliesslich vom Betreiber bereitgestellt, keine ACME-Anmeldung.
+tls:
+  certificates:
+    - certFile: /etc/openclaw-traefik/tls/origin.crt
+      keyFile: /etc/openclaw-traefik/tls/origin.key
+  options:
+    default:
+      minVersion: VersionTLS12
+http:
+  # Ohne bewusst gepruefte Routen wird kein Admin-Dienst weitergeleitet.
+  routers: {}
+  services: {}

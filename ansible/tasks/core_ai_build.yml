@@ -1,0 +1,126 @@
+---
+- name: Komponentenvertrag festlegen
+  ansible.builtin.set_fact:
+    core_pin: '{{ core_ollama_commit if core_tool == "ollama" else core_openclaw_commit }}'
+- name: Unveraenderlichen Buildpfad festlegen
+  ansible.builtin.set_fact:
+    core_build_dir: '{{ core_prefix }}/{{ core_tool }}/{{ core_pin }}'
+- name: Vorhandenen Buildnachweis pruefen
+  ansible.builtin.stat:
+    path: '{{ core_build_dir }}/build-ready.json'
+    follow: false
+    get_checksum: false
+  register: core_receipt
+- name: Bereits gebaute Binaerdatei statt erneuter Installation pruefen
+  ansible.builtin.stat:
+    path: '{{ core_build_dir }}/{{ "app/bin/ollama" if core_tool == "ollama" else "source/openclaw.mjs" }}'
+    follow: false
+    get_checksum: false
+  register: core_binary
+- name: Halbfertigen Nachweis nicht als Erfolg akzeptieren
+  ansible.builtin.assert:
+    that:
+      - not core_receipt.stat.exists or (core_receipt.stat.isreg and not core_receipt.stat.islnk and core_binary.stat.isreg | default(false))
+- name: Neue Komponente aus gepinntem GitHub-Commit bauen
+  when: not core_receipt.stat.exists
+  block:
+    - name: Private Bauumgebung erstellen
+      ansible.builtin.file:
+        path: '{{ core_build_dir }}'
+        state: directory
+        owner: openclaw-core-build
+        group: openclaw-core-build
+        mode: '0755'
+    - name: Nur den freigegebenen GitHub-Commit beziehen
+      ansible.builtin.git:
+        repo: '{{ core_repos[core_tool] }}'
+        dest: '{{ core_build_dir }}/source'
+        version: '{{ core_pin }}'
+        force: false
+        recursive: false
+        update: false
+      become_user: openclaw-core-build
+      environment:
+        GIT_TERMINAL_PROMPT: '0'
+        GIT_CONFIG_NOSYSTEM: '1'
+        GIT_CONFIG_GLOBAL: /dev/null
+    - name: Go-Toolchain explizit pruefen
+      ansible.builtin.command:
+        argv: ['{{ core_go_bin }}', version]
+      register: go_version
+      changed_when: false
+      become_user: openclaw-core-build
+      environment: {GOTOOLCHAIN: local}
+      when: core_tool == 'ollama'
+    - name: Kein automatisches anderes Go verwenden
+      ansible.builtin.assert:
+        that: "('go' + core_go_version + ' ') in go_version.stdout"
+      when: core_tool == 'ollama'
+    - name: Native Ollama-Runtime inklusive CPU-Bibliotheken bauen
+      ansible.builtin.command:
+        argv: '{{ item }}'
+        chdir: '{{ core_build_dir }}/source'
+      loop:
+        - [cmake, -B, build, '.']
+        - [cmake, --build, build, --parallel, '{{ core_build_jobs | string }}']
+        - [cmake, --install, build, --prefix, '{{ core_build_dir }}/app']
+      become_user: openclaw-core-build
+      environment:
+        PATH: '{{ core_go_bin | dirname }}:/usr/local/bin:/usr/bin:/bin'
+        GOTOOLCHAIN: local
+        GOMAXPROCS: '{{ core_build_jobs | string }}'
+      when: core_tool == 'ollama'
+    - name: Node und pnpm exakt pruefen
+      ansible.builtin.command:
+        argv: '{{ item }}'
+      loop:
+        - ['{{ core_node_bin }}', --version]
+        - ['{{ core_pnpm_bin }}', --version]
+      register: js_versions
+      changed_when: false
+      become_user: openclaw-core-build
+      environment:
+        PATH: '{{ core_node_bin | dirname }}:/usr/local/bin:/usr/bin:/bin'
+      when: core_tool == 'openclaw'
+    - name: Abweichende JavaScript-Toolchain ablehnen
+      ansible.builtin.assert:
+        that:
+          - js_versions.results[0].stdout == core_node_version
+          - js_versions.results[1].stdout == core_pnpm_version
+      when: core_tool == 'openclaw'
+    - name: OpenClaw mit eingefrorenem Lockfile und Weboberflaeche bauen
+      ansible.builtin.command:
+        argv: '{{ item }}'
+        chdir: '{{ core_build_dir }}/source'
+      loop:
+        - ['{{ core_pnpm_bin }}', install, --frozen-lockfile]
+        - ['{{ core_pnpm_bin }}', build]
+        - ['{{ core_pnpm_bin }}', 'ui:build']
+      become_user: openclaw-core-build
+      environment:
+        PATH: '{{ core_node_bin | dirname }}:/usr/local/bin:/usr/bin:/bin'
+        CI: 'true'
+      when: core_tool == 'openclaw'
+    - name: Erwartetes Laufzeitartefakt pruefen
+      ansible.builtin.stat:
+        path: '{{ core_build_dir }}/{{ "app/bin/ollama" if core_tool == "ollama" else "source/dist/entry.js" }}'
+        get_checksum: false
+      register: built_file
+    - name: Fehlenden Build nicht markieren
+      ansible.builtin.assert:
+        that: built_file.stat.isreg | default(false)
+    - name: Fertigen Code fuer Dienst- und Buildkonten schreibschuetzen
+      ansible.builtin.file:
+        path: '{{ core_build_dir }}'
+        owner: root
+        group: root
+        mode: u=rwX,go=rX
+        recurse: true
+        follow: false
+    - name: Buildnachweis erst nach vollstaendigem Erfolg erzeugen
+      ansible.builtin.copy:
+        dest: '{{ core_build_dir }}/build-ready.json'
+        content: '{{ {"component": core_tool, "source_commit": core_pin, "scope": "native-build-not-runtime-health"} | to_json }}'
+        owner: root
+        group: root
+        mode: '0644'

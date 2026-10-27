@@ -15,6 +15,7 @@ NATIVE_TOOL_STATUS_KEYS+=("${NATIVE_GITHUB_TOOL_KEYS[@]}")
 native_tool_marker() {
     local marker
     case "$1" in
+        "Traefik") marker=traefik/native-github/build-ready.json ;;
         "Kubeseal") marker=kubeseal/native-github/build-ready.json ;;
         "OpenTelemetry") marker=opentelemetry/native-github/build-ready.json ;;
         "AutoGPT") marker=autogpt/native-github/build-ready.json ;;

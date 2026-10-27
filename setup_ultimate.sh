@@ -3927,7 +3927,7 @@ sort_tool_menu_keys() {
     for key in "${TOOL_KEYS[@]}"; do
         case "$key" in
             Ollama|OpenClaw|Ruflo) pinned+=("$key") ;;
-            GitOps_Bootstrap|Kubeseal) appended+=("$key") ;;
+            GitOps_Bootstrap|Kubeseal|Traefik) appended+=("$key") ;;
             *) remaining+=("$key") ;;
         esac
     done
@@ -4711,6 +4711,8 @@ show_main_menu() {
 }
 
 # Native migration metadata overrides older Docker descriptions only.
+TOOL_SCRIPT_NAMES["Traefik"]="traefik"
+TOOLS["Traefik"]="Nativer GitHub-Headless-Quellbuild; Dashboard aus, lokaler Ingress/TLS separat und bewusst einrichten."
 TOOL_KEYS+=("GitOps_Bootstrap")
 TOOL_SCRIPT_NAMES["GitOps_Bootstrap"]="gitops_bootstrap"
 TOOLS["GitOps_Bootstrap"]="Expliziter K3s/Cloudflared/Argo-Core-Bootstrap, kein Standard-Apply; docs/GITOPS_SMALL_VPS.md."

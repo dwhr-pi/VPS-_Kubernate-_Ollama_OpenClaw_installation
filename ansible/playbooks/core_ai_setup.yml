@@ -1,0 +1,246 @@
+---
+- name: Gepruefte native KI-Kerndienste vorbereiten
+  hosts: core_ai
+  become: true
+  gather_facts: true
+  serial: 1
+  vars:
+    # Inventar/Variablendatei liefert Operator, volle Quell-Pins und Toolchain-Versionen.
+    core_operator: ''
+    core_components: [ollama, openclaw]
+    core_ollama_commit: ''
+    core_openclaw_commit: ''
+    core_go_version: ''
+    core_node_version: ''
+    core_pnpm_version: ''
+    core_go_bin: /usr/local/bin/go
+    core_node_bin: /usr/bin/node
+    core_pnpm_bin: /usr/local/bin/pnpm
+    core_build_jobs: 1
+    core_start_services: false
+    core_openclaw_config_reviewed: false
+    core_token_file: /etc/openclaw-core/gateway.token
+    core_prefix: /opt/openclaw-core
+    core_users: {ollama: ollama-core, openclaw: openclaw-core}
+    core_repos:
+      ollama: https://github.com/ollama/ollama.git
+      openclaw: https://github.com/openclaw/openclaw.git
+  pre_tasks:
+    - name: Ziel und bewusst gewaehlte Buildvertraege pruefen
+      ansible.builtin.assert:
+        that:
+          - ansible_distribution == 'Ubuntu'
+          - ansible_distribution_version == '24.04'
+          - ansible_service_mgr == 'systemd'
+          - core_operator is match('^[a-z_][a-z0-9_-]*$')
+          - core_operator != 'root'
+          - core_components | length > 0
+          - core_components | difference(['ollama', 'openclaw']) | length == 0
+          - "'ollama' not in core_components or core_ollama_commit is match('^[a-f0-9]{40}$')"
+          - "'openclaw' not in core_components or core_openclaw_commit is match('^[a-f0-9]{40}$')"
+          - core_build_jobs | int >= 1 and core_build_jobs | int <= 2
+          - "'ollama' not in core_components or core_go_version is match('^[0-9]+\.[0-9]+\.[0-9]+$')"
+          - core_prefix == '/opt/openclaw-core'
+          - core_token_file == '/etc/openclaw-core/gateway.token'
+          - core_go_bin is match('^/(usr|opt)/[A-Za-z0-9_./-]+$')
+          - core_node_bin is match('^/(usr|opt)/[A-Za-z0-9_./-]+$')
+          - core_pnpm_bin is match('^/(usr|opt)/[A-Za-z0-9_./-]+$')
+          - ansible_memtotal_mb | int >= ((core_components | length) * 2048 + 1024)
+        fail_msg: 'Keine Default-Pins oder implizite Migration: Variablen und Ubuntu-24.04-Buildvertrag zuerst pruefen.'
+      tags: [always]
+    - name: Operator aus der bestehenden Benutzerverwaltung lesen
+      ansible.builtin.getent:
+        database: passwd
+      tags: [always]
+    - name: Bestehende Dienstkonten niemals als root verwenden
+      ansible.builtin.assert:
+        that:
+          - item not in getent_passwd or getent_passwd[item][1] | int > 0
+          - item not in getent_passwd or getent_passwd[item][-1] == '/usr/sbin/nologin'
+      loop: "{{ core_components | map('extract', core_users) | list + ['openclaw-core-build'] }}"
+      tags: [always]
+    - name: Benutzerdatenpfad getrennt vom Repo festlegen
+      ansible.builtin.set_fact:
+        USER_WORKSPACE_DIR: '{{ getent_passwd[core_operator][4] }}/.openclaw_ultimate_user_data'
+      tags: [always]
+    - name: Bestehendes Benutzerverzeichnis nur inspizieren
+      ansible.builtin.stat:
+        path: '{{ USER_WORKSPACE_DIR }}'
+        follow: false
+        get_checksum: false
+      register: workspace_before
+      tags: [always]
+    - name: Eindeutigen Systemd-tauglichen Datenpfad verlangen
+      ansible.builtin.assert:
+        that: USER_WORKSPACE_DIR is match('^/[A-Za-z0-9_./-]+$')
+      tags: [always]
+    - name: Fremde Rechte nicht pauschal korrigieren
+      ansible.builtin.assert:
+        that:
+          - not workspace_before.stat.exists or (workspace_before.stat.isdir and not workspace_before.stat.islnk)
+          - not workspace_before.stat.exists or workspace_before.stat.uid | int == getent_passwd[core_operator][1] | int
+          - not workspace_before.stat.exists or workspace_before.stat.mode == '0700'
+        fail_msg: 'User-Workspace hat fremde Rechte/Links. Bewusste Migration statt rekursivem chown erforderlich.'
+      tags: [always]
+  tasks:
+    - name: Codepraefix vor jeder Dateiaenderung inspizieren
+      ansible.builtin.stat:
+        path: '{{ core_prefix }}'
+        follow: false
+        get_checksum: false
+      register: prefix_before
+      tags: [always]
+    - name: Fremden oder verlinkten Codepraefix ablehnen
+      ansible.builtin.assert:
+        that:
+          - not prefix_before.stat.exists or (prefix_before.stat.isdir and not prefix_before.stat.islnk and prefix_before.stat.uid == 0)
+      tags: [always]
+    - name: Nur Build-Abhaengigkeiten ueber apt bereitstellen
+      ansible.builtin.apt:
+        name: [git, ca-certificates, build-essential, cmake, pkg-config]
+        state: present
+        update_cache: true
+        cache_valid_time: 3600
+        lock_timeout: 300
+      tags: [always]
+    - name: Privaten Benutzer-Workspace neu anlegen
+      ansible.builtin.file:
+        path: '{{ USER_WORKSPACE_DIR }}'
+        state: directory
+        owner: '{{ core_operator }}'
+        mode: '0700'
+      when: not workspace_before.stat.exists
+      tags: [always]
+    - name: Getrennte nicht privilegierte Dienstkonten einrichten
+      ansible.builtin.user:
+        name: '{{ core_users[item] }}'
+        system: true
+        create_home: false
+        shell: /usr/sbin/nologin
+        password_lock: true
+        groups: ''
+        append: false
+      loop: '{{ core_components }}'
+      tags: [always]
+    - name: Nicht privilegiertes Buildkonto einrichten
+      ansible.builtin.user:
+        name: openclaw-core-build
+        system: true
+        create_home: true
+        home: /var/cache/openclaw-core-build
+        shell: /usr/sbin/nologin
+        password_lock: true
+        groups: ''
+        append: false
+      tags: [always]
+    - name: Vorhandenen Service-Elternpfad inspizieren
+      ansible.builtin.stat:
+        path: '{{ USER_WORKSPACE_DIR }}/core-services'
+        follow: false
+        get_checksum: false
+      register: service_parent
+      tags: [always]
+    - name: Fremde Service-Daten nicht uebernehmen
+      ansible.builtin.assert:
+        that:
+          - not service_parent.stat.exists or (service_parent.stat.isdir and not service_parent.stat.islnk and service_parent.stat.pw_name == core_operator)
+      tags: [always]
+    - name: Geschuetzten Codepraefix und privaten Service-Elternpfad erstellen
+      ansible.builtin.file:
+        path: '{{ item.path }}'
+        state: directory
+        owner: '{{ item.owner }}'
+        mode: '{{ item.mode }}'
+      loop:
+        - {path: '{{ core_prefix }}', owner: root, mode: '0755'}
+        - {path: '{{ USER_WORKSPACE_DIR }}/core-services', owner: '{{ core_operator }}', mode: '0700'}
+        - {path: /usr/local/libexec, owner: root, mode: '0755'}
+      tags: [always]
+    - name: Dienst-UIDs ohne Secretzugriff lesen
+      ansible.builtin.command:
+        argv: [id, -u, '{{ core_users[item] }}']
+      loop: '{{ core_components }}'
+      register: service_uids
+      changed_when: false
+      tags: [always]
+    - name: Bestehende Datenteilbaeume inspizieren
+      ansible.builtin.stat:
+        path: '{{ USER_WORKSPACE_DIR }}/core-services/{{ item }}'
+        follow: false
+        get_checksum: false
+      loop: '{{ core_components }}'
+      register: data_before
+      tags: [always]
+    - name: Root-Dienstkonten und fremde Datenverzeichnisse ausschliessen
+      ansible.builtin.assert:
+        that:
+          - service_uids.results[core_index].stdout | int > 0
+          - not item.stat.exists or (item.stat.isdir and not item.stat.islnk and item.stat.uid | int == service_uids.results[core_index].stdout | int)
+      loop: '{{ data_before.results }}'
+      loop_control:
+        index_var: core_index
+      tags: [always]
+    - name: Dienstspezifische private Datenverzeichnisse erstellen
+      ansible.builtin.file:
+        path: '{{ USER_WORKSPACE_DIR }}/core-services/{{ item }}'
+        state: directory
+        owner: '{{ core_users[item] }}'
+        group: '{{ core_users[item] }}'
+        mode: '0700'
+      loop: '{{ core_components }}'
+      tags: [always]
+    - name: Native Quellen unveraenderlich bauen und versiegeln
+      ansible.builtin.include_tasks: ../tasks/core_ai_build.yml
+      loop: '{{ core_components }}'
+      loop_control:
+        loop_var: core_tool
+      tags: [always]
+    - name: OpenClaw-Starthelfer ohne eingebettetes Secret installieren
+      ansible.builtin.template:
+        src: ../templates/core-openclaw-run.sh.j2
+        dest: /usr/local/libexec/openclaw-core-run
+        owner: root
+        group: root
+        mode: '0755'
+      when: "'openclaw' in core_components"
+    - name: Token-Metadaten nur bei gewuenschtem OpenClaw-Start pruefen
+      ansible.builtin.stat:
+        path: '{{ core_token_file }}'
+        follow: false
+        get_checksum: false
+      register: gateway_token
+      when: core_start_services | bool and 'openclaw' in core_components
+      no_log: true
+    - name: Auth und Konfiguration vor Aktivierung verlangen
+      ansible.builtin.assert:
+        that:
+          - core_openclaw_config_reviewed | bool
+          - gateway_token.stat.isreg | default(false)
+          - not gateway_token.stat.islnk | default(true)
+          - gateway_token.stat.uid | default(-1) == 0
+          - gateway_token.stat.mode | default('') == '0600'
+          - gateway_token.stat.size | default(0) > 0
+      when: core_start_services | bool and 'openclaw' in core_components
+      no_log: true
+    - name: Gehaertete Systemd-Units registrieren
+      ansible.builtin.template:
+        src: ../templates/core-ai.service.j2
+        dest: '/etc/systemd/system/openclaw-core-{{ item }}.service'
+        owner: root
+        group: root
+        mode: '0644'
+      loop: '{{ core_components }}'
+      notify: Systemd neu einlesen
+    - name: Unit-Aenderungen vor optionalem Start laden
+      ansible.builtin.meta: flush_handlers
+    - name: Dienste nur nach ausdruecklicher Aktivierung starten
+      ansible.builtin.systemd_service:
+        name: 'openclaw-core-{{ item }}.service'
+        enabled: true
+        state: started
+      loop: '{{ core_components }}'
+      when: core_start_services | bool
+  handlers:
+    - name: Systemd neu einlesen
+      ansible.builtin.systemd_service:
+        daemon_reload: true

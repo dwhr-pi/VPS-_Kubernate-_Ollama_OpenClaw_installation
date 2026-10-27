@@ -1,0 +1,24 @@
+# Lokaler nativer Proxy; kein Docker-Socket und keine automatisch erkannten Dienste.
+entryPoints:
+  web:
+    address: '127.0.0.1:80'
+    http:
+      redirections:
+        entryPoint:
+          to: websecure
+          scheme: https
+          permanent: true
+  websecure:
+    address: '127.0.0.1:443'
+    http:
+      tls: {}
+providers:
+  file:
+    directory: /etc/openclaw-traefik/dynamic
+    watch: true
+api:
+  dashboard: false
+  insecure: false
+log:
+  level: WARN
+# Kein Access-Log mit Query-Strings/Authorization-Headern als Default.

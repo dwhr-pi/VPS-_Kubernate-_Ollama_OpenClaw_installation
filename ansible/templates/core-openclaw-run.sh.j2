@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# Token nur aus der geschuetzten systemd-Credential-Datei lesen, nie in argv.
+set -euo pipefail
+set +x
+token_file="${CREDENTIALS_DIRECTORY:?}/gateway-token"
+[[ -s "$token_file" ]] || exit 1
+OPENCLAW_GATEWAY_TOKEN=$(cat -- "$token_file")
+[[ -n "$OPENCLAW_GATEWAY_TOKEN" ]] || exit 1
+export OPENCLAW_GATEWAY_TOKEN
+exec {{ core_node_bin }} {{ core_prefix }}/openclaw/{{ core_openclaw_commit }}/source/openclaw.mjs gateway --bind loopback --port 18789 --auth token

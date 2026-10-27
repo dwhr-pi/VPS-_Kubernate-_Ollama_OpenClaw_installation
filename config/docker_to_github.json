@@ -4,6 +4,26 @@
   "scope": "46 ehemalige Containerpfade plus PyAirbyte-SDK und Kubeseal-CLI; offene Gesamtplattformen ohne Docker-Fallback",
   "tools": [
     {
+      "id": "traefik",
+      "name": "Traefik Headless",
+      "tool_key": "Traefik",
+      "repo": "traefik/traefik",
+      "previous_images": [],
+      "previous_installer": null,
+      "recipe": {
+        "repo": "traefik/traefik",
+        "pin": "b46d3ea648b543a8d8c675a178b0780faae958c7",
+        "kind": "go",
+        "go_min": [1, 27, 3],
+        "package": "./cmd/traefik",
+        "binary": "traefik",
+        "probe": ["version"],
+        "disk_mb": 16384,
+        "note": "Nativer Headless-Go-Build ohne Dashboard-Build: vorhandener Embed-Platzhalter bleibt ungenutzt, api.dashboard=false. Kein make binary (dessen Web-UI-Pfad verwendet Docker). Lokale Unit/TLS separat ueber scripts/setup_traefik_local.sh, kein Serverstart beim Build."
+      },
+      "blocked_reason": null
+    },
+    {
       "id": "kubeseal",
       "name": "Kubeseal",
       "tool_key": "Kubeseal",
