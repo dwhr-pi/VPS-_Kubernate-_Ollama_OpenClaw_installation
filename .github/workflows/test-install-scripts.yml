@@ -33,6 +33,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          python3 -B tests/test_signed_release.py -v
           bash -n scripts/backup_stateful_services.sh
           "$RUNNER_TEMP/bats/bin/bats" tests/bats/install_scripts.bats
           python3 -B -m unittest discover -s tests -p test_production_baseline.py -v
@@ -97,6 +98,23 @@ jobs:
           # Report locations and rule IDs only, never matching secret content.
           format: template
           template: '{{ range . }}{{ $target := .Target }}{{ range .Secrets }}{{ printf "%s: %s\n" $target .RuleID }}{{ end }}{{ end }}'
+          exit-code: '1'
+          hide-progress: 'true'
+          cache: 'false'
+  configuration-scan:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Reject high and critical infrastructure misconfigurations
+        uses: aquasecurity/trivy-action@8f28faec26515256b6d22074d1d2a8986f4cbd87
+        with:
+          version: v0.76.1
+          scan-type: config
+          scan-ref: .
+          severity: HIGH,CRITICAL
           exit-code: '1'
           hide-progress: 'true'
           cache: 'false'

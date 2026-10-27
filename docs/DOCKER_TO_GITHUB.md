@@ -1,5 +1,11 @@
 # Docker-Installer auf native GitHub-Builds umstellen
 
+**Installations-Teststatus, 27.10.2026:** Codeberg- und GitLab-Tools sind laut
+Nutzer derzeit nicht installationsgetestet. Das vorhandene Forgejo-Rezept aus
+Codeberg ist deshalb keine abgenommene Installation. Die unten genannten
+implementierten Rezepte und Offline-Tests aendern diesen Status nicht.
+Siehe [Teststatus-Matrix](TESTED_STATUS_MATRIX.md#quellenplattformen-installationsstatus).
+
 **Rollback-Nachtrag 27.10.2026:** [Szenarien je aktuellem Tool und Ubuntu-Releasewechsel](NATIVE_BUILD_RECOVERY.md).
 Die Matrix deckt alle 49 Eintraege des aktuellen Quellenmanifests ab; vorhandene
 Datenbanken/Container werden nicht automatisch als Rueckfall gestartet oder entfernt.

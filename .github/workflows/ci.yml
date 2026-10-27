@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
 
       - name: Install check tools
         run: |
@@ -33,11 +33,11 @@ jobs:
 
       - name: Markdownlint
         run: |
-          markdownlint readme.md docs/**/*.md || true
+          markdownlint readme.md docs/**/*.md
 
       - name: Markdown links
         run: |
-          markdown-link-check readme.md || true
+          markdown-link-check readme.md
 
       - name: Secret scan
         uses: gitleaks/gitleaks-action@v2
@@ -63,8 +63,8 @@ jobs:
 
       - name: Security scan wrappers
         run: |
-          bash scripts/secret_scan.sh || true
-          bash scripts/security_scan.sh || true
+          bash scripts/secret_scan.sh
+          bash scripts/security_scan.sh
 
       - name: Setup dry-run safety
         run: |

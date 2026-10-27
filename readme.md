@@ -1,19 +1,31 @@
 # VPS- Kubernate- Ollama & OpenClaw installation - Ultimate Setup V11.17
 
+Projektlizenz: [Apache-2.0](LICENSE). Fuer eingebundene Drittprojekte gelten deren
+eigene Bedingungen; siehe [Dritthinweise](THIRD_PARTY_NOTICES.md).
+Aktueller Codebefund: [Audit vom 27.10.2026](docs/AUDIT_2026_10.md).
+[Verzeichniszwecke](docs/DIRECTORY_LAYOUT.md),
+[Vorschlag fuer eine Kurz-README](docs/README_SHORT_PROPOSAL.md) und
+[PR-Entwurf mit Tests, Grenzen und Rollback](docs/reviews/2026-10-27-audit-quick-wins-pr.md).
+
 ## Empfohlener sicherer Einstieg
 
-Den lokal geprueften Bootstrap verwenden, nicht `curl | bash`. Commit und
-Installer-SHA256 aus einer **unabhaengig verifizierten** Release-Quelle beziehen:
+Den lokal geprueften Bootstrap verwenden, nicht `curl | bash`. Der bevorzugte
+Vertrauensanker ist **Minisign mit separat bereitgestelltem oeffentlichem Schluessel**:
 
 ```bash
-bash ./verify_and_install.sh --commit DEIN_VOLLER_COMMIT \
-  --installer-sha256 DEIN_VERIFIZIERTER_SHA256 \
-  --destination "$HOME/openclaw_ultimate_setup"
+bash ./verify_release_and_install.sh --tag vX.Y.Z \
+  --public-key /absoluter/unabhaengiger/release.pub \
+  --artifacts /absoluter/pfad/release-artefakte --verify-only
 ```
 
-Der temporaere Checkout wird erst nach Hashpruefung ausgefuehrt; der Zielstand
-bleibt gepinnt, statt erneut `main` zu laden. Vorhandene Ziele/Benutzerdaten
-werden nicht ersetzt. Auch der Bootstrap selbst muss vorab vertrauenswuerdig sein.
+`vX.Y.Z` ist ein Platzhalter, kein veroeffentlichtes Release. Ohne echten Tag,
+Signatur und unabhaengigen Schluessel bleibt dieser Weg gesperrt. Erst nach
+Pruefung bewusst `--verify-only` durch `--install --destination ABS` ersetzen.
+Standard-Updates verlangen ebenfalls einen signierten Tag; kein `main`-Fallback.
+[Signaturverfahren, Updates und offene Abnahmen](docs/SIGNED_RELEASES.md).
+[P0-Teilreview vom 27.10.2026 und priorisierte Restarbeiten](docs/CODEX_REVIEW_2026-10-27.md).
+Auch Bootstrap und Python-Pruefhelfer muessen vorab vertrauenswuerdig sein.
+Der bisherige [explizite Commit-/Hash-Weg](docs/SECURE_CORE_REFACTOR.md) bleibt separat.
 [Alle fuenf Bausteine: Core-Ansible, Restic/SOPS, Limits und nativer Traefik](docs/SECURE_CORE_REFACTOR.md).
 [Ergaenzungen 27.10.: Sprachdialog, Ressourcen, read-only Metriken, Tunnel, Policies und Velero](docs/PLATFORM_GAP_IMPLEMENTATION_2026-10-27.md).
 Die spaeter dokumentierten alten One-Liner sind kein empfohlener sicherer Einstieg.
@@ -155,9 +167,9 @@ Dies ist das ultimative Setup für ein hybrides KI- und Smart-Home-System, das d
 
 ## Wichtiger Original- und Support-Hinweis
 
-Dieses Setup ist das Original-Setup des Repositories `dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation`. Auch wenn viele Bestandteile aus einfachen Linux-/Bash-Skripten bestehen, ist das Original vor nicht autorisierten Veraenderungen, Manipulationsversuchen und nicht abgestimmten Fork-Aenderungen geschuetzt.
+Dieses Setup stammt aus dem Repository `dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation`. Quellcode kann veraendert werden. SHA256-Pruefsummen erkennen Abweichungen; eine Signatur kann die Herkunft gepruefter Release-Metadaten bestaetigen, wenn der Public Key unabhaengig vertraut ist. Das verhindert keine Aenderung und garantiert keine Fehlerfreiheit. Der aktuelle Freigabestand steht unter [signierte Releases](docs/SIGNED_RELEASES.md).
 
-Die automatisierte Supportunterstuetzung und Selbstheilung via Update gilt nur fuer das unverfaelschte Original-Setup bzw. fuer bewusst freigegebene Aenderungen. Wenn das Setup aus einem Fork, einer unbekannten Quelle oder einer lokal manipulierten Variante stammt, erlischt diese automatisierte Supportunterstuetzung: Das Original-Update kann solche Aenderungen nicht sicher bewerten, reparieren oder verantworten.
+Automatisierte Reparaturen sollen nur fuer eindeutig identifizierte, gepruefte Staende angeboten werden. Bei Forks, unbekannter Herkunft oder lokalen Aenderungen ist zuerst ein manueller Abgleich erforderlich; abweichender Code ist nicht automatisch ein Angriff. Diese betriebliche Supportgrenze ist keine zusaetzliche Lizenzbedingung und ersetzt keine ausdrueckliche Reparaturfreigabe.
 
 Bitte kontaktiere den Entwickler, wenn Funktionen, Anpassungen oder neue Tools gewuenscht sind. Wuensche koennen dann sauber aufgenommen, geprueft und kontrolliert in das Original-Setup integriert werden.
 

@@ -35,8 +35,14 @@ def file_digest(file):
 
 def git(repo, *args, allowed=(0,)):
     env = dict(os.environ, GIT_OPTIONAL_LOCKS='0', GIT_TERMINAL_PROMPT='0', GIT_LFS_SKIP_SMUDGE='1')
+    env.update(GIT_CONFIG_NOSYSTEM='1', GIT_CONFIG_GLOBAL=os.devnull,
+               GIT_NOREPLACE_OBJECTS='1', GIT_ATTR_NOSYSTEM='1')
     for key in list(env):
-        if key.startswith('GIT_TRACE') or key in ('GIT_CURL_VERBOSE', 'GIT_SSL_NO_VERIFY'):
+        if key.startswith(('GIT_TRACE', 'GIT_CONFIG_KEY_', 'GIT_CONFIG_VALUE_')) or key in (
+                'GIT_CURL_VERBOSE', 'GIT_SSL_NO_VERIFY', 'GIT_CONFIG_COUNT', 'GIT_CONFIG_PARAMETERS',
+                'GIT_DIR', 'GIT_WORK_TREE', 'GIT_INDEX_FILE', 'GIT_OBJECT_DIRECTORY',
+                'GIT_ALTERNATE_OBJECT_DIRECTORIES', 'GIT_COMMON_DIR', 'GIT_NAMESPACE',
+                'GIT_SHALLOW_FILE', 'GIT_EXEC_PATH'):
             env.pop(key)
     command = ['git', '-c', 'core.hooksPath=' + os.devnull, '-c', 'core.fsmonitor=false',
                '-c', 'http.followRedirects=false', '-c', 'http.sslVerify=true']
