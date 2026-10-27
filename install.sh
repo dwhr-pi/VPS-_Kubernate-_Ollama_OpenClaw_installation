@@ -4,7 +4,7 @@
 # Dieses Skript klont das Repository und startet das Haupt-Setup-Skript.
 # ==============================================================================
 
-set -e
+set -Eeuo pipefail
 
 # Sicherer Einstieg: den geprueften Commit verwenden, nicht erneut main beziehen.
 if [[ "${1:-}" == --verified-source ]]; then
@@ -31,9 +31,15 @@ GIT_AUTH_DIR=""
 git_auth_cleanup() {
     local rc=$?
     if [[ -n "$GIT_AUTH_DIR" && -d "$GIT_AUTH_DIR" && ! -L "$GIT_AUTH_DIR" ]]; then
-        # Delete only files created by this invocation, never recursively.
-        rm -f -- "$GIT_AUTH_DIR/token" "$GIT_AUTH_DIR/askpass"
-        rmdir -- "$GIT_AUTH_DIR" 2>/dev/null || true
+        # Nur eigene temporaere Dateien entfernen; Fehler nicht verschweigen.
+        if ! rm -f -- "$GIT_AUTH_DIR/token" "$GIT_AUTH_DIR/askpass"; then
+            printf 'PAT-Tempdateien nicht vollstaendig entfernt; privat pruefen.\n' >&2
+            if [[ "$rc" == 0 ]]; then rc=1; fi
+        fi
+        if ! rmdir -- "$GIT_AUTH_DIR"; then
+            printf 'PAT-Tempverzeichnis nicht leer; keine fremden Dateien loeschen.\n' >&2
+            if [[ "$rc" == 0 ]]; then rc=1; fi
+        fi
     fi
     GIT_AUTH_DIR=""
     unset GITHUB_PAT
@@ -412,10 +418,11 @@ if [[ "${1:-}" == --dry-run && $# == 1 ]]; then
     echo 'Dry-run: GitHub-Quellen, temporaeres Askpass bei Privat-Repo, verifizierte Sicherung vor Update. Kein Download/Install/Checkout.'
     exit 0
 fi
-if [[ $# != 0 ]]; then
-    echo 'Nutzung: bash install.sh [--dry-run]' >&2
+if [[ $# != 1 || "${1:-}" != --legacy-unsigned-main ]]; then
+    echo 'Unsignierter main-Einstieg gesperrt. Gepruefte Bootstrap-Kopie und verify_release_and_install.sh mit Minisign verwenden. Legacy nur bewusst mit --legacy-unsigned-main.' >&2
     exit 2
 fi
+shift
 trap git_auth_cleanup EXIT
 trap 'exit 130' INT
 trap 'exit 143' TERM
