@@ -1,0 +1,18 @@
+# Nach Review kopieren und den CONFIG-Commit ersetzen; niemals automatisch prunen.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: llmops-root
+  namespace: argocd
+spec:
+  project: llmops-root
+  source:
+    repoURL: https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation.git
+    targetRevision: REPLACE_WITH_FULL_CONFIG_COMMIT
+    path: k8s/gitops/apps
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  # Kein automated.sync und kein Loesch-Finalizer: zuerst geplanter manueller Sync.
+  syncPolicy:
+    syncOptions: [ApplyOutOfSyncOnly=true]

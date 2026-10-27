@@ -1,0 +1,68 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: monitoring-lite-prometheus
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval: 30s
+      scrape_timeout: 5s
+    rule_files: [/etc/prometheus/alerts.yml]
+    scrape_configs:
+      - job_name: prometheus
+        static_configs:
+          - targets: ['127.0.0.1:9090']
+      - job_name: node
+        static_configs:
+          - targets: {{ .Values.nodeExporterTargets | toJson }}
+      - job_name: ollama-exporter
+        metrics_path: /metrics
+        static_configs:
+          - targets: {{ .Values.ollamaExporterTargets | toJson }}
+  alerts.yml: |
+    groups:
+      - name: small-vps
+        rules:
+          - alert: ExporterDown
+            expr: up{job=~"node|ollama-exporter"} == 0
+            for: 5m
+            labels: {severity: warning}
+            annotations:
+              summary: Exporter seit fuenf Minuten unerreichbar
+          - alert: NodeMemoryPressure
+            expr: node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes < 0.15
+            for: 5m
+            labels: {severity: warning}
+            annotations:
+              summary: Weniger als 15 Prozent RAM verfuegbar
+          - alert: NodeDiskPressure
+            expr: node_filesystem_avail_bytes{fstype!~"tmpfs|overlay|squashfs"} / node_filesystem_size_bytes{fstype!~"tmpfs|overlay|squashfs"} < 0.15
+            for: 5m
+            labels: {severity: warning}
+            annotations:
+              summary: Weniger als 15 Prozent Dateisystemplatz verfuegbar
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: monitoring-lite-grafana
+data:
+  datasource.yaml: |
+    apiVersion: 1
+    datasources:
+      - name: Prometheus
+        uid: prometheus
+        type: prometheus
+        access: proxy
+        url: http://monitoring-lite-prometheus:9090
+        isDefault: true
+        editable: false
+  dashboards.yaml: |
+    apiVersion: 1
+    providers:
+      - name: local
+        type: file
+        options:
+          path: /etc/grafana/local-dashboards
+  vps.json: |
+    {"uid":"vps-lite","title":"VPS und Exporter","schemaVersion":39,"version":1,"refresh":"30s","panels":[{"id":1,"type":"timeseries","title":"Exporter-Verfuegbarkeit","datasource":{"type":"prometheus","uid":"prometheus"},"targets":[{"expr":"up","refId":"A"}],"gridPos":{"h":8,"w":12,"x":0,"y":0}},{"id":2,"type":"timeseries","title":"RAM verfuegbar (Prozent)","datasource":{"type":"prometheus","uid":"prometheus"},"targets":[{"expr":"100 * node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes","refId":"A"}],"gridPos":{"h":8,"w":12,"x":12,"y":0}},{"id":3,"type":"timeseries","title":"CPU ausgelastet (Prozent)","datasource":{"type":"prometheus","uid":"prometheus"},"targets":[{"expr":"100 * (1 - avg by (instance) (rate(node_cpu_seconds_total{mode=\"idle\"}[5m])))","refId":"A"}],"gridPos":{"h":8,"w":12,"x":0,"y":8}},{"id":4,"type":"text","title":"Inferenz-Metriken","options":{"mode":"markdown","content":"Tokenrate und Latenz erst nach Pruefung des gewaehlten Ollama-Exporters ergaenzen. Ollama /metrics wird nicht vorausgesetzt. Alertregeln ohne Alertmanager senden keine Benachrichtigungen."},"gridPos":{"h":8,"w":12,"x":12,"y":8}}]}

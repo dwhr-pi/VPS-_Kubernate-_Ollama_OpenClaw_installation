@@ -1,0 +1,24 @@
+# Keine beweglichen Images: Digest im privaten Werte-Overlay zwingend setzen.
+prometheus:
+  repository: prom/prometheus
+  digest: ''
+  resources:
+    requests: {cpu: 50m, memory: 128Mi, ephemeral-storage: 32Mi}
+    limits: {cpu: 250m, memory: 256Mi, ephemeral-storage: 256Mi}
+grafana:
+  repository: grafana/grafana
+  digest: ''
+  authSecret: grafana-auth
+  resources:
+    requests: {cpu: 50m, memory: 128Mi, ephemeral-storage: 32Mi}
+    limits: {cpu: 300m, memory: 256Mi, ephemeral-storage: 256Mi}
+storageClass: local-path
+# Kleine TSDB, keine produktiven Volltext-/Prompt-Logs.
+retentionTime: 6h
+retentionSize: 256MB
+nodeExporterTargets: []
+# Ollama selbst wird NICHT als /metrics-Exporter vorausgesetzt.
+ollamaExporterTargets: []
+# Nur konkrete private IPv4-/IPv6-Ziele und Exporter-Ports freigeben.
+exporterCIDRs: []
+exporterPorts: [9100, 8000]

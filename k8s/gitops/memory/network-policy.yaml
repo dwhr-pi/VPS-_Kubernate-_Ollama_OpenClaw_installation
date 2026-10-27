@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: memory-default-deny
+spec:
+  podSelector: {}
+  policyTypes: [Ingress, Egress]
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: qdrant-from-memory-clients
+spec:
+  podSelector:
+    matchLabels: {app: qdrant}
+  policyTypes: [Ingress]
+  ingress:
+    - from:
+        # Namespace UND Podlabel muessen passen; nicht zwei ODER-Regeln.
+        - namespaceSelector:
+            matchLabels: {kubernetes.io/metadata.name: ai-agents}
+          podSelector:
+            matchLabels: {memory-client: 'true'}
+      ports:
+        - {protocol: TCP, port: 6333}
+        - {protocol: TCP, port: 6334}

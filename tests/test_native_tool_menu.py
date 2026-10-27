@@ -31,8 +31,8 @@ class NativeToolMenuTests(unittest.TestCase):
         names = []
         for array in re.findall(r"^TOOL_KEYS\+?=\(([^\n]*)\)", self.setup, re.M):
             names.extend(shlex.split(array))
-        # PyAirbyte is assigned in the real migration block below, not twice here.
-        names = [name for name in names if name != "PyAirbyte"]
+        # These entries are assigned in the real metadata block below.
+        names = [name for name in names if name not in ("PyAirbyte", "GitOps_Bootstrap")]
         block = self.setup.split("# Native migration metadata overrides older Docker descriptions only.\n", 1)[1].split("# Hauptschleife", 1)[0]
         sort = re.search(r"^sort_tool_menu_keys\(\) \{\n.*?^\}", self.setup, re.M | re.S).group()
         return ('source scripts/helpers/native_github_menu.sh\n'

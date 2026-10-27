@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: agent-container-and-pod-bounds
+spec:
+  limits:
+    # Container-Defaults allein begrenzen nicht die Summe mehrerer Sidecars.
+    - type: Container
+      defaultRequest: {cpu: 50m, memory: 64Mi, ephemeral-storage: 64Mi}
+      default: {cpu: 250m, memory: 256Mi, ephemeral-storage: 256Mi}
+      min: {cpu: 10m, memory: 32Mi}
+      max: {cpu: '1', memory: 768Mi, ephemeral-storage: 1Gi}
+    - type: Pod
+      max: {cpu: '1', memory: 1Gi}
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: agents-small-vps-budget
+spec:
+  # Namespace-Budget, kein Ersatz fuer kube/system-reserved auf dem Node.
+  hard:
+    requests.cpu: '1'
+    requests.memory: 1Gi
+    limits.cpu: '2'
+    limits.memory: 2Gi
+    requests.ephemeral-storage: 512Mi
+    limits.ephemeral-storage: 2Gi
+    requests.storage: 12Gi
+    persistentvolumeclaims: '3'
+    pods: '6'
+    services.loadbalancers: '0'
+    services.nodeports: '0'

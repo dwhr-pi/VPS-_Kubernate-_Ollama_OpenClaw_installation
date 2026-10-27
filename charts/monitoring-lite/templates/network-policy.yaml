@@ -1,0 +1,78 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: monitoring-lite-default-deny
+spec:
+  podSelector:
+    matchExpressions:
+      - {key: app, operator: In, values: [monitoring-lite-prometheus, monitoring-lite-grafana]}
+  policyTypes: [Ingress, Egress]
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: monitoring-lite-dns
+spec:
+  podSelector:
+    matchExpressions:
+      - {key: app, operator: In, values: [monitoring-lite-prometheus, monitoring-lite-grafana]}
+  policyTypes: [Egress]
+  egress:
+    - to:
+        - namespaceSelector:
+            matchLabels: {kubernetes.io/metadata.name: kube-system}
+          podSelector:
+            matchLabels: {k8s-app: kube-dns}
+      ports:
+        - {protocol: UDP, port: 53}
+        - {protocol: TCP, port: 53}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: monitoring-lite-internal
+spec:
+  podSelector:
+    matchLabels: {app: monitoring-lite-prometheus}
+  policyTypes: [Ingress]
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels: {app: monitoring-lite-grafana}
+      ports:
+        - {protocol: TCP, port: 9090}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: monitoring-lite-grafana-egress
+spec:
+  podSelector:
+    matchLabels: {app: monitoring-lite-grafana}
+  policyTypes: [Egress]
+  egress:
+    - to:
+        - podSelector:
+            matchLabels: {app: monitoring-lite-prometheus}
+      ports:
+        - {protocol: TCP, port: 9090}
+{{- if .Values.exporterCIDRs }}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: monitoring-lite-exporter-egress
+spec:
+  podSelector:
+    matchLabels: {app: monitoring-lite-prometheus}
+  policyTypes: [Egress]
+  egress:
+    - to:
+{{- range .Values.exporterCIDRs }}
+        - ipBlock: {cidr: {{ . | quote }}}
+{{- end }}
+      ports:
+{{- range .Values.exporterPorts }}
+        - {protocol: TCP, port: {{ . }}}
+{{- end }}
+{{- end }}

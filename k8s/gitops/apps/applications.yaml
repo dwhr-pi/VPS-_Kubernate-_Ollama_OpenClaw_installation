@@ -1,0 +1,52 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: agents-baseline
+  namespace: argocd
+  annotations: {argocd.argoproj.io/sync-wave: '-10'}
+spec:
+  project: llmops-workloads
+  source:
+    repoURL: https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation.git
+    targetRevision: REPLACE_WITH_FULL_WORKLOAD_COMMIT
+    path: k8s/gitops/agents
+  destination: {server: 'https://kubernetes.default.svc', namespace: ai-agents}
+  syncPolicy:
+    syncOptions: [ApplyOutOfSyncOnly=true]
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: memory-qdrant
+  namespace: argocd
+  annotations: {argocd.argoproj.io/sync-wave: '0'}
+spec:
+  project: llmops-workloads
+  source:
+    repoURL: https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation.git
+    targetRevision: REPLACE_WITH_FULL_WORKLOAD_COMMIT
+    # Privates Deployment-Overlay mit echtem Digest und verschluesseltem Secret.
+    path: REPLACE_WITH_REVIEWED_MEMORY_OVERLAY
+  destination: {server: 'https://kubernetes.default.svc', namespace: ai-memory}
+  syncPolicy:
+    syncOptions: [ApplyOutOfSyncOnly=true]
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: monitoring-lite
+  namespace: argocd
+  annotations: {argocd.argoproj.io/sync-wave: '10'}
+spec:
+  project: llmops-workloads
+  source:
+    repoURL: https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation.git
+    targetRevision: REPLACE_WITH_FULL_WORKLOAD_COMMIT
+    path: charts/monitoring-lite
+    helm:
+      releaseName: monitoring-lite
+      # Diese Datei liegt nach Review direkt im Chart-Pfad des Deployment-Refs.
+      valueFiles: [values.production.yaml]
+  destination: {server: 'https://kubernetes.default.svc', namespace: ai-monitoring}
+  syncPolicy:
+    syncOptions: [ApplyOutOfSyncOnly=true]

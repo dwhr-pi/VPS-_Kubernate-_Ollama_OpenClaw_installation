@@ -1,0 +1,5 @@
+apiVersion: v2
+name: monitoring-lite
+description: Kleines privates Prometheus/Grafana-Paar ohne Operator oder Auto-Discovery
+type: application
+version: 0.1.0

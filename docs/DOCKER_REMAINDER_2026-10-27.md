@@ -28,8 +28,9 @@ Bestehende Container, Volumes, `/opt`-Installationen, Daten und Secrets bleiben
 unangetastet. Auch die beiden zuvor offenen Faelle Airbyte Core und Rhasspy 2
 bleiben offen; PyAirbyte ersetzt Airbyte Core nicht.
 
-Das gemeinsame Manifest umfasst jetzt 47 Eintraege: 43 urspruengliche Pfade,
-PyAirbyte sowie diese drei Ergaenzungen. Davon 43 Buildrezepte und vier
+Das gemeinsame Manifest umfasst 48 Eintraege: 43 urspruengliche Pfade,
+PyAirbyte, diese drei Ergaenzungen und die spaeter hinzugefuegte Kubeseal-CLI.
+Davon 44 Buildrezepte und vier
 offene Faelle (Airbyte Core, Rhasspy 2, AutoGPT Platform, Supabase).
 Buildrezept bedeutet nicht erfolgreich auf jeder Plattform gebaut oder betrieben.
 

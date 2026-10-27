@@ -46,9 +46,9 @@ class NativeGithubTests(unittest.TestCase):
         with patch.object(tool, "preflight"), patch.object(tool.common, "install", side_effect=self.source), patch.object(tool, "build", side_effect=self.build), redirect_stdout(io.StringIO()):
             tool.install(self.outer, self.prefix, self.marker, self.spec)
 
-    def test_inventory_has_47_paths_and_43_honest_build_recipes(self):
-        self.assertEqual(len(tool.TOOLS), 47)
-        self.assertEqual(sum(bool(s["recipe"]) for s in tool.TOOLS.values()), 43)
+    def test_inventory_has_48_paths_and_44_honest_build_recipes(self):
+        self.assertEqual(len(tool.TOOLS), 48)
+        self.assertEqual(sum(bool(s["recipe"]) for s in tool.TOOLS.values()), 44)
         for key, spec in tool.TOOLS.items():
             self.assertEqual(key, spec["id"])
             if spec["recipe"]:

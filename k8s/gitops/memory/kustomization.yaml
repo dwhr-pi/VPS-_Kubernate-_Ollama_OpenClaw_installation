@@ -1,0 +1,12 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: ai-memory
+resources:
+  - namespace.yaml
+  - qdrant.yaml
+  - network-policy.yaml
+images:
+  # Absichtlich nicht startfaehiger Platzhalter: im eigenen Overlay Digest setzen.
+  - name: qdrant-runtime
+    newName: registry.example.invalid/qdrant
+    newTag: REPLACE_WITH_REVIEWED_PIN

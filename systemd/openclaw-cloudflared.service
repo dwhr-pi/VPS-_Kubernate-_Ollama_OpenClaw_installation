@@ -1,0 +1,30 @@
+[Unit]
+Description=Cloudflare Tunnel fuer bewusst konfigurierte private Ziele
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+DynamicUser=yes
+# Token bleibt ausserhalb von Git und erscheint weder in argv noch Environment.
+LoadCredential=tunnel-token:/etc/openclaw-gitops/cloudflared.token
+ExecStart=/usr/local/bin/cloudflared --no-autoupdate tunnel run --token-file %d/tunnel-token
+Restart=on-failure
+RestartSec=10
+NoNewPrivileges=yes
+CapabilityBoundingSet=
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictSUIDSGID=yes
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX AF_NETLINK
+UMask=0077
+MemoryMax=256M
+CPUQuota=50%
+
+[Install]
+WantedBy=multi-user.target

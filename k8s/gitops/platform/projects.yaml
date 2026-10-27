@@ -1,0 +1,39 @@
+# Einmal manuell mit geprueftem Kontext anwenden; Root-Repo ist Admin-vertrauenswuerdig.
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: llmops-root
+  namespace: argocd
+spec:
+  sourceRepos: ['https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation.git']
+  destinations:
+    - {server: 'https://kubernetes.default.svc', namespace: argocd}
+  clusterResourceBlacklist:
+    - {group: '*', kind: '*'}
+  namespaceResourceWhitelist:
+    - {group: argoproj.io, kind: Application}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: llmops-workloads
+  namespace: argocd
+spec:
+  sourceRepos: ['https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation.git']
+  destinations:
+    - {server: 'https://kubernetes.default.svc', namespace: ai-agents}
+    - {server: 'https://kubernetes.default.svc', namespace: ai-memory}
+    - {server: 'https://kubernetes.default.svc', namespace: ai-monitoring}
+  # Namespace-Verwaltung verlangt vertrauenswuerdige, nicht fremde App-Quellen.
+  clusterResourceWhitelist:
+    - {group: '', kind: Namespace}
+  namespaceResourceWhitelist:
+    - {group: '', kind: ConfigMap}
+    - {group: '', kind: Service}
+    - {group: '', kind: PersistentVolumeClaim}
+    - {group: '', kind: ResourceQuota}
+    - {group: '', kind: LimitRange}
+    - {group: apps, kind: Deployment}
+    - {group: apps, kind: StatefulSet}
+    - {group: networking.k8s.io, kind: NetworkPolicy}
+    - {group: bitnami.com, kind: SealedSecret}

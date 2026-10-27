@@ -3923,18 +3923,20 @@ TOOL_SCRIPT_NAMES["Perplexity_API_Cookbook"]="perplexity_cookbook"
 
 sort_tool_menu_keys() {
     local key
-    local -a pinned=() remaining=() sorted=()
+    local -a pinned=() remaining=() sorted=() appended=()
     for key in "${TOOL_KEYS[@]}"; do
         case "$key" in
             Ollama|OpenClaw|Ruflo) pinned+=("$key") ;;
+            GitOps_Bootstrap|Kubeseal) appended+=("$key") ;;
             *) remaining+=("$key") ;;
         esac
     done
-    # Preserve core tools above the separator; sort every remaining tool A-Z.
+    # Preserve core tools above the separator; sort the existing catalog A-Z.
     if ((${#remaining[@]})); then
         mapfile -t sorted < <(printf '%s\n' "${remaining[@]}" | LC_ALL=C sort -f -s)
     fi
-    TOOL_KEYS=("${pinned[@]}" "${sorted[@]}")
+    # Neue GitOps-Werkzeuge bewusst hinter dem bisherigen Z-Ende belassen.
+    TOOL_KEYS=("${pinned[@]}" "${sorted[@]}" "${appended[@]}")
 }
 
 # Funktion zum Anzeigen des Tool-Management-Menüs
@@ -4709,6 +4711,11 @@ show_main_menu() {
 }
 
 # Native migration metadata overrides older Docker descriptions only.
+TOOL_KEYS+=("GitOps_Bootstrap")
+TOOL_SCRIPT_NAMES["GitOps_Bootstrap"]="gitops_bootstrap"
+TOOLS["GitOps_Bootstrap"]="Expliziter K3s/Cloudflared/Argo-Core-Bootstrap, kein Standard-Apply; docs/GITOPS_SMALL_VPS.md."
+TOOL_SCRIPT_NAMES["Kubeseal"]="kubeseal"
+TOOLS["Kubeseal"]="GitHub-Quellbuild der Sealed-Secrets-CLI; kein Controllerstart oder Clusterzugriff."
 TOOL_SCRIPT_NAMES["OpenTelemetry"]="opentelemetry"
 TOOL_SCRIPT_NAMES["AutoGPT"]="autogpt"
 TOOL_SCRIPT_NAMES["Supabase"]="supabase"

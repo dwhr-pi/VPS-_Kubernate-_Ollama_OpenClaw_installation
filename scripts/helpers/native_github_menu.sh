@@ -4,6 +4,7 @@ NATIVE_GITHUB_TOOL_KEYS=("Airbyte" "Apache_Tika" "Appsmith" "ArchiveBox" "Argill
 
 # Include newly discovered paths in the same native status dispatch.
 NATIVE_GITHUB_TOOL_KEYS+=("OpenTelemetry" "AutoGPT" "Supabase")
+NATIVE_GITHUB_TOOL_KEYS+=("Kubeseal")
 
 register_native_github_tool_keys() {
     local key

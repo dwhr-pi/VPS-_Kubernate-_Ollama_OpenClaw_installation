@@ -15,6 +15,10 @@ NATIVE_TOOL_STATUS_KEYS+=("${NATIVE_GITHUB_TOOL_KEYS[@]}")
 native_tool_marker() {
     local marker
     case "$1" in
+        "Kubeseal") marker=kubeseal/native-github/build-ready.json ;;
+        "OpenTelemetry") marker=opentelemetry/native-github/build-ready.json ;;
+        "AutoGPT") marker=autogpt/native-github/build-ready.json ;;
+        "Supabase") marker=supabase/native-github/build-ready.json ;;
         BrowserOS_Study) marker=browseros_study/ready.json ;;
         Enki_Browser_Study) marker=enki_browser_study/ready.json ;;
         Qwen_Desktop_Study) marker=qwen_desktop_study/ready.json ;;

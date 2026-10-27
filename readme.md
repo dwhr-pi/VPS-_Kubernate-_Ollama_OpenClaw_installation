@@ -3,6 +3,10 @@
 [Plattform-Review vom 26.10.2026: Vollinventar, P0/P1/P2-Patchplan und sichere Beispiele](docs/reviews/2026-10-26-platform-patch-plan.md).
 Statischer Nachweis fuer 385 Tools/245 Profile, keine automatische Produktionsfreigabe.
 
+**Neue optionale GitOps-Basis:** [fuenf Bausteine fuer kleine VPS/WSL](docs/GITOPS_SMALL_VPS.md):
+Qdrant/PVC, Agenten-Budgets, Sealed Secrets, Monitoring und bewusster K3s/Cloudflared/Argo-Core-Bootstrap.
+Kein automatisches Apply; neue Tools GitOps_Bootstrap/Kubeseal sind am Menueende angehaengt.
+
 [Docker nach GitHub: vollstaendige Tool-Liste und Umstellungsstand](docs/DOCKER_TO_GITHUB.md):
 41 der 43 Buildrezepte implementiert (Forgejo: freigegebenes Codeberg), 2 Umstellungen offen; PyAirbyte zusaetzlich separat; kein automatischer
 Image-Fallback dieser 43 Tool-Pfade. Bestehende Container/Daten werden nicht migriert.

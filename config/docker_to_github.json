@@ -1,8 +1,28 @@
 {
   "schema_version": 1,
   "review_date": "2026-10-27",
-  "scope": "46 ehemalige Containerpfade plus separates PyAirbyte-SDK; offene Gesamtplattformen ohne Docker-Fallback",
+  "scope": "46 ehemalige Containerpfade plus PyAirbyte-SDK und Kubeseal-CLI; offene Gesamtplattformen ohne Docker-Fallback",
   "tools": [
+    {
+      "id": "kubeseal",
+      "name": "Kubeseal",
+      "tool_key": "Kubeseal",
+      "repo": "bitnami/sealed-secrets",
+      "previous_images": [],
+      "previous_installer": null,
+      "recipe": {
+        "repo": "bitnami/sealed-secrets",
+        "pin": "c58a60f0bd5283d28c25ad068e7c9760634be470",
+        "kind": "go",
+        "go_min": [1, 27, 3],
+        "package": "./cmd/kubeseal",
+        "binary": "kubeseal",
+        "probe": ["--version"],
+        "disk_mb": 4096,
+        "note": "Nur Sealed-Secrets-CLI aus GitHub gebaut. Kein Controller, Clusterzugriff, Key-Import oder Secret-Apply; Go >=1.27.3 erforderlich."
+      },
+      "blocked_reason": null
+    },
     {
       "id": "opentelemetry",
       "name": "OpenTelemetry",

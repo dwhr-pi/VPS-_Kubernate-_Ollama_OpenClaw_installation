@@ -1,0 +1,108 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: qdrant-config
+data:
+  production.yaml: |
+    storage:
+      storage_path: /qdrant/data/storage
+      snapshots_path: /qdrant/data/snapshots
+      # Payloads auf Disk senken RAM-Verbrauch, erhoehen aber Disk-I/O.
+      on_disk_payload: true
+      performance:
+        max_search_threads: 1
+    service:
+      host: 0.0.0.0
+      http_port: 6333
+      grpc_port: 6334
+    telemetry_disabled: true
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: qdrant-data
+  annotations:
+    # Kein GitOps-Prune fuer Daten; ein PVC ist trotzdem kein Backup.
+    argocd.argoproj.io/sync-options: Prune=false,Delete=false
+spec:
+  accessModes: [ReadWriteOnce]
+  storageClassName: local-path
+  resources:
+    requests: {storage: 5Gi}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: qdrant
+spec:
+  type: ClusterIP
+  selector: {app: qdrant}
+  ports:
+    - {name: http, port: 6333, targetPort: http}
+    - {name: grpc, port: 6334, targetPort: grpc}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qdrant
+spec:
+  replicas: 1
+  # Local-Path/RWO und kleines Budget: kontrolliertes Wartungsfenster statt HA.
+  strategy: {type: Recreate}
+  selector:
+    matchLabels: {app: qdrant}
+  template:
+    metadata:
+      labels: {app: qdrant}
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+        fsGroup: 10001
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: {type: RuntimeDefault}
+      containers:
+        - name: qdrant
+          image: qdrant-runtime
+          args: [--config-path, /etc/qdrant/production.yaml]
+          ports:
+            - {name: http, containerPort: 6333}
+            - {name: grpc, containerPort: 6334}
+          env:
+            # Fehlendes Secret blockiert den Start, niemals ungeschuetzter Fallback.
+            - name: QDRANT__SERVICE__API_KEY
+              valueFrom:
+                secretKeyRef: {name: qdrant-auth, key: api-key}
+          resources:
+            requests: {cpu: 100m, memory: 128Mi, ephemeral-storage: 64Mi}
+            limits: {cpu: 500m, memory: 512Mi, ephemeral-storage: 512Mi}
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          # TCP-Liveness vermeidet einen API-Key in Probe-Headern; kein RAG-Qualitaetstest.
+          startupProbe:
+            tcpSocket: {port: http}
+            periodSeconds: 5
+            failureThreshold: 60
+          readinessProbe:
+            tcpSocket: {port: http}
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket: {port: http}
+            periodSeconds: 30
+            failureThreshold: 5
+          volumeMounts:
+            # Ein Mount: fsGroup kann das PVC vorbereiten, keine root-eigenen SubPath-Verzeichnisse.
+            - {name: data, mountPath: /qdrant/data}
+            - {name: config, mountPath: /etc/qdrant, readOnly: true}
+            - {name: tmp, mountPath: /tmp}
+      volumes:
+        - name: data
+          persistentVolumeClaim: {claimName: qdrant-data}
+        - name: config
+          configMap: {name: qdrant-config}
+        - name: tmp
+          emptyDir: {sizeLimit: 128Mi}

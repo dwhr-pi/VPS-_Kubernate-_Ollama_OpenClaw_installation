@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "argocd_images": {
+    "REPLACE_WITH_EXACT_IMAGE_FROM_REVIEWED_MANIFEST": "sha256:REPLACE_WITH_VERIFIED_DIGEST"
+  },
+  "platforms": {
+    "linux-amd64": {
+      "k3s": {
+        "url": "https://github.com/k3s-io/k3s/releases/download/REPLACE_WITH_REVIEWED_VERSION/k3s",
+        "sha256": "REPLACE_WITH_VERIFIED_SHA256"
+      },
+      "k3s_installer": {
+        "url": "https://raw.githubusercontent.com/k3s-io/k3s/REPLACE_WITH_FULL_COMMIT/install.sh",
+        "sha256": "REPLACE_WITH_VERIFIED_SHA256"
+      },
+      "cloudflared": {
+        "url": "https://github.com/cloudflare/cloudflared/releases/download/REPLACE_WITH_REVIEWED_VERSION/cloudflared-linux-amd64",
+        "sha256": "REPLACE_WITH_VERIFIED_SHA256"
+      },
+      "argocd": {
+        "url": "https://raw.githubusercontent.com/argoproj/argo-cd/REPLACE_WITH_FULL_COMMIT/manifests/core-install.yaml",
+        "sha256": "REPLACE_WITH_VERIFIED_SHA256"
+      }
+    }
+  }
+}

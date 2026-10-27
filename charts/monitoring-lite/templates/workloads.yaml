@@ -1,0 +1,113 @@
+{{- range $name := list "prometheus" "grafana" }}
+{{- $component := index $.Values $name }}
+{{- $digest := required (printf "%s.digest: gepruefter SHA256-Digest erforderlich" $name) $component.digest }}
+{{- if not (regexMatch "^sha256:[a-f0-9]{64}$" $digest) }}
+{{- fail "Image-Digest muss sha256 mit 64 kleinen Hexzeichen sein" }}
+{{- end }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: monitoring-lite-{{ $name }}
+  annotations:
+    argocd.argoproj.io/sync-options: Prune=false,Delete=false
+spec:
+  accessModes: [ReadWriteOnce]
+  storageClassName: {{ $.Values.storageClass | quote }}
+  resources:
+    requests: {storage: 1Gi}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: monitoring-lite-{{ $name }}
+spec:
+  type: ClusterIP
+  selector: {app: monitoring-lite-{{ $name }}}
+  ports:
+    - name: http
+      port: {{ if eq $name "prometheus" }}9090{{ else }}3000{{ end }}
+      targetPort: http
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: monitoring-lite-{{ $name }}
+spec:
+  replicas: 1
+  strategy: {type: Recreate}
+  selector:
+    matchLabels: {app: monitoring-lite-{{ $name }}}
+  template:
+    metadata:
+      labels: {app: monitoring-lite-{{ $name }}}
+      annotations:
+        # Konfigurationsaenderungen loesen einen kontrollierten Podwechsel aus.
+        checksum/config: {{ include (print $.Template.BasePath "/config.yaml") $ | sha256sum }}
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+        fsGroup: 10001
+        seccompProfile: {type: RuntimeDefault}
+      containers:
+        - name: {{ $name }}
+          image: {{ printf "%s@%s" $component.repository $digest | quote }}
+          ports:
+            - {name: http, containerPort: {{ if eq $name "prometheus" }}9090{{ else }}3000{{ end }}}
+          resources: {{ $component.resources | toJson }}
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+{{- if eq $name "prometheus" }}
+          args:
+            - --config.file=/etc/prometheus/prometheus.yml
+            - --storage.tsdb.path=/data
+            - --storage.tsdb.retention.time={{ $.Values.retentionTime }}
+            - --storage.tsdb.retention.size={{ $.Values.retentionSize }}
+          readinessProbe:
+            httpGet: {path: /-/ready, port: http}
+          livenessProbe:
+            httpGet: {path: /-/healthy, port: http}
+{{- else }}
+          env:
+            - {name: GF_PATHS_DATA, value: /data}
+            - {name: GF_PATHS_LOGS, value: /tmp}
+            - {name: GF_PATHS_PLUGINS, value: /data/plugins}
+            - {name: GF_AUTH_ANONYMOUS_ENABLED, value: 'false'}
+            - {name: GF_USERS_ALLOW_SIGN_UP, value: 'false'}
+            - {name: GF_ANALYTICS_REPORTING_ENABLED, value: 'false'}
+            - {name: GF_ANALYTICS_CHECK_FOR_UPDATES, value: 'false'}
+            - name: GF_SECURITY_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef: {name: {{ $.Values.grafana.authSecret | quote }}, key: admin-password}
+          readinessProbe:
+            httpGet: {path: /api/health, port: http}
+          livenessProbe:
+            httpGet: {path: /api/health, port: http}
+{{- end }}
+          startupProbe:
+            tcpSocket: {port: http}
+            failureThreshold: 60
+            periodSeconds: 5
+          volumeMounts:
+            - {name: data, mountPath: /data}
+            - {name: tmp, mountPath: /tmp}
+{{- if eq $name "prometheus" }}
+            - {name: config, mountPath: /etc/prometheus, readOnly: true}
+{{- else }}
+            - {name: config, mountPath: /etc/grafana/provisioning/datasources/default.yaml, subPath: datasource.yaml, readOnly: true}
+            - {name: config, mountPath: /etc/grafana/provisioning/dashboards/default.yaml, subPath: dashboards.yaml, readOnly: true}
+            - {name: config, mountPath: /etc/grafana/local-dashboards/vps.json, subPath: vps.json, readOnly: true}
+{{- end }}
+      volumes:
+        - name: data
+          persistentVolumeClaim: {claimName: monitoring-lite-{{ $name }}}
+        - name: config
+          configMap: {name: monitoring-lite-{{ $name }}}
+        - name: tmp
+          emptyDir: {sizeLimit: 128Mi}
+{{- end }}
