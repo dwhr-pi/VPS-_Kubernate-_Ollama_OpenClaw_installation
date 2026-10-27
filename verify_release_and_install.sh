@@ -3,7 +3,7 @@
 set -Eeuo pipefail
 umask 077
 ROOT="$(cd "${BASH_SOURCE[0]%/*}" && pwd)"
-tag= key= artifacts= download=0 execute=0 destination="$HOME/openclaw_ultimate_setup" stage=
+tag= key= artifacts= download=0 execute=0 verify_only=0 destination="$HOME/openclaw_ultimate_setup" stage=
 die() { printf 'Release-Einstieg abgebrochen: %s\n' "$*" >&2; exit 1; }
 while (($#)); do
   case "$1" in
@@ -13,10 +13,11 @@ while (($#)); do
       shift 2 ;;
     --download) download=1; shift ;;
     --install) execute=1; shift ;;
-    --verify-only) shift ;;
+    --verify-only) verify_only=1; shift ;;
     *) die '--tag vX.Y.Z --public-key ABS [--artifacts ABS | --download] [--install --destination ABS]' ;;
   esac
 done
+((execute == 0 || verify_only == 0)) || die '--install und --verify-only schliessen sich aus.'
 [[ "$tag" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9.-]+)?$ && "$key" == /* && -f "$key" && ! -L "$key" ]] || die 'Release-Tag und unabhaengige regulaere Public-Key-Datei erforderlich.'
 command -v minisign >/dev/null || die 'Minisign separat aus gepruefter Quelle bereitstellen.'
 command -v python3 >/dev/null || die 'Python 3 erforderlich.'
