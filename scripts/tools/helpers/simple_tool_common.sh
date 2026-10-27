@@ -177,27 +177,43 @@ clone_or_update_github_source() {
   local repo_url="$1"
   local target_dir="$2"
 
-  repair_git_target_for_clone "$target_dir" "$repo_url" "GitHub_Source"
-
-  if [ -d "$target_dir/.git" ]; then
-    if git -C "$target_dir" fetch origin --prune && git -C "$target_dir" pull --ff-only; then
-      return 0
-    fi
-    log_warn "Git-Update fuer $target_dir fehlgeschlagen. Lokale Kopie wird neu geklont."
-    rm -rf "$target_dir"
-  elif [ -e "$target_dir" ]; then
-    log_warn "Unvollstaendige Quelle unter $target_dir gefunden. Raeume vor neuem Clone auf."
-    rm -rf "$target_dir"
+  local origin_url
+  # Existing sources may contain user work; never remove or relocate them on failure.
+  if [[ -L "$target_dir" || -L "$target_dir/.git" ]]; then
+    log_warn 'Verknuepftes Quellziel: keine automatische Aenderung.'
+    return 1
   fi
-
-  log_info "Klone Quelle aus GitHub: $repo_url"
-  if git clone --depth 1 --filter=blob:none "$repo_url" "$target_dir"; then
+  if [[ -e "$target_dir" ]]; then
+    if [[ ! -d "$target_dir/.git" ]]; then
+      log_warn 'Quellziel existiert ohne Git-Nachweis. Dateien bleiben erhalten; neues Ziel bewusst waehlen.'
+      return 1
+    fi
+    if ! origin_url=$(git -C "$target_dir" remote get-url origin); then
+      log_warn 'Origin nicht pruefbar; vorhandene Quelle bleibt erhalten.'
+      return 1
+    fi
+    if [[ "$origin_url" != "$repo_url" ]]; then
+      log_warn 'Origin weicht ab; keine automatische Verschiebung oder Ueberschreibung.'
+      return 1
+    fi
+    if ! GIT_TERMINAL_PROMPT=0 git -C "$target_dir" fetch origin --prune; then
+      log_warn 'Git-Fetch fehlgeschlagen; vorhandene Quelle bleibt erhalten.'
+      return 1
+    fi
+    if ! GIT_TERMINAL_PROMPT=0 git -C "$target_dir" pull --ff-only; then
+      log_warn 'Git-Pull fehlgeschlagen; vorhandene Quelle bleibt erhalten.'
+      return 1
+    fi
     return 0
   fi
 
-  log_warn "Erster Clone-Versuch fehlgeschlagen. Versuche erneut mit HTTP/1.1 gegen HTTP/2-Abbrueche."
-  rm -rf "$target_dir"
-  git -c http.version=HTTP/1.1 clone --depth 1 --filter=blob:none "$repo_url" "$target_dir"
+  log_info 'Klone GitHub-Quelle in ein bisher nicht vorhandenes Ziel.'
+  if GIT_TERMINAL_PROMPT=0 git clone --depth 1 --filter=blob:none "$repo_url" "$target_dir"; then
+    return 0
+  fi
+
+  log_warn 'Clone fehlgeschlagen. Partielle Dateien bleiben zur Diagnose erhalten; kein Loesch-/Retry-Fallback.'
+  return 1
 }
 
 install_git_docker_tool() {
