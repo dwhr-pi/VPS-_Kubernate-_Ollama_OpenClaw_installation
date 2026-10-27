@@ -20,6 +20,8 @@ repo_update_backups/
 tokens/
 secrets/
 .openclaw_ultimate_user_data/
+/installed_tools.txt
+/installed_profiles.txt
 env-vault.age
 .vault.lock
 .automaton/
