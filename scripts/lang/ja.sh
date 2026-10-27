@@ -1,4 +1,14 @@
 #!/bin/bash
+TXT_YES_LABEL="はい"
+TXT_NO_LABEL="いいえ"
+TXT_LOADING_NOTICE_TITLE="画面を準備中"
+TXT_LOADING_NOTICE_BODY='「%s」画面を準備します。\n\n%s\n\nWSL やストレージの状態により、読み込みには数秒から数分かかります。任意の時間・ディスク測定値はローカルの概要から読み込みます。\n\n続行しますか？'
+TXT_LOADING_GAUGE_TITLE='%s を読み込み中'
+TXT_LOADING_GAUGE_TEXT="メニュー、状態、任意の測定値を準備中..."
+TXT_LOADING_TOOLS_LABEL="ツール管理"
+TXT_LOADING_TOOLS_DETAIL="ツールの状態、選択肢、最近の時間・ディスク測定値を準備します。"
+TXT_LOADING_PROFILES_LABEL="プロファイル管理"
+TXT_LOADING_PROFILES_DETAIL="プロファイルの状態、グループ、最近の測定値を準備します。"
 
 # Ursprünglich Deutsch: zentrale deutsche Originaltexte siehe de.sh
 TXT_LANGUAGE_MENU_TITLE="言語の選択"

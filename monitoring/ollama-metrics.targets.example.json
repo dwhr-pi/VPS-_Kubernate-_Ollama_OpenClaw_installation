@@ -1,0 +1,1 @@
+[{"targets": ["ollama-readonly-exporter.ai-monitoring.svc.cluster.local:9404"], "labels": {"collector": "readonly-inventory"}}]

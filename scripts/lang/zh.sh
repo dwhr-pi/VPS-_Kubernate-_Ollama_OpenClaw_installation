@@ -1,4 +1,14 @@
 #!/bin/bash
+TXT_YES_LABEL="是"
+TXT_NO_LABEL="否"
+TXT_LOADING_NOTICE_TITLE="正在准备视图"
+TXT_LOADING_NOTICE_BODY='正在准备“%s”视图。\n\n%s\n\n根据 WSL 和存储设备的情况，加载可能需要几秒到几分钟。可选的时间和磁盘测量数据从本地摘要读取。\n\n继续？'
+TXT_LOADING_GAUGE_TITLE='正在加载 %s'
+TXT_LOADING_GAUGE_TEXT="正在准备菜单、状态和可选测量数据..."
+TXT_LOADING_TOOLS_LABEL="工具管理"
+TXT_LOADING_TOOLS_DETAIL="正在准备工具状态、选择项以及最近的时间和磁盘测量数据。"
+TXT_LOADING_PROFILES_LABEL="配置管理"
+TXT_LOADING_PROFILES_DETAIL="正在准备配置状态、配置组以及最近的测量数据。"
 
 # Ursprünglich Deutsch: zentrale deutsche Originaltexte siehe de.sh
 TXT_LANGUAGE_MENU_TITLE="语言选择"

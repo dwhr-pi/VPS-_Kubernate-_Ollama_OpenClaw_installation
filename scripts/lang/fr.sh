@@ -1,4 +1,14 @@
 #!/bin/bash
+TXT_YES_LABEL="Oui"
+TXT_NO_LABEL="Non"
+TXT_LOADING_NOTICE_TITLE="PRÉPARATION DE LA VUE"
+TXT_LOADING_NOTICE_BODY='Préparation de la vue « %s ».\n\n%s\n\nLe chargement peut durer quelques secondes à plusieurs minutes selon WSL et le stockage. Les mesures facultatives proviennent du résumé local.\n\nContinuer ?'
+TXT_LOADING_GAUGE_TITLE='CHARGEMENT : %s'
+TXT_LOADING_GAUGE_TEXT="Préparation des menus, des états et des mesures facultatives..."
+TXT_LOADING_TOOLS_LABEL="Gestion des outils"
+TXT_LOADING_TOOLS_DETAIL="Préparation des états, des choix et des mesures de durée et de stockage."
+TXT_LOADING_PROFILES_LABEL="Gestion des profils"
+TXT_LOADING_PROFILES_DETAIL="Préparation des états, des groupes de profils et des mesures récentes."
 
 # Ursprünglich Deutsch: zentrale deutsche Originaltexte siehe de.sh
 TXT_LANGUAGE_MENU_TITLE="Choix de la langue"

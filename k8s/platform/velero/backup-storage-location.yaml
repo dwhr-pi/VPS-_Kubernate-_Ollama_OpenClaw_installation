@@ -1,0 +1,34 @@
+# Velero-Server/AWS-Plugin separat mit geprueften Versionen installieren; keine Zugangsdaten in Git.
+apiVersion: velero.io/v1
+kind: BackupStorageLocation
+metadata: {name: offsite, namespace: velero}
+spec:
+  provider: aws
+  accessMode: ReadWrite
+  objectStorage:
+    bucket: REPLACE_WITH_DEDICATED_OFFSITE_BUCKET
+    prefix: llmops/cluster-01
+  credential:
+    name: velero-cloud-credentials
+    key: cloud
+  config:
+    region: REPLACE_WITH_S3_REGION
+    s3ForcePathStyle: 'true'
+    s3Url: https://REPLACE_WITH_OFFSITE_S3_HOST
+---
+# Zeitplan erst nach konsistentem Probe-Backup und Restore explizit entpausieren.
+apiVersion: velero.io/v1
+kind: Schedule
+metadata: {name: llmops-daily, namespace: velero}
+spec:
+  paused: true
+  skipImmediately: true
+  schedule: '30 2 * * *'
+  useOwnerReferencesInBackup: false
+  template:
+    storageLocation: offsite
+    includedNamespaces: ['*']
+    includeClusterResources: true
+    defaultVolumesToFsBackup: true
+    snapshotVolumes: false
+    ttl: 336h0m0s

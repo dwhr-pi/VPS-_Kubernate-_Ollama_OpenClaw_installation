@@ -19,7 +19,9 @@ scrape_configs:
       - targets: ['node-exporter:9100']
   - job_name: ollama-exporter
     metrics_path: /metrics
-    # Empty until an independently verified exporter is installed. Ollama itself
-    # is not assumed to expose Prometheus metrics on port 11434.
+    # Read-only-Inventarexporter, keine Inferenztests und keine erfundenen GPU-Metriken.
+    # Ziele erst nach bewusster Abnahme aktivieren; Beispiel liegt daneben.
+    sample_limit: 128
     file_sd_configs:
       - files: [/etc/prometheus/ollama-metrics.targets.json]
+        refresh_interval: 60s

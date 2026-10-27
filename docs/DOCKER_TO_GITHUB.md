@@ -1,5 +1,9 @@
 # Docker-Installer auf native GitHub-Builds umstellen
 
+**Rollback-Nachtrag 27.10.2026:** [Szenarien je aktuellem Tool und Ubuntu-Releasewechsel](NATIVE_BUILD_RECOVERY.md).
+Die Matrix deckt alle 49 Eintraege des aktuellen Quellenmanifests ab; vorhandene
+Datenbanken/Container werden nicht automatisch als Rueckfall gestartet oder entfernt.
+
 **Nachtrag 27.10.2026:** Weitere aktive Pfade bei OpenTelemetry, AutoGPT Platform
 und Supabase gefunden und bearbeitet. [Restliste mit Status und Grenzen](DOCKER_REMAINDER_2026-10-27.md).
 Die folgenden Zahlen beziehen sich auf die urspruenglichen 43 Pfade.

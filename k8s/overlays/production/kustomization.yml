@@ -11,3 +11,4 @@ replicas:
     count: 1
 patches:
   - path: resources.yml
+  - path: resource-quota.yaml

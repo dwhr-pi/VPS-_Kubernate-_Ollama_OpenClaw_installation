@@ -1,0 +1,33 @@
+# Vorhandenen hashgeprueften Argo-Core-Bootstrap nutzen. Nur manuelle Synchronisation.
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata: {name: llmops-core, namespace: argocd}
+spec:
+  sourceRepos: ['https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation.git']
+  destinations: [{server: 'https://kubernetes.default.svc', namespace: llmops}]
+  clusterResourceWhitelist: [{group: '', kind: Namespace}]
+  namespaceResourceWhitelist:
+    - {group: '', kind: ConfigMap}
+    - {group: '', kind: Service}
+    - {group: '', kind: ResourceQuota}
+    - {group: '', kind: LimitRange}
+    - {group: '', kind: PersistentVolumeClaim}
+    - {group: apps, kind: Deployment}
+    - {group: apps, kind: StatefulSet}
+    - {group: networking.k8s.io, kind: NetworkPolicy}
+    - {group: networking.k8s.io, kind: Ingress}
+    - {group: traefik.io, kind: Middleware}
+    - {group: cert-manager.io, kind: Issuer}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata: {name: llmops-core-production, namespace: argocd}
+spec:
+  project: llmops-core
+  source:
+    repoURL: https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation.git
+    targetRevision: REPLACE_WITH_FULL_REVIEWED_COMMIT
+    path: k8s/overlays/production
+  destination: {server: 'https://kubernetes.default.svc', namespace: llmops}
+  syncPolicy:
+    syncOptions: [ApplyOutOfSyncOnly=true]

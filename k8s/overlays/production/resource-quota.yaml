@@ -1,0 +1,20 @@
+# GPU-Produktionsbudget fuer vorhandenen Namespace llmops; kein Mini-VPS-Default.
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: llmops-budget
+  namespace: llmops
+spec:
+  hard:
+    requests.cpu: '8'
+    requests.memory: 24Gi
+    requests.ephemeral-storage: 8Gi
+    limits.cpu: '16'
+    limits.memory: 48Gi
+    limits.ephemeral-storage: 16Gi
+    requests.nvidia.com/gpu: '1'
+    requests.storage: 100Gi
+    persistentvolumeclaims: '2'
+    pods: '8'
+    services.nodeports: '0'
+    services.loadbalancers: '0'

@@ -1,0 +1,79 @@
+# Optionaler Repo-Exporter; Python-Image/Quellstand separat pruefen. Standard: kein Podstart.
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: ollama-readonly-exporter, namespace: ai-monitoring}
+spec:
+  replicas: 0
+  selector:
+    matchLabels: {app: ollama-readonly-exporter}
+  template:
+    metadata:
+      labels: {app: ollama-readonly-exporter}
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+        seccompProfile: {type: RuntimeDefault}
+      containers:
+        - name: exporter
+          image: registry.example.invalid/ollama-readonly-exporter:REPLACE_WITH_REVIEWED_DIGEST
+          args: [--ollama-url, 'http://ollama.llmops.svc.cluster.local:11434', --listen-address, '$(POD_IP)']
+          env:
+            - name: POD_IP
+              valueFrom: {fieldRef: {fieldPath: status.podIP}}
+          ports: [{name: metrics, containerPort: 9404}]
+          securityContext:
+            runAsNonRoot: true
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {cpu: 20m, memory: 32Mi}
+            limits: {cpu: 100m, memory: 64Mi}
+          readinessProbe:
+            httpGet: {path: /healthz, port: metrics}
+          livenessProbe:
+            httpGet: {path: /healthz, port: metrics}
+            periodSeconds: 30
+---
+apiVersion: v1
+kind: Service
+metadata: {name: ollama-readonly-exporter, namespace: ai-monitoring}
+spec:
+  type: ClusterIP
+  selector: {app: ollama-readonly-exporter}
+  ports: [{name: metrics, port: 9404, targetPort: metrics}]
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata: {name: ollama-readonly-exporter, namespace: ai-monitoring}
+spec:
+  podSelector: {matchLabels: {app: ollama-readonly-exporter}}
+  policyTypes: [Ingress, Egress]
+  ingress:
+    - from:
+        - podSelector: {matchLabels: {app: monitoring-lite-prometheus}}
+      ports: [{port: 9404, protocol: TCP}]
+  egress:
+    - to:
+        - namespaceSelector: {matchLabels: {kubernetes.io/metadata.name: llmops}}
+          podSelector: {matchLabels: {app: ollama}}
+      ports: [{port: 11434, protocol: TCP}]
+    - to:
+        - namespaceSelector: {matchLabels: {kubernetes.io/metadata.name: kube-system}}
+          podSelector: {matchLabels: {k8s-app: kube-dns}}
+      ports: [{port: 53, protocol: UDP}, {port: 53, protocol: TCP}]
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata: {name: ollama-from-readonly-exporter, namespace: llmops}
+spec:
+  podSelector: {matchLabels: {app: ollama}}
+  policyTypes: [Ingress]
+  ingress:
+    - from:
+        - namespaceSelector: {matchLabels: {kubernetes.io/metadata.name: ai-monitoring}}
+          podSelector: {matchLabels: {app: ollama-readonly-exporter}}
+      ports: [{port: 11434, protocol: TCP}]

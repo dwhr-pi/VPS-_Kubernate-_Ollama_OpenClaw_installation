@@ -1,4 +1,14 @@
 #!/bin/bash
+TXT_YES_LABEL="Sí"
+TXT_NO_LABEL="No"
+TXT_LOADING_NOTICE_TITLE="PREPARANDO LA VISTA"
+TXT_LOADING_NOTICE_BODY='Preparando la vista «%s».\n\n%s\n\nLa carga puede tardar segundos o varios minutos según WSL y el almacenamiento. Las mediciones opcionales se leen del resumen local.\n\n¿Continuar?'
+TXT_LOADING_GAUGE_TITLE='CARGANDO %s'
+TXT_LOADING_GAUGE_TEXT="Preparando menús, estados y mediciones opcionales..."
+TXT_LOADING_TOOLS_LABEL="Gestión de herramientas"
+TXT_LOADING_TOOLS_DETAIL="Preparando estados, opciones y mediciones recientes de tiempo y espacio."
+TXT_LOADING_PROFILES_LABEL="Gestión de perfiles"
+TXT_LOADING_PROFILES_DETAIL="Preparando estados, grupos de perfiles y mediciones recientes."
 
 # Ursprünglich Deutsch: zentrale deutsche Originaltexte siehe de.sh
 TXT_LANGUAGE_MENU_TITLE="Selección de idioma"

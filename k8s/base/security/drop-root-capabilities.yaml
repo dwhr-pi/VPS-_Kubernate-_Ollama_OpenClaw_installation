@@ -1,0 +1,40 @@
+# Kyverno-Pod-Haertung. Ausnahmen nur fuer benannte System-Namespaces mit Admin-Freigabelabel.
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: llmops-drop-root-capabilities
+  annotations: {pod-policies.kyverno.io/autogen-controllers: none}
+spec:
+  validationFailureAction: Enforce
+  background: true
+  rules:
+    - name: restricted-containers
+      match:
+        any:
+          - resources:
+              kinds: [Pod]
+              namespaceSelector:
+                matchLabels: {llmops.example/security-policy: enforce}
+      exclude:
+        any:
+          - resources:
+              namespaces: [kube-system, velero, kyverno]
+              namespaceSelector:
+                matchLabels: {llmops.example/system-exception: approved}
+      validate:
+        message: Nicht-root, schreibgeschuetztes Root-Dateisystem und entfernte Capabilities erforderlich.
+        pattern:
+          spec:
+            securityContext:
+              runAsNonRoot: true
+              seccompProfile: {type: RuntimeDefault}
+            containers:
+              - securityContext: &restricted
+                  '=(runAsNonRoot)': true
+                  readOnlyRootFilesystem: true
+                  allowPrivilegeEscalation: false
+                  capabilities: {drop: [ALL]}
+            '=(initContainers)':
+              - securityContext: *restricted
+            '=(ephemeralContainers)':
+              - securityContext: *restricted

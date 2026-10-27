@@ -1,0 +1,85 @@
+# Optionaler ausgehender Tunnel. Image, Zugangsdaten, DNS und Access/SSO vorher abnehmen.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: llmops-edge
+  labels:
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/enforce-version: v1.34
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: cloudflared, namespace: llmops-edge}
+spec:
+  replicas: 0
+  selector:
+    matchLabels: {app: cloudflared}
+  template:
+    metadata:
+      labels: {app: cloudflared}
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65532
+        fsGroup: 65532
+        seccompProfile: {type: RuntimeDefault}
+      containers:
+        - name: tunnel
+          image: registry.example.invalid/cloudflared:REPLACE_WITH_REVIEWED_MULTIARCH_DIGEST
+          args: [tunnel, --no-autoupdate, --config, /etc/cloudflared/config.yml, --metrics, '$(POD_IP):2000', run]
+          env:
+            - name: POD_IP
+              valueFrom: {fieldRef: {fieldPath: status.podIP}}
+          securityContext:
+            runAsNonRoot: true
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {cpu: 50m, memory: 64Mi}
+            limits: {cpu: 500m, memory: 256Mi}
+          ports: [{name: health, containerPort: 2000}]
+          readinessProbe:
+            httpGet: {path: /ready, port: health}
+            periodSeconds: 10
+          # Keine Liveness auf /ready: Edge-Ausfall darf keine Neustartschleife ausloesen.
+          volumeMounts:
+            - {name: config, mountPath: /etc/cloudflared, readOnly: true}
+            - {name: credentials, mountPath: /run/tunnel, readOnly: true}
+      volumes:
+        - name: config
+          configMap: {name: cloudflared-routes}
+        - name: credentials
+          secret:
+            secretName: cloudflared-credentials
+            defaultMode: 0440
+            items: [{key: credentials.json, path: credentials.json}]
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata: {name: cloudflared-boundary, namespace: llmops-edge}
+spec:
+  podSelector: {matchLabels: {app: cloudflared}}
+  policyTypes: [Ingress, Egress]
+  ingress: []
+  egress:
+    - to:
+        - namespaceSelector: {matchLabels: {kubernetes.io/metadata.name: kube-system}}
+          podSelector: {matchLabels: {k8s-app: kube-dns}}
+      ports: [{port: 53, protocol: UDP}, {port: 53, protocol: TCP}]
+    - to:
+        - namespaceSelector: {matchLabels: {kubernetes.io/metadata.name: llmops}}
+          podSelector: {matchLabels: {app: open-webui}}
+      ports: [{port: 8080, protocol: TCP}]
+    - to:
+        - namespaceSelector: {matchLabels: {kubernetes.io/metadata.name: ai-monitoring}}
+          podSelector: {matchLabels: {app: monitoring-lite-grafana}}
+      ports: [{port: 3000, protocol: TCP}]
+    # Edge und Access-JWKS: vor Produktion auf freigegebene Egress-Ziele begrenzen.
+    - to:
+        - ipBlock:
+            cidr: 0.0.0.0/0
+            except: [10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16, 127.0.0.0/8, 169.254.0.0/16]
+      ports: [{port: 7844, protocol: UDP}, {port: 7844, protocol: TCP}, {port: 443, protocol: TCP}]

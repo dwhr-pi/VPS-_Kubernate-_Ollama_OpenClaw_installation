@@ -1,4 +1,14 @@
 #!/bin/bash
+TXT_YES_LABEL="Yes"
+TXT_NO_LABEL="No"
+TXT_LOADING_NOTICE_TITLE="PREPARING VIEW"
+TXT_LOADING_NOTICE_BODY='Preparing the "%s" view.\n\n%s\n\nLoading may take seconds to several minutes depending on WSL and storage. Optional time and disk measurements are read from the local summary.\n\nContinue?'
+TXT_LOADING_GAUGE_TITLE='LOADING %s'
+TXT_LOADING_GAUGE_TEXT="Preparing menu entries, status and optional measurements..."
+TXT_LOADING_TOOLS_LABEL="Tool management"
+TXT_LOADING_TOOLS_DETAIL="Preparing tool status, selection options and recent time/disk measurements."
+TXT_LOADING_PROFILES_LABEL="Profile management"
+TXT_LOADING_PROFILES_DETAIL="Preparing profile status, profile groups and recent time/disk measurements."
 
 # Ursprünglich Deutsch:
 # - Sprachauswahl

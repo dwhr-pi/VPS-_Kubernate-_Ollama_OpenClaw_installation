@@ -1,4 +1,14 @@
 #!/bin/bash
+TXT_YES_LABEL="Да"
+TXT_NO_LABEL="Нет"
+TXT_LOADING_NOTICE_TITLE="ПОДГОТОВКА ОКНА"
+TXT_LOADING_NOTICE_BODY='Подготовка окна «%s».\n\n%s\n\nЗагрузка может занять от нескольких секунд до нескольких минут в зависимости от WSL и накопителя. Дополнительные измерения читаются из локальной сводки.\n\nПродолжить?'
+TXT_LOADING_GAUGE_TITLE='ЗАГРУЗКА: %s'
+TXT_LOADING_GAUGE_TEXT="Подготовка меню, состояния и дополнительных измерений..."
+TXT_LOADING_TOOLS_LABEL="Управление инструментами"
+TXT_LOADING_TOOLS_DETAIL="Подготовка состояния инструментов, вариантов выбора и измерений времени и места."
+TXT_LOADING_PROFILES_LABEL="Управление профилями"
+TXT_LOADING_PROFILES_DETAIL="Подготовка состояния профилей, групп и последних измерений."
 
 # Ursprünglich Deutsch: zentrale deutsche Originaltexte siehe de.sh
 TXT_LANGUAGE_MENU_TITLE="Выбор языка"

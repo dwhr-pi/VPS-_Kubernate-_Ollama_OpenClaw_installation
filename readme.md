@@ -15,6 +15,7 @@ Der temporaere Checkout wird erst nach Hashpruefung ausgefuehrt; der Zielstand
 bleibt gepinnt, statt erneut `main` zu laden. Vorhandene Ziele/Benutzerdaten
 werden nicht ersetzt. Auch der Bootstrap selbst muss vorab vertrauenswuerdig sein.
 [Alle fuenf Bausteine: Core-Ansible, Restic/SOPS, Limits und nativer Traefik](docs/SECURE_CORE_REFACTOR.md).
+[Ergaenzungen 27.10.: Sprachdialog, Ressourcen, read-only Metriken, Tunnel, Policies und Velero](docs/PLATFORM_GAP_IMPLEMENTATION_2026-10-27.md).
 Die spaeter dokumentierten alten One-Liner sind kein empfohlener sicherer Einstieg.
 
 [Plattform-Review vom 26.10.2026: Vollinventar, P0/P1/P2-Patchplan und sichere Beispiele](docs/reviews/2026-10-26-platform-patch-plan.md).

@@ -1,0 +1,49 @@
+# Lokale Tunnel-Routen: ClusterIP statt oeffentlichem Traefik/NodePort/LoadBalancer.
+# Abhaengig von eigener Tunnel-UUID, Secret credentials.json, Access/SSO und existierenden UI-Services.
+apiVersion: v1
+kind: ConfigMap
+metadata: {name: cloudflared-routes, namespace: llmops-edge}
+data:
+  config.yml: |
+    tunnel: REPLACE_WITH_OWN_TUNNEL_UUID
+    credentials-file: /run/tunnel/credentials.json
+    ingress:
+      - hostname: webui.example.invalid
+        service: http://open-webui.llmops.svc.cluster.local:8080
+        originRequest:
+          access:
+            required: true
+            teamName: REPLACE_WITH_ACCESS_TEAM
+            audTag: [REPLACE_WITH_WEBUI_ACCESS_AUD]
+      - hostname: grafana.example.invalid
+        service: http://monitoring-lite-grafana.ai-monitoring.svc.cluster.local:3000
+        originRequest:
+          access:
+            required: true
+            teamName: REPLACE_WITH_ACCESS_TEAM
+            audTag: [REPLACE_WITH_GRAFANA_ACCESS_AUD]
+      - service: http_status:404
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata: {name: webui-from-tunnel, namespace: llmops}
+spec:
+  podSelector: {matchLabels: {app: open-webui}}
+  policyTypes: [Ingress]
+  ingress:
+    - from:
+        - namespaceSelector: {matchLabels: {kubernetes.io/metadata.name: llmops-edge}}
+          podSelector: {matchLabels: {app: cloudflared}}
+      ports: [{port: 8080, protocol: TCP}]
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata: {name: grafana-from-tunnel, namespace: ai-monitoring}
+spec:
+  podSelector: {matchLabels: {app: monitoring-lite-grafana}}
+  policyTypes: [Ingress]
+  ingress:
+    - from:
+        - namespaceSelector: {matchLabels: {kubernetes.io/metadata.name: llmops-edge}}
+          podSelector: {matchLabels: {app: cloudflared}}
+      ports: [{port: 3000, protocol: TCP}]

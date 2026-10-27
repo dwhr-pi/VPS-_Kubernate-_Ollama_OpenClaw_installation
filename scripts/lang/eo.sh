@@ -1,4 +1,14 @@
 #!/bin/bash
+TXT_YES_LABEL="Jes"
+TXT_NO_LABEL="Ne"
+TXT_LOADING_NOTICE_TITLE="PREPARADO DE LA VIDO"
+TXT_LOADING_NOTICE_BODY='Preparante la vidon "%s".\n\n%s\n\nŜargado povas daŭri sekundojn aŭ plurajn minutojn depende de WSL kaj la datumportilo. La laŭvolaj mezuroj venas el la loka resumo.\n\nĈu daŭrigi?'
+TXT_LOADING_GAUGE_TITLE='ŜARGADO: %s'
+TXT_LOADING_GAUGE_TEXT="Preparante menuerojn, statojn kaj laŭvolajn mezurojn..."
+TXT_LOADING_TOOLS_LABEL="Administrado de iloj"
+TXT_LOADING_TOOLS_DETAIL="Preparante ilostatojn, elektojn kaj lastajn mezurojn de tempo kaj diskospaco."
+TXT_LOADING_PROFILES_LABEL="Administrado de profiloj"
+TXT_LOADING_PROFILES_DETAIL="Preparante profilostatojn, profilgrupojn kaj lastajn mezurojn."
 
 # Ursprünglich Deutsch: zentrale deutsche Originaltexte siehe de.sh
 TXT_LANGUAGE_MENU_TITLE="Lingvo-elekto"

@@ -2050,10 +2050,13 @@ show_management_loading_notice() {
         return 0
     fi
 
+    local notice_text gauge_title
+    printf -v notice_text "${TXT_LOADING_NOTICE_BODY}" "$target_label" "$detail_text"
+    printf -v gauge_title "${TXT_LOADING_GAUGE_TITLE}" "$target_label"
     if ! dialog --clear --backtitle "$APP_TITLE" \
-        --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
-        --title "ANSICHT WIRD VORBEREITET" \
-        --yesno "Die Ansicht '${target_label}' wird jetzt vorbereitet.\n\n${detail_text}\n\nDas Laden kann je nach WSL-/Datentraegerzustand einige Sekunden bis mehrere Minuten dauern. Wenn Zeit- und Speicherwerte aktiv sind, werden Messwerte aus der lokalen Summary-Datei gelesen.\n\nFortfahren?" 15 92; then
+        --yes-label "$TXT_YES_LABEL" --no-label "$TXT_NO_LABEL" \
+        --title "$TXT_LOADING_NOTICE_TITLE" \
+        --yesno "$notice_text" 15 92; then
         return 1
     fi
 
@@ -2063,8 +2066,8 @@ show_management_loading_notice() {
             sleep 0.05
         done
     ) | dialog --clear --backtitle "$APP_TITLE" \
-        --title "LADE ${target_label}" \
-        --gauge "Bereite Menueeintraege, Status und optionale Messwerte vor..." 8 78 0
+        --title "$gauge_title" \
+        --gauge "$TXT_LOADING_GAUGE_TEXT" 8 78 0
 
     reset_terminal_display
     return 0
@@ -4997,12 +5000,12 @@ while true; do
             show_rag_compliance_review || true
             ;;
         8)
-            if show_management_loading_notice "Tool-Management" "Es werden Toolstatus, Auswahloptionen und optional die letzten Zeit-/Speicherwerte vorbereitet."; then
+            if show_management_loading_notice "$TXT_LOADING_TOOLS_LABEL" "$TXT_LOADING_TOOLS_DETAIL"; then
                 show_tool_management_menu
             fi
             ;;
         9)
-            if show_management_loading_notice "Profil-Management" "Es werden Profilstatus, Profilbloecke und optional die letzten Zeit-/Speicherwerte vorbereitet."; then
+            if show_management_loading_notice "$TXT_LOADING_PROFILES_LABEL" "$TXT_LOADING_PROFILES_DETAIL"; then
                 show_profile_management_hub
             fi
             ;;

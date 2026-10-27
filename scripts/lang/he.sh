@@ -1,4 +1,14 @@
 #!/bin/bash
+TXT_YES_LABEL="כן"
+TXT_NO_LABEL="לא"
+TXT_LOADING_NOTICE_TITLE="הכנת התצוגה"
+TXT_LOADING_NOTICE_BODY='מכין את התצוגה "%s".\n\n%s\n\nהטעינה עשויה להימשך מספר שניות עד כמה דקות בהתאם ל-WSL ולאחסון. המדידות הנוספות נקראות מהסיכום המקומי.\n\nלהמשיך?'
+TXT_LOADING_GAUGE_TITLE='טוען %s'
+TXT_LOADING_GAUGE_TEXT="מכין תפריטים, מצב ומדידות נוספות..."
+TXT_LOADING_TOOLS_LABEL="ניהול כלים"
+TXT_LOADING_TOOLS_DETAIL="מכין מצבי כלים, אפשרויות ומדידות זמן ושטח אחרונות."
+TXT_LOADING_PROFILES_LABEL="ניהול פרופילים"
+TXT_LOADING_PROFILES_DETAIL="מכין מצבי פרופילים, קבוצות ומדידות אחרונות."
 
 # Ursprünglich Deutsch: zentrale deutsche Originaltexte siehe de.sh
 TXT_LANGUAGE_MENU_TITLE="בחירת שפה"

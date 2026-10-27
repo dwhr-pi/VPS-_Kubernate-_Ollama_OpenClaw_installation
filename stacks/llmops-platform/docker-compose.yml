@@ -1,7 +1,16 @@
+# Optionaler Compose-Altpfad; native Installer bleiben getrennt. Budgets vor Start dimensionieren.
 services:
   litellm:
     image: ghcr.io/berriai/litellm:main-latest
     container_name: llmops-litellm
+    cpus: 2.0
+    mem_limit: 2g
+    mem_reservation: 512m
+    pids_limit: 256
+    deploy:
+      resources:
+        limits: {cpus: '2.0', memory: 2G}
+        reservations: {cpus: '0.25', memory: 512M}
     restart: unless-stopped
     env_file:
       - .env
@@ -14,6 +23,14 @@ services:
   open-webui:
     image: ghcr.io/open-webui/open-webui:main
     container_name: llmops-open-webui
+    cpus: 2.0
+    mem_limit: 2g
+    mem_reservation: 512m
+    pids_limit: 256
+    deploy:
+      resources:
+        limits: {cpus: '2.0', memory: 2G}
+        reservations: {cpus: '0.25', memory: 512M}
     restart: unless-stopped
     env_file:
       - .env
@@ -32,6 +49,14 @@ services:
   qdrant:
     image: qdrant/qdrant:latest
     container_name: llmops-qdrant
+    cpus: 1.0
+    mem_limit: 1g
+    mem_reservation: 256m
+    pids_limit: 128
+    deploy:
+      resources:
+        limits: {cpus: '1.0', memory: 1G}
+        reservations: {cpus: '0.1', memory: 256M}
     restart: unless-stopped
     volumes:
       - ./data/qdrant:/qdrant/storage

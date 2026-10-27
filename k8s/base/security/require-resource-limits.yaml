@@ -1,0 +1,29 @@
+# Kyverno separat installieren. Nur adminseitig optierte Namespaces; kein automatischer Apply.
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: llmops-require-resource-limits
+  annotations: {pod-policies.kyverno.io/autogen-controllers: none}
+spec:
+  validationFailureAction: Enforce
+  background: true
+  rules:
+    - name: requests-and-limits
+      match:
+        any:
+          - resources:
+              kinds: [Pod]
+              namespaceSelector:
+                matchLabels: {llmops.example/security-policy: enforce}
+      validate:
+        message: CPU- und RAM-Requests/Limits sind fuer alle normalen und Init-Container erforderlich.
+        pattern:
+          spec:
+            containers:
+              - resources:
+                  requests: {cpu: '?*', memory: '?*'}
+                  limits: {cpu: '?*', memory: '?*'}
+            '=(initContainers)':
+              - resources:
+                  requests: {cpu: '?*', memory: '?*'}
+                  limits: {cpu: '?*', memory: '?*'}

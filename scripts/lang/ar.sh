@@ -1,4 +1,14 @@
 #!/bin/bash
+TXT_YES_LABEL="نعم"
+TXT_NO_LABEL="لا"
+TXT_LOADING_NOTICE_TITLE="جارٍ إعداد العرض"
+TXT_LOADING_NOTICE_BODY='جارٍ إعداد العرض «%s».\n\n%s\n\nقد يستغرق التحميل ثواني أو عدة دقائق حسب WSL ووحدة التخزين. تُقرأ القياسات الاختيارية من الملخص المحلي.\n\nهل تريد المتابعة؟'
+TXT_LOADING_GAUGE_TITLE='جارٍ تحميل %s'
+TXT_LOADING_GAUGE_TEXT="جارٍ إعداد القوائم والحالة والقياسات الاختيارية..."
+TXT_LOADING_TOOLS_LABEL="إدارة الأدوات"
+TXT_LOADING_TOOLS_DETAIL="إعداد حالة الأدوات والخيارات وقياسات الوقت والمساحة الأخيرة."
+TXT_LOADING_PROFILES_LABEL="إدارة ملفات التعريف"
+TXT_LOADING_PROFILES_DETAIL="إعداد حالات ملفات التعريف والمجموعات والقياسات الأخيرة."
 
 # Ursprünglich Deutsch: zentrale deutsche Originaltexte siehe de.sh
 TXT_LANGUAGE_MENU_TITLE="اختيار اللغة"

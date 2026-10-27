@@ -1,4 +1,14 @@
 #!/bin/bash
+TXT_YES_LABEL="Ja"
+TXT_NO_LABEL="Nein"
+TXT_LOADING_NOTICE_TITLE="ANSICHT WIRD VORBEREITET"
+TXT_LOADING_NOTICE_BODY='Die Ansicht "%s" wird vorbereitet.\n\n%s\n\nDas Laden kann je nach WSL und Datentraeger einige Sekunden bis mehrere Minuten dauern. Optionale Zeit- und Speicherwerte werden aus der lokalen Zusammenfassung gelesen.\n\nFortfahren?'
+TXT_LOADING_GAUGE_TITLE='LADE %s'
+TXT_LOADING_GAUGE_TEXT="Menueeintraege, Status und optionale Messwerte werden vorbereitet..."
+TXT_LOADING_TOOLS_LABEL="Tool-Management"
+TXT_LOADING_TOOLS_DETAIL="Toolstatus, Auswahloptionen und letzte Zeit-/Speicherwerte werden vorbereitet."
+TXT_LOADING_PROFILES_LABEL="Profil-Management"
+TXT_LOADING_PROFILES_DETAIL="Profilstatus, Profilbloecke und letzte Zeit-/Speicherwerte werden vorbereitet."
 
 # Ursprünglich Deutsch:
 # - Sprachauswahl
