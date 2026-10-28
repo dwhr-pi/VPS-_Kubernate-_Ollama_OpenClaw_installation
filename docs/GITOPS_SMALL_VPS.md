@@ -1,5 +1,27 @@
 # Ressourcenschonende GitOps-Basis: fuenf konkrete Bausteine
 
+## Planung verschieben und Eingabefehler
+
+Der Tools-Eintrag `GitOps_Bootstrap` fuehrt nur einen Offline-Plan aus, keine
+Installation. Bei jeder Frage **nur Enter druecken**, um zu verschieben. Auch
+Leerzeichen, Tabulatoren, Windows-CRLF oder ein Eingabeende werden als
+Verschieben behandelt: Exitcode 3 wird im Setup als `skipped` protokolliert,
+nicht als `failed` und nicht als erfolgreich installiert.
+
+Ein nichtleerer, aber ungueltiger Dateipfad ist dagegen ein Eingabefehler.
+Dann wird die private Adresse nicht mehr abgefragt. Der Pfad muss auf eine
+vorhandene absolute Linux-/WSL-Datei ohne Symlink zeigen, nicht auf `C:\...`;
+der Inhalt wird anschliessend
+weiterhin streng geprueft. Fuehrende/abschliessende Leerzeichen werden entfernt,
+Leerzeichen innerhalb eines Pfads bleiben erhalten. Anfuehrungszeichen nicht
+mit in die interaktive Pfadeingabe kopieren.
+
+Das Log vom 28.10.2026 mit `Absolute gepruefte JSON-Artefaktdatei erforderlich`
+belegt keine gestartete K3s-/ArgoCD-Installation. Eine Dauer von 2544 Sekunden
+kann die Wartezeit auf Eingaben einschliessen. Die Apply-Speicherpruefung bleibt
+unveraendert: 7,2 GiB auf dem Windows-Host reichen nicht fuer die 12-GiB-Reserve.
+Die Artefaktvorlage bleibt ohne echte Pins/Hashes nicht einsatzbereit.
+
 Stand: 27.10.2026. **Implementierte Vorlagen und Skripte, keine Produktionsfreigabe.**
 Bestehende Installationen, Secrets, K3s-Cluster und Nutzdaten werden hier nicht
 migriert oder angefasst. Die bisherige [Baseline](PRODUCTION_BASELINE.md) bleibt

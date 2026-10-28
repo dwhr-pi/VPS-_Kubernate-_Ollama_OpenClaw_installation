@@ -104,6 +104,56 @@ class ArtifactLockTests(unittest.TestCase):
 
 
 class GitopsContractTests(unittest.TestCase):
+    def interactive_input_fixture(self, text):
+        wrapper = (ROOT / 'scripts/tools/gitops_bootstrap_install.sh').read_text(encoding='utf-8')
+        helper = re.search(r'^gitops_read_plan_value\(\) \{\n.*?^\}', wrapper, re.M | re.S).group()
+        start = wrapper.index("  if ! gitops_read_plan_value 'Absoluter Pfad")
+        end = wrapper.index('  exec 3<&-', start)
+        command = ('set -euo pipefail\nexec 3<&0\n' + helper + '\n' + wrapper[start:end]
+                   + '\nprintf "fixture-plan:%s|%s\\n" "$artifacts" "$address"\n')
+        # Exercise real input/branch logic with a pipe, not /dev/tty or the planner.
+        return subprocess.run([BASH, '--noprofile', '--norc', '-c', command], input=text,
+                              cwd=ROOT, capture_output=True, text=True, timeout=30)
+
+    @unittest.skipUnless(BASH and Path(BASH).is_file(), 'Native Bash required')
+    def test_empty_whitespace_crlf_and_eof_defer_before_address_prompt(self):
+        for text in ('\n', '\r\n', ' \t\r\n', ''):
+            with self.subTest(text=repr(text)):
+                result = self.interactive_input_fixture(text)
+                self.assertEqual(result.returncode, 3, result.stderr)
+                self.assertIn('Planung verschoben', result.stdout)
+                self.assertNotIn('Private IPv4-Adresse', result.stdout)
+                self.assertNotIn('fixture-plan:', result.stdout)
+
+    @unittest.skipUnless(BASH and Path(BASH).is_file(), 'Native Bash required')
+    def test_nonempty_invalid_path_fails_before_address_prompt(self):
+        for path in ('relative.json', '/nonexistent-fixture/lock.json'):
+            with self.subTest(path=path):
+                result = self.interactive_input_fixture(path + '\n10.7.0.2\n')
+                self.assertEqual(result.returncode, 1, result.stderr)
+                self.assertIn('vorhandene absolute JSON', result.stderr)
+                self.assertNotIn('Private IPv4-Adresse', result.stdout)
+                self.assertNotIn('fixture-plan:', result.stdout)
+
+    @unittest.skipUnless(BASH and Path(BASH).is_file(), 'Native Bash required')
+    def test_normalized_path_preserves_inner_spaces_and_empty_address_defers(self):
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / 'fixture lock.json'
+            path.write_text('{}')
+            bash_path = path.as_posix()
+            if sys.platform == 'win32':
+                bash_path = '/' + bash_path[0].lower() + bash_path[2:]
+            for address in ('\n', ' \t\r\n', ''):
+                result = self.interactive_input_fixture('  ' + bash_path + '  \r\n' + address)
+                self.assertEqual(result.returncode, 3, result.stderr)
+                self.assertIn('Private IPv4-Adresse', result.stdout)
+                self.assertIn('Planung verschoben', result.stdout)
+                self.assertNotIn('fixture-plan:', result.stdout)
+            result = self.interactive_input_fixture('  ' + bash_path + '\r\n 10.7.0.2 \r\n')
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertIn('fixture-plan:' + bash_path + '|10.7.0.2', result.stdout)
+            self.assertEqual(path.read_text(), '{}')
+
     def test_menu_wrapper_is_plan_only_and_can_defer_without_success_marker(self):
         wrapper = (ROOT / 'scripts/tools/gitops_bootstrap_install.sh').read_text(encoding='utf-8')
         self.assertIn('--interactive-plan', wrapper)

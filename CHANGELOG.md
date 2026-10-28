@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+### 2026-10-28: GitOps-Planung ohne falschen Installationsfehler verschieben
+
+- Leere, nur aus Leerzeichen bestehende und CRLF-Eingaben sowie EOF beim
+  gefuehrten GitOps-Plan als Verschieben behandeln; kein Installationsmarker.
+- Ungueltigen Artefakt-Dateipfad vor der zweiten Frage abweisen. Die strengen
+  Inhalts-/Apply-Freigaben und die Windows-Host-Speicherreserve bleiben erhalten.
+- Eingabewartezeit im Log erklaert; Offline-Regressionen ohne TTY-/Clusterzugriff.
+
 ### 2026-10-28: Gemini-Desktop-Projekte getrennt eingeordnet
 
 - Bwendell- und Dortanes-Desktop/Legacy-Eintraege sowie separate gepinnte
