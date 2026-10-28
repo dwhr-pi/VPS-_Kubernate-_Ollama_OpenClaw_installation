@@ -1,5 +1,21 @@
 # Tools Catalog
 
+**[Gemini Desktop: beide Projekte, Windows, CLI und OpenClaw](tools/gemini-desktop-clients.md)**:
+Getrennte manuelle Desktop-/Legacy-Eintraege und gepinnte Studienquellen.
+Keine Gemini-CLI-GUIs; Pflegepause/Archivierung und Sicherheitsrisiken benannt.
+OpenClaw-eigene Desktopansicht und konkreter Adapter-Refactor-Plan dokumentiert.
+
+**[OpenAPI Servers fuer Open WebUI](tools/openapi-servers.md)**:
+Gepinnter GitHub-Quellstand und private Zeitserver-Umgebung ohne Docker;
+Loopback/Bearer-Einrichtung und Start bewusst separat. Keine Filesystem-,
+SQL- oder Tokenserver automatisch freigeschaltet; Installationsabnahme offen.
+
+**[KI-Animationen, Game-Engines, VR/AR und Live-Wallpaper](tools/ai-game-engines-xr-wallpaper.md)**:
+Godot-Quellen und optionaler Linux-Editor-Build, Godot XR Tools sowie getrennte
+O3DE-/Lively-Quellpakete im Tools-Menue; ohne Docker oder GUI-/Headsetstart.
+Unity/Unreal, Valve Index, Plattformexporte und Wallpaper-Grenzen eingeordnet.
+Installation und Hardwarebetrieb noch ungeprueft.
+
 **[GitLab, OpenForge, GENIE.AI und MLflow](tools/gitlab-openforge-mlflow.md)**:
 Alle fuenf Nutzerquellen getrennt eingeordnet; gleichnamige Projekte sind kein
 gemeinsames Produkt. Optionaler Offline-CI-/manueller Ollama-Review als Konzept,

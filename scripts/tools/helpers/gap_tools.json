@@ -1,4 +1,15 @@
 {
+  "gemini_desktop_bwendell_source": {"name":"Gemini_Desktop_Bwendell_Source","repo":"bwendell/gemini-desktop","pin":"6dae4a7e88fba61a4e17aa3a58902c7a2c4f779e","mode":"source","reserve_mb":2048},
+  "gemini_desktop_dortanes_source": {"name":"Gemini_Desktop_Dortanes_Source","repo":"dortanes/gemini-desktop","pin":"2dedef7d6e0665c9b95a137255df9477152bcf8f","mode":"source","reserve_mb":2048},
+  "openapi_servers": {
+    "name": "OpenAPI_Servers", "repo": "open-webui/openapi-servers",
+    "pin": "df86ff8ae5a1962f2c405bd888bf0a426f4e9e24", "mode": "openapi-time", "reserve_mb": 2048
+  },
+  "godot_source": {"name":"Godot_Source","repo":"godotengine/godot","pin":"ed1daf0bf001b61586d9930840f2f1394092c079","mode":"source","reserve_mb":2048},
+  "godot_build": {"name":"Godot_Build","repo":"godotengine/godot","pin":"ed1daf0bf001b61586d9930840f2f1394092c079","mode":"godot-build","reserve_mb":16384},
+  "godot_xr_tools": {"name":"Godot_XR_Tools","repo":"GodotVR/godot-xr-tools","pin":"6366586be10484c7affd21685a279d7d71b74437","mode":"source","reserve_mb":2048},
+  "o3de_source": {"name":"O3DE_Source","repo":"o3de/o3de","pin":"3db6943249d8bd7960b9ed7e9aee310b7668586e","mode":"source","reserve_mb":4096},
+  "lively_wallpaper_source": {"name":"Lively_Wallpaper_Source","repo":"lively-community/lively","pin":"25a0a5f4ed1988ff42117d3a17feb321062237fe","mode":"source","reserve_mb":2048},
   "qwen_desktop_study": {
     "name": "Qwen_Desktop_Study", "repo": "QwenLM/qwen-code",
     "pin": "bf66a26c978dac68af31fbc093eb53044e204b24", "mode": "source", "reserve_mb": 2048

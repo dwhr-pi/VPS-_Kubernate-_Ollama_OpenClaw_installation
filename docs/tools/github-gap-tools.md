@@ -1,5 +1,10 @@
 # GitHub-Ergaenzungen: Qwen Desktop, Hermes/Jarvis und Medienquellen
 
+Neue GameDev-Auswahl:
+[Godot, XR Tools, O3DE, Lively sowie Unity-/Unreal-Einordnung](ai-game-engines-xr-wallpaper.md).
+Godot hat einen separaten optionalen Linux-Source-Build; die anderen neuen
+Quellpakete starten keine fertige App, kein Headset und keinen Wallpaper-Host.
+
 Neu: [Qwen_Desktop_Study fuer Studienzwecke und Weiterentwicklung](qwen-desktop-study.md):
 GitHub-Quellen als Standard, optionaler separater Linux-/Windows-Build wie bei Enki.
 

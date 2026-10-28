@@ -24,6 +24,18 @@
 
 ## Quellenplattformen: Installationsstatus
 
+[Gemini-Desktop-Projekte](tools/gemini-desktop-clients.md): manuelle Releases und
+Studienquellen. Windows-Installation/Builds und CLI-/OpenClaw-Adapter ungeprueft;
+Dortanes archiviert, Bwendell-Pflege pausiert. Kein automatischer Login/GUI-Start.
+
+[OpenAPI Servers](tools/openapi-servers.md): private Zeitserver-Umgebung plus
+separate Loopback-/Bearer-Einrichtung. Installation, Serverstart und
+Open-WebUI-End-to-End-Test vom 28.10.2026 noch ungeprueft.
+
+[Godot, XR Tools, O3DE und Lively](tools/ai-game-engines-xr-wallpaper.md):
+neue optionale Quell-/Buildwege vom 28.10.2026; Installation, Export und
+VR-/AR-/Wallpaper-Betrieb ungeprueft. Offline-Tests sind keine Hardwareabnahme.
+
 Nutzerhinweis vom 27.10.2026: **Codeberg- und GitLab-Tools sind derzeit in der
 Installation ungetestet.** Eine dokumentierte Quelle, ein vorhandenes Buildrezept
 oder bestandene Offline-/Mocktests ersetzen keinen Installationsnachweis.

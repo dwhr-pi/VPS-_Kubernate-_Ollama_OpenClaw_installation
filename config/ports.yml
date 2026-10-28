@@ -1,6 +1,7 @@
 {
   "version": "11.16",
   "ports": [
+    { "port": 8021, "service": "openapi_servers", "label": "Optionaler OpenAPI-Zeitserver; nur 127.0.0.1, Bearer, kein Autostart" },
     { "port": 3333, "service": "embedded_debug_hil", "label": "GDB OpenOCD/pyOCD optional; nur Loopback, standardmaessig nicht gestartet" },
     { "port": 3011, "service": "freellmapi", "label": "FreeLLMAPI optional; nur 127.0.0.1" },
     { "port": 1880, "service": "node_red", "label": "Node-RED" },

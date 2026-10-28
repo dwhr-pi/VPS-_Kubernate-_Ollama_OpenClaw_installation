@@ -898,6 +898,11 @@ get_tool_install_fallback_min_free_mb() {
         "Vikunja") printf '16384' ;;
         "Watchtower") printf '4096' ;;
         "Caddy") printf '4096' ;;
+        "Godot_Build") printf '16384' ;;
+        "Godot_Source"|"Godot_XR_Tools"|"Lively_Wallpaper_Source") printf '2048' ;;
+        "O3DE_Source") printf '4096' ;;
+        "OpenAPI_Servers") printf '2048' ;;
+        "Gemini_Desktop_Bwendell_Source"|"Gemini_Desktop_Dortanes_Source") printf '2048' ;;
         "cAdvisor") printf '8192' ;;
         "Changedetection_IO") printf '8192' ;;
         "CrowdSec") printf '16384' ;;
@@ -3050,7 +3055,7 @@ TOOL_SCRIPT_NAMES["Agentic_OS"]="agentic_os"
 TOOLS["Hyperfine"]="experimental: gepinnte GitHub-Quellen fuer CLI-Zeitmessungen, keine gebaute Rust-CLI und kein Lasttest. docs/tools/local-ai-benchmarks.md"
 TOOL_SCRIPT_NAMES["Hyperfine"]="hyperfine"
 TOOLS["Claude_Code"]="experimental: GitHub-Referenzmaterial, KEINE CLI-Installation; proprietaere Distribution separat. Ohne Docker."
-TOOLS["Gemini_CLI"]="experimental: gepinnte GitHub-Quellen, keine gebaute CLI. Ohne Docker, Cloud/Login getrennt."
+TOOLS["Gemini_CLI"]="Gepinnte GitHub-Quellen, keine gebaute CLI. Nicht die Gemini-Desktop-Webwrapper. docs/tools/gemini-desktop-clients.md"
 TOOL_SCRIPT_NAMES["Claude_Code"]="claude_code"
 TOOL_SCRIPT_NAMES["Gemini_CLI"]="gemini_cli"
 TOOLS["Alexandria_Audiobook"]="experimental: gepinnte GitHub-Quellen + private Python-venv ohne Docker. Qwen3-TTS/GPU-Laufzeit und Modelle separat; noch nicht betriebsbereit. docs/tools/alexandria-audiobook.md"
@@ -3733,6 +3738,14 @@ install_tool() {
         end_operation_measurement "success"
         operation_status="success"
         echo 'OpenMontage: GitHub-Kernumgebung installiert/geprueft. Noch kein fertiger Renderer, Agent, Modell oder Film. Remotion-Status und Doku pruefen.'
+    elif [[ "$TOOL_KEY" =~ ^(Gemini_Desktop_Bwendell|Gemini_Desktop_Dortanes_Legacy)$ ]] && [ "$tool_rc" -eq 0 ]; then
+        end_operation_measurement "success"
+        operation_status="success"
+        echo "${TOOL_KEY}: manuell bestaetigt, technisch ungeprueft; kein automatischer Installiert-Marker."
+    elif [[ "$TOOL_KEY" =~ ^(Gemini_Desktop_Bwendell|Gemini_Desktop_Dortanes_Legacy)$ ]] && [ "$tool_rc" -eq 3 ]; then
+        end_operation_measurement "skipped"
+        operation_status="skipped"
+        echo "${TOOL_KEY}: manuelle Installation verschoben oder Legacy-Sicherheitssperre; keine Installation bestaetigt."
     elif [[ "$TOOL_KEY" =~ ^(Comet|BrowserOS|Enki_Browser)$ ]] && [ "$tool_rc" -eq 0 ]; then
         end_operation_measurement "success"
         operation_status="success"
@@ -3946,6 +3959,32 @@ TOOLS["Perplexity_Node"]="Perplexity Node SDK: GitHub/Bazel-Paketbuild, keine AP
 TOOL_SCRIPT_NAMES["Perplexity_Node"]="perplexity_node"
 TOOLS["Perplexity_API_Cookbook"]="Perplexity API Cookbook: lokale GitHub-Beispiele, kein Dienst. docs/tools/comet-and-browser-research.md"
 TOOL_SCRIPT_NAMES["Perplexity_API_Cookbook"]="perplexity_cookbook"
+
+TOOL_KEYS+=("Godot_Source" "Godot_Build" "Godot_XR_Tools" "O3DE_Source" "Lively_Wallpaper_Source")
+TOOLS["Godot_Source"]="Godot: nur gepinnte GitHub-Quellen, kein Editor-Build. docs/tools/ai-game-engines-xr-wallpaper.md"
+TOOL_SCRIPT_NAMES["Godot_Source"]="godot_source"
+TOOLS["Godot_Build"]="Godot: optionaler Linux-Editor-Source-Build, 6 GiB RAM/16 GiB Disk; kein GUI/XR-Start. docs/tools/ai-game-engines-xr-wallpaper.md"
+TOOL_SCRIPT_NAMES["Godot_Build"]="godot_build"
+TOOLS["Godot_XR_Tools"]="Godot-XR-Addon-Quellen; Projektimport/Runtime separat, kein Headsetzugriff. docs/tools/ai-game-engines-xr-wallpaper.md"
+TOOL_SCRIPT_NAMES["Godot_XR_Tools"]="godot_xr_tools"
+TOOLS["O3DE_Source"]="Nur O3DE-GitHub-Quellen ohne LFS-Payloads/Build; keine fertige Engine. docs/tools/ai-game-engines-xr-wallpaper.md"
+TOOL_SCRIPT_NAMES["O3DE_Source"]="o3de_source"
+TOOLS["Lively_Wallpaper_Source"]="Nur Windows-Wallpaper-Quellen fuer Studien; kein Build/EXE-Start/Desktop-Eingriff. docs/tools/ai-game-engines-xr-wallpaper.md"
+TOOL_SCRIPT_NAMES["Lively_Wallpaper_Source"]="lively_wallpaper_source"
+
+TOOL_KEYS+=("OpenAPI_Servers")
+TOOLS["OpenAPI_Servers"]="Open-WebUI-OpenAPI: gepinnte Quellen + private Zeitserver-Umgebung; Bearer/Loopback-Einrichtung und Start separat. Kein Docker/Filesystem/SQL. docs/tools/openapi-servers.md"
+TOOL_SCRIPT_NAMES["OpenAPI_Servers"]="openapi_servers"
+
+TOOL_KEYS+=("Gemini_Desktop_Bwendell" "Gemini_Desktop_Bwendell_Source" "Gemini_Desktop_Dortanes_Legacy" "Gemini_Desktop_Dortanes_Source")
+TOOLS["Gemini_Desktop_Bwendell"]="Manueller GitHub-Desktop-Release, Pflege pausiert; Google-Webwrapper, NICHT Gemini CLI/OpenClaw. docs/tools/gemini-desktop-clients.md"
+TOOL_SCRIPT_NAMES["Gemini_Desktop_Bwendell"]="gemini_desktop_bwendell"
+TOOLS["Gemini_Desktop_Dortanes_Legacy"]="Archiviertes Legacy-Projekt mit Sicherheitsrisiken; nur Release-Link, kein Start/Download. docs/tools/gemini-desktop-clients.md"
+TOOL_SCRIPT_NAMES["Gemini_Desktop_Dortanes_Legacy"]="gemini_desktop_dortanes"
+TOOLS["Gemini_Desktop_Bwendell_Source"]="Gepinnte GitHub-Studienquellen des Webseitenwrappers; kein Build/CLI-/OpenClaw-Adapter. docs/tools/gemini-desktop-clients.md"
+TOOL_SCRIPT_NAMES["Gemini_Desktop_Bwendell_Source"]="gemini_desktop_bwendell_source"
+TOOLS["Gemini_Desktop_Dortanes_Source"]="Archivierte GitHub-Studienquellen; kein Build/Login/GUI, Sicherheitspruefung erforderlich. docs/tools/gemini-desktop-clients.md"
+TOOL_SCRIPT_NAMES["Gemini_Desktop_Dortanes_Source"]="gemini_desktop_dortanes_source"
 
 sort_tool_menu_keys() {
     local key

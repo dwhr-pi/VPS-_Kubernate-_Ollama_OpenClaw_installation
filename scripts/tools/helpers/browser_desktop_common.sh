@@ -3,11 +3,19 @@
 set -euo pipefail
 browser_desktop_can_prompt() { [[ -t 0 ]]; }
 browser_desktop_main() {
-    local tool="$1" action="$2" url name answer
+    local tool="$1" action="$2" url name answer doc='docs/tools/comet-and-browser-research.md'
     case "$tool" in
         comet) name='Comet'; url='https://www.perplexity.ai/comet' ;;
         browseros) name='BrowserOS'; url='https://github.com/browseros-ai/BrowserOS/releases/latest' ;;
         enki_browser) name='Enki Browser'; url='https://github.com/danilogiles/enki-browser/releases/latest' ;;
+        gemini_desktop_bwendell)
+            name='Gemini Desktop (bwendell, Pflege pausiert)'
+            url='https://github.com/bwendell/gemini-desktop/releases/tag/v0.12.1'
+            doc='docs/tools/gemini-desktop-clients.md' ;;
+        gemini_desktop_dortanes)
+            name='Gemini Desktop (dortanes, archiviertes Legacy-Projekt)'
+            url='https://github.com/dortanes/gemini-desktop/releases/tag/v1.0.1'
+            doc='docs/tools/gemini-desktop-clients.md' ;;
         *) return 2 ;;
     esac
     case "$action" in
@@ -23,7 +31,16 @@ browser_desktop_main() {
     esac
     echo "$name: offizieller Desktop-Download, kein Docker und keine EXE-Ausfuehrung in WSL."
     echo "Download: $url"
-    echo 'Anleitung: docs/tools/comet-and-browser-research.md'
+    echo "Anleitung: $doc"
+    if [[ "$tool" == gemini_desktop_bwendell || "$tool" == gemini_desktop_dortanes ]]; then
+        echo 'Drittanbieter-Webseitenwrapper, KEINE Gemini-CLI-Oberflaeche und KEIN OpenClaw-Client. Kein Login oder Cookie-/Keyimport durch das Setup.'
+        echo 'Pflege pausiert bzw. archiviert; keine Sicherheits- oder Produktionsfreigabe.'
+    fi
+    if [[ "$tool" == gemini_desktop_dortanes ]]; then
+        echo 'Legacy-Risiko: webSecurity=false und deaktivierte Update-Signaturpruefung im gepinnten Quellstand.'
+        echo 'Nur manueller Release-Link/Studienquellen. Keine automatische Browseroeffnung, kein Download oder Installiert-Marker.'
+        return 3
+    fi
     if ! browser_desktop_can_prompt && [[ "$action" != --open-download ]]; then
         echo 'Manueller Vorgang wartet auf Benutzer. Kein Download und keine Installation ausgefuehrt.'
         return 3

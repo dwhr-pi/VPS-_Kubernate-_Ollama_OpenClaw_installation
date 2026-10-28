@@ -2,6 +2,33 @@
 
 ## Unreleased
 
+### 2026-10-28: Gemini-Desktop-Projekte getrennt eingeordnet
+
+- Bwendell- und Dortanes-Desktop/Legacy-Eintraege sowie separate gepinnte
+  Studienquellen ohne Docker im A-Z-Tools-Menue ergaenzt.
+- Gemini-Webwrapper sind keine CLI-/OpenClaw-Clients; Pflegepause, Archivierung,
+  Release-Pruefung und bekannte Dortanes-Sicherheitsflags dokumentiert.
+- OpenClaw-eigene Desktopansicht, Windows-/WSL-Terminalweg und Adapterplan
+  beschrieben; kein automatischer Build, Login, Modell- oder EXE-Start.
+
+### 2026-10-28: Open-WebUI-OpenAPI-Toolserver
+
+- OpenAPI_Servers aus gepinntem GitHub-Stand im A-Z-Menue; private Linux-/WSL-
+  Zeitserver-Umgebung ohne Docker, uv privat nur nach Zustimmung.
+- Separate Konfiguration/Key-Anzeige und expliziter Loopback-Start mit Bearer-
+  Pflicht; kein automatischer WebUI-, Filesystem-, SQL- oder Tokenzugriff.
+- Einrichtung, Netzwerkraeume, CORS, Abhaengigkeits-Lock und datenerhaltende
+  Deinstallation dokumentiert; Installations-/End-to-End-Abnahme offen.
+
+### 2026-10-28: KI-GameDev, XR und Wallpaper
+
+- Godot_Source, optionaler Godot_Build fuer Linux, Godot_XR_Tools sowie getrennte
+  O3DE_Source-/Lively_Wallpaper_Source-Eintraege im Tools-Menue und in der Registry.
+- Gepinnte GitHub-Quellen ohne Docker; schwere Builds nur explizit, keine GUI,
+  Modelle, Headsets, Desktop-Autostarts oder automatischen SDK-Installationen.
+- Anleitung zu Unity/Unreal, Valve Index/OpenXR, AR, Plattformexporten und
+  Wallpaper-/Screensaver-Grenzen. Installation und Hardwarebetrieb ungeprueft.
+
 - Plattform-Review mit P0/P1/P2-Patchplan, vollstaendigen Registry-Matrizen,
   readonly Inventarreporter und inaktiven Health-/CI-/K8s-Security-Beispielen.
   Keine produktiven Deployments, Profile oder Secrets geaendert; keine neue

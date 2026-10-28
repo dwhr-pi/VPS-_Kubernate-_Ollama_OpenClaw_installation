@@ -380,6 +380,12 @@ def install(runtime, marker, base, spec, install_build_deps=False):
     if runtime.exists():
         raise ValueError("Vorhandener Ordner ohne Besitznachweis; nichts ueberschrieben.")
     reserve(base, spec)
+    if spec['mode'] == 'godot-build':
+        from game_engine_build import preflight
+        preflight()
+    if spec['mode'] == 'openapi-time':
+        from openapi_servers_runtime import prepare
+        prepare(base, approved=install_build_deps)
     if spec['mode'] == 'browser-python':
         browser_use_prepare(base, approved=install_build_deps)
     elif spec['mode'] == 'perplexity-mcp':
@@ -404,7 +410,13 @@ def install(runtime, marker, base, spec, install_build_deps=False):
             if len(entries) < 2:
                 raise ValueError("Quellcheckout enthaelt keine README/Lizenzdatei.")
         if spec["mode"] != "source":
-            if spec['mode'] in ('browser-python', 'perplexity-python', 'perplexity-node', 'perplexity-mcp'):
+            if spec['mode'] == 'openapi-time':
+                from openapi_servers_runtime import build
+                entries = build(runtime, env)
+            elif spec['mode'] == 'godot-build':
+                from game_engine_build import build
+                entries = build(runtime, env, spec['pin'])
+            elif spec['mode'] in ('browser-python', 'perplexity-python', 'perplexity-node', 'perplexity-mcp'):
                 entries = browser_research_build(runtime, env, spec['mode'])
             else:
                 entries = qwen_build(runtime, env) if spec["mode"] == "desktop-build" else hermes_build(runtime, env, python)
@@ -441,7 +453,7 @@ def main(argv=None):
     parser.add_argument("tool", choices=SPECS)
     parser.add_argument("action", nargs="?", default="install", choices=("install", "update", "repair", "uninstall", "status", "check", "doctor", "plan"))
     parser.add_argument("--dry-run", action="store_true")
-    parser.add_argument('--install-build-deps', action='store_true', help='Browser_Use/Perplexity tools: explicit consent for pinned private build prerequisites; no browser/server start')
+    parser.add_argument('--install-build-deps', action='store_true', help='Browser_Use/Perplexity/OpenAPI tools: explicit consent for pinned private prerequisites; no browser/server start')
     parser.add_argument("--source-only", action="store_true", help="MuseTalk: nur bisherigen Quellcheckout verwalten")
     parser.add_argument('--resume-uninstall', action='store_true', help='Perplexity SDKs: explicit removal of unchanged inventoried remnants after a partial uninstall')
     override = parser.add_mutually_exclusive_group()
@@ -452,8 +464,8 @@ def main(argv=None):
         if opts.action not in ("install", opts.override):
             parser.error("Widerspruechliche Aktionen.")
         opts.action = opts.override
-    if opts.install_build_deps and (opts.tool not in ('browser_use', 'perplexity_mcp', 'perplexity_python', 'perplexity_node') or opts.action not in ('install', 'update', 'repair', 'plan')):
-        parser.error('--install-build-deps hier nur fuer Browser_Use/Perplexity-Builds bei Install/Update/Repair oder Plan.')
+    if opts.install_build_deps and (opts.tool not in ('openapi_servers', 'browser_use', 'perplexity_mcp', 'perplexity_python', 'perplexity_node') or opts.action not in ('install', 'update', 'repair', 'plan')):
+        parser.error('--install-build-deps hier nur fuer Browser_Use/Perplexity/OpenAPI bei Install/Update/Repair oder Plan.')
     if opts.resume_uninstall and (opts.tool not in ('perplexity_python', 'perplexity_node') or opts.action != 'uninstall'):
         parser.error('--resume-uninstall nur fuer ausdrueckliche Deinstallation der Perplexity SDKs.')
     if opts.tool == "musetalk" and not opts.source_only:
@@ -469,6 +481,14 @@ def main(argv=None):
     base, runtime, marker = paths(opts.tool)
     if opts.dry_run or opts.action == "plan":
         print(json.dumps(dict(tool=opts.tool, **spec, target=str(runtime)), indent=2))
+        if spec['mode'] == 'openapi-time':
+            print('Nur Zeitserver-Pythonumgebung; Linux/WSL, vorhandenes Python >=3.10, uv privat nur nach Zustimmung. Einrichtung/Schluessel und Loopback-Start separat. Keine Filesystem-/SQL-/Tokenserver.')
+        if spec['mode'] == 'godot-build':
+            print('Linux x86_64/aarch64, INSTALL_HEAVY_TOOLS=1, SCons >=4.4 und C++/Grafik-/Audio-Buildbasis separat; 6 GiB freier RAM, 16 GiB Disk, 1-2 Jobs. Kein GUI/XR-/Export-Template-Start.')
+        elif opts.tool == 'o3de_source':
+            print('Nur Quellen; Git LFS bleibt deaktiviert. LFS-Payloads, Gems, SDKs und vollstaendiger O3DE-Build nicht enthalten.')
+        elif opts.tool == 'lively_wallpaper_source':
+            print('Nur Windows-Projektquellen fuer Studien; kein Windows-Build/EXE-Start oder Desktop-Eingriff.')
         if opts.tool == 'browser_use':
             print('uv >=0.13.5: vorhandene Basis bevorzugt, sonst privater GitHub-Bootstrap nur nach Zustimmung; 256 MiB Zusatzreserve. Kein Python-/Chromium-Download.')
         elif opts.tool == 'perplexity_mcp':
@@ -509,7 +529,7 @@ def main(argv=None):
                 marker.unlink()
             print("Privater unveraenderter Bestand entfernt; Nutzerdaten ausserhalb, Logs und Basiswerkzeuge bleiben.")
         else:
-            if opts.tool in ('browser_use', 'perplexity_mcp', 'perplexity_python', 'perplexity_node'):
+            if opts.tool in ('openapi_servers', 'browser_use', 'perplexity_mcp', 'perplexity_python', 'perplexity_node'):
                 install(runtime, marker, base, spec, install_build_deps=opts.install_build_deps)
             else:
                 install(runtime, marker, base, spec)

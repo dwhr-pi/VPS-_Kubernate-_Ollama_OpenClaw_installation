@@ -85,3 +85,18 @@ HE vorne, Oracle steuert, Pi weckt, RTX rechnet.
 - GPU Workstation: Media-/Avatar-/vLLM-/RVC-Jobs ueber Queue starten.
 - Low Resource Mode: Glances/Netdata statt vollem Grafana-Stack, SQLite-Queue statt Redis/RabbitMQ.
 - Security First Mode: Secrets extern, Ports minimal, check_secrets/check_ports/check_resource_budget vor Installationen.
+
+## Windows-Desktop und CLI
+
+[Gemini Desktop oder OpenClaw am Windows-Desktop](tools/gemini-desktop-clients.md):
+zwei gleichnamige Webwrapper, echte CLI und eigener Gateway sauber getrennt.
+
+## Open-WebUI-Erweiterung
+
+[OpenAPI Servers: Zeitwerkzeuge sicher einrichten](tools/openapi-servers.md).
+Installation, lokale Key-Konfiguration und Dienststart sind getrennte Schritte.
+
+## KI-GameDev-Ergaenzung
+
+[KI-Animationen, Game-Engines, VR/AR und Live-Wallpaper](tools/ai-game-engines-xr-wallpaper.md):
+optionale GitHub-Quellen und Godot-Linux-Build, keine automatische GUI-/XR-Installation.

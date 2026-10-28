@@ -13,6 +13,7 @@ import webinar_releases as releases
 
 VERSION = "0.13.5"
 SUPPORTED_TOOLS = {
+    "openapi_servers": "OpenAPI_Servers",
     "browser_use": "Browser_Use",
     "perplexity_python": "Perplexity_Python",
     "searxng": "SearXNG",
