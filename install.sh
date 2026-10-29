@@ -15,6 +15,8 @@ fi
 
 REPO_URL="https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation.git" # BITTE AN IHR REPOSITORY ANPASSEN!
 INSTALL_DIR="openclaw_ultimate_setup"
+INSTALL_BRANCH=""
+KNOWN_FEATURE_BRANCH="codex/optional-coding-agents-20261029"
 TTY_DEVICE="/dev/tty"
 USER_WORKSPACE_DIR="${HOME}/.openclaw_ultimate_user_data"
 SETUP_PREFERENCES_FILE="$USER_WORKSPACE_DIR/setup_preferences.conf"
@@ -366,6 +368,115 @@ apply_install_language() {
     esac
 }
 
+validate_install_branch() {
+    local branch="${1:-}"
+    [[ -n "$branch" && "$branch" != -* && "$branch" != *'@{'* ]] || return 1
+    git check-ref-format --branch "$branch" >/dev/null 2>&1
+}
+
+parse_legacy_options() {
+    local enabled=0 branch_seen=0
+    INSTALL_BRANCH=""
+    while (($#)); do
+        case "$1" in
+            --legacy-unsigned-main|--legacy-unsigned-branch)
+                ((enabled == 0)) || return 2
+                enabled=1; shift ;;
+            --branch)
+                [[ $# -ge 2 && $branch_seen == 0 && -n "$2" ]] || return 2
+                INSTALL_BRANCH="$2"; branch_seen=1; shift 2 ;;
+            *) return 2 ;;
+        esac
+    done
+    ((enabled == 1))
+}
+
+select_install_branch() {
+    local choice branch
+    if [[ -n "$INSTALL_BRANCH" ]]; then
+        validate_install_branch "$INSTALL_BRANCH" || { echo 'Ungueltiger Branchname.' >&2; return 2; }
+    else
+        {
+            printf '\n%s\n' 'Unsignierter Entwicklungsweg: Branch waehlen / Select branch'
+            printf '%s\n' '1) main (Standard / default)' "2) $KNOWN_FEATURE_BRANCH (Feature/Test)" \
+                '3) Anderen Branch eingeben / Enter another branch' '0) Abbrechen / Cancel'
+            read -r -p 'Auswahl [Enter = 1/main]: ' choice || return 1
+            case "${choice:-1}" in
+                1) INSTALL_BRANCH=main ;;
+                2) INSTALL_BRANCH="$KNOWN_FEATURE_BRANCH" ;;
+                3)
+                    read -r -p 'Exakter Branchname [Enter = Abbrechen]: ' branch || return 1
+                    validate_install_branch "$branch" || { echo 'Kein gueltiger Branch gewaehlt; abgebrochen.' >&2; return 2; }
+                    INSTALL_BRANCH="$branch" ;;
+                *) echo 'Abgebrochen; kein Checkout gestartet.' >&2; return 1 ;;
+            esac
+        } < "$TTY_DEVICE"
+    fi
+    printf 'Ausgewaehlter Branch: %s\n' "$INSTALL_BRANCH"
+    echo 'Keine Release-Signatur: Branch-Code vorher pruefen. Es gibt keinen main-Fallback.'
+}
+
+branch_install_directory() {
+    local branch="$1" digest label
+    validate_install_branch "$branch" || return 2
+    if [[ "$branch" == main ]]; then printf '%s\n' openclaw_ultimate_setup; return; fi
+    command -v sha256sum >/dev/null 2>&1 || { echo 'sha256sum fehlt.' >&2; return 1; }
+    digest="$(printf '%s' "$branch" | sha256sum)" || return 1
+    digest="${digest%% *}"
+    label="${branch//[^a-zA-Z0-9]/_}"
+    printf 'openclaw_ultimate_setup-branch-%s-%s\n' "${label:0:40}" "${digest:0:16}"
+}
+
+resolve_install_head() {
+    local branch="$1" remote expected ref extra
+    validate_install_branch "$branch" || return 2
+    # Query an exact head: tags and untrusted fallback refs are not accepted.
+    remote="$(git_auth_run ls-remote --exit-code --heads "$REPO_URL" "refs/heads/$branch")" || {
+        echo 'Branch nicht erreichbar oder nicht vorhanden; kein Clone/Update und kein main-Fallback.' >&2; return 1;
+    }
+    read -r expected ref extra <<< "$remote"
+    [[ "$expected" =~ ^[0-9a-f]{40}$ && -z "$extra" && \
+       "$remote" == "$expected"$'\t'"refs/heads/$branch" ]] || {
+        echo 'Unerwartete Remote-Antwort; abgebrochen.' >&2; return 1;
+    }
+    printf '%s\n' "$expected"
+}
+
+prepare_feature_checkout() {
+    local expected actual top fetched state
+    validate_install_branch "$INSTALL_BRANCH" || return 2
+    [[ "$INSTALL_BRANCH" != main && ! -L "$INSTALL_DIR" ]] || return 2
+    expected="$(resolve_install_head "$INSTALL_BRANCH")" || return 1
+    if [[ -e "$INSTALL_DIR" ]]; then
+        [[ -d "$INSTALL_DIR" && -d "$INSTALL_DIR/.git" && ! -L "$INSTALL_DIR/.git" ]] || return 1
+        top="$(git_auth_run -C "$INSTALL_DIR" rev-parse --show-toplevel)" || return 1
+        [[ "$(cd "$INSTALL_DIR" && pwd -P)" == "$top" ]] || return 1
+        actual="$(git_auth_run -C "$INSTALL_DIR" config --get remote.origin.url)" || return 1
+        [[ "$actual" == "$REPO_URL" ]] || { echo 'Abweichender Origin; kein Update.' >&2; return 1; }
+        actual="$(git_auth_run -C "$INSTALL_DIR" symbolic-ref --short HEAD)" || return 1
+        [[ "$actual" == "$INSTALL_BRANCH" ]] || { echo 'Anderer lokaler Branch; kein Umschalten.' >&2; return 1; }
+        state="$(git_auth_run -C "$INSTALL_DIR" status --porcelain)" || return 1
+        [[ -z "$state" ]] || {
+            echo 'Lokale Aenderungen bleiben erhalten; Feature-Update abgebrochen.' >&2; return 1;
+        }
+        # Preserve the previous checkout before changing remote-tracking refs.
+        create_repo_update_backup "$(cd "$INSTALL_DIR" && pwd -P)" || return 1
+        git_auth_run -c core.hooksPath=/dev/null -C "$INSTALL_DIR" fetch --no-tags origin \
+            "refs/heads/$INSTALL_BRANCH:refs/remotes/origin/$INSTALL_BRANCH" || return 1
+    else
+        git_auth_run -c core.hooksPath=/dev/null clone --template= --single-branch --no-checkout \
+            --branch "$INSTALL_BRANCH" -- "$REPO_URL" "$INSTALL_DIR" || return 1
+    fi
+    fetched="$(git_auth_run -C "$INSTALL_DIR" rev-parse --verify "refs/remotes/origin/$INSTALL_BRANCH^{commit}")" || return 1
+    [[ "$fetched" == "$expected" ]] || {
+        echo 'Branch hat sich seit Auswahl geaendert; vor Ausfuehrung erneut pruefen.' >&2; return 1;
+    }
+    git_auth_run -c core.hooksPath=/dev/null -C "$INSTALL_DIR" checkout "$INSTALL_BRANCH" -- || return 1
+    git_auth_run -c core.hooksPath=/dev/null -C "$INSTALL_DIR" merge --ff-only --no-edit "$expected" || return 1
+    [[ "$(git_auth_run -C "$INSTALL_DIR" rev-parse HEAD)" == "$expected" ]] || return 1
+    printf 'Unsignierter Branch-Checkout: %s @ %s\nZiel: %s\n' "$INSTALL_BRANCH" "$expected" "$INSTALL_DIR"
+}
+
 select_install_language() {
     local existing_language=""
     if [ -f "$SETUP_PREFERENCES_FILE" ]; then
@@ -418,11 +529,10 @@ if [[ "${1:-}" == --dry-run && $# == 1 ]]; then
     echo 'Dry-run: GitHub-Quellen, temporaeres Askpass bei Privat-Repo, verifizierte Sicherung vor Update. Kein Download/Install/Checkout.'
     exit 0
 fi
-if [[ $# != 1 || "${1:-}" != --legacy-unsigned-main ]]; then
-    echo 'Unsignierter main-Einstieg gesperrt. Gepruefte Bootstrap-Kopie und verify_release_and_install.sh mit Minisign verwenden. Legacy nur bewusst mit --legacy-unsigned-main.' >&2
+if ! parse_legacy_options "$@"; then
+    echo 'Unsignierter Branch-Einstieg gesperrt. Gepruefte Bootstrap-Kopie und verify_release_and_install.sh mit Minisign verwenden. Entwicklung nur bewusst mit --legacy-unsigned-branch (bisher --legacy-unsigned-main).' >&2
     exit 2
 fi
-shift
 trap git_auth_cleanup EXIT
 trap 'exit 130' INT
 trap 'exit 143' TERM
@@ -448,6 +558,11 @@ if ! command -v git >/dev/null 2>&1; then
     fi
 fi
 
+select_install_branch
+INSTALL_DIR="$(branch_install_directory "$INSTALL_BRANCH")"
+printf 'Installationsordner: %s\n' "$INSTALL_DIR"
+[[ ! -L "$INSTALL_DIR" ]] || { echo 'Verlinkter Installationsordner wird nicht veraendert.' >&2; exit 1; }
+
 # Abfrage für privates Repository
 read -r -p "$TXT_PRIVATE_REPO_QUESTION" IS_PRIVATE_REPO < "$TTY_DEVICE"
 IS_PRIVATE_REPO=${IS_PRIVATE_REPO:-N}
@@ -467,12 +582,26 @@ if [[ "$IS_PRIVATE_REPO" =~ ^([jJyYsSoO])$ ]]; then
     git_auth_init
 fi
 
-# Repository klonen
-if [ -d "$INSTALL_DIR" ]; then
+# Feature checkouts never switch or overwrite the main installation.
+if [[ "$INSTALL_BRANCH" == main ]]; then
+    MAIN_EXPECTED_HEAD="$(resolve_install_head main)"
+fi
+if [[ "$INSTALL_BRANCH" != main ]]; then
+    prepare_feature_checkout
+    cd "$INSTALL_DIR"
+elif [ -d "$INSTALL_DIR" ]; then
     echo -e "${YELLOW}${TXT_EXISTING_DIR_UPDATE}${NC}"
     cd "$INSTALL_DIR"
     git_require_clean_origin "$PWD"
+    LOCAL_INSTALL_BRANCH="$(git branch --show-current)"
+    if [[ -n "$LOCAL_INSTALL_BRANCH" && "$LOCAL_INSTALL_BRANCH" != main ]]; then
+        echo 'Im main-Installationsordner ist ein anderer Branch aktiv; kein Umschalten/Update.' >&2
+        exit 1
+    fi
     git_auth_run fetch origin
+    [[ "$(git rev-parse --verify 'refs/remotes/origin/main^{commit}')" == "$MAIN_EXPECTED_HEAD" ]] || {
+        echo 'main hat sich seit Auswahl geaendert; kein Update/Start.' >&2; exit 1;
+    }
     if git show-ref --verify --quiet refs/remotes/origin/main; then
         REPO_STATUS="$(git status --porcelain)"
         if [ -n "$REPO_STATUS" ]; then
@@ -522,11 +651,17 @@ if [ -d "$INSTALL_DIR" ]; then
     fi
 else
     echo -e "${BLUE}${TXT_CLONE_REPO}${NC}"
-    git_auth_run clone "$REPO_URL" "$INSTALL_DIR"
+    git_auth_run -c core.hooksPath=/dev/null clone --template= --single-branch --branch main -- "$REPO_URL" "$INSTALL_DIR"
     cd "$INSTALL_DIR"
 fi
 
 # Haupt-Setup-Skript ausführen
+if [[ "$INSTALL_BRANCH" == main ]]; then
+    [[ "$(git rev-parse HEAD)" == "$MAIN_EXPECTED_HEAD" ]] || {
+        echo 'main-Commit weicht von der Auswahl ab; Setup nicht gestartet.' >&2; exit 1;
+    }
+    printf 'Unsignierter main-Checkout: %s\n' "$MAIN_EXPECTED_HEAD"
+fi
 git_auth_cleanup
 find . -type f -name "*.sh" -exec chmod +x {} \; 2>/dev/null || true
 bash ./setup_ultimate.sh < "$TTY_DEVICE" > "$TTY_DEVICE" 2>&1

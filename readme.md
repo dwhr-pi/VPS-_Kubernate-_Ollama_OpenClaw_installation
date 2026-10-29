@@ -6,6 +6,8 @@ eigene Bedingungen; siehe [Dritthinweise](THIRD_PARTY_NOTICES.md).
 OpenCode-/Qwen-/Aider-/Codex-Profile, OpenHands-SDK-Worker und technisch begrenzte
 Einmalausfuehrung. [Belegte Bestandsmatrix](docs/agents/CODING_AGENT_INVENTORY.md).
 Kein automatischer Agentenstart, Cloud-Login oder Produktivdeployment.
+[Branch-Auswahl fuer den expliziten Entwicklungs-Installer](docs/INSTALL_BRANCH_SELECTION.md):
+`main`, Coding-Agenten-Featurebranch oder eigener Branch; keine automatische Uebernahme nach `main`.
 Aktueller Codebefund: [Audit vom 27.10.2026](docs/AUDIT_2026_10.md).
 [Gesamtaudit vom 29.10.2026](docs/audit/EXECUTIVE_SUMMARY.md): belegte
 Sicherheitsbefunde, vollstaendiges Registry-Inventar mit JSON, Integrationsluecken,

@@ -85,6 +85,10 @@ neuen Releases ab. Die bisherige ausdrueckliche Main-Reparatur bleibt getrennt
 und verlangt ihre vorhandene Sicherungs-/Bestaetigungslogik.
 `install.sh --legacy-unsigned-main` ist bewusst als unsignierter Altpfad markiert,
 nicht der empfohlene Einstieg. Ein direkter Aufruf ohne Optionen ist gesperrt.
+Der explizite Altpfad bietet jetzt eine [Branch-Auswahl](INSTALL_BRANCH_SELECTION.md)
+fuer `main`, den Coding-Agenten-Featurebranch oder einen anderen exakten Branch.
+Alternativer Optionsname: `--legacy-unsigned-branch`; optional `--branch NAME`.
+Dies sind keine signierten Releases. Der signierte Tag-/Minisign-Pfad bleibt getrennt.
 
 ## Release vorbereiten: Maintainer
 

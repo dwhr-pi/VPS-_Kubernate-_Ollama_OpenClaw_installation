@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+### 2026-10-29: Explizite Entwicklungs-Branch-Auswahl
+
+- Unsignierter Opt-in-Installer bietet main, den Coding-Agenten-Featurebranch
+  und frei eingegebene kuenftige Branches; kein stiller main-Fallback.
+- Featurebranches erhalten getrennte Checkout-Ordner, exakte Head-/Commitpruefung
+  und nur saubere Fast-Forward-Updates nach Sicherung. Nutzworkspace bleibt erhalten.
+- Signierter Release-Pfad und Sperre ohne Opt-in bleiben unveraendert;
+  Offline-Regressionen und Bedienungsanleitung ergaenzt. Kein Installer gestartet.
+
 ### 2026-10-29: Optionale lokale Coding-Agenten
 
 - Belegte Bestandsmatrix fuer sieben Clients, getrennte Nachweisstufen und
