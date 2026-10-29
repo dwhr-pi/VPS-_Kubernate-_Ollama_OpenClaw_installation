@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+### 2026-10-29: Legacy-Kubernetes-Manifest mit Freigabe archiviert
+
+- Altes Gesamtmanifest aus dem ausfuehrbaren YAML-Pfad entfernt und unveraendert
+  als Markdown-Quellreferenz erhalten; SHA256-Vertrag sichert den Archivinhalt.
+- Anzeige, Checklisten und Auditlinks verweisen auf Archiv und aktuelle Basis.
+  Breaking Change fuer externe Skripte am alten Pfad; keine Cluster-/PVC-Aktion.
+- 39 betroffene Tests gruen. Lokaler Trivy-Konfigurationsscan ohne HIGH/CRITICAL,
+  jedoch mit dokumentierter Abdeckungsluecke bei nicht gerenderten Helm-Vorlagen.
+  Globale Lint-/Linkfehler sind damit nicht als geloest ausgegeben.
+
 ### 2026-10-29: Health-Ausfuehrungsrecht und explizite Overlay-Sicherheit
 
 - Secret-Scan-Wrapper startet den Helper explizit mit Bash; 0600-Fixture

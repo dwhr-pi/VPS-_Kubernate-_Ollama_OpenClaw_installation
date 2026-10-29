@@ -115,10 +115,10 @@ Manuell relevant:
 Für VPS-Deployments:
 
 - `scripts/vps_standalone.sh` ausführen
-- danach `scripts/k8s_deployments.yaml` prüfen und nur gezielt anwenden
+- danach die [Kustomize-/GitOps-Anleitung](../GITOPS_SMALL_VPS.md) lesen und die Abnahme planen; kein automatisches Apply
 
 Wichtiger Hinweis:
-`scripts/k8s_deployments.yaml` enthält Beispiel-/Risikostellen und sollte vor produktiver Nutzung gehärtet werden.
+Das [alte Gesamtmanifest](../legacy/K8S_DEPLOYMENTS_LEGACY.md) ist nur noch eine historische Referenz und darf nicht als Deployment verwendet werden. Bestehende Cluster werden durch die Archivierung nicht verändert.
 
 ## 11. Profilhinweis: Influencer_LiveCam_Streaming_AI
 

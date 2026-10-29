@@ -17,8 +17,8 @@ Weitere Tools allein beheben die bestehenden Lifecycle-/Netzprobleme nicht.
 | Kritisch | PAT in Clone-URL kann in Args/Remote-Konfiguration landen | [install.sh:350](../../install.sh#L350), [Clone:426](../../install.sh#L426) |
 | Kritisch | Compose-Uninstall entfernt Volumes und frei ueberschreibbares Verzeichnis ohne ausreichenden Besitz-/Datenschutz | [Helper:91](../../scripts/tools/helpers/docker_compose_tool_common.sh#L91) |
 | Wichtig | OpenClaw-Installer ist kein abgesicherter Dienst; Token, Dienstidentitaet und End-to-End-Inferenz nicht abgenommen | [openclaw_install.sh:23](../../scripts/tools/openclaw_install.sh#L23), [Abschluss:60](../../scripts/tools/openclaw_install.sh#L60) |
-| Wichtig | Ollama-Pod ohne GPU-Zuweisung, Probes, ephemeral-storage und explizite Pod-Security | [k8s_deployments.yaml:21](../../scripts/k8s_deployments.yaml#L21) |
-| Wichtig | Beispiel-Proxy per LoadBalancer, NetworkPolicies nicht im Namespace der AI-Services | [Proxy:221](../../scripts/k8s_deployments.yaml#L221), [Policy:5](../../examples/k3s/network-policies.yaml#L5) |
+| Wichtig | Ollama-Pod ohne GPU-Zuweisung, Probes, ephemeral-storage und explizite Pod-Security | [k8s_deployments.yaml:21](../legacy/K8S_DEPLOYMENTS_LEGACY.md#historischer-quelltext) |
+| Wichtig | Beispiel-Proxy per LoadBalancer, NetworkPolicies nicht im Namespace der AI-Services | [Proxy:221](../legacy/K8S_DEPLOYMENTS_LEGACY.md#historischer-quelltext), [Policy:5](../../examples/k3s/network-policies.yaml#L5) |
 | Wichtig | Monitoring-Einzelinstaller publizieren Wildcard-Ports; Prometheus scrape nur sich selbst | [Prometheus:10](../../scripts/tools/prometheus_install.sh#L10), [Scrape:30](../../scripts/tools/prometheus_install.sh#L30), [Grafana:10](../../scripts/tools/grafana_install.sh#L10) |
 | Wichtig | Kopierfehler im Backup werden ignoriert; kein belegter konsistenter Offsite-Restore | [backup_run.sh:16](../../scripts/operations/backup_run.sh#L16) |
 | Wichtig | Bewegliche Source-/Image-Versionen und Registry-/Menue-Drift | [OpenClaw:34](../../scripts/tools/openclaw_install.sh#L34), [Compose:3](../../stacks/llmops-platform/docker-compose.yml#L3) |

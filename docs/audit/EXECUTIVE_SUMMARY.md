@@ -5,6 +5,12 @@ einschliesslich der noch nicht committeten GPU-/Betriebsergaenzungen.
 Die exakte Basis und Dateihashes stehen im [Inventar](inventory.json).
 Es gab keinen Produktions-, WSL-, Provider-, Wallet- oder Credential-Zugriff.
 
+Nachtrag zur Navigation: Das im damaligen Inventar erfasste
+`scripts/k8s_deployments.yaml` ist jetzt eine
+[nicht ausfuehrbare historische Referenz](../legacy/K8S_DEPLOYMENTS_LEGACY.md).
+Inventar und Befunde bleiben als datierte Belege erhalten. Die Archivierung
+repariert keine bestehenden Cluster und ersetzt keine Live-Abnahme.
+
 ## Tatsaechlicher Stand
 
 399 Tools, 245 Profile und 45 registrierte Ports bilden einen umfangreichen

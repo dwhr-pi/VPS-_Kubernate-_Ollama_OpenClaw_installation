@@ -21,11 +21,13 @@ Installationsrunner. Diese Mechanismen werden erweitert, nicht parallel neu erfu
 | P1 | Umfangreicher Monitoring-Stack kann einen Gratis-VPS ueberlasten | Expliziter Vollstack, kurze Retention und Limits; monitoring-lite bleibt Alternative |
 | P1 | Local-Path-Volumes sind nodegebunden, keine verteilte Datensicherung | Node-/Disk-Ausfall und Restore gesondert testen; kein blindes Skalieren |
 
-**Breaking Change:** Ein erneutes Anwenden von `scripts/k8s_deployments.yaml`
-entfernt dessen LoadBalancer-Freigabe. Vorher aktive Nutzer und Zugriffspfad
-pruefen. Keine bestehenden Workloads wurden durch diese Bearbeitung geaendert.
-Der Legacy-Proxy bleibt ein nicht produktionsreifes Beispiel, insbesondere sein
-fest eingetragener Gemini-Modellname ist keine aktuelle Verfuegbarkeitszusage.
+**Breaking Change:** Das alte `scripts/k8s_deployments.yaml` ist inzwischen
+entfernt und nur als [historische Referenz](legacy/K8S_DEPLOYMENTS_LEGACY.md)
+erhalten. Nicht erneut anwenden. Fruehere Aenderungen an diesem Beispiel
+entfernten die LoadBalancer-Freigabe, waren aber keine Produktionsabnahme.
+Bestehende Workloads und Zugriffspfade separat pruefen; nichts wurde automatisch
+geaendert. Der alte Gemini-Modellname bleibt eine historische Angabe,
+keine aktuelle Verfuegbarkeitszusage.
 
 ## Architektur
 

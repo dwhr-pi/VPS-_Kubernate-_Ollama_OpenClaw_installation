@@ -128,6 +128,40 @@ als gueltige Links freigegeben werden. Alte Quellen bleiben erhalten;
 Ersatz-URLs muessen einzeln geprueft werden. Mehr Warten behebt abgeschlossene
 rote Laeufe nicht. Push-/PR-Doppelanzeigen sind keine unabhaengigen Fehler.
 
+## Vierter Reparatursatz: freigegebene Archivierung des Altmanifests
+
+Der Nutzer hat ausdruecklich freigegeben, das alte Gesamtmanifest als nicht
+ausfuehrbare historische Referenz zu erhalten. Der YAML-Pfad unter `scripts/`
+entfaellt; der unveraenderte Quelltext liegt als Codeblock in
+[der Archivdatei](../legacy/K8S_DEPLOYMENTS_LEGACY.md).
+SHA-256 des normalisierten Quelltextblocks:
+`5c6b694dbfbab8e43b26364054777d9d2e930eb64e3acf5dc39da19c5d4354f2`.
+Der neue Test prueft diesen Hash, den entfernten YAML-Pfad und die Anzeige
+in einem isolierten Verzeichnis, einschliesslich Fehler bei fehlendem Archiv.
+
+Die Menueoperation behaelt ihren Namen, zeigt aber eine deutliche Archivwarnung
+und die aktuellen Kustomize-Einstiege. README, Checklisten und lokale Auditlinks
+verweisen auf die Referenz; historische Befunde und Inventardaten bleiben als
+datierte Belege erhalten. Kein Scanner-Ausschluss wurde hinzugefuegt.
+
+**Breaking Change:** Externe Skripte duerfen den alten YAML-Pfad nicht mehr
+verwenden. Kein Installer und keine Operation fuehren den archivierten Code
+aus. Bereits laufende Pods, Services, PVCs und Secrets bleiben unveraendert;
+die Archivierung ist keine Reparatur solcher Installationen. Eine Ruecknahme
+der Repo-Aenderung erfordert ein eigenes Review, keinen Cluster-Rollback.
+
+Lokale Abnahme: **39 Tests OK**, ShellCheck der Anzeige ohne Befund.
+Trivy **0.76.1** aus SHA256-geprueftem offiziellem Windows-Release meldet beim
+Konfigurationsscan **0 HIGH/CRITICAL-Befunde** fuer 44 erkannte Dateien.
+Es bleibt eine Abdeckungsluecke: `charts/monitoring-lite` kann ohne gepruefte
+Image-Digests nicht gerendert werden; eine rohe Helm-Template-Datei wird vom
+YAML-Parser abgelehnt. Der Scan-Erfolg beweist daher keine vollstaendige
+Helm-/Runtime-Pruefung. Keine echten Digests oder Credentials wurden erfunden.
+Der neue GitHub-Lauf muss den Stand unter Linux erneut bestaetigen.
+
+Globale Shell-/Markdown- und Linkbefunde bleiben weiterhin offen. Die Zahl
+roter Push-/PR-Checks allein erlaubt weder Merge- noch Produktionsfreigabe.
+
 ## Erste lokale Abnahme (historisch)
 
 Lokale Abnahme dieses Reparatursatzes unter Windows mit nativem Git Bash:

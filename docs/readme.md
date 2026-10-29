@@ -18,6 +18,10 @@ Komponente ist nicht automatisch installiert, getestet oder produktionsreif.
 
 ## Themenbereiche
 
+Das alte [Kubernetes-Gesamtmanifest](legacy/K8S_DEPLOYMENTS_LEGACY.md) ist nur
+noch eine historische Quellreferenz, kein ausfuehrbarer Deployment-Pfad.
+Bestehende Cluster und PVCs wurden durch die Archivierung nicht veraendert.
+
 | Bereich | Inhalt und wichtige Links |
 | --- | --- |
 | Tools und Profile | [Tool-Anleitungen](tools/), [Profil-Dokumentation](profiles/), [Tool-Registry](../config/tools.yml), [Profil-Registry](../config/profiles.yml); [Docker-zu-Source-Umstellung](DOCKER_TO_GITHUB.md) mit offenen Faellen |

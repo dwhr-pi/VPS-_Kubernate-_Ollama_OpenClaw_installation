@@ -8,6 +8,9 @@ eigene Bedingungen; siehe [Dritthinweise](THIRD_PARTY_NOTICES.md).
 OpenCode-/Qwen-/Aider-/Codex-Profile, OpenHands-SDK-Worker und technisch begrenzte
 Einmalausfuehrung. [Belegte Bestandsmatrix](docs/agents/CODING_AGENT_INVENTORY.md).
 Kein automatischer Agentenstart, Cloud-Login oder Produktivdeployment.
+Das [alte Kubernetes-Gesamtmanifest](docs/legacy/K8S_DEPLOYMENTS_LEGACY.md)
+ist archiviert und kein ausfuehrbarer Deployment-Pfad. Bestehende Cluster und
+Daten werden dadurch nicht geaendert oder automatisch gehaertet.
 [Branch-Auswahl fuer den expliziten Entwicklungs-Installer](docs/INSTALL_BRANCH_SELECTION.md):
 `main`, Coding-Agenten-Featurebranch oder eigener Branch; keine automatische Uebernahme nach `main`.
 Aktueller Codebefund: [Audit vom 27.10.2026](docs/AUDIT_2026_10.md).
@@ -943,7 +946,7 @@ Wichtige Grenze:
 │   ├── install_local_only.sh   # Spezifisches Setup für reinen MiniPC (Lokal)
 │   ├── ruflo_install.sh        # Installiert Ruflo aus GitHub, stellt Node.js 22 und pnpm sicher und verlinkt die CLI
 │   ├── port_check.sh           # Skript zur Überprüfung von Port-Konflikten
-│   ├── k8s_deployments.yaml    # Kubernetes Deployment-Definitionen für VPS-Dienste
+│   ├── operations/show_k8s_deployments.sh # Zeigt nur die historische Referenz; kein Apply
 │   ├── config_templates/       # Verzeichnis für Konfigurationsvorlagen
 │   │   └── openclaw/
 │   │       ├── .env.template

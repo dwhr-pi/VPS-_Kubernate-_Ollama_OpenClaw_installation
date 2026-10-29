@@ -27,7 +27,7 @@ keine erneute externe Quellen-, Versions- oder Lizenzpruefung.
 | P0 | [install.sh](../../install.sh) | Vollstaendige verifizierbare Update-Sicherung statt bloss untracked-Dateiliste; PAT nicht in URL persistieren |
 | P0 | [Compose-Helper](../../scripts/tools/helpers/docker_compose_tool_common.sh) | Pfad-/Besitznachweis und datenerhaltende Deinstallation, keine pauschale Volumenloeschung |
 | P1 | [Backup](../../scripts/operations/backup_run.sh), [Monitoring](../../scripts/install_monitoring.sh) | Fehler muessen fehlschlagen; Restore, Offsite und echte Scrapes/Alarme implementieren |
-| P1 | [Kubernetes-Manifeste](../../scripts/k8s_deployments.yaml) | Private Services, explizite GPU-/Speicheranforderungen, Namespace-Policies und Auth |
+| P1 | [Kubernetes-Manifeste](../legacy/K8S_DEPLOYMENTS_LEGACY.md#historischer-quelltext) | Private Services, explizite GPU-/Speicheranforderungen, Namespace-Policies und Auth |
 | P1 | [Queue-Worker](../../scripts/queue/queue_worker.sh), [User-Unit](../../scripts/systemd/openclaw-queue-worker.service) | Prozessbaum/cgroup-Grenzen, Abbruch und Neustart-Recovery mit Fixtures nachweisen |
 | P2 | [Registry](../../config/tools.yml), [Menue](../../setup_ultimate.sh) | Eine Quelle der Wahrheit, Lifecycle-Mappings und source/runtime-getrennte Nachweise |
 | P2 | [CI](../../.github/workflows/ci.yml), [Offline Regression](../../.github/workflows/offline-regression.yml) | Vorhandene Gates wirksam machen, fehlende Plattform-/Manifesttests ergaenzen |
