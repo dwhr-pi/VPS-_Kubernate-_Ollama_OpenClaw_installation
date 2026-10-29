@@ -13,6 +13,7 @@ Komponente ist nicht automatisch installiert, getestet oder produktionsreif.
 | Welcher Branch wird installiert? | [Branch-Auswahl](INSTALL_BRANCH_SELECTION.md): main, Featurebranch, freie Eingabe, getrennte Checkout-Ordner |
 | Wie funktioniert der sichere Release-Weg? | [Signierte Releases](SIGNED_RELEASES.md): Minisign, unabhaengiger Public Key, Artefakte und Update-Vertrag |
 | Wie teste ich den Coding-Agenten-Branch? | [Abnahmeplan](agents/CODING_AGENTS_ACCEPTANCE.md): Menue, Offline-Tests, optionale Laufzeittests und Merge-Kriterien |
+| Warum ist PR 6 noch nicht freigegeben? | [CI-Befunde und Reparaturstand](agents/CI_REPAIR_STATUS.md): Ursachen, erster Fixsatz und weiterhin offene Blocker |
 | Wo liegt was? | [Verzeichnisstruktur](DIRECTORY_LAYOUT.md): Repository-Code, Nutzworkspace und Konfigurationspfade |
 
 ## Themenbereiche

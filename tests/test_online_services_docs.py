@@ -13,7 +13,7 @@ class OnlineServicesDocs(unittest.TestCase):
     def test_provider_tables_have_consistent_official_website_columns(self):
         documents = {
             "PROVIDER_KEY_CATALOG.md": 5,
-            "FREE_TIERS_AND_TRIAL_CREDITS.md": 1,
+            "FREE_TIERS_AND_TRIAL_CREDITS.md": 2,
             "API_KEY_GUIDE.md": 1,
             "OnlineOnKeyServices/README.md": 1,
         }

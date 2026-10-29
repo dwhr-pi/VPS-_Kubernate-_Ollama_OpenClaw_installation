@@ -2,6 +2,7 @@
 import json
 import os
 from pathlib import Path
+import re
 import shutil
 import subprocess
 import tempfile
@@ -29,11 +30,15 @@ class MediaStatus(unittest.TestCase):
         r = self.shell('for tool in "${NATIVE_TOOL_STATUS_KEYS[@]}"; do native_tool_marker "$tool" >/dev/null; printf "%s|%s\\n" "$tool" "$NATIVE_TOOL_MARKER"; done')
         self.assertEqual(r.returncode, 0, r.stderr)
         mappings = dict(line.split('|', 1) for line in r.stdout.splitlines())
-        registry = {t['name']: t for t in json.loads((ROOT / 'config/tools.yml').read_text())['tools']}
+        registry = json.loads((ROOT / 'config/tools.yml').read_text())['tools']
         for name in REPORTED:
             self.assertIn(name, mappings)
         for name, marker in mappings.items():
-            self.assertEqual(registry[name]['check_value'], '~/.openclaw_ultimate_user_data/tools/' + marker, name)
+            normalized = lambda value: re.sub(r'[^a-z0-9]+', '_', value.casefold())
+            rows = [row for row in registry
+                    if normalized(name) in (normalized(row['name']), normalized(row['id']))]
+            self.assertEqual(len(rows), 1, name)
+            self.assertEqual(rows[0]['check_value'], '~/.openclaw_ultimate_user_data/tools/' + marker, name)
 
     def test_anthropic_cli_requires_marker_and_nonempty_binary(self):
         r = self.shell('''
@@ -51,7 +56,8 @@ native_tool_sync_status Anthropic_CLI "$root"
         self.assertEqual(r.returncode, 0, r.stderr)
 
     def test_all_markers_enable_uninstall_and_removed_markers_stay_removed(self):
-        r = self.shell('''
+        # Generic legacy marker contract only; verified adapters reject dummy markers.
+        r = self.shell('NATIVE_TOOL_STATUS_KEYS=(' + ' '.join(REPORTED) + ')\n' + '''
 mkdir -p "$root/status"
 printf 'Other\n\n' > "$root/installed_tools.txt"
 printf 'Other\n' > "$root/status/installed_tools.txt"
@@ -103,6 +109,22 @@ for file in "$root/installed_tools.txt" "$root/status/installed_tools.txt"; do
     test "$other" = 1
 done
 test -d "$root/tools/chattts"
+''')
+        self.assertEqual(r.returncode, 0, r.stderr)
+
+    def test_owned_coding_adapters_reject_plain_marker_files(self):
+        r = self.shell('''
+mkdir -p "$root/status"
+for tool in OpenCode Aider OpenHands Codex_CLI; do
+    native_tool_marker "$tool" >/dev/null
+    marker="$root/tools/$NATIVE_TOOL_MARKER"
+    mkdir -p "${marker%/*}"
+    printf 'synthetic-not-valid-evidence\n' > "$marker"
+done
+native_tool_sync_selected "$root" OpenCode Aider OpenHands Codex_CLI
+for file in "$root/installed_tools.txt" "$root/status/installed_tools.txt"; do
+    test ! -s "$file"
+done
 ''')
         self.assertEqual(r.returncode, 0, r.stderr)
 

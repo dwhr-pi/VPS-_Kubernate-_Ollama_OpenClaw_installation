@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+### 2026-10-29: Erste CI-Reparaturen vor PR-6-Abnahme
+
+- macOS-Fixtures kanonisieren temporaere Pfade; Gitleaks erhaelt vollstaendige
+  Git-Historie und einen festen Action-Commit, ohne Scan-Fehler zu ignorieren.
+- Runner-unabhaengige Inventar-Fixtures und aktualisierte Source-/Statusvertraege;
+  falsche Coding-Marker bleiben ungueltig, produktive Schutzpruefungen unveraendert.
+- Fehlende oeffentliche Platzhalterbeispiele ausserhalb ignorierter Secret-Ordner
+  ergaenzt. Shell-/Markdown-/Link- und Trivy-Befunde bleiben explizit offen.
+
 ### 2026-10-29: Linux-Registry-Verweis korrigiert
 
 - Monitoring_Observability verweist auf die tatsaechlich kleingeschriebene

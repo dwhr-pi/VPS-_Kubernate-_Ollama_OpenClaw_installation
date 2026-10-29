@@ -107,7 +107,7 @@ bash scripts/seal_openclaw_secret.sh --cert /privat/controller.pem \
 Die letzte Zeile fragt den Key verdeckt ab; kein Key in Shell-History, argv oder
 Klartextdateien. Das Skript verarbeitet Klartext nur im Speicher/stdio und nutzt
 `kubeseal --scope strict --format yaml` offline. Das echte verschluesselte YAML
-kann nach Review in Git; [Strukturbeispiel](../k8s/gitops/secrets/openclaw-api.sealed.yaml.example)
+kann nach Review in Git; [Strukturbeispiel](../k8s/gitops/examples/openclaw-api.sealed.yaml.example)
 ist absichtlich kein erfundener gueltiger Ciphertext. Namespace/Name sind gebunden;
 ein Umbenennen verlangt neues Sealing. `OPENCLAW_API_KEY` ist eine fiktive
 Beispielvariable, kein hier bestaetigter OpenClaw-Konfigurationsvertrag.

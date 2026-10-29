@@ -17,7 +17,7 @@ spec.loader.exec_module(agents)
 class Profiles(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
-        self.root = Path(self.temp.name) / "private"
+        self.root = Path(self.temp.name).resolve() / "private"
         self.environment = mock.patch.dict(os.environ, OPENCLAW_USER_DATA_DIR=str(self.root))
         self.environment.start()
 

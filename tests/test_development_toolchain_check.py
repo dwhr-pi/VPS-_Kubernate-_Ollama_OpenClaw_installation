@@ -136,7 +136,7 @@ class DevelopmentToolchainCheckTests(unittest.TestCase):
         self.assertIn('development_toolchains.py" "$@"', wrapper)
 
     def test_overviews_and_presentation_are_discoverable(self):
-        for name in ("docs/TOOLS_CATALOG.md", "docs/TOOL_MATRIX.md", "docs/TOOL_INDEX.md", "README.md"):
+        for name in ("docs/TOOLS_CATALOG.md", "docs/TOOL_MATRIX.md", "docs/TOOL_INDEX.md", "readme.md"):
             text = (ROOT / name).read_text(encoding="utf-8")
             self.assertIn("development-toolchain-check.md", text)
             self.assertIn("technology-tooling-overview.pptx", text)

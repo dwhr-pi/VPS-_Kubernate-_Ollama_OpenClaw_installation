@@ -22,7 +22,7 @@ class CodingRegistry(unittest.TestCase):
         menu = (ROOT / 'setup_ultimate.sh').read_text(encoding='utf-8')
         tracking = (ROOT / 'scripts/helpers/status_tracking.sh').read_text(encoding='utf-8')
         self.assertEqual(len(local['profiles']), 5)
-        with tempfile.TemporaryDirectory() as directory, mock.patch.dict(os.environ, OPENCLAW_USER_DATA_DIR=str(Path(directory) / 'private')):
+        with tempfile.TemporaryDirectory() as directory, mock.patch.dict(os.environ, OPENCLAW_USER_DATA_DIR=str(Path(directory).resolve() / 'private')):
             for item in local['profiles']:
                 row, = [row for row in rows if row['id'] == item['id']]
                 self.assertFalse(row['auto_install'])

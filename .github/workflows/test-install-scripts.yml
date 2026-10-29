@@ -37,6 +37,7 @@ jobs:
           python3 -B tests/test_install_branches.py -v
           python3 -B tests/test_docs_navigation.py -v
           python3 -B tests/test_repository_audit.py -v
+          python3 -B tests/test_ci_repair_contracts.py -v
           bash -n scripts/backup_stateful_services.sh
           "$RUNNER_TEMP/bats/bin/bats" tests/bats/install_scripts.bats
           python3 -B -m unittest discover -s tests -p test_production_baseline.py -v

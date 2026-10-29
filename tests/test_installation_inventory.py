@@ -22,8 +22,18 @@ class Inventory(unittest.TestCase):
         self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name) / 'workspace'
         self.output = Path(self.temp.name) / 'external/programmes.json'
+        original_evidence = inv.evidence
+
+        def fixture_evidence(name, root, specs):
+            # Absolute host installs such as /usr/local/bin/kustomize are not fixtures.
+            value = specs.get(name, {}).get('check_value', '')
+            if value.startswith('~/.openclaw_ultimate_user_data/'):
+                return original_evidence(name, root, specs)
+            return 'unverified'
+
         for context in (patch.object(inv, 'maintenance_guard', side_effect=lambda *a, **k: nullcontext()),
-                        patch.object(inv.shutil, 'which', return_value=None)):
+                        patch.object(inv.shutil, 'which', return_value=None),
+                        patch.object(inv, 'evidence', side_effect=fixture_evidence)):
             context.start()
             self.addCleanup(context.stop)
 

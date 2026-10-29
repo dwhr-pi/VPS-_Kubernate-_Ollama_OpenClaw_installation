@@ -189,7 +189,7 @@ Beide verwenden denselben Timer. Hostpfade muessen vorher existieren.
 ### SOPS und age: nur Ciphertext in Git
 
 Vollstaendiger Code: [.sops.yaml](../.sops.yaml),
-[ENV-Vorlage](../config/secrets/core.env.template),
+[ENV-Vorlage](../config/examples/core.env.template),
 [Setup-Wrapper](../scripts/decrypt_core_env.sh),
 [sicherer Writer](../scripts/security/decrypt_sops_env.py).
 
@@ -201,10 +201,11 @@ Die ENV-Vorlage enthaelt ausschliesslich Platzhalter.
 ```bash
 # Nur die private Arbeitskopie ausserhalb des Repositories mit echten Werten fuellen.
 umask 077
-install -m 600 config/secrets/core.env.template "$HOME/core.private.env"
+install -m 600 config/examples/core.env.template "$HOME/core.private.env"
 
 # Nach lokaler Bearbeitung verschluesseln; niemals die Klartextdatei committen.
 # PUBLIC_AGE_RECIPIENT enthaelt ausschliesslich den oeffentlichen age1-Empfaenger.
+install -d -m 700 config/secrets
 sops encrypt --age "$PUBLIC_AGE_RECIPIENT" \
   --input-type binary --output-type binary "$HOME/core.private.env" \
   > config/secrets/core.env.enc.json
