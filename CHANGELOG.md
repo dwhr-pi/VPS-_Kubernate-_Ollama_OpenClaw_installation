@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+### 2026-10-29: Linux-Registry-Verweis korrigiert
+
+- Monitoring_Observability verweist auf die tatsaechlich kleingeschriebene
+  Datei docs/Profile/monitoring_observability.md; kein Umbenennen von Nutzdaten.
+- Registry-Audit prueft Dateinamen und Verzeichnisnamen jetzt auch unter
+  Windows exakt auf Gross-/Kleinschreibung; plattformuebergreifende Regression.
+
 ### 2026-10-29: Dokumentations-Wegweiser und Branch-Abnahme
 
 - docs/readme.md als Themen- und Statusuebersicht ergaenzt, ohne historische

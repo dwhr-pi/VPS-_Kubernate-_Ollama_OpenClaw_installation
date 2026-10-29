@@ -792,7 +792,7 @@
     {
       "id": "Monitoring_Observability",
       "category": "betrieb",
-      "doc": "docs/Profile/Monitoring_Observability.md",
+      "doc": "docs/Profile/monitoring_observability.md",
       "install": "scripts/profiles/Monitoring_Observability_install.sh",
       "uninstall": "scripts/profiles/Monitoring_Observability_uninstall.sh",
       "tools": [

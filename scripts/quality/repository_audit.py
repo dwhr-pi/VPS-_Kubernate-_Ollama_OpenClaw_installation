@@ -21,6 +21,24 @@ class Audit:
         self.root = Path(root).resolve()
         self.issues = []
         self.counts = {}
+        self.directory_names = {}
+
+    def exact_path_case(self, value):
+        # Use real directory entries even on case-insensitive Windows volumes.
+        relative = Path(posixpath.normpath(value))
+        if relative.is_absolute() or relative.drive or '..' in relative.parts:
+            return False
+        parent = self.root
+        for part in relative.parts:
+            try:
+                if parent not in self.directory_names:
+                    self.directory_names[parent] = {entry.name for entry in parent.iterdir()}
+            except OSError:
+                return False
+            if part not in self.directory_names[parent]:
+                return False
+            parent = parent / part
+        return True
 
     def issue(self, level, code, path):
         # Never print document contents, environment variables or secret values.
@@ -79,6 +97,8 @@ class Audit:
                         self.issue("error", "unsafe-path", where + "/" + field)
                     elif not candidate.is_file():
                         self.issue("error", "missing-file", where + "/" + field)
+                    elif not self.exact_path_case(value):
+                        self.issue("error", "registry-path-case-mismatch", where + "/" + field)
                 if name == "tools":
                     if not row.get("check_type") or not row.get("check_value"):
                         self.issue("error", "missing-install-check", where)

@@ -7,6 +7,12 @@ ausfuehren: dort liegen `setup_ultimate.sh`, `scripts/` und `tests/`.
 Nicht mit `sudo`, nicht in produktiven Agentenprojekten und nicht parallel zu
 einer anderen Installation testen. [Bedienung und Grenzen](LOCAL_CODING_WORKBENCH.md).
 
+Nutzerbericht vom 29.10.2026: `test_install_branches.py`,
+`test_coding_workbench.py` und `test_native_coding_clis.py` endeten mit `OK`.
+Der Registry-Check meldete einen fehlenden Dateiverweis (siehe unten).
+Das sind gemeldete Offline-Ergebnisse, keine unabhaengige Laufzeitabnahme der
+Agenten; der Linux-Nachtest nach Korrektur des Doc-Verweises bleibt gesondert offen.
+
 ## 1. Ausgangsstand festhalten
 
 ```bash
@@ -64,6 +70,13 @@ Probe, kein echter Ollama-/OpenHands-Test. Die neue Dokumentationspruefung
 auf deinem frisch installierten aelteren Checkout kann sie noch fehlen.
 Zusaetzlich moeglich: `test_p0_safety.py`, `test_qwen_code.py`,
 `test_tool_menu_order.py` und `test_native_tool_menu.py` nach demselben Schema.
+
+Ein unter Linux gefundener `missing-file`-Fehler betraf den alten Doc-Verweis
+des Profils `Monitoring_Observability`: Die Datei heisst exakt
+`docs/Profile/monitoring_observability.md`, nicht `Monitoring_Observability.md`.
+Der Verweis wurde korrigiert; der Audit erkennt solche Schreibweisen nun auch
+auf einem case-insensitiven Windows-Dateisystem. Die uebrigen Kataloghinweise
+sind davon unabhaengig und werden nicht als erledigt ausgegeben.
 
 ## 3. Menue und Planfunktionen
 
