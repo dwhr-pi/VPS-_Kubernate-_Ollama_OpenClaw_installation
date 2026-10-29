@@ -1,0 +1,7 @@
+{
+  "q-backup": ["a-backup"],
+  "q-network": ["a-network", "a-gateway"],
+  "q-gpu": ["a-gpu"],
+  "q-license": ["a-license"],
+  "q-delete": ["a-current-policy"]
+}

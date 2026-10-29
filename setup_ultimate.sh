@@ -2242,13 +2242,8 @@ show_user_workspace_menu() {
                 show_recent_measurements
                 ;;
             7)
-                dialog --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" --yesno "${TXT_WORKSPACE_DELETE_CONFIRM:-Der gesamte Benutzer-Workspace wird gelöscht. Darin können .env-Vorlagen, Statusdateien und weitere sensible Daten liegen. Wirklich fortfahren?}" 10 100
-                if [ $? -eq 0 ]; then
-                    rm -rf "$USER_WORKSPACE_DIR"
-                    echo -e "${YELLOW}${TXT_WORKSPACE_DELETED:-Der Benutzer-Workspace wurde gelöscht.}${NC}"
-                    ensure_user_workspace
-                    read -p "${TXT_PRESS_ENTER:-Drücken Sie Enter...}"
-                fi
+                # No recursive purge until ownership, mounts and locking are verified.
+                dialog --msgbox "Die automatische Komplettloeschung ist aus Datensicherheitsgruenden gesperrt. Es wurden keine Dateien geloescht. Bitte zuerst ein externes Backup erstellen und dessen Wiederherstellung pruefen. Einzelne Tools ueber ihre datenerhaltende Deinstallation verwalten. Siehe docs/audit/SECURITY_FINDINGS.md (SEC-001)." 12 100
                 ;;
             8)
                 if show_setup_language_menu; then

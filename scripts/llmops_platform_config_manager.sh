@@ -4,6 +4,7 @@
 # Analog zum OpenClaw-Konfigurations-Manager, aber fuer stacks/llmops-platform.
 # ==============================================================================
 
+umask 077
 GREEN="\033[0;32m"
 BLUE="\033[0;34m"
 RED="\033[0;31m"
@@ -15,7 +16,8 @@ INSTALL_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 USER_WORKSPACE_DIR="${HOME}/.openclaw_ultimate_user_data"
 LLMOPS_TEMPLATE_DIR="$USER_WORKSPACE_DIR/llmops-platform"
 LLMOPS_STACK_DIR="$INSTALL_DIR/stacks/llmops-platform"
-LLMOPS_CHOICE_FILE="/tmp/llmops_platform_config_choice"
+LLMOPS_TEMP_DIR="$(mktemp -d "${TMPDIR:-/tmp}/llmops-config.XXXXXXXX")" || exit 1
+LLMOPS_CHOICE_FILE="$LLMOPS_TEMP_DIR/choice"
 
 ensure_user_workspace() {
     mkdir -p "$LLMOPS_TEMPLATE_DIR"
@@ -27,6 +29,7 @@ ensure_user_workspace() {
 
 cleanup_temp_files() {
     rm -f "$LLMOPS_CHOICE_FILE"
+    rmdir -- "$LLMOPS_TEMP_DIR" 2>/dev/null || true
 }
 
 pause_screen() {
@@ -68,7 +71,11 @@ apply_env() {
         return 1
     fi
 
-    cp "$template_file" "$target_file"
+    if [ -L "$template_file" ] || [ -L "$target_file" ] || [ -L "$LLMOPS_STACK_DIR" ]; then
+        echo -e "${RED}Verlinkte Konfigurationspfade sind nicht erlaubt.${NC}"
+        return 1
+    fi
+    install -m 600 -- "$template_file" "$target_file" || return 1
     echo -e "${GREEN}LLMOps-Stack-.env erfolgreich nach ${target_file} angewendet.${NC}"
     echo -e "${YELLOW}Hinweis: Der Compose-Stack liest jetzt ${target_file} als Laufzeitdatei.${NC}"
 }

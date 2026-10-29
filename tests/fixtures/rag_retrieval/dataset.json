@@ -1,0 +1,10 @@
+{
+  "scope": "synthetic fixtures only; no customer data or real retrieval",
+  "queries": [
+    {"id": "q-backup", "question": "Welche Restore-Pruefung verlangt Mandant A?", "relevant": ["a-backup"], "forbidden": ["b-backup"]},
+    {"id": "q-network", "question": "Wie erreicht Agent A das Modellgateway?", "relevant": ["a-network", "a-gateway"], "forbidden": ["b-network"]},
+    {"id": "q-gpu", "question": "Welcher lokale Worker besitzt die GPU?", "relevant": ["a-gpu"], "forbidden": []},
+    {"id": "q-license", "question": "Welche Lizenz hat das eigene Testprojekt?", "relevant": ["a-license"], "forbidden": []},
+    {"id": "q-delete", "question": "Was gilt fuer geloeschte Dokumentversionen?", "relevant": ["a-current-policy"], "forbidden": ["a-deleted-policy"]}
+  ]
+}

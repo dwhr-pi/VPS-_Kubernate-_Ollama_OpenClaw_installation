@@ -2,6 +2,21 @@
 
 ## Unreleased
 
+### 2026-10-29: Optionale GPU- und Betriebsbausteine
+
+- GPU-Overlay auf bestehender Kubernetes-Basis, getrennte Agent-PVCs,
+  NVIDIA-Plugin-Werte, Secret-Wrapper und offline erzeugbarer HTTPS-Ingress.
+- Planbasierte, SHA256-pruefende Helm-Wege fuer NVIDIA und Monitoring;
+  keine Treiberinstallation, Cluster-Aenderung oder Modelle ohne Freigabe.
+- Authentifizierter ServiceMonitor und Loki-Netzwerkgrenze, kein erfundener
+  Ollama-Metrikendpunkt und keine neue Promtail-Installation.
+- CI baut, scannt und veroeffentlicht ein gepinntes Gateway-Image bei passendem
+  Main-Push; kein automatisches Deployment. Native Installer bleiben erhalten.
+- Legacy-Proxy-Key aus URL entfernt, Fallback-Streaming korrigiert und
+  LoadBalancer durch ClusterIP ersetzt (Zugriffsaenderung bei erneutem Apply).
+- Transaktionswrapper mit privater umask und Python-Preflight; keine
+  pauschale Loesch-/Rollback-Logik fuer vorhandene Daten.
+
 ### 2026-10-28: GitOps-Planung ohne falschen Installationsfehler verschieben
 
 - Leere, nur aus Leerzeichen bestehende und CRLF-Eingaben sowie EOF beim

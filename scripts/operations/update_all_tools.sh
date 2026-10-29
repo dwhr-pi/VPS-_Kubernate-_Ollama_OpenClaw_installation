@@ -12,16 +12,24 @@ if [ ! -s "$TOOL_STATUS_FILE" ]; then
   exit 0
 fi
 
-while IFS= read -r tool_name; do
+failed=0
+while IFS= read -r tool_name || [ -n "$tool_name" ]; do
+  tool_name="${tool_name%$'\r'}"
   [ -z "$tool_name" ] && continue
-  slug="$(echo "$tool_name" | tr '[:upper:]' '[:lower:]')"
-  script_path="${REPO_ROOT}/scripts/tools/${slug}_install.sh"
-  if [ -x "$script_path" ] || [ -f "$script_path" ]; then
-    log_info "Aktualisiere Tool über Re-Install: $tool_name"
-    bash "$script_path" || log_warn "Update für $tool_name fehlgeschlagen."
+  if script_path="$(python3 -I -B "$REPO_ROOT/scripts/lib/tool_dispatch.py" "$tool_name" --action update)"; then
+    log_info "Aktualisiere Tool ueber registriertes Update-Skript."
+    if ! bash "$script_path"; then
+      log_warn "Registriertes Tool-Update fehlgeschlagen."
+      failed=1
+    fi
   else
-    log_warn "Kein Install-Skript gefunden für $tool_name ($script_path)"
+    log_warn "Kein freigegebener Update-Pfad; kein automatischer Re-Install."
+    failed=1
   fi
 done < "$TOOL_STATUS_FILE"
 
-log_success "Update aller vermerkten Tools abgeschlossen."
+if [ "$failed" -ne 0 ]; then
+  log_warn "Updates unvollstaendig; Hinweise pruefen. Keine fehlenden Updater durch Installer ersetzt."
+  exit 1
+fi
+log_success "Alle registrierten Updates erfolgreich abgeschlossen."

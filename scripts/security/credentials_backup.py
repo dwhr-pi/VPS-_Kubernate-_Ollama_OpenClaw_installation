@@ -17,6 +17,8 @@ import tarfile
 from env_vault import Workspace, VaultError, age_run, no_symlinks
 
 LIMIT = 32 * 1024**2
+ARCHIVE_LIMIT = LIMIT + 2 * 1024**2
+CIPHERTEXT_LIMIT = ARCHIVE_LIMIT + 2 * 1024**2
 SETTINGS = 'credential-backup-settings.json'
 
 # Keep recovery instructions in the message itself, not only behind a web link.
@@ -114,13 +116,13 @@ def relative(value):
     return path
 
 
-def read_bounded(path):
+def read_bounded(path, limit=LIMIT):
     no_symlinks(path)
-    if not path.is_file() or path.stat().st_nlink != 1 or path.stat().st_size > LIMIT:
+    if not path.is_file() or path.stat().st_nlink != 1 or path.stat().st_size > limit:
         raise VaultError('Datei fehlt, ist verlinkt oder zu gross.')
     with path.open('rb') as stream:
-        data = stream.read(LIMIT + 1)
-    if len(data) > LIMIT:
+        data = stream.read(limit + 1)
+    if len(data) > limit:
         raise VaultError('Dateigroessenlimit ueberschritten.')
     return data
 
@@ -195,11 +197,14 @@ def pack(root, settings):
             entry = tarfile.TarInfo(name)
             entry.size, entry.mode = len(content), 0o600
             archive.addfile(entry, io.BytesIO(content))
-    return buffer.getvalue()
+    payload = buffer.getvalue()
+    if len(payload) > ARCHIVE_LIMIT:
+        raise VaultError('Archiv inklusive Metadaten zu gross; Auswahl verkleinern.')
+    return payload
 
 
 def unpack(payload):
-    if len(payload) > LIMIT + 2 * 1024**2:
+    if len(payload) > ARCHIVE_LIMIT:
         raise VaultError('Archiv zu gross.')
     files = {}
     with tarfile.open(fileobj=io.BytesIO(payload), mode='r:') as archive:
@@ -229,12 +234,14 @@ def export(root, target):
     Workspace(target.parent)  # Also reject repository destinations.
     content = pack(root, load_settings(root))
     encrypted = age_run(['--passphrase'], content)
+    if len(encrypted) > CIPHERTEXT_LIMIT:
+        raise VaultError('Verschluesselter Export zu gross; keine Sicherung geschrieben.')
     new_file(target, encrypted)
     print('Verschluesselter Export geschrieben. Keine Klartext-TAR auf Disk; separat sicher aufbewahren.')
 
 
 def recover(source, target, apply=False):
-    encrypted = read_bounded(source)
+    encrypted = read_bounded(source, CIPHERTEXT_LIMIT)
     # Validate a private Linux destination before decrypting or writing secrets.
     no_symlinks(target)
     if not target.is_absolute() or target.exists():

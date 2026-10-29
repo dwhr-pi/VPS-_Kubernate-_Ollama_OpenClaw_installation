@@ -10,10 +10,21 @@ spec:
         # Kein erfundener /metrics-Endpunkt; separaten Exporter verwenden.
         prometheus.io/scrape: 'false'
     spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+        fsGroup: 10001
+        seccompProfile: {type: RuntimeDefault}
       runtimeClassName: nvidia
       nodeSelector: {nvidia.com/gpu.present: 'true'}
       containers:
         - name: ollama
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
           # Am 29.10.2026 am offiziellen Registry-Manifest verifiziert.
           image: ollama/ollama@sha256:20d1bbfbabe1c97ba4b16301f08a20d8484bcf77047742a3cb71c613d8e12d0b
           resources:

@@ -10,11 +10,15 @@ if [[ -z "$TOOL_ID" || "$TOOL_ID" == "--help" ]]; then
 fi
 
 DRY_RUN=0
+if [[ $# -gt 2 || ( $# -eq 2 && "$2" != "--dry-run" ) ]]; then
+  echo "Fehler: Nur <tool_id> und optional --dry-run erlaubt." >&2
+  exit 2
+fi
 if [[ "${2:-}" == "--dry-run" ]]; then
   DRY_RUN=1
 fi
 
-SCRIPT="$ROOT_DIR/scripts/tools/${TOOL_ID}_uninstall.sh"
+SCRIPT="$(python3 -I -B "$ROOT_DIR/scripts/lib/tool_dispatch.py" "$TOOL_ID" --action uninstall)" || exit 1
 
 if [[ ! -f "$SCRIPT" ]]; then
   echo "WARN: Kein Uninstaller gefunden: $SCRIPT"

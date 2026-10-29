@@ -11,7 +11,8 @@ import sys
 from urllib.parse import unquote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[2]
-SKIP = {".git", "node_modules", ".venv", "venv", "__pycache__", "dist", "build"}
+SKIP = {".git", "node_modules", ".venv", "venv", "__pycache__", "dist", "build",
+        ".codex-build", ".pytest_cache", ".ruff_cache"}
 STATUSES = {"planned", "optional", "experimental", "stable", "beta", "heavy", "manual", "documentation-first"}
 
 
@@ -115,7 +116,9 @@ class Audit:
 
     def files(self):
         for directory, dirs, names in os.walk(self.root, followlinks=False):
-            dirs[:] = sorted(d for d in dirs if d not in SKIP and not (Path(directory) / d).is_symlink())
+            dirs[:] = sorted(d for d in dirs if d not in SKIP and not (Path(directory) / d).is_symlink()
+                             and not (hasattr(Path(directory) / d, 'is_junction')
+                                      and (Path(directory) / d).is_junction()))
             for name in sorted(names):
                 file = Path(directory) / name
                 if not file.is_symlink():

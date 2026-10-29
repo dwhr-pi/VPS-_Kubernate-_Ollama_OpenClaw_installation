@@ -37,6 +37,8 @@ jobs:
           bash -n scripts/backup_stateful_services.sh
           "$RUNNER_TEMP/bats/bin/bats" tests/bats/install_scripts.bats
           python3 -B -m unittest discover -s tests -p test_production_baseline.py -v
+          python3 -B -m unittest discover -s tests -p test_gpu_platform_blueprint.py -v
+          bash -n scripts/monitoring_install.sh scripts/nvidia_device_plugin_install.sh scripts/seal_gemini_secret.sh
           python3 -B -m unittest discover -s tests -p test_vps_delivery.py -v
           python3 -B -m unittest discover -s tests -p test_vps_secrets.py -v
           python3 -B tests/test_archivebox_python.py -v
@@ -80,6 +82,7 @@ jobs:
           tar -xzf "$RUNNER_TEMP/kustomize.tar.gz" -C "$RUNNER_TEMP" kustomize
           "$RUNNER_TEMP/kustomize" build k8s/base > "$RUNNER_TEMP/llmops-base.yml"
           "$RUNNER_TEMP/kustomize" build k8s/overlays/production > "$RUNNER_TEMP/llmops-production.yml"
+          "$RUNNER_TEMP/kustomize" build k8s/overlays/gpu > "$RUNNER_TEMP/llmops-gpu.yml"
           "$RUNNER_TEMP/kustomize" build k8s/overlays/vps-cpu > "$RUNNER_TEMP/llmops-vps.yml"
   secret-scan:
     runs-on: ubuntu-24.04

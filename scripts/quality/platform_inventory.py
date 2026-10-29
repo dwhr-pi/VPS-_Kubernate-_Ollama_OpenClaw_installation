@@ -53,7 +53,25 @@ def inventory(root=ROOT):
                       'logs': row.get('logs_script'), 'doctor': row.get('doctor_script'),
                       'update': row.get('update_script')}
             checks = {key: script(root, value) for key, value in fields.items()}
+            implementation = ('documented' if row.get('install_mode') in
+                              ('documentation-only', 'documentation-first', 'desktop-manual') else
+                              'implemented' if checks['install']['state'] == 'present' else 'planned')
             result['rows'].append({'kind': kind, 'id': row['id'], 'name': row.get('name') or row['id'],
+                'function': row.get('description') or 'not-declared',
+                'source': row.get('source') or row.get('github') or 'not-declared',
+                'source_commit': row.get('source_commit') or 'not-declared',
+                'license': row.get('license') or 'not-declared',
+                'maintenance': row.get('maintenance_status') or row.get('maintenance') or 'not-reviewed',
+                'metadata_verification': 'registry-declarations-only',
+                'platforms': row.get('platforms') or row.get('supported_platforms') or 'not-declared',
+                'implementation_state': implementation,
+                'verification': {'planned': True, 'documented': bool(row.get('doc')),
+                                 'implemented': checks['install']['state'] == 'present',
+                                 'tested': False, 'staging_verified': False, 'production_verified': False},
+                'implementation_caveat': 'Entrypoint presence is not a working runtime, integration or sandbox.',
+                'tests': 'not-mapped; see audit test report',
+                'integration_status': 'not-runtime-verified',
+                'security_note': row.get('security_note') or 'not-assessed',
                 'declared_status': row.get('status') or 'not-declared', 'review_class': review_class(row),
                 'install_mode': row.get('install_mode') or 'not-declared',
                 'target_hint': row.get('check_value') if row.get('check_type') == 'path' else 'not-declared',

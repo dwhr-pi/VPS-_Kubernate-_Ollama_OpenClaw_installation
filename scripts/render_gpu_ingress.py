@@ -2,7 +2,6 @@
 import argparse
 import ipaddress
 import json
-from pathlib import Path
 import re
 
 
