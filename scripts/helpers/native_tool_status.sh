@@ -13,11 +13,16 @@ NATIVE_TOOL_STATUS_KEYS+=("Qwen_Desktop_Study")
 NATIVE_TOOL_STATUS_KEYS+=("Godot_Source" "Godot_Build" "Godot_XR_Tools" "O3DE_Source" "Lively_Wallpaper_Source")
 NATIVE_TOOL_STATUS_KEYS+=("OpenAPI_Servers")
 NATIVE_TOOL_STATUS_KEYS+=("Gemini_Desktop_Bwendell_Source" "Gemini_Desktop_Dortanes_Source")
+NATIVE_TOOL_STATUS_KEYS+=("OpenCode" "Aider" "OpenHands" "Codex_CLI")
 NATIVE_TOOL_STATUS_KEYS+=("${NATIVE_GITHUB_TOOL_KEYS[@]}")
 
 native_tool_marker() {
     local marker
     case "$1" in
+        OpenCode) marker=opencode/native-coding/current/OWNED.json ;;
+        Aider) marker=aider/native-coding/current/OWNED.json ;;
+        OpenHands) marker=openhands/native-coding/current/OWNED.json ;;
+        Codex_CLI) marker=codex_cli/native-coding/current/OWNED.json ;;
         "Traefik") marker=traefik/native-github/build-ready.json ;;
         "Kubeseal") marker=kubeseal/native-github/build-ready.json ;;
         "OpenTelemetry") marker=opentelemetry/native-github/build-ready.json ;;
@@ -162,6 +167,16 @@ native_tool_sync_selected() {
     for tool in "${selected[@]}"; do
         native_tool_marker "$tool" >/dev/null || return 2
         managed["$tool"]=1
+        case "$tool" in
+            OpenCode|Aider|OpenHands|Codex_CLI)
+                # Validate the owned activation pointer and hashes, not merely a marker.
+                local coding_slug="${NATIVE_TOOL_MARKER%%/*}"
+                if OPENCLAW_USER_DATA_DIR="$root" "${CODING_AGENTS_PYTHON_BIN:-python3}" -I -B \
+                    "$(cd "${BASH_SOURCE[0]%/*}/.." && pwd)/agents/install_cli.py" "$coding_slug" check >/dev/null 2>&1; then
+                    present["$tool"]=1
+                fi
+                continue ;;
+        esac
         marker="$root/tools/$NATIVE_TOOL_MARKER"
         if [[ -f "$marker" && ! -L "$marker" && -s "$marker" && ! -L "$root/tools" && ! -L "${marker%/*}" ]]; then
             if [[ "$tool" == Anthropic_CLI ]]; then

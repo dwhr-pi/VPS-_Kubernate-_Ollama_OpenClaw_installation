@@ -1,5 +1,13 @@
 # OpenCode Integration Guide
 
+**Aktueller Weg (29.10.2026):** [gepinntes natives CLI-Build](agents/NATIVE_CLI_BUILDS.md)
+und [optionale isolierte Workbench](agents/LOCAL_CODING_WORKBENCH.md).
+Die folgenden Scaffold-/`/opt`-Hinweise sind **historisch und nicht mehr der
+empfohlene Installationsweg**. Insbesondere gilt die fruehere rekursive
+Aufraeumroutine nicht als sicherer Besitznachweis. Neue Installer entfernen
+keine Altinstallationen; Legacy-Daten bleiben erhalten. Ein Quellbaum oder
+`run.sh` mit Hinweisen ist keine lauffaehige Coding-CLI.
+
 ## Zweck
 
 OpenCode ist als Codex-aehnlicher Coding-Agent-Workspace gedacht. Im Setup wird es als optionales Coding-Agent-Scaffold vorbereitet und unter `/opt/opencode` geklont.

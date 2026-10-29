@@ -1,5 +1,11 @@
 # Aider Integration Guide
 
+**Aktueller Weg (29.10.2026):** [privater gepinnter Source-Build](agents/NATIVE_CLI_BUILDS.md)
+mit explizitem Hash-Lock und [optionale isolierte Workbench](agents/LOCAL_CODING_WORKBENCH.md).
+Der fruehere globale PATH-Check ist kein Nachweis dieses privaten Builds.
+Historische Scaffold-Beispiele unten nicht als aktuelle Installationsanweisung
+verwenden; alte `/opt`-/venv-Daten werden weder geloescht noch automatisch migriert.
+
 ## Zweck
 
 Aider ist ein terminalbasierter Coding-Agent fuer Git-Repositories. Er eignet sich fuer Patch-Erstellung, Refactoring, kleinere Features, Tests, Code-Erklaerungen und Git-Diff-basierte Arbeit.

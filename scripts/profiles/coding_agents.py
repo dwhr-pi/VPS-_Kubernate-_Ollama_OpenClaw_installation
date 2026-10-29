@@ -64,8 +64,8 @@ def encoded(value):
     return (json.dumps(value, indent=2, ensure_ascii=True) + "\n").encode()
 
 
-def profile_action(profile_id, action):
-    item = next((p for p in catalog()["profiles"] if p["id"] == profile_id), None)
+def profile_action(profile_id, action, profile_catalog=None):
+    item = next((p for p in (profile_catalog or catalog())["profiles"] if p["id"] == profile_id), None)
     if item is None:
         raise ValueError("Unbekanntes Profil")
     root = private_root()
@@ -174,7 +174,7 @@ def route(task, allow_cloud=False):
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("kind", choices=("profile", "source", "route"))
+    parser.add_argument("kind", choices=("profile", "local-profile", "source", "route"))
     parser.add_argument("name")
     parser.add_argument("action", nargs="?", default="--dry-run")
     parser.add_argument("--dry-run", dest="dry_run", action="store_true")
@@ -189,6 +189,9 @@ def main(argv=None):
         action = "--dry-run" if args.dry_run else (args.override_action or args.action)
         if action == "--status":
             action = "status"
+        if args.kind == 'local-profile':
+            local = json.loads((ROOT / 'config/agents/local_profiles.json').read_text(encoding='utf-8'))
+            return profile_action(args.name, action, local)
         return profile_action(args.name, action) if args.kind == "profile" else source_action(args.name, action)
     except (ValueError, KeyError, OSError, subprocess.CalledProcessError) as exc:
         # Git stderr is deliberately not echoed: credentials/proxy URLs may be present.

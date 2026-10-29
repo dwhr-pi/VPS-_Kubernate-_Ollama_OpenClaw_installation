@@ -1,6 +1,5 @@
-#!/bin/bash
-TOOL_NAME="Aider"
-TOOL_KEY="Aider"
-TOOL_SLUG="aider"
-source "$(dirname "$0")/helpers/scaffold_tool_common.sh"
-uninstall_scaffold_tool
+#!/usr/bin/env bash
+# Source: https://github.com/Aider-AI/aider.git
+set -euo pipefail
+script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+exec python3 -I -B "${script_dir}/../agents/install_cli.py" aider uninstall "$@"

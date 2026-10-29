@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "scope": "profile templates only; execution requires the technically isolated workbench",
+  "profiles": [
+    {"id": "OpenCode_Local", "tools": ["opencode", "ollama"], "roles": ["plan", "implement", "review", "test"], "runtime_ready": false},
+    {"id": "Qwen_Code_Local", "tools": ["qwen_code", "ollama"], "roles": ["plan", "implement", "review", "test"], "runtime_ready": false},
+    {"id": "Aider_Local", "tools": ["aider", "ollama"], "roles": ["plan", "implement", "review", "test"], "runtime_ready": false},
+    {"id": "OpenHands_Isolated_Worker", "tools": ["openhands", "ollama"], "roles": ["plan", "implement", "review", "test"], "runtime_ready": false},
+    {"id": "Codex_CLI_Adapter", "tools": ["codex_cli", "ollama"], "roles": ["plan", "implement", "review", "test"], "runtime_ready": false}
+  ]
+}

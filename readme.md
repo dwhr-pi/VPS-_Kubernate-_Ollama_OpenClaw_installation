@@ -2,6 +2,10 @@
 
 Projektlizenz: [Apache-2.0](LICENSE). Fuer eingebundene Drittprojekte gelten deren
 eigene Bedingungen; siehe [Dritthinweise](THIRD_PARTY_NOTICES.md).
+[Optionale Coding-Agenten](docs/agents/LOCAL_CODING_WORKBENCH.md): getrennte
+OpenCode-/Qwen-/Aider-/Codex-Profile, OpenHands-SDK-Worker und technisch begrenzte
+Einmalausfuehrung. [Belegte Bestandsmatrix](docs/agents/CODING_AGENT_INVENTORY.md).
+Kein automatischer Agentenstart, Cloud-Login oder Produktivdeployment.
 Aktueller Codebefund: [Audit vom 27.10.2026](docs/AUDIT_2026_10.md).
 [Gesamtaudit vom 29.10.2026](docs/audit/EXECUTIVE_SUMMARY.md): belegte
 Sicherheitsbefunde, vollstaendiges Registry-Inventar mit JSON, Integrationsluecken,

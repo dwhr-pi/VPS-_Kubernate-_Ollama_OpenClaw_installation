@@ -3,6 +3,36 @@
   "description": "Zentrale Profil-Registry. Dateiname .yml, Inhalt absichtlich als JSON-kompatibles YAML fuer einfache Bash/Python-Auswertung.",
   "profiles": [
     {
+      "id": "OpenCode_Local", "category": "Development / Isolated Coding", "status": "planned", "auto_install": false,
+      "resource_class": "medium", "doc": "docs/agents/LOCAL_CODING_WORKBENCH.md",
+      "install": "scripts/profiles/OpenCode_Local_install.sh", "uninstall": "scripts/profiles/OpenCode_Local_uninstall.sh",
+      "tools": ["opencode", "ollama"], "security_note": "Profilvorlage; keine automatische Installation oder Agentenausfuehrung. Worker separat freigeben."
+    },
+    {
+      "id": "Qwen_Code_Local", "category": "Development / Isolated Coding", "status": "planned", "auto_install": false,
+      "resource_class": "medium", "doc": "docs/agents/LOCAL_CODING_WORKBENCH.md",
+      "install": "scripts/profiles/Qwen_Code_Local_install.sh", "uninstall": "scripts/profiles/Qwen_Code_Local_uninstall.sh",
+      "tools": ["qwen_code", "ollama"], "security_note": "Vorhandenen Qwen-Build wiederverwenden; keine globale CLI, kein Login oder Modell-Pull."
+    },
+    {
+      "id": "Aider_Local", "category": "Development / Isolated Coding", "status": "planned", "auto_install": false,
+      "resource_class": "medium", "doc": "docs/agents/LOCAL_CODING_WORKBENCH.md",
+      "install": "scripts/profiles/Aider_Local_install.sh", "uninstall": "scripts/profiles/Aider_Local_uninstall.sh",
+      "tools": ["aider", "ollama"], "security_note": "Profilvorlage; isolierter Worker, kein automatischer Commit oder Push."
+    },
+    {
+      "id": "OpenHands_Isolated_Worker", "category": "Development / Isolated Coding", "status": "planned", "auto_install": false,
+      "resource_class": "medium", "doc": "docs/agents/LOCAL_CODING_WORKBENCH.md",
+      "install": "scripts/profiles/OpenHands_Isolated_Worker_install.sh", "uninstall": "scripts/profiles/OpenHands_Isolated_Worker_uninstall.sh",
+      "tools": ["openhands", "ollama"], "security_note": "SDK in einem einmaligen Container ohne Netzwerk/Host-Docker-Socket; Image-Abnahme separat."
+    },
+    {
+      "id": "Codex_CLI_Adapter", "category": "Development / Isolated Coding", "status": "planned", "auto_install": false,
+      "resource_class": "medium", "doc": "docs/agents/LOCAL_CODING_WORKBENCH.md",
+      "install": "scripts/profiles/Codex_CLI_Adapter_install.sh", "uninstall": "scripts/profiles/Codex_CLI_Adapter_uninstall.sh",
+      "tools": ["codex_cli", "ollama"], "security_note": "Open-Source-CLI, lokale Modellkompatibilitaet separat testen; kein Cloud-Login oder Token-Mount."
+    },
+    {
       "id": "Claude_Code_Agent",
       "category": "Development / Separated Agents",
       "status": "planned",

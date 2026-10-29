@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+### 2026-10-29: Optionale lokale Coding-Agenten
+
+- Belegte Bestandsmatrix fuer sieben Clients, getrennte Nachweisstufen und
+  ehrliche Lizenz-/Providergrenzen statt pauschaler OSS-/Produktionszusage.
+- OpenCode, Aider und Codex CLI mit gepinnten nativen Lifecycle-Vertraegen;
+  OpenHands-SDK nur als Quellen, Qwen-Build unveraendert. Keine Installation.
+- Fuenf unabhaengige lokale Profile und expliziter Einmalworker mit Docker-
+  Netzwerkisolation, Ressourcenlimits und begrenztem Loopback-Ollama-Broker.
+- Getrennte Worktrees, Read-only-Rollen, private begrenzte Ergebnisdateien,
+  datenerhaltende Deaktivierung und Offline-CI; reale Build-/Modellabnahme offen.
+
 ### 2026-10-29: Belegtes Gesamtaudit und kleine Schutzmassnahmen
 
 - Zehn Audit-Dokumente und reproduzierbares JSON-Inventar fuer Tools, Profile
