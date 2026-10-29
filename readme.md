@@ -2,6 +2,8 @@
 
 Projektlizenz: [Apache-2.0](LICENSE). Fuer eingebundene Drittprojekte gelten deren
 eigene Bedingungen; siehe [Dritthinweise](THIRD_PARTY_NOTICES.md).
+[Dokumentations-Wegweiser](docs/readme.md) und
+[Abnahmeplan fuer den Coding-Agenten-Branch](docs/agents/CODING_AGENTS_ACCEPTANCE.md).
 [Optionale Coding-Agenten](docs/agents/LOCAL_CODING_WORKBENCH.md): getrennte
 OpenCode-/Qwen-/Aider-/Codex-Profile, OpenHands-SDK-Worker und technisch begrenzte
 Einmalausfuehrung. [Belegte Bestandsmatrix](docs/agents/CODING_AGENT_INVENTORY.md).

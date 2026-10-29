@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+### 2026-10-29: Dokumentations-Wegweiser und Branch-Abnahme
+
+- docs/readme.md als Themen- und Statusuebersicht ergaenzt, ohne historische
+  Dokumentation umzubenennen oder Produktionsreife aus Beschreibungen abzuleiten.
+- Konkreter Abnahmeplan fuer Setup/Menue, Offline-Tests, temporaeren
+  Profil-Lifecycle und getrennte echte Agenten-/Modelltests vor main.
+- Lokale Link-/Testverweispruefung in CI ergaenzt; kein Main-Merge oder Deploy.
+
 ### 2026-10-29: Explizite Entwicklungs-Branch-Auswahl
 
 - Unsignierter Opt-in-Installer bietet main, den Coding-Agenten-Featurebranch
