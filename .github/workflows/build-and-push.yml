@@ -1,0 +1,58 @@
+name: Inference Gateway - Build, Scan, Publish
+on:
+  push:
+    branches: [main]
+    paths:
+      - services/inference-gateway/**
+      - .github/workflows/build-and-push.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: inference-gateway-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  image:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Build ohne Secrets
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          image="ghcr.io/${GITHUB_REPOSITORY,,}/inference-gateway:${GITHUB_SHA}"
+          printf 'GATEWAY_IMAGE=%s\n' "$image" >> "$GITHUB_ENV"
+          docker build --pull --tag "$image" services/inference-gateway
+      - name: Trivy - Veroeffentlichung bei Schwachstellen sperren
+        uses: aquasecurity/trivy-action@8f28faec26515256b6d22074d1d2a8986f4cbd87
+        with:
+          version: v0.76.1
+          scan-type: image
+          image-ref: ${{ env.GATEWAY_IMAGE }}
+          scanners: vuln,secret
+          severity: HIGH,CRITICAL
+          ignore-unfixed: false
+          exit-code: '1'
+      - name: Exakt das gescannte Image nach GHCR uebertragen
+        env:
+          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          umask 077
+          export DOCKER_CONFIG
+          DOCKER_CONFIG="$(mktemp -d)"
+          cleanup() { docker logout ghcr.io >/dev/null 2>&1 || true; rm -f -- "$DOCKER_CONFIG/config.json"; rmdir -- "$DOCKER_CONFIG"; }
+          trap cleanup EXIT
+          printf '%s' "$GHCR_TOKEN" | docker login ghcr.io --username "$GITHUB_ACTOR" --password-stdin
+          unset GHCR_TOKEN
+          docker push "$GATEWAY_IMAGE"
+          docker inspect --format '{{json .RepoDigests}}' "$GATEWAY_IMAGE" >> "$GITHUB_STEP_SUMMARY"
+          printf '\nKein Cluster-Deployment ausgefuehrt.\n' >> "$GITHUB_STEP_SUMMARY"

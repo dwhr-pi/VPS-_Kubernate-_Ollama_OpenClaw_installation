@@ -1,0 +1,74 @@
+# Optionaler Vollstack; fuer kleine Gratis-VPS monitoring-lite vorziehen.
+defaultRules:
+  rules:
+    etcd: false
+    kubeScheduler: false
+    kubeControllerManager: false
+kubeEtcd: {enabled: false}
+kubeScheduler: {enabled: false}
+kubeControllerManager: {enabled: false}
+kubeProxy: {enabled: false}
+grafana:
+  admin:
+    existingSecret: grafana-admin
+    userKey: admin-user
+    passwordKey: admin-password
+  service: {type: ClusterIP}
+  ingress: {enabled: false}
+  persistence: {enabled: true, storageClassName: local-path, size: 1Gi}
+  resources:
+    requests: {cpu: 100m, memory: 128Mi}
+    limits: {cpu: 500m, memory: 512Mi}
+  sidecar:
+    dashboards: {enabled: false}
+    datasources: {enabled: false}
+  additionalDataSources:
+    - name: Loki
+      type: loki
+      access: proxy
+      url: http://llmops-loki.monitoring.svc.cluster.local:3100
+      jsonData: {httpHeaderName1: X-Scope-OrgID}
+      secureJsonData: {httpHeaderValue1: llmops}
+alertmanager:
+  alertmanagerSpec:
+    replicas: 1
+    resources:
+      requests: {cpu: 50m, memory: 64Mi}
+      limits: {cpu: 250m, memory: 256Mi}
+    storage:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: local-path
+          accessModes: [ReadWriteOnce]
+          resources: {requests: {storage: 1Gi}}
+prometheusOperator:
+  resources:
+    requests: {cpu: 100m, memory: 128Mi}
+    limits: {cpu: 500m, memory: 512Mi}
+kube-state-metrics:
+  resources:
+    requests: {cpu: 50m, memory: 64Mi}
+    limits: {cpu: 250m, memory: 256Mi}
+prometheus-node-exporter:
+  resources:
+    requests: {cpu: 25m, memory: 32Mi}
+    limits: {cpu: 200m, memory: 128Mi}
+prometheus:
+  service: {type: ClusterIP}
+  prometheusSpec:
+    replicas: 1
+    retention: 24h
+    retentionSize: 2GB
+    scrapeInterval: 30s
+    evaluationInterval: 30s
+    resources:
+      requests: {cpu: 250m, memory: 512Mi}
+      limits: {cpu: '1', memory: 1536Mi}
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: local-path
+          accessModes: [ReadWriteOnce]
+          resources: {requests: {storage: 5Gi}}
+    # Kein erfundener Ollama-/metrics-Endpunkt und kein Secret im Scrape-Job.
+    # LiteLLM-Metriken erst nach Auth-/Label-Abnahme per ServiceMonitor anbinden.

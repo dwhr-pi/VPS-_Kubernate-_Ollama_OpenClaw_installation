@@ -1,0 +1,21 @@
+# Patch auf den bestehenden StatefulSet: PVC und Probes aus der Basis bleiben.
+apiVersion: apps/v1
+kind: StatefulSet
+metadata: {name: ollama}
+spec:
+  replicas: 1
+  template:
+    metadata:
+      annotations:
+        # Kein erfundener /metrics-Endpunkt; separaten Exporter verwenden.
+        prometheus.io/scrape: 'false'
+    spec:
+      runtimeClassName: nvidia
+      nodeSelector: {nvidia.com/gpu.present: 'true'}
+      containers:
+        - name: ollama
+          # Am 29.10.2026 am offiziellen Registry-Manifest verifiziert.
+          image: ollama/ollama@sha256:20d1bbfbabe1c97ba4b16301f08a20d8484bcf77047742a3cb71c613d8e12d0b
+          resources:
+            requests: {cpu: '2', memory: 4Gi, ephemeral-storage: 256Mi, nvidia.com/gpu: 1}
+            limits: {cpu: '6', memory: 12Gi, ephemeral-storage: 2Gi, nvidia.com/gpu: 1}

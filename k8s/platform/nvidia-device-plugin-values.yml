@@ -1,0 +1,17 @@
+# Host-Treiber, Container Toolkit und K3s-RuntimeClass muessen bereits existieren.
+runtimeClassName: nvidia
+failOnInitError: true
+migStrategy: none
+deviceListStrategy: envvar
+nodeSelector: {nvidia.com/gpu.present: 'true'}
+gfd: {enabled: false}
+nfd: {enabled: false}
+mps: {enableHostPID: false}
+devicePlugin: {enabled: true, enableHostNetwork: false}
+resources:
+  requests: {cpu: 50m, memory: 64Mi}
+  limits: {cpu: 250m, memory: 256Mi}
+securityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  capabilities: {drop: [ALL]}

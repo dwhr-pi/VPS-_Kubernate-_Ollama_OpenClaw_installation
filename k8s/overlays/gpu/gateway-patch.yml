@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: litellm}
+spec:
+  template:
+    metadata:
+      annotations:
+        # Annotation alleine erzeugt beim Prometheus Operator keinen Scrape-Job.
+        prometheus.io/scrape: 'true'
+        prometheus.io/path: /metrics
+        prometheus.io/port: '4000'
+    spec:
+      containers:
+        - name: litellm
+          # Offizieller main-stable-Digest; keine Release-Tag-Gleichheit behauptet.
+          image: ghcr.io/berriai/litellm@sha256:37e2dafb088a7723beb998590682957386dfc83ffea1848486f8e0e5cfac0b06
+          env:
+            - {name: LITELLM_OLLAMA_MODEL, value: 'ollama/llama3.2:1b'}
+            # Nur injiziert, keine Cloudroute und kein automatischer Fallback.
+            - name: GEMINI_API_KEY
+              valueFrom:
+                secretKeyRef: {name: gemini-runtime, key: GEMINI_API_KEY, optional: true}

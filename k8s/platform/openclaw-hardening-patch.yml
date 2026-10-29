@@ -1,0 +1,41 @@
+# Nur als Patch auf ein separat geprueftes OpenClaw-Deployment verwenden.
+# Nicht als vollstaendiges Deployment anwenden: Image/Startvertrag bleiben upstream.
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: openclaw, namespace: llmops}
+spec:
+  replicas: 1
+  strategy: {type: Recreate}
+  template:
+    metadata:
+      annotations: {prometheus.io/scrape: 'false'}
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+        fsGroup: 10001
+        seccompProfile: {type: RuntimeDefault}
+      containers:
+        - name: openclaw
+          env:
+            - {name: OPENCLAW_STATE_DIR, value: /data/state}
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {cpu: 250m, memory: 512Mi, ephemeral-storage: 128Mi}
+            limits: {cpu: '2', memory: 2Gi, ephemeral-storage: 1Gi}
+          startupProbe: {tcpSocket: {port: 18789}, periodSeconds: 10, failureThreshold: 30}
+          readinessProbe: {tcpSocket: {port: 18789}, periodSeconds: 10}
+          livenessProbe: {tcpSocket: {port: 18789}, periodSeconds: 30, failureThreshold: 5}
+          volumeMounts:
+            - {name: workspace, mountPath: /data}
+            - {name: tmp, mountPath: /tmp}
+      volumes:
+        - name: workspace
+          persistentVolumeClaim: {claimName: agent-workspaces}
+        - name: tmp
+          emptyDir: {sizeLimit: 256Mi}

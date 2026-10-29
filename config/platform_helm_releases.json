@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "verified_at": "2026-10-29",
+  "releases": {
+    "nvidia": {
+      "name": "nvidia-device-plugin", "namespace": "gpu-system",
+      "url": "https://github.com/NVIDIA/k8s-device-plugin/releases/download/v0.20.1/nvidia-device-plugin-0.20.1.tgz",
+      "sha256": "b705142f03ac17906bfcface9319e2f7b9a570d2af7f04f23252723ce2c0bb8e",
+      "values": "k8s/platform/nvidia-device-plugin-values.yml"
+    },
+    "prometheus": {
+      "name": "llmops-monitoring", "namespace": "monitoring",
+      "url": "https://github.com/prometheus-community/helm-charts/releases/download/kube-prometheus-stack-92.14.1/kube-prometheus-stack-92.14.1.tgz",
+      "sha256": "99e2d893fdbd4e397fa4fafd6298979f4622c2695a023dfb71615dd93d34a517",
+      "values": "k8s/monitoring/prometheus-values.yml"
+    },
+    "loki": {
+      "name": "llmops-loki", "namespace": "monitoring",
+      "url": "https://github.com/grafana-community/helm-charts/releases/download/loki-20.0.2/loki-20.0.2.tgz",
+      "sha256": "c26acef5f5127f200dedd97be805a35cf11c481e8ec1b2fea79e85d68ac4bbba",
+      "values": "k8s/monitoring/loki-values.yml"
+    }
+  }
+}

@@ -1,0 +1,13 @@
+model_list:
+  - model_name: local-default
+    litellm_params:
+      model: os.environ/LITELLM_OLLAMA_MODEL
+      api_base: os.environ/OLLAMA_API_BASE
+general_settings:
+  master_key: os.environ/LITELLM_MASTER_KEY
+litellm_settings:
+  callbacks: [prometheus]
+  set_verbose: false
+router_settings:
+  num_retries: 0
+  timeout: 120

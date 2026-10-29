@@ -1,0 +1,54 @@
+# K3s installiert Traefik standardmaessig in kube-system, nicht in traefik.
+# Raw Ollama bleibt ausschliesslich fuer das interne Gateway freigegeben.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata: {name: k3s-ingress-to-gateways}
+spec:
+  podSelector:
+    matchExpressions:
+      - {key: app, operator: In, values: [litellm, openclaw]}
+  policyTypes: [Ingress]
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels: {kubernetes.io/metadata.name: kube-system}
+          podSelector:
+            matchLabels: {app.kubernetes.io/name: traefik}
+      ports: [{protocol: TCP, port: 4000}, {protocol: TCP, port: 18789}]
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata: {name: k3s-acme-solver}
+spec:
+  podSelector:
+    matchLabels: {acme.cert-manager.io/http01-solver: 'true'}
+  policyTypes: [Ingress]
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels: {kubernetes.io/metadata.name: kube-system}
+          podSelector:
+            matchLabels: {app.kubernetes.io/name: traefik}
+      ports: [{protocol: TCP, port: 8089}]
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata: {name: openclaw-to-inference-gateway}
+spec:
+  podSelector: {matchLabels: {app: openclaw}}
+  policyTypes: [Egress]
+  egress:
+    - to:
+        - podSelector: {matchLabels: {app: litellm}}
+      ports: [{protocol: TCP, port: 4000}]
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata: {name: inference-gateway-from-openclaw}
+spec:
+  podSelector: {matchLabels: {app: litellm}}
+  policyTypes: [Ingress]
+  ingress:
+    - from:
+        - podSelector: {matchLabels: {app: openclaw}}
+      ports: [{protocol: TCP, port: 4000}]

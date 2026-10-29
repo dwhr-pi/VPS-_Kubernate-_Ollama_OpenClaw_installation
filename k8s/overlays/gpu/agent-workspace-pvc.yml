@@ -1,0 +1,11 @@
+# Agenten und Modellcache niemals auf dasselbe beschreibbare Volume legen.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: agent-workspaces
+  annotations: {argocd.argoproj.io/sync-options: 'Prune=false,Delete=false'}
+spec:
+  accessModes: [ReadWriteOnce]
+  storageClassName: local-path
+  resources:
+    requests: {storage: 20Gi}

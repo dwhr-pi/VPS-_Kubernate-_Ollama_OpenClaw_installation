@@ -1,0 +1,20 @@
+# Nach Installation der Operator-CRDs bewusst separat anwenden.
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: litellm
+  namespace: llmops
+  labels: {release: llmops-monitoring}
+spec:
+  namespaceSelector: {matchNames: [llmops]}
+  selector:
+    matchLabels: {llmops-metrics: litellm}
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: 30s
+      scrapeTimeout: 10s
+      # Secret liegt im Namespace dieses ServiceMonitor, nicht im Git.
+      authorization:
+        type: Bearer
+        credentials: {name: litellm-runtime, key: master-key}

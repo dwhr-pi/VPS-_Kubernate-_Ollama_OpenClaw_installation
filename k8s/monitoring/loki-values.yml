@@ -1,0 +1,45 @@
+# Einzelknotenbetrieb, keine HA; Loki nur im Monitoring-Namespace erreichbar machen.
+deploymentMode: Monolithic
+loki:
+  auth_enabled: true
+  commonConfig: {replication_factor: 1}
+  storage: {type: filesystem}
+  schemaConfig:
+    configs:
+      - from: '2024-04-01'
+        store: tsdb
+        object_store: filesystem
+        schema: v13
+        index: {prefix: index_, period: 24h}
+  limits_config:
+    retention_period: 24h
+    ingestion_rate_mb: 2
+    ingestion_burst_size_mb: 4
+  compactor:
+    retention_enabled: true
+    delete_request_store: filesystem
+singleBinary:
+  enabled: true
+  replicas: 1
+  sidecar: false
+  resources:
+    requests: {cpu: 100m, memory: 256Mi}
+    limits: {cpu: 500m, memory: 768Mi}
+  persistence:
+    enabled: true
+    storageClass: local-path
+    size: 10Gi
+    enableStatefulSetAutoDeletePVC: false
+    whenDeleted: Retain
+    whenScaled: Retain
+read: {replicas: 0}
+write: {replicas: 0}
+backend: {replicas: 0}
+gateway: {enabled: false}
+chunksCache: {enabled: false}
+resultsCache: {enabled: false}
+lokiCanary: {enabled: false}
+test: {enabled: false}
+monitoring:
+  selfMonitoring: {enabled: false}
+  serviceMonitor: {enabled: false}

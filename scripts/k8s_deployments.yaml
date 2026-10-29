@@ -229,7 +229,8 @@ spec:
     - protocol: TCP
       port: 8000
       targetPort: 8000
-  type: LoadBalancer
+  # Legacy-Beispiel bleibt intern; kein unauthentifizierter WAN-Endpunkt.
+  type: ClusterIP
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -255,10 +256,10 @@ data:
 
         try:
             # Versuch, Gemini zu nutzen
-            gemini_headers = {"Content-Type": "application/json"}
+            gemini_headers = {"Content-Type": "application/json", "x-goog-api-key": GEMINI_API_KEY}
             gemini_payload = {"contents": [{"parts": [{"text": prompt}]}]}
             gemini_response = requests.post(
-                f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_MODEL}:generateContent?key={GEMINI_API_KEY}",
+                f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_MODEL}:generateContent",
                 headers=gemini_headers,
                 json=gemini_payload,
                 timeout=10
@@ -269,17 +270,17 @@ data:
                 return jsonify({"text": gemini_data["candidates"][0]["content"]["parts"][0]["text"]})
 
         except (requests.exceptions.RequestException, KeyError) as e:
-            print(f"Gemini-Anfrage fehlgeschlagen oder Limit erreicht: {e}. Versuche Ollama...")
+            print(f"Gemini-Anfrage fehlgeschlagen: {type(e).__name__}. Versuche Ollama...")
             # Fallback auf Ollama
             if OLLAMA_URL:
                 try:
-                    ollama_payload = {"model": "llama3.2:1b", "prompt": prompt}
+                    ollama_payload = {"model": "llama3.2:1b", "prompt": prompt, "stream": False}
                     ollama_response = requests.post(f"{OLLAMA_URL}/api/generate", json=ollama_payload, timeout=30)
                     ollama_response.raise_for_status()
                     ollama_data = ollama_response.json()
                     return jsonify({"text": ollama_data["response"]})
                 except requests.exceptions.RequestException as e_ollama:
-                    print(f"Ollama-Anfrage fehlgeschlagen: {e_ollama}")
+                    print(f"Ollama-Anfrage fehlgeschlagen: {type(e_ollama).__name__}")
                     return jsonify({"error": "Beide LLM-Anbieter sind nicht erreichbar."}), 500
             else:
                 return jsonify({"error": "Gemini fehlgeschlagen und Ollama-URL nicht konfiguriert."}), 500
