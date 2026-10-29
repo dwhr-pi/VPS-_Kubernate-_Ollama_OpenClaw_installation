@@ -44,6 +44,45 @@ Ein Pin ersetzt weder Lizenzpruefung noch einen erfolgreichen Scan.
 Falls der nun vollstaendige Scan echte Funde liefert, bleiben diese Blocker;
 keine breit gefasste Allowlist und keine automatische History-Umschreibung.
 
+## Zweiter Reparatursatz und neue CI-Belege
+
+Am Head `566ebe51618872e56c62f7b241a146c932d8b7a3` besteht die
+[volle Offline-Regression](https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation/actions/runs/40943474053/job/123692602411):
+**2.180 Tests, OK (8 uebersprungen)**. Auch die Gitleaks-Scans sind gruen.
+Das bedeutet keine Freigabe der weiterhin roten Konfigurations-/Lint-Pruefungen.
+
+Der [macOS-Lauf](https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation/actions/runs/40943474488/job/123692604206)
+passiert nun Workbench und Registry, trifft aber im folgenden Modul
+`test_native_coding_clis.py` erneut auf `/var` als Symlink-Vorfahren.
+Auch dessen temporaere Fixture-Wurzel wird kanonisiert. Der produktive
+`guarded()`-Vertrag und seine Symlink-Negativtests bleiben unveraendert.
+
+[Next Level Health](https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation/actions/runs/40943473934/job/123692601516)
+meldet unaufgeloeste lokale Queue-Sources und ein unbenutztes TSV-Prioritaetsfeld.
+ShellCheck verfolgt diese Sources jetzt explizit mit `-x` und
+`--source-path=SCRIPTDIR`; es gibt keinen SC1091-Ausschluss.
+Das bereits zur Jobauswahl verwendete Prioritaetsfeld wird beim Einlesen der
+ausgewaehlten Zeile als `_priority` gekennzeichnet; die TSV-Struktur bleibt gleich.
+Der Agent-Framework-Python-Check verwendet statt einer Ein-Element-Schleife
+einen einzelnen, weiterhin vollstaendig zitierten Programmpfad. Zwei Tests
+pruefen Leerzeichen im Pfad und die Ablehnung eines inkompatiblen Overrides.
+
+Lokale Abnahme des zweiten Satzes: **34 Tests OK (1 uebersprungen)** fuer
+Queue, Framework und CI-Vertraege; separat **44 native CLI-Tests OK**.
+Der gezielte Health-ShellCheck ist mit ShellCheck 0.11.0 ohne Befund.
+Das pruefsummengepruefte Windows-Testwerkzeug liegt nur im temporaeren
+Validierungsordner; weder Setup-Installation noch System-PATH wurden geaendert.
+Der Ubuntu-CI-Lauf mit seinem ShellCheck 0.9.0 und die echte macOS-Abnahme
+muessen fuer den neuen Commit erneut laufen.
+
+Die weiteren Logs zeigen **9.323 Markdownlint-Befunde** und
+**29 HIGH-Trivy-Befunde**: zwoelf in unvollstaendigen Kustomize-Patches,
+17 in `scripts/k8s_deployments.yaml`. Patches muessen gegen die gerenderten
+Workloads bewertet werden; alte vollstaendige Deployments brauchen eine
+eigene Laufzeit-/Volume-Abnahme. Keine pauschalen Scanner-Ausnahmen und
+keine ungepruefte UID-/Read-only-Umstellung nur fuer einen gruenen Status.
+Der globale ShellCheck und die Linkpruefung bleiben ebenfalls offen.
+
 ## Naechste Abnahme
 
 Lokale Abnahme dieses Reparatursatzes unter Windows mit nativem Git Bash:

@@ -22,13 +22,12 @@ af_paths() {
 }
 
 af_python() {
-    local candidate
-    for candidate in "${AGENT_FRAMEWORK_PYTHON_BIN:-python3}"; do
-        command -v "$candidate" >/dev/null && "$candidate" -I -c \
-            'import sys; assert (3, 10) <= sys.version_info < (3, 16)' && {
-            command -v "$candidate"; return 0;
-        }
-    done
+    local candidate="${AGENT_FRAMEWORK_PYTHON_BIN:-python3}"
+    if command -v "$candidate" >/dev/null && "$candidate" -I -c \
+        'import sys; assert (3, 10) <= sys.version_info < (3, 16)'; then
+        command -v "$candidate"
+        return 0
+    fi
     echo 'Python 3.10-3.15 mit venv erforderlich; Ubuntu 24.04 Python 3.12 passt.' >&2
     echo 'Basis ggf. separat einrichten: sudo apt-get install python3 python3-venv git util-linux' >&2
     return 1

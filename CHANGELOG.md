@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+### 2026-10-29: Zweiter CI-Reparatursatz
+
+- Native-CLI-Fixture-Pfade auch unter macOS kanonisiert; Symlink-Sperre bleibt.
+- Health-ShellCheck verfolgt Queue-Hilfsdateien statt SC1091 zu unterdruecken;
+  TSV-Prioritaet und expliziter Python-Interpreter bleiben unveraendert wirksam.
+- Zusaetzliche Python-Override-Tests; volle GitHub-Regression am vorherigen
+  Reparatur-Commit gruen. Globale Lint-/Trivy-/Link-Befunde bleiben offen.
+
 ### 2026-10-29: Erste CI-Reparaturen vor PR-6-Abnahme
 
 - macOS-Fixtures kanonisieren temporaere Pfade; Gitleaks erhaelt vollstaendige

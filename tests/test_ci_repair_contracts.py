@@ -7,6 +7,17 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class CiRepairContracts(unittest.TestCase):
+    def test_queue_lint_resolves_real_sources_without_suppressions(self):
+        workflow = (ROOT / '.github/workflows/next-level-health.yml').read_text(encoding='utf-8')
+        self.assertIn('shellcheck -x --source-path=SCRIPTDIR', workflow)
+        self.assertNotIn('--exclude', workflow)
+        self.assertNotIn('continue-on-error', workflow)
+        for path in (ROOT / 'scripts/queue').glob('*.sh'):
+            text = path.read_text(encoding='utf-8')
+            self.assertNotIn('disable=SC1091', text)
+            for filename in re.findall(r'# shellcheck source=(queue_\w+\.sh)', text):
+                self.assertTrue((path.parent / filename).is_file(), filename)
+
     def test_gitleaks_checks_full_history_without_disabling_scan(self):
         workflow = (ROOT / '.github/workflows/secret-scan.yml').read_text(encoding='utf-8')
         self.assertIn('fetch-depth: 0', workflow)

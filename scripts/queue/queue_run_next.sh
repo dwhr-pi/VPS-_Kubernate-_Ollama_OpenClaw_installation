@@ -60,7 +60,7 @@ queue_lock_state
 selected_id="$(awk -F '\t' '$2=="queued" {rank=($3=="high"?0:($3=="normal"?1:2)); print rank "\t" NR "\t" $1}' "$QUEUE_FILE" | sort -n -k1,1 -k2,2 | awk -F '\t' 'NR==1 {print $3}')"
 [[ -n "$selected_id" ]] || exit 0
 job_line="$(awk -F '\t' -v id="$selected_id" '$1==id {print; exit}' "$QUEUE_FILE")"
-IFS=$'\t' read -r job_id _status priority attempts max_attempts timeout_seconds job_cmd _exit_code <<< "$job_line"
+IFS=$'\t' read -r job_id _status _priority attempts max_attempts timeout_seconds job_cmd _exit_code <<< "$job_line"
 if [[ ! "$job_id" =~ ^[A-Za-z0-9_-]+$ || ! "$attempts" =~ ^[0-9]{1,6}$ ||
       ! "$max_attempts" =~ ^[1-9][0-9]{0,5}$ || ! "$timeout_seconds" =~ ^[1-9][0-9]{0,5}$ ]]; then
   echo "Fehler: Ungueltige Queue-Metadaten; kein Job gestartet." >&2
