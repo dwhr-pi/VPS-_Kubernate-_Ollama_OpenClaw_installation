@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+### 2026-10-29: Health-Ausfuehrungsrecht und explizite Overlay-Sicherheit
+
+- Secret-Scan-Wrapper startet den Helper explizit mit Bash; 0600-Fixture
+  testet Argumente und Fehlerweitergabe ohne Zugriff auf echte Zugangsdaten.
+- Globale ShellCheck-Source-Aufloesung und Gitleaks-Vertraege synchronisiert;
+  keine Regeln abgeschaltet. Overlay-SecurityContexts entsprechen der Basis,
+  beide betroffenen Kustomize-Ausgaben bleiben bytegleich.
+- Globale Lint-/Linkfehler und das alte Kubernetes-Gesamtmanifest bleiben
+  Merge-Blocker; keine automatische Produktions- oder main-Freigabe.
+
 ### 2026-10-29: Zweiter CI-Reparatursatz
 
 - Native-CLI-Fixture-Pfade auch unter macOS kanonisiert; Symlink-Sperre bleibt.

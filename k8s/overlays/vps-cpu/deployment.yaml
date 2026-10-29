@@ -6,8 +6,20 @@ metadata:
 spec:
   template:
     spec:
+      # Repeat base security invariants without changing the rendered workload.
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+        fsGroup: 10001
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: {type: RuntimeDefault}
       containers:
         - name: ollama
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
           env:
             - {name: OLLAMA_CONTEXT_LENGTH, value: '2048'}
             - {name: OLLAMA_MAX_QUEUE, value: '4'}
@@ -25,8 +37,18 @@ spec:
   replicas: 1
   template:
     spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+        fsGroup: 10001
+        seccompProfile: {type: RuntimeDefault}
       containers:
         - name: litellm
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
           resources:
             requests: {cpu: 250m, memory: 256Mi, ephemeral-storage: 128Mi}
             limits: {cpu: '1', memory: 1Gi, ephemeral-storage: 512Mi}

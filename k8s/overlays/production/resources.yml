@@ -6,10 +6,22 @@ metadata:
 spec:
   template:
     spec:
+      # Keep these invariants identical to the base, including in raw patch scans.
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+        fsGroup: 10001
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: {type: RuntimeDefault}
       nodeSelector:
         llmops.example/gpu: 'true'
       containers:
         - name: ollama
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
           resources:
             requests:
               cpu: '2'
@@ -30,8 +42,18 @@ metadata:
 spec:
   template:
     spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+        fsGroup: 10001
+        seccompProfile: {type: RuntimeDefault}
       containers:
         - name: litellm
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
           resources:
             requests: {cpu: 500m, memory: 1Gi, ephemeral-storage: 256Mi}
             limits: {cpu: '2', memory: 4Gi, ephemeral-storage: 1Gi}

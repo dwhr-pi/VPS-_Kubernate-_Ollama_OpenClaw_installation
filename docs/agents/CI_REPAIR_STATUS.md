@@ -83,14 +83,60 @@ eigene Laufzeit-/Volume-Abnahme. Keine pauschalen Scanner-Ausnahmen und
 keine ungepruefte UID-/Read-only-Umstellung nur fuer einen gruenen Status.
 Der globale ShellCheck und die Linkpruefung bleiben ebenfalls offen.
 
-## Naechste Abnahme
+## Dritter Reparatursatz: Health-Wrapper und Overlay-Vertraege
+
+Am Head `8d65f6383429a8890e32d71700b72e3ccb005fb9` sind die Agenten-Fixtures
+auch auf macOS gruen. Die Health-ShellCheck- und Registry-Schritte bestehen.
+Der [folgende Fehler](https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation/actions/runs/40945192363/job/123698607842)
+ist ein separater Exit 126: `scan_secrets.sh` startet `check_secrets.sh`
+direkt, obwohl dessen Git-Dateimodus kein Ausfuehrungsrecht enthaelt.
+Der Wrapper verwendet jetzt `exec bash`, ohne chmod-Massenaktion oder sudo.
+Ein isolierter Test mit einem 0600-Helper prueft Erfolg, `--dry-run` und
+die unveraenderte Weitergabe eines Fehlercodes. Der echte Scan wird dabei
+nicht auf persoenliche Daten angewendet. Sein bisheriger informierender
+Safe-Modus ist kein Ersatz fuer die weiterhin verpflichtenden Gitleaks-Scans.
+
+Die globale `.shellcheckrc` aktiviert Source-Verfolgung mit
+`external-sources=true` und `source-path=SCRIPTDIR`; sie unterdrueckt keine
+Regeln. Die noch spaeter folgenden Gitleaks-Schritte in `CI` und `Repo Health`
+erhalten ebenfalls vollen Verlauf, den bereits geprueften Action-Commit und
+Checkout ohne gespeicherte Credentials. Keine Scan-Abschwaechung.
+
+In den zwei oben genannten Ressourcen-Patches werden die schon aus der Basis
+geerbten SecurityContexts ausdruecklich wiederholt: Non-root, UID/GID 10001,
+RuntimeDefault-Seccomp, kein Privilegienanstieg, read-only Root und Drop ALL.
+Die mit pruefsummengeprueftem Kustomize 5.8.3 lokal gerenderten `production`-
+und `vps-cpu`-Workloads sind vor/nach dem Patch **bytegleich**. Keine Aenderung
+von UID, Datenpfad, Volume, Netzwerk oder Laufzeitverhalten im fertigen Manifest.
+Ein Offline-Vertrag gleicht die Sicherheitsfelder gegen die Basis ab.
+Ein neuer Trivy-Lauf muss das Ergebnis bestaetigen; lokal wurde Trivy nicht
+ausgefuehrt. Die **17 HIGH-Befunde im alten Gesamtmanifest bleiben offen**.
+
+Lokale Abnahme: **57 Tests OK (7 uebersprungen)** in fuenf betroffenen Modulen;
+der geaenderte Secret-Wrapper besteht ShellCheck 0.11.0. Die uebersprungenen
+Tests sind keine Linux-/Cluster-Abnahme. Globale Shell-/Formatierungsfehler
+werden durch diese Teilabnahme nicht als geloest ausgegeben.
+Eine zusaetzliche lokale ShellCheck-Gesamtanalyse ueber 2.175 Shell-Dateien
+wurde zeitlich begrenzt beendet und gilt ausdruecklich nicht als bestanden.
+Die globalen CI-Pruefungen bleiben unveraendert verpflichtend.
+
+Der [neue PR-Linkcheck](https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation/actions/runs/40945192988)
+ist inzwischen ebenfalls fehlgeschlagen: darunter echte 404-Links,
+Platzhalter-Repositories, nicht erreichbare lokale Beispielports sowie
+202-/403-/503-Antworten und Timeouts. Diese Klassen duerfen nicht pauschal
+als gueltige Links freigegeben werden. Alte Quellen bleiben erhalten;
+Ersatz-URLs muessen einzeln geprueft werden. Mehr Warten behebt abgeschlossene
+rote Laeufe nicht. Push-/PR-Doppelanzeigen sind keine unabhaengigen Fehler.
+
+## Erste lokale Abnahme (historisch)
 
 Lokale Abnahme dieses Reparatursatzes unter Windows mit nativem Git Bash:
 156 Tests in 15 betroffenen Modulen, **OK (2 uebersprungen)**.
 Der Offline-Registry-Check meldet weiterhin **0 Fehler, 802 Hinweise** bei
 400 Tools, 250 Profilen und 45 Ports. `git diff --check` ist ohne Befund.
-Die komplette Regression mit ueber 2.000 Tests sowie echte macOS-, Trivy-,
-ShellCheck- und Gitleaks-Laeufe sind damit nicht als bestanden nachgewiesen.
+Diese erste lokale Teilabnahme allein wies noch keine volle Regression und
+keine echten macOS-, Trivy-, ShellCheck- oder Gitleaks-Laeufe nach.
+Die spaeteren GitHub-Belege stehen in den obigen Abschnitten.
 
 Die hier korrigierten Vertraege lokal mit den betroffenen Testmodulen pruefen,
 danach die neuen GitHub-Runs fuer den neuen Commit auswerten. Lokale Fixtures
