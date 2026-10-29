@@ -2185,7 +2185,7 @@ show_user_workspace_menu() {
         "4" "${TXT_WORKSPACE_OPTION_4:-Profil-Quellen und Profilseiten aus dem Repo neu in den Workspace kopieren}" \
         "5" "${TXT_WORKSPACE_OPTION_5:-Prompt-Bereich im Workspace anzeigen}" \
         "6" "${TXT_WORKSPACE_OPTION_6:-Letzte Messwerte anzeigen}" \
-        "7" "${TXT_WORKSPACE_OPTION_7:-Benutzer-Workspace komplett löschen}" \
+        "7" "${TXT_WORKSPACE_OPTION_7_BLOCKED:-Komplettloeschung gesperrt: Backup-/Sicherheitshinweise}" \
         "8" "${TXT_WORKSPACE_OPTION_8:-Sprache ändern}" \
         "9" "${TXT_WORKSPACE_OPTION_9:-${TXT_BACK_ITEM:-Zurück}}" \
         "10" "Installationsstatus exportieren / wiederherstellen" 2> /tmp/user_workspace_choice

@@ -9,6 +9,7 @@ import shutil
 import subprocess
 import sys
 import unittest
+from audit_reports import write_report
 
 ROOT = Path(__file__).resolve().parents[2]
 PATTERNS = (
@@ -24,6 +25,8 @@ PATTERNS = (
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--write-report', action='store_true')
+    parser.add_argument('--suite', action='append', choices=PATTERNS,
+                        help='Targeted recheck; writes a separate report, preserving the full run')
     args = parser.parse_args()
     # Never resolve Windows bash.exe to the WSL launcher.
     if os.name == 'nt':
@@ -33,7 +36,7 @@ def main():
         os.environ['PATH'] = str(bash.parent) + os.pathsep + os.environ.get('PATH', '')
     rows = []
     success = True
-    for pattern in PATTERNS:
+    for pattern in args.suite or PATTERNS:
         suite = unittest.TestLoader().discover(str(ROOT / 'tests'), pattern=pattern)
         output = io.StringIO()
         result = unittest.TextTestRunner(stream=output, verbosity=1).run(suite)
@@ -57,13 +60,8 @@ def main():
               'totals': {key: sum(row[key] for row in rows) for key in ('run', 'passed', 'failures', 'errors')},
               'skipped': sum(len(row['skipped']) for row in rows)}
     if args.write_report:
-        path = ROOT / 'docs/audit/test_results.json'
-        for parent in (ROOT / 'docs', path.parent):
-            if parent.is_symlink() or (hasattr(parent, 'is_junction') and parent.is_junction()):
-                raise ValueError('Linked report directory rejected')
-        if path.is_symlink() or (path.exists() and path.stat().st_nlink != 1):
-            raise ValueError('Linked report file rejected')
-        path.write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8', newline='\n')
+        name = 'test_recheck_results.json' if args.suite else 'test_results.json'
+        write_report(ROOT, name, json.dumps(report, indent=2) + '\n')
     print(json.dumps({'totals': report['totals'], 'skipped': report['skipped'], 'successful': success}), flush=True)
     return 0 if success else 1
 

@@ -2,6 +2,19 @@
 
 ## Unreleased
 
+### 2026-10-29: Belegtes Gesamtaudit und kleine Schutzmassnahmen
+
+- Zehn Audit-Dokumente und reproduzierbares JSON-Inventar fuer Tools, Profile
+  und Repository-Integrationsdateien, ohne Runtime- oder Produktionszusage.
+- Unsichere Workspace-Komplettloeschung gesperrt; Update/Uninstall verlangen
+  registrierte, nicht verlinkte Lifecycle-Pfade. Kein impliziter Reinstall.
+- Credential-Backup-Budgets fuer Klartext/TAR/Ciphertext abgestimmt; Scanner-
+  Fehler nicht mehr als sauberer Scan, keine externe Credential-Verifikation.
+- Compose-LiteLLM-Environment korrigiert, automatischer Cloud-Fallback entfernt;
+  private Konfigurationskopie und Retentionsmarker fuer Monitoring-Storage.
+- Vorhandene Inventarpruefungen erweitert und deterministische RAG-Auswertung
+  samt synthetischen ACL-/Ranking-Fixtures ergaenzt. Kein Tool installiert.
+
 ### 2026-10-29: Optionale GPU- und Betriebsbausteine
 
 - GPU-Overlay auf bestehender Kubernetes-Basis, getrennte Agent-PVCs,

@@ -1,0 +1,251 @@
+{
+  "timestamp": "2026-10-29T03:25:11.550466+00:00",
+  "revision": "414f0c0aac7707dbc4753dca5d57fe34b4c20412",
+  "platform": "win32",
+  "python": "3.12.14",
+  "scope": "selected offline fixtures, not all repository tests or runtime acceptance",
+  "runtime_acceptance": false,
+  "suites": [
+    {
+      "suite": "test_master_audit_safety.py",
+      "run": 11,
+      "passed": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": [
+        {
+          "test": "test_secret_fallback_rejects_matches_and_scan_errors_without_values (test_master_audit_safety.MasterAuditSafety.test_secret_fallback_rejects_matches_and_scan_errors_without_values)",
+          "reason": "Linux Bash fixture; no WSL execution"
+        },
+        {
+          "test": "test_symlink_dispatch_is_rejected (test_master_audit_safety.MasterAuditSafety.test_symlink_dispatch_is_rejected)",
+          "reason": "Symlink privileges unavailable on this host"
+        }
+      ],
+      "expected_failures": 0
+    },
+    {
+      "suite": "test_platform_inventory.py",
+      "run": 7,
+      "passed": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": [],
+      "expected_failures": 0
+    },
+    {
+      "suite": "test_repository_audit.py",
+      "run": 13,
+      "passed": 13,
+      "failures": 0,
+      "errors": 0,
+      "skipped": [],
+      "expected_failures": 0
+    },
+    {
+      "suite": "test_credentials_backup.py",
+      "run": 13,
+      "passed": 12,
+      "failures": 0,
+      "errors": 0,
+      "skipped": [
+        {
+          "test": "test_symlink_source_rejected (test_credentials_backup.CredentialsBackupTests.test_symlink_source_rejected)",
+          "reason": "Symlink privilege unavailable; checked on Ubuntu CI"
+        }
+      ],
+      "expected_failures": 0
+    },
+    {
+      "suite": "test_install_rollback.py",
+      "run": 19,
+      "passed": 18,
+      "failures": 0,
+      "errors": 0,
+      "skipped": [
+        {
+          "test": "test_symlink_target_outside_owned_root_is_preserved (test_install_rollback.Rollback.test_symlink_target_outside_owned_root_is_preserved)",
+          "reason": "symlinks unavailable"
+        }
+      ],
+      "expected_failures": 0
+    },
+    {
+      "suite": "test_installation_reset.py",
+      "run": 16,
+      "passed": 15,
+      "failures": 0,
+      "errors": 0,
+      "skipped": [
+        {
+          "test": "test_reset_cannot_overlap_installer_and_gate_inode_remains (test_installation_reset.KernelCoordination.test_reset_cannot_overlap_installer_and_gate_inode_remains)",
+          "reason": "Linux flock integration"
+        }
+      ],
+      "expected_failures": 0
+    },
+    {
+      "suite": "test_installation_inventory.py",
+      "run": 12,
+      "passed": 12,
+      "failures": 0,
+      "errors": 0,
+      "skipped": [],
+      "expected_failures": 0
+    },
+    {
+      "suite": "test_p0_safety.py",
+      "run": 22,
+      "passed": 21,
+      "failures": 0,
+      "errors": 0,
+      "skipped": [
+        {
+          "test": "test_symlink_escape_is_refused_before_docker (test_p0_safety.ShellSafety.test_symlink_escape_is_refused_before_docker)",
+          "reason": "POSIX symlink acceptance in Ubuntu CI"
+        }
+      ],
+      "expected_failures": 0
+    },
+    {
+      "suite": "test_signed_release.py",
+      "run": 16,
+      "passed": 16,
+      "failures": 0,
+      "errors": 0,
+      "skipped": [],
+      "expected_failures": 0
+    },
+    {
+      "suite": "test_tool_coverage_audit.py",
+      "run": 10,
+      "passed": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": [],
+      "expected_failures": 0
+    },
+    {
+      "suite": "test_production_baseline.py",
+      "run": 13,
+      "passed": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": [
+        {
+          "test": "test_dry_run_never_contacts_docker_or_restic (test_production_baseline.BackupBehavior.test_dry_run_never_contacts_docker_or_restic)",
+          "reason": "Linux/POSIX mock execution required; runs in Ubuntu CI"
+        },
+        {
+          "test": "test_env_is_not_executed (test_production_baseline.BackupBehavior.test_env_is_not_executed)",
+          "reason": "Linux/POSIX mock execution required; runs in Ubuntu CI"
+        },
+        {
+          "test": "test_insecure_env_permissions_fail (test_production_baseline.BackupBehavior.test_insecure_env_permissions_fail)",
+          "reason": "Linux/POSIX mock execution required; runs in Ubuntu CI"
+        },
+        {
+          "test": "test_restic_failure_still_restarts_services_and_fails (test_production_baseline.BackupBehavior.test_restic_failure_still_restarts_services_and_fails)",
+          "reason": "Linux/POSIX mock execution required; runs in Ubuntu CI"
+        },
+        {
+          "test": "test_success_restarts_previously_running_services (test_production_baseline.BackupBehavior.test_success_restarts_previously_running_services)",
+          "reason": "Linux/POSIX mock execution required; runs in Ubuntu CI"
+        },
+        {
+          "test": "test_unapproved_downtime_fails_before_docker (test_production_baseline.BackupBehavior.test_unapproved_downtime_fails_before_docker)",
+          "reason": "Linux/POSIX mock execution required; runs in Ubuntu CI"
+        }
+      ],
+      "expected_failures": 0
+    },
+    {
+      "suite": "test_gpu_platform_blueprint.py",
+      "run": 9,
+      "passed": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": [],
+      "expected_failures": 0
+    },
+    {
+      "suite": "test_vps_delivery.py",
+      "run": 16,
+      "passed": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": [
+        {
+          "test": "test_apply_requires_explicit_context_and_confirmation_before_checks (test_vps_delivery.ScriptBehavior.test_apply_requires_explicit_context_and_confirmation_before_checks)",
+          "reason": "Bash process fixtures run in Linux CI"
+        },
+        {
+          "test": "test_failed_server_validation_never_applies_or_waits_for_rollout (test_vps_delivery.ScriptBehavior.test_failed_server_validation_never_applies_or_waits_for_rollout)",
+          "reason": "Bash process fixtures run in Linux CI"
+        },
+        {
+          "test": "test_help_does_not_touch_runtime (test_vps_delivery.ScriptBehavior.test_help_does_not_touch_runtime)",
+          "reason": "Bash process fixtures run in Linux CI"
+        },
+        {
+          "test": "test_plan_has_no_remote_kubectl_commands (test_vps_delivery.ScriptBehavior.test_plan_has_no_remote_kubectl_commands)",
+          "reason": "Bash process fixtures run in Linux CI"
+        },
+        {
+          "test": "test_secret_manifest_rejected_before_apply (test_vps_delivery.ScriptBehavior.test_secret_manifest_rejected_before_apply)",
+          "reason": "Bash process fixtures run in Linux CI"
+        },
+        {
+          "test": "test_server_dry_run_precedes_apply_and_rollout (test_vps_delivery.ScriptBehavior.test_server_dry_run_precedes_apply_and_rollout)",
+          "reason": "Bash process fixtures run in Linux CI"
+        },
+        {
+          "test": "test_unknown_option_fails_before_hostcheck (test_vps_delivery.ScriptBehavior.test_unknown_option_fails_before_hostcheck)",
+          "reason": "Bash process fixtures run in Linux CI"
+        }
+      ],
+      "expected_failures": 0
+    },
+    {
+      "suite": "test_local_ai_benchmarks.py",
+      "run": 17,
+      "passed": 17,
+      "failures": 0,
+      "errors": 0,
+      "skipped": [],
+      "expected_failures": 0
+    },
+    {
+      "suite": "test_rag_compliance_review.py",
+      "run": 28,
+      "passed": 28,
+      "failures": 0,
+      "errors": 0,
+      "skipped": [],
+      "expected_failures": 0
+    },
+    {
+      "suite": "test_game_engine_tools.py",
+      "run": 10,
+      "passed": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": [],
+      "expected_failures": 0
+    }
+  ],
+  "successful": true,
+  "scanner_availability": {
+    "gitleaks": false,
+    "trivy": false,
+    "helm": false,
+    "kustomize": false
+  },
+  "totals": {
+    "run": 232,
+    "passed": 213,
+    "failures": 0,
+    "errors": 0
+  },
+  "skipped": 19
+}

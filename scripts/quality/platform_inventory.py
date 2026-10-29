@@ -53,9 +53,9 @@ def inventory(root=ROOT):
                       'logs': row.get('logs_script'), 'doctor': row.get('doctor_script'),
                       'update': row.get('update_script')}
             checks = {key: script(root, value) for key, value in fields.items()}
-            implementation = ('documented' if row.get('install_mode') in
-                              ('documentation-only', 'documentation-first', 'desktop-manual') else
-                              'implemented' if checks['install']['state'] == 'present' else 'planned')
+            documentation = script(root, row.get('doc'))
+            # An executable placeholder is still not an implemented integration.
+            implementation = 'documented' if documentation['state'] == 'present' else 'planned'
             result['rows'].append({'kind': kind, 'id': row['id'], 'name': row.get('name') or row['id'],
                 'function': row.get('description') or 'not-declared',
                 'source': row.get('source') or row.get('github') or 'not-declared',
@@ -65,8 +65,9 @@ def inventory(root=ROOT):
                 'metadata_verification': 'registry-declarations-only',
                 'platforms': row.get('platforms') or row.get('supported_platforms') or 'not-declared',
                 'implementation_state': implementation,
-                'verification': {'planned': True, 'documented': bool(row.get('doc')),
-                                 'implemented': checks['install']['state'] == 'present',
+                'entrypoint_present': checks['install']['state'] == 'present',
+                'verification': {'planned': True, 'documented': documentation['state'] == 'present',
+                                 'implemented': False,
                                  'tested': False, 'staging_verified': False, 'production_verified': False},
                 'implementation_caveat': 'Entrypoint presence is not a working runtime, integration or sandbox.',
                 'tests': 'not-mapped; see audit test report',
@@ -80,7 +81,7 @@ def inventory(root=ROOT):
                 'ports': row.get('ports'), 'resource_class': row.get('resource_class') or 'not-declared',
                 'check_type': row.get('check_type') or 'not-mapped', 'scripts': checks,
                 'risk': row.get('risk') or 'not-assessed', 'readiness': 'not-tested',
-                'doc': script(root, row.get('doc'))})
+                'doc': documentation})
         selected = [row for row in result['rows'] if row['kind'] == kind]
         result['summary'][kind] = {'count': len(selected),
             'declared_status': dict(sorted(Counter(row['declared_status'] for row in selected).items())),
@@ -103,8 +104,8 @@ def markdown(report, kind='all', revision='not-specified'):
         'Reviewklasse = konservative Abnahmeplanung, keine Registry-Aenderung oder Produktionsfreigabe.',
         'Unbekannt/experimental/optional wird ohne weiteren Beleg planned; vorhandene stable/beta bleiben nur deklarierte Labels.',
         'Zielhinweis aus check_value ist kein verifizierter Installationspfad. Fehlendes Mapping beweist nicht das Fehlen einer Funktion im Installer.', '',
-        '| Eintrag / Reviewklasse | Registry-Status | Install-Skript / Zielhinweis | Abhaengigkeiten | Ports | Ressourcenklasse | Check / Health / Smoke / Version / Logs | Uninstall | Test / Reife | Risiko |',
-        '|---|---|---|---|---|---|---|---|---|---|']
+        '| Eintrag / Reviewklasse | Registry-Status | Install-Skript / Zielhinweis | Abhaengigkeiten | Ports | Ressourcenklasse | Check / Health / Smoke / Version / Logs | Uninstall | Test / Reife | Risiko | Quelle / Lizenz / Wartung |',
+        '|---|---|---|---|---|---|---|---|---|---|---|']
     for row in sorted(report['rows'], key=lambda row: (row['kind'], row['name'].casefold())):
         if kind != 'all' and row['kind'] != kind:
             continue
@@ -116,7 +117,8 @@ def markdown(report, kind='all', revision='not-specified'):
         lines.append('| ' + ' | '.join(map(cell, [row['kind'] + ':' + row['id'] + ' / ' + row['review_class'],
             row['declared_status'], file(checks['install']) + '; Ziel: ' + str(row['target_hint']),
             dependencies, row['ports'], row['resource_class'],
-            row['check_type'] + '; ' + contract, file(checks['uninstall']), row['readiness'] + '; keine Abnahme', row['risk']])) + ' |')
+            row['check_type'] + '; ' + contract, file(checks['uninstall']), row['readiness'] + '; keine Abnahme', row['risk'],
+            str(row['source']) + '; ' + str(row['license']) + '; ' + str(row['maintenance'])])) + ' |')
     lines += ['', 'Ende des metadatenbasierten Inventars.']
     return '\n'.join(lines) + '\n'
 

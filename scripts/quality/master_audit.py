@@ -10,6 +10,7 @@ import sys
 
 from platform_inventory import inventory, markdown
 from repository_audit import Audit, SKIP
+from audit_reports import write_report
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -73,19 +74,10 @@ def snapshot(root=ROOT):
 
 
 def write_reports(report):
-    directory = ROOT / 'docs/audit'
-    # Fixed output boundary; refuse linked paths, not arbitrary --output destinations.
-    for path in (ROOT / 'docs', directory):
-        if path.is_symlink() or (hasattr(path, 'is_junction') and path.is_junction()):
-            raise ValueError('Linked report directory rejected')
-    directory.mkdir(exist_ok=True)
     files = {'inventory.json': json.dumps(report, indent=2, ensure_ascii=True) + '\n',
              'TOOL_INVENTORY.md': markdown(report, revision=report['revision'])}
     for name, content in files.items():
-        path = directory / name
-        if path.is_symlink() or (path.exists() and path.stat().st_nlink != 1):
-            raise ValueError('Linked report file rejected')
-        path.write_text(content, encoding='utf-8', newline='\n')
+        write_report(ROOT, name, content)
 
 
 def main():

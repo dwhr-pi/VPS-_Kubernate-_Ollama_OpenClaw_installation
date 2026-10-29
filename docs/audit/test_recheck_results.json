@@ -1,0 +1,51 @@
+{
+  "timestamp": "2026-10-29T03:34:40.378992+00:00",
+  "revision": "414f0c0aac7707dbc4753dca5d57fe34b4c20412",
+  "platform": "win32",
+  "python": "3.12.14",
+  "scope": "selected offline fixtures, not all repository tests or runtime acceptance",
+  "runtime_acceptance": false,
+  "suites": [
+    {
+      "suite": "test_master_audit_safety.py",
+      "run": 12,
+      "passed": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": [
+        {
+          "test": "test_secret_fallback_rejects_matches_and_scan_errors_without_values (test_master_audit_safety.MasterAuditSafety.test_secret_fallback_rejects_matches_and_scan_errors_without_values)",
+          "reason": "Linux Bash fixture; no WSL execution"
+        },
+        {
+          "test": "test_symlink_dispatch_is_rejected (test_master_audit_safety.MasterAuditSafety.test_symlink_dispatch_is_rejected)",
+          "reason": "Symlink privileges unavailable on this host"
+        }
+      ],
+      "expected_failures": 0
+    },
+    {
+      "suite": "test_platform_inventory.py",
+      "run": 7,
+      "passed": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": [],
+      "expected_failures": 0
+    }
+  ],
+  "successful": true,
+  "scanner_availability": {
+    "gitleaks": false,
+    "trivy": false,
+    "helm": false,
+    "kustomize": false
+  },
+  "totals": {
+    "run": 19,
+    "passed": 17,
+    "failures": 0,
+    "errors": 0
+  },
+  "skipped": 2
+}

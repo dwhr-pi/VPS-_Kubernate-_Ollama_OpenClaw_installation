@@ -3,6 +3,8 @@
 Stand 29.10.2026. [test_results.json](test_results.json) haelt Ergebnisse mit
 Datum und Quellstand fest; noch nicht gelaufene Tests gelten nicht
 als bestanden. Der Bericht nennt bewusst Teilumfang, Plattform und Skips.
+Gezielte Nachpruefungen stehen getrennt in
+[test_recheck_results.json](test_recheck_results.json); sie ersetzen nicht den Vollumfang.
 
 ## Reproduzierbare Offline-Pruefungen
 

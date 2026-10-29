@@ -17,6 +17,7 @@ import credentials_backup as credentials
 sys.path.insert(0, str(ROOT / 'scripts/quality'))
 import platform_inventory
 from repository_audit import Audit
+from audit_reports import write_report
 
 
 def module(name, relative):
@@ -110,10 +111,27 @@ class MasterAuditSafety(unittest.TestCase):
             self.assertEqual(audit.result()['errors'], 0)
             self.assertEqual(audit.counts['python_files'], 1)
 
+    def test_report_replacement_preserves_hardlink_peer(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            write_report(root, 'inventory.json', 'old report\n')
+            peer = root / 'peer.json'
+            try:
+                os.link(root / 'docs/audit/inventory.json', peer)
+            except OSError:
+                self.skipTest('Hardlinks unavailable on this filesystem')
+            write_report(root, 'inventory.json', 'new report\n')
+            self.assertEqual(peer.read_text(), 'old report\n')
+            self.assertEqual((root / 'docs/audit/inventory.json').read_text(), 'new report\n')
+            self.assertFalse(list((root / 'docs/audit').glob('.audit-stage-*')))
+            with self.assertRaises(ValueError):
+                write_report(root, '../not-allowed', 'rejected')
+
     def test_no_inventory_row_is_promoted_to_production(self):
         rows = platform_inventory.inventory()['rows']
         self.assertTrue(rows)
         for row in rows:
+            self.assertFalse(row['verification']['implemented'])
             self.assertFalse(row['verification']['staging_verified'])
             self.assertFalse(row['verification']['production_verified'])
             self.assertEqual(row['metadata_verification'], 'registry-declarations-only')
@@ -130,6 +148,8 @@ class MasterAuditSafety(unittest.TestCase):
         for ranking in ({}, {'q': ['a', 'a']}):
             with self.assertRaises(ValueError):
                 rag.evaluate(dataset, ranking)
+        with self.assertRaises(ValueError):
+            rag.evaluate({'queries': [{'id': 'q', 'relevant': 'not-a-list'}]}, {'q': ['a']})
 
     def test_compose_config_uses_runtime_environment_lookup(self):
         config = (ROOT / 'stacks/llmops-platform/litellm-config.yaml').read_text()

@@ -9,12 +9,19 @@ def evaluate(dataset, predictions, k=3):
     if type(k) is not int or not 1 <= k <= 100:
         raise ValueError('k muss zwischen 1 und 100 liegen')
     queries = dataset['queries']
-    if not queries or len({query['id'] for query in queries}) != len(queries):
+    if (not isinstance(queries, list) or not queries or
+            any(not isinstance(query, dict) or not isinstance(query.get('id'), str)
+                or not query['id'] for query in queries) or
+            len({query['id'] for query in queries}) != len(queries)):
         raise ValueError('Nichtleere, eindeutige Testfragen erforderlich')
     if not isinstance(predictions, dict) or set(predictions) != {query['id'] for query in queries}:
         raise ValueError('Genau eine Rangliste fuer jede Testfrage erforderlich')
     scores = []
     for query in queries:
+        for field in ('relevant', 'forbidden'):
+            values = query.get(field, [])
+            if not isinstance(values, list) or any(not isinstance(value, str) or not value for value in values):
+                raise ValueError('Relevanz-/ACL-IDs muessen Listen nichtleerer Strings sein')
         relevant = set(query['relevant'])
         forbidden = set(query.get('forbidden', []))
         ranked = predictions[query['id']]
@@ -41,7 +48,8 @@ def main():
     parser.add_argument('--k', type=int, default=3)
     args = parser.parse_args()
     try:
-        data = evaluate(json.loads(args.dataset.read_text()), json.loads(args.predictions.read_text()), args.k)
+        data = evaluate(json.loads(args.dataset.read_text(encoding='utf-8')),
+                        json.loads(args.predictions.read_text(encoding='utf-8')), args.k)
         print(json.dumps(data, indent=2))
     except (ValueError, KeyError, TypeError, OSError) as error:
         parser.error(str(error))

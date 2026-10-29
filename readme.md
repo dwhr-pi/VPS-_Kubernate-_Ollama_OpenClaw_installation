@@ -3,6 +3,9 @@
 Projektlizenz: [Apache-2.0](LICENSE). Fuer eingebundene Drittprojekte gelten deren
 eigene Bedingungen; siehe [Dritthinweise](THIRD_PARTY_NOTICES.md).
 Aktueller Codebefund: [Audit vom 27.10.2026](docs/AUDIT_2026_10.md).
+[Gesamtaudit vom 29.10.2026](docs/audit/EXECUTIVE_SUMMARY.md): belegte
+Sicherheitsbefunde, vollstaendiges Registry-Inventar mit JSON, Integrationsluecken,
+Plattform-/Ressourcenmatrix und priorisierte Roadmap. Keine pauschale Produktionsfreigabe.
 [GPU-Kubernetes und Betriebsbausteine vom 29.10.2026](docs/LLMOPS_GPU_AND_OPERATIONS.md):
 optionales Ollama-GPU-Overlay, Secret-/Ingress-Grenzen, planbasierte Helm-Installer,
 Monitoring und gescanntes GHCR-Image. Keine automatische Cluster-Aenderung;
