@@ -79,7 +79,7 @@ werden nach Ressourcencheck, Lock und privatem Buildlog:
 2. Fehlendes/inkompatibles Node/npm ueber den vorhandenen GitHub-nvm-Helfer bereitgestellt: nvm
    v0.40.8 aus GitHub, offizielles Node-22-Binary mit npm. nvm uebernimmt die
    Download-/Checksumpruefung; kein Node-Source-Build.
-3. Fehlendes/falsches pnpm als **pnpm@10.28.1** per npm in einem privaten Prefix installiert, mit
+3. Fehlendes/falsches pnpm als `pnpm@10.28.1` per npm in einem privaten Prefix installiert, mit
    `--global=false --ignore-scripts`. Quelle ist die offizielle npm-Registry, kein globales Update
    und keine Corepack-Aktivierung erforderlich.
 

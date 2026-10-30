@@ -375,7 +375,7 @@ Aenderung an MusicGen oder an der WSL des Benutzers.
 ## Automaton Runtime-Bootstrap, 2026-10-16
 
 - Automaton fehlte Node: Node/npm ueber vorhandenen GitHub-nvm-Helfer privat unter
-  tools/automaton/runtime/nvm bereitstellen. pnpm@10.28.1 separat per npm --prefix unter
+  tools/automaton/runtime/nvm bereitstellen. `pnpm@10.28.1` separat per npm --prefix unter
   runtime/pnpm, ohne globales Update/Lifecycle-Skripte.
 - Nur Installation/Repair nach Ressourcen/Lock/Log, opt-out AUTOMATON_AUTO_RUNTIME=0; Status/Doctor
   ohne Downloads, kein Agentenstart.

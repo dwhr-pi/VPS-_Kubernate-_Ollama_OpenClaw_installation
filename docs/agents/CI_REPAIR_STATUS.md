@@ -306,17 +306,38 @@ veroeffentlichte Beispiel-Tokens nicht wieder in Betrieb nehmen. Echte User-ENV,
 Dienste wurden nicht angefasst. Noch keine Gesamtfreigabe: der neue Head und die externen Quellen
 muessen erneut alle Gates bestehen.
 
-Lokale Nachpruefung: 53 Tests in vier betroffenen Modulen bestanden; ShellCheck, shfmt,
-Markdownlint und `git diff --check` ohne Befund. Der komplette Dateiscan mit dem offiziellen,
-SHA256-geprueften Gitleaks 8.30.1 meldete null Treffer, ohne neue Scanner-Ausnahmen. Kein lokaler
-Ansible-Apply; ein zusaetzlicher YAML-Parserlauf war mangels PyYAML nicht verfuegbar.
+Lokale Nachpruefung: 53 Tests in vier betroffenen Modulen bestanden; ShellCheck, shfmt, Markdownlint
+und `git diff --check` ohne Befund. Der komplette Dateiscan mit dem offiziellen, SHA256-geprueften
+Gitleaks 8.30.1 meldete null Treffer, ohne neue Scanner-Ausnahmen. Kein lokaler Ansible-Apply; ein
+zusaetzlicher YAML-Parserlauf war mangels PyYAML nicht verfuegbar.
 
 Die acht Skips des vorigen Linux-Gesamtlaufs betrafen drei native Qwen-PowerShell-Fixtures, vier
 native Windows-Webinar-/Qwen-Launcher-Fixtures sowie den Windows-WSL-Launcher-Guard. Die dort
 benoetigte Windows-Umgebung existiert auf dem Linux-Runner nicht; es wurden keine neuen Skips
-eingefuehrt. Die Agenten-Vertragsmatrix auf Windows ersetzt keine volle Windows-Installationsabnahme.
+eingefuehrt. Die Agenten-Vertragsmatrix auf Windows ersetzt keine volle
+Windows-Installationsabnahme.
 
-## Fruehere lokale Teilabnahme
+## Strikte Link-Abnahme nach dem Nachlauf
+
+Head `0cb7ad5` bestand die komplette Linux-Regression mit 2247 Tests und denselben acht
+plattformbedingten Skips. Die Agentenmatrix bestand unter Ubuntu, Windows und macOS 15. Der
+vollstaendige Dateiscan bestand ohne neue Ausnahmen. Trotzdem war ein gruener Repo-Health-Job kein
+gueltiger Linknachweis: seine CLI 3.13.7 protokollierte tote Links und lieferte dennoch Exitcode 0.
+
+Alle drei Link-Gates verwenden deshalb die korrigierte, festgelegte Version 3.15.0 und pruefen deren
+echten Prozess-Exitcode vorab mit reinen lokalen Dateifixtures. Die Parser-Abdeckung und
+Status-/Auth-Regeln bleiben erhalten. Oeffentliche 202/403, Transportfehler und weitere tote Quellen
+muessen weiterhin fehlschlagen. Der alte Drittanbieter-Link-Wrapper wird durch dieselbe festgelegte
+CLI ersetzt; alle Markdown-Dateien bleiben erfasst. Keine gruene Gesamtabnahme vor den erneuten
+Runs. Die bestehenden externen Quellenblocker bleiben dokumentiert und aktiv.
+
+Lokaler Gegenbeweis: dieselbe Offline-CLI-Fixture besteht mit 3.15.0 und weist 3.13.7 wegen
+Exitcode 0 fuer ein fehlendes Dateiziel zurueck. Elf Quellenpolicy-Tests, Markdownlint,
+JavaScript-Syntax und `git diff --check` bestanden. Der verbleibende Jarvis-404 im duplizierten
+Inventar ist ebenfalls historisch gekennzeichnet; pnpm-Paketspezifikationen sind Code, keine
+E-Mail-Links. Keine neue Domain- oder Statuscode-Ausnahme.
+
+## Historische erste Teilabnahme
 
 Lokale Abnahme dieses Reparatursatzes unter Windows mit nativem Git Bash: 156 Tests in 15
 betroffenen Modulen, **OK (2 uebersprungen)**. Der Offline-Registry-Check meldet weiterhin **0

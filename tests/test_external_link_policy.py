@@ -66,13 +66,16 @@ class ExternalLinkPolicyTests(unittest.TestCase):
         self.assertEqual(self.config["replacementPatterns"], [])
 
     def test_ci_link_gates_use_the_same_explicit_configuration(self):
-        for name in ("ci.yml", "repo-health.yml"):
+        for name in ("ci.yml", "repo-health.yml", "linkcheck.yml"):
             text = (ROOT / ".github/workflows" / name).read_text(encoding="utf-8")
+            self.assertIn('markdown-link-check@3.15.0', text)
+            self.assertIn('node scripts/quality/link_checker_contract.cjs', text)
             for line in text.splitlines():
                 if "markdown-link-check " in line and "npm install" not in line:
                     self.assertIn("-c .github/markdown-link-check.json", line)
         dedicated = (ROOT / ".github/workflows/linkcheck.yml").read_text(encoding="utf-8")
-        self.assertIn("config-file: .github/markdown-link-check.json", dedicated)
+        self.assertIn("-c .github/markdown-link-check.json", dedicated)
+        self.assertIn("find . -type f -name '*.md'", dedicated)
         self.assertNotIn("continue-on-error", dedicated)
         health = (ROOT / ".github/workflows/repo-health.yml").read_text(encoding="utf-8")
         self.assertIn("find docs -name '*.md' -print0", health)
@@ -127,7 +130,7 @@ class ExternalLinkPolicyTests(unittest.TestCase):
             "docs/MISTRAL_AI_INTEGRATION.md": ["https://docs.mistral.ai/getting-started/models/weights/"],
             "docs/media_studio/SOCIAL_AVATAR_AUTOMATION.md": ["https://docs.n8n.io/sustainable-use-license/"],
             "docs/audit/TOOL_INVENTORY.md": ["https://github.com/canonical/ufw", "https://github.com/dwhr-pi/content-multiplier.git", "https://codeberg.org/forgejo/forgejo.git", "https://github.com/modelcontextprotocol/servers/tree/main/src/sqlite"],
-            "docs/TOOL_SETUP_AUDIT.md": ["https://github.com/deinname/fingpt", "https://github.com/username/huginn", "https://github.com/flowiseai/flowisechatbot", "https://github.com/modelcontextprotocol/server-sqlite", "https://github.com/modelcontextprotocol/server-postgres", "https://github.com/modelcontextprotocol/server-git", "https://github.com/modelcontextprotocol/server-filesystem", "https://github.com/openclaw/clawbake"],
+            "docs/TOOL_SETUP_AUDIT.md": ["https://github.com/deinname/fingpt", "https://github.com/username/huginn", "https://github.com/flowiseai/flowisechatbot", "https://github.com/modelcontextprotocol/server-sqlite", "https://github.com/modelcontextprotocol/server-postgres", "https://github.com/modelcontextprotocol/server-git", "https://github.com/modelcontextprotocol/server-filesystem", "https://github.com/openclaw/clawbake", "https://github.com/till-schaefer/jarvis"],
         }
         for path, urls in cases.items():
             text = (ROOT / path).read_text(encoding="utf-8")

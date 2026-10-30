@@ -21,7 +21,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y shellcheck shfmt
-          npm install -g markdownlint-cli@0.44.0 markdown-link-check@3.13.7
+          npm install -g markdownlint-cli@0.44.0 markdown-link-check@3.15.0
 
       - name: Bash syntax
         run: |
@@ -43,6 +43,7 @@ jobs:
 
       - name: Markdown links
         run: |
+          node scripts/quality/link_checker_contract.cjs "$(command -v markdown-link-check)"
           markdown-link-check -c .github/markdown-link-check.json readme.md
 
       - name: Secret scan

@@ -12,6 +12,15 @@ markdown-link-check -c .github/markdown-link-check.json readme.md
 find docs -type f -name '*.md' -print0 | xargs -0 -n1 markdown-link-check -c .github/markdown-link-check.json
 ```
 
+Verbindliche Bibliothek/CLI: `markdown-link-check@3.15.0`. Die zuvor verwendete CLI 3.13.7 gab bei
+toten Links faelschlich Exitcode 0 zurueck. Deshalb prueft jeder der drei Workflows vor dem
+Netzwerkcheck den echten installierten Checker mit `scripts/quality/link_checker_contract.cjs`:
+vorhandene lokale Datei muss 0 liefern, fehlende Datei und gemischte Eingaben jeweils 1. Dieser
+Regressionstest verwendet keine HTTP-Anfragen. Die
+[offizielle korrigierte CLI](https://github.com/tcort/markdown-link-check/blob/v3.15.0/markdown-link-check)
+wirft bei `dead` wieder einen Fehler. Ein alter gruener Job mit `ERROR: dead links` ist keine
+Link-Abnahme. Der dedizierte Workflow prueft weiterhin alle Markdown-Dateien, nicht nur Aenderungen.
+
 Die zusaetzliche Einzelpruefung unter `scripts/quality/external_link_probe.py` ersetzt diesen Parser
 und seine vollstaendige Markdown-Abdeckung nicht. Sie untersucht explizite Markdown-Ziele mit GET,
 vier parallelen Anfragen, zehn Sekunden Timeout und hoechstens zwei Versuchen. Nur 200/206 gelten

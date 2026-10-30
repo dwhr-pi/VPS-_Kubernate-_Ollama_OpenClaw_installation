@@ -24,7 +24,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y shellcheck shfmt python3
-          npm install -g markdown-link-check@3.13.7
+          npm install -g markdown-link-check@3.15.0
 
       - name: Validate JSON-compatible config
         run: bash scripts/validate_config.sh
@@ -54,5 +54,6 @@ jobs:
 
       - name: Markdown link check
         run: |
+          node scripts/quality/link_checker_contract.cjs "$(command -v markdown-link-check)"
           markdown-link-check -c .github/markdown-link-check.json readme.md
           find docs -name '*.md' -print0 | xargs -0 -n 1 markdown-link-check -c .github/markdown-link-check.json
