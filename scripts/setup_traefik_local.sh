@@ -3,7 +3,7 @@
 set -euo pipefail
 umask 077
 ROOT="$(cd "${BASH_SOURCE[0]%/*}/.." && pwd)"
-binary= digest= source_commit= mode=plan start=0
+binary='' digest='' source_commit='' mode=plan start=0
 die() {
   printf 'Lokaler Traefik abgebrochen: %s\n' "$*" >&2
   exit 1

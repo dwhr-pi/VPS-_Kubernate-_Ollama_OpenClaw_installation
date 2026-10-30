@@ -143,7 +143,7 @@ fc_prepare_python() {
     echo 'Privates/fremdes Python: dessen venv/ensurepip separat reparieren oder FAL_CLIENT_PYTHON_BIN passend setzen; kein System-Python ersetzt.' >&2
     return 1
   }
-  command -v apt-get >/dev/null && command -v sudo >/dev/null || {
+  { command -v apt-get >/dev/null && command -v sudo >/dev/null; } || {
     echo "Keine apt/sudo-Reparatur verfuegbar. $package separat einrichten." >&2
     return 1
   }
@@ -284,6 +284,7 @@ fal_client_main() (
   log="$(mktemp "$FC_LOGS/fal_client_$(date +%Y%m%d_%H%M%S)_XXXXXX.log")"
   exec > >(tee -a "$log") 2>&1
   echo "Fal-Client-Installer: 2026-10-19-venv-dependency-repair; Aktion: $mode; Pin: $FC_COMMIT"
+  local rc
   trap 'rc=$?; if ((rc != 0)); then echo "Fal-Client-Fehler ($rc); Dateien erhalten. Log: $log. Nach Behebung --repair verwenden."; fi' EXIT
   if [[ "$mode" == uninstall || "$mode" == --uninstall ]]; then
     fc_deactivate

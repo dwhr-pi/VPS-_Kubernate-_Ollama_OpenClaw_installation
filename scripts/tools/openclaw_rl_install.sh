@@ -45,14 +45,14 @@ fi
 # 1. OpenClaw RL aus GitHub klonen
 if [ -d "$OPENCLAW_RL_DIR" ]; then
   echo -e "${YELLOW}OpenClaw RL Verzeichnis $OPENCLAW_RL_DIR existiert bereits. Aktualisiere Repository...${NC}"
-  cd "$OPENCLAW_RL_DIR"
+  cd "$OPENCLAW_RL_DIR" || exit 1
   git pull --ff-only
 else
   echo -e "${BLUE}Klone OpenClaw RL in $OPENCLAW_RL_DIR...${NC}"
   sudo mkdir -p "$OPENCLAW_RL_DIR"
-  sudo chown -R $USER:$USER "$OPENCLAW_RL_DIR"
+  sudo chown -R "$USER:$USER" "$OPENCLAW_RL_DIR"
   git clone "$OPENCLAW_RL_REPO_URL" "$OPENCLAW_RL_DIR"
-  cd "$OPENCLAW_RL_DIR"
+  cd "$OPENCLAW_RL_DIR" || exit 1
 fi
 
 # 2. Python-Abhängigkeiten installieren

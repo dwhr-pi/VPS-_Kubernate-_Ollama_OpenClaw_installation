@@ -67,7 +67,8 @@ backup_openclaw_state_if_requested() {
   fi
 
   mkdir -p "$OPENCLAW_BACKUP_ROOT"
-  local target_archive="${OPENCLAW_BACKUP_ROOT}/openclaw_state_$(date +%Y%m%d_%H%M%S).tar.gz"
+  local target_archive
+  target_archive="${OPENCLAW_BACKUP_ROOT}/openclaw_state_$(date +%Y%m%d_%H%M%S).tar.gz"
   tar -C "$HOME" -czf "$target_archive" ".openclaw"
   echo -e "${GREEN}OpenClaw-Status gesichert: ${target_archive}${NC}"
 }

@@ -184,14 +184,14 @@ fi
 # 1. Clawhub CLI aus GitHub klonen
 if [ -d "$CLAWHUB_CLI_DIR" ]; then
   echo -e "${YELLOW}Clawhub CLI Verzeichnis $CLAWHUB_CLI_DIR existiert bereits. Aktualisiere Repository...${NC}"
-  cd "$CLAWHUB_CLI_DIR"
+  cd "$CLAWHUB_CLI_DIR" || exit 1
   GIT_TERMINAL_PROMPT=0 git pull --ff-only
 else
   echo -e "${BLUE}Klone Clawhub CLI in $CLAWHUB_CLI_DIR...${NC}"
   sudo mkdir -p "$CLAWHUB_CLI_DIR"
   sudo chown -R "$USER:$USER" "$CLAWHUB_CLI_DIR"
   GIT_TERMINAL_PROMPT=0 git clone "$CLAWHUB_CLI_REPO_URL" "$CLAWHUB_CLI_DIR"
-  cd "$CLAWHUB_CLI_DIR"
+  cd "$CLAWHUB_CLI_DIR" || exit 1
 fi
 
 # 2. Abhängigkeiten installieren

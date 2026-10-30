@@ -251,6 +251,7 @@ sfizz_main() (
   exec > >(tee -a "$log") 2>&1
   echo "Sfizz Installer: 2026-10-18-github-native; Aktion: $mode; Pin: $SF_COMMIT"
   echo 'Achtung: sfztools/sfizz ist archiviert. Engine/Renderer, keine DAW-Plugins.'
+  local rc
   trap 'rc=$?; if ((rc)); then echo "Sfizz Fehler ($rc); Quellen/Daten erhalten. Log: $log; nach Pruefung --repair."; fi' EXIT
   if [[ "$mode" == uninstall || "$mode" == --uninstall ]]; then
     rm -f -- "$SF_MARKER" "$SF_NATIVE"

@@ -196,6 +196,7 @@ pyannote_audio_main() (
   log="$(mktemp "$PA_LOGS/pyannote_audio_$(date +%Y%m%d_%H%M%S)_XXXXXX.log")"
   exec > >(tee -a "$log") 2>&1
   echo "Pyannote-Audio-Installer: 2026-10-16-github-source-cpu; Aktion: $mode; Commit: $PA_COMMIT"
+  local rc
   trap 'rc=$?; if ((rc != 0)); then echo "Pyannote-Fehler ($rc). Dateien erhalten. Log: $log; nach Behebung --repair verwenden."; fi' EXIT
   if [[ "$mode" == uninstall || "$mode" == --uninstall ]]; then
     pa_deactivate

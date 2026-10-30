@@ -246,6 +246,7 @@ aida_x_main() (
   log="$(mktemp "$AX_LOGS/aida_x_$(date +%Y%m%d_%H%M%S)_XXXXXX.log")"
   exec > >(tee -a "$log") 2>&1
   echo "AIDA-X Installer: 2026-10-18-github-native; Aktion: $mode; Pin: $AX_COMMIT"
+  local rc
   trap 'rc=$?; if ((rc)); then echo "AIDA-X Fehler ($rc); Quellen/Daten erhalten. Log: $log; nach Pruefung --repair."; fi' EXIT
   if [[ "$mode" == uninstall || "$mode" == --uninstall ]]; then
     rm -f -- "$AX_MARKER" "$AX_NATIVE"

@@ -101,7 +101,7 @@ supir_main() (
       return 0
       ;;
     doctor | check | --check)
-      [[ -f "$SUPIR_MARKER" && "$(<"$SUPIR_MARKER")" == "$SUPIR_COMMIT" ]] && supir_inspect || {
+      { [[ -f "$SUPIR_MARKER" && "$(<"$SUPIR_MARKER")" == "$SUPIR_COMMIT" ]] && supir_inspect; } || {
         echo 'SUPIR-Quellinstallation fehlt oder ist inkonsistent.' >&2
         return 1
       }
@@ -151,6 +151,7 @@ supir_main() (
   log="$(mktemp "$SUPIR_LOGS/supir_$(date +%Y%m%d_%H%M%S)_XXXXXX.log")"
   exec > >(tee -a "$log") 2>&1
   echo "SUPIR-Installer: 2026-10-16-github-source-only; Aktion: $mode; Commit: $SUPIR_COMMIT"
+  local rc
   trap 'rc=$?; if ((rc != 0)); then echo "SUPIR-Fehler ($rc). Dateien erhalten. Log: $log; nach Behebung --repair verwenden."; fi' EXIT
   if [[ "$mode" == uninstall || "$mode" == --uninstall ]]; then
     supir_deactivate

@@ -94,7 +94,8 @@ infer_status() {
 send_report_email() {
   local report_file="$1"
   local recipient="$2"
-  local subject="[OpenClaw Ultimate Setup][Report:${REPORT_ID}] Installationslauf-Diagnose $(date '+%Y-%m-%d %H:%M')"
+  local subject
+  subject="[OpenClaw Ultimate Setup][Report:${REPORT_ID}] Installationslauf-Diagnose $(date '+%Y-%m-%d %H:%M')"
 
   load_secure_mail_settings
 

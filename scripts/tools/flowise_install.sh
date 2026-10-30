@@ -67,7 +67,8 @@ prepare_flowise_node_environment() {
   if [ -n "$node_bin" ]; then
     [ -x "$node_bin" ] || fail_with_hint "FLOWISE_NODE_BIN ist nicht ausfuehrbar: $node_bin" \
       "Bitte auf ein Node-20.x-Binary zeigen lassen, z. B. FLOWISE_NODE_BIN=/pfad/zu/node."
-    export PATH="$(dirname "$node_bin"):$PATH"
+    PATH="$(dirname "$node_bin"):$PATH"
+    export PATH
   else
     command -v node >/dev/null 2>&1 || fail_with_hint "Node.js wurde nicht gefunden." \
       "Flowise benoetigt Node.js 20.x." \

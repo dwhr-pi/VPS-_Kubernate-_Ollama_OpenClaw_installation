@@ -35,7 +35,7 @@ if [ -d "$OPENCLAW_DIR" ]; then
 else
   echo -e "${BLUE}Klone OpenClaw in $OPENCLAW_DIR...${NC}"
   sudo mkdir -p "$OPENCLAW_DIR"
-  sudo chown -R $USER:$USER "$OPENCLAW_DIR"
+  sudo chown -R "$USER:$USER" "$OPENCLAW_DIR"
   run_with_retry "$OPENCLAW_NETWORK_RETRY_ATTEMPTS" "$OPENCLAW_NETWORK_RETRY_DELAY_SECONDS" \
     git clone "$OPENCLAW_REPO_URL" "$OPENCLAW_DIR"
   cd "$OPENCLAW_DIR"

@@ -61,15 +61,15 @@ wan21_runtime_preflight() {
     echo 'Automatischer CUDA-Laufzeitpfad ist auf Linux x86_64 begrenzt; ARM nur Quellcode.' >&2
     return 1
   }
-  command -v nvidia-smi >/dev/null && nvidia-smi >/dev/null 2>&1 || {
+  { command -v nvidia-smi >/dev/null && nvidia-smi >/dev/null 2>&1; } || {
     echo 'Wan21: nutzbare NVIDIA-GPU/Treiber fehlen; keine Treiberinstallation.' >&2
     return 1
   }
-  command -v nvcc >/dev/null && nvcc --version | grep -q 'release 12.8' || {
+  { command -v nvcc >/dev/null && nvcc --version | grep -q 'release 12.8'; } || {
     echo 'Wan21: CUDA Toolkit 12.8/nvcc fuer Flash-Attention-Build erforderlich; separat einrichten.' >&2
     return 1
   }
-  command -v c++ >/dev/null && command -v tar >/dev/null || {
+  { command -v c++ >/dev/null && command -v tar >/dev/null; } || {
     echo 'Wan21: C++-Compiler oder tar fehlt; separat einrichten.' >&2
     return 1
   }
@@ -214,6 +214,7 @@ wan21_main() (
   log="$(mktemp "$WAN21_LOGS/wan21_$(date +%Y%m%d_%H%M%S)_XXXXXX.log")"
   exec > >(tee -a "$log") 2>&1
   echo "Wan21-Installer: 2026-10-16-github-source; Aktion: $mode; Commit: $WAN21_COMMIT"
+  local rc
   trap 'rc=$?; if ((rc != 0)); then echo "Wan21-Fehler ($rc). Dateien erhalten. Log: $log; nach Behebung --repair verwenden."; fi' EXIT
   if [[ "$mode" == uninstall || "$mode" == --uninstall ]]; then
     rm -f -- "$WAN21_MARKER" "$WAN21_RUNTIME_MARKER"

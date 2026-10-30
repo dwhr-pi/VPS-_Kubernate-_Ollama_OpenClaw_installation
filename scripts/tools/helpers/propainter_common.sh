@@ -238,6 +238,7 @@ propainter_main() (
   log="$(mktemp "$PP_LOGS/propainter_$(date +%Y%m%d_%H%M%S)_XXXXXX.log")"
   exec > >(tee -a "$log") 2>&1
   echo "ProPainter-Installer: 2026-10-18-github-sparse-source; Aktion: $mode; Pin: $PP_COMMIT"
+  local rc
   trap 'rc=$?; if ((rc != 0)); then echo "ProPainter-Fehler ($rc); Dateien erhalten. Log: $log. Nach Pruefung --repair verwenden."; fi' EXIT
   if [[ "$mode" == uninstall || "$mode" == --uninstall ]]; then
     pp_deactivate

@@ -254,6 +254,7 @@ aegisub_main() (
   log="$(mktemp "$AE_LOGS/aegisub_$(date +%Y%m%d_%H%M%S)_XXXXXX.log")"
   exec > >(tee -a "$log") 2>&1
   echo "Aegisub Installer: 2026-10-18-github-native; Aktion: $mode; Pin: $AE_COMMIT"
+  local rc
   trap 'rc=$?; if ((rc)); then echo "Aegisub Fehler ($rc); Quellen/Daten erhalten. Log: $log; nach Pruefung --repair."; fi' EXIT
   if [[ "$mode" == uninstall || "$mode" == --uninstall ]]; then
     rm -f -- "$AE_MARKER" "$AE_NATIVE"

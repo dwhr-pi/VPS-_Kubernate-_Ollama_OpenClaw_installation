@@ -187,6 +187,7 @@ vidubb_main() (
   log="$(mktemp "$VD_LOGS/vidubb_$(date +%Y%m%d_%H%M%S)_XXXXXX.log")"
   exec > >(tee -a "$log") 2>&1
   echo "ViDubb-Installer: 2026-10-16-github-sparse-source; Aktion: $mode; Pin: $VD_COMMIT"
+  local rc
   trap 'rc=$?; if ((rc != 0)); then echo "ViDubb-Fehler ($rc); Dateien erhalten. Log: $log. Nach Pruefung --repair verwenden."; fi' EXIT
   if [[ "$mode" == uninstall || "$mode" == --uninstall ]]; then
     vd_deactivate

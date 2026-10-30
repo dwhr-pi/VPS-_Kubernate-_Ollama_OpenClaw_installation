@@ -148,39 +148,88 @@ allein erlaubt weder Merge- noch Produktionsfreigabe.
 
 ## Freigegebene Formatierungsbereinigung vom 30.10.2026
 
-Dieser Satz ist groesser als die vorangegangenen gezielten Fixes und wurde
-am 29.10. ausdruecklich vom Nutzer freigegeben. Die Regeln stehen in der
-[Formatierungspolicy](../quality/FORMATTING_POLICY.md). Shell-Dateien wurden
-mit shfmt 3.8.0, Markdown mit Prettier 3.6.2 und markdownlint-cli 0.44.0
-bearbeitet; keine Installer oder Modelle wurden dabei gestartet.
+Dieser Satz ist groesser als die vorangegangenen gezielten Fixes und wurde am 29.10. ausdruecklich
+vom Nutzer freigegeben. Die Regeln stehen in der
+[Formatierungspolicy](../quality/FORMATTING_POLICY.md). Shell-Dateien wurden mit shfmt 3.8.0,
+Markdown mit Prettier 3.6.2 und markdownlint-cli 0.44.0 bearbeitet; keine Installer oder Modelle
+wurden dabei gestartet.
 
-Zwei Shell-Formatter-Gates verwenden nun dieselben Optionen. Vier beschaedigte
-Audit-Tabellen wurden strukturell korrigiert; urspruengliche Zelltexte, auch
-Code mit `\|\|`, blieben erhalten. Historische Codebloecke werden nicht zur
-optischen Zeilenkuerzung umgeschrieben. Der Archiv-Hash bleibt Testvertrag.
+Zwei Shell-Formatter-Gates verwenden nun dieselben Optionen. Vier beschaedigte Audit-Tabellen wurden
+strukturell korrigiert; urspruengliche Zelltexte, auch Code mit `\|\|`, blieben erhalten.
+Historische Codebloecke werden nicht zur optischen Zeilenkuerzung umgeschrieben. Der Archiv-Hash
+bleibt Testvertrag.
 
-Der erste komplette Windows-Fixturelauf meldete 2.189 Tests, davon 32
-uebersprungen, aber 32 Fehlschlaege und sieben Testfehler. Die Befunde
-betrafen layoutabhaengige Text-/Quellvergleiche, keine bestandene Gesamtabnahme.
-Nach gezielten Testkorrekturen bestanden die betroffenen Module:
-**348 Tests OK, drei uebersprungen**. Separate Gegenproben pruefen, dass
-fehlende Verneinungen weiterhin fehlschlagen und Marker-/Pruefreihenfolgen
-erhalten bleiben. Fuer 16 kritische Shell-Dateien war die minifizierte
-Programmstruktur vor und nach der Formatierung identisch. Das ist kein
-Ersatz fuer Laufzeit-, Plattform- oder Produktionspruefungen.
+Der erste komplette Windows-Fixturelauf meldete 2.189 Tests, davon 32 uebersprungen, aber 32
+Fehlschlaege und sieben Testfehler. Die Befunde betrafen layoutabhaengige Text-/Quellvergleiche,
+keine bestandene Gesamtabnahme. Nach gezielten Testkorrekturen bestanden die betroffenen Module:
+**348 Tests OK, drei uebersprungen**. Separate Gegenproben pruefen, dass fehlende Verneinungen
+weiterhin fehlschlagen und Marker-/Pruefreihenfolgen erhalten bleiben. Fuer 16 kritische
+Shell-Dateien war die minifizierte Programmstruktur vor und nach der Formatierung identisch. Das ist
+kein Ersatz fuer Laufzeit-, Plattform- oder Produktionspruefungen.
 
-Abnahme vor dem Upload: Der repositoryweite Markdownlint-Lauf hat **0 Befunde**.
-Der shfmt-Check mit gemeinsamen Optionen und `git diff --check` bestehen.
-Ein weiterer Satz aus Archiv-, Navigations-, Registry-, Policy- und
-Testvertragspruefungen besteht mit **36 Tests**. Die Pruefsatzzahlen werden
-wegen moeglicher Ueberschneidungen nicht zu einer neuen Gesamtzahl addiert.
-Die ganze Linux-Regression muss fuer den neuen Commit in GitHub laufen.
+Abnahme vor dem Upload: Der repositoryweite Markdownlint-Lauf hat **0 Befunde**. Der shfmt-Check mit
+gemeinsamen Optionen und `git diff --check` bestehen. Ein weiterer Satz aus Archiv-, Navigations-,
+Registry-, Policy- und Testvertragspruefungen besteht mit **36 Tests**. Die Pruefsatzzahlen werden
+wegen moeglicher Ueberschneidungen nicht zu einer neuen Gesamtzahl addiert. Die ganze
+Linux-Regression muss fuer den neuen Commit in GitHub laufen.
 
-Die letzten lokalen ShellCheck-Befunddateien enthalten noch **388 Meldungen**
-in 160 zuvor auffaelligen Dateien. Globale Shell-Befunde und externe
-Linkfehler sind damit weiterhin offen; keine pauschalen Excludes oder
-HTTP-403-/202-Erfolgsbehauptungen. Fuer den neuen Commit muessen alle
+Die letzten lokalen ShellCheck-Befunddateien enthalten noch **388 Meldungen** in 160 zuvor
+auffaelligen Dateien. Globale Shell-Befunde und externe Linkfehler sind damit weiterhin offen; keine
+pauschalen Excludes oder HTTP-403-/202-Erfolgsbehauptungen. Fuer den neuen Commit muessen alle
 verpflichtenden GitHub-Pruefungen erneut laufen. Kein Main-Merge.
+
+## Weitere Shell- und Quellenkorrekturen vom 30.10.2026
+
+Der gemeldete Head `4cead8a` hat 14 erfolgreiche und sieben fehlgeschlagene Pruefungen. Die roten
+Anzeigen umfassen doppelte Push-/PR-Laeufe und betreffen weiterhin ShellCheck sowie externe Links.
+Ein gruener Markdown- oder Konfigurationsscan ersetzt diese noch offenen Gates nicht.
+
+Dieser begrenzte Reparatursatz aendert keine Scanner-Ausnahmen und keine produktiven Installationen:
+
+- 36 EXIT-Handler deklarieren ihren Fehlerstatus lokal, bevor der verzuegert ausgefuehrte Handler
+  ihn setzt. Der originale Exitcode bleibt erhalten.
+- Die Enter-Pausen verwenden `read -r`; Benutzertexte mit Backslashes werden nicht als
+  Escape-Sequenzen verarbeitet. Leere Bootstrap-Variablen erhalten explizite leere Werte.
+- Gemeinsame Vorbedingungen werden als eine Bedingungsgruppe gekennzeichnet. Der Recovery-Block
+  bleibt fuer das Scheitern einer beliebigen Vorbedingung zustaendig; Pruefreihenfolge und
+  Kurzschlussverhalten bleiben erhalten.
+- Sieben aeltere Installer brechen bei fehlgeschlagenem Verzeichniswechsel ab, statt Builds oder
+  Git-Befehle im vorherigen Verzeichnis fortzusetzen.
+- Benutzer-/Gruppenargumente und zwei kommaseparierte Paketargumente werden eindeutig quotiert.
+  Deklaration und berechnete Zuweisung sind getrennt, damit der Rueckgabestatus der Berechnung nicht
+  verdeckt wird. Tatsaechlich ungenutzte private Farbkonstanten wurden entfernt.
+
+`tests/test_shell_error_contracts.py` prueft nur isolierte Shell-Fragmente: alle 36 EXIT-Handler mit
+Status 0, 17 und 130, negative Verzeichniswechsel, die Build-/Quellen-Freigabe, die Paketargumente
+und wortgetreue Eingaben. Dabei werden keine vollstaendigen Installer, Downloads oder Dienste
+gestartet. Weitere vorhandene Tool- und Sicherheits-Fixtures bleiben unveraendert aktiv.
+
+Lokale Teilabnahme: **fuenf neue Fragment-Tests OK**, dazu drei bestehende Formatierungspolicy- und
+vier Navigations-Tests OK. Die Shell-Syntaxpruefung der 115 geaenderten Shell-Dateien besteht,
+ebenso shfmt. Der Offline-Registry-Check bleibt bei **0 Fehlern und 802 Hinweisen**. Der komplette
+Windows-Fixturelauf wurde zeitlich begrenzt und vor Abschluss beendet; er wird nicht als bestandene
+Gesamtregression ausgewiesen. Ein ShellCheck-Zwischenlauf hat weiterhin Befunde, keine gruene
+Gesamtabnahme. Die Linux-CI muss den veroeffentlichten Head erneut pruefen.
+
+Vier Kataloglinks wurden anhand der offiziellen GitHub-Verzeichnis-API geprueft und korrigiert:
+
+| Alter, nicht existierender Repositoryname | Belegter Quellpfad                                                                                               |
+| ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `modelcontextprotocol/server-filesystem`  | [servers/src/filesystem](https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem)               |
+| `modelcontextprotocol/server-git`         | [servers/src/git](https://github.com/modelcontextprotocol/servers/tree/main/src/git)                             |
+| `modelcontextprotocol/server-sqlite`      | [servers-archived/src/sqlite](https://github.com/modelcontextprotocol/servers-archived/tree/main/src/sqlite)     |
+| `modelcontextprotocol/server-postgres`    | [servers-archived/src/postgres](https://github.com/modelcontextprotocol/servers-archived/tree/main/src/postgres) |
+
+SQLite und PostgreSQL bleiben ausdruecklich archivierte Referenzen und erhalten damit keine
+Installations- oder Produktionsfreigabe. Dies ist keine vollstaendige Reparatur des externen
+Link-Gates: weitere 404-Links, Login-Seiten und nicht erreichbare Inhalte muessen einzeln behandelt
+werden. HTTP 202/403 wird nicht pauschal als Erfolg gewertet.
+
+**Abnahme und Ruecknahme:** Die neuen Fragment-Tests muessen bestehen, Shell-Syntax, shfmt,
+Markdownlint und `git diff --check` ebenfalls. Die vollstaendige Linux-Regression sowie die
+verbleibenden Shell-/Link-Gates muessen fuer den neuen Head erneut laufen. Ruecknahme nur durch
+einen reviewten Gegen-Patch; keine Datenwiederherstellung, Deinstallation oder Cluster-Aktion
+erforderlich. Kein Main-Merge, keine Produktionsfreigabe.
 
 ## Erste lokale Abnahme (historisch)
 

@@ -4,7 +4,7 @@ set -euo pipefail
 umask 077
 ROOT="$(cd "${BASH_SOURCE[0]%/*}/.." && pwd)"
 PYTHON_BIN=${GITOPS_PYTHON_BIN:-python3}
-mode=plan lock= address= confirmed=0 firewall_confirmed=0
+mode=plan lock='' address='' confirmed=0 firewall_confirmed=0
 die() {
   printf 'GitOps-Bootstrap abgebrochen: %s\n' "$*" >&2
   exit 1

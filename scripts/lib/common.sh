@@ -311,8 +311,10 @@ begin_measurement() {
   infer_and_install_base_packages_for_current_script "${0:-}"
   export CURRENT_OPERATION_ID="$1"
   export CURRENT_OPERATION_TITLE="$2"
-  export CURRENT_OPERATION_START_TS="$(date +%s)"
-  export CURRENT_OPERATION_FREE_KB_BEFORE="$(snapshot_disk_kb /)"
+  CURRENT_OPERATION_START_TS="$(date +%s)"
+  export CURRENT_OPERATION_START_TS
+  CURRENT_OPERATION_FREE_KB_BEFORE="$(snapshot_disk_kb /)"
+  export CURRENT_OPERATION_FREE_KB_BEFORE
 }
 
 end_measurement() {

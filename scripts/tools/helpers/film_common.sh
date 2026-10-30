@@ -101,7 +101,7 @@ film_main() (
       return 0
       ;;
     doctor | check | --check)
-      [[ -f "$FILM_MARKER" && "$(<"$FILM_MARKER")" == "$FILM_COMMIT" ]] && film_inspect || {
+      { [[ -f "$FILM_MARKER" && "$(<"$FILM_MARKER")" == "$FILM_COMMIT" ]] && film_inspect; } || {
         echo 'FILM-Quellinstallation fehlt oder ist inkonsistent.' >&2
         return 1
       }
@@ -151,6 +151,7 @@ film_main() (
   log="$(mktemp "$FILM_LOGS/film_$(date +%Y%m%d_%H%M%S)_XXXXXX.log")"
   exec > >(tee -a "$log") 2>&1
   echo "FILM-Installer: 2026-10-16-github-source-only; Aktion: $mode; Commit: $FILM_COMMIT"
+  local rc
   trap 'rc=$?; if ((rc != 0)); then echo "FILM-Fehler ($rc). Dateien erhalten. Log: $log; nach Behebung --repair verwenden."; fi' EXIT
   if [[ "$mode" == uninstall || "$mode" == --uninstall ]]; then
     film_deactivate

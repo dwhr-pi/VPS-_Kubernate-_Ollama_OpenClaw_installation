@@ -72,7 +72,7 @@ af_prepare_venv() {
     return 1
   }
   echo "Fehlende Python-Basisabhaengigkeit: $package. Installiere gezielt via apt; Framework bleibt GitHub-Quelle."
-  command -v sudo >/dev/null && sudo -v || {
+  { command -v sudo >/dev/null && sudo -v; } || {
     echo 'sudo-Freigabe fehlgeschlagen. Benutzerpasswort/CapsLock pruefen; keine Installation ausgefuehrt.' >&2
     return 1
   }
@@ -210,6 +210,7 @@ agent_framework_main() (
   exec > >(tee -a "$log") 2>&1
   echo "Agent-Framework-Installer: 2026-10-16-github-python-core-venv-repair; Aktion: $action"
   echo "Quelle: $AF_URL; Commit: $AF_COMMIT; Version: $AF_VERSION"
+  local rc
   trap 'rc=$?; if ((rc != 0)); then echo "Fehler ($rc). Quelle/Daten erhalten; Log: $log. Nach Behebung --repair aufrufen."; fi' EXIT
   if [[ "$action" == uninstall || "$action" == --uninstall ]]; then
     rm -f -- "$AF_MARKER"

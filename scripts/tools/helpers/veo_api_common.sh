@@ -143,7 +143,7 @@ va_prepare_python() {
     echo 'Privates/fremdes Python: dessen venv/ensurepip separat reparieren oder VEO_API_PYTHON_BIN passend setzen; kein System-Python ersetzt.' >&2
     return 1
   }
-  command -v apt-get >/dev/null && command -v sudo >/dev/null || {
+  { command -v apt-get >/dev/null && command -v sudo >/dev/null; } || {
     echo "Keine apt/sudo-Reparatur verfuegbar. $package separat einrichten." >&2
     return 1
   }
@@ -283,6 +283,7 @@ veo_api_main() (
   log="$(mktemp "$VA_LOGS/veo_api_$(date +%Y%m%d_%H%M%S)_XXXXXX.log")"
   exec > >(tee -a "$log") 2>&1
   echo "Veo-API-SDK-Installer: 2026-10-19-venv-dependency-repair; Aktion: $mode; Pin: $VA_COMMIT"
+  local rc
   trap 'rc=$?; if ((rc != 0)); then echo "Veo-API-SDK-Fehler ($rc); Dateien erhalten. Log: $log. Nach Behebung --repair verwenden."; fi' EXIT
   if [[ "$mode" == uninstall || "$mode" == --uninstall ]]; then
     va_deactivate

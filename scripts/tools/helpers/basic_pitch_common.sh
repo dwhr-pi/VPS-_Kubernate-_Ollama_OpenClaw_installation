@@ -168,7 +168,7 @@ bp_prepare_python() {
     echo 'Privates/fremdes Python: dessen venv/ensurepip separat reparieren oder BASIC_PITCH_PYTHON_BIN passend setzen; kein System-Python ersetzt.' >&2
     return 1
   }
-  command -v apt-get >/dev/null && command -v sudo >/dev/null || {
+  { command -v apt-get >/dev/null && command -v sudo >/dev/null; } || {
     echo "Keine apt/sudo-Reparatur verfuegbar. $package separat einrichten." >&2
     return 1
   }
@@ -234,7 +234,7 @@ bp_install_package() (
     constraints="$(mktemp "$BP_BASE/runtime_constraints_XXXXXX")" || return 1
     # Older TF/TFLite wheels require NumPy 1.x; no CUDA/system-driver changes.
     printf '%s\n' 'numpy==1.26.4' 'librosa==0.10.2.post1' >"$constraints"
-    options=(--constraint "$constraints" --only-binary=numpy,scipy,numba,llvmlite,tensorflow,tflite-runtime)
+    options=(--constraint "$constraints" "--only-binary=numpy,scipy,numba,llvmlite,tensorflow,tflite-runtime")
     flavor=runtime
   fi
   "$BP_VENV/bin/python" -I -B -m pip --isolated install --no-cache-dir \
@@ -330,6 +330,7 @@ basic_pitch_main() (
   log="$(mktemp "$BP_LOGS/basic_pitch_$(date +%Y%m%d_%H%M%S)_XXXXXX.log")"
   exec > >(tee -a "$log") 2>&1
   echo "Basic Pitch-Installer: 2026-10-19-venv-dependency-repair; Aktion: $mode; Pin: $BP_COMMIT"
+  local rc
   trap 'rc=$?; if ((rc != 0)); then echo "Basic Pitch-Fehler ($rc); Dateien erhalten. Log: $log. Nach Behebung --repair verwenden."; fi' EXIT
   if [[ "$mode" == uninstall || "$mode" == --uninstall ]]; then
     bp_deactivate

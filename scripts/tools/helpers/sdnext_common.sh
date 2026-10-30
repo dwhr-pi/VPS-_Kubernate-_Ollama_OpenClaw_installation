@@ -106,7 +106,7 @@ sn_prepare_python() {
     echo 'Privates/fremdes Python: dessen venv/ensurepip separat reparieren oder SDNEXT_PYTHON_BIN auf ein geeignetes System-Python setzen.' >&2
     return 1
   }
-  command -v apt-get >/dev/null && command -v sudo >/dev/null || {
+  { command -v apt-get >/dev/null && command -v sudo >/dev/null; } || {
     echo "Keine apt/sudo-Reparatur verfuegbar. $package separat einrichten." >&2
     return 1
   }
@@ -236,6 +236,7 @@ sdnext_main() (
   log="$(mktemp "$SN_LOGS/sdnext_$(date +%Y%m%d_%H%M%S)_XXXXXX.log")"
   exec > >(tee -a "$log") 2>&1
   echo "SD.Next-Installer: 2026-10-19-venv-dependency-repair; Aktion: $mode; Pin: $SN_COMMIT"
+  local rc
   trap 'rc=$?; if ((rc != 0)); then echo "SD.Next-Fehler ($rc); Dateien erhalten. Log: $log. Nach Pruefung --repair verwenden."; fi' EXIT
   if [[ "$mode" == uninstall || "$mode" == --uninstall ]]; then
     sn_deactivate

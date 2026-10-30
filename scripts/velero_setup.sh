@@ -2,7 +2,7 @@
 # Velero-1.18-Server/Node-Agent nur lokal rendern; gepruefte CLI und Image-Digests erforderlich.
 set -euo pipefail
 umask 077
-mode=plan server= plugin=
+mode=plan server='' plugin=''
 die() {
   printf 'Velero-Vorbereitung abgebrochen: %s\n' "$*" >&2
   exit 1

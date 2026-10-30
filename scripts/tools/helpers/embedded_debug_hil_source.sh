@@ -120,7 +120,7 @@ hil_prepare_python() {
     echo 'Privates/fremdes Python: dessen venv/ensurepip separat reparieren oder EMBEDDED_DEBUG_HIL_PYTHON_BIN passend setzen; kein System-Python ersetzt.' >&2
     return 1
   }
-  command -v apt-get >/dev/null && command -v sudo >/dev/null || {
+  { command -v apt-get >/dev/null && command -v sudo >/dev/null; } || {
     echo "Keine apt/sudo-Reparatur verfuegbar. $package separat einrichten." >&2
     return 1
   }

@@ -11,7 +11,7 @@ private_cpython310_base_deps() {
     dpkg-query -W -f='${Status}' "$package" 2>/dev/null | grep -qx 'install ok installed' || missing+=("$package")
   done
   ((${#missing[@]})) || return 0
-  command -v apt-get >/dev/null && command -v sudo >/dev/null || {
+  { command -v apt-get >/dev/null && command -v sudo >/dev/null; } || {
     echo 'Fehlende CPython-Buildbibliotheken manuell einrichten; apt/sudo nicht vorhanden.' >&2
     return 1
   }

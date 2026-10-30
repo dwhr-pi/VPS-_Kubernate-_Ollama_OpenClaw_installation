@@ -2,7 +2,7 @@
 # Vertrauensanker muessen aus einem unabhaengig geprueften Release stammen.
 set -euo pipefail
 umask 077
-commit= expected= destination="$HOME/openclaw_ultimate_setup" verify_only=0
+commit='' expected='' destination="$HOME/openclaw_ultimate_setup" verify_only=0
 repo=https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation.git
 die() {
   printf 'Verifizierter Bootstrap abgebrochen: %s\n' "$*" >&2

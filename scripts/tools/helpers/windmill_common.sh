@@ -124,7 +124,7 @@ wm_binary_preflight() {
     echo 'Dieser Pin bietet nur Linux-amd64 als nicht-EE-Binary. ARM/Windows/macOS: Quellpfad, kein falsches Asset verwenden.' >&2
     return 1
   }
-  command -v curl >/dev/null && command -v sha256sum >/dev/null || {
+  { command -v curl >/dev/null && command -v sha256sum >/dev/null; } || {
     echo 'curl/sha256sum fehlen; separat einrichten.' >&2
     return 1
   }
@@ -241,6 +241,7 @@ windmill_main() (
   log="$(mktemp "$WM_LOGS/windmill_$(date +%Y%m%d_%H%M%S)_XXXXXX.log")"
   exec > >(tee -a "$log") 2>&1
   echo "Windmill-Installer: 2026-10-16-github-source-native-release; Aktion: $mode; Pin: $WM_COMMIT"
+  local rc
   trap 'rc=$?; if ((rc != 0)); then echo "Windmill-Fehler ($rc); Dateien erhalten. Log: $log. Nach Pruefung --repair verwenden."; fi' EXIT
   if [[ "$mode" == uninstall || "$mode" == --uninstall ]]; then
     wm_deactivate

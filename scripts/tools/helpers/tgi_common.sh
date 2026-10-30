@@ -197,6 +197,7 @@ tgi_main() (
   log="$(mktemp "$TGI_LOGS/tgi_$(date +%Y%m%d_%H%M%S)_XXXXXX.log")"
   exec > >(tee -a "$log") 2>&1
   echo "TGI-Installer: 2026-10-16-github-source-launcher; Aktion: $mode; Pin: $TGI_COMMIT"
+  local rc
   trap 'rc=$?; if ((rc != 0)); then echo "TGI-Fehler ($rc); Dateien erhalten. Log: $log. Nach Pruefung --repair verwenden."; fi' EXIT
   if [[ "$mode" == uninstall || "$mode" == --uninstall ]]; then
     tgi_deactivate

@@ -198,6 +198,7 @@ automaton_build() (
   before="$(df -Pk "$mount" | awk 'NR==2 {print $4}')"
   started="$SECONDS"
   exec > >(tee -a "$log") 2>&1
+  local rc
   trap 'rc=$?; printf "Automaton Build Exit=%s Dauer=%ss Disk-vorher-KiB=%s\n" "$rc" "$((SECONDS-started))" "$before"; df -Pk "$mount"; exit "$rc"' EXIT
   echo "Automaton GitHub-Source $AUTOMATON_SOURCE_COMMIT; kein Docker, Wallet- oder Agentenstart."
   automaton_prepare_runtime || {
@@ -254,7 +255,7 @@ automaton_main() (
     return 0
   fi
   if [[ "$mode" == status || "$mode" == doctor ]]; then
-    automaton_is_built && automaton_verify_source || {
+    { automaton_is_built && automaton_verify_source; } || {
       echo 'Automaton: kein verifizierter Source-Build vorhanden.' >&2
       return 1
     }
@@ -268,7 +269,8 @@ automaton_main() (
     automaton_lock || return 1
     if [[ -e "$AUTOMATON_SOURCE_DIR" ]]; then
       automaton_verify_source || return 1
-      local disabled="$AUTOMATON_BASE/source.disabled.$(date +%Y%m%d_%H%M%S).$$"
+      local disabled
+      disabled="$AUTOMATON_BASE/source.disabled.$(date +%Y%m%d_%H%M%S).$$"
       [[ ! -e "$disabled" ]] || return 1
       mv -- "$AUTOMATON_SOURCE_DIR" "$disabled" || return 1
     fi

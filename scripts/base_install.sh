@@ -146,14 +146,14 @@ echo -e "${GREEN}3/5: OpenClaw aus GitHub klonen und bauen...${NC}"
 OPENCLAW_DIR="/opt/openclaw"
 if [ -d "$OPENCLAW_DIR" ]; then
   echo -e "${YELLOW}OpenClaw Verzeichnis $OPENCLAW_DIR existiert bereits. Überspringe Klonen.${NC}"
-  cd "$OPENCLAW_DIR"
+  cd "$OPENCLAW_DIR" || exit 1
   git pull --ff-only
 else
   echo -e "${BLUE}Klone OpenClaw in $OPENCLAW_DIR...${NC}"
   sudo mkdir -p "$OPENCLAW_DIR"
-  sudo chown -R $USER:$USER "$OPENCLAW_DIR"
+  sudo chown -R "$USER:$USER" "$OPENCLAW_DIR"
   git clone https://github.com/openclaw/openclaw.git "$OPENCLAW_DIR"
-  cd "$OPENCLAW_DIR"
+  cd "$OPENCLAW_DIR" || exit 1
 fi
 
 echo -e "${BLUE}Installiere OpenClaw Abhängigkeiten mit pnpm...${NC}"

@@ -205,6 +205,7 @@ freellmapi_build() (
   started="$SECONDS"
   before="$(df -Pk "$mount" | awk 'NR==2 {print $4}')"
   exec > >(tee -a "$log") 2>&1
+  local rc
   trap 'rc=$?; printf "Build Exit=%s Dauer=%ss Disk-vorher-KiB=%s\n" "$rc" "$((SECONDS-started))" "$before"; df -Pk "$mount"; exit "$rc"' EXIT
   echo "FreeLLMAPI GitHub-Source $FREELLMAPI_SOURCE_TAG ($FREELLMAPI_SOURCE_COMMIT), ohne Container."
   freellmapi_prepare_runtime || return 1
@@ -275,14 +276,15 @@ freellmapi_main() (
     return $?
   fi
   if [[ "$mode" == uninstall ]]; then
-    command -v git >/dev/null && command -v flock >/dev/null && command -v python3 >/dev/null || {
+    { command -v git >/dev/null && command -v flock >/dev/null && command -v python3 >/dev/null; } || {
       echo 'Fehler: Git/flock/Python fuer sichere Deaktivierung erforderlich.' >&2
       return 1
     }
     freellmapi_lock && freellmapi_port_free || return 1
     if [[ -e "$FREELLMAPI_SOURCE_DIR" ]]; then
       freellmapi_verify_source || return 1
-      local disabled="$FREELLMAPI_BASE/source.disabled.$(date +%Y%m%d_%H%M%S).$$"
+      local disabled
+      disabled="$FREELLMAPI_BASE/source.disabled.$(date +%Y%m%d_%H%M%S).$$"
       [[ ! -e "$disabled" ]] || return 1
       mv -- "$FREELLMAPI_SOURCE_DIR" "$disabled" || return 1
     fi

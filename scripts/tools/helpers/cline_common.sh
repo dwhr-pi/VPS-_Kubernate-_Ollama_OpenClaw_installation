@@ -149,6 +149,7 @@ cline_main() (
   exec > >(tee -a "$log") 2>&1
   echo "Cline-Installer: 2026-10-16-github-vsix; Aktion: $mode"
   echo "GitHub: $CLINE_URL"
+  local rc
   trap 'rc=$?; if ((rc != 0)); then echo "Cline: Fehler ($rc). Log: $log; nach Behebung erneut starten."; fi' EXIT
   if [[ "$mode" == uninstall || "$mode" == --uninstall ]]; then
     if [[ -e "$CLINE_PACKAGE" ]]; then

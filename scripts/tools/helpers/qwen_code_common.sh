@@ -227,6 +227,7 @@ qwen_code_build() (
   before="$(df -Pk "$mount" | awk 'NR==2 {print $4}')"
   started="$SECONDS"
   exec > >(tee -a "$log") 2>&1
+  local rc
   trap 'rc=$?; printf "Qwen Code Build Exit=%s Dauer=%ss Disk-vorher-KiB=%s\n" "$rc" "$((SECONDS-started))" "$before"; df -Pk "$mount"; exit "$rc"' EXIT
   echo "Qwen Code GitHub-Source $QWEN_CODE_SOURCE_COMMIT; kein Docker, Login- oder Agentenstart."
   qwen_code_prepare_runtime || {
@@ -287,7 +288,7 @@ qwen_code_main() (
     return 0
   fi
   if [[ "$mode" == status || "$mode" == doctor ]]; then
-    qwen_code_is_built && qwen_code_verify_source || {
+    { qwen_code_is_built && qwen_code_verify_source; } || {
       echo 'Qwen Code: kein verifizierter Source-Build vorhanden.' >&2
       return 1
     }
@@ -301,7 +302,8 @@ qwen_code_main() (
     qwen_code_lock || return 1
     if [[ -e "$QWEN_CODE_SOURCE_DIR" ]]; then
       qwen_code_verify_source || return 1
-      local disabled="$QWEN_CODE_BASE/source.disabled.$(date +%Y%m%d_%H%M%S).$$"
+      local disabled
+      disabled="$QWEN_CODE_BASE/source.disabled.$(date +%Y%m%d_%H%M%S).$$"
       [[ ! -e "$disabled" ]] || return 1
       mv -- "$QWEN_CODE_SOURCE_DIR" "$disabled" || return 1
     fi

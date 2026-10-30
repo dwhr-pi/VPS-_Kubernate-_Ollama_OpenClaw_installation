@@ -62,7 +62,7 @@ fi
 if [ -d "$CLAWBAKE_DIR" ]; then
   if [ -d "$CLAWBAKE_DIR/.git" ]; then
     echo -e "${YELLOW}Clawbake Verzeichnis $CLAWBAKE_DIR existiert bereits. Aktualisiere Repository...${NC}"
-    cd "$CLAWBAKE_DIR"
+    cd "$CLAWBAKE_DIR" || exit 1
     current_remote="$(git remote get-url origin 2>/dev/null || true)"
     if [ "$current_remote" != "$CLAWBAKE_REPO_URL" ]; then
       backup_dir="${CLAWBAKE_DIR}.backup.$(date +%Y%m%d_%H%M%S)"
@@ -71,7 +71,7 @@ if [ -d "$CLAWBAKE_DIR" ]; then
       cd /
       sudo mv "$CLAWBAKE_DIR" "$backup_dir"
       clone_clawbake_repo "$CLAWBAKE_DIR"
-      cd "$CLAWBAKE_DIR"
+      cd "$CLAWBAKE_DIR" || exit 1
     else
       git pull --ff-only
     fi
@@ -80,12 +80,12 @@ if [ -d "$CLAWBAKE_DIR" ]; then
     echo -e "${YELLOW}Clawbake-Verzeichnis existiert, ist aber kein Git-Repo. Sichere nach ${backup_dir}.${NC}"
     sudo mv "$CLAWBAKE_DIR" "$backup_dir"
     clone_clawbake_repo "$CLAWBAKE_DIR"
-    cd "$CLAWBAKE_DIR"
+    cd "$CLAWBAKE_DIR" || exit 1
   fi
 else
   echo -e "${BLUE}Klone Clawbake in $CLAWBAKE_DIR...${NC}"
   clone_clawbake_repo "$CLAWBAKE_DIR"
-  cd "$CLAWBAKE_DIR"
+  cd "$CLAWBAKE_DIR" || exit 1
 fi
 
 echo -e "${BLUE}Clawbake Git-Stand:${NC}"

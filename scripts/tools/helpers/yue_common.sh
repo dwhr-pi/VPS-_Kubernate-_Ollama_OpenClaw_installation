@@ -197,6 +197,7 @@ yue_main() (
   log="$(mktemp "$YU_LOGS/yue_$(date +%Y%m%d_%H%M%S)_XXXXXX.log")"
   exec > >(tee -a "$log") 2>&1
   echo "YuE-Installer: 2026-10-18-github-sparse-source; Aktion: $mode; Pin: $YU_COMMIT"
+  local rc
   trap 'rc=$?; if ((rc != 0)); then echo "YuE-Fehler ($rc); Dateien erhalten. Log: $log. Nach Pruefung --repair verwenden."; fi' EXIT
   if [[ "$mode" == uninstall || "$mode" == --uninstall ]]; then
     yu_deactivate

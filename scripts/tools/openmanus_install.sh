@@ -143,7 +143,7 @@ if [ -d "$OPENMANUS_DIR" ]; then
 else
   echo -e "${BLUE}Klone OpenManus in $OPENMANUS_DIR...${NC}"
   sudo mkdir -p "$OPENMANUS_DIR"
-  sudo chown -R $USER:$USER "$OPENMANUS_DIR"
+  sudo chown -R "$USER:$USER" "$OPENMANUS_DIR"
   git clone "$OPENMANUS_REPO_URL" "$OPENMANUS_DIR"
   cd "$OPENMANUS_DIR"
 fi

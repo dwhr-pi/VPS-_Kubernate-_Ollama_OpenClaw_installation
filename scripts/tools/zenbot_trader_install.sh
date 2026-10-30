@@ -24,14 +24,14 @@ echo -e "${BLUE}Starte Installation von Zenbot-trader...${NC}"
 # 1. Zenbot-trader aus GitHub klonen
 if [ -d "$ZENBOT_DIR" ]; then
   echo -e "${YELLOW}Zenbot-trader Verzeichnis $ZENBOT_DIR existiert bereits. Aktualisiere Repository...${NC}"
-  cd "$ZENBOT_DIR"
+  cd "$ZENBOT_DIR" || exit 1
   git pull
 else
   echo -e "${BLUE}Klone Zenbot-trader in $ZENBOT_DIR...${NC}"
   sudo mkdir -p "$ZENBOT_DIR"
-  sudo chown -R $USER:$USER "$ZENBOT_DIR"
+  sudo chown -R "$USER:$USER" "$ZENBOT_DIR"
   git clone https://github.com/dwhr-pi/zenbot-trader-platform.git "$ZENBOT_DIR"
-  cd "$ZENBOT_DIR"
+  cd "$ZENBOT_DIR" || exit 1
 fi
 
 # 2. Abhängigkeiten installieren mit pnpm

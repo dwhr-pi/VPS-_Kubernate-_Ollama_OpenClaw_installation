@@ -218,6 +218,7 @@ deepfilternet_main() (
   log="$(mktemp "$DF_LOGS/deepfilternet_$(date +%Y%m%d_%H%M%S)_XXXXXX.log")"
   exec > >(tee -a "$log") 2>&1
   echo "DeepFilterNet-Installer: 2026-10-16-github-rust-cpu; Aktion: $mode; Pin: $DF_COMMIT"
+  local rc
   trap 'rc=$?; if ((rc != 0)); then echo "DeepFilterNet-Fehler ($rc); Daten erhalten. Log: $log. Nach Behebung --repair verwenden."; fi' EXIT
   if [[ "$mode" == uninstall || "$mode" == --uninstall ]]; then
     rm -f -- "$DF_MARKER"

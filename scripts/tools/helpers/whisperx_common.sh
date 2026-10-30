@@ -200,7 +200,7 @@ wx_prepare_python() {
     echo 'Privates/fremdes Python: dessen venv/ensurepip separat reparieren oder WHISPERX_PYTHON_BIN passend setzen; kein System-Python ersetzt.' >&2
     return 1
   }
-  command -v apt-get >/dev/null && command -v sudo >/dev/null || {
+  { command -v apt-get >/dev/null && command -v sudo >/dev/null; } || {
     echo "Keine apt/sudo-Reparatur verfuegbar. $package separat einrichten." >&2
     return 1
   }
@@ -266,7 +266,7 @@ wx_install_package() (
     constraints="$(mktemp "$WX_BASE/runtime_constraints_XXXXXX")" || return 1
     wx_torch_constraints >"$constraints" || return 1
     printf '%s\n' 'numpy>=2.1,<3' 'transformers<5' >>"$constraints"
-    options=(--constraint "$constraints" --only-binary=torch,torchaudio,torchvision,torchcodec,triton,ctranslate2,numpy,scipy,numba,llvmlite)
+    options=(--constraint "$constraints" "--only-binary=torch,torchaudio,torchvision,torchcodec,triton,ctranslate2,numpy,scipy,numba,llvmlite")
     flavor=runtime
   fi
   "$WX_VENV/bin/python" -I -B -m pip --isolated install --no-cache-dir \
@@ -362,6 +362,7 @@ whisperx_main() (
   log="$(mktemp "$WX_LOGS/whisperx_$(date +%Y%m%d_%H%M%S)_XXXXXX.log")"
   exec > >(tee -a "$log") 2>&1
   echo "WhisperX-Installer: 2026-10-19-venv-dependency-repair; Aktion: $mode; Pin: $WX_COMMIT"
+  local rc
   trap 'rc=$?; if ((rc != 0)); then echo "WhisperX-Fehler ($rc); Dateien erhalten. Log: $log. Nach Behebung --repair verwenden."; fi' EXIT
   if [[ "$mode" == uninstall || "$mode" == --uninstall ]]; then
     wx_deactivate

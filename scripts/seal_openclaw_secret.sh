@@ -3,7 +3,7 @@
 set -euo pipefail
 set +x
 umask 077
-cert= cert_sha= output= namespace=ai-agents name=openclaw-api key=OPENCLAW_API_KEY
+cert='' cert_sha='' output='' namespace=ai-agents name=openclaw-api key=OPENCLAW_API_KEY
 die() {
   printf 'Sealing abgebrochen: %s\n' "$*" >&2
   exit 1
@@ -30,7 +30,7 @@ done
 [[ "$key" =~ ^[A-Za-z0-9_.-]+$ ]] || die 'Secret-Feldname ungueltig.'
 for tool in kubeseal python3; do command -v "$tool" >/dev/null || die "Werkzeug fehlt: $tool"; done
 [[ -t 0 ]] || die 'Secret nur interaktiv verdeckt eingeben; kein Key in CLI-Argumenten.'
-secret= stage=
+secret='' stage=''
 cleanup() {
   unset secret
   [[ -z "$stage" ]] || rm -f -- "$stage"

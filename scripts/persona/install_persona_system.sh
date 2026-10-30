@@ -51,7 +51,8 @@ backup_then_copy_file() {
   mkdir -p "$(dirname "$target_file")"
 
   if [ -f "$target_file" ]; then
-    local backup_file="${target_file}.bak.$(date +%Y%m%d_%H%M%S)"
+    local backup_file
+    backup_file="${target_file}.bak.$(date +%Y%m%d_%H%M%S)"
     cp "$target_file" "$backup_file"
     log_warn "Bestehende Datei gesichert: $backup_file"
   fi
@@ -66,7 +67,7 @@ copy_tree_with_backups() {
 
   mkdir -p "$target_dir"
   while IFS= read -r -d '' file; do
-    local relative_path="${file#$source_dir/}"
+    local relative_path="${file#"$source_dir"/}"
     backup_then_copy_file "$file" "$target_dir/$relative_path"
   done < <(find "$source_dir" -type f -print0)
 }

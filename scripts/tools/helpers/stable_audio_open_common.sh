@@ -127,7 +127,7 @@ sa_python_build_resources() {
 sa_select_python() {
   local candidate answer="" consent="${STABLE_AUDIO_OPEN_BUILD_PYTHON:-ask}"
   if [[ -n "${STABLE_AUDIO_OPEN_PYTHON_BIN:-}" ]]; then
-    command -v "$SA_PYTHON" >/dev/null && private_cpython310_ok "$SA_PYTHON" || {
+    { command -v "$SA_PYTHON" >/dev/null && private_cpython310_ok "$SA_PYTHON"; } || {
       echo 'Explizites STABLE_AUDIO_OPEN_PYTHON_BIN ist nicht nutzbar (Python 3.10 + venv/SSL erforderlich). Keine automatische Ersetzung.' >&2
       return 1
     }
@@ -268,6 +268,7 @@ stable_audio_open_main() (
   log="$(mktemp "$SA_LOGS/stable_audio_open_$(date +%Y%m%d_%H%M%S)_XXXXXX.log")"
   exec > >(tee -a "$log") 2>&1
   echo "Stable Audio Open-Installer: 2026-10-18-private-python310; Aktion: $mode; Pin: $SA_COMMIT"
+  local rc
   trap 'rc=$?; if ((rc != 0)); then echo "Stable Audio Open-Fehler ($rc); Dateien erhalten. Log: $log. Nach Behebung --repair verwenden."; fi' EXIT
   if [[ "$mode" == uninstall || "$mode" == --uninstall ]]; then
     sa_deactivate

@@ -1220,7 +1220,7 @@ show_recent_measurements() {
 
   if [ ! -f "$METRICS_HISTORY_FILE" ]; then
     echo -e "${YELLOW}Es liegen noch keine Messwerte vor.${NC}"
-    read -p "Drücken Sie Enter..."
+    read -r -p "Drücken Sie Enter..."
     return 0
   fi
 
@@ -1249,7 +1249,7 @@ show_recent_measurements() {
         { print }
     '
   echo
-  read -p "Drücken Sie Enter..."
+  read -r -p "Drücken Sie Enter..."
 }
 
 show_operation_intro() {
@@ -1637,7 +1637,7 @@ show_installation_monitoring_menu() {
           echo -e "${GREEN}Erweiterte Installationsüberwachung wurde aktiviert.${NC}"
           echo -e "${YELLOW}Ab jetzt werden Tool-Installationen und -Deinstallationen zusätzlich ins Terminal protokolliert, in Logdateien geschrieben und nach jedem Schritt manuell bestätigt.${NC}"
         fi
-        read -p "Drücken Sie Enter..."
+        read -r -p "Drücken Sie Enter..."
         ;;
       2)
         if is_preference_enabled "${OVERVIEW_METRICS_ENABLED:-false}"; then
@@ -1647,7 +1647,7 @@ show_installation_monitoring_menu() {
           set_overview_metrics_mode "true"
           echo -e "${GREEN}Zeit-/Speicherwerte in Tool-/Profilübersichten wurden aktiviert.${NC}"
         fi
-        read -p "Drücken Sie Enter..."
+        read -r -p "Drücken Sie Enter..."
         ;;
       3)
         if is_preference_enabled "${MENU_LOADING_NOTICE_ENABLED:-true}"; then
@@ -1657,7 +1657,7 @@ show_installation_monitoring_menu() {
           set_menu_loading_notice_mode "true"
           echo -e "${GREEN}Lade-Hinweis vor Tool-/Profilübersichten wurde aktiviert.${NC}"
         fi
-        read -p "Drücken Sie Enter..."
+        read -r -p "Drücken Sie Enter..."
         ;;
       4)
         clear
@@ -1665,7 +1665,7 @@ show_installation_monitoring_menu() {
         echo -e "${YELLOW}Log-Verzeichnis für Installations- und Deinstallationsläufe:${NC}"
         echo "$USER_INSTALL_LOG_DIR"
         echo
-        read -p "Drücken Sie Enter..."
+        read -r -p "Drücken Sie Enter..."
         ;;
       5)
         show_recent_install_logs
@@ -1682,27 +1682,27 @@ show_installation_monitoring_menu() {
           echo -e "${GREEN}Automatische Log-Aufräumung vor Installationen wurde aktiviert.${NC}"
           echo -e "${YELLOW}Es werden nur alte Installations- und Diagnoseberichte im Benutzer-Workspace rotiert.${NC}"
         fi
-        read -p "Drücken Sie Enter..."
+        read -r -p "Drücken Sie Enter..."
         ;;
       8)
         clear
         run_setup_log_cleanup "dry-run"
         echo
-        read -p "Drücken Sie Enter..."
+        read -r -p "Drücken Sie Enter..."
         ;;
       9)
         clear
         echo -e "${YELLOW}Alte Logs werden jetzt anhand der aktuellen Aufbewahrungsregeln gelöscht.${NC}"
         run_setup_log_cleanup "apply"
         echo
-        read -p "Drücken Sie Enter..."
+        read -r -p "Drücken Sie Enter..."
         ;;
       10)
         clear
         echo -e "${YELLOW}Alte Fehler-Logs werden jetzt anhand der aktuellen Aufbewahrungsregeln gelöscht.${NC}"
         run_setup_log_cleanup "apply" "true"
         echo
-        read -p "Drücken Sie Enter..."
+        read -r -p "Drücken Sie Enter..."
         ;;
       11)
         show_log_cleanup_settings_menu
@@ -1711,38 +1711,38 @@ show_installation_monitoring_menu() {
         clear
         bash "$INSTALL_DIR/scripts/install_run_diagnostics.sh"
         echo
-        read -p "Installationslauf-Diagnose abgeschlossen. Drücken Sie Enter..."
+        read -r -p "Installationslauf-Diagnose abgeschlossen. Drücken Sie Enter..."
         ;;
       13)
         clear
         bash "$INSTALL_DIR/scripts/dependency_snapshot.sh"
         echo
-        read -p "Abhängigkeiten-/Speicher-Snapshot abgeschlossen. Drücken Sie Enter..."
+        read -r -p "Abhängigkeiten-/Speicher-Snapshot abgeschlossen. Drücken Sie Enter..."
         ;;
       14)
         clear
         bash "$INSTALL_DIR/scripts/cleanup_installation_residues.sh" --dry-run --all
         echo
-        read -p "Trockenlauf abgeschlossen. Drücken Sie Enter..."
+        read -r -p "Trockenlauf abgeschlossen. Drücken Sie Enter..."
         ;;
       15)
         clear
         bash "$INSTALL_DIR/scripts/cleanup_installation_residues.sh" --apply --all
         echo
-        read -p "Bereinigung abgeschlossen oder abgebrochen. Drücken Sie Enter..."
+        read -r -p "Bereinigung abgeschlossen oder abgebrochen. Drücken Sie Enter..."
         ;;
       16)
         clear
         bash "$INSTALL_DIR/scripts/cleanup_installation_residues.sh" --dry-run --opt-tools
         echo
-        read -p "Trockenlauf abgeschlossen. Drücken Sie Enter..."
+        read -r -p "Trockenlauf abgeschlossen. Drücken Sie Enter..."
         ;;
       17)
         clear
         echo -e "${YELLOW}/opt-Toolreste werden jetzt einzeln abgefragt. Docker-Volumes bleiben geschützt.${NC}"
         bash "$INSTALL_DIR/scripts/cleanup_installation_residues.sh" --apply --opt-tools
         echo
-        read -p "Bereinigung abgeschlossen oder abgebrochen. Drücken Sie Enter..."
+        read -r -p "Bereinigung abgeschlossen oder abgebrochen. Drücken Sie Enter..."
         ;;
       18)
         return 0
@@ -1764,7 +1764,7 @@ show_log_cleanup_settings_menu() {
 
   new_days="$(cat /tmp/log_cleanup_days)"
   if ! set_log_cleanup_number_preference "LOG_CLEANUP_RETENTION_DAYS" "$new_days"; then
-    read -p "Drücken Sie Enter..."
+    read -r -p "Drücken Sie Enter..."
     return 1
   fi
 
@@ -1777,12 +1777,12 @@ show_log_cleanup_settings_menu() {
 
   new_keep="$(cat /tmp/log_cleanup_keep)"
   if ! set_log_cleanup_number_preference "LOG_CLEANUP_KEEP_RECENT" "$new_keep"; then
-    read -p "Drücken Sie Enter..."
+    read -r -p "Drücken Sie Enter..."
     return 1
   fi
 
   echo -e "${GREEN}Log-Aufbewahrung aktualisiert: ${LOG_CLEANUP_RETENTION_DAYS} Tage, neueste ${LOG_CLEANUP_KEEP_RECENT} Dateien behalten.${NC}"
-  read -p "Drücken Sie Enter..."
+  read -r -p "Drücken Sie Enter..."
 }
 
 show_recent_install_logs() {
@@ -1805,7 +1805,7 @@ show_recent_install_logs() {
     echo -e "${YELLOW}Es wurden noch keine Installations- oder Deinstallationslogs gefunden.${NC}"
     echo -e "${YELLOW}Log-Verzeichnis:${NC} $USER_INSTALL_LOG_DIR"
     echo
-    read -p "Drücken Sie Enter..."
+    read -r -p "Drücken Sie Enter..."
     return 0
   fi
 
@@ -1827,7 +1827,7 @@ show_recent_install_logs() {
   echo
   tail -n 200 "$full_path"
   echo
-  read -p "Drücken Sie Enter..."
+  read -r -p "Drücken Sie Enter..."
 }
 
 find_latest_install_log_file() {
@@ -1865,7 +1865,7 @@ show_install_log_tail_now() {
   echo
   tail -n 220 "$log_file"
   echo
-  read -p "Drücken Sie Enter..."
+  read -r -p "Drücken Sie Enter..."
 }
 
 run_install_log_diagnostics_now() {
@@ -1892,7 +1892,7 @@ run_install_log_diagnostics_now() {
     bash "$diagnostics_script" --log "$log_file" --no-email
   fi
   echo
-  read -p "Drücken Sie Enter..."
+  read -r -p "Drücken Sie Enter..."
 }
 
 show_diagnostics_quick_menu() {
@@ -1920,27 +1920,27 @@ show_diagnostics_quick_menu() {
         ;;
       1)
         bash "$INSTALL_DIR/scripts/last_install_log.sh" --failed
-        read -p "Letzter Fehlerbericht angezeigt. Drücken Sie Enter..."
+        read -r -p "Letzter Fehlerbericht angezeigt. Drücken Sie Enter..."
         ;;
       2)
         bash "$INSTALL_DIR/scripts/last_install_log.sh"
-        read -p "Letztes Installationsprotokoll angezeigt. Drücken Sie Enter..."
+        read -r -p "Letztes Installationsprotokoll angezeigt. Drücken Sie Enter..."
         ;;
       3)
         bash "$INSTALL_DIR/scripts/tool_log_diagnostics.sh"
-        read -p "Tool-Logdiagnose abgeschlossen. Drücken Sie Enter..."
+        read -r -p "Tool-Logdiagnose abgeschlossen. Drücken Sie Enter..."
         ;;
       4)
         bash "$INSTALL_DIR/scripts/install_run_diagnostics.sh"
-        read -p "Installationslauf-Diagnose abgeschlossen. Drücken Sie Enter..."
+        read -r -p "Installationslauf-Diagnose abgeschlossen. Drücken Sie Enter..."
         ;;
       5)
         bash "$INSTALL_DIR/scripts/dependency_snapshot.sh"
-        read -p "Abhängigkeiten-/Speicher-Snapshot abgeschlossen. Drücken Sie Enter..."
+        read -r -p "Abhängigkeiten-/Speicher-Snapshot abgeschlossen. Drücken Sie Enter..."
         ;;
       6)
         bash "$INSTALL_DIR/scripts/last_install_log.sh" --email
-        read -p "E-Mail-Diagnose abgeschlossen. Drücken Sie Enter..."
+        read -r -p "E-Mail-Diagnose abgeschlossen. Drücken Sie Enter..."
         ;;
     esac
   done
@@ -2203,7 +2203,7 @@ show_user_workspace_menu() {
         echo
         echo -e "${YELLOW}${TXT_WORKSPACE_PATH_LABEL:-Benutzer-Workspace:}${NC} $USER_WORKSPACE_DIR"
         echo
-        read -p "${TXT_PRESS_ENTER:-Drücken Sie Enter...}"
+        read -r -p "${TXT_PRESS_ENTER:-Drücken Sie Enter...}"
         ;;
       2)
         clear
@@ -2211,13 +2211,13 @@ show_user_workspace_menu() {
         echo -e "${YELLOW}${TXT_WORKSPACE_CONTENT_LABEL:-Inhalt des Benutzer-Workspace:}${NC}"
         find "$USER_WORKSPACE_DIR" -maxdepth 3 -type f 2>/dev/null | sort
         echo
-        read -p "${TXT_PRESS_ENTER:-Drücken Sie Enter...}"
+        read -r -p "${TXT_PRESS_ENTER:-Drücken Sie Enter...}"
         ;;
       3)
         cp "$INSTALL_DIR/scripts/config_templates/openclaw/.env.template" "$USER_OPENCLAW_TEMPLATE_DIR/.env.template"
         cp "$INSTALL_DIR/scripts/config_templates/openclaw/config.json.template" "$USER_OPENCLAW_TEMPLATE_DIR/config.json.template"
         echo -e "${GREEN}${TXT_WORKSPACE_OPENCLAW_COPIED:-Die OpenClaw-Vorlagen wurden erneut in den Benutzer-Workspace kopiert.}${NC}"
-        read -p "${TXT_PRESS_ENTER:-Drücken Sie Enter...}"
+        read -r -p "${TXT_PRESS_ENTER:-Drücken Sie Enter...}"
         ;;
       4)
         if [ -d "$INSTALL_DIR/docs/Profil" ]; then
@@ -2227,7 +2227,7 @@ show_user_workspace_menu() {
           find "$INSTALL_DIR/docs/Profile" -maxdepth 1 -type f -name '*.md' -exec cp {} "$USER_PROFILE_RENDERED_DIR/" \;
         fi
         echo -e "${GREEN}${TXT_WORKSPACE_PROFILES_COPIED:-Profil-Quellen und abgeleitete Profilseiten wurden erneut in den Benutzer-Workspace kopiert.}${NC}"
-        read -p "${TXT_PRESS_ENTER:-Drücken Sie Enter...}"
+        read -r -p "${TXT_PRESS_ENTER:-Drücken Sie Enter...}"
         ;;
       5)
         clear
@@ -2236,7 +2236,7 @@ show_user_workspace_menu() {
         echo
         find "$USER_PROMPTS_DIR" -maxdepth 2 -type f 2>/dev/null | sort
         echo
-        read -p "${TXT_PRESS_ENTER:-Drücken Sie Enter...}"
+        read -r -p "${TXT_PRESS_ENTER:-Drücken Sie Enter...}"
         ;;
       6)
         show_recent_measurements
@@ -2248,7 +2248,7 @@ show_user_workspace_menu() {
       8)
         if show_setup_language_menu; then
           echo -e "${GREEN}${TXT_LANGUAGE_CHANGED:-Die Setup-Sprache wurde aktualisiert.}${NC}"
-          read -p "${TXT_PRESS_ENTER:-Drücken Sie Enter...}"
+          read -r -p "${TXT_PRESS_ENTER:-Drücken Sie Enter...}"
         fi
         ;;
       9)
@@ -2304,7 +2304,7 @@ show_options_menu() {
       1)
         if show_setup_language_menu; then
           echo -e "${GREEN}${TXT_LANGUAGE_CHANGED:-Die Setup-Sprache wurde aktualisiert.}${NC}"
-          read -p "${TXT_PRESS_ENTER:-Drücken Sie Enter...}"
+          read -r -p "${TXT_PRESS_ENTER:-Drücken Sie Enter...}"
         fi
         ;;
       2)
@@ -2312,7 +2312,7 @@ show_options_menu() {
         ;;
       3)
         show_metrics_editor
-        read -p "Setup-Messwerte aktualisiert. Drücken Sie Enter..."
+        read -r -p "Setup-Messwerte aktualisiert. Drücken Sie Enter..."
         ;;
       4)
         show_user_workspace_menu
@@ -2365,7 +2365,7 @@ show_options_menu() {
         begin_operation_measurement "main_menu_update_check" "Nur auf Setup-Updates prüfen"
         run_bash_script "$INSTALL_DIR/scripts/check_setup_updates.sh"
         if [ $? -eq 0 ]; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
-        read -p "Update-Prüfung abgeschlossen. Drücken Sie Enter..."
+        read -r -p "Update-Prüfung abgeschlossen. Drücken Sie Enter..."
         ;;
       13)
         local_update_rc=0
@@ -2386,10 +2386,10 @@ show_options_menu() {
           end_operation_measurement "failed"
         fi
         if [ "$local_update_rc" -eq 0 ]; then
-          read -p "Setup-Update abgeschlossen. Drücken Sie Enter, um das Setup-Menue neu zu starten..."
+          read -r -p "Setup-Update abgeschlossen. Drücken Sie Enter, um das Setup-Menue neu zu starten..."
           restart_setup_menu_after_update
         fi
-        read -p "Setup-Update abgeschlossen. Drücken Sie Enter..."
+        read -r -p "Setup-Update abgeschlossen. Drücken Sie Enter..."
         ;;
       14)
         show_installation_monitoring_menu
@@ -2402,11 +2402,11 @@ show_options_menu() {
         ;;
       17)
         bash "$INSTALL_DIR/scripts/install_run_diagnostics.sh"
-        read -p "Installationslauf-Diagnose abgeschlossen. Drücken Sie Enter..."
+        read -r -p "Installationslauf-Diagnose abgeschlossen. Drücken Sie Enter..."
         ;;
       18)
         bash "$INSTALL_DIR/scripts/dependency_snapshot.sh"
-        read -p "Abhängigkeiten-/Speicher-Snapshot abgeschlossen. Drücken Sie Enter..."
+        read -r -p "Abhängigkeiten-/Speicher-Snapshot abgeschlossen. Drücken Sie Enter..."
         ;;
       19)
         if command -v python3 >/dev/null 2>&1; then
@@ -4117,7 +4117,7 @@ show_tool_management_menu() {
     return 0
   fi
 
-  read -p "Tool-Management abgeschlossen. Drücken Sie Enter..."
+  read -r -p "Tool-Management abgeschlossen. Drücken Sie Enter..."
 }
 
 declare -A PROFILE_CORE_TOOLS
@@ -4927,10 +4927,10 @@ while true; do
       local_update_rc=$?
       if [ "$local_update_rc" -eq 0 ]; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
       if [ "$local_update_rc" -eq 0 ]; then
-        read -p "System-Update abgeschlossen. Drücken Sie Enter, um das Setup-Menue neu zu starten..."
+        read -r -p "System-Update abgeschlossen. Drücken Sie Enter, um das Setup-Menue neu zu starten..."
         restart_setup_menu_after_update
       fi
-      read -p "System-Update abgeschlossen. Drücken Sie Enter..."
+      read -r -p "System-Update abgeschlossen. Drücken Sie Enter..."
       ;;
     2)
       show_operation_intro \
@@ -4940,11 +4940,11 @@ while true; do
         "15-40 GB ohne Modelle, mit mehreren Modellen deutlich mehr" \
         "Die eigentliche Dauer haengt stark von Modellgroesse, Internetgeschwindigkeit und SSD-Leistung ab."
       run_bash_script "$INSTALL_DIR/scripts/ollama_model_manager.sh"
-      read -p "Ollama Modell-Management abgeschlossen. Drücken Sie Enter..."
+      read -r -p "Ollama Modell-Management abgeschlossen. Drücken Sie Enter..."
       ;;
     3)
       run_bash_script "$INSTALL_DIR/scripts/openclaw_config_manager.sh"
-      read -p "OpenClaw Konfiguration abgeschlossen. Drücken Sie Enter..."
+      read -r -p "OpenClaw Konfiguration abgeschlossen. Drücken Sie Enter..."
       ;;
     15)
       clear
@@ -4967,7 +4967,7 @@ while true; do
       if [ -f "$INSTALL_DIR/docs/media_studio/SETUP_MENU.md" ]; then
         sed -n '1,120p' "$INSTALL_DIR/docs/media_studio/SETUP_MENU.md"
       fi
-      read -p "MEDIA STUDIO Übersicht angezeigt. Drücken Sie Enter..."
+      read -r -p "MEDIA STUDIO Übersicht angezeigt. Drücken Sie Enter..."
       ;;
     4)
       show_operation_intro \
@@ -4985,7 +4985,7 @@ while true; do
         end_operation_measurement "failed"
         echo -e "${RED}Hybrid-Setup abgebrochen, weil die Basis-Installation fehlgeschlagen ist.${NC}"
       fi
-      read -p "Hybrid-Setup abgeschlossen. Drücken Sie Enter..."
+      read -r -p "Hybrid-Setup abgeschlossen. Drücken Sie Enter..."
       ;;
     5)
       show_operation_intro \
@@ -5003,7 +5003,7 @@ while true; do
         end_operation_measurement "failed"
         echo -e "${RED}VPS-Standalone-Setup abgebrochen, weil die Basis-Installation fehlgeschlagen ist.${NC}"
       fi
-      read -p "VPS-Standalone-Setup abgeschlossen. Drücken Sie Enter..."
+      read -r -p "VPS-Standalone-Setup abgeschlossen. Drücken Sie Enter..."
       ;;
     6)
       load_metrics_config
@@ -5022,7 +5022,7 @@ while true; do
         end_operation_measurement "failed"
         echo -e "${RED}Standalone MiniPC-Setup abgebrochen, weil die Basis-Installation fehlgeschlagen ist.${NC}"
       fi
-      read -p "Standalone MiniPC-Setup abgeschlossen. Drücken Sie Enter..."
+      read -r -p "Standalone MiniPC-Setup abgeschlossen. Drücken Sie Enter..."
       ;;
     ────────*)
       continue
@@ -5038,7 +5038,7 @@ while true; do
       echo -e "${BLUE}Ruflo Installation & Management...${NC}"
       run_bash_script "$INSTALL_DIR/scripts/ruflo_install.sh"
       if [ $? -eq 0 ]; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
-      read -p "Ruflo-Aktion abgeschlossen. Drücken Sie Enter..."
+      read -r -p "Ruflo-Aktion abgeschlossen. Drücken Sie Enter..."
       ;;
     16)
       show_development_toolchain_check || true
@@ -5062,7 +5062,7 @@ while true; do
       ;;
     11)
       run_bash_script "$INSTALL_DIR/scripts/port_check.sh"
-      read -p "Port-Analyse abgeschlossen. Drücken Sie Enter..."
+      read -r -p "Port-Analyse abgeschlossen. Drücken Sie Enter..."
       ;;
     12)
       show_operation_intro \

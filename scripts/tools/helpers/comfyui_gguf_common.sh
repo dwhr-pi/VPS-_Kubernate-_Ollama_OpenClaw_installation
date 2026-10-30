@@ -273,7 +273,7 @@ comfyui_gguf_main() (
       return 0
       ;;
     doctor | check | --check)
-      cg_installed && cg_syntax && "$CG_PYTHON" -I -B -m pip --isolated check || {
+      { cg_installed && cg_syntax && "$CG_PYTHON" -I -B -m pip --isolated check; } || {
         echo 'GGUF-Integration fehlt/ist inkonsistent. Source-only ist keine aktive ComfyUI-Erweiterung.' >&2
         return 1
       }
@@ -326,6 +326,7 @@ comfyui_gguf_main() (
   log="$(mktemp "$CG_LOGS/comfyui_gguf_$(date +%Y%m%d_%H%M%S)_XXXXXX.log")"
   exec > >(tee -a "$log") 2>&1
   echo "ComfyUI-GGUF-Installer: 2026-10-19-guided-base-check; Aktion: $mode; Modus: $install_mode"
+  local rc
   trap 'rc=$?; if ((rc != 0)); then echo "GGUF-Fehler ($rc). Quelle/Daten erhalten. Log: $log; nach Behebung --repair verwenden."; fi' EXIT
   if [[ "$mode" == uninstall || "$mode" == --uninstall ]]; then
     cg_deactivate

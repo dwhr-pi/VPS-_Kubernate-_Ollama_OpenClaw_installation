@@ -137,7 +137,7 @@ else
   }
 fi
 
-cd "$ACTIVEPIECES_DIR"
+cd "$ACTIVEPIECES_DIR" || exit 1
 if [ ! -f package.json ]; then
   echo -e "${RED}Fehler: Activepieces-Clone ist unvollstaendig, package.json fehlt in $ACTIVEPIECES_DIR.${NC}"
   echo -e "${YELLOW}pnpm wird bewusst nicht gestartet, damit der eigentliche Git-Fehler sichtbar bleibt.${NC}"
