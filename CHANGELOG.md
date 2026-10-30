@@ -4,12 +4,12 @@
 
 ### 2026-10-30: Freigegebene Formatierungsbereinigung
 
-- Gemeinsame Shell-Formatter-Optionen und dokumentierte Markdown-Regeln;
-  mechanische Formatierung mit getrennten Struktur- und Testvertragskorrekturen.
-- Dokumentationspruefungen tolerieren Layout, nicht fehlende Sicherheitswarnungen.
-  Quellpruefungen behalten Markerpfade und Aufrufreihenfolgen bei.
-- 348 betroffene Tests gruen; globale Shell-/Linkbefunde bleiben offen.
-  Keine Runtime-Installation, Produktionsfreigabe oder Uebernahme nach main.
+- Gemeinsame Shell-Formatter-Optionen und dokumentierte Markdown-Regeln; mechanische Formatierung
+  mit getrennten Struktur- und Testvertragskorrekturen.
+- Dokumentationspruefungen tolerieren Layout, nicht fehlende Sicherheitswarnungen. Quellpruefungen
+  behalten Markerpfade und Aufrufreihenfolgen bei.
+- 348 betroffene Tests gruen; globale Shell-/Linkbefunde bleiben offen. Keine Runtime-Installation,
+  Produktionsfreigabe oder Uebernahme nach main.
 
 ### 2026-10-29: Legacy-Kubernetes-Manifest mit Freigabe archiviert
 
@@ -655,10 +655,10 @@
   pnpm-Update, keine Downloads bei Status/Doctor, kein Agentenstart. Mit AUTOMATON_AUTO_RUNTIME=0
   deaktivierbar.
 
-- FreeLLMAPI: fehlendes/inkompatibles Node/npm bei expliziter Installation oder Repair automatisch
-  privat ueber vorhandenen GitHub-nvm-Helfer bereitstellen. Ressourcen/Lock/Log vor Bootstrap;
-  kompatible Runtimes weiterverwenden, Status/Doctor/Start ohne Downloads, System-Node/Shellprofile
-  unveraendert.
+- FreeLLMAPI benoetigt bei fehlendem/inkompatiblem Node/npm zur expliziten Installation oder Repair
+  automatisch privat ueber vorhandenen GitHub-nvm-Helfer bereitstellen. Ressourcen/Lock/Log vor
+  Bootstrap; kompatible Runtimes weiterverwenden, Status/Doctor/Start ohne Downloads,
+  System-Node/Shellprofile unveraendert.
 
 - Qwen_Code vom allgemeinen Hybrid-Platzhalter auf eigenen gepinnten GitHub- CLI-Source-Build ohne
   Docker umgestellt; kein Login/Start/Modell-Download.

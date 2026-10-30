@@ -58,7 +58,7 @@ git() {
             printf '{}' > "$FREELLMAPI_SOURCE_DIR/server/package.json"
             printf '{}' > "$FREELLMAPI_SOURCE_DIR/client/package.json" ;;
         *'remote get-url origin') printf '%s\n' "$FREELLMAPI_SOURCE_URL" ;;
-        *'rev-parse HEAD') printf '%s\n' "${MOCK_COMMIT:-$FREELLMAPI_SOURCE_COMMIT}" ;;
+        *'rev-parse HEAD') printf '%s\n' "${MOCK_COMMIT:-$FREE_LLM_SOURCE_COMMIT}" ;;
         *'status --porcelain'*)
             if [[ "${DIRTY:-0}" == 1 ]]; then echo ' M README.md'; fi ;;
         *) return 99 ;;

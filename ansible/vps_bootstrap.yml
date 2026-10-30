@@ -13,7 +13,7 @@
     docker_architectures:
       x86_64: amd64
       aarch64: arm64
-    docker_key_sha256: 1500c1f56fa9e26b9b8f42452a553675796ade0807cdce11975eb98170b3a570
+    docker_signing_sha256: "{{ docker_key_sha256 | default('1500c1f56fa9e26b9b8f42452a553675796ade0807cdce11975eb98170b3a570') }}"
   pre_tasks:
     - name: Validate platform and explicit safety acknowledgements
       ansible.builtin.assert:
@@ -102,7 +102,7 @@
       ansible.builtin.get_url:
         url: https://download.docker.com/linux/ubuntu/gpg
         dest: /etc/apt/keyrings/docker.asc
-        checksum: "sha256:{{ docker_key_sha256 }}"
+        checksum: "sha256:{{ docker_signing_sha256 }}"
         mode: '0644'
     - name: Configure signed Docker repository
       ansible.builtin.apt_repository:

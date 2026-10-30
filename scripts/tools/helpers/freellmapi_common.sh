@@ -3,7 +3,7 @@ set -euo pipefail
 FREELLMAPI_REPO_ROOT="$(cd "${BASH_SOURCE[0]%/*}/../../.." && pwd)"
 FREELLMAPI_SOURCE_URL=https://github.com/tashfeenahmed/freellmapi.git
 FREELLMAPI_SOURCE_TAG=v0.14.2
-FREELLMAPI_SOURCE_COMMIT=57c0669233bbe0c70a0f9f9927613192be948773
+FREE_LLM_SOURCE_COMMIT=57c0669233bbe0c70a0f9f9927613192be948773
 FREELLMAPI_INSTALLER_REVISION=2026-10-16-github-source-no-docker
 FREELLMAPI_RUNTIME_REVISION=2026-10-16-private-node-bootstrap
 
@@ -161,7 +161,7 @@ freellmapi_lock() {
 
 freellmapi_is_built() {
   [[ -f "$FREELLMAPI_MARKER" && -f "$FREELLMAPI_SOURCE_DIR/server/dist/index.js" && -f "$FREELLMAPI_SOURCE_DIR/client/dist/index.html" ]] &&
-    grep -Fxq "$FREELLMAPI_SOURCE_COMMIT" "$FREELLMAPI_MARKER"
+    grep -Fxq "$FREE_LLM_SOURCE_COMMIT" "$FREELLMAPI_MARKER"
 }
 
 freellmapi_verify_source() {
@@ -170,7 +170,7 @@ freellmapi_verify_source() {
     return 1
   }
   [[ "$(git -C "$FREELLMAPI_SOURCE_DIR" remote get-url origin)" == "$FREELLMAPI_SOURCE_URL" &&
-  "$(git -C "$FREELLMAPI_SOURCE_DIR" rev-parse HEAD)" == "$FREELLMAPI_SOURCE_COMMIT" ]] || {
+  "$(git -C "$FREELLMAPI_SOURCE_DIR" rev-parse HEAD)" == "$FREE_LLM_SOURCE_COMMIT" ]] || {
     echo 'Fehler: Quelle/Commit weicht vom gepinnten GitHub-Stand ab; kein Reset/Checkout.' >&2
     return 1
   }
@@ -208,7 +208,7 @@ freellmapi_build() (
   exec > >(tee -a "$log") 2>&1
   local rc
   trap 'rc=$?; printf "Build Exit=%s Dauer=%ss Disk-vorher-KiB=%s\n" "$rc" "$((SECONDS-${started}))" "$before"; df -Pk "$mount"; exit "$rc"' EXIT
-  echo "FreeLLMAPI GitHub-Source $FREELLMAPI_SOURCE_TAG ($FREELLMAPI_SOURCE_COMMIT), ohne Container."
+  echo "FreeLLMAPI GitHub-Source $FREELLMAPI_SOURCE_TAG ($FREE_LLM_SOURCE_COMMIT), ohne Container."
   freellmapi_prepare_runtime || return 1
   if [[ "$mode" == install ]] && freellmapi_is_built; then
     freellmapi_smoke || return 1
@@ -233,7 +233,7 @@ freellmapi_build() (
     echo 'Fehler: Server/UI oder native SQLite-Abhaengigkeit nicht nutzbar.' >&2
     return 1
   }
-  printf '%s\n' "$FREELLMAPI_SOURCE_COMMIT" >"$FREELLMAPI_MARKER" || return 1
+  printf '%s\n' "$FREE_LLM_SOURCE_COMMIT" >"$FREELLMAPI_MARKER" || return 1
   echo 'Source-Build fertig, kein Server gestartet. Private ENV vorbereiten; dann bewusst freellmapi_start.sh verwenden.'
 )
 

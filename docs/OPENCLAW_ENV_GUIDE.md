@@ -130,9 +130,14 @@ Typischer Ablauf zum Suchen:
 
 ## 1. Minimal `.env` für localhost
 
+`<GENERATE_LOCALLY>` ist kein nutzbarer Token. Erzeuge pro Gateway einen eigenen Zufallswert, zum
+Beispiel lokal mit `openssl rand -hex 32`, und trage ihn nur in die externe, mit Modus 0600
+geschuetzte `.env` ein. Den alten veroeffentlichten Beispielwert niemals verwenden; falls er bereits
+eingesetzt wurde, rotieren.
+
 ```env
 # Security token for gateway access
-OPENCLAW_GATEWAY_TOKEN=8c3f7c2c0e2d7a0c0b3a4d3f8e1f9c5a7b2e6f4c1d9a0e5f7b3c2d1a6e9f0c1
+OPENCLAW_GATEWAY_TOKEN=<GENERATE_LOCALLY>
 
 # Storage directory for OpenClaw state
 OPENCLAW_STATE_DIR=/home/$USER/.openclaw
@@ -270,7 +275,7 @@ Konfigurationsentscheidung als eine reine Chat-UI-Auswahl.
 ## 6. Beispiel einer vollständigen lokalen `.env`
 
 ```env
-OPENCLAW_GATEWAY_TOKEN=8c3f7c2c0e2d7a0c0b3a4d3f8e1f9c5a7b2e6f4c1d9a0e5f7b3c2d1a6e9f0c1
+OPENCLAW_GATEWAY_TOKEN=<GENERATE_LOCALLY>
 
 OPENCLAW_STATE_DIR=/home/BENUTZERNAME/.openclaw
 OPENCLAW_CONFIG_PATH=/home/BENUTZERNAME/.openclaw/openclaw.json

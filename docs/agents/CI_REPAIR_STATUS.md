@@ -281,7 +281,42 @@ GitHub-Lauf keine vollstaendig gruene CI.
 Rollback erfolgt nur durch einen reviewten Gegen-Patch im Featurebranch. Es gibt keinen Datenbank-,
 Workspace- oder Cluster-Rollback, weil diese nicht veraendert wurden.
 
-## Erste lokale Abnahme (historisch)
+## Nachlauf des autonomen Patchsatzes
+
+Head `3409d90` bestand beide ShellCheck-Jobs. Die volle Linux-Regression meldete 2241 Tests, acht
+plattformbedingte Skips und zwei Fehler: der Quellen-Test erkannte erhaltene historische Inline-URLs
+nicht und die isolierte Dialog-Fixture lud die neue Formatvalidierung nicht. Beide Fixtures wurden
+korrigiert, ohne Produktivpruefungen zu entfernen.
+
+Der macOS-14-Job wurde vor Runner-Start durch den angekuendigten Brownout abgebrochen. Beleg:
+[offizielle Runner-Abkuendigung](https://github.com/actions/runner-images/issues/13518). Die
+unveraenderten Agententests laufen deshalb kuenftig auf macOS 15; Windows und Ubuntu bleiben.
+
+Der vollstaendige Dateiscan fand acht Treffer, die der separate differenzbasierte Git-Scan nicht
+meldete: oeffentliche Digest-/Commit-Metadaten, Prosa, alte Beispiel-Tokens und eine unsichere
+private Installationsanleitung. Die Metadaten sind jetzt eindeutig benannt, ihre festen Werte und
+Integritaetspruefungen unveraendert. Wiederverwendbare Tokenbeispiele wurden durch Platzhalter mit
+lokaler Erzeugungs- und Rotationsanleitung ersetzt. Private Installation verwendet keine Tokens in
+URLs oder Prozessargumenten und verweist auf die signierte Release-Pruefung. Gitleaks bleibt ohne
+neue Ausnahmen aktiv; Diagnosen nennen geschwaerzt Regel, Datei und Zeile.
+
+`docker_signing_sha256` benennt den oeffentlichen Ansible-Digest eindeutig; die alte Variable
+`docker_key_sha256` bleibt als kompatibler Override erhalten. Rollback nur als Gegen-Patch;
+veroeffentlichte Beispiel-Tokens nicht wieder in Betrieb nehmen. Echte User-ENV, Zugangsdaten und
+Dienste wurden nicht angefasst. Noch keine Gesamtfreigabe: der neue Head und die externen Quellen
+muessen erneut alle Gates bestehen.
+
+Lokale Nachpruefung: 53 Tests in vier betroffenen Modulen bestanden; ShellCheck, shfmt,
+Markdownlint und `git diff --check` ohne Befund. Der komplette Dateiscan mit dem offiziellen,
+SHA256-geprueften Gitleaks 8.30.1 meldete null Treffer, ohne neue Scanner-Ausnahmen. Kein lokaler
+Ansible-Apply; ein zusaetzlicher YAML-Parserlauf war mangels PyYAML nicht verfuegbar.
+
+Die acht Skips des vorigen Linux-Gesamtlaufs betrafen drei native Qwen-PowerShell-Fixtures, vier
+native Windows-Webinar-/Qwen-Launcher-Fixtures sowie den Windows-WSL-Launcher-Guard. Die dort
+benoetigte Windows-Umgebung existiert auf dem Linux-Runner nicht; es wurden keine neuen Skips
+eingefuehrt. Die Agenten-Vertragsmatrix auf Windows ersetzt keine volle Windows-Installationsabnahme.
+
+## Fruehere lokale Teilabnahme
 
 Lokale Abnahme dieses Reparatursatzes unter Windows mit nativem Git Bash: 156 Tests in 15
 betroffenen Modulen, **OK (2 uebersprungen)**. Der Offline-Registry-Check meldet weiterhin **0

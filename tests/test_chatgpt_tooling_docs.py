@@ -18,7 +18,13 @@ class ChatGPTToolingDocsTests(unittest.TestCase):
         expected = fixture["repositories"]
         self.assertEqual(len(expected), 90)
         self.assertEqual(len(set(expected)), len(expected))
-        actual = re.findall(r"\]\((https://github\.com/[^)]+)\)", SOURCES.read_text(encoding="utf-8"))
+        text = SOURCES.read_text(encoding="utf-8")
+        actual = re.findall(r"\]\((https://github\.com/[^)]+)\)", text)
+        # Unavailable originals remain provenance, not successful live links.
+        historical = re.findall(r"`(https://github\.com/[^`]+)` \(historische Quelle; Abruf 404, nicht als aktueller Beleg verifiziert\)", text)
+        self.assertEqual(historical, ['https://github.com/bminor/bash'])
+        self.assertIn('[Primaerquelle](https://www.gnu.org/software/bash/)', text)
+        actual += historical
         self.assertEqual(set(actual), set(expected))
         self.assertEqual(len(actual), len(expected))
         self.assertNotIn("utm_source", "\n".join(actual))
