@@ -99,12 +99,12 @@ for model in "${MODEL_KEYS[@]}"; do
   options+=("$model" "${MODEL_SIZE[$model]} | ${MODEL_RAM[$model]} | ${MODEL_DESC[$model]}" "$state")
 done
 
-dialog --clear --backtitle "OpenClaw & AI Infrastructure - Ultimate Setup" \
+if ! dialog --clear --backtitle "OpenClaw & AI Infrastructure - Ultimate Setup" \
   --title "Ollama Modellkatalog" --checklist \
   "Modelle auswählen: markiert = installiert, unmarkiert = entfernt." 26 120 14 \
-  "${options[@]}" 2>/tmp/ollama_catalog_selection
-
-[ $? -eq 0 ] || exit 0
+  "${options[@]}" 2>/tmp/ollama_catalog_selection; then
+  exit 0
+fi
 
 mapfile -t SELECTED_MODELS < <(tr ' ' '\n' </tmp/ollama_catalog_selection | tr -d '"' | sed '/^$/d')
 

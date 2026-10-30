@@ -107,7 +107,7 @@ main() {
   fi
 
   if command -v duckdb >/dev/null 2>&1; then
-    log "DuckDB ist bereits verfuegbar:"
+    log "$TOOL_NAME ist bereits verfuegbar:"
     duckdb --version
     exit 0
   fi

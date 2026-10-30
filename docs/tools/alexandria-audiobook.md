@@ -99,11 +99,11 @@ export ALEXANDRIA_PORT=4200
 "$base/venv/bin/python" app.py
 ```
 
-Port 4200 vorher auf Konflikte pruefen. Browser: [localhost:4200](http://127.0.0.1:4200). Keine
-Bindung an 0.0.0.0 oder oeffentlichen Tunnel. Unser Installer oeffnet keinen Port;
-Registry-Portliste leer. In der App LLM-Anbieter/Endpunkt bewusst pruefen; lokale OpenAI-kompatible
-Skriptaufbereitung ist kein Nachweis aller Modell-/TTS-Funktionen. Keine ungeprueften
-Cloud-Fallbacks oder Schluessel.
+Port 4200 vorher auf Konflikte pruefen. Browser: `http://127.0.0.1:4200` (lokales Beispiel, kein
+oeffentlicher Link). Keine Bindung an 0.0.0.0 oder oeffentlichen Tunnel. Unser Installer oeffnet
+keinen Port; Registry-Portliste leer. In der App LLM-Anbieter/Endpunkt bewusst pruefen; lokale
+OpenAI-kompatible Skriptaufbereitung ist kein Nachweis aller Modell-/TTS-Funktionen. Keine
+ungeprueften Cloud-Fallbacks oder Schluessel.
 
 ## 4. Ressourcen, Sicherheit und Update
 

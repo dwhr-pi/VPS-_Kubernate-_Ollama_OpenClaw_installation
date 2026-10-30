@@ -17,8 +17,6 @@ HUGINN_WEB_SERVICE="${HUGINN_WEB_SERVICE:-huginn-web.service}"
 HUGINN_WORKER_SERVICE="${HUGINN_WORKER_SERVICE:-huginn-worker.service}"
 USER_WORKSPACE_DIR="${HOME}/.openclaw_ultimate_user_data"
 HUGINN_USER_SETTINGS_FILE="${USER_WORKSPACE_DIR}/huginn/install_settings.env"
-HUGINN_LATEST_INSTALL_LOG_PATTERN="${USER_WORKSPACE_DIR}/install_logs/*tool_install_Huginn.log"
-HUGINN_LATEST_ANY_LOG_PATTERN="${USER_WORKSPACE_DIR}/install_logs/*Huginn*.log"
 
 print_header() {
   echo
@@ -65,13 +63,23 @@ detect_huginn_git_ref() {
 }
 
 detect_latest_huginn_log() {
-  # shellcheck disable=SC2086
-  ls -1t $HUGINN_LATEST_INSTALL_LOG_PATTERN 2>/dev/null | head -n 1 || true
+  latest_huginn_log_matching '*tool_install_Huginn.log'
 }
 
 detect_latest_any_huginn_log() {
-  # shellcheck disable=SC2086
-  ls -1t $HUGINN_LATEST_ANY_LOG_PATTERN 2>/dev/null | head -n 1 || true
+  latest_huginn_log_matching '*Huginn*.log'
+}
+
+latest_huginn_log_matching() {
+  local pattern="$1" candidate latest=""
+  while IFS= read -r -d '' candidate; do
+    if [ -z "$latest" ] || [ "$candidate" -nt "$latest" ]; then
+      latest="$candidate"
+    fi
+  done < <(find "$USER_WORKSPACE_DIR/install_logs" -maxdepth 1 -type f -name "$pattern" -print0 2>/dev/null)
+  if [ -n "$latest" ]; then
+    printf '%s\n' "$latest"
+  fi
 }
 
 huginn_runtime_healthy() {

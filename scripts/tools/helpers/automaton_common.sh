@@ -55,7 +55,8 @@ automaton_activate_private_node() {
   [[ "$(git -C "$AUTOMATON_NVM_DIR" remote get-url origin)" == https://github.com/nvm-sh/nvm.git ]] || return 1
   git -C "$AUTOMATON_NVM_DIR" diff --quiet HEAD -- nvm.sh || return 1
   export NVM_DIR="$AUTOMATON_NVM_DIR"
-  # shellcheck disable=SC1090
+  # Verified external nvm checkout; not present in the setup repository.
+  # shellcheck source=/dev/null
   source "$NVM_DIR/nvm.sh" --no-use || return 1
   nvm use 22 >/dev/null 2>&1
 }
@@ -199,7 +200,7 @@ automaton_build() (
   started="$SECONDS"
   exec > >(tee -a "$log") 2>&1
   local rc
-  trap 'rc=$?; printf "Automaton Build Exit=%s Dauer=%ss Disk-vorher-KiB=%s\n" "$rc" "$((SECONDS-started))" "$before"; df -Pk "$mount"; exit "$rc"' EXIT
+  trap 'rc=$?; printf "Automaton Build Exit=%s Dauer=%ss Disk-vorher-KiB=%s\n" "$rc" "$((SECONDS-${started}))" "$before"; df -Pk "$mount"; exit "$rc"' EXIT
   echo "Automaton GitHub-Source $AUTOMATON_SOURCE_COMMIT; kein Docker, Wallet- oder Agentenstart."
   automaton_prepare_runtime || {
     echo 'Automaton: Runtime-Bereitstellung fehlgeschlagen; Build gestoppt, kein neuer Erfolgsmarker.' >&2

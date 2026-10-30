@@ -7,20 +7,18 @@ log_error() { :; }
 python3.10() { return 1; }
 python3.11() { return 0; }
 python3() { return 1; }
-SD_WEBUI_PYTHON_BIN=python3.11
-[[ "$(sd_webui_find_python)" == python3.11 ]]
-SD_WEBUI_PYTHON_BIN=python3
-if sd_webui_find_python; then
+[[ "$(SD_WEBUI_PYTHON_BIN=python3.11 sd_webui_find_python)" == python3.11 ]]
+if SD_WEBUI_PYTHON_BIN=python3 sd_webui_find_python; then
   echo 'FAIL: Python 3.12 accepted'
   exit 1
 fi
-SD_WEBUI_PYTHON_BIN=python3.11
 begin_measurement() {
   echo 'Unexpected installation' >&2
   return 99
 }
-sd_webui_main --check
-sd_webui_main --dry-run
+# These runtime overrides are consumed by functions loaded through eval above.
+SD_WEBUI_PYTHON_BIN=python3.11 sd_webui_main --check
+SD_WEBUI_PYTHON_BIN=python3.11 sd_webui_main --dry-run
 TOOL_DIR="$(mktemp -d)"
 trap 'rm -rf -- "$TOOL_DIR"' EXIT
 mkdir -p "$TOOL_DIR/venv/bin"

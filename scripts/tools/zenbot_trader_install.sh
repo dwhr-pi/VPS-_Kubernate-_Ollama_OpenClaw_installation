@@ -36,16 +36,15 @@ fi
 
 # 2. Abhängigkeiten installieren mit pnpm
 echo -e "${BLUE}Installiere Abhängigkeiten für Zenbot-trader mit pnpm...${NC}"
-pnpm install
-if [ $? -ne 0 ]; then
+if ! pnpm install; then
   echo -e "${RED}Fehler: pnpm install für Zenbot-trader fehlgeschlagen.${NC}"
   exit 1
 fi
 
 # 3. Zenbot-trader bauen (falls notwendig)
 echo -e "${BLUE}Baue Zenbot-trader mit pnpm (falls notwendig)...${NC}"
-pnpm build # Annahme: Es gibt einen Build-Schritt
-if [ $? -ne 0 ]; then
+# Annahme: Es gibt einen Build-Schritt; ein Fehlschlag bleibt optional.
+if ! pnpm build; then
   echo -e "${YELLOW}Hinweis: pnpm build für Zenbot-trader fehlgeschlagen oder nicht notwendig.${NC}"
 fi
 

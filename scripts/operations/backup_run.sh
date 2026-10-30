@@ -28,7 +28,7 @@ fi
 # The encrypted vault lives under backups, which is intentionally excluded above.
 VAULT_FILE="${USER_WORKSPACE_DIR}/backups/credentials/env-vault.age"
 if [ -f "$VAULT_FILE" ] && [ ! -L "$VAULT_FILE" ]; then
-  mkdir -m 700 -p "$TARGET_DIR/credentials"
+  mkdir -m 700 "$TARGET_DIR/credentials"
   cp "$VAULT_FILE" "$TARGET_DIR/credentials/env-vault.age"
   chmod 600 "$TARGET_DIR/credentials/env-vault.age"
 fi

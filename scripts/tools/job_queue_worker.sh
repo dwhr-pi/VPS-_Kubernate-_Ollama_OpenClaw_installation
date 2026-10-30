@@ -81,7 +81,7 @@ run_one() {
   update_status "$job_id" running
   echo "Starte Job $job_id: $command"
   if timeout "$JOB_QUEUE_TIMEOUT_SECONDS" bash -lc "$command" >"$log_file" 2>&1; then
-    update_status "$job_id" done
+    update_status "$job_id" 'done'
     echo "Job fertig: $job_id"
   else
     update_status "$job_id" failed

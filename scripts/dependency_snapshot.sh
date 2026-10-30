@@ -85,9 +85,15 @@ human_du() {
   done
 
   echo "## Node"
-  command -v node >/dev/null 2>&1 && echo "- node: $(node --version)" || true
-  command -v npm >/dev/null 2>&1 && echo "- npm: $(npm --version)" || true
-  command -v pnpm >/dev/null 2>&1 && echo "- pnpm: $(pnpm --version)" || true
+  if command -v node >/dev/null 2>&1; then
+    echo "- node: $(node --version)" || true
+  fi
+  if command -v npm >/dev/null 2>&1; then
+    echo "- npm: $(npm --version)" || true
+  fi
+  if command -v pnpm >/dev/null 2>&1; then
+    echo "- pnpm: $(pnpm --version)" || true
+  fi
   echo
   if command -v npm >/dev/null 2>&1; then
     if command -v timeout >/dev/null 2>&1; then

@@ -48,11 +48,11 @@ Telegram und optionalen Erweiterungen. Der GitHub-Link fuehrt zu
 [NousResearch/hermes-agent](https://github.com/NousResearch/hermes-agent), nicht zu einem
 nachgewiesenen eigenen Jarvis-Quellcodeprojekt.
 
-Die im Nutzertext genannte Adresse [till-schaefer/jarvis](https://github.com/till-schaefer/jarvis)
-lieferte beim Pruefen **404**. Das beweist keine dauerhafte Nichtexistenz, belegt aber keinen
-installierbaren oeffentlichen Quellstand. Die behauptete Folge aus Clone,
-`pip install -r requirements.txt`, `.env.example` und `python main.py` ist deshalb **kein
-verifizierter Schnellstart** und wird nicht ausgefuehrt.
+Die im Nutzertext genannte Adresse `https://github.com/till-schaefer/jarvis` (historische Quelle;
+Abruf 404, nicht als aktueller Beleg verifiziert) lieferte beim Pruefen **404**. Das beweist keine
+dauerhafte Nichtexistenz, belegt aber keinen installierbaren oeffentlichen Quellstand. Die
+behauptete Folge aus Clone, `pip install -r requirements.txt`, `.env.example` und `python main.py`
+ist deshalb **kein verifizierter Schnellstart** und wird nicht ausgefuehrt.
 
 ### Belegte Inhalte statt vermuteter Architektur
 

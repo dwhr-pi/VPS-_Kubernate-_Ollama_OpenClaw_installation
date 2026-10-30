@@ -118,9 +118,7 @@ trap cleanup_temp_files EXIT
 
 while true; do
   ensure_user_workspace
-  show_openclaw_config_menu
-
-  if [ $? -ne 0 ] || [ ! -f "$OPENCLAW_CONFIG_CHOICE_FILE" ]; then
+  if ! show_openclaw_config_menu || [ ! -f "$OPENCLAW_CONFIG_CHOICE_FILE" ]; then
     break
   fi
 

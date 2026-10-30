@@ -60,10 +60,11 @@ install_ollama_model() {
   local sanitized_model_name
 
   rm -f "$MODEL_TO_INSTALL_FILE"
-  dialog --clear --backtitle "Ollama Modell-Manager" \
-    --inputbox "Geben Sie den Namen des zu installierenden Modells ein (z.B. llama3.2:1b, mistral, deepseek-coder):" 10 60 "" 2>"$MODEL_TO_INSTALL_FILE"
-
-  if [ $? -ne 0 ] || [ ! -f "$MODEL_TO_INSTALL_FILE" ]; then
+  if ! dialog --clear --backtitle "Ollama Modell-Manager" \
+    --inputbox "Geben Sie den Namen des zu installierenden Modells ein (z.B. llama3.2:1b, mistral, deepseek-coder):" 10 60 "" 2>"$MODEL_TO_INSTALL_FILE"; then
+    return 0
+  fi
+  if [ ! -f "$MODEL_TO_INSTALL_FILE" ]; then
     return
   fi
 
@@ -75,7 +76,8 @@ install_ollama_model() {
   fi
 
   echo -e "${BLUE}Installiere Modell: ${model_name}...${NC}"
-  sanitized_model_name="$(printf '%s' "$model_name" | tr '/: .' '_---')"
+  sanitized_model_name="${model_name//\//_}"
+  sanitized_model_name="${sanitized_model_name//[: .]/-}"
   begin_measurement "ollama_model_install_${sanitized_model_name}" "Ollama Modell installieren: ${model_name}"
   if ollama pull "$model_name"; then
     end_measurement "success"
@@ -92,10 +94,11 @@ uninstall_ollama_model() {
   local sanitized_model_name
 
   rm -f "$MODEL_TO_UNINSTALL_FILE"
-  dialog --clear --backtitle "Ollama Modell-Manager" \
-    --inputbox "Geben Sie den Namen des zu deinstallierenden Modells ein:" 10 60 "" 2>"$MODEL_TO_UNINSTALL_FILE"
-
-  if [ $? -ne 0 ] || [ ! -f "$MODEL_TO_UNINSTALL_FILE" ]; then
+  if ! dialog --clear --backtitle "Ollama Modell-Manager" \
+    --inputbox "Geben Sie den Namen des zu deinstallierenden Modells ein:" 10 60 "" 2>"$MODEL_TO_UNINSTALL_FILE"; then
+    return 0
+  fi
+  if [ ! -f "$MODEL_TO_UNINSTALL_FILE" ]; then
     return
   fi
 
@@ -107,7 +110,8 @@ uninstall_ollama_model() {
   fi
 
   echo -e "${BLUE}Deinstalliere Modell: ${model_name}...${NC}"
-  sanitized_model_name="$(printf '%s' "$model_name" | tr '/: .' '_---')"
+  sanitized_model_name="${model_name//\//_}"
+  sanitized_model_name="${sanitized_model_name//[: .]/-}"
   begin_measurement "ollama_model_uninstall_${sanitized_model_name}" "Ollama Modell deinstallieren: ${model_name}"
   if ollama rm "$model_name"; then
     end_measurement "success"
@@ -123,9 +127,7 @@ ensure_ollama_available
 trap cleanup_temp_files EXIT
 
 while true; do
-  show_ollama_menu
-
-  if [ $? -ne 0 ] || [ ! -f "$OLLAMA_CHOICE_FILE" ]; then
+  if ! show_ollama_menu || [ ! -f "$OLLAMA_CHOICE_FILE" ]; then
     break
   fi
 

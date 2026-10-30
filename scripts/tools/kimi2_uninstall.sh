@@ -28,8 +28,7 @@ fi
 
 # Installationsverzeichnis entfernen
 echo -e "${BLUE}Entferne Kimi 2 Installationsverzeichnis: ${KIMI2_DIR}${NC}"
-sudo rm -rf "$KIMI2_DIR"
-if [ $? -ne 0 ]; then
+if ! sudo rm -rf "$KIMI2_DIR"; then
   echo -e "${RED}Fehler beim Entfernen des Kimi 2 Installationsverzeichnisses.${NC}"
   exit 1
 fi

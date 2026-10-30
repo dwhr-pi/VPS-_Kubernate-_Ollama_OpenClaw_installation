@@ -55,6 +55,8 @@ ensure_node_tool_runtime() {
   fi
   export NVM_DIR="${NVM_DIR:-$HOME/.nvm}"
   if ! declare -F nvm >/dev/null && [ -s "$NVM_DIR/nvm.sh" ]; then
+    # External nvm checkout, available only after runtime provisioning.
+    # shellcheck source=/dev/null
     source "$NVM_DIR/nvm.sh" --no-use || return 1
   fi
   if declare -F nvm >/dev/null; then
@@ -70,6 +72,8 @@ ensure_node_tool_runtime() {
     run_apt_with_lock_wait install -y git curl ca-certificates tar xz-utils || return 1
     echo 'Installiere nvm v0.40.8 aus GitHub im Benutzerkonto. Keine Shellprofil-Aenderung.'
     GIT_TERMINAL_PROMPT=0 git clone --depth 1 --branch v0.40.8 https://github.com/nvm-sh/nvm.git "$NVM_DIR" || return 1
+    # Pinned external nvm checkout, not part of this repository.
+    # shellcheck source=/dev/null
     source "$NVM_DIR/nvm.sh" --no-use || return 1
   fi
   echo 'Stelle Node 22 samt npm ueber nvm bereit (nur Binary, kein Source-Build).'
@@ -116,7 +120,9 @@ install_node_tool() {
   if [ ! -f package.json ]; then
     npm init -y >/dev/null 2>&1
   fi
-  if ! npm install --engine-strict ${TOOL_NPM_PACKAGES}; then
+  local -a npm_packages
+  read -r -a npm_packages <<<"${TOOL_NPM_PACKAGES//$'\n'/ }"
+  if ! npm install --engine-strict "${npm_packages[@]}"; then
     echo "Fehler: npm-Installation von ${TOOL_NAME} fehlgeschlagen." >&2
     return 1
   fi

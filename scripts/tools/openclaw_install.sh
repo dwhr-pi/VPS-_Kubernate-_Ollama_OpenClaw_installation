@@ -43,16 +43,14 @@ fi
 
 # 2. Abhängigkeiten installieren mit pnpm
 echo -e "${BLUE}Installiere Abhängigkeiten für OpenClaw mit pnpm...${NC}"
-run_with_retry "$OPENCLAW_NETWORK_RETRY_ATTEMPTS" "$OPENCLAW_NETWORK_RETRY_DELAY_SECONDS" pnpm install
-if [ $? -ne 0 ]; then
+if ! run_with_retry "$OPENCLAW_NETWORK_RETRY_ATTEMPTS" "$OPENCLAW_NETWORK_RETRY_DELAY_SECONDS" pnpm install; then
   echo -e "${RED}Fehler: pnpm install für OpenClaw fehlgeschlagen.${NC}"
   exit 1
 fi
 
 # 3. OpenClaw bauen
 echo -e "${BLUE}Baue OpenClaw mit pnpm...${NC}"
-pnpm build
-if [ $? -ne 0 ]; then
+if ! pnpm build; then
   echo -e "${RED}Fehler: pnpm build für OpenClaw fehlgeschlagen.${NC}"
   exit 1
 fi

@@ -43,7 +43,7 @@ jobs:
 
       - name: Markdown links
         run: |
-          markdown-link-check readme.md
+          markdown-link-check -c .github/markdown-link-check.json readme.md
 
       - name: Secret scan
         uses: gitleaks/gitleaks-action@ff98106e4c7b2bc287b24eaf42907196329070c7 # v2

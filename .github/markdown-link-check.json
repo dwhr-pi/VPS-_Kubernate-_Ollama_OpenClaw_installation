@@ -1,7 +1,23 @@
 {
   "ignorePatterns": [
     { "pattern": "^/C:/" },
-    { "pattern": "^app://" }
+    { "pattern": "^app://" },
+    {
+      "pattern": "^https://www\\.zotero\\.org/settings/keys$",
+      "reason": "Persoenliche Key-Verwaltung, Login erforderlich; keine Inhaltsverifikation. Siehe docs/quality/EXTERNAL_LINK_POLICY.md."
+    },
+    {
+      "pattern": "^https://console\\.mistral\\.ai/$",
+      "reason": "Konto-Dashboard, Login erforderlich; keine Inhaltsverifikation. Siehe docs/quality/EXTERNAL_LINK_POLICY.md."
+    },
+    {
+      "pattern": "^https://dash\\.cloudflare\\.com/$",
+      "reason": "Konto-Dashboard, Login erforderlich; keine Inhaltsverifikation. Siehe docs/quality/EXTERNAL_LINK_POLICY.md."
+    },
+    {
+      "pattern": "^https://platform\\.deepseek\\.com/$",
+      "reason": "Konto-Dashboard, Login erforderlich; keine Inhaltsverifikation. Siehe docs/quality/EXTERNAL_LINK_POLICY.md."
+    }
   ],
   "replacementPatterns": [],
   "timeout": "20s",

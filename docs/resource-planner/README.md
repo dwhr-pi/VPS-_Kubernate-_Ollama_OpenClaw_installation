@@ -40,7 +40,9 @@ Die Profile nutzen die offiziell beschriebenen Gesamtgroessen **31B dense** und 
 aktive MoE-Parameter als gesamte Gewichtsgroesse zaehlen. Die E2B/E4B-Varianten werden bewusst nicht
 aus ihren effektiven Namen in vollstaendige RAM-Anforderungen umgerechnet.
 Architektur-/Modalitaetskosten, zusaetzliche Encoder/Draft-Modelle sind separat einzurechnen.
-[Offizielle Modelluebersicht](https://ai.google.dev/gemma/docs/core.md).
+[Offizielle Modelluebersicht](https://ai.google.dev/gemma/docs/core). Historischer Exportpfad:
+`https://ai.google.dev/gemma/docs/core.md` (Abruf ohne Antwort); die HTML-Seite ist belegt, ihre
+Erreichbarkeit bleibt Teil der Linkpruefung.
 
 ## Diskreter Skalierungsversuch
 

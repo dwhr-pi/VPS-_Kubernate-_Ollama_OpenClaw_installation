@@ -491,7 +491,7 @@ resolve_install_head() {
     return 1
   }
   read -r expected ref extra <<<"$remote"
-  [[ "$expected" =~ ^[0-9a-f]{40}$ && -z "$extra" &&
+  [[ "$expected" =~ ^[0-9a-f]{40}$ && "$ref" == "refs/heads/$branch" && -z "$extra" &&
     "$remote" == "$expected"$'\t'"refs/heads/$branch" ]] || {
     echo 'Unerwartete Remote-Antwort; abgebrochen.' >&2
     return 1
@@ -734,6 +734,6 @@ if [[ "$INSTALL_BRANCH" == main ]]; then
 fi
 git_auth_cleanup
 find . -type f -name "*.sh" -exec chmod +x {} \; 2>/dev/null || true
-bash ./setup_ultimate.sh <"$TTY_DEVICE" >"$TTY_DEVICE" 2>&1
+bash ./setup_ultimate.sh <>"$TTY_DEVICE" >&0 2>&1
 
 echo -e "${GREEN}${TXT_INSTALLATION_FINISHED}${NC}"

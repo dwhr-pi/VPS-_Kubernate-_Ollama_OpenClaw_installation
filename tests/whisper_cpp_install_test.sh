@@ -30,26 +30,26 @@ function /opt/whisper_cpp/build/bin/whisper-cli {
 }
 mark_tool_installed() { marked=true; }
 
-WHISPER_CPP_BUILD_JOBS=2 expected_jobs=2 build_result=0 smoke_result=0
+expected_jobs=2 build_result=0 smoke_result=0
 deps_ready=false marked=false result=''
-install_whisper_cpp
+WHISPER_CPP_BUILD_JOBS=2 install_whisper_cpp
 [[ "$marked" == true && "$result" == success ]]
-WHISPER_CPP_BUILD_JOBS=1 expected_jobs=1
-install_whisper_cpp
+expected_jobs=1
+WHISPER_CPP_BUILD_JOBS=1 install_whisper_cpp
 build_result=1 marked=false result=''
-if install_whisper_cpp; then
+if WHISPER_CPP_BUILD_JOBS=1 install_whisper_cpp; then
   echo 'FAIL: build error accepted'
   exit 1
 fi
 [[ "$marked" == false && "$result" == failed ]]
 build_result=0 smoke_result=1 marked=false
-if install_whisper_cpp; then
+if WHISPER_CPP_BUILD_JOBS=1 install_whisper_cpp; then
   echo 'FAIL: smoke error accepted'
   exit 1
 fi
 [[ "$marked" == false ]]
-WHISPER_CPP_BUILD_JOBS='"2"'
-if install_whisper_cpp; then
+# Runtime override for the function loaded through eval above.
+if WHISPER_CPP_BUILD_JOBS='"2"' install_whisper_cpp; then
   echo 'FAIL: quoted job count accepted'
   exit 1
 fi

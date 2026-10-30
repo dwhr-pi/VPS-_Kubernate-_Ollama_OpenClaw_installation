@@ -110,7 +110,7 @@ paperless_main() {
   paperless_compose up -d --pull never || return 1
   echo 'Stack gestartet, noch kein Berechtigungs-/Funktionstest. Admin manuell einrichten; Status erst nach HTTP-Test.'
   local attempt
-  for attempt in 1 2 3 4 5 6; do
+  for ((attempt = 1; attempt <= 6; attempt++)); do
     if curl -fsS --max-time 5 -o /dev/null http://127.0.0.1:8010/; then
       mark_current_tool_installed
       return 0

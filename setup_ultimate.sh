@@ -40,7 +40,6 @@ CUSTOM_SOURCES_FILE="$USER_WORKSPACE_DIR/custom_sources.conf"
 CUSTOM_OLLAMA_BUILDS_FILE="$USER_WORKSPACE_DIR/custom_ollama_builds.conf"
 SCRIPT_ROOT_DIR="$INSTALL_DIR"
 LANGUAGE_SELECTION_REQUIRED=0
-STARTUP_LANGUAGE_DIALOG_PENDING=0
 
 if [ ! -f "$SETUP_PREFERENCES_FILE" ]; then
   LANGUAGE_SELECTION_REQUIRED=1
@@ -329,10 +328,8 @@ EOF
 
 show_metrics_editor() {
   ensure_metrics_config
-  dialog --clear --backtitle "$APP_TITLE" \
-    --title "SETUP-MESSWERTE & BENCHMARKS" --editbox "$METRICS_CONFIG_FILE" 30 110 2>/tmp/metrics_config_edit
-
-  if [ $? -eq 0 ]; then
+  if dialog --clear --backtitle "$APP_TITLE" \
+    --title "SETUP-MESSWERTE & BENCHMARKS" --editbox "$METRICS_CONFIG_FILE" 30 110 2>/tmp/metrics_config_edit; then
     cp /tmp/metrics_config_edit "$METRICS_CONFIG_FILE"
     echo -e "${GREEN}Die editierbaren Setup-Messwerte wurden aktualisiert.${NC}"
   fi
@@ -945,10 +942,10 @@ get_tool_install_fallback_min_free_mb() {
     "FinRobot" | "FinRAG")
       printf '20480'
       ;;
-    "Ollama" | "Open_WebUI" | "Qdrant" | "ChromaDB" | "Meilisearch" | "Paperless"* | "Nextcloud")
+    "Ollama" | "ChromaDB" | "Paperless"*)
       printf '8192'
       ;;
-    "Docker" | "K3s" | "Kubernetes"* | "Grafana" | "Prometheus" | "Loki")
+    "Docker" | "K3s" | "Kubernetes"*)
       printf '8192'
       ;;
     *)
@@ -1591,7 +1588,7 @@ show_installation_monitoring_menu() {
       loading_notice_mark="( )"
     fi
 
-    dialog --clear --backtitle "$APP_TITLE" \
+    if ! dialog --clear --backtitle "$APP_TITLE" \
       --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
       --title "INSTALLATIONSÜBERWACHUNG" --menu "Zusätzliche Überwachung, Logansicht und sichere Log-Aufräumung." 42 112 22 \
       "1" "${monitoring_mark} Erweiterte Installationsüberwachung umschalten (aktuell: ${monitoring_state})" \
@@ -1618,9 +1615,7 @@ show_installation_monitoring_menu() {
       "16" "/opt-Toolreste Trockenlauf anzeigen" \
       "17" "/opt-Toolreste bereinigen (jedes Verzeichnis Ja/Nein)" \
       "──────────────" "$separator_line" \
-      "18" "${TXT_BACK_ITEM:-Zurück}" 2>/tmp/install_monitoring_choice
-
-    if [ $? -ne 0 ]; then
+      "18" "${TXT_BACK_ITEM:-Zurück}" 2>/tmp/install_monitoring_choice; then
       return 0
     fi
 
@@ -1755,10 +1750,8 @@ show_log_cleanup_settings_menu() {
   local new_days
   local new_keep
 
-  dialog --clear --backtitle "$APP_TITLE" \
-    --title "LOG-AUFBEWAHRUNG" --inputbox "Wie viele Tage sollen Installations-/Diagnoselogs mindestens behalten werden?" 10 90 "${LOG_CLEANUP_RETENTION_DAYS:-14}" 2>/tmp/log_cleanup_days
-
-  if [ $? -ne 0 ]; then
+  if ! dialog --clear --backtitle "$APP_TITLE" \
+    --title "LOG-AUFBEWAHRUNG" --inputbox "Wie viele Tage sollen Installations-/Diagnoselogs mindestens behalten werden?" 10 90 "${LOG_CLEANUP_RETENTION_DAYS:-14}" 2>/tmp/log_cleanup_days; then
     return 0
   fi
 
@@ -1768,10 +1761,8 @@ show_log_cleanup_settings_menu() {
     return 1
   fi
 
-  dialog --clear --backtitle "$APP_TITLE" \
-    --title "LOG-AUFBEWAHRUNG" --inputbox "Wie viele neueste Dateien sollen pro Log-Ordner immer behalten werden?" 10 90 "${LOG_CLEANUP_KEEP_RECENT:-30}" 2>/tmp/log_cleanup_keep
-
-  if [ $? -ne 0 ]; then
+  if ! dialog --clear --backtitle "$APP_TITLE" \
+    --title "LOG-AUFBEWAHRUNG" --inputbox "Wie viele neueste Dateien sollen pro Log-Ordner immer behalten werden?" 10 90 "${LOG_CLEANUP_KEEP_RECENT:-30}" 2>/tmp/log_cleanup_keep; then
     return 0
   fi
 
@@ -1809,12 +1800,10 @@ show_recent_install_logs() {
     return 0
   fi
 
-  dialog --clear --backtitle "$APP_TITLE" \
+  if ! dialog --clear --backtitle "$APP_TITLE" \
     --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
     --title "LETZTE INSTALLATIONS-LOGS" --menu "Wähle eine Logdatei zur Ansicht aus:" 22 110 15 \
-    "${options[@]}" 2>/tmp/install_log_choice
-
-  if [ $? -ne 0 ]; then
+    "${options[@]}" 2>/tmp/install_log_choice; then
     return 0
   fi
 
@@ -1897,7 +1886,7 @@ run_install_log_diagnostics_now() {
 
 show_diagnostics_quick_menu() {
   while true; do
-    dialog --clear --backtitle "$APP_TITLE" \
+    if ! dialog --clear --backtitle "$APP_TITLE" \
       --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
       --title "TOOL-DIAGNOSE & LETZTE FEHLER" \
       --menu "Schneller Zugriff auf die letzten Installationsprotokolle und Diagnoseberichte." 22 104 6 \
@@ -1907,9 +1896,7 @@ show_diagnostics_quick_menu() {
       "4" "Installationslauf-Diagnose erstellen" \
       "5" "Abhaengigkeiten-/Speicher-Snapshot erstellen" \
       "6" "Letztes Installationsprotokoll per E-Mail senden" \
-      "7" "Installations-Reset / alte Sperren pruefen und freigeben" 2>/tmp/diagnostics_quick_choice
-
-    if [ $? -ne 0 ]; then
+      "7" "Installations-Reset / alte Sperren pruefen und freigeben" 2>/tmp/diagnostics_quick_choice; then
       clear
       return 0
     fi
@@ -2046,6 +2033,15 @@ format_tool_queue_preview() {
   fi
 }
 
+loading_translation_format_ok() {
+  local format="$1" expected="$2" remainder
+  [[ "$expected" =~ ^[0-9]+$ ]] || return 1
+  remainder="${format//'%s'/}"
+  [[ "$remainder" != *'%'* ]] || return 1
+  remainder="${format//[^%]/}"
+  [[ ${#remainder} -eq "$expected" ]]
+}
+
 show_management_loading_notice() {
   local target_label="$1"
   local detail_text="$2"
@@ -2056,7 +2052,12 @@ show_management_loading_notice() {
   fi
 
   local notice_text gauge_title
+  loading_translation_format_ok "$TXT_LOADING_NOTICE_BODY" 2 || return 1
+  loading_translation_format_ok "$TXT_LOADING_GAUGE_TITLE" 1 || return 1
+  # Validated local catalog templates contain only the expected %s slots.
+  # shellcheck disable=SC2059
   printf -v notice_text "${TXT_LOADING_NOTICE_BODY}" "$target_label" "$detail_text"
+  # shellcheck disable=SC2059
   printf -v gauge_title "${TXT_LOADING_GAUGE_TITLE}" "$target_label"
   if ! dialog --clear --backtitle "$APP_TITLE" \
     --yes-label "$TXT_YES_LABEL" --no-label "$TXT_NO_LABEL" \
@@ -2176,7 +2177,7 @@ show_user_workspace_menu() {
   ensure_user_workspace
 
   while true; do
-    dialog --clear --backtitle "$APP_TITLE" \
+    if ! dialog --clear --backtitle "$APP_TITLE" \
       --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
       --title "${TXT_WORKSPACE_MENU_TITLE:-BENUTZER-WORKSPACE}" --menu "${TXT_WORKSPACE_MENU_PROMPT:-Bearbeitbare und sensible Dateien liegen außerhalb des Repos.}" 22 104 9 \
       "1" "${TXT_WORKSPACE_OPTION_1:-Pfad anzeigen}" \
@@ -2188,9 +2189,7 @@ show_user_workspace_menu() {
       "7" "${TXT_WORKSPACE_OPTION_7_BLOCKED:-Komplettloeschung gesperrt: Backup-/Sicherheitshinweise}" \
       "8" "${TXT_WORKSPACE_OPTION_8:-Sprache ändern}" \
       "9" "${TXT_WORKSPACE_OPTION_9:-${TXT_BACK_ITEM:-Zurück}}" \
-      "10" "Installationsstatus exportieren / wiederherstellen" 2>/tmp/user_workspace_choice
-
-    if [ $? -ne 0 ]; then
+      "10" "Installationsstatus exportieren / wiederherstellen" 2>/tmp/user_workspace_choice; then
       return 0
     fi
 
@@ -2260,7 +2259,7 @@ show_user_workspace_menu() {
 
 show_options_menu() {
   while true; do
-    dialog --clear --backtitle "$APP_TITLE" \
+    if ! dialog --clear --backtitle "$APP_TITLE" \
       --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
       --title "${TXT_OPTIONS_MENU_TITLE:-OPTIONEN}" --menu "${TXT_OPTIONS_MENU_PROMPT:-Wählen Sie eine Verwaltungs- oder Konfigurationsfunktion:}" 40 110 24 \
       "1" "${TXT_OPTIONS_1:-Sprache ändern}" \
@@ -2288,9 +2287,7 @@ show_options_menu() {
       "18" "Abhängigkeiten-/Speicher-Snapshot erstellen" \
       "19" "Verschluesselter ENV-Tresor / Zugangsdaten verwalten" \
       "20" "Installations-Reset / alte Sperren freigeben (datenerhaltend)" \
-      "21" "Installationsstatus / Programmliste exportieren und wiederherstellen" 2>/tmp/options_choice
-
-    if [ $? -ne 0 ]; then
+      "21" "Installationsstatus / Programmliste exportieren und wiederherstellen" 2>/tmp/options_choice; then
       return 0
     fi
 
@@ -2363,8 +2360,7 @@ show_options_menu() {
           "$(get_operation_storage_estimate_label "main_menu_update_check" "${MIN_FREE_GB_ABSOLUTE}-${MIN_FREE_GB_RECOMMENDED} GB")" \
           "Dabei werden keine Paket-Updates installiert und keine lokalen Aenderungen automatisch verworfen."
         begin_operation_measurement "main_menu_update_check" "Nur auf Setup-Updates prüfen"
-        run_bash_script "$INSTALL_DIR/scripts/check_setup_updates.sh"
-        if [ $? -eq 0 ]; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
+        if run_bash_script "$INSTALL_DIR/scripts/check_setup_updates.sh"; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
         read -r -p "Update-Prüfung abgeschlossen. Drücken Sie Enter..."
         ;;
       13)
@@ -2531,6 +2527,8 @@ load_installed_map() {
     entry_name="${entry_name%$'\r'}"
     entry_name="${entry_name//\"/}"
     [ -n "$entry_name" ] || continue
+    # This write updates the caller map through a Bash nameref.
+    # shellcheck disable=SC2034
     target_map["$entry_name"]=1
   done <"$file_path"
 }
@@ -2802,8 +2800,7 @@ install_profile() {
   show_profile_action_intro "$PROFILE_KEY" "installieren" "install"
   begin_operation_measurement "profile_install_${PROFILE_KEY}" "Profil installieren: ${PROFILE_KEY}"
   echo -e "${BLUE}Installiere Profil: ${PROFILE_KEY}...${NC}"
-  run_bash_script "$INSTALL_DIR/scripts/profiles/${PROFILE_KEY}_install.sh"
-  if [ $? -eq 0 ]; then
+  if run_bash_script "$INSTALL_DIR/scripts/profiles/${PROFILE_KEY}_install.sh"; then
     append_unique_line "$PROFILE_STATUS_FILE" "$PROFILE_KEY"
     end_operation_measurement "success"
     echo -e "${GREEN}Profil \'$PROFILE_KEY\' erfolgreich installiert.${NC}"
@@ -2820,8 +2817,7 @@ uninstall_profile() {
   show_profile_action_intro "$PROFILE_KEY" "deinstallieren" "uninstall"
   begin_operation_measurement "profile_uninstall_${PROFILE_KEY}" "Profil deinstallieren: ${PROFILE_KEY}"
   echo -e "${BLUE}Deinstalliere Profil: ${PROFILE_KEY}...${NC}"
-  run_bash_script "$INSTALL_DIR/scripts/profiles/${PROFILE_KEY}_uninstall.sh"
-  if [ $? -eq 0 ]; then
+  if run_bash_script "$INSTALL_DIR/scripts/profiles/${PROFILE_KEY}_uninstall.sh"; then
     remove_exact_line "$PROFILE_STATUS_FILE" "$PROFILE_KEY"
     end_operation_measurement "success"
     echo -e "${GREEN}Profil \'$PROFILE_KEY\' erfolgreich deinstalliert.${NC}"
@@ -2866,7 +2862,6 @@ show_profile_management_menu() {
   for profile_key in "${PROFILE_KEYS[@]}"; do
     local profile_status_text="Nicht installiert"
     local profile_metric_summary
-    local profile_storage_summary
     if [ -n "$profile_key" ] && [ "${INSTALLED_PROFILES_MAP[$profile_key]:-}" = "1" ]; then
       profile_status_text="Installiert"
     fi
@@ -2879,13 +2874,11 @@ show_profile_management_menu() {
   done
 
   while true; do
-    dialog --clear --backtitle "$APP_TITLE" \
+    if ! dialog --clear --backtitle "$APP_TITLE" \
       --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
       --title "PROFIL-MANAGEMENT" --menu "$profile_menu_prompt" 30 120 18 \
       "${PROFILE_MENU_OPTIONS[@]}" \
-      "ZURUECK" "${TXT_BACK_ITEM:-Zurück} zum Profil-Hub" 2>/tmp/profile_selection
-
-    if [ $? -ne 0 ]; then
+      "ZURUECK" "${TXT_BACK_ITEM:-Zurück} zum Profil-Hub" 2>/tmp/profile_selection; then
       return 0
     fi
 
@@ -2909,7 +2902,6 @@ show_profile_management_menu() {
     for profile_key in "${PROFILE_KEYS[@]}"; do
       local refreshed_status_text="Nicht installiert"
       local refreshed_metric_summary
-      local refreshed_storage_summary
       if [ -n "$profile_key" ] && [ "${INSTALLED_PROFILES_MAP[$profile_key]:-}" = "1" ]; then
         refreshed_status_text="Installiert"
       fi
@@ -3893,8 +3885,7 @@ uninstall_tool() {
   echo -e "${YELLOW}Achtung:${NC} Die Deinstallation entfernt in der Regel nur das Tool selbst."
   echo -e "${YELLOW}Hinweis:${NC} Abhängigkeiten, Build-Apps, Paket-Caches und andere Zusätze bleiben erhalten."
   echo -e "${YELLOW}Aufräumen:${NC} Bitte danach in den Optionen unter Installationsüberwachung die Installationsreste-/Cache-Bereinigung prüfen."
-  run_tool_script "$TOOL_KEY" "uninstall"
-  if [ $? -eq 0 ]; then
+  if run_tool_script "$TOOL_KEY" "uninstall"; then
     remove_exact_line "$TOOL_STATUS_FILE" "$TOOL_KEY"
     remove_exact_line "$USER_STATUS_DIR/installed_tools.txt" "$TOOL_KEY"
     remove_tool_from_autostart_script "$TOOL_KEY"
@@ -4047,7 +4038,6 @@ show_tool_management_menu() {
   for tool_key in "${TOOL_KEYS[@]}"; do
     STATUS="off"
     local tool_metric_summary
-    local tool_storage_summary
     if [ -n "$tool_key" ] && [ "${INSTALLED_TOOLS_MAP[$tool_key]:-}" = "1" ]; then
       STATUS="on"
       installed_tool_count=$((installed_tool_count + 1))
@@ -4405,12 +4395,10 @@ show_tool_group_checklist() {
     group_prompt="(*) = behalten oder installieren. Leer = bei installierten Tools deinstallieren.\n\nZeit- und Speicherwerte sind deaktiviert oder wegen der Listengröße automatisch im Schnellmodus ausgeblendet.\nAusführung: erst Deinstallationen, danach Installationen."
   fi
 
-  dialog --clear --backtitle "$APP_TITLE" \
+  if ! dialog --clear --backtitle "$APP_TITLE" \
     --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
     --title "$group_title" --checklist "$group_prompt" 28 120 18 \
-    "${options[@]}" 2>/tmp/profile_block_tools_selection
-
-  if [ $? -ne 0 ]; then
+    "${options[@]}" 2>/tmp/profile_block_tools_selection; then
     return 0
   fi
 
@@ -4450,13 +4438,11 @@ toggle_full_profile_from_block() {
   load_installed_map "$PROFILE_STATUS_FILE" installed_profiles_map
 
   if [ "${installed_profiles_map[$profile_key]:-}" = "1" ]; then
-    dialog --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" --yesno "Profil '$profile_key' ist aktuell installiert. Möchten Sie das gesamte Profil jetzt deinstallieren?" 8 80
-    if [ $? -eq 0 ]; then
+    if dialog --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" --yesno "Profil '$profile_key' ist aktuell installiert. Möchten Sie das gesamte Profil jetzt deinstallieren?" 8 80; then
       uninstall_profile "$profile_key"
     fi
   else
-    dialog --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" --yesno "Profil '$profile_key' ist aktuell nicht installiert. Möchten Sie das gesamte Profil jetzt installieren?" 8 80
-    if [ $? -eq 0 ]; then
+    if dialog --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" --yesno "Profil '$profile_key' ist aktuell nicht installiert. Möchten Sie das gesamte Profil jetzt installieren?" 8 80; then
       install_profile "$profile_key"
     fi
   fi
@@ -4489,8 +4475,7 @@ toggle_tool_group_bulk() {
   fi
 
   if [ "$all_installed" -eq 1 ]; then
-    dialog --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" --yesno "Block '$group_title' ist aktuell installiert. Möchten Sie alle enthaltenen Tools jetzt deinstallieren?" 9 90
-    if [ $? -eq 0 ]; then
+    if dialog --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" --yesno "Block '$group_title' ist aktuell installiert. Möchten Sie alle enthaltenen Tools jetzt deinstallieren?" 9 90; then
       for tool_key in $tool_list; do
         [ -n "$tool_key" ] || continue
         [ "${installed_map[$tool_key]:-}" = "1" ] || continue
@@ -4502,8 +4487,7 @@ toggle_tool_group_bulk() {
       done
     fi
   else
-    dialog --yesno "Block '$group_title' ist aktuell nicht vollständig installiert. Möchten Sie alle enthaltenen Tools jetzt installieren?" 9 95
-    if [ $? -eq 0 ]; then
+    if dialog --yesno "Block '$group_title' ist aktuell nicht vollständig installiert. Möchten Sie alle enthaltenen Tools jetzt installieren?" 9 95; then
       for tool_key in $tool_list; do
         [ -n "$tool_key" ] || continue
         [ "${installed_map[$tool_key]:-}" != "1" ] || continue
@@ -4544,7 +4528,7 @@ show_profile_block_detail_menu() {
         "4" "Integrationen / Optional" \
         "5" "${special_label} (Einzeltools)" \
         "6" "${special_label} komplett installieren/deinstallieren" \
-        "7" "${TXT_BACK_ITEM:-Zurück}" 2>/tmp/profile_block_choice
+        "7" "${TXT_BACK_ITEM:-Zurück}" 2>/tmp/profile_block_choice || return 0
     else
       dialog --clear --backtitle "$APP_TITLE" \
         --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
@@ -4553,11 +4537,7 @@ show_profile_block_detail_menu() {
         "2" "Kernmodule (wichtig)" \
         "3" "Erweiterte Module" \
         "4" "Integrationen / Optional" \
-        "5" "${TXT_BACK_ITEM:-Zurück}" 2>/tmp/profile_block_choice
-    fi
-
-    if [ $? -ne 0 ]; then
-      return 0
+        "5" "${TXT_BACK_ITEM:-Zurück}" 2>/tmp/profile_block_choice || return 0
     fi
 
     choice="$(cat /tmp/profile_block_choice)"
@@ -4596,12 +4576,10 @@ show_profile_block_browser() {
     options+=("$profile_key" "${PROFILES[$profile_key]}")
   done
 
-  dialog --clear --backtitle "$APP_TITLE" \
+  if ! dialog --clear --backtitle "$APP_TITLE" \
     --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
     --title "PROFILBLÖCKE & EINZELTOOLS" --menu "Wählen Sie einen Profilblock aus:" 26 100 14 \
-    "${options[@]}" 2>/tmp/profile_block_profile_choice
-
-  if [ $? -ne 0 ]; then
+    "${options[@]}" 2>/tmp/profile_block_profile_choice; then
     return 0
   fi
 
@@ -4609,14 +4587,12 @@ show_profile_block_browser() {
 }
 
 show_profile_management_hub() {
-  dialog --clear --backtitle "$APP_TITLE" \
+  if ! dialog --clear --backtitle "$APP_TITLE" \
     --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
     --title "PROFIL-MANAGEMENT" --menu "Wählen Sie eine Ansicht:" 18 90 6 \
     "1" "Schnellansicht: komplette Profile" \
     "2" "Blockansicht: Profilblöcke + Einzeltools" \
-    "3" "${TXT_BACK_ITEM:-Zurück}" 2>/tmp/profile_management_hub_choice
-
-  if [ $? -ne 0 ]; then
+    "3" "${TXT_BACK_ITEM:-Zurück}" 2>/tmp/profile_management_hub_choice; then
     return 0
   fi
 
@@ -4979,8 +4955,7 @@ while true; do
       begin_operation_measurement "main_menu_hybrid" "Hybrid-Setup: Dein MiniPC + Multi-VPS"
       echo -e "${BLUE}Starte Hybrid-Setup (Dein MiniPC + Multi-VPS)...${NC}"
       if run_base_install_if_needed; then
-        run_bash_script "$INSTALL_DIR/scripts/hybrid_setup.sh"
-        if [ $? -eq 0 ]; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
+        if run_bash_script "$INSTALL_DIR/scripts/hybrid_setup.sh"; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
       else
         end_operation_measurement "failed"
         echo -e "${RED}Hybrid-Setup abgebrochen, weil die Basis-Installation fehlgeschlagen ist.${NC}"
@@ -4997,8 +4972,7 @@ while true; do
       begin_operation_measurement "main_menu_vps" "Standalone-Setup: Nur VPS"
       echo -e "${BLUE}Starte Standalone VPS-Setup (Cloud-Native)...${NC}"
       if run_base_install_if_needed; then
-        run_bash_script "$INSTALL_DIR/scripts/vps_standalone.sh"
-        if [ $? -eq 0 ]; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
+        if run_bash_script "$INSTALL_DIR/scripts/vps_standalone.sh"; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
       else
         end_operation_measurement "failed"
         echo -e "${RED}VPS-Standalone-Setup abgebrochen, weil die Basis-Installation fehlgeschlagen ist.${NC}"
@@ -5016,16 +4990,12 @@ while true; do
       begin_operation_measurement "main_menu_local" "Standalone-Setup: Nur MiniPC"
       echo -e "${BLUE}Starte Standalone MiniPC-Setup (Lokal)...${NC}"
       if run_base_install_if_needed; then
-        run_bash_script "$INSTALL_DIR/scripts/install_local_only.sh"
-        if [ $? -eq 0 ]; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
+        if run_bash_script "$INSTALL_DIR/scripts/install_local_only.sh"; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
       else
         end_operation_measurement "failed"
         echo -e "${RED}Standalone MiniPC-Setup abgebrochen, weil die Basis-Installation fehlgeschlagen ist.${NC}"
       fi
       read -r -p "Standalone MiniPC-Setup abgeschlossen. Drücken Sie Enter..."
-      ;;
-    ────────*)
-      continue
       ;;
     7)
       show_operation_intro \
@@ -5036,8 +5006,7 @@ while true; do
         "Abhaengig vom Repo-Ziel kann zusaetzlich Netzwerkzeit fuer das Klonen und den Build anfallen."
       begin_operation_measurement "main_menu_ruflo" "Ruflo: Installation & Management"
       echo -e "${BLUE}Ruflo Installation & Management...${NC}"
-      run_bash_script "$INSTALL_DIR/scripts/ruflo_install.sh"
-      if [ $? -eq 0 ]; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
+      if run_bash_script "$INSTALL_DIR/scripts/ruflo_install.sh"; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
       read -r -p "Ruflo-Aktion abgeschlossen. Drücken Sie Enter..."
       ;;
     16)
@@ -5073,8 +5042,7 @@ while true; do
         "Falls die Basis noch nicht installiert ist, fuehre zuerst ein Setup wie Punkt 4, 5 oder 6 aus."
       begin_operation_measurement "main_menu_openclaw_dev" "OpenClaw im Dev-Modus starten"
       echo -e "${BLUE}Starte OpenClaw im Dev-Modus...${NC}"
-      cd /opt/openclaw && pnpm dev
-      if [ $? -eq 0 ]; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
+      if cd /opt/openclaw && pnpm dev; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
       ;;
     13)
       show_operation_intro \
@@ -5085,8 +5053,7 @@ while true; do
         "Wenn Home Assistant noch nicht eingerichtet wurde, nutze vorher ein passendes Setup mit lokaler oder hybrider Installation."
       begin_operation_measurement "main_menu_homeassistant" "Home Assistant starten"
       echo -e "${BLUE}Starte Home Assistant...${NC}"
-      sudo systemctl start homeassistant@homeassistant
-      if [ $? -eq 0 ]; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
+      if sudo systemctl start homeassistant@homeassistant; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
       ;;
     14)
       show_operation_intro \
@@ -5096,8 +5063,7 @@ while true; do
         "$(get_operation_storage_estimate_label "main_menu_start_manager" "${MIN_FREE_GB_ABSOLUTE} GB oder mehr fuer Logs und Runtime-Dateien")" \
         "Falls du einen Autostart spaeter abbrechen willst, kann das erzeugte Skript dich direkt wieder ins Setup zurueckbringen."
       begin_operation_measurement "main_menu_start_manager" "Installierte Dienste starten"
-      run_bash_script "$INSTALL_DIR/scripts/tool_start_manager.sh"
-      if [ $? -eq 0 ]; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
+      if run_bash_script "$INSTALL_DIR/scripts/tool_start_manager.sh"; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
       ;;
     17)
       print_exit_message

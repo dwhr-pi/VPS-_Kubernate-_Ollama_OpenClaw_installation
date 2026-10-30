@@ -35,11 +35,11 @@ dialog() {
   fi
 }
 
-dialog --clear --backtitle "OpenClaw & AI Infrastructure - Ultimate Setup" \
+if ! dialog --clear --backtitle "OpenClaw & AI Infrastructure - Ultimate Setup" \
   --title "LLM-Builder Projekt-Assistent" --inputbox \
-  "Name des neuen LLM-Projekts:" 10 80 "mein-lokales-llm" 2>/tmp/llm_builder_project_name
-
-[ $? -eq 0 ] || exit 0
+  "Name des neuen LLM-Projekts:" 10 80 "mein-lokales-llm" 2>/tmp/llm_builder_project_name; then
+  exit 0
+fi
 
 PROJECT_NAME="$(tr -d '\r' </tmp/llm_builder_project_name)"
 PROJECT_DIR="$LLM_PROJECTS_DIR/$PROJECT_NAME"

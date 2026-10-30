@@ -150,16 +150,14 @@ fi
 
 # 2. Abhängigkeiten installieren mit pnpm
 echo -e "${BLUE}Installiere Abhängigkeiten für Flowise mit pnpm...${NC}"
-pnpm install
-if [ $? -ne 0 ]; then
+if ! pnpm install; then
   echo -e "${RED}Fehler: pnpm install für Flowise fehlgeschlagen.${NC}"
   exit 1
 fi
 
 # 3. Flowise bauen
 echo -e "${BLUE}Baue Flowise mit pnpm...${NC}"
-pnpm build
-if [ $? -ne 0 ]; then
+if ! pnpm build; then
   echo -e "${RED}Fehler: pnpm build für Flowise fehlgeschlagen.${NC}"
   exit 1
 fi

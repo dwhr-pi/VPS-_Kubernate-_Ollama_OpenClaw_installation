@@ -5,7 +5,7 @@ WM_URL=https://github.com/windmill-labs/windmill.git
 WM_COMMIT=1fe3858a6d51949327046117d9ce4c10467a3000
 WM_RELEASE=v1.837.0
 WM_SHA256=5879cd22b178d8871031cc072e5de5052ab46c4bd134e3358ff8a96d25d229aa
-WM_ASSET_URL=https://github.com/windmill-labs/windmill/releases/download/v1.837.0/windmill-amd64
+WM_ASSET_URL="https://github.com/windmill-labs/windmill/releases/download/$WM_RELEASE/windmill-amd64"
 
 wm_paths() {
   local root="${OPENCLAW_USER_DATA_DIR:-$HOME/.openclaw_ultimate_user_data}" path index=0

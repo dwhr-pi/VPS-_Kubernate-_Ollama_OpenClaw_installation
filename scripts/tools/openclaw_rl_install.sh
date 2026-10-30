@@ -58,6 +58,8 @@ fi
 # 2. Python-Abhängigkeiten installieren
 echo -e "${BLUE}Installiere Python-Abhängigkeiten für OpenClaw RL...${NC}"
 python3 -m venv venv
+# Generated virtualenv activation script, absent from the checkout.
+# shellcheck source=/dev/null
 source venv/bin/activate
 pip install -r requirements.txt
 deactivate

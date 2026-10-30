@@ -16,8 +16,8 @@ produktionsreif.
 | Warum ist PR 6 noch nicht freigegeben?    | [CI-Befunde und Reparaturstand](agents/CI_REPAIR_STATUS.md): Ursachen, erster Fixsatz und weiterhin offene Blocker     |
 | Wo liegt was?                             | [Verzeichnisstruktur](DIRECTORY_LAYOUT.md): Repository-Code, Nutzworkspace und Konfigurationspfade                     |
 
-Die [Formatierungsregeln](quality/FORMATTING_POLICY.md) beschreiben die
-freigegebene Bereinigung und die weiterhin verpflichtenden Sicherheitspruefungen.
+Die [Formatierungsregeln](quality/FORMATTING_POLICY.md) beschreiben die freigegebene Bereinigung und
+die weiterhin verpflichtenden Sicherheitspruefungen.
 
 ## Themenbereiche
 
@@ -43,6 +43,10 @@ Archivierung nicht veraendert.
 | Recht und Compliance         | [Legal](legal/): technische Dokumentations- und Pruefhilfen, keine individuelle Rechtsberatung                                                                                                                         |
 | Praesentationen              | [Praesentationen](presentations/): begleitende Uebersichten; nicht massgeblich fuer den aktuellen Implementierungsstand                                                                                                |
 | Historie                     | [Legacy](legacy/) und datierte Reviews: fruehere Konzepte und nachvollziehbare Entwicklung                                                                                                                             |
+
+Zur technischen Abnahme: [CI-Reparaturprotokoll](agents/CI_REPAIR_STATUS.md) und
+[externe Links und Quellenstatus](quality/EXTERNAL_LINK_POLICY.md). Nicht erreichbare Quellen werden
+nicht durch pauschale HTTP-403-/202-Erfolgsregeln freigegeben.
 
 ## Dokumente richtig einordnen
 

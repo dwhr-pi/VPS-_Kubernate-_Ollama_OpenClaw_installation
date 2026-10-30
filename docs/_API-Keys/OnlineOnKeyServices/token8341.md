@@ -297,7 +297,7 @@ zutreffende pauschale Rechtsbewertung. Fuer erfasste Verarbeitungen bleiben die 
 Verantwortlichen bestehen; Drittlandtransfers brauchen zusaetzlich eine tragfaehige Grundlage und
 Bewertung nach Kapitel V, etwa geeignete Garantien unter den Voraussetzungen des Art. 46. Eine
 Vertragsklausel allein ist keine Sicherheitsgarantie. Siehe
-[DSGVO, insbesondere Art. 3, 28 und 44-49](https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:32016R0679).
+[DSGVO, insbesondere Art. 3, 28 und 44-49](https://op.europa.eu/en/publication-detail/-/publication/3e485e15-11bd-11e6-ba9a-01aa75ed71a1/language-de).
 
 Vor Produktivfreigabe: Rechtsgrundlage, Rollen/AV-Vertrag, tatsaechliche Verarbeitungsorte,
 Unterauftragnehmer, Transferbewertung, Aufbewahrung, Training/Caching, Loeschrechte und technische
@@ -305,9 +305,10 @@ Massnahmen fachlich pruefen. Pseudonymisierung ist nicht automatisch Anonymisier
 Nachweise bleibt die Freigabe gesperrt; lokale Ollama-Modelle bevorzugen. Auch lokale Verarbeitung
 benoetigt Rechte-, Loesch- und Sicherheitskonzepte.
 
-Der [EU AI Act](https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:32024R1689) ist getrennt
-zu betrachten: konkrete Rolle, Verwendungszweck, Risikoklasse und anwendbare Fristen pruefen;
-insbesondere koennen Transparenzpflichten relevant sein. Weder API-Kompatibilitaet noch ein
+Der
+[EU AI Act](https://op.europa.eu/en/publication-detail/-/publication/dc8116a1-3fe6-11ef-865a-01aa75ed71a1/language-de)
+ist getrennt zu betrachten: konkrete Rolle, Verwendungszweck, Risikoklasse und anwendbare Fristen
+pruefen; insbesondere koennen Transparenzpflichten relevant sein. Weder API-Kompatibilitaet noch ein
 bestimmter Serverstandort beweist AI-Act-Konformitaet. Keine pauschale juristische Freigabe durch
 diese Seite.
 
@@ -353,3 +354,15 @@ Verwandt: [Alle API-Schluessel](../README.md), [OpenRouter](openrouter.md),
 [Aktuell recherchierter Leitfaden](../REGISTRATION_BILLING_AND_IDENTITY.md): Key-Verwaltung,
 beworbenes 0,5-CNY-Trial, 5-CNY-Bonusschwelle und noch unbestaetigte Zahlungsarten/KYC-Bedingungen.
 Diese Registrierungshinweise heben die hier dokumentierten Endpunkt-/Trust-Widersprueche nicht auf.
+
+## CI-Quellenabgleich (30.10.2026)
+
+Die Alt-Adressen bleiben als Herkunftsbeleg erhalten. Die neuen Nachweise wurden anonym mit HTTP 200
+abgerufen und anhand von Titel und CELEX bzw. offizieller Projektquelle zugeordnet.
+EU-Metadatensaetze belegen die jeweilige Originalveroeffentlichung, nicht eine aktuelle
+konsolidierte Rechtspruefung. Keine Anmeldung und keine Provider-Inferenz.
+
+| Alt-Adresse (Abruf fehlgeschlagen)                                     | Erreichbarer Nachweis                                                                                                      |
+| ---------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| `https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:32016R0679` | [Primaerquelle](https://op.europa.eu/en/publication-detail/-/publication/3e485e15-11bd-11e6-ba9a-01aa75ed71a1/language-de) |
+| `https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:32024R1689` | [Primaerquelle](https://op.europa.eu/en/publication-detail/-/publication/dc8116a1-3fe6-11ef-865a-01aa75ed71a1/language-de) |

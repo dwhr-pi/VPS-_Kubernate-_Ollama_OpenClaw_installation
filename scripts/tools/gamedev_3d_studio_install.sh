@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-SCRIPT_NAME="gamedev_3d_studio_install"
 START_TS="$(date +%s)"
 GAMEDEV_HOME="${GAMEDEV_HOME:-$HOME/Ultimate_KI_Setup/gamedev_3d_studio}"
 LOG_DIR="$GAMEDEV_HOME/logs"

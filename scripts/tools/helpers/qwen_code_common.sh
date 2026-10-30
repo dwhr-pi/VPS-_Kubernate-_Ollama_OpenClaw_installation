@@ -58,7 +58,8 @@ qwen_code_activate_private_node() {
   [[ "$(git -C "$QWEN_CODE_NVM_DIR" remote get-url origin)" == https://github.com/nvm-sh/nvm.git ]] || return 1
   git -C "$QWEN_CODE_NVM_DIR" diff --quiet HEAD -- nvm.sh || return 1
   export NVM_DIR="$QWEN_CODE_NVM_DIR"
-  # shellcheck disable=SC1090
+  # Verified external nvm checkout; not present in the setup repository.
+  # shellcheck source=/dev/null
   source "$NVM_DIR/nvm.sh" --no-use || return 1
   nvm use 22 >/dev/null 2>&1
 }
@@ -228,7 +229,7 @@ qwen_code_build() (
   started="$SECONDS"
   exec > >(tee -a "$log") 2>&1
   local rc
-  trap 'rc=$?; printf "Qwen Code Build Exit=%s Dauer=%ss Disk-vorher-KiB=%s\n" "$rc" "$((SECONDS-started))" "$before"; df -Pk "$mount"; exit "$rc"' EXIT
+  trap 'rc=$?; printf "Qwen Code Build Exit=%s Dauer=%ss Disk-vorher-KiB=%s\n" "$rc" "$((SECONDS-${started}))" "$before"; df -Pk "$mount"; exit "$rc"' EXIT
   echo "Qwen Code GitHub-Source $QWEN_CODE_SOURCE_COMMIT; kein Docker, Login- oder Agentenstart."
   qwen_code_prepare_runtime || {
     echo 'Qwen Code: Runtime-Bereitstellung fehlgeschlagen; kein neuer Erfolgsmarker.' >&2

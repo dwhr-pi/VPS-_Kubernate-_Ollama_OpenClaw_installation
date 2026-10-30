@@ -20,7 +20,9 @@ fi
 if [[ "$MODE" == "--status" ]]; then
   echo "Queue Manager Status"
   [[ -d "$QUEUE_DIR" ]] && echo "Queue-Ordner vorhanden: $QUEUE_DIR" || echo "Queue-Ordner fehlt: $QUEUE_DIR"
-  [[ -f "$QUEUE_DIR/queue-policy.json" ]] && cat "$QUEUE_DIR/queue-policy.json" || true
+  if [[ -f "$QUEUE_DIR/queue-policy.json" ]]; then
+    cat "$QUEUE_DIR/queue-policy.json" || true
+  fi
   exit 0
 fi
 

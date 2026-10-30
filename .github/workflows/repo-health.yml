@@ -54,5 +54,5 @@ jobs:
 
       - name: Markdown link check
         run: |
-          markdown-link-check readme.md
-          find docs -name '*.md' -print0 | xargs -0 -n 1 markdown-link-check
+          markdown-link-check -c .github/markdown-link-check.json readme.md
+          find docs -name '*.md' -print0 | xargs -0 -n 1 markdown-link-check -c .github/markdown-link-check.json

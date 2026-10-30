@@ -264,9 +264,15 @@ list_recent_logs() {
   done || true
   echo
   echo "### Node/npm/pnpm"
-  command -v node >/dev/null 2>&1 && node --version || true
-  command -v npm >/dev/null 2>&1 && npm --version || true
-  command -v pnpm >/dev/null 2>&1 && pnpm --version || true
+  if command -v node >/dev/null 2>&1; then
+    node --version || true
+  fi
+  if command -v npm >/dev/null 2>&1; then
+    npm --version || true
+  fi
+  if command -v pnpm >/dev/null 2>&1; then
+    pnpm --version || true
+  fi
   if command -v npm >/dev/null 2>&1; then
     if command -v timeout >/dev/null 2>&1; then
       timeout 8s npm list -g --depth=0 2>/dev/null | tail -n 80 || echo "Timeout bei npm global list."

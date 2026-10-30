@@ -548,8 +548,9 @@ prepare_mysql_database_for_huginn() {
     return 1
   fi
 
-  db_name_ident="$(printf "%s" "$db_name" | sed 's/`/``/g')"
-  db_user_ident="$(printf "%s" "$db_user" | sed 's/`/``/g')"
+  # MySQL identifier quoting doubles literal backticks, not shell substitutions.
+  db_name_ident="${db_name//\`/\`\`}"
+  db_user_ident="${db_user//\`/\`\`}"
   db_user_literal="$(printf "%s" "$db_user" | sed "s/'/''/g")"
   db_password_literal="$(printf "%s" "$db_password" | sed "s/'/''/g")"
 

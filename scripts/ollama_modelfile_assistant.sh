@@ -47,24 +47,19 @@ if ! command -v dialog >/dev/null 2>&1; then
   exit 1
 fi
 
-prompt_input "Modelfile-Assistent" "Name des neuen Ollama-Modells:" "mein-llm" /tmp/modelfile_name
-[ $? -eq 0 ] || exit 0
+prompt_input "Modelfile-Assistent" "Name des neuen Ollama-Modells:" "mein-llm" /tmp/modelfile_name || exit 0
 MODEL_NAME="$(cat /tmp/modelfile_name)"
 
-prompt_input "Modelfile-Assistent" "Pfad zur GGUF-Datei oder Name des Basismodells für FROM:" "./mein-modell.gguf" /tmp/modelfile_from
-[ $? -eq 0 ] || exit 0
+prompt_input "Modelfile-Assistent" "Pfad zur GGUF-Datei oder Name des Basismodells für FROM:" "./mein-modell.gguf" /tmp/modelfile_from || exit 0
 MODEL_FROM="$(cat /tmp/modelfile_from)"
 
-prompt_input "Modelfile-Assistent" "Systemprompt für das Modell:" "Du bist ein hilfreicher lokaler Assistent." /tmp/modelfile_system
-[ $? -eq 0 ] || exit 0
+prompt_input "Modelfile-Assistent" "Systemprompt für das Modell:" "Du bist ein hilfreicher lokaler Assistent." /tmp/modelfile_system || exit 0
 MODEL_SYSTEM="$(cat /tmp/modelfile_system)"
 
-prompt_input "Modelfile-Assistent" "Temperatur (z. B. 0.2):" "0.2" /tmp/modelfile_temperature
-[ $? -eq 0 ] || exit 0
+prompt_input "Modelfile-Assistent" "Temperatur (z. B. 0.2):" "0.2" /tmp/modelfile_temperature || exit 0
 MODEL_TEMPERATURE="$(cat /tmp/modelfile_temperature)"
 
-prompt_input "Modelfile-Assistent" "Context-Länge NUM_CTX (z. B. 8192):" "8192" /tmp/modelfile_ctx
-[ $? -eq 0 ] || exit 0
+prompt_input "Modelfile-Assistent" "Context-Länge NUM_CTX (z. B. 8192):" "8192" /tmp/modelfile_ctx || exit 0
 MODEL_CTX="$(cat /tmp/modelfile_ctx)"
 
 TARGET_FILE="$USER_MODELFILE_DIR/${MODEL_NAME}.Modelfile"

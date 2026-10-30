@@ -3,7 +3,9 @@
 Der vorgelegte Logausschnitt endet vor einer abschliessenden apt-Meldung. Ein Abbruchgrund ist
 daraus nicht sicher ableitbar. Der bisherige Installer setzt jedoch ein `kustomize`-Paket in den
 konfigurierten apt-Quellen voraus. Stattdessen nutzt er jetzt die offiziellen
-[Release-Assets](https://github.com/kubernetes-sigs/kustomize/releases/tag/kustomize%2Fv5.8.2).
+[Release-Assets](https://github.com/kubernetes-sigs/kustomize/releases/tag/kustomize/v5.8.2).
+Historischer Pfad: `https://github.com/kubernetes-sigs/kustomize/releases/tag/kustomize%2Fv5.8.2`
+(Abruf 404); das Release selbst ist unter dem unkodierten Pfad belegt.
 
 ## Ablauf
 

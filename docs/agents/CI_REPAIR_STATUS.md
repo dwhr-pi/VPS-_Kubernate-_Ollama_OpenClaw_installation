@@ -231,6 +231,56 @@ verbleibenden Shell-/Link-Gates muessen fuer den neuen Head erneut laufen. Rueck
 einen reviewten Gegen-Patch; keine Datenwiederherstellung, Deinstallation oder Cluster-Aktion
 erforderlich. Kein Main-Merge, keine Produktionsfreigabe.
 
+## Autonome CI-Runde am 30.10.2026
+
+Ausgangspunkt ist PR-Head `990d947a77e52a6c12eff9b493d310b5fffc27a3` mit 14 erfolgreichen und sieben
+fehlgeschlagenen Checks. Der Branch bleibt `codex/optional-coding-agents-20261029`, kein Main-Merge
+und kein Force-Push. Unterbrochene Teilaufgaben wurden lokal gegengeprueft, nicht ungeprueft
+uebernommen.
+
+Die Statusabfragen in der zentralen Setup-Logik und in den Managern pruefen nun die jeweilige
+Operation unmittelbar. Cancel/ESC beendet den Dialog ohne Aktion; ein fehlgeschlagener Kindprozess
+darf keine Installationsmarker veraendern. Ueberdeckte Fallback-Muster wurden entfernt, ohne die
+spezifischen Speicherreserven abzusenken. Die Modell-Messwertnormalisierung ersetzt ausserdem eine
+ungueltige `tr`-Zeichenklasse; der Originalmodellname bleibt ein einzelnes, unveraendertes
+CLI-Argument.
+
+Pakete werden als Arrays ohne Dateiglobbing weitergegeben. Externe SDK-/venv-Dateien sind als solche
+annotiert, nicht als mitgelieferter, statisch gepruefter Quelltext ausgegeben. Fuer schreibende
+Nameref-/Bibliotheksschnittstellen bleiben nur eng begruendete Einzelanweisungs-Ausnahmen.
+Dynamische `printf`-Uebersetzungen werden vor der Verwendung auf ausschliesslich die erwartete Zahl
+von `%s`-Slots geprueft; `%n`, `%b`, positionale und zusaetzliche Slots werden abgewiesen. Globale
+ShellCheck-Regeln bleiben aktiv.
+
+Ein nachgelagerter Lifecycle-Check konnte grosse Diagnoseberichte unter `pipefail` mit SIGPIPE
+abbrechen. Sortieren in die temporaere Berichtsdatei statt in eine frueh geschlossene `head`-Pipe
+beseitigt diesen Fehler. Der strenge Modus bleibt bei fehlenden Lifecycle-Dateien fehlgeschlagen;
+die Anzeigebegrenzung verdeckt sie nicht.
+
+Gezielte lokale Abnahme: sieben Setup-Vertragstests, 26 Shell-Vertragstests, 13
+Branch-/Bootstrap-Tests, elf Link-Policy-Tests und ein grosser Lifecycle-Berichtstest bestanden. Ein
+erster paralleler Windows-Lauf hatte einen Fixture-Timeout; die unveraenderte Branch-Race-Gegenprobe
+und danach das vollstaendige Branch-Modul bestanden erneut. Mock-Tests starten keine echten
+Installer, Modelle oder Dienste. Die vollstaendige Linux-Regression muss weiterhin den
+veroeffentlichten Head pruefen.
+
+Die Linkregeln stehen in der [Quellenpolicy](../quality/EXTERNAL_LINK_POLICY.md). Alle drei
+Link-Gates verwenden dieselbe explizite Konfiguration. Vier exakt verankerte persoenliche
+Konto-Einstiege sind als AUTH/inhaltlich nicht verifiziert klassifiziert; keine Domain-Ausnahme.
+Oeffentliche 202/403 bleiben Fehler. Nachweise fuer DSGVO, AI Act, DSM und NIS-2 stammen vom
+amtlichen EU-Publikationsportal, der Paperless-API-Nachweis aus der offiziellen
+Repository-Dokumentation. Titel und CELEX bzw. Projektidentitaet sowie anonyme HTTP-200-Abrufe
+wurden geprueft. Die alten Adressen bleiben an den Fundstellen erhalten. Dies belegt keine aktuelle
+konsolidierte Rechtspruefung und keine Provider-Inferenz.
+
+Weitere amtliche Quellen liefern weiterhin 403 oder Transportfehler. Eine ausdrueckliche
+Entscheidung zur transparenten Archivkennzeichnung dieser einzelnen Quellen ist angefragt; bis dahin
+bleiben sie im Link-Gate und blockieren die Gesamtabnahme. Diese Runde behauptet vor dem erneuten
+GitHub-Lauf keine vollstaendig gruene CI.
+
+Rollback erfolgt nur durch einen reviewten Gegen-Patch im Featurebranch. Es gibt keinen Datenbank-,
+Workspace- oder Cluster-Rollback, weil diese nicht veraendert wurden.
+
 ## Erste lokale Abnahme (historisch)
 
 Lokale Abnahme dieses Reparatursatzes unter Windows mit nativem Git Bash: 156 Tests in 15

@@ -81,6 +81,7 @@ promptfoo_main() {
     return 2
     ;;
   esac
+  printf '%s\n' "$TOOL_MODULE_TYPE"
   echo 'Promptfoo: GitHub-Source-Build; Node >=22.22.0, npm 11.11.0. Kein Dienststart, keine Cloud-Abfragen.'
   if [ "$mode" = --dry-run ]; then
     echo 'Plan: Node-Runtime ueber nvm bereitstellen, falls noetig; npm 11.11.0 privat im User-Workspace. Kein Download/Build/nvm-Wechsel.'

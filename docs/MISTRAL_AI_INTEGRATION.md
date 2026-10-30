@@ -139,7 +139,8 @@ Als einfache Staffelung:
 ## Quellen
 
 - [Mistral Models Overview](https://docs.mistral.ai/models)
-- [Mistral Model Weights and Licenses](https://docs.mistral.ai/getting-started/models/weights/)
+- `https://docs.mistral.ai/getting-started/models/weights/` (historische Quelle; Abruf 404, nicht
+  als aktueller Beleg verifiziert); [Primaerquelle](https://docs.mistral.ai/models)
 - [Mistral 7B](https://docs.mistral.ai/models/model-cards/mistral-7b-0-1)
 - [Mistral Nemo 12B](https://docs.mistral.ai/models/mistral-nemo-12b-24-07)
 - [Ollama: mistral](https://ollama.com/library/mistral)

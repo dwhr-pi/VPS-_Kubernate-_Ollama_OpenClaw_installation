@@ -55,8 +55,8 @@ create_handoff() {
 
   {
     printf '# Codex-Handoff: %s\n\n' "$base"
-    printf 'Erstellt: `%s`\n\n' "$(date -Is)"
-    printf 'Quelle: `%s`\n\n' "$report"
+    printf "Erstellt: \`%s\`\n\n" "$(date -Is)"
+    printf "Quelle: \`%s\`\n\n" "$report"
     printf 'Status: neue Diagnose-/Logdatei wurde erkannt und fuer die Weiterarbeit vorbereitet.\n\n'
     printf '## Aufgabe fuer Codex\n\n'
     printf 'Analysiere diesen Diagnosebericht, fasse die wahrscheinliche Ursache zusammen, pruefe die relevanten Installer-/Setup-Dateien im Repository und schlage einen sicheren Fix vor. Bitte keine Secrets ausgeben und keine Nutzerdateien blind loeschen.\n\n'
@@ -72,7 +72,7 @@ create_handoff() {
     printf '\n```\n\n'
     printf '## Naechste sinnvolle Pruefkommandos\n\n'
     printf '```bash\n'
-    printf 'cd "${OPENCLAW_SETUP_REPO:-$HOME/openclaw_ultimate_setup}"\n'
+    printf "cd \"\${OPENCLAW_SETUP_REPO:-\$HOME/openclaw_ultimate_setup}\"\n"
     printf 'bash scripts/tool_log_diagnostics.sh --tool Huginn --no-email\n'
     printf 'bash scripts/huginn_status.sh 2>/dev/null || true\n'
     printf 'git status --short\n'

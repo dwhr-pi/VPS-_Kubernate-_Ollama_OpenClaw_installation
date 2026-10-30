@@ -49,7 +49,6 @@ is_private_or_local_target() {
 
 sanitize_allowlist() {
   local raw="$1"
-  local tmp=""
   local item=""
   local cleaned=()
 

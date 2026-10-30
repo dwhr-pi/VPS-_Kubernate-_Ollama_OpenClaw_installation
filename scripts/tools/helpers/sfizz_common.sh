@@ -181,7 +181,7 @@ sfizz_main() (
   case "$mode" in
     --dry-run | --plan | plan | --help)
       echo 'Achtung: sfztools/sfizz ist archiviert; Engine/Renderer, keine DAW-Plugins.'
-      echo "Sfizz 1.2.3: GitHub $SF_URL; Pin $SF_COMMIT; ohne Docker."
+      echo "Sfizz $SF_VERSION: GitHub $SF_URL; Pin $SF_COMMIT; ohne Docker."
       echo 'Standard: Quelle plus 6 gepinnte GitHub-Unterprojekte. SFIZZ_BUILD=1: optional Offline-Renderer, max. 1 Job (einstellbar 1-2).'
       echo 'Quelle: 1 GiB freie Disk, WSL C: 2 GiB; Build: 4 GiB RAM/Disk/WSL C:. Kein Audio-/Dienststart.'
       return 0

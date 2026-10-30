@@ -96,8 +96,10 @@ und native Audioerzeugung nicht pauschal zusagen.
 
 - [ComfyUI](https://github.com/Comfy-Org/ComfyUI): GPL-3.0 laut Projekt; Custom Nodes und Gewichte
   gesondert pruefen. Lokale GUI kann auch Cloud-Nodes enthalten.
-- [n8n](https://docs.n8n.io/sustainable-use-license/): Sustainable Use/Fair-Code mit
-  Nutzungsgrenzen, nicht pauschal OSI-Open-Source oder uneingeschraenkt weiterverkaufbar.
+- `https://docs.n8n.io/sustainable-use-license/` (historische Quelle; Abruf 404, nicht als aktueller
+  Beleg verifiziert); [Primaerquelle](https://github.com/n8n-io/n8n/blob/master/LICENSE.md):
+  Sustainable Use/Fair-Code mit Nutzungsgrenzen, nicht pauschal OSI-Open-Source oder
+  uneingeschraenkt weiterverkaufbar.
 - [Activepieces](https://github.com/activepieces/activepieces/blob/main/docs/about/license.mdx):
   Core MIT, Enterprise-/Cloud-Funktionen mit anderen Bedingungen.
 - [Huginn](https://github.com/huginn/huginn): MIT.

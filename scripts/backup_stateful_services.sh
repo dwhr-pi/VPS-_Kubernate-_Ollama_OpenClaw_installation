@@ -46,7 +46,7 @@ while IFS= read -r line || [[ -n "$line" ]]; do
     value=${value:1:${#value}-2}
   fi
   printf -v "$key" '%s' "$value"
-  export "$key"
+  export "${key?}"
 done <"$env_file"
 
 for key in RESTIC_REPOSITORY RESTIC_PASSWORD_FILE COMPOSE_FILE QDRANT_DATA_DIR POSTGRES_DATA_DIR MINIO_DATA_DIR BACKUP_LOCK_DIR; do

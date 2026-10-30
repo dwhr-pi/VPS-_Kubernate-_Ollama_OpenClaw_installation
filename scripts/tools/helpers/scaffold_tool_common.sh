@@ -61,7 +61,9 @@ install_scaffold_tool() {
       exit 1
     fi
     sudo apt-get update
-    sudo apt-get install -y ${TOOL_APT_PACKAGES}
+    local -a packages
+    read -r -a packages <<<"${TOOL_APT_PACKAGES//$'\n'/ }"
+    sudo apt-get install -y "${packages[@]}"
   fi
 
   sudo mkdir -p "$TOOL_DIR"

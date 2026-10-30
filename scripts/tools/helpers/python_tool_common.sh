@@ -43,7 +43,10 @@ install_python_tool() {
   # shellcheck disable=SC1091
   source "${TOOL_DIR}/venv/bin/activate"
   pip install --upgrade pip setuptools wheel
-  pip install ${TOOL_PACKAGES}
+  # Preserve requirement specifiers literally (including extras and wildcards).
+  local -a packages
+  read -r -a packages <<<"${TOOL_PACKAGES//$'\n'/ }"
+  pip install "${packages[@]}"
 
   if [ -n "${TOOL_POST_INSTALL:-}" ]; then
     bash -lc "source '${TOOL_DIR}/venv/bin/activate' && ${TOOL_POST_INSTALL}"

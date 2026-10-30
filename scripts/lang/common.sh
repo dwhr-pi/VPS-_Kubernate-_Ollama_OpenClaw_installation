@@ -176,7 +176,7 @@ load_setup_language() {
 show_setup_language_menu() {
   local current_language="${SETUP_LANGUAGE:-$DEFAULT_SETUP_LANGUAGE}"
 
-  dialog --clear --backtitle "$APP_TITLE" \
+  if ! dialog --clear --backtitle "$APP_TITLE" \
     --title "${TXT_LANGUAGE_MENU_TITLE:-Sprachauswahl}" \
     --menu "${TXT_LANGUAGE_MENU_PROMPT:-Bitte wählen Sie die Sprache für das Setup:}" 20 90 10 \
     "de" "Deutsch" \
@@ -188,9 +188,7 @@ show_setup_language_menu() {
     "es" "Español" \
     "eo" "Esperanto" \
     "ar" "العربية" \
-    "he" "עברית" 2>/tmp/setup_language_choice
-
-  if [ $? -ne 0 ]; then
+    "he" "עברית" 2>/tmp/setup_language_choice; then
     return 1
   fi
 

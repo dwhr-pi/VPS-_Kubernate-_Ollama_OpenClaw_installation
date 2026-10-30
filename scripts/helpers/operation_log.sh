@@ -72,6 +72,8 @@ print_operation_log_heading() {
 start_operation_log() {
   local operation="$1" slug timestamp tool="" header
   ACTIVE_OPERATION_LOG_FILE=""
+  # Public result read by installer callers, including on initialization failure.
+  # shellcheck disable=SC2034
   LAST_OPERATION_LOG_FILE=""
   slug="$(printf '%s' "$operation" | tr -cs '[:alnum:]_.-' '_')"
   timestamp="$(date +%Y%m%d_%H%M%S)"

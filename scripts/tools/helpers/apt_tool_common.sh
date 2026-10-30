@@ -27,7 +27,10 @@ install_apt_tool() {
 
   echo -e "${BLUE}Starte Installation von ${TOOL_NAME}...${NC}"
   sudo apt-get update
-  sudo apt-get install -y ${APT_PACKAGES}
+  # Package lists are whitespace-delimited data, never shell globs.
+  local -a packages
+  read -r -a packages <<<"${APT_PACKAGES//$'\n'/ }"
+  sudo apt-get install -y "${packages[@]}"
 
   if [ -n "${TOOL_ENABLE_SERVICE:-}" ]; then
     sudo systemctl enable "$TOOL_ENABLE_SERVICE"
@@ -57,7 +60,9 @@ uninstall_apt_tool() {
     sudo systemctl disable "$TOOL_ENABLE_SERVICE" || true
   fi
 
-  sudo apt-get remove -y ${APT_PACKAGES}
+  local -a packages
+  read -r -a packages <<<"${APT_PACKAGES//$'\n'/ }"
+  sudo apt-get remove -y "${packages[@]}"
   sudo apt-get autoremove -y
 
   mark_current_tool_removed

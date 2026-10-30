@@ -144,6 +144,8 @@ load_installed_map() {
     entry_name="${entry_name%$'\r'}"
     entry_name="${entry_name//\"/}"
     [ -n "$entry_name" ] || continue
+    # The nameref writes into the caller's associative array.
+    # shellcheck disable=SC2034
     target_map["$entry_name"]=1
   done <"$file_path"
 }

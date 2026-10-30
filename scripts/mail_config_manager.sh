@@ -72,7 +72,7 @@ ensure_mail_tools() {
   fi
 
   echo -e "${YELLOW}Mail-Tools fehlen teilweise. Installiere Mail_Utils_MSMTP automatisch...${NC}"
-  INSTALL_DIR="$INSTALL_DIR" bash "$INSTALL_DIR/scripts/tools/mail_utils_msmtp_install.sh"
+  env INSTALL_DIR="$INSTALL_DIR" bash "$INSTALL_DIR/scripts/tools/mail_utils_msmtp_install.sh"
 }
 
 edit_mail_settings_dialog() {
@@ -80,7 +80,7 @@ edit_mail_settings_dialog() {
   local tmp_form
   tmp_form="$(mktemp)"
 
-  dialog --clear --backtitle "OpenClaw Ultimate Setup" \
+  if ! dialog --clear --backtitle "OpenClaw Ultimate Setup" \
     --title "E-MAIL-DIAGNOSE KONFIGURATION" \
     --form "SMTP-Daten fuer Diagnoseberichte. Hinweis: Beim E-Mail-Anbieter muss SMTP/IMAP fuer Drittanbieter-Apps aktiviert sein." 22 100 10 \
     "Absender / SMTP-User:" 1 1 "$MAIL_FROM" 1 28 60 120 \
@@ -90,9 +90,7 @@ edit_mail_settings_dialog() {
     "STARTTLS:" 5 1 "$SMTP_TLS_STARTTLS" 5 28 60 10 \
     "msmtp Account:" 6 1 "$MSMTP_ACCOUNT" 6 28 60 40 \
     "Diagnose-Empfaenger:" 7 1 "$DEFAULT_EMAIL_TO" 7 28 60 120 \
-    2>"$tmp_form"
-
-  if [ $? -ne 0 ]; then
+    2>"$tmp_form"; then
     rm -f "$tmp_form"
     return 0
   fi
@@ -126,11 +124,9 @@ edit_password_dialog() {
   tmp_pass="$(mktemp)"
   chmod 600 "$tmp_pass" 2>/dev/null || true
 
-  dialog --clear --backtitle "OpenClaw Ultimate Setup" \
+  if ! dialog --clear --backtitle "OpenClaw Ultimate Setup" \
     --title "SMTP-PASSWORT / APP-PASSWORT" \
-    --insecure --passwordbox "SMTP- oder App-Passwort lokal speichern.\n\nEs wird nur in $SMTP_PASSWORD_FILE gespeichert, chmod 600.\nNicht ins Repo schreiben." 12 92 2>"$tmp_pass"
-
-  if [ $? -ne 0 ]; then
+    --insecure --passwordbox "SMTP- oder App-Passwort lokal speichern.\n\nEs wird nur in $SMTP_PASSWORD_FILE gespeichert, chmod 600.\nNicht ins Repo schreiben." 12 92 2>"$tmp_pass"; then
     rm -f "$tmp_pass"
     return 0
   fi
@@ -224,7 +220,7 @@ main_menu() {
   ensure_mail_workspace
 
   while true; do
-    dialog --clear --backtitle "OpenClaw Ultimate Setup" \
+    if ! dialog --clear --backtitle "OpenClaw Ultimate Setup" \
       --cancel-label "↩ Zurück" \
       --title "E-MAIL-DIAGNOSE" \
       --menu "Konfiguration fuer Diagnoseberichte per E-Mail. Keine Secrets im Repo." 22 100 6 \
@@ -233,9 +229,7 @@ main_menu() {
       "3" "Mailtools installieren / pruefen" \
       "4" "Testmail ohne Logs senden" \
       "5" "Lokale Testmail-Datei loeschen" \
-      "6" "Status anzeigen" 2>/tmp/mail_config_choice
-
-    if [ $? -ne 0 ]; then
+      "6" "Status anzeigen" 2>/tmp/mail_config_choice; then
       clear
       return 0
     fi

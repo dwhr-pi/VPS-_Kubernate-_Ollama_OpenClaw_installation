@@ -16,10 +16,14 @@ esac
 
 # emsdk_env.sh only activates the already installed SDK in this subprocess.
 set +u
+# External installed SDK activation script; absent from this repository.
+# shellcheck source=/dev/null
 source "$PENPOT_EMSDK_ENV"
 set -u
 cd "$checkout/render-wasm"
 export BUILD_MODE=release NODE_ENV=production
+# Upstream checkout supplies build/copy functions and the checked variables below.
+# shellcheck source=/dev/null
 source ./_build_env "$target" --locked
 export EM_CACHE="$prefix/_build/emscripten-cache"
 if [ "$RUST_VERSION" != "1.99.0" ] || [ "$CARGO_BUILD_TARGET" != "wasm32-unknown-emscripten" ]; then

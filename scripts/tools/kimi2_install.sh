@@ -61,8 +61,7 @@ else
   echo -e "${BLUE}Klone Kimi 2 Repository von ${KIMI2_REPO}...${NC}"
   sudo mkdir -p "$(dirname "$KIMI2_DIR")"
   sudo chown -R "$USER:$USER" "$(dirname "$KIMI2_DIR")"
-  git clone "$KIMI2_REPO" "$KIMI2_DIR"
-  if [ $? -ne 0 ]; then
+  if ! git clone "$KIMI2_REPO" "$KIMI2_DIR"; then
     echo -e "${RED}Fehler beim Klonen des Kimi 2 Repositories.${NC}"
     exit 1
   fi

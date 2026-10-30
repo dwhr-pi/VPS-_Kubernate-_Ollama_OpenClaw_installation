@@ -93,9 +93,7 @@ trap cleanup_temp_files EXIT
 
 while true; do
   ensure_user_workspace
-  show_menu
-
-  if [ $? -ne 0 ] || [ ! -f "$LLMOPS_CHOICE_FILE" ]; then
+  if ! show_menu || [ ! -f "$LLMOPS_CHOICE_FILE" ]; then
     break
   fi
 

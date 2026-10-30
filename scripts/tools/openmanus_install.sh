@@ -155,6 +155,8 @@ if [ -d venv ] && [ ! -f venv/bin/activate ]; then
   rm -rf venv
 fi
 python3 -m venv venv
+# Generated virtualenv activation script, absent from the checkout.
+# shellcheck source=/dev/null
 source venv/bin/activate
 python -m pip install --upgrade pip setuptools wheel
 

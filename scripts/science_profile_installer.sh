@@ -28,7 +28,7 @@ detect_gpu() {
 clone_github_projects() {
   [ -f "$PROJECT_MANIFEST" ] || return 0
   mkdir -p "$PROFILE_ROOT/src"
-  while IFS='|' read -r profile name url purpose notes; do
+  while IFS='|' read -r profile name url _ _; do
     case "$profile" in "" | \#*) continue ;; esac
     [ "$profile" = "$PROFILE_KEY" ] || continue
     target="$PROFILE_ROOT/src/$(printf '%s' "$name" | tr '[:upper:] /' '[:lower:]__')"

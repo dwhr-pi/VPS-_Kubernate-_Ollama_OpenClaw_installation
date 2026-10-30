@@ -185,7 +185,7 @@ aegisub_main() (
   ae_paths || return 1
   case "$mode" in
     --dry-run | --plan | plan | --help)
-      echo "Aegisub 3.5.1: GitHub $AE_URL; Pin $AE_COMMIT; ohne Docker."
+      echo "Aegisub $AE_VERSION: GitHub $AE_URL; Pin $AE_COMMIT; ohne Docker."
       echo 'Standard: gepinnte GitHub-Quellen. AEGISUB_BUILD=1: optional nativer GUI-Build, 1 Job (einstellbar 1-2).'
       echo 'Quelle: 1 GiB freie Disk, WSL C: 2 GiB; Build: 4 GiB RAM und 8 GiB Disk/WSL C:. Kein Audio-/Dienststart.'
       return 0

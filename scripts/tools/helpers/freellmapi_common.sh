@@ -89,7 +89,8 @@ freellmapi_activate_private_node() {
   git -C "$FREELLMAPI_NVM_DIR" diff --quiet HEAD -- nvm.sh || return 1
   export NVM_DIR="$FREELLMAPI_NVM_DIR"
   # Activation only: never nvm install from status, doctor or start.
-  # shellcheck disable=SC1090
+  # Verified external nvm checkout; not present in the setup repository.
+  # shellcheck source=/dev/null
   source "$NVM_DIR/nvm.sh" --no-use || return 1
   nvm use 22 >/dev/null 2>&1
 }
@@ -206,7 +207,7 @@ freellmapi_build() (
   before="$(df -Pk "$mount" | awk 'NR==2 {print $4}')"
   exec > >(tee -a "$log") 2>&1
   local rc
-  trap 'rc=$?; printf "Build Exit=%s Dauer=%ss Disk-vorher-KiB=%s\n" "$rc" "$((SECONDS-started))" "$before"; df -Pk "$mount"; exit "$rc"' EXIT
+  trap 'rc=$?; printf "Build Exit=%s Dauer=%ss Disk-vorher-KiB=%s\n" "$rc" "$((SECONDS-${started}))" "$before"; df -Pk "$mount"; exit "$rc"' EXIT
   echo "FreeLLMAPI GitHub-Source $FREELLMAPI_SOURCE_TAG ($FREELLMAPI_SOURCE_COMMIT), ohne Container."
   freellmapi_prepare_runtime || return 1
   if [[ "$mode" == install ]] && freellmapi_is_built; then

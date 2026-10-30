@@ -112,7 +112,11 @@ handle_ignored_build_scripts() {
   echo "$ignored_output"
 
   if prompt_yes_no "Ich korrigiere jetzt das zuvor fehlende ignorierte Build-Skript, z.B. @discordjs/opus@0.10.0. Bitte bestätige die Korrektur mit (j/N): "; then
-    pnpm approve-builds <"$TTY_DEVICE" >"$TTY_DEVICE" 2>&1 || {
+    if [ ! -c "$TTY_DEVICE" ] || ! [ -t 0 ] <"$TTY_DEVICE"; then
+      echo "Build approval requires a terminal device." >&2
+      return 1
+    fi
+    pnpm approve-builds <>"$TTY_DEVICE" >&0 2>&1 || {
       echo -e "${RED}Warnung: 'pnpm approve-builds' konnte nicht erfolgreich abgeschlossen werden.${NC}"
       return 1
     }
@@ -157,8 +161,7 @@ else
 fi
 
 echo -e "${BLUE}Installiere OpenClaw Abhängigkeiten mit pnpm...${NC}"
-pnpm install
-if [ $? -ne 0 ]; then
+if ! pnpm install; then
   echo -e "${RED}Fehler: pnpm install fehlgeschlagen.${NC}"
   exit 1
 fi

@@ -26,25 +26,20 @@ declare -a STARTABLE_TOOLS=()
 declare -a UNSUPPORTED_TOOLS=()
 declare -A START_LABELS=()
 declare -A START_HINTS=()
-declare -A START_KIND=()
 
 START_ORDER=("Huginn" "Ollama" "Home_Assistant" "OpenClaw")
 
 START_LABELS["Huginn"]="Huginn"
 START_HINTS["Huginn"]="Web + Worker, bevorzugt per systemd"
-START_KIND["Huginn"]="service"
 
 START_LABELS["Ollama"]="Ollama"
 START_HINTS["Ollama"]="lokales Modell-Backend per systemd"
-START_KIND["Ollama"]="service"
 
 START_LABELS["Home_Assistant"]="Home Assistant"
 START_HINTS["Home_Assistant"]="Smart-Home-Dienst per systemd"
-START_KIND["Home_Assistant"]="service"
 
 START_LABELS["OpenClaw"]="OpenClaw"
 START_HINTS["OpenClaw"]="Dev-Modus im Hintergrund, Logs im Benutzer-Workspace"
-START_KIND["OpenClaw"]="background"
 
 cleanup_temp_files() {
   rm -f "$SELECTION_FILE" "$MENU_FILE"

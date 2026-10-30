@@ -193,8 +193,20 @@ nicht doppelt hier pflegen: [Webinar-Werkzeuge installieren](../tools/webinar-to
 Selfhosting allein bestaetigt keine DSGVO-Konformitaet. Fuer die konkrete Konfiguration,
 Empfaengerkommunikation, Aufzeichnung und Datenverarbeitung eine passende fachliche/rechtliche
 Pruefung vorsehen. Der Leitfaden ersetzt keine Beratung und keine Abnahme. Primaerquelle fuer eine
-solche Pruefung: [DSGVO im EU-Amtsblatt](https://eur-lex.europa.eu/eli/reg/2016/679/oj?locale=de).
+solche Pruefung:
+[DSGVO im EU-Amtsblatt](https://op.europa.eu/en/publication-detail/-/publication/3e485e15-11bd-11e6-ba9a-01aa75ed71a1/language-de).
 
 **Nicht durch diese Dokumentation ausgefuehrt:** Installation, WSL-/GPU-Start, Formularbetrieb,
 Datenbankmigration, SMTP-Konfiguration, Mailversand, Aufnahme, Streaming, Tracking, Werbung oder
 Publikation. Verlinkte Tools und Prototypen bilden noch keinen end-to-end getesteten Webinar-Funnel.
+
+## CI-Quellenabgleich (30.10.2026)
+
+Die Alt-Adressen bleiben als Herkunftsbeleg erhalten. Die neuen Nachweise wurden anonym mit HTTP 200
+abgerufen und anhand von Titel und CELEX bzw. offizieller Projektquelle zugeordnet.
+EU-Metadatensaetze belegen die jeweilige Originalveroeffentlichung, nicht eine aktuelle
+konsolidierte Rechtspruefung. Keine Anmeldung und keine Provider-Inferenz.
+
+| Alt-Adresse (Abruf fehlgeschlagen)                        | Erreichbarer Nachweis                                                                                                      |
+| --------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| `https://eur-lex.europa.eu/eli/reg/2016/679/oj?locale=de` | [Primaerquelle](https://op.europa.eu/en/publication-detail/-/publication/3e485e15-11bd-11e6-ba9a-01aa75ed71a1/language-de) |

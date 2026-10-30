@@ -110,9 +110,9 @@ Fehlende Built-in-Submodule ggf. separat nach Upstream-Anleitung und Review einr
 alle nachladen. Dieser Erststart ist hier **nicht end-to-end getestet**.
 
 Kein `--listen`, kein `--share`, kein API-Listener nach aussen. Im Browser danach nur
-[localhost:7860](http://127.0.0.1:7860) verwenden. Oeffentliche Erreichbarkeit, Tunnel, Cloud oder
-Auth-Ausnahmen nicht aktivieren. Der Installer selbst bindet keinen Port; deshalb bleibt seine
-Portliste leer.
+`http://127.0.0.1:7860` (lokales Beispiel, kein oeffentlicher Link) verwenden. Oeffentliche
+Erreichbarkeit, Tunnel, Cloud oder Auth-Ausnahmen nicht aktivieren. Der Installer selbst bindet
+keinen Port; deshalb bleibt seine Portliste leer.
 
 ## 4. Zielhost und Ressourcen
 

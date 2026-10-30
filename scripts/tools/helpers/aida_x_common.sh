@@ -177,7 +177,7 @@ aida_x_main() (
   ax_paths || return 1
   case "$mode" in
     --dry-run | --plan | plan | --help)
-      echo "AIDA-X 1.1.0: GitHub $AX_URL; Pin $AX_COMMIT; ohne Docker."
+      echo "AIDA-X $AX_VERSION: GitHub $AX_URL; Pin $AX_COMMIT; ohne Docker."
       echo 'Standard: Quelle plus 8 gepinnte GitHub-Unterprojekte. AIDA_X_BUILD=1: optional Standalone, max. 1 Job (einstellbar 1-2).'
       echo 'Quelle: 1 GiB freie Disk, WSL C: 2 GiB; Build: 4 GiB RAM/Disk/WSL C:. Kein Audio-/Dienststart.'
       return 0
