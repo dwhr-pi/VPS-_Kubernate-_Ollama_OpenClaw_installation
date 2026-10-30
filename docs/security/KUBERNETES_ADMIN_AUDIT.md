@@ -13,10 +13,16 @@ Datenloeschung brauchen eigene Freigaben und Auditspuren ohne Prompt-/Secret-Inh
 
 ## NSA / CISA als Admin-Auditbogen
 
+Ergaenzender erreichbarer Beleg: das
+[CISA-Bulletin vom 15.03.2022](https://content.govdelivery.com/accounts/USDHSCISA/bulletins/30ef592)
+bestaetigt die gemeinsame Guidance als historischen Kontext. Es belegt nicht den Volltext der
+Version 1.2 vom August 2022. Deren gesperrte Originaladresse bleibt unten unverifiziert erhalten.
+
 Orientierung:
-[Kubernetes Hardening Guidance, Version 1.2, August 2022](https://media.defense.gov/2022/Aug/29/2003066362/1/1/0/CTR_KUBERNETES_HARDENING_GUIDANCE_1.2_20220829.PDF).
-Keine Behauptung, dies sei eine neue 2026-Ausgabe. Die Themenzuordnung unten ist eine
-projektspezifische Zusammenfassung, keine wortgetreue Kontrollnummerierung. Veraltete
+`https://media.defense.gov/2022/Aug/29/2003066362/1/1/0/CTR_KUBERNETES_HARDENING_GUIDANCE_1.2_20220829.PDF`
+(Kubernetes Hardening Guidance, Version 1.2, August 2022; unverifizierte Originalreferenz, CI HTTP
+403, 30.10.2026). Keine Behauptung, dies sei eine neue 2026-Ausgabe. Die Themenzuordnung unten ist
+eine projektspezifische Zusammenfassung, keine wortgetreue Kontrollnummerierung. Veraltete
 PodSecurityPolicy durch aktuelle Pod Security Admission ersetzen.
 
 | Thema der Guidance           | Projektpruefung                 | Sollnachweis                         | Status | Verantwortlich / Datum / Evidenz |

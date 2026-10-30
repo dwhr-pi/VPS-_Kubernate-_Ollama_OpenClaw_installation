@@ -209,8 +209,10 @@ der Beschaeftigten, Verarbeitungsverzeichnis, Zugriffsprozesse und technische/or
 Massnahmen muessen fuer den konkreten Betrieb geprueft werden. Beschaeftigtendaten und
 Gesundheitsdaten brauchen besondere Aufmerksamkeit; keine pauschale Einwilligung als Loesung. Keine
 automatisierten Bewertungen von Leistung, Eignung oder Kuendigung. Quellen:
-[DSGVO, amtliche Fassung](https://amtliche-handbuecher.bundesfinanzministerium.de/ao/2026/Datenschutz-Grundverordnung/inhalt.html),
-[§ 26 BDSG](https://www.gesetze-im-internet.de/bdsg_2018/__26.html).
+`https://amtliche-handbuecher.bundesfinanzministerium.de/ao/2026/Datenschutz-Grundverordnung/inhalt.html`
+(DSGVO, amtliche Fassung; unverifizierte Originalreferenz, CI HTTP 503, 30.10.2026),
+`https://www.gesetze-im-internet.de/bdsg_2018/__26.html` (§ 26 BDSG; unverifizierte
+Originalreferenz, CI Transportfehler, 30.10.2026).
 
 | Bereich           | Vor Produktivbetrieb nachweisen                                                                                                         |
 | ----------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
@@ -230,7 +232,8 @@ Rechtsberatung oder Zertifizierung.
 Restic/Borg, Snapshots oder eine lokale Logdatei allein ergeben keine Revisionssicherheit. Fuer
 steuerlich relevante Unterlagen muessen die jeweils anwendbaren GoBD-Anforderungen, Verfahren und
 Nachweise gesondert geprueft werden; nicht jede Personalakte ist pauschal ein GoBD-Archiv. Quelle:
-[BMF: GoBD im amtlichen Handbuch](https://amtliche-handbuecher.bundesfinanzministerium.de/ao/2026/Anhaenge/BMF-Schreiben-und-gleichlautende-Laendererlasse/Anhang-33/inhalt.html).
+`https://amtliche-handbuecher.bundesfinanzministerium.de/ao/2026/Anhaenge/BMF-Schreiben-und-gleichlautende-Laendererlasse/Anhang-33/inhalt.html`
+(BMF: GoBD im amtlichen Handbuch; unverifizierte Originalreferenz, CI HTTP 503, 30.10.2026).
 
 DB-Dump/Originale/Archivdateien/Metadaten/Config konsistent sichern, Secrets separat verschluesselt
 verwalten. Mindestens eine getrennte geschuetzte Kopie und Wiederherstellung mit identischer

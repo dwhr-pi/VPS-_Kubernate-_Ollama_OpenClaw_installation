@@ -7,27 +7,33 @@ Recherche-APIs wurden verbunden.
 
 ## Comet ist ein Client, keine lokale Inferenz-Runtime
 
-Die [offizielle Comet-Seite](https://www.perplexity.ai/comet) bietet Downloads fuer
-Desktop/Mobilgeraete. Ein offizieller vollstaendiger Comet-Quellcode-/Build- Vertrag wurde in den
-geprueften Quellen nicht nachgewiesen. Daher **kein GitHub-Source-Installer fuer Comet** und keine
-Gleichsetzung mit dem offenen Chromium-Unterbau. Fuer Comet bleibt es beim offiziellen Downloadlink.
-Konto-/Tarif-/Plattformbedingungen vor Installation dort pruefen. Der neue Eintrag **Comet** bietet
-wie Qwen Desktop Oeffnen der offiziellen Downloadseite, einen Wartepunkt und anschliessende manuelle
-Bestaetigung. Die EXE wird unter Windows heruntergeladen/geprueft/ausgefuehrt, niemals automatisch
-in WSL.
+Quellenhinweis 30.10.2026: Die hinterlegte Comet-Seite ist aus der automatisierten Pruefung mit 403
+nicht verifiziert. Plattformen und Downloads vor einer manuellen Installation dort selbst pruefen.
+Die erreichbare
+[offizielle API-Dokumentation](https://docs.perplexity.ai/docs/getting-started/quickstart) belegt
+nur den API-Key-Einstieg, nicht die Comet-Downloads oder eine offene Comet-Lizenz.
+
+Die `https://www.perplexity.ai/comet` (offizielle Comet-Seite; unverifizierte Originalreferenz, CI
+HTTP 403, 30.10.2026) bietet Downloads fuer Desktop/Mobilgeraete. Ein offizieller vollstaendiger
+Comet-Quellcode-/Build- Vertrag wurde in den geprueften Quellen nicht nachgewiesen. Daher **kein
+GitHub-Source-Installer fuer Comet** und keine Gleichsetzung mit dem offenen Chromium-Unterbau. Fuer
+Comet bleibt es beim offiziellen Downloadlink. Konto-/Tarif-/Plattformbedingungen vor Installation
+dort pruefen. Der neue Eintrag **Comet** bietet wie Qwen Desktop Oeffnen der offiziellen
+Downloadseite, einen Wartepunkt und anschliessende manuelle Bestaetigung. Die EXE wird unter Windows
+heruntergeladen/geprueft/ausgefuehrt, niemals automatisch in WSL.
 
 ## Neue Eintraege am Listenende
 
-| Projekt / GitHub                                                                     | Rolle                                    | Einordnung fuer den Hybridstack                                                                                              |
-| ------------------------------------------------------------------------------------ | ---------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| **Comet** / [Download](https://www.perplexity.ai/comet)                              | Proprietaerer Desktop-Browser            | Manueller Windows-Download mit Pause/Bestaetigung; explizite Nicht-GitHub-Ausnahme                                           |
-| **BrowserOS** / [GitHub](https://github.com/browseros-ai/BrowserOS)                  | Offener agentischer Desktop-Browser      | Offiziellen GitHub-Release manuell fuer Windows/Linux installieren, kein Chromium-Source-Build                               |
-| **Enki_Browser** / [GitHub](https://github.com/danilogiles/enki-browser)             | Chromium-Browser mit eigenem Assistenten | Offiziellen GitHub-Release manuell fuer Windows/Linux installieren                                                           |
-| **Browser_Use** / [GitHub](https://github.com/browser-use/browser-use)               | Browser-Agent-Bibliothek                 | Privates Python-Paket aus GitHub; fehlenden uv-Lock lokal erzeugen, dann frozen Sync; kein Browserdownload oder Agentenstart |
-| **Perplexity_MCP** / [GitHub](https://github.com/perplexityai/modelcontextprotocol)  | Offizieller API-MCP-Server               | Gepinnter TypeScript-Build; kein Serverstart, kein API-Key erforderlich fuer den Build                                       |
-| **Perplexity_Python** / [GitHub](https://github.com/perplexityai/perplexity-py)      | Offizieller Python-SDK                   | Gepinntes Bazel-Wheel mit privater Python-Umgebung; keine API-Anfrage                                                        |
-| **Perplexity_Node** / [GitHub](https://github.com/perplexityai/perplexity-node)      | Offizieller Node-SDK                     | Gepinntes Bazel-Paket; keine API-Anfrage                                                                                     |
-| **Perplexity_API_Cookbook** / [GitHub](https://github.com/perplexityai/api-cookbook) | Offizielle Beispiele                     | Gepinnte Beispielsammlung lokal installieren; kein ausfuehrbarer Dienst, Beispiele werden nicht gestartet                    |
+| Projekt / GitHub                                                                                                   | Rolle                                    | Einordnung fuer den Hybridstack                                                                                              |
+| ------------------------------------------------------------------------------------------------------------------ | ---------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| **Comet** / `https://www.perplexity.ai/comet` (Download; unverifizierte Originalreferenz, CI HTTP 403, 30.10.2026) | Proprietaerer Desktop-Browser            | Manueller Windows-Download mit Pause/Bestaetigung; explizite Nicht-GitHub-Ausnahme                                           |
+| **BrowserOS** / [GitHub](https://github.com/browseros-ai/BrowserOS)                                                | Offener agentischer Desktop-Browser      | Offiziellen GitHub-Release manuell fuer Windows/Linux installieren, kein Chromium-Source-Build                               |
+| **Enki_Browser** / [GitHub](https://github.com/danilogiles/enki-browser)                                           | Chromium-Browser mit eigenem Assistenten | Offiziellen GitHub-Release manuell fuer Windows/Linux installieren                                                           |
+| **Browser_Use** / [GitHub](https://github.com/browser-use/browser-use)                                             | Browser-Agent-Bibliothek                 | Privates Python-Paket aus GitHub; fehlenden uv-Lock lokal erzeugen, dann frozen Sync; kein Browserdownload oder Agentenstart |
+| **Perplexity_MCP** / [GitHub](https://github.com/perplexityai/modelcontextprotocol)                                | Offizieller API-MCP-Server               | Gepinnter TypeScript-Build; kein Serverstart, kein API-Key erforderlich fuer den Build                                       |
+| **Perplexity_Python** / [GitHub](https://github.com/perplexityai/perplexity-py)                                    | Offizieller Python-SDK                   | Gepinntes Bazel-Wheel mit privater Python-Umgebung; keine API-Anfrage                                                        |
+| **Perplexity_Node** / [GitHub](https://github.com/perplexityai/perplexity-node)                                    | Offizieller Node-SDK                     | Gepinntes Bazel-Paket; keine API-Anfrage                                                                                     |
+| **Perplexity_API_Cookbook** / [GitHub](https://github.com/perplexityai/api-cookbook)                               | Offizielle Beispiele                     | Gepinnte Beispielsammlung lokal installieren; kein ausfuehrbarer Dienst, Beispiele werden nicht gestartet                    |
 
 Die Eintraege sind jetzt separat im Setup erreichbar; **kein Download oder Build wurde auf deinem
 Produktivsystem ausgefuehrt**. Die PDF-Aussagen zu Browser Operator und OpenBrowser sind ohne

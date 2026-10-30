@@ -892,7 +892,8 @@ BRAVE_API_KEY=...
 
 Von Perplexity:
 
-- [www.perplexity.ai/settings/api](https://www.perplexity.ai/settings/api)
+- `https://www.perplexity.ai/settings/api` (frueherer API-Key-Einstieg; unverifizierte
+  Originalreferenz, CI HTTP 403, 30.10.2026)
 - API-Key erzeugen
 
 Beginnt meist mit:

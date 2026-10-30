@@ -87,44 +87,68 @@ ein Quelleninventar, keine Liste funktionierender Installationen.
 ## Oeffentliche Quellen mit gemeldeten Fehlern
 
 Diese Liste umfasst alle uebrigen unterschiedlichen URLs aus dem gemeldeten Lauf; Mehrfachvorkommen
-wurden zusammengefasst. Status 0 bedeutet Transportfehler, nicht HTTP. Keine dieser oeffentlichen
-Quellen wird vom Gate ausgenommen. Die Spalte ist der **gemeldete CI-Befund**, keine Behauptung
-eines erfolgreichen aktuellen Abrufs. Google Veo konnte im Recherchewerkzeug inhaltlich abgerufen
-werden; ein solcher Browserabruf ersetzt keinen erfolgreichen anonymen CI-Abruf. Bei Rechtstexten
-bleiben Zuordnung, Originalfassung, Konsolidierung und zeitliche Gueltigkeit separat zu pruefen.
+wurden zusammengefasst. Status 0 bedeutet Transportfehler, nicht HTTP. Die Spalte ist der
+**gemeldete CI-Befund**, keine Behauptung eines erfolgreichen aktuellen Abrufs. Google Veo konnte im
+Recherchewerkzeug inhaltlich abgerufen werden; ein solcher Browserabruf ersetzt keinen erfolgreichen
+anonymen CI-Abruf. Bei Rechtstexten bleiben Zuordnung, Originalfassung, Konsolidierung und zeitliche
+Gueltigkeit separat zu pruefen.
 
-| Quelle                                                                                                                                                     | Gemeldeter CI-Befund                          |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------- |
-| [BMF DSGVO](https://amtliche-handbuecher.bundesfinanzministerium.de/ao/2026/Datenschutz-Grundverordnung/inhalt.html)                                       | 503                                           |
-| [BDSG 26](https://www.gesetze-im-internet.de/bdsg_2018/__26.html)                                                                                          | 0                                             |
-| [BMF GoBD](https://amtliche-handbuecher.bundesfinanzministerium.de/ao/2026/Anhaenge/BMF-Schreiben-und-gleichlautende-Laendererlasse/Anhang-33/inhalt.html) | 503                                           |
-| [GNU GDB](https://www.gnu.org/software/gdb/)                                                                                                               | 0                                             |
-| [GNU Bash](https://www.gnu.org/software/bash/)                                                                                                             | 0                                             |
-| [DSGVO DE ELI](https://op.europa.eu/en/publication-detail/-/publication/3e485e15-11bd-11e6-ba9a-01aa75ed71a1/language-de)                                  | 202                                           |
-| [UrhG 69d](https://www.gesetze-im-internet.de/urhg/__69d.html)                                                                                             | 0                                             |
-| [UrhG 69e](https://www.gesetze-im-internet.de/urhg/__69e.html)                                                                                             | 0                                             |
-| [Veo](https://ai.google.dev/gemini-api/docs/veo)                                                                                                           | 0                                             |
-| [AI Act](https://op.europa.eu/en/publication-detail/-/publication/dc8116a1-3fe6-11ef-865a-01aa75ed71a1/language-de)                                        | 202                                           |
-| [OJ 2026/1744](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202601744)                                                                         | 202; Zuordnung zu AI Omnibus nicht bestaetigt |
-| [DSGVO ELI](https://op.europa.eu/en/publication-detail/-/publication/3e485e15-11bd-11e6-ba9a-01aa75ed71a1/language-de)                                     | 202                                           |
-| [DSM](https://op.europa.eu/en/publication-detail/-/publication/214471fe-786e-11e9-9f05-01aa75ed71a1/language-de)                                           | 202                                           |
-| [NIS-2](https://op.europa.eu/en/publication-detail/-/publication/9b84d482-85bd-11ed-9887-01aa75ed71a1/language-de)                                         | 202                                           |
-| [Gesetze im Internet](https://www.gesetze-im-internet.de/)                                                                                                 | 0                                             |
-| [Korea](https://www.law.go.kr/)                                                                                                                            | 0                                             |
-| [Singapur](https://www.pdpc.gov.sg/)                                                                                                                       | 202                                           |
-| [Nigeria](https://ndpc.gov.ng/)                                                                                                                            | 403                                           |
-| [VAE](https://uaelegislation.gov.ae/)                                                                                                                      | 403                                           |
-| [Russland](https://pravo.gov.ru/)                                                                                                                          | 0                                             |
-| [Russland Publikation](https://publication.pravo.gov.ru/)                                                                                                  | 0                                             |
-| [Ukraine](https://zakon.rada.gov.ua/laws/main?lang=en)                                                                                                     | 0                                             |
-| [Paperless API](https://github.com/paperless-ngx/paperless-ngx/blob/main/docs/api.md)                                                                      | 403; oeffentliche Doku, keine Auth-Ausnahme   |
-| [Google Preise](https://ai.google.dev/gemini-api/docs/pricing)                                                                                             | 0                                             |
-| [Google Billing](https://ai.google.dev/gemini-api/docs/billing)                                                                                            | 0                                             |
-| [Google Einstieg](https://ai.google.dev/)                                                                                                                  | 0                                             |
-| [DSGVO CELEX](https://op.europa.eu/en/publication-detail/-/publication/3e485e15-11bd-11e6-ba9a-01aa75ed71a1/language-de)                                   | 202                                           |
-| [AI Act CELEX](https://op.europa.eu/en/publication-detail/-/publication/dc8116a1-3fe6-11ef-865a-01aa75ed71a1/language-de)                                  | 202                                           |
-| [Google API Key](https://ai.google.dev/gemini-api/docs/api-key)                                                                                            | 0                                             |
-| [NSA/CISA Kubernetes 1.2](https://media.defense.gov/2022/Aug/29/2003066362/1/1/0/CTR_KUBERNETES_HARDENING_GUIDANCE_1.2_20220829.PDF)                       | 403                                           |
+### Ausdrueckliche Quellenfreigabe vom 30.10.2026
+
+Der Nutzer hat die einzeln belegte Umklassifizierung nicht automatisch pruefbarer Originaladressen
+genehmigt. Die [datierte Evidenzliste](UNVERIFIED_SOURCE_REFERENCES_2026-10-30.json) enthaelt exakt
+23 Adressen aus den fehlgeschlagenen Runs fuer `6e11a77`, Status und betroffene Dateien. Sie ist
+Dokumentation, keine vom Checker eingelesene Ignore-Liste. Die Originaladressen bleiben an ihren
+Fundstellen als Code mit Datum und unverifiziertem CI-Befund erhalten. Das aendert bewusst den
+Live-Link-Pruefumfang, nicht die Erfolgskriterien. Keine Aussage, die Seiten seien geloescht,
+veraltet, fachlich aktuell oder generell unerreichbar. Einige lieferten lokal 200, aus GitHub aber
+0/403/406/502/503; andere scheiterten an beiden Orten. Oeffentliche aktive Links mit solchen
+Antworten bleiben Fehler. Neue Fundstellen werden nicht automatisch umklassifiziert.
+
+Erreichbare offizielle Zusatzbelege:
+
+- [Perplexity Quickstart](https://docs.perplexity.ai/docs/getting-started/quickstart): Anlegen eines
+  API-Keys in der Console; kein Kontozugriff, Tarif-/KYC-Nachweis oder Comet-Downloadnachweis.
+- [CISA-Bulletin vom Maerz 2022](https://content.govdelivery.com/accounts/USDHSCISA/bulletins/30ef592):
+  historischer Kontext der gemeinsamen Kubernetes-Guidance, kein Ersatz des gesperrten PDFs 1.2 vom
+  August 2022 und keine neue Konformitaetsbescheinigung.
+
+Beide Inhalte wurden gelesen und anonym mit HTTP 200 abgerufen. Vor einer fachlichen Nutzung
+unverifizierter Originalreferenzen ist eine erneute Inhaltspruefung erforderlich. Eine spaetere
+Wiederaufnahme als aktiver Link braucht einen nachvollziehbaren erfolgreichen Abruf und Review.
+
+| Quelle                                                                                                                                                                                                                | Gemeldeter CI-Befund                          |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------- |
+| `https://amtliche-handbuecher.bundesfinanzministerium.de/ao/2026/Datenschutz-Grundverordnung/inhalt.html` (BMF DSGVO; unverifizierte Originalreferenz, CI HTTP 503, 30.10.2026)                                       | 503                                           |
+| `https://www.gesetze-im-internet.de/bdsg_2018/__26.html` (BDSG 26; unverifizierte Originalreferenz, CI Transportfehler, 30.10.2026)                                                                                   | 0                                             |
+| `https://amtliche-handbuecher.bundesfinanzministerium.de/ao/2026/Anhaenge/BMF-Schreiben-und-gleichlautende-Laendererlasse/Anhang-33/inhalt.html` (BMF GoBD; unverifizierte Originalreferenz, CI HTTP 503, 30.10.2026) | 503                                           |
+| [GNU GDB](https://www.gnu.org/software/gdb/)                                                                                                                                                                          | 0                                             |
+| [GNU Bash](https://www.gnu.org/software/bash/)                                                                                                                                                                        | 0                                             |
+| [DSGVO DE ELI](https://op.europa.eu/en/publication-detail/-/publication/3e485e15-11bd-11e6-ba9a-01aa75ed71a1/language-de)                                                                                             | 202                                           |
+| `https://www.gesetze-im-internet.de/urhg/__69d.html` (UrhG 69d; unverifizierte Originalreferenz, CI Transportfehler, 30.10.2026)                                                                                      | 0                                             |
+| `https://www.gesetze-im-internet.de/urhg/__69e.html` (UrhG 69e; unverifizierte Originalreferenz, CI Transportfehler, 30.10.2026)                                                                                      | 0                                             |
+| [Veo](https://ai.google.dev/gemini-api/docs/veo)                                                                                                                                                                      | 0                                             |
+| [AI Act](https://op.europa.eu/en/publication-detail/-/publication/dc8116a1-3fe6-11ef-865a-01aa75ed71a1/language-de)                                                                                                   | 202                                           |
+| `https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202601744` (OJ 2026/1744; unverifizierte Originalreferenz, CI HTTP 202, 30.10.2026)                                                                         | 202; Zuordnung zu AI Omnibus nicht bestaetigt |
+| [DSGVO ELI](https://op.europa.eu/en/publication-detail/-/publication/3e485e15-11bd-11e6-ba9a-01aa75ed71a1/language-de)                                                                                                | 202                                           |
+| [DSM](https://op.europa.eu/en/publication-detail/-/publication/214471fe-786e-11e9-9f05-01aa75ed71a1/language-de)                                                                                                      | 202                                           |
+| [NIS-2](https://op.europa.eu/en/publication-detail/-/publication/9b84d482-85bd-11ed-9887-01aa75ed71a1/language-de)                                                                                                    | 202                                           |
+| `https://www.gesetze-im-internet.de/` (Gesetze im Internet; unverifizierte Originalreferenz, CI Transportfehler, 30.10.2026)                                                                                          | 0                                             |
+| `https://www.law.go.kr/` (Korea; unverifizierte Originalreferenz, CI Transportfehler, 30.10.2026)                                                                                                                     | 0                                             |
+| `https://www.pdpc.gov.sg/` (Singapur; unverifizierte Originalreferenz, CI HTTP 202, 30.10.2026)                                                                                                                       | 202                                           |
+| `https://ndpc.gov.ng/` (Nigeria; unverifizierte Originalreferenz, CI HTTP 403, 30.10.2026)                                                                                                                            | 403                                           |
+| `https://uaelegislation.gov.ae/` (VAE; unverifizierte Originalreferenz, CI HTTP 403, 30.10.2026)                                                                                                                      | 403                                           |
+| `https://pravo.gov.ru/` (Russland; unverifizierte Originalreferenz, CI Transportfehler, 30.10.2026)                                                                                                                   | 0                                             |
+| `https://publication.pravo.gov.ru/` (Russland Publikation; unverifizierte Originalreferenz, CI Transportfehler, 30.10.2026)                                                                                           | 0                                             |
+| `https://zakon.rada.gov.ua/laws/main?lang=en` (Ukraine; unverifizierte Originalreferenz, CI Transportfehler, 30.10.2026)                                                                                              | 0                                             |
+| [Paperless API](https://github.com/paperless-ngx/paperless-ngx/blob/main/docs/api.md)                                                                                                                                 | 403; oeffentliche Doku, keine Auth-Ausnahme   |
+| [Google Preise](https://ai.google.dev/gemini-api/docs/pricing)                                                                                                                                                        | 0                                             |
+| [Google Billing](https://ai.google.dev/gemini-api/docs/billing)                                                                                                                                                       | 0                                             |
+| [Google Einstieg](https://ai.google.dev/)                                                                                                                                                                             | 0                                             |
+| [DSGVO CELEX](https://op.europa.eu/en/publication-detail/-/publication/3e485e15-11bd-11e6-ba9a-01aa75ed71a1/language-de)                                                                                              | 202                                           |
+| [AI Act CELEX](https://op.europa.eu/en/publication-detail/-/publication/dc8116a1-3fe6-11ef-865a-01aa75ed71a1/language-de)                                                                                             | 202                                           |
+| [Google API Key](https://ai.google.dev/gemini-api/docs/api-key)                                                                                                                                                       | 0                                             |
+| `https://media.defense.gov/2022/Aug/29/2003066362/1/1/0/CTR_KUBERNETES_HARDENING_GUIDANCE_1.2_20220829.PDF` (NSA/CISA Kubernetes 1.2; unverifizierte Originalreferenz, CI HTTP 403, 30.10.2026)                       | 403                                           |
 
 ## CI-Quellenabgleich (30.10.2026)
 

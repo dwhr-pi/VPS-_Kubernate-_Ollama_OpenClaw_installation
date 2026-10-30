@@ -10,16 +10,16 @@ Head `153372ce86f2cc880b0a606bc2c5d5a3d5b07cfc`, Base `ea02bf8d9c36aaf479bd2bd9d
 [PR 6](https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation/pull/6). Die
 folgenden Links sind datierte Fehlerbelege, keine Aussage ueber spaetere Runs.
 
-| Pruefung               | Belegter Befund                                                                                                                                                                                   | Bearbeitung                                                                                                                 |
-| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| macOS-Agenten-Fixtures | [Job](https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation/actions/runs/40936270460/job/123667511933): temporaerer `/var`-Pfad fuehrt ueber Symlink und wird korrekt abgelehnt | Fixture-Pfade vor Verwendung kanonisieren; produktive Symlink-Sperre bleibt unveraendert                                    |
-| Gitleaks               | [Job](https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation/actions/runs/40936270324/job/123667511137): Scanbereich enthaelt einen im flachen Checkout fehlenden Vorfahren      | Vollstaendige Git-Historie, keine gespeicherten Checkout-Credentials, fester Action-Commit; Scan bleibt verpflichtend       |
-| Installationsinventar  | [Job](https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation/actions/runs/40936270648/job/123667513146): vorinstalliertes Kustomize auf dem Runner beeinflusst Fixture-Export    | Inventar-Fixture auf seinen eigenen Workspace begrenzen; Artefakt-/Pruefsummenpruefung erhalten                             |
-| Gesamtregression       | [Job](https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation/actions/runs/40936270887/job/123667512668): neun Fehlschlaege und zwei Fehler                                       | README-Schreibweise, alte Status-/Wrappererwartungen, Displaynamen, Tabellenanzahl und fehlende Beispieldateien korrigieren |
-| ShellCheck             | [Job](https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation/actions/runs/40936270195/job/123667510817): Befunde in zahlreichen Skripten                                         | Weiterhin offen; nicht durch pauschale Excludes oder Fehlerignorierung behoben                                              |
-| Markdownlint           | [Job](https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation/actions/runs/40936270540/job/123667512004): umfangreiche Formatbefunde                                              | Weiterhin offen; keine ungepruefte Massenumschreibung aller Dokumente                                                       |
-| Trivy-Konfiguration    | [Job](https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation/actions/runs/40936270648/job/123667513246): HIGH-Befunde etwa zu SecurityContexts/Read-only-Root                    | Weiterhin offen; vollstaendige Workloads und Patch-/Beispieldateien fachlich unterscheiden, nicht Scanner ausschalten       |
-| Markdown-Links         | [Job](https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation/actions/runs/40936270792/job/123667512364): zahlreiche nicht erreichbare Links                                      | Weiterhin offen; historische/unbestaetigte Quellen nicht still als geprueft ausgeben                                        |
+| Pruefung               | Belegter Befund                                                                                                                                                                                                                                              | Bearbeitung                                                                                                                 |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------- |
+| macOS-Agenten-Fixtures | `https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation/actions/runs/40936270460/job/123667511933` (Job; unverifizierte Originalreferenz, CI HTTP 502, 30.10.2026): temporaerer `/var`-Pfad fuehrt ueber Symlink und wird korrekt abgelehnt | Fixture-Pfade vor Verwendung kanonisieren; produktive Symlink-Sperre bleibt unveraendert                                    |
+| Gitleaks               | [Job](https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation/actions/runs/40936270324/job/123667511137): Scanbereich enthaelt einen im flachen Checkout fehlenden Vorfahren                                                                 | Vollstaendige Git-Historie, keine gespeicherten Checkout-Credentials, fester Action-Commit; Scan bleibt verpflichtend       |
+| Installationsinventar  | [Job](https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation/actions/runs/40936270648/job/123667513146): vorinstalliertes Kustomize auf dem Runner beeinflusst Fixture-Export                                                               | Inventar-Fixture auf seinen eigenen Workspace begrenzen; Artefakt-/Pruefsummenpruefung erhalten                             |
+| Gesamtregression       | [Job](https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation/actions/runs/40936270887/job/123667512668): neun Fehlschlaege und zwei Fehler                                                                                                  | README-Schreibweise, alte Status-/Wrappererwartungen, Displaynamen, Tabellenanzahl und fehlende Beispieldateien korrigieren |
+| ShellCheck             | [Job](https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation/actions/runs/40936270195/job/123667510817): Befunde in zahlreichen Skripten                                                                                                    | Weiterhin offen; nicht durch pauschale Excludes oder Fehlerignorierung behoben                                              |
+| Markdownlint           | [Job](https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation/actions/runs/40936270540/job/123667512004): umfangreiche Formatbefunde                                                                                                         | Weiterhin offen; keine ungepruefte Massenumschreibung aller Dokumente                                                       |
+| Trivy-Konfiguration    | [Job](https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation/actions/runs/40936270648/job/123667513246): HIGH-Befunde etwa zu SecurityContexts/Read-only-Root                                                                               | Weiterhin offen; vollstaendige Workloads und Patch-/Beispieldateien fachlich unterscheiden, nicht Scanner ausschalten       |
+| Markdown-Links         | [Job](https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation/actions/runs/40936270792/job/123667512364): zahlreiche nicht erreichbare Links                                                                                                 | Weiterhin offen; historische/unbestaetigte Quellen nicht still als geprueft ausgeben                                        |
 
 ## Schutzregeln bleiben bestehen
 
@@ -331,13 +331,34 @@ muessen weiterhin fehlschlagen. Der alte Drittanbieter-Link-Wrapper wird durch d
 CLI ersetzt; alle Markdown-Dateien bleiben erfasst. Keine gruene Gesamtabnahme vor den erneuten
 Runs. Die bestehenden externen Quellenblocker bleiben dokumentiert und aktiv.
 
-Lokaler Gegenbeweis: dieselbe Offline-CLI-Fixture besteht mit 3.15.0 und weist 3.13.7 wegen
-Exitcode 0 fuer ein fehlendes Dateiziel zurueck. Elf Quellenpolicy-Tests, Markdownlint,
-JavaScript-Syntax und `git diff --check` bestanden. Der verbleibende Jarvis-404 im duplizierten
-Inventar ist ebenfalls historisch gekennzeichnet; pnpm-Paketspezifikationen sind Code, keine
-E-Mail-Links. Keine neue Domain- oder Statuscode-Ausnahme.
+Lokaler Gegenbeweis: dieselbe Offline-CLI-Fixture besteht mit 3.15.0 und weist 3.13.7 wegen Exitcode
+0 fuer ein fehlendes Dateiziel zurueck. Elf Quellenpolicy-Tests, Markdownlint, JavaScript-Syntax und
+`git diff --check` bestanden. Der verbleibende Jarvis-404 im duplizierten Inventar ist ebenfalls
+historisch gekennzeichnet; pnpm-Paketspezifikationen sind Code, keine E-Mail-Links. Keine neue
+Domain- oder Statuscode-Ausnahme.
 
-## Historische erste Teilabnahme
+## Freigegebene Originalreferenzen
+
+Am 30.10.2026 hat der Nutzer die Umklassifizierung einzeln nachgewiesener, nicht automatisch
+verifizierbarer Quellen genehmigt. 23 exakte Adressen aus den Runs fuer `6e11a77` bleiben mit
+Original-URL, Datum und CI-Status als unverifizierte Referenzen erhalten. Darunter sind geschuetzte
+Behoerden-/Perplexity-Seiten sowie lokal erreichbare, aus GitHub fehlgeschlagene Quellen. Das ist
+eine dokumentierte Aenderung des Live-Link-Pruefumfangs, kein Nachweis einer geloeschten oder
+fachlich veralteten Seite. Keine neue Ignore-Regel und keine akzeptierten 202/403/406/5xx.
+
+Die [Evidenzliste](../quality/UNVERIFIED_SOURCE_REFERENCES_2026-10-30.json) wird nicht als
+Checker-Konfiguration benutzt. Erreichbare offizielle Perplexity-/CISA-Belege sind mit begrenztem
+Pruefumfang ergaenzt; keine stillschweigende Gleichsetzung des Maerz-Bulletins mit dem August-PDF.
+Originaladressen und datierte Berichte bleiben erhalten. Neue Linkfehler muessen weiterhin
+fehlschlagen und einzeln geprueft werden. Der naechste Commit braucht erneut alle GitHub-Checks.
+
+Lokale Abnahme dieser Quellenrunde: 21 Tests in drei Modulen bestanden, Markdownlint und
+`git diff --check` ohne Befund. Auch der echte Markdown-Extractor der installierten
+Linkchecker-Abhaengigkeit erkennt keine der 23 Originalreferenzen mehr als aktives Linkziel.
+Die URLs sind weiterhin in ihren urspruenglichen Dateien enthalten. Keine Installation oder
+Provider-Anfrage mit Zugangsdaten.
+
+## Aeltere lokale Teilabnahme
 
 Lokale Abnahme dieses Reparatursatzes unter Windows mit nativem Git Bash: 156 Tests in 15
 betroffenen Modulen, **OK (2 uebersprungen)**. Der Offline-Registry-Check meldet weiterhin **0

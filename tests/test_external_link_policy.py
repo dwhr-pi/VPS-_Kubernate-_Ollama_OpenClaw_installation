@@ -175,6 +175,35 @@ class ExternalLinkPolicyTests(unittest.TestCase):
         text = "`https://old.invalid/` [Live](https://example.org/)\n```sh\n[Code](https://code.invalid/)\n```\n"
         self.assertEqual(PROBE.markdown_urls(text), ["https://example.org/"])
 
+    def test_approved_original_references_are_exact_evidence_not_ignore_rules(self):
+        ledger = json.loads((ROOT / 'docs/quality/UNVERIFIED_SOURCE_REFERENCES_2026-10-30.json').read_text(encoding='utf-8'))
+        self.assertIs(ledger['user_approved'], True)
+        self.assertEqual(ledger['ci_head'], '6e11a77b52f9098592d496fca4a47bb92dfc41d8')
+        self.assertEqual(len(ledger['references']), 23)
+        self.assertEqual(len({ref['url'] for ref in ledger['references']}), 23)
+        for ref in ledger['references']:
+            self.assertEqual(ref['classification'], 'UNVERIFIED_REFERENCE')
+            self.assertFalse(self.ignored(ref['url']), ref['url'])
+            self.assertTrue(ref['ci_status'])
+            for filename in ref['files']:
+                path = (ROOT / filename).resolve()
+                path.relative_to(ROOT)
+                text = path.read_text(encoding='utf-8')
+                self.assertIn('`' + ref['url'] + '`', text, filename)
+                self.assertTrue('unverifizierte Originalreferenz' in ' '.join(text.split()), filename)
+                self.assertNotIn(ref['url'], PROBE.markdown_urls(text), filename)
+        for name in ('ci.yml', 'repo-health.yml', 'linkcheck.yml'):
+            text = (ROOT / '.github/workflows' / name).read_text(encoding='utf-8')
+            self.assertNotIn('UNVERIFIED_SOURCE_REFERENCES', text)
+
+    def test_official_supplements_do_not_claim_equivalent_unverified_content(self):
+        guide = (ROOT / 'docs/security/KUBERNETES_ADMIN_AUDIT.md').read_text(encoding='utf-8')
+        self.assertIn('https://content.govdelivery.com/accounts/USDHSCISA/bulletins/30ef592', PROBE.markdown_urls(guide))
+        self.assertIn('Es belegt nicht den Volltext', guide)
+        api = (ROOT / 'docs/_API-Keys/REGISTRATION_BILLING_AND_IDENTITY.md').read_text(encoding='utf-8')
+        self.assertIn('https://docs.perplexity.ai/docs/getting-started/quickstart', PROBE.markdown_urls(api))
+        self.assertIn('kein Key-Abruf', api)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -137,11 +137,12 @@ geschuetzter Ausdrucksform unterschieden. Das ist keine pauschale Erlaubnis, Cod
 oder Gestaltung zu kopieren. Siehe die
 [offizielle Gerichtsmitteilung](https://curia.europa.eu/jcms/upload/docs/application/pdf/2012-05/cp120053en.pdf).
 
-In Deutschland nennt [§ 69d Abs. 3 UrhG](https://www.gesetze-im-internet.de/urhg/__69d.html)
-Bedingungen fuer das Beobachten, Untersuchen und Testen durch Berechtigte.
-[§ 69e UrhG](https://www.gesetze-im-internet.de/urhg/__69e.html) regelt enge Voraussetzungen fuer
-bestimmte Interoperabilitaets-Dekompilierungen, nicht ein allgemeines Recht, konkurrierende Produkte
-zu kopieren.
+In Deutschland nennt `https://www.gesetze-im-internet.de/urhg/__69d.html` (§ 69d Abs. 3 UrhG;
+unverifizierte Originalreferenz, CI Transportfehler, 30.10.2026) Bedingungen fuer das Beobachten,
+Untersuchen und Testen durch Berechtigte. `https://www.gesetze-im-internet.de/urhg/__69e.html` (§
+69e UrhG; unverifizierte Originalreferenz, CI Transportfehler, 30.10.2026) regelt enge
+Voraussetzungen fuer bestimmte Interoperabilitaets-Dekompilierungen, nicht ein allgemeines Recht,
+konkurrierende Produkte zu kopieren.
 
 | Sicherer Projektgrundsatz                   | Grenze                                                                                |
 | ------------------------------------------- | ------------------------------------------------------------------------------------- |

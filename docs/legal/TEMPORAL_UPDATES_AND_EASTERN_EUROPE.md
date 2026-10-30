@@ -81,13 +81,13 @@ Sicherheitssperre.
 
 ## Amtliche Einstiege und offene Pruefungen
 
-| Land       | Quelle                                                                                               | Recherchebefund / Grenze                                                     |
-| ---------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
-| Russland   | [pravo.gov.ru](https://pravo.gov.ru/), [Veroeffentlichungsportal](https://publication.pravo.gov.ru/) | Beide Abrufe am 21.10.2026 mit Timeout; aktuelle Gesetze nicht verifiziert   |
-| Ukraine    | [Verkhovna Rada](https://zakon.rada.gov.ua/laws/main?lang=en)                                        | Amtliche Parlamentsdatenbank; Original-/Uebersetzungsstand einzeln pruefen   |
-| Polen      | [ISAP](https://isap.sejm.gov.pl/), [ELI](https://eli.sejm.gov.pl/)                                   | ISAP weist selbst auf den informativen Charakter vereinheitlichter Texte hin |
-| Tschechien | [e-Sbirka](https://www.e-sbirka.cz/)                                                                 | Amtliche Dokumente gefunden; Portal-/Fassungspruefung offen                  |
-| Slowakei   | [Slov-Lex Archiv](https://www.slov-lex.sk/ezbierky/archiv-zbierky-zakonov)                           | Zeitliche Fassungen und Aenderungsarchive als Rechercheeinstieg              |
+| Land       | Quelle                                                                                                                                                                                                                                   | Recherchebefund / Grenze                                                     |
+| ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| Russland   | `https://pravo.gov.ru/` (pravo.gov.ru; unverifizierte Originalreferenz, CI Transportfehler, 30.10.2026), `https://publication.pravo.gov.ru/` (Veroeffentlichungsportal; unverifizierte Originalreferenz, CI Transportfehler, 30.10.2026) | Beide Abrufe am 21.10.2026 mit Timeout; aktuelle Gesetze nicht verifiziert   |
+| Ukraine    | `https://zakon.rada.gov.ua/laws/main?lang=en` (Verkhovna Rada; unverifizierte Originalreferenz, CI Transportfehler, 30.10.2026)                                                                                                          | Amtliche Parlamentsdatenbank; Original-/Uebersetzungsstand einzeln pruefen   |
+| Polen      | [ISAP](https://isap.sejm.gov.pl/), `https://eli.sejm.gov.pl/` (ELI; unverifizierte Originalreferenz, CI Transportfehler, 30.10.2026)                                                                                                     | ISAP weist selbst auf den informativen Charakter vereinheitlichter Texte hin |
+| Tschechien | [e-Sbirka](https://www.e-sbirka.cz/)                                                                                                                                                                                                     | Amtliche Dokumente gefunden; Portal-/Fassungspruefung offen                  |
+| Slowakei   | [Slov-Lex Archiv](https://www.slov-lex.sk/ezbierky/archiv-zbierky-zakonov)                                                                                                                                                               | Zeitliche Fassungen und Aenderungsarchive als Rechercheeinstieg              |
 
 Fuer Russland gehoeren insbesondere 152-FZ zum Datenschutz, dessen aktuelle Aenderungen, Art. 18
 Abs. 5, Ausnahmen, grenzueberschreitende Verarbeitung und gegebenenfalls das Zivilrecht in die
