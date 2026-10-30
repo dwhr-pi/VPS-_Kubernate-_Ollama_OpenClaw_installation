@@ -354,11 +354,22 @@ fehlschlagen und einzeln geprueft werden. Der naechste Commit braucht erneut all
 
 Lokale Abnahme dieser Quellenrunde: 21 Tests in drei Modulen bestanden, Markdownlint und
 `git diff --check` ohne Befund. Auch der echte Markdown-Extractor der installierten
-Linkchecker-Abhaengigkeit erkennt keine der 23 Originalreferenzen mehr als aktives Linkziel.
-Die URLs sind weiterhin in ihren urspruenglichen Dateien enthalten. Keine Installation oder
+Linkchecker-Abhaengigkeit erkennt keine der 23 Originalreferenzen mehr als aktives Linkziel. Die
+URLs sind weiterhin in ihren urspruenglichen Dateien enthalten. Keine Installation oder
 Provider-Anfrage mit Zugangsdaten.
 
 ## Aeltere lokale Teilabnahme
+
+## Anbieter-Spalte nach der Quellenfreigabe
+
+Der Gesamtlauf fuer `ce2cfd7` fand bei 2249 Tests noch einen Tabellenvertragsfehler: die
+Perplexity-Website war korrekt unverifiziert erhalten, aber ohne aktiven offiziellen Zusatzbeleg in
+der Anbieter-Spalte. Die bereits inhaltlich und mit HTTP 200 gepruefte offizielle API-Uebersicht ist
+dort ergaenzt. Der urspruengliche Tabellen-Test bleibt unveraendert; die gesperrte Homepage wird
+nicht wieder als gepruefter Link ausgegeben. Kein Nachweis fuer einen Comet-Download oder
+Provider-Zugang. Neuer Commit erfordert erneut die gesamte CI.
+
+## Historische lokale Erstpruefung
 
 Lokale Abnahme dieses Reparatursatzes unter Windows mit nativem Git Bash: 156 Tests in 15
 betroffenen Modulen, **OK (2 uebersprungen)**. Der Offline-Registry-Check meldet weiterhin **0
