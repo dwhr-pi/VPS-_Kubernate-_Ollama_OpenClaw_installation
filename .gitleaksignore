@@ -1,0 +1,4 @@
+# Two reviewed non-secret labels, fixed to the immutable formatting commit.
+# See docs/quality/GITLEAKS_FALSE_POSITIVES.md. No wildcard or rule exclusion.
+73307e569f046583030d3435fc0fe4362aebb617:CHANGELOG.md:generic-api-key:658
+73307e569f046583030d3435fc0fe4362aebb617:scripts/tools/helpers/veo_api_common.sh:generic-api-key:285

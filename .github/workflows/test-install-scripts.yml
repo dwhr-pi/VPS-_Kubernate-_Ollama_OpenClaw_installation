@@ -40,6 +40,7 @@ jobs:
           python3 -B tests/test_ci_repair_contracts.py -v
           python3 -B tests/test_doc_assertions.py -v
           python3 -B tests/test_formatting_policy.py -v
+          python3 -B tests/test_gitleaks_false_positives.py -v
           python3 -B tests/test_legacy_k8s_archive.py -v
           bash -n scripts/backup_stateful_services.sh
           "$RUNNER_TEMP/bats/bin/bats" tests/bats/install_scripts.bats
