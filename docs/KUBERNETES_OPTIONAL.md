@@ -17,7 +17,8 @@
 
 ## k3s Low-Budget
 
-k3s kann spaeter sinnvoll sein, wenn Host-Hardening, Backups, Ports und Ressourcen stabil sind. Nicht als Default fuer Erstinstallation.
+k3s kann spaeter sinnvoll sein, wenn Host-Hardening, Backups, Ports und Ressourcen stabil sind.
+Nicht als Default fuer Erstinstallation.
 
 ## GPU-Nodes spaeter
 
@@ -25,4 +26,5 @@ GPU-Nodes brauchen Treiber, Runtime, Storage, Modellordner und klare Ressourcenl
 
 ## Vorlage
 
-Helm-/K8s-Struktur darf vorbereitet werden, aber keine Cluster-Installation ohne explizite Zustimmung.
+Helm-/K8s-Struktur darf vorbereitet werden, aber keine Cluster-Installation ohne explizite
+Zustimmung.

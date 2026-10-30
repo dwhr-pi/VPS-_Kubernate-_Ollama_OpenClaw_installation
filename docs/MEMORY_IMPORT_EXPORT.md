@@ -1,7 +1,6 @@
 # Memory Import Export
 
-Memory-Daten muessen kontrolliert importiert, exportiert und geloescht werden
-koennen.
+Memory-Daten muessen kontrolliert importiert, exportiert und geloescht werden koennen.
 
 ## Regeln
 

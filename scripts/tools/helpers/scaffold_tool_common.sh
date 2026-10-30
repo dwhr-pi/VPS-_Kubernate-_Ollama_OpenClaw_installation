@@ -14,77 +14,76 @@ HELPER_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$HELPER_DIR/../../helpers/status_tracking.sh"
 
 write_optional_file() {
-    local target_path="$1"
-    local content="${2:-}"
+  local target_path="$1"
+  local content="${2:-}"
 
-    if [ -n "$content" ]; then
-        cat > "$target_path" <<EOF
+  if [ -n "$content" ]; then
+    cat >"$target_path" <<EOF
 $content
 EOF
-    fi
+  fi
 }
 
 safe_prepare_tool_dir_for_clone() {
-    local target_dir="$1"
+  local target_dir="$1"
 
-    case "$target_dir" in
-        /opt/*|"${HOME}"/*)
-            ;;
-        *)
-            echo -e "${RED}Fehler: Unsicherer Tool-Pfad fuer Neuaufbau: ${target_dir}${NC}"
-            exit 1
-            ;;
-    esac
+  case "$target_dir" in
+    /opt/* | "${HOME}"/*) ;;
+    *)
+      echo -e "${RED}Fehler: Unsicherer Tool-Pfad fuer Neuaufbau: ${target_dir}${NC}"
+      exit 1
+      ;;
+  esac
 
-    if [ -e "$target_dir" ]; then
-        sudo rm -rf "$target_dir"
-    fi
+  if [ -e "$target_dir" ]; then
+    sudo rm -rf "$target_dir"
+  fi
 
-    sudo mkdir -p "$target_dir"
-    sudo chown -R "$USER:$USER" "$target_dir"
+  sudo mkdir -p "$target_dir"
+  sudo chown -R "$USER:$USER" "$target_dir"
 }
 
 install_scaffold_tool() {
-    : "${TOOL_NAME:?TOOL_NAME ist erforderlich}"
-    : "${TOOL_KEY:?TOOL_KEY ist erforderlich}"
-    : "${TOOL_SLUG:?TOOL_SLUG ist erforderlich}"
-    : "${TOOL_DESCRIPTION:?TOOL_DESCRIPTION ist erforderlich}"
+  : "${TOOL_NAME:?TOOL_NAME ist erforderlich}"
+  : "${TOOL_KEY:?TOOL_KEY ist erforderlich}"
+  : "${TOOL_SLUG:?TOOL_SLUG ist erforderlich}"
+  : "${TOOL_DESCRIPTION:?TOOL_DESCRIPTION ist erforderlich}"
 
-    TOOL_DIR="${TOOL_DIR:-/opt/${TOOL_SLUG}}"
-    init_tool_tracking "$TOOL_KEY"
+  TOOL_DIR="${TOOL_DIR:-/opt/${TOOL_SLUG}}"
+  init_tool_tracking "$TOOL_KEY"
 
-    echo -e "${BLUE}Starte Installation von ${TOOL_NAME}...${NC}"
-    echo -e "${BLUE}Scaffold-Helper: sichere /opt-Aufraeumroutine aktiv.${NC}"
+  echo -e "${BLUE}Starte Installation von ${TOOL_NAME}...${NC}"
+  echo -e "${BLUE}Scaffold-Helper: sichere /opt-Aufraeumroutine aktiv.${NC}"
 
-    if [ -n "${TOOL_APT_PACKAGES:-}" ]; then
-        if ! command -v apt-get >/dev/null 2>&1; then
-            echo -e "${RED}Fehler: Dieses Skript unterstützt aktuell nur apt-basierte Systeme.${NC}"
-            exit 1
-        fi
-        sudo apt-get update
-        sudo apt-get install -y ${TOOL_APT_PACKAGES}
+  if [ -n "${TOOL_APT_PACKAGES:-}" ]; then
+    if ! command -v apt-get >/dev/null 2>&1; then
+      echo -e "${RED}Fehler: Dieses Skript unterstützt aktuell nur apt-basierte Systeme.${NC}"
+      exit 1
     fi
+    sudo apt-get update
+    sudo apt-get install -y ${TOOL_APT_PACKAGES}
+  fi
 
-    sudo mkdir -p "$TOOL_DIR"
-    sudo chown -R "$USER:$USER" "$TOOL_DIR"
+  sudo mkdir -p "$TOOL_DIR"
+  sudo chown -R "$USER:$USER" "$TOOL_DIR"
 
-    if [ -n "${TOOL_GIT_REPO:-}" ]; then
-        if [ -d "$TOOL_DIR/.git" ]; then
-            git -C "$TOOL_DIR" pull --ff-only || true
-        else
-            safe_prepare_tool_dir_for_clone "$TOOL_DIR"
-            git clone "$TOOL_GIT_REPO" "$TOOL_DIR"
-            sudo chown -R "$USER:$USER" "$TOOL_DIR"
-        fi
+  if [ -n "${TOOL_GIT_REPO:-}" ]; then
+    if [ -d "$TOOL_DIR/.git" ]; then
+      git -C "$TOOL_DIR" pull --ff-only || true
+    else
+      safe_prepare_tool_dir_for_clone "$TOOL_DIR"
+      git clone "$TOOL_GIT_REPO" "$TOOL_DIR"
+      sudo chown -R "$USER:$USER" "$TOOL_DIR"
     fi
+  fi
 
-    write_optional_file "$TOOL_DIR/.env.template" "${TOOL_ENV_TEMPLATE:-}"
-    write_optional_file "$TOOL_DIR/config.json" "${TOOL_CONFIG_JSON:-}"
-    write_optional_file "$TOOL_DIR/run.sh" "${TOOL_RUN_SCRIPT:-}"
-    write_optional_file "$TOOL_DIR/PROMPT_EXAMPLES.md" "${TOOL_PROMPT_EXAMPLE:-}"
-    write_optional_file "$TOOL_DIR/INTEGRATION_NOTES.md" "${TOOL_INTEGRATION_NOTES:-}"
+  write_optional_file "$TOOL_DIR/.env.template" "${TOOL_ENV_TEMPLATE:-}"
+  write_optional_file "$TOOL_DIR/config.json" "${TOOL_CONFIG_JSON:-}"
+  write_optional_file "$TOOL_DIR/run.sh" "${TOOL_RUN_SCRIPT:-}"
+  write_optional_file "$TOOL_DIR/PROMPT_EXAMPLES.md" "${TOOL_PROMPT_EXAMPLE:-}"
+  write_optional_file "$TOOL_DIR/INTEGRATION_NOTES.md" "${TOOL_INTEGRATION_NOTES:-}"
 
-    cat > "$TOOL_DIR/README.md" <<EOF
+  cat >"$TOOL_DIR/README.md" <<EOF
 # ${TOOL_NAME}
 
 ${TOOL_DESCRIPTION}
@@ -102,33 +101,33 @@ ${TOOL_OPENCLAW_NOTE:-Keine zusätzlichen Hinweise hinterlegt.}
 ${TOOL_MODULE_TYPE:-Connector-/Workflow-Modul}
 EOF
 
-    if [ -f "$TOOL_DIR/run.sh" ]; then
-        chmod +x "$TOOL_DIR/run.sh"
-    fi
+  if [ -f "$TOOL_DIR/run.sh" ]; then
+    chmod +x "$TOOL_DIR/run.sh"
+  fi
 
-    if [ -n "${TOOL_POST_INSTALL_FUNCTION:-}" ]; then
-        if ! declare -F "$TOOL_POST_INSTALL_FUNCTION" >/dev/null || ! "$TOOL_POST_INSTALL_FUNCTION"; then
-            echo -e "${RED}Fehler: Nachinstallation von ${TOOL_NAME} fehlgeschlagen.${NC}"
-            return 1
-        fi
-    elif [ -n "${TOOL_POST_INSTALL:-}" ]; then
-        bash -lc "cd '$TOOL_DIR' && ${TOOL_POST_INSTALL}"
+  if [ -n "${TOOL_POST_INSTALL_FUNCTION:-}" ]; then
+    if ! declare -F "$TOOL_POST_INSTALL_FUNCTION" >/dev/null || ! "$TOOL_POST_INSTALL_FUNCTION"; then
+      echo -e "${RED}Fehler: Nachinstallation von ${TOOL_NAME} fehlgeschlagen.${NC}"
+      return 1
     fi
+  elif [ -n "${TOOL_POST_INSTALL:-}" ]; then
+    bash -lc "cd '$TOOL_DIR' && ${TOOL_POST_INSTALL}"
+  fi
 
-    mark_current_tool_installed
-    echo -e "${GREEN}${TOOL_NAME} wurde erfolgreich installiert.${NC}"
+  mark_current_tool_installed
+  echo -e "${GREEN}${TOOL_NAME} wurde erfolgreich installiert.${NC}"
 }
 
 uninstall_scaffold_tool() {
-    : "${TOOL_NAME:?TOOL_NAME ist erforderlich}"
-    : "${TOOL_KEY:?TOOL_KEY ist erforderlich}"
-    : "${TOOL_SLUG:?TOOL_SLUG ist erforderlich}"
+  : "${TOOL_NAME:?TOOL_NAME ist erforderlich}"
+  : "${TOOL_KEY:?TOOL_KEY ist erforderlich}"
+  : "${TOOL_SLUG:?TOOL_SLUG ist erforderlich}"
 
-    TOOL_DIR="${TOOL_DIR:-/opt/${TOOL_SLUG}}"
-    init_tool_tracking "$TOOL_KEY"
+  TOOL_DIR="${TOOL_DIR:-/opt/${TOOL_SLUG}}"
+  init_tool_tracking "$TOOL_KEY"
 
-    echo -e "${BLUE}Starte Deinstallation von ${TOOL_NAME}...${NC}"
-    sudo rm -rf "$TOOL_DIR"
-    mark_current_tool_removed
-    echo -e "${GREEN}${TOOL_NAME} wurde entfernt.${NC}"
+  echo -e "${BLUE}Starte Deinstallation von ${TOOL_NAME}...${NC}"
+  sudo rm -rf "$TOOL_DIR"
+  mark_current_tool_removed
+  echo -e "${GREEN}${TOOL_NAME} wurde entfernt.${NC}"
 }

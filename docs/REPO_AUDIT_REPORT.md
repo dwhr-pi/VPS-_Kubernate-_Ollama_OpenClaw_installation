@@ -2,12 +2,15 @@
 
 ## Kurzfazit
 
-Das Repository ist inzwischen deutlich mehr als eine lose Tool-Sammlung. Es entwickelt sich klar in Richtung einer modularen lokalen und hybriden LLMOps-Plattform. Gleichzeitig zeigt der aktuelle Stand noch typische Wachstumsprobleme:
+Das Repository ist inzwischen deutlich mehr als eine lose Tool-Sammlung. Es entwickelt sich klar in
+Richtung einer modularen lokalen und hybriden LLMOps-Plattform. Gleichzeitig zeigt der aktuelle
+Stand noch typische Wachstumsprobleme:
 
 - Menü, README, Registries und Skriptwahrheit sind noch nicht überall identisch
 - einige Profile überlappen sich stark
 - nicht alle Installationspfade folgen bereits demselben Reifegrad
-- ein Teil der neuen Tools ist dokumentiert und installierbar, aber noch nicht vollständig im Hauptmenü verdrahtet
+- ein Teil der neuen Tools ist dokumentiert und installierbar, aber noch nicht vollständig im
+  Hauptmenü verdrahtet
 
 ## Geprüfte Bereiche
 
@@ -27,7 +30,8 @@ Das Repository ist inzwischen deutlich mehr als eine lose Tool-Sammlung. Es entw
 
 ### Idee und Konzept
 
-- klare Plattformidee: Base System -> Runtime -> Gateway -> Agenten -> RAG -> Tool Layer -> UI -> Monitoring -> Security
+- klare Plattformidee: Base System -> Runtime -> Gateway -> Agenten -> RAG -> Tool Layer -> UI ->
+  Monitoring -> Security
 - gute Trennung in Profile und Einzeltools
 - lokale, kostenlose und optionale Cloud-/API-Pfade werden überwiegend erkennbar gemacht
 
@@ -48,7 +52,8 @@ Das Repository ist inzwischen deutlich mehr als eine lose Tool-Sammlung. Es entw
 ### 1. Sync-Lücke zwischen Dokumentation und Menü
 
 - `setup_ultimate.sh` ist noch nicht für jede neue Profilfamilie die alleinige Wahrheit
-- einige neue Studio- und Agentenprofile existieren bereits als Skripte und Doku, aber noch nicht als vollständig integrierte Menüpfade
+- einige neue Studio- und Agentenprofile existieren bereits als Skripte und Doku, aber noch nicht
+  als vollständig integrierte Menüpfade
 
 ### 2. Dubletten und Namensüberschneidungen
 
@@ -72,19 +77,19 @@ Das Repository ist inzwischen deutlich mehr als eine lose Tool-Sammlung. Es entw
 
 ## Bewertung 1-10
 
-| Bereich | Bewertung | Kommentar |
-|---|---:|---|
-| Idee / Konzept | 9 | sehr starke Grundidee und guter Praxisbezug |
-| Modularität | 8 | Profile und Tools sind gut getrennt, aber teils redundant |
-| Sicherheit | 7 | deutliche Fortschritte, dennoch noch Härtungspotenzial |
-| Wartbarkeit | 6 | gewachsenes Repo, noch nicht überall aus einer Registry gesteuert |
-| Anfängerfreundlichkeit | 7 | Doku ist besser geworden, Komplexität bleibt hoch |
-| VPS-Tauglichkeit | 8 | Hybrid- und Serverpfade sind klar vorhanden |
-| WSL2-Tauglichkeit | 7 | viel berücksichtigt, GPU/Docker/Netzwerk bleiben knifflig |
-| Kubernetes-/K3s-Tauglichkeit | 7 | Option vorhanden, aber nicht überall gleicher Ausbaugrad |
-| Offline-/Local-AI-Tauglichkeit | 9 | Ollama, RAG, lokale Medienpfade stark vorhanden |
-| Automatisierungsgrad | 7 | viele Skripte, aber noch nicht alles aus zentraler Registry |
-| Risiko durch Shell-/Browser-Agenten | 5 | beherrschbar, aber nur mit klarer Nutzerdisziplin |
+| Bereich                             | Bewertung | Kommentar                                                         |
+| ----------------------------------- | --------: | ----------------------------------------------------------------- |
+| Idee / Konzept                      |         9 | sehr starke Grundidee und guter Praxisbezug                       |
+| Modularität                         |         8 | Profile und Tools sind gut getrennt, aber teils redundant         |
+| Sicherheit                          |         7 | deutliche Fortschritte, dennoch noch Härtungspotenzial            |
+| Wartbarkeit                         |         6 | gewachsenes Repo, noch nicht überall aus einer Registry gesteuert |
+| Anfängerfreundlichkeit              |         7 | Doku ist besser geworden, Komplexität bleibt hoch                 |
+| VPS-Tauglichkeit                    |         8 | Hybrid- und Serverpfade sind klar vorhanden                       |
+| WSL2-Tauglichkeit                   |         7 | viel berücksichtigt, GPU/Docker/Netzwerk bleiben knifflig         |
+| Kubernetes-/K3s-Tauglichkeit        |         7 | Option vorhanden, aber nicht überall gleicher Ausbaugrad          |
+| Offline-/Local-AI-Tauglichkeit      |         9 | Ollama, RAG, lokale Medienpfade stark vorhanden                   |
+| Automatisierungsgrad                |         7 | viele Skripte, aber noch nicht alles aus zentraler Registry       |
+| Risiko durch Shell-/Browser-Agenten |         5 | beherrschbar, aber nur mit klarer Nutzerdisziplin                 |
 
 ## Wichtigste Verbesserungen dieses Ausbaus
 

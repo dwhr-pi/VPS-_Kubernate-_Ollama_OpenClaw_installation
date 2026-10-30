@@ -143,7 +143,7 @@ class PlatformGapContracts(unittest.TestCase):
     def test_every_native_manifest_tool_has_a_recovery_scenario(self):
         manifest = json.loads(self.read('config/docker_to_github.json'))['tools']
         text = self.read('docs/NATIVE_BUILD_RECOVERY.md')
-        rows = dict(re.findall(r'^\| `([^`]+)` \| ([^|]+) \|', text, re.M))
+        rows = dict(re.findall(r'^\|\s*`([^`]+)`\s*\|\s*([^|]+)\s*\|', text, re.M))
         self.assertEqual(set(rows), {tool['id'] for tool in manifest})
         for tool in manifest:
             self.assertIn('A / B' if tool['recipe'] else 'C', rows[tool['id']])

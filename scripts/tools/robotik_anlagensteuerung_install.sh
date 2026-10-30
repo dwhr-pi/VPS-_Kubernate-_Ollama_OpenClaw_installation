@@ -50,7 +50,7 @@ install_python_clients() {
 }
 
 write_safety_defaults() {
-  cat > "$ROBOTICS_HOME/configs/command_whitelist.yml" <<'EOF'
+  cat >"$ROBOTICS_HOME/configs/command_whitelist.yml" <<'EOF'
 # Standard: keine Schreibbefehle erlaubt.
 # Erst nach Risikoanalyse, manueller Freigabe, Grenzwertpruefung und Not-Aus-Konzept erweitern.
 allowed_commands: []
@@ -58,7 +58,7 @@ read_only: true
 require_human_approval: true
 EOF
 
-  cat > "$ROBOTICS_HOME/README_Robotik_Anlagensteuerung.md" <<'EOF'
+  cat >"$ROBOTICS_HOME/README_Robotik_Anlagensteuerung.md" <<'EOF'
 # Robotik & Anlagensteuerung
 
 Dieses Verzeichnis ist read-only vorbereitet. KI darf Diagnosen und Simulationen planen,
@@ -86,4 +86,3 @@ echo "Keine ROS-/PLC-/HMI-Stacks wurden blind installiert; diese bleiben bewusst
 df -h "$HOME" || true
 echo "Dauer: $(($(date +%s) - START_TS)) Sekunden"
 echo "Logdatei: $LOG_FILE"
-

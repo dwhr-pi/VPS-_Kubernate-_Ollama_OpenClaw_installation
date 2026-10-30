@@ -1,6 +1,7 @@
 # Menu Structure Next Level
 
-Die Menues sollen weniger nach historischer Entstehung und mehr nach Betriebszweck gegliedert werden.
+Die Menues sollen weniger nach historischer Entstehung und mehr nach Betriebszweck gegliedert
+werden.
 
 ## Hauptkategorien
 

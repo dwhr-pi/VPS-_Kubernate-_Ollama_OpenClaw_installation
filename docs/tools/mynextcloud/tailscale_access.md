@@ -2,7 +2,8 @@
 
 ## Empfehlung
 
-Admin-Zugriff nur ueber Tailscale/Tailnet. Oeffentlicher Zugriff, falls noetig, getrennt ueber Cloudflare Access.
+Admin-Zugriff nur ueber Tailscale/Tailnet. Oeffentlicher Zugriff, falls noetig, getrennt ueber
+Cloudflare Access.
 
 ## Nutzung
 
@@ -12,4 +13,5 @@ Admin-Zugriff nur ueber Tailscale/Tailnet. Oeffentlicher Zugriff, falls noetig, 
 
 ## Sicherheitsnotiz
 
-Tailscale ersetzt keine App-2FA. myNextCloud-Admin-Konten trotzdem mit starken Passwoertern und 2FA schuetzen.
+Tailscale ersetzt keine App-2FA. myNextCloud-Admin-Konten trotzdem mit starken Passwoertern und 2FA
+schuetzen.

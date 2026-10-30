@@ -10,8 +10,8 @@ example.tld. IN TXT "v=spf1 mx -all"
 
 ## DKIM
 
-DKIM signiert ausgehende Mails. Der private Key bleibt auf dem Server oder in
-einem Secret Store. Nur der Public Key kommt in DNS.
+DKIM signiert ausgehende Mails. Der private Key bleibt auf dem Server oder in einem Secret Store.
+Nur der Public Key kommt in DNS.
 
 ```text
 default._domainkey.example.tld. IN TXT "v=DKIM1; k=rsa; p=DKIM_PUBLIC_KEY_PLACEHOLDER"
@@ -35,9 +35,9 @@ _dmarc.example.tld. IN TXT "v=DMARC1; p=reject; rua=mailto:dmarc@example.tld; ad
 
 ## ARC
 
-ARC ist relevant, wenn Mails ueber Weiterleitungen oder Mailinglisten laufen.
-Stalwart kann ARC unterstuetzen; die konkrete Aktivierung muss anhand der
-eingesetzten Version und Konfiguration geprueft werden.
+ARC ist relevant, wenn Mails ueber Weiterleitungen oder Mailinglisten laufen. Stalwart kann ARC
+unterstuetzen; die konkrete Aktivierung muss anhand der eingesetzten Version und Konfiguration
+geprueft werden.
 
 ## Pruefen
 

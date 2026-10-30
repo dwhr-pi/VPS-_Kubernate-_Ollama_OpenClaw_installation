@@ -31,7 +31,7 @@ mkdir -p "$(dirname "$REPORT_PATH")"
   echo "- Preview manuell via run-preview.sh"
   echo "- Screenshot optional via screenshot.sh"
   echo
-} > "$REPORT_PATH"
+} >"$REPORT_PATH"
 
 cd "$TARGET_DIR"
 pnpm install
@@ -43,6 +43,6 @@ pnpm build
   echo "- Build: erfolgreich"
   echo "- Auto-Fix-Runden: 0/3 in diesem Lauf"
   echo
-} >> "$REPORT_PATH"
+} >>"$REPORT_PATH"
 
 echo "Build-Check erfolgreich. Report: $REPORT_PATH"

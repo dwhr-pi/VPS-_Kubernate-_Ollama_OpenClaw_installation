@@ -30,7 +30,8 @@ Offizielle Quellen:
 
 Nutze `Tailscale`, wenn du:
 
-- `SSH`, `Open WebUI`, `Grafana`, `Home Assistant`, `MinIO` oder ähnliche Admin-UIs nur privat erreichen willst
+- `SSH`, `Open WebUI`, `Grafana`, `Home Assistant`, `MinIO` oder ähnliche Admin-UIs nur privat
+  erreichen willst
 - keine offenen Panel-Ports im Internet möchtest
 - MiniPC, VPS und weitere Hosts in ein privates Tailnet hängen willst
 
@@ -59,23 +60,28 @@ Offizielle Quellen:
 
 Diese beiden Begriffe werden oft verwechselt, meinen aber nicht ganz dasselbe:
 
-- `advertised routes` ist der uebergeordnete Tailscale-Begriff fuer Netze, die ein Geraet dem Tailnet anbietet
-- `subnet routes` sind die konkreten LAN- oder VLAN-Netze hinter diesem Geraet, zum Beispiel `192.168.178.0/24` oder `10.10.20.0/24`
+- `advertised routes` ist der uebergeordnete Tailscale-Begriff fuer Netze, die ein Geraet dem
+  Tailnet anbietet
+- `subnet routes` sind die konkreten LAN- oder VLAN-Netze hinter diesem Geraet, zum Beispiel
+  `192.168.178.0/24` oder `10.10.20.0/24`
 
 Praktisch bedeutet das:
 
 - mit `tailscale up --advertise-routes=192.168.178.0/24` bewirbst du eine `subnet route`
 - das Geraet wird damit zum `subnet router`
-- andere Tailnet-Geraete koennen dann auch Ziele erreichen, auf denen selbst kein Tailscale installiert ist, etwa Drucker, Kameras, NAS, Smart-TV, AV-Receiver oder lokale IoT-Webinterfaces
+- andere Tailnet-Geraete koennen dann auch Ziele erreichen, auf denen selbst kein Tailscale
+  installiert ist, etwa Drucker, Kameras, NAS, Smart-TV, AV-Receiver oder lokale IoT-Webinterfaces
 
 Sinn und Zweck:
 
 - `normales Tailscale`: direkter Zugriff nur auf Geraete, auf denen Tailscale selbst laeuft
-- `subnet router`: Zugriff auch auf das restliche Heim- oder Standortnetz hinter einem Tailscale-Knoten
+- `subnet router`: Zugriff auch auf das restliche Heim- oder Standortnetz hinter einem
+  Tailscale-Knoten
 
 Wichtig:
 
-- die beworbenen Routen muessen im Tailscale-Adminbereich freigegeben werden oder per `autoApprovers` erlaubt sein
+- die beworbenen Routen muessen im Tailscale-Adminbereich freigegeben werden oder per
+  `autoApprovers` erlaubt sein
 - auf Linux braucht ein echter `subnet router` in der Regel aktiviertes IP-Forwarding
 - `advertised routes` sind nicht dasselbe wie ein `exit node`
 
@@ -95,10 +101,13 @@ sudo tailscale up --advertise-exit-node
 
 Wann was sinnvoll ist:
 
-- `subnet router`: wenn du zu Hause oder im Buero interne Systeme ohne Tailscale-App erreichen willst
-- `exit node`: wenn Handy, Tablet oder Notebook unterwegs so arbeiten sollen, als waeren sie im Heimnetz oder ueber den Heimanschluss im Internet
+- `subnet router`: wenn du zu Hause oder im Buero interne Systeme ohne Tailscale-App erreichen
+  willst
+- `exit node`: wenn Handy, Tablet oder Notebook unterwegs so arbeiten sollen, als waeren sie im
+  Heimnetz oder ueber den Heimanschluss im Internet
 
-Beides kann auf demselben Geraet kombiniert werden, wenn der Host stabil genug ist und sauber abgesichert wurde.
+Beides kann auf demselben Geraet kombiniert werden, wenn der Host stabil genug ist und sauber
+abgesichert wurde.
 
 ### Typisches Beispiel fuer dieses Repo
 
@@ -129,7 +138,8 @@ Fuer `iPhone`, `iPad`, `Android-Handy` und `Android-Tablet` ist der direkte Weg 
 2. mit demselben Tailnet anmelden
 3. pruefen, ob der MiniPC oder VPS in der Geraeteliste sichtbar ist
 4. bei Bedarf `Use Exit Node` oder `Exit Node` aktivieren
-5. interne Weboberflaechen direkt ueber Tailnet-IP, MagicDNS oder ueber die freigegebene `subnet route` aufrufen
+5. interne Weboberflaechen direkt ueber Tailnet-IP, MagicDNS oder ueber die freigegebene
+   `subnet route` aufrufen
 
 Sinnvoll fuer mobile Geraete:
 
@@ -147,17 +157,19 @@ Hier muss man drei Faelle unterscheiden:
 
 Wenn ein TV oder Geraet keinen nativen Tailscale-Client hat, gibt es zwei typische Wege:
 
-1. `subnet router`
-   Dann bleibt das TV im normalen Heimnetz, und deine anderen Tailscale-Geraete koennen dieses TV oder seine Weboberflaeche ueber das Heimnetz erreichen.
+1. `subnet router` Dann bleibt das TV im normalen Heimnetz, und deine anderen Tailscale-Geraete
+   koennen dieses TV oder seine Weboberflaeche ueber das Heimnetz erreichen.
 
-2. vorgeschalteter Router oder Gateway mit Tailscale
-   Ein Router, MiniPC, Raspberry Pi oder kleines Gateway-Geraet im selben Netz kann Tailscale sprechen und als `subnet router` oder `exit node` dienen.
+2. vorgeschalteter Router oder Gateway mit Tailscale Ein Router, MiniPC, Raspberry Pi oder kleines
+   Gateway-Geraet im selben Netz kann Tailscale sprechen und als `subnet router` oder `exit node`
+   dienen.
 
 Wichtig dabei:
 
 - das Geraet ohne Tailscale wird dadurch nicht selbst Teil des Tailnets
 - erreichbar wird es ueber das Netz hinter dem `subnet router`
-- fuer echte ausgehende Nutzung ueber Tailscale braucht das Endgeraet entweder einen eigenen Client oder einen vorgeschalteten Router, der den Verkehr entsprechend fuehrt
+- fuer echte ausgehende Nutzung ueber Tailscale braucht das Endgeraet entweder einen eigenen Client
+  oder einen vorgeschalteten Router, der den Verkehr entsprechend fuehrt
 
 ### Wann ein `subnet router` besonders sinnvoll ist
 
@@ -170,11 +182,14 @@ Ein `subnet router` passt sehr gut, wenn du:
 
 ### Sicherheits- und Praxis-Hinweise
 
-- Admin-Oberflaechen trotzdem nur gezielt freigeben, nicht pauschal das ganze LAN unnoetig gross bewerben
+- Admin-Oberflaechen trotzdem nur gezielt freigeben, nicht pauschal das ganze LAN unnoetig gross
+  bewerben
 - moeglichst nur die wirklich benoetigten Netze per `--advertise-routes` freigeben
-- bei mehreren Standorten auf ueberschneidende Netze achten, zum Beispiel nicht mehrfach dasselbe `192.168.0.0/24`
+- bei mehreren Standorten auf ueberschneidende Netze achten, zum Beispiel nicht mehrfach dasselbe
+  `192.168.0.0/24`
 - `subnet routes` loesen keinen DNS- oder Reverse-Proxy-Bedarf fuer oeffentliche Dienste
-- fuer Web-Apps mit oeffentlicher Domain bleibt `Cloudflare Tunnel` oder ein sauberer Reverse Proxy oft die bessere Ergaenzung
+- fuer Web-Apps mit oeffentlicher Domain bleibt `Cloudflare Tunnel` oder ein sauberer Reverse Proxy
+  oft die bessere Ergaenzung
 
 ### Wann `Cloudflare Tunnel`?
 
@@ -219,7 +234,8 @@ Offizielle Quellen:
 
 ## Migration von Cloudflare DNS zu Hurricane Electric
 
-Wenn deine Domain aktuell über Cloudflare DNS läuft und du für DNS/DDNS auf `Hurricane Electric` wechseln willst, ist der saubere Weg:
+Wenn deine Domain aktuell über Cloudflare DNS läuft und du für DNS/DDNS auf `Hurricane Electric`
+wechseln willst, ist der saubere Weg:
 
 1. bestehende DNS-Zone bei Cloudflare vollständig inventarisieren
 2. dieselben Records bei `dns.he.net` anlegen
@@ -242,12 +258,16 @@ Vor dem Wechsel mindestens diese Records sichern:
 
 Wichtig:
 
-- `Cloudflare Tunnel`-Hostnamen bleiben fachlich nutzbar, aber ihre DNS-Seite muss nach dem NS-Wechsel korrekt bei HE nachgebildet oder bewusst anders aufgebaut werden
-- reine Cloudflare-Proxy-Funktionen des orangenen Wolkenmodus verschwinden, wenn Cloudflare nicht mehr autoritativer DNS-Anbieter ist
+- `Cloudflare Tunnel`-Hostnamen bleiben fachlich nutzbar, aber ihre DNS-Seite muss nach dem
+  NS-Wechsel korrekt bei HE nachgebildet oder bewusst anders aufgebaut werden
+- reine Cloudflare-Proxy-Funktionen des orangenen Wolkenmodus verschwinden, wenn Cloudflare nicht
+  mehr autoritativer DNS-Anbieter ist
 
 ### Sonderfall: Cloudflare Registrar
 
-Wenn die Domain direkt bei `Cloudflare Registrar` liegt, kannst du die Nameserver nicht einfach auf einen anderen DNS-Provider setzen. In diesem Fall musst du die Domain zuerst zu einem Registrar übertragen, der freie Nameserver-Wahl erlaubt.
+Wenn die Domain direkt bei `Cloudflare Registrar` liegt, kannst du die Nameserver nicht einfach auf
+einen anderen DNS-Provider setzen. In diesem Fall musst du die Domain zuerst zu einem Registrar
+übertragen, der freie Nameserver-Wahl erlaubt.
 
 Praxisfolge:
 
@@ -270,7 +290,8 @@ Praxisfolge:
 - funktionieren öffentliche Subdomains noch?
 - wurden versehentlich Cloudflare-spezifische Schutzannahmen vergessen?
 
-Für ein konkretes Beispiel auf dein Setup bezogen siehe auch die Beispielsektion `botsoft.uk` in [docs/DNS_DDoS_GUIDE.md](DNS_DDoS_GUIDE.md).
+Für ein konkretes Beispiel auf dein Setup bezogen siehe auch die Beispielsektion `botsoft.uk` in
+[docs/DNS_DDoS_GUIDE.md](DNS_DDoS_GUIDE.md).
 
 ## Praktische Zuordnung
 

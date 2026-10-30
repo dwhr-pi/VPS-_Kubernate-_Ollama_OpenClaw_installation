@@ -1,7 +1,7 @@
 # Hurricane Electric DNS/DDNS und DDoS-Hinweise
 
-Hurricane Electric ist im neuen Standardpfad der bevorzugte externe DNS-/IPv6-
-und Domain-Einstieg. Cloudflare bleibt optional, aber nicht Pflicht.
+Hurricane Electric ist im neuen Standardpfad der bevorzugte externe DNS-/IPv6- und Domain-Einstieg.
+Cloudflare bleibt optional, aber nicht Pflicht.
 
 ## HE DNS/DDNS
 
@@ -25,8 +25,8 @@ HE DNS ist kein vollstaendiger DDoS-Schutz. Plane zusaetzlich:
 
 ## DDNS mit ddclient
 
-`ddclient_he` ist als planned Tool registriert. Konkrete Zugangsdaten muessen
-lokal gespeichert werden, niemals im Repository.
+`ddclient_he` ist als planned Tool registriert. Konkrete Zugangsdaten muessen lokal gespeichert
+werden, niemals im Repository.
 
 ## Admin-Panels
 

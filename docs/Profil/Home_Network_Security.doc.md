@@ -2,7 +2,8 @@
 
 ## Zweck
 
-Defensives Profil fuer FRITZ!Box-, LAN-, WLAN-, DNS-, Pi-hole-/AdGuard-, Tailscale- und Cloudflare-Tunnel-Analyse. Es hilft, das eigene Heimnetz sichtbar und sicherer zu machen.
+Defensives Profil fuer FRITZ!Box-, LAN-, WLAN-, DNS-, Pi-hole-/AdGuard-, Tailscale- und
+Cloudflare-Tunnel-Analyse. Es hilft, das eigene Heimnetz sichtbar und sicherer zu machen.
 
 ## Typische Aufgaben
 
@@ -24,7 +25,8 @@ Defensives Profil fuer FRITZ!Box-, LAN-, WLAN-, DNS-, Pi-hole-/AdGuard-, Tailsca
 
 ## Grenzen
 
-Nur eigene Netze und erlaubte Geraete pruefen. Keine Scans fremder IP-Bereiche, keine Credential-Tests, keine Intrusion-Automation.
+Nur eigene Netze und erlaubte Geraete pruefen. Keine Scans fremder IP-Bereiche, keine
+Credential-Tests, keine Intrusion-Automation.
 
 ## Status
 

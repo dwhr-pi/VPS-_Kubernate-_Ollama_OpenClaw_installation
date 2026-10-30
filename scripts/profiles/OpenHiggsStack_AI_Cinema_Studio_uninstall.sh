@@ -9,4 +9,3 @@ echo "Hinweis: Lokale Modelle, Outputs und ComfyUI-Ordner werden nicht automatis
 echo "Pruefe bei Bedarf manuell: ~/ai-stack und ~/.openclaw_ultimate_user_data/openhiggsstack"
 
 mark_profile_removed "OpenHiggsStack_AI_Cinema_Studio"
-

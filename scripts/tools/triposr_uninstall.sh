@@ -8,4 +8,3 @@ echo "Pfad: $INSTALL_ROOT"
 echo "Aus Sicherheitsgruenden nicht automatisch geloescht."
 echo "Manuell nach Pruefung:"
 echo "  sudo rm -rf \"$INSTALL_ROOT\""
-

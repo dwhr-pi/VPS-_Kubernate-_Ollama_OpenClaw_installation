@@ -6,9 +6,9 @@
 
 ## Aufgabe
 
-Der Agent hilft beim Verwalten eigener Domains, Mailboxen, Aliase, Regeln und
-eingehender E-Mails. Er arbeitet local-first mit Ollama und erstellt nur
-Entwuerfe oder Vorschlaege, bis ein Mensch freigibt.
+Der Agent hilft beim Verwalten eigener Domains, Mailboxen, Aliase, Regeln und eingehender E-Mails.
+Er arbeitet local-first mit Ollama und erstellt nur Entwuerfe oder Vorschlaege, bis ein Mensch
+freigibt.
 
 ## Erlaubt
 

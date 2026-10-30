@@ -1,6 +1,8 @@
 # AI 3D Generation Studio
 
-Dieses Profil erweitert das Ultimate-KI-Setup zu einem lokalen Open-Source AI-3D-Studio fuer Game Assets, CAD-Prototypen, Charaktere, Produktvisualisierung und spaetere Render-Farmen. Es verbindet Ollama, OpenClaw, ComfyUI, Blender, Hunyuan3D, TripoSR und FFmpeg zu einer modularen Pipeline.
+Dieses Profil erweitert das Ultimate-KI-Setup zu einem lokalen Open-Source AI-3D-Studio fuer Game
+Assets, CAD-Prototypen, Charaktere, Produktvisualisierung und spaetere Render-Farmen. Es verbindet
+Ollama, OpenClaw, ComfyUI, Blender, Hunyuan3D, TripoSR und FFmpeg zu einer modularen Pipeline.
 
 ## Zweck
 
@@ -13,16 +15,16 @@ Dieses Profil erweitert das Ultimate-KI-Setup zu einem lokalen Open-Source AI-3D
 
 ## Bausteine
 
-| Komponente | Aufgabe |
-| --- | --- |
-| Ollama | Lokale Promptplanung, Asset-Briefings, QA-Checklisten |
-| OpenClaw | Agent-Orchestrierung, Batch-Jobs, Toolsteuerung |
-| ComfyUI | Visuelle 3D-/Bild-/Textur-Workflows |
-| Hunyuan3D 2.1 | Image/Text zu hochwertigem Mesh mit PBR-Texturen |
-| TripoSR | Schnelle Single-Image-Rekonstruktion und Mesh-Prototyping |
-| Blender | Cleanup, UV, Retopo, Baking, Rigging, Export |
-| FFmpeg | Turntables, Preview-Videos, Social-Media-Clips |
-| n8n optional | Queue, Benachrichtigung, Export-Automation |
+| Komponente    | Aufgabe                                                   |
+| ------------- | --------------------------------------------------------- |
+| Ollama        | Lokale Promptplanung, Asset-Briefings, QA-Checklisten     |
+| OpenClaw      | Agent-Orchestrierung, Batch-Jobs, Toolsteuerung           |
+| ComfyUI       | Visuelle 3D-/Bild-/Textur-Workflows                       |
+| Hunyuan3D 2.1 | Image/Text zu hochwertigem Mesh mit PBR-Texturen          |
+| TripoSR       | Schnelle Single-Image-Rekonstruktion und Mesh-Prototyping |
+| Blender       | Cleanup, UV, Retopo, Baking, Rigging, Export              |
+| FFmpeg        | Turntables, Preview-Videos, Social-Media-Clips            |
+| n8n optional  | Queue, Benachrichtigung, Export-Automation                |
 
 ## Hardware
 
@@ -32,7 +34,8 @@ Dieses Profil erweitert das Ultimate-KI-Setup zu einem lokalen Open-Source AI-3D
 - 24-32+ GB VRAM: Hunyuan3D Shape + Texture, groessere Texturen, Batchjobs.
 - Multi-GPU/Kubernetes: spaeter fuer Render Queue, Asset Farm und parallele Blender-Jobs.
 
-Hunyuan3D 2.1 nennt als Orientierung ca. 10 GB VRAM fuer Shape, 21 GB fuer Textur und 29 GB fuer Shape+Textur. Das ist ein wichtiger Planungswert fuer RTX-Workstations und VPS-GPU-Nodes.
+Hunyuan3D 2.1 nennt als Orientierung ca. 10 GB VRAM fuer Shape, 21 GB fuer Textur und 29 GB fuer
+Shape+Textur. Das ist ein wichtiger Planungswert fuer RTX-Workstations und VPS-GPU-Nodes.
 
 ## Architektur
 
@@ -77,7 +80,8 @@ Geplante Beispiel-Workflows:
 - `game_asset_pipeline.json`
 - `cad_prototype_pipeline.json`
 
-Die JSON-Dateien sind bewusst als Startvorlagen gedacht. Echte Modellpfade muessen lokal an die eigene ComfyUI-Installation angepasst werden.
+Die JSON-Dateien sind bewusst als Startvorlagen gedacht. Echte Modellpfade muessen lokal an die
+eigene ComfyUI-Installation angepasst werden.
 
 ## Blender Automation
 
@@ -118,4 +122,5 @@ bash scripts/tools/triposr_install.sh
 cp config/ai3d.env.example .env.ai3d
 ```
 
-Danach ComfyUI starten, Node-Installation bewusst aktivieren und ein kleines Image-to-3D-Experiment mit einem lokal gespeicherten Referenzbild ausfuehren.
+Danach ComfyUI starten, Node-Installation bewusst aktivieren und ein kleines Image-to-3D-Experiment
+mit einem lokal gespeicherten Referenzbild ausfuehren.

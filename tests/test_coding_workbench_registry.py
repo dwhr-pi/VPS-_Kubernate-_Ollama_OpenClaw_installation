@@ -60,7 +60,7 @@ class CodingRegistry(unittest.TestCase):
                            ('OpenHands', 'openhands'), ('Codex_CLI', 'codex_cli')):
             self.assertIn(menu + ') marker=' + slug + '/native-coding/current/OWNED.json', helper)
         self.assertIn('agents/install_cli.py" "$coding_slug" check', helper)
-        self.assertIn('OpenCode|Aider|OpenHands|Codex_CLI)', helper)
+        self.assertRegex(helper, r'OpenCode\s*\|\s*Aider\s*\|\s*OpenHands\s*\|\s*Codex_CLI\)')
 
     def test_existing_qwen_and_proprietary_boundary_preserved(self):
         rows = {row['id']: row for row in json.loads((ROOT / 'config/tools.yml').read_text())['tools']}

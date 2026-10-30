@@ -33,17 +33,17 @@ echo -e "${YELLOW}Achtung: Blender ist ein sehr grosser Source-Build. Plane lang
 echo -e "${YELLOW}apt wird nur fuer Compiler/Build-Abhaengigkeiten genutzt, nicht fuer die Blender-App selbst.${NC}"
 
 if ! ensure_user_workspace || ! require_disk_mb "$BLENDER_MIN_FREE_MB" /opt; then
-    echo -e "${RED}Fehler: Zu wenig freier Speicher fuer den Blender-Source-Build.${NC}"
-    echo -e "${YELLOW}Empfohlen sind mindestens $((BLENDER_MIN_FREE_MB / 1024)) GB frei auf /opt.${NC}"
-    exit 1
+  echo -e "${RED}Fehler: Zu wenig freier Speicher fuer den Blender-Source-Build.${NC}"
+  echo -e "${YELLOW}Empfohlen sind mindestens $((BLENDER_MIN_FREE_MB / 1024)) GB frei auf /opt.${NC}"
+  exit 1
 fi
 
 ensure_base_apt_packages \
-    git git-lfs subversion ca-certificates build-essential cmake ninja-build \
-    python3 python3-dev python3-pip pkg-config libx11-dev libxxf86vm-dev \
-    libxcursor-dev libxi-dev libxrandr-dev libxinerama-dev libegl-dev \
-    libwayland-dev wayland-protocols libxkbcommon-dev libdbus-1-dev \
-    libgl1-mesa-dev libglu1-mesa-dev
+  git git-lfs subversion ca-certificates build-essential cmake ninja-build \
+  python3 python3-dev python3-pip pkg-config libx11-dev libxxf86vm-dev \
+  libxcursor-dev libxi-dev libxrandr-dev libxinerama-dev libegl-dev \
+  libwayland-dev wayland-protocols libxkbcommon-dev libdbus-1-dev \
+  libgl1-mesa-dev libglu1-mesa-dev
 
 sudo mkdir -p "$BLENDER_ROOT"
 sudo chown -R "$USER":"$USER" "$BLENDER_ROOT"
@@ -60,9 +60,9 @@ mkdir -p "$BLENDER_BUILD_DIR" "$BLENDER_INSTALL_PREFIX"
 
 echo -e "${BLUE}Konfiguriere Blender mit CMake/Ninja...${NC}"
 cmake -S "$BLENDER_SOURCE_DIR" -B "$BLENDER_BUILD_DIR" -G Ninja \
-    -DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_INSTALL_PREFIX="$BLENDER_INSTALL_PREFIX" \
-    -DWITH_INSTALL_PORTABLE=OFF
+  -DCMAKE_BUILD_TYPE=Release \
+  -DCMAKE_INSTALL_PREFIX="$BLENDER_INSTALL_PREFIX" \
+  -DWITH_INSTALL_PORTABLE=OFF
 
 echo -e "${BLUE}Baue Blender mit ${BLENDER_JOBS} Jobs...${NC}"
 cmake --build "$BLENDER_BUILD_DIR" --parallel "$BLENDER_JOBS"
@@ -72,15 +72,15 @@ cmake --install "$BLENDER_BUILD_DIR"
 
 BLENDER_BIN="$(find "$BLENDER_INSTALL_PREFIX" -type f -name blender -perm -111 | head -n 1)"
 if [ -z "$BLENDER_BIN" ]; then
-    echo -e "${RED}Fehler: Blender wurde gebaut, aber kein ausfuehrbares blender-Binary gefunden.${NC}"
-    exit 1
+  echo -e "${RED}Fehler: Blender wurde gebaut, aber kein ausfuehrbares blender-Binary gefunden.${NC}"
+  exit 1
 fi
 
 sudo ln -sf "$BLENDER_BIN" /usr/local/bin/blender
 
 if ! command -v blender >/dev/null 2>&1; then
-    echo -e "${RED}Fehler: Blender ist nach dem Build nicht im PATH auffindbar.${NC}"
-    exit 1
+  echo -e "${RED}Fehler: Blender ist nach dem Build nicht im PATH auffindbar.${NC}"
+  exit 1
 fi
 
 echo -e "${GREEN}Blender wurde erfolgreich aus GitHub-Quelle installiert.${NC}"

@@ -1,7 +1,6 @@
 # AI-ContentMultiplier
 
-AI-ContentMultiplier ist ein optionaler Workflow fuer Content-Repurposing im
-Ultimate KI Setup.
+AI-ContentMultiplier ist ein optionaler Workflow fuer Content-Repurposing im Ultimate KI Setup.
 
 Projektordner:
 
@@ -21,8 +20,7 @@ Aus einer Quelle werden mehrere Entwuerfe erzeugt:
 - FAQ
 - SEO Keywords
 
-Das Tool bringt eine eigene Workflow-Toolsammlung mit. Die Bausteine sind
-dokumentiert unter:
+Das Tool bringt eine eigene Workflow-Toolsammlung mit. Die Bausteine sind dokumentiert unter:
 
 ```text
 C:\Users\danie\Documents\GitHub\content-multiplier\docs\TOOL_COLLECTION.md
@@ -67,9 +65,8 @@ Optional, nur mit bewusst gesetzten lokalen API-Keys:
 
 Status: `optional`, `documentation-first`, `workflow`
 
-Dieses Tool installiert standardmaessig keine schweren Abhaengigkeiten. Der
-Setup-Wrapper legt nur lokale Konfigurations- und Ausgabeordner an und verweist
-auf die Workflow-Dokumentation.
+Dieses Tool installiert standardmaessig keine schweren Abhaengigkeiten. Der Setup-Wrapper legt nur
+lokale Konfigurations- und Ausgabeordner an und verweist auf die Workflow-Dokumentation.
 
 ## Setup
 

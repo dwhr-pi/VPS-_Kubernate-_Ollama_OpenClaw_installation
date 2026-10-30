@@ -47,7 +47,7 @@ class PyannoteContract(unittest.TestCase):
                           'import torch', 'from pyannote.audio import', 'rm -rf', 'sudo apt'):
             self.assertNotIn(forbidden, text)
         runtime = text[text.index('pa_install_runtime()'):text.index('pa_deactivate()')]
-        self.assertLess(runtime.index('pip --isolated check'), runtime.index('> "$PA_RUNTIME_MARKER"'))
+        self.assertLess(runtime.index('pip --isolated check'), re.search(r'>\s*"\$PA_RUNTIME_MARKER"', runtime).start())
 
     def test_document_links(self):
         doc = ROOT / 'docs/tools/pyannote-audio.md'

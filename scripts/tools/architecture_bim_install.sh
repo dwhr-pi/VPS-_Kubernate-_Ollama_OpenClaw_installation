@@ -77,7 +77,7 @@ install_python_tools() {
 }
 
 write_env_example() {
-  cat > "$ARCHITECTURE_HOME/architecture_bim.env.example" <<'EOF'
+  cat >"$ARCHITECTURE_HOME/architecture_bim.env.example" <<'EOF'
 ARCHITECTURE_HOME=~/Ultimate_KI_Setup/architecture
 OLLAMA_BASE_URL=http://127.0.0.1:11434
 OPENCLAW_GATEWAY_URL=ws://127.0.0.1:18789
@@ -98,4 +98,3 @@ echo "Bonsai/BlenderBIM, Speckle Connectoren, LoRAs, Texturen und EnergyPlus/Ope
 df -h "$HOME" || true
 echo "Dauer: $(($(date +%s) - START_TS)) Sekunden"
 echo "Logdatei: $LOG_FILE"
-

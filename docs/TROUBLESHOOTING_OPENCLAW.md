@@ -9,7 +9,8 @@ which openclaw || true
 openclaw --version || true
 ```
 
-Wenn das Kommando fehlt, Installationslog unter `~/.openclaw_ultimate_user_data/install_logs/` ansehen.
+Wenn das Kommando fehlt, Installationslog unter `~/.openclaw_ultimate_user_data/install_logs/`
+ansehen.
 
 ## Token oder Konfiguration passt nicht
 
@@ -34,4 +35,3 @@ curl http://127.0.0.1:11434/api/tags
 ```
 
 Wenn Ollama nicht erreichbar ist, zuerst Ollama reparieren, nicht OpenClaw neu installieren.
-

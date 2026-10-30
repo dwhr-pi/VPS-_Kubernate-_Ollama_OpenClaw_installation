@@ -2,7 +2,8 @@
 
 ## Zweck
 
-Visuelle KI- und Automationsplattform fuer Workflows, Trigger, Connectoren und Low-Code-Integrationen.
+Visuelle KI- und Automationsplattform fuer Workflows, Trigger, Connectoren und
+Low-Code-Integrationen.
 
 ## Installierbare Kern-Tools
 

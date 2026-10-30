@@ -2,8 +2,9 @@
 
 ## Überblick
 
-Dieses Profil wurde aus `readme.md`, `docs/setup_guide.md` und `scripts/profiles/Programmierer_install.sh` zusammengeführt.
-Es ist aktuell auf Entwicklungs- und Automatisierungs-Workflows ausgerichtet.
+Dieses Profil wurde aus `readme.md`, `docs/setup_guide.md` und
+`scripts/profiles/Programmierer_install.sh` zusammengeführt. Es ist aktuell auf Entwicklungs- und
+Automatisierungs-Workflows ausgerichtet.
 
 ## Installierter Stack
 
@@ -37,14 +38,17 @@ clawhub
 
 ### ⚠ Missing in Setup
 
-- Das in der Doku erwähnte Coding-Modell wie DeepSeek Coder wird nicht automatisch via Ollama installiert.
+- Das in der Doku erwähnte Coding-Modell wie DeepSeek Coder wird nicht automatisch via Ollama
+  installiert.
 - Eine echte Entwickler-Toolchain über Huginn/Clawhub hinaus fehlt.
 
 ### ❌ Missing in Docs
 
-- Die konkrete CLI-Verlinkung nach `/usr/local/bin/clawhub` ist in der allgemeinen Doku kaum sichtbar.
+- Die konkrete CLI-Verlinkung nach `/usr/local/bin/clawhub` ist in der allgemeinen Doku kaum
+  sichtbar.
 
 ## Hinweise
 
 - Huginn benötigt manuelle `.env`-Anpassung und einen manuellen Start.
-- Standardport von Huginn ist `3000` und kollidiert potenziell mit OpenClaw, Flowise, Activepieces und Zenbot.
+- Standardport von Huginn ist `3000` und kollidiert potenziell mit OpenClaw, Flowise, Activepieces
+  und Zenbot.

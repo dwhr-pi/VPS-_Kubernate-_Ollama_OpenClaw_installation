@@ -4,7 +4,8 @@ Status: `planned` / `documentation-first`
 
 ## Ziel
 
-Ultimate JARVIS ist ein Betriebsprofil fuer einen lokalen, modularen KI-Assistenten auf Basis von OpenClaw, Ollama, Memory/RAG, Voice und sicheren Tool-Freigaben.
+Ultimate JARVIS ist ein Betriebsprofil fuer einen lokalen, modularen KI-Assistenten auf Basis von
+OpenClaw, Ollama, Memory/RAG, Voice und sicheren Tool-Freigaben.
 
 Funktionen:
 
@@ -19,7 +20,9 @@ Funktionen:
 
 ## Sicherheitsstatus
 
-Dieses Profil installiert nichts automatisch. Es ist ein Architektur- und Betriebsprofil. Kritische Aktionen wie Shell, Docker, Kubernetes, Smart Home, E-Mail, Dateizugriff oder Browser-Automation duerfen nur nach ausdruecklicher Freigabe ausgefuehrt werden.
+Dieses Profil installiert nichts automatisch. Es ist ein Architektur- und Betriebsprofil. Kritische
+Aktionen wie Shell, Docker, Kubernetes, Smart Home, E-Mail, Dateizugriff oder Browser-Automation
+duerfen nur nach ausdruecklicher Freigabe ausgefuehrt werden.
 
 ## Architektur
 

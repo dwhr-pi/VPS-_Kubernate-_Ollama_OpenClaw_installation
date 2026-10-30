@@ -2,7 +2,8 @@
 
 ## Zweck
 
-Agenten-Benchmarks, Regressionspruefungen, Task-Erfolg, Halluzinations-Checks und Tracing fuer Coding- und Recherche-Agenten.
+Agenten-Benchmarks, Regressionspruefungen, Task-Erfolg, Halluzinations-Checks und Tracing fuer
+Coding- und Recherche-Agenten.
 
 ## Installierbare Kern-Tools
 

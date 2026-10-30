@@ -60,7 +60,7 @@ confirm() {
   local answer
   read -r -p "$prompt [j/N] " answer
   case "$answer" in
-    y|Y|yes|YES|j|J|ja|JA) return 0 ;;
+    y | Y | yes | YES | j | J | ja | JA) return 0 ;;
     *) return 1 ;;
   esac
 }
@@ -72,7 +72,7 @@ USER_ENV_DIR="$HOME/.openclaw_ultimate_user_data/openhiggsstack"
 log "Starte OpenHiggsStack Installation."
 log "OS-Erkennung: $(detect_os)"
 log "Zielordner: $OPENHIGGSSTACK_HOME"
-log "Freier Speicher vorher: $(( $(free_kb 2>/dev/null || echo 0) / 1024 )) MB"
+log "Freier Speicher vorher: $(($(free_kb 2>/dev/null || echo 0) / 1024)) MB"
 
 command -v git >/dev/null 2>&1 || install_package_if_possible git
 command -v python3 >/dev/null 2>&1 || install_package_if_possible python3
@@ -129,7 +129,7 @@ else
 fi
 
 END_TS="$(date +%s)"
-log "Freier Speicher nachher: $(( $(free_kb 2>/dev/null || echo 0) / 1024 )) MB"
+log "Freier Speicher nachher: $(($(free_kb 2>/dev/null || echo 0) / 1024)) MB"
 log "Installationsdauer: $((END_TS - START_TS)) Sekunden"
 log "OpenHiggsStack Vorbereitung abgeschlossen."
 log "Naechster Schritt: ComfyUI starten und Wan2.x-Workflow manuell importieren."

@@ -15,8 +15,8 @@ run() {
 }
 
 case "$MODE" in
-  --dry-run|--apply) ;;
-  --help|-h)
+  --dry-run | --apply) ;;
+  --help | -h)
     echo "Usage: sudo bash scripts/security/setup-fail2ban.sh [--dry-run|--apply]"
     exit 0
     ;;
@@ -31,7 +31,7 @@ run apt-get update
 run apt-get install -y fail2ban
 
 if [[ "$MODE" == "--apply" ]]; then
-  cat > "$JAIL_FILE" <<'EOF'
+  cat >"$JAIL_FILE" <<'EOF'
 [sshd]
 enabled = true
 mode = aggressive

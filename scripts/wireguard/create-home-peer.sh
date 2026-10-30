@@ -7,8 +7,8 @@ VPS_PUBLIC_IP="${VPS_PUBLIC_IP:-VPS_PUBLIC_IP}"
 WG_PORT="${WG_PORT:-51820}"
 
 case "$MODE" in
-  --dry-run|--apply) ;;
-  --help|-h)
+  --dry-run | --apply) ;;
+  --help | -h)
     echo "Usage: bash scripts/wireguard/create-home-peer.sh [--dry-run|--apply]"
     exit 0
     ;;
@@ -28,7 +28,7 @@ fi
 
 mkdir -p "$WG_DIR"
 chmod 700 "$WG_DIR"
-cat > "$WG_DIR/home-watcher.conf.example" <<EOF
+cat >"$WG_DIR/home-watcher.conf.example" <<EOF
 [Interface]
 Address = 10.44.0.2/24
 PrivateKey = WG_PRIVATE_KEY_PLACEHOLDER

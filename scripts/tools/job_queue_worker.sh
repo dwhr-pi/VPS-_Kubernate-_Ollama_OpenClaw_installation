@@ -92,7 +92,7 @@ run_one() {
 
 case "$ACTION" in
   start)
-    echo "$$" > "$RUNNING_FILE"
+    echo "$$" >"$RUNNING_FILE"
     while true; do
       run_one || break
     done
@@ -111,7 +111,10 @@ case "$ACTION" in
     [[ -f "$RUNNING_FILE" ]] && echo "Worker laeuft: $(cat "$RUNNING_FILE")" || echo "Worker laeuft nicht."
     ;;
   logs)
-    [[ -n "$ARG" ]] || { echo "Usage: job_queue_worker.sh logs <job_id>" >&2; exit 2; }
+    [[ -n "$ARG" ]] || {
+      echo "Usage: job_queue_worker.sh logs <job_id>" >&2
+      exit 2
+    }
     cat "$QUEUE_DIR/logs/${ARG}.log"
     ;;
   *)

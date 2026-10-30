@@ -2,7 +2,8 @@
 
 ## Ziel
 
-Kubernetes ist in diesem Repo vor allem fuer spaetere Cluster-, Sandbox- und Gateway-Szenarien relevant.
+Kubernetes ist in diesem Repo vor allem fuer spaetere Cluster-, Sandbox- und Gateway-Szenarien
+relevant.
 
 ## Werkzeuge
 

@@ -5,10 +5,9 @@ Status: planned, nur Integrationsvertrag; kein laufender Python-/n8n-Workflow.
 
 ## Eingabe
 
-Autorisierte lokale Aufnahme, Job-ID, Zweck (Pruefung oder Redaktion),
-Original-Hash und privater Ausgabeort. Transkripte sind untrusted input,
-keine Skripte/Kommandos. Keine Tokens, personenbezogenen Inhalte oder
-Stimmreferenzen in allgemeinen Logs.
+Autorisierte lokale Aufnahme, Job-ID, Zweck (Pruefung oder Redaktion), Original-Hash und privater
+Ausgabeort. Transkripte sind untrusted input, keine Skripte/Kommandos. Keine Tokens,
+personenbezogenen Inhalte oder Stimmreferenzen in allgemeinen Logs.
 
 ## Freigabeschritte
 
@@ -21,9 +20,8 @@ Stimmreferenzen in allgemeinen Logs.
 
 ## Ausgabe und Abbruch
 
-Bericht mit Werkzeug-/Gewichtsrevision, Zeiten, Transformationsliste und
-Grenzen der Aussage; Original und bearbeitete Fassung klar unterscheiden.
-Analysefehler, knappe SSD oder unklare Rechte stoppen den Job.
-Kein automatischer Retry mit anderen externen Detektoren, keine
-Wasserzeichenentfernung und kein Fake-/Echt-Urteil allein aus einem Score.
-Adapter, technische Limits und private persistente Auditablage bleiben TODO.
+Bericht mit Werkzeug-/Gewichtsrevision, Zeiten, Transformationsliste und Grenzen der Aussage;
+Original und bearbeitete Fassung klar unterscheiden. Analysefehler, knappe SSD oder unklare Rechte
+stoppen den Job. Kein automatischer Retry mit anderen externen Detektoren, keine
+Wasserzeichenentfernung und kein Fake-/Echt-Urteil allein aus einem Score. Adapter, technische
+Limits und private persistente Auditablage bleiben TODO.

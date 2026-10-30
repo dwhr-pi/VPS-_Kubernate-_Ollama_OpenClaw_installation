@@ -1,6 +1,7 @@
 # Recommended First Install
 
-Dieser Pfad ist fuer neue Systeme gedacht, damit nicht zu frueh schwere oder riskante Komponenten installiert werden.
+Dieser Pfad ist fuer neue Systeme gedacht, damit nicht zu frueh schwere oder riskante Komponenten
+installiert werden.
 
 ## Reihenfolge
 
@@ -24,9 +25,9 @@ Dieser Pfad ist fuer neue Systeme gedacht, damit nicht zu frueh schwere oder ris
 ## Stop-Regeln
 
 Stoppe und pruefe, wenn:
+
 - Windows-Host-Speicher knapp ist, auch wenn Linux viel frei meldet.
 - Docker-Daemon nicht erreichbar ist.
 - Node/Python-Version nicht zum Upstream passt.
 - ein Git-Clone unvollstaendig ist.
 - ein Installer versucht, echte Secrets oder Live-Keys anzulegen.
-

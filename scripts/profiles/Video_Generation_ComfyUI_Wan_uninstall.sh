@@ -8,4 +8,3 @@ echo "Entferne Profilstatus: Video Generation ComfyUI Wan"
 echo "Lokale ComfyUI-, Modell- und Output-Ordner bleiben zur Sicherheit erhalten."
 
 mark_profile_removed "Video_Generation_ComfyUI_Wan"
-

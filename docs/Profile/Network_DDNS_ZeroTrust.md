@@ -20,7 +20,8 @@ Hurricane Electric DDNS, WireGuard/Headscale, Reverse Proxy und geschuetzte Admi
 
 ## Empfohlene Tools
 
-`wireguard`, `headscale`, `ddclient`, `caddy`, `traefik`, `nginx_proxy_manager`, `authelia`, `authentik`
+`wireguard`, `headscale`, `ddclient`, `caddy`, `traefik`, `nginx_proxy_manager`, `authelia`,
+`authentik`
 
 ## Minimalpfad
 
@@ -31,7 +32,8 @@ Hurricane Electric DDNS, WireGuard/Headscale, Reverse Proxy und geschuetzte Admi
 
 ## Full-Pfad
 
-Der Full-Pfad bleibt manuell, bis Installer, Uninstaller, Doctor-Check, Portdoku und Rollback vorhanden sind.
+Der Full-Pfad bleibt manuell, bis Installer, Uninstaller, Doctor-Check, Portdoku und Rollback
+vorhanden sind.
 
 ## Sicherheitsgrenzen
 
@@ -43,14 +45,14 @@ Der Full-Pfad bleibt manuell, bis Installer, Uninstaller, Doctor-Check, Portdoku
 
 ## Hinweise fuer Plattformen
 
-| Plattform | Empfehlung |
-| --- | --- |
-| WSL2 | Nur leichte Tests, Windows-C:-Speicher beachten. |
-| MiniPC | Maximal 1 schwerer Job, Queue verwenden. |
-| Oracle VPS | Gut fuer Control Plane, Monitoring und Reverse Proxy. |
-| Raspberry Pi | Nur leichte Dienste und Watcher-Aufgaben. |
-| RTX/GPU | Geeignet fuer schwere Medien-/LLM-Aufgaben. |
-| Kubernetes/K3s | Erst nach stabiler Einzelinstallation. |
+| Plattform      | Empfehlung                                            |
+| -------------- | ----------------------------------------------------- |
+| WSL2           | Nur leichte Tests, Windows-C:-Speicher beachten.      |
+| MiniPC         | Maximal 1 schwerer Job, Queue verwenden.              |
+| Oracle VPS     | Gut fuer Control Plane, Monitoring und Reverse Proxy. |
+| Raspberry Pi   | Nur leichte Dienste und Watcher-Aufgaben.             |
+| RTX/GPU        | Geeignet fuer schwere Medien-/LLM-Aufgaben.           |
+| Kubernetes/K3s | Erst nach stabiler Einzelinstallation.                |
 
 ## Beispiel-Prompt
 

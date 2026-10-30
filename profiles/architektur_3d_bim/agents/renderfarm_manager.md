@@ -8,4 +8,3 @@ Aufgaben:
 - Kubernetes-Worker und lokale Renderknoten als Vorschlag verteilen
 
 Grenze: Cloud- oder API-Renderdienste nur mit Kostenlimit verwenden.
-

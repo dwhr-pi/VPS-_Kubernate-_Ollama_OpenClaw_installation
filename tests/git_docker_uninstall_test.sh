@@ -25,7 +25,8 @@ function [ {
 test_target=/opt/metabase
 for path in / /opt /opt/../home /opt/metabase/child /home/metabase; do
   if validate_git_docker_uninstall_dir "$path"; then
-    echo "FAIL: accepted unsafe target $path"; exit 1
+    echo "FAIL: accepted unsafe target $path"
+    exit 1
   fi
 done
 validate_git_docker_uninstall_dir /opt/metabase
@@ -34,7 +35,8 @@ uninstall_git_docker_tool Metabase /opt/metabase
 [[ "$sudo_called" == true && "$marked" == true && "$result" == success ]]
 sudo_result=1 sudo_called=false marked=false result=''
 if uninstall_git_docker_tool Metabase /opt/metabase; then
-  echo 'FAIL: deletion failure accepted'; exit 1
+  echo 'FAIL: deletion failure accepted'
+  exit 1
 fi
 [[ "$sudo_called" == true && "$marked" == false && "$result" == failed ]]
 for tool in Mosquitto Node_RED; do

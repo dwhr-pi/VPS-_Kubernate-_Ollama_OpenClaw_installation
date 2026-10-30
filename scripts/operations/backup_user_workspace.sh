@@ -3,7 +3,10 @@
 set -euo pipefail
 set +x
 umask 077
-die() { printf 'Workspace-Backup abgebrochen: %s\n' "$*" >&2; exit 1; }
+die() {
+  printf 'Workspace-Backup abgebrochen: %s\n' "$*" >&2
+  exit 1
+}
 source_dir=${BACKUP_SOURCE:?Absolutes Quellverzeichnis setzen}
 secret_dir=${BACKUP_SECRET_DIR:?Privates Secret-Verzeichnis setzen}
 host_id=${BACKUP_HOST_ID:?Stabile eindeutige Host-ID setzen}

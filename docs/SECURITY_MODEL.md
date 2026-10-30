@@ -2,11 +2,10 @@
 
 ## Rechtliche und technische Grenzen
 
-[Rechts-/RAG-Governance](legal/README.md) ergaenzt Quellenreview, Templates
-und Offline-Pruefungen. Sie ist kein technisches Enforcement und garantiert
-keine Gesetzeskonformitaet. Prompts ersetzen keine Berechtigungen; Hash-Ketten
-ersetzen keine unabhaengige Beweissicherung. Keine automatische historische
-Kettenreparatur, Datenloeschung oder Uebernahme aller Prompt-/Output-Rohdaten.
+[Rechts-/RAG-Governance](legal/README.md) ergaenzt Quellenreview, Templates und Offline-Pruefungen.
+Sie ist kein technisches Enforcement und garantiert keine Gesetzeskonformitaet. Prompts ersetzen
+keine Berechtigungen; Hash-Ketten ersetzen keine unabhaengige Beweissicherung. Keine automatische
+historische Kettenreparatur, Datenloeschung oder Uebernahme aller Prompt-/Output-Rohdaten.
 
 ## Defaults
 

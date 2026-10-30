@@ -2,12 +2,13 @@
 
 ## Zielbild
 
-Ergaenzung: [getrennte Coding-Agenten-Profile](agents/coding-agent-profiles.md).
-Jarvis-Core uebernimmt nur Rollenwahl/Routing, Claude/Gemini/Ollama bleiben
-getrennte Worker. OpenClaw ist die optionale Runtime, MCP der Tool-Layer,
-Kubernetes nur optional fuer Skalierung. Noch kein ausfuehrender Adapter.
+Ergaenzung: [getrennte Coding-Agenten-Profile](agents/coding-agent-profiles.md). Jarvis-Core
+uebernimmt nur Rollenwahl/Routing, Claude/Gemini/Ollama bleiben getrennte Worker. OpenClaw ist die
+optionale Runtime, MCP der Tool-Layer, Kubernetes nur optional fuer Skalierung. Noch kein
+ausfuehrender Adapter.
 
-Diese Architektur transformiert das Setup von einer Sammlung einzelner Tools zu einer modularen, reproduzierbaren und sicheren LLMOps-Plattform für lokale und hybride KI-Agenten.
+Diese Architektur transformiert das Setup von einer Sammlung einzelner Tools zu einer modularen,
+reproduzierbaren und sicheren LLMOps-Plattform für lokale und hybride KI-Agenten.
 
 ```mermaid
 flowchart TD
@@ -33,6 +34,7 @@ flowchart TD
 - K3s für Cluster- oder VPS-Szenarien
 
 Abhängigkeiten:
+
 - `docker`
 - `k3s`
 - `kubectl`
@@ -44,6 +46,7 @@ Abhängigkeiten:
 - `Python` für Agenten, RAG und LLMOps-Bausteine
 
 Abhängigkeiten:
+
 - `ollama`
 - `nodejs>=22`
 - `python3`
@@ -55,6 +58,7 @@ Abhängigkeiten:
 - Logging, Fallbacks, einheitliche OpenAI-kompatible Endpunkte
 
 Abhängigkeiten:
+
 - `LiteLLM`
 - API-Keys für Cloud-Fallbacks
 
@@ -67,6 +71,7 @@ Abhängigkeiten:
 - optional `Aider`, `OpenCode`, `Continue.dev`
 
 Abhängigkeiten:
+
 - lokales oder remote Modellgateway
 - Toolserver
 - Memory/RAG
@@ -78,6 +83,7 @@ Abhängigkeiten:
 - `LlamaIndex` und `LangChain` für Import, Chunking und Retrieval
 
 Abhängigkeiten:
+
 - Storage
 - Modell-Embeddings
 
@@ -88,6 +94,7 @@ Abhängigkeiten:
 - APIs und Connectoren
 
 Abhängigkeiten:
+
 - Gateway oder Agenten
 - Secrets
 
@@ -98,6 +105,7 @@ Abhängigkeiten:
 - RAG- und Agenten-nahe Bedienung
 
 Abhängigkeiten:
+
 - LiteLLM
 - Ollama oder Cloud-Provider
 
@@ -109,6 +117,7 @@ Abhängigkeiten:
 - optional `Uptime Kuma`, `Netdata`
 
 Abhängigkeiten:
+
 - App- und Modellzugriffe
 - Log- und Metric-Endpunkte
 
@@ -122,6 +131,7 @@ Abhängigkeiten:
 - Firewall und optional Cloudflare Tunnel
 
 Abhängigkeiten:
+
 - Secrets
 - Policies
 - Netzwerkgrenzen
@@ -135,6 +145,7 @@ Abhängigkeiten:
 - optional `restic` oder `borg`
 
 Abhängigkeiten:
+
 - Volumes
 - Snapshot-/Backup-Ziel
 
@@ -144,11 +155,13 @@ Abhängigkeiten:
 - `LiteLLM` hängt an `Ollama` und optional Cloud-Keys
 - `OpenClaw` und andere Agenten hängen an Gateway, Tool Layer und Memory
 - `Langfuse` und `OpenLIT` hängen an der Instrumentierung der Apps
-- `Qdrant`, `Postgres`, `Redis` und `MinIO` sollten als zustandsbehaftete Kernservices behandelt werden
+- `Qdrant`, `Postgres`, `Redis` und `MinIO` sollten als zustandsbehaftete Kernservices behandelt
+  werden
 
 ## Produktionshinweise
 
 - sensible Dateien gehören in `~/.openclaw_ultimate_user_data`
 - öffentlich erreichbare Endpunkte nur über Gateway, Auth und Reverse Proxy
 - `Open WebUI` und `LiteLLM` nicht ungeschützt auf `0.0.0.0` freigeben
-- Monitoring und Security sollten nicht optionaler Nachgedanke, sondern Teil des Standard-Stacks sein
+- Monitoring und Security sollten nicht optionaler Nachgedanke, sondern Teil des Standard-Stacks
+  sein

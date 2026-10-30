@@ -11,7 +11,8 @@ Profil fuer Wetter-, Klima-, Energie-, PV-, Batterie- und Smart-Home-Auswertunge
 
 ## Sicherheit
 
-Keine automatische Schaltung kritischer Verbraucher ohne Grenzwerte, Freigabe und Fallback. Energie- und Wetterdaten koennen Rueckschluesse auf Anwesenheit zulassen.
+Keine automatische Schaltung kritischer Verbraucher ohne Grenzwerte, Freigabe und Fallback. Energie-
+und Wetterdaten koennen Rueckschluesse auf Anwesenheit zulassen.
 
 ## Installation
 

@@ -3,21 +3,21 @@
 set -euo pipefail
 
 dialog() {
-    local arg
-    local has_cancel_label=0
+  local arg
+  local has_cancel_label=0
 
-    for arg in "$@"; do
-        if [ "$arg" = "--cancel-label" ]; then
-            has_cancel_label=1
-            break
-        fi
-    done
-
-    if [ "$has_cancel_label" -eq 1 ]; then
-        command dialog "$@"
-    else
-        command dialog --cancel-label "Zurueck" "$@"
+  for arg in "$@"; do
+    if [ "$arg" = "--cancel-label" ]; then
+      has_cancel_label=1
+      break
     fi
+  done
+
+  if [ "$has_cancel_label" -eq 1 ]; then
+    command dialog "$@"
+  else
+    command dialog --cancel-label "Zurueck" "$@"
+  fi
 }
 
 GREEN="\033[0;32m"
@@ -34,18 +34,18 @@ USER_MODELFILE_DIR="$USER_WORKSPACE_DIR/modelfiles"
 mkdir -p "$USER_MODELFILE_DIR"
 
 prompt_input() {
-    local title="$1"
-    local message="$2"
-    local default_value="${3:-}"
-    local target_file="$4"
+  local title="$1"
+  local message="$2"
+  local default_value="${3:-}"
+  local target_file="$4"
 
-    dialog --clear --backtitle "OpenClaw & AI Infrastructure - Ultimate Setup" \
-    --title "$title" --inputbox "$message" 11 90 "$default_value" 2> "$target_file"
+  dialog --clear --backtitle "OpenClaw & AI Infrastructure - Ultimate Setup" \
+    --title "$title" --inputbox "$message" 11 90 "$default_value" 2>"$target_file"
 }
 
 if ! command -v dialog >/dev/null 2>&1; then
-    echo -e "${RED}Fehler: dialog ist nicht installiert.${NC}"
-    exit 1
+  echo -e "${RED}Fehler: dialog ist nicht installiert.${NC}"
+  exit 1
 fi
 
 prompt_input "Modelfile-Assistent" "Name des neuen Ollama-Modells:" "mein-llm" /tmp/modelfile_name
@@ -70,7 +70,7 @@ MODEL_CTX="$(cat /tmp/modelfile_ctx)"
 
 TARGET_FILE="$USER_MODELFILE_DIR/${MODEL_NAME}.Modelfile"
 
-cat > "$TARGET_FILE" <<EOF
+cat >"$TARGET_FILE" <<EOF
 # Modelfile erzeugt durch das Ultimate Setup
 # Dieser Modelfile liegt bewusst im Benutzer-Workspace und nicht im Git-Repository.
 

@@ -81,7 +81,7 @@ install_python_tools() {
 }
 
 write_examples() {
-  cat > "$CAD3D_HOME/cad_3d_konstruktion.env.example" <<'EOF'
+  cat >"$CAD3D_HOME/cad_3d_konstruktion.env.example" <<'EOF'
 CAD3D_HOME=~/Ultimate_KI_Setup/cad_3d_konstruktion
 OLLAMA_BASE_URL=http://127.0.0.1:11434
 OPENCLAW_GATEWAY_URL=ws://127.0.0.1:18789
@@ -95,7 +95,7 @@ CAD3D_INSTALL_HEAVY_TOOLS=0
 CAD3D_INSTALL_PARAMETRIC_LIBS=0
 EOF
 
-  cat > "$CAD3D_HOME/openscad/example_sensor_mount.scad" <<'EOF'
+  cat >"$CAD3D_HOME/openscad/example_sensor_mount.scad" <<'EOF'
 // Einfaches parametrisches Beispiel fuer einen Sensorhalter.
 width = 60;
 depth = 35;
@@ -110,7 +110,7 @@ difference() {
 }
 EOF
 
-  cat > "$CAD3D_HOME/prompts/text_to_cad_prompt.md" <<'EOF'
+  cat >"$CAD3D_HOME/prompts/text_to_cad_prompt.md" <<'EOF'
 # Text-to-CAD Prompt
 
 Erzeuge ein parametrisches CAD-Modell. Frage nach fehlenden Massen, Toleranzen,

@@ -1,6 +1,9 @@
 # Elektronik Entwickler
 
-Das Profil `Elektronik_Entwickler` baut eine lokale KI-gestuetzte Elektronik-, PCB-, Embedded- und FPGA-Entwicklungsumgebung fuer Ubuntu/WSL2, Windows 11 und optional VPS/Kubernetes auf. Es verbindet Ollama, OpenClaw, Codex, n8n, KiCad, Simulation, Firmware-Builds, FPGA-Toolchains und Home-Assistant-nahe IoT-Hardware.
+Das Profil `Elektronik_Entwickler` baut eine lokale KI-gestuetzte Elektronik-, PCB-, Embedded- und
+FPGA-Entwicklungsumgebung fuer Ubuntu/WSL2, Windows 11 und optional VPS/Kubernetes auf. Es verbindet
+Ollama, OpenClaw, Codex, n8n, KiCad, Simulation, Firmware-Builds, FPGA-Toolchains und
+Home-Assistant-nahe IoT-Hardware.
 
 ## Zielbild
 
@@ -31,17 +34,17 @@ flowchart LR
 
 ## Open-Source Toolchain
 
-| Bereich | Tools |
-| --- | --- |
-| PCB / EDA | KiCad, LibrePCB, Fritzing |
-| Mechanik / Gehaeuse | FreeCAD |
-| Circuit-as-Code | Circuit-Synth, tscircuit |
-| KiCad AI | KiCad MCP Server, kicad-happy |
-| Simulation | ngspice, Verilator, GTKWave |
-| Embedded | PlatformIO, ESP-IDF, Arduino CLI, Zephyr RTOS, OpenOCD |
-| FPGA / ASIC | Yosys, OpenROAD, OpenLane, TinyTapeout |
-| Automation | OpenClaw, Codex, n8n, GitHub Actions |
-| Monitoring | Prometheus/Grafana optional, Home Assistant, MQTT |
+| Bereich             | Tools                                                  |
+| ------------------- | ------------------------------------------------------ |
+| PCB / EDA           | KiCad, LibrePCB, Fritzing                              |
+| Mechanik / Gehaeuse | FreeCAD                                                |
+| Circuit-as-Code     | Circuit-Synth, tscircuit                               |
+| KiCad AI            | KiCad MCP Server, kicad-happy                          |
+| Simulation          | ngspice, Verilator, GTKWave                            |
+| Embedded            | PlatformIO, ESP-IDF, Arduino CLI, Zephyr RTOS, OpenOCD |
+| FPGA / ASIC         | Yosys, OpenROAD, OpenLane, TinyTapeout                 |
+| Automation          | OpenClaw, Codex, n8n, GitHub Actions                   |
+| Monitoring          | Prometheus/Grafana optional, Home Assistant, MQTT      |
 
 ## Hardware-Ziele
 
@@ -52,28 +55,28 @@ flowchart LR
 
 ## AI-Agenten
 
-| Agent | Aufgabe |
-| --- | --- |
-| `schematic-review-agent` | ERC, Pinout, Pullups, Versorgung, Schutzbeschaltung |
-| `pcb-review-agent` | DRC, Routing, Return Paths, EMV/EMC, Testpunkte |
-| `datasheet-agent` | Grenzwerte, Layout-Hinweise, Register, Timing |
-| `firmware-agent` | ESP32/Arduino/STM32/Zephyr-Code, Treiber, Tests |
-| `fpga-agent` | Verilog/VHDL, Yosys/Verilator/GTKWave, Timing-Hinweise |
-| `power-agent` | Strombudget, Batterie-Laufzeit, Netzteil, Thermik |
-| `production-agent` | BOM, JLCPCB/LCSC-nahe Verfuegbarkeit, Gerber-Check |
-| `home-assistant-hardware-agent` | MQTT Discovery, ESPHome, Sensor-Integration |
+| Agent                           | Aufgabe                                                |
+| ------------------------------- | ------------------------------------------------------ |
+| `schematic-review-agent`        | ERC, Pinout, Pullups, Versorgung, Schutzbeschaltung    |
+| `pcb-review-agent`              | DRC, Routing, Return Paths, EMV/EMC, Testpunkte        |
+| `datasheet-agent`               | Grenzwerte, Layout-Hinweise, Register, Timing          |
+| `firmware-agent`                | ESP32/Arduino/STM32/Zephyr-Code, Treiber, Tests        |
+| `fpga-agent`                    | Verilog/VHDL, Yosys/Verilator/GTKWave, Timing-Hinweise |
+| `power-agent`                   | Strombudget, Batterie-Laufzeit, Netzteil, Thermik      |
+| `production-agent`              | BOM, JLCPCB/LCSC-nahe Verfuegbarkeit, Gerber-Check     |
+| `home-assistant-hardware-agent` | MQTT Discovery, ESPHome, Sensor-Integration            |
 
 ## Ollama Modelle
 
-| Modellfamilie | Nutzen | Hardware-Hinweis |
-| --- | --- | --- |
-| DeepSeek-Coder | Firmware, C/C++, Python, Verilog-Hilfe | kleine Varianten CPU/8 GB RAM, groessere mit 8-16 GB VRAM |
-| Qwen Coder | Code, Datenblatt-Zusammenfassung, Tool-Use | 7B/14B je nach RAM/VRAM |
-| Llama | Planung, Review, Dokumentation | 3B/8B fuer lokale Basis, groesser fuer bessere Reviews |
-| CodeGemma | Embedded-Code und kleine lokale Coding-Aufgaben | gut fuer knappe Systeme |
-| StarCoder | Codegenerierung und Legacy-C/C++ | eher RAM-/VRAM-intensiv |
-| Phi | schnelle kleine Assistenten und Klassifikation | geeignet fuer MiniPC/CPU |
-| Gemma | kompakte Review- und Doku-Aufgaben | gut fuer lokale Basisprofile |
+| Modellfamilie  | Nutzen                                          | Hardware-Hinweis                                          |
+| -------------- | ----------------------------------------------- | --------------------------------------------------------- |
+| DeepSeek-Coder | Firmware, C/C++, Python, Verilog-Hilfe          | kleine Varianten CPU/8 GB RAM, groessere mit 8-16 GB VRAM |
+| Qwen Coder     | Code, Datenblatt-Zusammenfassung, Tool-Use      | 7B/14B je nach RAM/VRAM                                   |
+| Llama          | Planung, Review, Dokumentation                  | 3B/8B fuer lokale Basis, groesser fuer bessere Reviews    |
+| CodeGemma      | Embedded-Code und kleine lokale Coding-Aufgaben | gut fuer knappe Systeme                                   |
+| StarCoder      | Codegenerierung und Legacy-C/C++                | eher RAM-/VRAM-intensiv                                   |
+| Phi            | schnelle kleine Assistenten und Klassifikation  | geeignet fuer MiniPC/CPU                                  |
+| Gemma          | kompakte Review- und Doku-Aufgaben              | gut fuer lokale Basisprofile                              |
 
 ## OpenClaw Integration
 
@@ -85,7 +88,8 @@ flowchart LR
 
 ## Dashboard
 
-Das Dashboard soll im Darkmode-Cyberpunk/Hacker/Engineering-Stil mit orangefarbenen Akzenten arbeiten:
+Das Dashboard soll im Darkmode-Cyberpunk/Hacker/Engineering-Stil mit orangefarbenen Akzenten
+arbeiten:
 
 - Temperatur, Stromverbrauch, Sensorwerte und MQTT-Status.
 - Build-Status fuer Firmware, FPGA-Synthese und Simulation.
@@ -143,5 +147,6 @@ bash scripts/tools/electronics_dev_install.sh
 cp config/electronics.env.example .env.electronics
 ```
 
-Danach KiCad/FreeCAD lokal starten, einen Beispielprojektordner unter `~/Ultimate_KI_Setup/electronics/projects` anlegen und OpenClaw/Codex fuer Review- und Firmware-Aufgaben nutzen.
-
+Danach KiCad/FreeCAD lokal starten, einen Beispielprojektordner unter
+`~/Ultimate_KI_Setup/electronics/projects` anlegen und OpenClaw/Codex fuer Review- und
+Firmware-Aufgaben nutzen.

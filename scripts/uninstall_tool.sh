@@ -10,7 +10,7 @@ if [[ -z "$TOOL_ID" || "$TOOL_ID" == "--help" ]]; then
 fi
 
 DRY_RUN=0
-if [[ $# -gt 2 || ( $# -eq 2 && "$2" != "--dry-run" ) ]]; then
+if [[ $# -gt 2 || ($# -eq 2 && "$2" != "--dry-run") ]]; then
   echo "Fehler: Nur <tool_id> und optional --dry-run erlaubt." >&2
   exit 2
 fi
@@ -32,4 +32,3 @@ if [[ "$DRY_RUN" -eq 1 ]]; then
 fi
 
 bash "$SCRIPT"
-

@@ -16,7 +16,7 @@ fi
 
 mkdir -p "$MEMORY_DIR/daily" "$MEMORY_DIR/projects"
 
-cat > "$PERSONA_FILE" <<EOF
+cat >"$PERSONA_FILE" <<EOF
 {
   "id": "$PERSONA_ID",
   "name": "$PERSONA_NAME",
@@ -42,13 +42,13 @@ cat > "$PERSONA_FILE" <<EOF
 }
 EOF
 
-cat > "$MEMORY_DIR/MEMORY.md" <<EOF
+cat >"$MEMORY_DIR/MEMORY.md" <<EOF
 # ${PERSONA_NAME} Memory
 
 - Erste Erinnerungen folgen hier.
 EOF
 
-cat > "$MEMORY_DIR/DREAMS.md" <<'EOF'
+cat >"$MEMORY_DIR/DREAMS.md" <<'EOF'
 # Dreams
 
 - Zusammenfassungen und Verdichtungen.

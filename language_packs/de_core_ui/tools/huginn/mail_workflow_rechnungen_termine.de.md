@@ -65,7 +65,8 @@ Relevante Mails:
 
 ## Wichtiger Hinweis
 
-Die echten Feldnamen aus dem `IMAP Folder Agent` solltest du nach dem ersten Test immer auf der `Events`-Seite pruefen.
+Die echten Feldnamen aus dem `IMAP Folder Agent` solltest du nach dem ersten Test immer auf der
+`Events`-Seite pruefen.
 
 Typische Felder sind:
 

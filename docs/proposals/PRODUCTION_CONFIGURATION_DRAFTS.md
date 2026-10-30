@@ -1,10 +1,10 @@
 # Konfigurationsvorschlaege und Runbook
 
-Stand 23.10.2026. **Review-Vorlagen, keine neu installierten Dateien.**
-Bestehende Konfigurationen nicht ueberschreiben. Nach Freigabe in einem eigenen
-PR extrahieren, rendern, schema-validieren und im Wegwerfcluster testen.
-Echte Images/Digests, Secret-Zufuehrung, Storage-Klasse und Gateway-Konfiguration
-sind verbindliche Voraussetzungen. Diese Beispiele sind kein bereits getestetes Release.
+Stand 23.10.2026. **Review-Vorlagen, keine neu installierten Dateien.** Bestehende Konfigurationen
+nicht ueberschreiben. Nach Freigabe in einem eigenen PR extrahieren, rendern, schema-validieren und
+im Wegwerfcluster testen. Echte Images/Digests, Secret-Zufuehrung, Storage-Klasse und
+Gateway-Konfiguration sind verbindliche Voraussetzungen. Diese Beispiele sind kein bereits
+getestetes Release.
 
 [Bewertung und Phasen](PRODUCTION_BASELINE_2026-10-23.md).
 
@@ -23,26 +23,25 @@ OLLAMA_MODEL=
 CLOUD_FALLBACK_ENABLED=false
 ```
 
-| Variable | Anforderung |
-|---|---|
+| Variable                      | Anforderung                                                                                                                               |
+| ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
 | OLLAMA_IMAGE / OPENCLAW_IMAGE | Verifiziertes aus GitHub-Quelle gebautes Image, vollstaendig `registry/name@sha256:<64 Hexzeichen>`; kein geratener Digest, kein `latest` |
-| STORAGE_CLASS | Bestehende gepruefte Storage-Klasse mit passendem Restore-/Retain-Verfahren; kein implizites migrieren vorhandener PVCs |
-| PSS_VERSION | Zum Testcluster passende feste PSS-Minorversion, nicht ungeprueft `latest` |
-| PRIVATE_CLIENT_CIDR | Tatsaechlich geroutetes VPN-/Adminnetz, nicht automatisch 0.0.0.0/0 oder ::/0 |
-| OPENCLAW_TOKEN_SECRET | Vorab extern bereitgestellter Secretname mit nichtleerem Key `token`; kein Tokenwert in ENV/ConfigMap/Git |
-| OLLAMA_MODEL | Erst nach expliziter Modell-/Lizenz-/Speicherfreigabe konfigurieren; keine Modell-Downloads durch diese Vorlage |
-| CLOUD_FALLBACK_ENABLED | Vertrag fuer den spaeteren Renderer/Gateway-Adapter; nicht durch Setzen der Variable allein technisch durchgesetzt |
+| STORAGE_CLASS                 | Bestehende gepruefte Storage-Klasse mit passendem Restore-/Retain-Verfahren; kein implizites migrieren vorhandener PVCs                   |
+| PSS_VERSION                   | Zum Testcluster passende feste PSS-Minorversion, nicht ungeprueft `latest`                                                                |
+| PRIVATE_CLIENT_CIDR           | Tatsaechlich geroutetes VPN-/Adminnetz, nicht automatisch 0.0.0.0/0 oder ::/0                                                             |
+| OPENCLAW_TOKEN_SECRET         | Vorab extern bereitgestellter Secretname mit nichtleerem Key `token`; kein Tokenwert in ENV/ConfigMap/Git                                 |
+| OLLAMA_MODEL                  | Erst nach expliziter Modell-/Lizenz-/Speicherfreigabe konfigurieren; keine Modell-Downloads durch diese Vorlage                           |
+| CLOUD_FALLBACK_ENABLED        | Vertrag fuer den spaeteren Renderer/Gateway-Adapter; nicht durch Setzen der Variable allein technisch durchgesetzt                        |
 
-Vorlage nur mit einer **expliziten Allowlist** nichtgeheimer Variablen rendern.
-Kein pauschales `envsubst` ueber Secrets, NGINX-Konfiguration oder beliebige JSON-
-Variablen. Kubernetes expandiert diese Renderplatzhalter nicht automatisch.
-Renderer muss leere Werte, ungueltige Digests und offene Client-CIDRs vor Apply ablehnen.
-Bestehende Root-/LLMOps-ENV-Dateien bleiben unveraendert.
+Vorlage nur mit einer **expliziten Allowlist** nichtgeheimer Variablen rendern. Kein pauschales
+`envsubst` ueber Secrets, NGINX-Konfiguration oder beliebige JSON- Variablen. Kubernetes expandiert
+diese Renderplatzhalter nicht automatisch. Renderer muss leere Werte, ungueltige Digests und offene
+Client-CIDRs vor Apply ablehnen. Bestehende Root-/LLMOps-ENV-Dateien bleiben unveraendert.
 
 ## 2. Namespace, Budgets und ServiceAccount
 
-Vorgeschlagen: `deploy/ai-core/base/namespace.yaml` nach Rendering.
-Budgets sind Beispiele fuer eine kleine CPU-Baseline, nicht fuer beliebige Modelle.
+Vorgeschlagen: `deploy/ai-core/base/namespace.yaml` nach Rendering. Budgets sind Beispiele fuer eine
+kleine CPU-Baseline, nicht fuer beliebige Modelle.
 
 ```yaml
 apiVersion: v1
@@ -97,14 +96,14 @@ spec:
         ephemeral-storage: 1Gi
 ```
 
-Kein RoleBinding und keine Admin-Kubeconfig fuer normale AI-Pods. Der Account
-ohne API-Token ist kein Ersatz fuer Netz- und Tool-Policies.
+Kein RoleBinding und keine Admin-Kubeconfig fuer normale AI-Pods. Der Account ohne API-Token ist
+kein Ersatz fuer Netz- und Tool-Policies.
 
 ## 3. Ollama: eigener Pod, Modell-PVC und Probes
 
-Vorgeschlagen: `deploy/ai-core/base/ollama.yaml`.
-Image-Vertrag: Binary `ollama` ist fuer UID 10001 ausfuehrbar; Schreibpfade und
-PVC-Rechte vorab gegen das konkrete Image testen. Keine privilegierten Init-Chowns.
+Vorgeschlagen: `deploy/ai-core/base/ollama.yaml`. Image-Vertrag: Binary `ollama` ist fuer UID 10001
+ausfuehrbar; Schreibpfade und PVC-Rechte vorab gegen das konkrete Image testen. Keine privilegierten
+Init-Chowns.
 
 ```yaml
 apiVersion: v1
@@ -213,30 +212,28 @@ spec:
     - {name: api, port: 11434, targetPort: api}
 ```
 
-In-Pod-Listener auf allen Pod-Interfaces ist nicht gleich Host-/WAN-Publishing.
-Die folgende Policy begrenzt den Zugriff. `/api/tags` prueft nur API-Verfuegbarkeit,
-nicht Modell-/Inferenzfaehigkeit. Kein automatischer Pull oder Probe-Prompt.
-`Recreate` vermeidet parallele RWO-Nutzung, bedeutet aber Update-Downtime.
+In-Pod-Listener auf allen Pod-Interfaces ist nicht gleich Host-/WAN-Publishing. Die folgende Policy
+begrenzt den Zugriff. `/api/tags` prueft nur API-Verfuegbarkeit, nicht Modell-/Inferenzfaehigkeit.
+Kein automatischer Pull oder Probe-Prompt. `Recreate` vermeidet parallele RWO-Nutzung, bedeutet aber
+Update-Downtime.
 
-GPU-Overlay: zusaetzlich `limits.nvidia.com/gpu: 1`, passende Node-Affinity/
-Toleration und GPU-Quota setzen; NVIDIA Device Plugin und Runtime zuvor testen.
-Nicht blind auf einen CPU-/ARM-Node schedulen. 8 GiB Host-RAM sind kein
-VRAM-Budget; Modell und KV-Cache messen, GPU nicht mit ComfyUI ueberbuchen.
-PVC-Anforderung ist keine Garantie physisch freien Speichers. Bei WSL zusaetzlich
-den Windows-Host begrenzen/pruefen, bevor Modell- oder Builddaten geschrieben werden.
+GPU-Overlay: zusaetzlich `limits.nvidia.com/gpu: 1`, passende Node-Affinity/ Toleration und
+GPU-Quota setzen; NVIDIA Device Plugin und Runtime zuvor testen. Nicht blind auf einen CPU-/ARM-Node
+schedulen. 8 GiB Host-RAM sind kein VRAM-Budget; Modell und KV-Cache messen, GPU nicht mit ComfyUI
+ueberbuchen. PVC-Anforderung ist keine Garantie physisch freien Speichers. Bei WSL zusaetzlich den
+Windows-Host begrenzen/pruefen, bevor Modell- oder Builddaten geschrieben werden.
 
 ## 4. OpenClaw: eigener Workload mit verpflichtendem Secret
 
-Vorgeschlagen: `deploy/ai-core/base/openclaw.yaml`.
-Vorbedingung: ein passender Build aus freigegebenem GitHub-Pin unter `/app`,
-Node im PATH und die referenzierten Gateway-Flags/Health-Endpunkte dieser Version.
-Config-Schema des konkreten Pins pruefen. Kein Docker-Socket, Host-Pfad oder
-privater Benutzer-Workspace wird gemountet.
+Vorgeschlagen: `deploy/ai-core/base/openclaw.yaml`. Vorbedingung: ein passender Build aus
+freigegebenem GitHub-Pin unter `/app`, Node im PATH und die referenzierten
+Gateway-Flags/Health-Endpunkte dieser Version. Config-Schema des konkreten Pins pruefen. Kein
+Docker-Socket, Host-Pfad oder privater Benutzer-Workspace wird gemountet.
 
 Das Secret wird **nicht** mit Platzhalter-Token in Git angelegt. Secret-Manager/
-Sealed-Secrets-Prozess muss `${OPENCLAW_TOKEN_SECRET}` mit Key `token` vorab
-bereitstellen. Kubernetes Secrets sind ohne weitere Konfiguration nicht automatisch
-verschluesselt gespeichert. RBAC/Encryption-at-rest/Rotation gesondert absichern.
+Sealed-Secrets-Prozess muss `${OPENCLAW_TOKEN_SECRET}` mit Key `token` vorab bereitstellen.
+Kubernetes Secrets sind ohne weitere Konfiguration nicht automatisch verschluesselt gespeichert.
+RBAC/Encryption-at-rest/Rotation gesondert absichern.
 
 ```yaml
 apiVersion: v1
@@ -350,18 +347,17 @@ spec:
 ```
 
 Diese Minimalconfig ist bewusst **noch keine Modell-/Skill-/Channel-Konfiguration**.
-Ollama-Provider, vorhandene Modell-ID und Tool-Allowlist muessen schema-konform
-ergaenzt und negativ getestet werden. Keine pauschale Shell-Freigabe fuer Agenten.
-Readiness ist keine Freigabe fuer beliebige Skills oder reale Haus-/Finanzaktionen.
-Keine Cloud-Keys/Provider in dieser Vorlage. Token als Secret-Env ist besser als
-Args/ConfigMap, aber immer noch fuer entsprechend berechtigte Prozesse/Administratoren
-lesbar; SecretRef-/Credential-Mechanismen je nach Pin bevorzugen.
+Ollama-Provider, vorhandene Modell-ID und Tool-Allowlist muessen schema-konform ergaenzt und negativ
+getestet werden. Keine pauschale Shell-Freigabe fuer Agenten. Readiness ist keine Freigabe fuer
+beliebige Skills oder reale Haus-/Finanzaktionen. Keine Cloud-Keys/Provider in dieser Vorlage. Token
+als Secret-Env ist besser als Args/ConfigMap, aber immer noch fuer entsprechend berechtigte
+Prozesse/Administratoren lesbar; SecretRef-/Credential-Mechanismen je nach Pin bevorzugen.
 
 ## 5. Default-Deny und explizite Pfade
 
-Vorgeschlagen: `deploy/ai-core/base/network-policy.yaml`.
-DNS-Labels/CNI muessen am Ziel geprueft werden; NodeLocal DNS braucht ggf. eigene
-Regeln. Ein CNI ohne Policy-Durchsetzung macht diese Objekte wirkungslos.
+Vorgeschlagen: `deploy/ai-core/base/network-policy.yaml`. DNS-Labels/CNI muessen am Ziel geprueft
+werden; NodeLocal DNS braucht ggf. eigene Regeln. Ein CNI ohne Policy-Durchsetzung macht diese
+Objekte wirkungslos.
 
 ```yaml
 apiVersion: networking.k8s.io/v1
@@ -432,18 +428,17 @@ spec:
         - {protocol: TCP, port: 18789}
 ```
 
-Ollama bekommt absichtlich keinen Internet-Egress. Modelle ueber einen eigenen
-freigegebenen Ingest-Job laden, nicht den Inferenzpod generell oeffnen.
-Der separate Proxy-Workload in `ingress-system` ist Voraussetzung und braucht
-seinerseits Egress nur zum Gateway, eigene Probes/Limits und eine Management-
-Ingressregel fuer `${PRIVATE_CLIENT_CIDR}`. Diese Regeln erzeugen ihn nicht.
-Kubelet-Probes/Hostverkehr und Reverse-Proxy-SNAT am konkreten CNI testen.
-Keine behauptete Ende-zu-Ende-Verbindung ohne diesen Test.
+Ollama bekommt absichtlich keinen Internet-Egress. Modelle ueber einen eigenen freigegebenen
+Ingest-Job laden, nicht den Inferenzpod generell oeffnen. Der separate Proxy-Workload in
+`ingress-system` ist Voraussetzung und braucht seinerseits Egress nur zum Gateway, eigene
+Probes/Limits und eine Management- Ingressregel fuer `${PRIVATE_CLIENT_CIDR}`. Diese Regeln erzeugen
+ihn nicht. Kubelet-Probes/Hostverkehr und Reverse-Proxy-SNAT am konkreten CNI testen. Keine
+behauptete Ende-zu-Ende-Verbindung ohne diesen Test.
 
 ## 6. Separater Reverse Proxy mit TLS, mTLS und Rate Limit
 
-Vorgeschlagen: ConfigMap fuer einen **eigenen** nichtprivilegierten NGINX-Workload
-in `ingress-system`, kein Sidecar mit Hostzugriff. Hier nur dessen Konfiguration;
+Vorgeschlagen: ConfigMap fuer einen **eigenen** nichtprivilegierten NGINX-Workload in
+`ingress-system`, kein Sidecar mit Hostzugriff. Hier nur dessen Konfiguration;
 Deployment/Secret-Mounts sind Teil des spaeteren Ingress-PRs.
 
 ```nginx
@@ -486,24 +481,23 @@ http {
 }
 ```
 
-TLS-/Client-CA-Dateien ausschliesslich aus extern verwalteten Secrets mounten.
-Root-FS read-only, `/tmp` begrenzt beschreibbar, Capabilities droppen und kein
-NodePort/oeffentlicher LoadBalancer als Default. mTLS bedeutet neue Client-
-Zertifikate und ist ein **Breaking Change**, nicht automatisch browserkompatibel.
-Alternativ bewusst OIDC/Auth-Proxy waehlen, nicht Auth entfernen.
-Gateway-Token bleibt zusaetzlich erforderlich. Trusted-Proxy-/Origin-Regeln am
-konkreten OpenClaw-Pin setzen. HTTP-Rate-Limits begrenzen nicht jede Nachricht
-eines bereits geoeffneten WebSockets; app-seitige Session-/Kostenlimits bleiben noetig.
-Das Accesslog-Format enthaelt absichtlich weder URI, Querystring noch Header.
-Fehler-/Anwendungslogs trotzdem separat redigieren; keine Debug-Dumps aktivieren.
+TLS-/Client-CA-Dateien ausschliesslich aus extern verwalteten Secrets mounten. Root-FS read-only,
+`/tmp` begrenzt beschreibbar, Capabilities droppen und kein NodePort/oeffentlicher LoadBalancer als
+Default. mTLS bedeutet neue Client- Zertifikate und ist ein **Breaking Change**, nicht automatisch
+browserkompatibel. Alternativ bewusst OIDC/Auth-Proxy waehlen, nicht Auth entfernen. Gateway-Token
+bleibt zusaetzlich erforderlich. Trusted-Proxy-/Origin-Regeln am konkreten OpenClaw-Pin setzen.
+HTTP-Rate-Limits begrenzen nicht jede Nachricht eines bereits geoeffneten WebSockets; app-seitige
+Session-/Kostenlimits bleiben noetig. Das Accesslog-Format enthaelt absichtlich weder URI,
+Querystring noch Header. Fehler-/Anwendungslogs trotzdem separat redigieren; keine Debug-Dumps
+aktivieren.
 
 ## 7. Native systemd-Alternative fuer OpenClaw
 
-Alternative zum Gateway-Pod, **nicht gleichzeitig denselben Zustand starten**.
-Dedizierten Systembenutzer `openclaw` mit nologin zuerst ueber die Hostrolle anlegen.
-Der Unit-Entwurf erwartet ein gepinntes Release unter `/opt/openclaw/current`,
-eine kompatible private Node-Runtime sowie validierte Konfiguration unter
-`/etc/openclaw`. Keinen bestehenden User-Workspace mounten oder umziehen.
+Alternative zum Gateway-Pod, **nicht gleichzeitig denselben Zustand starten**. Dedizierten
+Systembenutzer `openclaw` mit nologin zuerst ueber die Hostrolle anlegen. Der Unit-Entwurf erwartet
+ein gepinntes Release unter `/opt/openclaw/current`, eine kompatible private Node-Runtime sowie
+validierte Konfiguration unter `/etc/openclaw`. Keinen bestehenden User-Workspace mounten oder
+umziehen.
 
 ```ini
 [Unit]
@@ -560,11 +554,11 @@ exec /opt/openclaw/current/runtime/bin/node \
   --bind loopback --auth token --port 18789
 ```
 
-LoadCredential schuetzt den Transport zum Dienst, verschluesselt die Quelldatei
-aber nicht automatisch auf Disk. Rechte, Recovery-Key und ggf. verschluesselte
-Credentials gesondert verwalten. Unit ist keine vollstaendige Exec-/Egress-Sandbox;
-Host-Firewall und OpenClaw-Toolpolicy zusaetzlich testen. Native Gateway->Ollama-
-Adresse muss zum gewaehlten Host-/VPN-/Kubernetes-Pfad passen, nicht blind localhost.
+LoadCredential schuetzt den Transport zum Dienst, verschluesselt die Quelldatei aber nicht
+automatisch auf Disk. Rechte, Recovery-Key und ggf. verschluesselte Credentials gesondert verwalten.
+Unit ist keine vollstaendige Exec-/Egress-Sandbox; Host-Firewall und OpenClaw-Toolpolicy zusaetzlich
+testen. Native Gateway->Ollama- Adresse muss zum gewaehlten Host-/VPN-/Kubernetes-Pfad passen, nicht
+blind localhost.
 
 ## 8. Host-Firewall, SSH und Updates
 
@@ -580,13 +574,12 @@ ufw allow 443/tcp
 ufw status verbose
 ```
 
-Keine implizite Freigabe fuer 11434, 18789, 6333, 8123 oder Datenbanken.
-443 nur, wenn tatsaechlich ein beabsichtigter TLS-/Auth-Proxy dort sitzt.
-Vor Enable/Reload: Interface/Port, IPv6, Provider-Firewall, zweite Admin-Sitzung
-und Rettungskonsole pruefen. Alte Freigaben separat inventarisieren; obige Befehle
-entfernen sie nicht. Kein `ufw reset`. Auf K3s-Hosts CNI-/Forwardingregeln nicht
-blind sperren. Docker-Publishing kann UFW umgehen; externen IPv4-/IPv6-Porttest
-gegen eigene freigegebene Hosts als Abnahme vorsehen.
+Keine implizite Freigabe fuer 11434, 18789, 6333, 8123 oder Datenbanken. 443 nur, wenn tatsaechlich
+ein beabsichtigter TLS-/Auth-Proxy dort sitzt. Vor Enable/Reload: Interface/Port, IPv6,
+Provider-Firewall, zweite Admin-Sitzung und Rettungskonsole pruefen. Alte Freigaben separat
+inventarisieren; obige Befehle entfernen sie nicht. Kein `ufw reset`. Auf K3s-Hosts
+CNI-/Forwardingregeln nicht blind sperren. Docker-Publishing kann UFW umgehen; externen
+IPv4-/IPv6-Porttest gegen eigene freigegebene Hosts als Abnahme vorsehen.
 
 Vorgeschlagener SSH-Drop-in nach erfolgreichem Key-/Sudo-Test des Adminbenutzers:
 
@@ -597,11 +590,11 @@ KbdInteractiveAuthentication no
 PubkeyAuthentication yes
 ```
 
-`sshd -t` und effektive Konfiguration vor Reload pruefen. Lockout ist Breaking
-Change. Fail2ban-SSHD-Jail mit systemd-Backend nur auf vorhandene Logs abstimmen;
-keine pauschalen NGINX-Jails ohne passende Logquelle aktivieren.
-Security-Updates fuer Ubuntu nach geprueften Origins/Release einrichten, aber
-keinen automatischen Reboot des GPU-/Control-Hosts ohne Wartungsfenster.
+`sshd -t` und effektive Konfiguration vor Reload pruefen. Lockout ist Breaking Change.
+Fail2ban-SSHD-Jail mit systemd-Backend nur auf vorhandene Logs abstimmen; keine pauschalen
+NGINX-Jails ohne passende Logquelle aktivieren. Security-Updates fuer Ubuntu nach geprueften
+Origins/Release einrichten, aber keinen automatischen Reboot des GPU-/Control-Hosts ohne
+Wartungsfenster.
 
 ```text
 APT::Periodic::Update-Package-Lists "1";
@@ -630,13 +623,12 @@ scrape_configs:
       - targets: [ai-metrics.monitoring.svc.cluster.local:9108]
 ```
 
-Exporter/Namespace/DNS/Policy muessen existieren. `ai-metrics` ist ein
-**vorgeschlagener eigener Adapter**, kein behaupteter Ollama-/OpenClaw-Endpunkt.
-CPU/RAM/Disk ueber node-exporter, Pod-Restarts ueber kube-state-metrics,
-Gateway-Verfuegbarkeit ueber authentifizierungsbewusste Healthchecks sammeln.
-Ollama-Latenz/TTFT im Gateway oder Adapter instrumentieren; keine automatische
-Inferenz nur fuer einen als read-only beworbenen Doctor. Keine User-/Prompt-/
-Tokenwerte als Labels. Log-Retention und Collector-Speicherbudgets festlegen.
+Exporter/Namespace/DNS/Policy muessen existieren. `ai-metrics` ist ein **vorgeschlagener eigener
+Adapter**, kein behaupteter Ollama-/OpenClaw-Endpunkt. CPU/RAM/Disk ueber node-exporter,
+Pod-Restarts ueber kube-state-metrics, Gateway-Verfuegbarkeit ueber authentifizierungsbewusste
+Healthchecks sammeln. Ollama-Latenz/TTFT im Gateway oder Adapter instrumentieren; keine automatische
+Inferenz nur fuer einen als read-only beworbenen Doctor. Keine User-/Prompt-/ Tokenwerte als Labels.
+Log-Retention und Collector-Speicherbudgets festlegen.
 
 Vorgeschlagene Regeln, Adapter-Metriken sind erst zu implementieren:
 
@@ -668,18 +660,17 @@ groups:
         labels: {severity: warning}
 ```
 
-Es fehlen in diesem Entwurf noch Alertmanager-Routing/Empfaengerfreigabe,
-regelbasierte Ausnahmen fuer schlafende GPU-Nodes und ein Testalarm. Keine
-automatischen E-Mails/Pushes. Latenz-Schwellen nach Modell/Hardware/SLO messen,
-nicht einen beliebigen universellen Sekundenwert als Produktionsgarantie ausgeben.
+Es fehlen in diesem Entwurf noch Alertmanager-Routing/Empfaengerfreigabe, regelbasierte Ausnahmen
+fuer schlafende GPU-Nodes und ein Testalarm. Keine automatischen E-Mails/Pushes. Latenz-Schwellen
+nach Modell/Hardware/SLO messen, nicht einen beliebigen universellen Sekundenwert als
+Produktionsgarantie ausgeben.
 
 ## 10. Backup-Konfiguration und Restore
 
-Vorgeschlagener Restic-Runner sichert **nur bereits konsistent bereitgestellte
-Exporte**. Er ersetzt weder K3s-Datastore-Backup noch PVC-Snapshot/DB-Dump.
-Ein Export-Producer muss das Staging nach erfolgreicher Pruefung atomar publizieren;
-keine parallelen Schreibzugriffe waehrend der Sicherung. Quelle/Owner/Manifest,
-Frische und erwartete Pflichtartefakte vor jedem Lauf verifizieren.
+Vorgeschlagener Restic-Runner sichert **nur bereits konsistent bereitgestellte Exporte**. Er ersetzt
+weder K3s-Datastore-Backup noch PVC-Snapshot/DB-Dump. Ein Export-Producer muss das Staging nach
+erfolgreicher Pruefung atomar publizieren; keine parallelen Schreibzugriffe waehrend der Sicherung.
+Quelle/Owner/Manifest, Frische und erwartete Pflichtartefakte vor jedem Lauf verifizieren.
 
 ```sh
 #!/bin/sh
@@ -699,11 +690,11 @@ restic check
 ```
 
 Der gezeigte Runner ist der Sicherungsschritt, nicht der noch fehlende Manifest-
-Validator/Export-Producer. Ein vorhandenes Manifest allein beweist keine Konsistenz.
-Vor Aktivierung deshalb Pflicht: nativen OpenClaw-Export mit zum Pin passender
-Verify-Funktion, DB-Konsistenz, PVC-/Datastore-Exporte, RPO/RTO, Zielzugriff,
-Recovery-Key und Erfolg-/Fehler-Metrik implementieren. Kein `forget --prune` als
-Default; kein Repo-/Workspace-rsync trotz Fehler als erfolgreich markieren.
+Validator/Export-Producer. Ein vorhandenes Manifest allein beweist keine Konsistenz. Vor Aktivierung
+deshalb Pflicht: nativen OpenClaw-Export mit zum Pin passender Verify-Funktion, DB-Konsistenz,
+PVC-/Datastore-Exporte, RPO/RTO, Zielzugriff, Recovery-Key und Erfolg-/Fehler-Metrik implementieren.
+Kein `forget --prune` als Default; kein Repo-/Workspace-rsync trotz Fehler als erfolgreich
+markieren.
 
 Vorgeschlagener Timer erst nach diesen Voraussetzungen, ohne Install/Enable:
 
@@ -721,11 +712,10 @@ Unit=ai-backup.service
 WantedBy=timers.target
 ```
 
-Vorgeschlagene zugehoerige Service-Unit; Benutzer und gezielte Leserechte auf
-freigegebene Exporte zuvor ueber Hostrolle bereitstellen. `ReadOnlyPaths` erteilt
-keine fehlenden Dateirechte. `repository.env` enthaelt nur die Repository-Adresse,
-keine in die URL eingebetteten Zugangsdaten. Backend-Auth, falls erforderlich,
-separat ueber Credentials anbinden, nicht im Beispiel erfinden.
+Vorgeschlagene zugehoerige Service-Unit; Benutzer und gezielte Leserechte auf freigegebene Exporte
+zuvor ueber Hostrolle bereitstellen. `ReadOnlyPaths` erteilt keine fehlenden Dateirechte.
+`repository.env` enthaelt nur die Repository-Adresse, keine in die URL eingebetteten Zugangsdaten.
+Backend-Auth, falls erforderlich, separat ueber Credentials anbinden, nicht im Beispiel erfinden.
 
 ```ini
 [Unit]
@@ -757,51 +747,48 @@ CPUQuota=50%
 TimeoutStartSec=2h
 ```
 
-Kein automatischer Root-Zugriff auf den persoenlichen User-Workspace.
-Ausserhalb der Sicherung verwahrte Recovery-Keys sind erforderlich.
+Kein automatischer Root-Zugriff auf den persoenlichen User-Workspace. Ausserhalb der Sicherung
+verwahrte Recovery-Keys sind erforderlich.
 
-Restore-Prozess: frisches isoliertes Ziel -> Archiv-/Hash-/DB-Integritaet pruefen
--> Restic-Snapshot in frisches Verzeichnis wiederherstellen -> Datenbank/State
-gegen kompatible Version laden -> Rechte und Tests -> erst dann expliziter
-Umschaltplan. Kein In-place-Restore ueber produktive Volumes.
-Monatlichen Restore-Test separat freigeben; es wurde kein Timer angelegt.
-Modelle standardmaessig ueber Version/Digest/Quelle/Lizenz und Modelfiles
-inventarisieren; Gewichte bei Bedarf gezielt sichern, nicht jeden Cache replizieren.
+Restore-Prozess: frisches isoliertes Ziel -> Archiv-/Hash-/DB-Integritaet pruefen -> Restic-Snapshot
+in frisches Verzeichnis wiederherstellen -> Datenbank/State gegen kompatible Version laden -> Rechte
+und Tests -> erst dann expliziter Umschaltplan. Kein In-place-Restore ueber produktive Volumes.
+Monatlichen Restore-Test separat freigeben; es wurde kein Timer angelegt. Modelle standardmaessig
+ueber Version/Digest/Quelle/Lizenz und Modelfiles inventarisieren; Gewichte bei Bedarf gezielt
+sichern, nicht jeden Cache replizieren.
 
 ## 11. Runbook nach Freigabe und Deployment
 
-| Aktion | Kubernetes-Pfad | Native Alternative / Vorsicht |
-|---|---|---|
-| Start | Gerenderte gepruefte Version anwenden, Events/Probes beobachten | Vorgeschlagene Unit nach Test gezielt starten; kein Doppelbetrieb auf demselben Zustand |
-| Stop | Erst Sessions/Jobs drainen, dann Deployment skalieren; PVC behalten | Dienst stoppen, Workspaces nicht deinstallieren |
-| Update | Backup/Restore pruefen, Digest aendern, neue Config schema-validieren, Rollout beobachten | Verifiziertes Release neben altem installieren, erst nach Test umschalten; kein Hard-Sync |
-| Logs | Nur benoetigte Pod-/Event-Metadaten, vor Weitergabe redigieren | journalctl begrenzt nach Unit/Zeit; keine ENV-/Token-/Prompt-Dumps |
-| Modellwechsel | Gesonderter erlaubter Ingest, kompatible Modell-ID konfigurieren, Speicher und Antwort testen | Dasselbe Verfahren; Probe ist echter Ressourcenverbrauch, kein read-only Check |
+| Aktion            | Kubernetes-Pfad                                                                                       | Native Alternative / Vorsicht                                                              |
+| ----------------- | ----------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| Start             | Gerenderte gepruefte Version anwenden, Events/Probes beobachten                                       | Vorgeschlagene Unit nach Test gezielt starten; kein Doppelbetrieb auf demselben Zustand    |
+| Stop              | Erst Sessions/Jobs drainen, dann Deployment skalieren; PVC behalten                                   | Dienst stoppen, Workspaces nicht deinstallieren                                            |
+| Update            | Backup/Restore pruefen, Digest aendern, neue Config schema-validieren, Rollout beobachten             | Verifiziertes Release neben altem installieren, erst nach Test umschalten; kein Hard-Sync  |
+| Logs              | Nur benoetigte Pod-/Event-Metadaten, vor Weitergabe redigieren                                        | journalctl begrenzt nach Unit/Zeit; keine ENV-/Token-/Prompt-Dumps                         |
+| Modellwechsel     | Gesonderter erlaubter Ingest, kompatible Modell-ID konfigurieren, Speicher und Antwort testen         | Dasselbe Verfahren; Probe ist echter Ressourcenverbrauch, kein read-only Check             |
 | Disaster Recovery | Frischer Cluster/Namespace, Datastore/Token und Volumes nach dokumentierter Reihenfolge, dann Gateway | Frischer Host/Release, Geheimnisse aus geschuetzter Recovery, Restore nie ueber Live-State |
 
-PDB absichtlich nicht als Schein-HA fuer die Einzelinstanz hinzugefuegt. Erst bei
-getestetem Multi-Replik-/Storage-/Sessionkonzept z.B. `minAvailable: 1` fuer zwei
-wirklich unabhaengig betriebsfaehige Gateways; das ist fuer RWO-/SQLite-State
-keine sichere blinde Skalierung.
+PDB absichtlich nicht als Schein-HA fuer die Einzelinstanz hinzugefuegt. Erst bei getestetem
+Multi-Replik-/Storage-/Sessionkonzept z.B. `minAvailable: 1` fuer zwei wirklich unabhaengig
+betriebsfaehige Gateways; das ist fuer RWO-/SQLite-State keine sichere blinde Skalierung.
 
 ## Quellen und Validierungsgrenzen
 
-Am 23.10.2026 gelesen:
-[OpenClaw Gateway CLI](https://docs.openclaw.ai/cli/gateway),
+Am 23.10.2026 gelesen: [OpenClaw Gateway CLI](https://docs.openclaw.ai/cli/gateway),
 [Health-Endpunkte](https://docs.openclaw.ai/gateway/health),
 [Config-Schema](https://docs.openclaw.ai/gateway/configuration-reference),
-[Docker-Netze](https://docs.docker.com/reference/compose-file/networks/).
-Live-Schema des konkreten gebauten Pins hat Vorrang vor beweglicher Web-Doku.
-Keine Modell-/Auth-/Cluster-Abfragen wurden ausgefuehrt.
+[Docker-Netze](https://docs.docker.com/reference/compose-file/networks/). Live-Schema des konkreten
+gebauten Pins hat Vorrang vor beweglicher Web-Doku. Keine Modell-/Auth-/Cluster-Abfragen wurden
+ausgefuehrt.
 
 Noch offen: echte Image-Pins, reproduzierbarer Build, OpenClaw-Modell-/Toolpolicy,
-Proxy-Deployment/TLS-Secrets, gesamte CNI-Kommunikationsmatrix, API-Schemavalidierung,
-Probe- und Rechte-Tests sowie Export-/Restore-Producer. Codebeispiele sind kein
-Beweis, dass diese Integrationen bereits vorhanden oder produktionsreif sind.
+Proxy-Deployment/TLS-Secrets, gesamte CNI-Kommunikationsmatrix, API-Schemavalidierung, Probe- und
+Rechte-Tests sowie Export-/Restore-Producer. Codebeispiele sind kein Beweis, dass diese
+Integrationen bereits vorhanden oder produktionsreif sind.
 
-Statische Dokumentpruefung dieses Vorschlagspakets: drei Dokumente, 31 lokale
-Dateiverweise vorhanden, 17 geschlossene Codebloecke; drei Shell-Bloecke mit nativer
-Git-Bash `-n` ohne Ausfuehrung syntaxgeprueft. Kein YAML-Parser im verwendeten
-Python-/Node-Pruefkontext verfuegbar, nichts nachinstalliert. YAML/API-Schema,
-systemd/NGINX/Prometheus-Konfiguration und Mermaid-Rendering sind hier nicht
-funktional validiert. Keine Deploy-/Probe-/Backup-Befehle aus den Beispielen ausgefuehrt.
+Statische Dokumentpruefung dieses Vorschlagspakets: drei Dokumente, 31 lokale Dateiverweise
+vorhanden, 17 geschlossene Codebloecke; drei Shell-Bloecke mit nativer Git-Bash `-n` ohne
+Ausfuehrung syntaxgeprueft. Kein YAML-Parser im verwendeten Python-/Node-Pruefkontext verfuegbar,
+nichts nachinstalliert. YAML/API-Schema, systemd/NGINX/Prometheus-Konfiguration und
+Mermaid-Rendering sind hier nicht funktional validiert. Keine Deploy-/Probe-/Backup-Befehle aus den
+Beispielen ausgefuehrt.

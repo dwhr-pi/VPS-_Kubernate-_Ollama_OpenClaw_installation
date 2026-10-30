@@ -2,8 +2,9 @@
 
 ## Überblick
 
-Dieses Profil wurde aus der fachlichen Quelle [Audio.doc.md](../Profil/Audio.doc.md), `readme.md` und den vorhandenen Tool-Skripten zusammengeführt.
-Es beschreibt ein OpenClaw- und Ollama-kompatibles Audioprofil für Transkription, Sprachverarbeitung und Audio-Bereinigung.
+Dieses Profil wurde aus der fachlichen Quelle [Audio.doc.md](../Profil/Audio.doc.md), `readme.md`
+und den vorhandenen Tool-Skripten zusammengeführt. Es beschreibt ein OpenClaw- und
+Ollama-kompatibles Audioprofil für Transkription, Sprachverarbeitung und Audio-Bereinigung.
 
 ## Installierter Stack
 
@@ -18,7 +19,8 @@ Es beschreibt ein OpenClaw- und Ollama-kompatibles Audioprofil für Transkriptio
 
 ## Dokumentierte zusätzliche Tools
 
-Aktuell sind die Kernwerkzeuge plus das zusätzliche Laufzeitmodul `Voice_Assistant_Runtime` als installierbare Bausteine abgedeckt.
+Aktuell sind die Kernwerkzeuge plus das zusätzliche Laufzeitmodul `Voice_Assistant_Runtime` als
+installierbare Bausteine abgedeckt.
 
 ## Verantwortlichkeiten
 
@@ -59,7 +61,8 @@ Nutze FFmpeg für Konvertierung und Cleanup und gib die empfohlenen Verarbeitung
 - Dieses Profil passt gut zu OpenClaw für Audio-Pipelines und Vorverarbeitung.
 - `Whisper` deckt Speech-to-Text ab.
 - `FFmpeg`, `librosa` und `pydub` ergänzen Analyse und Cleanup.
-- Mit `Piper` und `Coqui_TTS` ist jetzt auch die dokumentierte TTS-Seite als installierbarer Baustein vorhanden.
+- Mit `Piper` und `Coqui_TTS` ist jetzt auch die dokumentierte TTS-Seite als installierbarer
+  Baustein vorhanden.
 
 ## Vergleich
 
@@ -71,7 +74,8 @@ Nutze FFmpeg für Konvertierung und Cleanup und gib die empfohlenen Verarbeitung
 
 ### ⚠ Missing in Setup
 
-- Das zuvor fehlende Voice-Assistant-Laufzeitprofil ist jetzt als `Voice_Assistant_Runtime` im Setup vorhanden.
+- Das zuvor fehlende Voice-Assistant-Laufzeitprofil ist jetzt als `Voice_Assistant_Runtime` im Setup
+  vorhanden.
 
 ### ❌ Missing in Docs
 
@@ -79,4 +83,5 @@ Nutze FFmpeg für Konvertierung und Cleanup und gib die empfohlenen Verarbeitung
 
 ## Hinweise
 
-- Das Profil ist aktuell stark bei Transkription und Nachbearbeitung, aber noch nicht vollständig bei TTS.
+- Das Profil ist aktuell stark bei Transkription und Nachbearbeitung, aber noch nicht vollständig
+  bei TTS.

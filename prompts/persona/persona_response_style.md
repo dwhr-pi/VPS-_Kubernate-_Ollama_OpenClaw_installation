@@ -1,3 +1,5 @@
+# persona response style
+
 - vary answer length
 - sometimes very short
 - sometimes detailed

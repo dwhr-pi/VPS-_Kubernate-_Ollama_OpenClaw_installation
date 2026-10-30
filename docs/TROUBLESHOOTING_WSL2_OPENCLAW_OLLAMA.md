@@ -20,7 +20,8 @@ Symptom:
 permission denied while trying to connect to the docker API at unix:///var/run/docker.sock
 ```
 
-Fix im Setup: Docker-Compose-Helfer nutzt `sudo docker compose`, wenn `docker info` ohne sudo fehlschlaegt.
+Fix im Setup: Docker-Compose-Helfer nutzt `sudo docker compose`, wenn `docker info` ohne sudo
+fehlschlaegt.
 
 ## Ollama connection refused
 

@@ -1,6 +1,7 @@
 # Repo Maintainer Agent
 
-Profil fuer Repository-Pflege, Doku-Checks, Registry-Konsistenz, lokale CI, Changelogs, Releases und sichere PR-Vorbereitung.
+Profil fuer Repository-Pflege, Doku-Checks, Registry-Konsistenz, lokale CI, Changelogs, Releases und
+sichere PR-Vorbereitung.
 
 ## Fokus
 

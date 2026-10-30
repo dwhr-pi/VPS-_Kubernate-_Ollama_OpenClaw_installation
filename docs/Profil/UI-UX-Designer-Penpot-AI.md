@@ -2,7 +2,9 @@
 
 ## Zweck des Profils
 
-Dieses Profil beschreibt einen optionalen Design- und Prototyping-Pfad fuer dieses Repository. Penpot dient hier nicht als Ersatz fuer `Ollama`, `OpenClaw` oder `Codex`, sondern als visuelle Oberflaeche fuer:
+Dieses Profil beschreibt einen optionalen Design- und Prototyping-Pfad fuer dieses Repository.
+Penpot dient hier nicht als Ersatz fuer `Ollama`, `OpenClaw` oder `Codex`, sondern als visuelle
+Oberflaeche fuer:
 
 - UI/UX-Design
 - klickbare Prototypen
@@ -11,7 +13,8 @@ Dieses Profil beschreibt einen optionalen Design- und Prototyping-Pfad fuer dies
 - SVG-, CSS- und HTML-nahe Handoffs
 - AI-gestuetzte Design-to-Code-Workflows
 
-Penpot ist besonders passend fuer dieses Setup, weil es self-hostbar, Open Source und stark auf Zusammenarbeit zwischen Design und Entwicklung ausgerichtet ist.
+Penpot ist besonders passend fuer dieses Setup, weil es self-hostbar, Open Source und stark auf
+Zusammenarbeit zwischen Design und Entwicklung ausgerichtet ist.
 
 ## Geeignete Einsatzgebiete
 
@@ -55,12 +58,15 @@ Der Setup-Pfad installiert dabei standardmaessig:
 Wichtig:
 
 - Penpot wird im Setup standardmaessig nur an `127.0.0.1` gebunden
-- fuer dieses Repository wird standardmaessig `9011` statt `9001` genutzt, um Kollisionen mit MinIO zu vermeiden
-- `PENPOT_PUBLIC_URI` muss angepasst werden, wenn du Penpot ueber Reverse Proxy, Cloudflare Tunnel oder Tailscale veroeffentlichen willst
+- fuer dieses Repository wird standardmaessig `9011` statt `9001` genutzt, um Kollisionen mit MinIO
+  zu vermeiden
+- `PENPOT_PUBLIC_URI` muss angepasst werden, wenn du Penpot ueber Reverse Proxy, Cloudflare Tunnel
+  oder Tailscale veroeffentlichen willst
 
 ## MCP-Anbindung an OpenClaw, Codex und Ollama
 
-Penpot besitzt einen offiziellen MCP-Server. Damit koennen AI-Agenten Penpot-Dateien kontextbezogen lesen, analysieren und veraendern.
+Penpot besitzt einen offiziellen MCP-Server. Damit koennen AI-Agenten Penpot-Dateien kontextbezogen
+lesen, analysieren und veraendern.
 
 In diesem Setup ist die Idee:
 
@@ -73,7 +79,8 @@ Wichtig:
 
 - Penpot ersetzt das LLM nicht
 - das LLM ersetzt Penpot nicht
-- zusammen ergaenzen sie sich: visuelles Design plus KI-gestuetzte Analyse, Generierung und Transformation
+- zusammen ergaenzen sie sich: visuelles Design plus KI-gestuetzte Analyse, Generierung und
+  Transformation
 
 Fuer Details siehe:
 
@@ -85,14 +92,17 @@ Sicherheit:
 
 - Penpot standardmaessig nur lokal oder im privaten Netz betreiben
 - MCP, Plugin-Server und Web-UI nicht offen ins Internet stellen
-- bei externer Nutzung zuerst Reverse Proxy, Auth, Tailscale oder bewusst konfigurierte Tunnel einsetzen
+- bei externer Nutzung zuerst Reverse Proxy, Auth, Tailscale oder bewusst konfigurierte Tunnel
+  einsetzen
 - `PENPOT_SECRET_KEY` nie hart codieren oder in Git speichern
 
 Ressourcen:
 
-- kleine bis mittlere Self-Hosted-Instanzen sollten mindestens mehrere GB RAM und freien SSD-Speicher einplanen
+- kleine bis mittlere Self-Hosted-Instanzen sollten mindestens mehrere GB RAM und freien
+  SSD-Speicher einplanen
 - Exporte, Assets und Vorschaudaten wachsen mit der Zeit
-- mehrere parallele Nutzer, grosse Bilddaten oder groessere Design-Systeme erhoehen den Ressourcenbedarf deutlich
+- mehrere parallele Nutzer, grosse Bilddaten oder groessere Design-Systeme erhoehen den
+  Ressourcenbedarf deutlich
 
 ## Beispielprompts fuer die Nutzung
 
@@ -116,8 +126,10 @@ Exportiere aus dem Design sinnvolle CSS-Variablen und Design Tokens.
 
 - Penpot ist kein Ersatz fuer ein LLM oder einen Agenten-Orchestrator
 - MCP-gestuetzte Designaenderungen brauchen zusaetzliche Betriebs- und Sicherheitsdisziplin
-- komplexe Produktionsfreigaben, Multi-User-MCP und Internet-Exposition sollten erst spaeter bewusst aufgebaut werden
-- Penpot erstellt keine fertige Anwendung von allein; Design, Review und Entwicklerabnahme bleiben wichtig
+- komplexe Produktionsfreigaben, Multi-User-MCP und Internet-Exposition sollten erst spaeter bewusst
+  aufgebaut werden
+- Penpot erstellt keine fertige Anwendung von allein; Design, Review und Entwicklerabnahme bleiben
+  wichtig
 
 ## Praktische Empfehlung
 

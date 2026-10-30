@@ -2,8 +2,11 @@
 
 ## Überblick
 
-Dieses Profil wurde aus der fachlichen Quelle [Texter_Werbung_Marketing.doc.md](../Profil/Texter_Werbung_Marketing.doc.md), `readme.md`, `docs/setup_guide.md` und `scripts/profiles/Texter_Werbung_Marketing_install.sh` zusammengeführt.
-Es beschreibt ein OpenClaw- und Ollama-kompatibles Marketingprofil für Conversion Copy, Social Content, Funnel-Workflows, Recherche und agentische Kampagnenautomatisierung.
+Dieses Profil wurde aus der fachlichen Quelle
+[Texter_Werbung_Marketing.doc.md](../Profil/Texter_Werbung_Marketing.doc.md), `readme.md`,
+`docs/setup_guide.md` und `scripts/profiles/Texter_Werbung_Marketing_install.sh` zusammengeführt. Es
+beschreibt ein OpenClaw- und Ollama-kompatibles Marketingprofil für Conversion Copy, Social Content,
+Funnel-Workflows, Recherche und agentische Kampagnenautomatisierung.
 
 ## Installierter Stack
 
@@ -17,7 +20,8 @@ Es beschreibt ein OpenClaw- und Ollama-kompatibles Marketingprofil für Conversi
 
 ## Dokumentierte zusätzliche Tools
 
-Die zuvor zusätzlich dokumentierten Marketing-Bausteine sind jetzt als Setup-Module oder vorhandene Tool-Äquivalente abbildbar:
+Die zuvor zusätzlich dokumentierten Marketing-Bausteine sind jetzt als Setup-Module oder vorhandene
+Tool-Äquivalente abbildbar:
 
 - `Browser_Tool`
 - `Firecrawl`
@@ -253,8 +257,10 @@ und gib mir Tonalität, Sprachstil, No-Go-Wörter und Beispieltexte.
 
 ## OpenClaw / Ollama Fit
 
-- Dieses Profil passt gut zu OpenClaw als Orchestrator für Kampagnen-, Funnel- und Content-Workflows.
-- Ollama eignet sich hier vor allem für lokale Copy-Erstellung, Variantenbildung und Zielgruppenanalyse.
+- Dieses Profil passt gut zu OpenClaw als Orchestrator für Kampagnen-, Funnel- und
+  Content-Workflows.
+- Ollama eignet sich hier vor allem für lokale Copy-Erstellung, Variantenbildung und
+  Zielgruppenanalyse.
 - `LangChain`, `ChromaDB` und `Playwright` sind die wichtigsten aktuell eingebauten Zusatzbausteine.
 - `n8n` und `Activepieces` ergänzen die operative Automatisierung.
 
@@ -268,12 +274,14 @@ und gib mir Tonalität, Sprachstil, No-Go-Wörter und Beispieltexte.
 
 ### ⚠ Missing in Setup
 
-- Die zuvor fehlenden Marketing-Connectoren, Vektorspeicher und Kreativbausteine sind jetzt im Setup vorhanden.
+- Die zuvor fehlenden Marketing-Connectoren, Vektorspeicher und Kreativbausteine sind jetzt im Setup
+  vorhanden.
 - Für externe Plattformen müssen weiterhin echte API-Keys und Kontozugänge hinterlegt werden.
 
 ### ❌ Missing in Docs
 
-- Die Abgrenzung zwischen Marketingprofil und allgemeiner Automatisierung ist in der Hauptdoku noch nicht stark genug.
+- Die Abgrenzung zwischen Marketingprofil und allgemeiner Automatisierung ist in der Hauptdoku noch
+  nicht stark genug.
 
 ## Hinweise
 

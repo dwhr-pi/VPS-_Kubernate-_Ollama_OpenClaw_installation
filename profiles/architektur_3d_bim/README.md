@@ -9,5 +9,5 @@ Enthalten sind:
 - Beispielkonfigurationen
 - vorsichtige Diagnose- und Installationsskripte
 
-Das Profil ist lokal-first und behandelt BIM/CAD-Dateien als sensible Projektdaten. Produktive Bauplanung braucht immer fachliche Pruefung.
-
+Das Profil ist lokal-first und behandelt BIM/CAD-Dateien als sensible Projektdaten. Produktive
+Bauplanung braucht immer fachliche Pruefung.

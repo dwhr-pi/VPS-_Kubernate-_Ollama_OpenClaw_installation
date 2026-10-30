@@ -126,7 +126,7 @@ human_du() {
   else
     echo "Docker/Podman nicht verfuegbar."
   fi
-} > "$REPORT_FILE"
+} >"$REPORT_FILE"
 
 echo "Snapshot erstellt: $REPORT_FILE"
 sed -n '1,80p' "$REPORT_FILE"

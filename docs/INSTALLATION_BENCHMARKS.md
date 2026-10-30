@@ -32,7 +32,8 @@ Die Datei ist schon mit ersten Schätzwerten vorbelegt für:
 - Home Assistant
 - Cloudflared
 - alle großen Profile mit grobem GB-Bedarf
-- mehrere einzelne Tools wie `Ollama`, `n8n`, `OpenClaw`, `OpenManus`, `ComfyUI` und `Stable Diffusion WebUI Forge`
+- mehrere einzelne Tools wie `Ollama`, `n8n`, `OpenClaw`, `OpenManus`, `ComfyUI` und
+  `Stable Diffusion WebUI Forge`
 
 ## Im Setup bearbeiten
 
@@ -44,7 +45,8 @@ Dort wird die Datei direkt editierbar geöffnet.
 
 ## Speicherort
 
-Die Datei liegt bewusst außerhalb des Repositories, damit sie bei Updates erhalten bleibt und nicht versehentlich ins Git-Repository geschrieben wird:
+Die Datei liegt bewusst außerhalb des Repositories, damit sie bei Updates erhalten bleibt und nicht
+versehentlich ins Git-Repository geschrieben wird:
 
 ```text
 ~/.openclaw_ultimate_user_data/setup_metrics.conf
@@ -73,9 +75,11 @@ Das gilt insbesondere für:
 - Profil-Installationen und Profil-Deinstallationen
 - Tool-Installationen und Tool-Deinstallationen
 
-Damit bekommst du mit der Zeit echte Erfahrungswerte deines eigenen Systems statt nur allgemeiner Schätzungen.
+Damit bekommst du mit der Zeit echte Erfahrungswerte deines eigenen Systems statt nur allgemeiner
+Schätzungen.
 
-Diese Werte kannst du später nutzen, um die Standard-Schätzwerte in `setup_metrics.conf` besser an deine reale Umgebung anzupassen.
+Diese Werte kannst du später nutzen, um die Standard-Schätzwerte in `setup_metrics.conf` besser an
+deine reale Umgebung anzupassen.
 
 ## Priorität der Werte
 
@@ -85,7 +89,8 @@ Für Tool-, Profil- und mehrere Hauptmenü-Aktionen gilt jetzt diese Reihenfolge
 2. dein editierter Wert aus `setup_metrics.conf`
 3. eingebauter Fallback im Setup
 
-Dadurch lernst das Setup mit der Zeit aus deinem echten System, bleibt aber trotzdem manuell übersteuerbar.
+Dadurch lernst das Setup mit der Zeit aus deinem echten System, bleibt aber trotzdem manuell
+übersteuerbar.
 
 ## Einzelne Tools fein schätzen
 
@@ -98,7 +103,8 @@ N8N_TOOL_DURATION_ESTIMATE="10-30 min Klonen + Build bzw. Runtime-Installation"
 N8N_TOOL_STORAGE_ESTIMATE="5-15 GB"
 ```
 
-Das ist besonders sinnvoll, wenn ein einzelnes Tool deutlich von den allgemeinen MiniPC- oder Gesamtwerten abweicht.
+Das ist besonders sinnvoll, wenn ein einzelnes Tool deutlich von den allgemeinen MiniPC- oder
+Gesamtwerten abweicht.
 
 ## Wichtiger Hinweis
 

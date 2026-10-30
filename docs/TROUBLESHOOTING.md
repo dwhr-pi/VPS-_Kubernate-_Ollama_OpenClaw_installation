@@ -15,7 +15,8 @@ Bedeutung:
 
 - der eigentliche TypeScript-/pnpm-Build ist meist schon fast fertig
 - der Fehler passiert beim Generieren der CLI-Startmetadaten
-- auf WSL2/MiniPC-Systemen ist oft die Startumgebung zu träge oder die geerbte `PATH` aus Windows zu groß
+- auf WSL2/MiniPC-Systemen ist oft die Startumgebung zu träge oder die geerbte `PATH` aus Windows zu
+  groß
 
 Das Setup reagiert jetzt robuster:
 
@@ -48,18 +49,22 @@ Bedeutung:
 
 - das Upstream-Monorepo von `n8n` ist build-technisch empfindlich
 - auf MiniPC-/WSL2-Systemen kann der direkte Build aus der aktuellen GitHub-Quelle scheitern
-- die Warnungen zu fehlenden `dist/*.js`-Dateien deuten oft auf einen unvollständigen oder fehlschlagenden Turbo-/Workspace-Build hin
+- die Warnungen zu fehlenden `dist/*.js`-Dateien deuten oft auf einen unvollständigen oder
+  fehlschlagenden Turbo-/Workspace-Build hin
 
 Das Setup reagiert jetzt robuster:
 
 - zuerst wird weiterhin der GitHub-Quellcode-Build versucht
-- wenn dieser Build scheitert, richtet das Setup automatisch eine stabilere lokale Runtime-Fallback-Installation ein
+- wenn dieser Build scheitert, richtet das Setup automatisch eine stabilere lokale
+  Runtime-Fallback-Installation ein
 - dabei wird `n8n` lokal unter `/opt/n8n-runtime` installiert und nach `/usr/local/bin/n8n` verlinkt
 
 Wichtig:
 
-- Das ist kein vollständiger Quellcode-Build des Monorepos mehr, sondern ein nutzbarer Fallback für den Betrieb.
-- Wenn du das volle Monorepo wirklich selbst bauen willst, ist meist ein genauer Blick auf den gerade ausgecheckten Upstream-Stand nötig.
+- Das ist kein vollständiger Quellcode-Build des Monorepos mehr, sondern ein nutzbarer Fallback für
+  den Betrieb.
+- Wenn du das volle Monorepo wirklich selbst bauen willst, ist meist ein genauer Blick auf den
+  gerade ausgecheckten Upstream-Stand nötig.
 
 ### Huginn kehrt nach der Installation ohne klaren Hinweis ins Setup zurueck
 
@@ -69,7 +74,8 @@ Typische Hinweise:
 Could not loading huginn settings from .env file.
 ```
 
-oder ein Ruecksprung direkt ins Setup, obwohl `Huginn` noch nicht eindeutig als installiert markiert wird.
+oder ein Ruecksprung direkt ins Setup, obwohl `Huginn` noch nicht eindeutig als installiert markiert
+wird.
 
 Bedeutung:
 
@@ -84,9 +90,11 @@ Das Setup reagiert jetzt robuster:
 - alternativ kannst du bewusst einen anderen Upstream-Stand testen:
   - `HUGINN_REPO_REF=master`
   - oder einen anderen Tag/Branch
-- die Meldung `development test` bei Bundler ist **keine Huginn-Version**, sondern nur die ausgeschlossene Gem-Gruppe:
+- die Meldung `development test` bei Bundler ist **keine Huginn-Version**, sondern nur die
+  ausgeschlossene Gem-Gruppe:
   - `bundle config set --local without "development test"`
-- wenn die Datenbankkonfiguration in `.env` noch unvollstaendig ist, markiert das Setup Huginn jetzt als **vorbereitet** statt kommentarlos fehlzuschlagen
+- wenn die Datenbankkonfiguration in `.env` noch unvollstaendig ist, markiert das Setup Huginn jetzt
+  als **vorbereitet** statt kommentarlos fehlzuschlagen
 
 Praktischer Ablauf:
 
@@ -137,29 +145,43 @@ Bedeutung:
 
 - das Huginn-Release `v2022.08.18` bringt ein aelteres Lockfile mit
 - `grpc 1.42.0` ist darin grundsaetzlich nicht falsch, aber auf modernen Toolchains problematisch
-- der Fehler wird oft erst dadurch ausgeloest, dass Bundler mit `force_ruby_platform=true` einen lokalen Source-Build erzwingt
-- auf `x86_64-linux` existieren fuer neuere `grpc`-1.x-Versionen vorkompilierte Gems, die diesen Compilerpfad vermeiden
+- der Fehler wird oft erst dadurch ausgeloest, dass Bundler mit `force_ruby_platform=true` einen
+  lokalen Source-Build erzwingt
+- auf `x86_64-linux` existieren fuer neuere `grpc`-1.x-Versionen vorkompilierte Gems, die diesen
+  Compilerpfad vermeiden
 
 Das Setup reagiert jetzt robuster:
 
 - es liest die erwartete Bundler-Version aus Huginns `Gemfile.lock`
   - fuer `v2022.08.18` ist das `Bundler 2.3.10`
-- es bevorzugt vorkompilierte Linux-Gems und setzt **nicht mehr standardmaessig** `force_ruby_platform=true`
-- wenn im Lockfile noch der alte Huginn-gRPC-Stack (`grpc 1.42.0`, `googleapis-common-protos 1.3.12`, `google-protobuf 3.21.5`) steckt und Ruby nicht auf `2.7` laeuft, zieht das Setup den Kompatibilitaetsfix jetzt **bereits vor dem ersten** `bundle install` ein
-- wenn trotzdem ein `grpc`-Buildfehler erkannt wird, versucht das Setup einen gezielten Refresh der Google-/gRPC-Transitivabhaengigkeiten
+- es bevorzugt vorkompilierte Linux-Gems und setzt **nicht mehr standardmaessig**
+  `force_ruby_platform=true`
+- wenn im Lockfile noch der alte Huginn-gRPC-Stack (`grpc 1.42.0`,
+  `googleapis-common-protos 1.3.12`, `google-protobuf 3.21.5`) steckt und Ruby nicht auf `2.7`
+  laeuft, zieht das Setup den Kompatibilitaetsfix jetzt **bereits vor dem ersten** `bundle install`
+  ein
+- wenn trotzdem ein `grpc`-Buildfehler erkannt wird, versucht das Setup einen gezielten Refresh der
+  Google-/gRPC-Transitivabhaengigkeiten
   - dabei wird `grpc` auf einen kompatiblen neueren `1.x`-Stand gezogen
-- wenn selbst dieser Refresh haengt oder nicht sauber durchlaeuft, kann das Setup als letzten robusten Fallback die optionale `google-cloud-translate`-Abhaengigkeit deaktivieren
-  - dadurch fehlt dann der `GoogleTranslateAgent`, aber Huginn kann auf Systemen mit problematischem Legacy-gRPC-Stack trotzdem weiter installiert werden
-- dieser Fallback greift jetzt nicht nur vorbereitend, sondern auch im echten `bundle install`-Fehlerpfad automatisch
-  - das Setup meldet dabei klar, dass der `GoogleTranslateAgent` deaktiviert wurde und startet den Bundler-Lauf danach erneut
-- wenn zunaechst `mini_racer` oder `libv8-node` ausfaellt und der nachfolgende Bundler-Lauf erst danach in `grpc` kippt, greift derselbe Google-Translate-Fallback jetzt ebenfalls automatisch
-- zusaetzlich protokolliert das Skript erkannte Ruby- und Bundler-Versionen direkt im Installationslauf
+- wenn selbst dieser Refresh haengt oder nicht sauber durchlaeuft, kann das Setup als letzten
+  robusten Fallback die optionale `google-cloud-translate`-Abhaengigkeit deaktivieren
+  - dadurch fehlt dann der `GoogleTranslateAgent`, aber Huginn kann auf Systemen mit problematischem
+    Legacy-gRPC-Stack trotzdem weiter installiert werden
+- dieser Fallback greift jetzt nicht nur vorbereitend, sondern auch im echten
+  `bundle install`-Fehlerpfad automatisch
+  - das Setup meldet dabei klar, dass der `GoogleTranslateAgent` deaktiviert wurde und startet den
+    Bundler-Lauf danach erneut
+- wenn zunaechst `mini_racer` oder `libv8-node` ausfaellt und der nachfolgende Bundler-Lauf erst
+  danach in `grpc` kippt, greift derselbe Google-Translate-Fallback jetzt ebenfalls automatisch
+- zusaetzlich protokolliert das Skript erkannte Ruby- und Bundler-Versionen direkt im
+  Installationslauf
 
 Wichtig:
 
 - das Huginn-Release `v2022.08.18` wurde mit `Ruby 2.7.6` und `Bundler 2.3.10` gepflegt
 - neuere System-Rubies koennen funktionieren, sind aber fuer dieses Release nicht ideal
-- in diesem Repository gibt es **kein eigenes Huginn-Dockerfile**; die Installation laeuft ueber `scripts/tools/huginn_install.sh` und das Upstream-Repo unter `/opt/huginn`
+- in diesem Repository gibt es **kein eigenes Huginn-Dockerfile**; die Installation laeuft ueber
+  `scripts/tools/huginn_install.sh` und das Upstream-Repo unter `/opt/huginn`
 
 Manuelle Pruefung:
 
@@ -199,20 +221,24 @@ but that version can no longer be found in that source.
 
 Bedeutung:
 
-- das aeltere Huginn-Lockfile kann plattformspezifische `nokogiri`-Eintraege fuer `x86_64-linux` enthalten
-- wenn Rubygems genau diese vorkompilierte Binärversion nicht mehr ausliefert, stoppt `bundle install` schon vor spaeteren Abhaengigkeiten
+- das aeltere Huginn-Lockfile kann plattformspezifische `nokogiri`-Eintraege fuer `x86_64-linux`
+  enthalten
+- wenn Rubygems genau diese vorkompilierte Binärversion nicht mehr ausliefert, stoppt
+  `bundle install` schon vor spaeteren Abhaengigkeiten
 - der Fehler ist dann kein `grpc`-Problem mehr, sondern ein veralteter `nokogiri`-Lockfile-Stand
 
 Das Setup reagiert jetzt robuster:
 
 - es erkennt plattformspezifische `nokogiri`-Lockfile-Eintraege und weist frueh darauf hin
-- wenn Bundler an einer entfernten `nokogiri`-Binärversion haengen bleibt, startet das Setup automatisch einen gezielten Refresh von:
+- wenn Bundler an einer entfernten `nokogiri`-Binärversion haengen bleibt, startet das Setup
+  automatisch einen gezielten Refresh von:
   - `nokogiri`
   - `mini_portile2`
   - `racc`
 - davor wird der bisherige Lockfile-Stand als `Gemfile.lock.bak.before_nokogiri_refresh` gesichert
 - nach dem Refresh startet `bundle install` automatisch erneut
-- wenn danach spaeter noch der bekannte Google-/gRPC-Pfad faellt, greift weiterhin der vorhandene `GoogleTranslateAgent`-Fallback
+- wenn danach spaeter noch der bekannte Google-/gRPC-Pfad faellt, greift weiterhin der vorhandene
+  `GoogleTranslateAgent`-Fallback
 
 Manuelle Pruefung:
 
@@ -225,18 +251,25 @@ bundle install
 
 ### Welche Huginn-Upstream-Version soll ich mit `HUGINN_REPO_REF` verwenden?
 
-- fuer eine laenger stabile Standardinstallation bleibt `HUGINN_REPO_REF=v2022.08.18` die empfohlene Voreinstellung
+- fuer eine laenger stabile Standardinstallation bleibt `HUGINN_REPO_REF=v2022.08.18` die empfohlene
+  Voreinstellung
 - fuer dieses Setup ist bei `v2022.08.18` MySQL/MariaDB der empfohlene Datenbankpfad
-- PostgreSQL ist bewusst eher ein Original-/Upstream-Testpfad, weil es in dieser lokalen Installation bereits wiederholt Zusatzprobleme mit alten Huginn-/Gem-Staenden gab
-- fuer modernere AI-/LLM-, Docker- oder Kubernetes-Szenarien kann bewusst ein neuerer Branch wie `master` getestet werden
-- `master` benoetigt aktuell Ruby `>= 3.4.0`; das Setup nutzt dafuer bei Bedarf einen getrennten rbenv-Pfad unter `~/.rbenv-openclaw-huginn`, damit der stabile `v2022.08.18`-Pfad nicht kaputtgeht
-- die Auswahl liegt in `~/.openclaw_ultimate_user_data/huginn/install_settings.env`, die bearbeitbare Huginn-`.env.template` in `~/.openclaw_ultimate_user_data/huginn/.env.template`
-- eine ausfuehrliche Einordnung der Varianten `Release-Tag`, `master/main`, `Commit SHA` und `eigener Fork` steht hier:
+- PostgreSQL ist bewusst eher ein Original-/Upstream-Testpfad, weil es in dieser lokalen
+  Installation bereits wiederholt Zusatzprobleme mit alten Huginn-/Gem-Staenden gab
+- fuer modernere AI-/LLM-, Docker- oder Kubernetes-Szenarien kann bewusst ein neuerer Branch wie
+  `master` getestet werden
+- `master` benoetigt aktuell Ruby `>= 3.4.0`; das Setup nutzt dafuer bei Bedarf einen getrennten
+  rbenv-Pfad unter `~/.rbenv-openclaw-huginn`, damit der stabile `v2022.08.18`-Pfad nicht kaputtgeht
+- die Auswahl liegt in `~/.openclaw_ultimate_user_data/huginn/install_settings.env`, die
+  bearbeitbare Huginn-`.env.template` in `~/.openclaw_ultimate_user_data/huginn/.env.template`
+- eine ausfuehrliche Einordnung der Varianten `Release-Tag`, `master/main`, `Commit SHA` und
+  `eigener Fork` steht hier:
   - [HUGINN_REPO_REF_GUIDE.md](HUGINN_REPO_REF_GUIDE.md)
 
 ### Neuesten Huginn-Installationslog automatisch auswerten
 
-Der Logname enthaelt Datum, Uhrzeit und Vorgang. Statt den neuesten Namen manuell einzusetzen, nutze:
+Der Logname enthaelt Datum, Uhrzeit und Vorgang. Statt den neuesten Namen manuell einzusetzen,
+nutze:
 
 ```bash
 bash scripts/huginn_log_diagnostics.sh
@@ -264,14 +297,18 @@ bash scripts/tool_log_diagnostics.sh --tool OpenManus
 bash scripts/tool_log_diagnostics.sh --tool Huginn
 ```
 
-Das Script zeigt den Bericht weiterhin im Terminal und fragt anschliessend, ob der Bericht per E-Mail an `ai-chat-to-markdown@web.de` gesendet werden soll. Der Versand nutzt nur lokal vorhandene Mailprogramme wie `mail` oder `sendmail`.
+Das Script zeigt den Bericht weiterhin im Terminal und fragt anschliessend, ob der Bericht per
+E-Mail an `ai-chat-to-markdown@web.de` gesendet werden soll. Der Versand nutzt nur lokal vorhandene
+Mailprogramme wie `mail` oder `sendmail`.
 
 Wichtig:
 
 - keine SMTP-Passwoerter, App-Passwoerter oder API-Keys ins Repository schreiben
 - fuer echten Versand lokal z. B. `mailutils` oder `msmtp` sicher konfigurieren
-- fuer WEB.DE und aehnliche Provider muss der Envelope-Absender zur SMTP-Adresse passen; setze dafuer lokal `MAIL_FROM` in `~/.openclaw_ultimate_user_data/mail/mail_settings.env`
-- Huginn kann spaeter als erste Aufgabe genau diese Diagnoseberichte weiterverarbeiten oder weiterleiten
+- fuer WEB.DE und aehnliche Provider muss der Envelope-Absender zur SMTP-Adresse passen; setze
+  dafuer lokal `MAIL_FROM` in `~/.openclaw_ultimate_user_data/mail/mail_settings.env`
+- Huginn kann spaeter als erste Aufgabe genau diese Diagnoseberichte weiterverarbeiten oder
+  weiterleiten
 
 Beispiel ohne Passwort:
 
@@ -301,16 +338,22 @@ Der Editor schreibt die Konfiguration `.env`-aehnlich in:
 - `~/.openclaw_ultimate_user_data/mail/smtp_password`
 - `~/.msmtprc`
 
-Das SMTP-/App-Passwort wird getrennt in `smtp_password` gespeichert und mit `chmod 600` abgesichert. Wenn beim Eintragen der Daten `msmtp`, `mail` oder `sendmail` fehlen, installiert das Setup die Komponente `Mail_Utils_MSMTP` automatisch nach.
+Das SMTP-/App-Passwort wird getrennt in `smtp_password` gespeichert und mit `chmod 600` abgesichert.
+Wenn beim Eintragen der Daten `msmtp`, `mail` oder `sendmail` fehlen, installiert das Setup die
+Komponente `Mail_Utils_MSMTP` automatisch nach.
 
 Wichtig beim E-Mail-Anbieter:
 
 - SMTP/IMAP bzw. Zugriff fuer Drittanbieter-Apps muss haeufig erst im Konto aktiviert werden.
 - Das entspricht der Freigabe fuer externe Mail-Apps auf Handy, Tablet oder Desktop.
 - Einige Anbieter verlangen ein eigenes App-Passwort statt des normalen Konto-Passworts.
-- Der Envelope-Absender muss zur SMTP-Adresse passen, sonst lehnen Anbieter wie WEB.DE den Versand mit `Sender address is not allowed` ab.
+- Der Envelope-Absender muss zur SMTP-Adresse passen, sonst lehnen Anbieter wie WEB.DE den Versand
+  mit `Sender address is not allowed` ab.
 
-Der Menuepunkt `Testmail ohne Logs senden` versendet bewusst nur eine kurze Pruefmail und keine Installations- oder Diagnoseberichte. Die lokale Testmail-Datei liegt in `~/.openclaw_ultimate_user_data/mail/last_test_mail.txt` und kann im selben Menue wieder geloescht werden. Bereits zugestellte Testmails muessen im Postfach des Anbieters geloescht werden.
+Der Menuepunkt `Testmail ohne Logs senden` versendet bewusst nur eine kurze Pruefmail und keine
+Installations- oder Diagnoseberichte. Die lokale Testmail-Datei liegt in
+`~/.openclaw_ultimate_user_data/mail/last_test_mail.txt` und kann im selben Menue wieder geloescht
+werden. Bereits zugestellte Testmails muessen im Postfach des Anbieters geloescht werden.
 
 ### Alte Installations- und Diagnose-Logs aufraeumen
 
@@ -319,7 +362,8 @@ Wenn viele Installationsversuche laufen, wachsen die Logordner im Benutzer-Works
 - `~/.openclaw_ultimate_user_data/install_logs/`
 - `~/.openclaw_ultimate_user_data/diagnostic_reports/`
 
-Die sichere Log-Rotation loescht nur Dateien in diesen Benutzerordnern und behaelt standardmaessig die neuesten 30 Dateien je Ordner. Ein Trockenlauf zeigt zuerst, was geloescht wuerde:
+Die sichere Log-Rotation loescht nur Dateien in diesen Benutzerordnern und behaelt standardmaessig
+die neuesten 30 Dateien je Ordner. Ein Trockenlauf zeigt zuerst, was geloescht wuerde:
 
 ```bash
 bash scripts/cleanup_setup_logs.sh --dry-run --days 14 --keep 30
@@ -331,11 +375,14 @@ Anwenden:
 bash scripts/cleanup_setup_logs.sh --apply --days 14 --keep 30
 ```
 
-Im Setup-Menue liegt die Funktion unter `Optionen` -> `Installationsueberwachung`. Dort kann auch aktiviert werden, dass alte Logs vor jeder Tool-Installation oder -Deinstallation automatisch rotiert werden.
+Im Setup-Menue liegt die Funktion unter `Optionen` -> `Installationsueberwachung`. Dort kann auch
+aktiviert werden, dass alte Logs vor jeder Tool-Installation oder -Deinstallation automatisch
+rotiert werden.
 
 ### Huginn `master` mit PostgreSQL nachtesten
 
-Der Pfad `HUGINN_REPO_REF=master` plus `DATABASE_ADAPTER=postgresql` nutzt Ruby `3.4.x` ueber den getrennten rbenv-Pfad `~/.rbenv-openclaw-huginn`.
+Der Pfad `HUGINN_REPO_REF=master` plus `DATABASE_ADAPTER=postgresql` nutzt Ruby `3.4.x` ueber den
+getrennten rbenv-Pfad `~/.rbenv-openclaw-huginn`.
 
 Validierter lokaler Teststand vom 14. Mai 2026:
 
@@ -401,6 +448,7 @@ bash scripts/lib/resource_check.sh --summary
 ```bash
 bash scripts/operations/security_scan.sh
 ```
+
 ## pnpm: ERR_PNPM_IGNORED_BUILDS
 
 Symptom:
@@ -412,15 +460,21 @@ Run "pnpm approve-builds" to pick which dependencies should be allowed to run sc
 
 Bedeutung:
 
-pnpm 10/11 blockiert Build-Skripte von Abhaengigkeiten standardmaessig oder nach Policy, damit Pakete beim Installieren nicht ungefragt Code ausfuehren. Das ist eine Sicherheitsfunktion, aber native Module wie `esbuild`, `sharp`, `argon2`, `better-sqlite3`, `onnxruntime-node` oder `hnswlib-node` koennen dadurch unvollstaendig bleiben.
+pnpm 10/11 blockiert Build-Skripte von Abhaengigkeiten standardmaessig oder nach Policy, damit
+Pakete beim Installieren nicht ungefragt Code ausfuehren. Das ist eine Sicherheitsfunktion, aber
+native Module wie `esbuild`, `sharp`, `argon2`, `better-sqlite3`, `onnxruntime-node` oder
+`hnswlib-node` koennen dadurch unvollstaendig bleiben.
 
 Empfohlener Umgang:
 
 - Nicht blind alle Builds erlauben.
 - Im jeweiligen Projektverzeichnis `pnpm ignored-builds` ausfuehren.
-- Nur bekannte und benoetigte Pakete mit `pnpm approve-builds` oder einer gepflegten `onlyBuiltDependencies`-Liste freigeben.
+- Nur bekannte und benoetigte Pakete mit `pnpm approve-builds` oder einer gepflegten
+  `onlyBuiltDependencies`-Liste freigeben.
 - Danach `pnpm install --no-frozen-lockfile` und den Build erneut starten.
 
 Ruflo:
 
-Das Ruflo-Installskript erkennt diesen Fall und fragt interaktiv, ob nur bekannte Ruflo-Build-Abhaengigkeiten in `pnpm-workspace.yaml` unter `onlyBuiltDependencies` eingetragen werden sollen. Fuer nicht-interaktive Tests kann bewusst `RUFLO_APPROVE_BUILDS=1` gesetzt werden.
+Das Ruflo-Installskript erkennt diesen Fall und fragt interaktiv, ob nur bekannte
+Ruflo-Build-Abhaengigkeiten in `pnpm-workspace.yaml` unter `onlyBuiltDependencies` eingetragen
+werden sollen. Fuer nicht-interaktive Tests kann bewusst `RUFLO_APPROVE_BUILDS=1` gesetzt werden.

@@ -104,7 +104,7 @@ install_python_tools || true
 install_node_tools || true
 clone_optional_mcp_tools || true
 
-cat > "$ELECTRONICS_HOME/electronics.env.example" <<'EOF'
+cat >"$ELECTRONICS_HOME/electronics.env.example" <<'EOF'
 ELECTRONICS_HOME=~/Ultimate_KI_Setup/electronics
 OLLAMA_BASE_URL=http://127.0.0.1:11434
 OPENCLAW_GATEWAY_URL=ws://127.0.0.1:18789
@@ -118,4 +118,3 @@ echo "Keine Hersteller-Keys, Board-Secrets oder Cloud-Zugangsdaten wurden angele
 df -h "$HOME" || true
 echo "Dauer: $(($(date +%s) - START_TS)) Sekunden"
 echo "Logdatei: $LOG_FILE"
-

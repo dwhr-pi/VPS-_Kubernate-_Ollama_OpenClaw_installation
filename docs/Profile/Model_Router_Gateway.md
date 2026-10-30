@@ -2,7 +2,8 @@
 
 ## Zweck
 
-Zentrale Modellschicht fuer LiteLLM, Ollama und OpenAI-kompatible APIs mit Fallbacks, Kostenkontrolle und Routing.
+Zentrale Modellschicht fuer LiteLLM, Ollama und OpenAI-kompatible APIs mit Fallbacks,
+Kostenkontrolle und Routing.
 
 ## Installierbare Kern-Tools
 

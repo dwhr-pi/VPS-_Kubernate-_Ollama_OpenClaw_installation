@@ -21,11 +21,11 @@ PIPEDREAM_DIR="/opt/pipedream"
 echo -e "${BLUE}Starte Deinstallation von Pipedream (Self-Hosted)...${NC}"
 
 if [ -d "$PIPEDREAM_DIR" ]; then
-    echo -e "${YELLOW}Lösche Pipedream Verzeichnis $PIPEDREAM_DIR...${NC}"
-    sudo rm -rf "$PIPEDREAM_DIR"
-    echo -e "${GREEN}Pipedream erfolgreich deinstalliert (falls lokal geklont).${NC}"
+  echo -e "${YELLOW}Lösche Pipedream Verzeichnis $PIPEDREAM_DIR...${NC}"
+  sudo rm -rf "$PIPEDREAM_DIR"
+  echo -e "${GREEN}Pipedream erfolgreich deinstalliert (falls lokal geklont).${NC}"
 else
-    echo -e "${YELLOW}Pipedream ist nicht installiert oder Verzeichnis nicht gefunden.${NC}"
+  echo -e "${YELLOW}Pipedream ist nicht installiert oder Verzeichnis nicht gefunden.${NC}"
 fi
 
 echo -e "${YELLOW}Hinweis: Wenn Pipedream über Docker/Kubernetes installiert wurde, müssen Sie die entsprechenden Container/Pods/Deployments manuell entfernen.${NC}"

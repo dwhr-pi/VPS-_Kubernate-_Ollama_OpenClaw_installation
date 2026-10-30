@@ -1,6 +1,7 @@
 # Cyber Security AI
 
-Defensives Setup-Profil fuer Security-Findings, Hardening, SBOMs, Container-Scans und Repo-Hygiene. Siehe Quellprofil: `docs/Profil/Cyber_Security_AI.doc.md`.
+Defensives Setup-Profil fuer Security-Findings, Hardening, SBOMs, Container-Scans und Repo-Hygiene.
+Siehe Quellprofil: `docs/Profil/Cyber_Security_AI.doc.md`.
 
 Status: `beta`
 

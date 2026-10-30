@@ -2,11 +2,9 @@
 
 ## Server
 
-Fork:
-`https://github.com/dwhr-pi/myNextCloud-server`
+Fork: `https://github.com/dwhr-pi/myNextCloud-server`
 
-Upstream:
-`https://github.com/nextcloud/server`
+Upstream: `https://github.com/nextcloud/server`
 
 Empfohlener Ablauf:
 
@@ -17,15 +15,14 @@ git status --short
 git log --oneline --decorate --graph --max-count=20 --all
 ```
 
-Nicht automatisch mergen, wenn Branding-, Lizenz- oder App-spezifische Aenderungen betroffen sind. Erst Diff pruefen, dann gezielt mergen oder rebasen.
+Nicht automatisch mergen, wenn Branding-, Lizenz- oder App-spezifische Aenderungen betroffen sind.
+Erst Diff pruefen, dann gezielt mergen oder rebasen.
 
 ## Android
 
-Fork:
-`https://github.com/dwhr-pi/myNexcloud-for-android`
+Fork: `https://github.com/dwhr-pi/myNexcloud-for-android`
 
-Upstream:
-`https://github.com/nextcloud/android`
+Upstream: `https://github.com/nextcloud/android`
 
 Empfohlener Ablauf:
 
@@ -38,10 +35,10 @@ git log --oneline --decorate --graph --max-count=20 --all
 
 ## Android Library
 
-Referenz:
-`https://github.com/nextcloud/android-library`
+Referenz: `https://github.com/nextcloud/android-library`
 
-Die Library separat beobachten, besonders wenn Login, WebDAV, TLS, OAuth oder File Sync betroffen sind.
+Die Library separat beobachten, besonders wenn Login, WebDAV, TLS, OAuth oder File Sync betroffen
+sind.
 
 ## Rechtlicher Hinweis
 

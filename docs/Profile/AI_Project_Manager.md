@@ -2,7 +2,8 @@
 
 ## Zweck
 
-Projektplanung, Repo-Hygiene, Releases, lokale CI und Architekturentscheidungen fuer AI-/LLMOps-Repositories.
+Projektplanung, Repo-Hygiene, Releases, lokale CI und Architekturentscheidungen fuer
+AI-/LLMOps-Repositories.
 
 ## Installierbare Kern-Tools
 

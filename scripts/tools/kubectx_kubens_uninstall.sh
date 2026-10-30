@@ -10,7 +10,7 @@ uninstall_kubectx_kubens() {
     return 1
   fi
   if ! sudo rm -f -- /usr/local/bin/kubectx /usr/local/bin/kubens ||
-     ! sudo rm -rf --one-file-system -- /opt/kubectx; then
+    ! sudo rm -rf --one-file-system -- /opt/kubectx; then
     log_error "kubectx/kubens konnte nicht entfernt werden. sudo-Rechte pruefen und Deinstallation erneut starten."
     end_measurement "failed"
     return 1

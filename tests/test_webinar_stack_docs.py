@@ -1,6 +1,7 @@
 """Documentation checks only; no live webinar, registration or SMTP tests."""
 from pathlib import Path
 import re
+from doc_assertions import assert_prose_in, assert_prose_not_in
 import unittest
 from urllib.parse import urlsplit
 
@@ -36,9 +37,9 @@ class WebinarStackDocsTests(unittest.TestCase):
         doc = GUIDE.read_text(encoding="utf-8")
         fences = re.findall(r"^```(.*)$", doc, re.M)
         self.assertEqual(fences, ["text", "", "text", ""])
-        self.assertNotIn("docker compose up", doc)
-        self.assertNotIn("smtp_password=", doc)
-        self.assertIn("kein Nachweis einer fertig eingerichteten Gesamtplattform", doc)
+        assert_prose_not_in(self, "docker compose up", doc)
+        assert_prose_not_in(self, "smtp_password=", doc)
+        assert_prose_in(self, "kein Nachweis einer fertig eingerichteten Gesamtplattform", doc)
 
 
 if __name__ == "__main__":

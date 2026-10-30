@@ -5,7 +5,10 @@ umask 077
 ROOT="$(cd "${BASH_SOURCE[0]%/*}/.." && pwd)"
 commit=${1:-} destination=${2:-}
 repo=https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation.git
-die() { printf 'Verifizierter Quellenstart abgebrochen: %s\n' "$*" >&2; exit 1; }
+die() {
+  printf 'Verifizierter Quellenstart abgebrochen: %s\n' "$*" >&2
+  exit 1
+}
 [[ "$commit" =~ ^[a-f0-9]{40}$ && "$destination" == /* ]] || die 'Commit und absolutes Ziel erforderlich.'
 [[ "$EUID" != 0 ]] || die 'Interaktives Setup als normaler Benutzer starten, nicht pauschal als root.'
 home=$(realpath -e -- "$HOME")

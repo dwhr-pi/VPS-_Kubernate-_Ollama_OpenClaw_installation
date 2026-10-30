@@ -2,7 +2,8 @@
 
 ## Kurzfassung
 
-`Code_Sandbox` ist in diesem Repository aktuell ein vorbereitetes Sandbox-Modul. Es ist noch kein vollstaendiger, automatisch isolierender Container-Runner und kein eigenes Webinterface.
+`Code_Sandbox` ist in diesem Repository aktuell ein vorbereitetes Sandbox-Modul. Es ist noch kein
+vollstaendiger, automatisch isolierender Container-Runner und kein eigenes Webinterface.
 
 Die Installation erzeugt vor allem eine klare Arbeitsstruktur unter:
 
@@ -24,7 +25,8 @@ Der aktuelle `run.sh` ist bewusst nur ein Platzhalter:
 echo "Nutze Docker-Container oder ein eigenes Jail-System als Sandbox-Backend."
 ```
 
-Das ist wichtig: Die Installation markiert das Modul als vorbereitet, aber sie fuehrt noch keine fremden Programme wirklich isoliert aus.
+Das ist wichtig: Die Installation markiert das Modul als vorbereitet, aber sie fuehrt noch keine
+fremden Programme wirklich isoliert aus.
 
 ## Warum gibt es Code_Sandbox?
 
@@ -32,7 +34,8 @@ Das Modul ist als Sicherheits- und Workflow-Baustein fuer Coding-Agenten gedacht
 
 - OpenClaw soll spaeter Code nicht direkt auf dem Host ausfuehren.
 - Programmierer-/LLM-Builder-Profile brauchen einen Ort fuer Tests, Builds und Experimente.
-- Agentische Tools wie OpenHands, Aider, AutoGen, CrewAI oder LangGraph sollen riskante Aktionen nur in begrenzten Umgebungen ausfuehren.
+- Agentische Tools wie OpenHands, Aider, AutoGen, CrewAI oder LangGraph sollen riskante Aktionen nur
+  in begrenzten Umgebungen ausfuehren.
 - Docker, Podman, Devcontainer oder spaeter K3s koennen als Backend dienen.
 
 ## Aktuelle Nutzung
@@ -53,21 +56,22 @@ SANDBOX_TIMEOUT_SECONDS=30
 SANDBOX_MEMORY_LIMIT=1g
 ```
 
-Damit ist dokumentiert, welche Laufzeit spaeter verwendet werden soll. Es ist aber noch keine vollstaendige Ausfuehrungslogik eingebaut.
+Damit ist dokumentiert, welche Laufzeit spaeter verwendet werden soll. Es ist aber noch keine
+vollstaendige Ausfuehrungslogik eingebaut.
 
 ## Kombinationen mit anderen Tools
 
-| Tool/Profil | Rolle von Code_Sandbox | Status |
-|---|---|---|
-| OpenClaw | sichere Ausfuehrungsumgebung fuer Tool-Tasks | geplant |
-| Programmierer | Tests, Builds, Repo-Experimente isolieren | vorbereitet |
-| LLM_Builder | Trainings-/Build-Hilfsschritte begrenzen | vorbereitet |
-| OpenHands | Agentenaktionen in Container/Jail auslagern | geplant |
-| Aider | Tests nach Codeaenderungen in Sandbox ausfuehren | geplant |
-| AutoGen/CrewAI/LangGraph | Worker duerfen nur Sandbox-Kommandos nutzen | geplant |
-| Docker/Podman | moegliches Sandbox-Backend | Voraussetzung |
-| Devcontainer CLI | reproduzierbare Projektumgebung | sinnvoller naechster Schritt |
-| K3s | spaeter isolierte Worker-Jobs | advanced |
+| Tool/Profil              | Rolle von Code_Sandbox                           | Status                       |
+| ------------------------ | ------------------------------------------------ | ---------------------------- |
+| OpenClaw                 | sichere Ausfuehrungsumgebung fuer Tool-Tasks     | geplant                      |
+| Programmierer            | Tests, Builds, Repo-Experimente isolieren        | vorbereitet                  |
+| LLM_Builder              | Trainings-/Build-Hilfsschritte begrenzen         | vorbereitet                  |
+| OpenHands                | Agentenaktionen in Container/Jail auslagern      | geplant                      |
+| Aider                    | Tests nach Codeaenderungen in Sandbox ausfuehren | geplant                      |
+| AutoGen/CrewAI/LangGraph | Worker duerfen nur Sandbox-Kommandos nutzen      | geplant                      |
+| Docker/Podman            | moegliches Sandbox-Backend                       | Voraussetzung                |
+| Devcontainer CLI         | reproduzierbare Projektumgebung                  | sinnvoller naechster Schritt |
+| K3s                      | spaeter isolierte Worker-Jobs                    | advanced                     |
 
 ## Minimaler manueller Sandbox-Test mit Docker
 

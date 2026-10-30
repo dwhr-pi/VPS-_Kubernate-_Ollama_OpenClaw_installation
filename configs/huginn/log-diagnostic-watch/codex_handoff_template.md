@@ -8,7 +8,9 @@ Status: neue Diagnose-/Logdatei wurde erkannt und fuer die Weiterarbeit vorberei
 
 ## Aufgabe fuer Codex
 
-Analysiere diesen Diagnosebericht, fasse die wahrscheinliche Ursache zusammen, pruefe die relevanten Installer-/Setup-Dateien im Repository und schlage einen sicheren Fix vor. Bitte keine Secrets ausgeben und keine Nutzerdateien blind loeschen.
+Analysiere diesen Diagnosebericht, fasse die wahrscheinliche Ursache zusammen, pruefe die relevanten
+Installer-/Setup-Dateien im Repository und schlage einen sicheren Fix vor. Bitte keine Secrets
+ausgeben und keine Nutzerdateien blind loeschen.
 
 ## Gefilterter Auszug
 

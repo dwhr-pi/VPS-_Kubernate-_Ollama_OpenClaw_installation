@@ -1,12 +1,16 @@
 # Cloudflare Tunnel Schritt für Schritt
 
-Ergänzend zur Schritt-für-Schritt-Anleitung gibt es jetzt auch die gemeinsame Einordnung unter [docs/REMOTE_ACCESS_DNS_GUIDE.md](REMOTE_ACCESS_DNS_GUIDE.md). Dort wird erklärt, wann `Cloudflare Tunnel`, `Tailscale` oder `Hurricane Electric` der sinnvollere Pfad ist.
+Ergänzend zur Schritt-für-Schritt-Anleitung gibt es jetzt auch die gemeinsame Einordnung unter
+[docs/REMOTE_ACCESS_DNS_GUIDE.md](REMOTE_ACCESS_DNS_GUIDE.md). Dort wird erklärt, wann
+`Cloudflare Tunnel`, `Tailscale` oder `Hurricane Electric` der sinnvollere Pfad ist.
 
-Diese Anleitung hilft dir dabei, den für das Setup benötigten Tunnel und den zugehörigen Token bei [cloudflare.com](https://cloudflare.com) anzulegen.
+Diese Anleitung hilft dir dabei, den für das Setup benötigten Tunnel und den zugehörigen Token bei
+[cloudflare.com](https://cloudflare.com) anzulegen.
 
 ## Ziel
 
-Am Ende brauchst du den Tunnel-Token, den das Setup in `hybrid_setup.sh` oder `install_local_only.sh` abfragt.
+Am Ende brauchst du den Tunnel-Token, den das Setup in `hybrid_setup.sh` oder
+`install_local_only.sh` abfragt.
 
 ## Voraussetzungen
 
@@ -86,13 +90,12 @@ sudo cloudflared tunnel run --token <dein-token> alexa-skill-tunnel
 
 ## Was ist der richtige Token?
 
-Verwende den Tunnel-Token aus dem Bereich `Deploy your Tunnel`. Genau diesen Wert erwartet das Setup.
+Verwende den Tunnel-Token aus dem Bereich `Deploy your Tunnel`. Genau diesen Wert erwartet das
+Setup.
 
 ## Typische Fehler
 
-- Falsche Zieladresse:
-  Wenn Home Assistant lokal auf `8123` läuft, muss das Ziel auch auf `http://localhost:8123` zeigen.
-- Falsche Domain:
-  Die Domain muss in deinem Cloudflare-Konto aktiv verwaltet werden.
-- Kein Token:
-  Ohne Tunnel-Token kann das Setup den Tunnel nicht sinnvoll vorbereiten.
+- Falsche Zieladresse: Wenn Home Assistant lokal auf `8123` läuft, muss das Ziel auch auf
+  `http://localhost:8123` zeigen.
+- Falsche Domain: Die Domain muss in deinem Cloudflare-Konto aktiv verwaltet werden.
+- Kein Token: Ohne Tunnel-Token kann das Setup den Tunnel nicht sinnvoll vorbereiten.

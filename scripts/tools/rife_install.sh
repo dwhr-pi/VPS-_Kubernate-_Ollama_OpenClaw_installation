@@ -13,13 +13,16 @@ rife_find_python() {
   local candidate
   if [ -n "${RIFE_PYTHON_BIN:-}" ]; then
     if command -v "$RIFE_PYTHON_BIN" >/dev/null 2>&1 && rife_python_ok "$RIFE_PYTHON_BIN"; then
-      command -v "$RIFE_PYTHON_BIN"; return 0
+      command -v "$RIFE_PYTHON_BIN"
+      return 0
     fi
-    log_error 'RIFE_PYTHON_BIN muss auf Python 3.10/3.11 zeigen.' >&2; return 1
+    log_error 'RIFE_PYTHON_BIN muss auf Python 3.10/3.11 zeigen.' >&2
+    return 1
   fi
   for candidate in python3.11 python3.10 python3 /opt/openclaw-python/python-3.11.*/bin/python3.11; do
     if command -v "$candidate" >/dev/null 2>&1 && rife_python_ok "$candidate"; then
-      command -v "$candidate"; return 0
+      command -v "$candidate"
+      return 0
     fi
   done
   log_error 'RIFE: Python 3.10/3.11 fehlt. Python 3.12 ist fuer die NumPy-Vorgabe ungeeignet; RIFE_PYTHON_BIN setzen.' >&2
@@ -28,7 +31,10 @@ rife_find_python() {
 
 rife_prepare_venv() {
   local python_bin="$1" dir="$2" backup
-  if [ -L "$dir/.venv" ]; then log_error '.venv ist ein Symlink; manuell pruefen.'; return 1; fi
+  if [ -L "$dir/.venv" ]; then
+    log_error '.venv ist ein Symlink; manuell pruefen.'
+    return 1
+  fi
   if [ -e "$dir/.venv" ]; then
     if [ -x "$dir/.venv/bin/python" ] && rife_python_ok "$dir/.venv/bin/python"; then return 0; fi
     backup="$(mktemp -d "$dir/venv-backup.XXXXXXXX")" || return 1
@@ -41,7 +47,11 @@ rife_prepare_venv() {
 rife_main() {
   local mode="${1:-install}" python_bin dir=/opt/rife
   local torch_index="${RIFE_TORCH_INDEX_URL:-https://download.pytorch.org/whl/cpu}"
-  case "$mode" in install|--check|--dry-run) ;; *) log_error "Unbekannte Option: $mode"; return 2 ;; esac
+  case "$mode" in install | --check | --dry-run) ;; *)
+    log_error "Unbekannte Option: $mode"
+    return 2
+    ;;
+  esac
   python_bin=""
   if ! python_bin="$(rife_find_python)"; then
     # An explicitly requested interpreter must never be silently replaced.
@@ -54,33 +64,40 @@ rife_main() {
   fi
   log_info "RIFE-Python: $python_bin; PyTorch-Quelle: $torch_index"
   if [ "$mode" != install ]; then
-    log_info 'Plan: GitHub-Quelle, kompatible .venv, NumPy nur als Wheel; keine Modell-Downloads.'; return 0
+    log_info 'Plan: GitHub-Quelle, kompatible .venv, NumPy nur als Wheel; keine Modell-Downloads.'
+    return 0
   fi
   confirm_heavy_install RIFE || return 0
   AUTO_INSTALL_TOOL_BASE_DEPS=false begin_measurement tool_install_RIFE 'RIFE mit kompatiblem Python'
   if ! REQUIRE_WINDOWS_HOST_FREE_MB=20480 require_disk_mb 40960 /opt; then
-    end_measurement failed; return 1
+    end_measurement failed
+    return 1
   fi
   if [ -z "$python_bin" ]; then
     if ! python_bin="$(build_isolated_cpython311)" || ! rife_python_ok "$python_bin"; then
       log_error 'RIFE: Isoliertes Python konnte nicht bereitgestellt werden.'
-      end_measurement failed; return 1
+      end_measurement failed
+      return 1
     fi
   fi
   if ! ensure_base_apt_packages git ca-certificates libgl1 libglib2.0-0 ||
-     ! sudo mkdir -p "$dir" || ! sudo chown "$USER:$USER" "$dir" ||
-     ! clone_or_update_git_target RIFE https://github.com/hzwer/ECCV2022-RIFE.git "$dir" ||
-     ! rife_prepare_venv "$python_bin" "$dir"; then
-    end_measurement failed; return 1
+    ! sudo mkdir -p "$dir" || ! sudo chown "$USER:$USER" "$dir" ||
+    ! clone_or_update_git_target RIFE https://github.com/hzwer/ECCV2022-RIFE.git "$dir" ||
+    ! rife_prepare_venv "$python_bin" "$dir"; then
+    end_measurement failed
+    return 1
   fi
   if [ ! -f "$dir/requirements.txt" ]; then
-    log_error 'RIFE requirements.txt fehlt; Upstream-Layout pruefen.'; end_measurement failed; return 1
+    log_error 'RIFE requirements.txt fehlt; Upstream-Layout pruefen.'
+    end_measurement failed
+    return 1
   fi
   if ! "$dir/.venv/bin/python" -m pip install torch torchvision --index-url "$torch_index" ||
-     ! "$dir/.venv/bin/python" -m pip install --only-binary=numpy -r "$dir/requirements.txt" ||
-     ! "$dir/.venv/bin/python" -c 'import numpy, cv2, torch, torchvision; assert (1,16,0) <= tuple(map(int, numpy.__version__.split("."))) <= (1,23,5)'; then
+    ! "$dir/.venv/bin/python" -m pip install --only-binary=numpy -r "$dir/requirements.txt" ||
+    ! "$dir/.venv/bin/python" -c 'import numpy, cv2, torch, torchvision; assert (1,16,0) <= tuple(map(int, numpy.__version__.split("."))) <= (1,23,5)'; then
     log_error 'RIFE-Abhaengigkeiten fehlgeschlagen. Kein automatischer NumPy-Source-Build; Python/Wheel-Angebot/Resolver-Log pruefen.'
-    end_measurement failed; return 1
+    end_measurement failed
+    return 1
   fi
   mark_tool_installed RIFE
   end_measurement success

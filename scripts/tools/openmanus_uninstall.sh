@@ -20,11 +20,11 @@ OPENMANUS_DIR="/opt/openmanus"
 echo -e "${BLUE}Starte Deinstallation von OpenManus...${NC}"
 
 if [ -d "$OPENMANUS_DIR" ]; then
-    echo -e "${YELLOW}Lösche OpenManus Verzeichnis $OPENMANUS_DIR...${NC}"
-    sudo rm -rf "$OPENMANUS_DIR"
-    echo -e "${GREEN}OpenManus erfolgreich deinstalliert.${NC}"
+  echo -e "${YELLOW}Lösche OpenManus Verzeichnis $OPENMANUS_DIR...${NC}"
+  sudo rm -rf "$OPENMANUS_DIR"
+  echo -e "${GREEN}OpenManus erfolgreich deinstalliert.${NC}"
 else
-    echo -e "${YELLOW}OpenManus ist nicht installiert oder Verzeichnis nicht gefunden.${NC}"
+  echo -e "${YELLOW}OpenManus ist nicht installiert oder Verzeichnis nicht gefunden.${NC}"
 fi
 
 echo -e "${GREEN}OpenManus Deinstallation abgeschlossen.${NC}"

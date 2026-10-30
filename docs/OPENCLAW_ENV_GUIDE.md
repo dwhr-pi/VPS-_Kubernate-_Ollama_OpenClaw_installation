@@ -1,6 +1,8 @@
 # OpenClaw .env Dokumentation
 
-Diese Seite erklärt die `.env`-Vorlage unseres Setups, beschreibt die wichtigsten Bereiche verständlich auf Deutsch und dokumentiert zusätzlich die originale OpenClaw-`.env`-Beispielstruktur als Referenz.
+Diese Seite erklärt die `.env`-Vorlage unseres Setups, beschreibt die wichtigsten Bereiche
+verständlich auf Deutsch und dokumentiert zusätzlich die originale OpenClaw-`.env`-Beispielstruktur
+als Referenz.
 
 ## Zweck dieser Datei
 
@@ -22,7 +24,8 @@ Sie wird vom OpenClaw-Konfigurationsmanager verwendet und verbindet:
 
 ## Sicherheit bei der Verwendung
 
-Unsere neueren Setup-Versionen lagern sensible und bearbeitbare Dateien bewusst aus dem Repository aus.
+Unsere neueren Setup-Versionen lagern sensible und bearbeitbare Dateien bewusst aus dem Repository
+aus.
 
 Der Benutzer-Workspace liegt hier:
 
@@ -51,7 +54,8 @@ Worauf du trotzdem achten musst:
 - Screenshots mit API-Keys vermeiden
 - den Benutzer-Workspace beim Weitergeben des Systems bewusst mitlöschen
 
-Wenn du alles vollständig entfernen willst, lösche zusätzlich zum Setup-Verzeichnis auch den Benutzer-Workspace:
+Wenn du alles vollständig entfernen willst, lösche zusätzlich zum Setup-Verzeichnis auch den
+Benutzer-Workspace:
 
 ```bash
 rm -rf ~/.openclaw_ultimate_user_data
@@ -65,7 +69,8 @@ Die wichtigsten Begleitseiten dazu sind:
 
 ## Datei `.env` laden
 
-Dies funktioniert in diesem Fall nur im Verzeichnis von `OpenClaw`, also typischerweise unter `/opt/openclaw`.
+Dies funktioniert in diesem Fall nur im Verzeichnis von `OpenClaw`, also typischerweise unter
+`/opt/openclaw`.
 
 ```bash
 cd /opt/openclaw
@@ -215,7 +220,9 @@ Nach dem ersten Start erstellt OpenClaw meist:
  └── cache/
 ```
 
-Wenn du mehrere Instanzen oder Projekte planst, zum Beispiel für ein größeres KI-Projekt mit Ollama, kannst du auch etwas wie `~/ai/openclaw/` nutzen. Gegenwärtig ist das in unserem Setup aber nicht der Standardfall.
+Wenn du mehrere Instanzen oder Projekte planst, zum Beispiel für ein größeres KI-Projekt mit Ollama,
+kannst du auch etwas wie `~/ai/openclaw/` nutzen. Gegenwärtig ist das in unserem Setup aber nicht
+der Standardfall.
 
 ## 5. Wichtig für Ollama-Integration
 
@@ -247,7 +254,8 @@ PRIMÄRES_LLM_ANBIETER=OLLAMA
 FALLBACK_TO_GEMINI=true
 ```
 
-Das ist eine Besonderheit unseres Setups und dient dazu, lokal zuerst Ollama zu verwenden und nur bei Bedarf auf Gemini auszuweichen.
+Das ist eine Besonderheit unseres Setups und dient dazu, lokal zuerst Ollama zu verwenden und nur
+bei Bedarf auf Gemini auszuweichen.
 
 Wichtig:
 
@@ -256,7 +264,8 @@ Wichtig:
 - im Chatfenster ist das nicht automatisch als frei sichtbarer Modellwähler garantiert
 - die Auswahl wird in unserem Setup daher primär über `.env` und `config.json` gesteuert
 
-Wenn du also im Alltag spontan zwischen Modellen wechseln willst, ist das in unserem Setup eher eine Konfigurationsentscheidung als eine reine Chat-UI-Auswahl.
+Wenn du also im Alltag spontan zwischen Modellen wechseln willst, ist das in unserem Setup eher eine
+Konfigurationsentscheidung als eine reine Chat-UI-Auswahl.
 
 ## 6. Beispiel einer vollständigen lokalen `.env`
 
@@ -306,7 +315,8 @@ Je nach Installationsmethode.
 
 Die Gateway-Authentifizierung + Pfade.
 
-Dieser Bereich ist die Sicherheits- und Systemkonfiguration von OpenClaw. Hier geht es weniger um externe Anbieter und mehr darum, wie dein eigener Dienst abgesichert und gestartet wird.
+Dieser Bereich ist die Sicherheits- und Systemkonfiguration von OpenClaw. Hier geht es weniger um
+externe Anbieter und mehr darum, wie dein eigener Dienst abgesichert und gestartet wird.
 
 ### `OPENCLAW_GATEWAY_TOKEN`
 
@@ -365,7 +375,8 @@ Hier speichert OpenClaw:
 - temporäre Daten
 - Cache
 
-Nur ändern, wenn du Docker-Volumes nutzt, mehrere Instanzen betreibst oder Daten getrennt speichern willst.
+Nur ändern, wenn du Docker-Volumes nutzt, mehrere Instanzen betreibst oder Daten getrennt speichern
+willst.
 
 ### `OPENCLAW_CONFIG_PATH`
 
@@ -375,7 +386,8 @@ OPENCLAW_CONFIG_PATH=~/.openclaw/openclaw.json
 
 Das ist die Haupt-Konfigurationsdatei.
 
-Nur ändern, wenn du mehrere Konfigurationen parallel fahren willst oder ein spezielles Deployment-Setup hast.
+Nur ändern, wenn du mehrere Konfigurationen parallel fahren willst oder ein spezielles
+Deployment-Setup hast.
 
 ### `OPENCLAW_HOME`
 
@@ -385,7 +397,8 @@ OPENCLAW_HOME=~
 
 Das definiert das Home-Verzeichnis für interne Pfade.
 
-Normalerweise nicht nötig zu ändern. Relevanter bei Docker, CI/CD oder Service-Usern ohne echtes Home-Verzeichnis.
+Normalerweise nicht nötig zu ändern. Relevanter bei Docker, CI/CD oder Service-Usern ohne echtes
+Home-Verzeichnis.
 
 ### `OPENCLAW_LOAD_SHELL_ENV`
 
@@ -463,7 +476,8 @@ Wichtig:
 
 - du brauchst meistens nur einen Anbieter
 - mehrere Anbieter lohnen sich für Fallbacks oder Rotation
-- bei einem Tippfehler im Schlüssel wirkt es oft so, als sei das Limit erreicht oder der Key gesperrt
+- bei einem Tippfehler im Schlüssel wirkt es oft so, als sei das Limit erreicht oder der Key
+  gesperrt
 
 ### `OPENAI_API_KEY`
 
@@ -586,23 +600,28 @@ Nur wenn du sie explizit nutzen willst:
 Für die meisten Setups sind diese nicht nötig. Der Grund ist in unserem Projekt ganz schlicht:
 
 - das Standard-Setup läuft bereits mit `Ollama`, `OpenAI`, `Anthropic`, `Gemini` oder `OpenRouter`
-- die vier folgenden Schlüssel sind eher Zusatzfälle für spezielle Provider, Routing oder Experimente
-- sie sind also nicht deshalb unnötig, weil einige davon aus China kommen, sondern weil sie im Standardszenario nicht gebraucht werden
+- die vier folgenden Schlüssel sind eher Zusatzfälle für spezielle Provider, Routing oder
+  Experimente
+- sie sind also nicht deshalb unnötig, weil einige davon aus China kommen, sondern weil sie im
+  Standardszenario nicht gebraucht werden
 
 Wichtig vorweg:
 
 - anonyme Nutzung ist bei diesen Diensten in der Praxis normalerweise nicht vorgesehen
 - fast immer brauchst du mindestens ein Benutzerkonto
-- ob zusätzlich Guthaben, Kreditkarte oder andere Zahlungsdaten nötig sind, hängt vom jeweiligen Anbieter und Tarif ab
+- ob zusätzlich Guthaben, Kreditkarte oder andere Zahlungsdaten nötig sind, hängt vom jeweiligen
+  Anbieter und Tarif ab
 - Preise und Bedingungen ändern sich; deshalb immer kurz auf der offiziellen Preisseite gegenprüfen
 
 ### `ZAI_API_KEY`
 
-`Z.AI` ist der Entwicklerzugang zur GLM-/Zhipu-Welt. Das ist nach meiner Einordnung ein chinesischer Anbieter beziehungsweise ein international auftretender Ableger von Zhipu.
+`Z.AI` ist der Entwicklerzugang zur GLM-/Zhipu-Welt. Das ist nach meiner Einordnung ein chinesischer
+Anbieter beziehungsweise ein international auftretender Ableger von Zhipu.
 
 Warum meist nicht nötig:
 
-- unser Setup funktioniert schon ohne Z.AI direkt mit OpenAI, Anthropic, Gemini, OpenRouter oder lokalem Ollama
+- unser Setup funktioniert schon ohne Z.AI direkt mit OpenAI, Anthropic, Gemini, OpenRouter oder
+  lokalem Ollama
 - Z.AI ist daher eher eine Zusatzoption, wenn du bewusst GLM-Modelle nutzen willst
 
 Zugang und Kosten:
@@ -610,22 +629,29 @@ Zugang und Kosten:
 - nicht anonym
 - Registrierung/Login erforderlich
 - laut offizieller Quick-Start-Doku muss man bei Bedarf die Billing-Seite aufladen
-- laut offizieller Pricing-Seite gibt es aktuell auch kostenlose Modelle beziehungsweise zeitweise kostenlose Varianten, etwa `GLM-4.7-Flash` oder `GLM-4.5-Flash`
-- kostenpflichtige Modelle werden tokenbasiert abgerechnet; die offene Pricing-Seite zeigt je nach Modell ungefähr Preise vom sehr kleinen Cent-Bereich pro 1M Tokens bis in den mehrstelligen Dollarbereich
+- laut offizieller Pricing-Seite gibt es aktuell auch kostenlose Modelle beziehungsweise zeitweise
+  kostenlose Varianten, etwa `GLM-4.7-Flash` oder `GLM-4.5-Flash`
+- kostenpflichtige Modelle werden tokenbasiert abgerechnet; die offene Pricing-Seite zeigt je nach
+  Modell ungefähr Preise vom sehr kleinen Cent-Bereich pro 1M Tokens bis in den mehrstelligen
+  Dollarbereich
 
 Zahlungsweg:
 
 - in den von mir geprüften offiziellen Quellen ist ein Billing-/Top-up-Prozess dokumentiert
-- ich habe dort aber keine belastbare offizielle Aussage zu PayPal, KYC oder konkreten Kartenarten gesehen
+- ich habe dort aber keine belastbare offizielle Aussage zu PayPal, KYC oder konkreten Kartenarten
+  gesehen
 
 ### `AI_GATEWAY_API_KEY`
 
-Die Bezeichnung passt sehr wahrscheinlich zu `Vercel AI Gateway`. Falls du einen anderen Gateway-Anbieter meinst, muss man das separat prüfen.
+Die Bezeichnung passt sehr wahrscheinlich zu `Vercel AI Gateway`. Falls du einen anderen
+Gateway-Anbieter meinst, muss man das separat prüfen.
 
 Warum meist nicht nötig:
 
-- du brauchst einen AI-Gateway nur, wenn du Provider bündeln, Requests routen, zentrale Abrechnung, Caching oder Monitoring über mehrere Modelle hinweg willst
-- für einen normalen OpenClaw-Start mit lokalem Ollama oder einem einzelnen Provider ist das nicht erforderlich
+- du brauchst einen AI-Gateway nur, wenn du Provider bündeln, Requests routen, zentrale Abrechnung,
+  Caching oder Monitoring über mehrere Modelle hinweg willst
+- für einen normalen OpenClaw-Start mit lokalem Ollama oder einem einzelnen Provider ist das nicht
+  erforderlich
 
 Zugang und Kosten:
 
@@ -637,55 +663,69 @@ Zugang und Kosten:
 Zahlungsweg:
 
 - für die kostenlose Stufe reicht der Account
-- für kostenpflichtige Nutzung verweist Vercel auf hinterlegte Zahlungsmethoden beziehungsweise Kartenabrechnung
-- in den geprüften offiziellen Vercel-Quellen habe ich keine belastbare PayPal- oder KYC-Aussage für AI Gateway selbst gefunden
+- für kostenpflichtige Nutzung verweist Vercel auf hinterlegte Zahlungsmethoden beziehungsweise
+  Kartenabrechnung
+- in den geprüften offiziellen Vercel-Quellen habe ich keine belastbare PayPal- oder KYC-Aussage für
+  AI Gateway selbst gefunden
 
 Hinweis:
 
-- Falls du stattdessen `Cloudflare AI Gateway` meinst: Dort sind die Kernfunktionen laut offizieller Cloudflare-Doku aktuell grundsätzlich kostenlos mit Cloudflare-Account nutzbar, aber das ist sehr wahrscheinlich nicht die API-Key-Bezeichnung, die hier gemeint ist
+- Falls du stattdessen `Cloudflare AI Gateway` meinst: Dort sind die Kernfunktionen laut offizieller
+  Cloudflare-Doku aktuell grundsätzlich kostenlos mit Cloudflare-Account nutzbar, aber das ist sehr
+  wahrscheinlich nicht die API-Key-Bezeichnung, die hier gemeint ist
 
 ### `MINIMAX_API_KEY`
 
-`MiniMax` ist nach meiner Einordnung ebenfalls ein chinesisch geprägter beziehungsweise chinesisch gegründeter Anbieter mit internationaler Ausrichtung.
+`MiniMax` ist nach meiner Einordnung ebenfalls ein chinesisch geprägter beziehungsweise chinesisch
+gegründeter Anbieter mit internationaler Ausrichtung.
 
 Warum meist nicht nötig:
 
 - unser Setup braucht MiniMax nicht als Pflichtbestandteil
-- sinnvoll wird es nur, wenn du gezielt MiniMax-Modelle für Text, Audio, Video oder Musik testen willst
+- sinnvoll wird es nur, wenn du gezielt MiniMax-Modelle für Text, Audio, Video oder Musik testen
+  willst
 
 Zugang und Kosten:
 
 - nicht anonym
 - Registrierung/Login erforderlich
-- laut offizieller Doku gibt es kostenlose Startmöglichkeiten beziehungsweise freie Registrierung mit kostenlosem Kontingent
+- laut offizieller Doku gibt es kostenlose Startmöglichkeiten beziehungsweise freie Registrierung
+  mit kostenlosem Kontingent
 - zusätzlich gibt es kostenpflichtige Token-, Abo- und Pay-as-you-go-Modelle
-- die öffentliche Pricing-Kommunikation zeigt kleine Entwicklerpläne ungefähr ab `¥29/Monat`; je nach API-Bereich können die Preise aber stark schwanken
+- die öffentliche Pricing-Kommunikation zeigt kleine Entwicklerpläne ungefähr ab `¥29/Monat`; je
+  nach API-Bereich können die Preise aber stark schwanken
 
 Zahlungsweg:
 
 - Billing-/Aufladung ist offiziell vorgesehen
-- ich habe in den geprüften offiziellen Quellen keine saubere Bestätigung zu PayPal, KYC oder konkreten Kartenpflichten gefunden
+- ich habe in den geprüften offiziellen Quellen keine saubere Bestätigung zu PayPal, KYC oder
+  konkreten Kartenpflichten gefunden
 
 ### `SYNTHETIC_API_KEY`
 
-`Synthetic` wirkt in diesem Kontext weniger wie ein einzelnes Grundmodell, sondern eher wie ein Zugangsdienst beziehungsweise Modell-Gateway mit Anthropic-kompatibler API.
+`Synthetic` wirkt in diesem Kontext weniger wie ein einzelnes Grundmodell, sondern eher wie ein
+Zugangsdienst beziehungsweise Modell-Gateway mit Anthropic-kompatibler API.
 
 Warum meist nicht nötig:
 
 - wenn du bereits direkte Provider nutzt, brauchst du Synthetic nicht zwingend
-- interessant ist es eher, wenn du bewusst dessen Modellzugang, Flatrate-Ansatz oder kompatible API nutzen willst
+- interessant ist es eher, wenn du bewusst dessen Modellzugang, Flatrate-Ansatz oder kompatible API
+  nutzen willst
 
 Zugang und Kosten:
 
 - nicht anonym
 - Account/Login erforderlich
 - laut offizieller Synthetic-Doku gibt es Subscription-Packs und zusätzlich usage-based pricing
-- die offene Pricing-Seite zeigt aktuell etwa `$1/Tag` beziehungsweise `$30/Monat` für ein Subscription-Pack
-- die Seite beschreibt außerdem usage-based pricing, ohne auf der Übersichtsseite jede Einzelbedingung im Detail auszuschreiben
+- die offene Pricing-Seite zeigt aktuell etwa `$1/Tag` beziehungsweise `$30/Monat` für ein
+  Subscription-Pack
+- die Seite beschreibt außerdem usage-based pricing, ohne auf der Übersichtsseite jede
+  Einzelbedingung im Detail auszuschreiben
 
 Zahlungsweg:
 
-- die offizielle Pricing-Seite nennt Sign-up/Login, aber ich habe dort keine belastbare Bestätigung zu PayPal, KYC oder genauen Zahlungsmittelarten gesehen
+- die offizielle Pricing-Seite nennt Sign-up/Login, aber ich habe dort keine belastbare Bestätigung
+  zu PayPal, KYC oder genauen Zahlungsmittelarten gesehen
 
 ### Minimal-Setup Empfehlung
 
@@ -895,7 +935,9 @@ In deiner `.env`:
 - nur die Dienste eintragen, die du fertig eingerichtet hast
 - schrittweise arbeiten, weil die Einrichtung etwas Zeit braucht
 
-Der beste Weg ist, die `.env` mit der Zeit in einem Editor zu pflegen. Speichere dir diese `.env` lokal, zum Beispiel auf deinem PC, und füge sie später per Copy und Paste in den Editor unseres Setups mit ein. Niemals auf GitHub hochladen!
+Der beste Weg ist, die `.env` mit der Zeit in einem Editor zu pflegen. Speichere dir diese `.env`
+lokal, zum Beispiel auf deinem PC, und füge sie später per Copy und Paste in den Editor unseres
+Setups mit ein. Niemals auf GitHub hochladen!
 
 Beispiel:
 
@@ -906,7 +948,8 @@ BRAVE_API_KEY=abc123
 
 ## Originale OpenClaw `.env` Referenz
 
-Nachfolgend ist die originale OpenClaw-`.env`-Beispielstruktur dokumentiert, die du mir gegeben hast.
+Nachfolgend ist die originale OpenClaw-`.env`-Beispielstruktur dokumentiert, die du mir gegeben
+hast.
 
 ```dotenv
 # OpenClaw .env example

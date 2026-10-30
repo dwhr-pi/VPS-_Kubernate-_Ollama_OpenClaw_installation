@@ -2,8 +2,10 @@
 
 ## Überblick
 
-Dieses Profil wurde aus der fachlichen Quelle [Visual_Creator.doc.md](../Profil/Visual_Creator.doc.md), `readme.md` und den vorhandenen Tool-Skripten zusammengeführt.
-Es beschreibt ein OpenClaw- und Ollama-kompatibles Kreativprofil für Bild- und Video-Generierung, Prompting und Asset-Produktion.
+Dieses Profil wurde aus der fachlichen Quelle
+[Visual_Creator.doc.md](../Profil/Visual_Creator.doc.md), `readme.md` und den vorhandenen
+Tool-Skripten zusammengeführt. Es beschreibt ein OpenClaw- und Ollama-kompatibles Kreativprofil für
+Bild- und Video-Generierung, Prompting und Asset-Produktion.
 
 ## Installierter Stack
 
@@ -59,14 +61,16 @@ Nutze FFmpeg für Post-Processing und beschreibe, wo Stable Diffusion, ComfyUI o
 
 - Dieses Profil passt gut zu OpenClaw für kreative Asset-Pipelines und Workflow-Orchestrierung.
 - `FFmpeg` ist bereits vorhanden.
-- `Stable_Diffusion_WebUI`, `ComfyUI` und `RealESRGAN` sind jetzt als installierbare Bausteine ergänzt.
+- `Stable_Diffusion_WebUI`, `ComfyUI` und `RealESRGAN` sind jetzt als installierbare Bausteine
+  ergänzt.
 
 ## Vergleich
 
 ### ✅ In Sync
 
 - `ffmpeg` aus der Quelle ist bereits als Tool vorhanden.
-- `stable-diffusion-webui`, `comfyui` und `RealESRGAN` sind jetzt als installierbare Module vorhanden.
+- `stable-diffusion-webui`, `comfyui` und `RealESRGAN` sind jetzt als installierbare Module
+  vorhanden.
 
 ### ⚠ Missing in Setup
 
@@ -79,4 +83,5 @@ Nutze FFmpeg für Post-Processing und beschreibe, wo Stable Diffusion, ComfyUI o
 
 ## Hinweise
 
-- Das Profil ist aktuell eher planerisch und prompt-orientiert als produktionsfertig für lokale Bild-/Video-Generierung.
+- Das Profil ist aktuell eher planerisch und prompt-orientiert als produktionsfertig für lokale
+  Bild-/Video-Generierung.

@@ -2,7 +2,8 @@
 
 ## Ziel
 
-n8n kann als Workflow-Schicht fuer OpenClaw, Ollama, myNextCloud, Home Assistant und Monitoring dienen. Git-/Source-Builds sind schwerer als Paket-/Containerpfade und bleiben opt-in.
+n8n kann als Workflow-Schicht fuer OpenClaw, Ollama, myNextCloud, Home Assistant und Monitoring
+dienen. Git-/Source-Builds sind schwerer als Paket-/Containerpfade und bleiben opt-in.
 
 ## Voraussetzungen
 

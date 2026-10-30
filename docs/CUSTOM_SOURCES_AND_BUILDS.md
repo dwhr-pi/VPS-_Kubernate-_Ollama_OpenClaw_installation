@@ -1,6 +1,7 @@
 # Custom Quellen und Ollama-Builds
 
-Diese Erweiterung erlaubt es, eigene GitHub-Repositories, Forks und Custom-Ollama-Builds sauber im Setup zu hinterlegen, ohne die Standardquellen im Quellcode unlesbar zu machen.
+Diese Erweiterung erlaubt es, eigene GitHub-Repositories, Forks und Custom-Ollama-Builds sauber im
+Setup zu hinterlegen, ohne die Standardquellen im Quellcode unlesbar zu machen.
 
 ## Ziel
 
@@ -61,7 +62,8 @@ Dort kannst du:
 
 ## Huginn als branch-orientiertes Setup
 
-Huginn wird im Setup jetzt nicht nur ueber eine einmalige Umgebungsvariable gesteuert, sondern als branch-orientierte Quelle mit gespeichertem Profil.
+Huginn wird im Setup jetzt nicht nur ueber eine einmalige Umgebungsvariable gesteuert, sondern als
+branch-orientierte Quelle mit gespeichertem Profil.
 
 Relevante Schluessel in `custom_sources.conf`:
 
@@ -81,9 +83,11 @@ Empfohlene Huginn-Profile:
 
 Wichtig:
 
-- wenn du den Huginn-Branch, Tag, Commit oder Fork aenderst, sollte der Huginn-Installer danach erneut laufen
+- wenn du den Huginn-Branch, Tag, Commit oder Fork aenderst, sollte der Huginn-Installer danach
+  erneut laufen
 - das Setup behandelt jeden Huginn-Stand bewusst als eigenen Installationslauf
-- dadurch werden Bundle-, Datenbank- und Fallback-Schritte passend zum gewaehlten Stand erneut ausgefuehrt
+- dadurch werden Bundle-, Datenbank- und Fallback-Schritte passend zum gewaehlten Stand erneut
+  ausgefuehrt
 
 ## Unterstützte Override-Quellen
 

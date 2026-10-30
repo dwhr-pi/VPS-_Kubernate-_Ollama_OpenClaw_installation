@@ -24,6 +24,6 @@ touch "$TARGET_MEMORY"
   echo
   echo "## Import $(date -Iseconds)"
   cat "$IMPORT_FILE"
-} >> "$TARGET_MEMORY"
+} >>"$TARGET_MEMORY"
 
 echo "Memory importiert nach: $TARGET_MEMORY"

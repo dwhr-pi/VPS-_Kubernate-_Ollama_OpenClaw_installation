@@ -1,6 +1,7 @@
 # Voice Command Center
 
-Profil fuer lokale Sprachsteuerung mit Whisper/faster-whisper, Piper/Coqui, Home Assistant, Node-RED und OpenClaw.
+Profil fuer lokale Sprachsteuerung mit Whisper/faster-whisper, Piper/Coqui, Home Assistant, Node-RED
+und OpenClaw.
 
 ## Fokus
 
@@ -11,7 +12,8 @@ Profil fuer lokale Sprachsteuerung mit Whisper/faster-whisper, Piper/Coqui, Home
 
 ## Sicherheitsregel
 
-Sprachbefehle werden standardmaessig als Vorschlag interpretiert. Kritische Aktionen brauchen Bestaetigung, Rollenpruefung und Grenzwerte.
+Sprachbefehle werden standardmaessig als Vorschlag interpretiert. Kritische Aktionen brauchen
+Bestaetigung, Rollenpruefung und Grenzwerte.
 
 ## Installation
 

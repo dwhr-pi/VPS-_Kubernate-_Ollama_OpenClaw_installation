@@ -2,7 +2,8 @@
 
 ## Aufgabe
 
-Der Game Asset Designer erzeugt spieloptimierte Assets mit LOD, sauberem Pivot, PBR-Texturen und Export fuer Unity, Unreal, Godot oder VRChat.
+Der Game Asset Designer erzeugt spieloptimierte Assets mit LOD, sauberem Pivot, PBR-Texturen und
+Export fuer Unity, Unreal, Godot oder VRChat.
 
 ## Empfohlene Modelle
 
@@ -36,5 +37,5 @@ Baue ein game-ready Sci-Fi-Werkzeug als GLB und FBX. Ziel: mid-poly, PBR, 2K Tex
 
 ## Kubernetes
 
-Game-Asset-Jobs lassen sich hervorragend job-basiert skalieren: jeder Worker rendert oder konvertiert ein Asset.
-
+Game-Asset-Jobs lassen sich hervorragend job-basiert skalieren: jeder Worker rendert oder
+konvertiert ein Asset.

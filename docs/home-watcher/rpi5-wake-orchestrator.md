@@ -1,8 +1,7 @@
 # Raspberry Pi 5 / Mini-PC als Wake-Orchestrator
 
-Der Heimnetz-Waechter ist ein kleines System, das immer eingeschaltet bleibt.
-Er verbindet das Heimnetz per WireGuard mit dem Oracle VPS und kann den
-RTX-/KI-Server per Wake-on-LAN starten.
+Der Heimnetz-Waechter ist ein kleines System, das immer eingeschaltet bleibt. Er verbindet das
+Heimnetz per WireGuard mit dem Oracle VPS und kann den RTX-/KI-Server per Wake-on-LAN starten.
 
 ## Aufgaben
 
@@ -44,5 +43,5 @@ GPU_SERVER_IP=GPU_SERVER_IP bash scripts/home-watcher/shutdown-idle-gpu-server.s
 
 Warnung:
 
-Automatisches Herunterfahren erst aktivieren, wenn Jobs, Downloads und Modelle
-nicht versehentlich unterbrochen werden.
+Automatisches Herunterfahren erst aktivieren, wenn Jobs, Downloads und Modelle nicht versehentlich
+unterbrochen werden.

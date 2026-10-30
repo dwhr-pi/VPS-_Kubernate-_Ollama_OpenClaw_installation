@@ -21,11 +21,11 @@ LANGFLOW_DIR="/opt/langflow"
 echo -e "${BLUE}Starte Deinstallation von LangFlow...${NC}"
 
 if [ -d "$LANGFLOW_DIR" ]; then
-    echo -e "${YELLOW}Lösche LangFlow Verzeichnis $LANGFLOW_DIR...${NC}"
-    sudo rm -rf "$LANGFLOW_DIR"
-    echo -e "${GREEN}LangFlow erfolgreich deinstalliert.${NC}"
+  echo -e "${YELLOW}Lösche LangFlow Verzeichnis $LANGFLOW_DIR...${NC}"
+  sudo rm -rf "$LANGFLOW_DIR"
+  echo -e "${GREEN}LangFlow erfolgreich deinstalliert.${NC}"
 else
-    echo -e "${YELLOW}LangFlow ist nicht installiert oder Verzeichnis nicht gefunden.${NC}"
+  echo -e "${YELLOW}LangFlow ist nicht installiert oder Verzeichnis nicht gefunden.${NC}"
 fi
 
 echo -e "${GREEN}LangFlow Deinstallation abgeschlossen.${NC}"

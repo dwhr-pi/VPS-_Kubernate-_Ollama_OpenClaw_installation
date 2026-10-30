@@ -46,7 +46,7 @@ class GGUFContract(unittest.TestCase):
             self.assertNotIn(forbidden, text)
         activate = text[text.index('cg_activate()'):text.index('cg_deactivate()')]
         self.assertLess(activate.index('cg_install_dependency'), activate.index('ln -s'))
-        self.assertLess(activate.index('ln -s'), activate.index('> "$CG_MARKER"'))
+        self.assertLess(activate.index('ln -s'), re.search(r'>\s*"\$CG_MARKER"', activate).start())
 
     def test_document_links(self):
         doc = ROOT / 'docs/tools/comfyui-gguf.md'

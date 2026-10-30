@@ -10,4 +10,3 @@ echo "Hinweis: Es werden keine grossen Video-/Bildmodelle automatisch herunterge
 bash "$ROOT_DIR/scripts/install-openhiggsstack.sh"
 
 mark_profile_installed "OpenHiggsStack_AI_Cinema_Studio"
-

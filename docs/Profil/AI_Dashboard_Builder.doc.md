@@ -2,7 +2,8 @@
 
 ## Zweck
 
-Erstellt lokale Dashboards fuer KI-Setup, Dienste, Kosten, Speicher, GPU, Logs, Automationen und Agentenstatus.
+Erstellt lokale Dashboards fuer KI-Setup, Dienste, Kosten, Speicher, GPU, Logs, Automationen und
+Agentenstatus.
 
 ## Typische Aufgaben
 
@@ -24,7 +25,8 @@ Erstellt lokale Dashboards fuer KI-Setup, Dienste, Kosten, Speicher, GPU, Logs, 
 
 ## Sicherheit
 
-Dashboards koennen interne Hostnamen, Logs, Prompts und Fehlerberichte zeigen. Standard: nur lokal oder per Tailscale/Reverse Proxy mit Auth.
+Dashboards koennen interne Hostnamen, Logs, Prompts und Fehlerberichte zeigen. Standard: nur lokal
+oder per Tailscale/Reverse Proxy mit Auth.
 
 ## Status
 

@@ -2,7 +2,8 @@
 
 ## Zweck
 
-Stellt einen produktiven Coding-Agent-Stack mit Sandbox, GitHub-Workflow und lokalem oder hybridem Modellzugriff bereit.
+Stellt einen produktiven Coding-Agent-Stack mit Sandbox, GitHub-Workflow und lokalem oder hybridem
+Modellzugriff bereit.
 
 ## Use Cases
 

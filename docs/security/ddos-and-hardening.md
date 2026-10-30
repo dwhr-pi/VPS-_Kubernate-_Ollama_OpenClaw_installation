@@ -1,12 +1,12 @@
 # DDoS- und Hardening-Konzept
 
-Hurricane Electric ist der bevorzugte externe Einstieg fuer Domain, DNS und
-IPv6. HE ersetzt aber keinen vollstaendigen DDoS-Schutz.
+Hurricane Electric ist der bevorzugte externe Einstieg fuer Domain, DNS und IPv6. HE ersetzt aber
+keinen vollstaendigen DDoS-Schutz.
 
 ## Realistische Einordnung
 
-HE kann ein guter Internet-/IPv6-/DNS-Baustein sein. Gegen groessere Angriffe
-brauchst du aber mehrere Schutzschichten:
+HE kann ein guter Internet-/IPv6-/DNS-Baustein sein. Gegen groessere Angriffe brauchst du aber
+mehrere Schutzschichten:
 
 - bewusste DNS-Eintraege
 - VPS-Firewall
@@ -138,13 +138,13 @@ Sensible Dienste duerfen nur ueber VPN erreichbar sein.
 
 Empfohlene VLANs:
 
-| VLAN | Zweck |
-|---|---|
-| 10 | Infrastruktur |
-| 20 | KI-Systeme |
-| 30 | IoT/Home Assistant/Kameras |
-| 40 | Gaeste |
-| 50 | Labor/Test |
+| VLAN | Zweck                      |
+| ---- | -------------------------- |
+| 10   | Infrastruktur              |
+| 20   | KI-Systeme                 |
+| 30   | IoT/Home Assistant/Kameras |
+| 40   | Gaeste                     |
+| 50   | Labor/Test                 |
 
 Regel:
 

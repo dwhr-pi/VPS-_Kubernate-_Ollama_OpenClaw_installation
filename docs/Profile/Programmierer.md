@@ -2,8 +2,10 @@
 
 ## Überblick
 
-Dieses Profil wurde aus der fachlichen Quelle [Programmierer.doc.md](../Profil/Programmierer.doc.md), `readme.md`, `docs/setup_guide.md` und `scripts/profiles/Programmierer_install.sh` zusammengeführt.
-Es beschreibt ein OpenClaw- und Ollama-kompatibles Multi-Agent-Setup für Entwicklung, Debugging, Architektur, Sicherheit und DevOps.
+Dieses Profil wurde aus der fachlichen Quelle
+[Programmierer.doc.md](../Profil/Programmierer.doc.md), `readme.md`, `docs/setup_guide.md` und
+`scripts/profiles/Programmierer_install.sh` zusammengeführt. Es beschreibt ein OpenClaw- und
+Ollama-kompatibles Multi-Agent-Setup für Entwicklung, Debugging, Architektur, Sicherheit und DevOps.
 
 ## Installierter Stack
 
@@ -21,7 +23,8 @@ Es beschreibt ein OpenClaw- und Ollama-kompatibles Multi-Agent-Setup für Entwic
 
 ## Dokumentierte zusätzliche Tools
 
-Die zuvor zusätzlich dokumentierten Entwickler- und Observability-Bausteine sind jetzt als Setup-Module oder vorhandene Tools abbildbar:
+Die zuvor zusätzlich dokumentierten Entwickler- und Observability-Bausteine sind jetzt als
+Setup-Module oder vorhandene Tools abbildbar:
 
 - `Docker`
 - `Kubernetes`
@@ -45,7 +48,9 @@ Die zuvor zusätzlich dokumentierten Entwickler- und Observability-Bausteine sin
 
 ## Codex-Nachbau
 
-Aus deinem Setup ergibt sich jetzt zusätzlich ein eigener optionaler `Codex-Nachbau`-Block im `Programmierer`-Profil. Er ist bewusst separat auswählbar, damit das normale Entwicklerprofil schlank bleibt und der schwerere Coding-Agent-Stack nur bei Bedarf mitinstalliert wird.
+Aus deinem Setup ergibt sich jetzt zusätzlich ein eigener optionaler `Codex-Nachbau`-Block im
+`Programmierer`-Profil. Er ist bewusst separat auswählbar, damit das normale Entwicklerprofil
+schlank bleibt und der schwerere Coding-Agent-Stack nur bei Bedarf mitinstalliert wird.
 
 ### Kern aus deinem Setup
 
@@ -60,7 +65,9 @@ Aus deinem Setup ergibt sich jetzt zusätzlich ein eigener optionaler `Codex-Nac
 
 ### Ergänzte Module für den Nachbau
 
-Diese Bausteine sind jetzt im Setup als einzelne Tools hinterlegt und über `Programmierer -> Codex-Nachbau` auswählbar. Zusätzlich gibt es dort jetzt auch eine Komplettaktion, um den ganzen Block in einem Schritt zu installieren oder wieder zu entfernen.
+Diese Bausteine sind jetzt im Setup als einzelne Tools hinterlegt und über
+`Programmierer -> Codex-Nachbau` auswählbar. Zusätzlich gibt es dort jetzt auch eine Komplettaktion,
+um den ganzen Block in einem Schritt zu installieren oder wieder zu entfernen.
 
 - `Aider`
 - `OpenCode`
@@ -69,7 +76,8 @@ Diese Bausteine sind jetzt im Setup als einzelne Tools hinterlegt und über `Pro
 - `Podman`
 - ergänzend die bereits vorhandenen Bausteine `Docker`, `K3s`, `Clawbake` und `Ollama`
 
-Wo sinnvoll, werden die neuen Bausteine direkt aus GitHub-Quellen geholt und lokal auf dem Zielsystem vorbereitet oder gebaut.
+Wo sinnvoll, werden die neuen Bausteine direkt aus GitHub-Quellen geholt und lokal auf dem
+Zielsystem vorbereitet oder gebaut.
 
 ### Empfohlener Stack
 
@@ -113,7 +121,9 @@ Mit zusaetzlichen Toolchains ebenfalls gut denkbar:
 
 Wichtige Grenze:
 
-- iPhone- und macOS-Nativbuilds lassen sich fachlich vorbereiten, analysieren und grossteils generieren, der finale Build, die Signierung und der App-Store-/TestFlight-Weg brauchen aber weiterhin ein echtes macOS-/Xcode-System
+- iPhone- und macOS-Nativbuilds lassen sich fachlich vorbereiten, analysieren und grossteils
+  generieren, der finale Build, die Signierung und der App-Store-/TestFlight-Weg brauchen aber
+  weiterhin ein echtes macOS-/Xcode-System
 
 Empfehlung:
 
@@ -255,11 +265,14 @@ fehlende Sandbox-Isolation und Secret-Leaks. Schlage konkrete Hardening-Maßnahm
 
 ## OpenClaw / Ollama Fit
 
-- Dieses Profil passt gut zu lokalem Ollama als primärem Modell-Backend und OpenClaw als Agenten- und Tool-Orchestrierungsschicht.
-- Besonders passend ist die Kombination aus `LangGraph`, `CrewAI` und `AutoGen` für mehrstufige Planer-, Coder-, Reviewer- und Ops-Agenten.
+- Dieses Profil passt gut zu lokalem Ollama als primärem Modell-Backend und OpenClaw als Agenten-
+  und Tool-Orchestrierungsschicht.
+- Besonders passend ist die Kombination aus `LangGraph`, `CrewAI` und `AutoGen` für mehrstufige
+  Planer-, Coder-, Reviewer- und Ops-Agenten.
 - `Playwright` ergänzt Browser-Automation und UI-Checks.
 - `ChromaDB` passt als lokale Memory- und Retrieval-Schicht für agentische Entwicklungsworkflows.
-- Für Coding-Aufgaben ist zusätzlich ein spezialisiertes Ollama-Modell sinnvoll, das aktuell noch manuell gewählt und installiert werden muss.
+- Für Coding-Aufgaben ist zusätzlich ein spezialisiertes Ollama-Modell sinnvoll, das aktuell noch
+  manuell gewählt und installiert werden muss.
 
 ## Vergleich
 
@@ -267,23 +280,32 @@ fehlende Sandbox-Isolation und Secret-Leaks. Schlage konkrete Hardening-Maßnahm
 
 - Huginn ist sowohl dokumentiert als auch script-seitig eingebunden.
 - Clawhub CLI ist sowohl im Menü als auch im Profilskript enthalten.
-- `LangGraph`, `CrewAI`, `AutoGen`, `Playwright` und `ChromaDB` sind jetzt als einzelne Tools vorhanden.
+- `LangGraph`, `CrewAI`, `AutoGen`, `Playwright` und `ChromaDB` sind jetzt als einzelne Tools
+  vorhanden.
 - Die wichtigsten agentischen Entwicklungsbausteine aus der Quelldatei sind damit praktisch nutzbar.
-- Der `Codex-Nachbau` ist jetzt als eigener optionaler Profilblock mit `Aider`, `OpenCode`, `OpenHands`, `GitHub_CLI` und `Podman` auswählbar.
+- Der `Codex-Nachbau` ist jetzt als eigener optionaler Profilblock mit `Aider`, `OpenCode`,
+  `OpenHands`, `GitHub_CLI` und `Podman` auswählbar.
 
 ### ⚠ Missing in Setup
 
 - Die zuvor fehlenden DevOps-, Observability- und Queue-Bausteine sind jetzt im Setup vorhanden.
-- Ein dediziertes Coding-Modell für Ollama wird weiterhin nicht automatisch mit einem Profil ausgerollt.
-- Die empfohlenen Ollama-Modelle werden weiterhin bewusst über den Ollama-Modell-Manager oder manuelle `ollama pull`-Kommandos installiert.
+- Ein dediziertes Coding-Modell für Ollama wird weiterhin nicht automatisch mit einem Profil
+  ausgerollt.
+- Die empfohlenen Ollama-Modelle werden weiterhin bewusst über den Ollama-Modell-Manager oder
+  manuelle `ollama pull`-Kommandos installiert.
 
 ### ❌ Missing in Docs
 
-- Die konkrete CLI-Verlinkung nach `/usr/local/bin/clawhub` ist in der allgemeinen Projektdoku nur am Rand sichtbar.
+- Die konkrete CLI-Verlinkung nach `/usr/local/bin/clawhub` ist in der allgemeinen Projektdoku nur
+  am Rand sichtbar.
 
 ## Hinweise
 
 - Huginn benötigt weiterhin manuelle `.env`-Anpassung und einen manuellen Start.
-- Standardport von Huginn ist `3000` und kollidiert potenziell mit OpenClaw, Flowise, Activepieces und Zenbot.
-- Für das volle Zielbild bleiben vor allem Modellwahl, konkrete Sandbox-Strategie und projektabhängige Startkommandos als bewusste Feinarbeit beim Nutzer.
-- Falls bei einem Git-Clone überhaupt ein GitHub-Username abgefragt wird, ist damit dein eigener GitHub-Benutzer gemeint. Das sollte nur bei privaten oder geschützten Repositories nötig sein; öffentliche Repositories sollten ohne Login klonen.
+- Standardport von Huginn ist `3000` und kollidiert potenziell mit OpenClaw, Flowise, Activepieces
+  und Zenbot.
+- Für das volle Zielbild bleiben vor allem Modellwahl, konkrete Sandbox-Strategie und
+  projektabhängige Startkommandos als bewusste Feinarbeit beim Nutzer.
+- Falls bei einem Git-Clone überhaupt ein GitHub-Username abgefragt wird, ist damit dein eigener
+  GitHub-Benutzer gemeint. Das sollte nur bei privaten oder geschützten Repositories nötig sein;
+  öffentliche Repositories sollten ohne Login klonen.

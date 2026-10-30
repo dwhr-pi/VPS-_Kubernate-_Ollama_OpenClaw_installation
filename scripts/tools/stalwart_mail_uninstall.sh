@@ -37,13 +37,13 @@ apply_uninstall() {
 }
 
 case "$MODE" in
-  --help|-h)
+  --help | -h)
     usage
     ;;
   --status)
     status
     ;;
-  --dry-run|--plan)
+  --dry-run | --plan)
     dry_run
     ;;
   --apply)

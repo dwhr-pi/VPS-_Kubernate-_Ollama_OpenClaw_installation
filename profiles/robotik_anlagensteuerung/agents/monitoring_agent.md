@@ -2,7 +2,8 @@
 
 ## Aufgabe
 
-Fasst MQTT-, OPC-UA-, Home-Assistant-, n8n- oder Monitoring-Daten zusammen und erzeugt Dashboard-Vorschlaege.
+Fasst MQTT-, OPC-UA-, Home-Assistant-, n8n- oder Monitoring-Daten zusammen und erzeugt
+Dashboard-Vorschlaege.
 
 ## Sicherheitsregeln
 

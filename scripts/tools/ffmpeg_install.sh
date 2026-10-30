@@ -31,8 +31,8 @@ echo -e "${YELLOW}Primaerquelle: ${FFMPEG_REPO_URL}${NC}"
 echo -e "${YELLOW}Hinweis: apt wird nur fuer Compiler/Build-Abhaengigkeiten genutzt, nicht fuer die FFmpeg-App selbst.${NC}"
 
 if ! ensure_user_workspace || ! require_disk_mb "$FFMPEG_MIN_FREE_MB" /opt; then
-    echo -e "${RED}Fehler: Zu wenig freier Speicher fuer den FFmpeg-Source-Build.${NC}"
-    exit 1
+  echo -e "${RED}Fehler: Zu wenig freier Speicher fuer den FFmpeg-Source-Build.${NC}"
+  exit 1
 fi
 
 ensure_base_apt_packages git ca-certificates build-essential pkg-config yasm nasm cmake autoconf automake libtool
@@ -46,11 +46,11 @@ cd "$FFMPEG_SOURCE_DIR"
 
 echo -e "${BLUE}Konfiguriere FFmpeg Source-Build...${NC}"
 ./configure \
-    --prefix="$FFMPEG_PREFIX" \
-    --disable-debug \
-    --disable-doc \
-    --disable-static \
-    --enable-shared
+  --prefix="$FFMPEG_PREFIX" \
+  --disable-debug \
+  --disable-doc \
+  --disable-static \
+  --enable-shared
 
 echo -e "${BLUE}Baue FFmpeg mit ${FFMPEG_JOBS} Jobs...${NC}"
 make -j "$FFMPEG_JOBS"
@@ -63,8 +63,8 @@ sudo ln -sf "$FFMPEG_PREFIX/bin/ffprobe" /usr/local/bin/ffprobe
 sudo ldconfig
 
 if ! command -v ffmpeg >/dev/null 2>&1; then
-    echo -e "${RED}Fehler: FFmpeg wurde gebaut, ist aber nicht im PATH auffindbar.${NC}"
-    exit 1
+  echo -e "${RED}Fehler: FFmpeg wurde gebaut, ist aber nicht im PATH auffindbar.${NC}"
+  exit 1
 fi
 
 echo -e "${GREEN}FFmpeg wurde erfolgreich aus GitHub-Quelle installiert.${NC}"

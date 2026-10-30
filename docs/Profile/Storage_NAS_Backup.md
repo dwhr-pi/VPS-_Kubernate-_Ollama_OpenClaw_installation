@@ -1,6 +1,7 @@
 # Storage NAS Backup
 
-Profil fuer lokale Backups, Modelle, Medien, Dokumente, MinIO, Restic, BorgBackup, Rclone und optionale NAS-Anbindung.
+Profil fuer lokale Backups, Modelle, Medien, Dokumente, MinIO, Restic, BorgBackup, Rclone und
+optionale NAS-Anbindung.
 
 ## Fokus
 
@@ -11,7 +12,8 @@ Profil fuer lokale Backups, Modelle, Medien, Dokumente, MinIO, Restic, BorgBacku
 
 ## Sicherheit
 
-Backup-Schluessel, Repository-Passwoerter und Cloud-Token niemals ins Repo schreiben. Restore regelmaessig testen.
+Backup-Schluessel, Repository-Passwoerter und Cloud-Token niemals ins Repo schreiben. Restore
+regelmaessig testen.
 
 ## Installation
 

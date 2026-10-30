@@ -1,6 +1,7 @@
 """Offline provenance, link and template checks, not Hermes runtime tests."""
 from pathlib import Path
 import re
+from doc_assertions import assert_prose_in, assert_prose_not_in
 import unittest
 
 
@@ -79,7 +80,7 @@ class HermesJarvisDocsTests(unittest.TestCase):
                      "Minute 20-30", "Private Schluessel bleiben auf dem Client",
                      "Das Drive-Paket ist\nkeine Voraussetzung",
                      "### Erwartete Uebergabe", "keinen Installer"):
-            self.assertIn(text, doc)
+            assert_prose_in(self, text, doc)
 
     def test_till_source_not_mistaken_for_installable_repository(self):
         doc = DASHBOARD.read_text(encoding="utf-8")
@@ -88,7 +89,7 @@ class HermesJarvisDocsTests(unittest.TestCase):
                      "kein verifizierter Schnellstart", "Supabase und Voyage AI",
                      "Prompt-Verbot ist keine Zugriffskontrolle",
                      "keine Datenbank angelegt"):
-            self.assertIn(text, doc)
+            assert_prose_in(self, text, doc)
 
 
 if __name__ == "__main__":

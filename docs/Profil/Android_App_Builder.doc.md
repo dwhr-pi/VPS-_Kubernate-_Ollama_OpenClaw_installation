@@ -2,7 +2,9 @@
 
 ## Zweck
 
-Profil fuer lokale Android-Projekte wie MyExplorer, myBOX, Companion-Apps oder angepasste Tailscale-/Home-Assistant-Workflows. Fokus ist Planung, Build-Umgebung, UI-Konzept, Sync-Funktionen und sichere App-Konfiguration.
+Profil fuer lokale Android-Projekte wie MyExplorer, myBOX, Companion-Apps oder angepasste
+Tailscale-/Home-Assistant-Workflows. Fokus ist Planung, Build-Umgebung, UI-Konzept, Sync-Funktionen
+und sichere App-Konfiguration.
 
 ## Typische Aufgaben
 
@@ -22,7 +24,8 @@ Profil fuer lokale Android-Projekte wie MyExplorer, myBOX, Companion-Apps oder a
 
 ## Sicherheit
 
-Android-Keystores, Signaturpasswoerter und Store-Zugangsdaten gehoeren nie ins Repo. Berechtigungen minimal halten.
+Android-Keystores, Signaturpasswoerter und Store-Zugangsdaten gehoeren nie ins Repo. Berechtigungen
+minimal halten.
 
 ## Status
 

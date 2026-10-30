@@ -13,4 +13,3 @@ Empfehlung:
 - Kleine Setups lokal starten.
 - Kubernetes erst nutzen, wenn Renderjobs wirklich parallelisiert werden.
 - GPU-Worker mit klaren Limits, Storage-Pfaden und Warteschlangen betreiben.
-

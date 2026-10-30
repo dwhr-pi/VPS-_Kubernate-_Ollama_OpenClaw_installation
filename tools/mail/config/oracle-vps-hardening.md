@@ -1,7 +1,7 @@
 # Oracle VPS Hardening fuer Stalwart Mail
 
-Der Oracle VPS ist der Mailserver-Standort. Er muss besonders sauber
-abgesichert werden, weil Mailserver im Internet sichtbar sind.
+Der Oracle VPS ist der Mailserver-Standort. Er muss besonders sauber abgesichert werden, weil
+Mailserver im Internet sichtbar sind.
 
 ## Ports
 
@@ -59,9 +59,8 @@ Admin-Zugriff bevorzugt ueber WireGuard, Tailscale oder feste Admin-IP.
 
 ## Fail2Ban / CrowdSec
 
-Aktiviere mindestens SSH-Schutz. Mail-spezifische Logs koennen spaeter
-angebunden werden, sobald Logformat und Pfade der Stalwart-Version geprueft
-sind.
+Aktiviere mindestens SSH-Schutz. Mail-spezifische Logs koennen spaeter angebunden werden, sobald
+Logformat und Pfade der Stalwart-Version geprueft sind.
 
 ## Rate Limits
 
@@ -101,5 +100,4 @@ Hurricane Electric/DNS allein ist kein DDoS-Schutz. Nutze:
 - Provider-Regeln
 - bei groesseren Angriffen Scrubbing/BGP-Mitigation
 
-Pruefe PTR/rDNS. Ohne passenden PTR auf `mail.example.tld` leidet die
-Mailzustellung oft erheblich.
+Pruefe PTR/rDNS. Ohne passenden PTR auf `mail.example.tld` leidet die Mailzustellung oft erheblich.

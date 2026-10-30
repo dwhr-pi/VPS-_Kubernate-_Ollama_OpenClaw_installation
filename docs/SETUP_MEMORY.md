@@ -2,155 +2,143 @@
 
 ## Getrennte Coding-Agenten (18.10.2026)
 
-Sieben Profile trennen Claude/Gemini/Ollama, Jarvis-Routing und OpenClaw/MCP/
-Kubernetes-Layer. Private Vorlageninstallation ist implementiert, der
-Routingplan ist offline und fuehrt nichts aus. Kein Jarvis-Runtime-Eingriff.
-GitHub-Quellvorbereitung fuer zwei Clients, ohne Docker; Claude-CLI nicht
-aus dem proprietaeren Referenzrepo baubar. [Details](agents/coding-agent-profiles.md).
+Sieben Profile trennen Claude/Gemini/Ollama, Jarvis-Routing und OpenClaw/MCP/ Kubernetes-Layer.
+Private Vorlageninstallation ist implementiert, der Routingplan ist offline und fuehrt nichts aus.
+Kein Jarvis-Runtime-Eingriff. GitHub-Quellvorbereitung fuer zwei Clients, ohne Docker; Claude-CLI
+nicht aus dem proprietaeren Referenzrepo baubar. [Details](agents/coding-agent-profiles.md).
 
 ## YuE: GitHub statt Medien-Guard (18.10.2026)
 
-YuE-v1 bewusst auf Commit gepinnt: main enthaelt inzwischen YuE2.
-Eigener Sparse-Quellinstaller ohne Docker, GPU-/Python-Pakete, Tokenizer
-oder Modelle. AST-/Pin-/Pfadpruefung, Ressourcencheck, Logs und Lifecycle.
-Keine Benutzer-WSL oder Inferenz fuer die Entwicklung. [Details](tools/yue.md).
+YuE-v1 bewusst auf Commit gepinnt: main enthaelt inzwischen YuE2. Eigener Sparse-Quellinstaller ohne
+Docker, GPU-/Python-Pakete, Tokenizer oder Modelle. AST-/Pin-/Pfadpruefung, Ressourcencheck, Logs
+und Lifecycle. Keine Benutzer-WSL oder Inferenz fuer die Entwicklung. [Details](tools/yue.md).
 
 ## ACE-Step 1.5: GitHub statt Medien-Guard (18.10.2026)
 
-Eigener gepinnter Sparse-Quell-/venv-Installer fuer ace-step 1.5.0 aus
-Git-Tag v0.1.8. Beide Wheel-Pakete acestep/openrouter und erforderliche
-UI-JS-Dateien bleiben erhalten, Modelle/Medien/Secrets ausgeschlossen.
-Keine GPU-Runtime, CUDA-/Treiber-/Systeminstallation, Dienste oder Modelle.
-Nur Offline-Tests, Benutzer-WSL unveraendert. [Details](tools/ace-step-15.md).
+Eigener gepinnter Sparse-Quell-/venv-Installer fuer ace-step 1.5.0 aus Git-Tag v0.1.8. Beide
+Wheel-Pakete acestep/openrouter und erforderliche UI-JS-Dateien bleiben erhalten,
+Modelle/Medien/Secrets ausgeschlossen. Keine GPU-Runtime, CUDA-/Treiber-/Systeminstallation, Dienste
+oder Modelle. Nur Offline-Tests, Benutzer-WSL unveraendert. [Details](tools/ace-step-15.md).
 
 ## WhisperX: GitHub statt Medien-Guard (18.10.2026)
 
-Release 3.8.6, private venv ohne Docker. Basispaket --no-deps; optionale
-Runtime braucht doppeltes Opt-in, ffmpeg, vorhandene Torch-/Audio-/Vision-
-Wheels und Ressourcenreserven. Kein HF-Login, keine Audioverarbeitung,
-ASR-/Alignment- oder Diarisierungsdownloads. VAD-Gewicht im Repo enthalten.
-Nur Offline-Tests; Benutzer-WSL nicht betreten. [Details](tools/whisperx.md).
+Release 3.8.6, private venv ohne Docker. Basispaket --no-deps; optionale Runtime braucht doppeltes
+Opt-in, ffmpeg, vorhandene Torch-/Audio-/Vision- Wheels und Ressourcenreserven. Kein HF-Login, keine
+Audioverarbeitung, ASR-/Alignment- oder Diarisierungsdownloads. VAD-Gewicht im Repo enthalten. Nur
+Offline-Tests; Benutzer-WSL nicht betreten. [Details](tools/whisperx.md).
 
 ## Aegisub: GitHub statt Medien-Guard (18.10.2026)
 
-Eigener Lifecycle mit Pin auf 3.5.1. Standard nur Quellen, optionaler
-Meson/Ninja-Build mit AEGISUB_BUILD=1 und einem Job. Private Installation,
-kein sudo, keine Wrap-Downloads; LuaJIT/wxWidgets/Medienbibliotheken separat
-einrichten. Update-Checker deaktiviert, keine GUI gestartet. Nur Offline-Tests,
-keine WSL-Aenderungen. [Details](tools/aegisub.md).
+Eigener Lifecycle mit Pin auf 3.5.1. Standard nur Quellen, optionaler Meson/Ninja-Build mit
+AEGISUB_BUILD=1 und einem Job. Private Installation, kein sudo, keine Wrap-Downloads;
+LuaJIT/wxWidgets/Medienbibliotheken separat einrichten. Update-Checker deaktiviert, keine GUI
+gestartet. Nur Offline-Tests, keine WSL-Aenderungen. [Details](tools/aegisub.md).
 
 ## Basic Pitch: GitHub statt Medien-Guard (18.10.2026)
 
-Release 0.4.0 mit festem Commit, private venv, keine Docker-Nutzung.
-Basispaket ohne Runtime-Abhaengigkeiten; optionale Runtime doppelt opt-in
-mit Python 3.10/3.11, RAM-/Disk-/Windows-C:-Pruefung. Kleine Modelle aus
-dem GitHub-Repo enthalten, kein Audio-/MIDI-Test oder Dienststart.
-Dokumentation: [Basic Pitch](tools/basic-pitch.md). Keine WSL-Aenderungen
-oder echte Installation bei der Entwicklung.
+Release 0.4.0 mit festem Commit, private venv, keine Docker-Nutzung. Basispaket ohne
+Runtime-Abhaengigkeiten; optionale Runtime doppelt opt-in mit Python 3.10/3.11,
+RAM-/Disk-/Windows-C:-Pruefung. Kleine Modelle aus dem GitHub-Repo enthalten, kein Audio-/MIDI-Test
+oder Dienststart. Dokumentation: [Basic Pitch](tools/basic-pitch.md). Keine WSL-Aenderungen oder
+echte Installation bei der Entwicklung.
 
 ## Sfizz: GitHub statt Platzhalter (18.10.2026)
 
-Eigener Lifecycle fuer Engine 1.2.3 und sechs gepinnte GitHub-Unterprojekte.
-Default nur Quellen; SFIZZ_BUILD=1 baut optional sfizz_render mit einem Job.
-Archiviertes Upstream, keine sfizz-ui-/DAW-Plugins. Status trennt Quellen,
-ELF-/Hashpruefung und fehlenden Audiotest. Keine WSL-/Audio-/Systeminstallation
-bei der Entwicklung; nur synthetische Offline-Tests. Details: [Sfizz](tools/sfizz.md).
+Eigener Lifecycle fuer Engine 1.2.3 und sechs gepinnte GitHub-Unterprojekte. Default nur Quellen;
+SFIZZ_BUILD=1 baut optional sfizz_render mit einem Job. Archiviertes Upstream, keine
+sfizz-ui-/DAW-Plugins. Status trennt Quellen, ELF-/Hashpruefung und fehlenden Audiotest. Keine
+WSL-/Audio-/Systeminstallation bei der Entwicklung; nur synthetische Offline-Tests. Details:
+[Sfizz](tools/sfizz.md).
 
 ## AIDA-X GitHub/nativer Build (18.10.2026)
 
-media_candidate ersetzt; Release 1.1.0/1027cdd1756505fd2ab1a4adb91a394a3af9df57.
-Quellen plus 8 gepinnte GitHub-Unterprojekte, optional AIDA_X_BUILD=1:
-privater CMake-Standalone-Build mit 1-2 Jobs, Ressourcencheck/Lock/Logs.
-Keine apt-/Docker-Installation, kein System-/Plugin-/Audio-Start.
+media_candidate ersetzt; Release 1.1.0/1027cdd1756505fd2ab1a4adb91a394a3af9df57. Quellen plus 8
+gepinnte GitHub-Unterprojekte, optional AIDA_X_BUILD=1: privater CMake-Standalone-Build mit 1-2
+Jobs, Ressourcencheck/Lock/Logs. Keine apt-/Docker-Installation, kein System-/Plugin-/Audio-Start.
 Native-Artefaktstatus ist kein Audiotest. Nur Offline-Tests, WSL unveraendert.
 
 ## ProPainter GitHub-Quellinstaller (18.10.2026)
 
-media_candidate ersetzt; Quellpin e870e79321c31b733e2031af5aa2fb1fe3ac7eec.
-Sparse-Quellen, S-Lab-Lizenz-Opt-in, AST ohne Import, Diskcheck/Lock/Logs.
-Kein pip-Paketroot, kein Docker/Python-/Modell-Download oder Inferenzstart.
-source_ready ist keine Inferenzfreigabe. Nur Offline-Tests, kein WSL-Zugriff.
+media_candidate ersetzt; Quellpin e870e79321c31b733e2031af5aa2fb1fe3ac7eec. Sparse-Quellen,
+S-Lab-Lizenz-Opt-in, AST ohne Import, Diskcheck/Lock/Logs. Kein pip-Paketroot, kein
+Docker/Python-/Modell-Download oder Inferenzstart. source_ready ist keine Inferenzfreigabe. Nur
+Offline-Tests, kein WSL-Zugriff.
 
 ## Kiwi Edit GitHub-Basispaket (18.10.2026)
 
-media_candidate ersetzt durch privaten diffsynth-2.0.4-Basisinstaller,
-GitHub-Pin 178f3f4f8221d7598fcc21875c847d6cf6323c4e. Sparse-Quellen,
---no-deps, Ressourcen-/Pfadschutz, Lock und Logs. Kein Docker/Modell-/Demo-
-oder Remote-Code-Start; MIT/Apache-Metadatenabweichung dokumentiert.
-Nur Offline-Tests; keine WSL-Aenderungen oder Inferenzbereitschaft behauptet.
+media_candidate ersetzt durch privaten diffsynth-2.0.4-Basisinstaller, GitHub-Pin
+178f3f4f8221d7598fcc21875c847d6cf6323c4e. Sparse-Quellen, --no-deps, Ressourcen-/Pfadschutz, Lock
+und Logs. Kein Docker/Modell-/Demo- oder Remote-Code-Start; MIT/Apache-Metadatenabweichung
+dokumentiert. Nur Offline-Tests; keine WSL-Aenderungen oder Inferenzbereitschaft behauptet.
 
 ## VOID GitHub-Quellinstallation (18.10.2026)
 
-Eigene Lifecycle-Skripte statt media_candidate. Netflix/void-model ist
-auf e3914f8f551dd4b880661991fd6b28cd1699a97a gepinnt; Sparse-Quellen ohne
-Modelle/Medien/.env/Notebooks, Syntaxcheck ohne Import, Diskcheck/Lock/Logs.
-Kein installierbarer Paket-Root, kein Docker, pip, Modell- oder Gemini-Aufruf.
-Nur Quellvorbereitung: source_ready ist nicht runtime_ready. Kein WSL-Zugriff.
+Eigene Lifecycle-Skripte statt media_candidate. Netflix/void-model ist auf
+e3914f8f551dd4b880661991fd6b28cd1699a97a gepinnt; Sparse-Quellen ohne Modelle/Medien/.env/Notebooks,
+Syntaxcheck ohne Import, Diskcheck/Lock/Logs. Kein installierbarer Paket-Root, kein Docker, pip,
+Modell- oder Gemini-Aufruf. Nur Quellvorbereitung: source_ready ist nicht runtime_ready. Kein
+WSL-Zugriff.
 
 ## Just Dub It GitHub-Basispakete (18.10.2026)
 
-Archiviertes Ursprungsrepo bleibt explizit gepinnt auf
-fa4d8f8911036ba79a62f97e7e62581e39441d56, kein stiller LTX-2.3-Wechsel.
-Private Python-3.12-venv installiert beide lokalen LTX-Pakete --no-deps.
-Lizenz-Opt-in, Ressourcen-/Pfadschutz, Logs und Lifecycle; keine Modelle,
-GPU-Runtime oder Dubbing-Ausfuehrung. Nur Offline-Tests, kein WSL-Zugriff.
+Archiviertes Ursprungsrepo bleibt explizit gepinnt auf fa4d8f8911036ba79a62f97e7e62581e39441d56,
+kein stiller LTX-2.3-Wechsel. Private Python-3.12-venv installiert beide lokalen LTX-Pakete
+--no-deps. Lizenz-Opt-in, Ressourcen-/Pfadschutz, Logs und Lifecycle; keine Modelle, GPU-Runtime
+oder Dubbing-Ausfuehrung. Nur Offline-Tests, kein WSL-Zugriff.
 
 ## Personnel Documents CLI-Starter (18.10.2026)
 
-Install/Update/Repair verwalten jetzt einen privaten CLI-Starter aus dem
-GitHub-Setup-Checkout statt Exit-Code-2-Guard. Kein Docker/Paketdownload,
-Paperless-Start oder echter Aktenzugriff. Checksummen fuer Pipeline und
-synthetische Pruefdatei, Diskcheck, Lock und private Logs. Deinstallation
-entfernt nur eigenen Starter/Registrierung; Quelldateien und Daten bleiben.
+Install/Update/Repair verwalten jetzt einen privaten CLI-Starter aus dem GitHub-Setup-Checkout statt
+Exit-Code-2-Guard. Kein Docker/Paketdownload, Paperless-Start oder echter Aktenzugriff. Checksummen
+fuer Pipeline und synthetische Pruefdatei, Diskcheck, Lock und private Logs. Deinstallation entfernt
+nur eigenen Starter/Registrierung; Quelldateien und Daten bleiben.
 
 ## Moshi GitHub-Basispaket (16.10.2026)
 
 Eigene Lifecycle-Skripte ersetzen media_candidate. Moshi 0.2.13, Pin
-e6a55d2722a65870ef52a6c9f6ecfc0e90f38362, Paket aus `source/moshi/`.
-Private Basis-venv --no-deps; Ressourcencheck, Lock, Logs, kein Docker.
-Kein Modell-/GPU-Paketdownload, Serverstart oder Mikrofonzugriff.
-Nur Offline-Tests; WSL unveraendert, kein Inferenz-Bereitschaftseintrag.
+e6a55d2722a65870ef52a6c9f6ecfc0e90f38362, Paket aus `source/moshi/`. Private Basis-venv --no-deps;
+Ressourcencheck, Lock, Logs, kein Docker. Kein Modell-/GPU-Paketdownload, Serverstart oder
+Mikrofonzugriff. Nur Offline-Tests; WSL unveraendert, kein Inferenz-Bereitschaftseintrag.
 
 ## Stable Audio Open GitHub-Basispaket (16.10.2026)
 
-Eigenes Lifecycle ersetzt media_candidate. stable-audio-tools 0.0.20 ist
-auf 3241adba4fc2a85cf5b29d9eb68d42f40a28e820 gepinnt. Upstream verlangt
-Python >=3.10,<3.11; kein Python-3.12-Bypass. Private venv --no-deps,
-Ressourcenchecks, Lock und Logs; keine Docker-/GPU-/Modellinstallation.
-Nur Offline-Tests; WSL unveraendert, kein Inferenz-Bereitschaftseintrag.
+Eigenes Lifecycle ersetzt media_candidate. stable-audio-tools 0.0.20 ist auf
+3241adba4fc2a85cf5b29d9eb68d42f40a28e820 gepinnt. Upstream verlangt Python >=3.10,<3.11; kein
+Python-3.12-Bypass. Private venv --no-deps, Ressourcenchecks, Lock und Logs; keine
+Docker-/GPU-/Modellinstallation. Nur Offline-Tests; WSL unveraendert, kein
+Inferenz-Bereitschaftseintrag.
 
 ## AudioGen GitHub-Basispaket (16.10.2026)
 
-Eigene Lifecycle-Skripte ersetzen media_candidate fuer AudioGen. AudioCraft
-v1.3.0 ist auf Commit 72cb16f9fb239e9cf03f7bd997198c7d7a67a01c gepinnt.
-Private venv, --no-deps, Ressourcencheck, Lock und Logs; kein Docker,
-Modellzugriff oder Generierung. Legacy-Runtime bleibt separat ungetestet.
-Keine Aenderung an MusicGen oder an der WSL des Benutzers.
+Eigene Lifecycle-Skripte ersetzen media_candidate fuer AudioGen. AudioCraft v1.3.0 ist auf Commit
+72cb16f9fb239e9cf03f7bd997198c7d7a67a01c gepinnt. Private venv, --no-deps, Ressourcencheck, Lock und
+Logs; kein Docker, Modellzugriff oder Generierung. Legacy-Runtime bleibt separat ungetestet. Keine
+Aenderung an MusicGen oder an der WSL des Benutzers.
 
 ## AudioLDM2 GitHub-Basispaket, 2026-10-16
 
 - b5786c5dc0ae8f766337fdc1b67ab6046586d14d / 0.1.0, private venv, --no-deps.
-- Keine automatische Runtime: NumPy<=1.23.5, Gradio<4, ungepinnter Diffusers-
-  Branch und alter CUDA-Zusatzindex. Python 3.12 nur fuer Paketvorbereitung.
+- Keine automatische Runtime: NumPy<=1.23.5, Gradio<4, ungepinnter Diffusers- Branch und alter
+  CUDA-Zusatzindex. Python 3.12 nur fuer Paketvorbereitung.
 - LICENSE CC BY-NC-SA 4.0 vs setup.py MIT; kein kommerzieller Freigabeschluss.
-- app.py share=True wird nicht ausgefuehrt. Metadaten statt Paket-/Torch-
-  Import; kein Modell-/Audio-/WebUI-Start, Uninstall nur Marker.
+- app.py share=True wird nicht ausgefuehrt. Metadaten statt Paket-/Torch- Import; kein
+  Modell-/Audio-/WebUI-Start, Uninstall nur Marker.
 
 ## ChatTTS GitHub-Paket und Core-Runtime, 2026-10-16
 
-- Pin 77b89ee281cd479f5b1a787ada330dc975ca1f2a. setup.py-Version 0.0.0
-  explizit ueber CHTTS_VER; keine behauptete offizielle Release-Version.
-- Standard --no-deps, Core-Runtime separat doppelt opt-in mit vorhandenen
-  Torch/torchaudio-Builds als Constraints. Keine Demo-/Pynini-Gesamtinstallation.
-- Code AGPLv3+, Modell laut README CC BY-NC 4.0. Keine Modell-/Inferenz-
-  oder WebUI-Starts; WebUI-Default 0.0.0.0, spaeter explizit localhost nutzen.
+- Pin 77b89ee281cd479f5b1a787ada330dc975ca1f2a. setup.py-Version 0.0.0 explizit ueber CHTTS_VER;
+  keine behauptete offizielle Release-Version.
+- Standard --no-deps, Core-Runtime separat doppelt opt-in mit vorhandenen Torch/torchaudio-Builds
+  als Constraints. Keine Demo-/Pynini-Gesamtinstallation.
+- Code AGPLv3+, Modell laut README CC BY-NC 4.0. Keine Modell-/Inferenz- oder WebUI-Starts;
+  WebUI-Default 0.0.0.0, spaeter explizit localhost nutzen.
 
 ## Qwen3-TTS GitHub-Paket und getrennte Runtime, 2026-10-16
 
-- Pin 022e286b98fbec7e1e916cb940cdf532cd9f488e / qwen-tts 0.1.1.
-  Standard --no-deps in privater venv; keine volle Inferenzbereitschaft.
-- Runtime: QWEN3_TTS_INSTALL_RUNTIME=1 + INSTALL_HEAVY_TOOLS=1 und
-  bereits passende Torch/torchaudio-Metadaten; exakte Builds als Constraints.
+- Pin 022e286b98fbec7e1e916cb940cdf532cd9f488e / qwen-tts 0.1.1. Standard --no-deps in privater
+  venv; keine volle Inferenzbereitschaft.
+- Runtime: QWEN3_TTS_INSTALL_RUNTIME=1 + INSTALL_HEAVY_TOOLS=1 und bereits passende
+  Torch/torchaudio-Metadaten; exakte Builds als Constraints.
 - Package-Doctor nur Metadaten, Runtime zusaetzlich pip check. Kein Import,
   Modell-/Token-/Demo-/Trainingszugriff; offline nur im Installer-Unterprozess.
 
@@ -158,260 +146,259 @@ Keine Aenderung an MusicGen oder an der WSL des Benutzers.
 
 - Pin be6343d95d94db5f88973aa25575a390f3ce46aa. Sparse-Quellen ohne
   Gewichte/Referenzaudios/config.json/builtin_lora, private Python-venv.
-- Kein Docker, Pinokio-Install/Reset, App-Import, Torch-/Modell-/Trainingsstart.
-  AST/Pin/venv statt Inferenztest; Ressourcenreserve nur fuer Vorbereitung.
-- app/app.py nutzt ALEXANDRIA_HOST/ALEXANDRIA_PORT, privat 127.0.0.1:4200.
-  Runtime, GPU-Pins, Modellfreigabe, Queue und Exporttest bleiben offen.
+- Kein Docker, Pinokio-Install/Reset, App-Import, Torch-/Modell-/Trainingsstart. AST/Pin/venv statt
+  Inferenztest; Ressourcenreserve nur fuer Vorbereitung.
+- app/app.py nutzt ALEXANDRIA_HOST/ALEXANDRIA_PORT, privat 127.0.0.1:4200. Runtime, GPU-Pins,
+  Modellfreigabe, Queue und Exporttest bleiben offen.
 
 ## Veo_API Google-SDK aus GitHub, 2026-10-16
 
-- googleapis/python-genai v2.31.0 / 6bbead9ec73eee0b2557c4bf07406d3574b01533.
-  Repository-Root in privater venv; nur SDK-Basis, keine Tokenizer-/Torch-Extras.
-- Eigene Menueverdrahtung/Wrapper, Metadaten/Quellursprung statt SDK-Import.
-  Keine Google-Keys/ADC/Login/Cloudauftraege; kein lokales Veo-Modell.
-- SDK-Pin fest, PyPI-Abhaengigkeiten noch ohne vollstaendigen Hash-Lock.
-  Uninstall deaktiviert nur Marker, Daten/venv/Zugangsdaten bleiben erhalten.
+- googleapis/python-genai v2.31.0 / 6bbead9ec73eee0b2557c4bf07406d3574b01533. Repository-Root in
+  privater venv; nur SDK-Basis, keine Tokenizer-/Torch-Extras.
+- Eigene Menueverdrahtung/Wrapper, Metadaten/Quellursprung statt SDK-Import. Keine
+  Google-Keys/ADC/Login/Cloudauftraege; kein lokales Veo-Modell.
+- SDK-Pin fest, PyPI-Abhaengigkeiten noch ohne vollstaendigen Hash-Lock. Uninstall deaktiviert nur
+  Marker, Daten/venv/Zugangsdaten bleiben erhalten.
 
 ## Fal_Client GitHub-Python-SDK, 2026-10-16
 
-- Tag fal_client_v1.0.3, Pin 80ddb1d8f2f4b0a28a0323fd3c1d96e34c849eb5.
-  Nur projects/fal_client, nicht Monorepo-Root oder fal-Deployment-SDK.
-- Private venv, SCM-Versionswert fuer flachen Checkout explizit, Abhaengigkeiten
-  als Wheels von PyPI. Keine Docker-/WSL-Aktionen oder API-/Uploadtests.
-- Doctor: Version/Quellursprung/venv/pip check, kein SDK-Import oder Tokenlesen.
-  1 GiB RAM gesamt/512 MiB frei, 2 GiB Disk/messbare Windows-C:-Reserve.
+- Tag fal_client_v1.0.3, Pin 80ddb1d8f2f4b0a28a0323fd3c1d96e34c849eb5. Nur projects/fal_client,
+  nicht Monorepo-Root oder fal-Deployment-SDK.
+- Private venv, SCM-Versionswert fuer flachen Checkout explizit, Abhaengigkeiten als Wheels von
+  PyPI. Keine Docker-/WSL-Aktionen oder API-/Uploadtests.
+- Doctor: Version/Quellursprung/venv/pip check, kein SDK-Import oder Tokenlesen. 1 GiB RAM
+  gesamt/512 MiB frei, 2 GiB Disk/messbare Windows-C:-Reserve.
 - Client ist keine lokale fal-Plattform und keine Cloud-Kostensperre.
 
 ## Windmill nativ aus GitHub, 2026-10-16
 
-- v1.837.0 / 1fe3858a6d51949327046117d9ce4c10467a3000. Sparse-Quellen
-  ohne Upstream-.env/Hooks/Agent-Konfigurationen, Lock/Log/Diskwache.
-- Optional WINDMILL_INSTALL_BINARY=1 + WINDMILL_ACCEPT_RELEASE_TERMS=1:
-  Linux-amd64-Datei aus GitHub mit SHA256/ELF, nicht ausgefuehrt.
-- Release-Binary enthaelt laut Upstream auch proprietaere Komponenten;
-  kein als rein AGPL bezeichneter Ersatz fuer einen eigenen Source-Build.
+- v1.837.0 / 1fe3858a6d51949327046117d9ce4c10467a3000. Sparse-Quellen ohne
+  Upstream-.env/Hooks/Agent-Konfigurationen, Lock/Log/Diskwache.
+- Optional WINDMILL_INSTALL_BINARY=1 + WINDMILL_ACCEPT_RELEASE_TERMS=1: Linux-amd64-Datei aus GitHub
+  mit SHA256/ELF, nicht ausgefuehrt.
+- Release-Binary enthaelt laut Upstream auch proprietaere Komponenten; kein als rein AGPL
+  bezeichneter Ersatz fuer einen eigenen Source-Build.
 - Kein PostgreSQL/Server/Workerstart, keine Ports/Secrets, keine WSL-Aktion.
   SERVER_BIND_ADDR=127.0.0.1 vor spaeterem manuellen Start zwingend beachten.
 
 ## SD.Next GitHub-Quelle und private venv, 2026-10-16
 
-- Pin b7dcb0ce870181a40d1246fde1febbff5593a750, kein automatisches latest.
-  Eigener Installer/Update/Doctor/Status und Menue, keine Docker-Aufrufe.
-- Python 3.10-3.13, ensurepip/venv vorab pruefen. 2 GiB Disk, 4 GiB
-  messbare Windows-C:-Reserve nur fuer Quellen/venv.
-- Upstream installer.py installiert schon beim Import Pakete; --test ist
-  ein Modelltest. Kein Upstream-Import/Launcherstart durch unseren Installer.
-- Runtime nicht nachgewiesen, keine Modelle/Submodule/Treiber/Ports;
-  Uninstall entfernt nur Marker, nicht Daten.
+- Pin b7dcb0ce870181a40d1246fde1febbff5593a750, kein automatisches latest. Eigener
+  Installer/Update/Doctor/Status und Menue, keine Docker-Aufrufe.
+- Python 3.10-3.13, ensurepip/venv vorab pruefen. 2 GiB Disk, 4 GiB messbare Windows-C:-Reserve nur
+  fuer Quellen/venv.
+- Upstream installer.py installiert schon beim Import Pakete; --test ist ein Modelltest. Kein
+  Upstream-Import/Launcherstart durch unseren Installer.
+- Runtime nicht nachgewiesen, keine Modelle/Submodule/Treiber/Ports; Uninstall entfernt nur Marker,
+  nicht Daten.
 
 ## Pinokio nativer GitHub-Release, 2026-10-16
 
-- Eigene Menueverdrahtung und Wrapper; v8.2.0, Windows Pinokio.exe mit
-  dokumentiertem GitHub-SHA256. Keine Docker-/WSL-Installation.
-- Browserfreigabe, Enter-Pause und manuelle Bestaetigung; ausstehend Exit 3,
-  kein automatisch gesetzter Installationsmarker oder ausgefuehrter Installer.
-- Desktop-App-Skripte sind keine Sandbox; Modelle, Queue-Integration und
-  technische Installationserkennung bleiben gesondert zu pruefen.
+- Eigene Menueverdrahtung und Wrapper; v8.2.0, Windows Pinokio.exe mit dokumentiertem GitHub-SHA256.
+  Keine Docker-/WSL-Installation.
+- Browserfreigabe, Enter-Pause und manuelle Bestaetigung; ausstehend Exit 3, kein automatisch
+  gesetzter Installationsmarker oder ausgefuehrter Installer.
+- Desktop-App-Skripte sind keine Sandbox; Modelle, Queue-Integration und technische
+  Installationserkennung bleiben gesondert zu pruefen.
 
 ## TGI GitHub-Quellen und optionaler Launcher, 2026-10-16
 
-- Release v3.3.7, Pin dfb3fbe78e0d1d69251bd33065591c61bafdfaa8. Cargo-Workspace
-  nennt upstream 3.3.6-dev0; kein erfundener Binary-Versioncheck.
-- Standard Quellen; TGI_BUILD_LAUNCHER=1 plus INSTALL_HEAVY_TOOLS=1 baut nur
-  Rust-Launcher privat mit einem Job/locked. Router/Python-Shard/GPU noch offen.
+- Release v3.3.7, Pin dfb3fbe78e0d1d69251bd33065591c61bafdfaa8. Cargo-Workspace nennt upstream
+  3.3.6-dev0; kein erfundener Binary-Versioncheck.
+- Standard Quellen; TGI_BUILD_LAUNCHER=1 plus INSTALL_HEAVY_TOOLS=1 baut nur Rust-Launcher privat
+  mit einem Job/locked. Router/Python-Shard/GPU noch offen.
 - Keine Modelle/Server/Treiber/WSL-Aktionen; Marker-Deaktivierung erhaelt Daten.
 
 ## ViDubb GitHub-Quellen, 2026-10-16
 
 - Pin 6a90ea25fd14d7cb241f1c5759fc9f4b8b93f49d; Sparse-/Partial-Fetch, kein
   Upstream-.env-/Medien-/Gewichtscheckout. Nur AST/Quellchecks, kein Import.
-- Laufzeit nicht eingerichtet: alte TensorFlow/TTS-Pins, pip beim Import,
-  share=True und loeschende Arbeitsablaeufe. VIDUBB_INSTALL_RUNTIME=1 gesperrt.
+- Laufzeit nicht eingerichtet: alte TensorFlow/TTS-Pins, pip beim Import, share=True und loeschende
+  Arbeitsablaeufe. VIDUBB_INSTALL_RUNTIME=1 gesperrt.
 - Quellmarker/Lock/Logs und datenerhaltende Deaktivierung; WSL unberuehrt.
 
 ## ComfyUI-GGUF Pfaderkennung, 2026-10-16
 
-- COMFYUI_ROOT vor Registrierung vor eindeutiger fester Kandidatenliste;
-  venv/.venv erkennen, bei Mehrdeutigkeit expliziten Override verlangen.
-- Markerpfad vor Lesen pruefen; keine rekursive Suche/Imports/Rechteaenderungen.
-  Fehlende Basisdateien konkret nennen. ComfyUI bleibt separate schwere Auswahl.
+- COMFYUI_ROOT vor Registrierung vor eindeutiger fester Kandidatenliste; venv/.venv erkennen, bei
+  Mehrdeutigkeit expliziten Override verlangen.
+- Markerpfad vor Lesen pruefen; keine rekursive Suche/Imports/Rechteaenderungen. Fehlende
+  Basisdateien konkret nennen. ComfyUI bleibt separate schwere Auswahl.
 
 ## HF Hub GitHub-Client/CLI, 2026-10-16
 
-- 2.2.0, Pin acfdf30d99441317270cca6e9362dd7f9ff47c55; eigene venv/bin/hf,
-  getrennt von Datasets-venv. hf-xet nur Wheel, keine Extras/Transfers/Logins.
-- >=1 GiB gesamt, >=512 MiB verfuegbar, 2 GiB Disk/WSL-Hostreserve.
-  Python 3.10-3.13, Linux x86_64/ARM64 vorgesehen, echte Pakettests offen.
-- Doctor nur Metadaten/Entrypoint/pip check; keine CLI-/Hub-Ausfuehrung.
-  Deaktivierung erhaelt Daten/Token; native CLI ist keine technische Sandbox.
+- 2.2.0, Pin acfdf30d99441317270cca6e9362dd7f9ff47c55; eigene venv/bin/hf, getrennt von
+  Datasets-venv. hf-xet nur Wheel, keine Extras/Transfers/Logins.
+- > =1 GiB gesamt, >=512 MiB verfuegbar, 2 GiB Disk/WSL-Hostreserve. Python 3.10-3.13, Linux
+  > x86_64/ARM64 vorgesehen, echte Pakettests offen.
+- Doctor nur Metadaten/Entrypoint/pip check; keine CLI-/Hub-Ausfuehrung. Deaktivierung erhaelt
+  Daten/Token; native CLI ist keine technische Sandbox.
 
 ## HF Datasets GitHub-Basispaket, 2026-10-16
 
-- 5.1.0, Pin efe6ea4f88260b1a5066f28a9c90d82365a29f42, private venv;
-  keine Decoder-/Torch-/Training-Extras und keine Daten-/Modell-/Token-Aktionen.
-- >=2 GiB gesamt, >=1 GiB verfuegbar, 4 GiB Disk/WSL-Hostreserve. Python
-  3.10-3.13, Linux x86_64/ARM64-Wheel-Pfad; echte Pakettests noch offen.
-- PyArrow/NumPy/pandas nur Wheels; HF-Hub-Bibliothek als Abhaengigkeit,
-  separater HF_Hub-Menuepfad bleibt planned. Bestehende ensurepip-Reparatur genutzt.
+- 5.1.0, Pin efe6ea4f88260b1a5066f28a9c90d82365a29f42, private venv; keine
+  Decoder-/Torch-/Training-Extras und keine Daten-/Modell-/Token-Aktionen.
+- > =2 GiB gesamt, >=1 GiB verfuegbar, 4 GiB Disk/WSL-Hostreserve. Python 3.10-3.13, Linux
+  > x86_64/ARM64-Wheel-Pfad; echte Pakettests noch offen.
+- PyArrow/NumPy/pandas nur Wheels; HF-Hub-Bibliothek als Abhaengigkeit, separater HF_Hub-Menuepfad
+  bleibt planned. Bestehende ensurepip-Reparatur genutzt.
 
 ## AudioSeal GitHub-CPU-Paket, 2026-10-16
 
-- AudioSeal 0.2.0, Pin e63a8a0e5cdf7bb797159c92ba15961557fe9bd2; private
-  Python-venv, Torch 2.10.0+cpu, keine Dev-/CUDA-/Modell-/Audioaktionen.
-- >=6 GiB gesamt, >=4 GiB verfuegbar, 8 GiB Disk/WSL-Hostreserve. Linux x86_64,
-  Python 3.10-3.13. Wiederverwendete sichere ensurepip-Reparatur nur bei Installation.
-- Checkpoint-Loader nutzt weights_only=False; nur vertrauenswuerdige Gewichte,
-  kein universeller Deepfake-Detektor. Nur Offline-Tests; kein echter Pakettest.
+- AudioSeal 0.2.0, Pin e63a8a0e5cdf7bb797159c92ba15961557fe9bd2; private Python-venv, Torch
+  2.10.0+cpu, keine Dev-/CUDA-/Modell-/Audioaktionen.
+- > =6 GiB gesamt, >=4 GiB verfuegbar, 8 GiB Disk/WSL-Hostreserve. Linux x86_64, Python 3.10-3.13.
+  > Wiederverwendete sichere ensurepip-Reparatur nur bei Installation.
+- Checkpoint-Loader nutzt weights_only=False; nur vertrauenswuerdige Gewichte, kein universeller
+  Deepfake-Detektor. Nur Offline-Tests; kein echter Pakettest.
 
 ## DeepFilterNet GitHub-Rust-CPU, 2026-10-16
 
-- v0.5.6, Commit 978576aa8400552a4ce9730838c635aa30db5e61; native deep-filter-CLI
-  aus libDF, kein Docker/Python/PyTorch. Cargo.lock, ein Buildjob.
+- v0.5.6, Commit 978576aa8400552a4ce9730838c635aa30db5e61; native deep-filter-CLI aus libDF, kein
+  Docker/Python/PyTorch. Cargo.lock, ein Buildjob.
 - Mitgeliefertes DFN3-ONNX-Modell aus GitHub eingebettet, kein separater
   Modell-/Audio-/Mikrofon-/Dienststart. Kein Deepfake-/Authentizitaetsdetektor.
-- >=6 GiB Gesamt-RAM, >=4 GiB verfuegbar, 8 GiB Disk/WSL-Hostreserve;
-  Toolchain separat, echte Linux-/ARM-Buildtests offen. Nur Offline-Mocks.
+- > =6 GiB Gesamt-RAM, >=4 GiB verfuegbar, 8 GiB Disk/WSL-Hostreserve; Toolchain separat, echte
+  > Linux-/ARM-Buildtests offen. Nur Offline-Mocks.
 
 ## Qwen Code RAM-Budget, 2026-10-16
 
-- Alte 8192-MB-Pruefung las MemTotal, nicht freien RAM. Neue lokale
-  Planungsregel: >=7168 MiB gesamt und >=5120 MiB MemAvailable, vor Downloads.
-- Upstream-Build behielt 4096-MiB-Node-Heap; pnpm child-concurrency=1,
-  network-concurrency=4. Kein belegtes Minimum/Erfolgsgarantie, keine WSL-Aenderung.
+- Alte 8192-MB-Pruefung las MemTotal, nicht freien RAM. Neue lokale Planungsregel: >=7168 MiB gesamt
+  und >=5120 MiB MemAvailable, vor Downloads.
+- Upstream-Build behielt 4096-MiB-Node-Heap; pnpm child-concurrency=1, network-concurrency=4. Kein
+  belegtes Minimum/Erfolgsgarantie, keine WSL-Aenderung.
 
 ## Qwen Desktop manuelle Uebergabe, 2026-10-16
 
 - Install/Update warten interaktiv nach Browserangebot auf Enter und
   [(j)a/(N)ein]-Abschlussbestaetigung. Keine automatische Windows-Installation.
-- Exit 0 bestaetigt manuell, 3 verschoben/EOF, 1 Browserfehler. Tools-Menue
-  behandelt 3 als skipped, 0 ohne automatisch verifizierten Installiert-Haken.
+- Exit 0 bestaetigt manuell, 3 verschoben/EOF, 1 Browserfehler. Tools-Menue behandelt 3 als skipped,
+  0 ohne automatisch verifizierten Installiert-Haken.
 - --open-download bleibt reine Browser-Uebergabe ohne Wartephase.
 
 ## Agent Framework venv-Reparatur, 2026-10-16
 
 - Import von venv allein erkennt fehlendes ensurepip unter Ubuntu nicht.
-- Vor Clone/Build gezielt pythonX.Y-venv fuer paketverwaltetes System-Python
-  nach sudo-Freigabe installieren; bestehender APT-Lock-Helper, Opt-out
-  AGENT_FRAMEWORK_AUTO_VENV=0. Keine Reparatur von Custom-Python via apt.
+- Vor Clone/Build gezielt pythonX.Y-venv fuer paketverwaltetes System-Python nach sudo-Freigabe
+  installieren; bestehender APT-Lock-Helper, Opt-out AGENT_FRAMEWORK_AUTO_VENV=0. Keine Reparatur
+  von Custom-Python via apt.
 - Partial-venv und Quelle bleiben erhalten; --repair vervollstaendigt sie.
 - Nur Offline-Mocks testen; keine WSL-/Systeminstallation durch Codex.
 
 ## Pyannote Audio GitHub/CPU, 2026-10-16
 
-- Release 4.0.4, Commit 78c0d16a5f558adb1024d112e6857b3204b450b3,
-  eigener GitHub-Source-Installer ohne Docker; source-ready ist kein Modelltest.
-- Optional CPU-Pakete nur PYANNOTE_AUDIO_INSTALL_RUNTIME=1 und
-  INSTALL_HEAVY_TOOLS=1, private venv, Torch/Audio 2.10.0, TorchCodec 0.10.0.
-- Keine Imports von Pipeline/torch bei Checks, Modelle/Token separat.
-  Telemetrie-Flags bei spaeterer Nutzung explizit setzen. Keine Echtheitsbewertung.
+- Release 4.0.4, Commit 78c0d16a5f558adb1024d112e6857b3204b450b3, eigener GitHub-Source-Installer
+  ohne Docker; source-ready ist kein Modelltest.
+- Optional CPU-Pakete nur PYANNOTE_AUDIO_INSTALL_RUNTIME=1 und INSTALL_HEAVY_TOOLS=1, private venv,
+  Torch/Audio 2.10.0, TorchCodec 0.10.0.
+- Keine Imports von Pipeline/torch bei Checks, Modelle/Token separat. Telemetrie-Flags bei spaeterer
+  Nutzung explizit setzen. Keine Echtheitsbewertung.
 - Keine WSL-/Medienzugriffe durch Codex. Deaktivierung erhaelt alle Daten.
 
 ## FILM GitHub-Quellen, 2026-10-16
 
-- google-research/frame-interpolation auf Pin
-  69f8708f08e62c2edf46a27616a4bfcf083e2076, Source-only ohne Docker.
-- Upstream archiviert; TensorFlow 2.6.2/Legacy-CUDA nicht ungeprueft auf
-  Ubuntu 24.04 oder RTX 5080 installieren. Quellmarker ist kein Inferenztest.
-- Original-CLI kann vorhandene Ausgabeframes entfernen: eigene neue
-  Jobordner und Originalkopien fuer spaetere manuelle Tests voraussetzen.
+- google-research/frame-interpolation auf Pin 69f8708f08e62c2edf46a27616a4bfcf083e2076, Source-only
+  ohne Docker.
+- Upstream archiviert; TensorFlow 2.6.2/Legacy-CUDA nicht ungeprueft auf Ubuntu 24.04 oder RTX 5080
+  installieren. Quellmarker ist kein Inferenztest.
+- Original-CLI kann vorhandene Ausgabeframes entfernen: eigene neue Jobordner und Originalkopien
+  fuer spaetere manuelle Tests voraussetzen.
 - Keine Live-WSL-/TensorFlow-/Modell-/Videoaktionen. Uninstall nur Marker.
 
 ## SUPIR GitHub-Quellen, 2026-10-16
 
-- Fanghua-Yu/SUPIR master, Commit bda91af2000042f8bedfec8897d92917e67c1d88,
-  eigener Source-only-Installer ohne Docker. Marker ist keine GPU-Laufzeit.
-- FastAPI 0.95.1 verlangt Pydantic <2, Gradio 4.16.0 >=2; automatische
-  Legacy-Pakete nicht freigeben. Keine Python-3.8-/Conda-/Modellinstallation.
-- SUPIR Software License Agreement mit kommerziellen Einschraenkungen
-  klar dokumentieren, nicht pauschal als MIT/Apache behandeln.
-- Offline-Syntax/Pin-Checks, Lock/Logs, Deaktivierung ohne Datenloeschung.
-  Keine Eingriffe in WSL oder laufende Dienste durch Codex.
+- Fanghua-Yu/SUPIR master, Commit bda91af2000042f8bedfec8897d92917e67c1d88, eigener
+  Source-only-Installer ohne Docker. Marker ist keine GPU-Laufzeit.
+- FastAPI 0.95.1 verlangt Pydantic <2, Gradio 4.16.0 >=2; automatische Legacy-Pakete nicht
+  freigeben. Keine Python-3.8-/Conda-/Modellinstallation.
+- SUPIR Software License Agreement mit kommerziellen Einschraenkungen klar dokumentieren, nicht
+  pauschal als MIT/Apache behandeln.
+- Offline-Syntax/Pin-Checks, Lock/Logs, Deaktivierung ohne Datenloeschung. Keine Eingriffe in WSL
+  oder laufende Dienste durch Codex.
 
 ## ComfyUI-GGUF GitHub-Node, 2026-10-16
 
-- Eigener Source-Installer fuer city96/ComfyUI-GGUF, Pin
-  6ea2651e7df66d7585f6ffee804b20e92fb38b8a, ohne Docker/Modelle.
-- Vorhandenes ComfyUI voraussetzen; gguf in dessen venv, bestehende
-  Paketversionen per Constraints erhalten. Node-Link erst nach Paketpruefung.
-- Source-only ohne Integration moeglich; Uninstall entfernt nur eigenen
-  Node-Link/Marker, nicht Quelle/Pakete/Modelle. Keine WSL-/ComfyUI-Liveeingriffe.
+- Eigener Source-Installer fuer city96/ComfyUI-GGUF, Pin 6ea2651e7df66d7585f6ffee804b20e92fb38b8a,
+  ohne Docker/Modelle.
+- Vorhandenes ComfyUI voraussetzen; gguf in dessen venv, bestehende Paketversionen per Constraints
+  erhalten. Node-Link erst nach Paketpruefung.
+- Source-only ohne Integration moeglich; Uninstall entfernt nur eigenen Node-Link/Marker, nicht
+  Quelle/Pakete/Modelle. Keine WSL-/ComfyUI-Liveeingriffe.
 
 ## Wan21 GitHub-Quellinstallation, 2026-10-16
 
-- Wan-Video/Wan2.1 auf Commit 9737cba9c1c3c4d04b33fcad41c111989865d315
-  ohne Docker; source-ready prueft nur saubere Quellen/Syntax.
-- WAN21_INSTALL_RUNTIME=1 und INSTALL_HEAVY_TOOLS=1 fuer experimentelle
-  private CUDA-Pakete, nach GPU/nvcc/Ressourcenchecks. Keine Gewichte/Starts.
-- Kein SDPA-Fallback versprechen: Upstream-Modell ruft flash_attention direkt.
-  Doctor nur Metadaten, echter CUDA-/RTX-5080-Renderpfad weiter ungetestet.
+- Wan-Video/Wan2.1 auf Commit 9737cba9c1c3c4d04b33fcad41c111989865d315 ohne Docker; source-ready
+  prueft nur saubere Quellen/Syntax.
+- WAN21_INSTALL_RUNTIME=1 und INSTALL_HEAVY_TOOLS=1 fuer experimentelle private CUDA-Pakete, nach
+  GPU/nvcc/Ressourcenchecks. Keine Gewichte/Starts.
+- Kein SDPA-Fallback versprechen: Upstream-Modell ruft flash_attention direkt. Doctor nur Metadaten,
+  echter CUDA-/RTX-5080-Renderpfad weiter ungetestet.
 - Keine WSL-Eingriffe durch Codex; Uninstall erhaelt Quelle/venv/Modelle.
 
 ## Cline GitHub-VSIX, 2026-10-16
 
-- Eigener optionaler Paketinstaller statt Hybrid-Guard: offizielles VSIX
-  v4.1.25 mit festem Release-Hash, kein Docker oder schwerer Source-Build.
-- release-ready/package_ready pruefen nur die Paketbereitstellung; niemals
-  als Nachweis einer installierten Windows-/WSL-Extension ausgeben.
-- Manuelle VSIX-Installation im gewuenschten Editorprofil dokumentiert.
-  Kein code-Aufruf, Login, Agent, API, Modell oder WSL-Eingriff durch Codex.
+- Eigener optionaler Paketinstaller statt Hybrid-Guard: offizielles VSIX v4.1.25 mit festem
+  Release-Hash, kein Docker oder schwerer Source-Build.
+- release-ready/package_ready pruefen nur die Paketbereitstellung; niemals als Nachweis einer
+  installierten Windows-/WSL-Extension ausgeben.
+- Manuelle VSIX-Installation im gewuenschten Editorprofil dokumentiert. Kein code-Aufruf, Login,
+  Agent, API, Modell oder WSL-Eingriff durch Codex.
 
 ## Karaoke Formats Installation, 2026-10-16
 
-- Eigener SRT/LRC-Konverter erhielt einen privaten Installer fuer einen Starter
-  aus dem vorhandenen GitHub-Checkout; keine separate Kopie, kein Docker/pip.
-- SHA-256-Pruefung erkennt geaenderte/fehlende Quelle; Tool-Update erneuert
-  den Starter. Lock, private Logs, Disk-Reserve und Offline-Doctor integriert.
-- Keine Medienverarbeitung/Downloads/WSL-Eingriffe beim Entwickeln. Uninstall
-  entfernt nur verwalteten Starter und Registrierung, keine Medien/Quellen.
+- Eigener SRT/LRC-Konverter erhielt einen privaten Installer fuer einen Starter aus dem vorhandenen
+  GitHub-Checkout; keine separate Kopie, kein Docker/pip.
+- SHA-256-Pruefung erkennt geaenderte/fehlende Quelle; Tool-Update erneuert den Starter. Lock,
+  private Logs, Disk-Reserve und Offline-Doctor integriert.
+- Keine Medienverarbeitung/Downloads/WSL-Eingriffe beim Entwickeln. Uninstall entfernt nur
+  verwalteten Starter und Registrierung, keine Medien/Quellen.
 
 ## Microsoft Agent Framework GitHub-Source, 2026-10-16
 
-- Planungs-Platzhalter durch optionalen Python-Core-Installer ersetzt:
-  1.22.0, Commit 17b1a14bd5b4c774c18d5b827b4f5b97bed3cbee,
-  python/packages/core aus GitHub, private venv, PyPI-Abhaengigkeiten.
-- Ressourcenpruefung vor Downloads, Operations-Lock, private Logs,
-  Offline-Status/Doctor und datenerhaltende Deaktivierung.
-- Kein Docker, Modell-/Providerstart, .NET, AutoGen-Migration oder WSL-Eingriff.
-  Nur Offline-/Mocktests; realer Source-Build und Ollama-Integration noch offen.
+- Planungs-Platzhalter durch optionalen Python-Core-Installer ersetzt: 1.22.0, Commit
+  17b1a14bd5b4c774c18d5b827b4f5b97bed3cbee, python/packages/core aus GitHub, private venv,
+  PyPI-Abhaengigkeiten.
+- Ressourcenpruefung vor Downloads, Operations-Lock, private Logs, Offline-Status/Doctor und
+  datenerhaltende Deaktivierung.
+- Kein Docker, Modell-/Providerstart, .NET, AutoGen-Migration oder WSL-Eingriff. Nur
+  Offline-/Mocktests; realer Source-Build und Ollama-Integration noch offen.
 
 ## Qwen Code Runtime-Bootstrap, 2026-10-16
 
-- Abbruch wegen fehlendem Node durch private Bereitstellung bei ausdruecklicher
-  Installation/Repair ersetzen. Node 22.22+/npm >=10 via vorhandenem GitHub-nvm.
+- Abbruch wegen fehlendem Node durch private Bereitstellung bei ausdruecklicher Installation/Repair
+  ersetzen. Node 22.22+/npm >=10 via vorhandenem GitHub-nvm.
 - Corepack 0.34.0 privat per npm, pnpm 11.24.0 samt Upstream-SHA-512 im
   tools/qwen_code/runtime/corepack-cache; keine globalen Shims/Profile aendern.
-- Vor Downloads Ressourcen/Lock/Log, Pruefungen mit Corepack-Netzwerk aus.
-  QWEN_CODE_AUTO_RUNTIME=0 sperrt Bootstrap. Kein echter Download, WSL-Zugriff,
-  Login, Agentenstart oder Modellabruf durch Codex. Revision:
-  2026-10-16-private-node-corepack-bootstrap.
+- Vor Downloads Ressourcen/Lock/Log, Pruefungen mit Corepack-Netzwerk aus. QWEN_CODE_AUTO_RUNTIME=0
+  sperrt Bootstrap. Kein echter Download, WSL-Zugriff, Login, Agentenstart oder Modellabruf durch
+  Codex. Revision: 2026-10-16-private-node-corepack-bootstrap.
 
 ## Automaton Runtime-Bootstrap, 2026-10-16
 
-- Automaton fehlte Node: Node/npm ueber vorhandenen GitHub-nvm-Helfer privat
-  unter tools/automaton/runtime/nvm bereitstellen. pnpm@10.28.1 separat per
-  npm --prefix unter runtime/pnpm, ohne globales Update/Lifecycle-Skripte.
-- Nur Installation/Repair nach Ressourcen/Lock/Log, opt-out
-  AUTOMATON_AUTO_RUNTIME=0; Status/Doctor ohne Downloads, kein Agentenstart.
-- System-Node, ~/.nvm, Shellprofile, Wallets und WSL durch Codex unveraendert.
-  Revision 2026-10-16-private-node-pnpm-bootstrap. Kein echter Runtime-Download.
+- Automaton fehlte Node: Node/npm ueber vorhandenen GitHub-nvm-Helfer privat unter
+  tools/automaton/runtime/nvm bereitstellen. pnpm@10.28.1 separat per npm --prefix unter
+  runtime/pnpm, ohne globales Update/Lifecycle-Skripte.
+- Nur Installation/Repair nach Ressourcen/Lock/Log, opt-out AUTOMATON_AUTO_RUNTIME=0; Status/Doctor
+  ohne Downloads, kein Agentenstart.
+- System-Node, ~/.nvm, Shellprofile, Wallets und WSL durch Codex unveraendert. Revision
+  2026-10-16-private-node-pnpm-bootstrap. Kein echter Runtime-Download.
 
 ## FreeLLMAPI privater Node-Bootstrap, 2026-10-16
 
-- Neuer Source-Installer erreicht, aber Node fehlte: automatischen Bootstrap
-  nur in expliziter Installation/Repair ergaenzt. Runtime-Revision:
-  2026-10-16-private-node-bootstrap; Source-Revision bleibt erkennbar.
-- Vorhandenen node_tool_common-Helfer nutzen, private NVM_DIR unter
-  tools/freellmapi/runtime/nvm, strenge FreeLLMAPI-Node/npm-Kompatibilitaet.
-- nvm v0.40.8 GitHub; Node-22-Binary/npm offiziell, kein System-Node-Austausch.
-  Laufzeit bei spaeterem Start aktivieren, nicht erneut installieren.
-- FREELLMAPI_AUTO_NODE=0 verhindert Bootstrap. Kein echter Download/Build,
-  WSL-Zugriff oder Service-Start durch Codex; Tests verwenden Stubs.
+- Neuer Source-Installer erreicht, aber Node fehlte: automatischen Bootstrap nur in expliziter
+  Installation/Repair ergaenzt. Runtime-Revision: 2026-10-16-private-node-bootstrap; Source-Revision
+  bleibt erkennbar.
+- Vorhandenen node_tool_common-Helfer nutzen, private NVM_DIR unter tools/freellmapi/runtime/nvm,
+  strenge FreeLLMAPI-Node/npm-Kompatibilitaet.
+- nvm v0.40.8 GitHub; Node-22-Binary/npm offiziell, kein System-Node-Austausch. Laufzeit bei
+  spaeterem Start aktivieren, nicht erneut installieren.
+- FREELLMAPI_AUTO_NODE=0 verhindert Bootstrap. Kein echter Download/Build, WSL-Zugriff oder
+  Service-Start durch Codex; Tests verwenden Stubs.
 
 ## Qwen Code / alte FreeLLMAPI-Meldung, 2026-10-16
 
-- GitHub-main enthielt bei erneuter Onlinepruefung noch den alten FreeLLMAPI-
-  Docker-Helfer. Lokale Bearbeitung ist nicht Veroeffentlichung/Verteilung.
-  Neuer Helfer meldet Revision 2026-10-16-github-source-no-docker.
+- GitHub-main enthielt bei erneuter Onlinepruefung noch den alten FreeLLMAPI- Docker-Helfer. Lokale
+  Bearbeitung ist nicht Veroeffentlichung/Verteilung. Neuer Helfer meldet Revision
+  2026-10-16-github-source-no-docker.
 - Qwen_Code eigener optionaler Source-Installer v0.25.1 am Commit
   c1a8218f38203e272e6e965778ed6a2795cfeed7; kein Hybrid-Platzhalter mehr.
 - pnpm 11.24.0/Corepack, Node 22.x, CLI-Build/Bundle ohne Docker-/Sandboxbuild,
@@ -420,52 +407,52 @@ Keine Aenderung an MusicGen oder an der WSL des Benutzers.
 
 ## Automaton Source, 2026-10-16
 
-- Optionaler GitHub-Source-Build am Commit d8f816881fd24b6f5e3d616e59edec387a447667,
-  Node 22.x/pnpm 10.28.1, ohne Docker. Kein Runtime-/Wallet-/Provisionierungsstart.
-- Privater User-Workspace, Buildmarker, Lock, Log und Ressourcenchecks;
-  Rebuild statt blindem main-Update, Code bei Deaktivierung erhalten.
+- Optionaler GitHub-Source-Build am Commit d8f816881fd24b6f5e3d616e59edec387a447667, Node 22.x/pnpm
+  10.28.1, ohne Docker. Kein Runtime-/Wallet-/Provisionierungsstart.
+- Privater User-Workspace, Buildmarker, Lock, Log und Ressourcenchecks; Rebuild statt blindem
+  main-Update, Code bei Deaktivierung erhalten.
 - Offline-review.py bleibt separat und erlaubt keine Ausfuehrung.
 - Keine produktiven Wallets, WSL-Eingriffe, globalen CLI- oder Dienstinstallationen.
 
 ## FreeLLMAPI Source, 2026-10-16
 
-- Installer baut GitHub v0.14.2 / 57c0669233bbe0c70a0f9f9927613192be948773
-  ohne Docker; npm-Abhaengigkeiten aus Upstream-Lockfile. Keine Engine-/Node-Installation.
-- Build und Start getrennt: FREELLMAPI_ENABLE_NETWORK=1 nur vor nativem
-  Vordergrundstart, HOST 127.0.0.1 erzwungen, native-data separat von altem data/.
+- Installer baut GitHub v0.14.2 / 57c0669233bbe0c70a0f9f9927613192be948773 ohne Docker;
+  npm-Abhaengigkeiten aus Upstream-Lockfile. Keine Engine-/Node-Installation.
+- Build und Start getrennt: FREELLMAPI_ENABLE_NETWORK=1 nur vor nativem Vordergrundstart, HOST
+  127.0.0.1 erzwungen, native-data separat von altem data/.
 - Private ENV nicht als Shell laden, keine Keys erzeugen/rotieren/importieren.
   Port/Lock/Commit/Origin/dirty-Source pruefen, kein automatisches Kill/Reset.
 - Nur Offline-Mocktests, kein Live-Build/Routerstart oder WSL-Eingriff.
 
 ## Qwen Desktop / Modellpfad, 2026-10-15
 
-- Qwen_Desktop ist Qwen Code Desktop, nicht Qwen Chat/Studio oder QwenWork.
-  Offiziellen desktop-latest-Einstieg und desktop-v0.25.2-x64-Asset verifiziert.
-- Eigener planned/manual-windows-Menueeintrag, optionale Profilreferenz,
-  Anleitung docs/tools/qwen-desktop-windows.md. PowerShell prueft nur
-  lokalen Installer-Hash/Authenticode, installiert/startet nichts.
-- Unterbrochenen Hybrid-Katalog mit HYBRID_MODELS_AND_WAN.md vervollstaendigt:
-  sechs Modellfamilien, sieben geplante Tools; keine geaenderten Modelldefaults.
-- Keine Downloader, keine Keys, keine WSL-/Docker-/Service-/Treiber-Aenderung,
-  keine Publikation. Provider-/Desktop-Livetests fehlen noch.
+- Qwen_Desktop ist Qwen Code Desktop, nicht Qwen Chat/Studio oder QwenWork. Offiziellen
+  desktop-latest-Einstieg und desktop-v0.25.2-x64-Asset verifiziert.
+- Eigener planned/manual-windows-Menueeintrag, optionale Profilreferenz, Anleitung
+  docs/tools/qwen-desktop-windows.md. PowerShell prueft nur lokalen Installer-Hash/Authenticode,
+  installiert/startet nichts.
+- Unterbrochenen Hybrid-Katalog mit HYBRID_MODELS_AND_WAN.md vervollstaendigt: sechs Modellfamilien,
+  sieben geplante Tools; keine geaenderten Modelldefaults.
+- Keine Downloader, keine Keys, keine WSL-/Docker-/Service-/Treiber-Aenderung, keine Publikation.
+  Provider-/Desktop-Livetests fehlen noch.
 
 ## Defensiver Audio-Review, 2026-10-14
 
 - Pyannote_Audio, DeepFilterNet, AudioSeal neu planned, keine Runtime.
 - Demucs/UVR5/Audacity/RVC nicht dupliziert, Quellen/Doku ergaenzt.
-- Exakte Signalkomponente fuer Subtraktion erforderlich: Hintergrund abziehen
-  laesst Stimme uebrig, Prompt/neu erzeugte Stimme ist keine exakte Referenz.
-- Keine allgemeine 8-kHz-/Tiefpass-/RVC-Echtheitsreparatur; kein Wasserzeichen-
-  entfernen, kein unkritisches Fake-/Echturteil. Originale und Arbeitskopien trennen.
+- Exakte Signalkomponente fuer Subtraktion erforderlich: Hintergrund abziehen laesst Stimme uebrig,
+  Prompt/neu erzeugte Stimme ist keine exakte Referenz.
+- Keine allgemeine 8-kHz-/Tiefpass-/RVC-Echtheitsreparatur; kein Wasserzeichen- entfernen, kein
+  unkritisches Fake-/Echturteil. Originale und Arbeitskopien trennen.
 - Python/OpenClaw/n8n nur Workflowvertrag, keine Installation oder WSL-Aenderung.
 
 ## Social-Avatar-Stack, 2026-10-14
 
-- CogVideoX/LTX_Video/SD_Next/Pinokio/Windmill/TGI und Fal_Client/Veo_API
-  planned; gemeinsame nicht-installierende Guards. Keine WSL-/Runtime-Aenderung.
+- CogVideoX/LTX_Video/SD_Next/Pinokio/Windmill/TGI und Fal_Client/Veo_API planned; gemeinsame
+  nicht-installierende Guards. Keine WSL-/Runtime-Aenderung.
 - Vorhandenes AI_Influencer-Profil erweitert; kein Doppelprofil.
-- Veo/fal sind externe Dienste, SDK != lokales Modell. Windmill nicht pauschal
-  MIT/Apache, TGI Maintenance Mode, Pinokio keine Container-Sandbox.
+- Veo/fal sind externe Dienste, SDK != lokales Modell. Windmill nicht pauschal MIT/Apache, TGI
+  Maintenance Mode, Pinokio keine Container-Sandbox.
 - Social-Workflow und JSON-Vorlage sind Entwuerfe, Limits nicht durchgesetzt,
   Cloud/Uploads/Publikation deaktiviert. AnimateDiff-Legacy-Registry-Luecke bleibt TODO.
 
@@ -473,19 +460,21 @@ Keine Aenderung an MusicGen oder an der WSL des Benutzers.
 
 - HF_Datasets, HF_Hub, Video2Dataset als planned, keine automatische Installation.
 - Vorhandenes Dataset_Curator-Profil erweitert; kein neues Doppelprofil.
-- FineVideo/VIDGEN-1M/Panda-70M/MiraData/VALID mit Primaerquellen und Grenzen
-  in media_studio/VIDEO_TRAINING_DATASETS.md. VALID nur historische Karte verifiziert.
-- Streaming ist kein hartes Byte-Limit; FineVideo ist nicht automatisch ein
-  universeller T2V-Trainingsinput. Panda-Lizenz nichtkommerziell/Forschung.
-- Beispiel-Freigabeprotokoll ist inaktiv. Keine Dataset-/Modelldownloads,
-  keine Trainingsjobs, keine WSL-Eingriffe oder GitHub-Publikation.
+- FineVideo/VIDGEN-1M/Panda-70M/MiraData/VALID mit Primaerquellen und Grenzen in
+  media_studio/VIDEO_TRAINING_DATASETS.md. VALID nur historische Karte verifiziert.
+- Streaming ist kein hartes Byte-Limit; FineVideo ist nicht automatisch ein universeller
+  T2V-Trainingsinput. Panda-Lizenz nichtkommerziell/Forschung.
+- Beispiel-Freigabeprotokoll ist inaktiv. Keine Dataset-/Modelldownloads, keine Trainingsjobs, keine
+  WSL-Eingriffe oder GitHub-Publikation.
 
 ## Audio-/Video-Erweiterung, 2026-10-14
 
-- 20 planned-Kandidaten mit gemeinsamem nicht-installierendem Guard; Tool-Menue/Registry synchron ergaenzt.
-- Audio_Postproduction_Local_First bleibt planned. Bestehende TTS-/ASR-/FFmpeg-Tools wiederverwenden.
-- Eigene Karaoke_Formats-CLI konvertiert nur Basis-SRT/LRC offline; kein Alignment,
-  kein ASR, keine Uebersetzung. Export nur mit --apply in neue Datei ausserhalb Git.
+- 20 planned-Kandidaten mit gemeinsamem nicht-installierendem Guard; Tool-Menue/Registry synchron
+  ergaenzt.
+- Audio_Postproduction_Local_First bleibt planned. Bestehende TTS-/ASR-/FFmpeg-Tools
+  wiederverwenden.
+- Eigene Karaoke_Formats-CLI konvertiert nur Basis-SRT/LRC offline; kein Alignment, kein ASR, keine
+  Uebersetzung. Export nur mit --apply in neue Datei ausserhalb Git.
 - Produktions-/Karaoke-/MIDI-Leitfaeden korrigieren Lizenz-, GPU- und Timing-Versprechen.
 - Keine WSL-Aenderung, keine Installation, keine Gewichte, keine Publikation.
 
@@ -494,14 +483,18 @@ Diese Datei dient als dauerhafte Projekt-Erinnerung fuer spaetere Chats und Folg
 ## Agentic Coding, 2026-10-14
 
 - [Einsteiger-Leitfaden](AGENTIC_CODING_GUIDE.md), Aufgabenvorlagen und planned-Profil ergaenzt.
-- Vorhandene Coding-Tools dokumentiert, nicht neu installiert. Microsoft Agent Framework nur als Kandidat registriert; AutoGen-Upstream Maintenance Mode, keine automatische Migration.
-- Allgemeines Automatenprinzip nicht mit Conway Automaton gleichsetzen. Automaton-Runtime und Wallet-Funktionen bleiben gesperrt.
-- Keine WSL-/Runtime-Aenderungen; Queue-Locks, harte Limits und Client-Tests bleiben Voraussetzung fuer autonome Ausfuehrung.
+- Vorhandene Coding-Tools dokumentiert, nicht neu installiert. Microsoft Agent Framework nur als
+  Kandidat registriert; AutoGen-Upstream Maintenance Mode, keine automatische Migration.
+- Allgemeines Automatenprinzip nicht mit Conway Automaton gleichsetzen. Automaton-Runtime und
+  Wallet-Funktionen bleiben gesperrt.
+- Keine WSL-/Runtime-Aenderungen; Queue-Locks, harte Limits und Client-Tests bleiben Voraussetzung
+  fuer autonome Ausfuehrung.
 
 ## Automaton, 2026-10-14
 
 - Conway-Research/automaton als planned/high-risk registriert; nur Offline-Review-Prototyp.
-- Wallet-Datei upstream nicht mit verschluesseltem Tresor verwechseln; keine Zenbot-Seeds importieren.
+- Wallet-Datei upstream nicht mit verschluesseltem Tresor verwechseln; keine Zenbot-Seeds
+  importieren.
 - Install/Run/Update/Uninstall gesperrt; bestehende Wallets/WSL bleiben unangetastet.
 - Details und offene Freigabekriterien: [Automaton](tools/automaton.md).
 
@@ -512,12 +505,17 @@ Diese Datei dient als dauerhafte Projekt-Erinnerung fuer spaetere Chats und Folg
 ### Aider / Coding-Agent
 
 - Letzter Installationsfehler: `rm: cannot remove '/opt/aider': Permission denied`.
-- Ursache: Der gemeinsame Scaffold-Installer hatte `/opt/aider` mit `sudo` vorbereitet, loeschte alte Clone-Reste beim Neuaufbau aber ohne `sudo`.
-- Fix: `scripts/tools/helpers/scaffold_tool_common.sh` nutzt jetzt eine pfadgeschuetzte Aufraeumfunktion fuer `/opt/*` und User-Home-Pfade, bevor ein Git-Clone neu erstellt wird.
+- Ursache: Der gemeinsame Scaffold-Installer hatte `/opt/aider` mit `sudo` vorbereitet, loeschte
+  alte Clone-Reste beim Neuaufbau aber ohne `sudo`.
+- Fix: `scripts/tools/helpers/scaffold_tool_common.sh` nutzt jetzt eine pfadgeschuetzte
+  Aufraeumfunktion fuer `/opt/*` und User-Home-Pfade, bevor ein Git-Clone neu erstellt wird.
 - Nachfolgefehler: `fatal: could not create work tree dir '/opt/aider': Permission denied`.
-- Ursache: Nach dem sicheren Loeschen wurde direkt nach `/opt/aider` geklont, obwohl der normale User nicht in `/opt` schreiben darf.
-- Fix-Erweiterung: Die Aufraeumfunktion erstellt das Zielverzeichnis danach mit `sudo mkdir -p` und setzt Besitzrechte auf den aktuellen User, bevor `git clone` in das leere Verzeichnis schreibt.
-- Wichtig: Der Fix ist bewusst zentral, damit auch andere Scaffold-Tools von alten Root-Resten sauber repariert werden koennen.
+- Ursache: Nach dem sicheren Loeschen wurde direkt nach `/opt/aider` geklont, obwohl der normale
+  User nicht in `/opt` schreiben darf.
+- Fix-Erweiterung: Die Aufraeumfunktion erstellt das Zielverzeichnis danach mit `sudo mkdir -p` und
+  setzt Besitzrechte auf den aktuellen User, bevor `git clone` in das leere Verzeichnis schreibt.
+- Wichtig: Der Fix ist bewusst zentral, damit auch andere Scaffold-Tools von alten Root-Resten
+  sauber repariert werden koennen.
 - Neue Doku dazu: `docs/AIDER_INTEGRATION_GUIDE.md`.
 
 ### TODO: Aider funktional nachruesten
@@ -525,14 +523,18 @@ Diese Datei dient als dauerhafte Projekt-Erinnerung fuer spaetere Chats und Folg
 - `scripts/aider/run_aider_task.sh` erstellen.
 - Allowlist fuer erlaubte Repositories und optionalen Dry-Run-Patchmodus ergaenzen.
 - OpenClaw-Tooldefinition fuer Repo-Analyse, Patch-Vorschlag und Testlauf ergaenzen.
-- Nach Aider-Aenderungen automatisch `git diff`, `scripts/validate_config.sh` und passende Tests anbieten.
+- Nach Aider-Aenderungen automatisch `git diff`, `scripts/validate_config.sh` und passende Tests
+  anbieten.
 
 ### OpenCode / Coding-Agent-Scaffold
 
 - Letzter Installationsfehler: `rm: cannot remove '/opt/opencode': Permission denied`.
-- Ursache ist sehr wahrscheinlich eine alte Helper-Version oder eine andere Setup-Kopie, weil OpenCode den gemeinsamen Scaffold-Helper nutzt.
-- Aktueller Fix: Der Scaffold-Helper nutzt eine pfadgeschuetzte `sudo rm -rf`-Routine fuer alte `/opt/<tool>`-Reste.
-- Im neuen Installationslog muss `Scaffold-Helper: sichere /opt-Aufraeumroutine aktiv.` erscheinen. Fehlt diese Zeile, wurde nicht der aktuelle Setup-Stand gestartet.
+- Ursache ist sehr wahrscheinlich eine alte Helper-Version oder eine andere Setup-Kopie, weil
+  OpenCode den gemeinsamen Scaffold-Helper nutzt.
+- Aktueller Fix: Der Scaffold-Helper nutzt eine pfadgeschuetzte `sudo rm -rf`-Routine fuer alte
+  `/opt/<tool>`-Reste.
+- Im neuen Installationslog muss `Scaffold-Helper: sichere /opt-Aufraeumroutine aktiv.` erscheinen.
+  Fehlt diese Zeile, wurde nicht der aktuelle Setup-Stand gestartet.
 - Neue Doku dazu: `docs/OPENCODE_INTEGRATION_GUIDE.md`.
 
 ### TODO: OpenCode funktional nachruesten
@@ -545,9 +547,12 @@ Diese Datei dient als dauerhafte Projekt-Erinnerung fuer spaetere Chats und Folg
 ### GitHub CLI / gh
 
 - Letzter Installationsfehler: `rm: cannot remove '/opt/github_cli': Permission denied`.
-- GitHub CLI nutzt ebenfalls den gemeinsamen Scaffold-Helper und baut aus `https://github.com/cli/cli.git` nach `/opt/github_cli`.
-- Der aktuelle Helper entfernt alte `/opt/<tool>`-Reste mit einer pfadgeschuetzten `sudo rm -rf`-Routine.
-- Im neuen Installationslog muss `Scaffold-Helper: sichere /opt-Aufraeumroutine aktiv.` erscheinen. Fehlt diese Zeile, wurde noch eine alte Setup-Kopie gestartet.
+- GitHub CLI nutzt ebenfalls den gemeinsamen Scaffold-Helper und baut aus
+  `https://github.com/cli/cli.git` nach `/opt/github_cli`.
+- Der aktuelle Helper entfernt alte `/opt/<tool>`-Reste mit einer pfadgeschuetzten
+  `sudo rm -rf`-Routine.
+- Im neuen Installationslog muss `Scaffold-Helper: sichere /opt-Aufraeumroutine aktiv.` erscheinen.
+  Fehlt diese Zeile, wurde noch eine alte Setup-Kopie gestartet.
 - Neue Doku dazu: `docs/GITHUB_CLI_INTEGRATION_GUIDE.md`.
 
 ### TODO: GitHub CLI funktional nachruesten
@@ -559,28 +564,37 @@ Diese Datei dient als dauerhafte Projekt-Erinnerung fuer spaetere Chats und Folg
 
 ### Podman / Container Runtime
 
-- Installationslog zeigt aktivierte systemd-Einheiten: `podman-auto-update.service`, `podman-auto-update.timer`, `podman-clean-transient.service`, `podman-restart.service`, `podman.service`, `podman.socket`.
+- Installationslog zeigt aktivierte systemd-Einheiten: `podman-auto-update.service`,
+  `podman-auto-update.timer`, `podman-clean-transient.service`, `podman-restart.service`,
+  `podman.service`, `podman.socket`.
 - Das ist kein Fehler, aber eine wichtige Autostart-/Update-Nebenwirkung.
 - `podman.socket` stellt eine lokale API bereit und darf nicht unbewusst extern freigegeben werden.
-- `podman-auto-update.timer` kann Container aktualisieren, wenn passende Labels/Units genutzt werden. Fuer reproduzierbare Tests sollte Auto-Update optional und bewusst bleiben.
+- `podman-auto-update.timer` kann Container aktualisieren, wenn passende Labels/Units genutzt
+  werden. Fuer reproduzierbare Tests sollte Auto-Update optional und bewusst bleiben.
 - Neue Doku dazu: `docs/PODMAN_CONTAINER_RUNTIME_GUIDE.md`.
 
 ### TODO: Podman funktional nachruesten
 
-- Doctor-Check fuer `podman --version`, `podman info`, `podman.socket` und `podman-auto-update.timer`.
+- Doctor-Check fuer `podman --version`, `podman info`, `podman.socket` und
+  `podman-auto-update.timer`.
 - Setup-Option fuer Auto-Update aktivieren/deaktivieren ergaenzen.
 - Podman als Runtime fuer `Code_Sandbox` und spaetere OpenClaw-Toolausfuehrung dokumentieren.
 - Security-Hinweis: Socket nur lokal, rootless bevorzugen, keine `--privileged`-Defaults.
 
 ### Clawbake
 
-- Alter Fehler: `Fehler: Clawbake Repository nicht erreichbar: https://github.com/openclaw/clawbake.git`.
+- Alter Fehler:
+  `Fehler: Clawbake Repository nicht erreichbar: https://github.com/openclaw/clawbake.git`.
 - Neue Quelle laut Nutzer und GitHub-Pruefung: `https://github.com/NeurometricAI/clawbake`.
-- Wichtige Korrektur: Die neue Quelle ist kein pnpm-Projekt, sondern ein Go/Kubernetes/Helm/OpenClaw-Operator-Projekt.
-- Installer wurde auf die neue Quelle, Remote-Backup bei Quellenwechsel, Go/Make-Pruefung und `make build` umgestellt.
+- Wichtige Korrektur: Die neue Quelle ist kein pnpm-Projekt, sondern ein
+  Go/Kubernetes/Helm/OpenClaw-Operator-Projekt.
+- Installer wurde auf die neue Quelle, Remote-Backup bei Quellenwechsel, Go/Make-Pruefung und
+  `make build` umgestellt.
 - Nachfolgefehler: `fatal: could not create work tree dir '/opt/clawbake': Permission denied`.
-- Ursache: Nach `sudo rm -rf /opt/clawbake` wurde direkt nach `/opt/clawbake` geklont, obwohl der normale User nicht in `/opt` schreiben darf.
-- Fix: Der Installer erzeugt nun das Zielverzeichnis mit `sudo mkdir`, setzt Besitzrechte und klont in das leere Zielverzeichnis.
+- Ursache: Nach `sudo rm -rf /opt/clawbake` wurde direkt nach `/opt/clawbake` geklont, obwohl der
+  normale User nicht in `/opt` schreiben darf.
+- Fix: Der Installer erzeugt nun das Zielverzeichnis mit `sudo mkdir`, setzt Besitzrechte und klont
+  in das leere Zielverzeichnis.
 - `CLAWBAKE_SKIP_BUILD=true` kann genutzt werden, um nur das Repository vorzubereiten.
 - Neue Doku dazu: `docs/CLAWBAKE_INTEGRATION_GUIDE.md`.
 
@@ -593,43 +607,67 @@ Diese Datei dient als dauerhafte Projekt-Erinnerung fuer spaetere Chats und Folg
 
 ### Aktueller Clawbake-Befund aus Installationslogs
 
-- Wenn `go: downloading github.com/jackc/pgservicefile ...` erscheint, ist das kein Installationsfehler, sondern ein normaler Go-Modul-Download aus dem PostgreSQL-Umfeld.
-- Der Loghinweis `Clawbake braucht für echten Betrieb Kubernetes, PostgreSQL/OIDC-Secrets und Helm-/Values-Konfiguration` bedeutet: Quelle/Build sind vorbereitet, aber der produktive Kubernetes-Deployment-Pfad ist noch offen.
-- Fuer die Setup-Statusanzeige sollte Clawbake spaeter drei Zustaende bekommen: `prepared` fuer Repo vorhanden, `built` fuer lokales Build-Artefakt, `deployed` fuer laufenden Kubernetes-/Helm-Betrieb.
+- Wenn `go: downloading github.com/jackc/pgservicefile ...` erscheint, ist das kein
+  Installationsfehler, sondern ein normaler Go-Modul-Download aus dem PostgreSQL-Umfeld.
+- Der Loghinweis
+  `Clawbake braucht für echten Betrieb Kubernetes, PostgreSQL/OIDC-Secrets und Helm-/Values-Konfiguration`
+  bedeutet: Quelle/Build sind vorbereitet, aber der produktive Kubernetes-Deployment-Pfad ist noch
+  offen.
+- Fuer die Setup-Statusanzeige sollte Clawbake spaeter drei Zustaende bekommen: `prepared` fuer Repo
+  vorhanden, `built` fuer lokales Build-Artefakt, `deployed` fuer laufenden
+  Kubernetes-/Helm-Betrieb.
 
 ### Clawbake und MySQL/MariaDB
 
-- Der aktuelle Upstream ist PostgreSQL-only: `db/sqlc.yaml` setzt `engine: postgresql`, der Go-Code nutzt `pgx/v5`, die Migration nutzt `database/pgx/v5`, und das Helm-Chart erzeugt PostgreSQL-URLs.
-- MySQL/MariaDB waere fuer Clawbake kein einfacher Adapter-Schalter, sondern ein echter Port mit neuen Migrationen, sqlc-Generator, Treiber, Tests und Helm-Templates.
-- Der Installer akzeptiert deshalb nur `CLAWBAKE_DATABASE_ENGINE=postgresql` und bricht bei `mysql`, `mariadb` oder `mysql2` bewusst ab.
+- Der aktuelle Upstream ist PostgreSQL-only: `db/sqlc.yaml` setzt `engine: postgresql`, der Go-Code
+  nutzt `pgx/v5`, die Migration nutzt `database/pgx/v5`, und das Helm-Chart erzeugt PostgreSQL-URLs.
+- MySQL/MariaDB waere fuer Clawbake kein einfacher Adapter-Schalter, sondern ein echter Port mit
+  neuen Migrationen, sqlc-Generator, Treiber, Tests und Helm-Templates.
+- Der Installer akzeptiert deshalb nur `CLAWBAKE_DATABASE_ENGINE=postgresql` und bricht bei `mysql`,
+  `mariadb` oder `mysql2` bewusst ab.
 
 ### Authentik / Authelia / OIDC
 
 - OIDC ist kein einzelnes Tool, sondern ein Login-Standard auf Basis von OAuth2.
 - Authentik und Authelia wurden als optionale Security-/SSO-Bausteine aufgenommen.
-- Authentik ist ein komfortabler Identity Provider mit Web-UI und eignet sich eher fuer VPS, K3s und Homelab-Setups mit mehreren Diensten.
-- Authelia ist eine schlanke Auth-/MFA-Schicht vor Webdiensten und eignet sich gut fuer MiniPC, Homelab und Reverse-Proxy-Schutz.
-- Installationsskripte erzeugen nur lokale Vorlagen unter `~/.openclaw_ultimate_user_data/auth/...` und starten bewusst keinen produktiven Dienst.
-- Authentik nutzt im Setup lokale Port-Mappings `9010`/`9444`, damit kein Konflikt mit MinIO `9000` entsteht. Authelia nutzt `9091`.
+- Authentik ist ein komfortabler Identity Provider mit Web-UI und eignet sich eher fuer VPS, K3s und
+  Homelab-Setups mit mehreren Diensten.
+- Authelia ist eine schlanke Auth-/MFA-Schicht vor Webdiensten und eignet sich gut fuer MiniPC,
+  Homelab und Reverse-Proxy-Schutz.
+- Installationsskripte erzeugen nur lokale Vorlagen unter `~/.openclaw_ultimate_user_data/auth/...`
+  und starten bewusst keinen produktiven Dienst.
+- Authentik nutzt im Setup lokale Port-Mappings `9010`/`9444`, damit kein Konflikt mit MinIO `9000`
+  entsteht. Authelia nutzt `9091`.
 - Neue Doku dazu: `docs/AUTH_OIDC_HELM_SECRETS_GUIDE.md`.
 
 ### Installationsueberwachung / Sofortdiagnose
 
-- Der manuelle Nach-Schritt-Dialog der erweiterten Installationsueberwachung bietet jetzt neben `[N]` und `[Z]` auch:
+- Der manuelle Nach-Schritt-Dialog der erweiterten Installationsueberwachung bietet jetzt neben
+  `[N]` und `[Z]` auch:
 - `[L]` zeigt direkt das aktuelle bzw. letzte Installationslog.
 - `[D]` startet sofort `scripts/tool_log_diagnostics.sh --log <log> --no-email`.
-- `[E]` startet sofort `scripts/tool_log_diagnostics.sh --log <log> --email-now ai-chat-to-markdown@web.de`.
-- `tool_log_diagnostics.sh` unterstuetzt dafuer neu `--email-now` bzw. `--send-email`, damit nach expliziter Auswahl keine zweite Rueckfrage mehr noetig ist.
-- Voraussetzung fuer E-Mail: `Mail_Utils_MSMTP` installieren und lokal `~/.msmtprc` sowie `~/.openclaw_ultimate_user_data/mail/mail_settings.env` konfigurieren. Keine SMTP-Zugangsdaten ins Repo schreiben.
+- `[E]` startet sofort
+  `scripts/tool_log_diagnostics.sh --log <log> --email-now ai-chat-to-markdown@web.de`.
+- `tool_log_diagnostics.sh` unterstuetzt dafuer neu `--email-now` bzw. `--send-email`, damit nach
+  expliziter Auswahl keine zweite Rueckfrage mehr noetig ist.
+- Voraussetzung fuer E-Mail: `Mail_Utils_MSMTP` installieren und lokal `~/.msmtprc` sowie
+  `~/.openclaw_ultimate_user_data/mail/mail_settings.env` konfigurieren. Keine SMTP-Zugangsdaten ins
+  Repo schreiben.
 
 ### LangGraph / Bibliothekstools
 
-- LangGraph ist kein eigenstaendiger Webdienst und kein Desktopprogramm, sondern eine Python-Bibliothek fuer zustandsbehaftete Agenten- und Workflow-Graphen.
-- Eine erfolgreiche Installation unter `/opt/langgraph/venv` bedeutet nur, dass LangGraph importierbar ist. Es funktioniert dadurch noch nicht automatisch direkt in OpenClaw.
-- OpenClaw soll LangGraph spaeter ueber ein klares Tool-/Worker-Skript nutzen, z. B. `scripts/langgraph/run_graph_tool.py`.
-- Geplanter Ablauf: OpenClaw Task -> LangGraph Python-Worker -> Ollama/LiteLLM/Qdrant/Langfuse -> Markdown/JSON-Ergebnis unter `~/.openclaw_ultimate_user_data/langgraph/runs`.
-- Erste sinnvolle LangGraph-Use-Cases: Repo-Review-Graph, Install-Log-Diagnose-Graph, RAG-Antwort-Graph, Profil-Planungs-Graph, defensiver Security-Audit-Graph.
-- Fuer alle Bibliothekstools gilt: Installation allein reicht nicht. Sie brauchen Smoke-Test, Beispielskript, Ergebnisformat, Doctor-Check und eine klare Integrationsbeschreibung.
+- LangGraph ist kein eigenstaendiger Webdienst und kein Desktopprogramm, sondern eine
+  Python-Bibliothek fuer zustandsbehaftete Agenten- und Workflow-Graphen.
+- Eine erfolgreiche Installation unter `/opt/langgraph/venv` bedeutet nur, dass LangGraph
+  importierbar ist. Es funktioniert dadurch noch nicht automatisch direkt in OpenClaw.
+- OpenClaw soll LangGraph spaeter ueber ein klares Tool-/Worker-Skript nutzen, z. B.
+  `scripts/langgraph/run_graph_tool.py`.
+- Geplanter Ablauf: OpenClaw Task -> LangGraph Python-Worker -> Ollama/LiteLLM/Qdrant/Langfuse ->
+  Markdown/JSON-Ergebnis unter `~/.openclaw_ultimate_user_data/langgraph/runs`.
+- Erste sinnvolle LangGraph-Use-Cases: Repo-Review-Graph, Install-Log-Diagnose-Graph,
+  RAG-Antwort-Graph, Profil-Planungs-Graph, defensiver Security-Audit-Graph.
+- Fuer alle Bibliothekstools gilt: Installation allein reicht nicht. Sie brauchen Smoke-Test,
+  Beispielskript, Ergebnisformat, Doctor-Check und eine klare Integrationsbeschreibung.
 - Neue Doku dazu:
   - `docs/LANGGRAPH_INTEGRATION_GUIDE.md`
   - `docs/TOOL_USAGE_AND_INTEGRATION_GUIDE.md`
@@ -645,10 +683,14 @@ Diese Datei dient als dauerhafte Projekt-Erinnerung fuer spaetere Chats und Folg
 
 ### CrewAI / Multi-Agent-Teams
 
-- CrewAI wurde erfolgreich als Python-Agentenframework unter `/opt/crewai/venv` installiert, laut Log mit `crewai-1.14.4`.
-- CrewAI ist wie LangGraph kein eigenstaendiger Webdienst, sondern wird ueber Python-Skripte, Teams und Rollen-Workflows genutzt.
-- Geeignete Integrationsform: OpenClaw Task -> `scripts/crewai/run_crew_task.py` -> CrewAI Team -> Ollama/LiteLLM/Qdrant -> Markdown/JSON-Report.
-- Gute erste Teams: Repo-Maintainer-Team, Install-Log-Diagnose-Team, Profil-Builder-Team, defensives Security-Review-Team.
+- CrewAI wurde erfolgreich als Python-Agentenframework unter `/opt/crewai/venv` installiert, laut
+  Log mit `crewai-1.14.4`.
+- CrewAI ist wie LangGraph kein eigenstaendiger Webdienst, sondern wird ueber Python-Skripte, Teams
+  und Rollen-Workflows genutzt.
+- Geeignete Integrationsform: OpenClaw Task -> `scripts/crewai/run_crew_task.py` -> CrewAI Team ->
+  Ollama/LiteLLM/Qdrant -> Markdown/JSON-Report.
+- Gute erste Teams: Repo-Maintainer-Team, Install-Log-Diagnose-Team, Profil-Builder-Team, defensives
+  Security-Review-Team.
 - Neue Doku dazu: `docs/CREWAI_INTEGRATION_GUIDE.md`.
 
 ### TODO: CrewAI funktional nachruesten
@@ -663,10 +705,14 @@ Diese Datei dient als dauerhafte Projekt-Erinnerung fuer spaetere Chats und Folg
 
 ### AutoGen / Multi-Agent-Chats
 
-- AutoGen wurde laut Installationslog erfolgreich unter `/opt/autogen/venv` installiert, u. a. mit `pyautogen-0.10.0`, `autogen-core-0.7.5` und `autogen-agentchat-0.7.5`.
-- AutoGen ist kein Webdienst, sondern ein Python-Framework fuer Multi-Agent-Chats, Reviewer-Agenten, Planner/Worker-Muster und User-Proxy-Freigaben.
-- Geeignete Integrationsform: OpenClaw Task -> `scripts/autogen/run_autogen_task.py` -> Planner/Worker/Reviewer/User-Proxy -> Ollama/LiteLLM/Qdrant -> Markdown/JSON-Report.
-- Gute erste Szenarien: Repo-Review-Chat, Installationsfehler-Triage, Security-Findings-Review, Profil-Design-Review.
+- AutoGen wurde laut Installationslog erfolgreich unter `/opt/autogen/venv` installiert, u. a. mit
+  `pyautogen-0.10.0`, `autogen-core-0.7.5` und `autogen-agentchat-0.7.5`.
+- AutoGen ist kein Webdienst, sondern ein Python-Framework fuer Multi-Agent-Chats, Reviewer-Agenten,
+  Planner/Worker-Muster und User-Proxy-Freigaben.
+- Geeignete Integrationsform: OpenClaw Task -> `scripts/autogen/run_autogen_task.py` ->
+  Planner/Worker/Reviewer/User-Proxy -> Ollama/LiteLLM/Qdrant -> Markdown/JSON-Report.
+- Gute erste Szenarien: Repo-Review-Chat, Installationsfehler-Triage, Security-Findings-Review,
+  Profil-Design-Review.
 - Neue Doku dazu: `docs/AUTOGEN_INTEGRATION_GUIDE.md`.
 
 ### TODO: AutoGen funktional nachruesten
@@ -682,10 +728,14 @@ Diese Datei dient als dauerhafte Projekt-Erinnerung fuer spaetere Chats und Folg
 ### Playwright / Browser Automation
 
 - Playwright ist kein Webdienst, sondern ein Browser-Automation-Framework.
-- Eine vorhandene Python-Umgebung unter `/opt/playwright/venv` reicht nur fuer den Python-Import; fuer echte Browserlaeufe muessen Browser-Binaries wie Chromium installiert sein.
-- Pruefbefehle: `source /opt/playwright/venv/bin/activate`, `python -c "import playwright"`, `python -m playwright install chromium`.
-- Geeignete Integrationsform: OpenClaw Task -> `scripts/playwright/browser_worker.py` -> headless Chromium -> Screenshot/HTML/JSON unter `~/.openclaw_ultimate_user_data/playwright/`.
-- Playwright kann fuer OpenClaw, Browser_Automation_Agent, Huginn, n8n, LangGraph, CrewAI und AutoGen als sicher begrenzter Browser-Worker dienen.
+- Eine vorhandene Python-Umgebung unter `/opt/playwright/venv` reicht nur fuer den Python-Import;
+  fuer echte Browserlaeufe muessen Browser-Binaries wie Chromium installiert sein.
+- Pruefbefehle: `source /opt/playwright/venv/bin/activate`, `python -c "import playwright"`,
+  `python -m playwright install chromium`.
+- Geeignete Integrationsform: OpenClaw Task -> `scripts/playwright/browser_worker.py` -> headless
+  Chromium -> Screenshot/HTML/JSON unter `~/.openclaw_ultimate_user_data/playwright/`.
+- Playwright kann fuer OpenClaw, Browser_Automation_Agent, Huginn, n8n, LangGraph, CrewAI und
+  AutoGen als sicher begrenzter Browser-Worker dienen.
 - Neue Doku dazu: `docs/PLAYWRIGHT_INTEGRATION_GUIDE.md`.
 
 ### TODO: Playwright funktional nachruesten
@@ -695,16 +745,22 @@ Diese Datei dient als dauerhafte Projekt-Erinnerung fuer spaetere Chats und Folg
 - Allowlist unter `~/.openclaw_ultimate_user_data/playwright/allowed_targets.txt` einfuehren.
 - Doctor-Check fuer Playwright-Import und Chromium-Binary ergaenzen.
 - OpenClaw-Tooldefinition fuer Browser-Screenshot und HTML-Extraktion ergaenzen.
-- Safety: nur erlaubte Ziele, Rate-Limit, keine Captcha-Umgehung, keine Cookies/Screenshots ins Repo.
+- Safety: nur erlaubte Ziele, Rate-Limit, keine Captcha-Umgehung, keine Cookies/Screenshots ins
+  Repo.
 
 ### ChromaDB / lokaler Vektorstore
 
-- ChromaDB wurde laut Installationslog erfolgreich unter `/opt/chromadb/venv` installiert, u. a. mit `chromadb-1.5.9`.
-- ChromaDB ist kein klassisches Desktopprogramm. Es kann als Python-Bibliothek direkt in RAG-/Memory-Skripten oder optional als lokaler HTTP-Server genutzt werden.
-- ChromaDB wird nicht automatisch von Ollama oder OpenClaw genutzt. Es braucht eine Pipeline: Import/Chunking -> Embeddings -> ChromaDB -> Retrieval -> Kontext fuer Ollama/OpenClaw.
+- ChromaDB wurde laut Installationslog erfolgreich unter `/opt/chromadb/venv` installiert, u. a. mit
+  `chromadb-1.5.9`.
+- ChromaDB ist kein klassisches Desktopprogramm. Es kann als Python-Bibliothek direkt in
+  RAG-/Memory-Skripten oder optional als lokaler HTTP-Server genutzt werden.
+- ChromaDB wird nicht automatisch von Ollama oder OpenClaw genutzt. Es braucht eine Pipeline:
+  Import/Chunking -> Embeddings -> ChromaDB -> Retrieval -> Kontext fuer Ollama/OpenClaw.
 - Empfohlener Datenpfad: `~/.openclaw_ultimate_user_data/chromadb/`.
-- Geeignete Integrationsform: OpenClaw Task -> `scripts/chromadb/query_memory.py` -> ChromaDB PersistentClient -> relevante Dokumente/Erinnerungen -> OpenClaw-Kontext.
-- ChromaDB passt zu OpenClaw, Memory_Import_Export, Personal_Knowledge_Memory, Document_Intelligence, LangGraph, CrewAI und AutoGen.
+- Geeignete Integrationsform: OpenClaw Task -> `scripts/chromadb/query_memory.py` -> ChromaDB
+  PersistentClient -> relevante Dokumente/Erinnerungen -> OpenClaw-Kontext.
+- ChromaDB passt zu OpenClaw, Memory_Import_Export, Personal_Knowledge_Memory,
+  Document_Intelligence, LangGraph, CrewAI und AutoGen.
 - Neue Doku dazu: `docs/CHROMADB_INTEGRATION_GUIDE.md`.
 
 ### TODO: ChromaDB funktional nachruesten
@@ -719,11 +775,16 @@ Diese Datei dient als dauerhafte Projekt-Erinnerung fuer spaetere Chats und Folg
 
 ### Code_Sandbox
 
-- Diagnosemeldung `Keine Treffer fuer das Diagnosemuster gefunden` ist bei erfolgreicher Installation kein Fehler, sondern bedeutet nur, dass der Logfilter keine bekannten Problemzeilen gefunden hat.
-- Logstatus: `Starte Installation von Code_Sandbox...` gefolgt von `Code_Sandbox wurde erfolgreich installiert.`
-- Code_Sandbox ist aktuell ein vorbereitetes Sandbox-Modul unter `/opt/code_sandbox`, kein vollstaendiger Runner und kein Webdienst.
+- Diagnosemeldung `Keine Treffer fuer das Diagnosemuster gefunden` ist bei erfolgreicher
+  Installation kein Fehler, sondern bedeutet nur, dass der Logfilter keine bekannten Problemzeilen
+  gefunden hat.
+- Logstatus: `Starte Installation von Code_Sandbox...` gefolgt von
+  `Code_Sandbox wurde erfolgreich installiert.`
+- Code_Sandbox ist aktuell ein vorbereitetes Sandbox-Modul unter `/opt/code_sandbox`, kein
+  vollstaendiger Runner und kein Webdienst.
 - Die Installation erzeugt `.env.template`, `README.md` und einen Platzhalter-`run.sh`.
-- Ziel: OpenClaw, Programmierer-, LLM-Builder- und Agentenprofile sollen spaeter riskante Codeausfuehrung ueber Docker/Podman/Devcontainer statt direkt auf dem Host starten.
+- Ziel: OpenClaw, Programmierer-, LLM-Builder- und Agentenprofile sollen spaeter riskante
+  Codeausfuehrung ueber Docker/Podman/Devcontainer statt direkt auf dem Host starten.
 - Neue Doku dazu: `docs/CODE_SANDBOX_USAGE_GUIDE.md`.
 
 ### TODO: Code_Sandbox funktional nachruesten
@@ -734,37 +795,50 @@ Diese Datei dient als dauerhafte Projekt-Erinnerung fuer spaetere Chats und Folg
 - Optional Podman- und Devcontainer-Backend.
 - OpenClaw-Tooldefinition fuer Sandbox-Kommandos ergaenzen.
 - Doctor-Check fuer Docker/Podman und Sandbox-Testlauf.
-- Safety: keine Secrets, kein Docker-Socket-Mount, kein `--privileged`, keine Host-Pfade ausser explizitem Workspace.
+- Safety: keine Secrets, kein Docker-Socket-Mount, kein `--privileged`, keine Host-Pfade ausser
+  explizitem Workspace.
 
 ## Als veraltet identifiziert
 
-Diese Punkte gelten im Projektverlauf inzwischen als veraltet, problematisch oder nur noch als Legacy-Verhalten:
+Diese Punkte gelten im Projektverlauf inzwischen als veraltet, problematisch oder nur noch als
+Legacy-Verhalten:
 
 ### Setup / Update-Pfad
 
-- Der fruehere weiche Setup-Update-Pfad mit `git pull --ff-only` ohne harten Repo-Abgleich war fehleranfaellig, weil alte lokale Repo-Dateien neue Staende blockieren oder teilweise stehen bleiben konnten.
-- Fuer das Setup-Repository gilt deshalb der harte Abgleich auf `main` inzwischen als bevorzugter Standard.
+- Der fruehere weiche Setup-Update-Pfad mit `git pull --ff-only` ohne harten Repo-Abgleich war
+  fehleranfaellig, weil alte lokale Repo-Dateien neue Staende blockieren oder teilweise stehen
+  bleiben konnten.
+- Fuer das Setup-Repository gilt deshalb der harte Abgleich auf `main` inzwischen als bevorzugter
+  Standard.
 
 ### Huginn Upstream / Installer-Meldungen
 
-- Die Formulierung `HUGINN_REPO_REF ueberschreiben` gilt als veraltet; der Wert wird jetzt im Setup ausgewaehlt oder festgelegt.
-- Ein Huginn-Lauf ohne vorgeschaltetes Auswahlmenue fuer den Upstream-Stand gilt als veraltet; die Ref-Wahl gehoert jetzt vor den eigentlichen Installationslauf.
+- Die Formulierung `HUGINN_REPO_REF ueberschreiben` gilt als veraltet; der Wert wird jetzt im Setup
+  ausgewaehlt oder festgelegt.
+- Ein Huginn-Lauf ohne vorgeschaltetes Auswahlmenue fuer den Upstream-Stand gilt als veraltet; die
+  Ref-Wahl gehoert jetzt vor den eigentlichen Installationslauf.
 
 ### Huginn Konfigurationsablage
 
-- Ein neuer Huginn-Lauf, der sich blind an Huginns alter `.env.example` orientiert, gilt als veraltet.
-- Sichere Huginn-Werte gehoeren in den Benutzer-Workspace unter `~/.openclaw_ultimate_user_data/huginn/`.
-- Alte Datenbank-Defaults wie `huginn_development`, `root` und leeres Passwort gelten fuer dieses Setup als Legacy und sollen nicht mehr der Standard sein.
+- Ein neuer Huginn-Lauf, der sich blind an Huginns alter `.env.example` orientiert, gilt als
+  veraltet.
+- Sichere Huginn-Werte gehoeren in den Benutzer-Workspace unter
+  `~/.openclaw_ultimate_user_data/huginn/`.
+- Alte Datenbank-Defaults wie `huginn_development`, `root` und leeres Passwort gelten fuer dieses
+  Setup als Legacy und sollen nicht mehr der Standard sein.
 
 ### Huginn Datenbankpfade
 
-- Die alten Fallbacks in `config/database.yml` mit `username: root`, Produktionspasswort-Fallback und `reconnect: true` gelten als Legacy.
-- Der alte PostgreSQL-Gemstand `pg-1.1.3` gilt unter Ruby 3.2 in diesem Huginn-Upstream als veraltet und inkompatibel.
+- Die alten Fallbacks in `config/database.yml` mit `username: root`, Produktionspasswort-Fallback
+  und `reconnect: true` gelten als Legacy.
+- Der alte PostgreSQL-Gemstand `pg-1.1.3` gilt unter Ruby 3.2 in diesem Huginn-Upstream als veraltet
+  und inkompatibel.
 - Der alte mysql2-Pfad `0.5.3` gilt unter Ruby 3.2 als veraltet.
 
 ### Huginn Ruby-/Gem-Altlasten
 
-- Die folgenden Huginn-Teilbereiche gelten in diesem Upstream auf moderner Ruby-Basis als veraltet oder besonders stoeranfaellig:
+- Die folgenden Huginn-Teilbereiche gelten in diesem Upstream auf moderner Ruby-Basis als veraltet
+  oder besonders stoeranfaellig:
   - `google-cloud-translate` mit altem `grpc 1.42.0`
   - `mini_racer` / `libv8-node`
   - `ruby-growl`
@@ -774,39 +848,75 @@ Diese Punkte gelten im Projektverlauf inzwischen als veraltet, problematisch ode
 
 ### Huginn Laufzeitverhalten
 
-- Ein Huginn-Betrieb nur mit Webserver ohne Worker gilt fuer echte Verarbeitung als unvollstaendig und damit als veralteter Betriebsmodus.
-- Bei HTML-Extraction im `Website Agent` gilt `value: "text"` in diesem Huginn-Stand als veraltet bzw. unpassend; erwartet werden XPath-Ausdruecke wie `string(.)` oder `normalize-space(.)`.
-- Das alte YAML-Ladeverhalten ueber `YAML.load` im Jobs-Pfad gilt fuer den aktuellen Psych-Stack als veraltet.
+- Ein Huginn-Betrieb nur mit Webserver ohne Worker gilt fuer echte Verarbeitung als unvollstaendig
+  und damit als veralteter Betriebsmodus.
+- Bei HTML-Extraction im `Website Agent` gilt `value: "text"` in diesem Huginn-Stand als veraltet
+  bzw. unpassend; erwartet werden XPath-Ausdruecke wie `string(.)` oder `normalize-space(.)`.
+- Das alte YAML-Ladeverhalten ueber `YAML.load` im Jobs-Pfad gilt fuer den aktuellen Psych-Stack als
+  veraltet.
 
 ### Huginn UI-/Workflow-Eigenheiten
 
-- Der Eindruck, dass ein Scenario-Reimport immer einen echten Klon erzeugt, gilt fuer diesen Huginn-Stand als falsch bzw. veraltet.
-- Bestehende Scenarios koennen beim Reimport anhand ihrer Export-Identitaet wiedererkannt und aktualisiert werden.
+- Der Eindruck, dass ein Scenario-Reimport immer einen echten Klon erzeugt, gilt fuer diesen
+  Huginn-Stand als falsch bzw. veraltet.
+- Bestehende Scenarios koennen beim Reimport anhand ihrer Export-Identitaet wiedererkannt und
+  aktualisiert werden.
 
 ### Huginn
 
 - Der aktuelle Huginn-Installer wurde intensiv fuer Ruby `3.2.x` gehaertet.
-- Das Setup erzeugt jetzt auch automatisch einen echten Huginn-`INVITATION_CODE`, wenn die `.env` noch leer ist oder noch auf dem unsicheren Default `try-huginn` steht.
-- Der aktuelle Huginn-Invitation-Code laesst sich jederzeit mit `grep '^INVITATION_CODE=' /opt/huginn/.env` im Terminal nachlesen.
-- Der erste Huginn-Admin kann bei Bedarf ohne Web-Registrierung direkt per `rails runner` angelegt werden, indem `requires_no_invitation_code!` gesetzt wird.
+- Das Setup erzeugt jetzt auch automatisch einen echten Huginn-`INVITATION_CODE`, wenn die `.env`
+  noch leer ist oder noch auf dem unsicheren Default `try-huginn` steht.
+- Der aktuelle Huginn-Invitation-Code laesst sich jederzeit mit
+  `grep '^INVITATION_CODE=' /opt/huginn/.env` im Terminal nachlesen.
+- Der erste Huginn-Admin kann bei Bedarf ohne Web-Registrierung direkt per `rails runner` angelegt
+  werden, indem `requires_no_invitation_code!` gesetzt wird.
 - Der `dry_runnable.rb`-Pfad wurde fuer Ruby 3.2 angepasst, damit Agenten wieder speicherbar sind.
-- Der `jobs_helper.rb`-Pfad wurde fuer den aktuellen Psych/YAML-Stack auf `YAML.unsafe_load` umgestellt, damit die `Jobs`-Seite wieder funktioniert.
-- Fuer echte Huginn-Verarbeitung reichen im aktuellen Setup nicht nur der Webserver, sondern zusaetzlich ein Worker-Prozess mit `RAILS_ENV=production bundle exec rails runner bin/threaded.rb`.
-- Huginn nutzt in diesem Setup jetzt standardmaessig den Port `3002`, damit kein Konflikt mit OpenClaw auf `3000` und Grafana auf `3001` entsteht.
-- Portkonflikte muessen im Setup kuenftig immer mitgedacht werden: upstream-defaults und setup-empfohlene Ports sollten beide benannt werden. Fuer Huginn gilt: upstream oft `3000`, Setup-Empfehlung bewusst `3002`.
-- Beim `Website Agent` dieses Huginn-Stands muss HTML-Extraction in `extract` mit XPath-Werten wie `string(.)` oder `normalize-space(.)` arbeiten; `value: "text"` fuehrt hier leicht zu leeren Payload-Feldern trotz erfolgreichem Abruf.
-- Scenario-Export und Reimport koennen bestehende Scenarios anhand ihrer internen Export-Identitaet wiedererkennen; ein lokal umbenanntes Scenario kann beim Reimport derselben Exportdatei wieder auf den alten Exportnamen zurueckfallen.
-- Der Installer richtet nach erfolgreicher Huginn-Installation nach Moeglichkeit zwei lokale `systemd`-Dienste ein: `huginn-web.service` und `huginn-worker.service`.
-- Im Setup-Hauptmenue gibt es jetzt einen zentralen Start-Manager `Installierte Dienste starten`, der bekannte Startziele gesammelt oder gezielt anstossen kann.
-- Der Start-Manager erzeugt bei Bedarf ein anpassbares Autostart-Skript unter `~/.openclaw_ultimate_user_data/autostart/start_selected_tools.sh`.
-- Dieses Autostart-Skript muss vor dem eigentlichen Start einen Abbruchpfad zurueck ins Setup anbieten, damit Konfigurationsaenderungen vor einem erneuten Start moeglich bleiben.
-- Der Installer bevorzugt fuer neue Huginn-`.env` jetzt die sichere Vorlage aus `~/.openclaw_ultimate_user_data/huginn/.env.template` und bereinigt alte DB-Defaults wie `root`/`huginn_development`.
-- Die Warnung `MYSQL_OPT_RECONNECT is deprecated` stammt im Huginn-Stand nicht primaer vom MySQL-Server-Update, sondern vom alten `reconnect`-Default in `config/database.yml`; der Installer setzt diesen Default jetzt auf `false`.
-- Wenn die sichere Huginn-Vorlage versehentlich auf `DATABASE_ADAPTER=postgresql` steht, laeuft der alte `pg-1.1.3`-Stack unter Ruby 3.2 in `pg_ext.so` aus; der Installer gibt dafuer jetzt einen gezielten Hinweis statt nur allgemein bei `db:create` zu scheitern.
-- Der offizielle aktuelle Huginn-Upstream spricht in der Installationsdoku derzeit weiterhin von `master`; unsere Huginn-Auswahl und Doku sollten diesen Namen fuer den Teststand konsistent verwenden statt zwischen `main` und `master` zu mischen.
-- `master` ist gegenueber `v2022.08.18` sichtbar moderner bei Ruby, OpenAI-kompatiblen `.env`-Optionen und dem HTTP-Backend-Pfad; MySQL/MariaDB bleibt laut offizieller Installationsdateien aber weiter ein realer Standardpfad.
-- Fuer VPS/K3s-Szenarien mit Clawbake ist PostgreSQL bei Huginn strategisch vorzuziehen, weil Clawbake upstream PostgreSQL-only ist. Lokale MiniPC-/WSL2-Huginn-Tests koennen weiterhin mit MySQL/MariaDB sinnvoll sein.
-- Sinnvoller Workflow: Huginn-Agents/Scenarios lokal absichern und testen, dann ohne Secrets exportieren und in eine VPS-Huginn-Instanz mit PostgreSQL importieren; bei Bedarf auch umgekehrt von VPS nach lokal zurueckholen.
+- Der `jobs_helper.rb`-Pfad wurde fuer den aktuellen Psych/YAML-Stack auf `YAML.unsafe_load`
+  umgestellt, damit die `Jobs`-Seite wieder funktioniert.
+- Fuer echte Huginn-Verarbeitung reichen im aktuellen Setup nicht nur der Webserver, sondern
+  zusaetzlich ein Worker-Prozess mit
+  `RAILS_ENV=production bundle exec rails runner bin/threaded.rb`.
+- Huginn nutzt in diesem Setup jetzt standardmaessig den Port `3002`, damit kein Konflikt mit
+  OpenClaw auf `3000` und Grafana auf `3001` entsteht.
+- Portkonflikte muessen im Setup kuenftig immer mitgedacht werden: upstream-defaults und
+  setup-empfohlene Ports sollten beide benannt werden. Fuer Huginn gilt: upstream oft `3000`,
+  Setup-Empfehlung bewusst `3002`.
+- Beim `Website Agent` dieses Huginn-Stands muss HTML-Extraction in `extract` mit XPath-Werten wie
+  `string(.)` oder `normalize-space(.)` arbeiten; `value: "text"` fuehrt hier leicht zu leeren
+  Payload-Feldern trotz erfolgreichem Abruf.
+- Scenario-Export und Reimport koennen bestehende Scenarios anhand ihrer internen Export-Identitaet
+  wiedererkennen; ein lokal umbenanntes Scenario kann beim Reimport derselben Exportdatei wieder auf
+  den alten Exportnamen zurueckfallen.
+- Der Installer richtet nach erfolgreicher Huginn-Installation nach Moeglichkeit zwei lokale
+  `systemd`-Dienste ein: `huginn-web.service` und `huginn-worker.service`.
+- Im Setup-Hauptmenue gibt es jetzt einen zentralen Start-Manager `Installierte Dienste starten`,
+  der bekannte Startziele gesammelt oder gezielt anstossen kann.
+- Der Start-Manager erzeugt bei Bedarf ein anpassbares Autostart-Skript unter
+  `~/.openclaw_ultimate_user_data/autostart/start_selected_tools.sh`.
+- Dieses Autostart-Skript muss vor dem eigentlichen Start einen Abbruchpfad zurueck ins Setup
+  anbieten, damit Konfigurationsaenderungen vor einem erneuten Start moeglich bleiben.
+- Der Installer bevorzugt fuer neue Huginn-`.env` jetzt die sichere Vorlage aus
+  `~/.openclaw_ultimate_user_data/huginn/.env.template` und bereinigt alte DB-Defaults wie
+  `root`/`huginn_development`.
+- Die Warnung `MYSQL_OPT_RECONNECT is deprecated` stammt im Huginn-Stand nicht primaer vom
+  MySQL-Server-Update, sondern vom alten `reconnect`-Default in `config/database.yml`; der Installer
+  setzt diesen Default jetzt auf `false`.
+- Wenn die sichere Huginn-Vorlage versehentlich auf `DATABASE_ADAPTER=postgresql` steht, laeuft der
+  alte `pg-1.1.3`-Stack unter Ruby 3.2 in `pg_ext.so` aus; der Installer gibt dafuer jetzt einen
+  gezielten Hinweis statt nur allgemein bei `db:create` zu scheitern.
+- Der offizielle aktuelle Huginn-Upstream spricht in der Installationsdoku derzeit weiterhin von
+  `master`; unsere Huginn-Auswahl und Doku sollten diesen Namen fuer den Teststand konsistent
+  verwenden statt zwischen `main` und `master` zu mischen.
+- `master` ist gegenueber `v2022.08.18` sichtbar moderner bei Ruby, OpenAI-kompatiblen
+  `.env`-Optionen und dem HTTP-Backend-Pfad; MySQL/MariaDB bleibt laut offizieller
+  Installationsdateien aber weiter ein realer Standardpfad.
+- Fuer VPS/K3s-Szenarien mit Clawbake ist PostgreSQL bei Huginn strategisch vorzuziehen, weil
+  Clawbake upstream PostgreSQL-only ist. Lokale MiniPC-/WSL2-Huginn-Tests koennen weiterhin mit
+  MySQL/MariaDB sinnvoll sein.
+- Sinnvoller Workflow: Huginn-Agents/Scenarios lokal absichern und testen, dann ohne Secrets
+  exportieren und in eine VPS-Huginn-Instanz mit PostgreSQL importieren; bei Bedarf auch umgekehrt
+  von VPS nach lokal zurueckholen.
 - Eine einfache funktionierende Testkette wurde erfolgreich bestaetigt:
   - `Manual Event Agent`
   - `Event Formatting Agent`
@@ -814,22 +924,28 @@ Diese Punkte gelten im Projektverlauf inzwischen als veraltet, problematisch ode
 
 ### Sprachpakete
 
-- Das Setup kann jetzt nachinstallierbare Sprachpakete aus `~/.openclaw_ultimate_user_data/language_packs/` laden.
-- Sprachpakete werden nach der eingebauten Setup-Sprache als Overlay geladen und koennen vorhandene `TXT_*`-Texte gezielt ueberschreiben.
+- Das Setup kann jetzt nachinstallierbare Sprachpakete aus
+  `~/.openclaw_ultimate_user_data/language_packs/` laden.
+- Sprachpakete werden nach der eingebauten Setup-Sprache als Overlay geladen und koennen vorhandene
+  `TXT_*`-Texte gezielt ueberschreiben.
 - Fuer die Verwaltung gibt es jetzt `Optionen -> Sprachpakete verwalten`.
-- Das Repo enthaelt mit `language_packs/de_core_ui/` bereits ein erstes deutsches Starter-Paket, das spaeter in ein eigenes Repo ausgelagert werden kann.
-- Das separate Repo `Ultimate_KI_Setup-Sprachenpakete` soll kuenftig parallel zum Haupt-Setup mit gepflegt werden, damit exportierbare Sprachpakete und Setup-Integration nicht auseinanderlaufen.
+- Das Repo enthaelt mit `language_packs/de_core_ui/` bereits ein erstes deutsches Starter-Paket, das
+  spaeter in ein eigenes Repo ausgelagert werden kann.
+- Das separate Repo `Ultimate_KI_Setup-Sprachenpakete` soll kuenftig parallel zum Haupt-Setup mit
+  gepflegt werden, damit exportierbare Sprachpakete und Setup-Integration nicht auseinanderlaufen.
   - `google-cloud-translate` / `grpc 1.42.0`
   - `mini_racer` / `libv8-node`
   - `ruby-growl`
   - `net-ftp-list`
   - `gmail_xoauth`
   - `mysql2 0.5.3`
-- Der reale Huginn-Lauf vom `2026-05-11` erreichte nach den Gem-Fixes nicht mehr den alten Bundler-/gRPC-Abbruch, sondern scheiterte erst bei der Datenbankverbindung.
+- Der reale Huginn-Lauf vom `2026-05-11` erreichte nach den Gem-Fixes nicht mehr den alten
+  Bundler-/gRPC-Abbruch, sondern scheiterte erst bei der Datenbankverbindung.
 
 ### Aktueller echter Restfehler bei Huginn
 
-- Logdatei: `/home/ubuntu/.openclaw_ultimate_user_data/install_logs/20260511_173138_tool_install_Huginn.log`
+- Logdatei:
+  `/home/ubuntu/.openclaw_ultimate_user_data/install_logs/20260511_173138_tool_install_Huginn.log`
 - Relevanter Fehler:
   - `Mysql2::Error::ConnectionError: Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock'`
 - Befund dazu:
@@ -851,9 +967,13 @@ Geprueft wurden:
 Aktueller Befund:
 
 - Eine aktive MySQL-/MariaDB-Nutzung ist im aktuellen Setup derzeit vor allem bei `Huginn` sichtbar.
-- Das Trading-Profil mit `Zenbot_trader` bzw. der verlinkten externen GitHub-Plattform richtet im lokalen Setup aktuell **keinen** MySQL-/MariaDB-Dienst ein.
-- Fuer `ZenTrade AI` wurde im aktuellen lokalen Repository **kein** eigener Quelltreffer gefunden. Falls spaeter ein externer `ZenTrade AI`-Stand angebunden wird, muss dessen Datenbankbedarf separat im Zielrepo geprueft werden.
-- In den aktuellen Profilskripten und Stacks gibt es ausdrueckliche **PostgreSQL- und SQLite-Pfade**, die nicht pauschal auf MySQL/MariaDB umgestellt werden sollten.
+- Das Trading-Profil mit `Zenbot_trader` bzw. der verlinkten externen GitHub-Plattform richtet im
+  lokalen Setup aktuell **keinen** MySQL-/MariaDB-Dienst ein.
+- Fuer `ZenTrade AI` wurde im aktuellen lokalen Repository **kein** eigener Quelltreffer gefunden.
+  Falls spaeter ein externer `ZenTrade AI`-Stand angebunden wird, muss dessen Datenbankbedarf
+  separat im Zielrepo geprueft werden.
+- In den aktuellen Profilskripten und Stacks gibt es ausdrueckliche **PostgreSQL- und
+  SQLite-Pfade**, die nicht pauschal auf MySQL/MariaDB umgestellt werden sollten.
 
 ### Bewusste DB-Ausnahmen im Projekt
 
@@ -870,57 +990,89 @@ Diese Komponenten sind im aktuellen Setup fachlich bewusst nicht auf MySQL/Maria
 
 ### Projektregel fuer kuenftige Chats
 
-- MariaDB/MySQL soll im Projekt bevorzugt dort verwendet werden, wo der Zielstack frei zwischen Adaptern waehlen kann und der Betrieb damit vereinheitlicht werden soll.
-- PostgreSQL-, SQLite- oder MongoDB-native Pfade sollen **nicht** automatisch auf MariaDB/MySQL umgestellt werden, nur um einen globalen Einheitsstandard zu erzwingen.
-- Vor jeder kuenftigen DB-Umstellung ist zuerst zu pruefen, ob der jeweilige Upstream-Stack technisch oder dokumentarisch auf PostgreSQL, SQLite oder MongoDB zugeschnitten ist.
-- Fuer `Huginn` ist MySQL/MariaDB aktuell der reale operative Kandidat, solange keine bewusste Entscheidung fuer `postgresql` oder `sqlite3` getroffen wird.
-- Ausnahme/Ergaenzung: Wenn Huginn auf einer VPS oder in K3s zusammen mit Clawbake betrieben werden soll, ist PostgreSQL fuer Huginn vorzuziehen, weil Clawbake selbst PostgreSQL-only ist.
+- MariaDB/MySQL soll im Projekt bevorzugt dort verwendet werden, wo der Zielstack frei zwischen
+  Adaptern waehlen kann und der Betrieb damit vereinheitlicht werden soll.
+- PostgreSQL-, SQLite- oder MongoDB-native Pfade sollen **nicht** automatisch auf MariaDB/MySQL
+  umgestellt werden, nur um einen globalen Einheitsstandard zu erzwingen.
+- Vor jeder kuenftigen DB-Umstellung ist zuerst zu pruefen, ob der jeweilige Upstream-Stack
+  technisch oder dokumentarisch auf PostgreSQL, SQLite oder MongoDB zugeschnitten ist.
+- Fuer `Huginn` ist MySQL/MariaDB aktuell der reale operative Kandidat, solange keine bewusste
+  Entscheidung fuer `postgresql` oder `sqlite3` getroffen wird.
+- Ausnahme/Ergaenzung: Wenn Huginn auf einer VPS oder in K3s zusammen mit Clawbake betrieben werden
+  soll, ist PostgreSQL fuer Huginn vorzuziehen, weil Clawbake selbst PostgreSQL-only ist.
 
 ### Praktische Schlussfolgerung
 
 Fuer Huginn gibt es aktuell drei sinnvolle DB-Pfade:
 
 1. lokalen MySQL- oder MariaDB-Dienst installieren und starten
-2. externen MySQL-Host in `/opt/huginn/.env` ueber `DATABASE_HOST` und optional `DATABASE_PORT` setzen
+2. externen MySQL-Host in `/opt/huginn/.env` ueber `DATABASE_HOST` und optional `DATABASE_PORT`
+   setzen
 3. Huginn auf `postgresql` oder `sqlite3` umstellen
 
 ### Wichtige Dateien
 
 - [scripts/tools/huginn_install.sh](../scripts/tools/huginn_install.sh)
 - [docs/HUGINN_ENV_GUIDE.md](HUGINN_ENV_GUIDE.md)
-- Die fruehere Huginn-ENV-Vorlage ist nicht mehr vorhanden; aktuelle Parameter siehe [HUGINN_ENV_GUIDE.md](HUGINN_ENV_GUIDE.md). Keine Datei oder Zugangsdaten aus einem alten Worktree uebernehmen.
+- Die fruehere Huginn-ENV-Vorlage ist nicht mehr vorhanden; aktuelle Parameter siehe
+  [HUGINN_ENV_GUIDE.md](HUGINN_ENV_GUIDE.md). Keine Datei oder Zugangsdaten aus einem alten Worktree
+  uebernehmen.
 
 ### Hinweis fuer Folge-Chats
 
-Wenn ein spaeterer Chat an Huginn weiterarbeitet, sollte er zuerst diese Punkte als bekannt voraussetzen:
+Wenn ein spaeterer Chat an Huginn weiterarbeitet, sollte er zuerst diese Punkte als bekannt
+voraussetzen:
 
 - Der fruehere `grpc 1.42.0`-Fehler ist nicht mehr der primaere Blocker.
 - Der aktuelle reale Restfehler ist die fehlende lokale MySQL-/MariaDB-Infrastruktur fuer Huginn.
-- Vor weiteren Gem-/Bundler-Eingriffen sollte zuerst entschieden werden, ob Huginn mit `mysql2`, `postgresql` oder `sqlite3` betrieben werden soll.
+- Vor weiteren Gem-/Bundler-Eingriffen sollte zuerst entschieden werden, ob Huginn mit `mysql2`,
+  `postgresql` oder `sqlite3` betrieben werden soll.
 
 ### Jarvis / FritzBox / Alexa / Home Assistant
 
-- Fuer die Kombination aus Fritz!Box/Fritz!Fon, Home Assistant, optionaler Alexa-Bridge und lokalem Sprachassistenten gibt es jetzt das Profil `Jarvis_FritzBox_Alexa_Home_Assistant`.
-- Das sogenannte `Jarvis Brain` ist kein einzelnes Tool, sondern eine logische Zentrale aus Ollama, OpenClaw, Home Assistant, Node-RED/MQTT, optionalem Memory und lokaler STT/TTS-Pipeline.
-- Alexa soll dabei nicht als eigentliche Telefonanlage verstanden werden. Fritz!Box oder spaeter Asterisk/SIP sind die Telefonie-Schicht; Alexa ist hoechstens optionaler Trigger oder Ausgabekanal.
-- Datenschutzregel: keine heimliche Anrufaufzeichnung, keine Cloud-Weitergabe privater Anrufdaten als Standard, keine sicherheitskritischen Smart-Home-Aktionen ohne Bestaetigung.
+- Fuer die Kombination aus Fritz!Box/Fritz!Fon, Home Assistant, optionaler Alexa-Bridge und lokalem
+  Sprachassistenten gibt es jetzt das Profil `Jarvis_FritzBox_Alexa_Home_Assistant`.
+- Das sogenannte `Jarvis Brain` ist kein einzelnes Tool, sondern eine logische Zentrale aus Ollama,
+  OpenClaw, Home Assistant, Node-RED/MQTT, optionalem Memory und lokaler STT/TTS-Pipeline.
+- Alexa soll dabei nicht als eigentliche Telefonanlage verstanden werden. Fritz!Box oder spaeter
+  Asterisk/SIP sind die Telefonie-Schicht; Alexa ist hoechstens optionaler Trigger oder
+  Ausgabekanal.
+- Datenschutzregel: keine heimliche Anrufaufzeichnung, keine Cloud-Weitergabe privater Anrufdaten
+  als Standard, keine sicherheitskritischen Smart-Home-Aktionen ohne Bestaetigung.
 
 ### OpenHiggsStack / AI Cinema Studio
 
 - Neues optionales Profil: `OpenHiggsStack_AI_Cinema_Studio`.
 - Zweck: offene, lokale bzw. hybride Alternative zu cloudbasierten AI-Cinema-/Marketing-Studios.
 - Kernbausteine: OpenClaw, Ollama, ComfyUI, Wan2.x, FFmpeg, n8n.
-- `scripts/install-openhiggsstack.sh` bereitet Ordner, Log und `.env` vor, installiert nach Moeglichkeit `ffmpeg` und fragt vor dem ComfyUI-Klon.
+- `scripts/install-openhiggsstack.sh` bereitet Ordner, Log und `.env` vor, installiert nach
+  Moeglichkeit `ffmpeg` und fragt vor dem ComfyUI-Klon.
 - Grosse Modelle wie Wan2.1/Wan2.2, Flux oder Cloud-Modelle werden nie automatisch heruntergeladen.
-- Fuer allgemeine Installationsfehler gibt es `scripts/last_install_log.sh`, um das neueste Log sofort anzuzeigen oder via bestehender Diagnose-Mail weiterzugeben.
+- Fuer allgemeine Installationsfehler gibt es `scripts/last_install_log.sh`, um das neueste Log
+  sofort anzuzeigen oder via bestehender Diagnose-Mail weiterzugeben.
 
 ### Installationsueberwachung / Log- und Speicherdiagnose
 
-- Ursache fuer das beobachtete Weiterinstallieren nach `[Z]`: Der normale Tool-Batch hatte den Abbruch bereits, aber Profil-/Gruppeninstallationen haben `TOOL_BATCH_ABORT_REQUESTED` nicht konsequent bis zur Profilansicht zurueckgegeben.
-- Fix: `show_tool_group_checklist` und `toggle_tool_group_bulk` brechen nun nach `install_tool` und `uninstall_tool` sofort ab, setzen `PROFILE_FLOW_ABORT_REQUESTED=1` und springen zurueck, sobald `[Z]` oder `[z]` gewaehlt wurde.
-- Neue Sofortbefehle: `bash scripts/last_install_log.sh --failed`, `bash scripts/last_install_log.sh --diagnostics` und `bash scripts/last_install_log.sh --snapshot`.
-- `scripts/install_run_diagnostics.sh` erstellt einen Bericht ueber mehrere aktuelle Logs statt nur ueber das letzte Tool. Damit gehen fruehere fehlgeschlagene Tools im selben Installationslauf nicht mehr unter.
-- `scripts/dependency_snapshot.sh` dokumentiert Speicherorte, `/opt`, Python-venvs, apt-Markierungen, Node/npm/pnpm und Docker/Podman-Spuren. Das ist wichtig, weil Deinstallation nicht automatisch alle Caches, globalen Abhaengigkeiten, Container-Images oder Modellordner entfernt.
-- Deinstallationen laufen im Tool-Management und in Profil-Toolgruppen jetzt vor Installationen, damit bei knappen Datentraegern zuerst Speicher freigegeben wird.
-- Fehler nach `install_tool`/`uninstall_tool` oeffnen den Sofortdialog auch ohne aktivierte erweiterte Ueberwachung. Bei Fehlern ist Enter bewusst wie `[Z]`, damit nicht versehentlich weiterinstalliert wird.
-- Alte Fehlerlogs koennen ueber die Installationsueberwachung oder per `bash scripts/cleanup_setup_logs.sh --apply --failed-only` gezielt geloescht werden.
+- Ursache fuer das beobachtete Weiterinstallieren nach `[Z]`: Der normale Tool-Batch hatte den
+  Abbruch bereits, aber Profil-/Gruppeninstallationen haben `TOOL_BATCH_ABORT_REQUESTED` nicht
+  konsequent bis zur Profilansicht zurueckgegeben.
+- Fix: `show_tool_group_checklist` und `toggle_tool_group_bulk` brechen nun nach `install_tool` und
+  `uninstall_tool` sofort ab, setzen `PROFILE_FLOW_ABORT_REQUESTED=1` und springen zurueck, sobald
+  `[Z]` oder `[z]` gewaehlt wurde.
+- Neue Sofortbefehle: `bash scripts/last_install_log.sh --failed`,
+  `bash scripts/last_install_log.sh --diagnostics` und
+  `bash scripts/last_install_log.sh --snapshot`.
+- `scripts/install_run_diagnostics.sh` erstellt einen Bericht ueber mehrere aktuelle Logs statt nur
+  ueber das letzte Tool. Damit gehen fruehere fehlgeschlagene Tools im selben Installationslauf
+  nicht mehr unter.
+- `scripts/dependency_snapshot.sh` dokumentiert Speicherorte, `/opt`, Python-venvs,
+  apt-Markierungen, Node/npm/pnpm und Docker/Podman-Spuren. Das ist wichtig, weil Deinstallation
+  nicht automatisch alle Caches, globalen Abhaengigkeiten, Container-Images oder Modellordner
+  entfernt.
+- Deinstallationen laufen im Tool-Management und in Profil-Toolgruppen jetzt vor Installationen,
+  damit bei knappen Datentraegern zuerst Speicher freigegeben wird.
+- Fehler nach `install_tool`/`uninstall_tool` oeffnen den Sofortdialog auch ohne aktivierte
+  erweiterte Ueberwachung. Bei Fehlern ist Enter bewusst wie `[Z]`, damit nicht versehentlich
+  weiterinstalliert wird.
+- Alte Fehlerlogs koennen ueber die Installationsueberwachung oder per
+  `bash scripts/cleanup_setup_logs.sh --apply --failed-only` gezielt geloescht werden.

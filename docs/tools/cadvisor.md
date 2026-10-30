@@ -1,14 +1,13 @@
 # cAdvisor: nativer GitHub-Build mit privater Go-Basis
 
-cAdvisor erfasst im spaeteren Betrieb Container-/cgroup-Ressourcen fuer
-Monitoring. Ein gebautes Binary ist noch kein eingerichteter Exporter und
-kein Nachweis, dass Host-/WSL-Containerdaten vollstaendig sichtbar sind.
+cAdvisor erfasst im spaeteren Betrieb Container-/cgroup-Ressourcen fuer Monitoring. Ein gebautes
+Binary ist noch kein eingerichteter Exporter und kein Nachweis, dass Host-/WSL-Containerdaten
+vollstaendig sichtbar sind.
 
 ## Fehler vom 25.10.2026: Go fehlt
 
-Das Log um 02:00 zeigt einen Abbruch vor dem Quellenbuild. Die Speicherpruefung
-war erfolgreich. cAdvisor ist jetzt an den vorhandenen zustimmungspflichtigen
-privaten Go-Bootstrap angebunden:
+Das Log um 02:00 zeigt einen Abbruch vor dem Quellenbuild. Die Speicherpruefung war erfolgreich.
+cAdvisor ist jetzt an den vorhandenen zustimmungspflichtigen privaten Go-Bootstrap angebunden:
 
 ```bash
 bash scripts/tools/cadvisor_install.sh --dry-run
@@ -17,32 +16,30 @@ bash scripts/tools/cadvisor_install.sh --install-build-deps
 bash scripts/tools/cadvisor_doctor.sh
 ```
 
-Ohne Flag fragt ein interaktives Terminal mit `[j/N]`. Enter, EOF oder fehlende
-Zustimmung genehmigt keinen Download. Dry-Run bleibt auch mit Flag schreibfrei.
-Build-/Statuspruefungen laden keine Toolchain still nach.
+Ohne Flag fragt ein interaktives Terminal mit `[j/N]`. Enter, EOF oder fehlende Zustimmung genehmigt
+keinen Download. Dry-Run bleibt auch mit Flag schreibfrei. Build-/Statuspruefungen laden keine
+Toolchain still nach.
 
 ## Abbruch waehrend go build am 25.10.2026 um 04:25
 
-Das gemeldete Log endet mitten in `go build`, danach erscheint PowerShell.
-Ein Abschlussstatus, Compilerfehler oder OOM-Nachweis fehlt. Die Disk-Vorpruefung
-war erfolgreich; sie prueft weder den gesamten Windows-RAM noch spaetere
-Speicherspitzen. Ein beendeter WSL-/Shellprozess oder Speicherdruck ist moeglich,
-aber anhand dieses Logs nicht bewiesen. Kein erfolgreicher Buildnachweis.
+Das gemeldete Log endet mitten in `go build`, danach erscheint PowerShell. Ein Abschlussstatus,
+Compilerfehler oder OOM-Nachweis fehlt. Die Disk-Vorpruefung war erfolgreich; sie prueft weder den
+gesamten Windows-RAM noch spaetere Speicherspitzen. Ein beendeter WSL-/Shellprozess oder
+Speicherdruck ist moeglich, aber anhand dieses Logs nicht bewiesen. Kein erfolgreicher
+Buildnachweis.
 
-Der cAdvisor-Build verwendet jetzt **`-p=1`, `GOMAXPROCS=1` und
-`GOMEMLIMIT=768MiB`**, auch fuer Go-Unterprozesse der Asset-Erstellung.
-Das senkt die Parallelitaet. GOMEMLIMIT ist ein weiches GC-Ziel **je Prozess**,
-keine harte Grenze fuer Compiler, Linker, Windows oder die gesamte WSL-VM und
-keine Garantie gegen OOM. Siehe [Go GC Guide](https://go.dev/doc/gc-guide#Memory_limit).
-Der Build kann dadurch deutlich laenger dauern.
+Der cAdvisor-Build verwendet jetzt **`-p=1`, `GOMAXPROCS=1` und `GOMEMLIMIT=768MiB`**, auch fuer
+Go-Unterprozesse der Asset-Erstellung. Das senkt die Parallelitaet. GOMEMLIMIT ist ein weiches
+GC-Ziel **je Prozess**, keine harte Grenze fuer Compiler, Linker, Windows oder die gesamte WSL-VM
+und keine Garantie gegen OOM. Siehe [Go GC Guide](https://go.dev/doc/gc-guide#Memory_limit). Der
+Build kann dadurch deutlich laenger dauern.
 
-Compiler-Ausgabe wird laufend ins aktuelle Operationslog geschrieben, nicht
-erst nach Ende des Builds gesammelt. Der Rueckgabepuffer ist begrenzt; im Log
-stehen PID, Statusmeldungen alle 30 Sekunden und der beobachtete Exitstatus.
-Signal-/Timeoutabbrueche sind Fehler, keine Installation. Ein kompletter VM-
-oder Hostabbruch kann jedoch auch den Logger toeten: danach ist weiterhin kein
-abschliessender Logeintrag garantiert. Das Setup faengt normale Installerfehler
-bereits ab; ein WSL-Abbruch kann nicht durch Bash abgefangen werden.
+Compiler-Ausgabe wird laufend ins aktuelle Operationslog geschrieben, nicht erst nach Ende des
+Builds gesammelt. Der Rueckgabepuffer ist begrenzt; im Log stehen PID, Statusmeldungen alle 30
+Sekunden und der beobachtete Exitstatus. Signal-/Timeoutabbrueche sind Fehler, keine Installation.
+Ein kompletter VM- oder Hostabbruch kann jedoch auch den Logger toeten: danach ist weiterhin kein
+abschliessender Logeintrag garantiert. Das Setup faengt normale Installerfehler bereits ab; ein
+WSL-Abbruch kann nicht durch Bash abgefangen werden.
 
 Vor erneutem Build zuerst diagnostizieren, nicht blind Daten/Lockdateien loeschen:
 
@@ -62,31 +59,29 @@ dmesg -T | grep -Ei 'out of memory|oom|killed process'
 journalctl -k -b -1 --no-pager | grep -Ei 'out of memory|oom|killed process'
 ```
 
-Kernel-Logs koennen ohne zusaetzliche Leserechte unzugaenglich und nach einem
-VM-Neustart verloren sein. Fehlende Treffer widerlegen OOM nicht. Fuer den
-naechsten Start aus PowerShell den Exitcode direkt nach dem WSL-Aufruf mit
-`$LASTEXITCODE` erfassen. Keine automatische WSL-RAM-/Swap-/Treiber-Aenderung.
-Bei OOM-Indizien zuerst parallele schwere Jobs geordnet beenden und WSL-/Host-
-RAM separat pruefen. Keine Schutzgrenze umgehen.
+Kernel-Logs koennen ohne zusaetzliche Leserechte unzugaenglich und nach einem VM-Neustart verloren
+sein. Fehlende Treffer widerlegen OOM nicht. Fuer den naechsten Start aus PowerShell den Exitcode
+direkt nach dem WSL-Aufruf mit `$LASTEXITCODE` erfassen. Keine automatische
+WSL-RAM-/Swap-/Treiber-Aenderung. Bei OOM-Indizien zuerst parallele schwere Jobs geordnet beenden
+und WSL-/Host- RAM separat pruefen. Keine Schutzgrenze umgehen.
 
-Danach den aktualisierten Installer erneut starten. Bleibt nach dem harten
-Abbruch ein `operation.lock` oder ein nativer Ordner ohne Buildnachweis zurueck,
-blockiert das Setup absichtlich. Erst sicherstellen, dass kein Build mehr laeuft,
-Besitz und Inhalt pruefen und den Bestand sichern; kein pauschales `rm -rf`
-auf Tool-, Cache- oder Nutzerdatenordner. Private Go-Toolchain weiterverwenden.
+Danach den aktualisierten Installer erneut starten. Bleibt nach dem harten Abbruch ein
+`operation.lock` oder ein nativer Ordner ohne Buildnachweis zurueck, blockiert das Setup
+absichtlich. Erst sicherstellen, dass kein Build mehr laeuft, Besitz und Inhalt pruefen und den
+Bestand sichern; kein pauschales `rm -rf` auf Tool-, Cache- oder Nutzerdatenordner. Private
+Go-Toolchain weiterverwenden.
 
 ## Rollback-Sperre am 25.10.2026 um 19:46
 
-Dieser Versuch wurde **vor Start des cAdvisor-Installers** blockiert. Die
-globale Menue-/Rollback-Sperre lautet standardmaessig:
+Dieser Versuch wurde **vor Start des cAdvisor-Installers** blockiert. Die globale
+Menue-/Rollback-Sperre lautet standardmaessig:
 `~/.openclaw_ultimate_user_data/install_transactions/.runner-lock`.
 
-Bevorzugter Wiederanlauf im aktualisierten Setup: **Optionen -> Installations-Reset**.
-Die [Reset-Anleitung](../INSTALLATION_RESET.md) beschreibt Prozesspruefung und
-Archivierung alter Sperren ohne Linux-Neuinstallation oder Datenloeschung.
-Sie schuetzt alle Tools, nicht nur cAdvisor. Der vorherige harte WSL-Abbruch
-kann sie hinterlassen haben; eine laufende andere Installation ist ebenfalls
-moeglich. Dies ist kein neuer Speicherplatz- oder Go-Fehler.
+Bevorzugter Wiederanlauf im aktualisierten Setup: **Optionen -> Installations-Reset**. Die
+[Reset-Anleitung](../INSTALLATION_RESET.md) beschreibt Prozesspruefung und Archivierung alter
+Sperren ohne Linux-Neuinstallation oder Datenloeschung. Sie schuetzt alle Tools, nicht nur cAdvisor.
+Der vorherige harte WSL-Abbruch kann sie hinterlassen haben; eine laufende andere Installation ist
+ebenfalls moeglich. Dies ist kein neuer Speicherplatz- oder Go-Fehler.
 
 Nach Uebernahme der aktualisierten Skripte rein lesend pruefen:
 
@@ -95,75 +90,71 @@ python3 scripts/lib/install_rollback.py --inspect-lock
 ps -eo pid,ppid,comm
 ```
 
-Neue Sperren enthalten `owner.json` mit PID, Linux-Boot-ID und Prozessstartzeit.
-Das verhindert eine Verwechslung durch wiederverwendete PIDs. Die Diagnose
-meldet aktive, geaenderte oder unbekannte Besitzer, entfernt aber nichts.
-**Ein fehlender Besitzerprozess beweist nicht, dass keine verwaisten Compiler
-oder anderen Installer mehr laufen.** Alte leere Sperren haben keinen Besitzer-
-Nachweis und werden weiterhin nicht automatisch aufgehoben.
+Neue Sperren enthalten `owner.json` mit PID, Linux-Boot-ID und Prozessstartzeit. Das verhindert eine
+Verwechslung durch wiederverwendete PIDs. Die Diagnose meldet aktive, geaenderte oder unbekannte
+Besitzer, entfernt aber nichts. **Ein fehlender Besitzerprozess beweist nicht, dass keine verwaisten
+Compiler oder anderen Installer mehr laufen.** Alte leere Sperren haben keinen Besitzer- Nachweis
+und werden weiterhin nicht automatisch aufgehoben.
 
-Nur fuer die **alte, leere** Sperre: erst alle parallelen Setup-/Update-/Build-
-Vorgaenge pruefen und sicher beenden beziehungsweise deren Abschluss abwarten.
-Wenn sicher keine Installation mehr laeuft, kann der Nutzer bewusst ausschliesslich
-den leeren Sperrordner freigeben (Standardpfad; bei abweichendem
-`OPENCLAW_USER_DATA_DIR` den tatsaechlichen Pfad aus der Diagnose verwenden):
+Nur fuer die **alte, leere** Sperre: erst alle parallelen Setup-/Update-/Build- Vorgaenge pruefen
+und sicher beenden beziehungsweise deren Abschluss abwarten. Wenn sicher keine Installation mehr
+laeuft, kann der Nutzer bewusst ausschliesslich den leeren Sperrordner freigeben (Standardpfad; bei
+abweichendem `OPENCLAW_USER_DATA_DIR` den tatsaechlichen Pfad aus der Diagnose verwenden):
 
 ```bash
 # Manual recovery ONLY after excluding every active installation/build.
 rmdir -- "$HOME/.openclaw_ultimate_user_data/install_transactions/.runner-lock"
 ```
 
-`rmdir` entfernt keine Dateien und scheitert bei nichtleerem Ordner. Bei
-`owner.json`, unbekanntem Inhalt oder einem aktiven Besitzer **nicht** mit
-`rm -rf` nachhelfen. Dann Besitzer/Bestand gesondert pruefen. Keine Nutzerdaten,
-Journale, privaten Go-Werkzeuge oder nativen Quellordner entfernen.
+`rmdir` entfernt keine Dateien und scheitert bei nichtleerem Ordner. Bei `owner.json`, unbekanntem
+Inhalt oder einem aktiven Besitzer **nicht** mit `rm -rf` nachhelfen. Dann Besitzer/Bestand
+gesondert pruefen. Keine Nutzerdaten, Journale, privaten Go-Werkzeuge oder nativen Quellordner
+entfernen.
 
-Anschliessend cAdvisor erneut im Setup waehlen. Eine moegliche zweite
-toolinterne `operation.lock` oder ein unvollstaendiger nativer Build ist eine
-separate Pruefung; die globale Entsperrung macht daraus keinen erfolgreichen
-Build und umgeht keine Besitzkontrolle.
+Anschliessend cAdvisor erneut im Setup waehlen. Eine moegliche zweite toolinterne `operation.lock`
+oder ein unvollstaendiger nativer Build ist eine separate Pruefung; die globale Entsperrung macht
+daraus keinen erfolgreichen Build und umgeht keine Besitzkontrolle.
 
 ## Version und Quellen
 
-Der [gepruefte cAdvisor-Pin](https://github.com/google/cadvisor/tree/c57813afc32715351dff34ab76a6164bcb0e5c9d)
-deklarierte in [go.mod](https://github.com/google/cadvisor/blob/c57813afc32715351dff34ab76a6164bcb0e5c9d/go.mod)
-und [cmd/go.mod](https://github.com/google/cadvisor/blob/c57813afc32715351dff34ab76a6164bcb0e5c9d/cmd/go.mod)
-Go **1.25.0** als Mindestversion. Ein passendes vorhandenes Go wird bevorzugt.
-Das ist keine pauschale Garantie fuer alle kuenftigen Abhaengigkeitsversionen.
+Der
+[gepruefte cAdvisor-Pin](https://github.com/google/cadvisor/tree/c57813afc32715351dff34ab76a6164bcb0e5c9d)
+deklarierte in
+[go.mod](https://github.com/google/cadvisor/blob/c57813afc32715351dff34ab76a6164bcb0e5c9d/go.mod)
+und
+[cmd/go.mod](https://github.com/google/cadvisor/blob/c57813afc32715351dff34ab76a6164bcb0e5c9d/cmd/go.mod)
+Go **1.25.0** als Mindestversion. Ein passendes vorhandenes Go wird bevorzugt. Das ist keine
+pauschale Garantie fuer alle kuenftigen Abhaengigkeitsversionen.
 
-Andernfalls kann der bestehende Bootstrap nach Zustimmung **go1.27.3**
-aus dem offiziellen Go-Archiv mit fester SHA256 und Groesse privat einrichten.
-Das ist eine binaere Buildwerkzeug-Ausnahme, kein Source-Build von Go.
-System-Go, globale PATH-Einstellungen und Shellprofile bleiben unveraendert.
+Andernfalls kann der bestehende Bootstrap nach Zustimmung **go1.27.3** aus dem offiziellen Go-Archiv
+mit fester SHA256 und Groesse privat einrichten. Das ist eine binaere Buildwerkzeug-Ausnahme, kein
+Source-Build von Go. System-Go, globale PATH-Einstellungen und Shellprofile bleiben unveraendert.
 Quelle und Pruefwerte: [private_go.py](../../scripts/tools/helpers/private_go.py).
 
-Private Basis:
-`~/.openclaw_ultimate_user_data/tools/cadvisor/toolchain/`.
-Die Tool-Reserve bleibt bei **8192 MiB**. Der Go-Helper prueft ausserdem
-mindestens 4 GiB freien Zielspeicher; dies ist keine additive 12-GiB-Grenze
-und keine Garantie fuer den gesamten Buildbedarf. Unter WSL bleibt Windows-
-Hostspeicher einzubeziehen. Keinen Speicherwaechter fuer einen Versuch umgehen.
+Private Basis: `~/.openclaw_ultimate_user_data/tools/cadvisor/toolchain/`. Die Tool-Reserve bleibt
+bei **8192 MiB**. Der Go-Helper prueft ausserdem mindestens 4 GiB freien Zielspeicher; dies ist
+keine additive 12-GiB-Grenze und keine Garantie fuer den gesamten Buildbedarf. Unter WSL bleibt
+Windows- Hostspeicher einzubeziehen. Keinen Speicherwaechter fuer einen Versuch umgehen.
 
 ## Build und Betrieb trennen
 
-Der native Build arbeitet aus dem GitHub-Checkout, erzeugt die Webassets mit
-dem [gepinnten Upstream-Skript](https://github.com/google/cadvisor/blob/c57813afc32715351dff34ab76a6164bcb0e5c9d/build/assets.sh)
-und baut das Modul in `cmd`. Das Skript baut auch den dort versionierten
-go-bindata-Helfer. Go-Module kommen ueber den konfigurierten Modulproxy mit
-Pruefsummenkontrolle; nicht jeder Dependency-Download kommt direkt von GitHub.
-`GOTOOLCHAIN=local` verhindert einen stillen Go-Toolchainwechsel.
+Der native Build arbeitet aus dem GitHub-Checkout, erzeugt die Webassets mit dem
+[gepinnten Upstream-Skript](https://github.com/google/cadvisor/blob/c57813afc32715351dff34ab76a6164bcb0e5c9d/build/assets.sh)
+und baut das Modul in `cmd`. Das Skript baut auch den dort versionierten go-bindata-Helfer.
+Go-Module kommen ueber den konfigurierten Modulproxy mit Pruefsummenkontrolle; nicht jeder
+Dependency-Download kommt direkt von GitHub. `GOTOOLCHAIN=local` verhindert einen stillen
+Go-Toolchainwechsel.
 
-Der Installer startet nur die Versionsprobe, keinen Monitoring-Daemon, keine
-Host-Erfassung, kein Docker und keine systemd-Unit. Spaetere Hostpfad-/cgroup-/
-Socket-Zugriffe sowie Listener/Auth/Firewall muessen gesondert freigegeben
-werden. Insbesondere keinen Docker-Socket oder privilegierten Dienst allein
-wegen eines erfolgreichen Builds erlauben.
+Der Installer startet nur die Versionsprobe, keinen Monitoring-Daemon, keine Host-Erfassung, kein
+Docker und keine systemd-Unit. Spaetere Hostpfad-/cgroup-/ Socket-Zugriffe sowie
+Listener/Auth/Firewall muessen gesondert freigegeben werden. Insbesondere keinen Docker-Socket oder
+privilegierten Dienst allein wegen eines erfolgreichen Builds erlauben.
 
-Private Toolchain bleibt bei App-Deinstallation erhalten. Vorhandene Container,
-Volumes, Archiv-/Monitoringdaten und /opt-Installationen werden nicht migriert
-oder geloescht. Ein fehlgeschlagener Bootstrap erzeugt keinen erfolgreichen
-App-Buildnachweis; vorhandene Daten bleiben erhalten.
+Private Toolchain bleibt bei App-Deinstallation erhalten. Vorhandene Container, Volumes,
+Archiv-/Monitoringdaten und /opt-Installationen werden nicht migriert oder geloescht. Ein
+fehlgeschlagener Bootstrap erzeugt keinen erfolgreichen App-Buildnachweis; vorhandene Daten bleiben
+erhalten.
 
-Offline-Fixtures pruefen Zustimmung, Kindprozess-PATH und Fehlerpfade. Ein
-echter Ubuntu-/WSL-Build oder eine Messwertabnahme wurde hier nicht ausgefuehrt.
-Siehe [Docker-zu-GitHub-Migration](../DOCKER_TO_GITHUB.md).
+Offline-Fixtures pruefen Zustimmung, Kindprozess-PATH und Fehlerpfade. Ein echter Ubuntu-/WSL-Build
+oder eine Messwertabnahme wurde hier nicht ausgefuehrt. Siehe
+[Docker-zu-GitHub-Migration](../DOCKER_TO_GITHUB.md).

@@ -36,18 +36,20 @@ if [[ "$#" -lt 1 ]]; then
 fi
 
 case "$priority" in
-  low|normal|high) ;;
-  *) echo "Fehler: Prioritaet muss low, normal oder high sein."; exit 1 ;;
+  low | normal | high) ;;
+  *)
+    echo "Fehler: Prioritaet muss low, normal oder high sein."
+    exit 1
+    ;;
 esac
 
 touch "$QUEUE_FILE"
 job_id="$(date +%Y%m%d%H%M%S)-$$"
 command_text="$*"
 if [[ "$command_text" == *$'\n'* || "$command_text" == *$'\r'* || "$command_text" == *$'\t'* ||
-      ! "${DEFAULT_TIMEOUT_SECONDS:-3600}" =~ ^[1-9][0-9]{0,5}$ ]]; then
+  ! "${DEFAULT_TIMEOUT_SECONDS:-3600}" =~ ^[1-9][0-9]{0,5}$ ]]; then
   echo "Fehler: Queue-Kommandos muessen einzeilig sein; Timeout muss eine positive Zahl sein." >&2
   exit 1
 fi
-printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\n' "$job_id" "queued" "$priority" "0" "1" "${DEFAULT_TIMEOUT_SECONDS:-3600}" "$command_text" >> "$QUEUE_FILE"
+printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\n' "$job_id" "queued" "$priority" "0" "1" "${DEFAULT_TIMEOUT_SECONDS:-3600}" "$command_text" >>"$QUEUE_FILE"
 echo "Job eingereiht: $job_id ($priority)"
-

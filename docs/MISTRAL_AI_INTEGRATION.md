@@ -1,15 +1,18 @@
 # Mistral AI Integration
 
-Diese Seite beschreibt, wie Mistral-Modelle in dieses Setup mit `Ollama`, `OpenClaw`, lokalen Agenten und Coding-Workflows passen.
+Diese Seite beschreibt, wie Mistral-Modelle in dieses Setup mit `Ollama`, `OpenClaw`, lokalen
+Agenten und Coding-Workflows passen.
 
 ## Was ist Mistral AI?
 
-Mistral AI ist ein europaeisches KI-Unternehmen mit starkem Fokus auf leistungsfaehige Modelle, die sich gut fuer Self-Hosting, lokale Inferenz und hybride Plattformen eignen.
+Mistral AI ist ein europaeisches KI-Unternehmen mit starkem Fokus auf leistungsfaehige Modelle, die
+sich gut fuer Self-Hosting, lokale Inferenz und hybride Plattformen eignen.
 
 Fuer dieses Repository ist Mistral besonders interessant, weil:
 
 - mehrere Modelle lokal oder halb-lokal nutzbar sind
-- die Modellfamilie von kompakten 7B-/12B-Varianten bis zu staerkeren MoE- und Coding-Modellen reicht
+- die Modellfamilie von kompakten 7B-/12B-Varianten bis zu staerkeren MoE- und Coding-Modellen
+  reicht
 - die Modelle in `Ollama` gut verfuegbar sind
 - Mistral-Modelle oft eine gute Balance aus Leistung, Geschwindigkeit und Hardwarebedarf bieten
 
@@ -17,8 +20,11 @@ Fuer dieses Repository ist Mistral besonders interessant, weil:
 
 Wichtig ist die Unterscheidung:
 
-- `Fully Open Source` bedeutet normalerweise: Gewichte, Code, Lizenz und oft auch wesentliche Trainingsinformationen sind offen genug, um das Modell breit selbst zu nutzen, zu veraendern und weiterzugeben.
-- `Open Weight` bedeutet: Die Modellgewichte sind oeffentlich verfuegbar, aber nicht automatisch der gesamte Trainingsprozess, die Trainingsdaten oder jede Nutzungsform.
+- `Fully Open Source` bedeutet normalerweise: Gewichte, Code, Lizenz und oft auch wesentliche
+  Trainingsinformationen sind offen genug, um das Modell breit selbst zu nutzen, zu veraendern und
+  weiterzugeben.
+- `Open Weight` bedeutet: Die Modellgewichte sind oeffentlich verfuegbar, aber nicht automatisch der
+  gesamte Trainingsprozess, die Trainingsdaten oder jede Nutzungsform.
 
 Fuer Mistral gilt:
 
@@ -52,14 +58,14 @@ Typische Vorteile:
 
 ## Empfohlene Mistral-Modelle fuer dieses Setup
 
-| Modell | Zweck | Empfehlung |
-|---|---|---|
-| `mistral:7b` | leichtgewichtiges Allround-Modell | gut fuer VPS, kleine Systeme, Tests und lokale OpenClaw-Basis |
-| `mistral-nemo:12b` | allgemeines Modell mit langem Kontext | gut fuer RAG, Routing, groessere Dokumente und bessere Balance als 7B |
-| `mixtral:8x7b` | starke General AI mit MoE | gut als Hauptagent auf staerkeren lokalen Systemen |
-| `mixtral:8x22b` | High-End General AI | fuer grosse Server, viele Dokumente, grosse Kontexte und hochwertige Hauptagenten |
-| `codestral:22b` | Coding und Refactoring | gut fuer Codex-nahe Entwicklerpfade und lokale Coding-Assistenten |
-| `devstral:24b` | agentisches Software Engineering | sehr gut fuer Multi-File-Edits, Tool-Nutzung und Coding-Agenten |
+| Modell             | Zweck                                 | Empfehlung                                                                        |
+| ------------------ | ------------------------------------- | --------------------------------------------------------------------------------- |
+| `mistral:7b`       | leichtgewichtiges Allround-Modell     | gut fuer VPS, kleine Systeme, Tests und lokale OpenClaw-Basis                     |
+| `mistral-nemo:12b` | allgemeines Modell mit langem Kontext | gut fuer RAG, Routing, groessere Dokumente und bessere Balance als 7B             |
+| `mixtral:8x7b`     | starke General AI mit MoE             | gut als Hauptagent auf staerkeren lokalen Systemen                                |
+| `mixtral:8x22b`    | High-End General AI                   | fuer grosse Server, viele Dokumente, grosse Kontexte und hochwertige Hauptagenten |
+| `codestral:22b`    | Coding und Refactoring                | gut fuer Codex-nahe Entwicklerpfade und lokale Coding-Assistenten                 |
+| `devstral:24b`     | agentisches Software Engineering      | sehr gut fuer Multi-File-Edits, Tool-Nutzung und Coding-Agenten                   |
 
 ## Empfehlung nach Einsatzfall
 

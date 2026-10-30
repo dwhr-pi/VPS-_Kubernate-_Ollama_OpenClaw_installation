@@ -2,9 +2,9 @@
 
 ## Zweck
 
-Der Mail Admin Agent verwaltet eigene Domains und Mailboxen auf einem
-Stalwart-Mailserver ueber eine eigene Integrationsschicht. Er arbeitet mit
-OpenClaw und Ollama und erstellt standardmaessig nur Vorschlaege.
+Der Mail Admin Agent verwaltet eigene Domains und Mailboxen auf einem Stalwart-Mailserver ueber eine
+eigene Integrationsschicht. Er arbeitet mit OpenClaw und Ollama und erstellt standardmaessig nur
+Vorschlaege.
 
 ## Faehigkeiten
 

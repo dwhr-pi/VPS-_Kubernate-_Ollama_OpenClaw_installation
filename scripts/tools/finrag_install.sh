@@ -206,13 +206,13 @@ main() {
 
   while [ "$#" -gt 0 ]; do
     case "$1" in
-      --check|--status)
+      --check | --status)
         mode="check"
         ;;
       --dry-run)
         DRY_RUN=1
         ;;
-      --help|-h)
+      --help | -h)
         usage
         exit 0
         ;;

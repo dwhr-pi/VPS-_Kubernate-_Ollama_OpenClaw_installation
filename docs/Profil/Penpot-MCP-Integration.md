@@ -4,9 +4,12 @@
 
 MCP steht fuer `Model Context Protocol`.
 
-Es ist ein Protokoll, mit dem AI-Clients und Agenten strukturierte Werkzeuge und Kontexte ansprechen koennen. Statt nur freien Text zu schicken, kann ein Agent damit gezielt auf externe Tools, APIs oder Datenquellen zugreifen.
+Es ist ein Protokoll, mit dem AI-Clients und Agenten strukturierte Werkzeuge und Kontexte ansprechen
+koennen. Statt nur freien Text zu schicken, kann ein Agent damit gezielt auf externe Tools, APIs
+oder Datenquellen zugreifen.
 
-Fuer dieses Repository ist MCP interessant, weil `OpenClaw`, `Codex` oder andere AI-Clients damit kontrollierter auf lokale Systeme, Datenquellen und spezialisierte Plattformen zugreifen koennen.
+Fuer dieses Repository ist MCP interessant, weil `OpenClaw`, `Codex` oder andere AI-Clients damit
+kontrollierter auf lokale Systeme, Datenquellen und spezialisierte Plattformen zugreifen koennen.
 
 ## Wie Penpot MCP grundsaetzlich funktioniert
 
@@ -80,7 +83,8 @@ URL: http://localhost:4401/sse
 
 ### Stdio-only Client ueber Proxy
 
-Laut offizieller Penpot-MCP-Doku kann bei stdio-only Clients ein Proxy wie `mcp-remote` genutzt werden:
+Laut offizieller Penpot-MCP-Doku kann bei stdio-only Clients ein Proxy wie `mcp-remote` genutzt
+werden:
 
 ```bash
 npx -y mcp-remote http://localhost:4401/sse --allow-http
@@ -92,13 +96,15 @@ Wichtige Sicherheitsregel fuer dieses Repository:
 
 - Penpot MCP und das Penpot-Plugin nicht offen ins Internet stellen
 - Web-UI, MCP-HTTP, SSE, WebSocket und Plugin-Server standardmaessig nur lokal oder privat betreiben
-- bei Remote-Nutzung zuerst Auth, Reverse Proxy, Tailscale oder einen bewusst abgesicherten Tunnel planen
+- bei Remote-Nutzung zuerst Auth, Reverse Proxy, Tailscale oder einen bewusst abgesicherten Tunnel
+  planen
 
 Besonders kritisch:
 
 - der Plugin-Teil arbeitet im Kontext einer echten Design-Datei
 - der MCP-Server kann Designdaten lesen und veraendern
-- die Doku beschreibt ausserdem einen Modus, in dem der Agent Code ausfuehren oder Designumformungen erzeugen kann
+- die Doku beschreibt ausserdem einen Modus, in dem der Agent Code ausfuehren oder Designumformungen
+  erzeugen kann
 
 ## Empfehlung fuer dieses Setup
 

@@ -29,7 +29,7 @@ for install_file in "$TOOLS_DIR"/*_install.sh; do
     file="$TOOLS_DIR/${tool}_${action}.sh"
     if [ ! -f "$file" ]; then
       missing=$((missing + 1))
-      printf 'FEHLT %-28s %s\n' "$tool" "$action" >> "$tmp_report"
+      printf 'FEHLT %-28s %s\n' "$tool" "$action" >>"$tmp_report"
     fi
   done
 done
@@ -42,7 +42,7 @@ fi
 
 echo "Hinweis: $missing Lifecycle-Dateien fehlen noch."
 sort "$tmp_report" | head -n "$MAX_REPORT"
-if [ "$(wc -l < "$tmp_report")" -gt "$MAX_REPORT" ]; then
+if [ "$(wc -l <"$tmp_report")" -gt "$MAX_REPORT" ]; then
   echo "... weitere Eintraege ausgeblendet. MAX_REPORT=$MAX_REPORT erhoehen fuer mehr Details."
 fi
 

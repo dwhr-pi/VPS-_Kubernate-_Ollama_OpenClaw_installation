@@ -2,9 +2,8 @@
 
 ## Zweck
 
-Dieses Profil nutzt OpenClaw, Ollama und optional n8n, um aus Quellen wie URLs,
-PDFs, Webseiten, YouTube-Transkripten oder LinkedIn-Inhalten mehrere
-Content-Entwuerfe zu erzeugen.
+Dieses Profil nutzt OpenClaw, Ollama und optional n8n, um aus Quellen wie URLs, PDFs, Webseiten,
+YouTube-Transkripten oder LinkedIn-Inhalten mehrere Content-Entwuerfe zu erzeugen.
 
 ## Typische Aufgaben
 

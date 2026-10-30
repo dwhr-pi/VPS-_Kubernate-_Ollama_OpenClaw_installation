@@ -10,7 +10,7 @@ while [[ $# -gt 0 ]]; do
     --dry-run)
       DRY_RUN=1
       ;;
-    --help|-h)
+    --help | -h)
       cat <<'USAGE'
 DuckDB Uninstaller
 

@@ -1,6 +1,7 @@
 # GBOX
 
-`babelcloud/gbox` ist eine CLI- und MCP-nahe Umgebung, mit der AI-Agenten Android-, Browser- und Desktop-Umgebungen bedienen koennen.
+`babelcloud/gbox` ist eine CLI- und MCP-nahe Umgebung, mit der AI-Agenten Android-, Browser- und
+Desktop-Umgebungen bedienen koennen.
 
 ## Einordnung im Setup
 
@@ -33,7 +34,9 @@ Optionaler Source-Build:
 GBOX_BUILD_FROM_SOURCE=1 bash scripts/tools/gbox_install.sh
 ```
 
-Der Source-Build erwartet laut Upstream Go, make, Node.js und pnpm via Corepack. Falls diese Abhaengigkeiten fehlen, bricht der Installer ab und installiert keine fertigen Pakete im Hintergrund.
+Der Source-Build erwartet laut Upstream Go, make, Node.js und pnpm via Corepack. Falls diese
+Abhaengigkeiten fehlen, bricht der Installer ab und installiert keine fertigen Pakete im
+Hintergrund.
 
 ## myBox-Nutzung
 

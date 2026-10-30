@@ -2,14 +2,17 @@
 
 ## Kurzfassung
 
-LangGraph ist kein Dienst mit eigenem Webinterface und kein Programm, das man dauerhaft wie Huginn, n8n oder Open WebUI startet. Es ist eine Python-Bibliothek fuer zustandsbehaftete Agenten- und Workflow-Graphen.
+LangGraph ist kein Dienst mit eigenem Webinterface und kein Programm, das man dauerhaft wie Huginn,
+n8n oder Open WebUI startet. Es ist eine Python-Bibliothek fuer zustandsbehaftete Agenten- und
+Workflow-Graphen.
 
 Das bedeutet:
 
 - Installation legt typischerweise eine Python-Umgebung unter `/opt/langgraph/venv` an.
 - Nutzung erfolgt ueber Python-Skripte, Notebooks, OpenClaw-Tools oder eigene Worker.
 - LangGraph funktioniert nicht automatisch in OpenClaw, nur weil es installiert ist.
-- OpenClaw kann LangGraph aber nutzen, sobald ein Tool-/Workflow-Skript LangGraph importiert und aufruft.
+- OpenClaw kann LangGraph aber nutzen, sobald ein Tool-/Workflow-Skript LangGraph importiert und
+  aufruft.
 
 ## Pruefen, ob LangGraph funktioniert
 
@@ -23,7 +26,8 @@ Wenn diese Befehle funktionieren, ist LangGraph als Bibliothek verfuegbar.
 
 ## Wofuer ist LangGraph sinnvoll?
 
-LangGraph ist besonders nuetzlich, wenn ein Agent nicht nur eine einzelne Antwort geben soll, sondern mehrere Schritte mit Zustand, Entscheidungspunkten und Wiederholungen braucht.
+LangGraph ist besonders nuetzlich, wenn ein Agent nicht nur eine einzelne Antwort geben soll,
+sondern mehrere Schritte mit Zustand, Entscheidungspunkten und Wiederholungen braucht.
 
 Typische Muster:
 
@@ -36,19 +40,19 @@ Typische Muster:
 
 ## Welche vorhandenen Tools koennen LangGraph nutzen?
 
-| Tool/Profil | LangGraph-Nutzen | Integrationsart |
-|---|---|---|
-| OpenClaw | mehrstufige Agentenablaeufe, Tool-Orchestrierung, Memory-Workflows | eigenes OpenClaw-Tool oder Python-Worker |
-| LiteLLM | einheitlicher Modellzugriff fuer Graph-Knoten | API-Client im LangGraph-Skript |
-| Ollama | lokale Modelle fuer Graph-Knoten | OpenAI-kompatibel oder Ollama-Client |
-| Qdrant/ChromaDB | RAG-Zustand und Dokumentabruf | Retriever-Knoten |
-| Langfuse | Tracing, Prompt-/Run-Auswertung | Callback/Telemetry |
-| OpenLIT/OpenTelemetry | Observability fuer Agentenablaeufe | Instrumentierung |
-| Promptfoo | Regressionstests fuer Graph-Ausgaben | Test-Harness |
-| n8n | LangGraph als externer lokaler Worker | HTTP/Webhook-Aufruf |
-| Huginn | LangGraph als lokaler Script-/Webhook-Endpunkt | Agent ruft Worker auf |
-| Flowise/LangFlow | visuelle Alternative, nicht identisch | eher Vergleich/Ergaenzung |
-| Aider/OpenHands | Coding-Agenten koennen Graph-Logik als Projektbaustein nutzen | Python-Projektintegration |
+| Tool/Profil           | LangGraph-Nutzen                                                   | Integrationsart                          |
+| --------------------- | ------------------------------------------------------------------ | ---------------------------------------- |
+| OpenClaw              | mehrstufige Agentenablaeufe, Tool-Orchestrierung, Memory-Workflows | eigenes OpenClaw-Tool oder Python-Worker |
+| LiteLLM               | einheitlicher Modellzugriff fuer Graph-Knoten                      | API-Client im LangGraph-Skript           |
+| Ollama                | lokale Modelle fuer Graph-Knoten                                   | OpenAI-kompatibel oder Ollama-Client     |
+| Qdrant/ChromaDB       | RAG-Zustand und Dokumentabruf                                      | Retriever-Knoten                         |
+| Langfuse              | Tracing, Prompt-/Run-Auswertung                                    | Callback/Telemetry                       |
+| OpenLIT/OpenTelemetry | Observability fuer Agentenablaeufe                                 | Instrumentierung                         |
+| Promptfoo             | Regressionstests fuer Graph-Ausgaben                               | Test-Harness                             |
+| n8n                   | LangGraph als externer lokaler Worker                              | HTTP/Webhook-Aufruf                      |
+| Huginn                | LangGraph als lokaler Script-/Webhook-Endpunkt                     | Agent ruft Worker auf                    |
+| Flowise/LangFlow      | visuelle Alternative, nicht identisch                              | eher Vergleich/Ergaenzung                |
+| Aider/OpenHands       | Coding-Agenten koennen Graph-Logik als Projektbaustein nutzen      | Python-Projektintegration                |
 
 ## Minimaler lokaler Beispiel-Workflow
 
@@ -74,7 +78,8 @@ export LANGGRAPH_OUTPUT_DIR="$HOME/.openclaw_ultimate_user_data/langgraph/runs"
 
 ## OpenClaw-Anbindung, Zielbild
 
-OpenClaw sollte LangGraph nicht blind als globale Abhaengigkeit verwenden, sondern ueber ein klares Tool:
+OpenClaw sollte LangGraph nicht blind als globale Abhaengigkeit verwenden, sondern ueber ein klares
+Tool:
 
 ```text
 OpenClaw Task
@@ -94,13 +99,13 @@ Vorteile:
 
 ## Sinnvolle erste Graphen fuer dieses Repo
 
-| Graph | Zweck | Risiko |
-|---|---|---|
-| `repo_review_graph` | Repo scannen, Findings strukturieren, TODOs erzeugen | niedrig, read-only |
-| `rag_answer_graph` | Frage mit Qdrant/Chroma-Kontext beantworten | mittel wegen Datenschutz |
-| `install_log_diagnosis_graph` | Installationslogs auswerten und Reparaturvorschlaege machen | niedrig bis mittel |
-| `profile_planner_graph` | Profilanforderung in Tools, Ports und Doku zerlegen | niedrig |
-| `security_audit_graph` | defensive Checkliste aus Trivy/Semgrep/Gitleaks verdichten | mittel, nur eigene Systeme |
+| Graph                         | Zweck                                                       | Risiko                     |
+| ----------------------------- | ----------------------------------------------------------- | -------------------------- |
+| `repo_review_graph`           | Repo scannen, Findings strukturieren, TODOs erzeugen        | niedrig, read-only         |
+| `rag_answer_graph`            | Frage mit Qdrant/Chroma-Kontext beantworten                 | mittel wegen Datenschutz   |
+| `install_log_diagnosis_graph` | Installationslogs auswerten und Reparaturvorschlaege machen | niedrig bis mittel         |
+| `profile_planner_graph`       | Profilanforderung in Tools, Ports und Doku zerlegen         | niedrig                    |
+| `security_audit_graph`        | defensive Checkliste aus Trivy/Semgrep/Gitleaks verdichten  | mittel, nur eigene Systeme |
 
 ## Was noch fehlt
 

@@ -8,4 +8,3 @@ Aufgaben:
 - IFC-Aenderungen als Patch- oder Skriptvorschlag vorbereiten
 
 Arbeitsmodus: Erst Analyse, dann Vorschlag, danach menschliche Freigabe.
-

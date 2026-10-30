@@ -2,7 +2,8 @@
 
 Diese Datei sammelt **alltagstaugliche deutsche Vorlagen** fuer Mail-Workflows in Huginn.
 
-Der Fokus liegt bewusst auf einfachen, robusten Bausteinen, die sowohl fuer den stabilen Stand `v2022.08.18` als auch als Ausgangspunkt fuer `main` geeignet sind.
+Der Fokus liegt bewusst auf einfachen, robusten Bausteinen, die sowohl fuer den stabilen Stand
+`v2022.08.18` als auch als Ausgangspunkt fuer `main` geeignet sind.
 
 ## Vorbemerkung
 
@@ -48,8 +49,10 @@ Huginn soll:
 ## 1. IMAP Folder Agent
 
 Offizielle Huginn-Beschreibung:
-- Der `IMAP Folder Agent` prueft einen IMAP-Server in angegebenen Ordnern und erzeugt Events fuer neue Mails.  
-Quelle: [Huginn Wiki: Agent Types & Descriptions](https://github-wiki-see.page/m/huginn/huginn/wiki/Agent-Types-%26-Descriptions)
+
+- Der `IMAP Folder Agent` prueft einen IMAP-Server in angegebenen Ordnern und erzeugt Events fuer
+  neue Mails.\
+  Quelle: [Huginn Wiki: Agent Types & Descriptions](https://github-wiki-see.page/m/huginn/huginn/wiki/Agent-Types-%26-Descriptions)
 
 ### Typische Einstellidee
 
@@ -82,8 +85,9 @@ Das reduziert die spaetere Filterlogik in Huginn deutlich.
 Der `Trigger Agent` filtert aus den eingehenden Mail-Events nur die wirklich wichtigen Faelle.
 
 Offizielle Huginn-Beschreibung:
-- Der `Trigger Agent` prueft Regeln aus `path`, `value` und `type` gegen eingehende Event-Felder.  
-Quelle: [Huginn Wiki: Agent Types & Descriptions](https://github-wiki-see.page/m/huginn/huginn/wiki/Agent-Types-%26-Descriptions)
+
+- Der `Trigger Agent` prueft Regeln aus `path`, `value` und `type` gegen eingehende Event-Felder.\
+  Quelle: [Huginn Wiki: Agent Types & Descriptions](https://github-wiki-see.page/m/huginn/huginn/wiki/Agent-Types-%26-Descriptions)
 
 ### Wichtiger Praxishinweis
 
@@ -97,7 +101,8 @@ Typische Kandidaten sind:
 - `body`
 - `text`
 
-Pruefe deshalb nach dem ersten IMAP-Test immer erst auf der `Events`-Seite, **wie dein IMAP-Event wirklich aussieht**.
+Pruefe deshalb nach dem ersten IMAP-Test immer erst auf der `Events`-Seite, **wie dein IMAP-Event
+wirklich aussieht**.
 
 ### Beispiel-Regel fuer wichtige Mails
 
@@ -122,11 +127,14 @@ Wenn du lieber ueber Absender filterst, kannst du stattdessen `path: "from"` ver
 
 ## 3. Event Formatting Agent
 
-Der `Event Formatting Agent` macht aus dem oft unruhigen Mail-Event ein sauberes Arbeitsformat fuer spaetere Benachrichtigungen oder Automationen.
+Der `Event Formatting Agent` macht aus dem oft unruhigen Mail-Event ein sauberes Arbeitsformat fuer
+spaetere Benachrichtigungen oder Automationen.
 
 Offizielle Huginn-Beschreibung:
-- Der `Event Formatting Agent` formatiert eingehende Events und fuegt bei Bedarf neue Felder hinzu.  
-Quelle: [Huginn Wiki: Agent Types & Descriptions](https://github-wiki-see.page/m/huginn/huginn/wiki/Agent-Types-%26-Descriptions)
+
+- Der `Event Formatting Agent` formatiert eingehende Events und fuegt bei Bedarf neue Felder
+  hinzu.\
+  Quelle: [Huginn Wiki: Agent Types & Descriptions](https://github-wiki-see.page/m/huginn/huginn/wiki/Agent-Types-%26-Descriptions)
 
 ### Beispielhafte deutsche Aufbereitung
 
@@ -146,13 +154,15 @@ Quelle: [Huginn Wiki: Agent Types & Descriptions](https://github-wiki-see.page/m
 
 Hinweis:
 
-- Falls `body` in deinem Event nicht existiert, teste stattdessen `text` oder den echten Feldnamen aus dem Event.
+- Falls `body` in deinem Event nicht existiert, teste stattdessen `text` oder den echten Feldnamen
+  aus dem Event.
 
 ## 4A. Sofortige Einzelbenachrichtigung mit Email Agent
 
 Offizielle Huginn-Beschreibung:
-- Der `Email Agent` sendet eingehende Events sofort per E-Mail.  
-Quelle: [Huginn Wiki: Agent Types & Descriptions](https://github-wiki-see.page/m/huginn/huginn/wiki/Agent-Types-%26-Descriptions)
+
+- Der `Email Agent` sendet eingehende Events sofort per E-Mail.\
+  Quelle: [Huginn Wiki: Agent Types & Descriptions](https://github-wiki-see.page/m/huginn/huginn/wiki/Agent-Types-%26-Descriptions)
 
 ### Beispiel
 
@@ -173,8 +183,9 @@ Gut fuer:
 ## 4B. Taegliche Sammelmail mit Email Digest Agent
 
 Offizielle Huginn-Beschreibung:
-- Der `Email Digest Agent` sammelt Events und sendet sie nach Zeitplan gebuendelt per Mail.  
-Quelle: [Huginn Wiki: Agent Types & Descriptions](https://github-wiki-see.page/m/huginn/huginn/wiki/Agent-Types-%26-Descriptions)
+
+- Der `Email Digest Agent` sammelt Events und sendet sie nach Zeitplan gebuendelt per Mail.\
+  Quelle: [Huginn Wiki: Agent Types & Descriptions](https://github-wiki-see.page/m/huginn/huginn/wiki/Agent-Types-%26-Descriptions)
 
 ### Einsatzidee
 
@@ -186,7 +197,8 @@ Nutze ihn zum Beispiel fuer:
 
 ### Praxis
 
-Der `Email Digest Agent` ist besonders sinnvoll, wenn du nicht fuer jede einzelne Mail sofort eine neue Benachrichtigung willst.
+Der `Email Digest Agent` ist besonders sinnvoll, wenn du nicht fuer jede einzelne Mail sofort eine
+neue Benachrichtigung willst.
 
 ## Konkrete Reihenfolge im Alltag
 
@@ -195,7 +207,8 @@ Der `Email Digest Agent` ist besonders sinnvoll, wenn du nicht fuer jede einzeln
 3. verbinde den `IMAP Folder Agent` mit genau diesem Ordner
 4. pruefe auf der `Events`-Seite die echten Feldnamen
 5. passe danach `Trigger Agent` und `Event Formatting Agent` an
-6. entscheide, ob du sofortige Mails (`Email Agent`) oder einen Sammeldigest (`Email Digest Agent`) willst
+6. entscheide, ob du sofortige Mails (`Email Agent`) oder einen Sammeldigest (`Email Digest Agent`)
+   willst
 
 ## Warum dieser Workflow alltagstauglich ist
 

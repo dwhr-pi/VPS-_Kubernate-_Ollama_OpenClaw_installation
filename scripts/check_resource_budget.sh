@@ -38,4 +38,3 @@ if [[ "$swap_mb" -lt "$MIN_SWAP_MB" ]]; then
 fi
 
 exit "$rc"
-

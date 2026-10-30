@@ -31,20 +31,20 @@ echo -e "${BLUE}Quelle: ${GBOX_REPO_URL}${NC}"
 echo -e "${YELLOW}Hinweis: Dieses Setup nutzt die GitHub-Quelle. npm/Homebrew-Fertigpakete werden hier nicht installiert.${NC}"
 
 if ! command -v git >/dev/null 2>&1; then
-    echo -e "${RED}Fehler: git ist erforderlich, um GBOX aus GitHub zu klonen.${NC}"
-    exit 1
+  echo -e "${RED}Fehler: git ist erforderlich, um GBOX aus GitHub zu klonen.${NC}"
+  exit 1
 fi
 
 if [ -d "$GBOX_DIR/.git" ]; then
-    echo -e "${YELLOW}GBOX-Verzeichnis existiert bereits. Aktualisiere per git pull --ff-only...${NC}"
-    git -C "$GBOX_DIR" pull --ff-only
+  echo -e "${YELLOW}GBOX-Verzeichnis existiert bereits. Aktualisiere per git pull --ff-only...${NC}"
+  git -C "$GBOX_DIR" pull --ff-only
 else
-    sudo mkdir -p "$GBOX_DIR"
-    sudo chown -R "$USER:$USER" "$GBOX_DIR"
-    git clone "$GBOX_REPO_URL" "$GBOX_DIR"
+  sudo mkdir -p "$GBOX_DIR"
+  sudo chown -R "$USER:$USER" "$GBOX_DIR"
+  git clone "$GBOX_REPO_URL" "$GBOX_DIR"
 fi
 
-cat > "$GBOX_DIR/ULTIMATE_KI_SETUP_NOTES.md" <<'EOF'
+cat >"$GBOX_DIR/ULTIMATE_KI_SETUP_NOTES.md" <<'EOF'
 # GBOX im Ultimate KI Setup
 
 GBOX ist als GitHub-Source-Integration fuer Android-, Browser-/Desktop- und MCP-nahe Agenten-Workflows vorgesehen.
@@ -71,32 +71,32 @@ GBOX_BUILD_FROM_SOURCE=1 bash scripts/tools/gbox_install.sh
 EOF
 
 if [ "$GBOX_BUILD_FROM_SOURCE" = "1" ]; then
-    echo -e "${BLUE}Baue GBOX aus Source...${NC}"
+  echo -e "${BLUE}Baue GBOX aus Source...${NC}"
 
-    for cmd in go make node corepack; do
-        if ! command -v "$cmd" >/dev/null 2>&1; then
-            echo -e "${RED}Fehler: ${cmd} fehlt. Installiere Build-Abhaengigkeiten bewusst und starte erneut.${NC}"
-            echo -e "${YELLOW}Erwartet laut Upstream: Go 1.21+, make, Node.js 16.13+, pnpm via corepack.${NC}"
-            exit 1
-        fi
-    done
+  for cmd in go make node corepack; do
+    if ! command -v "$cmd" >/dev/null 2>&1; then
+      echo -e "${RED}Fehler: ${cmd} fehlt. Installiere Build-Abhaengigkeiten bewusst und starte erneut.${NC}"
+      echo -e "${YELLOW}Erwartet laut Upstream: Go 1.21+, make, Node.js 16.13+, pnpm via corepack.${NC}"
+      exit 1
+    fi
+  done
 
-    (
-        cd "$GBOX_DIR"
-        corepack enable
-        make build
-    )
+  (
+    cd "$GBOX_DIR"
+    corepack enable
+    make build
+  )
 else
-    echo -e "${YELLOW}Source-Build uebersprungen. Setze GBOX_BUILD_FROM_SOURCE=1, um `make build` auszufuehren.${NC}"
+  echo -e "${YELLOW}Source-Build uebersprungen. Setze GBOX_BUILD_FROM_SOURCE=1, um $(make build) auszufuehren.${NC}"
 fi
 
 if [ "$GBOX_RUN_SETUP" = "1" ]; then
-    if command -v gbox >/dev/null 2>&1; then
-        echo -e "${BLUE}Fuehre gbox setup -y aus...${NC}"
-        gbox setup -y
-    else
-        echo -e "${YELLOW}gbox liegt noch nicht als Befehl im PATH. GBOX_RUN_SETUP wurde uebersprungen.${NC}"
-    fi
+  if command -v gbox >/dev/null 2>&1; then
+    echo -e "${BLUE}Fuehre gbox setup -y aus...${NC}"
+    gbox setup -y
+  else
+    echo -e "${YELLOW}gbox liegt noch nicht als Befehl im PATH. GBOX_RUN_SETUP wurde uebersprungen.${NC}"
+  fi
 fi
 
 mark_current_tool_installed

@@ -43,7 +43,7 @@ LANGUAGE_SELECTION_REQUIRED=0
 STARTUP_LANGUAGE_DIALOG_PENDING=0
 
 if [ ! -f "$SETUP_PREFERENCES_FILE" ]; then
-    LANGUAGE_SELECTION_REQUIRED=1
+  LANGUAGE_SELECTION_REQUIRED=1
 fi
 
 source "$INSTALL_DIR/scripts/lang/common.sh"
@@ -54,67 +54,67 @@ source "$INSTALL_DIR/scripts/helpers/operation_log.sh"
 source "$INSTALL_DIR/scripts/helpers/webinar_platform_menu.sh"
 
 ensure_user_workspace() {
-    ensure_setup_preferences
-    mkdir -p "$USER_WORKSPACE_DIR"
-    mkdir -p "$USER_STATUS_DIR"
-    mkdir -p "$USER_OPENCLAW_TEMPLATE_DIR"
-    mkdir -p "$USER_PROFILE_SOURCE_DIR"
-    mkdir -p "$USER_PROFILE_RENDERED_DIR"
-    mkdir -p "$USER_PROMPTS_DIR"
-    mkdir -p "$USER_MODELFILE_DIR"
-    mkdir -p "$USER_METRICS_LOG_DIR"
-    mkdir -p "$USER_INSTALL_LOG_DIR"
-    mkdir -p "$USER_CUSTOM_SOURCE_DIR"
-    # Migrate only a missing primary file. Empty means intentionally no tools.
-    if [ ! -f "$TOOL_STATUS_FILE" ] && [ -s "$USER_STATUS_DIR/installed_tools.txt" ]; then
-        cp "$USER_STATUS_DIR/installed_tools.txt" "$TOOL_STATUS_FILE"
-    elif [ ! -f "$USER_STATUS_DIR/installed_tools.txt" ] && [ -s "$TOOL_STATUS_FILE" ]; then
-        cp "$TOOL_STATUS_FILE" "$USER_STATUS_DIR/installed_tools.txt"
-    fi
-    touch "$PROFILE_STATUS_FILE" "$TOOL_STATUS_FILE"
+  ensure_setup_preferences
+  mkdir -p "$USER_WORKSPACE_DIR"
+  mkdir -p "$USER_STATUS_DIR"
+  mkdir -p "$USER_OPENCLAW_TEMPLATE_DIR"
+  mkdir -p "$USER_PROFILE_SOURCE_DIR"
+  mkdir -p "$USER_PROFILE_RENDERED_DIR"
+  mkdir -p "$USER_PROMPTS_DIR"
+  mkdir -p "$USER_MODELFILE_DIR"
+  mkdir -p "$USER_METRICS_LOG_DIR"
+  mkdir -p "$USER_INSTALL_LOG_DIR"
+  mkdir -p "$USER_CUSTOM_SOURCE_DIR"
+  # Migrate only a missing primary file. Empty means intentionally no tools.
+  if [ ! -f "$TOOL_STATUS_FILE" ] && [ -s "$USER_STATUS_DIR/installed_tools.txt" ]; then
+    cp "$USER_STATUS_DIR/installed_tools.txt" "$TOOL_STATUS_FILE"
+  elif [ ! -f "$USER_STATUS_DIR/installed_tools.txt" ] && [ -s "$TOOL_STATUS_FILE" ]; then
+    cp "$TOOL_STATUS_FILE" "$USER_STATUS_DIR/installed_tools.txt"
+  fi
+  touch "$PROFILE_STATUS_FILE" "$TOOL_STATUS_FILE"
 
-    if [ ! -s "$PROFILE_STATUS_FILE" ] && [ -s "$USER_STATUS_DIR/installed_profiles.txt" ]; then
-        cp "$USER_STATUS_DIR/installed_profiles.txt" "$PROFILE_STATUS_FILE"
-    elif [ ! -s "$USER_STATUS_DIR/installed_profiles.txt" ] && [ -s "$PROFILE_STATUS_FILE" ]; then
-        cp "$PROFILE_STATUS_FILE" "$USER_STATUS_DIR/installed_profiles.txt"
-    fi
+  if [ ! -s "$PROFILE_STATUS_FILE" ] && [ -s "$USER_STATUS_DIR/installed_profiles.txt" ]; then
+    cp "$USER_STATUS_DIR/installed_profiles.txt" "$PROFILE_STATUS_FILE"
+  elif [ ! -s "$USER_STATUS_DIR/installed_profiles.txt" ] && [ -s "$PROFILE_STATUS_FILE" ]; then
+    cp "$PROFILE_STATUS_FILE" "$USER_STATUS_DIR/installed_profiles.txt"
+  fi
 
-    if [ ! -f "$USER_OPENCLAW_TEMPLATE_DIR/.env.template" ]; then
-        cp "$INSTALL_DIR/scripts/config_templates/openclaw/.env.template" "$USER_OPENCLAW_TEMPLATE_DIR/.env.template"
-    fi
+  if [ ! -f "$USER_OPENCLAW_TEMPLATE_DIR/.env.template" ]; then
+    cp "$INSTALL_DIR/scripts/config_templates/openclaw/.env.template" "$USER_OPENCLAW_TEMPLATE_DIR/.env.template"
+  fi
 
-    if [ ! -f "$USER_OPENCLAW_TEMPLATE_DIR/config.json.template" ]; then
-        cp "$INSTALL_DIR/scripts/config_templates/openclaw/config.json.template" "$USER_OPENCLAW_TEMPLATE_DIR/config.json.template"
-    fi
+  if [ ! -f "$USER_OPENCLAW_TEMPLATE_DIR/config.json.template" ]; then
+    cp "$INSTALL_DIR/scripts/config_templates/openclaw/config.json.template" "$USER_OPENCLAW_TEMPLATE_DIR/config.json.template"
+  fi
 
-    if [ -d "$INSTALL_DIR/docs/Profil" ]; then
-        find "$INSTALL_DIR/docs/Profil" -maxdepth 1 -type f -name '*.doc.md' | while IFS= read -r source_file; do
-            target_file="$USER_PROFILE_SOURCE_DIR/$(basename "$source_file")"
-            if [ ! -f "$target_file" ]; then
-                cp "$source_file" "$target_file"
-            fi
-        done
-    fi
+  if [ -d "$INSTALL_DIR/docs/Profil" ]; then
+    find "$INSTALL_DIR/docs/Profil" -maxdepth 1 -type f -name '*.doc.md' | while IFS= read -r source_file; do
+      target_file="$USER_PROFILE_SOURCE_DIR/$(basename "$source_file")"
+      if [ ! -f "$target_file" ]; then
+        cp "$source_file" "$target_file"
+      fi
+    done
+  fi
 
-    if [ -d "$INSTALL_DIR/docs/Profile" ]; then
-        find "$INSTALL_DIR/docs/Profile" -maxdepth 1 -type f -name '*.md' | while IFS= read -r rendered_file; do
-            target_file="$USER_PROFILE_RENDERED_DIR/$(basename "$rendered_file")"
-            if [ ! -f "$target_file" ]; then
-                cp "$rendered_file" "$target_file"
-            fi
-        done
-    fi
+  if [ -d "$INSTALL_DIR/docs/Profile" ]; then
+    find "$INSTALL_DIR/docs/Profile" -maxdepth 1 -type f -name '*.md' | while IFS= read -r rendered_file; do
+      target_file="$USER_PROFILE_RENDERED_DIR/$(basename "$rendered_file")"
+      if [ ! -f "$target_file" ]; then
+        cp "$rendered_file" "$target_file"
+      fi
+    done
+  fi
 
-    if [ ! -f "$USER_PROMPTS_DIR/README.txt" ]; then
-        cat > "$USER_PROMPTS_DIR/README.txt" <<'EOF'
+  if [ ! -f "$USER_PROMPTS_DIR/README.txt" ]; then
+    cat >"$USER_PROMPTS_DIR/README.txt" <<'EOF'
 Hier können künftig benutzerdefinierte Prompt-Dateien abgelegt werden.
 Diese Dateien liegen bewusst außerhalb des Repositories, damit sie bei Updates erhalten bleiben
 und nicht versehentlich in Git oder GitHub landen.
 EOF
-    fi
+  fi
 
-    if [ ! -f "$CUSTOM_SOURCES_FILE" ]; then
-        cat > "$CUSTOM_SOURCES_FILE" <<'EOF'
+  if [ ! -f "$CUSTOM_SOURCES_FILE" ]; then
+    cat >"$CUSTOM_SOURCES_FILE" <<'EOF'
 # Benutzerdefinierte GitHub-Quellen für Setup, Tools und eigene Forks
 # Format:
 # CUSTOM_REPO_<SCHLUESSEL>_URL="https://github.com/owner/repo.git"
@@ -142,10 +142,10 @@ CUSTOM_REPO_FINROBOT_URL=""
 # Standard FinRAG: https://github.com/AI4Finance-Foundation/FinRAG.git
 CUSTOM_REPO_FINRAG_URL=""
 EOF
-    fi
+  fi
 
-    if [ ! -f "$CUSTOM_OLLAMA_BUILDS_FILE" ]; then
-        cat > "$CUSTOM_OLLAMA_BUILDS_FILE" <<'EOF'
+  if [ ! -f "$CUSTOM_OLLAMA_BUILDS_FILE" ]; then
+    cat >"$CUSTOM_OLLAMA_BUILDS_FILE" <<'EOF'
 # Benutzerdefinierte Ollama-Builds und Fork-Notizen
 # Für jeden eigenen Build kannst du hier einen gut lesbaren Block anlegen.
 #
@@ -159,9 +159,9 @@ EOF
 # BUILD_FINGPT_FORK_MODEFILE_PATH="$HOME/.openclaw_ultimate_user_data/modelfiles/fingpt-fork-local.Modelfile"
 # BUILD_FINGPT_FORK_NOTES="Nach Fine-Tuning/Export die GGUF-Datei eintragen und dann ollama create ausführen."
 EOF
-    fi
+  fi
 
-    cat > "$USER_DIALOGRC_FILE" <<'EOF'
+  cat >"$USER_DIALOGRC_FILE" <<'EOF'
 # Ausgelagerte dialog-Farben für das Ultimate Setup
 use_colors = ON
 use_shadow = OFF
@@ -193,21 +193,21 @@ uarrow_color = (BLUE,WHITE,ON)
 darrow_color = (BLUE,WHITE,ON)
 EOF
 
-    if [ ! -f "$METRICS_HISTORY_FILE" ]; then
-        printf 'timestamp\toperation_id\toperation_title\tstatus\tduration_seconds\tfree_kb_before\tfree_kb_after\tdelta_kb\n' > "$METRICS_HISTORY_FILE"
-    fi
-    if [ ! -f "$METRICS_SUMMARY_FILE" ]; then
-        printf 'operation_id\tduration_seconds\tdelta_kb\ttimestamp\n' > "$METRICS_SUMMARY_FILE"
-    fi
+  if [ ! -f "$METRICS_HISTORY_FILE" ]; then
+    printf 'timestamp\toperation_id\toperation_title\tstatus\tduration_seconds\tfree_kb_before\tfree_kb_after\tdelta_kb\n' >"$METRICS_HISTORY_FILE"
+  fi
+  if [ ! -f "$METRICS_SUMMARY_FILE" ]; then
+    printf 'operation_id\tduration_seconds\tdelta_kb\ttimestamp\n' >"$METRICS_SUMMARY_FILE"
+  fi
 
-    touch "$PROFILE_STATUS_FILE" "$TOOL_STATUS_FILE"
-    export DIALOGRC="$USER_DIALOGRC_FILE"
+  touch "$PROFILE_STATUS_FILE" "$TOOL_STATUS_FILE"
+  export DIALOGRC="$USER_DIALOGRC_FILE"
 }
 
 ensure_metrics_config() {
-    ensure_user_workspace
-    if [ ! -f "$METRICS_CONFIG_FILE" ]; then
-        cat > "$METRICS_CONFIG_FILE" <<'EOF'
+  ensure_user_workspace
+  if [ ! -f "$METRICS_CONFIG_FILE" ]; then
+    cat >"$METRICS_CONFIG_FILE" <<'EOF'
 # Editierbare Schätz- und Testwerte für dieses Setup
 # Stand: Letsung MiniPC Testziel mit Windows 11 original + Ubuntu 24.04 LTS in WSL2
 
@@ -324,216 +324,216 @@ GITHUB_TOOL_SOURCES_PREFERRED="true"
 STRICT_GITHUB_TOOL_SOURCES="false"
 ALLOW_NON_GITHUB_TOOL_SOURCE="false"
 EOF
-    fi
+  fi
 }
 
 show_metrics_editor() {
-    ensure_metrics_config
-    dialog --clear --backtitle "$APP_TITLE" \
-    --title "SETUP-MESSWERTE & BENCHMARKS" --editbox "$METRICS_CONFIG_FILE" 30 110 2> /tmp/metrics_config_edit
+  ensure_metrics_config
+  dialog --clear --backtitle "$APP_TITLE" \
+    --title "SETUP-MESSWERTE & BENCHMARKS" --editbox "$METRICS_CONFIG_FILE" 30 110 2>/tmp/metrics_config_edit
 
-    if [ $? -eq 0 ]; then
-        cp /tmp/metrics_config_edit "$METRICS_CONFIG_FILE"
-        echo -e "${GREEN}Die editierbaren Setup-Messwerte wurden aktualisiert.${NC}"
-    fi
+  if [ $? -eq 0 ]; then
+    cp /tmp/metrics_config_edit "$METRICS_CONFIG_FILE"
+    echo -e "${GREEN}Die editierbaren Setup-Messwerte wurden aktualisiert.${NC}"
+  fi
 }
 
 load_metrics_config() {
-    ensure_metrics_config
-    # shellcheck source=/dev/null
-    source "$METRICS_CONFIG_FILE"
-    : "${LOCAL_SETUP_TOTAL_ESTIMATE:=$SETUP_INSTALL_TIME_ESTIMATE}"
-    : "${LOCAL_SETUP_CONFIRM_STOP_1_ESTIMATE:=12-35 min}"
-    : "${LOCAL_SETUP_CONFIRM_STOP_2_ESTIMATE:=18-45 min}"
-    : "${LOCAL_SETUP_CLOUDFLARE_TOKEN_STOP_ESTIMATE:=22-60 min}"
+  ensure_metrics_config
+  # shellcheck source=/dev/null
+  source "$METRICS_CONFIG_FILE"
+  : "${LOCAL_SETUP_TOTAL_ESTIMATE:=$SETUP_INSTALL_TIME_ESTIMATE}"
+  : "${LOCAL_SETUP_CONFIRM_STOP_1_ESTIMATE:=12-35 min}"
+  : "${LOCAL_SETUP_CONFIRM_STOP_2_ESTIMATE:=18-45 min}"
+  : "${LOCAL_SETUP_CLOUDFLARE_TOKEN_STOP_ESTIMATE:=22-60 min}"
 }
 
 is_preference_enabled() {
-    case "$(printf '%s' "${1:-false}" | tr '[:upper:]' '[:lower:]')" in
-        1|true|yes|on|ja)
-            return 0
-            ;;
-        *)
-            return 1
-            ;;
-    esac
+  case "$(printf '%s' "${1:-false}" | tr '[:upper:]' '[:lower:]')" in
+    1 | true | yes | on | ja)
+      return 0
+      ;;
+    *)
+      return 1
+      ;;
+  esac
 }
 
 overview_metrics_allowed_for_count() {
-    local item_count="${1:-0}"
-    local max_items="${OVERVIEW_METRICS_MAX_ITEMS:-80}"
+  local item_count="${1:-0}"
+  local max_items="${OVERVIEW_METRICS_MAX_ITEMS:-80}"
 
-    if ! is_preference_enabled "${OVERVIEW_METRICS_ENABLED:-false}"; then
-        return 1
-    fi
+  if ! is_preference_enabled "${OVERVIEW_METRICS_ENABLED:-false}"; then
+    return 1
+  fi
 
-    if is_preference_enabled "${OVERVIEW_METRICS_FORCE:-false}"; then
-        return 0
-    fi
-
-    if [ "$item_count" -gt "$max_items" ] 2>/dev/null; then
-        return 1
-    fi
-
+  if is_preference_enabled "${OVERVIEW_METRICS_FORCE:-false}"; then
     return 0
+  fi
+
+  if [ "$item_count" -gt "$max_items" ] 2>/dev/null; then
+    return 1
+  fi
+
+  return 0
 }
 
 set_installation_monitoring_mode() {
-    local enabled="$1"
+  local enabled="$1"
 
-    enabled="$(normalize_setup_boolean "$enabled")"
-    persist_setup_preference "INSTALL_MONITORING_VERBOSE" "$enabled"
-    persist_setup_preference "INSTALL_MONITORING_MANUAL_FLOW" "$enabled"
-    load_setup_language
+  enabled="$(normalize_setup_boolean "$enabled")"
+  persist_setup_preference "INSTALL_MONITORING_VERBOSE" "$enabled"
+  persist_setup_preference "INSTALL_MONITORING_MANUAL_FLOW" "$enabled"
+  load_setup_language
 }
 
 set_log_cleanup_mode() {
-    local enabled="$1"
+  local enabled="$1"
 
-    enabled="$(normalize_setup_boolean "$enabled")"
-    persist_setup_preference "LOG_CLEANUP_BEFORE_OPERATION" "$enabled"
-    load_setup_language
+  enabled="$(normalize_setup_boolean "$enabled")"
+  persist_setup_preference "LOG_CLEANUP_BEFORE_OPERATION" "$enabled"
+  load_setup_language
 }
 
 set_overview_metrics_mode() {
-    local enabled="$1"
+  local enabled="$1"
 
-    enabled="$(normalize_setup_boolean "$enabled")"
-    persist_setup_preference "OVERVIEW_METRICS_ENABLED" "$enabled"
-    load_setup_language
+  enabled="$(normalize_setup_boolean "$enabled")"
+  persist_setup_preference "OVERVIEW_METRICS_ENABLED" "$enabled"
+  load_setup_language
 }
 
 set_menu_loading_notice_mode() {
-    local enabled="$1"
+  local enabled="$1"
 
-    enabled="$(normalize_setup_boolean "$enabled")"
-    persist_setup_preference "MENU_LOADING_NOTICE_ENABLED" "$enabled"
-    load_setup_language
+  enabled="$(normalize_setup_boolean "$enabled")"
+  persist_setup_preference "MENU_LOADING_NOTICE_ENABLED" "$enabled"
+  load_setup_language
 }
 
 set_log_cleanup_number_preference() {
-    local key="$1"
-    local value="$2"
+  local key="$1"
+  local value="$2"
 
-    case "$value" in
-        ''|*[!0-9]*)
-            echo -e "${RED}Fehler: '$value' ist keine gültige Zahl.${NC}"
-            return 1
-            ;;
-    esac
+  case "$value" in
+    '' | *[!0-9]*)
+      echo -e "${RED}Fehler: '$value' ist keine gültige Zahl.${NC}"
+      return 1
+      ;;
+  esac
 
-    persist_setup_preference "$key" "$value"
-    load_setup_language
+  persist_setup_preference "$key" "$value"
+  load_setup_language
 }
 
 reset_terminal_display() {
-    printf '\033[0m'
-    tput sgr0 2>/dev/null || true
+  printf '\033[0m'
+  tput sgr0 2>/dev/null || true
 }
 
 get_free_disk_kb() {
-    df -Pk "$HOME" 2>/dev/null | awk 'NR==2 {print $4}'
+  df -Pk "$HOME" 2>/dev/null | awk 'NR==2 {print $4}'
 }
 
 get_free_disk_gb() {
-    local free_kb
-    free_kb="$(get_free_disk_kb)"
-    if [ -n "$free_kb" ]; then
-        printf '%s' $((free_kb / 1024 / 1024))
-    else
-        printf '0'
-    fi
+  local free_kb
+  free_kb="$(get_free_disk_kb)"
+  if [ -n "$free_kb" ]; then
+    printf '%s' $((free_kb / 1024 / 1024))
+  else
+    printf '0'
+  fi
 }
 
 is_wsl_environment() {
-    grep -qi microsoft /proc/version 2>/dev/null || grep -qi microsoft /proc/sys/kernel/osrelease 2>/dev/null
+  grep -qi microsoft /proc/version 2>/dev/null || grep -qi microsoft /proc/sys/kernel/osrelease 2>/dev/null
 }
 
 get_windows_host_free_kb() {
-    local drive_name="${WINDOWS_HOST_DRIVE:-C}"
-    local free_bytes
+  local drive_name="${WINDOWS_HOST_DRIVE:-C}"
+  local free_bytes
 
-    command -v powershell.exe >/dev/null 2>&1 || return 0
-    free_bytes="$(powershell.exe -NoProfile -Command "(Get-PSDrive -Name '${drive_name}').Free" 2>/dev/null | tr -d '\r' | awk 'NF {print int($1); exit}')"
-    if [ -n "$free_bytes" ] && [ "$free_bytes" -gt 0 ] 2>/dev/null; then
-        printf '%s' $((free_bytes / 1024))
-    fi
+  command -v powershell.exe >/dev/null 2>&1 || return 0
+  free_bytes="$(powershell.exe -NoProfile -Command "(Get-PSDrive -Name '${drive_name}').Free" 2>/dev/null | tr -d '\r' | awk 'NF {print int($1); exit}')"
+  if [ -n "$free_bytes" ] && [ "$free_bytes" -gt 0 ] 2>/dev/null; then
+    printf '%s' $((free_bytes / 1024))
+  fi
 }
 
 show_wsl_windows_space_warning() {
-    local windows_free_kb
-    local absolute_min_kb
+  local windows_free_kb
+  local absolute_min_kb
 
-    is_wsl_environment || return 0
-    windows_free_kb="$(get_windows_host_free_kb)"
-    [ -n "$windows_free_kb" ] || return 0
+  is_wsl_environment || return 0
+  windows_free_kb="$(get_windows_host_free_kb)"
+  [ -n "$windows_free_kb" ] || return 0
 
-    echo -e "${YELLOW}Freier Windows-Host-Speicher (${WINDOWS_HOST_DRIVE:-C}:):${NC} ${GREEN}$(format_kb_human "$windows_free_kb")${NC}"
-    echo -e "${YELLOW}Hinweis:${NC} Die WSL-Zahl oben ist die freie Kapazitaet im Linux-Dateisystem bzw. Mountpoint, nicht automatisch die freie Kapazitaet deiner gesamten Windows-Festplatten. Wenn WSL auf ${WINDOWS_HOST_DRIVE:-C}: liegt, begrenzt der Windows-Host-Speicher praktisch, wie stark die WSL-VHDX noch wachsen kann."
+  echo -e "${YELLOW}Freier Windows-Host-Speicher (${WINDOWS_HOST_DRIVE:-C}:):${NC} ${GREEN}$(format_kb_human "$windows_free_kb")${NC}"
+  echo -e "${YELLOW}Hinweis:${NC} Die WSL-Zahl oben ist die freie Kapazitaet im Linux-Dateisystem bzw. Mountpoint, nicht automatisch die freie Kapazitaet deiner gesamten Windows-Festplatten. Wenn WSL auf ${WINDOWS_HOST_DRIVE:-C}: liegt, begrenzt der Windows-Host-Speicher praktisch, wie stark die WSL-VHDX noch wachsen kann."
 
-    absolute_min_kb=$(( ${MIN_FREE_GB_ABSOLUTE:-50} * 1024 * 1024 ))
-    if [ "$windows_free_kb" -lt "$absolute_min_kb" ] 2>/dev/null; then
-        echo -e "${RED}Warnung:${NC} Windows meldet weniger als ${MIN_FREE_GB_ABSOLUTE:-50} GB frei. Grosse Installationen koennen scheitern oder Windows/WSL instabil machen."
-    fi
+  absolute_min_kb=$((${MIN_FREE_GB_ABSOLUTE:-50} * 1024 * 1024))
+  if [ "$windows_free_kb" -lt "$absolute_min_kb" ] 2>/dev/null; then
+    echo -e "${RED}Warnung:${NC} Windows meldet weniger als ${MIN_FREE_GB_ABSOLUTE:-50} GB frei. Grosse Installationen koennen scheitern oder Windows/WSL instabil machen."
+  fi
 }
 
 format_duration_human() {
-    local total_seconds="$1"
-    local minutes=$((total_seconds / 60))
-    local seconds=$((total_seconds % 60))
+  local total_seconds="$1"
+  local minutes=$((total_seconds / 60))
+  local seconds=$((total_seconds % 60))
 
-    if [ "$minutes" -gt 0 ]; then
-        printf '%s min %s s' "$minutes" "$seconds"
-    else
-        printf '%s s' "$seconds"
-    fi
+  if [ "$minutes" -gt 0 ]; then
+    printf '%s min %s s' "$minutes" "$seconds"
+  else
+    printf '%s s' "$seconds"
+  fi
 }
 
 format_duration_hhmmss() {
-    local total_seconds="${1:-}"
+  local total_seconds="${1:-}"
 
-    if ! [[ "$total_seconds" =~ ^[0-9]+$ ]]; then
-        printf '%s' "--:--:--"
-        return 0
-    fi
+  if ! [[ "$total_seconds" =~ ^[0-9]+$ ]]; then
+    printf '%s' "--:--:--"
+    return 0
+  fi
 
-    printf '%02d:%02d:%02d' \
-        "$((total_seconds / 3600))" \
-        "$(((total_seconds % 3600) / 60))" \
-        "$((total_seconds % 60))"
+  printf '%02d:%02d:%02d' \
+    "$((total_seconds / 3600))" \
+    "$(((total_seconds % 3600) / 60))" \
+    "$((total_seconds % 60))"
 }
 
 highlight_time_value() {
-    local value="$1"
-    printf '%b%s%b' "$WHITE" "$value" "$NC"
+  local value="$1"
+  printf '%b%s%b' "$WHITE" "$value" "$NC"
 }
 
 format_kb_human() {
-    local total_kb="${1:-0}"
-    local abs_kb="$total_kb"
+  local total_kb="${1:-0}"
+  local abs_kb="$total_kb"
 
-    if [ "${abs_kb#-}" != "$abs_kb" ]; then
-        abs_kb="${abs_kb#-}"
-    fi
+  if [ "${abs_kb#-}" != "$abs_kb" ]; then
+    abs_kb="${abs_kb#-}"
+  fi
 
-    if [ "$abs_kb" -ge 1048576 ] 2>/dev/null; then
-        awk -v kb="$total_kb" 'BEGIN {printf "%.1f GB", kb/1048576}'
-    elif [ "$abs_kb" -ge 1024 ] 2>/dev/null; then
-        awk -v kb="$total_kb" 'BEGIN {printf "%.1f MB", kb/1024}'
-    else
-        printf '%s KB' "$total_kb"
-    fi
+  if [ "$abs_kb" -ge 1048576 ] 2>/dev/null; then
+    awk -v kb="$total_kb" 'BEGIN {printf "%.1f GB", kb/1048576}'
+  elif [ "$abs_kb" -ge 1024 ] 2>/dev/null; then
+    awk -v kb="$total_kb" 'BEGIN {printf "%.1f MB", kb/1024}'
+  else
+    printf '%s KB' "$total_kb"
+  fi
 }
 
 format_kb_mb_value() {
-    local total_kb="${1:-}"
+  local total_kb="${1:-}"
 
-    if ! [[ "$total_kb" =~ ^-?[0-9]+$ ]]; then
-        printf '%s' "--.- MB"
-        return 0
-    fi
+  if ! [[ "$total_kb" =~ ^-?[0-9]+$ ]]; then
+    printf '%s' "--.- MB"
+    return 0
+  fi
 
-    awk -v kb="$total_kb" 'BEGIN {printf "%.1f MB", kb/1024}'
+  awk -v kb="$total_kb" 'BEGIN {printf "%.1f MB", kb/1024}'
 }
 
 declare -A METRIC_CACHE_DURATION_SECONDS
@@ -541,13 +541,13 @@ declare -A METRIC_CACHE_DELTA_KB
 METRIC_CACHE_LOADED=0
 
 rebuild_metric_summary_cache() {
-    ensure_user_workspace
-    if [ ! -f "$METRICS_HISTORY_FILE" ]; then
-        printf 'operation_id\tduration_seconds\tdelta_kb\ttimestamp\n' > "$METRICS_SUMMARY_FILE"
-        return 0
-    fi
+  ensure_user_workspace
+  if [ ! -f "$METRICS_HISTORY_FILE" ]; then
+    printf 'operation_id\tduration_seconds\tdelta_kb\ttimestamp\n' >"$METRICS_SUMMARY_FILE"
+    return 0
+  fi
 
-    awk -F'\t' '
+  awk -F'\t' '
         NR == 1 && $2 == "operation_id" { next }
         $4 == "success" && $2 != "" {
             duration[$2] = $5
@@ -560,676 +560,676 @@ rebuild_metric_summary_cache() {
                 print id "\t" duration[id] "\t" delta[id] "\t" ts[id]
             }
         }
-    ' "$METRICS_HISTORY_FILE" > "$METRICS_SUMMARY_FILE"
+    ' "$METRICS_HISTORY_FILE" >"$METRICS_SUMMARY_FILE"
 }
 
 load_metric_cache_once() {
-    local timestamp
-    local operation_id
-    local operation_title
-    local status
-    local duration_seconds
-    local free_kb_before
-    local free_kb_after
-    local delta_kb
+  local timestamp
+  local operation_id
+  local operation_title
+  local status
+  local duration_seconds
+  local free_kb_before
+  local free_kb_after
+  local delta_kb
 
-    if [ "${METRIC_CACHE_LOADED:-0}" = "1" ]; then
-        return 0
-    fi
+  if [ "${METRIC_CACHE_LOADED:-0}" = "1" ]; then
+    return 0
+  fi
 
-    METRIC_CACHE_DURATION_SECONDS=()
-    METRIC_CACHE_DELTA_KB=()
-    ensure_user_workspace
-    if [ ! -s "$METRICS_SUMMARY_FILE" ] || [ "$(wc -l < "$METRICS_SUMMARY_FILE" 2>/dev/null || echo 0)" -le 1 ]; then
-        rebuild_metric_summary_cache
-    fi
+  METRIC_CACHE_DURATION_SECONDS=()
+  METRIC_CACHE_DELTA_KB=()
+  ensure_user_workspace
+  if [ ! -s "$METRICS_SUMMARY_FILE" ] || [ "$(wc -l <"$METRICS_SUMMARY_FILE" 2>/dev/null || echo 0)" -le 1 ]; then
+    rebuild_metric_summary_cache
+  fi
 
-    if [ -f "$METRICS_SUMMARY_FILE" ]; then
-        while IFS=$'\t' read -r operation_id duration_seconds delta_kb timestamp; do
-            [ "$operation_id" != "operation_id" ] || continue
-            [ -n "$operation_id" ] || continue
-            METRIC_CACHE_DURATION_SECONDS["$operation_id"]="$duration_seconds"
-            METRIC_CACHE_DELTA_KB["$operation_id"]="$delta_kb"
-        done < "$METRICS_SUMMARY_FILE"
-    fi
-    METRIC_CACHE_LOADED=1
+  if [ -f "$METRICS_SUMMARY_FILE" ]; then
+    while IFS=$'\t' read -r operation_id duration_seconds delta_kb timestamp; do
+      [ "$operation_id" != "operation_id" ] || continue
+      [ -n "$operation_id" ] || continue
+      METRIC_CACHE_DURATION_SECONDS["$operation_id"]="$duration_seconds"
+      METRIC_CACHE_DELTA_KB["$operation_id"]="$delta_kb"
+    done <"$METRICS_SUMMARY_FILE"
+  fi
+  METRIC_CACHE_LOADED=1
 }
 
 invalidate_metric_cache() {
-    METRIC_CACHE_LOADED=0
+  METRIC_CACHE_LOADED=0
 }
 
 get_last_success_metric_field() {
-    local operation_id="$1"
-    local field_index="$2"
+  local operation_id="$1"
+  local field_index="$2"
 
-    load_metric_cache_once
-    case "$field_index" in
-        5)
-            printf '%s' "${METRIC_CACHE_DURATION_SECONDS[$operation_id]:-}"
-            ;;
-        8)
-            printf '%s' "${METRIC_CACHE_DELTA_KB[$operation_id]:-}"
-            ;;
-        *)
-            return 1
-            ;;
-    esac
+  load_metric_cache_once
+  case "$field_index" in
+    5)
+      printf '%s' "${METRIC_CACHE_DURATION_SECONDS[$operation_id]:-}"
+      ;;
+    8)
+      printf '%s' "${METRIC_CACHE_DELTA_KB[$operation_id]:-}"
+      ;;
+    *)
+      return 1
+      ;;
+  esac
 }
 
 get_operation_metric_summary_plain() {
-    local operation_id="$1"
-    local duration_seconds
-    local delta_kb
+  local operation_id="$1"
+  local duration_seconds
+  local delta_kb
 
-    duration_seconds="$(get_last_success_metric_field "$operation_id" 5)"
-    delta_kb="$(get_last_success_metric_field "$operation_id" 8)"
+  duration_seconds="$(get_last_success_metric_field "$operation_id" 5)"
+  delta_kb="$(get_last_success_metric_field "$operation_id" 8)"
 
-    printf '%s | %s' "$(format_duration_hhmmss "$duration_seconds")" "$(format_kb_mb_value "$delta_kb")"
+  printf '%s | %s' "$(format_duration_hhmmss "$duration_seconds")" "$(format_kb_mb_value "$delta_kb")"
 }
 
 summarize_operation_metrics_plain() {
-    local operation_kind="$1"
-    shift
-    local total_seconds=0
-    local total_kb=0
-    local missing_duration=0
-    local missing_storage=0
-    local item
-    local operation_id
-    local duration_seconds
-    local delta_kb
+  local operation_kind="$1"
+  shift
+  local total_seconds=0
+  local total_kb=0
+  local missing_duration=0
+  local missing_storage=0
+  local item
+  local operation_id
+  local duration_seconds
+  local delta_kb
 
-    for item in "$@"; do
-        [ -n "$item" ] || continue
-        operation_id="${operation_kind}_${item}"
-        duration_seconds="$(get_last_success_metric_field "$operation_id" 5)"
-        delta_kb="$(get_last_success_metric_field "$operation_id" 8)"
+  for item in "$@"; do
+    [ -n "$item" ] || continue
+    operation_id="${operation_kind}_${item}"
+    duration_seconds="$(get_last_success_metric_field "$operation_id" 5)"
+    delta_kb="$(get_last_success_metric_field "$operation_id" 8)"
 
-        if [[ "$duration_seconds" =~ ^[0-9]+$ ]]; then
-            total_seconds=$((total_seconds + duration_seconds))
-        else
-            missing_duration=1
-        fi
-
-        if [[ "$delta_kb" =~ ^-?[0-9]+$ ]]; then
-            total_kb=$((total_kb + delta_kb))
-        else
-            missing_storage=1
-        fi
-    done
-
-    if [ "$missing_duration" -eq 1 ]; then
-        printf '%s' "--:--:--"
+    if [[ "$duration_seconds" =~ ^[0-9]+$ ]]; then
+      total_seconds=$((total_seconds + duration_seconds))
     else
-        format_duration_hhmmss "$total_seconds"
+      missing_duration=1
     fi
-    printf ' | '
-    if [ "$missing_storage" -eq 1 ]; then
-        printf '%s' "--.- MB"
+
+    if [[ "$delta_kb" =~ ^-?[0-9]+$ ]]; then
+      total_kb=$((total_kb + delta_kb))
     else
-        format_kb_mb_value "$total_kb"
+      missing_storage=1
     fi
+  done
+
+  if [ "$missing_duration" -eq 1 ]; then
+    printf '%s' "--:--:--"
+  else
+    format_duration_hhmmss "$total_seconds"
+  fi
+  printf ' | '
+  if [ "$missing_storage" -eq 1 ]; then
+    printf '%s' "--.- MB"
+  else
+    format_kb_mb_value "$total_kb"
+  fi
 }
 
 summarize_operation_metrics_with_missing_plain() {
-    local operation_kind="$1"
-    shift
-    local total_seconds=0
-    local total_kb=0
-    local missing_duration=0
-    local missing_storage=0
-    local item
-    local operation_id
-    local duration_seconds
-    local delta_kb
+  local operation_kind="$1"
+  shift
+  local total_seconds=0
+  local total_kb=0
+  local missing_duration=0
+  local missing_storage=0
+  local item
+  local operation_id
+  local duration_seconds
+  local delta_kb
 
-    for item in "$@"; do
-        [ -n "$item" ] || continue
-        operation_id="${operation_kind}_${item}"
-        duration_seconds="$(get_last_success_metric_field "$operation_id" 5)"
-        delta_kb="$(get_last_success_metric_field "$operation_id" 8)"
+  for item in "$@"; do
+    [ -n "$item" ] || continue
+    operation_id="${operation_kind}_${item}"
+    duration_seconds="$(get_last_success_metric_field "$operation_id" 5)"
+    delta_kb="$(get_last_success_metric_field "$operation_id" 8)"
 
-        if [[ "$duration_seconds" =~ ^[0-9]+$ ]]; then
-            total_seconds=$((total_seconds + duration_seconds))
-        else
-            missing_duration=$((missing_duration + 1))
-        fi
-
-        if [[ "$delta_kb" =~ ^-?[0-9]+$ ]]; then
-            total_kb=$((total_kb + delta_kb))
-        else
-            missing_storage=$((missing_storage + 1))
-        fi
-    done
-
-    if [ "$missing_duration" -gt 0 ]; then
-        printf '%s' "--:--:--"
+    if [[ "$duration_seconds" =~ ^[0-9]+$ ]]; then
+      total_seconds=$((total_seconds + duration_seconds))
     else
-        format_duration_hhmmss "$total_seconds"
+      missing_duration=$((missing_duration + 1))
     fi
-    printf ' | '
-    if [ "$missing_storage" -gt 0 ]; then
-        printf '%s' "--.- MB"
+
+    if [[ "$delta_kb" =~ ^-?[0-9]+$ ]]; then
+      total_kb=$((total_kb + delta_kb))
     else
-        format_kb_mb_value "$total_kb"
+      missing_storage=$((missing_storage + 1))
     fi
-    printf ' (fehlend: Zeit %s, Speicher %s)' "$missing_duration" "$missing_storage"
+  done
+
+  if [ "$missing_duration" -gt 0 ]; then
+    printf '%s' "--:--:--"
+  else
+    format_duration_hhmmss "$total_seconds"
+  fi
+  printf ' | '
+  if [ "$missing_storage" -gt 0 ]; then
+    printf '%s' "--.- MB"
+  else
+    format_kb_mb_value "$total_kb"
+  fi
+  printf ' (fehlend: Zeit %s, Speicher %s)' "$missing_duration" "$missing_storage"
 }
 
 summarize_tool_batch_metrics_plain() {
-    local -n uninstall_ref="$1"
-    local -n install_ref="$2"
-    local total_seconds=0
-    local total_kb=0
-    local missing_duration=0
-    local missing_storage=0
-    local item
-    local operation_id
-    local duration_seconds
-    local delta_kb
+  local -n uninstall_ref="$1"
+  local -n install_ref="$2"
+  local total_seconds=0
+  local total_kb=0
+  local missing_duration=0
+  local missing_storage=0
+  local item
+  local operation_id
+  local duration_seconds
+  local delta_kb
 
-    for item in "${uninstall_ref[@]}"; do
-        [ -n "$item" ] || continue
-        operation_id="tool_uninstall_${item}"
-        duration_seconds="$(get_last_success_metric_field "$operation_id" 5)"
-        delta_kb="$(get_last_success_metric_field "$operation_id" 8)"
-        if [[ "$duration_seconds" =~ ^[0-9]+$ ]]; then
-            total_seconds=$((total_seconds + duration_seconds))
-        else
-            missing_duration=1
-        fi
-        if [[ "$delta_kb" =~ ^-?[0-9]+$ ]]; then
-            total_kb=$((total_kb + delta_kb))
-        else
-            missing_storage=1
-        fi
-    done
-
-    for item in "${install_ref[@]}"; do
-        [ -n "$item" ] || continue
-        operation_id="tool_install_${item}"
-        duration_seconds="$(get_last_success_metric_field "$operation_id" 5)"
-        delta_kb="$(get_last_success_metric_field "$operation_id" 8)"
-        if [[ "$duration_seconds" =~ ^[0-9]+$ ]]; then
-            total_seconds=$((total_seconds + duration_seconds))
-        else
-            missing_duration=1
-        fi
-        if [[ "$delta_kb" =~ ^-?[0-9]+$ ]]; then
-            total_kb=$((total_kb + delta_kb))
-        else
-            missing_storage=1
-        fi
-    done
-
-    if [ "$missing_duration" -eq 1 ]; then
-        printf '%s' "--:--:--"
+  for item in "${uninstall_ref[@]}"; do
+    [ -n "$item" ] || continue
+    operation_id="tool_uninstall_${item}"
+    duration_seconds="$(get_last_success_metric_field "$operation_id" 5)"
+    delta_kb="$(get_last_success_metric_field "$operation_id" 8)"
+    if [[ "$duration_seconds" =~ ^[0-9]+$ ]]; then
+      total_seconds=$((total_seconds + duration_seconds))
     else
-        format_duration_hhmmss "$total_seconds"
+      missing_duration=1
     fi
-    printf ' | '
-    if [ "$missing_storage" -eq 1 ]; then
-        printf '%s' "--.- MB"
+    if [[ "$delta_kb" =~ ^-?[0-9]+$ ]]; then
+      total_kb=$((total_kb + delta_kb))
     else
-        format_kb_mb_value "$total_kb"
+      missing_storage=1
     fi
+  done
+
+  for item in "${install_ref[@]}"; do
+    [ -n "$item" ] || continue
+    operation_id="tool_install_${item}"
+    duration_seconds="$(get_last_success_metric_field "$operation_id" 5)"
+    delta_kb="$(get_last_success_metric_field "$operation_id" 8)"
+    if [[ "$duration_seconds" =~ ^[0-9]+$ ]]; then
+      total_seconds=$((total_seconds + duration_seconds))
+    else
+      missing_duration=1
+    fi
+    if [[ "$delta_kb" =~ ^-?[0-9]+$ ]]; then
+      total_kb=$((total_kb + delta_kb))
+    else
+      missing_storage=1
+    fi
+  done
+
+  if [ "$missing_duration" -eq 1 ]; then
+    printf '%s' "--:--:--"
+  else
+    format_duration_hhmmss "$total_seconds"
+  fi
+  printf ' | '
+  if [ "$missing_storage" -eq 1 ]; then
+    printf '%s' "--.- MB"
+  else
+    format_kb_mb_value "$total_kb"
+  fi
 }
 
 get_operation_duration_estimate_label() {
-    local operation_id="$1"
-    local fallback_label="$2"
-    local duration_seconds
+  local operation_id="$1"
+  local fallback_label="$2"
+  local duration_seconds
 
-    duration_seconds="$(get_last_success_metric_field "$operation_id" 5)"
-    if [ -n "$duration_seconds" ]; then
-        printf '%s %s' "$(highlight_time_value "$(format_duration_human "$duration_seconds")")" "${YELLOW}(letzte erfolgreiche Messung)${NC}"
-    else
-        highlight_time_value "$fallback_label"
-    fi
+  duration_seconds="$(get_last_success_metric_field "$operation_id" 5)"
+  if [ -n "$duration_seconds" ]; then
+    printf '%s %s' "$(highlight_time_value "$(format_duration_human "$duration_seconds")")" "${YELLOW}(letzte erfolgreiche Messung)${NC}"
+  else
+    highlight_time_value "$fallback_label"
+  fi
 }
 
 get_operation_storage_estimate_label() {
-    local operation_id="$1"
-    local fallback_label="$2"
-    local delta_kb
+  local operation_id="$1"
+  local fallback_label="$2"
+  local delta_kb
 
-    delta_kb="$(get_last_success_metric_field "$operation_id" 8)"
-    if [ -n "$delta_kb" ]; then
-        printf '%s freier Speicher empfohlen, letzte erfolgreiche Aenderung: %s' "$fallback_label" "$(format_kb_human "$delta_kb")"
-    else
-        printf '%s' "$fallback_label"
-    fi
+  delta_kb="$(get_last_success_metric_field "$operation_id" 8)"
+  if [ -n "$delta_kb" ]; then
+    printf '%s freier Speicher empfohlen, letzte erfolgreiche Aenderung: %s' "$fallback_label" "$(format_kb_human "$delta_kb")"
+  else
+    printf '%s' "$fallback_label"
+  fi
 }
 
 get_default_tool_duration_label() {
-    local tool_key="$1"
+  local tool_key="$1"
 
-    case "$tool_key" in
-        "Ollama") printf '5-15 min Installation, Modelle zusaetzlich je nach Groesse' ;;
-        "n8n") printf '10-45 min Klonen + GitHub-Monorepo-Build' ;;
-        "OpenClaw") printf '15-60 min Download + Build je nach System' ;;
-        "OpenManus") printf '5-20 min Download + Einrichtung' ;;
-        "ComfyUI"|"Stable_Diffusion_WebUI_Forge") printf '15-45 min plus Modell-Downloads' ;;
-        *) printf '%s Download + %s Installation/Anpassung je nach Tool' "${SETUP_DOWNLOAD_TIME_ESTIMATE}" "${SETUP_INSTALL_TIME_ESTIMATE}" ;;
-    esac
+  case "$tool_key" in
+    "Ollama") printf '5-15 min Installation, Modelle zusaetzlich je nach Groesse' ;;
+    "n8n") printf '10-45 min Klonen + GitHub-Monorepo-Build' ;;
+    "OpenClaw") printf '15-60 min Download + Build je nach System' ;;
+    "OpenManus") printf '5-20 min Download + Einrichtung' ;;
+    "ComfyUI" | "Stable_Diffusion_WebUI_Forge") printf '15-45 min plus Modell-Downloads' ;;
+    *) printf '%s Download + %s Installation/Anpassung je nach Tool' "${SETUP_DOWNLOAD_TIME_ESTIMATE}" "${SETUP_INSTALL_TIME_ESTIMATE}" ;;
+  esac
 }
 
 tool_key_to_metric_prefix() {
-    local tool_key="$1"
+  local tool_key="$1"
 
-    printf '%s' "$tool_key" | tr '[:lower:]- /.' '[:upper:]____'
+  printf '%s' "$tool_key" | tr '[:lower:]- /.' '[:upper:]____'
 }
 
 operation_id_to_metric_prefix() {
-    local operation_id="$1"
+  local operation_id="$1"
 
-    printf '%s' "$operation_id" | tr '[:lower:]- /.' '[:upper:]____'
+  printf '%s' "$operation_id" | tr '[:lower:]- /.' '[:upper:]____'
 }
 
 get_configured_tool_duration_label() {
-    local tool_key="$1"
-    local metric_prefix
-    local metric_var_name
+  local tool_key="$1"
+  local metric_prefix
+  local metric_var_name
 
-    metric_prefix="$(tool_key_to_metric_prefix "$tool_key")"
-    metric_var_name="${metric_prefix}_TOOL_DURATION_ESTIMATE"
-    printf '%s' "${!metric_var_name:-}"
+  metric_prefix="$(tool_key_to_metric_prefix "$tool_key")"
+  metric_var_name="${metric_prefix}_TOOL_DURATION_ESTIMATE"
+  printf '%s' "${!metric_var_name:-}"
 }
 
 get_configured_tool_storage_label() {
-    local tool_key="$1"
-    local metric_prefix
-    local metric_var_name
+  local tool_key="$1"
+  local metric_prefix
+  local metric_var_name
 
-    metric_prefix="$(tool_key_to_metric_prefix "$tool_key")"
-    metric_var_name="${metric_prefix}_TOOL_STORAGE_ESTIMATE"
-    printf '%s' "${!metric_var_name:-}"
+  metric_prefix="$(tool_key_to_metric_prefix "$tool_key")"
+  metric_var_name="${metric_prefix}_TOOL_STORAGE_ESTIMATE"
+  printf '%s' "${!metric_var_name:-}"
 }
 
 get_default_tool_storage_label() {
-    local tool_key="$1"
+  local tool_key="$1"
 
-    case "$tool_key" in
-        "Ollama") printf '15-40 GB ohne Modelle, mit mehreren Modellen deutlich mehr' ;;
-        "n8n") printf '5-15 GB' ;;
-        "ComfyUI"|"Stable_Diffusion_WebUI_Forge") printf '30-120 GB je nach Modellen und Workflows' ;;
-        *) printf '%s-%s GB' "${MIN_FREE_GB_ABSOLUTE}" "${MIN_FREE_GB_RECOMMENDED}" ;;
-    esac
+  case "$tool_key" in
+    "Ollama") printf '15-40 GB ohne Modelle, mit mehreren Modellen deutlich mehr' ;;
+    "n8n") printf '5-15 GB' ;;
+    "ComfyUI" | "Stable_Diffusion_WebUI_Forge") printf '30-120 GB je nach Modellen und Workflows' ;;
+    *) printf '%s-%s GB' "${MIN_FREE_GB_ABSOLUTE}" "${MIN_FREE_GB_RECOMMENDED}" ;;
+  esac
 }
 
 get_tool_install_measured_mb() {
-    local tool_key="$1"
-    local delta_kb
+  local tool_key="$1"
+  local delta_kb
 
-    delta_kb="$(get_last_success_metric_field "tool_install_${tool_key}" 8)"
-    if [[ "$delta_kb" =~ ^[0-9]+$ ]] && [ "$delta_kb" -gt 0 ] 2>/dev/null; then
-        printf '%s' "$(( (delta_kb + 1023) / 1024 ))"
-    fi
+  delta_kb="$(get_last_success_metric_field "tool_install_${tool_key}" 8)"
+  if [[ "$delta_kb" =~ ^[0-9]+$ ]] && [ "$delta_kb" -gt 0 ] 2>/dev/null; then
+    printf '%s' "$(((delta_kb + 1023) / 1024))"
+  fi
 }
 
 get_tool_install_fallback_min_free_mb() {
-    local tool_key="$1"
+  local tool_key="$1"
 
-    case "$tool_key" in
-        "Traefik") printf '16384' ;;
-        "OpenTelemetry") printf '8192' ;;
-        "Langfuse"|"Grafana_Alloy") printf '49152' ;;
-        "NocoDB") printf '32768' ;;
-        "Penpot") printf '65536' ;;
-        "PyAirbyte") printf '16384' ;;
-        "Forgejo") printf '16384' ;;
-        "Apache_Tika") printf '16384' ;;
-        "Appsmith") printf '49152' ;;
-        "ArchiveBox") printf '8192' ;;
-        "Argilla") printf '16384' ;;
-        "Budibase") printf '32768' ;;
-        "Directus") printf '24576' ;;
-        "Grafana") printf '32768' ;;
-        "Home_Assistant") printf '16384' ;;
-        "Metabase") printf '32768' ;;
-        "Neo4j") printf '49152' ;;
-        "Netdata") printf '16384' ;;
-        "Nextcloud") printf '24576' ;;
-        "Open_WebUI") printf '24576' ;;
-        "Promtail") printf '16384' ;;
-        "Stirling_PDF") printf '24576' ;;
-        "Vault") printf '24576' ;;
-        "Vikunja") printf '16384' ;;
-        "Watchtower") printf '4096' ;;
-        "Caddy") printf '4096' ;;
-        "Godot_Build") printf '16384' ;;
-        "Godot_Source"|"Godot_XR_Tools"|"Lively_Wallpaper_Source") printf '2048' ;;
-        "O3DE_Source") printf '4096' ;;
-        "OpenAPI_Servers") printf '2048' ;;
-        "Gemini_Desktop_Bwendell_Source"|"Gemini_Desktop_Dortanes_Source") printf '2048' ;;
-        "cAdvisor") printf '8192' ;;
-        "Changedetection_IO") printf '8192' ;;
-        "CrowdSec") printf '16384' ;;
-        "Healthchecks") printf '8192' ;;
-        "LiteLLM") printf '8192' ;;
-        "Loki") printf '16384' ;;
-        "Meilisearch") printf '24576' ;;
-        "MinIO") printf '8192' ;;
-        "Mosquitto") printf '4096' ;;
-        "Node_Exporter") printf '4096' ;;
-        "Node_Red") printf '8192' ;;
-        "Prometheus") printf '16384' ;;
-        "Qdrant") printf '24576' ;;
-        "SearXNG") printf '8192' ;;
-        "Uptime_Kuma") printf '8192' ;;
-        "Weaviate") printf '16384' ;;
-        "Zigbee2MQTT") printf '8192' ;;
-        "Qwen_Desktop_Build") printf '20480' ;;
-        "Browser_Use"|"Perplexity_MCP") printf '4096' ;;
-        "Perplexity_Python"|"Perplexity_Node") printf '8192' ;;
-        "Perplexity_API_Cookbook") printf '2048' ;;
-        "BrowserOS_Study") printf '2048' ;;
-        "Enki_Browser_Study") printf '2048' ;;
-        "Qwen_Desktop_Study") printf '2048' ;;
-        "Hermes_Agent_Jarvis") printf '4096' ;;
-        "MuseTalk") printf '20480' ;;
-        "Gradio"|"Streamlit"|"WanVideoWrapper"|"CogVideoX"|"LTX_Video"|"Video2Dataset"|"LivePortrait"|"SadTalker"|"RVC"|"UVR5"|"Audacity"|"OBS") printf '2048' ;;
-        "Concat") printf '2048' ;;
-        "Remotion") printf '16384' ;;
-        "HyperFrames") printf '12288' ;;
-        "Airbyte")
-            printf '32768'
-            ;;
-        "ComfyUI"|"Stable_Diffusion_WebUI"|"Stable_Diffusion_WebUI_Forge"|"InvokeAI"|"Fooocus"|"Blender"|"AnimateDiff"|"RealESRGAN"|"GFPGAN"|"Wan_Video"|"SVD"*|*"Video"*|*"Image"*)
-            printf '40960'
-            ;;
-        "AutoGPT"|"OpenHands"|"Activepieces"|"n8n"|"Clawhub"|"Clawhub_CLI"|"OpenManus"|"Kimi"*|"Ruflo")
-            printf '16384'
-            ;;
-        "FinRobot"|"FinRAG")
-            printf '20480'
-            ;;
-        "Ollama"|"Open_WebUI"|"Qdrant"|"ChromaDB"|"Meilisearch"|"Paperless"*|"Nextcloud")
-            printf '8192'
-            ;;
-        "Docker"|"K3s"|"Kubernetes"*|"Grafana"|"Prometheus"|"Loki")
-            printf '8192'
-            ;;
-        *)
-            printf '4096'
-            ;;
-    esac
+  case "$tool_key" in
+    "Traefik") printf '16384' ;;
+    "OpenTelemetry") printf '8192' ;;
+    "Langfuse" | "Grafana_Alloy") printf '49152' ;;
+    "NocoDB") printf '32768' ;;
+    "Penpot") printf '65536' ;;
+    "PyAirbyte") printf '16384' ;;
+    "Forgejo") printf '16384' ;;
+    "Apache_Tika") printf '16384' ;;
+    "Appsmith") printf '49152' ;;
+    "ArchiveBox") printf '8192' ;;
+    "Argilla") printf '16384' ;;
+    "Budibase") printf '32768' ;;
+    "Directus") printf '24576' ;;
+    "Grafana") printf '32768' ;;
+    "Home_Assistant") printf '16384' ;;
+    "Metabase") printf '32768' ;;
+    "Neo4j") printf '49152' ;;
+    "Netdata") printf '16384' ;;
+    "Nextcloud") printf '24576' ;;
+    "Open_WebUI") printf '24576' ;;
+    "Promtail") printf '16384' ;;
+    "Stirling_PDF") printf '24576' ;;
+    "Vault") printf '24576' ;;
+    "Vikunja") printf '16384' ;;
+    "Watchtower") printf '4096' ;;
+    "Caddy") printf '4096' ;;
+    "Godot_Build") printf '16384' ;;
+    "Godot_Source" | "Godot_XR_Tools" | "Lively_Wallpaper_Source") printf '2048' ;;
+    "O3DE_Source") printf '4096' ;;
+    "OpenAPI_Servers") printf '2048' ;;
+    "Gemini_Desktop_Bwendell_Source" | "Gemini_Desktop_Dortanes_Source") printf '2048' ;;
+    "cAdvisor") printf '8192' ;;
+    "Changedetection_IO") printf '8192' ;;
+    "CrowdSec") printf '16384' ;;
+    "Healthchecks") printf '8192' ;;
+    "LiteLLM") printf '8192' ;;
+    "Loki") printf '16384' ;;
+    "Meilisearch") printf '24576' ;;
+    "MinIO") printf '8192' ;;
+    "Mosquitto") printf '4096' ;;
+    "Node_Exporter") printf '4096' ;;
+    "Node_Red") printf '8192' ;;
+    "Prometheus") printf '16384' ;;
+    "Qdrant") printf '24576' ;;
+    "SearXNG") printf '8192' ;;
+    "Uptime_Kuma") printf '8192' ;;
+    "Weaviate") printf '16384' ;;
+    "Zigbee2MQTT") printf '8192' ;;
+    "Qwen_Desktop_Build") printf '20480' ;;
+    "Browser_Use" | "Perplexity_MCP") printf '4096' ;;
+    "Perplexity_Python" | "Perplexity_Node") printf '8192' ;;
+    "Perplexity_API_Cookbook") printf '2048' ;;
+    "BrowserOS_Study") printf '2048' ;;
+    "Enki_Browser_Study") printf '2048' ;;
+    "Qwen_Desktop_Study") printf '2048' ;;
+    "Hermes_Agent_Jarvis") printf '4096' ;;
+    "MuseTalk") printf '20480' ;;
+    "Gradio" | "Streamlit" | "WanVideoWrapper" | "CogVideoX" | "LTX_Video" | "Video2Dataset" | "LivePortrait" | "SadTalker" | "RVC" | "UVR5" | "Audacity" | "OBS") printf '2048' ;;
+    "Concat") printf '2048' ;;
+    "Remotion") printf '16384' ;;
+    "HyperFrames") printf '12288' ;;
+    "Airbyte")
+      printf '32768'
+      ;;
+    "ComfyUI" | "Stable_Diffusion_WebUI" | "Stable_Diffusion_WebUI_Forge" | "InvokeAI" | "Fooocus" | "Blender" | "AnimateDiff" | "RealESRGAN" | "GFPGAN" | "Wan_Video" | "SVD"* | *"Video"* | *"Image"*)
+      printf '40960'
+      ;;
+    "AutoGPT" | "OpenHands" | "Activepieces" | "n8n" | "Clawhub" | "Clawhub_CLI" | "OpenManus" | "Kimi"* | "Ruflo")
+      printf '16384'
+      ;;
+    "FinRobot" | "FinRAG")
+      printf '20480'
+      ;;
+    "Ollama" | "Open_WebUI" | "Qdrant" | "ChromaDB" | "Meilisearch" | "Paperless"* | "Nextcloud")
+      printf '8192'
+      ;;
+    "Docker" | "K3s" | "Kubernetes"* | "Grafana" | "Prometheus" | "Loki")
+      printf '8192'
+      ;;
+    *)
+      printf '4096'
+      ;;
+  esac
 }
 
 get_tool_install_min_free_mb() {
-    local tool_key="$1"
-    local measured_mb
-    local fallback_mb
-    local measured_guard_mb
+  local tool_key="$1"
+  local measured_mb
+  local fallback_mb
+  local measured_guard_mb
 
-    measured_mb="$(get_tool_install_measured_mb "$tool_key")"
-    fallback_mb="$(get_tool_install_fallback_min_free_mb "$tool_key")"
+  measured_mb="$(get_tool_install_measured_mb "$tool_key")"
+  fallback_mb="$(get_tool_install_fallback_min_free_mb "$tool_key")"
 
-    if [[ "$measured_mb" =~ ^[0-9]+$ ]] && [ "$measured_mb" -gt 0 ] 2>/dev/null; then
-        measured_guard_mb=$((measured_mb + (measured_mb / 2) + 1024))
-        if [ "$measured_guard_mb" -lt 2048 ] 2>/dev/null; then
-            measured_guard_mb=2048
-        fi
-        if [ "$measured_guard_mb" -gt "$fallback_mb" ] 2>/dev/null; then
-            printf '%s' "$measured_guard_mb"
-        else
-            printf '%s' "$fallback_mb"
-        fi
-    else
-        printf '%s' "$fallback_mb"
+  if [[ "$measured_mb" =~ ^[0-9]+$ ]] && [ "$measured_mb" -gt 0 ] 2>/dev/null; then
+    measured_guard_mb=$((measured_mb + (measured_mb / 2) + 1024))
+    if [ "$measured_guard_mb" -lt 2048 ] 2>/dev/null; then
+      measured_guard_mb=2048
     fi
+    if [ "$measured_guard_mb" -gt "$fallback_mb" ] 2>/dev/null; then
+      printf '%s' "$measured_guard_mb"
+    else
+      printf '%s' "$fallback_mb"
+    fi
+  else
+    printf '%s' "$fallback_mb"
+  fi
 }
 
 get_tool_install_windows_min_free_mb() {
-    local linux_min_mb="${1:-4096}"
+  local linux_min_mb="${1:-4096}"
 
-    if [ "$linux_min_mb" -ge 40960 ] 2>/dev/null; then
-        printf '30720'
-    elif [ "$linux_min_mb" -ge 20480 ] 2>/dev/null; then
-        printf '20480'
-    elif [ "$linux_min_mb" -ge 8192 ] 2>/dev/null; then
-        printf '10240'
-    else
-        printf '5120'
-    fi
+  if [ "$linux_min_mb" -ge 40960 ] 2>/dev/null; then
+    printf '30720'
+  elif [ "$linux_min_mb" -ge 20480 ] 2>/dev/null; then
+    printf '20480'
+  elif [ "$linux_min_mb" -ge 8192 ] 2>/dev/null; then
+    printf '10240'
+  else
+    printf '5120'
+  fi
 }
 
 is_heavy_or_experimental_tool() {
-    local tool_key="$1"
+  local tool_key="$1"
 
-    case "$tool_key" in
-        "Qwen_Desktop_Build"|"Hermes_Agent_Jarvis"|"Remotion"|"HyperFrames") return 0 ;;
-        "Airbyte"|"Activepieces"|"AutoGPT"|"OpenHands"|"n8n"|"Nextcloud"|"ComfyUI"|"Stable_Diffusion_WebUI"|"Stable_Diffusion_WebUI_Forge"|"InvokeAI"|"Fooocus"|"vLLM"|"K3s"|"Kubernetes"|"Docker"|"Docker_Compose_Plugin"|"Coqui_TTS"|"FinRobot"|"FinRAG"|"Android"*|"MobSF"|"Blender"|"AnimateDiff")
-            return 0
-            ;;
-        *)
-            return 1
-            ;;
-    esac
+  case "$tool_key" in
+    "Qwen_Desktop_Build" | "Hermes_Agent_Jarvis" | "Remotion" | "HyperFrames") return 0 ;;
+    "Airbyte" | "Activepieces" | "AutoGPT" | "OpenHands" | "n8n" | "Nextcloud" | "ComfyUI" | "Stable_Diffusion_WebUI" | "Stable_Diffusion_WebUI_Forge" | "InvokeAI" | "Fooocus" | "vLLM" | "K3s" | "Kubernetes" | "Docker" | "Docker_Compose_Plugin" | "Coqui_TTS" | "FinRobot" | "FinRAG" | "Android"* | "MobSF" | "Blender" | "AnimateDiff")
+      return 0
+      ;;
+    *)
+      return 1
+      ;;
+  esac
 }
 
 confirm_heavy_or_experimental_tool() {
-    local tool_key="$1"
-    local answer
+  local tool_key="$1"
+  local answer
 
-    if ! is_heavy_or_experimental_tool "$tool_key"; then
-        return 0
-    fi
+  if ! is_heavy_or_experimental_tool "$tool_key"; then
+    return 0
+  fi
 
-    reset_terminal_display
-    echo -e "${YELLOW}Sicherheitsabfrage:${NC} ${tool_key} ist schwer/experimentell oder kann grosse Downloads, Docker-Images, GPU-/Kubernetes-/Monorepo-Builds oder viele Abhaengigkeiten ausloesen."
-    echo -e "${YELLOW}Dieses Tool wird nicht automatisch installiert. Fortfahren? [j/N]${NC}"
-    read -r answer </dev/tty || answer=""
-    case "$answer" in
-        y|Y|j|J|yes|YES|ja|JA)
-            return 0
-            ;;
-        *)
-            echo -e "${YELLOW}Installation von ${tool_key} abgebrochen. Es wurde nichts installiert.${NC}"
-            return 1
-            ;;
-    esac
+  reset_terminal_display
+  echo -e "${YELLOW}Sicherheitsabfrage:${NC} ${tool_key} ist schwer/experimentell oder kann grosse Downloads, Docker-Images, GPU-/Kubernetes-/Monorepo-Builds oder viele Abhaengigkeiten ausloesen."
+  echo -e "${YELLOW}Dieses Tool wird nicht automatisch installiert. Fortfahren? [j/N]${NC}"
+  read -r answer </dev/tty || answer=""
+  case "$answer" in
+    y | Y | j | J | yes | YES | ja | JA)
+      return 0
+      ;;
+    *)
+      echo -e "${YELLOW}Installation von ${tool_key} abgebrochen. Es wurde nichts installiert.${NC}"
+      return 1
+      ;;
+  esac
 }
 
 preflight_tool_install_storage() {
-    local tool_key="$1"
-    local min_mb
-    local min_kb
-    local free_kb
-    local measured_mb
-    local fallback_mb
-    local windows_min_mb
-    local windows_min_kb
-    local windows_free_kb
+  local tool_key="$1"
+  local min_mb
+  local min_kb
+  local free_kb
+  local measured_mb
+  local fallback_mb
+  local windows_min_mb
+  local windows_min_kb
+  local windows_free_kb
 
-    min_mb="$(get_tool_install_min_free_mb "$tool_key")"
-    fallback_mb="$(get_tool_install_fallback_min_free_mb "$tool_key")"
-    measured_mb="$(get_tool_install_measured_mb "$tool_key")"
-    min_kb=$((min_mb * 1024))
-    free_kb="$(get_free_disk_kb)"
-    free_kb="${free_kb:-0}"
+  min_mb="$(get_tool_install_min_free_mb "$tool_key")"
+  fallback_mb="$(get_tool_install_fallback_min_free_mb "$tool_key")"
+  measured_mb="$(get_tool_install_measured_mb "$tool_key")"
+  min_kb=$((min_mb * 1024))
+  free_kb="$(get_free_disk_kb)"
+  free_kb="${free_kb:-0}"
 
-    echo -e "${YELLOW}Speicherplatz-Wache fuer ${tool_key}:${NC} mindestens $(format_kb_human "$min_kb") freier Linux-/WSL-Speicher vor dem Start."
-    if [[ "$measured_mb" =~ ^[0-9]+$ ]] && [ "$measured_mb" -gt 0 ] 2>/dev/null; then
-        echo -e "${YELLOW}Vorlage:${NC} letzte erfolgreiche Messung ${measured_mb} MB; Mindestwert mit Sicherheitsaufschlag und Tool-Fallback ${fallback_mb} MB."
-    else
-        echo -e "${YELLOW}Vorlage:${NC} noch kein erfolgreicher Messwert vorhanden; nutze konservativen Tool-Fallback ${fallback_mb} MB."
-    fi
-    echo -e "${YELLOW}Aktuell frei Linux/WSL:${NC} $(format_kb_human "$free_kb")"
+  echo -e "${YELLOW}Speicherplatz-Wache fuer ${tool_key}:${NC} mindestens $(format_kb_human "$min_kb") freier Linux-/WSL-Speicher vor dem Start."
+  if [[ "$measured_mb" =~ ^[0-9]+$ ]] && [ "$measured_mb" -gt 0 ] 2>/dev/null; then
+    echo -e "${YELLOW}Vorlage:${NC} letzte erfolgreiche Messung ${measured_mb} MB; Mindestwert mit Sicherheitsaufschlag und Tool-Fallback ${fallback_mb} MB."
+  else
+    echo -e "${YELLOW}Vorlage:${NC} noch kein erfolgreicher Messwert vorhanden; nutze konservativen Tool-Fallback ${fallback_mb} MB."
+  fi
+  echo -e "${YELLOW}Aktuell frei Linux/WSL:${NC} $(format_kb_human "$free_kb")"
 
-    if [ "$free_kb" -lt "$min_kb" ] 2>/dev/null; then
-        echo -e "${RED}Abbruch vor der Installation:${NC} Fuer ${tool_key} sind mindestens $(format_kb_human "$min_kb") frei empfohlen, aktuell sind nur $(format_kb_human "$free_kb") frei."
-        echo -e "${YELLOW}Tipp:${NC} Erst Speicher freigeben, z. B. mit: bash scripts/cleanup_installation_residues.sh --apply --all"
+  if [ "$free_kb" -lt "$min_kb" ] 2>/dev/null; then
+    echo -e "${RED}Abbruch vor der Installation:${NC} Fuer ${tool_key} sind mindestens $(format_kb_human "$min_kb") frei empfohlen, aktuell sind nur $(format_kb_human "$free_kb") frei."
+    echo -e "${YELLOW}Tipp:${NC} Erst Speicher freigeben, z. B. mit: bash scripts/cleanup_installation_residues.sh --apply --all"
+    return 1
+  fi
+
+  if is_wsl_environment; then
+    windows_min_mb="$(get_tool_install_windows_min_free_mb "$min_mb")"
+    case "$tool_key" in
+      "Traefik" | "OpenTelemetry") windows_min_mb="$min_mb" ;;
+      "PyAirbyte" | "Langfuse" | "NocoDB" | "Penpot" | "Grafana_Alloy" | "Apache_Tika" | "Appsmith" | "ArchiveBox" | "Argilla" | "Budibase" | "Forgejo" | "Caddy" | "cAdvisor" | "Changedetection_IO" | "CrowdSec" | "Directus" | "Grafana" | "Healthchecks" | "Home_Assistant" | "LiteLLM" | "Loki" | "Meilisearch" | "Metabase" | "MinIO" | "Mosquitto" | "Neo4j" | "Netdata" | "Nextcloud" | "Node_Exporter" | "Node_Red" | "Open_WebUI" | "Prometheus" | "Promtail" | "Qdrant" | "SearXNG" | "Stirling_PDF" | "Uptime_Kuma" | "Vault" | "Vikunja" | "Watchtower" | "Weaviate" | "Zigbee2MQTT") windows_min_mb="$min_mb" ;;
+      Qwen_Desktop_Build | Hermes_Agent_Jarvis | Gradio | Streamlit | WanVideoWrapper | CogVideoX | LTX_Video | Video2Dataset | MuseTalk | LivePortrait | SadTalker | RVC | UVR5 | Audacity | OBS | Concat | Remotion | HyperFrames) windows_min_mb="$min_mb" ;;
+    esac
+    windows_min_kb=$((windows_min_mb * 1024))
+    windows_free_kb="$(get_windows_host_free_kb)"
+    if [ -n "$windows_free_kb" ]; then
+      echo -e "${YELLOW}Aktuell frei Windows-Host (${WINDOWS_HOST_DRIVE:-C}:):${NC} ${GREEN}$(format_kb_human "$windows_free_kb")${NC}"
+      if [ "$windows_free_kb" -lt "$windows_min_kb" ] 2>/dev/null; then
+        echo -e "${RED}Abbruch vor der Installation:${NC} Unter WSL sollte ${WINDOWS_HOST_DRIVE:-C}: fuer ${tool_key} mindestens $(format_kb_human "$windows_min_kb") frei haben, aktuell sind nur $(format_kb_human "$windows_free_kb") frei."
+        echo "Fehlend: mindestens $(((windows_min_kb - windows_free_kb + 1023) / 1024)) MiB auf dem Windows-Host. Kein Installer gestartet."
+        echo -e "${YELLOW}Grund:${NC} Die WSL-VHDX waechst auf dem Windows-Host. Wenn ${WINDOWS_HOST_DRIVE:-C}: voll laeuft, koennen Downloads, pip/npm/pnpm oder Docker-Images mit I/O-Fehlern abbrechen."
         return 1
+      fi
+    else
+      echo -e "${YELLOW}Hinweis:${NC} Windows-Host-Speicher konnte nicht ermittelt werden. Linux-/WSL-Pruefung wurde trotzdem ausgefuehrt."
     fi
+  fi
 
-    if is_wsl_environment; then
-        windows_min_mb="$(get_tool_install_windows_min_free_mb "$min_mb")"
-        case "$tool_key" in
-            "Traefik"|"OpenTelemetry") windows_min_mb="$min_mb" ;;
-            "PyAirbyte"|"Langfuse"|"NocoDB"|"Penpot"|"Grafana_Alloy"|"Apache_Tika"|"Appsmith"|"ArchiveBox"|"Argilla"|"Budibase"|"Forgejo"|"Caddy"|"cAdvisor"|"Changedetection_IO"|"CrowdSec"|"Directus"|"Grafana"|"Healthchecks"|"Home_Assistant"|"LiteLLM"|"Loki"|"Meilisearch"|"Metabase"|"MinIO"|"Mosquitto"|"Neo4j"|"Netdata"|"Nextcloud"|"Node_Exporter"|"Node_Red"|"Open_WebUI"|"Prometheus"|"Promtail"|"Qdrant"|"SearXNG"|"Stirling_PDF"|"Uptime_Kuma"|"Vault"|"Vikunja"|"Watchtower"|"Weaviate"|"Zigbee2MQTT") windows_min_mb="$min_mb" ;;
-            Qwen_Desktop_Build|Hermes_Agent_Jarvis|Gradio|Streamlit|WanVideoWrapper|CogVideoX|LTX_Video|Video2Dataset|MuseTalk|LivePortrait|SadTalker|RVC|UVR5|Audacity|OBS|Concat|Remotion|HyperFrames) windows_min_mb="$min_mb" ;;
-        esac
-        windows_min_kb=$((windows_min_mb * 1024))
-        windows_free_kb="$(get_windows_host_free_kb)"
-        if [ -n "$windows_free_kb" ]; then
-            echo -e "${YELLOW}Aktuell frei Windows-Host (${WINDOWS_HOST_DRIVE:-C}:):${NC} ${GREEN}$(format_kb_human "$windows_free_kb")${NC}"
-            if [ "$windows_free_kb" -lt "$windows_min_kb" ] 2>/dev/null; then
-                echo -e "${RED}Abbruch vor der Installation:${NC} Unter WSL sollte ${WINDOWS_HOST_DRIVE:-C}: fuer ${tool_key} mindestens $(format_kb_human "$windows_min_kb") frei haben, aktuell sind nur $(format_kb_human "$windows_free_kb") frei."
-                echo "Fehlend: mindestens $(((windows_min_kb - windows_free_kb + 1023) / 1024)) MiB auf dem Windows-Host. Kein Installer gestartet."
-                echo -e "${YELLOW}Grund:${NC} Die WSL-VHDX waechst auf dem Windows-Host. Wenn ${WINDOWS_HOST_DRIVE:-C}: voll laeuft, koennen Downloads, pip/npm/pnpm oder Docker-Images mit I/O-Fehlern abbrechen."
-                return 1
-            fi
-        else
-            echo -e "${YELLOW}Hinweis:${NC} Windows-Host-Speicher konnte nicht ermittelt werden. Linux-/WSL-Pruefung wurde trotzdem ausgefuehrt."
-        fi
-    fi
-
-    return 0
+  return 0
 }
 
 begin_operation_measurement() {
-    ensure_user_workspace
-    ACTIVE_OPERATION_ID="$1"
-    ACTIVE_OPERATION_TITLE="$2"
-    start_operation_log "$ACTIVE_OPERATION_ID" || return 1
-    ACTIVE_OPERATION_STARTED_AT="$(date +%s)"
-    ACTIVE_OPERATION_FREE_KB_BEFORE="$(get_free_disk_kb)"
-    append_operation_note "Freier WSL-/Linux-Dateisystemspeicher vor Start: $(format_kb_human "${ACTIVE_OPERATION_FREE_KB_BEFORE:-0}")" || return 1
-    capture_operation_output show_wsl_windows_space_warning
+  ensure_user_workspace
+  ACTIVE_OPERATION_ID="$1"
+  ACTIVE_OPERATION_TITLE="$2"
+  start_operation_log "$ACTIVE_OPERATION_ID" || return 1
+  ACTIVE_OPERATION_STARTED_AT="$(date +%s)"
+  ACTIVE_OPERATION_FREE_KB_BEFORE="$(get_free_disk_kb)"
+  append_operation_note "Freier WSL-/Linux-Dateisystemspeicher vor Start: $(format_kb_human "${ACTIVE_OPERATION_FREE_KB_BEFORE:-0}")" || return 1
+  capture_operation_output show_wsl_windows_space_warning
 }
 
 end_operation_measurement() {
-    local operation_status="$1"
-    local ended_at
-    local free_kb_after
-    local duration_seconds
-    local delta_kb
-    local metric_prefix
-    local tmp_metrics_file
-    local tmp_metrics_summary_file
+  local operation_status="$1"
+  local ended_at
+  local free_kb_after
+  local duration_seconds
+  local delta_kb
+  local metric_prefix
+  local tmp_metrics_file
+  local tmp_metrics_summary_file
 
-    [ -n "${ACTIVE_OPERATION_STARTED_AT:-}" ] || return 0
-    LAST_OPERATION_LOG_FILE="${ACTIVE_OPERATION_LOG_FILE:-}"
+  [ -n "${ACTIVE_OPERATION_STARTED_AT:-}" ] || return 0
+  LAST_OPERATION_LOG_FILE="${ACTIVE_OPERATION_LOG_FILE:-}"
 
-    ended_at="$(date +%s)"
-    free_kb_after="$(get_free_disk_kb)"
-    free_kb_after="${free_kb_after:-0}"
-    ACTIVE_OPERATION_FREE_KB_BEFORE="${ACTIVE_OPERATION_FREE_KB_BEFORE:-$free_kb_after}"
-    duration_seconds=$((ended_at - ACTIVE_OPERATION_STARTED_AT))
-    delta_kb=$((ACTIVE_OPERATION_FREE_KB_BEFORE - free_kb_after))
-    append_operation_note "Ergebnis: Status=$operation_status; Dauer=${duration_seconds}s; Linux-frei-vorher-KiB=${ACTIVE_OPERATION_FREE_KB_BEFORE}; Linux-frei-nachher-KiB=$free_kb_after" || true
+  ended_at="$(date +%s)"
+  free_kb_after="$(get_free_disk_kb)"
+  free_kb_after="${free_kb_after:-0}"
+  ACTIVE_OPERATION_FREE_KB_BEFORE="${ACTIVE_OPERATION_FREE_KB_BEFORE:-$free_kb_after}"
+  duration_seconds=$((ended_at - ACTIVE_OPERATION_STARTED_AT))
+  delta_kb=$((ACTIVE_OPERATION_FREE_KB_BEFORE - free_kb_after))
+  append_operation_note "Ergebnis: Status=$operation_status; Dauer=${duration_seconds}s; Linux-frei-vorher-KiB=${ACTIVE_OPERATION_FREE_KB_BEFORE}; Linux-frei-nachher-KiB=$free_kb_after" || true
 
-    printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n' \
-        "$(date '+%Y-%m-%d %H:%M:%S')" \
-        "${ACTIVE_OPERATION_ID:-unbekannt}" \
-        "${ACTIVE_OPERATION_TITLE:-Unbekannt}" \
-        "$operation_status" \
-        "$duration_seconds" \
-        "${ACTIVE_OPERATION_FREE_KB_BEFORE:-0}" \
-        "${free_kb_after:-0}" \
-        "$delta_kb" >> "$METRICS_HISTORY_FILE"
+  printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n' \
+    "$(date '+%Y-%m-%d %H:%M:%S')" \
+    "${ACTIVE_OPERATION_ID:-unbekannt}" \
+    "${ACTIVE_OPERATION_TITLE:-Unbekannt}" \
+    "$operation_status" \
+    "$duration_seconds" \
+    "${ACTIVE_OPERATION_FREE_KB_BEFORE:-0}" \
+    "${free_kb_after:-0}" \
+    "$delta_kb" >>"$METRICS_HISTORY_FILE"
 
-    if [ "$operation_status" = "success" ]; then
-        tmp_metrics_summary_file="$(mktemp)"
-        awk -F'\t' -v id="${ACTIVE_OPERATION_ID:-unbekannt}" 'BEGIN {OFS=FS} NR == 1 || $1 != id {print}' "$METRICS_SUMMARY_FILE" > "$tmp_metrics_summary_file" 2>/dev/null || printf 'operation_id\tduration_seconds\tdelta_kb\ttimestamp\n' > "$tmp_metrics_summary_file"
-        printf '%s\t%s\t%s\t%s\n' \
-            "${ACTIVE_OPERATION_ID:-unbekannt}" \
-            "$duration_seconds" \
-            "$delta_kb" \
-            "$(date '+%Y-%m-%d %H:%M:%S')" >> "$tmp_metrics_summary_file"
-        mv "$tmp_metrics_summary_file" "$METRICS_SUMMARY_FILE"
-    fi
-    invalidate_metric_cache
+  if [ "$operation_status" = "success" ]; then
+    tmp_metrics_summary_file="$(mktemp)"
+    awk -F'\t' -v id="${ACTIVE_OPERATION_ID:-unbekannt}" 'BEGIN {OFS=FS} NR == 1 || $1 != id {print}' "$METRICS_SUMMARY_FILE" >"$tmp_metrics_summary_file" 2>/dev/null || printf 'operation_id\tduration_seconds\tdelta_kb\ttimestamp\n' >"$tmp_metrics_summary_file"
+    printf '%s\t%s\t%s\t%s\n' \
+      "${ACTIVE_OPERATION_ID:-unbekannt}" \
+      "$duration_seconds" \
+      "$delta_kb" \
+      "$(date '+%Y-%m-%d %H:%M:%S')" >>"$tmp_metrics_summary_file"
+    mv "$tmp_metrics_summary_file" "$METRICS_SUMMARY_FILE"
+  fi
+  invalidate_metric_cache
 
-    ensure_metrics_config
-    metric_prefix="LAST_$(operation_id_to_metric_prefix "${ACTIVE_OPERATION_ID:-unknown}")"
-    tmp_metrics_file="$(mktemp)"
-    grep -Ev "^${metric_prefix}_(TIMESTAMP|STATUS|DURATION_SECONDS|FREE_KB_BEFORE|FREE_KB_AFTER|FREE_GB_BEFORE|FREE_GB_AFTER|DELTA_KB)=" "$METRICS_CONFIG_FILE" > "$tmp_metrics_file" || true
-    {
-        printf '\n# Letzte Messung fuer %s\n' "${ACTIVE_OPERATION_TITLE:-Unbekannt}"
-        printf '%s_TIMESTAMP="%s"\n' "$metric_prefix" "$(date '+%Y-%m-%d %H:%M:%S')"
-        printf '%s_STATUS="%s"\n' "$metric_prefix" "$operation_status"
-        printf '%s_DURATION_SECONDS="%s"\n' "$metric_prefix" "$duration_seconds"
-        printf '%s_FREE_KB_BEFORE="%s"\n' "$metric_prefix" "${ACTIVE_OPERATION_FREE_KB_BEFORE:-0}"
-        printf '%s_FREE_KB_AFTER="%s"\n' "$metric_prefix" "${free_kb_after:-0}"
-        printf '%s_FREE_GB_BEFORE="%s"\n' "$metric_prefix" "$(( ${ACTIVE_OPERATION_FREE_KB_BEFORE:-0} / 1024 / 1024 ))"
-        printf '%s_FREE_GB_AFTER="%s"\n' "$metric_prefix" "$(( ${free_kb_after:-0} / 1024 / 1024 ))"
-        printf '%s_DELTA_KB="%s"\n' "$metric_prefix" "$delta_kb"
-    } >> "$tmp_metrics_file"
-    mv "$tmp_metrics_file" "$METRICS_CONFIG_FILE"
+  ensure_metrics_config
+  metric_prefix="LAST_$(operation_id_to_metric_prefix "${ACTIVE_OPERATION_ID:-unknown}")"
+  tmp_metrics_file="$(mktemp)"
+  grep -Ev "^${metric_prefix}_(TIMESTAMP|STATUS|DURATION_SECONDS|FREE_KB_BEFORE|FREE_KB_AFTER|FREE_GB_BEFORE|FREE_GB_AFTER|DELTA_KB)=" "$METRICS_CONFIG_FILE" >"$tmp_metrics_file" || true
+  {
+    printf '\n# Letzte Messung fuer %s\n' "${ACTIVE_OPERATION_TITLE:-Unbekannt}"
+    printf '%s_TIMESTAMP="%s"\n' "$metric_prefix" "$(date '+%Y-%m-%d %H:%M:%S')"
+    printf '%s_STATUS="%s"\n' "$metric_prefix" "$operation_status"
+    printf '%s_DURATION_SECONDS="%s"\n' "$metric_prefix" "$duration_seconds"
+    printf '%s_FREE_KB_BEFORE="%s"\n' "$metric_prefix" "${ACTIVE_OPERATION_FREE_KB_BEFORE:-0}"
+    printf '%s_FREE_KB_AFTER="%s"\n' "$metric_prefix" "${free_kb_after:-0}"
+    printf '%s_FREE_GB_BEFORE="%s"\n' "$metric_prefix" "$((${ACTIVE_OPERATION_FREE_KB_BEFORE:-0} / 1024 / 1024))"
+    printf '%s_FREE_GB_AFTER="%s"\n' "$metric_prefix" "$((${free_kb_after:-0} / 1024 / 1024))"
+    printf '%s_DELTA_KB="%s"\n' "$metric_prefix" "$delta_kb"
+  } >>"$tmp_metrics_file"
+  mv "$tmp_metrics_file" "$METRICS_CONFIG_FILE"
 
-    echo -e "${YELLOW}Messwert gespeichert:${NC} ${ACTIVE_OPERATION_TITLE:-Unbekannt} | Status: $operation_status | Dauer: ${WHITE}$(format_duration_human "$duration_seconds")${NC} | Speicher vorher: $(format_kb_human "${ACTIVE_OPERATION_FREE_KB_BEFORE:-0}") | Speicher nachher: $(format_kb_human "${free_kb_after:-0}") | Speicheränderung: $(format_kb_human "$delta_kb")"
-    echo -e "${YELLOW}Messwert in Config aktualisiert:${NC} ${METRICS_CONFIG_FILE}"
-    if [ -n "${LAST_OPERATION_LOG_FILE:-}" ]; then
-        print_operation_log_heading "$LAST_OPERATION_LOG_FILE"
-    fi
+  echo -e "${YELLOW}Messwert gespeichert:${NC} ${ACTIVE_OPERATION_TITLE:-Unbekannt} | Status: $operation_status | Dauer: ${WHITE}$(format_duration_human "$duration_seconds")${NC} | Speicher vorher: $(format_kb_human "${ACTIVE_OPERATION_FREE_KB_BEFORE:-0}") | Speicher nachher: $(format_kb_human "${free_kb_after:-0}") | Speicheränderung: $(format_kb_human "$delta_kb")"
+  echo -e "${YELLOW}Messwert in Config aktualisiert:${NC} ${METRICS_CONFIG_FILE}"
+  if [ -n "${LAST_OPERATION_LOG_FILE:-}" ]; then
+    print_operation_log_heading "$LAST_OPERATION_LOG_FILE"
+  fi
 
-    unset ACTIVE_OPERATION_ID ACTIVE_OPERATION_TITLE ACTIVE_OPERATION_STARTED_AT ACTIVE_OPERATION_FREE_KB_BEFORE ACTIVE_OPERATION_LOG_FILE
+  unset ACTIVE_OPERATION_ID ACTIVE_OPERATION_TITLE ACTIVE_OPERATION_STARTED_AT ACTIVE_OPERATION_FREE_KB_BEFORE ACTIVE_OPERATION_LOG_FILE
 }
 
 record_menu_load_measurement() {
-    local operation_id="$1"
-    local operation_title="$2"
-    local started_at="$3"
-    local free_kb_before="$4"
-    local ended_at
-    local free_kb_after
-    local duration_seconds
-    local delta_kb
-    local tmp_metrics_summary_file
+  local operation_id="$1"
+  local operation_title="$2"
+  local started_at="$3"
+  local free_kb_before="$4"
+  local ended_at
+  local free_kb_after
+  local duration_seconds
+  local delta_kb
+  local tmp_metrics_summary_file
 
-    [ -n "$started_at" ] || return 0
-    ensure_user_workspace
-    ensure_metrics_config
+  [ -n "$started_at" ] || return 0
+  ensure_user_workspace
+  ensure_metrics_config
 
-    ended_at="$(date +%s)"
-    free_kb_after="$(get_free_disk_kb)"
-    free_kb_after="${free_kb_after:-0}"
-    free_kb_before="${free_kb_before:-$free_kb_after}"
-    duration_seconds=$((ended_at - started_at))
-    delta_kb=$((free_kb_before - free_kb_after))
+  ended_at="$(date +%s)"
+  free_kb_after="$(get_free_disk_kb)"
+  free_kb_after="${free_kb_after:-0}"
+  free_kb_before="${free_kb_before:-$free_kb_after}"
+  duration_seconds=$((ended_at - started_at))
+  delta_kb=$((free_kb_before - free_kb_after))
 
-    printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n' \
-        "$(date '+%Y-%m-%d %H:%M:%S')" \
-        "$operation_id" \
-        "$operation_title" \
-        "success" \
-        "$duration_seconds" \
-        "$free_kb_before" \
-        "$free_kb_after" \
-        "$delta_kb" >> "$METRICS_HISTORY_FILE"
+  printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n' \
+    "$(date '+%Y-%m-%d %H:%M:%S')" \
+    "$operation_id" \
+    "$operation_title" \
+    "success" \
+    "$duration_seconds" \
+    "$free_kb_before" \
+    "$free_kb_after" \
+    "$delta_kb" >>"$METRICS_HISTORY_FILE"
 
-    tmp_metrics_summary_file="$(mktemp)"
-    awk -F'\t' -v id="$operation_id" 'BEGIN {OFS=FS} NR == 1 || $1 != id {print}' "$METRICS_SUMMARY_FILE" > "$tmp_metrics_summary_file" 2>/dev/null || printf 'operation_id\tduration_seconds\tdelta_kb\ttimestamp\n' > "$tmp_metrics_summary_file"
-    printf '%s\t%s\t%s\t%s\n' \
-        "$operation_id" \
-        "$duration_seconds" \
-        "$delta_kb" \
-        "$(date '+%Y-%m-%d %H:%M:%S')" >> "$tmp_metrics_summary_file"
-    mv "$tmp_metrics_summary_file" "$METRICS_SUMMARY_FILE"
-    invalidate_metric_cache
+  tmp_metrics_summary_file="$(mktemp)"
+  awk -F'\t' -v id="$operation_id" 'BEGIN {OFS=FS} NR == 1 || $1 != id {print}' "$METRICS_SUMMARY_FILE" >"$tmp_metrics_summary_file" 2>/dev/null || printf 'operation_id\tduration_seconds\tdelta_kb\ttimestamp\n' >"$tmp_metrics_summary_file"
+  printf '%s\t%s\t%s\t%s\n' \
+    "$operation_id" \
+    "$duration_seconds" \
+    "$delta_kb" \
+    "$(date '+%Y-%m-%d %H:%M:%S')" >>"$tmp_metrics_summary_file"
+  mv "$tmp_metrics_summary_file" "$METRICS_SUMMARY_FILE"
+  invalidate_metric_cache
 }
 
 show_recent_measurements() {
-    ensure_user_workspace
-    local white="$WHITE"
-    local yellow="$YELLOW"
-    local nc="$NC"
+  ensure_user_workspace
+  local white="$WHITE"
+  local yellow="$YELLOW"
+  local nc="$NC"
 
-    if [ ! -f "$METRICS_HISTORY_FILE" ]; then
-        echo -e "${YELLOW}Es liegen noch keine Messwerte vor.${NC}"
-        read -p "Drücken Sie Enter..."
-        return 0
-    fi
+  if [ ! -f "$METRICS_HISTORY_FILE" ]; then
+    echo -e "${YELLOW}Es liegen noch keine Messwerte vor.${NC}"
+    read -p "Drücken Sie Enter..."
+    return 0
+  fi
 
-    clear
-    echo
-    echo -e "${YELLOW}Letzte Messwerte aus dem Benutzer-Workspace:${NC}"
-    echo -e "${YELLOW}Datei:${NC} $METRICS_HISTORY_FILE"
-    echo
-    tail -n 20 "$METRICS_HISTORY_FILE" | awk -F'\t' -v white="$white" -v yellow="$yellow" -v nc="$nc" '
+  clear
+  echo
+  echo -e "${YELLOW}Letzte Messwerte aus dem Benutzer-Workspace:${NC}"
+  echo -e "${YELLOW}Datei:${NC} $METRICS_HISTORY_FILE"
+  echo
+  tail -n 20 "$METRICS_HISTORY_FILE" | awk -F'\t' -v white="$white" -v yellow="$yellow" -v nc="$nc" '
         NR == 1 && $1 == "timestamp" {
             print
             next
@@ -1248,159 +1248,159 @@ show_recent_measurements() {
         }
         { print }
     '
-    echo
-    read -p "Drücken Sie Enter..."
+  echo
+  read -p "Drücken Sie Enter..."
 }
 
 show_operation_intro() {
-    local operation_title="$1"
-    local operation_summary="$2"
-    local operation_duration="$3"
-    local operation_storage="$4"
-    local operation_notes="${5:-}"
+  local operation_title="$1"
+  local operation_summary="$2"
+  local operation_duration="$3"
+  local operation_storage="$4"
+  local operation_notes="${5:-}"
 
-    load_metrics_config
-    clear
-    echo
-    echo -e "${YELLOW}Willkommen im ${APP_TITLE}.${NC}"
-    echo -e "${YELLOW}Es startet jetzt: ${operation_title}${NC}"
-    echo
-    echo -e "${YELLOW}Was passiert:${NC} ${operation_summary}"
-    echo -e "${YELLOW}Geschaetzte Dauer:${NC} ${operation_duration}"
-    echo -e "${YELLOW}Empfohlener freier Speicher:${NC} ${operation_storage}"
-    echo -e "${YELLOW}Hinweis:${NC} Mehrere sudo-/Passwortabfragen sind normal. Gemeint ist das Linux-/Ubuntu-Passwort deines Users."
-    echo -e "${YELLOW}Hinweis:${NC} Die Zeiten sind nur Schaetzwerte und haengen von SSD, CPU, RAM, Internet und den gewaehlten Modulen ab."
-    if [ -n "$operation_notes" ]; then
-        echo -e "${YELLOW}Zusatz:${NC} ${operation_notes}"
-    fi
-    echo
-    sleep 4
+  load_metrics_config
+  clear
+  echo
+  echo -e "${YELLOW}Willkommen im ${APP_TITLE}.${NC}"
+  echo -e "${YELLOW}Es startet jetzt: ${operation_title}${NC}"
+  echo
+  echo -e "${YELLOW}Was passiert:${NC} ${operation_summary}"
+  echo -e "${YELLOW}Geschaetzte Dauer:${NC} ${operation_duration}"
+  echo -e "${YELLOW}Empfohlener freier Speicher:${NC} ${operation_storage}"
+  echo -e "${YELLOW}Hinweis:${NC} Mehrere sudo-/Passwortabfragen sind normal. Gemeint ist das Linux-/Ubuntu-Passwort deines Users."
+  echo -e "${YELLOW}Hinweis:${NC} Die Zeiten sind nur Schaetzwerte und haengen von SSD, CPU, RAM, Internet und den gewaehlten Modulen ab."
+  if [ -n "$operation_notes" ]; then
+    echo -e "${YELLOW}Zusatz:${NC} ${operation_notes}"
+  fi
+  echo
+  sleep 4
 }
 
 show_tool_action_plan_intro() {
-    local context_label="$1"
-    local uninstall_items="$2"
-    local install_items="$3"
-    local -a uninstall_array=()
-    local -a install_array=()
-    local uninstall_summary
-    local install_summary
-    local combined_summary
+  local context_label="$1"
+  local uninstall_items="$2"
+  local install_items="$3"
+  local -a uninstall_array=()
+  local -a install_array=()
+  local uninstall_summary
+  local install_summary
+  local combined_summary
 
-    read -r -a uninstall_array <<< "$uninstall_items"
-    read -r -a install_array <<< "$install_items"
-    uninstall_summary="$(summarize_operation_metrics_plain "tool_uninstall" "${uninstall_array[@]}")"
-    install_summary="$(summarize_operation_metrics_plain "tool_install" "${install_array[@]}")"
-    combined_summary="$(summarize_tool_batch_metrics_plain uninstall_array install_array)"
+  read -r -a uninstall_array <<<"$uninstall_items"
+  read -r -a install_array <<<"$install_items"
+  uninstall_summary="$(summarize_operation_metrics_plain "tool_uninstall" "${uninstall_array[@]}")"
+  install_summary="$(summarize_operation_metrics_plain "tool_install" "${install_array[@]}")"
+  combined_summary="$(summarize_tool_batch_metrics_plain uninstall_array install_array)"
 
-    clear
-    echo
-    echo -e "${YELLOW}Willkommen im ${APP_TITLE}.${NC}"
-    echo -e "${YELLOW}Es startet jetzt: Tool-Management fuer ${context_label}${NC}"
-    echo
-    echo -e "${YELLOW}Was passiert:${NC} Das Setup fuehrt ausgewaehlte Tool-Aenderungen in einer sicheren Reihenfolge aus."
-    echo -e "${YELLOW}Geplante Reihenfolge:${NC}"
-    echo -e "${YELLOW}1. Deinstallationen zuerst:${NC} ${uninstall_items:-${GREEN}(keine)${NC}}"
-    echo -e "${YELLOW}2. Installationen danach:${NC} ${install_items:-${GREEN}(keine)${NC}}"
-    echo
-    echo -e "${YELLOW}Ermittelte Werte:${NC}"
-    echo -e "${YELLOW}Deinstallationen gesamt:${NC} ${uninstall_summary}"
-    echo -e "${YELLOW}Installationen gesamt:${NC} ${install_summary}"
-    echo -e "${YELLOW}Geplante Aenderungen gesamt:${NC} ${combined_summary}"
-    echo -e "${YELLOW}Fehlende Werte:${NC} Zeit ${WHITE}--:--:--${NC}, Speicher ${WHITE}--.- MB${NC}"
-    echo
-    echo -e "${YELLOW}Warum diese Reihenfolge:${NC} So wird Speicherplatz vor neuen Downloads, Builds und Container-Images freigegeben."
-    echo -e "${YELLOW}Hinweis:${NC} Bei mehreren Tools erscheinen danach die einzelnen Installationsseiten mit Dauer- und Speicherhinweisen."
-    echo
-    sleep 4
+  clear
+  echo
+  echo -e "${YELLOW}Willkommen im ${APP_TITLE}.${NC}"
+  echo -e "${YELLOW}Es startet jetzt: Tool-Management fuer ${context_label}${NC}"
+  echo
+  echo -e "${YELLOW}Was passiert:${NC} Das Setup fuehrt ausgewaehlte Tool-Aenderungen in einer sicheren Reihenfolge aus."
+  echo -e "${YELLOW}Geplante Reihenfolge:${NC}"
+  echo -e "${YELLOW}1. Deinstallationen zuerst:${NC} ${uninstall_items:-${GREEN}(keine)${NC}}"
+  echo -e "${YELLOW}2. Installationen danach:${NC} ${install_items:-${GREEN}(keine)${NC}}"
+  echo
+  echo -e "${YELLOW}Ermittelte Werte:${NC}"
+  echo -e "${YELLOW}Deinstallationen gesamt:${NC} ${uninstall_summary}"
+  echo -e "${YELLOW}Installationen gesamt:${NC} ${install_summary}"
+  echo -e "${YELLOW}Geplante Aenderungen gesamt:${NC} ${combined_summary}"
+  echo -e "${YELLOW}Fehlende Werte:${NC} Zeit ${WHITE}--:--:--${NC}, Speicher ${WHITE}--.- MB${NC}"
+  echo
+  echo -e "${YELLOW}Warum diese Reihenfolge:${NC} So wird Speicherplatz vor neuen Downloads, Builds und Container-Images freigegeben."
+  echo -e "${YELLOW}Hinweis:${NC} Bei mehreren Tools erscheinen danach die einzelnen Installationsseiten mit Dauer- und Speicherhinweisen."
+  echo
+  sleep 4
 }
 
 get_profile_required_gb() {
-    local profile_key="$1"
+  local profile_key="$1"
 
-    load_metrics_config
+  load_metrics_config
 
-    case "$profile_key" in
-        "Programmierer") echo "${PROGRAMMIERER_REQUIRED_GB} GB" ;;
-        "Media_Musik") echo "${MEDIA_MUSIK_REQUIRED_GB} GB" ;;
-        "KI_Forschung") echo "${KI_FORSCHUNG_REQUIRED_GB} GB" ;;
-        "Physik") echo "${PHYSIK_REQUIRED_GB} GB" ;;
-        "Chemie") echo "${CHEMIE_REQUIRED_GB} GB" ;;
-        "Biologie") echo "${BIOLOGIE_REQUIRED_GB} GB" ;;
-        "Bioinformatik") echo "${BIOINFORMATIK_REQUIRED_GB} GB" ;;
-        "Molekuelsimulation") echo "${MOLEKUELSIMULATION_REQUIRED_GB} GB" ;;
-        "Robotik_Labor") echo "${ROBOTIK_LABOR_REQUIRED_GB} GB" ;;
-        "Materialwissenschaft") echo "${MATERIALWISSENSCHAFT_REQUIRED_GB} GB" ;;
-        "Mathematik_Simulation") echo "${MATHEMATIK_SIMULATION_REQUIRED_GB} GB" ;;
-        "Astronomie_Space_AI") echo "${ASTRONOMIE_SPACE_AI_REQUIRED_GB} GB" ;;
-        "Medizinische_Literatur_Recherche") echo "${MEDIZINISCHE_LITERATUR_RECHERCHE_REQUIRED_GB} GB" ;;
-        "Umwelt_Klima_Energie") echo "${UMWELT_KLIMA_ENERGIE_REQUIRED_GB} GB" ;;
-        "Personal_Assistant_Local_First") echo "${PERSONAL_ASSISTANT_LOCAL_FIRST_REQUIRED_GB} GB" ;;
-        "Voice_Command_Center") echo "${VOICE_COMMAND_CENTER_REQUIRED_GB} GB" ;;
-        "Knowledge_Librarian") echo "${KNOWLEDGE_LIBRARIAN_REQUIRED_GB} GB" ;;
-        "Web_App_Builder") echo "${WEB_APP_BUILDER_REQUIRED_GB} GB" ;;
-        "Zero_Trust_Remote_Access") echo "${ZERO_TRUST_REMOTE_ACCESS_REQUIRED_GB} GB" ;;
-        "Kubernetes_GPU_Orchestrator") echo "${KUBERNETES_GPU_ORCHESTRATOR_REQUIRED_GB} GB" ;;
-        "Storage_NAS_Backup") echo "${STORAGE_NAS_BACKUP_REQUIRED_GB} GB" ;;
-        "Texter_Werbung_Marketing") echo "${MARKETING_REQUIRED_GB} GB" ;;
-        "Rechtsberatung_Steuerrecht") echo "${RECHT_STEUER_REQUIRED_GB} GB" ;;
-        "Agent_Orchestrator") echo "${AGENT_ORCHESTRATOR_REQUIRED_GB} GB" ;;
-        "Audio") echo "${AUDIO_REQUIRED_GB} GB" ;;
-        "Content_Automation") echo "${CONTENT_AUTOMATION_REQUIRED_GB} GB" ;;
-        "Research_Agent") echo "${RESEARCH_AGENT_REQUIRED_GB} GB" ;;
-        "Security_Analyst") echo "${SECURITY_ANALYST_REQUIRED_GB} GB" ;;
-        "Trading_AI") echo "${TRADING_AI_REQUIRED_GB} GB" ;;
-        "Visual_Creator") echo "${VISUAL_CREATOR_REQUIRED_GB} GB" ;;
-        "LLM_Builder") echo "${LLM_BUILDER_REQUIRED_GB} GB" ;;
-        "DevOps_SRE") echo "${DEVOPS_SRE_REQUIRED_GB} GB" ;;
-        "Data_Engineering") echo "${DATA_ENGINEERING_REQUIRED_GB} GB" ;;
-        "Document_AI") echo "${DOCUMENT_AI_REQUIRED_GB} GB" ;;
-        "Voice_Assistant") echo "${VOICE_ASSISTANT_REQUIRED_GB} GB" ;;
-        "Video_Generation") echo "${VIDEO_GENERATION_REQUIRED_GB} GB" ;;
-        "Image_Generation") echo "${IMAGE_GENERATION_REQUIRED_GB} GB" ;;
-        "Web3_Crypto_Tools") echo "${WEB3_CRYPTO_TOOLS_REQUIRED_GB} GB" ;;
-        "Compliance_Privacy") echo "${COMPLIANCE_PRIVACY_REQUIRED_GB} GB" ;;
-        "Personal_Knowledge_OS") echo "${PERSONAL_KNOWLEDGE_OS_REQUIRED_GB} GB" ;;
-        "Repo_Maintainer") echo "${REPO_MAINTAINER_REQUIRED_GB} GB" ;;
-        *) echo "${MIN_FREE_GB_ABSOLUTE}-${MIN_FREE_GB_RECOMMENDED} GB" ;;
-    esac
+  case "$profile_key" in
+    "Programmierer") echo "${PROGRAMMIERER_REQUIRED_GB} GB" ;;
+    "Media_Musik") echo "${MEDIA_MUSIK_REQUIRED_GB} GB" ;;
+    "KI_Forschung") echo "${KI_FORSCHUNG_REQUIRED_GB} GB" ;;
+    "Physik") echo "${PHYSIK_REQUIRED_GB} GB" ;;
+    "Chemie") echo "${CHEMIE_REQUIRED_GB} GB" ;;
+    "Biologie") echo "${BIOLOGIE_REQUIRED_GB} GB" ;;
+    "Bioinformatik") echo "${BIOINFORMATIK_REQUIRED_GB} GB" ;;
+    "Molekuelsimulation") echo "${MOLEKUELSIMULATION_REQUIRED_GB} GB" ;;
+    "Robotik_Labor") echo "${ROBOTIK_LABOR_REQUIRED_GB} GB" ;;
+    "Materialwissenschaft") echo "${MATERIALWISSENSCHAFT_REQUIRED_GB} GB" ;;
+    "Mathematik_Simulation") echo "${MATHEMATIK_SIMULATION_REQUIRED_GB} GB" ;;
+    "Astronomie_Space_AI") echo "${ASTRONOMIE_SPACE_AI_REQUIRED_GB} GB" ;;
+    "Medizinische_Literatur_Recherche") echo "${MEDIZINISCHE_LITERATUR_RECHERCHE_REQUIRED_GB} GB" ;;
+    "Umwelt_Klima_Energie") echo "${UMWELT_KLIMA_ENERGIE_REQUIRED_GB} GB" ;;
+    "Personal_Assistant_Local_First") echo "${PERSONAL_ASSISTANT_LOCAL_FIRST_REQUIRED_GB} GB" ;;
+    "Voice_Command_Center") echo "${VOICE_COMMAND_CENTER_REQUIRED_GB} GB" ;;
+    "Knowledge_Librarian") echo "${KNOWLEDGE_LIBRARIAN_REQUIRED_GB} GB" ;;
+    "Web_App_Builder") echo "${WEB_APP_BUILDER_REQUIRED_GB} GB" ;;
+    "Zero_Trust_Remote_Access") echo "${ZERO_TRUST_REMOTE_ACCESS_REQUIRED_GB} GB" ;;
+    "Kubernetes_GPU_Orchestrator") echo "${KUBERNETES_GPU_ORCHESTRATOR_REQUIRED_GB} GB" ;;
+    "Storage_NAS_Backup") echo "${STORAGE_NAS_BACKUP_REQUIRED_GB} GB" ;;
+    "Texter_Werbung_Marketing") echo "${MARKETING_REQUIRED_GB} GB" ;;
+    "Rechtsberatung_Steuerrecht") echo "${RECHT_STEUER_REQUIRED_GB} GB" ;;
+    "Agent_Orchestrator") echo "${AGENT_ORCHESTRATOR_REQUIRED_GB} GB" ;;
+    "Audio") echo "${AUDIO_REQUIRED_GB} GB" ;;
+    "Content_Automation") echo "${CONTENT_AUTOMATION_REQUIRED_GB} GB" ;;
+    "Research_Agent") echo "${RESEARCH_AGENT_REQUIRED_GB} GB" ;;
+    "Security_Analyst") echo "${SECURITY_ANALYST_REQUIRED_GB} GB" ;;
+    "Trading_AI") echo "${TRADING_AI_REQUIRED_GB} GB" ;;
+    "Visual_Creator") echo "${VISUAL_CREATOR_REQUIRED_GB} GB" ;;
+    "LLM_Builder") echo "${LLM_BUILDER_REQUIRED_GB} GB" ;;
+    "DevOps_SRE") echo "${DEVOPS_SRE_REQUIRED_GB} GB" ;;
+    "Data_Engineering") echo "${DATA_ENGINEERING_REQUIRED_GB} GB" ;;
+    "Document_AI") echo "${DOCUMENT_AI_REQUIRED_GB} GB" ;;
+    "Voice_Assistant") echo "${VOICE_ASSISTANT_REQUIRED_GB} GB" ;;
+    "Video_Generation") echo "${VIDEO_GENERATION_REQUIRED_GB} GB" ;;
+    "Image_Generation") echo "${IMAGE_GENERATION_REQUIRED_GB} GB" ;;
+    "Web3_Crypto_Tools") echo "${WEB3_CRYPTO_TOOLS_REQUIRED_GB} GB" ;;
+    "Compliance_Privacy") echo "${COMPLIANCE_PRIVACY_REQUIRED_GB} GB" ;;
+    "Personal_Knowledge_OS") echo "${PERSONAL_KNOWLEDGE_OS_REQUIRED_GB} GB" ;;
+    "Repo_Maintainer") echo "${REPO_MAINTAINER_REQUIRED_GB} GB" ;;
+    *) echo "${MIN_FREE_GB_ABSOLUTE}-${MIN_FREE_GB_RECOMMENDED} GB" ;;
+  esac
 }
 
 show_profile_action_intro() {
-    local profile_key="$1"
-    local action_label="$2"
-    local operation_kind="${3:-install}"
-    local required_gb
-    local extra_notes
-    local duration_label
-    local profile_tools_total_summary
-    local profile_tool
-    local -a profile_tool_array=()
-    local operation_id="profile_${operation_kind}_${profile_key}"
+  local profile_key="$1"
+  local action_label="$2"
+  local operation_kind="${3:-install}"
+  local required_gb
+  local extra_notes
+  local duration_label
+  local profile_tools_total_summary
+  local profile_tool
+  local -a profile_tool_array=()
+  local operation_id="profile_${operation_kind}_${profile_key}"
 
-    required_gb="$(get_profile_required_gb "$profile_key")"
-    extra_notes="Je nach Profil werden mehrere Einzeltools nacheinander installiert oder entfernt. Das kann laenger dauern als bei einem Einzeltool."
-    duration_label="$(get_operation_duration_estimate_label "$operation_id" "${SETUP_DOWNLOAD_TIME_ESTIMATE} Download + ${SETUP_INSTALL_TIME_ESTIMATE} Installation/Anpassung je nach Profilgroesse")"
-    required_gb="$(get_operation_storage_estimate_label "$operation_id" "$required_gb")"
+  required_gb="$(get_profile_required_gb "$profile_key")"
+  extra_notes="Je nach Profil werden mehrere Einzeltools nacheinander installiert oder entfernt. Das kann laenger dauern als bei einem Einzeltool."
+  duration_label="$(get_operation_duration_estimate_label "$operation_id" "${SETUP_DOWNLOAD_TIME_ESTIMATE} Download + ${SETUP_INSTALL_TIME_ESTIMATE} Installation/Anpassung je nach Profilgroesse")"
+  required_gb="$(get_operation_storage_estimate_label "$operation_id" "$required_gb")"
 
-    for profile_tool in ${PROFILE_CORE_TOOLS[$profile_key]:-} ${PROFILE_EXTENDED_TOOLS[$profile_key]:-} ${PROFILE_INTEGRATION_TOOLS[$profile_key]:-} ${PROFILE_SPECIAL_TOOLS[$profile_key]:-}; do
-        [ -n "$profile_tool" ] || continue
-        profile_tool_array+=("$profile_tool")
-    done
-    if [ ${#profile_tool_array[@]} -gt 0 ]; then
-        profile_tools_total_summary="$(summarize_operation_metrics_with_missing_plain "tool_install" "${profile_tool_array[@]}")"
-        extra_notes="${extra_notes} Ermittelte Summe der zugeordneten Einzeltools: ${profile_tools_total_summary}."
-    else
-        extra_notes="${extra_notes} Ermittelte Summe der zugeordneten Einzeltools: --:--:-- | --.- MB (fehlend: Zeit 0, Speicher 0), da fuer dieses Profil keine Einzeltool-Liste hinterlegt ist."
-    fi
+  for profile_tool in ${PROFILE_CORE_TOOLS[$profile_key]:-} ${PROFILE_EXTENDED_TOOLS[$profile_key]:-} ${PROFILE_INTEGRATION_TOOLS[$profile_key]:-} ${PROFILE_SPECIAL_TOOLS[$profile_key]:-}; do
+    [ -n "$profile_tool" ] || continue
+    profile_tool_array+=("$profile_tool")
+  done
+  if [ ${#profile_tool_array[@]} -gt 0 ]; then
+    profile_tools_total_summary="$(summarize_operation_metrics_with_missing_plain "tool_install" "${profile_tool_array[@]}")"
+    extra_notes="${extra_notes} Ermittelte Summe der zugeordneten Einzeltools: ${profile_tools_total_summary}."
+  else
+    extra_notes="${extra_notes} Ermittelte Summe der zugeordneten Einzeltools: --:--:-- | --.- MB (fehlend: Zeit 0, Speicher 0), da fuer dieses Profil keine Einzeltool-Liste hinterlegt ist."
+  fi
 
-    case "$profile_key" in
-        "Trading_AI"|"Web3_Crypto_Tools")
-            extra_notes="${extra_notes} Achtung: Diese Profile sind standardmaessig fuer Analyse, Backtesting, Alerts und Paper-Trading gedacht. Keine autonome Live-Orderausfuehrung, keine Finanzberatung und keine Haftung fuer Verluste oder sonstige verursachte Schaeden."
-            ;;
-    esac
+  case "$profile_key" in
+    "Trading_AI" | "Web3_Crypto_Tools")
+      extra_notes="${extra_notes} Achtung: Diese Profile sind standardmaessig fuer Analyse, Backtesting, Alerts und Paper-Trading gedacht. Keine autonome Live-Orderausfuehrung, keine Finanzberatung und keine Haftung fuer Verluste oder sonstige verursachte Schaeden."
+      ;;
+  esac
 
-    show_operation_intro \
+  show_operation_intro \
     "Profil ${action_label}: ${profile_key}" \
     "${PROFILES[$profile_key]}" \
     "$duration_label" \
@@ -1409,22 +1409,22 @@ show_profile_action_intro() {
 }
 
 show_tool_action_intro() {
-    local tool_key="$1"
-    local action_label="$2"
-    local operation_kind="${3:-install}"
-    local operation_id="tool_${operation_kind}_${tool_key}"
-    local duration_label
-    local storage_label
-    local configured_duration
-    local configured_storage
+  local tool_key="$1"
+  local action_label="$2"
+  local operation_kind="${3:-install}"
+  local operation_id="tool_${operation_kind}_${tool_key}"
+  local duration_label
+  local storage_label
+  local configured_duration
+  local configured_storage
 
-    configured_duration="$(get_configured_tool_duration_label "$tool_key")"
-    configured_storage="$(get_configured_tool_storage_label "$tool_key")"
+  configured_duration="$(get_configured_tool_duration_label "$tool_key")"
+  configured_storage="$(get_configured_tool_storage_label "$tool_key")"
 
-    duration_label="$(get_operation_duration_estimate_label "$operation_id" "${configured_duration:-$(get_default_tool_duration_label "$tool_key")}")"
-    storage_label="$(get_operation_storage_estimate_label "$operation_id" "${configured_storage:-$(get_default_tool_storage_label "$tool_key")}")"
+  duration_label="$(get_operation_duration_estimate_label "$operation_id" "${configured_duration:-$(get_default_tool_duration_label "$tool_key")}")"
+  storage_label="$(get_operation_storage_estimate_label "$operation_id" "${configured_storage:-$(get_default_tool_storage_label "$tool_key")}")"
 
-    show_operation_intro \
+  show_operation_intro \
     "Tool ${action_label}: ${tool_key}" \
     "${TOOLS[$tool_key]}" \
     "$duration_label" \
@@ -1433,27 +1433,27 @@ show_tool_action_intro() {
 }
 
 validate_tool_source_policy() {
-    local tool_key="$1"
-    local action="$2"
-    local script_name="${TOOL_SCRIPT_NAMES[$tool_key]}"
-    local script_path="$INSTALL_DIR/scripts/tools/${script_name}_${action}.sh"
+  local tool_key="$1"
+  local action="$2"
+  local script_name="${TOOL_SCRIPT_NAMES[$tool_key]}"
+  local script_path="$INSTALL_DIR/scripts/tools/${script_name}_${action}.sh"
 
-    load_metrics_config
+  load_metrics_config
 
-    [ "$action" = "install" ] || return 0
-    [ "${GITHUB_TOOL_SOURCES_PREFERRED:-true}" = "true" ] || return 0
-    [ -f "$script_path" ] || return 0
+  [ "$action" = "install" ] || return 0
+  [ "${GITHUB_TOOL_SOURCES_PREFERRED:-true}" = "true" ] || return 0
+  [ -f "$script_path" ] || return 0
 
-    # Comet has no verified public source build; allow only its official manual page.
-    if [[ "$tool_key" == Comet && "$script_name" == comet ]]; then
-        python3 -I -c 'import json,sys; e=next(x for x in json.load(open(sys.argv[1],encoding="utf-8"))["tools"] if x["id"]=="comet"); assert e["source"]=="https://www.perplexity.ai/comet" and e["source_verified"] is True and e["source_exception"]=="user-requested-official-comet-download"' "$INSTALL_DIR/config/tools.yml" || return 1
-        echo 'Quellenpruefung: Comet, offizielle manuelle Download-Ausnahme; kein GitHub-Source-Build.'
-        return 0
-    fi
+  # Comet has no verified public source build; allow only its official manual page.
+  if [[ "$tool_key" == Comet && "$script_name" == comet ]]; then
+    python3 -I -c 'import json,sys; e=next(x for x in json.load(open(sys.argv[1],encoding="utf-8"))["tools"] if x["id"]=="comet"); assert e["source"]=="https://www.perplexity.ai/comet" and e["source_verified"] is True and e["source_exception"]=="user-requested-official-comet-download"' "$INSTALL_DIR/config/tools.yml" || return 1
+    echo 'Quellenpruefung: Comet, offizielle manuelle Download-Ausnahme; kein GitHub-Source-Build.'
+    return 0
+  fi
 
-    # Only the explicitly approved Forgejo source exception may bypass GitHub preference.
-    if [ "$tool_key" = "Forgejo" ] && [ "$script_name" = "forgejo" ]; then
-        if "${NATIVE_GITHUB_PYTHON_BIN:-python3}" -I -c '
+  # Only the explicitly approved Forgejo source exception may bypass GitHub preference.
+  if [ "$tool_key" = "Forgejo" ] && [ "$script_name" = "forgejo" ]; then
+    if "${NATIVE_GITHUB_PYTHON_BIN:-python3}" -I -c '
 import json, sys
 registry = json.load(open(sys.argv[1], encoding="utf-8"))["tools"]
 manifest = json.load(open(sys.argv[2], encoding="utf-8"))["tools"]
@@ -1465,1232 +1465,1232 @@ assert entry["source"] == "https://codeberg.org/forgejo/forgejo.git"
 assert recipe["source_host"] == "codeberg.org" and recipe["repo"] == "forgejo/forgejo"
 assert entry["source_commit"] == recipe["pin"]
 ' "$INSTALL_DIR/config/tools.yml" "$INSTALL_DIR/config/docker_to_github.json"; then
-            echo -e "${YELLOW}Quellenpruefung:${NC} Forgejo: freigegebene offizielle Codeberg-Quelle, Commit gepinnt."
-            return 0
-        fi
-        echo -e "${RED}Abbruch: Forgejo-Quellen-Ausnahme oder Pin ungueltig.${NC}"
-        return 1
+      echo -e "${YELLOW}Quellenpruefung:${NC} Forgejo: freigegebene offizielle Codeberg-Quelle, Commit gepinnt."
+      return 0
     fi
+    echo -e "${RED}Abbruch: Forgejo-Quellen-Ausnahme oder Pin ungueltig.${NC}"
+    return 1
+  fi
 
-    if grep -Eq 'github\.com|raw\.githubusercontent\.com' "$script_path"; then
-        echo -e "${YELLOW}Quellenpruefung:${NC} GitHub-Quelle im Installer erkannt."
-        return 0
-    fi
-
-    echo -e "${YELLOW}Quellenpruefung:${NC} In ${script_path} wurde keine GitHub-Primaerquelle erkannt."
-    echo -e "${YELLOW}Hinweis:${NC} Systemabhaengigkeiten duerfen apt/pip/npm nutzen, aber Primaertools sollen aus GitHub-Repos kommen."
-
-    if [ "${STRICT_GITHUB_TOOL_SOURCES:-false}" = "true" ] && [ "${ALLOW_NON_GITHUB_TOOL_SOURCE:-false}" != "true" ]; then
-        echo -e "${RED}Abbruch: STRICT_GITHUB_TOOL_SOURCES=true blockiert diesen Installer ohne erkannte GitHub-Quelle.${NC}"
-        echo -e "${YELLOW}Bewusste Ausnahme: ALLOW_NON_GITHUB_TOOL_SOURCE=1 setzen oder den Installer auf GitHub-Quelle umbauen.${NC}"
-        return 1
-    fi
-
+  if grep -Eq 'github\.com|raw\.githubusercontent\.com' "$script_path"; then
+    echo -e "${YELLOW}Quellenpruefung:${NC} GitHub-Quelle im Installer erkannt."
     return 0
+  fi
+
+  echo -e "${YELLOW}Quellenpruefung:${NC} In ${script_path} wurde keine GitHub-Primaerquelle erkannt."
+  echo -e "${YELLOW}Hinweis:${NC} Systemabhaengigkeiten duerfen apt/pip/npm nutzen, aber Primaertools sollen aus GitHub-Repos kommen."
+
+  if [ "${STRICT_GITHUB_TOOL_SOURCES:-false}" = "true" ] && [ "${ALLOW_NON_GITHUB_TOOL_SOURCE:-false}" != "true" ]; then
+    echo -e "${RED}Abbruch: STRICT_GITHUB_TOOL_SOURCES=true blockiert diesen Installer ohne erkannte GitHub-Quelle.${NC}"
+    echo -e "${YELLOW}Bewusste Ausnahme: ALLOW_NON_GITHUB_TOOL_SOURCE=1 setzen oder den Installer auf GitHub-Quelle umbauen.${NC}"
+    return 1
+  fi
+
+  return 0
 }
 
 run_bash_script() {
-    local script_path="$1"
-    shift || true
-    local script_rc
-    ensure_user_workspace
-    if [ -z "${ACTIVE_OPERATION_STARTED_AT:-}" ] || [ -z "${ACTIVE_OPERATION_LOG_FILE:-}" ] || [ ! -f "$ACTIVE_OPERATION_LOG_FILE" ]; then
-        start_operation_log "${ACTIVE_OPERATION_ID:-$(basename "$script_path" .sh)}" || return 1
-    fi
+  local script_path="$1"
+  shift || true
+  local script_rc
+  ensure_user_workspace
+  if [ -z "${ACTIVE_OPERATION_STARTED_AT:-}" ] || [ -z "${ACTIVE_OPERATION_LOG_FILE:-}" ] || [ ! -f "$ACTIVE_OPERATION_LOG_FILE" ]; then
+    start_operation_log "${ACTIVE_OPERATION_ID:-$(basename "$script_path" .sh)}" || return 1
+  fi
 
-    if [ ! -f "$script_path" ]; then
-        append_operation_note "Fehler: Skript nicht gefunden: $script_path" || true
-        return 1
-    fi
+  if [ ! -f "$script_path" ]; then
+    append_operation_note "Fehler: Skript nicht gefunden: $script_path" || true
+    return 1
+  fi
 
-    if is_preference_enabled "${INSTALL_MONITORING_VERBOSE:-false}" || is_preference_enabled "${INSTALL_MONITORING_MANUAL_FLOW:-false}"; then
-        echo -e "${YELLOW}Erweiterte Installationsüberwachung ist aktiv.${NC}"
-    fi
-    print_operation_log_heading "$ACTIVE_OPERATION_LOG_FILE"
-    script_rc=0
-    capture_operation_output bash "$script_path" "$@" || script_rc=$?
+  if is_preference_enabled "${INSTALL_MONITORING_VERBOSE:-false}" || is_preference_enabled "${INSTALL_MONITORING_MANUAL_FLOW:-false}"; then
+    echo -e "${YELLOW}Erweiterte Installationsüberwachung ist aktiv.${NC}"
+  fi
+  print_operation_log_heading "$ACTIVE_OPERATION_LOG_FILE"
+  script_rc=0
+  capture_operation_output bash "$script_path" "$@" || script_rc=$?
 
-    reset_terminal_display
-    return $script_rc
+  reset_terminal_display
+  return $script_rc
 }
 
 run_setup_log_cleanup() {
-    local mode="${1:-dry-run}"
-    local failed_only="${2:-false}"
-    local cleanup_script="$INSTALL_DIR/scripts/cleanup_setup_logs.sh"
-    local cleanup_args=("--dry-run")
+  local mode="${1:-dry-run}"
+  local failed_only="${2:-false}"
+  local cleanup_script="$INSTALL_DIR/scripts/cleanup_setup_logs.sh"
+  local cleanup_args=("--dry-run")
 
-    ensure_user_workspace
+  ensure_user_workspace
 
-    if [ "$mode" = "apply" ]; then
-        cleanup_args=("--apply")
-    fi
+  if [ "$mode" = "apply" ]; then
+    cleanup_args=("--apply")
+  fi
 
-    if [ "$failed_only" = "true" ]; then
-        cleanup_args+=("--failed-only")
-    fi
+  if [ "$failed_only" = "true" ]; then
+    cleanup_args+=("--failed-only")
+  fi
 
-    if [ ! -f "$cleanup_script" ]; then
-        echo -e "${YELLOW}Log-Aufräumskript nicht gefunden: $cleanup_script${NC}"
-        return 1
-    fi
+  if [ ! -f "$cleanup_script" ]; then
+    echo -e "${YELLOW}Log-Aufräumskript nicht gefunden: $cleanup_script${NC}"
+    return 1
+  fi
 
-    bash "$cleanup_script" "${cleanup_args[@]}" \
-        --days "${LOG_CLEANUP_RETENTION_DAYS:-14}" \
-        --keep "${LOG_CLEANUP_KEEP_RECENT:-30}"
+  bash "$cleanup_script" "${cleanup_args[@]}" \
+    --days "${LOG_CLEANUP_RETENTION_DAYS:-14}" \
+    --keep "${LOG_CLEANUP_KEEP_RECENT:-30}"
 }
 
 maybe_cleanup_logs_before_operation() {
-    if ! is_preference_enabled "${LOG_CLEANUP_BEFORE_OPERATION:-false}"; then
-        return 0
-    fi
+  if ! is_preference_enabled "${LOG_CLEANUP_BEFORE_OPERATION:-false}"; then
+    return 0
+  fi
 
-    echo -e "${YELLOW}Log-Aufräumung vor dem nächsten Installations-/Deinstallationslauf ist aktiv.${NC}"
-    run_setup_log_cleanup "apply" || echo -e "${YELLOW}Hinweis: Log-Aufräumung konnte nicht vollständig ausgeführt werden. Installation läuft weiter.${NC}"
+  echo -e "${YELLOW}Log-Aufräumung vor dem nächsten Installations-/Deinstallationslauf ist aktiv.${NC}"
+  run_setup_log_cleanup "apply" || echo -e "${YELLOW}Hinweis: Log-Aufräumung konnte nicht vollständig ausgeführt werden. Installation läuft weiter.${NC}"
 }
 
 show_installation_monitoring_menu() {
-    local monitoring_state
-    local cleanup_state
-    local overview_metrics_state
-    local loading_notice_state
-    local monitoring_mark
-    local cleanup_mark
-    local overview_metrics_mark
-    local loading_notice_mark
-    local separator_line="${TXT_SEPARATOR_LINE:-────────────────────────────────────────────────────────}"
+  local monitoring_state
+  local cleanup_state
+  local overview_metrics_state
+  local loading_notice_state
+  local monitoring_mark
+  local cleanup_mark
+  local overview_metrics_mark
+  local loading_notice_mark
+  local separator_line="${TXT_SEPARATOR_LINE:-────────────────────────────────────────────────────────}"
 
-    while true; do
+  while true; do
+    if is_preference_enabled "${INSTALL_MONITORING_VERBOSE:-false}"; then
+      monitoring_state="aktiv"
+      monitoring_mark="(*)"
+    else
+      monitoring_state="inaktiv"
+      monitoring_mark="( )"
+    fi
+
+    if is_preference_enabled "${LOG_CLEANUP_BEFORE_OPERATION:-false}"; then
+      cleanup_state="aktiv"
+      cleanup_mark="(*)"
+    else
+      cleanup_state="inaktiv"
+      cleanup_mark="( )"
+    fi
+    if is_preference_enabled "${OVERVIEW_METRICS_ENABLED:-false}"; then
+      overview_metrics_state="aktiv"
+      overview_metrics_mark="(*)"
+    else
+      overview_metrics_state="inaktiv"
+      overview_metrics_mark="( )"
+    fi
+    if is_preference_enabled "${MENU_LOADING_NOTICE_ENABLED:-true}"; then
+      loading_notice_state="aktiv"
+      loading_notice_mark="(*)"
+    else
+      loading_notice_state="inaktiv"
+      loading_notice_mark="( )"
+    fi
+
+    dialog --clear --backtitle "$APP_TITLE" \
+      --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
+      --title "INSTALLATIONSÜBERWACHUNG" --menu "Zusätzliche Überwachung, Logansicht und sichere Log-Aufräumung." 42 112 22 \
+      "1" "${monitoring_mark} Erweiterte Installationsüberwachung umschalten (aktuell: ${monitoring_state})" \
+      "────────" "$separator_line" \
+      "2" "${overview_metrics_mark} Zeit-/Speicherwerte in Tool-/Profilübersichten umschalten (aktuell: ${overview_metrics_state}, große Listen bleiben automatisch schnell)" \
+      "3" "${loading_notice_mark} Lade-Hinweis vor Tool-/Profilübersichten umschalten (aktuell: ${loading_notice_state})" \
+      "─────────" "$separator_line" \
+      "4" "Log-Verzeichnis anzeigen" \
+      "5" "Letzte Installations-Logs anzeigen" \
+      "6" "Letzte Messwerte anzeigen" \
+      "──────────" "$separator_line" \
+      "7" "${cleanup_mark} Log-Aufräumung vor Installationen umschalten (aktuell: ${cleanup_state})" \
+      "8" "Log-Aufräumung Trockenlauf anzeigen" \
+      "9" "Alte Logs jetzt löschen" \
+      "10" "Alte Fehler-Logs jetzt löschen" \
+      "11" "Aufbewahrung einstellen (Tage/neueste Dateien)" \
+      "───────────" "$separator_line" \
+      "12" "Installationslauf-Diagnose erstellen" \
+      "13" "Abhängigkeiten-/Speicher-Snapshot erstellen" \
+      "────────────" "$separator_line" \
+      "14" "Installationsreste/Caches Trockenlauf anzeigen" \
+      "15" "Installationsreste/Caches bereinigen (mit Sicherheitsabfrage)" \
+      "─────────────" "$separator_line" \
+      "16" "/opt-Toolreste Trockenlauf anzeigen" \
+      "17" "/opt-Toolreste bereinigen (jedes Verzeichnis Ja/Nein)" \
+      "──────────────" "$separator_line" \
+      "18" "${TXT_BACK_ITEM:-Zurück}" 2>/tmp/install_monitoring_choice
+
+    if [ $? -ne 0 ]; then
+      return 0
+    fi
+
+    case "$(cat /tmp/install_monitoring_choice)" in
+      ────────*)
+        continue
+        ;;
+      1)
         if is_preference_enabled "${INSTALL_MONITORING_VERBOSE:-false}"; then
-            monitoring_state="aktiv"
-            monitoring_mark="(*)"
+          set_installation_monitoring_mode "false"
+          echo -e "${GREEN}Erweiterte Installationsüberwachung wurde deaktiviert.${NC}"
         else
-            monitoring_state="inaktiv"
-            monitoring_mark="( )"
+          set_installation_monitoring_mode "true"
+          echo -e "${GREEN}Erweiterte Installationsüberwachung wurde aktiviert.${NC}"
+          echo -e "${YELLOW}Ab jetzt werden Tool-Installationen und -Deinstallationen zusätzlich ins Terminal protokolliert, in Logdateien geschrieben und nach jedem Schritt manuell bestätigt.${NC}"
         fi
-
-        if is_preference_enabled "${LOG_CLEANUP_BEFORE_OPERATION:-false}"; then
-            cleanup_state="aktiv"
-            cleanup_mark="(*)"
-        else
-            cleanup_state="inaktiv"
-            cleanup_mark="( )"
-        fi
+        read -p "Drücken Sie Enter..."
+        ;;
+      2)
         if is_preference_enabled "${OVERVIEW_METRICS_ENABLED:-false}"; then
-            overview_metrics_state="aktiv"
-            overview_metrics_mark="(*)"
+          set_overview_metrics_mode "false"
+          echo -e "${GREEN}Zeit-/Speicherwerte in Tool-/Profilübersichten wurden deaktiviert.${NC}"
         else
-            overview_metrics_state="inaktiv"
-            overview_metrics_mark="( )"
+          set_overview_metrics_mode "true"
+          echo -e "${GREEN}Zeit-/Speicherwerte in Tool-/Profilübersichten wurden aktiviert.${NC}"
         fi
+        read -p "Drücken Sie Enter..."
+        ;;
+      3)
         if is_preference_enabled "${MENU_LOADING_NOTICE_ENABLED:-true}"; then
-            loading_notice_state="aktiv"
-            loading_notice_mark="(*)"
+          set_menu_loading_notice_mode "false"
+          echo -e "${GREEN}Lade-Hinweis vor Tool-/Profilübersichten wurde deaktiviert.${NC}"
         else
-            loading_notice_state="inaktiv"
-            loading_notice_mark="( )"
+          set_menu_loading_notice_mode "true"
+          echo -e "${GREEN}Lade-Hinweis vor Tool-/Profilübersichten wurde aktiviert.${NC}"
         fi
-
-        dialog --clear --backtitle "$APP_TITLE" \
-        --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
-        --title "INSTALLATIONSÜBERWACHUNG" --menu "Zusätzliche Überwachung, Logansicht und sichere Log-Aufräumung." 42 112 22 \
-        "1" "${monitoring_mark} Erweiterte Installationsüberwachung umschalten (aktuell: ${monitoring_state})" \
-        "────────" "$separator_line" \
-        "2" "${overview_metrics_mark} Zeit-/Speicherwerte in Tool-/Profilübersichten umschalten (aktuell: ${overview_metrics_state}, große Listen bleiben automatisch schnell)" \
-        "3" "${loading_notice_mark} Lade-Hinweis vor Tool-/Profilübersichten umschalten (aktuell: ${loading_notice_state})" \
-        "─────────" "$separator_line" \
-        "4" "Log-Verzeichnis anzeigen" \
-        "5" "Letzte Installations-Logs anzeigen" \
-        "6" "Letzte Messwerte anzeigen" \
-        "──────────" "$separator_line" \
-        "7" "${cleanup_mark} Log-Aufräumung vor Installationen umschalten (aktuell: ${cleanup_state})" \
-        "8" "Log-Aufräumung Trockenlauf anzeigen" \
-        "9" "Alte Logs jetzt löschen" \
-        "10" "Alte Fehler-Logs jetzt löschen" \
-        "11" "Aufbewahrung einstellen (Tage/neueste Dateien)" \
-        "───────────" "$separator_line" \
-        "12" "Installationslauf-Diagnose erstellen" \
-        "13" "Abhängigkeiten-/Speicher-Snapshot erstellen" \
-        "────────────" "$separator_line" \
-        "14" "Installationsreste/Caches Trockenlauf anzeigen" \
-        "15" "Installationsreste/Caches bereinigen (mit Sicherheitsabfrage)" \
-        "─────────────" "$separator_line" \
-        "16" "/opt-Toolreste Trockenlauf anzeigen" \
-        "17" "/opt-Toolreste bereinigen (jedes Verzeichnis Ja/Nein)" \
-        "──────────────" "$separator_line" \
-        "18" "${TXT_BACK_ITEM:-Zurück}" 2> /tmp/install_monitoring_choice
-
-        if [ $? -ne 0 ]; then
-            return 0
+        read -p "Drücken Sie Enter..."
+        ;;
+      4)
+        clear
+        echo
+        echo -e "${YELLOW}Log-Verzeichnis für Installations- und Deinstallationsläufe:${NC}"
+        echo "$USER_INSTALL_LOG_DIR"
+        echo
+        read -p "Drücken Sie Enter..."
+        ;;
+      5)
+        show_recent_install_logs
+        ;;
+      6)
+        show_recent_measurements
+        ;;
+      7)
+        if is_preference_enabled "${LOG_CLEANUP_BEFORE_OPERATION:-false}"; then
+          set_log_cleanup_mode "false"
+          echo -e "${GREEN}Automatische Log-Aufräumung vor Installationen wurde deaktiviert.${NC}"
+        else
+          set_log_cleanup_mode "true"
+          echo -e "${GREEN}Automatische Log-Aufräumung vor Installationen wurde aktiviert.${NC}"
+          echo -e "${YELLOW}Es werden nur alte Installations- und Diagnoseberichte im Benutzer-Workspace rotiert.${NC}"
         fi
-
-        case "$(cat /tmp/install_monitoring_choice)" in
-            ────────*)
-                continue
-                ;;
-            1)
-                if is_preference_enabled "${INSTALL_MONITORING_VERBOSE:-false}"; then
-                    set_installation_monitoring_mode "false"
-                    echo -e "${GREEN}Erweiterte Installationsüberwachung wurde deaktiviert.${NC}"
-                else
-                    set_installation_monitoring_mode "true"
-                    echo -e "${GREEN}Erweiterte Installationsüberwachung wurde aktiviert.${NC}"
-                    echo -e "${YELLOW}Ab jetzt werden Tool-Installationen und -Deinstallationen zusätzlich ins Terminal protokolliert, in Logdateien geschrieben und nach jedem Schritt manuell bestätigt.${NC}"
-                fi
-                read -p "Drücken Sie Enter..."
-                ;;
-            2)
-                if is_preference_enabled "${OVERVIEW_METRICS_ENABLED:-false}"; then
-                    set_overview_metrics_mode "false"
-                    echo -e "${GREEN}Zeit-/Speicherwerte in Tool-/Profilübersichten wurden deaktiviert.${NC}"
-                else
-                    set_overview_metrics_mode "true"
-                    echo -e "${GREEN}Zeit-/Speicherwerte in Tool-/Profilübersichten wurden aktiviert.${NC}"
-                fi
-                read -p "Drücken Sie Enter..."
-                ;;
-            3)
-                if is_preference_enabled "${MENU_LOADING_NOTICE_ENABLED:-true}"; then
-                    set_menu_loading_notice_mode "false"
-                    echo -e "${GREEN}Lade-Hinweis vor Tool-/Profilübersichten wurde deaktiviert.${NC}"
-                else
-                    set_menu_loading_notice_mode "true"
-                    echo -e "${GREEN}Lade-Hinweis vor Tool-/Profilübersichten wurde aktiviert.${NC}"
-                fi
-                read -p "Drücken Sie Enter..."
-                ;;
-            4)
-                clear
-                echo
-                echo -e "${YELLOW}Log-Verzeichnis für Installations- und Deinstallationsläufe:${NC}"
-                echo "$USER_INSTALL_LOG_DIR"
-                echo
-                read -p "Drücken Sie Enter..."
-                ;;
-            5)
-                show_recent_install_logs
-                ;;
-            6)
-                show_recent_measurements
-                ;;
-            7)
-                if is_preference_enabled "${LOG_CLEANUP_BEFORE_OPERATION:-false}"; then
-                    set_log_cleanup_mode "false"
-                    echo -e "${GREEN}Automatische Log-Aufräumung vor Installationen wurde deaktiviert.${NC}"
-                else
-                    set_log_cleanup_mode "true"
-                    echo -e "${GREEN}Automatische Log-Aufräumung vor Installationen wurde aktiviert.${NC}"
-                    echo -e "${YELLOW}Es werden nur alte Installations- und Diagnoseberichte im Benutzer-Workspace rotiert.${NC}"
-                fi
-                read -p "Drücken Sie Enter..."
-                ;;
-            8)
-                clear
-                run_setup_log_cleanup "dry-run"
-                echo
-                read -p "Drücken Sie Enter..."
-                ;;
-            9)
-                clear
-                echo -e "${YELLOW}Alte Logs werden jetzt anhand der aktuellen Aufbewahrungsregeln gelöscht.${NC}"
-                run_setup_log_cleanup "apply"
-                echo
-                read -p "Drücken Sie Enter..."
-                ;;
-            10)
-                clear
-                echo -e "${YELLOW}Alte Fehler-Logs werden jetzt anhand der aktuellen Aufbewahrungsregeln gelöscht.${NC}"
-                run_setup_log_cleanup "apply" "true"
-                echo
-                read -p "Drücken Sie Enter..."
-                ;;
-            11)
-                show_log_cleanup_settings_menu
-                ;;
-            12)
-                clear
-                bash "$INSTALL_DIR/scripts/install_run_diagnostics.sh"
-                echo
-                read -p "Installationslauf-Diagnose abgeschlossen. Drücken Sie Enter..."
-                ;;
-            13)
-                clear
-                bash "$INSTALL_DIR/scripts/dependency_snapshot.sh"
-                echo
-                read -p "Abhängigkeiten-/Speicher-Snapshot abgeschlossen. Drücken Sie Enter..."
-                ;;
-            14)
-                clear
-                bash "$INSTALL_DIR/scripts/cleanup_installation_residues.sh" --dry-run --all
-                echo
-                read -p "Trockenlauf abgeschlossen. Drücken Sie Enter..."
-                ;;
-            15)
-                clear
-                bash "$INSTALL_DIR/scripts/cleanup_installation_residues.sh" --apply --all
-                echo
-                read -p "Bereinigung abgeschlossen oder abgebrochen. Drücken Sie Enter..."
-                ;;
-            16)
-                clear
-                bash "$INSTALL_DIR/scripts/cleanup_installation_residues.sh" --dry-run --opt-tools
-                echo
-                read -p "Trockenlauf abgeschlossen. Drücken Sie Enter..."
-                ;;
-            17)
-                clear
-                echo -e "${YELLOW}/opt-Toolreste werden jetzt einzeln abgefragt. Docker-Volumes bleiben geschützt.${NC}"
-                bash "$INSTALL_DIR/scripts/cleanup_installation_residues.sh" --apply --opt-tools
-                echo
-                read -p "Bereinigung abgeschlossen oder abgebrochen. Drücken Sie Enter..."
-                ;;
-            18)
-                return 0
-                ;;
-        esac
-    done
+        read -p "Drücken Sie Enter..."
+        ;;
+      8)
+        clear
+        run_setup_log_cleanup "dry-run"
+        echo
+        read -p "Drücken Sie Enter..."
+        ;;
+      9)
+        clear
+        echo -e "${YELLOW}Alte Logs werden jetzt anhand der aktuellen Aufbewahrungsregeln gelöscht.${NC}"
+        run_setup_log_cleanup "apply"
+        echo
+        read -p "Drücken Sie Enter..."
+        ;;
+      10)
+        clear
+        echo -e "${YELLOW}Alte Fehler-Logs werden jetzt anhand der aktuellen Aufbewahrungsregeln gelöscht.${NC}"
+        run_setup_log_cleanup "apply" "true"
+        echo
+        read -p "Drücken Sie Enter..."
+        ;;
+      11)
+        show_log_cleanup_settings_menu
+        ;;
+      12)
+        clear
+        bash "$INSTALL_DIR/scripts/install_run_diagnostics.sh"
+        echo
+        read -p "Installationslauf-Diagnose abgeschlossen. Drücken Sie Enter..."
+        ;;
+      13)
+        clear
+        bash "$INSTALL_DIR/scripts/dependency_snapshot.sh"
+        echo
+        read -p "Abhängigkeiten-/Speicher-Snapshot abgeschlossen. Drücken Sie Enter..."
+        ;;
+      14)
+        clear
+        bash "$INSTALL_DIR/scripts/cleanup_installation_residues.sh" --dry-run --all
+        echo
+        read -p "Trockenlauf abgeschlossen. Drücken Sie Enter..."
+        ;;
+      15)
+        clear
+        bash "$INSTALL_DIR/scripts/cleanup_installation_residues.sh" --apply --all
+        echo
+        read -p "Bereinigung abgeschlossen oder abgebrochen. Drücken Sie Enter..."
+        ;;
+      16)
+        clear
+        bash "$INSTALL_DIR/scripts/cleanup_installation_residues.sh" --dry-run --opt-tools
+        echo
+        read -p "Trockenlauf abgeschlossen. Drücken Sie Enter..."
+        ;;
+      17)
+        clear
+        echo -e "${YELLOW}/opt-Toolreste werden jetzt einzeln abgefragt. Docker-Volumes bleiben geschützt.${NC}"
+        bash "$INSTALL_DIR/scripts/cleanup_installation_residues.sh" --apply --opt-tools
+        echo
+        read -p "Bereinigung abgeschlossen oder abgebrochen. Drücken Sie Enter..."
+        ;;
+      18)
+        return 0
+        ;;
+    esac
+  done
 }
 
 show_log_cleanup_settings_menu() {
-    local new_days
-    local new_keep
+  local new_days
+  local new_keep
 
-    dialog --clear --backtitle "$APP_TITLE" \
-    --title "LOG-AUFBEWAHRUNG" --inputbox "Wie viele Tage sollen Installations-/Diagnoselogs mindestens behalten werden?" 10 90 "${LOG_CLEANUP_RETENTION_DAYS:-14}" 2> /tmp/log_cleanup_days
+  dialog --clear --backtitle "$APP_TITLE" \
+    --title "LOG-AUFBEWAHRUNG" --inputbox "Wie viele Tage sollen Installations-/Diagnoselogs mindestens behalten werden?" 10 90 "${LOG_CLEANUP_RETENTION_DAYS:-14}" 2>/tmp/log_cleanup_days
 
-    if [ $? -ne 0 ]; then
-        return 0
-    fi
+  if [ $? -ne 0 ]; then
+    return 0
+  fi
 
-    new_days="$(cat /tmp/log_cleanup_days)"
-    if ! set_log_cleanup_number_preference "LOG_CLEANUP_RETENTION_DAYS" "$new_days"; then
-        read -p "Drücken Sie Enter..."
-        return 1
-    fi
-
-    dialog --clear --backtitle "$APP_TITLE" \
-    --title "LOG-AUFBEWAHRUNG" --inputbox "Wie viele neueste Dateien sollen pro Log-Ordner immer behalten werden?" 10 90 "${LOG_CLEANUP_KEEP_RECENT:-30}" 2> /tmp/log_cleanup_keep
-
-    if [ $? -ne 0 ]; then
-        return 0
-    fi
-
-    new_keep="$(cat /tmp/log_cleanup_keep)"
-    if ! set_log_cleanup_number_preference "LOG_CLEANUP_KEEP_RECENT" "$new_keep"; then
-        read -p "Drücken Sie Enter..."
-        return 1
-    fi
-
-    echo -e "${GREEN}Log-Aufbewahrung aktualisiert: ${LOG_CLEANUP_RETENTION_DAYS} Tage, neueste ${LOG_CLEANUP_KEEP_RECENT} Dateien behalten.${NC}"
+  new_days="$(cat /tmp/log_cleanup_days)"
+  if ! set_log_cleanup_number_preference "LOG_CLEANUP_RETENTION_DAYS" "$new_days"; then
     read -p "Drücken Sie Enter..."
+    return 1
+  fi
+
+  dialog --clear --backtitle "$APP_TITLE" \
+    --title "LOG-AUFBEWAHRUNG" --inputbox "Wie viele neueste Dateien sollen pro Log-Ordner immer behalten werden?" 10 90 "${LOG_CLEANUP_KEEP_RECENT:-30}" 2>/tmp/log_cleanup_keep
+
+  if [ $? -ne 0 ]; then
+    return 0
+  fi
+
+  new_keep="$(cat /tmp/log_cleanup_keep)"
+  if ! set_log_cleanup_number_preference "LOG_CLEANUP_KEEP_RECENT" "$new_keep"; then
+    read -p "Drücken Sie Enter..."
+    return 1
+  fi
+
+  echo -e "${GREEN}Log-Aufbewahrung aktualisiert: ${LOG_CLEANUP_RETENTION_DAYS} Tage, neueste ${LOG_CLEANUP_KEEP_RECENT} Dateien behalten.${NC}"
+  read -p "Drücken Sie Enter..."
 }
 
 show_recent_install_logs() {
-    local log_file
-    local options=()
-    local selected_log
-    local full_path
+  local log_file
+  local options=()
+  local selected_log
+  local full_path
 
-    ensure_user_workspace
-    mkdir -p "$USER_INSTALL_LOG_DIR"
+  ensure_user_workspace
+  mkdir -p "$USER_INSTALL_LOG_DIR"
 
-    while IFS= read -r log_file; do
-        [ -n "$log_file" ] || continue
-        options+=("$log_file" "Installationsprotokoll")
-    done < <(find "$USER_INSTALL_LOG_DIR" -maxdepth 1 -type f -name '*.log' -printf '%f\n' 2>/dev/null | sort -r | head -n 15)
+  while IFS= read -r log_file; do
+    [ -n "$log_file" ] || continue
+    options+=("$log_file" "Installationsprotokoll")
+  done < <(find "$USER_INSTALL_LOG_DIR" -maxdepth 1 -type f -name '*.log' -printf '%f\n' 2>/dev/null | sort -r | head -n 15)
 
-    if [ ${#options[@]} -eq 0 ]; then
-        clear
-        echo
-        echo -e "${YELLOW}Es wurden noch keine Installations- oder Deinstallationslogs gefunden.${NC}"
-        echo -e "${YELLOW}Log-Verzeichnis:${NC} $USER_INSTALL_LOG_DIR"
-        echo
-        read -p "Drücken Sie Enter..."
-        return 0
-    fi
-
-    dialog --clear --backtitle "$APP_TITLE" \
-    --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
-    --title "LETZTE INSTALLATIONS-LOGS" --menu "Wähle eine Logdatei zur Ansicht aus:" 22 110 15 \
-    "${options[@]}" 2> /tmp/install_log_choice
-
-    if [ $? -ne 0 ]; then
-        return 0
-    fi
-
-    selected_log="$(cat /tmp/install_log_choice)"
-    full_path="$USER_INSTALL_LOG_DIR/$selected_log"
-
+  if [ ${#options[@]} -eq 0 ]; then
     clear
     echo
-    print_operation_log_heading "$full_path"
-    echo
-    tail -n 200 "$full_path"
+    echo -e "${YELLOW}Es wurden noch keine Installations- oder Deinstallationslogs gefunden.${NC}"
+    echo -e "${YELLOW}Log-Verzeichnis:${NC} $USER_INSTALL_LOG_DIR"
     echo
     read -p "Drücken Sie Enter..."
+    return 0
+  fi
+
+  dialog --clear --backtitle "$APP_TITLE" \
+    --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
+    --title "LETZTE INSTALLATIONS-LOGS" --menu "Wähle eine Logdatei zur Ansicht aus:" 22 110 15 \
+    "${options[@]}" 2>/tmp/install_log_choice
+
+  if [ $? -ne 0 ]; then
+    return 0
+  fi
+
+  selected_log="$(cat /tmp/install_log_choice)"
+  full_path="$USER_INSTALL_LOG_DIR/$selected_log"
+
+  clear
+  echo
+  print_operation_log_heading "$full_path"
+  echo
+  tail -n 200 "$full_path"
+  echo
+  read -p "Drücken Sie Enter..."
 }
 
 find_latest_install_log_file() {
-    ensure_user_workspace
-    find "$USER_INSTALL_LOG_DIR" -maxdepth 1 -type f -name '*.log' -printf '%T@ %p\n' 2>/dev/null |
-        sort -nr |
-        awk 'NR == 1 {sub(/^[^ ]+ /, ""); print}'
+  ensure_user_workspace
+  find "$USER_INSTALL_LOG_DIR" -maxdepth 1 -type f -name '*.log' -printf '%T@ %p\n' 2>/dev/null |
+    sort -nr |
+    awk 'NR == 1 {sub(/^[^ ]+ /, ""); print}'
 }
 
 resolve_install_log_file() {
-    local current_log_file="${1:-}"
+  local current_log_file="${1:-}"
 
-    if [ -n "$current_log_file" ] && [ -f "$current_log_file" ]; then
-        printf '%s\n' "$current_log_file"
-        return 0
-    fi
-
-    # Historical logs remain available only through the explicit log-history menu.
+  if [ -n "$current_log_file" ] && [ -f "$current_log_file" ]; then
+    printf '%s\n' "$current_log_file"
     return 0
+  fi
+
+  # Historical logs remain available only through the explicit log-history menu.
+  return 0
 }
 
 show_install_log_tail_now() {
-    local current_log_file="${1:-}"
-    local log_file
+  local current_log_file="${1:-}"
+  local log_file
 
-    log_file="$(resolve_install_log_file "$current_log_file")"
-    if [ -z "$log_file" ] || [ ! -f "$log_file" ]; then
-        echo -e "${YELLOW}Kein Installationsprotokoll gefunden.${NC}"
-        return 1
-    fi
+  log_file="$(resolve_install_log_file "$current_log_file")"
+  if [ -z "$log_file" ] || [ ! -f "$log_file" ]; then
+    echo -e "${YELLOW}Kein Installationsprotokoll gefunden.${NC}"
+    return 1
+  fi
 
-    clear
-    echo
-    print_operation_log_heading "$log_file"
-    echo
-    tail -n 220 "$log_file"
-    echo
-    read -p "Drücken Sie Enter..."
+  clear
+  echo
+  print_operation_log_heading "$log_file"
+  echo
+  tail -n 220 "$log_file"
+  echo
+  read -p "Drücken Sie Enter..."
 }
 
 run_install_log_diagnostics_now() {
-    local current_log_file="${1:-}"
-    local email_mode="${2:-no-email}"
-    local log_file
-    local diagnostics_script="$INSTALL_DIR/scripts/tool_log_diagnostics.sh"
+  local current_log_file="${1:-}"
+  local email_mode="${2:-no-email}"
+  local log_file
+  local diagnostics_script="$INSTALL_DIR/scripts/tool_log_diagnostics.sh"
 
-    log_file="$(resolve_install_log_file "$current_log_file")"
-    if [ -z "$log_file" ] || [ ! -f "$log_file" ]; then
-        echo -e "${YELLOW}Kein Installationsprotokoll gefunden.${NC}"
-        return 1
-    fi
+  log_file="$(resolve_install_log_file "$current_log_file")"
+  if [ -z "$log_file" ] || [ ! -f "$log_file" ]; then
+    echo -e "${YELLOW}Kein Installationsprotokoll gefunden.${NC}"
+    return 1
+  fi
 
-    if [ ! -f "$diagnostics_script" ]; then
-        echo -e "${RED}Fehler: Tool-Logdiagnose nicht gefunden: $diagnostics_script${NC}"
-        return 1
-    fi
+  if [ ! -f "$diagnostics_script" ]; then
+    echo -e "${RED}Fehler: Tool-Logdiagnose nicht gefunden: $diagnostics_script${NC}"
+    return 1
+  fi
 
-    clear
-    if [ "$email_mode" = "email" ]; then
-        bash "$diagnostics_script" --log "$log_file" --email-now
-    else
-        bash "$diagnostics_script" --log "$log_file" --no-email
-    fi
-    echo
-    read -p "Drücken Sie Enter..."
+  clear
+  if [ "$email_mode" = "email" ]; then
+    bash "$diagnostics_script" --log "$log_file" --email-now
+  else
+    bash "$diagnostics_script" --log "$log_file" --no-email
+  fi
+  echo
+  read -p "Drücken Sie Enter..."
 }
 
 show_diagnostics_quick_menu() {
-    while true; do
-        dialog --clear --backtitle "$APP_TITLE" \
-        --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
-        --title "TOOL-DIAGNOSE & LETZTE FEHLER" \
-        --menu "Schneller Zugriff auf die letzten Installationsprotokolle und Diagnoseberichte." 22 104 6 \
-        "1" "Letzten fehlgeschlagenen Fehlerbericht anzeigen" \
-        "2" "Letztes Installationsprotokoll anzeigen" \
-        "3" "Tool-Logdiagnose interaktiv starten" \
-        "4" "Installationslauf-Diagnose erstellen" \
-        "5" "Abhaengigkeiten-/Speicher-Snapshot erstellen" \
-        "6" "Letztes Installationsprotokoll per E-Mail senden" \
-        "7" "Installations-Reset / alte Sperren pruefen und freigeben" 2> /tmp/diagnostics_quick_choice
+  while true; do
+    dialog --clear --backtitle "$APP_TITLE" \
+      --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
+      --title "TOOL-DIAGNOSE & LETZTE FEHLER" \
+      --menu "Schneller Zugriff auf die letzten Installationsprotokolle und Diagnoseberichte." 22 104 6 \
+      "1" "Letzten fehlgeschlagenen Fehlerbericht anzeigen" \
+      "2" "Letztes Installationsprotokoll anzeigen" \
+      "3" "Tool-Logdiagnose interaktiv starten" \
+      "4" "Installationslauf-Diagnose erstellen" \
+      "5" "Abhaengigkeiten-/Speicher-Snapshot erstellen" \
+      "6" "Letztes Installationsprotokoll per E-Mail senden" \
+      "7" "Installations-Reset / alte Sperren pruefen und freigeben" 2>/tmp/diagnostics_quick_choice
 
-        if [ $? -ne 0 ]; then
-            clear
-            return 0
-        fi
+    if [ $? -ne 0 ]; then
+      clear
+      return 0
+    fi
 
-        case "$(cat /tmp/diagnostics_quick_choice)" in
-            7)
-                run_bash_script "$INSTALL_DIR/scripts/installation_reset_menu.sh"
-                ;;
-            1)
-                bash "$INSTALL_DIR/scripts/last_install_log.sh" --failed
-                read -p "Letzter Fehlerbericht angezeigt. Drücken Sie Enter..."
-                ;;
-            2)
-                bash "$INSTALL_DIR/scripts/last_install_log.sh"
-                read -p "Letztes Installationsprotokoll angezeigt. Drücken Sie Enter..."
-                ;;
-            3)
-                bash "$INSTALL_DIR/scripts/tool_log_diagnostics.sh"
-                read -p "Tool-Logdiagnose abgeschlossen. Drücken Sie Enter..."
-                ;;
-            4)
-                bash "$INSTALL_DIR/scripts/install_run_diagnostics.sh"
-                read -p "Installationslauf-Diagnose abgeschlossen. Drücken Sie Enter..."
-                ;;
-            5)
-                bash "$INSTALL_DIR/scripts/dependency_snapshot.sh"
-                read -p "Abhängigkeiten-/Speicher-Snapshot abgeschlossen. Drücken Sie Enter..."
-                ;;
-            6)
-                bash "$INSTALL_DIR/scripts/last_install_log.sh" --email
-                read -p "E-Mail-Diagnose abgeschlossen. Drücken Sie Enter..."
-                ;;
-        esac
-    done
+    case "$(cat /tmp/diagnostics_quick_choice)" in
+      7)
+        run_bash_script "$INSTALL_DIR/scripts/installation_reset_menu.sh"
+        ;;
+      1)
+        bash "$INSTALL_DIR/scripts/last_install_log.sh" --failed
+        read -p "Letzter Fehlerbericht angezeigt. Drücken Sie Enter..."
+        ;;
+      2)
+        bash "$INSTALL_DIR/scripts/last_install_log.sh"
+        read -p "Letztes Installationsprotokoll angezeigt. Drücken Sie Enter..."
+        ;;
+      3)
+        bash "$INSTALL_DIR/scripts/tool_log_diagnostics.sh"
+        read -p "Tool-Logdiagnose abgeschlossen. Drücken Sie Enter..."
+        ;;
+      4)
+        bash "$INSTALL_DIR/scripts/install_run_diagnostics.sh"
+        read -p "Installationslauf-Diagnose abgeschlossen. Drücken Sie Enter..."
+        ;;
+      5)
+        bash "$INSTALL_DIR/scripts/dependency_snapshot.sh"
+        read -p "Abhängigkeiten-/Speicher-Snapshot abgeschlossen. Drücken Sie Enter..."
+        ;;
+      6)
+        bash "$INSTALL_DIR/scripts/last_install_log.sh" --email
+        read -p "E-Mail-Diagnose abgeschlossen. Drücken Sie Enter..."
+        ;;
+    esac
+  done
 }
 
 handle_manual_tool_post_action() {
-    local tool_key="$1"
-    local action_label="$2"
-    local operation_status="${3:-success}"
-    local upcoming_preview="${4:-}"
-    local current_log_file="${LAST_OPERATION_LOG_FILE:-}"
-    local next_choice
-    local prompt_text
-    local default_choice="N"
+  local tool_key="$1"
+  local action_label="$2"
+  local operation_status="${3:-success}"
+  local upcoming_preview="${4:-}"
+  local current_log_file="${LAST_OPERATION_LOG_FILE:-}"
+  local next_choice
+  local prompt_text
+  local default_choice="N"
 
-    if ! is_preference_enabled "${INSTALL_MONITORING_MANUAL_FLOW:-false}" && [ "$operation_status" != "failed" ]; then
-        return 0
-    fi
+  if ! is_preference_enabled "${INSTALL_MONITORING_MANUAL_FLOW:-false}" && [ "$operation_status" != "failed" ]; then
+    return 0
+  fi
 
+  if [ "$operation_status" = "failed" ]; then
+    default_choice="Z"
+  fi
+
+  echo
+  if [ "$operation_status" = "failed" ]; then
+    echo -e "${RED}Fehler erkannt bei '${action_label} ${tool_key}'.${NC}"
+    echo -e "${YELLOW}Bevor der Batch weiterläuft, kannst du sofort Log, Diagnose oder E-Mail-Diagnose öffnen.${NC}"
+  else
+    echo -e "${YELLOW}Erweiterte Installationsüberwachung ist aktiv.${NC}"
+    echo -e "${YELLOW}Nach dem Schritt '${action_label} ${tool_key}' wird nicht automatisch weitergesprungen.${NC}"
+  fi
+  if [ -n "$current_log_file" ]; then
+    echo -e "${YELLOW}Logdatei:${NC} $current_log_file"
+  fi
+  if [ -n "$upcoming_preview" ]; then
+    echo -e "${YELLOW}Als Nächstes geplant:${NC} $upcoming_preview"
+  else
+    echo -e "${YELLOW}Als Nächstes geplant:${NC} (keine weiteren Tools in diesem Batch)"
+  fi
+
+  while true; do
     if [ "$operation_status" = "failed" ]; then
-        default_choice="Z"
-    fi
-
-    echo
-    if [ "$operation_status" = "failed" ]; then
-        echo -e "${RED}Fehler erkannt bei '${action_label} ${tool_key}'.${NC}"
-        echo -e "${YELLOW}Bevor der Batch weiterläuft, kannst du sofort Log, Diagnose oder E-Mail-Diagnose öffnen.${NC}"
+      prompt_text="Zurück ins Setup [Z], weiter/nächstes Tool [N], Log [L], Diagnose [D] oder Diagnose per E-Mail [E]? "
     else
-        echo -e "${YELLOW}Erweiterte Installationsüberwachung ist aktiv.${NC}"
-        echo -e "${YELLOW}Nach dem Schritt '${action_label} ${tool_key}' wird nicht automatisch weitergesprungen.${NC}"
+      prompt_text="Weiter/nächstes Tool [N], zurück ins Setup [Z], Log anzeigen [L], Diagnose [D] oder Diagnose per E-Mail [E]? "
     fi
-    if [ -n "$current_log_file" ]; then
-        echo -e "${YELLOW}Logdatei:${NC} $current_log_file"
-    fi
-    if [ -n "$upcoming_preview" ]; then
-        echo -e "${YELLOW}Als Nächstes geplant:${NC} $upcoming_preview"
-    else
-        echo -e "${YELLOW}Als Nächstes geplant:${NC} (keine weiteren Tools in diesem Batch)"
-    fi
+    read -r -p "$prompt_text" next_choice
+    case "$(printf '%s' "${next_choice:-$default_choice}" | tr '[:lower:]' '[:upper:]')" in
+      N | "")
+        TOOL_BATCH_ABORT_REQUESTED=0
+        break
+        ;;
+      Z)
+        TOOL_BATCH_ABORT_REQUESTED=1
+        break
+        ;;
+      L)
+        show_install_log_tail_now "$current_log_file"
+        ;;
+      D)
+        run_install_log_diagnostics_now "$current_log_file" "no-email"
+        ;;
+      E)
+        run_install_log_diagnostics_now "$current_log_file" "email"
+        ;;
+      *)
+        echo -e "${YELLOW}Bitte nur: N, Z, L, D oder E eingeben.${NC}"
+        ;;
+    esac
+  done
 
-    while true; do
-        if [ "$operation_status" = "failed" ]; then
-            prompt_text="Zurück ins Setup [Z], weiter/nächstes Tool [N], Log [L], Diagnose [D] oder Diagnose per E-Mail [E]? "
-        else
-            prompt_text="Weiter/nächstes Tool [N], zurück ins Setup [Z], Log anzeigen [L], Diagnose [D] oder Diagnose per E-Mail [E]? "
-        fi
-        read -r -p "$prompt_text" next_choice
-        case "$(printf '%s' "${next_choice:-$default_choice}" | tr '[:lower:]' '[:upper:]')" in
-            N|"")
-                TOOL_BATCH_ABORT_REQUESTED=0
-                break
-                ;;
-            Z)
-                TOOL_BATCH_ABORT_REQUESTED=1
-                break
-                ;;
-            L)
-                show_install_log_tail_now "$current_log_file"
-                ;;
-            D)
-                run_install_log_diagnostics_now "$current_log_file" "no-email"
-                ;;
-            E)
-                run_install_log_diagnostics_now "$current_log_file" "email"
-                ;;
-            *)
-                echo -e "${YELLOW}Bitte nur: N, Z, L, D oder E eingeben.${NC}"
-                ;;
-        esac
-    done
-
-    LAST_OPERATION_LOG_FILE=""
+  LAST_OPERATION_LOG_FILE=""
 }
 
 format_tool_queue_preview() {
-    local max_items="${1:-6}"
-    shift || true
-    local item
-    local count=0
-    local preview=""
-    local remaining=0
+  local max_items="${1:-6}"
+  shift || true
+  local item
+  local count=0
+  local preview=""
+  local remaining=0
 
-    for item in "$@"; do
-        [ -n "$item" ] || continue
-        if [ "$count" -lt "$max_items" ]; then
-            if [ -n "$preview" ]; then
-                preview="${preview}, ${item}"
-            else
-                preview="$item"
-            fi
-        else
-            remaining=$((remaining + 1))
-        fi
-        count=$((count + 1))
-    done
-
-    if [ "$count" -eq 0 ]; then
-        printf '%s' ""
-    elif [ "$remaining" -gt 0 ]; then
-        printf '%s (+%s weitere)' "$preview" "$remaining"
+  for item in "$@"; do
+    [ -n "$item" ] || continue
+    if [ "$count" -lt "$max_items" ]; then
+      if [ -n "$preview" ]; then
+        preview="${preview}, ${item}"
+      else
+        preview="$item"
+      fi
     else
-        printf '%s' "$preview"
+      remaining=$((remaining + 1))
     fi
+    count=$((count + 1))
+  done
+
+  if [ "$count" -eq 0 ]; then
+    printf '%s' ""
+  elif [ "$remaining" -gt 0 ]; then
+    printf '%s (+%s weitere)' "$preview" "$remaining"
+  else
+    printf '%s' "$preview"
+  fi
 }
 
 show_management_loading_notice() {
-    local target_label="$1"
-    local detail_text="$2"
+  local target_label="$1"
+  local detail_text="$2"
 
-    load_setup_language
-    if ! is_preference_enabled "${MENU_LOADING_NOTICE_ENABLED:-true}"; then
-        return 0
-    fi
-
-    local notice_text gauge_title
-    printf -v notice_text "${TXT_LOADING_NOTICE_BODY}" "$target_label" "$detail_text"
-    printf -v gauge_title "${TXT_LOADING_GAUGE_TITLE}" "$target_label"
-    if ! dialog --clear --backtitle "$APP_TITLE" \
-        --yes-label "$TXT_YES_LABEL" --no-label "$TXT_NO_LABEL" \
-        --title "$TXT_LOADING_NOTICE_TITLE" \
-        --yesno "$notice_text" 15 92; then
-        return 1
-    fi
-
-    (
-        for percent in 0 20 45 70 90 100; do
-            echo "$percent"
-            sleep 0.05
-        done
-    ) | dialog --clear --backtitle "$APP_TITLE" \
-        --title "$gauge_title" \
-        --gauge "$TXT_LOADING_GAUGE_TEXT" 8 78 0
-
-    reset_terminal_display
+  load_setup_language
+  if ! is_preference_enabled "${MENU_LOADING_NOTICE_ENABLED:-true}"; then
     return 0
+  fi
+
+  local notice_text gauge_title
+  printf -v notice_text "${TXT_LOADING_NOTICE_BODY}" "$target_label" "$detail_text"
+  printf -v gauge_title "${TXT_LOADING_GAUGE_TITLE}" "$target_label"
+  if ! dialog --clear --backtitle "$APP_TITLE" \
+    --yes-label "$TXT_YES_LABEL" --no-label "$TXT_NO_LABEL" \
+    --title "$TXT_LOADING_NOTICE_TITLE" \
+    --yesno "$notice_text" 15 92; then
+    return 1
+  fi
+
+  (
+    for percent in 0 20 45 70 90 100; do
+      echo "$percent"
+      sleep 0.05
+    done
+  ) | dialog --clear --backtitle "$APP_TITLE" \
+    --title "$gauge_title" \
+    --gauge "$TXT_LOADING_GAUGE_TEXT" 8 78 0
+
+  reset_terminal_display
+  return 0
 }
 
 confirm_tool_batch_step() {
-    local action_label="$1"
-    local tool_key="$2"
-    local upcoming_preview="$3"
-    local step_choice
+  local action_label="$1"
+  local tool_key="$2"
+  local upcoming_preview="$3"
+  local step_choice
 
-    if ! is_preference_enabled "${INSTALL_MONITORING_MANUAL_FLOW:-false}"; then
+  if ! is_preference_enabled "${INSTALL_MONITORING_MANUAL_FLOW:-false}"; then
+    return 0
+  fi
+
+  echo
+  echo -e "${YELLOW}Naechster Batch-Schritt:${NC} ${action_label} ${tool_key}"
+  if [ -n "$upcoming_preview" ]; then
+    echo -e "${YELLOW}Danach geplant:${NC} $upcoming_preview"
+  else
+    echo -e "${YELLOW}Danach geplant:${NC} (keine weiteren Tools in diesem Batch)"
+  fi
+
+  while true; do
+    read -r -p "Ausfuehren [N], dieses Tool ueberspringen [S] oder Batch abbrechen [Z]? " step_choice
+    case "$(printf '%s' "${step_choice:-N}" | tr '[:lower:]' '[:upper:]')" in
+      N | "")
         return 0
-    fi
-
-    echo
-    echo -e "${YELLOW}Naechster Batch-Schritt:${NC} ${action_label} ${tool_key}"
-    if [ -n "$upcoming_preview" ]; then
-        echo -e "${YELLOW}Danach geplant:${NC} $upcoming_preview"
-    else
-        echo -e "${YELLOW}Danach geplant:${NC} (keine weiteren Tools in diesem Batch)"
-    fi
-
-    while true; do
-        read -r -p "Ausfuehren [N], dieses Tool ueberspringen [S] oder Batch abbrechen [Z]? " step_choice
-        case "$(printf '%s' "${step_choice:-N}" | tr '[:lower:]' '[:upper:]')" in
-            N|"")
-                return 0
-                ;;
-            S)
-                echo -e "${YELLOW}${action_label} ${tool_key} wurde uebersprungen.${NC}"
-                return 2
-                ;;
-            Z)
-                TOOL_BATCH_ABORT_REQUESTED=1
-                return 1
-                ;;
-            *)
-                echo -e "${YELLOW}Bitte nur: N, S oder Z eingeben.${NC}"
-                ;;
-        esac
-    done
+        ;;
+      S)
+        echo -e "${YELLOW}${action_label} ${tool_key} wurde uebersprungen.${NC}"
+        return 2
+        ;;
+      Z)
+        TOOL_BATCH_ABORT_REQUESTED=1
+        return 1
+        ;;
+      *)
+        echo -e "${YELLOW}Bitte nur: N, S oder Z eingeben.${NC}"
+        ;;
+    esac
+  done
 }
 
 handle_manual_profile_post_action() {
-    local profile_key="$1"
-    local action_label="$2"
-    local current_log_file="${LAST_OPERATION_LOG_FILE:-}"
-    local next_choice
+  local profile_key="$1"
+  local action_label="$2"
+  local current_log_file="${LAST_OPERATION_LOG_FILE:-}"
+  local next_choice
 
-    if ! is_preference_enabled "${INSTALL_MONITORING_MANUAL_FLOW:-false}"; then
-        return 0
-    fi
+  if ! is_preference_enabled "${INSTALL_MONITORING_MANUAL_FLOW:-false}"; then
+    return 0
+  fi
 
-    echo
-    echo -e "${YELLOW}Erweiterte Installationsüberwachung ist aktiv.${NC}"
-    echo -e "${YELLOW}Nach dem Schritt '${action_label} ${profile_key}' wird nicht automatisch weitergesprungen.${NC}"
-    if [ -n "$current_log_file" ]; then
-        echo -e "${YELLOW}Logdatei:${NC} $current_log_file"
-    fi
+  echo
+  echo -e "${YELLOW}Erweiterte Installationsüberwachung ist aktiv.${NC}"
+  echo -e "${YELLOW}Nach dem Schritt '${action_label} ${profile_key}' wird nicht automatisch weitergesprungen.${NC}"
+  if [ -n "$current_log_file" ]; then
+    echo -e "${YELLOW}Logdatei:${NC} $current_log_file"
+  fi
 
-    while true; do
-        read -r -p "Zurück ins Profilmenü [N], direkt zurück ins Setup [Z], Log anzeigen [L], Diagnose [D] oder Diagnose per E-Mail [E]? " next_choice
-        case "$(printf '%s' "${next_choice:-N}" | tr '[:lower:]' '[:upper:]')" in
-            N|"")
-                PROFILE_FLOW_ABORT_REQUESTED=0
-                break
-                ;;
-            Z)
-                PROFILE_FLOW_ABORT_REQUESTED=1
-                break
-                ;;
-            L)
-                show_install_log_tail_now "$current_log_file"
-                ;;
-            D)
-                run_install_log_diagnostics_now "$current_log_file" "no-email"
-                ;;
-            E)
-                run_install_log_diagnostics_now "$current_log_file" "email"
-                ;;
-            *)
-                echo -e "${YELLOW}Bitte nur: N, Z, L, D oder E eingeben.${NC}"
-                ;;
-        esac
-    done
+  while true; do
+    read -r -p "Zurück ins Profilmenü [N], direkt zurück ins Setup [Z], Log anzeigen [L], Diagnose [D] oder Diagnose per E-Mail [E]? " next_choice
+    case "$(printf '%s' "${next_choice:-N}" | tr '[:lower:]' '[:upper:]')" in
+      N | "")
+        PROFILE_FLOW_ABORT_REQUESTED=0
+        break
+        ;;
+      Z)
+        PROFILE_FLOW_ABORT_REQUESTED=1
+        break
+        ;;
+      L)
+        show_install_log_tail_now "$current_log_file"
+        ;;
+      D)
+        run_install_log_diagnostics_now "$current_log_file" "no-email"
+        ;;
+      E)
+        run_install_log_diagnostics_now "$current_log_file" "email"
+        ;;
+      *)
+        echo -e "${YELLOW}Bitte nur: N, Z, L, D oder E eingeben.${NC}"
+        ;;
+    esac
+  done
 
-    LAST_OPERATION_LOG_FILE=""
+  LAST_OPERATION_LOG_FILE=""
 }
 
 print_exit_message() {
-    clear
-    echo
-    echo -e "${YELLOW}${TXT_EXIT_LINE_1:-Setup beendet. Bis zum naechsten Mal.}${NC}"
-    echo -e "${YELLOW}${TXT_EXIT_LINE_2:-Zum Neustart siehe README oder direkt:}${NC}"
-    echo -e "${YELLOW}${TXT_EXIT_RESTART:-cd ~/openclaw_ultimate_setup && bash ./setup_ultimate.sh}${NC}"
-    echo
+  clear
+  echo
+  echo -e "${YELLOW}${TXT_EXIT_LINE_1:-Setup beendet. Bis zum naechsten Mal.}${NC}"
+  echo -e "${YELLOW}${TXT_EXIT_LINE_2:-Zum Neustart siehe README oder direkt:}${NC}"
+  echo -e "${YELLOW}${TXT_EXIT_RESTART:-cd ~/openclaw_ultimate_setup && bash ./setup_ultimate.sh}${NC}"
+  echo
 }
 
 show_user_workspace_menu() {
-    ensure_user_workspace
+  ensure_user_workspace
 
-    while true; do
-        dialog --clear --backtitle "$APP_TITLE" \
-        --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
-        --title "${TXT_WORKSPACE_MENU_TITLE:-BENUTZER-WORKSPACE}" --menu "${TXT_WORKSPACE_MENU_PROMPT:-Bearbeitbare und sensible Dateien liegen außerhalb des Repos.}" 22 104 9 \
-        "1" "${TXT_WORKSPACE_OPTION_1:-Pfad anzeigen}" \
-        "2" "${TXT_WORKSPACE_OPTION_2:-Workspace-Dateien auflisten}" \
-        "3" "${TXT_WORKSPACE_OPTION_3:-OpenClaw Vorlagen aus dem Repo neu in den Workspace kopieren}" \
-        "4" "${TXT_WORKSPACE_OPTION_4:-Profil-Quellen und Profilseiten aus dem Repo neu in den Workspace kopieren}" \
-        "5" "${TXT_WORKSPACE_OPTION_5:-Prompt-Bereich im Workspace anzeigen}" \
-        "6" "${TXT_WORKSPACE_OPTION_6:-Letzte Messwerte anzeigen}" \
-        "7" "${TXT_WORKSPACE_OPTION_7_BLOCKED:-Komplettloeschung gesperrt: Backup-/Sicherheitshinweise}" \
-        "8" "${TXT_WORKSPACE_OPTION_8:-Sprache ändern}" \
-        "9" "${TXT_WORKSPACE_OPTION_9:-${TXT_BACK_ITEM:-Zurück}}" \
-        "10" "Installationsstatus exportieren / wiederherstellen" 2> /tmp/user_workspace_choice
+  while true; do
+    dialog --clear --backtitle "$APP_TITLE" \
+      --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
+      --title "${TXT_WORKSPACE_MENU_TITLE:-BENUTZER-WORKSPACE}" --menu "${TXT_WORKSPACE_MENU_PROMPT:-Bearbeitbare und sensible Dateien liegen außerhalb des Repos.}" 22 104 9 \
+      "1" "${TXT_WORKSPACE_OPTION_1:-Pfad anzeigen}" \
+      "2" "${TXT_WORKSPACE_OPTION_2:-Workspace-Dateien auflisten}" \
+      "3" "${TXT_WORKSPACE_OPTION_3:-OpenClaw Vorlagen aus dem Repo neu in den Workspace kopieren}" \
+      "4" "${TXT_WORKSPACE_OPTION_4:-Profil-Quellen und Profilseiten aus dem Repo neu in den Workspace kopieren}" \
+      "5" "${TXT_WORKSPACE_OPTION_5:-Prompt-Bereich im Workspace anzeigen}" \
+      "6" "${TXT_WORKSPACE_OPTION_6:-Letzte Messwerte anzeigen}" \
+      "7" "${TXT_WORKSPACE_OPTION_7_BLOCKED:-Komplettloeschung gesperrt: Backup-/Sicherheitshinweise}" \
+      "8" "${TXT_WORKSPACE_OPTION_8:-Sprache ändern}" \
+      "9" "${TXT_WORKSPACE_OPTION_9:-${TXT_BACK_ITEM:-Zurück}}" \
+      "10" "Installationsstatus exportieren / wiederherstellen" 2>/tmp/user_workspace_choice
 
-        if [ $? -ne 0 ]; then
-            return 0
+    if [ $? -ne 0 ]; then
+      return 0
+    fi
+
+    case "$(cat /tmp/user_workspace_choice)" in
+      10)
+        run_bash_script "$INSTALL_DIR/scripts/installation_inventory_menu.sh"
+        ;;
+      1)
+        clear
+        echo
+        echo -e "${YELLOW}${TXT_WORKSPACE_PATH_LABEL:-Benutzer-Workspace:}${NC} $USER_WORKSPACE_DIR"
+        echo
+        read -p "${TXT_PRESS_ENTER:-Drücken Sie Enter...}"
+        ;;
+      2)
+        clear
+        echo
+        echo -e "${YELLOW}${TXT_WORKSPACE_CONTENT_LABEL:-Inhalt des Benutzer-Workspace:}${NC}"
+        find "$USER_WORKSPACE_DIR" -maxdepth 3 -type f 2>/dev/null | sort
+        echo
+        read -p "${TXT_PRESS_ENTER:-Drücken Sie Enter...}"
+        ;;
+      3)
+        cp "$INSTALL_DIR/scripts/config_templates/openclaw/.env.template" "$USER_OPENCLAW_TEMPLATE_DIR/.env.template"
+        cp "$INSTALL_DIR/scripts/config_templates/openclaw/config.json.template" "$USER_OPENCLAW_TEMPLATE_DIR/config.json.template"
+        echo -e "${GREEN}${TXT_WORKSPACE_OPENCLAW_COPIED:-Die OpenClaw-Vorlagen wurden erneut in den Benutzer-Workspace kopiert.}${NC}"
+        read -p "${TXT_PRESS_ENTER:-Drücken Sie Enter...}"
+        ;;
+      4)
+        if [ -d "$INSTALL_DIR/docs/Profil" ]; then
+          find "$INSTALL_DIR/docs/Profil" -maxdepth 1 -type f -name '*.doc.md' -exec cp {} "$USER_PROFILE_SOURCE_DIR/" \;
         fi
-
-        case "$(cat /tmp/user_workspace_choice)" in
-            10)
-                run_bash_script "$INSTALL_DIR/scripts/installation_inventory_menu.sh"
-                ;;
-            1)
-                clear
-                echo
-                echo -e "${YELLOW}${TXT_WORKSPACE_PATH_LABEL:-Benutzer-Workspace:}${NC} $USER_WORKSPACE_DIR"
-                echo
-                read -p "${TXT_PRESS_ENTER:-Drücken Sie Enter...}"
-                ;;
-            2)
-                clear
-                echo
-                echo -e "${YELLOW}${TXT_WORKSPACE_CONTENT_LABEL:-Inhalt des Benutzer-Workspace:}${NC}"
-                find "$USER_WORKSPACE_DIR" -maxdepth 3 -type f 2>/dev/null | sort
-                echo
-                read -p "${TXT_PRESS_ENTER:-Drücken Sie Enter...}"
-                ;;
-            3)
-                cp "$INSTALL_DIR/scripts/config_templates/openclaw/.env.template" "$USER_OPENCLAW_TEMPLATE_DIR/.env.template"
-                cp "$INSTALL_DIR/scripts/config_templates/openclaw/config.json.template" "$USER_OPENCLAW_TEMPLATE_DIR/config.json.template"
-                echo -e "${GREEN}${TXT_WORKSPACE_OPENCLAW_COPIED:-Die OpenClaw-Vorlagen wurden erneut in den Benutzer-Workspace kopiert.}${NC}"
-                read -p "${TXT_PRESS_ENTER:-Drücken Sie Enter...}"
-                ;;
-            4)
-                if [ -d "$INSTALL_DIR/docs/Profil" ]; then
-                    find "$INSTALL_DIR/docs/Profil" -maxdepth 1 -type f -name '*.doc.md' -exec cp {} "$USER_PROFILE_SOURCE_DIR/" \;
-                fi
-                if [ -d "$INSTALL_DIR/docs/Profile" ]; then
-                    find "$INSTALL_DIR/docs/Profile" -maxdepth 1 -type f -name '*.md' -exec cp {} "$USER_PROFILE_RENDERED_DIR/" \;
-                fi
-                echo -e "${GREEN}${TXT_WORKSPACE_PROFILES_COPIED:-Profil-Quellen und abgeleitete Profilseiten wurden erneut in den Benutzer-Workspace kopiert.}${NC}"
-                read -p "${TXT_PRESS_ENTER:-Drücken Sie Enter...}"
-                ;;
-            5)
-                clear
-                echo
-                echo -e "${YELLOW}${TXT_WORKSPACE_PROMPTS_LABEL:-Prompt-Bereich im Benutzer-Workspace:}${NC} $USER_PROMPTS_DIR"
-                echo
-                find "$USER_PROMPTS_DIR" -maxdepth 2 -type f 2>/dev/null | sort
-                echo
-                read -p "${TXT_PRESS_ENTER:-Drücken Sie Enter...}"
-                ;;
-            6)
-                show_recent_measurements
-                ;;
-            7)
-                # No recursive purge until ownership, mounts and locking are verified.
-                dialog --msgbox "Die automatische Komplettloeschung ist aus Datensicherheitsgruenden gesperrt. Es wurden keine Dateien geloescht. Bitte zuerst ein externes Backup erstellen und dessen Wiederherstellung pruefen. Einzelne Tools ueber ihre datenerhaltende Deinstallation verwalten. Siehe docs/audit/SECURITY_FINDINGS.md (SEC-001)." 12 100
-                ;;
-            8)
-                if show_setup_language_menu; then
-                    echo -e "${GREEN}${TXT_LANGUAGE_CHANGED:-Die Setup-Sprache wurde aktualisiert.}${NC}"
-                    read -p "${TXT_PRESS_ENTER:-Drücken Sie Enter...}"
-                fi
-                ;;
-            9)
-                return 0
-                ;;
-        esac
-    done
+        if [ -d "$INSTALL_DIR/docs/Profile" ]; then
+          find "$INSTALL_DIR/docs/Profile" -maxdepth 1 -type f -name '*.md' -exec cp {} "$USER_PROFILE_RENDERED_DIR/" \;
+        fi
+        echo -e "${GREEN}${TXT_WORKSPACE_PROFILES_COPIED:-Profil-Quellen und abgeleitete Profilseiten wurden erneut in den Benutzer-Workspace kopiert.}${NC}"
+        read -p "${TXT_PRESS_ENTER:-Drücken Sie Enter...}"
+        ;;
+      5)
+        clear
+        echo
+        echo -e "${YELLOW}${TXT_WORKSPACE_PROMPTS_LABEL:-Prompt-Bereich im Benutzer-Workspace:}${NC} $USER_PROMPTS_DIR"
+        echo
+        find "$USER_PROMPTS_DIR" -maxdepth 2 -type f 2>/dev/null | sort
+        echo
+        read -p "${TXT_PRESS_ENTER:-Drücken Sie Enter...}"
+        ;;
+      6)
+        show_recent_measurements
+        ;;
+      7)
+        # No recursive purge until ownership, mounts and locking are verified.
+        dialog --msgbox "Die automatische Komplettloeschung ist aus Datensicherheitsgruenden gesperrt. Es wurden keine Dateien geloescht. Bitte zuerst ein externes Backup erstellen und dessen Wiederherstellung pruefen. Einzelne Tools ueber ihre datenerhaltende Deinstallation verwalten. Siehe docs/audit/SECURITY_FINDINGS.md (SEC-001)." 12 100
+        ;;
+      8)
+        if show_setup_language_menu; then
+          echo -e "${GREEN}${TXT_LANGUAGE_CHANGED:-Die Setup-Sprache wurde aktualisiert.}${NC}"
+          read -p "${TXT_PRESS_ENTER:-Drücken Sie Enter...}"
+        fi
+        ;;
+      9)
+        return 0
+        ;;
+    esac
+  done
 }
 
 show_options_menu() {
-    while true; do
-        dialog --clear --backtitle "$APP_TITLE" \
-        --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
-        --title "${TXT_OPTIONS_MENU_TITLE:-OPTIONEN}" --menu "${TXT_OPTIONS_MENU_PROMPT:-Wählen Sie eine Verwaltungs- oder Konfigurationsfunktion:}" 40 110 24 \
-        "1" "${TXT_OPTIONS_1:-Sprache ändern}" \
-        "2" "${TXT_OPTIONS_14:-Sprachpakete verwalten}" \
-        "────────" "────────────── Sprache / Basis ──────────────" \
-        "3" "${TXT_OPTIONS_2:-Setup-Messwerte & Benchmarks bearbeiten}" \
-        "─────────" "────────── Messwerte / Workspace ────────────" \
-        "4" "${TXT_OPTIONS_7:-Benutzer-Workspace verwalten}" \
-        "5" "${TXT_OPTIONS_5:-Ollama Modellkatalog}" \
-        "6" "${TXT_OPTIONS_3:-Ollama Modelfile-Assistent}" \
-        "7" "${TXT_OPTIONS_4:-LLM-Builder Projektstruktur-Assistent}" \
-        "8" "${TXT_OPTIONS_8:-Custom GitHub-Quellen & Ollama-Builds}" \
-        "──────────" "───────── Quellen / Konfiguration ───────────" \
-        "9" "${TXT_OPTIONS_9:-LLMOps Plattform Konfiguration (.env Stack)}" \
-        "10" "${TXT_OPTIONS_10:-Huginn Konfiguration (.env Vorlage)}" \
-        "───────────" "──────────── Setup / Diagnose ───────────────" \
-        "11" "${TXT_OPTIONS_6:-Setup-Repository hart reparieren / auf GitHub main zurücksetzen}" \
-        "12" "${TXT_OPTIONS_12:-Nur auf Setup-Updates prüfen}" \
-        "13" "${TXT_OPTIONS_13:-Jetzt nur das Setup aktualisieren}" \
-        "────────────" "──────── Installation / Diagnose ────────────" \
-        "14" "${TXT_OPTIONS_11:-Installationsüberwachung konfigurieren}" \
-        "15" "${TXT_OPTIONS_15:-Tooldiagnose / letzter Fehlerbericht}" \
-        "16" "E-Mail-Diagnose konfigurieren / Testmail senden" \
-        "17" "Installationslauf-Diagnose erstellen" \
-        "18" "Abhängigkeiten-/Speicher-Snapshot erstellen" \
-        "19" "Verschluesselter ENV-Tresor / Zugangsdaten verwalten" \
-        "20" "Installations-Reset / alte Sperren freigeben (datenerhaltend)" \
-        "21" "Installationsstatus / Programmliste exportieren und wiederherstellen" 2> /tmp/options_choice
+  while true; do
+    dialog --clear --backtitle "$APP_TITLE" \
+      --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
+      --title "${TXT_OPTIONS_MENU_TITLE:-OPTIONEN}" --menu "${TXT_OPTIONS_MENU_PROMPT:-Wählen Sie eine Verwaltungs- oder Konfigurationsfunktion:}" 40 110 24 \
+      "1" "${TXT_OPTIONS_1:-Sprache ändern}" \
+      "2" "${TXT_OPTIONS_14:-Sprachpakete verwalten}" \
+      "────────" "────────────── Sprache / Basis ──────────────" \
+      "3" "${TXT_OPTIONS_2:-Setup-Messwerte & Benchmarks bearbeiten}" \
+      "─────────" "────────── Messwerte / Workspace ────────────" \
+      "4" "${TXT_OPTIONS_7:-Benutzer-Workspace verwalten}" \
+      "5" "${TXT_OPTIONS_5:-Ollama Modellkatalog}" \
+      "6" "${TXT_OPTIONS_3:-Ollama Modelfile-Assistent}" \
+      "7" "${TXT_OPTIONS_4:-LLM-Builder Projektstruktur-Assistent}" \
+      "8" "${TXT_OPTIONS_8:-Custom GitHub-Quellen & Ollama-Builds}" \
+      "──────────" "───────── Quellen / Konfiguration ───────────" \
+      "9" "${TXT_OPTIONS_9:-LLMOps Plattform Konfiguration (.env Stack)}" \
+      "10" "${TXT_OPTIONS_10:-Huginn Konfiguration (.env Vorlage)}" \
+      "───────────" "──────────── Setup / Diagnose ───────────────" \
+      "11" "${TXT_OPTIONS_6:-Setup-Repository hart reparieren / auf GitHub main zurücksetzen}" \
+      "12" "${TXT_OPTIONS_12:-Nur auf Setup-Updates prüfen}" \
+      "13" "${TXT_OPTIONS_13:-Jetzt nur das Setup aktualisieren}" \
+      "────────────" "──────── Installation / Diagnose ────────────" \
+      "14" "${TXT_OPTIONS_11:-Installationsüberwachung konfigurieren}" \
+      "15" "${TXT_OPTIONS_15:-Tooldiagnose / letzter Fehlerbericht}" \
+      "16" "E-Mail-Diagnose konfigurieren / Testmail senden" \
+      "17" "Installationslauf-Diagnose erstellen" \
+      "18" "Abhängigkeiten-/Speicher-Snapshot erstellen" \
+      "19" "Verschluesselter ENV-Tresor / Zugangsdaten verwalten" \
+      "20" "Installations-Reset / alte Sperren freigeben (datenerhaltend)" \
+      "21" "Installationsstatus / Programmliste exportieren und wiederherstellen" 2>/tmp/options_choice
 
-        if [ $? -ne 0 ]; then
-            return 0
+    if [ $? -ne 0 ]; then
+      return 0
+    fi
+
+    case "$(cat /tmp/options_choice)" in
+      21)
+        run_bash_script "$INSTALL_DIR/scripts/installation_inventory_menu.sh"
+        ;;
+      20)
+        run_bash_script "$INSTALL_DIR/scripts/installation_reset_menu.sh"
+        ;;
+      1)
+        if show_setup_language_menu; then
+          echo -e "${GREEN}${TXT_LANGUAGE_CHANGED:-Die Setup-Sprache wurde aktualisiert.}${NC}"
+          read -p "${TXT_PRESS_ENTER:-Drücken Sie Enter...}"
         fi
-
-        case "$(cat /tmp/options_choice)" in
-            21)
-                run_bash_script "$INSTALL_DIR/scripts/installation_inventory_menu.sh"
-                ;;
-            20)
-                run_bash_script "$INSTALL_DIR/scripts/installation_reset_menu.sh"
-                ;;
-            1)
-                if show_setup_language_menu; then
-                    echo -e "${GREEN}${TXT_LANGUAGE_CHANGED:-Die Setup-Sprache wurde aktualisiert.}${NC}"
-                    read -p "${TXT_PRESS_ENTER:-Drücken Sie Enter...}"
-                fi
-                ;;
-            2)
-                run_bash_script "$INSTALL_DIR/scripts/language_pack_manager.sh"
-                ;;
-            3)
-                show_metrics_editor
-                read -p "Setup-Messwerte aktualisiert. Drücken Sie Enter..."
-                ;;
-            4)
-                show_user_workspace_menu
-                ;;
-            5)
-                run_bash_script "$INSTALL_DIR/scripts/ollama_model_catalog_manager.sh"
-                ;;
-            6)
-                run_bash_script "$INSTALL_DIR/scripts/ollama_modelfile_assistant.sh"
-                ;;
-            7)
-                run_bash_script "$INSTALL_DIR/scripts/llm_builder_project_scaffold.sh"
-                ;;
-            8)
-                run_bash_script "$INSTALL_DIR/scripts/custom_source_manager.sh"
-                ;;
-            9)
-                run_bash_script "$INSTALL_DIR/scripts/llmops_platform_config_manager.sh"
-                ;;
-            10)
-                run_bash_script "$INSTALL_DIR/scripts/huginn_config_manager.sh"
-                ;;
-            11)
-                show_operation_intro \
-                "Gesicherter Setup-Abgleich mit GitHub main" \
-                "Tracking-Aenderungen werden erst nach verifizierter Sicherung und SYNC-Freigabe ersetzt. Lokale Branches und nicht kollidierende Zusatzdateien bleiben erhalten." \
-                "Meist nur wenige Minuten, abhängig von Netzwerk und Repo-Größe" \
-                "${MIN_FREE_GB_ABSOLUTE}-${MIN_FREE_GB_RECOMMENDED} GB" \
-                "Nutze diese Methode nur, wenn das normale Update nicht greift oder ein alter Setup-Stand festhaengt."
-                if run_bash_script "$INSTALL_DIR/scripts/auto_update_hard.sh" --dry-run; then
-                    read -r -p "Verifizierte Sicherung erstellen und lokale Tracking-Aenderungen ersetzen? Tippe SYNC: " confirm_repo_sync
-                    if [[ "$confirm_repo_sync" == SYNC ]]; then
-                        if run_bash_script "$INSTALL_DIR/scripts/auto_update_hard.sh" --apply --confirm-discard-local; then
-                            read -r -p "Gesicherter Setup-Abgleich abgeschlossen. Enter zum Neustart..."
-                            restart_setup_menu_after_update
-                        else
-                            echo 'Update fehlgeschlagen. Vorhandene Sicherungen bleiben erhalten; Log pruefen.'
-                            read -r -p "Enter zurueck..."
-                        fi
-                    fi
-                fi
-                ;;
-            12)
-                show_operation_intro \
-                "Nur auf Setup-Updates prüfen" \
-                "Prüft den lokalen Git-Stand gegen origin/main, ohne direkt Updates oder Systempakete zu installieren." \
-                "Wenige Sekunden bis ca. 1 Minute, je nach Netzwerk und Git-Status" \
-                "$(get_operation_storage_estimate_label "main_menu_update_check" "${MIN_FREE_GB_ABSOLUTE}-${MIN_FREE_GB_RECOMMENDED} GB")" \
-                "Dabei werden keine Paket-Updates installiert und keine lokalen Aenderungen automatisch verworfen."
-                begin_operation_measurement "main_menu_update_check" "Nur auf Setup-Updates prüfen"
-                run_bash_script "$INSTALL_DIR/scripts/check_setup_updates.sh"
-                if [ $? -eq 0 ]; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
-                read -p "Update-Prüfung abgeschlossen. Drücken Sie Enter..."
-                ;;
-            13)
-                local_update_rc=0
-                show_operation_intro \
-                "Jetzt nur das Setup aktualisieren" \
-                "Aktualisiert nur dieses Setup-Repository gegen origin/main. Betriebssystem und pnpm bleiben dabei unberuehrt." \
-                "Wenige Sekunden bis einige Minuten, je nach Netzwerk und Git-Stand" \
-                "$(get_operation_storage_estimate_label "main_menu_setup_only_update" "${MIN_FREE_GB_ABSOLUTE}-${MIN_FREE_GB_RECOMMENDED} GB")" \
-                "Bei lokalen Aenderungen im Setup wird das Repo-Update bewusst uebersprungen, damit nichts ueberschrieben wird."
-                begin_operation_measurement "main_menu_setup_only_update" "Nur das Setup aktualisieren"
-                run_bash_script "$INSTALL_DIR/scripts/update_setup_only.sh"
-                local_update_rc=$?
-                if [ "$local_update_rc" -eq 0 ]; then
-                    end_operation_measurement "success"
-                elif [ "$local_update_rc" -eq 2 ]; then
-                    end_operation_measurement "skipped"
-                else
-                    end_operation_measurement "failed"
-                fi
-                if [ "$local_update_rc" -eq 0 ]; then
-                    read -p "Setup-Update abgeschlossen. Drücken Sie Enter, um das Setup-Menue neu zu starten..."
-                    restart_setup_menu_after_update
-                fi
-                read -p "Setup-Update abgeschlossen. Drücken Sie Enter..."
-                ;;
-            14)
-                show_installation_monitoring_menu
-                ;;
-            15)
-                show_diagnostics_quick_menu
-                ;;
-            16)
-                run_bash_script "$INSTALL_DIR/scripts/mail_config_manager.sh"
-                ;;
-            17)
-                bash "$INSTALL_DIR/scripts/install_run_diagnostics.sh"
-                read -p "Installationslauf-Diagnose abgeschlossen. Drücken Sie Enter..."
-                ;;
-            18)
-                bash "$INSTALL_DIR/scripts/dependency_snapshot.sh"
-                read -p "Abhängigkeiten-/Speicher-Snapshot abgeschlossen. Drücken Sie Enter..."
-                ;;
-            19)
-                if command -v python3 >/dev/null 2>&1; then
-                    python3 "$INSTALL_DIR/scripts/security/env_vault.py" menu
-                else
-                    echo "Python 3.10+ fehlt. Siehe docs/ENV_VAULT.md."
-                fi
-                read -r -p "ENV-Tresor geschlossen. Druecken Sie Enter..."
-                ;;
-            ────────*)
-                continue
-                ;;
-        esac
-    done
+        ;;
+      2)
+        run_bash_script "$INSTALL_DIR/scripts/language_pack_manager.sh"
+        ;;
+      3)
+        show_metrics_editor
+        read -p "Setup-Messwerte aktualisiert. Drücken Sie Enter..."
+        ;;
+      4)
+        show_user_workspace_menu
+        ;;
+      5)
+        run_bash_script "$INSTALL_DIR/scripts/ollama_model_catalog_manager.sh"
+        ;;
+      6)
+        run_bash_script "$INSTALL_DIR/scripts/ollama_modelfile_assistant.sh"
+        ;;
+      7)
+        run_bash_script "$INSTALL_DIR/scripts/llm_builder_project_scaffold.sh"
+        ;;
+      8)
+        run_bash_script "$INSTALL_DIR/scripts/custom_source_manager.sh"
+        ;;
+      9)
+        run_bash_script "$INSTALL_DIR/scripts/llmops_platform_config_manager.sh"
+        ;;
+      10)
+        run_bash_script "$INSTALL_DIR/scripts/huginn_config_manager.sh"
+        ;;
+      11)
+        show_operation_intro \
+          "Gesicherter Setup-Abgleich mit GitHub main" \
+          "Tracking-Aenderungen werden erst nach verifizierter Sicherung und SYNC-Freigabe ersetzt. Lokale Branches und nicht kollidierende Zusatzdateien bleiben erhalten." \
+          "Meist nur wenige Minuten, abhängig von Netzwerk und Repo-Größe" \
+          "${MIN_FREE_GB_ABSOLUTE}-${MIN_FREE_GB_RECOMMENDED} GB" \
+          "Nutze diese Methode nur, wenn das normale Update nicht greift oder ein alter Setup-Stand festhaengt."
+        if run_bash_script "$INSTALL_DIR/scripts/auto_update_hard.sh" --dry-run; then
+          read -r -p "Verifizierte Sicherung erstellen und lokale Tracking-Aenderungen ersetzen? Tippe SYNC: " confirm_repo_sync
+          if [[ "$confirm_repo_sync" == SYNC ]]; then
+            if run_bash_script "$INSTALL_DIR/scripts/auto_update_hard.sh" --apply --confirm-discard-local; then
+              read -r -p "Gesicherter Setup-Abgleich abgeschlossen. Enter zum Neustart..."
+              restart_setup_menu_after_update
+            else
+              echo 'Update fehlgeschlagen. Vorhandene Sicherungen bleiben erhalten; Log pruefen.'
+              read -r -p "Enter zurueck..."
+            fi
+          fi
+        fi
+        ;;
+      12)
+        show_operation_intro \
+          "Nur auf Setup-Updates prüfen" \
+          "Prüft den lokalen Git-Stand gegen origin/main, ohne direkt Updates oder Systempakete zu installieren." \
+          "Wenige Sekunden bis ca. 1 Minute, je nach Netzwerk und Git-Status" \
+          "$(get_operation_storage_estimate_label "main_menu_update_check" "${MIN_FREE_GB_ABSOLUTE}-${MIN_FREE_GB_RECOMMENDED} GB")" \
+          "Dabei werden keine Paket-Updates installiert und keine lokalen Aenderungen automatisch verworfen."
+        begin_operation_measurement "main_menu_update_check" "Nur auf Setup-Updates prüfen"
+        run_bash_script "$INSTALL_DIR/scripts/check_setup_updates.sh"
+        if [ $? -eq 0 ]; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
+        read -p "Update-Prüfung abgeschlossen. Drücken Sie Enter..."
+        ;;
+      13)
+        local_update_rc=0
+        show_operation_intro \
+          "Jetzt nur das Setup aktualisieren" \
+          "Aktualisiert nur dieses Setup-Repository gegen origin/main. Betriebssystem und pnpm bleiben dabei unberuehrt." \
+          "Wenige Sekunden bis einige Minuten, je nach Netzwerk und Git-Stand" \
+          "$(get_operation_storage_estimate_label "main_menu_setup_only_update" "${MIN_FREE_GB_ABSOLUTE}-${MIN_FREE_GB_RECOMMENDED} GB")" \
+          "Bei lokalen Aenderungen im Setup wird das Repo-Update bewusst uebersprungen, damit nichts ueberschrieben wird."
+        begin_operation_measurement "main_menu_setup_only_update" "Nur das Setup aktualisieren"
+        run_bash_script "$INSTALL_DIR/scripts/update_setup_only.sh"
+        local_update_rc=$?
+        if [ "$local_update_rc" -eq 0 ]; then
+          end_operation_measurement "success"
+        elif [ "$local_update_rc" -eq 2 ]; then
+          end_operation_measurement "skipped"
+        else
+          end_operation_measurement "failed"
+        fi
+        if [ "$local_update_rc" -eq 0 ]; then
+          read -p "Setup-Update abgeschlossen. Drücken Sie Enter, um das Setup-Menue neu zu starten..."
+          restart_setup_menu_after_update
+        fi
+        read -p "Setup-Update abgeschlossen. Drücken Sie Enter..."
+        ;;
+      14)
+        show_installation_monitoring_menu
+        ;;
+      15)
+        show_diagnostics_quick_menu
+        ;;
+      16)
+        run_bash_script "$INSTALL_DIR/scripts/mail_config_manager.sh"
+        ;;
+      17)
+        bash "$INSTALL_DIR/scripts/install_run_diagnostics.sh"
+        read -p "Installationslauf-Diagnose abgeschlossen. Drücken Sie Enter..."
+        ;;
+      18)
+        bash "$INSTALL_DIR/scripts/dependency_snapshot.sh"
+        read -p "Abhängigkeiten-/Speicher-Snapshot abgeschlossen. Drücken Sie Enter..."
+        ;;
+      19)
+        if command -v python3 >/dev/null 2>&1; then
+          python3 "$INSTALL_DIR/scripts/security/env_vault.py" menu
+        else
+          echo "Python 3.10+ fehlt. Siehe docs/ENV_VAULT.md."
+        fi
+        read -r -p "ENV-Tresor geschlossen. Druecken Sie Enter..."
+        ;;
+      ────────*)
+        continue
+        ;;
+    esac
+  done
 }
 
 restart_setup_menu_after_update() {
-    echo
-    echo -e "${YELLOW}Das Setup-Menue wird jetzt neu gestartet, damit keine alte geladene Bash-Version weiterlaeuft.${NC}"
-    echo -e "${YELLOW}Falls du danach alte Inhalte siehst, pruefe bitte, ob noch ein zweites Setup-Terminal offen ist.${NC}"
-    sleep 2
-    exec bash "$INSTALL_DIR/setup_ultimate.sh"
+  echo
+  echo -e "${YELLOW}Das Setup-Menue wird jetzt neu gestartet, damit keine alte geladene Bash-Version weiterlaeuft.${NC}"
+  echo -e "${YELLOW}Falls du danach alte Inhalte siehst, pruefe bitte, ob noch ein zweites Setup-Terminal offen ist.${NC}"
+  sleep 2
+  exec bash "$INSTALL_DIR/setup_ultimate.sh"
 }
 
 append_unique_line() {
-    local file_path="$1"
-    local value="$2"
+  local file_path="$1"
+  local value="$2"
 
-    touch "$file_path"
-    if ! grep -Fxq "$value" "$file_path"; then
-        echo "$value" >> "$file_path"
-    fi
+  touch "$file_path"
+  if ! grep -Fxq "$value" "$file_path"; then
+    echo "$value" >>"$file_path"
+  fi
 }
 
 remove_exact_line() {
-    local file_path="$1"
-    local value="$2"
+  local file_path="$1"
+  local value="$2"
 
-    [ -f "$file_path" ] || return 0
-    sed -i "\|^${value}\$|d" "$file_path"
+  [ -f "$file_path" ] || return 0
+  sed -i "\|^${value}\$|d" "$file_path"
 }
 
 is_allowed_value() {
-    local candidate="$1"
-    shift
-    local allowed
+  local candidate="$1"
+  shift
+  local allowed
 
-    for allowed in "$@"; do
-        if [ "$candidate" = "$allowed" ]; then
-            return 0
-        fi
-    done
+  for allowed in "$@"; do
+    if [ "$candidate" = "$allowed" ]; then
+      return 0
+    fi
+  done
 
-    return 1
+  return 1
 }
 
 normalize_status_file() {
-    local file_path="$1"
-    shift
-    local allowed_values=("$@")
-    local tmp_file
-    local backup_file
-    local entry_name
-    local cleaned_name
-    local has_changes=0
-    declare -A seen_values
+  local file_path="$1"
+  shift
+  local allowed_values=("$@")
+  local tmp_file
+  local backup_file
+  local entry_name
+  local cleaned_name
+  local has_changes=0
+  declare -A seen_values
 
-    mkdir -p "$(dirname "$file_path")"
-    touch "$file_path"
-    tmp_file="$(mktemp)"
+  mkdir -p "$(dirname "$file_path")"
+  touch "$file_path"
+  tmp_file="$(mktemp)"
 
-    while IFS= read -r entry_name || [ -n "$entry_name" ]; do
-        cleaned_name="${entry_name%$'\r'}"
-        cleaned_name="${cleaned_name//\"/}"
+  while IFS= read -r entry_name || [ -n "$entry_name" ]; do
+    cleaned_name="${entry_name%$'\r'}"
+    cleaned_name="${cleaned_name//\"/}"
 
-        if [ "$cleaned_name" != "$entry_name" ]; then
-            has_changes=1
-        fi
-
-        if [ -z "$cleaned_name" ]; then
-            [ -n "$entry_name" ] && has_changes=1
-            continue
-        fi
-
-        if ! is_allowed_value "$cleaned_name" "${allowed_values[@]}"; then
-            has_changes=1
-            continue
-        fi
-
-        if [[ -n "${seen_values[$cleaned_name]:-}" ]]; then
-            has_changes=1
-            continue
-        fi
-
-        seen_values["$cleaned_name"]=1
-        printf '%s\n' "$cleaned_name" >> "$tmp_file"
-    done < "$file_path"
-
-    if ! cmp -s "$file_path" "$tmp_file"; then
-        has_changes=1
+    if [ "$cleaned_name" != "$entry_name" ]; then
+      has_changes=1
     fi
 
-    if [ "$has_changes" -eq 1 ]; then
-        backup_file="${file_path}.bak.$(date +%Y%m%d_%H%M%S)"
-        cp "$file_path" "$backup_file" 2>/dev/null || true
-        mv "$tmp_file" "$file_path"
-        echo -e "${YELLOW}Hinweis: Statusdatei $(basename "$file_path") wurde bereinigt. Sicherung: $backup_file${NC}"
-    else
-        rm -f "$tmp_file"
+    if [ -z "$cleaned_name" ]; then
+      [ -n "$entry_name" ] && has_changes=1
+      continue
     fi
+
+    if ! is_allowed_value "$cleaned_name" "${allowed_values[@]}"; then
+      has_changes=1
+      continue
+    fi
+
+    if [[ -n "${seen_values[$cleaned_name]:-}" ]]; then
+      has_changes=1
+      continue
+    fi
+
+    seen_values["$cleaned_name"]=1
+    printf '%s\n' "$cleaned_name" >>"$tmp_file"
+  done <"$file_path"
+
+  if ! cmp -s "$file_path" "$tmp_file"; then
+    has_changes=1
+  fi
+
+  if [ "$has_changes" -eq 1 ]; then
+    backup_file="${file_path}.bak.$(date +%Y%m%d_%H%M%S)"
+    cp "$file_path" "$backup_file" 2>/dev/null || true
+    mv "$tmp_file" "$file_path"
+    echo -e "${YELLOW}Hinweis: Statusdatei $(basename "$file_path") wurde bereinigt. Sicherung: $backup_file${NC}"
+  else
+    rm -f "$tmp_file"
+  fi
 }
 
 load_installed_map() {
-    local file_path="$1"
-    local map_name="$2"
-    local entry_name
-    local -n target_map="$map_name"
+  local file_path="$1"
+  local map_name="$2"
+  local entry_name
+  local -n target_map="$map_name"
 
-    [ -f "$file_path" ] || return 0
+  [ -f "$file_path" ] || return 0
 
-    while IFS= read -r entry_name || [ -n "$entry_name" ]; do
-        entry_name="${entry_name%$'\r'}"
-        entry_name="${entry_name//\"/}"
-        [ -n "$entry_name" ] || continue
-        target_map["$entry_name"]=1
-    done < "$file_path"
+  while IFS= read -r entry_name || [ -n "$entry_name" ]; do
+    entry_name="${entry_name%$'\r'}"
+    entry_name="${entry_name//\"/}"
+    [ -n "$entry_name" ] || continue
+    target_map["$entry_name"]=1
+  done <"$file_path"
 }
 
 selection_contains() {
-    local needle="$1"
-    shift
-    local item
+  local needle="$1"
+  shift
+  local item
 
-    for item in "$@"; do
-        if [ "$item" = "$needle" ]; then
-            return 0
-        fi
-    done
+  for item in "$@"; do
+    if [ "$item" = "$needle" ]; then
+      return 0
+    fi
+  done
 
-    return 1
+  return 1
 }
 
 run_ordered_tool_actions() {
-    local context_label="$1"
-    local -n uninstall_queue_ref="$2"
-    local -n install_queue_ref="$3"
-    local tool_key
-    local step_rc
-    local upcoming_preview
-    local -a remaining_tools=()
-    local index
+  local context_label="$1"
+  local -n uninstall_queue_ref="$2"
+  local -n install_queue_ref="$3"
+  local tool_key
+  local step_rc
+  local upcoming_preview
+  local -a remaining_tools=()
+  local index
 
-    if [ "${#uninstall_queue_ref[@]}" -eq 0 ] && [ "${#install_queue_ref[@]}" -eq 0 ]; then
-        echo -e "${YELLOW}Keine Tool-Aenderungen fuer ${context_label} ausgewaehlt.${NC}"
-        return 0
-    fi
-
-    show_tool_action_plan_intro \
-        "$context_label" \
-        "${uninstall_queue_ref[*]}" \
-        "${install_queue_ref[*]}"
-
-    for index in "${!uninstall_queue_ref[@]}"; do
-        tool_key="${uninstall_queue_ref[$index]}"
-        [ -n "$tool_key" ] || continue
-        remaining_tools=("${uninstall_queue_ref[@]:$((index + 1))}" "${install_queue_ref[@]}")
-        upcoming_preview="$(format_tool_queue_preview 6 "${remaining_tools[@]}")"
-        confirm_tool_batch_step "Deinstallation" "$tool_key" "$upcoming_preview"
-        step_rc=$?
-        if [ "$step_rc" -eq 2 ]; then
-            continue
-        elif [ "$step_rc" -ne 0 ]; then
-            echo -e "${YELLOW}Batch wurde vor '${tool_key}' abgebrochen. Rueckkehr ins Setup.${NC}"
-            return 1
-        fi
-        TOOL_BATCH_UPCOMING_PREVIEW="$upcoming_preview"
-        uninstall_tool "$tool_key"
-        TOOL_BATCH_UPCOMING_PREVIEW=""
-        if [ "${TOOL_BATCH_ABORT_REQUESTED:-0}" = "1" ]; then
-            echo -e "${YELLOW}Batch wurde auf Wunsch nach '${tool_key}' abgebrochen. Rueckkehr ins Setup.${NC}"
-            return 1
-        fi
-    done
-
-    for index in "${!install_queue_ref[@]}"; do
-        tool_key="${install_queue_ref[$index]}"
-        [ -n "$tool_key" ] || continue
-        remaining_tools=("${install_queue_ref[@]:$((index + 1))}")
-        upcoming_preview="$(format_tool_queue_preview 6 "${remaining_tools[@]}")"
-        confirm_tool_batch_step "Installation" "$tool_key" "$upcoming_preview"
-        step_rc=$?
-        if [ "$step_rc" -eq 2 ]; then
-            continue
-        elif [ "$step_rc" -ne 0 ]; then
-            echo -e "${YELLOW}Batch wurde vor '${tool_key}' abgebrochen. Rueckkehr ins Setup.${NC}"
-            return 1
-        fi
-        TOOL_BATCH_UPCOMING_PREVIEW="$upcoming_preview"
-        install_tool "$tool_key"
-        TOOL_BATCH_UPCOMING_PREVIEW=""
-        if [ "${TOOL_BATCH_ABORT_REQUESTED:-0}" = "1" ]; then
-            echo -e "${YELLOW}Batch wurde auf Wunsch nach '${tool_key}' abgebrochen. Rueckkehr ins Setup.${NC}"
-            return 1
-        fi
-    done
-
+  if [ "${#uninstall_queue_ref[@]}" -eq 0 ] && [ "${#install_queue_ref[@]}" -eq 0 ]; then
+    echo -e "${YELLOW}Keine Tool-Aenderungen fuer ${context_label} ausgewaehlt.${NC}"
     return 0
+  fi
+
+  show_tool_action_plan_intro \
+    "$context_label" \
+    "${uninstall_queue_ref[*]}" \
+    "${install_queue_ref[*]}"
+
+  for index in "${!uninstall_queue_ref[@]}"; do
+    tool_key="${uninstall_queue_ref[$index]}"
+    [ -n "$tool_key" ] || continue
+    remaining_tools=("${uninstall_queue_ref[@]:$((index + 1))}" "${install_queue_ref[@]}")
+    upcoming_preview="$(format_tool_queue_preview 6 "${remaining_tools[@]}")"
+    confirm_tool_batch_step "Deinstallation" "$tool_key" "$upcoming_preview"
+    step_rc=$?
+    if [ "$step_rc" -eq 2 ]; then
+      continue
+    elif [ "$step_rc" -ne 0 ]; then
+      echo -e "${YELLOW}Batch wurde vor '${tool_key}' abgebrochen. Rueckkehr ins Setup.${NC}"
+      return 1
+    fi
+    TOOL_BATCH_UPCOMING_PREVIEW="$upcoming_preview"
+    uninstall_tool "$tool_key"
+    TOOL_BATCH_UPCOMING_PREVIEW=""
+    if [ "${TOOL_BATCH_ABORT_REQUESTED:-0}" = "1" ]; then
+      echo -e "${YELLOW}Batch wurde auf Wunsch nach '${tool_key}' abgebrochen. Rueckkehr ins Setup.${NC}"
+      return 1
+    fi
+  done
+
+  for index in "${!install_queue_ref[@]}"; do
+    tool_key="${install_queue_ref[$index]}"
+    [ -n "$tool_key" ] || continue
+    remaining_tools=("${install_queue_ref[@]:$((index + 1))}")
+    upcoming_preview="$(format_tool_queue_preview 6 "${remaining_tools[@]}")"
+    confirm_tool_batch_step "Installation" "$tool_key" "$upcoming_preview"
+    step_rc=$?
+    if [ "$step_rc" -eq 2 ]; then
+      continue
+    elif [ "$step_rc" -ne 0 ]; then
+      echo -e "${YELLOW}Batch wurde vor '${tool_key}' abgebrochen. Rueckkehr ins Setup.${NC}"
+      return 1
+    fi
+    TOOL_BATCH_UPCOMING_PREVIEW="$upcoming_preview"
+    install_tool "$tool_key"
+    TOOL_BATCH_UPCOMING_PREVIEW=""
+    if [ "${TOOL_BATCH_ABORT_REQUESTED:-0}" = "1" ]; then
+      echo -e "${YELLOW}Batch wurde auf Wunsch nach '${tool_key}' abgebrochen. Rueckkehr ins Setup.${NC}"
+      return 1
+    fi
+  done
+
+  return 0
 }
 
 is_base_install_ready() {
-    command -v node >/dev/null 2>&1 || return 1
-    command -v pnpm >/dev/null 2>&1 || return 1
-    command -v ollama >/dev/null 2>&1 || return 1
-    [ -d /opt/openclaw ] || return 1
-    [ -f /opt/openclaw/package.json ] || return 1
-    [ -d /opt/openclaw/node_modules ] || return 1
-    return 0
+  command -v node >/dev/null 2>&1 || return 1
+  command -v pnpm >/dev/null 2>&1 || return 1
+  command -v ollama >/dev/null 2>&1 || return 1
+  [ -d /opt/openclaw ] || return 1
+  [ -f /opt/openclaw/package.json ] || return 1
+  [ -d /opt/openclaw/node_modules ] || return 1
+  return 0
 }
 
 sync_ollama_tool_status() {
-    local binary status_file
-    OLLAMA_STATUS_CHANGED=0
-    binary="$(command -v ollama 2>/dev/null || true)"
-    if [ -n "$binary" ] && [ -f "$binary" ] && [ -x "$binary" ]; then
-        if ! grep -Fxq "Ollama" "$TOOL_STATUS_FILE" 2>/dev/null; then
-            append_unique_line "$TOOL_STATUS_FILE" "Ollama"
-            OLLAMA_STATUS_CHANGED=1
-        fi
-    else
-        # Clear both status locations, otherwise legacy migration can restore a stale entry.
-        for status_file in "$TOOL_STATUS_FILE" "$USER_STATUS_DIR/installed_tools.txt"; do
-            if grep -Fxq "Ollama" "$status_file" 2>/dev/null; then
-                remove_exact_line "$status_file" "Ollama"
-                OLLAMA_STATUS_CHANGED=1
-            fi
-        done
+  local binary status_file
+  OLLAMA_STATUS_CHANGED=0
+  binary="$(command -v ollama 2>/dev/null || true)"
+  if [ -n "$binary" ] && [ -f "$binary" ] && [ -x "$binary" ]; then
+    if ! grep -Fxq "Ollama" "$TOOL_STATUS_FILE" 2>/dev/null; then
+      append_unique_line "$TOOL_STATUS_FILE" "Ollama"
+      OLLAMA_STATUS_CHANGED=1
     fi
+  else
+    # Clear both status locations, otherwise legacy migration can restore a stale entry.
+    for status_file in "$TOOL_STATUS_FILE" "$USER_STATUS_DIR/installed_tools.txt"; do
+      if grep -Fxq "Ollama" "$status_file" 2>/dev/null; then
+        remove_exact_line "$status_file" "Ollama"
+        OLLAMA_STATUS_CHANGED=1
+      fi
+    done
+  fi
 }
 
 sync_core_tool_status() {
-    local status_changed=0
-    local tool_key
-    local install_path
+  local status_changed=0
+  local tool_key
+  local install_path
 
-    ensure_user_workspace
-    normalize_status_file "$TOOL_STATUS_FILE" "${TOOL_KEYS[@]}"
+  ensure_user_workspace
+  normalize_status_file "$TOOL_STATUS_FILE" "${TOOL_KEYS[@]}"
 
-    native_tool_sync_all "$USER_WORKSPACE_DIR" || return 1
-    sync_ollama_tool_status
-    if [ "$OLLAMA_STATUS_CHANGED" -eq 1 ]; then status_changed=1; fi
+  native_tool_sync_all "$USER_WORKSPACE_DIR" || return 1
+  sync_ollama_tool_status
+  if [ "$OLLAMA_STATUS_CHANGED" -eq 1 ]; then status_changed=1; fi
 
-    if [ -d /opt/openclaw ] && [ -f /opt/openclaw/package.json ]; then
-        if ! grep -Fxq "OpenClaw" "$TOOL_STATUS_FILE" 2>/dev/null; then
-            append_unique_line "$TOOL_STATUS_FILE" "OpenClaw"
-            status_changed=1
-        fi
+  if [ -d /opt/openclaw ] && [ -f /opt/openclaw/package.json ]; then
+    if ! grep -Fxq "OpenClaw" "$TOOL_STATUS_FILE" 2>/dev/null; then
+      append_unique_line "$TOOL_STATUS_FILE" "OpenClaw"
+      status_changed=1
     fi
+  fi
 
-    if [ -d /opt/huginn ]; then
-        if ! grep -Fxq "Huginn" "$TOOL_STATUS_FILE" 2>/dev/null; then
-            append_unique_line "$TOOL_STATUS_FILE" "Huginn"
-            status_changed=1
-        fi
+  if [ -d /opt/huginn ]; then
+    if ! grep -Fxq "Huginn" "$TOOL_STATUS_FILE" 2>/dev/null; then
+      append_unique_line "$TOOL_STATUS_FILE" "Huginn"
+      status_changed=1
     fi
+  fi
 
-    if [ -d /opt/clawhub-cli ]; then
-        if ! grep -Fxq "Clawhub_CLI" "$TOOL_STATUS_FILE" 2>/dev/null; then
-            append_unique_line "$TOOL_STATUS_FILE" "Clawhub_CLI"
-            status_changed=1
-        fi
+  if [ -d /opt/clawhub-cli ]; then
+    if ! grep -Fxq "Clawhub_CLI" "$TOOL_STATUS_FILE" 2>/dev/null; then
+      append_unique_line "$TOOL_STATUS_FILE" "Clawhub_CLI"
+      status_changed=1
     fi
+  fi
 
-    # Reparatur fuer Tools, die real unter /opt vorhanden sind, aber durch
-    # alte Installer/abgebrochene Menues noch nicht im Statusfile stehen. Ohne
-    # diese Nachsynchronisierung kann ein Abwaehlen im Tool-Menue keine
-    # Deinstallation planen, weil das Setup das Tool nicht als installiert kennt.
-    while IFS='|' read -r tool_key install_path; do
-        [ -n "$tool_key" ] || continue
-        [ -n "$install_path" ] || continue
-        if [ -e "$install_path" ] && ! grep -Fxq "$tool_key" "$TOOL_STATUS_FILE" 2>/dev/null; then
-            append_unique_line "$TOOL_STATUS_FILE" "$tool_key"
-            status_changed=1
-        fi
-    done <<'EOF'
+  # Reparatur fuer Tools, die real unter /opt vorhanden sind, aber durch
+  # alte Installer/abgebrochene Menues noch nicht im Statusfile stehen. Ohne
+  # diese Nachsynchronisierung kann ein Abwaehlen im Tool-Menue keine
+  # Deinstallation planen, weil das Setup das Tool nicht als installiert kennt.
+  while IFS='|' read -r tool_key install_path; do
+    [ -n "$tool_key" ] || continue
+    [ -n "$install_path" ] || continue
+    if [ -e "$install_path" ] && ! grep -Fxq "$tool_key" "$TOOL_STATUS_FILE" 2>/dev/null; then
+      append_unique_line "$TOOL_STATUS_FILE" "$tool_key"
+      status_changed=1
+    fi
+  done <<'EOF'
 AutoGPT|/opt/autogpt/autogpt_platform
 Airbyte|/opt/airbyte
 Clawhub|/opt/clawhub
@@ -2701,26 +2701,26 @@ Activepieces|/opt/activepieces
 Apache_Tika|/opt/apache_tika
 EOF
 
-    if [ "$status_changed" -eq 1 ]; then
-        echo -e "${BLUE}Hinweis: Der Tool-Status wurde mit dem System abgeglichen; veraltete Ollama-Markierungen wurden gegebenenfalls entfernt.${NC}"
-    fi
+  if [ "$status_changed" -eq 1 ]; then
+    echo -e "${BLUE}Hinweis: Der Tool-Status wurde mit dem System abgeglichen; veraltete Ollama-Markierungen wurden gegebenenfalls entfernt.${NC}"
+  fi
 }
 
 run_base_install_if_needed() {
-    if is_base_install_ready; then
-        echo -e "${GREEN}Basis-Installation bereits vorhanden. Überspringe erneuten OpenClaw-Build.${NC}"
-        echo -e "${YELLOW}Hinweis: Falls Sie bewusst neu bauen möchten, führen Sie scripts/base_install.sh manuell aus.${NC}"
-        return 0
-    fi
+  if is_base_install_ready; then
+    echo -e "${GREEN}Basis-Installation bereits vorhanden. Überspringe erneuten OpenClaw-Build.${NC}"
+    echo -e "${YELLOW}Hinweis: Falls Sie bewusst neu bauen möchten, führen Sie scripts/base_install.sh manuell aus.${NC}"
+    return 0
+  fi
 
-    echo -e "${BLUE}Starte Basis-Installation. Der OpenClaw-Build kann mehrere Minuten dauern.${NC}"
-    run_bash_script "$INSTALL_DIR/scripts/base_install.sh"
+  echo -e "${BLUE}Starte Basis-Installation. Der OpenClaw-Build kann mehrere Minuten dauern.${NC}"
+  run_bash_script "$INSTALL_DIR/scripts/base_install.sh"
 }
 
 # Check dependencies
 if ! command -v dialog >/dev/null 2>&1; then
-    echo -e "${YELLOW}Installiere dialog für die Menüführung...${NC}"
-    sudo apt update && sudo apt install -y dialog
+  echo -e "${YELLOW}Installiere dialog für die Menüführung...${NC}"
+  sudo apt update && sudo apt install -y dialog
 fi
 
 # --- Funktionen für Profil-Management ---
@@ -2798,129 +2798,129 @@ PROFILES["Repo_Maintainer"]="Maintainer-Profil für GitHub-Repo-Pflege, lokale C
 
 # Funktion zum Installieren eines Profils
 install_profile() {
-    local PROFILE_KEY="$1"
-    show_profile_action_intro "$PROFILE_KEY" "installieren" "install"
-    begin_operation_measurement "profile_install_${PROFILE_KEY}" "Profil installieren: ${PROFILE_KEY}"
-    echo -e "${BLUE}Installiere Profil: ${PROFILE_KEY}...${NC}"
-    run_bash_script "$INSTALL_DIR/scripts/profiles/${PROFILE_KEY}_install.sh"
-    if [ $? -eq 0 ]; then
-        append_unique_line "$PROFILE_STATUS_FILE" "$PROFILE_KEY"
-        end_operation_measurement "success"
-        echo -e "${GREEN}Profil \'$PROFILE_KEY\' erfolgreich installiert.${NC}"
-    else
-        end_operation_measurement "failed"
-        echo -e "${RED}Fehler bei der Installation von Profil \'$PROFILE_KEY\'.${NC}"
-    fi
-    handle_manual_profile_post_action "$PROFILE_KEY" "Profil-Installation"
+  local PROFILE_KEY="$1"
+  show_profile_action_intro "$PROFILE_KEY" "installieren" "install"
+  begin_operation_measurement "profile_install_${PROFILE_KEY}" "Profil installieren: ${PROFILE_KEY}"
+  echo -e "${BLUE}Installiere Profil: ${PROFILE_KEY}...${NC}"
+  run_bash_script "$INSTALL_DIR/scripts/profiles/${PROFILE_KEY}_install.sh"
+  if [ $? -eq 0 ]; then
+    append_unique_line "$PROFILE_STATUS_FILE" "$PROFILE_KEY"
+    end_operation_measurement "success"
+    echo -e "${GREEN}Profil \'$PROFILE_KEY\' erfolgreich installiert.${NC}"
+  else
+    end_operation_measurement "failed"
+    echo -e "${RED}Fehler bei der Installation von Profil \'$PROFILE_KEY\'.${NC}"
+  fi
+  handle_manual_profile_post_action "$PROFILE_KEY" "Profil-Installation"
 }
 
 # Funktion zum Deinstallieren eines Profils
 uninstall_profile() {
-    local PROFILE_KEY="$1"
-    show_profile_action_intro "$PROFILE_KEY" "deinstallieren" "uninstall"
-    begin_operation_measurement "profile_uninstall_${PROFILE_KEY}" "Profil deinstallieren: ${PROFILE_KEY}"
-    echo -e "${BLUE}Deinstalliere Profil: ${PROFILE_KEY}...${NC}"
-    run_bash_script "$INSTALL_DIR/scripts/profiles/${PROFILE_KEY}_uninstall.sh"
-    if [ $? -eq 0 ]; then
-        remove_exact_line "$PROFILE_STATUS_FILE" "$PROFILE_KEY"
-        end_operation_measurement "success"
-        echo -e "${GREEN}Profil \'$PROFILE_KEY\' erfolgreich deinstalliert.${NC}"
-    else
-        end_operation_measurement "failed"
-        echo -e "${RED}Fehler bei der Deinstallation von Profil \'$PROFILE_KEY\'.${NC}"
-    fi
-    handle_manual_profile_post_action "$PROFILE_KEY" "Profil-Deinstallation"
+  local PROFILE_KEY="$1"
+  show_profile_action_intro "$PROFILE_KEY" "deinstallieren" "uninstall"
+  begin_operation_measurement "profile_uninstall_${PROFILE_KEY}" "Profil deinstallieren: ${PROFILE_KEY}"
+  echo -e "${BLUE}Deinstalliere Profil: ${PROFILE_KEY}...${NC}"
+  run_bash_script "$INSTALL_DIR/scripts/profiles/${PROFILE_KEY}_uninstall.sh"
+  if [ $? -eq 0 ]; then
+    remove_exact_line "$PROFILE_STATUS_FILE" "$PROFILE_KEY"
+    end_operation_measurement "success"
+    echo -e "${GREEN}Profil \'$PROFILE_KEY\' erfolgreich deinstalliert.${NC}"
+  else
+    end_operation_measurement "failed"
+    echo -e "${RED}Fehler bei der Deinstallation von Profil \'$PROFILE_KEY\'.${NC}"
+  fi
+  handle_manual_profile_post_action "$PROFILE_KEY" "Profil-Deinstallation"
 }
 
 # Funktion zum Anzeigen des Profil-Management-Menüs
 show_profile_management_menu() {
-    PROFILE_FLOW_ABORT_REQUESTED=0
-    ensure_user_workspace
-    normalize_status_file "$PROFILE_STATUS_FILE" "${PROFILE_KEYS[@]}"
+  PROFILE_FLOW_ABORT_REQUESTED=0
+  ensure_user_workspace
+  normalize_status_file "$PROFILE_STATUS_FILE" "${PROFILE_KEYS[@]}"
 
-    if ! is_base_install_ready; then
-        dialog --clear --backtitle "$APP_TITLE" \
-        --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
-        --title "BASIS-INSTALLATION FEHLT" \
-        --msgbox "Hinweis: Ollama und/oder OpenClaw sind aktuell noch nicht vollständig installiert.\n\nDie Profilverwaltung kann trotzdem geöffnet werden. Einige Profile benötigen für die volle Funktion aber die Basis-Installation.\n\nEmpfehlung: Öffne zuerst die Basis-Installation, wenn Profile direkt mit Ollama/OpenClaw arbeiten sollen.\n\nDrücke Enter, um die Profilverwaltung trotzdem zu öffnen." 14 86
-        reset_terminal_display
-    fi
+  if ! is_base_install_ready; then
+    dialog --clear --backtitle "$APP_TITLE" \
+      --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
+      --title "BASIS-INSTALLATION FEHLT" \
+      --msgbox "Hinweis: Ollama und/oder OpenClaw sind aktuell noch nicht vollständig installiert.\n\nDie Profilverwaltung kann trotzdem geöffnet werden. Einige Profile benötigen für die volle Funktion aber die Basis-Installation.\n\nEmpfehlung: Öffne zuerst die Basis-Installation, wenn Profile direkt mit Ollama/OpenClaw arbeiten sollen.\n\nDrücke Enter, um die Profilverwaltung trotzdem zu öffnen." 14 86
+    reset_terminal_display
+  fi
 
-    declare -A INSTALLED_PROFILES_MAP
-    load_installed_map "$PROFILE_STATUS_FILE" INSTALLED_PROFILES_MAP
-    local profile_menu_total_summary
-    local profile_menu_prompt
-    local overview_metrics_enabled="false"
-    if overview_metrics_allowed_for_count "${#PROFILE_KEYS[@]}"; then
-        overview_metrics_enabled="true"
+  declare -A INSTALLED_PROFILES_MAP
+  load_installed_map "$PROFILE_STATUS_FILE" INSTALLED_PROFILES_MAP
+  local profile_menu_total_summary
+  local profile_menu_prompt
+  local overview_metrics_enabled="false"
+  if overview_metrics_allowed_for_count "${#PROFILE_KEYS[@]}"; then
+    overview_metrics_enabled="true"
+  fi
+  if [ "$overview_metrics_enabled" = "true" ]; then
+    profile_menu_total_summary="$(summarize_operation_metrics_with_missing_plain "profile_install" "${PROFILE_KEYS[@]}")"
+    profile_menu_prompt="Wählen Sie ein Profil.\n\nSpalten: Status | Zeit hh:mm:ss | Gesamtspeicher MB | Beschreibung\nFehlende Werte: --:--:-- | --.- MB\nErmittelte Summe aller Profil-Installationen: ${profile_menu_total_summary}\n\nIn der Detailansicht können Gesamtprofil oder Einzeltools verwaltet werden:"
+  else
+    profile_menu_total_summary=""
+    profile_menu_prompt="Wählen Sie ein Profil.\n\nZeit- und Speicherwerte sind deaktiviert oder wegen der großen Liste automatisch im Schnellmodus ausgeblendet.\n\nIn der Detailansicht können Gesamtprofil oder Einzeltools verwaltet werden:"
+  fi
+
+  PROFILE_MENU_OPTIONS=()
+  for profile_key in "${PROFILE_KEYS[@]}"; do
+    local profile_status_text="Nicht installiert"
+    local profile_metric_summary
+    local profile_storage_summary
+    if [ -n "$profile_key" ] && [ "${INSTALLED_PROFILES_MAP[$profile_key]:-}" = "1" ]; then
+      profile_status_text="Installiert"
     fi
     if [ "$overview_metrics_enabled" = "true" ]; then
-        profile_menu_total_summary="$(summarize_operation_metrics_with_missing_plain "profile_install" "${PROFILE_KEYS[@]}")"
-        profile_menu_prompt="Wählen Sie ein Profil.\n\nSpalten: Status | Zeit hh:mm:ss | Gesamtspeicher MB | Beschreibung\nFehlende Werte: --:--:-- | --.- MB\nErmittelte Summe aller Profil-Installationen: ${profile_menu_total_summary}\n\nIn der Detailansicht können Gesamtprofil oder Einzeltools verwaltet werden:"
+      profile_metric_summary="$(get_operation_metric_summary_plain "profile_install_${profile_key}")"
+      PROFILE_MENU_OPTIONS+=("$profile_key" "[$profile_status_text] ${profile_metric_summary} | ${PROFILES[$profile_key]}")
     else
-        profile_menu_total_summary=""
-        profile_menu_prompt="Wählen Sie ein Profil.\n\nZeit- und Speicherwerte sind deaktiviert oder wegen der großen Liste automatisch im Schnellmodus ausgeblendet.\n\nIn der Detailansicht können Gesamtprofil oder Einzeltools verwaltet werden:"
+      PROFILE_MENU_OPTIONS+=("$profile_key" "[$profile_status_text] ${PROFILES[$profile_key]}")
+    fi
+  done
+
+  while true; do
+    dialog --clear --backtitle "$APP_TITLE" \
+      --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
+      --title "PROFIL-MANAGEMENT" --menu "$profile_menu_prompt" 30 120 18 \
+      "${PROFILE_MENU_OPTIONS[@]}" \
+      "ZURUECK" "${TXT_BACK_ITEM:-Zurück} zum Profil-Hub" 2>/tmp/profile_selection
+
+    if [ $? -ne 0 ]; then
+      return 0
     fi
 
+    local selected_profile
+    selected_profile="$(cat /tmp/profile_selection)"
+
+    if [ "$selected_profile" = "ZURUECK" ]; then
+      return 0
+    fi
+
+    show_profile_block_detail_menu "$selected_profile"
+    if [ "${PROFILE_FLOW_ABORT_REQUESTED:-0}" = "1" ]; then
+      return 0
+    fi
+    load_installed_map "$PROFILE_STATUS_FILE" INSTALLED_PROFILES_MAP
+    if [ "$overview_metrics_enabled" = "true" ]; then
+      profile_menu_total_summary="$(summarize_operation_metrics_with_missing_plain "profile_install" "${PROFILE_KEYS[@]}")"
+      profile_menu_prompt="Wählen Sie ein Profil.\n\nSpalten: Status | Zeit hh:mm:ss | Gesamtspeicher MB | Beschreibung\nFehlende Werte: --:--:-- | --.- MB\nErmittelte Summe aller Profil-Installationen: ${profile_menu_total_summary}\n\nIn der Detailansicht können Gesamtprofil oder Einzeltools verwaltet werden:"
+    fi
     PROFILE_MENU_OPTIONS=()
     for profile_key in "${PROFILE_KEYS[@]}"; do
-        local profile_status_text="Nicht installiert"
-        local profile_metric_summary
-        local profile_storage_summary
-        if [ -n "$profile_key" ] && [ "${INSTALLED_PROFILES_MAP[$profile_key]:-}" = "1" ]; then
-            profile_status_text="Installiert"
-        fi
-        if [ "$overview_metrics_enabled" = "true" ]; then
-            profile_metric_summary="$(get_operation_metric_summary_plain "profile_install_${profile_key}")"
-            PROFILE_MENU_OPTIONS+=("$profile_key" "[$profile_status_text] ${profile_metric_summary} | ${PROFILES[$profile_key]}")
-        else
-            PROFILE_MENU_OPTIONS+=("$profile_key" "[$profile_status_text] ${PROFILES[$profile_key]}")
-        fi
+      local refreshed_status_text="Nicht installiert"
+      local refreshed_metric_summary
+      local refreshed_storage_summary
+      if [ -n "$profile_key" ] && [ "${INSTALLED_PROFILES_MAP[$profile_key]:-}" = "1" ]; then
+        refreshed_status_text="Installiert"
+      fi
+      if [ "$overview_metrics_enabled" = "true" ]; then
+        refreshed_metric_summary="$(get_operation_metric_summary_plain "profile_install_${profile_key}")"
+        PROFILE_MENU_OPTIONS+=("$profile_key" "[$refreshed_status_text] ${refreshed_metric_summary} | ${PROFILES[$profile_key]}")
+      else
+        PROFILE_MENU_OPTIONS+=("$profile_key" "[$refreshed_status_text] ${PROFILES[$profile_key]}")
+      fi
     done
-
-    while true; do
-        dialog --clear --backtitle "$APP_TITLE" \
-        --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
-        --title "PROFIL-MANAGEMENT" --menu "$profile_menu_prompt" 30 120 18 \
-        "${PROFILE_MENU_OPTIONS[@]}" \
-        "ZURUECK" "${TXT_BACK_ITEM:-Zurück} zum Profil-Hub" 2> /tmp/profile_selection
-
-        if [ $? -ne 0 ]; then
-            return 0
-        fi
-
-        local selected_profile
-        selected_profile="$(cat /tmp/profile_selection)"
-
-        if [ "$selected_profile" = "ZURUECK" ]; then
-            return 0
-        fi
-
-        show_profile_block_detail_menu "$selected_profile"
-        if [ "${PROFILE_FLOW_ABORT_REQUESTED:-0}" = "1" ]; then
-            return 0
-        fi
-        load_installed_map "$PROFILE_STATUS_FILE" INSTALLED_PROFILES_MAP
-        if [ "$overview_metrics_enabled" = "true" ]; then
-            profile_menu_total_summary="$(summarize_operation_metrics_with_missing_plain "profile_install" "${PROFILE_KEYS[@]}")"
-            profile_menu_prompt="Wählen Sie ein Profil.\n\nSpalten: Status | Zeit hh:mm:ss | Gesamtspeicher MB | Beschreibung\nFehlende Werte: --:--:-- | --.- MB\nErmittelte Summe aller Profil-Installationen: ${profile_menu_total_summary}\n\nIn der Detailansicht können Gesamtprofil oder Einzeltools verwaltet werden:"
-        fi
-        PROFILE_MENU_OPTIONS=()
-        for profile_key in "${PROFILE_KEYS[@]}"; do
-            local refreshed_status_text="Nicht installiert"
-            local refreshed_metric_summary
-            local refreshed_storage_summary
-            if [ -n "$profile_key" ] && [ "${INSTALLED_PROFILES_MAP[$profile_key]:-}" = "1" ]; then
-                refreshed_status_text="Installiert"
-            fi
-            if [ "$overview_metrics_enabled" = "true" ]; then
-                refreshed_metric_summary="$(get_operation_metric_summary_plain "profile_install_${profile_key}")"
-                PROFILE_MENU_OPTIONS+=("$profile_key" "[$refreshed_status_text] ${refreshed_metric_summary} | ${PROFILES[$profile_key]}")
-            else
-                PROFILE_MENU_OPTIONS+=("$profile_key" "[$refreshed_status_text] ${PROFILES[$profile_key]}")
-            fi
-        done
-    done
+  done
 }
 
 # --- Funktionen für Tool-Management ---
@@ -3561,34 +3561,34 @@ TOOL_SCRIPT_NAMES["Runway_API"]="runway_api"
 TOOL_SCRIPT_NAMES["Image_Upscaler_Pipeline"]="image_upscaler_pipeline"
 
 run_tool_script() {
-    local tool_key="$1"
-    local action="$2"
-    local script_name="${TOOL_SCRIPT_NAMES[$tool_key]}"
+  local tool_key="$1"
+  local action="$2"
+  local script_name="${TOOL_SCRIPT_NAMES[$tool_key]}"
 
-    if [ -z "$script_name" ]; then
-        echo -e "${RED}Fehler: Kein Skript-Mapping für Tool '$tool_key' gefunden.${NC}"
-        return 1
-    fi
+  if [ -z "$script_name" ]; then
+    echo -e "${RED}Fehler: Kein Skript-Mapping für Tool '$tool_key' gefunden.${NC}"
+    return 1
+  fi
 
-    if ! validate_tool_source_policy "$tool_key" "$action"; then
-        return 1
-    fi
+  if ! validate_tool_source_policy "$tool_key" "$action"; then
+    return 1
+  fi
 
-    if [ "$action" = "install" ]; then
-        run_bash_script "$INSTALL_DIR/scripts/tools/run_install_transaction.sh" "$tool_key" "$INSTALL_DIR/scripts/tools/${script_name}_${action}.sh"
-    else
-        run_bash_script "$INSTALL_DIR/scripts/tools/${script_name}_${action}.sh"
-    fi
+  if [ "$action" = "install" ]; then
+    run_bash_script "$INSTALL_DIR/scripts/tools/run_install_transaction.sh" "$tool_key" "$INSTALL_DIR/scripts/tools/${script_name}_${action}.sh"
+  else
+    run_bash_script "$INSTALL_DIR/scripts/tools/${script_name}_${action}.sh"
+  fi
 }
 
 remove_tool_from_autostart_script() {
-    local tool_key="$1"
-    local autostart_script="$USER_WORKSPACE_DIR/autostart/start_selected_tools.sh"
-    local remaining_count=0
+  local tool_key="$1"
+  local autostart_script="$USER_WORKSPACE_DIR/autostart/start_selected_tools.sh"
+  local remaining_count=0
 
-    [ -f "$autostart_script" ] || return 0
+  [ -f "$autostart_script" ] || return 0
 
-    python3 - "$tool_key" "$autostart_script" <<'PY'
+  python3 - "$tool_key" "$autostart_script" <<'PY'
 from pathlib import Path
 import re
 import sys
@@ -3617,7 +3617,8 @@ if removed:
     path.write_text("\n".join(output).rstrip() + "\n", encoding="utf-8")
 PY
 
-    remaining_count="$(python3 - "$autostart_script" <<'PY'
+  remaining_count="$(
+    python3 - "$autostart_script" <<'PY'
 from pathlib import Path
 import re
 import sys
@@ -3633,278 +3634,278 @@ for line in path.read_text(encoding="utf-8").splitlines():
         count += 1
 print(count)
 PY
-)"
+  )"
 
-    if [ "$remaining_count" -eq 0 ] 2>/dev/null; then
-        rm -f "$autostart_script"
-        echo -e "${YELLOW}Autostart-Skript entfernt, weil kein Startziel mehr eingetragen ist.${NC}"
-    else
-        echo -e "${YELLOW}Autostart bereinigt: ${tool_key} wurde aus ${autostart_script} ausgetragen.${NC}"
-    fi
+  if [ "$remaining_count" -eq 0 ] 2>/dev/null; then
+    rm -f "$autostart_script"
+    echo -e "${YELLOW}Autostart-Skript entfernt, weil kein Startziel mehr eingetragen ist.${NC}"
+  else
+    echo -e "${YELLOW}Autostart bereinigt: ${tool_key} wurde aus ${autostart_script} ausgetragen.${NC}"
+  fi
 }
 
 # Funktion zum Installieren eines Tools
 plan_gitops_bootstrap_from_setup() {
-    local plan_rc=0 plan_status=failed
-    # Offline-Plan ohne Installer-Transaktion, Rollback oder Installationsmarker.
-    begin_operation_measurement "tool_install_GitOps_Bootstrap" "GitOps_Bootstrap: Offline-Plan, keine Installation" || return 1
-    capture_operation_output bash "$INSTALL_DIR/scripts/tools/gitops_bootstrap_install.sh" --interactive-plan || plan_rc=$?
-    case "$plan_rc" in
-        0) plan_status=planned ;;
-        3) plan_status=skipped ;;
-        *) plan_status=failed ;;
-    esac
-    end_operation_measurement "$plan_status"
-    handle_manual_tool_post_action GitOps_Bootstrap "Planung" "$plan_status" "${TOOL_BATCH_UPCOMING_PREVIEW:-}"
-    [[ "$plan_status" != failed ]]
+  local plan_rc=0 plan_status=failed
+  # Offline-Plan ohne Installer-Transaktion, Rollback oder Installationsmarker.
+  begin_operation_measurement "tool_install_GitOps_Bootstrap" "GitOps_Bootstrap: Offline-Plan, keine Installation" || return 1
+  capture_operation_output bash "$INSTALL_DIR/scripts/tools/gitops_bootstrap_install.sh" --interactive-plan || plan_rc=$?
+  case "$plan_rc" in
+    0) plan_status=planned ;;
+    3) plan_status=skipped ;;
+    *) plan_status=failed ;;
+  esac
+  end_operation_measurement "$plan_status"
+  handle_manual_tool_post_action GitOps_Bootstrap "Planung" "$plan_status" "${TOOL_BATCH_UPCOMING_PREVIEW:-}"
+  [[ "$plan_status" != failed ]]
 }
 
 install_tool() {
-    local TOOL_KEY="$1"
-    LAST_OPERATION_LOG_FILE=""
-    ACTIVE_OPERATION_LOG_FILE=""
-    local COMFYUI_GGUF_MODE="${COMFYUI_GGUF_MODE:-integrate}"
-    export COMFYUI_GGUF_MODE
-    local operation_status="failed"
-    local tool_rc=0
-    local storage_rc=0
-    if [ "$TOOL_KEY" = GitOps_Bootstrap ]; then
-        plan_gitops_bootstrap_from_setup
-        return $?
+  local TOOL_KEY="$1"
+  LAST_OPERATION_LOG_FILE=""
+  ACTIVE_OPERATION_LOG_FILE=""
+  local COMFYUI_GGUF_MODE="${COMFYUI_GGUF_MODE:-integrate}"
+  export COMFYUI_GGUF_MODE
+  local operation_status="failed"
+  local tool_rc=0
+  local storage_rc=0
+  if [ "$TOOL_KEY" = GitOps_Bootstrap ]; then
+    plan_gitops_bootstrap_from_setup
+    return $?
+  fi
+  if [ "$TOOL_KEY" = "Huginn" ]; then
+    reset_terminal_display
+    echo -e "${YELLOW}Huginn Vorbereitung: Zuerst Version und Datenbank auswählen, danach startet die Installation.${NC}"
+    if ! bash "$INSTALL_DIR/scripts/huginn_config_manager.sh" --prepare-install; then
+      reset_terminal_display
+      echo -e "${YELLOW}Huginn-Installation wurde vor dem Start abgebrochen.${NC}"
+      return 1
     fi
-    if [ "$TOOL_KEY" = "Huginn" ]; then
-        reset_terminal_display
-        echo -e "${YELLOW}Huginn Vorbereitung: Zuerst Version und Datenbank auswählen, danach startet die Installation.${NC}"
-        if ! bash "$INSTALL_DIR/scripts/huginn_config_manager.sh" --prepare-install; then
-            reset_terminal_display
-            echo -e "${YELLOW}Huginn-Installation wurde vor dem Start abgebrochen.${NC}"
-            return 1
-        fi
-        reset_terminal_display
-    fi
+    reset_terminal_display
+  fi
 
-    show_tool_action_intro "$TOOL_KEY" "installieren" "install"
-    if ! confirm_heavy_or_experimental_tool "$TOOL_KEY"; then
-        operation_status="skipped"
-        handle_manual_tool_post_action "$TOOL_KEY" "Installation" "$operation_status" "${TOOL_BATCH_UPCOMING_PREVIEW:-}"
-        return 1
-    fi
-    if [ "$TOOL_KEY" = ComfyUI_GGUF ] && ! gguf_prepare_dependency; then
-        operation_status="skipped"
-        echo 'GGUF-Voraussetzung nicht bereit oder nicht freigegeben; GGUF-Installer nicht gestartet.'
-        handle_manual_tool_post_action "$TOOL_KEY" "Installation" "$operation_status" "${TOOL_BATCH_UPCOMING_PREVIEW:-}"
-        return 1
-    fi
-    maybe_cleanup_logs_before_operation
-    begin_operation_measurement "tool_install_${TOOL_KEY}" "Tool installieren: ${TOOL_KEY}" || return 1
-    echo -e "${BLUE}Installiere Tool: ${TOOL_KEY}...${NC}"
-    capture_operation_output preflight_tool_install_storage "$TOOL_KEY" || storage_rc=$?
-    if [ "$storage_rc" -ne 0 ]; then
-        if [ "$storage_rc" -eq 74 ]; then
-            append_operation_note "Installation $TOOL_KEY abgebrochen: aktuelle Logdatei nicht vollstaendig beschreibbar. Kein Tool-Installer gestartet." || true
-        else
-            append_operation_note "Installation $TOOL_KEY abgebrochen: Speicherplatzmangel laut Vorpruefung. Kein Tool-Installer gestartet; keine Deinstallation/Bereinigung ausgefuehrt." || true
-        fi
-        end_operation_measurement "failed"
-        echo -e "${RED}Tool '${TOOL_KEY}' wurde vor dem Start wegen fehlendem Speicher oder fehlgeschlagener Protokollierung nicht installiert; Details siehe aktuelle Meldungen.${NC}"
-        echo -e "${YELLOW}Kein Installer gestartet: nichts zurueckzurollen. Bereits installierte Tools bleiben unveraendert.${NC}"
-        handle_manual_tool_post_action "$TOOL_KEY" "Installation" "$operation_status" "${TOOL_BATCH_UPCOMING_PREVIEW:-}"
-        return 1
-    fi
-    if [ "$TOOL_KEY" = "Huginn" ]; then
-        echo -e "${YELLOW}Huginn nutzt die Benutzerkonfiguration aus ~/.openclaw_ultimate_user_data/huginn/.${NC}"
-        echo -e "${YELLOW}Dort liegen HUGINN_REPO_REF, Datenbankauswahl und .env.template bewusst ausserhalb des Repos.${NC}"
-    fi
-    run_tool_script "$TOOL_KEY" "install" || tool_rc=$?
-    if [ "$tool_rc" -eq 0 ]; then
-        if native_tool_marker "$TOOL_KEY" >/dev/null; then
-            native_tool_sync_status "$TOOL_KEY" "$USER_WORKSPACE_DIR" || tool_rc=$?
-        fi
-    fi
-    if [ "$TOOL_KEY" = ComfyUI_GGUF ] && [ "$COMFYUI_GGUF_MODE" = source ] && [ "$tool_rc" -eq 0 ]; then
-        end_operation_measurement "success"
-        operation_status="success"
-        echo 'GGUF-GitHub-Quellen vorbereitet; keine neue aktive Integration registriert. Bestehende Integrationen bleiben erhalten.'
-    elif [ "$TOOL_KEY" = MuseTalk ] && [ "$tool_rc" -eq 0 ]; then
-        end_operation_measurement "success"
-        operation_status="success"
-        echo 'MuseTalk: Python-Pakete/CUDA-Smoke-Test geprueft. Keine Modelle, GUI oder Inferenz gestartet; Status und docs/tools/musetalk.md beachten.'
-    elif [[ "$TOOL_KEY" =~ ^(Qwen_Desktop_Study|Qwen_Desktop_Build|Hermes_Agent_Jarvis|Gradio|Streamlit|WanVideoWrapper|CogVideoX|LTX_Video|Video2Dataset|LivePortrait|SadTalker|RVC|UVR5|Audacity|OBS)$ ]] && [ "$tool_rc" -eq 0 ]; then
-        end_operation_measurement "success"
-        operation_status="success"
-        echo "${TOOL_KEY}: Installationsumfang siehe aktuelles Log/Status. Quellen sind keine fertige Runtime; Build/Paket ohne GUI-/Agenten-/Modellstart."
-    elif [[ "$TOOL_KEY" =~ ^(Concat|Remotion|HyperFrames)$ ]] && [ "$tool_rc" -eq 0 ]; then
-        end_operation_measurement "success"
-        operation_status="success"
-        echo "${TOOL_KEY}: GitHub-Paket/Build installiert und Artefakte geprueft. GUI, Browser, Codecs und Rendering separat abnehmen; kein Dienst gestartet."
-    elif [[ "$TOOL_KEY" =~ ^(Browser_Use|Perplexity_MCP|Perplexity_Python|Perplexity_Node|Perplexity_API_Cookbook)$ ]] && [ "$tool_rc" -eq 0 ]; then
-        end_operation_measurement "success"
-        operation_status="success"
-        echo "${TOOL_KEY}: Paket/Build bzw. Cookbook-Dateien geprueft. Keine Browser, MCP-Server, Agenten oder API-Anfragen gestartet; Umfang siehe Dokumentation."
-    elif [ "$TOOL_KEY" = "OpenMontage" ] && [ "$tool_rc" -eq 0 ]; then
-        end_operation_measurement "success"
-        operation_status="success"
-        echo 'OpenMontage: GitHub-Kernumgebung installiert/geprueft. Noch kein fertiger Renderer, Agent, Modell oder Film. Remotion-Status und Doku pruefen.'
-    elif [[ "$TOOL_KEY" =~ ^(Gemini_Desktop_Bwendell|Gemini_Desktop_Dortanes_Legacy)$ ]] && [ "$tool_rc" -eq 0 ]; then
-        end_operation_measurement "success"
-        operation_status="success"
-        echo "${TOOL_KEY}: manuell bestaetigt, technisch ungeprueft; kein automatischer Installiert-Marker."
-    elif [[ "$TOOL_KEY" =~ ^(Gemini_Desktop_Bwendell|Gemini_Desktop_Dortanes_Legacy)$ ]] && [ "$tool_rc" -eq 3 ]; then
-        end_operation_measurement "skipped"
-        operation_status="skipped"
-        echo "${TOOL_KEY}: manuelle Installation verschoben oder Legacy-Sicherheitssperre; keine Installation bestaetigt."
-    elif [[ "$TOOL_KEY" =~ ^(Comet|BrowserOS|Enki_Browser)$ ]] && [ "$tool_rc" -eq 0 ]; then
-        end_operation_measurement "success"
-        operation_status="success"
-        echo -e "${GREEN}${TOOL_KEY}: Desktop-Installation manuell bestaetigt; kein automatisch gepruefter Installationsstatus.${NC}"
-    elif [[ "$TOOL_KEY" =~ ^(Comet|BrowserOS|Enki_Browser)$ ]] && [ "$tool_rc" -eq 3 ]; then
-        end_operation_measurement "skipped"
-        operation_status="skipped"
-        echo -e "${YELLOW}${TOOL_KEY}: manuelle Desktop-Installation verschoben/nicht bestaetigt. Kein Fehler.${NC}"
-    elif [ "$TOOL_KEY" = "Qwen_Desktop" ] && [ "$tool_rc" -eq 0 ]; then
-        end_operation_measurement "success"
-        operation_status="success"
-        echo -e "${GREEN}Qwen Desktop: Windows-Installation manuell bestaetigt; kein automatisch gepruefter Installationsstatus.${NC}"
-    elif [ "$TOOL_KEY" = "Qwen_Desktop" ] && [ "$tool_rc" -eq 3 ]; then
-        end_operation_measurement "skipped"
-        operation_status="skipped"
-        echo -e "${YELLOW}Qwen Desktop: manuelle Windows-Installation verschoben/nicht bestaetigt. Kein Fehler.${NC}"
-    elif [ "$TOOL_KEY" = "Pinokio" ] && [ "$tool_rc" -eq 0 ]; then
-        end_operation_measurement "success"
-        operation_status="success"
-        echo -e "${GREEN}Pinokio: Desktop-Installation manuell bestaetigt; kein automatisch gepruefter Installationsstatus.${NC}"
-    elif [ "$TOOL_KEY" = "Pinokio" ] && [ "$tool_rc" -eq 3 ]; then
-        end_operation_measurement "skipped"
-        operation_status="skipped"
-        echo -e "${YELLOW}Pinokio: Desktop-Installation verschoben/nicht bestaetigt. Kein Fehler.${NC}"
-    elif [ "$TOOL_KEY" = "SD_Next" ] && [ "$tool_rc" -eq 0 ]; then
-        end_operation_measurement "success"
-        operation_status="success"
-        echo -e "${GREEN}SD.Next: GitHub-Quelle und Python-venv vorbereitet. Laufzeitpakete/Modelle fehlen noch; kein WebUI-Start.${NC}"
-    elif [ "$TOOL_KEY" = "Windmill" ] && [ "$tool_rc" -eq 0 ]; then
-        end_operation_measurement "success"
-        operation_status="success"
-        echo -e "${GREEN}Windmill: GitHub-Installation vorbereitet; PostgreSQL/Server/Worker nicht eingerichtet oder gestartet. Siehe Windmill-Status und Doku.${NC}"
-    elif [ "$TOOL_KEY" = "Alexandria_Audiobook" ] && [ "$tool_rc" -eq 0 ]; then
-        end_operation_measurement "success"
-        operation_status="success"
-        echo -e "${GREEN}Alexandria: GitHub-Quellen und Python-venv vorbereitet; GPU-Laufzeit/Modelle fehlen noch, keine WebUI gestartet.${NC}"
-    elif [ "$TOOL_KEY" = "Qwen3_TTS" ] && [ "$tool_rc" -eq 0 ]; then
-        end_operation_measurement "success"
-        operation_status="success"
-        echo -e "${GREEN}Qwen3-TTS: GitHub-Paket eingerichtet. Runtime-Abhaengigkeiten separat im Status pruefen; Modelle/Inferenz nicht getestet.${NC}"
-    elif [ "$TOOL_KEY" = "ChatTTS" ] && [ "$tool_rc" -eq 0 ]; then
-        end_operation_measurement "success"
-        operation_status="success"
-        echo -e "${GREEN}ChatTTS: GitHub-Paket eingerichtet. Runtime-Abhaengigkeiten im Status pruefen; keine Modelle/Inferenz/WebUI getestet.${NC}"
-    elif [ "$TOOL_KEY" = "AudioLDM2" ] && [ "$tool_rc" -eq 0 ]; then
-        end_operation_measurement "success"
-        operation_status="success"
-        echo -e "${GREEN}AudioLDM2: GitHub-Basispaket eingerichtet, nicht betriebsbereit. Runtime/Modelle fehlen; keine CLI/WebUI gestartet.${NC}"
-    elif [ "$TOOL_KEY" = "AudioGen" ] && [ "$tool_rc" -eq 0 ]; then
-        end_operation_measurement "success"
-        operation_status="success"
-        echo -e "${GREEN}AudioGen: AudioCraft-Basispaket aus GitHub eingerichtet. Runtime/Modelle fehlen; keine Audiogenerierung gestartet.${NC}"
-    elif [ "$TOOL_KEY" = "Stable_Audio_Open" ] && [ "$tool_rc" -eq 0 ]; then
-        end_operation_measurement "success"
-        operation_status="success"
-        echo -e "${GREEN}Stable Audio Open: GitHub-Basispaket eingerichtet. GPU-Runtime/Modelle fehlen; keine Audiogenerierung oder WebUI gestartet.${NC}"
-    elif [ "$TOOL_KEY" = "Moshi" ] && [ "$tool_rc" -eq 0 ]; then
-        end_operation_measurement "success"
-        operation_status="success"
-        echo -e "${GREEN}Moshi: GitHub-Basispaket eingerichtet. Runtime/Modelle fehlen; kein Server oder Mikrofonzugriff gestartet.${NC}"
-    elif [ "$TOOL_KEY" = "Just_Dub_It" ] && [ "$tool_rc" -eq 0 ]; then
-        end_operation_measurement "success"
-        operation_status="success"
-        echo -e "${GREEN}Just Dub It: archivierte GitHub-Basispakete eingerichtet. Runtime/Modelle fehlen; kein Dubbing oder Training gestartet.${NC}"
-    elif [ "$TOOL_KEY" = "VOID_Model" ] && [ "$tool_rc" -eq 0 ]; then
-        end_operation_measurement "success"
-        operation_status="success"
-        echo -e "${GREEN}VOID: GitHub-Quellen vorbereitet, nicht betriebsbereit. Keine Runtime/Modelle, Videobearbeitung oder Gemini-Aufrufe.${NC}"
-    elif [ "$TOOL_KEY" = "Kiwi_Edit" ] && [ "$tool_rc" -eq 0 ]; then
-        end_operation_measurement "success"
-        operation_status="success"
-        echo -e "${GREEN}Kiwi Edit: GitHub-Basispaket eingerichtet. Runtime/Modelle fehlen; keine Demo, Videobearbeitung oder Remote-Code-Ausfuehrung gestartet.${NC}"
-    elif [ "$TOOL_KEY" = "ProPainter" ] && [ "$tool_rc" -eq 0 ]; then
-        end_operation_measurement "success"
-        operation_status="success"
-        echo -e "${GREEN}ProPainter: GitHub-Quellen vorbereitet, nicht betriebsbereit. Runtime/Modelle fehlen; keine Videobearbeitung oder Gewichtsdownloads gestartet.${NC}"
-    elif { [ "$TOOL_KEY" = "Claude_Code" ] || [ "$TOOL_KEY" = "Gemini_CLI" ]; } && [ "$tool_rc" -eq 0 ]; then
-        end_operation_measurement "success"
-        operation_status="success"
-        echo -e "${GREEN}GitHub-Quellen/Referenzmaterial vorbereitet; keine lauffaehige CLI installiert, kein Login oder Cloud-/Agentenstart.${NC}"
-    elif [ "$TOOL_KEY" = "Embedded_Debug_HIL" ] && [ "$tool_rc" -eq 0 ]; then
-        end_operation_measurement "success"
-        operation_status="success"
-        echo -e "${GREEN}Embedded Debug HIL: pygdbmi-Basis aus GitHub eingerichtet, ohne Docker. Kein GDB/OpenOCD, USB-Zugriff, MCP-Server oder Hardwaretest.${NC}"
-    elif [ "$TOOL_KEY" = "MOSS_TTS" ] && [ "$tool_rc" -eq 0 ]; then
-        end_operation_measurement "success"
-        operation_status="success"
-        echo -e "${GREEN}MOSS-TTS: GitHub-Checkout und Basis-Metadatenpaket eingerichtet. Keine fertige TTS-Laufzeit: Modelle/Runtime fehlen, keine Inferenz oder WebUI gestartet.${NC}"
-    elif [ "$TOOL_KEY" = "YuE" ] && [ "$tool_rc" -eq 0 ]; then
-        end_operation_measurement "success"
-        operation_status="success"
-        echo -e "${GREEN}YuE-v1: GitHub-Quellen vorbereitet. Runtime, xcodec und Modelle fehlen; keine Musikgenerierung und kein YuE2-Wechsel.${NC}"
-    elif [ "$TOOL_KEY" = "ACE_Step_15" ] && [ "$tool_rc" -eq 0 ]; then
-        end_operation_measurement "success"
-        operation_status="success"
-        echo -e "${GREEN}ACE-Step 1.5: GitHub-Basispaket installiert. Runtime/Modelle fehlen; keine Musikgenerierung oder WebUI gestartet.${NC}"
-    elif [ "$TOOL_KEY" = "WhisperX" ] && [ "$tool_rc" -eq 0 ]; then
-        end_operation_measurement "success"
-        operation_status="success"
-        echo -e "${GREEN}WhisperX: GitHub-Paket installiert. Runtime-/Modellstatus separat pruefen; kein Transkriptions- oder Diarisierungstest.${NC}"
-    elif [ "$TOOL_KEY" = "Aegisub" ] && [ "$tool_rc" -eq 0 ]; then
-        end_operation_measurement "success"
-        operation_status="success"
-        echo -e "${GREEN}Aegisub: GitHub-Quellen vorbereitet. Optionalen nativen Build im Status pruefen; kein GUI-/Audiotest.${NC}"
-    elif [ "$TOOL_KEY" = "Basic_Pitch" ] && [ "$tool_rc" -eq 0 ]; then
-        end_operation_measurement "success"
-        operation_status="success"
-        echo -e "${GREEN}Basic Pitch: GitHub-Paket installiert. Laufzeit-Abhaengigkeiten im Status pruefen; kein Audio-/MIDI-Inferenztest.${NC}"
-    elif [ "$TOOL_KEY" = "Sfizz" ] && [ "$tool_rc" -eq 0 ]; then
-        end_operation_measurement "success"
-        operation_status="success"
-        echo -e "${GREEN}Sfizz: GitHub-Engine-Quellen vorbereitet. Optionalen Renderer-Build im Status pruefen; keine DAW-Plugins oder Audiotests.${NC}"
-    elif [ "$TOOL_KEY" = "AIDA_X" ] && [ "$tool_rc" -eq 0 ]; then
-        end_operation_measurement "success"
-        operation_status="success"
-        echo -e "${GREEN}AIDA-X: GitHub-Quellen vorbereitet. Optionalen Standalone-Build im Status pruefen; kein Audio-/Pluginstart oder Audiotest.${NC}"
-    elif [ "$tool_rc" -eq 0 ]; then
-        append_unique_line "$TOOL_STATUS_FILE" "$TOOL_KEY"
-        end_operation_measurement "success"
-        operation_status="success"
-        echo -e "${GREEN}Tool \'$TOOL_KEY\' erfolgreich installiert.${NC}"
-    else
-        end_operation_measurement "failed"
-        echo -e "${RED}Fehler bei der Installation von Tool \'$TOOL_KEY\'.${NC}"
-    fi
+  show_tool_action_intro "$TOOL_KEY" "installieren" "install"
+  if ! confirm_heavy_or_experimental_tool "$TOOL_KEY"; then
+    operation_status="skipped"
     handle_manual_tool_post_action "$TOOL_KEY" "Installation" "$operation_status" "${TOOL_BATCH_UPCOMING_PREVIEW:-}"
+    return 1
+  fi
+  if [ "$TOOL_KEY" = ComfyUI_GGUF ] && ! gguf_prepare_dependency; then
+    operation_status="skipped"
+    echo 'GGUF-Voraussetzung nicht bereit oder nicht freigegeben; GGUF-Installer nicht gestartet.'
+    handle_manual_tool_post_action "$TOOL_KEY" "Installation" "$operation_status" "${TOOL_BATCH_UPCOMING_PREVIEW:-}"
+    return 1
+  fi
+  maybe_cleanup_logs_before_operation
+  begin_operation_measurement "tool_install_${TOOL_KEY}" "Tool installieren: ${TOOL_KEY}" || return 1
+  echo -e "${BLUE}Installiere Tool: ${TOOL_KEY}...${NC}"
+  capture_operation_output preflight_tool_install_storage "$TOOL_KEY" || storage_rc=$?
+  if [ "$storage_rc" -ne 0 ]; then
+    if [ "$storage_rc" -eq 74 ]; then
+      append_operation_note "Installation $TOOL_KEY abgebrochen: aktuelle Logdatei nicht vollstaendig beschreibbar. Kein Tool-Installer gestartet." || true
+    else
+      append_operation_note "Installation $TOOL_KEY abgebrochen: Speicherplatzmangel laut Vorpruefung. Kein Tool-Installer gestartet; keine Deinstallation/Bereinigung ausgefuehrt." || true
+    fi
+    end_operation_measurement "failed"
+    echo -e "${RED}Tool '${TOOL_KEY}' wurde vor dem Start wegen fehlendem Speicher oder fehlgeschlagener Protokollierung nicht installiert; Details siehe aktuelle Meldungen.${NC}"
+    echo -e "${YELLOW}Kein Installer gestartet: nichts zurueckzurollen. Bereits installierte Tools bleiben unveraendert.${NC}"
+    handle_manual_tool_post_action "$TOOL_KEY" "Installation" "$operation_status" "${TOOL_BATCH_UPCOMING_PREVIEW:-}"
+    return 1
+  fi
+  if [ "$TOOL_KEY" = "Huginn" ]; then
+    echo -e "${YELLOW}Huginn nutzt die Benutzerkonfiguration aus ~/.openclaw_ultimate_user_data/huginn/.${NC}"
+    echo -e "${YELLOW}Dort liegen HUGINN_REPO_REF, Datenbankauswahl und .env.template bewusst ausserhalb des Repos.${NC}"
+  fi
+  run_tool_script "$TOOL_KEY" "install" || tool_rc=$?
+  if [ "$tool_rc" -eq 0 ]; then
+    if native_tool_marker "$TOOL_KEY" >/dev/null; then
+      native_tool_sync_status "$TOOL_KEY" "$USER_WORKSPACE_DIR" || tool_rc=$?
+    fi
+  fi
+  if [ "$TOOL_KEY" = ComfyUI_GGUF ] && [ "$COMFYUI_GGUF_MODE" = source ] && [ "$tool_rc" -eq 0 ]; then
+    end_operation_measurement "success"
+    operation_status="success"
+    echo 'GGUF-GitHub-Quellen vorbereitet; keine neue aktive Integration registriert. Bestehende Integrationen bleiben erhalten.'
+  elif [ "$TOOL_KEY" = MuseTalk ] && [ "$tool_rc" -eq 0 ]; then
+    end_operation_measurement "success"
+    operation_status="success"
+    echo 'MuseTalk: Python-Pakete/CUDA-Smoke-Test geprueft. Keine Modelle, GUI oder Inferenz gestartet; Status und docs/tools/musetalk.md beachten.'
+  elif [[ "$TOOL_KEY" =~ ^(Qwen_Desktop_Study|Qwen_Desktop_Build|Hermes_Agent_Jarvis|Gradio|Streamlit|WanVideoWrapper|CogVideoX|LTX_Video|Video2Dataset|LivePortrait|SadTalker|RVC|UVR5|Audacity|OBS)$ ]] && [ "$tool_rc" -eq 0 ]; then
+    end_operation_measurement "success"
+    operation_status="success"
+    echo "${TOOL_KEY}: Installationsumfang siehe aktuelles Log/Status. Quellen sind keine fertige Runtime; Build/Paket ohne GUI-/Agenten-/Modellstart."
+  elif [[ "$TOOL_KEY" =~ ^(Concat|Remotion|HyperFrames)$ ]] && [ "$tool_rc" -eq 0 ]; then
+    end_operation_measurement "success"
+    operation_status="success"
+    echo "${TOOL_KEY}: GitHub-Paket/Build installiert und Artefakte geprueft. GUI, Browser, Codecs und Rendering separat abnehmen; kein Dienst gestartet."
+  elif [[ "$TOOL_KEY" =~ ^(Browser_Use|Perplexity_MCP|Perplexity_Python|Perplexity_Node|Perplexity_API_Cookbook)$ ]] && [ "$tool_rc" -eq 0 ]; then
+    end_operation_measurement "success"
+    operation_status="success"
+    echo "${TOOL_KEY}: Paket/Build bzw. Cookbook-Dateien geprueft. Keine Browser, MCP-Server, Agenten oder API-Anfragen gestartet; Umfang siehe Dokumentation."
+  elif [ "$TOOL_KEY" = "OpenMontage" ] && [ "$tool_rc" -eq 0 ]; then
+    end_operation_measurement "success"
+    operation_status="success"
+    echo 'OpenMontage: GitHub-Kernumgebung installiert/geprueft. Noch kein fertiger Renderer, Agent, Modell oder Film. Remotion-Status und Doku pruefen.'
+  elif [[ "$TOOL_KEY" =~ ^(Gemini_Desktop_Bwendell|Gemini_Desktop_Dortanes_Legacy)$ ]] && [ "$tool_rc" -eq 0 ]; then
+    end_operation_measurement "success"
+    operation_status="success"
+    echo "${TOOL_KEY}: manuell bestaetigt, technisch ungeprueft; kein automatischer Installiert-Marker."
+  elif [[ "$TOOL_KEY" =~ ^(Gemini_Desktop_Bwendell|Gemini_Desktop_Dortanes_Legacy)$ ]] && [ "$tool_rc" -eq 3 ]; then
+    end_operation_measurement "skipped"
+    operation_status="skipped"
+    echo "${TOOL_KEY}: manuelle Installation verschoben oder Legacy-Sicherheitssperre; keine Installation bestaetigt."
+  elif [[ "$TOOL_KEY" =~ ^(Comet|BrowserOS|Enki_Browser)$ ]] && [ "$tool_rc" -eq 0 ]; then
+    end_operation_measurement "success"
+    operation_status="success"
+    echo -e "${GREEN}${TOOL_KEY}: Desktop-Installation manuell bestaetigt; kein automatisch gepruefter Installationsstatus.${NC}"
+  elif [[ "$TOOL_KEY" =~ ^(Comet|BrowserOS|Enki_Browser)$ ]] && [ "$tool_rc" -eq 3 ]; then
+    end_operation_measurement "skipped"
+    operation_status="skipped"
+    echo -e "${YELLOW}${TOOL_KEY}: manuelle Desktop-Installation verschoben/nicht bestaetigt. Kein Fehler.${NC}"
+  elif [ "$TOOL_KEY" = "Qwen_Desktop" ] && [ "$tool_rc" -eq 0 ]; then
+    end_operation_measurement "success"
+    operation_status="success"
+    echo -e "${GREEN}Qwen Desktop: Windows-Installation manuell bestaetigt; kein automatisch gepruefter Installationsstatus.${NC}"
+  elif [ "$TOOL_KEY" = "Qwen_Desktop" ] && [ "$tool_rc" -eq 3 ]; then
+    end_operation_measurement "skipped"
+    operation_status="skipped"
+    echo -e "${YELLOW}Qwen Desktop: manuelle Windows-Installation verschoben/nicht bestaetigt. Kein Fehler.${NC}"
+  elif [ "$TOOL_KEY" = "Pinokio" ] && [ "$tool_rc" -eq 0 ]; then
+    end_operation_measurement "success"
+    operation_status="success"
+    echo -e "${GREEN}Pinokio: Desktop-Installation manuell bestaetigt; kein automatisch gepruefter Installationsstatus.${NC}"
+  elif [ "$TOOL_KEY" = "Pinokio" ] && [ "$tool_rc" -eq 3 ]; then
+    end_operation_measurement "skipped"
+    operation_status="skipped"
+    echo -e "${YELLOW}Pinokio: Desktop-Installation verschoben/nicht bestaetigt. Kein Fehler.${NC}"
+  elif [ "$TOOL_KEY" = "SD_Next" ] && [ "$tool_rc" -eq 0 ]; then
+    end_operation_measurement "success"
+    operation_status="success"
+    echo -e "${GREEN}SD.Next: GitHub-Quelle und Python-venv vorbereitet. Laufzeitpakete/Modelle fehlen noch; kein WebUI-Start.${NC}"
+  elif [ "$TOOL_KEY" = "Windmill" ] && [ "$tool_rc" -eq 0 ]; then
+    end_operation_measurement "success"
+    operation_status="success"
+    echo -e "${GREEN}Windmill: GitHub-Installation vorbereitet; PostgreSQL/Server/Worker nicht eingerichtet oder gestartet. Siehe Windmill-Status und Doku.${NC}"
+  elif [ "$TOOL_KEY" = "Alexandria_Audiobook" ] && [ "$tool_rc" -eq 0 ]; then
+    end_operation_measurement "success"
+    operation_status="success"
+    echo -e "${GREEN}Alexandria: GitHub-Quellen und Python-venv vorbereitet; GPU-Laufzeit/Modelle fehlen noch, keine WebUI gestartet.${NC}"
+  elif [ "$TOOL_KEY" = "Qwen3_TTS" ] && [ "$tool_rc" -eq 0 ]; then
+    end_operation_measurement "success"
+    operation_status="success"
+    echo -e "${GREEN}Qwen3-TTS: GitHub-Paket eingerichtet. Runtime-Abhaengigkeiten separat im Status pruefen; Modelle/Inferenz nicht getestet.${NC}"
+  elif [ "$TOOL_KEY" = "ChatTTS" ] && [ "$tool_rc" -eq 0 ]; then
+    end_operation_measurement "success"
+    operation_status="success"
+    echo -e "${GREEN}ChatTTS: GitHub-Paket eingerichtet. Runtime-Abhaengigkeiten im Status pruefen; keine Modelle/Inferenz/WebUI getestet.${NC}"
+  elif [ "$TOOL_KEY" = "AudioLDM2" ] && [ "$tool_rc" -eq 0 ]; then
+    end_operation_measurement "success"
+    operation_status="success"
+    echo -e "${GREEN}AudioLDM2: GitHub-Basispaket eingerichtet, nicht betriebsbereit. Runtime/Modelle fehlen; keine CLI/WebUI gestartet.${NC}"
+  elif [ "$TOOL_KEY" = "AudioGen" ] && [ "$tool_rc" -eq 0 ]; then
+    end_operation_measurement "success"
+    operation_status="success"
+    echo -e "${GREEN}AudioGen: AudioCraft-Basispaket aus GitHub eingerichtet. Runtime/Modelle fehlen; keine Audiogenerierung gestartet.${NC}"
+  elif [ "$TOOL_KEY" = "Stable_Audio_Open" ] && [ "$tool_rc" -eq 0 ]; then
+    end_operation_measurement "success"
+    operation_status="success"
+    echo -e "${GREEN}Stable Audio Open: GitHub-Basispaket eingerichtet. GPU-Runtime/Modelle fehlen; keine Audiogenerierung oder WebUI gestartet.${NC}"
+  elif [ "$TOOL_KEY" = "Moshi" ] && [ "$tool_rc" -eq 0 ]; then
+    end_operation_measurement "success"
+    operation_status="success"
+    echo -e "${GREEN}Moshi: GitHub-Basispaket eingerichtet. Runtime/Modelle fehlen; kein Server oder Mikrofonzugriff gestartet.${NC}"
+  elif [ "$TOOL_KEY" = "Just_Dub_It" ] && [ "$tool_rc" -eq 0 ]; then
+    end_operation_measurement "success"
+    operation_status="success"
+    echo -e "${GREEN}Just Dub It: archivierte GitHub-Basispakete eingerichtet. Runtime/Modelle fehlen; kein Dubbing oder Training gestartet.${NC}"
+  elif [ "$TOOL_KEY" = "VOID_Model" ] && [ "$tool_rc" -eq 0 ]; then
+    end_operation_measurement "success"
+    operation_status="success"
+    echo -e "${GREEN}VOID: GitHub-Quellen vorbereitet, nicht betriebsbereit. Keine Runtime/Modelle, Videobearbeitung oder Gemini-Aufrufe.${NC}"
+  elif [ "$TOOL_KEY" = "Kiwi_Edit" ] && [ "$tool_rc" -eq 0 ]; then
+    end_operation_measurement "success"
+    operation_status="success"
+    echo -e "${GREEN}Kiwi Edit: GitHub-Basispaket eingerichtet. Runtime/Modelle fehlen; keine Demo, Videobearbeitung oder Remote-Code-Ausfuehrung gestartet.${NC}"
+  elif [ "$TOOL_KEY" = "ProPainter" ] && [ "$tool_rc" -eq 0 ]; then
+    end_operation_measurement "success"
+    operation_status="success"
+    echo -e "${GREEN}ProPainter: GitHub-Quellen vorbereitet, nicht betriebsbereit. Runtime/Modelle fehlen; keine Videobearbeitung oder Gewichtsdownloads gestartet.${NC}"
+  elif { [ "$TOOL_KEY" = "Claude_Code" ] || [ "$TOOL_KEY" = "Gemini_CLI" ]; } && [ "$tool_rc" -eq 0 ]; then
+    end_operation_measurement "success"
+    operation_status="success"
+    echo -e "${GREEN}GitHub-Quellen/Referenzmaterial vorbereitet; keine lauffaehige CLI installiert, kein Login oder Cloud-/Agentenstart.${NC}"
+  elif [ "$TOOL_KEY" = "Embedded_Debug_HIL" ] && [ "$tool_rc" -eq 0 ]; then
+    end_operation_measurement "success"
+    operation_status="success"
+    echo -e "${GREEN}Embedded Debug HIL: pygdbmi-Basis aus GitHub eingerichtet, ohne Docker. Kein GDB/OpenOCD, USB-Zugriff, MCP-Server oder Hardwaretest.${NC}"
+  elif [ "$TOOL_KEY" = "MOSS_TTS" ] && [ "$tool_rc" -eq 0 ]; then
+    end_operation_measurement "success"
+    operation_status="success"
+    echo -e "${GREEN}MOSS-TTS: GitHub-Checkout und Basis-Metadatenpaket eingerichtet. Keine fertige TTS-Laufzeit: Modelle/Runtime fehlen, keine Inferenz oder WebUI gestartet.${NC}"
+  elif [ "$TOOL_KEY" = "YuE" ] && [ "$tool_rc" -eq 0 ]; then
+    end_operation_measurement "success"
+    operation_status="success"
+    echo -e "${GREEN}YuE-v1: GitHub-Quellen vorbereitet. Runtime, xcodec und Modelle fehlen; keine Musikgenerierung und kein YuE2-Wechsel.${NC}"
+  elif [ "$TOOL_KEY" = "ACE_Step_15" ] && [ "$tool_rc" -eq 0 ]; then
+    end_operation_measurement "success"
+    operation_status="success"
+    echo -e "${GREEN}ACE-Step 1.5: GitHub-Basispaket installiert. Runtime/Modelle fehlen; keine Musikgenerierung oder WebUI gestartet.${NC}"
+  elif [ "$TOOL_KEY" = "WhisperX" ] && [ "$tool_rc" -eq 0 ]; then
+    end_operation_measurement "success"
+    operation_status="success"
+    echo -e "${GREEN}WhisperX: GitHub-Paket installiert. Runtime-/Modellstatus separat pruefen; kein Transkriptions- oder Diarisierungstest.${NC}"
+  elif [ "$TOOL_KEY" = "Aegisub" ] && [ "$tool_rc" -eq 0 ]; then
+    end_operation_measurement "success"
+    operation_status="success"
+    echo -e "${GREEN}Aegisub: GitHub-Quellen vorbereitet. Optionalen nativen Build im Status pruefen; kein GUI-/Audiotest.${NC}"
+  elif [ "$TOOL_KEY" = "Basic_Pitch" ] && [ "$tool_rc" -eq 0 ]; then
+    end_operation_measurement "success"
+    operation_status="success"
+    echo -e "${GREEN}Basic Pitch: GitHub-Paket installiert. Laufzeit-Abhaengigkeiten im Status pruefen; kein Audio-/MIDI-Inferenztest.${NC}"
+  elif [ "$TOOL_KEY" = "Sfizz" ] && [ "$tool_rc" -eq 0 ]; then
+    end_operation_measurement "success"
+    operation_status="success"
+    echo -e "${GREEN}Sfizz: GitHub-Engine-Quellen vorbereitet. Optionalen Renderer-Build im Status pruefen; keine DAW-Plugins oder Audiotests.${NC}"
+  elif [ "$TOOL_KEY" = "AIDA_X" ] && [ "$tool_rc" -eq 0 ]; then
+    end_operation_measurement "success"
+    operation_status="success"
+    echo -e "${GREEN}AIDA-X: GitHub-Quellen vorbereitet. Optionalen Standalone-Build im Status pruefen; kein Audio-/Pluginstart oder Audiotest.${NC}"
+  elif [ "$tool_rc" -eq 0 ]; then
+    append_unique_line "$TOOL_STATUS_FILE" "$TOOL_KEY"
+    end_operation_measurement "success"
+    operation_status="success"
+    echo -e "${GREEN}Tool \'$TOOL_KEY\' erfolgreich installiert.${NC}"
+  else
+    end_operation_measurement "failed"
+    echo -e "${RED}Fehler bei der Installation von Tool \'$TOOL_KEY\'.${NC}"
+  fi
+  handle_manual_tool_post_action "$TOOL_KEY" "Installation" "$operation_status" "${TOOL_BATCH_UPCOMING_PREVIEW:-}"
 }
 
 # Funktion zum Deinstallieren eines Tools
 uninstall_tool() {
-    local TOOL_KEY="$1"
-    local operation_status="failed"
-    show_tool_action_intro "$TOOL_KEY" "deinstallieren" "uninstall"
-    maybe_cleanup_logs_before_operation
-    begin_operation_measurement "tool_uninstall_${TOOL_KEY}" "Tool deinstallieren: ${TOOL_KEY}"
-    echo -e "${BLUE}Deinstalliere Tool: ${TOOL_KEY}...${NC}"
-    echo -e "${YELLOW}Achtung:${NC} Die Deinstallation entfernt in der Regel nur das Tool selbst."
-    echo -e "${YELLOW}Hinweis:${NC} Abhängigkeiten, Build-Apps, Paket-Caches und andere Zusätze bleiben erhalten."
-    echo -e "${YELLOW}Aufräumen:${NC} Bitte danach in den Optionen unter Installationsüberwachung die Installationsreste-/Cache-Bereinigung prüfen."
-    run_tool_script "$TOOL_KEY" "uninstall"
-    if [ $? -eq 0 ]; then
-        remove_exact_line "$TOOL_STATUS_FILE" "$TOOL_KEY"
-        remove_exact_line "$USER_STATUS_DIR/installed_tools.txt" "$TOOL_KEY"
-        remove_tool_from_autostart_script "$TOOL_KEY"
-        end_operation_measurement "success"
-        operation_status="success"
-        echo -e "${GREEN}Tool \'$TOOL_KEY\' erfolgreich deinstalliert.${NC}"
-    else
-        end_operation_measurement "failed"
-        echo -e "${RED}Fehler bei der Deinstallation von Tool \'$TOOL_KEY\'.${NC}"
-    fi
-    handle_manual_tool_post_action "$TOOL_KEY" "Deinstallation" "$operation_status" "${TOOL_BATCH_UPCOMING_PREVIEW:-}"
+  local TOOL_KEY="$1"
+  local operation_status="failed"
+  show_tool_action_intro "$TOOL_KEY" "deinstallieren" "uninstall"
+  maybe_cleanup_logs_before_operation
+  begin_operation_measurement "tool_uninstall_${TOOL_KEY}" "Tool deinstallieren: ${TOOL_KEY}"
+  echo -e "${BLUE}Deinstalliere Tool: ${TOOL_KEY}...${NC}"
+  echo -e "${YELLOW}Achtung:${NC} Die Deinstallation entfernt in der Regel nur das Tool selbst."
+  echo -e "${YELLOW}Hinweis:${NC} Abhängigkeiten, Build-Apps, Paket-Caches und andere Zusätze bleiben erhalten."
+  echo -e "${YELLOW}Aufräumen:${NC} Bitte danach in den Optionen unter Installationsüberwachung die Installationsreste-/Cache-Bereinigung prüfen."
+  run_tool_script "$TOOL_KEY" "uninstall"
+  if [ $? -eq 0 ]; then
+    remove_exact_line "$TOOL_STATUS_FILE" "$TOOL_KEY"
+    remove_exact_line "$USER_STATUS_DIR/installed_tools.txt" "$TOOL_KEY"
+    remove_tool_from_autostart_script "$TOOL_KEY"
+    end_operation_measurement "success"
+    operation_status="success"
+    echo -e "${GREEN}Tool \'$TOOL_KEY\' erfolgreich deinstalliert.${NC}"
+  else
+    end_operation_measurement "failed"
+    echo -e "${RED}Fehler bei der Deinstallation von Tool \'$TOOL_KEY\'.${NC}"
+  fi
+  handle_manual_tool_post_action "$TOOL_KEY" "Deinstallation" "$operation_status" "${TOOL_BATCH_UPCOMING_PREVIEW:-}"
 }
 
 TOOL_KEYS+=("Qwen_Desktop_Build" "Hermes_Agent_Jarvis" "Gradio" "Streamlit" "MuseTalk" "LivePortrait" "SadTalker" "RVC" "UVR5" "Audacity" "OBS" "WebsiteFactory" "AI_ContentMultiplier")
@@ -3994,129 +3995,129 @@ TOOLS["Gemini_Desktop_Dortanes_Source"]="Archivierte GitHub-Studienquellen; kein
 TOOL_SCRIPT_NAMES["Gemini_Desktop_Dortanes_Source"]="gemini_desktop_dortanes_source"
 
 sort_tool_menu_keys() {
-    local key
-    local -a pinned=() remaining=() sorted=() appended=()
-    for key in "${TOOL_KEYS[@]}"; do
-        case "$key" in
-            Ollama|OpenClaw|Ruflo) pinned+=("$key") ;;
-            GitOps_Bootstrap|Kubeseal|Traefik) appended+=("$key") ;;
-            *) remaining+=("$key") ;;
-        esac
-    done
-    # Preserve core tools above the separator; sort the existing catalog A-Z.
-    if ((${#remaining[@]})); then
-        mapfile -t sorted < <(printf '%s\n' "${remaining[@]}" | LC_ALL=C sort -f -s)
-    fi
-    # Neue GitOps-Werkzeuge bewusst hinter dem bisherigen Z-Ende belassen.
-    TOOL_KEYS=("${pinned[@]}" "${sorted[@]}" "${appended[@]}")
+  local key
+  local -a pinned=() remaining=() sorted=() appended=()
+  for key in "${TOOL_KEYS[@]}"; do
+    case "$key" in
+      Ollama | OpenClaw | Ruflo) pinned+=("$key") ;;
+      GitOps_Bootstrap | Kubeseal | Traefik) appended+=("$key") ;;
+      *) remaining+=("$key") ;;
+    esac
+  done
+  # Preserve core tools above the separator; sort the existing catalog A-Z.
+  if ((${#remaining[@]})); then
+    mapfile -t sorted < <(printf '%s\n' "${remaining[@]}" | LC_ALL=C sort -f -s)
+  fi
+  # Neue GitOps-Werkzeuge bewusst hinter dem bisherigen Z-Ende belassen.
+  TOOL_KEYS=("${pinned[@]}" "${sorted[@]}" "${appended[@]}")
 }
 
 # Funktion zum Anzeigen des Tool-Management-Menüs
 show_tool_management_menu() {
-    local tool_menu_started_at
-    local tool_menu_free_kb_before
-    tool_menu_started_at="$(date +%s)"
-    tool_menu_free_kb_before="$(get_free_disk_kb)"
-    TOOL_BATCH_ABORT_REQUESTED=0
-    sort_tool_menu_keys
-    sync_core_tool_status
-    ensure_user_workspace
-    normalize_status_file "$TOOL_STATUS_FILE" "${TOOL_KEYS[@]}"
+  local tool_menu_started_at
+  local tool_menu_free_kb_before
+  tool_menu_started_at="$(date +%s)"
+  tool_menu_free_kb_before="$(get_free_disk_kb)"
+  TOOL_BATCH_ABORT_REQUESTED=0
+  sort_tool_menu_keys
+  sync_core_tool_status
+  ensure_user_workspace
+  normalize_status_file "$TOOL_STATUS_FILE" "${TOOL_KEYS[@]}"
 
-    # Installierte Tools laden
-    declare -A INSTALLED_TOOLS_MAP
-    local total_tool_count=0
-    local installed_tool_count=0
-    local tool_menu_total_summary
-    local tool_menu_prompt
-    local overview_metrics_enabled="false"
-    load_installed_map "$TOOL_STATUS_FILE" INSTALLED_TOOLS_MAP
-    total_tool_count="${#TOOL_KEYS[@]}"
-    if overview_metrics_allowed_for_count "${#TOOL_KEYS[@]}"; then
-        overview_metrics_enabled="true"
-        tool_menu_total_summary="$(summarize_operation_metrics_with_missing_plain "tool_install" "${TOOL_KEYS[@]}")"
-        tool_menu_prompt="(*) = behalten oder installieren.\n\nSpalten: Auswahl | Tool | Zeit hh:mm:ss | Gesamtspeicher MB | Beschreibung\nFehlende Werte: --:--:-- | --.- MB\nErmittelte Summe aller Tool-Installationen: ${tool_menu_total_summary}\nAusführung: erst Deinstallationen, danach Installationen.\nGesamt: ${total_tool_count} | Installiert: ${installed_tool_count}"
-    else
-        overview_metrics_enabled="false"
-        tool_menu_total_summary=""
-        tool_menu_prompt="(*) = behalten oder installieren.\n\nZeit- und Speicherwerte sind deaktiviert oder wegen der großen Liste automatisch im Schnellmodus ausgeblendet.\nAusführung: erst Deinstallationen, danach Installationen.\nGesamt: ${total_tool_count} | Installiert: ${installed_tool_count}"
+  # Installierte Tools laden
+  declare -A INSTALLED_TOOLS_MAP
+  local total_tool_count=0
+  local installed_tool_count=0
+  local tool_menu_total_summary
+  local tool_menu_prompt
+  local overview_metrics_enabled="false"
+  load_installed_map "$TOOL_STATUS_FILE" INSTALLED_TOOLS_MAP
+  total_tool_count="${#TOOL_KEYS[@]}"
+  if overview_metrics_allowed_for_count "${#TOOL_KEYS[@]}"; then
+    overview_metrics_enabled="true"
+    tool_menu_total_summary="$(summarize_operation_metrics_with_missing_plain "tool_install" "${TOOL_KEYS[@]}")"
+    tool_menu_prompt="(*) = behalten oder installieren.\n\nSpalten: Auswahl | Tool | Zeit hh:mm:ss | Gesamtspeicher MB | Beschreibung\nFehlende Werte: --:--:-- | --.- MB\nErmittelte Summe aller Tool-Installationen: ${tool_menu_total_summary}\nAusführung: erst Deinstallationen, danach Installationen.\nGesamt: ${total_tool_count} | Installiert: ${installed_tool_count}"
+  else
+    overview_metrics_enabled="false"
+    tool_menu_total_summary=""
+    tool_menu_prompt="(*) = behalten oder installieren.\n\nZeit- und Speicherwerte sind deaktiviert oder wegen der großen Liste automatisch im Schnellmodus ausgeblendet.\nAusführung: erst Deinstallationen, danach Installationen.\nGesamt: ${total_tool_count} | Installiert: ${installed_tool_count}"
+  fi
+
+  TOOL_CHECKLIST_OPTIONS=()
+  for tool_key in "${TOOL_KEYS[@]}"; do
+    STATUS="off"
+    local tool_metric_summary
+    local tool_storage_summary
+    if [ -n "$tool_key" ] && [ "${INSTALLED_TOOLS_MAP[$tool_key]:-}" = "1" ]; then
+      STATUS="on"
+      installed_tool_count=$((installed_tool_count + 1))
     fi
-
-    TOOL_CHECKLIST_OPTIONS=()
-    for tool_key in "${TOOL_KEYS[@]}"; do
-        STATUS="off"
-        local tool_metric_summary
-        local tool_storage_summary
-        if [ -n "$tool_key" ] && [ "${INSTALLED_TOOLS_MAP[$tool_key]:-}" = "1" ]; then
-            STATUS="on"
-            installed_tool_count=$((installed_tool_count + 1))
-        fi
-        if [ "$overview_metrics_enabled" = "true" ]; then
-            tool_metric_summary="$(get_operation_metric_summary_plain "tool_install_${tool_key}")"
-            TOOL_CHECKLIST_OPTIONS+=("$tool_key" "${tool_metric_summary} | ${TOOLS[$tool_key]}" "$STATUS")
-        else
-            TOOL_CHECKLIST_OPTIONS+=("$tool_key" "${TOOLS[$tool_key]}" "$STATUS")
-        fi
-        if [ "$tool_key" = "Ruflo" ]; then
-            TOOL_CHECKLIST_OPTIONS+=("__TOOLS_SEPARATOR__" "---------------- Weitere Tools A-Z ----------------" "off")
-        fi
-    done
-    if [ "$overview_metrics_enabled" != "true" ]; then
-        tool_menu_prompt="(*) = behalten oder installieren.\n\nZeit- und Speicherwerte sind deaktiviert oder wegen der großen Liste automatisch im Schnellmodus ausgeblendet.\nAusführung: erst Deinstallationen, danach Installationen.\nGesamt: ${total_tool_count} | Installiert: ${installed_tool_count}"
-    else
-        tool_menu_prompt="(*) = behalten oder installieren.\n\nSpalten: Auswahl | Tool | Zeit hh:mm:ss | Gesamtspeicher MB | Beschreibung\nFehlende Werte: --:--:-- | --.- MB\nErmittelte Summe aller Tool-Installationen: ${tool_menu_total_summary}\nAusführung: erst Deinstallationen, danach Installationen.\nGesamt: ${total_tool_count} | Installiert: ${installed_tool_count}"
-    fi
-
     if [ "$overview_metrics_enabled" = "true" ]; then
-        record_menu_load_measurement "menu_load_tool_management_metrics_on" "Tool-Menue laden (Zeit-/Speicherwerte aktiv)" "$tool_menu_started_at" "$tool_menu_free_kb_before"
+      tool_metric_summary="$(get_operation_metric_summary_plain "tool_install_${tool_key}")"
+      TOOL_CHECKLIST_OPTIONS+=("$tool_key" "${tool_metric_summary} | ${TOOLS[$tool_key]}" "$STATUS")
     else
-        record_menu_load_measurement "menu_load_tool_management_metrics_off" "Tool-Menue laden (Zeit-/Speicherwerte inaktiv)" "$tool_menu_started_at" "$tool_menu_free_kb_before"
+      TOOL_CHECKLIST_OPTIONS+=("$tool_key" "${TOOLS[$tool_key]}" "$STATUS")
     fi
+    if [ "$tool_key" = "Ruflo" ]; then
+      TOOL_CHECKLIST_OPTIONS+=("__TOOLS_SEPARATOR__" "---------------- Weitere Tools A-Z ----------------" "off")
+    fi
+  done
+  if [ "$overview_metrics_enabled" != "true" ]; then
+    tool_menu_prompt="(*) = behalten oder installieren.\n\nZeit- und Speicherwerte sind deaktiviert oder wegen der großen Liste automatisch im Schnellmodus ausgeblendet.\nAusführung: erst Deinstallationen, danach Installationen.\nGesamt: ${total_tool_count} | Installiert: ${installed_tool_count}"
+  else
+    tool_menu_prompt="(*) = behalten oder installieren.\n\nSpalten: Auswahl | Tool | Zeit hh:mm:ss | Gesamtspeicher MB | Beschreibung\nFehlende Werte: --:--:-- | --.- MB\nErmittelte Summe aller Tool-Installationen: ${tool_menu_total_summary}\nAusführung: erst Deinstallationen, danach Installationen.\nGesamt: ${total_tool_count} | Installiert: ${installed_tool_count}"
+  fi
 
-    dialog --clear --backtitle "$APP_TITLE" \
+  if [ "$overview_metrics_enabled" = "true" ]; then
+    record_menu_load_measurement "menu_load_tool_management_metrics_on" "Tool-Menue laden (Zeit-/Speicherwerte aktiv)" "$tool_menu_started_at" "$tool_menu_free_kb_before"
+  else
+    record_menu_load_measurement "menu_load_tool_management_metrics_off" "Tool-Menue laden (Zeit-/Speicherwerte inaktiv)" "$tool_menu_started_at" "$tool_menu_free_kb_before"
+  fi
+
+  dialog --clear --backtitle "$APP_TITLE" \
     --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
     --extra-button --extra-label "62 Quellen verwalten" \
     --help-button --help-label "Ubuntu / Windows" \
     --title "TOOL-MANAGEMENT (${installed_tool_count}/${total_tool_count} installiert)" --checklist "$tool_menu_prompt" 34 120 24 \
-    "${TOOL_CHECKLIST_OPTIONS[@]}" 2> /tmp/tool_selection
+    "${TOOL_CHECKLIST_OPTIONS[@]}" 2>/tmp/tool_selection
 
-    local tool_dialog_rc=$?
-    if [ "$tool_dialog_rc" -eq 2 ]; then
-        show_webinar_platform_menu
-        return 0
+  local tool_dialog_rc=$?
+  if [ "$tool_dialog_rc" -eq 2 ]; then
+    show_webinar_platform_menu
+    return 0
+  fi
+  if [ "$tool_dialog_rc" -eq 3 ]; then
+    show_development_toolchain_check
+    return 0
+  fi
+  if [ "$tool_dialog_rc" -ne 0 ]; then
+    return 0
+  fi
+
+  mapfile -t SELECTED_TOOLS_ARRAY < <(tr ' ' '\n' </tmp/tool_selection | tr -d '"' | sed '/^$/d; /^__TOOLS_SEPARATOR__$/d')
+
+  local -a tools_to_uninstall=()
+  local -a tools_to_install=()
+
+  # Erst Deinstallationen planen, dann Installationen. So wird Speicher
+  # freigegeben, bevor neue, oft grosse Abhaengigkeiten geladen werden.
+  for tool_key in "${TOOL_KEYS[@]}"; do
+    if ! selection_contains "$tool_key" "${SELECTED_TOOLS_ARRAY[@]}" && [ "${INSTALLED_TOOLS_MAP[$tool_key]:-}" = "1" ]; then
+      tools_to_uninstall+=("$tool_key")
     fi
-    if [ "$tool_dialog_rc" -eq 3 ]; then
-        show_development_toolchain_check
-        return 0
+  done
+
+  for tool_key in "${TOOL_KEYS[@]}"; do
+    if selection_contains "$tool_key" "${SELECTED_TOOLS_ARRAY[@]}" && [ "${INSTALLED_TOOLS_MAP[$tool_key]:-}" != "1" ]; then
+      tools_to_install+=("$tool_key")
     fi
-    if [ "$tool_dialog_rc" -ne 0 ]; then
-        return 0
-    fi
+  done
 
-    mapfile -t SELECTED_TOOLS_ARRAY < <(tr ' ' '\n' < /tmp/tool_selection | tr -d '"' | sed '/^$/d; /^__TOOLS_SEPARATOR__$/d')
+  if ! run_ordered_tool_actions "Tool-Management" tools_to_uninstall tools_to_install; then
+    return 0
+  fi
 
-    local -a tools_to_uninstall=()
-    local -a tools_to_install=()
-
-    # Erst Deinstallationen planen, dann Installationen. So wird Speicher
-    # freigegeben, bevor neue, oft grosse Abhaengigkeiten geladen werden.
-    for tool_key in "${TOOL_KEYS[@]}"; do
-        if ! selection_contains "$tool_key" "${SELECTED_TOOLS_ARRAY[@]}" && [ "${INSTALLED_TOOLS_MAP[$tool_key]:-}" = "1" ]; then
-            tools_to_uninstall+=("$tool_key")
-        fi
-    done
-
-    for tool_key in "${TOOL_KEYS[@]}"; do
-        if selection_contains "$tool_key" "${SELECTED_TOOLS_ARRAY[@]}" && [ "${INSTALLED_TOOLS_MAP[$tool_key]:-}" != "1" ]; then
-            tools_to_install+=("$tool_key")
-        fi
-    done
-
-    if ! run_ordered_tool_actions "Tool-Management" tools_to_uninstall tools_to_install; then
-        return 0
-    fi
-
-    read -p "Tool-Management abgeschlossen. Drücken Sie Enter..."
+  read -p "Tool-Management abgeschlossen. Drücken Sie Enter..."
 }
 
 declare -A PROFILE_CORE_TOOLS
@@ -4352,399 +4353,399 @@ PROFILE_EXTENDED_TOOLS["Repo_Maintainer"]="Gitleaks Docker_Compose_Plugin"
 PROFILE_INTEGRATION_TOOLS["Repo_Maintainer"]="Docker"
 
 show_tool_group_checklist() {
-    local group_title="$1"
-    local tool_list="$2"
-    local options=()
-    local tool_key
-    local status
-    local group_metric_summary
-    local tool_metric_summary
-    local group_prompt
-    local overview_metrics_enabled="false"
-    local -a group_tool_array=()
-    local group_tool_count=0
-    declare -A installed_map
+  local group_title="$1"
+  local tool_list="$2"
+  local options=()
+  local tool_key
+  local status
+  local group_metric_summary
+  local tool_metric_summary
+  local group_prompt
+  local overview_metrics_enabled="false"
+  local -a group_tool_array=()
+  local group_tool_count=0
+  declare -A installed_map
 
-    ensure_user_workspace
-    native_tool_sync_all "$USER_WORKSPACE_DIR" || return 1
-    normalize_status_file "$TOOL_STATUS_FILE" "${TOOL_KEYS[@]}"
-    load_installed_map "$TOOL_STATUS_FILE" installed_map
+  ensure_user_workspace
+  native_tool_sync_all "$USER_WORKSPACE_DIR" || return 1
+  normalize_status_file "$TOOL_STATUS_FILE" "${TOOL_KEYS[@]}"
+  load_installed_map "$TOOL_STATUS_FILE" installed_map
 
-    for tool_key in $tool_list; do
-        [ -n "$tool_key" ] || continue
-        group_tool_count=$((group_tool_count + 1))
-    done
-    if overview_metrics_allowed_for_count "$group_tool_count"; then
-        overview_metrics_enabled="true"
-    fi
+  for tool_key in $tool_list; do
+    [ -n "$tool_key" ] || continue
+    group_tool_count=$((group_tool_count + 1))
+  done
+  if overview_metrics_allowed_for_count "$group_tool_count"; then
+    overview_metrics_enabled="true"
+  fi
 
-    for tool_key in $tool_list; do
-        [ -n "$tool_key" ] || continue
-        group_tool_array+=("$tool_key")
-        status="off"
-        if [ "${installed_map[$tool_key]:-}" = "1" ]; then
-            status="on"
-        fi
-        if [ "$overview_metrics_enabled" = "true" ]; then
-            tool_metric_summary="$(get_operation_metric_summary_plain "tool_install_${tool_key}")"
-            options+=("$tool_key" "${tool_metric_summary} | ${TOOLS[$tool_key]}" "$status")
-        else
-            options+=("$tool_key" "${TOOLS[$tool_key]}" "$status")
-        fi
-    done
-
-    if [ ${#options[@]} -eq 0 ]; then
-        dialog --msgbox "${TXT_NO_TOOLS_DEFINED:-Für diesen Block sind aktuell keine Einzeltools definiert.}" 8 60
-        return 0
+  for tool_key in $tool_list; do
+    [ -n "$tool_key" ] || continue
+    group_tool_array+=("$tool_key")
+    status="off"
+    if [ "${installed_map[$tool_key]:-}" = "1" ]; then
+      status="on"
     fi
     if [ "$overview_metrics_enabled" = "true" ]; then
-        group_metric_summary="$(summarize_operation_metrics_with_missing_plain "tool_install" "${group_tool_array[@]}")"
-        group_prompt="(*) = behalten oder installieren. Leer = bei installierten Tools deinstallieren.\n\nSpalten: Auswahl | Tool | Zeit hh:mm:ss | Gesamtspeicher MB | Beschreibung\nFehlende Werte: --:--:-- | --.- MB\nErmittelte Summe dieses Blocks: ${group_metric_summary}\nAusführung: erst Deinstallationen, danach Installationen."
+      tool_metric_summary="$(get_operation_metric_summary_plain "tool_install_${tool_key}")"
+      options+=("$tool_key" "${tool_metric_summary} | ${TOOLS[$tool_key]}" "$status")
     else
-        group_prompt="(*) = behalten oder installieren. Leer = bei installierten Tools deinstallieren.\n\nZeit- und Speicherwerte sind deaktiviert oder wegen der Listengröße automatisch im Schnellmodus ausgeblendet.\nAusführung: erst Deinstallationen, danach Installationen."
+      options+=("$tool_key" "${TOOLS[$tool_key]}" "$status")
     fi
+  done
 
-    dialog --clear --backtitle "$APP_TITLE" \
+  if [ ${#options[@]} -eq 0 ]; then
+    dialog --msgbox "${TXT_NO_TOOLS_DEFINED:-Für diesen Block sind aktuell keine Einzeltools definiert.}" 8 60
+    return 0
+  fi
+  if [ "$overview_metrics_enabled" = "true" ]; then
+    group_metric_summary="$(summarize_operation_metrics_with_missing_plain "tool_install" "${group_tool_array[@]}")"
+    group_prompt="(*) = behalten oder installieren. Leer = bei installierten Tools deinstallieren.\n\nSpalten: Auswahl | Tool | Zeit hh:mm:ss | Gesamtspeicher MB | Beschreibung\nFehlende Werte: --:--:-- | --.- MB\nErmittelte Summe dieses Blocks: ${group_metric_summary}\nAusführung: erst Deinstallationen, danach Installationen."
+  else
+    group_prompt="(*) = behalten oder installieren. Leer = bei installierten Tools deinstallieren.\n\nZeit- und Speicherwerte sind deaktiviert oder wegen der Listengröße automatisch im Schnellmodus ausgeblendet.\nAusführung: erst Deinstallationen, danach Installationen."
+  fi
+
+  dialog --clear --backtitle "$APP_TITLE" \
     --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
     --title "$group_title" --checklist "$group_prompt" 28 120 18 \
-    "${options[@]}" 2> /tmp/profile_block_tools_selection
+    "${options[@]}" 2>/tmp/profile_block_tools_selection
 
-    if [ $? -ne 0 ]; then
-        return 0
+  if [ $? -ne 0 ]; then
+    return 0
+  fi
+
+  mapfile -t SELECTED_GROUP_TOOLS < <(tr ' ' '\n' </tmp/profile_block_tools_selection | tr -d '"' | sed '/^$/d')
+
+  local -a tools_to_uninstall=()
+  local -a tools_to_install=()
+
+  # Erst Deinstallationen planen, dann Installationen, damit Speicher vor
+  # neuen Downloads/Builds frei wird.
+  for tool_key in $tool_list; do
+    [ -n "$tool_key" ] || continue
+    if ! selection_contains "$tool_key" "${SELECTED_GROUP_TOOLS[@]}" && [ "${installed_map[$tool_key]:-}" = "1" ]; then
+      tools_to_uninstall+=("$tool_key")
     fi
+  done
 
-    mapfile -t SELECTED_GROUP_TOOLS < <(tr ' ' '\n' < /tmp/profile_block_tools_selection | tr -d '"' | sed '/^$/d')
-
-    local -a tools_to_uninstall=()
-    local -a tools_to_install=()
-
-    # Erst Deinstallationen planen, dann Installationen, damit Speicher vor
-    # neuen Downloads/Builds frei wird.
-    for tool_key in $tool_list; do
-        [ -n "$tool_key" ] || continue
-        if ! selection_contains "$tool_key" "${SELECTED_GROUP_TOOLS[@]}" && [ "${installed_map[$tool_key]:-}" = "1" ]; then
-            tools_to_uninstall+=("$tool_key")
-        fi
-    done
-
-    for tool_key in $tool_list; do
-        [ -n "$tool_key" ] || continue
-        if selection_contains "$tool_key" "${SELECTED_GROUP_TOOLS[@]}" && [ "${installed_map[$tool_key]:-}" != "1" ]; then
-            tools_to_install+=("$tool_key")
-        fi
-    done
-
-    if ! run_ordered_tool_actions "$group_title" tools_to_uninstall tools_to_install; then
-        PROFILE_FLOW_ABORT_REQUESTED=1
-        return 0
+  for tool_key in $tool_list; do
+    [ -n "$tool_key" ] || continue
+    if selection_contains "$tool_key" "${SELECTED_GROUP_TOOLS[@]}" && [ "${installed_map[$tool_key]:-}" != "1" ]; then
+      tools_to_install+=("$tool_key")
     fi
+  done
+
+  if ! run_ordered_tool_actions "$group_title" tools_to_uninstall tools_to_install; then
+    PROFILE_FLOW_ABORT_REQUESTED=1
+    return 0
+  fi
 }
 
 toggle_full_profile_from_block() {
-    local profile_key="$1"
-    declare -A installed_profiles_map
+  local profile_key="$1"
+  declare -A installed_profiles_map
 
-    ensure_user_workspace
-    normalize_status_file "$PROFILE_STATUS_FILE" "${PROFILE_KEYS[@]}"
-    load_installed_map "$PROFILE_STATUS_FILE" installed_profiles_map
+  ensure_user_workspace
+  normalize_status_file "$PROFILE_STATUS_FILE" "${PROFILE_KEYS[@]}"
+  load_installed_map "$PROFILE_STATUS_FILE" installed_profiles_map
 
-    if [ "${installed_profiles_map[$profile_key]:-}" = "1" ]; then
-        dialog --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" --yesno "Profil '$profile_key' ist aktuell installiert. Möchten Sie das gesamte Profil jetzt deinstallieren?" 8 80
-        if [ $? -eq 0 ]; then
-            uninstall_profile "$profile_key"
-        fi
-    else
-        dialog --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" --yesno "Profil '$profile_key' ist aktuell nicht installiert. Möchten Sie das gesamte Profil jetzt installieren?" 8 80
-        if [ $? -eq 0 ]; then
-            install_profile "$profile_key"
-        fi
+  if [ "${installed_profiles_map[$profile_key]:-}" = "1" ]; then
+    dialog --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" --yesno "Profil '$profile_key' ist aktuell installiert. Möchten Sie das gesamte Profil jetzt deinstallieren?" 8 80
+    if [ $? -eq 0 ]; then
+      uninstall_profile "$profile_key"
     fi
+  else
+    dialog --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" --yesno "Profil '$profile_key' ist aktuell nicht installiert. Möchten Sie das gesamte Profil jetzt installieren?" 8 80
+    if [ $? -eq 0 ]; then
+      install_profile "$profile_key"
+    fi
+  fi
 }
 
 toggle_tool_group_bulk() {
-    local group_title="$1"
-    local tool_list="$2"
-    local tool_key
-    local all_installed=1
-    local has_tools=0
-    declare -A installed_map
+  local group_title="$1"
+  local tool_list="$2"
+  local tool_key
+  local all_installed=1
+  local has_tools=0
+  declare -A installed_map
 
-    ensure_user_workspace
-    native_tool_sync_all "$USER_WORKSPACE_DIR" || return 1
-    normalize_status_file "$TOOL_STATUS_FILE" "${TOOL_KEYS[@]}"
-    load_installed_map "$TOOL_STATUS_FILE" installed_map
+  ensure_user_workspace
+  native_tool_sync_all "$USER_WORKSPACE_DIR" || return 1
+  normalize_status_file "$TOOL_STATUS_FILE" "${TOOL_KEYS[@]}"
+  load_installed_map "$TOOL_STATUS_FILE" installed_map
 
-    for tool_key in $tool_list; do
+  for tool_key in $tool_list; do
+    [ -n "$tool_key" ] || continue
+    has_tools=1
+    if [ "${installed_map[$tool_key]:-}" != "1" ]; then
+      all_installed=0
+    fi
+  done
+
+  if [ "$has_tools" -eq 0 ]; then
+    dialog --ok-label "${TXT_OK_LABEL:-✔  OK}" --msgbox "Für diesen Block sind aktuell keine Tools definiert." 8 60
+    return 0
+  fi
+
+  if [ "$all_installed" -eq 1 ]; then
+    dialog --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" --yesno "Block '$group_title' ist aktuell installiert. Möchten Sie alle enthaltenen Tools jetzt deinstallieren?" 9 90
+    if [ $? -eq 0 ]; then
+      for tool_key in $tool_list; do
         [ -n "$tool_key" ] || continue
-        has_tools=1
-        if [ "${installed_map[$tool_key]:-}" != "1" ]; then
-            all_installed=0
+        [ "${installed_map[$tool_key]:-}" = "1" ] || continue
+        uninstall_tool "$tool_key"
+        if [ "${TOOL_BATCH_ABORT_REQUESTED:-0}" = "1" ]; then
+          PROFILE_FLOW_ABORT_REQUESTED=1
+          return 0
         fi
-    done
-
-    if [ "$has_tools" -eq 0 ]; then
-        dialog --ok-label "${TXT_OK_LABEL:-✔  OK}" --msgbox "Für diesen Block sind aktuell keine Tools definiert." 8 60
-        return 0
+      done
     fi
-
-    if [ "$all_installed" -eq 1 ]; then
-        dialog --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" --yesno "Block '$group_title' ist aktuell installiert. Möchten Sie alle enthaltenen Tools jetzt deinstallieren?" 9 90
-        if [ $? -eq 0 ]; then
-            for tool_key in $tool_list; do
-                [ -n "$tool_key" ] || continue
-                [ "${installed_map[$tool_key]:-}" = "1" ] || continue
-                uninstall_tool "$tool_key"
-                if [ "${TOOL_BATCH_ABORT_REQUESTED:-0}" = "1" ]; then
-                    PROFILE_FLOW_ABORT_REQUESTED=1
-                    return 0
-                fi
-            done
+  else
+    dialog --yesno "Block '$group_title' ist aktuell nicht vollständig installiert. Möchten Sie alle enthaltenen Tools jetzt installieren?" 9 95
+    if [ $? -eq 0 ]; then
+      for tool_key in $tool_list; do
+        [ -n "$tool_key" ] || continue
+        [ "${installed_map[$tool_key]:-}" != "1" ] || continue
+        install_tool "$tool_key"
+        if [ "${TOOL_BATCH_ABORT_REQUESTED:-0}" = "1" ]; then
+          PROFILE_FLOW_ABORT_REQUESTED=1
+          return 0
         fi
-    else
-        dialog --yesno "Block '$group_title' ist aktuell nicht vollständig installiert. Möchten Sie alle enthaltenen Tools jetzt installieren?" 9 95
-        if [ $? -eq 0 ]; then
-            for tool_key in $tool_list; do
-                [ -n "$tool_key" ] || continue
-                [ "${installed_map[$tool_key]:-}" != "1" ] || continue
-                install_tool "$tool_key"
-                if [ "${TOOL_BATCH_ABORT_REQUESTED:-0}" = "1" ]; then
-                    PROFILE_FLOW_ABORT_REQUESTED=1
-                    return 0
-                fi
-            done
-        fi
+      done
     fi
+  fi
 }
 
 show_profile_block_detail_menu() {
-    local profile_key="$1"
-    local choice
-    local has_special_tools=0
-    local special_label="Spezialblock"
+  local profile_key="$1"
+  local choice
+  local has_special_tools=0
+  local special_label="Spezialblock"
 
-    if [ -n "${PROFILE_SPECIAL_TOOLS[$profile_key]:-}" ]; then
-        has_special_tools=1
+  if [ -n "${PROFILE_SPECIAL_TOOLS[$profile_key]:-}" ]; then
+    has_special_tools=1
+  fi
+  if [ -n "${PROFILE_SPECIAL_LABELS[$profile_key]:-}" ]; then
+    special_label="${PROFILE_SPECIAL_LABELS[$profile_key]}"
+  fi
+
+  while true; do
+    if [ "${PROFILE_FLOW_ABORT_REQUESTED:-0}" = "1" ]; then
+      return 0
     fi
-    if [ -n "${PROFILE_SPECIAL_LABELS[$profile_key]:-}" ]; then
-        special_label="${PROFILE_SPECIAL_LABELS[$profile_key]}"
+    if [ "$has_special_tools" -eq 1 ]; then
+      dialog --clear --backtitle "$APP_TITLE" \
+        --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
+        --title "PROFILBLOCK: $profile_key" --menu "Wählen Sie Block oder Gesamtprofil:" 24 96 10 \
+        "1" "Gesamtes Profil installieren/deinstallieren" \
+        "2" "Kernmodule (wichtig)" \
+        "3" "Erweiterte Module" \
+        "4" "Integrationen / Optional" \
+        "5" "${special_label} (Einzeltools)" \
+        "6" "${special_label} komplett installieren/deinstallieren" \
+        "7" "${TXT_BACK_ITEM:-Zurück}" 2>/tmp/profile_block_choice
+    else
+      dialog --clear --backtitle "$APP_TITLE" \
+        --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
+        --title "PROFILBLOCK: $profile_key" --menu "Wählen Sie Block oder Gesamtprofil:" 22 90 8 \
+        "1" "Gesamtes Profil installieren/deinstallieren" \
+        "2" "Kernmodule (wichtig)" \
+        "3" "Erweiterte Module" \
+        "4" "Integrationen / Optional" \
+        "5" "${TXT_BACK_ITEM:-Zurück}" 2>/tmp/profile_block_choice
     fi
 
-    while true; do
-        if [ "${PROFILE_FLOW_ABORT_REQUESTED:-0}" = "1" ]; then
-            return 0
-        fi
+    if [ $? -ne 0 ]; then
+      return 0
+    fi
+
+    choice="$(cat /tmp/profile_block_choice)"
+    case "$choice" in
+      1) toggle_full_profile_from_block "$profile_key" ;;
+      2) show_tool_group_checklist "$profile_key - Kernmodule" "${PROFILE_CORE_TOOLS[$profile_key]}" ;;
+      3) show_tool_group_checklist "$profile_key - Erweiterte Module" "${PROFILE_EXTENDED_TOOLS[$profile_key]}" ;;
+      4) show_tool_group_checklist "$profile_key - Integrationen / Optional" "${PROFILE_INTEGRATION_TOOLS[$profile_key]}" ;;
+      5)
         if [ "$has_special_tools" -eq 1 ]; then
-            dialog --clear --backtitle "$APP_TITLE" \
-            --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
-            --title "PROFILBLOCK: $profile_key" --menu "Wählen Sie Block oder Gesamtprofil:" 24 96 10 \
-            "1" "Gesamtes Profil installieren/deinstallieren" \
-            "2" "Kernmodule (wichtig)" \
-            "3" "Erweiterte Module" \
-            "4" "Integrationen / Optional" \
-            "5" "${special_label} (Einzeltools)" \
-            "6" "${special_label} komplett installieren/deinstallieren" \
-            "7" "${TXT_BACK_ITEM:-Zurück}" 2> /tmp/profile_block_choice
+          show_tool_group_checklist "$profile_key - ${special_label}" "${PROFILE_SPECIAL_TOOLS[$profile_key]}"
         else
-            dialog --clear --backtitle "$APP_TITLE" \
-            --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
-            --title "PROFILBLOCK: $profile_key" --menu "Wählen Sie Block oder Gesamtprofil:" 22 90 8 \
-            "1" "Gesamtes Profil installieren/deinstallieren" \
-            "2" "Kernmodule (wichtig)" \
-            "3" "Erweiterte Module" \
-            "4" "Integrationen / Optional" \
-            "5" "${TXT_BACK_ITEM:-Zurück}" 2> /tmp/profile_block_choice
+          return 0
         fi
-
-        if [ $? -ne 0 ]; then
-            return 0
+        ;;
+      6)
+        if [ "$has_special_tools" -eq 1 ]; then
+          toggle_tool_group_bulk "$profile_key - ${special_label}" "${PROFILE_SPECIAL_TOOLS[$profile_key]}"
+        else
+          return 0
         fi
-
-        choice="$(cat /tmp/profile_block_choice)"
-        case "$choice" in
-            1) toggle_full_profile_from_block "$profile_key" ;;
-            2) show_tool_group_checklist "$profile_key - Kernmodule" "${PROFILE_CORE_TOOLS[$profile_key]}" ;;
-            3) show_tool_group_checklist "$profile_key - Erweiterte Module" "${PROFILE_EXTENDED_TOOLS[$profile_key]}" ;;
-            4) show_tool_group_checklist "$profile_key - Integrationen / Optional" "${PROFILE_INTEGRATION_TOOLS[$profile_key]}" ;;
-            5)
-                if [ "$has_special_tools" -eq 1 ]; then
-                    show_tool_group_checklist "$profile_key - ${special_label}" "${PROFILE_SPECIAL_TOOLS[$profile_key]}"
-                else
-                    return 0
-                fi
-                ;;
-            6)
-                if [ "$has_special_tools" -eq 1 ]; then
-                    toggle_tool_group_bulk "$profile_key - ${special_label}" "${PROFILE_SPECIAL_TOOLS[$profile_key]}"
-                else
-                    return 0
-                fi
-                ;;
-            7) return 0 ;;
-        esac
-        if [ "${PROFILE_FLOW_ABORT_REQUESTED:-0}" = "1" ]; then
-            return 0
-        fi
-    done
+        ;;
+      7) return 0 ;;
+    esac
+    if [ "${PROFILE_FLOW_ABORT_REQUESTED:-0}" = "1" ]; then
+      return 0
+    fi
+  done
 }
 
 show_profile_block_browser() {
-    local options=()
-    local profile_key
+  local options=()
+  local profile_key
 
-    for profile_key in "${PROFILE_KEYS[@]}"; do
-        options+=("$profile_key" "${PROFILES[$profile_key]}")
-    done
+  for profile_key in "${PROFILE_KEYS[@]}"; do
+    options+=("$profile_key" "${PROFILES[$profile_key]}")
+  done
 
-    dialog --clear --backtitle "$APP_TITLE" \
+  dialog --clear --backtitle "$APP_TITLE" \
     --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
     --title "PROFILBLÖCKE & EINZELTOOLS" --menu "Wählen Sie einen Profilblock aus:" 26 100 14 \
-    "${options[@]}" 2> /tmp/profile_block_profile_choice
+    "${options[@]}" 2>/tmp/profile_block_profile_choice
 
-    if [ $? -ne 0 ]; then
-        return 0
-    fi
+  if [ $? -ne 0 ]; then
+    return 0
+  fi
 
-    show_profile_block_detail_menu "$(cat /tmp/profile_block_profile_choice)"
+  show_profile_block_detail_menu "$(cat /tmp/profile_block_profile_choice)"
 }
 
 show_profile_management_hub() {
-    dialog --clear --backtitle "$APP_TITLE" \
+  dialog --clear --backtitle "$APP_TITLE" \
     --cancel-label "${TXT_BACK_LABEL:-↩ Zurück}" \
     --title "PROFIL-MANAGEMENT" --menu "Wählen Sie eine Ansicht:" 18 90 6 \
     "1" "Schnellansicht: komplette Profile" \
     "2" "Blockansicht: Profilblöcke + Einzeltools" \
-    "3" "${TXT_BACK_ITEM:-Zurück}" 2> /tmp/profile_management_hub_choice
+    "3" "${TXT_BACK_ITEM:-Zurück}" 2>/tmp/profile_management_hub_choice
 
-    if [ $? -ne 0 ]; then
-        return 0
-    fi
+  if [ $? -ne 0 ]; then
+    return 0
+  fi
 
-    case "$(cat /tmp/profile_management_hub_choice)" in
-        1) show_profile_management_menu ;;
-        2) show_profile_block_browser ;;
-        3) return 0 ;;
-    esac
+  case "$(cat /tmp/profile_management_hub_choice)" in
+    1) show_profile_management_menu ;;
+    2) show_profile_block_browser ;;
+    3) return 0 ;;
+  esac
 }
 
 # --- Hauptmenü ---
 
 show_development_toolchain_report() {
-    local report check_rc
-    report="$(mktemp "${TMPDIR:-/tmp}/openclaw-tool-preflight.XXXXXX")" || return 1
-    if run_bash_script "$INSTALL_DIR/scripts/check_development_toolchains.sh" > "$report" 2>&1; then
-        check_rc=0
-    else
-        check_rc=$?
-        printf '\nPruefer konnte nicht abgeschlossen werden (Exit %s).\n' "$check_rc" >> "$report"
-    fi
-    dialog --clear --backtitle "$APP_TITLE" \
-        --title "62 Werkzeugquellen: lokale Vorpruefung, keine Installation" \
-        --textbox "$report" 30 110 || true
-    rm -f -- "$report"
-    return "$check_rc"
+  local report check_rc
+  report="$(mktemp "${TMPDIR:-/tmp}/openclaw-tool-preflight.XXXXXX")" || return 1
+  if run_bash_script "$INSTALL_DIR/scripts/check_development_toolchains.sh" >"$report" 2>&1; then
+    check_rc=0
+  else
+    check_rc=$?
+    printf '\nPruefer konnte nicht abgeschlossen werden (Exit %s).\n' "$check_rc" >>"$report"
+  fi
+  dialog --clear --backtitle "$APP_TITLE" \
+    --title "62 Werkzeugquellen: lokale Vorpruefung, keine Installation" \
+    --textbox "$report" 30 110 || true
+  rm -f -- "$report"
+  return "$check_rc"
 }
 
 show_development_toolchain_check() {
-    local action tool line id name mode report rc ref
-    local -a tool_options command
-    while true; do
-        action=$(dialog --clear --backtitle "$APP_TITLE" --title "62 Werkzeugquellen: Installation und Pruefung" \
-            --menu "GitHub-basierte Builds/Pakete ohne Docker. Ein Werkzeug pro Vorgang.\nKeine Dienste, Cluster, CI-Workflows oder Editor-Erweiterungen automatisch aktivieren." \
-            20 100 7 \
-            check "Alle 62 Quellen lokal vorpruefen" \
-            plan "Installationsplan / Voraussetzungen eines Werkzeugs" \
-            install "Ein Werkzeug bauen oder Paket bereitstellen" \
-            status "Installationsnachweis eines Werkzeugs pruefen" \
-            update "Bewusst anderen Tag/Commit installieren" \
-            uninstall "Eigene Installation deinstallieren" \
-            back "Zurueck" 3>&1 1>&2 2>&3) || return 0
-        [[ "$action" == back ]] && return 0
-        if [[ "$action" == check ]]; then
-            show_development_toolchain_report || true
-            continue
-        fi
-        tool_options=()
-        while IFS='|' read -r id name mode; do
-            [[ "$id" =~ ^[a-z0-9_]+$ ]] || continue
-            tool_options+=("$id" "$name [$mode]")
-        done < <(run_bash_script "$INSTALL_DIR/scripts/install_development_toolchain.sh" list)
-        if ((${#tool_options[@]} == 0)); then
-            dialog --msgbox "Installationskatalog konnte nicht gelesen werden. Keine Installation gestartet." 8 85
-            continue
-        fi
-        tool=$(dialog --clear --backtitle "$APP_TITLE" --title "Werkzeug waehlen: $action" \
-            --menu "Die Liste ist A-Z sortiert. Paketarten sind keine globalen Dienste." \
-            30 110 20 "${tool_options[@]}" 3>&1 1>&2 2>&3) || continue
-        command=("$INSTALL_DIR/scripts/install_development_toolchain.sh" "$action" --tool "$tool")
-        if [[ "$action" == install || "$action" == update ]]; then
-            report="$(mktemp "${TMPDIR:-/tmp}/openclaw-build-plan.XXXXXX")" || return 1
-            run_bash_script "$INSTALL_DIR/scripts/install_development_toolchain.sh" plan --tool "$tool" > "$report" 2>&1
-            dialog --title "Buildplan und Voraussetzungen: $tool" --textbox "$report" 30 110 || true
-            rm -f -- "$report"
-            dialog --defaultno --yes-label "(j)a" --no-label "(N)ein" --yesno \
-                "GitHub-Code und Buildhooks fuer $tool ausfuehren?\nDependencies koennen Paketregistries kontaktieren. Voraussetzungen/Lizenz bitte pruefen.\nPrivate Installation; keine Sandbox. Schwere Builds brauchen INSTALL_HEAVY_TOOLS=1.\nSystemwerkzeuge werden nicht ersetzt. Jetzt bewusst fortfahren?" 14 100 || continue
-            command+=(--accept-build-risk)
-        fi
-        if [[ "$action" == update ]]; then
-            ref=$(dialog --inputbox "Neuen Tag/Commit angeben. Leer: vorhandener Stand bleibt erhalten.\nBei bestehenden Adaptern verwaltet der jeweilige Installer seinen Pin." \
-                11 100 "" 3>&1 1>&2 2>&3) || continue
-            [[ -n "$ref" ]] && command+=(--ref "$ref")
-        fi
-        if [[ "$action" == uninstall ]]; then
-            dialog --defaultno --yes-label "(j)a" --no-label "(N)ein" --yesno \
-                "Eigene Installation von $tool entfernen? Basiswerkzeuge und Logs bleiben erhalten." 10 95 || continue
-        fi
-        report="$(mktemp "${TMPDIR:-/tmp}/openclaw-development-action.XXXXXX")" || return 1
-        dialog --title "Development: $tool" --infobox \
-            "Aktion $action laeuft. Quellbuilds koennen lange dauern.\nDas aktuelle Buildlog wird im Ergebnis genannt; bitte keinen zweiten Job starten." 9 95
-        if run_bash_script "${command[@]}" > "$report" 2>&1; then rc=0; else rc=$?; fi
-        printf '\nAktion: %s | Werkzeug: %s | Exit: %s\n' "$action" "$tool" "$rc" >> "$report"
-        dialog --title "Development: $tool / $action (Exit $rc)" --textbox "$report" 30 110 || true
-        rm -f -- "$report"
-    done
+  local action tool line id name mode report rc ref
+  local -a tool_options command
+  while true; do
+    action=$(dialog --clear --backtitle "$APP_TITLE" --title "62 Werkzeugquellen: Installation und Pruefung" \
+      --menu "GitHub-basierte Builds/Pakete ohne Docker. Ein Werkzeug pro Vorgang.\nKeine Dienste, Cluster, CI-Workflows oder Editor-Erweiterungen automatisch aktivieren." \
+      20 100 7 \
+      check "Alle 62 Quellen lokal vorpruefen" \
+      plan "Installationsplan / Voraussetzungen eines Werkzeugs" \
+      install "Ein Werkzeug bauen oder Paket bereitstellen" \
+      status "Installationsnachweis eines Werkzeugs pruefen" \
+      update "Bewusst anderen Tag/Commit installieren" \
+      uninstall "Eigene Installation deinstallieren" \
+      back "Zurueck" 3>&1 1>&2 2>&3) || return 0
+    [[ "$action" == back ]] && return 0
+    if [[ "$action" == check ]]; then
+      show_development_toolchain_report || true
+      continue
+    fi
+    tool_options=()
+    while IFS='|' read -r id name mode; do
+      [[ "$id" =~ ^[a-z0-9_]+$ ]] || continue
+      tool_options+=("$id" "$name [$mode]")
+    done < <(run_bash_script "$INSTALL_DIR/scripts/install_development_toolchain.sh" list)
+    if ((${#tool_options[@]} == 0)); then
+      dialog --msgbox "Installationskatalog konnte nicht gelesen werden. Keine Installation gestartet." 8 85
+      continue
+    fi
+    tool=$(dialog --clear --backtitle "$APP_TITLE" --title "Werkzeug waehlen: $action" \
+      --menu "Die Liste ist A-Z sortiert. Paketarten sind keine globalen Dienste." \
+      30 110 20 "${tool_options[@]}" 3>&1 1>&2 2>&3) || continue
+    command=("$INSTALL_DIR/scripts/install_development_toolchain.sh" "$action" --tool "$tool")
+    if [[ "$action" == install || "$action" == update ]]; then
+      report="$(mktemp "${TMPDIR:-/tmp}/openclaw-build-plan.XXXXXX")" || return 1
+      run_bash_script "$INSTALL_DIR/scripts/install_development_toolchain.sh" plan --tool "$tool" >"$report" 2>&1
+      dialog --title "Buildplan und Voraussetzungen: $tool" --textbox "$report" 30 110 || true
+      rm -f -- "$report"
+      dialog --defaultno --yes-label "(j)a" --no-label "(N)ein" --yesno \
+        "GitHub-Code und Buildhooks fuer $tool ausfuehren?\nDependencies koennen Paketregistries kontaktieren. Voraussetzungen/Lizenz bitte pruefen.\nPrivate Installation; keine Sandbox. Schwere Builds brauchen INSTALL_HEAVY_TOOLS=1.\nSystemwerkzeuge werden nicht ersetzt. Jetzt bewusst fortfahren?" 14 100 || continue
+      command+=(--accept-build-risk)
+    fi
+    if [[ "$action" == update ]]; then
+      ref=$(dialog --inputbox "Neuen Tag/Commit angeben. Leer: vorhandener Stand bleibt erhalten.\nBei bestehenden Adaptern verwaltet der jeweilige Installer seinen Pin." \
+        11 100 "" 3>&1 1>&2 2>&3) || continue
+      [[ -n "$ref" ]] && command+=(--ref "$ref")
+    fi
+    if [[ "$action" == uninstall ]]; then
+      dialog --defaultno --yes-label "(j)a" --no-label "(N)ein" --yesno \
+        "Eigene Installation von $tool entfernen? Basiswerkzeuge und Logs bleiben erhalten." 10 95 || continue
+    fi
+    report="$(mktemp "${TMPDIR:-/tmp}/openclaw-development-action.XXXXXX")" || return 1
+    dialog --title "Development: $tool" --infobox \
+      "Aktion $action laeuft. Quellbuilds koennen lange dauern.\nDas aktuelle Buildlog wird im Ergebnis genannt; bitte keinen zweiten Job starten." 9 95
+    if run_bash_script "${command[@]}" >"$report" 2>&1; then rc=0; else rc=$?; fi
+    printf '\nAktion: %s | Werkzeug: %s | Exit: %s\n' "$action" "$tool" "$rc" >>"$report"
+    dialog --title "Development: $tool / $action (Exit $rc)" --textbox "$report" 30 110 || true
+    rm -f -- "$report"
+  done
 }
 
 show_rag_compliance_review() {
-    local report check_rc
-    report="$(mktemp "${TMPDIR:-/tmp}/openclaw-legal-review.XXXXXX")" || return 1
-    printf '%s\n\n' "Keine Rechtsfreigabe. Dokumentation: docs/legal/README.md" > "$report"
-    if run_bash_script "$INSTALL_DIR/scripts/check_rag_compliance.sh" doctor >> "$report" 2>&1; then
-        check_rc=0
-    else
-        check_rc=$?
-        printf '\nPruefung nicht abgeschlossen (Exit %s).\n' "$check_rc" >> "$report"
-    fi
-    dialog --clear --backtitle "$APP_TITLE" \
-        --title "Recht / RAG: Quellenpflege, keine Compliance-Garantie" \
-        --textbox "$report" 30 110 || true
-    rm -f -- "$report"
-    return "$check_rc"
+  local report check_rc
+  report="$(mktemp "${TMPDIR:-/tmp}/openclaw-legal-review.XXXXXX")" || return 1
+  printf '%s\n\n' "Keine Rechtsfreigabe. Dokumentation: docs/legal/README.md" >"$report"
+  if run_bash_script "$INSTALL_DIR/scripts/check_rag_compliance.sh" doctor >>"$report" 2>&1; then
+    check_rc=0
+  else
+    check_rc=$?
+    printf '\nPruefung nicht abgeschlossen (Exit %s).\n' "$check_rc" >>"$report"
+  fi
+  dialog --clear --backtitle "$APP_TITLE" \
+    --title "Recht / RAG: Quellenpflege, keine Compliance-Garantie" \
+    --textbox "$report" 30 110 || true
+  rm -f -- "$report"
+  return "$check_rc"
 }
 
 show_main_menu() {
-    local dialog_rc
-    local menu_height=23
-    local menu_width=88
-    local menu_rows=16
-    local term_lines=0
-    local term_cols=0
-    local begin_row=1
-    local begin_col=1
+  local dialog_rc
+  local menu_height=23
+  local menu_width=88
+  local menu_rows=16
+  local term_lines=0
+  local term_cols=0
+  local begin_row=1
+  local begin_col=1
 
-    : > /tmp/menu_choice
-    reset_terminal_display
-    if command -v tput >/dev/null 2>&1; then
-        term_lines="$(tput lines 2>/dev/null || echo 0)"
-        term_cols="$(tput cols 2>/dev/null || echo 0)"
-        if [ "$term_lines" -gt "$menu_height" ]; then
-            begin_row=$(( (term_lines - menu_height) / 2 + 1 ))
-        fi
-        if [ "$term_cols" -gt "$menu_width" ]; then
-            begin_col=$(( (term_cols - menu_width) / 2 ))
-        fi
+  : >/tmp/menu_choice
+  reset_terminal_display
+  if command -v tput >/dev/null 2>&1; then
+    term_lines="$(tput lines 2>/dev/null || echo 0)"
+    term_cols="$(tput cols 2>/dev/null || echo 0)"
+    if [ "$term_lines" -gt "$menu_height" ]; then
+      begin_row=$(((term_lines - menu_height) / 2 + 1))
     fi
+    if [ "$term_cols" -gt "$menu_width" ]; then
+      begin_col=$(((term_cols - menu_width) / 2))
+    fi
+  fi
 
-    dialog --clear --backtitle "$APP_TITLE" \
+  dialog --clear --backtitle "$APP_TITLE" \
     --begin "$begin_row" "$begin_col" \
     --ok-label "${TXT_OK_LABEL:-✔  OK}" \
     --cancel-label "${TXT_CANCEL_LABEL:-🚪 Beenden}" \
@@ -4770,16 +4771,16 @@ show_main_menu() {
     "12" "${TXT_MENU_12:-OpenClaw starten (Dev-Modus)}" \
     "13" "${TXT_MENU_13:-Home Assistant starten}" \
     "14" "${TXT_MENU_14:-Installierte Dienste starten}" \
-    "15" "${TXT_MENU_15:-MEDIA STUDIO: Voice, Singer, Choir, Avatar, Film}" 2> /tmp/menu_choice
+    "15" "${TXT_MENU_15:-MEDIA STUDIO: Voice, Singer, Choir, Avatar, Film}" 2>/tmp/menu_choice
 
-    dialog_rc=$?
-    if [ $dialog_rc -eq 3 ]; then
-        printf '%s\n' "OPTIONS" > /tmp/menu_choice
-    elif [ $dialog_rc -ne 0 ]; then
-        printf '%s\n' "17" > /tmp/menu_choice
-    fi
+  dialog_rc=$?
+  if [ $dialog_rc -eq 3 ]; then
+    printf '%s\n' "OPTIONS" >/tmp/menu_choice
+  elif [ $dialog_rc -ne 0 ]; then
+    printf '%s\n' "17" >/tmp/menu_choice
+  fi
 
-    return 0
+  return 0
 }
 
 # Native migration metadata overrides older Docker descriptions only.
@@ -4891,221 +4892,221 @@ register_native_github_tool_keys
 
 # Hauptschleife
 while true; do
-    if [ "$LANGUAGE_SELECTION_REQUIRED" = "1" ]; then
-        show_setup_language_menu || true
-        LANGUAGE_SELECTION_REQUIRED=0
-    fi
-    show_main_menu
-    if [ -s /tmp/menu_choice ]; then
-        CHOICE="$(tr -d '[:space:]' < /tmp/menu_choice)"
-    else
-        CHOICE="17"
-    fi
+  if [ "$LANGUAGE_SELECTION_REQUIRED" = "1" ]; then
+    show_setup_language_menu || true
+    LANGUAGE_SELECTION_REQUIRED=0
+  fi
+  show_main_menu
+  if [ -s /tmp/menu_choice ]; then
+    CHOICE="$(tr -d '[:space:]' </tmp/menu_choice)"
+  else
+    CHOICE="17"
+  fi
 
-    if [ "$CHOICE" = "17" ]; then
-        print_exit_message
-        exit 0
-    fi
+  if [ "$CHOICE" = "17" ]; then
+    print_exit_message
+    exit 0
+  fi
 
-    case $CHOICE in
-        ────────*)
-            continue
-            ;;
-        OPTIONS)
-            show_options_menu
-            ;;
-        1)
-            show_operation_intro \
-            "Setup-Update + System-Update" \
-            "Das Setup-Repository wird aktualisiert. Danach folgen Ubuntu-Updates sowie die Aktualisierung von pnpm." \
-            "$(get_operation_duration_estimate_label "main_menu_update" "${UBUNTU_UPDATES_DOWNLOAD_TIME_ESTIMATE} Download + ${UBUNTU_UPDATES_INSTALL_TIME_ESTIMATE} Installation")" \
-            "$(get_operation_storage_estimate_label "main_menu_update" "${MIN_FREE_GB_ABSOLUTE}-${MIN_FREE_GB_RECOMMENDED} GB")" \
-            "Bei lokalen Aenderungen im Setup wird das Repo-Update bewusst uebersprungen, damit nichts ueberschrieben wird."
-            begin_operation_measurement "main_menu_update" "Setup-Update + System-Update"
-            run_bash_script "$INSTALL_DIR/scripts/auto_update.sh"
-            local_update_rc=$?
-            if [ "$local_update_rc" -eq 0 ]; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
-            if [ "$local_update_rc" -eq 0 ]; then
-                read -p "System-Update abgeschlossen. Drücken Sie Enter, um das Setup-Menue neu zu starten..."
-                restart_setup_menu_after_update
-            fi
-            read -p "System-Update abgeschlossen. Drücken Sie Enter..."
-            ;;
-        2)
-            show_operation_intro \
-            "Ollama Modell-Manager" \
-            "Lokales LLM-Backend. Du kannst über den Ollama Modell-Manager spezifische Modelle installieren und verwalten. Für weitere Informationen zu den Modellen siehe in der Online-Dokumentation nach." \
-            "Modell-Downloads und Installationszeiten werden im Modell-Manager je Modell gemessen und spaeter fuer reale Erfahrungswerte gespeichert" \
-            "15-40 GB ohne Modelle, mit mehreren Modellen deutlich mehr" \
-            "Die eigentliche Dauer haengt stark von Modellgroesse, Internetgeschwindigkeit und SSD-Leistung ab."
-            run_bash_script "$INSTALL_DIR/scripts/ollama_model_manager.sh"
-            read -p "Ollama Modell-Management abgeschlossen. Drücken Sie Enter..."
-            ;;
-        3)
-            run_bash_script "$INSTALL_DIR/scripts/openclaw_config_manager.sh"
-            read -p "OpenClaw Konfiguration abgeschlossen. Drücken Sie Enter..."
-            ;;
-        15)
-            clear
-            echo -e "${YELLOW}MEDIA STUDIO${NC}"
-            echo
-            echo "1 Voice Studio"
-            echo "2 AI Singer Studio"
-            echo "3 Choir Studio"
-            echo "4 Broadcasting Studio"
-            echo "5 Podcast Studio"
-            echo "6 Audiobook Studio"
-            echo "7 Avatar Studio"
-            echo "8 Film Studio"
-            echo "9 Dubbing Studio"
-            echo "10 Virtual Human Studio"
-            echo
-            echo -e "${YELLOW}Sicherheitsmodus:${NC} Diese Kategorie ist documentation-first. Schwere Voice-, Avatar-, LipSync- und Render-Tools werden nicht automatisch installiert."
-            echo -e "${YELLOW}Doku:${NC} $INSTALL_DIR/docs/media_studio/SETUP_MENU.md"
-            echo
-            if [ -f "$INSTALL_DIR/docs/media_studio/SETUP_MENU.md" ]; then
-                sed -n '1,120p' "$INSTALL_DIR/docs/media_studio/SETUP_MENU.md"
-            fi
-            read -p "MEDIA STUDIO Übersicht angezeigt. Drücken Sie Enter..."
-            ;;
-        4)
-            show_operation_intro \
-            "Hybrid-Setup: Dein MiniPC + Multi-VPS" \
-            "Installiert zuerst die Basis mit OpenClaw und Ollama und richtet danach das hybride Setup mit Home Assistant und Cloudflare-nahem Zugriff ein." \
-            "$(get_operation_duration_estimate_label "main_menu_hybrid" "${SETUP_INSTALL_TIME_ESTIMATE} Gesamt, darin meist ${OPENCLAW_DOWNLOAD_TIME_ESTIMATE} Download + ${OPENCLAW_BUILD_TIME_ESTIMATE} Build + ${OLLAMA_INSTALL_TIME_ESTIMATE} fuer Ollama + ${HOME_ASSISTANT_INSTALL_TIME_ESTIMATE} fuer Home Assistant")" \
-            "$(get_operation_storage_estimate_label "main_menu_hybrid" "${MIN_FREE_GB_RECOMMENDED} GB oder mehr")" \
-            "Je nach Cloudflare- und VPS-Schritten koennen weitere manuelle Angaben oder API-Daten noetig sein."
-            begin_operation_measurement "main_menu_hybrid" "Hybrid-Setup: Dein MiniPC + Multi-VPS"
-            echo -e "${BLUE}Starte Hybrid-Setup (Dein MiniPC + Multi-VPS)...${NC}"
-            if run_base_install_if_needed; then
-                run_bash_script "$INSTALL_DIR/scripts/hybrid_setup.sh"
-                if [ $? -eq 0 ]; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
-            else
-                end_operation_measurement "failed"
-                echo -e "${RED}Hybrid-Setup abgebrochen, weil die Basis-Installation fehlgeschlagen ist.${NC}"
-            fi
-            read -p "Hybrid-Setup abgeschlossen. Drücken Sie Enter..."
-            ;;
-        5)
-            show_operation_intro \
-            "Standalone-Setup: Nur VPS (Cloud-Native)" \
-            "Installiert die Basis und richtet danach die VPS-Variante mit K3s-/Cloud-Native-Bausteinen fuer OpenClaw vor." \
-            "$(get_operation_duration_estimate_label "main_menu_vps" "${SETUP_INSTALL_TIME_ESTIMATE} Gesamt, darin meist ${OPENCLAW_DOWNLOAD_TIME_ESTIMATE} Download + ${OPENCLAW_BUILD_TIME_ESTIMATE} Build + ${OLLAMA_INSTALL_TIME_ESTIMATE} fuer Ollama")" \
-            "$(get_operation_storage_estimate_label "main_menu_vps" "${MIN_FREE_GB_RECOMMENDED} GB oder mehr")" \
-            "Einige Teile sind vorbereitende Infrastruktur. Fuer produktive Deployments koennen spaeter noch weitere Schritte notwendig sein."
-            begin_operation_measurement "main_menu_vps" "Standalone-Setup: Nur VPS"
-            echo -e "${BLUE}Starte Standalone VPS-Setup (Cloud-Native)...${NC}"
-            if run_base_install_if_needed; then
-                run_bash_script "$INSTALL_DIR/scripts/vps_standalone.sh"
-                if [ $? -eq 0 ]; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
-            else
-                end_operation_measurement "failed"
-                echo -e "${RED}VPS-Standalone-Setup abgebrochen, weil die Basis-Installation fehlgeschlagen ist.${NC}"
-            fi
-            read -p "VPS-Standalone-Setup abgeschlossen. Drücken Sie Enter..."
-            ;;
-        6)
-            load_metrics_config
-            show_operation_intro \
-            "Standalone-Setup: Nur MiniPC (Lokal)" \
-            "Installiert die komplette lokale Basis mit OpenClaw, Ollama und den fuer den MiniPC vorgesehenen Zusatzkomponenten." \
-            "$(get_operation_duration_estimate_label "main_menu_local" "${LOCAL_SETUP_TOTAL_ESTIMATE} Gesamt, darin meist ${OPENCLAW_DOWNLOAD_TIME_ESTIMATE} Download + ${OPENCLAW_BUILD_TIME_ESTIMATE} Build + ${OLLAMA_INSTALL_TIME_ESTIMATE} fuer Ollama + ${HOME_ASSISTANT_INSTALL_TIME_ESTIMATE} fuer Home Assistant")" \
-            "$(get_operation_storage_estimate_label "main_menu_local" "${MIN_FREE_GB_RECOMMENDED} GB oder mehr")" \
-            "Der OpenClaw-Build mit Ollama kann geschaetzt ${WHITE}${LOCAL_SETUP_TOTAL_ESTIMATE}${YELLOW} dauern.\nEine Eingabe des Ubuntu-Passworts wird kurz nach Beginn der Installation abverlangt.\nIn voraussichtlich ${WHITE}${LOCAL_SETUP_CONFIRM_STOP_1_ESTIMATE}${YELLOW} wird eine manuelle Bestaetigung von dir verlangt, typischerweise beim nachtraeglichen Build von @discordjs/opus.\nDanach geht es auch schon mit Ollama weiter, grob ab ${WHITE}${LOCAL_SETUP_CONFIRM_STOP_2_ESTIMATE}${YELLOW}, inklusive einer erneuten Ubuntu-Passwortabfrage.\nKurz vor ${WHITE}${LOCAL_SETUP_CLOUDFLARE_TOKEN_STOP_ESTIMATE}${YELLOW} wird in der Regel der Cloudflare-Token abgefragt.\nDiese Zwischenstopps gehoeren zur gesamten Zeitmessung mit dazu."
-            begin_operation_measurement "main_menu_local" "Standalone-Setup: Nur MiniPC"
-            echo -e "${BLUE}Starte Standalone MiniPC-Setup (Lokal)...${NC}"
-            if run_base_install_if_needed; then
-                run_bash_script "$INSTALL_DIR/scripts/install_local_only.sh"
-                if [ $? -eq 0 ]; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
-            else
-                end_operation_measurement "failed"
-                echo -e "${RED}Standalone MiniPC-Setup abgebrochen, weil die Basis-Installation fehlgeschlagen ist.${NC}"
-            fi
-            read -p "Standalone MiniPC-Setup abgeschlossen. Drücken Sie Enter..."
-            ;;
-        ────────*)
-            continue
-            ;;
-        7)
-            show_operation_intro \
-            "Ruflo: Installation & Management" \
-            "Klonen, Node.js-/pnpm-Pruefung, Build und CLI-Verknuepfung fuer Ruflo bzw. Claude-Flow-nahe Werkzeuge." \
-            "$(get_operation_duration_estimate_label "main_menu_ruflo" "${SETUP_DOWNLOAD_TIME_ESTIMATE} Download + ${SETUP_INSTALL_TIME_ESTIMATE} Installation")" \
-            "$(get_operation_storage_estimate_label "main_menu_ruflo" "${MIN_FREE_GB_ABSOLUTE} GB oder mehr")" \
-            "Abhaengig vom Repo-Ziel kann zusaetzlich Netzwerkzeit fuer das Klonen und den Build anfallen."
-            begin_operation_measurement "main_menu_ruflo" "Ruflo: Installation & Management"
-            echo -e "${BLUE}Ruflo Installation & Management...${NC}"
-            run_bash_script "$INSTALL_DIR/scripts/ruflo_install.sh"
-            if [ $? -eq 0 ]; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
-            read -p "Ruflo-Aktion abgeschlossen. Drücken Sie Enter..."
-            ;;
-        16)
-            show_development_toolchain_check || true
-            ;;
-        18)
-            show_rag_compliance_review || true
-            ;;
-        8)
-            if show_management_loading_notice "$TXT_LOADING_TOOLS_LABEL" "$TXT_LOADING_TOOLS_DETAIL"; then
-                show_tool_management_menu
-            fi
-            ;;
-        9)
-            if show_management_loading_notice "$TXT_LOADING_PROFILES_LABEL" "$TXT_LOADING_PROFILES_DETAIL"; then
-                show_profile_management_hub
-            fi
-            ;;
-        10)
-            dialog --clear --backtitle "$APP_TITLE" \
-            --title "Dokumentation & API-Key Guide" --textbox "$INSTALL_DIR/docs/_API-Keys/API_KEY_GUIDE.md" 25 80
-            ;;
-        11)
-            run_bash_script "$INSTALL_DIR/scripts/port_check.sh"
-            read -p "Port-Analyse abgeschlossen. Drücken Sie Enter..."
-            ;;
-        12)
-            show_operation_intro \
-            "OpenClaw im Dev-Modus starten" \
-            "Startet die vorhandene OpenClaw-Installation im Entwicklungsmodus mit pnpm dev." \
-            "$(get_operation_duration_estimate_label "main_menu_openclaw_dev" "Start meist in wenigen Sekunden bis Minuten, je nach vorhandenem Build-Stand")" \
-            "$(get_operation_storage_estimate_label "main_menu_openclaw_dev" "${MIN_FREE_GB_ABSOLUTE} GB oder mehr")" \
-            "Falls die Basis noch nicht installiert ist, fuehre zuerst ein Setup wie Punkt 4, 5 oder 6 aus."
-            begin_operation_measurement "main_menu_openclaw_dev" "OpenClaw im Dev-Modus starten"
-            echo -e "${BLUE}Starte OpenClaw im Dev-Modus...${NC}"
-            cd /opt/openclaw && pnpm dev
-            if [ $? -eq 0 ]; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
-            ;;
-        13)
-            show_operation_intro \
-            "Home Assistant starten" \
-            "Startet den vorhandenen Home-Assistant-Dienst ueber systemd." \
-            "$(get_operation_duration_estimate_label "main_menu_homeassistant" "${HOME_ASSISTANT_INSTALL_TIME_ESTIMATE} fuer Erstaufbau, Start selbst meist deutlich kuerzer")" \
-            "$(get_operation_storage_estimate_label "main_menu_homeassistant" "${MIN_FREE_GB_ABSOLUTE} GB oder mehr")" \
-            "Wenn Home Assistant noch nicht eingerichtet wurde, nutze vorher ein passendes Setup mit lokaler oder hybrider Installation."
-            begin_operation_measurement "main_menu_homeassistant" "Home Assistant starten"
-            echo -e "${BLUE}Starte Home Assistant...${NC}"
-            sudo systemctl start homeassistant@homeassistant
-            if [ $? -eq 0 ]; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
-            ;;
-        14)
-            show_operation_intro \
-            "Installierte Dienste starten" \
-            "Oeffnet den zentralen Start-Manager fuer aktuell installierte und im Setup hinterlegte Startziele. Dort kannst du alle oder nur ausgewaehlte Tools starten und ein anpassbares Autostart-Skript erzeugen." \
-            "$(get_operation_duration_estimate_label "main_menu_start_manager" "Menue oeffnet sofort, eigentliche Starts je nach Tool in Sekunden bis wenigen Minuten")" \
-            "$(get_operation_storage_estimate_label "main_menu_start_manager" "${MIN_FREE_GB_ABSOLUTE} GB oder mehr fuer Logs und Runtime-Dateien")" \
-            "Falls du einen Autostart spaeter abbrechen willst, kann das erzeugte Skript dich direkt wieder ins Setup zurueckbringen."
-            begin_operation_measurement "main_menu_start_manager" "Installierte Dienste starten"
-            run_bash_script "$INSTALL_DIR/scripts/tool_start_manager.sh"
-            if [ $? -eq 0 ]; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
-            ;;
-        17)
-            print_exit_message
-            exit 0
-            ;;
-        *)
-            print_exit_message
-            exit 0
-            ;;
-    esac
+  case $CHOICE in
+    ────────*)
+      continue
+      ;;
+    OPTIONS)
+      show_options_menu
+      ;;
+    1)
+      show_operation_intro \
+        "Setup-Update + System-Update" \
+        "Das Setup-Repository wird aktualisiert. Danach folgen Ubuntu-Updates sowie die Aktualisierung von pnpm." \
+        "$(get_operation_duration_estimate_label "main_menu_update" "${UBUNTU_UPDATES_DOWNLOAD_TIME_ESTIMATE} Download + ${UBUNTU_UPDATES_INSTALL_TIME_ESTIMATE} Installation")" \
+        "$(get_operation_storage_estimate_label "main_menu_update" "${MIN_FREE_GB_ABSOLUTE}-${MIN_FREE_GB_RECOMMENDED} GB")" \
+        "Bei lokalen Aenderungen im Setup wird das Repo-Update bewusst uebersprungen, damit nichts ueberschrieben wird."
+      begin_operation_measurement "main_menu_update" "Setup-Update + System-Update"
+      run_bash_script "$INSTALL_DIR/scripts/auto_update.sh"
+      local_update_rc=$?
+      if [ "$local_update_rc" -eq 0 ]; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
+      if [ "$local_update_rc" -eq 0 ]; then
+        read -p "System-Update abgeschlossen. Drücken Sie Enter, um das Setup-Menue neu zu starten..."
+        restart_setup_menu_after_update
+      fi
+      read -p "System-Update abgeschlossen. Drücken Sie Enter..."
+      ;;
+    2)
+      show_operation_intro \
+        "Ollama Modell-Manager" \
+        "Lokales LLM-Backend. Du kannst über den Ollama Modell-Manager spezifische Modelle installieren und verwalten. Für weitere Informationen zu den Modellen siehe in der Online-Dokumentation nach." \
+        "Modell-Downloads und Installationszeiten werden im Modell-Manager je Modell gemessen und spaeter fuer reale Erfahrungswerte gespeichert" \
+        "15-40 GB ohne Modelle, mit mehreren Modellen deutlich mehr" \
+        "Die eigentliche Dauer haengt stark von Modellgroesse, Internetgeschwindigkeit und SSD-Leistung ab."
+      run_bash_script "$INSTALL_DIR/scripts/ollama_model_manager.sh"
+      read -p "Ollama Modell-Management abgeschlossen. Drücken Sie Enter..."
+      ;;
+    3)
+      run_bash_script "$INSTALL_DIR/scripts/openclaw_config_manager.sh"
+      read -p "OpenClaw Konfiguration abgeschlossen. Drücken Sie Enter..."
+      ;;
+    15)
+      clear
+      echo -e "${YELLOW}MEDIA STUDIO${NC}"
+      echo
+      echo "1 Voice Studio"
+      echo "2 AI Singer Studio"
+      echo "3 Choir Studio"
+      echo "4 Broadcasting Studio"
+      echo "5 Podcast Studio"
+      echo "6 Audiobook Studio"
+      echo "7 Avatar Studio"
+      echo "8 Film Studio"
+      echo "9 Dubbing Studio"
+      echo "10 Virtual Human Studio"
+      echo
+      echo -e "${YELLOW}Sicherheitsmodus:${NC} Diese Kategorie ist documentation-first. Schwere Voice-, Avatar-, LipSync- und Render-Tools werden nicht automatisch installiert."
+      echo -e "${YELLOW}Doku:${NC} $INSTALL_DIR/docs/media_studio/SETUP_MENU.md"
+      echo
+      if [ -f "$INSTALL_DIR/docs/media_studio/SETUP_MENU.md" ]; then
+        sed -n '1,120p' "$INSTALL_DIR/docs/media_studio/SETUP_MENU.md"
+      fi
+      read -p "MEDIA STUDIO Übersicht angezeigt. Drücken Sie Enter..."
+      ;;
+    4)
+      show_operation_intro \
+        "Hybrid-Setup: Dein MiniPC + Multi-VPS" \
+        "Installiert zuerst die Basis mit OpenClaw und Ollama und richtet danach das hybride Setup mit Home Assistant und Cloudflare-nahem Zugriff ein." \
+        "$(get_operation_duration_estimate_label "main_menu_hybrid" "${SETUP_INSTALL_TIME_ESTIMATE} Gesamt, darin meist ${OPENCLAW_DOWNLOAD_TIME_ESTIMATE} Download + ${OPENCLAW_BUILD_TIME_ESTIMATE} Build + ${OLLAMA_INSTALL_TIME_ESTIMATE} fuer Ollama + ${HOME_ASSISTANT_INSTALL_TIME_ESTIMATE} fuer Home Assistant")" \
+        "$(get_operation_storage_estimate_label "main_menu_hybrid" "${MIN_FREE_GB_RECOMMENDED} GB oder mehr")" \
+        "Je nach Cloudflare- und VPS-Schritten koennen weitere manuelle Angaben oder API-Daten noetig sein."
+      begin_operation_measurement "main_menu_hybrid" "Hybrid-Setup: Dein MiniPC + Multi-VPS"
+      echo -e "${BLUE}Starte Hybrid-Setup (Dein MiniPC + Multi-VPS)...${NC}"
+      if run_base_install_if_needed; then
+        run_bash_script "$INSTALL_DIR/scripts/hybrid_setup.sh"
+        if [ $? -eq 0 ]; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
+      else
+        end_operation_measurement "failed"
+        echo -e "${RED}Hybrid-Setup abgebrochen, weil die Basis-Installation fehlgeschlagen ist.${NC}"
+      fi
+      read -p "Hybrid-Setup abgeschlossen. Drücken Sie Enter..."
+      ;;
+    5)
+      show_operation_intro \
+        "Standalone-Setup: Nur VPS (Cloud-Native)" \
+        "Installiert die Basis und richtet danach die VPS-Variante mit K3s-/Cloud-Native-Bausteinen fuer OpenClaw vor." \
+        "$(get_operation_duration_estimate_label "main_menu_vps" "${SETUP_INSTALL_TIME_ESTIMATE} Gesamt, darin meist ${OPENCLAW_DOWNLOAD_TIME_ESTIMATE} Download + ${OPENCLAW_BUILD_TIME_ESTIMATE} Build + ${OLLAMA_INSTALL_TIME_ESTIMATE} fuer Ollama")" \
+        "$(get_operation_storage_estimate_label "main_menu_vps" "${MIN_FREE_GB_RECOMMENDED} GB oder mehr")" \
+        "Einige Teile sind vorbereitende Infrastruktur. Fuer produktive Deployments koennen spaeter noch weitere Schritte notwendig sein."
+      begin_operation_measurement "main_menu_vps" "Standalone-Setup: Nur VPS"
+      echo -e "${BLUE}Starte Standalone VPS-Setup (Cloud-Native)...${NC}"
+      if run_base_install_if_needed; then
+        run_bash_script "$INSTALL_DIR/scripts/vps_standalone.sh"
+        if [ $? -eq 0 ]; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
+      else
+        end_operation_measurement "failed"
+        echo -e "${RED}VPS-Standalone-Setup abgebrochen, weil die Basis-Installation fehlgeschlagen ist.${NC}"
+      fi
+      read -p "VPS-Standalone-Setup abgeschlossen. Drücken Sie Enter..."
+      ;;
+    6)
+      load_metrics_config
+      show_operation_intro \
+        "Standalone-Setup: Nur MiniPC (Lokal)" \
+        "Installiert die komplette lokale Basis mit OpenClaw, Ollama und den fuer den MiniPC vorgesehenen Zusatzkomponenten." \
+        "$(get_operation_duration_estimate_label "main_menu_local" "${LOCAL_SETUP_TOTAL_ESTIMATE} Gesamt, darin meist ${OPENCLAW_DOWNLOAD_TIME_ESTIMATE} Download + ${OPENCLAW_BUILD_TIME_ESTIMATE} Build + ${OLLAMA_INSTALL_TIME_ESTIMATE} fuer Ollama + ${HOME_ASSISTANT_INSTALL_TIME_ESTIMATE} fuer Home Assistant")" \
+        "$(get_operation_storage_estimate_label "main_menu_local" "${MIN_FREE_GB_RECOMMENDED} GB oder mehr")" \
+        "Der OpenClaw-Build mit Ollama kann geschaetzt ${WHITE}${LOCAL_SETUP_TOTAL_ESTIMATE}${YELLOW} dauern.\nEine Eingabe des Ubuntu-Passworts wird kurz nach Beginn der Installation abverlangt.\nIn voraussichtlich ${WHITE}${LOCAL_SETUP_CONFIRM_STOP_1_ESTIMATE}${YELLOW} wird eine manuelle Bestaetigung von dir verlangt, typischerweise beim nachtraeglichen Build von @discordjs/opus.\nDanach geht es auch schon mit Ollama weiter, grob ab ${WHITE}${LOCAL_SETUP_CONFIRM_STOP_2_ESTIMATE}${YELLOW}, inklusive einer erneuten Ubuntu-Passwortabfrage.\nKurz vor ${WHITE}${LOCAL_SETUP_CLOUDFLARE_TOKEN_STOP_ESTIMATE}${YELLOW} wird in der Regel der Cloudflare-Token abgefragt.\nDiese Zwischenstopps gehoeren zur gesamten Zeitmessung mit dazu."
+      begin_operation_measurement "main_menu_local" "Standalone-Setup: Nur MiniPC"
+      echo -e "${BLUE}Starte Standalone MiniPC-Setup (Lokal)...${NC}"
+      if run_base_install_if_needed; then
+        run_bash_script "$INSTALL_DIR/scripts/install_local_only.sh"
+        if [ $? -eq 0 ]; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
+      else
+        end_operation_measurement "failed"
+        echo -e "${RED}Standalone MiniPC-Setup abgebrochen, weil die Basis-Installation fehlgeschlagen ist.${NC}"
+      fi
+      read -p "Standalone MiniPC-Setup abgeschlossen. Drücken Sie Enter..."
+      ;;
+    ────────*)
+      continue
+      ;;
+    7)
+      show_operation_intro \
+        "Ruflo: Installation & Management" \
+        "Klonen, Node.js-/pnpm-Pruefung, Build und CLI-Verknuepfung fuer Ruflo bzw. Claude-Flow-nahe Werkzeuge." \
+        "$(get_operation_duration_estimate_label "main_menu_ruflo" "${SETUP_DOWNLOAD_TIME_ESTIMATE} Download + ${SETUP_INSTALL_TIME_ESTIMATE} Installation")" \
+        "$(get_operation_storage_estimate_label "main_menu_ruflo" "${MIN_FREE_GB_ABSOLUTE} GB oder mehr")" \
+        "Abhaengig vom Repo-Ziel kann zusaetzlich Netzwerkzeit fuer das Klonen und den Build anfallen."
+      begin_operation_measurement "main_menu_ruflo" "Ruflo: Installation & Management"
+      echo -e "${BLUE}Ruflo Installation & Management...${NC}"
+      run_bash_script "$INSTALL_DIR/scripts/ruflo_install.sh"
+      if [ $? -eq 0 ]; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
+      read -p "Ruflo-Aktion abgeschlossen. Drücken Sie Enter..."
+      ;;
+    16)
+      show_development_toolchain_check || true
+      ;;
+    18)
+      show_rag_compliance_review || true
+      ;;
+    8)
+      if show_management_loading_notice "$TXT_LOADING_TOOLS_LABEL" "$TXT_LOADING_TOOLS_DETAIL"; then
+        show_tool_management_menu
+      fi
+      ;;
+    9)
+      if show_management_loading_notice "$TXT_LOADING_PROFILES_LABEL" "$TXT_LOADING_PROFILES_DETAIL"; then
+        show_profile_management_hub
+      fi
+      ;;
+    10)
+      dialog --clear --backtitle "$APP_TITLE" \
+        --title "Dokumentation & API-Key Guide" --textbox "$INSTALL_DIR/docs/_API-Keys/API_KEY_GUIDE.md" 25 80
+      ;;
+    11)
+      run_bash_script "$INSTALL_DIR/scripts/port_check.sh"
+      read -p "Port-Analyse abgeschlossen. Drücken Sie Enter..."
+      ;;
+    12)
+      show_operation_intro \
+        "OpenClaw im Dev-Modus starten" \
+        "Startet die vorhandene OpenClaw-Installation im Entwicklungsmodus mit pnpm dev." \
+        "$(get_operation_duration_estimate_label "main_menu_openclaw_dev" "Start meist in wenigen Sekunden bis Minuten, je nach vorhandenem Build-Stand")" \
+        "$(get_operation_storage_estimate_label "main_menu_openclaw_dev" "${MIN_FREE_GB_ABSOLUTE} GB oder mehr")" \
+        "Falls die Basis noch nicht installiert ist, fuehre zuerst ein Setup wie Punkt 4, 5 oder 6 aus."
+      begin_operation_measurement "main_menu_openclaw_dev" "OpenClaw im Dev-Modus starten"
+      echo -e "${BLUE}Starte OpenClaw im Dev-Modus...${NC}"
+      cd /opt/openclaw && pnpm dev
+      if [ $? -eq 0 ]; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
+      ;;
+    13)
+      show_operation_intro \
+        "Home Assistant starten" \
+        "Startet den vorhandenen Home-Assistant-Dienst ueber systemd." \
+        "$(get_operation_duration_estimate_label "main_menu_homeassistant" "${HOME_ASSISTANT_INSTALL_TIME_ESTIMATE} fuer Erstaufbau, Start selbst meist deutlich kuerzer")" \
+        "$(get_operation_storage_estimate_label "main_menu_homeassistant" "${MIN_FREE_GB_ABSOLUTE} GB oder mehr")" \
+        "Wenn Home Assistant noch nicht eingerichtet wurde, nutze vorher ein passendes Setup mit lokaler oder hybrider Installation."
+      begin_operation_measurement "main_menu_homeassistant" "Home Assistant starten"
+      echo -e "${BLUE}Starte Home Assistant...${NC}"
+      sudo systemctl start homeassistant@homeassistant
+      if [ $? -eq 0 ]; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
+      ;;
+    14)
+      show_operation_intro \
+        "Installierte Dienste starten" \
+        "Oeffnet den zentralen Start-Manager fuer aktuell installierte und im Setup hinterlegte Startziele. Dort kannst du alle oder nur ausgewaehlte Tools starten und ein anpassbares Autostart-Skript erzeugen." \
+        "$(get_operation_duration_estimate_label "main_menu_start_manager" "Menue oeffnet sofort, eigentliche Starts je nach Tool in Sekunden bis wenigen Minuten")" \
+        "$(get_operation_storage_estimate_label "main_menu_start_manager" "${MIN_FREE_GB_ABSOLUTE} GB oder mehr fuer Logs und Runtime-Dateien")" \
+        "Falls du einen Autostart spaeter abbrechen willst, kann das erzeugte Skript dich direkt wieder ins Setup zurueckbringen."
+      begin_operation_measurement "main_menu_start_manager" "Installierte Dienste starten"
+      run_bash_script "$INSTALL_DIR/scripts/tool_start_manager.sh"
+      if [ $? -eq 0 ]; then end_operation_measurement "success"; else end_operation_measurement "failed"; fi
+      ;;
+    17)
+      print_exit_message
+      exit 0
+      ;;
+    *)
+      print_exit_message
+      exit 0
+      ;;
+  esac
 done
 rm -f /tmp/menu_choice /tmp/profile_selection /tmp/tool_selection

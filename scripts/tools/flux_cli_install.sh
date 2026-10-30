@@ -44,13 +44,13 @@ run_cmd() {
 
 detect_arch() {
   case "$(uname -m)" in
-    x86_64|amd64)
+    x86_64 | amd64)
       printf 'amd64'
       ;;
-    aarch64|arm64)
+    aarch64 | arm64)
       printf 'arm64'
       ;;
-    armv7l|armv6l)
+    armv7l | armv6l)
       printf 'arm'
       ;;
     *)
@@ -82,13 +82,13 @@ main() {
   local mode="install"
   while [ "$#" -gt 0 ]; do
     case "$1" in
-      --check|--status)
+      --check | --status)
         mode="check"
         ;;
       --dry-run)
         DRY_RUN=1
         ;;
-      --help|-h)
+      --help | -h)
         usage
         exit 0
         ;;
@@ -147,7 +147,7 @@ main() {
 
   (
     cd "$tmpdir"
-    grep " ${asset}$" "$checksum_asset" > "${checksum_asset}.one"
+    grep " ${asset}$" "$checksum_asset" >"${checksum_asset}.one"
     sha256sum -c "${checksum_asset}.one"
   )
 

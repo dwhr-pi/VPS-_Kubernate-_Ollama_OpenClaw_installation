@@ -9,8 +9,8 @@
 ## Zweck
 
 [Lokaler Social-Avatar-Workflow und Toolstack](../media_studio/SOCIAL_AVATAR_AUTOMATION.md).
-CogVideoX/LTX optional; Veo/fal nur als gesperrter Cloud-Integrationsplan.
-Keine Einkommens-/Reichweitengarantie und kein automatischer Publisher.
+CogVideoX/LTX optional; Veo/fal nur als gesperrter Cloud-Integrationsplan. Keine
+Einkommens-/Reichweitengarantie und kein automatischer Publisher.
 
 Virtuelle Content-Persona fuer Social Clips und Moderation.
 
@@ -35,7 +35,8 @@ markenbewusst, freundlich, klar gekennzeichnet
 ## Full Workflow
 
 - Stimme, Avatar, Dubbing, Musik und Schnitt ueber Job Queue planen.
-- Schwere Tools wie MuseTalk, Hallo2, SkyReels-A1 oder EMO nur auf GPU-Workstation/Kubernetes-GPU-Node testen.
+- Schwere Tools wie MuseTalk, Hallo2, SkyReels-A1 oder EMO nur auf
+  GPU-Workstation/Kubernetes-GPU-Node testen.
 - Keine automatische Veroeffentlichung ohne Freigabe.
 
 ## Ressourcenbedarf

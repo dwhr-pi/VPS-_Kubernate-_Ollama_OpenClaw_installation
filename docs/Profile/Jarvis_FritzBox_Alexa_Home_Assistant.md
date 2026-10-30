@@ -1,10 +1,12 @@
 # Jarvis FritzBox Alexa Home Assistant
 
-Status: `experimental`  
-Tier: `advanced`  
+Status: `experimental`\
+Tier: `advanced`\
 Kategorie: `automation`
 
-Dieses Profil buendelt die Bausteine fuer einen lokalen Jarvis-aehnlichen Heimassistenten mit Fritz!Box/Fritz!Fon, Home Assistant, optionaler Alexa-Bridge, lokaler Spracheingabe/-ausgabe und einem Ollama/OpenClaw-basierten Brain.
+Dieses Profil buendelt die Bausteine fuer einen lokalen Jarvis-aehnlichen Heimassistenten mit
+Fritz!Box/Fritz!Fon, Home Assistant, optionaler Alexa-Bridge, lokaler Spracheingabe/-ausgabe und
+einem Ollama/OpenClaw-basierten Brain.
 
 ## Ziel
 
@@ -54,13 +56,13 @@ Advanced:
 
 ## Ports
 
-| Dienst | Port | Hinweis |
-|---|---:|---|
-| Home Assistant | 8123 | nur LAN/Tailscale oder Reverse Proxy mit Auth |
-| Node-RED | 1880 | Admin UI schuetzen |
-| MQTT/Mosquitto | 1883 | Auth aktivieren |
-| Ollama | 11434 | lokal binden |
-| Qdrant optional | 6333 | nicht oeffentlich exponieren |
+| Dienst          |  Port | Hinweis                                       |
+| --------------- | ----: | --------------------------------------------- |
+| Home Assistant  |  8123 | nur LAN/Tailscale oder Reverse Proxy mit Auth |
+| Node-RED        |  1880 | Admin UI schuetzen                            |
+| MQTT/Mosquitto  |  1883 | Auth aktivieren                               |
+| Ollama          | 11434 | lokal binden                                  |
+| Qdrant optional |  6333 | nicht oeffentlich exponieren                  |
 
 ## Sicherheit
 
@@ -91,8 +93,10 @@ Danach:
 bash scripts/profiles/Jarvis_FritzBox_Alexa_Home_Assistant_uninstall.sh
 ```
 
-Die Deinstallation entfernt nur den Profilstatus. Kernwerkzeuge werden nicht blind deinstalliert, weil sie oft von Smart-Home-, Voice- und RAG-Profilen geteilt werden.
+Die Deinstallation entfernt nur den Profilstatus. Kernwerkzeuge werden nicht blind deinstalliert,
+weil sie oft von Smart-Home-, Voice- und RAG-Profilen geteilt werden.
 
 ## Ausfuehrliche Profilquelle
 
-Siehe [docs/Profil/Jarvis_FritzBox_Alexa_Home_Assistant.doc.md](../Profil/Jarvis_FritzBox_Alexa_Home_Assistant.doc.md).
+Siehe
+[docs/Profil/Jarvis_FritzBox_Alexa_Home_Assistant.doc.md](../Profil/Jarvis_FritzBox_Alexa_Home_Assistant.doc.md).

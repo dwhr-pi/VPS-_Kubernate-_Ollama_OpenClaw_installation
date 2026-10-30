@@ -43,4 +43,3 @@ Wenn ein Tool unerwartet externe Provider nutzt:
 - API-Keys entfernen oder deaktivieren.
 - LiteLLM/OpenRouter-Konfiguration pruefen.
 - Kostenwarnungen im Setup beachten.
-

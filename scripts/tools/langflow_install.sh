@@ -23,15 +23,15 @@ echo -e "${BLUE}Starte Installation von LangFlow...${NC}"
 
 # 1. LangFlow aus GitHub klonen
 if [ -d "$LANGFLOW_DIR" ]; then
-    echo -e "${YELLOW}LangFlow Verzeichnis $LANGFLOW_DIR existiert bereits. Aktualisiere Repository...${NC}"
-    cd "$LANGFLOW_DIR"
-    git pull
+  echo -e "${YELLOW}LangFlow Verzeichnis $LANGFLOW_DIR existiert bereits. Aktualisiere Repository...${NC}"
+  cd "$LANGFLOW_DIR"
+  git pull
 else
-    echo -e "${BLUE}Klone LangFlow in $LANGFLOW_DIR...${NC}"
-    sudo mkdir -p "$LANGFLOW_DIR"
-    sudo chown -R $USER:$USER "$LANGFLOW_DIR"
-    git clone https://github.com/logspace-ai/langflow.git "$LANGFLOW_DIR"
-    cd "$LANGFLOW_DIR"
+  echo -e "${BLUE}Klone LangFlow in $LANGFLOW_DIR...${NC}"
+  sudo mkdir -p "$LANGFLOW_DIR"
+  sudo chown -R $USER:$USER "$LANGFLOW_DIR"
+  git clone https://github.com/logspace-ai/langflow.git "$LANGFLOW_DIR"
+  cd "$LANGFLOW_DIR"
 fi
 
 # 2. Python-Abhängigkeiten installieren

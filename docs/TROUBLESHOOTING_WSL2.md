@@ -2,7 +2,8 @@
 
 ## Linux meldet viel Speicher, Windows wenig
 
-WSL2 sieht ein virtuelles Linux-Dateisystem. Die Anzeige kann hoch wirken, obwohl die Windows-Partition fast voll ist. Entscheidend ist beides:
+WSL2 sieht ein virtuelles Linux-Dateisystem. Die Anzeige kann hoch wirken, obwohl die
+Windows-Partition fast voll ist. Entscheidend ist beides:
 
 - freier Speicher im Linux-Dateisystem
 - freier Speicher auf dem Windows-Hostlaufwerk, auf dem die WSL-VHDX liegt
@@ -58,4 +59,3 @@ Shell-Dateien muessen LF statt CRLF haben:
 ```bash
 file scripts/*.sh
 ```
-

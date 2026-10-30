@@ -2,4 +2,3 @@
 set -euo pipefail
 
 echo "ScanCode Toolkit wird nicht automatisch entfernt."
-

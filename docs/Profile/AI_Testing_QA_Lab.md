@@ -1,7 +1,7 @@
 # AI Testing QA Lab
 
-Status: `planned`  
-Hardwarebedarf: `low` bis `medium`  
+Status: `planned`\
+Hardwarebedarf: `low` bis `medium`\
 Installationsart: lokal, CI, WSL2, VPS
 
 ## Zweck
@@ -10,14 +10,14 @@ Automatisierte Tests fuer Agenten, Prompts, Modelle, Regressionen und Setup-Skri
 
 ## Kern-Tools
 
-| Tool | Zweck | Status |
-|---|---|---|
-| pytest | Python-Tests | empfohlen |
-| bats-core | Shell-Tests | geplant |
-| shellcheck/shfmt | Shell-Qualitaet | empfohlen |
-| Playwright | UI-/Browser-Tests | empfohlen |
-| promptfoo | Prompt-Regressionen | empfohlen |
-| deepeval | LLM-Evaluation | optional |
+| Tool             | Zweck               | Status    |
+| ---------------- | ------------------- | --------- |
+| pytest           | Python-Tests        | empfohlen |
+| bats-core        | Shell-Tests         | geplant   |
+| shellcheck/shfmt | Shell-Qualitaet     | empfohlen |
+| Playwright       | UI-/Browser-Tests   | empfohlen |
+| promptfoo        | Prompt-Regressionen | empfohlen |
+| deepeval         | LLM-Evaluation      | optional  |
 
 ## Qualitaetsregeln
 

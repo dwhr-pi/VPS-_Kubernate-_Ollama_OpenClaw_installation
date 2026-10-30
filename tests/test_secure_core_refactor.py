@@ -121,7 +121,7 @@ class SecureCoreContracts(unittest.TestCase):
     def test_limits_and_traefik_are_opt_in_and_do_not_expose_dashboard(self):
         limits = (ROOT / 'scripts/operations/apply_service_limits.sh').read_text()
         self.assertIn('memory=8G cpu=200 mode=plan', limits)
-        self.assertIn('total-1073741824', limits)
+        self.assertRegex(limits, r'total\s*-\s*1073741824')
         self.assertIn('if ((restart))', limits)
         proxy = (ROOT / 'scripts/setup_traefik_local.sh').read_text()
         self.assertIn('source_commit', proxy)

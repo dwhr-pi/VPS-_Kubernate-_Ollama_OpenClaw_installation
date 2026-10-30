@@ -2,7 +2,8 @@
 
 ## Zweck
 
-Defensives KI-Sicherheitsprofil fuer Hardening, Schwachstellenmanagement, Repo-Pruefung, SBOMs, Container-Scans, Loganalyse und sichere Handlungsempfehlungen.
+Defensives KI-Sicherheitsprofil fuer Hardening, Schwachstellenmanagement, Repo-Pruefung, SBOMs,
+Container-Scans, Loganalyse und sichere Handlungsempfehlungen.
 
 ## Typische Aufgaben
 
@@ -25,7 +26,8 @@ Defensives KI-Sicherheitsprofil fuer Hardening, Schwachstellenmanagement, Repo-P
 
 ## Guardrails
 
-Nur defensive Nutzung und eigene Systeme. Keine Malware, keine Credential-Exfiltration, keine Persistenz-/Evasion-Anleitungen, keine Scans fremder Ziele.
+Nur defensive Nutzung und eigene Systeme. Keine Malware, keine Credential-Exfiltration, keine
+Persistenz-/Evasion-Anleitungen, keine Scans fremder Ziele.
 
 ## Status
 

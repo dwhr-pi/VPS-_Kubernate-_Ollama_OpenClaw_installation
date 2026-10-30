@@ -2,11 +2,11 @@
 set -euo pipefail
 
 check() {
-    if command -v "$1" >/dev/null 2>&1; then
-        printf '[OK] %s: %s\n' "$1" "$(command -v "$1")"
-    else
-        printf '[HINWEIS] %s nicht gefunden\n' "$1"
-    fi
+  if command -v "$1" >/dev/null 2>&1; then
+    printf '[OK] %s: %s\n' "$1" "$(command -v "$1")"
+  else
+    printf '[HINWEIS] %s nicht gefunden\n' "$1"
+  fi
 }
 
 echo "Robotik/Anlagensteuerung Diagnose"
@@ -24,7 +24,7 @@ check n8n
 check curl
 
 if command -v curl >/dev/null 2>&1 && curl -fsS http://127.0.0.1:11434/api/tags >/dev/null 2>&1; then
-    echo "[OK] Ollama erreichbar"
+  echo "[OK] Ollama erreichbar"
 else
-    echo "[HINWEIS] Ollama nicht erreichbar oder nicht gestartet"
+  echo "[HINWEIS] Ollama nicht erreichbar oder nicht gestartet"
 fi

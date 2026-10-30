@@ -7,6 +7,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+from doc_assertions import assert_prose_in, assert_prose_not_in
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -266,7 +267,7 @@ test ! -e "$MO_BASE/disk-reached"
     def test_safety_documentation(self):
         doc = (ROOT / "docs/tools/moshi.md").read_text(encoding="utf-8")
         for warning in ("CC-BY 4.0", "MIT", "PortAudio", "Mikrofon", "3.12", "--no-deps"):
-            self.assertIn(warning, doc)
+            assert_prose_in(self, warning, doc)
 
 
 if __name__ == "__main__":

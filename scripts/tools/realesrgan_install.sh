@@ -22,22 +22,22 @@ sudo apt-get update
 sudo apt-get install -y git python3 python3-venv python3-pip build-essential ffmpeg libgl1
 
 if [ -d "$TOOL_DIR/.git" ]; then
-    git -C "$TOOL_DIR" pull --ff-only
+  git -C "$TOOL_DIR" pull --ff-only
 else
-    sudo mkdir -p "$TOOL_DIR"
-    sudo chown -R "$USER:$USER" "$TOOL_DIR"
-    git clone "$REPO_URL" "$TOOL_DIR"
+  sudo mkdir -p "$TOOL_DIR"
+  sudo chown -R "$USER:$USER" "$TOOL_DIR"
+  git clone "$REPO_URL" "$TOOL_DIR"
 fi
 
 cd "$TOOL_DIR"
 if [ ! -d venv ]; then
-    python3 -m venv venv
+  python3 -m venv venv
 fi
 # shellcheck disable=SC1091
 source venv/bin/activate
 pip install --upgrade pip setuptools wheel
 if [ -f requirements.txt ]; then
-    pip install -r requirements.txt || true
+  pip install -r requirements.txt || true
 fi
 pip install -e . || true
 deactivate

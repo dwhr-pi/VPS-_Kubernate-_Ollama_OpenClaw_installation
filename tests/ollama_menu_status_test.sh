@@ -10,23 +10,23 @@ USER_STATUS_DIR="$temp_dir/status"
 mkdir -p "$USER_STATUS_DIR"
 test_binary=''
 command() {
-    if [[ "$*" == '-v ollama' ]]; then
-        [[ -n "$test_binary" ]] || return 1
-        printf '%s\n' "$test_binary"
-    else builtin command "$@"; fi
+  if [[ "$*" == '-v ollama' ]]; then
+    [[ -n "$test_binary" ]] || return 1
+    printf '%s\n' "$test_binary"
+  else builtin command "$@"; fi
 }
-append_unique_line() { printf '%s\n' "$2" >> "$1"; }
+append_unique_line() { printf '%s\n' "$2" >>"$1"; }
 remove_exact_line() { sed -i '\|^Ollama$|d' "$1"; }
-printf 'Ollama\nOpenClaw\n' > "$TOOL_STATUS_FILE"
-printf 'Ollama\n' > "$USER_STATUS_DIR/installed_tools.txt"
+printf 'Ollama\nOpenClaw\n' >"$TOOL_STATUS_FILE"
+printf 'Ollama\n' >"$USER_STATUS_DIR/installed_tools.txt"
 sync_ollama_tool_status
 [[ "$OLLAMA_STATUS_CHANGED" == 1 ]]
-[[ "$(< "$TOOL_STATUS_FILE")" == OpenClaw ]]
+[[ "$(<"$TOOL_STATUS_FILE")" == OpenClaw ]]
 [[ ! -s "$USER_STATUS_DIR/installed_tools.txt" ]]
 sync_ollama_tool_status
 [[ "$OLLAMA_STATUS_CHANGED" == 0 ]]
 test_binary="$temp_dir/ollama"
-printf '#!/usr/bin/env bash\nexit 0\n' > "$test_binary"
+printf '#!/usr/bin/env bash\nexit 0\n' >"$test_binary"
 chmod +x "$test_binary"
 sync_ollama_tool_status
 grep -Fxq Ollama "$TOOL_STATUS_FILE"

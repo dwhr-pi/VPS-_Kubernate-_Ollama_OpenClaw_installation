@@ -2,7 +2,8 @@
 
 ## Zweck
 
-Lokales Schutz- und Hygieneprofil fuer Malware-Scans, Quarantaene-Workflows, Datei-Checks, Signaturen, YARA-Regeln und verdachtige Downloads. Es ist defensiv und fuer eigene Systeme gedacht.
+Lokales Schutz- und Hygieneprofil fuer Malware-Scans, Quarantaene-Workflows, Datei-Checks,
+Signaturen, YARA-Regeln und verdachtige Downloads. Es ist defensiv und fuer eigene Systeme gedacht.
 
 ## Typische Aufgaben
 
@@ -22,7 +23,8 @@ Lokales Schutz- und Hygieneprofil fuer Malware-Scans, Quarantaene-Workflows, Dat
 
 ## Sicherheit
 
-Keine Samples ins Repo legen. Verdachtige Dateien nicht ungeprueft ausfuehren. Quarantaene ausserhalb des Repos unter `~/.openclaw_ultimate_user_data/security/quarantine/`.
+Keine Samples ins Repo legen. Verdachtige Dateien nicht ungeprueft ausfuehren. Quarantaene
+ausserhalb des Repos unter `~/.openclaw_ultimate_user_data/security/quarantine/`.
 
 ## Status
 

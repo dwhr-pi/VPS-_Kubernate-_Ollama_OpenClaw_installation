@@ -16,4 +16,5 @@ bash scripts/install/install_cad_tools.sh
 bash scripts/check/check_cad_tools.sh
 ```
 
-Die Beispiele sind als Startpunkte gedacht. Vor echtem Einsatz immer Masse, Toleranzen, Material und Belastung pruefen.
+Die Beispiele sind als Startpunkte gedacht. Vor echtem Einsatz immer Masse, Toleranzen, Material und
+Belastung pruefen.

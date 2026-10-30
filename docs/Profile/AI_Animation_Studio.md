@@ -2,7 +2,8 @@
 
 ## Aufgabe
 
-Das AI Animation Studio erweitert 3D-Assets um einfache Animationen, Turntables, Lip-Sync-Vorbereitung und Musikvideo-/Social-Clip-Pipelines.
+Das AI Animation Studio erweitert 3D-Assets um einfache Animationen, Turntables,
+Lip-Sync-Vorbereitung und Musikvideo-/Social-Clip-Pipelines.
 
 ## Empfohlene Modelle
 
@@ -35,4 +36,3 @@ Erzeuge eine 8-Sekunden-Turntable-Animation fuer den Charakter, mit neutralem Li
 - AI Voice zu Lippenanimation.
 - Musikvideo-Szenengenerator.
 - Cyberpunk/Unreal-Pipeline.
-

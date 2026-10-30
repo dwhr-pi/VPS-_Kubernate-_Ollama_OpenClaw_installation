@@ -54,10 +54,10 @@ detect_asset() {
   local machine
   machine="$(uname -m)"
   case "$machine" in
-    x86_64|amd64)
+    x86_64 | amd64)
       printf 'duckdb_cli-linux-amd64.zip'
       ;;
-    aarch64|arm64)
+    aarch64 | arm64)
       printf 'duckdb_cli-linux-aarch64.zip'
       ;;
     *)
@@ -85,10 +85,10 @@ main() {
       --dry-run)
         DRY_RUN=1
         ;;
-      --check|--status)
+      --check | --status)
         mode="check"
         ;;
-      --help|-h)
+      --help | -h)
         usage
         exit 0
         ;;

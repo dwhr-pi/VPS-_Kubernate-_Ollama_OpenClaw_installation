@@ -8,13 +8,13 @@ NATIVE_GITHUB_TOOL_KEYS+=("Kubeseal")
 NATIVE_GITHUB_TOOL_KEYS+=("Traefik")
 
 register_native_github_tool_keys() {
-    local key
-    local -A seen=()
-    for key in "${TOOL_KEYS[@]}"; do seen["$key"]=1; done
-    for key in "${NATIVE_GITHUB_TOOL_KEYS[@]}"; do
-        if [[ -z "${seen[$key]:-}" ]]; then
-            TOOL_KEYS+=("$key")
-            seen["$key"]=1
-        fi
-    done
+  local key
+  local -A seen=()
+  for key in "${TOOL_KEYS[@]}"; do seen["$key"]=1; done
+  for key in "${NATIVE_GITHUB_TOOL_KEYS[@]}"; do
+    if [[ -z "${seen[$key]:-}" ]]; then
+      TOOL_KEYS+=("$key")
+      seen["$key"]=1
+    fi
+  done
 }

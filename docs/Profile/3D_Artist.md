@@ -2,7 +2,8 @@
 
 ## Aufgabe
 
-Der 3D Artist erzeugt aus Prompts, Skizzen oder Referenzbildern stimmige 3D-Assets und bereitet sie fuer Blender, WebGL oder Game Engines vor.
+Der 3D Artist erzeugt aus Prompts, Skizzen oder Referenzbildern stimmige 3D-Assets und bereitet sie
+fuer Blender, WebGL oder Game Engines vor.
 
 ## Empfohlene Modelle
 
@@ -33,5 +34,5 @@ Erstelle ein stilisiertes Cyberpunk-Marktstand-Asset als GLB, low-poly-tauglich,
 
 ## Kubernetes Skalierung
 
-Mehrere 3D-Artist-Jobs koennen als Queue parallel auf ComfyUI- und Blender-Worker-Nodes verteilt werden.
-
+Mehrere 3D-Artist-Jobs koennen als Queue parallel auf ComfyUI- und Blender-Worker-Nodes verteilt
+werden.

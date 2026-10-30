@@ -1,6 +1,7 @@
 # Knowledge Librarian
 
-Profil fuer lokale Wissensverwaltung aus PDFs, Markdown, Office-Dateien, Scans, Webseiten und Notizen.
+Profil fuer lokale Wissensverwaltung aus PDFs, Markdown, Office-Dateien, Scans, Webseiten und
+Notizen.
 
 ## Fokus
 
@@ -11,7 +12,8 @@ Profil fuer lokale Wissensverwaltung aus PDFs, Markdown, Office-Dateien, Scans, 
 
 ## Sicherheit
 
-Dokumente koennen personenbezogene Daten, Verträge, Zugangsdaten oder interne Informationen enthalten. Import, Index und Backup muessen lokal und zugriffsgeschuetzt bleiben.
+Dokumente koennen personenbezogene Daten, Verträge, Zugangsdaten oder interne Informationen
+enthalten. Import, Index und Backup muessen lokal und zugriffsgeschuetzt bleiben.
 
 ## Installation
 

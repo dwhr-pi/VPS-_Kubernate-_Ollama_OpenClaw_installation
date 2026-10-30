@@ -2,7 +2,9 @@
 
 ## Zweck
 
-Experimentierprofil fuer lokale Agenten mit Feedback-Loops, Evaluation, Replay-Logs, Tool-Nutzung und Sicherheitsgrenzen. Es geht um kontrollierte Lernprotokolle, nicht um unkontrollierte Selbstoptimierung.
+Experimentierprofil fuer lokale Agenten mit Feedback-Loops, Evaluation, Replay-Logs, Tool-Nutzung
+und Sicherheitsgrenzen. Es geht um kontrollierte Lernprotokolle, nicht um unkontrollierte
+Selbstoptimierung.
 
 ## Typische Aufgaben
 

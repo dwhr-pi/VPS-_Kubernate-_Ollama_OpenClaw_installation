@@ -1,6 +1,7 @@
 """Offline documentation checks; no accounts, network, scheduler or installers."""
 from pathlib import Path
 import re
+from doc_assertions import assert_prose_in, assert_prose_not_in
 import unittest
 from urllib.parse import unquote, urlsplit
 
@@ -38,10 +39,10 @@ class FreeTierSourcesDocs(unittest.TestCase):
         text = REPORT.read_text(encoding="utf-8")
         for term in ("5 USD Trial", "30 Tage", "Zahlungsmittel", "15 USD",
                      "Kein Konto", "nicht synchronen Dateiinhalt", "keine Live", "2026"):
-            self.assertIn(term.casefold(), text.casefold())
-        self.assertIn("billing-credits", text)
-        self.assertIn("Cerebras", text)
-        self.assertIn("Commercial Terms", text)
+            assert_prose_in(self, term.casefold(), text.casefold())
+        assert_prose_in(self, "billing-credits", text)
+        assert_prose_in(self, "Cerebras", text)
+        assert_prose_in(self, "Commercial Terms", text)
 
     def test_claude_code_is_not_silently_replaced_or_relicensed(self):
         text = CLAUDE.read_text(encoding="utf-8")
@@ -63,7 +64,7 @@ class FreeTierSourcesDocs(unittest.TestCase):
         text = OVERVIEW.read_text(encoding="utf-8")
         for term in ("Codex-Thread-Automation", "montags 09:00", "Europe/Berlin",
                      "kein bei GitHub installierter", "Push fuehrt daher nicht sofort", "laufender App"):
-            self.assertIn(term, text)
+            assert_prose_in(self, term, text)
 
     def test_navigation_links_to_sources_and_history(self):
         for path in (BASE / "README.md", ROOT / "docs/tools/freellmapi.md",

@@ -2,7 +2,8 @@
 
 ## Zweck
 
-Profil fuer GPU-Workstations, mehrere GPUs, Blender, ComfyUI, Stable Diffusion, Video-Rendering und optionales Offloading ueber K3s oder andere Scheduler.
+Profil fuer GPU-Workstations, mehrere GPUs, Blender, ComfyUI, Stable Diffusion, Video-Rendering und
+optionales Offloading ueber K3s oder andere Scheduler.
 
 ## Typische Aufgaben
 
@@ -23,7 +24,8 @@ Profil fuer GPU-Workstations, mehrere GPUs, Blender, ComfyUI, Stable Diffusion, 
 
 ## Sicherheit und Betrieb
 
-GPU-Stacks sind ressourcenintensiv. Keine Installation im Minimalpfad. Vorher Speicherplatz, Treiber, Temperatur, Netzteil und Backup pruefen.
+GPU-Stacks sind ressourcenintensiv. Keine Installation im Minimalpfad. Vorher Speicherplatz,
+Treiber, Temperatur, Netzteil und Backup pruefen.
 
 ## Status
 

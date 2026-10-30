@@ -16,7 +16,7 @@ source /opt/pdf_parser/venv/bin/activate
 pip install --upgrade pip setuptools wheel
 pip install pymupdf pdfplumber unstructured
 deactivate
-cat > /opt/pdf_parser/README.md <<EOF
+cat >/opt/pdf_parser/README.md <<EOF
 # PDF_Parser
 
 Dokumenten- und PDF-Parser für Legal-, Research- und Content-Workflows.

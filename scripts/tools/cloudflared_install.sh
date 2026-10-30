@@ -14,13 +14,13 @@ source "$SCRIPT_DIR/../helpers/status_tracking.sh"
 init_tool_tracking "Cloudflared"
 
 if ! command -v curl >/dev/null 2>&1; then
-    echo -e "${RED}Fehler: curl wird für die Cloudflared-Installation benötigt.${NC}"
-    exit 1
+  echo -e "${RED}Fehler: curl wird für die Cloudflared-Installation benötigt.${NC}"
+  exit 1
 fi
 
 if ! command -v dpkg >/dev/null 2>&1; then
-    echo -e "${RED}Fehler: Dieses Skript ist aktuell für Debian/Ubuntu-Systeme gedacht.${NC}"
-    exit 1
+  echo -e "${RED}Fehler: Dieses Skript ist aktuell für Debian/Ubuntu-Systeme gedacht.${NC}"
+  exit 1
 fi
 
 ARCH="$(dpkg --print-architecture)"

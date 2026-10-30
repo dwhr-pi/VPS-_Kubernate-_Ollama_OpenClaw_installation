@@ -3,6 +3,7 @@
 Ziel: persönliche Wissensdatenbank, lokale Suche, Memory, Sync, Export.
 
 ## Kern
+
 - Joplin
 - Meilisearch
 - Qdrant
@@ -11,6 +12,7 @@ Ziel: persönliche Wissensdatenbank, lokale Suche, Memory, Sync, Export.
 - Rclone
 
 ## Optional
+
 - Obsidian
 - Logseq
 - OpenSearch

@@ -16,7 +16,7 @@ write_example() {
   local body="$2"
   if [ "${APPLY:-0}" -eq 1 ]; then
     mkdir -p "$OUT_DIR"
-    printf '%s\n' "$body" > "$OUT_DIR/$name.json"
+    printf '%s\n' "$body" >"$OUT_DIR/$name.json"
     echo "Geschrieben: $OUT_DIR/$name.json"
   else
     echo "== $name =="
@@ -26,7 +26,10 @@ write_example() {
 
 APPLY=0
 [ "${1:-}" = "--apply" ] && APPLY=1
-[ "${1:-}" = "-h" ] || [ "${1:-}" = "--help" ] && { usage; exit 0; }
+[ "${1:-}" = "-h" ] || [ "${1:-}" = "--help" ] && {
+  usage
+  exit 0
+}
 
 write_example "new_file_upload" '{
   "name": "myNextCloud new file upload",

@@ -2,7 +2,9 @@
 
 ## Kurzfassung
 
-Playwright ist ein Browser-Automation-Framework fuer Webtests, Screenshots, Crawling, Formularpruefung und kontrollierte Browser-Agenten. Es ist kein dauerhafter Dienst mit eigenem Webinterface.
+Playwright ist ein Browser-Automation-Framework fuer Webtests, Screenshots, Crawling,
+Formularpruefung und kontrollierte Browser-Agenten. Es ist kein dauerhafter Dienst mit eigenem
+Webinterface.
 
 Nach der Installation liegt die Python-Umgebung typischerweise in:
 
@@ -10,7 +12,8 @@ Nach der Installation liegt die Python-Umgebung typischerweise in:
 /opt/playwright/venv
 ```
 
-Wichtig: Eine installierte Python-Bibliothek reicht bei Playwright oft noch nicht aus. Fuer echte Browserlaeufe muessen zusaetzlich die Browser-Binaries vorhanden sein.
+Wichtig: Eine installierte Python-Bibliothek reicht bei Playwright oft noch nicht aus. Fuer echte
+Browserlaeufe muessen zusaetzlich die Browser-Binaries vorhanden sein.
 
 ## Installation pruefen
 
@@ -48,17 +51,17 @@ Auf WSL2 oder VPS ohne Desktop laeuft Playwright normalerweise headless.
 
 ## Welche vorhandenen Tools koennen Playwright nutzen?
 
-| Tool/Profil | Playwright-Nutzen | Integrationsart |
-|---|---|---|
-| OpenClaw | Browser-Tool fuer erlaubte Webaufgaben | Tool-/Worker-Skript |
-| Browser_Automation_Agent | Kernwerkzeug fuer Tests, Screenshots, Crawling | direkt |
-| OSINT_Research | Screenshots und Quellenpruefung oeffentlicher Quellen | nur legal/defensiv |
-| Huginn | externer Screenshot-/Browser-Worker | Script/Webhook |
-| n8n | Browser-Worker per Execute Command/Webhook | Automation-Bruecke |
-| LangGraph | Browser-Knoten in kontrolliertem Graph | Worker |
-| CrewAI | Tool-Agent fuer Webpruefung | Worker |
-| AutoGen | Browser-Agent mit User-Proxy-Freigabe | Worker |
-| Open WebUI/Grafana/Huginn/n8n | UI-Smoke-Tests | lokale Tests |
+| Tool/Profil                   | Playwright-Nutzen                                     | Integrationsart     |
+| ----------------------------- | ----------------------------------------------------- | ------------------- |
+| OpenClaw                      | Browser-Tool fuer erlaubte Webaufgaben                | Tool-/Worker-Skript |
+| Browser_Automation_Agent      | Kernwerkzeug fuer Tests, Screenshots, Crawling        | direkt              |
+| OSINT_Research                | Screenshots und Quellenpruefung oeffentlicher Quellen | nur legal/defensiv  |
+| Huginn                        | externer Screenshot-/Browser-Worker                   | Script/Webhook      |
+| n8n                           | Browser-Worker per Execute Command/Webhook            | Automation-Bruecke  |
+| LangGraph                     | Browser-Knoten in kontrolliertem Graph                | Worker              |
+| CrewAI                        | Tool-Agent fuer Webpruefung                           | Worker              |
+| AutoGen                       | Browser-Agent mit User-Proxy-Freigabe                 | Worker              |
+| Open WebUI/Grafana/Huginn/n8n | UI-Smoke-Tests                                        | lokale Tests        |
 
 ## Minimales Beispiel
 

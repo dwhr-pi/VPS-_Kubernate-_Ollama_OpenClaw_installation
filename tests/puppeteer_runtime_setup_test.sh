@@ -5,15 +5,16 @@ source "$repo_dir/scripts/tools/puppeteer_install.sh"
 runtime_ready=true installs=0 fail_install=false disk_free=100000
 check_node_tool_runtime() { [[ "$runtime_ready" == true ]]; }
 nvm() {
-    case "$1" in
-        use) [[ "$runtime_ready" == true ]] ;;
-        install)
-            [[ "$*" == 'install -b 22' ]] || return 99
-            installs=$((installs + 1))
-            [[ "$fail_install" == false ]] || return 1
-            runtime_ready=true ;;
-        *) return 99 ;;
-    esac
+  case "$1" in
+    use) [[ "$runtime_ready" == true ]] ;;
+    install)
+      [[ "$*" == 'install -b 22' ]] || return 99
+      installs=$((installs + 1))
+      [[ "$fail_install" == false ]] || return 1
+      runtime_ready=true
+      ;;
+    *) return 99 ;;
+  esac
 }
 df() { printf 'Filesystem 1M-blocks Used Available Use%% Mounted\nmock 200000 0 %s 0%% /\n' "$disk_free"; }
 prepare_puppeteer_runtime

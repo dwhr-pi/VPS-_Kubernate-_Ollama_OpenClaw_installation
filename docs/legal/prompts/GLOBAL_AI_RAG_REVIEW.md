@@ -1,7 +1,7 @@
 # Projektbezogener KI-/RAG-Rechtsreview fuer Coding-Agenten
 
-Diese Vorlage wird bewusst als Projektauftrag uebergeben, nicht automatisch
-in Codex/Qwen/OpenClaw oder Systemprompts eingebaut. Sie erweitert keine Rechte.
+Diese Vorlage wird bewusst als Projektauftrag uebergeben, nicht automatisch in Codex/Qwen/OpenClaw
+oder Systemprompts eingebaut. Sie erweitert keine Rechte.
 
 ```text
 Aufgabe: Unterstuetze die nachvollziehbare Rechts-/Risikopruefung unseres

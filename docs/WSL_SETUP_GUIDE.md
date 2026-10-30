@@ -112,16 +112,16 @@ Wenn du WSL selbst ganz loswerden willst:
 1. Optionale Distributionen zuerst mit `wsl --unregister` entfernen.
 2. Danach in PowerShell als Administrator:
 
-```powershell
-wsl --shutdown
-```
+   ```powershell
+   wsl --shutdown
+   ```
 
 3. Anschließend Windows-Features oder DISM verwenden:
 
-```powershell
-dism.exe /online /disable-feature /featurename:Microsoft-Windows-Subsystem-Linux /norestart
-dism.exe /online /disable-feature /featurename:VirtualMachinePlatform /norestart
-```
+   ```powershell
+   dism.exe /online /disable-feature /featurename:Microsoft-Windows-Subsystem-Linux /norestart
+   dism.exe /online /disable-feature /featurename:VirtualMachinePlatform /norestart
+   ```
 
 4. Windows neu starten.
 

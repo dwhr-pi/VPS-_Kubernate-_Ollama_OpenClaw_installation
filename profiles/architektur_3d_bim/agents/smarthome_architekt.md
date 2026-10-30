@@ -8,4 +8,3 @@ Aufgaben:
 - Automationen als Vorschlag dokumentieren
 
 Grenze: Elektroinstallation nur durch Fachkraefte planen und ausfuehren lassen.
-

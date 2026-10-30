@@ -21,11 +21,11 @@ df -h "$HOME" | sed -n '1,2p'
 echo
 echo "Vorhandene Programme:"
 for cmd in ros2 gz gazebo rviz2 mosquitto_pub mosquitto_sub node-red n8n docker; do
-    if command -v "$cmd" >/dev/null 2>&1; then
-        printf '  [OK] %s -> %s\n' "$cmd" "$(command -v "$cmd")"
-    else
-        printf '  [--] %s nicht gefunden\n' "$cmd"
-    fi
+  if command -v "$cmd" >/dev/null 2>&1; then
+    printf '  [OK] %s -> %s\n' "$cmd" "$(command -v "$cmd")"
+  else
+    printf '  [--] %s nicht gefunden\n' "$cmd"
+  fi
 done
 echo
 echo "Empfehlung: ROS 2 nur nach offizieller Anleitung und passend zur Ubuntu-Version installieren."

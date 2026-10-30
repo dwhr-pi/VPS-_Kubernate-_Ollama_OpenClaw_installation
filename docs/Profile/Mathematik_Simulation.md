@@ -1,6 +1,7 @@
 # Mathematik Simulation
 
-Profil fuer Formeln, numerische Simulation, Optimierung, Statistik, Visualisierung und lokale KI-Assistenz.
+Profil fuer Formeln, numerische Simulation, Optimierung, Statistik, Visualisierung und lokale
+KI-Assistenz.
 
 ## Fokus
 
@@ -11,7 +12,8 @@ Profil fuer Formeln, numerische Simulation, Optimierung, Statistik, Visualisieru
 
 ## Sicherheit
 
-KI-Ergebnisse sind Rechen- und Modellvorschlaege. Kritische technische, medizinische oder finanzielle Entscheidungen brauchen externe Validierung.
+KI-Ergebnisse sind Rechen- und Modellvorschlaege. Kritische technische, medizinische oder
+finanzielle Entscheidungen brauchen externe Validierung.
 
 ## Installation
 

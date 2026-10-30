@@ -19,4 +19,3 @@ Jobfelder:
 - Ausgabeformat
 - Prioritaet
 - GPU-Anforderung
-

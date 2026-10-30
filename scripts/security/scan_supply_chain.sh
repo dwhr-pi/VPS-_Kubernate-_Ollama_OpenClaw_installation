@@ -18,4 +18,3 @@ else
 fi
 
 bash "$ROOT_DIR/scripts/check_tools.sh" || true
-

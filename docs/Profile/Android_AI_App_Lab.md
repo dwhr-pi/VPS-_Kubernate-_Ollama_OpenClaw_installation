@@ -1,22 +1,23 @@
 # Android AI App Lab
 
-Status: `planned`  
-Hardwarebedarf: `medium`  
+Status: `planned`\
+Hardwarebedarf: `medium`\
 Installationsart: Linux-PC, WSL2 mit Android-SDK-Pfaden, GPU nicht erforderlich
 
 ## Zweck
 
-Android-App-Building mit Codex/OpenClaw: Gradle-Projekte pruefen, APKs bauen, Debugging vorbereiten und F-Droid-kompatible Open-Source-Apps analysieren.
+Android-App-Building mit Codex/OpenClaw: Gradle-Projekte pruefen, APKs bauen, Debugging vorbereiten
+und F-Droid-kompatible Open-Source-Apps analysieren.
 
 ## Kern-Tools
 
-| Tool | Zweck | Status |
-|---|---|---|
-| Android SDK CLI | Build-Tools, Plattformen, Emulator optional | geplant |
-| Gradle/Kotlin/Java | Android-Builds | empfohlen |
-| adb/scrcpy | Geraetezugriff und Bildschirmspiegelung | optional |
-| apktool/jadx | Defensive APK-Analyse | optional |
-| MobSF/Frida | Nur defensive lokale Analyse | experimentell |
+| Tool               | Zweck                                       | Status        |
+| ------------------ | ------------------------------------------- | ------------- |
+| Android SDK CLI    | Build-Tools, Plattformen, Emulator optional | geplant       |
+| Gradle/Kotlin/Java | Android-Builds                              | empfohlen     |
+| adb/scrcpy         | Geraetezugriff und Bildschirmspiegelung     | optional      |
+| apktool/jadx       | Defensive APK-Analyse                       | optional      |
+| MobSF/Frida        | Nur defensive lokale Analyse                | experimentell |
 
 ## OpenClaw-Agenten
 

@@ -8,7 +8,8 @@
 
 ## Zweck
 
-Stalwart-Mailserver, IMAP/SMTP, eigene Domains, Spamfilter, KI-Antwortentwuerfe und n8n/OpenClaw-Automation.
+Stalwart-Mailserver, IMAP/SMTP, eigene Domains, Spamfilter, KI-Antwortentwuerfe und
+n8n/OpenClaw-Automation.
 
 ## Empfohlene Tools
 
@@ -22,11 +23,13 @@ Stalwart-Mailserver, IMAP/SMTP, eigene Domains, Spamfilter, KI-Antwortentwuerfe 
 
 1. `bash scripts/preflight.sh --dry-run` ausfuehren.
 2. Nur leichte, dokumentierte Komponenten aktivieren.
-3. Schwere oder serverartige Komponenten erst nach Doctor-, Port-, Secret- und Ressourcencheck installieren.
+3. Schwere oder serverartige Komponenten erst nach Doctor-, Port-, Secret- und Ressourcencheck
+   installieren.
 
 ## Full-Pfad
 
-- Erst wenn Installer, Doctor, Uninstaller, Portdoku, Ressourcenwerte und Restore-/Rollback-Schritte vorhanden sind.
+- Erst wenn Installer, Doctor, Uninstaller, Portdoku, Ressourcenwerte und Restore-/Rollback-Schritte
+  vorhanden sind.
 - Lange Aufgaben ueber Queue Worker Orchestrator planen.
 
 ## Sicherheitswarnungen

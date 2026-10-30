@@ -2,7 +2,8 @@
 
 ## Aufgabe
 
-Dieses Profil erzeugt CAD-nahe Prototypen und STL-Dateien fuer Designstudien, 3D-Drucktests und technische Visualisierung. Es ersetzt kein echtes CAD-System, hilft aber beim schnellen Konzepten.
+Dieses Profil erzeugt CAD-nahe Prototypen und STL-Dateien fuer Designstudien, 3D-Drucktests und
+technische Visualisierung. Es ersetzt kein echtes CAD-System, hilft aber beim schnellen Konzepten.
 
 ## Empfohlene Modelle
 
@@ -31,9 +32,9 @@ Erstelle einen einfachen Gehaeuse-Prototyp fuer einen Sensor, 80 x 45 x 25 mm, a
 
 ## Sicherheitsregel
 
-Nicht fuer sicherheitskritische Bauteile ohne echte CAD-Pruefung, Simulation und Materialvalidierung verwenden.
+Nicht fuer sicherheitskritische Bauteile ohne echte CAD-Pruefung, Simulation und Materialvalidierung
+verwenden.
 
 ## Kubernetes
 
 CAD-Prototypen sind meist kleine Jobs; Queue und Versionsarchiv sind wichtiger als GPU-Autoscaling.
-

@@ -24,7 +24,8 @@ Audio-Mastering, Stem-Separation und lokale Tools.
 
 ## Installationshinweis
 
-Dieses Profil ist zuerst als Planungs- und Auswahlprofil gedacht. Einzelne Tools muessen bewusst im Setup-Menue ausgewaehlt werden.
+Dieses Profil ist zuerst als Planungs- und Auswahlprofil gedacht. Einzelne Tools muessen bewusst im
+Setup-Menue ausgewaehlt werden.
 
 ## Beispiel-Prompt
 

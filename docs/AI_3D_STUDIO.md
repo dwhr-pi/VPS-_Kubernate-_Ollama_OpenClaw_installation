@@ -1,6 +1,8 @@
 # Open Source AI 3D Studio
 
-Das AI-3D-Studio ist ein optionaler Ausbau fuer lokale 3D-Generierung, Game-Asset-Produktion, CAD-nahe Prototypen und Render-Automation. Ziel ist kein Cloud-Zwang, sondern eine offene Pipeline aus Ollama, OpenClaw, ComfyUI, Blender, Hunyuan3D und TripoSR.
+Das AI-3D-Studio ist ein optionaler Ausbau fuer lokale 3D-Generierung, Game-Asset-Produktion,
+CAD-nahe Prototypen und Render-Automation. Ziel ist kein Cloud-Zwang, sondern eine offene Pipeline
+aus Ollama, OpenClaw, ComfyUI, Blender, Hunyuan3D und TripoSR.
 
 ## Quellen und Einordnung
 
@@ -10,7 +12,9 @@ Das AI-3D-Studio ist ein optionaler Ausbau fuer lokale 3D-Generierung, Game-Asse
 - ComfyUI Flowty TripoSR Nodes: `https://github.com/flowtyone/ComfyUI-Flowty-TripoSR`
 - ComfyUI Tripo Nodes: `https://github.com/VAST-AI-Research/ComfyUI-Tripo`
 
-Hunyuan3D 2.1 ist eher die hochwertige PBR-Asset-Pipeline. TripoSR ist die schnelle lokale Single-Image-zu-Mesh-Rekonstruktion. Zusammen sind sie sinnvoll: TripoSR fuer schnelle Entwuerfe, Hunyuan3D fuer finale oder hochwertigere Assets.
+Hunyuan3D 2.1 ist eher die hochwertige PBR-Asset-Pipeline. TripoSR ist die schnelle lokale
+Single-Image-zu-Mesh-Rekonstruktion. Zusammen sind sie sinnvoll: TripoSR fuer schnelle Entwuerfe,
+Hunyuan3D fuer finale oder hochwertigere Assets.
 
 ## Projektstruktur
 
@@ -54,4 +58,3 @@ flowchart TD
 - Vor Modell-Downloads freien Speicher pruefen.
 - Generated Assets koennen urheberrechtliche oder personenbezogene Bezuege haben.
 - Cloud-APIs nur optional und mit Kostenlimit verwenden.
-

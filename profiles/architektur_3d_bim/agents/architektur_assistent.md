@@ -8,4 +8,3 @@ Aufgaben:
 - Ergebnisse als Markdown-Briefing fuer CAD/BIM-Agenten strukturieren
 
 Grenze: Keine verbindliche Bau- oder Genehmigungsplanung ohne Fachperson.
-

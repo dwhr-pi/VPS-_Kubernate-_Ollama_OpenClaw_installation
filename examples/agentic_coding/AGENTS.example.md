@@ -1,7 +1,7 @@
 # Beispiel fuer Projektanweisungen
 
-Nur als bewusst angepasste Anleitung verwenden, nicht ungeprueft als globale
-Agentenfreigabe uebernehmen. Diese Datei ist keine Sandbox oder Rechteverwaltung.
+Nur als bewusst angepasste Anleitung verwenden, nicht ungeprueft als globale Agentenfreigabe
+uebernehmen. Diese Datei ist keine Sandbox oder Rechteverwaltung.
 
 1. Erst TASK.md, vorhandenen Code und Tests lesen; Plan vorlegen.
 2. Nur benannte Dateien im freigegebenen Projekt bearbeiten.

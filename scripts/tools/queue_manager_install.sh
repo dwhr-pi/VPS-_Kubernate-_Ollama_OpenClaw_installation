@@ -5,7 +5,7 @@ MODE="${1:---dry-run}"
 QUEUE_DIR="${QUEUE_MANAGER_DIR:-$HOME/.openclaw_ultimate_user_data/queue}"
 
 case "$MODE" in
-  --dry-run|--plan|--prepare|--status|--help|-h) ;;
+  --dry-run | --plan | --prepare | --status | --help | -h) ;;
   *)
     echo "Bitte --dry-run, --prepare, --status oder --help verwenden." >&2
     exit 2
@@ -33,7 +33,7 @@ if [[ "$MODE" == "--dry-run" || "$MODE" == "--plan" ]]; then
 fi
 
 mkdir -p "$QUEUE_DIR/jobs" "$QUEUE_DIR/logs"
-cat > "$QUEUE_DIR/queue-policy.json" <<'EOF'
+cat >"$QUEUE_DIR/queue-policy.json" <<'EOF'
 {
   "default_engine": "planned",
   "parallelism": {

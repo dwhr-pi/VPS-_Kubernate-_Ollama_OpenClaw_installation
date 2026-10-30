@@ -1,16 +1,17 @@
 # Architektur 3D BIM Guide
 
-Dieser Guide ergaenzt das Profil `Architektur_3D_BIM` um Installation, Projektstruktur, Hardwareklassen und Betriebsregeln.
+Dieser Guide ergaenzt das Profil `Architektur_3D_BIM` um Installation, Projektstruktur,
+Hardwareklassen und Betriebsregeln.
 
 ## Hardwareklassen
 
-| Klasse | Einsatz |
-| --- | --- |
-| CPU-only MiniPC | CAD, IFC-Analyse, kleine FreeCAD/IfcOpenShell-Skripte, Doku |
-| 16-32 GB RAM Workstation | FreeCAD, QGIS, Blender Preview, kleinere Photogrammetrie |
-| 8-12 GB VRAM GPU | ComfyUI Konzeptbilder, einfache Blender GPU-Renders |
-| 16-24 GB VRAM GPU | ernsthafte Renderjobs, SDXL/Flux, groessere Szenen |
-| Multi-GPU / Kubernetes | parallele Renderfarm, Batchjobs, verteilte Texture Libraries |
+| Klasse                   | Einsatz                                                      |
+| ------------------------ | ------------------------------------------------------------ |
+| CPU-only MiniPC          | CAD, IFC-Analyse, kleine FreeCAD/IfcOpenShell-Skripte, Doku  |
+| 16-32 GB RAM Workstation | FreeCAD, QGIS, Blender Preview, kleinere Photogrammetrie     |
+| 8-12 GB VRAM GPU         | ComfyUI Konzeptbilder, einfache Blender GPU-Renders          |
+| 16-24 GB VRAM GPU        | ernsthafte Renderjobs, SDXL/Flux, groessere Szenen           |
+| Multi-GPU / Kubernetes   | parallele Renderfarm, Batchjobs, verteilte Texture Libraries |
 
 ## Speicher und Netzwerk
 
@@ -54,4 +55,3 @@ Optionale schwere Pakete oder manuelle Schritte:
 - Texturen, LoRAs, HDRIs, 3D-Modelle und Stadt-/GIS-Daten koennen eigene Lizenzen haben.
 - IFC-/BIM-Modelle von Kundenprojekten sind vertraulich.
 - AI-Renderings fuer echte Bauvorhaben immer als Konzept oder Visualisierung kennzeichnen.
-

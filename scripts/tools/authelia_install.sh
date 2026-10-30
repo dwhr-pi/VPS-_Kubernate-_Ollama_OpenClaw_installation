@@ -25,7 +25,7 @@ echo -e "${YELLOW}Hinweis: Es werden keine Secrets erzeugt und kein produktiver 
 mkdir -p "$AUTH_DIR"
 chmod 700 "$USER_WORKSPACE_DIR/auth" "$AUTH_DIR" 2>/dev/null || true
 
-cat > "$AUTH_DIR/configuration.example.yml" <<'EOF'
+cat >"$AUTH_DIR/configuration.example.yml" <<'EOF'
 # Authelia Beispielkonfiguration - keine echten Secrets ins Repo
 server:
   address: tcp://127.0.0.1:9091/
@@ -60,7 +60,7 @@ notifier:
     filename: /config/notification.txt
 EOF
 
-cat > "$AUTH_DIR/docker-compose.example.yml" <<'EOF'
+cat >"$AUTH_DIR/docker-compose.example.yml" <<'EOF'
 services:
   authelia:
     image: authelia/authelia:latest
@@ -72,7 +72,7 @@ services:
       - ./data:/config
 EOF
 
-cat > "$AUTH_DIR/README.md" <<'EOF'
+cat >"$AUTH_DIR/README.md" <<'EOF'
 # Authelia im OpenClaw Setup
 
 Authelia ist eine optionale schlanke Auth-/SSO-/MFA-Schicht vor Webdiensten.

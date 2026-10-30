@@ -7,6 +7,7 @@ import os
 from pathlib import Path
 import sys
 import tempfile
+import re
 import unittest
 from unittest.mock import patch
 
@@ -142,7 +143,7 @@ class Inventory(unittest.TestCase):
 
     def test_update_backup_and_menu_are_wired(self):
         update = (ROOT / 'scripts/auto_update_hard.sh').read_text()
-        apply = update.split('    --apply)', 1)[1]
+        apply = re.split(r'(?m)^\s+--apply\)', update, maxsplit=1)[1]
         self.assertLess(apply.index('installation_inventory.py'), apply.index('"$HELPER" sync'))
         backup = (ROOT / 'scripts/operations/backup_run.sh').read_text()
         self.assertIn('installation-inventory.json', backup)

@@ -1,12 +1,17 @@
 # Architektur_3D_BIM
 
-Lokales Profil fuer Architektur, BIM/IFC, CAD, Innenraumplanung, 3D-Rendering, Smart-Home-Planung und Renderfarm-Workflows im Ultimate KI Setup.
+Lokales Profil fuer Architektur, BIM/IFC, CAD, Innenraumplanung, 3D-Rendering, Smart-Home-Planung
+und Renderfarm-Workflows im Ultimate KI Setup.
 
-Dieses Profil erweitert Ollama, OpenClaw, n8n, ComfyUI, Blender, FreeCAD und optionale Kubernetes-Worker zu einem lokal-first Architektur- und BIM-Studio. Es ist fuer Planung, Analyse, Visualisierung und Dokumentation gedacht, nicht als Ersatz fuer Architekten, Statiker, Energieberater, Brandschutzplaner oder bauvorlageberechtigte Fachpersonen.
+Dieses Profil erweitert Ollama, OpenClaw, n8n, ComfyUI, Blender, FreeCAD und optionale
+Kubernetes-Worker zu einem lokal-first Architektur- und BIM-Studio. Es ist fuer Planung, Analyse,
+Visualisierung und Dokumentation gedacht, nicht als Ersatz fuer Architekten, Statiker,
+Energieberater, Brandschutzplaner oder bauvorlageberechtigte Fachpersonen.
 
 ## Kurzbeschreibung
 
-`Architektur_3D_BIM` kombiniert klassische Open-Source-Bau-, CAD- und 3D-Werkzeuge mit lokalen KI-Agenten:
+`Architektur_3D_BIM` kombiniert klassische Open-Source-Bau-, CAD- und 3D-Werkzeuge mit lokalen
+KI-Agenten:
 
 - Grundrisse analysieren und Varianten vorschlagen
 - FreeCAD-/OpenSCAD-/Blender-Skripte vorbereiten
@@ -19,13 +24,18 @@ Dieses Profil erweitert Ollama, OpenClaw, n8n, ComfyUI, Blender, FreeCAD und opt
 
 ## Sicherheits- und Fachregel
 
-KI darf in diesem Profil Vorschlaege, Analysen, Skripte und Visualisierungen erzeugen. Sie darf keine verbindliche Bauplanung, Statik, Elektroplanung, Brandschutzbewertung, Genehmigungsplanung oder Kostenzusage ersetzen.
+KI darf in diesem Profil Vorschlaege, Analysen, Skripte und Visualisierungen erzeugen. Sie darf
+keine verbindliche Bauplanung, Statik, Elektroplanung, Brandschutzbewertung, Genehmigungsplanung
+oder Kostenzusage ersetzen.
 
 Pflichtregeln:
 
-- Bau-, Statik-, Tragwerks-, Brandschutz-, Elektro- und Genehmigungsfragen immer fachlich pruefen lassen.
-- IFC-/CAD-Aenderungen nur versioniert speichern und nie ungeprueft in produktive Planungsstaende uebernehmen.
-- Cloud-APIs, Renderdienste und Materialdatenbanken nur mit Kostenlimit und ohne vertrauliche Projektdaten nutzen.
+- Bau-, Statik-, Tragwerks-, Brandschutz-, Elektro- und Genehmigungsfragen immer fachlich pruefen
+  lassen.
+- IFC-/CAD-Aenderungen nur versioniert speichern und nie ungeprueft in produktive Planungsstaende
+  uebernehmen.
+- Cloud-APIs, Renderdienste und Materialdatenbanken nur mit Kostenlimit und ohne vertrauliche
+  Projektdaten nutzen.
 - Remote WebUIs nur ueber Auth, Tunnel-Policies und lokale Firewalls freigeben.
 - AI-Renderings als Entwurf kennzeichnen, nicht als baurechtliche Planung.
 
@@ -77,48 +87,50 @@ Optional: Kubernetes Render- und GPU-Worker
 
 ## Empfohlene Open-Source-Bausteine
 
-| Bereich | Tool | Aufgabe | Status |
-|---|---|---|---|
-| CAD | FreeCAD | parametrisches CAD, STEP/STL/DXF, Python-Scripting | stabil |
-| 3D/Rendering | Blender | Visualisierung, Animation, Asset- und Renderpipeline | stabil |
-| BIM | Bonsai / BlenderBIM | IFC-Modellierung und BIM in Blender | stabil/aktiv |
-| Kollaboration | Speckle | Modell-Streaming, Versions- und Teamworkflows | optional |
-| Innenraum | SweetHome3D | schnelle Wohnraum- und Moebelplanung | stabil |
-| Energie | OpenStudio | Energieanalyse und Gebaeudesimulation | fortgeschritten |
-| GIS/Stadt | QGIS | Stadtplanung, Geo-Daten, Lageplaene | stabil |
-| IFC | IFCOpenShell | IFC lesen, schreiben, pruefen, Skripting | stabil |
-| Code-CAD | OpenSCAD | parametrisches Code-CAD und 3D-Druck | stabil |
-| Photogrammetrie | Meshroom / AliceVision | Foto zu 3D-Mesh | optional/GPU-lastig |
-| Photogrammetrie | COLMAP | SfM/MVS, Kamera-Posen, 3D-Rekonstruktion | optional/GPU-lastig |
+| Bereich         | Tool                   | Aufgabe                                              | Status              |
+| --------------- | ---------------------- | ---------------------------------------------------- | ------------------- |
+| CAD             | FreeCAD                | parametrisches CAD, STEP/STL/DXF, Python-Scripting   | stabil              |
+| 3D/Rendering    | Blender                | Visualisierung, Animation, Asset- und Renderpipeline | stabil              |
+| BIM             | Bonsai / BlenderBIM    | IFC-Modellierung und BIM in Blender                  | stabil/aktiv        |
+| Kollaboration   | Speckle                | Modell-Streaming, Versions- und Teamworkflows        | optional            |
+| Innenraum       | SweetHome3D            | schnelle Wohnraum- und Moebelplanung                 | stabil              |
+| Energie         | OpenStudio             | Energieanalyse und Gebaeudesimulation                | fortgeschritten     |
+| GIS/Stadt       | QGIS                   | Stadtplanung, Geo-Daten, Lageplaene                  | stabil              |
+| IFC             | IFCOpenShell           | IFC lesen, schreiben, pruefen, Skripting             | stabil              |
+| Code-CAD        | OpenSCAD               | parametrisches Code-CAD und 3D-Druck                 | stabil              |
+| Photogrammetrie | Meshroom / AliceVision | Foto zu 3D-Mesh                                      | optional/GPU-lastig |
+| Photogrammetrie | COLMAP                 | SfM/MVS, Kamera-Posen, 3D-Rekonstruktion             | optional/GPU-lastig |
 
 ## Ollama-Modellvorschlaege
 
-| Modellfamilie | Staerke | Einsatz |
-|---|---|---|
-| `qwen2.5-coder` / Qwen Coder | Code, Python, Skripting | FreeCAD-, Blender-, IFCOpenShell- und OpenSCAD-Code |
-| `deepseek-coder` | technische Codegenerierung | CAD-Skripte, Automationslogik, n8n-Glue-Code |
-| `deepseek-r1` | reasoning-lastige Analyse | Variantenbewertung, Planungslogik, Fehleranalyse |
-| Llama 3.x | allgemeine Assistenz | Projektberichte, Checklisten, Kundenkommunikation |
-| Mistral / Codestral | kompakte Code- und Textarbeit | lokale CAD-/BIM-Hilfsagenten |
-| CodeLlama | klassische Codehilfe | kleinere Skripte und Beispiele |
-| Phi / Gemma | sparsame Hardware | Zusammenfassungen, einfache Checklisten, offline kleine Systeme |
+| Modellfamilie                | Staerke                       | Einsatz                                                         |
+| ---------------------------- | ----------------------------- | --------------------------------------------------------------- |
+| `qwen2.5-coder` / Qwen Coder | Code, Python, Skripting       | FreeCAD-, Blender-, IFCOpenShell- und OpenSCAD-Code             |
+| `deepseek-coder`             | technische Codegenerierung    | CAD-Skripte, Automationslogik, n8n-Glue-Code                    |
+| `deepseek-r1`                | reasoning-lastige Analyse     | Variantenbewertung, Planungslogik, Fehleranalyse                |
+| Llama 3.x                    | allgemeine Assistenz          | Projektberichte, Checklisten, Kundenkommunikation               |
+| Mistral / Codestral          | kompakte Code- und Textarbeit | lokale CAD-/BIM-Hilfsagenten                                    |
+| CodeLlama                    | klassische Codehilfe          | kleinere Skripte und Beispiele                                  |
+| Phi / Gemma                  | sparsame Hardware             | Zusammenfassungen, einfache Checklisten, offline kleine Systeme |
 
-Empfehlung: Auf schwacher Hardware kleine 3B- bis 8B-Modelle fuer Dokumentation nutzen. Fuer CAD-Code und IFC-Analyse sind 14B- bis 32B-Modelle deutlich angenehmer. Grosse Render- oder Vision-Pipelines brauchen unabhaengig vom LLM vor allem SSD, RAM und GPU/VRAM.
+Empfehlung: Auf schwacher Hardware kleine 3B- bis 8B-Modelle fuer Dokumentation nutzen. Fuer
+CAD-Code und IFC-Analyse sind 14B- bis 32B-Modelle deutlich angenehmer. Grosse Render- oder
+Vision-Pipelines brauchen unabhaengig vom LLM vor allem SSD, RAM und GPU/VRAM.
 
 ## OpenClaw-Agentenrollen
 
-| Agent | Aufgabe |
-|---|---|
-| Architektur-Assistent | sammelt Anforderungen, Raumprogramm, Varianten und Rueckfragen |
-| BIM-Analyst | liest IFC-Berichte, erkennt fehlende Eigenschaften und Mengenrisiken |
-| CAD-Code Generator | erzeugt FreeCAD-, OpenSCAD-, Blender- oder IFCOpenShell-Skripte |
-| Innenraum Designer | erstellt Stil-, Licht-, Material- und Moebelkonzepte |
-| Materialplaner | ordnet Materialien, Mengen, Nachhaltigkeit und Kostenrisiken |
-| SmartHome Architekt | plant Sensorik, Zonen, Home Assistant, MQTT und Datenschutz |
-| Stadtplanungs-KI | nutzt QGIS-/Geo-Kontext fuer Lage, Umgebung und Infrastruktur |
-| Renderfarm Manager | plant Blender-/ComfyUI-Jobs, Prioritaeten und GPU-Auslastung |
-| IFC Parser | extrahiert Raeume, Bauteile, Geschosse, Mengen und Property Sets |
-| STL/3D-Druck Assistent | prueft Massstab, Wandstaerken, Export und Druckbarkeit |
+| Agent                  | Aufgabe                                                              |
+| ---------------------- | -------------------------------------------------------------------- |
+| Architektur-Assistent  | sammelt Anforderungen, Raumprogramm, Varianten und Rueckfragen       |
+| BIM-Analyst            | liest IFC-Berichte, erkennt fehlende Eigenschaften und Mengenrisiken |
+| CAD-Code Generator     | erzeugt FreeCAD-, OpenSCAD-, Blender- oder IFCOpenShell-Skripte      |
+| Innenraum Designer     | erstellt Stil-, Licht-, Material- und Moebelkonzepte                 |
+| Materialplaner         | ordnet Materialien, Mengen, Nachhaltigkeit und Kostenrisiken         |
+| SmartHome Architekt    | plant Sensorik, Zonen, Home Assistant, MQTT und Datenschutz          |
+| Stadtplanungs-KI       | nutzt QGIS-/Geo-Kontext fuer Lage, Umgebung und Infrastruktur        |
+| Renderfarm Manager     | plant Blender-/ComfyUI-Jobs, Prioritaeten und GPU-Auslastung         |
+| IFC Parser             | extrahiert Raeume, Bauteile, Geschosse, Mengen und Property Sets     |
+| STL/3D-Druck Assistent | prueft Massstab, Wandstaerken, Export und Druckbarkeit               |
 
 ## Beispiel-Workflows
 
@@ -181,15 +193,16 @@ Wichtig: LoRAs und Modelle nur aus vertrauenswuerdigen Quellen nutzen und Lizenz
 
 ## Kubernetes- und Multi-GPU-Skalierung
 
-| Node | Aufgabe | Hinweise |
-|---|---|---|
-| Node 1 | Ollama / OpenClaw | CPU/RAM wichtig, GPU optional |
-| Node 2 | ComfyUI | NVIDIA CUDA/VRAM fuer SDXL/Flux |
-| Node 3 | Blender Renderer | GPU-Rendering, Cycles, Eevee Next |
-| Node 4 | IFC/FreeCAD/QGIS Jobs | CPU/RAM/SSD, nicht zwingend GPU |
-| Node 5 | Storage/Cache | schnelle NVMe, Backups, Asset Library |
+| Node   | Aufgabe               | Hinweise                              |
+| ------ | --------------------- | ------------------------------------- |
+| Node 1 | Ollama / OpenClaw     | CPU/RAM wichtig, GPU optional         |
+| Node 2 | ComfyUI               | NVIDIA CUDA/VRAM fuer SDXL/Flux       |
+| Node 3 | Blender Renderer      | GPU-Rendering, Cycles, Eevee Next     |
+| Node 4 | IFC/FreeCAD/QGIS Jobs | CPU/RAM/SSD, nicht zwingend GPU       |
+| Node 5 | Storage/Cache         | schnelle NVMe, Backups, Asset Library |
 
-Kubernetes bleibt optional. Fuer kleine Setups reicht ein lokaler Rechner. Fuer Renderfarmen spaeter GPU-Worker mit Labels wie `gpu=true`, `render=blender` und `ai=comfyui` verwenden.
+Kubernetes bleibt optional. Fuer kleine Setups reicht ein lokaler Rechner. Fuer Renderfarmen spaeter
+GPU-Worker mit Labels wie `gpu=true`, `render=blender` und `ai=comfyui` verwenden.
 
 ## Projektordnerstruktur
 
@@ -251,8 +264,10 @@ REMOTE_WEBUI=false
 
 ## Lizenzhinweise
 
-- FreeCAD, Blender, QGIS, IFCOpenShell und OpenSCAD sind Open-Source-Projekte, aber einzelne Plugins, Assets, LoRAs, Texturen und Modelle koennen andere Lizenzen haben.
-- Speckle, OpenStudio, Meshroom/AliceVision und COLMAP koennen je nach Paket/Distribution eigene Installations- und Lizenzbedingungen haben.
+- FreeCAD, Blender, QGIS, IFCOpenShell und OpenSCAD sind Open-Source-Projekte, aber einzelne
+  Plugins, Assets, LoRAs, Texturen und Modelle koennen andere Lizenzen haben.
+- Speckle, OpenStudio, Meshroom/AliceVision und COLMAP koennen je nach Paket/Distribution eigene
+  Installations- und Lizenzbedingungen haben.
 - KI-generierte Entwuerfe nicht ohne Rechtepruefung als Kunden- oder Verkaufsunterlagen nutzen.
 
 ## Beispielprompts
@@ -285,5 +300,5 @@ ARCH_INSTALL_CORE=1 bash scripts/install_architektur_3d_bim_optional.sh
 bash profiles/architektur_3d_bim/scripts/check_architektur_stack.sh
 ```
 
-Standardmaessig prueft das Installationsskript nur System und Hinweise. Schwere Pakete werden erst mit `ARCH_INSTALL_CORE=1` vorgeschlagen/installiert.
-
+Standardmaessig prueft das Installationsskript nur System und Hinweise. Schwere Pakete werden erst
+mit `ARCH_INSTALL_CORE=1` vorgeschlagen/installiert.

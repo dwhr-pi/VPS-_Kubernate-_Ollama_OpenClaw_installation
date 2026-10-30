@@ -23,30 +23,30 @@ echo -e "${BLUE}Starte Installation von Zenbot-trader...${NC}"
 
 # 1. Zenbot-trader aus GitHub klonen
 if [ -d "$ZENBOT_DIR" ]; then
-    echo -e "${YELLOW}Zenbot-trader Verzeichnis $ZENBOT_DIR existiert bereits. Aktualisiere Repository...${NC}"
-    cd "$ZENBOT_DIR"
-    git pull
+  echo -e "${YELLOW}Zenbot-trader Verzeichnis $ZENBOT_DIR existiert bereits. Aktualisiere Repository...${NC}"
+  cd "$ZENBOT_DIR"
+  git pull
 else
-    echo -e "${BLUE}Klone Zenbot-trader in $ZENBOT_DIR...${NC}"
-    sudo mkdir -p "$ZENBOT_DIR"
-    sudo chown -R $USER:$USER "$ZENBOT_DIR"
-    git clone https://github.com/dwhr-pi/zenbot-trader-platform.git "$ZENBOT_DIR"
-    cd "$ZENBOT_DIR"
+  echo -e "${BLUE}Klone Zenbot-trader in $ZENBOT_DIR...${NC}"
+  sudo mkdir -p "$ZENBOT_DIR"
+  sudo chown -R $USER:$USER "$ZENBOT_DIR"
+  git clone https://github.com/dwhr-pi/zenbot-trader-platform.git "$ZENBOT_DIR"
+  cd "$ZENBOT_DIR"
 fi
 
 # 2. Abhängigkeiten installieren mit pnpm
 echo -e "${BLUE}Installiere Abhängigkeiten für Zenbot-trader mit pnpm...${NC}"
 pnpm install
 if [ $? -ne 0 ]; then
-    echo -e "${RED}Fehler: pnpm install für Zenbot-trader fehlgeschlagen.${NC}"
-    exit 1
+  echo -e "${RED}Fehler: pnpm install für Zenbot-trader fehlgeschlagen.${NC}"
+  exit 1
 fi
 
 # 3. Zenbot-trader bauen (falls notwendig)
 echo -e "${BLUE}Baue Zenbot-trader mit pnpm (falls notwendig)...${NC}"
 pnpm build # Annahme: Es gibt einen Build-Schritt
 if [ $? -ne 0 ]; then
-    echo -e "${YELLOW}Hinweis: pnpm build für Zenbot-trader fehlgeschlagen oder nicht notwendig.${NC}"
+  echo -e "${YELLOW}Hinweis: pnpm build für Zenbot-trader fehlgeschlagen oder nicht notwendig.${NC}"
 fi
 
 # 4. Konfiguration (Platzhalter)

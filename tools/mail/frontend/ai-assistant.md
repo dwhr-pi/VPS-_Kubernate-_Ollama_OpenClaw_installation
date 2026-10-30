@@ -9,5 +9,4 @@ Der KI-Assistent hilft bei:
 - Regelvorschlaegen
 - Mailbox-/Alias-Vorschlaegen
 
-Er darf nicht automatisch senden und keine produktiven Aenderungen ohne
-Freigabe ausfuehren.
+Er darf nicht automatisch senden und keine produktiven Aenderungen ohne Freigabe ausfuehren.

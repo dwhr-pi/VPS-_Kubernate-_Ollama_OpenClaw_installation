@@ -2,7 +2,8 @@
 
 ## Ziel
 
-Oracle Free VPS kann fuer leichte Remote-Dienste, Monitoring, Tunnels, Backups und kleine Automationen dienen. Schwere KI-/GPU-/Kubernetes-Pfade sind nicht automatisch geeignet.
+Oracle Free VPS kann fuer leichte Remote-Dienste, Monitoring, Tunnels, Backups und kleine
+Automationen dienen. Schwere KI-/GPU-/Kubernetes-Pfade sind nicht automatisch geeignet.
 
 ## Geeignet
 

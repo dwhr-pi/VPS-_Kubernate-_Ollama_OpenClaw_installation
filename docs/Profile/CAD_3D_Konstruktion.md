@@ -1,6 +1,9 @@
 # CAD 3D Konstruktion
 
-Das Profil `CAD_3D_Konstruktion` erweitert das Ultimate KI Setup um lokale CAD-, 3D-Konstruktions-, Text-to-CAD-, OpenSCAD-, FreeCAD-, 3D-Druck- und Robotik-Bauteil-Workflows. Es ist lokal-first fuer Ubuntu/WSL2 ausgelegt, nutzt Ollama, OpenClaw, n8n und kann spaeter mit Cloudflare/Tailscale, Mini-PCs, GPU-Workern oder Kubernetes-Render-/Build-Nodes erweitert werden.
+Das Profil `CAD_3D_Konstruktion` erweitert das Ultimate KI Setup um lokale CAD-, 3D-Konstruktions-,
+Text-to-CAD-, OpenSCAD-, FreeCAD-, 3D-Druck- und Robotik-Bauteil-Workflows. Es ist lokal-first fuer
+Ubuntu/WSL2 ausgelegt, nutzt Ollama, OpenClaw, n8n und kann spaeter mit Cloudflare/Tailscale,
+Mini-PCs, GPU-Workern oder Kubernetes-Render-/Build-Nodes erweitert werden.
 
 ## Ziel
 
@@ -12,10 +15,13 @@ Dieses Profil soll aus technischen Anforderungen wiederholbare CAD-Artefakte erz
 - CadQuery/build123d: optionale Python-Parametrik fuer reproduzierbare Modelle.
 - 3D-Druck: STL/3MF/OBJ pruefen, reparieren, orientieren und dokumentieren.
 - Robotik-Bauteile: Halterungen, Sensor-Mounts, Greiferfinger, Adapterplatten, Kabelhalter.
-- Mechanische Plausibilitaet: Wandstaerke, Toleranzen, Schraubdome, Einpressmuttern, Montagefreiheit.
+- Mechanische Plausibilitaet: Wandstaerke, Toleranzen, Schraubdome, Einpressmuttern,
+  Montagefreiheit.
 - Projekt-Dokumentation: BOM, Zeichnungsnotizen, Fertigungshinweise, Versionsprotokoll.
 
-KI erzeugt Vorschlaege und Skripte, ersetzt aber keine echte Konstrukteurspruefung. Tragende, sicherheitskritische, elektrische, druckbeaufschlagte oder bewegte Bauteile brauchen Simulation, Materialdaten, Normen, Tests und Fachfreigabe.
+KI erzeugt Vorschlaege und Skripte, ersetzt aber keine echte Konstrukteurspruefung. Tragende,
+sicherheitskritische, elektrische, druckbeaufschlagte oder bewegte Bauteile brauchen Simulation,
+Materialdaten, Normen, Tests und Fachfreigabe.
 
 ## Architektur
 
@@ -32,17 +38,17 @@ flowchart LR
 
 ## Open-Source Toolchain
 
-| Bereich | Tools | Aufgabe |
-| --- | --- | --- |
-| CAD Kern | FreeCAD | Parametrische Modelle, STEP/STL, Python-Automation |
-| Script-CAD | OpenSCAD | Textbasierte, reproduzierbare Konstruktionen |
-| Python-CAD | CadQuery, build123d optional | Text-to-CAD, Feature-basierte Bauteile |
-| Mesh / Repair | MeshLab, Blender, trimesh | STL/OBJ pruefen, reparieren, konvertieren |
-| 3D-Druck | PrusaSlicer oder Cura optional | Slicing, Druckprofile, G-Code-Pruefung |
-| Robotik | ROS 2/Gazebo/MoveIt optional | Bauteile in Simulation und URDF-Kontext pruefen |
-| Automation | OpenClaw, Codex, n8n | Agenten, Reviews, Exportketten, Archivierung |
-| Zugriff | Tailscale / Cloudflare Access optional | Remote-WebUI und Projektzugriff absichern |
-| Skalierung | Kubernetes optional | Batch-Exports, Renderjobs, STL-Pruefqueue |
+| Bereich       | Tools                                  | Aufgabe                                            |
+| ------------- | -------------------------------------- | -------------------------------------------------- |
+| CAD Kern      | FreeCAD                                | Parametrische Modelle, STEP/STL, Python-Automation |
+| Script-CAD    | OpenSCAD                               | Textbasierte, reproduzierbare Konstruktionen       |
+| Python-CAD    | CadQuery, build123d optional           | Text-to-CAD, Feature-basierte Bauteile             |
+| Mesh / Repair | MeshLab, Blender, trimesh              | STL/OBJ pruefen, reparieren, konvertieren          |
+| 3D-Druck      | PrusaSlicer oder Cura optional         | Slicing, Druckprofile, G-Code-Pruefung             |
+| Robotik       | ROS 2/Gazebo/MoveIt optional           | Bauteile in Simulation und URDF-Kontext pruefen    |
+| Automation    | OpenClaw, Codex, n8n                   | Agenten, Reviews, Exportketten, Archivierung       |
+| Zugriff       | Tailscale / Cloudflare Access optional | Remote-WebUI und Projektzugriff absichern          |
+| Skalierung    | Kubernetes optional                    | Batch-Exports, Renderjobs, STL-Pruefqueue          |
 
 ## Workflows
 
@@ -80,25 +86,27 @@ Nicht automatisch freigeben:
 
 ## Agenten
 
-| Agent | Aufgabe |
-| --- | --- |
-| `cad-planner` | Anforderungen, Masse, Toleranzen, Fertigungsverfahren strukturieren |
-| `openscad-generator` | Parametrische OpenSCAD-Skripte erzeugen und Varianten ableiten |
-| `freecad-operator` | FreeCAD-Python, STEP/STL-Export und Modellberichte vorbereiten |
-| `printability-reviewer` | Wandstaerke, Ueberhaenge, Bohrungen, Toleranzen, Support-Risiken pruefen |
-| `robotics-part-designer` | Halter, Adapter, Greiferfinger und URDF-nahe Bauteile planen |
-| `bom-doc-agent` | BOM, Druckhinweise, Schrauben, Inserts und Montageanleitung erstellen |
+| Agent                    | Aufgabe                                                                  |
+| ------------------------ | ------------------------------------------------------------------------ |
+| `cad-planner`            | Anforderungen, Masse, Toleranzen, Fertigungsverfahren strukturieren      |
+| `openscad-generator`     | Parametrische OpenSCAD-Skripte erzeugen und Varianten ableiten           |
+| `freecad-operator`       | FreeCAD-Python, STEP/STL-Export und Modellberichte vorbereiten           |
+| `printability-reviewer`  | Wandstaerke, Ueberhaenge, Bohrungen, Toleranzen, Support-Risiken pruefen |
+| `robotics-part-designer` | Halter, Adapter, Greiferfinger und URDF-nahe Bauteile planen             |
+| `bom-doc-agent`          | BOM, Druckhinweise, Schrauben, Inserts und Montageanleitung erstellen    |
 
 ## Ollama Modelle
 
-| Aufgabe | Empfehlung |
-| --- | --- |
-| CAD-/Python-Code | `qwen2.5-coder`, `deepseek-coder`, `codellama` |
-| Technische Spezifikation | `llama3.1`, `mistral`, `qwen2.5` |
-| Kleine lokale Assistenten | `phi3`, `gemma2`, kleine Qwen-Modelle |
-| Review und Doku | Qwen, Llama, Mistral je nach RAM/VRAM |
+| Aufgabe                   | Empfehlung                                     |
+| ------------------------- | ---------------------------------------------- |
+| CAD-/Python-Code          | `qwen2.5-coder`, `deepseek-coder`, `codellama` |
+| Technische Spezifikation  | `llama3.1`, `mistral`, `qwen2.5`               |
+| Kleine lokale Assistenten | `phi3`, `gemma2`, kleine Qwen-Modelle          |
+| Review und Doku           | Qwen, Llama, Mistral je nach RAM/VRAM          |
 
-CPU-only reicht fuer Planung, OpenSCAD und kleinere FreeCAD-Skripte. GPU ist fuer klassische CAD-Erzeugung nicht zwingend, hilft aber bei ComfyUI/Rendering, Mesh-Visualisierung oder spaeteren 3D-AI-Modellen.
+CPU-only reicht fuer Planung, OpenSCAD und kleinere FreeCAD-Skripte. GPU ist fuer klassische
+CAD-Erzeugung nicht zwingend, hilft aber bei ComfyUI/Rendering, Mesh-Visualisierung oder spaeteren
+3D-AI-Modellen.
 
 ## Projektstruktur
 
@@ -156,14 +164,16 @@ Einpressmuttern und moegliche Bruchstellen.
 
 ## Kubernetes und Worker
 
-Kubernetes ist optional. Sinnvoll wird es bei Batch-Exports, vielen STL-Varianten, Render-Previews oder gemeinsamer Nutzung:
+Kubernetes ist optional. Sinnvoll wird es bei Batch-Exports, vielen STL-Varianten, Render-Previews
+oder gemeinsamer Nutzung:
 
 - Node 1: Ollama / OpenClaw / n8n.
 - Node 2: FreeCAD/OpenSCAD Batch-Worker.
 - Node 3: Blender/Preview/Render.
 - Node 4: ComfyUI oder AI-3D-Worker.
 
-CAD-Jobs sollten reproduzierbar bleiben: Eingabe, Skript, Modellversion, Toolversion und Exportparameter gehoeren in den Report.
+CAD-Jobs sollten reproduzierbar bleiben: Eingabe, Skript, Modellversion, Toolversion und
+Exportparameter gehoeren in den Report.
 
 ## Sicherheit und Qualitaet
 
@@ -184,4 +194,5 @@ openscad --version
 freecad --version || true
 ```
 
-Wenn FreeCAD in WSL2 keine GUI oeffnet, headless ueber `FreeCADCmd` oder die Windows-FreeCAD-GUI mit gemeinsamem Projektordner nutzen.
+Wenn FreeCAD in WSL2 keine GUI oeffnet, headless ueber `FreeCADCmd` oder die Windows-FreeCAD-GUI mit
+gemeinsamem Projektordner nutzen.

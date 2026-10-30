@@ -34,7 +34,7 @@ if [ -f "$ENV_TEMPLATE" ]; then
   cp "$ENV_TEMPLATE" "$ENV_TEMPLATE.bak.$(date +%Y%m%d_%H%M%S)"
 fi
 
-cat > "$ENV_TEMPLATE" <<'EOF'
+cat >"$ENV_TEMPLATE" <<'EOF'
 PROFILE_NAME=Jarvis_FritzBox_Alexa_Home_Assistant
 JARVIS_ENABLED=false
 JARVIS_MODE=local_only
@@ -66,7 +66,7 @@ DATA_RETENTION_DAYS=7
 LOG_LEVEL=info
 EOF
 
-cat > "$PROFILE_DIR/docs/README.md" <<'EOF'
+cat >"$PROFILE_DIR/docs/README.md" <<'EOF'
 # Jarvis FritzBox Alexa Home Assistant
 
 Dieses Profil ist ein sicherer Startpunkt fuer Fritz!Box-, Home-Assistant-, Voice- und Jarvis-Brain-Experimente.

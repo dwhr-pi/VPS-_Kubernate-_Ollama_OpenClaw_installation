@@ -8,4 +8,3 @@ echo "Projektordner: $ARCHITECTURE_HOME"
 echo "Projekte, IFC, CAD, Texturen, Renderings und Backups werden nicht automatisch geloescht."
 echo "Manuell nach Pruefung:"
 echo "  rm -rf \"$ARCHITECTURE_HOME\""
-

@@ -260,7 +260,7 @@ preinstall_cpu_torch_if_safe() {
   fi
 
   case "$arch" in
-    x86_64|amd64)
+    x86_64 | amd64)
       log_finrobot "Installiere CPU-only PyTorch vorab, damit pip keine grossen CUDA-/NVIDIA-Wheels fuer FinRobot zieht."
       pip install --index-url https://download.pytorch.org/whl/cpu torch
       ;;
@@ -277,13 +277,13 @@ main() {
 
   while [ "$#" -gt 0 ]; do
     case "$1" in
-      --check|--status)
+      --check | --status)
         mode="check"
         ;;
       --dry-run)
         DRY_RUN=1
         ;;
-      --help|-h)
+      --help | -h)
         usage
         exit 0
         ;;

@@ -8,4 +8,3 @@ Aufgaben:
 - Varianten fuer Nutzerentscheidungen vergleichbar machen
 
 Grenze: Visualisierungen sind Entwurfshilfen, keine verbindlichen Ausfuehrungsplaene.
-

@@ -2,7 +2,8 @@
 
 ## Neu ergaenzte Profilgruppen
 
-Core/Betrieb, KI/Agenten, Security, Infrastruktur, Medien, Android und Projektsteuerung wurden als `planned`/`documentation-first` ergaenzt.
+Core/Betrieb, KI/Agenten, Security, Infrastruktur, Medien, Android und Projektsteuerung wurden als
+`planned`/`documentation-first` ergaenzt.
 
 ## Noch offen
 

@@ -1,6 +1,7 @@
 # Install Checklist
 
-Diese Checkliste beschreibt den aktuell reproduzierbaren Setup-Weg auf Basis der vorhandenen Skripte.
+Diese Checkliste beschreibt den aktuell reproduzierbaren Setup-Weg auf Basis der vorhandenen
+Skripte.
 
 ## 1. Bootstrap
 
@@ -57,22 +58,27 @@ Optional weitere Modelle manuell über den Ollama-Modell-Manager installieren.
 ## 6. Profile installieren
 
 ### Programmierer
+
 - `scripts/profiles/Programmierer_install.sh`
 - installiert: Huginn, Clawhub CLI
 
 ### Media_Musik
+
 - `scripts/profiles/Media_Musik_install.sh`
 - installiert: Clawbake
 
 ### KI_Forschung
+
 - `scripts/profiles/KI_Forschung_install.sh`
 - installiert: OpenClaw RL, Flowise, LangFlow
 
 ### Texter_Werbung_Marketing
+
 - `scripts/profiles/Texter_Werbung_Marketing_install.sh`
 - installiert: n8n, Activepieces
 
 ### Rechtsberatung_Steuerrecht
+
 - `scripts/profiles/Rechtsberatung_Steuerrecht_install.sh`
 - installiert: Web-Fetch- und PDF/OCR-Werkzeuge
 
@@ -115,7 +121,9 @@ Manuell relevant:
 Für VPS-Deployments:
 
 - `scripts/vps_standalone.sh` ausführen
-- danach die [Kustomize-/GitOps-Anleitung](../../GITOPS_SMALL_VPS.md) lesen und die Abnahme planen; kein automatisches Apply
+- danach die [Kustomize-/GitOps-Anleitung](../../GITOPS_SMALL_VPS.md) lesen und die Abnahme planen;
+  kein automatisches Apply
 
-Wichtiger Hinweis:
-Das [alte Gesamtmanifest](../../legacy/K8S_DEPLOYMENTS_LEGACY.md) ist nur noch eine historische Referenz und darf nicht als Deployment verwendet werden. Bestehende Cluster werden durch die Archivierung nicht verändert.
+Wichtiger Hinweis: Das [alte Gesamtmanifest](../../legacy/K8S_DEPLOYMENTS_LEGACY.md) ist nur noch
+eine historische Referenz und darf nicht als Deployment verwendet werden. Bestehende Cluster werden
+durch die Archivierung nicht verändert.

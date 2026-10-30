@@ -8,4 +8,3 @@ Aufgaben:
 - Pruefberichte fuer Nutzer, n8n oder Projektordner erzeugen
 
 Arbeitsmodus: lesend und berichtend. Schreibende IFC-Aenderungen nur nach Review.
-

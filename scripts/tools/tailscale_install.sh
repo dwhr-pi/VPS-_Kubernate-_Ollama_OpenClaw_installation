@@ -14,8 +14,8 @@ source "$SCRIPT_DIR/../helpers/status_tracking.sh"
 init_tool_tracking "Tailscale"
 
 if ! command -v curl >/dev/null 2>&1; then
-    echo -e "${RED}Fehler: curl wird für die Tailscale-Installation benötigt.${NC}"
-    exit 1
+  echo -e "${RED}Fehler: curl wird für die Tailscale-Installation benötigt.${NC}"
+  exit 1
 fi
 
 echo -e "${BLUE}Starte Installation von Tailscale...${NC}"
@@ -24,8 +24,8 @@ echo -e "${YELLOW}Es wird der offizielle Linux-Installer von tailscale.com verwe
 curl -fsSL https://tailscale.com/install.sh | sh
 
 if command -v systemctl >/dev/null 2>&1; then
-    sudo systemctl enable tailscaled >/dev/null 2>&1 || true
-    sudo systemctl start tailscaled >/dev/null 2>&1 || true
+  sudo systemctl enable tailscaled >/dev/null 2>&1 || true
+  sudo systemctl start tailscaled >/dev/null 2>&1 || true
 fi
 
 echo -e "${GREEN}Tailscale wurde installiert.${NC}"

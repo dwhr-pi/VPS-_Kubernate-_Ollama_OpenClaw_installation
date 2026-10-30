@@ -24,8 +24,8 @@ summarize_file() {
   prompt="$(printf 'Fasse diese Datei kurz zusammen, schlage Tags vor und nenne Sicherheitsauffaelligkeiten. Datei:\n\n%s' "$(sed -n '1,400p' "$file")" | json_escape)"
   curl -fsS "$OLLAMA_BASE_URL/api/generate" \
     -H 'Content-Type: application/json' \
-    -d "{\"model\":\"$OLLAMA_MODEL\",\"prompt\":$prompt,\"stream\":false}" \
-    | python3 -c 'import json,sys; print(json.load(sys.stdin).get("response",""))' > "$out"
+    -d "{\"model\":\"$OLLAMA_MODEL\",\"prompt\":$prompt,\"stream\":false}" |
+    python3 -c 'import json,sys; print(json.load(sys.stdin).get("response",""))' >"$out"
   echo "Geschrieben: $out"
 }
 
@@ -41,7 +41,10 @@ main() {
     echo "Ollama URL: $OLLAMA_BASE_URL"
     exit 0
   fi
-  command -v python3 >/dev/null 2>&1 || { echo "Fehler: python3 fehlt" >&2; exit 1; }
+  command -v python3 >/dev/null 2>&1 || {
+    echo "Fehler: python3 fehlt" >&2
+    exit 1
+  }
   curl -fsS "$OLLAMA_BASE_URL/api/tags" >/dev/null
 
   if [ -f "$target" ]; then

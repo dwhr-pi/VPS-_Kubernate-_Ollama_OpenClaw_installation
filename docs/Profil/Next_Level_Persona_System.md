@@ -2,7 +2,8 @@
 
 ## Rolle
 
-Modulares Persona-Framework fuer `Ollama` und `OpenClaw`, das persistente, wiedererkennbare und modusfaehige KI-Personas mit Memory, Stilprofilen und kontrollierten Multimodal-Hooks aufbaut.
+Modulares Persona-Framework fuer `Ollama` und `OpenClaw`, das persistente, wiedererkennbare und
+modusfaehige KI-Personas mit Memory, Stilprofilen und kontrollierten Multimodal-Hooks aufbaut.
 
 Das Profil ist geeignet fuer:
 

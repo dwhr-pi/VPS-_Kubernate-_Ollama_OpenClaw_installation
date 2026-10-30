@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 import re
 import tempfile
+from doc_assertions import assert_prose_in, assert_prose_not_in
 import unittest
 from unittest.mock import patch
 
@@ -148,7 +149,7 @@ class MediaWorkflowTests(unittest.TestCase):
         for text in ("render_ready=false", "kein implementierter Worker", "XTTS", "InsightFace",
                      "Sustainable Use License", "nicht auslesbar", "https://umnik.ai/",
                      "https://github.com/Wan-Video/Wan2.1", "POST /prompt"):
-            self.assertIn(text, doc)
+            assert_prose_in(self, text, doc)
 
     def test_guide_discoverable(self):
         for path in ("docs/TOOLS_CATALOG.md", "docs/TOOL_INDEX.md", "docs/media_studio/README.md",

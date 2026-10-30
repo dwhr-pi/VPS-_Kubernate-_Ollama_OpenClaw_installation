@@ -3,12 +3,21 @@
 set -euo pipefail
 umask 077
 
-die() { printf 'Backup abgebrochen: %s\n' "$*" >&2; exit 1; }
+die() {
+  printf 'Backup abgebrochen: %s\n' "$*" >&2
+  exit 1
+}
 usage() { printf 'Nutzung: bash %s /absolut/backup.env [--dry-run|--run]\n' "$0"; }
-[[ $# -ge 1 && $# -le 2 ]] || { usage; exit 2; }
+[[ $# -ge 1 && $# -le 2 ]] || {
+  usage
+  exit 2
+}
 env_file=$1
 mode=${2:---dry-run}
-[[ "$mode" == --run || "$mode" == --dry-run ]] || { usage; exit 2; }
+[[ "$mode" == --run || "$mode" == --dry-run ]] || {
+  usage
+  exit 2
+}
 [[ "$env_file" == /* && -f "$env_file" && ! -L "$env_file" ]] || die 'Absolute regulaere env-Datei erforderlich.'
 
 secure_file() {
@@ -30,7 +39,7 @@ while IFS= read -r line || [[ -n "$line" ]]; do
   key=${line%%=*}
   value=${line#*=}
   case "$key" in
-    RESTIC_REPOSITORY|RESTIC_PASSWORD_FILE|AWS_ACCESS_KEY_ID|AWS_SECRET_ACCESS_KEY|AWS_SESSION_TOKEN|AWS_DEFAULT_REGION|COMPOSE_FILE|QDRANT_DATA_DIR|POSTGRES_DATA_DIR|MINIO_DATA_DIR|BACKUP_LOCK_DIR|BACKUP_ALLOW_DOWNTIME|BACKUP_TARGET_IS_EXTERNAL) ;;
+    RESTIC_REPOSITORY | RESTIC_PASSWORD_FILE | AWS_ACCESS_KEY_ID | AWS_SECRET_ACCESS_KEY | AWS_SESSION_TOKEN | AWS_DEFAULT_REGION | COMPOSE_FILE | QDRANT_DATA_DIR | POSTGRES_DATA_DIR | MINIO_DATA_DIR | BACKUP_LOCK_DIR | BACKUP_ALLOW_DOWNTIME | BACKUP_TARGET_IS_EXTERNAL) ;;
     *) die 'Nicht erlaubter Variablenname in env-Datei.' ;;
   esac
   if [[ "$value" == \"*\" || "$value" == \'*\' ]]; then
@@ -38,7 +47,7 @@ while IFS= read -r line || [[ -n "$line" ]]; do
   fi
   printf -v "$key" '%s' "$value"
   export "$key"
-done < "$env_file"
+done <"$env_file"
 
 for key in RESTIC_REPOSITORY RESTIC_PASSWORD_FILE COMPOSE_FILE QDRANT_DATA_DIR POSTGRES_DATA_DIR MINIO_DATA_DIR BACKUP_LOCK_DIR; do
   [[ -n ${!key:-} ]] || die "Pflichtvariable fehlt: $key"

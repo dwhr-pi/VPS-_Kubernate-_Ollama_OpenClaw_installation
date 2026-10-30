@@ -2,7 +2,8 @@
 
 ## Zweck
 
-Checklistenprofil fuer Musik-, Bild-, Video- und Textprojekte mit Urheberrechts-Hinweisen, Quellenangaben, Lizenzpruefung und Risiko-Check. Es ersetzt keine Rechtsberatung.
+Checklistenprofil fuer Musik-, Bild-, Video- und Textprojekte mit Urheberrechts-Hinweisen,
+Quellenangaben, Lizenzpruefung und Risiko-Check. Es ersetzt keine Rechtsberatung.
 
 ## Typische Aufgaben
 
@@ -23,7 +24,8 @@ Checklistenprofil fuer Musik-, Bild-, Video- und Textprojekte mit Urheberrechts-
 
 ## Grenzen
 
-Keine Rechtsberatung, keine verbindliche Lizenzfreigabe. Das Profil hilft beim Strukturieren und Dokumentieren.
+Keine Rechtsberatung, keine verbindliche Lizenzfreigabe. Das Profil hilft beim Strukturieren und
+Dokumentieren.
 
 ## Status
 

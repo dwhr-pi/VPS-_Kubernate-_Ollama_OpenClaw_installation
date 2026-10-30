@@ -1,4 +1,6 @@
 #!/bin/bash
+# Translation catalog: variables are a sourced public interface, not local state.
+# shellcheck disable=SC2034
 TXT_YES_LABEL="Yes"
 TXT_NO_LABEL="No"
 TXT_LOADING_NOTICE_TITLE="PREPARING VIEW"

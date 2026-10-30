@@ -1,6 +1,7 @@
 # Architektur Renderfarm und Kubernetes
 
-Dieses Dokument beschreibt den optionalen verteilten Betrieb fuer Rendering, KI-Bildsysteme, IFC-Analyse und Storage.
+Dieses Dokument beschreibt den optionalen verteilten Betrieb fuer Rendering, KI-Bildsysteme,
+IFC-Analyse und Storage.
 
 ## Rollen
 
@@ -22,4 +23,3 @@ Dieses Dokument beschreibt den optionalen verteilten Betrieb fuer Rendering, KI-
 - Cloudflare Tunnel oder Tailscale fuer WebUIs.
 - Keine offenen Ports fuer Blender, ComfyUI oder Filebrowser.
 - Authentik/Authelia optional als zentrale Auth-Schicht.
-

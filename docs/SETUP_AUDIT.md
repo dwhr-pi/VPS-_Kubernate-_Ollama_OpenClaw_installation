@@ -4,7 +4,8 @@ Stand: 2026-05-28.
 
 ## Was ist bereits gut?
 
-- Das Repository ist bereits modular aufgebaut: Profile, Tools, Scripts, Docs, Security-Checks und Installationslogs sind getrennt.
+- Das Repository ist bereits modular aufgebaut: Profile, Tools, Scripts, Docs, Security-Checks und
+  Installationslogs sind getrennt.
 - Lokale Userdaten werden zunehmend nach `~/.openclaw_ultimate_user_data` ausgelagert.
 - Schwere Tools werden als experimentell/heavy erkannt und brauchen zunehmend Opt-in.
 - WSL2-, VPS-, GPU- und Kubernetes-Pfade sind dokumentiert oder als planned gekennzeichnet.
@@ -12,7 +13,8 @@ Stand: 2026-05-28.
 
 ## Was fehlt?
 
-- Vollstaendige Lifecycle-Abdeckung pro Tool: `check`, `install`, `update`, `uninstall`, `doctor`, `status`.
+- Vollstaendige Lifecycle-Abdeckung pro Tool: `check`, `install`, `update`, `uninstall`, `doctor`,
+  `status`.
 - Maschinenlesbare Ressourcenwerte fuer alle Tools/Profile.
 - Einheitliche Profilstruktur in allen alten und neuen Profilen.
 - Port-/Secret-Hinweise in allen Tool-Eintraegen.
@@ -27,14 +29,17 @@ Stand: 2026-05-28.
 
 ## Was ist unklar?
 
-- Welche Tools in der lokalen Umgebung wirklich installiert sind, wenn Installationen abgebrochen wurden.
+- Welche Tools in der lokalen Umgebung wirklich installiert sind, wenn Installationen abgebrochen
+  wurden.
 - Welche Profile produktiv genutzt werden und welche nur Dokumentation/Backlog sind.
 - Ob alle Upstream-Forks sauber ableitbar und aktuell sind.
 
 ## Tools/Profile ergaenzen
 
-- Profile: Bild/Video, DevOps/Kubernetes, Security/Privacy, Home Assistant, n8n, Local Memory, Android, Business Office, Legal Checker, System Doctor.
-- Tools: LocalAI, AnythingLLM, RAGFlow, Haystack, SOPS/age, OpenTelemetry Collector, Tempo, Backstage, MkDocs, Filebrowser, Windmill.
+- Profile: Bild/Video, DevOps/Kubernetes, Security/Privacy, Home Assistant, n8n, Local Memory,
+  Android, Business Office, Legal Checker, System Doctor.
+- Tools: LocalAI, AnythingLLM, RAGFlow, Haystack, SOPS/age, OpenTelemetry Collector, Tempo,
+  Backstage, MkDocs, Filebrowser, Windmill.
 
 ## Prioritaeten
 

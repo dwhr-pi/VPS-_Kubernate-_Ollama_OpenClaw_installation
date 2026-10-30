@@ -2,8 +2,7 @@
 
 ## Ziel
 
-Backups muessen vor Updates, schweren Installationen und Mailserver-Aenderungen
-existieren.
+Backups muessen vor Updates, schweren Installationen und Mailserver-Aenderungen existieren.
 
 ## Empfohlene Tools
 

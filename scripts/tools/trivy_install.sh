@@ -17,8 +17,8 @@ init_tool_tracking "Trivy"
 echo -e "${BLUE}Starte Installation von Trivy...${NC}"
 
 if ! command -v apt-get >/dev/null 2>&1; then
-    echo -e "${RED}Fehler: Dieses Skript unterstützt aktuell nur apt-basierte Systeme.${NC}"
-    exit 1
+  echo -e "${RED}Fehler: Dieses Skript unterstützt aktuell nur apt-basierte Systeme.${NC}"
+  exit 1
 fi
 
 sudo apt-get update

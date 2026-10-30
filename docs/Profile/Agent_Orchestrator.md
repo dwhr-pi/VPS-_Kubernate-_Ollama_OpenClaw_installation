@@ -2,8 +2,10 @@
 
 ## Überblick
 
-Dieses Profil wurde aus der fachlichen Quelle [Agent_Orchestrator.doc.md](../Profil/Agent_Orchestrator.doc.md), `readme.md` und den vorhandenen Tool-Skripten zusammengeführt.
-Es beschreibt ein OpenClaw- und Ollama-kompatibles Koordinationsprofil für Mehragentensysteme, Aufgabenzerlegung und Ergebnis-Synchronisierung.
+Dieses Profil wurde aus der fachlichen Quelle
+[Agent_Orchestrator.doc.md](../Profil/Agent_Orchestrator.doc.md), `readme.md` und den vorhandenen
+Tool-Skripten zusammengeführt. Es beschreibt ein OpenClaw- und Ollama-kompatibles
+Koordinationsprofil für Mehragentensysteme, Aufgabenzerlegung und Ergebnis-Synchronisierung.
 
 ## Installierter Stack
 
@@ -81,7 +83,8 @@ Begründe die Auswahl und gib die Übergabedaten je Agent an.
 
 ### ✅ In Sync
 
-- Task Decomposition, Multi-Agent Routing und Memory Management lassen sich mit den vorhandenen Agenten-Frameworks grundsätzlich abbilden.
+- Task Decomposition, Multi-Agent Routing und Memory Management lassen sich mit den vorhandenen
+  Agenten-Frameworks grundsätzlich abbilden.
 - Die wichtigsten Frameworks dafür sind bereits als Tools vorhanden.
 - Queue-/Event-Bus- und Observability-Bausteine sind jetzt als installierbare Module vorhanden.
 
@@ -97,4 +100,5 @@ Begründe die Auswahl und gib die Übergabedaten je Agent an.
 ## Hinweise
 
 - Dieses Profil ist aktuell vor allem ein Rollen- und Architekturprofil.
-- Für produktionsreife Orchestrierung fehlen noch Laufzeitpolicies, Persistenzregeln und Fehlerroutinen als eigene Module.
+- Für produktionsreife Orchestrierung fehlen noch Laufzeitpolicies, Persistenzregeln und
+  Fehlerroutinen als eigene Module.

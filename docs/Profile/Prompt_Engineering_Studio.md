@@ -2,7 +2,8 @@
 
 ## Zweck
 
-Prompt-Bibliotheken, Systemprompt-Pflege, Modellvergleiche, Prompt-Regressionen und Evaluationssets fuer Ollama/OpenClaw/LiteLLM.
+Prompt-Bibliotheken, Systemprompt-Pflege, Modellvergleiche, Prompt-Regressionen und Evaluationssets
+fuer Ollama/OpenClaw/LiteLLM.
 
 ## Installierbare Kern-Tools
 

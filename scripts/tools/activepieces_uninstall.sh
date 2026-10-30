@@ -21,11 +21,11 @@ ACTIVEPIECES_DIR="/opt/activepieces"
 echo -e "${BLUE}Starte Deinstallation von Activepieces...${NC}"
 
 if [ -d "$ACTIVEPIECES_DIR" ]; then
-    echo -e "${YELLOW}Lösche Activepieces Verzeichnis $ACTIVEPIECES_DIR...${NC}"
-    sudo rm -rf "$ACTIVEPIECES_DIR"
-    echo -e "${GREEN}Activepieces erfolgreich deinstalliert.${NC}"
+  echo -e "${YELLOW}Lösche Activepieces Verzeichnis $ACTIVEPIECES_DIR...${NC}"
+  sudo rm -rf "$ACTIVEPIECES_DIR"
+  echo -e "${GREEN}Activepieces erfolgreich deinstalliert.${NC}"
 else
-    echo -e "${YELLOW}Activepieces ist nicht installiert oder Verzeichnis nicht gefunden.${NC}"
+  echo -e "${YELLOW}Activepieces ist nicht installiert oder Verzeichnis nicht gefunden.${NC}"
 fi
 
 echo -e "${GREEN}Activepieces Deinstallation abgeschlossen.${NC}"

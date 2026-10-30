@@ -2,9 +2,13 @@
 
 ## Lizenzen
 
-- Nextcloud Server: AGPL-3.0, siehe <https://github.com/nextcloud/server/blob/master/COPYING>. Lizenztexte erhalten. Bei oeffentlichem Betrieb eines modifizierten Servers Quellcodezugang dokumentieren.
-- Nextcloud Android: GPL-2.0, siehe <https://github.com/nextcloud/android/blob/master/LICENSE.txt>. Lizenztexte erhalten.
-- Nextcloud Android Library: MIT, siehe <https://github.com/nextcloud/android-library/blob/master/LICENSE.md>. Lizenztext erhalten.
+- Nextcloud Server: AGPL-3.0, siehe <https://github.com/nextcloud/server/blob/master/COPYING>.
+  Lizenztexte erhalten. Bei oeffentlichem Betrieb eines modifizierten Servers Quellcodezugang
+  dokumentieren.
+- Nextcloud Android: GPL-2.0, siehe <https://github.com/nextcloud/android/blob/master/LICENSE.txt>.
+  Lizenztexte erhalten.
+- Nextcloud Android Library: MIT, siehe
+  <https://github.com/nextcloud/android-library/blob/master/LICENSE.md>. Lizenztext erhalten.
 
 ## Branding
 

@@ -4,16 +4,29 @@ set -Eeuo pipefail
 umask 077
 ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 tag= key= artifacts= download=0 execute=0 verify_only=0 destination="$HOME/openclaw_ultimate_setup" stage=
-die() { printf 'Release-Einstieg abgebrochen: %s\n' "$*" >&2; exit 1; }
+die() {
+  printf 'Release-Einstieg abgebrochen: %s\n' "$*" >&2
+  exit 1
+}
 while (($#)); do
   case "$1" in
-    --tag|--public-key|--artifacts|--destination)
+    --tag | --public-key | --artifacts | --destination)
       (($# >= 2)) || die 'Optionswert fehlt.'
       case "$1" in --tag) tag=$2 ;; --public-key) key=$2 ;; --artifacts) artifacts=$2 ;; --destination) destination=$2 ;; esac
-      shift 2 ;;
-    --download) download=1; shift ;;
-    --install) execute=1; shift ;;
-    --verify-only) verify_only=1; shift ;;
+      shift 2
+      ;;
+    --download)
+      download=1
+      shift
+      ;;
+    --install)
+      execute=1
+      shift
+      ;;
+    --verify-only)
+      verify_only=1
+      shift
+      ;;
     *) die '--tag vX.Y.Z --public-key ABS [--artifacts ABS | --download] [--install --destination ABS]' ;;
   esac
 done
@@ -48,7 +61,7 @@ if ((download)); then
   done
 fi
 [[ "$artifacts" == /* && -d "$artifacts" && ! -L "$artifacts" ]] || die 'Absolutes Artefaktverzeichnis oder --download erforderlich.'
-python3 -I -B "$ROOT/scripts/security/release_manifest.py" --artifacts "$artifacts" --tag "$tag" --public-key "$key" > "$stage/verified.json"
+python3 -I -B "$ROOT/scripts/security/release_manifest.py" --artifacts "$artifacts" --tag "$tag" --public-key "$key" >"$stage/verified.json"
 commit=$(python3 -I -c 'import json,sys; print(json.load(open(sys.argv[1]))["commit"])' "$stage/verified.json")
 if ((!execute)); then
   printf 'Signatur, SHA256, Tag und Commit geprueft. Kein Clone/Installer gestartet.\n'
@@ -59,7 +72,7 @@ git_safe() {
   env -i PATH="$PATH" HOME="$stage/home" LANG=C GIT_CONFIG_NOSYSTEM=1 GIT_CONFIG_GLOBAL=/dev/null \
     GIT_TERMINAL_PROMPT=0 GIT_NOREPLACE_OBJECTS=1 GIT_LFS_SKIP_SMUDGE=1 \
     git -c core.hooksPath=/dev/null -c core.fsmonitor=false -c credential.helper= \
-      -c http.sslVerify=true -c protocol.file.allow=never -c protocol.ext.allow=never "$@"
+    -c http.sslVerify=true -c protocol.file.allow=never -c protocol.ext.allow=never "$@"
 }
 git_safe clone --no-checkout --depth=1 --single-branch --branch "$tag" --no-recurse-submodules \
   https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation.git "$stage/source"

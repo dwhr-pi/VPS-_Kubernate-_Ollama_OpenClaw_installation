@@ -1,9 +1,12 @@
 # AI Actor Studio
 
 ## Ziel
-Das AI Actor Studio beschreibt virtuelle Schauspieler und Schauspielerinnen fuer Dialoge, Monologe, Moderation, Szenen und Filmproduktionen.
+
+Das AI Actor Studio beschreibt virtuelle Schauspieler und Schauspielerinnen fuer Dialoge, Monologe,
+Moderation, Szenen und Filmproduktionen.
 
 ## Faehigkeiten
+
 - Emotionen
 - Koerpersprache
 - Dialoge
@@ -12,6 +15,7 @@ Das AI Actor Studio beschreibt virtuelle Schauspieler und Schauspielerinnen fuer
 - Rollenprofile
 
 ## Emotionen
+
 - Freude
 - Trauer
 - Wut
@@ -24,6 +28,7 @@ Das AI Actor Studio beschreibt virtuelle Schauspieler und Schauspielerinnen fuer
 - Ehrfurcht
 
 ## Workflow
+
 1. Rolle aus `docs/CHARACTER_LIBRARY.md` waehlen.
 2. Drehbuch oder Szene schreiben.
 3. Stimme und Emotion planen.
@@ -31,5 +36,6 @@ Das AI Actor Studio beschreibt virtuelle Schauspieler und Schauspielerinnen fuer
 5. Ausgabe manuell pruefen und KI-Kennzeichnung setzen.
 
 ## Warnung
-Keine echten Personen ohne Einwilligung nachbauen. Keine Deepfakes fuer Taeuschung, Politik, Betrug oder Rufschaden.
 
+Keine echten Personen ohne Einwilligung nachbauen. Keine Deepfakes fuer Taeuschung, Politik, Betrug
+oder Rufschaden.

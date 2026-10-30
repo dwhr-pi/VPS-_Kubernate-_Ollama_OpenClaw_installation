@@ -1,7 +1,7 @@
 # DNS und DDoS Guide
 
-Standard ist Hurricane Electric DNS/DDNS plus Oracle VPS und WireGuard.
-Cloudflare ist optional, aber kein Pflichtpfad.
+Standard ist Hurricane Electric DNS/DDNS plus Oracle VPS und WireGuard. Cloudflare ist optional,
+aber kein Pflichtpfad.
 
 ## Regeln
 
@@ -14,5 +14,5 @@ Cloudflare ist optional, aber kein Pflichtpfad.
 
 ## DDoS-Hinweis
 
-HE DNS ist kein vollstaendiger DDoS-Schutz. Fuer groessere Angriffe braucht es
-Provider-Massnahmen, Scrubbing oder BGP-Mitigation.
+HE DNS ist kein vollstaendiger DDoS-Schutz. Fuer groessere Angriffe braucht es Provider-Massnahmen,
+Scrubbing oder BGP-Mitigation.

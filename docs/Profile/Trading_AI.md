@@ -2,8 +2,10 @@
 
 ## Überblick
 
-Dieses Profil wurde aus der fachlichen Quelle [Trading_AI.doc.md](../Profil/Trading_AI.doc.md), `readme.md` und den vorhandenen Tool-Skripten zusammengeführt.
-Es beschreibt ein OpenClaw- und Ollama-kompatibles Tradingprofil für Marktanalyse, Strategieprüfung und Bot-unterstützte Entscheidungsprozesse.
+Dieses Profil wurde aus der fachlichen Quelle [Trading_AI.doc.md](../Profil/Trading_AI.doc.md),
+`readme.md` und den vorhandenen Tool-Skripten zusammengeführt. Es beschreibt ein OpenClaw- und
+Ollama-kompatibles Tradingprofil für Marktanalyse, Strategieprüfung und Bot-unterstützte
+Entscheidungsprozesse.
 
 ## Installierter Stack
 
@@ -77,7 +79,8 @@ GitHub-basierte Finanz-Stacks zur Weiterentwicklung:
 - `FinRobot`
 - `FinRAG`
 
-Diese GitHub-Stapel sind im Setup als optionale Module für Analyse, RAG und lokale Weiterentwicklung vorgesehen, nicht als automatische Live-Trading-Engine.
+Diese GitHub-Stapel sind im Setup als optionale Module für Analyse, RAG und lokale Weiterentwicklung
+vorgesehen, nicht als automatische Live-Trading-Engine.
 
 ## Vergleich
 
@@ -97,9 +100,11 @@ Diese GitHub-Stapel sind im Setup als optionale Module für Analyse, RAG und lok
 ## Hinweise
 
 - Keine Haftung für Verluste oder sonstige verursachte Schäden.
-- Das Profil ist bewusst eher analyse-, bot- und backtestnah gehalten, nicht als vollautomatisches Handelssystem.
+- Das Profil ist bewusst eher analyse-, bot- und backtestnah gehalten, nicht als vollautomatisches
+  Handelssystem.
 - LLMs und Agenten sollen hier keine autonomen Live-Trading-Entscheidungen treffen.
-- Empfohlen sind Marktanalyse, historische Tests, Paper-Trading und Risikoauswertung statt echter Ausführung.
+- Empfohlen sind Marktanalyse, historische Tests, Paper-Trading und Risikoauswertung statt echter
+  Ausführung.
 - Seed-Phrases, Private Keys und echte Exchange-Secrets gehören niemals ins Repository.
 - Empfohlene sichere Lesepfade:
   - [Trading_Analysis.md](Trading_Analysis.md)

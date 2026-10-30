@@ -1,23 +1,28 @@
 # FotoScan_Panorama_360_3D
 
-Lokales Profil fuer Foto-zu-Panorama, 360-Grad-Ansichten, einfache Photogrammetrie und optionale Gaussian-Splatting-Workflows im Ultimate KI Setup.
+Lokales Profil fuer Foto-zu-Panorama, 360-Grad-Ansichten, einfache Photogrammetrie und optionale
+Gaussian-Splatting-Workflows im Ultimate KI Setup.
 
 ## Kurzbeschreibung
 
-Dieses Profil beschreibt, wie mehrere Fotos lokal mit Open-Source-Werkzeugen zu Panoramen, 360-Grad-Ansichten und einfachen 3D-Rekonstruktionen verarbeitet werden koennen. Es ist als realistische Erweiterung fuer Ollama, OpenClaw, n8n und lokale Medien-/3D-Workflows gedacht.
+Dieses Profil beschreibt, wie mehrere Fotos lokal mit Open-Source-Werkzeugen zu Panoramen,
+360-Grad-Ansichten und einfachen 3D-Rekonstruktionen verarbeitet werden koennen. Es ist als
+realistische Erweiterung fuer Ollama, OpenClaw, n8n und lokale Medien-/3D-Workflows gedacht.
 
 ## Wichtige Tool-Basis
 
-Hugin ist ein Open-Source-Panorama-Stitcher mit CLI-Werkzeugen. COLMAP, OpenMVG, OpenMVS und Meshroom sind typische Open-Source-Photogrammetrie-Bausteine. Gaussian Splatting kann optional ueber COLMAP-basierte Datensaetze laufen.
+Hugin ist ein Open-Source-Panorama-Stitcher mit CLI-Werkzeugen. COLMAP, OpenMVG, OpenMVS und
+Meshroom sind typische Open-Source-Photogrammetrie-Bausteine. Gaussian Splatting kann optional ueber
+COLMAP-basierte Datensaetze laufen.
 
 ## Typische Workflows
 
-| Workflow | Tool-Basis | Ausgabe |
-|---|---|---|
-| Mehrere Fotos zu Panorama | Hugin / PanoTools | JPG, PNG, TIFF |
-| Fotoserie zu 360-Grad-Panorama | Hugin, Panorama-Viewer | equirectangular JPG/PNG, HTML-Viewer |
-| Fotos zu 3D-Modell | COLMAP, Meshroom, OpenMVG/OpenMVS | OBJ, PLY, GLB/glTF, textured mesh |
-| Fotos/Videos zu Gaussian Splatting | COLMAP als Pose-Vorstufe, optionale Splatting-Pipeline | PLY / Viewer-Datensatz |
+| Workflow                           | Tool-Basis                                             | Ausgabe                              |
+| ---------------------------------- | ------------------------------------------------------ | ------------------------------------ |
+| Mehrere Fotos zu Panorama          | Hugin / PanoTools                                      | JPG, PNG, TIFF                       |
+| Fotoserie zu 360-Grad-Panorama     | Hugin, Panorama-Viewer                                 | equirectangular JPG/PNG, HTML-Viewer |
+| Fotos zu 3D-Modell                 | COLMAP, Meshroom, OpenMVG/OpenMVS                      | OBJ, PLY, GLB/glTF, textured mesh    |
+| Fotos/Videos zu Gaussian Splatting | COLMAP als Pose-Vorstufe, optionale Splatting-Pipeline | PLY / Viewer-Datensatz               |
 
 ## OpenClaw-Jobparameter
 
@@ -63,5 +68,7 @@ Erlaubte Qualitaetsstufen:
 
 ## Grenzen
 
-Photogrammetrie und Gaussian Splatting sind daten- und GPU-lastig. COLMAP, Meshroom und Gaussian-Splatting-Pipelines koennen je nach GPU, CUDA-Version, Bildanzahl und Aufloesung deutlich variieren. Dieses Profil behauptet daher keine vollautomatische Erfolgsgarantie, sondern dokumentiert einen lokalen, pruefbaren Workflow.
-
+Photogrammetrie und Gaussian Splatting sind daten- und GPU-lastig. COLMAP, Meshroom und
+Gaussian-Splatting-Pipelines koennen je nach GPU, CUDA-Version, Bildanzahl und Aufloesung deutlich
+variieren. Dieses Profil behauptet daher keine vollautomatische Erfolgsgarantie, sondern
+dokumentiert einen lokalen, pruefbaren Workflow.

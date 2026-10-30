@@ -24,7 +24,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y shellcheck shfmt python3
-          npm install -g markdown-link-check
+          npm install -g markdown-link-check@3.13.7
 
       - name: Validate JSON-compatible config
         run: bash scripts/validate_config.sh
@@ -45,7 +45,7 @@ jobs:
 
       - name: shfmt check
         run: |
-          shfmt -d scripts install.sh setup_ultimate.sh
+          shfmt -d -i 2 -ci scripts install.sh setup_ultimate.sh
 
       - name: Secret scan with Gitleaks
         uses: gitleaks/gitleaks-action@ff98106e4c7b2bc287b24eaf42907196329070c7 # v2

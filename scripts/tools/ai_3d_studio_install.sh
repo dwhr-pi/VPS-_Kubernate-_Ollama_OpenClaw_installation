@@ -47,7 +47,7 @@ create_project_tree() {
 }
 
 write_env_example() {
-  cat > "$AI_3D_HOME/ai3d.env.example" <<'EOF'
+  cat >"$AI_3D_HOME/ai3d.env.example" <<'EOF'
 AI_3D_HOME=~/Ultimate_KI_Setup
 COMFYUI_HOST=http://127.0.0.1:8188
 OLLAMA_BASE_URL=http://127.0.0.1:11434

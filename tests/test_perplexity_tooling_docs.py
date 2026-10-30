@@ -1,6 +1,7 @@
 """Offline evidence and navigation checks for the Perplexity interview."""
 from pathlib import Path
 import re
+from doc_assertions import assert_prose_in, assert_prose_not_in
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -42,11 +43,11 @@ class PerplexityToolingDocsTests(unittest.TestCase):
     def test_navigation_and_action_boundaries(self):
         for name in ("docs/TOOLS_CATALOG.md", "docs/TOOL_INDEX.md",
                      "docs/tutorials/gemini-development-tooling.md"):
-            self.assertIn(DOC.name, (ROOT / name).read_text(encoding="utf-8"))
+            assert_prose_in(self, DOC.name, (ROOT / name).read_text(encoding="utf-8"))
         text = DOC.read_text(encoding="utf-8")
         for phrase in ("cache: false", "keine neuen Installer", "WSL-Aktion",
                        "keine automatische Sandbox", "nicht vollstaendig nachgeprueft"):
-            self.assertIn(phrase, text)
+            assert_prose_in(self, phrase, text)
 
     def test_tables_remain_consistent(self):
         columns = None

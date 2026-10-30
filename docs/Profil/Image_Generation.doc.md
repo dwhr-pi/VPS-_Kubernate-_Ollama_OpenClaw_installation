@@ -3,6 +3,7 @@
 Ziel: Bildgenerierung, UI-Assets, Icons, LoRA-Workflows, Upscaling.
 
 ## Kern
+
 - ComfyUI
 - Stable Diffusion WebUI Forge
 - Fooocus
@@ -11,6 +12,7 @@ Ziel: Bildgenerierung, UI-Assets, Icons, LoRA-Workflows, Upscaling.
 - ControlNet
 
 ## Optional
+
 - Krita AI Diffusion
 - Inkscape
 - ImageMagick

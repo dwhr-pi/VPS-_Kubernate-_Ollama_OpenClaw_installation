@@ -1,6 +1,8 @@
 # Elektronik Dashboard
 
-Das Elektronik-Dashboard ist als Darkmode-Hacker-/Engineering-Oberflaeche mit orangefarbenen Akzenten geplant. Es kann spaeter in das AI-Dashboard-Profil oder ein eigenes React/Tailwind/Three.js-Frontend einfliessen.
+Das Elektronik-Dashboard ist als Darkmode-Hacker-/Engineering-Oberflaeche mit orangefarbenen
+Akzenten geplant. Es kann spaeter in das AI-Dashboard-Profil oder ein eigenes
+React/Tailwind/Three.js-Frontend einfliessen.
 
 ## Widgets
 
@@ -32,4 +34,3 @@ Das Elektronik-Dashboard ist als Darkmode-Hacker-/Engineering-Oberflaeche mit or
 - Warnung: Gelb.
 - OK: Gruen.
 - Stil: Cyberpunk, Terminal, Engineering Console.
-

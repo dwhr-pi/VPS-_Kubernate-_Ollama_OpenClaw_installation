@@ -3,6 +3,7 @@
 Ziel: GitHub-Repo-Pflege, Issues, Releases, Lints, Tests und Dokuqualität.
 
 ## Kern
+
 - GitHub CLI
 - pre-commit
 - act

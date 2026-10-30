@@ -8,4 +8,3 @@ Aufgaben:
 - Annahmen sichtbar markieren
 
 Hinweis: Code immer in Kopie oder Testprojekt ausfuehren.
-

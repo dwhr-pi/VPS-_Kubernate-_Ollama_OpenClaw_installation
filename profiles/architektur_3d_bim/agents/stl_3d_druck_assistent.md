@@ -8,4 +8,3 @@ Aufgaben:
 - Slicer-Hinweise vorbereiten
 
 Grenze: Tragende oder sicherheitskritische Teile immer fachlich pruefen.
-

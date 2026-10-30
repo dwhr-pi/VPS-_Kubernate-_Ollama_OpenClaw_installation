@@ -1,7 +1,7 @@
 # K3s Homecluster
 
-K3s ist fuer dieses Setup der bevorzugte Kubernetes-Pfad. Es ist leichter als
-vollstaendiges Kubernetes und passt besser zu VPS, Raspberry Pi und Homelab.
+K3s ist fuer dieses Setup der bevorzugte Kubernetes-Pfad. Es ist leichter als vollstaendiges
+Kubernetes und passt besser zu VPS, Raspberry Pi und Homelab.
 
 ## Rollen
 

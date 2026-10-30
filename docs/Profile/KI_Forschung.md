@@ -2,8 +2,10 @@
 
 ## Überblick
 
-Dieses Profil wurde aus der fachlichen Quelle [KI_Forschung.doc.md](../Profil/KI_Forschung.doc.md), `readme.md`, `docs/setup_guide.md` und `scripts/profiles/KI_Forschung_install.sh` zusammengeführt.
-Es beschreibt ein OpenClaw- und Ollama-kompatibles Forschungsprofil für Recherche, Paper-Analyse, Hypothesenbildung, RAG und experimentelle Agenten-Workflows.
+Dieses Profil wurde aus der fachlichen Quelle [KI_Forschung.doc.md](../Profil/KI_Forschung.doc.md),
+`readme.md`, `docs/setup_guide.md` und `scripts/profiles/KI_Forschung_install.sh` zusammengeführt.
+Es beschreibt ein OpenClaw- und Ollama-kompatibles Forschungsprofil für Recherche, Paper-Analyse,
+Hypothesenbildung, RAG und experimentelle Agenten-Workflows.
 
 ## Installierter Stack
 
@@ -19,7 +21,8 @@ Es beschreibt ein OpenClaw- und Ollama-kompatibles Forschungsprofil für Recherc
 
 ## Dokumentierte zusätzliche Tools
 
-Die zuvor zusätzlich dokumentierten Forschungsbausteine sind jetzt als Setup-Module oder vorhandene Tool-Äquivalente abbildbar:
+Die zuvor zusätzlich dokumentierten Forschungsbausteine sind jetzt als Setup-Module oder vorhandene
+Tool-Äquivalente abbildbar:
 
 - `ChromaDB` als lokale Chroma-Entsprechung
 - `Weaviate`
@@ -150,7 +153,8 @@ Memory und Kosten und gib eine Empfehlung für Research, Coding und Agentensteue
 
 ## OpenClaw / Ollama Fit
 
-- Dieses Profil passt gut zu OpenClaw als Forschungs-Orchestrator und Ollama als lokaler Modellschicht.
+- Dieses Profil passt gut zu OpenClaw als Forschungs-Orchestrator und Ollama als lokaler
+  Modellschicht.
 - `LangChain` und `LlamaIndex` sind die wichtigsten aktuell installierbaren RAG-Bausteine.
 - `Flowise` und `LangFlow` unterstützen visuelle Forschungs- und Agentenflüsse.
 - `MLflow` und `Whisper` ergänzen Experiment-Tracking und Sprachverarbeitung.
@@ -166,15 +170,19 @@ Memory und Kosten und gib eine Empfehlung für Research, Coding und Agentensteue
 
 ### ⚠ Missing in Setup
 
-- Die zuvor fehlenden Forschungsbausteine sind jetzt im Setup als Module oder Profilbestandteile vorhanden.
-- Externe Spezialmodelle und proprietäre Forschungszugänge müssen weiterhin manuell mit ihren eigenen Credentials angebunden werden.
+- Die zuvor fehlenden Forschungsbausteine sind jetzt im Setup als Module oder Profilbestandteile
+  vorhanden.
+- Externe Spezialmodelle und proprietäre Forschungszugänge müssen weiterhin manuell mit ihren
+  eigenen Credentials angebunden werden.
 
 ### ❌ Missing in Docs
 
-- Die visuelle Abgrenzung zwischen Forschungsprofil und allgemeinem Tool-Menü ist in der Hauptdoku noch schwach.
+- Die visuelle Abgrenzung zwischen Forschungsprofil und allgemeinem Tool-Menü ist in der Hauptdoku
+  noch schwach.
 
 ## Hinweise
 
 - `Flowise` und `LangFlow` werden nicht vollständig als dauerhafte Services provisioniert.
 - Portkonflikte mit `3000` und `7860` bleiben relevant.
-- Für ernsthafte Forschungs-Pipelines fehlen noch mehrere in der Quelldatei genannte Skalierungs- und Tracking-Bausteine.
+- Für ernsthafte Forschungs-Pipelines fehlen noch mehrere in der Quelldatei genannte Skalierungs-
+  und Tracking-Bausteine.

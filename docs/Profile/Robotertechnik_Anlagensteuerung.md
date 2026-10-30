@@ -1,13 +1,17 @@
 # Robotertechnik & Anlagensteuerung
 
-Dieses Profil erweitert das Ultimate KI Setup um einen sicheren Robotik-, Anlagensteuerungs- und Simulationspfad fuer ROS 2, Gazebo, MoveIt 2, digitale Zwillinge, Anlagenmonitoring, Sensorik, Predictive Maintenance und industrielle Schnittstellen.
+Dieses Profil erweitert das Ultimate KI Setup um einen sicheren Robotik-, Anlagensteuerungs- und
+Simulationspfad fuer ROS 2, Gazebo, MoveIt 2, digitale Zwillinge, Anlagenmonitoring, Sensorik,
+Predictive Maintenance und industrielle Schnittstellen.
 
 Der Standardmodus ist bewusst defensiv:
 
-> Standardmodus: Simulation / Diagnose / Vorschlag.  
+> Standardmodus: Simulation / Diagnose / Vorschlag.\
 > Realmodus: nur mit Freigabe, Sicherheitsgrenzen und Hardware-Schutz.
 
-KI darf in diesem Profil nicht als unkontrollierte Maschinensteuerung verstanden werden. Sie ist ein Robotik-Ingenieur-Assistent, Diagnosehelfer, Simulationsplaner und Protokollant, nicht der alleinige Entscheider fuer reale Aktoren.
+KI darf in diesem Profil nicht als unkontrollierte Maschinensteuerung verstanden werden. Sie ist ein
+Robotik-Ingenieur-Assistent, Diagnosehelfer, Simulationsplaner und Protokollant, nicht der alleinige
+Entscheider fuer reale Aktoren.
 
 ## Kurzbeschreibung
 
@@ -16,7 +20,8 @@ Das Profil verbindet lokale KI mit technischen Systemen:
 - Ollama analysiert Logs, Sensordaten und technische Dokumentation lokal.
 - OpenClaw orchestriert Agenten fuer Planung, Diagnose, Simulation und Audit.
 - n8n und Node-RED verbinden MQTT, OPC UA, Modbus, Home Assistant, Webhooks und Tickets.
-- ROS 2, Gazebo, MoveIt 2, RViz, Nav2, Open-RMF und micro-ROS bilden den Robotik- und Simulationspfad.
+- ROS 2, Gazebo, MoveIt 2, RViz, Nav2, Open-RMF und micro-ROS bilden den Robotik- und
+  Simulationspfad.
 - InfluxDB, Prometheus, Telegraf und Grafana bilden Messwert-, Monitoring- und Dashboard-Pfade.
 
 ## Zweck des Profils
@@ -41,7 +46,8 @@ Geeignet fuer:
 
 Nicht geeignet als Standardpfad:
 
-- direkte Steuerung von Motoren, Roboterarmen, Foerderbaendern, Relais, Ventilen, Fraesen, Pumpen oder sonstigen gefaehrlichen Komponenten
+- direkte Steuerung von Motoren, Roboterarmen, Foerderbaendern, Relais, Ventilen, Fraesen, Pumpen
+  oder sonstigen gefaehrlichen Komponenten
 - sicherheitskritische Entscheidungen nur durch ein LLM
 - Umgehen von Hardware-Interlocks, Not-Aus, Grenzwerten oder Hersteller-Sicherheitslogik
 - produktiver Industrieeinsatz ohne Fachpersonal, Risikobeurteilung und Normen-/Herstellerpruefung
@@ -52,28 +58,29 @@ Reale Aktoren duerfen nur angesteuert werden, wenn alle Bedingungen erfuellt sin
 2. menschliche Freigabe ist erforderlich
 3. Not-Aus-Konzept ist dokumentiert
 4. Hardware-Interlocks sind vorhanden
-5. Grenzwerte fuer Geschwindigkeit, Kraft, Temperatur, Strom, Spannung und Bewegungsraum sind definiert
+5. Grenzwerte fuer Geschwindigkeit, Kraft, Temperatur, Strom, Spannung und Bewegungsraum sind
+   definiert
 6. jede Aktion wird protokolliert
 7. Testlauf in Simulation wurde vorher erfolgreich durchgefuehrt
 8. keine sicherheitskritische Funktion wird ausschliesslich durch ein LLM entschieden
 
 ## Empfohlene Open-Source-Tools
 
-| Bereich | Tool | Aufgabe |
-|---|---|---|
-| Robotik-Basis | ROS 2 | Nodes, Topics, Services, Actions, Launch, URDF, tf2, rosbag, Security |
-| Simulation | Gazebo / Gazebo Sim | virtuelle Testwelten, Sensor-/Aktor-Simulation, Kollisionspruefung |
-| Bewegungsplanung | MoveIt 2 | Roboterarm, Kinematik, Trajektorien, Kollisionspruefung |
-| Visualisierung | RViz | Roboterzustand, TF-Frames, Sensoren und Planung anzeigen |
-| Navigation | Nav2 | mobile Roboter, Karten, Navigation, Pfadplanung |
-| Flotten/Gebaeude | Open-RMF | Roboterflotten, Gebaeudeintegration, Ressourcenkoordination |
-| Mikrocontroller | micro-ROS | ROS-nahe Firmware-Anbindung fuer kleine Controller |
-| SPS/Test | OpenPLC | Lern-, Test- und Simulationsumgebung fuer IEC-61131-3-Logik |
-| Kommunikation | MQTT | Sensordaten, Events, Home Assistant, Node-RED |
-| Industrie | OPC UA | Anlagenstatus, SPS-/SCADA-nahe Schnittstelle |
-| Industrie | Modbus TCP | einfache industrielle Register-/Sensoranbindung |
-| Automation | n8n / Node-RED | Workflows, Grenzwertwarnungen, Tickets, Webhooks |
-| Monitoring | InfluxDB / Telegraf / Prometheus / Grafana | Messwerte, Dashboards, Alerts, Historie |
+| Bereich          | Tool                                       | Aufgabe                                                               |
+| ---------------- | ------------------------------------------ | --------------------------------------------------------------------- |
+| Robotik-Basis    | ROS 2                                      | Nodes, Topics, Services, Actions, Launch, URDF, tf2, rosbag, Security |
+| Simulation       | Gazebo / Gazebo Sim                        | virtuelle Testwelten, Sensor-/Aktor-Simulation, Kollisionspruefung    |
+| Bewegungsplanung | MoveIt 2                                   | Roboterarm, Kinematik, Trajektorien, Kollisionspruefung               |
+| Visualisierung   | RViz                                       | Roboterzustand, TF-Frames, Sensoren und Planung anzeigen              |
+| Navigation       | Nav2                                       | mobile Roboter, Karten, Navigation, Pfadplanung                       |
+| Flotten/Gebaeude | Open-RMF                                   | Roboterflotten, Gebaeudeintegration, Ressourcenkoordination           |
+| Mikrocontroller  | micro-ROS                                  | ROS-nahe Firmware-Anbindung fuer kleine Controller                    |
+| SPS/Test         | OpenPLC                                    | Lern-, Test- und Simulationsumgebung fuer IEC-61131-3-Logik           |
+| Kommunikation    | MQTT                                       | Sensordaten, Events, Home Assistant, Node-RED                         |
+| Industrie        | OPC UA                                     | Anlagenstatus, SPS-/SCADA-nahe Schnittstelle                          |
+| Industrie        | Modbus TCP                                 | einfache industrielle Register-/Sensoranbindung                       |
+| Automation       | n8n / Node-RED                             | Workflows, Grenzwertwarnungen, Tickets, Webhooks                      |
+| Monitoring       | InfluxDB / Telegraf / Prometheus / Grafana | Messwerte, Dashboards, Alerts, Historie                               |
 
 ## Empfohlene lokale Dienste
 
@@ -264,7 +271,8 @@ Wichtig: `ROBOTICS_REAL_HARDWARE=false` ist der sichere Standard.
 - Wartungsberichte nach Schichtende erzeugen.
 - ROS-2-Logdateien zusammenfassen lassen.
 - Simulationsberichte archivieren.
-- Freigabe-Workflow fuer Realmodus mit zwei Schritten: Sicherheitscheck und menschliche Bestaetigung.
+- Freigabe-Workflow fuer Realmodus mit zwei Schritten: Sicherheitscheck und menschliche
+  Bestaetigung.
 
 ## Home-Assistant-Anbindung
 
@@ -287,14 +295,17 @@ ros2 topic list
 ros2 launch <paket> <simulation>.launch.py
 ```
 
-Die offizielle ROS-2-Dokumentation beschreibt Installation, CLI, Launch, URDF, Gazebo-Simulation, Security und `ros2doctor`. Dieses Profil nutzt diese Bausteine nur als vorgeschlagene Struktur, nicht als automatische Komplettinstallation.
+Die offizielle ROS-2-Dokumentation beschreibt Installation, CLI, Launch, URDF, Gazebo-Simulation,
+Security und `ros2doctor`. Dieses Profil nutzt diese Bausteine nur als vorgeschlagene Struktur,
+nicht als automatische Komplettinstallation.
 
 ## OPC-UA-/MQTT-/Modbus-Anbindung
 
 - MQTT fuer einfache Sensor- und Eventdaten.
 - OPC UA fuer industrielle Status- und Prozessdaten.
 - Modbus TCP fuer einfache Registerdaten.
-- Schreibzugriffe werden durch Safety-Gates, Whitelists, Grenzwerte und Audit-Logging blockiert oder freigegeben.
+- Schreibzugriffe werden durch Safety-Gates, Whitelists, Grenzwerte und Audit-Logging blockiert oder
+  freigegeben.
 
 ## Logging und Audit
 

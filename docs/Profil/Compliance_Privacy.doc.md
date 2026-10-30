@@ -3,6 +3,7 @@
 Ziel: DSGVO, EU AI Act, Auditierbarkeit, lokale KI-Governance.
 
 ## Kern
+
 - Open Policy Agent
 - Gitleaks
 - TruffleHog
@@ -12,5 +13,6 @@ Ziel: DSGVO, EU AI Act, Auditierbarkeit, lokale KI-Governance.
 - Semgrep
 
 ## Optional
+
 - OWASP Dependency-Check
 - Datenquellen- und Modell-Dokumentation

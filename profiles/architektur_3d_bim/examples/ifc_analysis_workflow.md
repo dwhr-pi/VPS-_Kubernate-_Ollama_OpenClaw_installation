@@ -11,4 +11,3 @@ Beispielprompt:
 ```text
 Analysiere den IFC-Export. Markiere fehlende Raumfunktionen, fehlende Mengen und Bauteile ohne Material.
 ```
-

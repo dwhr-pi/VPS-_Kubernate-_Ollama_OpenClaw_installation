@@ -24,5 +24,4 @@ MCP-Server sollen Tools kontrolliert fuer Agenten bereitstellen.
 
 ## Tool-Registry
 
-Die MCP-Bausteine sind als planned/manual Tools registriert und installieren
-nichts automatisch.
+Die MCP-Bausteine sind als planned/manual Tools registriert und installieren nichts automatisch.

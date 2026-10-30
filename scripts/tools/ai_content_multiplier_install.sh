@@ -90,7 +90,7 @@ install_workflow() {
     echo "Hinweis: .env.example im Projektordner wurde nicht gefunden."
   fi
 
-  cat > "$USER_DIR/README.local.md" <<EOF
+  cat >"$USER_DIR/README.local.md" <<EOF
 # AI-ContentMultiplier lokale Arbeitsdaten
 
 Dieser Ordner enthaelt lokale Konfiguration und Ergebnisse.
@@ -107,13 +107,13 @@ EOF
 }
 
 case "${1:-}" in
-  --help|-h)
+  --help | -h)
     usage
     ;;
   --status)
     status
     ;;
-  --dry-run|--plan)
+  --dry-run | --plan)
     dry_run
     ;;
   --update)

@@ -2,7 +2,10 @@
 
 ## Kurzbeschreibung
 
-Dieses Profil beschreibt einen KI-gestuetzten Interior-, Renovierungs- und Home-Staging-Agenten fuer das bestehende Ollama/OpenClaw/Kubernetes/VPS-Setup. Der Agent analysiert Raumfotos, erkennt Raumtyp, Stil und visuelle Probleme, erstellt passende Prompts und erzeugt realistische Vorher-/Nachher-Varianten fuer Modernisierung, Aufraeumen, Umstellen und virtuelle Renovierung.
+Dieses Profil beschreibt einen KI-gestuetzten Interior-, Renovierungs- und Home-Staging-Agenten fuer
+das bestehende Ollama/OpenClaw/Kubernetes/VPS-Setup. Der Agent analysiert Raumfotos, erkennt
+Raumtyp, Stil und visuelle Probleme, erstellt passende Prompts und erzeugt realistische
+Vorher-/Nachher-Varianten fuer Modernisierung, Aufraeumen, Umstellen und virtuelle Renovierung.
 
 Der Fokus liegt auf lokalem oder selbst gehostetem Arbeiten mit:
 
@@ -13,7 +16,14 @@ Der Fokus liegt auf lokalem oder selbst gehostetem Arbeiten mit:
 - `Inpainting` fuer gezielte Eingriffe
 - `ComfyUI` oder `AUTOMATIC1111` fuer lokale Bildpipelines
 
-`roomGPT` dient hier als Open-Source-Inspiration fuer Upload, Stilwahl und Vorher-/Nachher-Vergleich. Laut dem offiziellen Repository nutzt die fruehe Open-Source-Version `ControlNet`, eine `Next.js`-App, `Replicate` fuer die Modell-Ausfuehrung und `Bytescale` fuer Bild-Storage. Fuer dieses Repo soll der bevorzugte Standard jedoch lokal bleiben, mit Cloud nur als bewusstem Fallback. Quellen: [roomGPT](https://github.com/Nutlope/roomGPT), [ComfyUI ControlNet](https://docs.comfy.org/tutorials/controlnet/controlnet), [AUTOMATIC1111](https://github.com/AUTOMATIC1111/stable-diffusion-webui), [ControlNet](https://github.com/lllyasviel/ControlNet)
+`roomGPT` dient hier als Open-Source-Inspiration fuer Upload, Stilwahl und
+Vorher-/Nachher-Vergleich. Laut dem offiziellen Repository nutzt die fruehe Open-Source-Version
+`ControlNet`, eine `Next.js`-App, `Replicate` fuer die Modell-Ausfuehrung und `Bytescale` fuer
+Bild-Storage. Fuer dieses Repo soll der bevorzugte Standard jedoch lokal bleiben, mit Cloud nur als
+bewusstem Fallback. Quellen: [roomGPT](https://github.com/Nutlope/roomGPT),
+[ComfyUI ControlNet](https://docs.comfy.org/tutorials/controlnet/controlnet),
+[AUTOMATIC1111](https://github.com/AUTOMATIC1111/stable-diffusion-webui),
+[ControlNet](https://github.com/lllyasviel/ControlNet)
 
 ## Typische Aufgaben des Agents
 
@@ -105,7 +115,8 @@ Der Fokus liegt auf lokalem oder selbst gehostetem Arbeiten mit:
 
 - `roomGPT`
   - als Web-UI-Inspiration fuer Upload, Stilwahl und Ergebnisvergleich
-  - das Repo nutzt in seiner Open-Source-Version Cloud-Bausteine und ist daher eher Referenz als direkter Standardpfad
+  - das Repo nutzt in seiner Open-Source-Version Cloud-Bausteine und ist daher eher Referenz als
+    direkter Standardpfad
 
 - `Replicate API`
   - nur als bewusst aktivierter Cloud-Fallback
@@ -231,8 +242,10 @@ Wohnungs- und Raumfotos koennen sensible private Informationen enthalten. Deshal
 
 Besonders wichtig:
 
-- Fotos aus bewohnten Raeumen koennen Hinweise auf Personen, Tagesablaeufe, Besitzverhaeltnisse oder Sicherheitsniveau enthalten
-- bei Immobilien-, Airbnb- oder Maklerbildern keine irrefuehrenden Renovierungsbilder ohne klare Kennzeichnung als Visualisierung verwenden
+- Fotos aus bewohnten Raeumen koennen Hinweise auf Personen, Tagesablaeufe, Besitzverhaeltnisse oder
+  Sicherheitsniveau enthalten
+- bei Immobilien-, Airbnb- oder Maklerbildern keine irrefuehrenden Renovierungsbilder ohne klare
+  Kennzeichnung als Visualisierung verwenden
 
 ## Beispiel-Prompts
 

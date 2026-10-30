@@ -27,4 +27,3 @@ sudo rm -f /usr/share/applications/zotero.desktop
 
 echo -e "${GREEN}Zotero wurde entfernt.${NC}"
 mark_current_tool_removed
-

@@ -23,9 +23,9 @@ echo -e "${BLUE}Starte Setup-, System- und pnpm-Update...${NC}"
 # 1. Setup-Repository aktualisieren
 echo -e "${GREEN}1/3: Aktualisiere das Setup-Repository...${NC}"
 if [ -x "$INSTALL_DIR/scripts/update_setup_only.sh" ]; then
-    "$INSTALL_DIR/scripts/update_setup_only.sh"
+  "$INSTALL_DIR/scripts/update_setup_only.sh"
 else
-    bash "$INSTALL_DIR/scripts/update_setup_only.sh"
+  bash "$INSTALL_DIR/scripts/update_setup_only.sh"
 fi
 
 # 2. System aktualisieren
@@ -36,15 +36,15 @@ sudo apt-get autoremove -y
 # 3. pnpm aktualisieren
 echo -e "${GREEN}3/3: Aktualisiere pnpm...${NC}"
 if command -v pnpm >/dev/null 2>&1; then
-    sudo pnpm add -g pnpm@latest
-    echo -e "${GREEN}pnpm auf die neueste Version aktualisiert.${NC}"
+  sudo pnpm add -g pnpm@latest
+  echo -e "${GREEN}pnpm auf die neueste Version aktualisiert.${NC}"
 else
-    echo -e "${YELLOW}pnpm ist nicht installiert. Installiere pnpm...${NC}"
-    sudo npm install -g pnpm
-    if ! command -v pnpm >/dev/null 2>&1; then
-        echo -e "${RED}Fehler: pnpm konnte nicht installiert werden. Bitte manuell prüfen.${NC}"
-        exit 1
-    fi
+  echo -e "${YELLOW}pnpm ist nicht installiert. Installiere pnpm...${NC}"
+  sudo npm install -g pnpm
+  if ! command -v pnpm >/dev/null 2>&1; then
+    echo -e "${RED}Fehler: pnpm konnte nicht installiert werden. Bitte manuell prüfen.${NC}"
+    exit 1
+  fi
 fi
 
 echo -e "${GREEN}Setup-, System- und pnpm-Update abgeschlossen.${NC}"

@@ -4,16 +4,17 @@
 
 `babelcloud/gbox` passt am besten zum Profil `Android_App_Builder`.
 
-Fuer dein `myBox`-Projekt ist GBOX ein sinnvoller Baustein, wenn Codex/OpenClaw Android-Apps testen, UI-Flows bedienen oder spaeter ueber MCP eine mobile Umgebung steuern soll.
+Fuer dein `myBox`-Projekt ist GBOX ein sinnvoller Baustein, wenn Codex/OpenClaw Android-Apps testen,
+UI-Flows bedienen oder spaeter ueber MCP eine mobile Umgebung steuern soll.
 
 ## Warum dieses Profil?
 
-| Profil | Rolle fuer myBox |
-|---|---|
-| `Android_App_Builder` | Primaeres Profil fuer Android-App-Entwicklung, Tests, Companion-App und mobile Automation |
-| `MCP_Agent_Tools` | Macht GBOX als Tool-/MCP-Schicht fuer Agenten sichtbar |
-| `Browser_Automation_Agent` | Ergaenzt Browser-/Desktop-Tests und UI-Pruefungen |
-| `Local_AI_App_Builder` | Gut fuer lokale myBox-Dashboards, Admin-Panels und interne UIs |
+| Profil                     | Rolle fuer myBox                                                                          |
+| -------------------------- | ----------------------------------------------------------------------------------------- |
+| `Android_App_Builder`      | Primaeres Profil fuer Android-App-Entwicklung, Tests, Companion-App und mobile Automation |
+| `MCP_Agent_Tools`          | Macht GBOX als Tool-/MCP-Schicht fuer Agenten sichtbar                                    |
+| `Browser_Automation_Agent` | Ergaenzt Browser-/Desktop-Tests und UI-Pruefungen                                         |
+| `Local_AI_App_Builder`     | Gut fuer lokale myBox-Dashboards, Admin-Panels und interne UIs                            |
 
 ## Was GBOX fuer myBox leisten kann
 
@@ -56,4 +57,5 @@ GBOX_BUILD_FROM_SOURCE=1 bash scripts/tools/gbox_install.sh
 
 ## Status
 
-Experimentell, aber passend. GBOX ist stark fuer Agenten-Automation, braucht aber klare Grenzen, weil es reale Apps und Geraete bedienen kann.
+Experimentell, aber passend. GBOX ist stark fuer Agenten-Automation, braucht aber klare Grenzen,
+weil es reale Apps und Geraete bedienen kann.

@@ -1,6 +1,7 @@
 # AI 3D Kubernetes Scaling
 
-Dieses Dokument beschreibt die spaetere Skalierung des AI-3D-Studios auf GPU-Nodes. Lokal unter WSL2/Ubuntu bleibt Docker optional; Kubernetes ist ein Ausbaupfad fuer Render-Farmen und Batch-Jobs.
+Dieses Dokument beschreibt die spaetere Skalierung des AI-3D-Studios auf GPU-Nodes. Lokal unter
+WSL2/Ubuntu bleibt Docker optional; Kubernetes ist ein Ausbaupfad fuer Render-Farmen und Batch-Jobs.
 
 ## Zielarchitektur
 
@@ -35,7 +36,9 @@ flowchart LR
 
 ## GPU Hinweise
 
-- NVIDIA RTX: CUDA/OptiX bevorzugt, RTX 5080 mit aktuellem Treiber und passender CUDA/PyTorch-Kombination planen.
-- AMD: ROCm-Unterstuetzung fuer 3D/ComfyUI ist projektabhaengig; Hunyuan3D-Nodes koennen CUDA-Annahmen enthalten.
-- Multi-GPU: lieber Job-Level-Parallelisierung als ein einzelnes riesiges Modell ueber mehrere GPUs erzwingen.
-
+- NVIDIA RTX: CUDA/OptiX bevorzugt, RTX 5080 mit aktuellem Treiber und passender
+  CUDA/PyTorch-Kombination planen.
+- AMD: ROCm-Unterstuetzung fuer 3D/ComfyUI ist projektabhaengig; Hunyuan3D-Nodes koennen
+  CUDA-Annahmen enthalten.
+- Multi-GPU: lieber Job-Level-Parallelisierung als ein einzelnes riesiges Modell ueber mehrere GPUs
+  erzwingen.

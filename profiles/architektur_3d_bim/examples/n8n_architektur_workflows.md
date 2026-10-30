@@ -8,5 +8,5 @@ Sinnvolle Automationen:
 - Backup-Workflow archiviert Projektordner
 - Telegram/Email meldet abgeschlossene Renderjobs
 
-Sicherheitsregel: n8n darf produktive IFC/CAD-Dateien standardmaessig nur kopieren und analysieren, nicht ueberschreiben.
-
+Sicherheitsregel: n8n darf produktive IFC/CAD-Dateien standardmaessig nur kopieren und analysieren,
+nicht ueberschreiben.

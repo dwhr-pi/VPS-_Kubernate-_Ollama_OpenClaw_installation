@@ -54,4 +54,3 @@ Erstelle 8 Shots mit Stimmung, Kamera, Licht, Motion, Bildprompt und Videoprompt
 3. Keyframes generieren.
 4. Wan2.x-Clips rendern.
 5. FFmpeg-Schnitt mit Audio synchronisieren.
-

@@ -1,12 +1,14 @@
 # Installation Wizard
 
-Dieser Wizard beschreibt sichere Installationspfade. Er ersetzt keine interaktive Auswahl, sondern dient als Entscheidungshilfe fuer Nutzer und fuer spaetere Setup-Menues.
+Dieser Wizard beschreibt sichere Installationspfade. Er ersetzt keine interaktive Auswahl, sondern
+dient als Entscheidungshilfe fuer Nutzer und fuer spaetere Setup-Menues.
 
 ## 1. Minimal lokal
 
 Geeignet fuer: WSL2, MiniPC, Linux-PC ohne grosse GPU.
 
 Empfohlen:
+
 - Ollama
 - OpenClaw
 - Open WebUI
@@ -15,6 +17,7 @@ Empfohlen:
 - Uptime Kuma optional
 
 Nicht sofort:
+
 - grosse Video-/Bildmodelle
 - Kubernetes
 - offene Web-Panels
@@ -23,6 +26,7 @@ Nicht sofort:
 ## 2. MiniPC + Smart Home
 
 Empfohlen:
+
 - Tailscale statt offener Ports
 - Home Assistant Integration
 - MQTT/Node-RED/n8n
@@ -30,12 +34,14 @@ Empfohlen:
 - Backup mit Restic/Rclone
 
 Wichtig:
+
 - Admin-UIs nicht ins Internet oeffnen.
 - Secrets in `~/.openclaw_ultimate_user_data` halten.
 
 ## 3. GPU / Medien
 
 Empfohlen:
+
 - ComfyUI
 - Blender
 - FFmpeg
@@ -43,6 +49,7 @@ Empfohlen:
 - Piper
 
 Vorher pruefen:
+
 - VRAM
 - CUDA/ROCm
 - Modellcache
@@ -51,12 +58,14 @@ Vorher pruefen:
 ## 4. VPS / Remote
 
 Empfohlen:
+
 - Cloudflare Tunnel oder Tailscale
 - Reverse Proxy nur mit Auth
 - Monitoring-Agenten
 - keine privaten RAG-Daten ohne Verschluesselung
 
 Nicht empfohlen:
+
 - grosse Modelle ohne GPU
 - offene Docker-Sockets
 - Admin-Panels auf `0.0.0.0`
@@ -66,9 +75,9 @@ Nicht empfohlen:
 Kubernetes erst nutzen, wenn Einzelinstallation, Backups und Ports stabil sind.
 
 Startreihenfolge:
+
 1. Storage und Backups
 2. Secrets
 3. Monitoring
 4. leichte Services
 5. GPU-/Render-/LLM-Worker
-

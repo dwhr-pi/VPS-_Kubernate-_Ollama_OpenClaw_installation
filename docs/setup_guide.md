@@ -2,32 +2,50 @@
 
 ## 1. Einführung
 
-Dieser umfassende Guide beschreibt die Installation und Konfiguration einer hochflexiblen und leistungsstarken KI- und Smart Home Infrastruktur. Das System ist darauf ausgelegt, sowohl auf einem lokalen MiniPC (Letsung mit WSL2) als auch auf mehreren Cloud-basierten Virtual Private Servern (VPS) zu laufen, um eine optimale Ressourcennutzung und Ausfallsicherheit zu gewährleisten. Die Installation erfolgt vollautomatisch über ein interaktives Bash-Skript, das direkt von GitHub bezogen wird.
+Dieser umfassende Guide beschreibt die Installation und Konfiguration einer hochflexiblen und
+leistungsstarken KI- und Smart Home Infrastruktur. Das System ist darauf ausgelegt, sowohl auf einem
+lokalen MiniPC (Letsung mit WSL2) als auch auf mehreren Cloud-basierten Virtual Private Servern
+(VPS) zu laufen, um eine optimale Ressourcennutzung und Ausfallsicherheit zu gewährleisten. Die
+Installation erfolgt vollautomatisch über ein interaktives Bash-Skript, das direkt von GitHub
+bezogen wird.
 
 ### 1.1 Architektur-Übersicht
 
 Die Architektur basiert auf einem hybriden Ansatz:
 
-*   **Letsung MiniPC (WSL2):** Dient als lokaler Hub für datenschutzsensible Anwendungen, Home Assistant, lokale LLMs (Ollama) und als Edge-Computing-Knoten. Die dynamische IP wird über Hurricane Electric DNS verwaltet.
-*   **Oracle Cloud Free Tier VPS:** Bietet eine kostenlose, leistungsstarke Cloud-Umgebung für Kubernetes (K3s), weitere LLMs, und 24/7 laufende Dienste wie Zenbot-trader oder n8n.
-*   **Weitere kostenlose VPS (optional):** Können für spezifische Dienste wie Monitoring, Backup oder zusätzliche LLM-Instanzen genutzt werden, um die Last zu verteilen und die Verfügbarkeit zu erhöhen.
+- **Letsung MiniPC (WSL2):** Dient als lokaler Hub für datenschutzsensible Anwendungen, Home
+  Assistant, lokale LLMs (Ollama) und als Edge-Computing-Knoten. Die dynamische IP wird über
+  Hurricane Electric DNS verwaltet.
+- **Oracle Cloud Free Tier VPS:** Bietet eine kostenlose, leistungsstarke Cloud-Umgebung für
+  Kubernetes (K3s), weitere LLMs, und 24/7 laufende Dienste wie Zenbot-trader oder n8n.
+- **Weitere kostenlose VPS (optional):** Können für spezifische Dienste wie Monitoring, Backup oder
+  zusätzliche LLM-Instanzen genutzt werden, um die Last zu verteilen und die Verfügbarkeit zu
+  erhöhen.
 
-Die Kommunikation zwischen den Komponenten erfolgt über sichere Kanäle (z.B. Cloudflare Tunnel, VPNs) und API-Schnittstellen.
+Die Kommunikation zwischen den Komponenten erfolgt über sichere Kanäle (z.B. Cloudflare Tunnel,
+VPNs) und API-Schnittstellen.
 
 ## 2. Installations-Voraussetzungen
 
-Bevor du mit der Installation beginnst, stelle sicher, dass die folgenden Voraussetzungen erfüllt sind:
+Bevor du mit der Installation beginnst, stelle sicher, dass die folgenden Voraussetzungen erfüllt
+sind:
 
-*   **Betriebssystem:** Ubuntu 22.04 LTS (oder neuer) auf dem MiniPC (innerhalb von WSL2) und auf allen VPS-Instanzen.
-*   **Internetverbindung:** Stabile Internetverbindung auf allen Systemen.
-*   **GitHub-Konto:** Für den Zugriff auf die Installationsskripte und die Projekt-Repositories.
-*   **GitHub Personal Access Token (PAT):** Erforderlich, wenn du das Setup aus einem privaten Repository installierst (siehe `PRIVATE_REPO_GUIDE.md`).
-*   **Cloud-Konten:** Konten bei Oracle Cloud (für Free Tier VPS), Google Cloud (für Gemini API, Google Calendar API), Cloudflare (für Tunnel, DNS) und Hurricane Electric (für dynamisches DNS).
-*   **API-Keys:** Alle notwendigen API-Keys müssen bereitgehalten werden (siehe [API-Key Guide](_API-Keys/API_KEY_GUIDE.md)).
+- **Betriebssystem:** Ubuntu 22.04 LTS (oder neuer) auf dem MiniPC (innerhalb von WSL2) und auf
+  allen VPS-Instanzen.
+- **Internetverbindung:** Stabile Internetverbindung auf allen Systemen.
+- **GitHub-Konto:** Für den Zugriff auf die Installationsskripte und die Projekt-Repositories.
+- **GitHub Personal Access Token (PAT):** Erforderlich, wenn du das Setup aus einem privaten
+  Repository installierst (siehe `PRIVATE_REPO_GUIDE.md`).
+- **Cloud-Konten:** Konten bei Oracle Cloud (für Free Tier VPS), Google Cloud (für Gemini API,
+  Google Calendar API), Cloudflare (für Tunnel, DNS) und Hurricane Electric (für dynamisches DNS).
+- **API-Keys:** Alle notwendigen API-Keys müssen bereitgehalten werden (siehe
+  [API-Key Guide](_API-Keys/API_KEY_GUIDE.md)).
 
 ## 3. Der Installationsprozess
 
-Die Installation erfolgt über ein interaktives Bash-Skript (`setup_ultimate.sh`), das über einen One-Liner-Befehl gestartet wird. Das Skript führt dich durch ein Menü, in dem du verschiedene Setup-Optionen und Profile auswählen kannst.
+Die Installation erfolgt über ein interaktives Bash-Skript (`setup_ultimate.sh`), das über einen
+One-Liner-Befehl gestartet wird. Das Skript führt dich durch ein Menü, in dem du verschiedene
+Setup-Optionen und Profile auswählen kannst.
 
 ### 3.1 Start der Installation
 
@@ -43,83 +61,136 @@ Das `install.sh`-Skript klont das Repository und startet das Hauptmenü.
 
 Das Hauptmenü bietet folgende Optionen:
 
-*   **1. System-Update (OS & pnpm):** Aktualisiert das Betriebssystem und `pnpm` auf die neuesten Versionen.
-*   **2. Ollama Modell-Manager:** Ermöglicht die Installation und Deinstallation spezifischer Ollama-Modelle.
-*   **3. OpenClaw Konfiguration (.env & config.json):** Startet den OpenClaw Konfigurations-Manager, um die `.env`- und `config.json`-Dateien zu bearbeiten und anzuwenden.
-*   **4. Hybrid: Letsung MiniPC + Multi-VPS (Empfohlen):** Installiert das Setup auf deinem MiniPC und bereitet die Multi-VPS-Umgebung vor.
-*   **5. Standalone: Nur VPS (Cloud-Native):** Installiert das Setup auf einem einzelnen VPS mit Kubernetes (K3s).
-*   **6. Standalone: Nur MiniPC (Lokal):** Installiert alle Komponenten lokal auf deinem MiniPC ohne VPS-Anbindung.
-*   **7. Ruflo: Installation & Management:** Installiert und verwaltet das Ruflo-System.
-*   **8. Tools: Installieren & Deinstallieren:** Ein Untermenü zur Auswahl spezifischer Tools (n8n, Activepieces, Flowise, etc.).
-*   **9. Profile: Installieren & Deinstallieren:** Ein Untermenü zur Auswahl und Verwaltung von Profilen (Programmierer, Media & Musik, KI-Forschung, Texter/Werbung/Marketing, Rechtsberatung & Steuerrecht).
-*   **10. Dokumentation & API-Key Guide:** Zeigt diesen Guide und den API-Key Guide an.
-*   **11. System-Check & Port-Analyse:** Führt eine Analyse der Systemressourcen und Port-Verfügbarkeit durch.
-*   **12. OpenClaw starten (Dev-Modus):** Startet OpenClaw im Entwicklungsmodus.
-*   **13. Home Assistant starten:** Startet den Home Assistant Dienst.
-*   **14. Beenden:** Beendet das Installationsprogramm.
+- **1. System-Update (OS & pnpm):** Aktualisiert das Betriebssystem und `pnpm` auf die neuesten
+  Versionen.
+- **2. Ollama Modell-Manager:** Ermöglicht die Installation und Deinstallation spezifischer
+  Ollama-Modelle.
+- **3. OpenClaw Konfiguration (.env & config.json):** Startet den OpenClaw Konfigurations-Manager,
+  um die `.env`- und `config.json`-Dateien zu bearbeiten und anzuwenden.
+- **4. Hybrid: Letsung MiniPC + Multi-VPS (Empfohlen):** Installiert das Setup auf deinem MiniPC und
+  bereitet die Multi-VPS-Umgebung vor.
+- **5. Standalone: Nur VPS (Cloud-Native):** Installiert das Setup auf einem einzelnen VPS mit
+  Kubernetes (K3s).
+- **6. Standalone: Nur MiniPC (Lokal):** Installiert alle Komponenten lokal auf deinem MiniPC ohne
+  VPS-Anbindung.
+- **7. Ruflo: Installation & Management:** Installiert und verwaltet das Ruflo-System.
+- **8. Tools: Installieren & Deinstallieren:** Ein Untermenü zur Auswahl spezifischer Tools (n8n,
+  Activepieces, Flowise, etc.).
+- **9. Profile: Installieren & Deinstallieren:** Ein Untermenü zur Auswahl und Verwaltung von
+  Profilen (Programmierer, Media & Musik, KI-Forschung, Texter/Werbung/Marketing, Rechtsberatung &
+  Steuerrecht).
+- **10. Dokumentation & API-Key Guide:** Zeigt diesen Guide und den API-Key Guide an.
+- **11. System-Check & Port-Analyse:** Führt eine Analyse der Systemressourcen und
+  Port-Verfügbarkeit durch.
+- **12. OpenClaw starten (Dev-Modus):** Startet OpenClaw im Entwicklungsmodus.
+- **13. Home Assistant starten:** Startet den Home Assistant Dienst.
+- **14. Beenden:** Beendet das Installationsprogramm.
 
 ### 3.3 Profil-Management
 
-Das Profil-Management (Option 9 im Hauptmenü) ermöglicht die Installation und Deinstallation von thematisch gebündelten Softwarepaketen. Du kannst mehrere Profile gleichzeitig installieren.
+Das Profil-Management (Option 9 im Hauptmenü) ermöglicht die Installation und Deinstallation von
+thematisch gebündelten Softwarepaketen. Du kannst mehrere Profile gleichzeitig installieren.
 
-*   **Programmierer-Setup:** Enthält Tools für Entwicklung, Code-Generierung (z.B. DeepSeek Coder Modell für Ollama), Git-Integration, Huginn und Clawhub CLI. Ideal für Entwickler und Automatisierungsexperten.
-*   **Media & Musik:** Beinhaltet Tools für Audio-Verarbeitung (FFmpeg, Audio-AI), Video-Generierung und die Alexa-Integration, Clawbake. Für Content Creator und Medienproduzenten.
-*   **KI-Forschung:** Umfasst spezialisierte Bibliotheken und Konfigurationen für OpenClaw RL und erweiterte LLM-Modelle (z.B. Gemini-1.5-Pro), Flowise/LangFlow. Für KI-Wissenschaftler und Forscher.
-*   **Texter, Werbung & Marketing:** Stellt Tools für Content-Generierung, SEO-Analyse, Social Media Integration und spezialisierte LLM-Modelle für Textproduktion bereit, n8n, Activepieces. Optimiert für Marketingexperten und Texter, die ihre Inhalte mit KI verbessern möchten.
-*   **Rechtsberatung & Steuerrecht:** Tools für Web-Search & Fetch, PDF-Reader/Document-Parser, Zotero. Für die Analyse von Rechtsdokumenten und Steuerrecht, unterstützt durch spezialisierte KI-Agenten.
+- **Programmierer-Setup:** Enthält Tools für Entwicklung, Code-Generierung (z.B. DeepSeek Coder
+  Modell für Ollama), Git-Integration, Huginn und Clawhub CLI. Ideal für Entwickler und
+  Automatisierungsexperten.
+- **Media & Musik:** Beinhaltet Tools für Audio-Verarbeitung (FFmpeg, Audio-AI), Video-Generierung
+  und die Alexa-Integration, Clawbake. Für Content Creator und Medienproduzenten.
+- **KI-Forschung:** Umfasst spezialisierte Bibliotheken und Konfigurationen für OpenClaw RL und
+  erweiterte LLM-Modelle (z.B. Gemini-1.5-Pro), Flowise/LangFlow. Für KI-Wissenschaftler und
+  Forscher.
+- **Texter, Werbung & Marketing:** Stellt Tools für Content-Generierung, SEO-Analyse, Social Media
+  Integration und spezialisierte LLM-Modelle für Textproduktion bereit, n8n, Activepieces. Optimiert
+  für Marketingexperten und Texter, die ihre Inhalte mit KI verbessern möchten.
+- **Rechtsberatung & Steuerrecht:** Tools für Web-Search & Fetch, PDF-Reader/Document-Parser,
+  Zotero. Für die Analyse von Rechtsdokumenten und Steuerrecht, unterstützt durch spezialisierte
+  KI-Agenten.
 
 ### 3.4 Tool-Management
 
-Das Tool-Management (Option 8 im Hauptmenü) ermöglicht die Installation und Deinstallation einzelner Tools. Hier eine Übersicht der verfügbaren Tools:
+Das Tool-Management (Option 8 im Hauptmenü) ermöglicht die Installation und Deinstallation einzelner
+Tools. Hier eine Übersicht der verfügbaren Tools:
 
-*   **Ollama:** Lokales LLM-Backend. Du kannst über den Ollama Modell-Manager (Option 2 im Hauptmenü) spezifische Modelle installieren und verwalten.
-*   **OpenManus:** GitHub-basierte Agenten-/Automationsbasis. Der Installer prüft Python-venv, Torch und problematische optionale Pakete wie `flash-attn` vorsichtig, statt unfertige Builds blind zu erzwingen.
-*   **OpenClaw:** Ein KI-Agenten-Framework mit Reinforcement Learning (RL) und Skill-Integration (z.B. `gcali` für Google Kalender). Nutze den OpenClaw Konfigurations-Manager (Option 3) für die `.env` und `config.json`.
-*   **Clawhub:** Zentraler Server für die Orchestrierung und Verwaltung von KI-Agenten und deren Interaktionen.
-*   **Clawhub CLI:** Ein Kommandozeilen-Tool zur Interaktion mit Clawhub-Diensten.
-*   **OpenClaw RL:** Die Reinforcement Learning Erweiterung für OpenClaw.
-*   **Clawbake:** Ein Tool zur Automatisierung von Builds und Deployments, ideal für CI/CD-Pipelines.
-*   **n8n:** Ein Workflow-Automatisierungstool, das viele Apps und Dienste verbindet (Open-Source-Alternative zu Zapier).
-*   **Activepieces:** Eine Open-Source-Alternative zu Zapier für Workflow-Automatisierung und Integrationen.
-*   **Flowise:** Open-Source-UI für LLM-Anwendungen, basierend auf LangchainJS, zur visuellen Workflow-Erstellung.
-*   **LangFlow:** UI für LangChain, um LLM-Anwendungen visuell zu erstellen und zu testen.
-*   **Pipedream:** Eine Serverless-Plattform zur Integration von APIs und Diensten (Self-Hosted Option ist komplex und wird auf die offizielle Doku verwiesen).
-*   **Huginn:** Ein Open-Source-Agentensystem, das Aktionen im Web automatisiert und Ereignisse überwacht (wird auch im Programmierer-Profil installiert).
-*   **Zenbot-trader:** Eine Plattform für automatisierten Krypto-Handel mit Backtesting, Sim-Trading und Live-Trading.
-*   **Kimi 2:** GitHub-Referenz/Dokumentationsbasis für Kimi-/Moonshot-Workflows. Falls Upstream kein `requirements.txt` oder `pyproject.toml` liefert, wird keine Python-Installation erzwungen.
-*   **Huge Facing (Hugging Face):** Integration von Hugging Face Modellen, entweder lokal über Ollama oder über die Hugging Face Inference API. Ermöglicht den Zugriff auf eine riesige Bibliothek von vortrainierten KI-Modellen.
+- **Ollama:** Lokales LLM-Backend. Du kannst über den Ollama Modell-Manager (Option 2 im Hauptmenü)
+  spezifische Modelle installieren und verwalten.
+- **OpenManus:** GitHub-basierte Agenten-/Automationsbasis. Der Installer prüft Python-venv, Torch
+  und problematische optionale Pakete wie `flash-attn` vorsichtig, statt unfertige Builds blind zu
+  erzwingen.
+- **OpenClaw:** Ein KI-Agenten-Framework mit Reinforcement Learning (RL) und Skill-Integration (z.B.
+  `gcali` für Google Kalender). Nutze den OpenClaw Konfigurations-Manager (Option 3) für die `.env`
+  und `config.json`.
+- **Clawhub:** Zentraler Server für die Orchestrierung und Verwaltung von KI-Agenten und deren
+  Interaktionen.
+- **Clawhub CLI:** Ein Kommandozeilen-Tool zur Interaktion mit Clawhub-Diensten.
+- **OpenClaw RL:** Die Reinforcement Learning Erweiterung für OpenClaw.
+- **Clawbake:** Ein Tool zur Automatisierung von Builds und Deployments, ideal für CI/CD-Pipelines.
+- **n8n:** Ein Workflow-Automatisierungstool, das viele Apps und Dienste verbindet
+  (Open-Source-Alternative zu Zapier).
+- **Activepieces:** Eine Open-Source-Alternative zu Zapier für Workflow-Automatisierung und
+  Integrationen.
+- **Flowise:** Open-Source-UI für LLM-Anwendungen, basierend auf LangchainJS, zur visuellen
+  Workflow-Erstellung.
+- **LangFlow:** UI für LangChain, um LLM-Anwendungen visuell zu erstellen und zu testen.
+- **Pipedream:** Eine Serverless-Plattform zur Integration von APIs und Diensten (Self-Hosted Option
+  ist komplex und wird auf die offizielle Doku verwiesen).
+- **Huginn:** Ein Open-Source-Agentensystem, das Aktionen im Web automatisiert und Ereignisse
+  überwacht (wird auch im Programmierer-Profil installiert).
+- **Zenbot-trader:** Eine Plattform für automatisierten Krypto-Handel mit Backtesting, Sim-Trading
+  und Live-Trading.
+- **Kimi 2:** GitHub-Referenz/Dokumentationsbasis für Kimi-/Moonshot-Workflows. Falls Upstream kein
+  `requirements.txt` oder `pyproject.toml` liefert, wird keine Python-Installation erzwungen.
+- **Huge Facing (Hugging Face):** Integration von Hugging Face Modellen, entweder lokal über Ollama
+  oder über die Hugging Face Inference API. Ermöglicht den Zugriff auf eine riesige Bibliothek von
+  vortrainierten KI-Modellen.
 
 ## 4. Konfiguration und API-Keys
 
-Die detaillierte Konfiguration von API-Keys, Port-Einstellungen und Fallback-Routing zwischen Gemini und Ollama ist im [API-Key Guide](_API-Keys/API_KEY_GUIDE.md) beschrieben. Bitte lies diese Datei sorgfältig durch, bevor du mit der Konfiguration beginnst. Informationen zur DNS-Umstellung und zum DDoS-Schutz findest du in `DNS_DDoS_GUIDE.md`.
+Die detaillierte Konfiguration von API-Keys, Port-Einstellungen und Fallback-Routing zwischen Gemini
+und Ollama ist im [API-Key Guide](_API-Keys/API_KEY_GUIDE.md) beschrieben. Bitte lies diese Datei
+sorgfältig durch, bevor du mit der Konfiguration beginnst. Informationen zur DNS-Umstellung und zum
+DDoS-Schutz findest du in `DNS_DDoS_GUIDE.md`.
 
 ## 5. Multi-VPS-Strategie
 
-Um die Ressourcen optimal zu nutzen und die Stabilität zu erhöhen, wird eine Multi-VPS-Strategie empfohlen. Hier sind einige Vorschläge:
+Um die Ressourcen optimal zu nutzen und die Stabilität zu erhöhen, wird eine Multi-VPS-Strategie
+empfohlen. Hier sind einige Vorschläge:
 
-*   **Letsung MiniPC:** Home Assistant, lokale Ollama-Instanzen (für schnelle, datenschutzsensible Anfragen), Alexa Skill über Cloudflare Tunnel.
-*   **Oracle Cloud Free Tier VPS:** Kubernetes (K3s) Cluster, Zenbot-trader, n8n, Activepieces, Flowise/LangFlow, Pipedream (Self-Hosted).
-*   **Zusätzliche kostenlose VPS:** Können für spezifische Dienste wie Monitoring (z.B. Prometheus/Grafana), Backup-Lösungen oder weitere LLM-Instanzen genutzt werden.
+- **Letsung MiniPC:** Home Assistant, lokale Ollama-Instanzen (für schnelle, datenschutzsensible
+  Anfragen), Alexa Skill über Cloudflare Tunnel.
+- **Oracle Cloud Free Tier VPS:** Kubernetes (K3s) Cluster, Zenbot-trader, n8n, Activepieces,
+  Flowise/LangFlow, Pipedream (Self-Hosted).
+- **Zusätzliche kostenlose VPS:** Können für spezifische Dienste wie Monitoring (z.B.
+  Prometheus/Grafana), Backup-Lösungen oder weitere LLM-Instanzen genutzt werden.
 
 ## 6. Fehlerbehebung und Support
 
-Sollten während der Installation oder Konfiguration Probleme auftreten, konsultiere bitte zuerst die [API-Key Guide](_API-Keys/API_KEY_GUIDE.md), `DNS_DDoS_GUIDE.md` und die `PRIVATE_REPO_GUIDE.md`. Bei weiteren Fragen oder Problemen kannst du Issues im GitHub-Repository erstellen.
+Sollten während der Installation oder Konfiguration Probleme auftreten, konsultiere bitte zuerst die
+[API-Key Guide](_API-Keys/API_KEY_GUIDE.md), `DNS_DDoS_GUIDE.md` und die `PRIVATE_REPO_GUIDE.md`.
+Bei weiteren Fragen oder Problemen kannst du Issues im GitHub-Repository erstellen.
 
 Wir wünschen dir viel Erfolg bei der Einrichtung deines intelligenten, automatisierten Systems!
-# Zusätzliche Hinweise
 
-## sudo Passwort
+## Zusätzliche Hinweise
 
-Wenn während der Installation ein Passwort abgefragt wird, ist damit das `sudo`-Passwort des Linux-Benutzers gemeint. Unter WSL ist das das Passwort deines Ubuntu-/Linux-Users, nicht automatisch dein Windows-Passwort.
+### sudo Passwort
 
-## zstd Voraussetzung
+Wenn während der Installation ein Passwort abgefragt wird, ist damit das `sudo`-Passwort des
+Linux-Benutzers gemeint. Unter WSL ist das das Passwort deines Ubuntu-/Linux-Users, nicht
+automatisch dein Windows-Passwort.
 
-Einige Tools oder Paketarchive benötigen `zstd` zum Entpacken. Das Setup installiert `zstd` jetzt direkt mit den Basis-Abhängigkeiten, damit Meldungen wie `This version requires zstd for extraction` nicht mehr auftreten.
+### zstd Voraussetzung
 
-## pnpm Warnung zu ignorierten Build-Skripten
+Einige Tools oder Paketarchive benötigen `zstd` zum Entpacken. Das Setup installiert `zstd` jetzt
+direkt mit den Basis-Abhängigkeiten, damit Meldungen wie `This version requires zstd for extraction`
+nicht mehr auftreten.
 
-Wenn `pnpm` beim OpenClaw-Build z. B. `@discordjs/opus@0.10.0` als ignoriertes Build-Skript meldet, bietet das Setup jetzt am Ende des Builds einen separaten Bestätigungsschritt für `pnpm approve-builds` an.
+### pnpm Warnung zu ignorierten Build-Skripten
 
-## Cloudflare Tunnel
+Wenn `pnpm` beim OpenClaw-Build z. B. `@discordjs/opus@0.10.0` als ignoriertes Build-Skript meldet,
+bietet das Setup jetzt am Ende des Builds einen separaten Bestätigungsschritt für
+`pnpm approve-builds` an.
 
-Für die Schritt-für-Schritt-Erstellung des benötigten Tunnel-Tokens siehe [CLOUDFLARE_TUNNEL_GUIDE.md](CLOUDFLARE_TUNNEL_GUIDE.md).
+### Cloudflare Tunnel
+
+Für die Schritt-für-Schritt-Erstellung des benötigten Tunnel-Tokens siehe
+[CLOUDFLARE_TUNNEL_GUIDE.md](CLOUDFLARE_TUNNEL_GUIDE.md).

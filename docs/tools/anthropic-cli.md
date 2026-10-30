@@ -1,38 +1,38 @@
 # Anthropic CLI: quelloffene Claude-API-CLI `ant`
 
-**Sinn und Zweck:** Mit der offiziellen CLI `ant` die Claude-Plattform aus
-dem Terminal oder eigenen Skripten ansprechen. Der Client stammt aus
-[anthropics/anthropic-cli](https://github.com/anthropics/anthropic-cli) und
-steht unter der [MIT-Lizenz](https://github.com/anthropics/anthropic-cli/blob/78ab237474e7c34983d77f6f41fcd1152f32a7ce/LICENSE).
+**Sinn und Zweck:** Mit der offiziellen CLI `ant` die Claude-Plattform aus dem Terminal oder eigenen
+Skripten ansprechen. Der Client stammt aus
+[anthropics/anthropic-cli](https://github.com/anthropics/anthropic-cli) und steht unter der
+[MIT-Lizenz](https://github.com/anthropics/anthropic-cli/blob/78ab237474e7c34983d77f6f41fcd1152f32a7ce/LICENSE).
 Quelloffener Client bedeutet nicht offene Modellgewichte oder kostenlose API-Nutzung.
 
-Stand: **21.10.2026**, Setupstatus `experimental`, optional, kein Docker.
-Gepruefter Pin: `78ab237474e7c34983d77f6f41fcd1152f32a7ce`.
-Hier wurden keine Programme installiert, Go-Builds, Anmeldungen oder API-Aufrufe
-ausgefuehrt. Der Installer ist vorbereitet und mit Offline-Fixtures getestet.
+Stand: **21.10.2026**, Setupstatus `experimental`, optional, kein Docker. Gepruefter Pin:
+`78ab237474e7c34983d77f6f41fcd1152f32a7ce`. Hier wurden keine Programme installiert, Go-Builds,
+Anmeldungen oder API-Aufrufe ausgefuehrt. Der Installer ist vorbereitet und mit Offline-Fixtures
+getestet.
 
 ## Nicht mit Claude Code verwechseln
 
-| Tool | GitHub / Lizenz | Aufgabe im Setup |
-|---|---|---|
-| **Anthropic_CLI / `ant`** | anthropics/anthropic-cli, MIT | Offizieller API-Client fuer Nachrichten und Plattformressourcen; aus Go-Quellen baubar |
+| Tool                       | GitHub / Lizenz                                                                                            | Aufgabe im Setup                                                                          |
+| -------------------------- | ---------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| **Anthropic_CLI / `ant`**  | anthropics/anthropic-cli, MIT                                                                              | Offizieller API-Client fuer Nachrichten und Plattformressourcen; aus Go-Quellen baubar    |
 | **Claude_Code / `claude`** | anthropics/claude-code, [Commercial Terms](https://github.com/anthropics/claude-code/blob/main/LICENSE.md) | Separater Coding-Agent; der bestehende GitHub-Referenzcheckout ist keine installierte CLI |
 
-Die [Upstream-Anleitung](https://github.com/anthropics/anthropic-cli/blob/78ab237474e7c34983d77f6f41fcd1152f32a7ce/README.md)
-beschreibt Nachrichten, Dateiuploads sowie Agenten-/Session-Verwaltung ueber
-die API. `ant` wird dadurch nicht automatisch zum interaktiven Coding-Agenten
-mit den Workflows von Claude Code. Bestehende Claude-Code-Profile werden nicht
-umbenannt oder heimlich auf einen anderen Client umgeleitet.
+Die
+[Upstream-Anleitung](https://github.com/anthropics/anthropic-cli/blob/78ab237474e7c34983d77f6f41fcd1152f32a7ce/README.md)
+beschreibt Nachrichten, Dateiuploads sowie Agenten-/Session-Verwaltung ueber die API. `ant` wird
+dadurch nicht automatisch zum interaktiven Coding-Agenten mit den Workflows von Claude Code.
+Bestehende Claude-Code-Profile werden nicht umbenannt oder heimlich auf einen anderen Client
+umgeleitet.
 
 ## Installation aus GitHub vorbereiten und ausfuehren
 
-Voraussetzung: vorhandenes Git und Python >=3.10 mit SSL-Unterstuetzung.
-Fuer den Build wird **Go >=1.25** benoetigt; ein nutzbares vorhandenes Go
-wird bevorzugt. Fehlt es oder ist es zu alt, stellt der Installer jetzt
-eine isolierte offizielle Go-Toolchain bereit.
-Massgeblich ist das [go.mod am Pin](https://github.com/anthropics/anthropic-cli/blob/78ab237474e7c34983d77f6f41fcd1152f32a7ce/go.mod);
-die allgemeinere README-Angabe Go >=1.22 reicht fuer diesen Stand nicht aus.
-Keine Systeminstallation, kein sudo/apt und kein Ersetzen von System-Go.
+Voraussetzung: vorhandenes Git und Python >=3.10 mit SSL-Unterstuetzung. Fuer den Build wird
+**Go >=1.25** benoetigt; ein nutzbares vorhandenes Go wird bevorzugt. Fehlt es oder ist es zu alt,
+stellt der Installer jetzt eine isolierte offizielle Go-Toolchain bereit. Massgeblich ist das
+[go.mod am Pin](https://github.com/anthropics/anthropic-cli/blob/78ab237474e7c34983d77f6f41fcd1152f32a7ce/go.mod);
+die allgemeinere README-Angabe Go >=1.22 reicht fuer diesen Stand nicht aus. Keine
+Systeminstallation, kein sudo/apt und kein Ersetzen von System-Go.
 
 ```bash
 bash scripts/tools/anthropic_cli_install.sh --dry-run
@@ -41,100 +41,93 @@ bash scripts/tools/anthropic_cli_doctor.sh
 bash scripts/tools/anthropic_cli_status.sh
 ```
 
-Im Tools-Menue heisst der Eintrag **Anthropic_CLI**. Die explizite Auswahl startet
-den GitHub-Source-Build, keinen Container. Primaerquelle ist der feste GitHub-Pin,
-kein `@latest`, kein Homebrew-/npm-/apt-Installationspfad.
-Go-Modulabhaengigkeiten duerfen beim Build vom Go-Modulproxy geladen werden:
-`proxy.golang.org`, Pruefsummen ueber `sum.golang.org`, Versionen aus go.mod/go.sum.
-"Aus GitHub" bedeutet hier **nicht**, dass jedes transitive Paket allein von
-GitHub geladen wird oder dass der Build ohne Netzwerk moeglich sein muss.
+Im Tools-Menue heisst der Eintrag **Anthropic_CLI**. Die explizite Auswahl startet den
+GitHub-Source-Build, keinen Container. Primaerquelle ist der feste GitHub-Pin, kein `@latest`, kein
+Homebrew-/npm-/apt-Installationspfad. Go-Modulabhaengigkeiten duerfen beim Build vom Go-Modulproxy
+geladen werden: `proxy.golang.org`, Pruefsummen ueber `sum.golang.org`, Versionen aus go.mod/go.sum.
+"Aus GitHub" bedeutet hier **nicht**, dass jedes transitive Paket allein von GitHub geladen wird
+oder dass der Build ohne Netzwerk moeglich sein muss.
 
 ### Fehler "Go >=1.25 fehlt" automatisch beheben
 
-Der alte Installer brach bei fehlendem Go ab, obwohl die Speicherpruefung
-erfolgreich war. Die korrigierte Revision meldet im aktuellen Log:
-`Anthropic_CLI-Installer: 2026-10-21-private-go-bootstrap-download-v2`.
-Nach Uebernahme dieser Korrektur kann der normale Installationsaufruf oder
-`--repair` den fehlenden Build-Unterbau automatisch bereitstellen.
-Eine lokale Repository-Aenderung ist noch keine Veroeffentlichung auf GitHub.
+Der alte Installer brach bei fehlendem Go ab, obwohl die Speicherpruefung erfolgreich war. Die
+korrigierte Revision meldet im aktuellen Log:
+`Anthropic_CLI-Installer: 2026-10-21-private-go-bootstrap-download-v2`. Nach Uebernahme dieser
+Korrektur kann der normale Installationsaufruf oder `--repair` den fehlenden Build-Unterbau
+automatisch bereitstellen. Eine lokale Repository-Aenderung ist noch keine Veroeffentlichung auf
+GitHub.
 
-Der private Fallback ist auf **Go 1.27.3** gepinnt, passend zum Mindestwert
-Go >=1.25. Version, Archivgroessen und SHA-256 stammen aus den am 21.10.2026
-gelesenen [offiziellen Download-Metadaten](https://go.dev/dl/?mode=json).
-Keine unkontrollierte `latest`-Auswahl bei jedem Start.
+Der private Fallback ist auf **Go 1.27.3** gepinnt, passend zum Mindestwert Go >=1.25. Version,
+Archivgroessen und SHA-256 stammen aus den am 21.10.2026 gelesenen
+[offiziellen Download-Metadaten](https://go.dev/dl/?mode=json). Keine unkontrollierte
+`latest`-Auswahl bei jedem Start.
 
-| Host | Intel/AMD 64-Bit | ARM64 |
-|---|---|---|
-| Linux / bereits vom Nutzer gestartetes WSL | `linux-amd64` | `linux-arm64` |
-| Windows nativ | `windows-amd64` | `windows-arm64` |
-| macOS | `darwin-amd64` | `darwin-arm64` |
+| Host                                       | Intel/AMD 64-Bit | ARM64           |
+| ------------------------------------------ | ---------------- | --------------- |
+| Linux / bereits vom Nutzer gestartetes WSL | `linux-amd64`    | `linux-arm64`   |
+| Windows nativ                              | `windows-amd64`  | `windows-arm64` |
+| macOS                                      | `darwin-amd64`   | `darwin-arm64`  |
 
-Der Installer wechselt nicht selbst nach WSL. Andere Architekturen benoetigen
-eine separat bereitgestellte kompatible Go-Toolchain. Die Plattformauswahl
-wurde mit Fixtures geprueft, nicht durch echte Builds auf allen sechs Hosts.
+Der Installer wechselt nicht selbst nach WSL. Andere Architekturen benoetigen eine separat
+bereitgestellte kompatible Go-Toolchain. Die Plattformauswahl wurde mit Fixtures geprueft, nicht
+durch echte Builds auf allen sechs Hosts.
 
-**Herkunft transparent:** Die Anthropic-CLI wird weiter aus GitHub gebaut.
-Nur die fehlende Go-Buildabhaengigkeit wird als offizielles Archiv von
-`https://dl.google.com/go/` geladen, wie in der
-[Go-Installationsdokumentation](https://go.dev/doc/install) beschrieben.
-Es ist kein Docker-Image, Drittanbieter-Installer oder aus GitHub selbst
-gebautes Go. Ein Go-Source-Build wuerde seinerseits eine Bootstrap-Toolchain
-benoetigen und waere hier unnoetig schwer.
+**Herkunft transparent:** Die Anthropic-CLI wird weiter aus GitHub gebaut. Nur die fehlende
+Go-Buildabhaengigkeit wird als offizielles Archiv von `https://dl.google.com/go/` geladen, wie in
+der [Go-Installationsdokumentation](https://go.dev/doc/install) beschrieben. Es ist kein
+Docker-Image, Drittanbieter-Installer oder aus GitHub selbst gebautes Go. Ein Go-Source-Build wuerde
+seinerseits eine Bootstrap-Toolchain benoetigen und waere hier unnoetig schwer.
 
-Vor Entpacken/Ausfuehren werden gepinnte Groesse und SHA-256 kontrolliert.
-Keine Credential-Header oder geerbten Proxy-Credentials. Umleitungen sind nur
-zwischen den zwei exakten offiziellen HTTPS-Archiv-URLs erlaubt; keine fremden
-Mirrors oder unbegrenzten Wiederholungen. Archive duerfen nur regulaere Dateien
-unter `go/` enthalten; Pfadausbrueche, Links und Spezialdateien werden
-abgewiesen. Entpackgrenze: 1 GiB / 60.000 Eintraege. Vor Wiederverwendung
-wird der gesamte private Dateibestand mit seinem Hashmanifest verglichen;
-veraenderte oder unbekannte Toolchains werden nicht ueberschrieben.
-Das ersetzt keine Betriebssystem-Sandbox.
+Vor Entpacken/Ausfuehren werden gepinnte Groesse und SHA-256 kontrolliert. Keine Credential-Header
+oder geerbten Proxy-Credentials. Umleitungen sind nur zwischen den zwei exakten offiziellen
+HTTPS-Archiv-URLs erlaubt; keine fremden Mirrors oder unbegrenzten Wiederholungen. Archive duerfen
+nur regulaere Dateien unter `go/` enthalten; Pfadausbrueche, Links und Spezialdateien werden
+abgewiesen. Entpackgrenze: 1 GiB / 60.000 Eintraege. Vor Wiederverwendung wird der gesamte private
+Dateibestand mit seinem Hashmanifest verglichen; veraenderte oder unbekannte Toolchains werden nicht
+ueberschrieben. Das ersetzt keine Betriebssystem-Sandbox.
 
 ### Go-Download scheitert trotz ausreichender Disk
 
-Das Log vom 21.10.2026 um 02:52 zeigt bereits den privaten Go-Bootstrap;
-die aeltere pauschale Fehlermeldung beweist weder Speicherplatzmangel noch einen
-bestimmten Netzwerkfehler. Ein reiner HEAD-Aufruf von diesem Windows-Rechner
-lieferte am 21.10.2026 fuer das Linux-amd64-Archiv HTTP 200 und die erwarteten
-70.588.678 Bytes. Das ist kein Download- oder Verbindungstest aus deiner WSL.
-Es wurde weder ein Go-Archiv heruntergeladen noch eine Installation gestartet.
+Das Log vom 21.10.2026 um 02:52 zeigt bereits den privaten Go-Bootstrap; die aeltere pauschale
+Fehlermeldung beweist weder Speicherplatzmangel noch einen bestimmten Netzwerkfehler. Ein reiner
+HEAD-Aufruf von diesem Windows-Rechner lieferte am 21.10.2026 fuer das Linux-amd64-Archiv HTTP 200
+und die erwarteten 70.588.678 Bytes. Das ist kein Download- oder Verbindungstest aus deiner WSL. Es
+wurde weder ein Go-Archiv heruntergeladen noch eine Installation gestartet.
 
-Die neue Revision protokolliert Versuch, Phase, gelesene Bytes und Fehlerklasse:
-DNS, Zeitlimit, HTTP-Status, TLS/Zertifikate, Schreibrechte oder Speicherplatz.
-Rohmeldungen, Proxy-Zugangsdaten und HTTP-Antwortinhalte werden nicht ausgegeben.
-Die tatsaechliche Ursache deiner WSL-Verbindung bleibt bis zum neuen Log offen.
+Die neue Revision protokolliert Versuch, Phase, gelesene Bytes und Fehlerklasse: DNS, Zeitlimit,
+HTTP-Status, TLS/Zertifikate, Schreibrechte oder Speicherplatz. Rohmeldungen, Proxy-Zugangsdaten und
+HTTP-Antwortinhalte werden nicht ausgegeben. Die tatsaechliche Ursache deiner WSL-Verbindung bleibt
+bis zum neuen Log offen.
 
-Der erste Versuch nutzt `https://dl.google.com/go/<Archiv>`. Bei geeigneten
-Transportfehlern wird einmal `https://go.dev/dl/<Archiv>` versucht. Dieser zweite
-Zugang leitet normalerweise wieder auf denselben Google-Host um: **kein
-unabhaengiger Mirror und keine Garantie bei einer Google-Netzsperre**.
-Socket-Zeitlimit maximal 30 Sekunden; Zeitbudget 600 Sekunden, geprueft zwischen
-Lesevorgaengen. Ein bereits laufender Socket-Aufruf kann das Budget um sein
-Zeitlimit ueberschreiten. Bei TLS-, Rechte-, Disk- oder Integritaetsfehlern wird
-nicht auf andere Quellen ausgewichen. TLS-Pruefung bleibt immer eingeschaltet.
+Der erste Versuch nutzt `https://dl.google.com/go/<Archiv>`. Bei geeigneten Transportfehlern wird
+einmal `https://go.dev/dl/<Archiv>` versucht. Dieser zweite Zugang leitet normalerweise wieder auf
+denselben Google-Host um: **kein unabhaengiger Mirror und keine Garantie bei einer
+Google-Netzsperre**. Socket-Zeitlimit maximal 30 Sekunden; Zeitbudget 600 Sekunden, geprueft
+zwischen Lesevorgaengen. Ein bereits laufender Socket-Aufruf kann das Budget um sein Zeitlimit
+ueberschreiten. Bei TLS-, Rechte-, Disk- oder Integritaetsfehlern wird nicht auf andere Quellen
+ausgewichen. TLS-Pruefung bleibt immer eingeschaltet.
 
-Im Standardmodus `auto` werden vorhandene HTTP(S)-Proxy-Einstellungen ohne
-Benutzername/Passwort validiert und fuer Archiv- und Go-Moduldownloads verwendet.
-Der vorherige Bootstrap ignorierte Proxys vollstaendig. Proxy-Werte erscheinen
-nicht im Log. Bei authentifizierten oder ungueltigen Proxy-URLs wird abgebrochen,
-nicht stillschweigend direkt verbunden. Ein bewusster Direktzugriff ist moeglich:
+Im Standardmodus `auto` werden vorhandene HTTP(S)-Proxy-Einstellungen ohne Benutzername/Passwort
+validiert und fuer Archiv- und Go-Moduldownloads verwendet. Der vorherige Bootstrap ignorierte
+Proxys vollstaendig. Proxy-Werte erscheinen nicht im Log. Bei authentifizierten oder ungueltigen
+Proxy-URLs wird abgebrochen, nicht stillschweigend direkt verbunden. Ein bewusster Direktzugriff ist
+moeglich:
 
 ```bash
 ANTHROPIC_CLI_GO_PROXY_MODE=direct bash scripts/tools/anthropic_cli_install.sh --repair
 ```
 
-Alternativ ein vorher manuell von der [offiziellen Go-Downloadseite](https://go.dev/dl/)
-geladenes, zur Zielplattform passendes Archiv angeben. Kein Entpacken notwendig:
+Alternativ ein vorher manuell von der [offiziellen Go-Downloadseite](https://go.dev/dl/) geladenes,
+zur Zielplattform passendes Archiv angeben. Kein Entpacken notwendig:
 
 ```bash
 ANTHROPIC_CLI_GO_ARCHIVE=/absoluter/pfad/go1.27.3.linux-amd64.tar.gz bash scripts/tools/anthropic_cli_install.sh --repair
 ```
 
-Der Installer prueft die gepinnte Groesse und SHA-256 vor und nach dem Kopieren;
-die ausgewaehlte Quelldatei bleibt erhalten. Relative Pfade und Links werden
-abgewiesen. Dies ersetzt nur den Toolchain-Download, nicht GitHub-Zugriff und
-Go-Moduldownloads fuer den anschliessenden Build. Kein API-Key erforderlich.
+Der Installer prueft die gepinnte Groesse und SHA-256 vor und nach dem Kopieren; die ausgewaehlte
+Quelldatei bleibt erhalten. Relative Pfade und Links werden abgewiesen. Dies ersetzt nur den
+Toolchain-Download, nicht GitHub-Zugriff und Go-Moduldownloads fuer den anschliessenden Build. Kein
+API-Key erforderlich.
 
 Bewusst keinen automatischen Go-Download zulassen:
 
@@ -145,9 +138,9 @@ ANTHROPIC_CLI_GO_BOOTSTRAP=0 bash scripts/tools/anthropic_cli_install.sh --repai
 ```
 
 Standard ist `ANTHROPIC_CLI_GO_BOOTSTRAP=1` fuer einen explizit ausgewaehlten
-Installations-/Reparaturvorgang. `--source-only`, `--dry-run`, Check/Doctor,
-Status und Deinstallation laden kein Go nach. Eine bereits erfolgreich
-registrierte CLI wird nicht allein wegen fehlendem Go neu gebaut.
+Installations-/Reparaturvorgang. `--source-only`, `--dry-run`, Check/Doctor, Status und
+Deinstallation laden kein Go nach. Eine bereits erfolgreich registrierte CLI wird nicht allein wegen
+fehlendem Go neu gebaut.
 
 Nur Quellcode, ohne Go-Build und ohne Installed-Marker:
 
@@ -157,23 +150,22 @@ bash scripts/tools/anthropic_cli_install.sh --source-only
 
 Zielbasis: `${OPENCLAW_USER_DATA_DIR:-$HOME/.openclaw_ultimate_user_data}/tools/anthropic_cli/`.
 
-| Bestandteil | Pfad / Verhalten |
-|---|---|
-| Quellen | `source/`, Pin und unveraenderter Git-Zustand werden geprueft |
-| Private CLI | `bin/ant`, nativ unter Windows `bin/ant.exe` |
-| Private Go-Abhaengigkeit | `toolchain/go1.27.3-<os>-<arch>/go/`, eigener Besitz-/Hashnachweis in `toolchain-ready.json` daneben |
-| Status | `build-ready.json` erst nach erfolgreichem Build, Go-Buildinfo-Pruefung und Hash-Erfassung |
-| Cache / Temp | `go-cache/`, `go-build-cache/`, `build-temp/`, isoliertes `build-home/`; keine persoenliche Go-Konfiguration uebernehmen |
-| Logs / Lock | Eigenes aktuelles Log im externen `install_logs/`, Operationssperre gegen doppelte Installation |
-| Reserven | 1 GiB Disk fuer Quellen, 4 GiB fuer Build inklusive Go-Bootstrap; unter Linux mindestens 1 GiB aktuell verfuegbarer RAM; WSL-C:-Reserve separat geprueft |
+| Bestandteil              | Pfad / Verhalten                                                                                                                                         |
+| ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Quellen                  | `source/`, Pin und unveraenderter Git-Zustand werden geprueft                                                                                            |
+| Private CLI              | `bin/ant`, nativ unter Windows `bin/ant.exe`                                                                                                             |
+| Private Go-Abhaengigkeit | `toolchain/go1.27.3-<os>-<arch>/go/`, eigener Besitz-/Hashnachweis in `toolchain-ready.json` daneben                                                     |
+| Status                   | `build-ready.json` erst nach erfolgreichem Build, Go-Buildinfo-Pruefung und Hash-Erfassung                                                               |
+| Cache / Temp             | `go-cache/`, `go-build-cache/`, `build-temp/`, isoliertes `build-home/`; keine persoenliche Go-Konfiguration uebernehmen                                 |
+| Logs / Lock              | Eigenes aktuelles Log im externen `install_logs/`, Operationssperre gegen doppelte Installation                                                          |
+| Reserven                 | 1 GiB Disk fuer Quellen, 4 GiB fuer Build inklusive Go-Bootstrap; unter Linux mindestens 1 GiB aktuell verfuegbarer RAM; WSL-C:-Reserve separat geprueft |
 
-Go laeuft mit `GOTOOLCHAIN=local`, CGO aus, Build-Parallelitaet 1 und zwei
-Go-Prozessoren. Das gesetzte Go-GC-Speicherziel ist kein hartes RAM-Limit.
-Der Build ist auf 1800 Sekunden je langer Phase begrenzt. Keine API-Keys,
-Cloud-Credentials oder fremden Go-Overrides aus der Umgebung an den Build geben.
-Die verwendete Toolchain muss vertrauenswuerdig sein; Umgebungsfilterung ist
-keine Betriebssystem-Sandbox. Kein `go generate` und kein Start der gebauten CLI.
-Die Buildinfo-Pruefung verwendet `go version -m`, nicht `ant --version`.
+Go laeuft mit `GOTOOLCHAIN=local`, CGO aus, Build-Parallelitaet 1 und zwei Go-Prozessoren. Das
+gesetzte Go-GC-Speicherziel ist kein hartes RAM-Limit. Der Build ist auf 1800 Sekunden je langer
+Phase begrenzt. Keine API-Keys, Cloud-Credentials oder fremden Go-Overrides aus der Umgebung an den
+Build geben. Die verwendete Toolchain muss vertrauenswuerdig sein; Umgebungsfilterung ist keine
+Betriebssystem-Sandbox. Kein `go generate` und kein Start der gebauten CLI. Die Buildinfo-Pruefung
+verwendet `go version -m`, nicht `ant --version`.
 
 ## Windows, Linux und macOS
 
@@ -186,18 +178,18 @@ py -3 -B scripts/tools/helpers/anthropic_cli.py install
 py -3 -B scripts/tools/helpers/anthropic_cli.py doctor
 ```
 
-Nach eigener erfolgreicher Installation ist die CLI fuer eine bewusste lokale
-Hilfeabfrage erreichbar, ohne PATH oder Shellprofile zu veraendern:
+Nach eigener erfolgreicher Installation ist die CLI fuer eine bewusste lokale Hilfeabfrage
+erreichbar, ohne PATH oder Shellprofile zu veraendern:
 
 ```powershell
 & "$HOME/.openclaw_ultimate_user_data/tools/anthropic_cli/bin/ant.exe" --help
 ```
 
-Unter Linux/macOS entsprechend `bin/ant --help` unter der gewaehlten Zielbasis
-aufrufen. Diese Hilfeabfragen werden vom Installer nicht ausgefuehrt. Bei
-`OPENCLAW_USER_DATA_DIR` muss der Pfad entsprechend angepasst werden. ARM oder
-andere Architekturen sind erst nach einem echten Build/Smoke-Test als getestet
-zu betrachten; keine Performance-Zusage fuer MiniPC, Raspberry Pi oder VPS.
+Unter Linux/macOS entsprechend `bin/ant --help` unter der gewaehlten Zielbasis aufrufen. Diese
+Hilfeabfragen werden vom Installer nicht ausgefuehrt. Bei `OPENCLAW_USER_DATA_DIR` muss der Pfad
+entsprechend angepasst werden. ARM oder andere Architekturen sind erst nach einem echten
+Build/Smoke-Test als getestet zu betrachten; keine Performance-Zusage fuer MiniPC, Raspberry Pi oder
+VPS.
 
 ## Update, Repair, Doctor und Deinstallation
 
@@ -209,40 +201,38 @@ bash scripts/tools/anthropic_cli_uninstall.sh --dry-run
 bash scripts/tools/anthropic_cli_uninstall.sh
 ```
 
-Update bleibt auf demselben Pin. Lokal geaenderte Quellen oder eine geaenderte
-CLI werden nicht ueberschrieben. Doctor/Status starten weder CLI noch Go oder
-API, sondern pruefen Quellpin, Besitzmarker und Binary-Hash. `api_tested=false`
-bleibt ausdruecklich erhalten: ein gebauter API-Client ist kein erfolgreicher
-Anmeldungs- oder Modelltest. Ein Quellcheckout allein gilt nicht als installiert.
+Update bleibt auf demselben Pin. Lokal geaenderte Quellen oder eine geaenderte CLI werden nicht
+ueberschrieben. Doctor/Status starten weder CLI noch Go oder API, sondern pruefen Quellpin,
+Besitzmarker und Binary-Hash. `api_tested=false` bleibt ausdruecklich erhalten: ein gebauter
+API-Client ist kein erfolgreicher Anmeldungs- oder Modelltest. Ein Quellcheckout allein gilt nicht
+als installiert.
 
-Deinstallation entfernt nur die hashgepruefte eigene CLI und ihren Build-Marker.
-Fremde Dateien, Quellen, Logs, private Go-Toolchain, Go-Cache, gemeinsam genutztes
-Go und Zugangsdaten bleiben erhalten. Ein erfolgreicher Go-Bootstrap ist ein
-wiederverwendbarer Build-Unterbau und kein Installationsnachweis fuer `ant`.
-Scheitert danach der ant-Build, bleibt diese fertige Toolchain fuer den Retry;
-kein pauschales Loeschen von Build-Unterbau oder Cache.
-Neue Go-Download-/Entpack-Stagings werden bei Fehlern vollstaendig entfernt,
-ohne bestehende Daten anzutasten. Neue Build-Stagingdateien werden ebenfalls entfernt;
-ein Fehler beim abschliessenden Markerschreiben entfernt auch die neue CLI.
-Alte erfolgreiche Installationen werden nicht wegen eines spaeteren Fremdfehlers
-geloescht. Caches koennen Platz belegen; kein pauschales Autoremove.
-Speicherplatzmangel waehrend eines Downloads wird ausdruecklich so ins aktuelle
-Vorgangslog geschrieben und nicht als alter Log- oder reiner Netzwerkfehler
-ausgegeben. Eine bestandene Vorpruefung garantiert nicht, dass ein parallel
-belegter Windows-Datentraeger waehrend des gesamten Builds ausreichend frei bleibt.
+Deinstallation entfernt nur die hashgepruefte eigene CLI und ihren Build-Marker. Fremde Dateien,
+Quellen, Logs, private Go-Toolchain, Go-Cache, gemeinsam genutztes Go und Zugangsdaten bleiben
+erhalten. Ein erfolgreicher Go-Bootstrap ist ein wiederverwendbarer Build-Unterbau und kein
+Installationsnachweis fuer `ant`. Scheitert danach der ant-Build, bleibt diese fertige Toolchain
+fuer den Retry; kein pauschales Loeschen von Build-Unterbau oder Cache. Neue
+Go-Download-/Entpack-Stagings werden bei Fehlern vollstaendig entfernt, ohne bestehende Daten
+anzutasten. Neue Build-Stagingdateien werden ebenfalls entfernt; ein Fehler beim abschliessenden
+Markerschreiben entfernt auch die neue CLI. Alte erfolgreiche Installationen werden nicht wegen
+eines spaeteren Fremdfehlers geloescht. Caches koennen Platz belegen; kein pauschales Autoremove.
+Speicherplatzmangel waehrend eines Downloads wird ausdruecklich so ins aktuelle Vorgangslog
+geschrieben und nicht als alter Log- oder reiner Netzwerkfehler ausgegeben. Eine bestandene
+Vorpruefung garantiert nicht, dass ein parallel belegter Windows-Datentraeger waehrend des gesamten
+Builds ausreichend frei bleibt.
 
 ## API-Freigabe bleibt ein eigener Schritt
 
-Die Nutzung kann Daten an externe Anbieter senden und Kosten verursachen.
-Kein `ant auth login`, `ant messages create`, `ant apply`, Upload oder Agentenstart
-im Installer. Erst Modell-ID, API-Zugang, Budget, Datenfreigabe und Rechte pruefen.
-Schluessel nicht als Kommandozeilenargument oder in Markdown/Logs hinterlegen.
-Vorhandenes `ANTHROPIC_API_KEY` nur bewusst im separaten Nutzungsprozess verwenden.
+Die Nutzung kann Daten an externe Anbieter senden und Kosten verursachen. Kein `ant auth login`,
+`ant messages create`, `ant apply`, Upload oder Agentenstart im Installer. Erst Modell-ID,
+API-Zugang, Budget, Datenfreigabe und Rechte pruefen. Schluessel nicht als Kommandozeilenargument
+oder in Markdown/Logs hinterlegen. Vorhandenes `ANTHROPIC_API_KEY` nur bewusst im separaten
+Nutzungsprozess verwenden.
 
-Ein OpenAI-kompatibler Endpunkt wie OpenRouter/token8341 ist nicht automatisch
-ein passender Anthropic-Protokolladapter. Auch Ollama und FreeLLMAPI werden nicht
-automatisch konfiguriert oder getestet. Keine globale `ANTHROPIC_BASE_URL` aendern.
+Ein OpenAI-kompatibler Endpunkt wie OpenRouter/token8341 ist nicht automatisch ein passender
+Anthropic-Protokolladapter. Auch Ollama und FreeLLMAPI werden nicht automatisch konfiguriert oder
+getestet. Keine globale `ANTHROPIC_BASE_URL` aendern.
 
 Weiter: [Coding-Agenten](../agents/coding-agent-profiles.md),
-[API-Key-Katalog](../_API-Keys/PROVIDER_KEY_CATALOG.md),
-[FreeLLMAPI](freellmapi.md), [Secrets](../SECRETS_AND_KEYS.md).
+[API-Key-Katalog](../_API-Keys/PROVIDER_KEY_CATALOG.md), [FreeLLMAPI](freellmapi.md),
+[Secrets](../SECRETS_AND_KEYS.md).

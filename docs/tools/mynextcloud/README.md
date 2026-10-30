@@ -16,7 +16,8 @@ Upstreams:
 
 - Fork based on Nextcloud.
 - Not affiliated with or endorsed by Nextcloud GmbH.
-- Nextcloud-Markenname, Logos, Icons, Splashscreens und offizielle Branding-Hinweise nicht als eigenes Branding uebernehmen.
+- Nextcloud-Markenname, Logos, Icons, Splashscreens und offizielle Branding-Hinweise nicht als
+  eigenes Branding uebernehmen.
 - AGPL/GPL/MIT-Lizenztexte und Copyright-Hinweise erhalten.
 - Keine Secrets ins Repo.
 - Keine Docker-Pflicht; Docker nur optional.

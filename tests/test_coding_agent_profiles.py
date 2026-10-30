@@ -5,6 +5,7 @@ import os
 from pathlib import Path
 import subprocess
 import tempfile
+from doc_assertions import assert_prose_in, assert_prose_not_in
 import unittest
 from unittest import mock
 
@@ -126,7 +127,7 @@ class Profiles(unittest.TestCase):
     def test_documentation_is_explicit_about_missing_runtime(self):
         doc = (ROOT / "docs/agents/coding-agent-profiles.md").read_text(encoding="utf-8")
         for word in ("nicht Open Source", "Offline-Routingplan", "keine Sandbox", "runtime_ready", "nur GitHub"):
-            self.assertIn(word, doc)
+            assert_prose_in(self, word, doc)
 
 
 if __name__ == "__main__":

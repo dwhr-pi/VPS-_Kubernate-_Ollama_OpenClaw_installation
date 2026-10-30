@@ -3,15 +3,25 @@
 set -euo pipefail
 umask 077
 mode=plan server= plugin=
-die() { printf 'Velero-Vorbereitung abgebrochen: %s\n' "$*" >&2; exit 1; }
+die() {
+  printf 'Velero-Vorbereitung abgebrochen: %s\n' "$*" >&2
+  exit 1
+}
 while (($#)); do
   case "$1" in
-    --render) mode=render; shift ;;
-    --server-image|--plugin-image)
+    --render)
+      mode=render
+      shift
+      ;;
+    --server-image | --plugin-image)
       (($# >= 2)) || die 'Optionswert fehlt.'
       case "$1" in --server-image) server=$2 ;; --plugin-image) plugin=$2 ;; esac
-      shift 2 ;;
-    --help|-h) printf '%s\n' '--render --server-image REGISTRY/velero@sha256:HASH --plugin-image REGISTRY/aws-plugin@sha256:HASH'; exit 0 ;;
+      shift 2
+      ;;
+    --help | -h)
+      printf '%s\n' '--render --server-image REGISTRY/velero@sha256:HASH --plugin-image REGISTRY/aws-plugin@sha256:HASH'
+      exit 0
+      ;;
     *) die 'Nur Plan oder --render erlaubt; kein automatisches Apply/Secret-Import.' ;;
   esac
 done

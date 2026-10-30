@@ -9,13 +9,13 @@ YELLOW="\033[1;33m"
 NC="\033[0m"
 
 if ! command -v dialog >/dev/null 2>&1; then
-    echo -e "${RED}Fehler: dialog ist nicht installiert.${NC}"
-    exit 1
+  echo -e "${RED}Fehler: dialog ist nicht installiert.${NC}"
+  exit 1
 fi
 
 if ! command -v ollama >/dev/null 2>&1; then
-    echo -e "${RED}Fehler: Ollama ist nicht installiert.${NC}"
-    exit 1
+  echo -e "${RED}Fehler: Ollama ist nicht installiert.${NC}"
+  exit 1
 fi
 
 declare -A MODEL_DESC
@@ -86,36 +86,36 @@ MODEL_RAM["codestral:22b"]="empf. ab 28-32 GB RAM"
 
 declare -A INSTALLED
 while IFS= read -r line; do
-    model_name="$(printf '%s' "$line" | awk '{print $1}')"
-    [ -n "$model_name" ] && INSTALLED["$model_name"]=1
+  model_name="$(printf '%s' "$line" | awk '{print $1}')"
+  [ -n "$model_name" ] && INSTALLED["$model_name"]=1
 done < <(ollama list 2>/dev/null | tail -n +2 || true)
 
 options=()
 for model in "${MODEL_KEYS[@]}"; do
-    state="off"
-    if [ "${INSTALLED[$model]:-}" = "1" ]; then
-        state="on"
-    fi
-    options+=("$model" "${MODEL_SIZE[$model]} | ${MODEL_RAM[$model]} | ${MODEL_DESC[$model]}" "$state")
+  state="off"
+  if [ "${INSTALLED[$model]:-}" = "1" ]; then
+    state="on"
+  fi
+  options+=("$model" "${MODEL_SIZE[$model]} | ${MODEL_RAM[$model]} | ${MODEL_DESC[$model]}" "$state")
 done
 
 dialog --clear --backtitle "OpenClaw & AI Infrastructure - Ultimate Setup" \
---title "Ollama Modellkatalog" --checklist \
-"Modelle auswählen: markiert = installiert, unmarkiert = entfernt." 26 120 14 \
-"${options[@]}" 2> /tmp/ollama_catalog_selection
+  --title "Ollama Modellkatalog" --checklist \
+  "Modelle auswählen: markiert = installiert, unmarkiert = entfernt." 26 120 14 \
+  "${options[@]}" 2>/tmp/ollama_catalog_selection
 
 [ $? -eq 0 ] || exit 0
 
-mapfile -t SELECTED_MODELS < <(tr ' ' '\n' < /tmp/ollama_catalog_selection | tr -d '"' | sed '/^$/d')
+mapfile -t SELECTED_MODELS < <(tr ' ' '\n' </tmp/ollama_catalog_selection | tr -d '"' | sed '/^$/d')
 
 contains_selected() {
-    local needle="$1"
-    shift
-    local item
-    for item in "$@"; do
-        [ "$item" = "$needle" ] && return 0
-    done
-    return 1
+  local needle="$1"
+  shift
+  local item
+  for item in "$@"; do
+    [ "$item" = "$needle" ] && return 0
+  done
+  return 1
 }
 
 clear
@@ -124,17 +124,17 @@ echo -e "${YELLOW}Bearbeite ausgewählte Ollama-Modelle...${NC}"
 echo
 
 for model in "${MODEL_KEYS[@]}"; do
-    if contains_selected "$model" "${SELECTED_MODELS[@]}"; then
-        if [ "${INSTALLED[$model]:-}" != "1" ]; then
-            echo -e "${BLUE}Installiere Modell: ${model}${NC}"
-            ollama pull "$model"
-        fi
-    else
-        if [ "${INSTALLED[$model]:-}" = "1" ]; then
-            echo -e "${BLUE}Entferne Modell: ${model}${NC}"
-            ollama rm "$model" || true
-        fi
+  if contains_selected "$model" "${SELECTED_MODELS[@]}"; then
+    if [ "${INSTALLED[$model]:-}" != "1" ]; then
+      echo -e "${BLUE}Installiere Modell: ${model}${NC}"
+      ollama pull "$model"
     fi
+  else
+    if [ "${INSTALLED[$model]:-}" = "1" ]; then
+      echo -e "${BLUE}Entferne Modell: ${model}${NC}"
+      ollama rm "$model" || true
+    fi
+  fi
 done
 
 echo

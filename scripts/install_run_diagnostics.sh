@@ -35,7 +35,7 @@ while [ "$#" -gt 0 ]; do
       LIMIT="${2:-40}"
       shift 2
       ;;
-    --email|--send-email)
+    --email | --send-email)
       EMAIL_MODE="always"
       if [ "${2:-}" != "" ] && [[ "${2:-}" != --* ]]; then
         EMAIL_TO="$2"
@@ -45,7 +45,7 @@ while [ "$#" -gt 0 ]; do
         shift
       fi
       ;;
-    -h|--help)
+    -h | --help)
       usage
       exit 0
       ;;
@@ -112,9 +112,9 @@ send_report_email() {
 
   if command -v mail >/dev/null 2>&1; then
     if [ -n "${MAIL_FROM:-}" ]; then
-      mail -r "$MAIL_FROM" -s "$subject" "$recipient" < "$report_file"
+      mail -r "$MAIL_FROM" -s "$subject" "$recipient" <"$report_file"
     else
-      mail -s "$subject" "$recipient" < "$report_file"
+      mail -s "$subject" "$recipient" <"$report_file"
     fi
     return $?
   fi
@@ -304,7 +304,7 @@ list_recent_logs() {
   echo 'bash scripts/dependency_snapshot.sh'
   echo 'du -sh /opt/* ~/.cache ~/.ollama ~/ai-stack ~/.openclaw_ultimate_user_data 2>/dev/null | sort -h'
   echo '```'
-} > "$REPORT_FILE"
+} >"$REPORT_FILE"
 
 echo "Installationslauf-Diagnose erstellt: $REPORT_FILE"
 sed -n '1,80p' "$REPORT_FILE"

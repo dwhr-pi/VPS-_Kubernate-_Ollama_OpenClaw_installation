@@ -4,14 +4,21 @@ set -euo pipefail
 umask 077
 commit= expected= destination="$HOME/openclaw_ultimate_setup" verify_only=0
 repo=https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation.git
-die() { printf 'Verifizierter Bootstrap abgebrochen: %s\n' "$*" >&2; exit 1; }
+die() {
+  printf 'Verifizierter Bootstrap abgebrochen: %s\n' "$*" >&2
+  exit 1
+}
 while (($#)); do
   case "$1" in
-    --commit|--installer-sha256|--destination)
+    --commit | --installer-sha256 | --destination)
       (($# >= 2)) || die 'Optionswert fehlt.'
       case "$1" in --commit) commit=$2 ;; --installer-sha256) expected=$2 ;; --destination) destination=$2 ;; esac
-      shift 2 ;;
-    --verify-only) verify_only=1; shift ;;
+      shift 2
+      ;;
+    --verify-only)
+      verify_only=1
+      shift
+      ;;
     *) die '--commit VOLLER_SHA --installer-sha256 SHA256 [--destination ABS] [--verify-only]' ;;
   esac
 done
@@ -36,7 +43,7 @@ git_safe() {
   env -i PATH="$PATH" HOME="$stage/home" GIT_CONFIG_NOSYSTEM=1 GIT_CONFIG_GLOBAL=/dev/null \
     GIT_TEMPLATE_DIR="$stage/templates" GIT_TERMINAL_PROMPT=0 GIT_ASKPASS=/bin/false \
     git -c credential.helper= -c core.hooksPath=/dev/null -c protocol.allow=never \
-      -c protocol.https.allow=always -c http.sslVerify=true "$@"
+    -c protocol.https.allow=always -c http.sslVerify=true "$@"
 }
 # Noch kein Checkout und keine Ausfuehrung heruntergeladenen Codes.
 git_safe clone --no-checkout --depth=1 --no-recurse-submodules "$repo" "$stage/source"

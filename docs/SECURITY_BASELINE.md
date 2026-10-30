@@ -3,7 +3,8 @@
 ## Standardregeln
 
 - Keine echten Secrets ins Repository.
-- Nur `.env.example`, echte `.env` unter `~/.openclaw_ultimate_user_data` oder lokalen Servicepfaden.
+- Nur `.env.example`, echte `.env` unter `~/.openclaw_ultimate_user_data` oder lokalen
+  Servicepfaden.
 - Dienste standardmaessig nur auf `127.0.0.1` binden.
 - Admin-UIs nie direkt ins Internet freigeben.
 - Remote-Zugriff nur via Tailscale, Cloudflare Access oder Reverse Proxy mit Auth.
@@ -20,7 +21,8 @@
 - Shell-Zugriff nur lokal und protokolliert.
 - Keine destruktiven Befehle ohne explizite Freigabe.
 - Kein automatisches Ausfuehren von Code aus unbekannten Repositories.
-# Next-Level Safe Defaults
+
+## Next-Level Safe Defaults
 
 Diese Regeln gelten fuer neue Profile, Tools und Installer:
 
@@ -28,11 +30,15 @@ Diese Regeln gelten fuer neue Profile, Tools und Installer:
 - `.env.example` bleibt Vorlage; echte `.env` gehoert nach `~/.openclaw_ultimate_user_data`.
 - Dienste binden standardmaessig an `127.0.0.1`.
 - Oeffentlicher Zugriff nur per Tailscale, Cloudflare Access oder bewusst gehärtetem Reverse Proxy.
-- Keine Docker-Socket-, Kubernetes-Dashboard-, Datenbank- oder Admin-UI-Freigabe ins oeffentliche Internet.
+- Keine Docker-Socket-, Kubernetes-Dashboard-, Datenbank- oder Admin-UI-Freigabe ins oeffentliche
+  Internet.
 - Schwere Tools brauchen Speicher/RAM/Swap-Preflight und explizite Zustimmung.
-- Security-, Trading-, Robotik-, Smart-Home- und Browser-Agenten brauchen Human Approval fuer schreibende oder externe Aktionen.
-- Forks oder manipulierte Setup-Kopien erhalten keine automatische Selbstheilung ohne Herkunfts-/Integritaetspruefung.
-# Zusatz 2026: HE/Oracle/WireGuard Standard
+- Security-, Trading-, Robotik-, Smart-Home- und Browser-Agenten brauchen Human Approval fuer
+  schreibende oder externe Aktionen.
+- Forks oder manipulierte Setup-Kopien erhalten keine automatische Selbstheilung ohne
+  Herkunfts-/Integritaetspruefung.
+
+## Zusatz 2026: HE/Oracle/WireGuard Standard
 
 Cloudflare ist nicht mehr Pflichtbestandteil. Der empfohlene Standard ist:
 
@@ -50,7 +56,7 @@ Weitere Details:
 - [Port Security Matrix](PORT_SECURITY_MATRIX.md)
 - [HE/Oracle/Homecluster Start](architecture/he-oracle-homecluster.md)
 
-## Next Improvements Security Baseline
+### Next Improvements Security Baseline
 
 - .env bleibt ausserhalb des Repos; im Repo nur .env.example.
 - Keine Tokens in Logs, Markdown-Beispielen oder Queue-Kommandos.

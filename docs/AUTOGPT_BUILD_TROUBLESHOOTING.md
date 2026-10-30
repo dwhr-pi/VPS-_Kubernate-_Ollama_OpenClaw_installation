@@ -4,9 +4,9 @@ Diese Seite erklaert haeufige AutoGPT-Buildfehler im Ultimate KI Setup.
 
 ## Preflight: Speicherplatz und RAM
 
-Die Host-Pruefung laeuft bereits vor Git-Clone und Docker-/Paketinstallation.
-Nach Bereitstellung von Docker folgt eine zweite Pruefung inklusive Docker-Root.
-Eine reine Host-Pruefung ohne Installation ist moeglich:
+Die Host-Pruefung laeuft bereits vor Git-Clone und Docker-/Paketinstallation. Nach Bereitstellung
+von Docker folgt eine zweite Pruefung inklusive Docker-Root. Eine reine Host-Pruefung ohne
+Installation ist moeglich:
 
 ```bash
 bash scripts/tools/autogpt_install.sh --check
@@ -14,27 +14,27 @@ bash scripts/tools/autogpt_install.sh --check
 bash scripts/tools/autogpt_install.sh --dry-run
 ```
 
-Diese Befehle pruefen keinen Docker-Start und garantieren keinen erfolgreichen
-Build. Die Status-Helfer koennen lokale Status-/Logdateien im User-Workspace anlegen.
+Diese Befehle pruefen keinen Docker-Start und garantieren keinen erfolgreichen Build. Die
+Status-Helfer koennen lokale Status-/Logdateien im User-Workspace anlegen.
 
 ### Abbruch aus dem Protokoll vom 8. Juni 2026
 
-Der Abbruch ist ein beabsichtigter Ressourcenschutz, kein Docker-Buildfehler:
-39019 MB auf Windows C: liegen 12181 MB unter dem Setup-Grenzwert von 51200 MB.
-4315 MB verfuegbarer RAM plus Swap liegen 3877 MB unter 8192 MB.
-Diese Werte sind konservative Setup-Grenzen, keine garantierten Upstream-Minima.
+Der Abbruch ist ein beabsichtigter Ressourcenschutz, kein Docker-Buildfehler: 39019 MB auf Windows
+C: liegen 12181 MB unter dem Setup-Grenzwert von 51200 MB. 4315 MB verfuegbarer RAM plus Swap liegen
+3877 MB unter 8192 MB. Diese Werte sind konservative Setup-Grenzen, keine garantierten
+Upstream-Minima.
 
-1. Auf Windows C: ausreichend Platz freigeben. Der grosse freie Linux-Wert
-   ersetzt den Host-Speicher fuer eine dort gespeicherte WSL-VHDX nicht.
+1. Auf Windows C: ausreichend Platz freigeben. Der grosse freie Linux-Wert ersetzt den Host-Speicher
+   fuer eine dort gespeicherte WSL-VHDX nicht.
 2. Andere speicherintensive Anwendungen schliessen und `free -h` in WSL pruefen.
-3. Falls WSL begrenzt ist, die Windows-Datei `%UserProfile%\.wslconfig` pruefen.
-   RAM-Zuweisung muss zum physischen Host passen; Swap ersetzt keinen echten RAM.
-   Mehr Swap benoetigt wiederum Datentraegerplatz.
-4. Nach manuellen Anpassungen `--check` erneut ausfuehren. Das Setup aendert
-   weder WSL-Grenzen noch Swap automatisch und loescht keine Docker-Daten.
+3. Falls WSL begrenzt ist, die Windows-Datei `%UserProfile%\.wslconfig` pruefen. RAM-Zuweisung muss
+   zum physischen Host passen; Swap ersetzt keinen echten RAM. Mehr Swap benoetigt wiederum
+   Datentraegerplatz.
+4. Nach manuellen Anpassungen `--check` erneut ausfuehren. Das Setup aendert weder WSL-Grenzen noch
+   Swap automatisch und loescht keine Docker-Daten.
 
-Der AutoGPT-Installer prueft vor dem grossen Docker-Build und vor
-`docker compose up -d` jetzt automatisch:
+Der AutoGPT-Installer prueft vor dem grossen Docker-Build und vor `docker compose up -d` jetzt
+automatisch:
 
 - freier Linux-/WSL-Speicher
 - freier Windows-C:-Speicher unter WSL
@@ -44,17 +44,16 @@ Der AutoGPT-Installer prueft vor dem grossen Docker-Build und vor
 
 Standard-Mindestwerte:
 
-| Ressource | Mindestwert | Empfehlung |
-| --- | ---: | ---: |
-| Linux-/WSL-Speicher | 40960 MB | 81920 MB oder mehr |
-| Windows C: unter WSL | 51200 MB | 81920 MB oder mehr |
-| Docker-Root-Speicher | 40960 MB | 81920 MB oder mehr |
-| RAM plus Swap | 8192 MB | 12288 MB oder mehr |
+| Ressource            | Mindestwert |         Empfehlung |
+| -------------------- | ----------: | -----------------: |
+| Linux-/WSL-Speicher  |    40960 MB | 81920 MB oder mehr |
+| Windows C: unter WSL |    51200 MB | 81920 MB oder mehr |
+| Docker-Root-Speicher |    40960 MB | 81920 MB oder mehr |
+| RAM plus Swap        |     8192 MB | 12288 MB oder mehr |
 
-Warum so streng? AutoGPT baut viele Docker-Images und startet danach mehrere
-Dienste wie RabbitMQ, Redis, Supabase, Frontend und Worker. Ein Build kann
-scheinbar erfolgreich sein, waehrend RabbitMQ oder ein anderer Dienst direkt
-danach wegen Speicher-, Volume- oder I/O-Problemen beendet wird.
+Warum so streng? AutoGPT baut viele Docker-Images und startet danach mehrere Dienste wie RabbitMQ,
+Redis, Supabase, Frontend und Worker. Ein Build kann scheinbar erfolgreich sein, waehrend RabbitMQ
+oder ein anderer Dienst direkt danach wegen Speicher-, Volume- oder I/O-Problemen beendet wird.
 
 Nur fuer bewusste Tests kann die Pruefung uebersprungen werden:
 
@@ -62,8 +61,7 @@ Nur fuer bewusste Tests kann die Pruefung uebersprungen werden:
 AUTOGPT_SKIP_RESOURCE_PREFLIGHT=1 bash scripts/tools/autogpt_install.sh
 ```
 
-Das wird nicht empfohlen, wenn Windows C:, Docker-Speicher oder RAM bereits
-knapp sind.
+Das wird nicht empfohlen, wenn Windows C:, Docker-Speicher oder RAM bereits knapp sind.
 
 ## Aktueller Fehler: RabbitMQ startet nach erfolgreichem Build nicht
 
@@ -75,10 +73,9 @@ Container rabbitmq Error
 dependency failed to start: container rabbitmq exited (1)
 ```
 
-In diesem Fall ist der lange Docker-Build sehr wahrscheinlich nicht am
-Frontend gescheitert. Die Images wurden gebaut, aber `docker compose up -d`
-konnte die Plattform nicht starten, weil RabbitMQ als Abhaengigkeit beendet
-wurde.
+In diesem Fall ist der lange Docker-Build sehr wahrscheinlich nicht am Frontend gescheitert. Die
+Images wurden gebaut, aber `docker compose up -d` konnte die Plattform nicht starten, weil RabbitMQ
+als Abhaengigkeit beendet wurde.
 
 ## Diagnose fuer RabbitMQ
 
@@ -110,8 +107,8 @@ Hauefige Ursachen:
 - zu wenig RAM/Swap waehrend mehrere AutoGPT-Container gleichzeitig starten
 - RabbitMQ-Konfigurations- oder Cookie-Probleme im Upstream-Compose-Setup
 
-Wichtig: Volumes nicht blind loeschen. Erst Logs pruefen und Backups beachten,
-weil Laufzeitdaten verloren gehen koennen.
+Wichtig: Volumes nicht blind loeschen. Erst Logs pruefen und Backups beachten, weil Laufzeitdaten
+verloren gehen koennen.
 
 ## Fehler: Frontend `pnpm build`
 
@@ -125,10 +122,9 @@ ELIFECYCLE Command failed with exit code 1
 target frontend: failed to solve
 ```
 
-Wenn vorher mehrere Images wie `rest_server`, `executor`, `scheduler_server`,
-`notification_server` oder `database_manager` erfolgreich exportiert wurden,
-dann funktionieren Docker und BuildKit grundsaetzlich. Der Abbruch liegt dann
-sehr wahrscheinlich im AutoGPT-Frontend-Build.
+Wenn vorher mehrere Images wie `rest_server`, `executor`, `scheduler_server`, `notification_server`
+oder `database_manager` erfolgreich exportiert wurden, dann funktionieren Docker und BuildKit
+grundsaetzlich. Der Abbruch liegt dann sehr wahrscheinlich im AutoGPT-Frontend-Build.
 
 ## Was ist wahrscheinlich nicht die Ursache?
 
@@ -142,8 +138,7 @@ Running pip as root
 gen-prisma-stub ... not installed as a script
 ```
 
-stammen aus dem Container-Build. Sie sind allein normalerweise nicht der finale
-Abbruch.
+stammen aus dem Container-Build. Sie sind allein normalerweise nicht der finale Abbruch.
 
 ### Edge Runtime Warnungen
 
@@ -153,8 +148,8 @@ Meldungen wie:
 A Node.js API is used ... not supported in the Edge Runtime
 ```
 
-koennen im Next.js/Supabase-Kontext als Warnungen erscheinen. Im gezeigten Log
-ist der finale Abbruch spaeter `ELIFECYCLE`.
+koennen im Next.js/Supabase-Kontext als Warnungen erscheinen. Im gezeigten Log ist der finale
+Abbruch spaeter `ELIFECYCLE`.
 
 ### Git Commit Metadaten
 
@@ -183,8 +178,7 @@ cd /opt/autogpt/autogpt_platform
 sudo env DOCKER_BUILDKIT=1 COMPOSE_DOCKER_CLI_BUILD=1 docker compose build frontend --progress=plain
 ```
 
-Wichtig: Die entscheidenden Zeilen stehen meistens direkt vor dem finalen
-`ELIFECYCLE`-Fehler.
+Wichtig: Die entscheidenden Zeilen stehen meistens direkt vor dem finalen `ELIFECYCLE`-Fehler.
 
 ## Ressourcenhinweis
 
@@ -195,22 +189,19 @@ Der Frontend-Build kann sehr lange laufen und nutzt:
 - viel Docker-Speicher
 - Node mit `--max-old-space-size=8192`
 
-Unter WSL sollte vor AutoGPT ausreichend Windows-C:-Speicher und Linux-/WSL-
-Speicher frei sein. Wenn das System waehrend `Linting and checking validity of
-types` sehr lange haengt, kann auch Ressourcenknappheit oder I/O-Druck beteiligt
-sein.
+Unter WSL sollte vor AutoGPT ausreichend Windows-C:-Speicher und Linux-/WSL- Speicher frei sein.
+Wenn das System waehrend `Linting and checking validity of types` sehr lange haengt, kann auch
+Ressourcenknappheit oder I/O-Druck beteiligt sein.
 
 ## Mögliche Workarounds
 
 Diese Punkte sind bewusst nicht automatisch aktiviert:
 
 - AutoGPT-Upstream aktualisieren und erneut bauen.
-- Frontend separat mit `--progress=plain` bauen, um den echten TypeScript- oder
-  Next.js-Fehler zu sehen.
-- Wenn Upstream eine Build-Option fuer Type-Checking/Linting anbietet, nur nach
-  Review nutzen.
-- Bei wiederholtem Fehlschlag AutoGPT als `experimental/heavy` markieren und im
-  Batch ueberspringen.
+- Frontend separat mit `--progress=plain` bauen, um den echten TypeScript- oder Next.js-Fehler zu
+  sehen.
+- Wenn Upstream eine Build-Option fuer Type-Checking/Linting anbietet, nur nach Review nutzen.
+- Bei wiederholtem Fehlschlag AutoGPT als `experimental/heavy` markieren und im Batch ueberspringen.
 
 ## Setup-Verhalten
 
@@ -221,5 +212,4 @@ Der Installer erkennt jetzt typische Frontend-Buildmuster und erklaert:
 - Edge-Runtime-Warnungen
 - Git-Metadatenwarnungen
 
-Dadurch soll nach einem langen Build klarer werden, welcher Teil wirklich
-fehlgeschlagen ist.
+Dadurch soll nach einem langen Build klarer werden, welcher Teil wirklich fehlgeschlagen ist.

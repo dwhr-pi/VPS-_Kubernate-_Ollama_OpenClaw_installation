@@ -8,8 +8,8 @@ if (($# == 0)) || [[ $# == 1 && $1 == --dry-run ]]; then
     set -- --tag "$OPENCLAW_RELEASE_TAG" --artifacts "$OPENCLAW_RELEASE_ARTIFACTS" --public-key "$OPENCLAW_RELEASE_PUBLIC_KEY" "$mode"
     if [[ "$mode" == --apply ]]; then set -- "$@" --fetch; fi
   else
-  printf '%s\n' 'Kein Release gewaehlt: --tag vX.Y.Z --artifacts ABS --public-key ABS [--dry-run|--apply --fetch]. Kein main-Fallback.' >&2
-  exit 2
+    printf '%s\n' 'Kein Release gewaehlt: --tag vX.Y.Z --artifacts ABS --public-key ABS [--dry-run|--apply --fetch]. Kein main-Fallback.' >&2
+    exit 2
   fi
 fi
 exec python3 -I -B "$ROOT/scripts/security/update_verified_release.py" "$@"

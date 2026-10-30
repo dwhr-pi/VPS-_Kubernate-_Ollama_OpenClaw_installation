@@ -31,4 +31,3 @@
 - Erfolgreicher Firmware-Build erzeugt OTA-Kandidat.
 - Home Assistant Discovery Payload wird generiert.
 - MQTT-Test prueft Sensorwerte.
-

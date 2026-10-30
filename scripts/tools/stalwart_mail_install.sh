@@ -50,7 +50,7 @@ prepare() {
     echo "Konfiguration erstellt: $USER_DIR/config/stalwart.toml"
   fi
 
-  cat > "$USER_DIR/README.local.md" <<EOF
+  cat >"$USER_DIR/README.local.md" <<EOF
 # Stalwart Mail lokale Daten
 
 Dieser Ordner enthaelt lokale Mailserver-Konfiguration, Daten, Backups und Audit-Logs.
@@ -69,16 +69,16 @@ EOF
 }
 
 case "$MODE" in
-  --help|-h)
+  --help | -h)
     usage
     ;;
   --status)
     status
     ;;
-  --dry-run|--plan)
+  --dry-run | --plan)
     dry_run
     ;;
-  --prepare|--apply)
+  --prepare | --apply)
     prepare
     ;;
   *)

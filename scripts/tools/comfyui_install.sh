@@ -30,29 +30,29 @@ sudo apt-get update
 sudo apt-get install -y git python3 python3-venv python3-pip build-essential
 
 if [ -d "$TOOL_DIR/.git" ]; then
-    git -C "$TOOL_DIR" pull --ff-only
+  git -C "$TOOL_DIR" pull --ff-only
 else
-    sudo mkdir -p "$TOOL_DIR"
-    sudo chown -R "$USER:$USER" "$TOOL_DIR"
-    git clone "$REPO_URL" "$TOOL_DIR"
+  sudo mkdir -p "$TOOL_DIR"
+  sudo chown -R "$USER:$USER" "$TOOL_DIR"
+  git clone "$REPO_URL" "$TOOL_DIR"
 fi
 
 cd "$TOOL_DIR"
 if [ ! -d venv ]; then
-    python3 -m venv venv
+  python3 -m venv venv
 fi
 # shellcheck disable=SC1091
 source venv/bin/activate
 export PIP_NO_CACHE_DIR=1
 pip install --no-cache-dir --upgrade pip setuptools wheel
 if [ -f requirements.txt ]; then
-    if ! pip install --no-cache-dir -r requirements.txt; then
-        echo -e "${RED}Fehler: pip install fuer ComfyUI ist fehlgeschlagen.${NC}"
-        echo -e "${YELLOW}Typische Ursache bei WSL: zu wenig freier Linux-/Windows-Host-Speicher waehrend PyTorch/CUDA-Pakete entpackt werden.${NC}"
-        echo -e "${YELLOW}Aufraeumen: bash scripts/cleanup_installation_residues.sh --apply --all und ggf. sudo rm -rf /opt/comfyui/venv${NC}"
-        deactivate || true
-        exit 1
-    fi
+  if ! pip install --no-cache-dir -r requirements.txt; then
+    echo -e "${RED}Fehler: pip install fuer ComfyUI ist fehlgeschlagen.${NC}"
+    echo -e "${YELLOW}Typische Ursache bei WSL: zu wenig freier Linux-/Windows-Host-Speicher waehrend PyTorch/CUDA-Pakete entpackt werden.${NC}"
+    echo -e "${YELLOW}Aufraeumen: bash scripts/cleanup_installation_residues.sh --apply --all und ggf. sudo rm -rf /opt/comfyui/venv${NC}"
+    deactivate || true
+    exit 1
+  fi
 fi
 deactivate
 

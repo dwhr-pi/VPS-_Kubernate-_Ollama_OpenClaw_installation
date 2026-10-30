@@ -1,6 +1,7 @@
 # Install Checklist
 
-Diese Checkliste beschreibt den aktuell empfohlenen Weg für ein sauberes Setup. Sie ist bewusst anfängerfreundlich gehalten und trennt Basis, optionale Profile und Prüfungen.
+Diese Checkliste beschreibt den aktuell empfohlenen Weg für ein sauberes Setup. Sie ist bewusst
+anfängerfreundlich gehalten und trennt Basis, optionale Profile und Prüfungen.
 
 ## 1. Repository und Basis aktualisieren
 
@@ -103,12 +104,11 @@ Für `Ethical_HackerGPT` zusätzlich:
 
 ## 7. Vor riskanten Profilen unbedingt lesen
 
-- `Trading_Crypto_Web3` und `Web3_Crypto_Agent`:
-  niemals Seed-Phrases, Wallet-Private-Keys oder echte Börsen-API-Keys ins Repo speichern
-- `MCP_Agent_Tools`:
-  Shell-/Browser-/Filesystem-Zugriff nur mit Safe-Mode und bewusster Freigabe nutzen
-- `Cloudflare Tunnel`:
-  öffentliche Ports, Token und Policies absichern
+- `Trading_Crypto_Web3` und `Web3_Crypto_Agent`: niemals Seed-Phrases, Wallet-Private-Keys oder
+  echte Börsen-API-Keys ins Repo speichern
+- `MCP_Agent_Tools`: Shell-/Browser-/Filesystem-Zugriff nur mit Safe-Mode und bewusster Freigabe
+  nutzen
+- `Cloudflare Tunnel`: öffentliche Ports, Token und Policies absichern
 
 ## 8. Für Medien-Profile zusätzlich prüfen
 
@@ -117,6 +117,7 @@ Für `Ethical_HackerGPT` zusätzlich:
 - WSL2/Docker/NVIDIA-Setup korrekt?
 
 Besonders relevant für:
+
 - `Image_Generation`
 - `Image_Generation_Studio`
 - `Video_Generation`

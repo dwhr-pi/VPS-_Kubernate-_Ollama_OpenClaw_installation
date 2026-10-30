@@ -107,6 +107,6 @@ Vor einem groesseren PR:
 
 ## Hinweis
 
-Dieses Projekt befindet sich in aktiver Entwicklung. Experimentelle Komponenten
-koennen sich schnell aendern. Neue PRs, Ideen, Sicherheitsverbesserungen und
-Dokumentationsverbesserungen sind willkommen.
+Dieses Projekt befindet sich in aktiver Entwicklung. Experimentelle Komponenten koennen sich schnell
+aendern. Neue PRs, Ideen, Sicherheitsverbesserungen und Dokumentationsverbesserungen sind
+willkommen.

@@ -19,63 +19,63 @@ HOME_ASSISTANT_VENV="/srv/homeassistant"
 OPENCLAW_DIR="/opt/openclaw"
 
 read_from_tty() {
-    local prompt="$1"
-    local target_var="$2"
-    local secret="${3:-false}"
-    local input_value
+  local prompt="$1"
+  local target_var="$2"
+  local secret="${3:-false}"
+  local input_value
 
-    if [ ! -e "$TTY_DEVICE" ]; then
-        echo -e "${RED}Fehler: Kein interaktives Terminal für Eingaben verfügbar.${NC}"
-        exit 1
-    fi
+  if [ ! -e "$TTY_DEVICE" ]; then
+    echo -e "${RED}Fehler: Kein interaktives Terminal für Eingaben verfügbar.${NC}"
+    exit 1
+  fi
 
-    if [ "$secret" = "true" ]; then
-        read -r -s -p "$prompt" input_value < "$TTY_DEVICE"
-        echo
-    else
-        read -r -p "$prompt" input_value < "$TTY_DEVICE"
-    fi
+  if [ "$secret" = "true" ]; then
+    read -r -s -p "$prompt" input_value <"$TTY_DEVICE"
+    echo
+  else
+    read -r -p "$prompt" input_value <"$TTY_DEVICE"
+  fi
 
-    printf -v "$target_var" '%s' "$input_value"
+  printf -v "$target_var" '%s' "$input_value"
 }
 
 escape_sed_replacement() {
-    printf '%s' "$1" | sed -e 's/[\/&]/\\&/g'
+  printf '%s' "$1" | sed -e 's/[\/&]/\\&/g'
 }
 
 ensure_ollama_available() {
-    if ! command -v ollama >/dev/null 2>&1; then
-        echo -e "${RED}Fehler: Ollama ist nicht installiert.${NC}"
-        exit 1
-    fi
+  if ! command -v ollama >/dev/null 2>&1; then
+    echo -e "${RED}Fehler: Ollama ist nicht installiert.${NC}"
+    exit 1
+  fi
 
-    if ! ollama list >/dev/null 2>&1; then
-        echo -e "${RED}Fehler: Ollama ist installiert, aber der Dienst ist nicht erreichbar.${NC}"
-        echo -e "${YELLOW}Bitte starten Sie Ollama zuerst, z.B. mit 'ollama serve'.${NC}"
-        exit 1
-    fi
+  if ! ollama list >/dev/null 2>&1; then
+    echo -e "${RED}Fehler: Ollama ist installiert, aber der Dienst ist nicht erreichbar.${NC}"
+    echo -e "${YELLOW}Bitte starten Sie Ollama zuerst, z.B. mit 'ollama serve'.${NC}"
+    exit 1
+  fi
 }
 
 ensure_openclaw_env() {
-    if [ ! -d "$OPENCLAW_DIR" ]; then
-        echo -e "${RED}Fehler: OpenClaw wurde unter ${OPENCLAW_DIR} nicht gefunden.${NC}"
-        exit 1
-    fi
+  if [ ! -d "$OPENCLAW_DIR" ]; then
+    echo -e "${RED}Fehler: OpenClaw wurde unter ${OPENCLAW_DIR} nicht gefunden.${NC}"
+    exit 1
+  fi
 
-    if [ ! -f "$OPENCLAW_DIR/.env" ]; then
-        if [ -f "$OPENCLAW_DIR/.env.example" ]; then
-            cp "$OPENCLAW_DIR/.env.example" "$OPENCLAW_DIR/.env"
-        else
-            echo -e "${RED}Fehler: Weder .env noch .env.example wurden unter ${OPENCLAW_DIR} gefunden.${NC}"
-            exit 1
-        fi
+  if [ ! -f "$OPENCLAW_DIR/.env" ]; then
+    if [ -f "$OPENCLAW_DIR/.env.example" ]; then
+      cp "$OPENCLAW_DIR/.env.example" "$OPENCLAW_DIR/.env"
+    else
+      echo -e "${RED}Fehler: Weder .env noch .env.example wurden unter ${OPENCLAW_DIR} gefunden.${NC}"
+      exit 1
     fi
+  fi
 }
 
 echo -e "${BLUE}Starte Hybrid-Setup für Letsung MiniPC und Multi-VPS...${NC}"
 
 # 1. Ressourcenplan (für Dokumentation)
-cat <<EOF > ~/RESOURCE_PLAN.md
+cat <<EOF >~/RESOURCE_PLAN.md
 # Ressourcenplan für Hybrid-Setup
 
 Dieses Setup verteilt die Last und Funktionalitäten auf Ihren Letsung MiniPC und mehrere VPS, um optimale Leistung und Kostenersparnis zu gewährleisten.
@@ -106,8 +106,8 @@ EOF
 echo -e "${GREEN}1/5: Lade Ollama Modell llama3.2:1b herunter...${NC}"
 ensure_ollama_available
 if ! ollama pull llama3.2:1b; then
-    echo -e "${RED}Fehler: Ollama Modell konnte nicht heruntergeladen werden. Prüfen Sie Ihre Ollama-Installation.${NC}"
-    exit 1
+  echo -e "${RED}Fehler: Ollama Modell konnte nicht heruntergeladen werden. Prüfen Sie Ihre Ollama-Installation.${NC}"
+  exit 1
 fi
 
 # 3. OpenClaw .env Konfiguration (Gemini-Ollama Fallback)
@@ -122,7 +122,7 @@ sed -i "s/^GEMINI_MODEL=.*/GEMINI_MODEL=gemini-1.5-flash/" "$OPENCLAW_DIR/.env"
 sed -i "s/^OLLAMA_BASE_URL=.*/OLLAMA_BASE_URL=http:\/\/localhost:11434/" "$OPENCLAW_DIR/.env"
 sed -i "s/^OLLAMA_MODEL=.*/OLLAMA_MODEL=llama3.2:1b/" "$OPENCLAW_DIR/.env"
 if ! grep -q "FALLBACK_TO_OLLAMA" "$OPENCLAW_DIR/.env"; then
-    echo "FALLBACK_TO_OLLAMA=true" >> "$OPENCLAW_DIR/.env"
+  echo "FALLBACK_TO_OLLAMA=true" >>"$OPENCLAW_DIR/.env"
 fi
 
 echo -e "${GREEN}OpenClaw .env erfolgreich konfiguriert.${NC}"
@@ -130,7 +130,7 @@ echo -e "${GREEN}OpenClaw .env erfolgreich konfiguriert.${NC}"
 # 4. Home Assistant Core Installation
 echo -e "${GREEN}3/5: Installiere Home Assistant Core...${NC}"
 if ! id -u "$HOME_ASSISTANT_USER" >/dev/null 2>&1; then
-    sudo useradd --system --create-home --home-dir "$HOME_ASSISTANT_HOME" --shell /usr/sbin/nologin "$HOME_ASSISTANT_USER"
+  sudo useradd --system --create-home --home-dir "$HOME_ASSISTANT_HOME" --shell /usr/sbin/nologin "$HOME_ASSISTANT_USER"
 fi
 sudo mkdir -p "$HOME_ASSISTANT_VENV" "$HOME_ASSISTANT_HOME/.homeassistant"
 sudo chown -R "$HOME_ASSISTANT_USER":"$HOME_ASSISTANT_USER" "$HOME_ASSISTANT_VENV" "$HOME_ASSISTANT_HOME"
@@ -157,14 +157,14 @@ echo -e "${YELLOW}Siehe dazu auch docs/CLOUDFLARE_TUNNEL_GUIDE.md für die Cloud
 read_from_tty "Cloudflare Tunnel Token: " CF_TUNNEL_TOKEN true
 
 if [ -n "$CF_TUNNEL_TOKEN" ]; then
-    echo -e "${BLUE}Cloudflare Tunnel Token erfasst.${NC}"
-    echo -e "${YELLOW}Führen Sie die folgenden Befehle bei Bedarf manuell aus:${NC}"
-    echo "sudo cloudflared tunnel login"
-    echo "sudo cloudflared tunnel create alexa-skill-tunnel"
-    echo "sudo cloudflared tunnel route dns alexa-skill-tunnel <ihre-domain>"
-    echo "sudo cloudflared tunnel run --token <ihr-token> alexa-skill-tunnel"
+  echo -e "${BLUE}Cloudflare Tunnel Token erfasst.${NC}"
+  echo -e "${YELLOW}Führen Sie die folgenden Befehle bei Bedarf manuell aus:${NC}"
+  echo "sudo cloudflared tunnel login"
+  echo "sudo cloudflared tunnel create alexa-skill-tunnel"
+  echo "sudo cloudflared tunnel route dns alexa-skill-tunnel <ihre-domain>"
+  echo "sudo cloudflared tunnel run --token <ihr-token> alexa-skill-tunnel"
 else
-    echo -e "${YELLOW}Kein Cloudflare Tunnel Token eingegeben. Cloudflared wurde installiert, die Tunnel-Konfiguration bleibt manuell.${NC}"
+  echo -e "${YELLOW}Kein Cloudflare Tunnel Token eingegeben. Cloudflared wurde installiert, die Tunnel-Konfiguration bleibt manuell.${NC}"
 fi
 
 echo -e "${GREEN}Cloudflared installiert. Die Tunnel-Konfiguration ist als manueller Schritt dokumentiert.${NC}"

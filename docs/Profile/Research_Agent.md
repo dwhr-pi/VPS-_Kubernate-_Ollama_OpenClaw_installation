@@ -2,8 +2,10 @@
 
 ## Überblick
 
-Dieses Profil wurde aus der fachlichen Quelle [Research_Agent.doc.md](../Profil/Research_Agent.doc.md), `readme.md` und den vorhandenen Tool-Skripten zusammengeführt.
-Es beschreibt ein OpenClaw- und Ollama-kompatibles Rechercheprofil für GitHub-Analyse, Doku-Verständnis und Tool-/Repo-Evaluierung.
+Dieses Profil wurde aus der fachlichen Quelle
+[Research_Agent.doc.md](../Profil/Research_Agent.doc.md), `readme.md` und den vorhandenen
+Tool-Skripten zusammengeführt. Es beschreibt ein OpenClaw- und Ollama-kompatibles Rechercheprofil
+für GitHub-Analyse, Doku-Verständnis und Tool-/Repo-Evaluierung.
 
 ## Installierter Stack
 
@@ -64,14 +66,16 @@ Begründe Nutzen, Integrationsaufwand und welches Profil am meisten davon profit
 
 - Dieses Profil passt gut zu OpenClaw als koordinierendem Recherche-Agenten.
 - `Playwright` eignet sich für Browser- und UI-nahe Recherche.
-- `LangChain`, `LlamaIndex`, `ChromaDB`, `Qdrant` und `Weaviate` helfen bei Doku-Auswertung, Notizen und Retrieval.
+- `LangChain`, `LlamaIndex`, `ChromaDB`, `Qdrant` und `Weaviate` helfen bei Doku-Auswertung, Notizen
+  und Retrieval.
 - `Trend_Monitor` ergänzt die Trend- und Feed-Seite für Themenradar.
 
 ## Vergleich
 
 ### ✅ In Sync
 
-- Die Kernrollen Recherche, Doku-Verständnis und Setup-Verbesserung lassen sich mit den vorhandenen Bausteinen gut abbilden.
+- Die Kernrollen Recherche, Doku-Verständnis und Setup-Verbesserung lassen sich mit den vorhandenen
+  Bausteinen gut abbilden.
 - Die wichtigsten RAG- und Browser-Werkzeuge sind schon installierbar.
 - Trend-Monitoring ist jetzt als eigenes Modul installierbar.
 

@@ -2,14 +2,13 @@
 
 ## Zweck
 
-Dieses Profil beschreibt den sicheren Betrieb von Hurricane Electric,
-Oracle VPS, WireGuard, Heimnetz-Waechter, K3s und On-Demand-GPU-Server.
+Dieses Profil beschreibt den sicheren Betrieb von Hurricane Electric, Oracle VPS, WireGuard,
+Heimnetz-Waechter, K3s und On-Demand-GPU-Server.
 
 ## Zielgruppe
 
-Einsteiger und Betreiber, die das Ultimate KI Setup sicher aus dem Internet
-erreichbar machen wollen, ohne sensible KI- und Heimdienste direkt zu
-veroeffentlichen.
+Einsteiger und Betreiber, die das Ultimate KI Setup sicher aus dem Internet erreichbar machen
+wollen, ohne sensible KI- und Heimdienste direkt zu veroeffentlichen.
 
 ## Empfohlene Tools
 

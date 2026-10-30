@@ -21,11 +21,11 @@ ZENBOT_DIR="/opt/zenbot-trader"
 echo -e "${BLUE}Starte Deinstallation von Zenbot-trader...${NC}"
 
 if [ -d "$ZENBOT_DIR" ]; then
-    echo -e "${YELLOW}Lösche Zenbot-trader Verzeichnis $ZENBOT_DIR...${NC}"
-    sudo rm -rf "$ZENBOT_DIR"
-    echo -e "${GREEN}Zenbot-trader erfolgreich deinstalliert.${NC}"
+  echo -e "${YELLOW}Lösche Zenbot-trader Verzeichnis $ZENBOT_DIR...${NC}"
+  sudo rm -rf "$ZENBOT_DIR"
+  echo -e "${GREEN}Zenbot-trader erfolgreich deinstalliert.${NC}"
 else
-    echo -e "${YELLOW}Zenbot-trader ist nicht installiert oder Verzeichnis nicht gefunden.${NC}"
+  echo -e "${YELLOW}Zenbot-trader ist nicht installiert oder Verzeichnis nicht gefunden.${NC}"
 fi
 
 echo -e "${GREEN}Zenbot-trader Deinstallation abgeschlossen.${NC}"

@@ -13,7 +13,7 @@ umask 077
 mkdir -p "$QUEUE_HOME" "$QUEUE_LOG_DIR"
 
 if [[ ! -f "$QUEUE_CONFIG" ]]; then
-  cat > "$QUEUE_CONFIG" <<'EOF'
+  cat >"$QUEUE_CONFIG" <<'EOF'
 MAX_PARALLEL_JOBS=1
 MAX_LOAD_AVG=4
 MIN_MEM_AVAILABLE_MB=1024
@@ -59,9 +59,12 @@ queue_change_waiting_state() {
   queue_file="${QUEUE_FILE:-$QUEUE_HOME/jobs.tsv}"
   queue_lock_state
   if [[ -f "$queue_file" || "${QUEUE_MODE:-}" == tsv ]]; then
-    [[ -f "$queue_file" ]] || { echo "Keine TSV-Queue vorhanden."; return 0; }
+    [[ -f "$queue_file" ]] || {
+      echo "Keine TSV-Queue vorhanden."
+      return 0
+    }
     tmp_file="$(mktemp "${queue_file}.XXXXXX")"
-    awk -F '\t' -v OFS='\t' -v before="$before" -v after="$after" '$2==before {$2=after} {print}' "$queue_file" > "$tmp_file"
+    awk -F '\t' -v OFS='\t' -v before="$before" -v after="$after" '$2==before {$2=after} {print}' "$queue_file" >"$tmp_file"
     mv "$tmp_file" "$queue_file"
   else
     init_queue_db
@@ -88,4 +91,3 @@ resource_guard_ok() {
   fi
   return 0
 }
-

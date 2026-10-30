@@ -8,4 +8,3 @@ Aufgaben:
 - Chancen und Konflikte fuer Verdichtung, Gruenflaechen und Erreichbarkeit markieren
 
 Grenze: Keine amtliche oder rechtlich verbindliche Planung.
-

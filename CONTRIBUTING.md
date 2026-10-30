@@ -14,11 +14,11 @@ Direkte Pushes auf `main` sollen moeglichst vermieden werden.
 ## Vor dem Pull Request
 
 Zuerst `python3 -B scripts/quality/repository_audit.py` ausfuehren.
-[Pruefumfang, Fixture-Tests und CI-Grenzen](docs/REPOSITORY_QUALITY.md)
-beschreiben die folgenden Checks. Installer oder persoenliche WSL-/Produktiv-
-Systeme nicht als Testumgebung verwenden. Quellcheckout, erfolgreicher Build und
-getestete Runtime sind getrennte Statusangaben; fehlende Metadaten nicht als
-`stable` auffuellen. Keine echten Zugangsdaten oder lokalen Worktree-Pfade in Doku.
+[Pruefumfang, Fixture-Tests und CI-Grenzen](docs/REPOSITORY_QUALITY.md) beschreiben die folgenden
+Checks. Installer oder persoenliche WSL-/Produktiv- Systeme nicht als Testumgebung verwenden.
+Quellcheckout, erfolgreicher Build und getestete Runtime sind getrennte Statusangaben; fehlende
+Metadaten nicht als `stable` auffuellen. Keine echten Zugangsdaten oder lokalen Worktree-Pfade in
+Doku.
 
 ## Empfohlene Branch-Namen
 
@@ -85,8 +85,7 @@ Nutze stattdessen:
 
 ## Branch-Schutz fuer Maintainer
 
-Fuer produktive Nutzung wird empfohlen, `main` mit GitHub Branch Protection zu
-schuetzen:
+Fuer produktive Nutzung wird empfohlen, `main` mit GitHub Branch Protection zu schuetzen:
 
 - direkte Pushes auf `main` deaktivieren
 - Pull Requests verlangen
@@ -95,4 +94,5 @@ schuetzen:
 - Force-Push verbieten
 - Branch-Loeschung verhindern
 
-Details stehen in [docs/GITHUB_CONTRIBUTION_AND_BRANCH_PROTECTION.md](docs/GITHUB_CONTRIBUTION_AND_BRANCH_PROTECTION.md).
+Details stehen in
+[docs/GITHUB_CONTRIBUTION_AND_BRANCH_PROTECTION.md](docs/GITHUB_CONTRIBUTION_AND_BRANCH_PROTECTION.md).

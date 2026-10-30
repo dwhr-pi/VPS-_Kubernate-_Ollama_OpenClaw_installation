@@ -16,15 +16,15 @@ init_tool_tracking "Cloudflared"
 echo -e "${BLUE}Starte Deinstallation von cloudflared...${NC}"
 
 if command -v systemctl >/dev/null 2>&1; then
-    sudo systemctl stop cloudflared >/dev/null 2>&1 || true
-    sudo systemctl disable cloudflared >/dev/null 2>&1 || true
+  sudo systemctl stop cloudflared >/dev/null 2>&1 || true
+  sudo systemctl disable cloudflared >/dev/null 2>&1 || true
 fi
 
 if command -v apt-get >/dev/null 2>&1; then
-    sudo apt-get remove -y cloudflared || true
-    sudo apt-get autoremove -y || true
+  sudo apt-get remove -y cloudflared || true
+  sudo apt-get autoremove -y || true
 else
-    echo -e "${YELLOW}Hinweis: apt-get wurde nicht gefunden. Bitte cloudflared auf diesem System manuell entfernen.${NC}"
+  echo -e "${YELLOW}Hinweis: apt-get wurde nicht gefunden. Bitte cloudflared auf diesem System manuell entfernen.${NC}"
 fi
 
 echo -e "${GREEN}cloudflared wurde entfernt.${NC}"

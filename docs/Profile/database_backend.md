@@ -2,7 +2,8 @@
 
 ## Zweck
 
-Stellt relationale, Key-Value-, Objekt- und Plattform-Backends für Agenten, UI, Monitoring und RAG bereit.
+Stellt relationale, Key-Value-, Objekt- und Plattform-Backends für Agenten, UI, Monitoring und RAG
+bereit.
 
 ## Use Cases
 

@@ -1,7 +1,6 @@
 # CrowdSec und Fail2Ban
 
-CrowdSec ist der bevorzugte moderne Schutz. Fail2Ban bleibt als Fallback oder
-Zusatzschutz sinnvoll.
+CrowdSec ist der bevorzugte moderne Schutz. Fail2Ban bleibt als Fallback oder Zusatzschutz sinnvoll.
 
 ## CrowdSec installieren
 
@@ -49,5 +48,5 @@ Empfohlene Jails:
 
 ## Hinweis
 
-CrowdSec und Fail2Ban ersetzen keine saubere Firewall. Sie reagieren auf
-Angriffe, aber sie sollten nicht die erste und einzige Schutzlinie sein.
+CrowdSec und Fail2Ban ersetzen keine saubere Firewall. Sie reagieren auf Angriffe, aber sie sollten
+nicht die erste und einzige Schutzlinie sein.
