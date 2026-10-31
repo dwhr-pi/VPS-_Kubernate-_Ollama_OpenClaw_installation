@@ -378,7 +378,22 @@ Einzelfallpolicy gesondert dokumentiert und unverifiziert erhalten, nicht als ak
 Ignore-Regeln. HTTP 200 lokaler Alternativen wird nicht als bestaetigter Projektinhalt ausgegeben.
 Die urspruengliche 23er-Evidenz bleibt erhalten; keine Statuscode-Regel wurde geaendert.
 
-## Historischer lokaler Erstlauf
+## NotebookLM-Nachtrag vom 31.10.2026
+
+Der komplette Repo-Health-Lauf fuer `eaf2ae9` fand einen gemeldeten 404 bei der bisherigen
+NotebookLM-Adresse. Googles gelesene und anonym mit HTTP 200 abgerufene Mitteilung vom 16.07.2026
+belegt die Umbenennung zu Gemini Notebook. Diese offizielle Mitteilung dient jetzt als aktiver
+Nachweis, die alte Originaladresse bleibt mit CI-Befund erhalten. Keine Behauptung dauerhafter
+Loeschung: ein anderer Abruf leitete auf eine neue Produktadresse weiter. Keine Anmeldung, keine
+Cloud-Nutzung und kein neuer Installer.
+
+Ein anderer, identischer Linklauf bestand, waehrend der Push-Linklauf einmal an einer
+Community-Blogquelle mit Transportstatus 0 scheiterte. Ihr anonymer Wiederabruf lieferte 200; sie
+wird deshalb nicht stillschweigend ausgenommen. Der direkte Job-Neustart wurde der Integration mit
+`403 Resource not accessible by integration` verweigert. Der regulaere neue Commit behebt
+stattdessen den tatsaechlichen NotebookLM-Quellenfehler und muss wieder alle Checks durchlaufen.
+
+## Historische lokale Teilabnahme
 
 Lokale Abnahme dieses Reparatursatzes unter Windows mit nativem Git Bash: 156 Tests in 15
 betroffenen Modulen, **OK (2 uebersprungen)**. Der Offline-Registry-Check meldet weiterhin **0

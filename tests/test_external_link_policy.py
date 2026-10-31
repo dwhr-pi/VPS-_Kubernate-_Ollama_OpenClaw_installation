@@ -222,6 +222,18 @@ class ExternalLinkPolicyTests(unittest.TestCase):
                 self.assertTrue('unverifizierte Originalreferenz' in ' '.join(text.split()), filename)
                 self.assertNotIn(ref['url'], PROBE.markdown_urls(text), filename)
 
+    def test_notebooklm_reference_uses_official_rename_with_original_preserved(self):
+        text = (ROOT / 'docs/tutorials/manus-interview-2026-10-22.md').read_text(encoding='utf-8')
+        original = 'https://notebooklm.google/'
+        replacement = 'https://blog.google/innovation-and-ai/products/gemini-notebook/notebooklm-gemini-notebook/'
+        self.assertIn('`' + original + '`', text)
+        self.assertNotIn(original, PROBE.markdown_urls(text))
+        self.assertIn(replacement, PROBE.markdown_urls(text))
+        self.assertIn('16.07.2026', text)
+        self.assertIn('Gemini Notebook', text)
+        self.assertIn('Cloud-Produkte', text)
+        self.assertFalse(self.ignored(original))
+
 
 if __name__ == "__main__":
     unittest.main()
