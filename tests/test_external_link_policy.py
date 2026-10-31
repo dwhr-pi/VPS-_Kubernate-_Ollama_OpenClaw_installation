@@ -82,6 +82,10 @@ class ExternalLinkPolicyTests(unittest.TestCase):
         self.assertNotIn("continue-on-error", dedicated)
         health = (ROOT / ".github/workflows/repo-health.yml").read_text(encoding="utf-8")
         self.assertIn("find docs -name '*.md' -print0", health)
+        self.assertIn('set -euo pipefail', health)
+        self.assertIn('set -euo pipefail', dedicated)
+        self.assertIn('xargs -0 -r node scripts/quality/check_markdown_links.cjs', health)
+        self.assertNotIn('xargs -0 -n 1 node scripts/quality/check_markdown_links.cjs', health)
 
     def test_status_failures_stay_failures_after_bounded_retries(self):
         for status in (202, 401, 403, 404, 429, 500, 503):

@@ -12,7 +12,8 @@ export NODE_PATH="$(npm root -g)"
 node --test tests/test_markdown_link_retry.cjs
 node scripts/quality/link_checker_contract.cjs "$(command -v markdown-link-check)"
 node scripts/quality/check_markdown_links.cjs -c .github/markdown-link-check.json readme.md
-find docs -type f -name '*.md' -print0 | xargs -0 -n1 node scripts/quality/check_markdown_links.cjs -c .github/markdown-link-check.json
+set -euo pipefail
+find docs -type f -name '*.md' -print0 | xargs -0 -r node scripts/quality/check_markdown_links.cjs -c .github/markdown-link-check.json
 ```
 
 Verbindliche Bibliothek/CLI: `markdown-link-check@3.15.0`. Die zuvor verwendete CLI 3.13.7 gab bei

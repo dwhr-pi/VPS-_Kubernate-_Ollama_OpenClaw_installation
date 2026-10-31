@@ -23,6 +23,7 @@ jobs:
           node scripts/quality/link_checker_contract.cjs "$(command -v markdown-link-check)"
       - name: Check all Markdown files
         run: |
+          set -euo pipefail
           export NODE_PATH="$(npm root -g)"
           find . -type f -name '*.md' -not -path './node_modules/*' -not -path './.git/*' -print0 \
             | xargs -0 -r node scripts/quality/check_markdown_links.cjs -c .github/markdown-link-check.json

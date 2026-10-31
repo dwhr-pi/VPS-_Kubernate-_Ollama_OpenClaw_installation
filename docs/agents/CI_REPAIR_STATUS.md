@@ -410,12 +410,20 @@ manuelle GitHub-Job-Neustarts; dies ist eine regulaere Robustheitskorrektur.
 
 ## Historischer lokaler Teilnachweis
 
+Repo-Health-Nachlauf: Die beiden gebuendelten Voll-Linklaeufe bestanden, waehrend der identische
+Dokumentationsumfang mit einem neuen Node-Prozess je Datei erheblich laenger lief. Der
+Repo-Health-Aufruf uebergibt deshalb dieselbe nullterminierte Dateiliste gebuendelt an denselben
+Runner. Sein bereits getesteter Sammelstatus behaelt Fehler auch nach spaeter erfolgreichen Dateien
+bei. Beide Find-/Xargs-Linkpipelines verwenden nun explizit `set -euo pipefail`, damit auch ein
+Fehler der Dateisuche nicht als Erfolg endet. Keine Dateiausnahme oder aenderungsbasierte
+Verkuerzung des Pruefumfangs.
+
 Lokale Retry-Pruefung: sieben JavaScript- und 15 Python-Vertragstests bestanden. Der echte Runner
 mit der gepinnten Bibliothek lieferte fuer lokale vorhandene, fehlende und gemischte Dateien korrekt
-0/1/1, ohne HTTP. Die Kindprozess-Gesamtpruefung scheiterte lokal zweimal bereits beim unveraenderten
-Upstream-Programm an der Windows-20-Sekunden-Grenze. Diese Grenze wurde nicht gelockert; der
-vollstaendige echte Prozess-Guard muss in der Linux-CI erfolgreich durchlaufen. Markdownlint und
-`git diff --check` bestanden. Keine Produktions- oder Inferenzpruefung.
+0/1/1, ohne HTTP. Die Kindprozess-Gesamtpruefung scheiterte lokal zweimal bereits beim
+unveraenderten Upstream-Programm an der Windows-20-Sekunden-Grenze. Diese Grenze wurde nicht
+gelockert; der vollstaendige echte Prozess-Guard muss in der Linux-CI erfolgreich durchlaufen.
+Markdownlint und `git diff --check` bestanden. Keine Produktions- oder Inferenzpruefung.
 
 Lokale Abnahme dieses Reparatursatzes unter Windows mit nativem Git Bash: 156 Tests in 15
 betroffenen Modulen, **OK (2 uebersprungen)**. Der Offline-Registry-Check meldet weiterhin **0
