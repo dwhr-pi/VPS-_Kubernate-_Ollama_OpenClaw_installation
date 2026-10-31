@@ -241,6 +241,17 @@ class ExternalLinkPolicyTests(unittest.TestCase):
         self.assertIn('Cloud-Produkte', text)
         self.assertFalse(self.ignored(original))
 
+    def test_mosquitto_reference_uses_exact_pinned_upstream_source(self):
+        text = (ROOT / 'docs/MOSQUITTO_INSTALLATION_NOTES.md').read_text(encoding='utf-8')
+        original = 'https://mosquitto.org/documentation/migrating-to-2-0/'
+        replacement = 'https://github.com/eclipse-mosquitto/mosquitto/blob/83f2620f0b955b89aadce32cceb96a8e81950f5e/www/pages/documentation/migrating-to-2-0.md'
+        self.assertIn('`' + original + '`', text)
+        self.assertNotIn(original, PROBE.markdown_urls(text))
+        self.assertIn(replacement, PROBE.markdown_urls(text))
+        self.assertIn('Transportstatus 0', text)
+        self.assertIn('Historischer Docker-/Compose-Portfall', text)
+        self.assertFalse(self.ignored(original))
+
 
 if __name__ == "__main__":
     unittest.main()

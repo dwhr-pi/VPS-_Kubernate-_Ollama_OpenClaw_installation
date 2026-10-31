@@ -1,5 +1,8 @@
 # Mosquitto: Port 9001 bereits belegt
 
+Historischer Docker-/Compose-Portfall, keine aktuelle native Build-Anleitung. Fuer die aktuelle
+GitHub-native Umstellung siehe [Docker zu GitHub](DOCKER_TO_GITHUB.md).
+
 Das Image wurde erfolgreich geladen. Docker scheitert beim Binden von `0.0.0.0:9001`, weil der Port
 schon belegt ist. Das ist kein Download- oder Docker-Rechtefehler. Der Installer veroeffentlichte
 diesen WebSocket-Port, ohne einen WebSocket-Listener zu konfigurieren. Diese Freigabe ist entfernt.
@@ -29,7 +32,14 @@ Vorhandene `config/mosquitto.conf` bleibt unveraendert. Fehlt sie, wird eine Min
 mit `listener 1883`, `allow_anonymous false`, deaktivierter Persistenz und stdout-Logging angelegt.
 **Clients bleiben gesperrt, bis Auth eingerichtet ist.** Keine Passwoerter werden erzeugt oder im
 Repo gespeichert. Siehe
-[Mosquitto-Authentifizierung](https://mosquitto.org/documentation/migrating-to-2-0/).
+[Mosquitto-Authentifizierung in der offiziellen Migrationsdatei](https://github.com/eclipse-mosquitto/mosquitto/blob/83f2620f0b955b89aadce32cceb96a8e81950f5e/www/pages/documentation/migrating-to-2-0.md).
+
+Quellenabgleich 31.10.2026: Die identische Website-Quelldatei wurde im offiziellen Repository
+inhaltlich gelesen und anonym mit HTTP 200 abgerufen. Die bisherige Adresse
+`https://mosquitto.org/documentation/migrating-to-2-0/` scheiterte im CI auch nach dem begrenzten
+Retry und beim separaten Abruf mit Transportstatus 0. Sie bleibt als unverifizierte Originalreferenz
+erhalten; keine Behauptung dauerhafter Loeschung. Der Nachweis betrifft die Migration zu Mosquitto
+2.0 und keine automatische Freigabe anonymer Listener oder einen aktuellen Installationsnachweis.
 
 Auf dem Zielsystem bewusst eine Passwortdatei erstellen (interaktive Eingabe, kein Passwort als
 Kommandozeilenargument):

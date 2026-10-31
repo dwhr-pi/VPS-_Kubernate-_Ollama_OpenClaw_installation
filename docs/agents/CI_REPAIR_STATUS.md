@@ -410,6 +410,14 @@ manuelle GitHub-Job-Neustarts; dies ist eine regulaere Robustheitskorrektur.
 
 ## Historischer lokaler Teilnachweis
 
+Mosquitto-Quellennachtrag vom 31.10.2026: Die Website-Migrationsseite scheiterte im CI nach beiden
+begrenzten Versuchen sowie lokal mit Transportstatus 0. Ihre identische Quelldatei im offiziellen
+GitHub-Repository wurde inhaltlich geprueft und mit HTTP 200 abgerufen. Der aktive Nachweis ist
+jetzt auf den gelesenen Commit gepinnt; die Originaladresse mit Befund bleibt erhalten. Die alte
+Compose-Portfall-Seite ist ausdruecklich historisch gekennzeichnet. Keine neue Ignore-Regel und
+keine Broker-/Passwort-/Listener-Aktion. Der erneut versuchte manuelle Job-Neustart wurde trotz
+Nutzerfreigabe technisch weiterhin mit `403 Resource not accessible by integration` abgewiesen.
+
 Repo-Health-Nachlauf: Die beiden gebuendelten Voll-Linklaeufe bestanden, waehrend der identische
 Dokumentationsumfang mit einem neuen Node-Prozess je Datei erheblich laenger lief. Der
 Repo-Health-Aufruf uebergibt deshalb dieselbe nullterminierte Dateiliste gebuendelt an denselben
