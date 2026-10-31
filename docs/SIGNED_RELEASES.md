@@ -10,7 +10,13 @@ vorhanden ausgegeben.
 Bootstrap (`verify_release_and_install.sh`) und Python-Pruefhelfer muessen aus einer unabhaengig
 geprueften Kopie stammen. Ein ungepruefter Bootstrap von `main` kann seine eigene
 Vertrauenswuerdigkeit nicht nachtraeglich beweisen. Minisign muss bereits separat geprueft vorhanden
-sein. Den Fingerprint des oeffentlichen Schluessels ueber einen zweiten vertrauenswuerdigen Kanal
+sein. Falls es fehlt, kann der gepruefte Bootstrap samt
+`scripts/security/ensure_minisign.sh` es unter Ubuntu/Debian nach ausdruecklicher
+Zustimmung aus den eingerichteten APT-Paketquellen installieren. Dies ist eine
+ausdrueckliche Paketquellen-Ausnahme fuer das Pruefwerkzeug, kein GitHub-Source-Build.
+APT-Signaturpruefungen werden nicht deaktiviert; die Vertrauenswuerdigkeit der
+eingerichteten Paketquellen bleibt Voraussetzung. Vorhandenes Minisign wird nur
+mit `minisign -v` geprueft. Den Fingerprint des oeffentlichen Schluessels ueber einen zweiten vertrauenswuerdigen Kanal
 pruefen. Private Signierschluessel gehoeren weder ins Repo noch auf Installationsziele.
 
 Ein Release besteht aus vier Dateien:
@@ -29,6 +35,16 @@ Fehlern. Die Release-Auswahl erfolgt ausdruecklich: kein automatischer Latest-Ta
 Downgrade-Schutz gegen einen bewusst gewaehlten alten signierten Tag.
 
 ## Installation
+
+Fehlt Minisign, fragt der Bootstrap bei interaktiver Standardeingabe mit `[j/N]`.
+Enter, EOF oder fehlende interaktive Eingabe erlauben keine Paketinstallation.
+Die ausdrueckliche Option `--install-minisign` erlaubt diese Einrichtung ohne
+zusaetzliche Ja/Nein-Frage; `sudo` kann weiterhin ein Passwort verlangen.
+Auch `--verify-only --install-minisign` kann somit Systempakete installieren.
+Es werden keine Schluessel erzeugt, keine Signaturen uebersprungen und keine
+privaten Schluessel benoetigt. APT-Fehler brechen den Ablauf vor dem Release-Download
+ab. Andere Plattformen benoetigen eine separate Minisign-Installation.
+Eine echte APT-/Fresh-Host-Abnahme ist nicht Bestandteil der Offline-Tests.
 
 Beispielbefehle, **nicht hier ausgefuehrt**. `vX.Y.Z` und Pfade ersetzen; es wird kein bereits
 veroeffentlichtes signiertes Release behauptet.

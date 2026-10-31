@@ -4,12 +4,17 @@ set -Eeuo pipefail
 umask 077
 ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 tag='' key='' artifacts='' download=0 execute=0 verify_only=0 destination="$HOME/openclaw_ultimate_setup" stage=''
+install_minisign=0
 die() {
   printf 'Release-Einstieg abgebrochen: %s\n' "$*" >&2
   exit 1
 }
 while (($#)); do
   case "$1" in
+    --install-minisign)
+      install_minisign=1
+      shift
+      ;;
     --tag | --public-key | --artifacts | --destination)
       (($# >= 2)) || die 'Optionswert fehlt.'
       case "$1" in --tag) tag=$2 ;; --public-key) key=$2 ;; --artifacts) artifacts=$2 ;; --destination) destination=$2 ;; esac
@@ -32,11 +37,13 @@ while (($#)); do
 done
 ((execute == 0 || verify_only == 0)) || die '--install und --verify-only schliessen sich aus.'
 [[ "$tag" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9.-]+)?$ && "$key" == /* && -f "$key" && ! -L "$key" ]] || die 'Release-Tag und unabhaengige regulaere Public-Key-Datei erforderlich.'
-command -v minisign >/dev/null || die 'Minisign separat aus gepruefter Quelle bereitstellen.'
 command -v python3 >/dev/null || die 'Python 3 erforderlich.'
 if ((execute)); then
   [[ $(uname -s) == Linux && "$EUID" != 0 ]] || die 'Installation nur als normaler Linux-/WSL-Benutzer.'
 fi
+# This helper belongs to the independently reviewed bootstrap, not downloaded assets.
+source "$ROOT/scripts/security/ensure_minisign.sh"
+ensure_minisign "$install_minisign" || die 'Minisign konnte nicht bereitgestellt werden; keine Release-Ausfuehrung.'
 cleanup() {
   local rc=$?
   if [[ -n "$stage" && "$stage" == /tmp/openclaw-release.* && -d "$stage" && ! -L "$stage" ]]; then
