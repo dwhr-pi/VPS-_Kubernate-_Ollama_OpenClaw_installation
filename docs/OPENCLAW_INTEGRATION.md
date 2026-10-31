@@ -2,7 +2,8 @@
 
 ## Ziel
 
-OpenClaw ist die lokale Agenten-Schicht fuer Codex-aehnliche Workflows, Ollama, n8n, RAG, Home Assistant und Tool-Automation.
+OpenClaw ist die lokale Agenten-Schicht fuer Codex-aehnliche Workflows, Ollama, n8n, RAG, Home
+Assistant und Tool-Automation.
 
 ## Gateway Start
 
@@ -18,13 +19,13 @@ OpenClaw ist die lokale Agenten-Schicht fuer Codex-aehnliche Workflows, Ollama, 
 
 ## Typische Fehler
 
-| Fehler | Ursache | Reparatur |
-|---|---|---|
-| gateway token mismatch | Token in Client/Gateway verschieden | Token neu setzen, nicht committen |
-| anthropic key missing | Cloud-Provider ohne Key aktiv | lokalen Provider waehlen oder Key bewusst setzen |
-| provider cooldown | Provider fehlerhaft/Rate-Limit | lokales Modell/Fallback nutzen |
-| openclaw command not found | PATH/Installation fehlt | Installer/Doctor ausfuehren |
-| WSL systemd Probleme | systemd nicht aktiv | WSL-Doku pruefen, User-Service nutzen |
+| Fehler                     | Ursache                             | Reparatur                                        |
+| -------------------------- | ----------------------------------- | ------------------------------------------------ |
+| gateway token mismatch     | Token in Client/Gateway verschieden | Token neu setzen, nicht committen                |
+| anthropic key missing      | Cloud-Provider ohne Key aktiv       | lokalen Provider waehlen oder Key bewusst setzen |
+| provider cooldown          | Provider fehlerhaft/Rate-Limit      | lokales Modell/Fallback nutzen                   |
+| openclaw command not found | PATH/Installation fehlt             | Installer/Doctor ausfuehren                      |
+| WSL systemd Probleme       | systemd nicht aktiv                 | WSL-Doku pruefen, User-Service nutzen            |
 
 ## Beispiel-Agenten
 

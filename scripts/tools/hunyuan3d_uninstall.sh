@@ -8,4 +8,3 @@ echo "Pfad: $INSTALL_ROOT"
 echo "Aus Sicherheitsgruenden nicht automatisch geloescht, weil Modelle/Assets gross und wertvoll sein koennen."
 echo "Manuell nach Pruefung:"
 echo "  sudo rm -rf \"$INSTALL_ROOT\""
-

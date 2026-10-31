@@ -18,4 +18,5 @@ Profile sind Arbeitsmodi fuer Tools, Modelle, Sicherheitsregeln und typische Wor
 
 ## Regel
 
-Ein Profil wird erst installierbar, wenn Registry, Toolmapping, Ressourcenwerte, Ports, Installer, Uninstaller, Doctor und Statuscheck vorhanden sind.
+Ein Profil wird erst installierbar, wenn Registry, Toolmapping, Ressourcenwerte, Ports, Installer,
+Uninstaller, Doctor und Statuscheck vorhanden sind.

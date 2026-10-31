@@ -24,7 +24,8 @@ Entfernt oder ersetzt wurden:
 Ersetzt durch:
 
 - OpenClaw-/Ollama-kompatibles Rollenprofil
-- optionaler Projektkontext aus `docs/Profile/`, `docs/Profil/`, `memory/`, `README.md`, `.env.example`, Setup-Skripten und frueheren Boardroom-Protokollen
+- optionaler Projektkontext aus `docs/Profile/`, `docs/Profil/`, `memory/`, `README.md`,
+  `.env.example`, Setup-Skripten und frueheren Boardroom-Protokollen
 - lokaler Betrieb mit einem oder mehreren Ollama-Modellen
 
 ## Dateien

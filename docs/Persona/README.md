@@ -2,7 +2,8 @@
 
 ## Was dieses Modul ist
 
-Dieses Modul erweitert das Repository um ein modulares Persona-System fuer `Ollama` und `OpenClaw`. Es kombiniert:
+Dieses Modul erweitert das Repository um ein modulares Persona-System fuer `Ollama` und `OpenClaw`.
+Es kombiniert:
 
 - Persona-Profile
 - Modus-Definitionen
@@ -34,14 +35,15 @@ Dieses Modul erweitert das Repository um ein modulares Persona-System fuer `Olla
 
 ## Schnellstart
 
-1. Profil-Doku lesen: [../Profil/Next_Level_Persona_System.md](../Profil/Next_Level_Persona_System.md)
+1. Profil-Doku lesen:
+   [../Profil/Next_Level_Persona_System.md](../Profil/Next_Level_Persona_System.md)
 2. Persona-Definitionen ansehen in `personas/`
 3. Prompt-Bausteine in `prompts/persona/` pruefen
 4. Installation vorbereiten:
 
-```bash
-bash scripts/persona/install_persona_system.sh
-```
+   ```bash
+   bash scripts/persona/install_persona_system.sh
+   ```
 
 5. Personas validieren:
 

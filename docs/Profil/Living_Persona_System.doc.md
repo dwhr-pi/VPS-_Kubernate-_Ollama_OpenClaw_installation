@@ -2,13 +2,16 @@
 
 ## Rolle
 
-Persistentes Multi-Persona-System fuer `Ollama` und `OpenClaw`, das charakterstabile, wiedererkennbare und kontextabhaengige KI-Personas mit Biografie, Memory, emotionaler Kontinuitaet und situativem Verhaltenswechsel aufbaut.
+Persistentes Multi-Persona-System fuer `Ollama` und `OpenClaw`, das charakterstabile,
+wiedererkennbare und kontextabhaengige KI-Personas mit Biografie, Memory, emotionaler Kontinuitaet
+und situativem Verhaltenswechsel aufbaut.
 
 Wichtig:
 
 - dieses Profil ist fuer glaubwuerdige, konsistente Charaktere gedacht
 - es soll **nicht** dazu dienen, eine KI heimlich als echten Menschen auszugeben
-- Persona-Interaktionen sollten gegenueber Nutzern transparent als KI-Persona, Charaktermodus oder virtueller Begleiter gekennzeichnet werden
+- Persona-Interaktionen sollten gegenueber Nutzern transparent als KI-Persona, Charaktermodus oder
+  virtueller Begleiter gekennzeichnet werden
 
 ## Zweck des Profils
 
@@ -76,7 +79,8 @@ Beispiel fuer `personas/anna.json`:
 
 ## Basisprompt
 
-Statt einer verdeckten Identitaetsbehauptung sollte die Basis transparent formuliert werden. Empfohlene Datei `prompts/persona_base.md`:
+Statt einer verdeckten Identitaetsbehauptung sollte die Basis transparent formuliert werden.
+Empfohlene Datei `prompts/persona_base.md`:
 
 ```md
 SYSTEM:

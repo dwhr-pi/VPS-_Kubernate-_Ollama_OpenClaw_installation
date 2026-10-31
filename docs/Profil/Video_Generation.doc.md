@@ -3,6 +3,7 @@
 Ziel: lokale Video-KI, Musikvideo-Pipelines, Upscaling, Frame-Interpolation.
 
 ## Kern
+
 - ComfyUI
 - Stable Diffusion WebUI Forge
 - Stable Video Diffusion
@@ -14,4 +15,5 @@ Ziel: lokale Video-KI, Musikvideo-Pipelines, Upscaling, Frame-Interpolation.
 - ControlNet / OpenPose vorbereiten
 
 ## Optional
+
 - Wan/weitere Video-Modelle nur dokumentieren

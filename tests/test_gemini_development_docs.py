@@ -3,6 +3,7 @@
 import json
 from pathlib import Path
 import re
+from doc_assertions import assert_prose_in, assert_prose_not_in
 import unittest
 
 
@@ -29,9 +30,9 @@ class GeminiDevelopmentDocsTests(unittest.TestCase):
                      "labstack/echo", "spf13/cobra", "bheisler/criterion.rs",
                      "docker/cli", "docker/compose", "helm/helm",
                      "kubernetes-sigs/kustomize", "canonical/microk8s"):
-            self.assertIn("](https://github.com/" + repo + ")", content)
-        self.assertIn("zehnteilige HTML-Deck fehlt", content)
-        self.assertIn("keine hier registrierten Slash-Befehle", content)
+            assert_prose_in(self, "](https://github.com/" + repo + ")", content)
+        assert_prose_in(self, "zehnteilige HTML-Deck fehlt", content)
+        assert_prose_in(self, "keine hier registrierten Slash-Befehle", content)
         self.assertFalse((ROOT / ".github/workflows/tech-stack-architect.yml").exists())
 
     def test_second_interview_is_discoverable_and_tables_balanced(self):
@@ -53,7 +54,7 @@ class GeminiDevelopmentDocsTests(unittest.TestCase):
             "keine verifizierte interne Toolliste", "keine Masseninstallation",
             "keine Sandbox", "System-Python", "Windows-Host-Speicher",
         ):
-            self.assertIn(phrase, content)
+            assert_prose_in(self, phrase, content)
 
     def test_source_pin_matches_agent_config(self):
         config = json.loads((ROOT / "config/agents/coding_agents.json").read_text(encoding="utf-8"))

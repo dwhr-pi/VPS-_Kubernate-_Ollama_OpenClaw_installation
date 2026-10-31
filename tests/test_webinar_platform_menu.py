@@ -98,7 +98,9 @@ echo done
     def test_separator_is_between_core_and_alphabetical_tools(self):
         source = (ROOT / "setup_ultimate.sh").read_text(encoding="utf-8")
         menu = source.split("show_tool_management_menu() {", 1)[1]
-        block = menu[menu.index("    TOOL_CHECKLIST_OPTIONS=()") : menu.index('    if [ "$overview_metrics_enabled" != "true" ]; then')]
+        start = re.search(r'(?m)^\s+TOOL_CHECKLIST_OPTIONS=\(\)', menu).start()
+        end = re.search(r'(?m)^\s+if \[ "\$overview_metrics_enabled" != "true" \]; then', menu).start()
+        block = menu[start:end]
         output = self.run_bash('''
 declare -A TOOLS INSTALLED_TOOLS_MAP
 TOOL_KEYS=(Ollama OpenClaw Ruflo ACE_Step_15 Act)

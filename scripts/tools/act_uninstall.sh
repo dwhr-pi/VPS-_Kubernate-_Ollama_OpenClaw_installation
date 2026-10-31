@@ -17,7 +17,7 @@ ACT_DIR="${ACT_DIR:-/opt/act}"
 echo -e "${BLUE}Starte Deinstallation von Act...${NC}"
 sudo rm -f /usr/local/bin/act
 if [ -d "$ACT_DIR" ]; then
-    sudo rm -rf "$ACT_DIR"
+  sudo rm -rf "$ACT_DIR"
 fi
 
 echo -e "${GREEN}Act wurde entfernt.${NC}"

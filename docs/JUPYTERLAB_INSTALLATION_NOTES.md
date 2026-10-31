@@ -2,9 +2,8 @@
 
 ## Warum der GitHub-Source-Build scheitern kann
 
-Der direkte Build aus `https://github.com/jupyterlab/jupyterlab` ist ein
-Entwicklerpfad. Dabei wird das komplette Frontend mit Yarn/JLPM, Lerna/Nx und
-Rspack gebaut.
+Der direkte Build aus `https://github.com/jupyterlab/jupyterlab` ist ein Entwicklerpfad. Dabei wird
+das komplette Frontend mit Yarn/JLPM, Lerna/Nx und Rspack gebaut.
 
 Im Log war der entscheidende Fehler:
 
@@ -12,8 +11,8 @@ Im Log war der entscheidende Fehler:
 Unsupported Node.js version "18.19.1". Rspack requires Node.js 20.19+ or 22.12+.
 ```
 
-Das ist kein normaler Anwender-Installationspfad. Fuer WSL2, MiniPC und VPS soll
-JupyterLab stabil aus dem Python-Paket installiert werden.
+Das ist kein normaler Anwender-Installationspfad. Fuer WSL2, MiniPC und VPS soll JupyterLab stabil
+aus dem Python-Paket installiert werden.
 
 ## Neuer Standardpfad
 
@@ -64,4 +63,3 @@ Wenn Node 18 erkannt wird, bricht der Source-Modus vor dem langen Build ab.
 - Standardbindung lokal halten, z. B. `127.0.0.1`.
 - Tokens und Notebook-Daten nicht ins Repo schreiben.
 - Remote-Zugriff bevorzugt ueber WireGuard, Tailscale oder Reverse Proxy mit Auth.
-

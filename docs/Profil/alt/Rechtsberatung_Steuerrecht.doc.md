@@ -1,28 +1,31 @@
 # Chatverlauf – Rechtsberatung_Steuerrecht / Ollama OpenClaw
 
 ## User
-Promt Liste für Rechtsanwälte erstellen, welche Tools wären außerdem für mein Ollama OpenClaw Projekt für das Profil Rechtsberatung_Steuerrecht sinnvoll:  
-https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation
+
+Promt Liste für Rechtsanwälte erstellen, welche Tools wären außerdem für mein Ollama OpenClaw
+Projekt für das Profil Rechtsberatung_Steuerrecht sinnvoll:\
+<https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation>
 
 ---
 
 ## Assistant
 
-Nice – das ist genau die richtige Richtung für ein ernstzunehmendes Legal-AI Setup 👍  
+Nice – das ist genau die richtige Richtung für ein ernstzunehmendes Legal-AI Setup 👍
 
 Ich bau dir das sauber in 3 Teile auf:
 
 ---
 
-# 🧠 1. Prompt-Liste für „Rechtsberatung_Steuerrecht“ (Ollama / OpenClaw ready)
+## 🧠 1. Prompt-Liste für „Rechtsberatung_Steuerrecht“ (Ollama / OpenClaw ready)
 
-Die wichtigste Erkenntnis aus Legal-AI:  
-👉 Strukturierte Prompts schlagen rohe Intelligenz  
-👉 RAG + klare Rollen reduzieren Halluzinationen massiv  
+Die wichtigste Erkenntnis aus Legal-AI:\
+👉 Strukturierte Prompts schlagen rohe Intelligenz\
+👉 RAG + klare Rollen reduzieren Halluzinationen massiv
 
 ---
 
-## ⚖️ Core-System-Prompt (Pflicht)
+### ⚖️ Core-System-Prompt (Pflicht)
+
 ```txt
 Du bist ein spezialisierter deutscher Rechtsanwalt für Steuerrecht.
 
@@ -44,7 +47,8 @@ Praxisnahe steuerrechtliche Einschätzung auf Fachanwalt-Niveau.
 ```
 
 📑 Prompt: Steueranalyse (Standardfall)
-```
+
+```text
 Analysiere folgenden steuerrechtlichen Sachverhalt:
 
 [INPUT]
@@ -57,7 +61,8 @@ Erstelle:
 ```
 
 💼 Prompt: Betriebsprüfung / Finanzamt
-```
+
+```text
 Simuliere eine Betriebsprüfung.
 
 Input:
@@ -71,7 +76,8 @@ Output:
 ```
 
 📊 Prompt: Steueroptimierung
-```
+
+```text
 Zeige legale Steueroptimierungen für:
 
 [Situation]
@@ -84,7 +90,8 @@ Struktur:
 ```
 
 📜 Prompt: Einspruch gegen Steuerbescheid
-```
+
+```text
 Erstelle eine juristische Argumentation gegen folgenden Steuerbescheid:
 
 [Bescheid]
@@ -97,7 +104,7 @@ Output:
 
 🧾 Prompt: Vertragsprüfung (steuerlich)
 
-```
+```text
 Prüfe folgenden Vertrag auf steuerliche Risiken:
 
 [Vertrag]
@@ -109,7 +116,8 @@ Output:
 ```
 
 ⚠️ Prompt: Risiko / Strafrecht
-```
+
+```text
 Bewerte folgenden Fall im Hinblick auf Steuerstrafrecht:
 
 [Fall]
@@ -121,7 +129,8 @@ Output:
 ```
 
 🤖 Prompt: Mandanten-Erklärung (vereinfachte Sprache)
-```
+
+```text
 Erkläre folgendes steuerliches Thema verständlich für einen Mandanten:
 
 [Thema]
@@ -129,44 +138,66 @@ Erkläre folgendes steuerliches Thema verständlich für einen Mandanten:
 Keine Fachbegriffe ohne Erklärung.
 ```
 
-## 🧩 2. Tools für dein Ollama + OpenClaw Legal Stack
+### 🧩 2. Tools für dein Ollama + OpenClaw Legal Stack
+
 🔥 MUST-HAVE Infrastruktur
-### 1. RAG + Dokumentensuche
-* LangChain
-* LlamaIndex
-### 2. Vector DB
-* Qdrant
-* Chroma
-### 3. EU-konforme Modelle / Hosting
-* EULLM
-### 4. Legal-spezifische Modelle
-* ALIENTELLIGENCE/aipoweredlawfirms
-* ALIENTELLIGENCE/lawfirm
+
+#### 1. RAG + Dokumentensuche
+
+- LangChain
+- LlamaIndex
+
+#### 2. Vector DB
+
+- Qdrant
+- Chroma
+
+#### 3. EU-konforme Modelle / Hosting
+
+- EULLM
+
+#### 4. Legal-spezifische Modelle
+
+- ALIENTELLIGENCE/aipoweredlawfirms
+- ALIENTELLIGENCE/lawfirm
 
 🧠 Advanced Legal AI Layer
-### 5. Multi-Agent System
-* Research Agent
-* Tax Law Agent
-* Risk Agent
-* Drafting Agent
-### 6. OCR + Dokumentverarbeitung
-* Tesseract OCR
-* PDF Parser
-### 7. Knowledge Graph
-* Neo4j
-## ⚙️ 3. Spezifisch für Steuerrecht
-### 📚 Datenquellen
-* AO (Abgabenordnung)
-* EStG
-* UStG
-* BFH Urteile
-* BMF Schreiben
-### 🧮 Spezielle Tools
-* Steuerberechnung (Python Tool)
-* Fristen-Checker
-* Risiko-Scoring
-## 🧱 4. Empfohlene Architektur
-```
+
+#### 5. Multi-Agent System
+
+- Research Agent
+- Tax Law Agent
+- Risk Agent
+- Drafting Agent
+
+#### 6. OCR + Dokumentverarbeitung
+
+- Tesseract OCR
+- PDF Parser
+
+#### 7. Knowledge Graph
+
+- Neo4j
+
+### ⚙️ 3. Spezifisch für Steuerrecht
+
+#### 📚 Datenquellen
+
+- AO (Abgabenordnung)
+- EStG
+- UStG
+- BFH Urteile
+- BMF Schreiben
+
+#### 🧮 Spezielle Tools
+
+- Steuerberechnung (Python Tool)
+- Fristen-Checker
+- Risiko-Scoring
+
+### 🧱 4. Empfohlene Architektur
+
+```text
 Ollama
   ↓
 OpenClaw (Agent Orchestrator)
@@ -184,27 +215,29 @@ Tools:
 ```
 
 🚀 Bonus: Realistische Erwartung
-* AI = Assistenzsystem, kein Anwalt
-* Halluzinationen möglich
-* Mit Setup → Associate-Level realistisch erreichbar
 
-
+- AI = Assistenzsystem, kein Anwalt
+- Halluzinationen möglich
+- Mit Setup → Associate-Level realistisch erreichbar
 
 xxxxxxxx
-## Assistant (Abschluss)
+
+### Assistant (Abschluss)
+
 👉 Wenn du willst:
-* komplettes OpenClaw Agent-Setup (YAML + Tools)
-* fertige RAG Pipeline für deutsches Steuerrecht
-* Multi-Agent System wie eine echte Kanzlei
-Sag einfach: „baue mir das Setup“
-```
+
+- komplettes OpenClaw Agent-Setup (YAML + Tools)
+- fertige RAG Pipeline für deutsches Steuerrecht
+- Multi-Agent System wie eine echte Kanzlei Sag einfach: „baue mir das Setup“
+
+```text
 
 ```
 
-```
+```text
 
 ```
 
-```
+```text
 
 ```

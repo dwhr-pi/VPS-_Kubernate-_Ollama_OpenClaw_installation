@@ -1,6 +1,5 @@
-#!/bin/bash
-TOOL_NAME="OpenHands"
-TOOL_KEY="OpenHands"
-TOOL_SLUG="openhands"
-source "$(dirname "$0")/helpers/scaffold_tool_common.sh"
-uninstall_scaffold_tool
+#!/usr/bin/env bash
+# Source: https://github.com/OpenHands/software-agent-sdk.git
+set -euo pipefail
+script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+exec python3 -I -B "${script_dir}/../agents/install_cli.py" openhands uninstall "$@"

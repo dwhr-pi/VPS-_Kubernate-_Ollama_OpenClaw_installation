@@ -1,6 +1,7 @@
 # Sprachpakete fuer Setup und Tools
 
-Dieses Setup kann neben den eingebauten Sprachdateien auch **nachinstallierbare Sprachpakete** laden.
+Dieses Setup kann neben den eingebauten Sprachdateien auch **nachinstallierbare Sprachpakete**
+laden.
 
 Der erste Anwendungsfall ist bewusst einfach:
 
@@ -10,7 +11,8 @@ Der erste Anwendungsfall ist bewusst einfach:
 
 ## Ziel
 
-Die Sprachpakete sollen nicht das ganze Setup hart forken, sondern nur ergaenzende oder ueberschreibende Texte liefern.
+Die Sprachpakete sollen nicht das ganze Setup hart forken, sondern nur ergaenzende oder
+ueberschreibende Texte liefern.
 
 Typische spaetere Inhalte:
 
@@ -73,7 +75,8 @@ tools/home_assistant/
 docs/
 ```
 
-Diese Inhalte werden aktuell noch nicht automatisch im Laufzeit-UI eingeblendet, koennen aber schon als strukturierte deutsche Quelle mitgeliefert werden.
+Diese Inhalte werden aktuell noch nicht automatisch im Laufzeit-UI eingeblendet, koennen aber schon
+als strukturierte deutsche Quelle mitgeliefert werden.
 
 ## Verwaltung im Setup
 
@@ -93,7 +96,8 @@ Dort kannst du aktuell:
 
 ## Installation aus einem anderen Repo
 
-Wenn du spaeter ein eigenes Repo mit Sprachpaketen hochlaedst, sollte es idealerweise so aufgebaut sein:
+Wenn du spaeter ein eigenes Repo mit Sprachpaketen hochlaedst, sollte es idealerweise so aufgebaut
+sein:
 
 ```text
 mein-repo/

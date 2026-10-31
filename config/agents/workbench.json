@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "description": "Optional one-shot workers; no scheduler, background agent, login or deployment",
+  "roles": {
+    "plan": {"workspace_write": false, "purpose": "Planung ohne Projektmutation"},
+    "implement": {"workspace_write": true, "purpose": "Implementierung ausschliesslich im eigenen Worktree"},
+    "review": {"workspace_write": false, "purpose": "Code-Review ohne Schreibrechte"},
+    "test": {"workspace_write": false, "purpose": "Unittest-Discovery im isolierten Container, kein Host-Testkommando"}
+  },
+  "agents": ["opencode", "qwen_code", "aider", "codex_cli", "openhands"],
+  "limits": {"memory": "2g", "cpus": "2", "pids": 128, "seconds": 900, "model_requests": 16},
+  "cloud": {"enabled": false, "credentials_in_worker": false},
+  "production_verified": false
+}

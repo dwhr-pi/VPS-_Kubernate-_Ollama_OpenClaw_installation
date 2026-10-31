@@ -8,4 +8,3 @@ Aufgaben:
 - Einkaufs- und Ausschreibungsnotizen vorbereiten
 
 Grenze: Preise und Verfuegbarkeit koennen sich aendern und muessen vor Bestellung geprueft werden.
-

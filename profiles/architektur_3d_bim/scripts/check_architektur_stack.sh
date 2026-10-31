@@ -22,11 +22,10 @@ check_cmd meshroom
 check_cmd python3
 check_cmd pip3
 
-if python3 - <<'PY' >/dev/null 2>&1
+if python3 - <<'PY' >/dev/null 2>&1; then
 import importlib.util
 raise SystemExit(0 if importlib.util.find_spec("ifcopenshell") else 1)
 PY
-then
   echo "[OK] Python-Modul ifcopenshell importierbar."
 else
   echo "[HINWEIS] Python-Modul ifcopenshell nicht importierbar."
@@ -39,4 +38,3 @@ else
 fi
 
 echo "Check abgeschlossen. Hinweise sind keine Fehler."
-

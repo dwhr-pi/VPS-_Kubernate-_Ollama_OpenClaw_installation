@@ -3,6 +3,7 @@
 Ziel: ETL, Datenvorbereitung, RAG-Vorverarbeitung, lokale Analytik.
 
 ## Kern
+
 - DuckDB
 - Prefect
 - MinIO
@@ -14,4 +15,5 @@ Ziel: ETL, Datenvorbereitung, RAG-Vorverarbeitung, lokale Analytik.
 - Pandoc
 
 ## Hinweise
+
 - große Dokumentenimporte und Embeddings früh auf Speicherbedarf prüfen

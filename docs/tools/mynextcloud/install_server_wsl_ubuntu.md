@@ -1,6 +1,7 @@
 # myNextCloud Server: Ubuntu/WSL2 Dev
 
 ## Ziel
+
 Lokaler Entwicklungsaufbau ohne Docker-Pflicht.
 
 ## Vorbereitung
@@ -22,4 +23,5 @@ cp .env.example .env
 
 ## Keine Secrets
 
-`.env` niemals committen. Produktive DB-Passwoerter und Tokens nur lokal oder in Secret-Store halten.
+`.env` niemals committen. Produktive DB-Passwoerter und Tokens nur lokal oder in Secret-Store
+halten.

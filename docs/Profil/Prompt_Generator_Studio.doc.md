@@ -2,7 +2,9 @@
 
 ## Zweck
 
-Das Profil erzeugt wiederverwendbare Prompts fuer Text, Marketing, Bild, Video, Musik, Voice, Code und Agenten. Es ist eine Bruecke zwischen Kreativprofilen, Codex/OpenClaw-Tasks, Ollama-Modellen, LiteLLM-Gateways und Evaluationswerkzeugen.
+Das Profil erzeugt wiederverwendbare Prompts fuer Text, Marketing, Bild, Video, Musik, Voice, Code
+und Agenten. Es ist eine Bruecke zwischen Kreativprofilen, Codex/OpenClaw-Tasks, Ollama-Modellen,
+LiteLLM-Gateways und Evaluationswerkzeugen.
 
 ## Typische Aufgaben
 
@@ -23,7 +25,8 @@ Das Profil erzeugt wiederverwendbare Prompts fuer Text, Marketing, Bild, Video, 
 
 ## Sicherheit
 
-Keine echten Kundendaten, API-Keys oder privaten Chatverlaeufe in Beispielprompts speichern. Promptbibliotheken koennen vertrauliche Strategien, Markenstimme oder interne Prozesse enthalten.
+Keine echten Kundendaten, API-Keys oder privaten Chatverlaeufe in Beispielprompts speichern.
+Promptbibliotheken koennen vertrauliche Strategien, Markenstimme oder interne Prozesse enthalten.
 
 ## Quickstart
 
@@ -34,4 +37,5 @@ Keine echten Kundendaten, API-Keys oder privaten Chatverlaeufe in Beispielprompt
 
 ## Status
 
-`beta`, da die Dokumentation stabil ist, aber Prompt-Registry und Evaluationssets weiter wachsen sollen.
+`beta`, da die Dokumentation stabil ist, aber Prompt-Registry und Evaluationssets weiter wachsen
+sollen.

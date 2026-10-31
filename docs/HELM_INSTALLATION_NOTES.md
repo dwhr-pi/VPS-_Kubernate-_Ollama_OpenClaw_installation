@@ -2,8 +2,7 @@
 
 ## Warum `apt install helm` fehlschlaegt
 
-Ubuntu 24.04/Noble liefert in den Standard-Repositories kein offizielles Paket `helm`.
-Der Fehler
+Ubuntu 24.04/Noble liefert in den Standard-Repositories kein offizielles Paket `helm`. Der Fehler
 
 ```text
 E: Unable to locate package helm
@@ -32,11 +31,11 @@ Der Installer:
 
 ## Architektur
 
-| System | Asset |
-| --- | --- |
-| Intel/AMD 64-bit | `linux-amd64` |
+| System                                 | Asset         |
+| -------------------------------------- | ------------- |
+| Intel/AMD 64-bit                       | `linux-amd64` |
 | ARM64 / Raspberry Pi 5 / Oracle Ampere | `linux-arm64` |
-| 32-bit ARM | `linux-arm` |
+| 32-bit ARM                             | `linux-arm`   |
 
 ## Vorab pruefen
 
@@ -53,5 +52,5 @@ HELM_VERSION=v3.15.4 bash scripts/tools/helm_install.sh
 
 ## Sicherheit
 
-Helm selbst ist nur ein CLI-Tool. Die sensiblen Daten liegen meist in `kubeconfig`, Helm-Values und Kubernetes-Secrets. Diese Dateien gehoeren nicht ins Repo.
-
+Helm selbst ist nur ein CLI-Tool. Die sensiblen Daten liegen meist in `kubeconfig`, Helm-Values und
+Kubernetes-Secrets. Diese Dateien gehoeren nicht ins Repo.

@@ -8,4 +8,3 @@ echo "Datenordner: $MEDIA_HOME"
 echo "Fotos/Outputs werden nicht automatisch geloescht."
 echo "Manuell nach Pruefung:"
 echo "  rm -rf \"$MEDIA_HOME\""
-

@@ -2,7 +2,8 @@
 
 ## Überblick
 
-Dieses Profil ist dokumentiert als Medien- und Musikprofil, wird script-seitig aktuell aber nur sehr schlank umgesetzt.
+Dieses Profil ist dokumentiert als Medien- und Musikprofil, wird script-seitig aktuell aber nur sehr
+schlank umgesetzt.
 
 ## Installierter Stack
 
@@ -39,4 +40,5 @@ scripts/tools/clawbake_install.sh
 
 ## Hinweise
 
-- Das Profil wirkt aktuell eher wie ein Platzhalter mit einem einzelnen Tool als wie ein vollständiges Medienprofil.
+- Das Profil wirkt aktuell eher wie ein Platzhalter mit einem einzelnen Tool als wie ein
+  vollständiges Medienprofil.

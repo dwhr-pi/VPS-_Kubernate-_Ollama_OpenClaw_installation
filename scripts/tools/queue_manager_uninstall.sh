@@ -5,7 +5,7 @@ MODE="${1:---dry-run}"
 QUEUE_DIR="${QUEUE_MANAGER_DIR:-$HOME/.openclaw_ultimate_user_data/queue}"
 
 case "$MODE" in
-  --dry-run|--apply|--status|--help|-h) ;;
+  --dry-run | --apply | --status | --help | -h) ;;
   *)
     echo "Bitte --dry-run, --apply, --status oder --help verwenden." >&2
     exit 2

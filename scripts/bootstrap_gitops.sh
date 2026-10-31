@@ -4,31 +4,47 @@ set -euo pipefail
 umask 077
 ROOT="$(cd "${BASH_SOURCE[0]%/*}/.." && pwd)"
 PYTHON_BIN=${GITOPS_PYTHON_BIN:-python3}
-mode=plan lock= address= confirmed=0 firewall_confirmed=0
-die() { printf 'GitOps-Bootstrap abgebrochen: %s\n' "$*" >&2; exit 1; }
+mode=plan lock='' address='' confirmed=0 firewall_confirmed=0
+die() {
+  printf 'GitOps-Bootstrap abgebrochen: %s\n' "$*" >&2
+  exit 1
+}
 while (($#)); do
   case "$1" in
-    --plan|--apply) mode=${1#--}; shift ;;
-    --artifacts|--private-address)
+    --plan | --apply)
+      mode=${1#--}
+      shift
+      ;;
+    --artifacts | --private-address)
       (($# >= 2)) || die 'Optionswert fehlt.'
       case "$1" in --artifacts) lock=$2 ;; --private-address) address=$2 ;; esac
-      shift 2 ;;
-    --confirm-new-host) confirmed=1; shift ;;
-    --confirm-private-firewall) firewall_confirmed=1; shift ;;
+      shift 2
+      ;;
+    --confirm-new-host)
+      confirmed=1
+      shift
+      ;;
+    --confirm-private-firewall)
+      firewall_confirmed=1
+      shift
+      ;;
     *) die '--plan|--apply --artifacts ABS --private-address IP [--confirm-new-host --confirm-private-firewall]' ;;
   esac
 done
 [[ "$lock" == /* && -f "$lock" && ! -L "$lock" ]] || die 'Absolute gepruefte JSON-Artefaktdatei erforderlich.'
 command -v "$PYTHON_BIN" >/dev/null || die 'Vorhandenes Python 3 erforderlich.'
-case "$(uname -m)" in x86_64|amd64) arch=linux-amd64 ;; aarch64|arm64) arch=linux-arm64 ;; *) die 'Nur x86_64/arm64.' ;; esac
+case "$(uname -m)" in x86_64 | amd64) arch=linux-amd64 ;; aarch64 | arm64) arch=linux-arm64 ;; *) die 'Nur x86_64/arm64.' ;; esac
 "$PYTHON_BIN" -I -B "$ROOT/scripts/lib/gitops_artifacts.py" "$lock" --arch "$arch" --private-address "$address" || exit 1
-[[ "$mode" == apply ]] || { printf 'Nur Plan: kein Netz, sudo, Clusterzugriff oder Dienststart.\n'; exit 0; }
+[[ "$mode" == apply ]] || {
+  printf 'Nur Plan: kein Netz, sudo, Clusterzugriff oder Dienststart.\n'
+  exit 0
+}
 [[ "$confirmed" == 1 && "$firewall_confirmed" == 1 && "$EUID" == 0 && $(uname -s) == Linux ]] || die 'Apply nur als root unter Linux mit --confirm-new-host und --confirm-private-firewall.'
 for tool in curl sha256sum install cmp stat systemctl flock ip awk grep ps df cat; do command -v "$tool" >/dev/null || die "Werkzeug fehlt: $tool"; done
 [[ $(ps -p 1 -o comm=) == systemd ]] || die 'systemd als PID 1 erforderlich; WSL vorher bewusst konfigurieren.'
 [[ $(stat -c %u -- "$lock") == 0 ]] || die 'Apply-Lockdatei muss root gehoeren.'
 permissions=$(stat -c %a -- "$lock")
-(( (8#$permissions & 8#022) == 0 )) || die 'Artefaktdatei darf nicht gruppen-/weltbeschreibbar sein.'
+(((8#$permissions & 8#022) == 0)) || die 'Artefaktdatei darf nicht gruppen-/weltbeschreibbar sein.'
 # Auch Verzeichnis-Austausch durch einen fremden Besitzer ausschliessen.
 "$PYTHON_BIN" -I -B -c 'import pathlib,sys; p=pathlib.Path(sys.argv[1]).resolve(); assert all(x.stat().st_uid==0 and not x.stat().st_mode & 0o022 for x in [p,*p.parents]), "root-eigener, nicht fremdbeschreibbarer Lockpfad erforderlich"' "$lock"
 interface=$(ip -4 -o addr show | awk -v wanted="$address" '{split($4,a,"/"); if(a[1]==wanted) print $2}')
@@ -69,19 +85,22 @@ else
     [[ ! -e "$path" && ! -L "$path" ]] || die 'Vorhandene/fremde Installation: kein automatisches Adoptieren oder Ueberschreiben.'
   done
   install -m 600 "$lock" "$state/owned-artifacts.json"
-  printf '%s\n' "$address" > "$state/private-address"
+  printf '%s\n' "$address" >"$state/private-address"
 fi
 stage=$(mktemp -d "$state/stage.XXXXXXXX")
-cleanup() { rm -f -- "$stage/lines" "$stage/payload" "$stage/argocd.pinned.yaml"; rmdir -- "$stage"; }
+cleanup() {
+  rm -f -- "$stage/lines" "$stage/payload" "$stage/argocd.pinned.yaml"
+  rmdir -- "$stage"
+}
 trap cleanup EXIT
 trap 'exit 130' INT
 trap 'exit 143' TERM
-"$PYTHON_BIN" -I -B "$ROOT/scripts/lib/gitops_artifacts.py" "$lock" --arch "$arch" --private-address "$address" --lines > "$stage/lines"
-mapfile -t items < "$stage/lines"
+"$PYTHON_BIN" -I -B "$ROOT/scripts/lib/gitops_artifacts.py" "$lock" --arch "$arch" --private-address "$address" --lines >"$stage/lines"
+mapfile -t items <"$stage/lines"
 ((${#items[@]} == 12)) || die 'Ungueltige Artefaktliste.'
 # Alle Downloads pruefen, bevor irgendein Dienst installiert wird.
-for ((i=0; i<12; i+=3)); do
-  name=${items[i]} url=${items[i+1]} hash=${items[i+2]}
+for ((i = 0; i < 12; i += 3)); do
+  name=${items[i]} url=${items[i + 1]} hash=${items[i + 2]}
   [[ ! -L "$state/$name" ]] || die 'Artefaktcache darf keine Symlinks enthalten.'
   if [[ -f "$state/$name" ]] && printf '%s  %s\n' "$hash" "$state/$name" | sha256sum --status -c -; then continue; fi
   curl -q --fail --silent --show-error --location --proto '=https' --proto-redir '=https' --connect-timeout 15 --max-time 300 --retry 2 --output "$stage/payload" "$url"
@@ -104,14 +123,17 @@ if ! systemctl is-active --quiet k3s; then
   env -i PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin HOME=/root \
     INSTALL_K3S_SKIP_DOWNLOAD=true INSTALL_K3S_SYMLINK=skip INSTALL_K3S_SKIP_SELINUX_RPM=true \
     bash "$state/k3s_installer" server --bind-address "$address" --advertise-address "$address" \
-      --node-ip "$address" --flannel-iface "$interface" --disable servicelb --write-kubeconfig-mode 600 \
-      --kubelet-arg 'system-reserved=cpu=200m,memory=512Mi,ephemeral-storage=1Gi' \
-      --kubelet-arg 'kube-reserved=cpu=200m,memory=512Mi,ephemeral-storage=1Gi'
+    --node-ip "$address" --flannel-iface "$interface" --disable servicelb --write-kubeconfig-mode 600 \
+    --kubelet-arg 'system-reserved=cpu=200m,memory=512Mi,ephemeral-storage=1Gi' \
+    --kubelet-arg 'kube-reserved=cpu=200m,memory=512Mi,ephemeral-storage=1Gi'
 fi
 kube=(/usr/local/bin/k3s kubectl --kubeconfig /etc/rancher/k3s/k3s.yaml --request-timeout=30s)
 api_ready=0
-for ((attempt=0; attempt<30; attempt++)); do
-  if "${kube[@]}" get --raw /readyz >/dev/null 2>&1; then api_ready=1; break; fi
+for ((attempt = 0; attempt < 30; attempt++)); do
+  if "${kube[@]}" get --raw /readyz >/dev/null 2>&1; then
+    api_ready=1
+    break
+  fi
   sleep 2
 done
 [[ "$api_ready" == 1 ]] || die 'K3s-API noch nicht bereit; Logs privat pruefen, gleicher Bootstrap ist wiederholbar.'
@@ -132,7 +154,7 @@ systemctl enable --now openclaw-cloudflared.service
 systemctl is-active --quiet openclaw-cloudflared.service || die 'Tunnel-Daemon nicht aktiv; keine Tokenausgabe.'
 [[ ! -L /usr/local/share/openclaw-gitops ]] || die 'Statusverzeichnis darf kein Symlink sein.'
 install -d -m 755 /usr/local/share/openclaw-gitops
-printf '{"scope":"bootstrap-infrastructure-only","applications_deployed":false}\n' > "$stage/payload"
+printf '{"scope":"bootstrap-infrastructure-only","applications_deployed":false}\n' >"$stage/payload"
 install -m 644 "$stage/payload" /usr/local/share/openclaw-gitops/bootstrap-ready.json
 printf 'Bootstrap fertig. Traefik und Local Path bleiben erhalten.\n'
 printf 'Weitere Installationen (Ollama, OpenClaw, n8n, RAG) nur nach Review ueber ArgoCD App-of-Apps.\n'

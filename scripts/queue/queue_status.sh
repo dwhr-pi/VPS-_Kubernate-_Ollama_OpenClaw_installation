@@ -4,7 +4,10 @@ if [[ "${1:-}" == --dry-run ]]; then
   echo "Plan: vorhandenen Queue-Status lesen; keine Aenderung."
   exit 0
 fi
-[[ "$#" == 0 ]] || { echo "Fehler: Keine weiteren Argumente erwartet." >&2; exit 64; }
+[[ "$#" == 0 ]] || {
+  echo "Fehler: Keine weiteren Argumente erwartet." >&2
+  exit 64
+}
 
 # Read-only: do not source executable config or create a queue during inspection.
 QUEUE_HOME="${QUEUE_HOME:-$HOME/.openclaw/job-queue}"

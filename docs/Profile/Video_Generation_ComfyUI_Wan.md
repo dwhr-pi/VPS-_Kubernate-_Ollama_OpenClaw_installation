@@ -1,29 +1,32 @@
 # Video Generation: ComfyUI + Wan2.x
 
-Status: `experimental`  
-Tier: `advanced`  
+Status: `experimental`\
+Tier: `advanced`\
 Kategorie: `media`
 
-Dieses technische Profil beschreibt den lokalen Video-Stack fuer ComfyUI und Wan2.1/Wan2.2. Es ist die Render-Schicht fuer OpenHiggsStack.
+Dieses technische Profil beschreibt den lokalen Video-Stack fuer ComfyUI und Wan2.1/Wan2.2. Es ist
+die Render-Schicht fuer OpenHiggsStack.
 
 ## Hardware-Anforderungen
 
-| Klasse | Erwartung |
-|---|---|
-| Low-End CPU-only | nur Prompting, Planung, Workflow-Tests ohne ernsthaftes Rendering |
-| 8-12 GB VRAM | minimale kleine Workflows, kurze Clips, reduzierte Aufloesung |
-| 16-24 GB VRAM | empfohlen fuer realistischere lokale Tests |
-| 24 GB+ VRAM | komfortabler fuer groessere Modelle, laengere Clips und Batch-Jobs |
+| Klasse               | Erwartung                                                           |
+| -------------------- | ------------------------------------------------------------------- |
+| Low-End CPU-only     | nur Prompting, Planung, Workflow-Tests ohne ernsthaftes Rendering   |
+| 8-12 GB VRAM         | minimale kleine Workflows, kurze Clips, reduzierte Aufloesung       |
+| 16-24 GB VRAM        | empfohlen fuer realistischere lokale Tests                          |
+| 24 GB+ VRAM          | komfortabler fuer groessere Modelle, laengere Clips und Batch-Jobs  |
 | Multi-GPU/Kubernetes | optional, spaeterer Advanced-Pfad mit Queue, Storage und Monitoring |
 
-Speicherwarnung: Video-Modelle, VAE, LoRAs, Zwischenbilder und Outputs koennen schnell viele hundert GB belegen.
+Speicherwarnung: Video-Modelle, VAE, LoRAs, Zwischenbilder und Outputs koennen schnell viele hundert
+GB belegen.
 
 ## Windows 11 + WSL2
 
 - WSL2 mit Ubuntu nutzen.
 - NVIDIA-Treiber auf Windows-Seite installieren.
 - In WSL mit `nvidia-smi` pruefen, ob die GPU sichtbar ist.
-- Projektdateien und Modelle moeglichst im Linux-Dateisystem speichern, nicht unter `/mnt/c`, wenn viele kleine Dateien genutzt werden.
+- Projektdateien und Modelle moeglichst im Linux-Dateisystem speichern, nicht unter `/mnt/c`, wenn
+  viele kleine Dateien genutzt werden.
 - ComfyUI-Weboberflaeche standardmaessig nur lokal nutzen: `http://127.0.0.1:8188`.
 
 ## Ubuntu Hinweise
@@ -70,7 +73,8 @@ http://127.0.0.1:8188
 
 ## ComfyUI Manager
 
-ComfyUI Manager ist optional. Er erleichtert Custom Nodes, kann aber auch unkontrolliert viele Abhaengigkeiten nachziehen. In produktionsnahen Setups besser dokumentiert und bewusst installieren.
+ComfyUI Manager ist optional. Er erleichtert Custom Nodes, kann aber auch unkontrolliert viele
+Abhaengigkeiten nachziehen. In produktionsnahen Setups besser dokumentiert und bewusst installieren.
 
 ## Wan2.1/Wan2.2 Modellhinweise
 
@@ -108,7 +112,8 @@ ffmpeg -i input.mp4 -vf "scale=1080:1920:force_original_aspect_ratio=decrease,pa
 
 ## OpenClaw/Ollama-Einbindung
 
-Ollama erstellt Storyboards, Shotlisten, negative Prompts und Social Captions. OpenClaw entscheidet, welcher Schritt lokal, per ComfyUI oder optional per Cloud-Fallback laufen soll.
+Ollama erstellt Storyboards, Shotlisten, negative Prompts und Social Captions. OpenClaw entscheidet,
+welcher Schritt lokal, per ComfyUI oder optional per Cloud-Fallback laufen soll.
 
 ## Ersttest
 

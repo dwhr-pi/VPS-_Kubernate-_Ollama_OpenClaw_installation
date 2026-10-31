@@ -8,6 +8,7 @@ import json
 from pathlib import Path
 import re
 import tempfile
+from doc_assertions import assert_prose_in, assert_prose_not_in
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -32,7 +33,7 @@ class RAGComplianceReviewTests(unittest.TestCase):
         self.assertFalse(coverage["national_law_review_complete"])
         text = (ROOT / "docs/legal/COUNTRY_COVERAGE.md").read_text(encoding="utf-8")
         for row in rows:
-            self.assertIn("| " + row["name"] + " |", text)
+            assert_prose_in(self, "| " + row["name"] + " |", text)
 
     def test_doctor_never_gives_legal_approval(self):
         result = review.source_review(date(2026, 10, 21))

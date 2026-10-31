@@ -4,7 +4,8 @@ Status: `planned` / `documentation-first`
 
 ## Zweck
 
-Ultimate JARVIS beschreibt ein lokales KI-Betriebsprofil fuer einen dauerhaften Assistenten mit Voice, Memory, Agenten-Orchestrierung, RAG, Smart Home und Infrastrukturhilfe.
+Ultimate JARVIS beschreibt ein lokales KI-Betriebsprofil fuer einen dauerhaften Assistenten mit
+Voice, Memory, Agenten-Orchestrierung, RAG, Smart Home und Infrastrukturhilfe.
 
 ## Zielgruppe
 
@@ -15,11 +16,11 @@ Ultimate JARVIS beschreibt ein lokales KI-Betriebsprofil fuer einen dauerhaften 
 
 ## Ressourcenbedarf
 
-| Modus | CPU | RAM | Speicher | GPU |
-| --- | --- | --- | --- | --- |
-| Minimal | 4 Kerne | 8 GB | 30 GB | nein |
-| Empfohlen | 8 Kerne | 16-32 GB | 100 GB | optional |
-| High-End | 12+ Kerne | 64 GB | 500 GB+ | ja |
+| Modus     | CPU       | RAM      | Speicher | GPU      |
+| --------- | --------- | -------- | -------- | -------- |
+| Minimal   | 4 Kerne   | 8 GB     | 30 GB    | nein     |
+| Empfohlen | 8 Kerne   | 16-32 GB | 100 GB   | optional |
+| High-End  | 12+ Kerne | 64 GB    | 500 GB+  | ja       |
 
 ## Empfohlene Tools
 
@@ -44,7 +45,8 @@ Ultimate JARVIS beschreibt ein lokales KI-Betriebsprofil fuer einen dauerhaften 
 
 ## Ports
 
-Keine Ports automatisch oeffnen. Typische interne Ports muessen lokal oder per VPN geschuetzt bleiben:
+Keine Ports automatisch oeffnen. Typische interne Ports muessen lokal oder per VPN geschuetzt
+bleiben:
 
 - Ollama: `127.0.0.1:11434`
 - OpenClaw Gateway: lokal/VPN
@@ -69,7 +71,8 @@ Dieses Profil ist aktuell dokumentationsbasiert:
 bash setup_ultimate.sh
 ```
 
-Danach einzeln die benoetigten Tools installieren. Keine Komplettinstallation aus diesem Profil starten.
+Danach einzeln die benoetigten Tools installieren. Keine Komplettinstallation aus diesem Profil
+starten.
 
 ## Testbefehl
 
@@ -81,7 +84,8 @@ bash scripts/doctor.sh
 
 ## Deinstallationshinweis
 
-Da dieses Profil nichts automatisch installiert, gibt es keine zentrale Deinstallation. Entferne einzelne Tools ueber das Tool-Menue.
+Da dieses Profil nichts automatisch installiert, gibt es keine zentrale Deinstallation. Entferne
+einzelne Tools ueber das Tool-Menue.
 
 ## Bekannte Fehler
 

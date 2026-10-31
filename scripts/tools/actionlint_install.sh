@@ -18,25 +18,25 @@ sudo mkdir -p "$(dirname "$ACTIONLINT_DIR")"
 sudo chown -R "$USER:$USER" "$(dirname "$ACTIONLINT_DIR")"
 
 if [ -d "$ACTIONLINT_DIR/.git" ]; then
-    echo "Actionlint Repository existiert bereits unter $ACTIONLINT_DIR. Aktualisiere Repository..."
-    git -C "$ACTIONLINT_DIR" pull --ff-only || {
-        echo "Warnung: Git-Update war nicht moeglich. Vorhandene lokale Kopie wird verwendet."
-    }
+  echo "Actionlint Repository existiert bereits unter $ACTIONLINT_DIR. Aktualisiere Repository..."
+  git -C "$ACTIONLINT_DIR" pull --ff-only || {
+    echo "Warnung: Git-Update war nicht moeglich. Vorhandene lokale Kopie wird verwendet."
+  }
 elif [ -e "$ACTIONLINT_DIR" ] && [ "$(find "$ACTIONLINT_DIR" -mindepth 1 -maxdepth 1 2>/dev/null | wc -l)" -gt 0 ]; then
-    echo "Fehler: $ACTIONLINT_DIR existiert, ist aber kein leeres Git-Repository."
-    echo "Bitte Verzeichnis pruefen oder Actionlint vorher deinstallieren."
-    end_measurement "failed"
-    exit 1
+  echo "Fehler: $ACTIONLINT_DIR existiert, ist aber kein leeres Git-Repository."
+  echo "Bitte Verzeichnis pruefen oder Actionlint vorher deinstallieren."
+  end_measurement "failed"
+  exit 1
 else
-    rm -rf "$ACTIONLINT_DIR"
-    git clone "$ACTIONLINT_REPO_URL" "$ACTIONLINT_DIR"
+  rm -rf "$ACTIONLINT_DIR"
+  git clone "$ACTIONLINT_REPO_URL" "$ACTIONLINT_DIR"
 fi
 
 cd "$ACTIONLINT_DIR"
 echo "Baue Actionlint CLI..."
 if ! go build -o actionlint ./cmd/actionlint; then
-    echo "Hinweis: ./cmd/actionlint konnte nicht gebaut werden, versuche Root-Package..."
-    go build -o actionlint .
+  echo "Hinweis: ./cmd/actionlint konnte nicht gebaut werden, versuche Root-Package..."
+  go build -o actionlint .
 fi
 
 sudo install -m 0755 "$ACTIONLINT_DIR/actionlint" /usr/local/bin/actionlint

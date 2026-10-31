@@ -3,25 +3,24 @@
 set -euo pipefail
 
 dialog() {
-    local arg
-    local has_cancel_label=0
+  local arg
+  local has_cancel_label=0
 
-    for arg in "$@"; do
-        if [ "$arg" = "--cancel-label" ]; then
-            has_cancel_label=1
-            break
-        fi
-    done
-
-    if [ "$has_cancel_label" -eq 1 ]; then
-        command dialog "$@"
-    else
-        command dialog --cancel-label "Zurueck" "$@"
+  for arg in "$@"; do
+    if [ "$arg" = "--cancel-label" ]; then
+      has_cancel_label=1
+      break
     fi
+  done
+
+  if [ "$has_cancel_label" -eq 1 ]; then
+    command dialog "$@"
+  else
+    command dialog --cancel-label "Zurueck" "$@"
+  fi
 }
 
 GREEN="\033[0;32m"
-BLUE="\033[0;34m"
 RED="\033[0;31m"
 YELLOW="\033[1;33m"
 NC="\033[0m"
@@ -34,43 +33,38 @@ USER_MODELFILE_DIR="$USER_WORKSPACE_DIR/modelfiles"
 mkdir -p "$USER_MODELFILE_DIR"
 
 prompt_input() {
-    local title="$1"
-    local message="$2"
-    local default_value="${3:-}"
-    local target_file="$4"
+  local title="$1"
+  local message="$2"
+  local default_value="${3:-}"
+  local target_file="$4"
 
-    dialog --clear --backtitle "OpenClaw & AI Infrastructure - Ultimate Setup" \
-    --title "$title" --inputbox "$message" 11 90 "$default_value" 2> "$target_file"
+  dialog --clear --backtitle "OpenClaw & AI Infrastructure - Ultimate Setup" \
+    --title "$title" --inputbox "$message" 11 90 "$default_value" 2>"$target_file"
 }
 
 if ! command -v dialog >/dev/null 2>&1; then
-    echo -e "${RED}Fehler: dialog ist nicht installiert.${NC}"
-    exit 1
+  echo -e "${RED}Fehler: dialog ist nicht installiert.${NC}"
+  exit 1
 fi
 
-prompt_input "Modelfile-Assistent" "Name des neuen Ollama-Modells:" "mein-llm" /tmp/modelfile_name
-[ $? -eq 0 ] || exit 0
+prompt_input "Modelfile-Assistent" "Name des neuen Ollama-Modells:" "mein-llm" /tmp/modelfile_name || exit 0
 MODEL_NAME="$(cat /tmp/modelfile_name)"
 
-prompt_input "Modelfile-Assistent" "Pfad zur GGUF-Datei oder Name des Basismodells für FROM:" "./mein-modell.gguf" /tmp/modelfile_from
-[ $? -eq 0 ] || exit 0
+prompt_input "Modelfile-Assistent" "Pfad zur GGUF-Datei oder Name des Basismodells für FROM:" "./mein-modell.gguf" /tmp/modelfile_from || exit 0
 MODEL_FROM="$(cat /tmp/modelfile_from)"
 
-prompt_input "Modelfile-Assistent" "Systemprompt für das Modell:" "Du bist ein hilfreicher lokaler Assistent." /tmp/modelfile_system
-[ $? -eq 0 ] || exit 0
+prompt_input "Modelfile-Assistent" "Systemprompt für das Modell:" "Du bist ein hilfreicher lokaler Assistent." /tmp/modelfile_system || exit 0
 MODEL_SYSTEM="$(cat /tmp/modelfile_system)"
 
-prompt_input "Modelfile-Assistent" "Temperatur (z. B. 0.2):" "0.2" /tmp/modelfile_temperature
-[ $? -eq 0 ] || exit 0
+prompt_input "Modelfile-Assistent" "Temperatur (z. B. 0.2):" "0.2" /tmp/modelfile_temperature || exit 0
 MODEL_TEMPERATURE="$(cat /tmp/modelfile_temperature)"
 
-prompt_input "Modelfile-Assistent" "Context-Länge NUM_CTX (z. B. 8192):" "8192" /tmp/modelfile_ctx
-[ $? -eq 0 ] || exit 0
+prompt_input "Modelfile-Assistent" "Context-Länge NUM_CTX (z. B. 8192):" "8192" /tmp/modelfile_ctx || exit 0
 MODEL_CTX="$(cat /tmp/modelfile_ctx)"
 
 TARGET_FILE="$USER_MODELFILE_DIR/${MODEL_NAME}.Modelfile"
 
-cat > "$TARGET_FILE" <<EOF
+cat >"$TARGET_FILE" <<EOF
 # Modelfile erzeugt durch das Ultimate Setup
 # Dieser Modelfile liegt bewusst im Benutzer-Workspace und nicht im Git-Repository.
 

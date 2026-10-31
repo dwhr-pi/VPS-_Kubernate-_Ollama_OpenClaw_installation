@@ -8,4 +8,3 @@ echo "Projektordner: $AI_3D_HOME"
 echo "Aus Sicherheitsgruenden werden Assets, Modelle und Exporte nicht automatisch geloescht."
 echo "Wenn du wirklich alles entfernen willst, pruefe den Pfad und fuehre manuell aus:"
 echo "  rm -rf \"$AI_3D_HOME\""
-

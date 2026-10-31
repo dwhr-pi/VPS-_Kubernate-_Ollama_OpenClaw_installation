@@ -1,0 +1,181 @@
+{
+  "reviewed_at": "2026-10-30",
+  "ci_head": "6e11a77b52f9098592d496fca4a47bb92dfc41d8",
+  "user_approved": true,
+  "scope": "Exact observed failures only; original URLs retained, not a runtime ignore list. HTTP reachability is not content verification.",
+  "references": [
+    {
+      "url": "https://amtliche-handbuecher.bundesfinanzministerium.de/ao/2026/Datenschutz-Grundverordnung/inhalt.html",
+      "ci_status": [503],
+      "files": ["docs/tools/personnel-documents.md", "docs/quality/EXTERNAL_LINK_POLICY.md"],
+      "local_status": 200,
+      "classification": "UNVERIFIED_REFERENCE"
+    },
+    {
+      "url": "https://www.gesetze-im-internet.de/bdsg_2018/__26.html",
+      "ci_status": [0],
+      "files": ["docs/tools/personnel-documents.md", "docs/quality/EXTERNAL_LINK_POLICY.md"],
+      "local_status": 200,
+      "classification": "UNVERIFIED_REFERENCE"
+    },
+    {
+      "url": "https://amtliche-handbuecher.bundesfinanzministerium.de/ao/2026/Anhaenge/BMF-Schreiben-und-gleichlautende-Laendererlasse/Anhang-33/inhalt.html",
+      "ci_status": [503],
+      "files": ["docs/tools/personnel-documents.md", "docs/quality/EXTERNAL_LINK_POLICY.md"],
+      "local_status": 200,
+      "classification": "UNVERIFIED_REFERENCE"
+    },
+    {
+      "url": "https://www.perplexity.ai/comet",
+      "ci_status": [403],
+      "files": ["docs/tools/comet-and-browser-research.md", "docs/audit/TOOL_INVENTORY.md"],
+      "local_status": 403,
+      "classification": "UNVERIFIED_REFERENCE"
+    },
+    {
+      "url": "https://www.perplexity.ai/",
+      "ci_status": [403],
+      "files": [
+        "docs/tutorials/manus-interview-2026-10-22.md",
+        "docs/_API-Keys/PROVIDER_KEY_CATALOG.md"
+      ],
+      "local_status": 403,
+      "classification": "UNVERIFIED_REFERENCE"
+    },
+    {
+      "url": "https://www.gesetze-im-internet.de/urhg/__69d.html",
+      "ci_status": [0],
+      "files": ["docs/tutorials/own-app-with-rea.md", "docs/quality/EXTERNAL_LINK_POLICY.md"],
+      "local_status": 200,
+      "classification": "UNVERIFIED_REFERENCE"
+    },
+    {
+      "url": "https://www.gesetze-im-internet.de/urhg/__69e.html",
+      "ci_status": [0],
+      "files": ["docs/tutorials/own-app-with-rea.md", "docs/quality/EXTERNAL_LINK_POLICY.md"],
+      "local_status": 200,
+      "classification": "UNVERIFIED_REFERENCE"
+    },
+    {
+      "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202601744",
+      "ci_status": [202],
+      "files": ["docs/legal/INTERNATIONAL_SOURCES.md", "docs/quality/EXTERNAL_LINK_POLICY.md"],
+      "local_status": 202,
+      "classification": "UNVERIFIED_REFERENCE"
+    },
+    {
+      "url": "https://www.leg.colorado.gov/bills/SB26-189",
+      "ci_status": [406],
+      "files": ["docs/legal/INTERNATIONAL_SOURCES.md"],
+      "local_status": 200,
+      "classification": "UNVERIFIED_REFERENCE"
+    },
+    {
+      "url": "https://www.gesetze-im-internet.de/",
+      "ci_status": [0],
+      "files": ["docs/legal/INTERNATIONAL_SOURCES.md", "docs/quality/EXTERNAL_LINK_POLICY.md"],
+      "local_status": 200,
+      "classification": "UNVERIFIED_REFERENCE"
+    },
+    {
+      "url": "https://www.pdpc.gov.sg/",
+      "ci_status": [202],
+      "files": ["docs/legal/INTERNATIONAL_SOURCES.md", "docs/quality/EXTERNAL_LINK_POLICY.md"],
+      "local_status": 200,
+      "classification": "UNVERIFIED_REFERENCE"
+    },
+    {
+      "url": "https://ndpc.gov.ng/",
+      "ci_status": [403],
+      "files": ["docs/legal/INTERNATIONAL_SOURCES.md", "docs/quality/EXTERNAL_LINK_POLICY.md"],
+      "local_status": 200,
+      "classification": "UNVERIFIED_REFERENCE"
+    },
+    {
+      "url": "https://uaelegislation.gov.ae/",
+      "ci_status": [403],
+      "files": ["docs/legal/INTERNATIONAL_SOURCES.md", "docs/quality/EXTERNAL_LINK_POLICY.md"],
+      "local_status": 403,
+      "classification": "UNVERIFIED_REFERENCE"
+    },
+    {
+      "url": "https://pravo.gov.ru/",
+      "ci_status": [0],
+      "files": [
+        "docs/legal/TEMPORAL_UPDATES_AND_EASTERN_EUROPE.md",
+        "docs/quality/EXTERNAL_LINK_POLICY.md"
+      ],
+      "local_status": 0,
+      "classification": "UNVERIFIED_REFERENCE"
+    },
+    {
+      "url": "https://publication.pravo.gov.ru/",
+      "ci_status": [0],
+      "files": [
+        "docs/legal/TEMPORAL_UPDATES_AND_EASTERN_EUROPE.md",
+        "docs/quality/EXTERNAL_LINK_POLICY.md"
+      ],
+      "local_status": 0,
+      "classification": "UNVERIFIED_REFERENCE"
+    },
+    {
+      "url": "https://zakon.rada.gov.ua/laws/main?lang=en",
+      "ci_status": [0],
+      "files": [
+        "docs/legal/TEMPORAL_UPDATES_AND_EASTERN_EUROPE.md",
+        "docs/quality/EXTERNAL_LINK_POLICY.md"
+      ],
+      "local_status": 0,
+      "classification": "UNVERIFIED_REFERENCE"
+    },
+    {
+      "url": "https://eli.sejm.gov.pl/",
+      "ci_status": [0],
+      "files": ["docs/legal/TEMPORAL_UPDATES_AND_EASTERN_EUROPE.md"],
+      "local_status": 0,
+      "classification": "UNVERIFIED_REFERENCE"
+    },
+    {
+      "url": "https://console.perplexity.ai/",
+      "ci_status": [403],
+      "files": ["docs/_API-Keys/REGISTRATION_BILLING_AND_IDENTITY.md"],
+      "local_status": 403,
+      "classification": "UNVERIFIED_REFERENCE"
+    },
+    {
+      "url": "https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation/actions/runs/40936270460/job/123667511933",
+      "ci_status": [502],
+      "files": ["docs/agents/CI_REPAIR_STATUS.md"],
+      "local_status": 200,
+      "classification": "UNVERIFIED_REFERENCE"
+    },
+    {
+      "url": "https://media.defense.gov/2022/Aug/29/2003066362/1/1/0/CTR_KUBERNETES_HARDENING_GUIDANCE_1.2_20220829.PDF",
+      "ci_status": [403],
+      "files": ["docs/security/KUBERNETES_ADMIN_AUDIT.md", "docs/quality/EXTERNAL_LINK_POLICY.md"],
+      "local_status": 403,
+      "classification": "UNVERIFIED_REFERENCE"
+    },
+    {
+      "url": "https://www.perplexity.ai/settings/api",
+      "ci_status": [403],
+      "files": ["docs/OPENCLAW_ENV_GUIDE.md"],
+      "local_status": 403,
+      "classification": "UNVERIFIED_REFERENCE"
+    },
+    {
+      "url": "https://www.cac.gov.cn/",
+      "ci_status": [0],
+      "files": ["docs/legal/INTERNATIONAL_SOURCES.md"],
+      "local_status": 0,
+      "classification": "UNVERIFIED_REFERENCE"
+    },
+    {
+      "url": "https://www.law.go.kr/",
+      "ci_status": [0],
+      "files": ["docs/legal/INTERNATIONAL_SOURCES.md"],
+      "local_status": 200,
+      "classification": "UNVERIFIED_REFERENCE"
+    }
+  ]
+}

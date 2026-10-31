@@ -2,7 +2,8 @@
 
 ## Zweck
 
-Lokale Dokumenten-, PDF- und Office-Automation mit Fokus auf Datenschutz, Strukturierung und spaeterer Mail-/Kalender-Erweiterbarkeit.
+Lokale Dokumenten-, PDF- und Office-Automation mit Fokus auf Datenschutz, Strukturierung und
+spaeterer Mail-/Kalender-Erweiterbarkeit.
 
 ## Installierbare Kern-Tools
 

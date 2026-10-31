@@ -1,14 +1,18 @@
 # OpenHiggsStack AI Cinema Studio
 
-Status: `experimental`  
-Tier: `advanced`  
+Status: `experimental`\
+Tier: `advanced`\
 Kategorie: `media`
 
-OpenHiggsStack ist ein optionales lokales bzw. halb-lokales AI-Cinema- und Marketing-Studio. Es ist kein 1:1-Klon von Higgsfield AI, sondern eine modulare Self-Hosted-Pipeline aus OpenClaw, Ollama, ComfyUI, Wan2.x, FFmpeg, n8n und optionalen Cloud-APIs.
+OpenHiggsStack ist ein optionales lokales bzw. halb-lokales AI-Cinema- und Marketing-Studio. Es ist
+kein 1:1-Klon von Higgsfield AI, sondern eine modulare Self-Hosted-Pipeline aus OpenClaw, Ollama,
+ComfyUI, Wan2.x, FFmpeg, n8n und optionalen Cloud-APIs.
 
 ## Zweck
 
-Higgsfield AI bietet cloudbasierte Bild-/Video-/Marketing-Funktionen und eine CLI-/MCP-Anbindung fuer Agenten. OpenHiggsStack bildet die offenen Bausteine nach, soweit sie lokal oder self-hosted sinnvoll nutzbar sind.
+Higgsfield AI bietet cloudbasierte Bild-/Video-/Marketing-Funktionen und eine CLI-/MCP-Anbindung
+fuer Agenten. OpenHiggsStack bildet die offenen Bausteine nach, soweit sie lokal oder self-hosted
+sinnvoll nutzbar sind.
 
 Ziel:
 
@@ -37,17 +41,17 @@ Ziel:
 
 ## Zusammenspiel der Komponenten
 
-| Komponente | Rolle |
-|---|---|
-| Ollama | lokale Planung, Prompt-Varianten, Shotlisten, Stilregeln |
-| OpenClaw | Agenten-Orchestrierung, Toolaufrufe, Freigaben, Memory |
-| n8n | Workflow-Automation, Warteschlange, Export-Vorbereitung |
-| ComfyUI | Node-basierte Bild-/Video-/Audio-/3D-Workflow-Engine |
-| Wan2.1/Wan2.2 | lokale Text-to-Video- und Image-to-Video-Modellfamilie |
-| Open Generative AI | offene Web-Studio-Inspiration fuer Higgsfield-aehnliche Workflows |
-| FFmpeg | Schnitt, Transcoding, Audio-Muxing, Untertitel, Thumbnails |
-| Higgsfield CLI/API optional | Cloud-Fallback oder Vergleichspfad, nur mit eigenen Keys |
-| Veo/Kling/Seedance/Sora/Runway/Pika optional | externe Modelle, kosten- und datenschutzpflichtig |
+| Komponente                                   | Rolle                                                             |
+| -------------------------------------------- | ----------------------------------------------------------------- |
+| Ollama                                       | lokale Planung, Prompt-Varianten, Shotlisten, Stilregeln          |
+| OpenClaw                                     | Agenten-Orchestrierung, Toolaufrufe, Freigaben, Memory            |
+| n8n                                          | Workflow-Automation, Warteschlange, Export-Vorbereitung           |
+| ComfyUI                                      | Node-basierte Bild-/Video-/Audio-/3D-Workflow-Engine              |
+| Wan2.1/Wan2.2                                | lokale Text-to-Video- und Image-to-Video-Modellfamilie            |
+| Open Generative AI                           | offene Web-Studio-Inspiration fuer Higgsfield-aehnliche Workflows |
+| FFmpeg                                       | Schnitt, Transcoding, Audio-Muxing, Untertitel, Thumbnails        |
+| Higgsfield CLI/API optional                  | Cloud-Fallback oder Vergleichspfad, nur mit eigenen Keys          |
+| Veo/Kling/Seedance/Sora/Runway/Pika optional | externe Modelle, kosten- und datenschutzpflichtig                 |
 
 ## Architektur
 
@@ -156,7 +160,10 @@ Danach manuell:
 
 ## Grenzen
 
-OpenHiggsStack ist eine Arbeitsgrundlage. Es ersetzt nicht automatisch eine fertige Higgsfield-Cloud-Produktion. Besonders Character Consistency, Multi-Shot-Kontinuitaet, Lippenbewegung, saubere Haende/Gesichter und lange Videos bleiben anspruchsvoll und brauchen manuelle Kontrolle.
+OpenHiggsStack ist eine Arbeitsgrundlage. Es ersetzt nicht automatisch eine fertige
+Higgsfield-Cloud-Produktion. Besonders Character Consistency, Multi-Shot-Kontinuitaet,
+Lippenbewegung, saubere Haende/Gesichter und lange Videos bleiben anspruchsvoll und brauchen
+manuelle Kontrolle.
 
 ## Gepruefte Quellen und Referenzen
 

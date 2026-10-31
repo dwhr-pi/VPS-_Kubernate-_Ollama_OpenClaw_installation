@@ -5,6 +5,7 @@ Quelle: GitHub-Remote `docs/Profil/Texter_Werbung_Marketing.doc.md`
 ## Kerninhalte
 
 ### Prompt-Bausteine
+
 - Core System Prompt
 - Hook Generator
 - Sales Copy
@@ -16,6 +17,7 @@ Quelle: GitHub-Remote `docs/Profil/Texter_Werbung_Marketing.doc.md`
 - A/B Test Variants
 
 ### Zusätzliche Tools laut Quelle
+
 - Web Browser Tool
 - Scraper / Firecrawl
 - Google Analytics API

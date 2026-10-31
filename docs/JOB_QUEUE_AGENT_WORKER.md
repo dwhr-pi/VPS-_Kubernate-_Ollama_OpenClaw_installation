@@ -1,7 +1,7 @@
 # Job Queue Agent Worker
 
-Der Job Queue Agent Worker verhindert, dass Codex-, OpenClaw-, n8n- oder
-Setup-Auftraege unkontrolliert parallel starten.
+Der Job Queue Agent Worker verhindert, dass Codex-, OpenClaw-, n8n- oder Setup-Auftraege
+unkontrolliert parallel starten.
 
 ## Ziel
 
@@ -16,9 +16,8 @@ Setup-Auftraege unkontrolliert parallel starten.
 
 ## Warum?
 
-Schwere Tools wie AutoGPT, Airbyte, ComfyUI, Blender oder Render-Pipelines
-koennen WSL2, Docker, VPS oder GPU-Workstations stark belasten. Die Queue gibt
-dem Setup einen sanften Sicherheitsgurt.
+Schwere Tools wie AutoGPT, Airbyte, ComfyUI, Blender oder Render-Pipelines koennen WSL2, Docker, VPS
+oder GPU-Workstations stark belasten. Die Queue gibt dem Setup einen sanften Sicherheitsgurt.
 
 ## CLI
 
@@ -32,8 +31,7 @@ bash scripts/tools/job_queue_worker.sh logs <job_id>
 
 ## OpenClaw Integration
 
-OpenClaw soll lange oder riskante Tasks nicht direkt ausfuehren, sondern als Job
-einreichen:
+OpenClaw soll lange oder riskante Tasks nicht direkt ausfuehren, sondern als Job einreichen:
 
 ```bash
 bash scripts/tools/job_queue_submit.sh "bash scripts/tools/autogpt_install.sh"
@@ -41,13 +39,13 @@ bash scripts/tools/job_queue_submit.sh "bash scripts/tools/autogpt_install.sh"
 
 ## n8n Integration
 
-n8n kann per Execute Command oder Webhook einen Job einreichen. Der Worker
-arbeitet ihn ab, schreibt Logs und n8n kann spaeter Status/Logs abrufen.
+n8n kann per Execute Command oder Webhook einen Job einreichen. Der Worker arbeitet ihn ab, schreibt
+Logs und n8n kann spaeter Status/Logs abrufen.
 
 ## Codex-Nachbau Integration
 
-Ein lokaler Codex-Worker kann Pull-/Build-/Testaufgaben in die Queue legen, statt
-mehrere Shellprozesse gleichzeitig zu starten.
+Ein lokaler Codex-Worker kann Pull-/Build-/Testaufgaben in die Queue legen, statt mehrere
+Shellprozesse gleichzeitig zu starten.
 
 ## Ressourcenlimits
 
@@ -67,12 +65,14 @@ Wichtige Werte:
 
 ## Keine Secrets
 
-Job-Kommandos duerfen keine API-Keys oder Tokens enthalten. Secrets gehoeren in
-lokale `.env`-Dateien ausserhalb des Repositories.
+Job-Kommandos duerfen keine API-Keys oder Tokens enthalten. Secrets gehoeren in lokale
+`.env`-Dateien ausserhalb des Repositories.
 
 ## Next-Level-Hinweis 2026-05-31
 
-Die Queue ist der bevorzugte Schutzpfad fuer lange oder schwere Aufgaben wie n8n-Builds, Airbyte, ComfyUI, Medienpipelines, Kubernetes-Deployments, Modell-Downloads, Voice-/Callcenter-Stacks und Security-Scans.
+Die Queue ist der bevorzugte Schutzpfad fuer lange oder schwere Aufgaben wie n8n-Builds, Airbyte,
+ComfyUI, Medienpipelines, Kubernetes-Deployments, Modell-Downloads, Voice-/Callcenter-Stacks und
+Security-Scans.
 
 Standard:
 
@@ -81,5 +81,5 @@ Standard:
 - RTX/GPU-Workstation: 1 schwerer GPU-Job oder mehrere leichte CPU-Jobs.
 - Raspberry Pi: nur Watcher-, Wake-on-LAN- und leichte Diagnosejobs.
 
-Schwere Profile sollen im Setup nicht direkt gestartet werden. Sie sollen entweder `planned/manual` bleiben oder ueber die Queue mit Logdatei, Timeout, Retry-Zaehler und Resource-Budget laufen.
-
+Schwere Profile sollen im Setup nicht direkt gestartet werden. Sie sollen entweder `planned/manual`
+bleiben oder ueber die Queue mit Logdatei, Timeout, Retry-Zaehler und Resource-Budget laufen.

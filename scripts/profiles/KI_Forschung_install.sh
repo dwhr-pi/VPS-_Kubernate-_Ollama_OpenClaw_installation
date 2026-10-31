@@ -9,7 +9,6 @@
 # Farben
 GREEN="\033[0;32m"
 BLUE="\033[0;34m"
-RED="\033[0;31m"
 YELLOW="\033[1;33m"
 NC="\033[0m"
 
@@ -23,35 +22,35 @@ echo -e "${BLUE}Starte Installation des KI-Forschung Profils...${NC}"
 
 # Beispiel: Installation von OpenClaw RL (falls noch nicht geschehen)
 if [ -f "$INSTALL_DIR/scripts/tools/openclaw_rl_install.sh" ]; then
-    echo -e "${BLUE}Installiere OpenClaw RL als Teil des KI-Forschung Profils...${NC}"
-    bash "$INSTALL_DIR/scripts/tools/openclaw_rl_install.sh"
+  echo -e "${BLUE}Installiere OpenClaw RL als Teil des KI-Forschung Profils...${NC}"
+  bash "$INSTALL_DIR/scripts/tools/openclaw_rl_install.sh"
 else
-    echo -e "${YELLOW}OpenClaw RL Installationsskript nicht gefunden. Überspringe OpenClaw RL Installation.${NC}"
+  echo -e "${YELLOW}OpenClaw RL Installationsskript nicht gefunden. Überspringe OpenClaw RL Installation.${NC}"
 fi
 
 # Beispiel: Installation von Flowise (falls noch nicht geschehen)
 if [ -f "$INSTALL_DIR/scripts/tools/flowise_install.sh" ]; then
-    echo -e "${BLUE}Installiere Flowise als Teil des KI-Forschung Profils...${NC}"
-    bash "$INSTALL_DIR/scripts/tools/flowise_install.sh"
+  echo -e "${BLUE}Installiere Flowise als Teil des KI-Forschung Profils...${NC}"
+  bash "$INSTALL_DIR/scripts/tools/flowise_install.sh"
 else
-    echo -e "${YELLOW}Flowise Installationsskript nicht gefunden. Überspringe Flowise Installation.${NC}"
+  echo -e "${YELLOW}Flowise Installationsskript nicht gefunden. Überspringe Flowise Installation.${NC}"
 fi
 
 # Beispiel: Installation von LangFlow (falls noch nicht geschehen)
 if [ -f "$INSTALL_DIR/scripts/tools/langflow_install.sh" ]; then
-    echo -e "${BLUE}Installiere LangFlow als Teil des KI-Forschung Profils...${NC}"
-    bash "$INSTALL_DIR/scripts/tools/langflow_install.sh"
+  echo -e "${BLUE}Installiere LangFlow als Teil des KI-Forschung Profils...${NC}"
+  bash "$INSTALL_DIR/scripts/tools/langflow_install.sh"
 else
-    echo -e "${YELLOW}LangFlow Installationsskript nicht gefunden. Überspringe LangFlow Installation.${NC}"
+  echo -e "${YELLOW}LangFlow Installationsskript nicht gefunden. Überspringe LangFlow Installation.${NC}"
 fi
 
 for tool_script in langchain_install.sh llamaindex_install.sh mlflow_install.sh whisper_install.sh chromadb_install.sh weaviate_install.sh crewai_install.sh autogpt_install.sh weights_and_biases_install.sh vllm_install.sh llama_cpp_install.sh stable_diffusion_webui_install.sh ray_install.sh envirollm_install.sh; do
-    if [ -f "$INSTALL_DIR/scripts/tools/$tool_script" ]; then
-        echo -e "${BLUE}Installiere ${tool_script%.sh} als Teil des KI-Forschung Profils...${NC}"
-        bash "$INSTALL_DIR/scripts/tools/$tool_script"
-    else
-        echo -e "${YELLOW}${tool_script} nicht gefunden. Überspringe diesen Baustein.${NC}"
-    fi
+  if [ -f "$INSTALL_DIR/scripts/tools/$tool_script" ]; then
+    echo -e "${BLUE}Installiere ${tool_script%.sh} als Teil des KI-Forschung Profils...${NC}"
+    bash "$INSTALL_DIR/scripts/tools/$tool_script"
+  else
+    echo -e "${YELLOW}${tool_script} nicht gefunden. Überspringe diesen Baustein.${NC}"
+  fi
 done
 
 echo -e "${GREEN}KI-Forschung Profil Installation abgeschlossen.${NC}"

@@ -33,7 +33,8 @@ neutral, serioes, international
 ## Full Workflow
 
 - Stimme, Avatar, Dubbing, Musik und Schnitt ueber Job Queue planen.
-- Schwere Tools wie MuseTalk, Hallo2, SkyReels-A1 oder EMO nur auf GPU-Workstation/Kubernetes-GPU-Node testen.
+- Schwere Tools wie MuseTalk, Hallo2, SkyReels-A1 oder EMO nur auf
+  GPU-Workstation/Kubernetes-GPU-Node testen.
 - Keine automatische Veroeffentlichung ohne Freigabe.
 
 ## Ressourcenbedarf

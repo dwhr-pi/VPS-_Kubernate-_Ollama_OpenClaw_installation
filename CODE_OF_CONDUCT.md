@@ -2,7 +2,8 @@
 
 ## Unser Anspruch
 
-Dieses Projekt soll freundlich, sachlich und lernorientiert bleiben. Beitraege sollen respektvoll, konstruktiv und sicherheitsbewusst sein.
+Dieses Projekt soll freundlich, sachlich und lernorientiert bleiben. Beitraege sollen respektvoll,
+konstruktiv und sicherheitsbewusst sein.
 
 ## Erwartetes Verhalten
 
@@ -14,4 +15,5 @@ Dieses Projekt soll freundlich, sachlich und lernorientiert bleiben. Beitraege s
 
 ## Durchsetzung
 
-Maintainer koennen Issues, Kommentare oder PRs moderieren, wenn sie gegen diese Regeln oder das Sicherheitsmodell des Projekts verstossen.
+Maintainer koennen Issues, Kommentare oder PRs moderieren, wenn sie gegen diese Regeln oder das
+Sicherheitsmodell des Projekts verstossen.

@@ -2,7 +2,8 @@
 
 ## Ziel
 
-GPU-Workstations sind fuer ComfyUI, Video-KI, lokale groessere Modelle, Blender und Benchmarks geeignet. Diese Pfade bleiben opt-in.
+GPU-Workstations sind fuer ComfyUI, Video-KI, lokale groessere Modelle, Blender und Benchmarks
+geeignet. Diese Pfade bleiben opt-in.
 
 ## Vor Installation pruefen
 

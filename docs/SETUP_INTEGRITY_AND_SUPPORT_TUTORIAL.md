@@ -2,20 +2,19 @@
 
 ## Aktueller Stand: 27.10.2026
 
-Dieses Dokument beschreibt auch geplante Support-/Manifestverfahren. Der bereits
-implementierte Release-Pruefpfad und seine offenen Abnahmen stehen unter
-[signierte Releases](SIGNED_RELEASES.md). Ohne unabhaengigen Public Key und
-gueltige signierte Artefakte gibt es keine Release-Freigabe.
+Dieses Dokument beschreibt auch geplante Support-/Manifestverfahren. Der bereits implementierte
+Release-Pruefpfad und seine offenen Abnahmen stehen unter [signierte Releases](SIGNED_RELEASES.md).
+Ohne unabhaengigen Public Key und gueltige signierte Artefakte gibt es keine Release-Freigabe.
 
-Der eigene Projektcode ist nach Maintainerentscheidung unter
-[Apache-2.0](../LICENSE) ausgewiesen. [Drittlizenzen](../THIRD_PARTY_NOTICES.md)
-bleiben getrennt. Support-/Selbstheilungsregeln beschreiben betriebliche
-Freigaben, keine zusaetzlichen Lizenzbedingungen. Hashes/Signaturen erkennen
-Abweichungen beziehungsweise bestaetigen Herkunft innerhalb ihres
-Vertrauensmodells; sie machen Quellcode nicht unveraenderbar. Ein Fork oder
-lokaler Diff ist fuer sich genommen kein Nachweis eines Angriffs.
+Der eigene Projektcode ist nach Maintainerentscheidung unter [Apache-2.0](../LICENSE) ausgewiesen.
+[Drittlizenzen](../THIRD_PARTY_NOTICES.md) bleiben getrennt. Support-/Selbstheilungsregeln
+beschreiben betriebliche Freigaben, keine zusaetzlichen Lizenzbedingungen. Hashes/Signaturen
+erkennen Abweichungen beziehungsweise bestaetigen Herkunft innerhalb ihres Vertrauensmodells; sie
+machen Quellcode nicht unveraenderbar. Ein Fork oder lokaler Diff ist fuer sich genommen kein
+Nachweis eines Angriffs.
 
-Dieses Tutorial beschreibt, wie das Ultimate KI Setup gegen unbemerkte Veraenderungen abgesichert werden kann, ohne normale Weiterentwicklung und Updates zu blockieren.
+Dieses Tutorial beschreibt, wie das Ultimate KI Setup gegen unbemerkte Veraenderungen abgesichert
+werden kann, ohne normale Weiterentwicklung und Updates zu blockieren.
 
 Ziel ist ein pruefbarer Support-Pfad:
 
@@ -23,9 +22,12 @@ Ziel ist ein pruefbarer Support-Pfad:
 2. Ein signierter Originalzustand wird mit einem oeffentlichen Schluessel verifiziert.
 3. Bei Abweichungen wird ein Diagnosebericht erzeugt.
 4. Der Bericht kann per E-Mail an den automatisierten Support gesendet werden.
-5. Spaeter kann dieser Support lokal durch Ollama + OpenClaw + Codex-nahe Agenten ausgewertet werden.
+5. Spaeter kann dieser Support lokal durch Ollama + OpenClaw + Codex-nahe Agenten ausgewertet
+   werden.
 
-Wichtig: Dieser Mechanismus ist kein Kopierschutz im klassischen Sinn. Er ist ein Sicherheits- und Support-Gate. Er soll erkennen, ob ein Setup noch dem Original entspricht oder ob es sich um Fork, lokale Manipulation oder unbekannte Quelle handelt.
+Wichtig: Dieser Mechanismus ist kein Kopierschutz im klassischen Sinn. Er ist ein Sicherheits- und
+Support-Gate. Er soll erkennen, ob ein Setup noch dem Original entspricht oder ob es sich um Fork,
+lokale Manipulation oder unbekannte Quelle handelt.
 
 ## Warum nicht MD5?
 
@@ -87,9 +89,9 @@ Selbstheilung: deaktiviert
 Empfehlung: Fork manuell pruefen oder mit Original abgleichen
 ```
 
-Weitere Details zu genehmigten Forks, eigenen Support-Branches, signierten
-Support-Freigaben, Patch-Auslieferung und sicherer Rueckfuehrung in `main`
-stehen in [Forks, Support und sichere Rueckfuehrung](FORK_SUPPORT_AND_UPSTREAM_GOVERNANCE.md).
+Weitere Details zu genehmigten Forks, eigenen Support-Branches, signierten Support-Freigaben,
+Patch-Auslieferung und sicherer Rueckfuehrung in `main` stehen in
+[Forks, Support und sichere Rueckfuehrung](FORK_SUPPORT_AND_UPSTREAM_GOVERNANCE.md).
 
 ## Schritt 1: Repo-Herkunft pruefen
 
@@ -110,11 +112,11 @@ Setup-Repo-Herkunft
 
 Moegliche Statuswerte:
 
-| Status | Bedeutung |
-|---|---|
-| `original` | `origin` zeigt auf das erwartete Original-Repository. |
+| Status                        | Bedeutung                                                                           |
+| ----------------------------- | ----------------------------------------------------------------------------------- |
+| `original`                    | `origin` zeigt auf das erwartete Original-Repository.                               |
 | `fork_with_original_upstream` | Setup stammt wahrscheinlich aus einem Fork, kennt aber das Original als `upstream`. |
-| `fork_or_unknown_source` | Quelle ist Fork, unbekannt oder nicht eindeutig pruefbar. |
+| `fork_or_unknown_source`      | Quelle ist Fork, unbekannt oder nicht eindeutig pruefbar.                           |
 
 ## Schritt 2: SHA256-Manifest erzeugen
 
@@ -135,7 +137,8 @@ find . \
   | xargs -0 sha256sum > security/file_manifest.sha256
 ```
 
-Dieses Manifest sollte nur Dateien enthalten, die zum Original-Setup gehoeren. Ausgeschlossen werden sollten:
+Dieses Manifest sollte nur Dateien enthalten, die zum Original-Setup gehoeren. Ausgeschlossen werden
+sollten:
 
 - `.git/`
 - `node_modules/`
@@ -163,7 +166,8 @@ Diese Liste ist spaeter fuer den Support sehr wertvoll.
 
 ## Schritt 4: Manifest signieren
 
-Damit ein Fork nicht einfach ein neues Manifest erzeugen und behaupten kann, es sei original, wird das Manifest signiert.
+Damit ein Fork nicht einfach ein neues Manifest erzeugen und behaupten kann, es sei original, wird
+das Manifest signiert.
 
 ### Variante A: GPG
 
@@ -284,7 +288,8 @@ Oder spaeter:
 bash scripts/security/verify_setup_integrity.sh --email
 ```
 
-Die Support-Adresse muss eindeutig sein, weil sie auch von anderen Produkten genutzt wird. Deshalb sollten Betreff und Report-ID eindeutig sein:
+Die Support-Adresse muss eindeutig sein, weil sie auch von anderen Produkten genutzt wird. Deshalb
+sollten Betreff und Report-ID eindeutig sein:
 
 ```text
 [OpenClaw Ultimate Setup][Integrity][Report:...] Integritaetspruefung
@@ -407,7 +412,9 @@ docs/SETUP_INTEGRITY_AND_SUPPORT_TUTORIAL.md
 
 ## Kurzfazit
 
-Die Kombination aus Git-Herkunft, SHA256-Manifest, Signatur und Support-Mail ist fuer dieses Setup realistisch und updatefreundlich. Sie blockiert Weiterentwicklung nicht, macht aber klar unterscheidbar:
+Die Kombination aus Git-Herkunft, SHA256-Manifest, Signatur und Support-Mail ist fuer dieses Setup
+realistisch und updatefreundlich. Sie blockiert Weiterentwicklung nicht, macht aber klar
+unterscheidbar:
 
 - Originalsetup mit gueltiger Integritaet
 - Originalsetup mit lokalen Aenderungen

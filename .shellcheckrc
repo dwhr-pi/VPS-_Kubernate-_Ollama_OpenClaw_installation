@@ -1,0 +1,3 @@
+# Analyse local helpers too; do not suppress findings or depend on the caller cwd.
+external-sources=true
+source-path=SCRIPTDIR

@@ -2,4 +2,3 @@
 set -euo pipefail
 
 echo "AdGuard Home wird nicht automatisch entfernt."
-

@@ -9,7 +9,6 @@
 # Farben
 GREEN="\033[0;32m"
 BLUE="\033[0;34m"
-RED="\033[0;31m"
 YELLOW="\033[1;33m"
 NC="\033[0m"
 
@@ -32,10 +31,10 @@ sudo apt-get install -y poppler-utils tesseract-ocr
 
 # 3. Installation von Zotero
 if [ -f "$INSTALL_DIR/scripts/tools/zotero_install.sh" ]; then
-    echo -e "${BLUE}Installiere Zotero als Teil des Profils 'Rechtsberatung & Steuerrecht'...${NC}"
-    bash "$INSTALL_DIR/scripts/tools/zotero_install.sh"
+  echo -e "${BLUE}Installiere Zotero als Teil des Profils 'Rechtsberatung & Steuerrecht'...${NC}"
+  bash "$INSTALL_DIR/scripts/tools/zotero_install.sh"
 else
-    echo -e "${YELLOW}Zotero Installationsskript nicht gefunden. Überspringe Zotero Installation.${NC}"
+  echo -e "${YELLOW}Zotero Installationsskript nicht gefunden. Überspringe Zotero Installation.${NC}"
 fi
 
 # 4. Konfiguration für OpenClaw Skills (falls spezifische Skills für Rechtsdatenbanken existieren)
@@ -45,12 +44,12 @@ echo -e "${BLUE}Konfiguriere OpenClaw für juristische Skills...${NC}"
 bash "$INSTALL_DIR/scripts/openclaw_skill_config.sh" --skill legal_db_search || true
 
 for tool_script in langchain_install.sh llamaindex_install.sh chromadb_install.sh qdrant_install.sh eullm_install.sh ai_powered_law_firms_install.sh lawfirm_install.sh tax_law_agent_install.sh risk_agent_install.sh drafting_agent_install.sh pdf_parser_install.sh neo4j_install.sh tax_calculator_install.sh deadline_checker_install.sh risk_scoring_install.sh; do
-    if [ -f "$INSTALL_DIR/scripts/tools/$tool_script" ]; then
-        echo -e "${BLUE}Installiere ${tool_script%.sh} als Teil des Profils 'Rechtsberatung & Steuerrecht'...${NC}"
-        bash "$INSTALL_DIR/scripts/tools/$tool_script"
-    else
-        echo -e "${YELLOW}${tool_script} nicht gefunden. Überspringe diesen Baustein.${NC}"
-    fi
+  if [ -f "$INSTALL_DIR/scripts/tools/$tool_script" ]; then
+    echo -e "${BLUE}Installiere ${tool_script%.sh} als Teil des Profils 'Rechtsberatung & Steuerrecht'...${NC}"
+    bash "$INSTALL_DIR/scripts/tools/$tool_script"
+  else
+    echo -e "${YELLOW}${tool_script} nicht gefunden. Überspringe diesen Baustein.${NC}"
+  fi
 done
 
 echo -e "${GREEN}Profil 'Rechtsberatung & Steuerrecht' Installation abgeschlossen.${NC}"

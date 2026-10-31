@@ -55,4 +55,3 @@ Format: Tabelle mit Szene, Visual, Motion, Prompt, Risiko.
 3. Character- und Stilregeln festlegen.
 4. ComfyUI-Prompts erzeugen.
 5. Renderreihenfolge vorschlagen.
-

@@ -14,5 +14,6 @@
 
 - Tool-Lifecycle-Dateien schrittweise nachziehen.
 - Menue-Preview auf neue 17 Hauptpunkte umstellen.
-- Registry-Felder fuer Lizenz, Installationsmodus, Ressourcen und Plattformstatus maschinenlesbar vervollstaendigen.
+- Registry-Felder fuer Lizenz, Installationsmodus, Ressourcen und Plattformstatus maschinenlesbar
+  vervollstaendigen.
 - Portmatrix mit verbleibenden Warnungen abgleichen.

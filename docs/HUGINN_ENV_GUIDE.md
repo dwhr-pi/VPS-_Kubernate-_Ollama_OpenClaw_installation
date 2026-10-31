@@ -1,17 +1,15 @@
 # Huginn `.env` Guide
 
-Diese Datei erklaert, **wo** die Huginn-`.env` in diesem Setup gepflegt wird und **wie** sie sicher bearbeitet werden soll.
+Diese Datei erklaert, **wo** die Huginn-`.env` in diesem Setup gepflegt wird und **wie** sie sicher
+bearbeitet werden soll.
 
 ## Pfade
 
-- Bearbeitbare Vorlage im Benutzer-Workspace:
-  `~/.openclaw_ultimate_user_data/huginn/.env.template`
+- Bearbeitbare Vorlage im Benutzer-Workspace: `~/.openclaw_ultimate_user_data/huginn/.env.template`
 - Sichere Huginn-Installationswerte im Benutzer-Workspace:
   `~/.openclaw_ultimate_user_data/huginn/install_settings.env`
-- Runtime-Datei der Huginn-Installation:
-  `/opt/huginn/.env`
-- Repo-Vorlage:
-  `scripts/config_templates/huginn/.env.template`
+- Runtime-Datei der Huginn-Installation: `/opt/huginn/.env`
+- Repo-Vorlage: `scripts/config_templates/huginn/.env.template`
 
 ## Empfohlener Workflow
 
@@ -20,16 +18,19 @@ Diese Datei erklaert, **wo** die Huginn-`.env` in diesem Setup gepflegt wird und
 3. Lege dort bei Bedarf auch den Huginn-Upstream-Stand (`HUGINN_REPO_REF`) fest.
 4. Wende die Vorlage bewusst auf `/opt/huginn/.env` an.
 
-Dadurch bleiben deine Anpassungen ausserhalb des Git-Repositories und ueberstehen Setup-Updates deutlich sauberer.
+Dadurch bleiben deine Anpassungen ausserhalb des Git-Repositories und ueberstehen Setup-Updates
+deutlich sauberer.
 
 ## Was ist wichtig?
 
-- `APP_SECRET_TOKEN` sollte gesetzt sein.
-  Wenn der Wert leer bleibt, erzeugt das Setup bei der Installation einen lokalen Secret-Token.
-- `INVITATION_CODE` sollte nicht auf dem unsicheren Huginn-Default `try-huginn` bleiben.
-  Wenn der Wert leer ist oder noch auf `try-huginn` steht, erzeugt das Setup jetzt automatisch einen lokalen Zufallscode.
-- Huginn nutzt upstream haeufig den Web-Port `3000`.
-  Dieses Setup verwendet fuer Huginn bewusst standardmaessig `3002`, damit kein Konflikt mit OpenClaw auf `3000` und Grafana auf `3001` entsteht.
+- `APP_SECRET_TOKEN` sollte gesetzt sein. Wenn der Wert leer bleibt, erzeugt das Setup bei der
+  Installation einen lokalen Secret-Token.
+- `INVITATION_CODE` sollte nicht auf dem unsicheren Huginn-Default `try-huginn` bleiben. Wenn der
+  Wert leer ist oder noch auf `try-huginn` steht, erzeugt das Setup jetzt automatisch einen lokalen
+  Zufallscode.
+- Huginn nutzt upstream haeufig den Web-Port `3000`. Dieses Setup verwendet fuer Huginn bewusst
+  standardmaessig `3002`, damit kein Konflikt mit OpenClaw auf `3000` und Grafana auf `3001`
+  entsteht.
 - Fuer die Datenbank braucht Huginn mindestens:
   - `DATABASE_ADAPTER`
   - `DATABASE_NAME`
@@ -55,22 +56,29 @@ Wichtige Unterschiede:
 - Datenbank-Defaults:
   - beide Stande verwenden in den offiziellen Beispieldateien weiter `mysql2` als Default-Adapter
   - beide haben weiter MySQL-/MariaDB-Pfade
-  - `master` entfernt den alten `DATABASE_RECONNECT`-/`reconnect: true`-Pfad, der in `v2022.08.18` die Warnung `MYSQL_OPT_RECONNECT is deprecated` ausloest
+  - `master` entfernt den alten `DATABASE_RECONNECT`-/`reconnect: true`-Pfad, der in `v2022.08.18`
+    die Warnung `MYSQL_OPT_RECONNECT is deprecated` ausloest
 - Neue Umgebungsoptionen auf `master`:
   - `OPENAI_API_KEY`
   - `OPENAI_BASE_URL`
   - `ADDITIONAL_GEMS`
   - `FARADAY_HTTP_BACKEND`
 - Mail/HTTP/LLM:
-  - `master` ist fuer modernere OpenAI-kompatible APIs und konfigurierbare HTTP-Backends sichtbar besser vorbereitet
+  - `master` ist fuer modernere OpenAI-kompatible APIs und konfigurierbare HTTP-Backends sichtbar
+    besser vorbereitet
   - `v2022.08.18` ist hier deutlich aelter und braucht mehr lokale Sonderbehandlung
 
 Wichtig zur Datenbankeinschaetzung:
 
-- Ich sehe in den offiziellen Installations- und Beispiel-Dateien keinen Hinweis auf einen grundsaetzlichen Wechsel weg von MySQL/MariaDB.
-- `master` bleibt also fuer unser Setup ein sinnvoller Kandidat, wenn wir Huginn weiter auf MySQL/MariaDB betreiben wollen.
-- Ich sehe in diesen Quellen auch keinen offensichtlichen Hinweis auf einen grossen, sofort problematischen Datenbankmodell-Bruch zwischen `v2022.08.18` und `master`.
-- Das ist aber eine vorsichtige Einschaetzung aus den offiziellen Installationsdateien, keine vollstaendige Migrationsgarantie. Der sichere Nachweis bleibt der frische `db:create`-/`db:migrate`-Lauf auf `master`.
+- Ich sehe in den offiziellen Installations- und Beispiel-Dateien keinen Hinweis auf einen
+  grundsaetzlichen Wechsel weg von MySQL/MariaDB.
+- `master` bleibt also fuer unser Setup ein sinnvoller Kandidat, wenn wir Huginn weiter auf
+  MySQL/MariaDB betreiben wollen.
+- Ich sehe in diesen Quellen auch keinen offensichtlichen Hinweis auf einen grossen, sofort
+  problematischen Datenbankmodell-Bruch zwischen `v2022.08.18` und `master`.
+- Das ist aber eine vorsichtige Einschaetzung aus den offiziellen Installationsdateien, keine
+  vollstaendige Migrationsgarantie. Der sichere Nachweis bleibt der frische
+  `db:create`-/`db:migrate`-Lauf auf `master`.
 
 Unsere aktuelle Setup-Empfehlung:
 
@@ -81,13 +89,15 @@ Unsere aktuelle Setup-Empfehlung:
 
 Die Huginn-Datenbankentscheidung haengt in diesem Setup von der Zielumgebung ab:
 
-| Umgebung | Empfehlung | Begruendung |
-|---|---|---|
-| MiniPC / WSL2 / lokaler Standalone-Test | MySQL/MariaDB oder vorhandener funktionierender Adapter | praktisch, lokal gut kontrollierbar, bisher als konservativer Huginn-Pfad nuetzlich |
-| VPS / K3s / Kubernetes mit Clawbake | PostgreSQL bevorzugt | Clawbake ist upstream PostgreSQL-only, daher ist PostgreSQL als gemeinsame Server-/Cluster-Datenbankrichtung konsistenter |
-| Reiner Huginn-Upstream-Vergleich | bewusst gewaehlter Adapter | `master` und `v2022.08.18` sollen getrennt testbar bleiben |
+| Umgebung                                | Empfehlung                                              | Begruendung                                                                                                               |
+| --------------------------------------- | ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| MiniPC / WSL2 / lokaler Standalone-Test | MySQL/MariaDB oder vorhandener funktionierender Adapter | praktisch, lokal gut kontrollierbar, bisher als konservativer Huginn-Pfad nuetzlich                                       |
+| VPS / K3s / Kubernetes mit Clawbake     | PostgreSQL bevorzugt                                    | Clawbake ist upstream PostgreSQL-only, daher ist PostgreSQL als gemeinsame Server-/Cluster-Datenbankrichtung konsistenter |
+| Reiner Huginn-Upstream-Vergleich        | bewusst gewaehlter Adapter                              | `master` und `v2022.08.18` sollen getrennt testbar bleiben                                                                |
 
-Wichtig: Diese Empfehlung bedeutet nicht, dass MySQL/MariaDB fuer Huginn unbrauchbar ist. Sie bedeutet nur, dass auf einer VPS oder in einem K3s-/Clawbake-Szenario PostgreSQL strategisch besser passt, weil Clawbake selbst nicht sinnvoll auf MySQL/MariaDB umgestellt werden kann.
+Wichtig: Diese Empfehlung bedeutet nicht, dass MySQL/MariaDB fuer Huginn unbrauchbar ist. Sie
+bedeutet nur, dass auf einer VPS oder in einem K3s-/Clawbake-Szenario PostgreSQL strategisch besser
+passt, weil Clawbake selbst nicht sinnvoll auf MySQL/MariaDB umgestellt werden kann.
 
 ## Szenario: lokale Agenten absichern und auf VPS importieren
 
@@ -109,9 +119,11 @@ Das funktioniert auch umgekehrt:
 
 Dabei gilt:
 
-- Exporte duerfen keine produktiven Passwoerter, Tokens oder privaten Mail-/API-Zugangsdaten enthalten.
+- Exporte duerfen keine produktiven Passwoerter, Tokens oder privaten Mail-/API-Zugangsdaten
+  enthalten.
 - PostgreSQL auf der VPS sollte wie Clawbake nicht oeffentlich exponiert werden.
-- Huginn-Agenten mit Webhooks, Mailzugriff oder externen APIs sollten lokal zuerst in einem Safe-/Test-Modus laufen.
+- Huginn-Agenten mit Webhooks, Mailzugriff oder externen APIs sollten lokal zuerst in einem
+  Safe-/Test-Modus laufen.
 
 ## Install-Logs fuer den `master`-Test
 
@@ -135,8 +147,8 @@ grep -nE 'Hinweis:|Fehler:|rake aborted!|LoadError|ArgumentError|ConnectionError
 
 ## Installierte Version und Datenbank vor Deinstallation erkennen
 
-Bevor Huginn deinstalliert wird, sollte immer festgehalten werden, welche Kombination gerade installiert oder fehlgeschlagen ist.
-Das Setup bringt dafuer einen Statuscheck mit:
+Bevor Huginn deinstalliert wird, sollte immer festgehalten werden, welche Kombination gerade
+installiert oder fehlgeschlagen ist. Das Setup bringt dafuer einen Statuscheck mit:
 
 ```bash
 cd ~/openclaw_ultimate_setup
@@ -159,7 +171,8 @@ Im Setup-Menue liegt derselbe Check unter:
 Optionen -> Huginn Konfiguration (.env Vorlage) -> Installierte Huginn-Version und Datenbank erkennen
 ```
 
-Beim Deinstallieren zeigt das Huginn-Uninstall-Skript diesen Status ebenfalls an, bevor `/opt/huginn` geloescht wird.
+Beim Deinstallieren zeigt das Huginn-Uninstall-Skript diesen Status ebenfalls an, bevor
+`/opt/huginn` geloescht wird.
 
 Bekanntes Fehlerbild:
 
@@ -167,9 +180,9 @@ Bekanntes Fehlerbild:
 LoadError: .../pg-1.1.3/lib/pg_ext.so: undefined symbol: rb_tainted_str_new
 ```
 
-Das ist typisch fuer den alten `v2022.08.18`-Stand mit `DATABASE_ADAPTER=postgresql` unter neuerem Ruby.
-Fuer unser stabiles Setup bleibt bei `v2022.08.18` daher MySQL/MariaDB empfohlen.
-PostgreSQL bleibt erhalten, aber als bewusster Original-/Upstream-Testpfad.
+Das ist typisch fuer den alten `v2022.08.18`-Stand mit `DATABASE_ADAPTER=postgresql` unter neuerem
+Ruby. Fuer unser stabiles Setup bleibt bei `v2022.08.18` daher MySQL/MariaDB empfohlen. PostgreSQL
+bleibt erhalten, aber als bewusster Original-/Upstream-Testpfad.
 
 Das Setup enthaelt dafuer einen optionalen Kompatibilitaetsversuch:
 
@@ -177,31 +190,42 @@ Das Setup enthaelt dafuer einen optionalen Kompatibilitaetsversuch:
 HUGINN_ENABLE_PG_RUBY32_COMPAT=true
 ```
 
-Wenn dieser Schalter aktiv ist, versucht der Installer den alten `pg ~> 1.1.3`-Pfad auf einen Ruby-3.2-kompatiblen `pg`-Zweig zu aktualisieren und den Lockfile gezielt neu zu schreiben.
-Das ist fuer PostgreSQL-Tests gedacht, nicht als neue Standardempfehlung fuer das konservative Huginn-Profil.
+Wenn dieser Schalter aktiv ist, versucht der Installer den alten `pg ~> 1.1.3`-Pfad auf einen
+Ruby-3.2-kompatiblen `pg`-Zweig zu aktualisieren und den Lockfile gezielt neu zu schreiben. Das ist
+fuer PostgreSQL-Tests gedacht, nicht als neue Standardempfehlung fuer das konservative
+Huginn-Profil.
 
 Aktueller Testerfolg:
 
-- `v2022.08.18 + PostgreSQL + Ruby 3.2.3` konnte mit diesem Compat-Pfad bis zu laufenden `huginn-web.service`- und `huginn-worker.service`-Diensten gebracht werden.
+- `v2022.08.18 + PostgreSQL + Ruby 3.2.3` konnte mit diesem Compat-Pfad bis zu laufenden
+  `huginn-web.service`- und `huginn-worker.service`-Diensten gebracht werden.
 - Der lokale HTTP-Test auf `127.0.0.1:3002` antwortete erfolgreich.
-- Die bekannten Warnungen zu `DidYouMean` und altem `ERB.new`/Sprockets-Code sind Legacy-Warnungen des alten Rails-/Ruby-Stacks und nicht automatisch ein Installationsabbruch.
+- Die bekannten Warnungen zu `DidYouMean` und altem `ERB.new`/Sprockets-Code sind Legacy-Warnungen
+  des alten Rails-/Ruby-Stacks und nicht automatisch ein Installationsabbruch.
 
 ### Frisches Ubuntu mit lokaler PostgreSQL-Datenbank
 
-Der PostgreSQL-Pfad ist nicht nur ein Effekt einer bereits vorhandenen Installation. Wenn `DATABASE_ADAPTER=postgresql` und `DATABASE_HOST=127.0.0.1` oder `localhost` gesetzt ist, installiert der Huginn-Installer selbst:
+Der PostgreSQL-Pfad ist nicht nur ein Effekt einer bereits vorhandenen Installation. Wenn
+`DATABASE_ADAPTER=postgresql` und `DATABASE_HOST=127.0.0.1` oder `localhost` gesetzt ist,
+installiert der Huginn-Installer selbst:
 
 ```bash
 sudo apt-get install -y postgresql postgresql-contrib libpq-dev
 ```
 
-Danach versucht das Setup den PostgreSQL-Dienst per `systemctl`, `pg_ctlcluster` oder klassischem `service` zu starten und legt die Rolle aus `DATABASE_USERNAME` mit `CREATEDB` an. `bundle exec rake db:create` erstellt anschliessend die Huginn-Datenbank.
+Danach versucht das Setup den PostgreSQL-Dienst per `systemctl`, `pg_ctlcluster` oder klassischem
+`service` zu starten und legt die Rolle aus `DATABASE_USERNAME` mit `CREATEDB` an.
+`bundle exec rake db:create` erstellt anschliessend die Huginn-Datenbank.
 
 Auf einem frischen Ubuntu sind daher vor allem diese Voraussetzungen wichtig:
 
 - `sudo` muss verfuegbar sein.
 - `apt-get` muss die Ubuntu-Paketquellen erreichen.
-- lokale PostgreSQL-Nutzung muss gewuenscht sein; bei externer Datenbank wird die lokale Vorbereitung bewusst uebersprungen.
-- Sonderzeichen in Datenbanknutzer und Passwort werden vom Installer fuer die lokale Rollenanlage gequotet; trotzdem sollten produktive Passwoerter nur in der ausgelagerten Benutzerkonfiguration liegen.
+- lokale PostgreSQL-Nutzung muss gewuenscht sein; bei externer Datenbank wird die lokale
+  Vorbereitung bewusst uebersprungen.
+- Sonderzeichen in Datenbanknutzer und Passwort werden vom Installer fuer die lokale Rollenanlage
+  gequotet; trotzdem sollten produktive Passwoerter nur in der ausgelagerten Benutzerkonfiguration
+  liegen.
 
 Schnelltest nach der Installation:
 
@@ -211,9 +235,10 @@ sudo -u postgres psql -tAc "SELECT 1 FROM pg_roles WHERE rolname = 'huginn';"
 sudo -u postgres psql -lqt | cut -d '|' -f 1 | grep -w huginn_production
 ```
 
-Falls danach ein Bundler-Hinweis zu `twitter >= 0` oder `version solving has failed` erscheint, ist das meist kein neuer PostgreSQL-Fehler.
-Dann wurde der alte Huginn-Lockfile zu breit neu aufgeloest.
-Der Installer vermeidet deshalb jetzt bei Nokogiri-Reparaturen einen kompletten Lockfile-Neuaufbau und aktualisiert stattdessen nur `nokogiri`, `racc` und `mini_portile2` gezielt.
+Falls danach ein Bundler-Hinweis zu `twitter >= 0` oder `version solving has failed` erscheint, ist
+das meist kein neuer PostgreSQL-Fehler. Dann wurde der alte Huginn-Lockfile zu breit neu aufgeloest.
+Der Installer vermeidet deshalb jetzt bei Nokogiri-Reparaturen einen kompletten Lockfile-Neuaufbau
+und aktualisiert stattdessen nur `nokogiri`, `racc` und `mini_portile2` gezielt.
 
 ## Gmail und andere Mailanbieter
 
@@ -222,11 +247,13 @@ Ja, Huginn ist nicht auf Gmail beschraenkt.
 Wichtig ist die Unterscheidung:
 
 - `gmail_xoauth` ist nur ein spezieller Gmail-OAuth-Pfad fuer aeltere Huginn-Staende
-- normale andere Mailadressen funktionieren typischerweise ueber klassische Mailprotokolle wie `IMAP`, `POP3` und `SMTP`
+- normale andere Mailadressen funktionieren typischerweise ueber klassische Mailprotokolle wie
+  `IMAP`, `POP3` und `SMTP`
 
 Praktisch bedeutet das:
 
-- fuer **eingehende Mails** nutzt du in Huginn spaeter Agenten oder Zugangsdaten mit den Serverdaten deines Mailanbieters
+- fuer **eingehende Mails** nutzt du in Huginn spaeter Agenten oder Zugangsdaten mit den Serverdaten
+  deines Mailanbieters
 - fuer **ausgehende Mails** nutzt Huginn die SMTP-Werte aus der `.env`
 
 Das ist also nicht auf Gmail beschraenkt. Typische Kandidaten sind zum Beispiel:
@@ -239,8 +266,9 @@ Das ist also nicht auf Gmail beschraenkt. Typische Kandidaten sind zum Beispiel:
 - IONOS
 - andere IMAP-/SMTP-faehige Anbieter
 
-Gmail ist in diesem Setup nur deshalb sichtbarer, weil der alte Huginn-Upstream dafuer einen eigenen OAuth-Sonderpfad mit `gmail_xoauth` mitbringt.
-Fuer andere Adressen ist der klassische IMAP-/SMTP-Weg oft sogar unkomplizierter.
+Gmail ist in diesem Setup nur deshalb sichtbarer, weil der alte Huginn-Upstream dafuer einen eigenen
+OAuth-Sonderpfad mit `gmail_xoauth` mitbringt. Fuer andere Adressen ist der klassische
+IMAP-/SMTP-Weg oft sogar unkomplizierter.
 
 ## Was gehoert in die `.env` und was nicht?
 
@@ -259,20 +287,24 @@ Beispielhafte Felder:
 Wichtig:
 
 - Die `.env` ist **nicht automatisch die komplette Mailbox-Konfiguration fuer eingehende Mails**.
-- IMAP-/POP3-Zugangsdaten fuer konkrete Mailabrufe liegen spaeter je nach Huginn-Agent oder Credential im jeweiligen Workflow.
+- IMAP-/POP3-Zugangsdaten fuer konkrete Mailabrufe liegen spaeter je nach Huginn-Agent oder
+  Credential im jeweiligen Workflow.
 - Deshalb muss nicht fuer jeden Mailanbieter ein eigener globaler Setup-Schalter gebaut werden.
 
 ## Passwort-Reset und Account-Mails
 
-Wichtig: Huginn versendet Account-Mails, Einladungen und Passwort-Reset-Mails ueber Rails ActionMailer.
-Das ist **nicht automatisch dasselbe** wie die OpenClaw-Diagnosemail ueber `msmtp`.
+Wichtig: Huginn versendet Account-Mails, Einladungen und Passwort-Reset-Mails ueber Rails
+ActionMailer. Das ist **nicht automatisch dasselbe** wie die OpenClaw-Diagnosemail ueber `msmtp`.
 
 Das bedeutet:
 
-- `msmtp` kann fuer Setup-Diagnoseberichte funktionieren, waehrend Huginn selbst trotzdem keine Passwort-Reset-Mail senden kann.
+- `msmtp` kann fuer Setup-Diagnoseberichte funktionieren, waehrend Huginn selbst trotzdem keine
+  Passwort-Reset-Mail senden kann.
 - Huginn braucht dafuer eigene Mailwerte in `/opt/huginn/.env`.
-- Der Absender muss zum SMTP-Konto passen, sonst lehnen Anbieter wie WEB.DE, GMX oder Gmail die Mail oft ab.
-- Viele Mailanbieter muessen Drittanbieter-Mailprogramme oder App-Passwoerter zuerst im Webinterface freischalten.
+- Der Absender muss zum SMTP-Konto passen, sonst lehnen Anbieter wie WEB.DE, GMX oder Gmail die Mail
+  oft ab.
+- Viele Mailanbieter muessen Drittanbieter-Mailprogramme oder App-Passwoerter zuerst im Webinterface
+  freischalten.
 
 Aktuelle Pruefung:
 
@@ -281,7 +313,8 @@ grep -E '^(SMTP_|SMTP_DELIVERY_METHOD|EMAIL_FROM_ADDRESS|DOMAIN|APP_HOST|APP_POR
   | sed -E 's/(PASSWORD|PASS|SECRET|TOKEN|KEY)=.*/\1=[REDACTED]/I'
 ```
 
-Wenn Huginn ueber den bereits lokal eingerichteten `msmtp`-/`sendmail`-Pfad versenden soll, ist diese Variante meist am einfachsten:
+Wenn Huginn ueber den bereits lokal eingerichteten `msmtp`-/`sendmail`-Pfad versenden soll, ist
+diese Variante meist am einfachsten:
 
 ```env
 SMTP_DELIVERY_METHOD=sendmail
@@ -319,9 +352,11 @@ Sicherheitsregel:
 - echte SMTP-Passwoerter niemals ins Git-Repository schreiben
 - wenn moeglich App-Passwort statt Hauptpasswort verwenden
 - lokale `.env` nur auf dem Zielsystem pflegen
-- vor externem Betrieb `DOMAIN` auf die echte geschuetzte Domain setzen, z. B. hinter Tailscale, Cloudflare Tunnel oder Reverse Proxy mit Auth
+- vor externem Betrieb `DOMAIN` auf die echte geschuetzte Domain setzen, z. B. hinter Tailscale,
+  Cloudflare Tunnel oder Reverse Proxy mit Auth
 
-Wenn du ausgesperrt bist und E-Mail noch nicht funktioniert, ist der lokale Terminalweg sicherer als ein Passwort-Reset per Mail:
+Wenn du ausgesperrt bist und E-Mail noch nicht funktioniert, ist der lokale Terminalweg sicherer als
+ein Passwort-Reset per Mail:
 
 ```bash
 cd /opt/huginn
@@ -365,7 +400,8 @@ Moeglicher Huginn-Fluss:
 3. Umformung in klare Event-Felder
 4. taegliche Sammelmail oder direkte Weitergabe an einen anderen Agenten
 
-Das ist alltagstauglich, weil es nicht nur ein Demo-Agent ist, sondern sofort echte Postfaecher entlasten kann.
+Das ist alltagstauglich, weil es nicht nur ein Demo-Agent ist, sondern sofort echte Postfaecher
+entlasten kann.
 
 Eine konkrete deutsche Vorlage dazu liegt jetzt auch hier:
 
@@ -388,7 +424,8 @@ sed -i "s/^INVITATION_CODE=.*/INVITATION_CODE=${new_code}/" /opt/huginn/.env
 printf 'Neuer Huginn Invitation Code: %s\n' "$new_code"
 ```
 
-Wenn du den ersten Admin lieber direkt im Terminal statt ueber die Web-Registrierung anlegen willst, geht das ohne Invitation Code so:
+Wenn du den ersten Admin lieber direkt im Terminal statt ueber die Web-Registrierung anlegen willst,
+geht das ohne Invitation Code so:
 
 ```bash
 cd /opt/huginn
@@ -403,25 +440,28 @@ Ein sehr einfacher erster Test ist ein `Manual Event Agent`.
 
 1. Oeffne `Agents`.
 2. Klicke `New Agent`.
-3. Suche in der Suchleiste gezielt nach `Manual Event Agent`, statt den Typ manuell in der langen Liste zu suchen.
+3. Suche in der Suchleiste gezielt nach `Manual Event Agent`, statt den Typ manuell in der langen
+   Liste zu suchen.
 4. Vergib einen Namen, z. B. `Erster Test`.
 5. Trage als Optionen zum Beispiel ein:
 
-```json
-{
-  "payload": {
-    "message": "Hallo aus meinem ersten Huginn-Test",
-    "source": "manual_test"
-  }
-}
-```
+   ```json
+   {
+     "payload": {
+       "message": "Hallo aus meinem ersten Huginn-Test",
+       "source": "manual_test"
+     }
+   }
+   ```
 
 6. Speichere den Agenten.
 
 Wichtig:
 
-- Bei diesem Agententyp gibt es je nach Huginn-Oberflaeche nicht immer einen auffaelligen `Run`-Button.
-- Beim `Manual Event Agent` wird auf der Detailseite stattdessen ein eigenes Formular mit einem `Submit`-Button verwendet.
+- Bei diesem Agententyp gibt es je nach Huginn-Oberflaeche nicht immer einen auffaelligen
+  `Run`-Button.
+- Beim `Manual Event Agent` wird auf der Detailseite stattdessen ein eigenes Formular mit einem
+  `Submit`-Button verwendet.
 - Dort kann direkt ein JSON-Event eingetragen und abgesendet werden, zum Beispiel:
 
 ```json
@@ -431,7 +471,8 @@ Wichtig:
 }
 ```
 
-- Je nach Huginn-Oberflaeche laesst sich derselbe Inhalt auch nicht als freier JSON-Text, sondern als einzelne Eingabezeilen pflegen.
+- Je nach Huginn-Oberflaeche laesst sich derselbe Inhalt auch nicht als freier JSON-Text, sondern
+  als einzelne Eingabezeilen pflegen.
 - Dann handelt es sich im Webinterface um einzelne Bloecke:
   - links der Schluessel
   - rechts der Wert
@@ -451,11 +492,14 @@ Wichtig:
 }
 ```
 
-- Wenn mehrere Test-Events auf einmal erzeugt werden sollen, kann auf der Detailseite stattdessen ein Top-Level-Schluessel `payloads` mit einem Array von Objekten verwendet werden.
-- Der einfachste Erfolgsindikator ist, dass beim Agenten in der Liste oder Detailansicht die Anzahl der `Events` hochgeht.
+- Wenn mehrere Test-Events auf einmal erzeugt werden sollen, kann auf der Detailseite stattdessen
+  ein Top-Level-Schluessel `payloads` mit einem Array von Objekten verwendet werden.
+- Der einfachste Erfolgsindikator ist, dass beim Agenten in der Liste oder Detailansicht die Anzahl
+  der `Events` hochgeht.
 - Wenn dort bereits `2` oder mehr Events stehen, hat der Test im Kern schon funktioniert.
 
-Danach kannst du in der Agent-Detailansicht oder ueber `Events` pruefen, ob Nutzdaten wie diese sichtbar sind:
+Danach kannst du in der Agent-Detailansicht oder ueber `Events` pruefen, ob Nutzdaten wie diese
+sichtbar sind:
 
 - `message: Hallo aus meinem ersten Huginn-Test`
 - `source: manual_test`
@@ -483,19 +527,24 @@ Wichtig:
 
 - Der `Manual Event Agent` muss den `Event Formatting Agent` als Empfaenger gesetzt haben.
 - Beim `Event Formatting Agent` sollte `Propagate immediately` auf `Yes` stehen.
-- Beim `Trigger Agent` ist `Propagate immediately` im aktuellen UI keine Textauswahl, sondern eine Checkbox direkt unter `Sources`.
-- Fuer die echte Verarbeitung reicht der Webserver allein nicht aus. Huginn braucht zusaetzlich einen laufenden Worker-Prozess.
+- Beim `Trigger Agent` ist `Propagate immediately` im aktuellen UI keine Textauswahl, sondern eine
+  Checkbox direkt unter `Sources`.
+- Fuer die echte Verarbeitung reicht der Webserver allein nicht aus. Huginn braucht zusaetzlich
+  einen laufenden Worker-Prozess.
 
-Wenn danach beim `Event Formatting Agent` `Last received event` und `Events created` hochgehen, funktioniert die Agent-Kette.
+Wenn danach beim `Event Formatting Agent` `Last received event` und `Events created` hochgehen,
+funktioniert die Agent-Kette.
 
 ## Website Agent Hinweis
 
-Beim `Website Agent` dieses Huginn-Stands muss der Wert in `extract` fuer HTML/XML als XPath-Ausdruck angegeben werden.
+Beim `Website Agent` dieses Huginn-Stands muss der Wert in `extract` fuer HTML/XML als
+XPath-Ausdruck angegeben werden.
 
 Wichtig:
 
 - `value: "text"` ist hier nicht korrekt.
-- Fuer sichtbaren Text sollte stattdessen zum Beispiel `value: "string(.)"` oder `value: "normalize-space(.)"` verwendet werden.
+- Fuer sichtbaren Text sollte stattdessen zum Beispiel `value: "string(.)"` oder
+  `value: "normalize-space(.)"` verwendet werden.
 - Erst `css` waehlt die HTML-Knoten aus, danach liest `value` den Inhalt per XPath aus.
 
 Beispiel fuer einen robusteren ersten Website-Test:
@@ -515,11 +564,13 @@ Beispiel fuer einen robusteren ersten Website-Test:
 }
 ```
 
-Wenn stattdessen `headline` oder `page_title` leer bleibt, liegt der Fehler oft nicht mehr am Abruf, sondern an einem unpassenden `value`-Ausdruck.
+Wenn stattdessen `headline` oder `page_title` leer bleibt, liegt der Fehler oft nicht mehr am Abruf,
+sondern an einem unpassenden `value`-Ausdruck.
 
 ## Weitere Beispiele
 
-- Weitere Huginn-Anwendungsbeispiele koennen spaeter direkt aus der Huginn-Oberflaeche, aus der offiziellen Huginn-Dokumentation oder aus Video-Tutorials erschlossen werden.
+- Weitere Huginn-Anwendungsbeispiele koennen spaeter direkt aus der Huginn-Oberflaeche, aus der
+  offiziellen Huginn-Dokumentation oder aus Video-Tutorials erschlossen werden.
 - Fuer dieses Setup ist zuerst wichtig, dass die kleinen lokalen Grundtests sauber funktionieren:
   - Agent speichern
   - Event erzeugen
@@ -528,7 +579,8 @@ Wenn stattdessen `headline` oder `page_title` leer bleibt, liegt der Fehler oft 
 
 ## Scenario-Import Hinweis
 
-Beim Export und erneuten Import eines bestehenden Scenarios dieses Huginn-Stands kann der Import vorhandene Objekte anhand ihrer internen Export-Identitaet wiedererkennen und aktualisieren.
+Beim Export und erneuten Import eines bestehenden Scenarios dieses Huginn-Stands kann der Import
+vorhandene Objekte anhand ihrer internen Export-Identitaet wiedererkennen und aktualisieren.
 
 Das bedeutet praktisch:
 
@@ -541,7 +593,8 @@ kann der Import den lokalen Datensatz wieder mit dem Namen aus der Exportdatei u
 Wichtig:
 
 - Das ist in diesem Fall nicht automatisch ein neuer Installationsfehler.
-- Fuer einen echten Klon oder eine parallele Variante sollte nicht einfach dieselbe Exportdatei unveraendert erneut importiert werden.
+- Fuer einen echten Klon oder eine parallele Variante sollte nicht einfach dieselbe Exportdatei
+  unveraendert erneut importiert werden.
 - Fuer sichere Tests besser:
   - das Scenario nur bearbeiten statt reimportieren,
   - oder vor dem Reimport die alte Testvariante loeschen,
@@ -589,7 +642,8 @@ cd /opt/huginn && RAILS_ENV=production RAILS_SERVE_STATIC_FILES=1 bundle exec ra
 cd /opt/huginn && RAILS_ENV=production bundle exec rails runner bin/threaded.rb
 ```
 
-Ohne den Worker werden Events oft nur in die Queue gelegt, aber nicht weiterverarbeitet. Typische Symptome sind:
+Ohne den Worker werden Events oft nur in die Queue gelegt, aber nicht weiterverarbeitet. Typische
+Symptome sind:
 
 - Agenten erzeugen zwar Events
 - verbundene Empfaenger-Agenten erhalten aber nichts
@@ -598,7 +652,8 @@ Ohne den Worker werden Events oft nur in die Queue gelegt, aber nicht weitervera
 
 ## Huginn als lokaler Dauerbetrieb
 
-Das Setup richtet Huginn jetzt nach erfolgreicher Installation nach Moeglichkeit auch als zwei lokale `systemd`-Dienste ein:
+Das Setup richtet Huginn jetzt nach erfolgreicher Installation nach Moeglichkeit auch als zwei
+lokale `systemd`-Dienste ein:
 
 - `huginn-web.service`
 - `huginn-worker.service`
@@ -607,7 +662,8 @@ Die Rollen bleiben dabei gleich:
 
 - `huginn-web.service` startet die Weboberflaeche
 - `huginn-worker.service` verarbeitet Jobs, Events und Agent-Ketten
-- Huginn nutzt in diesem Setup standardmaessig `127.0.0.1:3002`, damit kein Konflikt mit OpenClaw auf `3000` und Grafana auf `3001` entsteht
+- Huginn nutzt in diesem Setup standardmaessig `127.0.0.1:3002`, damit kein Konflikt mit OpenClaw
+  auf `3000` und Grafana auf `3001` entsteht
 
 Nützliche Befehle:
 
@@ -635,10 +691,12 @@ sudo systemctl start huginn-web.service
 sudo systemctl start huginn-worker.service
 ```
 
-Im Setup-Hauptmenue gibt es dafuer jetzt zusaetzlich den Punkt `Installierte Dienste starten`.
-Dort kannst du alle aktuell startbaren Tools gesammelt oder gezielt starten und dir ein anpassbares Autostart-Skript erzeugen lassen.
+Im Setup-Hauptmenue gibt es dafuer jetzt zusaetzlich den Punkt `Installierte Dienste starten`. Dort
+kannst du alle aktuell startbaren Tools gesammelt oder gezielt starten und dir ein anpassbares
+Autostart-Skript erzeugen lassen.
 
-Wenn `systemd` in der Zielumgebung nicht verfuegbar ist, bleibt der manuelle Zwei-Prozess-Start aus den obigen Befehlen der Fallback.
+Wenn `systemd` in der Zielumgebung nicht verfuegbar ist, bleibt der manuelle Zwei-Prozess-Start aus
+den obigen Befehlen der Fallback.
 
 ## Freigabe nach aussen
 
@@ -652,5 +710,6 @@ Empfohlen:
 
 ## Bezug zum Installer
 
-Der Huginn-Installer nutzt diese Vorlage, wenn `/opt/huginn/.env` noch nicht existiert.
-Wenn die Runtime-Datei schon existiert, bleibt sie unberuehrt, bis du sie bewusst ueber den Huginn-Konfigurationseditor ersetzt.
+Der Huginn-Installer nutzt diese Vorlage, wenn `/opt/huginn/.env` noch nicht existiert. Wenn die
+Runtime-Datei schon existiert, bleibt sie unberuehrt, bis du sie bewusst ueber den
+Huginn-Konfigurationseditor ersetzt.

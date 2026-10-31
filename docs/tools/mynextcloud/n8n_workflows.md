@@ -16,15 +16,18 @@
 
 ## Workflow 2: Audio hochgeladen
 
-Webhook -> Datei abrufen -> Whisper Endpoint -> Ollama Zusammenfassung -> Tags -> `.transcript.md` speichern.
+Webhook -> Datei abrufen -> Whisper Endpoint -> Ollama Zusammenfassung -> Tags -> `.transcript.md`
+speichern.
 
 ## Workflow 3: Bild hochgeladen
 
-Webhook -> Bild abrufen -> lokale Vision-KI optional -> Beschreibung -> Album-/Ordner-Vorschlag speichern.
+Webhook -> Bild abrufen -> lokale Vision-KI optional -> Beschreibung -> Album-/Ordner-Vorschlag
+speichern.
 
 ## Workflow 4: Backup
 
-Zeittrigger -> Datenbankdump -> Datenordner Snapshot -> Logdatei -> Benachrichtigung via Home Assistant/Email.
+Zeittrigger -> Datenbankdump -> Datenordner Snapshot -> Logdatei -> Benachrichtigung via Home
+Assistant/Email.
 
 ## Sicherheit
 

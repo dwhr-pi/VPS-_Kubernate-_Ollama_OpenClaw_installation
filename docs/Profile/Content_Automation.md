@@ -2,8 +2,10 @@
 
 ## Überblick
 
-Dieses Profil wurde aus der fachlichen Quelle [Content_Automation.doc.md](../Profil/Content_Automation.doc.md), `readme.md` und den vorhandenen Tool-Skripten zusammengeführt.
-Es beschreibt ein OpenClaw- und Ollama-kompatibles Profil für automatisierte Content-Pipelines von Skript über Audio und Video bis zum Upload.
+Dieses Profil wurde aus der fachlichen Quelle
+[Content_Automation.doc.md](../Profil/Content_Automation.doc.md), `readme.md` und den vorhandenen
+Tool-Skripten zusammengeführt. Es beschreibt ein OpenClaw- und Ollama-kompatibles Profil für
+automatisierte Content-Pipelines von Skript über Audio und Video bis zum Upload.
 
 ## Installierter Stack
 
@@ -72,8 +74,10 @@ Thema analysieren, Skript erzeugen, Voiceover vorbereiten, Video schneiden und E
 - Dieses Profil passt gut zu OpenClaw als Pipeline-Orchestrator.
 - `FFmpeg` deckt den Videoschnitt-Baustein ab.
 - `Whisper` hilft bei Transkript- und Audio-Vorarbeit.
-- `Playwright`, `n8n` und `Activepieces` sind gute Grundlagen für Automatisierung und Browser-/Upload-Schritte.
-- `Piper`, `Coqui_TTS`, `YT_DLP` und `Stable_Diffusion_WebUI` ergänzen jetzt TTS, Quellbeschaffung und visuelle Asset-Erstellung.
+- `Playwright`, `n8n` und `Activepieces` sind gute Grundlagen für Automatisierung und
+  Browser-/Upload-Schritte.
+- `Piper`, `Coqui_TTS`, `YT_DLP` und `Stable_Diffusion_WebUI` ergänzen jetzt TTS, Quellbeschaffung
+  und visuelle Asset-Erstellung.
 - `Trend_Monitor` ergänzt Themenradar und Feed-basierte Content-Vorbereitung.
 
 ## Vergleich
@@ -81,14 +85,17 @@ Thema analysieren, Skript erzeugen, Voiceover vorbereiten, Video schneiden und E
 ### ✅ In Sync
 
 - `ffmpeg` aus der Quelle ist bereits installierbar.
-- Die Workflow-Seite lässt sich mit `n8n`, `Activepieces` und `Playwright` bereits teilweise abbilden.
-- `Piper`, `Coqui_TTS`, `YT_DLP` und `Stable_Diffusion_WebUI` sind jetzt ebenfalls als echte Bausteine vorhanden.
+- Die Workflow-Seite lässt sich mit `n8n`, `Activepieces` und `Playwright` bereits teilweise
+  abbilden.
+- `Piper`, `Coqui_TTS`, `YT_DLP` und `Stable_Diffusion_WebUI` sind jetzt ebenfalls als echte
+  Bausteine vorhanden.
 - `Trend_Monitor` ist jetzt als Recherche- und Trendmodul installierbar.
 
 ### ⚠ Missing in Setup
 
 - Die zuvor fehlenden Thumbnail- und Upload-Bausteine sind jetzt direkt installierbar.
-- Offen bleibt nur eine vollständig produktionsfertige End-to-End-Verdrahtung mit echten Zielplattform-Credentials.
+- Offen bleibt nur eine vollständig produktionsfertige End-to-End-Verdrahtung mit echten
+  Zielplattform-Credentials.
 
 ### ❌ Missing in Docs
 
@@ -96,4 +103,5 @@ Thema analysieren, Skript erzeugen, Voiceover vorbereiten, Video schneiden und E
 
 ## Hinweise
 
-- Das Profil ist aktuell eher ein orchestrierbares Baukastensystem als eine fertig vorkonfigurierte Content-Fabrik.
+- Das Profil ist aktuell eher ein orchestrierbares Baukastensystem als eine fertig vorkonfigurierte
+  Content-Fabrik.

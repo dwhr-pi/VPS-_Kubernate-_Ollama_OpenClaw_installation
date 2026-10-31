@@ -2,7 +2,8 @@
 
 ## Aufgabe
 
-Der Blender AI Operator automatisiert Blender Headless fuer Cleanup, Retopology, UV Unwrap, Texture Baking, Rigging, Animation und Export.
+Der Blender AI Operator automatisiert Blender Headless fuer Cleanup, Retopology, UV Unwrap, Texture
+Baking, Rigging, Animation und Export.
 
 ## Tools
 
@@ -34,4 +35,3 @@ Nimm das GLB aus dem letzten Hunyuan3D-Job, bereinige Normalen, reduziere auf 35
 ## Kubernetes
 
 Blender laeuft gut als stateless Worker, solange Assets und Outputs auf gemeinsamem Storage liegen.
-

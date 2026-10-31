@@ -13,7 +13,7 @@ class OnlineServicesDocs(unittest.TestCase):
     def test_provider_tables_have_consistent_official_website_columns(self):
         documents = {
             "PROVIDER_KEY_CATALOG.md": 5,
-            "FREE_TIERS_AND_TRIAL_CREDITS.md": 1,
+            "FREE_TIERS_AND_TRIAL_CREDITS.md": 2,
             "API_KEY_GUIDE.md": 1,
             "OnlineOnKeyServices/README.md": 1,
         }
@@ -49,13 +49,14 @@ class OnlineServicesDocs(unittest.TestCase):
         for term in ("https://openai.com/", "https://www.anthropic.com/", "https://ai.google.dev/",
                      "https://www.moonshot.ai/", "https://huggingface.co/", "https://openrouter.ai/"):
             self.assertIn(term, catalog)
-        for prefix in ("| EULLM |", "| AI Gateway |", "| OIDC |"):
-            row = next(line for line in catalog.splitlines() if line.startswith(prefix))
+        for label in ("EULLM", "AI Gateway", "OIDC"):
+            row = next(line for line in catalog.splitlines()
+                       if line.startswith('|') and line.split('|')[1].strip() == label)
             website = row.split("|")[2]
             self.assertNotIn("https://", website)
             self.assertIn("festgelegt", website)
         token = (DIRECTORY / "token8341.md").read_text(encoding="utf-8")
-        self.assertIn("kein bestaetigter API-Endpunkt", token)
+        self.assertIn("kein bestaetigter API-Endpunkt", " ".join(token.split()))
         self.assertIn("https://www.token8341.com/", token)
         router = (DIRECTORY / "openrouter.md").read_text(encoding="utf-8")
         self.assertIn("**Offizielle Webseite:**", router)

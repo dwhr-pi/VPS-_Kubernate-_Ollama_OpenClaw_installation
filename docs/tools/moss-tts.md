@@ -2,17 +2,16 @@
 
 ## Umfang und Quelle
 
-Der vorhandene Installer ist jetzt mit Registry und Tools-Menue verbunden,
-statt den gemeinsamen documentation-first-Guard aufzurufen.
+Der vorhandene Installer ist jetzt mit Registry und Tools-Menue verbunden, statt den gemeinsamen
+documentation-first-Guard aufzurufen.
 [OpenMOSS/MOSS-TTS](https://github.com/OpenMOSS/MOSS-TTS/tree/934d6826b084c46a0d033402174d5f8ac4ed2519),
-Commit `934d6826b084c46a0d033402174d5f8ac4ed2519`, Paketversion `0.1.0`.
-Status: experimental, Installation nur nach bewusster Auswahl, ohne Docker.
+Commit `934d6826b084c46a0d033402174d5f8ac4ed2519`, Paketversion `0.1.0`. Status: experimental,
+Installation nur nach bewusster Auswahl, ohne Docker.
 
-**Installiert werden Checkout und ein privates Basis-Metadatenpaket mit
-`--no-deps`, nicht eine fertige TTS-Laufzeit.** Upstream setzt `py-modules=[]`;
-der Checkout bleibt daher fuer die eigentlichen Pipeline-Quellen erforderlich.
-Keine Submodule, Gewichte, Modelle, Cloud-Aufrufe, Anmeldung, Gradio-WebUI,
-Server, Audiodateien, Inferenz oder Training werden automatisch gestartet.
+**Installiert werden Checkout und ein privates Basis-Metadatenpaket mit `--no-deps`, nicht eine
+fertige TTS-Laufzeit.** Upstream setzt `py-modules=[]`; der Checkout bleibt daher fuer die
+eigentlichen Pipeline-Quellen erforderlich. Keine Submodule, Gewichte, Modelle, Cloud-Aufrufe,
+Anmeldung, Gradio-WebUI, Server, Audiodateien, Inferenz oder Training werden automatisch gestartet.
 
 ## Installation
 
@@ -26,72 +25,69 @@ bash scripts/tools/moss_tts_update.sh
 bash scripts/tools/moss_tts_uninstall.sh
 ```
 
-Im Tools-Menue kann MOSS_TTS ausgewaehlt werden. Python 3.10-3.12 mit
-venv/ensurepip/SSL wird fuer diesen Basisweg akzeptiert; Ubuntu 24.04 mit
-Python 3.12 passt. Bei Bedarf `MOSS_TTS_PYTHON_BIN=/pfad/zum/python` setzen.
-Keine Umgehung von Python-Anforderungen, kein System-Python-Austausch.
+Im Tools-Menue kann MOSS_TTS ausgewaehlt werden. Python 3.10-3.12 mit venv/ensurepip/SSL wird fuer
+diesen Basisweg akzeptiert; Ubuntu 24.04 mit Python 3.12 passt. Bei Bedarf
+`MOSS_TTS_PYTHON_BIN=/pfad/zum/python` setzen. Keine Umgehung von Python-Anforderungen, kein
+System-Python-Austausch.
 
 ### Fehlendes venv/ensurepip reparieren
 
-Seit 19.10.2026 bietet der Installer das versionspassende Ubuntu-Paket an,
-beispielsweise `python3.12-venv`. Abfrage: `[(j)a/(N)ein]`, Standard Nein.
-Ohne Terminal keine Installation; ausdrueckliches nichtinteraktives Opt-in:
+Seit 19.10.2026 bietet der Installer das versionspassende Ubuntu-Paket an, beispielsweise
+`python3.12-venv`. Abfrage: `[(j)a/(N)ein]`, Standard Nein. Ohne Terminal keine Installation;
+ausdrueckliches nichtinteraktives Opt-in:
 
 ```bash
 MOSS_TTS_INSTALL_VENV_DEPS=1 bash scripts/tools/moss_tts_install.sh --repair
 ```
 
-`MOSS_TTS_INSTALL_VENV_DEPS=0` deaktiviert die Paketinstallation.
-Nur das zum gewaehlten System-Python unter `/usr/bin/python3.X` passende
-Paket wird angeboten. Private Interpreter, aktive venvs und SSL-/Versionsfehler
-erfordern separate Pruefung; kein System-Python wird ersetzt.
-Speicherpruefung, Sperre und aktuelles Tool-Log kommen vor der Reparatur.
-APT wartet begrenzt auf Paketverwaltungssperren, ohne Sperrdateien zu loeschen.
-Nach Paketinstallation wird venv/ensurepip erneut geprueft; bei Fehlern
-kein Clone/Build. MOSS-TTS bleibt aus GitHub, ohne Docker. Die Zustimmung
-gibt keine GPU-Runtime, Submodule, Modelle oder Dienste frei.
-Vorhandene fremde/beschaedigte venvs werden nicht automatisch geloescht.
+`MOSS_TTS_INSTALL_VENV_DEPS=0` deaktiviert die Paketinstallation. Nur das zum gewaehlten
+System-Python unter `/usr/bin/python3.X` passende Paket wird angeboten. Private Interpreter, aktive
+venvs und SSL-/Versionsfehler erfordern separate Pruefung; kein System-Python wird ersetzt.
+Speicherpruefung, Sperre und aktuelles Tool-Log kommen vor der Reparatur. APT wartet begrenzt auf
+Paketverwaltungssperren, ohne Sperrdateien zu loeschen. Nach Paketinstallation wird venv/ensurepip
+erneut geprueft; bei Fehlern kein Clone/Build. MOSS-TTS bleibt aus GitHub, ohne Docker. Die
+Zustimmung gibt keine GPU-Runtime, Submodule, Modelle oder Dienste frei. Vorhandene
+fremde/beschaedigte venvs werden nicht automatisch geloescht.
 
-Voraussetzungen: Linux x86_64/ARM64, normaler Benutzer, Git, Bash, flock,
-realpath. Konservative Basisreserve: 1 GiB Gesamt-RAM, 512 MiB aktuell frei,
-2 GiB freie Disk und unter messbarem WSL-Host 2 GiB Windows-Host-Reserve.
-Diese Werte sind **keine Inferenz-/VRAM-Anforderungen**. MiniPC/RPi/VPS eignen
-sich hier nur zur Vorbereitung; eine Audio-Laufzeit braucht separate Planung.
+Voraussetzungen: Linux x86_64/ARM64, normaler Benutzer, Git, Bash, flock, realpath. Konservative
+Basisreserve: 1 GiB Gesamt-RAM, 512 MiB aktuell frei, 2 GiB freie Disk und unter messbarem WSL-Host
+2 GiB Windows-Host-Reserve. Diese Werte sind **keine Inferenz-/VRAM-Anforderungen**. MiniPC/RPi/VPS
+eignen sich hier nur zur Vorbereitung; eine Audio-Laufzeit braucht separate Planung.
 
 ## Pfade und Status
 
-`${OPENCLAW_USER_DATA_DIR:-$HOME/.openclaw_ultimate_user_data}/tools/moss_tts/`
-enthaelt `source/`, `venv/`, `operation.lock` und `source-built`.
-Logs liegen unter `install_logs/moss_tts_*.log` im User-Workspace.
-Symlinks, fremde oder veraenderte Quellen werden nicht zurueckgesetzt oder
+`${OPENCLAW_USER_DATA_DIR:-$HOME/.openclaw_ultimate_user_data}/tools/moss_tts/` enthaelt `source/`,
+`venv/`, `operation.lock` und `source-built`. Logs liegen unter `install_logs/moss_tts_*.log` im
+User-Workspace. Symlinks, fremde oder veraenderte Quellen werden nicht zurueckgesetzt oder
 geloescht. Update bleibt beim geprueften Pin; keine main/latest-Migration.
 
-Status/Doctor pruefen Pin, Paketmetadaten und venv-Pfad ohne MOSS-/Torch-Import
-oder Audiozugriff. `installed` bedeutet nur Basisvorbereitung; Runtime,
-Modelle und Inferenz sind weiterhin nicht bestaetigt. Der Marker steuert den
-Menueeintrag. Deaktivierung entfernt Marker und beide Setup-Statuszeilen;
-Checkout, venv, eigene Daten und Logs bleiben bewusst erhalten.
+Status/Doctor pruefen Pin, Paketmetadaten und venv-Pfad ohne MOSS-/Torch-Import oder Audiozugriff.
+`installed` bedeutet nur Basisvorbereitung; Runtime, Modelle und Inferenz sind weiterhin nicht
+bestaetigt. Der Marker steuert den Menueeintrag. Deaktivierung entfernt Marker und beide
+Setup-Statuszeilen; Checkout, venv, eigene Daten und Logs bleiben bewusst erhalten.
 
 ## Laufzeit und Sicherheit
 
-Der [gepruefte Paket-Pin](https://github.com/OpenMOSS/MOSS-TTS/blob/934d6826b084c46a0d033402174d5f8ac4ed2519/pyproject.toml)
-bietet unterschiedliche Torch-/llama.cpp-/ONNX-/TensorRT-Extras. Ein einheitlicher
-GPU-Pfad ist damit nicht automatisch sichergestellt. `MOSS_TTS_INSTALL_RUNTIME=1`
-wird derzeit ausdruecklich abgelehnt. Naechster Schritt: separat getestete
-Runtime, Audio-Tokenizer, Modellvariante, Lizenzannahme und Ressourcenbudget.
-Kein pauschales VRAM-Versprechen oder automatischer CUDA-/Treiberumbau.
+Der
+[gepruefte Paket-Pin](https://github.com/OpenMOSS/MOSS-TTS/blob/934d6826b084c46a0d033402174d5f8ac4ed2519/pyproject.toml)
+bietet unterschiedliche Torch-/llama.cpp-/ONNX-/TensorRT-Extras. Ein einheitlicher GPU-Pfad ist
+damit nicht automatisch sichergestellt. `MOSS_TTS_INSTALL_RUNTIME=1` wird derzeit ausdruecklich
+abgelehnt. Naechster Schritt: separat getestete Runtime, Audio-Tokenizer, Modellvariante,
+Lizenzannahme und Ressourcenbudget. Kein pauschales VRAM-Versprechen oder automatischer
+CUDA-/Treiberumbau.
 
-Die Anwendung kommt aus GitHub; pip kann isolierte Build-Werkzeuge aus PyPI
-beziehen. Nicht alle Abhaengigkeiten stammen dadurch aus GitHub. Keine
-Netzwerksandbox oder vollstaendig gehashte Offline-Lieferkette wird behauptet.
-HF-Token werden im Installer-Subprozess entfernt; Offline-/Telemetrieflags
-verhindern nicht grundsaetzlich alle Netzwerkanfragen beliebiger Build-Skripte.
+Die Anwendung kommt aus GitHub; pip kann isolierte Build-Werkzeuge aus PyPI beziehen. Nicht alle
+Abhaengigkeiten stammen dadurch aus GitHub. Keine Netzwerksandbox oder vollstaendig gehashte
+Offline-Lieferkette wird behauptet. HF-Token werden im Installer-Subprozess entfernt;
+Offline-/Telemetrieflags verhindern nicht grundsaetzlich alle Netzwerkanfragen beliebiger
+Build-Skripte.
 
-Code: [Apache-2.0](https://github.com/OpenMOSS/MOSS-TTS/blob/934d6826b084c46a0d033402174d5f8ac4ed2519/LICENSE).
-Modellkarten und Datenrechte getrennt pruefen. Nur eigene Stimmen oder Stimmen
-mit ausdruecklicher Einwilligung verwenden; synthetische Inhalte kennzeichnen.
-Keine Stimmen-/Personendaten im Repo oder in Logs ablegen.
+Code:
+[Apache-2.0](https://github.com/OpenMOSS/MOSS-TTS/blob/934d6826b084c46a0d033402174d5f8ac4ed2519/LICENSE).
+Modellkarten und Datenrechte getrennt pruefen. Nur eigene Stimmen oder Stimmen mit ausdruecklicher
+Einwilligung verwenden; synthetische Inhalte kennzeichnen. Keine Stimmen-/Personendaten im Repo oder
+in Logs ablegen.
 
-Pruefung hier: Offline-Tests mit temporaeren Dateien und simulierten
-Installationsschritten. Kein echter Linux-/GPU-Build, Modelltest oder
-WSL-Zugriff. Siehe [Medienkatalog](../media_studio/AUDIO_VIDEO_TOOL_CATALOG.md).
+Pruefung hier: Offline-Tests mit temporaeren Dateien und simulierten Installationsschritten. Kein
+echter Linux-/GPU-Build, Modelltest oder WSL-Zugriff. Siehe
+[Medienkatalog](../media_studio/AUDIO_VIDEO_TOOL_CATALOG.md).

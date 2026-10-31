@@ -1,6 +1,7 @@
 # myNextCloud Mobile: Android Build
 
 ## Ziel
+
 Android-Fork lokal unter Windows 11 + WSL2 + Android Studio bauen.
 
 ## Upstream

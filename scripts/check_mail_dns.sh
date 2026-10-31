@@ -21,4 +21,3 @@ dig A "mail.$DOMAIN" +short || true
 dig AAAA "mail.$DOMAIN" +short || true
 
 echo "Hinweis: PTR/rDNS muss beim VPS-/IP-Provider geprueft werden."
-

@@ -8,6 +8,7 @@ from pathlib import Path
 import re
 import sys
 import tempfile
+from doc_assertions import assert_prose_in, assert_prose_not_in
 import unittest
 from unittest import mock
 
@@ -136,13 +137,13 @@ class DevelopmentToolchainCheckTests(unittest.TestCase):
         self.assertIn('development_toolchains.py" "$@"', wrapper)
 
     def test_overviews_and_presentation_are_discoverable(self):
-        for name in ("docs/TOOLS_CATALOG.md", "docs/TOOL_MATRIX.md", "docs/TOOL_INDEX.md", "README.md"):
+        for name in ("docs/TOOLS_CATALOG.md", "docs/TOOL_MATRIX.md", "docs/TOOL_INDEX.md", "readme.md"):
             text = (ROOT / name).read_text(encoding="utf-8")
-            self.assertIn("development-toolchain-check.md", text)
-            self.assertIn("technology-tooling-overview.pptx", text)
+            assert_prose_in(self, "development-toolchain-check.md", text)
+            assert_prose_in(self, "technology-tooling-overview.pptx", text)
         doc = ROOT / "docs/tools/development-toolchain-check.md"
         content = doc.read_text(encoding="utf-8")
-        self.assertIn("13 Folien", content)
+        assert_prose_in(self, "13 Folien", content)
         for target in re.findall(r"\]\(([^)]+)\)", content):
             if "://" not in target and not target.startswith("#"):
                 self.assertTrue((doc.parent / target.split("#")[0]).exists(), target)

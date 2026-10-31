@@ -1,6 +1,8 @@
 # Profile
 
-Dieses Verzeichnis enthaelt Profil-Dokumentation. Neue Profile starten als `documentation-first` oder `planned`, bis Registry, Toolmapping, Ressourcenwerte, Ports, Installer, Uninstaller, Doctor und Statuscheck vorhanden sind.
+Dieses Verzeichnis enthaelt Profil-Dokumentation. Neue Profile starten als `documentation-first`
+oder `planned`, bis Registry, Toolmapping, Ressourcenwerte, Ports, Installer, Uninstaller, Doctor
+und Statuscheck vorhanden sind.
 
 ## Profilgruppen
 

@@ -7,7 +7,6 @@
 # Farben
 GREEN="\033[0;32m"
 BLUE="\033[0;34m"
-RED="\033[0;31m"
 YELLOW="\033[1;33m"
 NC="\033[0m"
 
@@ -16,8 +15,6 @@ INSTALL_DIR="${INSTALL_DIR:-$(cd "$SCRIPT_DIR/../.." && pwd)}"
 # shellcheck disable=SC1091
 source "$INSTALL_DIR/scripts/helpers/status_tracking.sh"
 init_tool_tracking "Pipedream"
-
-PIPEDREAM_DIR="/opt/pipedream"
 
 echo -e "${BLUE}Starte Installation von Pipedream (Self-Hosted)...${NC}"
 
@@ -35,6 +32,7 @@ ${YELLOW}mit Kubernetes, folgen Sie bitte der offiziellen Pipedream-Dokumentatio
 echo -e "${BLUE}Offizielle Pipedream Self-Hosted Dokumentation: https://pipedream.com/docs/deploy/self-hosting/${NC}"
 
 # Beispiel: Klonen des Pipedream-Repositories (falls eine Community-Edition existiert)
+# PIPEDREAM_DIR="/opt/pipedream"
 # if [ -d "$PIPEDREAM_DIR" ]; then
 #     echo -e "${YELLOW}Pipedream Verzeichnis $PIPEDREAM_DIR existiert bereits. Aktualisiere Repository...${NC}"
 #     cd "$PIPEDREAM_DIR"

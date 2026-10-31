@@ -59,8 +59,8 @@ clone_or_update_git_target() {
   repair_git_target_for_clone "$target_dir" "$repo_url" "$tool_name"
 
   if [ -d "$target_dir/.git" ]; then
-    if GIT_TERMINAL_PROMPT=0 git -C "$target_dir" fetch origin --prune && \
-       GIT_TERMINAL_PROMPT=0 git -C "$target_dir" pull --ff-only; then
+    if GIT_TERMINAL_PROMPT=0 git -C "$target_dir" fetch origin --prune &&
+      GIT_TERMINAL_PROMPT=0 git -C "$target_dir" pull --ff-only; then
       return 0
     fi
     backup_broken_git_target "$target_dir" "Git-Update fehlgeschlagen" "$tool_name"
@@ -69,4 +69,3 @@ clone_or_update_git_target() {
   printf 'Klone %s aus GitHub: %s\n' "$tool_name" "$repo_url"
   GIT_TERMINAL_PROMPT=0 git clone "$repo_url" "$target_dir"
 }
-

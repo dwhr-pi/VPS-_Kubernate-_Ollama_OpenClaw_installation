@@ -1,6 +1,7 @@
 # Zero Trust Remote Access
 
-Profil fuer sicheren Remote-Zugriff auf Open WebUI, Grafana, Home Assistant, SSH, n8n und interne Dashboards.
+Profil fuer sicheren Remote-Zugriff auf Open WebUI, Grafana, Home Assistant, SSH, n8n und interne
+Dashboards.
 
 ## Fokus
 
@@ -11,7 +12,8 @@ Profil fuer sicheren Remote-Zugriff auf Open WebUI, Grafana, Home Assistant, SSH
 
 ## Entscheidung
 
-Standard ist: localhost oder privates Netz. Oeffentliche Tunnel nur mit Auth, Rollen, Logging und klarer Zieladresse.
+Standard ist: localhost oder privates Netz. Oeffentliche Tunnel nur mit Auth, Rollen, Logging und
+klarer Zieladresse.
 
 ## Installation
 

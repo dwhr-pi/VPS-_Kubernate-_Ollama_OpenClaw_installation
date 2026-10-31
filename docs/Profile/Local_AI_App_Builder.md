@@ -1,12 +1,13 @@
 # Local_AI_App_Builder
 
-Status: planned  
-Kategorie: Entwicklung, Dashboard, Desktop  
+Status: planned\
+Kategorie: Entwicklung, Dashboard, Desktop\
 Installationsart: lokal-first, WSL2/Linux, optional Desktop-Bruecke zu Windows
 
 ## Zweck
 
-Dieses Profil buendelt lokale App-Entwicklung fuer Dashboards, Admin-UIs, Companion-Apps und Setup-Frontends.
+Dieses Profil buendelt lokale App-Entwicklung fuer Dashboards, Admin-UIs, Companion-Apps und
+Setup-Frontends.
 
 ## Varianten
 
@@ -16,15 +17,15 @@ Dieses Profil buendelt lokale App-Entwicklung fuer Dashboards, Admin-UIs, Compan
 
 ## Toolbasis
 
-| Tool | Aufgabe | Status |
-|---|---|---|
-| Node.js LTS | Runtime und Build | stabil |
-| pnpm/Corepack | Paketmanagement | stabil |
-| Vite/React | Dashboards | empfohlen |
-| Playwright | UI-Tests | empfohlen |
-| Tauri | leichte Desktop-Apps | optional |
-| Electron | Desktop-Apps mit Webstack | optional/schwerer |
-| shadcn/ui | UI-Bausteine | optional |
+| Tool          | Aufgabe                   | Status            |
+| ------------- | ------------------------- | ----------------- |
+| Node.js LTS   | Runtime und Build         | stabil            |
+| pnpm/Corepack | Paketmanagement           | stabil            |
+| Vite/React    | Dashboards                | empfohlen         |
+| Playwright    | UI-Tests                  | empfohlen         |
+| Tauri         | leichte Desktop-Apps      | optional          |
+| Electron      | Desktop-Apps mit Webstack | optional/schwerer |
+| shadcn/ui     | UI-Bausteine              | optional          |
 
 ## Safe Defaults
 
@@ -39,4 +40,3 @@ Dieses Profil buendelt lokale App-Entwicklung fuer Dashboards, Admin-UIs, Compan
 3. Vite/React erstellt lokale UI.
 4. Playwright prueft Kernpfade.
 5. Das Setup verlinkt nur localhost oder Tailnet.
-

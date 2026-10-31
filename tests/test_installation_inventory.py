@@ -7,6 +7,7 @@ import os
 from pathlib import Path
 import sys
 import tempfile
+import re
 import unittest
 from unittest.mock import patch
 
@@ -22,8 +23,18 @@ class Inventory(unittest.TestCase):
         self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name) / 'workspace'
         self.output = Path(self.temp.name) / 'external/programmes.json'
+        original_evidence = inv.evidence
+
+        def fixture_evidence(name, root, specs):
+            # Absolute host installs such as /usr/local/bin/kustomize are not fixtures.
+            value = specs.get(name, {}).get('check_value', '')
+            if value.startswith('~/.openclaw_ultimate_user_data/'):
+                return original_evidence(name, root, specs)
+            return 'unverified'
+
         for context in (patch.object(inv, 'maintenance_guard', side_effect=lambda *a, **k: nullcontext()),
-                        patch.object(inv.shutil, 'which', return_value=None)):
+                        patch.object(inv.shutil, 'which', return_value=None),
+                        patch.object(inv, 'evidence', side_effect=fixture_evidence)):
             context.start()
             self.addCleanup(context.stop)
 
@@ -132,7 +143,7 @@ class Inventory(unittest.TestCase):
 
     def test_update_backup_and_menu_are_wired(self):
         update = (ROOT / 'scripts/auto_update_hard.sh').read_text()
-        apply = update.split('    --apply)', 1)[1]
+        apply = re.split(r'(?m)^\s+--apply\)', update, maxsplit=1)[1]
         self.assertLess(apply.index('installation_inventory.py'), apply.index('"$HELPER" sync'))
         backup = (ROOT / 'scripts/operations/backup_run.sh').read_text()
         self.assertIn('installation-inventory.json', backup)

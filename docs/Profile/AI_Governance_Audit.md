@@ -1,12 +1,13 @@
 # Profil: AI_Governance_Audit
 
-[RAG-Audit und Rechtsreview](../legal/README.md): begrenzter Offline-Pruefer,
-Quellenregister und DSB-Template. Hash-Konsistenz ist keine Echtheits- oder
-Rechtsgarantie; keine automatische Loeschung oder Kettenreparatur.
+[RAG-Audit und Rechtsreview](../legal/README.md): begrenzter Offline-Pruefer, Quellenregister und
+DSB-Template. Hash-Konsistenz ist keine Echtheits- oder Rechtsgarantie; keine automatische Loeschung
+oder Kettenreparatur.
 
 ## Zweck
 
-Nachvollziehbarkeit, Auditierbarkeit, Secret- und SBOM-Checks sowie AI-Governance-nahe Dokumentation fuer lokale und serverseitige Setups.
+Nachvollziehbarkeit, Auditierbarkeit, Secret- und SBOM-Checks sowie AI-Governance-nahe Dokumentation
+fuer lokale und serverseitige Setups.
 
 ## Installierbare Kern-Tools
 

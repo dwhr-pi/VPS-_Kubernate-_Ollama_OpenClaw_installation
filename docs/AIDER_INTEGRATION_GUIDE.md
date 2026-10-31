@@ -1,20 +1,33 @@
 # Aider Integration Guide
 
+**Aktueller Weg (29.10.2026):** [privater gepinnter Source-Build](agents/NATIVE_CLI_BUILDS.md) mit
+explizitem Hash-Lock und [optionale isolierte Workbench](agents/LOCAL_CODING_WORKBENCH.md). Der
+fruehere globale PATH-Check ist kein Nachweis dieses privaten Builds. Historische Scaffold-Beispiele
+unten nicht als aktuelle Installationsanweisung verwenden; alte `/opt`-/venv-Daten werden weder
+geloescht noch automatisch migriert.
+
 ## Zweck
 
-Aider ist ein terminalbasierter Coding-Agent fuer Git-Repositories. Er eignet sich fuer Patch-Erstellung, Refactoring, kleinere Features, Tests, Code-Erklaerungen und Git-Diff-basierte Arbeit.
+Aider ist ein terminalbasierter Coding-Agent fuer Git-Repositories. Er eignet sich fuer
+Patch-Erstellung, Refactoring, kleinere Features, Tests, Code-Erklaerungen und Git-Diff-basierte
+Arbeit.
 
-Im Setup ist Aider als Coding-Agent-Tool gedacht, nicht als dauerhafter Webdienst. Es laeuft direkt im Terminal im jeweiligen Projektordner.
+Im Setup ist Aider als Coding-Agent-Tool gedacht, nicht als dauerhafter Webdienst. Es laeuft direkt
+im Terminal im jeweiligen Projektordner.
 
 ## Installation im Setup
 
-Der Installer legt Aider standardmaessig unter `/opt/aider` ab und erstellt dort eine Python-Umgebung.
+Der Installer legt Aider standardmaessig unter `/opt/aider` ab und erstellt dort eine
+Python-Umgebung.
 
 Wichtiger Reparaturhinweis:
 
-- Wenn eine fruehere Installation `/opt/aider` mit Root-Rechten angelegt hat, kann ein normaler `rm -rf /opt/aider` scheitern.
-- Der gemeinsame Scaffold-Installer entfernt alte `/opt/<tool>`-Reste deshalb mit `sudo`, aber nur fuer sichere Pfade wie `/opt/*` oder den User-Home-Bereich.
-- Danach wird das Zielverzeichnis mit `sudo mkdir -p` vorbereitet und dem aktuellen User uebergeben, damit `git clone` nicht an `/opt`-Rechten scheitert.
+- Wenn eine fruehere Installation `/opt/aider` mit Root-Rechten angelegt hat, kann ein normaler
+  `rm -rf /opt/aider` scheitern.
+- Der gemeinsame Scaffold-Installer entfernt alte `/opt/<tool>`-Reste deshalb mit `sudo`, aber nur
+  fuer sichere Pfade wie `/opt/*` oder den User-Home-Bereich.
+- Danach wird das Zielverzeichnis mit `sudo mkdir -p` vorbereitet und dem aktuellen User uebergeben,
+  damit `git clone` nicht an `/opt`-Rechten scheitert.
 - Dadurch betrifft der Fix auch aehnliche Scaffold-Tools, ohne beliebige Loeschpfade zu erlauben.
 
 ## Schnelltest
@@ -43,7 +56,8 @@ source /opt/aider/venv/bin/activate
 aider
 ```
 
-Mit lokalem Modell ueber Ollama oder LiteLLM ist je nach Aider-Version eine passende Provider-Konfiguration noetig. Praxisnah ist:
+Mit lokalem Modell ueber Ollama oder LiteLLM ist je nach Aider-Version eine passende
+Provider-Konfiguration noetig. Praxisnah ist:
 
 ```bash
 cd ~/openclaw_ultimate_setup
@@ -51,7 +65,9 @@ source /opt/aider/venv/bin/activate
 aider --model ollama_chat/qwen2.5-coder:7b
 ```
 
-Wenn ein LiteLLM-Gateway genutzt wird, sollte Aider gegen die OpenAI-kompatible Gateway-URL konfiguriert werden. API-Schluessel gehoeren nicht ins Repository, sondern in die ausgelagerte User-Konfiguration unter `~/.openclaw_ultimate_user_data`.
+Wenn ein LiteLLM-Gateway genutzt wird, sollte Aider gegen die OpenAI-kompatible Gateway-URL
+konfiguriert werden. API-Schluessel gehoeren nicht ins Repository, sondern in die ausgelagerte
+User-Konfiguration unter `~/.openclaw_ultimate_user_data`.
 
 ## Sinnvolle Kombinationen
 
@@ -79,8 +95,11 @@ Geplanter Ausbau:
 - Allowlist fuer erlaubte Arbeitsverzeichnisse.
 - Optionaler Dry-Run-Modus mit Patch-Ausgabe statt Direktedit.
 - OpenClaw-Tooldefinition fuer "Repo analysieren", "Patch vorschlagen", "Tests starten".
-- Automatischer Nachtest mit `scripts/doctor.sh`, `scripts/validate_config.sh` und passenden Projekt-Tests.
+- Automatischer Nachtest mit `scripts/doctor.sh`, `scripts/validate_config.sh` und passenden
+  Projekt-Tests.
 
 ## Einordnung
 
-Aider ist fuer das Programmierer-/Codex-Sandbox-Setup besonders sinnvoll. Auf einem schwachen MiniPC sollte es bevorzugt mit kleinen lokalen Modellen oder ueber LiteLLM-Fallback genutzt werden. Auf GPU-Workstations kann es direkt mit groesseren lokalen Coding-Modellen arbeiten.
+Aider ist fuer das Programmierer-/Codex-Sandbox-Setup besonders sinnvoll. Auf einem schwachen MiniPC
+sollte es bevorzugt mit kleinen lokalen Modellen oder ueber LiteLLM-Fallback genutzt werden. Auf
+GPU-Workstations kann es direkt mit groesseren lokalen Coding-Modellen arbeiten.

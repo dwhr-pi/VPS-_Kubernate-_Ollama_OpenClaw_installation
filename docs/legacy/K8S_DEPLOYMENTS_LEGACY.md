@@ -1,3 +1,42 @@
+# Historisches Kubernetes-Gesamtmanifest
+
+**Archiv, kein ausfuehrbarer Deployment-Pfad. Nicht mit `kubectl apply` verwenden.**
+
+Der fruehere Pfad `scripts/k8s_deployments.yaml` wurde mit Nutzerfreigabe entfernt. Sein Inhalt aus
+Commit `ada8375b9015eba1ed585ee99fe5dac2b056cd94` bleibt unten unveraendert als Quellreferenz
+erhalten. Diese Markdown-Datei ist kein Kubernetes-Manifest und wird von keinem Installer
+angewendet.
+
+## Aktueller Einstieg
+
+- [Kustomize-Basis](../../k8s/base/kustomization.yml)
+- [Kleine VPS und GitOps](../GITOPS_SMALL_VPS.md)
+- [Produktions-Baseline und Abnahmegrenzen](../PRODUCTION_BASELINE.md)
+- [GPU- und Betriebsanleitung](../LLMOPS_GPU_AND_OPERATIONS.md)
+
+Auch die aktuellen Vorlagen brauchen gepruefte Image-Digests, eigene Secrets,
+Storage-/Netzwerkentscheidungen und eine gesonderte Abnahme. Kein automatisches Apply, kein
+Modell-Download und keine Produktivfreigabe durch diese Archivierung.
+
+## Risiken und Migration
+
+Das alte Beispiel enthaelt bewegliche Images, unvollstaendige SecurityContexts, fehlende
+Abhaengigkeiten und einen externen Modellaufruf. Der letzte Scan meldete 17 HIGH-Befunde. Die
+Archivierung repariert **keine bereits laufenden Pods**. Bestehende Cluster, PVCs, Services und
+Daten werden weder veraendert noch geloescht. Solche Installationen muessen separat inventarisiert
+und kontrolliert migriert werden; ein blindes Anwenden neuer Vorlagen ist kein sicherer
+Upgrade-Pfad.
+
+**Breaking Change fuer externe Skripte:** Der alte Dateipfad existiert nicht mehr. Die Setup-Anzeige
+zeigt stattdessen diese Referenz und die aktuellen Einstiege. Eine Ruecknahme dieser Repo-Aenderung
+braucht ein eigenes Review und bedeutet keine Freigabe des alten Codes. Keine automatische
+Cluster-Ruecksetzung.
+
+## Historischer Quelltext
+
+Der folgende Block dokumentiert den alten Stand, nicht eine Startanleitung.
+
+```yaml
 apiVersion: v1
 kind: Namespace
 metadata:
@@ -289,3 +328,4 @@ data:
 
     if __name__ == "__main__":
         app.run(host="0.0.0.0", port=8000)
+```

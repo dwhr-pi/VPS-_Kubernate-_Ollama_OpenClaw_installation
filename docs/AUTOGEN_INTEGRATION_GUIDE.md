@@ -2,7 +2,9 @@
 
 ## Kurzfassung
 
-AutoGen beziehungsweise `pyautogen` ist ein Python-Framework fuer Multi-Agent-Chats, Agent-to-Agent-Kommunikation und toolgestuetzte Aufgaben. Es ist kein klassischer Webdienst und kein Desktopprogramm.
+AutoGen beziehungsweise `pyautogen` ist ein Python-Framework fuer Multi-Agent-Chats,
+Agent-to-Agent-Kommunikation und toolgestuetzte Aufgaben. Es ist kein klassischer Webdienst und kein
+Desktopprogramm.
 
 Nach der Installation liegt AutoGen typischerweise in:
 
@@ -29,7 +31,8 @@ Wenn diese Befehle funktionieren, ist AutoGen als Bibliothek verfuegbar.
 
 ## Wofuer ist AutoGen sinnvoll?
 
-AutoGen eignet sich fuer Multi-Agent-Dialoge, bei denen mehrere Agenten miteinander diskutieren, Aufgaben verteilen oder Loesungen pruefen.
+AutoGen eignet sich fuer Multi-Agent-Dialoge, bei denen mehrere Agenten miteinander diskutieren,
+Aufgaben verteilen oder Loesungen pruefen.
 
 Typische Muster:
 
@@ -41,12 +44,12 @@ Typische Muster:
 
 ## Unterschied zu LangGraph und CrewAI
 
-| Punkt | AutoGen | CrewAI | LangGraph |
-|---|---|---|---|
-| Denkmodell | Agenten-Chat und Dialogkoordination | Rollen und Aufgaben | Zustandsgraph |
-| Staerke | Diskussion, Reviewer, User-Proxy | klare Teamrollen | kontrollierte Ablauflogik |
-| Risiko | Agenten koennen sich gegenseitig zu Aktionen treiben | Rollen koennen zu breit werden | Graph kann komplex werden |
-| OpenClaw-Nutzung | Multi-Agent-Worker | Rollen-Team-Worker | Graph-Worker |
+| Punkt            | AutoGen                                              | CrewAI                         | LangGraph                 |
+| ---------------- | ---------------------------------------------------- | ------------------------------ | ------------------------- |
+| Denkmodell       | Agenten-Chat und Dialogkoordination                  | Rollen und Aufgaben            | Zustandsgraph             |
+| Staerke          | Diskussion, Reviewer, User-Proxy                     | klare Teamrollen               | kontrollierte Ablauflogik |
+| Risiko           | Agenten koennen sich gegenseitig zu Aktionen treiben | Rollen koennen zu breit werden | Graph kann komplex werden |
+| OpenClaw-Nutzung | Multi-Agent-Worker                                   | Rollen-Team-Worker             | Graph-Worker              |
 
 Empfehlung:
 
@@ -56,17 +59,17 @@ Empfehlung:
 
 ## Welche vorhandenen Tools koennen AutoGen nutzen?
 
-| Tool/Profil | AutoGen-Nutzen | Integrationsart |
-|---|---|---|
-| OpenClaw | AutoGen als Multi-Agent-Review-Worker | Toolskript/Worker |
-| Ollama | lokale Modelle fuer Agenten | OpenAI-kompatibler Client oder LiteLLM |
-| LiteLLM | einheitlicher Modellzugriff | API-Gateway |
-| Qdrant/ChromaDB | gemeinsamer Kontext/RAG | Retriever-Tool |
-| Langfuse | Prompt- und Run-Auswertung | Tracing |
-| OpenLIT/OpenTelemetry | Observability | Instrumentierung |
-| Promptfoo | Regressionstests fuer Agenten-Dialoge | Test-Harness |
-| Aider/OpenHands | Coding-Agenten koennen AutoGen-Reviews nutzen | Projektintegration |
-| n8n/Huginn | AutoGen-Worker per Webhook oder Script starten | Automation-Bruecke |
+| Tool/Profil           | AutoGen-Nutzen                                 | Integrationsart                        |
+| --------------------- | ---------------------------------------------- | -------------------------------------- |
+| OpenClaw              | AutoGen als Multi-Agent-Review-Worker          | Toolskript/Worker                      |
+| Ollama                | lokale Modelle fuer Agenten                    | OpenAI-kompatibler Client oder LiteLLM |
+| LiteLLM               | einheitlicher Modellzugriff                    | API-Gateway                            |
+| Qdrant/ChromaDB       | gemeinsamer Kontext/RAG                        | Retriever-Tool                         |
+| Langfuse              | Prompt- und Run-Auswertung                     | Tracing                                |
+| OpenLIT/OpenTelemetry | Observability                                  | Instrumentierung                       |
+| Promptfoo             | Regressionstests fuer Agenten-Dialoge          | Test-Harness                           |
+| Aider/OpenHands       | Coding-Agenten koennen AutoGen-Reviews nutzen  | Projektintegration                     |
+| n8n/Huginn            | AutoGen-Worker per Webhook oder Script starten | Automation-Bruecke                     |
 
 ## OpenClaw-Zielbild
 
@@ -87,12 +90,12 @@ Ergebnisse sollten unterhalb des Benutzer-Workspaces liegen:
 
 ## Sinnvolle erste AutoGen-Szenarien
 
-| Szenario | Agenten | Zweck |
-|---|---|---|
-| `repo_review_chat` | Planner, Code Reviewer, Docs Reviewer | Aenderungen diskutieren und Findings sortieren |
-| `install_error_triage` | Log Analyst, Fix Planner, Safety Reviewer | Installationsfehler analysieren |
-| `security_findings_review` | Scanner Analyst, Risk Reviewer, Fix Advisor | defensive Findings bewerten |
-| `profile_design_review` | Architect, Tool Mapper, User Advocate | neue Profile gegen Dubletten pruefen |
+| Szenario                   | Agenten                                     | Zweck                                          |
+| -------------------------- | ------------------------------------------- | ---------------------------------------------- |
+| `repo_review_chat`         | Planner, Code Reviewer, Docs Reviewer       | Aenderungen diskutieren und Findings sortieren |
+| `install_error_triage`     | Log Analyst, Fix Planner, Safety Reviewer   | Installationsfehler analysieren                |
+| `security_findings_review` | Scanner Analyst, Risk Reviewer, Fix Advisor | defensive Findings bewerten                    |
+| `profile_design_review`    | Architect, Tool Mapper, User Advocate       | neue Profile gegen Dubletten pruefen           |
 
 ## Minimale Konfiguration
 
@@ -102,7 +105,8 @@ export LITELLM_BASE_URL=http://127.0.0.1:4000
 export AUTOGEN_OUTPUT_DIR="$HOME/.openclaw_ultimate_user_data/autogen/runs"
 ```
 
-Externe API-Keys gehoeren nie ins Repo. Fuer lokale Modelle sollte Ollama oder LiteLLM bevorzugt werden.
+Externe API-Keys gehoeren nie ins Repo. Fuer lokale Modelle sollte Ollama oder LiteLLM bevorzugt
+werden.
 
 ## Sicherheit
 

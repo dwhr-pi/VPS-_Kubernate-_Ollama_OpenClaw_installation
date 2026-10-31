@@ -1,7 +1,7 @@
 # Briefing fuer ein getrenntes Hermes-/Jarvis-Profil
 
-Eigene Vorlage fuer das Ultimate KI Setup, kein importiertes Profil.
-Als Prompt verwenden; vorhandene Profildateien nicht direkt ersetzen.
+Eigene Vorlage fuer das Ultimate KI Setup, kein importiertes Profil. Als Prompt verwenden;
+vorhandene Profildateien nicht direkt ersetzen.
 
 ```text
 Bereite ein persoenliches Assistenzprofil vor, ohne etwas zu installieren,

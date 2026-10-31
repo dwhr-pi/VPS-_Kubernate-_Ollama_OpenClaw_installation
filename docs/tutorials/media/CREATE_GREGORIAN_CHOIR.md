@@ -1,9 +1,11 @@
 # CREATE GREGORIAN CHOIR
 
 ## Ziel
+
 Einsteigerfreundliches Tutorial fuer create gregorian choir.
 
 ## Schritte
+
 1. Rolle aus der Character Library waehlen.
 2. Text/Skript vorbereiten.
 3. Stimme mit Piper oder optionalem Studio-Tool planen.
@@ -11,4 +13,6 @@ Einsteigerfreundliches Tutorial fuer create gregorian choir.
 5. Ergebnis kennzeichnen und manuell freigeben.
 
 ## Ressourcen
-MiniPC/RPi5 fuer Planung, Oracle VPS fuer Orchestrierung, Gaming PC/RTX fuer Rendering, Kubernetes nur fuer spaetere Worker.
+
+MiniPC/RPi5 fuer Planung, Oracle VPS fuer Orchestrierung, Gaming PC/RTX fuer Rendering, Kubernetes
+nur fuer spaetere Worker.

@@ -1,14 +1,25 @@
 # OpenCode Integration Guide
 
+**Aktueller Weg (29.10.2026):** [gepinntes natives CLI-Build](agents/NATIVE_CLI_BUILDS.md) und
+[optionale isolierte Workbench](agents/LOCAL_CODING_WORKBENCH.md). Die folgenden
+Scaffold-/`/opt`-Hinweise sind **historisch und nicht mehr der empfohlene Installationsweg**.
+Insbesondere gilt die fruehere rekursive Aufraeumroutine nicht als sicherer Besitznachweis. Neue
+Installer entfernen keine Altinstallationen; Legacy-Daten bleiben erhalten. Ein Quellbaum oder
+`run.sh` mit Hinweisen ist keine lauffaehige Coding-CLI.
+
 ## Zweck
 
-OpenCode ist als Codex-aehnlicher Coding-Agent-Workspace gedacht. Im Setup wird es als optionales Coding-Agent-Scaffold vorbereitet und unter `/opt/opencode` geklont.
+OpenCode ist als Codex-aehnlicher Coding-Agent-Workspace gedacht. Im Setup wird es als optionales
+Coding-Agent-Scaffold vorbereitet und unter `/opt/opencode` geklont.
 
-OpenCode ist kein klassischer Hintergrunddienst wie Huginn oder Grafana. Je nach Upstream-Stand wird es ueber das im geklonten Repository dokumentierte CLI- oder App-Startkommando genutzt.
+OpenCode ist kein klassischer Hintergrunddienst wie Huginn oder Grafana. Je nach Upstream-Stand wird
+es ueber das im geklonten Repository dokumentierte CLI- oder App-Startkommando genutzt.
 
 ## Installationshinweis
 
-Der Installer nutzt den gemeinsamen Scaffold-Helper. Wenn eine alte Installation `/opt/opencode` mit Root-Rechten angelegt hat, kann eine alte Helper-Version beim Neu-Klonen mit folgendem Fehler scheitern:
+Der Installer nutzt den gemeinsamen Scaffold-Helper. Wenn eine alte Installation `/opt/opencode` mit
+Root-Rechten angelegt hat, kann eine alte Helper-Version beim Neu-Klonen mit folgendem Fehler
+scheitern:
 
 ```txt
 rm: cannot remove '/opt/opencode': Permission denied
@@ -18,7 +29,8 @@ Aktueller Fix:
 
 - Der Scaffold-Helper entfernt alte `/opt/<tool>`-Reste mit `sudo`.
 - Der Loeschpfad ist auf sichere Ziele wie `/opt/*` oder den User-Home-Bereich begrenzt.
-- Das leere Zielverzeichnis wird danach mit korrekten User-Rechten neu angelegt, bevor `git clone` startet.
+- Das leere Zielverzeichnis wird danach mit korrekten User-Rechten neu angelegt, bevor `git clone`
+  startet.
 - Im Log erscheint jetzt der Hinweis `Scaffold-Helper: sichere /opt-Aufraeumroutine aktiv.`
 
 Wenn dieser Hinweis im neuen Log fehlt, wurde noch eine alte Setup-Kopie gestartet.
@@ -49,7 +61,8 @@ OPENCODE_MODEL=qwen3-coder:30b
 OLLAMA_HOST=http://127.0.0.1:11434
 ```
 
-Fuer schwache MiniPCs sollte ein kleineres Coding-Modell genutzt werden, zum Beispiel ein 7B-Coder-Modell. Fuer GPU-Workstations kann ein groesseres Modell sinnvoll sein.
+Fuer schwache MiniPCs sollte ein kleineres Coding-Modell genutzt werden, zum Beispiel ein
+7B-Coder-Modell. Fuer GPU-Workstations kann ein groesseres Modell sinnvoll sein.
 
 ## Kombinationen
 

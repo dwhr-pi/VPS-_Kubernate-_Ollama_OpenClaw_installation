@@ -51,7 +51,7 @@ install_packages() {
 }
 
 write_examples() {
-  cat > "$MEDIA_HOME/README_FotoScan.md" <<'EOF'
+  cat >"$MEDIA_HOME/README_FotoScan.md" <<'EOF'
 # FotoScan Panorama 360 3D
 
 Ordner:
@@ -92,4 +92,3 @@ echo "Keine GPU-lastigen oder experimentellen Photogrammetrie-/Splatting-Builds 
 df -h "$HOME" || true
 echo "Dauer: $(($(date +%s) - START_TS)) Sekunden"
 echo "Logdatei: $LOG_FILE"
-

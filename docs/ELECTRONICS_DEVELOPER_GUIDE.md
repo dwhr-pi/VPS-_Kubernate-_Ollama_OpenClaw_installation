@@ -1,6 +1,7 @@
 # Elektronik Entwickler Guide
 
-Dieser Guide beschreibt das optionale Elektronik-Entwicklerprofil fuer PCB, Embedded, FPGA und Home-Assistant-Hardware.
+Dieser Guide beschreibt das optionale Elektronik-Entwicklerprofil fuer PCB, Embedded, FPGA und
+Home-Assistant-Hardware.
 
 ## Projektstruktur
 
@@ -26,7 +27,8 @@ Ultimate_KI_Setup/electronics/
 bash scripts/tools/electronics_dev_install.sh
 ```
 
-Der Installer nutzt bevorzugt apt, pipx/pip und npm/pnpm. Er installiert keine proprietaeren Cloud-Abhaengigkeiten und erzwingt kein Docker.
+Der Installer nutzt bevorzugt apt, pipx/pip und npm/pnpm. Er installiert keine proprietaeren
+Cloud-Abhaengigkeiten und erzwingt kein Docker.
 
 ## Empfohlene Arbeitsweise
 
@@ -56,7 +58,8 @@ Moegliche Integrationen:
 
 ## GPU
 
-GPU ist fuer EDA nicht Pflicht. Sie ist eher fuer lokale LLMs, RAG, Bild-/Board-Analyse und spaetere Dashboard-/Vision-Workflows relevant.
+GPU ist fuer EDA nicht Pflicht. Sie ist eher fuer lokale LLMs, RAG, Bild-/Board-Analyse und spaetere
+Dashboard-/Vision-Workflows relevant.
 
 - NVIDIA/RTX: Ollama/LLM-Beschleunigung, CUDA optional.
 - AMD/Intel: je nach Ollama/Runtime; EDA-Tools selbst meist CPU-lastig.
@@ -69,4 +72,3 @@ GPU ist fuer EDA nicht Pflicht. Sie ist eher fuer lokale LLMs, RAG, Bild-/Board-
 - PlatformIO nutzt falsche Python-Version: venv oder pipx isoliert verwenden.
 - ESP-IDF ist schwer: erst PlatformIO/Arduino CLI testen, ESP-IDF nur bei Bedarf aktivieren.
 - OpenLane/OpenROAD sind gross: nur auf Workstations oder separaten Build-Nodes installieren.
-

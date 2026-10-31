@@ -57,4 +57,3 @@ Diese Workflows sind Konzeptvorlagen. Sie sollen nicht automatisch API-Keys oder
 3. Nur ein Renderjob gleichzeitig auf Low-VRAM-Systemen.
 4. Nach jedem Job Speicher und Fehlerlog pruefen.
 5. Diagnose-Mail optional nur mit Logauszug, nie mit API-Keys.
-

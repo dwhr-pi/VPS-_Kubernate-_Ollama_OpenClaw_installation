@@ -2,7 +2,8 @@
 
 Dieser Worktree ist eine kleine Brücke zwischen Setup-Logs, Huginn und einem Codex-Nachbau.
 
-Er prüft, ob neue Diagnoseberichte eingegangen sind, erzeugt daraus eine bereinigte Markdown-Übergabe und legt diese lokal so ab, dass Codex direkt weiterarbeiten kann.
+Er prüft, ob neue Diagnoseberichte eingegangen sind, erzeugt daraus eine bereinigte
+Markdown-Übergabe und legt diese lokal so ab, dass Codex direkt weiterarbeiten kann.
 
 ## Zielbild
 
@@ -18,27 +19,27 @@ flowchart LR
 
 ## Komponenten
 
-- `scripts/tool_log_diagnostics.sh`
-  Erstellt gefilterte Diagnoseberichte aus Installationslogs.
-- `scripts/huginn_log_worktree/check_log_intake.sh`
-  Erkennt neue Diagnoseberichte und erzeugt Codex-Handoff-Dateien.
-- `configs/huginn/log-diagnostic-watch/`
-  Enthält Vorlage, Beispiel-Event und Handoff-Beispiel für Huginn.
-- `~/.openclaw_ultimate_user_data/diagnostic_reports/`
-  Lokaler Eingang für Diagnoseberichte.
-- `~/.openclaw_ultimate_user_data/codex_handoffs/`
-  Lokaler Ausgang für Codex-fertige Übergabedateien.
+- `scripts/tool_log_diagnostics.sh` Erstellt gefilterte Diagnoseberichte aus Installationslogs.
+- `scripts/huginn_log_worktree/check_log_intake.sh` Erkennt neue Diagnoseberichte und erzeugt
+  Codex-Handoff-Dateien.
+- `configs/huginn/log-diagnostic-watch/` Enthält Vorlage, Beispiel-Event und Handoff-Beispiel für
+  Huginn.
+- `~/.openclaw_ultimate_user_data/diagnostic_reports/` Lokaler Eingang für Diagnoseberichte.
+- `~/.openclaw_ultimate_user_data/codex_handoffs/` Lokaler Ausgang für Codex-fertige
+  Übergabedateien.
 
 ## Installation
 
-Die Dateien liegen im Repository und werden beim Kopieren/Update des Setups nach `~/openclaw_ultimate_setup` nutzbar.
+Die Dateien liegen im Repository und werden beim Kopieren/Update des Setups nach
+`~/openclaw_ultimate_setup` nutzbar.
 
 ```bash
 cd ~/openclaw_ultimate_setup
 chmod +x scripts/huginn_log_worktree/check_log_intake.sh
 ```
 
-Optional kann Huginn den Check regelmäßig ausführen. Dafür muss der ShellCommandAgent bewusst aktiviert werden:
+Optional kann Huginn den Check regelmäßig ausführen. Dafür muss der ShellCommandAgent bewusst
+aktiviert werden:
 
 ```bash
 sudo sed -i 's/^ENABLE_INSECURE_AGENTS=.*/ENABLE_INSECURE_AGENTS=true/' /opt/huginn/.env
@@ -46,7 +47,9 @@ grep -q '^ENABLE_INSECURE_AGENTS=' /opt/huginn/.env || echo 'ENABLE_INSECURE_AGE
 sudo systemctl restart huginn-web.service huginn-worker.service
 ```
 
-Sicherheitswarnung: `ENABLE_INSECURE_AGENTS=true` erlaubt Huginn das Ausführen lokaler Shell-Kommandos. Das ist für diesen lokalen Automationsfall nützlich, gehört aber nur auf eine private, nicht öffentlich administrierbare Huginn-Instanz.
+Sicherheitswarnung: `ENABLE_INSECURE_AGENTS=true` erlaubt Huginn das Ausführen lokaler
+Shell-Kommandos. Das ist für diesen lokalen Automationsfall nützlich, gehört aber nur auf eine
+private, nicht öffentlich administrierbare Huginn-Instanz.
 
 ## Schnelltest ohne Huginn
 
@@ -104,7 +107,8 @@ latest="$(ls -1t ~/.openclaw_ultimate_user_data/codex_handoffs/*.md | head -n 1)
 sed -n '1,220p' "$latest"
 ```
 
-Diese Datei kann direkt in deinen Codex-Nachbau gegeben werden, damit er mit demselben Arbeitskontext weiter analysieren kann.
+Diese Datei kann direkt in deinen Codex-Nachbau gegeben werden, damit er mit demselben
+Arbeitskontext weiter analysieren kann.
 
 ## E-Mail-Variante
 
@@ -114,10 +118,15 @@ Wichtig:
 
 - SMTP-Zugangsdaten werden nicht im Repository gespeichert.
 - Die Konfiguration liegt unter `~/.openclaw_ultimate_user_data/mail/`.
-- Viele Anbieter wie WEB.DE, GMX oder Gmail müssen Drittanbieter-Mailprogramme zuerst erlauben oder ein App-Passwort nutzen.
-- Der Absender muss zum SMTP-Konto passen, sonst lehnen Anbieter häufig mit `Sender address is not allowed` ab.
+- Viele Anbieter wie WEB.DE, GMX oder Gmail müssen Drittanbieter-Mailprogramme zuerst erlauben oder
+  ein App-Passwort nutzen.
+- Der Absender muss zum SMTP-Konto passen, sonst lehnen Anbieter häufig mit
+  `Sender address is not allowed` ab.
 
-Für eingehende E-Mails kann Huginn zusätzlich ein Postfach per IMAP überwachen. Das ist als zweiter Schritt sinnvoll, wenn Diagnoseberichte nicht nur lokal, sondern über Mail ankommen sollen. Die IMAP-Zugangsdaten gehören dann in Huginn-Credentials oder lokale Benutzerkonfiguration, niemals ins Git-Repository.
+Für eingehende E-Mails kann Huginn zusätzlich ein Postfach per IMAP überwachen. Das ist als zweiter
+Schritt sinnvoll, wenn Diagnoseberichte nicht nur lokal, sondern über Mail ankommen sollen. Die
+IMAP-Zugangsdaten gehören dann in Huginn-Credentials oder lokale Benutzerkonfiguration, niemals ins
+Git-Repository.
 
 ## Datenschutz und Betrieb
 
@@ -125,7 +134,8 @@ Für eingehende E-Mails kann Huginn zusätzlich ein Postfach per IMAP überwache
 - Vor Weitergabe an externe Systeme immer manuell prüfen.
 - Alte Logs können über die Installationsüberwachung im Setup bereinigt werden.
 - Der Worktree löscht keine Originalberichte automatisch.
-- Die State-Datei liegt unter `~/.openclaw_ultimate_user_data/huginn_log_worktree/processed_reports.tsv`.
+- Die State-Datei liegt unter
+  `~/.openclaw_ultimate_user_data/huginn_log_worktree/processed_reports.tsv`.
 
 ## Nützliche Kommandos
 
@@ -138,11 +148,10 @@ tail -n 80 ~/.openclaw_ultimate_user_data/mail/msmtp.log
 
 ## Fehlerbilder
 
-- `ShellCommandAgent disabled`
-  `ENABLE_INSECURE_AGENTS=true` fehlt in `/opt/huginn/.env` oder Huginn wurde danach nicht neu gestartet.
-- `no_new_reports`
-  Es gibt keine neuen `.md`-Dateien oder sie wurden bereits verarbeitet.
-- `Permission denied`
-  Skript ausführbar machen oder Pfade unter `~/.openclaw_ultimate_user_data/` prüfen.
-- `mail ... non-zero status`
-  SMTP-Absender, Provider-Freigabe, App-Passwort oder `msmtp`-Konfiguration prüfen.
+- `ShellCommandAgent disabled` `ENABLE_INSECURE_AGENTS=true` fehlt in `/opt/huginn/.env` oder Huginn
+  wurde danach nicht neu gestartet.
+- `no_new_reports` Es gibt keine neuen `.md`-Dateien oder sie wurden bereits verarbeitet.
+- `Permission denied` Skript ausführbar machen oder Pfade unter `~/.openclaw_ultimate_user_data/`
+  prüfen.
+- `mail ... non-zero status` SMTP-Absender, Provider-Freigabe, App-Passwort oder
+  `msmtp`-Konfiguration prüfen.

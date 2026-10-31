@@ -6,8 +6,8 @@ Nein. Installiere zuerst nur Basis, Ollama und OpenClaw.
 
 ## Ist Cloudflare Pflicht?
 
-Nein. Standard ist Hurricane Electric DNS/DDNS, Oracle VPS und WireGuard.
-Cloudflare bleibt optional.
+Nein. Standard ist Hurricane Electric DNS/DDNS, Oracle VPS und WireGuard. Cloudflare bleibt
+optional.
 
 ## Darf Ollama ins Internet?
 

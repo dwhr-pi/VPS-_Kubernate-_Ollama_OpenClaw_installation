@@ -1,6 +1,7 @@
 """Offline checks for the Grok interview documentation and inventory skill."""
 from pathlib import Path
 import re
+from doc_assertions import assert_prose_in, assert_prose_not_in
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -40,10 +41,10 @@ class GrokToolingDocsTests(unittest.TestCase):
     def test_report_preserves_evidence_and_not_run_state(self):
         text = REPORT.read_text(encoding="utf-8")
         for state in ("found", "observed", "passed", "failed", "not-found", "not-run"):
-            self.assertIn("- " + state + ":", text)
+            assert_prose_in(self, "- " + state + ":", text)
         for field in ("timezone", "Authorized scope", "Exit code", "Evidence / timestamp"):
-            self.assertIn(field, text)
-        self.assertIn("| not-run | n/a |", text)
+            assert_prose_in(self, field, text)
+        assert_prose_in(self, "| not-run | n/a |", text)
 
     def test_integration_is_discoverable_without_active_workflow(self):
         for name in ("docs/TOOLS_CATALOG.md", "docs/TOOL_INDEX.md",

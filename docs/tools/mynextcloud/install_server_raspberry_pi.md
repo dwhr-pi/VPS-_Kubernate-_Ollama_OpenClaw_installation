@@ -1,10 +1,12 @@
 # myNextCloud Server auf Raspberry Pi
 
-Dieser Pfad ist `planned` und NextcloudPi-inspiriert, aber kein automatischer NextcloudPi-Fork-Installer.
+Dieser Pfad ist `planned` und NextcloudPi-inspiriert, aber kein automatischer
+NextcloudPi-Fork-Installer.
 
 ## Ziel
 
-`myNextCloud Server` soll auf Raspberry Pi lokal-first laufen: kleine Dateiablage, private Sync-Zentrale, optionale KI-Verarbeitung auf einem staerkeren Host.
+`myNextCloud Server` soll auf Raspberry Pi lokal-first laufen: kleine Dateiablage, private
+Sync-Zentrale, optionale KI-Verarbeitung auf einem staerkeren Host.
 
 ## Empfehlung
 

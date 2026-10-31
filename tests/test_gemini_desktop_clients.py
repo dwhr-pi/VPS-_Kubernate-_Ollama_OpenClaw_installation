@@ -10,6 +10,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+from doc_assertions import assert_prose_in, assert_prose_not_in
 import unittest
 from unittest.mock import patch
 
@@ -94,15 +95,15 @@ class GeminiDesktopClientsTests(unittest.TestCase):
         for word in ('nicht fuer **Gemini CLI**', 'Pflege', 'Archiviert', 'webSecurity: false',
                      'verifyUpdateCodeSignature: false', 'Direkt umschaltbar: nein.',
                      'kein fertiger Adapter', '18789', 'gemini_desktop_bwendell_source', 'gemini_desktop_dortanes_source'):
-            self.assertIn(word, text)
+            assert_prose_in(self, word, text)
         for key in SOURCES:
-            self.assertIn(G.SPECS[key]['pin'], text)
+            assert_prose_in(self, G.SPECS[key]['pin'], text)
         for target in re.findall(r'\]\(([^)]+)\)', text):
             if '://' not in target:
                 self.assertTrue((DOC.parent / target.split('#', 1)[0]).is_file(), target)
         self.assertEqual(text.count('```') % 2, 0)
         for filename in ('TOOLS_CATALOG.md', 'START_HERE.md', 'TESTED_STATUS_MATRIX.md'):
-            self.assertIn('tools/gemini-desktop-clients.md', (ROOT / 'docs' / filename).read_text(encoding='utf-8'))
+            assert_prose_in(self, 'tools/gemini-desktop-clients.md', (ROOT / 'docs' / filename).read_text(encoding='utf-8'))
 
 
 if __name__ == '__main__':

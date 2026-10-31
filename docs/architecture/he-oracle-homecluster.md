@@ -1,7 +1,7 @@
 # Einsteiger-Tutorial: HE vorne, Oracle steuert, Pi weckt, RTX rechnet
 
-Dieses Dokument ist der empfohlene Startpunkt fuer die neue sichere
-Zielarchitektur des Ultimate KI Setup.
+Dieses Dokument ist der empfohlene Startpunkt fuer die neue sichere Zielarchitektur des Ultimate KI
+Setup.
 
 Der Merksatz lautet:
 
@@ -11,9 +11,9 @@ HE vorne, Oracle steuert, Pi weckt, RTX rechnet.
 
 ## Warum diese Architektur?
 
-Viele KI-Dienste sind stark und sensibel: Ollama, OpenClaw, ComfyUI, Whisper,
-Home Assistant, Kubernetes und Datenbanken sollen nicht direkt im Internet
-stehen. Stattdessen gibt es eine klare Kette:
+Viele KI-Dienste sind stark und sensibel: Ollama, OpenClaw, ComfyUI, Whisper, Home Assistant,
+Kubernetes und Datenbanken sollen nicht direkt im Internet stehen. Stattdessen gibt es eine klare
+Kette:
 
 1. Hurricane Electric / eigene Domain / IPv6 ist der externe Einstieg.
 2. Oracle VPS ist die Online-Steuerzentrale und DMZ.
@@ -37,8 +37,8 @@ flowchart TD
 
 ## Was ist neu gegenueber frueher?
 
-Cloudflare ist nicht mehr Pflichtbestandteil. Cloudflare bleibt eine gute
-optionale Alternative fuer:
+Cloudflare ist nicht mehr Pflichtbestandteil. Cloudflare bleibt eine gute optionale Alternative
+fuer:
 
 - Cloudflare Access
 - Cloudflare Tunnel
@@ -61,8 +61,8 @@ Der Standardpfad ist aber:
 
 Wenn du dir nur eine Sache merkst:
 
-> Veröffentliche niemals Ollama, OpenClaw, Home Assistant, Kubernetes API,
-> NAS, Datenbanken, ComfyUI oder Whisper direkt ins Internet.
+> Veröffentliche niemals Ollama, OpenClaw, Home Assistant, Kubernetes API, NAS, Datenbanken, ComfyUI
+> oder Whisper direkt ins Internet.
 
 Diese Dienste gehoeren hinter WireGuard oder in ein internes Netz.
 
@@ -70,8 +70,8 @@ Diese Dienste gehoeren hinter WireGuard oder in ein internes Netz.
 
 ### Hurricane Electric
 
-Hurricane Electric ist vorne im Internet sichtbar. Dort liegt der Domain-,
-DNS- und IPv6-Kontext. HE ist aber kein vollstaendiger DDoS-Schutz.
+Hurricane Electric ist vorne im Internet sichtbar. Dort liegt der Domain-, DNS- und IPv6-Kontext. HE
+ist aber kein vollstaendiger DDoS-Schutz.
 
 Bei Angriffen brauchst du zusaetzlich:
 

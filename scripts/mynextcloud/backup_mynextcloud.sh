@@ -18,18 +18,46 @@ APPLY=0
 
 while [ "$#" -gt 0 ]; do
   case "$1" in
-    --data-dir) DATA_DIR="${2:-}"; shift 2 ;;
-    --backup-dir) BACKUP_DIR="${2:-}"; shift 2 ;;
-    --db-name) DB_NAME="${2:-}"; shift 2 ;;
-    --db-user) DB_USER="${2:-}"; shift 2 ;;
-    --apply) APPLY=1; shift ;;
-    -h|--help) usage; exit 0 ;;
-    *) echo "Unbekannte Option: $1" >&2; usage; exit 1 ;;
+    --data-dir)
+      DATA_DIR="${2:-}"
+      shift 2
+      ;;
+    --backup-dir)
+      BACKUP_DIR="${2:-}"
+      shift 2
+      ;;
+    --db-name)
+      DB_NAME="${2:-}"
+      shift 2
+      ;;
+    --db-user)
+      DB_USER="${2:-}"
+      shift 2
+      ;;
+    --apply)
+      APPLY=1
+      shift
+      ;;
+    -h | --help)
+      usage
+      exit 0
+      ;;
+    *)
+      echo "Unbekannte Option: $1" >&2
+      usage
+      exit 1
+      ;;
   esac
 done
 
-[ -n "$DATA_DIR" ] || { echo "Fehler: --data-dir fehlt" >&2; exit 1; }
-[ -n "$BACKUP_DIR" ] || { echo "Fehler: --backup-dir fehlt" >&2; exit 1; }
+[ -n "$DATA_DIR" ] || {
+  echo "Fehler: --data-dir fehlt" >&2
+  exit 1
+}
+[ -n "$BACKUP_DIR" ] || {
+  echo "Fehler: --backup-dir fehlt" >&2
+  exit 1
+}
 
 STAMP="$(date +%Y%m%d_%H%M%S)"
 ARCHIVE="$BACKUP_DIR/mynextcloud_data_$STAMP.tar.gz"
@@ -49,9 +77,9 @@ mkdir -p "$BACKUP_DIR"
 tar -czf "$ARCHIVE" -C "$(dirname "$DATA_DIR")" "$(basename "$DATA_DIR")"
 if [ -n "$DB_NAME" ] && command -v pg_dump >/dev/null 2>&1; then
   if [ -n "$DB_USER" ]; then
-    pg_dump -U "$DB_USER" "$DB_NAME" > "$DUMP"
+    pg_dump -U "$DB_USER" "$DB_NAME" >"$DUMP"
   else
-    pg_dump "$DB_NAME" > "$DUMP"
+    pg_dump "$DB_NAME" >"$DUMP"
   fi
 fi
 echo "Backup abgeschlossen."

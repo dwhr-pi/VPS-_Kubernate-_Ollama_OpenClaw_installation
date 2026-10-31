@@ -4,8 +4,10 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/helpers/simple_tool_common.sh"
 uninstall_whisper_cpp() {
   local mode="${1:-uninstall}" target=/opt/whisper_cpp resolved
-  case "$mode" in uninstall|--dry-run) ;; *)
-    log_error 'Aufruf: whisper_cpp_uninstall.sh [--dry-run]'; return 2 ;;
+  case "$mode" in uninstall | --dry-run) ;; *)
+    log_error 'Aufruf: whisper_cpp_uninstall.sh [--dry-run]'
+    return 2
+    ;;
   esac
   resolved="$(realpath -m -- "$target")" || return 1
   if [ -L "$target" ] || [ "$resolved" != "$target" ]; then

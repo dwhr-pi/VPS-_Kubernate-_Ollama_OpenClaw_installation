@@ -1,22 +1,23 @@
 # Model Router Cost Control
 
-Status: `planned`  
-Hardwarebedarf: `medium`  
+Status: `planned`\
+Hardwarebedarf: `medium`\
 Installationsart: lokal, VPS, Kubernetes spaeter
 
 ## Zweck
 
-Modell-Routing zwischen Ollama, OpenAI-kompatiblen APIs, Gemini, LiteLLM und lokalen Modellen mit Kosten-, Token- und Fallback-Logik.
+Modell-Routing zwischen Ollama, OpenAI-kompatiblen APIs, Gemini, LiteLLM und lokalen Modellen mit
+Kosten-, Token- und Fallback-Logik.
 
 ## Kern-Tools
 
-| Tool | Zweck | Status |
-|---|---|---|
-| LiteLLM | OpenAI-kompatibles Gateway, Routing | empfohlen |
-| Ollama | lokale Modelle | empfohlen |
-| Open WebUI | UI und lokale Modellnutzung | empfohlen |
-| LocalAI | alternative lokale Runtime | optional |
-| Langfuse/OpenLIT | Kosten-/Tracing-Logging | empfohlen |
+| Tool             | Zweck                               | Status    |
+| ---------------- | ----------------------------------- | --------- |
+| LiteLLM          | OpenAI-kompatibles Gateway, Routing | empfohlen |
+| Ollama           | lokale Modelle                      | empfohlen |
+| Open WebUI       | UI und lokale Modellnutzung         | empfohlen |
+| LocalAI          | alternative lokale Runtime          | optional  |
+| Langfuse/OpenLIT | Kosten-/Tracing-Logging             | empfohlen |
 
 ## Sicherheitsregeln
 

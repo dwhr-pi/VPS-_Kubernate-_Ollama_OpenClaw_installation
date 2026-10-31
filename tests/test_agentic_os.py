@@ -8,6 +8,7 @@ from pathlib import Path
 import re
 import sys
 import tempfile
+from doc_assertions import assert_prose_in, assert_prose_not_in
 import unittest
 from unittest import mock
 
@@ -137,7 +138,7 @@ class AgenticOSIntegration(unittest.TestCase):
         text = doc.read_text(encoding="utf-8")
         for phrase in ("FastAPI", "keinen Next.js", "Evaluationskandidat", "runtime_ready=false",
                        "kill -9", "~/.hermes/.env", "kein Kernbestandteil", "Nur Setup-Marker"):
-            self.assertIn(phrase, text)
+            assert_prose_in(self, phrase, text)
         for target in re.findall(r"\]\(([^)]+)\)", text):
             if "://" not in target and not target.startswith("#"):
                 self.assertTrue((doc.parent / target.split("#")[0]).is_file(), target)

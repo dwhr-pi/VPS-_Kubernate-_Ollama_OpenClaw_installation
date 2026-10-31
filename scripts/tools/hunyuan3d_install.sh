@@ -42,4 +42,3 @@ echo "Hinweis: Shape ca. 10 GB VRAM, Texture ca. 21 GB VRAM, Shape+Texture ca. 2
 echo "Repo: $INSTALL_ROOT"
 echo "Log: $LOG_FILE"
 echo "Dauer: $(($(date +%s) - START_TS)) Sekunden"
-

@@ -39,7 +39,7 @@ class QwenDesktopDocs(unittest.TestCase):
         entries = json.loads((ROOT / 'config/tools.yml').read_text(encoding='utf-8'))['tools']
         for tid in ('cline', 'qwen_code', 'wan21', 'comfyui_gguf', 'wanvideo_wrapper', 'supir', 'film'):
             tool, = [t for t in entries if t['id'] == tid]
-            self.assertEqual(tool['status'], 'experimental' if tid in ('qwen_code', 'cline', 'wan21', 'comfyui_gguf', 'supir', 'film') else 'planned')
+            self.assertEqual(tool['status'], 'experimental')
             self.assertTrue((ROOT / tool['doc']).is_file())
 
     def test_profile_optional(self):

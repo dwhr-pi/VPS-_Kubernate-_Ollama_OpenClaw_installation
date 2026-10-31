@@ -9,4 +9,6 @@ Geplante Notebook-Typen:
 - `gpu_job_report.ipynb`: GPU-/Kubernetes-Jobs auswerten
 - `experiment_logbook.ipynb`: mehrsprachiges Laborjournal mit Ollama-Hilfe
 
-Die Installer legen pro Profil einen eigenen Arbeitsbereich unter `~/Ultimate_KI_Setup/science_lab/<Profil>/notebooks` an. Grosse Daten und Ergebnisse bleiben bewusst ausserhalb des Git-Repositories.
+Die Installer legen pro Profil einen eigenen Arbeitsbereich unter
+`~/Ultimate_KI_Setup/science_lab/<Profil>/notebooks` an. Grosse Daten und Ergebnisse bleiben bewusst
+ausserhalb des Git-Repositories.

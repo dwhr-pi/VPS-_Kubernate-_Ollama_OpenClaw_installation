@@ -8,4 +8,3 @@ echo "Projektordner: $ROBOTICS_HOME"
 echo "Logs, Simulationen, Safety-Konfigurationen und Projektdateien werden nicht automatisch geloescht."
 echo "Manuell nach Pruefung:"
 echo "  rm -rf \"$ROBOTICS_HOME\""
-

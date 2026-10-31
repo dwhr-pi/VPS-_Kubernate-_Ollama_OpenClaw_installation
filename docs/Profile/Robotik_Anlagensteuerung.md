@@ -1,6 +1,9 @@
 # Robotik Anlagensteuerung
 
-Das Profil `Robotik_Anlagensteuerung` erweitert das Ultimate KI Setup um Robotik, Anlagensteuerung, industrielle Automatisierung, Digital Twin, SCADA/HMI, SPS/PLC-Anbindung und KI-gestuetzte Diagnose. Es ist lokal-first fuer Ubuntu/WSL2 ausgelegt und kann spaeter ueber Tailscale/Cloudflare Access, Home Assistant und Kubernetes erweitert werden.
+Das Profil `Robotik_Anlagensteuerung` erweitert das Ultimate KI Setup um Robotik, Anlagensteuerung,
+industrielle Automatisierung, Digital Twin, SCADA/HMI, SPS/PLC-Anbindung und KI-gestuetzte Diagnose.
+Es ist lokal-first fuer Ubuntu/WSL2 ausgelegt und kann spaeter ueber Tailscale/Cloudflare Access,
+Home Assistant und Kubernetes erweitert werden.
 
 ## Zweck
 
@@ -19,9 +22,11 @@ Dieses Profil hilft dabei:
 
 ## Sicherheitsregel: KI darf nicht direkt gefaehrliche Aktoren steuern
 
-KI darf Vorschlaege machen, Diagnosen erstellen, Logs auswerten und Simulationen planen. KI darf im ersten Schritt nur lesend auf echte Anlagendaten zugreifen.
+KI darf Vorschlaege machen, Diagnosen erstellen, Logs auswerten und Simulationen planen. KI darf im
+ersten Schritt nur lesend auf echte Anlagendaten zugreifen.
 
-Schreibzugriffe auf SPS/PLC, Robotercontroller, Motoren, Ventile, Relais, Heizungen, Pumpen oder andere Aktoren muessen standardmaessig deaktiviert sein.
+Schreibzugriffe auf SPS/PLC, Robotercontroller, Motoren, Ventile, Relais, Heizungen, Pumpen oder
+andere Aktoren muessen standardmaessig deaktiviert sein.
 
 Jeder Schreibzugriff braucht:
 
@@ -33,24 +38,25 @@ Jeder Schreibzugriff braucht:
 - Not-Aus-Konzept.
 - mechanische und elektrische Sicherheit ausserhalb der KI.
 
-Simulation geht immer vor Realbetrieb. Fuer echte Industrieanlagen muessen geltende Normen, Herstellerdokumentationen, Risikoanalysen und Fachpersonal beruecksichtigt werden.
+Simulation geht immer vor Realbetrieb. Fuer echte Industrieanlagen muessen geltende Normen,
+Herstellerdokumentationen, Risikoanalysen und Fachpersonal beruecksichtigt werden.
 
 ## Empfohlene Komponenten
 
-| Bereich | Tool | Aufgabe |
-|---|---|---|
-| Robotik-Basis | ROS 2 | Kommunikation, Nodes, Topics, Services, Robotik-Framework |
-| Bewegungsplanung | MoveIt 2 | Roboterarm, Greifen, Kinematik, Trajektorienplanung |
-| Controller | ros2_control | Controller-Manager, Hardware-Interfaces, Joint-State-Controller |
-| Simulation | Gazebo | Digital Twin, Testumgebung, Sensor-/Aktor-Simulation |
-| Visualisierung | RViz 2 | Roboterzustand, Sensoren, TF-Frames, Planung anzeigen |
-| SPS/PLC | OpenPLC | Open-Source-SPS-Laufzeit und IEC-61131-3-Experimente |
-| Industrieprotokolle | Modbus TCP / OPC UA / MQTT | Kommunikation zwischen Steuerung, Sensorik und Dashboard |
-| Dashboard / HMI | FUXA oder Node-RED Dashboard | Prozessvisualisierung, Statusanzeigen, Alarme |
-| Automation | n8n / Node-RED | Workflows, Benachrichtigungen, Ereignislogik |
-| KI-Schicht | Ollama + OpenClaw | Diagnose, Planung, Dokumentation, Wartungsassistent |
-| Sicherheit | Tailscale / Cloudflare Access / Firewall | Zugriff absichern |
-| Logging | JSONL / SQLite / InfluxDB optional | Ereignisprotokoll, Messwerte, Fehlerhistorie |
+| Bereich             | Tool                                     | Aufgabe                                                         |
+| ------------------- | ---------------------------------------- | --------------------------------------------------------------- |
+| Robotik-Basis       | ROS 2                                    | Kommunikation, Nodes, Topics, Services, Robotik-Framework       |
+| Bewegungsplanung    | MoveIt 2                                 | Roboterarm, Greifen, Kinematik, Trajektorienplanung             |
+| Controller          | ros2_control                             | Controller-Manager, Hardware-Interfaces, Joint-State-Controller |
+| Simulation          | Gazebo                                   | Digital Twin, Testumgebung, Sensor-/Aktor-Simulation            |
+| Visualisierung      | RViz 2                                   | Roboterzustand, Sensoren, TF-Frames, Planung anzeigen           |
+| SPS/PLC             | OpenPLC                                  | Open-Source-SPS-Laufzeit und IEC-61131-3-Experimente            |
+| Industrieprotokolle | Modbus TCP / OPC UA / MQTT               | Kommunikation zwischen Steuerung, Sensorik und Dashboard        |
+| Dashboard / HMI     | FUXA oder Node-RED Dashboard             | Prozessvisualisierung, Statusanzeigen, Alarme                   |
+| Automation          | n8n / Node-RED                           | Workflows, Benachrichtigungen, Ereignislogik                    |
+| KI-Schicht          | Ollama + OpenClaw                        | Diagnose, Planung, Dokumentation, Wartungsassistent             |
+| Sicherheit          | Tailscale / Cloudflare Access / Firewall | Zugriff absichern                                               |
+| Logging             | JSONL / SQLite / InfluxDB optional       | Ereignisprotokoll, Messwerte, Fehlerhistorie                    |
 
 ## Architekturvorschlag
 
@@ -85,15 +91,15 @@ Simulation geht immer vor Realbetrieb. Fuer echte Industrieanlagen muessen gelte
 
 ## OpenClaw Agenten
 
-| Agent | Aufgabe |
-| --- | --- |
-| `robotik-diagnose-agent` | Logs, Sensorwerte und Fehlermeldungen analysieren |
-| `digital-twin-agent` | Simulationsszenarien fuer ROS 2/Gazebo planen |
-| `wartungsplan-agent` | Checklisten, Wartungsintervalle und Ersatzteilhinweise erstellen |
-| `scada-hmi-agent` | Dashboard-Struktur, Alarme und HMI-Texte vorschlagen |
+| Agent                     | Aufgabe                                                              |
+| ------------------------- | -------------------------------------------------------------------- |
+| `robotik-diagnose-agent`  | Logs, Sensorwerte und Fehlermeldungen analysieren                    |
+| `digital-twin-agent`      | Simulationsszenarien fuer ROS 2/Gazebo planen                        |
+| `wartungsplan-agent`      | Checklisten, Wartungsintervalle und Ersatzteilhinweise erstellen     |
+| `scada-hmi-agent`         | Dashboard-Struktur, Alarme und HMI-Texte vorschlagen                 |
 | `plc-safety-review-agent` | PLC-/Modbus-/OPC-UA-Kommandos gegen Whitelist und Grenzwerte pruefen |
-| `ros2-codex-agent` | ROS-2-Nodes, Launch-Files und Testskripte erzeugen |
-| `anlagen-log-agent` | JSONL/SQLite/InfluxDB-Historie zusammenfassen |
+| `ros2-codex-agent`        | ROS-2-Nodes, Launch-Files und Testskripte erzeugen                   |
+| `anlagen-log-agent`       | JSONL/SQLite/InfluxDB-Historie zusammenfassen                        |
 
 ## Ollama Aufgaben
 
@@ -138,7 +144,8 @@ Empfohlener Ablauf:
 - Node 4: n8n/Node-RED/FUXA Gateway.
 - Storage: gemeinsame Logs, Modelle, Konfigurationen und Simulationsartefakte.
 
-Kubernetes eignet sich fuer Simulation, Auswertung, Dashboards und Datenerfassung. Direkte Echtzeitsteuerung echter Maschinen gehoert nicht als Standard in Kubernetes.
+Kubernetes eignet sich fuer Simulation, Auswertung, Dashboards und Datenerfassung. Direkte
+Echtzeitsteuerung echter Maschinen gehoert nicht als Standard in Kubernetes.
 
 ## Projektordner
 
@@ -169,7 +176,9 @@ bash scripts/tools/robotik_anlagensteuerung_install.sh
 cp config/robotik_anlagensteuerung.env.example .env.robotik
 ```
 
-Der Installer bereitet Ordner, Python-Umgebung, MQTT-/Modbus-/OPC-UA-Clientbibliotheken und optionale Node-RED/n8n-Anschlussstruktur vor. ROS 2, MoveIt 2, Gazebo, FUXA und OpenPLC werden bewusst als groessere, systemnahe Schritte dokumentiert und nicht blind installiert.
+Der Installer bereitet Ordner, Python-Umgebung, MQTT-/Modbus-/OPC-UA-Clientbibliotheken und
+optionale Node-RED/n8n-Anschlussstruktur vor. ROS 2, MoveIt 2, Gazebo, FUXA und OpenPLC werden
+bewusst als groessere, systemnahe Schritte dokumentiert und nicht blind installiert.
 
 ## Grenzen
 
@@ -178,4 +187,3 @@ Der Installer bereitet Ordner, Python-Umgebung, MQTT-/Modbus-/OPC-UA-Clientbibli
 - Keine Garantie fuer Normkonformitaet.
 - Simulationen sind Annahmen, keine Abnahme.
 - Fachpersonal bleibt Pflicht bei echten Maschinen.
-

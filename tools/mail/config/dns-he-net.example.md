@@ -28,8 +28,8 @@ example.tld.  IN  TXT  "v=spf1 mx -all"
 
 ## DKIM
 
-Der DKIM Public Key wird von Stalwart bzw. dem DKIM-Generator geliefert.
-Der private Key darf nicht in Git gespeichert werden.
+Der DKIM Public Key wird von Stalwart bzw. dem DKIM-Generator geliefert. Der private Key darf nicht
+in Git gespeichert werden.
 
 ```text
 default._domainkey.example.tld. IN TXT "v=DKIM1; k=rsa; p=DKIM_PUBLIC_KEY_PLACEHOLDER"
@@ -71,9 +71,9 @@ _smtp._tls.example.tld. IN TXT "v=TLSRPTv1; rua=mailto:tlsrpt@example.tld"
 
 ## PTR / rDNS
 
-Wichtig: Der PTR/rDNS fuer `VPS_PUBLIC_IP` sollte auf `mail.example.tld`
-zeigen. Das wird normalerweise beim VPS-/IP-Provider gesetzt, nicht bei HE DNS.
-Ohne passenden PTR kann Mailzustellung deutlich schlechter werden.
+Wichtig: Der PTR/rDNS fuer `VPS_PUBLIC_IP` sollte auf `mail.example.tld` zeigen. Das wird
+normalerweise beim VPS-/IP-Provider gesetzt, nicht bei HE DNS. Ohne passenden PTR kann
+Mailzustellung deutlich schlechter werden.
 
 ## Test-Kommandos
 

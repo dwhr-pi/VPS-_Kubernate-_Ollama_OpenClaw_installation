@@ -1,6 +1,7 @@
 """Offline documentation checks; no Qwen, compiler, CI or cluster execution."""
 from pathlib import Path
 import re
+from doc_assertions import assert_prose_in, assert_prose_not_in
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -48,7 +49,7 @@ class QwenToolingDocsTests(unittest.TestCase):
         text = DOC.read_text(encoding="utf-8")
         for phrase in ("nicht coverage", "keinen Namespace", "cache: false",
                        "keine neuen Installer", "Keine WSL-Aktion"):
-            self.assertIn(phrase, text)
+            assert_prose_in(self, phrase, text)
         columns = None
         for line in text.splitlines():
             if line.startswith("|"):

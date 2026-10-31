@@ -5,6 +5,7 @@ Quelle: GitHub-Remote `docs/Profil/Media_Musik.doc.md`
 ## Kerninhalte
 
 ### Prompt-Bausteine
+
 - Structured Music Prompt
 - EDM / Hyperpop / Trap Prompt Set
 - K-Pop Hybrid Prompts
@@ -13,6 +14,7 @@ Quelle: GitHub-Remote `docs/Profil/Media_Musik.doc.md`
 - Prompt Modifier Layer
 
 ### Zusätzliche Tools laut Quelle
+
 - MusicGen
 - Riffusion
 - FFmpeg

@@ -1,6 +1,7 @@
 # Astronomie Space AI
 
-Profil fuer Astronomie, Raumfahrt-Recherche, FITS-Dateien, Bildauswertung, Sternkarten und wissenschaftliche Notebooks.
+Profil fuer Astronomie, Raumfahrt-Recherche, FITS-Dateien, Bildauswertung, Sternkarten und
+wissenschaftliche Notebooks.
 
 ## Fokus
 
@@ -11,7 +12,8 @@ Profil fuer Astronomie, Raumfahrt-Recherche, FITS-Dateien, Bildauswertung, Stern
 
 ## Sicherheit
 
-Keine Navigations-, Flug- oder Missionsentscheidungen ohne Fachpruefung. Beobachtungsdaten und private Standortdaten schuetzen.
+Keine Navigations-, Flug- oder Missionsentscheidungen ohne Fachpruefung. Beobachtungsdaten und
+private Standortdaten schuetzen.
 
 ## Installation
 

@@ -2,13 +2,17 @@
 
 ## Kurzfassung
 
-OIDC ist kein einzelnes Tool, sondern ein Login-Standard. Tools wie Authentik, Authelia oder Keycloak koennen diesen Standard bereitstellen.
+OIDC ist kein einzelnes Tool, sondern ein Login-Standard. Tools wie Authentik, Authelia oder
+Keycloak koennen diesen Standard bereitstellen.
 
-Helm-Werte sind Kubernetes-Konfigurationen fuer eine Anwendung. OIDC-Secrets sind Login-Geheimnisse wie Client-Secrets, Session-Secrets oder Token-Schluessel. Sie sind vergleichbar mit `.env`-Werten, gehoeren aber im Kubernetes-Betrieb in `values.yaml`, Secret-Dateien oder Kubernetes-Secrets.
+Helm-Werte sind Kubernetes-Konfigurationen fuer eine Anwendung. OIDC-Secrets sind Login-Geheimnisse
+wie Client-Secrets, Session-Secrets oder Token-Schluessel. Sie sind vergleichbar mit `.env`-Werten,
+gehoeren aber im Kubernetes-Betrieb in `values.yaml`, Secret-Dateien oder Kubernetes-Secrets.
 
 ## Was sind Helm-Werte?
 
-Helm installiert Anwendungen in Kubernetes ueber Charts. Eine `values.yaml` steuert, wie die Anwendung ausgerollt wird.
+Helm installiert Anwendungen in Kubernetes ueber Charts. Eine `values.yaml` steuert, wie die
+Anwendung ausgerollt wird.
 
 Beispiel:
 
@@ -42,7 +46,8 @@ OIDC_CLIENT_SECRET=change-me-outside-repo
 OIDC_REDIRECT_URI=https://clawbake.example.com/auth/callback
 ```
 
-Der wichtige Punkt: `OIDC_CLIENT_SECRET` ist wie ein Passwort oder API-Key. Es darf nicht ins Repository.
+Der wichtige Punkt: `OIDC_CLIENT_SECRET` ist wie ein Passwort oder API-Key. Es darf nicht ins
+Repository.
 
 ## Ablage im Setup
 
@@ -55,12 +60,14 @@ Empfohlene Trennung:
 
 ## Was ist Authentik?
 
-Authentik ist ein selbst gehosteter Identity Provider und SSO-Dienst. Es kann moderne Login-Protokolle wie OIDC/OAuth2, SAML und LDAP bereitstellen.
+Authentik ist ein selbst gehosteter Identity Provider und SSO-Dienst. Es kann moderne
+Login-Protokolle wie OIDC/OAuth2, SAML und LDAP bereitstellen.
 
 Geeignet fuer:
 
 - mehrere Webdienste mit einem zentralen Login
-- OIDC-Login fuer Anwendungen wie Clawbake, Grafana, Open WebUI-nahe Gateways oder interne Dashboards
+- OIDC-Login fuer Anwendungen wie Clawbake, Grafana, Open WebUI-nahe Gateways oder interne
+  Dashboards
 - Benutzerverwaltung mit Gruppen, Rollen und Policies
 - komfortablere Admin-Oberflaeche
 
@@ -74,7 +81,9 @@ Empfehlung: Sinnvoll fuer VPS, K3s, Homelab und produktionsnaehere Setups mit me
 
 ## Was ist Authelia?
 
-Authelia ist ein schlanker Authentifizierungs- und Autorisierungsserver fuer selbst gehostete Dienste. Es wird oft mit Reverse Proxies wie Caddy, Traefik oder Nginx genutzt und bietet SSO/MFA-Schutz vor internen Web-UIs.
+Authelia ist ein schlanker Authentifizierungs- und Autorisierungsserver fuer selbst gehostete
+Dienste. Es wird oft mit Reverse Proxies wie Caddy, Traefik oder Nginx genutzt und bietet
+SSO/MFA-Schutz vor internen Web-UIs.
 
 Geeignet fuer:
 
@@ -93,16 +102,16 @@ Empfehlung: Sinnvoll als schlanke Schutzschicht fuer MiniPC, Homelab und VPS.
 
 ## Authentik oder Authelia?
 
-| Kriterium | Authentik | Authelia |
-|---|---|---|
-| Ziel | Vollwertiger Identity Provider | Schlanke Auth-/SSO-Schutzschicht |
-| Bedienung | Web-Admin-UI | Konfigurationsdateien |
-| OIDC | Ja | Ja |
-| SAML/LDAP | Ja | je nach Einsatz weniger zentral |
-| Ressourcen | hoeher | niedriger |
-| MiniPC | optional, eher schwer | gut geeignet |
-| VPS/K3s | sehr sinnvoll | sinnvoll |
-| Beste Rolle im Setup | zentrale Login-Plattform | Reverse-Proxy-Schutz fuer Dienste |
+| Kriterium            | Authentik                      | Authelia                          |
+| -------------------- | ------------------------------ | --------------------------------- |
+| Ziel                 | Vollwertiger Identity Provider | Schlanke Auth-/SSO-Schutzschicht  |
+| Bedienung            | Web-Admin-UI                   | Konfigurationsdateien             |
+| OIDC                 | Ja                             | Ja                                |
+| SAML/LDAP            | Ja                             | je nach Einsatz weniger zentral   |
+| Ressourcen           | hoeher                         | niedriger                         |
+| MiniPC               | optional, eher schwer          | gut geeignet                      |
+| VPS/K3s              | sehr sinnvoll                  | sinnvoll                          |
+| Beste Rolle im Setup | zentrale Login-Plattform       | Reverse-Proxy-Schutz fuer Dienste |
 
 ## Sinnvolle Architektur
 
@@ -128,7 +137,9 @@ Clawbake nennt OIDC, Kubernetes und Helm. Daher braucht es spaeter:
 
 ## Status im Setup
 
-Authentik und Authelia werden als optionale Auth-Bausteine aufgenommen. Die Installationsskripte bereiten bewusst nur sichere lokale Vorlagen im User-Workspace vor. Ein produktiver Start erfolgt spaeter bewusst mit Domain, TLS, Reverse Proxy, Secrets und Backup-Konzept.
+Authentik und Authelia werden als optionale Auth-Bausteine aufgenommen. Die Installationsskripte
+bereiten bewusst nur sichere lokale Vorlagen im User-Workspace vor. Ein produktiver Start erfolgt
+spaeter bewusst mit Domain, TLS, Reverse Proxy, Secrets und Backup-Konzept.
 
 Standard-Portplanung im Setup:
 

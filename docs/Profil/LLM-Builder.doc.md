@@ -4,10 +4,11 @@ Quelle: Benutzerauftrag für ein realistisches lokales Modellbau-Setup auf Basis
 
 ## Ziel
 
-Dieses Profil beschreibt ein vollständiges Setup, mit dem man eigene lokale LLMs bauen, anpassen, fine-tunen, quantisieren, als GGUF exportieren und anschließend mit Ollama verwenden kann.
+Dieses Profil beschreibt ein vollständiges Setup, mit dem man eigene lokale LLMs bauen, anpassen,
+fine-tunen, quantisieren, als GGUF exportieren und anschließend mit Ollama verwenden kann.
 
-Wichtig:
-Es geht ausdrücklich nicht darum, ein Foundation Model vollständig von Null zu trainieren. Ziel ist ein realistischer lokaler Workflow auf Basis vorhandener Open-Source-Modelle.
+Wichtig: Es geht ausdrücklich nicht darum, ein Foundation Model vollständig von Null zu trainieren.
+Ziel ist ein realistischer lokaler Workflow auf Basis vorhandener Open-Source-Modelle.
 
 ## Realistischer Workflow
 
@@ -48,8 +49,8 @@ Es geht ausdrücklich nicht darum, ein Foundation Model vollständig von Null zu
 - eigenes GGUF-Modell importieren
 - Systemprompt, Parameter und Template definieren
 
-Hinweis:
-Die Modelfiles selbst sollten möglichst lokal außerhalb des Git-Repositories gepflegt werden, idealerweise im Benutzer-Workspace des Setups.
+Hinweis: Die Modelfiles selbst sollten möglichst lokal außerhalb des Git-Repositories gepflegt
+werden, idealerweise im Benutzer-Workspace des Setups.
 
 ## Beispielkommandos
 

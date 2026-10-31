@@ -51,4 +51,3 @@ sudo apt-get install -y freecad blender openscad qgis colmap python3 python3-pip
 
 echo "Installationslauf beendet. Bitte anschliessend pruefen:"
 echo "  bash profiles/architektur_3d_bim/scripts/check_architektur_stack.sh"
-

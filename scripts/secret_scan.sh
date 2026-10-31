@@ -6,7 +6,7 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 echo "Secret-Scan (safe, read-only)"
 
 if command -v gitleaks >/dev/null 2>&1; then
-  gitleaks detect --source "$ROOT_DIR" --no-git --redact
+  gitleaks detect --source "$ROOT_DIR" --no-git --redact --verbose
   exit $?
 fi
 

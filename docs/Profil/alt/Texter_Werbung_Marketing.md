@@ -43,4 +43,5 @@ scripts/tools/activepieces_install.sh
 ## Hinweise
 
 - n8n nutzt standardmäßig Port `5678`.
-- Activepieces nutzt standardmäßig Port `3000` und kollidiert potenziell mit OpenClaw und weiteren Diensten.
+- Activepieces nutzt standardmäßig Port `3000` und kollidiert potenziell mit OpenClaw und weiteren
+  Diensten.

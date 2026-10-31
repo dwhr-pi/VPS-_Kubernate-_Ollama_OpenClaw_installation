@@ -2,6 +2,7 @@
 import json
 from pathlib import Path
 import re
+from doc_assertions import assert_prose_in, assert_prose_not_in
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -11,12 +12,12 @@ DOC = ROOT / "docs/tools/ruflo.md"
 class RufloSourceDocsTests(unittest.TestCase):
     def test_user_sources_and_retrieval_limits(self):
         text = DOC.read_text(encoding="utf-8")
-        self.assertIn("https://www.instagram.com/reel/DeRCVWllVC2/", text)
-        self.assertIn("scientific-calcium-e74.notion.site/Ruflo-der-Befehl-mit-dem-aus-Claude-eine-Firma-wird-3fbc501ffd45811f8738c955cdeb6f94", text)
-        self.assertIn("Abruf gedrosselt", text)
-        self.assertIn("kein reel angesehen", text.lower())
-        self.assertIn("22.10.2026", text)
-        self.assertNotIn("?mdxt=", text)
+        assert_prose_in(self, "https://www.instagram.com/reel/DeRCVWllVC2/", text)
+        assert_prose_in(self, "scientific-calcium-e74.notion.site/Ruflo-der-Befehl-mit-dem-aus-Claude-eine-Firma-wird-3fbc501ffd45811f8738c955cdeb6f94", text)
+        assert_prose_in(self, "Abruf gedrosselt", text)
+        assert_prose_in(self, "kein reel angesehen", text.lower())
+        assert_prose_in(self, "22.10.2026", text)
+        assert_prose_not_in(self, "?mdxt=", text)
 
     def test_existing_registry_and_wrapper_match_documentation(self):
         tools = json.loads((ROOT / "config/tools.yml").read_text(encoding="utf-8"))["tools"]

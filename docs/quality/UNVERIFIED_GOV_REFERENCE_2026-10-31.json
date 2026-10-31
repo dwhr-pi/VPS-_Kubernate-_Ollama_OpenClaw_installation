@@ -1,0 +1,15 @@
+{
+  "reviewed_at": "2026-10-31",
+  "ci_head": "b7ca90daebdb8d60a0b95286fee04966e3e26dca",
+  "user_approved": true,
+  "scope": "Individually documented government reference under the approved policy; not a checker ignore list.",
+  "references": [
+    {
+      "url": "https://inforegulator.org.za/",
+      "classification": "UNVERIFIED_REFERENCE",
+      "ci_status": [0],
+      "local_status": 200,
+      "files": ["docs/legal/INTERNATIONAL_SOURCES.md"]
+    }
+  ]
+}

@@ -13,4 +13,3 @@ modern timber facade, passive house, green roof, urban courtyard, realistic arch
 ```
 
 Hinweis: Bei ControlNet/Depth immer Referenzbild, Modell, Seed und Workflow-Datei dokumentieren.
-

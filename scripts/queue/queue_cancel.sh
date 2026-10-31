@@ -32,7 +32,6 @@ if ! awk -F '\t' -v id="$job_id" '$1==id && ($2=="queued" || $2=="paused") {foun
   exit 1
 fi
 tmp_file="$(mktemp "${QUEUE_FILE}.XXXXXX")"
-awk -F '\t' -v OFS='\t' -v id="$job_id" '$1==id && ($2=="queued" || $2=="paused") {$2="cancelled"} {print}' "$QUEUE_FILE" > "$tmp_file"
+awk -F '\t' -v OFS='\t' -v id="$job_id" '$1==id && ($2=="queued" || $2=="paused") {$2="cancelled"} {print}' "$QUEUE_FILE" >"$tmp_file"
 mv "$tmp_file" "$QUEUE_FILE"
 echo "Job als cancelled markiert: $job_id"
-

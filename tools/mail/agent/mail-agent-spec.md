@@ -1,8 +1,7 @@
 # Mail Agent Spezifikation
 
-Der Mail Agent ist eine Integrationsschicht fuer OpenClaw/Ollama. Er verwaltet
-keinen Stalwart-Core-Code direkt, sondern spricht spaeter ueber eine gekapselte
-API-Schicht mit Stalwart.
+Der Mail Agent ist eine Integrationsschicht fuer OpenClaw/Ollama. Er verwaltet keinen
+Stalwart-Core-Code direkt, sondern spricht spaeter ueber eine gekapselte API-Schicht mit Stalwart.
 
 ## Ziele
 
@@ -19,12 +18,12 @@ API-Schicht mit Stalwart.
 
 ## Rollen
 
-| Rolle | Rechte |
-|---|---|
-| Admin | alle Domains und Mailboxen verwalten |
-| Domain-Admin | eigene Domain verwalten |
-| User | eigene Mailbox, Aliase und Regeln sehen |
-| KI-Agent | nur Vorschlaege, Entwuerfe und vorbereitete Aktionen |
+| Rolle        | Rechte                                               |
+| ------------ | ---------------------------------------------------- |
+| Admin        | alle Domains und Mailboxen verwalten                 |
+| Domain-Admin | eigene Domain verwalten                              |
+| User         | eigene Mailbox, Aliase und Regeln sehen              |
+| KI-Agent     | nur Vorschlaege, Entwuerfe und vorbereitete Aktionen |
 
 ## Sicherheitsregeln
 
@@ -33,8 +32,8 @@ API-Schicht mit Stalwart.
 - Passwoerter werden nicht geloggt.
 - DKIM Private Keys werden nicht gelesen oder angezeigt.
 - Anhaenge werden separat markiert.
-- Audit-Log enthaelt Aktion, Actor, Zeit, Zielobjekt und Ergebnis, aber keine
-  unnoetigen Mailinhalte.
+- Audit-Log enthaelt Aktion, Actor, Zeit, Zielobjekt und Ergebnis, aber keine unnoetigen
+  Mailinhalte.
 
 ## Zielaktionen
 
@@ -50,8 +49,7 @@ API-Schicht mit Stalwart.
 
 ## Offene API-Punkte
 
-Die konkrete Stalwart Management/JMAP/API-Version muss vor Implementierung
-geprueft werden:
+Die konkrete Stalwart Management/JMAP/API-Version muss vor Implementierung geprueft werden:
 
 - Authentifizierung fuer Management API
 - Domain-/Mailbox-Endpunkte

@@ -17,16 +17,16 @@ init_tool_tracking "Mail_Utils_MSMTP"
 
 echo -e "${YELLOW}Entferne mailutils/msmtp/msmtp-mta. Lokale Benutzerkonfiguration bleibt erhalten.${NC}"
 if [ "$(id -u)" -eq 0 ]; then
-    apt-get remove -y mailutils msmtp msmtp-mta || true
-    apt-get autoremove -y || true
+  apt-get remove -y mailutils msmtp msmtp-mta || true
+  apt-get autoremove -y || true
 elif sudo -n true 2>/dev/null; then
-    sudo apt-get remove -y mailutils msmtp msmtp-mta || true
-    sudo apt-get autoremove -y || true
+  sudo apt-get remove -y mailutils msmtp msmtp-mta || true
+  sudo apt-get autoremove -y || true
 else
-    echo "Hinweis: sudo ist nicht ohne Passwort-Prompt verfuegbar. Pakete wurden nicht entfernt."
-    echo "Manuell ausfuehren:"
-    echo "  sudo apt-get remove -y mailutils msmtp msmtp-mta"
-    echo "  sudo apt-get autoremove -y"
+  echo "Hinweis: sudo ist nicht ohne Passwort-Prompt verfuegbar. Pakete wurden nicht entfernt."
+  echo "Manuell ausfuehren:"
+  echo "  sudo apt-get remove -y mailutils msmtp msmtp-mta"
+  echo "  sudo apt-get autoremove -y"
 fi
 
 mark_current_tool_removed

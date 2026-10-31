@@ -1,6 +1,7 @@
 """Read-only documentation contracts, not Kubernetes policy enforcement tests."""
 from pathlib import Path
 import re
+from doc_assertions import assert_prose_in, assert_prose_not_in
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -29,9 +30,9 @@ class SecurityAuditDocs(unittest.TestCase):
             text = file.read_text(encoding='utf-8')
             self.assertEqual(len(re.findall(r'^```', text, re.M)) % 2, 0, file.name)
         audit = FILES[0].read_text(encoding='utf-8')
-        self.assertIn('152cce67cb0a76b189aa548d31f32696de8d78be', audit)
-        self.assertIn('kein\nvollstaendiger Penetrationstest', audit)
-        self.assertIn('```mermaid', audit)
+        assert_prose_in(self, '152cce67cb0a76b189aa548d31f32696de8d78be', audit)
+        assert_prose_in(self, 'kein\nvollstaendiger Penetrationstest', audit)
+        assert_prose_in(self, '```mermaid', audit)
         self.assertEqual(len(re.findall(r'^\| S\d\d \|', audit, re.M)), 16)
 
     def test_observer_example_has_no_privileged_resource_or_verb(self):

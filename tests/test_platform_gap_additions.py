@@ -143,7 +143,7 @@ class PlatformGapContracts(unittest.TestCase):
     def test_every_native_manifest_tool_has_a_recovery_scenario(self):
         manifest = json.loads(self.read('config/docker_to_github.json'))['tools']
         text = self.read('docs/NATIVE_BUILD_RECOVERY.md')
-        rows = dict(re.findall(r'^\| `([^`]+)` \| ([^|]+) \|', text, re.M))
+        rows = dict(re.findall(r'^\|\s*`([^`]+)`\s*\|\s*([^|]+)\s*\|', text, re.M))
         self.assertEqual(set(rows), {tool['id'] for tool in manifest})
         for tool in manifest:
             self.assertIn('A / B' if tool['recipe'] else 'C', rows[tool['id']])
@@ -197,6 +197,7 @@ class PlatformGapContracts(unittest.TestCase):
     @unittest.skipUnless(BASH and Path(BASH).is_file(), 'Bash erforderlich')
     def test_loading_dialog_has_translated_yes_no_for_all_ten_languages(self):
         setup = self.read('setup_ultimate.sh')
+        validator = re.search(r'^loading_translation_format_ok\(\) \{\n.*?^\}', setup, re.M | re.S).group()
         function = re.search(r'^show_management_loading_notice\(\) \{\n.*?^\}', setup, re.M | re.S).group()
         command = '''set -euo pipefail
 APP_TITLE=fixture
@@ -212,7 +213,7 @@ dialog() {
     esac
   done
 }
-''' + function + '\n' + 'for lang in de en fr zh ja ru es eo ar he; do\n' + \
+''' + validator + '\n' + function + '\n' + 'for lang in de en fr zh ja ru es eo ar he; do\n' + \
             'source ' + shlex.quote(ROOT.as_posix() + '/scripts/lang') + '/"$lang".sh\n' + '''
 printf 'LANG:%s\\n' "$lang"
 rc=0

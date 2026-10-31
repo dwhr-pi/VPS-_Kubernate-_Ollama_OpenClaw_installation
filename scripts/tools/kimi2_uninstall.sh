@@ -22,16 +22,15 @@ echo -e "${BLUE}Starte Deinstallation von Kimi 2...${NC}"
 
 # Prüfen, ob Kimi 2 installiert ist
 if [ ! -d "$KIMI2_DIR" ]; then
-    echo -e "${YELLOW}Kimi 2 ist nicht installiert unter ${KIMI2_DIR}. Überspringe Deinstallation.${NC}"
-    exit 0
+  echo -e "${YELLOW}Kimi 2 ist nicht installiert unter ${KIMI2_DIR}. Überspringe Deinstallation.${NC}"
+  exit 0
 fi
 
 # Installationsverzeichnis entfernen
 echo -e "${BLUE}Entferne Kimi 2 Installationsverzeichnis: ${KIMI2_DIR}${NC}"
-sudo rm -rf "$KIMI2_DIR"
-if [ $? -ne 0 ]; then
-    echo -e "${RED}Fehler beim Entfernen des Kimi 2 Installationsverzeichnisses.${NC}"
-    exit 1
+if ! sudo rm -rf "$KIMI2_DIR"; then
+  echo -e "${RED}Fehler beim Entfernen des Kimi 2 Installationsverzeichnisses.${NC}"
+  exit 1
 fi
 
 echo -e "${GREEN}Kimi 2 erfolgreich deinstalliert.${NC}"

@@ -1,0 +1,16 @@
+# STRUCTURE ONLY: not valid ciphertext and not an apply-ready manifest.
+# Use scripts/seal_openclaw_secret.sh with an independently verified certificate.
+# OPENCLAW_API_KEY is a fictional example variable, not a verified app contract.
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  name: openclaw-api
+  namespace: ai-agents
+spec:
+  encryptedData:
+    OPENCLAW_API_KEY: REPLACE_WITH_REAL_KUBESEAL_CIPHERTEXT
+  template:
+    metadata:
+      name: openclaw-api
+      namespace: ai-agents
+    type: Opaque

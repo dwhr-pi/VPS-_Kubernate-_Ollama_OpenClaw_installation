@@ -56,6 +56,7 @@ Empfohlene Basis:
 - optional `Tailscale` für privaten Admin-Zugriff ohne offene Panel-Ports
 
 Wichtig:
+
 - SSH nicht unnötig offen lassen
 - Passwort-Login nach Möglichkeit deaktivieren
 - SSH-Keys bevorzugen
@@ -78,6 +79,7 @@ Besonders riskant:
 - Trading-/Web3-Agenten
 
 Regel:
+
 - immer mit Safe-Mode starten
 - niemals ungeprüft Schreibzugriff auf produktive Verzeichnisse geben
 - keine API-Schlüssel oder Wallet-Operationen automatisch durch Agenten ausführen lassen
@@ -88,16 +90,21 @@ Regel:
 - keine überbreiten Wildcard-Freigaben
 - Tunnel-Tokens nicht im Repo speichern
 - Policies und Identitätsregeln nutzen
-- `cloudflared` nur für bewusst veröffentlichte Dienste verwenden, nicht als Ersatz für privaten Admin-Zugriff auf alles
-- für die gemeinsame Einordnung mit `Tailscale` und `Hurricane Electric` siehe `docs/REMOTE_ACCESS_DNS_GUIDE.md`
+- `cloudflared` nur für bewusst veröffentlichte Dienste verwenden, nicht als Ersatz für privaten
+  Admin-Zugriff auf alles
+- für die gemeinsame Einordnung mit `Tailscale` und `Hurricane Electric` siehe
+  `docs/REMOTE_ACCESS_DNS_GUIDE.md`
 
 ## 6b. Tailscale
 
-- sinnvoll für privaten Zugriff auf `SSH`, `Open WebUI`, `Grafana`, `Home Assistant`, `MinIO` oder andere Admin-UIs
-- `tailscale up` bewusst manuell ausführen, damit Tailnet-Join und Freigaben nicht ungefragt automatisiert werden
+- sinnvoll für privaten Zugriff auf `SSH`, `Open WebUI`, `Grafana`, `Home Assistant`, `MinIO` oder
+  andere Admin-UIs
+- `tailscale up` bewusst manuell ausführen, damit Tailnet-Join und Freigaben nicht ungefragt
+  automatisiert werden
 - oft die sauberere Wahl, wenn kein öffentlicher Reverse-Proxy-Zugang benötigt wird
 - ACLs, Key-Expiry und eventuelle Subnet-Router bewusst planen
-- für die gemeinsame Einordnung mit `Cloudflare` und `Hurricane Electric` siehe `docs/REMOTE_ACCESS_DNS_GUIDE.md`
+- für die gemeinsame Einordnung mit `Cloudflare` und `Hurricane Electric` siehe
+  `docs/REMOTE_ACCESS_DNS_GUIDE.md`
 
 ## 7. Trading und Web3
 

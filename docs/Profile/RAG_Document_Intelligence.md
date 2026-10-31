@@ -24,11 +24,13 @@ Lokale Dokumenten-KI fuer OCR, PDF, Markdown, Office, E-Mail, Nextcloud und Low-
 
 1. `bash scripts/preflight.sh --dry-run` ausfuehren.
 2. Nur leichte, dokumentierte Komponenten aktivieren.
-3. Schwere oder serverartige Komponenten erst nach Doctor-, Port-, Secret- und Ressourcencheck installieren.
+3. Schwere oder serverartige Komponenten erst nach Doctor-, Port-, Secret- und Ressourcencheck
+   installieren.
 
 ## Full-Pfad
 
-- Erst wenn Installer, Doctor, Uninstaller, Portdoku, Ressourcenwerte und Restore-/Rollback-Schritte vorhanden sind.
+- Erst wenn Installer, Doctor, Uninstaller, Portdoku, Ressourcenwerte und Restore-/Rollback-Schritte
+  vorhanden sind.
 - Lange Aufgaben ueber Queue Worker Orchestrator planen.
 
 ## Sicherheitswarnungen

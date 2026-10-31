@@ -2,7 +2,8 @@
 
 ## Ziel
 
-Das Persona-System kann spaeter mit Bild-, Audio-, Video- und Telefon-Hooks erweitert werden. Dieses Dokument beschreibt den Konzeptpfad, nicht eine vollstaendige Produktivimplementierung.
+Das Persona-System kann spaeter mit Bild-, Audio-, Video- und Telefon-Hooks erweitert werden. Dieses
+Dokument beschreibt den Konzeptpfad, nicht eine vollstaendige Produktivimplementierung.
 
 ## Moegliche Workflows
 

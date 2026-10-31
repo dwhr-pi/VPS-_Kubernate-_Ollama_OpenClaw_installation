@@ -2,9 +2,12 @@
 
 ## Kurzbeschreibung
 
-Dieses Profil beschreibt einen lokalen Jarvis-aehnlichen Assistenten fuer Telefonie, Smart Home und Sprachsteuerung. Es verbindet Fritz!Box/Fritz!Fon, Home Assistant, Alexa-nahe Sprachtrigger, lokale STT/TTS-Bausteine, Ollama und OpenClaw zu einem kontrollierten Heimassistenten.
+Dieses Profil beschreibt einen lokalen Jarvis-aehnlichen Assistenten fuer Telefonie, Smart Home und
+Sprachsteuerung. Es verbindet Fritz!Box/Fritz!Fon, Home Assistant, Alexa-nahe Sprachtrigger, lokale
+STT/TTS-Bausteine, Ollama und OpenClaw zu einem kontrollierten Heimassistenten.
 
-Das Profil ersetzt nicht `Voice_Assistant` oder `Smart_Home_AI_Assistant`, sondern fuehrt beide Welten zusammen:
+Das Profil ersetzt nicht `Voice_Assistant` oder `Smart_Home_AI_Assistant`, sondern fuehrt beide
+Welten zusammen:
 
 - Telefonie-Events aus Fritz!Box oder Fritz!Fon
 - Home-Assistant-Automationen
@@ -15,14 +18,17 @@ Das Profil ersetzt nicht `Voice_Assistant` oder `Smart_Home_AI_Assistant`, sonde
 
 ## Was bedeutet "Jarvis Brain"?
 
-Mit `Brain` ist in diesem Setup kein einzelnes Tool gemeint. Es ist die zentrale Logikschicht, die mehrere Komponenten zusammenfuehrt:
+Mit `Brain` ist in diesem Setup kein einzelnes Tool gemeint. Es ist die zentrale Logikschicht, die
+mehrere Komponenten zusammenfuehrt:
 
 - `Ollama` liefert das lokale Sprachmodell fuer Verstehen, Antworten und Plaene.
 - `OpenClaw` uebernimmt Agentenlogik, Tool-Nutzung, Aufgabenketten und spaetere Memory-Workflows.
-- `Home Assistant` ist der sichere Aktions- und Ereignis-Hub fuer Haus, Telefonie, Sensoren und Geraete.
+- `Home Assistant` ist der sichere Aktions- und Ereignis-Hub fuer Haus, Telefonie, Sensoren und
+  Geraete.
 - `Node-RED` kann Ereignisse routen, filtern und einfache Regeln ohne Code verbinden.
 - `Mosquitto/MQTT` ist die lokale Nachrichtenleitung zwischen Diensten.
-- `Qdrant` oder `ChromaDB` koennen spaeter Erinnerungen, Telefonnotizen, Routinen und Hauswissen speichern.
+- `Qdrant` oder `ChromaDB` koennen spaeter Erinnerungen, Telefonnotizen, Routinen und Hauswissen
+  speichern.
 - `Piper` und `Whisper/faster-whisper` bilden die lokale Sprach-Ausgabe und Sprach-Erkennung.
 
 Praktisch ist das Brain also:
@@ -41,7 +47,8 @@ Ereignisse + Sprache + Telefonie + Smart Home
 - Verpasste Anrufe als Aufgabe, Erinnerung oder Home-Assistant-Benachrichtigung speichern.
 - Per Sprache fragen: "Wer hat zuletzt angerufen?"
 - Rueckrufnotizen erstellen, ohne private Daten ins Git-Repository zu schreiben.
-- Alexa als Sprach-Trigger oder Ausgabeweg nutzen, soweit die Home-Assistant-Integration dies erlaubt.
+- Alexa als Sprach-Trigger oder Ausgabeweg nutzen, soweit die Home-Assistant-Integration dies
+  erlaubt.
 - Home-Assistant-Szenen per Jarvis-Brain planen und mit Freigabe ausfuehren.
 - Lokale TTS-Antworten ueber Piper erzeugen.
 - Sprachbefehle per Whisper/faster-whisper lokal transkribieren.
@@ -50,7 +57,8 @@ Ereignisse + Sprache + Telefonie + Smart Home
 
 ## Grenzen bei Alexa und Fritz!Box
 
-Alexa ist in diesem Profil nicht die Telefonanlage. Die Telefonanlage bleibt die Fritz!Box bzw. optional spaeter Asterisk/SIP.
+Alexa ist in diesem Profil nicht die Telefonanlage. Die Telefonanlage bleibt die Fritz!Box bzw.
+optional spaeter Asterisk/SIP.
 
 Sinnvolle Rollen:
 
@@ -59,7 +67,8 @@ Sinnvolle Rollen:
 - Alexa: optionaler Sprachtrigger oder Ausgabegeraet ueber Home Assistant bzw. Alexa-Integrationen.
 - Jarvis Brain: lokale Entscheidungsschicht mit Ollama/OpenClaw/Memory.
 
-Wichtig: Alexa ist ein Cloud-naher Dienst. Fuer private oder sensible Telefonie sollte die lokale Route ueber Fritz!Box, Home Assistant, MQTT, Whisper und Piper bevorzugt werden.
+Wichtig: Alexa ist ein Cloud-naher Dienst. Fuer private oder sensible Telefonie sollte die lokale
+Route ueber Fritz!Box, Home Assistant, MQTT, Whisper und Piper bevorzugt werden.
 
 ## Empfohlene Komponenten
 
@@ -245,7 +254,9 @@ Falls private Daten benoetigt werden, sage nur: "Ich habe eine private Notiz im 
 
 ## Ollama/OpenClaw-Fit
 
-Ollama ist fuer kurze lokale Entscheidungen, Rueckrufnotizen und natuerliche Antworten geeignet. OpenClaw eignet sich als Orchestrator, sobald mehrere Schritte noetig sind: Ereignis lesen, Memory abfragen, Aktion pruefen, Home Assistant ausloesen, Notiz speichern.
+Ollama ist fuer kurze lokale Entscheidungen, Rueckrufnotizen und natuerliche Antworten geeignet.
+OpenClaw eignet sich als Orchestrator, sobald mehrere Schritte noetig sind: Ereignis lesen, Memory
+abfragen, Aktion pruefen, Home Assistant ausloesen, Notiz speichern.
 
 ## Sinnvolle lokale Modelle
 

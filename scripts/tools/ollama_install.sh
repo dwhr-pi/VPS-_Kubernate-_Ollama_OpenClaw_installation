@@ -19,14 +19,14 @@ init_tool_tracking "Ollama"
 echo -e "${BLUE}Starte Installation von Ollama...${NC}"
 
 if command -v ollama >/dev/null 2>&1; then
-    echo -e "${GREEN}Ollama ist bereits installiert.${NC}"
-    exit 0
+  echo -e "${GREEN}Ollama ist bereits installiert.${NC}"
+  exit 0
 fi
 
 curl -fsSL https://ollama.com/install.sh | sh
 if ! command -v ollama >/dev/null 2>&1; then
-    echo -e "${RED}Fehler: Ollama konnte nicht installiert werden.${NC}"
-    exit 1
+  echo -e "${RED}Fehler: Ollama konnte nicht installiert werden.${NC}"
+  exit 1
 fi
 
 echo -e "${GREEN}Ollama Installation abgeschlossen.${NC}"

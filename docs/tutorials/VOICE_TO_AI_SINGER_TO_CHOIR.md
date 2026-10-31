@@ -1,11 +1,13 @@
 # Beispielprojekt: Eigene Stimme zu AI Saenger und Chor
 
 ## Eingabe
+
 ```text
 Daniel.wav
 ```
 
 ## Ausgabeziele
+
 - Sprecher.
 - Hoerbuchsprecher.
 - Saenger.
@@ -16,6 +18,7 @@ Daniel.wav
 - Trance EDM Choir.
 
 ## Workflow
+
 1. `Daniel.wav` sichern und nicht ins Repo kopieren.
 2. Aufnahme mit Audacity reinigen.
 3. Dataset unter `~/.openclaw_ultimate_user_data/voice_studio/datasets/daniel/` vorbereiten.
@@ -28,11 +31,13 @@ Daniel.wav
 10. Ergebnis mit KI-Kennzeichnung und Projektprotokoll exportieren.
 
 ## Minimal-Setup
+
 - Piper.
 - FFmpeg.
 - Audacity.
 
 ## Empfohlenes Setup
+
 - Piper.
 - Coqui TTS / XTTS v2.
 - FFmpeg.
@@ -40,6 +45,7 @@ Daniel.wav
 - Job Queue.
 
 ## High-End Studio Setup
+
 - GPU-Workstation.
 - RVC.
 - Seed-VC.
@@ -47,4 +53,3 @@ Daniel.wav
 - OpenUtau.
 - UVR5.
 - Job Queue mit Parallelitaet 1 fuer schwere Jobs.
-

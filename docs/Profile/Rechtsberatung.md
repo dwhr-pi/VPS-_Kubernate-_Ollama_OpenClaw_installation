@@ -2,12 +2,16 @@
 
 ## Überblick
 
-Dieses Profil wurde aus der fachlichen Quelle [Rechtsberatung_Steuerrecht.doc.md](../Profil/Rechtsberatung_Steuerrecht.doc.md), `readme.md`, `docs/setup_guide.md` und `scripts/profiles/Rechtsberatung_Steuerrecht_install.sh` zusammengeführt.
-Es beschreibt ein OpenClaw- und Ollama-kompatibles Legal-Profil fuer strukturierte Fallanalyse, Dokumentenauswertung, RAG und fachgebietsbezogene Assistenz in echten Rechtsgebieten.
+Dieses Profil wurde aus der fachlichen Quelle
+[Rechtsberatung_Steuerrecht.doc.md](../Profil/Rechtsberatung_Steuerrecht.doc.md), `readme.md`,
+`docs/setup_guide.md` und `scripts/profiles/Rechtsberatung_Steuerrecht_install.sh` zusammengeführt.
+Es beschreibt ein OpenClaw- und Ollama-kompatibles Legal-Profil fuer strukturierte Fallanalyse,
+Dokumentenauswertung, RAG und fachgebietsbezogene Assistenz in echten Rechtsgebieten.
 
 ## Installierter Stack
 
-- Basis: `pup`, `jq`, `wget`, `curl`, `poppler-utils`, `tesseract-ocr`, `python3`, `python3-pip`, `python3-venv`
+- Basis: `pup`, `jq`, `wget`, `curl`, `poppler-utils`, `tesseract-ocr`, `python3`, `python3-pip`,
+  `python3-venv`
 - Bereits als einzelne Tools installierbar:
   - Zotero unter `/opt/zotero`
   - symbolischer Link `/usr/local/bin/zotero`
@@ -17,7 +21,8 @@ Es beschreibt ein OpenClaw- und Ollama-kompatibles Legal-Profil fuer strukturier
 
 ## Dokumentierte zusätzliche Tools
 
-Die zuvor zusätzlich dokumentierten Rechts- und Steuer-Bausteine sind jetzt als Setup-Module oder vorhandene Profile abbildbar:
+Die zuvor zusätzlich dokumentierten Rechts- und Steuer-Bausteine sind jetzt als Setup-Module oder
+vorhandene Profile abbildbar:
 
 - `Qdrant`
 - `EULLM`
@@ -104,7 +109,8 @@ Keine Fachbegriffe ohne Erklärung.
 
 ## Fachgebiete A-Z
 
-Die folgenden Prompts sind nach Rechtsgebieten sortiert und bewusst an echte Fachrichtungen angelehnt.
+Die folgenden Prompts sind nach Rechtsgebieten sortiert und bewusst an echte Fachrichtungen
+angelehnt.
 
 ### Arbeitsrecht
 
@@ -413,8 +419,10 @@ ohne unkommentierte Fachbegriffe zu verwenden, und gib konkrete nächste Schritt
 
 - Dieses Profil passt gut zu OpenClaw als Agenten-Orchestrator für strukturierte Legal-Workflows.
 - `LangChain`, `LlamaIndex` und `ChromaDB` bilden die aktuell vorhandene RAG-Grundlage.
-- `Tesseract OCR`, `poppler-utils`, `pup`, `jq` und `Zotero` decken Dokumenten- und Recherchearbeit ab.
-- Für das volle Zielbild aus der Quelldatei fehlen noch spezialisierte Legal-Modelle, Knowledge-Graph- und Fristen-/Risikotools.
+- `Tesseract OCR`, `poppler-utils`, `pup`, `jq` und `Zotero` decken Dokumenten- und Recherchearbeit
+  ab.
+- Für das volle Zielbild aus der Quelldatei fehlen noch spezialisierte Legal-Modelle,
+  Knowledge-Graph- und Fristen-/Risikotools.
 
 ## Vergleich
 
@@ -426,14 +434,17 @@ ohne unkommentierte Fachbegriffe zu verwenden, und gib konkrete nächste Schritt
 
 ### ⚠ Missing in Setup
 
-- Die zuvor fehlenden juristischen Connectoren, Parser und Bewertungsbausteine sind jetzt im Setup vorhanden.
+- Die zuvor fehlenden juristischen Connectoren, Parser und Bewertungsbausteine sind jetzt im Setup
+  vorhanden.
 - Das referenzierte `scripts/openclaw_skill_config.sh` ist jetzt ebenfalls vorhanden.
 
 ### ❌ Missing in Docs
 
-- Die praktische Trennung zwischen Assistenzsystem und echter Rechtsberatung könnte in der Hauptdoku klarer hervorgehoben werden.
+- Die praktische Trennung zwischen Assistenzsystem und echter Rechtsberatung könnte in der Hauptdoku
+  klarer hervorgehoben werden.
 
 ## Hinweise
 
 - Dieses Profil ist ein Assistenz- und Analyseprofil, kein Ersatz für anwaltliche Verantwortung.
-- Für ein ernsthaftes Legal-Setup fehlen noch mehrere dokumentierte Spezialbausteine als echte Tools.
+- Für ein ernsthaftes Legal-Setup fehlen noch mehrere dokumentierte Spezialbausteine als echte
+  Tools.

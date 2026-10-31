@@ -83,6 +83,28 @@ af_prepare_venv /mock/python
 ''')
         self.assertEqual(result.returncode, 0, result.stderr)
 
+    def test_python_override_is_one_executable_even_with_spaces(self):
+        result = self.run_bash('''
+source scripts/tools/helpers/agent_framework_common.sh
+mkdir -p "$HOME/private toolchain"
+printf '#!/usr/bin/env bash\\n[[ "$1" == -I && "$2" == -c ]]\\n' > "$HOME/private toolchain/python"
+chmod +x "$HOME/private toolchain/python"
+export AGENT_FRAMEWORK_PYTHON_BIN="$HOME/private toolchain/python"
+[[ "$(af_python)" == "$AGENT_FRAMEWORK_PYTHON_BIN" ]]
+''')
+        self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_incompatible_override_does_not_fall_back(self):
+        result = self.run_bash('''
+source scripts/tools/helpers/agent_framework_common.sh
+incompatible_python() { return 1; }
+python3() { echo unexpected-fallback; return 0; }
+export AGENT_FRAMEWORK_PYTHON_BIN=incompatible_python
+if af_python; then exit 99; fi
+''')
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertNotIn('unexpected-fallback', result.stdout)
+
     def test_missing_venv_repairs_versioned_package_and_rechecks(self):
         result = self.run_bash('''
 source scripts/tools/helpers/agent_framework_common.sh

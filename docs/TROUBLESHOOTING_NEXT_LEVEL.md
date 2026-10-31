@@ -8,7 +8,8 @@ Nach Windows-Neustart mehrere Minuten warten. Docker Desktop/WSL initialisieren 
 
 ## Python nicht gefunden
 
-Windows App Execution Alias deaktivieren oder Python installieren. In WSL bevorzugt `python3` nutzen.
+Windows App Execution Alias deaktivieren oder Python installieren. In WSL bevorzugt `python3`
+nutzen.
 
 ## Ollama nicht erreichbar
 

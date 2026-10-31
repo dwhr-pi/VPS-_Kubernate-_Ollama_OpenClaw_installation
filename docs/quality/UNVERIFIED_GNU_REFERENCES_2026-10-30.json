@@ -1,0 +1,30 @@
+{
+  "reviewed_at": "2026-10-30",
+  "ci_head": "fe1d3a82b8553d2d1e16af0551145570bb9cbf7d",
+  "user_approved": true,
+  "scope": "GNU follow-up under the approved individual-reference policy. CI transport failures on both push and PR runs; local HTTP 200 does not verify content. No verified equivalent replacement is claimed.",
+  "references": [
+    {
+      "url": "https://www.gnu.org/software/gdb/",
+      "ci_status": [0],
+      "local_status": 200,
+      "classification": "UNVERIFIED_REFERENCE",
+      "files": [
+        "docs/tutorials/manus-language-infrastructure-sources.md",
+        "docs/quality/EXTERNAL_LINK_POLICY.md"
+      ]
+    },
+    {
+      "url": "https://www.gnu.org/software/bash/",
+      "ci_status": [0],
+      "local_status": 200,
+      "classification": "UNVERIFIED_REFERENCE",
+      "files": [
+        "docs/tutorials/manus-language-infrastructure-sources.md",
+        "docs/tutorials/chatgpt-tooling-sources.md",
+        "docs/TOOL_SETUP_AUDIT.md",
+        "docs/quality/EXTERNAL_LINK_POLICY.md"
+      ]
+    }
+  ]
+}

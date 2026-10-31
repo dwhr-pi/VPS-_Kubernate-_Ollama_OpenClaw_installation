@@ -18,24 +18,24 @@ HOME_ASSISTANT_HOME="/var/lib/homeassistant"
 HOME_ASSISTANT_VENV="/srv/homeassistant"
 
 read_from_tty() {
-    local prompt="$1"
-    local target_var="$2"
-    local secret="${3:-false}"
-    local input_value
+  local prompt="$1"
+  local target_var="$2"
+  local secret="${3:-false}"
+  local input_value
 
-    if [ ! -e "$TTY_DEVICE" ]; then
-        echo -e "${RED}Fehler: Kein interaktives Terminal für Eingaben verfügbar.${NC}"
-        exit 1
-    fi
+  if [ ! -e "$TTY_DEVICE" ]; then
+    echo -e "${RED}Fehler: Kein interaktives Terminal für Eingaben verfügbar.${NC}"
+    exit 1
+  fi
 
-    if [ "$secret" = "true" ]; then
-        read -r -s -p "$prompt" input_value < "$TTY_DEVICE"
-        echo
-    else
-        read -r -p "$prompt" input_value < "$TTY_DEVICE"
-    fi
+  if [ "$secret" = "true" ]; then
+    read -r -s -p "$prompt" input_value <"$TTY_DEVICE"
+    echo
+  else
+    read -r -p "$prompt" input_value <"$TTY_DEVICE"
+  fi
 
-    printf -v "$target_var" '%s' "$input_value"
+  printf -v "$target_var" '%s' "$input_value"
 }
 
 echo -e "${BLUE}Starte Standalone MiniPC-Setup: Home Assistant, Cloudflared, gcali...${NC}"
@@ -43,7 +43,7 @@ echo -e "${BLUE}Starte Standalone MiniPC-Setup: Home Assistant, Cloudflared, gca
 # 1. Home Assistant Core Installation
 echo -e "${GREEN}1/3: Installiere Home Assistant Core...${NC}"
 if ! id -u "$HOME_ASSISTANT_USER" >/dev/null 2>&1; then
-    sudo useradd --system --create-home --home-dir "$HOME_ASSISTANT_HOME" --shell /usr/sbin/nologin "$HOME_ASSISTANT_USER"
+  sudo useradd --system --create-home --home-dir "$HOME_ASSISTANT_HOME" --shell /usr/sbin/nologin "$HOME_ASSISTANT_USER"
 fi
 sudo mkdir -p "$HOME_ASSISTANT_VENV" "$HOME_ASSISTANT_HOME/.homeassistant"
 sudo chown -R "$HOME_ASSISTANT_USER":"$HOME_ASSISTANT_USER" "$HOME_ASSISTANT_VENV" "$HOME_ASSISTANT_HOME"
@@ -70,14 +70,14 @@ echo -e "${YELLOW}Siehe dazu auch docs/CLOUDFLARE_TUNNEL_GUIDE.md für die Cloud
 read_from_tty "Cloudflare Tunnel Token: " CF_TUNNEL_TOKEN true
 
 if [ -n "$CF_TUNNEL_TOKEN" ]; then
-    echo -e "${BLUE}Cloudflare Tunnel Token erfasst.${NC}"
-    echo -e "${YELLOW}Führen Sie die folgenden Befehle bei Bedarf manuell aus:${NC}"
-    echo "sudo cloudflared tunnel login"
-    echo "sudo cloudflared tunnel create alexa-skill-tunnel"
-    echo "sudo cloudflared tunnel route dns alexa-skill-tunnel <ihre-domain>"
-    echo "sudo cloudflared tunnel run --token <ihr-token> alexa-skill-tunnel"
+  echo -e "${BLUE}Cloudflare Tunnel Token erfasst.${NC}"
+  echo -e "${YELLOW}Führen Sie die folgenden Befehle bei Bedarf manuell aus:${NC}"
+  echo "sudo cloudflared tunnel login"
+  echo "sudo cloudflared tunnel create alexa-skill-tunnel"
+  echo "sudo cloudflared tunnel route dns alexa-skill-tunnel <ihre-domain>"
+  echo "sudo cloudflared tunnel run --token <ihr-token> alexa-skill-tunnel"
 else
-    echo -e "${YELLOW}Kein Cloudflare Tunnel Token eingegeben. Cloudflared wurde installiert, die Tunnel-Konfiguration bleibt manuell.${NC}"
+  echo -e "${YELLOW}Kein Cloudflare Tunnel Token eingegeben. Cloudflared wurde installiert, die Tunnel-Konfiguration bleibt manuell.${NC}"
 fi
 
 echo -e "${GREEN}Cloudflared installiert. Die Tunnel-Konfiguration ist als manueller Schritt dokumentiert.${NC}"

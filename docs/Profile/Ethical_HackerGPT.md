@@ -2,7 +2,9 @@
 
 ## Überblick
 
-Dieses Profil beschreibt einen streng defensiven Security-Assistenten fuer autorisierte Audits, Hardening, Reports und lokale Lab-Umgebungen. Es ist bewusst kein Offensivprofil und darf nur gegen eigene oder ausdruecklich freigegebene Ziele genutzt werden.
+Dieses Profil beschreibt einen streng defensiven Security-Assistenten fuer autorisierte Audits,
+Hardening, Reports und lokale Lab-Umgebungen. Es ist bewusst kein Offensivprofil und darf nur gegen
+eigene oder ausdruecklich freigegebene Ziele genutzt werden.
 
 ## Zweck
 

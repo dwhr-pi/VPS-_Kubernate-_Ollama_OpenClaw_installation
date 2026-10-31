@@ -7,8 +7,8 @@ WG_PORT="${WG_PORT:-51820}"
 VPS_PUBLIC_IP="${VPS_PUBLIC_IP:-VPS_PUBLIC_IP}"
 
 case "$MODE" in
-  --dry-run|--apply) ;;
-  --help|-h)
+  --dry-run | --apply) ;;
+  --help | -h)
     echo "Usage: bash scripts/wireguard/create-vps-peer.sh [--dry-run|--apply]"
     exit 0
     ;;
@@ -28,7 +28,7 @@ fi
 
 mkdir -p "$WG_DIR"
 chmod 700 "$WG_DIR"
-cat > "$WG_DIR/vps-wg0.conf.example" <<EOF
+cat >"$WG_DIR/vps-wg0.conf.example" <<EOF
 [Interface]
 Address = 10.44.0.1/24
 ListenPort = ${WG_PORT}

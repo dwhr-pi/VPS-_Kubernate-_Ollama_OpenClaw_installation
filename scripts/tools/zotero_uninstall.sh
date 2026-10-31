@@ -7,7 +7,6 @@ set -euo pipefail
 
 GREEN='\033[0;32m'
 BLUE='\033[0;34m'
-RED='\033[0;31m'
 YELLOW='\033[1;33m'
 NC='\033[0m'
 
@@ -27,4 +26,3 @@ sudo rm -f /usr/share/applications/zotero.desktop
 
 echo -e "${GREEN}Zotero wurde entfernt.${NC}"
 mark_current_tool_removed
-

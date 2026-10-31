@@ -28,7 +28,7 @@ is_processed() {
 mark_processed() {
   local file="$1"
   local handoff="$2"
-  printf '%s\t%s\t%s\n' "$file" "$(date -Is)" "$handoff" >> "$PROCESSED_FILE"
+  printf '%s\t%s\t%s\n' "$file" "$(date -Is)" "$handoff" >>"$PROCESSED_FILE"
 }
 
 redact_stream() {
@@ -41,8 +41,8 @@ redact_stream() {
 make_excerpt() {
   local file="$1"
   {
-    grep -nE 'Fehler:|Error:|ERROR:?|failed|rake aborted!|LoadError|ArgumentError|ConnectionError|Traceback|Exception|WARN|Hinweis:|systemd|service|curl|HTTP/|assets:precompile|bundle|npm|pnpm|yarn|docker|kubernetes|postgres|mysql|sqlite|grpc|esbuild|password|passwd|secret|token|api[_-]?key|authorization|cookie' "$file" 2>/dev/null \
-      | tail -n "$MAX_EXCERPT_LINES" || true
+    grep -nE 'Fehler:|Error:|ERROR:?|failed|rake aborted!|LoadError|ArgumentError|ConnectionError|Traceback|Exception|WARN|Hinweis:|systemd|service|curl|HTTP/|assets:precompile|bundle|npm|pnpm|yarn|docker|kubernetes|postgres|mysql|sqlite|grpc|esbuild|password|passwd|secret|token|api[_-]?key|authorization|cookie' "$file" 2>/dev/null |
+      tail -n "$MAX_EXCERPT_LINES" || true
   } | redact_stream
 }
 
@@ -55,8 +55,8 @@ create_handoff() {
 
   {
     printf '# Codex-Handoff: %s\n\n' "$base"
-    printf 'Erstellt: `%s`\n\n' "$(date -Is)"
-    printf 'Quelle: `%s`\n\n' "$report"
+    printf "Erstellt: \`%s\`\n\n" "$(date -Is)"
+    printf "Quelle: \`%s\`\n\n" "$report"
     printf 'Status: neue Diagnose-/Logdatei wurde erkannt und fuer die Weiterarbeit vorbereitet.\n\n'
     printf '## Aufgabe fuer Codex\n\n'
     printf 'Analysiere diesen Diagnosebericht, fasse die wahrscheinliche Ursache zusammen, pruefe die relevanten Installer-/Setup-Dateien im Repository und schlage einen sicheren Fix vor. Bitte keine Secrets ausgeben und keine Nutzerdateien blind loeschen.\n\n'
@@ -72,14 +72,14 @@ create_handoff() {
     printf '\n```\n\n'
     printf '## Naechste sinnvolle Pruefkommandos\n\n'
     printf '```bash\n'
-    printf 'cd "${OPENCLAW_SETUP_REPO:-$HOME/openclaw_ultimate_setup}"\n'
+    printf "cd \"\${OPENCLAW_SETUP_REPO:-\$HOME/openclaw_ultimate_setup}\"\n"
     printf 'bash scripts/tool_log_diagnostics.sh --tool Huginn --no-email\n'
     printf 'bash scripts/huginn_status.sh 2>/dev/null || true\n'
     printf 'git status --short\n'
     printf '```\n\n'
     printf '## Sicherheitsnotiz\n\n'
     printf 'Der Auszug wurde automatisch basis-redigiert. Bitte vor Weitergabe trotzdem pruefen, ob private Pfade, Tokens, Cookies oder Mailadressen enthalten sind.\n'
-  } > "$handoff"
+  } >"$handoff"
 
   chmod 600 "$handoff" 2>/dev/null || true
   printf '%s' "$handoff"

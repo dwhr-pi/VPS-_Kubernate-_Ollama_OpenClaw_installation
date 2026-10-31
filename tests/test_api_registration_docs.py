@@ -1,6 +1,7 @@
 """Offline content/link checks, not checkout, account, key or pricing live tests."""
 from pathlib import Path
 import re
+from doc_assertions import assert_prose_in, assert_prose_not_in
 import unittest
 from urllib.parse import urlsplit
 
@@ -37,8 +38,8 @@ class ApiRegistrationDocsTests(unittest.TestCase):
                      "Kredit-/Debitkarte", "Einzahlung", "Mindestkauf",
                      "Ausweis", "Selfie", "3-D Secure", "UB",
                      "nicht automatisch Klarna", "nicht automatisch die Mindestaufladung"):
-            self.assertIn(term, main)
-        self.assertIn("PayPal, Klarna und Krypto", SERVICES.read_text(encoding="utf-8"))
+            assert_prose_in(self, term, main)
+        assert_prose_in(self, "PayPal, Klarna und Krypto", SERVICES.read_text(encoding="utf-8"))
 
     def test_amounts_are_qualified_and_have_primary_sources(self):
         text = MAIN.read_text(encoding="utf-8")

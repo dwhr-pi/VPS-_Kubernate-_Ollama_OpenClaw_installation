@@ -12,6 +12,7 @@
 - Text -> Avatarvideo.
 
 ## Beispiel: Text zu Avatarvideo
+
 1. Text erstellen.
 2. Rolle aus Character Library waehlen.
 3. Stimme erzeugen.
@@ -19,4 +20,3 @@
 5. LipSync/Avatarvideo als GPU-Job planen.
 6. Review und KI-Kennzeichnung.
 7. Export, keine automatische Veroeffentlichung.
-

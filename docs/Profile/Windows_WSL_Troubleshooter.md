@@ -24,13 +24,15 @@ WSL2-, Speicher-, Docker- und Windows-Pfad-Diagnose.
 
 ## Full-Installationspfad
 
-Full-Installationen bleiben documentation-first, bis Healthchecks, Uninstaller und Rollback getestet sind. Lange Jobs sollen ueber den Job Queue Manager laufen.
+Full-Installationen bleiben documentation-first, bis Healthchecks, Uninstaller und Rollback getestet
+sind. Lange Jobs sollen ueber den Job Queue Manager laufen.
 
 ## Sicherheitswarnungen
 
 - Keine Secrets ins Repository schreiben.
 - Dienste standardmaessig nur auf `127.0.0.1` binden.
-- Externe Freigabe nur ueber WireGuard, Tailscale, optional Cloudflare Access oder gehaerteten Reverse Proxy.
+- Externe Freigabe nur ueber WireGuard, Tailscale, optional Cloudflare Access oder gehaerteten
+  Reverse Proxy.
 - Agentenaktionen bleiben read-only-first und brauchen Freigabe fuer Schreibaktionen.
 
 ## Modelle
@@ -55,4 +57,5 @@ Pruefe dieses Profil im Dry-Run, nenne benoetigte Tools, Risiken und sichere nae
 
 ## Grenzen
 
-Dieses Profil darf keine produktiven Secrets erzeugen, keine Admin-Ports oeffnen und keine schweren Builds automatisch starten.
+Dieses Profil darf keine produktiven Secrets erzeugen, keine Admin-Ports oeffnen und keine schweren
+Builds automatisch starten.

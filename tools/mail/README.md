@@ -1,15 +1,14 @@
 # Stalwart Mail im Ultimate KI Setup
 
-Diese Integration nutzt `stalwartlabs/stalwart` als selbst gehosteten
-Mailserver-Kern fuer eigene Domains auf einem Oracle VPS mit Hurricane Electric
-DNS.
+Diese Integration nutzt `stalwartlabs/stalwart` als selbst gehosteten Mailserver-Kern fuer eigene
+Domains auf einem Oracle VPS mit Hurricane Electric DNS.
 
 Upstream:
 
 - `https://github.com/stalwartlabs/stalwart`
 
-Wichtig: Stalwart soll nicht hart geforkt oder umgebaut werden. Das Setup baut
-eine eigene Integrationsschicht davor:
+Wichtig: Stalwart soll nicht hart geforkt oder umgebaut werden. Das Setup baut eine eigene
+Integrationsschicht davor:
 
 - Dokumentation und sichere Betriebsprofile
 - `mail-control-panel` als spaeteres eigenes Admin-/Agent-Modul
@@ -35,16 +34,16 @@ Stalwart ist ein moderner Mailserver mit Unterstuetzung fuer:
 
 ## Unterschied zu Mailcow/Mailu
 
-Mailcow und Mailu sind komplette Mail-Stacks mit vielen Containern und starker
-Vorkonfiguration. Stalwart ist hier als schlankerer, moderner Mailserver-Kern
-gedacht, auf dem wir eine eigene KI-faehige Verwaltungsschicht aufbauen.
+Mailcow und Mailu sind komplette Mail-Stacks mit vielen Containern und starker Vorkonfiguration.
+Stalwart ist hier als schlankerer, moderner Mailserver-Kern gedacht, auf dem wir eine eigene
+KI-faehige Verwaltungsschicht aufbauen.
 
-| Punkt | Stalwart | Mailcow/Mailu |
-|---|---|---|
-| Rolle im Setup | Mailserver-Kern | kompletter Mail-Stack |
-| Anpassung | Integrationsschicht daneben | Stack-Konfiguration |
-| KI-Agent | eigener Layer geplant | muesste separat angebunden werden |
-| Updates | Upstream moeglichst unveraendert | Stack-Updates beachten |
+| Punkt          | Stalwart                         | Mailcow/Mailu                     |
+| -------------- | -------------------------------- | --------------------------------- |
+| Rolle im Setup | Mailserver-Kern                  | kompletter Mail-Stack             |
+| Anpassung      | Integrationsschicht daneben      | Stack-Konfiguration               |
+| KI-Agent       | eigener Layer geplant            | muesste separat angebunden werden |
+| Updates        | Upstream moeglichst unveraendert | Stack-Updates beachten            |
 
 ## Zielbetrieb
 
@@ -69,8 +68,8 @@ Typische Mailports:
 - `443/tcp` Webadmin/Webmail/API nur abgesichert
 - `4190/tcp` ManageSieve optional
 
-Admin-Webinterface und Control Panel sollen bevorzugt nur ueber WireGuard,
-Tailscale, eingeschraenkte IPs oder starke Auth erreichbar sein.
+Admin-Webinterface und Control Panel sollen bevorzugt nur ueber WireGuard, Tailscale,
+eingeschraenkte IPs oder starke Auth erreichbar sein.
 
 ## Was niemals automatisch passieren darf
 
@@ -92,14 +91,12 @@ Der KI-Agent darf:
 - DNS-Konfiguration erklaeren
 - Mailbox-/Alias-Aenderungen vorbereiten
 
-Der KI-Agent darf nicht ohne Freigabe senden oder produktive Aenderungen
-durchfuehren.
+Der KI-Agent darf nicht ohne Freigabe senden oder produktive Aenderungen durchfuehren.
 
 ## Web.de/GMX Import
 
-Web.de/GMX werden nicht nativ gehostet, sondern per IMAP abgerufen oder
-importiert. Zugangsdaten liegen nur lokal oder in einem Secret Store, niemals im
-Repository.
+Web.de/GMX werden nicht nativ gehostet, sondern per IMAP abgerufen oder importiert. Zugangsdaten
+liegen nur lokal oder in einem Secret Store, niemals im Repository.
 
 ## Produktiv-Checkliste
 

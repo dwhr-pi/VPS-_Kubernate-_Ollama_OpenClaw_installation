@@ -41,7 +41,7 @@ install_tool() {
     cp "$PROJECT_DIR/.env.example" "$USER_DIR/.env"
     chmod 600 "$USER_DIR/.env" 2>/dev/null || true
   fi
-  cat > "$USER_DIR/README.local.md" <<EOF
+  cat >"$USER_DIR/README.local.md" <<EOF
 # WebsiteFactory lokale Daten
 
 - Tool-Projekt: $PROJECT_DIR
@@ -55,13 +55,13 @@ EOF
 }
 
 case "${1:-}" in
-  --help|-h)
+  --help | -h)
     usage
     ;;
   --status)
     status
     ;;
-  --dry-run|--plan)
+  --dry-run | --plan)
     dry_run
     ;;
   "")

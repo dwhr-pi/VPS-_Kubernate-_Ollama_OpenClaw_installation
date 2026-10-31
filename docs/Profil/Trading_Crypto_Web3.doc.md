@@ -22,5 +22,6 @@ Analyse-, Simulations- und Backtesting-Profil für Krypto, Web3 und botnahe Work
 
 - Keine Haftung für Verluste oder sonstige verursachte Schäden.
 - Seed-Phrases, Private Keys und echte API-Secrets niemals im Repository speichern.
-- Wallet-, Börsen- und RPC-Zugänge nur bewusst und getrennt von normalen Agenten-Workflows verwenden.
+- Wallet-, Börsen- und RPC-Zugänge nur bewusst und getrennt von normalen Agenten-Workflows
+  verwenden.
 - Erst Backtesting und Paper-Trading, danach höchstens manuelle Ausführung.

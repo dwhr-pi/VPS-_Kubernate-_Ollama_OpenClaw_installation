@@ -2,20 +2,24 @@
 
 ## Zweck
 
-Das Profil `Boardroom` ist ein Entscheidungs- und Review-Profil fuer das Ultimate KI Setup mit Ollama und OpenClaw. Es simuliert eine kleine Expertenrunde, die strategische Entscheidungen aus mehreren Perspektiven prueft und danach ein klares Chairman-Verdict erzeugt.
+Das Profil `Boardroom` ist ein Entscheidungs- und Review-Profil fuer das Ultimate KI Setup mit
+Ollama und OpenClaw. Es simuliert eine kleine Expertenrunde, die strategische Entscheidungen aus
+mehreren Perspektiven prueft und danach ein klares Chairman-Verdict erzeugt.
 
-Gut geeignet ist es fuer Architekturentscheidungen, Tool-Auswahl, Kosten-/Nutzen-Abwaegungen, VPS-/Kubernetes-/GPU-Fragen, Sicherheitsentscheidungen, Produktideen und groessere Automatisierungsplaene.
+Gut geeignet ist es fuer Architekturentscheidungen, Tool-Auswahl, Kosten-/Nutzen-Abwaegungen,
+VPS-/Kubernetes-/GPU-Fragen, Sicherheitsentscheidungen, Produktideen und groessere
+Automatisierungsplaene.
 
 ## Rollen
 
-| Rolle | Fokus |
-|---|---|
-| CFO | Kosten, ROI, Cashflow, Betriebskosten, Risiken, Opportunitaetskosten und Worst-Case-Finanzfolgen |
-| Operator | Umsetzbarkeit, Aufwand, technische Komplexitaet, Wartung, Skalierung, Abhaengigkeiten und Nutzerbelastung |
-| Vertriebler | Nutzenversprechen, Kundenreaktion, Positionierung, Preislogik, Einwaende, Marktresonanz und Verstaendlichkeit |
-| Mentor | Langzeitfolgen, Erfahrungswerte, Mustererkennung, strategische Richtung und die Frage, ob das richtige Problem geloest wird |
-| Skeptiker | Versteckte Annahmen, Sicherheitsrisiken, Scheiternszenarien, Lock-in, Datenschutz und blinde Flecken |
-| Chairman | Fuehrt alle Perspektiven zusammen und gibt eine klare Empfehlung mit genau einem naechsten Schritt |
+| Rolle       | Fokus                                                                                                                       |
+| ----------- | --------------------------------------------------------------------------------------------------------------------------- |
+| CFO         | Kosten, ROI, Cashflow, Betriebskosten, Risiken, Opportunitaetskosten und Worst-Case-Finanzfolgen                            |
+| Operator    | Umsetzbarkeit, Aufwand, technische Komplexitaet, Wartung, Skalierung, Abhaengigkeiten und Nutzerbelastung                   |
+| Vertriebler | Nutzenversprechen, Kundenreaktion, Positionierung, Preislogik, Einwaende, Marktresonanz und Verstaendlichkeit               |
+| Mentor      | Langzeitfolgen, Erfahrungswerte, Mustererkennung, strategische Richtung und die Frage, ob das richtige Problem geloest wird |
+| Skeptiker   | Versteckte Annahmen, Sicherheitsrisiken, Scheiternszenarien, Lock-in, Datenschutz und blinde Flecken                        |
+| Chairman    | Fuehrt alle Perspektiven zusammen und gibt eine klare Empfehlung mit genau einem naechsten Schritt                          |
 
 ## Trigger
 
@@ -94,7 +98,8 @@ Maximal 2-5 relevante Dateien lesen. Keine endlose Repo-Analyse.
 - Lokale Kontrolle und Datenschutz haben hohes Gewicht.
 - Cloud-Lock-in vermeiden.
 - Docker nur optional behandeln, da dieses Projekt Git-/Shell-Installationen bevorzugt.
-- WSL2, Ubuntu, Ollama, OpenClaw, n8n, Cloudflare Tunnel, Tailscale, Home Assistant und Kubernetes beruecksichtigen, wenn relevant.
+- WSL2, Ubuntu, Ollama, OpenClaw, n8n, Cloudflare Tunnel, Tailscale, Home Assistant und Kubernetes
+  beruecksichtigen, wenn relevant.
 - Bei Security-Fragen Skeptiker und Operator staerker gewichten.
 - Bei Produkt-/Marketingfragen Vertriebler und Mentor staerker gewichten.
 - Bei VPS-/GPU-/Kubernetes-Fragen CFO, Operator und Skeptiker staerker gewichten.
@@ -115,11 +120,11 @@ Bessere Variante:
 
 ## Modell-Empfehlungen
 
-| Hardware | Modelle |
-|---|---|
-| schwach / Mini-PC | `llama3.2:1b`, `llama3.2:3b`, `phi3:mini` |
-| solide lokale Workstation | `llama3.1:8b`, `qwen2.5:7b`, `mistral:7b`, `gemma2:9b` |
-| Hybrid | Rollen lokal ueber Ollama, Chairman optional ueber staerkeres Modell; sensible Projektdateien lokal halten |
+| Hardware                  | Modelle                                                                                                    |
+| ------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| schwach / Mini-PC         | `llama3.2:1b`, `llama3.2:3b`, `phi3:mini`                                                                  |
+| solide lokale Workstation | `llama3.1:8b`, `qwen2.5:7b`, `mistral:7b`, `gemma2:9b`                                                     |
+| Hybrid                    | Rollen lokal ueber Ollama, Chairman optional ueber staerkeres Modell; sensible Projektdateien lokal halten |
 
 ## Qualitaetsregeln
 

@@ -39,4 +39,3 @@ echo "Keine TripoSR-Modelle automatisch geladen."
 echo "Repo: $INSTALL_ROOT"
 echo "Log: $LOG_FILE"
 echo "Dauer: $(($(date +%s) - START_TS)) Sekunden"
-

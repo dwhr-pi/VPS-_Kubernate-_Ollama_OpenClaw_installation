@@ -1,17 +1,16 @@
 # WebsiteFactory / WebBuild-Agent
 
-WebsiteFactory ist ein lokaler Workflow-Prototyp fuer das Ultimate KI Setup.
-Aus einem Marketing-Prompt erzeugt das Tool ein GitHub-taugliches
-Landingpage-Projekt auf Basis von Astro plus Tailwind CSS.
+WebsiteFactory ist ein lokaler Workflow-Prototyp fuer das Ultimate KI Setup. Aus einem
+Marketing-Prompt erzeugt das Tool ein GitHub-taugliches Landingpage-Projekt auf Basis von Astro plus
+Tailwind CSS.
 
 ## Status
 
 Status: `optional`, `prototype`, `workflow-first`
 
-Das Setup installiert hier bewusst keine schweren Node-, Browser- oder
-Cloud-Abhaengigkeiten automatisch. Standard ist lokal mit Ollama. Claude,
-Gemini und OpenAI bleiben optional und muessen bewusst ausserhalb des Repos
-konfiguriert werden.
+Das Setup installiert hier bewusst keine schweren Node-, Browser- oder Cloud-Abhaengigkeiten
+automatisch. Standard ist lokal mit Ollama. Claude, Gemini und OpenAI bleiben optional und muessen
+bewusst ausserhalb des Repos konfiguriert werden.
 
 ## Zweck
 

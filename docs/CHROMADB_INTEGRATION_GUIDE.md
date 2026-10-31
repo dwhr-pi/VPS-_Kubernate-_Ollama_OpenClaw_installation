@@ -2,7 +2,9 @@
 
 ## Kurzfassung
 
-ChromaDB ist eine lokale Vektor-/Embedding-Datenbank fuer RAG, Memory, Dokumentensuche und Agentenkontext. Je nach Nutzung kann ChromaDB entweder direkt als Python-Bibliothek in Skripten laufen oder als eigener lokaler Server gestartet werden.
+ChromaDB ist eine lokale Vektor-/Embedding-Datenbank fuer RAG, Memory, Dokumentensuche und
+Agentenkontext. Je nach Nutzung kann ChromaDB entweder direkt als Python-Bibliothek in Skripten
+laufen oder als eigener lokaler Server gestartet werden.
 
 Nach der Installation liegt die Python-Umgebung typischerweise in:
 
@@ -48,14 +50,16 @@ Empfohlener Speicherort:
 
 ## Nutzung als lokaler Server
 
-Wenn ein Tool per HTTP auf ChromaDB zugreifen soll, kann ein Servermodus genutzt werden. Der genaue Startbefehl haengt von der installierten Version ab. Typische Variante:
+Wenn ein Tool per HTTP auf ChromaDB zugreifen soll, kann ein Servermodus genutzt werden. Der genaue
+Startbefehl haengt von der installierten Version ab. Typische Variante:
 
 ```bash
 source /opt/chromadb/venv/bin/activate
 chroma run --host 127.0.0.1 --port 8000 --path "$HOME/.openclaw_ultimate_user_data/chromadb"
 ```
 
-Wichtig: Nicht oeffentlich binden. Standard fuer dieses Setup ist `127.0.0.1` oder Zugriff ueber Tailscale.
+Wichtig: Nicht oeffentlich binden. Standard fuer dieses Setup ist `127.0.0.1` oder Zugriff ueber
+Tailscale.
 
 ## Wofuer ist ChromaDB sinnvoll?
 
@@ -70,9 +74,11 @@ Wichtig: Nicht oeffentlich binden. Standard fuer dieses Setup ist `127.0.0.1` od
 
 ChromaDB ist nicht das Modell und nicht der Chat-Agent.
 
-- Ollama erzeugt Antworten und Embeddings, speichert aber nicht automatisch deine Dokumente in ChromaDB.
+- Ollama erzeugt Antworten und Embeddings, speichert aber nicht automatisch deine Dokumente in
+  ChromaDB.
 - OpenClaw nutzt ChromaDB nicht automatisch, nur weil ChromaDB installiert ist.
-- ChromaDB beantwortet keine Fragen allein. Es liefert passende Textstuecke, Erinnerungen oder Dokumente zurueck.
+- ChromaDB beantwortet keine Fragen allein. Es liefert passende Textstuecke, Erinnerungen oder
+  Dokumente zurueck.
 - Ein RAG-/Memory-Workflow muss ChromaDB bewusst befuellen und abfragen.
 
 Praktisch bedeutet das:
@@ -89,16 +95,16 @@ Dokumente/Notizen/Chats
 
 ## Typische Kombinationen
 
-| Kombination | Zweck | Status im Setup |
-|---|---|---|
-| ChromaDB + Python-Skript | einfachster lokaler Memory-/RAG-Test | vorbereitet, Beispielskripte noch TODO |
-| ChromaDB + Ollama | Ollama generiert Antwort, ChromaDB liefert Kontext | braucht RAG-Skript oder Tool |
-| ChromaDB + OpenClaw | OpenClaw fragt Memory/RAG ab und nutzt Treffer im Task | noch nicht automatisch integriert |
-| ChromaDB + LlamaIndex | LlamaIndex baut Index-/Query-Pipeline | sinnvoller naechster Integrationspfad |
-| ChromaDB + LangChain/LangGraph | Graph-/Agenten-Knoten mit Retriever | spaeterer Worker |
-| ChromaDB + Open WebUI | Knowledge-/RAG-nahe Nutzung je nach Open-WebUI-Konfiguration | separat konfigurieren |
-| ChromaDB + Memory_Import_Export | Chat-/Markdown-/JSONL-Import als lokaler Wissensspeicher | geplant |
-| ChromaDB + Persona-System | langfristige Persona-/Projekt-Erinnerungen | geplant, nur mit Transparenz |
+| Kombination                     | Zweck                                                        | Status im Setup                        |
+| ------------------------------- | ------------------------------------------------------------ | -------------------------------------- |
+| ChromaDB + Python-Skript        | einfachster lokaler Memory-/RAG-Test                         | vorbereitet, Beispielskripte noch TODO |
+| ChromaDB + Ollama               | Ollama generiert Antwort, ChromaDB liefert Kontext           | braucht RAG-Skript oder Tool           |
+| ChromaDB + OpenClaw             | OpenClaw fragt Memory/RAG ab und nutzt Treffer im Task       | noch nicht automatisch integriert      |
+| ChromaDB + LlamaIndex           | LlamaIndex baut Index-/Query-Pipeline                        | sinnvoller naechster Integrationspfad  |
+| ChromaDB + LangChain/LangGraph  | Graph-/Agenten-Knoten mit Retriever                          | spaeterer Worker                       |
+| ChromaDB + Open WebUI           | Knowledge-/RAG-nahe Nutzung je nach Open-WebUI-Konfiguration | separat konfigurieren                  |
+| ChromaDB + Memory_Import_Export | Chat-/Markdown-/JSONL-Import als lokaler Wissensspeicher     | geplant                                |
+| ChromaDB + Persona-System       | langfristige Persona-/Projekt-Erinnerungen                   | geplant, nur mit Transparenz           |
 
 ## Minimaler Nutzungsablauf
 
@@ -145,31 +151,32 @@ results = collection.query(
 print(results["documents"])
 ```
 
-Hinweis: Fuer bessere Trefferqualitaet sollte spaeter ein definiertes Embedding-Modell genutzt werden. Diese Auswahl ist noch ein TODO fuer die OpenClaw-/Ollama-Integration.
+Hinweis: Fuer bessere Trefferqualitaet sollte spaeter ein definiertes Embedding-Modell genutzt
+werden. Diese Auswahl ist noch ein TODO fuer die OpenClaw-/Ollama-Integration.
 
 ## Welche vorhandenen Tools koennen ChromaDB nutzen?
 
-| Tool/Profil | ChromaDB-Nutzen | Integrationsart |
-|---|---|---|
-| OpenClaw | lokaler Memory-/RAG-Speicher | Python-Tool oder HTTP-Server |
-| Open WebUI | Knowledge-/RAG-nahe Nutzung, je nach Konfiguration | indirekt |
-| LangGraph | Retriever-Knoten fuer Graphen | Python-Bibliothek |
-| CrewAI | Wissen fuer Rollen/Teams | Tool/Retriever |
-| AutoGen | gemeinsamer Kontext fuer Agenten | Tool/Retriever |
-| LlamaIndex | Vektorstore-Backend | Python-Integration |
-| Document_Intelligence | Dokumente einbetten und durchsuchen | RAG-Pipeline |
-| Memory_Import_Export | Chat-/Markdown-/JSONL-Importe speichern | Import-Pipeline |
-| Personal_Knowledge_Memory | lokaler Wissensspeicher | Memory-Pipeline |
+| Tool/Profil               | ChromaDB-Nutzen                                    | Integrationsart              |
+| ------------------------- | -------------------------------------------------- | ---------------------------- |
+| OpenClaw                  | lokaler Memory-/RAG-Speicher                       | Python-Tool oder HTTP-Server |
+| Open WebUI                | Knowledge-/RAG-nahe Nutzung, je nach Konfiguration | indirekt                     |
+| LangGraph                 | Retriever-Knoten fuer Graphen                      | Python-Bibliothek            |
+| CrewAI                    | Wissen fuer Rollen/Teams                           | Tool/Retriever               |
+| AutoGen                   | gemeinsamer Kontext fuer Agenten                   | Tool/Retriever               |
+| LlamaIndex                | Vektorstore-Backend                                | Python-Integration           |
+| Document_Intelligence     | Dokumente einbetten und durchsuchen                | RAG-Pipeline                 |
+| Memory_Import_Export      | Chat-/Markdown-/JSONL-Importe speichern            | Import-Pipeline              |
+| Personal_Knowledge_Memory | lokaler Wissensspeicher                            | Memory-Pipeline              |
 
 ## Unterschied zu Qdrant
 
-| Punkt | ChromaDB | Qdrant |
-|---|---|---|
-| Einstieg | sehr einfach lokal/Python | staerker als eigener Server |
-| Betrieb | Bibliothek oder lokaler Server | Dienst/API |
-| MiniPC Standalone | sehr gut | sehr gut |
-| Skalierung | eher leicht bis mittel | besser fuer groessere Vektor-Sets |
-| Setup-Komplexitaet | niedrig | mittel |
+| Punkt              | ChromaDB                       | Qdrant                            |
+| ------------------ | ------------------------------ | --------------------------------- |
+| Einstieg           | sehr einfach lokal/Python      | staerker als eigener Server       |
+| Betrieb            | Bibliothek oder lokaler Server | Dienst/API                        |
+| MiniPC Standalone  | sehr gut                       | sehr gut                          |
+| Skalierung         | eher leicht bis mittel         | besser fuer groessere Vektor-Sets |
+| Setup-Komplexitaet | niedrig                        | mittel                            |
 
 Empfehlung:
 
@@ -189,7 +196,8 @@ OpenClaw Task
 Aktueller Stand:
 
 - ChromaDB ist als Tool installierbar.
-- ChromaDB ist in Profilen wie `RAG_Wissensdatenbank`, `Personal_Knowledge_Memory`, `Memory_Import_Export` und `Next_Level_Persona_System` sinnvoll.
+- ChromaDB ist in Profilen wie `RAG_Wissensdatenbank`, `Personal_Knowledge_Memory`,
+  `Memory_Import_Export` und `Next_Level_Persona_System` sinnvoll.
 - Es gibt noch kein fertiges OpenClaw-Tool, das ChromaDB automatisch befuellt oder abfragt.
 - Das muss bewusst nachgeruestet werden, damit OpenClaw ChromaDB wirklich nutzt.
 

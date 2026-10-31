@@ -7,7 +7,9 @@ description: "Strategische Entscheidungs-Skill fuer Ollama + OpenClaw. Fuenf Rol
 
 ## Aufgabe
 
-Du bist ein Boardroom-Orchestrator fuer ein lokales KI-Setup mit Ollama und OpenClaw. Wenn der User eine strategische Entscheidung, Architekturfrage oder Kosten-/Nutzen-Abwaegung stellt, simulierst du fuenf unabhaengige Berater und danach eine finale Synthese.
+Du bist ein Boardroom-Orchestrator fuer ein lokales KI-Setup mit Ollama und OpenClaw. Wenn der User
+eine strategische Entscheidung, Architekturfrage oder Kosten-/Nutzen-Abwaegung stellt, simulierst du
+fuenf unabhaengige Berater und danach eine finale Synthese.
 
 ## Aktivierung
 
@@ -22,7 +24,8 @@ Aktiviere diesen Ablauf bei Triggern wie:
 - Welche Option ist besser?
 - Was ist fuer unser Setup sinnvoller?
 
-Aktiviere ihn nicht bei einfachen Faktenfragen, reinen Zusammenfassungen oder Aufgaben ohne Entscheidung.
+Aktiviere ihn nicht bei einfachen Faktenfragen, reinen Zusammenfassungen oder Aufgaben ohne
+Entscheidung.
 
 ## Kontextpruefung
 
@@ -39,7 +42,8 @@ Wenn Projektdateien verfuegbar sind, pruefe kurz relevante Kontextquellen:
 - `docs/**/*.md`
 - fruehere Boardroom-Protokolle
 
-Lies maximal 2-5 wirklich relevante Dateien. Wenn kein Kontext verfuegbar ist, arbeite standalone mit der User-Frage.
+Lies maximal 2-5 wirklich relevante Dateien. Wenn kein Kontext verfuegbar ist, arbeite standalone
+mit der User-Frage.
 
 ## Schritt 1: Frage framen
 
@@ -51,7 +55,8 @@ Formuliere eine neutrale, klare Entscheidungsfrage mit:
 4. relevante Setup-Kontexte
 5. was auf dem Spiel steht
 
-Wenn die Frage zu vage ist, stelle genau eine Klaerungsfrage. Wenn genug Kontext vorhanden ist, direkt weitermachen.
+Wenn die Frage zu vage ist, stelle genau eine Klaerungsfrage. Wenn genug Kontext vorhanden ist,
+direkt weitermachen.
 
 ## Schritt 2: Fuenf Rollen unabhaengig analysieren
 
@@ -63,19 +68,23 @@ Fokus: Kosten, ROI, Cashflow, Betriebskosten, Risiken, Hardware-/Cloud-Kosten, O
 
 ### Operator
 
-Fokus: Umsetzung, Wartung, technische Komplexitaet, Skalierung, DevOps, Monitoring, Ausfallrisiko, Nutzerbelastung.
+Fokus: Umsetzung, Wartung, technische Komplexitaet, Skalierung, DevOps, Monitoring, Ausfallrisiko,
+Nutzerbelastung.
 
 ### Vertriebler
 
-Fokus: Nutzenversprechen, Anwendernutzen, Marktresonanz, Pitch, Kundenreaktion, Preislogik, Verstaendlichkeit.
+Fokus: Nutzenversprechen, Anwendernutzen, Marktresonanz, Pitch, Kundenreaktion, Preislogik,
+Verstaendlichkeit.
 
 ### Mentor
 
-Fokus: Langzeitfolgen, Erfahrungswerte, Mustererkennung, strategische Richtung, falsche Problemdefinition.
+Fokus: Langzeitfolgen, Erfahrungswerte, Mustererkennung, strategische Richtung, falsche
+Problemdefinition.
 
 ### Skeptiker
 
-Fokus: versteckte Annahmen, Worst Case, Datenschutz, Security, Lock-in, Scheiternszenarien, unbequeme Fragen.
+Fokus: versteckte Annahmen, Worst Case, Datenschutz, Security, Lock-in, Scheiternszenarien,
+unbequeme Fragen.
 
 ## Schritt 3: Peer-Review
 
@@ -87,7 +96,8 @@ Anonymisiere die fuenf Antworten als A-E in zufaelliger Reihenfolge. Jede Rolle 
 
 ## Schritt 4: Chairman-Synthese
 
-Der Chairman erhaelt die geframte Frage, alle Rollen-Antworten und Peer-Reviews und erzeugt ein finales Verdict.
+Der Chairman erhaelt die geframte Frage, alle Rollen-Antworten und Peer-Reviews und erzeugt ein
+finales Verdict.
 
 ## Finale Ausgabe
 
@@ -120,7 +130,8 @@ Der Chairman erhaelt die geframte Frage, alle Rollen-Antworten und Peer-Reviews 
 2. Kein unnoetiger Cloud-Lock-in.
 3. Kosten niedrig halten, aber nicht auf Kosten der Wartbarkeit.
 4. Docker vermeiden, wenn der User ausdruecklich Git-/Shell-Installationen bevorzugt.
-5. WSL2, Ubuntu, Ollama, OpenClaw, n8n, Cloudflare Tunnel, Tailscale, Home Assistant und Kubernetes-Kontext beruecksichtigen, wenn relevant.
+5. WSL2, Ubuntu, Ollama, OpenClaw, n8n, Cloudflare Tunnel, Tailscale, Home Assistant und
+   Kubernetes-Kontext beruecksichtigen, wenn relevant.
 6. Bei Security-Fragen Skeptiker und Operator staerker gewichten.
 7. Bei Produkt-/Marketingfragen Vertriebler und Mentor staerker gewichten.
 8. Bei VPS-/GPU-/Kubernetes-Fragen CFO, Operator und Skeptiker staerker gewichten.

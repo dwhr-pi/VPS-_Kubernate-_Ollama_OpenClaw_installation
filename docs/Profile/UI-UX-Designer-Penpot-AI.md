@@ -2,9 +2,12 @@
 
 ## Überblick
 
-Dieses Profil erweitert das Repository um einen optionalen Pfad für self-hostbares UI/UX-Design, Prototyping, Design-Systeme und AI-gestützte Design-to-Code-Workflows mit Penpot.
+Dieses Profil erweitert das Repository um einen optionalen Pfad für self-hostbares UI/UX-Design,
+Prototyping, Design-Systeme und AI-gestützte Design-to-Code-Workflows mit Penpot.
 
-Penpot ist in diesem Setup keine Konkurrenz zu `Ollama`, `OpenClaw` oder `Codex`, sondern die visuelle Design- und Prototyping-Oberfläche, die mit lokalen oder hybriden KI-Workflows kombiniert werden kann.
+Penpot ist in diesem Setup keine Konkurrenz zu `Ollama`, `OpenClaw` oder `Codex`, sondern die
+visuelle Design- und Prototyping-Oberfläche, die mit lokalen oder hybriden KI-Workflows kombiniert
+werden kann.
 
 ## Geeignete Einsatzgebiete
 
@@ -44,11 +47,13 @@ Wichtig:
 
 - Standardbindung nur auf `127.0.0.1`
 - Standardport in diesem Repository: `9011`
-- `PENPOT_PUBLIC_URI` muss angepasst werden, wenn später ein Reverse Proxy oder Tunnel davor gesetzt wird
+- `PENPOT_PUBLIC_URI` muss angepasst werden, wenn später ein Reverse Proxy oder Tunnel davor gesetzt
+  wird
 
 ## MCP-Anbindung
 
-Penpot besitzt einen offiziellen MCP-Server. Damit können `Codex`, `OpenClaw` oder andere MCP-kompatible Clients Penpot-Dateien kontextbezogen lesen und bearbeiten.
+Penpot besitzt einen offiziellen MCP-Server. Damit können `Codex`, `OpenClaw` oder andere
+MCP-kompatible Clients Penpot-Dateien kontextbezogen lesen und bearbeiten.
 
 Mehr dazu:
 

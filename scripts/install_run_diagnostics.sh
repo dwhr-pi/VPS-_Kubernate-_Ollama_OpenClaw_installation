@@ -35,7 +35,7 @@ while [ "$#" -gt 0 ]; do
       LIMIT="${2:-40}"
       shift 2
       ;;
-    --email|--send-email)
+    --email | --send-email)
       EMAIL_MODE="always"
       if [ "${2:-}" != "" ] && [[ "${2:-}" != --* ]]; then
         EMAIL_TO="$2"
@@ -45,7 +45,7 @@ while [ "$#" -gt 0 ]; do
         shift
       fi
       ;;
-    -h|--help)
+    -h | --help)
       usage
       exit 0
       ;;
@@ -94,7 +94,8 @@ infer_status() {
 send_report_email() {
   local report_file="$1"
   local recipient="$2"
-  local subject="[OpenClaw Ultimate Setup][Report:${REPORT_ID}] Installationslauf-Diagnose $(date '+%Y-%m-%d %H:%M')"
+  local subject
+  subject="[OpenClaw Ultimate Setup][Report:${REPORT_ID}] Installationslauf-Diagnose $(date '+%Y-%m-%d %H:%M')"
 
   load_secure_mail_settings
 
@@ -112,9 +113,9 @@ send_report_email() {
 
   if command -v mail >/dev/null 2>&1; then
     if [ -n "${MAIL_FROM:-}" ]; then
-      mail -r "$MAIL_FROM" -s "$subject" "$recipient" < "$report_file"
+      mail -r "$MAIL_FROM" -s "$subject" "$recipient" <"$report_file"
     else
-      mail -s "$subject" "$recipient" < "$report_file"
+      mail -s "$subject" "$recipient" <"$report_file"
     fi
     return $?
   fi
@@ -263,9 +264,15 @@ list_recent_logs() {
   done || true
   echo
   echo "### Node/npm/pnpm"
-  command -v node >/dev/null 2>&1 && node --version || true
-  command -v npm >/dev/null 2>&1 && npm --version || true
-  command -v pnpm >/dev/null 2>&1 && pnpm --version || true
+  if command -v node >/dev/null 2>&1; then
+    node --version || true
+  fi
+  if command -v npm >/dev/null 2>&1; then
+    npm --version || true
+  fi
+  if command -v pnpm >/dev/null 2>&1; then
+    pnpm --version || true
+  fi
   if command -v npm >/dev/null 2>&1; then
     if command -v timeout >/dev/null 2>&1; then
       timeout 8s npm list -g --depth=0 2>/dev/null | tail -n 80 || echo "Timeout bei npm global list."
@@ -304,7 +311,7 @@ list_recent_logs() {
   echo 'bash scripts/dependency_snapshot.sh'
   echo 'du -sh /opt/* ~/.cache ~/.ollama ~/ai-stack ~/.openclaw_ultimate_user_data 2>/dev/null | sort -h'
   echo '```'
-} > "$REPORT_FILE"
+} >"$REPORT_FILE"
 
 echo "Installationslauf-Diagnose erstellt: $REPORT_FILE"
 sed -n '1,80p' "$REPORT_FILE"

@@ -1,6 +1,7 @@
 # AI Media Production Agents
 
 ## Agenten
+
 - NewsAnchorAgent
 - ModeratorAgent
 - ActorAgent
@@ -13,6 +14,7 @@
 - FilmDirectorAgent
 
 ## Gemeinsame Regeln
+
 - Keine echten Personen ohne Einwilligung nachbauen.
 - KI-Inhalte kennzeichnen.
 - Keine automatische Veroeffentlichung.
@@ -20,6 +22,7 @@
 - Rohdaten und Modelle ausserhalb des Repos speichern.
 
 ## Beispiel-Agent
+
 ```json
 {
   "name": "NewsAnchorAgent",
@@ -36,4 +39,3 @@
   ]
 }
 ```
-

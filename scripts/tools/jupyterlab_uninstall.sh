@@ -14,4 +14,3 @@ rm -rf "$INSTALL_DIR"
 mark_tool_removed "JupyterLab"
 log_success "JupyterLab entfernt."
 end_measurement "success"
-

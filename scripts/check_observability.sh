@@ -18,4 +18,3 @@ for port in 3000 9090 3100 19999 8080; do
 done
 
 echo "Empfehlung Low-Resource: zuerst Glances oder Netdata, Grafana/Prometheus/Loki nur optional."
-

@@ -1,0 +1,69 @@
+name: Coding agents - offline boundaries
+on:
+  pull_request:
+    paths:
+      - scripts/agents/**
+      - scripts/tools/opencode_*.sh
+      - scripts/tools/aider_*.sh
+      - scripts/tools/openhands_*.sh
+      - scripts/tools/codex_cli_*.sh
+      - scripts/profiles/**
+      - scripts/helpers/native_tool_status.sh
+      - config/tools.yml
+      - config/profiles.yml
+      - setup_ultimate.sh
+      - config/agents/**
+      - tests/test_coding_workbench.py
+      - tests/test_coding_workbench_registry.py
+      - tests/test_native_coding_clis.py
+      - tests/test_openhands_worker.py
+      - .github/workflows/coding-agents.yml
+  push:
+    branches: [main]
+    paths:
+      - scripts/agents/**
+      - scripts/tools/opencode_*.sh
+      - scripts/tools/aider_*.sh
+      - scripts/tools/openhands_*.sh
+      - scripts/tools/codex_cli_*.sh
+      - scripts/profiles/**
+      - scripts/helpers/native_tool_status.sh
+      - config/tools.yml
+      - config/profiles.yml
+      - setup_ultimate.sh
+      - config/agents/**
+      - tests/test_coding_workbench.py
+      - tests/test_coding_workbench_registry.py
+      - tests/test_native_coding_clis.py
+      - tests/test_openhands_worker.py
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  fixtures:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-latest, macos-15]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      PYTHONUTF8: '1'
+      GIT_TERMINAL_PROMPT: '0'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Mocked workers and native lifecycle contracts
+        run: |
+          python -B -m unittest discover -s tests -p test_coding_workbench.py -v
+          python -B -m unittest discover -s tests -p test_coding_workbench_registry.py -v
+          python -B -m unittest discover -s tests -p test_native_coding_clis.py -v
+          python -B -m unittest discover -s tests -p test_openhands_worker.py -v
+          python -B -m unittest discover -s tests -p test_coding_agent_profiles.py -v
+      - name: Registry consistency without runtime probes
+        run: python -B scripts/quality/repository_audit.py --section registry

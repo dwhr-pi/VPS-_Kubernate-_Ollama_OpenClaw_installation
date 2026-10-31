@@ -1,7 +1,7 @@
 # mail-control-panel Backend
 
-Das Backend ist die geplante Integrationsschicht zwischen Stalwart,
-OpenClaw/Ollama und dem spaeteren Webinterface.
+Das Backend ist die geplante Integrationsschicht zwischen Stalwart, OpenClaw/Ollama und dem
+spaeteren Webinterface.
 
 ## Ziel
 
@@ -23,13 +23,13 @@ Stalwart bleibt Upstream. Das Backend kapselt nur:
 
 ## Module
 
-| Modul | Aufgabe |
-|---|---|
-| `stalwart-api-client/` | API-Kapselung fuer Stalwart Management/JMAP/API |
-| `mailbox-manager/` | Mailboxen erstellen, sperren, Quotas, Passwortwechsel |
-| `alias-manager/` | Aliase, Weiterleitungen, Catch-all optional |
-| `imap-importer/` | Web.de/GMX per IMAP abrufen/importieren |
-| `audit-logger/` | alle Aenderungen revisionssicher protokollieren |
+| Modul                  | Aufgabe                                               |
+| ---------------------- | ----------------------------------------------------- |
+| `stalwart-api-client/` | API-Kapselung fuer Stalwart Management/JMAP/API       |
+| `mailbox-manager/`     | Mailboxen erstellen, sperren, Quotas, Passwortwechsel |
+| `alias-manager/`       | Aliase, Weiterleitungen, Catch-all optional           |
+| `imap-importer/`       | Web.de/GMX per IMAP abrufen/importieren               |
+| `audit-logger/`        | alle Aenderungen revisionssicher protokollieren       |
 
 ## API-Sicherheitsregeln
 

@@ -16,8 +16,8 @@ run() {
 }
 
 case "$MODE" in
-  --dry-run|--apply) ;;
-  --help|-h)
+  --dry-run | --apply) ;;
+  --help | -h)
     echo "Usage: sudo bash scripts/security/setup-ufw.sh [--dry-run|--apply]"
     exit 0
     ;;

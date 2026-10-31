@@ -2,7 +2,8 @@
 
 ## Zweck
 
-Ressourcen-, Laufzeit- und Kostenblick fuer MiniPC-, VPS- und GPU-Profile mit Fokus auf Ollama-, Monitoring- und Telemetriedaten.
+Ressourcen-, Laufzeit- und Kostenblick fuer MiniPC-, VPS- und GPU-Profile mit Fokus auf Ollama-,
+Monitoring- und Telemetriedaten.
 
 ## Installierbare Kern-Tools
 

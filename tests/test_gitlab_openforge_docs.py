@@ -1,6 +1,7 @@
 """Offline-Dokumentationstests; keine Quellenabrufe, Installer oder Modellaufrufe."""
 from pathlib import Path
 import re
+from doc_assertions import assert_prose_in, assert_prose_not_in
 import unittest
 from urllib.parse import unquote
 
@@ -34,11 +35,11 @@ class GitLabOpenForgeDocs(unittest.TestCase):
 
     def test_opt_in_and_unverified_installation_boundaries_are_explicit(self):
         text = DOC.read_text(encoding='utf-8')
-        self.assertIn('Installationsstatus: **ungeprueft**', text)
-        self.assertIn('Keine automatischen Produktivdeployments, Modell-Downloads', text)
-        self.assertIn('Diese Seite aktiviert keine `.gitlab-ci.yml`', text)
-        self.assertIn('keinen containerfreien Gesamtbetrieb', text)
-        self.assertIn('keinen hier abgenommenen gepinnten GitHub-Source-Build', text)
+        assert_prose_in(self, 'Installationsstatus: **ungeprueft**', text)
+        assert_prose_in(self, 'Keine automatischen Produktivdeployments, Modell-Downloads', text)
+        assert_prose_in(self, 'Diese Seite aktiviert keine `.gitlab-ci.yml`', text)
+        assert_prose_in(self, 'keinen containerfreien Gesamtbetrieb', text)
+        assert_prose_in(self, 'keinen hier abgenommenen gepinnten GitHub-Source-Build', text)
 
 
 if __name__ == '__main__':

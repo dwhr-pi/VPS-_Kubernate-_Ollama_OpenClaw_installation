@@ -2,7 +2,6 @@
 
 GREEN='\033[0;32m'
 BLUE='\033[0;34m'
-RED='\033[0;31m'
 YELLOW='\033[1;33m'
 NC='\033[0m'
 
@@ -15,12 +14,12 @@ init_profile_tracking "Trading_AI"
 echo -e "${BLUE}Starte Installation des Trading_AI-Profils...${NC}"
 
 for tool_script in zenbot_trader_install.sh web3_apis_install.sh exchange_apis_install.sh zenbot_api_install.sh risk_strategy_analyzer_install.sh backtest_workflow_install.sh fingpt_install.sh finrobot_install.sh finrag_install.sh; do
-    if [ -f "$INSTALL_DIR/scripts/tools/$tool_script" ]; then
-        echo -e "${BLUE}Installiere ${tool_script%.sh} als Teil des Trading_AI-Profils...${NC}"
-        bash "$INSTALL_DIR/scripts/tools/$tool_script"
-    else
-        echo -e "${YELLOW}${tool_script} nicht gefunden. Überspringe diesen Baustein.${NC}"
-    fi
+  if [ -f "$INSTALL_DIR/scripts/tools/$tool_script" ]; then
+    echo -e "${BLUE}Installiere ${tool_script%.sh} als Teil des Trading_AI-Profils...${NC}"
+    bash "$INSTALL_DIR/scripts/tools/$tool_script"
+  else
+    echo -e "${YELLOW}${tool_script} nicht gefunden. Überspringe diesen Baustein.${NC}"
+  fi
 done
 
 echo -e "${GREEN}Trading_AI-Profil Installation abgeschlossen.${NC}"

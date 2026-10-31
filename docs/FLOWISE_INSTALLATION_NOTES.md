@@ -14,7 +14,9 @@ Die alte/falsche Quelle
 https://github.com/FlowiseAI/FlowiseChatbot.git
 ```
 
-ist nicht oeffentlich erreichbar und fuehrt bei `git clone` zu einer GitHub-Username-/Passwortabfrage. GitHub akzeptiert Passwort-Authentifizierung fuer Git ohnehin nicht mehr; fuer oeffentliche Tools soll das Setup deshalb gar nicht nach Credentials fragen.
+ist nicht oeffentlich erreichbar und fuehrt bei `git clone` zu einer
+GitHub-Username-/Passwortabfrage. GitHub akzeptiert Passwort-Authentifizierung fuer Git ohnehin
+nicht mehr; fuer oeffentliche Tools soll das Setup deshalb gar nicht nach Credentials fragen.
 
 ## Sicherer Setup-Pfad
 
@@ -24,11 +26,13 @@ Der Installer verwendet jetzt:
 GIT_TERMINAL_PROMPT=0 git clone https://github.com/FlowiseAI/Flowise.git /opt/flowise
 ```
 
-Dadurch bricht der Clone bei falscher URL sauber ab, statt interaktiv nach Username oder Token zu fragen.
+Dadurch bricht der Clone bei falscher URL sauber ab, statt interaktiv nach Username oder Token zu
+fragen.
 
 ## Abgebrochener Clone und `ERR_PNPM_NO_PKG_MANIFEST`
 
-Wenn der alte Installer bereits gelaufen ist, kann ein leerer oder unvollstaendiger Ordner liegen bleiben:
+Wenn der alte Installer bereits gelaufen ist, kann ein leerer oder unvollstaendiger Ordner liegen
+bleiben:
 
 ```text
 /opt/flowise
@@ -40,7 +44,8 @@ Dann findet `pnpm install` keine `package.json` und meldet:
 ERR_PNPM_NO_PKG_MANIFEST No package.json found
 ```
 
-Der neue Installer nutzt die zentrale Git-Reparaturlogik. Ein leerer oder unvollstaendiger Zielordner wird nicht blind geloescht, sondern unter
+Der neue Installer nutzt die zentrale Git-Reparaturlogik. Ein leerer oder unvollstaendiger
+Zielordner wird nicht blind geloescht, sondern unter
 
 ```text
 ~/.openclaw_ultimate_user_data/setup_repair_backups/
@@ -60,16 +65,18 @@ Das ist aber nicht mehr der Standardpfad des Installers.
 
 Flowise ist ein Node/pnpm-Projekt.
 
-| Bereich | Empfehlung |
-| --- | --- |
-| Node.js | Node 20.x erforderlich; Node 18 fuehrt zu `Unsupported engine` und darf nicht fuer den Build genutzt werden |
-| pnpm | Muss zur Node-20-Umgebung passen |
-| RAM | 4 GB Minimum, 8 GB+ empfohlen |
-| Speicher | mindestens 8 GB Linux-/WSL-Speicher fuer Repository, pnpm-Cache und Build |
-| Windows/WSL2 | mindestens 20 GB freier Windows-C:-Speicher empfohlen, falls die WSL-Distro auf C: liegt |
-| Ports | Flowise typischerweise lokal binden und nur ueber Auth/Reverse Proxy freigeben |
+| Bereich      | Empfehlung                                                                                                  |
+| ------------ | ----------------------------------------------------------------------------------------------------------- |
+| Node.js      | Node 20.x erforderlich; Node 18 fuehrt zu `Unsupported engine` und darf nicht fuer den Build genutzt werden |
+| pnpm         | Muss zur Node-20-Umgebung passen                                                                            |
+| RAM          | 4 GB Minimum, 8 GB+ empfohlen                                                                               |
+| Speicher     | mindestens 8 GB Linux-/WSL-Speicher fuer Repository, pnpm-Cache und Build                                   |
+| Windows/WSL2 | mindestens 20 GB freier Windows-C:-Speicher empfohlen, falls die WSL-Distro auf C: liegt                    |
+| Ports        | Flowise typischerweise lokal binden und nur ueber Auth/Reverse Proxy freigeben                              |
 
-Der Installer prueft diese Werte vor dem Build. Wenn Node 18.x gefunden wird, bricht er bewusst ab, weil Flowise aktuell Node 20.x erwartet und der Build sonst erst nach langer Laufzeit fehlschlagen oder beendet werden kann.
+Der Installer prueft diese Werte vor dem Build. Wenn Node 18.x gefunden wird, bricht er bewusst ab,
+weil Flowise aktuell Node 20.x erwartet und der Build sonst erst nach langer Laufzeit fehlschlagen
+oder beendet werden kann.
 
 Wenn eine passende Node-20-Installation bereits separat vorhanden ist:
 
@@ -93,4 +100,6 @@ FLOWISE_SKIP_WINDOWS_DISK_CHECK=true bash scripts/tools/flowise_install.sh
 
 ## Sicherheitsregel
 
-Keine GitHub-Zugangsdaten eingeben, wenn ein oeffentliches Tool geklont werden soll. Eine Username-Abfrage bedeutet hier fast immer: falsche URL, privates Repo, Netzwerkproblem oder veralteter Installer.
+Keine GitHub-Zugangsdaten eingeben, wenn ein oeffentliches Tool geklont werden soll. Eine
+Username-Abfrage bedeutet hier fast immer: falsche URL, privates Repo, Netzwerkproblem oder
+veralteter Installer.

@@ -28,8 +28,8 @@ detect_gpu() {
 clone_github_projects() {
   [ -f "$PROJECT_MANIFEST" ] || return 0
   mkdir -p "$PROFILE_ROOT/src"
-  while IFS='|' read -r profile name url purpose notes; do
-    case "$profile" in ""|\#*) continue ;; esac
+  while IFS='|' read -r profile name url _ _; do
+    case "$profile" in "" | \#*) continue ;; esac
     [ "$profile" = "$PROFILE_KEY" ] || continue
     target="$PROFILE_ROOT/src/$(printf '%s' "$name" | tr '[:upper:] /' '[:lower:]__')"
     if [ -d "$target/.git" ]; then
@@ -39,13 +39,13 @@ clone_github_projects() {
       log "Klone $name aus GitHub: $url"
       git clone "$url" "$target"
     fi
-  done < "$PROJECT_MANIFEST"
+  done <"$PROJECT_MANIFEST"
 }
 
 write_requirements() {
   case "$PROFILE_KEY" in
     Physik)
-      cat > "$PROFILE_ROOT/requirements.txt" <<'REQ'
+      cat >"$PROFILE_ROOT/requirements.txt" <<'REQ'
 jupyterlab
 numpy
 scipy
@@ -58,7 +58,7 @@ yt
 REQ
       ;;
     Chemie)
-      cat > "$PROFILE_ROOT/requirements.txt" <<'REQ'
+      cat >"$PROFILE_ROOT/requirements.txt" <<'REQ'
 jupyterlab
 numpy
 scipy
@@ -70,7 +70,7 @@ pubchempy
 REQ
       ;;
     Biologie)
-      cat > "$PROFILE_ROOT/requirements.txt" <<'REQ'
+      cat >"$PROFILE_ROOT/requirements.txt" <<'REQ'
 jupyterlab
 numpy
 pandas
@@ -82,7 +82,7 @@ scikit-image
 REQ
       ;;
     Bioinformatik)
-      cat > "$PROFILE_ROOT/requirements.txt" <<'REQ'
+      cat >"$PROFILE_ROOT/requirements.txt" <<'REQ'
 jupyterlab
 numpy
 pandas
@@ -94,7 +94,7 @@ snakemake
 REQ
       ;;
     Molekuelsimulation)
-      cat > "$PROFILE_ROOT/requirements.txt" <<'REQ'
+      cat >"$PROFILE_ROOT/requirements.txt" <<'REQ'
 jupyterlab
 numpy
 scipy
@@ -106,7 +106,7 @@ nglview
 REQ
       ;;
     Robotik_Labor)
-      cat > "$PROFILE_ROOT/requirements.txt" <<'REQ'
+      cat >"$PROFILE_ROOT/requirements.txt" <<'REQ'
 jupyterlab
 numpy
 pandas
@@ -118,7 +118,7 @@ opencv-python
 REQ
       ;;
     Materialwissenschaft)
-      cat > "$PROFILE_ROOT/requirements.txt" <<'REQ'
+      cat >"$PROFILE_ROOT/requirements.txt" <<'REQ'
 jupyterlab
 numpy
 scipy
@@ -157,7 +157,7 @@ else
   log "GitHub-Projekte nicht geklont. Aktivieren mit SCIENCE_CLONE_GITHUB=1."
 fi
 
-cat > "$PROFILE_ROOT/README.md" <<EOF
+cat >"$PROFILE_ROOT/README.md" <<EOF
 # $PROFILE_KEY Science Lab
 
 Lokaler Profilordner fuer $PROFILE_KEY.
@@ -173,4 +173,3 @@ EOF
 
 log "Freier Speicher nach Ende: $(free_gb) GB"
 log "Profil vorbereitet: $PROFILE_ROOT"
-

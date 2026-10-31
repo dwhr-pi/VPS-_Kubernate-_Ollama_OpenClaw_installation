@@ -1,56 +1,40 @@
-# 🔒 Installation aus einem privaten Repository
+# Installation aus einem privaten Repository
 
-Dieses Dokument beschreibt, wie Sie das **OpenClaw Ultimate Setup V4** sicher aus einem privaten GitHub-Repository installieren können. Da private Repositories eine Authentifizierung erfordern, ist der Standard-`curl`-Befehl hier etwas komplexer.
+Die fruehere V4-Anleitung empfahl Tokens in Clone-URLs und `curl | bash`. Diese unsicheren Verfahren
+sind zurueckgezogen: URLs landen in Git-Konfigurationen, Logs und Prozessargumenten. Ein Loeschen
+der Shell-History behebt diese Offenlegung nicht.
 
----
+## Zugriff vorbereiten
 
-## 🔑 1. GitHub Personal Access Token (PAT) erstellen
+Einen bereits eingerichteten SSH-Zugang oder einen geschuetzten Git-Credential-Manager verwenden.
+Keine Schluessel hier hochladen und keine Zugangsdaten in URLs, Skripte oder Git schreiben.
 
-Bevor Sie beginnen, müssen Sie ein Token erstellen, um den Zugriff auf Ihr privates Repository zu autorisieren:
+Falls ein PAT benoetigt wird, unter
+[GitHub Fine-grained Tokens](https://github.com/settings/tokens?type=beta) nur das eigene Repository
+und `Contents: Read-only` freigeben, kurze Laufzeit setzen und den Token ausschliesslich im
+Credential-Manager hinterlegen. Bereits ueber URL oder Prozessargumente offengelegte Tokens
+widerrufen und ersetzen. Keine fremden Credentials auslesen.
 
-1.  Gehen Sie zu [GitHub Settings > Developer settings > Personal access tokens > Fine-grained tokens](https://github.com/settings/tokens?type=beta).
-2.  Klicken Sie auf **Generate new token**.
-3.  Geben Sie dem Token einen Namen (z. B. "OpenClaw-Installer").
-4.  Wählen Sie unter **Repository access** die Option "Only select repositories" und wählen Sie `VPS-_Kubernate-_Ollama_OpenClaw_installation` aus.
-5.  Geben Sie unter **Permissions** dem Repository "Contents" die Berechtigung **Read-only**.
-6.  Klicken Sie auf **Generate token** und kopieren Sie das Token sicher (es wird nur einmal angezeigt!).
+## Zuerst nur Quellen herunterladen
 
----
-
-## 🚀 2. Installation via `git clone` (Empfohlen)
-
-Dies ist der sicherste und einfachste Weg für private Repositories. Ersetzen Sie `DEIN_TOKEN` durch das zuvor erstellte Token:
-
-```bash
-# Repository klonen (Token wird für die Authentifizierung genutzt)
-git clone https://DEIN_TOKEN@github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation.git openclaw_setup
-
-# In das Verzeichnis wechseln und das Setup starten
-cd openclaw_setup && bash ./setup_ultimate.sh
-```
-
----
-
-## 📡 3. Installation via `curl` (Alternativ)
-
-Wenn Sie unbedingt einen One-Liner mit `curl` verwenden möchten, sieht der Befehl für ein privates Repository wie folgt aus:
+Die folgenden Befehle setzen einen bereits eingerichteten und separat geprueften SSH-Zugang voraus.
+Sie starten keinen Installer:
 
 ```bash
-curl -H "Authorization: token DEIN_TOKEN" \
-     -L https://raw.githubusercontent.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation/main/install.sh | bash
+git clone --no-recurse-submodules git@github.com:dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation.git openclaw_setup
+cd openclaw_setup
+git status --short
+git rev-parse HEAD
 ```
 
-**⚠️ Wichtig:** Bei dieser Methode müssen Sie sicherstellen, dass das `install.sh` Skript innerhalb Ihres Repositories ebenfalls so angepasst ist, dass es das Klonen des privaten Repositories mit dem Token unterstützt.
+Repository-Inhalt allein ist kein unabhaengiger Vertrauensanker. Vor Ausfuehrung dem
+[signierten Release-Pfad](SIGNED_RELEASES.md) mit separat erhaltenem Minisign-Schluessel folgen.
+Ohne verifizierte Signatur keine Release-Installation. Unsigniertes Main oder ein Featurebranch ist
+keine gleichwertige sichere Alternative; Ausnahmen bleiben bewusstes Opt-in.
 
----
+## Betrieb
 
-## 🛡️ Sicherheitshinweise
-
-*   **Token-Geheimhaltung:** Geben Sie Ihr Personal Access Token niemals an Dritte weiter.
-*   **Token-Löschung:** Wenn Sie die Installation abgeschlossen haben und keinen weiteren Zugriff mehr benötigen, können Sie das Token in Ihren GitHub-Einstellungen wieder löschen.
-*   **Verlauf löschen:** Wenn Sie das Token direkt im Terminal eingegeben haben, sollten Sie Ihren Befehlsverlauf bereinigen:
-    ```bash
-    history -c && history -w
-    ```
-
-Viel Erfolg bei der Einrichtung Ihres geschützten Systems!
+Benutzerdaten und `.env` bleiben im externen Workspace `~/.openclaw_ultimate_user_data`, niemals im
+Checkout. Zugangsdaten nicht an Support-Adressen senden. Nicht mehr benoetigte PATs widerrufen; ein
+SSH-Schluessel muss nicht fuer jeden Installationsversuch neu erstellt werden. Der private Download
+ersetzt weder Code-Review noch Integritaetspruefung.

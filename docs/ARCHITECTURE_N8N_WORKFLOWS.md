@@ -33,4 +33,3 @@
 - Nach jedem Meilenstein Snapshot.
 - Rendercache nach Alter/Groesse bereinigen.
 - Kritische Projektdateien extern sichern.
-

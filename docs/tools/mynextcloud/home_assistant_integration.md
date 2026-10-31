@@ -16,4 +16,5 @@
 
 ## Beispiel
 
-Home Assistant Automation sendet bei Backup-Erfolg einen Webhook an n8n, n8n schreibt `backup_report.md` in myNextCloud und sendet eine lokale Benachrichtigung.
+Home Assistant Automation sendet bei Backup-Erfolg einen Webhook an n8n, n8n schreibt
+`backup_report.md` in myNextCloud und sendet eine lokale Benachrichtigung.

@@ -18,7 +18,7 @@ find "$ROOT_DIR" -path "$ROOT_DIR/.git" -prune -o \
   -path "*/node_modules/*" -prune -o \
   -path "*/venv/*" -prune -o \
   -path "*/.venv/*" -prune -o \
-  \( -name ".env" -o -name "*.pem" -o -name "*.key" -o -path "*/secrets/*" \) -print > "$tmp_files" 2>/dev/null || true
+  \( -name ".env" -o -name "*.pem" -o -name "*.key" -o -path "*/secrets/*" \) -print >"$tmp_files" 2>/dev/null || true
 
 if [[ -s "$tmp_files" ]]; then
   echo "WARN: Potenziell sensible Dateien im Repository gefunden. Bitte nur .env.example, Platzhalter oder externe User-Daten nutzen."
@@ -31,12 +31,12 @@ if command -v rg >/dev/null 2>&1; then
     timeout 30 rg -l --hidden --no-messages \
       --glob '!.git/**' --glob '!node_modules/**' --glob '!**/venv/**' --glob '!**/.venv/**' \
       --glob '!*.log' --glob '!*.png' --glob '!*.jpg' --glob '!*.jpeg' --glob '!*.webp' --glob '!*.zip' --glob '!*.tar' --glob '!*.gz' \
-      '(OPENAI_API_KEY|ANTHROPIC_API_KEY|GEMINI_API_KEY|AWS_SECRET_ACCESS_KEY|PRIVATE KEY|password *= *[^_ <>{}]|token *= *[^_ <>{}])' "$ROOT_DIR" > "$tmp_patterns" 2>/dev/null || true
+      '(OPENAI_API_KEY|ANTHROPIC_API_KEY|GEMINI_API_KEY|AWS_SECRET_ACCESS_KEY|PRIVATE KEY|password *= *[^_ <>{}]|token *= *[^_ <>{}])' "$ROOT_DIR" >"$tmp_patterns" 2>/dev/null || true
   else
     rg -l --hidden --no-messages \
       --glob '!.git/**' --glob '!node_modules/**' --glob '!**/venv/**' --glob '!**/.venv/**' \
       --glob '!*.log' --glob '!*.png' --glob '!*.jpg' --glob '!*.jpeg' --glob '!*.webp' --glob '!*.zip' --glob '!*.tar' --glob '!*.gz' \
-      '(OPENAI_API_KEY|ANTHROPIC_API_KEY|GEMINI_API_KEY|AWS_SECRET_ACCESS_KEY|PRIVATE KEY|password *= *[^_ <>{}]|token *= *[^_ <>{}])' "$ROOT_DIR" > "$tmp_patterns" 2>/dev/null || true
+      '(OPENAI_API_KEY|ANTHROPIC_API_KEY|GEMINI_API_KEY|AWS_SECRET_ACCESS_KEY|PRIVATE KEY|password *= *[^_ <>{}]|token *= *[^_ <>{}])' "$ROOT_DIR" >"$tmp_patterns" 2>/dev/null || true
   fi
   if [[ -s "$tmp_patterns" ]]; then
     echo "WARN: Dateien mit potenziellen Secret-Mustern gefunden. Werte werden absichtlich nicht angezeigt:"

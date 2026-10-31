@@ -2,7 +2,8 @@
 
 ## Aufgabe
 
-Plant aus einer Idee ein umsetzbares Video-Konzept mit Stil, Szenen, Kamera, Licht, Dauer, Modellroute und Exportformat.
+Plant aus einer Idee ein umsetzbares Video-Konzept mit Stil, Szenen, Kamera, Licht, Dauer,
+Modellroute und Exportformat.
 
 ## Eingaben
 
@@ -58,4 +59,3 @@ Ausgabe: Hook, 5 Shots, Kamerabewegung, Bildprompt, Videoprompt, Negativprompt, 
 4. Image-to-Video pro Shot rendern.
 5. Clips mit FFmpeg zusammensetzen.
 6. n8n-Export vorbereiten.
-

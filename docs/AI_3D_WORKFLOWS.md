@@ -1,6 +1,8 @@
 # AI 3D Workflow Templates
 
-Diese Datei beschreibt die geplanten ComfyUI- und Blender-Workflows. Die echten ComfyUI-JSON-Dateien muessen nach Installation der lokalen Nodes aus ComfyUI exportiert und an Modellpfade angepasst werden.
+Diese Datei beschreibt die geplanten ComfyUI- und Blender-Workflows. Die echten ComfyUI-JSON-Dateien
+muessen nach Installation der lokalen Nodes aus ComfyUI exportiert und an Modellpfade angepasst
+werden.
 
 ## text_to_3d.json
 
@@ -36,4 +38,3 @@ Diese Datei beschreibt die geplanten ComfyUI- und Blender-Workflows. Die echten 
 - Klare geometrische Beschreibung.
 - Mesh auf Massstab, Wandstaerke und Druckbarkeit pruefen.
 - STL-Export und optional Screenshot/Turntable.
-

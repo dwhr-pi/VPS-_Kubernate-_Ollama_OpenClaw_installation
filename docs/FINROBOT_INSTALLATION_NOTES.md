@@ -8,7 +8,8 @@ Unter Ubuntu 24.04/Noble kann FinRobot mit dem Standard-Python fehlschlagen:
 ERROR: Package 'finrobot' requires a different Python: 3.12.3 not in '<3.12,>=3.10'
 ```
 
-FinRobot erlaubt aktuell Python `>=3.10` und `<3.12`. Ubuntu 24.04 bringt standardmaessig Python `3.12` mit, was fuer dieses Paket zu neu ist.
+FinRobot erlaubt aktuell Python `>=3.10` und `<3.12`. Ubuntu 24.04 bringt standardmaessig Python
+`3.12` mit, was fuer dieses Paket zu neu ist.
 
 ## Sicherer Installationspfad
 
@@ -31,15 +32,14 @@ Dieses Python wird nur fuer die FinRobot-Venv genutzt. `/usr/bin/python3` bleibt
 
 ## Sudo-Pruefung vor langem Build
 
-Der CPython-Build kann einige Minuten dauern. Der Installer prueft deshalb
-`sudo` jetzt direkt vor dem Build mit `sudo -v`. Wenn das Passwort falsch
-eingegeben wird, etwa durch CapsLock oder Tastaturlayout, bricht der Installer
-sofort ab und nicht erst nach `make`.
+Der CPython-Build kann einige Minuten dauern. Der Installer prueft deshalb `sudo` jetzt direkt vor
+dem Build mit `sudo -v`. Wenn das Passwort falsch eingegeben wird, etwa durch CapsLock oder
+Tastaturlayout, bricht der Installer sofort ab und nicht erst nach `make`.
 
-Nach dem Anlegen und Uebergeben von `/opt/openclaw-python` an den aktuellen
-Benutzer laeuft `make altinstall` ohne spaetes `sudo`. Dadurch bleibt der
-isolierte Python-Pfad sicher vom System-Python getrennt, aber der Build scheitert
-nicht mehr erst ganz am Ende an einer abgelaufenen sudo-Sitzung.
+Nach dem Anlegen und Uebergeben von `/opt/openclaw-python` an den aktuellen Benutzer laeuft
+`make altinstall` ohne spaetes `sudo`. Dadurch bleibt der isolierte Python-Pfad sicher vom
+System-Python getrennt, aber der Build scheitert nicht mehr erst ganz am Ende an einer abgelaufenen
+sudo-Sitzung.
 
 Beispiel:
 
@@ -56,16 +56,16 @@ bash scripts/tools/finrobot_install.sh --dry-run
 
 ## Ressourcenbedarf
 
-| Bereich | Empfehlung |
-| --- | --- |
-| Python | 3.10 oder 3.11 |
-| RAM | 4 GB Minimum, 8 GB+ empfohlen |
-| Linux-/WSL-Speicher | mindestens 20 GB frei |
-| Windows-C:-Speicher bei WSL2 | mindestens 20 GB frei, 50 GB empfohlen |
-| pip-Cache | standardmaessig deaktiviert, damit grosse Wheels nicht doppelt Speicher verbrauchen |
-| PyTorch | CPU-only PyTorch wird auf x86_64 vorab installiert, damit pip keine CUDA-/NVIDIA-Wheels zieht |
-| Ports | keine Standardports |
-| WSL2 | geeignet, wenn Python 3.10/3.11 vorhanden ist |
+| Bereich                      | Empfehlung                                                                                    |
+| ---------------------------- | --------------------------------------------------------------------------------------------- |
+| Python                       | 3.10 oder 3.11                                                                                |
+| RAM                          | 4 GB Minimum, 8 GB+ empfohlen                                                                 |
+| Linux-/WSL-Speicher          | mindestens 20 GB frei                                                                         |
+| Windows-C:-Speicher bei WSL2 | mindestens 20 GB frei, 50 GB empfohlen                                                        |
+| pip-Cache                    | standardmaessig deaktiviert, damit grosse Wheels nicht doppelt Speicher verbrauchen           |
+| PyTorch                      | CPU-only PyTorch wird auf x86_64 vorab installiert, damit pip keine CUDA-/NVIDIA-Wheels zieht |
+| Ports                        | keine Standardports                                                                           |
+| WSL2                         | geeignet, wenn Python 3.10/3.11 vorhanden ist                                                 |
 
 ## Fehlerbild: `Input/output error` bei pip
 
@@ -75,15 +75,20 @@ Wenn Windows-C: fast voll ist, kann pip nach grossen Downloads mit einem I/O-Feh
 ERROR: Could not install packages due to an OSError: [Errno 5] Input/output error
 ```
 
-Im beobachteten Log waren nur ca. 5,4 GB auf Windows C: frei. Gleichzeitig wurden grosse CUDA-/NVIDIA-Wheels geladen, z. B. `nvidia_cublas_cu12`, `nvidia_cudnn_cu12`, `nvidia_cusparse_cu12` und `triton`. Unter WSL kann das die VHDX wachsen lassen, obwohl Linux selbst noch viel freien Speicher meldet.
+Im beobachteten Log waren nur ca. 5,4 GB auf Windows C: frei. Gleichzeitig wurden grosse
+CUDA-/NVIDIA-Wheels geladen, z. B. `nvidia_cublas_cu12`, `nvidia_cudnn_cu12`, `nvidia_cusparse_cu12`
+und `triton`. Unter WSL kann das die VHDX wachsen lassen, obwohl Linux selbst noch viel freien
+Speicher meldet.
 
-Der Installer bricht deshalb jetzt bei zu wenig Windows-C:-Speicher vor dem pip-Schritt ab. Zusaetzlich wird auf Intel/AMD `x86_64` zuerst CPU-only PyTorch installiert:
+Der Installer bricht deshalb jetzt bei zu wenig Windows-C:-Speicher vor dem pip-Schritt ab.
+Zusaetzlich wird auf Intel/AMD `x86_64` zuerst CPU-only PyTorch installiert:
 
 ```bash
 pip install --index-url https://download.pytorch.org/whl/cpu torch
 ```
 
-Dadurch sollen unnoetige CUDA-Gigabyte auf WSL/MiniPC vermieden werden. Wenn du bewusst GPU-/CUDA-Abhaengigkeiten testen willst:
+Dadurch sollen unnoetige CUDA-Gigabyte auf WSL/MiniPC vermieden werden. Wenn du bewusst
+GPU-/CUDA-Abhaengigkeiten testen willst:
 
 ```bash
 FINROBOT_PREINSTALL_CPU_TORCH=false bash scripts/tools/finrobot_install.sh
@@ -91,4 +96,6 @@ FINROBOT_PREINSTALL_CPU_TORCH=false bash scripts/tools/finrobot_install.sh
 
 ## Warum kein automatisches Python-Downgrade?
 
-Python ist Teil des Ubuntu-Basissystems. Ein Ersetzen oder Downgrade von `python3` kann Paketverwaltung und Systemtools beschaedigen. Deshalb baut das Setup bei Bedarf ein separates Python unter `/opt/openclaw-python` und verwendet es nur fuer FinRobot.
+Python ist Teil des Ubuntu-Basissystems. Ein Ersetzen oder Downgrade von `python3` kann
+Paketverwaltung und Systemtools beschaedigen. Deshalb baut das Setup bei Bedarf ein separates Python
+unter `/opt/openclaw-python` und verwendet es nur fuer FinRobot.

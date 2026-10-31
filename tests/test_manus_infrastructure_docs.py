@@ -1,6 +1,7 @@
 """Offline source-catalogue checks; no infrastructure, package or network access."""
 from pathlib import Path
 import re
+from doc_assertions import assert_prose_in, assert_prose_not_in
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -55,7 +56,7 @@ class ManusInfrastructureDocs(unittest.TestCase):
                        "GCC GitHub-Mirror", "PostgreSQL GitHub-Mirror",
                        "Issue-Tracker/Code-Mirror", "https://github.com/dbt-labs/dbt",
                        "https://gcc.gnu.org/git.html", "https://www.postgresql.org/docs/current/git.html"):
-            self.assertIn(phrase, self.text)
+            assert_prose_in(self, phrase, self.text)
 
     def test_side_effects_and_no_install_boundaries_are_clear(self):
         for phrase in ("Keine neuen Installer", "kein Docker-/WSL-Zugriff",

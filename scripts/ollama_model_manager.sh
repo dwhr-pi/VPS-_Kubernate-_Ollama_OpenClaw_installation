@@ -21,124 +21,126 @@ MODEL_TO_INSTALL_FILE="/tmp/model_to_install"
 MODEL_TO_UNINSTALL_FILE="/tmp/model_to_uninstall"
 
 cleanup_temp_files() {
-    rm -f "$OLLAMA_CHOICE_FILE" "$MODEL_TO_INSTALL_FILE" "$MODEL_TO_UNINSTALL_FILE"
+  rm -f "$OLLAMA_CHOICE_FILE" "$MODEL_TO_INSTALL_FILE" "$MODEL_TO_UNINSTALL_FILE"
 }
 
 ensure_ollama_available() {
-    if ! command -v ollama >/dev/null 2>&1; then
-        echo -e "${RED}Fehler: Ollama ist nicht installiert. Bitte installieren Sie Ollama zuerst.${NC}"
-        exit 1
-    fi
+  if ! command -v ollama >/dev/null 2>&1; then
+    echo -e "${RED}Fehler: Ollama ist nicht installiert. Bitte installieren Sie Ollama zuerst.${NC}"
+    exit 1
+  fi
 
-    if ! ollama list >/dev/null 2>&1; then
-        echo -e "${RED}Fehler: Ollama ist installiert, aber der Dienst ist nicht erreichbar.${NC}"
-        echo -e "${YELLOW}Bitte starten Sie Ollama zuerst, z.B. mit 'ollama serve' oder über den Systemdienst.${NC}"
-        exit 1
-    fi
+  if ! ollama list >/dev/null 2>&1; then
+    echo -e "${RED}Fehler: Ollama ist installiert, aber der Dienst ist nicht erreichbar.${NC}"
+    echo -e "${YELLOW}Bitte starten Sie Ollama zuerst, z.B. mit 'ollama serve' oder über den Systemdienst.${NC}"
+    exit 1
+  fi
 }
 
 show_ollama_menu() {
-    rm -f "$OLLAMA_CHOICE_FILE"
-    dialog --clear --backtitle "Ollama Modell-Manager" \
+  rm -f "$OLLAMA_CHOICE_FILE"
+  dialog --clear --backtitle "Ollama Modell-Manager" \
     --title "OLLAMA MODELLE" --menu "Wählen Sie eine Aktion:" 15 60 5 \
     "1" "Installierte Modelle anzeigen" \
     "2" "Modell installieren" \
     "3" "Modell deinstallieren" \
-    "4" "Zurück zum Hauptmenü" 2> "$OLLAMA_CHOICE_FILE"
+    "4" "Zurück zum Hauptmenü" 2>"$OLLAMA_CHOICE_FILE"
 }
 
 list_installed_models() {
-    echo -e "${BLUE}Installierte Ollama Modelle:${NC}"
-    if ! ollama list; then
-        echo -e "${RED}Fehler: Installierte Modelle konnten nicht abgefragt werden.${NC}"
-    fi
-    read -r -p "Drücken Sie Enter, um fortzufahren..."
+  echo -e "${BLUE}Installierte Ollama Modelle:${NC}"
+  if ! ollama list; then
+    echo -e "${RED}Fehler: Installierte Modelle konnten nicht abgefragt werden.${NC}"
+  fi
+  read -r -p "Drücken Sie Enter, um fortzufahren..."
 }
 
 install_ollama_model() {
-    local model_name
-    local sanitized_model_name
+  local model_name
+  local sanitized_model_name
 
-    rm -f "$MODEL_TO_INSTALL_FILE"
-    dialog --clear --backtitle "Ollama Modell-Manager" \
-    --inputbox "Geben Sie den Namen des zu installierenden Modells ein (z.B. llama3.2:1b, mistral, deepseek-coder):" 10 60 "" 2> "$MODEL_TO_INSTALL_FILE"
+  rm -f "$MODEL_TO_INSTALL_FILE"
+  if ! dialog --clear --backtitle "Ollama Modell-Manager" \
+    --inputbox "Geben Sie den Namen des zu installierenden Modells ein (z.B. llama3.2:1b, mistral, deepseek-coder):" 10 60 "" 2>"$MODEL_TO_INSTALL_FILE"; then
+    return 0
+  fi
+  if [ ! -f "$MODEL_TO_INSTALL_FILE" ]; then
+    return
+  fi
 
-    if [ $? -ne 0 ] || [ ! -f "$MODEL_TO_INSTALL_FILE" ]; then
-        return
-    fi
-
-    model_name="$(tr -d '\r' < "$MODEL_TO_INSTALL_FILE")"
-    if [ -z "$model_name" ]; then
-        echo -e "${YELLOW}Kein Modellname eingegeben.${NC}"
-        read -r -p "Drücken Sie Enter, um fortzufahren..."
-        return
-    fi
-
-    echo -e "${BLUE}Installiere Modell: ${model_name}...${NC}"
-    sanitized_model_name="$(printf '%s' "$model_name" | tr '/: .' '_---')"
-    begin_measurement "ollama_model_install_${sanitized_model_name}" "Ollama Modell installieren: ${model_name}"
-    if ollama pull "$model_name"; then
-        end_measurement "success"
-        echo -e "${GREEN}Modell ${model_name} erfolgreich installiert.${NC}"
-    else
-        end_measurement "failed"
-        echo -e "${RED}Fehler bei der Installation von Modell ${model_name}.${NC}"
-    fi
+  model_name="$(tr -d '\r' <"$MODEL_TO_INSTALL_FILE")"
+  if [ -z "$model_name" ]; then
+    echo -e "${YELLOW}Kein Modellname eingegeben.${NC}"
     read -r -p "Drücken Sie Enter, um fortzufahren..."
+    return
+  fi
+
+  echo -e "${BLUE}Installiere Modell: ${model_name}...${NC}"
+  sanitized_model_name="${model_name//\//_}"
+  sanitized_model_name="${sanitized_model_name//[: .]/-}"
+  begin_measurement "ollama_model_install_${sanitized_model_name}" "Ollama Modell installieren: ${model_name}"
+  if ollama pull "$model_name"; then
+    end_measurement "success"
+    echo -e "${GREEN}Modell ${model_name} erfolgreich installiert.${NC}"
+  else
+    end_measurement "failed"
+    echo -e "${RED}Fehler bei der Installation von Modell ${model_name}.${NC}"
+  fi
+  read -r -p "Drücken Sie Enter, um fortzufahren..."
 }
 
 uninstall_ollama_model() {
-    local model_name
-    local sanitized_model_name
+  local model_name
+  local sanitized_model_name
 
-    rm -f "$MODEL_TO_UNINSTALL_FILE"
-    dialog --clear --backtitle "Ollama Modell-Manager" \
-    --inputbox "Geben Sie den Namen des zu deinstallierenden Modells ein:" 10 60 "" 2> "$MODEL_TO_UNINSTALL_FILE"
+  rm -f "$MODEL_TO_UNINSTALL_FILE"
+  if ! dialog --clear --backtitle "Ollama Modell-Manager" \
+    --inputbox "Geben Sie den Namen des zu deinstallierenden Modells ein:" 10 60 "" 2>"$MODEL_TO_UNINSTALL_FILE"; then
+    return 0
+  fi
+  if [ ! -f "$MODEL_TO_UNINSTALL_FILE" ]; then
+    return
+  fi
 
-    if [ $? -ne 0 ] || [ ! -f "$MODEL_TO_UNINSTALL_FILE" ]; then
-        return
-    fi
-
-    model_name="$(tr -d '\r' < "$MODEL_TO_UNINSTALL_FILE")"
-    if [ -z "$model_name" ]; then
-        echo -e "${YELLOW}Kein Modellname eingegeben.${NC}"
-        read -r -p "Drücken Sie Enter, um fortzufahren..."
-        return
-    fi
-
-    echo -e "${BLUE}Deinstalliere Modell: ${model_name}...${NC}"
-    sanitized_model_name="$(printf '%s' "$model_name" | tr '/: .' '_---')"
-    begin_measurement "ollama_model_uninstall_${sanitized_model_name}" "Ollama Modell deinstallieren: ${model_name}"
-    if ollama rm "$model_name"; then
-        end_measurement "success"
-        echo -e "${GREEN}Modell ${model_name} erfolgreich deinstalliert.${NC}"
-    else
-        end_measurement "failed"
-        echo -e "${RED}Fehler bei der Deinstallation von Modell ${model_name}.${NC}"
-    fi
+  model_name="$(tr -d '\r' <"$MODEL_TO_UNINSTALL_FILE")"
+  if [ -z "$model_name" ]; then
+    echo -e "${YELLOW}Kein Modellname eingegeben.${NC}"
     read -r -p "Drücken Sie Enter, um fortzufahren..."
+    return
+  fi
+
+  echo -e "${BLUE}Deinstalliere Modell: ${model_name}...${NC}"
+  sanitized_model_name="${model_name//\//_}"
+  sanitized_model_name="${sanitized_model_name//[: .]/-}"
+  begin_measurement "ollama_model_uninstall_${sanitized_model_name}" "Ollama Modell deinstallieren: ${model_name}"
+  if ollama rm "$model_name"; then
+    end_measurement "success"
+    echo -e "${GREEN}Modell ${model_name} erfolgreich deinstalliert.${NC}"
+  else
+    end_measurement "failed"
+    echo -e "${RED}Fehler bei der Deinstallation von Modell ${model_name}.${NC}"
+  fi
+  read -r -p "Drücken Sie Enter, um fortzufahren..."
 }
 
 ensure_ollama_available
 trap cleanup_temp_files EXIT
 
 while true; do
-    show_ollama_menu
+  if ! show_ollama_menu || [ ! -f "$OLLAMA_CHOICE_FILE" ]; then
+    break
+  fi
 
-    if [ $? -ne 0 ] || [ ! -f "$OLLAMA_CHOICE_FILE" ]; then
-        break
-    fi
+  OLLAMA_CHOICE="$(tr -d '\r' <"$OLLAMA_CHOICE_FILE")"
 
-    OLLAMA_CHOICE="$(tr -d '\r' < "$OLLAMA_CHOICE_FILE")"
-
-    case "$OLLAMA_CHOICE" in
-        1) list_installed_models ;;
-        2) install_ollama_model ;;
-        3) uninstall_ollama_model ;;
-        4) break ;;
-        *)
-            echo -e "${RED}Ungültige Auswahl. Bitte versuchen Sie es erneut.${NC}"
-            sleep 2
-            ;;
-    esac
+  case "$OLLAMA_CHOICE" in
+    1) list_installed_models ;;
+    2) install_ollama_model ;;
+    3) uninstall_ollama_model ;;
+    4) break ;;
+    *)
+      echo -e "${RED}Ungültige Auswahl. Bitte versuchen Sie es erneut.${NC}"
+      sleep 2
+      ;;
+  esac
 done

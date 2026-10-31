@@ -2,7 +2,8 @@
 
 ## Zweck
 
-Synthetische Testdaten, RAG-Fragen, Prompt-Testfaelle und vorbereitende Datenarbeit fuer lokale AI-Systeme.
+Synthetische Testdaten, RAG-Fragen, Prompt-Testfaelle und vorbereitende Datenarbeit fuer lokale
+AI-Systeme.
 
 ## Installierbare Kern-Tools
 

@@ -2,6 +2,7 @@
 import ast
 from pathlib import Path
 import re
+from doc_assertions import assert_prose_in, assert_prose_not_in
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -42,28 +43,28 @@ class Token8341Docs(unittest.TestCase):
         text = DOC.read_text(encoding="utf-8")
         for phrase in ("Widerspruch", "Upstream", "keine Empfehlung",
                        "keine zutreffende pauschale Rechtsbewertung", "keine geprueften"):
-            self.assertIn(phrase.lower(), text.lower())
-        self.assertIn("nicht aktiviert", text)
+            assert_prose_in(self, phrase.lower(), text.lower())
+        assert_prose_in(self, "nicht aktiviert", text)
 
     def test_research_distinguishes_evidence_from_unverified_community_claims(self):
         text = DOC.read_text(encoding="utf-8")
         for phrase in ("## Recherche und Quellenbewertung", "keine konkret pruefbaren Reddit-",
                        "Unser eigenes Repository", "nicht belegt", "kein gemessener token8341-Vorfall",
                        "Unabhaengigkeit nicht verifiziert", "kein Nachweis eines Ausfalls"):
-            self.assertIn(phrase, text)
+            assert_prose_in(self, phrase, text)
         for source in ("https://developer.cloud.tencent.com/article/2695833",
                        "https://blog.51cto.com/u_12227/14914057",
                        "https://www.scamadviser.com/check-website/token8341.com",
                        "https://token8341.com/fa/terms"):
-            self.assertIn("](" + source + ")", text)
+            assert_prose_in(self, "](" + source + ")", text)
 
     def test_host_uncertainty_does_not_enable_cloud_or_automatic_fallback(self):
         text = DOC.read_text(encoding="utf-8")
-        self.assertIn("TOKEN8341_ALLOW_CLOUD=0", text)
-        self.assertIn("Keine Keys auf Hosts verteilen", text)
-        self.assertIn("Host-Allowlist und Redirect-Sperre", text)
-        self.assertIn("www.token8341.com/v1", text)
-        self.assertIn("api.token8341.com/v1", text)
+        assert_prose_in(self, "TOKEN8341_ALLOW_CLOUD=0", text)
+        assert_prose_in(self, "Keine Keys auf Hosts verteilen", text)
+        assert_prose_in(self, "Host-Allowlist und Redirect-Sperre", text)
+        assert_prose_in(self, "www.token8341.com/v1", text)
+        assert_prose_in(self, "api.token8341.com/v1", text)
 
 
 if __name__ == "__main__":

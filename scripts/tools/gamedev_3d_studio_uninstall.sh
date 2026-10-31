@@ -9,8 +9,8 @@ echo "Zum vollstaendigen Entfernen bewusst ausfuehren:"
 echo "  rm -rf \"$GAMEDEV_HOME\""
 
 if [ "${GAMEDEV_REMOVE_ALL:-0}" = "1" ]; then
-    rm -rf "$GAMEDEV_HOME"
-    echo "GameDev 3D Studio Daten wurden entfernt."
+  rm -rf "$GAMEDEV_HOME"
+  echo "GameDev 3D Studio Daten wurden entfernt."
 else
-    echo "Keine Daten geloescht. Setze GAMEDEV_REMOVE_ALL=1 fuer bewusste Entfernung."
+  echo "Keine Daten geloescht. Setze GAMEDEV_REMOVE_ALL=1 fuer bewusste Entfernung."
 fi

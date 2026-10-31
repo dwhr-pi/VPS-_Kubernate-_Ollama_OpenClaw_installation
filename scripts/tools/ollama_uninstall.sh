@@ -26,8 +26,8 @@ sudo systemctl daemon-reload >/dev/null 2>&1 || true
 sudo rm -rf /usr/share/ollama /var/lib/ollama
 
 if command -v ollama >/dev/null 2>&1; then
-    echo -e "${RED}Fehler: Ollama scheint noch installiert zu sein.${NC}"
-    exit 1
+  echo -e "${RED}Fehler: Ollama scheint noch installiert zu sein.${NC}"
+  exit 1
 fi
 
 echo -e "${GREEN}Ollama Deinstallation abgeschlossen.${NC}"

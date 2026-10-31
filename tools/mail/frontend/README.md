@@ -1,7 +1,7 @@
 # mail-control-panel Frontend
 
-Das Frontend ist als eigenes kleines Control Panel geplant. Es soll Stalwart
-nicht forken, sondern ueber das Backend verwalten.
+Das Frontend ist als eigenes kleines Control Panel geplant. Es soll Stalwart nicht forken, sondern
+ueber das Backend verwalten.
 
 ## Bevorzugte Technik
 

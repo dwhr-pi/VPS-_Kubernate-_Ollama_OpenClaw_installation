@@ -9,8 +9,10 @@ Im Setup stehen jetzt zwei Wege bereit:
 
 Hinweis:
 
-- Für weitere Informationen zu einzelnen Modellen siehe in der Online-Dokumentation und im Modellkatalog nach.
-- Modell-Installationen und Deinstallationen werden jetzt im Ollama Modell-Manager zeitlich mitgemessen und im Benutzer-Workspace protokolliert.
+- Für weitere Informationen zu einzelnen Modellen siehe in der Online-Dokumentation und im
+  Modellkatalog nach.
+- Modell-Installationen und Deinstallationen werden jetzt im Ollama Modell-Manager zeitlich
+  mitgemessen und im Benutzer-Workspace protokolliert.
 
 ## Empfohlene Gruppen
 
@@ -22,7 +24,8 @@ Hinweis:
 
 Die kuratierte Übersicht findest du in [docs/OLLAMA_MODEL_CATALOG.md](OLLAMA_MODEL_CATALOG.md).
 
-Eine eigene Einordnung speziell fuer Mistral AI steht in [docs/MISTRAL_AI_INTEGRATION.md](MISTRAL_AI_INTEGRATION.md).
+Eine eigene Einordnung speziell fuer Mistral AI steht in
+[docs/MISTRAL_AI_INTEGRATION.md](MISTRAL_AI_INTEGRATION.md).
 
 Die Messwerte landen hier:
 

@@ -30,8 +30,11 @@ if [[ "$command_text" == *$'\n'* || "$command_text" == *$'\r'* || "$command_text
   exit 1
 fi
 case "$priority" in
-  low|normal|high) ;;
-  *) echo "Fehler: Prioritaet muss low, normal oder high sein." >&2; exit 1 ;;
+  low | normal | high) ;;
+  *)
+    echo "Fehler: Prioritaet muss low, normal oder high sein." >&2
+    exit 1
+    ;;
 esac
 if [[ ! "${DEFAULT_TIMEOUT_SECONDS:-3600}" =~ ^[1-9][0-9]{0,5}$ ]]; then
   echo "Fehler: Ungueltiger Queue-Timeout." >&2

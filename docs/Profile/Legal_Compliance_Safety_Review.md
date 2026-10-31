@@ -1,25 +1,26 @@
 # Legal Compliance Safety Review
 
-Neu: [internationale Rechtsquellen, Laenderabdeckung und RAG-Pruefhilfe](../legal/README.md)
-mit Offline-CLI im Hauptmenue 18 und DSB-Template. Keine globale Aktivierung
-oder automatische rechtliche Freigabe durch dieses Profil.
+Neu: [internationale Rechtsquellen, Laenderabdeckung und RAG-Pruefhilfe](../legal/README.md) mit
+Offline-CLI im Hauptmenue 18 und DSB-Template. Keine globale Aktivierung oder automatische
+rechtliche Freigabe durch dieses Profil.
 
-Status: `planned`  
-Hardwarebedarf: `low` bis `medium`  
+Status: `planned`\
+Hardwarebedarf: `low` bis `medium`\
 Installationsart: lokal, CI, WSL2, VPS
 
 ## Zweck
 
-Sichere Nutzung fuer Recht, Datenschutz, Urheberrecht, Lizenzen, Impressum und Open-Source-Compliance. Keine Rechtsberatung, sondern Pruef- und Dokumentationsassistenz.
+Sichere Nutzung fuer Recht, Datenschutz, Urheberrecht, Lizenzen, Impressum und
+Open-Source-Compliance. Keine Rechtsberatung, sondern Pruef- und Dokumentationsassistenz.
 
 ## Kern-Tools
 
-| Tool | Zweck | Status |
-|---|---|---|
-| reuse/licensee | Lizenzpruefung | empfohlen |
-| scancode-toolkit | umfassende OSS-Compliance | optional, schwer |
-| gitleaks/detect-secrets | Secret-Pruefung | empfohlen |
-| Semgrep | Policy- und Code-Regeln | empfohlen |
+| Tool                    | Zweck                     | Status           |
+| ----------------------- | ------------------------- | ---------------- |
+| reuse/licensee          | Lizenzpruefung            | empfohlen        |
+| scancode-toolkit        | umfassende OSS-Compliance | optional, schwer |
+| gitleaks/detect-secrets | Secret-Pruefung           | empfohlen        |
+| Semgrep                 | Policy- und Code-Regeln   | empfohlen        |
 
 ## Sicherheitsregeln
 

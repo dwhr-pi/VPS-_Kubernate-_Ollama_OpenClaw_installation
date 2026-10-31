@@ -2,8 +2,10 @@
 
 ## Überblick
 
-Dieses Profil wurde aus der fachlichen Quelle [Media_Musik.doc.md](../Profil/Media_Musik.doc.md), `readme.md`, `docs/setup_guide.md` und `scripts/profiles/Media_Musik_install.sh` zusammengeführt.
-Es beschreibt ein OpenClaw- und Ollama-kompatibles Kreativprofil für Musik, Audioanalyse, Prompt-Design, Remix-Workflows und Medienproduktion.
+Dieses Profil wurde aus der fachlichen Quelle [Media_Musik.doc.md](../Profil/Media_Musik.doc.md),
+`readme.md`, `docs/setup_guide.md` und `scripts/profiles/Media_Musik_install.sh` zusammengeführt. Es
+beschreibt ein OpenClaw- und Ollama-kompatibles Kreativprofil für Musik, Audioanalyse,
+Prompt-Design, Remix-Workflows und Medienproduktion.
 
 ## Installierter Stack
 
@@ -18,7 +20,8 @@ Es beschreibt ein OpenClaw- und Ollama-kompatibles Kreativprofil für Musik, Aud
 
 ## Dokumentierte zusätzliche Tools
 
-Die zuvor zusätzlich dokumentierten Media-Bausteine sind jetzt als Setup-Module oder vorhandene Tool-Äquivalente abbildbar:
+Die zuvor zusätzlich dokumentierten Media-Bausteine sind jetzt als Setup-Module oder vorhandene
+Tool-Äquivalente abbildbar:
 
 - `Suno_API`
 - `Udio_API`
@@ -177,9 +180,12 @@ Arrangement-Anpassung und finalem Export mit FFmpeg, Demucs und pydub.
 ## OpenClaw / Ollama Fit
 
 - Dieses Profil passt gut zu OpenClaw als Workflow-Orchestrator für Musik- und Medienpipelines.
-- Ollama eignet sich hier vor allem für Prompt-Refinement, Lyrics, Strukturplanung und Variantenbildung.
-- `FFmpeg`, `librosa`, `pydub`, `Demucs` und `Whisper` decken bereits starke lokale Audio-Bausteine ab.
-- Für die in der Quelldatei beschriebene eigentliche Musik-Generierung fehlen noch Music-Generatoren und Visual-Generatoren.
+- Ollama eignet sich hier vor allem für Prompt-Refinement, Lyrics, Strukturplanung und
+  Variantenbildung.
+- `FFmpeg`, `librosa`, `pydub`, `Demucs` und `Whisper` decken bereits starke lokale Audio-Bausteine
+  ab.
+- Für die in der Quelldatei beschriebene eigentliche Musik-Generierung fehlen noch Music-Generatoren
+  und Visual-Generatoren.
 
 ## Vergleich
 
@@ -196,9 +202,12 @@ Arrangement-Anpassung und finalem Export mit FFmpeg, Demucs und pydub.
 
 ### ❌ Missing in Docs
 
-- Die Verzahnung zwischen Musikprofil, Audio-Pipeline und Visual-Pipeline ist in der Hauptdoku noch nicht klar genug beschrieben.
+- Die Verzahnung zwischen Musikprofil, Audio-Pipeline und Visual-Pipeline ist in der Hauptdoku noch
+  nicht klar genug beschrieben.
 
 ## Hinweise
 
-- Das Profil ist aktuell stärker für Prompting, Analyse und Post-Processing als für vollständige Musikgenerierung ausgeprägt.
-- Für GPU-intensive Medienpipelines fehlen noch mehrere der in der Quelldatei genannten Generator-Module.
+- Das Profil ist aktuell stärker für Prompting, Analyse und Post-Processing als für vollständige
+  Musikgenerierung ausgeprägt.
+- Für GPU-intensive Medienpipelines fehlen noch mehrere der in der Quelldatei genannten
+  Generator-Module.

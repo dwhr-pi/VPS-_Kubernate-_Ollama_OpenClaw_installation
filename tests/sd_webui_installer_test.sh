@@ -7,25 +7,29 @@ log_error() { :; }
 python3.10() { return 1; }
 python3.11() { return 0; }
 python3() { return 1; }
-SD_WEBUI_PYTHON_BIN=python3.11
-[[ "$(sd_webui_find_python)" == python3.11 ]]
-SD_WEBUI_PYTHON_BIN=python3
-if sd_webui_find_python; then echo 'FAIL: Python 3.12 accepted'; exit 1; fi
-SD_WEBUI_PYTHON_BIN=python3.11
-begin_measurement() { echo 'Unexpected installation' >&2; return 99; }
-sd_webui_main --check
-sd_webui_main --dry-run
+[[ "$(SD_WEBUI_PYTHON_BIN=python3.11 sd_webui_find_python)" == python3.11 ]]
+if SD_WEBUI_PYTHON_BIN=python3 sd_webui_find_python; then
+  echo 'FAIL: Python 3.12 accepted'
+  exit 1
+fi
+begin_measurement() {
+  echo 'Unexpected installation' >&2
+  return 99
+}
+# These runtime overrides are consumed by functions loaded through eval above.
+SD_WEBUI_PYTHON_BIN=python3.11 sd_webui_main --check
+SD_WEBUI_PYTHON_BIN=python3.11 sd_webui_main --dry-run
 TOOL_DIR="$(mktemp -d)"
 trap 'rm -rf -- "$TOOL_DIR"' EXIT
 mkdir -p "$TOOL_DIR/venv/bin"
-printf 'old-environment\n' > "$TOOL_DIR/venv/marker"
-printf '#!/usr/bin/env bash\nexit 1\n' > "$TOOL_DIR/venv/bin/python"
+printf 'old-environment\n' >"$TOOL_DIR/venv/marker"
+printf '#!/usr/bin/env bash\nexit 1\n' >"$TOOL_DIR/venv/bin/python"
 chmod +x "$TOOL_DIR/venv/bin/python"
 fake_python() {
-    [[ "$1" == -m && "$2" == venv ]]
-    mkdir -p "$3/bin"
-    printf '#!/usr/bin/env bash\nexit 0\n' > "$3/bin/python"
-    chmod +x "$3/bin/python"
+  [[ "$1" == -m && "$2" == venv ]]
+  mkdir -p "$3/bin"
+  printf '#!/usr/bin/env bash\nexit 0\n' >"$3/bin/python"
+  chmod +x "$3/bin/python"
 }
 sd_webui_prepare_venv fake_python
 backups=("$TOOL_DIR"/venv-backup.*/venv/marker)

@@ -7,7 +7,6 @@
 # Farben
 GREEN="\033[0;32m"
 BLUE="\033[0;34m"
-RED="\033[0;31m"
 YELLOW="\033[1;33m"
 NC="\033[0m"
 
@@ -23,20 +22,22 @@ echo -e "${BLUE}Starte Installation von LangFlow...${NC}"
 
 # 1. LangFlow aus GitHub klonen
 if [ -d "$LANGFLOW_DIR" ]; then
-    echo -e "${YELLOW}LangFlow Verzeichnis $LANGFLOW_DIR existiert bereits. Aktualisiere Repository...${NC}"
-    cd "$LANGFLOW_DIR"
-    git pull
+  echo -e "${YELLOW}LangFlow Verzeichnis $LANGFLOW_DIR existiert bereits. Aktualisiere Repository...${NC}"
+  cd "$LANGFLOW_DIR" || exit 1
+  git pull
 else
-    echo -e "${BLUE}Klone LangFlow in $LANGFLOW_DIR...${NC}"
-    sudo mkdir -p "$LANGFLOW_DIR"
-    sudo chown -R $USER:$USER "$LANGFLOW_DIR"
-    git clone https://github.com/logspace-ai/langflow.git "$LANGFLOW_DIR"
-    cd "$LANGFLOW_DIR"
+  echo -e "${BLUE}Klone LangFlow in $LANGFLOW_DIR...${NC}"
+  sudo mkdir -p "$LANGFLOW_DIR"
+  sudo chown -R "$USER:$USER" "$LANGFLOW_DIR"
+  git clone https://github.com/logspace-ai/langflow.git "$LANGFLOW_DIR"
+  cd "$LANGFLOW_DIR" || exit 1
 fi
 
 # 2. Python-Abhängigkeiten installieren
 echo -e "${BLUE}Installiere Python-Abhängigkeiten für LangFlow...${NC}"
 python3 -m venv venv
+# Generated virtualenv activation script, absent from the checkout.
+# shellcheck source=/dev/null
 source venv/bin/activate
 pip install -r requirements.txt
 deactivate

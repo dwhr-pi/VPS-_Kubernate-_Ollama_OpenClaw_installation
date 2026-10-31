@@ -4,7 +4,10 @@ if [[ "${1:-}" == --dry-run ]]; then
   echo "Plan: hoechstens einen freigegebenen Queue-Job ausfuehren; keine Aenderung."
   exit 0
 fi
-[[ "$#" == 0 ]] || { echo "Fehler: Worker erwartet keine Argumente ausser --dry-run." >&2; exit 64; }
+[[ "$#" == 0 ]] || {
+  echo "Fehler: Worker erwartet keine Argumente ausser --dry-run." >&2
+  exit 64
+}
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=queue_common.sh
@@ -14,7 +17,11 @@ if [[ "${QUEUE_MODE:-}" == "tsv" || -f "${QUEUE_FILE:-$QUEUE_HOME/jobs.tsv}" ]];
   exec bash "$SCRIPT_DIR/queue_run_next.sh"
 fi
 
-queue_lock_worker || { rc=$?; [[ "$rc" == 75 ]] && exit 0; exit "$rc"; }
+queue_lock_worker || {
+  rc=$?
+  [[ "$rc" == 75 ]] && exit 0
+  exit "$rc"
+}
 if [[ "${MAX_PARALLEL_JOBS:-1}" != 1 ]]; then
   echo "Fehler: Dieser Minimal-Worker unterstuetzt MAX_PARALLEL_JOBS=1." >&2
   exit 1

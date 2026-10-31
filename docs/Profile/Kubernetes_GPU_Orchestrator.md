@@ -11,7 +11,8 @@ Profil fuer K3s-/Kubernetes-basierte GPU-, Render-, LLM- und Science-Worker.
 
 ## Sicherheit
 
-GPU-Worker sollten nicht ungeschuetzt im Internet stehen. Secrets gehoeren in Kubernetes-Secrets oder externe Secret-Stores, nicht ins Repo.
+GPU-Worker sollten nicht ungeschuetzt im Internet stehen. Secrets gehoeren in Kubernetes-Secrets
+oder externe Secret-Stores, nicht ins Repo.
 
 ## Installation
 

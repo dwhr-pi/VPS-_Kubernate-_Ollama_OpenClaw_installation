@@ -2,7 +2,8 @@
 
 ## Ueberblick
 
-Die Variable `HUGINN_REPO_REF` bestimmt, welcher Stand des offiziellen Huginn-Repositories verwendet wird.
+Die Variable `HUGINN_REPO_REF` bestimmt, welcher Stand des offiziellen Huginn-Repositories verwendet
+wird.
 
 Beispiel:
 
@@ -23,10 +24,13 @@ Offizielle Releases befinden sich hier:
 
 Im Setup wird Huginn jetzt bewusst branch-orientiert verwaltet:
 
-- die Auswahl liegt ausserhalb des Repositories in `~/.openclaw_ultimate_user_data/custom_sources.conf`
-- dort werden `CUSTOM_REPO_HUGINN_URL`, `CUSTOM_REPO_HUGINN_REF` und `CUSTOM_REPO_HUGINN_PROFILE` gespeichert
+- die Auswahl liegt ausserhalb des Repositories in
+  `~/.openclaw_ultimate_user_data/custom_sources.conf`
+- dort werden `CUSTOM_REPO_HUGINN_URL`, `CUSTOM_REPO_HUGINN_REF` und `CUSTOM_REPO_HUGINN_PROFILE`
+  gespeichert
 - aenderst du Branch, Tag, Commit oder Fork, sollte danach der Huginn-Installer erneut laufen
-- dadurch behandelt das Setup jeden Huginn-Stand als eigenen Installationslauf mit passenden Bundle-, Datenbank- und Fallback-Schritten
+- dadurch behandelt das Setup jeden Huginn-Stand als eigenen Installationslauf mit passenden
+  Bundle-, Datenbank- und Fallback-Schritten
 
 ---
 
@@ -313,7 +317,8 @@ Viele aeltere Huginn-Tutorials im Internet basieren noch auf:
 - SQLite/MySQL
 - klassischen VPS-Setups
 
-Fuer moderne AI-/Kubernetes-Deployments sollten aktuelle Container- und Security-Standards verwendet werden.
+Fuer moderne AI-/Kubernetes-Deployments sollten aktuelle Container- und Security-Standards verwendet
+werden.
 
 ## Setup-Hinweis
 

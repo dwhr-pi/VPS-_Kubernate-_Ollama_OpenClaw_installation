@@ -44,4 +44,5 @@ sudo apt-get install -y poppler-utils tesseract-ocr
 
 ## Hinweise
 
-- Das Uninstall-Skript entfernt sehr allgemeine Werkzeuge wie `curl` und `wget`; das kann andere Teile des Systems beeinträchtigen.
+- Das Uninstall-Skript entfernt sehr allgemeine Werkzeuge wie `curl` und `wget`; das kann andere
+  Teile des Systems beeinträchtigen.

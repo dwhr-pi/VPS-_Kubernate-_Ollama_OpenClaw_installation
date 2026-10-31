@@ -5,7 +5,7 @@ MODE="${1:---dry-run}"
 QUEUE_DIR="${QUEUE_MANAGER_DIR:-$HOME/.openclaw_ultimate_user_data/queue}"
 
 case "$MODE" in
-  --dry-run|--plan|--prepare|--status|--help|-h) ;;
+  --dry-run | --plan | --prepare | --status | --help | -h) ;;
   *)
     echo "Bitte --dry-run, --prepare, --status oder --help verwenden." >&2
     exit 2
@@ -20,7 +20,9 @@ fi
 if [[ "$MODE" == "--status" ]]; then
   echo "Queue Manager Status"
   [[ -d "$QUEUE_DIR" ]] && echo "Queue-Ordner vorhanden: $QUEUE_DIR" || echo "Queue-Ordner fehlt: $QUEUE_DIR"
-  [[ -f "$QUEUE_DIR/queue-policy.json" ]] && cat "$QUEUE_DIR/queue-policy.json" || true
+  if [[ -f "$QUEUE_DIR/queue-policy.json" ]]; then
+    cat "$QUEUE_DIR/queue-policy.json" || true
+  fi
   exit 0
 fi
 
@@ -33,7 +35,7 @@ if [[ "$MODE" == "--dry-run" || "$MODE" == "--plan" ]]; then
 fi
 
 mkdir -p "$QUEUE_DIR/jobs" "$QUEUE_DIR/logs"
-cat > "$QUEUE_DIR/queue-policy.json" <<'EOF'
+cat >"$QUEUE_DIR/queue-policy.json" <<'EOF'
 {
   "default_engine": "planned",
   "parallelism": {

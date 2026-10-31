@@ -27,26 +27,26 @@ echo -e "${BLUE}Installiere Mail-Tools fuer Diagnoseberichte...${NC}"
 echo -e "${YELLOW}Hinweis: Es werden keine SMTP-Passwoerter oder Zugangsdaten ins Repository geschrieben.${NC}"
 
 if command -v mail >/dev/null 2>&1 && command -v sendmail >/dev/null 2>&1; then
-    echo -e "${GREEN}mail und sendmail sind bereits vorhanden. Paketinstallation wird uebersprungen.${NC}"
+  echo -e "${GREEN}mail und sendmail sind bereits vorhanden. Paketinstallation wird uebersprungen.${NC}"
 elif [ "$(id -u)" -eq 0 ]; then
-    apt-get update
-    DEBIAN_FRONTEND=noninteractive apt-get install -y mailutils msmtp msmtp-mta ca-certificates
+  apt-get update
+  DEBIAN_FRONTEND=noninteractive apt-get install -y mailutils msmtp msmtp-mta ca-certificates
 elif sudo -n true 2>/dev/null; then
-    sudo apt-get update
-    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y mailutils msmtp msmtp-mta ca-certificates
+  sudo apt-get update
+  sudo DEBIAN_FRONTEND=noninteractive apt-get install -y mailutils msmtp msmtp-mta ca-certificates
 else
-    echo -e "${RED}Fehler: sudo ist nicht ohne Passwort-Prompt verfuegbar.${NC}"
-    echo "Bitte interaktiv im Setup ausfuehren oder vorher installieren:"
-    echo "  sudo apt-get update"
-    echo "  sudo DEBIAN_FRONTEND=noninteractive apt-get install -y mailutils msmtp msmtp-mta ca-certificates"
-    exit 1
+  echo -e "${RED}Fehler: sudo ist nicht ohne Passwort-Prompt verfuegbar.${NC}"
+  echo "Bitte interaktiv im Setup ausfuehren oder vorher installieren:"
+  echo "  sudo apt-get update"
+  echo "  sudo DEBIAN_FRONTEND=noninteractive apt-get install -y mailutils msmtp msmtp-mta ca-certificates"
+  exit 1
 fi
 
 mkdir -p "$MAIL_CONFIG_DIR"
 chmod 700 "$MAIL_CONFIG_DIR" 2>/dev/null || true
 
 if [ ! -f "$MSMTP_TEMPLATE" ]; then
-    cat > "$MSMTP_TEMPLATE" <<'EOF'
+  cat >"$MSMTP_TEMPLATE" <<'EOF'
 # msmtp Beispielkonfiguration
 # Kopiere diese Datei bei Bedarf nach ~/.msmtprc und passe sie lokal an.
 # Keine echten Passwoerter, App-Passwoerter oder Tokens ins Repository schreiben.
@@ -76,11 +76,11 @@ passwordeval   "pass show smtp/dein.absender@example.org"
 # passwordeval "cat ~/.openclaw_ultimate_user_data/mail/smtp_password"
 # Die Datei smtp_password muss chmod 600 haben und darf nie ins Repo.
 EOF
-    chmod 600 "$MSMTP_TEMPLATE" 2>/dev/null || true
+  chmod 600 "$MSMTP_TEMPLATE" 2>/dev/null || true
 fi
 
 if [ ! -f "$MAIL_SETTINGS_TEMPLATE" ]; then
-    cat > "$MAIL_SETTINGS_TEMPLATE" <<'EOF'
+  cat >"$MAIL_SETTINGS_TEMPLATE" <<'EOF'
 # OpenClaw Diagnose-Mail Einstellungen
 # Diese Datei dient nur als Hinweis. Nutze bevorzugt das Setup-Menue, damit der
 # Diagnose-Empfaenger verschluesselt als DEFAULT_EMAIL_TO_ENC gespeichert wird.
@@ -89,10 +89,10 @@ if [ ! -f "$MAIL_SETTINGS_TEMPLATE" ]; then
 MAIL_FROM="deine-adresse@web.de"
 MSMTP_ACCOUNT="default"
 EOF
-    chmod 600 "$MAIL_SETTINGS_TEMPLATE" 2>/dev/null || true
+  chmod 600 "$MAIL_SETTINGS_TEMPLATE" 2>/dev/null || true
 fi
 
-cat > "$MAIL_README" <<'EOF'
+cat >"$MAIL_README" <<'EOF'
 # Mailausgabe fuer OpenClaw Setup-Diagnose
 
 Dieses Verzeichnis enthaelt lokale Mail-Hinweise fuer Diagnoseberichte.

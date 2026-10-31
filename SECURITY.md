@@ -2,7 +2,8 @@
 
 ## Grundsatz
 
-Dieses Projekt ist local-first und sicherheitsbewusst. Es akzeptiert keine echten Secrets im Repository.
+Dieses Projekt ist local-first und sicherheitsbewusst. Es akzeptiert keine echten Secrets im
+Repository.
 
 ## Nicht erlaubt
 
@@ -15,7 +16,8 @@ Dieses Projekt ist local-first und sicherheitsbewusst. Es akzeptiert keine echte
 
 ## Meldung von Sicherheitsproblemen
 
-Bitte keine sensiblen Details in oeffentlichen Issues posten. Erstelle stattdessen einen privaten Kontaktweg ueber den Maintainer oder einen minimalen, nicht-ausnutzbaren Hinweis im Issue.
+Bitte keine sensiblen Details in oeffentlichen Issues posten. Erstelle stattdessen einen privaten
+Kontaktweg ueber den Maintainer oder einen minimalen, nicht-ausnutzbaren Hinweis im Issue.
 
 ## Erwartete Defaults
 

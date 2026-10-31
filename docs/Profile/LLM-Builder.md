@@ -2,11 +2,13 @@
 
 ## Überblick
 
-Dieses Profil wurde aus der fachlichen Quelle [LLM-Builder.doc.md](../Profil/LLM-Builder.doc.md), `readme.md` und den vorhandenen Tool-Skripten zusammengeführt.
-Es beschreibt ein realistisches lokales Modellbau-Setup für Fine-Tuning, GGUF-Export, Quantisierung und die spätere Nutzung mit Ollama.
+Dieses Profil wurde aus der fachlichen Quelle [LLM-Builder.doc.md](../Profil/LLM-Builder.doc.md),
+`readme.md` und den vorhandenen Tool-Skripten zusammengeführt. Es beschreibt ein realistisches
+lokales Modellbau-Setup für Fine-Tuning, GGUF-Export, Quantisierung und die spätere Nutzung mit
+Ollama.
 
-Wichtig:
-Dieses Profil zielt nicht auf das Training eines Foundation Models von Null, sondern auf einen praktikablen lokalen Workflow mit vorhandenen Open-Source-Modellen.
+Wichtig: Dieses Profil zielt nicht auf das Training eines Foundation Models von Null, sondern auf
+einen praktikablen lokalen Workflow mit vorhandenen Open-Source-Modellen.
 
 ## Installierter Stack
 
@@ -78,7 +80,8 @@ Das Setup bringt jetzt drei direkt passende Hilfen mit:
 - `⚙ Optionen -> Ollama Modelfile-Assistent`
 - `⚙ Optionen -> Ollama Modellkatalog`
 
-Damit kannst du Projektordner, Modelfiles und lokale Modell-Installationen getrennt vom Git-Repository pflegen.
+Damit kannst du Projektordner, Modelfiles und lokale Modell-Installationen getrennt vom
+Git-Repository pflegen.
 
 ## Verfügbare Kommandos
 
@@ -109,7 +112,9 @@ cd /opt/llama_cpp_toolchain
 
 ## Empfohlene Startmodelle für den Workflow
 
-Diese Modelle werden bewusst nicht automatisch gepullt, damit Größe und Hardwarebedarf bei dir kontrollierbar bleiben. Für lokale Tests und den Modellbau-Workflow sind sie aber naheliegende Startpunkte:
+Diese Modelle werden bewusst nicht automatisch gepullt, damit Größe und Hardwarebedarf bei dir
+kontrollierbar bleiben. Für lokale Tests und den Modellbau-Workflow sind sie aber naheliegende
+Startpunkte:
 
 ```bash
 ollama pull llama3.2:3b
@@ -129,7 +134,8 @@ ollama pull devstral:24b
 
 ### Mistral-Orientierung fuer dieses Profil
 
-Fuer den lokalen Modellbau und spaetere Ollama-Nutzung sind aus der Mistral-Familie besonders interessant:
+Fuer den lokalen Modellbau und spaetere Ollama-Nutzung sind aus der Mistral-Familie besonders
+interessant:
 
 - `mistral:7b` als kompakter offener Startpunkt
 - `mistral-nemo:12b` fuer mehr Kontext und staerkere allgemeine Nutzung
@@ -160,24 +166,31 @@ Erzeuge für mein feinjustiertes GGUF-Modell ein Ollama-Modelfile mit Systemprom
 ## OpenClaw / Ollama Fit
 
 - `Ollama` ist die Zielplattform für die lokale Bereitstellung des fertigen Modells.
-- `OpenClaw` kann den Workflow später orchestrieren, ist aber nicht zwingend für das eigentliche Fine-Tuning.
+- `OpenClaw` kann den Workflow später orchestrieren, ist aber nicht zwingend für das eigentliche
+  Fine-Tuning.
 - `Data_Juicer`, `Unsloth`, `LLaMA_Factory` und `Axolotl` decken den Trainingspfad ab.
 - `Llama_CPP_Toolchain` schließt den Weg nach GGUF und Quantisierung.
-- `Flowise` und `LangFlow` sind optional hilfreich, um Eingaben und Testketten visuell zu evaluieren.
-- Über den neuen Ollama-Modelfile-Assistenten im Optionen-Menü kann eine lokale Modelfile-Vorlage direkt in `~/.openclaw_ultimate_user_data/modelfiles` erzeugt werden.
+- `Flowise` und `LangFlow` sind optional hilfreich, um Eingaben und Testketten visuell zu
+  evaluieren.
+- Über den neuen Ollama-Modelfile-Assistenten im Optionen-Menü kann eine lokale Modelfile-Vorlage
+  direkt in `~/.openclaw_ultimate_user_data/modelfiles` erzeugt werden.
 
 ## Vergleich
 
 ### ✅ In Sync
 
-- Die Pflicht-Komponenten für den realistischen lokalen Workflow sind jetzt als einzelne Setup-Module vorhanden.
+- Die Pflicht-Komponenten für den realistischen lokalen Workflow sind jetzt als einzelne
+  Setup-Module vorhanden.
 - `Ollama` bleibt die lokale Zielplattform für das spätere fertige Modell.
-- `llama.cpp` ist sowohl als allgemeines Modul als auch als gezielte Toolchain für GGUF und Quantisierung abbildbar.
+- `llama.cpp` ist sowohl als allgemeines Modul als auch als gezielte Toolchain für GGUF und
+  Quantisierung abbildbar.
 
 ### ⚠ Missing in Setup
 
-- Das Profil automatisiert bewusst nicht das vollständige End-to-End-Training mit einem einzigen Knopf, weil Datensätze, Hyperparameter und Hardware stark variieren.
-- Das eigentliche Basismodell wird weiterhin bewusst über den Ollama-Modell-Manager oder manuelle Auswahl geladen, nicht automatisch.
+- Das Profil automatisiert bewusst nicht das vollständige End-to-End-Training mit einem einzigen
+  Knopf, weil Datensätze, Hyperparameter und Hardware stark variieren.
+- Das eigentliche Basismodell wird weiterhin bewusst über den Ollama-Modell-Manager oder manuelle
+  Auswahl geladen, nicht automatisch.
 
 ### ❌ Missing in Docs
 
@@ -185,7 +198,11 @@ Erzeuge für mein feinjustiertes GGUF-Modell ein Ollama-Modelfile mit Systemprom
 
 ## Hinweise
 
-- Die neuen Bausteine werden aus GitHub-Quellen geholt und lokal auf dem Zielsystem vorbereitet oder gebaut.
-- Der Modelfile-Assistent speichert Vorlagen bewusst außerhalb des Repositories, damit eigene GGUF-Pfade, Systemprompts und Modellnamen nicht versehentlich in Git landen.
-- Für echte Trainingsläufe solltest du Speicherbedarf, GPU-Verfügbarkeit und Datensatzgröße individuell prüfen.
-- Für kleinere Systeme kann ein Adapter-Workflow mit LoRA/QLoRA sinnvoller sein als große Voll-Merges.
+- Die neuen Bausteine werden aus GitHub-Quellen geholt und lokal auf dem Zielsystem vorbereitet oder
+  gebaut.
+- Der Modelfile-Assistent speichert Vorlagen bewusst außerhalb des Repositories, damit eigene
+  GGUF-Pfade, Systemprompts und Modellnamen nicht versehentlich in Git landen.
+- Für echte Trainingsläufe solltest du Speicherbedarf, GPU-Verfügbarkeit und Datensatzgröße
+  individuell prüfen.
+- Für kleinere Systeme kann ein Adapter-Workflow mit LoRA/QLoRA sinnvoller sein als große
+  Voll-Merges.

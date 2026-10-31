@@ -5,8 +5,11 @@ MODE="${1:---dry-run}"
 QUEUE_DIR="${JOB_QUEUE_DIR:-$HOME/.openclaw_ultimate_user_data/job_queue}"
 
 case "$MODE" in
-  --dry-run|--apply|--status|--help|-h) ;;
-  *) echo "Usage: bash scripts/tools/job_queue_uninstall.sh [--dry-run|--apply|--status]" >&2; exit 2 ;;
+  --dry-run | --apply | --status | --help | -h) ;;
+  *)
+    echo "Usage: bash scripts/tools/job_queue_uninstall.sh [--dry-run|--apply|--status]" >&2
+    exit 2
+    ;;
 esac
 
 if [[ "$MODE" == "--status" ]]; then

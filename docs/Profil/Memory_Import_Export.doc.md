@@ -2,7 +2,9 @@
 
 ## Zweck
 
-Dieses Profil importiert und exportiert Erinnerungen, Notizen, Chat-Exporte und Projektkontext aus Markdown, JSON, JSONL, SQLite und ZIP-Archiven. Ziel ist ein lokaler, editierbarer Memory-/RAG-Bestand fuer OpenClaw, Open WebUI, Qdrant oder ChromaDB.
+Dieses Profil importiert und exportiert Erinnerungen, Notizen, Chat-Exporte und Projektkontext aus
+Markdown, JSON, JSONL, SQLite und ZIP-Archiven. Ziel ist ein lokaler, editierbarer
+Memory-/RAG-Bestand fuer OpenClaw, Open WebUI, Qdrant oder ChromaDB.
 
 ## Typische Aufgaben
 
@@ -23,7 +25,8 @@ Dieses Profil importiert und exportiert Erinnerungen, Notizen, Chat-Exporte und 
 
 ## Datenschutz
 
-Memory-Importe enthalten oft personenbezogene Daten, private Chats und Projektgeheimnisse. Standard ist lokale Verarbeitung. Cloud-Uploads nur bewusst und nach Redaction.
+Memory-Importe enthalten oft personenbezogene Daten, private Chats und Projektgeheimnisse. Standard
+ist lokale Verarbeitung. Cloud-Uploads nur bewusst und nach Redaction.
 
 ## Quickstart
 

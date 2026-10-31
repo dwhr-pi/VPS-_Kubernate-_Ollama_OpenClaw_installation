@@ -5,6 +5,7 @@ Quelle: GitHub-Remote `docs/Profil/KI_Forschung.doc.md`
 ## Kerninhalte
 
 ### Prompt-Bausteine
+
 - Deep Research Prompts
 - Paper-Analyse
 - Hypothesen Generator
@@ -14,6 +15,7 @@ Quelle: GitHub-Remote `docs/Profil/KI_Forschung.doc.md`
 - RAG Knowledge Extraction
 
 ### Zusätzliche Tools laut Quelle
+
 - LangChain
 - LlamaIndex
 - Chroma / Weaviate

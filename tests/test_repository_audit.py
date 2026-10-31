@@ -39,6 +39,24 @@ class RepositoryAudit(unittest.TestCase):
         self.assertEqual(result["errors"], 0)
         self.assertEqual(result["issue_counts"]["missing-doctor_script"], 1)
 
+    def test_registry_file_and_directory_case_are_exact_on_every_platform(self):
+        for value in ('docs/Tool.md', 'Docs/tool.md'):
+            with self.subTest(value=value):
+                self.profile['doc'] = value
+                result = self.check()
+                self.assertEqual(result['errors'], 1)
+                self.assertTrue({'missing-file', 'registry-path-case-mismatch'} & set(result['issue_counts']))
+                self.assertFalse(audit.Audit(self.root).exact_path_case(value))
+        self.profile['doc'] = 'docs/tool.md'
+        self.assertEqual(self.check()['errors'], 0)
+        self.assertTrue(audit.Audit(self.root).exact_path_case('docs/tool.md'))
+
+    def test_real_registry_paths_have_no_errors_with_exact_case(self):
+        result = audit.Audit(ROOT)
+        result.registry()
+        self.assertEqual(result.result()['errors'], 0,
+                         [item for item in result.issues if item['level'] == 'error'])
+
     def test_duplicate_ids_fail(self):
         self.assertIn("duplicate-id", self.check(tools=[self.tool, self.tool])["issue_counts"])
 

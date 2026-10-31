@@ -8,4 +8,3 @@ echo "Projektordner: $ELECTRONICS_HOME"
 echo "Aus Sicherheitsgruenden werden Projekte, Datenblaetter, Gerber, BOMs und Firmware nicht automatisch geloescht."
 echo "Manuell nach Pruefung:"
 echo "  rm -rf \"$ELECTRONICS_HOME\""
-

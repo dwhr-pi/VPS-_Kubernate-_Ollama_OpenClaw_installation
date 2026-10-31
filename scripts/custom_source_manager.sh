@@ -36,7 +36,7 @@ persist_config_value() {
         print config_key "=\"" config_value "\""
       }
     }
-  ' "$target_file" > "$tmp_file"
+  ' "$target_file" >"$tmp_file"
   mv "$tmp_file" "$target_file"
 }
 
@@ -184,7 +184,7 @@ clone_or_update_custom_source() {
       echo
       echo "# Benutzerdefinierter Eintrag für ${source_key}"
       printf 'CUSTOM_REPO_%s_URL="%s"\n' "$source_key" "$repo_url"
-    } >> "$CUSTOM_SOURCES_FILE"
+    } >>"$CUSTOM_SOURCES_FILE"
   fi
 
   end_measurement "success"
@@ -223,7 +223,7 @@ prepare_custom_ollama_build() {
   fi
 
   if [ -n "$gguf_path" ]; then
-    cat > "$modelfile_path" <<EOF
+    cat >"$modelfile_path" <<EOF
 FROM $gguf_path
 
 PARAMETER temperature 0.2
@@ -232,7 +232,7 @@ PARAMETER num_ctx 32768
 SYSTEM You are a finance analysis model prepared for structured market, report and risk analysis. You must not claim to execute trades autonomously.
 EOF
   else
-    cat > "$modelfile_path" <<EOF
+    cat >"$modelfile_path" <<EOF
 FROM $base_model
 
 PARAMETER temperature 0.2
@@ -250,7 +250,7 @@ EOF
     printf 'BUILD_%s_BASE_MODEL="%s"\n' "$(printf '%s' "$build_name" | tr '[:lower:]-' '[:upper:]_')" "$base_model"
     printf 'BUILD_%s_GGUF_PATH="%s"\n' "$(printf '%s' "$build_name" | tr '[:lower:]-' '[:upper:]_')" "$gguf_path"
     printf 'BUILD_%s_MODEFILE_PATH="%s"\n' "$(printf '%s' "$build_name" | tr '[:lower:]-' '[:upper:]_')" "$modelfile_path"
-  } >> "$CUSTOM_OLLAMA_BUILDS_FILE"
+  } >>"$CUSTOM_OLLAMA_BUILDS_FILE"
 
   log_success "Modelfile vorbereitet: $modelfile_path"
   echo
@@ -265,7 +265,7 @@ EOF
     echo
     read -r -p "Soll der Build jetzt direkt in Ollama registriert werden? (j/N): " answer
     case "$answer" in
-      j|J|y|Y|yes|YES)
+      j | J | y | Y | yes | YES)
         ollama create "$build_name" -f "$modelfile_path"
         ;;
     esac
@@ -301,10 +301,22 @@ while true; do
   case "$choice" in
     1) edit_config_file "$CUSTOM_SOURCES_FILE" ;;
     2) edit_config_file "$CUSTOM_OLLAMA_BUILDS_FILE" ;;
-    3) show_current_files; read -r -p "Enter..." _ ;;
-    4) clone_or_update_custom_source; read -r -p "Enter..." _ ;;
-    5) prepare_custom_ollama_build; read -r -p "Enter..." _ ;;
-    6) configure_huginn_source; read -r -p "Enter..." _ ;;
+    3)
+      show_current_files
+      read -r -p "Enter..." _
+      ;;
+    4)
+      clone_or_update_custom_source
+      read -r -p "Enter..." _
+      ;;
+    5)
+      prepare_custom_ollama_build
+      read -r -p "Enter..." _
+      ;;
+    6)
+      configure_huginn_source
+      read -r -p "Enter..." _
+      ;;
     7)
       echo
       echo "Kurzlogik:"
@@ -314,7 +326,8 @@ while true; do
       echo "- Für FinGPT/FinRobot/FinRAG oder eigene Forks gilt meist:"
       echo "  Fine-Tuning/Export -> GGUF -> Modelfile -> ollama create"
       echo
-      read -r -p "Enter..." _ ;;
+      read -r -p "Enter..." _
+      ;;
     8) exit 0 ;;
     *) ;;
   esac

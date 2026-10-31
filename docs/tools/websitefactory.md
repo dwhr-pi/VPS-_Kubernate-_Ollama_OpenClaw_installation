@@ -1,8 +1,7 @@
 # WebsiteFactory / WebBuild-Agent
 
-WebsiteFactory ist ein neuer Workflow-Baustein fuer das Ultimate KI Setup.
-Er erzeugt aus einem Marketing-Briefing ein GitHub-taugliches
-Landingpage-Projekt.
+WebsiteFactory ist ein neuer Workflow-Baustein fuer das Ultimate KI Setup. Er erzeugt aus einem
+Marketing-Briefing ein GitHub-taugliches Landingpage-Projekt.
 
 ## Eingaben
 

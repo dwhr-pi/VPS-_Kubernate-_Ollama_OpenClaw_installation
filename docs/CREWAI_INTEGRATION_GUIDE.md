@@ -2,7 +2,8 @@
 
 ## Kurzfassung
 
-CrewAI ist ein Python-Agentenframework fuer rollenbasierte Multi-Agent-Workflows. Es ist kein klassischer Dienst mit eigenem Webinterface und kein Desktopprogramm.
+CrewAI ist ein Python-Agentenframework fuer rollenbasierte Multi-Agent-Workflows. Es ist kein
+klassischer Dienst mit eigenem Webinterface und kein Desktopprogramm.
 
 Nach der Installation liegt CrewAI typischerweise in:
 
@@ -39,33 +40,34 @@ Beispiele:
 - Reviewer prueft Risiken und Luecken.
 - Tool-Agent ruft lokale Tools oder APIs auf.
 
-CrewAI passt daher gut zu Aufgaben, bei denen Rollen, Aufgabenlisten und Ergebnisartefakte klar definiert sind.
+CrewAI passt daher gut zu Aufgaben, bei denen Rollen, Aufgabenlisten und Ergebnisartefakte klar
+definiert sind.
 
 ## Welche vorhandenen Tools koennen CrewAI nutzen?
 
-| Tool/Profil | CrewAI-Nutzen | Integrationsart |
-|---|---|---|
-| OpenClaw | CrewAI als Multi-Agent-Worker fuer konkrete Tasks | Toolskript/Worker |
-| Ollama | lokale LLMs fuer CrewAI-Agenten | LiteLLM/Ollama-Client |
-| LiteLLM | einheitlicher Modellzugriff fuer CrewAI | API-Gateway |
-| Open WebUI | manuelle Nutzung der Ergebnisse | Browser/Markdown-Reports |
-| Qdrant/ChromaDB | Wissen/RAG fuer CrewAI-Rollen | Retriever-Tool |
-| Langfuse | Run-/Prompt-Auswertung | Tracing |
-| OpenLIT/OpenTelemetry | Observability | Instrumentierung |
-| Promptfoo | CrewAI-Ausgaben testen | Regressionstests |
-| n8n | CrewAI-Worker per Webhook starten | HTTP/CLI-Bruecke |
-| Huginn | CrewAI-Worker aus Automation anstossen | Script/Webhook |
-| Aider/OpenHands | CrewAI als Planungs-/Review-Unterstuetzung | Projektintegration |
+| Tool/Profil           | CrewAI-Nutzen                                     | Integrationsart          |
+| --------------------- | ------------------------------------------------- | ------------------------ |
+| OpenClaw              | CrewAI als Multi-Agent-Worker fuer konkrete Tasks | Toolskript/Worker        |
+| Ollama                | lokale LLMs fuer CrewAI-Agenten                   | LiteLLM/Ollama-Client    |
+| LiteLLM               | einheitlicher Modellzugriff fuer CrewAI           | API-Gateway              |
+| Open WebUI            | manuelle Nutzung der Ergebnisse                   | Browser/Markdown-Reports |
+| Qdrant/ChromaDB       | Wissen/RAG fuer CrewAI-Rollen                     | Retriever-Tool           |
+| Langfuse              | Run-/Prompt-Auswertung                            | Tracing                  |
+| OpenLIT/OpenTelemetry | Observability                                     | Instrumentierung         |
+| Promptfoo             | CrewAI-Ausgaben testen                            | Regressionstests         |
+| n8n                   | CrewAI-Worker per Webhook starten                 | HTTP/CLI-Bruecke         |
+| Huginn                | CrewAI-Worker aus Automation anstossen            | Script/Webhook           |
+| Aider/OpenHands       | CrewAI als Planungs-/Review-Unterstuetzung        | Projektintegration       |
 
 ## Unterschied zu LangGraph
 
-| Punkt | CrewAI | LangGraph |
-|---|---|---|
-| Denkmodell | Rollen und Aufgaben | Graph mit Zustand und Kanten |
-| Staerke | Team-/Rollen-Workflows | kontrollierte Zustandsmaschinen |
-| Einstieg | oft einfacher fuer Aufgabenketten | besser fuer komplexe Kontrollfluesse |
-| OpenClaw-Nutzung | Worker fuer Multi-Agent-Aufgaben | Worker fuer Graph-Workflows |
-| Risiko | Rollen koennen zu viel autonom tun | Graph kann zu komplex werden |
+| Punkt            | CrewAI                             | LangGraph                            |
+| ---------------- | ---------------------------------- | ------------------------------------ |
+| Denkmodell       | Rollen und Aufgaben                | Graph mit Zustand und Kanten         |
+| Staerke          | Team-/Rollen-Workflows             | kontrollierte Zustandsmaschinen      |
+| Einstieg         | oft einfacher fuer Aufgabenketten  | besser fuer komplexe Kontrollfluesse |
+| OpenClaw-Nutzung | Worker fuer Multi-Agent-Aufgaben   | Worker fuer Graph-Workflows          |
+| Risiko           | Rollen koennen zu viel autonom tun | Graph kann zu komplex werden         |
 
 Empfehlung:
 
@@ -91,13 +93,13 @@ Ergebnisse sollten unterhalb des Benutzer-Workspaces liegen:
 
 ## Sinnvolle erste CrewAI-Teams fuer dieses Repo
 
-| Team | Rollen | Zweck |
-|---|---|---|
-| `repo_maintainer_team` | Researcher, Code Reviewer, Docs Writer | Repo-Aenderungen bewerten |
-| `install_diagnosis_team` | Log Analyst, Fix Planner, Safety Reviewer | Installationsfehler auswerten |
-| `profile_builder_team` | Architect, Tool Mapper, Doc Writer | neue Profile sauber planen |
-| `security_review_team` | Auditor, SBOM Analyst, Hardening Advisor | defensive Security-Berichte |
-| `creator_planning_team` | Prompt Designer, Media Planner, Rights Checker | Creator-Workflows planen |
+| Team                     | Rollen                                         | Zweck                         |
+| ------------------------ | ---------------------------------------------- | ----------------------------- |
+| `repo_maintainer_team`   | Researcher, Code Reviewer, Docs Writer         | Repo-Aenderungen bewerten     |
+| `install_diagnosis_team` | Log Analyst, Fix Planner, Safety Reviewer      | Installationsfehler auswerten |
+| `profile_builder_team`   | Architect, Tool Mapper, Doc Writer             | neue Profile sauber planen    |
+| `security_review_team`   | Auditor, SBOM Analyst, Hardening Advisor       | defensive Security-Berichte   |
+| `creator_planning_team`  | Prompt Designer, Media Planner, Rights Checker | Creator-Workflows planen      |
 
 ## Minimale Konfiguration
 
@@ -109,7 +111,8 @@ export LITELLM_BASE_URL=http://127.0.0.1:4000
 export CREWAI_OUTPUT_DIR="$HOME/.openclaw_ultimate_user_data/crewai/runs"
 ```
 
-API-Keys gehoeren niemals ins Repo. Wenn externe Provider genutzt werden, muessen sie in `~/.openclaw_ultimate_user_data` oder in sicherer Shell-/Service-Konfiguration liegen.
+API-Keys gehoeren niemals ins Repo. Wenn externe Provider genutzt werden, muessen sie in
+`~/.openclaw_ultimate_user_data` oder in sicherer Shell-/Service-Konfiguration liegen.
 
 ## Sicherheit
 

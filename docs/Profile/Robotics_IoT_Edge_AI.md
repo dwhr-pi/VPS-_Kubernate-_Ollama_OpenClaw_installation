@@ -2,7 +2,8 @@
 
 ## Zweck
 
-Lokale Edge-AI- und IoT-Plattform fuer Sensorik, MQTT, Home Assistant und spaetere ESP-/Robotik-Pfade.
+Lokale Edge-AI- und IoT-Plattform fuer Sensorik, MQTT, Home Assistant und spaetere
+ESP-/Robotik-Pfade.
 
 ## Installierbare Kern-Tools
 

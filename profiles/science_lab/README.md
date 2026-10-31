@@ -9,5 +9,5 @@ Enthalten:
 - OpenClaw-Agentenvorlagen
 - Dashboard-/Notebook-Ort fuer wissenschaftliche Workflows
 
-Standard ist lokal-first und dockerfrei. GitHub-Projekte werden nur geklont, wenn `SCIENCE_CLONE_GITHUB=1` gesetzt ist.
-
+Standard ist lokal-first und dockerfrei. GitHub-Projekte werden nur geklont, wenn
+`SCIENCE_CLONE_GITHUB=1` gesetzt ist.

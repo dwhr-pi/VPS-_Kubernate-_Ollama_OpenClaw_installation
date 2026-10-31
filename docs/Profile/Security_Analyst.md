@@ -2,8 +2,10 @@
 
 ## Überblick
 
-Dieses Profil wurde aus der fachlichen Quelle [Security_Analyst.doc.md](../Profil/Security_Analyst.doc.md), `readme.md`, `docs/setup_guide.md` und den vorhandenen Skripten zusammengeführt.
-Es beschreibt ein OpenClaw- und Ollama-kompatibles Sicherheitsprofil für Exposure-Checks, Portanalyse, Logs und Hardening.
+Dieses Profil wurde aus der fachlichen Quelle
+[Security_Analyst.doc.md](../Profil/Security_Analyst.doc.md), `readme.md`, `docs/setup_guide.md` und
+den vorhandenen Skripten zusammengeführt. Es beschreibt ein OpenClaw- und Ollama-kompatibles
+Sicherheitsprofil für Exposure-Checks, Portanalyse, Logs und Hardening.
 
 ## Installierter Stack
 
@@ -61,7 +63,8 @@ Schlage konkrete Maßnahmen für Firewall, Secret-Handling, Dienste und Laufzeit
 ## OpenClaw / Ollama Fit
 
 - Dieses Profil passt gut zu OpenClaw als Sicherheits- und Review-Agent.
-- Das Repo enthält jetzt Konfigurations- und Portprüfpfade plus zusätzliche Security-Tools, aber noch keinen vollwertigen Pentest-Stack.
+- Das Repo enthält jetzt Konfigurations- und Portprüfpfade plus zusätzliche Security-Tools, aber
+  noch keinen vollwertigen Pentest-Stack.
 
 ## Vergleich
 

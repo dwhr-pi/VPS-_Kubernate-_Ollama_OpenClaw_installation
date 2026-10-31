@@ -1,6 +1,7 @@
 # Repository Sync and Recovery
 
-Diese Seite beschreibt den sichersten Weg, um das Repository auf Windows, Ubuntu/WSL und in Codex-Worktrees wieder in einen sauberen Zustand zu bringen.
+Diese Seite beschreibt den sichersten Weg, um das Repository auf Windows, Ubuntu/WSL und in
+Codex-Worktrees wieder in einen sauberen Zustand zu bringen.
 
 ## Ziel
 
@@ -124,7 +125,8 @@ git status
 
 ### Wichtig
 
-Wenn ein Codex-Worktree stark abweicht, heißt das nicht automatisch, dass GitHub falsch ist. Häufig ist nur dieser eine temporäre Worktree vom normalen `main` entkoppelt.
+Wenn ein Codex-Worktree stark abweicht, heißt das nicht automatisch, dass GitHub falsch ist. Häufig
+ist nur dieser eine temporäre Worktree vom normalen `main` entkoppelt.
 
 ## 4. Benutzer-Workspace bewusst getrennt behandeln
 
@@ -173,7 +175,8 @@ grep 'APP_VERSION=' ~/openclaw_ultimate_setup/setup_ultimate.sh
 git -C ~/openclaw_ultimate_setup show origin/main:setup_ultimate.sh | grep 'APP_VERSION='
 ```
 
-Wenn beide Werte gleich sind, dann stimmt die Version im Repository mit der Version auf GitHub überein.
+Wenn beide Werte gleich sind, dann stimmt die Version im Repository mit der Version auf GitHub
+überein.
 
 ## 6. Häufigster Fehler
 
@@ -182,7 +185,8 @@ Der häufigste Denkfehler ist:
 - eine Codex-Worktree-Kopie ansehen
 - aber die Ubuntu-Laufzeitkopie oder die Windows-Hauptkopie aktualisieren
 
-Dann wirken Versionsanzeigen, Dateien und Menüs widersprüchlich, obwohl nur unterschiedliche Arbeitskopien betrachtet werden.
+Dann wirken Versionsanzeigen, Dateien und Menüs widersprüchlich, obwohl nur unterschiedliche
+Arbeitskopien betrachtet werden.
 
 ## 7. Empfehlung für den Alltag
 
@@ -229,7 +233,8 @@ Typischer Windows-Zielpfad aus Ubuntu/WSL heraus:
 
 ### Repo inklusive `.git` nach Windows kopieren
 
-Damit sicherst du den kompletten Repository-Zustand und kannst ihn spaeter wieder nach Ubuntu zurueckspielen:
+Damit sicherst du den kompletten Repository-Zustand und kannst ihn spaeter wieder nach Ubuntu
+zurueckspielen:
 
 ```bash
 mkdir -p /mnt/c/Users/BENUTZERNAME/Documents/GitHub/Codex/openclaw_repo_backup
@@ -256,7 +261,8 @@ rsync -a --delete --exclude '.git' ~/openclaw_ultimate_setup/ /mnt/c/Users/BENUT
 
 Wichtig:
 
-- das Repository allein reicht nicht aus, wenn du auch sensible und bearbeitete Benutzerdaten behalten willst
+- das Repository allein reicht nicht aus, wenn du auch sensible und bearbeitete Benutzerdaten
+  behalten willst
 - diese liegen in `~/.openclaw_ultimate_user_data`
 
 Deshalb bei Bedarf separat sichern:

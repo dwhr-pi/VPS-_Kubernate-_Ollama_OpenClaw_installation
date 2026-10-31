@@ -11,4 +11,3 @@ echo "Keine grossen Wan2.x-Modelle werden automatisch heruntergeladen."
 bash "$ROOT_DIR/scripts/install-openhiggsstack.sh"
 
 mark_profile_installed "Video_Generation_ComfyUI_Wan"
-

@@ -54,10 +54,10 @@ detect_asset() {
   local machine
   machine="$(uname -m)"
   case "$machine" in
-    x86_64|amd64)
+    x86_64 | amd64)
       printf 'duckdb_cli-linux-amd64.zip'
       ;;
-    aarch64|arm64)
+    aarch64 | arm64)
       printf 'duckdb_cli-linux-aarch64.zip'
       ;;
     *)
@@ -85,10 +85,10 @@ main() {
       --dry-run)
         DRY_RUN=1
         ;;
-      --check|--status)
+      --check | --status)
         mode="check"
         ;;
-      --help|-h)
+      --help | -h)
         usage
         exit 0
         ;;
@@ -107,7 +107,7 @@ main() {
   fi
 
   if command -v duckdb >/dev/null 2>&1; then
-    log "DuckDB ist bereits verfuegbar:"
+    log "$TOOL_NAME ist bereits verfuegbar:"
     duckdb --version
     exit 0
   fi

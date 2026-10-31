@@ -2,7 +2,8 @@
 
 ## Langsamer Start nach Windows-Neustart
 
-WSL2 kann nach dem Neustart mehrere Minuten brauchen, besonders wenn Docker Desktop, grosse VHDX-Dateien oder viele Images beteiligt sind.
+WSL2 kann nach dem Neustart mehrere Minuten brauchen, besonders wenn Docker Desktop, grosse
+VHDX-Dateien oder viele Images beteiligt sind.
 
 ## Typische Checks
 
@@ -23,13 +24,15 @@ docker version || true
 
 ## Speicher
 
-Wenn die WSL-Distro auf C: liegt, ist freier Windows-C:-Speicher der praktische Engpass fuer VHDX-Wachstum. Unter 20 GB frei sollten schwere Installationen blockiert werden.
+Wenn die WSL-Distro auf C: liegt, ist freier Windows-C:-Speicher der praktische Engpass fuer
+VHDX-Wachstum. Unter 20 GB frei sollten schwere Installationen blockiert werden.
 
 ## Docker
 
 - Docker Desktop starten und warten.
 - Danach erst WSL/Setup starten.
-- Bei `permission denied /var/run/docker.sock` entweder Usergruppe korrigieren oder bewusst `sudo docker` nutzen.
+- Bei `permission denied /var/run/docker.sock` entweder Usergruppe korrigieren oder bewusst
+  `sudo docker` nutzen.
 
 ## Reparaturpfad
 

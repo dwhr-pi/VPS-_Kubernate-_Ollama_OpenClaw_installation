@@ -7,8 +7,8 @@ IDLE_MINUTES="${IDLE_MINUTES:-60}"
 SSH_USER="${SSH_USER:-daniel}"
 
 case "$MODE" in
-  --dry-run|--apply) ;;
-  --help|-h)
+  --dry-run | --apply) ;;
+  --help | -h)
     echo "Usage: GPU_SERVER_IP=... bash scripts/home-watcher/shutdown-idle-gpu-server.sh [--dry-run|--apply]"
     exit 0
     ;;

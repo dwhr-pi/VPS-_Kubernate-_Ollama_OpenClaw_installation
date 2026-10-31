@@ -52,11 +52,17 @@ while [ $# -gt 0 ]; do
       ;;
     --apt) CLEAN_APT=true ;;
     --docker) CLEAN_DOCKER=true ;;
-    --docker-volumes) CLEAN_DOCKER=true; CLEAN_DOCKER_VOLUMES=true ;;
+    --docker-volumes)
+      CLEAN_DOCKER=true
+      CLEAN_DOCKER_VOLUMES=true
+      ;;
     --caches) CLEAN_CACHES=true ;;
     --opt-tools) CLEAN_OPT_TOOLS=true ;;
     --no-opt-report) SHOW_OPT=false ;;
-    -h|--help) usage; exit 0 ;;
+    -h | --help)
+      usage
+      exit 0
+      ;;
     *)
       echo "Unbekannte Option: $1" >&2
       usage
@@ -111,7 +117,7 @@ confirm_step() {
 
   read -r -p "$prompt [j/N]: " answer
   case "${answer,,}" in
-    j|ja|y|yes) return 0 ;;
+    j | ja | y | yes) return 0 ;;
     *) return 1 ;;
   esac
 }
@@ -128,7 +134,7 @@ cache_dir_size() {
 remove_cache_dir() {
   local dir="$1"
   case "$dir" in
-    "$HOME"/.cache/*|"$HOME"/.npm/*|"$HOME"/.local/share/pnpm/*|"$HOME"/.pnpm-store|"$HOME"/.bun/install/cache|"$HOME"/.cargo/registry|"$HOME"/.cargo/git)
+    "$HOME"/.cache/* | "$HOME"/.npm/* | "$HOME"/.local/share/pnpm/* | "$HOME"/.pnpm-store | "$HOME"/.bun/install/cache | "$HOME"/.cargo/registry | "$HOME"/.cargo/git)
       if [ -e "$dir" ]; then
         if confirm_step "Cache wirklich entfernen: $dir ($(cache_dir_size "$dir"))?"; then
           run_or_show "Cache entfernen: $dir ($(cache_dir_size "$dir"))" rm -rf "$dir"
@@ -147,7 +153,7 @@ remove_opt_tool_dir() {
   local dir="$1"
 
   case "$dir" in
-    /opt/containerd|/opt/clawhub|/opt/bun|/opt/actionlint|/opt/comfyui|/opt/autogpt|/opt/aider|/opt/airbyte|/opt/openmanus|/opt/activepieces|/opt/apache_tika|/opt/kimi2|/opt/ruflo)
+    /opt/containerd | /opt/clawhub | /opt/bun | /opt/actionlint | /opt/comfyui | /opt/autogpt | /opt/aider | /opt/airbyte | /opt/openmanus | /opt/activepieces | /opt/apache_tika | /opt/kimi2 | /opt/ruflo)
       if [ -e "$dir" ]; then
         if confirm_step "/opt-Toolrest wirklich entfernen: $dir ($(cache_dir_size "$dir"))?"; then
           run_or_show "/opt-Toolrest entfernen: $dir ($(cache_dir_size "$dir"))" sudo rm -rf "$dir"

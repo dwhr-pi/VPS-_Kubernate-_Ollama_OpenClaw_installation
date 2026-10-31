@@ -26,7 +26,7 @@ while IFS= read -r tool_name || [ -n "$tool_name" ]; do
     log_warn "Kein freigegebener Update-Pfad; kein automatischer Re-Install."
     failed=1
   fi
-done < "$TOOL_STATUS_FILE"
+done <"$TOOL_STATUS_FILE"
 
 if [ "$failed" -ne 0 ]; then
   log_warn "Updates unvollstaendig; Hinweise pruefen. Keine fehlenden Updater durch Installer ersetzt."

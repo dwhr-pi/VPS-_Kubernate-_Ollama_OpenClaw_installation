@@ -2,13 +2,14 @@
 
 ## Zweck
 
-Social-Content-Erweiterung:
-[Workflowvertrag](../../workflows/media/Social_Avatar_Content.md).
-Nur Vorschlag/Plan; gemeinsame GPU-Sperre und Rechte-/Kostenfreigaben vor
-spaeterer Adapterausfuehrung. Kein automatisches Posten oder Cloud-Fallback.
-Media-Agent fuer das AI Media Production Studio. Er plant, prueft und protokolliert Workflows, fuehrt aber keine schwere Installation und keine Veroeffentlichung ohne Freigabe aus.
+Social-Content-Erweiterung: [Workflowvertrag](../../workflows/media/Social_Avatar_Content.md). Nur
+Vorschlag/Plan; gemeinsame GPU-Sperre und Rechte-/Kostenfreigaben vor spaeterer Adapterausfuehrung.
+Kein automatisches Posten oder Cloud-Fallback. Media-Agent fuer das AI Media Production Studio. Er
+plant, prueft und protokolliert Workflows, fuehrt aber keine schwere Installation und keine
+Veroeffentlichung ohne Freigabe aus.
 
 ## Regeln
+
 - KI-Inhalte kennzeichnen.
 - Keine echten Personen ohne Einwilligung nachbauen.
 - Rohdaten und Modelle nicht ins Repo schreiben.

@@ -25,7 +25,7 @@ echo -e "${YELLOW}Hinweis: Es werden keine Secrets erzeugt und kein produktiver 
 mkdir -p "$AUTH_DIR"
 chmod 700 "$USER_WORKSPACE_DIR/auth" "$AUTH_DIR" 2>/dev/null || true
 
-cat > "$AUTH_DIR/.env.template" <<'EOF'
+cat >"$AUTH_DIR/.env.template" <<'EOF'
 # Authentik lokale Vorlage - keine echten Secrets ins Repo
 AUTHENTIK_DOMAIN=auth.example.local
 AUTHENTIK_PORT_HTTP=9010
@@ -38,7 +38,7 @@ AUTHENTIK_BOOTSTRAP_EMAIL=admin@example.local
 AUTHENTIK_BOOTSTRAP_PASSWORD=change-me-outside-repo
 EOF
 
-cat > "$AUTH_DIR/docker-compose.example.yml" <<'EOF'
+cat >"$AUTH_DIR/docker-compose.example.yml" <<'EOF'
 # Beispielvorlage. Vor produktiver Nutzung Secrets, Volumes, TLS und Reverse Proxy pruefen.
 services:
   authentik-server:
@@ -64,7 +64,7 @@ volumes:
   authentik_postgres:
 EOF
 
-cat > "$AUTH_DIR/README.md" <<'EOF'
+cat >"$AUTH_DIR/README.md" <<'EOF'
 # Authentik im OpenClaw Setup
 
 Authentik ist eine optionale Identity-Provider-/SSO-Schicht fuer Webdienste.

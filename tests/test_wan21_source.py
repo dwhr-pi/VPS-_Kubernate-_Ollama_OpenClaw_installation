@@ -48,7 +48,7 @@ class WanContract(unittest.TestCase):
             self.assertNotIn(token, text)
         start = text.index('wan21_install_runtime()')
         self.assertLess(text.index('pip --isolated check', start),
-                        text.index('> "$WAN21_RUNTIME_MARKER"', start))
+                        re.search(r'>\s*"\$WAN21_RUNTIME_MARKER"', text[start:]).start() + start)
 
     def test_document_links(self):
         doc = ROOT / 'docs/tools/wan21.md'

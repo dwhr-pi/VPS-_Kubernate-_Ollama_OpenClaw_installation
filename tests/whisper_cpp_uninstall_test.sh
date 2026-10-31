@@ -7,7 +7,10 @@ end_measurement() { result="$1"; }
 log_warn() { :; }
 log_error() { :; }
 log_success() { :; }
-mark_tool_removed() { [[ "$1" == Whisper_CPP ]]; marked=true; }
+mark_tool_removed() {
+  [[ "$1" == Whisper_CPP ]]
+  marked=true
+}
 realpath() { echo "$resolved_target"; }
 sudo() {
   called=true

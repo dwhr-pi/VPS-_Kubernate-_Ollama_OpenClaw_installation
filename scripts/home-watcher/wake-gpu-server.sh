@@ -6,8 +6,8 @@ GPU_SERVER_MAC="${GPU_SERVER_MAC:-GPU_SERVER_MAC}"
 BROADCAST_IP="${BROADCAST_IP:-255.255.255.255}"
 
 case "$MODE" in
-  --dry-run|--apply) ;;
-  --help|-h)
+  --dry-run | --apply) ;;
+  --help | -h)
     echo "Usage: GPU_SERVER_MAC=xx:xx:xx:xx:xx:xx bash scripts/home-watcher/wake-gpu-server.sh [--dry-run|--apply]"
     exit 0
     ;;

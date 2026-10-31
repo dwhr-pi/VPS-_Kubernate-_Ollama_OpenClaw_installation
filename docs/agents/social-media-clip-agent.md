@@ -55,4 +55,3 @@ Thema: lokales OpenClaw/Ollama AI Studio.
 3. Shots und Overlays planen.
 4. FFmpeg-Exportparameter ausgeben.
 5. n8n-Upload-Vorbereitung erzeugen.
-

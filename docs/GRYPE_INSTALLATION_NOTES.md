@@ -2,8 +2,7 @@
 
 ## Warum `apt install grype` fehlschlaegt
 
-Ubuntu 24.04/Noble liefert in den Standard-Repositories kein offizielles Paket `grype`.
-Der Fehler
+Ubuntu 24.04/Noble liefert in den Standard-Repositories kein offizielles Paket `grype`. Der Fehler
 
 ```text
 E: Unable to locate package grype
@@ -43,5 +42,5 @@ GRYPE_VERSION=v0.87.0 bash scripts/tools/grype_install.sh
 
 ## Sicherheit
 
-Grype ist ein defensiver Schwachstellenscanner. Reports koennen Paketnamen, Pfade und interne Versionsstaende enthalten und sollten nicht unbedacht veroeffentlicht werden.
-
+Grype ist ein defensiver Schwachstellenscanner. Reports koennen Paketnamen, Pfade und interne
+Versionsstaende enthalten und sollten nicht unbedacht veroeffentlicht werden.

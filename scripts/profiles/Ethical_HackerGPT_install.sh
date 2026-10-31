@@ -38,10 +38,10 @@ is_private_or_local_target() {
   local target="$1"
 
   case "$target" in
-    localhost|127.0.0.1|::1) return 0 ;;
-    *.local|*.lan|*.internal|*.home) return 0 ;;
-    10.*|192.168.*) return 0 ;;
-    172.16.*|172.17.*|172.18.*|172.19.*|172.2?.*|172.30.*|172.31.*) return 0 ;;
+    localhost | 127.0.0.1 | ::1) return 0 ;;
+    *.local | *.lan | *.internal | *.home) return 0 ;;
+    10.* | 192.168.*) return 0 ;;
+    172.16.* | 172.17.* | 172.18.* | 172.19.* | 172.2?.* | 172.30.* | 172.31.*) return 0 ;;
   esac
 
   return 1
@@ -49,11 +49,10 @@ is_private_or_local_target() {
 
 sanitize_allowlist() {
   local raw="$1"
-  local tmp=""
   local item=""
   local cleaned=()
 
-  IFS=',' read -r -a entries <<< "$raw"
+  IFS=',' read -r -a entries <<<"$raw"
   for item in "${entries[@]}"; do
     item="${item//\"/}"
     item="$(printf '%s' "$item" | xargs)"
@@ -133,14 +132,14 @@ fi
 
 if [ "$ETHICAL_HACKER_INSTALL_LABS" = "true" ]; then
   mkdir -p "$PROFILE_WORKSPACE_DIR/labs"
-  cat > "$PROFILE_WORKSPACE_DIR/labs/juice-shop.compose.yml" <<'EOF'
+  cat >"$PROFILE_WORKSPACE_DIR/labs/juice-shop.compose.yml" <<'EOF'
 services:
   juice-shop:
     image: bkimminich/juice-shop
     ports:
       - "127.0.0.1:3008:3000"
 EOF
-  cat > "$PROFILE_WORKSPACE_DIR/labs/dvwa.compose.yml" <<'EOF'
+  cat >"$PROFILE_WORKSPACE_DIR/labs/dvwa.compose.yml" <<'EOF'
 services:
   dvwa:
     image: vulnerables/web-dvwa
@@ -150,9 +149,9 @@ EOF
   log_warn "Lokale Lab-Compose-Dateien wurden vorbereitet, aber nicht gestartet."
 fi
 
-printf '%s\n' "${SANITIZED_ALLOWLIST[@]}" > "$OUTPUT_DIR/ethical_hackergpt_allowlist.txt"
+printf '%s\n' "${SANITIZED_ALLOWLIST[@]}" >"$OUTPUT_DIR/ethical_hackergpt_allowlist.txt"
 
-cat > "$OUTPUT_DIR/ethical_hackergpt_example_report.md" <<EOF
+cat >"$OUTPUT_DIR/ethical_hackergpt_example_report.md" <<EOF
 # Ethical HackerGPT Beispielreport
 
 - Zeitpunkt: $(date -Iseconds)
@@ -197,10 +196,13 @@ trivy fs .
 - Nach jedem Fix denselben Check erneut ausfuehren und Report aktualisieren.
 EOF
 
-cat > "$PROFILE_ENV_FILE" <<EOF
+cat >"$PROFILE_ENV_FILE" <<EOF
 ETHICAL_HACKER_ENABLED=$ETHICAL_HACKER_ENABLED
 ETHICAL_HACKER_MODE=$ETHICAL_HACKER_MODE
-ETHICAL_HACKER_ALLOWLIST=$(IFS=,; printf '%s' "${SANITIZED_ALLOWLIST[*]}")
+ETHICAL_HACKER_ALLOWLIST=$(
+  IFS=,
+  printf '%s' "${SANITIZED_ALLOWLIST[*]}"
+)
 ETHICAL_HACKER_RATE_LIMIT=$ETHICAL_HACKER_RATE_LIMIT
 ETHICAL_HACKER_INSTALL_LABS=$ETHICAL_HACKER_INSTALL_LABS
 ETHICAL_HACKER_INSTALL_OPTIONAL_TOOLS=$ETHICAL_HACKER_INSTALL_OPTIONAL_TOOLS

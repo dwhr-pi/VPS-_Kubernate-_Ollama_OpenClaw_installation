@@ -8,7 +8,8 @@
 
 ## Zweck
 
-Zentrale Warteschlange fuer Codex-, OpenClaw- und Agenten-Auftraege mit Limits, Retry, Pause/Resume und Logging.
+Zentrale Warteschlange fuer Codex-, OpenClaw- und Agenten-Auftraege mit Limits, Retry, Pause/Resume
+und Logging.
 
 ## Empfohlene Tools
 
@@ -23,11 +24,13 @@ Zentrale Warteschlange fuer Codex-, OpenClaw- und Agenten-Auftraege mit Limits, 
 
 1. `bash scripts/preflight.sh --dry-run` ausfuehren.
 2. Nur leichte, dokumentierte Komponenten aktivieren.
-3. Schwere oder serverartige Komponenten erst nach Doctor-, Port-, Secret- und Ressourcencheck installieren.
+3. Schwere oder serverartige Komponenten erst nach Doctor-, Port-, Secret- und Ressourcencheck
+   installieren.
 
 ## Full-Pfad
 
-- Erst wenn Installer, Doctor, Uninstaller, Portdoku, Ressourcenwerte und Restore-/Rollback-Schritte vorhanden sind.
+- Erst wenn Installer, Doctor, Uninstaller, Portdoku, Ressourcenwerte und Restore-/Rollback-Schritte
+  vorhanden sind.
 - Lange Aufgaben ueber Queue Worker Orchestrator planen.
 
 ## Sicherheitswarnungen

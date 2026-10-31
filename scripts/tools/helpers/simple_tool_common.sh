@@ -14,8 +14,12 @@ install_apt_tool() {
   shift
   local packages=("$@")
   begin_measurement "tool_install_${tool_name}" "Tool installieren: ${tool_name}"
-  if ensure_user_workspace && require_disk_mb 512 / && \
-     { log_info "Installiere ${tool_name} via apt: ${packages[*]}"; sudo apt-get update; sudo apt-get install -y "${packages[@]}"; }; then
+  if ensure_user_workspace && require_disk_mb 512 / &&
+    {
+      log_info "Installiere ${tool_name} via apt: ${packages[*]}"
+      sudo apt-get update
+      sudo apt-get install -y "${packages[@]}"
+    }; then
     mark_tool_installed "$tool_name"
     log_success "${tool_name} installiert."
     end_measurement "success"
@@ -143,10 +147,10 @@ ensure_docker_compose_available() {
 
   arch="$(uname -m)"
   case "$arch" in
-    x86_64|amd64)
+    x86_64 | amd64)
       arch="x86_64"
       ;;
-    aarch64|arm64)
+    aarch64 | arm64)
       arch="aarch64"
       ;;
     *)
@@ -232,7 +236,7 @@ install_git_docker_tool() {
       end_measurement "failed"
       return 1
     fi
-    printf '%s\n' "$compose_content" > "$install_dir/docker-compose.yml"
+    printf '%s\n' "$compose_content" >"$install_dir/docker-compose.yml"
     if ! (cd "$install_dir" && run_docker_compose up -d); then
       log_error "Docker Compose fuer ${tool_name} fehlgeschlagen. Kein Installiert-Status gesetzt."
       end_measurement "failed"

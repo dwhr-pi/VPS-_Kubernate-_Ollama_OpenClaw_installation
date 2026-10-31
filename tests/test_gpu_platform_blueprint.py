@@ -83,7 +83,7 @@ class PlatformContracts(unittest.TestCase):
                             for action in re.findall(r'uses: ([^\s]+)', workflow)))
 
     def test_legacy_proxy_does_not_embed_key_in_url(self):
-        content = (ROOT / 'scripts/k8s_deployments.yaml').read_text()
+        content = (ROOT / 'docs/legacy/K8S_DEPLOYMENTS_LEGACY.md').read_text()
         self.assertNotIn('generateContent?key=', content)
         self.assertIn('"x-goog-api-key": GEMINI_API_KEY', content)
         self.assertNotIn('type: LoadBalancer', content)

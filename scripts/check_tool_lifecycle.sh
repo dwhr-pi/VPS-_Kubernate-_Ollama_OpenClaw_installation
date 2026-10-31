@@ -23,13 +23,14 @@ missing=0
 shopt -s nullglob
 
 for install_file in "$TOOLS_DIR"/*_install.sh; do
-  tool="$(basename "$install_file" "_install.sh")"
+  tool="${install_file##*/}"
+  tool="${tool%_install.sh}"
   total=$((total + 1))
   for action in check update uninstall doctor status; do
     file="$TOOLS_DIR/${tool}_${action}.sh"
     if [ ! -f "$file" ]; then
       missing=$((missing + 1))
-      printf 'FEHLT %-28s %s\n' "$tool" "$action" >> "$tmp_report"
+      printf 'FEHLT %-28s %s\n' "$tool" "$action" >>"$tmp_report"
     fi
   done
 done
@@ -41,8 +42,10 @@ if [ "$missing" -eq 0 ]; then
 fi
 
 echo "Hinweis: $missing Lifecycle-Dateien fehlen noch."
-sort "$tmp_report" | head -n "$MAX_REPORT"
-if [ "$(wc -l < "$tmp_report")" -gt "$MAX_REPORT" ]; then
+# Do not let head close a pipe while sort is still writing a large report.
+sort -o "$tmp_report" "$tmp_report"
+head -n "$MAX_REPORT" "$tmp_report"
+if [ "$(wc -l <"$tmp_report")" -gt "$MAX_REPORT" ]; then
   echo "... weitere Eintraege ausgeblendet. MAX_REPORT=$MAX_REPORT erhoehen fuer mehr Details."
 fi
 

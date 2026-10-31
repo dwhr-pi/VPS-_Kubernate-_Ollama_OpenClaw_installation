@@ -38,23 +38,23 @@ while [ "$#" -gt 0 ]; do
       MODE="list"
       shift
       ;;
-    --failed|--failures)
+    --failed | --failures)
       MODE="failed"
       shift
       ;;
-    --diagnostics|--run-diagnostics)
+    --diagnostics | --run-diagnostics)
       MODE="diagnostics"
       shift
       ;;
-    --snapshot|--dependencies)
+    --snapshot | --dependencies)
       MODE="snapshot"
       shift
       ;;
-    --email|--send-email)
+    --email | --send-email)
       MODE="email"
       shift
       ;;
-    -h|--help)
+    -h | --help)
       usage
       exit 0
       ;;

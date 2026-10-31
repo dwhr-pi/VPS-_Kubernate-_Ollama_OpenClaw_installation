@@ -2,8 +2,8 @@
 
 ## Warum `apt install duckdb` fehlschlagen kann
 
-Ubuntu 24.04/Noble liefert in den Standard-Repositories kein offizielles Paket mit dem Namen `duckdb`.
-Der Fehler
+Ubuntu 24.04/Noble liefert in den Standard-Repositories kein offizielles Paket mit dem Namen
+`duckdb`. Der Fehler
 
 ```text
 E: Unable to locate package duckdb
@@ -28,7 +28,8 @@ Ziel: /opt/duckdb
 Symlink: /usr/local/bin/duckdb
 ```
 
-Der Installer benoetigt `curl` und `unzip`. Falls diese Werkzeuge fehlen, installiert das Setup sie vor dem Download automatisch ueber `apt`.
+Der Installer benoetigt `curl` und `unzip`. Falls diese Werkzeuge fehlen, installiert das Setup sie
+vor dem Download automatisch ueber `apt`.
 
 Die Version kann bewusst ueberschrieben werden:
 
@@ -47,13 +48,13 @@ bash scripts/tools/duckdb_install.sh --dry-run
 
 DuckDB ist ein leichtes lokales Analysewerkzeug.
 
-| Bereich | Empfehlung |
-| --- | --- |
-| RAM | 1 GB Minimum, 4 GB+ fuer groessere Tabellen |
-| Speicher | wenige 100 MB fuer Binary, zusaetzlich Platz fuer Datenbanken |
-| Ports | keine |
-| Docker | nicht erforderlich |
-| WSL2 | geeignet, aber Datenbanken besser im Linux-Dateisystem statt auf langsamen Windows-Mounts speichern |
+| Bereich  | Empfehlung                                                                                          |
+| -------- | --------------------------------------------------------------------------------------------------- |
+| RAM      | 1 GB Minimum, 4 GB+ fuer groessere Tabellen                                                         |
+| Speicher | wenige 100 MB fuer Binary, zusaetzlich Platz fuer Datenbanken                                       |
+| Ports    | keine                                                                                               |
+| Docker   | nicht erforderlich                                                                                  |
+| WSL2     | geeignet, aber Datenbanken besser im Linux-Dateisystem statt auf langsamen Windows-Mounts speichern |
 
 ## Deinstallation
 

@@ -18,12 +18,13 @@ jobs:
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
           fetch-depth: 0
+          persist-credentials: false
 
       - name: Install QA tools
         run: |
           sudo apt-get update
           sudo apt-get install -y shellcheck shfmt python3
-          npm install -g markdown-link-check
+          npm install -g markdown-link-check@3.15.0
 
       - name: Validate JSON-compatible config
         run: bash scripts/validate_config.sh
@@ -44,14 +45,18 @@ jobs:
 
       - name: shfmt check
         run: |
-          shfmt -d scripts install.sh setup_ultimate.sh
+          shfmt -d -i 2 -ci scripts install.sh setup_ultimate.sh
 
       - name: Secret scan with Gitleaks
-        uses: gitleaks/gitleaks-action@v2
+        uses: gitleaks/gitleaks-action@ff98106e4c7b2bc287b24eaf42907196329070c7 # v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Markdown link check
         run: |
-          markdown-link-check readme.md
-          find docs -name '*.md' -print0 | xargs -0 -n 1 markdown-link-check
+          set -euo pipefail
+          export NODE_PATH="$(npm root -g)"
+          node --test tests/test_markdown_link_retry.cjs
+          node scripts/quality/link_checker_contract.cjs "$(command -v markdown-link-check)"
+          node scripts/quality/check_markdown_links.cjs -c .github/markdown-link-check.json readme.md
+          find docs -name '*.md' -print0 | xargs -0 -r node scripts/quality/check_markdown_links.cjs -c .github/markdown-link-check.json

@@ -2,6 +2,7 @@
 import json
 from pathlib import Path
 import re
+from doc_assertions import assert_prose_in, assert_prose_not_in
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -36,25 +37,25 @@ class ManusToolingInterviewTests(unittest.TestCase):
     def test_brief_covers_all_seven_selection_criteria(self):
         text = (SKILL.parent / "assets/tooling-brief.md").read_text(encoding="utf-8")
         for field in ("Einsatzgebiet", "Betriebsmodell", "Hardware", "Datenschutz", "Budget", "Integrationen", "Bedienniveau"):
-            self.assertIn(field, text)
+            assert_prose_in(self, field, text)
         skill = SKILL.read_text(encoding="utf-8")
-        self.assertIn("bereits bekannten Kontext nicht erneut", skill)
-        self.assertIn("GitHub statt als Docker-Installation", skill)
+        assert_prose_in(self, "bereits bekannten Kontext nicht erneut", skill)
+        assert_prose_in(self, "GitHub statt als Docker-Installation", skill)
 
     def test_existing_ci_and_deck_remain_accurately_described(self):
         go = (ROOT / "examples/manus-ci-cd/go-ci.yml.example").read_text()
         rust = (ROOT / "examples/manus-ci-cd/rust-ci.yml.example").read_text()
-        self.assertIn("cache: false", go)
-        self.assertIn("go-version-file: go.mod", go)
-        self.assertIn("go test -race", go)
-        self.assertIn("cargo clippy --locked --all-targets -- -D warnings", rust)
+        assert_prose_in(self, "cache: false", go)
+        assert_prose_in(self, "go-version-file: go.mod", go)
+        assert_prose_in(self, "go test -race", go)
+        assert_prose_in(self, "cargo clippy --locked --all-targets -- -D warnings", rust)
         text = DOC.read_text(encoding="utf-8")
-        self.assertIn("cache: false", text)
-        self.assertIn("keine\n  byteidentischen Binaries", text)
+        assert_prose_in(self, "cache: false", text)
+        assert_prose_in(self, "keine\n  byteidentischen Binaries", text)
         self.assertEqual(len(json.loads((ROOT / "docs/presentations/technology-tooling-overview.json").read_text(encoding="utf-8"))["slides"]), 13)
-        self.assertIn("Dify ist hier eine zusaetzliche Referenz", text)
+        assert_prose_in(self, "Dify ist hier eine zusaetzliche Referenz", text)
         for path in ("docs/TOOLS_CATALOG.md", "docs/TOOL_INDEX.md", "docs/tutorials/manus-development-workflow.md"):
-            self.assertIn(DOC.name, (ROOT / path).read_text(encoding="utf-8"))
+            assert_prose_in(self, DOC.name, (ROOT / path).read_text(encoding="utf-8"))
 
 
 if __name__ == "__main__":

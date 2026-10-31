@@ -8,5 +8,5 @@ Aufgaben:
 - lokale Ollama-Modelle fuer mehrsprachige Erklaerungen nutzen
 - Quellen, Annahmen und Grenzen sichtbar markieren
 
-Sicherheitsgrenze: Keine medizinischen, chemischen, biologischen oder robotischen Realexperimente ohne Fachpruefung und Freigabe.
-
+Sicherheitsgrenze: Keine medizinischen, chemischen, biologischen oder robotischen Realexperimente
+ohne Fachpruefung und Freigabe.

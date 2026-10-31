@@ -2,7 +2,8 @@
 
 ## Zweck
 
-Stellt den zentralen Knowledge- und Retrieval-Layer für Dokumente, Webseiten, Markdown und Repositories bereit.
+Stellt den zentralen Knowledge- und Retrieval-Layer für Dokumente, Webseiten, Markdown und
+Repositories bereit.
 
 ## Use Cases
 

@@ -23,7 +23,7 @@ jobs:
 
       - name: ShellCheck
         run: |
-          shellcheck scripts/check_secrets.sh scripts/check_resource_budget.sh scripts/queue/*.sh scripts/security/scan_*.sh
+          shellcheck -x --source-path=SCRIPTDIR scripts/check_secrets.sh scripts/check_resource_budget.sh scripts/queue/*.sh scripts/security/scan_*.sh
 
       - name: Registry checks
         run: |

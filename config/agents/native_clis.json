@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "verified_date": "2026-10-29",
+  "tools": {
+    "opencode": {
+      "origin": "https://github.com/anomalyco/opencode.git",
+      "commit": "f023f7c36c090260a49c6e4da0ff69cbbd10c168",
+      "license": "MIT",
+      "license_file": "LICENSE",
+      "kind": "bun",
+      "toolchain": "1.4.4",
+      "disk_gib": 20,
+      "artifact": "packages/cli/dist/cli-linux-x64/bin/opencode",
+      "contracts": {
+        "LICENSE": "625f0f619133f89bbbb2abe37369613dfa1885eba1e50d02170deb62bb42cb6b",
+        "package.json": "5735d8046d5cb57a7a3896c5cd6d76a4aba5cb1a5ae80dd3fc187de0fbacad20",
+        "bun.lock": "3e7b726aee3d021262f282ff5b1ab42eaa431a87b81ac12c640e49e19a8922ba",
+        "packages/cli/package.json": "6285f9f692d1ff25e182979bc648f120458c02b85894ab0684492f2c4684bc3c",
+        "packages/cli/script/build.ts": "a3c8f971f8afcda29a129ddea1c956770ccd7d26044a51c92c4506aa0ec46df2"
+      }
+    },
+    "aider": {
+      "origin": "https://github.com/Aider-AI/aider.git",
+      "commit": "5dc9490bb35f9729ef2c95d00a19ccd30c26339c",
+      "license": "Apache-2.0",
+      "license_file": "LICENSE.txt",
+      "kind": "python",
+      "disk_gib": 10,
+      "artifact": "../venv/bin/aider",
+      "requires_hashed_lock": true,
+      "contracts": {
+        "LICENSE.txt": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+        "pyproject.toml": "1faaea506c1d42f5e9db0d7152cea43920596b901e281e27c2655e791284c9ef",
+        "requirements.txt": "5b340fe0a8830196dbfc18098edd73c379eeae05f752ab47979e96cb542f095f"
+      }
+    },
+    "codex_cli": {
+      "origin": "https://github.com/openai/codex.git",
+      "commit": "8fdf6472955749a731fd9e4b8ffc218e8e80c51d",
+      "license": "Apache-2.0",
+      "license_file": "LICENSE",
+      "kind": "cargo",
+      "toolchain": "1.95.0",
+      "disk_gib": 20,
+      "artifact": "codex-rs/target/release/codex",
+      "contracts": {
+        "LICENSE": "d17f227e4df5da1600391338865ce0f3055211760a36688f816941d58232d8dc",
+        "codex-rs/rust-toolchain.toml": "570656042681cfd8795403a455baf9a33035331a07db0645e866bbcea89a3d64",
+        "codex-rs/Cargo.lock": "3ff4ebfeed5963ce3b7894a05c236a4058ad36a98c22359bd2ab823f3248f3c6",
+        "codex-rs/cli/Cargo.toml": "a12cf0c6b64f66ccc18eb1db74b50a8a12a79411e0d5024dfa948b5f6388260a"
+      }
+    },
+    "openhands": {
+      "origin": "https://github.com/OpenHands/software-agent-sdk.git",
+      "commit": "47bbc5e8392c4c75b7f77a1da38bed4a9f53d6a5",
+      "license": "MIT",
+      "license_file": "LICENSE",
+      "kind": "source-only",
+      "runtime_ready": false,
+      "disk_gib": 10,
+      "artifact": "LICENSE",
+      "contracts": {
+        "LICENSE": "14a9b631c658eee682c6c2973525fbdf808c3457176bc47513052c559cc5ce86"
+      }
+    }
+  }
+}

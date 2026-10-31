@@ -4,6 +4,8 @@ set -euo pipefail
 SCRIPT_LIB_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=apt_lock_wait.sh
 source "$SCRIPT_LIB_DIR/apt_lock_wait.sh"
+# Public path consumed by scripts sourcing this library.
+# shellcheck disable=SC2034
 REPO_ROOT="$(cd "$SCRIPT_LIB_DIR/../.." && pwd)"
 USER_WORKSPACE_DIR="${OPENCLAW_USER_DATA_DIR:-${HOME}/.openclaw_ultimate_user_data}"
 USER_STATUS_DIR="${USER_WORKSPACE_DIR}/status"
@@ -41,10 +43,10 @@ ensure_user_workspace() {
   fi
 
   if [ ! -f "$METRICS_HISTORY_FILE" ]; then
-    printf 'timestamp\toperation_id\toperation_title\tstatus\tduration_seconds\tfree_kb_before\tfree_kb_after\tdelta_kb\n' > "$METRICS_HISTORY_FILE"
+    printf 'timestamp\toperation_id\toperation_title\tstatus\tduration_seconds\tfree_kb_before\tfree_kb_after\tdelta_kb\n' >"$METRICS_HISTORY_FILE"
   fi
   if [ ! -f "$CUSTOM_SOURCES_FILE" ]; then
-    cat > "$CUSTOM_SOURCES_FILE" <<'EOF'
+    cat >"$CUSTOM_SOURCES_FILE" <<'EOF'
 # Benutzerdefinierte GitHub-Quellen für Setup, Tools und eigene Forks
 # Format:
 # CUSTOM_REPO_<SCHLUESSEL>_URL="https://github.com/owner/repo.git"
@@ -80,7 +82,7 @@ CUSTOM_REPO_FINRAG_URL=""
 EOF
   fi
   if [ ! -f "$CUSTOM_OLLAMA_BUILDS_FILE" ]; then
-    cat > "$CUSTOM_OLLAMA_BUILDS_FILE" <<'EOF'
+    cat >"$CUSTOM_OLLAMA_BUILDS_FILE" <<'EOF'
 # Benutzerdefinierte Ollama-Builds und Fork-Notizen
 # Für jeden eigenen Build kannst du hier einen gut lesbaren Block anlegen.
 #
@@ -188,8 +190,7 @@ infer_and_install_base_packages_for_current_script() {
   [ "${AUTO_INSTALL_TOOL_BASE_DEPS:-true}" = "true" ] || return 0
   [ -n "$script_path" ] && [ -f "$script_path" ] || return 0
   case "$(basename "$script_path")" in
-    *_install.sh)
-      ;;
+    *_install.sh) ;;
     *)
       return 0
       ;;
@@ -231,20 +232,20 @@ status_add() {
   local file="$1"
   local value="$2"
   ensure_user_workspace
-  grep -Fxv "$value" "$file" > "${file}.tmp" 2>/dev/null || true
+  grep -Fxv "$value" "$file" >"${file}.tmp" 2>/dev/null || true
   mv "${file}.tmp" "$file"
-  printf '%s\n' "$value" >> "$file"
+  printf '%s\n' "$value" >>"$file"
 
   case "$file" in
     "$TOOL_STATUS_FILE")
-      grep -Fxv "$value" "$LEGACY_TOOL_STATUS_FILE" > "${LEGACY_TOOL_STATUS_FILE}.tmp" 2>/dev/null || true
+      grep -Fxv "$value" "$LEGACY_TOOL_STATUS_FILE" >"${LEGACY_TOOL_STATUS_FILE}.tmp" 2>/dev/null || true
       mv "${LEGACY_TOOL_STATUS_FILE}.tmp" "$LEGACY_TOOL_STATUS_FILE"
-      printf '%s\n' "$value" >> "$LEGACY_TOOL_STATUS_FILE"
+      printf '%s\n' "$value" >>"$LEGACY_TOOL_STATUS_FILE"
       ;;
     "$PROFILE_STATUS_FILE")
-      grep -Fxv "$value" "$LEGACY_PROFILE_STATUS_FILE" > "${LEGACY_PROFILE_STATUS_FILE}.tmp" 2>/dev/null || true
+      grep -Fxv "$value" "$LEGACY_PROFILE_STATUS_FILE" >"${LEGACY_PROFILE_STATUS_FILE}.tmp" 2>/dev/null || true
       mv "${LEGACY_PROFILE_STATUS_FILE}.tmp" "$LEGACY_PROFILE_STATUS_FILE"
-      printf '%s\n' "$value" >> "$LEGACY_PROFILE_STATUS_FILE"
+      printf '%s\n' "$value" >>"$LEGACY_PROFILE_STATUS_FILE"
       ;;
   esac
 }
@@ -253,16 +254,16 @@ status_remove() {
   local file="$1"
   local value="$2"
   ensure_user_workspace
-  grep -Fxv "$value" "$file" > "${file}.tmp" 2>/dev/null || true
+  grep -Fxv "$value" "$file" >"${file}.tmp" 2>/dev/null || true
   mv "${file}.tmp" "$file"
 
   case "$file" in
     "$TOOL_STATUS_FILE")
-      grep -Fxv "$value" "$LEGACY_TOOL_STATUS_FILE" > "${LEGACY_TOOL_STATUS_FILE}.tmp" 2>/dev/null || true
+      grep -Fxv "$value" "$LEGACY_TOOL_STATUS_FILE" >"${LEGACY_TOOL_STATUS_FILE}.tmp" 2>/dev/null || true
       mv "${LEGACY_TOOL_STATUS_FILE}.tmp" "$LEGACY_TOOL_STATUS_FILE"
       ;;
     "$PROFILE_STATUS_FILE")
-      grep -Fxv "$value" "$LEGACY_PROFILE_STATUS_FILE" > "${LEGACY_PROFILE_STATUS_FILE}.tmp" 2>/dev/null || true
+      grep -Fxv "$value" "$LEGACY_PROFILE_STATUS_FILE" >"${LEGACY_PROFILE_STATUS_FILE}.tmp" 2>/dev/null || true
       mv "${LEGACY_PROFILE_STATUS_FILE}.tmp" "$LEGACY_PROFILE_STATUS_FILE"
       ;;
   esac
@@ -312,8 +313,10 @@ begin_measurement() {
   infer_and_install_base_packages_for_current_script "${0:-}"
   export CURRENT_OPERATION_ID="$1"
   export CURRENT_OPERATION_TITLE="$2"
-  export CURRENT_OPERATION_START_TS="$(date +%s)"
-  export CURRENT_OPERATION_FREE_KB_BEFORE="$(snapshot_disk_kb /)"
+  CURRENT_OPERATION_START_TS="$(date +%s)"
+  export CURRENT_OPERATION_START_TS
+  CURRENT_OPERATION_FREE_KB_BEFORE="$(snapshot_disk_kb /)"
+  export CURRENT_OPERATION_FREE_KB_BEFORE
 }
 
 end_measurement() {
@@ -323,7 +326,7 @@ end_measurement() {
   end_ts="$(date +%s)"
   free_after="$(snapshot_disk_kb /)"
   duration=$((end_ts - ${CURRENT_OPERATION_START_TS:-$end_ts}))
-  delta=$(( ${CURRENT_OPERATION_FREE_KB_BEFORE:-$free_after} - free_after ))
+  delta=$((${CURRENT_OPERATION_FREE_KB_BEFORE:-$free_after} - free_after))
   timestamp="$(date '+%Y-%m-%d %H:%M:%S')"
   printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n' \
     "$timestamp" \
@@ -333,7 +336,7 @@ end_measurement() {
     "$duration" \
     "${CURRENT_OPERATION_FREE_KB_BEFORE:-$free_after}" \
     "$free_after" \
-    "$delta" >> "$METRICS_HISTORY_FILE"
+    "$delta" >>"$METRICS_HISTORY_FILE"
 }
 
 run_measured() {
@@ -356,8 +359,11 @@ confirm_heavy_install() {
     printf '%b' "${YELLOW}Warnung: ${label} ist ein schweres/optionales Tool. Installation wirklich starten? (j/N): ${NC}"
     read -r answer
     case "$answer" in
-      j|J|y|Y|yes|YES) return 0 ;;
-      *) log_warn "${label} wurde vom Nutzer abgebrochen."; return 1 ;;
+      j | J | y | Y | yes | YES) return 0 ;;
+      *)
+        log_warn "${label} wurde vom Nutzer abgebrochen."
+        return 1
+        ;;
     esac
   fi
   return 0

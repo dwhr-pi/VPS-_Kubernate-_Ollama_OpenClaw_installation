@@ -30,13 +30,13 @@ ask_toggle() {
     if [ "$current_value" = "true" ]; then
       read -r -p "$prompt [Y/n]: " answer || true
       case "${answer:-}" in
-        n|N|no|NO) current_value="false" ;;
+        n | N | no | NO) current_value="false" ;;
         *) current_value="true" ;;
       esac
     else
       read -r -p "$prompt [j/N]: " answer || true
       case "${answer:-}" in
-        y|Y|yes|YES|j|J|ja|JA) current_value="true" ;;
+        y | Y | yes | YES | j | J | ja | JA) current_value="true" ;;
         *) current_value="false" ;;
       esac
     fi
@@ -51,7 +51,8 @@ backup_then_copy_file() {
   mkdir -p "$(dirname "$target_file")"
 
   if [ -f "$target_file" ]; then
-    local backup_file="${target_file}.bak.$(date +%Y%m%d_%H%M%S)"
+    local backup_file
+    backup_file="${target_file}.bak.$(date +%Y%m%d_%H%M%S)"
     cp "$target_file" "$backup_file"
     log_warn "Bestehende Datei gesichert: $backup_file"
   fi
@@ -66,7 +67,7 @@ copy_tree_with_backups() {
 
   mkdir -p "$target_dir"
   while IFS= read -r -d '' file; do
-    local relative_path="${file#$source_dir/}"
+    local relative_path="${file#"$source_dir"/}"
     backup_then_copy_file "$file" "$target_dir/$relative_path"
   done < <(find "$source_dir" -type f -print0)
 }
@@ -85,7 +86,7 @@ install_validation_tooling() {
 }
 
 write_workspace_readme() {
-  cat > "$PERSONA_WORKSPACE_DIR/README.md" <<EOF
+  cat >"$PERSONA_WORKSPACE_DIR/README.md" <<EOF
 # Persona System Workspace
 
 Dieses Verzeichnis wurde aus dem Repository vorbereitet.
@@ -136,7 +137,7 @@ fi
 
 if [ "$PERSONA_INSTALL_TTS_HOOKS" = "true" ]; then
   mkdir -p "$PERSONA_WORKSPACE_DIR/hooks/tts"
-  cat > "$PERSONA_WORKSPACE_DIR/hooks/tts/README.md" <<'EOF'
+  cat >"$PERSONA_WORKSPACE_DIR/hooks/tts/README.md" <<'EOF'
 # TTS Hooks
 
 Platzhalter fuer spaetere TTS-Anbindung, zum Beispiel Piper oder Coqui.
@@ -145,7 +146,7 @@ fi
 
 if [ "$PERSONA_INSTALL_STT_HOOKS" = "true" ]; then
   mkdir -p "$PERSONA_WORKSPACE_DIR/hooks/stt"
-  cat > "$PERSONA_WORKSPACE_DIR/hooks/stt/README.md" <<'EOF'
+  cat >"$PERSONA_WORKSPACE_DIR/hooks/stt/README.md" <<'EOF'
 # STT Hooks
 
 Platzhalter fuer spaetere Spracheingabe, zum Beispiel faster-whisper oder Vosk.
@@ -154,7 +155,7 @@ fi
 
 if [ "$PERSONA_INSTALL_IMAGE_VIDEO_HOOKS" = "true" ]; then
   mkdir -p "$PERSONA_WORKSPACE_DIR/hooks/multimodal"
-  cat > "$PERSONA_WORKSPACE_DIR/hooks/multimodal/README.md" <<'EOF'
+  cat >"$PERSONA_WORKSPACE_DIR/hooks/multimodal/README.md" <<'EOF'
 # Multimodal Hooks
 
 Platzhalter fuer Bild-, Video- und Szenenprompt-Workflows.
@@ -168,7 +169,7 @@ fi
 
 if [ "$PERSONA_INSTALL_SUNO_EXAMPLES" = "true" ]; then
   mkdir -p "$PERSONA_WORKSPACE_DIR/examples/suno"
-  cat > "$PERSONA_WORKSPACE_DIR/examples/suno/README.md" <<'EOF'
+  cat >"$PERSONA_WORKSPACE_DIR/examples/suno/README.md" <<'EOF'
 # Suno / Music / Video Memory Examples
 
 - Beispiel: nostalgischer EDM/K-Pop-Track

@@ -1,6 +1,7 @@
 # Install Checklist
 
-Diese Checkliste beschreibt den aktuell reproduzierbaren Setup-Weg auf Basis der vorhandenen Skripte.
+Diese Checkliste beschreibt den aktuell reproduzierbaren Setup-Weg auf Basis der vorhandenen
+Skripte.
 
 ## 1. Bootstrap
 
@@ -57,22 +58,27 @@ Optional weitere Modelle manuell über den Ollama-Modell-Manager installieren.
 ## 6. Profile installieren
 
 ### Programmierer
+
 - `scripts/profiles/Programmierer_install.sh`
 - installiert: Huginn, Clawhub CLI
 
 ### Media_Musik
+
 - `scripts/profiles/Media_Musik_install.sh`
 - installiert: Clawbake
 
 ### KI_Forschung
+
 - `scripts/profiles/KI_Forschung_install.sh`
 - installiert: OpenClaw RL, Flowise, LangFlow
 
 ### Texter_Werbung_Marketing
+
 - `scripts/profiles/Texter_Werbung_Marketing_install.sh`
 - installiert: n8n, Activepieces
 
 ### Rechtsberatung_Steuerrecht
+
 - `scripts/profiles/Rechtsberatung_Steuerrecht_install.sh`
 - installiert: Web-Fetch- und PDF/OCR-Werkzeuge
 
@@ -115,10 +121,12 @@ Manuell relevant:
 Für VPS-Deployments:
 
 - `scripts/vps_standalone.sh` ausführen
-- danach `scripts/k8s_deployments.yaml` prüfen und nur gezielt anwenden
+- danach die [Kustomize-/GitOps-Anleitung](../GITOPS_SMALL_VPS.md) lesen und die Abnahme planen;
+  kein automatisches Apply
 
-Wichtiger Hinweis:
-`scripts/k8s_deployments.yaml` enthält Beispiel-/Risikostellen und sollte vor produktiver Nutzung gehärtet werden.
+Wichtiger Hinweis: Das [alte Gesamtmanifest](../legacy/K8S_DEPLOYMENTS_LEGACY.md) ist nur noch eine
+historische Referenz und darf nicht als Deployment verwendet werden. Bestehende Cluster werden durch
+die Archivierung nicht verändert.
 
 ## 11. Profilhinweis: Influencer_LiveCam_Streaming_AI
 
@@ -132,7 +140,8 @@ Fuer das Profil `Influencer_LiveCam_Streaming_AI` zusaetzlich einplanen:
 - `ComfyUI` oder `Fooocus` optional fuer Thumbnail- und Branding-Ideen
 - Speicherplatz fuer Aufnahmen, Transkripte, Clips und Assets
 - Datenschutzpruefung fuer Chat-Logs, Fan-Kommunikation und Moderationsspeicher
-- keine oeffentliche Freigabe sensibler Creator- oder Admin-Panels ohne Tunnel, Reverse Proxy oder privates Overlay
+- keine oeffentliche Freigabe sensibler Creator- oder Admin-Panels ohne Tunnel, Reverse Proxy oder
+  privates Overlay
 
 ## 12. Profilhinweis: Ethical_HackerGPT
 
@@ -142,7 +151,8 @@ Fuer das Profil `Ethical_HackerGPT` zusaetzlich einplanen:
 - Allowlist nur mit eigenen oder lokal isolierten Zielen befuellen
 - bei leerer Allowlist nur `127.0.0.1` und `localhost` verwenden
 - Output-Verzeichnis `./reports/security` pruefen
-- Basistools wie `nmap`, `gitleaks`, `semgrep`, `trivy`, `syft`, `grype`, `ufw`, `fail2ban` und `lynis` defensiv nutzen
+- Basistools wie `nmap`, `gitleaks`, `semgrep`, `trivy`, `syft`, `grype`, `ufw`, `fail2ban` und
+  `lynis` defensiv nutzen
 - optionale Tools und Labs nur bewusst aktivieren
 - keine oeffentlichen IP-Ranges oder fremden Domains pruefen
 
@@ -154,7 +164,8 @@ Fuer das Profil `Living_Persona_System` zusaetzlich einplanen:
 - Persona-Memory datensparsam und nachvollziehbar halten
 - keine versteckte Menschenausgabe oder Identitaetsvortaeuschung bauen
 - `Ollama` und `OpenClaw` fuer Routing und Prompt-Aufbau vorbereiten
-- optional `Qdrant` oder `ChromaDB` nur dann nutzen, wenn Memory wirklich ueber Einzelfiles hinausgehen soll
+- optional `Qdrant` oder `ChromaDB` nur dann nutzen, wenn Memory wirklich ueber Einzelfiles
+  hinausgehen soll
 - Testfaelle fuer Rollenwechsel, Memory-Recall und Kontextmodi anlegen
 
 ## 14. Profilhinweis: Next_Level_Persona_System

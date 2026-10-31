@@ -2,12 +2,13 @@
 
 ## Grundregel
 
-Neu: [ENV-Tresor mit Masterpassphrase](ENV_VAULT.md), erreichbar unter
-Setup -> Optionen -> 19. Verschluesselter Tresor im Backupverzeichnis,
-ENV-Vorschau ohne Werte und Schreiben erst nach Freigabe. Keine gemeinsame
-Master-Zugangsdaten fuer alle Programme: die Passphrase schuetzt getrennte Werte.
+Neu: [ENV-Tresor mit Masterpassphrase](ENV_VAULT.md), erreichbar unter Setup -> Optionen -> 19.
+Verschluesselter Tresor im Backupverzeichnis, ENV-Vorschau ohne Werte und Schreiben erst nach
+Freigabe. Keine gemeinsame Master-Zugangsdaten fuer alle Programme: die Passphrase schuetzt
+getrennte Werte.
 
-Keine echten Secrets ins Repository. Dazu zaehlen API-Keys, Tokens, Private Keys, `.env`, SSH-Keys, Cloudflare Tokens, Tailscale Auth Keys, Home Assistant Tokens und Datenbankpasswoerter.
+Keine echten Secrets ins Repository. Dazu zaehlen API-Keys, Tokens, Private Keys, `.env`, SSH-Keys,
+Cloudflare Tokens, Tailscale Auth Keys, Home Assistant Tokens und Datenbankpasswoerter.
 
 ## Pfade
 
@@ -17,13 +18,13 @@ Keine echten Secrets ins Repository. Dazu zaehlen API-Keys, Tokens, Private Keys
 
 ## Empfohlene Tools
 
-| Tool | Zweck | Status |
-|---|---|---|
-| Gitleaks | Secret-Scan im Repo | optional |
-| TruffleHog | tiefer Secret-Scan | optional |
-| SOPS | verschluesselte Konfiguration | planned |
-| age | lokale Schluessel/Verschluesselung | planned |
-| dotenv-linter | `.env`-Format pruefen | planned |
+| Tool          | Zweck                              | Status   |
+| ------------- | ---------------------------------- | -------- |
+| Gitleaks      | Secret-Scan im Repo                | optional |
+| TruffleHog    | tiefer Secret-Scan                 | optional |
+| SOPS          | verschluesselte Konfiguration      | planned  |
+| age           | lokale Schluessel/Verschluesselung | planned  |
+| dotenv-linter | `.env`-Format pruefen              | planned  |
 
 ## Setup-Regeln
 

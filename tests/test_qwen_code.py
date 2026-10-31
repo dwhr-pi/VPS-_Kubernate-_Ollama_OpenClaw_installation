@@ -44,7 +44,7 @@ class QwenCodeTests(unittest.TestCase):
     def test_success_marker_and_preservation(self):
         helper = (ROOT / 'scripts/tools/helpers/qwen_code_common.sh').read_text()
         self.assertLess(helper.index('rm -f -- "$QWEN_CODE_MARKER"'), helper.index('pnpm install'))
-        self.assertLess(helper.index('qwen_code_smoke || {'), helper.index('> "$QWEN_CODE_MARKER"'))
+        self.assertLess(helper.index('qwen_code_smoke || {'), re.search(r'>\s*"\$QWEN_CODE_MARKER"', helper).start())
         for value in ('flock -n 9', 'qwen_code_ram_budget', 'require_disk_mb 10240', 'source.disabled.'):
             self.assertIn(value, helper)
         self.assertNotIn('rm -rf', helper)

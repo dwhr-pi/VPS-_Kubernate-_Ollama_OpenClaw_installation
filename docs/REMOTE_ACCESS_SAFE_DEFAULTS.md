@@ -2,7 +2,8 @@
 
 ## Grundregel
 
-Dienste binden standardmaessig an `127.0.0.1`. Oeffentliche Freigaben werden nicht automatisch erzeugt.
+Dienste binden standardmaessig an `127.0.0.1`. Oeffentliche Freigaben werden nicht automatisch
+erzeugt.
 
 ## Empfohlen
 

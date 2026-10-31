@@ -1,6 +1,8 @@
 # AI 3D Studio Dashboard
 
-Das Dashboard ist als spaetere React/Tailwind/WebGL/Three.js-Oberflaeche geplant. Es soll keine Pflicht fuer das Basissetup sein, sondern eine Bedienebene fuer Render Queue, Asset Browser und Monitoring.
+Das Dashboard ist als spaetere React/Tailwind/WebGL/Three.js-Oberflaeche geplant. Es soll keine
+Pflicht fuer das Basissetup sein, sondern eine Bedienebene fuer Render Queue, Asset Browser und
+Monitoring.
 
 ## Module
 
@@ -31,4 +33,3 @@ POST /api/workflows/:id/run
 - Backend: FastAPI oder Node.js, je nachdem was im Setup stabiler ist.
 - Keine Secrets im Browser.
 - Export-Downloads nur mit lokaler Auth oder internem Netz.
-

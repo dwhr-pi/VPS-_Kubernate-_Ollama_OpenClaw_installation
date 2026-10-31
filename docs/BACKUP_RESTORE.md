@@ -19,4 +19,5 @@
 
 ## Restore
 
-Ein Backup gilt erst als gut, wenn ein Restore-Test dokumentiert wurde. Docker-Volumes werden nicht ohne explizite Zustimmung geloescht oder wiederhergestellt.
+Ein Backup gilt erst als gut, wenn ein Restore-Test dokumentiert wurde. Docker-Volumes werden nicht
+ohne explizite Zustimmung geloescht oder wiederhergestellt.

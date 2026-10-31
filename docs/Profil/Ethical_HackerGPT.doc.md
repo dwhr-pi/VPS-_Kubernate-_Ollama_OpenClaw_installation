@@ -2,7 +2,8 @@
 
 ## Kurzbeschreibung
 
-`Ethical HackerGPT` ist ein defensives Sicherheitsprofil fuer autorisierte Analysen auf eigenen Systemen, lokalen Laborumgebungen und freigegebenen Repositories.
+`Ethical HackerGPT` ist ein defensives Sicherheitsprofil fuer autorisierte Analysen auf eigenen
+Systemen, lokalen Laborumgebungen und freigegebenen Repositories.
 
 Der Fokus liegt auf:
 
@@ -32,7 +33,8 @@ Das Profil richtet sich an Setups mit:
 - GitHub-Repositories
 - internen oder lokalen Netzwerken
 
-Der Agent soll helfen, Schwachstellen strukturiert zu finden, sicher zu dokumentieren und Abhaengigkeiten, Konfigurationen und Dienste auf bekannte Risiken zu pruefen.
+Der Agent soll helfen, Schwachstellen strukturiert zu finden, sicher zu dokumentieren und
+Abhaengigkeiten, Konfigurationen und Dienste auf bekannte Risiken zu pruefen.
 
 ## Guardrails und Sicherheitsregeln
 
@@ -42,7 +44,8 @@ Der Agent soll helfen, Schwachstellen strukturiert zu finden, sicher zu dokument
 - Standardmodus ist `audit`.
 - Aktive oder aggressivere Tests nur mit explizitem Schalter.
 - Die Zielmenge wird ueber eine Allowlist begrenzt.
-- Wenn die Allowlist leer oder ungeeignet ist, faellt das Profil auf `127.0.0.1` und `localhost` zurueck.
+- Wenn die Allowlist leer oder ungeeignet ist, faellt das Profil auf `127.0.0.1` und `localhost`
+  zurueck.
 - Oeffentliche Ziele werden im Schutzmodus standardmaessig blockiert.
 
 ## Typische Aufgaben
@@ -206,7 +209,12 @@ nmap -Pn 127.0.0.1
 
 ## Beispielprompts
 
-- `Pruefe meinen Ubuntu-VPS im Audit-Modus auf offensichtliche Hardening-Luecken und strukturiere das Ergebnis nach Findings, Risiko und Fix-Kommandos.`
+- Beispiel fuer den Audit-Modus:
+
+  ```text
+  Pruefe meinen Ubuntu-VPS im Audit-Modus auf offensichtliche Hardening-Luecken und strukturiere das Ergebnis nach Findings, Risiko und Fix-Kommandos.
+  ```
+
 - `Analysiere dieses Repository auf Secrets, unsichere Dependencies und typische Konfigurationsschwaechen.`
 - `Erstelle eine SBOM fuer mein Docker-Image und bewerte bekannte Risiken fuer den produktiven Betrieb.`
 - `Bewerte meine Webserver-Header und TLS-Konfiguration fuer meinen eigenen Dienst auf localhost.`

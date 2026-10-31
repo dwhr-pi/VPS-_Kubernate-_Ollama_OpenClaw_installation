@@ -1,13 +1,15 @@
 # Vollstaendige Konfigurationen der Produktions-Baseline
 
-Stand: 23.10.2026. Kommentierter Lesestand der angelegten Dateien, keine deployte Infrastruktur.
-Die [Betriebsanleitung](PRODUCTION_BASELINE.md) beschreibt Voraussetzungen, Risiken und Tests.
-Massgeblich bleiben die verlinkten Quelldateien; bei spaeteren Aenderungen kann dieser datierte Lesestand abweichen.
-Platzhalter sind absichtlich nicht einsatzbereit. Keine echten Secrets enthalten.
+Stand: 23.10.2026. Kommentierter Lesestand der angelegten Dateien, keine deployte Infrastruktur. Die
+[Betriebsanleitung](PRODUCTION_BASELINE.md) beschreibt Voraussetzungen, Risiken und Tests.
+Massgeblich bleiben die verlinkten Quelldateien; bei spaeteren Aenderungen kann dieser datierte
+Lesestand abweichen. Platzhalter sind absichtlich nicht einsatzbereit. Keine echten Secrets
+enthalten.
 
 ## 1. Infrastructure as Code
 
-Ansible verwaltet den Sollzustand idempotent; der Dienstbenutzer erhaelt keine Root- oder Docker-Gruppenrechte.
+Ansible verwaltet den Sollzustand idempotent; der Dienstbenutzer erhaelt keine Root- oder
+Docker-Gruppenrechte.
 
 ### ansible/vps_bootstrap.yml
 
@@ -29,7 +31,7 @@ Ansible verwaltet den Sollzustand idempotent; der Dienstbenutzer erhaelt keine R
     docker_architectures:
       x86_64: amd64
       aarch64: arm64
-    docker_key_sha256: 1500c1f56fa9e26b9b8f42452a553675796ade0807cdce11975eb98170b3a570
+    docker_signing_sha256: "{{ docker_key_sha256 | default('1500c1f56fa9e26b9b8f42452a553675796ade0807cdce11975eb98170b3a570') }}"
   pre_tasks:
     - name: Validate platform and explicit safety acknowledgements
       ansible.builtin.assert:
@@ -118,7 +120,7 @@ Ansible verwaltet den Sollzustand idempotent; der Dienstbenutzer erhaelt keine R
       ansible.builtin.get_url:
         url: https://download.docker.com/linux/ubuntu/gpg
         dest: /etc/apt/keyrings/docker.asc
-        checksum: "sha256:{{ docker_key_sha256 }}"
+        checksum: "sha256:{{ docker_signing_sha256 }}"
         mode: '0644'
     - name: Configure signed Docker repository
       ansible.builtin.apt_repository:
@@ -194,7 +196,9 @@ vps.example.invalid ansible_user=ubuntu
 
 ## 2. Kubernetes-Baseline
 
-Kustomize trennt CPU-Basis und GPU-Produktion. Interne Services, Ressourcenbudgets und Default-Deny begrenzen den Zugriff. Traefik/cert-manager bleiben bewusst separat versionierte Plattformvoraussetzungen.
+Kustomize trennt CPU-Basis und GPU-Produktion. Interne Services, Ressourcenbudgets und Default-Deny
+begrenzen den Zugriff. Traefik/cert-manager bleiben bewusst separat versionierte
+Plattformvoraussetzungen.
 
 ### k8s/base/kustomization.yml
 
@@ -736,7 +740,9 @@ securityContext:
 
 ## 3. Observability
 
-Prometheus/Grafana und Loki/Alloy sind vom Anwendungssystem getrennt. Alloy ersetzt das abgekundigte Promtail. Tokenmetriken stammen von LiteLLM; ein nativer Ollama-Metrics-Endpunkt wird nicht vorgetaeuscht.
+Prometheus/Grafana und Loki/Alloy sind vom Anwendungssystem getrennt. Alloy ersetzt das abgekundigte
+Promtail. Tokenmetriken stammen von LiteLLM; ein nativer Ollama-Metrics-Endpunkt wird nicht
+vorgetaeuscht.
 
 ### docker-compose.monitoring.yml
 
@@ -1061,7 +1067,9 @@ providers:
 
 ## 4. Secrets und Backups
 
-SOPS benoetigt den echten oeffentlichen age-Empfaenger. Restic sichert validierte Daten-Mounts nur im freigegebenen Wartungsfenster; kein Kopieren laufender Datenbanken und kein automatisches Loeschen.
+SOPS benoetigt den echten oeffentlichen age-Empfaenger. Restic sichert validierte Daten-Mounts nur
+im freigegebenen Wartungsfenster; kein Kopieren laufender Datenbanken und kein automatisches
+Loeschen.
 
 ### .sops.yaml
 
@@ -1256,7 +1264,8 @@ BACKUP_TARGET_IS_EXTERNAL=0
 
 ## 5. CI/CD und Offline-Pruefung
 
-Bats prueft echte Skripte anhand isolierter Fixtures, Trivy scannt Dateien mit hartem Fehlerstatus. Die Vorpruefung lehnt Platzhalter und Images ohne Digest ab.
+Bats prueft echte Skripte anhand isolierter Fixtures, Trivy scannt Dateien mit hartem Fehlerstatus.
+Die Vorpruefung lehnt Platzhalter und Images ohne Digest ab.
 
 ### .github/workflows/test-install-scripts.yml
 
@@ -1666,4 +1675,3 @@ if sys.argv[1] == 'backup': raise SystemExit(int(os.environ.get('MOCK_BACKUP_EXI
 if __name__ == '__main__':
     unittest.main()
 ```
-

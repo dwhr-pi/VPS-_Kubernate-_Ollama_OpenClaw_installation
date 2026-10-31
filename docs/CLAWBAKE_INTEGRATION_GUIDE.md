@@ -2,7 +2,8 @@
 
 ## Aktuelle Quelle
 
-Die alte Quelle `https://github.com/openclaw/clawbake.git` ist im Setup nicht mehr die Standardquelle.
+Die alte Quelle `https://github.com/openclaw/clawbake.git` ist im Setup nicht mehr die
+Standardquelle.
 
 Aktuelle Standardquelle:
 
@@ -52,7 +53,8 @@ CLAWBAKE_SKIP_BUILD=true bash scripts/tools/clawbake_install.sh
 
 ## Was der aktuelle Installer wirklich leistet
 
-Der aktuelle Installer ist bewusst ein **Vorbereitungs- und Build-Pfad**. Wenn im Log Zeilen wie diese erscheinen, ist das ein gutes Zeichen:
+Der aktuelle Installer ist bewusst ein **Vorbereitungs- und Build-Pfad**. Wenn im Log Zeilen wie
+diese erscheinen, ist das ein gutes Zeichen:
 
 ```text
 Hinweis: Clawbake ist ein Kubernetes-/OpenClaw-Operator-Projekt. Fuer produktive Nutzung werden Go, Docker/K3s und spaeter Helm-Werte/OIDC-Secrets benoetigt.
@@ -65,9 +67,11 @@ Interpretation:
 - Das Repository wurde erreicht und der Go-Abhaengigkeitsaufbau ist gestartet.
 - `pgservicefile` ist ein normaler Go-Download aus dem PostgreSQL-Stack, kein Fehler.
 - Ein erfolgreicher Build bedeutet noch nicht, dass Clawbake produktiv erreichbar ist.
-- Fuer echten Betrieb fehlen danach noch Kubernetes/K3s, PostgreSQL, OIDC/Auth, Helm-Values, Domain/TLS und eine sichere Secret-Ablage.
+- Fuer echten Betrieb fehlen danach noch Kubernetes/K3s, PostgreSQL, OIDC/Auth, Helm-Values,
+  Domain/TLS und eine sichere Secret-Ablage.
 
-Kurz gesagt: `installiert/gebaut` bedeutet bei Clawbake aktuell `Quellcode vorbereitet und ggf. Binary gebaut`, nicht `Webdienst fertig deployed`.
+Kurz gesagt: `installiert/gebaut` bedeutet bei Clawbake aktuell
+`Quellcode vorbereitet und ggf. Binary gebaut`, nicht `Webdienst fertig deployed`.
 
 ## Datenbank: PostgreSQL statt MySQL/MariaDB
 
@@ -83,7 +87,9 @@ Wichtige Upstream-Befunde:
 - `charts/clawbake/values.yaml` setzt intern `postgres:18`.
 - `charts/clawbake/templates/secret.yaml` erzeugt eine PostgreSQL-URL.
 
-Damit ist MySQL/MariaDB aktuell keine sinnvolle Setup-Option fuer Clawbake. Ein MySQL-Pfad waere ein echter Upstream-Port mit neuen Migrationen, sqlc-Konfiguration, Go-Treiber, Tests und Helm-Templates. Das ist deutlich mehr als eine `.env`- oder `values.yaml`-Aenderung.
+Damit ist MySQL/MariaDB aktuell keine sinnvolle Setup-Option fuer Clawbake. Ein MySQL-Pfad waere ein
+echter Upstream-Port mit neuen Migrationen, sqlc-Konfiguration, Go-Treiber, Tests und
+Helm-Templates. Das ist deutlich mehr als eine `.env`- oder `values.yaml`-Aenderung.
 
 Der Installer akzeptiert deshalb nur:
 
@@ -91,7 +97,9 @@ Der Installer akzeptiert deshalb nur:
 CLAWBAKE_DATABASE_ENGINE=postgresql
 ```
 
-Wenn `CLAWBAKE_DATABASE_ENGINE=mysql`, `mariadb` oder `mysql2` gesetzt wird, bricht der Installer bewusst mit einer erklaerenden Meldung ab. Das verhindert eine Scheinkonfiguration, die spaeter erst im Kubernetes-/Helm-Betrieb scheitert.
+Wenn `CLAWBAKE_DATABASE_ENGINE=mysql`, `mariadb` oder `mysql2` gesetzt wird, bricht der Installer
+bewusst mit einer erklaerenden Meldung ab. Das verhindert eine Scheinkonfiguration, die spaeter erst
+im Kubernetes-/Helm-Betrieb scheitert.
 
 ## Voraussetzungen
 
@@ -105,17 +113,18 @@ Laut Upstream sind fuer lokale Entwicklung relevant:
 - OIDC-Konfiguration fuer Login
 - Helm fuer Deployment
 
-Das bedeutet: Clawbake ist eher ein fortgeschrittenes Kubernetes-/OpenClaw-Managementmodul, nicht ein leichtes MiniPC-Basistool.
+Das bedeutet: Clawbake ist eher ein fortgeschrittenes Kubernetes-/OpenClaw-Managementmodul, nicht
+ein leichtes MiniPC-Basistool.
 
 ## Status erkennen
 
 Nach dem Installer sollte zuerst zwischen drei Stufen unterschieden werden:
 
-| Stufe | Bedeutung | Pruefung |
-|---|---|---|
-| Quelle vorhanden | Repo liegt unter `/opt/clawbake` | `test -d /opt/clawbake/.git` |
-| Build vorbereitet | Go/Make-Abhaengigkeiten konnten aufgeloest werden | `cd /opt/clawbake && go version && make --version` |
-| Produktiv bereit | Kubernetes, DB, Auth, Helm und Secrets sind konfiguriert | noch nicht automatisch im Setup umgesetzt |
+| Stufe             | Bedeutung                                                | Pruefung                                           |
+| ----------------- | -------------------------------------------------------- | -------------------------------------------------- |
+| Quelle vorhanden  | Repo liegt unter `/opt/clawbake`                         | `test -d /opt/clawbake/.git`                       |
+| Build vorbereitet | Go/Make-Abhaengigkeiten konnten aufgeloest werden        | `cd /opt/clawbake && go version && make --version` |
+| Produktiv bereit  | Kubernetes, DB, Auth, Helm und Secrets sind konfiguriert | noch nicht automatisch im Setup umgesetzt          |
 
 Pruefbefehle:
 
@@ -128,13 +137,17 @@ make --version
 find . -maxdepth 3 -type f -perm -111 | sort
 ```
 
-Wenn kein laufender Dienst, kein Helm-Release oder kein Kubernetes-Namespace fuer Clawbake existiert, ist Clawbake noch nicht produktiv deployed.
+Wenn kein laufender Dienst, kein Helm-Release oder kein Kubernetes-Namespace fuer Clawbake
+existiert, ist Clawbake noch nicht produktiv deployed.
 
 ## Helm-Werte, OIDC und Secrets
 
-Helm-Werte sind die Kubernetes-Konfiguration fuer ein Chart. Sie stehen meist in einer `values.yaml` und entsprechen grob einer `.env.template` fuer Kubernetes. Darin liegen zum Beispiel Hostnames, Ressourcenlimits, Datenbanknamen, Ingress-Einstellungen oder Feature-Schalter.
+Helm-Werte sind die Kubernetes-Konfiguration fuer ein Chart. Sie stehen meist in einer `values.yaml`
+und entsprechen grob einer `.env.template` fuer Kubernetes. Darin liegen zum Beispiel Hostnames,
+Ressourcenlimits, Datenbanknamen, Ingress-Einstellungen oder Feature-Schalter.
 
-OIDC steht fuer OpenID Connect. Das ist kein einzelnes Tool, sondern ein Login-Standard. Clawbake kann darueber spaeter einen externen Login-Anbieter nutzen.
+OIDC steht fuer OpenID Connect. Das ist kein einzelnes Tool, sondern ein Login-Standard. Clawbake
+kann darueber spaeter einen externen Login-Anbieter nutzen.
 
 OIDC-Secrets sind sensible Login-Werte wie:
 

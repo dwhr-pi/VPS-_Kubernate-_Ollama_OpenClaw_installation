@@ -4,7 +4,8 @@
 
 Konzept / optionales Advanced-Modul.
 
-Dieses Dokument beschreibt moegliche Integrationen. Es behauptet **keine** vollstaendige Implementierung im aktuellen Repo.
+Dieses Dokument beschreibt moegliche Integrationen. Es behauptet **keine** vollstaendige
+Implementierung im aktuellen Repo.
 
 ## Moegliche Integrationen
 

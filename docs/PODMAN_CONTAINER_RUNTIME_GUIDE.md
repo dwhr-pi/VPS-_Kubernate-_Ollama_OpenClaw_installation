@@ -2,9 +2,12 @@
 
 ## Einordnung
 
-Podman ist eine Container-Runtime und eine Alternative bzw. Ergaenzung zu Docker. Im Ultimate KI Setup kann Podman fuer isolierte Tool-Stacks, lokale Dienste, Tests, Sandbox-Workflows und spaeter auch rootless Container genutzt werden.
+Podman ist eine Container-Runtime und eine Alternative bzw. Ergaenzung zu Docker. Im Ultimate KI
+Setup kann Podman fuer isolierte Tool-Stacks, lokale Dienste, Tests, Sandbox-Workflows und spaeter
+auch rootless Container genutzt werden.
 
-Podman ist kein einzelnes KI-Tool und kein Webinterface. Es stellt die Laufzeit bereit, auf der andere Dienste oder Container-Workflows laufen koennen.
+Podman ist kein einzelnes KI-Tool und kein Webinterface. Es stellt die Laufzeit bereit, auf der
+andere Dienste oder Container-Workflows laufen koennen.
 
 ## Typische Log-Ausgabe
 
@@ -23,13 +26,15 @@ Das bedeutet:
 
 - `podman.socket`: stellt eine lokale Podman-API per systemd Socket bereit.
 - `podman.service`: aktiviert den Podman API Service bei Bedarf.
-- `podman-auto-update.timer`: kann Container automatisch aktualisieren, wenn sie entsprechend markiert sind.
+- `podman-auto-update.timer`: kann Container automatisch aktualisieren, wenn sie entsprechend
+  markiert sind.
 - `podman-clean-transient.service`: raeumt temporaere Container-/Service-Zustaende auf.
 - `podman-restart.service`: hilft beim Neustart von Podman-Units nach Boot/Systemstart.
 
 ## Sicherheitsbewertung
 
-Auf einem privaten MiniPC oder einer WSL-Testumgebung ist Podman meist sinnvoll. Auf einem VPS sollte man bewusster entscheiden:
+Auf einem privaten MiniPC oder einer WSL-Testumgebung ist Podman meist sinnvoll. Auf einem VPS
+sollte man bewusster entscheiden:
 
 - Auto-Update kann Dienste unerwartet veraendern.
 - Ein aktivierter Socket sollte nicht unkontrolliert extern erreichbar sein.
@@ -80,7 +85,8 @@ Wieder aktivieren:
 sudo systemctl enable --now podman-auto-update.timer
 ```
 
-Empfehlung fuer dieses Setup: Auto-Update standardmaessig nur bewusst nutzen, nicht als versteckte Pflichtfunktion. Fuer produktionsnahe Tests lieber feste Image-Tags, Backups und manuelle Updates.
+Empfehlung fuer dieses Setup: Auto-Update standardmaessig nur bewusst nutzen, nicht als versteckte
+Pflichtfunktion. Fuer produktionsnahe Tests lieber feste Image-Tags, Backups und manuelle Updates.
 
 ## Podman Socket
 
@@ -103,7 +109,8 @@ Aktivieren:
 sudo systemctl enable --now podman.socket
 ```
 
-Der Socket sollte nicht nach aussen freigegeben werden. Wenn Remote-Zugriff noetig ist, dann nur ueber SSH, Tailscale oder eine bewusst abgesicherte Verbindung.
+Der Socket sollte nicht nach aussen freigegeben werden. Wenn Remote-Zugriff noetig ist, dann nur
+ueber SSH, Tailscale oder eine bewusst abgesicherte Verbindung.
 
 ## Nutzung im Setup
 
@@ -111,7 +118,8 @@ Geeignete Kombinationen:
 
 - `Code_Sandbox`: isolierte Testcontainer fuer Agenten-Patches.
 - `OpenClaw`: spaeter als kontrollierter Container-Runner fuer Tool-Aufrufe.
-- `n8n`, `Huginn`, `Flowise`, `Langfuse`: alternative Container-Ausfuehrung, wenn Compose/Podman-Compose gepflegt wird.
+- `n8n`, `Huginn`, `Flowise`, `Langfuse`: alternative Container-Ausfuehrung, wenn
+  Compose/Podman-Compose gepflegt wird.
 - `Security`: Trivy/Grype/Syft koennen Podman-Images scannen.
 - `DevOps/SRE`: lokale Reproduktion von VPS- oder K3s-nahen Workflows.
 
@@ -171,7 +179,8 @@ podman system prune
 
 ## TODO fuer das Setup
 
-- Doctor-Check fuer `podman --version`, `podman info`, `podman.socket` und `podman-auto-update.timer`.
+- Doctor-Check fuer `podman --version`, `podman info`, `podman.socket` und
+  `podman-auto-update.timer`.
 - Installationsoption: Auto-Update aktivieren/deaktivieren.
 - Profilhinweis fuer MiniPC, VPS, WSL2 und K3s-nahe Testumgebungen.
 - Security-Hinweis in Tool-Matrix: Socket nur lokal, keine Default-Exposition.

@@ -3,6 +3,7 @@
 Ziel: PDF, OCR, Formulare, Verträge, Akten, Behördenpost, Rechnungen.
 
 ## Kern
+
 - OCRmyPDF
 - Tesseract
 - Stirling PDF

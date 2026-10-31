@@ -2,9 +2,11 @@
 
 ## Rolle
 
-KI-gestuetzter Creator-Arbeitsbereich fuer Influencer, Streamer, Live-Cam-Betreiber, Musiker, DJs, Coaches und Social-Media-Kanaele.
+KI-gestuetzter Creator-Arbeitsbereich fuer Influencer, Streamer, Live-Cam-Betreiber, Musiker, DJs,
+Coaches und Social-Media-Kanaele.
 
-Das Profil ergaenzt bestehende Profile wie `Content_Automation`, `Image_Generation`, `Audio`, `Media_Musik`, `Prompt_Engineering_Studio` und `Compliance_Privacy`, ohne sie zu ersetzen:
+Das Profil ergaenzt bestehende Profile wie `Content_Automation`, `Image_Generation`, `Audio`,
+`Media_Musik`, `Prompt_Engineering_Studio` und `Compliance_Privacy`, ohne sie zu ersetzen:
 
 - `Content_Automation` bleibt der generische Produktionspfad fuer Skript, Schnitt und Ausspielung
 - `Image_Generation` deckt Bild- und Thumbnail-Engines ab
@@ -12,7 +14,8 @@ Das Profil ergaenzt bestehende Profile wie `Content_Automation`, `Image_Generati
 - `Prompt_Engineering_Studio` bleibt das Profil fuer Prompt-Tests und Vorlagen
 - `Compliance_Privacy` bleibt das Profil fuer DSGVO, Logging-Minimierung und Governance
 
-Dieses Profil fokussiert den operativen Creator-Alltag: Live-Produktion, Moderation, Clip-Workflows, Community-Betreuung und sichere Automatisierung.
+Dieses Profil fokussiert den operativen Creator-Alltag: Live-Produktion, Moderation, Clip-Workflows,
+Community-Betreuung und sichere Automatisierung.
 
 ## Zweck des Profils
 
@@ -117,7 +120,8 @@ Dieses Profil fokussiert den operativen Creator-Alltag: Live-Produktion, Moderat
 
 - `Live2D`-aehnliche freie Alternativen
   - keine vollwertige freie 1:1-Entsprechung zu proprietaeren Komplett-Stacks annehmen
-  - sinnvoller ist eine modulare Kombination aus Tracking, Avatar-Assets, Browser-Overlay und TTS/Lip-Sync
+  - sinnvoller ist eine modulare Kombination aus Tracking, Avatar-Assets, Browser-Overlay und
+    TTS/Lip-Sync
 
 ### KI und Automatisierung
 
@@ -125,7 +129,8 @@ Dieses Profil fokussiert den operativen Creator-Alltag: Live-Produktion, Moderat
   - lokaler Modellpfad fuer Titel, Moderation, Script-Hilfen, Antworten und Redaktionsplanung
 
 - `OpenClaw`
-  - sinnvoll als Agenten- und Workflow-Schicht fuer Moderation, Prompt-Vorlagen und Creator-Assistenten
+  - sinnvoll als Agenten- und Workflow-Schicht fuer Moderation, Prompt-Vorlagen und
+    Creator-Assistenten
 
 - `Open WebUI`
   - sinnvoll als benutzerfreundlicher Frontend-Zugang fuer Creator ohne tiefe CLI-Nutzung
@@ -144,7 +149,8 @@ Dieses Profil fokussiert den operativen Creator-Alltag: Live-Produktion, Moderat
   - optional als einfacherer Bildgenerator fuer schnelle Thumbnail- oder Post-Ideen
 
 - `LangChain` oder `LlamaIndex`
-  - nur sinnvoll, wenn aus Stream-Archiven, FAQ, Sponsoreninfos oder Community-Wissen wirklich ein wiederverwendbarer Wissenspfad aufgebaut wird
+  - nur sinnvoll, wenn aus Stream-Archiven, FAQ, Sponsoreninfos oder Community-Wissen wirklich ein
+    wiederverwendbarer Wissenspfad aufgebaut wird
   - fuer kleine Creator-Setups nicht automatisch noetig
 
 ### Moderation und Sicherheit
@@ -156,7 +162,8 @@ Dieses Profil fokussiert den operativen Creator-Alltag: Live-Produktion, Moderat
   - sehr sinnvoll als erste und erklaerbare Moderationsstufe
 
 - NSFW- oder Jugendschutzfilter
-  - nur dort einsetzen, wo rechtlich und organisatorisch sauber definiert ist, was gefiltert oder geloggt werden darf
+  - nur dort einsetzen, wo rechtlich und organisatorisch sauber definiert ist, was gefiltert oder
+    geloggt werden darf
 
 - Logging mit Datenschutz-Minimierung
   - nur noetige Moderationsereignisse speichern
@@ -308,35 +315,47 @@ OBS_PROFILE_DIR=./profiles/influencer-livecam/obs
 
 ### Livestream-Titel generieren
 
-> Erstelle 12 klickstarke, aber nicht irrefuehrende Livestream-Titel fuer einen deutschsprachigen Tech- und Creator-Stream ueber lokale KI-Tools, OBS und Community-Workflows. Gib je Titel eine kurze Hook-Idee mit.
+> Erstelle 12 klickstarke, aber nicht irrefuehrende Livestream-Titel fuer einen deutschsprachigen
+> Tech- und Creator-Stream ueber lokale KI-Tools, OBS und Community-Workflows. Gib je Titel eine
+> kurze Hook-Idee mit.
 
 ### TikTok-, Reels- oder Shorts-Idee aus Stream-Transkript
 
-> Analysiere dieses Stream-Transkript und extrahiere 5 kurze Clip-Ideen unter 45 Sekunden. Gib fuer jede Idee einen Hook, einen Start-Zeitpunkt, eine Cut-Empfehlung und eine Caption-Vorlage aus.
+> Analysiere dieses Stream-Transkript und extrahiere 5 kurze Clip-Ideen unter 45 Sekunden. Gib fuer
+> jede Idee einen Hook, einen Start-Zeitpunkt, eine Cut-Empfehlung und eine Caption-Vorlage aus.
 
 ### Chat freundlich moderieren
 
-> Formuliere eine kurze, freundliche Moderationsantwort auf diese Chat-Nachricht. Ziel ist Deeskalation ohne Blossstellung. Wenn die Nachricht gegen Regeln verstoesst, nenne die Regel knapp und bleibe sachlich.
+> Formuliere eine kurze, freundliche Moderationsantwort auf diese Chat-Nachricht. Ziel ist
+> Deeskalation ohne Blossstellung. Wenn die Nachricht gegen Regeln verstoesst, nenne die Regel knapp
+> und bleibe sachlich.
 
 ### Thumbnail-Konzept erstellen
 
-> Erstelle 3 Thumbnail-Konzepte fuer ein Video ueber lokale KI-Streaming-Workflows. Beschreibe Bildaufbau, Text, Farbwelt, Gesichtsausdruck, visuelle Hierarchie und eine Variante ohne Gesicht.
+> Erstelle 3 Thumbnail-Konzepte fuer ein Video ueber lokale KI-Streaming-Workflows. Beschreibe
+> Bildaufbau, Text, Farbwelt, Gesichtsausdruck, visuelle Hierarchie und eine Variante ohne Gesicht.
 
 ### Sponsoring-Text erstellen
 
-> Erstelle einen transparenten Sponsoring-Hinweis fuer ein Video und eine Livestream-Ansage. Die Formulierung soll freundlich, klar und rechtlich sauber sein. Kein uebertriebener Werbeton.
+> Erstelle einen transparenten Sponsoring-Hinweis fuer ein Video und eine Livestream-Ansage. Die
+> Formulierung soll freundlich, klar und rechtlich sauber sein. Kein uebertriebener Werbeton.
 
 ### OBS-Szenenplan erstellen
 
-> Erstelle einen OBS-Szenenplan fuer einen 2-stuendigen Creator-Livestream mit Intro, Hauptszene, Browser-Demo, Q&A, Pause, Sponsor-Slot und Outro. Gib je Szene Quellen, Overlays und Wechselhinweise aus.
+> Erstelle einen OBS-Szenenplan fuer einen 2-stuendigen Creator-Livestream mit Intro, Hauptszene,
+> Browser-Demo, Q&A, Pause, Sponsor-Slot und Outro. Gib je Szene Quellen, Overlays und
+> Wechselhinweise aus.
 
 ### Community-Regeln formulieren
 
-> Formuliere 10 klare Community-Regeln fuer einen deutschsprachigen Creator-Kanal. Der Ton soll freundlich, inklusiv und bestimmt sein. Ergaenze 5 Moderationsbeispiele fuer Grenzfaelle.
+> Formuliere 10 klare Community-Regeln fuer einen deutschsprachigen Creator-Kanal. Der Ton soll
+> freundlich, inklusiv und bestimmt sein. Ergaenze 5 Moderationsbeispiele fuer Grenzfaelle.
 
 ### 7-Tage-Postingplan erstellen
 
-> Erstelle einen 7-Tage-Postingplan fuer einen Creator-Kanal mit Livestream, Shorts, Behind-the-Scenes und Community-Post. Gib pro Tag Ziel, Format, Hook, CTA und Produktionsaufwand an.
+> Erstelle einen 7-Tage-Postingplan fuer einen Creator-Kanal mit Livestream, Shorts,
+> Behind-the-Scenes und Community-Post. Gib pro Tag Ziel, Format, Hook, CTA und Produktionsaufwand
+> an.
 
 ## Sicherheit und Grenzen
 
@@ -382,7 +401,8 @@ Pflichtpunkte fuer datenschutznahe Setups:
 ### Optional Docker oder Kubernetes
 
 - `Owncast`, `PeerTube`, `Langfuse`, `Open WebUI` oder Creator-Dashboard als Services kapseln
-- GPU-Workloads nur dann in Container oder K8s verlagern, wenn Treiber und Volumes sauber geplant sind
+- GPU-Workloads nur dann in Container oder K8s verlagern, wenn Treiber und Volumes sauber geplant
+  sind
 
 ### Hardware und Speicher
 
@@ -409,11 +429,13 @@ Pflichtpunkte fuer datenschutznahe Setups:
 - zusammen mit `Image_Generation` fuer Thumbnails, Poster und Kanalgrafiken
 - zusammen mit `Audio` oder `Voice_Clone_TTS_Studio` nur mit klaren Rechte- und Einwilligungsregeln
 - zusammen mit `Compliance_Privacy` fuer DSGVO, Jugendschutz und Auditfragen
-- zusammen mit `Prompt_Engineering_Studio` fuer Creator-spezifische Systemprompts und Moderationsvorlagen
+- zusammen mit `Prompt_Engineering_Studio` fuer Creator-spezifische Systemprompts und
+  Moderationsvorlagen
 
 ## Grenzen
 
 - ersetzt keine Rechtsberatung fuer Medien-, Marken- oder Persoenlichkeitsrecht
 - ersetzt keine plattformseitige Moderation oder Community-Policies
 - ersetzt keine informierte Zustimmung bei Stimme, Bild oder Persona realer Menschen
-- sollte automatisches Verbreiten, Antworten oder Moderieren nur mit manueller Freigabe oder klaren Guardrails ausfuehren
+- sollte automatisches Verbreiten, Antworten oder Moderieren nur mit manueller Freigabe oder klaren
+  Guardrails ausfuehren

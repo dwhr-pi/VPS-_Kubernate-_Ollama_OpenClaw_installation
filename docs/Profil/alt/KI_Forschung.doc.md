@@ -4,25 +4,29 @@
 
 ## 👤 User
 
-Promt Liste für KI Forschung erstellen, welche Tools wären außerdem für mein Ollama OpenClaw Projekt für das Profil KI_Forschung sinnvoll:
-https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation
+Promt Liste für KI Forschung erstellen, welche Tools wären außerdem für mein Ollama OpenClaw Projekt
+für das Profil KI_Forschung sinnvoll:
+<https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation>
 
 ---
 
 ## 🤖 Assistant
 
-Sehr gutes Setup, das du da baust – **Ollama + OpenClaw + Kubernetes** ist im Prinzip schon eine halbe Research-Plattform 😄  
+Sehr gutes Setup, das du da baust – **Ollama + OpenClaw + Kubernetes** ist im Prinzip schon eine
+halbe Research-Plattform 😄\
 Ich geb dir jetzt **3 Dinge in einem Paket**:
 
 ---
 
-# 🧠 1. Prompt-Liste für dein Profil **KI_Forschung**
+## 🧠 1. Prompt-Liste für dein Profil **KI_Forschung**
 
-Diese Prompts sind so gebaut, dass sie mit Agenten wie OpenClaw + Ollama gut funktionieren (inkl. Tool-Use / RAG / Automation).
+Diese Prompts sind so gebaut, dass sie mit Agenten wie OpenClaw + Ollama gut funktionieren (inkl.
+Tool-Use / RAG / Automation).
 
 ---
 
-## 🔍 A. Deep Research Prompts
+### 🔍 A. Deep Research Prompts
+
 ```txt
 SYSTEM:
 Du bist ein KI-Forschungsassistent mit Zugriff auf lokale Modelle, Dokumente und Webdaten.
@@ -39,6 +43,7 @@ Aufgaben:
 ```
 
 📚 B. Paper-Analyse
+
 ```Plain text
 Analysiere dieses Paper:
 
@@ -48,6 +53,7 @@ Analysiere dieses Paper:
 - Reproduzierbarkeit
 - Neuheit
 ```
+
 ⚡ C. Hypothesen Generator
 
 ```Plain text
@@ -77,52 +83,60 @@ Vergleiche Modelle nach:
 - Memory
 - Kosten
 ```
+
 🧠 G. RAG Knowledge Extraction
+
 ```Plain text
 Extrahiere Key Insights + Knowledge Graph Struktur
 ```
 
-## ⚙️ 2. Tools für dein OpenClaw / Ollama Setup
+### ⚙️ 2. Tools für dein OpenClaw / Ollama Setup
 
-### 🧱 Core Stack
-* LangChain → Agenten & Tool Use
-* LlamaIndex → Dokumente / RAG
-* Chroma / Weaviate → Vector DB
+#### 🧱 Core Stack
 
-### 🧠 Agent Frameworks
-* CrewAI
-* AutoGPT
+- LangChain → Agenten & Tool Use
+- LlamaIndex → Dokumente / RAG
+- Chroma / Weaviate → Vector DB
 
-### 🧪 Research Tools
-* MLflow
-* Weights & Biases
+#### 🧠 Agent Frameworks
 
-### ⚡ Serving / Performance
-* vLLM
-* llama.cpp
+- CrewAI
+- AutoGPT
 
-### 🎨 Multimodal
-* Whisper (Speech)
-* Stable Diffusion (Image)
+#### 🧪 Research Tools
 
-### 🧬 Advanced
-* Ray (Scaling)
-* EnviroLLM (Efficiency Tracking)
+- MLflow
+- Weights & Biases
 
-## 🧩 3. Architektur Upgrade
+#### ⚡ Serving / Performance
+
+- vLLM
+- llama.cpp
+
+#### 🎨 Multimodal
+
+- Whisper (Speech)
+- Stable Diffusion (Image)
+
+#### 🧬 Advanced
+
+- Ray (Scaling)
+- EnviroLLM (Efficiency Tracking)
+
+### 🧩 3. Architektur Upgrade
+
 ```Plain text
 User → OpenClaw → LangChain/CrewAI → Ollama + RAG + Tools
 ```
 
-### 🔥 Erweiterungen
+#### 🔥 Erweiterungen
 
 RAG Layer
-* PDFs
-* GitHub
-* Papers
-Multi-Agent System
-* Planner
-* Researcher
-* Critic
-Auto Pipelines
-* Topic → Research → Summary → Storage
+
+- PDFs
+- GitHub
+- Papers Multi-Agent System
+- Planner
+- Researcher
+- Critic Auto Pipelines
+- Topic → Research → Summary → Storage

@@ -6,6 +6,7 @@ from pathlib import Path
 import sys
 import tarfile
 import tempfile
+from doc_assertions import assert_prose_in, assert_prose_not_in
 import unittest
 from unittest.mock import patch
 
@@ -161,7 +162,7 @@ class CredentialsBackupTests(unittest.TestCase):
                             'Kontrolliert aktivieren', 'cp -i', 'chmod 600',
                             'credentials-before.', 'tar -xOf', 'kein `source`/`eval`',
                             'Dateirechte', 'Mailtext selbst']:
-            self.assertIn(instruction, doc)
+            assert_prose_in(self, instruction, doc)
 
 
 if __name__ == '__main__':

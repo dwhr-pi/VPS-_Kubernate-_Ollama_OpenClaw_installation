@@ -5,6 +5,7 @@ Quelle: GitHub-Remote `docs/Profil/Rechtsberatung_Steuerrecht.doc.md`
 ## Kerninhalte
 
 ### Prompt-Bausteine
+
 - Core-System-Prompt Steuerrecht
 - Steueranalyse
 - Betriebsprüfung / Finanzamt
@@ -15,6 +16,7 @@ Quelle: GitHub-Remote `docs/Profil/Rechtsberatung_Steuerrecht.doc.md`
 - Mandanten-Erklärung
 
 ### Zusätzliche Tools laut Quelle
+
 - LangChain
 - LlamaIndex
 - Qdrant / Chroma

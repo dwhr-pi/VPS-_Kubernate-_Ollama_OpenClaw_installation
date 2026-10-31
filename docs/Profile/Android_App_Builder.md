@@ -1,6 +1,7 @@
 # Android App Builder
 
-Geplantes Setup-Profil fuer Android SDK, Gradle, Kotlin-Workflows, Companion-Apps und dein `myBox`-Projekt. Siehe Quellprofil: `docs/Profil/Android_App_Builder.doc.md`.
+Geplantes Setup-Profil fuer Android SDK, Gradle, Kotlin-Workflows, Companion-Apps und dein
+`myBox`-Projekt. Siehe Quellprofil: `docs/Profil/Android_App_Builder.doc.md`.
 
 Status: `planned`
 
@@ -14,7 +15,8 @@ Status: `planned`
 
 ## GBOX fuer myBox
 
-`babelcloud/gbox` passt hier als primaeres Tool, wenn Codex/OpenClaw Android-UI-Flows pruefen, Screenshots erzeugen oder spaeter ueber MCP ein Testgeraet bedienen soll.
+`babelcloud/gbox` passt hier als primaeres Tool, wenn Codex/OpenClaw Android-UI-Flows pruefen,
+Screenshots erzeugen oder spaeter ueber MCP ein Testgeraet bedienen soll.
 
 Empfohlener Einstieg:
 

@@ -1,7 +1,6 @@
 # Mailserver AI Assistant
 
-Der Mailserver AI Assistant nutzt Stalwart Mail als Kern und OpenClaw/Ollama als
-Assistenzschicht.
+Der Mailserver AI Assistant nutzt Stalwart Mail als Kern und OpenClaw/Ollama als Assistenzschicht.
 
 ## Funktionen
 

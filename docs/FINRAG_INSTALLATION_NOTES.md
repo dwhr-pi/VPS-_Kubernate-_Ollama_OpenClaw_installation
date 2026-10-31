@@ -8,11 +8,13 @@ Unter Ubuntu 24.04/Noble kann FinRAG mit dem Standard-Python fehlschlagen:
 ERROR: Package 'finrag' requires a different Python: 3.12.3 not in '<3.12,>=3.10'
 ```
 
-Das bedeutet: FinRAG erlaubt aktuell Python `>=3.10` und `<3.12`. Ubuntu 24.04 bringt standardmaessig Python `3.12` mit, was fuer dieses Paket zu neu ist.
+Das bedeutet: FinRAG erlaubt aktuell Python `>=3.10` und `<3.12`. Ubuntu 24.04 bringt
+standardmaessig Python `3.12` mit, was fuer dieses Paket zu neu ist.
 
 ## Sicherer Installationspfad
 
-Das Setup ersetzt kein System-Python. Stattdessen prueft der Installer zuerst auf kompatible Python-Versionen:
+Das Setup ersetzt kein System-Python. Stattdessen prueft der Installer zuerst auf kompatible
+Python-Versionen:
 
 1. `FINRAG_PYTHON_BIN`, falls gesetzt
 2. `python3.11`
@@ -31,15 +33,14 @@ Dieses Python wird nur fuer die FinRAG-Venv genutzt. `/usr/bin/python3` bleibt u
 
 ## Sudo-Pruefung vor langem Build
 
-Der CPython-Build kann einige Minuten dauern. Der Installer prueft deshalb
-`sudo` jetzt direkt vor dem Build mit `sudo -v`. Wenn das Passwort falsch
-eingegeben wird, etwa durch CapsLock oder Tastaturlayout, bricht der Installer
-sofort ab und nicht erst nach `make`.
+Der CPython-Build kann einige Minuten dauern. Der Installer prueft deshalb `sudo` jetzt direkt vor
+dem Build mit `sudo -v`. Wenn das Passwort falsch eingegeben wird, etwa durch CapsLock oder
+Tastaturlayout, bricht der Installer sofort ab und nicht erst nach `make`.
 
-Nach dem Anlegen und Uebergeben von `/opt/openclaw-python` an den aktuellen
-Benutzer laeuft `make altinstall` ohne spaetes `sudo`. Dadurch bleibt der
-isolierte Python-Pfad sicher vom System-Python getrennt, aber der Build scheitert
-nicht mehr erst ganz am Ende an einer abgelaufenen sudo-Sitzung.
+Nach dem Anlegen und Uebergeben von `/opt/openclaw-python` an den aktuellen Benutzer laeuft
+`make altinstall` ohne spaetes `sudo`. Dadurch bleibt der isolierte Python-Pfad sicher vom
+System-Python getrennt, aber der Build scheitert nicht mehr erst ganz am Ende an einer abgelaufenen
+sudo-Sitzung.
 
 Beispiel:
 
@@ -64,14 +65,16 @@ bash scripts/tools/finrag_install.sh --dry-run
 
 ## Ressourcenbedarf
 
-| Bereich | Empfehlung |
-| --- | --- |
-| Python | 3.10 oder 3.11 |
-| RAM | 4 GB Minimum, 8 GB+ empfohlen |
+| Bereich  | Empfehlung                                                 |
+| -------- | ---------------------------------------------------------- |
+| Python   | 3.10 oder 3.11                                             |
+| RAM      | 4 GB Minimum, 8 GB+ empfohlen                              |
 | Speicher | 4 GB+ fuer CPython-Build, Quelle, Venv und Abhaengigkeiten |
-| Ports | keine Standardports |
-| WSL2 | geeignet, wenn Python 3.10/3.11 vorhanden ist |
+| Ports    | keine Standardports                                        |
+| WSL2     | geeignet, wenn Python 3.10/3.11 vorhanden ist              |
 
 ## Warum kein automatisches Python-Downgrade?
 
-Python ist Teil des Ubuntu-Basissystems. Ein Ersetzen oder Downgrade von `python3` kann Paketverwaltung und Systemtools beschaedigen. Deshalb baut das Setup bei Bedarf ein separates Python unter `/opt/openclaw-python` und verwendet es nur fuer FinRAG.
+Python ist Teil des Ubuntu-Basissystems. Ein Ersetzen oder Downgrade von `python3` kann
+Paketverwaltung und Systemtools beschaedigen. Deshalb baut das Setup bei Bedarf ein separates Python
+unter `/opt/openclaw-python` und verwendet es nur fuer FinRAG.

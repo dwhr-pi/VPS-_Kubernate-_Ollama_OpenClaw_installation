@@ -3,6 +3,7 @@ import json
 from pathlib import Path
 import re
 import sqlite3
+from doc_assertions import assert_prose_in, assert_prose_not_in
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -17,7 +18,13 @@ class ChatGPTToolingDocsTests(unittest.TestCase):
         expected = fixture["repositories"]
         self.assertEqual(len(expected), 90)
         self.assertEqual(len(set(expected)), len(expected))
-        actual = re.findall(r"\]\((https://github\.com/[^)]+)\)", SOURCES.read_text(encoding="utf-8"))
+        text = SOURCES.read_text(encoding="utf-8")
+        actual = re.findall(r"\]\((https://github\.com/[^)]+)\)", text)
+        # Unavailable originals remain provenance, not successful live links.
+        historical = re.findall(r"`(https://github\.com/[^`]+)` \(historische Quelle; Abruf 404, nicht als aktueller Beleg verifiziert\)", text)
+        self.assertEqual(historical, ['https://github.com/bminor/bash'])
+        self.assertIn('`https://www.gnu.org/software/bash/` (Primaerquelle; unverifizierte', text)
+        actual += historical
         self.assertEqual(set(actual), set(expected))
         self.assertEqual(len(actual), len(expected))
         self.assertNotIn("utm_source", "\n".join(actual))
@@ -44,11 +51,11 @@ class ChatGPTToolingDocsTests(unittest.TestCase):
 
     def test_artifact_claims_and_execution_boundaries(self):
         text = DOC.read_text(encoding="utf-8")
-        self.assertIn("keine nutzbaren Datei-URLs", text)
-        self.assertIn("ohne Provenienznachweis", text)
-        self.assertIn("Keine Toolinstallation, WSL-Aktion", text)
-        self.assertIn("kein hier\ninstallierter Skill", text)
-        self.assertNotIn("images.openai.com/static-rsc", text)
+        assert_prose_in(self, "keine nutzbaren Datei-URLs", text)
+        assert_prose_in(self, "ohne Provenienznachweis", text)
+        assert_prose_in(self, "Keine Toolinstallation, WSL-Aktion", text)
+        assert_prose_in(self, "kein hier\ninstallierter Skill", text)
+        assert_prose_not_in(self, "images.openai.com/static-rsc", text)
         self.assertFalse((ROOT / ".github/workflows/chatgpt-interview-ci.yml").exists())
 
     def test_navigation(self):

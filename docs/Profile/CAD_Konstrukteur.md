@@ -1,10 +1,15 @@
 # CAD Konstrukteur / 3D-Druck / Technische Modellierung
 
-Dieses Profil erweitert das Ultimate KI Setup um einen lokalen CAD-Konstrukteur fuer technische Bauteile, 3D-Druck, parametrische Modellierung und KI-gestuetzte CAD-Code-Erzeugung. Es nutzt bevorzugt lokale Open-Source-Komponenten und bleibt bewusst modular: stabile CAD-Werkzeuge werden getrennt von experimentellen Text-to-CAD-Agenten betrachtet.
+Dieses Profil erweitert das Ultimate KI Setup um einen lokalen CAD-Konstrukteur fuer technische
+Bauteile, 3D-Druck, parametrische Modellierung und KI-gestuetzte CAD-Code-Erzeugung. Es nutzt
+bevorzugt lokale Open-Source-Komponenten und bleibt bewusst modular: stabile CAD-Werkzeuge werden
+getrennt von experimentellen Text-to-CAD-Agenten betrachtet.
 
 ## Zweck
 
-Der CAD-Konstrukteur soll aus natuerlicher Sprache technische CAD-Aufgaben ableiten, fehlende Masse erkennen, Rueckfragen stellen, parametrischen Code erzeugen und daraus Modelle fuer Prototyping, 3D-Druck, Robotik und Gehaeusebau vorbereiten.
+Der CAD-Konstrukteur soll aus natuerlicher Sprache technische CAD-Aufgaben ableiten, fehlende Masse
+erkennen, Rueckfragen stellen, parametrischen Code erzeugen und daraus Modelle fuer Prototyping,
+3D-Druck, Robotik und Gehaeusebau vorbereiten.
 
 Typische Aufgaben:
 
@@ -43,27 +48,27 @@ Review / Verbesserung / neue Variante
 
 ## Gepruefte Open-Source-Projekte
 
-| Projekt | Status | Einschaetzung |
-|---|---|---|
-| [FreeCAD](https://github.com/FreeCAD/FreeCAD) | stabiler Kern | Open-Source parametrischer 3D-Modeller mit Python-API, Linux/Windows/macOS, gute Basis fuer FreeCAD-Python und STEP/STL-Export. |
-| [CadQuery](https://github.com/CadQuery/cadquery) | stabiler Script-CAD-Baustein | Python-basiertes parametrisches CAD-Framework auf OCCT, gut fuer wiederholbare technische Bauteile, STEP/STL/DXF-nahe Workflows. |
-| [OpenSCAD](https://github.com/openscad/openscad) | stabil fuer 3D-Druck-Code | Programmierer-orientierter Solid-3D-CAD-Modeller, ideal fuer einfache parametrische Gehaeuse, Adapter und 3D-Druckteile. |
-| [Blender](https://github.com/blender/blender) | stabil als Preview/Render/Asset-Tool | Nicht primaeres CAD, aber nuetzlich fuer Vorschau, Mesh-Checks, Renderings, Animation und Asset-Konvertierung. |
-| [CADAM](https://github.com/Adam-CAD/CADAM) | experimentell | Open-Source Text-to-CAD Web-App mit OpenSCAD/WASM-Bezug. Interessant als Inspiration, aber nicht als Pflichtinstallation. |
-| [text-to-cad / CAD Skills](https://github.com/earthtojake/text-to-cad) | experimentell, aber relevant | Agent Skills fuer CAD, Robotik und Hardwaredesign, MIT-lizenziert, mit STEP/STL/URDF/SDF-Bezug. Gut als spaeterer Agentenpfad. |
-| [openAI-to-FreeCAD workflow](https://github.com/giuliano-t/openAI-to-freeCAD-workflow) | Forschungs-/Beispielprojekt | Zeigt eine RAG-/Few-Shot-Pipeline von Sprache zu FreeCAD-Python. Klein und prototypisch, daher nur als Referenz, nicht als Produktionsbasis. |
+| Projekt                                                                                | Status                               | Einschaetzung                                                                                                                                |
+| -------------------------------------------------------------------------------------- | ------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| [FreeCAD](https://github.com/FreeCAD/FreeCAD)                                          | stabiler Kern                        | Open-Source parametrischer 3D-Modeller mit Python-API, Linux/Windows/macOS, gute Basis fuer FreeCAD-Python und STEP/STL-Export.              |
+| [CadQuery](https://github.com/CadQuery/cadquery)                                       | stabiler Script-CAD-Baustein         | Python-basiertes parametrisches CAD-Framework auf OCCT, gut fuer wiederholbare technische Bauteile, STEP/STL/DXF-nahe Workflows.             |
+| [OpenSCAD](https://github.com/openscad/openscad)                                       | stabil fuer 3D-Druck-Code            | Programmierer-orientierter Solid-3D-CAD-Modeller, ideal fuer einfache parametrische Gehaeuse, Adapter und 3D-Druckteile.                     |
+| [Blender](https://github.com/blender/blender)                                          | stabil als Preview/Render/Asset-Tool | Nicht primaeres CAD, aber nuetzlich fuer Vorschau, Mesh-Checks, Renderings, Animation und Asset-Konvertierung.                               |
+| [CADAM](https://github.com/Adam-CAD/CADAM)                                             | experimentell                        | Open-Source Text-to-CAD Web-App mit OpenSCAD/WASM-Bezug. Interessant als Inspiration, aber nicht als Pflichtinstallation.                    |
+| [text-to-cad / CAD Skills](https://github.com/earthtojake/text-to-cad)                 | experimentell, aber relevant         | Agent Skills fuer CAD, Robotik und Hardwaredesign, MIT-lizenziert, mit STEP/STL/URDF/SDF-Bezug. Gut als spaeterer Agentenpfad.               |
+| [openAI-to-FreeCAD workflow](https://github.com/giuliano-t/openAI-to-freeCAD-workflow) | Forschungs-/Beispielprojekt          | Zeigt eine RAG-/Few-Shot-Pipeline von Sprache zu FreeCAD-Python. Klein und prototypisch, daher nur als Referenz, nicht als Produktionsbasis. |
 
 ## Lokale Modell-Empfehlungen
 
-| Modell | Staerke | Einsatz |
-|---|---|---|
-| `qwen2.5-coder:1.5b` / `qwen2.5-coder:3b` | klein, schnell | schwache Hardware, einfache OpenSCAD-/Python-Snippets, Rueckfragen |
-| `qwen2.5-coder:7b` | guter Allround-Code | FreeCAD-Python, CadQuery, Varianten, Fehlersuche |
-| `deepseek-coder:6.7b` | Code-Generierung | saubere Script-Erzeugung, Refactoring, Erklaerungen |
-| `deepseek-r1` | reasoning-stark | technische Abwaegungen, Mass-/Toleranzanalyse, Fehlerhypothesen |
-| `llama3.2:1b` / `llama3.2:3b` | leichtgewichtig | einfache Assistentenlogik, Auftragserfassung, Checklisten |
-| `llama3.1:8b` oder aehnlich | solide Sprache + Planung | CAD-Briefings, N8n-Workflows, Dokumentation |
-| `codestral` / Mistral-Code-Modelle | stark, falls lokal verfuegbar | komplexere Python-/CAD-Code-Erzeugung auf staerkerer GPU |
+| Modell                                    | Staerke                       | Einsatz                                                            |
+| ----------------------------------------- | ----------------------------- | ------------------------------------------------------------------ |
+| `qwen2.5-coder:1.5b` / `qwen2.5-coder:3b` | klein, schnell                | schwache Hardware, einfache OpenSCAD-/Python-Snippets, Rueckfragen |
+| `qwen2.5-coder:7b`                        | guter Allround-Code           | FreeCAD-Python, CadQuery, Varianten, Fehlersuche                   |
+| `deepseek-coder:6.7b`                     | Code-Generierung              | saubere Script-Erzeugung, Refactoring, Erklaerungen                |
+| `deepseek-r1`                             | reasoning-stark               | technische Abwaegungen, Mass-/Toleranzanalyse, Fehlerhypothesen    |
+| `llama3.2:1b` / `llama3.2:3b`             | leichtgewichtig               | einfache Assistentenlogik, Auftragserfassung, Checklisten          |
+| `llama3.1:8b` oder aehnlich               | solide Sprache + Planung      | CAD-Briefings, N8n-Workflows, Dokumentation                        |
+| `codestral` / Mistral-Code-Modelle        | stark, falls lokal verfuegbar | komplexere Python-/CAD-Code-Erzeugung auf staerkerer GPU           |
 
 ## Faehigkeiten des CAD-Agenten
 
@@ -114,7 +119,11 @@ bash scripts/install/install_cad_tools.sh
 bash scripts/check/check_cad_tools.sh
 ```
 
-Das Installationsskript prueft vorhandene Programme, installiert unter Ubuntu/WSL2 nach Moeglichkeit FreeCAD, OpenSCAD und Basis-Python, legt eine venv unter `~/.openclaw_ultimate_user_data/cad_konstrukteur/venv` an und versucht dort CadQuery, NumPy, Trimesh und MeshIO zu installieren. Blender bleibt optional und wird nur mit `CAD_INSTALL_BLENDER=1` installiert.
+Das Installationsskript prueft vorhandene Programme, installiert unter Ubuntu/WSL2 nach Moeglichkeit
+FreeCAD, OpenSCAD und Basis-Python, legt eine venv unter
+`~/.openclaw_ultimate_user_data/cad_konstrukteur/venv` an und versucht dort CadQuery, NumPy, Trimesh
+und MeshIO zu installieren. Blender bleibt optional und wird nur mit `CAD_INSTALL_BLENDER=1`
+installiert.
 
 ## N8n-Automation
 
@@ -139,21 +148,24 @@ Erhoehe die Wandstaerke auf drei Millimeter.
 Exportiere als STL.
 ```
 
-Whisper transkribiert Sprache. OpenClaw wandelt die Aenderung in CAD-Parameter oder Code-Aenderungen um. FreeCAD, CadQuery oder OpenSCAD regenerieren das Modell.
+Whisper transkribiert Sprache. OpenClaw wandelt die Aenderung in CAD-Parameter oder Code-Aenderungen
+um. FreeCAD, CadQuery oder OpenSCAD regenerieren das Modell.
 
 ## Sicherheit und Grenzen
 
 - KI-CAD kann fehlerhafte Geometrie, falsche Masse oder unzureichende Toleranzen erzeugen.
-- Bauteile fuer Fahrzeuge, Bremsen, Strom, Gas, Medizin, tragende Konstruktionen oder Maschinen muessen fachlich geprueft werden.
+- Bauteile fuer Fahrzeuge, Bremsen, Strom, Gas, Medizin, tragende Konstruktionen oder Maschinen
+  muessen fachlich geprueft werden.
 - 3D-Druckteile haben begrenzte Stabilitaet und anisotrope Materialeigenschaften.
 - Toleranzen muessen real gedruckt und getestet werden.
 - Materialwahl, Temperatur, UV, Belastung, Vibration und Schraubkraefte beachten.
-- Sicherheitskritische Bauteile duerfen nicht ohne Simulation, Test und Fachpruefung eingesetzt werden.
+- Sicherheitskritische Bauteile duerfen nicht ohne Simulation, Test und Fachpruefung eingesetzt
+  werden.
 
 ## Stabil, optional, experimentell
 
-| Stufe | Bausteine |
-|---|---|
-| stabil | FreeCAD, OpenSCAD, Blender als Preview/Render, FreeCAD-Python, OpenSCAD-Code |
-| optional | CadQuery per venv, MeshIO, Trimesh, N8n-Automation, Whisper-Kommandos |
+| Stufe         | Bausteine                                                                                               |
+| ------------- | ------------------------------------------------------------------------------------------------------- |
+| stabil        | FreeCAD, OpenSCAD, Blender als Preview/Render, FreeCAD-Python, OpenSCAD-Code                            |
+| optional      | CadQuery per venv, MeshIO, Trimesh, N8n-Automation, Whisper-Kommandos                                   |
 | experimentell | CADAM, text-to-cad Agent Skills, openAI-to-FreeCAD RAG-Workflow, vollautomatische Text-to-CAD-Pipelines |

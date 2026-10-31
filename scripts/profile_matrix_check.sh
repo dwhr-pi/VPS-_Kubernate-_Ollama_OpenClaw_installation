@@ -7,9 +7,9 @@ echo "Profile-Matrix-Check"
 
 for file in "$ROOT_DIR/docs/PROFILE_INDEX.md" "$ROOT_DIR/docs/PROFILE_TOOL_MAPPING.md" "$ROOT_DIR/docs/Profile/Next_Level_Profile_Backlog.md"; do
   if [ -f "$file" ]; then
-    echo "OK: ${file#$ROOT_DIR/}"
+    echo "OK: ${file#"$ROOT_DIR"/}"
   else
-    echo "FEHLT: ${file#$ROOT_DIR/}"
+    echo "FEHLT: ${file#"$ROOT_DIR"/}"
     exit 1
   fi
 done
