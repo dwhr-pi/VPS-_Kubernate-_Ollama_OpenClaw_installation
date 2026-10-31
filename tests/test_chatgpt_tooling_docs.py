@@ -23,7 +23,7 @@ class ChatGPTToolingDocsTests(unittest.TestCase):
         # Unavailable originals remain provenance, not successful live links.
         historical = re.findall(r"`(https://github\.com/[^`]+)` \(historische Quelle; Abruf 404, nicht als aktueller Beleg verifiziert\)", text)
         self.assertEqual(historical, ['https://github.com/bminor/bash'])
-        self.assertIn('[Primaerquelle](https://www.gnu.org/software/bash/)', text)
+        self.assertIn('`https://www.gnu.org/software/bash/` (Primaerquelle; unverifizierte', text)
         actual += historical
         self.assertEqual(set(actual), set(expected))
         self.assertEqual(len(actual), len(expected))

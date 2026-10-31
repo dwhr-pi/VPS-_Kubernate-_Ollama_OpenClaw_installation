@@ -204,6 +204,24 @@ class ExternalLinkPolicyTests(unittest.TestCase):
         self.assertIn('https://docs.perplexity.ai/docs/getting-started/quickstart', PROBE.markdown_urls(api))
         self.assertIn('kein Key-Abruf', api)
 
+    def test_gnu_followup_preserves_only_observed_transport_failures(self):
+        data = json.loads((ROOT / 'docs/quality/UNVERIFIED_GNU_REFERENCES_2026-10-30.json').read_text(encoding='utf-8'))
+        self.assertIs(data['user_approved'], True)
+        self.assertEqual(data['ci_head'], 'fe1d3a82b8553d2d1e16af0551145570bb9cbf7d')
+        self.assertEqual({r['url'] for r in data['references']}, {
+            'https://www.gnu.org/software/bash/', 'https://www.gnu.org/software/gdb/'})
+        for ref in data['references']:
+            self.assertEqual(ref['ci_status'], [0])
+            self.assertEqual(ref['classification'], 'UNVERIFIED_REFERENCE')
+            self.assertFalse(self.ignored(ref['url']))
+            for filename in ref['files']:
+                path = (ROOT / filename).resolve()
+                path.relative_to(ROOT)
+                text = path.read_text(encoding='utf-8')
+                self.assertIn('`' + ref['url'] + '`', text, filename)
+                self.assertTrue('unverifizierte Originalreferenz' in ' '.join(text.split()), filename)
+                self.assertNotIn(ref['url'], PROBE.markdown_urls(text), filename)
+
 
 if __name__ == "__main__":
     unittest.main()

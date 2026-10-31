@@ -73,7 +73,7 @@ ein Quelleninventar, keine Liste funktionierender Installationen.
 | `modelcontextprotocol/server-filesystem`, `modelcontextprotocol/server-git`                                    | Alte Reponamen 404; Verzeichnisse im [offiziellen Monorepo](https://github.com/modelcontextprotocol/servers)                                                                     |
 | `modelcontextprotocol/server-sqlite`, `modelcontextprotocol/server-postgres`, `servers/tree/main/src/sqlite`   | Alte Pfade 404; [offizielles Archiv](https://github.com/modelcontextprotocol/servers-archived); nicht mehr gepflegt, keine Produktionsfreigabe                                   |
 | `https://codeberg.org/forgejo/forgejo.git`                                                                     | Clone-URL, Abruf 403; als Code erhalten, [offizielle Projektdokumentation](https://forgejo.org/docs/latest/) inhaltlich abgerufen; kein erfolgreicher Repository-Abruf behauptet |
-| `https://github.com/bminor/bash`                                                                               | 404; GNU Bash bleibt aktive Primaerquelle, dessen Transportfehler bleiben Blocker                                                                                                |
+| `https://github.com/bminor/bash`                                                                               | 404; GNU-Originaladresse bleibt im gesonderten Nachtrag unverifiziert erhalten; keine erfolgreiche Inhaltspruefung behauptet                                                     |
 | `https://github.com/canonical/ufw`                                                                             | 404; keine stillschweigende Behauptung eines existierenden GitHub-Repositories                                                                                                   |
 | `https://github.com/flowiseai/flowisechatbot`                                                                  | 404; historischer Inventareintrag, nicht automatisch mit einem anderen Produkt gleichgesetzt                                                                                     |
 | `https://github.com/openclaw/clawbake`                                                                         | 404; historisch, bestehender Clawbake-Leitfaden dokumentiert die separate Nutzerquelle                                                                                           |
@@ -107,6 +107,14 @@ Antworten bleiben Fehler. Neue Fundstellen werden nicht automatisch umklassifizi
 
 Erreichbare offizielle Zusatzbelege:
 
+GNU-Nachtrag fuer `fe1d3a8`: Die
+[zwei gesondert belegten GNU-Adressen](UNVERIFIED_GNU_REFERENCES_2026-10-30.json) scheiterten im
+Push- und PR-Linklauf wiederholt mit Transportstatus 0. Lokal kam HTTP 200 zurueck, das bestaetigt
+aber keinen Projektinhalt. Auch die geprueften Savannah-Alternativen lieferten keinen belastbar
+bestaetigten Ersatzinhalt und werden deshalb nicht als neue Belege verwendet. Beide Originaladressen
+bleiben mit Datum und Befund erhalten. Die erste Evidenzliste mit 23 Adressen bleibt unveraendert;
+insgesamt sind damit 25 exakte Referenzen dokumentiert, keine Domain-Regel.
+
 - [Perplexity Quickstart](https://docs.perplexity.ai/docs/getting-started/quickstart): Anlegen eines
   API-Keys in der Console; kein Kontozugriff, Tarif-/KYC-Nachweis oder Comet-Downloadnachweis.
 - [CISA-Bulletin vom Maerz 2022](https://content.govdelivery.com/accounts/USDHSCISA/bulletins/30ef592):
@@ -122,8 +130,8 @@ Wiederaufnahme als aktiver Link braucht einen nachvollziehbaren erfolgreichen Ab
 | `https://amtliche-handbuecher.bundesfinanzministerium.de/ao/2026/Datenschutz-Grundverordnung/inhalt.html` (BMF DSGVO; unverifizierte Originalreferenz, CI HTTP 503, 30.10.2026)                                       | 503                                           |
 | `https://www.gesetze-im-internet.de/bdsg_2018/__26.html` (BDSG 26; unverifizierte Originalreferenz, CI Transportfehler, 30.10.2026)                                                                                   | 0                                             |
 | `https://amtliche-handbuecher.bundesfinanzministerium.de/ao/2026/Anhaenge/BMF-Schreiben-und-gleichlautende-Laendererlasse/Anhang-33/inhalt.html` (BMF GoBD; unverifizierte Originalreferenz, CI HTTP 503, 30.10.2026) | 503                                           |
-| [GNU GDB](https://www.gnu.org/software/gdb/)                                                                                                                                                                          | 0                                             |
-| [GNU Bash](https://www.gnu.org/software/bash/)                                                                                                                                                                        | 0                                             |
+| `https://www.gnu.org/software/gdb/` (GNU GDB; unverifizierte Originalreferenz, CI Transportfehler, 30.10.2026)                                                                                                        | 0                                             |
+| `https://www.gnu.org/software/bash/` (GNU Bash; unverifizierte Originalreferenz, CI Transportfehler, 30.10.2026)                                                                                                      | 0                                             |
 | [DSGVO DE ELI](https://op.europa.eu/en/publication-detail/-/publication/3e485e15-11bd-11e6-ba9a-01aa75ed71a1/language-de)                                                                                             | 202                                           |
 | `https://www.gesetze-im-internet.de/urhg/__69d.html` (UrhG 69d; unverifizierte Originalreferenz, CI Transportfehler, 30.10.2026)                                                                                      | 0                                             |
 | `https://www.gesetze-im-internet.de/urhg/__69e.html` (UrhG 69e; unverifizierte Originalreferenz, CI Transportfehler, 30.10.2026)                                                                                      | 0                                             |

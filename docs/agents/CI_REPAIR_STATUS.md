@@ -369,7 +369,16 @@ dort ergaenzt. Der urspruengliche Tabellen-Test bleibt unveraendert; die gesperr
 nicht wieder als gepruefter Link ausgegeben. Kein Nachweis fuer einen Comet-Download oder
 Provider-Zugang. Neuer Commit erfordert erneut die gesamte CI.
 
-## Historische lokale Erstpruefung
+## GNU-Nachtrag nach erneuter Gesamtabnahme
+
+Die Regression fuer `fe1d3a8` bestand mit 2249 Tests und acht unveraenderten Windows-Skips. Beide
+dedizierten Linklaeufe scheiterten danach nur noch an Transportstatus 0 fuer die originalen
+GNU-Seiten von Bash und GDB. Diese zwei Adressen sind im Rahmen der ausdruecklich freigegebenen
+Einzelfallpolicy gesondert dokumentiert und unverifiziert erhalten, nicht als aktive Belege oder
+Ignore-Regeln. HTTP 200 lokaler Alternativen wird nicht als bestaetigter Projektinhalt ausgegeben.
+Die urspruengliche 23er-Evidenz bleibt erhalten; keine Statuscode-Regel wurde geaendert.
+
+## Historischer lokaler Erstlauf
 
 Lokale Abnahme dieses Reparatursatzes unter Windows mit nativem Git Bash: 156 Tests in 15
 betroffenen Modulen, **OK (2 uebersprungen)**. Der Offline-Registry-Check meldet weiterhin **0

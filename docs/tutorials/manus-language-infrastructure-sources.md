@@ -92,9 +92,9 @@ kann lesbar sein, ersetzt aber keine Release-/Pinpruefung. Compiler, Sprachstand
 Zielplattform festlegen; getrennte Buildverzeichnisse fuer Debug/Release/Sanitizer nutzen.
 `ctest --test-dir build --output-on-failure` fuehrt Testprogramme aus. Sanitizer pruefen
 ausgefuehrte Pfade, nicht alle moeglichen Fehler. GDB stammt aus dem
-[GNU-GDB-Projekt](https://www.gnu.org/software/gdb/), nicht einem hier erfundenen offiziellen
-GitHub-Repository. Hardwarezugriffe separat freigeben:
-[Embedded Debug HIL](../tools/embedded-debug-hil.md).
+`https://www.gnu.org/software/gdb/` (GNU-GDB-Projekt; unverifizierte Originalreferenz, CI
+Transportfehler, 30.10.2026), nicht einem hier erfundenen offiziellen GitHub-Repository.
+Hardwarezugriffe separat freigeben: [Embedded Debug HIL](../tools/embedded-debug-hil.md).
 
 ## Rust
 
@@ -121,11 +121,11 @@ sind weitere optionale Ausbauideen, hier ohne neuen Installer oder Laufzeitnachw
 | [Bats-core](https://github.com/bats-core/bats-core)  | Verhaltenstests        | Tests brauchen Mocks fuer Dateisystem/Netz/Systemaktionen |
 | [BashDB](https://github.com/Trepan-Debuggers/bashdb) | Optionaler Debugger    | Fuehrt das debuggete Skript aus; nicht nur Syntaxanalyse  |
 
-Bash-Upstream ist GNU/Savannah, kein beliebiger GitHub-Fork:
-[GNU Bash](https://www.gnu.org/software/bash/). Diese GNU-Seite war beim Abruf zeitweise nicht
-erreichbar; kein positiver Live-Erreichbarkeitsnachweis. `bash -n` prueft Syntax ohne das Skript
-auszufuehren. `bash -x` fuehrt es dagegen aus und kann expandierte Secrets protokollieren.
-ShellCheck-/shfmt-Hooks sind bereits in unserer
+Bash-Upstream ist GNU/Savannah, kein beliebiger GitHub-Fork: `https://www.gnu.org/software/bash/`
+(GNU Bash; unverifizierte Originalreferenz, CI Transportfehler, 30.10.2026). Diese GNU-Seite war
+beim Abruf zeitweise nicht erreichbar; kein positiver Live-Erreichbarkeitsnachweis. `bash -n` prueft
+Syntax ohne das Skript auszufuehren. `bash -x` fuehrt es dagegen aus und kann expandierte Secrets
+protokollieren. ShellCheck-/shfmt-Hooks sind bereits in unserer
 [.pre-commit-config.yaml](../../.pre-commit-config.yaml) konfiguriert; das ist kein Nachweis fuer
 aktivierte oder installierte Hooks.
 
