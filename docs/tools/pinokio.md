@@ -119,4 +119,8 @@ documentation-first.
 
 Quellen: [GitHub-Projekt und Script Policy](https://github.com/pinokiocomputer/pinokio),
 [Release v8.2.0](https://github.com/pinokiocomputer/pinokio/releases/tag/v8.2.0),
-[Asset-Metadaten mit SHA256](https://api.github.com/repos/pinokiocomputer/pinokio/releases/tags/v8.2.0).
+`https://api.github.com/repos/pinokiocomputer/pinokio/releases/tags/v8.2.0` (API-Originalreferenz
+fuer Asset-Metadaten; CI HTTP 403 am 31.10.2026). Die Release-Seite belegt Version und Assetliste,
+nicht allein die SHA256-Digests. Die separate API-Originalreferenz bleibt deshalb erhalten; ihr
+CI-Abruf war gesperrt. Vor einem echten Download muessen die vorgesehenen Integritaetspruefungen
+weiterhin erfolgreich sein. Keine neue Downloadfreigabe, kein Erfolg ohne Hash-/Signaturpruefung.

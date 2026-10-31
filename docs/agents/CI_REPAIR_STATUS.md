@@ -410,6 +410,14 @@ manuelle GitHub-Job-Neustarts; dies ist eine regulaere Robustheitskorrektur.
 
 ## Historischer lokaler Teilnachweis
 
+Weitere einzeln gepruefte Quellen vom 31.10.2026: Eine suedafrikanische Behoerdenadresse scheiterte
+im CI auch nach Retry mit Transportstatus 0 und bleibt nach der ausdruecklichen Quellenfreigabe
+unverifiziert erhalten. Zwei Godot-HTML-Seiten mit HTTP 429 wurden durch die inhaltlich gelesenen,
+commit-gepinnten Originaldateien des offiziellen Godot-Dokumentationsrepositories ergaenzt. Die
+originale Pinokio-Release-API-Adresse mit CI 403 bleibt erhalten; die offizielle Release-Seite
+belegt Version/Assets, nicht allein die SHA256-Digests. Keine Aenderung an Installations-Hashes,
+Lizenzfreigaben oder HTTP-Erfolgskriterien, keine neue Checker-Ausnahme.
+
 Mosquitto-Quellennachtrag vom 31.10.2026: Die Website-Migrationsseite scheiterte im CI nach beiden
 begrenzten Versuchen sowie lokal mit Transportstatus 0. Ihre identische Quelldatei im offiziellen
 GitHub-Repository wurde inhaltlich geprueft und mit HTTP 200 abgerufen. Der aktive Nachweis ist

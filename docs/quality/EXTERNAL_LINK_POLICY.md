@@ -53,6 +53,21 @@ nicht durch eine beliebige erreichbare Startseite ersetzt werden. Historische Qu
 unveraenderter URL und explizitem Befund als Inline-Code erhalten, nicht als angeblich aktuelle
 Empfehlung.
 
+## Weitere Quellenbefunde vom 31.10.2026
+
+Nachtrag 31.10.2026: Die
+[einzeln protokollierte suedafrikanische Behoerdenadresse](UNVERIFIED_GOV_REFERENCE_2026-10-31.json)
+scheiterte im CI auch nach dem begrenzten Transport-Retry. Lokal kam HTTP 200 zurueck; das ist keine
+Inhalts-/Rechtsstandsverifikation. Die Originaladresse bleibt unverifiziert erhalten, die vorigen
+Evidenzlisten bleiben unveraendert. Damit sind 26 exakte Originalreferenzen protokolliert, keine
+pauschale Domain-Regel.
+
+Zwei Godot-Exportseiten lieferten HTTP 429. Die inhaltlich gelesenen Originaldateien im offiziellen
+Dokumentationsrepository sind deshalb auf einen geprueften Commit gepinnt und als aktive Belege
+verknuepft; alte HTML-Adressen bleiben erhalten. Bei Pinokio bleibt die gesperrte API-Adresse als
+Originalreferenz erhalten. Der erreichbare offizielle Release-Link belegt nur Version und
+Assetliste, nicht allein die Digests. Installer-Integritaetspruefungen bleiben unveraendert.
+
 ## Exakte Auth-Klassifikation
 
 Nur diese vier persoenlichen Kontoeinstiege sind in der Konfiguration exakt verankert. Sie werden

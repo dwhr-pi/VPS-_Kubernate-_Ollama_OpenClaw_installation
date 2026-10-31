@@ -102,7 +102,9 @@ Keine Engine liefert mit einem unveraenderten Projekt automatisch gleichwertige 
 Browser- und VR-Versionen. Eingabe, Renderer, UI, Assets und Leistungsbudget muessen angepasst
 werden. iOS-Export mit Godot benoetigt einen Mac mit Xcode; Signierung und Store-Veroeffentlichung
 sind separate Schritte.
-[Godot iOS](https://docs.godotengine.org/en/stable/tutorials/export/exporting_for_ios.html),
+[Godot iOS (offizielle Repository-Quelle)](https://github.com/godotengine/godot-docs/blob/6d86d7c7f3b8f4f56c71e113022d72fe80b2c84d/tutorials/export/exporting_for_ios.rst);
+`https://docs.godotengine.org/en/stable/tutorials/export/exporting_for_ios.html` (Originaladresse,
+CI HTTP 429 am 31.10.2026),
 [O3DE-Plattformstatus](https://www.docs.o3de.org/docs/welcome-guide/supported-platforms/),
 [Unity-Webbrowser](https://docs.unity.com/en-us/engine/6000.5/manual/platform-specific/webgl/intro/browsercompatibility),
 [Unreal-GitHub-Zugang](https://dev.epicgames.com/documentation/en-us/unreal-engine/downloading-source-code-in-unreal-engine).
@@ -112,7 +114,9 @@ Web-/Desktop-Einstieg GDScript bevorzugen. Nicht pauschal WebGPU versprechen: do
 2.0. Mehrthread-Webexport braucht besondere Cross-Origin-Isolation; Mikrofon/WebXR brauchen
 geeignete Browser und sichere Kontexte. Ein Webspiel kann keine beliebigen lokalen Dateien oder
 USB-Geraete wie eine Desktop-App ansprechen.
-[Godot-Webexport](https://docs.godotengine.org/en/stable/tutorials/export/exporting_for_web.html).
+[Godot-Webexport (offizielle Repository-Quelle)](https://github.com/godotengine/godot-docs/blob/6d86d7c7f3b8f4f56c71e113022d72fe80b2c84d/tutorials/export/exporting_for_web.rst);
+`https://docs.godotengine.org/en/stable/tutorials/export/exporting_for_web.html` (Originaladresse,
+CI HTTP 429 am 31.10.2026).
 
 ## Stereoskopie, Valve Index, VR und AR
 

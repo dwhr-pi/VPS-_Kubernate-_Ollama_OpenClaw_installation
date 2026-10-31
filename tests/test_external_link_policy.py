@@ -252,6 +252,39 @@ class ExternalLinkPolicyTests(unittest.TestCase):
         self.assertIn('Historischer Docker-/Compose-Portfall', text)
         self.assertFalse(self.ignored(original))
 
+    def test_south_africa_reference_is_individual_evidence_not_domain_ignore(self):
+        data = json.loads((ROOT / 'docs/quality/UNVERIFIED_GOV_REFERENCE_2026-10-31.json').read_text(encoding='utf-8'))
+        self.assertIs(data['user_approved'], True)
+        self.assertEqual(len(data['references']), 1)
+        ref = data['references'][0]
+        self.assertEqual(ref['url'], 'https://inforegulator.org.za/')
+        self.assertEqual(ref['ci_status'], [0])
+        self.assertFalse(self.ignored(ref['url']))
+        text = (ROOT / 'docs/legal/INTERNATIONAL_SOURCES.md').read_text(encoding='utf-8')
+        self.assertIn('`' + ref['url'] + '`', text)
+        self.assertNotIn(ref['url'], PROBE.markdown_urls(text))
+
+    def test_godot_sources_preserve_originals_and_exact_upstream_documents(self):
+        text = (ROOT / 'docs/tools/ai-game-engines-xr-wallpaper.md').read_text(encoding='utf-8')
+        pairs = [
+            ('https://docs.godotengine.org/en/stable/tutorials/export/exporting_for_ios.html', 'https://github.com/godotengine/godot-docs/blob/6d86d7c7f3b8f4f56c71e113022d72fe80b2c84d/tutorials/export/exporting_for_ios.rst'),
+            ('https://docs.godotengine.org/en/stable/tutorials/export/exporting_for_web.html', 'https://github.com/godotengine/godot-docs/blob/6d86d7c7f3b8f4f56c71e113022d72fe80b2c84d/tutorials/export/exporting_for_web.rst'),
+        ]
+        for original, source in pairs:
+            self.assertIn('`' + original + '`', text)
+            self.assertNotIn(original, PROBE.markdown_urls(text))
+            self.assertIn(source, PROBE.markdown_urls(text))
+            self.assertFalse(self.ignored(original))
+
+    def test_pinokio_html_release_never_substitutes_digest_verification(self):
+        text = (ROOT / 'docs/tools/pinokio.md').read_text(encoding='utf-8')
+        original = 'https://api.github.com/repos/pinokiocomputer/pinokio/releases/tags/v8.2.0'
+        self.assertIn('`' + original + '`', text)
+        self.assertNotIn(original, PROBE.markdown_urls(text))
+        self.assertIn('https://github.com/pinokiocomputer/pinokio/releases/tag/v8.2.0', PROBE.markdown_urls(text))
+        self.assertTrue('nicht allein die SHA256-Digests' in ' '.join(text.split()))
+        self.assertFalse(self.ignored(original))
+
 
 if __name__ == "__main__":
     unittest.main()
