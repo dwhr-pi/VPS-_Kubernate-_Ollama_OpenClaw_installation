@@ -43,8 +43,10 @@ jobs:
 
       - name: Markdown links
         run: |
+          export NODE_PATH="$(npm root -g)"
+          node --test tests/test_markdown_link_retry.cjs
           node scripts/quality/link_checker_contract.cjs "$(command -v markdown-link-check)"
-          markdown-link-check -c .github/markdown-link-check.json readme.md
+          node scripts/quality/check_markdown_links.cjs -c .github/markdown-link-check.json readme.md
 
       - name: Secret scan
         uses: gitleaks/gitleaks-action@ff98106e4c7b2bc287b24eaf42907196329070c7 # v2

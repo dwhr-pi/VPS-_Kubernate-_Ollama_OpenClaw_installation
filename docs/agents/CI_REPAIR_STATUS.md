@@ -393,7 +393,30 @@ wird deshalb nicht stillschweigend ausgenommen. Der direkte Job-Neustart wurde d
 `403 Resource not accessible by integration` verweigert. Der regulaere neue Commit behebt
 stattdessen den tatsaechlichen NotebookLM-Quellenfehler und muss wieder alle Checks durchlaufen.
 
-## Historische lokale Teilabnahme
+## Begrenzter Transport-Retry vom 31.10.2026
+
+Die naechste vollstaendige Runde bestand mit 2251 Tests und acht unveraenderten Windows-Skips,
+meldete aber einmal Transportstatus 0 beim offiziellen WireGuard-Repository statt der zuvor
+betroffenen Community-Seite. Diese wechselnden Fehler werden nicht durch weitere Quellen-Ausnahmen
+verdeckt. Alle Link-Gates nutzen jetzt dieselbe festgelegte Upstream-Bibliothek im gemeinsamen
+Runner. Er wiederholt HTTP(S)-Transportfehler genau einmal nach fuenf Sekunden, behaelt andere
+urspruengliche Fehler unveraendert bei und scheitert bei fehlenden oder fehlerhaften Ergebnissen.
+
+Sieben neue Offline-JavaScript-Vertragstests pruefen Begrenzung, echte Wiederherstellung, permanente
+Fehler, gemischte 202/403/404-Ergebnisse und Parserfehler. Der bestehende echte CLI-Dateitest wird
+auf Upstream-CLI und Runner angewandt. Keine neue Ignore-Regel, keine Domain-Ausnahme und kein
+Herabsetzen der HTTP-Erfolgskriterien. Die Integration hat weiterhin keine Berechtigung fuer
+manuelle GitHub-Job-Neustarts; dies ist eine regulaere Robustheitskorrektur.
+
+## Historischer lokaler Teilnachweis
+
+Lokale Retry-Pruefung: sieben JavaScript- und 15 Python-Vertragstests bestanden. Der echte Runner
+mit der gepinnten Bibliothek lieferte fuer lokale vorhandene, fehlende und gemischte Dateien korrekt
+0/1/1, ohne HTTP. Die Kindprozess-Gesamtpruefung scheiterte lokal zweimal bereits beim unveraenderten
+Upstream-Programm an der Windows-20-Sekunden-Grenze. Diese Grenze wurde nicht gelockert; der
+vollstaendige echte Prozess-Guard muss in der Linux-CI erfolgreich durchlaufen. Markdownlint und
+`git diff --check` bestanden. Keine Produktions- oder Inferenzpruefung.
+
 
 Lokale Abnahme dieses Reparatursatzes unter Windows mit nativem Git Bash: 156 Tests in 15
 betroffenen Modulen, **OK (2 uebersprungen)**. Der Offline-Registry-Check meldet weiterhin **0

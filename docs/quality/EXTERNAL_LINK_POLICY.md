@@ -1,6 +1,6 @@
 # Externe Markdown-Links: Policy und PR-6-Befunde
 
-Stand: 30.10.2026. Keine Merge- oder Produktionsfreigabe.
+Stand: 31.10.2026. Keine Merge- oder Produktionsfreigabe.
 
 ## Verbindlicher Check
 
@@ -8,8 +8,11 @@ Alle Markdown-Dateien bleiben im bestehenden Link-Gate. In jedem Workflow muss d
 explizit angegeben werden; sie wird nicht automatisch gefunden:
 
 ```sh
-markdown-link-check -c .github/markdown-link-check.json readme.md
-find docs -type f -name '*.md' -print0 | xargs -0 -n1 markdown-link-check -c .github/markdown-link-check.json
+export NODE_PATH="$(npm root -g)"
+node --test tests/test_markdown_link_retry.cjs
+node scripts/quality/link_checker_contract.cjs "$(command -v markdown-link-check)"
+node scripts/quality/check_markdown_links.cjs -c .github/markdown-link-check.json readme.md
+find docs -type f -name '*.md' -print0 | xargs -0 -n1 node scripts/quality/check_markdown_links.cjs -c .github/markdown-link-check.json
 ```
 
 Verbindliche Bibliothek/CLI: `markdown-link-check@3.15.0`. Die zuvor verwendete CLI 3.13.7 gab bei
@@ -20,6 +23,16 @@ Regressionstest verwendet keine HTTP-Anfragen. Die
 [offizielle korrigierte CLI](https://github.com/tcort/markdown-link-check/blob/v3.15.0/markdown-link-check)
 wirft bei `dead` wieder einen Fehler. Ein alter gruener Job mit `ERROR: dead links` ist keine
 Link-Abnahme. Der dedizierte Workflow prueft weiterhin alle Markdown-Dateien, nicht nur Aenderungen.
+
+Der gemeinsame Runner verwendet weiterhin diese unveraenderte Upstream-Bibliothek mit ihrer
+vollstaendigen Markdown-Auswertung und derselben JSON-Konfiguration. Ausschliesslich bei
+HTTP(S)-Transportstatus 0 wird nach fuenf Sekunden genau einmal dasselbe Dokument erneut geprueft.
+Nur die urspruenglichen Transportfehler duerfen durch die neuen echten Pruefergebnisse ersetzt
+werden. Urspruengliche HTTP-202/403/404-Fehler, lokale Dateifehler und sonstige Fehler bleiben
+fehlgeschlagen, auch wenn ein anderer Link den Wiederholungsversuch ausloest. Keine Endlosschleife,
+keine Domain-Ausnahme, kein `continue-on-error`. Fehlende oder nachtraeglich ignorierte Ergebnisse
+loeschen keinen Fehler; Parser-/Ergebnisfehler scheitern geschlossen. Beide echten Programme
+(Upstream-CLI und Runner) durchlaufen denselben Offline-Datei-Exitcode-Test.
 
 Die zusaetzliche Einzelpruefung unter `scripts/quality/external_link_probe.py` ersetzt diesen Parser
 und seine vollstaendige Markdown-Abdeckung nicht. Sie untersucht explizite Markdown-Ziele mit GET,

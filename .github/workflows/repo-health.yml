@@ -54,6 +54,8 @@ jobs:
 
       - name: Markdown link check
         run: |
+          export NODE_PATH="$(npm root -g)"
+          node --test tests/test_markdown_link_retry.cjs
           node scripts/quality/link_checker_contract.cjs "$(command -v markdown-link-check)"
-          markdown-link-check -c .github/markdown-link-check.json readme.md
-          find docs -name '*.md' -print0 | xargs -0 -n 1 markdown-link-check -c .github/markdown-link-check.json
+          node scripts/quality/check_markdown_links.cjs -c .github/markdown-link-check.json readme.md
+          find docs -name '*.md' -print0 | xargs -0 -n 1 node scripts/quality/check_markdown_links.cjs -c .github/markdown-link-check.json

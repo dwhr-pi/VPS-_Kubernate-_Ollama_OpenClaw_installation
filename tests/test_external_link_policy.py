@@ -70,8 +70,11 @@ class ExternalLinkPolicyTests(unittest.TestCase):
             text = (ROOT / ".github/workflows" / name).read_text(encoding="utf-8")
             self.assertIn('markdown-link-check@3.15.0', text)
             self.assertIn('node scripts/quality/link_checker_contract.cjs', text)
+            self.assertIn('node --test tests/test_markdown_link_retry.cjs', text)
+            self.assertIn('export NODE_PATH="$(npm root -g)"', text)
+            self.assertIn('node scripts/quality/check_markdown_links.cjs', text)
             for line in text.splitlines():
-                if "markdown-link-check " in line and "npm install" not in line:
+                if "check_markdown_links.cjs " in line:
                     self.assertIn("-c .github/markdown-link-check.json", line)
         dedicated = (ROOT / ".github/workflows/linkcheck.yml").read_text(encoding="utf-8")
         self.assertIn("-c .github/markdown-link-check.json", dedicated)
