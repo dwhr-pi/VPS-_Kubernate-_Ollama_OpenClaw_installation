@@ -1,5 +1,15 @@
 # Aktueller Projektstatus
 
+## Neue Bestandspruefung vom 31.10.2026
+
+Basis `b6202e191960f329d7ef300139d796af6a09abe0`: 400 Tools, 250 Profile,
+45 Registry-Ports; Offline-Projektcheck mit 0 Fehlern und 802 Metadatenhinweisen.
+Die [Review- und Haertungsrunde, Phase 0](REVIEW_FINDINGS.md) trennt aktuelle
+Codebefunde von den nachfolgenden historischen Nachweisen. Legacy-Uninstall,
+bewegliche Quellinstaller und ein nur verzeichnislesender Restore-Test bleiben
+prioritaere Risiken. Keine Runtime-/Produktionsfreigabe und keine automatische
+Statusumstufung; groessere Registry-/GitOps-Umbauten benoetigen eine Freigabe.
+
 [Plattform-Review vom 26.10.2026](reviews/2026-10-26-platform-patch-plan.md): 385 Tools, 245
 Profile, vollstaendige Metadatenmatrizen und priorisierte PRs. Historische Nachweise unten bleiben
 unveraendert; keine Runtime-Freigabe daraus.

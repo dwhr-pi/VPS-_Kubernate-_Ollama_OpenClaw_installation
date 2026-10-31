@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+### 2026-10-31: Neue Review-Runde, Phase 0
+
+- Aktuellen Bestand und statische Pruefungen in `docs/REVIEW_FINDINGS.md`
+  dokumentiert; veraltete Annahmen von bereits vorhandenen Schutzpfaden getrennt.
+- Legacy-Uninstall, bewegliche Quellinstaller und unzureichenden Restore-Test
+  priorisiert. Keine Installer-, Registry- oder Cluster-Aenderung und keine
+  Produktionsfreigabe; groessere Umbauten bleiben gesondert freizugeben.
+
 ### 2026-10-30: Freigegebene Formatierungsbereinigung
 
 - Gemeinsame Shell-Formatter-Optionen und dokumentierte Markdown-Regeln; mechanische Formatierung
