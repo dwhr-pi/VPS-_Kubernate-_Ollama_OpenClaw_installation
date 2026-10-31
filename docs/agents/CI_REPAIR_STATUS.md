@@ -417,7 +417,6 @@ Upstream-Programm an der Windows-20-Sekunden-Grenze. Diese Grenze wurde nicht ge
 vollstaendige echte Prozess-Guard muss in der Linux-CI erfolgreich durchlaufen. Markdownlint und
 `git diff --check` bestanden. Keine Produktions- oder Inferenzpruefung.
 
-
 Lokale Abnahme dieses Reparatursatzes unter Windows mit nativem Git Bash: 156 Tests in 15
 betroffenen Modulen, **OK (2 uebersprungen)**. Der Offline-Registry-Check meldet weiterhin **0
 Fehler, 802 Hinweise** bei 400 Tools, 250 Profilen und 45 Ports. `git diff --check` ist ohne Befund.
