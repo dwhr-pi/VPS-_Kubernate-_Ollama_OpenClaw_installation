@@ -1,8 +1,9 @@
 # P0-B: Quellen vor Ausfuehrung pruefen
 
-Stand: 01.11.2026. Erster Schutz-Teilsatz, **kein neuer fertiger Installer**.
-Die regulaeren Ollama-/K3s-Tool-Einstiege fuehren keine veraenderlichen
-Internet-Skripte mehr aus. Vorhandene Programme, Modelle, Cluster, Dienste,
+Stand: 02.11.2026, einschliesslich OpenClaw-Fortsetzung. Schutz-Teilsatz,
+**kein neuer fertiger Installer**. Die regulaeren Ollama-/K3s-Tool-Einstiege
+fuehren keine veraenderlichen Internet-Skripte mehr aus; OpenClaw fuehrt keinen
+ungepinnten Clone-/Pull-/Paketpfad mehr aus. Vorhandene Programme, Modelle, Cluster, Dienste,
 Konfigurationen und Installationsstatus bleiben unveraendert.
 
 ## Befund und Breaking Change
@@ -21,7 +22,7 @@ eine technische Trennung vom moeglichen Dienst-/Clusterstart. Ein lokal
 vorhandenes `ollama` wurde zudem ohne verwalteten Herkunftsnachweis als Erfolg
 akzeptiert. Diese automatischen Pfade sind jetzt bewusst gesperrt.
 
-**Auswirkung:** Die zwei Menuepunkte zeigen einen Quellenplan, installieren aber
+**Auswirkung:** Die drei Core-Menuepunkte zeigen einen Quellenplan, installieren aber
 noch nichts. Das ist eine beabsichtigte Sicherheitsbarriere, keine fehlgeschlagene
 fertige Native-Integration. Es gibt keinen `--force`, unsignierten Ersatzdownload,
 automatischen Paketmanager-Fallback oder versteckten Service-Start.
@@ -42,10 +43,11 @@ durch einen zweiten Einstieg umgangen werden.
 ```bash
 bash scripts/tools/ollama_install.sh --plan
 bash scripts/tools/k3s_install.sh --plan
+bash scripts/tools/openclaw_install.sh --plan
 ```
 
 Auch ein Aufruf ohne Optionen plant nur. Code 3 bedeutet **nicht installiert**.
-Der interaktive Tool-Dispatcher faengt diese beiden Planpfade vor generischer
+Der interaktive Tool-Dispatcher faengt diese drei Planpfade vor generischer
 Logbereinigung, Speicherpruefung, Installationssperre, Messung und
 Status-/Autostart-Verarbeitung ab. Selbst ein unerwarteter Guard-Code 0 kann
 dort keinen Installationsmarker erzeugen. Sein UI-Rueckgabewert ist kein
@@ -63,14 +65,15 @@ Eine bewusst bereitgestellte kleine JSON-Datei muss genau diese Felder haben:
 | Feld | Vertrag |
 | --- | --- |
 | `schema` | Ganzzahl 1 |
-| `tool` | `ollama` oder `k3s`, passend zum aufgerufenen Wrapper |
+| `tool` | `ollama`, `k3s` oder `openclaw`, passend zum aufgerufenen Wrapper |
 | `source_commit` | Voller, nicht nullgesetzter 40-stelliger Hex-Commit |
 | `url` | Exakte GitHub-Archivadresse fuer offiziellen Owner/Repo und diesen Commit |
 | `sha256` | Separat gepruefte 64-stellige Hex-Pruefsumme, nicht nur Nullen |
 | `size` | Exakte Bytezahl, mindestens 1, maximal 1 GiB |
 
 Erlaubte Formen sind `https://github.com/ollama/ollama/archive/COMMIT.tar.gz`
-und `https://github.com/k3s-io/k3s/archive/COMMIT.tar.gz`. `COMMIT` muss im echten
+und `https://github.com/k3s-io/k3s/archive/COMMIT.tar.gz`; fuer OpenClaw
+`https://github.com/openclaw/openclaw/archive/COMMIT.tar.gz`. `COMMIT` muss im echten
 Vertrag durch den tatsaechlich geprueften vollen Commit ersetzt sein. Es wird
 hier kein Release, Hash oder baubarer Quellstand erfunden oder freigegeben.
 
@@ -113,6 +116,27 @@ uebernommen werden. Es wird kein dauerhafter Vertrauensmarker erzeugt.
 
 ## Abnahme und Rollback
 
+### Fortsetzung: OpenClaw
+
+`scripts/tools/openclaw_install.sh` ist jetzt derselbe feste, isoliert aufgerufene
+Quellen-Guard statt eines schreibenden Installers. Kein `git clone`/`git pull`,
+kein `sudo chown`, kein `/opt/openclaw`-Zugriff, keine Paket-Hooks und kein
+Status-Tracking. Ein vorhandener Checkout wird weder aktualisiert noch adoptiert.
+**Breaking Change:** Auch die bisherige automatische OpenClaw-Neuinstallation
+und das in diesem Installer versteckte Update sind gesperrt. Bestehende
+Programme koennen weiterhin separat nach ihren bestehenden Betriebswegen genutzt
+werden; diese Betriebswege sind dadurch nicht pauschal sicherheitsabgenommen.
+
+Der [alte Installertext](legacy/OPENCLAW_INSTALL_PRE_P0B_2026_11_01.md) bleibt
+als nicht ausfuehrbare historische Referenz erhalten. Die bisherigen isolierten
+Paket-Fehlerhandler-Tests werden gegen diesen Text mit vollstaendigen Stubs
+weitergefuehrt; sie sind kein Runtime-Nachweis fuer den neuen Guard.
+Die neue Guard-Suite prueft den echten OpenClaw-Wrapper und den Menuepfad,
+offizielle/abweichende Manifestquelle und die Nicht-Installation bei gueltigem Hash.
+[Lokale Abnahme vom 02.11.2026 mit Pruefgrenzen](quality/2026-11-02-openclaw-menu-acceptance.md).
+
+### Nachweise des ersten Ollama-/K3s-Teilsatzes
+
 `tests/test_core_source_gate.py` prueft synthetische Quellenbytes, Manipulationen,
 fehlende Dateien im Offline-Fall, Schema-/Pin-/URL-Fehler, Hardlinks, sensible
 Fehlerausgaben sowie die echten Shell-Wrapper gegen einen Python-Spy. Die echte
@@ -138,16 +162,13 @@ Lokale Nachweise vom 01.11.2026 (ueberlappende Auswahlen, nicht addieren):
   oder einer YAML-Laufzeit validierter Workflow.
 
 Rollback nur als reviewter Code-Revert; keine Nutzdaten oder Marker loeschen.
-Ein Revert auf die zwei alten Direktinstaller reaktiviert das dokumentierte
+Ein Revert auf die alten Direktinstaller reaktiviert das dokumentierte
 Supply-Chain-Risiko und ist deshalb kein empfohlener Betriebs-Workaround.
 
 ## Naechster Teilsatz
 
-1. OpenClaw-Legacy-Installer: bewegliche Clone-/Pull-Ziele und ungefrorene
-   Paketinstallation beseitigen; bestehendes `/opt/openclaw` niemals implizit
-   adoptieren oder veraendern. `scripts/tools/openclaw_install.sh` ist weiterhin offen.
-2. Reviewte Quell-/Toolchain-Vertraege mit authentisierter Herkunft,
+1. Reviewte Quell-/Toolchain-Vertraege mit authentisierter Herkunft,
    sicherer Extraktion und frischem isolierten Build verbinden; erst nach echter
    Build-/Smoke-Abnahme einen getrennten Runtime-Nachweis erzeugen.
-3. Dienstregistrierung/-start und Statusmigration separat freigeben; danach
+2. Dienstregistrierung/-start und Statusmigration separat freigeben; danach
    Fresh-Host-Abnahme auf Ubuntu 24.04 amd64 und ARM. P0-B insgesamt bleibt offen.

@@ -2,6 +2,19 @@
 
 ## Unreleased
 
+### 2026-11-02: OpenClaw-Quellenschutz und erneute A-Z-Sortierung
+
+- Ungepinnten OpenClaw-Clone-/Pull-/Paketpfad durch Quellen-Guard ersetzt;
+  keine `/opt`-Adoption, Statusaenderung oder Laufzeitinstallation. Alter Text
+  als nicht ausfuehrbare Referenz mit bestehenden Fehlerhandler-Fixtures erhalten.
+- Breaking Change: automatische OpenClaw-Neuinstallation und das bisherige
+  implizite Installer-Update gesperrt, bis der separate Buildvertrag abgenommen ist.
+- Alle vorhandenen Nicht-Core-Menuepunkte wieder A-Z, einschliesslich der drei
+  zuvor angehaengten GitOps-Tools. Neue, nicht in der eingefrorenen Sortierbasis
+  enthaltene Schluessel werden kuenftig stabil hinter Z angehaengt.
+- Regressionen fuer reale native Registrierung, neue Eintraege, Wiederholung,
+  defekte Sortierbasis, Sortierfehler und OpenClaw-Guard erweitert.
+
 ### 2026-11-01: P0-B-Quellenschutz fuer Ollama und K3s
 
 - Veraenderliche curl-pipe-shell-Direktinstaller durch nebenwirkungsfreien Plan

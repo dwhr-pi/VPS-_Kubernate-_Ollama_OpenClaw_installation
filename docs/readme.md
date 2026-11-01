@@ -7,6 +7,9 @@ produktionsreif.
 
 ## Hier beginnen
 
+[Tool-Reihenfolge](tools/TOOL_MENU_ORDER.md): fester Bereich, bestehender Katalog
+A-Z nach der Trennlinie und kuenftige Tools als Anhang hinter Z.
+
 [P0-B: Ollama-/K3s-Quellenschutz](P0_B_CORE_SOURCES.md): gesperrte Legacy-
 Direktinstallation, explizite Offline-Pruefung und noch fehlende Runtime-Abnahme.
 

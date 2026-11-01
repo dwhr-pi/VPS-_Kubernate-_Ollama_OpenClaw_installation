@@ -1,5 +1,14 @@
 # Aktueller Projektstatus
 
+## OpenClaw-Quellenschutz und Tool-Reihenfolge vom 02.11.2026
+
+Auch der OpenClaw-Legacy-Installer ist jetzt vor Clone/Pull, `/opt`-Aenderungen,
+Paket-Hooks und Statusuebernahme gesperrt; siehe [P0-B](P0_B_CORE_SOURCES.md).
+Dies ist ein Plan-/Quellenpruefpfad, kein fertig abgenommener Ersatzbuild.
+Die [Tool-Sortierung](tools/TOOL_MENU_ORDER.md) umfasst wieder den gesamten
+vorhandenen Menuebestand nach der Trennlinie. Neue Schluessel bleiben kuenftig
+als Anhang hinter Z; die ersten drei Eintraege bleiben unveraendert.
+
 ## P0-B-Quellenschutz vom 01.11.2026
 
 [Erster Core-Quellenschutz](P0_B_CORE_SOURCES.md): Die zwei alten Ollama-/K3s-
@@ -9,7 +18,9 @@ Breaking Change: automatische Installation dieser zwei Legacy-Einstiege gesperrt
 Auch Basis-/VPS-Legacy-Assistenten delegieren vor Systemaenderungen an die Sperre;
 keine Umgehung ueber deren bisherige zweite Vendor-Pipes.
 Vorhandene Programme, Daten und Status bleiben erhalten. OpenClaw-Installer,
-authentisierte Buildvertraege und Service-Abnahme bleiben offen.
+authentisierte Buildvertraege und Service-Abnahme bleiben offen. Der dort noch
+offene OpenClaw-Schutz ist durch die oben genannte Fortsetzung inzwischen umgesetzt;
+eine produktionsfaehige OpenClaw-Ersatzinstallation ist weiterhin nicht abgenommen.
 
 ## P1-P3-Teilsatz vom 01.11.2026
 
