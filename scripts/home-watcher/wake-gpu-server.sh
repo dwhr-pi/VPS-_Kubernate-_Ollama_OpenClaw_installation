@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+if [[ "${1:-}" == --health-gate ]]; then
+  shift
+  ROOT="$(cd -P -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd)"
+  exec python3 -I -B "$ROOT/scripts/home-watcher/gpu_health_gate.py" "$@"
+fi
+
 MODE="${1:---dry-run}"
 GPU_SERVER_MAC="${GPU_SERVER_MAC:-GPU_SERVER_MAC}"
 BROADCAST_IP="${BROADCAST_IP:-255.255.255.255}"

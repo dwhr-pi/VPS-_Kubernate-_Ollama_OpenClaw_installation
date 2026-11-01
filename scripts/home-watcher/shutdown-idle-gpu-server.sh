@@ -27,4 +27,5 @@ if [[ "$MODE" == "--dry-run" ]]; then
   exit 0
 fi
 
-ssh "${SSH_USER}@${GPU_SERVER_IP}" "echo 'TODO: lokale Idle-Pruefung einfuegen'; sudo shutdown -h +1 'GPU server idle shutdown requested'"
+echo 'Shutdown gesperrt: kein gepruefter Queue-/Job-/Idle-Vertrag vorhanden. Keine SSH- oder Shutdown-Aktion.' >&2
+exit 1
