@@ -1,5 +1,16 @@
 # Aktueller Projektstatus
 
+## P0-B-Quellenschutz vom 01.11.2026
+
+[Erster Core-Quellenschutz](P0_B_CORE_SOURCES.md): Die zwei alten Ollama-/K3s-
+Direktinstaller fuehren keine veraenderlichen Internet-Skripte mehr aus.
+Standard ist nur ein Plan; optionale Offline-Bytepruefung ist keine Installation.
+Breaking Change: automatische Installation dieser zwei Legacy-Einstiege gesperrt.
+Auch Basis-/VPS-Legacy-Assistenten delegieren vor Systemaenderungen an die Sperre;
+keine Umgehung ueber deren bisherige zweite Vendor-Pipes.
+Vorhandene Programme, Daten und Status bleiben erhalten. OpenClaw-Installer,
+authentisierte Buildvertraege und Service-Abnahme bleiben offen.
+
 ## P1-P3-Teilsatz vom 01.11.2026
 
 [Umsetzung und offene Abnahmen](P1_P3_IMPLEMENTATION.md): getrennte beleggebundene

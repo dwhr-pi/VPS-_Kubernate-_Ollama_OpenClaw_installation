@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+### 2026-11-01: P0-B-Quellenschutz fuer Ollama und K3s
+
+- Veraenderliche curl-pipe-shell-Direktinstaller durch nebenwirkungsfreien Plan
+  und ausdrueckliche Offline-Quellenbytepruefung ersetzt; keine Downloads/Builds.
+- Menue-Plan vor generischen Installationsnebenwirkungen; kein Status-/Autostart-
+  Eintrag, auch nicht bei unerwartetem Guard-Erfolg. Vorhandene Daten bleiben erhalten.
+- Breaking Change: diese zwei Legacy-Einstiege installieren nicht mehr automatisch.
+  Basis-/VPS-Assistenten delegieren vor Systemaenderungen an dieselbe Sperre;
+  ihre weiteren Ollama-/K3s-Vendor-Pipes sind ebenfalls entfernt.
+  Vollstaendige Build-/Herkunfts-/Runtime-Abnahme sowie OpenClaw bleiben offen.
+
 ### 2026-11-01: P1-P3-Teilsatz ohne Produktionsaktionen
 
 - Separater Readiness-/Belegvertrag und generierte Registry-Matrizen mit CI-Driftcheck;

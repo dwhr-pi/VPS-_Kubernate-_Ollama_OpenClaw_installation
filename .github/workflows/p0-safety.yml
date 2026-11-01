@@ -26,7 +26,7 @@ jobs:
           . /etc/os-release
           test "$ID" = ubuntu
           test "$VERSION_ID" = 24.04
-          for script in install.sh setup_ultimate.sh scripts/auto_update_hard.sh scripts/update_setup_only.sh scripts/tools/helpers/docker_compose_tool_common.sh scripts/tools/ollama_uninstall.sh scripts/tools/openclaw_uninstall.sh; do
+          for script in install.sh setup_ultimate.sh scripts/base_install.sh scripts/vps_standalone.sh scripts/auto_update_hard.sh scripts/update_setup_only.sh scripts/tools/helpers/docker_compose_tool_common.sh scripts/tools/ollama_uninstall.sh scripts/tools/openclaw_uninstall.sh scripts/tools/ollama_install.sh scripts/tools/k3s_install.sh; do
             bash -n "$script"
           done
       - name: Test backup/restore, idempotence, PAT isolation and data-preserving uninstall
@@ -35,6 +35,7 @@ jobs:
           set -Eeuo pipefail
           python3 -I -B -m unittest discover -s tests -p test_p0_safety.py -v
           python3 -I -B -m unittest discover -s tests -p test_legacy_core_uninstall.py -v
+          python3 -I -B -m unittest discover -s tests -p test_core_source_gate.py -v
       - name: Preserve existing repository-audit regressions
         shell: bash
         run: python3 -I -B -m unittest discover -s tests -p test_repository_audit.py -v

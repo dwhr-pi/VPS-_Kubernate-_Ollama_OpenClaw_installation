@@ -3673,6 +3673,18 @@ plan_gitops_bootstrap_from_setup() {
 install_tool() {
   local TOOL_KEY="$1"
   case "$TOOL_KEY" in
+    Ollama | K3s)
+      local core_guard_rc=0
+      bash "$INSTALL_DIR/scripts/tools/${TOOL_KEY,,}_install.sh" --plan || core_guard_rc=$?
+      if [ "$core_guard_rc" -eq 3 ]; then
+        echo 'Nur Quellenplan, keine Installation. Status und Autostart bleiben unveraendert. Siehe docs/P0_B_CORE_SOURCES.md.'
+      else
+        echo 'Core-Installation nicht freigegeben; kein Installationsstatus uebernommen.'
+      fi
+      return 0
+      ;;
+  esac
+  case "$TOOL_KEY" in
     Coqui_TTS | OpenVoice | RVC | EMO | Personnel_Documents_AI | Zenbot_trader | Web3_APIs | Exchange_APIs | *Voice_Clone* | *Avatar*)
       if ! python3 -I -B "$INSTALL_DIR/scripts/security/risk_consent.py" --subject "$TOOL_KEY"; then
         echo 'Hochrisiko-Tool nicht freigegeben; keine Installation oder Statusaenderung.'

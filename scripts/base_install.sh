@@ -5,6 +5,12 @@
 # aus den GitHub-Quellen mit pnpm.
 # ==============================================================================
 
+# No legacy host changes before the reviewed core build contract exists.
+set -Eeuo pipefail
+CORE_ROOT="$(cd -P -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
+exec bash "$CORE_ROOT/scripts/tools/ollama_install.sh" "$@"
+
+# Inactive legacy implementation retained for isolated function regression tests.
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 INSTALL_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 source "$INSTALL_DIR/scripts/helpers/status_tracking.sh"
@@ -199,20 +205,5 @@ else
   echo -e "${GREEN}OpenClaw .env Datei existiert bereits.${NC}"
 fi
 
-# 5. Ollama installieren (falls nicht vorhanden)
-echo -e "${GREEN}5/5: Ollama installieren...${NC}"
-if ! command -v ollama >/dev/null 2>&1; then
-  echo -e "${YELLOW}Ollama nicht gefunden, installiere...${NC}"
-  curl -fsSL https://ollama.com/install.sh | sh
-  if ! command -v ollama >/dev/null 2>&1; then
-    echo -e "${RED}Fehler: Ollama konnte nicht installiert werden. Bitte manuell prüfen.${NC}"
-    exit 1
-  fi
-else
-  echo -e "${GREEN}Ollama ist bereits installiert.${NC}"
-fi
-
-init_tool_tracking "Ollama"
-mark_current_tool_installed
-
-echo -e "${GREEN}Basis-Installation abgeschlossen.${NC}"
+echo 'Legacy-Basisinstallation gesperrt; geprueften Core-Pfad separat planen.' >&2
+exit 3

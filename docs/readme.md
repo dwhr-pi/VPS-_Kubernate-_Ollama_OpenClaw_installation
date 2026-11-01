@@ -7,6 +7,9 @@ produktionsreif.
 
 ## Hier beginnen
 
+[P0-B: Ollama-/K3s-Quellenschutz](P0_B_CORE_SOURCES.md): gesperrte Legacy-
+Direktinstallation, explizite Offline-Pruefung und noch fehlende Runtime-Abnahme.
+
 [P1-P3-Umsetzung mit Abnahmegrenzen](P1_P3_IMPLEMENTATION.md): generierte Matrizen,
 Restore-/WoL-Fixtures, optionale Gateway-Policy und weiterhin offene Produktionsnachweise.
 

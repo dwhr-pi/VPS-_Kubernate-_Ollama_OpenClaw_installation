@@ -183,6 +183,10 @@ nicht als vermeintliche Fehlerbehebung reaktivieren.
 
 ## Priorisierte Restliste und naechste PR
 
+Fortsetzung am 01.11.2026: [erster P0-B-Quellenschutz](P0_B_CORE_SOURCES.md)
+fuer Ollama/K3s implementiert. Das sperrt die unsicheren Direktinstaller,
+ersetzt aber noch nicht den fehlenden abgenommenen Build-/Runtime-Vertrag.
+
 1. P0-B/C/D: gepinnte/verifizierte Downloads, getrennte Service-Starts,
    atomische Secrets und vollstaendig nachgewiesener Managed-Uninstall-Vertrag.
 2. P1: Top-20-Lifecycle vervollstaendigen, Ubuntu 24.04/Debian/ARM in Wegwerf-Hosts

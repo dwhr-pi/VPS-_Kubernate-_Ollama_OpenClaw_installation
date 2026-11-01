@@ -7,6 +7,10 @@
 
 set -euo pipefail
 
+# Keep the legacy host/bootstrap body unreachable until its separate migration.
+CORE_ROOT="$(cd -P -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
+exec bash "$CORE_ROOT/scripts/tools/k3s_install.sh" "$@"
+
 # Farben
 GREEN='\033[0;32m'
 BLUE='\033[0;34m'
@@ -45,30 +49,8 @@ install_base_packages() {
 }
 
 install_k3s() {
-  echo -e "${GREEN}2/4: Pruefe K3s Installation...${NC}"
-
-  if command -v k3s >/dev/null 2>&1; then
-    echo -e "${YELLOW}K3s ist bereits installiert. Ueberspringe Neuinstallation.${NC}"
-  else
-    echo -e "${BLUE}Installiere K3s (Lightweight Kubernetes)...${NC}"
-    curl -sfL https://get.k3s.io | sh -
-  fi
-
-  if ! run_sudo systemctl is-active --quiet k3s; then
-    echo -e "${RED}Fehler: Der K3s-Dienst laeuft nicht erfolgreich.${NC}"
-    echo -e "${YELLOW}Bitte pruefen Sie 'sudo systemctl status k3s' fuer Details.${NC}"
-    exit 1
-  fi
-
-  if ! command -v kubectl >/dev/null 2>&1; then
-    echo -e "${YELLOW}kubectl ist nicht direkt im PATH. Verwende /usr/local/bin/kubectl, falls vorhanden.${NC}"
-    if [ -x /usr/local/bin/kubectl ]; then
-      export PATH="/usr/local/bin:$PATH"
-    fi
-  fi
-
-  require_command kubectl
-  echo -e "${GREEN}K3s laeuft und kubectl ist verfuegbar.${NC}"
+  echo 'Legacy-K3s-Installation gesperrt; geprueften GitOps-Pfad separat planen.' >&2
+  return 3
 }
 
 prepare_workspace() {
