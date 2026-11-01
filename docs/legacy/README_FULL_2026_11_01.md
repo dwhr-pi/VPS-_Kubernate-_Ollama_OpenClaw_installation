@@ -1,0 +1,1407 @@
+# VPS- Kubernate- Ollama & OpenClaw installation - Ultimate Setup V11.17
+
+Historische Referenz, archiviert am 01.11.2026. Kein ausfuehrbarer Installationspfad.
+Aktuelle Orientierung: [README](../../readme.md) und [Umsetzungsstand](../P1_P3_IMPLEMENTATION.md).
+Der Wortlaut ist historisch; relative Dokumentationslinks wurden an den Archivort angepasst.
+
+Projektlizenz: [Apache-2.0](../../LICENSE). Fuer eingebundene Drittprojekte gelten deren eigene
+Bedingungen; siehe [Dritthinweise](../../THIRD_PARTY_NOTICES.md).
+[Dokumentations-Wegweiser](../../docs/readme.md) und
+[Abnahmeplan fuer den Coding-Agenten-Branch](../../docs/agents/CODING_AGENTS_ACCEPTANCE.md).
+[Optionale Coding-Agenten](../../docs/agents/LOCAL_CODING_WORKBENCH.md): getrennte
+OpenCode-/Qwen-/Aider-/Codex-Profile, OpenHands-SDK-Worker und technisch begrenzte
+Einmalausfuehrung. [Belegte Bestandsmatrix](../../docs/agents/CODING_AGENT_INVENTORY.md). Kein
+automatischer Agentenstart, Cloud-Login oder Produktivdeployment. Das
+[alte Kubernetes-Gesamtmanifest](../../docs/legacy/K8S_DEPLOYMENTS_LEGACY.md) ist archiviert und kein
+ausfuehrbarer Deployment-Pfad. Bestehende Cluster und Daten werden dadurch nicht geaendert oder
+automatisch gehaertet.
+[Branch-Auswahl fuer den expliziten Entwicklungs-Installer](../../docs/INSTALL_BRANCH_SELECTION.md):
+`main`, Coding-Agenten-Featurebranch oder eigener Branch; keine automatische Uebernahme nach `main`.
+Aktueller Codebefund: [Audit vom 27.10.2026](../../docs/AUDIT_2026_10.md).
+[Gesamtaudit vom 29.10.2026](../../docs/audit/EXECUTIVE_SUMMARY.md): belegte Sicherheitsbefunde,
+vollstaendiges Registry-Inventar mit JSON, Integrationsluecken, Plattform-/Ressourcenmatrix und
+priorisierte Roadmap. Keine pauschale Produktionsfreigabe.
+[GPU-Kubernetes und Betriebsbausteine vom 29.10.2026](../../docs/LLMOPS_GPU_AND_OPERATIONS.md): optionales
+Ollama-GPU-Overlay, Secret-/Ingress-Grenzen, planbasierte Helm-Installer, Monitoring und gescanntes
+GHCR-Image. Keine automatische Cluster-Aenderung; Live-Abnahme und Kapazitaetspruefung bleiben
+erforderlich. [Verzeichniszwecke](../../docs/DIRECTORY_LAYOUT.md),
+[Vorschlag fuer eine Kurz-README](../../docs/README_SHORT_PROPOSAL.md) und
+[PR-Entwurf mit Tests, Grenzen und Rollback](../../docs/reviews/2026-10-27-audit-quick-wins-pr.md).
+
+## Empfohlener sicherer Einstieg
+
+Den lokal geprueften Bootstrap verwenden, nicht `curl | bash`. Der bevorzugte Vertrauensanker ist
+**Minisign mit separat bereitgestelltem oeffentlichem Schluessel**:
+
+```bash
+bash ./verify_release_and_install.sh --tag vX.Y.Z \
+  --public-key /absoluter/unabhaengiger/release.pub \
+  --artifacts /absoluter/pfad/release-artefakte --verify-only
+```
+
+`vX.Y.Z` ist ein Platzhalter, kein veroeffentlichtes Release. Ohne echten Tag, Signatur und
+unabhaengigen Schluessel bleibt dieser Weg gesperrt. Erst nach Pruefung bewusst `--verify-only`
+durch `--install --destination ABS` ersetzen. Standard-Updates verlangen ebenfalls einen signierten
+Tag; kein `main`-Fallback.
+[Signaturverfahren, Updates und offene Abnahmen](../../docs/SIGNED_RELEASES.md).
+[P0-Teilreview vom 27.10.2026 und priorisierte Restarbeiten](../../docs/CODEX_REVIEW_2026-10-27.md). Auch
+Bootstrap und Python-Pruefhelfer muessen vorab vertrauenswuerdig sein. Der bisherige
+[explizite Commit-/Hash-Weg](../../docs/SECURE_CORE_REFACTOR.md) bleibt separat.
+[Alle fuenf Bausteine: Core-Ansible, Restic/SOPS, Limits und nativer Traefik](../../docs/SECURE_CORE_REFACTOR.md).
+[Ergaenzungen 27.10.: Sprachdialog, Ressourcen, read-only Metriken, Tunnel, Policies und Velero](../../docs/PLATFORM_GAP_IMPLEMENTATION_2026-10-27.md).
+Die spaeter dokumentierten alten One-Liner sind kein empfohlener sicherer Einstieg.
+
+[Plattform-Review vom 26.10.2026: Vollinventar, P0/P1/P2-Patchplan und sichere Beispiele](../../docs/reviews/2026-10-26-platform-patch-plan.md).
+Statischer Nachweis fuer 385 Tools/245 Profile, keine automatische Produktionsfreigabe.
+
+**Neue optionale GitOps-Basis:** [fuenf Bausteine fuer kleine VPS/WSL](../../docs/GITOPS_SMALL_VPS.md):
+Qdrant/PVC, Agenten-Budgets, Sealed Secrets, Monitoring und bewusster
+K3s/Cloudflared/Argo-Core-Bootstrap. Kein automatisches Apply; neue Tools GitOps_Bootstrap/Kubeseal
+sind am Menueende angehaengt.
+
+[Docker nach GitHub: vollstaendige Tool-Liste und Umstellungsstand](../../docs/DOCKER_TO_GITHUB.md): 41
+der 43 Buildrezepte implementiert (Forgejo: freigegebenes Codeberg), 2 Umstellungen offen; PyAirbyte
+zusaetzlich separat; kein automatischer Image-Fallback dieser 43 Tool-Pfade. Bestehende
+Container/Daten werden nicht migriert.
+
+**Neu starten:** [Aktueller Nachweisstand](../../docs/CURRENT_STATUS.md),
+[erste 60 Minuten ohne Installation](../../docs/FIRST_60_MINUTES.md) und
+[Grok-Review mit Kandidatenstatus](../../docs/tutorials/grok-repo-review-2026-10-23.md). Aktuelle
+Architekturpruefung und Patchreihenfolge:
+[Review vom 25.10.2026](../../docs/ARCHITECTURE_REVIEW_2026-10-25.md). Historische Sicherheitsbefunde und
+Tests: [Audit vom 23.10.2026](../../docs/AUDIT_2026-10-23.md). Die ausfuehrliche Linkuebersicht bleibt
+unten zur Kompatibilitaet erhalten.
+
+**Neue getrennte Baseline:**
+[Ansible, Kubernetes, Monitoring, SOPS/Restic und CI](../../docs/PRODUCTION_BASELINE.md) mit kommentierten
+Konfigurationen und expliziten Staging-Voraussetzungen; keine automatische Installation oder
+Produktionsfreigabe.
+
+## Inhaltsverzeichnis
+
+**Programmliste unabhaengig sichern:**
+[Installationsstatus-Backup, Export und Wiederherstellung](../../docs/INSTALLATION_STATUS_BACKUP.md).
+
+**ENV / API-Keys getrennt sichern:**
+[Verschluesselter TAR-Export, Wiederherstellung und optionale E-Mail](../../docs/CREDENTIALS_BACKUP.md),
+unter Optionen -> 21 -> 5. Optionen -> 21; JSON plus lesbare Programmliste, Vorschau vor Import.
+Keine Wiederherstellung geloeschter Programme aus blossen Statushaekchen.
+
+**Installation blockiert nach Absturz?**
+[Installations-Reset ohne Linux-Neuinstallation](../../docs/INSTALLATION_RESET.md): Optionen ->
+Installations-Reset. Prueft aktive Prozesse und archiviert nach Bestaetigung alte Sperren; keine
+Tool-/Nutzerdatenloeschung und kein Prozess-Kill.
+
+**Sicherheit und Kapazitaet:**
+[Aktueller statischer Sicherheitsaudit mit Zielarchitektur](../../docs/security/SECURITY_ARCHITECTURE_AUDIT_2026-10-25.md),
+[NSA/CISA-Adminpruefblatt, NetworkPolicies, RBAC und PSS](../../docs/security/KUBERNETES_ADMIN_AUDIT.md)
+und [interaktiver lokaler Ressourcenplaner](../../docs/resource-planner/index.html)
+([Annahmen und Grenzen](../../docs/resource-planner/README.md)).
+[Comet / offene Browser / Perplexity: Tools und Installation](../../docs/tools/comet-and-browser-research.md)
+sind getrennt als Recherchekandidaten dokumentiert, nicht als installierte Tools.
+
+**VPS-Auslieferung:**
+[Gateway, Modellcache, SOPS, Monitoring und GitOps](../../docs/VPS_GITOPS_DEPLOYMENT.md). OpenClaw/Client
+-> LiteLLM -> Ollama/PVC; optionales CPU-VPS-Overlay und abgesicherter Check-/Plan-/Apply-Pfad.
+Keine automatisch installierte Runtime, echten Secrets oder gestarteten Dienste; Staging-Abnahme vor
+Produktion.
+
+**Freigegebenes P0-Codepaket:**
+[Update-Sicherung, PAT und datenerhaltender Compose-Uninstall](../../docs/P0_SAFETY_CHANGES.md). Lokal
+geprueft; Ubuntu-24.04-VM-Abnahme steht noch aus. Keine Produktionsfreigabe.
+
+- [Aktuelle Governance-Dokumente](#aktuelle-governance-dokumente)
+- [Zielbild](#-zielbild)
+- [Empfohlener Start: HE vorne, Oracle steuert, Pi weckt, RTX rechnet](#empfohlener-start-he-vorne-oracle-steuert-pi-weckt-rtx-rechnet)
+- [Quickstarts](#quickstarts)
+- [Setup-Skripte schnell finden](#setup-skripte-schnell-finden)
+- [Speicherplatz und Bereinigung](#speicherplatz-und-bereinigung)
+- [Gegenwärtiger Status](#-gegenwärtiger-status)
+- [Schnelle Installation (One-Liner)](#-schnelle-installation-one-liner) Dokumentation
+- [Boardroom-Profil](#boardroom-profil)
+- [Neue Übersichten und Doctor-Skripte](#-neue-übersichten-und-doctor-skripte)
+- [Tool-Quellen und GitHub-Regel](#tool-quellen-und-github-regel)
+- [Optionale Profile](#optionale-profile)
+
+## Aktuelle Governance-Dokumente
+
+- [Recht, weltweite Laenderabdeckung und RAG-Datenschutz](../../docs/legal/README.md): Quellenregister,
+  begrenzte Offline-Pruefung im Hauptmenue 18, Master-Prompt und DSB-Template; keine
+  Compliance-Garantie.
+
+- [Alle 62 Werkzeuge mit konkretem Installations-/Projektweg](../../docs/DEVELOPMENT_TOOLS_OVERVIEW.md).
+- [Sieben weitere GitHub-Go-Build-Installer](../../docs/tools/development-go-tools.md): Gopls, Delve,
+  GolangCI_Lint, Kubeconform, KubeLinter, TFLint und Terraform_Docs.
+
+- [62 Sprach-/Shell-/Infrastrukturquellen im Setup pruefen](../../docs/tools/development-toolchain-check.md):
+  Hauptmenue 16 oder Zusatzschaltflaeche im Tools-Menue 8.
+- [Neue Tools: SQLFluff, Bats_Core und Invoke_Build](../../docs/tools/language-quality-tools.md), auch in
+  der [Tools-Gesamtuebersicht](../../docs/TOOLS_CATALOG.md).
+- [Technologie-/Tooling-Praesentation](../../docs/presentations/technology-tooling-overview.pptx) und
+  [textliche Folienzuordnung](../../docs/tools/development-toolchain-check.md#praesentation-mit-eingearbeitet).
+
+- [Aktueller Gesamtaudit und priorisierte Restarbeiten](../../docs/PROJECT_AUDIT_2026_10_20.md)
+- [Projekt offline pruefen: Umfang, Befehle und Grenzen](../../docs/REPOSITORY_QUALITY.md)
+
+- [Qwen Desktop unter Windows: Download, Installation und erster Coding-Auftrag](../../docs/tools/qwen-desktop-windows.md)
+- [DeepSeek/Qwen/Wan/GLM/Kimi/Doubao: lokaler Einstieg und Grenzen](../../docs/media_studio/HYBRID_MODELS_AND_WAN.md)
+
+- [Audio-Deepfakes: defensive Pruefung, Stimmen entfernen und Grenzen](../../docs/media_studio/AUDIO_DEEPFAKE_REVIEW.md)
+
+- [Lokaler Social-Avatar-Stack: Veo/fal-Alternativen und sichere Workflows](../../docs/media_studio/SOCIAL_AVATAR_AUTOMATION.md)
+
+- [Hugging Face: Video-Trainingsdaten, Rechte, Streaming und Speicherbudget](../../docs/media_studio/VIDEO_TRAINING_DATASETS.md)
+
+- [Hoerbuch, Dubbing, SFX und Video: Tool-Katalog](../../docs/media_studio/AUDIO_VIDEO_TOOL_CATALOG.md)
+- [Karaoke: Instrumentalspur, Zeitstempel, Uebersetzung und Offline-Konverter](../../docs/media_studio/KARAOKE_SUBTITLES_GUIDE.md)
+
+- [Agentic Coding verstehen: Einstieg, Tools, Praxis und Automaton](../../docs/AGENTIC_CODING_GUIDE.md)
+
+- [Lokale Personalakten mit Paperless und KI: sicherer Einstieg](../../docs/tools/personnel-documents.md)
+  (Prototyp, keine Compliance-Garantie)
+
+- [Automaton / Conway: sicherer Forschungspfad fuer Zenbot und Web3](../../docs/tools/automaton.md)
+  (experimenteller Quellpfad, kein automatischer Wallet-/Agentenstart)
+
+- [Embedded Debug HIL: sichere Agenten-Diagnose mit GDB/OpenOCD](../../docs/tools/embedded-debug-hil.md)
+
+- [FreeLLMAPI optional: Claude Code, lokale Modelle und API-Fallbacks](../../docs/tools/freellmapi.md)
+
+- [Zugangsdaten-Tresor und ENV automatisch ausfuellen](../../docs/ENV_VAULT.md)
+
+- [START HERE](../../docs/START_HERE.md)
+- [Beginner Guide](../../docs/BEGINNER_GUIDE.md)
+- [Priority Install Paths](../../docs/PRIORITY_INSTALL_PATHS.md)
+- [Decision Matrix](../../docs/DECISION_MATRIX.md)
+- [Job Queue Agent Worker](../../docs/JOB_QUEUE_AGENT_WORKER.md)
+- [Supply Chain Security](../../docs/SUPPLY_CHAIN_SECURITY.md)
+- [MCP Toolserver Guide](../../docs/MCP_TOOLSERVER_GUIDE.md)
+- [Setup Review und naechste Schritte](../../docs/SETUP_REVIEW_AND_NEXT_STEPS.md)
+- [Automated Setup Review 2026](../../docs/SETUP_REVIEW_2026_AUTOMATED.md)
+- [Missing Tools and Profiles](../../docs/MISSING_TOOLS_AND_PROFILES.md)
+- [Contribution und Branch-Schutz](../../docs/GITHUB_CONTRIBUTION_AND_BRANCH_PROTECTION.md)
+- [Einsteiger-Tutorial: HE/Oracle/Homecluster](../../docs/architecture/he-oracle-homecluster.md)
+- [Setup Review 2026 - Next Actions](../../docs/SETUP_REVIEW_2026_NEXT_ACTIONS.md)
+- [Installationspfade](../../docs/INSTALLATION_PATHS.md)
+- [Installation Wizard](../../docs/INSTALLATION_WIZARD.md)
+- [Recommended First Install](../../docs/RECOMMENDED_FIRST_INSTALL.md)
+- [Profile Packages](../../docs/PROFILE_PACKAGES.md)
+- [Tested Status Matrix](../../docs/TESTED_STATUS_MATRIX.md)
+- [Security Baseline](../../docs/SECURITY_BASELINE.md)
+- [GitHub Tool Sources](../../docs/GITHUB_TOOL_SOURCES.md)
+- [AI-ContentMultiplier Workflow](../../docs/tools/ai-content-multiplier/README.md)
+- [Stalwart Mail Integration](../../tools/mail/README.md)
+- [Airbyte, abctl und Kubernetes](../../docs/AIRBYTE_ABCTL_KUBERNETES_NOTES.md)
+- [Integritaetspruefung und automatisierter Support](../../docs/SETUP_INTEGRITY_AND_SUPPORT_TUTORIAL.md)
+- [Forks, Support und sichere Rueckfuehrung](../../docs/FORK_SUPPORT_AND_UPSTREAM_GOVERNANCE.md)
+- [WSL2/OpenClaw/Ollama Troubleshooting](../../docs/TROUBLESHOOTING_WSL2_OPENCLAW_OLLAMA.md)
+- [WSL2 Troubleshooting](../../docs/TROUBLESHOOTING_WSL2.md)
+- [OpenClaw Troubleshooting](../../docs/TROUBLESHOOTING_OPENCLAW.md)
+- [Ollama Troubleshooting](../../docs/TROUBLESHOOTING_OLLAMA.md)
+
+Neue Profile ab `11.17` sind bewusst als `planned` registriert. Sie sind sichtbar, aber starten
+keine schweren Toolchains ohne explizite Tool-Auswahl.
+
+Dies ist das ultimative Setup für ein hybrides KI- und Smart-Home-System, das deinen Letsung MiniPC
+(WSL2) und mehrere kostenlose VPS kombiniert. Es integriert eine Vielzahl von Tools und KI-Agenten,
+die direkt aus GitHub-Quellen kompiliert oder lokal aufgebaut werden.
+
+## Wichtiger Original- und Support-Hinweis
+
+Dieses Setup stammt aus dem Repository `dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation`.
+Quellcode kann veraendert werden. SHA256-Pruefsummen erkennen Abweichungen; eine Signatur kann die
+Herkunft gepruefter Release-Metadaten bestaetigen, wenn der Public Key unabhaengig vertraut ist. Das
+verhindert keine Aenderung und garantiert keine Fehlerfreiheit. Der aktuelle Freigabestand steht
+unter [signierte Releases](../../docs/SIGNED_RELEASES.md).
+
+Automatisierte Reparaturen sollen nur fuer eindeutig identifizierte, gepruefte Staende angeboten
+werden. Bei Forks, unbekannter Herkunft oder lokalen Aenderungen ist zuerst ein manueller Abgleich
+erforderlich; abweichender Code ist nicht automatisch ein Angriff. Diese betriebliche Supportgrenze
+ist keine zusaetzliche Lizenzbedingung und ersetzt keine ausdrueckliche Reparaturfreigabe.
+
+Bitte kontaktiere den Entwickler, wenn Funktionen, Anpassungen oder neue Tools gewuenscht sind.
+Wuensche koennen dann sauber aufgenommen, geprueft und kontrolliert in das Original-Setup integriert
+werden.
+
+Forks bleiben technisch moeglich, erhalten aber nicht automatisch denselben Supportstatus.
+Genehmigte Forks oder eigene Support-Branches koennen kontrolliert zugelassen werden, wenn Herkunft,
+Branch, Manifest und Support-Freigabe pruefbar sind. Der empfohlene Ablauf fuer Fork-Support,
+signierte Patches und sichere Rueckfuehrung in `main` ist in
+[Forks, Support und sichere Rueckfuehrung](../../docs/FORK_SUPPORT_AND_UPSTREAM_GOVERNANCE.md)
+dokumentiert.
+
+## Empfohlener Start: HE vorne, Oracle steuert, Pi weckt, RTX rechnet
+
+Der neue sichere Standardpfad ist:
+
+```text
+Internet
+-> Hurricane Electric / eigene Domain / IPv6
+-> Oracle VPS als Control Node / DMZ
+-> WireGuard ins Heimnetz
+-> Raspberry Pi 5 oder Mini-PC als Heimnetz-Waechter
+-> Wake-on-LAN fuer RTX-/Ollama-/OpenClaw-/ComfyUI-/Whisper-Server
+-> K3s/Kubernetes Worker Nodes zuhause
+```
+
+Cloudflare ist nicht mehr Pflichtbestandteil. Cloudflare bleibt optional fuer Access, Tunnel, Zero
+Trust oder zusaetzlichen Bot-/DDoS-Schutz. Der Einstieg fuer Einsteiger ist jetzt bewusst in
+[docs/architecture/he-oracle-homecluster.md](../../docs/architecture/he-oracle-homecluster.md)
+beschrieben.
+
+Wichtig: Ollama, OpenClaw Gateway, Kubernetes API, Home Assistant, NAS, Datenbanken, ComfyUI und
+Whisper APIs duerfen nicht direkt oeffentlich erreichbar sein. Diese Dienste gehoeren hinter
+WireGuard oder in ein internes Netz.
+
+## 🧱 Zielbild
+
+Das Repository entwickelt sich von einer reinen Tool-Sammlung zu einer modularen
+**LLMOps-Plattform**:
+
+`Base System -> Runtime -> Model Gateway -> Agent Layer -> Memory/RAG -> Tool Layer -> UI -> Monitoring -> Security`
+
+Die zugehoerige Architektur-Dokumentation findest du in
+[docs/ARCHITECTURE_LLMOPS_PLATFORM.md](../../docs/ARCHITECTURE_LLMOPS_PLATFORM.md).
+
+## Quickstarts
+
+| Ziel                       | Einstieg                                                                            |
+| -------------------------- | ----------------------------------------------------------------------------------- |
+| Minimal lokal              | `bash install.sh` starten und nur Basis/Programmierer waehlen                       |
+| MiniPC + Ollama + OpenClaw | `Programmierer`, `RAG_Wissensdatenbank`, `Monitoring_Observability`                 |
+| Medien/GPU                 | `Image_Generation_Studio`, `Video_Generation_Studio`, `Render_Farm_GPU_Workstation` |
+| Smart Home/Jarvis          | `Smart_Home_Automation`, `Voice_Command_Center`, `Personal_Assistant_Local_First`   |
+| Wissenschaft               | `Physik`, `Bioinformatik`, `Molekuelsimulation`, `Mathematik_Simulation`            |
+| Security                   | `Security_DevSecOps`, `Zero_Trust_Remote_Access`, `Anti_Virus`                      |
+| Kubernetes/VPS             | `DevOps_SRE`, `Kubernetes_GPU_Orchestrator`, `Storage_NAS_Backup`                   |
+
+## Setup-Skripte schnell finden
+
+| Zweck                                  | Datei / Kommando                                                |
+| -------------------------------------- | --------------------------------------------------------------- |
+| Interaktives Hauptsetup starten        | `bash install.sh` oder `bash setup_ultimate.sh`                 |
+| Setup ohne Systemupdates aktualisieren | `bash scripts/update_setup_only.sh`                             |
+| Nur auf Setup-Updates prüfen           | `bash scripts/check_setup_updates.sh`                           |
+| Letzte Logs und Fehler prüfen          | `bash scripts/last_install_log.sh --failed`                     |
+| Installationsdiagnose erstellen        | `bash scripts/install_run_diagnostics.sh`                       |
+| Abhängigkeiten-/Speicher-Snapshot      | `bash scripts/dependency_snapshot.sh`                           |
+| Installationsreste/Caches anzeigen     | `bash scripts/cleanup_installation_residues.sh --dry-run --all` |
+| Installationsreste/Caches bereinigen   | `bash scripts/cleanup_installation_residues.sh --apply --all`   |
+| Tool-Registry prüfen                   | `bash scripts/check_tools.sh`                                   |
+| Profile prüfen                         | `bash scripts/check_profiles.sh`                                |
+| Ports prüfen                           | `bash scripts/check_ports.sh`                                   |
+| Config prüfen                          | `bash scripts/validate_config.sh`                               |
+| Tool-Installer                         | `scripts/tools/<tool>_install.sh`                               |
+| Profil-Installer                       | `scripts/profiles/<profil>_install.sh`                          |
+
+Wichtige Uebersichten:
+
+- [Setup Review und Verbesserungsplan](../../docs/SETUP_REVIEW_AND_NEXT_STEPS.md)
+- [Profilmatrix](../../docs/PROFILE_MATRIX.md)
+- [Toolmatrix](../../docs/TOOL_MATRIX.md)
+- [Tool Deployment Matrix](../../docs/TOOL_DEPLOYMENT_MATRIX.md)
+- [GitHub Tool Sources](../../docs/GITHUB_TOOL_SOURCES.md)
+- [Airbyte, abctl und Kubernetes](../../docs/AIRBYTE_ABCTL_KUBERNETES_NOTES.md)
+- [Portmatrix](../../docs/PORT_MATRIX.md)
+- [Sicherheitsmodell](../../docs/SECURITY_MODEL.md)
+- [Secret Handling](../../docs/SECRETS_AND_KEYS.md)
+- [Remote Access Entscheidungshilfe](../../docs/REMOTE_ACCESS_DNS_GUIDE.md)
+- [myBox + GBOX Integration](../../docs/myBOX_GBOX_INTEGRATION.md)
+
+## Speicherplatz und Bereinigung
+
+Das Setup misst bei Tool-Installationen weiterhin Speicherwerte, auch wenn die Anzeige dieser Werte
+in den Tool-/Profiluebersichten deaktiviert ist. Die Anzeige kann Zeit kosten; die Messung selbst
+bleibt fuer Protokolle und Diagnose aktiv.
+
+Alle Tool-Installer, die die gemeinsame Ressourcenpruefung nutzen, warnen unter WSL jetzt
+zusaetzlich bei niedrigem Windows-Host-Speicher auf `C:`. Schwere Installer koennen daraus eine
+harte Mindestanforderung machen. Airbyte ist ein solcher Sonderfall, weil `abctl local install`
+viele Container-Images fuer einen eigenen lokalen `kind`/Kubernetes-Cluster nachlaedt.
+
+Nach Installations- und Deinstallationslaeufen kannst du kontrolliert Platz zurueckholen:
+
+```bash
+bash scripts/cleanup_installation_residues.sh --dry-run --all
+bash scripts/cleanup_installation_residues.sh --apply --all
+```
+
+Der Trockenlauf loescht nichts. Die Bereinigung entfernt nur Paket-/Build-Caches, ungenutzte
+apt-Abhaengigkeiten und Docker-Zwischenreste nach Sicherheitsabfrage. Modelle, Projektordner und
+`/opt`-Toolverzeichnisse werden nicht automatisch geloescht.
+
+## 🟡 Gegenwärtiger Status
+
+- `MiniPC`-Setup ist aktuell der stabilste abgeschlossene Pfad.
+- Der laufende Funktionstest konzentriert sich derzeit bevorzugt auf das `Programmierer`-Setup.
+- Weitere Profile und Plattformpfade werden aktuell funktional geprueft, bevor tiefer an der
+  Feinkonfiguration gearbeitet wird.
+- Neuere Plattform- und Ausbauprofile wurden jetzt strukturell in Doku und Registries aufgenommen,
+  sind aber nicht alle schon als Top-Level-Menuepfade gleich weit durchgetestet.
+- Neu hinzugekommen ist ausserdem das klar defensive Profil
+  [Ethical_HackerGPT](../../docs/Profil/Ethical_HackerGPT.doc.md) fuer autorisierte Sicherheitsanalysen,
+  Hardening, Reporting und lokale Security-Labs.
+- Ebenfalls neu ist das modulare
+  [Next Level Persona System](../../docs/Profil/Next_Level_Persona_System.md) fuer persistente Persona-,
+  Memory- und Modus-Workflows mit sicheren Disclosure-Defaults.
+- Fuer laenger laufende Baustellen und Chat-Uebergaenge gibt es jetzt zusaetzlich eine kleine
+  dauerhafte Projekt-Erinnerung unter [docs/SETUP_MEMORY.md](../../docs/SETUP_MEMORY.md).
+- Die aktuelle Review- und Prioritaetenliste liegt in
+  [docs/SETUP_REVIEW_AND_NEXT_STEPS.md](../../docs/SETUP_REVIEW_AND_NEXT_STEPS.md).
+- Neue modulare Profilbausteine: `Prompt_Generator_Studio`, `Memory_Import_Export`,
+  `Self_Learning_Agent_Lab`, `Boardroom`, `Home_Network_Security`, `Android_App_Builder`,
+  `AI_Dashboard_Builder`, `Render_Farm_GPU_Workstation`, `GameDev_3D_Studio_NEXTLEVEL`,
+  `CAD_Konstrukteur`, `Architektur_3D_BIM`, `Robotertechnik_Anlagensteuerung`, `Physik`, `Chemie`,
+  `Biologie`, `Bioinformatik`, `Molekuelsimulation`, `Robotik_Labor`, `Materialwissenschaft`,
+  `Legal_Safe_Creator`, `Cyber_Security_AI` und `Anti_Virus`.
+
+## 🚀 Schnelle Installation (One-Liner)
+
+Um die interaktive Installationsplattform zu starten, führe einfach den folgenden Befehl in deinem
+Terminal aus:
+
+```bash
+cd ~
+curl -sSL https://raw.githubusercontent.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation/main/install.sh | bash
+```
+
+Dieser Befehl lädt das `install.sh` Skript herunter und führt es aus. Das Skript klont dieses
+Repository und startet das interaktive Setup-Menü, das dich durch die weiteren Schritte führt.
+
+## 🔄 Setup erneut starten
+
+Wenn du das Setup-Menü erneut starten möchtest, navigiere in das Installationsverzeichnis
+(standardmäßig `~/openclaw_ultimate_setup`) und führe das Hauptskript aus:
+
+```bash
+cd ~/openclaw_ultimate_setup
+bash ./setup_ultimate.sh
+```
+
+## 🔁 Setup aktualisieren oder lokal entfernen
+
+Wenn es Änderungen im Repository gab und du dein bestehendes Setup aktualisieren möchtest, wird
+jetzt bewusst ein **harter Repo-Abgleich** empfohlen. So bleiben keine alten Setup-Dateien halb
+stehen, während dein ausgelagerter Benutzer-Workspace erhalten bleibt:
+
+```bash
+cd ~/openclaw_ultimate_setup
+git status --short
+git fetch origin --prune
+git checkout main 2>/dev/null || git checkout -b main --track origin/main
+git reset --hard origin/main
+git clean -fd
+printf '\nDas Repository ist jetzt aktualisiert.\n'
+printf 'Du kannst die aktuelle Terminal-Ausgabe jetzt in Ruhe lesen oder kopieren.\n'
+read -rp "Drücke Enter, um danach das Setup-Menü zu starten ... "
+bash ./setup_ultimate.sh
+```
+
+Wenn du vor dem Neustart des Menüs den angezeigten Stand erst prüfen möchtest, ist diese kleine
+Pause bewusst hilfreich. So kannst du z. B. Git-Meldungen, Versionsstände oder Warnungen noch lesen
+und direkt aus dem Terminal kopieren, bevor das interaktive Setup weiterläuft.
+
+Wichtig:
+
+- Die Pause erscheint nur dann, wenn der harte Repo-Abgleich erfolgreich war.
+- `git reset --hard origin/main` und `git clean -fd` verwerfen lokale Änderungen und ungetrackte
+  Zusatzdateien **im Setup-Repository**.
+- Dein ausgelagerter Benutzer-Workspace unter `~/.openclaw_ultimate_user_data` bleibt dabei
+  erhalten.
+- Die neueren Update-Skripte legen vor dem harten Abgleich zusätzlich eine Sicherung der verworfenen
+  Repo-Differenzen unter `~/.openclaw_ultimate_user_data/repo_update_backups` an.
+
+Wenn dabei vorher lokale Änderungen in Dateien wie `install.sh` oder `setup_ultimate.sh` auftauchen,
+ist das gerade der Grund für den harten Abgleich: Das Repo soll vollständig auf `origin/main`
+zurück, statt nur teilweise über `git pull` aktualisiert zu werden.
+
+In diesem Fall gibt es jetzt zwei sichere Wege:
+
+- im Menü den Punkt `Setup-Repository hart reparieren / auf GitHub main zurücksetzen` verwenden
+- oder den One-Liner-Installer erneut starten, der bei vorhandenem Repo jetzt ebenfalls den harten
+  Abgleich verwendet
+
+Wichtig dabei:
+
+- Es werden nur Dateien im Setup-Repository zurückgesetzt.
+- Dein ausgelagerter Benutzer-Workspace unter `~/.openclaw_ultimate_user_data` bleibt erhalten.
+- Vor dem harten Abgleich legt der Installer jetzt zusätzlich eine Sicherung des Repo-Zustands unter
+  `~/.openclaw_ultimate_user_data/repo_update_backups` an.
+
+Alternativ kannst du im Menü den Punkt `Setup-Update + System-Update (Repo, OS & pnpm)` nutzen.
+Dieser zieht den aktuellen Repository-Stand direkt im Setup-Verzeichnis und aktualisiert danach
+Ubuntu sowie `pnpm`.
+
+Wenn danach trotzdem noch ein älterer Setup-Stand angezeigt wird, sollte zuerst geprüft werden, ob
+wirklich das richtige Repository-Verzeichnis verwendet wird. Ein normaler `git pull` ist dafür nicht
+mehr der empfohlene Weg.
+
+Prüfen:
+
+```bash
+cd ~/openclaw_ultimate_setup
+git status
+```
+
+Wenn du den harten Repo-Abgleich lieber manuell ausführen möchtest, kannst du das Setup so direkt
+auf den aktuellen GitHub-Stand zurücksetzen:
+
+```bash
+cd ~/openclaw_ultimate_setup
+git fetch origin --prune
+git reset --hard origin/main
+printf '\nDas Repository wurde hart auf GitHub main zurückgesetzt.\n'
+printf 'Du kannst die aktuelle Terminal-Ausgabe jetzt in Ruhe lesen oder kopieren.\n'
+read -rp "Drücke Enter, um danach das Setup-Menü zu starten ... "
+bash ./setup_ultimate.sh
+```
+
+Dafür gibt es jetzt auch direkt im Menü einen eigenen Punkt:
+
+- `Setup-Repository hart reparieren / auf GitHub main zurücksetzen`
+
+Dieser Weg ist hilfreich, wenn trotz normalem `git pull` noch ein älterer Setup-Stand angezeigt
+wird.
+
+Wenn du ganz sauber neu anfangen willst, ist auch das weiterhin möglich:
+
+```bash
+cd ~
+rm -rf ~/openclaw_ultimate_setup
+curl -sSL https://raw.githubusercontent.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation/main/install.sh | bash
+```
+
+Wenn du das lokale Setup wieder entfernen möchtest, hast du zwei saubere Wege:
+
+1. Zuerst im Menü `Tools: Installieren & Deinstallieren` und
+   `Profile: Installieren & Deinstallieren` alle gewünschten Komponenten wieder abwählen.
+2. Danach das lokale Arbeitsverzeichnis entfernen:
+
+```bash
+cd ~
+rm -rf ~/openclaw_ultimate_setup
+```
+
+Wenn du zusätzlich lokal installierte Komponenten wie `Home Assistant`, `Ollama` oder einzelne Tools
+vollständig entfernen willst, nutze die jeweiligen `*_uninstall.sh` Skripte im Menü oder direkt
+unter `scripts/tools/`.
+
+Wenn du zusätzlich den ausgelagerten Benutzer-Workspace mit sensiblen Daten entfernen möchtest,
+kannst du das entweder im Menü über `Benutzer-Workspace verwalten` tun oder manuell:
+
+```bash
+rm -rf ~/.openclaw_ultimate_user_data
+```
+
+## Boardroom-Profil
+
+Das [Boardroom-Profil](../../docs/Profile/Boardroom.md) hilft bei strategischen Entscheidungen im Setup.
+Es simuliert CFO, Operator, Vertriebler, Mentor und Skeptiker und erzeugt danach ein
+Chairman-Verdict. Aktivierung zum Beispiel mit:
+`Boardroom rufen: Soll ich X oder Y fuer unser Setup nutzen?`
+
+**Wichtig für Einsteiger:** Während der Installation wirst du mehrfach nach einem Passwort gefragt.
+Gemeint ist dabei das `sudo`-Passwort deines Linux-Benutzers, also das Passwort des
+Ubuntu-/Linux-Users innerhalb von WSL oder auf deinem Server.
+
+**Sprachauswahl schon beim ersten Start:** Noch vor der Frage nach einem privaten GitHub-Repository
+kannst du jetzt bereits die Setup-Sprache festlegen. Diese Auswahl wird ausgelagert gespeichert und
+bei späteren Starts wiederverwendet.
+
+**Für private Repositories:** Das Skript wird dich nach einem GitHub Personal Access Token (PAT)
+fragen. Eine Anleitung zur Erstellung findest du in der `docs/PRIVATE_REPO_GUIDE.md`.
+
+**Für die OpenClaw `.env`:** Eine eigene Detaildokumentation zur `.env`-Struktur, zu den Feldern und
+zur originalen OpenClaw-Vorlage findest du in
+[docs/OPENCLAW_ENV_GUIDE.md](../../docs/OPENCLAW_ENV_GUIDE.md).
+
+**Für die Huginn `.env`:** Die Huginn-spezifische Vorlage, der Benutzer-Workspace-Pfad, der
+`INVITATION_CODE` und die Runtime-Datei unter `/opt/huginn/.env` sind jetzt in
+[docs/HUGINN_ENV_GUIDE.md](../../docs/HUGINN_ENV_GUIDE.md) dokumentiert.
+
+**Für eigene Forks und Custom-Builds:** Die neue Anleitung für benutzerdefinierte GitHub-Quellen,
+eigene Repositories, GGUF-Exporte und `ollama create` findest du in
+[docs/CUSTOM_SOURCES_AND_BUILDS.md](../../docs/CUSTOM_SOURCES_AND_BUILDS.md).
+
+**Wichtig für sensible Daten:** Bearbeitbare und sensible Dateien werden ab den neueren
+Setup-Versionen zusätzlich außerhalb des Repositories in `~/.openclaw_ultimate_user_data` abgelegt.
+Dadurch bleiben API-Keys, bearbeitete Vorlagen und Statusdateien beim Repo-Update sauber getrennt
+und werden nicht versehentlich ins Git-Repository geschrieben.
+
+Dazu gehören jetzt insbesondere:
+
+- OpenClaw-`.env`- und `config.json`-Vorlagen
+- Huginn-`.env`-Vorlagen
+- Statusdateien für installierte Tools und Profile
+- editierbare Installations-Messwerte
+- ausgelagerte Sprachvorgaben in `~/.openclaw_ultimate_user_data/setup_preferences.conf`
+- lokale Ollama-Modelfiles in `~/.openclaw_ultimate_user_data/modelfiles`
+- Profil-Quellen aus `docs/Profil`
+- abgeleitete Profilseiten aus `docs/Profile`
+- ein separater Bereich für künftige Benutzer-Prompts
+
+**Wichtiger Stack-Standard:** Die Compose-Plattform unter `stacks/llmops-platform/` nutzt jetzt eine
+echte `.env` als Laufzeitdatei, waehrend `.env.example` nur noch die Vorlage ist. Exponierte Dienste
+werden dort standardmaessig nur an `127.0.0.1` gebunden und sollten erst bewusst ueber Tunnel oder
+Reverse Proxy freigegeben werden.
+
+Fuer diesen Stack gibt es jetzt analog zu OpenClaw auch eine auslagerbare, editierbare Vorlage unter
+`scripts/config_templates/llmops-platform/.env.template`. Die bearbeitbare Benutzerkopie liegt unter
+`~/.openclaw_ultimate_user_data/llmops-platform/.env.template` und kann ueber
+`scripts/llmops_platform_config_manager.sh` auf `stacks/llmops-platform/.env` angewendet werden.
+
+Für privaten Remote-Zugriff ist jetzt zusätzlich `Tailscale` als Tool vorgesehen. Das passt
+besonders an die Stelle, an der sonst unnötig offene Admin-Ports entstehen würden, etwa für
+`Open WebUI`, `Grafana`, `Home Assistant`, `SSH` oder interne Dashboards.
+
+Für veröffentlichte, aber abgesicherte öffentliche Dienste ist zusätzlich `cloudflared` vorgesehen.
+Zusammen mit `Hurricane Electric` für DNS/DDNS und `Tailscale` für privaten Admin-Zugriff ist die
+gemeinsame Orientierung jetzt in [docs/REMOTE_ACCESS_DNS_GUIDE.md](../../docs/REMOTE_ACCESS_DNS_GUIDE.md)
+dokumentiert.
+
+## 🧭 Neue Übersichten und Doctor-Skripte
+
+- [docs/PROFILE_INDEX.md](../../docs/PROFILE_INDEX.md)
+- [docs/TOOL_INDEX.md](../../docs/TOOL_INDEX.md)
+- [docs/PROFILE_TOOL_MAPPING.md](../../docs/PROFILE_TOOL_MAPPING.md)
+- [docs/PORT_SECURITY_MATRIX.md](../../docs/PORT_SECURITY_MATRIX.md)
+- [docs/TOOL_DEPLOYMENT_MATRIX.md](../../docs/TOOL_DEPLOYMENT_MATRIX.md)
+- [docs/TOOL_USAGE_AND_INTEGRATION_GUIDE.md](../../docs/TOOL_USAGE_AND_INTEGRATION_GUIDE.md)
+- [docs/LANGGRAPH_INTEGRATION_GUIDE.md](../../docs/LANGGRAPH_INTEGRATION_GUIDE.md)
+- [docs/CREWAI_INTEGRATION_GUIDE.md](../../docs/CREWAI_INTEGRATION_GUIDE.md)
+- [docs/AUTOGEN_INTEGRATION_GUIDE.md](../../docs/AUTOGEN_INTEGRATION_GUIDE.md)
+- [docs/AIDER_INTEGRATION_GUIDE.md](../../docs/AIDER_INTEGRATION_GUIDE.md)
+- [docs/OPENCODE_INTEGRATION_GUIDE.md](../../docs/OPENCODE_INTEGRATION_GUIDE.md)
+- [docs/GITHUB_CLI_INTEGRATION_GUIDE.md](../../docs/GITHUB_CLI_INTEGRATION_GUIDE.md)
+- [docs/PODMAN_CONTAINER_RUNTIME_GUIDE.md](../../docs/PODMAN_CONTAINER_RUNTIME_GUIDE.md)
+- [docs/CLAWBAKE_INTEGRATION_GUIDE.md](../../docs/CLAWBAKE_INTEGRATION_GUIDE.md)
+- [docs/AUTH_OIDC_HELM_SECRETS_GUIDE.md](../../docs/AUTH_OIDC_HELM_SECRETS_GUIDE.md)
+- [docs/Profile/Jarvis_FritzBox_Alexa_Home_Assistant.md](../../docs/Profile/Jarvis_FritzBox_Alexa_Home_Assistant.md)
+- [docs/PLAYWRIGHT_INTEGRATION_GUIDE.md](../../docs/PLAYWRIGHT_INTEGRATION_GUIDE.md)
+- [docs/CHROMADB_INTEGRATION_GUIDE.md](../../docs/CHROMADB_INTEGRATION_GUIDE.md)
+- [docs/CODE_SANDBOX_USAGE_GUIDE.md](../../docs/CODE_SANDBOX_USAGE_GUIDE.md)
+- [docs/HARDWARE_REQUIREMENTS.md](../../docs/HARDWARE_REQUIREMENTS.md)
+- [docs/WSL_VPS_GPU_COMPATIBILITY.md](../../docs/WSL_VPS_GPU_COMPATIBILITY.md)
+- [docs/ROADMAP_NEXT_PROFILES.md](../../docs/ROADMAP_NEXT_PROFILES.md)
+
+Hinweis zur erweiterten Installationsueberwachung: Wenn sie aktiv ist, bietet der
+Nach-Schritt-Dialog direkte Sofortaktionen an. `[L]` zeigt das letzte Log, `[D]` erstellt eine
+Diagnose im Terminal und `[E]` sendet die Diagnose per konfigurierter E-Mail-Ausgabe. Wenn waehrend
+eines Installations-/Deinstallations-Batches ein Fehler auftritt, bricht `[Z]` bzw. `[z]` den
+laufenden Batch ab und fuehrt zurueck ins Setup statt blind mit dem naechsten Tool weiterzumachen.
+
+Vor jedem Tool-Schritt zeigt die erweiterte Installationsueberwachung jetzt ausserdem eine Vorschau
+auf die naechsten geplanten Tools. Dort kannst du mit `[N]` den aktuellen Schritt ausfuehren, mit
+`[S]` genau dieses Tool ueberspringen oder mit `[Z]` den gesamten Batch abbrechen. Das hilft
+besonders bei langen Source-Builds wie Blender, Airbyte, n8n oder grossen Docker-/Kubernetes-Tools.
+
+Die Tool- und Profiluebersichten koennen je nach WSL-/Datentraegerzustand spuerbar laden, besonders
+wenn Zeit- und Speicherwerte angezeigt werden. Vor dem Oeffnen erscheint deshalb optional ein
+Lade-Hinweis mit kurzer Fortschrittsanzeige. In
+`Optionen -> Installationsueberwachung konfigurieren` kannst du sowohl diesen Lade-Hinweis als auch
+die Anzeige der Zeit-/Speicherwerte in Tool- und Profiluebersichten an- oder abschalten.
+
+Diagnoseberichte enthalten zusaetzlich eine Repo-Herkunftspruefung. Dabei wird
+`git remote get-url origin` gegen das erwartete Original
+`https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation` geprueft. Wenn das Setup
+aus einem Fork oder einer unbekannten Quelle stammt, wird dies im Bericht und damit auch in
+Diagnose-E-Mails klar als Support-Hinweis markiert: Selbstheilung via Original-Update kann
+Fork-Manipulationen nicht sicher reparieren.
+
+Das geplante Verfahren fuer signierte Hash-Manifeste, Public-Key-Pruefung und automatisierten
+Support ueber Ollama/OpenClaw ist in
+[docs/SETUP_INTEGRITY_AND_SUPPORT_TUTORIAL.md](../../docs/SETUP_INTEGRITY_AND_SUPPORT_TUTORIAL.md)
+beschrieben.
+
+Schnelle Log- und Speicherdiagnose:
+
+```bash
+bash scripts/last_install_log.sh --failed
+bash scripts/last_install_log.sh --diagnostics
+bash scripts/last_install_log.sh --snapshot
+bash scripts/cleanup_installation_residues.sh --dry-run --all
+```
+
+`--failed` zeigt die letzten erkannten Fehlerlogs, `--diagnostics` erstellt einen Bericht ueber den
+letzten Installationslauf und `--snapshot` schreibt einen Abhaengigkeiten-/Speicher-Snapshot nach
+`~/.openclaw_ultimate_user_data/diagnostic_reports`. Das hilft besonders nach grossen
+Tool-Installationen, weil Deinstallationen nicht automatisch alle Systempakete, Python-venvs,
+npm/pnpm-Caches, Docker-/Podman-Images, Modellordner oder Build-Caches entfernen.
+
+Im Tool-Management werden Deinstallationen jetzt vor Installationen ausgefuehrt. Wenn in einem Batch
+also Tools abgewaehlt und andere neu angewaehlt werden, wird zuerst Speicher freigegeben und erst
+danach installiert. Bei Installationsfehlern erscheint der Log-/Diagnose-Dialog sofort, auch wenn
+die erweiterte Ueberwachung nicht aktiv ist; Enter entspricht in diesem Fehlerfall sicherheitshalber
+`Z` und springt zurueck ins Setup.
+
+Vor und nach Tool-Installationen werden Speicherwerte gemessen. Die Historie liegt unter
+`~/.openclaw_ultimate_user_data/metrics_logs/operation_history.tsv` und direkte
+Tool-Skript-Messungen unter `~/.openclaw_ultimate_user_data/metrics_logs/tool_script_history.tsv`.
+Die jeweils letzte Messung wird zusaetzlich in `~/.openclaw_ultimate_user_data/setup_metrics.conf`
+als `LAST_...` bzw. `LAST_TOOL_SCRIPT_...` Wert fortgeschrieben.
+
+Die Tool-Quellenpolitik steht ebenfalls in `setup_metrics.conf`: Standardmaessig sollen Primaertools
+aus GitHub kommen, waehrend Systemabhaengigkeiten wie `apt` erlaubt bleiben. Mit
+`STRICT_GITHUB_TOOL_SOURCES=true` kann das Setup Tool-Installer ohne erkannte GitHub-Quelle
+blockieren; bewusste Ausnahmen sind mit `ALLOW_NON_GITHUB_TOOL_SOURCE=1` moeglich.
+
+## Tool-Quellen und GitHub-Regel
+
+Die zentrale Uebersicht steht in [docs/GITHUB_TOOL_SOURCES.md](../../docs/GITHUB_TOOL_SOURCES.md).
+Kurzfassung:
+
+- `n8n` wird aktuell aus dem GitHub-Monorepo `github.com/n8n-io/n8n` geklont und lokal gebaut.
+- `Airbyte` nutzt GitHub-Quellen fuer Airbyte und `abctl`, die lokale Installation laeuft aber ueber
+  `abctl` und kann sehr viele Container-/Kubernetes-Komponenten nachladen. Unter WSL sollte Airbyte
+  nicht mit knappem Host-Speicher gestartet werden; 2-3 GB frei sind dafuer praktisch zu wenig.
+- Details zu Airbytes eigenem lokalen `kind`/Kubernetes-Cluster stehen in
+  [docs/AIRBYTE_ABCTL_KUBERNETES_NOTES.md](../../docs/AIRBYTE_ABCTL_KUBERNETES_NOTES.md).
+- `Blender` und `FFmpeg` werden jetzt ebenfalls aus GitHub-Quellen gebaut. Achtung: Besonders
+  Blender ist ein sehr grosser Source-Build und kann ueber Upstream-Skripte weitere
+  Build-Abhaengigkeiten nachladen.
+- `apt` bleibt fuer Basis-/Build-Abhaengigkeiten erlaubt, zum Beispiel `git`, `curl`,
+  `python3-venv`, `build-essential`, Docker oder Systembibliotheken.
+
+Alte Fehlerlogs koennen gezielt rotiert werden:
+
+```bash
+bash scripts/cleanup_setup_logs.sh --dry-run --failed-only
+bash scripts/cleanup_setup_logs.sh --apply --failed-only
+```
+
+## Optionale Profile
+
+## Optional: OpenHiggsStack / AI Cinema Studio
+
+Higgsfield AI ist ein proprietaerer bzw. cloudbasierter AI-Video-/Image-/Marketing-Studio-Pfad mit
+CLI-/Agent-Anbindung. Dieses Setup ergaenzt dafuer eine offene, lokale Alternative:
+[OpenHiggsStack AI Cinema Studio](../../docs/Profile/OpenHiggsStack_AI_Cinema_Studio.md).
+
+OpenHiggsStack ist kein 1:1-Klon, sondern eine modulare Pipeline aus `OpenClaw`, `Ollama`,
+`ComfyUI`, `Wan2.x`, `FFmpeg` und `n8n`. Cloud-APIs wie Higgsfield, Veo, Kling, Seedance, Runway,
+Pika oder Sora koennen optional spaeter angebunden werden, bleiben aber standardmaessig aus und
+benoetigen eigene Keys ausserhalb des Repositories.
+
+Technischer Einstieg:
+
+```bash
+bash scripts/install-openhiggsstack.sh
+bash scripts/last_install_log.sh
+```
+
+Das Installskript legt Ordner, Log und Beispielkonfiguration an, installiert nach Moeglichkeit
+`ffmpeg`, und fragt interaktiv, ob ComfyUI geklont werden soll. Grosse Modelle werden nicht
+automatisch heruntergeladen.
+
+Wenn eine Installation fehlschlaegt, zeigt `bash scripts/last_install_log.sh` sofort das neueste
+Protokoll. Mit `bash scripts/last_install_log.sh --email` kann die bestehende Diagnose-Mail-Funktion
+genutzt werden, sofern SMTP/msmtp bereits konfiguriert ist.
+
+## Optional: GameDev 3D Studio NEXTLEVEL
+
+Das Profil [GameDev 3D Studio NEXTLEVEL](../../docs/Profile/GameDev_3D_Studio.md) beschreibt ein lokales
+AI Game Studio fuer Godot 4.x, Godot-Demo-Projekte, Blender, ComfyUI, Ollama-NPCs, OpenClaw als Game
+Master, n8n-Automation, Multiplayer-/Kubernetes-Pfade, Renderfarm, Voice und Modding.
+
+Der Einstieg ist speicherschonend: Standardmaessig werden nur Ordnerstruktur, Env-Beispiel und
+Agent-/NPC-Beispiele angelegt. Grosse Schritte wie Godot-Quellcode, Demo-Projekte, Blender-Pakete
+oder ein Godot-Source-Build laufen nur, wenn sie bewusst per Umgebungsvariable aktiviert werden.
+
+```bash
+bash scripts/tools/gamedev_3d_studio_install.sh
+GAMEDEV_CLONE_GODOT=1 GAMEDEV_CLONE_DEMOS=1 bash scripts/tools/gamedev_3d_studio_install.sh
+```
+
+## Optional: CAD_Konstrukteur
+
+Das Profil [CAD_Konstrukteur](../../docs/Profile/CAD_Konstrukteur.md) beschreibt einen lokalen
+CAD-/3D-Druck-Assistenten fuer FreeCAD, CadQuery, OpenSCAD, Blender-Preview, Ollama-CAD-Code,
+OpenClaw-Agenten, N8n und Whisper-Sprachkommandos.
+
+Der Pfad ist experimentell, aber bewusst pruefbar: Das Installationsskript installiert nach
+Moeglichkeit FreeCAD/OpenSCAD und eine Python-venv fuer CadQuery, waehrend Blender optional bleibt.
+
+```bash
+bash scripts/install/install_cad_tools.sh
+bash scripts/check/check_cad_tools.sh
+```
+
+Beispielanwendung: Ein parametrisches Raspberry-Pi-, Mini-PC- oder ESP32-Gehaeuse mit Wandstaerke,
+Schraubloechern, Lueftungsschlitzen und STL-/STEP-Export vorbereiten. Sicherheitskritische oder
+tragende Bauteile muessen immer fachlich geprueft werden.
+
+## Optional: Architektur 3D BIM
+
+Das Profil [Architektur_3D_BIM](../../docs/Profile/Architektur_3D_BIM.md) beschreibt ein lokales
+Architektur-, BIM-/IFC-, CAD- und 3D-Rendering-Studio fuer FreeCAD, Blender, Bonsai/BlenderBIM,
+IFCOpenShell, QGIS, ComfyUI, OpenClaw-Agenten, n8n-Automation und optionale
+Renderfarm-/Kubernetes-Workflows.
+
+Der Einstieg ist bewusst lokal-first und vorsichtig: Standardmaessig werden Projektordner,
+Dokumentation, Agentenrollen und Checks vorbereitet. Schwere Architektur-/CAD-/BIM-Pakete werden nur
+mit explizitem Opt-in installiert.
+
+```bash
+bash scripts/install_architektur_3d_bim_optional.sh
+ARCH_INSTALL_CORE=1 bash scripts/install_architektur_3d_bim_optional.sh
+bash profiles/architektur_3d_bim/scripts/check_architektur_stack.sh
+```
+
+Wichtig: KI-Entwuerfe, IFC-Analysen und Renderings ersetzen keine Fachplanung. Bau, Statik,
+Brandschutz, Elektroplanung, Energieausweis und Genehmigung muessen immer fachlich geprueft werden.
+
+## Optional: Robotertechnik & Anlagensteuerung
+
+Das Profil [Robotertechnik_Anlagensteuerung](../../docs/Profile/Robotertechnik_Anlagensteuerung.md) ist
+ein Simulation-first-Profil fuer ROS 2, Gazebo, MoveIt 2, Anlagenmonitoring, Sensorik, Predictive
+Maintenance, MQTT-/OPC-UA-/Modbus-Anbindung und sichere KI-Assistenz fuer technische Systeme.
+
+Standardmaessig arbeitet dieses Profil im Simulations-, Diagnose- und Vorschlagsmodus. Reale
+Hardware darf nur mit explizitem Realmodus, menschlicher Freigabe, Not-Aus, Hardware-Interlocks,
+Grenzwerten und Audit-Logging angesteuert werden.
+
+```bash
+bash scripts/install_robotics_profile_optional.sh
+bash profiles/robotik_anlagensteuerung/scripts/check_robotics_stack.sh
+```
+
+Validierung:
+
+```bash
+bash scripts/doctor.sh
+bash scripts/validate_config.sh
+bash scripts/check_profiles.sh
+bash scripts/check_ports.sh
+```
+
+## Optional: Wissenschaftliche Science-Lab-Profile
+
+Die Science-Lab-Profile [Physik](../../docs/Profile/Physik.md), [Chemie](../../docs/Profile/Chemie.md),
+[Biologie](../../docs/Profile/Biologie.md), [Bioinformatik](../../docs/Profile/Bioinformatik.md),
+[Molekuelsimulation](../../docs/Profile/Molekuelsimulation.md),
+[Robotik_Labor](../../docs/Profile/Robotik_Labor.md) und
+[Materialwissenschaft](../../docs/Profile/Materialwissenschaft.md) erweitern Ollama, OpenClaw, Codex,
+Kubernetes, JupyterLab, Dashboards, Whisper und Home-Assistant-Sensorik zu einer lokalen
+wissenschaftlichen Arbeitsumgebung.
+
+Die Installer sind bewusst modular: Standardmaessig werden Ordner, Profilhinweise, Speicherprotokoll
+und eine Python-Umgebung vorbereitet. Grosse GitHub-Projekte werden nur mit `SCIENCE_CLONE_GITHUB=1`
+geklont; umfangreiche Python-Pakete werden nur mit `SCIENCE_INSTALL_PYTHON_DEPS=1` installiert.
+
+```bash
+bash scripts/profiles/Physik_install.sh
+SCIENCE_CLONE_GITHUB=1 bash scripts/profiles/Molekuelsimulation_install.sh
+SCIENCE_INSTALL_PYTHON_DEPS=1 bash scripts/profiles/Bioinformatik_install.sh
+```
+
+Docker ist fuer diese Profile nicht Pflicht. CUDA/ROCm werden erkannt und dokumentiert;
+Kubernetes-Offloading bleibt optional fuer groessere Simulationen, Batch-Analysen und GPU-Worker.
+
+## 🔐 Sicherheit bei der Nutzung
+
+Dieses Setup trennt ab den neueren Versionen bewusst zwischen:
+
+- dem eigentlichen Git-Repository
+- und deinem persönlichen Benutzer-Workspace unter `~/.openclaw_ultimate_user_data`
+
+Das ist wichtig, weil dort typischerweise sensible Inhalte liegen können:
+
+- API-Keys
+- bearbeitete `.env`-Dateien
+- Zugangsdaten
+- Statusdateien
+- angepasste Konfigurationsvorlagen
+- lokale Modelfiles für eigene Ollama-Modelle
+
+Darauf solltest du achten:
+
+- Niemals echte Secrets in Git committen oder auf GitHub hochladen.
+- Bearbeite sensible Vorlagen möglichst nur über den ausgelagerten Benutzer-Workspace.
+- Sichere deine `.env` lokal zusätzlich, wenn du wichtige API-Keys eingetragen hast.
+- Wenn du den Rechner oder die WSL weitergibst, lösche den Benutzer-Workspace gezielt mit.
+- Wenn du einen öffentlichen Host, VPS oder `0.0.0.0` nutzt, setze immer sichere Tokens und
+  Passwörter.
+- Eigene Modelfiles und GGUF-Pfade solltest du möglichst ebenfalls nur im Benutzer-Workspace pflegen
+  und nicht ins Git-Repository schreiben.
+- Auch neue Plattform-Stacks fuer LiteLLM, Open WebUI, Langfuse, Qdrant oder MinIO sollen immer
+  ueber `.env`-Dateien im Benutzer-Workspace oder in separaten lokalen Stack-Verzeichnissen
+  konfiguriert werden, nicht im Git-Repository.
+
+## ⚠️ Kostenfalle durch Cloud-APIs und Bezahldienste
+
+Dieses Setup ist lokal-first ausgelegt und wurde so konzipiert, dass viele Funktionen kostenlos oder
+mit Open-Source-Komponenten genutzt werden koennen. Trotzdem koennen einzelne Tools, Agenten oder
+Workflows auf externe KI-APIs, Cloud-Dienste, bezahlte Modellanbieter, Speicher-, VPS-, E-Mail-,
+Trading-, Medien- oder Automationsdienste zugreifen, wenn dort API-Keys, Zahlungsdaten oder eine
+Kreditkarte hinterlegt sind.
+
+Je nach Prompt, Fehlkonfiguration oder automatisiertem Workflow koennen dadurch unerwartete Kosten
+entstehen. Besonders kritisch sind Batch-Jobs, Agenten-Schleifen, automatische Mediengenerierung,
+Cloud-LLMs, Video-/Bild-APIs, Deployments, Speicher- und Traffic-Kosten sowie Dienste, die pro
+Anfrage, Token, Minute, GPU-Zeit oder Export abrechnen.
+
+Best Practices:
+
+- Nutze lokale Modelle und kostenlose Kontingente bevorzugt.
+- Hinterlege Zahlungsdaten nur bei Diensten, die du wirklich nutzen willst.
+- Setze harte Kostenlimits, Quotas, Budget-Warnungen und API-Limits beim Anbieter.
+- Trage Cloud-API-Keys nur bewusst und nur im Benutzer-Workspace ein, niemals im Repository.
+- Pruefe `.env`-Dateien, n8n-Workflows, Agenten-Tools und Fallback-Router, bevor du sie startest.
+- Starte neue Agenten- oder Batch-Workflows zuerst mit kleinen Tests.
+- Deaktiviere oder entferne API-Keys, wenn ein Tool nicht aktiv genutzt wird.
+- Kontrolliere regelmaessig Anbieter-Dashboards und Rechnungsseiten.
+
+Wichtig:
+
+- Das Entfernen von `~/openclaw_ultimate_setup` löscht nicht automatisch deinen ausgelagerten
+  Benutzer-Workspace.
+- Das ist Absicht, damit persönliche Daten und bearbeitete Vorlagen beim Repo-Update oder Neu-Klonen
+  nicht verloren gehen.
+- Wenn du wirklich alles entfernen möchtest, lösche zusätzlich:
+
+```bash
+rm -rf ~/.openclaw_ultimate_user_data
+```
+
+## ⚠️ Trading-, Web3- und Finanzhinweis
+
+Für Trading-, Web3- und finanznahe Profile gilt ausdrücklich:
+
+- Keine Haftung für Verluste oder sonstige verursachte Schäden.
+- Dieses Repository ist keine Anlageberatung, keine Finanzberatung und kein regulierter
+  Trading-Dienst.
+- Live-Trading, automatische Orderausführung und Wallet-nahe Automatisierung sind bewusst kein
+  sicherer Standardpfad dieses Setups.
+
+Warum dieser Hinweis wichtig ist:
+
+- automatisierte Trading-Signale oder Handlungsempfehlungen können rechtlich schnell in Richtung
+  regulierter Finanzdienstleistung fallen
+- LLMs wie `Ollama` oder agentische Workflows mit `OpenClaw` sind für Marktentscheidungen nicht
+  verlässlich genug
+- API-Keys, Börsenzugänge, Wallets und Private Keys sind ein hohes Sicherheitsrisiko
+- Nutzer können sich psychologisch zu stark auf KI-Ausgaben verlassen und Risiken unterschätzen
+
+Deshalb gilt im Repository als Best Practice:
+
+- erlaubt und sinnvoll:
+  - Marktanalyse
+  - Backtesting
+  - Paper Trading
+  - Alerts
+  - Portfolio-Tracking
+- nicht als Default:
+  - echtes automatisches Trading
+  - autonome Kauf-/Verkaufsentscheidungen durch KI
+  - Live-Orders durch Agenten
+
+Wenn du mit Trading- oder Web3-Profilen arbeitest:
+
+- nutze zuerst Simulation, Dry-Run und Paper-Trading
+- speichere niemals Seed-Phrases oder Private Keys im Repo
+- behandle alle Wallet-, API- und Exchange-Zugänge wie Hochrisiko-Secrets
+- lies zusätzlich die Sicherheits- und Profilhinweise in den jeweiligen
+  Trading-/Web3-Dokumentationen
+
+## 🧭 Installationspfade
+
+### Minimal Setup
+
+Empfohlen fuer einen schnellen lokalen Einstieg:
+
+1. `Standalone: Nur MiniPC (Lokal)`
+2. `Ollama`
+3. `OpenClaw`
+4. optional `Programmierer` oder `LLM_Builder`
+
+### Full Setup
+
+Empfohlen fuer eine lokale plus hybride AI-Plattform:
+
+1. `Standalone: Nur MiniPC (Lokal)` oder `Hybrid`
+2. `Programmierer`
+3. `LLM_Builder`
+4. `LiteLLM`
+5. `Open_WebUI`
+6. `Qdrant`
+7. `Langfuse`
+8. `Grafana`, `Prometheus`, `Loki`
+
+### Cluster Setup
+
+Empfohlen fuer VPS oder spaeteres Multi-Node-Sandboxing:
+
+1. `Standalone: Nur VPS (Cloud-Native)`
+2. `K3s`
+3. `LiteLLM`
+4. `Open_WebUI`
+5. `Qdrant`
+6. `Langfuse`
+7. `Grafana`, `Prometheus`, `Loki`
+
+Fuer einen vorkonfigurierten Plattform-Stack liegt jetzt auch ein Compose-Stack unter
+[stacks/llmops-platform/docker-compose.yml](../../stacks/llmops-platform/docker-compose.yml).
+
+### Quickstart GPU Workstation
+
+Empfohlen für lokale Medien- und Bild/Video-Workflows:
+
+- `Standalone: Nur MiniPC` oder Linux-Workstation
+- danach gezielt:
+  - `Image_Generation`
+  - `Video_Generation`
+  - `Voice_Assistant`
+- vorher unbedingt GPU, VRAM und SSD prüfen
+
+### Quickstart Media AI
+
+Für Audio, Bild, Video und Content-Pipelines:
+
+- `Media_Musik`
+- `Visual_Creator`
+- `Image_Generation`
+- `Video_Generation`
+- `Voice_Assistant`
+
+### Quickstart Secure Production-like
+
+Für produktionsnähere Self-Hosted-Setups:
+
+- `DevOps_SRE`
+- `Security_DevSecOps`
+- `Compliance_Privacy`
+- `Monitoring_Observability`
+- `Backup_Recovery`
+
+## 📖 Dokumentation
+
+Eine detaillierte Anleitung zur Konfiguration, API-Keys, Port-Analyse und den verschiedenen
+Setup-Optionen findest du in der `docs/_API-Keys/API_KEY_GUIDE.md`, `docs/setup_guide.md`,
+`docs/DNS_DDoS_GUIDE.md`, [docs/OPENCLAW_ENV_GUIDE.md](../../docs/OPENCLAW_ENV_GUIDE.md) und
+[docs/ARCHITECTURE_LLMOPS_PLATFORM.md](../../docs/ARCHITECTURE_LLMOPS_PLATFORM.md) innerhalb dieses
+Repositorys.
+
+Zusätzliche Hilfen:
+
+- `docs/CLOUDFLARE_TUNNEL_GUIDE.md` erklärt Schritt für Schritt, wie du den benötigten
+  Cloudflare-Tunnel und Token anlegst.
+- `docs/WSL_SETUP_GUIDE.md` erklärt WSL unter Windows, Ubuntu-24.04 bzw. andere
+  Linux-Distributionen, sowie Deinstallation und komplettes Zurücksetzen.
+- `docs/INSTALLATION_BENCHMARKS.md` beschreibt die editierbaren Installations-Schätzwerte und
+  verweist auf `~/.openclaw_ultimate_user_data/setup_metrics.conf`.
+- [docs/OLLAMA_MODEL_CATALOG.md](../../docs/OLLAMA_MODEL_CATALOG.md) listet empfohlene lokale Modelle,
+  Coding-Modelle und EU-nahe Modelle mit Groessen- und RAM-Hinweisen.
+- [docs/REPO_SYNC_AND_RECOVERY.md](../../docs/REPO_SYNC_AND_RECOVERY.md) beschreibt saubere Sync-, Backup-
+  und Wiederherstellungswege zwischen Windows, Ubuntu/WSL und Codex-Worktrees.
+- [docs/ROADMAP.md](../../docs/ROADMAP.md) zeigt die naechsten Ausbauphasen der Plattform.
+- [docs/SECURITY_HARDENING.md](../../docs/SECURITY_HARDENING.md) fasst Härtung, Agentenrisiken,
+  Tunnel-Absicherung und Secret-Hygiene kompakt zusammen.
+- [docs/PROFILE_MATRIX.md](../../docs/PROFILE_MATRIX.md), [docs/TOOL_MATRIX.md](../../docs/TOOL_MATRIX.md) und
+  [docs/PORT_MATRIX.md](../../docs/PORT_MATRIX.md) geben die aktuelle Betriebsübersicht.
+- sensible und bearbeitbare Setup-Dateien liegen jetzt außerhalb des Repos in
+  `~/.openclaw_ultimate_user_data`.
+- über `Benutzer-Workspace verwalten` kannst du diese ausgelagerten Dateien anzeigen, neu aus dem
+  Repo kopieren oder vollständig löschen.
+- das Setup zeichnet für wichtige Vorgänge jetzt zusätzlich reale Messwerte in
+  `~/.openclaw_ultimate_user_data/metrics_logs/operation_history.tsv` auf.
+- die neuen zentralen Registries liegen unter `config/tools.yml`, `config/profiles.yml` und
+  `config/ports.yml`.
+
+### Neue Plattformprofile
+
+Zusaetzlich zu den fachlichen Profilen gibt es jetzt eine zweite Ebene fuer den produktionsnahen
+Plattformbetrieb:
+
+- [docs/Profile/llmops.md](../../docs/Profile/llmops.md)
+- [docs/Profile/rag_knowledge_base.md](../../docs/Profile/rag_knowledge_base.md)
+- [docs/Profile/openwebui_frontend.md](../../docs/Profile/openwebui_frontend.md)
+- [docs/Profile/mcp_toolserver.md](../../docs/Profile/mcp_toolserver.md)
+- [docs/Profile/ai_security_guardrails.md](../../docs/Profile/ai_security_guardrails.md)
+- [docs/Profile/sandbox_coding_agent.md](../../docs/Profile/sandbox_coding_agent.md)
+- [docs/Profile/database_backend.md](../../docs/Profile/database_backend.md)
+- [docs/Profile/monitoring_observability.md](../../docs/Profile/monitoring_observability.md)
+- [docs/Profile/backup_storage.md](../../docs/Profile/backup_storage.md)
+
+Zusätzlich gibt es zwei Profil-Verzeichnisse:
+
+- `docs/Profil/` enthält die fachlichen Quelltexte und Prompt-Sammlungen je Profil.
+- `docs/Profile/` enthält die daraus abgeleiteten, repo-spezifischen Profilseiten mit tatsächlichem
+  Setup-Stand, installierbaren Tools und OpenClaw-/Ollama-Fit.
+
+### Neue Studio- und Spezialprofile
+
+Zusätzlich wurden spezialisierte Ausbauprofile ergänzt:
+
+- `Video_Generation_Studio`
+- `Image_Generation_Studio`
+- `Voice_Clone_TTS_Studio`
+- `Music_AI_Studio`
+- `Web3_Crypto_Agent`
+- `Smart_Home_AI_Assistant`
+- `Document_Intelligence`
+- `Personal_Knowledge_Memory`
+- `DevOps_SRE_Agent`
+- `Data_Analytics_BI`
+- `Game_Dev_AI`
+- `Education_Tutor`
+
+Die gesammelte Uebersicht steht in [docs/Profile/INDEX.md](../../docs/Profile/INDEX.md).
+
+## 🛠️ Enthaltene Komponenten & Tools
+
+Das Setup bietet eine breite Palette an Tools, die du nach Bedarf installieren und deinstallieren
+kannst:
+
+- **Ollama:** Lokales LLM-Backend mit flexiblem Modell-Management (z.B. `llama3.2:1b`,
+  `deepseek-coder`, `mistral`). Dient als leistungsstarke lokale KI-Engine für schnelle und
+  datenschutzsensible Anfragen.
+- **Google Gemini:** Primäres Cloud-LLM mit Fallback zu Ollama. Bietet Zugang zu den neuesten und
+  leistungsstärksten KI-Modellen von Google, mit Ollama als zuverlässiger Notlösung.
+- **OpenManus:** GitHub-basierte Agenten-/Automationsbasis. Der Installer prüft Python-venv, Torch
+  und optionale Build-Fallen wie `flash-attn` vorsichtig und bricht mit Reparaturhinweisen ab, statt
+  kaputte venvs stehenzulassen.
+- **OpenClaw:** KI-Agenten-Framework mit Reinforcement Learning (RL) und Skill-Integration (z.B.
+  `gcali` für Google Kalender). Eine erweiterte Plattform für lernende KI-Agenten, die sich an neue
+  Situationen anpassen können.
+- **Clawhub CLI:** Kommandozeilen-Tool zur Interaktion mit Clawhub-Diensten. Vereinfacht die
+  Verwaltung und Steuerung deiner Clawhub-basierten KI-Dienste über die Kommandozeile.
+- **Clawhub:** Zentraler Server für die Orchestrierung und Verwaltung von KI-Agenten und deren
+  Interaktionen. Bietet eine zentrale Schnittstelle für die Kommunikation und Koordination deiner
+  KI-Agenten.
+- **OpenClaw RL:** Reinforcement Learning Erweiterung für OpenClaw, ermöglicht dem Agenten das
+  Lernen durch Interaktion. Verbessert die Adaptionsfähigkeit und Entscheidungsfindung deiner
+  KI-Agenten.
+- **Clawbake:** Tool zur Automatisierung von Builds und Deployments. Beschleunigt die Entwicklung
+  und Bereitstellung von Softwareprojekten durch automatisierte Prozesse.
+- **n8n:** Workflow-Automatisierungstool, das viele Apps und Dienste verbindet. Ermöglicht die
+  visuelle Erstellung komplexer Automatisierungen und Integrationen ohne Code.
+- **Activepieces:** Open-Source-Alternative zu Zapier für Workflow-Automatisierung. Eine flexible
+  Plattform zur Automatisierung von Aufgaben und zur Verbindung verschiedener Anwendungen.
+- **Flowise / LangFlow:** Open-Source-UIs für LLM-Anwendungen, basierend auf LangchainJS, zur
+  visuellen Erstellung von LLM-Workflows. Ermöglicht die einfache Gestaltung und das Testen von
+  KI-Anwendungen durch Drag-and-Drop-Oberflächen.
+- **AutoGPT:** Agenten-Plattform von Significant Gravitas zum Erstellen, Starten und Verwalten
+  komplexer KI-Workflows. Kann lokal per Docker Compose betrieben werden.
+- **Pipedream:** Serverless-Plattform zur Integration von APIs und Diensten (Self-Hosted Option).
+  Ideal für die schnelle Entwicklung und Bereitstellung von Backend-Logik und Integrationen.
+- **Huginn:** Open-Source-Agentensystem, das Aktionen im Web automatisiert (ideal für
+  Programmierer-Profil). Ermöglicht das Sammeln, Filtern und Reagieren auf Informationen aus dem
+  Internet.
+- **FFmpeg:** CLI-Werkzeug für Audio- und Videoverarbeitung. Unterstützt Medienprofile bei
+  Konvertierung, Extraktion und Transcoding.
+- **Zenbot-trader:** Plattform für automatisierten Krypto-Handel. Ein leistungsstarkes Tool für
+  algorithmischen Handel auf verschiedenen Kryptowährungsbörsen.
+- **Kimi 2:** Lokale GitHub-Referenz/Dokumentationsbasis für Kimi-/Moonshot-Workflows. Der Installer
+  erzwingt keine `requirements.txt`, wenn Upstream aktuell keine Python-Projektstruktur
+  bereitstellt.
+- **Hugging Face:** Integration von Hugging Face Modellen, entweder lokal über Ollama oder über die
+  Hugging Face Inference API. Ermöglicht den Zugriff auf eine riesige Bibliothek von vortrainierten
+  KI-Modellen.
+- **Zotero:** Literatur- und Quellenverwaltung für Recherche- und Dokumentations-Workflows,
+  besonders relevant für Rechts- und Wissensprofile.
+- **Home Assistant Core:** Smart Home Automatisierung. Die zentrale Steuerung für dein Smart Home,
+  die eine Vielzahl von Geräten und Diensten integriert.
+- **Alexa Skill Integration:** Verbindung zu Alexa über Cloudflare Tunnel. Ermöglicht die
+  Sprachsteuerung deiner Smart-Home-Geräte und KI-Agenten über Amazon Alexa.
+- **Kubernetes (K3s):** Grundlage für VPS-basierte Deployments. Das Setup bereitet einen VPS mit
+  K3s, `kubectl` und einer sauberen Verzeichnisstruktur für nachfolgende Kubernetes-Manifeste vor.
+- **Ruflo:** Multi-Agenten- und Automatisierungsplattform mit CLI. Das Setup installiert Ruflo aus
+  GitHub, stellt Node.js und `pnpm` bereit und verlinkt die CLI für lokale Nutzung.
+- **Multi-VPS-Strategie:** Optimierte Ressourcennutzung über mehrere kostenlose VPS. Eine Strategie
+  zur Verteilung der Last und Erhöhung der Ausfallsicherheit durch Nutzung mehrerer Cloud-Anbieter.
+
+Zusätzlich im neuen Ausbau:
+
+- **RAG / Wissensschicht:** `LightRAG`, `Qdrant`, `ChromaDB`, `Apache Tika`, `Docling`
+- **Security:** `CrowdSec`, `Semgrep`, `Syft`, `Grype`, `UFW`
+- **Monitoring / Betrieb:** `Healthchecks`, `Node Exporter`, `Promtail`
+- **Automation / UI:** `Node-RED`, `Mosquitto`, `Zigbee2MQTT`, `ESPHome`, `Appsmith`, `Budibase`,
+  `NocoDB`, `Directus`
+- **Media / Studio:** `GFPGAN`, `Rembg`, `faster-whisper`, `Blender`
+
+Die aktuelle kuratierte Toolübersicht steht in [docs/TOOL_MATRIX.md](../../docs/TOOL_MATRIX.md).
+
+## 👤 Profil-Management
+
+### Profilgruppen
+
+- `Core`: Programmierer, KI_Forschung, Agent_Orchestrator, LLM_Builder
+- `LLMOps`: RAG_Wissensdatenbank, Monitoring_Observability, Backup_Recovery, MCP_Agent_Tools
+- `Coding`: Repo_Maintainer, Developer_CI_CD, DevOps_SRE
+- `Media`: Media_Musik, Visual_Creator, Image_Generation, Video_Generation, Voice_Assistant
+- `Security`: Security_Analyst, Security_DevSecOps, Compliance_Privacy
+- `Data`: Data_Engineering, Data_Analytics_BI, Document_AI
+- `Smart Home`: Smart_Home_Automation, Smart_Home_AI_Assistant
+- `Web3`: Trading_AI, Trading_Crypto_Web3, Web3_Crypto_Tools, Web3_Crypto_Agent
+- `Compliance`: Compliance_Privacy
+
+Das Setup unterstützt die Installation und Deinstallation verschiedener Profile über eine
+interaktive Checkliste. Du kannst mehrere Profile gleichzeitig installieren und verwalten.
+
+Neu dazu kommt eine Blockansicht im Menü:
+
+- komplette Profile schnell auswählen
+- Profilblöcke öffnen
+- Kernmodule, erweiterte Module und Integrationen getrennt anzeigen
+- einzelne Tools innerhalb eines Profils gezielt an- oder abwählen
+
+- **Programmierer-Setup:** Enthält Tools für Entwicklung, Code-Generierung (z.B. DeepSeek Coder
+  Modell für Ollama), Git-Integration und Huginn. Ideal für Entwickler, die ihre Produktivität mit
+  KI-Unterstützung steigern möchten.
+- **Media & Musik:** Beinhaltet Tools für Audio-Verarbeitung (FFmpeg, Audio-AI), Video-Generierung
+  und die Alexa-Integration. Perfekt für Kreative, die KI zur Erstellung und Bearbeitung von
+  Medieninhalten nutzen wollen.
+- **KI-Forschung:** Umfasst spezialisierte Bibliotheken und Konfigurationen für OpenClaw RL und
+  erweiterte LLM-Modelle (z.B. Gemini-1.5-Pro). Für Forscher und Enthusiasten, die an der
+  Entwicklung und dem Training von KI-Modellen arbeiten.
+- **Texter, Werbung & Marketing:** Stellt Tools für Content-Generierung, SEO-Analyse, Social Media
+  Integration und spezialisierte LLM-Modelle für Textproduktion bereit. Optimiert für
+  Marketingexperten und Texter, die ihre Inhalte mit KI verbessern möchten.
+- **Rechtsberatung & Steuerrecht:** Tools für Web-Search & Fetch, PDF-Reader/Document-Parser,
+  Zotero. Für die Analyse von Rechtsdokumenten und Steuerrecht, unterstützt durch spezialisierte
+  KI-Agenten.
+- **Agent Orchestrator:** Profil für Aufgabenzerlegung, Mehragenten-Routing und
+  Ergebnis-Synchronisierung mit LangGraph, CrewAI, AutoGen und Memory-Bausteinen.
+- **Audio:** Sprach- und Audioprofil mit Whisper, FFmpeg, Piper, Coqui TTS, librosa und pydub.
+- **Content Automation:** Profil für automatisierte Content-Pipelines von Skript über Voiceover und
+  Videoschnitt bis zum Upload.
+- **Research Agent:** Rechercheprofil für Repository-Analyse, Dokumentationsauswertung und
+  Setup-Verbesserungen.
+- **Security Analyst:** Security- und Hardening-Profil mit Scan- und Prüfwerkzeugen wie Nmap, Nikto,
+  Trivy und Fail2Ban.
+- **Trading AI:** Profil für Marktanalyse, Bot-gestützte Strategietests und Trading-Integrationen.
+- **Visual Creator:** Kreativprofil für Bild-, Video- und Asset-Pipelines mit Stable Diffusion
+  WebUI, ComfyUI, FFmpeg und RealESRGAN.
+- **LLM-Builder:** Profil für einen realistischen lokalen Workflow rund um Datensatzaufbereitung,
+  LoRA/QLoRA-Fine-Tuning, GGUF-Export, Quantisierung und Ollama-Einbindung.
+- **Document Intelligence:** Profil für OCR, Rechnungen, Verträge, PDF-/Markdown-/Docx-Konvertierung
+  und lokale RAG-Ablage.
+- **Personal Knowledge Memory:** Profil für privates Wissensgedächtnis mit lokaler Vector-DB.
+- **DevOps SRE Agent:** Profil für CI/CD, Kubernetes, IaC, Healthchecks und Betriebsautomatisierung.
+- **Data Analytics BI:** Profil für DuckDB, JupyterLab, Metabase, Reports und Analytik.
+- **Game Dev AI:** Profil für Blender-, Asset- und Dialog-/Quest-Workflows.
+- **Education Tutor:** Profil für Lernassistenten, Quiz, Karteikarten und PDF-RAG.
+
+Wichtige Orientierung:
+
+- die älteren Kernprofile bleiben kompakt und einsteigerfreundlich
+- `*_Studio`- und `*_Agent`-Profile sind die vertieften Spezialpfade
+- nicht jedes neue Profil ist schon als eigener Top-Level-Eintrag im grossen Hauptmenü verdrahtet;
+  Skripte und Doku existieren aber bereits
+
+## 💻 Codex-Nachbau und Plattformziele
+
+Der optionale `Codex-Nachbau` im `Programmierer`-Profil ist fuer klassische Softwareprojekte bereits
+sinnvoll nutzbar:
+
+- Linux
+- Windows
+- Web- und API-Projekte
+- Container- und Serverdienste
+- allgemeine Python-, Node-, Go- und Multi-Repo-Workflows
+
+Mit zusaetzlichen Toolchains ebenfalls gut denkbar:
+
+- Android mit Android SDK, Gradle, Flutter oder React Native
+- ESP32 mit PlatformIO oder ESP-IDF
+- Arduino mit Arduino CLI oder PlatformIO
+
+Wichtige Grenze:
+
+- iPhone- und macOS-Nativbuilds lassen sich fachlich vorbereiten, analysieren und grossteils
+  generieren, der finale Build, die Signierung und der App-Store-/TestFlight-Weg brauchen aber
+  weiterhin ein echtes macOS-/Xcode-System
+
+## ⚙️ Verzeichnisstruktur
+
+```text
+. # Repository Root
+├── install.sh                  # One-Liner Bootstrapper (mit Privat-Repo Support)
+├── setup_ultimate.sh           # Interaktives Haupt-Setup-Menü
+├── README.md                   # Diese Datei
+├── scripts/
+│   ├── auto_update.sh          # Skript für System- und pnpm-Updates
+│   ├── ollama_model_manager.sh # Skript für Ollama Modell-Management
+│   ├── openclaw_config_manager.sh # Skript für OpenClaw Konfigurationsverwaltung
+│   ├── base_install.sh         # Basis-Installation von System-Abhängigkeiten, pnpm
+│   ├── hybrid_setup.sh         # Spezifisches Setup für Letsung MiniPC (WSL2) und Vorbereitung für Multi-VPS
+│   ├── vps_standalone.sh       # Bereitet einen reinen VPS mit K3s, kubectl und Deployment-Workspace für spätere Kubernetes-Manifeste vor
+│   ├── install_local_only.sh   # Spezifisches Setup für reinen MiniPC (Lokal)
+│   ├── ruflo_install.sh        # Installiert Ruflo aus GitHub, stellt Node.js 22 und pnpm sicher und verlinkt die CLI
+│   ├── port_check.sh           # Skript zur Überprüfung von Port-Konflikten
+│   ├── operations/show_k8s_deployments.sh # Zeigt nur die historische Referenz; kein Apply
+│   ├── config_templates/       # Verzeichnis für Konfigurationsvorlagen
+│   │   └── openclaw/
+│   │       ├── .env.template
+│   │       └── config.json.template
+│   └── tools/                  # Verzeichnis für Tool-Installations-/Deinstallationsskripte
+│       ├── openmanus_install.sh       # Installiert OpenManus aus GitHub mit venv-/Torch-/flash-attn-Schutzlogik
+│       ├── openmanus_uninstall.sh     # Entfernt die OpenManus Installation wieder vom System
+│       ├── openclaw_install.sh        # Installiert OpenClaw und baut das Projekt mit pnpm
+│       ├── openclaw_uninstall.sh      # Entfernt die OpenClaw Installation vollständig
+│       ├── clawhub_cli_install.sh     # Installiert die Clawhub CLI oder nutzt bei Bedarf das Clawhub Haupt-Repository als Fallback
+│       ├── clawhub_cli_uninstall.sh   # Entfernt die Clawhub CLI Installation wieder
+│       ├── clawhub_install.sh         # Installiert den Clawhub Server für Agenten-Orchestrierung
+│       ├── clawhub_uninstall.sh       # Entfernt die Clawhub Server-Installation
+│       ├── openclaw_rl_install.sh     # Installiert die Reinforcement-Learning-Erweiterung für OpenClaw aus primärem oder alternativem Repository
+│       ├── openclaw_rl_uninstall.sh   # Entfernt die OpenClaw RL Installation wieder
+│       ├── clawbake_install.sh        # Installiert Clawbake für Build- und Deployment-Automatisierung
+│       ├── clawbake_uninstall.sh      # Entfernt Clawbake vom System
+│       ├── n8n_install.sh             # Installiert n8n und baut die Workflow-Plattform mit pnpm
+│       ├── n8n_uninstall.sh           # Entfernt die n8n Installation vollständig
+│       ├── activepieces_install.sh    # Installiert Activepieces als Open-Source Workflow-Automatisierung
+│       ├── activepieces_uninstall.sh  # Entfernt Activepieces wieder vom System
+│       ├── flowise_install.sh         # Installiert Flowise zur visuellen Erstellung von LLM-Workflows
+│       ├── flowise_uninstall.sh       # Entfernt die Flowise Installation wieder
+│       ├── langflow_install.sh        # Installiert LangFlow für visuelle LangChain-Workflows
+│       ├── langflow_uninstall.sh      # Entfernt LangFlow wieder vom System
+│       ├── autogpt_install.sh         # Installiert AutoGPT und startet die Plattform per Docker Compose
+│       ├── autogpt_uninstall.sh       # Stoppt AutoGPT Container und entfernt die lokale Installation
+│       ├── pipedream_install.sh       # Bereitet die Self-Hosted Installation von Pipedream vor
+│       ├── pipedream_uninstall.sh     # Entfernt eine vorhandene Pipedream Installation wieder
+│       ├── huginn_install.sh          # Installiert Huginn für ereignisgesteuerte Web-Automatisierungen
+│       ├── huginn_uninstall.sh        # Entfernt die Huginn Installation vollständig
+│       ├── ffmpeg_install.sh          # Installiert FFmpeg für Audio- und Videoverarbeitung im Medienprofil
+│       ├── ffmpeg_uninstall.sh        # Entfernt FFmpeg wieder vom System
+│       ├── zenbot_trader_install.sh   # Installiert die Zenbot-Trader-Plattform für automatisierten Krypto-Handel
+│       ├── zenbot_trader_uninstall.sh # Entfernt die Zenbot-Trader Installation wieder
+│       ├── kimi2_install.sh           # Installiert Kimi K2.5 aus primärem oder alternativem Repository und richtet Python-Abhängigkeiten ein
+│       ├── kimi2_uninstall.sh         # Entfernt die Kimi Installation vollständig
+│       ├── huge_facing_install.sh     # Erklärt die Einbindung von Hugging Face Modellen in das Setup
+│       ├── huge_facing_uninstall.sh   # Entfernt die hinterlegte Hugging-Face-Integration aus dem Setup-Kontext
+│       ├── zotero_install.sh          # Installiert Zotero für Recherche- und Wissensmanagement unter Linux
+│       └── zotero_uninstall.sh        # Entfernt die Zotero Installation wieder
+│   └── profiles/               # Verzeichnis für Profil-Installations-/Deinstallationsskripte
+│       ├── Programmierer_install.sh
+│       ├── Programmierer_uninstall.sh
+│       ├── Media_Musik_install.sh
+│       ├── Media_Musik_uninstall.sh
+│       ├── KI_Forschung_install.sh
+│       ├── KI_Forschung_uninstall.sh
+│       ├── Texter_Werbung_Marketing_install.sh
+│       ├── Texter_Werbung_Marketing_uninstall.sh
+│       ├── Rechtsberatung_Steuerrecht_install.sh
+│       ├── Rechtsberatung_Steuerrecht_uninstall.sh
+│       ├── Agent_Orchestrator_install.sh
+│       ├── Agent_Orchestrator_uninstall.sh
+│       ├── Audio_install.sh
+│       ├── Audio_uninstall.sh
+│       ├── Content_Automation_install.sh
+│       ├── Content_Automation_uninstall.sh
+│       ├── Research_Agent_install.sh
+│       ├── Research_Agent_uninstall.sh
+│       ├── Security_Analyst_install.sh
+│       ├── Security_Analyst_uninstall.sh
+│       ├── Trading_AI_install.sh
+│       ├── Trading_AI_uninstall.sh
+│       ├── Visual_Creator_install.sh
+│       ├── Visual_Creator_uninstall.sh
+│       ├── LLM_Builder_install.sh
+│       └── LLM_Builder_uninstall.sh
+├── docs/
+│   ├── _API-Keys/             # API-Key-Katalog, Guide und OnlineOnKeyServices
+│   ├── INSTALLATION_BENCHMARKS.md # Editierbare Schätzwerte für Downloadzeit, Installationszeit und GB-Bedarf
+│   ├── ARCHITECTURE_LLMOPS_PLATFORM.md # Neue Layer-Architektur für die produktionsreife LLMOps-Plattform
+│   ├── OLLAMA_MODEL_CATALOG.md # Kuratierter Ollama-Modellkatalog mit Größen- und RAM-Hinweisen
+│   ├── setup_guide.md          # Umfassende Dokumentation des gesamten Setups
+│   ├── PRIVATE_REPO_GUIDE.md   # Anleitung für die Installation aus einem privaten Repository
+│   ├── DNS_DDoS_GUIDE.md       # Anleitung zur DNS-Umstellung und DDoS-Schutz
+│   ├── Profil/                 # Fachliche Profilquellen und Prompt-Sammlungen je Themenprofil
+│   │   ├── Programmierer.doc.md
+│   │   ├── Media_Musik.doc.md
+│   │   ├── KI_Forschung.doc.md
+│   │   ├── Texter_Werbung_Marketing.doc.md
+│   │   ├── Rechtsberatung_Steuerrecht.doc.md
+│   │   └── LLM-Builder.doc.md
+│   └── Profile/                # Abgeleitete Profilseiten mit tatsächlichem Setup-Stand
+│       ├── INDEX.md
+│       ├── INCONSISTENCY_REPORT.md
+│       ├── INSTALL_CHECKLIST.md
+│       ├── profiles.json
+│       ├── Programmierer.md
+│       ├── Media_Musik.md
+│       ├── KI_Forschung.md
+│       ├── Texter_Werbung_Marketing.md
+│       ├── Rechtsberatung_Steuerrecht.md
+│       ├── LLM-Builder.md
+│       ├── llmops.md
+│       ├── rag_knowledge_base.md
+│       ├── openwebui_frontend.md
+│       ├── mcp_toolserver.md
+│       ├── ai_security_guardrails.md
+│       ├── sandbox_coding_agent.md
+│       ├── database_backend.md
+│       ├── monitoring_observability.md
+│       └── backup_storage.md
+├── stacks/
+│   └── llmops-platform/
+│       ├── docker-compose.yml  # Plattform-Stack für LiteLLM, Open WebUI, Qdrant, Langfuse, Monitoring und Storage
+│       ├── .env.example        # Beispiel-Umgebungsvariablen für den Plattform-Stack
+│       └── litellm-config.yaml # Routing und Fallback-Konfiguration für LiteLLM
+├── config/
+│   ├── tools.yml               # Zentrale Tool-Registry
+│   ├── profiles.yml            # Zentrale Profil-Registry
+│   └── ports.yml               # Port-Registry mit Konfliktbasis
+├── configs/
+│   └── .env.example            # Beispiel-Konfigurationen ohne Secrets
+└── .github/
+    ├── workflows/              # Shellcheck, Markdownlint, Linkcheck, Secret Scan
+    └── markdown-link-check.json
+```
+
+Wichtige Ergänzung:
+
+- persönliche und sensible Nutzerdaten liegen **nicht** im Repo, sondern in
+  `~/.openclaw_ultimate_user_data`
+- die Setup-Messwerte und Statusdateien werden ebenfalls im Benutzer-Workspace geführt
+- `scripts/lib/` und `scripts/operations/` enthalten die neue gemeinsame Betriebs- und Prüfungslogik
+
+## ⚠️ Wichtige Hinweise
+
+- **API-Keys:** Werden während der Installation abgefragt oder müssen manuell in
+  Konfigurationsdateien hinterlegt werden. Nutze den OpenClaw Konfigurations-Manager für die `.env`
+  und `config.json`.
+- **`sudo`-Passwort:** Wenn `sudo` ein Passwort verlangt, ist das das Passwort deines
+  Linux-Benutzers. Unter WSL ist das nicht dein Windows-Passwort, sondern das Passwort des
+  Ubuntu-/Linux-Users.
+- **`zstd` Voraussetzung:** Einige Installationen oder Paketentpackungen benötigen `zstd`. Das Setup
+  installiert `zstd` jetzt direkt mit den Basis-Abhängigkeiten.
+- **pnpm Warnung zu ignorierten Build-Skripten:** Wenn `pnpm` z. B. `@discordjs/opus@0.10.0` als
+  ignoriertes Build-Skript meldet, bietet das Setup jetzt am Ende des OpenClaw-Builds einen
+  separaten Bestätigungsschritt für `pnpm approve-builds` an.
+- **Ressourcen:** Das Setup ist für eine optimale Verteilung auf einen Letsung MiniPC (16GB RAM /
+  70GB Disk) und einen Oracle Cloud Free Tier VPS (24GB RAM) sowie weitere kostenlose VPS ausgelegt.
+- **Dynamische IP:** Hurricane Electric wird für die dynamische DNS-Auflösung des MiniPCs verwendet.
+  Eine detaillierte Anleitung zur Umstellung und zum DDoS-Schutz findest du in
+  `docs/DNS_DDoS_GUIDE.md`.
+- **Trading / Web3:** Keine Seed-Phrases, Private Keys oder echte Börsen-Keys im Repo oder in
+  Dokumentationsbeispielen speichern.
+- **Cloudflare / öffentliche Ports:** Exponierte Dienste immer mit Policies, HTTPS und minimalen
+  Freigaben absichern.
+- **Registry-System:** Die neuen Dateien unter `config/` sind die Zielstruktur für künftige
+  automatische Menü-Generierung, aber noch nicht jede Stelle des Hauptmenüs liest bereits daraus.
+
+Wir wünschen dir viel Erfolg bei der Einrichtung deines intelligenten, automatisierten Systems!
+
+## AI Media Studio
+
+Die Media-/Voice-/Avatar-Erweiterungen sind jetzt strukturiert einsortiert:
+
+- `docs/media_studio/` fuer Audio-, Video-, Podcast-, Hoerbuch-, TV- und Streaming-Pipelines.
+- `docs/voice_studio/` fuer TTS, Voice-Cloning, Training, Datasets, XTTS, OpenVoice, StyleTTS2 und
+  Piper.
+- `docs/voice_studio/singer/` fuer RVC, Seed-VC, DiffSinger, OpenUtau, NNSVS und AI-Singer-Training.
+- `docs/choir_system/` fuer SATB, Gregorian, Celtic, Epic und EDM Choir.
+- `docs/broadcasting/` fuer Newsroom, News Anchor, Wetter, Sport, Radio, Podcast und Talkshow.
+- `docs/film_studio/` fuer Schauspieler, Regie, Casting, Skripte und Movie Pipeline.
+- `docs/avatar_studio/` fuer Hallo2, MuseTalk, LivePortrait, SadTalker, Wav2Lip, SkyReels und EMO.
+
+Alle schweren Media-Tools sind `planned` oder `optional`. Es gibt keine automatische Installation
+von Voice-Cloning-, Avatar-, LipSync- oder GPU-Render-Tools ohne spaetere explizite Bestaetigung,
+Ressourcencheck und Sicherheitspruefung.
+
+## Start Here
+
+Der empfohlene Einstieg liegt in [docs/START_HERE.md](../../docs/START_HERE.md). Dort sind MiniPC, WSL2,
+Oracle VPS, Hurricane Electric DNS, Home Assistant, GPU Workstation, Low Resource Mode und Security
+First Mode getrennt beschrieben.

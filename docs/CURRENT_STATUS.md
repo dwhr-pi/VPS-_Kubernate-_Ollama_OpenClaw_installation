@@ -1,5 +1,15 @@
 # Aktueller Projektstatus
 
+## P1-P3-Teilsatz vom 01.11.2026
+
+[Umsetzung und offene Abnahmen](P1_P3_IMPLEMENTATION.md): getrennte beleggebundene
+Bereitschaft, generierte Registry-Matrizen, frueher Offline-Dry-Run, Datei-Restore-
+und Pi/GPU-Fixtures, optionale lokale Gateway-Policy und gekuerzte README.
+Kein echter Host-/Cluster-/Inferenztest und keine pauschale Produktionsfreigabe.
+Der alte verzeichnislesende Restore-Test ist ersetzt; der unbelegte Idle-Shutdown
+ist gesperrt. P0-Supply-Chain, Lifecycle-Vervollstaendigung und echte PVC-/DB-Restores
+bleiben offen. Die folgenden datierten Befunde bleiben als Historie erhalten.
+
 ## P0-A-Schutzpatch vom 01.11.2026
 
 [Legacy-Core-Uninstall-Schutz](P0_A_CORE_UNINSTALL.md): Ollama/OpenClaw werden

@@ -2,6 +2,18 @@
 
 ## Unreleased
 
+### 2026-11-01: P1-P3-Teilsatz ohne Produktionsaktionen
+
+- Separater Readiness-/Belegvertrag und generierte Registry-Matrizen mit CI-Driftcheck;
+  keine automatische Hochstufung vorhandener Tools. Frueher Offline-Dry-Run und
+  Fehlerweitergabe der Registry-Wrapper.
+- Synthetisch getesteter TAR-Datei-Restore und opt-in Pi-/GPU-Health-Gate ohne
+  Modellstart. Ungepruefter Idle-Shutdown gesperrt (Breaking Change).
+- Optionale lokale LiteLLM-Policy mit Text-/Token-/Prozessquoten, Risikofreigaben
+  fuer ausgewaehlte Menuepfade; bestehende Gateway-Routen bleiben unveraendert.
+- Kurze README mit erhaltenem historischen Alttext; Implementierung, Testumfang,
+  Rollback und verbleibende P0-/Live-Abnahmen in `docs/P1_P3_IMPLEMENTATION.md`.
+
 ### 2026-11-01: P0-A-Schutz fuer Legacy-Core-Uninstall
 
 - Destruktive Ollama-/OpenClaw-Uninstaller durch rein lesenden Guard ersetzt:

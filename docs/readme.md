@@ -7,6 +7,9 @@ produktionsreif.
 
 ## Hier beginnen
 
+[P1-P3-Umsetzung mit Abnahmegrenzen](P1_P3_IMPLEMENTATION.md): generierte Matrizen,
+Restore-/WoL-Fixtures, optionale Gateway-Policy und weiterhin offene Produktionsnachweise.
+
 | Anliegen                                  | Einstieg und Inhalt                                                                                                    |
 | ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
 | Was ist aktuell umgesetzt?                | [Aktueller Status](CURRENT_STATUS.md) und [erste 60 Minuten](FIRST_60_MINUTES.md): Orientierung und bestehende Grenzen |
