@@ -9,7 +9,7 @@ import re
 import stat
 import sys
 
-REPOS = {'ollama': 'ollama/ollama', 'k3s': 'k3s-io/k3s'}
+REPOS = {'ollama': 'ollama/ollama', 'k3s': 'k3s-io/k3s', 'openclaw': 'openclaw/openclaw'}
 MAX_ARTIFACT = 1024**3
 
 

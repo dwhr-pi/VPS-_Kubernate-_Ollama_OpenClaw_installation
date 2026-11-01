@@ -1,0 +1,71 @@
+# Historische OpenClaw-Installation vor P0-B
+
+Archiviert am 01.11.2026. NICHT ausfuehren oder als Ersatzinstaller verwenden.
+Der ungepinnte Clone-/Pull-/Paketpfad ist gesperrt. Der Text bleibt als
+Quellreferenz und fuer isolierte, vollstaendig gemockte Fehlerhandler-Tests erhalten.
+Aktueller Vertrag: [P0-B-Quellenschutz](../P0_B_CORE_SOURCES.md).
+
+```text
+#!/bin/bash
+# ==============================================================================
+# OPENCLAW_INSTALL.SH - Installation von OpenClaw
+# OpenClaw ist ein KI-Agenten-Framework mit Reinforcement Learning (RL) und
+# Skill-Integration (z.B. gcali).
+# ==============================================================================
+
+# Farben
+GREEN="\033[0;32m"
+BLUE="\033[0;34m"
+RED="\033[0;31m"
+YELLOW="\033[1;33m"
+NC="\033[0m"
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+INSTALL_DIR="${INSTALL_DIR:-$(cd "$SCRIPT_DIR/../.." && pwd)}"
+# shellcheck disable=SC1091
+source "$INSTALL_DIR/scripts/helpers/status_tracking.sh"
+# shellcheck disable=SC1091
+source "$INSTALL_DIR/scripts/lib/common.sh"
+init_tool_tracking "OpenClaw"
+
+OPENCLAW_DIR="/opt/openclaw"
+OPENCLAW_REPO_URL="$(get_custom_repo_url "OPENCLAW" "https://github.com/openclaw/openclaw.git")"
+OPENCLAW_NETWORK_RETRY_ATTEMPTS="${OPENCLAW_NETWORK_RETRY_ATTEMPTS:-3}"
+OPENCLAW_NETWORK_RETRY_DELAY_SECONDS="${OPENCLAW_NETWORK_RETRY_DELAY_SECONDS:-5}"
+
+echo -e "${BLUE}Starte Installation von OpenClaw...${NC}"
+
+# 1. OpenClaw aus GitHub klonen
+if [ -d "$OPENCLAW_DIR" ]; then
+  echo -e "${YELLOW}OpenClaw Verzeichnis $OPENCLAW_DIR existiert bereits. Aktualisiere Repository...${NC}"
+  cd "$OPENCLAW_DIR"
+  run_with_retry "$OPENCLAW_NETWORK_RETRY_ATTEMPTS" "$OPENCLAW_NETWORK_RETRY_DELAY_SECONDS" git pull --ff-only
+else
+  echo -e "${BLUE}Klone OpenClaw in $OPENCLAW_DIR...${NC}"
+  sudo mkdir -p "$OPENCLAW_DIR"
+  sudo chown -R "$USER:$USER" "$OPENCLAW_DIR"
+  run_with_retry "$OPENCLAW_NETWORK_RETRY_ATTEMPTS" "$OPENCLAW_NETWORK_RETRY_DELAY_SECONDS" \
+    git clone "$OPENCLAW_REPO_URL" "$OPENCLAW_DIR"
+  cd "$OPENCLAW_DIR"
+fi
+
+# 2. Abhängigkeiten installieren mit pnpm
+echo -e "${BLUE}Installiere Abhängigkeiten für OpenClaw mit pnpm...${NC}"
+if ! run_with_retry "$OPENCLAW_NETWORK_RETRY_ATTEMPTS" "$OPENCLAW_NETWORK_RETRY_DELAY_SECONDS" pnpm install; then
+  echo -e "${RED}Fehler: pnpm install für OpenClaw fehlgeschlagen.${NC}"
+  exit 1
+fi
+
+# 3. OpenClaw bauen
+echo -e "${BLUE}Baue OpenClaw mit pnpm...${NC}"
+if ! pnpm build; then
+  echo -e "${RED}Fehler: pnpm build für OpenClaw fehlgeschlagen.${NC}"
+  exit 1
+fi
+
+# 4. Konfiguration (Platzhalter)
+echo -e "${YELLOW}Hinweis: OpenClaw Konfiguration muss eventuell manuell angepasst werden (z.B. API-Keys, Skills).${NC}"
+
+echo -e "${GREEN}OpenClaw Installation abgeschlossen.${NC}"
+mark_current_tool_installed
+```

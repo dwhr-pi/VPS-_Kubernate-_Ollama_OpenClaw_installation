@@ -81,6 +81,20 @@ class SourceGate(unittest.TestCase):
         self.lock.write_text(json.dumps(contract))
         self.assertTrue(gate.verify('k3s', self.lock, self.payload)['verified'])
 
+    def test_openclaw_requires_its_own_pinned_contract_and_never_installs(self):
+        contract = dict(self.contract, tool='openclaw')
+        self.lock.write_text(json.dumps(contract))
+        with self.assertRaises(ValueError):
+            gate.verify('openclaw', self.lock, self.payload)
+        contract['url'] = 'https://github.com/openclaw/openclaw/archive/' + 'a' * 40 + '.tar.gz'
+        self.lock.write_text(json.dumps(contract))
+        result = gate.verify('openclaw', self.lock, self.payload)
+        self.assertTrue(result['verified'])
+        self.assertFalse(result['installed'])
+        with contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(gate.main(['openclaw', '--verify-source', '--manifest', str(self.lock),
+                                       '--artifact', str(self.payload)]), 3)
+
     def test_duplicate_extra_fields_and_input_size_rejected(self):
         for text in ('{"schema":1,"schema":1}', json.dumps(dict(self.contract, command='never execute')),
                      '[]', 'x' * 65537):
@@ -135,7 +149,7 @@ class SourceGate(unittest.TestCase):
     def test_ci_includes_this_fixture_and_both_wrappers(self):
         workflow = (ROOT / '.github/workflows/p0-safety.yml').read_text(encoding='utf-8')
         self.assertIn('test_core_source_gate.py', workflow)
-        for tool in ('ollama', 'k3s'):
+        for tool in ('ollama', 'k3s', 'openclaw'):
             self.assertIn(f'scripts/tools/{tool}_install.sh', workflow)
 
     def test_no_core_vendor_pipe_remains_in_four_legacy_entries(self):
@@ -144,6 +158,13 @@ class SourceGate(unittest.TestCase):
             text = (ROOT / relative).read_text(encoding='utf-8')
             self.assertNotIn('https://ollama.com/install.sh', text)
             self.assertNotIn('https://get.k3s.io', text)
+
+    def test_openclaw_wrapper_has_no_legacy_mutation_or_tracking(self):
+        text = (ROOT / 'scripts/tools/openclaw_install.sh').read_text(encoding='utf-8')
+        for forbidden in ('git clone', 'git pull', 'pnpm install', 'pnpm build', 'sudo ',
+                          '/opt/openclaw', 'status_tracking.sh', 'mark_current_tool_installed',
+                          'get_custom_repo_url'):
+            self.assertNotIn(forbidden, text)
 
 
 @unittest.skipUnless(BASH and Path(BASH).is_file(), 'Native Bash required, never WSL')
@@ -157,9 +178,9 @@ class SourceGateWrappers(unittest.TestCase):
             helper = root / 'scripts/security/core_source_gate.py'
             helper.write_text('# fixture, not executed\n')
             spy = root / 'bin/python3'
-            spy.write_text('#!/usr/bin/env bash\nprintf "ARG:%s\\n" "$@"\nexit 3\n')
+            spy.write_text('#!/usr/bin/env bash\nprintf "ARG:%s\\n" "$@"\nexit 3\n', newline='\n')
             spy.chmod(0o700)
-            for tool in ('ollama', 'k3s'):
+            for tool in ('ollama', 'k3s', 'openclaw'):
                 shutil.copyfile(ROOT / f'scripts/tools/{tool}_install.sh', root / f'scripts/tools/{tool}_install.sh')
                 env = dict(os.environ, BASH_ENV='', FIXTURE=root.as_posix(), HOME=str(root / 'untouched'),
                            INSTALL_DIR='/must-not-be-used', OPENCLAW_USER_DATA_DIR='/must-not-be-used')
@@ -194,12 +215,12 @@ maybe_cleanup_logs_before_operation() { printf 'UNEXPECTED-CLEANUP\n'; exit 90; 
 begin_operation_measurement() { printf 'UNEXPECTED-MEASUREMENT\n'; exit 90; }
 run_tool_script() { printf 'UNEXPECTED-INSTALL\n'; exit 90; }
 '''
-        for tool in ('Ollama', 'K3s'):
+        for tool in ('Ollama', 'K3s', 'OpenClaw'):
             for code in (0, 1, 2, 3):
                 # Large real functions exceed reliable Windows bash -c quoting boundaries.
                 with tempfile.TemporaryDirectory() as directory:
                     fixture = Path(directory) / 'menu-fixture.sh'
-                    fixture.write_text(stubs + function + f'\nFIXTURE_RC={code}\ninstall_tool {tool}\n', encoding='utf-8')
+                    fixture.write_text(stubs + function + f'\nFIXTURE_RC={code}\ninstall_tool {tool}\n', encoding='utf-8', newline='\n')
                     result = subprocess.run([BASH, str(fixture)], env=dict(os.environ, BASH_ENV=''),
                                             text=True, capture_output=True, timeout=20)
                 self.assertEqual(result.returncode, 0, result.stderr)

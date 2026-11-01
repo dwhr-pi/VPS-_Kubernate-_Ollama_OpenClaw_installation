@@ -3096,12 +3096,12 @@ TOOLS["Automaton"]="Conway Automaton: GitHub-Source ohne Docker, experimental/hi
 TOOL_KEYS+=("Embedded_Debug_HIL")
 TOOLS["Embedded_Debug_HIL"]="experimental: pygdbmi-Basis aus gepinntem GitHub-Stand, private venv ohne Docker. Offline-Berichte im Repo; Live-/MCP-/USB-Adapter weiterhin planned. 512 MiB RAM/Disk. docs/tools/embedded-debug-hil.md"
 TOOLS["FreeLLMAPI"]="GitHub-Source ohne Docker: fehlendes Node/npm wird privat ueber GitHub-nvm bereitgestellt; kein System-Node-Umbau. Buildreserve 2 GiB RAM/4 GiB Disk. Kein Serverstart; localhost 3011. Doku: docs/tools/freellmapi.md"
-TOOLS["Ollama"]="Lokales LLM-Backend. Du kannst über den Ollama Modell-Manager spezifische Modelle installieren und verwalten. Für weitere Informationen zu den Modellen siehe in der Online-Dokumentation nach."
+TOOLS["Ollama"]="Lokales LLM-Backend. Legacy-Neuinstallation gesperrt; nur Quellenplan. Vorhandene Runtime/Modelle bleiben erhalten. docs/P0_B_CORE_SOURCES.md"
 TOOLS["Ruflo"]="Ruflo/claude-flow-nahe CLI fuer Agenten-Orchestrierung und Hive-Mind-Workflows. Installation nutzt GitHub, Node.js und pnpm; Build-Skripte werden nur nach gezielter Freigabe erlaubt."
 TOOLS["Authentik"]="Optionaler Identity Provider fuer OIDC/OAuth2, SSO und zentrale Logins vor internen Webdiensten. Bereitet nur sichere lokale Vorlagen vor."
 TOOLS["Authelia"]="Optionale schlanke Auth-/MFA-Schicht vor Webdiensten, besonders fuer Reverse Proxy, MiniPC, Homelab und VPS geeignet. Bereitet nur lokale Vorlagen vor."
 TOOLS["OpenManus"]="KI-Agenten-Framework für automatisierte Aufgaben wie Web-Recherche und Datenanalyse."
-TOOLS["OpenClaw"]="Fortschrittliches KI-Agenten-Framework mit Reinforcement Learning (RL) und Skill-Integration (z.B. gcali)."
+TOOLS["OpenClaw"]="Agenten-Framework. Legacy-Installation/Update gesperrt; nur Quellenplan, keine /opt-Adoption oder Paket-Hooks. docs/P0_B_CORE_SOURCES.md"
 TOOLS["Clawhub_CLI"]="Kommandozeilen-Tool zur Interaktion mit Clawhub-Diensten, dem zentralen Hub für KI-Agenten."
 TOOLS["OpenClaw_RL"]="Reinforcement Learning Erweiterung für OpenClaw, ermöglicht dem Agenten das Lernen durch Interaktion."
 TOOLS["Clawbake"]="Experimental: Kubernetes-/OpenClaw-Operator-Projekt. Installer bereitet Quelle/Go-Build vor; echter Betrieb braucht K3s/Kubernetes, PostgreSQL, Helm-Values und OIDC-Secrets."
@@ -3178,7 +3178,7 @@ TOOLS["TikTok_Score"]="Heuristik-Modul für Viralitäts- und Kurzvideo-Scoring."
 TOOLS["Emotion_Tagging"]="Tagging-Modul für Stimmung, Emotion und Tonalität in Audio- oder Textinhalten."
 TOOLS["Docker"]="Docker Engine als Container-Laufzeit für Stacks, Integrationen und lokale Dienste."
 TOOLS["Kubernetes"]="kubectl und Basisschicht für Kubernetes-nahe OpenClaw-Deployments."
-TOOLS["K3s"]="Leichtgewichtige Kubernetes-Distribution für lokale oder VPS-nahe Cluster."
+TOOLS["K3s"]="Leichtgewichtiges Kubernetes. Legacy-Neuinstallation gesperrt; Quellenplan, separater GitOps-Pfad. Vorhandene Cluster bleiben erhalten."
 TOOLS["GitHub_API_Tooling"]="Python-Tooling für GitHub-API-Workflows, Repo-Automation und Metadatenabfragen."
 TOOLS["Code_Sandbox"]="Lokal vorbereitetes Sandbox-Modul für isolierte Codeausführung."
 TOOLS["VS_Code_Server"]="Code-Server für browserbasierte Entwicklungsumgebungen."
@@ -3673,7 +3673,7 @@ plan_gitops_bootstrap_from_setup() {
 install_tool() {
   local TOOL_KEY="$1"
   case "$TOOL_KEY" in
-    Ollama | K3s)
+    Ollama | OpenClaw | K3s)
       local core_guard_rc=0
       bash "$INSTALL_DIR/scripts/tools/${TOOL_KEY,,}_install.sh" --plan || core_guard_rc=$?
       if [ "$core_guard_rc" -eq 3 ]; then
@@ -4038,21 +4038,24 @@ TOOLS["Gemini_Desktop_Dortanes_Source"]="Archivierte GitHub-Studienquellen; kein
 TOOL_SCRIPT_NAMES["Gemini_Desktop_Dortanes_Source"]="gemini_desktop_dortanes_source"
 
 sort_tool_menu_keys() {
-  local key
-  local -a pinned=() remaining=() sorted=() appended=()
-  for key in "${TOOL_KEYS[@]}"; do
-    case "$key" in
-      Ollama | OpenClaw | Ruflo) pinned+=("$key") ;;
-      GitOps_Bootstrap | Kubeseal | Traefik) appended+=("$key") ;;
-      *) remaining+=("$key") ;;
-    esac
-  done
-  # Preserve core tools above the separator; sort the existing catalog A-Z.
-  if ((${#remaining[@]})); then
-    mapfile -t sorted < <(printf '%s\n' "${remaining[@]}" | LC_ALL=C sort -f -s)
+  local baseline_file="${1:-${INSTALL_DIR:-.}/config/tool_menu_sorted_baseline.txt}"
+  local helper="${INSTALL_DIR:-.}/scripts/helpers/tool_menu_order.py"
+  local sorted_output
+  local -a ordered=()
+  [[ -f "$helper" && ! -L "$helper" ]] || {
+    printf 'Tool-Sortierhelfer fehlt oder ist verlinkt; Reihenfolge unveraendert.\n' >&2
+    return 1
+  }
+  command -v python3 >/dev/null 2>&1 || {
+    printf 'Tool-Sortierung braucht vorhandenes Python 3; kein automatischer Download.\n' >&2
+    return 1
+  }
+  sorted_output=$(python3 -I -B "$helper" --baseline "$baseline_file" -- "${TOOL_KEYS[@]}") || return 1
+  if [[ -n "$sorted_output" ]]; then
+    mapfile -t ordered <<<"$sorted_output"
   fi
-  # Neue GitOps-Werkzeuge bewusst hinter dem bisherigen Z-Ende belassen.
-  TOOL_KEYS=("${pinned[@]}" "${sorted[@]}" "${appended[@]}")
+  (("${#ordered[@]}" == "${#TOOL_KEYS[@]}")) || return 1
+  TOOL_KEYS=("${ordered[@]}")
 }
 
 # Funktion zum Anzeigen des Tool-Management-Menüs
@@ -4062,7 +4065,7 @@ show_tool_management_menu() {
   tool_menu_started_at="$(date +%s)"
   tool_menu_free_kb_before="$(get_free_disk_kb)"
   TOOL_BATCH_ABORT_REQUESTED=0
-  sort_tool_menu_keys
+  sort_tool_menu_keys || return 1
   sync_core_tool_status
   ensure_user_workspace
   normalize_status_file "$TOOL_STATUS_FILE" "${TOOL_KEYS[@]}"
