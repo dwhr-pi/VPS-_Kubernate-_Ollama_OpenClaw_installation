@@ -48,6 +48,9 @@ if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
   case "${1:-}" in
     '') ensure_minisign 0 ;;
     --install-minisign) [[ $# == 1 ]] && ensure_minisign 1 ;;
-    *) printf 'Aufruf: bash ensure_minisign.sh [--install-minisign]\n' >&2; exit 2 ;;
+    *)
+      printf 'Aufruf: bash ensure_minisign.sh [--install-minisign]\n' >&2
+      exit 2
+      ;;
   esac
 fi
