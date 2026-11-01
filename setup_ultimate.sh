@@ -3878,6 +3878,20 @@ install_tool() {
 uninstall_tool() {
   local TOOL_KEY="$1"
   local operation_status="failed"
+  local tool_rc=0
+  # Preview must precede log cleanup, tracking, rollback locks and status mutation.
+  if [[ "$TOOL_KEY" == Ollama || "$TOOL_KEY" == OpenClaw ]]; then
+    local core_script=ollama
+    [[ "$TOOL_KEY" != OpenClaw ]] || core_script=openclaw
+    bash "$INSTALL_DIR/scripts/tools/${core_script}_uninstall.sh" --dry-run || tool_rc=$?
+    if [ "$tool_rc" -eq 3 ]; then
+      echo -e "${YELLOW}${TOOL_KEY}: nur Vorschau/Sicherheitssperre, NICHT deinstalliert. Status und Autostart bleiben erhalten.${NC}"
+    else
+      echo -e "${RED}${TOOL_KEY}: Legacy-Entfernung nicht freigegeben; kein Status entfernt. Siehe docs/P0_A_CORE_UNINSTALL.md.${NC}"
+    fi
+    # The UI action is handled, but no uninstall-success/status path is entered.
+    return 0
+  fi
   show_tool_action_intro "$TOOL_KEY" "deinstallieren" "uninstall"
   maybe_cleanup_logs_before_operation
   begin_operation_measurement "tool_uninstall_${TOOL_KEY}" "Tool deinstallieren: ${TOOL_KEY}"

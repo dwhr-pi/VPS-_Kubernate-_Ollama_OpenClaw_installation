@@ -1,5 +1,10 @@
 # P0-Paket: Update, PAT und datenerhaltender Compose-Uninstall
 
+Nachtrag 01.11.2026: Der getrennte
+[P0-A-Schutz fuer Legacy-Ollama/OpenClaw](P0_A_CORE_UNINSTALL.md) blockiert deren
+unbelegte Entfernung. Der unten beschriebene Compose-Uninstall bleibt unveraendert;
+die neue Sicherheitssperre ist kein Ersatz fuer einen verwalteten Core-Uninstaller.
+
 Ergaenzender [externer P0-Patchplan mit Standabgleich](sources/2026-10-24/README.md) fuer
 Kubernetes/Compose: Vorschlag, nicht Bestandteil der hier beschriebenen Freigabe.
 

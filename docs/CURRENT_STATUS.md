@@ -1,5 +1,13 @@
 # Aktueller Projektstatus
 
+## P0-A-Schutzpatch vom 01.11.2026
+
+[Legacy-Core-Uninstall-Schutz](P0_A_CORE_UNINSTALL.md): Ollama/OpenClaw werden
+ohne belegten Besitzvertrag nicht mehr automatisch entfernt. Standard ist eine
+rein lesende Vorschau; Status und Autostart bleiben erhalten. Das ist eine
+bewusste Sicherheitssperre, kein fertig abgenommener neuer Uninstaller oder
+Migrationspfad. Installer/Supply-Chain und andere Tools bleiben getrennte Aufgaben.
+
 ## Neue Bestandspruefung vom 31.10.2026
 
 Basis `b6202e191960f329d7ef300139d796af6a09abe0`: 400 Tools, 250 Profile,

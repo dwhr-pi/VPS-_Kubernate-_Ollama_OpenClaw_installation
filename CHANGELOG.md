@@ -2,6 +2,24 @@
 
 ## Unreleased
 
+### 2026-11-01: P0-A-Schutz fuer Legacy-Core-Uninstall
+
+- Destruktive Ollama-/OpenClaw-Uninstaller durch rein lesenden Guard ersetzt:
+  kein sudo, Dienststopp, TAR-Backup, rekursives Loeschen oder Marker-Adoption.
+- Menue-Vorschau vor generischen Uninstall-Nebenwirkungen; Status und Autostart
+  werden auch bei unerwartetem Guard-Erfolg nicht entfernt. Andere Tools behalten
+  ihre bisherige Erfolgs-/Fehlerbehandlung.
+- Breaking Change: automatische Legacy-Entfernung gesperrt; vollstaendiger
+  verwalteter Uninstall und Migration weiterhin offen. Neue Offline-Fixtures und
+  Ubuntu-P0-CI-Vertrag; keine Produktiv- oder Online-CI-Abnahme behauptet.
+
+### 2026-11-01: Getrennte Voraussetzungen fuer lokale Qualitaetspruefungen
+
+- LF fuer `.shellcheckrc` festgelegt; Windows-Checkout kann die Konfiguration
+  nicht mehr implizit nach CRLF konvertieren. Keine Regel unterdrueckt.
+- Minisign-Hilfe mit den bestehenden shfmt-Optionen rein mechanisch formatiert;
+  fuenf Bootstrap-Fixtures weiterhin gruen, keine Paketinstallation.
+
 ### 2026-10-31: Neue Review-Runde, Phase 0
 
 - Aktuellen Bestand und statische Pruefungen in `docs/REVIEW_FINDINGS.md`

@@ -4,6 +4,48 @@ Stand: 31.10.2026. Gepruefte Basis: `b6202e191960f329d7ef300139d796af6a09abe0`
 (`main`, anfangs sauberer Arbeitsstand). Die vier zuvor vorbereiteten Minisign-Dateien
 sind in dieser Basis bereits enthalten. Dieser Bericht ist keine Produktionsfreigabe.
 
+## Fortsetzung: P0-A-Schutz am 01.11.2026
+
+Auf Basis des Phase-0-Dokumentationscommits `a85dde0` wurde die
+[Sicherheitsbarriere fuer Legacy-Core-Uninstall](P0_A_CORE_UNINSTALL.md)
+implementiert. Die frueheren destruktiven Ollama-/OpenClaw-Uninstall-Pfade sind
+ersetzt. Ohne einen nachgewiesenen Besitz-/Migrationsvertrag wird keine
+Installation nachtraeglich adoptiert oder entfernt. Das ist ein Schutzpatch,
+kein neuer vollstaendiger verwalteter Uninstaller. Die nachfolgenden Befunde
+bleiben die historische Phase-0-Aufnahme der oben genannten Basis.
+
+- Neue Guard-Suite: 21 Tests, 20 bestanden und ein unter Windows mangels
+  Berechtigung uebersprungener echter Symlink-Test. Unter POSIX wird derselbe
+  Test nicht als Skip behandelt. Reale Wrapper laufen gegen einen temporaeren
+  Python-Spy; reale Menuefunktion gegen isolierte Stubs. Keine Produktivdienste.
+- Bestehende P0-Safety-Suite: 22 Tests ohne Fehler, ein POSIX-Symlink-Test
+  unter Windows uebersprungen.
+- Acht weitere betroffene Suites: 76 Tests ohne Fehler, zwei
+  Windows-/POSIX-bedingte Skips. Zusammen 119 Tests: 115 bestanden, vier Skips.
+- Offline-Projektcheck: 400 Tools, 250 Profile, 45 Ports, 257 Python-Dateien,
+  172 Python-Testmodule und 1.187 Markdown-Dateien; 0 Fehler, 802 bekannte
+  Metadatenhinweise. Keine pauschale Statusumstufung.
+- Die Ubuntu-24.04-P0-CI erhaelt Guard-Suite und beide Shell-Einstiege. Kein
+  Online-CI-Gesamtstatus und keine Fresh-Host-/Produktivabnahme behauptet.
+- Getrennte kleine Qualitaetskorrektur: `.shellcheckrc` bekommt einen expliziten
+  LF-Vertrag und liegt nun lokal ebenfalls mit LF vor. Die Minisign-Hilfe wurde
+  ausschliesslich mit den bestehenden shfmt-Optionen formatiert; ihre fuenf
+  Fixturetests bestehen weiterhin. Keine Lint-Regel wurde abgeschaltet.
+- Alle vier betroffenen Shell-Einstiege (`setup_ultimate.sh`, beide Core-Wrapper,
+  Minisign-Hilfe) bestehen einzeln `bash -n`, ShellCheck mit der echten lokalen
+  LF-Konfiguration und shfmt. Markdownlint fuer die geaenderten Dokumente,
+  lokaler Markdown-Linkaudit und `git diff --check` bestehen ebenfalls.
+  Keine vollstaendige neue ShellCheck-/Testsuite aller Tools behauptet.
+- `actionlint` und PyYAML sind hier nicht verfuegbar; die Workflow-Ergaenzung
+  wurde als Text-/Aufrufvertrag getestet, nicht als vollstaendige lokale
+  Actionlint-Abnahme ausgegeben.
+
+Die Freigabe fuer echte verwaltete Programm-/Dienstentfernung, Receipt-Erzeugung,
+Legacy-Migration, konsistente Statusaktualisierung und deren Linux-Abnahme bleibt
+offen. Clawbake, andere Uninstaller sowie Installer-/Supply-Chain-Pfade sind nicht
+durch die zwei Core-Guards automatisch mitgehaertet. Kein WSL-/Secret-Zugriff,
+keine produktiven Installationen, Deinstallationen oder Dienstaktionen.
+
 ## Pruefumfang und Grenzen
 
 - Windows mit nativem Git Bash; kein WSL-Zugriff, keine Container, Installer,
