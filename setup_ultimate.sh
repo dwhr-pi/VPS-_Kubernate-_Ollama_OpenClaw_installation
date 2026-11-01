@@ -7,6 +7,16 @@
 # Version: V11.17
 #
 
+# Offline entry must run before language, workspace and runtime initialization.
+if [[ "${BASH_SOURCE[0]}" == "$0" && "${1:-}" == --dry-run ]]; then
+  [[ $# == 1 ]] || {
+    printf 'Dry-run akzeptiert keine weiteren Optionen.\n' >&2
+    exit 2
+  }
+  DRY_ROOT="$(cd -P -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+  exec python3 -I -B "$DRY_ROOT/scripts/quality/repository_audit.py" --section registry
+fi
+
 # Farben & UI
 GREEN="\033[0;32m"
 BLUE="\033[0;34m"
@@ -2797,6 +2807,14 @@ PROFILES["Repo_Maintainer"]="Maintainer-Profil für GitHub-Repo-Pflege, lokale C
 # Funktion zum Installieren eines Profils
 install_profile() {
   local PROFILE_KEY="$1"
+  case "$PROFILE_KEY" in
+    *Trading* | *Web3* | *Voice_Clone* | *Avatar* | *Personnel* | *Personalakten*)
+      if ! python3 -I -B "$INSTALL_DIR/scripts/security/risk_consent.py" --subject "$PROFILE_KEY"; then
+        echo 'Hochrisiko-Profil nicht freigegeben; keine Installation oder Statusaenderung.'
+        return 0
+      fi
+      ;;
+  esac
   show_profile_action_intro "$PROFILE_KEY" "installieren" "install"
   begin_operation_measurement "profile_install_${PROFILE_KEY}" "Profil installieren: ${PROFILE_KEY}"
   echo -e "${BLUE}Installiere Profil: ${PROFILE_KEY}...${NC}"
@@ -3654,6 +3672,14 @@ plan_gitops_bootstrap_from_setup() {
 
 install_tool() {
   local TOOL_KEY="$1"
+  case "$TOOL_KEY" in
+    Coqui_TTS | OpenVoice | RVC | EMO | Personnel_Documents_AI | Zenbot_trader | Web3_APIs | Exchange_APIs | *Voice_Clone* | *Avatar*)
+      if ! python3 -I -B "$INSTALL_DIR/scripts/security/risk_consent.py" --subject "$TOOL_KEY"; then
+        echo 'Hochrisiko-Tool nicht freigegeben; keine Installation oder Statusaenderung.'
+        return 0
+      fi
+      ;;
+  esac
   LAST_OPERATION_LOG_FILE=""
   ACTIVE_OPERATION_LOG_FILE=""
   local COMFYUI_GGUF_MODE="${COMFYUI_GGUF_MODE:-integrate}"

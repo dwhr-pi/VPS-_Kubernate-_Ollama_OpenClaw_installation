@@ -2,6 +2,8 @@
 import argparse
 import ast
 from collections import Counter
+from datetime import datetime
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -14,6 +16,46 @@ ROOT = Path(__file__).resolve().parents[2]
 SKIP = {".git", "node_modules", ".venv", "venv", "__pycache__", "dist", "build",
         ".codex-build", ".pytest_cache", ".ruff_cache"}
 STATUSES = {"planned", "optional", "experimental", "stable", "beta", "heavy", "manual", "documentation-first"}
+READINESS = {"unknown", "planned", "source-ready", "runtime-verified", "deprecated"}
+
+
+def readiness_valid(root, row):
+    """Readiness is separate from legacy maturity; a receipt is not a cryptographic attestation."""
+    state = row.get('readiness', 'unknown')
+    if not isinstance(state, str) or state not in READINESS:
+        return False
+    if state not in ('source-ready', 'runtime-verified'):
+        return True
+    pin = row.get('source_commit')
+    if not isinstance(pin, str) or not re.fullmatch('[0-9a-f]{40}', pin):
+        return False
+    value = row.get('readiness_evidence')
+    if not isinstance(value, str) or not value.startswith('docs/evidence/') or '\\' in value:
+        return False
+    def regular(relative):
+        parts = Path(relative)
+        if parts.is_absolute() or '..' in parts.parts or ':' in relative:
+            raise ValueError('Unsafe evidence path')
+        path = Path(root)
+        for part in parts.parts:
+            path = path / part
+            if path.is_symlink() or (hasattr(path, 'is_junction') and path.is_junction()):
+                raise ValueError('Linked evidence path')
+        if not path.is_file() or path.stat().st_nlink != 1 or path.stat().st_size > 4 * 1024**2:
+            raise ValueError('Missing/oversized evidence')
+        return path
+    try:
+        evidence = json.loads(regular(value).read_text(encoding='utf-8'))
+        date = datetime.fromisoformat(evidence['tested_at'].replace('Z', '+00:00'))
+        log = evidence['log']
+        return (evidence['id'] == row['id'] and evidence['source_commit'] == pin
+                and evidence['scope'] == ('runtime' if state == 'runtime-verified' else 'source')
+                and evidence['result'] == 'passed'
+                and isinstance(evidence['platform'], str) and bool(evidence['platform'].strip())
+                and date.tzinfo is not None and isinstance(log, str) and log.startswith('docs/evidence/')
+                and hashlib.sha256(regular(log).read_bytes()).hexdigest() == evidence['log_sha256'])
+    except (OSError, ValueError, KeyError, TypeError, AttributeError):
+        return False
 
 
 class Audit:
@@ -70,6 +112,8 @@ class Audit:
                     self.issue("error", "duplicate-id", where)
                 else:
                     seen.add(ident)
+                if not readiness_valid(self.root, row):
+                    self.issue('error', 'invalid-readiness-evidence', where)
                 status = row.get("status")
                 if status is None:
                     self.issue("warning", "missing-status", where)

@@ -15,5 +15,5 @@ for file in "$ROOT_DIR/docs/PROFILE_INDEX.md" "$ROOT_DIR/docs/PROFILE_TOOL_MAPPI
 done
 
 if [ -f "$ROOT_DIR/scripts/check_profile_registry_sync.sh" ]; then
-  bash "$ROOT_DIR/scripts/check_profile_registry_sync.sh" || true
+  bash "$ROOT_DIR/scripts/check_profile_registry_sync.sh"
 fi

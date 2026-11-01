@@ -15,9 +15,9 @@ for file in "$ROOT_DIR/config/tools.yml" "$ROOT_DIR/docs/TOOL_INDEX.md" "$ROOT_D
 done
 
 if [ -f "$ROOT_DIR/scripts/check_tools.sh" ]; then
-  bash "$ROOT_DIR/scripts/check_tools.sh" || true
+  bash "$ROOT_DIR/scripts/check_tools.sh"
 fi
 
 if [ -f "$ROOT_DIR/scripts/check_tool_lifecycle.sh" ]; then
-  bash "$ROOT_DIR/scripts/check_tool_lifecycle.sh" || true
+  bash "$ROOT_DIR/scripts/check_tool_lifecycle.sh"
 fi

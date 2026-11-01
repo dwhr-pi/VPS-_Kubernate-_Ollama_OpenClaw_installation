@@ -25,5 +25,7 @@ jobs:
           python-version: "3.12"
       - name: Static repository checks (no installers or services)
         run: python -B scripts/quality/repository_audit.py
+      - name: Generated registry views must match source
+        run: python -B scripts/quality/registry_catalog.py --check
       - name: Offline Python fixture regressions
         run: python -B -m unittest discover -s tests -p 'test_*.py' -v
