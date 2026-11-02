@@ -1,0 +1,74 @@
+# Review existing violations BEFORE adding the opt-in namespace label.
+# AI namespaces: llmops/openclaw/ollama; never gpu-operator or velero.
+# Also enable PSS Restricted on approved AI namespaces, version-pinned to K8s.
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata: {name: ai-explicit-resource-contract}
+spec:
+  validationFailureAction: Enforce
+  background: true
+  failurePolicy: Fail
+  rules:
+    - name: cpu-memory-and-no-privileged
+      match:
+        any:
+          - resources:
+              kinds: [Pod]
+              namespaces: [llmops, openclaw, ollama]
+              namespaceSelector:
+                matchLabels: {llmops.example/admission: enforce}
+      validate:
+        message: Explicit CPU/memory requests and limits required; privileged forbidden.
+        foreach:
+          - list: 'request.object.spec.[containers, initContainers, ephemeralContainers][]'
+            pattern:
+              resources:
+                requests: {cpu: '?*', memory: '?*'}
+                limits: {cpu: '?*', memory: '?*'}
+              '=(securityContext)':
+                '=(privileged)': false
+    - name: gpu-claim-needs-explicit-limit
+      match:
+        any:
+          - resources:
+              kinds: [Pod]
+              namespaces: [llmops, openclaw, ollama]
+              namespaceSelector:
+                matchLabels: {llmops.example/admission: enforce}
+      validate:
+        message: Exclusive GPU requests and limits must both be explicit and equal to one.
+        foreach:
+          - list: request.object.spec.containers
+            preconditions:
+              any:
+                - key: '{{ element.resources.requests."nvidia.com/gpu" || element.resources.limits."nvidia.com/gpu" || `0` }}'
+                  operator: GreaterThan
+                  value: 0
+            pattern:
+              resources:
+                requests: {nvidia.com/gpu: '1'}
+                limits: {nvidia.com/gpu: '1'}
+    - name: shared-gpu-claim-needs-explicit-limit
+      match:
+        any:
+          - resources:
+              kinds: [Pod]
+              namespaces: [llmops, openclaw, ollama]
+              namespaceSelector:
+                matchLabels: {llmops.example/admission: enforce}
+      validate:
+        message: Shared GPU requests and limits must both be explicit and equal to one.
+        foreach:
+          - list: request.object.spec.containers
+            preconditions:
+              any:
+                - key: '{{ element.resources.requests."nvidia.com/gpu.shared" || element.resources.limits."nvidia.com/gpu.shared" || `0` }}'
+                  operator: GreaterThan
+                  value: 0
+            pattern:
+              resources:
+                requests: {nvidia.com/gpu.shared: '1'}
+                limits: {nvidia.com/gpu.shared: '1'}
+# Ordinary CPU agents need no GPU. Limits only constrain declared resources;
+# host device mounts/host namespaces must additionally be blocked by PSS.
+# Ephemeral debug containers with no resource contract are intentionally blocked.

@@ -39,6 +39,10 @@ die weiterhin verpflichtenden Sicherheitspruefungen.
 
 ## Themenbereiche
 
+[Sechs Hybrid-Review-Bausteine](../examples/hybrid-production-review/README.md): GPU-Operator,
+GitOps, ESO/Kyverno, GPU-Monitoring, privater Ingress und Velero als getrennte Konfigurationsbeispiele.
+Keine automatische Installation oder Produktionsfreigabe; Pins, private Eingaben und Live-Abnahmen bleiben erforderlich.
+
 Das alte [Kubernetes-Gesamtmanifest](legacy/K8S_DEPLOYMENTS_LEGACY.md) ist nur noch eine historische
 Quellreferenz, kein ausfuehrbarer Deployment-Pfad. Bestehende Cluster und PVCs wurden durch die
 Archivierung nicht veraendert.

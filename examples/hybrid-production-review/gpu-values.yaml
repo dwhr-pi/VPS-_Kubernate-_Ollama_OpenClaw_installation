@@ -1,0 +1,45 @@
+# NVIDIA GPU Operator Helm values; reviewed local chart required.
+# Native Linux K3s only. Do not manage the Windows/WSL GPU driver here.
+# GPU Operator has privileged operands; never install into an AI namespace.
+# Existing standalone NVIDIA device-plugin must be removed by a reviewed migration,
+# not left running concurrently. Driver/image licensing needs separate approval.
+driver:
+  enabled: false # Safe default: operator driver management is NOT yet authorized.
+  upgradePolicy:
+    autoUpgrade: false
+operator:
+  upgradeCRD: false
+  cleanupCRD: false
+  resources:
+    requests: {cpu: 100m, memory: 128Mi}
+    limits: {cpu: 500m, memory: 350Mi}
+toolkit:
+  enabled: true
+  resources:
+    requests: {cpu: 100m, memory: 128Mi}
+    limits: {cpu: 500m, memory: 512Mi}
+  env:
+    - {name: CONTAINERD_CONFIG, value: /var/lib/rancher/k3s/agent/etc/containerd/config.toml}
+    - {name: CONTAINERD_SOCKET, value: /run/k3s/containerd/containerd.sock}
+    - {name: CONTAINERD_RUNTIME_CLASS, value: nvidia}
+    - {name: CONTAINERD_SET_AS_DEFAULT, value: 'false'}
+# NFD is a separate dependency: approve and label the actual GPU nodes first.
+nfd: {enabled: false}
+mig: {strategy: none} # Do not assume an unspecified RTX supports MIG.
+migManager: {enabled: false}
+devicePlugin:
+  resources:
+    requests: {cpu: 50m, memory: 64Mi}
+    limits: {cpu: 250m, memory: 256Mi}
+  config:
+    name: gpu-sharing
+    default: exclusive
+dcgmExporter:
+  enabled: true
+  resources:
+    requests: {cpu: 50m, memory: 128Mi}
+    limits: {cpu: 500m, memory: 512Mi}
+  # kube-prometheus-stack CRDs must exist before this is enabled.
+  serviceMonitor:
+    enabled: true
+    additionalLabels: {release: monitoring}

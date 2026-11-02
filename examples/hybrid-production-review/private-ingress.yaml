@@ -1,0 +1,57 @@
+# Environment template: render only the three named public non-secret inputs.
+# Private DNS must resolve both hosts to the VPS WireGuard ingress address.
+# Traefik is reachable ONLY over the private interface/firewall, not WAN :443.
+# Ingress does not create WireGuard routes, AllowedIPs, CNI routes or MTU settings.
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata: {name: letsencrypt-prod}
+spec:
+  acme:
+    email: '${ACME_EMAIL}'
+    server: https://acme-v02.api.letsencrypt.org/directory
+    privateKeySecretRef: {name: letsencrypt-prod-account}
+    # Existing scoped DNS token in cert-manager namespace. Test staging FIRST.
+    solvers:
+      - dns01:
+          cloudflare:
+            apiTokenSecretRef: {name: cloudflare-dns01, key: api-token}
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata: {name: private-ui-auth, namespace: llmops}
+spec:
+  basicAuth:
+    # Pre-provisioned users key containing reviewed htpasswd hashes, never plaintext.
+    secret: private-ui-auth
+    removeHeader: true
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: private-ai-ui
+  namespace: llmops
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.middlewares: llmops-private-ui-auth@kubernetescrd
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts: ['${OPENCLAW_HOST}', '${N8N_HOST}']
+      secretName: private-ai-ui-tls
+  rules:
+    - host: '${OPENCLAW_HOST}'
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend: {service: {name: openclaw, port: {number: 18789}}}
+    - host: '${N8N_HOST}'
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend: {service: {name: n8n, port: {number: 5678}}}
+# Existing ClusterIP services, matching app labels and application authentication
+# are mandatory. OpenClaw must trust only the proxy and exact allowed UI origins.
+# n8n needs its correct external URL/proxy-hop settings. No raw Ollama ingress.

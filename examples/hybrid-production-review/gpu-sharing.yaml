@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata: {name: gpu-sharing, namespace: gpu-operator}
+data:
+  exclusive: |-
+    version: v1
+    flags:
+      migStrategy: none
+  shared: |-
+    version: v1
+    flags:
+      migStrategy: none
+    sharing:
+      timeSlicing:
+        renameByDefault: true
+        failRequestsGreaterThanOne: true
+        resources:
+          - name: nvidia.com/gpu
+            replicas: 2
+# Opt-in node label: nvidia.com/device-plugin.config=shared.
+# Shared workloads must request/limit nvidia.com/gpu.shared: 1 instead of
+# nvidia.com/gpu: 1. Adjust the ResourceQuota too; do NOT grant both resources.
+# No VRAM partitioning, fault isolation or guaranteed half-GPU performance.

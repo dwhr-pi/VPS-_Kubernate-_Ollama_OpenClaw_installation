@@ -1,0 +1,42 @@
+# Argo CRDs/controller come from the existing verified bootstrap, not a moving URL.
+# Namespace llmops must be privately reviewed; controller bootstrap is separate.
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata: {name: hybrid-reviewed, namespace: argocd}
+spec:
+  sourceRepos:
+    - https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation.git
+  destinations:
+    - {server: 'https://kubernetes.default.svc', namespace: llmops}
+  clusterResourceWhitelist:
+    - {group: '', kind: Namespace}
+  namespaceResourceWhitelist:
+    - {group: '', kind: ConfigMap}
+    - {group: '', kind: Service}
+    - {group: '', kind: PersistentVolumeClaim}
+    - {group: '', kind: LimitRange}
+    - {group: '', kind: ResourceQuota}
+    - {group: apps, kind: StatefulSet}
+    - {group: apps, kind: Deployment}
+    - {group: networking.k8s.io, kind: NetworkPolicy}
+    - {group: networking.k8s.io, kind: Ingress}
+    - {group: cert-manager.io, kind: Issuer}
+    - {group: traefik.io, kind: Middleware}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata: {name: hybrid-reviewed-gpu, namespace: argocd}
+spec:
+  project: hybrid-reviewed
+  source:
+    repoURL: https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation.git
+    # Real immutable review basis, NOT a production-approved deployment revision.
+    # This revision still contains deliberate image/model placeholders.
+    # Replace only with a separately approved commit containing usable pins.
+    targetRevision: ee65a51f44d44c0f0b093a9f30834d735e79df76
+    # This overlay already includes ../../base: never sync base a second time.
+    path: k8s/overlays/gpu
+  destination: {server: 'https://kubernetes.default.svc', namespace: llmops}
+  syncPolicy:
+    syncOptions: [ApplyOutOfSyncOnly=true]
+    # No automated, selfHeal, prune, finalizer or controller installation.

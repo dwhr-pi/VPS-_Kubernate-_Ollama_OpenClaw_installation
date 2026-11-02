@@ -1,0 +1,24 @@
+apiVersion: velero.io/v1
+kind: Schedule
+metadata: {name: reviewed-hybrid-daily, namespace: velero}
+spec:
+  # Enable only after a consistent sample backup and isolated restore succeeded.
+  paused: true
+  skipImmediately: true
+  schedule: '30 2 * * *'
+  useOwnerReferencesInBackup: false
+  template:
+    storageLocation: offsite
+    includedNamespaces: ['*']
+    includeClusterResources: true
+    defaultVolumesToFsBackup: false
+    snapshotVolumes: false
+    ttl: 336h0m0s
+# Opt in PVC-backed POD volumes using backup.velero.io/backup-volumes: memory.
+# Annotation belongs on the workload pod template, not the PVC or host path.
+# Optional model cache: add its actual pod volume name (often models), not
+# /mnt/data/ollama/models. hostPath volumes are NOT supported by Velero FSB.
+# Databases need tested logical dumps or application-specific quiescing hooks.
+# A live filesystem copy is not a transaction-consistent database backup.
+# Cluster metadata includes Secrets: use encrypted off-site storage and protect
+# repository credentials separately. Velero does NOT replace K3s datastore backup.

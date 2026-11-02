@@ -1,0 +1,82 @@
+# Canonical existing namespace is llmops, not a second parallel AI stack.
+# Requires working policy enforcement. Policies are additive: review existing
+# allow rules before claiming isolation. Cilium migration is NOT part of this file.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata: {name: reviewed-default-deny, namespace: llmops}
+spec:
+  podSelector: {}
+  policyTypes: [Ingress, Egress]
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata: {name: reviewed-dns-only, namespace: llmops}
+spec:
+  podSelector: {}
+  policyTypes: [Egress]
+  egress:
+    - to:
+        - namespaceSelector: {matchLabels: {kubernetes.io/metadata.name: kube-system}}
+          podSelector: {matchLabels: {k8s-app: kube-dns}}
+      ports: [{protocol: UDP, port: 53}, {protocol: TCP, port: 53}]
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata: {name: reviewed-private-ui, namespace: llmops}
+spec:
+  podSelector:
+    matchExpressions:
+      - {key: app, operator: In, values: [openclaw, n8n]}
+  policyTypes: [Ingress]
+  ingress:
+    - from:
+        # K3s bundled Traefik only; select a different explicit namespace if migrated.
+        - namespaceSelector: {matchLabels: {kubernetes.io/metadata.name: kube-system}}
+          podSelector: {matchLabels: {app.kubernetes.io/name: traefik}}
+      ports: [{protocol: TCP, port: 18789}, {protocol: TCP, port: 5678}]
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata: {name: reviewed-agent-to-gateway, namespace: llmops}
+spec:
+  podSelector:
+    matchExpressions:
+      - {key: app, operator: In, values: [openclaw, n8n]}
+  policyTypes: [Egress]
+  egress:
+    - to:
+        - podSelector: {matchLabels: {app: litellm}}
+      ports: [{protocol: TCP, port: 4000}]
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata: {name: reviewed-gateway-from-agent, namespace: llmops}
+spec:
+  podSelector: {matchLabels: {app: litellm}}
+  policyTypes: [Ingress, Egress]
+  ingress:
+    - from:
+        - podSelector:
+            matchExpressions:
+              - {key: app, operator: In, values: [openclaw, n8n]}
+      ports: [{protocol: TCP, port: 4000}]
+  egress:
+    - to:
+        - podSelector: {matchLabels: {app: ollama}}
+      ports: [{protocol: TCP, port: 11434}]
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata: {name: reviewed-ollama-from-gateway, namespace: llmops}
+spec:
+  podSelector: {matchLabels: {app: ollama}}
+  policyTypes: [Ingress]
+  ingress:
+    - from:
+        - podSelector: {matchLabels: {app: litellm}}
+      ports: [{protocol: TCP, port: 11434}]
+# External inference/model downloads intentionally blocked. Add ONLY separately
+# approved provider/proxy rules. Vanilla NetworkPolicy cannot allowlist FQDNs.
+# State services, ESO provider access and monitoring require reviewed narrow rules;
+# this file deliberately does not open arbitrary DBs or the Kubernetes API.
+# Traefik egress and monitoring egress must be allowed in their OWN namespaces.

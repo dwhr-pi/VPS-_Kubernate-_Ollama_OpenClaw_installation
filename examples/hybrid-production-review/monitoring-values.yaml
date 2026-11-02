@@ -1,0 +1,20 @@
+# Overlay for kube-prometheus-stack, release name monitoring, namespace monitoring.
+# Merge AFTER k8s/monitoring/prometheus-values.yml. NOT monitoring-lite values:
+# adding unknown dependency keys to that standalone chart would install nothing.
+grafana:
+  sidecar:
+    dashboards:
+      enabled: true
+      label: grafana_dashboard
+      labelValue: '1'
+      searchNamespace: monitoring
+prometheus:
+  prometheusSpec:
+    serviceMonitorNamespaceSelector:
+      matchNames: [monitoring, gpu-operator]
+    serviceMonitorSelector:
+      matchLabels: {release: monitoring}
+# Keep the existing resource limits, persistence and secret-backed Grafana admin.
+# Loki is a SEPARATE release using k8s/monitoring/loki-values.yml; a values file
+# does not instantiate another chart. Existing Alloy/log shipping remains separate.
+# DCGM exporter DaemonSet is owned by GPU Operator: do not install a second one.

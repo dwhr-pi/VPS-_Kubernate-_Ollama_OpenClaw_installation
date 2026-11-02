@@ -1,0 +1,48 @@
+# Local reviewed Velero chart, AWS-plugin and server versions must be compatible.
+# Render non-secret environment variables before use; never invent image digests.
+image:
+  repository: '${VELERO_IMAGE_REPOSITORY}'
+  digest: '${VELERO_IMAGE_DIGEST}'
+credentials:
+  useSecret: true
+  existingSecret: velero-cloud-credentials
+rbac:
+  # Supply version-reviewed backup/restore RBAC separately, never silently grant admin.
+  clusterAdministrator: false
+initContainers:
+  - name: velero-plugin-for-aws
+    image: '${VELERO_AWS_PLUGIN_IMAGE}'
+    volumeMounts: [{name: plugins, mountPath: /target}]
+configuration:
+  backupStorageLocation:
+    - name: offsite
+      provider: aws
+      bucket: '${S3_BUCKET}'
+      prefix: hybrid/cluster-01
+      default: true
+      config:
+        region: '${S3_REGION}'
+        s3Url: '${S3_ENDPOINT}'
+        s3ForcePathStyle: 'true'
+  volumeSnapshotLocation: []
+  defaultVolumesToFsBackup: false
+snapshotsEnabled: false
+deployNodeAgent: true
+nodeAgent:
+  # Confirm the real kubelet root on every native Linux worker first.
+  podVolumePath: /var/lib/kubelet/pods
+  containerSecurityContext:
+    privileged: false
+  nodeSelector:
+    kubernetes.io/os: linux
+    llmops.example/backup: 'true'
+  resources:
+    requests: {cpu: 100m, memory: 256Mi}
+    limits: {cpu: '1', memory: 1Gi}
+resources:
+  requests: {cpu: 100m, memory: 256Mi}
+  limits: {cpu: '1', memory: 1Gi}
+# Node-agent requires host mounts/root access; not PSS Restricted even if
+# privileged=false. Any stronger privilege must be separately justified/approved.
+# Existing secret needs key cloud with AWS credential-file format.
+# Provision velero-repo-credentials/repository-password privately BEFORE first FSB.
