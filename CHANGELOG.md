@@ -2,6 +2,18 @@
 
 ## Unreleased
 
+### 2026-11-02: Kompakte README und Terminal-Dokumentation
+
+- Sechs Themenlinks statt 45 grosser Navigationsueberschriften in der README;
+  historische Links eingeklappt, alle 45 bisherigen Abschnittsanker erhalten.
+- Hauptmenue 10 bietet sechs Themen mit je drei lokalen Dokumenten.
+  API-Key Guide bleibt erreichbar; Zurueck/Esc navigiert ohne Installationsaktion.
+- Navigation, feste Dokumentziele, fehlende Dateien und Dialogfehler mit
+  Offline-Fixtures getestet. Keine Aenderung an Installern, Quellenstrategie,
+  Secrets, Diensten oder Tool-Reihenfolge; nur Dokumentationsnavigation.
+- GitHub-Source-Builds bleiben die Vorgabe. Keine automatische Einfuehrung
+  weiterer fertiger Release-Artefakte.
+
 ### 2026-11-02: OpenClaw-Quellenschutz und erneute A-Z-Sortierung
 
 - Ungepinnten OpenClaw-Clone-/Pull-/Paketpfad durch Quellen-Guard ersetzt;

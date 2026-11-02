@@ -32,6 +32,15 @@ Prettier 3.6.2 formatiert Markdown mit 100 Zeichen Zielbreite und umgebrochenem 
 SHA256-gepruefte historische YAML-Block nicht umgebaut. Markdownlint prueft das Ergebnis unabhaengig
 vom Formatter.
 
+### Lokale HTML-Ausnahme fuer Navigation
+
+Die Projekt-README erlaubt ausschliesslich dort per MD033-Dateikonfiguration die
+HTML-Elemente `a`, `details` und `summary`: historische Abschnittsanker bleiben
+erreichbar, ihre Linkliste ist eingeklappt statt als 45 grosse Ueberschriften
+sichtbar. Andere HTML-Elemente bleiben untersagt; globale Regeln und Linkchecks
+werden nicht abgeschaltet. Die 45 bisherigen Ziele sind als Regression-Fixture
+festgehalten und werden gegen die unveraenderte historische Langfassung geprueft.
+
 ## Eng begrenzte Datenmodul-Ausnahme
 
 Die zehn Dateien `scripts/lang/{ar,de,en,eo,es,fr,he,ja,ru,zh}.sh` sind

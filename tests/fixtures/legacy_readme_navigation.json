@@ -1,0 +1,182 @@
+[
+  {
+    "title": "VPS- Kubernate- Ollama & OpenClaw installation - Ultimate Setup V11.17",
+    "anchor": "vps--kubernate--ollama--openclaw-installation---ultimate-setup-v1117"
+  },
+  {
+    "title": "Empfohlener sicherer Einstieg",
+    "anchor": "empfohlener-sicherer-einstieg"
+  },
+  {
+    "title": "Inhaltsverzeichnis",
+    "anchor": "inhaltsverzeichnis"
+  },
+  {
+    "title": "Aktuelle Governance-Dokumente",
+    "anchor": "aktuelle-governance-dokumente"
+  },
+  {
+    "title": "Wichtiger Original- und Support-Hinweis",
+    "anchor": "wichtiger-original--und-support-hinweis"
+  },
+  {
+    "title": "Empfohlener Start: HE vorne, Oracle steuert, Pi weckt, RTX rechnet",
+    "anchor": "empfohlener-start-he-vorne-oracle-steuert-pi-weckt-rtx-rechnet"
+  },
+  {
+    "title": "🧱 Zielbild",
+    "anchor": "-zielbild"
+  },
+  {
+    "title": "Quickstarts",
+    "anchor": "quickstarts"
+  },
+  {
+    "title": "Setup-Skripte schnell finden",
+    "anchor": "setup-skripte-schnell-finden"
+  },
+  {
+    "title": "Speicherplatz und Bereinigung",
+    "anchor": "speicherplatz-und-bereinigung"
+  },
+  {
+    "title": "🟡 Gegenwärtiger Status",
+    "anchor": "-gegenwärtiger-status"
+  },
+  {
+    "title": "🚀 Schnelle Installation (One-Liner)",
+    "anchor": "-schnelle-installation-one-liner"
+  },
+  {
+    "title": "🔄 Setup erneut starten",
+    "anchor": "-setup-erneut-starten"
+  },
+  {
+    "title": "🔁 Setup aktualisieren oder lokal entfernen",
+    "anchor": "-setup-aktualisieren-oder-lokal-entfernen"
+  },
+  {
+    "title": "Boardroom-Profil",
+    "anchor": "boardroom-profil"
+  },
+  {
+    "title": "🧭 Neue Übersichten und Doctor-Skripte",
+    "anchor": "-neue-übersichten-und-doctor-skripte"
+  },
+  {
+    "title": "Tool-Quellen und GitHub-Regel",
+    "anchor": "tool-quellen-und-github-regel"
+  },
+  {
+    "title": "Optionale Profile",
+    "anchor": "optionale-profile"
+  },
+  {
+    "title": "Optional: OpenHiggsStack / AI Cinema Studio",
+    "anchor": "optional-openhiggsstack--ai-cinema-studio"
+  },
+  {
+    "title": "Optional: GameDev 3D Studio NEXTLEVEL",
+    "anchor": "optional-gamedev-3d-studio-nextlevel"
+  },
+  {
+    "title": "Optional: CAD_Konstrukteur",
+    "anchor": "optional-cad_konstrukteur"
+  },
+  {
+    "title": "Optional: Architektur 3D BIM",
+    "anchor": "optional-architektur-3d-bim"
+  },
+  {
+    "title": "Optional: Robotertechnik & Anlagensteuerung",
+    "anchor": "optional-robotertechnik--anlagensteuerung"
+  },
+  {
+    "title": "Optional: Wissenschaftliche Science-Lab-Profile",
+    "anchor": "optional-wissenschaftliche-science-lab-profile"
+  },
+  {
+    "title": "🔐 Sicherheit bei der Nutzung",
+    "anchor": "-sicherheit-bei-der-nutzung"
+  },
+  {
+    "title": "⚠️ Kostenfalle durch Cloud-APIs und Bezahldienste",
+    "anchor": "-kostenfalle-durch-cloud-apis-und-bezahldienste"
+  },
+  {
+    "title": "⚠️ Trading-, Web3- und Finanzhinweis",
+    "anchor": "-trading--web3--und-finanzhinweis"
+  },
+  {
+    "title": "🧭 Installationspfade",
+    "anchor": "-installationspfade"
+  },
+  {
+    "title": "Minimal Setup",
+    "anchor": "minimal-setup"
+  },
+  {
+    "title": "Full Setup",
+    "anchor": "full-setup"
+  },
+  {
+    "title": "Cluster Setup",
+    "anchor": "cluster-setup"
+  },
+  {
+    "title": "Quickstart GPU Workstation",
+    "anchor": "quickstart-gpu-workstation"
+  },
+  {
+    "title": "Quickstart Media AI",
+    "anchor": "quickstart-media-ai"
+  },
+  {
+    "title": "Quickstart Secure Production-like",
+    "anchor": "quickstart-secure-production-like"
+  },
+  {
+    "title": "📖 Dokumentation",
+    "anchor": "-dokumentation"
+  },
+  {
+    "title": "Neue Plattformprofile",
+    "anchor": "neue-plattformprofile"
+  },
+  {
+    "title": "Neue Studio- und Spezialprofile",
+    "anchor": "neue-studio--und-spezialprofile"
+  },
+  {
+    "title": "🛠️ Enthaltene Komponenten & Tools",
+    "anchor": "-enthaltene-komponenten--tools"
+  },
+  {
+    "title": "👤 Profil-Management",
+    "anchor": "-profil-management"
+  },
+  {
+    "title": "Profilgruppen",
+    "anchor": "profilgruppen"
+  },
+  {
+    "title": "💻 Codex-Nachbau und Plattformziele",
+    "anchor": "-codex-nachbau-und-plattformziele"
+  },
+  {
+    "title": "⚙️ Verzeichnisstruktur",
+    "anchor": "-verzeichnisstruktur"
+  },
+  {
+    "title": "⚠️ Wichtige Hinweise",
+    "anchor": "-wichtige-hinweise"
+  },
+  {
+    "title": "AI Media Studio",
+    "anchor": "ai-media-studio"
+  },
+  {
+    "title": "Start Here",
+    "anchor": "start-here"
+  }
+]

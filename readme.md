@@ -1,119 +1,177 @@
 # Hybride Kubernetes- und KI-Plattform
 
-Projektlizenz: [Apache-2.0](LICENSE). Hinweise auf Unterstuetzung sind
-keine zusaetzliche Lizenzbedingung. [Drittprojekte](THIRD_PARTY_NOTICES.md).
-
 HE/Oracle Control/DMZ -> WireGuard -> Pi (WoL) -> RTX/K3s-Worker zuhause.
 Interne APIs bleiben privat; GPU, Tunnel, Cloud und privilegierte Dienste sind opt-in.
-Keine pauschale Produktionsfreigabe: P0-Supply-Chain und Live-Abnahmen sind noch offen.
+Keine pauschale Produktionsfreigabe: Supply-Chain und echte Laufzeit-/Restore-Abnahmen bleiben offen.
 
-[Dokumentationsindex](docs/readme.md) |
-[P1-P3: Umsetzung und offene Abnahmen](docs/P1_P3_IMPLEMENTATION.md) |
-[Sicherer Kernpfad](docs/SECURE_CORE_REFACTOR.md) |
-[Signierte Releases](docs/SIGNED_RELEASES.md) |
-[Installationszweige](docs/INSTALL_BRANCH_SELECTION.md).
-Kein ungeprueftes curl-pipe-bash; der Signatur-Vertrauensanker muss unabhaengig vorliegen.
+Projektlizenz: [Apache-2.0](LICENSE). [Drittprojekte](THIRD_PARTY_NOTICES.md).
+Hinweise auf Unterstuetzung sind keine zusaetzliche Lizenzbedingung.
 
-[Tool-Matrix](docs/generated/TOOL_MATRIX.md) |
-[Profile](docs/generated/PROFILE_MATRIX.md) |
-[Ports](docs/generated/PORT_MATRIX.md).
-Registry-Metadaten sind kein Laufzeitnachweis.
-[Entwicklungswerkzeuge](docs/DEVELOPMENT_TOOLS_OVERVIEW.md) |
-[Toolchain-Pruefung](docs/tools/development-toolchain-check.md) |
-[Praesentation](docs/presentations/technology-tooling-overview.pptx) |
-[Review-Fortsetzung](docs/tutorials/grok-repo-review-2026-10-23.md) |
-[Recht/RAG](docs/legal/README.md).
+## Orientierung
 
-Die folgenden bisherigen Ueberschriften bleiben als Navigation erhalten.
-Der [vollstaendige Alttext](docs/legacy/README_FULL_2026_11_01.md) ist historisch:
-alte Kommandos, Versionen und Aussagen sind keine aktuelle Installationsempfehlung.
+- **Einstieg:** [Erste 60 Minuten](docs/FIRST_60_MINUTES.md), [aktueller Status](docs/CURRENT_STATUS.md).
+- **Architektur:** [Hybrid-Plattform](docs/architecture/), [Kubernetes-Baseline](docs/PRODUCTION_BASELINE.md).
+- **Betrieb:** [Installationszweige](docs/INSTALL_BRANCH_SELECTION.md), [Backup und Restore](docs/INSTALLATION_STATUS_BACKUP.md).
+- **Sicherheit:** [Signierte Releases](docs/SIGNED_RELEASES.md), [sicherer Kernpfad](docs/SECURE_CORE_REFACTOR.md).
+- **Tools und Profile:** [Tool-Matrix](docs/generated/TOOL_MATRIX.md), [Profil-Matrix](docs/generated/PROFILE_MATRIX.md).
+- **Dokumentation und Historie:** [Wegweiser](docs/readme.md), [historische Langfassung](docs/legacy/README_FULL_2026_11_01.md).
 
-## [VPS- Kubernate- Ollama & OpenClaw installation - Ultimate Setup V11.17](docs/legacy/README_FULL_2026_11_01.md)
+Zum Lesen im Setup: Hauptmenue **10 - Dokumentation & API-Key Guide**.
+Dort zuerst eines von sechs Themen, dann ein Dokument auswaehlen.
+Enter oeffnet die markierte Auswahl; Zurueck/Esc kehrt zur vorherigen Ebene zurueck.
+Es werden nur lokale Dokumente angezeigt, keine Browser, Installer oder Dienste gestartet.
 
-## [Empfohlener sicherer Einstieg](docs/legacy/README_FULL_2026_11_01.md)
+Kein ungeprueftes curl-pipe-bash. Der Release-Vertrauensanker muss unabhaengig vorliegen.
+Primaertools bleiben GitHub-Source-Builds; bestehende ausdrueckliche Quellen-Ausnahmen bleiben separat dokumentiert.
+Registry-Metadaten und Menuehaekchen sind kein Laufzeitnachweis.
+[Ports](docs/generated/PORT_MATRIX.md), [P1-P3 und Abnahmegrenzen](docs/P1_P3_IMPLEMENTATION.md).
 
-## [Inhaltsverzeichnis](docs/legacy/README_FULL_2026_11_01.md)
+Weitere Themen: [Entwicklungswerkzeuge](docs/DEVELOPMENT_TOOLS_OVERVIEW.md),
+[Toolchain-Pruefung](docs/tools/development-toolchain-check.md),
+[Praesentation](docs/presentations/technology-tooling-overview.pptx),
+[Review-Fortsetzung](docs/tutorials/grok-repo-review-2026-10-23.md), [Recht/RAG](docs/legal/README.md).
 
-## [Aktuelle Governance-Dokumente](docs/legacy/README_FULL_2026_11_01.md)
+<!-- markdownlint-configure-file {"MD033": {"allowed_elements": ["a", "details", "summary"]}} -->
+<!-- Explicit legacy anchors preserve incoming links without oversized heading navigation. -->
+<details>
+<summary>Historische Abschnittslinks aufklappen</summary>
 
-## [Wichtiger Original- und Support-Hinweis](docs/legacy/README_FULL_2026_11_01.md)
+Alte Kommandos, Versionen und Aussagen sind keine aktuelle Installationsempfehlung.
+Die bisherigen Abschnittsanker bleiben hier erhalten; ihre Links fuehren in die historische Langfassung.
 
-## [Empfohlener Start: HE vorne, Oracle steuert, Pi weckt, RTX rechnet](docs/legacy/README_FULL_2026_11_01.md)
+<a id="vps--kubernate--ollama--openclaw-installation---ultimate-setup-v1117"></a>
+[VPS- Kubernate- Ollama & OpenClaw installation - Ultimate Setup V11.17](docs/legacy/README_FULL_2026_11_01.md#vps--kubernate--ollama--openclaw-installation---ultimate-setup-v1117)
 
-## [🧱 Zielbild](docs/legacy/README_FULL_2026_11_01.md)
+<a id="empfohlener-sicherer-einstieg"></a>
+[Empfohlener sicherer Einstieg](docs/legacy/README_FULL_2026_11_01.md#empfohlener-sicherer-einstieg)
 
-## [Quickstarts](docs/legacy/README_FULL_2026_11_01.md)
+<a id="inhaltsverzeichnis"></a>
+[Inhaltsverzeichnis](docs/legacy/README_FULL_2026_11_01.md#inhaltsverzeichnis)
 
-## [Setup-Skripte schnell finden](docs/legacy/README_FULL_2026_11_01.md)
+<a id="aktuelle-governance-dokumente"></a>
+[Aktuelle Governance-Dokumente](docs/legacy/README_FULL_2026_11_01.md#aktuelle-governance-dokumente)
 
-## [Speicherplatz und Bereinigung](docs/legacy/README_FULL_2026_11_01.md)
+<a id="wichtiger-original--und-support-hinweis"></a>
+[Wichtiger Original- und Support-Hinweis](docs/legacy/README_FULL_2026_11_01.md#wichtiger-original--und-support-hinweis)
 
-## [🟡 Gegenwärtiger Status](docs/legacy/README_FULL_2026_11_01.md)
+<a id="empfohlener-start-he-vorne-oracle-steuert-pi-weckt-rtx-rechnet"></a>
+[Empfohlener Start: HE vorne, Oracle steuert, Pi weckt, RTX rechnet](docs/legacy/README_FULL_2026_11_01.md#empfohlener-start-he-vorne-oracle-steuert-pi-weckt-rtx-rechnet)
 
-## [🚀 Schnelle Installation (One-Liner)](docs/legacy/README_FULL_2026_11_01.md)
+<a id="-zielbild"></a>
+[🧱 Zielbild](docs/legacy/README_FULL_2026_11_01.md#-zielbild)
 
-## [🔄 Setup erneut starten](docs/legacy/README_FULL_2026_11_01.md)
+<a id="quickstarts"></a>
+[Quickstarts](docs/legacy/README_FULL_2026_11_01.md#quickstarts)
 
-## [🔁 Setup aktualisieren oder lokal entfernen](docs/legacy/README_FULL_2026_11_01.md)
+<a id="setup-skripte-schnell-finden"></a>
+[Setup-Skripte schnell finden](docs/legacy/README_FULL_2026_11_01.md#setup-skripte-schnell-finden)
 
-## [Boardroom-Profil](docs/legacy/README_FULL_2026_11_01.md)
+<a id="speicherplatz-und-bereinigung"></a>
+[Speicherplatz und Bereinigung](docs/legacy/README_FULL_2026_11_01.md#speicherplatz-und-bereinigung)
 
-## [🧭 Neue Übersichten und Doctor-Skripte](docs/legacy/README_FULL_2026_11_01.md)
+<a id="-gegenwärtiger-status"></a>
+[🟡 Gegenwärtiger Status](docs/legacy/README_FULL_2026_11_01.md#-gegenwärtiger-status)
 
-## [Tool-Quellen und GitHub-Regel](docs/legacy/README_FULL_2026_11_01.md)
+<a id="-schnelle-installation-one-liner"></a>
+[🚀 Schnelle Installation (One-Liner)](docs/legacy/README_FULL_2026_11_01.md#-schnelle-installation-one-liner)
 
-## [Optionale Profile](docs/legacy/README_FULL_2026_11_01.md)
+<a id="-setup-erneut-starten"></a>
+[🔄 Setup erneut starten](docs/legacy/README_FULL_2026_11_01.md#-setup-erneut-starten)
 
-## [Optional: OpenHiggsStack / AI Cinema Studio](docs/legacy/README_FULL_2026_11_01.md)
+<a id="-setup-aktualisieren-oder-lokal-entfernen"></a>
+[🔁 Setup aktualisieren oder lokal entfernen](docs/legacy/README_FULL_2026_11_01.md#-setup-aktualisieren-oder-lokal-entfernen)
 
-## [Optional: GameDev 3D Studio NEXTLEVEL](docs/legacy/README_FULL_2026_11_01.md)
+<a id="boardroom-profil"></a>
+[Boardroom-Profil](docs/legacy/README_FULL_2026_11_01.md#boardroom-profil)
 
-## [Optional: CAD_Konstrukteur](docs/legacy/README_FULL_2026_11_01.md)
+<a id="-neue-übersichten-und-doctor-skripte"></a>
+[🧭 Neue Übersichten und Doctor-Skripte](docs/legacy/README_FULL_2026_11_01.md#-neue-übersichten-und-doctor-skripte)
 
-## [Optional: Architektur 3D BIM](docs/legacy/README_FULL_2026_11_01.md)
+<a id="tool-quellen-und-github-regel"></a>
+[Tool-Quellen und GitHub-Regel](docs/legacy/README_FULL_2026_11_01.md#tool-quellen-und-github-regel)
 
-## [Optional: Robotertechnik & Anlagensteuerung](docs/legacy/README_FULL_2026_11_01.md)
+<a id="optionale-profile"></a>
+[Optionale Profile](docs/legacy/README_FULL_2026_11_01.md#optionale-profile)
 
-## [Optional: Wissenschaftliche Science-Lab-Profile](docs/legacy/README_FULL_2026_11_01.md)
+<a id="optional-openhiggsstack--ai-cinema-studio"></a>
+[Optional: OpenHiggsStack / AI Cinema Studio](docs/legacy/README_FULL_2026_11_01.md#optional-openhiggsstack--ai-cinema-studio)
 
-## [🔐 Sicherheit bei der Nutzung](docs/legacy/README_FULL_2026_11_01.md)
+<a id="optional-gamedev-3d-studio-nextlevel"></a>
+[Optional: GameDev 3D Studio NEXTLEVEL](docs/legacy/README_FULL_2026_11_01.md#optional-gamedev-3d-studio-nextlevel)
 
-## [⚠️ Kostenfalle durch Cloud-APIs und Bezahldienste](docs/legacy/README_FULL_2026_11_01.md)
+<a id="optional-cad_konstrukteur"></a>
+[Optional: CAD_Konstrukteur](docs/legacy/README_FULL_2026_11_01.md#optional-cad_konstrukteur)
 
-## [⚠️ Trading-, Web3- und Finanzhinweis](docs/legacy/README_FULL_2026_11_01.md)
+<a id="optional-architektur-3d-bim"></a>
+[Optional: Architektur 3D BIM](docs/legacy/README_FULL_2026_11_01.md#optional-architektur-3d-bim)
 
-## [🧭 Installationspfade](docs/legacy/README_FULL_2026_11_01.md)
+<a id="optional-robotertechnik--anlagensteuerung"></a>
+[Optional: Robotertechnik & Anlagensteuerung](docs/legacy/README_FULL_2026_11_01.md#optional-robotertechnik--anlagensteuerung)
 
-## [Minimal Setup](docs/legacy/README_FULL_2026_11_01.md)
+<a id="optional-wissenschaftliche-science-lab-profile"></a>
+[Optional: Wissenschaftliche Science-Lab-Profile](docs/legacy/README_FULL_2026_11_01.md#optional-wissenschaftliche-science-lab-profile)
 
-## [Full Setup](docs/legacy/README_FULL_2026_11_01.md)
+<a id="-sicherheit-bei-der-nutzung"></a>
+[🔐 Sicherheit bei der Nutzung](docs/legacy/README_FULL_2026_11_01.md#-sicherheit-bei-der-nutzung)
 
-## [Cluster Setup](docs/legacy/README_FULL_2026_11_01.md)
+<a id="-kostenfalle-durch-cloud-apis-und-bezahldienste"></a>
+[⚠️ Kostenfalle durch Cloud-APIs und Bezahldienste](docs/legacy/README_FULL_2026_11_01.md#-kostenfalle-durch-cloud-apis-und-bezahldienste)
 
-## [Quickstart GPU Workstation](docs/legacy/README_FULL_2026_11_01.md)
+<a id="-trading--web3--und-finanzhinweis"></a>
+[⚠️ Trading-, Web3- und Finanzhinweis](docs/legacy/README_FULL_2026_11_01.md#-trading--web3--und-finanzhinweis)
 
-## [Quickstart Media AI](docs/legacy/README_FULL_2026_11_01.md)
+<a id="-installationspfade"></a>
+[🧭 Installationspfade](docs/legacy/README_FULL_2026_11_01.md#-installationspfade)
 
-## [Quickstart Secure Production-like](docs/legacy/README_FULL_2026_11_01.md)
+<a id="minimal-setup"></a>
+[Minimal Setup](docs/legacy/README_FULL_2026_11_01.md#minimal-setup)
 
-## [📖 Dokumentation](docs/legacy/README_FULL_2026_11_01.md)
+<a id="full-setup"></a>
+[Full Setup](docs/legacy/README_FULL_2026_11_01.md#full-setup)
 
-## [Neue Plattformprofile](docs/legacy/README_FULL_2026_11_01.md)
+<a id="cluster-setup"></a>
+[Cluster Setup](docs/legacy/README_FULL_2026_11_01.md#cluster-setup)
 
-## [Neue Studio- und Spezialprofile](docs/legacy/README_FULL_2026_11_01.md)
+<a id="quickstart-gpu-workstation"></a>
+[Quickstart GPU Workstation](docs/legacy/README_FULL_2026_11_01.md#quickstart-gpu-workstation)
 
-## [🛠️ Enthaltene Komponenten & Tools](docs/legacy/README_FULL_2026_11_01.md)
+<a id="quickstart-media-ai"></a>
+[Quickstart Media AI](docs/legacy/README_FULL_2026_11_01.md#quickstart-media-ai)
 
-## [👤 Profil-Management](docs/legacy/README_FULL_2026_11_01.md)
+<a id="quickstart-secure-production-like"></a>
+[Quickstart Secure Production-like](docs/legacy/README_FULL_2026_11_01.md#quickstart-secure-production-like)
 
-## [Profilgruppen](docs/legacy/README_FULL_2026_11_01.md)
+<a id="-dokumentation"></a>
+[📖 Dokumentation](docs/legacy/README_FULL_2026_11_01.md#-dokumentation)
 
-## [💻 Codex-Nachbau und Plattformziele](docs/legacy/README_FULL_2026_11_01.md)
+<a id="neue-plattformprofile"></a>
+[Neue Plattformprofile](docs/legacy/README_FULL_2026_11_01.md#neue-plattformprofile)
 
-## [⚙️ Verzeichnisstruktur](docs/legacy/README_FULL_2026_11_01.md)
+<a id="neue-studio--und-spezialprofile"></a>
+[Neue Studio- und Spezialprofile](docs/legacy/README_FULL_2026_11_01.md#neue-studio--und-spezialprofile)
 
-## [⚠️ Wichtige Hinweise](docs/legacy/README_FULL_2026_11_01.md)
+<a id="-enthaltene-komponenten--tools"></a>
+[🛠️ Enthaltene Komponenten & Tools](docs/legacy/README_FULL_2026_11_01.md#-enthaltene-komponenten--tools)
 
-## [AI Media Studio](docs/legacy/README_FULL_2026_11_01.md)
+<a id="-profil-management"></a>
+[👤 Profil-Management](docs/legacy/README_FULL_2026_11_01.md#-profil-management)
 
-## [Start Here](docs/legacy/README_FULL_2026_11_01.md)
+<a id="profilgruppen"></a>
+[Profilgruppen](docs/legacy/README_FULL_2026_11_01.md#profilgruppen)
+
+<a id="-codex-nachbau-und-plattformziele"></a>
+[💻 Codex-Nachbau und Plattformziele](docs/legacy/README_FULL_2026_11_01.md#-codex-nachbau-und-plattformziele)
+
+<a id="-verzeichnisstruktur"></a>
+[⚙️ Verzeichnisstruktur](docs/legacy/README_FULL_2026_11_01.md#-verzeichnisstruktur)
+
+<a id="-wichtige-hinweise"></a>
+[⚠️ Wichtige Hinweise](docs/legacy/README_FULL_2026_11_01.md#-wichtige-hinweise)
+
+<a id="ai-media-studio"></a>
+[AI Media Studio](docs/legacy/README_FULL_2026_11_01.md#ai-media-studio)
+
+<a id="start-here"></a>
+[Start Here](docs/legacy/README_FULL_2026_11_01.md#start-here)
+
+</details>

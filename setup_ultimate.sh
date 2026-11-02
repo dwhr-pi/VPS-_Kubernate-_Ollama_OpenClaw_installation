@@ -61,6 +61,7 @@ source "$INSTALL_DIR/scripts/helpers/native_tool_status.sh"
 source "$INSTALL_DIR/scripts/helpers/comfyui_gguf_dependency.sh"
 source "$INSTALL_DIR/scripts/helpers/operation_log.sh"
 source "$INSTALL_DIR/scripts/helpers/webinar_platform_menu.sh"
+source "$INSTALL_DIR/scripts/helpers/documentation_menu.sh"
 
 ensure_user_workspace() {
   ensure_setup_preferences
@@ -5081,8 +5082,7 @@ while true; do
       fi
       ;;
     10)
-      dialog --clear --backtitle "$APP_TITLE" \
-        --title "Dokumentation & API-Key Guide" --textbox "$INSTALL_DIR/docs/_API-Keys/API_KEY_GUIDE.md" 25 80
+      show_documentation_menu
       ;;
     11)
       run_bash_script "$INSTALL_DIR/scripts/port_check.sh"

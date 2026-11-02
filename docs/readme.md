@@ -7,6 +7,15 @@ produktionsreif.
 
 ## Hier beginnen
 
+Im Setup oeffnet **Hauptmenue 10 - Dokumentation & API-Key Guide** jetzt sechs kurze Themen:
+Einstieg, Architektur, Betrieb, Sicherheit, Tools/API-Keys und Historie. Erst danach ein Dokument waehlen.
+Enter oeffnet die markierte Auswahl; Zurueck/Esc geht eine Ebene zurueck. Im Textfenster kehrt
+Zurueck zur Dokumentauswahl zurueck. Die Anzeige liest nur lokale Dateien, ohne Browserstart,
+Netzwerkzugriff, Download oder Dienstaktion. Markdown wird als lesbarer Quelltext angezeigt.
+Der API-Key Guide bleibt unter **Tools, Profile und API-Keys** erreichbar.
+Die kompakte [Projekt-README](../readme.md) enthaelt dieselben sechs Themen und aufklappbare historische Links.
+Bestehende Abschnittsanker bleiben erhalten. Die Source-Build-Vorgabe wird nicht veraendert.
+
 [Tool-Reihenfolge](tools/TOOL_MENU_ORDER.md): fester Bereich, bestehender Katalog
 A-Z nach der Trennlinie und kuenftige Tools als Anhang hinter Z.
 
