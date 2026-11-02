@@ -1,5 +1,14 @@
 # Kostenlose LLM-Zugaenge: Quellen, Trial-Credits und eigene Auswertung
 
+**Wochenpruefung vom 02.11.2026:** [Aktueller Quellenbericht](reviews/2026-11-02.md).
+Ollama Cloud nennt jetzt Pay-as-you-go mit drei parallelen Requests; die bisher dokumentierten
+monatlichen Gratis-Starter-Credits sind nicht erneut belegt. 0 USD Abonnement ist keine kostenlose
+Cloud-Inferenz. [Aktuelle Preise](https://ollama.com/pricing). Lokales Ollama bleibt eigener Betrieb.
+Weitere Befunde: Gemini-Auth-Key-Anforderungen, Together-Kartenpflicht auch bei ACH und
+Lizenzabgrenzung der Anthropic-API-CLI: Setup-Pin MIT, heutiges Upstream-main Apache-2.0.
+Claude Code selbst bleibt davon getrennt.
+Die folgenden datierten Tabellen bleiben **historische Vergleiche**, keine unveraenderten aktuellen Zusagen.
+
 **Wochenpruefung vom 26.10.2026:** [Aktueller Bericht](reviews/2026-10-26.md). Die unten datierte
 Tabelle vom 21.10. bleibt als historischer Vergleich erhalten. Neu ergaenzt: Ollama-Cloud-Credits,
 Together-Datenablage und Gemini-Tarifausnahmen.
@@ -117,7 +126,7 @@ Provider keinen kostenlosen Provider. Ein Dollarbetrag ist keine garantierte Tok
 Schluessel sicher verwalten: [API-Key-Katalog](PROVIDER_KEY_CATALOG.md),
 [Secrets](../SECRETS_AND_KEYS.md), [OnlineOnKeyServices](OnlineOnKeyServices/README.md). Fuer die
 Lizenzfrage des Coding-Agenten:
-[Claude Code ist nicht die MIT-API-CLI ant](../tools/claude-code.md).
+[Claude Code und die API-CLI ant sind getrennte Projekte](../tools/claude-code.md).
 
 ## Woechentliche Auswertung und Repo-Aktualisierungen
 

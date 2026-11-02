@@ -1,5 +1,14 @@
 # API-Schluessel erhalten: Freikontingente, Bezahlung und Identitaet
 
+**Aktualisierung 02.11.2026:** [Wochenbericht](reviews/2026-11-02.md).
+Ollama Cloud wird aktuell als tokenbasiertes Pay-as-you-go beschrieben, nicht als bestaetigtes
+monatliches Gratisangebot. Einzahlung, Zahlarten und KYC bleiben UB.
+Together verlangt auch bei US-ACH eine hinterlegte gueltige Karte.
+Gemini dokumentiert serviceaccountgebundene Auth-Keys und die Ablehnung unbeschraenkter Standard-Keys.
+OpenRouters alte USDC-/AliPay-/PayPal-Angaben unten sind historische Befunde, im aktuellen Support
+nicht erneut im Detail bestaetigt; keine beliebige Coin-/Netzwerk- oder Ausweisfreiheitszusage.
+Die folgenden datierten Recherchetabellen bleiben erhalten, nicht als neue Checkout-Abnahme.
+
 Erreichbarer Perplexity-Nachweis (30.10.2026): Der
 [offizielle Quickstart](https://docs.perplexity.ai/docs/getting-started/quickstart) beschreibt die
 API-Key-Erstellung in der Console. Die unten erhaltene Console-Adresse ist wegen des anonymen

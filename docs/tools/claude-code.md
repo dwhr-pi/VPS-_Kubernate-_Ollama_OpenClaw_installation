@@ -9,9 +9,19 @@ Produkt.
 
 ## Lizenzpruefung vom 21.10.2026
 
+**Aktueller Nachtrag vom 02.11.2026:** [Quellenbericht](../_API-Keys/reviews/2026-11-02.md).
+Claude Codes Originallizenz verweist weiterhin auf Commercial Terms; ein vollstaendig baubarer
+Open-Source-Agentenkern ist im gelesenen Originalrepository nicht belegt.
+Korrektur der bisherigen API-CLI-Abgrenzung: Die
+[Originallizenz von anthropics/anthropic-cli](https://github.com/anthropics/anthropic-cli/blob/main/LICENSE)
+ist aktuell **Apache-2.0**, nicht MIT. Die ebenfalls erneut gelesene
+[Lizenz am Setup-Pin](https://github.com/anthropics/anthropic-cli/blob/78ab237474e7c34983d77f6f41fcd1152f32a7ce/LICENSE)
+bleibt **MIT**. Dies betrifft `ant`, nicht `claude`; kein Installer-Pin wurde geaendert.
+Zeitpunkt einer moeglichen Upstream-Lizenzaenderung nicht belegt.
+
 Erneut geprueft am **26.10.2026**: [Wochenbericht](../_API-Keys/reviews/2026-10-26.md).
 Originallizenz, README und sichtbarer Dateibaum belegen weiterhin keinen vollstaendigen
-Open-Source-Build des Coding-Agenten. Kein Leak/Repackage oder MIT-API-Client als Original-Agent
+Open-Source-Build des Coding-Agenten. Kein Leak/Repackage oder separater API-Client als Original-Agent
 gewertet.
 
 Das offizielle Repository ist [anthropics/claude-code](https://github.com/anthropics/claude-code).
@@ -35,7 +45,7 @@ Drittanbieter-Repackages verwenden.
 | --------------------------------------------- | ---------------------------------------------------------------------------- | -------------------------------------------------- |
 | `Claude_Code`                                 | Gepinnter GitHub-Checkout von Referenzmaterial/Plugins                       | Keine daraus gebaute funktionsfaehige `claude`-CLI |
 | `Claude_Code_Agent`                           | Rollen-/Routingvorlage                                                       | Kein gestarteter Coding-Agent                      |
-| [Anthropic_CLI / ant](anthropic-cli.md)       | Offizieller MIT-API-Client mit eigenem GitHub-Buildinstaller                 | Kein Ersatz fuer Claude Code                       |
+| [Anthropic_CLI / ant](anthropic-cli.md)       | Separater API-Client; Setup-Pin MIT, heutiges Upstream-main Apache-2.0 | Kein Ersatz fuer Claude Code                       |
 | [YouTube_Agent_Skill](youtube-agent-skill.md) | Optionales Skill-Paket fuer einen bereits eingerichteten kompatiblen Agenten | Keine Installation von Claude Code                 |
 
 Die vorhandenen Eintraege bleiben getrennt. Die Vorgabe **GitHub statt Docker** wird nicht durch

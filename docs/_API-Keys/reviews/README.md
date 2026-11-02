@@ -5,6 +5,7 @@ oeffentlichen Angaben am Prueftag, keine eigene Accountfreigabe oder erfolgreich
 
 | Datum      | Bericht                                                                                                     |
 | ---------- | ----------------------------------------------------------------------------------------------------------- |
+| 2026-11-02 | [Wochenpruefung: Cloud-Kosten, Lizenzkorrektur und Quellen](2026-11-02.md) |
 | 2026-10-26 | [Wochenpruefung: Cloud-Credits, Datenschutz, Quellen und Commitvergleich](2026-10-26.md)                    |
 | 2026-10-23 | [Registrierung, Zahlungsarten, Mindestbetraege und Identitaetspruefung](2026-10-23-registration-billing.md) |
 | 2026-10-21 | [Erstpruefung und Korrektur veralteter Free-Tier-Angaben](2026-10-21.md)                                    |
