@@ -38,7 +38,7 @@ def inventory(root=ROOT):
               'rows': [], 'summary': {}}
     for kind in ('tools', 'profiles'):
         script_fields = ('install', 'uninstall', 'check', 'healthcheck', 'smoke_test',
-                         'version', 'logs', 'doctor', 'update')
+                         'version', 'logs', 'doctor', 'update', 'status')
         rows = json.loads((root / 'config' / (kind + '.yml')).read_text(encoding='utf-8-sig'))[kind]
         if not isinstance(rows, list) or any(not isinstance(row, dict) for row in rows):
             raise ValueError('Registry muss eine Liste von Objekten enthalten.')
@@ -51,7 +51,7 @@ def inventory(root=ROOT):
                       'check': row.get('check_script'), 'healthcheck': row.get('healthcheck_script'),
                       'smoke_test': row.get('smoke_test_script'), 'version': row.get('version_script'),
                       'logs': row.get('logs_script'), 'doctor': row.get('doctor_script'),
-                      'update': row.get('update_script')}
+                      'update': row.get('update_script'), 'status': row.get('status_script')}
             checks = {key: script(root, value) for key, value in fields.items()}
             documentation = script(root, row.get('doc'))
             # An executable placeholder is still not an implemented integration.
@@ -100,6 +100,8 @@ def markdown(report, kind='all', revision='not-specified'):
         return ('[' + cell(info['path']) + '](../../' + info['path'] + ')' if info['path'] else '-') + ' (' + info['state'] + ')'
 
     lines = ['# Vollinventar: ' + kind, '', 'Repository-Revision: `' + revision + '`.', '',
+        'Arbeitsverzeichnis geaendert: ' + str(report.get('working_tree_dirty', 'nicht erfasst')) + '.',
+        'Dateimanifest-SHA256: `' + report.get('working_tree_manifest_sha256', 'nicht erfasst') + '`.', '',
         'Nur Registry und Dateiexistenz; keine Installation, Dienste, Cloud oder Secrets geprueft.',
         'Reviewklasse = konservative Abnahmeplanung, keine Registry-Aenderung oder Produktionsfreigabe.',
         'Unbekannt/experimental/optional wird ohne weiteren Beleg planned; vorhandene stable/beta bleiben nur deklarierte Labels.',
@@ -113,7 +115,7 @@ def markdown(report, kind='all', revision='not-specified'):
         dependencies = cell(row['dependencies']) if row['dependencies'] else 'nicht zentral deklariert'
         if row['optional_dependencies']:
             dependencies += '; optional: ' + cell(row['optional_dependencies'])
-        contract = ', '.join(key + ':' + checks[key]['state'] for key in ('healthcheck', 'smoke_test', 'version', 'logs', 'doctor'))
+        contract = ', '.join(key + ':' + checks[key]['state'] for key in ('healthcheck', 'smoke_test', 'version', 'logs', 'doctor', 'status'))
         lines.append('| ' + ' | '.join(map(cell, [row['kind'] + ':' + row['id'] + ' / ' + row['review_class'],
             row['declared_status'], file(checks['install']) + '; Ziel: ' + str(row['target_hint']),
             dependencies, row['ports'], row['resource_class'],

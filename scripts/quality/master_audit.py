@@ -1,5 +1,6 @@
 """Reproducible repository-only evidence bundle; no installation or runtime probes."""
 import argparse
+import ast
 from collections import Counter
 from datetime import datetime, timezone
 import hashlib
@@ -13,6 +14,14 @@ from repository_audit import Audit, SKIP
 from audit_reports import write_report
 
 ROOT = Path(__file__).resolve().parents[2]
+GENERATED_REPORTS = {'docs/audit/' + name for name in
+                     ('inventory.json', 'TOOL_INVENTORY.md', 'test_results.json', 'test_recheck_results.json')}
+
+
+def manifest_digest(files):
+    """Bind tracked AND untracked audited content without self-referencing generated reports."""
+    canonical = sorted(files, key=lambda row: row['path'])
+    return hashlib.sha256(json.dumps(canonical, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
 
 
 def git(root, *args):
@@ -29,6 +38,7 @@ def snapshot(root=ROOT):
     result['working_tree_dirty'] = bool(git(root, 'status', '--porcelain'))
     result['working_tree_diff_sha256'] = hashlib.sha256(
         git(root, 'diff', '--no-ext-diff', '--no-textconv', 'HEAD').encode()).hexdigest()
+    result['working_tree_diff_scope'] = 'tracked diff only; untracked audited files bound by manifest digest'
     audit = Audit(root)
     audit.registry()
     audit.code()
@@ -37,9 +47,10 @@ def snapshot(root=ROOT):
     # Paths/hashes only: never export file contents or inspect external user data.
     result['files'] = []
     result['services_and_integrations'] = []
+    test_references = {}
     for path in audit.files():
         rel = path.relative_to(root)
-        if rel.as_posix() in ('docs/audit/inventory.json', 'docs/audit/TOOL_INVENTORY.md'):
+        if rel.as_posix() in GENERATED_REPORTS:
             continue
         if (any(part in SKIP or part == '.codex-build' for part in rel.parts) or
                 (hasattr(path, 'is_junction') and path.is_junction())):
@@ -53,15 +64,30 @@ def snapshot(root=ROOT):
         # Resolve again before reading: do not follow parent symlinks out of the repo.
         if not path.resolve().is_relative_to(root):
             continue
-        record = {'path': rel.as_posix(), 'bytes': path.stat().st_size,
-                  'sha256': hashlib.sha256(path.read_bytes()).hexdigest()}
+        content = path.read_bytes()
+        record = {'path': rel.as_posix(), 'bytes': len(content),
+                  'sha256': hashlib.sha256(content).hexdigest()}
         result['files'].append(record)
+        if rel.parts[0] == 'tests' and path.name.startswith('test_') and path.suffix == '.py':
+            try:
+                tree = ast.parse(content.decode('utf-8-sig'))
+                for node in ast.walk(tree):
+                    if isinstance(node, ast.Constant) and isinstance(node.value, str) and len(node.value) < 256:
+                        test_references.setdefault(node.value, set()).add(rel.as_posix())
+            except (SyntaxError, UnicodeError):
+                pass  # Audit.code already reports parse failures without source contents.
         if rel.parts[0] in ('stacks', 'k8s', 'ansible', 'monitoring', 'systemd', 'services', 'skills', 'memory'):
             result['services_and_integrations'].append({
                 'path': rel.as_posix(), 'state': 'file-present; runtime-unverified',
                 'kind': rel.parts[0], 'sha256': record['sha256']})
     result['summary']['files_by_area'] = dict(sorted(Counter(
         item['path'].split('/')[0] for item in result['files']).items()))
+    result['working_tree_manifest_sha256'] = manifest_digest(result['files'])
+    result['working_tree_manifest_scope'] = 'bounded repository files, excludes secrets/build caches and four generated audit reports'
+    for row in result['rows']:
+        references = test_references.get(row['id'], set()) | test_references.get(row['name'], set())
+        row['static_test_references'] = sorted(references)
+        row['static_test_reference_scope'] = 'exact Python string literal only; not execution or coverage evidence'
     tools = [row for row in result['rows'] if row['kind'] == 'tools']
     result['summary']['metadata_gaps'] = {
         'missing_license': sum(row['license'] == 'not-declared' for row in tools),

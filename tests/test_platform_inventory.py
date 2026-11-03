@@ -41,6 +41,15 @@ class PlatformInventoryTests(unittest.TestCase):
             self.assertIsNone(row['ports'])
             self.assertEqual(row['risk'], 'not-assessed')
 
+    def test_declared_status_script_is_not_lost_or_executed(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = self.root(directory, [{'id': 'demo', 'status_script': 'scripts/demo_status.sh'}])
+            (root / 'scripts').mkdir()
+            (root / 'scripts/demo_status.sh').write_text('must-not-execute\n')
+            row = tool.inventory(root)['rows'][0]
+            self.assertEqual(row['scripts']['status'], {'path': 'scripts/demo_status.sh', 'state': 'present'})
+            self.assertFalse(row['verification']['tested'])
+
     def test_unsafe_script_paths_are_rejected_without_reading_them(self):
         with tempfile.TemporaryDirectory() as directory:
             root = self.root(directory)
