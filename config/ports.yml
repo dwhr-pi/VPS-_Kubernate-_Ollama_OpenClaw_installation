@@ -1,6 +1,8 @@
 {
   "version": "11.16",
   "ports": [
+    { "port": 6443, "service": "k3s_api", "label": "Kubernetes API; nur explizites privates VPN-Netz" },
+    { "port": 18789, "service": "openclaw_gateway", "label": "OpenClaw Gateway; nur Loopback oder explizites VPN-Netz" },
     { "port": 8021, "service": "openapi_servers", "label": "Optionaler OpenAPI-Zeitserver; nur 127.0.0.1, Bearer, kein Autostart" },
     { "port": 3333, "service": "embedded_debug_hil", "label": "GDB OpenOCD/pyOCD optional; nur Loopback, standardmaessig nicht gestartet" },
     { "port": 3011, "service": "freellmapi", "label": "FreeLLMAPI optional; nur 127.0.0.1" },

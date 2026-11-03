@@ -1,16 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-echo "Port Exposure Audit"
-echo "==================="
-
-if ! command -v ss >/dev/null 2>&1; then
-  echo "[WARN] 'ss' nicht verfügbar."
-  exit 0
+# Keep the existing host-inspection entrypoint; --dry-run performs no host query.
+ROOT="$(cd -P "${BASH_SOURCE[0]%/*}/../.." && pwd)"
+if (($# == 0)); then
+  set -- --check-host
 fi
-
-ss -ltnp | awk 'NR==1 || /0\\.0\\.0\\.0:|\\[::\\]:/'
-echo
-echo "Hinweis:"
-echo "- Prüfe besonders Bindings an 0.0.0.0 oder [::]"
-echo "- Öffentliche Ports nur mit Auth, Firewall und HTTPS freigeben"
+exec python3 -I -B "$ROOT/scripts/security/listener_audit.py" "$@"
