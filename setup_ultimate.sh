@@ -217,7 +217,7 @@ EOF
 ensure_metrics_config() {
   ensure_user_workspace
   if [ ! -f "$METRICS_CONFIG_FILE" ]; then
-    cat >"$METRICS_CONFIG_FILE" <<'EOF'
+    python3 -I -B "$INSTALL_DIR/scripts/security/metrics_config.py" init --file "$METRICS_CONFIG_FILE" --apply <<'EOF'
 # Editierbare Schätz- und Testwerte für dieses Setup
 # Stand: Letsung MiniPC Testziel mit Windows 11 original + Ubuntu 24.04 LTS in WSL2
 
@@ -335,21 +335,30 @@ STRICT_GITHUB_TOOL_SOURCES="false"
 ALLOW_NON_GITHUB_TOOL_SOURCE="false"
 EOF
   fi
+  python3 -I -B "$INSTALL_DIR/scripts/security/metrics_config.py" check --file "$METRICS_CONFIG_FILE" >/dev/null
 }
 
 show_metrics_editor() {
-  ensure_metrics_config
-  if dialog --clear --backtitle "$APP_TITLE" \
-    --title "SETUP-MESSWERTE & BENCHMARKS" --editbox "$METRICS_CONFIG_FILE" 30 110 2>/tmp/metrics_config_edit; then
-    cp /tmp/metrics_config_edit "$METRICS_CONFIG_FILE"
+  local edited_metrics metrics_sha
+  ensure_metrics_config || return 1
+  metrics_sha="$(python3 -I -B "$INSTALL_DIR/scripts/security/metrics_config.py" check --file "$METRICS_CONFIG_FILE")" || return 1
+  if edited_metrics="$(dialog --stdout --clear --backtitle "$APP_TITLE" \
+    --title "SETUP-MESSWERTE & BENCHMARKS" --editbox "$METRICS_CONFIG_FILE" 30 110)"; then
+    # Capture dialog data in memory; never execute it or use a predictable temporary path.
+    printf '%s\n' "$edited_metrics" | python3 -I -B "$INSTALL_DIR/scripts/security/metrics_config.py" \
+      edit --file "$METRICS_CONFIG_FILE" --expected-sha "$metrics_sha" --apply || return 1
     echo -e "${GREEN}Die editierbaren Setup-Messwerte wurden aktualisiert.${NC}"
   fi
 }
 
 load_metrics_config() {
-  ensure_metrics_config
-  # shellcheck source=/dev/null
-  source "$METRICS_CONFIG_FILE"
+  local metrics_data metrics_key metrics_value
+  ensure_metrics_config || return 1
+  metrics_data="$(python3 -I -B "$INSTALL_DIR/scripts/security/metrics_config.py" read --file "$METRICS_CONFIG_FILE")" || return 1
+  while IFS=$'\t' read -r metrics_key metrics_value; do
+    [[ -n "$metrics_key" ]] || continue
+    printf -v "$metrics_key" '%s' "$metrics_value"
+  done <<<"$metrics_data"
   : "${LOCAL_SETUP_TOTAL_ESTIMATE:=$SETUP_INSTALL_TIME_ESTIMATE}"
   : "${LOCAL_SETUP_CONFIRM_STOP_1_ESTIMATE:=12-35 min}"
   : "${LOCAL_SETUP_CONFIRM_STOP_2_ESTIMATE:=18-45 min}"
@@ -1115,7 +1124,6 @@ end_operation_measurement() {
   local duration_seconds
   local delta_kb
   local metric_prefix
-  local tmp_metrics_file
   local tmp_metrics_summary_file
 
   [ -n "${ACTIVE_OPERATION_STARTED_AT:-}" ] || return 0
@@ -1151,10 +1159,8 @@ end_operation_measurement() {
   fi
   invalidate_metric_cache
 
-  ensure_metrics_config
+  ensure_metrics_config || return 1
   metric_prefix="LAST_$(operation_id_to_metric_prefix "${ACTIVE_OPERATION_ID:-unknown}")"
-  tmp_metrics_file="$(mktemp)"
-  grep -Ev "^${metric_prefix}_(TIMESTAMP|STATUS|DURATION_SECONDS|FREE_KB_BEFORE|FREE_KB_AFTER|FREE_GB_BEFORE|FREE_GB_AFTER|DELTA_KB)=" "$METRICS_CONFIG_FILE" >"$tmp_metrics_file" || true
   {
     printf '\n# Letzte Messung fuer %s\n' "${ACTIVE_OPERATION_TITLE:-Unbekannt}"
     printf '%s_TIMESTAMP="%s"\n' "$metric_prefix" "$(date '+%Y-%m-%d %H:%M:%S')"
@@ -1165,8 +1171,7 @@ end_operation_measurement() {
     printf '%s_FREE_GB_BEFORE="%s"\n' "$metric_prefix" "$((${ACTIVE_OPERATION_FREE_KB_BEFORE:-0} / 1024 / 1024))"
     printf '%s_FREE_GB_AFTER="%s"\n' "$metric_prefix" "$((${free_kb_after:-0} / 1024 / 1024))"
     printf '%s_DELTA_KB="%s"\n' "$metric_prefix" "$delta_kb"
-  } >>"$tmp_metrics_file"
-  mv "$tmp_metrics_file" "$METRICS_CONFIG_FILE"
+  } | python3 -I -B "$INSTALL_DIR/scripts/security/metrics_config.py" merge --file "$METRICS_CONFIG_FILE" --apply || return 1
 
   echo -e "${YELLOW}Messwert gespeichert:${NC} ${ACTIVE_OPERATION_TITLE:-Unbekannt} | Status: $operation_status | Dauer: ${WHITE}$(format_duration_human "$duration_seconds")${NC} | Speicher vorher: $(format_kb_human "${ACTIVE_OPERATION_FREE_KB_BEFORE:-0}") | Speicher nachher: $(format_kb_human "${free_kb_after:-0}") | Speicheränderung: $(format_kb_human "$delta_kb")"
   echo -e "${YELLOW}Messwert in Config aktualisiert:${NC} ${METRICS_CONFIG_FILE}"

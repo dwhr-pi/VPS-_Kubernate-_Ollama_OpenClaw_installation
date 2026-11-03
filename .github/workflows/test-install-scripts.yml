@@ -38,6 +38,7 @@ jobs:
           python3 -B tests/test_docs_navigation.py -v
           python3 -B tests/test_repository_audit.py -v
           python3 -B tests/test_listener_audit.py -v
+          python3 -B tests/test_metrics_config.py -v
           python3 -B tests/test_ci_repair_contracts.py -v
           python3 -B tests/test_doc_assertions.py -v
           python3 -B tests/test_formatting_policy.py -v

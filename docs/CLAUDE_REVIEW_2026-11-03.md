@@ -7,6 +7,11 @@ Vergleich per lesendem `git ls-remote`, kein Pull/Reset. Die Webansicht allein w
 wurde deshalb nicht als Beleg des aktuellen Heads verwendet.
 Arbeitsbranch: `codex/claude-review-p0-20261103`; kein Merge nach `main`.
 
+Fortsetzung: [P0-B Messwerte-Datenpfad](P0_METRICS_DATA.md) entfernt `source` und den festen
+Editor-Temp-Pfad; beide bekannten Konfigurationsschreiber verwenden denselben atomaren Lock-Pfad.
+Die Tabelle unten bleibt die datierte Ausgangspruefung. Weitere Dialog-/Konfigurationspfade
+und ungepruefte Foundry-/ClawHub-Aufrufe sind damit nicht behoben.
+
 ## 1. Verifizierte Befunde
 
 Dateizeilen beziehen sich auf den Ausgangscommit, ausser der ausdruecklich neuen Listener-Pruefung.
@@ -25,10 +30,10 @@ Dateizeilen beziehen sich auf den Ausgangscommit, ausser der ausdruecklich neuen
 | 10 | Als Pruefbedarf bestaetigt | `config/tools.yml:1` fuehrt beispielsweise Automaton als experimental und Cosign/SOPS/age/OpenBao als planned. Keine automatische Hochstufung oder Abwertung nach Projektnamen; je Tool Quelle, Lizenz, Build und Probe einzeln belegen. |
 | 11 | Fuer Root-README widerlegt | `readme.md:1`: 188 Zeilen und verlinkte Detaildokumentation. Die Zahl der Dokumente allein beweist keinen Fehler; historische Aussagen und generierte Metadaten muessen aber unterscheidbar bleiben. |
 
-Zusaetzlicher bestaetigter P0-Befund: `setup_ultimate.sh:343-352` verwendet eine feste
+Zusaetzlicher am Ausgangscommit bestaetigter P0-Befund: `setup_ultimate.sh:343-352` verwendete eine feste
 `/tmp/metrics_config_edit` und laedt die editierte Konfiguration mit `source`. Nicht in diesem
-Patch geaendert: Werteparser, atomischer Editor und Migration der vielen Konfigurationsvariablen
-brauchen eigene Kompatibilitaetstests. Ebenso sind weitere feste Dialogdateien vorhanden.
+urspruenglichen P0-A-Patch geaendert. Der verlinkte P0-B-Folgepatch implementiert Parser/Editor
+mit eigenen Kompatibilitaetstests; echte POSIX-/UI-Abnahme bleibt separat. Weitere feste Dialogdateien bestehen.
 
 ## 2. Priorisierte Patchfolge
 
