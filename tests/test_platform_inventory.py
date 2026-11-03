@@ -83,6 +83,13 @@ class PlatformInventoryTests(unittest.TestCase):
             self.assertIn('high&#124;critical extra', rendered)
             self.assertIn('Ende des metadatenbasierten Inventars.', rendered)
 
+    def test_source_urls_remain_explicit_unverified_metadata(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = self.root(directory, [{'id': 'demo', 'source': 'https://example.invalid/source'}])
+            rendered = tool.markdown(tool.inventory(root), 'tools')
+            self.assertIn('`https://example.invalid/source`', rendered)
+            self.assertIn('keine abgeschlossene Online-/Lizenzpruefung', rendered)
+
     def test_optional_profile_dependencies_are_preserved(self):
         with tempfile.TemporaryDirectory() as directory:
             root = self.root(directory, profiles=[{'id': 'demo', 'tools': ['ollama'], 'optional_tools': ['qdrant']}])

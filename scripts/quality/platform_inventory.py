@@ -94,7 +94,9 @@ def markdown(report, kind='all', revision='not-specified'):
     def cell(value):
         if isinstance(value, list):
             value = ', '.join(map(str, value)) or 'keine registriert'
-        return str(value if value is not None else 'nicht deklariert').replace('|', '&#124;').replace('\n', ' ').replace('\r', ' ')
+        text = str(value if value is not None else 'nicht deklariert').replace('|', '&#124;').replace('\n', ' ').replace('\r', ' ')
+        # Registry URLs are source declarations, not automatically reviewed live links.
+        return re.sub(r'(?<![`(<])\bhttps?://[^\s`<>;]+', lambda match: '`' + match[0] + '`', text)
 
     def file(info):
         return ('[' + cell(info['path']) + '](../../' + info['path'] + ')' if info['path'] else '-') + ' (' + info['state'] + ')'
@@ -104,8 +106,11 @@ def markdown(report, kind='all', revision='not-specified'):
         'Dateimanifest-SHA256: `' + report.get('working_tree_manifest_sha256', 'nicht erfasst') + '`.', '',
         'Nur Registry und Dateiexistenz; keine Installation, Dienste, Cloud oder Secrets geprueft.',
         'Reviewklasse = konservative Abnahmeplanung, keine Registry-Aenderung oder Produktionsfreigabe.',
+        'Keine Installationssperre: Git-Quellbuilds bleiben nach bestandenen Pruefungen erlaubt.',
         'Unbekannt/experimental/optional wird ohne weiteren Beleg planned; vorhandene stable/beta bleiben nur deklarierte Labels.',
-        'Zielhinweis aus check_value ist kein verifizierter Installationspfad. Fehlendes Mapping beweist nicht das Fehlen einer Funktion im Installer.', '',
+        'Zielhinweis aus check_value ist kein verifizierter Installationspfad.',
+        'Fehlendes Mapping beweist nicht das Fehlen einer Funktion im Installer.',
+        'Quellenadressen sind deklarierte Metadaten als Code-Text, keine abgeschlossene Online-/Lizenzpruefung.', '',
         '| Eintrag / Reviewklasse | Registry-Status | Install-Skript / Zielhinweis | Abhaengigkeiten | Ports | Ressourcenklasse | Check / Health / Smoke / Version / Logs | Uninstall | Test / Reife | Risiko | Quelle / Lizenz / Wartung |',
         '|---|---|---|---|---|---|---|---|---|---|---|']
     for row in sorted(report['rows'], key=lambda row: (row['kind'], row['name'].casefold())):
