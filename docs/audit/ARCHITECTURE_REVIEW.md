@@ -1,5 +1,17 @@
 # Architekturreview
 
+## Aktualisierung 03.11.2026
+
+Vorhandene Layer und ihre aktuellen Dateien sind im
+[Architekturabgleich mit Diagramm](../LLMOPS_ARCHITECTURE_INCREMENT_2026-11-03.md) belegt.
+LiteLLM, SOPS-Helfer, Monitoring, Restic-/Velero-Pfade und GitOps sind keine generell fehlenden Tools.
+Neue Default-Dienste oder eine zweite Orchestrierung wurden nicht hinzugefuegt.
+CPU-VPS hat nun ein eigenes Namespace-Budget; lokale RWO-PVCs bleiben nodegebunden und kein HA-Storage.
+Private APIs, Git-Source-Builds, manuelle Freigaben und keine Docker-Installation gelten verbindlich.
+Agentenprofil-Dateischutz ist keine Ausfuehrungssandbox; Rollen-/JSON-Dateien allein erzwingen keine Hostrechte.
+
+Die folgenden Abschnitte bleiben der datierte Ausgangsreview, nicht eine neue Runtime-Abnahme.
+
 ## Layer und nachgewiesene Grenzen
 
 ```text

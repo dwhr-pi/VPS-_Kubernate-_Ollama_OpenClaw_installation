@@ -11,6 +11,7 @@ data:
           api_base: os.environ/OLLAMA_API_BASE
     general_settings:
       master_key: os.environ/LITELLM_MASTER_KEY
+      require_auth_for_metrics_endpoint: true
     litellm_settings:
       callbacks: [prometheus]
       set_verbose: false
@@ -22,6 +23,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: litellm
+  labels: {llmops-metrics: litellm}
 spec:
   selector:
     app: litellm

@@ -46,9 +46,7 @@ fi
 [[ $(uname -s) == Linux ]] || die 'Nur lokaler Linux-VPS; kein Windows-/Remote-Hostcheck.'
 case "$runtime_unit" in k3s | k3s-agent | containerd) ;; *) die 'Runtime-Unit nicht freigegeben.' ;; esac
 command -v python3 >/dev/null || die 'Vorhandenes Python 3 erforderlich.'
-python3 -I -B "$ROOT/scripts/quality/vps_host_preflight.py" --data-dir "$data_dir"
-command -v systemctl >/dev/null || die 'systemctl erforderlich; Runtime separat pruefen.'
-systemctl is-active --quiet "$runtime_unit" || die 'Gewaehlte Runtime-Unit ist nicht aktiv oder nicht pruefbar.'
+python3 -I -B "$ROOT/scripts/quality/vps_host_preflight.py" --data-dir "$data_dir" --runtime-unit "$runtime_unit"
 printf 'Lokale Vorpruefung erfolgreich. Keine Installation oder Swap-Aenderung.\n'
 [[ "$mode" != check ]] || exit 0
 [[ "$overlay" == /* && -d "$overlay" && ! -L "$overlay" ]] || die 'Absolutes geprueftes Deployment-Overlay erforderlich.'

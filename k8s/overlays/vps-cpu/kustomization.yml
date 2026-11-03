@@ -7,3 +7,4 @@ patches:
   - path: deployment.yaml
   - path: gateway.yaml
   - path: pvc.yaml
+  - path: resource-quota.yaml

@@ -1,5 +1,38 @@
 # Priorisierte Sicherheitsbefunde
 
+## Nachpruefung 03.11.2026
+
+Die datierten Einzelbefunde unten bleiben erhalten; aktuelle Einordnung:
+
+| Befund | Aktueller belegter Umfang | Offen vor Betriebsfreigabe |
+|---|---|---|
+| SEC-001 | Vorhandene Menue-Sperre/Fixture | Reale Migration/Restore, kein Purge freigegeben |
+| SEC-002 | Registry-Dispatcher und Traversal-Fixtures | Alle toolweisen Lifecycle-Pfade, Konkurrenzschutz |
+| SEC-003 | Begrenzte synthetische Backup-Transporte | Echter age-/Datenbank-/PVC-Restore |
+| SEC-004 | Redigierte Scanner-/Fehlerbehandlung vorhanden | Vollstaendige Historien-Triage und Credential-Rotation |
+| SEC-005 | `setup_ultimate.sh:343-352`: feste Temp-Datei und anschliessendes `source` weiterhin sichtbar | Privater Dialogzustand und nicht ausfuehrbarer Datenparser |
+| SEC-006 | Neuer privater atomischer ENV-Helfer, keine Repo-ENV-Neuausgabe | Bestehende Service-Secrets trennen, keine automatische Nutzdatenmigration |
+| SEC-007 | Keep-/Retention-Metadaten vorhanden | Wirklicher Helm-/Storage-Restore auf Wegwerfcluster |
+| SEC-008 | `backup_user_workspace.sh`: nur Zeitpunktcheck der Installationssperre | Gemeinsames ueber die gesamte Sicherung gehaltenes Lock |
+| SEC-009 | Neuer P1-Patch prueft Owner/Modus/Hardlinks bei Wiederholung | Echter POSIX-Rechtevollzug und getrennte Windows-ACL-Abnahme |
+| SEC-010 | Historische Aussage zu mutable Actions nicht pauschal auf aktuellen Stand uebertragen | Pins/Signaturen aller Installer, CVEs und echte Historien-Triage |
+
+SEC-009-Reproduktion: nur synthetisches Profil installieren, identische Datei hardverlinken oder
+unter POSIX auf 0666/Verzeichnis auf 0777 setzen, dann Install/Update/Check/Uninstall wiederholen.
+Erwartung: Fehler vor Adoption/Loeschung, Nutzdateien und Marker erhalten. Codebeleg:
+`scripts/profiles/coding_agents.py`: `metadata`, `read_owned`, `write_new_or_same`, `operation`.
+Aufwand: kleiner P1-Patch, keine neue Laufzeitabhaengigkeit. Abnahme:
+`tests/test_coding_profile_metadata.py` und bestehende Profiltests.
+Breaking Change/Rollback: [Profil-Dateisicherheit](../agents/PROFILE_FILE_SECURITY.md).
+
+F01-F07- und Architektur-Patches sind im Arbeitsstand enthalten, keine Live-Reparatur:
+[Schutzpfade und Grenzen](../F01_F07_IMPLEMENTATION.md),
+[CPU-/Storage-Abgleich](../LLMOPS_ARCHITECTURE_INCREMENT_2026-11-03.md).
+Weitere Legacy-Kandidaten wie Clawbakes ungepinnter Clone/Pull sind weiter einzeln zu pruefen;
+ein bestandener Inventarlauf zertifiziert keine Supply Chain. Keine echte Schluesselverifikation.
+
+## Historische Einzelbefunde
+
 Stand 29.10.2026. Zehn priorisierte Befunde, **nicht zehn nachgewiesene kritische
 Produktionsvorfaelle**. Quelle ist der lokale Code, keine aktive Ausnutzung. Codekorrektur bedeutet
 hier `implemented`/gezielt offline `tested`; nie automatisch `staging_verified` oder

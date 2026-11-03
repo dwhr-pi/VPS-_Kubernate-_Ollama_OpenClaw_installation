@@ -11,6 +11,8 @@ import private_go
 
 
 CONTRACTS = {
+    "argocd_cli": ([1, 27, 0], "docs/tools/argocd-cloudflared-native.md"),
+    "cloudflared": ([1, 27, 3], "docs/tools/argocd-cloudflared-native.md"),
     "kubeseal": ([1, 27, 3], "docs/tools/kubeseal.md"),
     "traefik": ([1, 27, 3], "docs/tools/traefik.md"),
     "opentelemetry": ([1, 26, 0], "docs/tools/opentelemetry-native.md"),

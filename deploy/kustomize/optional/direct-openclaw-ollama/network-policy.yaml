@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata: {name: ollama-from-explicit-openclaw, namespace: llmops}
+spec:
+  podSelector: {matchLabels: {app: ollama}}
+  policyTypes: [Ingress]
+  ingress:
+    - from:
+        - namespaceSelector: {matchLabels: {kubernetes.io/metadata.name: ai-agents}}
+          podSelector: {matchLabels: {app.kubernetes.io/name: openclaw, llmops-direct-inference: 'true'}}
+      ports: [{protocol: TCP, port: 11434}]
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata: {name: explicit-openclaw-to-ollama, namespace: ai-agents}
+spec:
+  podSelector: {matchLabels: {app.kubernetes.io/name: openclaw, llmops-direct-inference: 'true'}}
+  policyTypes: [Egress]
+  egress:
+    - to:
+        - namespaceSelector: {matchLabels: {kubernetes.io/metadata.name: llmops}}
+          podSelector: {matchLabels: {app: ollama}}
+      ports: [{protocol: TCP, port: 11434}]
+    - to:
+        - namespaceSelector: {matchLabels: {kubernetes.io/metadata.name: kube-system}}
+          podSelector: {matchLabels: {k8s-app: kube-dns}}
+      ports: [{protocol: UDP, port: 53}, {protocol: TCP, port: 53}]

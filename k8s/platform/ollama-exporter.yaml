@@ -40,7 +40,10 @@ spec:
 ---
 apiVersion: v1
 kind: Service
-metadata: {name: ollama-readonly-exporter, namespace: ai-monitoring}
+metadata:
+  name: ollama-readonly-exporter
+  namespace: ai-monitoring
+  labels: {llmops-metrics: ollama-readonly-exporter}
 spec:
   type: ClusterIP
   selector: {app: ollama-readonly-exporter}
@@ -55,6 +58,8 @@ spec:
   ingress:
     - from:
         - podSelector: {matchLabels: {app: monitoring-lite-prometheus}}
+        - namespaceSelector: {matchLabels: {kubernetes.io/metadata.name: monitoring}}
+          podSelector: {matchLabels: {app.kubernetes.io/name: prometheus}}
       ports: [{port: 9404, protocol: TCP}]
   egress:
     - to:

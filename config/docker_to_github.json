@@ -4,6 +4,46 @@
   "scope": "46 ehemalige Containerpfade plus PyAirbyte-SDK und Kubeseal-CLI; offene Gesamtplattformen ohne Docker-Fallback",
   "tools": [
     {
+      "id": "argocd_cli",
+      "name": "ArgoCD CLI",
+      "tool_key": "ArgoCD_CLI",
+      "repo": "argoproj/argo-cd",
+      "previous_images": [],
+      "previous_installer": "scripts/tools/argocd_cli_install.sh",
+      "recipe": {
+        "repo": "argoproj/argo-cd",
+        "pin": "3dc411247c3b00c283581642b0d017052d91664d",
+        "kind": "go",
+        "go_min": [1, 27, 0],
+        "package": "./cmd",
+        "binary": "argocd",
+        "probe": ["version", "--client", "--short"],
+        "disk_mb": 16384,
+        "note": "Git-Quellbuild am 03.11.2026 gelesenen HEAD; kein Release-Binaerdownload, sudo, Clusterzugriff oder Dienststart. Monolithischer Upstream-Build, Laufzeitabnahme offen; kein Produktionsrelease-Nachweis."
+      },
+      "blocked_reason": null
+    },
+    {
+      "id": "cloudflared",
+      "name": "Cloudflared",
+      "tool_key": "Cloudflared",
+      "repo": "cloudflare/cloudflared",
+      "previous_images": [],
+      "previous_installer": "scripts/tools/cloudflared_install.sh",
+      "recipe": {
+        "repo": "cloudflare/cloudflared",
+        "pin": "872b241f94871665c1c157adefcf90c11f0ead96",
+        "kind": "go",
+        "go_min": [1, 27, 3],
+        "package": "./cmd/cloudflared",
+        "binary": "cloudflared",
+        "probe": ["--version"],
+        "disk_mb": 8192,
+        "note": "Git-Quellbuild am 03.11.2026 gelesenen HEAD; kein latest-DEB, dpkg, Tunnel-Login, Tokenzugriff oder Dienststart. Build-/Tunnel-Abnahme offen; kein Produktionsrelease-Nachweis."
+      },
+      "blocked_reason": null
+    },
+    {
       "id": "traefik",
       "name": "Traefik Headless",
       "tool_key": "Traefik",

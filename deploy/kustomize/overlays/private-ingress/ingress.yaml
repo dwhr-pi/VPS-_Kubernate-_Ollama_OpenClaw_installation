@@ -1,0 +1,50 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: private-inference-gateway
+  namespace: llmops
+  annotations:
+    cert-manager.io/cluster-issuer: llmops-private-dns01
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: 'true'
+    traefik.ingress.kubernetes.io/router.middlewares: llmops-wireguard-only@kubernetescrd
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts: [llm.example.invalid]
+      secretName: private-inference-gateway-tls
+  rules:
+    - host: llm.example.invalid
+      http:
+        paths:
+          - path: /v1
+            pathType: Prefix
+            backend:
+              service: {name: litellm, port: {number: 4000}}
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata: {name: wireguard-only, namespace: llmops}
+spec:
+  ipAllowList:
+    # Replace with actual VPN source ranges. Do not trust arbitrary forwarded headers.
+    sourceRange: [10.44.0.0/24]
+---
+# K3s ships Traefik in kube-system, unlike a separate traefik namespace.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: k3s-private-ingress-to-gateway
+  namespace: llmops
+spec:
+  podSelector:
+    matchLabels: {app: litellm}
+  policyTypes: [Ingress]
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels: {kubernetes.io/metadata.name: kube-system}
+          podSelector:
+            matchLabels: {app.kubernetes.io/name: traefik}
+      ports:
+        - {protocol: TCP, port: 4000}

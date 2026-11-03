@@ -2,6 +2,42 @@
 
 ## Unreleased
 
+### 2026-11-03: Deklarative Einstiegspfade und explizites Staging
+
+- `deploy/kustomize` referenziert vorhandene Bases/Overlays ohne konkurrierende Workload-Kopien.
+- Privater DNS01-/VPN-Ingress, optionaler direkter OpenClaw-Zugriff und Operator-Monitoring
+  bleiben getrennte, ausdruecklich zu pruefende Pfade; keine Installation oder Aktivierung.
+- Ollama-Probes verwenden `/api/tags`; LiteLLM-Metrik-Authentifizierung ist explizit aktiv.
+  ServiceMonitor-/PrometheusRule-Selektoren und Dashboard um GPU-/Request-Metriken ergaenzt.
+- Neuer Plan-/Render-Einstieg und CI-Workflow mit Git-Source-Linters sowie gesondertem,
+  manuell bestaetigtem Staging. Frisches K3s-Provisioning bleibt ohne Source-Buildvertrag offen.
+- Regressionen und Grenzen: `docs/GITOPS_DEPLOYMENT_PATH.md`.
+
+### 2026-11-03: Ressourcenbudgets und Architekturabgleich
+
+- Bestehende Gateway-/Monitoring-/Secrets-/GitOps-Loesungen statt doppelter Installer dokumentiert.
+- CPU-VPS-Overlay erbt nicht mehr das Workstation-Budget: 3 GiB RAM-Requests, 5 GiB RAM-Limits,
+  ein 50-GiB-PVC und keine NodePort-/LoadBalancer-Services im LLMOps-Namespace.
+- PVC-Retention in der gemeinsamen Ollama-Basis ausdruecklich auf Retain gesetzt.
+- Host-Vorpruefung verlangt zwei logische CPUs und 3 GiB verfuegbaren RAM;
+  Runtime-Statusabfrage im bestehenden Deploy-Helfer auf zehn Sekunden begrenzt.
+- Regressionstests sowie Abnahme-/Rollback- und HPA-/Storage-Grenzen ergaenzt.
+  Kein automatischer Apply, keine Installation, keine pauschale Produktionsfreigabe.
+
+### 2026-11-03: Git-Installationsrichtlinie und F01-F07-Teilsatz
+
+- Verbindlich Git-Quellbuilds, keine Docker-Installation und kein Docker-Fallback;
+  automatische Engine-/Compose-Nachinstallation aus gemeinsamen Helfern und VPS-Ansible entfernt.
+- K3s-/Clawbake-Legacy-Uninstall nur als nicht loeschende Vorschau; keine falschen Entfernt-Marker.
+  Clawbake-Clone loescht vorhandene Ziele nicht mehr.
+- ArgoCD CLI und cloudflared auf native private Builds aus festen Git-Commits umgestellt;
+  kein ungepruefter latest-Binaerdownload oder automatischer Dienststart.
+- Atomische private ENV-Ausgabe ausserhalb des Repos mit expliziter Ersetzungsbestaetigung.
+- Redigierte History-Triage, native Monitoring-Konfiguration und Restic-Export-/Restore-Pruefpfad
+  als opt-in; Teilbackup-Marker fuer lokale Kopien und Offline-Regressionstests ergaenzt.
+- Keine Rotation, echten Builds, Alarmzustellungen oder Datenbank-/PVC-Restores behauptet.
+  Breaking Changes, Rollback und offene Abnahmen: `docs/F01_F07_IMPLEMENTATION.md`.
+
 ### 2026-11-02: Kompakte README und Terminal-Dokumentation
 
 - Sechs Themenlinks statt 45 grosser Navigationsueberschriften in der README;

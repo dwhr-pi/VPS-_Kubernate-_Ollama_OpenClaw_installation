@@ -13,18 +13,16 @@ NC="\033[0m"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 INSTALL_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
-USER_WORKSPACE_DIR="${HOME}/.openclaw_ultimate_user_data"
+USER_WORKSPACE_DIR="${USER_WORKSPACE_DIR:-${HOME}/.openclaw_ultimate_user_data}"
 LLMOPS_TEMPLATE_DIR="$USER_WORKSPACE_DIR/llmops-platform"
-LLMOPS_STACK_DIR="$INSTALL_DIR/stacks/llmops-platform"
+LLMOPS_STACK_DIR="$LLMOPS_TEMPLATE_DIR"
 LLMOPS_TEMP_DIR="$(mktemp -d "${TMPDIR:-/tmp}/llmops-config.XXXXXXXX")" || exit 1
 LLMOPS_CHOICE_FILE="$LLMOPS_TEMP_DIR/choice"
 
 ensure_user_workspace() {
-  mkdir -p "$LLMOPS_TEMPLATE_DIR"
-
-  if [ ! -f "$LLMOPS_TEMPLATE_DIR/.env.template" ]; then
-    cp "$INSTALL_DIR/scripts/config_templates/llmops-platform/.env.template" "$LLMOPS_TEMPLATE_DIR/.env.template"
-  fi
+  python3 -I -B "$INSTALL_DIR/scripts/security/private_env.py" prepare \
+    --workspace "$USER_WORKSPACE_DIR" --repo "$INSTALL_DIR" \
+    --source "$INSTALL_DIR/scripts/config_templates/llmops-platform/.env.template"
 }
 
 cleanup_temp_files() {
@@ -75,9 +73,17 @@ apply_env() {
     echo -e "${RED}Verlinkte Konfigurationspfade sind nicht erlaubt.${NC}"
     return 1
   fi
-  install -m 600 -- "$template_file" "$target_file" || return 1
+  local -a replacement=()
+  if [[ -e "$target_file" ]]; then
+    local answer
+    read -r -p 'Vorhandene private ENV bewusst ersetzen? [j/N] ' answer || return 1
+    case "$answer" in j | ja | y | yes) replacement=(--replace) ;; *) return 1 ;; esac
+  fi
+  python3 -I -B "$INSTALL_DIR/scripts/security/private_env.py" apply \
+    --workspace "$USER_WORKSPACE_DIR" --repo "$INSTALL_DIR" \
+    --source "$template_file" "${replacement[@]}" || return 1
   echo -e "${GREEN}LLMOps-Stack-.env erfolgreich nach ${target_file} angewendet.${NC}"
-  echo -e "${YELLOW}Hinweis: Der Compose-Stack liest jetzt ${target_file} als Laufzeitdatei.${NC}"
+  echo -e "${YELLOW}Private Konfiguration, kein automatischer Dienststart. Alte Repo-.env bleibt unveraendert; kein Docker-Installationsweg.${NC}"
 }
 
 show_menu() {
@@ -92,7 +98,7 @@ show_menu() {
 trap cleanup_temp_files EXIT
 
 while true; do
-  ensure_user_workspace
+  ensure_user_workspace || break
   if ! show_menu || [ ! -f "$LLMOPS_CHOICE_FILE" ]; then
     break
   fi

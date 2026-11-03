@@ -11,9 +11,10 @@ scrape_configs:
     authorization:
       type: Bearer
       credentials_file: /run/secrets/litellm-metrics-token
-    static_configs:
-      # Must be a reachable private listener, not a host-only loopback binding.
-      - targets: ['REPLACE_PRIVATE_LITELLM_ADDRESS:4000']
+    # Explicitly empty until private targets have been approved; not a successful scrape.
+    file_sd_configs:
+      - files: [/etc/prometheus/litellm-metrics.targets.json]
+        refresh_interval: 60s
   - job_name: node
     static_configs:
       - targets: ['node-exporter:9100']

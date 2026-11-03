@@ -1,5 +1,24 @@
 # Werkzeuge nach echtem Mehrwert bewerten
 
+## Nachpruefung 03.11.2026
+
+Kein neuer Dienst installiert. Gegen die aktuelle Registry ausgewertet: 400 Tools,
+236 ohne Lizenzfeld, 34 ohne Quellenfeld und 400 ohne aktuelle Wartungsabnahme in der Registry.
+Die unten datierte Tabelle bleibt eine Kandidatenbewertung, keine upstream-weite Zertifizierung.
+Fuer Gitleaks/Trivy/Monitoring/GitOps/RAG zuerst vorhandene Helfer und Abnahmewege nutzen.
+Semgrep/Checkov/Falco/Cosign/weitere Operatoren bleiben bedarfsabhaengig; kein pauschaler Vollstack.
+
+Originaltexte am 03.11.2026 erneut gelesen:
+[Codex CLI: Apache-2.0](https://raw.githubusercontent.com/openai/codex/main/LICENSE),
+[Gemini CLI: Apache-2.0](https://raw.githubusercontent.com/google-gemini/gemini-cli/main/LICENSE),
+[Claude Code: Anthropic Commercial Terms](https://raw.githubusercontent.com/anthropics/claude-code/main/LICENSE.md).
+Branch-Lizenztexte beweisen weder einen vollstaendig baubaren Quellumfang jedes Pins noch
+Runtime-Kompatibilitaet, Modelldienstrechte oder kostenlose Provider-Nutzung. Claude Code wird
+nicht durch Plugins, alternative Clients oder den bloss oeffentlichen GitHub-Auftritt zu Open Source.
+Kein Provider-/Account-/API-Key-Test wurde ausgefuehrt. Keine zusaetzliche Runtime ohne belegten Mehrwert.
+
+## Historische Kandidatenbewertung
+
 Stand 29.10.2026. **Keine neue Anwendung installiert.** Bereits vorhandene Registry-Eintraege sind
 kein Installations-/Integrationsnachweis. Empfehlungen beziehen sich auf Funktionsluecken, nicht auf
 Beliebtheit.

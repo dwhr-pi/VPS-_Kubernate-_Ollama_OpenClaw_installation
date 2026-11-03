@@ -33,7 +33,7 @@ install_github_docker_stack_tool() {
   : "${COMPOSE_YAML:?COMPOSE_YAML ist erforderlich}"
 
   init_tool_tracking "$TOOL_KEY"
-  ensure_docker_compose
+  ensure_docker_compose || return 1
 
   TOOL_DIR="${TOOL_DIR:-/opt/${TOOL_SLUG}}"
 

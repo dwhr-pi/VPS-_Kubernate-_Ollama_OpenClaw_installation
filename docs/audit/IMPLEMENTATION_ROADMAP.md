@@ -1,5 +1,21 @@
 # Priorisierte Umsetzung
 
+## Naechster kleiner Patch nach der Bestandsaufnahme
+
+Stand 03.11.2026: SEC-009-Dateimetadaten und Inventar-Evidenz sind als isolierte P1-Aenderungen
+bearbeitet, nicht produktiv angewendet. Danach **SEC-005 zuerst**: Messwert-Editor auf privates
+Tempdir und strikt gelesene Daten umstellen; vorher vorhandene Werte/Formate und alle Abbruchpfade
+inventarisieren. Kein pauschales Entfernen der vorhandenen Workspace-Konfiguration.
+
+Abnahmekriterien: zwei parallele Editor-Fixtures bleiben getrennt; Enter/Esc/EOF veraendern nichts;
+ein Shell-Sentinel im Datenfeld wird niemals ausgefuehrt; atomische eigene 0600-Zieldatei.
+Abhaengigkeiten: Dialog-/Messwert-Vertrag, passende Linux-Fixtures; Aufwand ein bis zwei Tage.
+Breaking Change: ausfuehrbare freie Shell-Konfigurationszeilen werden nicht mehr interpretiert.
+Rollback: vorhandene Konfiguration sichern/erhalten, keine automatische Reaktivierung von `source`.
+
+SEC-008-Maintenance-Lock und externer Restore folgen vor neuen Runtimes/Agentenplattformen.
+P2-P4 bleiben opt-in, keine automatische Installation aufgrund eines Scores.
+
 ## P0: Daten und Einstiegspfade
 
 SEC-001/002/003 zuerst reviewen: keine automatische Workspace-Komplettloeschung, Registry-basierte

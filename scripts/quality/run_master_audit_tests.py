@@ -13,6 +13,8 @@ from audit_reports import write_report
 
 ROOT = Path(__file__).resolve().parents[2]
 PATTERNS = (
+    'test_master_audit_manifest.py', 'test_coding_profile_metadata.py',
+    'test_coding_agent_profiles.py', 'test_f01_f07_hardening.py', 'test_docs_navigation.py',
     'test_master_audit_safety.py', 'test_platform_inventory.py', 'test_repository_audit.py',
     'test_credentials_backup.py', 'test_install_rollback.py', 'test_installation_reset.py',
     'test_installation_inventory.py', 'test_p0_safety.py', 'test_signed_release.py',
@@ -52,7 +54,10 @@ def main():
             print(output.getvalue(), file=sys.stderr)
     revision = subprocess.run(['git', '-C', str(ROOT), 'rev-parse', 'HEAD'],
                               capture_output=True, text=True, check=True, timeout=30).stdout.strip()
+    dirty = bool(subprocess.run(['git', '-C', str(ROOT), 'status', '--porcelain'],
+                               capture_output=True, text=True, check=True, timeout=30).stdout.strip())
     report = {'timestamp': datetime.now(timezone.utc).isoformat(), 'revision': revision,
+              'working_tree_dirty': dirty,
               'platform': sys.platform, 'python': sys.version.split()[0],
               'scope': 'selected offline fixtures, not all repository tests or runtime acceptance',
               'runtime_acceptance': False, 'suites': rows, 'successful': success,

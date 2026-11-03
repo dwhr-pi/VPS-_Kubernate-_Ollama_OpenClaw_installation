@@ -18,9 +18,11 @@ sind massgeblich.
 
 Ansible-Module beschreiben den Sollzustand statt Shell-Befehle bei jedem Lauf blind zu wiederholen.
 Das Playbook unterstuetzt einen **frischen dedizierten** Ubuntu-22.04/24.04-VPS, keinen vorhandenen
-K3s-/Docker-Host und kein WSL-Desktop. Es installiert Docker CE samt Compose-Plugin aus dem
-signierten offiziellen Docker-APT-Repository. Das ist eine ausdrueckliche Infrastruktur-Ausnahme zur
-GitHub-Quellenregel, kein Ersatz der bestehenden Tool-Installer.
+K3s-/Docker-Host und kein WSL-Desktop. Seit dem Patchsatz vom 03.11.2026 installiert es
+**kein Docker und kein Compose**; vorhandene Container-Laufzeiten bleiben unberuehrt.
+Primaertools werden aus Git-Quellen gebaut, apt bleibt System-/Build-Abhaengigkeiten vorbehalten.
+Die fruehere Docker-APT-Ausnahme ist historisch und wird nicht weiter angeboten;
+massgeblich ist die [Installationsrichtlinie](INSTALLATION_POLICY.md).
 
 Der Benutzer `llmops` erhaelt weder sudo noch Docker-Gruppenrechte; Zugriff auf den Docker-Socket
 waere praktisch Root-Zugriff. Die Passwortanmeldung wird abgeschaltet, vorhandene

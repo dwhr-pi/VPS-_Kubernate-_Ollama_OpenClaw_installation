@@ -1,5 +1,36 @@
 # Gesamtaudit: Ergebnis und Grenzen
 
+## Aktualisierung 03.11.2026
+
+Aktueller lokaler Ausgangscommit: `be3c21016963ba7335e4e5a2daca715a125b5ff6`, mit vorhandenen
+uncommitteten F01-F07-/Ressourcen-Patches. Bestandslauf: **400 Tools, 250 Profile, 45 Ports**,
+0 statische Fehler und 793 Metadatenhinweise. Das unten datierte Review bleibt als Historie erhalten.
+Keine pauschale Runtime-, Installations- oder Produktionsfreigabe.
+Isolierte lokale Code-Commits: `71b22d6` (Agentenprofil-Metadaten), `c888aa8`
+(Inventar-Dateimanifest und Status-Mapping). Kein Push; fruehere Arbeitskopie-Patches bleiben getrennt.
+`c9ce8a9` ergaenzt reproduzierbares Markdown fuer ungepruefte Quellen-Metadaten;
+die gezielte Inventar-Nachpruefung umfasst neun bestandene Tests.
+
+236 Tool-Records ohne Lizenzangabe, 34 ohne Quellenangabe, 400 ohne aktuelle Wartungsabnahme
+in der Registry. Das bedeutet Metadatenluecken, nicht 236 unlizenzierte oder 400 verlassene Projekte.
+Fehlende Health-/Smoke-Mappings beweisen nicht, dass es im jeweiligen Installer keine Checks gibt.
+[Aktuelles Vollinventar](inventory.json) bindet auch auditierte untracked Dateien per Manifest-Hash.
+String-Literal-Referenzen in Tests sind jetzt separat erfasst, aber kein Coverage-/Ausfuehrungsnachweis.
+
+Neuer sicherer P1-Teilsatz: SEC-009-Nachvalidierung fuer Agentenprofil-Dateien und zeitlich
+begrenzte Git-Operationen; [Verhalten und Migration](../agents/PROFILE_FILE_SECURITY.md).
+Inventar verliert `status_script` nicht mehr, generierte Auditberichte referenzieren sich nicht selbst.
+Die kuratierte Offline-Testsammlung wurde erweitert; aktuelle Zahlen und Skips stehen in
+[Test-Evidenz](TEST_COVERAGE.md). Keine wirkliche Mail, Inferenz oder Schluesselrotation im Testlauf.
+
+Prioritaet bleiben SEC-005 (feste Temp-Datei/ausfuehrbare Messwert-Konfiguration), SEC-008
+(Backup-/Installer-Lockvertrag), historische Credential-Triage und weitere Legacy-Lifecycle-Pfade.
+Die zehn Bereiche unten sind keine zehn aktuell bestaetigten kritischen Vorfaelle.
+Fuer P2-P4 zuerst vorhandenes Gateway/RAG/Monitoring abnehmen, keine weitere Orchestrierung installieren.
+Die [Git-/Ohne-Docker-Vorgabe](../INSTALLATION_POLICY.md) geht historischen Docker-Empfehlungen vor.
+
+## Historischer Stand 29.10.2026
+
 Stand: 29.10.2026. Grundlage ist lokales `main`, Ausgangscommit `a6ed0f3`, einschliesslich der noch
 nicht committeten GPU-/Betriebsergaenzungen. Die exakte Basis und Dateihashes stehen im
 [Inventar](inventory.json). Es gab keinen Produktions-, WSL-, Provider-, Wallet- oder
@@ -11,6 +42,9 @@ Befunde bleiben als datierte Belege erhalten. Die Archivierung repariert keine b
 und ersetzt keine Live-Abnahme.
 
 ## Tatsaechlicher Stand
+
+Die folgenden Zahlen gehoeren ausschliesslich zum historischen Review vom 29.10.2026;
+fuer den heutigen Stand siehe den Aktualisierungsblock und das neu erzeugte JSON.
 
 399 Tools, 245 Profile und 45 registrierte Ports bilden einen umfangreichen Installationskatalog.
 Ein Registry-Eintrag ist weder eine installierte Anwendung noch eine nachgewiesene Integration. Die

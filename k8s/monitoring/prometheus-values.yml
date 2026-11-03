@@ -57,6 +57,21 @@ prometheus:
   service: {type: ClusterIP}
   prometheusSpec:
     replicas: 1
+    # Match the declared llmops-monitoring release and deliberately selected namespaces.
+    serviceMonitorSelector:
+      matchLabels: {release: llmops-monitoring}
+    serviceMonitorNamespaceSelector:
+      matchExpressions:
+        - key: kubernetes.io/metadata.name
+          operator: In
+          values: [monitoring, llmops, ai-monitoring]
+    ruleSelector:
+      matchLabels: {release: llmops-monitoring}
+    ruleNamespaceSelector:
+      matchExpressions:
+        - key: kubernetes.io/metadata.name
+          operator: In
+          values: [monitoring, llmops, ai-monitoring]
     retention: 24h
     retentionSize: 2GB
     scrapeInterval: 30s

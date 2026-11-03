@@ -1,5 +1,11 @@
 # Vollstaendige Konfigurationen der Produktions-Baseline
 
+**Historischer Code-Snapshot, keine aktuelle Copy-Paste-Installationsempfehlung.**
+Insbesondere die hier noch sichtbare Docker-APT-Einrichtung ist seit dem 03.11.2026
+nicht mehr erlaubt und aus dem aktuellen Playbook entfernt.
+Siehe [Installationsrichtlinie](INSTALLATION_POLICY.md) und
+[aktuellen Architekturabgleich](LLMOPS_ARCHITECTURE_INCREMENT_2026-11-03.md).
+
 Stand: 23.10.2026. Kommentierter Lesestand der angelegten Dateien, keine deployte Infrastruktur. Die
 [Betriebsanleitung](PRODUCTION_BASELINE.md) beschreibt Voraussetzungen, Risiken und Tests.
 Massgeblich bleiben die verlinkten Quelldateien; bei spaeteren Aenderungen kann dieser datierte

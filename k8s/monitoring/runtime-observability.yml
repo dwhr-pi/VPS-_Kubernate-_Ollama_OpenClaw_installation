@@ -1,0 +1,52 @@
+# Optional: existing Prometheus Operator/CRDs and namespaces are prerequisites.
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: ollama-readonly-exporter
+  namespace: ai-monitoring
+  labels: {release: llmops-monitoring}
+spec:
+  namespaceSelector: {matchNames: [ai-monitoring]}
+  sampleLimit: 128
+  selector:
+    matchLabels: {llmops-metrics: ollama-readonly-exporter}
+  endpoints:
+    - port: metrics
+      path: /metrics
+      interval: 30s
+      scrapeTimeout: 5s
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: llmops-runtime
+  namespace: monitoring
+  labels: {release: llmops-monitoring}
+spec:
+  groups:
+    - name: llmops-runtime
+      rules:
+        - alert: LLMOpsGatewayScrapeUnavailable
+          expr: up{namespace="llmops",service="litellm"} == 0
+          for: 5m
+          labels: {severity: warning}
+          annotations:
+            summary: 'LiteLLM scrape unavailable; verify token and private network'
+        - alert: LLMOpsGatewayScrapeMissing
+          expr: absent(up{namespace="llmops",service="litellm"})
+          for: 10m
+          labels: {severity: warning}
+          annotations:
+            summary: 'No LiteLLM target discovered; verify ServiceMonitor selection'
+        - alert: LLMOpsRuntimeRestarting
+          expr: sum by (namespace, pod) (increase(kube_pod_container_status_restarts_total{namespace="llmops",container=~"ollama|litellm"}[15m])) > 3
+          for: 5m
+          labels: {severity: warning}
+          annotations:
+            summary: 'AI runtime repeatedly restarting; inspect OOM and storage events'
+        - alert: LLMOpsGPUFramebufferPressure
+          expr: DCGM_FI_DEV_FB_USED / (DCGM_FI_DEV_FB_USED + DCGM_FI_DEV_FB_FREE) > 0.9
+          for: 10m
+          labels: {severity: warning}
+          annotations:
+            summary: 'GPU framebuffer over 90 percent; scope targets to the reviewed home worker'

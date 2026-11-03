@@ -2,7 +2,7 @@
   "uid": "llmops-baseline",
   "title": "LLMOps: Gateway und Host",
   "schemaVersion": 39,
-  "version": 2,
+  "version": 3,
   "refresh": "30s",
   "time": {"from": "now-1h", "to": "now"},
   "panels": [
@@ -11,6 +11,9 @@
     {"id": 3, "title": "RAM verfuegbar (Bytes)", "type": "timeseries", "datasource": {"type": "prometheus", "uid": "prometheus"}, "gridPos": {"h": 8, "w": 12, "x": 0, "y": 8}, "targets": [{"refId": "A", "expr": "node_memory_MemAvailable_bytes"}]},
     {"id": 4, "title": "Dateisystem frei (Bytes)", "type": "timeseries", "datasource": {"type": "prometheus", "uid": "prometheus"}, "gridPos": {"h": 8, "w": 12, "x": 12, "y": 8}, "targets": [{"refId": "A", "expr": "node_filesystem_avail_bytes{fstype!~\"tmpfs|overlay|squashfs\"}"}]},
     {"id": 5, "title": "Gateway p95 Gesamtlatenz (Sekunden)", "type": "timeseries", "datasource": {"type": "prometheus", "uid": "prometheus"}, "gridPos": {"h": 8, "w": 12, "x": 0, "y": 16}, "targets": [{"refId": "A", "expr": "histogram_quantile(0.95, sum by (le) (rate(litellm_request_total_latency_metric_bucket[5m])))"}]},
-    {"id": 6, "title": "Scrape-Verfuegbarkeit", "type": "timeseries", "datasource": {"type": "prometheus", "uid": "prometheus"}, "gridPos": {"h": 8, "w": 12, "x": 12, "y": 16}, "targets": [{"refId": "A", "expr": "up{job=~\"litellm|node\"}"}]}
+    {"id": 6, "title": "Scrape-Verfuegbarkeit", "type": "timeseries", "datasource": {"type": "prometheus", "uid": "prometheus"}, "gridPos": {"h": 8, "w": 12, "x": 12, "y": 16}, "targets": [{"refId": "A", "expr": "up{job=~\"litellm|node\"}"}]},
+    {"id": 7, "title": "GPU-VRAM belegt (DCGM, optional)", "type": "timeseries", "datasource": {"type": "prometheus", "uid": "prometheus"}, "fieldConfig": {"defaults": {"unit": "bytes"}, "overrides": []}, "gridPos": {"h": 8, "w": 12, "x": 0, "y": 24}, "targets": [{"refId": "A", "expr": "DCGM_FI_DEV_FB_USED * 1024 * 1024", "legendFormat": "{{instance}} / GPU {{gpu}}"}]},
+    {"id": 8, "title": "GPU-Auslastung (DCGM, optional)", "type": "timeseries", "datasource": {"type": "prometheus", "uid": "prometheus"}, "fieldConfig": {"defaults": {"unit": "percent", "min": 0, "max": 100}, "overrides": []}, "gridPos": {"h": 8, "w": 12, "x": 12, "y": 24}, "targets": [{"refId": "A", "expr": "DCGM_FI_DEV_GPU_UTIL", "legendFormat": "{{instance}} / GPU {{gpu}}"}]},
+    {"id": 9, "title": "Proxy-Anfragen/s (LiteLLM-Version pruefen)", "type": "timeseries", "datasource": {"type": "prometheus", "uid": "prometheus"}, "fieldConfig": {"defaults": {"unit": "reqps"}, "overrides": []}, "gridPos": {"h": 8, "w": 12, "x": 0, "y": 32}, "targets": [{"refId": "A", "expr": "sum(rate(litellm_proxy_total_requests_metric_total[5m])) or sum(rate(litellm_requests_metric_total[5m]))"}]}
   ]
 }

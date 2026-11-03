@@ -1,0 +1,19 @@
+# Budget for one CPU Ollama and one gateway, not a GPU workstation.
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: llmops-budget
+  namespace: llmops
+spec:
+  hard:
+    requests.cpu: '2'
+    requests.memory: 3Gi
+    requests.ephemeral-storage: 1Gi
+    limits.cpu: '3'
+    limits.memory: 5Gi
+    limits.ephemeral-storage: 3Gi
+    requests.storage: 50Gi
+    persistentvolumeclaims: '1'
+    pods: '4'
+    services.nodeports: '0'
+    services.loadbalancers: '0'

@@ -165,6 +165,12 @@ ensure_base_apt_packages() {
 
   for package_name in "${REQUIRED_BASE_APT_PACKAGES[@]:-}"; do
     [ -n "$package_name" ] || continue
+    case "$package_name" in
+      docker* | moby* | podman-docker)
+        log_error "Docker-Pakete sind keine erlaubten Basisabhaengigkeiten. Git-Quellbuild verwenden."
+        return 1
+        ;;
+    esac
     if [ "$package_name" = "docker-compose-plugin" ]; then
       log_warn "docker-compose-plugin wird nicht direkt per Ubuntu-apt installiert; Docker Compose wird bei Bedarf als CLI-Plugin aus GitHub bereitgestellt."
       continue

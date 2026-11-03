@@ -1,0 +1,14 @@
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: llmops-private-dns01
+spec:
+  acme:
+    email: operator@example.invalid
+    # Validate with the staging CA before explicitly choosing production.
+    server: https://acme-staging-v02.api.letsencrypt.org/directory
+    privateKeySecretRef: {name: llmops-private-dns01-account}
+    solvers:
+      - dns01:
+          cloudflare:
+            apiTokenSecretRef: {name: cloudflare-dns01, key: api-token}

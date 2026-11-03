@@ -11,6 +11,8 @@ STAMP="$(date +%Y%m%d_%H%M%S)_$$"
 TARGET_DIR="${BACKUP_ROOT}/${STAMP}"
 mkdir -p "$BACKUP_ROOT"
 mkdir -m 700 "$TARGET_DIR"
+# Retain an explicit incomplete marker across errors, interruption and host crashes.
+(umask 077; printf '%s\n' 'Local copy; not encrypted or restore-verified. Filename records completion.' >"$TARGET_DIR/.backup-incomplete")
 
 log_info "Erstelle lokales Backup unter: $TARGET_DIR"
 
@@ -37,4 +39,5 @@ log_warn "Personalaktenpfade tools/paperless_ngx/ und personnel_documents/ sind 
 log_warn "Programmliste: $TARGET_DIR/installation-inventory.md. Fuer Verlust von Workspace/Backup separat extern exportieren."
 log_warn "ENV/API-Keys gesondert verschluesseln/exportieren: Optionen -> 21 -> 5; siehe docs/CREDENTIALS_BACKUP.md. Kein automatischer Mailversand."
 
-log_success "Backup abgeschlossen: $TARGET_DIR"
+mv -- "$TARGET_DIR/.backup-incomplete" "$TARGET_DIR/.backup-complete"
+log_success "Lokale Kopie abgeschlossen, nicht als Ganzes verschluesselt: $TARGET_DIR"

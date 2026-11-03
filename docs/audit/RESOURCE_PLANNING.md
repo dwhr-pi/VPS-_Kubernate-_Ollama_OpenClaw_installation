@@ -1,5 +1,15 @@
 # Ressourcen, Platzierung und Benchmarks
 
+## Aktualisierung 03.11.2026
+
+Aktuelle CPU-VPS-Quota: 3 GiB RAM-Requests, 5 GiB RAM-Limits, ein 50-GiB-Modell-PVC;
+Hostvorpruefung: zwei logische CPUs, 6 GiB gesamt, 3 GiB aktuell verfuegbar, 64 GiB Diskreserve.
+Dies ist keine gemessene Modellkapazitaet; bei vollen Limits plus OS/K3s/Monitoring eher mindestens
+8 GiB RAM einplanen. Die [Herleitung und Grenzen](../LLMOPS_ARCHITECTURE_INCREMENT_2026-11-03.md)
+erklaeren Queue/Kontext, nodegebundenen Cache und warum Ollama-HPA kein OOM-Schutz ist.
+Tokens/s, TTFT, VRAM, Energie und Modellqualitaet wurden hier nicht gemessen oder erfunden.
+Vorhandene Benchmark-Helfer und synthetische RAG-Rankings bleiben getrennt von echter Inferenz.
+
 ## Platzierung
 
 | Ort                     | Sinnvolle Rolle                                      | Nicht standardmaessig dort betreiben                                   |

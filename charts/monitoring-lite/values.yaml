@@ -21,4 +21,4 @@ nodeExporterTargets: []
 ollamaExporterTargets: []
 # Nur konkrete private IPv4-/IPv6-Ziele und Exporter-Ports freigeben.
 exporterCIDRs: []
-exporterPorts: [9100, 8000]
+exporterPorts: [9100, 8000, 9404]

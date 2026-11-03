@@ -1,0 +1,6 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+# Do not add this opt-in bundle to base: it needs operator CRDs and existing namespaces.
+resources:
+  - ../../../k8s/platform
+  - ../../../k8s/monitoring

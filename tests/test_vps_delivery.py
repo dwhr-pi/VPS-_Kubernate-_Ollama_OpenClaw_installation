@@ -54,8 +54,54 @@ class HostChecks(unittest.TestCase):
         with self.assertRaises(ValueError):
             hostcheck.check(Path('relative'), self.mem, self.swaps)
 
+    def test_single_unknown_or_invalid_cpu_count_fails_before_disk_access(self):
+        for count in (0, 1, -1, True, 1.5):
+            with self.subTest(count=count), patch.object(hostcheck.shutil, 'disk_usage') as disk:
+                with self.assertRaisesRegex(ValueError, 'CPU'):
+                    hostcheck.check(self.base, self.mem, self.swaps, cpu_count=count)
+                disk.assert_not_called()
+
+    def test_two_and_half_gib_available_is_not_enough_for_scheduling_headroom(self):
+        self.mem.write_text('MemTotal: 8388608 kB\nMemAvailable: 2621440 kB\n')
+        with self.assertRaisesRegex(ValueError, '3 GiB'):
+            self.check()
+
+    def test_runtime_check_is_bounded_read_only_and_propagates_failure(self):
+        with patch.object(hostcheck.shutil, 'which', return_value='/fixture/systemctl'), \
+             patch.object(hostcheck.subprocess, 'run', return_value=Mock(returncode=0)) as run:
+            hostcheck.check_runtime('k3s')
+        self.assertEqual(run.call_args.args[0], ['/fixture/systemctl', 'is-active', '--quiet', 'k3s'])
+        self.assertEqual(run.call_args.kwargs['timeout'], 10)
+        for rc in (1, 3, 4):
+            with patch.object(hostcheck.shutil, 'which', return_value='/fixture/systemctl'), \
+                 patch.object(hostcheck.subprocess, 'run', return_value=Mock(returncode=rc)), \
+                 self.assertRaises(ValueError):
+                hostcheck.check_runtime('containerd')
+        with patch.object(hostcheck.subprocess, 'run') as run, self.assertRaises(ValueError):
+            hostcheck.check_runtime('unapproved')
+        run.assert_not_called()
+
+    def test_runtime_timeout_is_not_a_success(self):
+        with patch.object(hostcheck.shutil, 'which', return_value='/fixture/systemctl'), \
+             patch.object(hostcheck.subprocess, 'run', side_effect=subprocess.TimeoutExpired('fixture', 10)), \
+             self.assertRaises(subprocess.TimeoutExpired):
+            hostcheck.check_runtime('k3s-agent')
+
 
 class DeliveryFiles(unittest.TestCase):
+    def test_small_vps_quota_is_not_the_workstation_budget(self):
+        folder = ROOT / 'k8s/overlays/vps-cpu'
+        self.assertIn('path: resource-quota.yaml', (folder / 'kustomization.yml').read_text())
+        text = (folder / 'resource-quota.yaml').read_text()
+        for required in ('limits.memory: 5Gi', 'requests.memory: 3Gi', 'requests.storage: 50Gi',
+                         "persistentvolumeclaims: '1'", "services.nodeports: '0'",
+                         "services.loadbalancers: '0'"):
+            self.assertIn(required, text)
+        self.assertNotIn('nvidia.com/gpu', text)
+        base = (ROOT / 'k8s/base/ollama.yml').read_text()
+        self.assertIn('whenDeleted: Retain', base)
+        self.assertIn('whenScaled: Retain', base)
+
     def test_overlay_reuses_existing_base_and_claim(self):
         folder = ROOT / 'k8s/overlays/vps-cpu'
         self.assertIn('../../base', (folder / 'kustomization.yml').read_text())
@@ -90,6 +136,14 @@ class DeliveryFiles(unittest.TestCase):
         self.assertEqual(len(ids), len(set(ids)))
         self.assertTrue(any('litellm_request_total_latency_metric_bucket' in t['expr']
                             for p in dashboard['panels'] for t in p['targets']))
+
+    def test_native_exporter_port_matches_monitoring_default(self):
+        exporter = (ROOT / 'scripts/monitoring/ollama_readonly_exporter.py').read_text()
+        generator = (ROOT / 'scripts/security/native_monitoring_config.py').read_text()
+        chart = (ROOT / 'charts/monitoring-lite/values.yaml').read_text()
+        self.assertIn("'--port', type=int, default=9404", exporter)
+        self.assertIn("'--ollama-exporter', default='127.0.0.1:9404'", generator)
+        self.assertIn('exporterPorts: [9100, 8000, 9404]', chart)
 
 
 @unittest.skipUnless(os.name == 'posix', 'Bash process fixtures run in Linux CI')

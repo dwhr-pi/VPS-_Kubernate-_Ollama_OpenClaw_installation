@@ -11,6 +11,7 @@ Hinweise auf Unterstuetzung sind keine zusaetzliche Lizenzbedingung.
 
 - **Einstieg:** [Erste 60 Minuten](docs/FIRST_60_MINUTES.md), [aktueller Status](docs/CURRENT_STATUS.md).
 - **Architektur:** [Hybrid-Plattform](docs/architecture/), [Kubernetes-Baseline](docs/PRODUCTION_BASELINE.md).
+  [Ressourcen, Storage und GitOps-Abnahme](docs/LLMOPS_ARCHITECTURE_INCREMENT_2026-11-03.md).
 - **Betrieb:** [Installationszweige](docs/INSTALL_BRANCH_SELECTION.md), [Backup und Restore](docs/INSTALLATION_STATUS_BACKUP.md).
 - **Sicherheit:** [Signierte Releases](docs/SIGNED_RELEASES.md), [sicherer Kernpfad](docs/SECURE_CORE_REFACTOR.md).
 - **Tools und Profile:** [Tool-Matrix](docs/generated/TOOL_MATRIX.md), [Profil-Matrix](docs/generated/PROFILE_MATRIX.md).
@@ -23,7 +24,17 @@ Es werden nur lokale Dokumente angezeigt, keine Browser, Installer oder Dienste 
 
 Kein ungeprueftes curl-pipe-bash. Der Release-Vertrauensanker muss unabhaengig vorliegen.
 Primaertools bleiben GitHub-Source-Builds; bestehende ausdrueckliche Quellen-Ausnahmen bleiben separat dokumentiert.
+**Verbindlich: Git-Quellen herunterladen und nativ bauen/installieren; keine Docker-Installation, kein Docker-Fallback.**
+Warnungen aendern diesen Installationsweg nicht. [Installationsrichtlinie](docs/INSTALLATION_POLICY.md).
 Registry-Metadaten und Menuehaekchen sind kein Laufzeitnachweis.
+
+## Deklarativer Pruefpfad
+
+`bash scripts/setup-cluster.sh` zeigt nur den Plan, ohne Download oder Clusterzugriff.
+Kompatible GitOps-Einstiege: `deploy/kustomize/`, bestehende Quelldateien bleiben unter `k8s/`.
+Namespaces, Budgets, PVCs, private TLS-Zugaenge und optionale Operator-Metriken sind getrennt.
+[Setup, manuelles Staging-Deployment, Voraussetzungen und Rollback](docs/GITOPS_DEPLOYMENT_PATH.md).
+
 [Ports](docs/generated/PORT_MATRIX.md), [P1-P3 und Abnahmegrenzen](docs/P1_P3_IMPLEMENTATION.md).
 
 Weitere Themen: [Entwicklungswerkzeuge](docs/DEVELOPMENT_TOOLS_OVERVIEW.md),

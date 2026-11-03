@@ -29,6 +29,10 @@ metadata:
 spec:
   serviceName: ollama-headless
   replicas: 1
+  # Explicit retention protects every overlay; it is not a PV or off-site backup.
+  persistentVolumeClaimRetentionPolicy:
+    whenDeleted: Retain
+    whenScaled: Retain
   selector:
     matchLabels:
       app: ollama
@@ -76,10 +80,12 @@ spec:
             periodSeconds: 10
             failureThreshold: 60
           readinessProbe:
-            httpGet: {path: /api/version, port: http}
+            httpGet: {path: /api/tags, port: http}
+            timeoutSeconds: 5
             periodSeconds: 10
           livenessProbe:
-            httpGet: {path: /api/version, port: http}
+            httpGet: {path: /api/tags, port: http}
+            timeoutSeconds: 5
             periodSeconds: 30
             failureThreshold: 5
           volumeMounts:

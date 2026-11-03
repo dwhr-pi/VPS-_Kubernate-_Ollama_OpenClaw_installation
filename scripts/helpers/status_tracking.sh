@@ -352,6 +352,12 @@ status_tracking_install_missing_base_packages() {
 
   for package_name in "${STATUS_TRACKING_REQUIRED_APT_PACKAGES[@]:-}"; do
     [ -n "$package_name" ] || continue
+    case "$package_name" in
+      docker* | moby* | podman-docker)
+        printf '%s\n' 'Docker ist keine erlaubte Basisabhaengigkeit; Git-Quellbuild verwenden.' >&2
+        return 1
+        ;;
+    esac
     if [ "$package_name" = "docker-compose-plugin" ]; then
       echo -e "\033[1;33mHinweis: docker-compose-plugin wird nicht direkt per Ubuntu-apt installiert; Docker Compose wird bei Bedarf als CLI-Plugin aus GitHub bereitgestellt.\033[0m"
       continue

@@ -1,5 +1,15 @@
 # Zehn priorisierte Integrationsluecken
 
+## Einordnung 03.11.2026
+
+Die zehn Themen bleiben eine Abnahmeliste, keine Behauptung fehlender Software.
+Der vorhandene Coding-Workbench-/Approval-Pfad und neue private Datei-/ENV-Helfer muessen bei
+INT-003/004 mitbetrachtet werden; alte Aussagen sind keine Feststellung, dass es keinerlei Schutz gibt.
+Neue Monitoring-Konfigurationen sind noch kein erfolgreicher Scrape oder Alarm.
+Der [aktuelle Architekturabgleich](../LLMOPS_ARCHITECTURE_INCREMENT_2026-11-03.md) ergaenzt Ressourcen,
+PVC-Retention, Runtime-Timeout und Exporter-Port; Ingest-/Tenant-/Loesch-/Restore- und Prozessrestart-
+Abnahmen bleiben offen. Keine zusaetzliche Inferenz-Runtime oder Workflow-Engine automatisch installiert.
+
 Kein Eintrag bedeutet automatisch "Tool fehlt". Status ist durch Codebelege begrenzt;
 Datenbank-/Hardware-/Netzwerkzugriff erfolgte nicht.
 

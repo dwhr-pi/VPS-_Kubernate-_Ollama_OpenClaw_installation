@@ -31,7 +31,7 @@ Nur Repository-Metadaten, kein Nachweis installierter oder produktionsfaehiger P
 | archivebox | experimental | unknown | d950dace5ef226634b86ebe43c7001aa7e076cbf | scripts/tools/archivebox_doctor.sh | scripts/tools/archivebox_update.sh |
 | argilla | experimental | unknown | 5338519accb13ae422f8bf9c0642651c249c49af | scripts/tools/argilla_doctor.sh | scripts/tools/argilla_update.sh |
 | argo_workflows | planned | unknown | unknown | not-mapped | not-mapped |
-| argocd_cli | unknown | unknown | unknown | not-mapped | not-mapped |
+| argocd_cli | experimental | unknown | 3dc411247c3b00c283581642b0d017052d91664d | scripts/tools/argocd_cli_doctor.sh | scripts/tools/argocd_cli_update.sh |
 | arq | planned | unknown | unknown | not-mapped | not-mapped |
 | asterisk | planned | unknown | unknown | not-mapped | not-mapped |
 | audacity | experimental | unknown | f515da46486301d48db89f195729ef0c87980668 | scripts/tools/audacity_doctor.sh | scripts/tools/audacity_update.sh |
@@ -74,7 +74,7 @@ Nur Repository-Metadaten, kein Nachweis installierter oder produktionsfaehiger P
 | claude_code | experimental | unknown | dd6bee38458cc3e6dc5f2b16eca1f0f364619ad8 | scripts/tools/claude_code_doctor.sh | scripts/tools/claude_code_update.sh |
 | clearer_voice_studio | planned | unknown | unknown | not-mapped | not-mapped |
 | cline | experimental | unknown | unknown | scripts/tools/cline_doctor.sh | scripts/tools/cline_update.sh |
-| cloudflared | unknown | unknown | unknown | not-mapped | not-mapped |
+| cloudflared | experimental | unknown | 872b241f94871665c1c157adefcf90c11f0ead96 | scripts/tools/cloudflared_doctor.sh | scripts/tools/cloudflared_update.sh |
 | codex_cli | experimental | unknown | 8fdf6472955749a731fd9e4b8ffc218e8e80c51d | scripts/tools/codex_cli_doctor.sh | scripts/tools/codex_cli_update.sh |
 | cogvideox | experimental | unknown | 7a1af7154511e0ce4e4be8d62faa8c5e5a3532d2 | scripts/tools/cogvideox_doctor.sh | scripts/tools/cogvideox_update.sh |
 | colibri | experimental | unknown | e0db083cdc9e563e0766cc6fc661ef23c32298e0 | scripts/tools/colibri_doctor.sh | scripts/tools/colibri_update.sh |

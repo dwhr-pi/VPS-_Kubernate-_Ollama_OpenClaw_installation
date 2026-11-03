@@ -4,6 +4,8 @@
 # Clawbake ist ein Tool zur Automatisierung von Builds und Deployments.
 # ==============================================================================
 
+set -Eeuo pipefail
+
 # Farben
 GREEN="\033[0;32m"
 BLUE="\033[0;34m"
@@ -25,11 +27,11 @@ CLAWBAKE_DATABASE_ENGINE="${CLAWBAKE_DATABASE_ENGINE:-postgresql}"
 clone_clawbake_repo() {
   local target_dir="$1"
 
-  sudo rm -rf "$target_dir"
-  sudo mkdir -p "$target_dir"
-  sudo chown -R "$USER:$USER" "$target_dir"
+  # Never delete/adopt an existing installation, including a dangling link.
+  [[ "$target_dir" == /opt/clawbake && ! -e "$target_dir" && ! -L "$target_dir" ]] || return 1
+  sudo mkdir -- "$target_dir"
+  sudo chown "$USER:$USER" "$target_dir"
   git clone "$CLAWBAKE_REPO_URL" "$target_dir"
-  sudo chown -R "$USER:$USER" "$target_dir"
 }
 
 echo -e "${BLUE}Starte Installation von Clawbake...${NC}"

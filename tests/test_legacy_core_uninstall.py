@@ -235,7 +235,7 @@ class LegacyMenu(unittest.TestCase):
             shim = root / 'bin/python3'
             shim.write_text('#!/usr/bin/env bash\nprintf "ARG:%s\\n" "$@"\nexit 3\n')
             shim.chmod(0o700)
-            for tool in ('ollama', 'openclaw'):
+            for tool in ('ollama', 'openclaw', 'k3s', 'clawbake'):
                 source = ROOT / f'scripts/tools/{tool}_uninstall.sh'
                 target = root / 'scripts/tools' / source.name
                 shutil.copyfile(source, target)
@@ -296,7 +296,7 @@ handle_manual_tool_post_action() { printf 'RESULT:%s\n' "$3"; }
                         self.assertIn('RESULT:failed', result.stdout)
 
     def test_wrappers_are_isolated_from_tracking_and_dependency_installation(self):
-        for tool in ('ollama', 'openclaw'):
+        for tool in ('ollama', 'openclaw', 'k3s', 'clawbake'):
             script = ROOT / f'scripts/tools/{tool}_uninstall.sh'
             text = script.read_text(encoding='utf-8')
             self.assertIn('exec python3 -I -B "$HELPER" ' + tool + ' "$@"', text)

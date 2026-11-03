@@ -11,6 +11,9 @@ PLANNED = 3
 BLOCKED = 1
 INVALID = 2
 ARTIFACTS = {
+    'k3s': ('usr/local/bin/k3s', 'usr/local/bin/k3s-uninstall.sh',
+            'etc/systemd/system/k3s.service', 'etc/rancher/k3s', 'var/lib/rancher/k3s'),
+    'clawbake': ('opt/clawbake',),
     'ollama': ('usr/local/bin/ollama', 'usr/bin/ollama',
                'etc/systemd/system/ollama.service', 'usr/share/ollama', 'var/lib/ollama'),
     'openclaw': ('opt/openclaw', 'etc/systemd/system/openclaw.service'),

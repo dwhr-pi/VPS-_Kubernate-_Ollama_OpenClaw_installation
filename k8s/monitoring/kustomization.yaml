@@ -1,0 +1,6 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+# Operator CRs only; Helm values and legacy Loki policies are not workloads.
+resources:
+  - litellm-service-monitor.yml
+  - runtime-observability.yml

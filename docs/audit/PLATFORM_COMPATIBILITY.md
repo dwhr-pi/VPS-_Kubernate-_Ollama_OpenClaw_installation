@@ -1,5 +1,14 @@
 # Capability- und Plattformmatrix
 
+## Nachpruefung 03.11.2026
+
+Audit/Fixtures laufen hier nativ unter Windows, ohne WSL-Zugriff. Die neue Agentenprofil-
+Metadatenlogik hat portable synthetische Tests; echte 0700-/0600-/UID-Durchsetzung benoetigt
+Linux/POSIX. Windows-ACLs werden nicht aus Modusbits abgeleitet. `test_results.json` nennt Skips.
+CPU-VPS-Hostchecks und systemd gelten nicht als Windows-/macOS-Clusterbetrieb.
+Docker/Compose werden nicht installiert; Podman ist kein stiller Ersatz. Bestehende historische
+Containerdaten bleiben erhalten; K3s/containerd nur nach separater expliziter Freigabe.
+
 `implemented` bedeutet Code vorhanden; `tested` nennt immer einen konkreten Testumfang. Kein
 pauschales `production_verified` in diesem Audit.
 

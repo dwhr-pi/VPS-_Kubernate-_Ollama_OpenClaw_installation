@@ -117,55 +117,8 @@ uninstall_git_node_tool() {
 }
 
 ensure_docker_compose_available() {
-  local arch
-  local compose_url
-  local plugin_dir="/usr/local/lib/docker/cli-plugins"
-
-  ensure_base_apt_packages git ca-certificates curl
-
-  if docker version >/dev/null 2>&1 || sudo docker version >/dev/null 2>&1; then
-    log_info "Docker ist bereits vorhanden."
-  elif apt-cache policy docker-ce 2>/dev/null | grep -q 'Candidate: [0-9]'; then
-    log_warn "Docker.com-Repository erkannt. Installiere Docker Engine aus docker-ce-Paketen statt Ubuntu docker.io."
-    sudo apt-get update
-    sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-  else
-    if dpkg -s containerd.io >/dev/null 2>&1; then
-      log_error "containerd.io ist installiert, aber docker-ce ist nicht als apt-Kandidat verfuegbar."
-      log_error "Ubuntu docker.io wuerde mit containerd.io kollidieren. Docker wird nicht automatisch installiert."
-      log_error "Bitte Docker-Repository reparieren oder Docker bewusst manuell installieren."
-      return 1
-    fi
-    log_warn "Kein Docker.com-Repository erkannt. Verwende Ubuntu docker.io als Fallback."
-    sudo apt-get update
-    sudo apt-get install -y docker.io
-  fi
-
-  if docker compose version >/dev/null 2>&1 || sudo docker compose version >/dev/null 2>&1; then
-    return 0
-  fi
-
-  arch="$(uname -m)"
-  case "$arch" in
-    x86_64 | amd64)
-      arch="x86_64"
-      ;;
-    aarch64 | arm64)
-      arch="aarch64"
-      ;;
-    *)
-      log_error "Docker Compose GitHub-Release fuer Architektur '$arch' ist im Installer nicht hinterlegt."
-      return 1
-      ;;
-  esac
-
-  compose_url="https://github.com/docker/compose/releases/latest/download/docker-compose-linux-${arch}"
-  log_warn "docker-compose-plugin ist nicht auf jedem Ubuntu-Repo verfuegbar. Installiere Docker Compose als CLI-Plugin aus GitHub: ${compose_url}"
-  sudo mkdir -p "$plugin_dir"
-  sudo curl -fsSL "$compose_url" -o "$plugin_dir/docker-compose"
-  sudo chmod 0755 "$plugin_dir/docker-compose"
-
-  docker compose version >/dev/null 2>&1 || sudo docker compose version >/dev/null 2>&1
+  log_error "Docker-/Compose-Installation ist nicht erlaubt. Nativen Git-Quellbuild verwenden; kein Container-Fallback."
+  return 1
 }
 
 run_docker_compose() {
@@ -227,7 +180,7 @@ install_git_docker_tool() {
   local compose_content="$4"
   begin_measurement "tool_install_${tool_name}" "Tool installieren: ${tool_name}"
   if ensure_user_workspace && require_disk_mb 2048 /; then
-    ensure_docker_compose_available
+    ensure_docker_compose_available || return 1
     sudo systemctl enable --now docker || true
     sudo mkdir -p "$install_dir"
     sudo chown -R "$USER":"$USER" "$install_dir"

@@ -1,5 +1,40 @@
 # Aktueller Projektstatus
 
+## Deklarative Einstiegspfade vom 03.11.2026
+
+[GitOps-Pfad](GITOPS_DEPLOYMENT_PATH.md): additive Kustomize-Einstiege, private DNS01-/VPN-
+Ingress-Option, `/api/tags`-Probes, authentifizierte Gateway-Metriken und selektierbare Operator-
+Monitors/Rules. Exporter bleibt bei null Replikaten; GPU-Metriken benoetigen separate DCGM-Abnahme.
+Neuer Setup-Einstieg plant standardmaessig nur. CI- und manuelles Staging sind konfiguriert,
+nicht als bereits erfolgreich ausgefuehrt freigegeben. Frisches K3s-Source-Provisioning,
+Live-Netz/TLS/Secret-/GPU-/Restore-Nachweise bleiben offen. Keine Docker-Installation.
+
+## Gesamtinventar und P1-Nachvalidierung vom 03.11.2026
+
+[Gesamtaudit](audit/EXECUTIVE_SUMMARY.md) und alle zehn Auditbereiche werden gegen den lokalen
+Arbeitsstand abgeglichen. Das Inventar erfasst 400 Tools/250 Profile, Status-Skript-Mappings,
+Dateihashes einschliesslich untracked Dateien und statische Testreferenzen, ohne Runtime-Hochstufung.
+SEC-009-Dateimetadaten werden bei Profil-Wiederholung nachvalidiert; keine automatische chmod-/chown-
+Migration. Die kuratierte Offline-Testsammlung wurde erweitert. Echte Restore-/Inferenz-/ACL-/GPU-
+und Produktionsabnahmen bleiben davon getrennt offen. Keine neuen Tools, Docker-Installation oder Dienste.
+
+## Ressourcen-/GitOps-Abgleich vom 03.11.2026
+
+[Architekturabgleich](LLMOPS_ARCHITECTURE_INCREMENT_2026-11-03.md): Gateway, Monitoring,
+SOPS-/Secret-Helfer und GitOps waren bereits vorhanden. Gezielt ergaenzt sind ein kleines
+CPU-VPS-Namespace-Budget, expliziter PVC-Erhalt in der Basis sowie CPU-/RAM- und zeitlich
+begrenzte Runtime-Vorpruefungen im vorhandenen Install-/Update-Pfad. Keine neuen Hintergrunddienste,
+keine Docker-Installation, kein Cluster-Apply und keine Runtime-/Produktionsfreigabe.
+
+## F01-F07-Teilsatz vom 03.11.2026
+
+[Installationsrichtlinie](INSTALLATION_POLICY.md): Git-Quellbuilds bleiben Standard,
+keine Docker-Installation und kein Docker-Fallback. [Patchsatz und Grenzen](F01_F07_IMPLEMENTATION.md):
+datenbewahrender K3s-/Clawbake-Legacy-Guard, native ArgoCD-/cloudflared-Buildrezepte,
+private atomische ENV-Ausgabe, redigierte History-Triage, native Monitoring-Konfiguration
+und Restic-Export-/Datei-Restore-Pruefpfad. Keine echte Schluesselrotation,
+Alarmzustellung, Datenbank-/PVC-Wiederherstellung oder generelle Produktionsfreigabe.
+
 ## OpenClaw-Quellenschutz und Tool-Reihenfolge vom 02.11.2026
 
 Auch der OpenClaw-Legacy-Installer ist jetzt vor Clone/Pull, `/opt`-Aenderungen,

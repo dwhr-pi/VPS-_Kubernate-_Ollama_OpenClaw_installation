@@ -1,9 +1,6 @@
-#!/bin/bash
-set -euo pipefail
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-# shellcheck disable=SC1091
-source "$SCRIPT_DIR/../helpers/status_tracking.sh"
-init_tool_tracking "K3s"
-sudo /usr/local/bin/k3s-uninstall.sh || true
-mark_current_tool_removed
-echo "K3s wurde entfernt."
+#!/usr/bin/env bash
+set -Eeuo pipefail
+ROOT="$(cd -P "${BASH_SOURCE[0]%/*}/../.." && pwd)"
+HELPER="$ROOT/scripts/security/legacy_core_uninstall.py"
+[[ -f "$HELPER" && ! -L "$HELPER" ]] || exit 1
+exec python3 -I -B "$HELPER" k3s "$@"

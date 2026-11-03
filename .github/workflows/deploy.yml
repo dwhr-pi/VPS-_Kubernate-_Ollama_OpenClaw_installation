@@ -1,0 +1,128 @@
+name: GitOps - Validate and Explicit Staging Deploy
+
+on:
+  pull_request:
+    paths: ['k8s/**', 'deploy/**', 'charts/**', 'scripts/setup-cluster.sh', 'tests/test_declarative_delivery.py', '.github/workflows/deploy.yml']
+  push:
+    branches: [main]
+    paths: ['k8s/**', 'deploy/**', 'charts/**', 'scripts/setup-cluster.sh', 'tests/test_declarative_delivery.py', '.github/workflows/deploy.yml']
+  workflow_dispatch:
+    inputs:
+      deploy_staging:
+        description: 'Explicitly deploy to a dedicated, approved STAGING runner (never production)'
+        type: boolean
+        default: false
+      confirm_sha:
+        description: 'Full reviewed workflow commit SHA; required only for staging deployment'
+        type: string
+        default: ''
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    env:
+      GOTOOLCHAIN: local
+      GOENV: 'off'
+      GOWORK: 'off'
+      GOMAXPROCS: '2'
+      GOMEMLIMIT: 2GiB
+      GIT_TERMINAL_PROMPT: '0'
+      GIT_CONFIG_NOSYSTEM: '1'
+      GIT_CONFIG_GLOBAL: /dev/null
+      KUBECONFIG: /dev/null
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16
+        with:
+          go-version: '1.27.3'
+          check-latest: false
+          cache: false
+      - name: Build linters from pinned official Git sources (no Docker)
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          umask 077
+          tools="$RUNNER_TEMP/llmops-ci-tools"
+          mkdir -m 700 "$tools" "$tools/bin"
+          build_tool() {
+            local name=$1 repo=$2 pin=$3 module=$4 package=$5
+            local source="$tools/$name"
+            git -c core.hooksPath=/dev/null init "$source"
+            git -C "$source" remote add origin "https://github.com/$repo.git"
+            git -c credential.helper= -C "$source" fetch --depth=1 origin "$pin"
+            git -c core.hooksPath=/dev/null -C "$source" checkout --detach FETCH_HEAD
+            test "$(git -C "$source" rev-parse HEAD)" = "$pin"
+            (
+              cd "$source/$module"
+              go mod download
+              go mod verify
+              go build -mod=readonly -trimpath -buildvcs=false -p=2 -o "$tools/bin/$name" "$package"
+            )
+          }
+          build_tool helm helm/helm bc232c5312e784e808ea95ae76f9e82d4fe142fc . ./cmd/helm
+          build_tool kube-linter stackrox/kube-linter 6d74f00b4c16cbf0aca5e29401a6e543cf04756d . ./cmd/kube-linter
+          build_tool kustomize kubernetes-sigs/kustomize 6e4452f7b136fb9a261afe60830867a875183a71 kustomize .
+      - name: Render, helm lint, kube-linter and offline delivery fixtures
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          tools="$RUNNER_TEMP/llmops-ci-tools/bin"
+          output="$RUNNER_TEMP/llmops-rendered"
+          mkdir -m 700 "$output"
+          for overlay in vps-cpu gpu production private-ingress vps-cpu-local-storage; do
+            "$tools/kustomize" build "deploy/kustomize/overlays/$overlay" > "$output/$overlay.yaml"
+          done
+          "$tools/kustomize" build deploy/kustomize/monitoring-operator > "$output/monitoring-operator.yaml"
+          # These synthetic digests only satisfy template linting. Nothing is deployed or published.
+          fixture_digest="sha256:$(printf '%064d' 1)"
+          "$tools/helm" lint charts/monitoring-lite --strict \
+            --set "prometheus.digest=$fixture_digest" --set "grafana.digest=$fixture_digest"
+          "$tools/helm" template llmops-monitoring-lite charts/monitoring-lite \
+            --set "prometheus.digest=$fixture_digest" --set "grafana.digest=$fixture_digest" > "$output/monitoring-lite.yaml"
+          # Run each independent plan separately; do not combine aliases into duplicate resources.
+          for file in "$output"/*.yaml; do "$tools/kube-linter" lint "$file"; done
+          export KUSTOMIZE_BIN="$tools/kustomize"
+          python3 -B -m unittest discover -s tests -p test_declarative_delivery.py -v
+          bash -n scripts/setup-cluster.sh
+
+  staging:
+    if: >-
+      github.event_name == 'workflow_dispatch' && inputs.deploy_staging == true &&
+      github.ref == 'refs/heads/main' &&
+      github.repository == 'dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation'
+    needs: validate
+    runs-on: [self-hosted, linux, llmops-staging]
+    timeout-minutes: 25
+    environment: llmops-staging
+    concurrency:
+      group: llmops-explicit-staging
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Deploy reviewed private staging overlay only after explicit approval
+        shell: bash
+        env:
+          REVIEWED_SHA: ${{ inputs.confirm_sha }}
+          APPROVED_OVERLAY: ${{ vars.LLMOPS_STAGING_OVERLAY }}
+          STAGING_CONTEXT: ${{ vars.LLMOPS_STAGING_CONTEXT }}
+          KUBECONFIG: ${{ vars.LLMOPS_STAGING_KUBECONFIG }}
+        run: |
+          set -Eeuo pipefail
+          test "$REVIEWED_SHA" = "$GITHUB_SHA"
+          [[ "$APPROVED_OVERLAY" == /* && "$APPROVED_OVERLAY" != "$GITHUB_WORKSPACE"* && -d "$APPROVED_OVERLAY" && ! -L "$APPROVED_OVERLAY" ]]
+          [[ "$KUBECONFIG" == /* && -f "$KUBECONFIG" && ! -L "$KUBECONFIG" ]]
+          test "$(stat -c %u -- "$KUBECONFIG")" = "$(id -u)"
+          test "$(stat -c %a -- "$KUBECONFIG")" = 600
+          test -n "$STAGING_CONTEXT"
+          bash scripts/setup-cluster.sh --apply --overlay "$APPROVED_OVERLAY" \
+            --context "$STAGING_CONTEXT" --confirm-apply

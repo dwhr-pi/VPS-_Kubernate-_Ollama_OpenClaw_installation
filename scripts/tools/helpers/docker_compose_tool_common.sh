@@ -8,7 +8,6 @@ BLUE='\033[0;34m'
 RED='\033[0;31m'
 YELLOW='\033[1;33m'
 NC='\033[0m'
-DOCKER_COMPOSE_TOOL_HELPER_REVISION="2026-10-23-preserve-data-owned-paths"
 DOCKER_COMPOSE_TOOL_CALL_ARGS=("$@")
 
 HELPER_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -69,20 +68,8 @@ compose_tool_write_owner() {
 }
 
 ensure_docker_compose() {
-  echo -e "${YELLOW}Docker-Compose-Helper-Revision:${NC} ${DOCKER_COMPOSE_TOOL_HELPER_REVISION}"
-
-  if command -v docker >/dev/null 2>&1 && { docker compose version >/dev/null 2>&1 || sudo docker compose version >/dev/null 2>&1; }; then
-    return 0
-  fi
-
-  echo -e "${YELLOW}Docker oder Docker Compose nicht gefunden. Installiere Docker Engine...${NC}"
-  curl -fsSL https://get.docker.com | sh
-  sudo usermod -aG docker "$USER" || true
-
-  if ! command -v docker >/dev/null 2>&1 || ! { docker compose version >/dev/null 2>&1 || sudo docker compose version >/dev/null 2>&1; }; then
-    echo -e "${RED}Fehler: Docker Compose konnte nicht bereitgestellt werden.${NC}"
-    exit 1
-  fi
+  printf '%s\n' 'Git-Quellbuild verwenden: Docker-/Compose-Installation und Container-Fallback sind nicht erlaubt. Siehe docs/INSTALLATION_POLICY.md.' >&2
+  return 1
 }
 
 run_docker_compose_tool() {

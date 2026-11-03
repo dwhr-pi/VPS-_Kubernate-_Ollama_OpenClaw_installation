@@ -1,5 +1,34 @@
 # Testumfang und Evidenz
 
+## Aktuelle Auswertung 03.11.2026
+
+[test_results.json](test_results.json) wird aus den wirklich ausgefuehrten kuratierten
+Offline-Suites erzeugt. Der Runner umfasst nun auch Dateimanifest-, Agentenmetadaten-,
+Profil-, F01-F07- und Dokumentnavigations-Fixtures. Das ist weiterhin weder die gesamte
+Testsammlung noch ein Installations-/Runtime-Smoke-Test aller 400 Tools und 250 Profile.
+Der alte Bericht bleibt im Git-Stand `be3c210` nachvollziehbar; alte Zahlen nicht als aktuellen Lauf lesen.
+
+SEC-009: portable synthetische Owner-/Modus-/Dateityp-Fixtures sowie realer Hardlink-Test im Tempdir;
+echter POSIX-Vollzug wird auf Windows ausdruecklich uebersprungen. Keine ACL-Freigabe daraus.
+Inventar: untracked Inhalt veraendert den Manifest-Hash; generierte Auditberichte verursachen
+keine Selbstreferenz. Status-Skript-Mapping ist explizit getestet.
+
+Testausgaben wie "SMTP uebergeben" stammen in dieser Sammlung aus gemockten Transport-Fixtures,
+nicht aus echtem Mailversand oder Providerzugriff. Kein Modell, Container oder produktiver Dienst gestartet.
+Aktuelle Fehler, Skips, Plattform und Runnerzeit stehen maschinenlesbar im Bericht.
+Der aktuelle kuratierte Lauf umfasst 278 Tests: 254 bestanden, 24 ausdruecklich uebersprungen,
+keine Fehler. Zusaetzlich bestanden vier Coding-Workbench-Registry-Tests und der redigierte
+Gitleaks-Arbeitsbaumscan (Exitcode 0). Das ist kein neuer Full-History- oder CVE-Scan.
+Git-Hooks wurden fuer die lokalen Commits nicht ausgefuehrt; die genannten Tests und der
+Scanner liefen separat. Keine Signatur durch einen privaten Maintainer-Schluessel wurde erzeugt.
+`scanner_availability` im Runner-JSON prueft nur den damaligen PATH. Der separate redigierte
+Arbeitsbaumscan nutzte eine bereits vorhandene gepruefte Gitleaks-Datei, keine Nachinstallation.
+Nach dem Generator-Formatfix bestanden neun gezielte Inventar-Tests; deren separater Bericht
+ersetzt nicht die 278 Tests des kuratierten Laufs und darf nicht als zusaetzliche neun eindeutige
+Tests aufsummiert werden. Die Referenzen sind weiterhin Metadaten, keine bestaetigten Live-Links.
+
+## Historischer Testumfang
+
 Stand 29.10.2026. [test_results.json](test_results.json) haelt Ergebnisse mit Datum und Quellstand
 fest; noch nicht gelaufene Tests gelten nicht als bestanden. Der Bericht nennt bewusst Teilumfang,
 Plattform und Skips. Gezielte Nachpruefungen stehen getrennt in

@@ -1,15 +1,83 @@
 {
-  "timestamp": "2026-10-29T03:25:11.550466+00:00",
-  "revision": "414f0c0aac7707dbc4753dca5d57fe34b4c20412",
+  "timestamp": "2026-11-03T04:04:29.907457+00:00",
+  "revision": "c888aa81fbce5dbca447651fa0c62f5dec7e6d25",
+  "working_tree_dirty": true,
   "platform": "win32",
   "python": "3.12.14",
   "scope": "selected offline fixtures, not all repository tests or runtime acceptance",
   "runtime_acceptance": false,
   "suites": [
     {
+      "suite": "test_master_audit_manifest.py",
+      "run": 2,
+      "passed": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": [],
+      "expected_failures": 0
+    },
+    {
+      "suite": "test_coding_profile_metadata.py",
+      "run": 4,
+      "passed": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": [
+        {
+          "test": "test_insecure_existing_permissions_are_not_repaired_or_accepted (test_coding_profile_metadata.MetadataTests.test_insecure_existing_permissions_are_not_repaired_or_accepted)",
+          "reason": "Actual POSIX permissions require native Unix"
+        }
+      ],
+      "expected_failures": 0
+    },
+    {
+      "suite": "test_coding_agent_profiles.py",
+      "run": 12,
+      "passed": 12,
+      "failures": 0,
+      "errors": 0,
+      "skipped": [],
+      "expected_failures": 0
+    },
+    {
+      "suite": "test_f01_f07_hardening.py",
+      "run": 14,
+      "passed": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": [
+        {
+          "test": "test_atomic_private_publication_and_no_implicit_overwrite (test_f01_f07_hardening.PrivateFiles.test_atomic_private_publication_and_no_implicit_overwrite)",
+          "reason": "Native POSIX dirfd tests; no WSL fallback"
+        },
+        {
+          "test": "test_existing_linked_template_cannot_be_opened_by_manager (test_f01_f07_hardening.PrivateFiles.test_existing_linked_template_cannot_be_opened_by_manager)",
+          "reason": "Native POSIX dirfd tests; no WSL fallback"
+        },
+        {
+          "test": "test_export_manifest_detects_partial_extra_corrupt_and_linked_files (test_f01_f07_hardening.PrivateFiles.test_export_manifest_detects_partial_extra_corrupt_and_linked_files)",
+          "reason": "Native POSIX dirfd tests; no WSL fallback"
+        },
+        {
+          "test": "test_symlink_and_hardlink_env_are_refused (test_f01_f07_hardening.PrivateFiles.test_symlink_and_hardlink_env_are_refused)",
+          "reason": "Native POSIX dirfd tests; no WSL fallback"
+        }
+      ],
+      "expected_failures": 0
+    },
+    {
+      "suite": "test_docs_navigation.py",
+      "run": 4,
+      "passed": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": [],
+      "expected_failures": 0
+    },
+    {
       "suite": "test_master_audit_safety.py",
-      "run": 11,
-      "passed": 9,
+      "run": 12,
+      "passed": 10,
       "failures": 0,
       "errors": 0,
       "skipped": [
@@ -26,8 +94,8 @@
     },
     {
       "suite": "test_platform_inventory.py",
-      "run": 7,
-      "passed": 7,
+      "run": 8,
+      "passed": 8,
       "failures": 0,
       "errors": 0,
       "skipped": [],
@@ -35,8 +103,8 @@
     },
     {
       "suite": "test_repository_audit.py",
-      "run": 13,
-      "passed": 13,
+      "run": 15,
+      "passed": 15,
       "failures": 0,
       "errors": 0,
       "skipped": [],
@@ -170,8 +238,8 @@
     },
     {
       "suite": "test_vps_delivery.py",
-      "run": 16,
-      "passed": 9,
+      "run": 22,
+      "passed": 15,
       "failures": 0,
       "errors": 0,
       "skipped": [
@@ -242,10 +310,10 @@
     "kustomize": false
   },
   "totals": {
-    "run": 232,
-    "passed": 213,
+    "run": 278,
+    "passed": 254,
     "failures": 0,
     "errors": 0
   },
-  "skipped": 19
+  "skipped": 24
 }
