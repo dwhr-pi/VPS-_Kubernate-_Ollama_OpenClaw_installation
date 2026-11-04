@@ -13,6 +13,7 @@ unabhaengige Defekte. Push-/PR-Duplikate werden nach Ursache behandelt, keine ne
 | Generierter Inventartext verlor Quellenklassifikation | Generator und Inventar nennen unverifizierte Originalreferenzen explizit | Original-URLs und 23 einzeln genehmigte Belege bleiben; keine Domain-Ausnahme |
 | Historische Zeilenanker zeigen auf heutige kurze Wrapper | Historische Zeilennummern im Label erhalten, heutige Dateilinks ohne falschen Live-Anker | Ausgangscommit und historische Einstufung bleiben sichtbar |
 | Trivy bricht bereits bei Installation ab | Scanner aus festem offiziellen Git-Commit bauen statt Release-Installerskript | Secret-Scan und HIGH/CRITICAL-Konfigurationsscan bleiben fail-closed |
+| Nachgelagerter shfmt-Fehler im Backup | Subshell fuer den unvollstaendigen Backup-Marker mehrzeilig formatieren | `umask 077`, Marker-Reihenfolge und Fehlerverhalten unveraendert |
 
 Betroffene urspruengliche PR-Jobs: ShellCheck `126397196553`, Offline-Tests `126397196616`,
 Regression `126397196310`, Trivy `126397196961` und `126397196912`, Repo-Health `126397196607`.
