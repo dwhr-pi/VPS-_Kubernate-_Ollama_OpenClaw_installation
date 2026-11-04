@@ -91,6 +91,11 @@ keine Behauptung, dass der Build-Installer diese Dienste startet.
 
 ## Abnahme auf einem neuen Ubuntu-Release
 
+| Tool-ID | Wiederherstellung | Zu erhaltender Zustand |
+|---|---|---|
+| `argocd_cli` | A / B | Nur private CLI-Builds; kubeconfig/ArgoCD-Kontext separat sichern, kein Cluster-Apply oder Server-Restore durch CLI-Reinstall |
+| `cloudflared` | A / B | Native CLI getrennt von Tunnel-Credentials/Config sichern; kein Login, Tokenzugriff oder Tunnelstart beim Wiederaufbau |
+
 1. Aktuellen Setup-Commit, Rezept-Pin, Betriebssystem, Architektur und Toolchains erfassen.
 2. Bestehende Anwendung und Daten anwendungskonsistent sichern; Restore separat testen.
 3. Native Abhaengigkeiten und Build nur isoliert testen, nicht zuerst das Produktiv-OS ersetzen.

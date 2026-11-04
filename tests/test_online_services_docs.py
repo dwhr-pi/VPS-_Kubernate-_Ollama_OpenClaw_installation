@@ -83,7 +83,11 @@ class OnlineServicesDocs(unittest.TestCase):
         target = "docs/_API-Keys/API_KEY_GUIDE.md"
         self.assertTrue((ROOT / target).is_file())
         setup = (ROOT / "setup_ultimate.sh").read_text(encoding="utf-8")
-        self.assertIn('$INSTALL_DIR/' + target, setup)
+        self.assertIn('source "$INSTALL_DIR/scripts/helpers/documentation_menu.sh"', setup)
+        helper = (ROOT / 'scripts/helpers/documentation_menu.sh').read_text(encoding='utf-8')
+        self.assertIn("tools:keys) printf '%s\\n' '" + target + "'", helper)
+        self.assertIn('relative="$(documentation_document_path "$topic" "$document")"', helper)
+        self.assertIn('--textbox "$INSTALL_DIR/$relative"', helper)
         self.assertNotIn('$INSTALL_DIR/docs/API_KEY_GUIDE.md', setup)
 
     def test_guide_headings_are_outside_code_blocks(self):

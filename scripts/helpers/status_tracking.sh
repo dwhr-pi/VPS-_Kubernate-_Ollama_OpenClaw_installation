@@ -5,6 +5,7 @@
 source "$(cd "$(dirname "${BASH_SOURCE[0]}")/../lib" && pwd)/apt_lock_wait.sh"
 
 STATUS_HELPER_ROOT="${OPENCLAW_USER_DATA_DIR:-${HOME}/.openclaw_ultimate_user_data}"
+STATUS_HELPER_INSTALL_DIR="$(cd -P "${BASH_SOURCE[0]%/*}/../.." && pwd)"
 PROFILE_STATUS_FILE="$STATUS_HELPER_ROOT/installed_profiles.txt"
 TOOL_STATUS_FILE="$STATUS_HELPER_ROOT/installed_tools.txt"
 STATUS_HELPER_METRICS_DIR="$STATUS_HELPER_ROOT/metrics_logs"
@@ -206,20 +207,19 @@ status_tracking_ensure_metrics() {
   if [ ! -f "$STATUS_HELPER_METRICS_HISTORY_FILE" ]; then
     printf 'timestamp\ttool\tstatus\tduration_seconds\tfree_kb_before\tfree_kb_after\tdelta_kb\n' >"$STATUS_HELPER_METRICS_HISTORY_FILE"
   fi
-  if [ ! -f "$STATUS_HELPER_METRICS_CONFIG_FILE" ]; then
-    printf '# Automatisch angelegte Setup-Messwerte\n' >"$STATUS_HELPER_METRICS_CONFIG_FILE"
-  fi
+  printf '# Automatisch angelegte Setup-Messwerte\n' | python3 -I -B \
+    "$STATUS_HELPER_INSTALL_DIR/scripts/security/metrics_config.py" init --file "$STATUS_HELPER_METRICS_CONFIG_FILE" --apply
 }
 
 status_tracking_record_tool_metric() {
   local status="$1"
-  local free_after duration_seconds delta_kb metric_prefix tmp_metrics_file
+  local free_after duration_seconds delta_kb metric_prefix
 
   [ -n "${CURRENT_TOOL_KEY:-}" ] || return 0
   [ -n "${CURRENT_TOOL_TRACKING_STARTED_AT:-}" ] || return 0
   [ "${CURRENT_TOOL_TRACKING_RECORDED:-0}" = "0" ] || return 0
 
-  status_tracking_ensure_metrics
+  status_tracking_ensure_metrics || return 1
   free_after="$(status_tracking_free_kb)"
   free_after="${free_after:-0}"
   CURRENT_TOOL_TRACKING_FREE_KB_BEFORE="${CURRENT_TOOL_TRACKING_FREE_KB_BEFORE:-$free_after}"
@@ -236,8 +236,6 @@ status_tracking_record_tool_metric() {
     "$delta_kb" >>"$STATUS_HELPER_METRICS_HISTORY_FILE"
 
   metric_prefix="LAST_TOOL_SCRIPT_$(status_tracking_metric_prefix "$CURRENT_TOOL_KEY")"
-  tmp_metrics_file="$(mktemp)"
-  grep -Ev "^${metric_prefix}_(TIMESTAMP|STATUS|DURATION_SECONDS|FREE_KB_BEFORE|FREE_KB_AFTER|FREE_GB_BEFORE|FREE_GB_AFTER|DELTA_KB)=" "$STATUS_HELPER_METRICS_CONFIG_FILE" >"$tmp_metrics_file" || true
   {
     printf '\n# Letzte direkte Tool-Skript-Messung fuer %s\n' "$CURRENT_TOOL_KEY"
     printf '%s_TIMESTAMP="%s"\n' "$metric_prefix" "$(date '+%Y-%m-%d %H:%M:%S')"
@@ -248,8 +246,8 @@ status_tracking_record_tool_metric() {
     printf '%s_FREE_GB_BEFORE="%s"\n' "$metric_prefix" "$((${CURRENT_TOOL_TRACKING_FREE_KB_BEFORE:-$free_after} / 1024 / 1024))"
     printf '%s_FREE_GB_AFTER="%s"\n' "$metric_prefix" "$((free_after / 1024 / 1024))"
     printf '%s_DELTA_KB="%s"\n' "$metric_prefix" "$delta_kb"
-  } >>"$tmp_metrics_file"
-  mv "$tmp_metrics_file" "$STATUS_HELPER_METRICS_CONFIG_FILE"
+  } | python3 -I -B "$STATUS_HELPER_INSTALL_DIR/scripts/security/metrics_config.py" \
+    merge --file "$STATUS_HELPER_METRICS_CONFIG_FILE" --apply || return 1
 
   CURRENT_TOOL_TRACKING_RECORDED=1
 }

@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+### 2026-11-03: Messwerte ohne Shell-Auswertung
+
+- Messwerte-Loader ohne `source`, Editor ohne vorhersehbaren `/tmp`-Ausgabepfad.
+- Literaler Parser, atomare 0600-Publikation, persistentes Lock und SHA-Vergleich fuer parallele Edits.
+- Beide bekannten Messwerte-Konfigurationsschreiber auf denselben gesperrten Merge-Pfad umgestellt.
+- Keine automatische Nutzdatenmigration oder Rechte-Reparatur. Shell-Ausdruecke werden abgelehnt;
+  POSIX-/UI-/ARM-Abnahme bleibt separat. Tests und Rollback: `docs/P0_METRICS_DATA.md`.
+
 ### 2026-11-03: Deklarative Einstiegspfade und explizites Staging
 
 - `deploy/kustomize` referenziert vorhandene Bases/Overlays ohne konkurrierende Workload-Kopien.

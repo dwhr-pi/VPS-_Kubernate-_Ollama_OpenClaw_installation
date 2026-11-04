@@ -24,6 +24,8 @@ native_tool_marker() {
     OpenHands) marker=openhands/native-coding/current/OWNED.json ;;
     Codex_CLI) marker=codex_cli/native-coding/current/OWNED.json ;;
     "Traefik") marker=traefik/native-github/build-ready.json ;;
+    "ArgoCD_CLI") marker=argocd_cli/native-github/build-ready.json ;;
+    "Cloudflared") marker=cloudflared/native-github/build-ready.json ;;
     "Kubeseal") marker=kubeseal/native-github/build-ready.json ;;
     "OpenTelemetry") marker=opentelemetry/native-github/build-ready.json ;;
     "AutoGPT") marker=autogpt/native-github/build-ready.json ;;
