@@ -6,6 +6,7 @@ NATIVE_GITHUB_TOOL_KEYS=("Airbyte" "Apache_Tika" "Appsmith" "ArchiveBox" "Argill
 NATIVE_GITHUB_TOOL_KEYS+=("OpenTelemetry" "AutoGPT" "Supabase")
 NATIVE_GITHUB_TOOL_KEYS+=("Kubeseal")
 NATIVE_GITHUB_TOOL_KEYS+=("Traefik")
+NATIVE_GITHUB_TOOL_KEYS+=("ArgoCD_CLI" "Cloudflared")
 
 register_native_github_tool_keys() {
   local key

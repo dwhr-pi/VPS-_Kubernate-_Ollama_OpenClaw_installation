@@ -270,7 +270,7 @@ printf 'rc:%s\n' "$rc"
             self.assertTrue((file.parent / target.split('#', 1)[0]).resolve().is_file(), target)
 
     @unittest.skipUnless(BASH and Path(BASH).is_file(), 'Bash unavailable')
-    def test_new_tools_stay_after_existing_sorted_z_end(self):
+    def test_new_tools_join_alphabetical_tail_after_fixed_core(self):
         setup = (ROOT / 'setup_ultimate.sh').read_text(encoding='utf-8')
         function = re.search(r'^sort_tool_menu_keys\(\) \{\n.*?^\}', setup, re.M | re.S).group()
         command = ('set -euo pipefail\n'
@@ -280,7 +280,7 @@ printf 'rc:%s\n' "$rc"
                                 cwd=ROOT, capture_output=True, text=True, timeout=30)
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(result.stdout.splitlines(),
-                         ['Ollama', 'OpenClaw', 'Ruflo', 'Act', 'Zotero', 'Kubeseal', 'GitOps_Bootstrap'])
+                         ['Ollama', 'OpenClaw', 'Ruflo', 'Act', 'GitOps_Bootstrap', 'Kubeseal', 'Zotero'])
 
     @unittest.skipUnless(BASH and Path(BASH).is_file(), 'Bash unavailable')
     def test_shell_syntax_only_without_executing_scripts(self):

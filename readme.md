@@ -28,7 +28,9 @@ Primaertools bleiben GitHub-Source-Builds; bestehende ausdrueckliche Quellen-Aus
 Warnungen aendern diesen Installationsweg nicht. [Installationsrichtlinie](docs/INSTALLATION_POLICY.md).
 Registry-Metadaten und Menuehaekchen sind kein Laufzeitnachweis.
 
-## Deklarativer Pruefpfad
+<a id="deklarativer-pruefpfad"></a>
+
+Deklarativer Pruefpfad:
 
 `bash scripts/setup-cluster.sh` zeigt nur den Plan, ohne Download oder Clusterzugriff.
 Kompatible GitOps-Einstiege: `deploy/kustomize/`, bestehende Quelldateien bleiben unter `k8s/`.

@@ -4071,7 +4071,7 @@ show_tool_management_menu() {
   tool_menu_started_at="$(date +%s)"
   tool_menu_free_kb_before="$(get_free_disk_kb)"
   TOOL_BATCH_ABORT_REQUESTED=0
-  sort_tool_menu_keys || return 1
+  sort_tool_menu_keys "${INSTALL_DIR:-.}/config/tool_menu_sorted_baseline.txt" || return 1
   sync_core_tool_status
   ensure_user_workspace
   normalize_status_file "$TOOL_STATUS_FILE" "${TOOL_KEYS[@]}"
@@ -4821,6 +4821,10 @@ show_main_menu() {
 }
 
 # Native migration metadata overrides older Docker descriptions only.
+TOOL_SCRIPT_NAMES["ArgoCD_CLI"]="argocd_cli"
+TOOL_SCRIPT_NAMES["Cloudflared"]="cloudflared"
+TOOLS["ArgoCD_CLI"]="Nativer GitHub-CLI-Quellbuild; kein Serverstart oder Cluster-Apply. Laufzeitabnahme offen."
+TOOLS["Cloudflared"]="Nativer GitHub-CLI-Quellbuild; kein Login, Tokenzugriff oder Tunnelstart. Laufzeitabnahme offen."
 TOOL_SCRIPT_NAMES["Traefik"]="traefik"
 TOOLS["Traefik"]="Nativer GitHub-Headless-Quellbuild; Dashboard aus, lokaler Ingress/TLS separat und bewusst einrichten."
 TOOL_KEYS+=("GitOps_Bootstrap")

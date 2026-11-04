@@ -39,6 +39,7 @@ jobs:
           python3 -B tests/test_repository_audit.py -v
           python3 -B tests/test_listener_audit.py -v
           python3 -B tests/test_metrics_config.py -v
+          python3 -B tests/test_pr9_ci_repair.py -v
           python3 -B tests/test_ci_repair_contracts.py -v
           python3 -B tests/test_doc_assertions.py -v
           python3 -B tests/test_formatting_policy.py -v
@@ -96,38 +97,39 @@ jobs:
           "$RUNNER_TEMP/kustomize" build k8s/overlays/vps-cpu > "$RUNNER_TEMP/llmops-vps.yml"
   secret-scan:
     runs-on: ubuntu-24.04
-    timeout-minutes: 15
+    timeout-minutes: 35
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
           persist-credentials: false
-      - name: Inspect repository files for secrets
-        uses: aquasecurity/trivy-action@8f28faec26515256b6d22074d1d2a8986f4cbd87
+      - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16
         with:
-          version: v0.76.1
-          scan-type: fs
-          scan-ref: .
-          scanners: secret
-          # Report locations and rule IDs only, never matching secret content.
-          format: template
-          template: '{{ range . }}{{ $target := .Target }}{{ range .Secrets }}{{ printf "%s: %s\n" $target .RuleID }}{{ end }}{{ end }}'
-          exit-code: '1'
-          hide-progress: 'true'
+          go-version: '1.27.3'
           cache: 'false'
+      - name: Build reviewed Trivy from official Git sources
+        run: bash scripts/ci/build_trivy.sh --build
+      - name: Inspect repository files for secrets
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Report file locations and rule IDs, never matching secret values.
+          trivy fs --scanners secret --exit-code 1 --no-progress --format template \
+            --template '{{ range . }}{{ $target := .Target }}{{ range .Secrets }}{{ printf "%s: %s\n" $target .RuleID }}{{ end }}{{ end }}' .
   configuration-scan:
     runs-on: ubuntu-24.04
-    timeout-minutes: 15
+    timeout-minutes: 35
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
           persist-credentials: false
-      - name: Reject high and critical infrastructure misconfigurations
-        uses: aquasecurity/trivy-action@8f28faec26515256b6d22074d1d2a8986f4cbd87
+      - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16
         with:
-          version: v0.76.1
-          scan-type: config
-          scan-ref: .
-          severity: HIGH,CRITICAL
-          exit-code: '1'
-          hide-progress: 'true'
+          go-version: '1.27.3'
           cache: 'false'
+      - name: Build reviewed Trivy from official Git sources
+        run: bash scripts/ci/build_trivy.sh --build
+      - name: Reject high and critical infrastructure misconfigurations
+        shell: bash
+        run: |
+          set -euo pipefail
+          trivy config --severity HIGH,CRITICAL --exit-code 1 .

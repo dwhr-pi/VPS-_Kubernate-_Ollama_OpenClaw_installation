@@ -12,6 +12,8 @@ BASH = 'C:/Program Files/Git/bin/bash.exe' if os.name == 'nt' else shutil.which(
 
 
 def source(path):
+    if path == 'base_install.sh':
+        return (ROOT / 'docs/legacy/BASE_INSTALL_REFERENCE.sh.txt').read_text(encoding='utf-8')
     return (ROOT / 'scripts' / path).read_text(encoding='utf-8')
 
 

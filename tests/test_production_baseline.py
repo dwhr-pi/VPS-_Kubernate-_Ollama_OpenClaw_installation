@@ -51,8 +51,9 @@ class BaselineFiles(unittest.TestCase):
         actions = re.findall(r'uses: ([^\s]+)', workflow)
         self.assertGreaterEqual(len(actions), 3)
         self.assertTrue(all(re.search(r'@[a-f0-9]{40}$', action) for action in actions))
-        self.assertIn('scanners: secret', workflow)
-        self.assertIn("exit-code: '1'", workflow)
+        self.assertIn('trivy fs --scanners secret --exit-code 1', workflow)
+        self.assertIn('trivy config --severity HIGH,CRITICAL --exit-code 1', workflow)
+        self.assertEqual(workflow.count('bash scripts/ci/build_trivy.sh --build'), 2)
         self.assertNotIn('continue-on-error', workflow)
         self.assertNotIn('pull_request_target', workflow)
 

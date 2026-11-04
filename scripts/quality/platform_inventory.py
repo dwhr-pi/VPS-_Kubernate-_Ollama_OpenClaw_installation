@@ -110,7 +110,9 @@ def markdown(report, kind='all', revision='not-specified'):
         'Unbekannt/experimental/optional wird ohne weiteren Beleg planned; vorhandene stable/beta bleiben nur deklarierte Labels.',
         'Zielhinweis aus check_value ist kein verifizierter Installationspfad.',
         'Fehlendes Mapping beweist nicht das Fehlen einer Funktion im Installer.',
-        'Quellenadressen sind deklarierte Metadaten als Code-Text, keine abgeschlossene Online-/Lizenzpruefung.', '',
+        'Quellenadressen sind deklarierte Metadaten als Code-Text, keine abgeschlossene Online-/Lizenzpruefung.',
+        'Jede solche Quellenadresse bleibt eine unverifizierte Originalreferenz;',
+        'vorhandene Abrufbelege und Original-URLs bleiben erhalten.', '',
         '| Eintrag / Reviewklasse | Registry-Status | Install-Skript / Zielhinweis | Abhaengigkeiten | Ports | Ressourcenklasse | Check / Health / Smoke / Version / Logs | Uninstall | Test / Reife | Risiko | Quelle / Lizenz / Wartung |',
         '|---|---|---|---|---|---|---|---|---|---|---|']
     for row in sorted(report['rows'], key=lambda row: (row['kind'], row['name'].casefold())):
