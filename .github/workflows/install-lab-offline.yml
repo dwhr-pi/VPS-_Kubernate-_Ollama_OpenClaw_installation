@@ -1,0 +1,45 @@
+name: Install lab - offline boundaries
+on:
+  pull_request:
+    paths:
+      - scripts/benchmarks/install_lab.py
+      - scripts/benchmarks/wsl_install_lab.ps1
+      - scripts/benchmarks/linux_install_lab.py
+      - scripts/benchmarks/install_lab_reports.py
+      - tests/test_install_lab.py
+      - tests/test_install_lab_reports.py
+      - config/install_lab_approvals.example.json
+      - .github/workflows/install-lab-offline.yml
+  push:
+    branches: [main]
+    paths:
+      - scripts/benchmarks/install_lab.py
+      - scripts/benchmarks/wsl_install_lab.ps1
+      - scripts/benchmarks/linux_install_lab.py
+      - scripts/benchmarks/install_lab_reports.py
+      - tests/test_install_lab.py
+      - tests/test_install_lab_reports.py
+      - .github/workflows/install-lab-offline.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  fixtures:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      PYTHONUTF8: '1'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Plans and disposable fixtures only, never import or start WSL
+        run: python -B -m unittest discover -s tests -p 'test_install_lab*.py' -v
