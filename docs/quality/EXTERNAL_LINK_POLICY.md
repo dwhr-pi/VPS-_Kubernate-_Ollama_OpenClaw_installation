@@ -4,6 +4,26 @@ Stand: 31.10.2026. Keine Merge- oder Produktionsfreigabe.
 
 ## Verbindlicher Check
 
+Nachtrag PR 10 vom 05.11.2026: Der Push-Lauf `41978791716`, Job `127083798023`,
+scheiterte ausschliesslich an der FFmpeg-Filter-Webfassung mit Transportstatus 0;
+der PR-Linkcheck desselben Commits `f72af3a9` war erfolgreich. Der unabhaengige
+Abruf der Webfassung lieferte ebenfalls ein Timeout. Im
+[Karaoke-Leitfaden](../media_studio/KARAOKE_SUBTITLES_GUIDE.md) bleibt die exakte
+Originaladresse daher ausdruecklich unverifiziert erhalten. Der aktive Beleg
+verweist auf den gelesenen offiziellen FFmpeg-GitHub-Quelltext an Commit
+`0893feba652894f836cb76617936da52570d20a5`, insbesondere `ass` und `subtitles`.
+Keine Domain-/Status-Ausnahme, kein abgeschalteter Check und keine Aenderung des
+Link-Checkers. Ein beantragter Job-Neustart wurde von der Integration mit HTTP 403
+abgewiesen; die dokumentierte Quellenkorrektur erhaelt einen neuen normalen Commit.
+
+Im selben Commit scheiterte Repo Health, Job `127083809804`, ausschliesslich an
+einem 51CTO-Community-Beitrag (Transportstatus 0 nach Retry). Ein Einzelabruf
+lieferte keinen lesbaren Artikel. Die vollstaendige Originaladresse und die schon
+zuvor eingeschraenkte Aussagekraft bleiben im
+[token8341-Quellenabschnitt](../_API-Keys/OnlineOnKeyServices/token8341.md#was-ausserhalb-der-betreiberwebsite-gefunden-wurde)
+explizit unverifiziert erhalten. Kein Ersatz durch eine beliebige Startseite,
+keine Aufwertung einer Betreiberangabe zum unabhaengigen Test, keine Domain-Regel.
+
 Alle Markdown-Dateien bleiben im bestehenden Link-Gate. In jedem Workflow muss die Konfiguration
 explizit angegeben werden; sie wird nicht automatisch gefunden:
 

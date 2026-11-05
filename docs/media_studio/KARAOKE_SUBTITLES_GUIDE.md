@@ -171,8 +171,17 @@ SRT bleibt fuer Barrierefreiheit/Sprachwahl sinnvoll.
 
 FFmpeg mit libass kann ASS rendern; passende Build-Optionen/Fonts vorausgesetzt. Eine abschaltbare
 ASS-Spur ist z. B. ein gesonderter MKV-/Player-Pfad, kein universelles MP4-/YouTube-Versprechen.
-[FFmpeg-Filter](https://ffmpeg.org/ffmpeg-filters.html). Es werden hier keine Videos gerendert oder
+[FFmpeg-Filter: offizieller Quelltext](https://github.com/FFmpeg/FFmpeg/blob/0893feba652894f836cb76617936da52570d20a5/doc/filters.texi).
+Die Abschnitte `ass` und `subtitles` sind an diesen gelesenen Quellstand gepinnt.
+Es werden hier keine Videos gerendert oder
 hochgeladen.
+
+Original-Webfassung, am 05.11.2026 nicht zuverlaessig maschinell erreichbar:
+`https://ffmpeg.org/ffmpeg-filters.html`. Der Push-Linkcheck meldete Transportstatus 0
+auch nach dem begrenzten Retry, die PR-Pruefung desselben Commits bestand. Ein
+zusaetzlicher Abruf lief in ein Timeout. Die Adresse bleibt als **unverifizierte
+Originalreferenz** erhalten, nicht als bestaetigter aktueller Webbeleg. Statt einer
+Domain-Ausnahme wird oben die inhaltlich gepruefte offizielle GitHub-Quelle verlinkt.
 
 ## 6. Integration und offene Punkte
 
