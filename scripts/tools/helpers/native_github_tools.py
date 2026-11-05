@@ -47,6 +47,10 @@ for key, item in TOOLS.items():
         for value in recipe.get("artifacts", []) + recipe.get("artifact_globs", []):
             if not isinstance(value, str) or not value or Path(value).is_absolute() or ".." in Path(value).parts or "\\" in value or ":" in value:
                 raise ValueError("Unsicherer Pipeline-Artefaktpfad.")
+        if recipe.get("cargo_package") and not re.fullmatch(r"[A-Za-z0-9_-]+", recipe["cargo_package"]):
+            raise ValueError("Ungueltiges Cargo-Paket.")
+        if "no_default_features" in recipe and not isinstance(recipe["no_default_features"], bool):
+            raise ValueError("Cargo-Feature-Schalter muss boolesch sein.")
         for step in recipe.get("steps", []):
             cwd = step.get("cwd", ".")
             args = step.get("args", [])
@@ -308,8 +312,14 @@ def build(prefix, spec):
         if not Path(sysroot).is_absolute() or not Path(sysroot).is_dir():
             raise ValueError("Vorhandene Rust-Toolchain nicht eindeutig; kein automatischer Download.")
         env["RUSTUP_TOOLCHAIN"] = sysroot
-        run(["cargo", "build", "--locked", "--release", "--bin", recipe["binary"], "-j", "2"], checkout, env)
-        shutil.copy2(common.checked(checkout / "target/release" / recipe["binary"]), binary)
+        module = common.checked(checkout / recipe.get("module_dir", "."))
+        args = ["cargo", "build", "--locked", "--release", "--bin", recipe["binary"]]
+        if recipe.get("cargo_package"):
+            args += ["--package", recipe["cargo_package"]]
+        if recipe.get("no_default_features"):
+            args.append("--no-default-features")
+        run(args + ["-j", "2"], module, env)
+        shutil.copy2(common.checked(module / "target/release" / recipe["binary"]), binary)
         artifacts = [binary.relative_to(prefix).as_posix()]
     elif kind == "cmake":
         run(["cmake", "-S", str(checkout), "-B", str(prefix / "cmake-build"),

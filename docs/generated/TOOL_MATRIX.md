@@ -95,7 +95,7 @@ Nur Repository-Metadaten, kein Nachweis installierter oder produktionsfaehiger P
 | deepspeed | experimental | unknown | 3133d9d689a67ab1d4feebf8166f19ee28cace6a | scripts/tools/deepspeed_doctor.sh | scripts/tools/deepspeed_update.sh |
 | delve | experimental | unknown | 0b7bffc7d40411f8361e10009e73fb9c9b318fb6 | scripts/tools/delve_doctor.sh | scripts/tools/delve_update.sh |
 | demucs | unknown | unknown | unknown | not-mapped | not-mapped |
-| diffsinger | planned | unknown | unknown | not-mapped | not-mapped |
+| diffsinger | experimental | planned | cb7869b8733a3882679c328994ee162845092cff | scripts/tools/diffsinger_doctor.sh | scripts/tools/diffsinger_update.sh |
 | directus | experimental | unknown | b3ce03c18673230913bdfdf14907eb13e6865178 | scripts/tools/directus_doctor.sh | scripts/tools/directus_update.sh |
 | docker | planned | unknown | unknown | not-mapped | not-mapped |
 | docker_mcp_registry | planned | unknown | unknown | not-mapped | not-mapped |
@@ -115,7 +115,7 @@ Nur Repository-Metadaten, kein Nachweis installierter oder produktionsfaehiger P
 | falco | planned | unknown | unknown | not-mapped | not-mapped |
 | faster_whisper | unknown | unknown | unknown | not-mapped | not-mapped |
 | fastlane | planned | unknown | unknown | not-mapped | not-mapped |
-| ffmpeg | unknown | unknown | unknown | not-mapped | not-mapped |
+| ffmpeg | experimental | planned | 8105ae2afe2c4182a4ad44b1b9c45a3146f0c0b1 | scripts/tools/ffmpeg_doctor.sh | scripts/tools/ffmpeg_update.sh |
 | film | experimental | unknown | 69f8708f08e62c2edf46a27616a4bfcf083e2076 | scripts/tools/film_doctor.sh | scripts/tools/film_update.sh |
 | find_skills | experimental | unknown | a80e4c9d12d607631249d4d7d059f835d4b2f13a | scripts/tools/find_skills_doctor.sh | scripts/tools/find_skills_update.sh |
 | finrag | optional | unknown | unknown | not-mapped | not-mapped |
@@ -269,7 +269,7 @@ Nur Repository-Metadaten, kein Nachweis installierter oder produktionsfaehiger P
 | openscap | planned | unknown | unknown | not-mapped | not-mapped |
 | opentelemetry | experimental | unknown | 30add0562534958c3b4173fa307b5a3497d0bc9c | scripts/tools/opentelemetry_doctor.sh | scripts/tools/opentelemetry_update.sh |
 | opentofu | unknown | unknown | unknown | not-mapped | not-mapped |
-| openutau | planned | unknown | unknown | not-mapped | not-mapped |
+| openutau | experimental | planned | f920e2423113f9a936ec77eebf1f192e02a7ea6a | scripts/tools/openutau_doctor.sh | scripts/tools/openutau_update.sh |
 | openvoice | planned | unknown | unknown | not-mapped | not-mapped |
 | openwakeword | planned | unknown | unknown | not-mapped | not-mapped |
 | paddleocr | planned | unknown | unknown | not-mapped | not-mapped |
@@ -326,12 +326,12 @@ Nur Repository-Metadaten, kein Nachweis installierter oder produktionsfaehiger P
 | rq | planned | unknown | unknown | not-mapped | not-mapped |
 | rspamd | planned | unknown | unknown | not-mapped | not-mapped |
 | ruflo | unknown | unknown | unknown | not-mapped | not-mapped |
-| rvc | experimental | unknown | 81eed5e8f68b6bed1789f682fe78cdd324495afc | scripts/tools/rvc_doctor.sh | scripts/tools/rvc_update.sh |
+| rvc | experimental | planned | 81eed5e8f68b6bed1789f682fe78cdd324495afc | scripts/tools/rvc_doctor.sh | scripts/tools/rvc_update.sh |
 | sadtalker | experimental | unknown | cd4c0465ae0b54a6f85af57f5c65fec9fe23e7f8 | scripts/tools/sadtalker_doctor.sh | scripts/tools/sadtalker_update.sh |
 | scancode_toolkit | unknown | unknown | unknown | not-mapped | not-mapped |
 | sdnext | experimental | unknown | b7dcb0ce870181a40d1246fde1febbff5593a750 | scripts/tools/sdnext_doctor.sh | scripts/tools/sdnext_update.sh |
 | searxng | experimental | unknown | 81371861f67226091d1c4df2e3908a11d3b54eb9 | scripts/tools/searxng_doctor.sh | scripts/tools/searxng_update.sh |
-| seed_vc | planned | unknown | unknown | not-mapped | not-mapped |
+| seed_vc | experimental | planned | 51383efd921027683c89e5348211d93ff12ac2a8 | scripts/tools/seed_vc_doctor.sh | scripts/tools/seed_vc_update.sh |
 | semgrep | unknown | unknown | unknown | not-mapped | not-mapped |
 | sfizz | experimental | unknown | 4e70dc0bef53b41f2853ed46e26f5911114c92d0 | scripts/tools/sfizz_doctor.sh | scripts/tools/sfizz_update.sh |
 | shellcheck | unknown | unknown | unknown | not-mapped | not-mapped |
@@ -374,7 +374,7 @@ Nur Repository-Metadaten, kein Nachweis installierter oder produktionsfaehiger P
 | ufw | unknown | unknown | unknown | not-mapped | not-mapped |
 | unstructured | unknown | unknown | unknown | not-mapped | not-mapped |
 | uptime_kuma | experimental | unknown | 0c287ac4b3a6723c56ab7d8d731017e58deff533 | scripts/tools/uptime_kuma_doctor.sh | scripts/tools/uptime_kuma_update.sh |
-| uvr5 | experimental | unknown | a5f88453bfb2b38b05a965bcf67727243e0cbf19 | scripts/tools/uvr5_doctor.sh | scripts/tools/uvr5_update.sh |
+| uvr5 | experimental | planned | a5f88453bfb2b38b05a965bcf67727243e0cbf19 | scripts/tools/uvr5_doctor.sh | scripts/tools/uvr5_update.sh |
 | vault | experimental | unknown | 9f51d2357f65b0c6e842d61fb144b605a0bc78ae | scripts/tools/vault_doctor.sh | scripts/tools/vault_update.sh |
 | vaultwarden | planned | unknown | unknown | not-mapped | not-mapped |
 | velero | planned | unknown | unknown | not-mapped | not-mapped |
@@ -401,6 +401,7 @@ Nur Repository-Metadaten, kein Nachweis installierter oder produktionsfaehiger P
 | wireguard | planned | unknown | unknown | not-mapped | not-mapped |
 | wsl2 | planned | unknown | unknown | not-mapped | not-mapped |
 | wyoming | planned | unknown | unknown | not-mapped | not-mapped |
+| xerj | experimental | planned | 83c9f0d123bac010a25ca2cf02ff093b08ee68ce | scripts/tools/xerj_doctor.sh | scripts/tools/xerj_update.sh |
 | yara | unknown | unknown | unknown | not-mapped | not-mapped |
 | youtube_agent_skill | experimental | unknown | a2feb2104981a375ffd4f87ee04f4f5344ac43c6 | scripts/tools/youtube_agent_skill_doctor.sh | scripts/tools/youtube_agent_skill_update.sh |
 | yue | experimental | unknown | 6d4f0b1f8ce6a55fb2392e959394c46e07ee334d | scripts/tools/yue_doctor.sh | scripts/tools/yue_update.sh |

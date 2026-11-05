@@ -27,5 +27,9 @@ jobs:
         run: python -B scripts/quality/repository_audit.py
       - name: Generated registry views must match source
         run: python -B scripts/quality/registry_catalog.py --check
+      - name: Headless command catalog must match reviewed registry metadata
+        run: python -I -B scripts/tool_commands.py docs
+      - name: Every registered tool must have a specific current VPS SSH guide
+        run: python -I -B scripts/quality/tool_ssh_docs.py
       - name: Offline Python fixture regressions
         run: python -B -m unittest discover -s tests -p 'test_*.py' -v

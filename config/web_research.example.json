@@ -1,0 +1,13 @@
+{
+  "seeds": ["https://docs.python.org/3/"],
+  "allowed_hosts": ["docs.python.org"],
+  "max_pages": 10,
+  "max_depth": 1,
+  "max_requests": 50,
+  "max_seconds": 120,
+  "max_bytes": 5242880,
+  "delay_seconds": 2,
+  "query_keys": [],
+  "searxng_url": "http://127.0.0.1:8080/search",
+  "extractor": "builtin"
+}
