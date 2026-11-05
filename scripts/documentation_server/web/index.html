@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OpenClaw | Handbuch</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <script src="/static/app.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#article">Zum Dokument</a>
+  <header><button id="menu" aria-label="Navigation umschalten" aria-expanded="false">Menü</button>
+    <a class="brand" href="/?doc=readme.md">OPENCLAW <span>Feldhandbuch</span></a>
+    <span class="offline">LOKAL / OFFLINE</span><button id="print">Drucken</button>
+  </header>
+  <div class="layout">
+    <aside id="navigation" aria-label="Dokumentnavigation">
+      <label for="search">Handbuch durchsuchen <kbd>/</kbd></label>
+      <input id="search" type="search" placeholder="Begriff, Tool oder Dateiname" autocomplete="off">
+      <div id="search-status" class="muted" role="status"></div>
+      <nav id="results" aria-label="Suchergebnisse" hidden></nav>
+      <nav id="quick" aria-label="Direktzugriff"><h2>Direkt zum Ziel</h2></nav>
+      <nav id="tree" aria-label="Alle Themen"><h2>Das gesamte Handbuch</h2></nav>
+      <p class="aside-note">Lesemodus. Keine Installer, Dienste oder externen Inhalte werden ausgeführt.</p>
+    </aside>
+    <main id="main">
+      <div class="eyebrow">WISSEN / BETRIEB / SICHERHEIT</div>
+      <div id="breadcrumb" class="muted">Handbuch wird geladen</div>
+      <article id="article" tabindex="-1" aria-live="polite"></article>
+      <footer>Lokale Momentaufnahme des geprüften Quellstands. Dokumentiert bedeutet nicht produktionsreif.</footer>
+    </main>
+    <aside id="outline" aria-label="Inhaltsverzeichnis"><h2>Auf dieser Seite</h2><nav id="toc"></nav></aside>
+  </div>
+</body>
+</html>

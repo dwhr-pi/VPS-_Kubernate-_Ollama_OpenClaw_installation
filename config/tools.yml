@@ -7432,6 +7432,30 @@
       "security_note": "Keine Dienststarts, Datenmigration oder Legacy-Loeschung. Private Buildpfade, aktuelle Operationslogs und Rollback; Upstream-Lizenz und --dry-run pruefen.",
       "updated": "2026-10-23",
       "source_commit": "b911c5d13e1a33219dcc537d4eb8898203a9364b"
+    },
+    {
+      "id": "markdown_docs_server",
+      "name": "Markdown_Docs_Server",
+      "category": "documentation",
+      "description": "Lokales Offline-Handbuch mit Volltextsuche, Themenmenue und Inhaltsverzeichnis. Kein automatischer Server-/Browserstart.",
+      "install_script": "scripts/tools/markdown_docs_server_install.sh",
+      "uninstall_script": "scripts/tools/markdown_docs_server_uninstall.sh",
+      "update_script": "scripts/tools/markdown_docs_server_update.sh",
+      "doctor_script": "scripts/tools/markdown_docs_server_doctor.sh",
+      "status_script": "scripts/tools/markdown_docs_server_status.sh",
+      "check_type": "path",
+      "check_value": "~/.openclaw_ultimate_user_data/tools/markdown_docs_server/OWNED.json",
+      "ports": [8765],
+      "source": "https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation.git",
+      "source_pin_policy": "Explicit reviewed full GitHub commit at install/update; pinned Python-Markdown source dependency",
+      "install_mode": "github-native-build",
+      "status": "experimental",
+      "readiness": "planned",
+      "auto_install": false,
+      "doc": "docs/tools/markdown-docs-server.md",
+      "safety": "Nur Loopback, freigegebene Quell-Momentaufnahme, kein Docker/PyPI/CDN/Autostart.",
+      "security_note": "Install/Update/Uninstall und Start brauchen --apply. Schreibgeschuetzte Dokumentansicht, keine Shell-Ausfuehrung. Keine Produktionsabnahme.",
+      "updated": "2026-11-05"
     }
   ],
   "voice_tools": [
