@@ -204,6 +204,7 @@ Nur Repository-Metadaten, kein Nachweis installierter oder produktionsfaehiger P
 | lynis | planned | unknown | unknown | not-mapped | not-mapped |
 | mail_utils_msmtp | unknown | unknown | unknown | not-mapped | not-mapped |
 | mailpit | planned | unknown | unknown | not-mapped | not-mapped |
+| markdown_docs_server | experimental | planned | unknown | scripts/tools/markdown_docs_server_doctor.sh | scripts/tools/markdown_docs_server_update.sh |
 | markdownlint_cli | planned | unknown | unknown | not-mapped | not-mapped |
 | marker | unknown | unknown | unknown | not-mapped | not-mapped |
 | marp | experimental | unknown | unknown | scripts/tools/marp_doctor.sh | scripts/tools/marp_update.sh |

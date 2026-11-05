@@ -2303,11 +2303,15 @@ show_options_menu() {
       "18" "Abhängigkeiten-/Speicher-Snapshot erstellen" \
       "19" "Verschluesselter ENV-Tresor / Zugangsdaten verwalten" \
       "20" "Installations-Reset / alte Sperren freigeben (datenerhaltend)" \
-      "21" "Installationsstatus / Programmliste exportieren und wiederherstellen" 2>/tmp/options_choice; then
+      "21" "Installationsstatus / Programmliste exportieren und wiederherstellen" \
+      "22" "Offline-Handbuch / Markdownserver einrichten und lesen" 2>/tmp/options_choice; then
       return 0
     fi
 
     case "$(cat /tmp/options_choice)" in
+      22)
+        run_bash_script "$INSTALL_DIR/scripts/markdown_docs_server_menu.sh"
+        ;;
       21)
         run_bash_script "$INSTALL_DIR/scripts/installation_inventory_menu.sh"
         ;;
@@ -4839,6 +4843,9 @@ TOOLS["OpenTelemetry"]="GitHub-Core-Collector-Quellbuild ohne Docker oder Dienst
 TOOLS["AutoGPT"]="OFFEN: AutoGPT Platform hat noch keinen abgenommenen nativen Gesamtbuild; kein Docker-Fallback."
 TOOLS["Supabase"]="OFFEN: native Gesamtplattform samt Datenbank/Auth/Storage noch nicht abgenommen; kein Docker-Fallback."
 TOOL_KEYS+=("PyAirbyte")
+TOOL_KEYS+=("Markdown_Docs_Server")
+TOOL_SCRIPT_NAMES["Markdown_Docs_Server"]="markdown_docs_server"
+TOOLS["Markdown_Docs_Server"]="Offline-Handbuch mit Suche und Themenmenue; GitHub-Quellen, nur 127.0.0.1, kein Autostart. docs/tools/markdown-docs-server.md"
 TOOLS["PyAirbyte"]="Separates GitHub-Python-SDK; kein Airbyte-Core-Ersatz. docs/DOCKER_TO_GITHUB.md"
 TOOL_SCRIPT_NAMES["PyAirbyte"]="pyairbyte"
 TOOLS["Airbyte"]="Native Umstellung OFFEN; kein Docker-Fallback. docs/DOCKER_TO_GITHUB.md"

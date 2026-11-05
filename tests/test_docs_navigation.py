@@ -56,6 +56,24 @@ class DocsNavigation(unittest.TestCase):
         self.assertIn('OPENCLAW_USER_DATA_DIR="$TEST_ROOT/workspace"', code)
         self.assertNotIn('--run --confirm', code)
 
+    def test_ffmpeg_reference_preserves_original_and_pins_relevant_official_source(self):
+        text = (ROOT / 'docs/media_studio/KARAOKE_SUBTITLES_GUIDE.md').read_text(encoding='utf-8')
+        self.assertIn('`https://ffmpeg.org/ffmpeg-filters.html`', text)
+        self.assertIn('unverifizierte', text)
+        self.assertIn('05.11.2026', text)
+        self.assertIn('Transportstatus 0', text)
+        self.assertRegex(text, r'\]\(https://github\.com/FFmpeg/FFmpeg/blob/[0-9a-f]{40}/doc/filters\.texi\)')
+        self.assertNotIn('](https://ffmpeg.org/ffmpeg-filters.html)', text)
+
+    def test_unreadable_community_reference_remains_explicit_and_unverified(self):
+        text = (ROOT / 'docs/_API-Keys/OnlineOnKeyServices/token8341.md').read_text(encoding='utf-8')
+        url = 'https://blog.51cto.com/u_12227/14914057'
+        self.assertIn('`' + url + '`', text)
+        self.assertIn('05.11.2026', text)
+        self.assertIn('Transportstatus 0', text)
+        self.assertIn('keinen lesbaren Inhalt', text)
+        self.assertNotIn('](' + url + ')', text)
+
 
 if __name__ == '__main__':
     unittest.main()

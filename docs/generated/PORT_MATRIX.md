@@ -41,6 +41,7 @@ Nur Repository-Metadaten, kein Nachweis installierter oder produktionsfaehiger P
 | 8099 | zigbee2mqtt |
 | 8123 | home_assistant |
 | 8188 | comfyui |
+| 8765 | markdown_docs_server |
 | 9000 | minio |
 | 9001 | minio_console |
 | 9010 | authentik_http |
