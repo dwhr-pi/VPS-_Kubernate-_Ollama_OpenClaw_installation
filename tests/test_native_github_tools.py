@@ -46,9 +46,9 @@ class NativeGithubTests(unittest.TestCase):
         with patch.object(tool, "preflight"), patch.object(tool.common, "install", side_effect=self.source), patch.object(tool, "build", side_effect=self.build), redirect_stdout(io.StringIO()):
             tool.install(self.outer, self.prefix, self.marker, self.spec)
 
-    def test_inventory_has_51_paths_and_47_honest_build_recipes(self):
-        self.assertEqual(len(tool.TOOLS), 51)
-        self.assertEqual(sum(bool(s["recipe"]) for s in tool.TOOLS.values()), 47)
+    def test_inventory_has_53_paths_and_49_honest_build_recipes(self):
+        self.assertEqual(len(tool.TOOLS), 53)
+        self.assertEqual(sum(bool(s["recipe"]) for s in tool.TOOLS.values()), 49)
         for key, spec in tool.TOOLS.items():
             self.assertEqual(key, spec["id"])
             if spec["recipe"]:
@@ -292,7 +292,8 @@ class NativeGithubTests(unittest.TestCase):
                         return recipe["manager"][1]
                     expected = []
                     if recipe.get("binary"):
-                        expected += ["bin/" + recipe["binary"], "source/target/release/" + recipe["binary"]]
+                        module = Path("source") / recipe.get("module_dir", ".")
+                        expected += ["bin/" + recipe["binary"], (module / "target/release" / recipe["binary"]).as_posix()]
                     if recipe.get("artifact"):
                         expected.append(recipe["artifact"])
                     for key in ("entry", "assets"):

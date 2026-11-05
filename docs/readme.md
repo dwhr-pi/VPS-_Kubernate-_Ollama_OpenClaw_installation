@@ -7,6 +7,26 @@ produktionsreif.
 
 ## Hier beginnen
 
+[Setup ohne Desktop ueber SSH bedienen](HEADLESS_SETUP.md): Terminalmenue,
+dialogfreie JSON-Plaene und [Befehle fuer jedes Tool](generated/HEADLESS_TOOL_COMMANDS.md).
+Unbeaufsichtigte Ausfuehrung nur fuer vorhandene gepruefte native Adapter und mit
+getrennter Aktionsfreigabe; keine pauschalen Yes-/Force-Flags.
+Die einzelnen Tool-Anleitungen enthalten ebenfalls einen sichtbaren Abschnitt
+**VPS ueber SSH bedienen**, einschliesslich zugehoeriger Plan- und freigegebener
+Lifecycle-Befehle. Desktop- oder nicht freigegebene Tools bleiben entsprechend gekennzeichnet.
+[SSH-Abdeckung aller registrierten Tools](generated/SSH_TOOL_COVERAGE.md):
+direkte Anleitungslinks pro Tool, einschliesslich der zuvor fehlenden Einstiegsseiten.
+Kurze Einstiegsseiten sind keine vollstaendige Lifecycle- oder Runtime-Abnahme.
+
+Optional: [XERJ-Code-/Dokumentsuche](tools/xerj.md), gepinnter nativer Rust-Build.
+Lokaler Index und oeffentlicher Corpus Hub bleiben getrennt; kein Autostart oder Upload.
+
+[Lokale Audio-Chain](tools/local-audio-chain.md): OpenUtau, DiffSinger, RVC/Seed-VC,
+UVR5 und privater FFmpeg-Build. Native Quellen als Standard, Docker gesondert
+eingeordnet; lokale KI-/MCP-Schnittstelle zunaechst ausschliesslich fuer Planung.
+[Concat mit lokalem Agenten](tools/concat.md#lokaler-agent-belegter-mcp-weg-statt-erfundener-http-api):
+eingebautes stdio-MCP, gepruefte Versionsgrenzen und noch offene Schreib-/Sandbox-Abnahme.
+
 Optional: [Offline-Handbuch im Browser](tools/markdown-docs-server.md) mit sichtbaren
 Direktlinks, Themenbaum, Volltextsuche und Seiten-Inhaltsverzeichnis. Nur lokal,
 keine Docker-Installation, keine externen Schriftarten oder Skripte.

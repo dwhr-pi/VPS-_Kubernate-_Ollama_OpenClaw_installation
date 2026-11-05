@@ -8,6 +8,20 @@
 #
 
 # Offline entry must run before language, workspace and runtime initialization.
+if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
+  case "${1:-}" in
+    --tools-json | --tool-plan)
+      HEADLESS_ROOT="$(cd -P -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+      if [[ "$1" == --tools-json && $# == 1 ]]; then
+        exec python3 -I -B "$HEADLESS_ROOT/scripts/tool_commands.py" list
+      elif [[ "$1" == --tool-plan && $# == 2 ]]; then
+        exec python3 -I -B "$HEADLESS_ROOT/scripts/tool_commands.py" show "$2"
+      fi
+      printf 'Erwartet: --tools-json oder --tool-plan TOOL_ID; keine Aktion ausgefuehrt.\n' >&2
+      exit 2
+      ;;
+  esac
+fi
 if [[ "${BASH_SOURCE[0]}" == "$0" && "${1:-}" == --dry-run ]]; then
   [[ $# == 1 ]] || {
     printf 'Dry-run akzeptiert keine weiteren Optionen.\n' >&2
@@ -946,7 +960,9 @@ get_tool_install_fallback_min_free_mb() {
     "Qwen_Desktop_Study") printf '2048' ;;
     "Hermes_Agent_Jarvis") printf '4096' ;;
     "MuseTalk") printf '20480' ;;
-    "Gradio" | "Streamlit" | "WanVideoWrapper" | "CogVideoX" | "LTX_Video" | "Video2Dataset" | "LivePortrait" | "SadTalker" | "RVC" | "UVR5" | "Audacity" | "OBS") printf '2048' ;;
+    "OpenUtau" | "DiffSinger" | "Seed_VC" | "Gradio" | "Streamlit" | "WanVideoWrapper" | "CogVideoX" | "LTX_Video" | "Video2Dataset" | "LivePortrait" | "SadTalker" | "RVC" | "UVR5" | "Audacity" | "OBS") printf '2048' ;;
+    "XERJ") printf '16384' ;;
+    "FFmpeg") printf '8192' ;;
     "Concat") printf '2048' ;;
     "Remotion") printf '16384' ;;
     "HyperFrames") printf '12288' ;;
@@ -4848,6 +4864,21 @@ TOOL_SCRIPT_NAMES["Markdown_Docs_Server"]="markdown_docs_server"
 TOOLS["Markdown_Docs_Server"]="Offline-Handbuch mit Suche und Themenmenue; GitHub-Quellen, nur 127.0.0.1, kein Autostart. docs/tools/markdown-docs-server.md"
 TOOLS["PyAirbyte"]="Separates GitHub-Python-SDK; kein Airbyte-Core-Ersatz. docs/DOCKER_TO_GITHUB.md"
 TOOL_SCRIPT_NAMES["PyAirbyte"]="pyairbyte"
+TOOL_SCRIPT_NAMES["XERJ"]="xerj"
+TOOLS["XERJ"]="Optionale lokale Code-/Dokumentsuche: GitHub-Rust-Build ohne Docker, Modell-/Server-/MCP-/Hub-Start. docs/tools/xerj.md"
+for audio_tool in OpenUtau DiffSinger Seed_VC; do
+  if [[ " ${TOOL_KEYS[*]} " != *" $audio_tool "* ]]; then
+    TOOL_KEYS+=("$audio_tool")
+  fi
+done
+TOOL_SCRIPT_NAMES["OpenUtau"]="openutau"
+TOOL_SCRIPT_NAMES["DiffSinger"]="diffsinger"
+TOOL_SCRIPT_NAMES["Seed_VC"]="seed_vc"
+TOOLS["OpenUtau"]="Gepinnte GitHub-Quellen fuer Arrangement; kein GUI-/Headless-Render-Build. docs/tools/local-audio-chain.md"
+TOOLS["DiffSinger"]="Gepinnte GitHub-Quellen fuer Gesangssynthese; Runtime/Modelle separat, kein Inferenzstart. docs/tools/local-audio-chain.md"
+TOOLS["Seed_VC"]="Gepinnte GitHub-Quellen fuer Timbre-Konvertierung; keine Modelle/Inference. docs/tools/local-audio-chain.md"
+TOOLS["FFmpeg"]="Privater gepinnter GitHub-CPU-Build fuer Audio; alte /opt-/PATH-Installation bleibt erhalten. docs/tools/local-audio-chain.md"
+TOOL_SCRIPT_NAMES["FFmpeg"]="ffmpeg"
 TOOLS["Airbyte"]="Native Umstellung OFFEN; kein Docker-Fallback. docs/DOCKER_TO_GITHUB.md"
 TOOL_SCRIPT_NAMES["Airbyte"]="airbyte"
 TOOLS["Apache_Tika"]="GitHub-Source-Build ohne Image-Installation; kein Dienststart. docs/DOCKER_TO_GITHUB.md"

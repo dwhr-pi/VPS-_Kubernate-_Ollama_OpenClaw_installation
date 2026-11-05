@@ -462,3 +462,1333 @@ Python-3.7/3.8-era Abhaengigkeiten und Audio-/STT- Komponenten benoetigen einen 
 Kompatibilitaets- und Supply-Chain-Audit fuer Ubuntu 24.04. Ein Quellen-Clone oder Paket ohne diese
 Dienste wird nicht als funktionsfaehiger Sprachassistent markiert. Beide Pfade bleiben deshalb mit
 klarer Fehlermeldung blockiert, ohne Docker-Fallback.
+
+<!-- BEGIN GENERATED VPS SSH -->
+
+## VPS ueber SSH bedienen
+
+Voraussetzung: ein bereits gepruefter Setup-Checkout und ein selbst eingerichteter
+SSH-Alias `vps` (Benutzer, Host und Schluessel in deiner SSH-Konfiguration).
+Alternativ `vps` durch `BENUTZER@VPS_HOST` ersetzen. Den Host-Fingerprint vorher
+unabhaengig pruefen; keine Host-Key-Pruefung abschalten. Keine Zugangsdaten in Git.
+
+Auf deinem Client (PowerShell, Linux oder macOS):
+
+```bash
+ssh -t vps
+```
+
+Danach **im Linux-Terminal des VPS**. Den Pfad bei einem Branch-Checkout anpassen;
+ein Windows-/Desktop-Tool wird durch SSH nicht zu einer VPS-Anwendung:
+
+```bash
+cd "$HOME/openclaw_ultimate_setup" || exit 1
+test -f scripts/tool_commands.py || exit 1
+```
+
+Zuerst nur den Offline-Plan lesen (keine Installation und kein Dienststart):
+
+```bash
+python3 -I -B scripts/tool_commands.py show airbyte
+python3 -I -B scripts/tool_commands.py show apache_tika
+python3 -I -B scripts/tool_commands.py show appsmith
+python3 -I -B scripts/tool_commands.py show archivebox
+python3 -I -B scripts/tool_commands.py show argilla
+python3 -I -B scripts/tool_commands.py show budibase
+python3 -I -B scripts/tool_commands.py show cadvisor
+python3 -I -B scripts/tool_commands.py show changedetection_io
+python3 -I -B scripts/tool_commands.py show crowdsec
+python3 -I -B scripts/tool_commands.py show directus
+python3 -I -B scripts/tool_commands.py show forgejo
+python3 -I -B scripts/tool_commands.py show grafana
+python3 -I -B scripts/tool_commands.py show grafana_alloy
+python3 -I -B scripts/tool_commands.py show healthchecks
+python3 -I -B scripts/tool_commands.py show home_assistant
+python3 -I -B scripts/tool_commands.py show langfuse
+python3 -I -B scripts/tool_commands.py show litellm
+python3 -I -B scripts/tool_commands.py show loki
+python3 -I -B scripts/tool_commands.py show meilisearch
+python3 -I -B scripts/tool_commands.py show metabase
+python3 -I -B scripts/tool_commands.py show minio
+python3 -I -B scripts/tool_commands.py show neo4j
+python3 -I -B scripts/tool_commands.py show netdata
+python3 -I -B scripts/tool_commands.py show nextcloud
+python3 -I -B scripts/tool_commands.py show nocodb
+python3 -I -B scripts/tool_commands.py show node_red
+python3 -I -B scripts/tool_commands.py show open_webui
+python3 -I -B scripts/tool_commands.py show penpot
+python3 -I -B scripts/tool_commands.py show prometheus
+python3 -I -B scripts/tool_commands.py show promtail
+python3 -I -B scripts/tool_commands.py show pyairbyte
+python3 -I -B scripts/tool_commands.py show qdrant
+python3 -I -B scripts/tool_commands.py show stirling_pdf
+python3 -I -B scripts/tool_commands.py show uptime_kuma
+python3 -I -B scripts/tool_commands.py show vault
+python3 -I -B scripts/tool_commands.py show vikunja
+python3 -I -B scripts/tool_commands.py show weaviate
+```
+
+### SSH-Aktionen: `airbyte`
+
+Kein freigegebener unbeaufsichtigter Docker-freier Adapter. Der Plan nennt
+vorhandene Skriptpfade; diese nicht ungeprueft ausfuehren. Die
+tool-spezifischen Plattform-, Lizenz- und Laufzeitgrenzen oben gelten weiterhin.
+
+Fuer die interaktive Installation nach Pruefung `bash setup_ultimate.sh` im
+VPS-Terminal oeffnen, dort im Tool-Management das gewuenschte Tool
+`Airbyte` (ID `airbyte`) waehlen und die Einzelfreigaben lesen.
+Fehlt der Eintrag oder ist der native Weg gesperrt, hier stoppen: keine
+Legacy-/Docker-Ausweichinstallation und kein automatischer Plattformwechsel.
+
+### SSH-Aktionen: `apache_tika`
+
+Status und Diagnose lesen den privaten Tool-Zustand auf dem VPS:
+
+```bash
+python3 -I -B scripts/tool_commands.py run apache_tika --action status
+python3 -I -B scripts/tool_commands.py run apache_tika --action doctor
+```
+
+Die folgenden Befehle **einzeln und nur nach Freigabe** ausfuehren, nicht als
+gemeinsamen Ablauf: Installation, spaeter Update oder bewusst Deinstallation.
+Vorher Quellen, Lizenz, Ressourcen und Daten-Erhaltungsregeln dieser Anleitung pruefen.
+
+Installieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run apache_tika --action install --apply --confirm apache_tika:install
+```
+
+Aktualisieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run apache_tika --action update --apply --confirm apache_tika:update
+```
+
+Deinstallieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run apache_tika --action uninstall --apply --confirm apache_tika:uninstall
+```
+
+Fehlende Build-Abhaengigkeiten stoppen den Versuch. Nur fuer Install/Update
+`--install-build-deps` nach separater Download-Freigabe ergaenzen. Kein Auto-Yes,
+kein Docker-Fallback; Source-Build/Status ist keine erfolgreiche Runtime-Abnahme.
+
+### SSH-Aktionen: `appsmith`
+
+Status und Diagnose lesen den privaten Tool-Zustand auf dem VPS:
+
+```bash
+python3 -I -B scripts/tool_commands.py run appsmith --action status
+python3 -I -B scripts/tool_commands.py run appsmith --action doctor
+```
+
+Die folgenden Befehle **einzeln und nur nach Freigabe** ausfuehren, nicht als
+gemeinsamen Ablauf: Installation, spaeter Update oder bewusst Deinstallation.
+Vorher Quellen, Lizenz, Ressourcen und Daten-Erhaltungsregeln dieser Anleitung pruefen.
+
+Installieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run appsmith --action install --apply --confirm appsmith:install
+```
+
+Aktualisieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run appsmith --action update --apply --confirm appsmith:update
+```
+
+Deinstallieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run appsmith --action uninstall --apply --confirm appsmith:uninstall
+```
+
+Fehlende Build-Abhaengigkeiten stoppen den Versuch. Nur fuer Install/Update
+`--install-build-deps` nach separater Download-Freigabe ergaenzen. Kein Auto-Yes,
+kein Docker-Fallback; Source-Build/Status ist keine erfolgreiche Runtime-Abnahme.
+
+### SSH-Aktionen: `archivebox`
+
+Status und Diagnose lesen den privaten Tool-Zustand auf dem VPS:
+
+```bash
+python3 -I -B scripts/tool_commands.py run archivebox --action status
+python3 -I -B scripts/tool_commands.py run archivebox --action doctor
+```
+
+Die folgenden Befehle **einzeln und nur nach Freigabe** ausfuehren, nicht als
+gemeinsamen Ablauf: Installation, spaeter Update oder bewusst Deinstallation.
+Vorher Quellen, Lizenz, Ressourcen und Daten-Erhaltungsregeln dieser Anleitung pruefen.
+
+Installieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run archivebox --action install --apply --confirm archivebox:install
+```
+
+Aktualisieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run archivebox --action update --apply --confirm archivebox:update
+```
+
+Deinstallieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run archivebox --action uninstall --apply --confirm archivebox:uninstall
+```
+
+Fehlende Build-Abhaengigkeiten stoppen den Versuch. Nur fuer Install/Update
+`--install-build-deps` nach separater Download-Freigabe ergaenzen. Kein Auto-Yes,
+kein Docker-Fallback; Source-Build/Status ist keine erfolgreiche Runtime-Abnahme.
+
+### SSH-Aktionen: `argilla`
+
+Status und Diagnose lesen den privaten Tool-Zustand auf dem VPS:
+
+```bash
+python3 -I -B scripts/tool_commands.py run argilla --action status
+python3 -I -B scripts/tool_commands.py run argilla --action doctor
+```
+
+Die folgenden Befehle **einzeln und nur nach Freigabe** ausfuehren, nicht als
+gemeinsamen Ablauf: Installation, spaeter Update oder bewusst Deinstallation.
+Vorher Quellen, Lizenz, Ressourcen und Daten-Erhaltungsregeln dieser Anleitung pruefen.
+
+Installieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run argilla --action install --apply --confirm argilla:install
+```
+
+Aktualisieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run argilla --action update --apply --confirm argilla:update
+```
+
+Deinstallieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run argilla --action uninstall --apply --confirm argilla:uninstall
+```
+
+Fehlende Build-Abhaengigkeiten stoppen den Versuch. Nur fuer Install/Update
+`--install-build-deps` nach separater Download-Freigabe ergaenzen. Kein Auto-Yes,
+kein Docker-Fallback; Source-Build/Status ist keine erfolgreiche Runtime-Abnahme.
+
+### SSH-Aktionen: `budibase`
+
+Status und Diagnose lesen den privaten Tool-Zustand auf dem VPS:
+
+```bash
+python3 -I -B scripts/tool_commands.py run budibase --action status
+python3 -I -B scripts/tool_commands.py run budibase --action doctor
+```
+
+Die folgenden Befehle **einzeln und nur nach Freigabe** ausfuehren, nicht als
+gemeinsamen Ablauf: Installation, spaeter Update oder bewusst Deinstallation.
+Vorher Quellen, Lizenz, Ressourcen und Daten-Erhaltungsregeln dieser Anleitung pruefen.
+
+Installieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run budibase --action install --apply --confirm budibase:install
+```
+
+Aktualisieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run budibase --action update --apply --confirm budibase:update
+```
+
+Deinstallieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run budibase --action uninstall --apply --confirm budibase:uninstall
+```
+
+Fehlende Build-Abhaengigkeiten stoppen den Versuch. Nur fuer Install/Update
+`--install-build-deps` nach separater Download-Freigabe ergaenzen. Kein Auto-Yes,
+kein Docker-Fallback; Source-Build/Status ist keine erfolgreiche Runtime-Abnahme.
+
+### SSH-Aktionen: `cadvisor`
+
+Status und Diagnose lesen den privaten Tool-Zustand auf dem VPS:
+
+```bash
+python3 -I -B scripts/tool_commands.py run cadvisor --action status
+python3 -I -B scripts/tool_commands.py run cadvisor --action doctor
+```
+
+Die folgenden Befehle **einzeln und nur nach Freigabe** ausfuehren, nicht als
+gemeinsamen Ablauf: Installation, spaeter Update oder bewusst Deinstallation.
+Vorher Quellen, Lizenz, Ressourcen und Daten-Erhaltungsregeln dieser Anleitung pruefen.
+
+Installieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run cadvisor --action install --apply --confirm cadvisor:install
+```
+
+Aktualisieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run cadvisor --action update --apply --confirm cadvisor:update
+```
+
+Deinstallieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run cadvisor --action uninstall --apply --confirm cadvisor:uninstall
+```
+
+Fehlende Build-Abhaengigkeiten stoppen den Versuch. Nur fuer Install/Update
+`--install-build-deps` nach separater Download-Freigabe ergaenzen. Kein Auto-Yes,
+kein Docker-Fallback; Source-Build/Status ist keine erfolgreiche Runtime-Abnahme.
+
+### SSH-Aktionen: `changedetection_io`
+
+Status und Diagnose lesen den privaten Tool-Zustand auf dem VPS:
+
+```bash
+python3 -I -B scripts/tool_commands.py run changedetection_io --action status
+python3 -I -B scripts/tool_commands.py run changedetection_io --action doctor
+```
+
+Die folgenden Befehle **einzeln und nur nach Freigabe** ausfuehren, nicht als
+gemeinsamen Ablauf: Installation, spaeter Update oder bewusst Deinstallation.
+Vorher Quellen, Lizenz, Ressourcen und Daten-Erhaltungsregeln dieser Anleitung pruefen.
+
+Installieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run changedetection_io --action install --apply --confirm changedetection_io:install
+```
+
+Aktualisieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run changedetection_io --action update --apply --confirm changedetection_io:update
+```
+
+Deinstallieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run changedetection_io --action uninstall --apply --confirm changedetection_io:uninstall
+```
+
+Fehlende Build-Abhaengigkeiten stoppen den Versuch. Nur fuer Install/Update
+`--install-build-deps` nach separater Download-Freigabe ergaenzen. Kein Auto-Yes,
+kein Docker-Fallback; Source-Build/Status ist keine erfolgreiche Runtime-Abnahme.
+
+### SSH-Aktionen: `crowdsec`
+
+Status und Diagnose lesen den privaten Tool-Zustand auf dem VPS:
+
+```bash
+python3 -I -B scripts/tool_commands.py run crowdsec --action status
+python3 -I -B scripts/tool_commands.py run crowdsec --action doctor
+```
+
+Die folgenden Befehle **einzeln und nur nach Freigabe** ausfuehren, nicht als
+gemeinsamen Ablauf: Installation, spaeter Update oder bewusst Deinstallation.
+Vorher Quellen, Lizenz, Ressourcen und Daten-Erhaltungsregeln dieser Anleitung pruefen.
+
+Installieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run crowdsec --action install --apply --confirm crowdsec:install
+```
+
+Aktualisieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run crowdsec --action update --apply --confirm crowdsec:update
+```
+
+Deinstallieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run crowdsec --action uninstall --apply --confirm crowdsec:uninstall
+```
+
+Fehlende Build-Abhaengigkeiten stoppen den Versuch. Nur fuer Install/Update
+`--install-build-deps` nach separater Download-Freigabe ergaenzen. Kein Auto-Yes,
+kein Docker-Fallback; Source-Build/Status ist keine erfolgreiche Runtime-Abnahme.
+
+### SSH-Aktionen: `directus`
+
+Status und Diagnose lesen den privaten Tool-Zustand auf dem VPS:
+
+```bash
+python3 -I -B scripts/tool_commands.py run directus --action status
+python3 -I -B scripts/tool_commands.py run directus --action doctor
+```
+
+Die folgenden Befehle **einzeln und nur nach Freigabe** ausfuehren, nicht als
+gemeinsamen Ablauf: Installation, spaeter Update oder bewusst Deinstallation.
+Vorher Quellen, Lizenz, Ressourcen und Daten-Erhaltungsregeln dieser Anleitung pruefen.
+
+Installieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run directus --action install --apply --confirm directus:install
+```
+
+Aktualisieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run directus --action update --apply --confirm directus:update
+```
+
+Deinstallieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run directus --action uninstall --apply --confirm directus:uninstall
+```
+
+Fehlende Build-Abhaengigkeiten stoppen den Versuch. Nur fuer Install/Update
+`--install-build-deps` nach separater Download-Freigabe ergaenzen. Kein Auto-Yes,
+kein Docker-Fallback; Source-Build/Status ist keine erfolgreiche Runtime-Abnahme.
+
+### SSH-Aktionen: `forgejo`
+
+Kein freigegebener unbeaufsichtigter Docker-freier Adapter. Der Plan nennt
+vorhandene Skriptpfade; diese nicht ungeprueft ausfuehren. Die
+tool-spezifischen Plattform-, Lizenz- und Laufzeitgrenzen oben gelten weiterhin.
+
+Fuer die interaktive Installation nach Pruefung `bash setup_ultimate.sh` im
+VPS-Terminal oeffnen, dort im Tool-Management das gewuenschte Tool
+`Forgejo` (ID `forgejo`) waehlen und die Einzelfreigaben lesen.
+Fehlt der Eintrag oder ist der native Weg gesperrt, hier stoppen: keine
+Legacy-/Docker-Ausweichinstallation und kein automatischer Plattformwechsel.
+
+### SSH-Aktionen: `grafana`
+
+Status und Diagnose lesen den privaten Tool-Zustand auf dem VPS:
+
+```bash
+python3 -I -B scripts/tool_commands.py run grafana --action status
+python3 -I -B scripts/tool_commands.py run grafana --action doctor
+```
+
+Die folgenden Befehle **einzeln und nur nach Freigabe** ausfuehren, nicht als
+gemeinsamen Ablauf: Installation, spaeter Update oder bewusst Deinstallation.
+Vorher Quellen, Lizenz, Ressourcen und Daten-Erhaltungsregeln dieser Anleitung pruefen.
+
+Installieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run grafana --action install --apply --confirm grafana:install
+```
+
+Aktualisieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run grafana --action update --apply --confirm grafana:update
+```
+
+Deinstallieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run grafana --action uninstall --apply --confirm grafana:uninstall
+```
+
+Fehlende Build-Abhaengigkeiten stoppen den Versuch. Nur fuer Install/Update
+`--install-build-deps` nach separater Download-Freigabe ergaenzen. Kein Auto-Yes,
+kein Docker-Fallback; Source-Build/Status ist keine erfolgreiche Runtime-Abnahme.
+
+### SSH-Aktionen: `grafana_alloy`
+
+Status und Diagnose lesen den privaten Tool-Zustand auf dem VPS:
+
+```bash
+python3 -I -B scripts/tool_commands.py run grafana_alloy --action status
+python3 -I -B scripts/tool_commands.py run grafana_alloy --action doctor
+```
+
+Die folgenden Befehle **einzeln und nur nach Freigabe** ausfuehren, nicht als
+gemeinsamen Ablauf: Installation, spaeter Update oder bewusst Deinstallation.
+Vorher Quellen, Lizenz, Ressourcen und Daten-Erhaltungsregeln dieser Anleitung pruefen.
+
+Installieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run grafana_alloy --action install --apply --confirm grafana_alloy:install
+```
+
+Aktualisieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run grafana_alloy --action update --apply --confirm grafana_alloy:update
+```
+
+Deinstallieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run grafana_alloy --action uninstall --apply --confirm grafana_alloy:uninstall
+```
+
+Fehlende Build-Abhaengigkeiten stoppen den Versuch. Nur fuer Install/Update
+`--install-build-deps` nach separater Download-Freigabe ergaenzen. Kein Auto-Yes,
+kein Docker-Fallback; Source-Build/Status ist keine erfolgreiche Runtime-Abnahme.
+
+### SSH-Aktionen: `healthchecks`
+
+Status und Diagnose lesen den privaten Tool-Zustand auf dem VPS:
+
+```bash
+python3 -I -B scripts/tool_commands.py run healthchecks --action status
+python3 -I -B scripts/tool_commands.py run healthchecks --action doctor
+```
+
+Die folgenden Befehle **einzeln und nur nach Freigabe** ausfuehren, nicht als
+gemeinsamen Ablauf: Installation, spaeter Update oder bewusst Deinstallation.
+Vorher Quellen, Lizenz, Ressourcen und Daten-Erhaltungsregeln dieser Anleitung pruefen.
+
+Installieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run healthchecks --action install --apply --confirm healthchecks:install
+```
+
+Aktualisieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run healthchecks --action update --apply --confirm healthchecks:update
+```
+
+Deinstallieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run healthchecks --action uninstall --apply --confirm healthchecks:uninstall
+```
+
+Fehlende Build-Abhaengigkeiten stoppen den Versuch. Nur fuer Install/Update
+`--install-build-deps` nach separater Download-Freigabe ergaenzen. Kein Auto-Yes,
+kein Docker-Fallback; Source-Build/Status ist keine erfolgreiche Runtime-Abnahme.
+
+### SSH-Aktionen: `home_assistant`
+
+Status und Diagnose lesen den privaten Tool-Zustand auf dem VPS:
+
+```bash
+python3 -I -B scripts/tool_commands.py run home_assistant --action status
+python3 -I -B scripts/tool_commands.py run home_assistant --action doctor
+```
+
+Die folgenden Befehle **einzeln und nur nach Freigabe** ausfuehren, nicht als
+gemeinsamen Ablauf: Installation, spaeter Update oder bewusst Deinstallation.
+Vorher Quellen, Lizenz, Ressourcen und Daten-Erhaltungsregeln dieser Anleitung pruefen.
+
+Installieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run home_assistant --action install --apply --confirm home_assistant:install
+```
+
+Aktualisieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run home_assistant --action update --apply --confirm home_assistant:update
+```
+
+Deinstallieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run home_assistant --action uninstall --apply --confirm home_assistant:uninstall
+```
+
+Fehlende Build-Abhaengigkeiten stoppen den Versuch. Nur fuer Install/Update
+`--install-build-deps` nach separater Download-Freigabe ergaenzen. Kein Auto-Yes,
+kein Docker-Fallback; Source-Build/Status ist keine erfolgreiche Runtime-Abnahme.
+
+### SSH-Aktionen: `langfuse`
+
+Status und Diagnose lesen den privaten Tool-Zustand auf dem VPS:
+
+```bash
+python3 -I -B scripts/tool_commands.py run langfuse --action status
+python3 -I -B scripts/tool_commands.py run langfuse --action doctor
+```
+
+Die folgenden Befehle **einzeln und nur nach Freigabe** ausfuehren, nicht als
+gemeinsamen Ablauf: Installation, spaeter Update oder bewusst Deinstallation.
+Vorher Quellen, Lizenz, Ressourcen und Daten-Erhaltungsregeln dieser Anleitung pruefen.
+
+Installieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run langfuse --action install --apply --confirm langfuse:install
+```
+
+Aktualisieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run langfuse --action update --apply --confirm langfuse:update
+```
+
+Deinstallieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run langfuse --action uninstall --apply --confirm langfuse:uninstall
+```
+
+Fehlende Build-Abhaengigkeiten stoppen den Versuch. Nur fuer Install/Update
+`--install-build-deps` nach separater Download-Freigabe ergaenzen. Kein Auto-Yes,
+kein Docker-Fallback; Source-Build/Status ist keine erfolgreiche Runtime-Abnahme.
+
+### SSH-Aktionen: `litellm`
+
+Status und Diagnose lesen den privaten Tool-Zustand auf dem VPS:
+
+```bash
+python3 -I -B scripts/tool_commands.py run litellm --action status
+python3 -I -B scripts/tool_commands.py run litellm --action doctor
+```
+
+Die folgenden Befehle **einzeln und nur nach Freigabe** ausfuehren, nicht als
+gemeinsamen Ablauf: Installation, spaeter Update oder bewusst Deinstallation.
+Vorher Quellen, Lizenz, Ressourcen und Daten-Erhaltungsregeln dieser Anleitung pruefen.
+
+Installieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run litellm --action install --apply --confirm litellm:install
+```
+
+Aktualisieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run litellm --action update --apply --confirm litellm:update
+```
+
+Deinstallieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run litellm --action uninstall --apply --confirm litellm:uninstall
+```
+
+Fehlende Build-Abhaengigkeiten stoppen den Versuch. Nur fuer Install/Update
+`--install-build-deps` nach separater Download-Freigabe ergaenzen. Kein Auto-Yes,
+kein Docker-Fallback; Source-Build/Status ist keine erfolgreiche Runtime-Abnahme.
+
+### SSH-Aktionen: `loki`
+
+Status und Diagnose lesen den privaten Tool-Zustand auf dem VPS:
+
+```bash
+python3 -I -B scripts/tool_commands.py run loki --action status
+python3 -I -B scripts/tool_commands.py run loki --action doctor
+```
+
+Die folgenden Befehle **einzeln und nur nach Freigabe** ausfuehren, nicht als
+gemeinsamen Ablauf: Installation, spaeter Update oder bewusst Deinstallation.
+Vorher Quellen, Lizenz, Ressourcen und Daten-Erhaltungsregeln dieser Anleitung pruefen.
+
+Installieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run loki --action install --apply --confirm loki:install
+```
+
+Aktualisieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run loki --action update --apply --confirm loki:update
+```
+
+Deinstallieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run loki --action uninstall --apply --confirm loki:uninstall
+```
+
+Fehlende Build-Abhaengigkeiten stoppen den Versuch. Nur fuer Install/Update
+`--install-build-deps` nach separater Download-Freigabe ergaenzen. Kein Auto-Yes,
+kein Docker-Fallback; Source-Build/Status ist keine erfolgreiche Runtime-Abnahme.
+
+### SSH-Aktionen: `meilisearch`
+
+Status und Diagnose lesen den privaten Tool-Zustand auf dem VPS:
+
+```bash
+python3 -I -B scripts/tool_commands.py run meilisearch --action status
+python3 -I -B scripts/tool_commands.py run meilisearch --action doctor
+```
+
+Die folgenden Befehle **einzeln und nur nach Freigabe** ausfuehren, nicht als
+gemeinsamen Ablauf: Installation, spaeter Update oder bewusst Deinstallation.
+Vorher Quellen, Lizenz, Ressourcen und Daten-Erhaltungsregeln dieser Anleitung pruefen.
+
+Installieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run meilisearch --action install --apply --confirm meilisearch:install
+```
+
+Aktualisieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run meilisearch --action update --apply --confirm meilisearch:update
+```
+
+Deinstallieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run meilisearch --action uninstall --apply --confirm meilisearch:uninstall
+```
+
+Fehlende Build-Abhaengigkeiten stoppen den Versuch. Nur fuer Install/Update
+`--install-build-deps` nach separater Download-Freigabe ergaenzen. Kein Auto-Yes,
+kein Docker-Fallback; Source-Build/Status ist keine erfolgreiche Runtime-Abnahme.
+
+### SSH-Aktionen: `metabase`
+
+Status und Diagnose lesen den privaten Tool-Zustand auf dem VPS:
+
+```bash
+python3 -I -B scripts/tool_commands.py run metabase --action status
+python3 -I -B scripts/tool_commands.py run metabase --action doctor
+```
+
+Die folgenden Befehle **einzeln und nur nach Freigabe** ausfuehren, nicht als
+gemeinsamen Ablauf: Installation, spaeter Update oder bewusst Deinstallation.
+Vorher Quellen, Lizenz, Ressourcen und Daten-Erhaltungsregeln dieser Anleitung pruefen.
+
+Installieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run metabase --action install --apply --confirm metabase:install
+```
+
+Aktualisieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run metabase --action update --apply --confirm metabase:update
+```
+
+Deinstallieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run metabase --action uninstall --apply --confirm metabase:uninstall
+```
+
+Fehlende Build-Abhaengigkeiten stoppen den Versuch. Nur fuer Install/Update
+`--install-build-deps` nach separater Download-Freigabe ergaenzen. Kein Auto-Yes,
+kein Docker-Fallback; Source-Build/Status ist keine erfolgreiche Runtime-Abnahme.
+
+### SSH-Aktionen: `minio`
+
+Status und Diagnose lesen den privaten Tool-Zustand auf dem VPS:
+
+```bash
+python3 -I -B scripts/tool_commands.py run minio --action status
+python3 -I -B scripts/tool_commands.py run minio --action doctor
+```
+
+Die folgenden Befehle **einzeln und nur nach Freigabe** ausfuehren, nicht als
+gemeinsamen Ablauf: Installation, spaeter Update oder bewusst Deinstallation.
+Vorher Quellen, Lizenz, Ressourcen und Daten-Erhaltungsregeln dieser Anleitung pruefen.
+
+Installieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run minio --action install --apply --confirm minio:install
+```
+
+Aktualisieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run minio --action update --apply --confirm minio:update
+```
+
+Deinstallieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run minio --action uninstall --apply --confirm minio:uninstall
+```
+
+Fehlende Build-Abhaengigkeiten stoppen den Versuch. Nur fuer Install/Update
+`--install-build-deps` nach separater Download-Freigabe ergaenzen. Kein Auto-Yes,
+kein Docker-Fallback; Source-Build/Status ist keine erfolgreiche Runtime-Abnahme.
+
+### SSH-Aktionen: `neo4j`
+
+Status und Diagnose lesen den privaten Tool-Zustand auf dem VPS:
+
+```bash
+python3 -I -B scripts/tool_commands.py run neo4j --action status
+python3 -I -B scripts/tool_commands.py run neo4j --action doctor
+```
+
+Die folgenden Befehle **einzeln und nur nach Freigabe** ausfuehren, nicht als
+gemeinsamen Ablauf: Installation, spaeter Update oder bewusst Deinstallation.
+Vorher Quellen, Lizenz, Ressourcen und Daten-Erhaltungsregeln dieser Anleitung pruefen.
+
+Installieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run neo4j --action install --apply --confirm neo4j:install
+```
+
+Aktualisieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run neo4j --action update --apply --confirm neo4j:update
+```
+
+Deinstallieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run neo4j --action uninstall --apply --confirm neo4j:uninstall
+```
+
+Fehlende Build-Abhaengigkeiten stoppen den Versuch. Nur fuer Install/Update
+`--install-build-deps` nach separater Download-Freigabe ergaenzen. Kein Auto-Yes,
+kein Docker-Fallback; Source-Build/Status ist keine erfolgreiche Runtime-Abnahme.
+
+### SSH-Aktionen: `netdata`
+
+Status und Diagnose lesen den privaten Tool-Zustand auf dem VPS:
+
+```bash
+python3 -I -B scripts/tool_commands.py run netdata --action status
+python3 -I -B scripts/tool_commands.py run netdata --action doctor
+```
+
+Die folgenden Befehle **einzeln und nur nach Freigabe** ausfuehren, nicht als
+gemeinsamen Ablauf: Installation, spaeter Update oder bewusst Deinstallation.
+Vorher Quellen, Lizenz, Ressourcen und Daten-Erhaltungsregeln dieser Anleitung pruefen.
+
+Installieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run netdata --action install --apply --confirm netdata:install
+```
+
+Aktualisieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run netdata --action update --apply --confirm netdata:update
+```
+
+Deinstallieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run netdata --action uninstall --apply --confirm netdata:uninstall
+```
+
+Fehlende Build-Abhaengigkeiten stoppen den Versuch. Nur fuer Install/Update
+`--install-build-deps` nach separater Download-Freigabe ergaenzen. Kein Auto-Yes,
+kein Docker-Fallback; Source-Build/Status ist keine erfolgreiche Runtime-Abnahme.
+
+### SSH-Aktionen: `nextcloud`
+
+Status und Diagnose lesen den privaten Tool-Zustand auf dem VPS:
+
+```bash
+python3 -I -B scripts/tool_commands.py run nextcloud --action status
+python3 -I -B scripts/tool_commands.py run nextcloud --action doctor
+```
+
+Die folgenden Befehle **einzeln und nur nach Freigabe** ausfuehren, nicht als
+gemeinsamen Ablauf: Installation, spaeter Update oder bewusst Deinstallation.
+Vorher Quellen, Lizenz, Ressourcen und Daten-Erhaltungsregeln dieser Anleitung pruefen.
+
+Installieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run nextcloud --action install --apply --confirm nextcloud:install
+```
+
+Aktualisieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run nextcloud --action update --apply --confirm nextcloud:update
+```
+
+Deinstallieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run nextcloud --action uninstall --apply --confirm nextcloud:uninstall
+```
+
+Fehlende Build-Abhaengigkeiten stoppen den Versuch. Nur fuer Install/Update
+`--install-build-deps` nach separater Download-Freigabe ergaenzen. Kein Auto-Yes,
+kein Docker-Fallback; Source-Build/Status ist keine erfolgreiche Runtime-Abnahme.
+
+### SSH-Aktionen: `nocodb`
+
+Status und Diagnose lesen den privaten Tool-Zustand auf dem VPS:
+
+```bash
+python3 -I -B scripts/tool_commands.py run nocodb --action status
+python3 -I -B scripts/tool_commands.py run nocodb --action doctor
+```
+
+Die folgenden Befehle **einzeln und nur nach Freigabe** ausfuehren, nicht als
+gemeinsamen Ablauf: Installation, spaeter Update oder bewusst Deinstallation.
+Vorher Quellen, Lizenz, Ressourcen und Daten-Erhaltungsregeln dieser Anleitung pruefen.
+
+Installieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run nocodb --action install --apply --confirm nocodb:install
+```
+
+Aktualisieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run nocodb --action update --apply --confirm nocodb:update
+```
+
+Deinstallieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run nocodb --action uninstall --apply --confirm nocodb:uninstall
+```
+
+Fehlende Build-Abhaengigkeiten stoppen den Versuch. Nur fuer Install/Update
+`--install-build-deps` nach separater Download-Freigabe ergaenzen. Kein Auto-Yes,
+kein Docker-Fallback; Source-Build/Status ist keine erfolgreiche Runtime-Abnahme.
+
+### SSH-Aktionen: `node_red`
+
+Status und Diagnose lesen den privaten Tool-Zustand auf dem VPS:
+
+```bash
+python3 -I -B scripts/tool_commands.py run node_red --action status
+python3 -I -B scripts/tool_commands.py run node_red --action doctor
+```
+
+Die folgenden Befehle **einzeln und nur nach Freigabe** ausfuehren, nicht als
+gemeinsamen Ablauf: Installation, spaeter Update oder bewusst Deinstallation.
+Vorher Quellen, Lizenz, Ressourcen und Daten-Erhaltungsregeln dieser Anleitung pruefen.
+
+Installieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run node_red --action install --apply --confirm node_red:install
+```
+
+Aktualisieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run node_red --action update --apply --confirm node_red:update
+```
+
+Deinstallieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run node_red --action uninstall --apply --confirm node_red:uninstall
+```
+
+Fehlende Build-Abhaengigkeiten stoppen den Versuch. Nur fuer Install/Update
+`--install-build-deps` nach separater Download-Freigabe ergaenzen. Kein Auto-Yes,
+kein Docker-Fallback; Source-Build/Status ist keine erfolgreiche Runtime-Abnahme.
+
+### SSH-Aktionen: `open_webui`
+
+Status und Diagnose lesen den privaten Tool-Zustand auf dem VPS:
+
+```bash
+python3 -I -B scripts/tool_commands.py run open_webui --action status
+python3 -I -B scripts/tool_commands.py run open_webui --action doctor
+```
+
+Die folgenden Befehle **einzeln und nur nach Freigabe** ausfuehren, nicht als
+gemeinsamen Ablauf: Installation, spaeter Update oder bewusst Deinstallation.
+Vorher Quellen, Lizenz, Ressourcen und Daten-Erhaltungsregeln dieser Anleitung pruefen.
+
+Installieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run open_webui --action install --apply --confirm open_webui:install
+```
+
+Aktualisieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run open_webui --action update --apply --confirm open_webui:update
+```
+
+Deinstallieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run open_webui --action uninstall --apply --confirm open_webui:uninstall
+```
+
+Fehlende Build-Abhaengigkeiten stoppen den Versuch. Nur fuer Install/Update
+`--install-build-deps` nach separater Download-Freigabe ergaenzen. Kein Auto-Yes,
+kein Docker-Fallback; Source-Build/Status ist keine erfolgreiche Runtime-Abnahme.
+
+### SSH-Aktionen: `penpot`
+
+Status und Diagnose lesen den privaten Tool-Zustand auf dem VPS:
+
+```bash
+python3 -I -B scripts/tool_commands.py run penpot --action status
+python3 -I -B scripts/tool_commands.py run penpot --action doctor
+```
+
+Die folgenden Befehle **einzeln und nur nach Freigabe** ausfuehren, nicht als
+gemeinsamen Ablauf: Installation, spaeter Update oder bewusst Deinstallation.
+Vorher Quellen, Lizenz, Ressourcen und Daten-Erhaltungsregeln dieser Anleitung pruefen.
+
+Installieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run penpot --action install --apply --confirm penpot:install
+```
+
+Aktualisieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run penpot --action update --apply --confirm penpot:update
+```
+
+Deinstallieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run penpot --action uninstall --apply --confirm penpot:uninstall
+```
+
+Fehlende Build-Abhaengigkeiten stoppen den Versuch. Nur fuer Install/Update
+`--install-build-deps` nach separater Download-Freigabe ergaenzen. Kein Auto-Yes,
+kein Docker-Fallback; Source-Build/Status ist keine erfolgreiche Runtime-Abnahme.
+
+### SSH-Aktionen: `prometheus`
+
+Status und Diagnose lesen den privaten Tool-Zustand auf dem VPS:
+
+```bash
+python3 -I -B scripts/tool_commands.py run prometheus --action status
+python3 -I -B scripts/tool_commands.py run prometheus --action doctor
+```
+
+Die folgenden Befehle **einzeln und nur nach Freigabe** ausfuehren, nicht als
+gemeinsamen Ablauf: Installation, spaeter Update oder bewusst Deinstallation.
+Vorher Quellen, Lizenz, Ressourcen und Daten-Erhaltungsregeln dieser Anleitung pruefen.
+
+Installieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run prometheus --action install --apply --confirm prometheus:install
+```
+
+Aktualisieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run prometheus --action update --apply --confirm prometheus:update
+```
+
+Deinstallieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run prometheus --action uninstall --apply --confirm prometheus:uninstall
+```
+
+Fehlende Build-Abhaengigkeiten stoppen den Versuch. Nur fuer Install/Update
+`--install-build-deps` nach separater Download-Freigabe ergaenzen. Kein Auto-Yes,
+kein Docker-Fallback; Source-Build/Status ist keine erfolgreiche Runtime-Abnahme.
+
+### SSH-Aktionen: `promtail`
+
+Status und Diagnose lesen den privaten Tool-Zustand auf dem VPS:
+
+```bash
+python3 -I -B scripts/tool_commands.py run promtail --action status
+python3 -I -B scripts/tool_commands.py run promtail --action doctor
+```
+
+Die folgenden Befehle **einzeln und nur nach Freigabe** ausfuehren, nicht als
+gemeinsamen Ablauf: Installation, spaeter Update oder bewusst Deinstallation.
+Vorher Quellen, Lizenz, Ressourcen und Daten-Erhaltungsregeln dieser Anleitung pruefen.
+
+Installieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run promtail --action install --apply --confirm promtail:install
+```
+
+Aktualisieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run promtail --action update --apply --confirm promtail:update
+```
+
+Deinstallieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run promtail --action uninstall --apply --confirm promtail:uninstall
+```
+
+Fehlende Build-Abhaengigkeiten stoppen den Versuch. Nur fuer Install/Update
+`--install-build-deps` nach separater Download-Freigabe ergaenzen. Kein Auto-Yes,
+kein Docker-Fallback; Source-Build/Status ist keine erfolgreiche Runtime-Abnahme.
+
+### SSH-Aktionen: `pyairbyte`
+
+Status und Diagnose lesen den privaten Tool-Zustand auf dem VPS:
+
+```bash
+python3 -I -B scripts/tool_commands.py run pyairbyte --action status
+python3 -I -B scripts/tool_commands.py run pyairbyte --action doctor
+```
+
+Die folgenden Befehle **einzeln und nur nach Freigabe** ausfuehren, nicht als
+gemeinsamen Ablauf: Installation, spaeter Update oder bewusst Deinstallation.
+Vorher Quellen, Lizenz, Ressourcen und Daten-Erhaltungsregeln dieser Anleitung pruefen.
+
+Installieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run pyairbyte --action install --apply --confirm pyairbyte:install
+```
+
+Aktualisieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run pyairbyte --action update --apply --confirm pyairbyte:update
+```
+
+Deinstallieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run pyairbyte --action uninstall --apply --confirm pyairbyte:uninstall
+```
+
+Fehlende Build-Abhaengigkeiten stoppen den Versuch. Nur fuer Install/Update
+`--install-build-deps` nach separater Download-Freigabe ergaenzen. Kein Auto-Yes,
+kein Docker-Fallback; Source-Build/Status ist keine erfolgreiche Runtime-Abnahme.
+
+### SSH-Aktionen: `qdrant`
+
+Status und Diagnose lesen den privaten Tool-Zustand auf dem VPS:
+
+```bash
+python3 -I -B scripts/tool_commands.py run qdrant --action status
+python3 -I -B scripts/tool_commands.py run qdrant --action doctor
+```
+
+Die folgenden Befehle **einzeln und nur nach Freigabe** ausfuehren, nicht als
+gemeinsamen Ablauf: Installation, spaeter Update oder bewusst Deinstallation.
+Vorher Quellen, Lizenz, Ressourcen und Daten-Erhaltungsregeln dieser Anleitung pruefen.
+
+Installieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run qdrant --action install --apply --confirm qdrant:install
+```
+
+Aktualisieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run qdrant --action update --apply --confirm qdrant:update
+```
+
+Deinstallieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run qdrant --action uninstall --apply --confirm qdrant:uninstall
+```
+
+Fehlende Build-Abhaengigkeiten stoppen den Versuch. Nur fuer Install/Update
+`--install-build-deps` nach separater Download-Freigabe ergaenzen. Kein Auto-Yes,
+kein Docker-Fallback; Source-Build/Status ist keine erfolgreiche Runtime-Abnahme.
+
+### SSH-Aktionen: `stirling_pdf`
+
+Status und Diagnose lesen den privaten Tool-Zustand auf dem VPS:
+
+```bash
+python3 -I -B scripts/tool_commands.py run stirling_pdf --action status
+python3 -I -B scripts/tool_commands.py run stirling_pdf --action doctor
+```
+
+Die folgenden Befehle **einzeln und nur nach Freigabe** ausfuehren, nicht als
+gemeinsamen Ablauf: Installation, spaeter Update oder bewusst Deinstallation.
+Vorher Quellen, Lizenz, Ressourcen und Daten-Erhaltungsregeln dieser Anleitung pruefen.
+
+Installieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run stirling_pdf --action install --apply --confirm stirling_pdf:install
+```
+
+Aktualisieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run stirling_pdf --action update --apply --confirm stirling_pdf:update
+```
+
+Deinstallieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run stirling_pdf --action uninstall --apply --confirm stirling_pdf:uninstall
+```
+
+Fehlende Build-Abhaengigkeiten stoppen den Versuch. Nur fuer Install/Update
+`--install-build-deps` nach separater Download-Freigabe ergaenzen. Kein Auto-Yes,
+kein Docker-Fallback; Source-Build/Status ist keine erfolgreiche Runtime-Abnahme.
+
+### SSH-Aktionen: `uptime_kuma`
+
+Status und Diagnose lesen den privaten Tool-Zustand auf dem VPS:
+
+```bash
+python3 -I -B scripts/tool_commands.py run uptime_kuma --action status
+python3 -I -B scripts/tool_commands.py run uptime_kuma --action doctor
+```
+
+Die folgenden Befehle **einzeln und nur nach Freigabe** ausfuehren, nicht als
+gemeinsamen Ablauf: Installation, spaeter Update oder bewusst Deinstallation.
+Vorher Quellen, Lizenz, Ressourcen und Daten-Erhaltungsregeln dieser Anleitung pruefen.
+
+Installieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run uptime_kuma --action install --apply --confirm uptime_kuma:install
+```
+
+Aktualisieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run uptime_kuma --action update --apply --confirm uptime_kuma:update
+```
+
+Deinstallieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run uptime_kuma --action uninstall --apply --confirm uptime_kuma:uninstall
+```
+
+Fehlende Build-Abhaengigkeiten stoppen den Versuch. Nur fuer Install/Update
+`--install-build-deps` nach separater Download-Freigabe ergaenzen. Kein Auto-Yes,
+kein Docker-Fallback; Source-Build/Status ist keine erfolgreiche Runtime-Abnahme.
+
+### SSH-Aktionen: `vault`
+
+Status und Diagnose lesen den privaten Tool-Zustand auf dem VPS:
+
+```bash
+python3 -I -B scripts/tool_commands.py run vault --action status
+python3 -I -B scripts/tool_commands.py run vault --action doctor
+```
+
+Die folgenden Befehle **einzeln und nur nach Freigabe** ausfuehren, nicht als
+gemeinsamen Ablauf: Installation, spaeter Update oder bewusst Deinstallation.
+Vorher Quellen, Lizenz, Ressourcen und Daten-Erhaltungsregeln dieser Anleitung pruefen.
+
+Installieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run vault --action install --apply --confirm vault:install
+```
+
+Aktualisieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run vault --action update --apply --confirm vault:update
+```
+
+Deinstallieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run vault --action uninstall --apply --confirm vault:uninstall
+```
+
+Fehlende Build-Abhaengigkeiten stoppen den Versuch. Nur fuer Install/Update
+`--install-build-deps` nach separater Download-Freigabe ergaenzen. Kein Auto-Yes,
+kein Docker-Fallback; Source-Build/Status ist keine erfolgreiche Runtime-Abnahme.
+
+### SSH-Aktionen: `vikunja`
+
+Status und Diagnose lesen den privaten Tool-Zustand auf dem VPS:
+
+```bash
+python3 -I -B scripts/tool_commands.py run vikunja --action status
+python3 -I -B scripts/tool_commands.py run vikunja --action doctor
+```
+
+Die folgenden Befehle **einzeln und nur nach Freigabe** ausfuehren, nicht als
+gemeinsamen Ablauf: Installation, spaeter Update oder bewusst Deinstallation.
+Vorher Quellen, Lizenz, Ressourcen und Daten-Erhaltungsregeln dieser Anleitung pruefen.
+
+Installieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run vikunja --action install --apply --confirm vikunja:install
+```
+
+Aktualisieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run vikunja --action update --apply --confirm vikunja:update
+```
+
+Deinstallieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run vikunja --action uninstall --apply --confirm vikunja:uninstall
+```
+
+Fehlende Build-Abhaengigkeiten stoppen den Versuch. Nur fuer Install/Update
+`--install-build-deps` nach separater Download-Freigabe ergaenzen. Kein Auto-Yes,
+kein Docker-Fallback; Source-Build/Status ist keine erfolgreiche Runtime-Abnahme.
+
+### SSH-Aktionen: `weaviate`
+
+Status und Diagnose lesen den privaten Tool-Zustand auf dem VPS:
+
+```bash
+python3 -I -B scripts/tool_commands.py run weaviate --action status
+python3 -I -B scripts/tool_commands.py run weaviate --action doctor
+```
+
+Die folgenden Befehle **einzeln und nur nach Freigabe** ausfuehren, nicht als
+gemeinsamen Ablauf: Installation, spaeter Update oder bewusst Deinstallation.
+Vorher Quellen, Lizenz, Ressourcen und Daten-Erhaltungsregeln dieser Anleitung pruefen.
+
+Installieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run weaviate --action install --apply --confirm weaviate:install
+```
+
+Aktualisieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run weaviate --action update --apply --confirm weaviate:update
+```
+
+Deinstallieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run weaviate --action uninstall --apply --confirm weaviate:uninstall
+```
+
+Fehlende Build-Abhaengigkeiten stoppen den Versuch. Nur fuer Install/Update
+`--install-build-deps` nach separater Download-Freigabe ergaenzen. Kein Auto-Yes,
+kein Docker-Fallback; Source-Build/Status ist keine erfolgreiche Runtime-Abnahme.
+
+Das interaktive Setup bleibt nach bewusster Freigabe im SSH-Terminal erreichbar:
+
+```bash
+bash setup_ultimate.sh
+```
+
+Keine automatische Installation, kein Browser-/Modell-/Produktivdienststart durch diese Dokumentation.
+Nach jedem bewusst ausgefuehrten Befehl den Exitcode unmittelbar mit `echo $?` pruefen;
+zum Verlassen des VPS-Terminals `exit` verwenden.
+
+[SSH-Voraussetzungen und Sicherheitsgrenzen](HEADLESS_SETUP.md) | [Befehle aller registrierten Tools](generated/HEADLESS_TOOL_COMMANDS.md)
+
+Dieser Abschnitt wird aus der Registry erzeugt. Pflege: `python3 -I -B scripts/quality/tool_ssh_docs.py --write`.
+
+<!-- END GENERATED VPS SSH -->

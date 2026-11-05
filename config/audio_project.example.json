@@ -1,0 +1,13 @@
+{
+  "name": "synthwave_demo",
+  "tempo": 128,
+  "voice_engine": "none",
+  "split_stems": false,
+  "mix_profile": "vocal_ducking_echo",
+  "rights_confirmed": false,
+  "notes": [
+    {"midi": 60, "length": 480, "lyric": "la"},
+    {"midi": 62, "length": 480, "lyric": "la"},
+    {"midi": 64, "length": 960, "lyric": "la"}
+  ]
+}
