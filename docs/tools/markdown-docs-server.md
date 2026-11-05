@@ -6,6 +6,19 @@ PyPI, kein Hintergrunddienst und kein Browser-Autostart.
 
 ## Lesen und Navigation
 
+Im laufenden Setup: unten **Optionen** waehlen, dann **22 - Offline-Handbuch /
+Markdownserver einrichten und lesen**. Das neue Settings-Menue bietet die
+Einrichtungsanleitung, den Dokumentations-Wegweiser und die zuletzt ergaenzten
+Linux-/WSL-Labor- und Messwert-Backup-Anleitungen direkt als lokale Texte.
+Das Oeffnen des Menues fuehrt weder Downloads noch Dateiaenderungen aus.
+
+Plan, Status und Doctor sind getrennte Aktionen. Installation und Update fragen
+einen vollstaendigen geprueften GitHub-Commit und danach eine separate Freigabe ab.
+**Server starten** fragt Port und Freigabe ab; der Server laeuft im Vordergrund,
+Stop mit **Strg+C**. Die URL wird angezeigt, kein Browser automatisch geoeffnet.
+Deinstallation hat ebenfalls eine eigene Sicherheitsabfrage. Alle Freigaben sind
+standardmaessig **Nein**; ein leerer Commit/Port oder Abbrechen startet nichts.
+
 Das lokale Handbuch bietet sichtbare Direktlinks fuer Einstieg/Quickstarts,
 aktuellen Status, sichere Installation, Branch-Auswahl und Installationsmessungen.
 Auch Setup-Skripte, Speicherbereinigung, Neustart und Update/Entfernen sind direkt
@@ -48,7 +61,8 @@ bash scripts/tools/markdown_docs_server_install.sh --source-commit "$DOCS_COMMIT
 ```
 
 Das interaktive Tool-Menue bietet zunaechst diesen Plan; fuer die bewusste
-Installation ist der oben beschriebene Commit-Aufruf erforderlich. Uncommittete
+Installation ist der oben beschriebene Commit-Aufruf oder die explizite
+Installationsaktion in **Optionen -> 22** erforderlich. Uncommittete
 oder noch nicht hochgeladene neue Dateien werden nicht als installierte
 GitHub-Quellen ausgegeben. Erstinstallation braucht Netzwerk, spaeteres Lesen nicht.
 Die Bash-Install/Update/Uninstall-Adapter liefern bei reinem Plan bewusst Exitcode

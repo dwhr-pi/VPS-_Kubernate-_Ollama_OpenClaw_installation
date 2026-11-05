@@ -3,15 +3,19 @@ on:
   pull_request:
     paths:
       - scripts/documentation_server/**
+      - scripts/markdown_docs_server_menu.sh
       - scripts/tools/markdown_docs_server_*.sh
       - tests/test_documentation_server.py
+      - tests/test_markdown_docs_settings.py
       - .github/workflows/documentation-server-offline.yml
   push:
     branches: [main]
     paths:
       - scripts/documentation_server/**
+      - scripts/markdown_docs_server_menu.sh
       - scripts/tools/markdown_docs_server_*.sh
       - tests/test_documentation_server.py
+      - tests/test_markdown_docs_settings.py
       - .github/workflows/documentation-server-offline.yml
   workflow_dispatch:
 permissions:
@@ -36,3 +40,5 @@ jobs:
           python-version: '3.12'
       - name: Local HTTP and source lifecycle fixtures, no downloads or installation
         run: python -B -m unittest discover -s tests -p test_documentation_server.py -v
+      - name: Settings fixtures with fake dialog and Python, no installed app
+        run: python -B -m unittest discover -s tests -p test_markdown_docs_settings.py -v

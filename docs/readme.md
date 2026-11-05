@@ -10,6 +10,8 @@ produktionsreif.
 Optional: [Offline-Handbuch im Browser](tools/markdown-docs-server.md) mit sichtbaren
 Direktlinks, Themenbaum, Volltextsuche und Seiten-Inhaltsverzeichnis. Nur lokal,
 keine Docker-Installation, keine externen Schriftarten oder Skripte.
+Einrichtung und Anleitungen im Setup ueber **Optionen -> 22 - Offline-Handbuch /
+Markdownserver**; kein Start oder Download allein durch Oeffnen des Settings-Menues.
 
 [Installationsmessungen](INSTALLATION_BENCHMARKS.md): getrennte Testumgebungen fuer
 [Linux](LINUX_INSTALL_LAB.md) und [WSL](WSL_INSTALL_LAB.md), Messwert-Export und Restore.

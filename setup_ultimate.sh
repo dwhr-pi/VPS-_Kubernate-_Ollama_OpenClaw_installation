@@ -2303,11 +2303,15 @@ show_options_menu() {
       "18" "Abhängigkeiten-/Speicher-Snapshot erstellen" \
       "19" "Verschluesselter ENV-Tresor / Zugangsdaten verwalten" \
       "20" "Installations-Reset / alte Sperren freigeben (datenerhaltend)" \
-      "21" "Installationsstatus / Programmliste exportieren und wiederherstellen" 2>/tmp/options_choice; then
+      "21" "Installationsstatus / Programmliste exportieren und wiederherstellen" \
+      "22" "Offline-Handbuch / Markdownserver einrichten und lesen" 2>/tmp/options_choice; then
       return 0
     fi
 
     case "$(cat /tmp/options_choice)" in
+      22)
+        run_bash_script "$INSTALL_DIR/scripts/markdown_docs_server_menu.sh"
+        ;;
       21)
         run_bash_script "$INSTALL_DIR/scripts/installation_inventory_menu.sh"
         ;;
