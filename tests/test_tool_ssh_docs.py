@@ -102,12 +102,16 @@ class ToolSSHDocs(unittest.TestCase):
         self.assertIn('ssh -t vps', text)
 
     def test_relative_links_and_new_generic_guides(self):
+        (self.root / 'docs/generated').mkdir()
+        for guide in ('docs/HEADLESS_SETUP.md', 'docs/generated/HEADLESS_TOOL_COMMANDS.md'):
+            (self.root / guide).write_text('# Fixture target\n', encoding='utf-8')
         for name in self.files:
             text = docs.render(name, [])
             self.assertIn('scripts/tool_commands.py list', text)
             self.assertNotIn('--apply --confirm', text)
             for link in re.findall(r'\]\(([^)]+)\)', text):
-                target = (ROOT / name).parent / link
+                target = ((self.root / name).parent / link).resolve()
+                self.assertTrue(target.is_relative_to(self.root.resolve()), target)
                 self.assertTrue(target.is_file(), target)
 
     @unittest.skipUnless(BASH and Path(BASH).is_file(), 'Native Bash unavailable; no WSL fallback')
