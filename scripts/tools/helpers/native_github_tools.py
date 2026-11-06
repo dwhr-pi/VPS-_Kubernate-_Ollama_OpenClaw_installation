@@ -108,6 +108,9 @@ def run(args, cwd, env):
     if (env.get('NATIVE_BUILD_STREAM') == 'litellm' and Path(str(args[0])).name == 'uv'
             and list(args[1:3]) == ['pip', 'install']):
         return native_build_process.run(args, cwd, env, timeout=int(env['LITELLM_BUILD_TIMEOUT_SECONDS']))
+    if (env.get('NATIVE_BUILD_STREAM') == 'xerj' and Path(str(args[0])).name == 'cargo'
+            and list(args[1:2]) == ['build']):
+        return native_build_process.run(args, cwd, env, timeout=int(env['XERJ_BUILD_TIMEOUT_SECONDS']))
     return common.run(args, cwd, env)
 
 
@@ -115,6 +118,13 @@ def litellm_build_timeout():
     value = os.environ.get('LITELLM_BUILD_TIMEOUT_SECONDS', '7200')
     if not re.fullmatch(r'[0-9]{3,5}', value) or not 300 <= int(value) <= 21600:
         raise ValueError('LITELLM_BUILD_TIMEOUT_SECONDS: ganze Sekunden zwischen 300 und 21600; Standard 7200.')
+    return value
+
+
+def xerj_build_timeout():
+    value = os.environ.get('XERJ_BUILD_TIMEOUT_SECONDS', '7200')
+    if not re.fullmatch(r'[0-9]{3,5}', value) or not 300 <= int(value) <= 21600:
+        raise ValueError('XERJ_BUILD_TIMEOUT_SECONDS: ganze Sekunden zwischen 300 und 21600; Standard 7200.')
     return value
 
 
@@ -138,6 +148,8 @@ def requirements(spec):
 def preflight(outer, spec, install_build_deps=False):
     if platform.system() != "Linux":
         raise ValueError("Native Builds derzeit fuer Ubuntu/WSL Linux; kein Windows-Crossbuild.")
+    if spec['id'] == 'xerj':
+        xerj_build_timeout()  # Reject invalid budgets before downloads or compiler bootstrap.
     common.reserve(outer, {"reserve_mb": spec["recipe"]["disk_mb"]})
     acknowledgement = spec["recipe"].get("eol_ack")
     if acknowledgement and os.environ.get(acknowledgement) != "1":
@@ -270,6 +282,10 @@ def build(prefix, spec):
                    CARGO_HTTP_TIMEOUT='60', CARGO_NET_RETRY='2', PYTHONUNBUFFERED='1')
         print('LiteLLM: uv-Paketinstallation mit laufender Ausgabe, PID/30s-Heartbeat und Prozessgruppen-Abbruch; Timeout:',
               env['LITELLM_BUILD_TIMEOUT_SECONDS'], 'Sekunden. Cargo/uv-Source-Builds jeweils einfach parallel.', flush=True)
+    if spec['id'] == 'xerj':
+        env.update(NATIVE_BUILD_STREAM='xerj', XERJ_BUILD_TIMEOUT_SECONDS=xerj_build_timeout())
+        print('XERJ: Cargo-Ausgabe mit PID/30s-Heartbeat und Prozessgruppen-Abbruch; Timeout:',
+              env['XERJ_BUILD_TIMEOUT_SECONDS'], 'Sekunden. Ein Heartbeat belegt keinen Buildfortschritt.', flush=True)
     binary = prefix / "bin" / recipe.get("binary", "unused")
     binary.parent.mkdir(mode=0o700)
     artifacts = []

@@ -52,6 +52,25 @@ Der konservative Build-Vorabcheck verlangt 16 GiB freien Zielspeicher und
 4 GiB verfuegbaren RAM, unter WSL zusaetzlich freien Windows-Host-Speicher.
 Das sind Reserven, **keine gemessenen Verbrauchswerte oder Prozesslimits**.
 Fat-LTO kann lange dauern; ein Timeout ist ein Fehler, kein fertiger Build.
+Der Cargo-Build gibt Compiler-/Download-Meldungen jetzt laufend im aktuellen Log
+aus, ergaenzt um PID und einen Status alle 30 Sekunden. Der Status belegt nur,
+dass der Prozess noch nicht beendet ist, nicht dass er Fortschritt macht.
+Standard-Zeitlimit: **7200 Sekunden (2 Stunden)**. Ein groesseres Budget ist eine
+eigene Entscheidung, keine Reparatur fuer einen nachgewiesenen Compilerfehler:
+
+```bash
+# Erst nach Pruefung des letzten Logs; 4 Stunden nur fuer diesen Aufruf.
+XERJ_BUILD_TIMEOUT_SECONDS=14400 bash scripts/tools/xerj_install.sh
+```
+
+Erlaubt sind ganze Sekunden von 300 bis 21600 (maximal 6 Stunden). Ungueltige
+Werte stoppen vor Downloads. Kein unbegrenztes Warten, kein automatischer Retry,
+keine Reduzierung der Speicherreserve. Bei Timeout wird unter Linux die
+Build-Prozessgruppe beendet und der neue Buildordner zurueckgerollt. Die private
+Rust-Basis und Logs bleiben erhalten; der geloeschte Buildcache kann beim
+naechsten Versuch nicht fortgesetzt werden. Ein Timeout allein beweist weder
+OOM noch einen Haenger. Zuerst die letzte Compiler-/Download-Meldung pruefen.
+
 Das gepinnte amd64-Cargo-Profil nutzt `x86-64-v2`; sehr alte CPUs bzw. eingeschraenkte
 VM-CPU-Features vorher pruefen. ARM-, Windows- und macOS-Laufzeiten wurden hier
 nicht abgenommen; der Setup-Buildpfad ist Linux/Ubuntu bzw. bewusst gewaehltes WSL.

@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+### 2026-11-06: Sichtbarer und begrenzter XERJ-Build
+
+- Cargo-Build mit laufender Ausgabe, PID und 30s-Status ueber den vorhandenen
+  Streaming-Runner; Timeout beendet unter Linux die Build-Prozessgruppe.
+- Zwei Stunden bleiben Standard. `XERJ_BUILD_TIMEOUT_SECONDS` erlaubt bewusst
+  300 bis 21600 Sekunden; Validierung vor Downloads, keine automatischen Retries.
+- Kein echter XERJ-Build ausgefuehrt; Timeout-/Fehler- und Buildvertraege durch
+  Offline-Fixtures geprueft. Quell-Pin, Lockfile, Features und Speicherreserve bleiben.
+
 ### 2026-11-06: Cargo/Rust-Basis ohne Bootstrap-Zirkelschluss
 
 - Separate opt-in Einrichtung im Menue der 62 Werkzeugquellen und per
