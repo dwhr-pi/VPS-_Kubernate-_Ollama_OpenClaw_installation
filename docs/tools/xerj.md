@@ -37,9 +37,13 @@ ist lokale lexikalische Suche. Es werden keine Modelle heruntergeladen.
 Kein Remote-Installationsskript, Release-Binary, Docker, Nix oder npm-Fallback.
 Nur `xerj --version` wird als abschliessende Probe gestartet, nicht der Server.
 
-Vorhanden sein muessen eine zum Lockfile passende Rust-/Cargo-Toolchain,
-`git`, C-/C++-Compiler, `make`, `pkg-config` und `perl`. Rust wird nicht automatisch
-installiert oder aktualisiert. Eventuell erforderliche Systembibliotheken werden
+Vorhanden sein muessen `git`, C-/C++-Compiler, `make`, `pkg-config` und `perl`.
+Rust/Cargo **1.98.0** wird ueber den vorhandenen privaten Bootstrap ausgewaehlt:
+gepruefte gemeinsame oder bereits vorhandene Basis zuerst, sonst Download nur
+nach Zustimmung bzw. `--install-build-deps`. Keine globale Rust-Aktualisierung.
+Die eigenstaendige Einrichtung ist unter **62 Quellen verwalten -> Cargo + rustc**
+erreichbar; Details und CLI-Befehle: [Cargo/Rust-Build-Basis](../BUILD_RUST_TOOLCHAIN.md).
+Eventuell erforderliche Systembibliotheken werden
 bei einem Buildfehler separat geprueft; kein blindes Nachinstallieren durch das Tool.
 Build-Skripte von Rust-Abhaengigkeiten sind ausfuehrbarer Code: nur nach Review
 und vorzugsweise in einer getrennten Build-Umgebung kompilieren.

@@ -32,6 +32,8 @@ class Xerj(unittest.TestCase):
         (self.prefix / 'source/engine').mkdir(parents=True)
         self.sysroot = self.base / 'fixture-toolchain'
         self.sysroot.mkdir()
+        # Compiler discovery is tested separately; never execute host tools here.
+        mock.patch.object(native.litellm_rust, 'select', return_value=self.sysroot).start()
         self.calls = []
 
     def fake_run(self, args, cwd, env):

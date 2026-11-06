@@ -3600,6 +3600,7 @@ run_tool_script() {
   local tool_key="$1"
   local action="$2"
   local script_name="${TOOL_SCRIPT_NAMES[$tool_key]}"
+  local -a tool_args=()
 
   if [ -z "$script_name" ]; then
     echo -e "${RED}Fehler: Kein Skript-Mapping für Tool '$tool_key' gefunden.${NC}"
@@ -3610,10 +3611,14 @@ run_tool_script() {
     return 1
   fi
 
+  # Only the interactive setup opts into the documentation approval dialog.
+  if [[ "$tool_key" == Markdown_Docs_Server && "$action" =~ ^(install|update)$ ]]; then
+    tool_args+=(--interactive)
+  fi
   if [ "$action" = "install" ]; then
-    run_bash_script "$INSTALL_DIR/scripts/tools/run_install_transaction.sh" "$tool_key" "$INSTALL_DIR/scripts/tools/${script_name}_${action}.sh"
+    run_bash_script "$INSTALL_DIR/scripts/tools/run_install_transaction.sh" "$tool_key" "$INSTALL_DIR/scripts/tools/${script_name}_${action}.sh" "${tool_args[@]}"
   else
-    run_bash_script "$INSTALL_DIR/scripts/tools/${script_name}_${action}.sh"
+    run_bash_script "$INSTALL_DIR/scripts/tools/${script_name}_${action}.sh" "${tool_args[@]}"
   fi
 }
 
@@ -4708,8 +4713,9 @@ show_development_toolchain_check() {
   while true; do
     action=$(dialog --clear --backtitle "$APP_TITLE" --title "62 Werkzeugquellen: Installation und Pruefung" \
       --menu "GitHub-basierte Builds/Pakete ohne Docker. Ein Werkzeug pro Vorgang.\nKeine Dienste, Cluster, CI-Workflows oder Editor-Erweiterungen automatisch aktivieren." \
-      20 100 7 \
+      22 100 8 \
       check "Alle 62 Quellen lokal vorpruefen" \
+      rust "Cargo + rustc: private Build-Basis erstmals einrichten" \
       plan "Installationsplan / Voraussetzungen eines Werkzeugs" \
       install "Ein Werkzeug bauen oder Paket bereitstellen" \
       status "Installationsnachweis eines Werkzeugs pruefen" \
@@ -4719,6 +4725,25 @@ show_development_toolchain_check() {
     [[ "$action" == back ]] && return 0
     if [[ "$action" == check ]]; then
       show_development_toolchain_report || true
+      continue
+    fi
+    if [[ "$action" == rust ]]; then
+      report="$(mktemp "${TMPDIR:-/tmp}/openclaw-rust-plan.XXXXXX")" || return 1
+      if run_bash_script "$INSTALL_DIR/scripts/install_rust_build_tools.sh" plan >"$report" 2>&1; then
+        rc=0
+      else
+        rc=$?
+      fi
+      dialog --title "Cargo/Rust: Bootstrap-Plan (Exit $rc)" --textbox "$report" 24 100 || true
+      rm -f -- "$report"
+      ((rc == 0)) || continue
+      dialog --defaultno --yes-label "Ja" --no-label "Nein" --yesno \
+        "Cargo und rustc privat herunterladen/einrichten?\nBereits genehmigte Basis-Toolchain-Ausnahme: offizielle Rust-Downloads, gepinnter Bootstrap mit SHA256.\nKein apt, sudo, Docker, globaler PATH-Wechsel oder Anwendungsbuild. Mindestens 6 GiB freier Speicher.\nGemeinsame Compiler bleiben bei App-Deinstallation erhalten." 14 100 || continue
+      command=("$INSTALL_DIR/scripts/install_rust_build_tools.sh" install --apply)
+      report="$(mktemp "${TMPDIR:-/tmp}/openclaw-rust-result.XXXXXX")" || return 1
+      if run_bash_script "${command[@]}" >"$report" 2>&1; then rc=0; else rc=$?; fi
+      dialog --title "Cargo/Rust: Einrichtung (Exit $rc)" --textbox "$report" 30 110 || true
+      rm -f -- "$report"
       continue
     fi
     tool_options=()

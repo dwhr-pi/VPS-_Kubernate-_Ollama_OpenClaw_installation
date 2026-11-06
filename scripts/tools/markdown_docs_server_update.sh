@@ -2,6 +2,9 @@
 # Preserve the previous verified snapshot; require an explicit reviewed commit.
 set -euo pipefail
 ROOT="$(cd "${BASH_SOURCE[0]%/*}/../.." && pwd)"
+if [[ "$#" == 1 && "$1" == --interactive ]]; then
+  exec bash "$ROOT/scripts/markdown_docs_server_menu.sh" --action update
+fi
 APPLY=false
 for ARG in "$@"; do
   if [[ "$ARG" == "--apply" ]]; then APPLY=true; fi

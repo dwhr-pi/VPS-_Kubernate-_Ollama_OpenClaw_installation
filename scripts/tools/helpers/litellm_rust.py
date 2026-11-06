@@ -44,6 +44,14 @@ def select(base):
             return verify(Path(explicit), base)
         except (OSError, ValueError, subprocess.SubprocessError) as error:
             raise ValueError('LiteLLM: explizites NATIVE_SOURCE_RUST_TOOLCHAIN ungueltig; keine automatische Ersetzung. ' + GUIDANCE) from error
+    if base.name in ('litellm', 'xerj'):
+        # Shared bootstrap is independently inventoried, not an unchecked PATH shim.
+        import litellm_rust_bootstrap as bootstrap
+        shared = common.checked(base.parent / 'cargo_build_tools')
+        if shared.exists():
+            root = bootstrap.existing(shared)
+            if root:
+                return root
     candidates = []
     private = base / 'toolchain'
     if private.is_dir():
@@ -69,7 +77,7 @@ def select(base):
 
 
 def activate(base, spec, env):
-    if spec['id'] != 'litellm':
+    if spec['id'] not in ('litellm', 'xerj'):
         return
     root = select(base)
     parts = env.get('PATH', '').split(os.pathsep)
