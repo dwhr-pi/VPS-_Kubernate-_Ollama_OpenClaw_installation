@@ -60,9 +60,17 @@ read -r -p 'Gepruefter vollstaendiger Commit: ' DOCS_COMMIT
 bash scripts/tools/markdown_docs_server_install.sh --source-commit "$DOCS_COMMIT" --apply
 ```
 
-Das interaktive Tool-Menue bietet zunaechst diesen Plan; fuer die bewusste
-Installation ist der oben beschriebene Commit-Aufruf oder die explizite
-Installationsaktion in **Optionen -> 22** erforderlich. Uncommittete
+Das interaktive Tool-Menue oeffnet fuer Installation/Update jetzt dieselbe
+Commit-Eingabe und separate Freigabe wie **Optionen -> 22**. Es uebernimmt keinen
+Commit automatisch. Ein Abbruch liefert Exitcode 2, damit weder ein
+Installiert-Status noch eine erfolgreiche Installationsmessung entsteht.
+Die gefuehrte Einrichtung kann auch direkt aufgerufen werden:
+
+```bash
+bash scripts/tools/markdown_docs_server_install.sh --interactive
+```
+
+Direkte Skriptaufrufe ohne Argumente bleiben reine Plaene. Uncommittete
 oder noch nicht hochgeladene neue Dateien werden nicht als installierte
 GitHub-Quellen ausgegeben. Erstinstallation braucht Netzwerk, spaeteres Lesen nicht.
 Die Bash-Install/Update/Uninstall-Adapter liefern bei reinem Plan bewusst Exitcode

@@ -22,6 +22,7 @@ markdown_docs_document() {
 
 markdown_docs_action() {
   local action="$1" root="$2" commit port relative
+  local cancel_rc="${3:-0}" rc
   local python="${GAP_TOOLS_PYTHON_BIN:-python3}"
   case "$action" in
     guide | index | metrics | linux | wsl)
@@ -40,10 +41,11 @@ markdown_docs_action() {
         --inputbox 'Vollstaendigen, bewusst geprueften Commit (40 kleine Hex-Zeichen) eingeben. Er muss bereits auf GitHub stehen und den Server enthalten. Enter ohne Wert bricht ab.' 13 94)"; then
         :
       else
-        markdown_docs_dialog_result "$?"
-        return $?
+        rc=$?
+        markdown_docs_dialog_result "$rc" || return $?
+        return "$cancel_rc"
       fi
-      [[ -n "$commit" ]] || return 0
+      [[ -n "$commit" ]] || return "$cancel_rc"
       if [[ ! "$commit" =~ ^[0-9a-f]{40}$ ]]; then
         printf '%s\n' 'Ungueltiger Commit; keine Aenderung.' >&2
         return 2
@@ -52,7 +54,9 @@ markdown_docs_action() {
         --yesno "Aktion: $action\nQuellstand: $commit\n\nGitHub-Quellen herunterladen und privat pruefen/einrichten? Kein Docker, Browser-, Dienst- oder Modellstart. Updates behalten den alten Snapshot." 15 94; then
         "$python" -I -B "$root/scripts/documentation_server/lifecycle.py" "$action" --source-commit "$commit" --apply
       else
-        markdown_docs_dialog_result "$?"
+        rc=$?
+        markdown_docs_dialog_result "$rc" || return $?
+        return "$cancel_rc"
       fi
       ;;
     status | doctor)
@@ -123,5 +127,13 @@ markdown_docs_menu() {
 }
 
 if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
-  markdown_docs_menu "$@"
+  if [[ "$#" == 0 ]]; then
+    markdown_docs_menu
+  elif [[ "$#" == 2 && "$1" == --action && "$2" =~ ^(install|update)$ ]]; then
+    # A cancelled tool transaction must never become a successful install metric.
+    markdown_docs_action "$2" "$(cd "${BASH_SOURCE[0]%/*}/.." && pwd)" 2
+  else
+    printf '%s\n' 'Erlaubt: ohne Argumente oder --action install|update.' >&2
+    exit 2
+  fi
 fi

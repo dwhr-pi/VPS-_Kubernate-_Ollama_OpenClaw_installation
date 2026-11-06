@@ -62,6 +62,59 @@ class MarkdownDocsSettings(unittest.TestCase):
         output = self.shell('dialog() { return 255; }; markdown_docs_action update /fixture')
         self.assertNotIn('PYTHON:', output)
 
+    def test_tool_transaction_cancel_is_not_an_install_success(self):
+        for action in ('install', 'update'):
+            for dialog in ('dialog() { return 1; }; ',
+                           'dialog() { return 255; }; ',
+                           'dialog() { printf ""; }; ',
+                           'dialog() { case "$*" in *--inputbox*) echo ' + 'a' * 40
+                           + ' ;; *) return 1 ;; esac; }; '):
+                output = self.shell(dialog + 'markdown_docs_action ' + action + ' /fixture 2', expected=2)
+                self.assertNotIn('PYTHON:', output)
+            self.shell('dialog() { return 127; }; markdown_docs_action ' + action + ' /fixture 2', expected=127)
+            output = self.shell('dialog() { case "$*" in *--inputbox*) echo ' + 'a' * 40
+                                + ' ;; *) return 0 ;; esac; }; markdown_docs_action ' + action + ' /fixture 2')
+            self.assertIn('<--apply>', output)
+            self.assertIn('<--source-commit> <' + 'a' * 40 + '>', output)
+            self.shell('fixture_python() { return 7; }; dialog() { case "$*" in *--inputbox*) echo '
+                       + 'a' * 40 + ' ;; *) return 0 ;; esac; }; markdown_docs_action '
+                       + action + ' /fixture 2', expected=7)
+
+    def test_setup_dispatch_requests_only_docs_install_update_dialogs(self):
+        setup = (ROOT / 'setup_ultimate.sh').read_text(encoding='utf-8')
+        dispatch = re.search(r'^run_tool_script\(\) \{\n.*?^\}', setup, re.M | re.S).group()
+        for tool, action, interactive in (('Markdown_Docs_Server', 'install', True),
+                                          ('Markdown_Docs_Server', 'update', True),
+                                          ('Markdown_Docs_Server', 'status', False),
+                                          ('Markdown_Docs_Server', 'uninstall', False),
+                                          ('Other', 'install', False)):
+            code = ('declare -A TOOL_SCRIPT_NAMES=([Markdown_Docs_Server]=markdown_docs_server [Other]=other)\n'
+                    'INSTALL_DIR=/fixture\nvalidate_tool_source_policy() { return 0; }\n'
+                    'run_bash_script() { printf " <%s>" "$@"; }\n' + dispatch + '\n'
+                    'run_tool_script ' + tool + ' ' + action)
+            output = self.shell(code)
+            self.assertEqual('<--interactive>' in output, interactive)
+            if action == 'install':
+                self.assertIn('run_install_transaction.sh', output)
+            self.assertNotIn('<--apply>', output)
+
+    def test_real_wrappers_preserve_plan_and_explicit_interactive_approval(self):
+        for action in ('install', 'update'):
+            wrapper = 'scripts/tools/markdown_docs_server_' + action + '.sh'
+            preamble = 'export GAP_TOOLS_PYTHON_BIN; export -f fixture_python\n'
+            output = self.shell(preamble + 'bash ' + wrapper, expected=2)
+            self.assertIn('PYTHON:', output)
+            self.assertNotIn('<--apply>', output)
+            for approved in (True, False):
+                dialog = ('dialog() { case "$*" in *--inputbox*) echo ' + 'a' * 40
+                          + ' ;; *) return ' + ('0' if approved else '1') + ' ;; esac; };\n'
+                          'export -f dialog\n')
+                output = self.shell(preamble + dialog + 'bash ' + wrapper + ' --interactive',
+                                    expected=0 if approved else 2)
+                self.assertEqual('PYTHON:' in output, approved)
+                if approved:
+                    self.assertIn('<' + action + '> <--source-commit> <' + 'a' * 40 + '> <--apply>', output)
+
     def test_serve_needs_valid_loopback_port_and_separate_approval(self):
         for value, status in (('', 0), ('80', 2), ('65536', 2), ('1+8764', 2), ('$(printf unsafe)', 2)):
             output = self.shell('dialog() { printf "%s\\n" ' + shlex.quote(value) + '; }; markdown_docs_action serve /fixture', status)

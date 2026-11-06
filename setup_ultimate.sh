@@ -3600,6 +3600,7 @@ run_tool_script() {
   local tool_key="$1"
   local action="$2"
   local script_name="${TOOL_SCRIPT_NAMES[$tool_key]}"
+  local -a tool_args=()
 
   if [ -z "$script_name" ]; then
     echo -e "${RED}Fehler: Kein Skript-Mapping für Tool '$tool_key' gefunden.${NC}"
@@ -3610,10 +3611,14 @@ run_tool_script() {
     return 1
   fi
 
+  # Only the interactive setup opts into the documentation approval dialog.
+  if [[ "$tool_key" == Markdown_Docs_Server && "$action" =~ ^(install|update)$ ]]; then
+    tool_args+=(--interactive)
+  fi
   if [ "$action" = "install" ]; then
-    run_bash_script "$INSTALL_DIR/scripts/tools/run_install_transaction.sh" "$tool_key" "$INSTALL_DIR/scripts/tools/${script_name}_${action}.sh"
+    run_bash_script "$INSTALL_DIR/scripts/tools/run_install_transaction.sh" "$tool_key" "$INSTALL_DIR/scripts/tools/${script_name}_${action}.sh" "${tool_args[@]}"
   else
-    run_bash_script "$INSTALL_DIR/scripts/tools/${script_name}_${action}.sh"
+    run_bash_script "$INSTALL_DIR/scripts/tools/${script_name}_${action}.sh" "${tool_args[@]}"
   fi
 }
 
