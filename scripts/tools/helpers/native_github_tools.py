@@ -150,10 +150,11 @@ def preflight(outer, spec, install_build_deps=False):
             raise ValueError("Zu wenig verfuegbarer RAM: mindestens " + str(minimum) + " MiB fuer diesen Build.")
     if spec["id"] == "litellm":
         litellm_build_timeout()  # Validate before downloads, apt or source checkout.
+    if spec["id"] in ("litellm", "xerj"):
         litellm_rust_bootstrap.prepare(outer, spec, approved=install_build_deps)
     build_deps.prepare(spec, approved=install_build_deps)
     for name in ["git"] + requirements(spec):
-        if spec["id"] == "litellm" and name in ("cargo", "rustc"):
+        if spec["id"] in ("litellm", "xerj") and name in ("cargo", "rustc"):
             continue  # Direct installed toolchain verified separately, independent of PATH.
         if name == "go" and spec["recipe"].get("go_min"):
             continue  # This versioned prerequisite is checked separately below.
@@ -586,7 +587,7 @@ def main(argv=None):
     outer, prefix, marker = paths(args.tool)
     if args.dry_run or args.action == "plan":
         print(json.dumps(dict(tool=args.tool, target=str(prefix), **spec), indent=2))
-        if args.tool == 'litellm':
+        if args.tool in ('litellm', 'xerj'):
             print('Rust 1.98.0: vorhandene Basis bevorzugt; privater offizieller Bootstrap nur nach Zustimmung/--install-build-deps, 2048 MiB Zusatzpuffer. Kein Download in diesem Plan.')
         if args.quarantine_incomplete:
             print("Caddy-Reparaturplan: unmarkierten Altordner nach Vorpruefung im Tool-Verzeichnis erhalten/umbenennen; danach frischer GitHub-Build. Kein Platzgewinn.")

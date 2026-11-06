@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+### 2026-11-06: Cargo/Rust-Basis ohne Bootstrap-Zirkelschluss
+
+- Separate opt-in Einrichtung im Menue der 62 Werkzeugquellen und per
+  `scripts/install_rust_build_tools.sh`; Plan/Status/Doctor bleiben getrennt.
+- Vorhandenen privaten Compiler-Bootstrap wiederverwendet: festes Rust/Cargo,
+  SHA256-geprueftes rustup-init, keine System-/PATH-/Default-Aenderung.
+- XERJ und LiteLLM verwenden die gepruefte gemeinsame Basis; XERJ kann fehlende
+  Compiler auch nach ausdruecklicher Einzelfreigabe privat bereitstellen.
+- Keine Builds, Dienste oder Downloads durch diese Aenderung ausgefuehrt.
+  Ausnahme, Daten-Erhalt und Nachweisgrenzen: [Rust-Build-Basis](docs/BUILD_RUST_TOOLCHAIN.md).
+
 ### 2026-11-03: Messwerte ohne Shell-Auswertung
 
 - Messwerte-Loader ohne `source`, Editor ohne vorhersehbaren `/tmp`-Ausgabepfad.

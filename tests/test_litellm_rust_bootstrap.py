@@ -45,11 +45,13 @@ class PrivateRustTests(unittest.TestCase):
         return ''
 
     def test_no_consent_no_download_or_mutation(self):
-        with patch.object(bootstrap, 'download') as download, patch.object(bootstrap.common, 'run') as run:
-            with self.assertRaisesRegex(ValueError, 'nicht freigegeben'):
-                bootstrap.prepare(self.base, self.spec)
-        download.assert_not_called()
-        run.assert_not_called()
+        for key in bootstrap.SUPPORTED:
+            spec = {**self.spec, 'id': key}
+            with self.subTest(tool=key), patch.object(bootstrap, 'download') as download, patch.object(bootstrap.common, 'run') as run:
+                with self.assertRaisesRegex(ValueError, 'nicht freigegeben'):
+                    bootstrap.prepare(self.base, spec)
+            download.assert_not_called()
+            run.assert_not_called()
         self.assertEqual(list(self.base.iterdir()), [])
 
     def test_explicit_invalid_path_never_bootstraps(self):

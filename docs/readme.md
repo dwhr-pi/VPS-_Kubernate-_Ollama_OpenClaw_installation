@@ -20,6 +20,9 @@ Kurze Einstiegsseiten sind keine vollstaendige Lifecycle- oder Runtime-Abnahme.
 
 Optional: [XERJ-Code-/Dokumentsuche](tools/xerj.md), gepinnter nativer Rust-Build.
 Lokaler Index und oeffentlicher Corpus Hub bleiben getrennt; kein Autostart oder Upload.
+[Cargo/Rust-Build-Basis](BUILD_RUST_TOOLCHAIN.md): getrennte Erstinstallation im
+Menue **62 Quellen verwalten**, ohne Docker, sudo oder globale PATH-Aenderung.
+Die bestehende offizielle Compiler-Bootstrap-Ausnahme bleibt ausdruecklich dokumentiert.
 
 [Lokale Audio-Chain](tools/local-audio-chain.md): OpenUtau, DiffSinger, RVC/Seed-VC,
 UVR5 und privater FFmpeg-Build. Native Quellen als Standard, Docker gesondert
