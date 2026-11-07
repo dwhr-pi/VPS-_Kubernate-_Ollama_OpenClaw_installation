@@ -2,6 +2,48 @@
 
 ## Unreleased
 
+<<<<<<< Updated upstream
+=======
+### 2026-11-07: begrenzter Infrastruktur-Teilsatz
+
+- Ollama-Inventarfehler in nativen, Helm- und Operator-Alertregeln sichtbar;
+  Metrics-Authentifizierung fuer beide nativen Gateway-Vorlagen explizit gesetzt.
+- Read-only Audio-MCP per festem stdio-Launcher und ausdruecklicher Freigabe;
+  keine Remote-, Shell- oder Filesystem-Adapter automatisch aktiviert.
+- Modell-Inventar-GET mit drei begrenzten Versuchen und Backoff; Inferenz-POSTs
+  und Cloud-Fallback unveraendert ohne automatische Wiederholung.
+- Review, Breaking Change bei Metrics-Auth, Rollback und offene Abnahmen:
+  [Infrastrukturreview](docs/INFRASTRUCTURE_REVIEW_2026-11-07.md).
+
+### 2026-11-06: Sichtbarer und begrenzter XERJ-Build
+
+- Cargo-Build mit laufender Ausgabe, PID und 30s-Status ueber den vorhandenen
+  Streaming-Runner; Timeout beendet unter Linux die Build-Prozessgruppe.
+- Zwei Stunden bleiben Standard. `XERJ_BUILD_TIMEOUT_SECONDS` erlaubt bewusst
+  300 bis 21600 Sekunden; Validierung vor Downloads, keine automatischen Retries.
+- Kein echter XERJ-Build ausgefuehrt; Timeout-/Fehler- und Buildvertraege durch
+  Offline-Fixtures geprueft. Quell-Pin, Lockfile, Features und Speicherreserve bleiben.
+
+### 2026-11-06: Cargo/Rust-Basis ohne Bootstrap-Zirkelschluss
+
+- Separate opt-in Einrichtung im Menue der 62 Werkzeugquellen und per
+  `scripts/install_rust_build_tools.sh`; Plan/Status/Doctor bleiben getrennt.
+- Vorhandenen privaten Compiler-Bootstrap wiederverwendet: festes Rust/Cargo,
+  SHA256-geprueftes rustup-init, keine System-/PATH-/Default-Aenderung.
+- XERJ und LiteLLM verwenden die gepruefte gemeinsame Basis; XERJ kann fehlende
+  Compiler auch nach ausdruecklicher Einzelfreigabe privat bereitstellen.
+- Keine Builds, Dienste oder Downloads durch diese Aenderung ausgefuehrt.
+  Ausnahme, Daten-Erhalt und Nachweisgrenzen: [Rust-Build-Basis](docs/BUILD_RUST_TOOLCHAIN.md).
+
+### 2026-11-03: Messwerte ohne Shell-Auswertung
+
+- Messwerte-Loader ohne `source`, Editor ohne vorhersehbaren `/tmp`-Ausgabepfad.
+- Literaler Parser, atomare 0600-Publikation, persistentes Lock und SHA-Vergleich fuer parallele Edits.
+- Beide bekannten Messwerte-Konfigurationsschreiber auf denselben gesperrten Merge-Pfad umgestellt.
+- Keine automatische Nutzdatenmigration oder Rechte-Reparatur. Shell-Ausdruecke werden abgelehnt;
+  POSIX-/UI-/ARM-Abnahme bleibt separat. Tests und Rollback: `docs/P0_METRICS_DATA.md`.
+
+>>>>>>> Stashed changes
 ### 2026-11-03: Deklarative Einstiegspfade und explizites Staging
 
 - `deploy/kustomize` referenziert vorhandene Bases/Overlays ohne konkurrierende Workload-Kopien.

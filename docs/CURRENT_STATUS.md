@@ -1,5 +1,15 @@
 # Aktueller Projektstatus
 
+## Infrastruktur-Teilsatz vom 07.11.2026
+
+[Review und drei Diffs](INFRASTRUCTURE_REVIEW_2026-11-07.md): konsistente
+Ollama-Inventar-Alerts, explizite Metrics-Auth auch fuer native Gateway-Vorlagen,
+ein freigabegesteuerter read-only Audio-MCP-Launcher sowie begrenzte Retries
+ausschliesslich fuer die lokale Modell-Inventar-Vorpruefung. Keine Inferenz-POST-
+Retries, Cloud-Fallbacks, neuen Hintergrunddienste oder Docker-Installation.
+Live-Scrape, Alarmzustellung, Client-Handshake, GPU und PVC-Restore bleiben offen;
+kein allgemeines Sandbox-/Produktionsversprechen oder Registry-Readiness-Upgrade.
+
 ## Deklarative Einstiegspfade vom 03.11.2026
 
 [GitOps-Pfad](GITOPS_DEPLOYMENT_PATH.md): additive Kustomize-Einstiege, private DNS01-/VPN-
