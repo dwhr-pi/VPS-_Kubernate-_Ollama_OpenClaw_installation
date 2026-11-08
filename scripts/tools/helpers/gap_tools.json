@@ -1,4 +1,7 @@
 {
+  "openutau": {"name":"OpenUtau","repo":"openutau/OpenUtau","pin":"f920e2423113f9a936ec77eebf1f192e02a7ea6a","mode":"source","reserve_mb":2048},
+  "diffsinger": {"name":"DiffSinger","repo":"openvpi/DiffSinger","pin":"cb7869b8733a3882679c328994ee162845092cff","mode":"source","reserve_mb":2048},
+  "seed_vc": {"name":"Seed_VC","repo":"Plachtaa/seed-vc","pin":"51383efd921027683c89e5348211d93ff12ac2a8","mode":"source","reserve_mb":2048},
   "gemini_desktop_bwendell_source": {"name":"Gemini_Desktop_Bwendell_Source","repo":"bwendell/gemini-desktop","pin":"6dae4a7e88fba61a4e17aa3a58902c7a2c4f779e","mode":"source","reserve_mb":2048},
   "gemini_desktop_dortanes_source": {"name":"Gemini_Desktop_Dortanes_Source","repo":"dortanes/gemini-desktop","pin":"2dedef7d6e0665c9b95a137255df9477152bcf8f","mode":"source","reserve_mb":2048},
   "openapi_servers": {

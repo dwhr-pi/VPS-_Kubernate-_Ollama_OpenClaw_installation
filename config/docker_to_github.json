@@ -1942,6 +1942,54 @@
       "blocked_reason": null
     },
     {
+      "id": "xerj",
+      "name": "XERJ",
+      "tool_key": "XERJ",
+      "repo": "xerj-org/xerj",
+      "previous_images": [],
+      "previous_installer": null,
+      "recipe": {
+        "repo": "xerj-org/xerj",
+        "pin": "83c9f0d123bac010a25ca2cf02ff093b08ee68ce",
+        "kind": "rust",
+        "module_dir": "engine",
+        "cargo_package": "xerj-server",
+        "no_default_features": true,
+        "binary": "xerj",
+        "probe": ["--version"],
+        "disk_mb": 16384,
+        "ram_mb": 4096,
+        "tools": ["cargo", "rustc", "cc", "c++", "make", "pkg-config", "perl"],
+        "note": "Optionaler nativer Rust-Release-Build mit engine/Cargo.lock; ohne neuronale Default-Features. Nur --version-Probe. Keine Server-, Modell-, Autoindex-, MCP-, Feedback- oder Corpus-Hub-Aktion; Rust/Build-Abhaengigkeiten vorher separat bereitstellen."
+      },
+      "blocked_reason": null
+    },
+    {
+      "id": "ffmpeg",
+      "name": "FFmpeg",
+      "tool_key": "FFmpeg",
+      "repo": "FFmpeg/FFmpeg",
+      "previous_images": [],
+      "previous_installer": "scripts/tools/ffmpeg_install.sh",
+      "recipe": {
+        "repo": "FFmpeg/FFmpeg",
+        "pin": "8105ae2afe2c4182a4ad44b1b9c45a3146f0c0b1",
+        "kind": "pipeline",
+        "disk_mb": 8192,
+        "ram_mb": 2048,
+        "tools": ["bash", "cc", "make", "pkg-config"],
+        "steps": [
+          {"args": ["bash", "./configure", "--prefix={prefix}/app", "--disable-debug", "--disable-doc", "--disable-autodetect", "--disable-network", "--disable-shared", "--enable-static", "--disable-x86asm"]},
+          {"args": ["make", "-j2"]},
+          {"args": ["make", "install"]}
+        ],
+        "artifacts": ["app/bin/ffmpeg", "app/bin/ffprobe"],
+        "probe": ["-version"],
+        "note": "Privater gepinnter CPU-Build fuer WAV/FLAC, Audiofilter und Loudness-Analyse. Kein apt-FFmpeg, sudo, globaler Symlink, Netzwerkprotokoll, NVENC oder Autodetect externer Codecs. Alte /opt-/PATH-Installationen bleiben erhalten."
+      },
+      "blocked_reason": null
+    },
+    {
       "id": "pyairbyte",
       "name": "PyAirbyte",
       "tool_key": "PyAirbyte",

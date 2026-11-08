@@ -2474,6 +2474,7 @@
     },
     {
       "id": "ollama",
+      "doc": "docs/tools/registry/ollama.md",
       "name": "Ollama",
       "category": "runtime",
       "install_script": "scripts/tools/ollama_install.sh",
@@ -2487,6 +2488,7 @@
     },
     {
       "id": "openclaw",
+      "doc": "docs/tools/registry/openclaw.md",
       "name": "OpenClaw",
       "category": "agent",
       "install_script": "scripts/tools/openclaw_install.sh",
@@ -2498,6 +2500,7 @@
     },
     {
       "id": "ruflo",
+      "doc": "docs/tools/ruflo.md",
       "name": "Ruflo",
       "category": "agent",
       "install_script": "scripts/tools/ruflo_install.sh",
@@ -2581,6 +2584,7 @@
     },
     {
       "id": "chromadb",
+      "doc": "docs/tools/registry/chromadb.md",
       "name": "ChromaDB",
       "category": "rag",
       "install_script": "scripts/tools/chromadb_install.sh",
@@ -2593,6 +2597,7 @@
     },
     {
       "id": "lightrag",
+      "doc": "docs/tools/registry/lightrag.md",
       "name": "LightRAG",
       "category": "rag",
       "install_script": "scripts/tools/lightrag_install.sh",
@@ -2628,6 +2633,7 @@
     },
     {
       "id": "openlit",
+      "doc": "docs/tools/registry/openlit.md",
       "name": "OpenLIT",
       "category": "observability",
       "install_script": "scripts/tools/openlit_install.sh",
@@ -2757,6 +2763,7 @@
     },
     {
       "id": "mail_utils_msmtp",
+      "doc": "docs/tools/registry/mail_utils_msmtp.md",
       "name": "Mail_Utils_MSMTP",
       "category": "monitoring",
       "install_script": "scripts/tools/mail_utils_msmtp_install.sh",
@@ -2768,6 +2775,7 @@
     },
     {
       "id": "trivy",
+      "doc": "docs/tools/registry/trivy.md",
       "name": "Trivy",
       "category": "security",
       "install_script": "scripts/tools/trivy_install.sh",
@@ -2780,6 +2788,7 @@
     },
     {
       "id": "gitleaks",
+      "doc": "docs/tools/registry/gitleaks.md",
       "name": "Gitleaks",
       "category": "security",
       "install_script": "scripts/tools/gitleaks_install.sh",
@@ -2792,6 +2801,7 @@
     },
     {
       "id": "semgrep",
+      "doc": "docs/tools/registry/semgrep.md",
       "name": "Semgrep",
       "category": "security",
       "install_script": "scripts/tools/semgrep_install.sh",
@@ -2826,6 +2836,7 @@
     },
     {
       "id": "ufw",
+      "doc": "docs/tools/registry/ufw.md",
       "name": "UFW",
       "category": "security",
       "install_script": "scripts/tools/ufw_install.sh",
@@ -2838,6 +2849,7 @@
     },
     {
       "id": "tailscale",
+      "doc": "docs/tools/registry/tailscale.md",
       "name": "Tailscale",
       "category": "security",
       "install_script": "scripts/tools/tailscale_install.sh",
@@ -2869,6 +2881,7 @@
     },
     {
       "id": "authentik",
+      "doc": "docs/tools/registry/authentik.md",
       "name": "Authentik",
       "category": "security",
       "install_script": "scripts/tools/authentik_install.sh",
@@ -2883,6 +2896,7 @@
     },
     {
       "id": "authelia",
+      "doc": "docs/tools/registry/authelia.md",
       "name": "Authelia",
       "category": "security",
       "install_script": "scripts/tools/authelia_install.sh",
@@ -2968,6 +2982,7 @@
     },
     {
       "id": "esphome",
+      "doc": "docs/tools/registry/esphome.md",
       "name": "ESPHome",
       "category": "automation",
       "install_script": "scripts/tools/esphome_install.sh",
@@ -3049,6 +3064,7 @@
     },
     {
       "id": "docling",
+      "doc": "docs/tools/registry/docling.md",
       "name": "Docling",
       "category": "documents",
       "install_script": "scripts/tools/docling_install.sh",
@@ -3061,6 +3077,7 @@
     },
     {
       "id": "pandoc",
+      "doc": "docs/tools/registry/pandoc.md",
       "name": "Pandoc",
       "category": "documents",
       "install_script": "scripts/tools/pandoc_install.sh",
@@ -3073,6 +3090,7 @@
     },
     {
       "id": "jupyterlab",
+      "doc": "docs/tools/registry/jupyterlab.md",
       "name": "JupyterLab",
       "category": "data",
       "install_script": "scripts/tools/jupyterlab_install.sh",
@@ -3087,6 +3105,7 @@
     },
     {
       "id": "duckdb",
+      "doc": "docs/tools/registry/duckdb.md",
       "name": "DuckDB",
       "category": "data",
       "install_script": "scripts/tools/duckdb_install.sh",
@@ -3174,6 +3193,7 @@
     },
     {
       "id": "restic",
+      "doc": "docs/tools/registry/restic.md",
       "name": "Restic",
       "category": "backup",
       "install_script": "scripts/tools/restic_install.sh",
@@ -3186,6 +3206,7 @@
     },
     {
       "id": "borgbackup",
+      "doc": "docs/tools/registry/borgbackup.md",
       "name": "BorgBackup",
       "category": "backup",
       "install_script": "scripts/tools/borgbackup_install.sh",
@@ -3198,6 +3219,7 @@
     },
     {
       "id": "rclone",
+      "doc": "docs/tools/registry/rclone.md",
       "name": "Rclone",
       "category": "backup",
       "install_script": "scripts/tools/rclone_install.sh",
@@ -3210,6 +3232,7 @@
     },
     {
       "id": "comfyui",
+      "doc": "docs/tools/registry/comfyui.md",
       "name": "ComfyUI",
       "category": "media",
       "install_script": "scripts/tools/comfyui_install.sh",
@@ -3241,6 +3264,7 @@
     },
     {
       "id": "gfpgan",
+      "doc": "docs/tools/registry/gfpgan.md",
       "name": "GFPGAN",
       "category": "media",
       "install_script": "scripts/tools/gfpgan_install.sh",
@@ -3253,6 +3277,7 @@
     },
     {
       "id": "realesrgan",
+      "doc": "docs/tools/registry/realesrgan.md",
       "name": "RealESRGAN",
       "category": "media",
       "install_script": "scripts/tools/realesrgan_install.sh",
@@ -3265,6 +3290,7 @@
     },
     {
       "id": "rembg",
+      "doc": "docs/tools/registry/rembg.md",
       "name": "Rembg",
       "category": "media",
       "install_script": "scripts/tools/rembg_install.sh",
@@ -3277,6 +3303,7 @@
     },
     {
       "id": "whisper_cpp",
+      "doc": "docs/tools/registry/whisper_cpp.md",
       "name": "Whisper.cpp",
       "category": "media",
       "install_script": "scripts/tools/whisper_cpp_install.sh",
@@ -3288,6 +3315,7 @@
     },
     {
       "id": "faster_whisper",
+      "doc": "docs/tools/registry/faster_whisper.md",
       "name": "faster-whisper",
       "category": "media",
       "install_script": "scripts/tools/faster_whisper_install.sh",
@@ -3300,19 +3328,32 @@
     },
     {
       "id": "ffmpeg",
+      "doc": "docs/tools/local-audio-chain.md",
       "name": "FFmpeg",
       "category": "media",
       "install_script": "scripts/tools/ffmpeg_install.sh",
       "uninstall_script": "scripts/tools/ffmpeg_uninstall.sh",
       "ports": [],
-      "check_type": "command",
-      "check_value": "ffmpeg",
+      "check_type": "path",
+      "check_value": "~/.openclaw_ultimate_user_data/tools/ffmpeg/native-github/build-ready.json",
       "safety": "Audio-/Video-Postprocessing lokal; grosse Outputs und Rechte an Medienmaterial beachten.",
       "source": "https://github.com/FFmpeg/FFmpeg",
-      "security_note": " Voice-Studio-Nutzung: Rechte, Einwilligung und Kennzeichnung beachten."
+      "security_note": " Voice-Studio-Nutzung: Rechte, Einwilligung und Kennzeichnung beachten.",
+      "auto_install": false,
+      "readiness": "planned",
+      "updated": "2026-11-05",
+      "source_commit": "8105ae2afe2c4182a4ad44b1b9c45a3146f0c0b1",
+      "source_verified": true,
+      "status": "experimental",
+      "install_mode": "github-native-build",
+      "description": "Gepinnter privater FFmpeg-CPU-Build ohne Netzwerkprotokolle, globale Symlinks oder Dienststart. Alte /opt-Installation bleibt erhalten.",
+      "update_script": "scripts/tools/ffmpeg_update.sh",
+      "doctor_script": "scripts/tools/ffmpeg_doctor.sh",
+      "status_script": "scripts/tools/ffmpeg_status.sh"
     },
     {
       "id": "piper",
+      "doc": "docs/tools/registry/piper.md",
       "name": "Piper",
       "category": "media",
       "install_script": "scripts/tools/piper_install.sh",
@@ -3326,6 +3367,7 @@
     },
     {
       "id": "coqui_tts",
+      "doc": "docs/tools/registry/coqui_tts.md",
       "name": "Coqui TTS",
       "category": "Voice Studio / TTS",
       "install_script": "scripts/tools/coqui_tts_install.sh",
@@ -3361,6 +3403,7 @@
     },
     {
       "id": "blender",
+      "doc": "docs/tools/registry/blender.md",
       "name": "Blender",
       "category": "media",
       "install_script": "scripts/tools/blender_install.sh",
@@ -3373,6 +3416,7 @@
     },
     {
       "id": "github_cli",
+      "doc": "docs/tools/registry/github_cli.md",
       "name": "GitHub CLI",
       "category": "coding",
       "install_script": "scripts/tools/github_cli_install.sh",
@@ -3384,6 +3428,7 @@
     },
     {
       "id": "act",
+      "doc": "docs/tools/registry/act.md",
       "name": "act",
       "category": "coding",
       "install_script": "scripts/tools/act_install.sh",
@@ -3395,6 +3440,7 @@
     },
     {
       "id": "pre_commit",
+      "doc": "docs/tools/registry/pre_commit.md",
       "name": "pre-commit",
       "category": "coding",
       "install_script": "scripts/tools/pre_commit_install.sh",
@@ -3406,6 +3452,7 @@
     },
     {
       "id": "release_please",
+      "doc": "docs/tools/registry/release_please.md",
       "name": "release-please",
       "category": "coding",
       "install_script": "scripts/tools/release_please_install.sh",
@@ -3417,6 +3464,7 @@
     },
     {
       "id": "changelog_generator",
+      "doc": "docs/tools/registry/changelog_generator.md",
       "name": "Changelog Generator",
       "category": "coding",
       "install_script": "scripts/tools/changelog_generator_install.sh",
@@ -3519,6 +3567,7 @@
     },
     {
       "id": "playwright",
+      "doc": "docs/tools/registry/playwright.md",
       "name": "Playwright",
       "category": "automation",
       "install_script": "scripts/tools/playwright_install.sh",
@@ -3543,6 +3592,7 @@
     },
     {
       "id": "flowise",
+      "doc": "docs/tools/registry/flowise.md",
       "name": "Flowise",
       "category": "automation",
       "install_script": "scripts/tools/flowise_install.sh",
@@ -3558,6 +3608,7 @@
     },
     {
       "id": "langflow",
+      "doc": "docs/tools/registry/langflow.md",
       "name": "LangFlow",
       "category": "automation",
       "install_script": "scripts/tools/langflow_install.sh",
@@ -3569,6 +3620,7 @@
     },
     {
       "id": "n8n",
+      "doc": "docs/tools/registry/n8n.md",
       "name": "n8n",
       "category": "automation",
       "install_script": "scripts/tools/n8n_install.sh",
@@ -3583,6 +3635,7 @@
     },
     {
       "id": "activepieces",
+      "doc": "docs/tools/registry/activepieces.md",
       "name": "Activepieces",
       "category": "automation",
       "install_script": "scripts/tools/activepieces_install.sh",
@@ -3739,6 +3792,7 @@
     },
     {
       "id": "llamaindex",
+      "doc": "docs/tools/registry/llamaindex.md",
       "name": "LlamaIndex",
       "category": "rag",
       "install_script": "scripts/tools/llamaindex_install.sh",
@@ -3751,6 +3805,7 @@
     },
     {
       "id": "unstructured",
+      "doc": "docs/tools/registry/unstructured.md",
       "name": "Unstructured",
       "category": "rag",
       "install_script": "scripts/tools/unstructured_install.sh",
@@ -3763,6 +3818,7 @@
     },
     {
       "id": "marker",
+      "doc": "docs/tools/registry/marker.md",
       "name": "Marker",
       "category": "rag",
       "install_script": "scripts/tools/marker_install.sh",
@@ -3830,6 +3886,7 @@
     },
     {
       "id": "grype",
+      "doc": "docs/tools/registry/grype.md",
       "name": "Grype",
       "category": "security",
       "install_script": "scripts/tools/grype_install.sh",
@@ -3845,6 +3902,7 @@
     },
     {
       "id": "fail2ban",
+      "doc": "docs/tools/registry/fail2ban.md",
       "name": "Fail2Ban",
       "category": "security",
       "install_script": "scripts/tools/fail2ban_install.sh",
@@ -3857,6 +3915,7 @@
     },
     {
       "id": "opentofu",
+      "doc": "docs/tools/registry/opentofu.md",
       "name": "OpenTofu",
       "category": "devops",
       "install_script": "scripts/tools/opentofu_install.sh",
@@ -3868,6 +3927,7 @@
     },
     {
       "id": "ansible",
+      "doc": "docs/tools/registry/ansible.md",
       "name": "Ansible",
       "category": "devops",
       "install_script": "scripts/tools/ansible_install.sh",
@@ -3945,6 +4005,7 @@
     },
     {
       "id": "clamav",
+      "doc": "docs/tools/registry/clamav.md",
       "name": "ClamAV",
       "category": "Mail / Security",
       "install_script": "scripts/tools/planned_tool_stub_install.sh",
@@ -3966,6 +4027,7 @@
     },
     {
       "id": "yara",
+      "doc": "docs/tools/registry/yara.md",
       "name": "YARA",
       "category": "security",
       "install_script": "scripts/tools/yara_install.sh",
@@ -4001,6 +4063,7 @@
     },
     {
       "id": "firecrawl",
+      "doc": "docs/tools/registry/firecrawl.md",
       "name": "Firecrawl Connector",
       "category": "search",
       "install_script": "scripts/tools/firecrawl_install.sh",
@@ -4012,6 +4075,7 @@
     },
     {
       "id": "haystack",
+      "doc": "docs/tools/registry/haystack.md",
       "name": "Haystack",
       "category": "rag",
       "install_script": "scripts/tools/haystack_install.sh",
@@ -4071,6 +4135,7 @@
     },
     {
       "id": "postgres",
+      "doc": "docs/tools/registry/postgres.md",
       "name": "PostgreSQL",
       "category": "data",
       "install_script": "scripts/tools/postgres_install.sh",
@@ -4084,6 +4149,7 @@
     },
     {
       "id": "redis",
+      "doc": "docs/tools/registry/redis.md",
       "name": "Redis",
       "category": "data",
       "install_script": "scripts/tools/redis_install.sh",
@@ -4098,6 +4164,7 @@
     },
     {
       "id": "huginn",
+      "doc": "docs/tools/registry/huginn.md",
       "name": "Huginn",
       "category": "automation",
       "install_script": "scripts/tools/huginn_install.sh",
@@ -4168,6 +4235,7 @@
     },
     {
       "id": "tesseract",
+      "doc": "docs/tools/registry/tesseract.md",
       "name": "Tesseract OCR",
       "category": "document",
       "install_script": "scripts/tools/tesseract_install.sh",
@@ -4180,6 +4248,7 @@
     },
     {
       "id": "syncthing",
+      "doc": "docs/tools/registry/syncthing.md",
       "name": "Syncthing",
       "category": "storage",
       "install_script": "scripts/tools/syncthing_install.sh",
@@ -4196,6 +4265,7 @@
     },
     {
       "id": "pytest",
+      "doc": "docs/tools/registry/pytest.md",
       "name": "pytest",
       "category": "testing",
       "install_script": "scripts/tools/pytest_install.sh",
@@ -4207,6 +4277,7 @@
     },
     {
       "id": "shellcheck",
+      "doc": "docs/tools/registry/shellcheck.md",
       "name": "ShellCheck",
       "category": "testing",
       "install_script": "scripts/tools/shellcheck_install.sh",
@@ -4218,6 +4289,7 @@
     },
     {
       "id": "shfmt",
+      "doc": "docs/tools/registry/shfmt.md",
       "name": "shfmt",
       "category": "testing",
       "install_script": "scripts/tools/shfmt_install.sh",
@@ -4229,6 +4301,7 @@
     },
     {
       "id": "deepeval",
+      "doc": "docs/tools/registry/deepeval.md",
       "name": "DeepEval",
       "category": "llmops",
       "install_script": "scripts/tools/deepeval_install.sh",
@@ -4240,6 +4313,7 @@
     },
     {
       "id": "pihole",
+      "doc": "docs/tools/registry/pihole.md",
       "name": "Pi-hole",
       "category": "network",
       "install_script": "scripts/tools/pihole_install.sh",
@@ -4254,6 +4328,7 @@
     },
     {
       "id": "adguard_home",
+      "doc": "docs/tools/registry/adguard_home.md",
       "name": "AdGuard Home",
       "category": "network",
       "install_script": "scripts/tools/adguard_home_install.sh",
@@ -4268,6 +4343,7 @@
     },
     {
       "id": "trafilatura",
+      "doc": "docs/tools/registry/trafilatura.md",
       "name": "trafilatura",
       "category": "search",
       "install_script": "scripts/tools/trafilatura_install.sh",
@@ -4279,6 +4355,7 @@
     },
     {
       "id": "reuse",
+      "doc": "docs/tools/registry/reuse.md",
       "name": "REUSE",
       "category": "compliance",
       "install_script": "scripts/tools/reuse_install.sh",
@@ -4290,6 +4367,7 @@
     },
     {
       "id": "scancode_toolkit",
+      "doc": "docs/tools/registry/scancode_toolkit.md",
       "name": "ScanCode Toolkit",
       "category": "compliance",
       "install_script": "scripts/tools/scancode_toolkit_install.sh",
@@ -4301,6 +4379,7 @@
     },
     {
       "id": "gbox",
+      "doc": "docs/tools/gbox.md",
       "name": "GBOX",
       "category": "automation",
       "install_script": "scripts/tools/gbox_install.sh",
@@ -4312,6 +4391,7 @@
     },
     {
       "id": "ai_content_multiplier",
+      "doc": "docs/tools/registry/ai_content_multiplier.md",
       "name": "AI-ContentMultiplier",
       "category": "workflow",
       "source": "https://github.com/dwhr-pi/content-multiplier.git",
@@ -4324,6 +4404,7 @@
     },
     {
       "id": "websitefactory",
+      "doc": "docs/tools/websitefactory.md",
       "name": "WebsiteFactory / WebBuild-Agent",
       "category": "workflow",
       "source": "local-tool + https://github.com/withastro/astro",
@@ -4338,6 +4419,7 @@
     },
     {
       "id": "stalwart_mail",
+      "doc": "docs/tools/registry/stalwart_mail.md",
       "name": "Stalwart Mail",
       "category": "mail",
       "source": "https://github.com/stalwartlabs/stalwart",
@@ -4358,6 +4440,7 @@
     },
     {
       "id": "queue_manager",
+      "doc": "docs/tools/registry/queue_manager.md",
       "name": "Queue Manager",
       "category": "workflow",
       "source": "https://github.com/rq/rq",
@@ -4372,6 +4455,7 @@
     },
     {
       "id": "tasktiger",
+      "doc": "docs/tools/registry/tasktiger.md",
       "name": "TaskTiger",
       "category": "queue",
       "source": "https://github.com/closeio/tasktiger",
@@ -4386,6 +4470,7 @@
     },
     {
       "id": "rq",
+      "doc": "docs/tools/registry/rq.md",
       "name": "RQ",
       "category": "queue",
       "source": "https://github.com/rq/rq",
@@ -4400,6 +4485,7 @@
     },
     {
       "id": "celery",
+      "doc": "docs/tools/registry/celery.md",
       "name": "Celery",
       "category": "queue",
       "source": "https://github.com/celery/celery",
@@ -4414,6 +4500,7 @@
     },
     {
       "id": "dramatiq",
+      "doc": "docs/tools/registry/dramatiq.md",
       "name": "Dramatiq",
       "category": "queue",
       "source": "https://github.com/Bogdanp/dramatiq",
@@ -4428,6 +4515,7 @@
     },
     {
       "id": "bullmq",
+      "doc": "docs/tools/registry/bullmq.md",
       "name": "BullMQ",
       "category": "queue",
       "source": "https://github.com/taskforcesh/bullmq",
@@ -4442,6 +4530,7 @@
     },
     {
       "id": "temporal",
+      "doc": "docs/tools/registry/temporal.md",
       "name": "Temporal",
       "category": "queue",
       "source": "https://github.com/temporalio/temporal",
@@ -4456,6 +4545,7 @@
     },
     {
       "id": "argo_workflows",
+      "doc": "docs/tools/registry/argo_workflows.md",
       "name": "Argo Workflows",
       "category": "queue",
       "source": "https://github.com/argoproj/argo-workflows",
@@ -4470,6 +4560,7 @@
     },
     {
       "id": "guardrails_ai",
+      "doc": "docs/tools/registry/guardrails_ai.md",
       "name": "Guardrails AI",
       "category": "llmops",
       "source": "https://github.com/guardrails-ai/guardrails",
@@ -4503,6 +4594,7 @@
     },
     {
       "id": "swe_agent",
+      "doc": "docs/tools/registry/swe_agent.md",
       "name": "SWE-agent",
       "category": "coding",
       "source": "https://github.com/SWE-agent/SWE-agent",
@@ -4517,6 +4609,7 @@
     },
     {
       "id": "cosign",
+      "doc": "docs/tools/registry/cosign.md",
       "name": "Cosign",
       "category": "security",
       "source": "https://github.com/sigstore/cosign",
@@ -4531,6 +4624,7 @@
     },
     {
       "id": "sops",
+      "doc": "docs/tools/registry/sops.md",
       "name": "SOPS",
       "category": "security",
       "source": "https://github.com/getsops/sops",
@@ -4545,6 +4639,7 @@
     },
     {
       "id": "age",
+      "doc": "docs/tools/registry/age.md",
       "name": "age",
       "category": "security",
       "source": "https://github.com/FiloSottile/age",
@@ -4559,6 +4654,7 @@
     },
     {
       "id": "vaultwarden",
+      "doc": "docs/tools/registry/vaultwarden.md",
       "name": "Vaultwarden",
       "category": "security",
       "source": "https://github.com/dani-garcia/vaultwarden",
@@ -4573,6 +4669,7 @@
     },
     {
       "id": "suricata",
+      "doc": "docs/tools/registry/suricata.md",
       "name": "Suricata",
       "category": "security",
       "source": "https://github.com/OISF/suricata",
@@ -4587,6 +4684,7 @@
     },
     {
       "id": "wazuh",
+      "doc": "docs/tools/registry/wazuh.md",
       "name": "Wazuh",
       "category": "security",
       "source": "https://github.com/wazuh/wazuh",
@@ -4601,6 +4699,7 @@
     },
     {
       "id": "headscale",
+      "doc": "docs/tools/registry/headscale.md",
       "name": "Headscale",
       "category": "network",
       "source": "https://github.com/juanfont/headscale",
@@ -4615,6 +4714,7 @@
     },
     {
       "id": "headplane",
+      "doc": "docs/tools/registry/headplane.md",
       "name": "Headplane",
       "category": "network",
       "source": "https://github.com/tale/headplane",
@@ -4629,6 +4729,7 @@
     },
     {
       "id": "wireguard",
+      "doc": "docs/tools/registry/wireguard.md",
       "name": "WireGuard",
       "category": "network",
       "source": "https://git.zx2c4.com/wireguard-tools",
@@ -4643,6 +4744,7 @@
     },
     {
       "id": "frp",
+      "doc": "docs/tools/registry/frp.md",
       "name": "frp",
       "category": "network",
       "source": "https://github.com/fatedier/frp",
@@ -4657,6 +4759,7 @@
     },
     {
       "id": "nginx_proxy_manager",
+      "doc": "docs/tools/registry/nginx_proxy_manager.md",
       "name": "Nginx Proxy Manager",
       "category": "network",
       "source": "https://github.com/NginxProxyManager/nginx-proxy-manager",
@@ -4714,6 +4817,7 @@
     },
     {
       "id": "ddclient_he",
+      "doc": "docs/tools/registry/ddclient_he.md",
       "name": "ddclient HE",
       "category": "network",
       "source": "https://github.com/ddclient/ddclient",
@@ -4728,6 +4832,7 @@
     },
     {
       "id": "acme_sh",
+      "doc": "docs/tools/registry/acme_sh.md",
       "name": "acme.sh",
       "category": "network",
       "source": "https://github.com/acmesh-official/acme.sh",
@@ -4742,6 +4847,7 @@
     },
     {
       "id": "rspamd",
+      "doc": "docs/tools/registry/rspamd.md",
       "name": "Rspamd",
       "category": "mail",
       "source": "https://github.com/rspamd/rspamd",
@@ -4756,6 +4862,7 @@
     },
     {
       "id": "roundcube",
+      "doc": "docs/tools/registry/roundcube.md",
       "name": "Roundcube",
       "category": "mail",
       "source": "https://github.com/roundcube/roundcubemail",
@@ -4770,6 +4877,7 @@
     },
     {
       "id": "snappymail",
+      "doc": "docs/tools/registry/snappymail.md",
       "name": "SnappyMail",
       "category": "mail",
       "source": "https://github.com/the-djmaze/snappymail",
@@ -4784,6 +4892,7 @@
     },
     {
       "id": "mailpit",
+      "doc": "docs/tools/registry/mailpit.md",
       "name": "Mailpit",
       "category": "mail",
       "source": "https://github.com/axllent/mailpit",
@@ -4798,6 +4907,7 @@
     },
     {
       "id": "opendkim",
+      "doc": "docs/tools/registry/opendkim.md",
       "name": "OpenDKIM",
       "category": "Mail / DNS",
       "source": "https://github.com/trusteddomainproject/OpenDKIM",
@@ -4819,6 +4929,7 @@
     },
     {
       "id": "opendmarc",
+      "doc": "docs/tools/registry/opendmarc.md",
       "name": "OpenDMARC",
       "category": "Mail / DNS",
       "source": "https://github.com/trusteddomainproject/OpenDMARC",
@@ -4840,6 +4951,7 @@
     },
     {
       "id": "kopia",
+      "doc": "docs/tools/registry/kopia.md",
       "name": "Kopia",
       "category": "backup",
       "source": "https://github.com/kopia/kopia",
@@ -4854,6 +4966,7 @@
     },
     {
       "id": "supabase_self_hosted",
+      "doc": "docs/tools/registry/supabase_self_hosted.md",
       "name": "Supabase self-hosted",
       "category": "data",
       "source": "https://github.com/supabase/supabase",
@@ -4868,6 +4981,7 @@
     },
     {
       "id": "duplicati",
+      "doc": "docs/tools/registry/duplicati.md",
       "name": "Duplicati",
       "category": "backup",
       "source": "https://github.com/duplicati/duplicati",
@@ -4882,6 +4996,7 @@
     },
     {
       "id": "invokeai",
+      "doc": "docs/tools/registry/invokeai.md",
       "name": "InvokeAI",
       "category": "media",
       "source": "https://github.com/invoke-ai/InvokeAI",
@@ -4896,6 +5011,7 @@
     },
     {
       "id": "automatic1111",
+      "doc": "docs/tools/registry/automatic1111.md",
       "name": "AUTOMATIC1111",
       "category": "media",
       "source": "https://github.com/AUTOMATIC1111/stable-diffusion-webui",
@@ -4910,6 +5026,7 @@
     },
     {
       "id": "krita_ai_diffusion",
+      "doc": "docs/tools/registry/krita_ai_diffusion.md",
       "name": "Krita AI Diffusion",
       "category": "media",
       "source": "https://github.com/Acly/krita-ai-diffusion",
@@ -4924,6 +5041,7 @@
     },
     {
       "id": "job_queue",
+      "doc": "docs/tools/registry/job_queue.md",
       "name": "Job Queue Agent Worker",
       "category": "queue",
       "source": "local bash/jsonl implementation in this repository",
@@ -4938,6 +5056,7 @@
     },
     {
       "id": "modelcontextprotocol_servers",
+      "doc": "docs/tools/registry/modelcontextprotocol_servers.md",
       "name": "Model Context Protocol Servers",
       "category": "mcp",
       "source": "https://github.com/modelcontextprotocol/servers",
@@ -4952,6 +5071,7 @@
     },
     {
       "id": "mcp_filesystem",
+      "doc": "docs/tools/registry/mcp_filesystem.md",
       "name": "MCP Filesystem Server",
       "category": "mcp",
       "source": "https://github.com/modelcontextprotocol/servers",
@@ -4966,6 +5086,7 @@
     },
     {
       "id": "mcp_git",
+      "doc": "docs/tools/registry/mcp_git.md",
       "name": "MCP Git Server",
       "category": "mcp",
       "source": "https://github.com/modelcontextprotocol/servers",
@@ -4980,6 +5101,7 @@
     },
     {
       "id": "mcp_github",
+      "doc": "docs/tools/registry/mcp_github.md",
       "name": "MCP GitHub Server",
       "category": "mcp",
       "source": "https://github.com/modelcontextprotocol/servers",
@@ -4994,6 +5116,7 @@
     },
     {
       "id": "mcp_shell",
+      "doc": "docs/tools/registry/mcp_shell.md",
       "name": "MCP Shell Server",
       "category": "mcp",
       "source": "https://github.com/modelcontextprotocol/servers",
@@ -5008,6 +5131,7 @@
     },
     {
       "id": "mcp_browser",
+      "doc": "docs/tools/registry/mcp_browser.md",
       "name": "MCP Browser Server",
       "category": "mcp",
       "source": "https://github.com/modelcontextprotocol/servers",
@@ -5022,6 +5146,7 @@
     },
     {
       "id": "mcp_sqlite",
+      "doc": "docs/tools/registry/mcp_sqlite.md",
       "name": "MCP SQLite Server",
       "category": "mcp",
       "source": "https://github.com/modelcontextprotocol/servers",
@@ -5036,6 +5161,7 @@
     },
     {
       "id": "mcp_postgres",
+      "doc": "docs/tools/registry/mcp_postgres.md",
       "name": "MCP Postgres Server",
       "category": "mcp",
       "source": "https://github.com/modelcontextprotocol/servers",
@@ -5050,6 +5176,7 @@
     },
     {
       "id": "mcp_fetch",
+      "doc": "docs/tools/registry/mcp_fetch.md",
       "name": "MCP Fetch Server",
       "category": "mcp",
       "source": "https://github.com/modelcontextprotocol/servers",
@@ -5064,6 +5191,7 @@
     },
     {
       "id": "mcp_memory",
+      "doc": "docs/tools/registry/mcp_memory.md",
       "name": "MCP Memory Server",
       "category": "mcp",
       "source": "https://github.com/modelcontextprotocol/servers",
@@ -5078,6 +5206,7 @@
     },
     {
       "id": "supervisord",
+      "doc": "docs/tools/registry/supervisord.md",
       "name": "Supervisor",
       "category": "process",
       "source": "https://github.com/Supervisor/supervisor",
@@ -5092,6 +5221,7 @@
     },
     {
       "id": "systemd_user_units",
+      "doc": "docs/tools/registry/systemd_user_units.md",
       "name": "systemd user units",
       "category": "process",
       "source": "https://github.com/systemd/systemd",
@@ -5106,6 +5236,7 @@
     },
     {
       "id": "tmux",
+      "doc": "docs/tools/registry/tmux.md",
       "name": "tmux",
       "category": "process",
       "source": "https://github.com/tmux/tmux",
@@ -5120,6 +5251,7 @@
     },
     {
       "id": "pm2",
+      "doc": "docs/tools/registry/pm2.md",
       "name": "PM2",
       "category": "process",
       "source": "https://github.com/Unitech/pm2",
@@ -5134,6 +5266,7 @@
     },
     {
       "id": "lynis",
+      "doc": "docs/tools/registry/lynis.md",
       "name": "Lynis",
       "category": "security",
       "source": "https://github.com/CISOfy/lynis",
@@ -5148,6 +5281,7 @@
     },
     {
       "id": "openscap",
+      "doc": "docs/tools/registry/openscap.md",
       "name": "OpenSCAP",
       "category": "security",
       "source": "https://github.com/OpenSCAP/openscap",
@@ -5162,6 +5296,7 @@
     },
     {
       "id": "ocrmypdf",
+      "doc": "docs/tools/registry/ocrmypdf.md",
       "name": "OCRmyPDF",
       "category": "documents",
       "source": "https://github.com/ocrmypdf/OCRmyPDF",
@@ -5176,6 +5311,7 @@
     },
     {
       "id": "zotero",
+      "doc": "docs/tools/registry/zotero.md",
       "name": "Zotero",
       "category": "documents",
       "source": "https://github.com/zotero/zotero",
@@ -5190,6 +5326,7 @@
     },
     {
       "id": "langchain",
+      "doc": "docs/tools/registry/langchain.md",
       "name": "LangChain",
       "category": "llmops",
       "source": "https://github.com/langchain-ai/langchain",
@@ -5300,6 +5437,7 @@
     },
     {
       "id": "mcp_filesystem_server",
+      "doc": "docs/tools/registry/mcp_filesystem_server.md",
       "name": "Filesystem MCP Server",
       "category": "MCP / Toolserver",
       "status": "planned",
@@ -5318,6 +5456,7 @@
     },
     {
       "id": "mcp_git_server",
+      "doc": "docs/tools/registry/mcp_git_server.md",
       "name": "Git MCP Server",
       "category": "MCP / Toolserver",
       "status": "planned",
@@ -5336,6 +5475,7 @@
     },
     {
       "id": "mcp_github_server",
+      "doc": "docs/tools/registry/mcp_github_server.md",
       "name": "GitHub MCP Server",
       "category": "MCP / Toolserver",
       "status": "planned",
@@ -5354,6 +5494,7 @@
     },
     {
       "id": "mcp_shell_server",
+      "doc": "docs/tools/registry/mcp_shell_server.md",
       "name": "Shell MCP Server",
       "category": "MCP / Toolserver",
       "status": "planned",
@@ -5372,6 +5513,7 @@
     },
     {
       "id": "mcp_browser_server",
+      "doc": "docs/tools/registry/mcp_browser_server.md",
       "name": "Browser MCP Server",
       "category": "MCP / Toolserver",
       "status": "planned",
@@ -5390,6 +5532,7 @@
     },
     {
       "id": "mcp_sqlite_server",
+      "doc": "docs/tools/registry/mcp_sqlite_server.md",
       "name": "SQLite MCP Server",
       "category": "MCP / Toolserver",
       "status": "planned",
@@ -5408,6 +5551,7 @@
     },
     {
       "id": "mcp_postgres_server",
+      "doc": "docs/tools/registry/mcp_postgres_server.md",
       "name": "Postgres MCP Server",
       "category": "MCP / Toolserver",
       "status": "planned",
@@ -5426,6 +5570,7 @@
     },
     {
       "id": "mcp_fetch_server",
+      "doc": "docs/tools/registry/mcp_fetch_server.md",
       "name": "Fetch MCP Server",
       "category": "MCP / Toolserver",
       "status": "planned",
@@ -5444,6 +5589,7 @@
     },
     {
       "id": "mcp_memory_server",
+      "doc": "docs/tools/registry/mcp_memory_server.md",
       "name": "Memory MCP Server",
       "category": "MCP / Toolserver",
       "status": "planned",
@@ -5468,6 +5614,7 @@
       "security_note": "Nur eigene Stimmen oder Stimmen mit ausdruecklicher Einwilligung verwenden; KI-Stimmen kennzeichnen; keine automatische Veroeffentlichung.",
       "updated": "2026-05-30",
       "id": "styletts2",
+      "doc": "docs/tools/registry/styletts2.md",
       "name": "StyleTTS2",
       "source": "https://github.com/yl4579/StyleTTS2",
       "category": "Voice Studio / TTS",
@@ -5487,6 +5634,7 @@
       "security_note": "Nur eigene Stimmen oder Stimmen mit ausdruecklicher Einwilligung verwenden; KI-Stimmen kennzeichnen; keine automatische Veroeffentlichung.",
       "updated": "2026-05-30",
       "id": "openvoice",
+      "doc": "docs/tools/registry/openvoice.md",
       "name": "OpenVoice",
       "source": "https://github.com/myshell-ai/OpenVoice",
       "category": "Voice Studio / Voice Cloning",
@@ -5503,9 +5651,10 @@
       "install_script": "scripts/tools/rvc_install.sh",
       "uninstall_script": "scripts/tools/rvc_uninstall.sh",
       "security_note": "Umfang vor Installation mit --dry-run pruefen. Keine Modelle, Authentifizierung, Dienste oder Docker. Update prueft denselben Pin; veraenderte Dateien werden nicht automatisch geloescht.",
-      "updated": "2026-05-30",
+      "updated": "2026-11-05",
       "id": "rvc",
-      "doc": "docs/tools/github-gap-tools.md",
+      "status_script": "scripts/tools/rvc_status.sh",
+      "doc": "docs/tools/local-audio-chain.md",
       "name": "RVC",
       "source": "https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI.git",
       "category": "Voice Studio / Singing Voice",
@@ -5520,64 +5669,86 @@
       "auto_install": false,
       "ports": [],
       "update_script": "scripts/tools/rvc_update.sh",
-      "doctor_script": "scripts/tools/rvc_doctor.sh"
+      "doctor_script": "scripts/tools/rvc_doctor.sh",
+      "readiness": "planned"
     },
     {
-      "license": "verify upstream license before production use",
-      "install_script": "scripts/tools/planned_tool_stub_install.sh",
-      "uninstall_script": "scripts/tools/planned_tool_stub_uninstall.sh",
-      "check_command": "echo documentation-only",
+      "license": "GPL-3.0; Modelle/Abhaengigkeiten separat",
+      "install_script": "scripts/tools/seed_vc_install.sh",
+      "uninstall_script": "scripts/tools/seed_vc_uninstall.sh",
       "security_note": "Nur eigene Stimmen oder Stimmen mit ausdruecklicher Einwilligung verwenden; KI-Stimmen kennzeichnen; keine automatische Veroeffentlichung.",
-      "updated": "2026-05-30",
+      "updated": "2026-11-05",
       "id": "seed_vc",
-      "name": "Seed-VC",
+      "doc": "docs/tools/local-audio-chain.md",
+      "name": "Seed_VC",
       "source": "https://github.com/Plachtaa/seed-vc",
       "category": "Voice Studio / Singing Voice",
-      "status": "planned",
+      "status": "experimental",
       "resource_class": "gpu-heavy",
-      "install_mode": "source",
-      "description": "Moderne Voice Conversion fuer hochwertige Gesangs- und Sprachstimmen.",
+      "install_mode": "github-source",
+      "description": "Gepinnter privater GitHub-Quellcheckout; kein fertiger Runtime-, GUI-, Modell- oder Inferenz-Build.",
       "risk": "high",
-      "check_type": "documentation",
-      "check_value": "https://github.com/Plachtaa/seed-vc"
+      "check_type": "path",
+      "check_value": "~/.openclaw_ultimate_user_data/tools/seed_vc/ready.json",
+      "auto_install": false,
+      "readiness": "planned",
+      "source_commit": "51383efd921027683c89e5348211d93ff12ac2a8",
+      "source_verified": true,
+      "update_script": "scripts/tools/seed_vc_update.sh",
+      "doctor_script": "scripts/tools/seed_vc_doctor.sh",
+      "status_script": "scripts/tools/seed_vc_status.sh"
     },
     {
-      "license": "verify upstream license before production use",
-      "install_script": "scripts/tools/planned_tool_stub_install.sh",
-      "uninstall_script": "scripts/tools/planned_tool_stub_uninstall.sh",
-      "check_command": "echo documentation-only",
+      "license": "Apache-2.0; Modelle/Datensaetze separat",
+      "install_script": "scripts/tools/diffsinger_install.sh",
+      "uninstall_script": "scripts/tools/diffsinger_uninstall.sh",
       "security_note": "Nur eigene Stimmen oder Stimmen mit ausdruecklicher Einwilligung verwenden; KI-Stimmen kennzeichnen; keine automatische Veroeffentlichung.",
-      "updated": "2026-05-30",
+      "updated": "2026-11-05",
       "id": "diffsinger",
+      "doc": "docs/tools/local-audio-chain.md",
       "name": "DiffSinger",
       "source": "https://github.com/openvpi/DiffSinger",
       "category": "Voice Studio / Singing Synthesis",
-      "status": "planned",
+      "status": "experimental",
       "resource_class": "gpu-heavy",
-      "install_mode": "source",
-      "description": "KI-Gesangssynthese fuer virtuelle Saenger und Song-Demos.",
+      "install_mode": "github-source",
+      "description": "Gepinnter privater GitHub-Quellcheckout; kein fertiger Runtime-, GUI-, Modell- oder Inferenz-Build.",
       "risk": "high",
-      "check_type": "documentation",
-      "check_value": "https://github.com/openvpi/DiffSinger"
+      "check_type": "path",
+      "check_value": "~/.openclaw_ultimate_user_data/tools/diffsinger/ready.json",
+      "auto_install": false,
+      "readiness": "planned",
+      "source_commit": "cb7869b8733a3882679c328994ee162845092cff",
+      "source_verified": true,
+      "update_script": "scripts/tools/diffsinger_update.sh",
+      "doctor_script": "scripts/tools/diffsinger_doctor.sh",
+      "status_script": "scripts/tools/diffsinger_status.sh"
     },
     {
-      "license": "verify upstream license before production use",
-      "install_script": "scripts/tools/planned_tool_stub_install.sh",
-      "uninstall_script": "scripts/tools/planned_tool_stub_uninstall.sh",
-      "check_command": "echo documentation-only",
+      "license": "MIT; Voicebanks/Modelle separat",
+      "install_script": "scripts/tools/openutau_install.sh",
+      "uninstall_script": "scripts/tools/openutau_uninstall.sh",
       "security_note": "Nur eigene Stimmen oder Stimmen mit ausdruecklicher Einwilligung verwenden; KI-Stimmen kennzeichnen; keine automatische Veroeffentlichung.",
-      "updated": "2026-05-30",
+      "updated": "2026-11-05",
       "id": "openutau",
+      "doc": "docs/tools/local-audio-chain.md",
       "name": "OpenUtau",
-      "source": "https://github.com/stakira/OpenUtau",
+      "source": "https://github.com/openutau/OpenUtau",
       "category": "Voice Studio / Singing Production",
-      "status": "planned",
+      "status": "experimental",
       "resource_class": "medium",
-      "install_mode": "manual",
-      "description": "Virtuelle Saenger, Gesangsproduktion und UTAU-kompatible Workflows.",
+      "install_mode": "github-source",
+      "description": "Gepinnter privater GitHub-Quellcheckout; kein fertiger Runtime-, GUI-, Modell- oder Inferenz-Build.",
       "risk": "medium",
-      "check_type": "documentation",
-      "check_value": "https://github.com/stakira/OpenUtau"
+      "check_type": "path",
+      "check_value": "~/.openclaw_ultimate_user_data/tools/openutau/ready.json",
+      "auto_install": false,
+      "readiness": "planned",
+      "source_commit": "f920e2423113f9a936ec77eebf1f192e02a7ea6a",
+      "source_verified": true,
+      "update_script": "scripts/tools/openutau_update.sh",
+      "doctor_script": "scripts/tools/openutau_doctor.sh",
+      "status_script": "scripts/tools/openutau_status.sh"
     },
     {
       "license": "verify upstream license before production use",
@@ -5587,6 +5758,7 @@
       "security_note": "Nur eigene Stimmen oder Stimmen mit ausdruecklicher Einwilligung verwenden; KI-Stimmen kennzeichnen; keine automatische Veroeffentlichung.",
       "updated": "2026-05-30",
       "id": "nnsvs",
+      "doc": "docs/tools/registry/nnsvs.md",
       "name": "NNSVS",
       "source": "https://github.com/nnsvs/nnsvs",
       "category": "Voice Studio / Singer Training",
@@ -5627,9 +5799,10 @@
       "install_script": "scripts/tools/uvr5_install.sh",
       "uninstall_script": "scripts/tools/uvr5_uninstall.sh",
       "security_note": "Umfang vor Installation mit --dry-run pruefen. Keine Modelle, Authentifizierung, Dienste oder Docker. Update prueft denselben Pin; veraenderte Dateien werden nicht automatisch geloescht.",
-      "updated": "2026-05-30",
+      "updated": "2026-11-05",
       "id": "uvr5",
-      "doc": "docs/tools/github-gap-tools.md",
+      "status_script": "scripts/tools/uvr5_status.sh",
+      "doc": "docs/tools/local-audio-chain.md",
       "name": "UVR5",
       "source": "https://github.com/Anjok07/ultimatevocalremovergui.git",
       "category": "Voice Studio / Source Separation",
@@ -5644,7 +5817,8 @@
       "auto_install": false,
       "ports": [],
       "update_script": "scripts/tools/uvr5_update.sh",
-      "doctor_script": "scripts/tools/uvr5_doctor.sh"
+      "doctor_script": "scripts/tools/uvr5_doctor.sh",
+      "readiness": "planned"
     },
     {
       "license": "verify upstream license before production use",
@@ -5654,6 +5828,7 @@
       "security_note": "Synthetic-Media-Tool: Einwilligung echter Personen, KI-Kennzeichnung, keine Deepfake-Taeuschung und keine automatische Veroeffentlichung.",
       "updated": "2026-05-30",
       "id": "fish_speech",
+      "doc": "docs/tools/registry/fish_speech.md",
       "name": "Fish Speech",
       "source": "https://github.com/fishaudio/fish-speech",
       "category": "AI Media Production / TTS",
@@ -5673,6 +5848,7 @@
       "security_note": "Synthetic-Media-Tool: Einwilligung echter Personen, KI-Kennzeichnung, keine Deepfake-Taeuschung und keine automatische Veroeffentlichung.",
       "updated": "2026-05-30",
       "id": "melotts",
+      "doc": "docs/tools/registry/melotts.md",
       "name": "MeloTTS",
       "source": "https://github.com/myshell-ai/MeloTTS",
       "category": "AI Media Production / TTS",
@@ -5692,6 +5868,7 @@
       "security_note": "Synthetic-Media-Tool: Einwilligung echter Personen, KI-Kennzeichnung, keine Deepfake-Taeuschung und keine automatische Veroeffentlichung.",
       "updated": "2026-05-30",
       "id": "kokoro_tts",
+      "doc": "docs/tools/registry/kokoro_tts.md",
       "name": "Kokoro TTS",
       "source": "https://github.com/hexgrad/kokoro",
       "category": "AI Media Production / TTS",
@@ -5711,6 +5888,7 @@
       "security_note": "Synthetic-Media-Tool: Einwilligung echter Personen, KI-Kennzeichnung, keine Deepfake-Taeuschung und keine automatische Veroeffentlichung.",
       "updated": "2026-05-30",
       "id": "spark_tts",
+      "doc": "docs/tools/registry/spark_tts.md",
       "name": "Spark-TTS",
       "source": "https://github.com/SparkAudio/Spark-TTS",
       "category": "AI Media Production / TTS",
@@ -5730,6 +5908,7 @@
       "security_note": "Synthetic-Media-Tool: Einwilligung echter Personen, KI-Kennzeichnung, keine Deepfake-Taeuschung und keine automatische Veroeffentlichung.",
       "updated": "2026-05-30",
       "id": "hallo2",
+      "doc": "docs/tools/registry/hallo2.md",
       "name": "Hallo2",
       "source": "https://github.com/fudan-generative-vision/hallo2",
       "category": "AI Media Production / Avatar Video",
@@ -5821,6 +6000,7 @@
       "security_note": "Synthetic-Media-Tool: Einwilligung echter Personen, KI-Kennzeichnung, keine Deepfake-Taeuschung und keine automatische Veroeffentlichung.",
       "updated": "2026-05-30",
       "id": "emo_avatar",
+      "doc": "docs/tools/registry/emo_avatar.md",
       "name": "EMO",
       "source": "https://github.com/HumanAIGC/EMO",
       "category": "AI Media Production / Avatar Video",
@@ -5840,6 +6020,7 @@
       "security_note": "Synthetic-Media-Tool: Einwilligung echter Personen, KI-Kennzeichnung, keine Deepfake-Taeuschung und keine automatische Veroeffentlichung.",
       "updated": "2026-05-30",
       "id": "skyreels_a1",
+      "doc": "docs/tools/registry/skyreels_a1.md",
       "name": "SkyReels-A1",
       "source": "https://github.com/SkyworkAI/SkyReels-A1",
       "category": "AI Media Production / Avatar Video",
@@ -5859,6 +6040,7 @@
       "security_note": "Synthetic-Media-Tool: Einwilligung echter Personen, KI-Kennzeichnung, keine Deepfake-Taeuschung und keine automatische Veroeffentlichung.",
       "updated": "2026-05-30",
       "id": "wav2lip",
+      "doc": "docs/tools/registry/wav2lip.md",
       "name": "Wav2Lip",
       "source": "https://github.com/Rudrabha/Wav2Lip",
       "category": "AI Media Production / LipSync",
@@ -5878,6 +6060,7 @@
       "security_note": "Media tool: no automatic publishing, verify rights and privacy.",
       "updated": "2026-05-30",
       "id": "clearer_voice_studio",
+      "doc": "docs/tools/registry/clearer_voice_studio.md",
       "name": "ClearerVoice Studio",
       "source": "https://github.com/modelscope/ClearerVoice-Studio",
       "category": "AI Media Production / Audio Tools",
@@ -5921,6 +6104,7 @@
       "security_note": "Media tool: no automatic publishing, verify rights and privacy.",
       "updated": "2026-05-30",
       "id": "subtitleedit",
+      "doc": "docs/tools/registry/subtitleedit.md",
       "name": "Subtitle Edit",
       "source": "https://github.com/SubtitleEdit/subtitleedit",
       "category": "AI Media Production / Broadcast Tools",
@@ -5934,6 +6118,7 @@
     },
     {
       "id": "openbao",
+      "doc": "docs/tools/registry/openbao.md",
       "name": "OpenBao",
       "source": "https://github.com/openbao/openbao",
       "category": "Secrets / Vault",
@@ -5953,6 +6138,7 @@
     },
     {
       "id": "infisical",
+      "doc": "docs/tools/registry/infisical.md",
       "name": "Infisical",
       "source": "https://github.com/Infisical/infisical",
       "category": "Secrets / Vault",
@@ -5972,6 +6158,7 @@
     },
     {
       "id": "glances",
+      "doc": "docs/tools/registry/glances.md",
       "name": "Glances",
       "source": "https://github.com/nicolargo/glances",
       "category": "Monitoring",
@@ -5991,6 +6178,7 @@
     },
     {
       "id": "blocky",
+      "doc": "docs/tools/registry/blocky.md",
       "name": "Blocky",
       "source": "https://github.com/0xERR0R/blocky",
       "category": "DNS / Security",
@@ -6010,6 +6198,7 @@
     },
     {
       "id": "llama_cpp",
+      "doc": "docs/tools/registry/llama_cpp.md",
       "name": "llama.cpp",
       "source": "https://github.com/ggerganov/llama.cpp",
       "category": "LLMOps / Runtime",
@@ -6029,6 +6218,7 @@
     },
     {
       "id": "vllm",
+      "doc": "docs/tools/registry/vllm.md",
       "name": "vLLM",
       "source": "https://github.com/vllm-project/vllm",
       "category": "LLMOps / Runtime",
@@ -6048,6 +6238,7 @@
     },
     {
       "id": "localai",
+      "doc": "docs/tools/registry/localai.md",
       "name": "LocalAI",
       "source": "https://github.com/mudler/LocalAI",
       "category": "LLMOps / Gateway",
@@ -6067,6 +6258,7 @@
     },
     {
       "id": "browsermcp",
+      "doc": "docs/tools/registry/browsermcp.md",
       "name": "Browser MCP",
       "source": "https://github.com/browsermcp/mcp",
       "category": "MCP / Browser",
@@ -6086,6 +6278,7 @@
     },
     {
       "id": "docker_mcp_registry",
+      "doc": "docs/tools/registry/docker_mcp_registry.md",
       "name": "Docker MCP Registry",
       "source": "https://github.com/docker/mcp-registry",
       "category": "MCP / Docker",
@@ -6105,6 +6298,7 @@
     },
     {
       "id": "rabbitmq",
+      "doc": "docs/tools/registry/rabbitmq.md",
       "name": "RabbitMQ",
       "source": "https://github.com/rabbitmq/rabbitmq-server",
       "category": "Queue / Messaging",
@@ -6124,6 +6318,7 @@
     },
     {
       "id": "pass",
+      "doc": "docs/tools/registry/pass.md",
       "name": "pass",
       "source": "https://github.com/zx2c4/password-store",
       "category": "Secrets / Local",
@@ -6143,6 +6338,7 @@
     },
     {
       "id": "litestream",
+      "doc": "docs/tools/registry/litestream.md",
       "name": "Litestream",
       "source": "https://github.com/benbjohnson/litestream",
       "category": "Backup / SQLite",
@@ -6162,6 +6358,7 @@
     },
     {
       "id": "fastlane",
+      "doc": "docs/tools/registry/fastlane.md",
       "name": "fastlane",
       "source": "https://github.com/fastlane/fastlane",
       "category": "Android / Release",
@@ -6181,6 +6378,7 @@
     },
     {
       "id": "apktool",
+      "doc": "docs/tools/registry/apktool.md",
       "name": "apktool",
       "source": "https://github.com/iBotPeaches/Apktool",
       "category": "Android / Analysis",
@@ -6200,6 +6398,7 @@
     },
     {
       "id": "mitmproxy",
+      "doc": "docs/tools/registry/mitmproxy.md",
       "name": "mitmproxy",
       "source": "https://github.com/mitmproxy/mitmproxy",
       "category": "Android / Security",
@@ -6219,6 +6418,7 @@
     },
     {
       "id": "k3s",
+      "doc": "docs/tools/registry/k3s.md",
       "name": "K3s",
       "source": "https://github.com/k3s-io/k3s",
       "category": "Kubernetes / Homelab",
@@ -6236,6 +6436,7 @@
     },
     {
       "id": "helm",
+      "doc": "docs/tools/registry/helm.md",
       "name": "Helm",
       "source": "https://github.com/helm/helm",
       "category": "Kubernetes / CLI",
@@ -6255,6 +6456,7 @@
     },
     {
       "id": "mcpo",
+      "doc": "docs/tools/registry/mcpo.md",
       "name": "MCPO",
       "source": "https://github.com/open-webui/mcpo",
       "category": "MCP / Gateway",
@@ -6272,6 +6474,7 @@
     },
     {
       "id": "nmap",
+      "doc": "docs/tools/registry/nmap.md",
       "name": "Nmap",
       "source": "https://github.com/nmap/nmap",
       "category": "Network / Diagnostics",
@@ -6289,6 +6492,7 @@
     },
     {
       "id": "radicale",
+      "doc": "docs/tools/registry/radicale.md",
       "name": "Radicale",
       "source": "https://github.com/Kozea/Radicale",
       "category": "Calendar / Contacts",
@@ -6306,6 +6510,7 @@
     },
     {
       "id": "trufflehog",
+      "doc": "docs/tools/registry/trufflehog.md",
       "name": "TruffleHog",
       "source": "https://github.com/trufflesecurity/trufflehog",
       "category": "Security / Secrets",
@@ -6323,6 +6528,7 @@
     },
     {
       "id": "imap_importer",
+      "doc": "docs/tools/registry/imap_importer.md",
       "name": "IMAP Importer",
       "source": "local-docs",
       "category": "Mail / Import",
@@ -6340,6 +6546,7 @@
     },
     {
       "id": "git",
+      "doc": "docs/tools/registry/git.md",
       "name": "Git",
       "source": "https://github.com/git/git",
       "category": "Developer Tools",
@@ -6357,6 +6564,7 @@
     },
     {
       "id": "doctor",
+      "doc": "docs/tools/registry/doctor.md",
       "name": "OpenClaw Setup Doctor",
       "source": "local-script",
       "category": "Diagnostics",
@@ -6374,6 +6582,7 @@
     },
     {
       "id": "wsl2",
+      "doc": "docs/tools/registry/wsl2.md",
       "name": "WSL2 Checks",
       "source": "local-script",
       "category": "Diagnostics",
@@ -6391,6 +6600,7 @@
     },
     {
       "id": "kubectl",
+      "doc": "docs/tools/registry/kubectl.md",
       "name": "kubectl",
       "source": "https://github.com/kubernetes/kubernetes",
       "category": "Kubernetes / CLI",
@@ -6448,6 +6658,7 @@
     },
     {
       "id": "wyoming",
+      "doc": "docs/tools/registry/wyoming.md",
       "name": "Wyoming Protocol",
       "source": "https://github.com/rhasspy/wyoming",
       "category": "Voice Assistant",
@@ -6465,6 +6676,7 @@
     },
     {
       "id": "openwakeword",
+      "doc": "docs/tools/registry/openwakeword.md",
       "name": "openWakeWord",
       "source": "https://github.com/dscripka/openWakeWord",
       "category": "Voice Assistant",
@@ -6482,6 +6694,7 @@
     },
     {
       "id": "voice_studio",
+      "doc": "docs/tools/registry/voice_studio.md",
       "name": "Voice Studio Profile",
       "source": "local-profile",
       "category": "Media Profile",
@@ -6499,6 +6712,7 @@
     },
     {
       "id": "podcast_studio",
+      "doc": "docs/tools/registry/podcast_studio.md",
       "name": "Podcast Studio Profile",
       "source": "local-profile",
       "category": "Media Profile",
@@ -6516,6 +6730,7 @@
     },
     {
       "id": "audiobook_studio",
+      "doc": "docs/tools/registry/audiobook_studio.md",
       "name": "Audiobook Studio Profile",
       "source": "local-profile",
       "category": "Media Profile",
@@ -6533,6 +6748,7 @@
     },
     {
       "id": "dubbing_studio",
+      "doc": "docs/tools/registry/dubbing_studio.md",
       "name": "Dubbing Studio Profile",
       "source": "local-profile",
       "category": "Media Profile",
@@ -6550,6 +6766,7 @@
     },
     {
       "id": "prompt_generator_studio",
+      "doc": "docs/tools/registry/prompt_generator_studio.md",
       "name": "Prompt Generator Studio Profile",
       "source": "local-profile",
       "category": "Media Profile",
@@ -6567,6 +6784,7 @@
     },
     {
       "id": "video_ai_production",
+      "doc": "docs/tools/registry/video_ai_production.md",
       "name": "Video AI Production Profile",
       "source": "local-profile",
       "category": "Media Profile",
@@ -6584,6 +6802,7 @@
     },
     {
       "id": "character_library",
+      "doc": "docs/tools/registry/character_library.md",
       "name": "Character Library",
       "source": "docs/CHARACTER_LIBRARY.md",
       "category": "Media Documentation",
@@ -6601,6 +6820,7 @@
     },
     {
       "id": "voice_clone",
+      "doc": "docs/tools/registry/voice_clone.md",
       "name": "Voice Clone Profile",
       "source": "local-profile",
       "category": "Media Profile",
@@ -6618,6 +6838,7 @@
     },
     {
       "id": "ai_choir",
+      "doc": "docs/tools/registry/ai_choir.md",
       "name": "AI Choir Profile",
       "source": "local-profile",
       "category": "Media Profile",
@@ -6635,6 +6856,7 @@
     },
     {
       "id": "android_sdk",
+      "doc": "docs/tools/registry/android_sdk.md",
       "name": "Android SDK CLI",
       "source": "https://android.googlesource.com/platform/tools/base",
       "category": "Android / Build",
@@ -6652,6 +6874,7 @@
     },
     {
       "id": "gradle",
+      "doc": "docs/tools/registry/gradle.md",
       "name": "Gradle",
       "source": "https://github.com/gradle/gradle",
       "category": "Build Tools",
@@ -6669,6 +6892,7 @@
     },
     {
       "id": "jadx",
+      "doc": "docs/tools/registry/jadx.md",
       "name": "JADX",
       "source": "https://github.com/skylot/jadx",
       "category": "Android / Analysis",
@@ -6686,6 +6910,7 @@
     },
     {
       "id": "dbt",
+      "doc": "docs/tools/registry/dbt.md",
       "name": "dbt Core",
       "category": "Data Engineering",
       "source": "https://github.com/dbt-labs/dbt-core",
@@ -6703,6 +6928,7 @@
     },
     {
       "id": "prefect",
+      "doc": "docs/tools/registry/prefect.md",
       "name": "Prefect",
       "source": "https://github.com/PrefectHQ/prefect",
       "category": "Queue / Workflows",
@@ -6721,6 +6947,7 @@
     },
     {
       "id": "arq",
+      "doc": "docs/tools/registry/arq.md",
       "name": "Arq",
       "source": "https://github.com/python-arq/arq",
       "category": "Queue / Python",
@@ -6739,6 +6966,7 @@
     },
     {
       "id": "apscheduler",
+      "doc": "docs/tools/registry/apscheduler.md",
       "name": "APScheduler",
       "source": "https://github.com/agronholm/apscheduler",
       "category": "Queue / Scheduler",
@@ -6822,6 +7050,7 @@
     },
     {
       "id": "renovate",
+      "doc": "docs/tools/registry/renovate.md",
       "name": "Renovate",
       "source": "https://github.com/renovatebot/renovate",
       "category": "DevOps / Updates",
@@ -6840,6 +7069,7 @@
     },
     {
       "id": "check_resource_budget",
+      "doc": "docs/tools/registry/check_resource_budget.md",
       "name": "Resource Budget Check",
       "source": "local-script",
       "category": "Diagnostics",
@@ -6858,6 +7088,7 @@
     },
     {
       "id": "mkdocs",
+      "doc": "docs/tools/registry/mkdocs.md",
       "name": "MkDocs",
       "source": "https://github.com/mkdocs/mkdocs",
       "category": "Documentation",
@@ -6876,6 +7107,7 @@
     },
     {
       "id": "podman",
+      "doc": "docs/tools/registry/podman.md",
       "name": "Podman",
       "source": "https://github.com/containers/podman",
       "category": "Container",
@@ -6914,6 +7146,7 @@
     },
     {
       "id": "firejail",
+      "doc": "docs/tools/registry/firejail.md",
       "name": "Firejail",
       "source": "https://github.com/netblue30/firejail",
       "category": "Sandbox",
@@ -6932,6 +7165,7 @@
     },
     {
       "id": "wakeonlan",
+      "doc": "docs/tools/registry/wakeonlan.md",
       "name": "wakeonlan",
       "source": "https://github.com/jpoliv/wakeonlan",
       "category": "Network / Wake-on-LAN",
@@ -6950,6 +7184,7 @@
     },
     {
       "id": "nvidia_smi",
+      "doc": "docs/tools/registry/nvidia_smi.md",
       "name": "nvidia-smi",
       "source": "vendor-tool",
       "category": "GPU Diagnostics",
@@ -6968,6 +7203,7 @@
     },
     {
       "id": "ddclient",
+      "doc": "docs/tools/registry/ddclient.md",
       "name": "ddclient",
       "source": "https://github.com/ddclient/ddclient",
       "category": "DNS / DDNS",
@@ -6986,6 +7222,7 @@
     },
     {
       "id": "markdownlint_cli",
+      "doc": "docs/tools/registry/markdownlint_cli.md",
       "name": "markdownlint-cli",
       "source": "https://github.com/igorshubovych/markdownlint-cli",
       "category": "Documentation",
@@ -7004,6 +7241,7 @@
     },
     {
       "id": "check_tools",
+      "doc": "docs/tools/registry/check_tools.md",
       "name": "Tool Registry Check",
       "source": "local-script",
       "category": "Diagnostics",
@@ -7022,6 +7260,7 @@
     },
     {
       "id": "check_profiles",
+      "doc": "docs/tools/registry/check_profiles.md",
       "name": "Profile Registry Check",
       "source": "local-script",
       "category": "Diagnostics",
@@ -7040,6 +7279,7 @@
     },
     {
       "id": "check_ports",
+      "doc": "docs/tools/registry/check_ports.md",
       "name": "Port Registry Check",
       "source": "local-script",
       "category": "Diagnostics",
@@ -7058,6 +7298,7 @@
     },
     {
       "id": "paddleocr",
+      "doc": "docs/tools/registry/paddleocr.md",
       "name": "PaddleOCR",
       "source": "https://github.com/PaddlePaddle/PaddleOCR",
       "category": "RAG / OCR",
@@ -7077,6 +7318,7 @@
     },
     {
       "id": "livekit",
+      "doc": "docs/tools/registry/livekit.md",
       "name": "LiveKit",
       "source": "https://github.com/livekit/livekit",
       "category": "Voice / Realtime",
@@ -7096,6 +7338,7 @@
     },
     {
       "id": "asterisk",
+      "doc": "docs/tools/registry/asterisk.md",
       "name": "Asterisk",
       "source": "https://github.com/asterisk/asterisk",
       "category": "Voice / Telefonie",
@@ -7115,6 +7358,7 @@
     },
     {
       "id": "beszel",
+      "doc": "docs/tools/registry/beszel.md",
       "name": "Beszel",
       "source": "https://github.com/henrygd/beszel",
       "category": "Monitoring",
@@ -7134,6 +7378,7 @@
     },
     {
       "id": "zeek",
+      "doc": "docs/tools/registry/zeek.md",
       "name": "Zeek",
       "source": "https://github.com/zeek/zeek",
       "category": "Security",
@@ -7153,6 +7398,7 @@
     },
     {
       "id": "falco",
+      "doc": "docs/tools/registry/falco.md",
       "name": "Falco",
       "source": "https://github.com/falcosecurity/falco",
       "category": "Security",
@@ -7172,6 +7418,7 @@
     },
     {
       "id": "stalwart",
+      "doc": "docs/tools/registry/stalwart.md",
       "name": "Stalwart Mail Server",
       "source": "https://github.com/stalwartlabs/stalwart",
       "category": "Mail",
@@ -7191,6 +7438,7 @@
     },
     {
       "id": "sieve",
+      "doc": "docs/tools/registry/sieve.md",
       "name": "Sieve Mail Filtering",
       "source": "https://github.com/stalwartlabs/stalwart",
       "category": "Mail",
@@ -7210,6 +7458,7 @@
     },
     {
       "id": "finrag",
+      "doc": "docs/tools/registry/finrag.md",
       "name": "FinRAG",
       "source": "https://github.com/AI4Finance-Foundation/FinRAG",
       "category": "RAG / Finance",
@@ -7229,6 +7478,7 @@
     },
     {
       "id": "finrobot",
+      "doc": "docs/tools/registry/finrobot.md",
       "name": "FinRobot",
       "source": "https://github.com/AI4Finance-Foundation/FinRobot",
       "category": "Finance AI / Agents",
@@ -7248,6 +7498,7 @@
     },
     {
       "id": "flux_cli",
+      "doc": "docs/tools/registry/flux_cli.md",
       "name": "Flux CLI",
       "source": "https://github.com/fluxcd/flux2",
       "category": "DevOps / GitOps",
@@ -7432,6 +7683,56 @@
       "security_note": "Keine Dienststarts, Datenmigration oder Legacy-Loeschung. Private Buildpfade, aktuelle Operationslogs und Rollback; Upstream-Lizenz und --dry-run pruefen.",
       "updated": "2026-10-23",
       "source_commit": "b911c5d13e1a33219dcc537d4eb8898203a9364b"
+    },
+    {
+      "id": "xerj",
+      "name": "XERJ",
+      "category": "RAG / Code Search",
+      "source": "https://github.com/xerj-org/xerj",
+      "source_commit": "83c9f0d123bac010a25ca2cf02ff093b08ee68ce",
+      "source_verified": true,
+      "license": "Apache-2.0; Abhaengigkeiten und fremde Corpus-Inhalte separat pruefen",
+      "status": "experimental",
+      "readiness": "planned",
+      "auto_install": false,
+      "install_mode": "github-native-build",
+      "resource_class": "heavy",
+      "ports": [],
+      "install_script": "scripts/tools/xerj_install.sh",
+      "update_script": "scripts/tools/xerj_update.sh",
+      "uninstall_script": "scripts/tools/xerj_uninstall.sh",
+      "doctor_script": "scripts/tools/xerj_doctor.sh",
+      "status_script": "scripts/tools/xerj_status.sh",
+      "check_type": "path",
+      "check_value": "~/.openclaw_ultimate_user_data/tools/xerj/native-github/build-ready.json",
+      "doc": "docs/tools/xerj.md",
+      "description": "Optionale lokale Code-/Dokumentsuche mit MCP-Faehigkeit. Gepinnter Rust-Release-Quellbuild ohne neuronale Default-Features; kein Dienst-/MCP-/Hub-Start.",
+      "security_note": "Keine automatische Indizierung, Freigabe, Telemetrie-/Feedback-Anmeldung oder Corpus-Hub-Verbindung. Nur private Listener mit Authentifizierung; keine Runtime-Abnahme.",
+      "updated": "2026-11-05"
+    },
+    {
+      "id": "markdown_docs_server",
+      "name": "Markdown_Docs_Server",
+      "category": "documentation",
+      "description": "Lokales Offline-Handbuch mit Volltextsuche, Themenmenue und Inhaltsverzeichnis. Kein automatischer Server-/Browserstart.",
+      "install_script": "scripts/tools/markdown_docs_server_install.sh",
+      "uninstall_script": "scripts/tools/markdown_docs_server_uninstall.sh",
+      "update_script": "scripts/tools/markdown_docs_server_update.sh",
+      "doctor_script": "scripts/tools/markdown_docs_server_doctor.sh",
+      "status_script": "scripts/tools/markdown_docs_server_status.sh",
+      "check_type": "path",
+      "check_value": "~/.openclaw_ultimate_user_data/tools/markdown_docs_server/OWNED.json",
+      "ports": [8765],
+      "source": "https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation.git",
+      "source_pin_policy": "Explicit reviewed full GitHub commit at install/update; pinned Python-Markdown source dependency",
+      "install_mode": "github-native-build",
+      "status": "experimental",
+      "readiness": "planned",
+      "auto_install": false,
+      "doc": "docs/tools/markdown-docs-server.md",
+      "safety": "Nur Loopback, freigegebene Quell-Momentaufnahme, kein Docker/PyPI/CDN/Autostart.",
+      "security_note": "Install/Update/Uninstall und Start brauchen --apply. Schreibgeschuetzte Dokumentansicht, keine Shell-Ausfuehrung. Keine Produktionsabnahme.",
+      "updated": "2026-11-05"
     }
   ],
   "voice_tools": [

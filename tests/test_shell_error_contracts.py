@@ -79,7 +79,7 @@ class ShellErrorContracts(unittest.TestCase):
     def test_failed_directory_change_cannot_continue_build_or_mark_success(self):
         files = ('clawbake', 'activepieces', 'openclaw_rl', 'clawhub_cli', 'langflow', 'zenbot_trader')
         paths = [ROOT / 'scripts/tools' / (name + '_install.sh') for name in files]
-        paths.append(ROOT / 'scripts/base_install.sh')
+        paths.append(ROOT / 'docs/legacy/BASE_INSTALL_REFERENCE.sh.txt')
         for path in paths:
             text = path.read_text(encoding='utf-8')
             guards = re.findall(r'^\s*(cd (?:"\$[A-Z_]+"|/) \|\| exit 1)$', text, re.MULTILINE)

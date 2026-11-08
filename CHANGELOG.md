@@ -2,8 +2,6 @@
 
 ## Unreleased
 
-<<<<<<< Updated upstream
-=======
 ### 2026-11-07: begrenzter Infrastruktur-Teilsatz
 
 - Ollama-Inventarfehler in nativen, Helm- und Operator-Alertregeln sichtbar;
@@ -43,7 +41,6 @@
 - Keine automatische Nutzdatenmigration oder Rechte-Reparatur. Shell-Ausdruecke werden abgelehnt;
   POSIX-/UI-/ARM-Abnahme bleibt separat. Tests und Rollback: `docs/P0_METRICS_DATA.md`.
 
->>>>>>> Stashed changes
 ### 2026-11-03: Deklarative Einstiegspfade und explizites Staging
 
 - `deploy/kustomize` referenziert vorhandene Bases/Overlays ohne konkurrierende Workload-Kopien.

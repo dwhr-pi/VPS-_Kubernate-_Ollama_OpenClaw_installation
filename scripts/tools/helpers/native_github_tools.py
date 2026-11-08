@@ -47,6 +47,10 @@ for key, item in TOOLS.items():
         for value in recipe.get("artifacts", []) + recipe.get("artifact_globs", []):
             if not isinstance(value, str) or not value or Path(value).is_absolute() or ".." in Path(value).parts or "\\" in value or ":" in value:
                 raise ValueError("Unsicherer Pipeline-Artefaktpfad.")
+        if recipe.get("cargo_package") and not re.fullmatch(r"[A-Za-z0-9_-]+", recipe["cargo_package"]):
+            raise ValueError("Ungueltiges Cargo-Paket.")
+        if "no_default_features" in recipe and not isinstance(recipe["no_default_features"], bool):
+            raise ValueError("Cargo-Feature-Schalter muss boolesch sein.")
         for step in recipe.get("steps", []):
             cwd = step.get("cwd", ".")
             args = step.get("args", [])
@@ -104,6 +108,9 @@ def run(args, cwd, env):
     if (env.get('NATIVE_BUILD_STREAM') == 'litellm' and Path(str(args[0])).name == 'uv'
             and list(args[1:3]) == ['pip', 'install']):
         return native_build_process.run(args, cwd, env, timeout=int(env['LITELLM_BUILD_TIMEOUT_SECONDS']))
+    if (env.get('NATIVE_BUILD_STREAM') == 'xerj' and Path(str(args[0])).name == 'cargo'
+            and list(args[1:2]) == ['build']):
+        return native_build_process.run(args, cwd, env, timeout=int(env['XERJ_BUILD_TIMEOUT_SECONDS']))
     return common.run(args, cwd, env)
 
 
@@ -111,6 +118,13 @@ def litellm_build_timeout():
     value = os.environ.get('LITELLM_BUILD_TIMEOUT_SECONDS', '7200')
     if not re.fullmatch(r'[0-9]{3,5}', value) or not 300 <= int(value) <= 21600:
         raise ValueError('LITELLM_BUILD_TIMEOUT_SECONDS: ganze Sekunden zwischen 300 und 21600; Standard 7200.')
+    return value
+
+
+def xerj_build_timeout():
+    value = os.environ.get('XERJ_BUILD_TIMEOUT_SECONDS', '7200')
+    if not re.fullmatch(r'[0-9]{3,5}', value) or not 300 <= int(value) <= 21600:
+        raise ValueError('XERJ_BUILD_TIMEOUT_SECONDS: ganze Sekunden zwischen 300 und 21600; Standard 7200.')
     return value
 
 
@@ -134,6 +148,8 @@ def requirements(spec):
 def preflight(outer, spec, install_build_deps=False):
     if platform.system() != "Linux":
         raise ValueError("Native Builds derzeit fuer Ubuntu/WSL Linux; kein Windows-Crossbuild.")
+    if spec['id'] == 'xerj':
+        xerj_build_timeout()  # Reject invalid budgets before downloads or compiler bootstrap.
     common.reserve(outer, {"reserve_mb": spec["recipe"]["disk_mb"]})
     acknowledgement = spec["recipe"].get("eol_ack")
     if acknowledgement and os.environ.get(acknowledgement) != "1":
@@ -146,10 +162,11 @@ def preflight(outer, spec, install_build_deps=False):
             raise ValueError("Zu wenig verfuegbarer RAM: mindestens " + str(minimum) + " MiB fuer diesen Build.")
     if spec["id"] == "litellm":
         litellm_build_timeout()  # Validate before downloads, apt or source checkout.
+    if spec["id"] in ("litellm", "xerj"):
         litellm_rust_bootstrap.prepare(outer, spec, approved=install_build_deps)
     build_deps.prepare(spec, approved=install_build_deps)
     for name in ["git"] + requirements(spec):
-        if spec["id"] == "litellm" and name in ("cargo", "rustc"):
+        if spec["id"] in ("litellm", "xerj") and name in ("cargo", "rustc"):
             continue  # Direct installed toolchain verified separately, independent of PATH.
         if name == "go" and spec["recipe"].get("go_min"):
             continue  # This versioned prerequisite is checked separately below.
@@ -265,6 +282,10 @@ def build(prefix, spec):
                    CARGO_HTTP_TIMEOUT='60', CARGO_NET_RETRY='2', PYTHONUNBUFFERED='1')
         print('LiteLLM: uv-Paketinstallation mit laufender Ausgabe, PID/30s-Heartbeat und Prozessgruppen-Abbruch; Timeout:',
               env['LITELLM_BUILD_TIMEOUT_SECONDS'], 'Sekunden. Cargo/uv-Source-Builds jeweils einfach parallel.', flush=True)
+    if spec['id'] == 'xerj':
+        env.update(NATIVE_BUILD_STREAM='xerj', XERJ_BUILD_TIMEOUT_SECONDS=xerj_build_timeout())
+        print('XERJ: Cargo-Ausgabe mit PID/30s-Heartbeat und Prozessgruppen-Abbruch; Timeout:',
+              env['XERJ_BUILD_TIMEOUT_SECONDS'], 'Sekunden. Ein Heartbeat belegt keinen Buildfortschritt.', flush=True)
     binary = prefix / "bin" / recipe.get("binary", "unused")
     binary.parent.mkdir(mode=0o700)
     artifacts = []
@@ -308,8 +329,14 @@ def build(prefix, spec):
         if not Path(sysroot).is_absolute() or not Path(sysroot).is_dir():
             raise ValueError("Vorhandene Rust-Toolchain nicht eindeutig; kein automatischer Download.")
         env["RUSTUP_TOOLCHAIN"] = sysroot
-        run(["cargo", "build", "--locked", "--release", "--bin", recipe["binary"], "-j", "2"], checkout, env)
-        shutil.copy2(common.checked(checkout / "target/release" / recipe["binary"]), binary)
+        module = common.checked(checkout / recipe.get("module_dir", "."))
+        args = ["cargo", "build", "--locked", "--release", "--bin", recipe["binary"]]
+        if recipe.get("cargo_package"):
+            args += ["--package", recipe["cargo_package"]]
+        if recipe.get("no_default_features"):
+            args.append("--no-default-features")
+        run(args + ["-j", "2"], module, env)
+        shutil.copy2(common.checked(module / "target/release" / recipe["binary"]), binary)
         artifacts = [binary.relative_to(prefix).as_posix()]
     elif kind == "cmake":
         run(["cmake", "-S", str(checkout), "-B", str(prefix / "cmake-build"),
@@ -576,7 +603,7 @@ def main(argv=None):
     outer, prefix, marker = paths(args.tool)
     if args.dry_run or args.action == "plan":
         print(json.dumps(dict(tool=args.tool, target=str(prefix), **spec), indent=2))
-        if args.tool == 'litellm':
+        if args.tool in ('litellm', 'xerj'):
             print('Rust 1.98.0: vorhandene Basis bevorzugt; privater offizieller Bootstrap nur nach Zustimmung/--install-build-deps, 2048 MiB Zusatzpuffer. Kein Download in diesem Plan.')
         if args.quarantine_incomplete:
             print("Caddy-Reparaturplan: unmarkierten Altordner nach Vorpruefung im Tool-Verzeichnis erhalten/umbenennen; danach frischer GitHub-Build. Kein Platzgewinn.")

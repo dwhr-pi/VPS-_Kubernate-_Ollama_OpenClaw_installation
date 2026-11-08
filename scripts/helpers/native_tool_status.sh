@@ -14,6 +14,7 @@ NATIVE_TOOL_STATUS_KEYS+=("Godot_Source" "Godot_Build" "Godot_XR_Tools" "O3DE_So
 NATIVE_TOOL_STATUS_KEYS+=("OpenAPI_Servers")
 NATIVE_TOOL_STATUS_KEYS+=("Gemini_Desktop_Bwendell_Source" "Gemini_Desktop_Dortanes_Source")
 NATIVE_TOOL_STATUS_KEYS+=("OpenCode" "Aider" "OpenHands" "Codex_CLI")
+NATIVE_TOOL_STATUS_KEYS+=("OpenUtau" "DiffSinger" "Seed_VC")
 NATIVE_TOOL_STATUS_KEYS+=("${NATIVE_GITHUB_TOOL_KEYS[@]}")
 
 native_tool_marker() {
@@ -24,6 +25,13 @@ native_tool_marker() {
     OpenHands) marker=openhands/native-coding/current/OWNED.json ;;
     Codex_CLI) marker=codex_cli/native-coding/current/OWNED.json ;;
     "Traefik") marker=traefik/native-github/build-ready.json ;;
+    XERJ) marker=xerj/native-github/build-ready.json ;;
+    FFmpeg) marker=ffmpeg/native-github/build-ready.json ;;
+    OpenUtau) marker=openutau/ready.json ;;
+    DiffSinger) marker=diffsinger/ready.json ;;
+    Seed_VC) marker=seed_vc/ready.json ;;
+    "ArgoCD_CLI") marker=argocd_cli/native-github/build-ready.json ;;
+    "Cloudflared") marker=cloudflared/native-github/build-ready.json ;;
     "Kubeseal") marker=kubeseal/native-github/build-ready.json ;;
     "OpenTelemetry") marker=opentelemetry/native-github/build-ready.json ;;
     "AutoGPT") marker=autogpt/native-github/build-ready.json ;;
@@ -188,7 +196,7 @@ native_tool_sync_selected() {
       fi
       present["$tool"]=1
       case "$tool" in
-        Gemini_Desktop_Bwendell_Source | Gemini_Desktop_Dortanes_Source | OpenAPI_Servers | Godot_Source | Godot_Build | Godot_XR_Tools | O3DE_Source | Lively_Wallpaper_Source | Qwen_Desktop_Study | Enki_Browser_Study | BrowserOS_Study | Browser_Use | Perplexity_MCP | Perplexity_Python | Perplexity_Node | Perplexity_API_Cookbook)
+        OpenUtau | DiffSinger | Seed_VC | Gemini_Desktop_Bwendell_Source | Gemini_Desktop_Dortanes_Source | OpenAPI_Servers | Godot_Source | Godot_Build | Godot_XR_Tools | O3DE_Source | Lively_Wallpaper_Source | Qwen_Desktop_Study | Enki_Browser_Study | BrowserOS_Study | Browser_Use | Perplexity_MCP | Perplexity_Python | Perplexity_Node | Perplexity_API_Cookbook)
           local browser_slug
           browser_slug="${NATIVE_TOOL_MARKER%/ready.json}"
           if ! OPENCLAW_USER_DATA_DIR="$root" "${GAP_TOOLS_PYTHON_BIN:-python3}" -B "$(cd "${BASH_SOURCE[0]%/*}/.." && pwd)/tools/helpers/gap_tools.py" "$browser_slug" check >/dev/null 2>&1; then

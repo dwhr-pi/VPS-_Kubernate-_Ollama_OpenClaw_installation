@@ -53,10 +53,16 @@ class Token8341Docs(unittest.TestCase):
                        "Unabhaengigkeit nicht verifiziert", "kein Nachweis eines Ausfalls"):
             assert_prose_in(self, phrase, text)
         for source in ("https://developer.cloud.tencent.com/article/2695833",
-                       "https://blog.51cto.com/u_12227/14914057",
                        "https://www.scamadviser.com/check-website/token8341.com",
                        "https://token8341.com/fa/terms"):
             assert_prose_in(self, "](" + source + ")", text)
+        # An unreadable source must remain explicit, but not masquerade as a verified live link.
+        source = "https://blog.51cto.com/u_12227/14914057"
+        record = text.split("51CTO-Originaladresse:", 1)[1].split("**Fazit zur Quellenlage:**", 1)[0]
+        for phrase in ("`" + source + "`", "05.11.2026", "Transportstatus 0",
+                       "keinen lesbaren Inhalt", "unverifiziert", "kein Ersatz"):
+            assert_prose_in(self, phrase, record)
+        self.assertNotIn("](" + source + ")", text)
 
     def test_host_uncertainty_does_not_enable_cloud_or_automatic_fallback(self):
         text = DOC.read_text(encoding="utf-8")

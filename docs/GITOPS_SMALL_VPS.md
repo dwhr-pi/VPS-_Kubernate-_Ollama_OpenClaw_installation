@@ -288,3 +288,96 @@ Live-/Restore-Abnahme wird hier behauptet.
 - [Argo deklarativ/App-of-Apps](https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/)
 - [Qdrant Konfigurationsschema](https://github.com/qdrant/qdrant/blob/master/config/config.yaml)
 - [Bestehende Metrik-Konfiguration](../monitoring/prometheus.yml)
+
+<!-- BEGIN GENERATED VPS SSH -->
+
+## VPS ueber SSH bedienen
+
+Voraussetzung: ein bereits gepruefter Setup-Checkout und ein selbst eingerichteter
+SSH-Alias `vps` (Benutzer, Host und Schluessel in deiner SSH-Konfiguration).
+Alternativ `vps` durch `BENUTZER@VPS_HOST` ersetzen. Den Host-Fingerprint vorher
+unabhaengig pruefen; keine Host-Key-Pruefung abschalten. Keine Zugangsdaten in Git.
+
+Auf deinem Client (PowerShell, Linux oder macOS):
+
+```bash
+ssh -t vps
+```
+
+Danach **im Linux-Terminal des VPS**. Den Pfad bei einem Branch-Checkout anpassen;
+ein Windows-/Desktop-Tool wird durch SSH nicht zu einer VPS-Anwendung:
+
+```bash
+cd "$HOME/openclaw_ultimate_setup" || exit 1
+test -f scripts/tool_commands.py || exit 1
+```
+
+Zuerst nur den Offline-Plan lesen (keine Installation und kein Dienststart):
+
+```bash
+python3 -I -B scripts/tool_commands.py show gitops_bootstrap
+python3 -I -B scripts/tool_commands.py show kubeseal
+```
+
+### SSH-Aktionen: `gitops_bootstrap`
+
+Kein freigegebener unbeaufsichtigter Docker-freier Adapter. Der Plan nennt
+vorhandene Skriptpfade; diese nicht ungeprueft ausfuehren. Die
+tool-spezifischen Plattform-, Lizenz- und Laufzeitgrenzen oben gelten weiterhin.
+
+Fuer die interaktive Installation nach Pruefung `bash setup_ultimate.sh` im
+VPS-Terminal oeffnen, dort im Tool-Management das gewuenschte Tool
+`GitOps Bootstrap (bewusstes Infrastruktur-Apply)` (ID `gitops_bootstrap`) waehlen und die Einzelfreigaben lesen.
+Fehlt der Eintrag oder ist der native Weg gesperrt, hier stoppen: keine
+Legacy-/Docker-Ausweichinstallation und kein automatischer Plattformwechsel.
+
+### SSH-Aktionen: `kubeseal`
+
+Status und Diagnose lesen den privaten Tool-Zustand auf dem VPS:
+
+```bash
+python3 -I -B scripts/tool_commands.py run kubeseal --action status
+python3 -I -B scripts/tool_commands.py run kubeseal --action doctor
+```
+
+Die folgenden Befehle **einzeln und nur nach Freigabe** ausfuehren, nicht als
+gemeinsamen Ablauf: Installation, spaeter Update oder bewusst Deinstallation.
+Vorher Quellen, Lizenz, Ressourcen und Daten-Erhaltungsregeln dieser Anleitung pruefen.
+
+Installieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run kubeseal --action install --apply --confirm kubeseal:install
+```
+
+Aktualisieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run kubeseal --action update --apply --confirm kubeseal:update
+```
+
+Deinstallieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run kubeseal --action uninstall --apply --confirm kubeseal:uninstall
+```
+
+Fehlende Build-Abhaengigkeiten stoppen den Versuch. Nur fuer Install/Update
+`--install-build-deps` nach separater Download-Freigabe ergaenzen. Kein Auto-Yes,
+kein Docker-Fallback; Source-Build/Status ist keine erfolgreiche Runtime-Abnahme.
+
+Das interaktive Setup bleibt nach bewusster Freigabe im SSH-Terminal erreichbar:
+
+```bash
+bash setup_ultimate.sh
+```
+
+Keine automatische Installation, kein Browser-/Modell-/Produktivdienststart durch diese Dokumentation.
+Nach jedem bewusst ausgefuehrten Befehl den Exitcode unmittelbar mit `echo $?` pruefen;
+zum Verlassen des VPS-Terminals `exit` verwenden.
+
+[SSH-Voraussetzungen und Sicherheitsgrenzen](HEADLESS_SETUP.md) | [Befehle aller registrierten Tools](generated/HEADLESS_TOOL_COMMANDS.md)
+
+Dieser Abschnitt wird aus der Registry erzeugt. Pflege: `python3 -I -B scripts/quality/tool_ssh_docs.py --write`.
+
+<!-- END GENERATED VPS SSH -->

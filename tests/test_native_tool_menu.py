@@ -28,12 +28,13 @@ class NativeToolMenuTests(unittest.TestCase):
         return result.stdout.splitlines()
 
     def menu(self):
+        # Parse the prefix once, then execute the real metadata block once.
+        # Whole-file regex collection used to duplicate future metadata additions.
+        prefix, metadata = self.setup.split("# Native migration metadata overrides older Docker descriptions only.\n", 1)
         names = []
-        for array in re.findall(r"^TOOL_KEYS\+?=\(([^\n]*)\)", self.setup, re.M):
+        for array in re.findall(r"^TOOL_KEYS\+?=\(([^\n]*)\)", prefix, re.M):
             names.extend(shlex.split(array))
-        # These entries are assigned in the real metadata block below.
-        names = [name for name in names if name not in ("PyAirbyte", "GitOps_Bootstrap")]
-        block = self.setup.split("# Native migration metadata overrides older Docker descriptions only.\n", 1)[1].split("# Hauptschleife", 1)[0]
+        block = metadata.split("# Hauptschleife", 1)[0]
         sort = re.search(r"^sort_tool_menu_keys\(\) \{\n.*?^\}", self.setup, re.M | re.S).group()
         return ('source scripts/helpers/native_github_menu.sh\n'
                 'declare -A TOOLS=() TOOL_SCRIPT_NAMES=()\n'
@@ -86,6 +87,15 @@ class NativeToolMenuTests(unittest.TestCase):
         self.assertIn("Docker-API", labels[2])
         native_status = (ROOT / "scripts/helpers/native_tool_status.sh").read_text(encoding="utf-8")
         self.assertIn('NATIVE_TOOL_STATUS_KEYS+=("${NATIVE_GITHUB_TOOL_KEYS[@]}")', native_status)
+
+    def test_future_metadata_additions_are_registered_exactly_once_after_z(self):
+        self.setup = self.setup.replace('TOOL_KEYS+=("Markdown_Docs_Server")',
+                                        'TOOL_KEYS+=("Markdown_Docs_Server" "AAA_Future_Metadata_Fixture")')
+        result = self.shell(self.menu() + 'printf "%s\\n" "${TOOL_KEYS[@]}"')
+        self.assertEqual(result.count('Markdown_Docs_Server'), 1)
+        self.assertEqual(result.count('AAA_Future_Metadata_Fixture'), 1)
+        self.assertLess(result.index('Zotero'), result.index('Markdown_Docs_Server'))
+        self.assertLess(result.index('Markdown_Docs_Server'), result.index('AAA_Future_Metadata_Fixture'))
 
 
 if __name__ == "__main__":

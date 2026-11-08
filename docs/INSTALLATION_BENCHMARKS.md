@@ -1,5 +1,12 @@
 # Installations-Benchmarks und editierbare Schätzwerte
 
+Neuer optionaler Ausbau: [separate WSL-Testdistribution](WSL_INSTALL_LAB.md) fuer
+Installieren, vollstaendigen nativen GitHub-Build, lokale Pruefung und Deinstallieren.
+Standardmaessig nur Offline-Plan; keine Docker-Installation und kein Eingriff in die persoenliche Distro.
+Noch keine echte WSL-Abnahme und nicht fuer alle Tools ein ausfuehrbarer Lifecycle-Adapter.
+Auch auf [normalem Linux](LINUX_INSTALL_LAB.md) planbar und explizit startbar; Zeit-/Platzwerte
+werden als portables Messwert-Backup gesichert und koennen in den bestehenden Workspace-Backup-Pfad importiert werden.
+
 Das Setup enthält jetzt eine editierbare Datei für Installations-Schätzwerte und Platzbedarf:
 
 - `~/.openclaw_ultimate_user_data/setup_metrics.conf`

@@ -12,6 +12,8 @@ Unbekannt/experimental/optional wird ohne weiteren Beleg planned; vorhandene sta
 Zielhinweis aus check_value ist kein verifizierter Installationspfad.
 Fehlendes Mapping beweist nicht das Fehlen einer Funktion im Installer.
 Quellenadressen sind deklarierte Metadaten als Code-Text, keine abgeschlossene Online-/Lizenzpruefung.
+Jede solche Quellenadresse bleibt eine unverifizierte Originalreferenz;
+vorhandene Abrufbelege und Original-URLs bleiben erhalten.
 
 | Eintrag / Reviewklasse | Registry-Status | Install-Skript / Zielhinweis | Abhaengigkeiten | Ports | Ressourcenklasse | Check / Health / Smoke / Version / Logs | Uninstall | Test / Reife | Risiko | Quelle / Lizenz / Wartung |
 |---|---|---|---|---|---|---|---|---|---|---|

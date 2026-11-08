@@ -1,7 +1,7 @@
 # Native statt Docker: Rollback und Ubuntu-Releasewechsel
 
-Stand: 2026-10-27. Geltungsbereich dieser Matrix sind die **49 Eintraege** in
-`config/docker_to_github.json`: 45 implementierte native Buildrezepte und vier ausdruecklich
+Stand: 2026-11-05. Geltungsbereich dieser Matrix sind die **53 Eintraege** in
+`config/docker_to_github.json`: 49 implementierte native Buildrezepte und vier ausdruecklich
 blockierte Gesamtplattformen. Andere Installer-Engines und Ansible- Deployments brauchen ihre
 eigenen Nachweise; diese Matrix behauptet keine vollstaendige Rollback-Abnahme aller Werkzeuge des
 Gesamtkatalogs.
@@ -55,6 +55,7 @@ keine Behauptung, dass der Build-Installer diese Dienste startet.
 | `changedetection_io` | A / B                  | Watch-Daten, Historie, Browser- und Benachrichtigungskonfiguration               |
 | `crowdsec`           | A / B                  | Lokale Datenbank, Collections, Bouncer-Keys und Firewallwirkung                  |
 | `directus`           | A / B                  | DB-Dump, Uploads, Extensions und Schema-Migrationsstand                          |
+| `ffmpeg`             | A / B                  | Audio-/Videoprojekte, Originalmedien und Exportprofile erhalten; alte /opt-Builds und globale Symlinks nicht entfernen |
 | `forgejo`            | A / B                  | Repositories, Datenbank, LFS, SSH-Keys; offizielle Codeberg-Ausnahme             |
 | `grafana`            | A / B                  | Datenbank, Plugins, Provisioning und Dashboards                                  |
 | `grafana_alloy`      | A / B                  | Konfiguration, WAL/Queues, Beyla-Assets und alte Unit                            |
@@ -86,10 +87,16 @@ keine Behauptung, dass der Build-Installer diese Dienste startet.
 | `vikunja`            | A / B                  | DB-Dump, Dateien und JWT-/Session-Konfiguration                                  |
 | `watchtower`         | A / B                  | Alter Containerbestand; archiviertes Tool aktualisiert keine nativen Builds      |
 | `weaviate`           | A / B                  | Konsistentes Backup der Collections, Module und Cluster-Konfiguration            |
+| `xerj`               | A / B                  | Lokale Indizes, Corpus-Daten und Konfiguration separat sichern; Reinstall startet weder Server noch Hub-Synchronisation |
 | `zigbee2mqtt`        | A / B                  | data/, Coordinator-Backup, Netzwerk-Keys; kein Funkreset                         |
 | `pyairbyte`          | A / B                  | Lokale SDK-Projekte, Datenquellen und Konnektorzustand; kein Airbyte-Core-Ersatz |
 
 ## Abnahme auf einem neuen Ubuntu-Release
+
+| Tool-ID | Wiederherstellung | Zu erhaltender Zustand |
+|---|---|---|
+| `argocd_cli` | A / B | Nur private CLI-Builds; kubeconfig/ArgoCD-Kontext separat sichern, kein Cluster-Apply oder Server-Restore durch CLI-Reinstall |
+| `cloudflared` | A / B | Native CLI getrennt von Tunnel-Credentials/Config sichern; kein Login, Tokenzugriff oder Tunnelstart beim Wiederaufbau |
 
 1. Aktuellen Setup-Commit, Rezept-Pin, Betriebssystem, Architektur und Toolchains erfassen.
 2. Bestehende Anwendung und Daten anwendungskonsistent sichern; Restore separat testen.

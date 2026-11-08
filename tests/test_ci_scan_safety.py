@@ -6,12 +6,17 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class CIScanSafety(unittest.TestCase):
-    def test_public_signing_digest_still_guards_download(self):
-        for name in ('ansible/vps_bootstrap.yml', 'docs/PRODUCTION_BASELINE_CODE.md'):
-            text = (ROOT / name).read_text(encoding='utf-8')
-            self.assertIn("docker_key_sha256 | default('1500c1f56fa9e26b9b8f42452a553675796ade0807cdce11975eb98170b3a570')", text)
-            self.assertIn('docker_signing_sha256:', text)
-            self.assertIn('checksum: "sha256:{{ docker_signing_sha256 }}"', text)
+    def test_native_host_bootstrap_cannot_reintroduce_docker_installation(self):
+        playbook = (ROOT / 'ansible/vps_bootstrap.yml').read_text(encoding='utf-8')
+        for forbidden in ('download.docker.com', 'docker-ce', 'docker-compose-plugin', 'groups: docker'):
+            self.assertNotIn(forbidden, playbook)
+        self.assertIn('name: [ca-certificates, curl, git, make, ufw, openssh-server, python3]', playbook)
+        self.assertIn('bootstrap_dedicated_host_confirmed | bool', playbook)
+        self.assertIn('bootstrap_key_access_confirmed | bool', playbook)
+        historical = (ROOT / 'docs/PRODUCTION_BASELINE_CODE.md').read_text(encoding='utf-8')
+        self.assertIn('Historischer Code-Snapshot, keine aktuelle Copy-Paste-Installationsempfehlung.', historical)
+        self.assertIn('aus dem aktuellen Playbook entfernt', historical)
+        self.assertIn('checksum: "sha256:{{ docker_signing_sha256 }}"', historical)
 
     def test_source_pin_and_marker_checks_are_preserved(self):
         text = (ROOT / 'scripts/tools/helpers/freellmapi_common.sh').read_text(encoding='utf-8')

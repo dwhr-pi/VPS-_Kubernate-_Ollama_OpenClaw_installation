@@ -12,7 +12,10 @@ TARGET_DIR="${BACKUP_ROOT}/${STAMP}"
 mkdir -p "$BACKUP_ROOT"
 mkdir -m 700 "$TARGET_DIR"
 # Retain an explicit incomplete marker across errors, interruption and host crashes.
-(umask 077; printf '%s\n' 'Local copy; not encrypted or restore-verified. Filename records completion.' >"$TARGET_DIR/.backup-incomplete")
+(
+  umask 077
+  printf '%s\n' 'Local copy; not encrypted or restore-verified. Filename records completion.' >"$TARGET_DIR/.backup-incomplete"
+)
 
 log_info "Erstelle lokales Backup unter: $TARGET_DIR"
 

@@ -26,6 +26,7 @@ Nur Repository-Metadaten, kein Nachweis installierter oder produktionsfaehiger P
 | 5432 | postgres |
 | 5678 | n8n |
 | 6333 | qdrant |
+| 6443 | k3s_api |
 | 7700 | meilisearch |
 | 7860 | stable_diffusion_webui_forge |
 | 8003 | airbyte |
@@ -40,6 +41,7 @@ Nur Repository-Metadaten, kein Nachweis installierter oder produktionsfaehiger P
 | 8099 | zigbee2mqtt |
 | 8123 | home_assistant |
 | 8188 | comfyui |
+| 8765 | markdown_docs_server |
 | 9000 | minio |
 | 9001 | minio_console |
 | 9010 | authentik_http |
@@ -50,4 +52,5 @@ Nur Repository-Metadaten, kein Nachweis installierter oder produktionsfaehiger P
 | 9998 | apache_tika |
 | 10000 | budibase |
 | 11434 | ollama |
+| 18789 | openclaw_gateway |
 | 19999 | netdata |

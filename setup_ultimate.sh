@@ -8,6 +8,20 @@
 #
 
 # Offline entry must run before language, workspace and runtime initialization.
+if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
+  case "${1:-}" in
+    --tools-json | --tool-plan)
+      HEADLESS_ROOT="$(cd -P -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+      if [[ "$1" == --tools-json && $# == 1 ]]; then
+        exec python3 -I -B "$HEADLESS_ROOT/scripts/tool_commands.py" list
+      elif [[ "$1" == --tool-plan && $# == 2 ]]; then
+        exec python3 -I -B "$HEADLESS_ROOT/scripts/tool_commands.py" show "$2"
+      fi
+      printf 'Erwartet: --tools-json oder --tool-plan TOOL_ID; keine Aktion ausgefuehrt.\n' >&2
+      exit 2
+      ;;
+  esac
+fi
 if [[ "${BASH_SOURCE[0]}" == "$0" && "${1:-}" == --dry-run ]]; then
   [[ $# == 1 ]] || {
     printf 'Dry-run akzeptiert keine weiteren Optionen.\n' >&2
@@ -217,7 +231,7 @@ EOF
 ensure_metrics_config() {
   ensure_user_workspace
   if [ ! -f "$METRICS_CONFIG_FILE" ]; then
-    cat >"$METRICS_CONFIG_FILE" <<'EOF'
+    python3 -I -B "$INSTALL_DIR/scripts/security/metrics_config.py" init --file "$METRICS_CONFIG_FILE" --apply <<'EOF'
 # Editierbare Schätz- und Testwerte für dieses Setup
 # Stand: Letsung MiniPC Testziel mit Windows 11 original + Ubuntu 24.04 LTS in WSL2
 
@@ -335,21 +349,30 @@ STRICT_GITHUB_TOOL_SOURCES="false"
 ALLOW_NON_GITHUB_TOOL_SOURCE="false"
 EOF
   fi
+  python3 -I -B "$INSTALL_DIR/scripts/security/metrics_config.py" check --file "$METRICS_CONFIG_FILE" >/dev/null
 }
 
 show_metrics_editor() {
-  ensure_metrics_config
-  if dialog --clear --backtitle "$APP_TITLE" \
-    --title "SETUP-MESSWERTE & BENCHMARKS" --editbox "$METRICS_CONFIG_FILE" 30 110 2>/tmp/metrics_config_edit; then
-    cp /tmp/metrics_config_edit "$METRICS_CONFIG_FILE"
+  local edited_metrics metrics_sha
+  ensure_metrics_config || return 1
+  metrics_sha="$(python3 -I -B "$INSTALL_DIR/scripts/security/metrics_config.py" check --file "$METRICS_CONFIG_FILE")" || return 1
+  if edited_metrics="$(dialog --stdout --clear --backtitle "$APP_TITLE" \
+    --title "SETUP-MESSWERTE & BENCHMARKS" --editbox "$METRICS_CONFIG_FILE" 30 110)"; then
+    # Capture dialog data in memory; never execute it or use a predictable temporary path.
+    printf '%s\n' "$edited_metrics" | python3 -I -B "$INSTALL_DIR/scripts/security/metrics_config.py" \
+      edit --file "$METRICS_CONFIG_FILE" --expected-sha "$metrics_sha" --apply || return 1
     echo -e "${GREEN}Die editierbaren Setup-Messwerte wurden aktualisiert.${NC}"
   fi
 }
 
 load_metrics_config() {
-  ensure_metrics_config
-  # shellcheck source=/dev/null
-  source "$METRICS_CONFIG_FILE"
+  local metrics_data metrics_key metrics_value
+  ensure_metrics_config || return 1
+  metrics_data="$(python3 -I -B "$INSTALL_DIR/scripts/security/metrics_config.py" read --file "$METRICS_CONFIG_FILE")" || return 1
+  while IFS=$'\t' read -r metrics_key metrics_value; do
+    [[ -n "$metrics_key" ]] || continue
+    printf -v "$metrics_key" '%s' "$metrics_value"
+  done <<<"$metrics_data"
   : "${LOCAL_SETUP_TOTAL_ESTIMATE:=$SETUP_INSTALL_TIME_ESTIMATE}"
   : "${LOCAL_SETUP_CONFIRM_STOP_1_ESTIMATE:=12-35 min}"
   : "${LOCAL_SETUP_CONFIRM_STOP_2_ESTIMATE:=18-45 min}"
@@ -937,7 +960,9 @@ get_tool_install_fallback_min_free_mb() {
     "Qwen_Desktop_Study") printf '2048' ;;
     "Hermes_Agent_Jarvis") printf '4096' ;;
     "MuseTalk") printf '20480' ;;
-    "Gradio" | "Streamlit" | "WanVideoWrapper" | "CogVideoX" | "LTX_Video" | "Video2Dataset" | "LivePortrait" | "SadTalker" | "RVC" | "UVR5" | "Audacity" | "OBS") printf '2048' ;;
+    "OpenUtau" | "DiffSinger" | "Seed_VC" | "Gradio" | "Streamlit" | "WanVideoWrapper" | "CogVideoX" | "LTX_Video" | "Video2Dataset" | "LivePortrait" | "SadTalker" | "RVC" | "UVR5" | "Audacity" | "OBS") printf '2048' ;;
+    "XERJ") printf '16384' ;;
+    "FFmpeg") printf '8192' ;;
     "Concat") printf '2048' ;;
     "Remotion") printf '16384' ;;
     "HyperFrames") printf '12288' ;;
@@ -1115,7 +1140,6 @@ end_operation_measurement() {
   local duration_seconds
   local delta_kb
   local metric_prefix
-  local tmp_metrics_file
   local tmp_metrics_summary_file
 
   [ -n "${ACTIVE_OPERATION_STARTED_AT:-}" ] || return 0
@@ -1151,10 +1175,8 @@ end_operation_measurement() {
   fi
   invalidate_metric_cache
 
-  ensure_metrics_config
+  ensure_metrics_config || return 1
   metric_prefix="LAST_$(operation_id_to_metric_prefix "${ACTIVE_OPERATION_ID:-unknown}")"
-  tmp_metrics_file="$(mktemp)"
-  grep -Ev "^${metric_prefix}_(TIMESTAMP|STATUS|DURATION_SECONDS|FREE_KB_BEFORE|FREE_KB_AFTER|FREE_GB_BEFORE|FREE_GB_AFTER|DELTA_KB)=" "$METRICS_CONFIG_FILE" >"$tmp_metrics_file" || true
   {
     printf '\n# Letzte Messung fuer %s\n' "${ACTIVE_OPERATION_TITLE:-Unbekannt}"
     printf '%s_TIMESTAMP="%s"\n' "$metric_prefix" "$(date '+%Y-%m-%d %H:%M:%S')"
@@ -1165,8 +1187,7 @@ end_operation_measurement() {
     printf '%s_FREE_GB_BEFORE="%s"\n' "$metric_prefix" "$((${ACTIVE_OPERATION_FREE_KB_BEFORE:-0} / 1024 / 1024))"
     printf '%s_FREE_GB_AFTER="%s"\n' "$metric_prefix" "$((${free_kb_after:-0} / 1024 / 1024))"
     printf '%s_DELTA_KB="%s"\n' "$metric_prefix" "$delta_kb"
-  } >>"$tmp_metrics_file"
-  mv "$tmp_metrics_file" "$METRICS_CONFIG_FILE"
+  } | python3 -I -B "$INSTALL_DIR/scripts/security/metrics_config.py" merge --file "$METRICS_CONFIG_FILE" --apply || return 1
 
   echo -e "${YELLOW}Messwert gespeichert:${NC} ${ACTIVE_OPERATION_TITLE:-Unbekannt} | Status: $operation_status | Dauer: ${WHITE}$(format_duration_human "$duration_seconds")${NC} | Speicher vorher: $(format_kb_human "${ACTIVE_OPERATION_FREE_KB_BEFORE:-0}") | Speicher nachher: $(format_kb_human "${free_kb_after:-0}") | Speicheränderung: $(format_kb_human "$delta_kb")"
   echo -e "${YELLOW}Messwert in Config aktualisiert:${NC} ${METRICS_CONFIG_FILE}"
@@ -2298,11 +2319,15 @@ show_options_menu() {
       "18" "Abhängigkeiten-/Speicher-Snapshot erstellen" \
       "19" "Verschluesselter ENV-Tresor / Zugangsdaten verwalten" \
       "20" "Installations-Reset / alte Sperren freigeben (datenerhaltend)" \
-      "21" "Installationsstatus / Programmliste exportieren und wiederherstellen" 2>/tmp/options_choice; then
+      "21" "Installationsstatus / Programmliste exportieren und wiederherstellen" \
+      "22" "Offline-Handbuch / Markdownserver einrichten und lesen" 2>/tmp/options_choice; then
       return 0
     fi
 
     case "$(cat /tmp/options_choice)" in
+      22)
+        run_bash_script "$INSTALL_DIR/scripts/markdown_docs_server_menu.sh"
+        ;;
       21)
         run_bash_script "$INSTALL_DIR/scripts/installation_inventory_menu.sh"
         ;;
@@ -3575,6 +3600,7 @@ run_tool_script() {
   local tool_key="$1"
   local action="$2"
   local script_name="${TOOL_SCRIPT_NAMES[$tool_key]}"
+  local -a tool_args=()
 
   if [ -z "$script_name" ]; then
     echo -e "${RED}Fehler: Kein Skript-Mapping für Tool '$tool_key' gefunden.${NC}"
@@ -3585,10 +3611,14 @@ run_tool_script() {
     return 1
   fi
 
+  # Only the interactive setup opts into the documentation approval dialog.
+  if [[ "$tool_key" == Markdown_Docs_Server && "$action" =~ ^(install|update)$ ]]; then
+    tool_args+=(--interactive)
+  fi
   if [ "$action" = "install" ]; then
-    run_bash_script "$INSTALL_DIR/scripts/tools/run_install_transaction.sh" "$tool_key" "$INSTALL_DIR/scripts/tools/${script_name}_${action}.sh"
+    run_bash_script "$INSTALL_DIR/scripts/tools/run_install_transaction.sh" "$tool_key" "$INSTALL_DIR/scripts/tools/${script_name}_${action}.sh" "${tool_args[@]}"
   else
-    run_bash_script "$INSTALL_DIR/scripts/tools/${script_name}_${action}.sh"
+    run_bash_script "$INSTALL_DIR/scripts/tools/${script_name}_${action}.sh" "${tool_args[@]}"
   fi
 }
 
@@ -4066,7 +4096,7 @@ show_tool_management_menu() {
   tool_menu_started_at="$(date +%s)"
   tool_menu_free_kb_before="$(get_free_disk_kb)"
   TOOL_BATCH_ABORT_REQUESTED=0
-  sort_tool_menu_keys || return 1
+  sort_tool_menu_keys "${INSTALL_DIR:-.}/config/tool_menu_sorted_baseline.txt" || return 1
   sync_core_tool_status
   ensure_user_workspace
   normalize_status_file "$TOOL_STATUS_FILE" "${TOOL_KEYS[@]}"
@@ -4683,8 +4713,9 @@ show_development_toolchain_check() {
   while true; do
     action=$(dialog --clear --backtitle "$APP_TITLE" --title "62 Werkzeugquellen: Installation und Pruefung" \
       --menu "GitHub-basierte Builds/Pakete ohne Docker. Ein Werkzeug pro Vorgang.\nKeine Dienste, Cluster, CI-Workflows oder Editor-Erweiterungen automatisch aktivieren." \
-      20 100 7 \
+      22 100 8 \
       check "Alle 62 Quellen lokal vorpruefen" \
+      rust "Cargo + rustc: private Build-Basis erstmals einrichten" \
       plan "Installationsplan / Voraussetzungen eines Werkzeugs" \
       install "Ein Werkzeug bauen oder Paket bereitstellen" \
       status "Installationsnachweis eines Werkzeugs pruefen" \
@@ -4694,6 +4725,25 @@ show_development_toolchain_check() {
     [[ "$action" == back ]] && return 0
     if [[ "$action" == check ]]; then
       show_development_toolchain_report || true
+      continue
+    fi
+    if [[ "$action" == rust ]]; then
+      report="$(mktemp "${TMPDIR:-/tmp}/openclaw-rust-plan.XXXXXX")" || return 1
+      if run_bash_script "$INSTALL_DIR/scripts/install_rust_build_tools.sh" plan >"$report" 2>&1; then
+        rc=0
+      else
+        rc=$?
+      fi
+      dialog --title "Cargo/Rust: Bootstrap-Plan (Exit $rc)" --textbox "$report" 24 100 || true
+      rm -f -- "$report"
+      ((rc == 0)) || continue
+      dialog --defaultno --yes-label "Ja" --no-label "Nein" --yesno \
+        "Cargo und rustc privat herunterladen/einrichten?\nBereits genehmigte Basis-Toolchain-Ausnahme: offizielle Rust-Downloads, gepinnter Bootstrap mit SHA256.\nKein apt, sudo, Docker, globaler PATH-Wechsel oder Anwendungsbuild. Mindestens 6 GiB freier Speicher.\nGemeinsame Compiler bleiben bei App-Deinstallation erhalten." 14 100 || continue
+      command=("$INSTALL_DIR/scripts/install_rust_build_tools.sh" install --apply)
+      report="$(mktemp "${TMPDIR:-/tmp}/openclaw-rust-result.XXXXXX")" || return 1
+      if run_bash_script "${command[@]}" >"$report" 2>&1; then rc=0; else rc=$?; fi
+      dialog --title "Cargo/Rust: Einrichtung (Exit $rc)" --textbox "$report" 30 110 || true
+      rm -f -- "$report"
       continue
     fi
     tool_options=()
@@ -4816,6 +4866,10 @@ show_main_menu() {
 }
 
 # Native migration metadata overrides older Docker descriptions only.
+TOOL_SCRIPT_NAMES["ArgoCD_CLI"]="argocd_cli"
+TOOL_SCRIPT_NAMES["Cloudflared"]="cloudflared"
+TOOLS["ArgoCD_CLI"]="Nativer GitHub-CLI-Quellbuild; kein Serverstart oder Cluster-Apply. Laufzeitabnahme offen."
+TOOLS["Cloudflared"]="Nativer GitHub-CLI-Quellbuild; kein Login, Tokenzugriff oder Tunnelstart. Laufzeitabnahme offen."
 TOOL_SCRIPT_NAMES["Traefik"]="traefik"
 TOOLS["Traefik"]="Nativer GitHub-Headless-Quellbuild; Dashboard aus, lokaler Ingress/TLS separat und bewusst einrichten."
 TOOL_KEYS+=("GitOps_Bootstrap")
@@ -4830,8 +4884,26 @@ TOOLS["OpenTelemetry"]="GitHub-Core-Collector-Quellbuild ohne Docker oder Dienst
 TOOLS["AutoGPT"]="OFFEN: AutoGPT Platform hat noch keinen abgenommenen nativen Gesamtbuild; kein Docker-Fallback."
 TOOLS["Supabase"]="OFFEN: native Gesamtplattform samt Datenbank/Auth/Storage noch nicht abgenommen; kein Docker-Fallback."
 TOOL_KEYS+=("PyAirbyte")
+TOOL_KEYS+=("Markdown_Docs_Server")
+TOOL_SCRIPT_NAMES["Markdown_Docs_Server"]="markdown_docs_server"
+TOOLS["Markdown_Docs_Server"]="Offline-Handbuch mit Suche und Themenmenue; GitHub-Quellen, nur 127.0.0.1, kein Autostart. docs/tools/markdown-docs-server.md"
 TOOLS["PyAirbyte"]="Separates GitHub-Python-SDK; kein Airbyte-Core-Ersatz. docs/DOCKER_TO_GITHUB.md"
 TOOL_SCRIPT_NAMES["PyAirbyte"]="pyairbyte"
+TOOL_SCRIPT_NAMES["XERJ"]="xerj"
+TOOLS["XERJ"]="Optionale lokale Code-/Dokumentsuche: GitHub-Rust-Build ohne Docker, Modell-/Server-/MCP-/Hub-Start. docs/tools/xerj.md"
+for audio_tool in OpenUtau DiffSinger Seed_VC; do
+  if [[ " ${TOOL_KEYS[*]} " != *" $audio_tool "* ]]; then
+    TOOL_KEYS+=("$audio_tool")
+  fi
+done
+TOOL_SCRIPT_NAMES["OpenUtau"]="openutau"
+TOOL_SCRIPT_NAMES["DiffSinger"]="diffsinger"
+TOOL_SCRIPT_NAMES["Seed_VC"]="seed_vc"
+TOOLS["OpenUtau"]="Gepinnte GitHub-Quellen fuer Arrangement; kein GUI-/Headless-Render-Build. docs/tools/local-audio-chain.md"
+TOOLS["DiffSinger"]="Gepinnte GitHub-Quellen fuer Gesangssynthese; Runtime/Modelle separat, kein Inferenzstart. docs/tools/local-audio-chain.md"
+TOOLS["Seed_VC"]="Gepinnte GitHub-Quellen fuer Timbre-Konvertierung; keine Modelle/Inference. docs/tools/local-audio-chain.md"
+TOOLS["FFmpeg"]="Privater gepinnter GitHub-CPU-Build fuer Audio; alte /opt-/PATH-Installation bleibt erhalten. docs/tools/local-audio-chain.md"
+TOOL_SCRIPT_NAMES["FFmpeg"]="ffmpeg"
 TOOLS["Airbyte"]="Native Umstellung OFFEN; kein Docker-Fallback. docs/DOCKER_TO_GITHUB.md"
 TOOL_SCRIPT_NAMES["Airbyte"]="airbyte"
 TOOLS["Apache_Tika"]="GitHub-Source-Build ohne Image-Installation; kein Dienststart. docs/DOCKER_TO_GITHUB.md"

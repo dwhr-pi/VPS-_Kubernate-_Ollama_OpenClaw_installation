@@ -38,7 +38,7 @@ class PlatformNavigation(unittest.TestCase):
         self.assertEqual(len(fixture), 45)
         self.assertEqual([row['title'] for row in fixture], headings(archive))
         anchors = re.findall(r'<a id="([^"]+)"></a>', root)
-        self.assertEqual(anchors, [row['anchor'] for row in fixture])
+        self.assertEqual(anchors, ['deklarativer-pruefpfad'] + [row['anchor'] for row in fixture])
         self.assertEqual(len(anchors), len(set(anchors)))
         for row in fixture:
             # These historical headings use letters, marks, spaces, underscores and hyphens.

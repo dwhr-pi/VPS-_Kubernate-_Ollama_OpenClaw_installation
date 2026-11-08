@@ -1,4 +1,4 @@
-"""Consent-gated official Rust prerequisite in LiteLLM's private toolchain tree."""
+"""Consent-gated official Rust prerequisite; no system/default/PATH changes."""
 import hashlib
 import json
 import os
@@ -15,6 +15,7 @@ import litellm_rust as rust
 import webinar_releases as releases
 
 MANAGER_VERSION = '1.29.2'
+SUPPORTED = ('litellm', 'xerj', 'cargo_build_tools')
 ARTIFACTS = {
     'linux-amd64': ('x86_64-unknown-linux-gnu', 21139856,
                     '5be191e8c70a5007074254cb74d78dbfdd25cd5a61c27de7b8e5410122ec24f4'),
@@ -77,24 +78,36 @@ def existing(base):
 
 
 def prepare(base, spec, approved=False):
-    if spec['id'] != 'litellm':
+    if spec['id'] not in SUPPORTED:
         return None
+    label = spec.get('name', spec['id'])
+    retry = ('bash scripts/install_rust_build_tools.sh install --apply'
+             if spec['id'] == 'cargo_build_tools' else
+             'bash scripts/tools/' + spec['id'] + '_install.sh --install-build-deps')
     # Explicit user paths must never be silently replaced, even on download consent.
     if os.environ.get('NATIVE_SOURCE_RUST_TOOLCHAIN'):
         return rust.select(base)
     private = existing(base)
     if private:
-        print('LiteLLM: gepruefte private Rust-Basis wiederverwendet:', private)
+        print(label + ': gepruefte private Rust-Basis wiederverwendet:', private)
         return private
-    try:
-        return rust.select(base)
-    except ValueError:
-        pass
+    if spec['id'] in ('litellm', 'xerj'):
+        shared = common.checked(base.parent / 'cargo_build_tools')
+        if shared.exists():
+            private = existing(shared)
+            if private:
+                print(label + ': gepruefte gemeinsame Cargo/Rust-Basis:', private)
+                return private
+    if spec['id'] != 'cargo_build_tools':
+        try:
+            return rust.select(base)
+        except ValueError:
+            pass
     slot, triple, size, digest = location(base)
-    print('LiteLLM: Rust ' + rust.VERSION + ' fehlt. Private Basis moeglich; keine System-/Default-/PATH-Aenderung.')
+    print(label + ': Rust ' + rust.VERSION + ' fehlt. Private Basis moeglich; keine System-/Default-/PATH-Aenderung.')
     print('Quelle: static.rust-lang.org; rustup-init ' + MANAGER_VERSION + ', feste SHA256; Rust ' + rust.VERSION + '.')
     print('Ziel:', slot, '; 2048 MiB Puffer zusaetzlich zur Toolreserve. Basis bleibt bei App-Deinstallation erhalten.')
-    print('Gezielt erneut starten: bash scripts/tools/litellm_install.sh --install-build-deps', flush=True)
+    print('Gezielt erneut starten: ' + retry, flush=True)
     if not approved and sys.stdin.isatty():
         print('Rust jetzt privat herunterladen/einrichten? [j/N]', flush=True)
         print('Warte auf Ihre Eingabe und Enter. Nur [j/ja/y/yes] erlaubt die Aktion; Nur [Enter] bedeutet: Nein.', flush=True)
@@ -103,7 +116,7 @@ def prepare(base, spec, approved=False):
         except EOFError:
             approved = False
     if not approved:
-        raise ValueError('LiteLLM: privater Rust-Download nicht freigegeben. ' + rust.GUIDANCE)
+        raise ValueError(label + ': privater Rust-Download nicht freigegeben. ' + retry)
     common.reserve(base, {'reserve_mb': spec['recipe']['disk_mb'] + 2048})
     slot.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
     stage = common.checked(Path(tempfile.mkdtemp(prefix='rust-bootstrap-', dir=slot.parent)))
@@ -136,7 +149,7 @@ def prepare(base, spec, approved=False):
         with (slot / 'rust-ready.json').open('x', encoding='utf-8') as stream:
             os.chmod(slot / 'rust-ready.json', 0o600)
             json.dump(record, stream)
-        print('Private Rust-Basis erfolgreich geprueft; noch kein erfolgreicher LiteLLM-Build.', flush=True)
+        print('Private Rust-/Cargo-Basis erfolgreich geprueft; noch kein erfolgreicher Anwendungsbuild.', flush=True)
         return root
     except BaseException:
         if published:

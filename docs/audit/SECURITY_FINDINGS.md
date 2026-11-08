@@ -10,7 +10,7 @@ Die datierten Einzelbefunde unten bleiben erhalten; aktuelle Einordnung:
 | SEC-002 | Registry-Dispatcher und Traversal-Fixtures | Alle toolweisen Lifecycle-Pfade, Konkurrenzschutz |
 | SEC-003 | Begrenzte synthetische Backup-Transporte | Echter age-/Datenbank-/PVC-Restore |
 | SEC-004 | Redigierte Scanner-/Fehlerbehandlung vorhanden | Vollstaendige Historien-Triage und Credential-Rotation |
-| SEC-005 | `setup_ultimate.sh:343-352`: feste Temp-Datei und anschliessendes `source` weiterhin sichtbar | Privater Dialogzustand und nicht ausfuehrbarer Datenparser |
+| SEC-005 | Messwerte-Loader/Editor und zwei Schreiber auf literalen, atomaren Lock-Pfad umgestellt | Echte POSIX-/UI-Abnahme; weitere feste Dialog-/Source-Pfade bleiben offen |
 | SEC-006 | Neuer privater atomischer ENV-Helfer, keine Repo-ENV-Neuausgabe | Bestehende Service-Secrets trennen, keine automatische Nutzdatenmigration |
 | SEC-007 | Keep-/Retention-Metadaten vorhanden | Wirklicher Helm-/Storage-Restore auf Wegwerfcluster |
 | SEC-008 | `backup_user_workspace.sh`: nur Zeitpunktcheck der Installationssperre | Gemeinsames ueber die gesamte Sicherung gehaltenes Lock |
@@ -24,6 +24,8 @@ Erwartung: Fehler vor Adoption/Loeschung, Nutzdateien und Marker erhalten. Codeb
 Aufwand: kleiner P1-Patch, keine neue Laufzeitabhaengigkeit. Abnahme:
 `tests/test_coding_profile_metadata.py` und bestehende Profiltests.
 Breaking Change/Rollback: [Profil-Dateisicherheit](../agents/PROFILE_FILE_SECURITY.md).
+
+SEC-005-Folgepatch und Grenzen: [Messwerte als Daten](../P0_METRICS_DATA.md).
 
 F01-F07- und Architektur-Patches sind im Arbeitsstand enthalten, keine Live-Reparatur:
 [Schutzpfade und Grenzen](../F01_F07_IMPLEMENTATION.md),

@@ -7,8 +7,6 @@ produktionsreif.
 
 ## Hier beginnen
 
-<<<<<<< Updated upstream
-=======
 [Infrastrukturreview vom 07.11.2026](INFRASTRUCTURE_REVIEW_2026-11-07.md):
 priorisierte Befunde, drei begrenzte Monitoring-/MCP-/Retry-Patches und offene Runtime-Abnahmen.
 
@@ -44,7 +42,6 @@ Markdownserver**; kein Start oder Download allein durch Oeffnen des Settings-Men
 [Installationsmessungen](INSTALLATION_BENCHMARKS.md): getrennte Testumgebungen fuer
 [Linux](LINUX_INSTALL_LAB.md) und [WSL](WSL_INSTALL_LAB.md), Messwert-Export und Restore.
 
->>>>>>> Stashed changes
 Im Setup oeffnet **Hauptmenue 10 - Dokumentation & API-Key Guide** jetzt sechs kurze Themen:
 Einstieg, Architektur, Betrieb, Sicherheit, Tools/API-Keys und Historie. Erst danach ein Dokument waehlen.
 Enter oeffnet die markierte Auswahl; Zurueck/Esc geht eine Ebene zurueck. Im Textfenster kehrt

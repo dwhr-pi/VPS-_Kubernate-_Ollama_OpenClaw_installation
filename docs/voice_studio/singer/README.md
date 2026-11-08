@@ -3,6 +3,12 @@
 Bereich fuer RVC, Seed-VC, DiffSinger, OpenUtau, NNSVS und Singer-Training. Alle Workflows sind
 einwilligungspflichtig und GPU-lastig.
 
+[Lokale Audio-Chain: Installationsumfang, SSH und KI-Planung](../../tools/local-audio-chain.md).
+Native GitHub-Quellen bleiben der Standard. Docker ist gesondert als noch nicht
+abgenommener Betriebsentwurf beschrieben, kein Installations-Fallback.
+OpenUtau/DiffSinger/Seed-VC haben jetzt echte gepinnte Quell-Lifecycle-Pfade;
+Quellen sind weiterhin kein fertiger Renderer. Der neue MCP-Einstieg plant nur.
+
 ## Ressourcenklassen
 
 | Klasse             | CPU         | RAM       | VRAM     | Speicherplatz | Nutzung                              |

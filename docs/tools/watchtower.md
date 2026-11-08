@@ -72,3 +72,83 @@ Quellpruefung:
 [Cobra-Einstieg](https://github.com/containrrr/watchtower/blob/ca0e86e824ec05389ab972ea97d04d4bf0476e90/cmd/root.go),
 [registrierte Flags](https://github.com/containrrr/watchtower/blob/ca0e86e824ec05389ab972ea97d04d4bf0476e90/internal/flags/flags.go).
 Siehe auch [Docker-zu-GitHub-Migration](../DOCKER_TO_GITHUB.md).
+
+<!-- BEGIN GENERATED VPS SSH -->
+
+## VPS ueber SSH bedienen
+
+Voraussetzung: ein bereits gepruefter Setup-Checkout und ein selbst eingerichteter
+SSH-Alias `vps` (Benutzer, Host und Schluessel in deiner SSH-Konfiguration).
+Alternativ `vps` durch `BENUTZER@VPS_HOST` ersetzen. Den Host-Fingerprint vorher
+unabhaengig pruefen; keine Host-Key-Pruefung abschalten. Keine Zugangsdaten in Git.
+
+Auf deinem Client (PowerShell, Linux oder macOS):
+
+```bash
+ssh -t vps
+```
+
+Danach **im Linux-Terminal des VPS**. Den Pfad bei einem Branch-Checkout anpassen;
+ein Windows-/Desktop-Tool wird durch SSH nicht zu einer VPS-Anwendung:
+
+```bash
+cd "$HOME/openclaw_ultimate_setup" || exit 1
+test -f scripts/tool_commands.py || exit 1
+```
+
+Zuerst nur den Offline-Plan lesen (keine Installation und kein Dienststart):
+
+```bash
+python3 -I -B scripts/tool_commands.py show watchtower
+```
+
+### SSH-Aktionen: `watchtower`
+
+Status und Diagnose lesen den privaten Tool-Zustand auf dem VPS:
+
+```bash
+python3 -I -B scripts/tool_commands.py run watchtower --action status
+python3 -I -B scripts/tool_commands.py run watchtower --action doctor
+```
+
+Die folgenden Befehle **einzeln und nur nach Freigabe** ausfuehren, nicht als
+gemeinsamen Ablauf: Installation, spaeter Update oder bewusst Deinstallation.
+Vorher Quellen, Lizenz, Ressourcen und Daten-Erhaltungsregeln dieser Anleitung pruefen.
+
+Installieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run watchtower --action install --apply --confirm watchtower:install
+```
+
+Aktualisieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run watchtower --action update --apply --confirm watchtower:update
+```
+
+Deinstallieren (separate Entscheidung):
+
+```bash
+python3 -I -B scripts/tool_commands.py run watchtower --action uninstall --apply --confirm watchtower:uninstall
+```
+
+Fehlende Build-Abhaengigkeiten stoppen den Versuch. Nur fuer Install/Update
+`--install-build-deps` nach separater Download-Freigabe ergaenzen. Kein Auto-Yes,
+kein Docker-Fallback; Source-Build/Status ist keine erfolgreiche Runtime-Abnahme.
+
+Das interaktive Setup bleibt nach bewusster Freigabe im SSH-Terminal erreichbar:
+
+```bash
+bash setup_ultimate.sh
+```
+
+Keine automatische Installation, kein Browser-/Modell-/Produktivdienststart durch diese Dokumentation.
+Nach jedem bewusst ausgefuehrten Befehl den Exitcode unmittelbar mit `echo $?` pruefen;
+zum Verlassen des VPS-Terminals `exit` verwenden.
+
+[SSH-Voraussetzungen und Sicherheitsgrenzen](../HEADLESS_SETUP.md) | [Befehle aller registrierten Tools](../generated/HEADLESS_TOOL_COMMANDS.md)
+
+Dieser Abschnitt wird aus der Registry erzeugt. Pflege: `python3 -I -B scripts/quality/tool_ssh_docs.py --write`.
+
+<!-- END GENERATED VPS SSH -->

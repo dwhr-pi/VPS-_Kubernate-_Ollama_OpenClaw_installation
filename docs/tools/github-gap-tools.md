@@ -208,3 +208,203 @@ Schluessel fuer den Build eingeben.
 
 Die Integration wird offline getestet. Vollstaendige Linux-/Windows-Builds, GUI-Funktion und
 GPU-Ablaeufe muessen auf dem Zielsystem separat abgenommen werden.
+
+<!-- BEGIN GENERATED VPS SSH -->
+
+## VPS ueber SSH bedienen
+
+Voraussetzung: ein bereits gepruefter Setup-Checkout und ein selbst eingerichteter
+SSH-Alias `vps` (Benutzer, Host und Schluessel in deiner SSH-Konfiguration).
+Alternativ `vps` durch `BENUTZER@VPS_HOST` ersetzen. Den Host-Fingerprint vorher
+unabhaengig pruefen; keine Host-Key-Pruefung abschalten. Keine Zugangsdaten in Git.
+
+Auf deinem Client (PowerShell, Linux oder macOS):
+
+```bash
+ssh -t vps
+```
+
+Danach **im Linux-Terminal des VPS**. Den Pfad bei einem Branch-Checkout anpassen;
+ein Windows-/Desktop-Tool wird durch SSH nicht zu einer VPS-Anwendung:
+
+```bash
+cd "$HOME/openclaw_ultimate_setup" || exit 1
+test -f scripts/tool_commands.py || exit 1
+```
+
+Zuerst nur den Offline-Plan lesen (keine Installation und kein Dienststart):
+
+```bash
+python3 -I -B scripts/tool_commands.py show audacity
+python3 -I -B scripts/tool_commands.py show cogvideox
+python3 -I -B scripts/tool_commands.py show gradio
+python3 -I -B scripts/tool_commands.py show hermes_agent_jarvis
+python3 -I -B scripts/tool_commands.py show liveportrait
+python3 -I -B scripts/tool_commands.py show ltx_video
+python3 -I -B scripts/tool_commands.py show obs
+python3 -I -B scripts/tool_commands.py show qwen_desktop_build
+python3 -I -B scripts/tool_commands.py show sadtalker
+python3 -I -B scripts/tool_commands.py show streamlit
+python3 -I -B scripts/tool_commands.py show video2dataset
+python3 -I -B scripts/tool_commands.py show wanvideo_wrapper
+```
+
+### SSH-Aktionen: `audacity`
+
+Kein freigegebener unbeaufsichtigter Docker-freier Adapter. Der Plan nennt
+vorhandene Skriptpfade; diese nicht ungeprueft ausfuehren. Die
+tool-spezifischen Plattform-, Lizenz- und Laufzeitgrenzen oben gelten weiterhin.
+
+Fuer die interaktive Installation nach Pruefung `bash setup_ultimate.sh` im
+VPS-Terminal oeffnen, dort im Tool-Management das gewuenschte Tool
+`Audacity` (ID `audacity`) waehlen und die Einzelfreigaben lesen.
+Fehlt der Eintrag oder ist der native Weg gesperrt, hier stoppen: keine
+Legacy-/Docker-Ausweichinstallation und kein automatischer Plattformwechsel.
+
+### SSH-Aktionen: `cogvideox`
+
+Kein freigegebener unbeaufsichtigter Docker-freier Adapter. Der Plan nennt
+vorhandene Skriptpfade; diese nicht ungeprueft ausfuehren. Die
+tool-spezifischen Plattform-, Lizenz- und Laufzeitgrenzen oben gelten weiterhin.
+
+Fuer die interaktive Installation nach Pruefung `bash setup_ultimate.sh` im
+VPS-Terminal oeffnen, dort im Tool-Management das gewuenschte Tool
+`CogVideoX` (ID `cogvideox`) waehlen und die Einzelfreigaben lesen.
+Fehlt der Eintrag oder ist der native Weg gesperrt, hier stoppen: keine
+Legacy-/Docker-Ausweichinstallation und kein automatischer Plattformwechsel.
+
+### SSH-Aktionen: `gradio`
+
+Kein freigegebener unbeaufsichtigter Docker-freier Adapter. Der Plan nennt
+vorhandene Skriptpfade; diese nicht ungeprueft ausfuehren. Die
+tool-spezifischen Plattform-, Lizenz- und Laufzeitgrenzen oben gelten weiterhin.
+
+Fuer die interaktive Installation nach Pruefung `bash setup_ultimate.sh` im
+VPS-Terminal oeffnen, dort im Tool-Management das gewuenschte Tool
+`Gradio` (ID `gradio`) waehlen und die Einzelfreigaben lesen.
+Fehlt der Eintrag oder ist der native Weg gesperrt, hier stoppen: keine
+Legacy-/Docker-Ausweichinstallation und kein automatischer Plattformwechsel.
+
+### SSH-Aktionen: `hermes_agent_jarvis`
+
+Kein freigegebener unbeaufsichtigter Docker-freier Adapter. Der Plan nennt
+vorhandene Skriptpfade; diese nicht ungeprueft ausfuehren. Die
+tool-spezifischen Plattform-, Lizenz- und Laufzeitgrenzen oben gelten weiterhin.
+
+Fuer die interaktive Installation nach Pruefung `bash setup_ultimate.sh` im
+VPS-Terminal oeffnen, dort im Tool-Management das gewuenschte Tool
+`Hermes_Agent_Jarvis` (ID `hermes_agent_jarvis`) waehlen und die Einzelfreigaben lesen.
+Fehlt der Eintrag oder ist der native Weg gesperrt, hier stoppen: keine
+Legacy-/Docker-Ausweichinstallation und kein automatischer Plattformwechsel.
+
+### SSH-Aktionen: `liveportrait`
+
+Kein freigegebener unbeaufsichtigter Docker-freier Adapter. Der Plan nennt
+vorhandene Skriptpfade; diese nicht ungeprueft ausfuehren. Die
+tool-spezifischen Plattform-, Lizenz- und Laufzeitgrenzen oben gelten weiterhin.
+
+Fuer die interaktive Installation nach Pruefung `bash setup_ultimate.sh` im
+VPS-Terminal oeffnen, dort im Tool-Management das gewuenschte Tool
+`LivePortrait` (ID `liveportrait`) waehlen und die Einzelfreigaben lesen.
+Fehlt der Eintrag oder ist der native Weg gesperrt, hier stoppen: keine
+Legacy-/Docker-Ausweichinstallation und kein automatischer Plattformwechsel.
+
+### SSH-Aktionen: `ltx_video`
+
+Kein freigegebener unbeaufsichtigter Docker-freier Adapter. Der Plan nennt
+vorhandene Skriptpfade; diese nicht ungeprueft ausfuehren. Die
+tool-spezifischen Plattform-, Lizenz- und Laufzeitgrenzen oben gelten weiterhin.
+
+Fuer die interaktive Installation nach Pruefung `bash setup_ultimate.sh` im
+VPS-Terminal oeffnen, dort im Tool-Management das gewuenschte Tool
+`LTX_Video` (ID `ltx_video`) waehlen und die Einzelfreigaben lesen.
+Fehlt der Eintrag oder ist der native Weg gesperrt, hier stoppen: keine
+Legacy-/Docker-Ausweichinstallation und kein automatischer Plattformwechsel.
+
+### SSH-Aktionen: `obs`
+
+Kein freigegebener unbeaufsichtigter Docker-freier Adapter. Der Plan nennt
+vorhandene Skriptpfade; diese nicht ungeprueft ausfuehren. Die
+tool-spezifischen Plattform-, Lizenz- und Laufzeitgrenzen oben gelten weiterhin.
+
+Fuer die interaktive Installation nach Pruefung `bash setup_ultimate.sh` im
+VPS-Terminal oeffnen, dort im Tool-Management das gewuenschte Tool
+`OBS` (ID `obs`) waehlen und die Einzelfreigaben lesen.
+Fehlt der Eintrag oder ist der native Weg gesperrt, hier stoppen: keine
+Legacy-/Docker-Ausweichinstallation und kein automatischer Plattformwechsel.
+
+### SSH-Aktionen: `qwen_desktop_build`
+
+Kein freigegebener unbeaufsichtigter Docker-freier Adapter. Der Plan nennt
+vorhandene Skriptpfade; diese nicht ungeprueft ausfuehren. Die
+tool-spezifischen Plattform-, Lizenz- und Laufzeitgrenzen oben gelten weiterhin.
+
+Fuer die interaktive Installation nach Pruefung `bash setup_ultimate.sh` im
+VPS-Terminal oeffnen, dort im Tool-Management das gewuenschte Tool
+`Qwen_Desktop_Build` (ID `qwen_desktop_build`) waehlen und die Einzelfreigaben lesen.
+Fehlt der Eintrag oder ist der native Weg gesperrt, hier stoppen: keine
+Legacy-/Docker-Ausweichinstallation und kein automatischer Plattformwechsel.
+
+### SSH-Aktionen: `sadtalker`
+
+Kein freigegebener unbeaufsichtigter Docker-freier Adapter. Der Plan nennt
+vorhandene Skriptpfade; diese nicht ungeprueft ausfuehren. Die
+tool-spezifischen Plattform-, Lizenz- und Laufzeitgrenzen oben gelten weiterhin.
+
+Fuer die interaktive Installation nach Pruefung `bash setup_ultimate.sh` im
+VPS-Terminal oeffnen, dort im Tool-Management das gewuenschte Tool
+`SadTalker` (ID `sadtalker`) waehlen und die Einzelfreigaben lesen.
+Fehlt der Eintrag oder ist der native Weg gesperrt, hier stoppen: keine
+Legacy-/Docker-Ausweichinstallation und kein automatischer Plattformwechsel.
+
+### SSH-Aktionen: `streamlit`
+
+Kein freigegebener unbeaufsichtigter Docker-freier Adapter. Der Plan nennt
+vorhandene Skriptpfade; diese nicht ungeprueft ausfuehren. Die
+tool-spezifischen Plattform-, Lizenz- und Laufzeitgrenzen oben gelten weiterhin.
+
+Fuer die interaktive Installation nach Pruefung `bash setup_ultimate.sh` im
+VPS-Terminal oeffnen, dort im Tool-Management das gewuenschte Tool
+`Streamlit` (ID `streamlit`) waehlen und die Einzelfreigaben lesen.
+Fehlt der Eintrag oder ist der native Weg gesperrt, hier stoppen: keine
+Legacy-/Docker-Ausweichinstallation und kein automatischer Plattformwechsel.
+
+### SSH-Aktionen: `video2dataset`
+
+Kein freigegebener unbeaufsichtigter Docker-freier Adapter. Der Plan nennt
+vorhandene Skriptpfade; diese nicht ungeprueft ausfuehren. Die
+tool-spezifischen Plattform-, Lizenz- und Laufzeitgrenzen oben gelten weiterhin.
+
+Fuer die interaktive Installation nach Pruefung `bash setup_ultimate.sh` im
+VPS-Terminal oeffnen, dort im Tool-Management das gewuenschte Tool
+`Video2Dataset` (ID `video2dataset`) waehlen und die Einzelfreigaben lesen.
+Fehlt der Eintrag oder ist der native Weg gesperrt, hier stoppen: keine
+Legacy-/Docker-Ausweichinstallation und kein automatischer Plattformwechsel.
+
+### SSH-Aktionen: `wanvideo_wrapper`
+
+Kein freigegebener unbeaufsichtigter Docker-freier Adapter. Der Plan nennt
+vorhandene Skriptpfade; diese nicht ungeprueft ausfuehren. Die
+tool-spezifischen Plattform-, Lizenz- und Laufzeitgrenzen oben gelten weiterhin.
+
+Fuer die interaktive Installation nach Pruefung `bash setup_ultimate.sh` im
+VPS-Terminal oeffnen, dort im Tool-Management das gewuenschte Tool
+`WanVideoWrapper` (ID `wanvideo_wrapper`) waehlen und die Einzelfreigaben lesen.
+Fehlt der Eintrag oder ist der native Weg gesperrt, hier stoppen: keine
+Legacy-/Docker-Ausweichinstallation und kein automatischer Plattformwechsel.
+
+Das interaktive Setup bleibt nach bewusster Freigabe im SSH-Terminal erreichbar:
+
+```bash
+bash setup_ultimate.sh
+```
+
+Keine automatische Installation, kein Browser-/Modell-/Produktivdienststart durch diese Dokumentation.
+Nach jedem bewusst ausgefuehrten Befehl den Exitcode unmittelbar mit `echo $?` pruefen;
+zum Verlassen des VPS-Terminals `exit` verwenden.
+
+[SSH-Voraussetzungen und Sicherheitsgrenzen](../HEADLESS_SETUP.md) | [Befehle aller registrierten Tools](../generated/HEADLESS_TOOL_COMMANDS.md)
+
+Dieser Abschnitt wird aus der Registry erzeugt. Pflege: `python3 -I -B scripts/quality/tool_ssh_docs.py --write`.
+
+<!-- END GENERATED VPS SSH -->
