@@ -32,25 +32,56 @@ class PlatformNavigation(unittest.TestCase):
         root = (ROOT / 'readme.md').read_text(encoding='utf-8')
         archive = (ROOT / 'docs/legacy/README_FULL_2026_11_01.md').read_text(encoding='utf-8')
         fixture = json.loads((ROOT / 'tests/fixtures/legacy_readme_navigation.json').read_text(encoding='utf-8'))
-        self.assertLess(len(root.splitlines()), 200)
-        self.assertEqual(headings(root), ['Hybride Kubernetes- und KI-Plattform', 'Orientierung'])
-        self.assertEqual(len(re.findall(r'^- \*\*', root, re.M)), 6)
+        visible = re.sub(r'<details>.*?</details>', '', root, flags=re.S)
+        self.assertLess(len(visible.splitlines()), 200)
+        self.assertEqual(headings(visible), [
+            'Hybride Kubernetes- und KI-Plattform', 'Orientierung', 'Installation und Betrieb',
+            'Schnelle Installation (One-Liner)', 'Setup erneut starten',
+            'Setup aktualisieren oder lokal entfernen',
+        ])
+        self.assertEqual(len(re.findall(r'^- \*\*', visible, re.M)), 6)
         self.assertEqual(len(fixture), 45)
-        self.assertEqual([row['title'] for row in fixture], headings(archive))
+        self.assertEqual([
+            'Weitere historische Setup-Hinweise' if row['anchor'] == 'boardroom-profil' else row['title']
+            for row in fixture
+        ], headings(archive))
         anchors = re.findall(r'<a id="([^"]+)"></a>', root)
-        self.assertEqual(anchors, ['deklarativer-pruefpfad'] + [row['anchor'] for row in fixture])
+        self.assertCountEqual(anchors, ['deklarativer-pruefpfad'] + [row['anchor'] for row in fixture])
         self.assertEqual(len(anchors), len(set(anchors)))
+        moved = {
+            '-schnelle-installation-one-liner': 'Schnelle Installation (One-Liner)',
+            '-setup-erneut-starten': 'Setup erneut starten',
+            '-setup-aktualisieren-oder-lokal-entfernen': 'Setup aktualisieren oder lokal entfernen',
+        }
+        history = root.split('<summary>Historische Abschnittslinks aufklappen</summary>', 1)[1].split('</details>', 1)[0]
         for row in fixture:
             # These historical headings use letters, marks, spaces, underscores and hyphens.
             expected = ''.join(char for char in row['title'].lower()
                                if char.isalnum() or char in ' _-' or
                                (unicodedata.category(char).startswith('M') and char != '\ufe0f')).replace(' ', '-')
             self.assertEqual(row['anchor'], expected, row['title'])
+            if expected in moved:
+                self.assertIn(f'<a id="{expected}"></a>\n\n### {moved[expected]}', visible)
+                self.assertIn(f'(../../readme.md#{expected})', archive)
+                continue
+            if expected == 'boardroom-profil':
+                self.assertIn('(docs/tools/boardroom.md)', visible)
+                self.assertIn('(../tools/boardroom.md)', archive)
+                self.assertTrue((ROOT / 'docs/tools/boardroom.md').is_file())
+                continue
             link = f"[{row['title']}](docs/legacy/README_FULL_2026_11_01.md#{row['anchor']})"
-            self.assertIn(link, root)
-            self.assertGreater(root.index(link), root.index('<details>'))
-            self.assertLess(root.index(link), root.index('</details>'))
+            self.assertIn(f'<a id="{expected}"></a>\n{link}', history)
         self.assertIn('Historische Referenz', archive)
+
+    def test_historical_destructive_commands_are_archived_not_recommended(self):
+        root = (ROOT / 'readme.md').read_text(encoding='utf-8')
+        visible = re.sub(r'<details>.*?</details>', '', root, flags=re.S)
+        history = root.split('<summary>Historischer Installationsweg:', 1)[1].split('</details>', 1)[0]
+        self.assertIn('Nicht ausführen', history)
+        self.assertNotIn('```bash', history)
+        for command in ('git reset --hard origin/main', 'git clean -fd', 'rm -rf ~/.openclaw_ultimate_user_data'):
+            self.assertIn(command, history)
+            self.assertNotIn(command, visible)
 
     def test_new_document_links_resolve(self):
         for relative in ('readme.md', 'docs/P1_P3_IMPLEMENTATION.md'):
