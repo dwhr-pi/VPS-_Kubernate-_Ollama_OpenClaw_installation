@@ -293,7 +293,8 @@ class NativeGithubTests(unittest.TestCase):
                     expected = []
                     if recipe.get("binary"):
                         module = Path("source") / recipe.get("module_dir", ".")
-                        expected += ["bin/" + recipe["binary"], (module / "target/release" / recipe["binary"]).as_posix()]
+                        profile = "quick" if spec["id"] == "xerj" else "release"
+                        expected += ["bin/" + recipe["binary"], (module / "target" / profile / recipe["binary"]).as_posix()]
                     if recipe.get("artifact"):
                         expected.append(recipe["artifact"])
                     for key in ("entry", "assets"):
