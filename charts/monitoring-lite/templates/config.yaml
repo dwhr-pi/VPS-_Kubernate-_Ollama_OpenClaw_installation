@@ -23,6 +23,12 @@ data:
     groups:
       - name: small-vps
         rules:
+          - alert: OllamaInventoryUnavailable
+            expr: ollama_monitor_up == 0
+            for: 5m
+            labels: {severity: warning}
+            annotations:
+              summary: Ollama-Inventarabfrage fehlgeschlagen; Exporter-HTTP allein belegt keine Backend-Gesundheit
           - alert: ExporterDown
             expr: up{job=~"node|ollama-exporter"} == 0
             for: 5m

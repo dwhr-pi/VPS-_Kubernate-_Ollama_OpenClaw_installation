@@ -3,6 +3,7 @@ import http.client
 from http.server import BaseHTTPRequestHandler
 import json
 import os
+import random
 import re
 import socketserver
 import threading
@@ -13,6 +14,41 @@ MAX_BODY = 1024 * 1024
 MAX_RESPONSE = 8 * 1024 * 1024
 GET_PATHS = {'/api/version', '/api/tags', '/v1/models'}
 POST_PATHS = {'/v1/chat/completions', '/v1/responses', '/api/show'}
+RETRY_STATUSES = frozenset((429, 502, 503, 504))
+
+
+def inventory_get(host, port, deadline, *, clock=time.monotonic, sleep=time.sleep, jitter=random.random):
+    """Retry only the side-effect-free local inventory GET, never inference POSTs."""
+    for attempt in range(3):
+        remaining = deadline - clock()
+        if remaining <= 0:
+            break
+        delay = 0.25 * (2 ** attempt) + 0.1 * jitter()
+        connection = http.client.HTTPConnection(host, port, timeout=min(10, remaining))
+        try:
+            connection.request('GET', '/api/tags')
+            response = connection.getresponse()
+            if response.status == 200:
+                raw = response.read(MAX_BODY + 1)
+                if len(raw) > MAX_BODY:
+                    raise ValueError('Local model inventory too large')
+                return raw
+            if response.status not in RETRY_STATUSES:
+                raise ValueError('Local model inventory unavailable')
+            retry_after = response.getheader('Retry-After')
+            if retry_after is not None:
+                # Unsupported/date headers fail closed rather than retrying too early.
+                if not isinstance(retry_after, str) or not re.fullmatch(r'[0-9]{1,6}', retry_after):
+                    raise ValueError('Inventory retry deferred by backend')
+                delay = max(delay, int(retry_after))
+        except (OSError, http.client.HTTPException):
+            pass  # Do not log upstream payloads, credentials or transport exception text.
+        finally:
+            connection.close()
+        if attempt == 2 or delay > 2 or delay >= deadline - clock():
+            break
+        sleep(delay)
+    raise ValueError('Local model inventory unavailable after bounded retries')
 
 
 def endpoint(value):
@@ -38,27 +74,19 @@ class Broker:
         self.lock = threading.Lock()
 
     def local_model(self):
-        connection = http.client.HTTPConnection(self.host, self.port, timeout=10)
-        try:
-            connection.request('GET', '/api/tags')
-            response = connection.getresponse()
-            raw = response.read(MAX_BODY + 1)
-            if response.status != 200 or len(raw) > MAX_BODY:
-                raise ValueError('Local model inventory unavailable')
-            inventory = json.loads(raw)
-            if not isinstance(inventory, dict) or not isinstance(inventory.get('models'), list):
-                raise ValueError('Invalid local model inventory')
-            rows = inventory['models']
-            if any(not isinstance(row, dict) for row in rows):
-                raise ValueError('Invalid local model inventory entry')
-            rows = [row for row in rows if self.model in (row.get('name'), row.get('model'))]
-            if (len(rows) != 1 or rows[0].get('remote_host') or rows[0].get('remote_model') or
-                    not isinstance(rows[0].get('digest'), str) or
-                    not re.fullmatch(r'(?:sha256:)?[a-f0-9]{64}', rows[0]['digest'])):
-                raise ValueError('Model must be present locally with a digest; no pull or cloud fallback')
-            return rows[0]['digest']
-        finally:
-            connection.close()
+        raw = inventory_get(self.host, self.port, min(self.deadline, time.monotonic() + 20))
+        inventory = json.loads(raw)
+        if not isinstance(inventory, dict) or not isinstance(inventory.get('models'), list):
+            raise ValueError('Invalid local model inventory')
+        rows = inventory['models']
+        if any(not isinstance(row, dict) for row in rows):
+            raise ValueError('Invalid local model inventory entry')
+        rows = [row for row in rows if self.model in (row.get('name'), row.get('model'))]
+        if (len(rows) != 1 or rows[0].get('remote_host') or rows[0].get('remote_model') or
+                not isinstance(rows[0].get('digest'), str) or
+                not re.fullmatch(r'(?:sha256:)?[a-f0-9]{64}', rows[0]['digest'])):
+            raise ValueError('Model must be present locally with a digest; no pull or cloud fallback')
+        return rows[0]['digest']
 
     def authorize(self, method, path, raw):
         if '?' in path or '#' in path or path not in (GET_PATHS if method == 'GET' else POST_PATHS):

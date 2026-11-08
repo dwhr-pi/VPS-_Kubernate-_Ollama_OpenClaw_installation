@@ -247,8 +247,16 @@ Datenbankschema sind getrennte Entscheidungen.
 
 ## Primaerquellen
 
-- [Kyverno: Requests/Limits](https://kyverno.io/policies/best-practices/require-pod-requests-limits/require-pod-requests-limits/)
-- [Kyverno: schreibgeschuetztes RootFS](https://kyverno.io/policies/best-practices/require-ro-rootfs/require-ro-rootfs/)
+- [Kyverno: Requests/Limits (historische ClusterPolicy)](https://github.com/kyverno/policies/blob/d12f1b56ff051b2b5e59ffd7d3d563f8add30547/best-practices/require-pod-requests-limits/require-pod-requests-limits.yaml)
+- [Kyverno: schreibgeschuetztes RootFS (historische ClusterPolicy)](https://github.com/kyverno/policies/blob/d12f1b56ff051b2b5e59ffd7d3d563f8add30547/best-practices/require-ro-rootfs/require-ro-rootfs.yaml)
+
+Die beiden alten Katalog-URLs lieferten am 08.11.2026 in CI HTTP 404.
+Die Links oben zeigen die offiziellen Originaldateien vor der Entfernung der
+Legacy-Beispiele. Sie sind historische Referenzen, keine Installationsfreigabe.
+Urspruengliche Adressen:
+
+- `https://kyverno.io/policies/best-practices/require-pod-requests-limits/require-pod-requests-limits/`
+- `https://kyverno.io/policies/best-practices/require-ro-rootfs/require-ro-rootfs/`
 - [Cloudflare: Kubernetes und Readiness](https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/deployment-guides/kubernetes/)
 - [Cloudflare: Access-Pruefung am Origin](https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/configure-tunnels/origin-parameters/#access)
 - [Velero: Schedule-Felder](https://velero.io/docs/v1.18/api-types/schedule/)

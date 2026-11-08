@@ -590,7 +590,7 @@ class BrokerTests(OfflineCase):
                 connection.close.assert_called_once()
 
     def test_inventory_bad_status_oversize_and_invalid_json_close_connection(self):
-        for status, raw in ((503, b"{}"), (200, b"x" * (broker_module.MAX_BODY + 1)),
+        for status, raw in ((401, b"{}"), (200, b"x" * (broker_module.MAX_BODY + 1)),
                             (200, b"not-json"), (200, b"[]"), (200, b'{"models":null}')):
             connection = Mock()
             connection.getresponse.return_value = Mock(status=status, read=Mock(return_value=raw))

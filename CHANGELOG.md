@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+### 2026-11-07: begrenzter Infrastruktur-Teilsatz
+
+- Ollama-Inventarfehler in nativen, Helm- und Operator-Alertregeln sichtbar;
+  Metrics-Authentifizierung fuer beide nativen Gateway-Vorlagen explizit gesetzt.
+- Read-only Audio-MCP per festem stdio-Launcher und ausdruecklicher Freigabe;
+  keine Remote-, Shell- oder Filesystem-Adapter automatisch aktiviert.
+- Modell-Inventar-GET mit drei begrenzten Versuchen und Backoff; Inferenz-POSTs
+  und Cloud-Fallback unveraendert ohne automatische Wiederholung.
+- Review, Breaking Change bei Metrics-Auth, Rollback und offene Abnahmen:
+  [Infrastrukturreview](docs/INFRASTRUCTURE_REVIEW_2026-11-07.md).
+
 ### 2026-11-06: Sichtbarer und begrenzter XERJ-Build
 
 - Cargo-Build mit laufender Ausgabe, PID und 30s-Status ueber den vorhandenen
