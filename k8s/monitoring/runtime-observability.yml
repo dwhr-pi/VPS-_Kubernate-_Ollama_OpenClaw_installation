@@ -26,6 +26,12 @@ spec:
   groups:
     - name: llmops-runtime
       rules:
+        - alert: OllamaInventoryUnavailable
+          expr: ollama_monitor_up == 0
+          for: 5m
+          labels: {severity: warning}
+          annotations:
+            summary: 'Ollama inventory unavailable; exporter HTTP success is insufficient'
         - alert: LLMOpsGatewayScrapeUnavailable
           expr: up{namespace="llmops",service="litellm"} == 0
           for: 5m

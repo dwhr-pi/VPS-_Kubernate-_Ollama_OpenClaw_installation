@@ -12,6 +12,7 @@ Hinweise auf Unterstuetzung sind keine zusaetzliche Lizenzbedingung.
 - **Einstieg:** [Erste 60 Minuten](docs/FIRST_60_MINUTES.md), [aktueller Status](docs/CURRENT_STATUS.md).
 - **Architektur:** [Hybrid-Plattform](docs/architecture/), [Kubernetes-Baseline](docs/PRODUCTION_BASELINE.md).
   [Ressourcen, Storage und GitOps-Abnahme](docs/LLMOPS_ARCHITECTURE_INCREMENT_2026-11-03.md).
+  [Infrastrukturreview: Monitoring, MCP und sichere Retries](docs/INFRASTRUCTURE_REVIEW_2026-11-07.md).
 - **Betrieb:** [Installationszweige](docs/INSTALL_BRANCH_SELECTION.md), [Backup und Restore](docs/INSTALLATION_STATUS_BACKUP.md).
 - **Sicherheit:** [Signierte Releases](docs/SIGNED_RELEASES.md), [sicherer Kernpfad](docs/SECURE_CORE_REFACTOR.md).
 - **Tools und Profile:** [Tool-Matrix](docs/generated/TOOL_MATRIX.md), [Profil-Matrix](docs/generated/PROFILE_MATRIX.md).
