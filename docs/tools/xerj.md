@@ -27,11 +27,16 @@ den Checkout und baut `xerj-server` aus `engine/` mit `engine/Cargo.lock`:
 
 ```bash
 # Build contract, executed only by the explicitly approved installer.
-cargo build --locked --release --bin xerj --package xerj-server --no-default-features -j 2
+cargo build --locked --profile quick --bin xerj --package xerj-server --no-default-features -j 2
 ```
 
 Der Aufruf erfolgt im Modulverzeichnis des privaten Checkouts, nicht im
-Setup-Repository. Release-Profil und statische Console-Quellen bleiben erhalten.
+Setup-Repository. Das Upstream-Profil `quick` vermeidet Fat-LTO und behaelt
+statische Console-Quellen und denselben Funktionsumfang. Der Installer uebernimmt
+`target/quick/xerj` und protokolliert das Profil im Buildnachweis. Dieser lokale
+Build ist kein offizielles Release-Artefakt und keine Benchmark-Referenz.
+Vorhandene gueltige Release-Installationen bleiben erhalten; kein automatischer
+Neubau oder Statuswechsel.
 `--no-default-features` laesst die neuronalen Default-Features weg; der Einstieg
 ist lokale lexikalische Suche. Es werden keine Modelle heruntergeladen.
 Kein Remote-Installationsskript, Release-Binary, Docker, Nix oder npm-Fallback.
@@ -51,19 +56,21 @@ und vorzugsweise in einer getrennten Build-Umgebung kompilieren.
 Der konservative Build-Vorabcheck verlangt 16 GiB freien Zielspeicher und
 4 GiB verfuegbaren RAM, unter WSL zusaetzlich freien Windows-Host-Speicher.
 Das sind Reserven, **keine gemessenen Verbrauchswerte oder Prozesslimits**.
-Fat-LTO kann lange dauern; ein Timeout ist ein Fehler, kein fertiger Build.
+Der Nutzer meldete am 08.11.2026 einen erfolgreichen manuellen `quick`-Build
+dieses Pins samt Versionsprobe nach rund 18 Stunden. Das ist kein nachgewiesener
+vollstaendiger Setup-Installationslauf oder Server-/MCP-Funktionstest.
 Der Cargo-Build gibt Compiler-/Download-Meldungen jetzt laufend im aktuellen Log
 aus, ergaenzt um PID und einen Status alle 30 Sekunden. Der Status belegt nur,
 dass der Prozess noch nicht beendet ist, nicht dass er Fortschritt macht.
-Standard-Zeitlimit: **7200 Sekunden (2 Stunden)**. Ein groesseres Budget ist eine
-eigene Entscheidung, keine Reparatur fuer einen nachgewiesenen Compilerfehler:
+Standard-Zeitlimit: **86400 Sekunden (24 Stunden)**. Ein kleineres Budget kann
+fuer einen bewusst kuerzeren Versuch gesetzt werden:
 
 ```bash
-# Erst nach Pruefung des letzten Logs; 4 Stunden nur fuer diesen Aufruf.
-XERJ_BUILD_TIMEOUT_SECONDS=14400 bash scripts/tools/xerj_install.sh
+# Optional: 20 Stunden nur fuer diesen Aufruf.
+XERJ_BUILD_TIMEOUT_SECONDS=72000 bash scripts/tools/xerj_install.sh
 ```
 
-Erlaubt sind ganze Sekunden von 300 bis 21600 (maximal 6 Stunden). Ungueltige
+Erlaubt sind ganze Sekunden von 300 bis 86400 (maximal 24 Stunden). Ungueltige
 Werte stoppen vor Downloads. Kein unbegrenztes Warten, kein automatischer Retry,
 keine Reduzierung der Speicherreserve. Bei Timeout wird unter Linux die
 Build-Prozessgruppe beendet und der neue Buildordner zurueckgerollt. Die private

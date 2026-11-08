@@ -122,9 +122,9 @@ def litellm_build_timeout():
 
 
 def xerj_build_timeout():
-    value = os.environ.get('XERJ_BUILD_TIMEOUT_SECONDS', '7200')
-    if not re.fullmatch(r'[0-9]{3,5}', value) or not 300 <= int(value) <= 21600:
-        raise ValueError('XERJ_BUILD_TIMEOUT_SECONDS: ganze Sekunden zwischen 300 und 21600; Standard 7200.')
+    value = os.environ.get('XERJ_BUILD_TIMEOUT_SECONDS', '86400')
+    if not re.fullmatch(r'[0-9]{3,5}', value) or not 300 <= int(value) <= 86400:
+        raise ValueError('XERJ_BUILD_TIMEOUT_SECONDS: ganze Sekunden zwischen 300 und 86400; Standard 86400.')
     return value
 
 
@@ -284,7 +284,7 @@ def build(prefix, spec):
               env['LITELLM_BUILD_TIMEOUT_SECONDS'], 'Sekunden. Cargo/uv-Source-Builds jeweils einfach parallel.', flush=True)
     if spec['id'] == 'xerj':
         env.update(NATIVE_BUILD_STREAM='xerj', XERJ_BUILD_TIMEOUT_SECONDS=xerj_build_timeout())
-        print('XERJ: Cargo-Ausgabe mit PID/30s-Heartbeat und Prozessgruppen-Abbruch; Timeout:',
+        print('XERJ: lokales Cargo-Profil quick, PID/30s-Heartbeat und Prozessgruppen-Abbruch; Timeout:',
               env['XERJ_BUILD_TIMEOUT_SECONDS'], 'Sekunden. Ein Heartbeat belegt keinen Buildfortschritt.', flush=True)
     binary = prefix / "bin" / recipe.get("binary", "unused")
     binary.parent.mkdir(mode=0o700)
@@ -330,13 +330,15 @@ def build(prefix, spec):
             raise ValueError("Vorhandene Rust-Toolchain nicht eindeutig; kein automatischer Download.")
         env["RUSTUP_TOOLCHAIN"] = sysroot
         module = common.checked(checkout / recipe.get("module_dir", "."))
-        args = ["cargo", "build", "--locked", "--release", "--bin", recipe["binary"]]
+        profile = "quick" if spec["id"] == "xerj" else "release"
+        profile_args = ["--profile", profile] if profile == "quick" else ["--release"]
+        args = ["cargo", "build", "--locked", *profile_args, "--bin", recipe["binary"]]
         if recipe.get("cargo_package"):
             args += ["--package", recipe["cargo_package"]]
         if recipe.get("no_default_features"):
             args.append("--no-default-features")
         run(args + ["-j", "2"], module, env)
-        shutil.copy2(common.checked(module / "target/release" / recipe["binary"]), binary)
+        shutil.copy2(common.checked(module / "target" / profile / recipe["binary"]), binary)
         artifacts = [binary.relative_to(prefix).as_posix()]
     elif kind == "cmake":
         run(["cmake", "-S", str(checkout), "-B", str(prefix / "cmake-build"),
@@ -537,6 +539,9 @@ def install(outer, prefix, marker, spec, install_build_deps=False, quarantine_in
         files = common.inventory(prefix)
         record = dict(recipe_hash=recipe_hash(spec), commit=recipe["pin"], scope="native-github-build",
                       application_tested=False, artifacts=artifacts, files=files)
+        if spec["id"] == "xerj":
+            # Existing release receipts retain their recipe hash and ownership checks.
+            record["cargo_profile"] = "quick"
         fd, pending = tempfile.mkstemp(prefix="build-ready-pending-", dir=prefix)
         try:
             with os.fdopen(fd, "w", encoding="utf-8") as stream:

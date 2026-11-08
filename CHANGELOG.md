@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+### 2026-11-08: XERJ mit lokalem Quick-Quellbuild
+
+- Gepinnter XERJ-Build verwendet Upstream-`quick`, unveraendertes Lockfile,
+  zwei Cargo-Jobs und Versionsprobe; kein Docker oder Serverstart.
+- Standardbudget auf 24 Stunden begrenzt. Speicherwache, Rollback und
+  vorhandene gueltige Release-Nachweise bleiben erhalten.
+- Der Nutzer meldete einen erfolgreichen manuellen Build nach rund 18 Stunden.
+  Der geaenderte Setup-Ablauf wird hier nur mit Offline-Fixtures geprueft.
+
 ### 2026-11-06: Sichtbarer und begrenzter XERJ-Build
 
 - Cargo-Build mit laufender Ausgabe, PID und 30s-Status ueber den vorhandenen
