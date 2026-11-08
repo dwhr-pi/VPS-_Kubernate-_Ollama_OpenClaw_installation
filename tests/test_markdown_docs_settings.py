@@ -62,6 +62,44 @@ class MarkdownDocsSettings(unittest.TestCase):
         output = self.shell('dialog() { return 255; }; markdown_docs_action update /fixture')
         self.assertNotIn('PYTHON:', output)
 
+    def test_source_confirmation_centers_or_uses_dialog_autosizing(self):
+        for size, position, dimensions in (
+            ('29 112', '<--begin><9><18>', '<11><76>'),
+            ('24 80', '<--begin><6><2>', '<11><76>'),
+            ('12 60', '', '<0><0>'),
+            ('0 0', '', '<0><0>'),
+        ):
+            with self.subTest(size=size):
+                output = self.shell(
+                    'markdown_docs_terminal_size() { echo ' + shlex.quote(size) + '; }; '
+                    'dialog() { printf "<%s>" "$@"; return 1; }; '
+                    'markdown_docs_confirm_source install ' + 'a' * 40, expected=1)
+                self.assertIn('<--clear><--no-shadow><--backtitle>'
+                              '<OpenClaw Ultimate Setup | Offline-Handbuch>'
+                              + position + '<--defaultno>', output)
+                self.assertTrue(output.endswith(dimensions))
+                self.assertNotIn('PYTHON:', output)
+
+    def test_all_handbook_widgets_share_backdrop_and_fit_small_terminal(self):
+        fixture = (
+            'markdown_docs_terminal_size() { echo "24 80"; }; '
+            'dialog() { printf "<%s>" "$@" >&2; return 1; }; '
+        )
+        for action, widget, position, dimensions in (
+            ('markdown_docs_menu', '--menu', '2', '<20><76><0><guide>'),
+            ('markdown_docs_action guide /fixture', '--textbox', '2', '<20><76>'),
+            ('markdown_docs_action install /fixture', '--inputbox', '5', '<13><76>'),
+            ('markdown_docs_action serve /fixture', '--inputbox', '6', '<11><76><8765>'),
+            ('markdown_docs_action uninstall /fixture', '--yesno', '6', '<12><76>'),
+        ):
+            with self.subTest(action=action):
+                output = self.shell(fixture + action + ' 2>&1')
+                self.assertIn('<--backtitle><OpenClaw Ultimate Setup | Offline-Handbuch>'
+                              '<--begin><' + position + '><2>', output)
+                self.assertIn('<' + widget + '>', output)
+                self.assertIn(dimensions, output)
+                self.assertNotIn('PYTHON:', output)
+
     def test_tool_transaction_cancel_is_not_an_install_success(self):
         for action in ('install', 'update'):
             for dialog in ('dialog() { return 1; }; ',
