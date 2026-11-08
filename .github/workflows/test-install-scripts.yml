@@ -86,6 +86,7 @@ jobs:
         run: |
           set -euo pipefail
           curl --fail --location --proto '=https' --proto-redir '=https' \
+            --retry 2 --retry-max-time 180 --connect-timeout 15 --max-time 60 \
             https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv5.8.3/kustomize_v5.8.3_linux_amd64.tar.gz \
             --output "$RUNNER_TEMP/kustomize.tar.gz"
           printf '%s  %s\n' cb9e31198d3f63b44848bd0afc4c8efc56e6cfef9c93a4a39a211940e6decd61 \

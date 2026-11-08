@@ -13,7 +13,7 @@ Hinweise auf Unterstuetzung sind keine zusaetzliche Lizenzbedingung.
 - **Architektur:** [Hybrid-Plattform](docs/architecture/), [Kubernetes-Baseline](docs/PRODUCTION_BASELINE.md).
   [Ressourcen, Storage und GitOps-Abnahme](docs/LLMOPS_ARCHITECTURE_INCREMENT_2026-11-03.md).
   [Infrastrukturreview: Monitoring, MCP und sichere Retries](docs/INFRASTRUCTURE_REVIEW_2026-11-07.md).
-- **Betrieb:** [Installationszweige](docs/INSTALL_BRANCH_SELECTION.md), [Backup und Restore](docs/INSTALLATION_STATUS_BACKUP.md).
+- **Betrieb:** [Installation, Neustart und Update](#installation-und-betrieb), [Backup und Restore](docs/INSTALLATION_STATUS_BACKUP.md).
 - **Sicherheit:** [Signierte Releases](docs/SIGNED_RELEASES.md), [sicherer Kernpfad](docs/SECURE_CORE_REFACTOR.md).
 - **Tools und Profile:** [Tool-Matrix](docs/generated/TOOL_MATRIX.md), [Profil-Matrix](docs/generated/PROFILE_MATRIX.md).
 - **Dokumentation und Historie:** [Wegweiser](docs/readme.md), [historische Langfassung](docs/legacy/README_FULL_2026_11_01.md).
@@ -46,6 +46,205 @@ Weitere Themen: [Entwicklungswerkzeuge](docs/DEVELOPMENT_TOOLS_OVERVIEW.md),
 [Review-Fortsetzung](docs/tutorials/grok-repo-review-2026-10-23.md), [Recht/RAG](docs/legal/README.md).
 
 <!-- markdownlint-configure-file {"MD033": {"allowed_elements": ["a", "details", "summary"]}} -->
+## Installation und Betrieb
+
+<a id="-schnelle-installation-one-liner"></a>
+
+### Schnelle Installation (One-Liner)
+
+Der alte `curl | bash`-One-Liner ist gesperrt. Verwende einen unabhaengig
+geprueften Bootstrap, den separat bezogenen oeffentlichen Minisign-Schluessel
+und ein signiertes Release. Tag und Pfade im Beispiel ersetzen:
+
+```bash
+bash ./verify_release_and_install.sh --tag vX.Y.Z \
+  --public-key /sicher/separat/release.pub \
+  --artifacts /sicher/release-artefakte --verify-only
+```
+
+Erst nach erfolgreicher Pruefung `--verify-only` durch
+`--install --destination "$HOME/openclaw_ultimate_setup"` ersetzen.
+Ist Minisign unter Ubuntu/Debian nicht vorhanden, kann der gepruefte Bootstrap
+es nach ausdruecklicher Zustimmung einrichten. Wenn der Vertrauensschluessel
+oder ein signiertes Release fehlt, gibt es keinen automatischen unsignierten
+Ersatz. Siehe [Signierte Releases](docs/SIGNED_RELEASES.md) und, nur fuer
+bewusste Entwicklungstests, [Installationszweige](docs/INSTALL_BRANCH_SELECTION.md).
+
+**Historischer One-Liner (nicht ausfuehren):** So lautete der fruehere
+unsignierte Einstieg. Er fuehrte den Download direkt aus, ohne vorherige
+Pruefung. Der aktuelle Bootstrap blockiert diesen Aufruf standardmaessig.
+
+```text
+cd ~
+curl -sSL https://raw.githubusercontent.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation/main/install.sh | bash
+```
+
+<a id="-setup-erneut-starten"></a>
+
+### Setup erneut starten
+
+```bash
+cd ~/openclaw_ultimate_setup && bash ./setup_ultimate.sh
+```
+
+Bei einem separaten Branch-Checkout oder einem eigenen Installationsziel
+stattdessen in genau dessen Ordner wechseln.
+
+<a id="-setup-aktualisieren-oder-lokal-entfernen"></a>
+
+### Setup aktualisieren oder lokal entfernen
+
+**Aktualisieren:** Im richtigen Setup-Verzeichnis zuerst `git status --short`
+pruefen. Fuer Releases den [signierten Updatepfad](docs/SIGNED_RELEASES.md#standard-update)
+mit `--dry-run` beginnen. Der freigegebene Updatepfad sichert den Checkout
+vor der Aktualisierung und stoppt bei lokalen Aenderungen. Keine manuellen
+Resets oder Bereinigungsbefehle als Routine verwenden.
+
+**Lokal entfernen:** Gewuenschte Tools und Profile zuerst ueber ihre
+Deinstallationsfunktionen entfernen. Danach den Setup-Checkout nach
+Pfadpruefung und Sicherung eigener Aenderungen separat entfernen. Der private
+Workspace `~/.openclaw_ultimate_user_data` mit Konfigurationen und Messwerten
+bleibt dabei erhalten. [Backup und Wiederherstellung](docs/INSTALLATION_STATUS_BACKUP.md).
+
+<details>
+<summary>Historischer Installationsweg: Neustart, Update und Entfernen</summary>
+
+**Archivtext, keine aktuelle Anleitung. Nicht ausführen.** Der folgende
+Originaltext beschreibt einen älteren Setup-Stand. Die Reset-, Clean- und
+Löschbefehle können lokale Änderungen und private Daten unwiederbringlich
+entfernen. Maßgeblich ist der aktuelle Installations- und Updateweg oben.
+
+#### Historisch: Setup erneut starten
+
+Wenn du das Setup-Menü erneut starten möchtest, navigiere in das Installationsverzeichnis
+(standardmäßig `~/openclaw_ultimate_setup`) und führe das Hauptskript aus:
+
+```text
+cd ~/openclaw_ultimate_setup
+bash ./setup_ultimate.sh
+```
+
+#### Historisch: Setup aktualisieren oder lokal entfernen
+
+Wenn es Änderungen im Repository gab und du dein bestehendes Setup aktualisieren möchtest, wird
+jetzt bewusst ein **harter Repo-Abgleich** empfohlen. So bleiben keine alten Setup-Dateien halb
+stehen, während dein ausgelagerter Benutzer-Workspace erhalten bleibt:
+
+```text
+cd ~/openclaw_ultimate_setup
+git status --short
+git fetch origin --prune
+git checkout main 2>/dev/null || git checkout -b main --track origin/main
+git reset --hard origin/main
+git clean -fd
+printf '\nDas Repository ist jetzt aktualisiert.\n'
+printf 'Du kannst die aktuelle Terminal-Ausgabe jetzt in Ruhe lesen oder kopieren.\n'
+read -rp "Drücke Enter, um danach das Setup-Menü zu starten ... "
+bash ./setup_ultimate.sh
+```
+
+Wenn du vor dem Neustart des Menüs den angezeigten Stand erst prüfen möchtest, ist diese kleine
+Pause bewusst hilfreich. So kannst du z. B. Git-Meldungen, Versionsstände oder Warnungen noch lesen
+und direkt aus dem Terminal kopieren, bevor das interaktive Setup weiterläuft.
+
+Wichtig:
+
+- Die Pause erscheint nur dann, wenn der harte Repo-Abgleich erfolgreich war.
+- `git reset --hard origin/main` und `git clean -fd` verwerfen lokale Änderungen und ungetrackte
+  Zusatzdateien **im Setup-Repository**.
+- Dein ausgelagerter Benutzer-Workspace unter `~/.openclaw_ultimate_user_data` bleibt dabei
+  erhalten.
+- Die neueren Update-Skripte legen vor dem harten Abgleich zusätzlich eine Sicherung der verworfenen
+  Repo-Differenzen unter `~/.openclaw_ultimate_user_data/repo_update_backups` an.
+
+Wenn dabei vorher lokale Änderungen in Dateien wie `install.sh` oder `setup_ultimate.sh` auftauchen,
+ist das gerade der Grund für den harten Abgleich: Das Repo soll vollständig auf `origin/main`
+zurück, statt nur teilweise über `git pull` aktualisiert zu werden.
+
+In diesem Fall gibt es jetzt zwei sichere Wege:
+
+- im Menü den Punkt `Setup-Repository hart reparieren / auf GitHub main zurücksetzen` verwenden
+- oder den One-Liner-Installer erneut starten, der bei vorhandenem Repo jetzt ebenfalls den harten
+  Abgleich verwendet
+
+Wichtig dabei:
+
+- Es werden nur Dateien im Setup-Repository zurückgesetzt.
+- Dein ausgelagerter Benutzer-Workspace unter `~/.openclaw_ultimate_user_data` bleibt erhalten.
+- Vor dem harten Abgleich legt der Installer jetzt zusätzlich eine Sicherung des Repo-Zustands unter
+  `~/.openclaw_ultimate_user_data/repo_update_backups` an.
+
+Alternativ kannst du im Menü den Punkt `Setup-Update + System-Update (Repo, OS & pnpm)` nutzen.
+Dieser zieht den aktuellen Repository-Stand direkt im Setup-Verzeichnis und aktualisiert danach
+Ubuntu sowie `pnpm`.
+
+Wenn danach trotzdem noch ein älterer Setup-Stand angezeigt wird, sollte zuerst geprüft werden, ob
+wirklich das richtige Repository-Verzeichnis verwendet wird. Ein normaler `git pull` ist dafür nicht
+mehr der empfohlene Weg.
+
+Prüfen:
+
+```text
+cd ~/openclaw_ultimate_setup
+git status
+```
+
+Wenn du den harten Repo-Abgleich lieber manuell ausführen möchtest, kannst du das Setup so direkt
+auf den aktuellen GitHub-Stand zurücksetzen:
+
+```text
+cd ~/openclaw_ultimate_setup
+git fetch origin --prune
+git reset --hard origin/main
+printf '\nDas Repository wurde hart auf GitHub main zurückgesetzt.\n'
+printf 'Du kannst die aktuelle Terminal-Ausgabe jetzt in Ruhe lesen oder kopieren.\n'
+read -rp "Drücke Enter, um danach das Setup-Menü zu starten ... "
+bash ./setup_ultimate.sh
+```
+
+Dafür gibt es jetzt auch direkt im Menü einen eigenen Punkt:
+
+- `Setup-Repository hart reparieren / auf GitHub main zurücksetzen`
+
+Dieser Weg ist hilfreich, wenn trotz normalem `git pull` noch ein älterer Setup-Stand angezeigt
+wird.
+
+Wenn du ganz sauber neu anfangen willst, ist auch das weiterhin möglich:
+
+```text
+cd ~
+rm -rf ~/openclaw_ultimate_setup
+curl -sSL https://raw.githubusercontent.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation/main/install.sh | bash
+```
+
+Wenn du das lokale Setup wieder entfernen möchtest, hast du zwei saubere Wege:
+
+1. Zuerst im Menü `Tools: Installieren & Deinstallieren` und
+   `Profile: Installieren & Deinstallieren` alle gewünschten Komponenten wieder abwählen.
+2. Danach das lokale Arbeitsverzeichnis entfernen:
+
+```text
+cd ~
+rm -rf ~/openclaw_ultimate_setup
+```
+
+Wenn du zusätzlich lokal installierte Komponenten wie `Home Assistant`, `Ollama` oder einzelne Tools
+vollständig entfernen willst, nutze die jeweiligen `*_uninstall.sh` Skripte im Menü oder direkt
+unter `scripts/tools/`.
+
+Wenn du zusätzlich den ausgelagerten Benutzer-Workspace mit sensiblen Daten entfernen möchtest,
+kannst du das entweder im Menü über `Benutzer-Workspace verwalten` tun oder manuell:
+
+```text
+rm -rf ~/.openclaw_ultimate_user_data
+```
+
+</details>
+
+<a id="boardroom-profil"></a>
+
+**Eigenstaendiges Entscheidungsprofil:** [Boardroom](docs/tools/boardroom.md).
+
 <!-- Explicit legacy anchors preserve incoming links without oversized heading navigation. -->
 <details>
 <summary>Historische Abschnittslinks aufklappen</summary>
@@ -85,18 +284,6 @@ Die bisherigen Abschnittsanker bleiben hier erhalten; ihre Links fuehren in die 
 
 <a id="-gegenwärtiger-status"></a>
 [🟡 Gegenwärtiger Status](docs/legacy/README_FULL_2026_11_01.md#-gegenwärtiger-status)
-
-<a id="-schnelle-installation-one-liner"></a>
-[🚀 Schnelle Installation (One-Liner)](docs/legacy/README_FULL_2026_11_01.md#-schnelle-installation-one-liner)
-
-<a id="-setup-erneut-starten"></a>
-[🔄 Setup erneut starten](docs/legacy/README_FULL_2026_11_01.md#-setup-erneut-starten)
-
-<a id="-setup-aktualisieren-oder-lokal-entfernen"></a>
-[🔁 Setup aktualisieren oder lokal entfernen](docs/legacy/README_FULL_2026_11_01.md#-setup-aktualisieren-oder-lokal-entfernen)
-
-<a id="boardroom-profil"></a>
-[Boardroom-Profil](docs/legacy/README_FULL_2026_11_01.md#boardroom-profil)
 
 <a id="-neue-übersichten-und-doctor-skripte"></a>
 [🧭 Neue Übersichten und Doctor-Skripte](docs/legacy/README_FULL_2026_11_01.md#-neue-übersichten-und-doctor-skripte)

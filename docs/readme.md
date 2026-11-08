@@ -10,6 +10,11 @@ produktionsreif.
 [Infrastrukturreview vom 07.11.2026](INFRASTRUCTURE_REVIEW_2026-11-07.md):
 priorisierte Befunde, drei begrenzte Monitoring-/MCP-/Retry-Patches und offene Runtime-Abnahmen.
 
+[Hybrid-K3s: Ollama und OpenClaw absichern](kubernetes/hybrid-ollama-openclaw.md):
+GPU und Modellcache, OpenClaw-Patch mit Secret-Referenz, Netzwerkisolation und Abnahmeplan.
+
+[Boardroom](tools/boardroom.md): eigenstaendiges Entscheidungsprofil mit Beispielaufruf und Profilreferenz.
+
 [Setup ohne Desktop ueber SSH bedienen](HEADLESS_SETUP.md): Terminalmenue,
 dialogfreie JSON-Plaene und [Befehle fuer jedes Tool](generated/HEADLESS_TOOL_COMMANDS.md).
 Unbeaufsichtigte Ausfuehrung nur fuer vorhandene gepruefte native Adapter und mit
