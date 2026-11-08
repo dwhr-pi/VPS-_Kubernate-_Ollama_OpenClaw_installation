@@ -114,7 +114,7 @@ Originaltext beschreibt einen älteren Setup-Stand. Die Reset-, Clean- und
 Löschbefehle können lokale Änderungen und private Daten unwiederbringlich
 entfernen. Maßgeblich ist der aktuelle Installations- und Updateweg oben.
 
-**Setup erneut starten**
+#### Historisch: Setup erneut starten
 
 Wenn du das Setup-Menü erneut starten möchtest, navigiere in das Installationsverzeichnis
 (standardmäßig `~/openclaw_ultimate_setup`) und führe das Hauptskript aus:
@@ -124,7 +124,7 @@ cd ~/openclaw_ultimate_setup
 bash ./setup_ultimate.sh
 ```
 
-**Setup aktualisieren oder lokal entfernen**
+#### Historisch: Setup aktualisieren oder lokal entfernen
 
 Wenn es Änderungen im Repository gab und du dein bestehendes Setup aktualisieren möchtest, wird
 jetzt bewusst ein **harter Repo-Abgleich** empfohlen. So bleiben keine alten Setup-Dateien halb

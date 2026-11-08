@@ -32,7 +32,10 @@ markdown_docs_dialog() {
   while (($#)); do
     case "$1" in
       --menu | --textbox | --inputbox | --yesno) break ;;
-      *) options+=("$1"); shift ;;
+      *)
+        options+=("$1")
+        shift
+        ;;
     esac
   done
   widget="$1" body="$2"

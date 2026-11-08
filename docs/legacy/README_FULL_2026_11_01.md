@@ -369,6 +369,7 @@ Siehe [Setup erneut starten im Haupt-README](../../readme.md#-setup-erneut-start
 Siehe [sichere Aktualisierung und Entfernung im Haupt-README](../../readme.md#-setup-aktualisieren-oder-lokal-entfernen).
 
 ## Weitere historische Setup-Hinweise
+
 **Wichtig für Einsteiger:** Während der Installation wirst du mehrfach nach einem Passwort gefragt.
 Gemeint ist dabei das `sudo`-Passwort deines Linux-Benutzers, also das Passwort des
 Ubuntu-/Linux-Users innerhalb von WSL oder auf deinem Server.
