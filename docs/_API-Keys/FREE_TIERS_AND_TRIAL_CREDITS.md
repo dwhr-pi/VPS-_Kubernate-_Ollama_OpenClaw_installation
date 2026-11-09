@@ -1,5 +1,11 @@
 # Kostenlose LLM-Zugaenge: Quellen, Trial-Credits und eigene Auswertung
 
+**Wochenpruefung vom 09.11.2026:** [Aktueller Quellenbericht](reviews/2026-11-09.md).
+Mistral dokumentiert moegliche Trainingsnutzung im Free mode mit Opt-out.
+OpenRouter beschreibt speichernde Safety-Retention-Endpunkte und deren Ausschluss
+durch ZDR-only; das allgemeine CSAM-Screening bleibt davon unberuehrt.
+Ollama Cloud bleibt kostenpflichtig nach Nutzung; lokale Inferenz ist davon getrennt.
+
 **Wochenpruefung vom 02.11.2026:** [Aktueller Quellenbericht](reviews/2026-11-02.md).
 Ollama Cloud nennt jetzt Pay-as-you-go mit drei parallelen Requests; die bisher dokumentierten
 monatlichen Gratis-Starter-Credits sind nicht erneut belegt. 0 USD Abonnement ist keine kostenlose
