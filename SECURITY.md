@@ -28,6 +28,20 @@ Kontaktweg ueber den Maintainer oder einen minimalen, nicht-ausnutzbaren Hinweis
 - Agenten standardmaessig read-only.
 - Schreibende Aktionen nur mit Human Approval.
 
+## Kubernetes: Gateway und Tokens
+
+- Ollama und OpenClaw nicht direkt per NodePort, LoadBalancer oder Host-Port
+  exponieren. Privater Ingress ueber WireGuard mit TLS und Gateway-Authentifizierung.
+- Default-Deny fuer Ingress und Egress; erlaubte Pfade in beiden Namespaces
+  abnehmen. Pods und Namespace-Labels vor unbefugten Aenderungen schuetzen.
+- Port-Forwarding per RBAC begrenzen: `create` auf `pods/portforward` nicht
+  an Agenten oder normale Nutzer vergeben. Auch `pods/exec`, Pod-Erstellung und
+  Secret-Zugriff separat einschraenken. NetworkPolicies ersetzen diese Rechtepruefung nicht.
+- Tokens via `secretKeyRef` aus separat bereitgestellten Secrets beziehen.
+  Bei Rotation neues Secret bereitstellen, betroffene Pods kontrolliert neu
+  starten, neuen Zugriff pruefen, danach alten Token widerrufen. Keine
+  Tokenwerte in Logs, Git oder Befehlsargumenten.
+
 ## Besonders sensible Bereiche
 
 - `scripts/security/`

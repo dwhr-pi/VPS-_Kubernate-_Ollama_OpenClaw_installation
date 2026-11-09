@@ -1,0 +1,26 @@
+# Optional strategic merge patch, applied after the existing hardening patch.
+# Only for a reviewed OpenClaw image exposing all three HTTP probe endpoints.
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: openclaw, namespace: llmops}
+spec:
+  strategy: {type: Recreate, rollingUpdate: null}
+  template:
+    spec:
+      containers:
+        - name: openclaw
+          startupProbe:
+            tcpSocket: null
+            httpGet: {path: /startupz, port: 18789}
+            periodSeconds: 10
+            failureThreshold: 30
+          readinessProbe:
+            tcpSocket: null
+            httpGet: {path: /readyz, port: 18789}
+            periodSeconds: 10
+            timeoutSeconds: 3
+          livenessProbe:
+            tcpSocket: null
+            httpGet: {path: /healthz, port: 18789}
+            periodSeconds: 30
+            failureThreshold: 5
