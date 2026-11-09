@@ -7,8 +7,20 @@ spec:
   strategy: {type: Recreate, rollingUpdate: null}
   template:
     spec:
+      # Keep the hardening contract visible to standalone manifest scanners.
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+        fsGroup: 10001
+        seccompProfile: {type: RuntimeDefault}
       containers:
         - name: openclaw
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
           startupProbe:
             tcpSocket: null
             httpGet: {path: /startupz, port: 18789}

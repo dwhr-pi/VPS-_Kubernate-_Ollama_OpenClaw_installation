@@ -23,6 +23,20 @@ ingress = load('gpu_ingress', 'scripts/render_gpu_ingress.py')
 
 
 class PlatformContracts(unittest.TestCase):
+    def test_openclaw_http_probe_patch_preserves_hardening(self):
+        base = (ROOT / 'k8s/platform/openclaw-hardening-patch.yml').read_text(encoding='utf-8')
+        probes = (ROOT / 'k8s/openclaw-deployment.yaml').read_text(encoding='utf-8')
+        for indent in (6, 10):
+            space = ' ' * indent
+            block = rf'^{space}securityContext:\n((?:^{space} +\S[^\n]*\n)+)'
+            expected = re.findall(block, base, re.M)
+            self.assertEqual(len(expected), 1)
+            self.assertEqual(re.findall(block, probes, re.M), expected)
+        self.assertIn('automountServiceAccountToken: false', probes)
+        self.assertEqual(probes.count('tcpSocket: null'), 3)
+        for endpoint in ('/startupz', '/readyz', '/healthz'):
+            self.assertIn(f'httpGet: {{path: {endpoint}, port: 18789}}', probes)
+
     def test_default_plan_has_no_network_subprocess_or_temp_files(self):
         for stack in ('monitoring', 'nvidia'):
             with mock.patch.object(helm, 'run', side_effect=AssertionError('process')), \
