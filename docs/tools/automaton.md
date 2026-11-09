@@ -12,8 +12,9 @@ bleibt unabhaengig davon erhalten und startet weder Automaton noch Zenbot/Ollama
 ## Herkunft und gepruefter Stand
 
 - [Conway-Research/automaton](https://github.com/Conway-Research/automaton), MIT.
-- [Conway](https://conway.tech) ist das zugehoerige Ecosystem, keine Garantie fuer kostenlose
-  Infrastruktur.
+- Conway ist das zugehoerige Ecosystem, keine Garantie fuer kostenlose Infrastruktur.
+  Originaladresse `https://conway.tech`: am 09.11.2026 im CI-Lauf und beim direkten Abruf
+  wegen Verbindungsfehler bzw. Timeout nicht verifiziert. Die Projektquelle oben bleibt der Einstieg.
 - Quellcode/Buildmanifest und GitHub-HEAD am 16.10.2026 erneut geprueft: Commit
   `d8f816881fd24b6f5e3d616e59edec387a447667`.
 - Paketversion dort `0.2.1`; ein Paketversionsfeld ist kein Beleg fuer ein gleichnamiges
