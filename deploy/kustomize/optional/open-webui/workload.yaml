@@ -1,0 +1,94 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ai-webui
+  labels:
+    pod-security.kubernetes.io/enforce: restricted
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata: {name: open-webui-data, namespace: ai-webui}
+spec:
+  accessModes: [ReadWriteOnce]
+  resources:
+    requests: {storage: 10Gi}
+---
+apiVersion: v1
+kind: Service
+metadata: {name: open-webui, namespace: ai-webui}
+spec:
+  type: ClusterIP
+  selector: {app: open-webui}
+  ports: [{name: http, port: 8080, targetPort: http}]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: open-webui, namespace: ai-webui}
+spec:
+  replicas: 0
+  strategy: {type: Recreate}
+  selector:
+    matchLabels: {app: open-webui}
+  template:
+    metadata:
+      labels: {app: open-webui}
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+        fsGroup: 10001
+        seccompProfile: {type: RuntimeDefault}
+      containers:
+        - name: open-webui
+          # Supply a reviewed digest and verify the non-root startup contract.
+          image: registry.example.invalid/open-webui:REPLACE_WITH_REVIEWED_PIN
+          ports: [{name: http, containerPort: 8080}]
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {cpu: 250m, memory: 512Mi, ephemeral-storage: 128Mi}
+            limits: {cpu: "1", memory: 2Gi, ephemeral-storage: 1Gi}
+          env:
+            - {name: HOME, value: /tmp}
+            - {name: DATA_DIR, value: /app/backend/data}
+            - {name: WEBUI_AUTH, value: "true"}
+            - {name: ENABLE_SIGNUP, value: "false"}
+            - {name: ENABLE_PERSISTENT_CONFIG, value: "false"}
+            - {name: ENABLE_OLLAMA_API, value: "false"}
+            - {name: ENABLE_OPENAI_API, value: "true"}
+            - {name: OFFLINE_MODE, value: "true"}
+            - {name: OPENAI_API_BASE_URLS, value: "http://litellm.llmops.svc.cluster.local:4000/v1"}
+            - name: WEBUI_SECRET_KEY
+              valueFrom:
+                secretKeyRef: {name: open-webui-runtime, key: session-key}
+            - name: OPENAI_API_KEYS
+              valueFrom:
+                secretKeyRef: {name: open-webui-runtime, key: inference-key}
+            - name: WEBUI_ADMIN_EMAIL
+              valueFrom:
+                secretKeyRef: {name: open-webui-bootstrap, key: email, optional: true}
+            - name: WEBUI_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef: {name: open-webui-bootstrap, key: password, optional: true}
+          startupProbe:
+            httpGet: {path: /health, port: http}
+            periodSeconds: 10
+            failureThreshold: 30
+          readinessProbe:
+            httpGet: {path: /health/db, port: http}
+            periodSeconds: 10
+          livenessProbe:
+            httpGet: {path: /health, port: http}
+            periodSeconds: 30
+          volumeMounts:
+            - {name: data, mountPath: /app/backend/data}
+            - {name: tmp, mountPath: /tmp}
+      volumes:
+        - name: data
+          persistentVolumeClaim: {claimName: open-webui-data}
+        - name: tmp
+          emptyDir: {sizeLimit: 256Mi}

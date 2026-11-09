@@ -1,0 +1,43 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: open-webui-private
+  namespace: ai-webui
+  annotations:
+    cert-manager.io/cluster-issuer: llmops-private-dns01
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    traefik.ingress.kubernetes.io/router.middlewares: ai-webui-webui-vpn@kubernetescrd
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts: [webui.example.invalid]
+      secretName: open-webui-private-tls
+  rules:
+    - host: webui.example.invalid
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service: {name: open-webui, port: {number: 8080}}
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata: {name: webui-vpn, namespace: ai-webui}
+spec:
+  ipAllowList:
+    # Non-routable documentation address; replace with the actual VPN source range.
+    sourceRange: [192.0.2.1/32]
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata: {name: webui-from-private-traefik, namespace: ai-webui}
+spec:
+  podSelector: {matchLabels: {app: open-webui}}
+  policyTypes: [Ingress]
+  ingress:
+    - from:
+        - namespaceSelector: {matchLabels: {kubernetes.io/metadata.name: kube-system}}
+          podSelector: {matchLabels: {app.kubernetes.io/name: traefik}}
+      ports: [{protocol: TCP, port: 8080}]

@@ -18,7 +18,7 @@ for arg in "$@"; do
 done
 case "$action" in
   --help | -h)
-    printf '%s\n' 'setup-cluster.sh [--plan|--render base|vps-cpu|gpu|production|private-ingress|vps-cpu-local-storage]' \
+    printf '%s\n' 'setup-cluster.sh [--plan|--render base|vps-cpu|gpu|production|private-ingress|vps-cpu-local-storage|open-webui|open-webui-ingress]' \
       '--check [Hostoptionen] | --validate [--overlay ABS] | --apply --overlay ABS --context NAME --confirm-apply' \
       '--bootstrap-plan --artifacts ABS --private-address IP: nur bestehenden Artefaktvertrag pruefen.' \
       'Keine automatische Neuinstallation. Details: docs/GITOPS_DEPLOYMENT_PATH.md.'
@@ -37,6 +37,7 @@ case "$action" in
       vps-cpu | gpu | production | private-ingress | vps-cpu-local-storage)
         path="$ROOT/deploy/kustomize/overlays/$1"
         ;;
+      open-webui | open-webui-ingress) path="$ROOT/deploy/kustomize/optional/$1" ;;
       *) die 'Overlay nicht freigegeben.' ;;
     esac
     command -v "${KUSTOMIZE_BIN:-kustomize}" >/dev/null || die 'Geprueftes Kustomize fehlt; keine Nachinstallation.'

@@ -97,6 +97,8 @@ jobs:
           "$RUNNER_TEMP/kustomize" build k8s/overlays/production > "$RUNNER_TEMP/llmops-production.yml"
           "$RUNNER_TEMP/kustomize" build k8s/overlays/gpu > "$RUNNER_TEMP/llmops-gpu.yml"
           "$RUNNER_TEMP/kustomize" build k8s/overlays/vps-cpu > "$RUNNER_TEMP/llmops-vps.yml"
+          "$RUNNER_TEMP/kustomize" build deploy/kustomize/optional/open-webui > "$RUNNER_TEMP/open-webui.yml"
+          "$RUNNER_TEMP/kustomize" build deploy/kustomize/optional/open-webui-ingress > "$RUNNER_TEMP/open-webui-ingress.yml"
   secret-scan:
     runs-on: ubuntu-24.04
     timeout-minutes: 35

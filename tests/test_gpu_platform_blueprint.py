@@ -23,6 +23,23 @@ ingress = load('gpu_ingress', 'scripts/render_gpu_ingress.py')
 
 
 class PlatformContracts(unittest.TestCase):
+    def test_open_webui_is_opt_in_and_keeps_raw_ollama_private(self):
+        path = ROOT / 'deploy/kustomize/optional/open-webui'
+        workload = (path / 'workload.yaml').read_text(encoding='utf-8')
+        policies = (path / 'network-policy.yaml').read_text(encoding='utf-8')
+        ingress = (path.parent / 'open-webui-ingress/ingress.yaml').read_text(encoding='utf-8')
+        for expected in ('replicas: 0', 'type: ClusterIP', 'readOnlyRootFilesystem: true',
+                         'runAsNonRoot: true', 'automountServiceAccountToken: false',
+                         'claimName: open-webui-data', 'name: open-webui-runtime'):
+            self.assertIn(expected, workload)
+        self.assertNotIn('kind: Ingress', workload)
+        self.assertNotIn('11434', policies)
+        self.assertEqual(policies.count('port: 4000'), 2)
+        self.assertIn('policyTypes: [Ingress, Egress]', policies)
+        self.assertIn('ai-webui-webui-vpn@kubernetescrd', ingress)
+        self.assertIn('webui.example.invalid', ingress)
+        self.assertNotIn('0.0.0.0/0', ingress)
+
     def test_openclaw_http_probe_patch_preserves_hardening(self):
         base = (ROOT / 'k8s/platform/openclaw-hardening-patch.yml').read_text(encoding='utf-8')
         probes = (ROOT / 'k8s/openclaw-deployment.yaml').read_text(encoding='utf-8')
