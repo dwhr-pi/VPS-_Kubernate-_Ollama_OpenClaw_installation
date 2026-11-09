@@ -176,6 +176,36 @@ und Gateway-Authentifizierung einrichten. Ollama nicht oeffentlich routen.
 
 ## Monitoring, Storage und Betriebsfreigabe
 
+### Optionale HTTP-Probes und lokaler Watchdog
+
+Den [HTTP-Probe-Patch](../../k8s/openclaw-deployment.yaml) nach dem
+Hardening-Patch einbinden, nicht als eigenstaendiges Deployment anwenden.
+Er setzt eine gepruefte Gateway-Version mit `/startupz`, `/readyz` und
+`/healthz` voraus. Der bestehende Hardening-Patch mit Ressourcen, PVC und
+TCP-Probes bleibt fuer aeltere Versionen unveraendert.
+
+Der [Watchdog](../../scripts/healthcheck-watchdog.sh) ist ein Einzelaufruf
+fuer Cron oder einen Timer im selben Netzwerk-Namespace wie der jeweilige
+Loopback-Listener. Auf einem Cluster-Node erreicht dessen Loopback nicht
+automatisch einen Pod. Keine Ports allein fuer diesen Check freigeben.
+Der Exitcode kann einen Alarm ausloesen; kein automatischer Pod-Neustart,
+kein Kubernetes-Token und keine automatische Timer-Einrichtung.
+
+```bash
+bash scripts/healthcheck-watchdog.sh gateway
+bash scripts/healthcheck-watchdog.sh ollama
+```
+
+Nur bewusst und separat aufrufen: `pull MODELL` laedt das gepruefte Modell
+in den bestehenden Ollama-Cache, `warmup MODELL` laedt es mit zehn Minuten
+Keep-Alive in den Speicher. Vorher Modell-ID, Lizenz, Plattenplatz und
+RAM/VRAM pruefen. Kein Standardmodell und kein Download beim Pod-Start.
+Ein Init-Container kann die API des noch nicht gestarteten Hauptcontainers
+nicht nutzen. Warmup ist kein Nachweis fuer Inferenz unter Last und kann
+mit anderen GPU-Workloads konkurrieren. Kein automatisches Host-Swap-Tuning.
+
+### Komponenten und Abnahme
+
 - **P0:** Vorhandenes Traefik und cert-manager fuer privates TLS nutzen.
   SOPS oder Sealed Secrets genuegen als erster Schritt; Vault erst bei
   konkretem Bedarf an zentraler Rotation oder dynamischen Zugangsdaten.
