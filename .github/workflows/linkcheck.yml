@@ -3,6 +3,7 @@ name: markdown-link-check
 on:
   push:
   pull_request:
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -10,6 +11,7 @@ permissions:
 jobs:
   linkcheck:
     runs-on: ubuntu-latest
+    timeout-minutes: 35
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
@@ -22,6 +24,7 @@ jobs:
           node --test tests/test_markdown_link_retry.cjs
           node scripts/quality/link_checker_contract.cjs "$(command -v markdown-link-check)"
       - name: Check all Markdown files
+        timeout-minutes: 30
         run: |
           set -euo pipefail
           export NODE_PATH="$(npm root -g)"

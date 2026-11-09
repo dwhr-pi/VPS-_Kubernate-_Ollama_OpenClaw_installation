@@ -66,7 +66,7 @@ class ExternalLinkPolicyTests(unittest.TestCase):
         self.assertEqual(self.config["replacementPatterns"], [])
 
     def test_ci_link_gates_use_the_same_explicit_configuration(self):
-        for name in ("ci.yml", "repo-health.yml", "linkcheck.yml"):
+        for name in ("ci.yml", "linkcheck.yml"):
             text = (ROOT / ".github/workflows" / name).read_text(encoding="utf-8")
             self.assertIn('markdown-link-check@3.15.0', text)
             self.assertIn('node scripts/quality/link_checker_contract.cjs', text)
@@ -81,11 +81,14 @@ class ExternalLinkPolicyTests(unittest.TestCase):
         self.assertIn("find . -type f -name '*.md'", dedicated)
         self.assertNotIn("continue-on-error", dedicated)
         health = (ROOT / ".github/workflows/repo-health.yml").read_text(encoding="utf-8")
-        self.assertIn("find docs -name '*.md' -print0", health)
-        self.assertIn('set -euo pipefail', health)
         self.assertIn('set -euo pipefail', dedicated)
-        self.assertIn('xargs -0 -r node scripts/quality/check_markdown_links.cjs', health)
-        self.assertNotIn('xargs -0 -n 1 node scripts/quality/check_markdown_links.cjs', health)
+        self.assertIn('xargs -0 -r node scripts/quality/check_markdown_links.cjs', dedicated)
+        for event in ('push', 'pull_request', 'workflow_dispatch'):
+            self.assertIn(f'  {event}:\n', dedicated)
+        self.assertIn('timeout-minutes: 35', dedicated)
+        self.assertIn('timeout-minutes: 30', dedicated)
+        self.assertIn('timeout-minutes: 20', health)
+        self.assertNotIn('check_markdown_links.cjs', health)
 
     def test_status_failures_stay_failures_after_bounded_retries(self):
         for status in (202, 401, 403, 404, 429, 500, 503):
