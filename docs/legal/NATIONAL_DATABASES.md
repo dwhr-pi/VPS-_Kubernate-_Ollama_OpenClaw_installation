@@ -26,8 +26,10 @@ nicht **keine Gesetze vorhanden**. Keine Live-Integration, kein Crawling und
 keine automatische Rechtsauskunft.
 
 Fuer offene Laender: [WIPO Lex](https://www.wipo.int/wipolex/en/members)
-fuer IP-Recht und [ILO NATLEX](https://natlex.ilo.org/dyn/natlex2/r/natlex/fe/about)
-fuer Arbeits- und Sozialrecht. Das sind fachlich begrenzte Rechercheeinstiege,
+fuer IP-Recht und ILO NATLEX fuer Arbeits- und Sozialrecht.
+NATLEX-Originaladresse: `https://natlex.ilo.org/dyn/natlex2/r/natlex/fe/about`.
+Im Web lesbar, im PR- und Push-Linkcheck am 10.11.2026 jedoch HTTP 403;
+kein automatischer Abrufnachweis. Das sind fachlich begrenzte Rechercheeinstiege,
 keine nationalen Volltextgarantien und keine KI-/Datenschutzfreigabe.
 Der fruehere NATLEX-Einstieg
 `https://www.ilo.org/resource/other/natlex-database-national-labour-social-security-and-related-human-rights`
