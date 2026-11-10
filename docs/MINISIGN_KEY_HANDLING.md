@@ -18,6 +18,45 @@ Schluesselpaar keine neue Datei darueberschreiben. Einen neuen Schluessel
 nur bewusst auf einem vertrauenswuerdigen Signiersystem erzeugen und vor
 der ersten Freigabe seinen oeffentlichen Teil sichern.
 
+## Privaten Schluessel sichern und die Kopie pruefen
+
+Im beschriebenen Ubuntu-/WSL-Setup liegt das Original unter
+`$HOME/.openclaw-release-signing/release.key`. Bevorzugt eine Kopie auf
+einem verschluesselten, nach der Sicherung getrennten Datentraeger
+aufbewahren. Die Passphrase getrennt sichern. Eine lokale Windows-Kopie
+ist zusaetzlich moeglich, aber **kein Offline-Backup**. Dafuer einen
+zugriffsbeschraenkten, nicht synchronisierten Ordner verwenden und die
+Windows-Berechtigungen am Ziel pruefen; Linux-Dateimodi allein
+garantieren auf einem Windows-Laufwerk keine Zugriffsbeschraenkung.
+
+Beispiel in Ubuntu/WSL mit GNU Coreutils; Windows-Benutzernamen anpassen.
+Das kleine `c` in `/mnt/c` ist wichtig:
+
+```bash
+src="$HOME/.openclaw-release-signing/release.key"
+dest='/mnt/c/Users/DEIN_WINDOWS_NAME/AppData/Local/OpenClaw-Signiersicherung'
+mkdir -p "$dest" &&
+cp --update=none -- "$src" "$dest/release.key" &&
+cmp -- "$src" "$dest/release.key" &&
+printf '%s\n' 'Sicherung vorhanden und bytegleich.'
+```
+
+Der Kopierbefehl ueberschreibt keine vorhandene Datei. Bei
+`Permission denied` fuer `/mnt/C` zuerst den Pfad korrigieren, statt
+Rechte zu lockern oder `sudo` zu verwenden. Ist die Ausgabe
+widerspruechlich, den Vergleich separat ausfuehren:
+
+```bash
+if cmp -s -- "$src" "$dest/release.key"; then
+  printf '%s\n' 'Sicherung vorhanden und bytegleich.'
+else
+  printf '%s\n' 'Sicherung fehlt, ist nicht lesbar oder weicht ab.'
+fi
+```
+
+Die Pruefung zeigt keinen Schluesselinhalt an. Bei Abweichung nichts
+ueberschreiben, bis klar ist, welches Schluesselpaar verwendet wird.
+
 ## Public Key erhalten und unabhaengig bestaetigen
 
 1. Der Maintainer berechnet den SHA256-Wert seiner originalen `release.pub`:
