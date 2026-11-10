@@ -1,5 +1,7 @@
 # Laenderabdeckung fuer die Rechtsrecherche
 
+[Nationaler Rechtsquellenkatalog nach Kontinent, Prioritaet und A-Z](NATIONAL_DATABASES.md).
+
 Stand der Mitgliedschaftsrecherche: **21.10.2026**. Grundlage:
 [UN-Mitglieder](https://www.un.org/en/about-us/member-states) und
 [UN-Beobachterstaaten](https://research.un.org/en/unmembers/observers). Die folgende Liste umfasst

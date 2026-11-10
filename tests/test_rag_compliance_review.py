@@ -19,6 +19,16 @@ EXAMPLES = ROOT / "tools/rag_compliance/examples"
 
 
 class RAGComplianceReviewTests(unittest.TestCase):
+    def test_national_directory_lists_every_country_once_with_status(self):
+        coverage = review.load_json(ROOT / "config/legal/country_coverage.json")
+        text = (ROOT / "docs/legal/NATIONAL_DATABASES.md").read_text(encoding="utf-8")
+        rows = re.findall(r"^\| (.+?) \| ([A-Z]{2}) \| (.+?) \|$", text, re.M)
+        self.assertCountEqual([name for name, _, _ in rows],
+                              [row["name"] for row in coverage["countries"]])
+        self.assertEqual(len({code for _, code, _ in rows}), 195)
+        self.assertTrue(all(status.strip() for _, _, status in rows))
+        self.assertEqual(len(re.findall(r"^### ", text, re.M)), 12)
+
     def example(self, name):
         return review.load_json(EXAMPLES / (name + ".json"))
 

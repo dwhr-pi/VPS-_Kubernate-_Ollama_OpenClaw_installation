@@ -113,9 +113,26 @@ minisign -Sm /sicher/neues-release-verzeichnis/SHA256SUMS \
   -s /offline/signierschluessel.key
 ```
 
-Die vier Dateien erst nach manueller Gegenpruefung als Release-Assets bereitstellen.
-Schluesselaustausch/-widerruf und die unabhaengige Verteilung des Public Keys bleiben
-organisatorisch festzulegen. Keine automatisierte Schluesselrotation.
+1. Den freigegebenen Commit und einen neuen, unveraenderlichen Versions-Tag
+   protokollieren. Kein Retagging bereits verteilter Versionen.
+2. Nach dem Export und der Offline-Signierung die vier Assets auf einem
+   getrennten Pruefsystem mit dem unabhaengig bezogenen Public Key per
+   `verify_release_and_install.sh --verify-only` pruefen. Vor dem
+   Upload kann dazu `--artifacts` verwendet werden.
+3. In GitHub einen Release-Entwurf fuer genau diesen Tag anlegen und alle
+   vier Assets hochladen. Erst nach Tag-/Commit-Abgleich und manueller
+   Freigabe publizieren. Danach den Download-Pfad mit `--download --verify-only`
+   erneut pruefen. Kein Deployment und kein Installerstart in Release-CI.
+4. Public Key und dessen Fingerprint ueber einen vom Release-Download
+   unabhaengigen, bereits vertrauenswuerdigen Maintainer-Kanal verteilen.
+   Fingerprint-Format und Key-ID eindeutig benennen. Bei Rotation neuen
+   Fingerprint unabhaengig bestaetigen und Widerruf/Gueltigkeit des alten
+   Schluessels kommunizieren. Secret Key bleibt offline.
+
+Optional kann eine spaetere Cosign-Keyless-Attestation den Herkunftsnachweis
+ergaenzen. Dafuer die genaue Workflow-Identitaet und den OIDC-Issuer
+festlegen und unabhaengig pruefen. Sie ersetzt weder den Minisign-Schluessel
+noch die vier Pflicht-Assets. Hier ist keine Keyless-Signierung aktiviert.
 
 ## Nachweis und Grenzen
 
