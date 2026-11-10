@@ -131,7 +131,7 @@ class CredentialsBackupTests(unittest.TestCase):
                             '$HOME/Downloads/credentials.tar.age',
                             'age --decrypt --output', 'tar -tf', 'tar -xOf',
                             '--confirm-restore', 'Ordnerrechte 0700, Dateirechte 0600',
-                            'https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation/blob/main/docs/CREDENTIALS_BACKUP.md',
+                            'https://github.com/dwhr-pi/OpenClaw-AI_Infrastructure-_Ultimate_Setup/blob/main/docs/CREDENTIALS_BACKUP.md',
                             'https://github.com/FiloSottile/age/releases']:
             self.assertIn(instruction, body)
         self.assertEqual(next(message.iter_attachments()).get_payload(decode=True), source.read_bytes())

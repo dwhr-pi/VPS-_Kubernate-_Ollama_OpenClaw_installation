@@ -3,7 +3,7 @@
 Du arbeitest im Repository:
 
 ```text
-https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation
+https://github.com/dwhr-pi/OpenClaw-AI_Infrastructure-_Ultimate_Setup
 ```
 
 Ziel: Integriere eine OpenClaw-/Ollama-kompatible Boardroom-Skill fuer strategische Entscheidungen.

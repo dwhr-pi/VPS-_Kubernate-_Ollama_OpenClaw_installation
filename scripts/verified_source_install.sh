@@ -4,7 +4,7 @@ set -euo pipefail
 umask 077
 ROOT="$(cd "${BASH_SOURCE[0]%/*}/.." && pwd)"
 commit=${1:-} destination=${2:-}
-repo=https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation.git
+repo=https://github.com/dwhr-pi/OpenClaw-AI_Infrastructure-_Ultimate_Setup.git
 die() {
   printf 'Verifizierter Quellenstart abgebrochen: %s\n' "$*" >&2
   exit 1

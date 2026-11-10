@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+### 2026-11-10: Migration des GitHub-Repository-Namens
+
+- Aktive Installer, Release-Metadaten, GitOps, Herkunftsdiagnose und Tool-Quellen
+  auf `dwhr-pi/OpenClaw-AI_Infrastructure-_Ultimate_Setup` umgestellt.
+- Signierte Altmetadaten bleiben unveraendert; kein unsignierter Fallback.
+- README-Einstieg ergaenzt; [Migration](docs/REPOSITORY_RENAME.md) beschreibt
+  Remote, Worktrees, bestehende Installationen und manuelle Freigabe.
+
 ### 2026-11-10: Rechtsquellen, Release und Wartung
 
 - Nationaler Rechtsquellenkatalog fuer 195 Staaten mit Prioritaet, Kontinent und offenen Quellen.

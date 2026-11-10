@@ -9,7 +9,7 @@ import subprocess
 import sys
 import tempfile
 
-REPO = 'https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation.git'
+REPO = 'https://github.com/dwhr-pi/OpenClaw-AI_Infrastructure-_Ultimate_Setup.git'
 TAG = re.compile(r'v[0-9]+\.[0-9]+\.[0-9]+(?:-[a-zA-Z0-9.-]+)?')
 
 

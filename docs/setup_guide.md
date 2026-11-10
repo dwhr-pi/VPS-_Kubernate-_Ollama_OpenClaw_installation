@@ -49,11 +49,8 @@ Setup-Optionen und Profile auswählen kannst.
 
 ### 3.1 Start der Installation
 
-Führe den folgenden Befehl in deinem Terminal aus:
-
-```bash
-curl -sSL https://raw.githubusercontent.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation/main/install.sh | bash
-```
+Verwende den [signierten Einstieg](SIGNED_RELEASES.md) mit einem unabhängig
+geprüften Bootstrap. Den früheren ungeprüften One-Liner nicht verwenden.
 
 Das `install.sh`-Skript klont das Repository und startet das Hauptmenü.
 

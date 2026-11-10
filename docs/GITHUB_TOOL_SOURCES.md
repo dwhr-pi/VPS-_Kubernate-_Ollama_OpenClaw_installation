@@ -132,7 +132,7 @@ archiviert, Pin `fa4d8f8911036ba79a62f97e7e62581e39441d56`.
 Community License und Modellbedingungen separat pruefen.
 
 Personnel_Documents_AI stammt aus dem
-[Setup-Repository](https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation), nicht
+[Setup-Repository](https://github.com/dwhr-pi/OpenClaw-AI_Infrastructure-_Ultimate_Setup), nicht
 aus Paperless selbst. Der [private CLI-Starter](tools/personnel-documents.md) nutzt den vorhandenen
 GitHub-Checkout mit SHA-256-Pruefung, ohne Docker oder erneuten Download. Paperless und Ollama sind
 separate optionale Bausteine.

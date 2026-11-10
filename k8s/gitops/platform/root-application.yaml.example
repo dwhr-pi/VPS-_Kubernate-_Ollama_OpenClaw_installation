@@ -7,7 +7,7 @@ metadata:
 spec:
   project: llmops-root
   source:
-    repoURL: https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation.git
+    repoURL: https://github.com/dwhr-pi/OpenClaw-AI_Infrastructure-_Ultimate_Setup.git
     targetRevision: REPLACE_WITH_FULL_CONFIG_COMMIT
     path: k8s/gitops/apps
   destination:

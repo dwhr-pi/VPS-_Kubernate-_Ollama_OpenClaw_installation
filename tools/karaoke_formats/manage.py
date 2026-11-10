@@ -122,7 +122,7 @@ def install(base):
     atomic_write(launcher, launcher_text(SOURCE, checksum), 0o700)
     atomic_write(marker, json.dumps({'tool': 'Karaoke_Formats', 'source': str(SOURCE),
                                    'sha256': checksum, 'source_url':
-                                   'https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation'}, indent=2) + '\n')
+                                   'https://github.com/dwhr-pi/OpenClaw-AI_Infrastructure-_Ultimate_Setup'}, indent=2) + '\n')
 
 
 def uninstall(base):

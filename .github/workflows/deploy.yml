@@ -96,7 +96,7 @@ jobs:
     if: >-
       github.event_name == 'workflow_dispatch' && inputs.deploy_staging == true &&
       github.ref == 'refs/heads/main' &&
-      github.repository == 'dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation'
+      github.repository == 'dwhr-pi/OpenClaw-AI_Infrastructure-_Ultimate_Setup'
     needs: validate
     runs-on: [self-hosted, linux, llmops-staging]
     timeout-minutes: 25

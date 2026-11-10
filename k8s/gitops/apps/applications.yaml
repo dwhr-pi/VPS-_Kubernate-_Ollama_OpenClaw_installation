@@ -7,7 +7,7 @@ metadata:
 spec:
   project: llmops-workloads
   source:
-    repoURL: https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation.git
+    repoURL: https://github.com/dwhr-pi/OpenClaw-AI_Infrastructure-_Ultimate_Setup.git
     targetRevision: REPLACE_WITH_FULL_WORKLOAD_COMMIT
     path: k8s/gitops/agents
   destination: {server: 'https://kubernetes.default.svc', namespace: ai-agents}
@@ -23,7 +23,7 @@ metadata:
 spec:
   project: llmops-workloads
   source:
-    repoURL: https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation.git
+    repoURL: https://github.com/dwhr-pi/OpenClaw-AI_Infrastructure-_Ultimate_Setup.git
     targetRevision: REPLACE_WITH_FULL_WORKLOAD_COMMIT
     # Privates Deployment-Overlay mit echtem Digest und verschluesseltem Secret.
     path: REPLACE_WITH_REVIEWED_MEMORY_OVERLAY
@@ -40,7 +40,7 @@ metadata:
 spec:
   project: llmops-workloads
   source:
-    repoURL: https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation.git
+    repoURL: https://github.com/dwhr-pi/OpenClaw-AI_Infrastructure-_Ultimate_Setup.git
     targetRevision: REPLACE_WITH_FULL_WORKLOAD_COMMIT
     path: charts/monitoring-lite
     helm:

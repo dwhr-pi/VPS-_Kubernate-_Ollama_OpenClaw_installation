@@ -1,8 +1,48 @@
-# OpenClaw - AI_Infrastructure - Ultimate Setup
+# OpenClaw & AI Infrastructure - Ultimate Setup
 
 HE/Oracle Control/DMZ -> WireGuard -> Pi (WoL) -> RTX/K3s-Worker zuhause.
 Interne APIs bleiben privat; GPU, Tunnel, Cloud und privilegierte Dienste sind opt-in.
 Keine pauschale Produktionsfreigabe: Supply-Chain und echte Laufzeit-/Restore-Abnahmen bleiben offen.
+
+## Was ist das hier überhaupt? (Kurz erklärt für Einsteiger)
+
+Ein VPS in der Cloud koordiniert das Setup. Ein Raspberry Pi zu Hause kann
+den Rechner mit RTX-Grafikkarte per Wake-on-LAN einschalten. Dieser Rechner
+übernimmt die KI-Inferenz; WireGuard verbindet die Standorte verschlüsselt.
+
+- **Lokal chatten und arbeiten:** Open WebUI und Ollama können Modellanfragen
+  auf eigener Hardware verarbeiten. Daten bleiben lokal, solange keine
+  externen Modellanbieter, Werkzeuge oder Datenflüsse aktiviert werden.
+- **Aufgaben automatisieren:** Werkzeuge wie n8n, Flowise oder Huginn helfen
+  bei wiederkehrenden Abläufen, etwa beim Sortieren von Daten oder Erstellen
+  von Berichten. Externe Dienste brauchen eine bewusste Freigabe.
+- **Passende Profile wählen:** Medienproduktion, Home Assistant, Entwicklung
+  oder Forschung lassen sich getrennt einrichten. Nicht jedes Profil ist
+  gleich weit getestet.
+
+| Frage | Verwaltete Cloud-KI | Dieses Setup |
+| --- | --- | --- |
+| Wo wird gerechnet? | Beim Anbieter | Bei lokaler Inferenz auf eigener Hardware |
+| Was kostet es? | Je nach Tarif oder Verbrauch | Hardware, Strom, gegebenenfalls VPS und bewusst genutzte Cloud-Dienste |
+| Wer kümmert sich um Betrieb und Sicherheit? | Der Anbieter für seine Plattform | Du für Updates, Zugriffsschutz und Backups |
+
+Einsteiger können vorhandene Werkzeuge über das Linux-Setup-Menü auswählen.
+Fortgeschrittene können Kubernetes, Kustomize, Ansible und Monitoring
+gezielt ergänzen. Das Projekt ist keine fertige Klick-App und verspricht
+keine Produktionsreife ohne eigene Laufzeit- und Restore-Tests.
+
+## Warum keine Docker-Installation?
+
+Dieses Setup bevorzugt geprüfte Git-Quellen und native Builds. Damit lassen
+sich genaue Quellstände nachvollziehen, Forks einbinden und projektspezifische
+Build-Schritte prüfen. Ein Quellbuild ist nicht automatisch sicher: Pins,
+Abhängigkeiten und Integritätsprüfungen bleiben wichtig. Builds können
+deutlich länger dauern als ein Image-Download; fehlende native Buildrezepte
+bleiben ausdrücklich offen.
+
+Kubernetes nutzt eine Container-Laufzeit; das ist keine Docker-Installation
+und kein Docker-Fallback für Tools. Vorhandene Container, Volumes und
+Benutzerdaten bleiben erhalten. [Installationsrichtlinie](docs/INSTALLATION_POLICY.md)
 
 Projektlizenz: [Apache-2.0](LICENSE). [Drittprojekte](THIRD_PARTY_NOTICES.md).
 Hinweise auf Unterstuetzung sind keine zusaetzliche Lizenzbedingung.
@@ -14,6 +54,7 @@ Hinweise auf Unterstuetzung sind keine zusaetzliche Lizenzbedingung.
   [Ressourcen, Storage und GitOps-Abnahme](docs/LLMOPS_ARCHITECTURE_INCREMENT_2026-11-03.md).
   [Infrastrukturreview: Monitoring, MCP und sichere Retries](docs/INFRASTRUCTURE_REVIEW_2026-11-07.md).
 - **Betrieb:** [Installation, Neustart und Update](#installation-und-betrieb), [Backup und Restore](docs/INSTALLATION_STATUS_BACKUP.md).
+  [Umzug auf den neuen Repository-Namen](docs/REPOSITORY_RENAME.md).
 - **Sicherheit:** [Signierte Releases](docs/SIGNED_RELEASES.md), [sicherer Kernpfad](docs/SECURE_CORE_REFACTOR.md).
 - **Tools und Profile:** [Tool-Matrix](docs/generated/TOOL_MATRIX.md), [Profil-Matrix](docs/generated/PROFILE_MATRIX.md).
 - **Dokumentation und Historie:** [Wegweiser](docs/readme.md), [historische Langfassung](docs/legacy/README_FULL_2026_11_01.md).

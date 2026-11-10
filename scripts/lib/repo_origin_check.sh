@@ -2,7 +2,7 @@
 # Gemeinsame Repo-Herkunftsprüfung fuer Diagnoseberichte.
 # Diese Datei repariert nichts und nimmt keine Aenderungen vor.
 
-ORIGINAL_SETUP_REPO_URL="https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation"
+ORIGINAL_SETUP_REPO_URL="https://github.com/dwhr-pi/OpenClaw-AI_Infrastructure-_Ultimate_Setup"
 
 normalize_git_remote_url() {
   local url="${1:-}"
@@ -30,7 +30,8 @@ print_repo_origin_report() {
 
   expected_normalized="$(normalize_git_remote_url "$ORIGINAL_SETUP_REPO_URL")"
 
-  if [ ! -d "$repo_dir/.git" ]; then
+  if { [ ! -d "$repo_dir/.git" ] && [ ! -f "$repo_dir/.git" ]; } ||
+    ! git -C "$repo_dir" rev-parse --git-dir >/dev/null 2>&1; then
     echo "## Setup-Repo-Herkunft"
     echo
     echo "- Status: unknown"

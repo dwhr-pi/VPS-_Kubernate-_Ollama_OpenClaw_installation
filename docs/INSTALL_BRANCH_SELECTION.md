@@ -38,14 +38,14 @@ unbeaufsichtigte Hintergrundinstallation.
 
 ## Den neuen Bootstrap beziehen
 
-Solange diese Aenderung nur im Featurebranch liegt, enthaelt `main/install.sh` die Auswahl **noch
-nicht**. Der Branch der heruntergeladenen Bootstrap-Datei und der anschliessend ausgewaehlte
-Zielbranch sind zwei verschiedene Dinge. Zum bewussten Testen des neuen Bootstraps unter Linux/WSL:
+Der Commit der heruntergeladenen Bootstrap-Datei und der anschliessend ausgewaehlte
+Zielbranch sind zwei verschiedene Dinge. Nur zum bewussten Entwicklungstest unter Linux/WSL
+den folgenden Platzhalter durch einen unabhaengig geprueften Commit ersetzen:
 
 ```bash
 cd ~
 curl -fSL --proto '=https' --proto-redir '=https' \
-  https://raw.githubusercontent.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation/codex/optional-coding-agents-20261029/install.sh \
+  "https://raw.githubusercontent.com/dwhr-pi/OpenClaw-AI_Infrastructure-_Ultimate_Setup/GEPRUEFTER_COMMIT/install.sh" \
   -o openclaw-install.sh
 less openclaw-install.sh
 ```

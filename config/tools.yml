@@ -1764,7 +1764,7 @@
       "id": "karaoke_formats",
       "name": "Karaoke_Formats",
       "auto_install": false,
-      "source": "https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation",
+      "source": "https://github.com/dwhr-pi/OpenClaw-AI_Infrastructure-_Ultimate_Setup",
       "category": "audio",
       "status": "experimental",
       "resource_class": "light",
@@ -2320,7 +2320,7 @@
     {
       "id": "personnel_documents",
       "name": "Personnel_Documents_AI",
-      "source": "https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation",
+      "source": "https://github.com/dwhr-pi/OpenClaw-AI_Infrastructure-_Ultimate_Setup",
       "additional_sources": [
         "https://github.com/paperless-ngx/paperless-ngx",
         "https://github.com/ollama/ollama",
@@ -7723,7 +7723,7 @@
       "check_type": "path",
       "check_value": "~/.openclaw_ultimate_user_data/tools/markdown_docs_server/OWNED.json",
       "ports": [8765],
-      "source": "https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation.git",
+      "source": "https://github.com/dwhr-pi/OpenClaw-AI_Infrastructure-_Ultimate_Setup.git",
       "source_pin_policy": "Explicit reviewed full GitHub commit at install/update; pinned Python-Markdown source dependency",
       "install_mode": "github-native-build",
       "status": "experimental",

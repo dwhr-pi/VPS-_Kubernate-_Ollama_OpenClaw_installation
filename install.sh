@@ -16,7 +16,7 @@ if [[ "${1:-}" == --verified-source ]]; then
   exec bash "$VERIFIED_ROOT/scripts/verified_source_install.sh" "$2" "$3"
 fi
 
-REPO_URL="https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation.git" # BITTE AN IHR REPOSITORY ANPASSEN!
+REPO_URL="https://github.com/dwhr-pi/OpenClaw-AI_Infrastructure-_Ultimate_Setup.git" # BITTE AN IHR REPOSITORY ANPASSEN!
 INSTALL_DIR="openclaw_ultimate_setup"
 INSTALL_BRANCH=""
 KNOWN_FEATURE_BRANCH="codex/optional-coding-agents-20261029"

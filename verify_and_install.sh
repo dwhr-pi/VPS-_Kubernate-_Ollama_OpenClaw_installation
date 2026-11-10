@@ -3,7 +3,7 @@
 set -euo pipefail
 umask 077
 commit='' expected='' destination="$HOME/openclaw_ultimate_setup" verify_only=0
-repo=https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation.git
+repo=https://github.com/dwhr-pi/OpenClaw-AI_Infrastructure-_Ultimate_Setup.git
 die() {
   printf 'Verifizierter Bootstrap abgebrochen: %s\n' "$*" >&2
   exit 1

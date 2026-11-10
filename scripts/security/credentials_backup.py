@@ -99,7 +99,7 @@ nach lokaler Pruefung bewusst wieder starten. Keine automatischen API-Tests.
 
 Ausfuehrliche Befehle zum kontrollierten Uebernehmen stehen im vertrauenswuerdigen
 Setup unter docs/CREDENTIALS_BACKUP.md und online hier:
-https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation/blob/main/docs/CREDENTIALS_BACKUP.md
+https://github.com/dwhr-pi/OpenClaw-AI_Infrastructure-_Ultimate_Setup/blob/main/docs/CREDENTIALS_BACKUP.md
 Der Online-Stand entspricht dem veroeffentlichten main-Branch und kann von dieser
 Mail abweichen. Passphrase, Schluessel und Klartextdateien
 nicht in Antworten auf diese Mail schicken. Private Pruefkopien nach erfolgreicher

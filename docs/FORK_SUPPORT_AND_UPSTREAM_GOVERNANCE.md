@@ -39,7 +39,7 @@ Eine solche Freigabe kann z. B. diese Daten enthalten:
 support_profile:
   status: approved_fork
   fork: dwhr-pi/beispiel-fork
-  upstream: dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation
+  upstream: dwhr-pi/OpenClaw-AI_Infrastructure-_Ultimate_Setup
   branch: support/kunde-oder-labor
   support_level: limited
   allowed_paths:
@@ -87,7 +87,7 @@ Es gibt mehrere sichere Wege. Die Reihenfolge ist bewusst konservativ:
    zieht die Aenderungen gezielt:
 
    ```bash
-   git remote add upstream https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation.git
+   git remote add upstream https://github.com/dwhr-pi/OpenClaw-AI_Infrastructure-_Ultimate_Setup.git
    git fetch upstream
    git checkout eigene-branch
    git merge upstream/support/ticket-1234-airbyte-fix

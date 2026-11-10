@@ -5,9 +5,8 @@ Skripte.
 
 ## 1. Bootstrap
 
-```bash
-curl -sSL https://raw.githubusercontent.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation/main/install.sh | bash
-```
+Den [signierten Einstieg](../SIGNED_RELEASES.md) verwenden. Fuer bestehende
+Installationen siehe [Repository-Migration](../REPOSITORY_RENAME.md).
 
 ## 2. Basis-Setup
 

@@ -16,7 +16,7 @@ import tempfile
 import uuid
 
 ROOT = Path(__file__).resolve().parents[2]
-UPSTREAM = 'https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation.git'
+UPSTREAM = 'https://github.com/dwhr-pi/OpenClaw-AI_Infrastructure-_Ultimate_Setup.git'
 MARKDOWN = 'https://github.com/Python-Markdown/markdown.git'
 MARKDOWN_PIN = 'b41e0aaf1181f1a8cb200cf5a815aad7c0020d23'
 EXT = {'.md', '.py', '.sh', '.yaml', '.yml', '.json', '.toml', '.txt', '.conf', '.png', '.jpg', '.jpeg', '.gif', '.webp'}

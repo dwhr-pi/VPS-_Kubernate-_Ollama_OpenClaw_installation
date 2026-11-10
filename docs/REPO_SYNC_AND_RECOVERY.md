@@ -92,13 +92,11 @@ git clean -fd
 bash ./setup_ultimate.sh
 ```
 
-### Komplett neu klonen
+### Repository-Umbenennung
 
-```bash
-rm -rf ~/openclaw_ultimate_setup
-cd ~
-curl -sSL https://raw.githubusercontent.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation/main/install.sh | bash
-```
+Fuer einen Namenswechsel weder den vorhandenen Checkout loeschen noch neu
+installieren. Siehe [Repository-Migration](REPOSITORY_RENAME.md). Fuer
+eine echte Neuinstallation gilt der [signierte Einstieg](SIGNED_RELEASES.md).
 
 ## 3. Codex-Worktrees richtig einordnen
 

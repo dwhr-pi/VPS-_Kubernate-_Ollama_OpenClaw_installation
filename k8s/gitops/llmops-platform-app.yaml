@@ -3,7 +3,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata: {name: llmops-core, namespace: argocd}
 spec:
-  sourceRepos: ['https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation.git']
+  sourceRepos: ['https://github.com/dwhr-pi/OpenClaw-AI_Infrastructure-_Ultimate_Setup.git']
   destinations: [{server: 'https://kubernetes.default.svc', namespace: llmops}]
   clusterResourceWhitelist: [{group: '', kind: Namespace}]
   namespaceResourceWhitelist:
@@ -25,7 +25,7 @@ metadata: {name: llmops-core-production, namespace: argocd}
 spec:
   project: llmops-core
   source:
-    repoURL: https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation.git
+    repoURL: https://github.com/dwhr-pi/OpenClaw-AI_Infrastructure-_Ultimate_Setup.git
     targetRevision: REPLACE_WITH_FULL_REVIEWED_COMMIT
     path: k8s/overlays/production
   destination: {server: 'https://kubernetes.default.svc', namespace: llmops}

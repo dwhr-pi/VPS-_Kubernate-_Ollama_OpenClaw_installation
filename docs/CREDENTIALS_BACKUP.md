@@ -303,7 +303,7 @@ selbst**: Softwarequellen, Windows-/WSL-/Linux-Befehle, manuelle TAR-Ansicht, Ru
 Workspace und Warnungen vor Klartextkopien. So bleiben grundlegende Restore-Schritte auch ohne
 Zugriff auf das Repository verfuegbar. Die Anleitung enthaelt keine Passphrase und aktiviert nichts
 automatisch. Die Mail enthaelt ausserdem einen direkten Link zur
-[Online-Dokumentation auf GitHub](https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation/blob/main/docs/CREDENTIALS_BACKUP.md).
+[Online-Dokumentation auf GitHub](https://github.com/dwhr-pi/OpenClaw-AI_Infrastructure-_Ultimate_Setup/blob/main/docs/CREDENTIALS_BACKUP.md).
 Dieser zeigt den veroeffentlichten Stand auf `main`; lokale Aenderungen sind erst nach ihrer
 Veroeffentlichung dort sichtbar. Bestehende EML-Dateien/Mails werden nicht nachtraeglich geaendert;
 einen neuen Entwurf erstellen.

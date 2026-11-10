@@ -135,8 +135,5 @@ Empfohlener Schnellstart:
 wsl --install -d Ubuntu-24.04
 ```
 
-Danach in Ubuntu:
-
-```bash
-curl -sSL https://raw.githubusercontent.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation/main/install.sh | bash
-```
+Danach in Ubuntu den [signierten Einstieg](SIGNED_RELEASES.md) verwenden.
+Bei einem bestehenden Checkout gilt die [Repository-Migration](REPOSITORY_RENAME.md).

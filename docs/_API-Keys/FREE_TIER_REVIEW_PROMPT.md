@@ -11,7 +11,7 @@ selbst keine Programme oder Automation.
    und die relevante FreeLLMAPI-/Coding-Agent-Dokumentation. Ermittle das tatsaechliche
    Windows-Repository, arbeite nicht in WSL oder einem Ersatz-Checkout.
 2. Lies lokalen HEAD und Arbeitsstatus sowie oeffentliches GitHub-`main` des Projekts
-   `dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation`. Vergleiche mit dem letzten Bericht.
+   `dwhr-pi/OpenClaw-AI_Infrastructure-_Ultimate_Setup`. Vergleiche mit dem letzten Bericht.
    Gleiches Commit bedeutet bei lokalen Aenderungen keine Inhaltsgleichheit. Keine persoenlichen
    Dateien oder Secrets fuer die Recherche oeffnen.
 3. Lies alle eingetragenen GitHub-Quellen inhaltlich. Pruefe ihre aktuellen Eigentuemernamen,

@@ -62,6 +62,17 @@ class ManifestTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'Signatur'):
             self.verify()
 
+    def test_renamed_repository_is_exact_and_old_metadata_is_not_reinterpreted(self):
+        repo = 'https://github.com/dwhr-pi/OpenClaw-AI_Infrastructure-_Ultimate_Setup.git'
+        self.assertEqual(release.REPO, repo)
+        for path in ('install.sh', 'verify_and_install.sh', 'verify_release_and_install.sh',
+                     'scripts/verified_source_install.sh', 'scripts/documentation_server/lifecycle.py'):
+            self.assertIn(repo, (ROOT / path).read_text(encoding='utf-8'), path)
+        self.data['repo'] = 'https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation.git'
+        self.sign_fixture()
+        with self.assertRaisesRegex(ValueError, 'Repository-Vertrag'):
+            self.verify()
+
     def test_payload_tampering_is_rejected(self):
         (self.artifacts / 'install.sh').write_text('tampered')
         with self.assertRaisesRegex(ValueError, 'Pruefsumme'):

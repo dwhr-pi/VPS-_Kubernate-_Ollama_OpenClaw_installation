@@ -35,11 +35,14 @@ class PlatformNavigation(unittest.TestCase):
         visible = re.sub(r'<details>.*?</details>', '', root, flags=re.S)
         self.assertLess(len(visible.splitlines()), 200)
         self.assertEqual(headings(visible), [
-            'OpenClaw - AI_Infrastructure - Ultimate Setup', 'Orientierung', 'Installation und Betrieb',
+            'OpenClaw & AI Infrastructure - Ultimate Setup',
+            'Was ist das hier überhaupt? (Kurz erklärt für Einsteiger)',
+            'Warum keine Docker-Installation?', 'Orientierung', 'Installation und Betrieb',
             'Quickstart: Signiertes Release installieren', 'Setup erneut starten',
             'Setup aktualisieren oder lokal entfernen',
         ])
-        self.assertEqual(len(re.findall(r'^- \*\*', visible, re.M)), 6)
+        orientation = visible.split('## Orientierung\n', 1)[1].split('\n## ', 1)[0]
+        self.assertEqual(len(re.findall(r'^- \*\*', orientation, re.M)), 6)
         self.assertEqual(len(fixture), 45)
         self.assertEqual([
             'Weitere historische Setup-Hinweise' if row['anchor'] == 'boardroom-profil' else row['title']

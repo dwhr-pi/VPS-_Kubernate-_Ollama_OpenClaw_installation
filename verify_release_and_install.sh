@@ -63,7 +63,7 @@ if ((download)); then
   for file in SHA256SUMS SHA256SUMS.minisig release.json install.sh; do
     curl -q --fail --silent --show-error --location --proto '=https' --proto-redir '=https' \
       --connect-timeout 15 --max-time 120 --max-filesize 1048576 \
-      "https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation/releases/download/$tag/$file" \
+      "https://github.com/dwhr-pi/OpenClaw-AI_Infrastructure-_Ultimate_Setup/releases/download/$tag/$file" \
       --output "$artifacts/$file"
   done
 fi
@@ -82,7 +82,7 @@ git_safe() {
     -c http.sslVerify=true -c protocol.file.allow=never -c protocol.ext.allow=never "$@"
 }
 git_safe clone --no-checkout --depth=1 --single-branch --branch "$tag" --no-recurse-submodules \
-  https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation.git "$stage/source"
+  https://github.com/dwhr-pi/OpenClaw-AI_Infrastructure-_Ultimate_Setup.git "$stage/source"
 [[ $(git_safe -C "$stage/source" rev-parse 'HEAD^{commit}') == "$commit" ]] || die 'Git-Tag zeigt nicht auf den signierten Commit.'
 git_safe -C "$stage/source" checkout --detach "$commit"
 [[ -f "$stage/source/install.sh" && ! -L "$stage/source/install.sh" ]] || die 'Installer darf kein Symlink sein.'

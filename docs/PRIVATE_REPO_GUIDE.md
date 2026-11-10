@@ -21,7 +21,7 @@ Die folgenden Befehle setzen einen bereits eingerichteten und separat geprueften
 Sie starten keinen Installer:
 
 ```bash
-git clone --no-recurse-submodules git@github.com:dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation.git openclaw_setup
+git clone --no-recurse-submodules git@github.com:dwhr-pi/OpenClaw-AI_Infrastructure-_Ultimate_Setup.git openclaw_setup
 cd openclaw_setup
 git status --short
 git rev-parse HEAD

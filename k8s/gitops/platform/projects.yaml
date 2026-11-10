@@ -5,7 +5,7 @@ metadata:
   name: llmops-root
   namespace: argocd
 spec:
-  sourceRepos: ['https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation.git']
+  sourceRepos: ['https://github.com/dwhr-pi/OpenClaw-AI_Infrastructure-_Ultimate_Setup.git']
   destinations:
     - {server: 'https://kubernetes.default.svc', namespace: argocd}
   clusterResourceBlacklist:
@@ -19,7 +19,7 @@ metadata:
   name: llmops-workloads
   namespace: argocd
 spec:
-  sourceRepos: ['https://github.com/dwhr-pi/VPS-_Kubernate-_Ollama_OpenClaw_installation.git']
+  sourceRepos: ['https://github.com/dwhr-pi/OpenClaw-AI_Infrastructure-_Ultimate_Setup.git']
   destinations:
     - {server: 'https://kubernetes.default.svc', namespace: ai-agents}
     - {server: 'https://kubernetes.default.svc', namespace: ai-memory}
