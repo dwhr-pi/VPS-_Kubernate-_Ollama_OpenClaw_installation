@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+### 2026-11-10: Rechtsquellen, Release und Wartung
+
+- Nationaler Rechtsquellenkatalog fuer 195 Staaten mit Prioritaet, Kontinent und offenen Quellen.
+- Signierter Quickstart im Haupt-README; historische Installationsbefehle separat archiviert.
+- Maintainer-Release-Anleitung, npm-Abhaengigkeitspruefung und optionaler nativer CIS-Audit-Wrapper.
+- Offene Arbeiten und Prioritaeten im [Wartungsreview](docs/MAINTENANCE_REVIEW_2026-11-10.md).
+
 ### 2026-11-08: XERJ mit lokalem Quick-Quellbuild
 
 - Gepinnter XERJ-Build verwendet Upstream-`quick`, unveraendertes Lockfile,

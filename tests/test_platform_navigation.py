@@ -35,8 +35,8 @@ class PlatformNavigation(unittest.TestCase):
         visible = re.sub(r'<details>.*?</details>', '', root, flags=re.S)
         self.assertLess(len(visible.splitlines()), 200)
         self.assertEqual(headings(visible), [
-            'Hybride Kubernetes- und KI-Plattform', 'Orientierung', 'Installation und Betrieb',
-            'Schnelle Installation (One-Liner)', 'Setup erneut starten',
+            'OpenClaw - AI_Infrastructure - Ultimate Setup', 'Orientierung', 'Installation und Betrieb',
+            'Quickstart: Signiertes Release installieren', 'Setup erneut starten',
             'Setup aktualisieren oder lokal entfernen',
         ])
         self.assertEqual(len(re.findall(r'^- \*\*', visible, re.M)), 6)
@@ -46,14 +46,15 @@ class PlatformNavigation(unittest.TestCase):
             for row in fixture
         ], headings(archive))
         anchors = re.findall(r'<a id="([^"]+)"></a>', root)
-        self.assertCountEqual(anchors, ['deklarativer-pruefpfad'] + [row['anchor'] for row in fixture])
-        self.assertEqual(len(anchors), len(set(anchors)))
         moved = {
-            '-schnelle-installation-one-liner': 'Schnelle Installation (One-Liner)',
+            '-schnelle-installation-one-liner': 'Quickstart: Signiertes Release installieren',
             '-setup-erneut-starten': 'Setup erneut starten',
             '-setup-aktualisieren-oder-lokal-entfernen': 'Setup aktualisieren oder lokal entfernen',
         }
-        history = root.split('<summary>Historische Abschnittslinks aufklappen</summary>', 1)[1].split('</details>', 1)[0]
+        self.assertCountEqual(anchors, ['deklarativer-pruefpfad', 'boardroom-profil', *moved])
+        self.assertIn('(docs/legacy/INSTALLATION_HISTORY.md)', visible)
+        legacy = (ROOT / 'docs/legacy/INSTALLATION_HISTORY.md').read_text(encoding='utf-8')
+        history = legacy.split('<summary>Historische Abschnittslinks aufklappen</summary>', 1)[1].split('</details>', 1)[0]
         for row in fixture:
             # These historical headings use letters, marks, spaces, underscores and hyphens.
             expected = ''.join(char for char in row['title'].lower()
@@ -69,16 +70,19 @@ class PlatformNavigation(unittest.TestCase):
                 self.assertIn('(../tools/boardroom.md)', archive)
                 self.assertTrue((ROOT / 'docs/tools/boardroom.md').is_file())
                 continue
-            link = f"[{row['title']}](docs/legacy/README_FULL_2026_11_01.md#{row['anchor']})"
+            link = f"[{row['title']}](README_FULL_2026_11_01.md#{row['anchor']})"
             self.assertIn(f'<a id="{expected}"></a>\n{link}', history)
         self.assertIn('Historische Referenz', archive)
 
     def test_historical_destructive_commands_are_archived_not_recommended(self):
         root = (ROOT / 'readme.md').read_text(encoding='utf-8')
         visible = re.sub(r'<details>.*?</details>', '', root, flags=re.S)
-        history = root.split('<summary>Historischer Installationsweg:', 1)[1].split('</details>', 1)[0]
+        archive = (ROOT / 'docs/legacy/INSTALLATION_HISTORY.md').read_text(encoding='utf-8')
+        history = archive.split('<summary>Historischer Installationsweg:', 1)[1].split('</details>', 1)[0]
         self.assertIn('Nicht ausführen', history)
         self.assertNotIn('```bash', history)
+        self.assertIn('curl -sSL', archive)
+        self.assertNotIn('curl -sSL', root)
         for command in ('git reset --hard origin/main', 'git clean -fd', 'rm -rf ~/.openclaw_ultimate_user_data'):
             self.assertIn(command, history)
             self.assertNotIn(command, visible)

@@ -29,7 +29,7 @@ Installation, passende Gewichte, lizenzierte Assets oder eine getestete Gesamtpi
 | ------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [Arcads-Flow](https://app.arcads.ai/flow/public/dcvTLGxXOccLw8L3YOeIVvya) | Beim Abruf nicht auslesbar; konkrete Nodes, Modelle und Eingabefelder unbekannt                                                                          |
 | [Arcads-Reel](https://www.instagram.com/reel/Deo_dq6zbPo/)                | Abruf gedrosselt; Beschreibung stammt aus deinem eingefuegten Text                                                                                       |
-| [Umnik](https://umnik.ai/)                                                | Oeffentliche Startseite beschreibt eine Modellplattform und Foto-/Trendangebote; kein Beleg fuer interne Modelle oder eine exportierbare lokale Pipeline |
+| Umnik: `https://umnik.ai/` | Oeffentliche Startseite im Web lesbar, im PR- und Push-Linkcheck am 10.11.2026 Transportfehler; kein Beleg fuer interne Modelle oder eine exportierbare lokale Pipeline |
 | [Umnik-Reel](https://www.instagram.com/reel/DeeOsB4qmNb/)                 | Abruf gedrosselt; konkrete Fahrszene und Herstellungsweg nicht verifiziert                                                                               |
 
 Deshalb hier zwei **eigene Funktionsrezepte**, kein ausgelesener Arcads-Graph und keine Behauptung,
