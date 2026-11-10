@@ -7,6 +7,9 @@ produktionsreif.
 
 ## Hier beginnen
 
+[Audit 11.18](AUDIT-2026-11-10.md), [Tool-Auswahl](TOOL-MATRIX.md),
+[offene Betriebsfaehigkeiten](MISSING-TOOLS.md) und [Betrieb](OPERATIONS.md).
+
 [Infrastrukturreview vom 07.11.2026](INFRASTRUCTURE_REVIEW_2026-11-07.md):
 priorisierte Befunde, drei begrenzte Monitoring-/MCP-/Retry-Patches und offene Runtime-Abnahmen.
 

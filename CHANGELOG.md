@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+### 11.18: Entwicklungsstand und Betriebsreview
+
+- Aktive Setup-, Tool- und Profilversionen auf 11.18 angehoben.
+- A-Z-Basis und die drei angehaengten Menueeintraege per Regressionstest abgesichert.
+- Audit, Tool-Alternativen, offene Betriebsfaehigkeiten und Runbook dokumentiert.
+
 ### 2026-11-10: Migration des GitHub-Repository-Namens
 
 - Aktive Installer, Release-Metadaten, GitOps, Herkunftsdiagnose und Tool-Quellen

@@ -79,6 +79,9 @@ class ToolMenuOrderTests(unittest.TestCase):
         result = self.run_sort(names)
         # LC_ALL=C sort -f folds ASCII letters to uppercase, including around underscores.
         self.assertEqual(result, pinned + sorted(remaining, key=str.upper) + appended)
+        for name in ('Markdown_Docs_Server', 'Cloudflared', 'XERJ'):
+            self.assertIn(name, appended)
+            self.assertGreater(result.index(name), result.index('Zotero'))
         self.assertCountEqual(result, names)
         self.assertGreater(len(result), 250)
         self.assertIn("ACE_Step_15", result)
