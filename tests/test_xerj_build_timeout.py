@@ -1,6 +1,7 @@
 """XERJ build diagnostics and bounded budgets; no compiler or network."""
 import contextlib
 import io
+import json
 import os
 from pathlib import Path
 import subprocess
@@ -16,18 +17,18 @@ import native_github_tools as tools
 class XerjTimeout(unittest.TestCase):
     def test_default_and_explicit_budget(self):
         with patch.dict(os.environ, {}, clear=True):
-            self.assertEqual(tools.xerj_build_timeout(), '7200')
-        for value in ('300', '14400', '21600'):
+            self.assertEqual(tools.xerj_build_timeout(), '86400')
+        for value in ('300', '64800', '86400'):
             with patch.dict(os.environ, XERJ_BUILD_TIMEOUT_SECONDS=value):
                 self.assertEqual(tools.xerj_build_timeout(), value)
 
     def test_invalid_budget_stops_preflight_before_workspace_or_download(self):
-        for value in ('0', '299', '21601', '-1', 'inf', '7200;echo x', '1.5', ' 7200', '999999'):
+        for value in ('0', '299', '86401', '-1', 'inf', '7200;echo x', '1.5', ' 7200', '999999'):
             with self.subTest(value=value), patch.dict(os.environ, XERJ_BUILD_TIMEOUT_SECONDS=value), \
                     patch.object(tools.platform, 'system', return_value='Linux'), \
                     patch.object(tools.common, 'reserve') as reserve, \
                     patch.object(tools.litellm_rust_bootstrap, 'prepare') as prepare:
-                with self.assertRaisesRegex(ValueError, '300 und 21600'):
+                with self.assertRaisesRegex(ValueError, '300 und 86400'):
                     tools.preflight(Path('/fixture'), tools.TOOLS['xerj'], install_build_deps=True)
                 reserve.assert_not_called()
                 prepare.assert_not_called()
@@ -88,7 +89,7 @@ class XerjTimeout(unittest.TestCase):
                 if args == ['rustc', '--print', 'sysroot']:
                     return str(module)
                 if args[:2] == ['cargo', 'build']:
-                    artifact = module / 'target/release/xerj'
+                    artifact = module / 'target/quick/xerj'
                     artifact.parent.mkdir(parents=True)
                     artifact.write_bytes(b'fixture-not-executable')
                 return ''
@@ -98,10 +99,34 @@ class XerjTimeout(unittest.TestCase):
                     patch.object(tools.litellm_rust, 'activate'), contextlib.redirect_stdout(io.StringIO()):
                 self.assertEqual(tools.build(prefix, tools.TOOLS['xerj']), ['bin/xerj'])
             args, env = next(row for row in commands if row[0][:2] == ['cargo', 'build'])
-            self.assertEqual(args, ['cargo', 'build', '--locked', '--release', '--bin', 'xerj',
+            self.assertEqual(args, ['cargo', 'build', '--locked', '--profile', 'quick', '--bin', 'xerj',
                                     '--package', 'xerj-server', '--no-default-features', '-j', '2'])
             self.assertEqual(env['NATIVE_BUILD_STREAM'], 'xerj')
             self.assertEqual(env['XERJ_BUILD_TIMEOUT_SECONDS'], '14400')
+
+    def test_quick_receipt_records_profile_and_legacy_receipt_remains_valid(self):
+        spec = tools.TOOLS['xerj']
+        with tempfile.TemporaryDirectory() as directory:
+            outer = Path(directory)
+            prefix = outer / 'native-github'
+            marker = prefix / 'build-ready.json'
+
+            def build(target, _spec):
+                binary = target / 'bin/xerj'
+                binary.parent.mkdir()
+                binary.write_bytes(b'fixture-not-executable')
+                return ['bin/xerj']
+
+            with patch.object(tools, 'preflight'), patch.object(tools, 'fetch_source'), \
+                    patch.object(tools, 'build', side_effect=build), contextlib.redirect_stdout(io.StringIO()):
+                tools.install(outer, prefix, marker, spec)
+            receipt = json.loads(marker.read_text())
+            self.assertEqual(receipt.pop('cargo_profile'), 'quick')
+            self.assertIs(receipt['application_tested'], False)
+            marker.write_text(json.dumps(receipt))
+            with patch.object(tools.common, 'git',
+                              side_effect=[spec['recipe']['pin'], tools.source_origin(spec['recipe'])]):
+                tools.validate(prefix, marker, spec, full=True)
 
 
 if __name__ == '__main__':

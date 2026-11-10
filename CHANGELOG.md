@@ -9,6 +9,15 @@
 - Maintainer-Release-Anleitung, npm-Abhaengigkeitspruefung und optionaler nativer CIS-Audit-Wrapper.
 - Offene Arbeiten und Prioritaeten im [Wartungsreview](docs/MAINTENANCE_REVIEW_2026-11-10.md).
 
+### 2026-11-08: XERJ mit lokalem Quick-Quellbuild
+
+- Gepinnter XERJ-Build verwendet Upstream-`quick`, unveraendertes Lockfile,
+  zwei Cargo-Jobs und Versionsprobe; kein Docker oder Serverstart.
+- Standardbudget auf 24 Stunden begrenzt. Speicherwache, Rollback und
+  vorhandene gueltige Release-Nachweise bleiben erhalten.
+- Der Nutzer meldete einen erfolgreichen manuellen Build nach rund 18 Stunden.
+  Der geaenderte Setup-Ablauf wird hier nur mit Offline-Fixtures geprueft.
+
 ### 2026-11-07: begrenzter Infrastruktur-Teilsatz
 
 - Ollama-Inventarfehler in nativen, Helm- und Operator-Alertregeln sichtbar;

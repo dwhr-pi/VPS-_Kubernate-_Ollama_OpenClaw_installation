@@ -41,7 +41,8 @@ class Xerj(unittest.TestCase):
         if args == ['rustc', '--print', 'sysroot']:
             return str(self.sysroot)
         if args[:2] == ['cargo', 'build']:
-            artifact = cwd / 'target/release' / self.spec['recipe']['binary']
+            profile = 'quick' if self.spec['id'] == 'xerj' else 'release'
+            artifact = cwd / 'target' / profile / self.spec['recipe']['binary']
             artifact.parent.mkdir(parents=True)
             artifact.write_text('fake fixture, never executable', encoding='utf-8')
             return ''
@@ -72,7 +73,7 @@ class Xerj(unittest.TestCase):
         self.assertEqual(artifacts, ['bin/xerj'])
         args, cwd, env = self.calls[1]
         self.assertEqual(cwd, self.prefix / 'source/engine')
-        self.assertEqual(args, ['cargo', 'build', '--locked', '--release', '--bin', 'xerj',
+        self.assertEqual(args, ['cargo', 'build', '--locked', '--profile', 'quick', '--bin', 'xerj',
                                 '--package', 'xerj-server', '--no-default-features', '-j', '2'])
         self.assertEqual(env['RUSTUP_TOOLCHAIN'], str(self.sysroot))
         self.assertEqual(env['CARGO_BUILD_JOBS'], '2')

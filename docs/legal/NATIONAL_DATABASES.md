@@ -26,9 +26,12 @@ nicht **keine Gesetze vorhanden**. Keine Live-Integration, kein Crawling und
 keine automatische Rechtsauskunft.
 
 Fuer offene Laender: [WIPO Lex](https://www.wipo.int/wipolex/en/members)
-fuer IP-Recht und [ILO NATLEX](https://www.ilo.org/resource/other/natlex-database-national-labour-social-security-and-related-human-rights)
+fuer IP-Recht und [ILO NATLEX](https://natlex.ilo.org/dyn/natlex2/r/natlex/fe/about)
 fuer Arbeits- und Sozialrecht. Das sind fachlich begrenzte Rechercheeinstiege,
 keine nationalen Volltextgarantien und keine KI-/Datenschutzfreigabe.
+Der fruehere NATLEX-Einstieg
+`https://www.ilo.org/resource/other/natlex-database-national-labour-social-security-and-related-human-rights`
+lieferte am 10.11.2026 im Linkcheck HTTP 404.
 
 ## Vorrangige Recherche
 
@@ -55,7 +58,7 @@ keine nationalen Volltextgarantien und keine KI-/Datenschutzfreigabe.
 
 | Land / UN-Bezeichnung | ISO | Nationaler Einstieg oder Grund der Luecke |
 | --- | --- | --- |
-| Austria | AT | [Amtliches Portal](https://www.ris.bka.gv.at/); Einstiegsseite am 10.11.2026 gelesen |
+| Austria | AT | Amtliches RIS: `https://www.ris.bka.gv.at/`; Einstiegsseite im Web lesbar, Linkcheck am 10.11.2026 HTTP 503 |
 | Belgium | BE | `https://www.ejustice.just.fgov.be/`; Kein auswertbarer Seiteninhalt am 10.11.2026 |
 | Bulgaria | BG | Kein nationaler Primaereinstieg verifiziert |
 | Croatia | HR | Kein nationaler Primaereinstieg verifiziert |

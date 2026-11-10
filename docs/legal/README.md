@@ -35,9 +35,8 @@ automatische Loeschung.
   [DSGVO, Art. 4 Nr. 5 und Erwaegungsgrund 26](https://op.europa.eu/en/publication-detail/-/publication/3e485e15-11bd-11e6-ba9a-01aa75ed71a1/language-de).
   Die EDPB-Originaladresse und den CI-Abrufbefund dokumentiert die
   [internationale Quellenuebersicht](INTERNATIONAL_SOURCES.md).
-
-Fuer nationale Einstiege und offene Laender siehe den
-[Rechtsquellenkatalog nach Kontinent und Rechercheprioritaet](NATIONAL_DATABASES.md).
+- **Nationale Quellen:** Fuer Einstiege und offene Laender siehe den
+  [Rechtsquellenkatalog nach Kontinent und Rechercheprioritaet](NATIONAL_DATABASES.md).
 - **Audit-Hashes beweisen keine absolute Unveraenderbarkeit.** DB-Administratoren, kompromittierte
   Hosts oder entfernte Kettenenden brauchen ein weitergehendes Bedrohungsmodell und unabhaengige
   Vergleichswerte.
