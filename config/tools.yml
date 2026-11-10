@@ -1,5 +1,5 @@
 {
-  "version": "11.17",
+  "version": "11.18",
   "description": "Zentrale Tool-Registry. Dateiname .yml, Inhalt absichtlich als JSON-kompatibles YAML fuer einfache Bash/Python-Auswertung.",
   "tools": [
     {

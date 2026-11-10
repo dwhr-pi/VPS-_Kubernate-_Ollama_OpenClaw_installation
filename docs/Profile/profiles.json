@@ -1,5 +1,5 @@
 {
-  "version": "11.17",
+  "version": "11.18",
   "notes": [
     "Maschinenlesbarer Profilkatalog für Setup, Doku und spätere Registry-Generierung.",
     "Nicht jedes Profil ist bereits vollständig als eigener Top-Level-Menüpunkt im Hauptsetup verdrahtet.",
