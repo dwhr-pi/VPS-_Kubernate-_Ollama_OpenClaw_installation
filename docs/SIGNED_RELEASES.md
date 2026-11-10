@@ -7,6 +7,9 @@ vorhanden ausgegeben.
 
 ## Vertrauensgrenze
 
+Fuer Erhalt, Windows-Kopie, SHA256-Fingerabdruck, Verteilung und Rotation
+siehe [Minisign-Schluessel handhaben](MINISIGN_KEY_HANDLING.md).
+
 Bootstrap (`verify_release_and_install.sh`) und Python-Pruefhelfer muessen aus einer unabhaengig
 geprueften Kopie stammen. Ein ungepruefter Bootstrap von `main` kann seine eigene
 Vertrauenswuerdigkeit nicht nachtraeglich beweisen. Minisign muss bereits separat geprueft vorhanden
