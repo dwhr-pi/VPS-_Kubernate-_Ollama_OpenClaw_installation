@@ -32,7 +32,9 @@ automatische Loeschung.
   Laender gelten gleichzeitig fuer jedes Projekt.
 - **Pseudonymisierung ist keine zugesicherte Anonymisierung.** Auch Hashes, Maskierungen und
   Embeddings koennen Personenbezug behalten. Siehe
-  [EDPB-Einordnung](https://www.edpb.europa.eu/topics/ai-and-technology/anonymisation-pseudonymisation_en).
+  [DSGVO, Art. 4 Nr. 5 und Erwaegungsgrund 26](https://op.europa.eu/en/publication-detail/-/publication/3e485e15-11bd-11e6-ba9a-01aa75ed71a1/language-de).
+  Die EDPB-Originaladresse und den CI-Abrufbefund dokumentiert die
+  [internationale Quellenuebersicht](INTERNATIONAL_SOURCES.md).
 - **Audit-Hashes beweisen keine absolute Unveraenderbarkeit.** DB-Administratoren, kompromittierte
   Hosts oder entfernte Kettenenden brauchen ein weitergehendes Bedrohungsmodell und unabhaengige
   Vergleichswerte.
