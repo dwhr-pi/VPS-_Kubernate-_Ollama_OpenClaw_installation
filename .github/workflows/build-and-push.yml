@@ -31,7 +31,7 @@ jobs:
           printf 'GATEWAY_IMAGE=%s\n' "$image" >> "$GITHUB_ENV"
           docker build --pull --tag "$image" services/inference-gateway
       - name: Trivy - Veroeffentlichung bei Schwachstellen sperren
-        uses: aquasecurity/trivy-action@8f28faec26515256b6d22074d1d2a8986f4cbd87
+        uses: aquasecurity/trivy-action@38b337fff0a2f984d5be173c99e3f633438167ec
         with:
           version: v0.76.1
           scan-type: image
