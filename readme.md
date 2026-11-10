@@ -37,6 +37,7 @@ Deklarativer Pruefpfad:
 Kompatible GitOps-Einstiege: `deploy/kustomize/`, bestehende Quelldateien bleiben unter `k8s/`.
 Namespaces, Budgets, PVCs, private TLS-Zugaenge und optionale Operator-Metriken sind getrennt.
 [Setup, manuelles Staging-Deployment, Voraussetzungen und Rollback](docs/GITOPS_DEPLOYMENT_PATH.md).
+[Privates Open WebUI: Voraussetzungen, Render-Pruefung und Abnahme](docs/kubernetes/open-webui-private.md).
 
 [Ports](docs/generated/PORT_MATRIX.md), [P1-P3 und Abnahmegrenzen](docs/P1_P3_IMPLEMENTATION.md).
 

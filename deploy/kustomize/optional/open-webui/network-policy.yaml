@@ -1,0 +1,34 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata: {name: webui-default-deny, namespace: ai-webui}
+spec:
+  podSelector: {}
+  policyTypes: [Ingress, Egress]
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata: {name: webui-egress, namespace: ai-webui}
+spec:
+  podSelector: {matchLabels: {app: open-webui}}
+  policyTypes: [Egress]
+  egress:
+    - to:
+        - namespaceSelector: {matchLabels: {kubernetes.io/metadata.name: llmops}}
+          podSelector: {matchLabels: {app: litellm}}
+      ports: [{protocol: TCP, port: 4000}]
+    - to:
+        - namespaceSelector: {matchLabels: {kubernetes.io/metadata.name: kube-system}}
+          podSelector: {matchLabels: {k8s-app: kube-dns}}
+      ports: [{protocol: UDP, port: 53}, {protocol: TCP, port: 53}]
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata: {name: litellm-from-webui, namespace: llmops}
+spec:
+  podSelector: {matchLabels: {app: litellm}}
+  policyTypes: [Ingress]
+  ingress:
+    - from:
+        - namespaceSelector: {matchLabels: {kubernetes.io/metadata.name: ai-webui}}
+          podSelector: {matchLabels: {app: open-webui}}
+      ports: [{protocol: TCP, port: 4000}]
