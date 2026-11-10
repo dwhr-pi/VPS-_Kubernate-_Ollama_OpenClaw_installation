@@ -7,6 +7,9 @@ produktionsreif.
 
 ## Hier beginnen
 
+[Signiertes Setup neu installieren](INSTALL_SIGNED_RELEASE.md):
+Windows-Public-Key uebernehmen, Bootstrap beziehen, Release pruefen und installieren.
+
 [Audit 11.18](AUDIT-2026-11-10.md), [Tool-Auswahl](TOOL-MATRIX.md),
 [offene Betriebsfaehigkeiten](MISSING-TOOLS.md) und [Betrieb](OPERATIONS.md).
 
