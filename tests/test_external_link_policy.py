@@ -61,7 +61,7 @@ class ExternalLinkPolicyTests(unittest.TestCase):
             "https://console.mistral.ai/public",
         ):
             self.assertFalse(self.ignored(url), url)
-        for status in (0, 202, 401, 403, 404, 429, 503):
+        for status in (0, 202, 401, 403, 404, 429, 502, 503, 504, 522):
             self.assertNotIn(status, self.config["aliveStatusCodes"])
         self.assertEqual(self.config["replacementPatterns"], [])
 
@@ -173,7 +173,14 @@ class ExternalLinkPolicyTests(unittest.TestCase):
                 with self.subTest(path=path, original=original):
                     self.assertIn(f"`{original}`", text)
                     self.assertNotIn(original, active)
-                    self.assertIn(replacement, active)
+                    if replacement.startswith('https://op.europa.eu/en/publication-detail/'):
+                        self.assertIn(f'`{replacement}`', text)
+                        self.assertNotIn(replacement, active)
+                        self.assertIn('PR24_LINKCHECK_2026-11-11.md', text)
+                        self.assertIn('unverifizierte Originalreferenz', text)
+                        self.assertFalse(self.ignored(replacement))
+                    else:
+                        self.assertIn(replacement, active)
             self.assertIn("Originalveroeffentlichung, nicht eine aktuelle konsolidierte Rechtspruefung", " ".join(text.split()))
 
     def test_unavailable_card_is_not_silently_replaced(self):
@@ -270,6 +277,8 @@ class ExternalLinkPolicyTests(unittest.TestCase):
     def test_godot_sources_preserve_originals_and_exact_upstream_documents(self):
         text = (ROOT / 'docs/tools/ai-game-engines-xr-wallpaper.md').read_text(encoding='utf-8')
         pairs = [
+            ('https://docs.godotengine.org/en/stable/engine_details/development/compiling/compiling_for_linuxbsd.html', 'https://github.com/godotengine/godot-docs/blob/6d86d7c7f3b8f4f56c71e113022d72fe80b2c84d/engine_details/development/compiling/compiling_for_linuxbsd.rst'),
+            ('https://docs.godotengine.org/en/stable/tutorials/xr/setting_up_xr.html', 'https://github.com/godotengine/godot-docs/blob/6d86d7c7f3b8f4f56c71e113022d72fe80b2c84d/tutorials/xr/setting_up_xr.rst'),
             ('https://docs.godotengine.org/en/stable/tutorials/export/exporting_for_ios.html', 'https://github.com/godotengine/godot-docs/blob/6d86d7c7f3b8f4f56c71e113022d72fe80b2c84d/tutorials/export/exporting_for_ios.rst'),
             ('https://docs.godotengine.org/en/stable/tutorials/export/exporting_for_web.html', 'https://github.com/godotengine/godot-docs/blob/6d86d7c7f3b8f4f56c71e113022d72fe80b2c84d/tutorials/export/exporting_for_web.rst'),
         ]
@@ -287,6 +296,39 @@ class ExternalLinkPolicyTests(unittest.TestCase):
         self.assertIn('https://github.com/pinokiocomputer/pinokio/releases/tag/v8.2.0', PROBE.markdown_urls(text))
         self.assertTrue('nicht allein die SHA256-Digests' in ' '.join(text.split()))
         self.assertFalse(self.ignored(original))
+
+    def test_pr24_metadata_errors_are_exact_dated_references_not_successes(self):
+        ledger = json.loads((ROOT / 'docs/quality/PR24_LINKCHECK_2026-11-11.json').read_text(encoding='utf-8'))
+        self.assertEqual(ledger['checked_on'], '2026-11-11')
+        self.assertEqual(ledger['ci_head'], 'ca91555c3f6ab5b5af79622f8b1ede8fc7cd7a4c')
+        self.assertEqual(ledger['job_id'], 130423315111)
+        self.assertEqual(ledger['push_attempt_2'], {'job_id': 130429822865, 'statuses': [502, 504]})
+        self.assertEqual({row['id'] for row in ledger['references']}, {'dsgvo', 'ai-act', 'dsm', 'nis-2'})
+        self.assertEqual(len(ledger['references']), 4)
+        expected = {
+            'dsgvo': '3e485e15-11bd-11e6-ba9a-01aa75ed71a1',
+            'ai-act': 'dc8116a1-3fe6-11ef-865a-01aa75ed71a1',
+            'dsm': '214471fe-786e-11e9-9f05-01aa75ed71a1',
+            'nis-2': '9b84d482-85bd-11ed-9887-01aa75ed71a1',
+        }
+        for row in ledger['references']:
+            self.assertEqual(row['url'], 'https://op.europa.eu/en/publication-detail/-/publication/'
+                             + expected[row['id']] + '/language-de')
+            self.assertTrue(row['files'])
+            self.assertEqual(row['probe_status'], 502)
+            self.assertEqual(row['classification'], 'UNVERIFIED_REFERENCE')
+            self.assertTrue(set(row['ci_status']) <= {0, 502})
+            self.assertFalse(self.ignored(row['url']))
+            for file in row['files']:
+                text = (ROOT / file).read_text(encoding='utf-8')
+                self.assertIn('`' + row['url'] + '`', text)
+                self.assertNotIn(row['url'], PROBE.markdown_urls(text))
+                self.assertIn('PR24_LINKCHECK_2026-11-11.md', text)
+                self.assertIn('unverifizierte Originalreferenz', text)
+        for status in (502, 522):
+            opener = Mock(side_effect=HTTPError('https://example.org/', status, '', {}, None))
+            self.assertEqual(PROBE.probe('https://example.org/', opener=opener, sleep=Mock()),
+                             ('FAIL', str(status)))
 
 
 if __name__ == "__main__":

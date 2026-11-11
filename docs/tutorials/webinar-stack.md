@@ -194,7 +194,7 @@ Selfhosting allein bestaetigt keine DSGVO-Konformitaet. Fuer die konkrete Konfig
 Empfaengerkommunikation, Aufzeichnung und Datenverarbeitung eine passende fachliche/rechtliche
 Pruefung vorsehen. Der Leitfaden ersetzt keine Beratung und keine Abnahme. Primaerquelle fuer eine
 solche Pruefung:
-[DSGVO im EU-Amtsblatt](https://op.europa.eu/en/publication-detail/-/publication/3e485e15-11bd-11e6-ba9a-01aa75ed71a1/language-de).
+[DSGVO im EU-Amtsblatt - Quellstatus, nicht verifiziert](../quality/PR24_LINKCHECK_2026-11-11.md#dsgvo).
 
 **Nicht durch diese Dokumentation ausgefuehrt:** Installation, WSL-/GPU-Start, Formularbetrieb,
 Datenbankmigration, SMTP-Konfiguration, Mailversand, Aufnahme, Streaming, Tracking, Werbung oder
@@ -209,4 +209,15 @@ konsolidierte Rechtspruefung. Keine Anmeldung und keine Provider-Inferenz.
 
 | Alt-Adresse (Abruf fehlgeschlagen)                        | Erreichbarer Nachweis                                                                                                      |
 | --------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| `https://eur-lex.europa.eu/eli/reg/2016/679/oj?locale=de` | [Primaerquelle](https://op.europa.eu/en/publication-detail/-/publication/3e485e15-11bd-11e6-ba9a-01aa75ed71a1/language-de) |
+| `https://eur-lex.europa.eu/eli/reg/2016/679/oj?locale=de` | [Quellstatus, nicht verifiziert](../quality/PR24_LINKCHECK_2026-11-11.md#dsgvo) |
+
+## Nachpruefung der EU-Metadaten am 11.11.2026
+
+Die folgenden Originalreferenzen bleiben erhalten, sind nach CI-Transportfehlern bzw. HTTP 502
+und separatem HTTP 502 derzeit nicht inhaltsverifiziert. Der fruehere Quellenstand bleibt historisch,
+keine neue konsolidierte Rechtspruefung wird behauptet. Einzelbelege und Abrufgrenzen:
+[PR-24-Quellenbericht](../quality/PR24_LINKCHECK_2026-11-11.md). Keine Domain-/Status-Ausnahme im Linkchecker.
+
+| Historische Metadatenadresse | Nachpruefung |
+| --- | --- |
+| `https://op.europa.eu/en/publication-detail/-/publication/3e485e15-11bd-11e6-ba9a-01aa75ed71a1/language-de` | unverifizierte Originalreferenz; 11.11.2026, HTTP 502 |

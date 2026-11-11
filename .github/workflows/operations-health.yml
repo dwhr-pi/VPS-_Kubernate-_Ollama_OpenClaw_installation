@@ -1,0 +1,46 @@
+name: Operations diagnostics - offline boundaries
+
+on:
+  pull_request:
+    paths:
+      - scripts/doctor.sh
+      - scripts/smoke-test.sh
+      - scripts/backup-restore-test.sh
+      - scripts/healthcheck_all.sh
+      - scripts/operations/**
+      - scripts/quality/tool_truth_table.py
+      - scripts/quality/evidence_inventory.py
+      - config/tools.yml
+      - config/docker_to_github.json
+      - docs/TOOL-MATRIX-NEU.md
+      - tests/test_platform_health.py
+      - tests/test_evidence_inventory.py
+      - .github/workflows/operations-health.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fixtures:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 5
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+      - name: Offline diagnostic and synthetic restore fixtures
+        run: python -B -m unittest discover -s tests -p test_platform_health.py -v
+      - name: Tool truth table drift check
+        run: python -I -B scripts/quality/tool_truth_table.py --check
+      - name: Evidence inventory fixtures
+        run: python -B -m unittest discover -s tests -p test_evidence_inventory.py -v

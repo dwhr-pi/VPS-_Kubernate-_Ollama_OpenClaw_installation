@@ -2,6 +2,40 @@
 
 ## Unreleased
 
+### 2026-11-11: PR-24-Linkquellen nachvollziehbar korrigiert
+
+- Godot-Linux-/XR-Weblinks nach CI HTTP 429 durch gelesene offizielle
+  Dokumentationsquellen am festen Commit ersetzt; Originaladressen erhalten.
+- Vier amtliche EU-Metadatenseiten nach CI- und Einzelabrufproblemen
+  (Transportstatus 0/HTTP 502/504) datiert als aktuell unverifizierte
+  Originalreferenzen dokumentiert. Historische Zuordnung bleibt erhalten.
+- Keine Domain-/Status-Ausnahme, keine Aenderung am Linkchecker.
+  ScamAdviser bleibt nach separatem HTTP 200 aktiv.
+
+### 2026-11-11: Audit um nachvollziehbare Einzelinventare erweitert
+
+- Ergaenzender Audit mit dreiteiliger Tool-Beweisregel und gesondertem Auditstatus.
+- Statischer Quellenindex fuer bewegliche Referenzen, Clone-/Paketaufrufe,
+  Netz-/Privilegien-/Ressourcenmuster ohne Ausgabe von Quellzeilen oder Secret-Werten.
+- Testinventar pro benanntem Python-/Bats-Fall und Referenzkandidaten;
+  fehlende lexikalische Referenz ausdruecklich kein Beweis fuer toten Code.
+- Legacy-Queue- und Workbench-Konflikte dokumentiert, enge Gitleaks-Ausnahmen
+  bestaetigt; keine produktiven Pfade ausgefuehrt oder Daten entfernt.
+
+### 2026-11-11: Sichere Diagnose und Betriebsreview
+
+- Review mit Prioritaeten, Quellfundstellen und Wahrheitstabelle aller 402 Haupttools.
+- Doctor offline als Standard; ausdrueckliche begrenzte Host-/HTTP-Probes,
+  JSON und ehrliche Exit-Codes, keine impliziten Paketdownloads.
+- Historische Health-Einstiege als Wrapper erhalten; Registry-Werte nicht mehr
+  als Shell-Befehl auswerten, Docker nicht mehr als Diagnosepflicht fordern.
+- Synthetischer Backup-/Restore-Test mit Bytevergleich und optionaler neuer
+  Nachweisdatei; keine Produktions-, Datenbank- oder PVC-Restore-Behauptung.
+- Regressionstests und Driftpruefung fuer die Wahrheitstabelle; neue
+  Tool-PR-Vertraege fuer Pins, SBOM, Lifecycle und deutschsprachige SSH-Doku.
+- Installer-Trust-Pfade bewusst getrennt erhalten. Keine Installation,
+  kein Dienststart, keine Secret-Inhalts- oder WSL-Pruefung.
+
 ### 11.18: Entwicklungsstand und Betriebsreview
 
 - Aktive Setup-, Tool- und Profilversionen auf 11.18 angehoben.

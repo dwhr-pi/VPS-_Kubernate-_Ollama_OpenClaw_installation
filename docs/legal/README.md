@@ -32,7 +32,7 @@ automatische Loeschung.
   Laender gelten gleichzeitig fuer jedes Projekt.
 - **Pseudonymisierung ist keine zugesicherte Anonymisierung.** Auch Hashes, Maskierungen und
   Embeddings koennen Personenbezug behalten. Siehe
-  [DSGVO, Art. 4 Nr. 5 und Erwaegungsgrund 26](https://op.europa.eu/en/publication-detail/-/publication/3e485e15-11bd-11e6-ba9a-01aa75ed71a1/language-de).
+  [DSGVO, Art. 4 Nr. 5 und Erwaegungsgrund 26 - Quellstatus, nicht verifiziert](../quality/PR24_LINKCHECK_2026-11-11.md#dsgvo).
   Die EDPB-Originaladresse und den CI-Abrufbefund dokumentiert die
   [internationale Quellenuebersicht](INTERNATIONAL_SOURCES.md).
 - **Nationale Quellen:** Fuer Einstiege und offene Laender siehe den
@@ -68,3 +68,14 @@ Die [vorhandenen Governance-Profile](../Profile/AI_Governance_Audit.md) und das
 [Legal-Review-Profil](../Profile/Legal_Compliance_Safety_Review.md) bleiben getrennte, nicht
 automatisch aktivierte Bausteine. Auch das [Personalakten-Projekt](../tools/personnel-documents.md)
 erhaelt dadurch keine Freigabe fuer echte Personalakten.
+
+## Nachpruefung der EU-Metadaten am 11.11.2026
+
+Die folgenden Originalreferenzen bleiben erhalten, sind nach CI-Transportfehlern bzw. HTTP 502
+und separatem HTTP 502 derzeit nicht inhaltsverifiziert. Der fruehere Quellenstand bleibt historisch,
+keine neue konsolidierte Rechtspruefung wird behauptet. Einzelbelege und Abrufgrenzen:
+[PR-24-Quellenbericht](../quality/PR24_LINKCHECK_2026-11-11.md). Keine Domain-/Status-Ausnahme im Linkchecker.
+
+| Historische Metadatenadresse | Nachpruefung |
+| --- | --- |
+| `https://op.europa.eu/en/publication-detail/-/publication/3e485e15-11bd-11e6-ba9a-01aa75ed71a1/language-de` | unverifizierte Originalreferenz; 11.11.2026, HTTP 502 |

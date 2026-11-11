@@ -13,6 +13,15 @@ Windows-Public-Key uebernehmen, Bootstrap beziehen, Release pruefen und installi
 [Audit 11.18](AUDIT-2026-11-10.md), [Tool-Auswahl](TOOL-MATRIX.md),
 [offene Betriebsfaehigkeiten](MISSING-TOOLS.md) und [Betrieb](OPERATIONS.md).
 
+[Betriebsreview 11.11.2026](REVIEW-2026-11-11.md): priorisierte Befunde,
+Diagnose-/Restore-Befehle und Nachweisgrenzen.
+[Vollstaendige Tool-Wahrheitstabelle](TOOL-MATRIX-NEU.md): 402 Registry-Eintraege,
+keine pauschale Runtime-Freigabe.
+
+[Erweiterter Audit 11.11.2026](AUDIT-2026-11-11.md):
+Quellfundstellen fuer Pins/Netz/Privilegien, Testinventar, Referenzkandidaten,
+Gitleaks-Grenzen und B1-B7-Lueckenplan.
+
 [Infrastrukturreview vom 07.11.2026](INFRASTRUCTURE_REVIEW_2026-11-07.md):
 priorisierte Befunde, drei begrenzte Monitoring-/MCP-/Retry-Patches und offene Runtime-Abnahmen.
 
