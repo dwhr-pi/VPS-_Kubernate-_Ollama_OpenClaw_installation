@@ -94,32 +94,12 @@ Weitere Themen: [Entwicklungswerkzeuge](docs/DEVELOPMENT_TOOLS_OVERVIEW.md),
 
 ### Quickstart: Signiertes Release installieren
 
-**Voraussetzungen:** Linux oder WSL, unabhaengig gepruefter Bootstrap,
-separat bezogener oeffentlicher Minisign-Schluessel und ein signiertes Release.
-`vX.Y.Z` ist ein Platzhalter, kein zugesagtes Release. Ohne einen vom
-Maintainer veroeffentlichten signierten Tag ist dieser Weg noch nicht nutzbar.
-Tag und Pfade im Beispiel ersetzen. Zuerst nur pruefen:
-
-```bash
-bash ./verify_release_and_install.sh --tag vX.Y.Z \
-  --public-key /sicher/separat/release.pub \
-  --artifacts /sicher/release-artefakte --verify-only
-```
-
-Erst nach erfolgreicher Pruefung in ein noch nicht vorhandenes Ziel installieren:
-
-```bash
-bash ./verify_release_and_install.sh --tag vX.Y.Z \
-  --public-key /sicher/separat/release.pub \
-  --artifacts /sicher/release-artefakte --install \
-  --destination "$HOME/openclaw_ultimate_setup"
-```
-
-Ist Minisign unter Ubuntu/Debian nicht vorhanden, kann der gepruefte Bootstrap
-es nach ausdruecklicher Zustimmung einrichten. Wenn der Vertrauensschluessel
-oder ein signiertes Release fehlt, gibt es keinen automatischen unsignierten
-Ersatz. Siehe [Signierte Releases](docs/SIGNED_RELEASES.md) und, nur fuer
-bewusste Entwicklungstests, [Installationszweige](docs/INSTALL_BRANCH_SELECTION.md).
+**Neu in Linux oder WSL?** Die
+[vollstaendige Installationsanleitung](docs/INSTALL_SIGNED_RELEASE.md) zeigt,
+wie du `release.pub` aus Windows uebernimmst, den Bootstrap von GitHub
+beziehst, das [signierte Release v11.17.0](https://github.com/dwhr-pi/OpenClaw-AI_Infrastructure-_Ultimate_Setup/releases/tag/v11.17.0)
+zuerst nur pruefst und danach in einen neuen Ordner installierst.
+Das ist kein Update einer vorhandenen Installation.
 
 <a id="-setup-erneut-starten"></a>
 

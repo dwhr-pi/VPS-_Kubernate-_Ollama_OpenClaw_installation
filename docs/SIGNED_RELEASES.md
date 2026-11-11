@@ -39,6 +39,10 @@ Downgrade-Schutz gegen einen bewusst gewaehlten alten signierten Tag.
 
 ## Installation
 
+Fuer den Weg ab leerem Linux-/WSL-Checkout, einschliesslich
+Windows-Schluesselkopie und Git-Bootstrap, siehe die
+[vollstaendige Anleitung fuer v11.17.0](INSTALL_SIGNED_RELEASE.md).
+
 Fehlt Minisign, fragt der Bootstrap bei interaktiver Standardeingabe mit `[j/N]`.
 Enter, EOF oder fehlende interaktive Eingabe erlauben keine Paketinstallation.
 Die ausdrueckliche Option `--install-minisign` erlaubt diese Einrichtung ohne
