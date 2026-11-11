@@ -20,3 +20,17 @@ Abnahmen und offene Grenzen: [F01-F07](docs/F01_F07_IMPLEMENTATION.md).
 - Benutzerdaten unter `~/.openclaw_ultimate_user_data` erhalten; keine destruktiven Git-/Uninstall-Abkuerzungen.
 - Metadaten/Fixtures nicht als echte Build-, Runtime-, Alarmierungs- oder Restore-Abnahme ausgeben.
 - Dokumentation auf Deutsch, neue Code-Kommentare auf Englisch.
+
+## Vertrag fuer neue Tool-PRs
+
+- GitHub-Source-URL, voller Commit-Pin und SHA256 fuer Buildartefakte/Downloads;
+  Build-Lockfiles und SBOM benoetigen einen nachvollziehbaren Erzeugungspfad.
+- Native systemd-Unit oder K8s-Manifest, falls ein Dienst vorgesehen ist.
+  Reine CLI-/Desktop-/Dokumentationswerkzeuge begruenden Nichtanwendbarkeit.
+- Begrenzter Smoke-Test, Doctor-Check, idempotenter Uninstall und deutsche
+  SSH-Anleitung. Marker und Klone sind kein Runtime-Nachweis.
+- Kein automatischer Start, Modell-Pull, Provider-Test oder Secret-Zugriff
+  fuer Dokumentations-/Diagnosebefehle. Nicht implementierte Pfade explizit
+  als offen markieren statt Erfolg vorzutaeuschen.
+- Neue Diagnose: `scripts/doctor.sh` und `scripts/smoke-test.sh` sind offline
+  standardmaessig unvollstaendig (Exit 3). Runtime nur explizit auswaehlen.

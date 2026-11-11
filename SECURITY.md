@@ -56,3 +56,32 @@ Fuer diese Bereiche sollen PRs besonders sorgfaeltig geprueft werden.
 ## Security PRs
 
 Security-PRs sind willkommen, wenn sie defensiv, autorisiert und nachvollziehbar sind.
+
+## Source-Builds und Nachweise
+
+- Neue Build-Freigaben brauchen GitHub-Quell-URL, vollen Commit, Lockfiles,
+  Artefakt-SHA256 und SBOM mit Build-/Compiler-Version. Ein Git-Commit ersetzt
+  keinen Hash fuer heruntergeladene Modelle oder Bootstrap-Artefakte.
+- Bewegliche Branches und Tags sind kein unveraenderlicher Produktions-Pin.
+  Neue aktive Deployments verwenden gepruefte Image-Digests; Platzhalter
+  bleiben bis zur Freigabe deaktiviert. Abhaengigkeitsupdates erneut testen.
+- SBOM und Scanbericht duerfen keine privaten Buildpfade oder Zugangsdaten
+  enthalten. Vorhandene Trivy-Gates nicht abschwaechen; SBOM-Pflicht ist ein
+  neuer Freigabevertrag, keine Behauptung vollstaendiger Altbestand-Abdeckung.
+- Rotation umfasst API-, Gateway-, WireGuard-, SOPS- und Release-Schluessel
+  je eigenem Runbook. Bei Verdacht zuerst Zugriff sperren, neu bereitstellen,
+  Verbraucher pruefen und alten Schluessel widerrufen; private Signierschluessel
+  niemals fuer einen Diagnosebericht auslesen oder ins Repository kopieren.
+- Restore-Nachweise enthalten Zeit, Artefakt-/Manifest-Hash, Umfang und Ergebnis.
+  Produktionsnachweis erfordert DB-konsistente Daten, getrennte Schluessel und
+  Wiederherstellung auf separatem Ziel. Synthetische Fixtures und Dateialter
+  sind ausdruecklich kein Offsite-/DB-/PVC-Nachweis.
+- NetworkPolicy-Standard: Default-Deny in beide Richtungen, DNS und benoetigte
+  Servicepfade explizit, CNI-Durchsetzung und unerlaubte Verbindungen negativ
+  testen. Kein Host-Netz, privilegierter Agent oder ServiceAccount-Token als
+  Abkuerzung. Egress zu Cloud/Metadatenzielen nicht pauschal freigeben.
+
+Die Diagnose liest standardmaessig keine privaten Dateien. Host-/HTTP-Probes
+erfordern explizit `--runtime`, Dateirechte nur `--secret-metadata`.
+Grenzen, Exit-Codes und Restore-Fixture:
+[Betriebsreview](docs/REVIEW-2026-11-11.md).

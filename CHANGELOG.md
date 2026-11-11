@@ -2,6 +2,20 @@
 
 ## Unreleased
 
+### 2026-11-11: Sichere Diagnose und Betriebsreview
+
+- Review mit Prioritaeten, Quellfundstellen und Wahrheitstabelle aller 402 Haupttools.
+- Doctor offline als Standard; ausdrueckliche begrenzte Host-/HTTP-Probes,
+  JSON und ehrliche Exit-Codes, keine impliziten Paketdownloads.
+- Historische Health-Einstiege als Wrapper erhalten; Registry-Werte nicht mehr
+  als Shell-Befehl auswerten, Docker nicht mehr als Diagnosepflicht fordern.
+- Synthetischer Backup-/Restore-Test mit Bytevergleich und optionaler neuer
+  Nachweisdatei; keine Produktions-, Datenbank- oder PVC-Restore-Behauptung.
+- Regressionstests und Driftpruefung fuer die Wahrheitstabelle; neue
+  Tool-PR-Vertraege fuer Pins, SBOM, Lifecycle und deutschsprachige SSH-Doku.
+- Installer-Trust-Pfade bewusst getrennt erhalten. Keine Installation,
+  kein Dienststart, keine Secret-Inhalts- oder WSL-Pruefung.
+
 ### 11.18: Entwicklungsstand und Betriebsreview
 
 - Aktive Setup-, Tool- und Profilversionen auf 11.18 angehoben.
