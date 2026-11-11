@@ -105,7 +105,12 @@ def fixture():
         manifest = root / 'manifest.json'
         manifest.write_text(json.dumps({'schema': 1, 'files': rows}))
         result = restore(archive, manifest, root / 'recovered')
+        for name, content in payloads.items():
+            if (root / 'recovered' / name).read_bytes() != content:
+                raise ValueError('Recovered fixture bytes differ')
         result['scope'] = 'synthetic-file-restore-fixture'
+        result['archive_sha256'] = hashlib.sha256(archive.read_bytes()).hexdigest()
+        result['manifest_sha256'] = hashlib.sha256(manifest.read_bytes()).hexdigest()
         return result
 
 
