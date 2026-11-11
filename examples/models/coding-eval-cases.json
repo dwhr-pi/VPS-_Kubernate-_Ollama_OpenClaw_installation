@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "status": "template-not-executed",
+  "auto_execute": false,
+  "cases": [
+    {"id": "eval-python-edges", "group_id": "holdout-python-boundaries", "language": "python", "task": "Implementiere eine reine Funktion fuer eine inklusive ganzzahlige Bereichspruefung.", "checks": ["Untergrenze", "Obergrenze", "negative Werte", "kein Dateisystem oder Netzwerk"], "result": null},
+    {"id": "eval-cpp-overflow", "group_id": "holdout-cpp-overflow", "language": "cpp", "task": "Analysiere einen vorgegebenen Integer-Overflow-Fall fuer C++20 anhand der Standardregeln.", "checks": ["signed vs unsigned", "Compilerdiagnostik", "keine undefinierte Ausfuehrung auf dem Host"], "result": null},
+    {"id": "eval-asm-x86", "group_id": "holdout-abi-x86", "language": "assembly", "isa": "x86-64", "syntax": "Intel", "assembler": "NASM; version operator-selected", "abi": "Linux System V AMD64", "task": "Reine unsigned 64-bit Additionsfunktion, modulo 2^64, ohne Syscalls.", "checks": ["Assembler akzeptiert Syntax", "Randwerte", "callee-saved Register", "kein Netzwerk oder Dateizugriff"], "result": null},
+    {"id": "eval-asm-arm", "group_id": "holdout-abi-arm", "language": "assembly", "isa": "AArch64", "syntax": "GAS", "assembler": "GNU assembler; version operator-selected", "abi": "Linux AAPCS64", "task": "Dieselbe reine unsigned 64-bit Addition unter dem angegebenen ABI.", "checks": ["separate Hardware oder freigegebene Emulation", "Randwerte", "Stack-Ausrichtung", "callee-saved Register"], "result": null}
+  ]
+}

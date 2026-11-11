@@ -235,9 +235,10 @@ class TruthTable(unittest.TestCase):
         table = load('tool_truth_table', 'scripts/quality/tool_truth_table.py')
         result = table.render()
         self.assertEqual(result, (ROOT / table.OUTPUT).read_text(encoding='utf-8'))
-        self.assertIn('402 Tools', result)
+        count = len(json.loads((ROOT / 'config/tools.yml').read_text(encoding='utf-8'))['tools'])
+        self.assertIn(f'{count} Tools', result)
         self.assertIn('nicht verifiziert', result)
-        self.assertEqual(len([line for line in result.splitlines() if line.startswith('| ')]), 404)
+        self.assertEqual(len([line for line in result.splitlines() if line.startswith('| ')]), count + 2)
 
 
 if __name__ == '__main__':

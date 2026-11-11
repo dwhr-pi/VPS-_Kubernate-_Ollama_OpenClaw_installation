@@ -92,6 +92,7 @@ Nur Repository-Metadaten, kein Nachweis installierter oder produktionsfaehiger P
 | ddclient_he | planned | unknown | unknown | not-mapped | not-mapped |
 | deepeval | unknown | unknown | unknown | not-mapped | not-mapped |
 | deepfilternet | experimental | unknown | 978576aa8400552a4ce9730838c635aa30db5e61 | scripts/tools/deepfilternet_doctor.sh | scripts/tools/deepfilternet_update.sh |
+| deepseek_r1 | experimental | planned | 0cf78561f1d51c84a21b2190626b21116d5c68bb | scripts/tools/deepseek_r1_doctor.sh | scripts/tools/deepseek_r1_update.sh |
 | deepspeed | experimental | unknown | 3133d9d689a67ab1d4feebf8166f19ee28cace6a | scripts/tools/deepspeed_doctor.sh | scripts/tools/deepspeed_update.sh |
 | delve | experimental | unknown | 0b7bffc7d40411f8361e10009e73fb9c9b318fb6 | scripts/tools/delve_doctor.sh | scripts/tools/delve_update.sh |
 | demucs | unknown | unknown | unknown | not-mapped | not-mapped |
@@ -109,6 +110,7 @@ Nur Repository-Metadaten, kein Nachweis installierter oder produktionsfaehiger P
 | emo_avatar | planned | unknown | unknown | not-mapped | not-mapped |
 | enki_browser | experimental | unknown | fd0ce82c486bbd54b4f81186fd455c0796cf536f | scripts/tools/enki_browser_doctor.sh | scripts/tools/enki_browser_update.sh |
 | enki_browser_study | experimental | unknown | fd0ce82c486bbd54b4f81186fd455c0796cf536f | scripts/tools/enki_browser_study_doctor.sh | scripts/tools/enki_browser_study_update.sh |
+| espeak_ng | experimental | planned | 688cb60368d6e0998f3632af8d1c3c2ad4191fc2 | scripts/tools/espeak_ng_doctor.sh | scripts/tools/espeak_ng_update.sh |
 | esphome | unknown | unknown | unknown | not-mapped | not-mapped |
 | fail2ban | unknown | unknown | unknown | not-mapped | not-mapped |
 | fal_client | experimental | unknown | 80ddb1d8f2f4b0a28a0323fd3c1d96e34c849eb5 | scripts/tools/fal_client_doctor.sh | scripts/tools/fal_client_update.sh |
@@ -231,6 +233,7 @@ Nur Repository-Metadaten, kein Nachweis installierter oder produktionsfaehiger P
 | meilisearch | experimental | unknown | 7b6f9f39bd91b04d4551673780cfeb31cb3f5e7b | scripts/tools/meilisearch_doctor.sh | scripts/tools/meilisearch_update.sh |
 | melotts | planned | unknown | unknown | not-mapped | not-mapped |
 | metabase | experimental | unknown | 0a34a97ceb26ae6bce05ebbbfc39a32d268233f5 | scripts/tools/metabase_doctor.sh | scripts/tools/metabase_update.sh |
+| minimax_m3 | experimental | planned | 8ef4ca53e1b0e8cd3d79b617a9fd229d2b6fd5f0 | scripts/tools/minimax_m3_doctor.sh | scripts/tools/minimax_m3_update.sh |
 | minio | experimental | unknown | 7aac2a2c5b7c882e68c1ce017d8256be2feea27f | scripts/tools/minio_doctor.sh | scripts/tools/minio_update.sh |
 | mitmproxy | planned | unknown | unknown | not-mapped | not-mapped |
 | mkdocs | planned | unknown | unknown | not-mapped | not-mapped |
@@ -253,6 +256,7 @@ Nur Repository-Metadaten, kein Nachweis installierter oder produktionsfaehiger P
 | node_red | experimental | unknown | df0a87cce1a243e21a2e0eb0fdbdbb8c4732392f | scripts/tools/node_red_doctor.sh | scripts/tools/node_red_update.sh |
 | nvidia_smi | planned | unknown | unknown | not-mapped | not-mapped |
 | o3de_source | experimental | unknown | 3db6943249d8bd7960b9ed7e9aee310b7668586e | scripts/tools/o3de_source_doctor.sh | scripts/tools/o3de_source_update.sh |
+| obot | experimental | planned | 251f96eb1ddae99d61e78a15b7a96115fc45630b | scripts/tools/obot_doctor.sh | scripts/tools/obot_update.sh |
 | obs | experimental | unknown | 7fc60ea38122e84681767c100d0ef3a82fe2dcf4 | scripts/tools/obs_doctor.sh | scripts/tools/obs_update.sh |
 | ocrmypdf | planned | unknown | unknown | not-mapped | not-mapped |
 | ollama | unknown | unknown | unknown | not-mapped | not-mapped |
@@ -272,6 +276,7 @@ Nur Repository-Metadaten, kein Nachweis installierter oder produktionsfaehiger P
 | openutau | experimental | planned | f920e2423113f9a936ec77eebf1f192e02a7ea6a | scripts/tools/openutau_doctor.sh | scripts/tools/openutau_update.sh |
 | openvoice | planned | unknown | unknown | not-mapped | not-mapped |
 | openwakeword | planned | unknown | unknown | not-mapped | not-mapped |
+| outlines | experimental | planned | c52af8472c6fe8a607a733ec11b709476af77a96 | scripts/tools/outlines_doctor.sh | scripts/tools/outlines_update.sh |
 | paddleocr | planned | unknown | unknown | not-mapped | not-mapped |
 | pandoc | unknown | unknown | unknown | not-mapped | not-mapped |
 | paperless_ngx | experimental | unknown | unknown | scripts/tools/paperless_ngx_doctor.sh | scripts/tools/paperless_ngx_update.sh |
@@ -305,6 +310,7 @@ Nur Repository-Metadaten, kein Nachweis installierter oder produktionsfaehiger P
 | queue_manager | planned | unknown | unknown | not-mapped | not-mapped |
 | qwen3_tts | experimental | unknown | 022e286b98fbec7e1e916cb940cdf532cd9f488e | scripts/tools/qwen3_tts_doctor.sh | scripts/tools/qwen3_tts_update.sh |
 | qwen_code | experimental | unknown | c1a8218f38203e272e6e965778ed6a2795cfeed7 | scripts/tools/qwen_code_doctor.sh | scripts/tools/qwen_code_update.sh |
+| qwen_coder | experimental | planned | 33bc6aabd7791ad7b32f7e92104f11f2359ba890 | scripts/tools/qwen_coder_doctor.sh | scripts/tools/qwen_coder_update.sh |
 | qwen_desktop | planned | unknown | unknown | scripts/tools/qwen_desktop_doctor.sh | scripts/tools/qwen_desktop_update.sh |
 | qwen_desktop_build | experimental | unknown | bf66a26c978dac68af31fbc093eb53044e204b24 | scripts/tools/qwen_desktop_build_doctor.sh | scripts/tools/qwen_desktop_build_update.sh |
 | qwen_desktop_study | experimental | unknown | bf66a26c978dac68af31fbc093eb53044e204b24 | scripts/tools/qwen_desktop_study_doctor.sh | scripts/tools/qwen_desktop_study_update.sh |

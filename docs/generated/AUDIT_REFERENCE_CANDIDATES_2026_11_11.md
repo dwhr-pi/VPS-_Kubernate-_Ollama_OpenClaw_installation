@@ -233,11 +233,17 @@ Nur Nachpruefkandidaten; Status TOT wird fuer keinen dieser Pfade behauptet.
 - `scripts/config_templates/openclaw/.env-Original-(Manus).template`
 - `scripts/research/crawl4ai_adapter.py`
 - `scripts/research/web_research.py`
+- `scripts/tools/deepseek_r1_check.sh`
 - `scripts/tools/diffsinger_check.sh`
+- `scripts/tools/espeak_ng_check.sh`
 - `scripts/tools/ffmpeg_check.sh`
 - `scripts/tools/helpers/cargo_build_tools.py`
 - `scripts/tools/markdown_docs_server_check.sh`
+- `scripts/tools/minimax_m3_check.sh`
+- `scripts/tools/obot_check.sh`
 - `scripts/tools/openutau_check.sh`
+- `scripts/tools/outlines_check.sh`
+- `scripts/tools/qwen_coder_check.sh`
 - `scripts/tools/seed_vc_check.sh`
 - `scripts/tools/xerj_check.sh`
 - `scripts/tools/xerj_repair.sh`

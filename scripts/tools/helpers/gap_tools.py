@@ -235,11 +235,30 @@ def hermes_build(runtime, env, python=None):
     return [".venv/Scripts/hermes.exe" if os.name == "nt" else ".venv/bin/hermes", "pyproject.toml"]
 
 
+def source_contracts(runtime, spec):
+    # Check reviewed metadata against the manifest, not an editable local marker.
+    contracts = spec.get('contracts', {})
+    if not isinstance(contracts, dict) or len(contracts) > 16:
+        raise ValueError('Ungueltige Quellvertraege.')
+    for name, expected in contracts.items():
+        relative = Path(name)
+        if (not name or relative.anchor or relative.is_absolute() or '..' in relative.parts
+                or '\\' in name or ':' in name or not isinstance(expected, str)
+                or len(expected) != 64 or any(c not in '0123456789abcdef' for c in expected)):
+            raise ValueError('Unsicherer Quellvertrag.')
+        path = checked(runtime / relative)
+        if (not path.is_file() or path.stat().st_size > 4 * 1024 * 1024
+                or hashlib.sha256(path.read_bytes()).hexdigest() != expected):
+            raise ValueError('Quellvertrag fehlt oder stimmt nicht: ' + name)
+    return list(contracts)
+
+
 def validate(runtime, marker, spec, full=False):
     record = json.loads(checked(marker).read_text(encoding="utf-8"))
     if record.get("pin") != spec["pin"] or record.get("repo") != spec["repo"] or record.get("mode") != spec["mode"]:
         raise ValueError("Unbekannter Installationsnachweis; kein Ueberschreiben/Loeschen.")
     checked(runtime)
+    source_contracts(runtime, spec)
     if git(runtime, "rev-parse", "HEAD") != spec["pin"] or git(runtime, "remote", "get-url", "origin") != "https://github.com/" + spec["repo"] + ".git":
         raise ValueError("Fremder Quellbestand.")
     entries = record.get("entries", [])
@@ -405,6 +424,7 @@ def install(runtime, marker, base, spec, install_build_deps=False):
             raise ValueError("GitHub-Pin stimmt nicht.")
         entries = [".git/HEAD"]
         if spec["mode"] == "source":
+            entries += source_contracts(runtime, spec)
             entries += [p.name for p in runtime.iterdir()
                         if p.is_file() and p.name.lower().startswith(("readme", "license", "copying"))]
             if len(entries) < 2:
@@ -426,7 +446,9 @@ def install(runtime, marker, base, spec, install_build_deps=False):
             if not checked(runtime / name).is_file():
                 raise ValueError("Erwartetes Artefakt fehlt: " + name)
         record = dict(repo=spec["repo"], pin=spec["pin"], mode=spec["mode"], entries=entries,
-                      installed=True, runtime_tested=False, files=inventory(runtime))
+                      installed=not spec.get('source_status_only', False),
+                      source_prepared=spec['mode'] == 'source',
+                      runtime_tested=False, files=inventory(runtime))
         descriptor, pending = tempfile.mkstemp(prefix="ready-pending-", dir=base)
         try:
             with os.fdopen(descriptor, "w", encoding="utf-8") as stream:
@@ -504,7 +526,10 @@ def main(argv=None):
             ready = True
         except (ValueError, OSError, subprocess.SubprocessError, KeyError, TypeError):
             pass
-        print(json.dumps(dict(installed=ready, scope=spec["mode"], runtime_tested=False)))
+        state = dict(installed=ready, scope=spec["mode"], runtime_tested=False)
+        if spec.get('source_status_only'):
+            state.update(installed=False, source_prepared=ready)
+        print(json.dumps(state))
         return 0 if ready or opts.action == "status" else 1
     with operation(base, opts.action, tool=spec["name"]):
         versions = {'browser_use': '2026-10-26-browser-use-explicit-local-lock', 'perplexity_mcp': '2026-10-26-perplexity-mcp-private-node-npm',

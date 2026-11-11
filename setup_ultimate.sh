@@ -903,6 +903,7 @@ get_tool_install_fallback_min_free_mb() {
   local tool_key="$1"
 
   case "$tool_key" in
+    "MiniMax_M3" | "Obot" | "DeepSeek_R1" | "Qwen_Coder" | "Outlines" | "eSpeak_NG") printf '2048' ;;
     "Traefik") printf '16384' ;;
     "OpenTelemetry") printf '8192' ;;
     "Langfuse" | "Grafana_Alloy") printf '49152' ;;
@@ -4885,6 +4886,24 @@ TOOLS["AutoGPT"]="OFFEN: AutoGPT Platform hat noch keinen abgenommenen nativen G
 TOOLS["Supabase"]="OFFEN: native Gesamtplattform samt Datenbank/Auth/Storage noch nicht abgenommen; kein Docker-Fallback."
 TOOL_KEYS+=("PyAirbyte")
 TOOL_KEYS+=("Markdown_Docs_Server")
+TOOL_KEYS+=("MiniMax_M3")
+TOOL_KEYS+=("Obot")
+TOOL_KEYS+=("DeepSeek_R1")
+TOOL_KEYS+=("Qwen_Coder")
+TOOL_KEYS+=("Outlines")
+TOOL_KEYS+=("eSpeak_NG")
+TOOL_SCRIPT_NAMES["Outlines"]="outlines"
+TOOL_SCRIPT_NAMES["eSpeak_NG"]="espeak_ng"
+TOOLS["Outlines"]="Structured-Output-GitHub-Quellen; keine Modelle/Python-Runtime. docs/tools/outlines.md"
+TOOLS["eSpeak_NG"]="Phonetik-GitHub-Quellen; kein Build oder Audiostart. docs/tools/espeak-ng.md"
+TOOL_SCRIPT_NAMES["Qwen_Coder"]="qwen_coder"
+TOOLS["Qwen_Coder"]="Qwen-Coder-Modellquellen; getrennt von Qwen Code, keine Gewichte/Inferenz. docs/tools/qwen-coder.md"
+TOOL_SCRIPT_NAMES["MiniMax_M3"]="minimax_m3"
+TOOL_SCRIPT_NAMES["Obot"]="obot"
+TOOL_SCRIPT_NAMES["DeepSeek_R1"]="deepseek_r1"
+TOOLS["MiniMax_M3"]="Nur gepinnte GitHub-Modellquellen; keine Gewichte/Inferenz. docs/tools/minimax-m3.md"
+TOOLS["Obot"]="Nur gepinnte GitHub-Quellen; nativer Runtime-Build offen, kein Dienststart. docs/tools/obot.md"
+TOOLS["DeepSeek_R1"]="MIT-Modellfamilie; nur GitHub-Quellen, keine Gewichte/Inferenz. docs/tools/deepseek-r1.md"
 TOOL_SCRIPT_NAMES["Markdown_Docs_Server"]="markdown_docs_server"
 TOOLS["Markdown_Docs_Server"]="Offline-Handbuch mit Suche und Themenmenue; GitHub-Quellen, nur 127.0.0.1, kein Autostart. docs/tools/markdown-docs-server.md"
 TOOLS["PyAirbyte"]="Separates GitHub-Python-SDK; kein Airbyte-Core-Ersatz. docs/DOCKER_TO_GITHUB.md"

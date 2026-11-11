@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "language": "de",
+  "scope": "curated-example-not-general-dictionary; stress is a contextual example assumption",
+  "entries": {
+    "es": {"syllables": 1, "stress": "0", "ipa": "/\u025bs/", "rhyme": null},
+    "ruft": {"syllables": 1, "stress": "1", "ipa": "/\u0281u\u02d0ft/", "rhyme": null},
+    "strahlt": {"syllables": 1, "stress": "1", "ipa": "/\u0283t\u0281a\u02d0lt/", "rhyme": null},
+    "scheint": {"syllables": 1, "stress": "1", "ipa": "/\u0283a\u026ant/", "rhyme": null},
+    "bleibt": {"syllables": 1, "stress": "1", "ipa": "/bla\u026apt/", "rhyme": null},
+    "die": {"syllables": 1, "stress": "0", "ipa": "/di\u02d0/", "rhyme": null},
+    "das": {"syllables": 1, "stress": "0", "ipa": "/das/", "rhyme": null},
+    "nacht": {"syllables": 1, "stress": "1", "ipa": "/naxt/", "rhyme": "axt"},
+    "pracht": {"syllables": 1, "stress": "1", "ipa": "/p\u0281axt/", "rhyme": "axt"},
+    "macht": {"syllables": 1, "stress": "1", "ipa": "/maxt/", "rhyme": "axt"},
+    "wacht": {"syllables": 1, "stress": "1", "ipa": "/vaxt/", "rhyme": "axt"},
+    "licht": {"syllables": 1, "stress": "1", "ipa": "/l\u026a\u00e7t/", "rhyme": "\u026a\u00e7t"},
+    "sicht": {"syllables": 1, "stress": "1", "ipa": "/z\u026a\u00e7t/", "rhyme": "\u026a\u00e7t"},
+    "gedicht": {"syllables": 2, "stress": "01", "ipa": "/\u0261\u0259\u02c8d\u026a\u00e7t/", "rhyme": "\u026a\u00e7t"},
+    "pflicht": {"syllables": 1, "stress": "1", "ipa": "/pfl\u026a\u00e7t/", "rhyme": "\u026a\u00e7t"}
+  }
+}

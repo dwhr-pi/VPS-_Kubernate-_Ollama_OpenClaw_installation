@@ -1,5 +1,11 @@
 # AI Singer
 
+Optionales Zubehoer: [Reim-/Lyric-Workflow](../CREATIVE_LYRICS.md),
+[Outlines](../tools/outlines.md) und [eSpeak NG](../tools/espeak-ng.md).
+Nur Quellenverwaltung und Offline-Textpruefung; keine automatische Installation,
+Profilaktivierung, Inferenz oder Audioausgabe. Lyrics-/Noten-/Stimmenfreigabe
+bleiben getrennte Schritte.
+
 ## Zweck
 
 AI Singer beschreibt den Weg von eigener Stimme oder freigegebenem Gesangsmaterial zu einem

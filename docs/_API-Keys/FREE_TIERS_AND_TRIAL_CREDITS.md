@@ -1,5 +1,13 @@
 # Kostenlose LLM-Zugaenge: Quellen, Trial-Credits und eigene Auswertung
 
+**Gezielte Together-Nachpruefung vom 11.11.2026:**
+Die [Billing-Seite](https://docs.together.ai/docs/billing-credits) bestaetigt
+paid-prepaid ohne allgemeines kostenloses Trial, mindestens 15 USD beim ersten
+und 5 USD bei weiteren Guthabenkaeufen. Keine neue Vollpruefung der anderen
+Anbieter durch diesen Nachtrag. Einordnung und Freigabegrenzen im
+[Hybrid-/MCP-Kapitel](../HYBRID_CLOUD_MCP.md#3-together-ai-bezahlte-cloud-inferenz).
+Die bisherigen Quellenberichte und historischen Tabellen bleiben unveraendert erhalten.
+
 **Wochenpruefung vom 09.11.2026:** [Aktueller Quellenbericht](reviews/2026-11-09.md).
 Mistral dokumentiert moegliche Trainingsnutzung im Free mode mit Opt-out.
 OpenRouter beschreibt speichernde Safety-Retention-Endpunkte und deren Ausschluss

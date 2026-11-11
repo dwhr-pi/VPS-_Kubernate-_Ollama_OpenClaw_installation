@@ -2,6 +2,56 @@
 
 ## Unreleased
 
+### 2026-11-11: Reim-/Lyric-Werkzeuge und begrenzte Offline-Pruefung
+
+- Outlines und eSpeak_NG als optionale gepinnte GitHub-Quelltools mit SHA256-
+  Vertraegen und getrenntem Quellen-/Runtime-Status ins Menue aufgenommen.
+- Standardbibliotheks-Pruefer mit Endwort-Regex, kuratierten IPA-/Silben-/
+  Betonungsdaten, Schema-/Groessenlimits und ehrlichen unvollstaendigen Ergebnissen.
+- Aktuelle optionale Outlines-Regex-Anbindung mit expliziter Freigabe und
+  Versuchslimit; keine Modelllade-/Download-/Cloud-Fallback-Funktion.
+- Promptvorlage und Audio-/AI-Singer-Verknuepfungen dokumentiert; kein
+  automatischer Profil-, Modell-, Audio-, Trainings- oder Dienststart.
+
+### 2026-11-11: Qwen Coder und Modellhandbuch
+
+- Qwen_Coder als separates gepinntes GitHub-Quelltool neben dem bestehenden
+  Qwen-Code-Client aufgenommen; gleicher begrenzter Quellen-Lifecycle.
+- Modellhandbuch zu Sprachen einschliesslich Assembler, Open-Weights-
+  Einrichtung, nativen Runtimes und vorhandenen Coding-Clients ergaenzt.
+- Gewichte sind kein Klartext-RAG-Korpus: RAG, Wissensluecken, SFT/LoRA,
+  Datenmigration, Evaluation und nachweisbare Basismodellherkunft getrennt.
+- Synthetische Datensatz-/Holdout-Vorlagen mit Offline-Vertragstests;
+  keine Modell-, Gewichts-, Trainings- oder Runtime-Installation ausgefuehrt.
+
+### 2026-11-11: GitHub-Quelltools und getrennte Anbieter-APIs
+
+- MiniMax_M3, Obot und DeepSeek_R1 mit Commit-Pins, SHA256-Vertraegen,
+  Menueeintraegen und Install/Status/Doctor/Update/Uninstall aufgenommen.
+- Nur Quellenverwaltung; source_prepared ist keine gebaute oder getestete
+  Runtime. Keine Modelle, Docker-Installation oder automatischen Dienststarts.
+- LTX bleibt vorhandenes Quelltool, jetzt mit eigener SSH-Anleitung und
+  dokumentierter Lightricks-API. Together und DeepSeek ebenfalls im API-Index.
+- Native Runtime-Builds, Modellinstallation, SBOM und End-to-End-Abnahmen offen.
+
+### 2026-11-11: MiniMax im API-Bereich
+
+- Eigene MiniMax-API-Anleitung mit Links aus API-Index, Online-Diensten und
+  Anbieter-Katalog; Cloud-Zugang vom lokalen M3-Modellbetrieb getrennt.
+- Pay-as-you-go, M Plan, Kosten-/Datenschutzfreigabe und sichere Key-Ablage
+  dokumentiert; keine Installation oder Provider-Aktivierung.
+
+### 2026-11-11: Hybrid-, Cloud- und MCP-Kapitel
+
+- MiniMax-M3 mit Open-Weight-/Community-Lizenzabgrenzung und konservativer
+  Rohgewichtsrechnung dokumentiert; kein Einzel-RTX- oder 1M-Kontext-Versprechen.
+- Obot als noch nicht installierter MCP-Gateway-Kandidat mit MIT-Quellstand,
+  Community-Limits und Produktions-/Offline-Abhaengigkeiten eingeordnet.
+- Together-Billing gezielt nachgeprueft: paid-prepaid, kein allgemeines Trial,
+  15 USD Erstkauf; Cloud-Route bleibt separat freizugeben.
+- Kapitel selbst aktiviert keine Dienste, Modelle oder Providerkonten;
+  spaetere Quellen-Registry-Ergaenzung separat oben dokumentiert.
+
 ### 2026-11-11: PR-24-Linkquellen nachvollziehbar korrigiert
 
 - Godot-Linux-/XR-Weblinks nach CI HTTP 429 durch gelesene offizielle

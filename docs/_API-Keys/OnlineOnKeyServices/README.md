@@ -33,6 +33,16 @@ Zurueck zu [Allen API-Schluesseln](../README.md), [FreeLLMAPI](../../tools/freel
 
 ## Anmeldung und Bezahlung
 
+### Direkte Anbieter statt Aggregatoren
+
+[LTX / Lightricks](ltx.md), [DeepSeek](deepseek.md) und [Together AI](together.md)
+sind weitere direkte API-Zugaenge. Jeder benoetigt eine eigene Freigabe und
+eigene Zugangsdaten; GitHub-Modellquellen sind keine Cloud-Guthaben.
+
+[MiniMax API](minimax.md) ist ebenfalls hier einsortiert: eigener Cloud-Zugang mit
+Pay-as-you-go oder M Plan, kein mit OpenRouter austauschbarer Key. Die Anleitung
+trennt Cloud-Nutzung vom lokalen MiniMax-M3-Modellbetrieb und aktiviert nichts.
+
 [Offizielle Key-Wege, kostenlose Kontingente, Mindesteinzahlungen, Kreditkarte/PayPal/Klarna/Krypto und Identitaetspruefungen](../REGISTRATION_BILLING_AND_IDENTITY.md)
 fuer OpenRouter, token8341 und die weiteren Anbieter. Ungeklaerte Checkout-/Accountbedingungen sind
 keine bestaetigte Freigabe.
