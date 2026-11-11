@@ -9,10 +9,12 @@ on:
       - scripts/healthcheck_all.sh
       - scripts/operations/**
       - scripts/quality/tool_truth_table.py
+      - scripts/quality/evidence_inventory.py
       - config/tools.yml
       - config/docker_to_github.json
       - docs/TOOL-MATRIX-NEU.md
       - tests/test_platform_health.py
+      - tests/test_evidence_inventory.py
       - .github/workflows/operations-health.yml
   workflow_dispatch:
 
@@ -40,3 +42,5 @@ jobs:
         run: python -B -m unittest discover -s tests -p test_platform_health.py -v
       - name: Tool truth table drift check
         run: python -I -B scripts/quality/tool_truth_table.py --check
+      - name: Evidence inventory fixtures
+        run: python -B -m unittest discover -s tests -p test_evidence_inventory.py -v

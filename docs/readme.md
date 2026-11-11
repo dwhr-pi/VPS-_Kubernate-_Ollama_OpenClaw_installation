@@ -18,6 +18,10 @@ Diagnose-/Restore-Befehle und Nachweisgrenzen.
 [Vollstaendige Tool-Wahrheitstabelle](TOOL-MATRIX-NEU.md): 402 Registry-Eintraege,
 keine pauschale Runtime-Freigabe.
 
+[Erweiterter Audit 11.11.2026](AUDIT-2026-11-11.md):
+Quellfundstellen fuer Pins/Netz/Privilegien, Testinventar, Referenzkandidaten,
+Gitleaks-Grenzen und B1-B7-Lueckenplan.
+
 [Infrastrukturreview vom 07.11.2026](INFRASTRUCTURE_REVIEW_2026-11-07.md):
 priorisierte Befunde, drei begrenzte Monitoring-/MCP-/Retry-Patches und offene Runtime-Abnahmen.
 

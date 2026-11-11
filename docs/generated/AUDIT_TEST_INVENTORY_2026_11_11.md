@@ -1,0 +1,5755 @@
+# Statisches Testinventar: 2026-11-11
+
+Jeder benannte Python-Test und Bats-Fall mit Quellposition; keine Tests werden ausgefuehrt.
+Pruefzweck wird durch den vorhandenen Testnamen identifiziert, nicht durch vermutete Runtime-Eigenschaften.
+Mock-/Fixture- und Laufzeitsemantik muessen am jeweiligen Quelltext geprueft werden.
+Keine Test-Payloads, Schluesselwerte oder Quelldatei-Inhalte im Bericht.
+Parametrisierung und dynamisch erzeugte Tests koennen mehr Laufzeitfaelle liefern als statische Namen.
+
+## tests/bats/healthcheck_watchdog.bats
+
+- `tests/bats/healthcheck_watchdog.bats:15` - Bats-Fall; Pruefzweck im Testtitel der Quelle.
+- `tests/bats/healthcheck_watchdog.bats:24` - Bats-Fall; Pruefzweck im Testtitel der Quelle.
+- `tests/bats/healthcheck_watchdog.bats:33` - Bats-Fall; Pruefzweck im Testtitel der Quelle.
+- `tests/bats/healthcheck_watchdog.bats:43` - Bats-Fall; Pruefzweck im Testtitel der Quelle.
+
+## tests/bats/install_scripts.bats
+
+- `tests/bats/install_scripts.bats:18` - Bats-Fall; Pruefzweck im Testtitel der Quelle.
+- `tests/bats/install_scripts.bats:25` - Bats-Fall; Pruefzweck im Testtitel der Quelle.
+- `tests/bats/install_scripts.bats:31` - Bats-Fall; Pruefzweck im Testtitel der Quelle.
+- `tests/bats/install_scripts.bats:38` - Bats-Fall; Pruefzweck im Testtitel der Quelle.
+- `tests/bats/install_scripts.bats:44` - Bats-Fall; Pruefzweck im Testtitel der Quelle.
+- `tests/bats/install_scripts.bats:49` - Bats-Fall; Pruefzweck im Testtitel der Quelle.
+- `tests/bats/install_scripts.bats:56` - Bats-Fall; Pruefzweck im Testtitel der Quelle.
+
+## tests/test_ace_step_15.py
+
+- `tests/test_ace_step_15.py:23`
+  Prueffall: `test_source_contract`
+- `tests/test_ace_step_15.py:48`
+  Prueffall: `test_dependency_order_and_scope`
+- `tests/test_ace_step_15.py:61`
+  Prueffall: `test_menu_doc_links`
+- `tests/test_ace_step_15.py:83`
+  Prueffall: `test_dry_run_no_files`
+- `tests/test_ace_step_15.py:91`
+  Prueffall: `test_python_dependency_decisions`
+- `tests/test_ace_step_15.py:120`
+  Prueffall: `test_read_only_actions_never_prepare_dependencies`
+- `tests/test_ace_step_15.py:127`
+  Prueffall: `test_status_missing`
+- `tests/test_ace_step_15.py:135`
+  Prueffall: `test_api_actions_rejected`
+- `tests/test_ace_step_15.py:139`
+  Prueffall: `test_bad_root`
+- `tests/test_ace_step_15.py:144`
+  Prueffall: `test_foreign_source_preserved`
+- `tests/test_ace_step_15.py:154`
+  Prueffall: `test_missing_sdk_layout_rejected`
+- `tests/test_ace_step_15.py:164`
+  Prueffall: `test_expected_subdirectory_accepted`
+- `tests/test_ace_step_15.py:174`
+  Prueffall: `test_foreign_venv_rejected`
+- `tests/test_ace_step_15.py:182`
+  Prueffall: `test_system_site_packages_rejected`
+- `tests/test_ace_step_15.py:191`
+  Prueffall: `test_key_environment_not_inherited`
+- `tests/test_ace_step_15.py:203`
+  Prueffall: `test_mock_package_build_targets_client_only`
+- `tests/test_ace_step_15.py:230`
+  Prueffall: `test_failed_package_build_clears_marker`
+- `tests/test_ace_step_15.py:243`
+  Prueffall: `test_deactivation_keeps_data`
+- `tests/test_ace_step_15.py:252`
+  Prueffall: `test_legacy_runtime_rejected_before_tools`
+- `tests/test_ace_step_15.py:257`
+  Prueffall: `test_low_total_ram_blocks_even_in_conditional`
+- `tests/test_ace_step_15.py:268`
+  Prueffall: `test_safety_documentation`
+- `tests/test_ace_step_15.py:273`
+  Prueffall: `test_sparse_checkout_keeps_package_excludes_models_media_env`
+
+## tests/test_aegisub.py
+
+- `tests/test_aegisub.py:23`
+  Prueffall: `test_registry_and_source_contract`
+- `tests/test_aegisub.py:43`
+  Prueffall: `test_menu_and_doc_links`
+- `tests/test_aegisub.py:64`
+  Prueffall: `test_dry_run_and_missing_status_do_not_write`
+- `tests/test_aegisub.py:74`
+  Prueffall: `test_missing_doctor_fails_and_start_rejected`
+- `tests/test_aegisub.py:78`
+  Prueffall: `test_unsafe_root_rejected`
+- `tests/test_aegisub.py:82`
+  Prueffall: `test_foreign_checkout_preserved`
+- `tests/test_aegisub.py:91`
+  Prueffall: `test_pinned_source_orchestrated_without_real_git`
+- `tests/test_aegisub.py:102`
+  Prueffall: `test_failed_fetch_never_sets_marker`
+- `tests/test_aegisub.py:111`
+  Prueffall: `test_build_commands_mocked_no_execution`
+- `tests/test_aegisub.py:125`
+  Prueffall: `test_build_failure_clears_stale_success`
+- `tests/test_aegisub.py:136`
+  Prueffall: `test_elf_hash_check_without_running_binary`
+- `tests/test_aegisub.py:156`
+  Prueffall: `test_parallelism_and_foreign_build_rejected`
+- `tests/test_aegisub.py:161`
+  Prueffall: `test_real_local_git_provenance_and_dirty_detection`
+- `tests/test_aegisub.py:176`
+  Prueffall: `test_failed_private_install_never_sets_native_marker`
+- `tests/test_aegisub.py:187`
+  Prueffall: `test_native_install_unsets_destdir`
+- `tests/test_aegisub.py:206`
+  Prueffall: `test_reconfigure_owned_build_without_wipe`
+
+## tests/test_agent_framework_source.py
+
+- `tests/test_agent_framework_source.py:16`
+  Prueffall: `test_pinned_core_only`
+- `tests/test_agent_framework_source.py:27`
+  Prueffall: `test_guards_and_lifecycle`
+- `tests/test_agent_framework_source.py:46`
+  Prueffall: `test_dry_run_no_mutation_or_tools`
+- `tests/test_agent_framework_source.py:56`
+  Prueffall: `test_status_missing_is_offline`
+- `tests/test_agent_framework_source.py:64`
+  Prueffall: `test_doctor_missing_fails_without_creation`
+- `tests/test_agent_framework_source.py:73`
+  Prueffall: `test_unknown_start_rejected`
+- `tests/test_agent_framework_source.py:77`
+  Prueffall: `test_ready_python_never_uses_sudo`
+- `tests/test_agent_framework_source.py:86`
+  Prueffall: `test_python_override_is_one_executable_even_with_spaces`
+- `tests/test_agent_framework_source.py:97`
+  Prueffall: `test_incompatible_override_does_not_fall_back`
+- `tests/test_agent_framework_source.py:108`
+  Prueffall: `test_missing_venv_repairs_versioned_package_and_rechecks`
+- `tests/test_agent_framework_source.py:125`
+  Prueffall: `test_repair_opt_out_and_custom_python_never_use_sudo`
+- `tests/test_agent_framework_source.py:135`
+  Prueffall: `test_sudo_failure_stops_before_apt`
+- `tests/test_agent_framework_source.py:146`
+  Prueffall: `test_failed_apt_or_failed_recheck_cannot_continue`
+- `tests/test_agent_framework_source.py:157`
+  Prueffall: `test_bootstrap_before_clone_and_not_in_read_only_actions`
+- `tests/test_agent_framework_source.py:166`
+  Prueffall: `test_unsafe_paths_rejected`
+- `tests/test_agent_framework_source.py:170`
+  Prueffall: `test_foreign_source_not_overwritten`
+- `tests/test_agent_framework_source.py:182`
+  Prueffall: `test_mock_success_marks_only_after_checks`
+- `tests/test_agent_framework_source.py:199`
+  Prueffall: `test_mock_failure_leaves_no_success_marker`
+
+## tests/test_agentic_coding_docs.py
+
+- `tests/test_agentic_coding_docs.py:18`
+  Prueffall: `test_tool_sources_and_documents`
+- `tests/test_agentic_coding_docs.py:33`
+  Prueffall: `test_profile_mapping_and_scripts`
+- `tests/test_agentic_coding_docs.py:42`
+  Prueffall: `test_local_markdown_links`
+- `tests/test_agentic_coding_docs.py:52`
+  Prueffall: `test_menu_wiring`
+- `tests/test_agentic_coding_docs.py:71`
+  Prueffall: `test_framework_dry_run_not_installed`
+- `tests/test_agentic_coding_docs.py:76`
+  Prueffall: `test_framework_agent_start_blocked`
+- `tests/test_agentic_coding_docs.py:82`
+  Prueffall: `test_profile_plan_is_not_installation`
+
+## tests/test_agentic_os.py
+
+- `tests/test_agentic_os.py:52`
+  Prueffall: `test_registry_pin_and_source_only_scope`
+- `tests/test_agentic_os.py:66`
+  Prueffall: `test_menu_and_indexes`
+- `tests/test_agentic_os.py:73`
+  Prueffall: `test_wrappers_never_bootstrap_or_start`
+- `tests/test_agentic_os.py:83`
+  Prueffall: `test_plan_has_no_files_network_or_application_execution`
+- `tests/test_agentic_os.py:91`
+  Prueffall: `test_marker_update_status_and_deactivation`
+- `tests/test_agentic_os.py:104`
+  Prueffall: `test_changed_source_not_reset`
+- `tests/test_agentic_os.py:112`
+  Prueffall: `test_low_disk_records_failure_without_fetch_or_marker`
+- `tests/test_agentic_os.py:123`
+  Prueffall: `test_fetch_failure_never_writes_success_marker`
+- `tests/test_agentic_os.py:129`
+  Prueffall: `test_missing_status_is_not_runtime_ready`
+- `tests/test_agentic_os.py:136`
+  Prueffall: `test_documentation_has_corrections_limits_and_valid_links`
+
+## tests/test_aida_x.py
+
+- `tests/test_aida_x.py:23`
+  Prueffall: `test_registry_and_source_contract`
+- `tests/test_aida_x.py:45`
+  Prueffall: `test_menu_and_doc_links`
+- `tests/test_aida_x.py:66`
+  Prueffall: `test_dry_run_and_missing_status_do_not_write`
+- `tests/test_aida_x.py:76`
+  Prueffall: `test_missing_doctor_fails_and_start_rejected`
+- `tests/test_aida_x.py:80`
+  Prueffall: `test_unsafe_root_rejected`
+- `tests/test_aida_x.py:84`
+  Prueffall: `test_foreign_checkout_preserved`
+- `tests/test_aida_x.py:93`
+  Prueffall: `test_all_pinned_modules_orchestrated_without_real_git`
+- `tests/test_aida_x.py:104`
+  Prueffall: `test_failed_fetch_never_sets_marker`
+- `tests/test_aida_x.py:113`
+  Prueffall: `test_build_commands_mocked_no_execution`
+- `tests/test_aida_x.py:127`
+  Prueffall: `test_build_failure_clears_stale_success`
+- `tests/test_aida_x.py:138`
+  Prueffall: `test_elf_hash_check_without_running_binary`
+- `tests/test_aida_x.py:157`
+  Prueffall: `test_parallelism_and_foreign_build_rejected`
+- `tests/test_aida_x.py:162`
+  Prueffall: `test_real_local_nested_git_provenance_and_dirty_detection`
+
+## tests/test_alexandria_audiobook.py
+
+- `tests/test_alexandria_audiobook.py:23`
+  Prueffall: `test_contract`
+- `tests/test_alexandria_audiobook.py:41`
+  Prueffall: `test_dependency_order_and_scope`
+- `tests/test_alexandria_audiobook.py:54`
+  Prueffall: `test_docs_menu`
+- `tests/test_alexandria_audiobook.py:78`
+  Prueffall: `test_dry_run_no_creation`
+- `tests/test_alexandria_audiobook.py:86`
+  Prueffall: `test_python_dependency_decisions`
+- `tests/test_alexandria_audiobook.py:115`
+  Prueffall: `test_read_only_actions_never_prepare_dependencies`
+- `tests/test_alexandria_audiobook.py:122`
+  Prueffall: `test_status_no_install`
+- `tests/test_alexandria_audiobook.py:131`
+  Prueffall: `test_doctor_missing`
+- `tests/test_alexandria_audiobook.py:134`
+  Prueffall: `test_start_blocked`
+- `tests/test_alexandria_audiobook.py:138`
+  Prueffall: `test_bad_path`
+- `tests/test_alexandria_audiobook.py:141`
+  Prueffall: `test_sparse_excludes_weights_audio_and_configs`
+- `tests/test_alexandria_audiobook.py:148`
+  Prueffall: `test_repo_path_rejected`
+- `tests/test_alexandria_audiobook.py:151`
+  Prueffall: `test_foreign_source_preserved`
+- `tests/test_alexandria_audiobook.py:161`
+  Prueffall: `test_syntax_check_no_import_and_venv_reuse`
+- `tests/test_alexandria_audiobook.py:177`
+  Prueffall: `test_bad_venv_preserved`
+- `tests/test_alexandria_audiobook.py:190`
+  Prueffall: `test_clone_failure_does_not_make_venv`
+- `tests/test_alexandria_audiobook.py:205`
+  Prueffall: `test_source_identity_checks`
+- `tests/test_alexandria_audiobook.py:219`
+  Prueffall: `test_deactivate_keeps_all_data`
+
+## tests/test_anthropic_cli.py
+
+- `tests/test_anthropic_cli.py:72`
+  Prueffall: `test_dry_runs_are_write_free_and_do_not_invoke_tools`
+- `tests/test_anthropic_cli.py:80`
+  Prueffall: `test_unknown_and_conflicting_arguments_fail_before_writes`
+- `tests/test_anthropic_cli.py:87`
+  Prueffall: `test_native_build_records_only_after_artifact_validation`
+- `tests/test_anthropic_cli.py:99`
+  Prueffall: `test_build_inherits_only_validated_credential_free_proxies`
+- `tests/test_anthropic_cli.py:110`
+  Prueffall: `test_source_only_has_no_cli_or_installed_marker`
+- `tests/test_anthropic_cli.py:117`
+  Prueffall: `test_update_is_idempotent_and_never_rebuilds_or_queries_api`
+- `tests/test_anthropic_cli.py:125`
+  Prueffall: `test_readonly_status_does_not_fetch_build_or_create_workspace`
+- `tests/test_anthropic_cli.py:133`
+  Prueffall: `test_doctor_validates_hash_without_running_cli`
+- `tests/test_anthropic_cli.py:141`
+  Prueffall: `test_no_go_fails_before_clone_and_logs_current_attempt`
+- `tests/test_anthropic_cli.py:150`
+  Prueffall: `test_missing_go_bootstrap_builds_with_private_go_without_global_path_change`
+- `tests/test_anthropic_cli.py:177`
+  Prueffall: `test_old_go_falls_back_to_private_toolchain`
+- `tests/test_anthropic_cli.py:190`
+  Prueffall: `test_failed_bootstrap_logs_current_failure_without_installed_marker`
+- `tests/test_anthropic_cli.py:201`
+  Prueffall: `test_bootstrap_can_be_disabled_by_environment`
+- `tests/test_anthropic_cli.py:209`
+  Prueffall: `test_source_only_and_dry_run_never_bootstrap`
+- `tests/test_anthropic_cli.py:214`
+  Prueffall: `test_unexpected_private_go_version_never_fetches_or_registers_cli`
+- `tests/test_anthropic_cli.py:227`
+  Prueffall: `test_uninstall_never_bootstraps_or_removes_private_go`
+- `tests/test_anthropic_cli.py:237`
+  Prueffall: `test_old_go_is_rejected_without_toolchain_download`
+- `tests/test_anthropic_cli.py:244`
+  Prueffall: `test_low_disk_is_logged_before_fetch`
+- `tests/test_anthropic_cli.py:252`
+  Prueffall: `test_failed_build_and_info_mismatch_do_not_register_cli`
+- `tests/test_anthropic_cli.py:267`
+  Prueffall: `test_actual_disk_budget_rejects_low_disk`
+- `tests/test_anthropic_cli.py:273`
+  Prueffall: `test_unexpected_module_is_rejected`
+- `tests/test_anthropic_cli.py:279`
+  Prueffall: `test_publish_failure_rolls_back_only_new_binary`
+- `tests/test_anthropic_cli.py:288`
+  Prueffall: `test_uninstall_preserves_sources_and_never_removes_altered_binary`
+- `tests/test_anthropic_cli.py:300`
+  Prueffall: `test_repair_missing_owned_binary`
+- `tests/test_anthropic_cli.py:307`
+  Prueffall: `test_foreign_binary_or_marker_is_not_replaced`
+- `tests/test_anthropic_cli.py:317`
+  Prueffall: `test_registry_and_license_scope`
+- `tests/test_anthropic_cli.py:333`
+  Prueffall: `test_empty_artifact_is_not_registered`
+
+## tests/test_api_registration_docs.py
+
+- `tests/test_api_registration_docs.py:16`
+  Prueffall: `test_provider_scope_includes_models_search_media_and_services`
+- `tests/test_api_registration_docs.py:35`
+  Prueffall: `test_requested_payment_and_identity_fields_are_explicit`
+- `tests/test_api_registration_docs.py:44`
+  Prueffall: `test_amounts_are_qualified_and_have_primary_sources`
+- `tests/test_api_registration_docs.py:59`
+  Prueffall: `test_no_account_or_document_verification_claims`
+- `tests/test_api_registration_docs.py:67`
+  Prueffall: `test_navigation_and_review_prompt_include_new_guides`
+- `tests/test_api_registration_docs.py:78`
+  Prueffall: `test_local_links_https_and_no_secrets_or_affiliates`
+- `tests/test_api_registration_docs.py:93`
+  Prueffall: `test_markdown_tables_have_consistent_columns`
+
+## tests/test_archivebox_python.py
+
+- `tests/test_archivebox_python.py:34`
+  Prueffall: `test_explicit_python_is_respected`
+- `tests/test_archivebox_python.py:41`
+  Prueffall: `test_invalid_explicit_python_never_downloads_or_falls_back`
+- `tests/test_archivebox_python.py:49`
+  Prueffall: `test_detects_existing_python313`
+- `tests/test_archivebox_python.py:55`
+  Prueffall: `test_missing_python_requires_consent_without_writes`
+- `tests/test_archivebox_python.py:63`
+  Prueffall: `test_no_download_during_build_selection`
+- `tests/test_archivebox_python.py:93`
+  Prueffall: `test_private_bootstrap_reuse_and_tamper_detection`
+- `tests/test_archivebox_python.py:108`
+  Prueffall: `test_failed_new_bootstrap_removes_only_new_slot`
+- `tests/test_archivebox_python.py:116`
+  Prueffall: `test_low_disk_prevents_uv_bootstrap`
+
+## tests/test_audio_review_docs.py
+
+- `tests/test_audio_review_docs.py:17`
+  Prueffall: `test_registry_and_menu`
+- `tests/test_audio_review_docs.py:35`
+  Prueffall: `test_existing_tools_not_duplicated`
+- `tests/test_audio_review_docs.py:44`
+  Prueffall: `test_profile_optional_only`
+- `tests/test_audio_review_docs.py:51`
+  Prueffall: `test_local_links`
+- `tests/test_audio_review_docs.py:72`
+  Prueffall: `test_runtime_actions_blocked`
+- `tests/test_audio_review_docs.py:76`
+  Prueffall: `test_checks_never_process_or_judge`
+
+## tests/test_audiogen.py
+
+- `tests/test_audiogen.py:23`
+  Prueffall: `test_source_contract`
+- `tests/test_audiogen.py:44`
+  Prueffall: `test_dependency_order_and_scope`
+- `tests/test_audiogen.py:57`
+  Prueffall: `test_menu_doc_links`
+- `tests/test_audiogen.py:79`
+  Prueffall: `test_dry_run_no_files`
+- `tests/test_audiogen.py:87`
+  Prueffall: `test_python_dependency_decisions`
+- `tests/test_audiogen.py:116`
+  Prueffall: `test_read_only_actions_never_prepare_dependencies`
+- `tests/test_audiogen.py:123`
+  Prueffall: `test_status_missing`
+- `tests/test_audiogen.py:131`
+  Prueffall: `test_api_actions_rejected`
+- `tests/test_audiogen.py:135`
+  Prueffall: `test_bad_root`
+- `tests/test_audiogen.py:140`
+  Prueffall: `test_foreign_source_preserved`
+- `tests/test_audiogen.py:150`
+  Prueffall: `test_missing_sdk_layout_rejected`
+- `tests/test_audiogen.py:160`
+  Prueffall: `test_expected_subdirectory_accepted`
+- `tests/test_audiogen.py:169`
+  Prueffall: `test_foreign_venv_rejected`
+- `tests/test_audiogen.py:177`
+  Prueffall: `test_system_site_packages_rejected`
+- `tests/test_audiogen.py:186`
+  Prueffall: `test_key_environment_not_inherited`
+- `tests/test_audiogen.py:198`
+  Prueffall: `test_mock_package_build_targets_client_only`
+- `tests/test_audiogen.py:225`
+  Prueffall: `test_failed_package_build_clears_marker`
+- `tests/test_audiogen.py:238`
+  Prueffall: `test_deactivation_keeps_data`
+- `tests/test_audiogen.py:247`
+  Prueffall: `test_legacy_runtime_rejected_before_tools`
+- `tests/test_audiogen.py:252`
+  Prueffall: `test_low_total_ram_blocks_even_in_conditional`
+- `tests/test_audiogen.py:263`
+  Prueffall: `test_safety_documentation`
+
+## tests/test_audioldm2.py
+
+- `tests/test_audioldm2.py:23`
+  Prueffall: `test_source_contract`
+- `tests/test_audioldm2.py:44`
+  Prueffall: `test_dependency_order_and_scope`
+- `tests/test_audioldm2.py:57`
+  Prueffall: `test_menu_doc_links`
+- `tests/test_audioldm2.py:79`
+  Prueffall: `test_dry_run_no_files`
+- `tests/test_audioldm2.py:87`
+  Prueffall: `test_python_dependency_decisions`
+- `tests/test_audioldm2.py:116`
+  Prueffall: `test_read_only_actions_never_prepare_dependencies`
+- `tests/test_audioldm2.py:123`
+  Prueffall: `test_status_missing`
+- `tests/test_audioldm2.py:131`
+  Prueffall: `test_api_actions_rejected`
+- `tests/test_audioldm2.py:135`
+  Prueffall: `test_bad_root`
+- `tests/test_audioldm2.py:140`
+  Prueffall: `test_foreign_source_preserved`
+- `tests/test_audioldm2.py:150`
+  Prueffall: `test_missing_sdk_layout_rejected`
+- `tests/test_audioldm2.py:160`
+  Prueffall: `test_expected_subdirectory_accepted`
+- `tests/test_audioldm2.py:169`
+  Prueffall: `test_foreign_venv_rejected`
+- `tests/test_audioldm2.py:177`
+  Prueffall: `test_system_site_packages_rejected`
+- `tests/test_audioldm2.py:186`
+  Prueffall: `test_key_environment_not_inherited`
+- `tests/test_audioldm2.py:198`
+  Prueffall: `test_mock_package_build_targets_client_only`
+- `tests/test_audioldm2.py:225`
+  Prueffall: `test_failed_package_build_clears_marker`
+- `tests/test_audioldm2.py:238`
+  Prueffall: `test_deactivation_keeps_data`
+- `tests/test_audioldm2.py:247`
+  Prueffall: `test_legacy_runtime_rejected_before_tools`
+- `tests/test_audioldm2.py:252`
+  Prueffall: `test_safety_documentation`
+
+## tests/test_audioseal.py
+
+- `tests/test_audioseal.py:17`
+  Prueffall: `test_registry_source_and_guards`
+- `tests/test_audioseal.py:42`
+  Prueffall: `test_docs_links_and_checkpoint_warning`
+- `tests/test_audioseal.py:63`
+  Prueffall: `test_dry_run_without_tools_or_creation`
+- `tests/test_audioseal.py:72`
+  Prueffall: `test_status_missing_offline`
+- `tests/test_audioseal.py:79`
+  Prueffall: `test_doctor_missing_and_start_rejected`
+- `tests/test_audioseal.py:84`
+  Prueffall: `test_invalid_paths_rejected`
+- `tests/test_audioseal.py:89`
+  Prueffall: `test_foreign_source_preserved`
+- `tests/test_audioseal.py:100`
+  Prueffall: `test_existing_clean_source_not_fetched`
+- `tests/test_audioseal.py:122`
+  Prueffall: `test_mock_install_marks_after_checks`
+- `tests/test_audioseal.py:132`
+  Prueffall: `test_failed_pip_removes_old_marker`
+- `tests/test_audioseal.py:142`
+  Prueffall: `test_deactivate_preserves_files`
+- `tests/test_audioseal.py:151`
+  Prueffall: `test_probe_metadata_only_and_rejects_wrong_marker`
+
+## tests/test_audit_governance.py
+
+- `tests/test_audit_governance.py:11`
+  Prueffall: `test_apache_license_is_complete_official_text`
+- `tests/test_audit_governance.py:16`
+  Prueffall: `test_legacy_status_is_ignored_while_runtime_paths_stay_external`
+- `tests/test_audit_governance.py:24`
+  Prueffall: `test_support_wording_does_not_claim_prevention_or_add_license_terms`
+- `tests/test_audit_governance.py:30`
+  Prueffall: `test_third_party_notice_local_links_exist`
+
+## tests/test_automaton.py
+
+- `tests/test_automaton.py:31`
+  Prueffall: `test_valid_proposal_never_authorizes_execution`
+- `tests/test_automaton.py:37`
+  Prueffall: `test_write_signing_and_network_rejected`
+- `tests/test_automaton.py:42`
+  Prueffall: `test_string_false_is_not_false`
+- `tests/test_automaton.py:46`
+  Prueffall: `test_turn_and_retry_limits`
+- `tests/test_automaton.py:52`
+  Prueffall: `test_no_generic_command_or_key_input`
+- `tests/test_automaton.py:57`
+  Prueffall: `test_trade_or_provisioning_rejected`
+- `tests/test_automaton.py:62`
+  Prueffall: `test_all_runtime_actions_blocked_no_home_created`
+- `tests/test_automaton.py:70`
+  Prueffall: `test_check_scope_does_not_claim_installed`
+- `tests/test_automaton.py:79`
+  Prueffall: `test_cli_rejects_without_disclosing_contents`
+- `tests/test_automaton.py:87`
+  Prueffall: `test_review_example`
+- `tests/test_automaton.py:92`
+  Prueffall: `test_registry_and_menu`
+- `tests/test_automaton.py:109`
+  Prueffall: `test_documentation_links`
+- `tests/test_automaton.py:167`
+  Prueffall: `test_plan_and_start_guard_have_no_side_effects`
+- `tests/test_automaton.py:178`
+  Prueffall: `test_mocked_install_rebuild_failure_and_preserving_uninstall`
+- `tests/test_automaton.py:210`
+  Prueffall: `test_failed_fetch_never_invokes_pnpm`
+- `tests/test_automaton.py:218`
+  Prueffall: `test_commit_mismatch_never_invokes_pnpm`
+- `tests/test_automaton.py:258`
+  Prueffall: `test_missing_runtimes_prepared_once`
+- `tests/test_automaton.py:264`
+  Prueffall: `test_compatible_runtimes_untouched`
+- `tests/test_automaton.py:269`
+  Prueffall: `test_missing_pnpm_does_not_replace_node`
+- `tests/test_automaton.py:275`
+  Prueffall: `test_opt_out_prevents_downloads`
+- `tests/test_automaton.py:280`
+  Prueffall: `test_failed_node_prevents_pnpm`
+- `tests/test_automaton.py:285`
+  Prueffall: `test_failed_pnpm_stops`
+- `tests/test_automaton.py:290`
+  Prueffall: `test_runtime_check_never_downloads`
+- `tests/test_automaton.py:295`
+  Prueffall: `test_private_pnpm_install_contract`
+
+## tests/test_basic_pitch.py
+
+- `tests/test_basic_pitch.py:23`
+  Prueffall: `test_source_contract`
+- `tests/test_basic_pitch.py:46`
+  Prueffall: `test_dependency_order_and_scope`
+- `tests/test_basic_pitch.py:59`
+  Prueffall: `test_menu_doc_links`
+- `tests/test_basic_pitch.py:81`
+  Prueffall: `test_dry_run_no_files`
+- `tests/test_basic_pitch.py:89`
+  Prueffall: `test_python_dependency_decisions`
+- `tests/test_basic_pitch.py:118`
+  Prueffall: `test_read_only_actions_never_prepare_dependencies`
+- `tests/test_basic_pitch.py:125`
+  Prueffall: `test_status_missing`
+- `tests/test_basic_pitch.py:133`
+  Prueffall: `test_api_actions_rejected`
+- `tests/test_basic_pitch.py:137`
+  Prueffall: `test_bad_root`
+- `tests/test_basic_pitch.py:142`
+  Prueffall: `test_foreign_source_preserved`
+- `tests/test_basic_pitch.py:152`
+  Prueffall: `test_missing_sdk_layout_rejected`
+- `tests/test_basic_pitch.py:162`
+  Prueffall: `test_expected_subdirectory_accepted`
+- `tests/test_basic_pitch.py:172`
+  Prueffall: `test_foreign_venv_rejected`
+- `tests/test_basic_pitch.py:180`
+  Prueffall: `test_system_site_packages_rejected`
+- `tests/test_basic_pitch.py:189`
+  Prueffall: `test_key_environment_not_inherited`
+- `tests/test_basic_pitch.py:203`
+  Prueffall: `test_mock_package_build_targets_client_only`
+- `tests/test_basic_pitch.py:230`
+  Prueffall: `test_failed_package_build_clears_marker`
+- `tests/test_basic_pitch.py:243`
+  Prueffall: `test_deactivation_keeps_data`
+- `tests/test_basic_pitch.py:252`
+  Prueffall: `test_legacy_runtime_rejected_before_tools`
+- `tests/test_basic_pitch.py:257`
+  Prueffall: `test_low_total_ram_blocks_even_in_conditional`
+- `tests/test_basic_pitch.py:268`
+  Prueffall: `test_safety_documentation`
+- `tests/test_basic_pitch.py:273`
+  Prueffall: `test_runtime_package_mocked_with_constraints_and_pip_check`
+- `tests/test_basic_pitch.py:299`
+  Prueffall: `test_runtime_pip_check_failure_never_registers_success`
+- `tests/test_basic_pitch.py:320`
+  Prueffall: `test_runtime_rejects_python_312_before_writes`
+- `tests/test_basic_pitch.py:333`
+  Prueffall: `test_native_dependency_wheels_and_no_false_menu_success`
+
+## tests/test_browser_research_tools.py
+
+- `tests/test_browser_research_tools.py:30`
+  Prueffall: `test_all_entries_have_lifecycle_menu_registry_and_documentation`
+- `tests/test_browser_research_tools.py:47`
+  Prueffall: `test_plans_and_status_have_no_network_or_mutation`
+- `tests/test_browser_research_tools.py:57`
+  Prueffall: `test_mcp_build_only_installs_and_syntax_checks`
+- `tests/test_browser_research_tools.py:71`
+  Prueffall: `test_sdk_bazel_missing_is_actionable_not_a_fake_success`
+- `tests/test_browser_research_tools.py:76`
+  Prueffall: `test_python_and_node_build_contracts_with_fixture_artifacts`
+- `tests/test_browser_research_tools.py:125`
+  Prueffall: `test_desktop_wait_confirmation_and_skip_without_opening_browser`
+- `tests/test_browser_research_tools.py:137`
+  Prueffall: `test_desktop_plan_and_noninteractive_skip`
+- `tests/test_browser_research_tools.py:147`
+  Prueffall: `test_manual_wait_and_source_exception_are_explicit`
+
+## tests/test_browser_use_uv.py
+
+- `tests/test_browser_use_uv.py:20`
+  Prueffall: `test_bootstrap_contract_and_explicit_consent_forwarded`
+- `tests/test_browser_use_uv.py:27`
+  Prueffall: `test_python_failure_prevents_bootstrap`
+- `tests/test_browser_use_uv.py:33`
+  Prueffall: `test_missing_uv_without_consent_never_downloads`
+- `tests/test_browser_use_uv.py:42`
+  Prueffall: `test_dry_run_with_consent_remains_readonly`
+- `tests/test_browser_use_uv.py:50`
+  Prueffall: `test_prerequisite_failure_prevents_checkout_and_ready_marker`
+- `tests/test_browser_use_uv.py:60`
+  Prueffall: `test_build_uses_absolute_private_uv_not_global_path`
+- `tests/test_browser_use_uv.py:77`
+  Prueffall: `test_missing_lock_is_created_before_frozen_sync_and_recorded`
+- `tests/test_browser_use_uv.py:110`
+  Prueffall: `test_failed_or_empty_lock_never_syncs_or_records_success`
+- `tests/test_browser_use_uv.py:129`
+  Prueffall: `test_frozen_sync_cannot_silently_change_lock`
+
+## tests/test_browseros_study.py
+
+- `tests/test_browseros_study.py:18`
+  Prueffall: `test_plan_and_status_are_readonly`
+- `tests/test_browseros_study.py:29`
+  Prueffall: `test_build_consent_required_before_any_resources_or_downloads`
+- `tests/test_browseros_study.py:35`
+  Prueffall: `test_windows_crossbuild_refused`
+- `tests/test_browseros_study.py:40`
+  Prueffall: `test_experimental_command_is_source_only_no_publication_and_records_artifact`
+- `tests/test_browseros_study.py:76`
+  Prueffall: `test_forged_artifact_paths_rejected`
+- `tests/test_browseros_study.py:83`
+  Prueffall: `test_registry_and_docs_distinguish_source_from_browser`
+
+## tests/test_caddy_recovery.py
+
+- `tests/test_caddy_recovery.py:48`
+  Prueffall: `test_noninteractive_default_preserves_orphan_without_preflight`
+- `tests/test_caddy_recovery.py:56`
+  Prueffall: `test_interactive_refusal_does_not_move_or_build`
+- `tests/test_caddy_recovery.py:65`
+  Prueffall: `test_storage_failure_precedes_any_move`
+- `tests/test_caddy_recovery.py:74`
+  Prueffall: `test_explicit_repair_preserves_all_old_data_and_creates_only_fresh_marker`
+- `tests/test_caddy_recovery.py:92`
+  Prueffall: `test_interactive_install_can_offer_recovery_without_extra_cli_flags`
+- `tests/test_caddy_recovery.py:100`
+  Prueffall: `test_new_build_failure_never_removes_preserved_orphan`
+- `tests/test_caddy_recovery.py:110`
+  Prueffall: `test_invalid_existing_marker_is_not_quarantined_or_adopted`
+- `tests/test_caddy_recovery.py:119`
+  Prueffall: `test_dry_run_never_moves_existing_files`
+- `tests/test_caddy_recovery.py:127`
+  Prueffall: `test_failed_rename_keeps_original_and_removes_only_empty_recovery_directory`
+- `tests/test_caddy_recovery.py:134`
+  Prueffall: `test_changed_marker_after_preflight_prevents_move`
+- `tests/test_caddy_recovery.py:141`
+  Prueffall: `test_option_rejects_other_tools_and_uninstall_before_any_operation`
+
+## tests/test_cargo_build_tools.py
+
+- `tests/test_cargo_build_tools.py:31`
+  Prueffall: `test_plan_and_install_without_apply_never_inspect_or_create_workspace`
+- `tests/test_cargo_build_tools.py:43`
+  Prueffall: `test_apply_is_not_allowed_on_read_only_actions`
+- `tests/test_cargo_build_tools.py:49`
+  Prueffall: `test_status_and_doctor_never_install_or_create_workspace`
+- `tests/test_cargo_build_tools.py:58`
+  Prueffall: `test_install_uses_private_operation_and_explicit_consent`
+- `tests/test_cargo_build_tools.py:68`
+  Prueffall: `test_root_and_explicit_foreign_toolchain_never_start_installation`
+- `tests/test_cargo_build_tools.py:78`
+  Prueffall: `test_bootstrap_errors_are_not_success`
+- `tests/test_cargo_build_tools.py:87`
+  Prueffall: `test_shared_basis_is_verified_and_explicit_selection_wins`
+- `tests/test_cargo_build_tools.py:102`
+  Prueffall: `test_corrupt_shared_basis_fails_closed`
+- `tests/test_cargo_build_tools.py:119`
+  Prueffall: `test_xerj_activation_keeps_guards_and_parent_environment`
+- `tests/test_cargo_build_tools.py:128`
+  Prueffall: `test_xerj_plan_never_bootstraps`
+- `tests/test_cargo_build_tools.py:134`
+  Prueffall: `test_xerj_preflight_checks_private_rust_before_source_build`
+- `tests/test_cargo_build_tools.py:151`
+  Prueffall: `test_actual_wrapper_plan_uses_isolated_python_without_creating_workspace`
+- `tests/test_cargo_build_tools.py:162`
+  Prueffall: `test_setup_exposes_separate_opt_in_bootstrap_without_duplicate_cargo_entry`
+- `tests/test_cargo_build_tools.py:171`
+  Prueffall: `test_real_setup_menu_cancel_and_approval_use_only_the_selected_action`
+
+## tests/test_chatgpt_tooling_docs.py
+
+- `tests/test_chatgpt_tooling_docs.py:16`
+  Prueffall: `test_all_original_repository_urls_are_preserved_without_tracking`
+- `tests/test_chatgpt_tooling_docs.py:32`
+  Prueffall: `test_primary_sources_for_corrections_and_openai_boundaries`
+- `tests/test_chatgpt_tooling_docs.py:46`
+  Prueffall: `test_local_links_resolve`
+- `tests/test_chatgpt_tooling_docs.py:52`
+  Prueffall: `test_artifact_claims_and_execution_boundaries`
+- `tests/test_chatgpt_tooling_docs.py:61`
+  Prueffall: `test_navigation`
+- `tests/test_chatgpt_tooling_docs.py:66`
+  Prueffall: `test_sql_configuration_inventory_and_filter`
+- `tests/test_chatgpt_tooling_docs.py:75`
+  Prueffall: `test_sql_required_fields_and_unique_primary_key`
+- `tests/test_chatgpt_tooling_docs.py:86`
+  Prueffall: `test_markdown_tables`
+
+## tests/test_chattts.py
+
+- `tests/test_chattts.py:23`
+  Prueffall: `test_source_contract`
+- `tests/test_chattts.py:44`
+  Prueffall: `test_dependency_order_and_scope`
+- `tests/test_chattts.py:57`
+  Prueffall: `test_menu_doc_links`
+- `tests/test_chattts.py:80`
+  Prueffall: `test_dry_run_no_files`
+- `tests/test_chattts.py:88`
+  Prueffall: `test_python_dependency_decisions`
+- `tests/test_chattts.py:117`
+  Prueffall: `test_read_only_actions_never_prepare_dependencies`
+- `tests/test_chattts.py:124`
+  Prueffall: `test_status_missing`
+- `tests/test_chattts.py:132`
+  Prueffall: `test_api_actions_rejected`
+- `tests/test_chattts.py:136`
+  Prueffall: `test_bad_root`
+- `tests/test_chattts.py:141`
+  Prueffall: `test_foreign_source_preserved`
+- `tests/test_chattts.py:151`
+  Prueffall: `test_missing_sdk_layout_rejected`
+- `tests/test_chattts.py:161`
+  Prueffall: `test_expected_subdirectory_accepted`
+- `tests/test_chattts.py:170`
+  Prueffall: `test_foreign_venv_rejected`
+- `tests/test_chattts.py:178`
+  Prueffall: `test_system_site_packages_rejected`
+- `tests/test_chattts.py:187`
+  Prueffall: `test_key_environment_not_inherited`
+- `tests/test_chattts.py:201`
+  Prueffall: `test_mock_package_build_targets_client_only`
+- `tests/test_chattts.py:231`
+  Prueffall: `test_failed_package_build_clears_marker`
+- `tests/test_chattts.py:244`
+  Prueffall: `test_deactivation_keeps_data`
+- `tests/test_chattts.py:253`
+  Prueffall: `test_runtime_requires_heavy_opt_in`
+- `tests/test_chattts.py:258`
+  Prueffall: `test_runtime_requires_existing_torch`
+- `tests/test_chattts.py:263`
+  Prueffall: `test_runtime_constraints_are_passed_and_pip_checked`
+
+## tests/test_ci_repair_contracts.py
+
+- `tests/test_ci_repair_contracts.py:15`
+  Prueffall: `test_global_shellcheck_follows_sources_without_disabling_rules`
+- `tests/test_ci_repair_contracts.py:20`
+  Prueffall: `test_overlay_patches_repeat_base_security_invariants`
+- `tests/test_ci_repair_contracts.py:36`
+  Prueffall: `test_scan_wrapper_handles_nonexecutable_helper_and_preserves_failure`
+- `tests/test_ci_repair_contracts.py:58`
+  Prueffall: `test_queue_lint_resolves_real_sources_without_suppressions`
+- `tests/test_ci_repair_contracts.py:69`
+  Prueffall: `test_gitleaks_checks_full_history_without_disabling_scan`
+- `tests/test_ci_repair_contracts.py:81`
+  Prueffall: `test_public_env_template_contains_only_placeholders_and_loopback`
+- `tests/test_ci_repair_contracts.py:102`
+  Prueffall: `test_sealed_structure_is_explicitly_not_deployable_ciphertext`
+- `tests/test_ci_repair_contracts.py:111`
+  Prueffall: `test_documentation_points_at_public_examples`
+
+## tests/test_ci_scan_safety.py
+
+- `tests/test_ci_scan_safety.py:9`
+  Prueffall: `test_native_host_bootstrap_cannot_reintroduce_docker_installation`
+- `tests/test_ci_scan_safety.py:21`
+  Prueffall: `test_source_pin_and_marker_checks_are_preserved`
+- `tests/test_ci_scan_safety.py:27`
+  Prueffall: `test_examples_never_publish_reusable_gateway_hex_tokens`
+- `tests/test_ci_scan_safety.py:34`
+  Prueffall: `test_private_guide_uses_ssh_and_signature_not_pat_arguments`
+- `tests/test_ci_scan_safety.py:41`
+  Prueffall: `test_scan_retains_fail_closed_redacted_diagnostics`
+- `tests/test_ci_scan_safety.py:48`
+  Prueffall: `test_macos_coverage_migrates_without_skip_or_fail_fast`
+
+## tests/test_claude_tooling_docs.py
+
+- `tests/test_claude_tooling_docs.py:12`
+  Prueffall: `test_local_links_resolve`
+- `tests/test_claude_tooling_docs.py:18`
+  Prueffall: `test_primary_integration_sources`
+- `tests/test_claude_tooling_docs.py:30`
+  Prueffall: `test_missing_artifacts_and_client_boundaries`
+- `tests/test_claude_tooling_docs.py:40`
+  Prueffall: `test_powershell_sample_has_process_scope_and_cleanup`
+- `tests/test_claude_tooling_docs.py:55`
+  Prueffall: `test_documentation_is_discoverable`
+- `tests/test_claude_tooling_docs.py:62`
+  Prueffall: `test_no_active_claude_interview_workflow`
+- `tests/test_claude_tooling_docs.py:67`
+  Prueffall: `test_markdown_tables_and_fences`
+
+## tests/test_cline_release.py
+
+- `tests/test_cline_release.py:22`
+  Prueffall: `test_registry_wired_to_github_release`
+- `tests/test_cline_release.py:34`
+  Prueffall: `test_safety_and_pin`
+- `tests/test_cline_release.py:68`
+  Prueffall: `test_plan_status_no_mutation_network`
+- `tests/test_cline_release.py:79`
+  Prueffall: `test_doctor_missing_fails`
+- `tests/test_cline_release.py:83`
+  Prueffall: `test_pinned_hash_rejects_fixture`
+- `tests/test_cline_release.py:87`
+  Prueffall: `test_synthetic_archive_metadata_valid`
+- `tests/test_cline_release.py:91`
+  Prueffall: `test_wrong_publisher_rejected`
+- `tests/test_cline_release.py:95`
+  Prueffall: `test_wrong_version_rejected`
+- `tests/test_cline_release.py:99`
+  Prueffall: `test_mock_fetch_and_idempotence`
+- `tests/test_cline_release.py:114`
+  Prueffall: `test_bad_download_no_marker`
+- `tests/test_cline_release.py:124`
+  Prueffall: `test_bad_existing_package_preserved`
+- `tests/test_cline_release.py:134`
+  Prueffall: `test_start_rejected`
+
+## tests/test_coding_agent_profiles.py
+
+- `tests/test_coding_agent_profiles.py:29`
+  Prueffall: `test_registry_menu_tools_and_docs`
+- `tests/test_coding_agent_profiles.py:50`
+  Prueffall: `test_plan_does_not_write_or_run`
+- `tests/test_coding_agent_profiles.py:57`
+  Prueffall: `test_cloud_default_is_local_and_opt_in_is_plan_only`
+- `tests/test_coding_agent_profiles.py:66`
+  Prueffall: `test_install_idempotent_check_and_non_destructive_uninstall`
+- `tests/test_coding_agent_profiles.py:77`
+  Prueffall: `test_modified_template_preserved`
+- `tests/test_coding_agent_profiles.py:85`
+  Prueffall: `test_lock_blocks_concurrent_update`
+- `tests/test_coding_agent_profiles.py:93`
+  Prueffall: `test_unsafe_paths_rejected`
+- `tests/test_coding_agent_profiles.py:98`
+  Prueffall: `test_source_missing_status_does_not_fetch`
+- `tests/test_coding_agent_profiles.py:104`
+  Prueffall: `test_mocked_source_fetch_never_builds_or_executes_cli`
+- `tests/test_coding_agent_profiles.py:116`
+  Prueffall: `test_failed_fetch_leaves_no_success_marker`
+- `tests/test_coding_agent_profiles.py:122`
+  Prueffall: `test_profile_install_rejects_low_disk`
+- `tests/test_coding_agent_profiles.py:127`
+  Prueffall: `test_documentation_is_explicit_about_missing_runtime`
+
+## tests/test_coding_profile_metadata.py
+
+- `tests/test_coding_profile_metadata.py:21`
+  Prueffall: `test_posix_mode_owner_and_type_checks_without_real_files`
+- `tests/test_coding_profile_metadata.py:43`
+  Prueffall: `test_repeated_install_rejects_hardlinks_and_preserves_payloads`
+- `tests/test_coding_profile_metadata.py:63`
+  Prueffall: `test_insecure_existing_permissions_are_not_repaired_or_accepted`
+- `tests/test_coding_profile_metadata.py:83`
+  Prueffall: `test_new_file_is_exclusive_and_git_timeout_does_not_leak_details`
+
+## tests/test_coding_workbench.py
+
+- `tests/test_coding_workbench.py:63`
+  Prueffall: `test_all_five_configure_and_worker_plans_are_inert`
+- `tests/test_coding_workbench.py:85`
+  Prueffall: `test_native_windows_plan_never_needs_unix_identity`
+- `tests/test_coding_workbench.py:94`
+  Prueffall: `test_run_without_confirm_refused_before_platform_git_or_docker`
+- `tests/test_coding_workbench.py:106`
+  Prueffall: `test_actual_execution_requires_nonroot_linux`
+- `tests/test_coding_workbench.py:118`
+  Prueffall: `test_bad_endpoints`
+- `tests/test_coding_workbench.py:128`
+  Prueffall: `test_bad_models_and_image_digests`
+- `tests/test_coding_workbench.py:138`
+  Prueffall: `test_bad_paths_and_linked_ancestors`
+- `tests/test_coding_workbench.py:150`
+  Prueffall: `test_private_root_cannot_be_home_or_repository`
+- `tests/test_coding_workbench.py:155`
+  Prueffall: `test_unknown_agent_or_role_refused`
+- `tests/test_coding_workbench.py:164`
+  Prueffall: `test_apply_readback_idempotence_and_modified_file_preservation`
+- `tests/test_coding_workbench.py:183`
+  Prueffall: `test_hardlinked_configuration_refused_even_if_bytes_match`
+- `tests/test_coding_workbench.py:195`
+  Prueffall: `test_real_symlink_and_unsafe_permissions_refused`
+- `tests/test_coding_workbench.py:211`
+  Prueffall: `test_existing_operation_lock_is_not_removed`
+- `tests/test_coding_workbench.py:231`
+  Prueffall: `test_worktree_plan_reads_only_and_apply_calls_exact_local_git`
+- `tests/test_coding_workbench.py:243`
+  Prueffall: `test_worktree_creation_rejects_unsafe_branch_dest_commit_and_dirty`
+- `tests/test_coding_workbench.py:255`
+  Prueffall: `test_valid_linked_tree_hash_and_git_reads`
+- `tests/test_coding_workbench.py:264`
+  Prueffall: `test_main_checkout_wrong_branch_top_and_dirty_rejected`
+- `tests/test_coding_workbench.py:274`
+  Prueffall: `test_credential_filenames_rejected_without_reading_contents`
+- `tests/test_coding_workbench.py:288`
+  Prueffall: `test_worktree_rejects_sockets_and_other_special_types_without_real_sockets`
+- `tests/test_coding_workbench.py:311`
+  Prueffall: `test_worktree_rejects_hardlink_to_file_outside_tree`
+- `tests/test_coding_workbench.py:333`
+  Prueffall: `test_security_flags_and_exact_mount_allowlist_for_every_role`
+- `tests/test_coding_workbench.py:360`
+  Prueffall: `test_catalog_json_cannot_grant_write_to_readonly_roles`
+- `tests/test_coding_workbench.py:437`
+  Prueffall: `test_execution_environment_scrubbed_and_only_model_socket_exposed`
+- `tests/test_coding_workbench.py:456`
+  Prueffall: `test_timeout_removes_only_own_labelled_container_and_closes_broker`
+- `tests/test_coding_workbench.py:465`
+  Prueffall: `test_timeout_never_removes_container_with_foreign_label`
+- `tests/test_coding_workbench.py:504`
+  Prueffall: `test_inspect_failure_confirmed_absent_by_exact_empty_listing`
+- `tests/test_coding_workbench.py:511`
+  Prueffall: `test_timeout_confirmed_absent_does_not_quarantine`
+- `tests/test_coding_workbench.py:520`
+  Prueffall: `test_inspect_failure_present_or_failed_listing_persists_quarantine`
+- `tests/test_coding_workbench.py:534`
+  Prueffall: `test_remove_errors_persist_quarantine_after_success_or_timeout`
+- `tests/test_coding_workbench.py:549`
+  Prueffall: `test_inspect_and_listing_exceptions_persist_quarantine`
+- `tests/test_coding_workbench.py:561`
+  Prueffall: `test_git_control_tamper_refuses_success_without_git_repair`
+- `tests/test_coding_workbench.py:571`
+  Prueffall: `test_local_inventory_guard_with_fake_http_connection`
+- `tests/test_coding_workbench.py:592`
+  Prueffall: `test_inventory_bad_status_oversize_and_invalid_json_close_connection`
+- `tests/test_coding_workbench.py:601`
+  Prueffall: `test_switch_pull_delete_and_path_tricks_rejected_without_budget_consumption`
+- `tests/test_coding_workbench.py:616`
+  Prueffall: `test_output_token_limits_and_default_caps`
+- `tests/test_coding_workbench.py:627`
+  Prueffall: `test_body_request_and_wallclock_budgets`
+- `tests/test_coding_workbench.py:641`
+  Prueffall: `test_concurrent_requests_cannot_overdraw_budget`
+- `tests/test_coding_workbench.py:677`
+  Prueffall: `test_forward_strips_credentials_and_preserves_bounded_body`
+- `tests/test_coding_workbench.py:690`
+  Prueffall: `test_forward_refuses_bad_framing_without_contacting_backend`
+- `tests/test_coding_workbench.py:701`
+  Prueffall: `test_forward_refuses_redirects_and_oversized_responses`
+- `tests/test_coding_workbench.py:713`
+  Prueffall: `test_adapter_config_permissions_and_local_endpoint`
+- `tests/test_coding_workbench.py:727`
+  Prueffall: `test_commands_are_argv_not_shell_and_test_role_never_runs_agent`
+- `tests/test_coding_workbench.py:743`
+  Prueffall: `test_worker_connects_only_to_broker_model_socket`
+- `tests/test_coding_workbench.py:753`
+  Prueffall: `test_missing_unix_server_never_falls_back_to_tcp`
+- `tests/test_coding_workbench.py:763`
+  Prueffall: `test_fake_loopback_ollama_over_unix_socket`
+
+## tests/test_coding_workbench_registry.py
+
+- `tests/test_coding_workbench_registry.py:18`
+  Prueffall: `test_profiles_are_independent_templates_and_do_not_autoinstall`
+- `tests/test_coding_workbench_registry.py:43`
+  Prueffall: `test_native_entries_match_pins_and_lifecycle_paths`
+- `tests/test_coding_workbench_registry.py:57`
+  Prueffall: `test_menu_refresh_uses_owned_evidence_not_marker_existence`
+- `tests/test_coding_workbench_registry.py:65`
+  Prueffall: `test_existing_qwen_and_proprietary_boundary_preserved`
+
+## tests/test_colibri.py
+
+- `tests/test_colibri.py:11`
+  Prueffall: `test_registry_is_explicitly_source_only`
+- `tests/test_colibri.py:22`
+  Prueffall: `test_wrappers_only_dispatch_to_shared_source_installer`
+- `tests/test_colibri.py:31`
+  Prueffall: `test_document_links_and_limits`
+- `tests/test_colibri.py:43`
+  Prueffall: `test_menu_and_indexes`
+
+## tests/test_comfyui_gguf.py
+
+- `tests/test_comfyui_gguf.py:23`
+  Prueffall: `test_registry_and_menu`
+- `tests/test_comfyui_gguf.py:37`
+  Prueffall: `test_dependencies_and_safety`
+- `tests/test_comfyui_gguf.py:51`
+  Prueffall: `test_document_links`
+- `tests/test_comfyui_gguf.py:89`
+  Prueffall: `test_plan_status_no_creation_or_network`
+- `tests/test_comfyui_gguf.py:101`
+  Prueffall: `test_base_check_missing_custom_path_does_not_offer_wrong_base_target`
+- `tests/test_comfyui_gguf.py:105`
+  Prueffall: `test_base_check_does_not_confuse_bad_venv_with_missing_source`
+- `tests/test_comfyui_gguf.py:115`
+  Prueffall: `test_base_check_success_does_not_create_plugin_workspace`
+- `tests/test_comfyui_gguf.py:126`
+  Prueffall: `test_missing_comfy_blocks`
+- `tests/test_comfyui_gguf.py:133`
+  Prueffall: `test_explicit_root_does_not_fall_back`
+- `tests/test_comfyui_gguf.py:141`
+  Prueffall: `test_auto_root_and_dotvenv_without_running_python`
+- `tests/test_comfyui_gguf.py:157`
+  Prueffall: `test_ambiguous_roots_rejected`
+- `tests/test_comfyui_gguf.py:170`
+  Prueffall: `test_ambiguous_venvs_rejected`
+- `tests/test_comfyui_gguf.py:182`
+  Prueffall: `test_registered_paths_reused_without_overrides_or_scan`
+- `tests/test_comfyui_gguf.py:197`
+  Prueffall: `test_doctor_missing_fails`
+- `tests/test_comfyui_gguf.py:201`
+  Prueffall: `test_syntax_not_model_import`
+- `tests/test_comfyui_gguf.py:205`
+  Prueffall: `test_source_only_no_link_or_package`
+- `tests/test_comfyui_gguf.py:214`
+  Prueffall: `test_foreign_target_preserved`
+- `tests/test_comfyui_gguf.py:223`
+  Prueffall: `test_wrong_registration_preserved`
+- `tests/test_comfyui_gguf.py:232`
+  Prueffall: `test_existing_dependency_no_pip`
+- `tests/test_comfyui_gguf.py:241`
+  Prueffall: `test_dependency_failure_prevents_activation`
+- `tests/test_comfyui_gguf.py:251`
+  Prueffall: `test_missing_dependency_uses_constraints_with_mock_pip`
+- `tests/test_comfyui_gguf.py:272`
+  Prueffall: `test_mock_package_conflict_keeps_marker_absent`
+- `tests/test_comfyui_gguf.py:287`
+  Prueffall: `test_activate_and_deactivate_preserve_source_media`
+- `tests/test_comfyui_gguf.py:303`
+  Prueffall: `test_unlink_rechecks_foreign_target`
+- `tests/test_comfyui_gguf.py:312`
+  Prueffall: `test_start_rejected`
+
+## tests/test_comfyui_gguf_dependency.py
+
+- `tests/test_comfyui_gguf_dependency.py:23`
+  Prueffall: `test_existing_base_never_prompts_or_installs`
+- `tests/test_comfyui_gguf_dependency.py:27`
+  Prueffall: `test_noninteractive_missing_base_does_not_install`
+- `tests/test_comfyui_gguf_dependency.py:31`
+  Prueffall: `test_bad_venv_does_not_offer_base_reinstall`
+- `tests/test_comfyui_gguf_dependency.py:35`
+  Prueffall: `test_decline_and_invalid_choices_do_not_install`
+- `tests/test_comfyui_gguf_dependency.py:40`
+  Prueffall: `test_source_only_without_base_install`
+- `tests/test_comfyui_gguf_dependency.py:49`
+  Prueffall: `test_custom_target_is_not_overridden`
+- `tests/test_comfyui_gguf_dependency.py:58`
+  Prueffall: `test_explicit_install_requires_successful_recheck`
+- `tests/test_comfyui_gguf_dependency.py:76`
+  Prueffall: `test_menu_guidance_precedes_measurement`
+- `tests/test_comfyui_gguf_dependency.py:83`
+  Prueffall: `test_user_abort_after_base_is_respected`
+
+## tests/test_concat_agent_docs.py
+
+- `tests/test_concat_agent_docs.py:11`
+  Prueffall: `test_native_mcp_example_uses_explicit_window_mode_and_no_network_proxy`
+- `tests/test_concat_agent_docs.py:21`
+  Prueffall: `test_source_pins_and_real_limits_are_explicit`
+- `tests/test_concat_agent_docs.py:33`
+  Prueffall: `test_hypothetical_http_methods_are_not_executable_code`
+
+## tests/test_core_source_gate.py
+
+- `tests/test_core_source_gate.py:35`
+  Prueffall: `test_plan_never_opens_inputs_or_reports_installation`
+- `tests/test_core_source_gate.py:44`
+  Prueffall: `test_valid_hash_proves_only_bytes_not_installation_or_authenticity`
+- `tests/test_core_source_gate.py:51`
+  Prueffall: `test_successful_cli_verification_still_cannot_mark_tool_installed`
+- `tests/test_core_source_gate.py:56`
+  Prueffall: `test_offline_missing_payload_and_bad_hash_fail_closed`
+- `tests/test_core_source_gate.py:65`
+  Prueffall: `test_wrong_tool_branch_foreign_source_and_malformed_contracts_rejected`
+- `tests/test_core_source_gate.py:75`
+  Prueffall: `test_k3s_requires_its_own_official_repository`
+- `tests/test_core_source_gate.py:84`
+  Prueffall: `test_openclaw_requires_its_own_pinned_contract_and_never_installs`
+- `tests/test_core_source_gate.py:98`
+  Prueffall: `test_duplicate_extra_fields_and_input_size_rejected`
+- `tests/test_core_source_gate.py:105`
+  Prueffall: `test_relative_paths_and_hardlinks_are_not_inputs`
+- `tests/test_core_source_gate.py:116`
+  Prueffall: `test_explicit_apply_and_force_have_no_implementation`
+- `tests/test_core_source_gate.py:122`
+  Prueffall: `test_input_changed_during_read_is_not_verified`
+- `tests/test_core_source_gate.py:127`
+  Prueffall: `test_symlink_input_or_parent_is_rejected`
+- `tests/test_core_source_gate.py:140`
+  Prueffall: `test_failures_never_echo_payload_or_manifest_contents`
+- `tests/test_core_source_gate.py:149`
+  Prueffall: `test_ci_includes_this_fixture_and_both_wrappers`
+- `tests/test_core_source_gate.py:155`
+  Prueffall: `test_no_core_vendor_pipe_remains_in_four_legacy_entries`
+- `tests/test_core_source_gate.py:162`
+  Prueffall: `test_openclaw_wrapper_has_no_legacy_mutation_or_tracking`
+- `tests/test_core_source_gate.py:172`
+  Prueffall: `test_real_wrappers_forward_to_fixed_helper_without_workspace_or_status`
+- `tests/test_core_source_gate.py:206`
+  Prueffall: `test_actual_menu_stops_before_cleanup_locks_measurement_and_status`
+
+## tests/test_credentials_backup.py
+
+- `tests/test_credentials_backup.py:32`
+  Prueffall: `test_pack_roundtrip_includes_settings_and_exact_selected_bytes`
+- `tests/test_credentials_backup.py:39`
+  Prueffall: `test_invalid_selection_and_missing_file_refused`
+- `tests/test_credentials_backup.py:46`
+  Prueffall: `test_email_header_injection_refused`
+- `tests/test_credentials_backup.py:51`
+  Prueffall: `test_tar_path_links_duplicates_and_corrupt_payload_refused`
+- `tests/test_credentials_backup.py:64`
+  Prueffall: `test_existing_outputs_never_overwritten`
+- `tests/test_credentials_backup.py:71`
+  Prueffall: `test_duplicate_tar_names_rejected`
+- `tests/test_credentials_backup.py:79`
+  Prueffall: `test_symlink_source_rejected`
+- `tests/test_credentials_backup.py:88`
+  Prueffall: `test_export_uses_age_and_no_plaintext_tar_file`
+- `tests/test_credentials_backup.py:97`
+  Prueffall: `test_failed_encryption_does_not_export`
+- `tests/test_credentials_backup.py:104`
+  Prueffall: `test_recover_check_readonly_then_isolated_restore`
+- `tests/test_credentials_backup.py:118`
+  Prueffall: `test_mail_draft_contains_only_encrypted_attachment_and_explicit_hint`
+- `tests/test_credentials_backup.py:140`
+  Prueffall: `test_mail_requires_consent_and_tls_without_network`
+- `tests/test_credentials_backup.py:159`
+  Prueffall: `test_documentation_covers_manual_activation_and_platforms`
+
+## tests/test_declarative_delivery.py
+
+- `tests/test_declarative_delivery.py:25`
+  Prueffall: `test_documentation_links_resolve`
+- `tests/test_declarative_delivery.py:35`
+  Prueffall: `test_probe_inventory_is_not_inference`
+- `tests/test_declarative_delivery.py:44`
+  Prueffall: `test_metrics_auth_and_selectors`
+- `tests/test_declarative_delivery.py:57`
+  Prueffall: `test_dashboard_real_metrics_and_unique_panels`
+- `tests/test_declarative_delivery.py:67`
+  Prueffall: `test_ci_does_not_deploy_on_push_or_pr`
+- `tests/test_declarative_delivery.py:81`
+  Prueffall: `test_private_ingress_never_routes_to_raw_ollama`
+- `tests/test_declarative_delivery.py:111`
+  Prueffall: `test_default_and_help_do_not_dispatch`
+- `tests/test_declarative_delivery.py:117`
+  Prueffall: `test_workflow_shell_blocks_parse_without_execution`
+- `tests/test_declarative_delivery.py:127`
+  Prueffall: `test_mixed_actions_and_provision_fail_closed`
+- `tests/test_declarative_delivery.py:134`
+  Prueffall: `test_modes_are_explicitly_mapped`
+- `tests/test_declarative_delivery.py:151`
+  Prueffall: `test_aliases_equal_existing_authoritative_manifests`
+- `tests/test_declarative_delivery.py:157`
+  Prueffall: `test_optional_bundles_and_retained_local_storage`
+
+## tests/test_deepfilternet.py
+
+- `tests/test_deepfilternet.py:17`
+  Prueffall: `test_source_contract`
+- `tests/test_deepfilternet.py:36`
+  Prueffall: `test_links`
+- `tests/test_deepfilternet.py:54`
+  Prueffall: `test_dry_run_no_tools_or_workspace`
+- `tests/test_deepfilternet.py:63`
+  Prueffall: `test_missing_status_no_creation`
+- `tests/test_deepfilternet.py:68`
+  Prueffall: `test_missing_doctor_fails`
+- `tests/test_deepfilternet.py:72`
+  Prueffall: `test_start_rejected`
+- `tests/test_deepfilternet.py:76`
+  Prueffall: `test_unsafe_workspace_rejected`
+- `tests/test_deepfilternet.py:81`
+  Prueffall: `test_foreign_source_preserved`
+- `tests/test_deepfilternet.py:92`
+  Prueffall: `test_clean_source_reused_without_fetch`
+- `tests/test_deepfilternet.py:103`
+  Prueffall: `test_cargo_flags_and_build_target`
+- `tests/test_deepfilternet.py:117`
+  Prueffall: `test_mock_binary_marker_and_tampering`
+- `tests/test_deepfilternet.py:131`
+  Prueffall: `test_failed_version_does_not_mark_success`
+
+## tests/test_dev_quality.py
+
+- `tests/test_dev_quality.py:63`
+  Prueffall: `test_dry_run_is_write_free`
+- `tests/test_dev_quality.py:70`
+  Prueffall: `test_status_and_doctor_never_write_download_or_execute`
+- `tests/test_dev_quality.py:77`
+  Prueffall: `test_install_both_pinned_packages_publishes_only_after_checks`
+- `tests/test_dev_quality.py:93`
+  Prueffall: `test_update_is_idempotent_and_does_not_run_packages`
+- `tests/test_dev_quality.py:103`
+  Prueffall: `test_modified_environment_blocks_repair_and_uninstall`
+- `tests/test_dev_quality.py:116`
+  Prueffall: `test_personal_empty_directory_blocks_uninstall_too`
+- `tests/test_dev_quality.py:125`
+  Prueffall: `test_shared_verifier_accepts_each_source_spec`
+- `tests/test_dev_quality.py:136`
+  Prueffall: `test_uninstall_removes_only_owned_environment_not_sources_or_foreign_files`
+- `tests/test_dev_quality.py:149`
+  Prueffall: `test_failed_new_build_rolls_back_and_logs_current_failure`
+- `tests/test_dev_quality.py:169`
+  Prueffall: `test_failed_marker_write_rolls_back_new_environment`
+- `tests/test_dev_quality.py:177`
+  Prueffall: `test_missing_ensurepip_stops_before_fetch`
+- `tests/test_dev_quality.py:184`
+  Prueffall: `test_disk_failure_stops_before_fetch`
+- `tests/test_dev_quality.py:190`
+  Prueffall: `test_lock_prevents_new_build`
+- `tests/test_dev_quality.py:198`
+  Prueffall: `test_unowned_or_path_traversal_marker_is_refused`
+- `tests/test_dev_quality.py:209`
+  Prueffall: `test_unknown_environment_without_marker_is_preserved`
+- `tests/test_dev_quality.py:215`
+  Prueffall: `test_run_wrapper_never_leaks_raw_subprocess_exception`
+- `tests/test_dev_quality.py:220`
+  Prueffall: `test_invalid_arguments_and_workspace_are_rejected`
+- `tests/test_dev_quality.py:226`
+  Prueffall: `test_registry_menu_wrappers_and_documentation_agree`
+
+## tests/test_development_go.py
+
+- `tests/test_development_go.py:71`
+  Prueffall: `test_all_seven_recipes_install_then_unregister_owned_binary`
+- `tests/test_development_go.py:89`
+  Prueffall: `test_dry_runs_are_write_free_without_go_or_git`
+- `tests/test_development_go.py:98`
+  Prueffall: `test_read_only_status_never_builds_or_downloads`
+- `tests/test_development_go.py:105`
+  Prueffall: `test_idempotent_update_never_rebuilds`
+- `tests/test_development_go.py:111`
+  Prueffall: `test_modified_binary_is_not_deleted_or_repaired`
+- `tests/test_development_go.py:122`
+  Prueffall: `test_binary_without_marker_is_preserved`
+- `tests/test_development_go.py:131`
+  Prueffall: `test_build_failure_removes_only_new_job_and_writes_current_log`
+- `tests/test_development_go.py:153`
+  Prueffall: `test_marker_failure_rolls_back_new_binary`
+- `tests/test_development_go.py:162`
+  Prueffall: `test_heavy_opt_in_is_enforced_before_build`
+- `tests/test_development_go.py:168`
+  Prueffall: `test_low_disk_error_is_not_success`
+- `tests/test_development_go.py:174`
+  Prueffall: `test_old_go_rejected_before_fetch`
+- `tests/test_development_go.py:182`
+  Prueffall: `test_registry_wrappers_menu_and_catalog_have_all_pins`
+- `tests/test_development_go.py:199`
+  Prueffall: `test_relative_and_repository_workspaces_rejected`
+- `tests/test_development_go.py:204`
+  Prueffall: `test_subprocess_failure_is_bounded`
+- `tests/test_development_go.py:209`
+  Prueffall: `test_path_guard_needs_only_one_lstat_per_component`
+- `tests/test_development_go.py:216`
+  Prueffall: `test_path_guard_still_rejects_links_and_windows_reparse_points`
+
+## tests/test_development_install.py
+
+- `tests/test_development_install.py:42`
+  Prueffall: `test_all_62_have_non_placeholder_paths_or_executable_build_recipes`
+- `tests/test_development_install.py:59`
+  Prueffall: `test_list_and_plan_never_run_tools_or_create_workspace`
+- `tests/test_development_install.py:70`
+  Prueffall: `test_build_receipt_only_after_artifact_and_reinstall_is_idempotent`
+- `tests/test_development_install.py:83`
+  Prueffall: `test_failed_build_rolls_back_only_new_generation_preserves_previous`
+- `tests/test_development_install.py:98`
+  Prueffall: `test_missing_artifact_and_failed_first_install_leave_no_marker`
+- `tests/test_development_install.py:110`
+  Prueffall: `test_low_disk_blocks_before_fetch_and_current_failure_is_logged`
+- `tests/test_development_install.py:123`
+  Prueffall: `test_global_lock_no_parallel_build_and_does_not_remove_foreign_lock`
+- `tests/test_development_install.py:133`
+  Prueffall: `test_wrong_owner_and_modified_binary_prevent_deletion`
+- `tests/test_development_install.py:147`
+  Prueffall: `test_successful_update_and_uninstall_only_remove_active_owned_generation`
+- `tests/test_development_install.py:163`
+  Prueffall: `test_marker_write_failure_preserves_old_receipt`
+- `tests/test_development_install.py:178`
+  Prueffall: `test_verified_private_node_is_available_only_in_build_process_path`
+- `tests/test_development_install.py:198`
+  Prueffall: `test_path_traversal_and_symlink_rejected`
+- `tests/test_development_install.py:207`
+  Prueffall: `test_workflow_is_only_pinned_package_not_active_workflow`
+- `tests/test_development_install.py:225`
+  Prueffall: `test_windows_never_launches_wsl_and_confirmation_required`
+
+## tests/test_development_toolchain_check.py
+
+- `tests/test_development_toolchain_check.py:33`
+  Prueffall: `test_exactly_62_unique_sources_in_ten_groups`
+- `tests/test_development_toolchain_check.py:41`
+  Prueffall: `test_reviewed_adapters_only_ever_promise_preflight`
+- `tests/test_development_toolchain_check.py:51`
+  Prueffall: `test_missing_prerequisite_blocks_sqlfluff`
+- `tests/test_development_toolchain_check.py:56`
+  Prueffall: `test_new_recipe_is_available_without_claiming_a_tested_installation`
+- `tests/test_development_toolchain_check.py:62`
+  Prueffall: `test_legacy_helm_is_replaced_in_62_catalog_by_private_github_build`
+- `tests/test_development_toolchain_check.py:69`
+  Prueffall: `test_project_workflow_extension_are_not_global_programs`
+- `tests/test_development_toolchain_check.py:78`
+  Prueffall: `test_low_disk_ram_and_windows_host_are_visible`
+- `tests/test_development_toolchain_check.py:85`
+  Prueffall: `test_missing_ensurepip_and_wrong_python_are_not_hidden`
+- `tests/test_development_toolchain_check.py:93`
+  Prueffall: `test_report_caches_path_checks_without_executing_tools`
+- `tests/test_development_toolchain_check.py:103`
+  Prueffall: `test_list_json_and_strict_do_not_create_user_workspace`
+- `tests/test_development_toolchain_check.py:118`
+  Prueffall: `test_invalid_selection_is_error_not_empty_success`
+- `tests/test_development_toolchain_check.py:123`
+  Prueffall: `test_placeholder_is_not_a_real_adapter`
+- `tests/test_development_toolchain_check.py:128`
+  Prueffall: `test_setup_has_explicit_paths_and_button_never_processes_tool_selection`
+- `tests/test_development_toolchain_check.py:139`
+  Prueffall: `test_overviews_and_presentation_are_discoverable`
+- `tests/test_development_toolchain_check.py:151`
+  Prueffall: `test_central_table_lists_all_62_sources_and_new_installer_links`
+- `tests/test_development_toolchain_check.py:164`
+  Prueffall: `test_go_build_metadata_and_heavy_gate_match_installer_recipes`
+- `tests/test_development_toolchain_check.py:177`
+  Prueffall: `test_terraform_setup_is_workflow_not_missing_cli_installer`
+- `tests/test_development_toolchain_check.py:181`
+  Prueffall: `test_preflight_uses_same_explicit_toolchain_paths_as_installers`
+
+## tests/test_doc_assertions.py
+
+- `tests/test_doc_assertions.py:8`
+  Prueffall: `test_layout_whitespace_is_ignored`
+- `tests/test_doc_assertions.py:12`
+  Prueffall: `test_missing_negation_is_still_a_failure`
+- `tests/test_doc_assertions.py:16`
+  Prueffall: `test_negative_claims_cover_wrapped_text`
+
+## tests/test_docker_remainder.py
+
+- `tests/test_docker_remainder.py:15`
+  Prueffall: `test_manifest_ids_are_unique`
+- `tests/test_docker_remainder.py:18`
+  Prueffall: `test_new_installers_only_delegate_to_native_engine`
+- `tests/test_docker_remainder.py:28`
+  Prueffall: `test_collector_has_pinned_native_core_build`
+- `tests/test_docker_remainder.py:40`
+  Prueffall: `test_unverified_platforms_cannot_claim_a_native_recipe`
+- `tests/test_docker_remainder.py:47`
+  Prueffall: `test_native_collector_uninstall_preserves_legacy`
+- `tests/test_docker_remainder.py:53`
+  Prueffall: `test_historical_container_implementations_are_inactive`
+- `tests/test_docker_remainder.py:59`
+  Prueffall: `test_native_notes_and_remainder_are_linked`
+- `tests/test_docker_remainder.py:66`
+  Prueffall: `test_collector_registry_uses_build_check_not_directory`
+
+## tests/test_docs_navigation.py
+
+- `tests/test_docs_navigation.py:17`
+  Prueffall: `test_bash_examples_parse_without_execution`
+- `tests/test_docs_navigation.py:27`
+  Prueffall: `test_relative_links_resolve_inside_repository`
+- `tests/test_docs_navigation.py:39`
+  Prueffall: `test_code_fences_and_root_entry_link`
+- `tests/test_docs_navigation.py:47`
+  Prueffall: `test_referenced_safety_test_modules_exist`
+- `tests/test_docs_navigation.py:59`
+  Prueffall: `test_ffmpeg_reference_preserves_original_and_pins_relevant_official_source`
+- `tests/test_docs_navigation.py:68`
+  Prueffall: `test_unreadable_community_reference_remains_explicit_and_unverified`
+
+## tests/test_documentation_server.py
+
+- `tests/test_documentation_server.py:47`
+  Prueffall: `test_page_and_source_are_read_only_and_toc_is_prefixed`
+- `tests/test_documentation_server.py:54`
+  Prueffall: `test_sanitizer_drops_active_html_events_schemes_and_remote_images`
+- `tests/test_documentation_server.py:65`
+  Prueffall: `test_links_rewrite_only_known_documents_and_external_clicks`
+- `tests/test_documentation_server.py:73`
+  Prueffall: `test_github_style_unicode_anchors_keep_historical_section_links`
+- `tests/test_documentation_server.py:78`
+  Prueffall: `test_http_host_origin_paths_and_methods`
+- `tests/test_documentation_server.py:110`
+  Prueffall: `test_frontend_has_local_assets_compact_navigation_and_no_cdn`
+- `tests/test_documentation_server.py:122`
+  Prueffall: `test_plan_has_no_file_process_or_network_side_effects`
+- `tests/test_documentation_server.py:128`
+  Prueffall: `test_immutable_snapshot_and_foreign_file_protection`
+- `tests/test_documentation_server.py:143`
+  Prueffall: `test_exclusive_lease_never_removes_existing_lock`
+- `tests/test_documentation_server.py:153`
+  Prueffall: `test_source_allowlist_excludes_env_git_userdata_and_executables`
+- `tests/test_documentation_server.py:159`
+  Prueffall: `test_archive_rejects_symlinks_and_traversal_and_keeps_safe_directories`
+- `tests/test_documentation_server.py:178`
+  Prueffall: `test_large_text_is_not_indexed_as_browser_content_and_license_is_readable`
+- `tests/test_documentation_server.py:191`
+  Prueffall: `test_clean_git_environment_preserves_windows_systemroot_not_credentials`
+- `tests/test_documentation_server.py:199`
+  Prueffall: `test_command_timeout_can_be_disabled_for_foreground_server`
+- `tests/test_documentation_server.py:204`
+  Prueffall: `test_failed_metadata_serialization_never_leaves_a_partial_marker`
+- `tests/test_documentation_server.py:212`
+  Prueffall: `test_update_publication_failure_restores_previous_app`
+
+## tests/test_embedded_debug_hil.py
+
+- `tests/test_embedded_debug_hil.py:22`
+  Prueffall: `test_registry_is_source_base_not_hardware`
+- `tests/test_embedded_debug_hil.py:36`
+  Prueffall: `test_dependency_order_and_scope`
+- `tests/test_embedded_debug_hil.py:48`
+  Prueffall: `test_offline_report_still_works`
+- `tests/test_embedded_debug_hil.py:69`
+  Prueffall: `test_dry_run_no_download_or_creation`
+- `tests/test_embedded_debug_hil.py:73`
+  Prueffall: `test_python_dependency_decisions`
+- `tests/test_embedded_debug_hil.py:103`
+  Prueffall: `test_read_only_actions_never_prepare_dependencies`
+- `tests/test_embedded_debug_hil.py:110`
+  Prueffall: `test_status_does_not_create_or_claim_hardware`
+- `tests/test_embedded_debug_hil.py:115`
+  Prueffall: `test_missing_doctor_fails`
+- `tests/test_embedded_debug_hil.py:118`
+  Prueffall: `test_hardware_actions_rejected`
+- `tests/test_embedded_debug_hil.py:122`
+  Prueffall: `test_unsafe_roots_rejected`
+- `tests/test_embedded_debug_hil.py:127`
+  Prueffall: `test_foreign_source_preserved`
+- `tests/test_embedded_debug_hil.py:137`
+  Prueffall: `test_foreign_venv_rejected`
+- `tests/test_embedded_debug_hil.py:141`
+  Prueffall: `test_failed_build_removes_success_marker`
+- `tests/test_embedded_debug_hil.py:151`
+  Prueffall: `test_mock_package_install_uses_local_github_source_only`
+- `tests/test_embedded_debug_hil.py:175`
+  Prueffall: `test_low_ram_prevents_disk_and_download`
+- `tests/test_embedded_debug_hil.py:184`
+  Prueffall: `test_deactivation_preserves_data_and_clears_status`
+
+## tests/test_enki_browser_study.py
+
+- `tests/test_enki_browser_study.py:18`
+  Prueffall: `test_plans_and_absent_status_do_not_touch_disk_or_network`
+- `tests/test_enki_browser_study.py:29`
+  Prueffall: `test_binary_consent_precedes_all_downloads`
+- `tests/test_enki_browser_study.py:35`
+  Prueffall: `test_packaging_build_keeps_sources_and_does_not_start_browser`
+- `tests/test_enki_browser_study.py:67`
+  Prueffall: `test_upstream_hash_and_host_contract`
+- `tests/test_enki_browser_study.py:80`
+  Prueffall: `test_artifact_paths_cannot_escape`
+- `tests/test_enki_browser_study.py:87`
+  Prueffall: `test_registry_lifecycle_docs_and_study_purpose`
+
+## tests/test_env_vault.py
+
+- `tests/test_env_vault.py:26`
+  Prueffall: `test_render_never_expands_or_executes`
+- `tests/test_env_vault.py:32`
+  Prueffall: `test_invalid_templates_and_values`
+- `tests/test_env_vault.py:43`
+  Prueffall: `test_workspace_and_identifier_boundaries`
+- `tests/test_env_vault.py:57`
+  Prueffall: `test_exclusive_lock`
+- `tests/test_env_vault.py:64`
+  Prueffall: `test_only_ciphertext_saved_and_failure_preserves_file`
+- `tests/test_env_vault.py:76`
+  Prueffall: `test_decrypt_schema`
+- `tests/test_env_vault.py:85`
+  Prueffall: `test_preview_apply_and_explicit_replace`
+- `tests/test_env_vault.py:107`
+  Prueffall: `test_template_filename_guard_and_catalog`
+- `tests/test_env_vault.py:114`
+  Prueffall: `test_noninteractive_secrets_refused`
+
+## tests/test_evidence_inventory.py
+
+- `tests/test_evidence_inventory.py:28`
+  Prueffall: `test_default_inventory_never_executes_source_or_echoes_lines`
+- `tests/test_evidence_inventory.py:40`
+  Prueffall: `test_untracked_and_private_env_are_not_read`
+- `tests/test_evidence_inventory.py:50`
+  Prueffall: `test_generated_reports_do_not_change_their_own_reference_counts`
+- `tests/test_evidence_inventory.py:58`
+  Prueffall: `test_unreferenced_is_never_called_dead`
+- `tests/test_evidence_inventory.py:65`
+  Prueffall: `test_link_and_outside_paths_not_followed`
+- `tests/test_evidence_inventory.py:74`
+  Prueffall: `test_bats_and_syntax_errors_are_visible`
+- `tests/test_evidence_inventory.py:83`
+  Prueffall: `test_extensionless_build_definitions_are_included_not_executed`
+- `tests/test_evidence_inventory.py:90`
+  Prueffall: `test_audit_status_never_promotes_structural_metadata_to_verified`
+- `tests/test_evidence_inventory.py:102`
+  Prueffall: `test_index_command_is_read_only_and_bounded`
+
+## tests/test_external_link_policy.py
+
+- `tests/test_external_link_policy.py:41`
+  Prueffall: `test_only_exact_account_entries_are_exempt`
+- `tests/test_external_link_policy.py:53`
+  Prueffall: `test_public_failures_are_not_exempt_or_alive`
+- `tests/test_external_link_policy.py:68`
+  Prueffall: `test_ci_link_gates_use_the_same_explicit_configuration`
+- `tests/test_external_link_policy.py:93`
+  Prueffall: `test_status_failures_stay_failures_after_bounded_retries`
+- `tests/test_external_link_policy.py:105`
+  Prueffall: `test_transport_failure_never_becomes_success`
+- `tests/test_external_link_policy.py:112`
+  Prueffall: `test_retry_can_recover_without_weakening_success_codes`
+- `tests/test_external_link_policy.py:122`
+  Prueffall: `test_local_examples_are_syntax_only`
+- `tests/test_external_link_policy.py:132`
+  Prueffall: `test_history_is_preserved_at_original_locations`
+- `tests/test_external_link_policy.py:152`
+  Prueffall: `test_equivalent_primary_records_keep_original_addresses`
+- `tests/test_external_link_policy.py:179`
+  Prueffall: `test_unavailable_card_is_not_silently_replaced`
+- `tests/test_external_link_policy.py:184`
+  Prueffall: `test_probe_excludes_code_not_public_links`
+- `tests/test_external_link_policy.py:188`
+  Prueffall: `test_approved_original_references_are_exact_evidence_not_ignore_rules`
+- `tests/test_external_link_policy.py:209`
+  Prueffall: `test_official_supplements_do_not_claim_equivalent_unverified_content`
+- `tests/test_external_link_policy.py:217`
+  Prueffall: `test_gnu_followup_preserves_only_observed_transport_failures`
+- `tests/test_external_link_policy.py:235`
+  Prueffall: `test_notebooklm_reference_uses_official_rename_with_original_preserved`
+- `tests/test_external_link_policy.py:247`
+  Prueffall: `test_mosquitto_reference_uses_exact_pinned_upstream_source`
+- `tests/test_external_link_policy.py:258`
+  Prueffall: `test_south_africa_reference_is_individual_evidence_not_domain_ignore`
+- `tests/test_external_link_policy.py:270`
+  Prueffall: `test_godot_sources_preserve_originals_and_exact_upstream_documents`
+- `tests/test_external_link_policy.py:282`
+  Prueffall: `test_pinokio_html_release_never_substitutes_digest_verification`
+
+## tests/test_f01_f07_hardening.py
+
+- `tests/test_f01_f07_hardening.py:31`
+  Prueffall: `test_source_build_recipes_are_fixed_and_native`
+- `tests/test_f01_f07_hardening.py:42`
+  Prueffall: `test_legacy_removal_wrappers_do_not_delete_or_report_removal`
+- `tests/test_f01_f07_hardening.py:50`
+  Prueffall: `test_docker_installation_does_not_run_commands`
+- `tests/test_f01_f07_hardening.py:70`
+  Prueffall: `test_monitoring_rejects_public_invalid_and_dns_targets`
+- `tests/test_f01_f07_hardening.py:78`
+  Prueffall: `test_monitoring_routes_alerts_and_keeps_secrets_in_files`
+- `tests/test_f01_f07_hardening.py:85`
+  Prueffall: `test_plans_do_not_read_files_start_processes_or_notify`
+- `tests/test_f01_f07_hardening.py:91`
+  Prueffall: `test_secret_triage_never_emits_match_or_value`
+- `tests/test_f01_f07_hardening.py:100`
+  Prueffall: `test_restic_partial_backup_is_not_success`
+- `tests/test_f01_f07_hardening.py:106`
+  Prueffall: `test_restic_env_is_literal_and_excludes_inherited_hooks`
+- `tests/test_f01_f07_hardening.py:124`
+  Prueffall: `test_local_backup_retains_partial_marker_until_last_step`
+- `tests/test_f01_f07_hardening.py:133`
+  Prueffall: `test_existing_linked_template_cannot_be_opened_by_manager`
+- `tests/test_f01_f07_hardening.py:149`
+  Prueffall: `test_atomic_private_publication_and_no_implicit_overwrite`
+- `tests/test_f01_f07_hardening.py:163`
+  Prueffall: `test_symlink_and_hardlink_env_are_refused`
+- `tests/test_f01_f07_hardening.py:181`
+  Prueffall: `test_export_manifest_detects_partial_extra_corrupt_and_linked_files`
+
+## tests/test_fal_client.py
+
+- `tests/test_fal_client.py:23`
+  Prueffall: `test_source_contract`
+- `tests/test_fal_client.py:44`
+  Prueffall: `test_dependency_order_and_scope`
+- `tests/test_fal_client.py:56`
+  Prueffall: `test_menu_doc_links`
+- `tests/test_fal_client.py:78`
+  Prueffall: `test_dry_run_no_files`
+- `tests/test_fal_client.py:86`
+  Prueffall: `test_python_dependency_decisions`
+- `tests/test_fal_client.py:115`
+  Prueffall: `test_read_only_actions_never_prepare_dependencies`
+- `tests/test_fal_client.py:122`
+  Prueffall: `test_status_missing`
+- `tests/test_fal_client.py:129`
+  Prueffall: `test_api_actions_rejected`
+- `tests/test_fal_client.py:133`
+  Prueffall: `test_bad_root`
+- `tests/test_fal_client.py:138`
+  Prueffall: `test_foreign_source_preserved`
+- `tests/test_fal_client.py:148`
+  Prueffall: `test_monorepo_subdirectory_required`
+- `tests/test_fal_client.py:158`
+  Prueffall: `test_expected_subdirectory_accepted`
+- `tests/test_fal_client.py:167`
+  Prueffall: `test_foreign_venv_rejected`
+- `tests/test_fal_client.py:175`
+  Prueffall: `test_system_site_packages_rejected`
+- `tests/test_fal_client.py:184`
+  Prueffall: `test_key_environment_not_inherited`
+- `tests/test_fal_client.py:196`
+  Prueffall: `test_mock_package_build_targets_client_only`
+- `tests/test_fal_client.py:223`
+  Prueffall: `test_failed_package_build_clears_marker`
+- `tests/test_fal_client.py:236`
+  Prueffall: `test_deactivation_keeps_data`
+
+## tests/test_film_source.py
+
+- `tests/test_film_source.py:23`
+  Prueffall: `test_registry_and_menu`
+- `tests/test_film_source.py:37`
+  Prueffall: `test_safety_contract`
+- `tests/test_film_source.py:47`
+  Prueffall: `test_docs_explain_limitations`
+- `tests/test_film_source.py:84`
+  Prueffall: `test_plan_status_no_network_or_creation`
+- `tests/test_film_source.py:95`
+  Prueffall: `test_missing_doctor_fails`
+- `tests/test_film_source.py:99`
+  Prueffall: `test_inspection_does_not_import_code`
+- `tests/test_film_source.py:103`
+  Prueffall: `test_source_registration_is_idempotent_no_runtime`
+- `tests/test_film_source.py:115`
+  Prueffall: `test_runtime_opt_in_fails_before_creation`
+- `tests/test_film_source.py:122`
+  Prueffall: `test_runtime_guard_ignores_heavy_permission`
+- `tests/test_film_source.py:131`
+  Prueffall: `test_foreign_checkout_preserved`
+- `tests/test_film_source.py:141`
+  Prueffall: `test_invalid_syntax_no_success_marker`
+- `tests/test_film_source.py:149`
+  Prueffall: `test_deactivation_preserves_models_and_sources`
+- `tests/test_film_source.py:160`
+  Prueffall: `test_start_blocked_and_unsafe_workspace_rejected`
+
+## tests/test_find_skills.py
+
+- `tests/test_find_skills.py:59`
+  Prueffall: `test_plan_is_read_only_and_offline`
+- `tests/test_find_skills.py:65`
+  Prueffall: `test_action_wrapper_dry_runs_are_read_only`
+- `tests/test_find_skills.py:71`
+  Prueffall: `test_install_owns_only_skill_and_license`
+- `tests/test_find_skills.py:79`
+  Prueffall: `test_qwen_target_and_record`
+- `tests/test_find_skills.py:85`
+  Prueffall: `test_idempotent_update_does_not_download`
+- `tests/test_find_skills.py:92`
+  Prueffall: `test_decline_creates_no_activation_marker`
+- `tests/test_find_skills.py:101`
+  Prueffall: `test_no_tty_default_does_not_accept`
+- `tests/test_find_skills.py:108`
+  Prueffall: `test_foreign_skill_is_preserved`
+- `tests/test_find_skills.py:118`
+  Prueffall: `test_doctor_detects_changes_without_execution`
+- `tests/test_find_skills.py:123`
+  Prueffall: `test_uninstall_preserves_modified_or_extra_files`
+- `tests/test_find_skills.py:132`
+  Prueffall: `test_uninstall_removes_owned_files_but_not_sources_or_tools`
+- `tests/test_find_skills.py:141`
+  Prueffall: `test_new_install_failure_rolls_back_only_new_files`
+- `tests/test_find_skills.py:150`
+  Prueffall: `test_low_disk_error_has_current_log_before_download`
+- `tests/test_find_skills.py:160`
+  Prueffall: `test_resource_floor`
+- `tests/test_find_skills.py:165`
+  Prueffall: `test_fetch_uses_exact_pin_without_executing_source`
+- `tests/test_find_skills.py:176`
+  Prueffall: `test_failed_fetch_cleans_only_own_staging_directory`
+- `tests/test_find_skills.py:185`
+  Prueffall: `test_lock_blocks_second_operation`
+- `tests/test_find_skills.py:193`
+  Prueffall: `test_repo_workspace_rejected`
+- `tests/test_find_skills.py:198`
+  Prueffall: `test_invalid_pin_and_agent_switch_rejected`
+- `tests/test_find_skills.py:207`
+  Prueffall: `test_registry_docs_links_and_menu`
+
+## tests/test_formatting_policy.py
+
+- `tests/test_formatting_policy.py:10`
+  Prueffall: `test_markdown_defaults_and_only_justified_overrides`
+- `tests/test_formatting_policy.py:19`
+  Prueffall: `test_shell_formatters_use_the_same_options`
+- `tests/test_formatting_policy.py:27`
+  Prueffall: `test_translation_exception_is_narrow_and_documented`
+
+## tests/test_free_tier_sources_docs.py
+
+- `tests/test_free_tier_sources_docs.py:17`
+  Prueffall: `test_named_sources_are_concrete_owner_repository_links`
+- `tests/test_free_tier_sources_docs.py:26`
+  Prueffall: `test_all_requested_providers_are_evaluated_with_primary_sources`
+- `tests/test_free_tier_sources_docs.py:38`
+  Prueffall: `test_initial_findings_preserve_corrections_and_sources`
+- `tests/test_free_tier_sources_docs.py:47`
+  Prueffall: `test_claude_code_is_not_silently_replaced_or_relicensed`
+- `tests/test_free_tier_sources_docs.py:56`
+  Prueffall: `test_review_retains_evidence_and_forbids_runtime_side_effects`
+- `tests/test_free_tier_sources_docs.py:63`
+  Prueffall: `test_schedule_is_not_misrepresented_as_github_workflow`
+- `tests/test_free_tier_sources_docs.py:69`
+  Prueffall: `test_navigation_links_to_sources_and_history`
+- `tests/test_free_tier_sources_docs.py:75`
+  Prueffall: `test_new_markdown_has_resolvable_local_links_and_balanced_fences`
+
+## tests/test_freellmapi.py
+
+- `tests/test_freellmapi.py:78`
+  Prueffall: `test_dry_run_never_writes`
+- `tests/test_freellmapi.py:84`
+  Prueffall: `test_invalid_port_rejected`
+- `tests/test_freellmapi.py:89`
+  Prueffall: `test_source_install_idempotent_no_start_or_env`
+- `tests/test_freellmapi.py:102`
+  Prueffall: `test_clone_failure_stops_before_npm`
+- `tests/test_freellmapi.py:108`
+  Prueffall: `test_commit_mismatch_stops_before_npm`
+- `tests/test_freellmapi.py:113`
+  Prueffall: `test_npm_failure_does_not_mark_built`
+- `tests/test_freellmapi.py:118`
+  Prueffall: `test_smoke_failure_does_not_mark_built`
+- `tests/test_freellmapi.py:123`
+  Prueffall: `test_dirty_source_blocks_update`
+- `tests/test_freellmapi.py:128`
+  Prueffall: `test_port_conflict_blocks_build`
+- `tests/test_freellmapi.py:133`
+  Prueffall: `test_lock_conflict_blocks_clone`
+- `tests/test_freellmapi.py:138`
+  Prueffall: `test_legacy_data_and_env_untouched`
+- `tests/test_freellmapi.py:148`
+  Prueffall: `test_uninstall_keeps_code_and_data`
+- `tests/test_freellmapi.py:158`
+  Prueffall: `test_start_requires_separate_network_consent`
+- `tests/test_freellmapi.py:191`
+  Prueffall: `test_missing_node_provisions_once_in_private_directory`
+- `tests/test_freellmapi.py:197`
+  Prueffall: `test_compatible_runtime_is_not_replaced`
+- `tests/test_freellmapi.py:202`
+  Prueffall: `test_opt_out_stops_without_provisioning`
+- `tests/test_freellmapi.py:208`
+  Prueffall: `test_failed_bootstrap_stops`
+- `tests/test_freellmapi.py:213`
+  Prueffall: `test_runtime_check_does_not_install`
+- `tests/test_freellmapi.py:219`
+  Prueffall: `test_later_process_activates_private_runtime_without_installing`
+- `tests/test_freellmapi.py:242`
+  Prueffall: `test_registry_uses_source_not_docker`
+- `tests/test_freellmapi.py:254`
+  Prueffall: `test_invalid_env_never_discloses_value`
+- `tests/test_freellmapi.py:265`
+  Prueffall: `test_env_is_not_shell_code_and_rejects_extra_keys`
+- `tests/test_freellmapi.py:275`
+  Prueffall: `test_runtime_overrides_external_environment`
+- `tests/test_freellmapi.py:287`
+  Prueffall: `test_documentation_local_links`
+
+## tests/test_game_engine_tools.py
+
+- `tests/test_game_engine_tools.py:24`
+  Prueffall: `test_registry_menu_status_and_all_lifecycle_scripts`
+- `tests/test_game_engine_tools.py:43`
+  Prueffall: `test_plans_do_not_create_workspace_or_call_git`
+- `tests/test_game_engine_tools.py:53`
+  Prueffall: `test_build_opt_in_is_required_before_source_fetch`
+- `tests/test_game_engine_tools.py:64`
+  Prueffall: `test_unsupported_host_and_unbounded_parallelism_are_rejected`
+- `tests/test_game_engine_tools.py:83`
+  Prueffall: `test_low_memory_blocks_preflight`
+- `tests/test_game_engine_tools.py:89`
+  Prueffall: `test_build_verifies_version_without_gui_or_project`
+- `tests/test_game_engine_tools.py:104`
+  Prueffall: `test_failed_build_keeps_no_marker_and_preserves_existing_neighbor`
+- `tests/test_game_engine_tools.py:116`
+  Prueffall: `test_missing_build_artifact_never_becomes_ready`
+- `tests/test_game_engine_tools.py:124`
+  Prueffall: `test_successful_fixture_build_is_idempotent_and_modified_binary_is_protected`
+- `tests/test_game_engine_tools.py:141`
+  Prueffall: `test_documentation_links_limits_and_honest_scope`
+
+## tests/test_gap_runtime_cleanup.py
+
+- `tests/test_gap_runtime_cleanup.py:34`
+  Prueffall: `test_readonly_package_uninstalls_and_preserves_toolchain`
+- `tests/test_gap_runtime_cleanup.py:46`
+  Prueffall: `test_partial_uninstall_requires_explicit_resume`
+- `tests/test_gap_runtime_cleanup.py:62`
+  Prueffall: `test_resume_rejects_changes_additions_or_invalid_proof`
+- `tests/test_gap_runtime_cleanup.py:83`
+  Prueffall: `test_failed_removal_retains_proof_for_resume`
+- `tests/test_gap_runtime_cleanup.py:97`
+  Prueffall: `test_resume_dry_run_is_read_only`
+- `tests/test_gap_runtime_cleanup.py:107`
+  Prueffall: `test_nonruntime_tree_is_never_changed`
+- `tests/test_gap_runtime_cleanup.py:113`
+  Prueffall: `test_foreign_owner_blocks_permission_changes_and_removal`
+
+## tests/test_gap_tools.py
+
+- `tests/test_gap_tools.py:40`
+  Prueffall: `test_plan_and_status_are_read_only`
+- `tests/test_gap_tools.py:49`
+  Prueffall: `test_source_install_has_honest_scope`
+- `tests/test_gap_tools.py:60`
+  Prueffall: `test_failed_build_removes_only_new_files`
+- `tests/test_gap_tools.py:72`
+  Prueffall: `test_storage_failure_never_fetches`
+- `tests/test_gap_tools.py:81`
+  Prueffall: `test_marker_write_failure_rolls_back_without_partial_status`
+- `tests/test_gap_tools.py:91`
+  Prueffall: `test_unmanaged_existing_directory_is_preserved`
+- `tests/test_gap_tools.py:100`
+  Prueffall: `test_changed_files_block_removal_validation`
+- `tests/test_gap_tools.py:113`
+  Prueffall: `test_uninstall_removes_owned_source_keeps_logs`
+- `tests/test_gap_tools.py:124`
+  Prueffall: `test_current_failure_log_contains_disk_error`
+- `tests/test_gap_tools.py:132`
+  Prueffall: `test_build_environment_excludes_provider_secrets`
+- `tests/test_gap_tools.py:139`
+  Prueffall: `test_hermes_frozen_core_without_agent_start`
+- `tests/test_gap_tools.py:149`
+  Prueffall: `test_hermes_missing_python_declined_before_checkout`
+- `tests/test_gap_tools.py:159`
+  Prueffall: `test_hermes_private_python_download_is_explicit_and_contained`
+- `tests/test_gap_tools.py:172`
+  Prueffall: `test_hermes_private_python_rejects_external_result`
+- `tests/test_gap_tools.py:177`
+  Prueffall: `test_hermes_noninteractive_never_implicitly_downloads`
+- `tests/test_gap_tools.py:183`
+  Prueffall: `test_hermes_prompt_decline_or_eof_never_downloads`
+- `tests/test_gap_tools.py:192`
+  Prueffall: `test_hermes_failed_python_download_rolls_back_new_runtime`
+- `tests/test_gap_tools.py:209`
+  Prueffall: `test_qwen_build_uses_native_unsigned_package_commands`
+- `tests/test_gap_tools.py:225`
+  Prueffall: `test_registry_pins_wrappers_and_documentation_match`
+- `tests/test_gap_tools.py:262`
+  Prueffall: `test_menu_fallbacks_match_all_gap_tool_reserves`
+- `tests/test_gap_tools.py:270`
+  Prueffall: `test_qwen_host_shortage_is_rejected_by_menu_before_installer`
+
+## tests/test_gemini_desktop_clients.py
+
+- `tests/test_gemini_desktop_clients.py:27`
+  Prueffall: `test_both_upstreams_are_distinct_and_source_scopes_are_honest`
+- `tests/test_gemini_desktop_clients.py:56`
+  Prueffall: `test_source_plan_and_status_do_not_write_or_call_git`
+- `tests/test_gemini_desktop_clients.py:66`
+  Prueffall: `test_manual_plans_never_claim_desktop_installation`
+- `tests/test_gemini_desktop_clients.py:76`
+  Prueffall: `test_legacy_install_and_open_request_stop_before_browser`
+- `tests/test_gemini_desktop_clients.py:87`
+  Prueffall: `test_bwendell_noninteractive_skip_does_not_start_browser`
+- `tests/test_gemini_desktop_clients.py:93`
+  Prueffall: `test_documentation_explains_cli_web_and_gateway_without_fake_adapter`
+
+## tests/test_gemini_development_docs.py
+
+- `tests/test_gemini_development_docs.py:16`
+  Prueffall: `test_second_interview_skill_metadata_and_links`
+- `tests/test_gemini_development_docs.py:27`
+  Prueffall: `test_new_sources_and_missing_html_are_explicit`
+- `tests/test_gemini_development_docs.py:38`
+  Prueffall: `test_second_interview_is_discoverable_and_tables_balanced`
+- `tests/test_gemini_development_docs.py:50`
+  Prueffall: `test_scope_is_explicit`
+- `tests/test_gemini_development_docs.py:59`
+  Prueffall: `test_source_pin_matches_agent_config`
+- `tests/test_gemini_development_docs.py:68`
+  Prueffall: `test_local_links_exist`
+- `tests/test_gemini_development_docs.py:81`
+  Prueffall: `test_key_github_sources_are_present`
+
+## tests/test_gitlab_openforge_docs.py
+
+- `tests/test_gitlab_openforge_docs.py:13`
+  Prueffall: `test_all_requested_sources_are_preserved`
+- `tests/test_gitlab_openforge_docs.py:25`
+  Prueffall: `test_local_links_resolve_and_catalogs_expose_the_document`
+- `tests/test_gitlab_openforge_docs.py:36`
+  Prueffall: `test_opt_in_and_unverified_installation_boundaries_are_explicit`
+
+## tests/test_gitleaks_false_positives.py
+
+- `tests/test_gitleaks_false_positives.py:9`
+  Prueffall: `test_exact_two_immutable_fingerprints_no_wildcards`
+
+## tests/test_gitops_small_vps.py
+
+- `tests/test_gitops_small_vps.py:39`
+  Prueffall: `test_valid_pinned_sources_and_architecture`
+- `tests/test_gitops_small_vps.py:43`
+  Prueffall: `test_placeholders_are_not_accepted_as_pins`
+- `tests/test_gitops_small_vps.py:47`
+  Prueffall: `test_invalid_source_digest_and_architecture_fail_closed`
+- `tests/test_gitops_small_vps.py:58`
+  Prueffall: `test_old_cloudflared_and_mutable_script_ref_are_rejected`
+- `tests/test_gitops_small_vps.py:66`
+  Prueffall: `test_duplicate_json_and_unknown_fields_are_rejected`
+- `tests/test_gitops_small_vps.py:75`
+  Prueffall: `test_private_address_is_not_public_loopback_or_command`
+- `tests/test_gitops_small_vps.py:81`
+  Prueffall: `test_argo_image_pinning_is_complete_and_deterministic`
+- `tests/test_gitops_small_vps.py:92`
+  Prueffall: `test_plan_cli_only_prints_metadata_and_keeps_fixture_unchanged`
+- `tests/test_gitops_small_vps.py:119`
+  Prueffall: `test_empty_whitespace_crlf_and_eof_defer_before_address_prompt`
+- `tests/test_gitops_small_vps.py:129`
+  Prueffall: `test_nonempty_invalid_path_fails_before_address_prompt`
+- `tests/test_gitops_small_vps.py:139`
+  Prueffall: `test_normalized_path_preserves_inner_spaces_and_empty_address_defers`
+- `tests/test_gitops_small_vps.py:157`
+  Prueffall: `test_menu_wrapper_is_plan_only_and_can_defer_without_success_marker`
+- `tests/test_gitops_small_vps.py:166`
+  Prueffall: `test_menu_planning_logs_planned_skipped_or_failed_without_installing`
+- `tests/test_gitops_small_vps.py:193`
+  Prueffall: `test_bootstrap_defaults_to_offline_and_requires_explicit_apply`
+- `tests/test_gitops_small_vps.py:208`
+  Prueffall: `test_qdrant_is_private_persistent_bounded_and_uses_secret_reference`
+- `tests/test_gitops_small_vps.py:218`
+  Prueffall: `test_agent_pod_and_namespace_budgets_are_separate`
+- `tests/test_gitops_small_vps.py:230`
+  Prueffall: `test_secret_helper_uses_stdin_certificate_pin_and_no_plaintext_file`
+- `tests/test_gitops_small_vps.py:239`
+  Prueffall: `test_monitoring_does_not_invent_ollama_metrics_and_enforces_digests`
+- `tests/test_gitops_small_vps.py:254`
+  Prueffall: `test_app_of_apps_is_not_automatic_or_pruning`
+- `tests/test_gitops_small_vps.py:263`
+  Prueffall: `test_new_documentation_links_resolve_locally`
+- `tests/test_gitops_small_vps.py:273`
+  Prueffall: `test_new_tools_join_alphabetical_tail_after_fixed_core`
+- `tests/test_gitops_small_vps.py:286`
+  Prueffall: `test_shell_syntax_only_without_executing_scripts`
+- `tests/test_gitops_small_vps.py:295`
+  Prueffall: `test_helm_refuses_missing_digests_and_renders_pinned_fixtures`
+
+## tests/test_gpu_platform_blueprint.py
+
+- `tests/test_gpu_platform_blueprint.py:26`
+  Prueffall: `test_open_webui_is_opt_in_and_keeps_raw_ollama_private`
+- `tests/test_gpu_platform_blueprint.py:43`
+  Prueffall: `test_openclaw_http_probe_patch_preserves_hardening`
+- `tests/test_gpu_platform_blueprint.py:57`
+  Prueffall: `test_default_plan_has_no_network_subprocess_or_temp_files`
+- `tests/test_gpu_platform_blueprint.py:66`
+  Prueffall: `test_apply_requires_both_context_and_confirmation`
+- `tests/test_gpu_platform_blueprint.py:73`
+  Prueffall: `test_chart_sources_are_versioned_and_hashed`
+- `tests/test_gpu_platform_blueprint.py:82`
+  Prueffall: `test_ingress_rejects_invalid_or_public_boundary`
+- `tests/test_gpu_platform_blueprint.py:90`
+  Prueffall: `test_ingress_never_exposes_raw_ollama`
+- `tests/test_gpu_platform_blueprint.py:98`
+  Prueffall: `test_pinned_runtime_images`
+- `tests/test_gpu_platform_blueprint.py:106`
+  Prueffall: `test_scan_precedes_login_and_publish`
+- `tests/test_gpu_platform_blueprint.py:116`
+  Prueffall: `test_legacy_proxy_does_not_embed_key_in_url`
+- `tests/test_gpu_platform_blueprint.py:123`
+  Prueffall: `test_metrics_do_not_claim_native_ollama_exporter`
+
+## tests/test_grok_tooling_docs.py
+
+- `tests/test_grok_tooling_docs.py:14`
+  Prueffall: `test_primary_sources_and_corrections_remain_traceable`
+- `tests/test_grok_tooling_docs.py:30`
+  Prueffall: `test_skill_metadata_and_relative_links`
+- `tests/test_grok_tooling_docs.py:41`
+  Prueffall: `test_report_preserves_evidence_and_not_run_state`
+- `tests/test_grok_tooling_docs.py:49`
+  Prueffall: `test_integration_is_discoverable_without_active_workflow`
+- `tests/test_grok_tooling_docs.py:59`
+  Prueffall: `test_markdown_tables_have_consistent_columns`
+
+## tests/test_hermes_jarvis_docs.py
+
+- `tests/test_hermes_jarvis_docs.py:16`
+  Prueffall: `test_primary_sources_and_fetch_gap`
+- `tests/test_hermes_jarvis_docs.py:24`
+  Prueffall: `test_local_links_resolve`
+- `tests/test_hermes_jarvis_docs.py:30`
+  Prueffall: `test_documentation_is_discoverable`
+- `tests/test_hermes_jarvis_docs.py:34`
+  Prueffall: `test_no_runtime_claims_or_remote_execution_one_liners`
+- `tests/test_hermes_jarvis_docs.py:45`
+  Prueffall: `test_skill_frontmatter_and_draft_only_scope`
+- `tests/test_hermes_jarvis_docs.py:54`
+  Prueffall: `test_briefing_previews_and_preserves_existing_profiles`
+- `tests/test_hermes_jarvis_docs.py:60`
+  Prueffall: `test_fences_and_no_credential_samples`
+- `tests/test_hermes_jarvis_docs.py:66`
+  Prueffall: `test_dashboard_source_scope_and_secret_boundaries`
+- `tests/test_hermes_jarvis_docs.py:76`
+  Prueffall: `test_express_setup_has_bounded_plan_and_honest_handover`
+- `tests/test_hermes_jarvis_docs.py:85`
+  Prueffall: `test_till_source_not_mistaken_for_installable_repository`
+
+## tests/test_hf_datasets.py
+
+- `tests/test_hf_datasets.py:17`
+  Prueffall: `test_source_registry_and_safety`
+- `tests/test_hf_datasets.py:40`
+  Prueffall: `test_documentation_links`
+- `tests/test_hf_datasets.py:58`
+  Prueffall: `test_dry_run_no_tools_or_files`
+- `tests/test_hf_datasets.py:67`
+  Prueffall: `test_status_missing_without_creation`
+- `tests/test_hf_datasets.py:74`
+  Prueffall: `test_doctor_missing_and_invalid_actions`
+- `tests/test_hf_datasets.py:79`
+  Prueffall: `test_invalid_paths`
+- `tests/test_hf_datasets.py:84`
+  Prueffall: `test_foreign_source_preserved`
+- `tests/test_hf_datasets.py:107`
+  Prueffall: `test_mock_install_success`
+- `tests/test_hf_datasets.py:117`
+  Prueffall: `test_mock_failure_has_no_success_marker`
+- `tests/test_hf_datasets.py:127`
+  Prueffall: `test_deactivate_preserves_data`
+- `tests/test_hf_datasets.py:136`
+  Prueffall: `test_probe_metadata_only_rejects_bad_marker`
+
+## tests/test_hf_hub.py
+
+- `tests/test_hf_hub.py:17`
+  Prueffall: `test_source_registry_and_safety`
+- `tests/test_hf_hub.py:40`
+  Prueffall: `test_documentation_links`
+- `tests/test_hf_hub.py:58`
+  Prueffall: `test_dry_run_no_tools_or_files`
+- `tests/test_hf_hub.py:67`
+  Prueffall: `test_status_missing_without_creation`
+- `tests/test_hf_hub.py:74`
+  Prueffall: `test_doctor_missing_and_invalid_actions`
+- `tests/test_hf_hub.py:79`
+  Prueffall: `test_invalid_paths`
+- `tests/test_hf_hub.py:84`
+  Prueffall: `test_foreign_source_preserved`
+- `tests/test_hf_hub.py:109`
+  Prueffall: `test_mock_install_success`
+- `tests/test_hf_hub.py:119`
+  Prueffall: `test_mock_failure_has_no_success_marker`
+- `tests/test_hf_hub.py:129`
+  Prueffall: `test_deactivate_preserves_data`
+- `tests/test_hf_hub.py:138`
+  Prueffall: `test_probe_metadata_only_rejects_bad_marker`
+- `tests/test_hf_hub.py:149`
+  Prueffall: `test_missing_cli_fails_metadata`
+- `tests/test_hf_hub.py:156`
+  Prueffall: `test_cli_metadata_contract_without_execution`
+
+## tests/test_hybrid_production_examples.py
+
+- `tests/test_hybrid_production_examples.py:21`
+  Prueffall: `test_examples_are_not_an_automatic_deployment`
+- `tests/test_hybrid_production_examples.py:33`
+  Prueffall: `test_gpu_sharing_is_explicit_not_isolation`
+- `tests/test_hybrid_production_examples.py:44`
+  Prueffall: `test_eso_has_real_provider_not_fake_sops_support`
+- `tests/test_hybrid_production_examples.py:54`
+  Prueffall: `test_admission_is_scoped_to_opt_in_ai_namespaces`
+- `tests/test_hybrid_production_examples.py:63`
+  Prueffall: `test_private_network_and_backup_defaults`
+- `tests/test_hybrid_production_examples.py:80`
+  Prueffall: `test_dashboard_has_import_datasource_and_real_gpu_metrics`
+- `tests/test_hybrid_production_examples.py:89`
+  Prueffall: `test_document_relative_links_resolve`
+- `tests/test_hybrid_production_examples.py:99`
+  Prueffall: `test_yaml_files_parse_offline`
+- `tests/test_hybrid_production_examples.py:107`
+  Prueffall: `test_bash_examples_parse_without_execution`
+
+## tests/test_infrastructure_increment.py
+
+- `tests/test_infrastructure_increment.py:29`
+  Prueffall: `test_all_supported_rules_detect_inventory_failure_not_only_exporter_http`
+- `tests/test_infrastructure_increment.py:37`
+  Prueffall: `test_bad_inventory_has_successful_metrics_response_but_backend_gauge_zero`
+- `tests/test_infrastructure_increment.py:45`
+  Prueffall: `test_native_and_kubernetes_gateway_metrics_require_auth`
+- `tests/test_infrastructure_increment.py:67`
+  Prueffall: `test_transient_status_backoff_is_bounded_and_connections_close_before_sleep`
+- `tests/test_infrastructure_increment.py:82`
+  Prueffall: `test_permanent_error_oversize_and_redirect_are_not_retried`
+- `tests/test_infrastructure_increment.py:88`
+  Prueffall: `test_retry_after_is_respected_or_fails_without_early_retry`
+- `tests/test_infrastructure_increment.py:98`
+  Prueffall: `test_transport_errors_retry_only_inventory_without_leaking_error_text`
+- `tests/test_infrastructure_increment.py:106`
+  Prueffall: `test_expired_deadline_and_last_attempt_never_sleep`
+- `tests/test_infrastructure_increment.py:115`
+  Prueffall: `test_inference_post_is_not_wrapped_in_inventory_retry`
+- `tests/test_infrastructure_increment.py:123`
+  Prueffall: `test_stdio_handshake_fixture_has_only_jsonrpc_and_exits_on_eof`
+- `tests/test_infrastructure_increment.py:137`
+  Prueffall: `test_plan_never_executes_and_config_requires_approval`
+- `tests/test_infrastructure_increment.py:147`
+  Prueffall: `test_standard_config_routes_through_fixed_approved_launcher`
+- `tests/test_infrastructure_increment.py:155`
+  Prueffall: `test_execution_scrubs_secrets_and_launches_only_existing_planner`
+- `tests/test_infrastructure_increment.py:165`
+  Prueffall: `test_arbitrary_commands_remote_endpoints_and_paths_are_rejected`
+
+## tests/test_install_branches.py
+
+- `tests/test_install_branches.py:59`
+  Prueffall: `test_main_feature_and_future_branch_selection`
+- `tests/test_install_branches.py:68`
+  Prueffall: `test_cancel_empty_custom_invalid_and_eof_do_not_choose_main`
+- `tests/test_install_branches.py:74`
+  Prueffall: `test_branch_argument_needs_explicit_unsigned_opt_in`
+- `tests/test_install_branches.py:84`
+  Prueffall: `test_invalid_refs_and_reflog_expansion_are_denied`
+- `tests/test_install_branches.py:89`
+  Prueffall: `test_deterministic_isolated_directories_do_not_collide`
+- `tests/test_install_branches.py:99`
+  Prueffall: `test_new_clone_checks_exact_head_and_never_touches_main`
+- `tests/test_install_branches.py:114`
+  Prueffall: `test_missing_branch_never_creates_checkout_or_falls_back`
+- `tests/test_install_branches.py:120`
+  Prueffall: `test_main_uses_exact_head_not_remote_default_or_tag`
+- `tests/test_install_branches.py:129`
+  Prueffall: `test_wrong_remote_head_reply_is_refused`
+- `tests/test_install_branches.py:135`
+  Prueffall: `test_existing_feature_checkout_is_backed_up_before_fetch`
+- `tests/test_install_branches.py:142`
+  Prueffall: `test_dirty_foreign_wrong_branch_and_failed_status_block_update`
+- `tests/test_install_branches.py:151`
+  Prueffall: `test_branch_race_stops_before_checkout_and_execution`
+- `tests/test_install_branches.py:156`
+  Prueffall: `test_gate_and_shell_syntax_remain_intact`
+
+## tests/test_install_lab.py
+
+- `tests/test_install_lab.py:25`
+  Prueffall: `test_default_plan_covers_registry_without_execution_or_writes`
+- `tests/test_install_lab.py:39`
+  Prueffall: `test_source_only_and_container_tools_are_not_passes`
+- `tests/test_install_lab.py:50`
+  Prueffall: `test_approval_is_exact_and_changed_recipe_invalidates_it`
+- `tests/test_install_lab.py:61`
+  Prueffall: `test_installer_dependency_changes_invalidate_approvals_but_crlf_does_not`
+- `tests/test_install_lab.py:74`
+  Prueffall: `test_insufficient_linux_or_host_space_is_a_skip`
+- `tests/test_install_lab.py:83`
+  Prueffall: `test_run_needs_approval_before_any_lab_access`
+- `tests/test_install_lab.py:88`
+  Prueffall: `test_personal_distribution_is_refused_before_marker_read`
+- `tests/test_install_lab.py:95`
+  Prueffall: `test_new_reports_cannot_overwrite_previous_results`
+- `tests/test_install_lab.py:103`
+  Prueffall: `test_cycle_success_failure_and_cleanup_preserve_correct_status`
+- `tests/test_install_lab.py:149`
+  Prueffall: `test_real_supervisor_uses_only_harmless_temporary_process`
+- `tests/test_install_lab.py:158`
+  Prueffall: `test_memory_guard_has_no_host_configuration_side_effects`
+- `tests/test_install_lab.py:165`
+  Prueffall: `test_host_contract_never_adopts_or_unregisters_distributions`
+- `tests/test_install_lab.py:177`
+  Prueffall: `test_powershell_parses_and_plan_never_launches_wsl`
+
+## tests/test_install_lab_reports.py
+
+- `tests/test_install_lab_reports.py:41`
+  Prueffall: `test_backup_restore_preserves_real_measurements_not_logs_or_status_files`
+- `tests/test_install_lab_reports.py:65`
+  Prueffall: `test_existing_backup_and_installation_status_are_never_overwritten`
+- `tests/test_install_lab_reports.py:85`
+  Prueffall: `test_incomplete_cycles_remain_incomplete_after_backup_and_restore`
+- `tests/test_install_lab_reports.py:95`
+  Prueffall: `test_no_success_for_missing_probe_or_remaining_installation`
+- `tests/test_install_lab_reports.py:107`
+  Prueffall: `test_unknown_failed_or_skipped_measurements_do_not_become_installed`
+- `tests/test_install_lab_reports.py:119`
+  Prueffall: `test_archive_cannot_contain_filesystem_paths_or_secret_payloads`
+- `tests/test_install_lab_reports.py:130`
+  Prueffall: `test_restore_plan_does_not_read_input_or_create_directories`
+- `tests/test_install_lab_reports.py:136`
+  Prueffall: `test_workspace_backup_includes_metrics_namespace`
+- `tests/test_install_lab_reports.py:145`
+  Prueffall: `test_native_plan_does_not_probe_host_or_provision_accounts`
+- `tests/test_install_lab_reports.py:152`
+  Prueffall: `test_native_lifecycle_is_root_approved_separate_and_cgroup_limited`
+- `tests/test_install_lab_reports.py:163`
+  Prueffall: `test_native_guard_refuses_missing_cgroup_or_unbounded_resources`
+
+## tests/test_install_rollback.py
+
+- `tests/test_install_rollback.py:41`
+  Prueffall: `test_new_disk_failure_removes_only_owned_root`
+- `tests/test_install_rollback.py:54`
+  Prueffall: `test_success_preserved_even_if_log_mentions_disk`
+- `tests/test_install_rollback.py:63`
+  Prueffall: `test_existing_success_never_deleted_by_later_failed_attempt`
+- `tests/test_install_rollback.py:70`
+  Prueffall: `test_non_disk_failure_preserves_new_files`
+- `tests/test_install_rollback.py:78`
+  Prueffall: `test_protected_data_is_not_removed`
+- `tests/test_install_rollback.py:90`
+  Prueffall: `test_cleanup_failure_preserves_original_exit_code`
+- `tests/test_install_rollback.py:95`
+  Prueffall: `test_missing_ownership_token_refuses_cleanup`
+- `tests/test_install_rollback.py:104`
+  Prueffall: `test_symlink_target_outside_owned_root_is_preserved`
+- `tests/test_install_rollback.py:117`
+  Prueffall: `test_unenrolled_plugin_never_removed`
+- `tests/test_install_rollback.py:127`
+  Prueffall: `test_opt_out_does_not_own_or_remove_root`
+- `tests/test_install_rollback.py:135`
+  Prueffall: `test_conflicting_installation_is_blocked`
+- `tests/test_install_rollback.py:142`
+  Prueffall: `test_lock_inspection_is_read_only_and_does_not_create_workspace`
+- `tests/test_install_rollback.py:148`
+  Prueffall: `test_legacy_lock_is_not_automatically_removed`
+- `tests/test_install_rollback.py:156`
+  Prueffall: `test_owner_identity_is_written_and_normal_completion_unlocks`
+- `tests/test_install_rollback.py:167`
+  Prueffall: `test_changed_pid_identity_does_not_unlock`
+- `tests/test_install_rollback.py:177`
+  Prueffall: `test_unsafe_root_rejected_without_installer`
+- `tests/test_install_rollback.py:182`
+  Prueffall: `test_disk_error_patterns_exclude_ram_and_warnings`
+- `tests/test_install_rollback.py:188`
+  Prueffall: `test_output_is_streamed_without_running_tool`
+- `tests/test_install_rollback.py:195`
+  Prueffall: `test_preflight_precedes_transaction_and_no_uninstall_called`
+
+## tests/test_installation_inventory.py
+
+- `tests/test_installation_inventory.py:59`
+  Prueffall: `test_snapshot_merges_status_copies_and_does_not_export_unknown_contents`
+- `tests/test_installation_inventory.py:68`
+  Prueffall: `test_inventory_detects_existing_marker_without_status_file`
+- `tests/test_installation_inventory.py:74`
+  Prueffall: `test_export_has_readable_summary_and_valid_checksum`
+- `tests/test_installation_inventory.py:81`
+  Prueffall: `test_workspace_export_requires_explicit_internal_backup_flag`
+- `tests/test_installation_inventory.py:86`
+  Prueffall: `test_tampered_or_truncated_export_is_not_imported`
+- `tests/test_installation_inventory.py:97`
+  Prueffall: `test_existing_export_is_never_overwritten`
+- `tests/test_installation_inventory.py:104`
+  Prueffall: `test_restore_requires_confirmation`
+- `tests/test_installation_inventory.py:109`
+  Prueffall: `test_restore_missing_program_remains_pending_without_fake_marker`
+- `tests/test_installation_inventory.py:117`
+  Prueffall: `test_restore_merges_both_copies_and_keeps_previous_status`
+- `tests/test_installation_inventory.py:131`
+  Prueffall: `test_corrupt_artifact_and_wrong_pin_never_become_candidates`
+- `tests/test_installation_inventory.py:139`
+  Prueffall: `test_preview_is_read_only_and_never_executes_checks`
+- `tests/test_installation_inventory.py:144`
+  Prueffall: `test_update_backup_and_menu_are_wired`
+
+## tests/test_installation_reset.py
+
+- `tests/test_installation_reset.py:35`
+  Prueffall: `test_check_does_not_create_any_files`
+- `tests/test_installation_reset.py:40`
+  Prueffall: `test_confirmation_and_legacy_acknowledgement_required`
+- `tests/test_installation_reset.py:48`
+  Prueffall: `test_empty_legacy_lock_is_archived_not_deleted`
+- `tests/test_installation_reset.py:57`
+  Prueffall: `test_owner_metadata_preserved_in_archive`
+- `tests/test_installation_reset.py:64`
+  Prueffall: `test_tool_lock_is_optional_and_flow_data_is_preserved`
+- `tests/test_installation_reset.py:73`
+  Prueffall: `test_unknown_tool_and_paths_are_rejected`
+- `tests/test_installation_reset.py:78`
+  Prueffall: `test_active_installer_or_package_manager_never_unlocks`
+- `tests/test_installation_reset.py:85`
+  Prueffall: `test_live_owner_never_unlocks`
+- `tests/test_installation_reset.py:92`
+  Prueffall: `test_unreadable_process_state_is_fail_closed`
+- `tests/test_installation_reset.py:99`
+  Prueffall: `test_unknown_lock_content_is_preserved`
+- `tests/test_installation_reset.py:106`
+  Prueffall: `test_confirmed_blocked_attempt_gets_a_new_failure_log`
+- `tests/test_installation_reset.py:116`
+  Prueffall: `test_process_becoming_active_between_checks_blocks_reset`
+- `tests/test_installation_reset.py:124`
+  Prueffall: `test_process_scan_redacts_arguments`
+- `tests/test_installation_reset.py:138`
+  Prueffall: `test_changed_lock_snapshot_is_not_archived`
+- `tests/test_installation_reset.py:145`
+  Prueffall: `test_menu_and_shared_helper_are_wired`
+- `tests/test_installation_reset.py:159`
+  Prueffall: `test_reset_cannot_overlap_installer_and_gate_inode_remains`
+
+## tests/test_just_dub_it.py
+
+- `tests/test_just_dub_it.py:23`
+  Prueffall: `test_source_contract`
+- `tests/test_just_dub_it.py:47`
+  Prueffall: `test_dependency_order_and_scope`
+- `tests/test_just_dub_it.py:60`
+  Prueffall: `test_menu_doc_links`
+- `tests/test_just_dub_it.py:82`
+  Prueffall: `test_dry_run_no_files`
+- `tests/test_just_dub_it.py:90`
+  Prueffall: `test_python_dependency_decisions`
+- `tests/test_just_dub_it.py:119`
+  Prueffall: `test_read_only_actions_never_prepare_dependencies`
+- `tests/test_just_dub_it.py:126`
+  Prueffall: `test_status_missing`
+- `tests/test_just_dub_it.py:134`
+  Prueffall: `test_interactive_acceptance_after_complete_license`
+- `tests/test_just_dub_it.py:145`
+  Prueffall: `test_license_rejects_empty_invalid_no_and_eof`
+- `tests/test_just_dub_it.py:150`
+  Prueffall: `test_noninteractive_explicit_acceptance_displays_attachment`
+- `tests/test_just_dub_it.py:158`
+  Prueffall: `test_explicit_rejection_never_prompts`
+- `tests/test_just_dub_it.py:165`
+  Prueffall: `test_noninteractive_unset_is_rejection`
+- `tests/test_just_dub_it.py:169`
+  Prueffall: `test_missing_license_blocks_even_explicit_acceptance`
+- `tests/test_just_dub_it.py:176`
+  Prueffall: `test_api_actions_rejected`
+- `tests/test_just_dub_it.py:180`
+  Prueffall: `test_bad_root`
+- `tests/test_just_dub_it.py:185`
+  Prueffall: `test_foreign_source_preserved`
+- `tests/test_just_dub_it.py:195`
+  Prueffall: `test_missing_sdk_layout_rejected`
+- `tests/test_just_dub_it.py:205`
+  Prueffall: `test_expected_subdirectory_accepted`
+- `tests/test_just_dub_it.py:214`
+  Prueffall: `test_foreign_venv_rejected`
+- `tests/test_just_dub_it.py:222`
+  Prueffall: `test_system_site_packages_rejected`
+- `tests/test_just_dub_it.py:231`
+  Prueffall: `test_key_environment_not_inherited`
+- `tests/test_just_dub_it.py:243`
+  Prueffall: `test_mock_package_build_targets_client_only`
+- `tests/test_just_dub_it.py:270`
+  Prueffall: `test_failed_package_build_clears_marker`
+- `tests/test_just_dub_it.py:283`
+  Prueffall: `test_deactivation_keeps_data`
+- `tests/test_just_dub_it.py:292`
+  Prueffall: `test_legacy_runtime_rejected_before_tools`
+- `tests/test_just_dub_it.py:297`
+  Prueffall: `test_license_required_before_any_download`
+- `tests/test_just_dub_it.py:305`
+  Prueffall: `test_archive_warning_in_dry_run`
+- `tests/test_just_dub_it.py:310`
+  Prueffall: `test_python_312_preflight_accepted_without_creation`
+- `tests/test_just_dub_it.py:320`
+  Prueffall: `test_low_total_ram_blocks_even_in_conditional`
+- `tests/test_just_dub_it.py:331`
+  Prueffall: `test_safety_documentation`
+
+## tests/test_karaoke_formats.py
+
+- `tests/test_karaoke_formats.py:19`
+  Prueffall: `test_timestamps`
+- `tests/test_karaoke_formats.py:25`
+  Prueffall: `test_invalid_timestamps`
+- `tests/test_karaoke_formats.py:30`
+  Prueffall: `test_srt_to_lrc`
+- `tests/test_karaoke_formats.py:35`
+  Prueffall: `test_lrc_to_srt_loses_gap`
+- `tests/test_karaoke_formats.py:40`
+  Prueffall: `test_lrc_requires_final_end`
+- `tests/test_karaoke_formats.py:45`
+  Prueffall: `test_unsupported_lrc_rejected`
+- `tests/test_karaoke_formats.py:52`
+  Prueffall: `test_metadata_ignored`
+- `tests/test_karaoke_formats.py:56`
+  Prueffall: `test_invalid_srt_rejected`
+- `tests/test_karaoke_formats.py:62`
+  Prueffall: `test_unicode`
+- `tests/test_karaoke_formats.py:66`
+  Prueffall: `test_plan_does_not_read_or_write`
+- `tests/test_karaoke_formats.py:70`
+  Prueffall: `test_export_explicit_and_no_overwrite`
+- `tests/test_karaoke_formats.py:83`
+  Prueffall: `test_invalid_output_paths`
+- `tests/test_karaoke_formats.py:88`
+  Prueffall: `test_oversized_input`
+- `tests/test_karaoke_formats.py:95`
+  Prueffall: `test_not_a_package_installer`
+
+## tests/test_karaoke_install.py
+
+- `tests/test_karaoke_install.py:32`
+  Prueffall: `test_plan_and_status_create_nothing`
+- `tests/test_karaoke_install.py:37`
+  Prueffall: `test_missing_doctor_fails_without_creation`
+- `tests/test_karaoke_install.py:41`
+  Prueffall: `test_install_idempotent_and_doctor`
+- `tests/test_karaoke_install.py:52`
+  Prueffall: `test_launcher_works_without_conversion`
+- `tests/test_karaoke_install.py:60`
+  Prueffall: `test_source_change_detected_by_starter`
+- `tests/test_karaoke_install.py:71`
+  Prueffall: `test_changed_launcher_repair`
+- `tests/test_karaoke_install.py:79`
+  Prueffall: `test_uninstall_preserves_media_and_source`
+- `tests/test_karaoke_install.py:91`
+  Prueffall: `test_changed_launcher_not_deleted`
+- `tests/test_karaoke_install.py:100`
+  Prueffall: `test_foreign_launcher_not_overwritten`
+- `tests/test_karaoke_install.py:109`
+  Prueffall: `test_lock_prevents_parallel_install`
+- `tests/test_karaoke_install.py:116`
+  Prueffall: `test_low_disk_blocks_before_writes`
+- `tests/test_karaoke_install.py:122`
+  Prueffall: `test_repo_workspace_rejected`
+
+## tests/test_kiwi_edit.py
+
+- `tests/test_kiwi_edit.py:23`
+  Prueffall: `test_source_contract`
+- `tests/test_kiwi_edit.py:48`
+  Prueffall: `test_dependency_order_and_scope`
+- `tests/test_kiwi_edit.py:61`
+  Prueffall: `test_menu_doc_links`
+- `tests/test_kiwi_edit.py:83`
+  Prueffall: `test_dry_run_no_files`
+- `tests/test_kiwi_edit.py:91`
+  Prueffall: `test_python_dependency_decisions`
+- `tests/test_kiwi_edit.py:120`
+  Prueffall: `test_read_only_actions_never_prepare_dependencies`
+- `tests/test_kiwi_edit.py:127`
+  Prueffall: `test_status_missing`
+- `tests/test_kiwi_edit.py:135`
+  Prueffall: `test_api_actions_rejected`
+- `tests/test_kiwi_edit.py:139`
+  Prueffall: `test_bad_root`
+- `tests/test_kiwi_edit.py:144`
+  Prueffall: `test_foreign_source_preserved`
+- `tests/test_kiwi_edit.py:154`
+  Prueffall: `test_missing_sdk_layout_rejected`
+- `tests/test_kiwi_edit.py:164`
+  Prueffall: `test_expected_subdirectory_accepted`
+- `tests/test_kiwi_edit.py:173`
+  Prueffall: `test_foreign_venv_rejected`
+- `tests/test_kiwi_edit.py:181`
+  Prueffall: `test_system_site_packages_rejected`
+- `tests/test_kiwi_edit.py:190`
+  Prueffall: `test_key_environment_not_inherited`
+- `tests/test_kiwi_edit.py:202`
+  Prueffall: `test_mock_package_build_targets_client_only`
+- `tests/test_kiwi_edit.py:229`
+  Prueffall: `test_failed_package_build_clears_marker`
+- `tests/test_kiwi_edit.py:242`
+  Prueffall: `test_deactivation_keeps_data`
+- `tests/test_kiwi_edit.py:251`
+  Prueffall: `test_legacy_runtime_rejected_before_tools`
+- `tests/test_kiwi_edit.py:256`
+  Prueffall: `test_low_total_ram_blocks_even_in_conditional`
+- `tests/test_kiwi_edit.py:267`
+  Prueffall: `test_safety_documentation`
+- `tests/test_kiwi_edit.py:272`
+  Prueffall: `test_sparse_checkout_keeps_package_excludes_models_media_env`
+
+## tests/test_legacy_core_uninstall.py
+
+- `tests/test_legacy_core_uninstall.py:57`
+  Prueffall: `test_both_default_and_explicit_dry_runs_preserve_everything`
+- `tests/test_legacy_core_uninstall.py:66`
+  Prueffall: `test_apply_is_blocked_before_any_metadata_or_service_access`
+- `tests/test_legacy_core_uninstall.py:73`
+  Prueffall: `test_empty_or_absent_installation_is_not_reported_removed`
+- `tests/test_legacy_core_uninstall.py:79`
+  Prueffall: `test_repeat_and_cancellation_have_no_status_or_file_effects`
+- `tests/test_legacy_core_uninstall.py:84`
+  Prueffall: `test_legacy_overrides_and_assume_yes_cannot_enable_actions`
+- `tests/test_legacy_core_uninstall.py:93`
+  Prueffall: `test_private_environment_values_never_appear_in_diagnostics`
+- `tests/test_legacy_core_uninstall.py:99`
+  Prueffall: `test_no_user_workspace_or_home_override_is_inspected`
+- `tests/test_legacy_core_uninstall.py:104`
+  Prueffall: `test_missing_marker_does_not_grant_ownership`
+- `tests/test_legacy_core_uninstall.py:109`
+  Prueffall: `test_even_a_private_marker_never_authorizes_legacy_deletion`
+- `tests/test_legacy_core_uninstall.py:131`
+  Prueffall: `test_wrong_owner_or_public_hardlinked_markers_remain_untrusted`
+- `tests/test_legacy_core_uninstall.py:150`
+  Prueffall: `test_payload_and_marker_contents_are_never_opened`
+- `tests/test_legacy_core_uninstall.py:156`
+  Prueffall: `test_symlink_parent_and_marker_are_preserved_without_following`
+- `tests/test_legacy_core_uninstall.py:183`
+  Prueffall: `test_root_uid_has_no_special_apply_bypass`
+- `tests/test_legacy_core_uninstall.py:189`
+  Prueffall: `test_noncanonical_paths_are_rejected`
+- `tests/test_legacy_core_uninstall.py:194`
+  Prueffall: `test_inspection_error_is_not_success_or_a_secret_dump`
+- `tests/test_legacy_core_uninstall.py:200`
+  Prueffall: `test_no_force_or_mutually_conflicting_modes`
+- `tests/test_legacy_core_uninstall.py:208`
+  Prueffall: `test_guard_has_no_mutating_or_process_execution_implementation`
+- `tests/test_legacy_core_uninstall.py:217`
+  Prueffall: `test_ubuntu_ci_keeps_the_guard_suite_and_shell_entrypoints`
+- `tests/test_legacy_core_uninstall.py:228`
+  Prueffall: `test_actual_wrappers_forward_arguments_and_return_code_without_tracking`
+- `tests/test_legacy_core_uninstall.py:258`
+  Prueffall: `test_real_menu_preserves_status_and_autostart_for_all_guard_results`
+- `tests/test_legacy_core_uninstall.py:298`
+  Prueffall: `test_wrappers_are_isolated_from_tracking_and_dependency_installation`
+
+## tests/test_legacy_k8s_archive.py
+
+- `tests/test_legacy_k8s_archive.py:17`
+  Prueffall: `test_original_source_preserved_exactly_but_not_as_manifest`
+- `tests/test_legacy_k8s_archive.py:29`
+  Prueffall: `test_no_dangling_local_markdown_links_to_removed_manifest`
+- `tests/test_legacy_k8s_archive.py:35`
+  Prueffall: `test_display_only_and_missing_archive_fails`
+
+## tests/test_lifecycle_inventory.py
+
+- `tests/test_lifecycle_inventory.py:25`
+  Prueffall: `test_twenty_unique_real_registry_ids`
+- `tests/test_lifecycle_inventory.py:34`
+  Prueffall: `test_inventory_preserves_file_names_and_contents`
+- `tests/test_lifecycle_inventory.py:43`
+  Prueffall: `test_missing_fields_are_not_runtime_success`
+- `tests/test_lifecycle_inventory.py:54`
+  Prueffall: `test_stub_is_detected_even_when_file_exists`
+- `tests/test_lifecycle_inventory.py:66`
+  Prueffall: `test_unsafe_paths_and_missing_files`
+- `tests/test_lifecycle_inventory.py:74`
+  Prueffall: `test_duplicate_unknown_and_malformed_registry_fail`
+- `tests/test_lifecycle_inventory.py:82`
+  Prueffall: `test_pin_and_complete_metadata_remain_unverified_runtime`
+- `tests/test_lifecycle_inventory.py:93`
+  Prueffall: `test_cli_dry_run_and_json_are_read_only`
+- `tests/test_lifecycle_inventory.py:99`
+  Prueffall: `test_strict_does_not_hide_metadata_gaps`
+- `tests/test_lifecycle_inventory.py:104`
+  Prueffall: `test_grok_followup_is_discoverable_and_not_a_fake_installation`
+
+## tests/test_lifecycle_report_limit.py
+
+- `tests/test_lifecycle_report_limit.py:15`
+  Prueffall: `test_large_report_is_truncated_without_hiding_strict_failure`
+
+## tests/test_listener_audit.py
+
+- `tests/test_listener_audit.py:25`
+  Prueffall: `test_wildcards_ipv4_ipv6_and_udp_are_rejected`
+- `tests/test_listener_audit.py:32`
+  Prueffall: `test_loopback_and_mapped_ipv4_are_allowed`
+- `tests/test_listener_audit.py:36`
+  Prueffall: `test_private_address_requires_exact_opt_in`
+- `tests/test_listener_audit.py:44`
+  Prueffall: `test_public_or_overbroad_cidr_cannot_disable_boundary`
+- `tests/test_listener_audit.py:49`
+  Prueffall: `test_invalid_output_is_not_silently_ignored`
+- `tests/test_listener_audit.py:55`
+  Prueffall: `test_unregistered_ports_are_counted_not_certified`
+- `tests/test_listener_audit.py:61`
+  Prueffall: `test_registry_preserves_control_api_and_rejects_duplicates`
+- `tests/test_listener_audit.py:78`
+  Prueffall: `test_default_and_dry_run_have_no_host_or_file_access`
+- `tests/test_listener_audit.py:86`
+  Prueffall: `test_missing_ss_and_command_failure_are_incomplete`
+- `tests/test_listener_audit.py:97`
+  Prueffall: `test_stdin_findings_have_nonzero_exit_without_process_details`
+- `tests/test_listener_audit.py:103`
+  Prueffall: `test_timeout_is_bounded_and_not_a_success`
+
+## tests/test_litellm_build_timeout.py
+
+- `tests/test_litellm_build_timeout.py:15`
+  Prueffall: `test_default_and_explicit_bounded_budget`
+- `tests/test_litellm_build_timeout.py:22`
+  Prueffall: `test_invalid_budget_fails_without_launching_anything`
+- `tests/test_litellm_build_timeout.py:29`
+  Prueffall: `test_only_heavy_pip_install_uses_streaming_not_freeze`
+- `tests/test_litellm_build_timeout.py:39`
+  Prueffall: `test_timeout_is_not_success_or_retried`
+- `tests/test_litellm_build_timeout.py:46`
+  Prueffall: `test_litellm_build_commands_and_limits`
+
+## tests/test_litellm_rust.py
+
+- `tests/test_litellm_rust.py:37`
+  Prueffall: `test_installed_toolchain_found_without_cargo_in_path`
+- `tests/test_litellm_rust.py:42`
+  Prueffall: `test_missing_toolchain_fails_with_specific_guidance_without_commands`
+- `tests/test_litellm_rust.py:49`
+  Prueffall: `test_invalid_explicit_selection_never_falls_back`
+- `tests/test_litellm_rust.py:56`
+  Prueffall: `test_wrong_version_is_rejected`
+- `tests/test_litellm_rust.py:61`
+  Prueffall: `test_mismatched_sysroot_is_rejected`
+- `tests/test_litellm_rust.py:67`
+  Prueffall: `test_activation_preserves_guards_and_parent_environment`
+
+## tests/test_litellm_rust_bootstrap.py
+
+- `tests/test_litellm_rust_bootstrap.py:47`
+  Prueffall: `test_no_consent_no_download_or_mutation`
+- `tests/test_litellm_rust_bootstrap.py:57`
+  Prueffall: `test_explicit_invalid_path_never_bootstraps`
+- `tests/test_litellm_rust_bootstrap.py:63`
+  Prueffall: `test_success_reuse_and_private_environment`
+- `tests/test_litellm_rust_bootstrap.py:72`
+  Prueffall: `test_failed_download_cleans_only_its_staging`
+- `tests/test_litellm_rust_bootstrap.py:84`
+  Prueffall: `test_partial_or_changed_slot_is_not_overwritten`
+- `tests/test_litellm_rust_bootstrap.py:94`
+  Prueffall: `test_corrupt_payload_not_executed`
+
+## tests/test_local_ai_benchmarks.py
+
+- `tests/test_local_ai_benchmarks.py:48`
+  Prueffall: `test_ns_conversion_and_no_fake_ttft`
+- `tests/test_local_ai_benchmarks.py:56`
+  Prueffall: `test_invalid_metrics_rejected`
+- `tests/test_local_ai_benchmarks.py:67`
+  Prueffall: `test_zero_work_has_no_invented_throughput`
+- `tests/test_local_ai_benchmarks.py:72`
+  Prueffall: `test_plan_has_no_network_or_writes`
+- `tests/test_local_ai_benchmarks.py:79`
+  Prueffall: `test_explicit_local_confirmation_required`
+- `tests/test_local_ai_benchmarks.py:86`
+  Prueffall: `test_cloud_model_rejected_without_request`
+- `tests/test_local_ai_benchmarks.py:92`
+  Prueffall: `test_remote_urls_credentials_and_queries_rejected`
+- `tests/test_local_ai_benchmarks.py:101`
+  Prueffall: `test_redirects_disabled`
+- `tests/test_local_ai_benchmarks.py:105`
+  Prueffall: `test_http_uses_no_environment_proxy`
+- `tests/test_local_ai_benchmarks.py:115`
+  Prueffall: `test_run_is_bounded_and_logs_only_metrics`
+- `tests/test_local_ai_benchmarks.py:132`
+  Prueffall: `test_missing_model_stops_before_generation`
+- `tests/test_local_ai_benchmarks.py:139`
+  Prueffall: `test_timeout_no_retry_and_private_failure_report`
+- `tests/test_local_ai_benchmarks.py:153`
+  Prueffall: `test_low_disk_logged_without_network`
+- `tests/test_local_ai_benchmarks.py:160`
+  Prueffall: `test_lock_prevents_parallel_client`
+- `tests/test_local_ai_benchmarks.py:169`
+  Prueffall: `test_offline_analysis_does_not_call_api`
+- `tests/test_local_ai_benchmarks.py:177`
+  Prueffall: `test_limits_are_not_silent_infinite_loops`
+- `tests/test_local_ai_benchmarks.py:182`
+  Prueffall: `test_docs_links_and_registered_hyperfine`
+
+## tests/test_local_audio_chain.py
+
+- `tests/test_local_audio_chain.py:32`
+  Prueffall: `test_all_six_existing_tools_are_unique_and_have_lifecycle_docs`
+- `tests/test_local_audio_chain.py:44`
+  Prueffall: `test_new_source_recipes_are_exact_and_never_claim_runtime`
+- `tests/test_local_audio_chain.py:57`
+  Prueffall: `test_ffmpeg_uses_private_pinned_build_without_legacy_deletion`
+- `tests/test_local_audio_chain.py:71`
+  Prueffall: `test_planning_is_deterministic_and_cannot_launch_or_write`
+- `tests/test_local_audio_chain.py:84`
+  Prueffall: `test_invalid_paths_commands_lyrics_and_values_are_rejected`
+- `tests/test_local_audio_chain.py:94`
+  Prueffall: `test_note_and_duration_limits`
+- `tests/test_local_audio_chain.py:100`
+  Prueffall: `test_conversion_and_stems_are_only_blocked_plan_stages`
+- `tests/test_local_audio_chain.py:106`
+  Prueffall: `test_mcp_initialize_list_and_call_are_read_only`
+- `tests/test_local_audio_chain.py:124`
+  Prueffall: `test_stdio_has_only_jsonrpc_and_bounded_input`
+- `tests/test_local_audio_chain.py:135`
+  Prueffall: `test_preset_fans_out_vocals_before_sidechain_and_echo`
+- `tests/test_local_audio_chain.py:145`
+  Prueffall: `test_export_is_unique_private_and_never_claims_audio_success`
+- `tests/test_local_audio_chain.py:159`
+  Prueffall: `test_export_without_confirmation_and_collision_preserve_files`
+- `tests/test_local_audio_chain.py:172`
+  Prueffall: `test_execute_fails_before_reading_project_or_writing_metadata`
+
+## tests/test_local_gateway_policy.py
+
+- `tests/test_local_gateway_policy.py:45`
+  Prueffall: `test_default_output_bound_and_key_not_retained`
+- `tests/test_local_gateway_policy.py:49`
+  Prueffall: `test_routes_and_overrides_fail_closed`
+- `tests/test_local_gateway_policy.py:59`
+  Prueffall: `test_token_and_message_limits`
+- `tests/test_local_gateway_policy.py:67`
+  Prueffall: `test_per_key_global_and_window_limits`
+- `tests/test_local_gateway_policy.py:78`
+  Prueffall: `test_per_key_limit_and_missing_identity`
+- `tests/test_local_gateway_policy.py:89`
+  Prueffall: `test_one_action_only_and_finance_blocked`
+
+## tests/test_manus_delivery_examples.py
+
+- `tests/test_manus_delivery_examples.py:47`
+  Prueffall: `test_examples_are_not_active_workflows`
+- `tests/test_manus_delivery_examples.py:53`
+  Prueffall: `test_all_action_references_use_full_pins_and_checkout_does_not_persist`
+- `tests/test_manus_delivery_examples.py:68`
+  Prueffall: `test_ci_jobs_have_no_release_credentials_or_publish_commands`
+- `tests/test_manus_delivery_examples.py:77`
+  Prueffall: `test_release_requires_main_manual_opt_in_and_verified_ci`
+- `tests/test_manus_delivery_examples.py:92`
+  Prueffall: `test_all_embedded_shell_blocks_pass_syntax_check_without_execution`
+- `tests/test_manus_delivery_examples.py:114`
+  Prueffall: `test_rust_pin_fixture_accepts_exact_version`
+- `tests/test_manus_delivery_examples.py:120`
+  Prueffall: `test_rust_pin_fixture_rejects_floating_or_injected_values`
+- `tests/test_manus_delivery_examples.py:127`
+  Prueffall: `test_release_digest_fixture_only_reports_valid_sha256`
+- `tests/test_manus_delivery_examples.py:138`
+  Prueffall: `test_skill_metadata_and_relative_references`
+- `tests/test_manus_delivery_examples.py:149`
+  Prueffall: `test_kubernetes_example_is_private_restricted_and_not_start_ready`
+- `tests/test_manus_delivery_examples.py:159`
+  Prueffall: `test_presentation_content_has_sources_and_local_references`
+- `tests/test_manus_delivery_examples.py:170`
+  Prueffall: `test_pptx_has_editable_slides_and_source_notes`
+
+## tests/test_manus_infrastructure_docs.py
+
+- `tests/test_manus_infrastructure_docs.py:38`
+  Prueffall: `test_all_62_sources_have_a_thematic_row`
+- `tests/test_manus_infrastructure_docs.py:48`
+  Prueffall: `test_tables_include_purpose_and_limit`
+- `tests/test_manus_infrastructure_docs.py:53`
+  Prueffall: `test_license_mirror_and_redirect_corrections_remain`
+- `tests/test_manus_infrastructure_docs.py:61`
+  Prueffall: `test_side_effects_and_no_install_boundaries_are_clear`
+- `tests/test_manus_infrastructure_docs.py:69`
+  Prueffall: `test_local_links_exist_and_catalog_is_discoverable`
+- `tests/test_manus_infrastructure_docs.py:77`
+  Prueffall: `test_no_active_install_or_deploy_command_blocks`
+
+## tests/test_manus_sources_docs.py
+
+- `tests/test_manus_sources_docs.py:23`
+  Prueffall: `test_all_thirty_supplied_sources_remain_clickable`
+- `tests/test_manus_sources_docs.py:28`
+  Prueffall: `test_exactly_thirty_project_rows_have_purpose_and_status`
+- `tests/test_manus_sources_docs.py:35`
+  Prueffall: `test_redirects_keep_original_and_current_repositories`
+- `tests/test_manus_sources_docs.py:41`
+  Prueffall: `test_archived_action_is_not_presented_as_recommended_workflow`
+- `tests/test_manus_sources_docs.py:47`
+  Prueffall: `test_boundaries_and_cross_links_are_explicit`
+- `tests/test_manus_sources_docs.py:55`
+  Prueffall: `test_local_document_links_resolve`
+
+## tests/test_manus_tooling_interview.py
+
+- `tests/test_manus_tooling_interview.py:14`
+  Prueffall: `test_new_skill_frontmatter_and_repository_references`
+- `tests/test_manus_tooling_interview.py:28`
+  Prueffall: `test_manus_claims_are_separate_from_local_artifacts`
+- `tests/test_manus_tooling_interview.py:37`
+  Prueffall: `test_brief_covers_all_seven_selection_criteria`
+- `tests/test_manus_tooling_interview.py:45`
+  Prueffall: `test_existing_ci_and_deck_remain_accurately_described`
+
+## tests/test_markdown_docs_settings.py
+
+- `tests/test_markdown_docs_settings.py:28`
+  Prueffall: `test_open_and_cancel_never_calls_python_or_opens_browser`
+- `tests/test_markdown_docs_settings.py:32`
+  Prueffall: `test_documentation_and_lab_guides_are_read_only`
+- `tests/test_markdown_docs_settings.py:41`
+  Prueffall: `test_plan_status_doctor_do_not_apply`
+- `tests/test_markdown_docs_settings.py:47`
+  Prueffall: `test_valid_install_and_update_need_commit_and_separate_approval`
+- `tests/test_markdown_docs_settings.py:58`
+  Prueffall: `test_blank_cancelled_and_invalid_commits_do_not_reach_python`
+- `tests/test_markdown_docs_settings.py:65`
+  Prueffall: `test_source_confirmation_centers_or_uses_dialog_autosizing`
+- `tests/test_markdown_docs_settings.py:83`
+  Prueffall: `test_all_handbook_widgets_share_backdrop_and_fit_small_terminal`
+- `tests/test_markdown_docs_settings.py:103`
+  Prueffall: `test_tool_transaction_cancel_is_not_an_install_success`
+- `tests/test_markdown_docs_settings.py:121`
+  Prueffall: `test_setup_dispatch_requests_only_docs_install_update_dialogs`
+- `tests/test_markdown_docs_settings.py:139`
+  Prueffall: `test_real_wrappers_preserve_plan_and_explicit_interactive_approval`
+- `tests/test_markdown_docs_settings.py:156`
+  Prueffall: `test_serve_needs_valid_loopback_port_and_separate_approval`
+- `tests/test_markdown_docs_settings.py:168`
+  Prueffall: `test_uninstall_is_explicit_and_preserves_lifecycle_guard`
+- `tests/test_markdown_docs_settings.py:173`
+  Prueffall: `test_lifecycle_failures_are_not_turned_into_success`
+- `tests/test_markdown_docs_settings.py:178`
+  Prueffall: `test_dialog_execution_errors_are_not_reported_as_user_cancel`
+- `tests/test_markdown_docs_settings.py:184`
+  Prueffall: `test_menu_reports_failure_and_recovers_before_user_cancels`
+- `tests/test_markdown_docs_settings.py:197`
+  Prueffall: `test_settings_entry_dispatch_and_default_no_are_present`
+
+## tests/test_master_audit_manifest.py
+
+- `tests/test_master_audit_manifest.py:15`
+  Prueffall: `test_digest_is_order_independent_and_binds_paths_sizes_and_hashes`
+- `tests/test_master_audit_manifest.py:25`
+  Prueffall: `test_untracked_content_is_bound_and_generated_reports_do_not_self_reference`
+
+## tests/test_master_audit_safety.py
+
+- `tests/test_master_audit_safety.py:44`
+  Prueffall: `test_dispatch_resolves_only_registered_paths`
+- `tests/test_master_audit_safety.py:56`
+  Prueffall: `test_registry_cannot_redirect_dispatch_outside_tools`
+- `tests/test_master_audit_safety.py:62`
+  Prueffall: `test_symlink_dispatch_is_rejected`
+- `tests/test_master_audit_safety.py:76`
+  Prueffall: `test_workspace_menu_never_recursively_purges_workspace`
+- `tests/test_master_audit_safety.py:84`
+  Prueffall: `test_large_export_can_be_read_for_recovery`
+- `tests/test_master_audit_safety.py:103`
+  Prueffall: `test_build_caches_are_excluded_from_audit`
+- `tests/test_master_audit_safety.py:114`
+  Prueffall: `test_report_replacement_preserves_hardlink_peer`
+- `tests/test_master_audit_safety.py:130`
+  Prueffall: `test_no_inventory_row_is_promoted_to_production`
+- `tests/test_master_audit_safety.py:139`
+  Prueffall: `test_rag_scores_supplied_rankings_and_rejects_acl_hits`
+- `tests/test_master_audit_safety.py:154`
+  Prueffall: `test_compose_config_uses_runtime_environment_lookup`
+- `tests/test_master_audit_safety.py:160`
+  Prueffall: `test_monitoring_helm_retains_namespace_and_storage`
+- `tests/test_master_audit_safety.py:166`
+  Prueffall: `test_secret_fallback_rejects_matches_and_scan_errors_without_values`
+
+## tests/test_media_catalog.py
+
+- `tests/test_media_catalog.py:20`
+  Prueffall: `test_native_source_tools_consistent`
+- `tests/test_media_catalog.py:38`
+  Prueffall: `test_profile_references`
+- `tests/test_media_catalog.py:49`
+  Prueffall: `test_local_links`
+- `tests/test_media_catalog.py:60`
+  Prueffall: `test_guards_do_not_install_or_create_home`
+
+## tests/test_media_editors.py
+
+- `tests/test_media_editors.py:42`
+  Prueffall: `test_all_plans_are_read_only_and_do_not_require_bun`
+- `tests/test_media_editors.py:52`
+  Prueffall: `test_concat_release_not_executed_and_hash_download_contract`
+- `tests/test_media_editors.py:69`
+  Prueffall: `test_failed_download_leaves_no_marker_and_preserves_user_file`
+- `tests/test_media_editors.py:80`
+  Prueffall: `test_two_source_builds_use_frozen_lock_and_expected_artifacts`
+- `tests/test_media_editors.py:100`
+  Prueffall: `test_remotion_decline_prints_license_before_any_package_action`
+- `tests/test_media_editors.py:113`
+  Prueffall: `test_build_failure_rolls_back_without_hiding_current_log`
+- `tests/test_media_editors.py:131`
+  Prueffall: `test_reserve_failure_happens_before_download_and_is_logged`
+- `tests/test_media_editors.py:143`
+  Prueffall: `test_marker_alone_never_counts_as_installed`
+- `tests/test_media_editors.py:152`
+  Prueffall: `test_unmanaged_runtime_is_never_overwritten`
+- `tests/test_media_editors.py:159`
+  Prueffall: `test_edited_or_extra_files_block_deletion`
+- `tests/test_media_editors.py:172`
+  Prueffall: `test_build_lock_rejects_parallel_invocation_and_is_not_removed`
+- `tests/test_media_editors.py:183`
+  Prueffall: `test_build_env_does_not_inherit_provider_credentials`
+- `tests/test_media_editors.py:193`
+  Prueffall: `test_unsafe_inventory_path_and_symlink_escape_rejected`
+- `tests/test_media_editors.py:201`
+  Prueffall: `test_menu_registry_wrappers_and_documentation`
+
+## tests/test_media_status_sync.py
+
+- `tests/test_media_status_sync.py:29`
+  Prueffall: `test_registry_and_marker_mapping_agree`
+- `tests/test_media_status_sync.py:43`
+  Prueffall: `test_anthropic_cli_requires_marker_and_nonempty_binary`
+- `tests/test_media_status_sync.py:58`
+  Prueffall: `test_all_markers_enable_uninstall_and_removed_markers_stay_removed`
+- `tests/test_media_status_sync.py:115`
+  Prueffall: `test_owned_coding_adapters_reject_plain_marker_files`
+- `tests/test_media_status_sync.py:131`
+  Prueffall: `test_coding_sources_register_in_both_lists_and_deactivate`
+- `tests/test_media_status_sync.py:160`
+  Prueffall: `test_empty_marker_or_folder_does_not_mean_installed`
+- `tests/test_media_status_sync.py:171`
+  Prueffall: `test_batch_writes_at_most_two_files_and_preserves_unchanged_files`
+- `tests/test_media_status_sync.py:182`
+  Prueffall: `test_menu_refreshes_before_each_map_load`
+- `tests/test_media_status_sync.py:190`
+  Prueffall: `test_unknown_name_is_not_silently_aliased`
+
+## tests/test_media_workflow_plan.py
+
+- `tests/test_media_workflow_plan.py:26`
+  Prueffall: `test_both_examples_are_review_plans_not_render_jobs`
+- `tests/test_media_workflow_plan.py:36`
+  Prueffall: `test_hash_stable_across_key_order_and_sensitive_to_edits`
+- `tests/test_media_workflow_plan.py:47`
+  Prueffall: `test_confirmation_never_enables_rendering`
+- `tests/test_media_workflow_plan.py:54`
+  Prueffall: `test_budget_bounds_and_booleans_not_integers`
+- `tests/test_media_workflow_plan.py:68`
+  Prueffall: `test_strict_fields_prevent_command_or_endpoint_configuration`
+- `tests/test_media_workflow_plan.py:76`
+  Prueffall: `test_assets_are_relative_references_not_urls_or_traversal`
+- `tests/test_media_workflow_plan.py:83`
+  Prueffall: `test_scenes_unique_and_bounded`
+- `tests/test_media_workflow_plan.py:94`
+  Prueffall: `test_talking_head_requires_audio`
+- `tests/test_media_workflow_plan.py:100`
+  Prueffall: `test_audio_modes_and_rights_types`
+- `tests/test_media_workflow_plan.py:113`
+  Prueffall: `test_input_recipe_not_mutated`
+- `tests/test_media_workflow_plan.py:119`
+  Prueffall: `test_cli_only_reads_recipe_and_emits_json`
+- `tests/test_media_workflow_plan.py:128`
+  Prueffall: `test_cli_rejects_invalid_json_duplicate_fields_size_and_nonfinite`
+- `tests/test_media_workflow_plan.py:138`
+  Prueffall: `test_nominal_frames_are_not_model_parameters`
+- `tests/test_media_workflow_plan.py:143`
+  Prueffall: `test_documentation_local_links_and_sources`
+- `tests/test_media_workflow_plan.py:154`
+  Prueffall: `test_guide_discoverable`
+
+## tests/test_memory_offloading.py
+
+- `tests/test_memory_offloading.py:31`
+  Prueffall: `test_raw_weights_and_no_runtime_guarantee`
+- `tests/test_memory_offloading.py:37`
+  Prueffall: `test_shared_pool_is_not_added_twice`
+- `tests/test_memory_offloading.py:42`
+  Prueffall: `test_gpu_fit_is_only_weight_estimate`
+- `tests/test_memory_offloading.py:48`
+  Prueffall: `test_insufficient_memory_not_recommended`
+- `tests/test_memory_offloading.py:51`
+  Prueffall: `test_cpu_only_default_vram_reserve_is_valid`
+- `tests/test_memory_offloading.py:54`
+  Prueffall: `test_invalid_negative_nonfinite_and_overflow`
+- `tests/test_memory_offloading.py:61`
+  Prueffall: `test_reserve_and_quantization_overhead_are_explicit`
+- `tests/test_memory_offloading.py:67`
+  Prueffall: `test_cli_json_is_pure_offline_arithmetic`
+- `tests/test_memory_offloading.py:101`
+  Prueffall: `test_both_plans_are_read_only`
+- `tests/test_memory_offloading.py:106`
+  Prueffall: `test_unknown_flags_are_not_swallowed_by_dry_run`
+- `tests/test_memory_offloading.py:113`
+  Prueffall: `test_conflicting_actions_are_rejected_before_writes`
+- `tests/test_memory_offloading.py:120`
+  Prueffall: `test_update_and_deactivation_dry_runs_remain_read_only`
+- `tests/test_memory_offloading.py:125`
+  Prueffall: `test_real_marker_only_after_source_preparation`
+- `tests/test_memory_offloading.py:132`
+  Prueffall: `test_update_idempotent_no_runtime_installation`
+- `tests/test_memory_offloading.py:140`
+  Prueffall: `test_low_disk_has_new_log_and_no_marker`
+- `tests/test_memory_offloading.py:152`
+  Prueffall: `test_foreign_source_is_not_reset`
+- `tests/test_memory_offloading.py:160`
+  Prueffall: `test_deactivation_preserves_sources_and_runtime`
+- `tests/test_memory_offloading.py:167`
+  Prueffall: `test_lock_blocks_operation`
+- `tests/test_memory_offloading.py:175`
+  Prueffall: `test_failed_marker_write_does_not_register_installed`
+- `tests/test_memory_offloading.py:183`
+  Prueffall: `test_pins_and_no_source_execution`
+- `tests/test_memory_offloading.py:193`
+  Prueffall: `test_registry_and_doc_links`
+
+## tests/test_meta_tooling_docs.py
+
+- `tests/test_meta_tooling_docs.py:14`
+  Prueffall: `test_original_github_sources_and_all_four_kits_remain_traceable`
+- `tests/test_meta_tooling_docs.py:26`
+  Prueffall: `test_local_links_and_skill_frontmatter_resolve`
+- `tests/test_meta_tooling_docs.py:37`
+  Prueffall: `test_existing_artifacts_not_misrepresented_as_meta_downloads`
+- `tests/test_meta_tooling_docs.py:54`
+  Prueffall: `test_meta_is_discoverable_but_separate_from_other_interviews`
+- `tests/test_meta_tooling_docs.py:61`
+  Prueffall: `test_markdown_fences_and_table_rows_are_balanced`
+
+## tests/test_metrics_config.py
+
+- `tests/test_metrics_config.py:27`
+  Prueffall: `test_actual_default_template_remains_compatible`
+- `tests/test_metrics_config.py:34`
+  Prueffall: `test_quotes_comments_unicode_and_empty_values`
+- `tests/test_metrics_config.py:41`
+  Prueffall: `test_executable_content_and_shell_environment_keys_are_rejected`
+- `tests/test_metrics_config.py:49`
+  Prueffall: `test_numeric_consumers_cannot_receive_expressions`
+- `tests/test_metrics_config.py:56`
+  Prueffall: `test_merge_preserves_settings_and_unrelated_history`
+- `tests/test_metrics_config.py:65`
+  Prueffall: `test_size_limit_and_bom`
+- `tests/test_metrics_config.py:70`
+  Prueffall: `test_plan_does_not_open_store_or_read_stdin`
+- `tests/test_metrics_config.py:79`
+  Prueffall: `test_no_source_fixed_editor_path_or_direct_metrics_replacement`
+- `tests/test_metrics_config.py:97`
+  Prueffall: `test_loader_assigns_literal_data_without_eval`
+- `tests/test_metrics_config.py:106`
+  Prueffall: `test_parser_failure_does_not_partially_assign_globals`
+- `tests/test_metrics_config.py:113`
+  Prueffall: `test_editor_cancel_never_reaches_write_action`
+- `tests/test_metrics_config.py:141`
+  Prueffall: `test_init_preserves_existing_and_read_never_executes`
+- `tests/test_metrics_config.py:148`
+  Prueffall: `test_read_and_check_do_not_create_lock_or_change_legacy_mode`
+- `tests/test_metrics_config.py:156`
+  Prueffall: `test_editor_updates_atomically_and_rejects_stale_revision`
+- `tests/test_metrics_config.py:166`
+  Prueffall: `test_bad_input_never_changes_original_or_leaks_payload`
+- `tests/test_metrics_config.py:174`
+  Prueffall: `test_file_links_and_unsafe_modes_are_rejected`
+- `tests/test_metrics_config.py:190`
+  Prueffall: `test_busy_lock_rejects_without_overwrite_then_merges`
+
+## tests/test_minisign_bootstrap.py
+
+- `tests/test_minisign_bootstrap.py:46`
+  Prueffall: `test_existing_minisign_never_runs_apt`
+- `tests/test_minisign_bootstrap.py:52`
+  Prueffall: `test_noninteractive_default_denies_install`
+- `tests/test_minisign_bootstrap.py:57`
+  Prueffall: `test_explicit_consent_installs_only_verifier_and_checks_it`
+- `tests/test_minisign_bootstrap.py:64`
+  Prueffall: `test_apt_failure_stops_before_install_or_version_check`
+- `tests/test_minisign_bootstrap.py:70`
+  Prueffall: `test_verifier_dependency_gate_precedes_download_and_verification`
+
+## tests/test_moshi.py
+
+- `tests/test_moshi.py:24`
+  Prueffall: `test_source_contract`
+- `tests/test_moshi.py:48`
+  Prueffall: `test_dependency_order_and_scope`
+- `tests/test_moshi.py:61`
+  Prueffall: `test_menu_doc_links`
+- `tests/test_moshi.py:83`
+  Prueffall: `test_dry_run_no_files`
+- `tests/test_moshi.py:91`
+  Prueffall: `test_python_dependency_decisions`
+- `tests/test_moshi.py:120`
+  Prueffall: `test_read_only_actions_never_prepare_dependencies`
+- `tests/test_moshi.py:127`
+  Prueffall: `test_status_missing`
+- `tests/test_moshi.py:135`
+  Prueffall: `test_api_actions_rejected`
+- `tests/test_moshi.py:139`
+  Prueffall: `test_bad_root`
+- `tests/test_moshi.py:144`
+  Prueffall: `test_foreign_source_preserved`
+- `tests/test_moshi.py:154`
+  Prueffall: `test_missing_sdk_layout_rejected`
+- `tests/test_moshi.py:164`
+  Prueffall: `test_expected_subdirectory_accepted`
+- `tests/test_moshi.py:173`
+  Prueffall: `test_foreign_venv_rejected`
+- `tests/test_moshi.py:181`
+  Prueffall: `test_system_site_packages_rejected`
+- `tests/test_moshi.py:190`
+  Prueffall: `test_key_environment_not_inherited`
+- `tests/test_moshi.py:202`
+  Prueffall: `test_mock_package_build_targets_client_only`
+- `tests/test_moshi.py:229`
+  Prueffall: `test_failed_package_build_clears_marker`
+- `tests/test_moshi.py:242`
+  Prueffall: `test_deactivation_keeps_data`
+- `tests/test_moshi.py:251`
+  Prueffall: `test_legacy_runtime_rejected_before_tools`
+- `tests/test_moshi.py:256`
+  Prueffall: `test_low_total_ram_blocks_even_in_conditional`
+- `tests/test_moshi.py:267`
+  Prueffall: `test_safety_documentation`
+
+## tests/test_moss_tts.py
+
+- `tests/test_moss_tts.py:23`
+  Prueffall: `test_source_contract`
+- `tests/test_moss_tts.py:44`
+  Prueffall: `test_dependency_order_and_scope`
+- `tests/test_moss_tts.py:57`
+  Prueffall: `test_menu_doc_links`
+- `tests/test_moss_tts.py:84`
+  Prueffall: `test_dry_run_no_files`
+- `tests/test_moss_tts.py:92`
+  Prueffall: `test_python_dependency_decisions`
+- `tests/test_moss_tts.py:121`
+  Prueffall: `test_read_only_actions_never_prepare_dependencies`
+- `tests/test_moss_tts.py:128`
+  Prueffall: `test_status_missing`
+- `tests/test_moss_tts.py:136`
+  Prueffall: `test_api_actions_rejected`
+- `tests/test_moss_tts.py:140`
+  Prueffall: `test_bad_root`
+- `tests/test_moss_tts.py:145`
+  Prueffall: `test_foreign_source_preserved`
+- `tests/test_moss_tts.py:155`
+  Prueffall: `test_missing_sdk_layout_rejected`
+- `tests/test_moss_tts.py:165`
+  Prueffall: `test_expected_subdirectory_accepted`
+- `tests/test_moss_tts.py:174`
+  Prueffall: `test_foreign_venv_rejected`
+- `tests/test_moss_tts.py:182`
+  Prueffall: `test_system_site_packages_rejected`
+- `tests/test_moss_tts.py:191`
+  Prueffall: `test_key_environment_not_inherited`
+- `tests/test_moss_tts.py:203`
+  Prueffall: `test_mock_package_build_targets_client_only`
+- `tests/test_moss_tts.py:230`
+  Prueffall: `test_failed_package_build_clears_marker`
+- `tests/test_moss_tts.py:243`
+  Prueffall: `test_deactivation_keeps_data`
+- `tests/test_moss_tts.py:258`
+  Prueffall: `test_legacy_runtime_rejected_before_tools`
+- `tests/test_moss_tts.py:263`
+  Prueffall: `test_low_total_ram_blocks_even_in_conditional`
+- `tests/test_moss_tts.py:274`
+  Prueffall: `test_safety_documentation`
+
+## tests/test_musetalk_runtime.py
+
+- `tests/test_musetalk_runtime.py:45`
+  Prueffall: `test_plan_never_creates_directories_or_runs_commands`
+- `tests/test_musetalk_runtime.py:54`
+  Prueffall: `test_source_marker_is_not_runtime_success`
+- `tests/test_musetalk_runtime.py:63`
+  Prueffall: `test_source_upgrade_and_idempotence`
+- `tests/test_musetalk_runtime.py:75`
+  Prueffall: `test_failed_build_preserves_existing_sources_and_models`
+- `tests/test_musetalk_runtime.py:91`
+  Prueffall: `test_failed_first_install_removes_only_new_checkout`
+- `tests/test_musetalk_runtime.py:100`
+  Prueffall: `test_unmanaged_dependencies_are_never_overwritten`
+- `tests/test_musetalk_runtime.py:108`
+  Prueffall: `test_marker_write_failure_never_publishes_success`
+- `tests/test_musetalk_runtime.py:117`
+  Prueffall: `test_modified_environment_blocks_uninstall_before_source_removal`
+- `tests/test_musetalk_runtime.py:126`
+  Prueffall: `test_uninstall_preserves_models_outside_owned_environment`
+- `tests/test_musetalk_runtime.py:137`
+  Prueffall: `test_blackwell_preflight_rejects_without_download`
+- `tests/test_musetalk_runtime.py:144`
+  Prueffall: `test_low_disk_failure_is_logged_before_fetch_or_build`
+- `tests/test_musetalk_runtime.py:155`
+  Prueffall: `test_missing_python_noninteractive_requires_approval`
+- `tests/test_musetalk_runtime.py:161`
+  Prueffall: `test_build_installs_dependencies_without_models_or_entrypoint`
+- `tests/test_musetalk_runtime.py:177`
+  Prueffall: `test_gap_entrypoint_dispatches_runtime_and_keeps_source_opt_in`
+- `tests/test_musetalk_runtime.py:182`
+  Prueffall: `test_source_only_uninstall_cannot_orphan_python_environment`
+
+## tests/test_native_build_deps.py
+
+- `tests/test_native_build_deps.py:28`
+  Prueffall: `test_recipe_has_required_compilers_and_library_headers`
+- `tests/test_native_build_deps.py:34`
+  Prueffall: `test_installed_packages_are_idempotent_without_prompt_or_apt`
+- `tests/test_native_build_deps.py:40`
+  Prueffall: `test_noninteractive_missing_packages_fail_without_system_changes`
+- `tests/test_native_build_deps.py:49`
+  Prueffall: `test_interactive_decline_never_runs_apt`
+- `tests/test_native_build_deps.py:55`
+  Prueffall: `test_explicit_or_interactive_consent_installs_only_missing_build_packages`
+- `tests/test_native_build_deps.py:73`
+  Prueffall: `test_apt_failure_propagates_instead_of_starting_build`
+- `tests/test_native_build_deps.py:78`
+  Prueffall: `test_package_status_must_be_fully_installed`
+- `tests/test_native_build_deps.py:84`
+  Prueffall: `test_other_tools_cannot_enable_arbitrary_apt_packages`
+- `tests/test_native_build_deps.py:91`
+  Prueffall: `test_non_ubuntu_explicit_apt_is_refused_but_manual_build_is_allowed`
+- `tests/test_native_build_deps.py:98`
+  Prueffall: `test_dry_run_with_explicit_flag_does_not_prepare_anything`
+- `tests/test_native_build_deps.py:105`
+  Prueffall: `test_storage_failure_is_logged_before_dependency_install_and_fetch`
+- `tests/test_native_build_deps.py:125`
+  Prueffall: `test_rust_and_native_compilers_are_required_up_front`
+- `tests/test_native_build_deps.py:128`
+  Prueffall: `test_missing_cc_requires_consent_before_any_apt`
+- `tests/test_native_build_deps.py:134`
+  Prueffall: `test_existing_native_toolchain_never_installs_packages`
+- `tests/test_native_build_deps.py:141`
+  Prueffall: `test_consent_installs_only_native_build_dependencies`
+- `tests/test_native_build_deps.py:158`
+  Prueffall: `test_installed_packages_but_broken_path_fails_without_apt`
+- `tests/test_native_build_deps.py:164`
+  Prueffall: `test_unknown_package_override_is_rejected`
+- `tests/test_native_build_deps.py:170`
+  Prueffall: `test_refusal_stops_preflight_before_uv_or_source_download`
+
+## tests/test_native_build_process.py
+
+- `tests/test_native_build_process.py:21`
+  Prueffall: `test_output_and_success_status`
+- `tests/test_native_build_process.py:30`
+  Prueffall: `test_nonzero_exit_preserved`
+- `tests/test_native_build_process.py:36`
+  Prueffall: `test_timeout_reports_failure_and_terminates_child`
+- `tests/test_native_build_process.py:46`
+  Prueffall: `test_return_buffer_is_bounded`
+- `tests/test_native_build_process.py:52`
+  Prueffall: `test_timeout_terminates_spawned_build_child`
+- `tests/test_native_build_process.py:71`
+  Prueffall: `test_signal_is_reported_without_claiming_oom`
+
+## tests/test_native_cleanup.py
+
+- `tests/test_native_cleanup.py:44`
+  Prueffall: `test_readonly_cache_is_unlocked_before_removal_without_touching_source`
+- `tests/test_native_cleanup.py:66`
+  Prueffall: `test_rollback_removes_only_native_prefix_and_preserves_toolchain_and_data`
+- `tests/test_native_cleanup.py:78`
+  Prueffall: `test_non_native_root_is_refused`
+- `tests/test_native_cleanup.py:84`
+  Prueffall: `test_cache_symlink_target_is_never_chmodded_or_deleted`
+- `tests/test_native_cleanup.py:102`
+  Prueffall: `test_link_in_cache_root_is_refused_without_touching_external_tree`
+- `tests/test_native_cleanup.py:114`
+  Prueffall: `test_hardlinked_file_is_not_chmodded`
+- `tests/test_native_cleanup.py:128`
+  Prueffall: `test_rollback_failure_does_not_mask_original_build_error`
+- `tests/test_native_cleanup.py:145`
+  Prueffall: `test_build_failure_rolls_back_readonly_cache_without_losing_original_error`
+- `tests/test_native_cleanup.py:159`
+  Prueffall: `test_success_after_readonly_cache_cleanup_gets_a_valid_build_marker`
+
+## tests/test_native_coding_clis.py
+
+- `tests/test_native_coding_clis.py:36`
+  Prueffall: `test_catalog_fixed_full_pins_and_licenses`
+- `tests/test_native_coding_clis.py:50`
+  Prueffall: `test_default_plan_has_no_side_effects`
+- `tests/test_native_coding_clis.py:60`
+  Prueffall: `test_plan_overrides_every_action`
+- `tests/test_native_coding_clis.py:69`
+  Prueffall: `test_wrapper_matrix_quoted_and_no_scaffold`
+- `tests/test_native_coding_clis.py:80`
+  Prueffall: `test_legacy_data_root_default_plan_and_state`
+- `tests/test_native_coding_clis.py:89`
+  Prueffall: `test_dry_run_alias_overrides_all_wrapper_actions_on_windows`
+- `tests/test_native_coding_clis.py:98`
+  Prueffall: `test_roots_reject_repository_and_descendants_for_every_tool`
+- `tests/test_native_coding_clis.py:106`
+  Prueffall: `test_roots_reject_repository_data_from_environment`
+- `tests/test_native_coding_clis.py:110`
+  Prueffall: `test_roots_allow_external_sibling_without_prefix_false_positive`
+- `tests/test_native_coding_clis.py:115`
+  Prueffall: `test_repository_data_refused_before_any_lifecycle_action`
+- `tests/test_native_coding_clis.py:123`
+  Prueffall: `test_windows_actions_refused_before_path_handling`
+- `tests/test_native_coding_clis.py:130`
+  Prueffall: `test_environment_drops_credentials_and_hooks`
+- `tests/test_native_coding_clis.py:139`
+  Prueffall: `test_git_disables_hooks_credentials_and_file_transport`
+- `tests/test_native_coding_clis.py:146`
+  Prueffall: `test_preflight_restrictions`
+- `tests/test_native_coding_clis.py:163`
+  Prueffall: `test_lock_required_and_no_invented_hashes`
+- `tests/test_native_coding_clis.py:177`
+  Prueffall: `test_unknown_contract_refused`
+- `tests/test_native_coding_clis.py:186`
+  Prueffall: `test_wrong_origin_and_pin_refused`
+- `tests/test_native_coding_clis.py:192`
+  Prueffall: `test_cargo_locked_existing_toolchain`
+- `tests/test_native_coding_clis.py:202`
+  Prueffall: `test_cargo_wrong_toolchain_fails_before_build`
+- `tests/test_native_coding_clis.py:207`
+  Prueffall: `test_bun_frozen_real_build_and_prepared_dependencies`
+- `tests/test_native_coding_clis.py:217`
+  Prueffall: `test_bun_missing_prepared_dependencies_fails`
+- `tests/test_native_coding_clis.py:222`
+  Prueffall: `test_bun_version_mismatch`
+- `tests/test_native_coding_clis.py:227`
+  Prueffall: `test_aider_private_venv_hashed_wheel_no_dependency_resolution`
+- `tests/test_native_coding_clis.py:244`
+  Prueffall: `test_openhands_source_only_never_runs_build`
+- `tests/test_native_coding_clis.py:250`
+  Prueffall: `test_tree_hash_detects_sdk_changes`
+- `tests/test_native_coding_clis.py:256`
+  Prueffall: `test_guard_rejects_mocked_ancestor_symlink`
+- `tests/test_native_coding_clis.py:260`
+  Prueffall: `test_private_path_refuses_escape`
+- `tests/test_native_coding_clis.py:264`
+  Prueffall: `test_unowned_current_never_deactivated`
+- `tests/test_native_coding_clis.py:269`
+  Prueffall: `test_unsafe_current_targets_refused`
+- `tests/test_native_coding_clis.py:274`
+  Prueffall: `test_advisory_lock_contention_closes_descriptor`
+- `tests/test_native_coding_clis.py:282`
+  Prueffall: `test_aider_missing_lock_refused_before_creating_directories`
+- `tests/test_native_coding_clis.py:289`
+  Prueffall: `test_failed_build_retains_existing_activation`
+- `tests/test_native_coding_clis.py:302`
+  Prueffall: `test_install_reuses_verified_same_pin_without_build_prerequisites`
+- `tests/test_native_coding_clis.py:313`
+  Prueffall: `test_install_rejects_invalid_evidence_instead_of_rebuilding`
+- `tests/test_native_coding_clis.py:317`
+  Prueffall: `test_install_rechecks_evidence_after_build_preflight_race`
+- `tests/test_native_coding_clis.py:324`
+  Prueffall: `test_main_install_and_update_select_reuse_or_rebuild`
+- `tests/test_native_coding_clis.py:332`
+  Prueffall: `test_run_discards_build_output_and_sets_timeout`
+- `tests/test_native_coding_clis.py:342`
+  Prueffall: `test_run_metadata_is_bounded_without_pipe_buffers`
+- `tests/test_native_coding_clis.py:356`
+  Prueffall: `test_subprocess_failures_and_timeouts_are_redacted_and_do_not_activate`
+- `tests/test_native_coding_clis.py:378`
+  Prueffall: `test_sdk_source_prepare_records_false_readiness_before_activation`
+- `tests/test_native_coding_clis.py:409`
+  Prueffall: `test_absent_status_does_not_create_state`
+- `tests/test_native_coding_clis.py:419`
+  Prueffall: `test_uninstall_only_deactivates_owned_pointer`
+- `tests/test_native_coding_clis.py:431`
+  Prueffall: `test_source_and_built_states_integrity`
+- `tests/test_native_coding_clis.py:457`
+  Prueffall: `test_no_recursive_removal_or_legacy_cleanup`
+
+## tests/test_native_github_adapters.py
+
+- `tests/test_native_github_adapters.py:28`
+  Prueffall: `test_nocodb_changes_only_owned_configuration_and_private_generator`
+- `tests/test_native_github_adapters.py:44`
+  Prueffall: `test_nocodb_unknown_node_contract_is_rejected`
+- `tests/test_native_github_adapters.py:52`
+  Prueffall: `test_nocodb_build_avoids_server_start_and_installs_build_dependencies`
+- `tests/test_native_github_adapters.py:66`
+  Prueffall: `test_asset_is_verified_before_available_to_compiler`
+- `tests/test_native_github_adapters.py:75`
+  Prueffall: `test_wrong_asset_digest_or_size_never_creates_provenance`
+- `tests/test_native_github_adapters.py:86`
+  Prueffall: `test_unapproved_asset_and_redirect_host_are_rejected`
+- `tests/test_native_github_adapters.py:94`
+  Prueffall: `test_penpot_missing_sdk_fails_preflight_without_download`
+- `tests/test_native_github_adapters.py:100`
+  Prueffall: `test_penpot_wrong_rust_is_rejected_before_asset_download`
+- `tests/test_native_github_adapters.py:106`
+  Prueffall: `test_penpot_only_selects_existing_target_and_verified_local_asset`
+- `tests/test_native_github_adapters.py:119`
+  Prueffall: `test_pyairbyte_is_not_airbyte_core`
+- `tests/test_native_github_adapters.py:126`
+  Prueffall: `test_nocodb_manual_starter_defaults_to_help_and_rejects_unsafe_requests`
+- `tests/test_native_github_adapters.py:145`
+  Prueffall: `test_penpot_wrapper_calls_build_not_global_setup`
+
+## tests/test_native_github_tools.py
+
+- `tests/test_native_github_tools.py:49`
+  Prueffall: `test_inventory_has_53_paths_and_49_honest_build_recipes`
+- `tests/test_native_github_tools.py:60`
+  Prueffall: `test_every_plan_and_status_are_read_only`
+- `tests/test_native_github_tools.py:69`
+  Prueffall: `test_blocked_install_fails_and_logs_without_fetch_or_marker`
+- `tests/test_native_github_tools.py:82`
+  Prueffall: `test_platform_remainders_fail_before_any_build_or_download`
+- `tests/test_native_github_tools.py:94`
+  Prueffall: `test_rhasspy_blocker_is_specific_and_never_downloads_or_marks_installed`
+- `tests/test_native_github_tools.py:111`
+  Prueffall: `test_rhasspy_blocked_uninstall_preserves_legacy_data`
+- `tests/test_native_github_tools.py:123`
+  Prueffall: `test_rhasspy_legacy_inventory_pins_sources_without_claiming_runtime`
+- `tests/test_native_github_tools.py:143`
+  Prueffall: `test_rhasspy_doctor_is_offline_read_only_and_reports_missing_implementation`
+- `tests/test_native_github_tools.py:162`
+  Prueffall: `test_rhasspy_doctor_handles_unavailable_inventory_without_enabling_install`
+- `tests/test_native_github_tools.py:169`
+  Prueffall: `test_low_disk_fails_before_sources_and_keeps_legacy_data`
+- `tests/test_native_github_tools.py:182`
+  Prueffall: `test_success_and_second_install_are_idempotent`
+- `tests/test_native_github_tools.py:192`
+  Prueffall: `test_build_failure_removes_only_new_prefix`
+- `tests/test_native_github_tools.py:202`
+  Prueffall: `test_mosquitto_example_is_loopback_denies_anonymous_and_keeps_old_config`
+- `tests/test_native_github_tools.py:214`
+  Prueffall: `test_atomic_marker_failure_never_leaves_success`
+- `tests/test_native_github_tools.py:222`
+  Prueffall: `test_unmanaged_directory_is_preserved`
+- `tests/test_native_github_tools.py:230`
+  Prueffall: `test_added_files_block_uninstall`
+- `tests/test_native_github_tools.py:240`
+  Prueffall: `test_uninstall_does_not_touch_sibling_legacy_data`
+- `tests/test_native_github_tools.py:250`
+  Prueffall: `test_foreign_commit_is_rejected`
+- `tests/test_native_github_tools.py:256`
+  Prueffall: `test_unsafe_artifact_marker_is_rejected`
+- `tests/test_native_github_tools.py:265`
+  Prueffall: `test_all_build_kinds_only_compile_and_probe_in_fixtures`
+- `tests/test_native_github_tools.py:331`
+  Prueffall: `test_environment_excludes_credentials_and_blocks_container_fallback`
+- `tests/test_native_github_tools.py:343`
+  Prueffall: `test_every_lifecycle_wrapper_uses_native_dispatcher`
+- `tests/test_native_github_tools.py:351`
+  Prueffall: `test_registry_uses_build_markers_and_never_calls_blocked_recipe_ready`
+- `tests/test_native_github_tools.py:361`
+  Prueffall: `test_eol_archive_requires_explicit_ack_before_fetch`
+- `tests/test_native_github_tools.py:368`
+  Prueffall: `test_python_version_check_is_before_fetch_and_does_not_expose_keys`
+- `tests/test_native_github_tools.py:375`
+  Prueffall: `test_submodule_pin_mismatch_rolls_back_without_fetching_dependency`
+- `tests/test_native_github_tools.py:389`
+  Prueffall: `test_missing_pipeline_output_is_failure_not_source_only_success`
+- `tests/test_native_github_tools.py:398`
+  Prueffall: `test_every_recipe_declares_its_toolchain_without_key_errors`
+- `tests/test_native_github_tools.py:403`
+  Prueffall: `test_official_codeberg_exception_does_not_mark_a_clone_as_installed`
+
+## tests/test_native_go.py
+
+- `tests/test_native_go.py:30`
+  Prueffall: `test_all_versioned_go_recipes_have_matching_explicit_contracts`
+- `tests/test_native_go.py:40`
+  Prueffall: `test_kubeseal_contract_matches_pinned_recipe_without_controller_actions`
+- `tests/test_native_go.py:47`
+  Prueffall: `test_kubeseal_rejects_unreviewed_minimum_before_toolchain_selection`
+- `tests/test_native_go.py:56`
+  Prueffall: `test_kubeseal_missing_go_logs_repair_without_download_or_success`
+- `tests/test_native_go.py:71`
+  Prueffall: `test_kubeseal_prefers_suitable_existing_go_without_download`
+- `tests/test_native_go.py:78`
+  Prueffall: `test_kubeseal_approved_private_go_changes_only_build_environment`
+- `tests/test_native_go.py:99`
+  Prueffall: `test_version_contract_rejects_old_development_and_invalid_versions`
+- `tests/test_native_go.py:104`
+  Prueffall: `test_existing_suitable_go_never_downloads_or_changes_environment`
+- `tests/test_native_go.py:113`
+  Prueffall: `test_missing_or_old_go_requires_consent_before_download`
+- `tests/test_native_go.py:120`
+  Prueffall: `test_interactive_refusal_does_not_download`
+- `tests/test_native_go.py:126`
+  Prueffall: `test_explicit_consent_uses_existing_verified_bootstrap`
+- `tests/test_native_go.py:136`
+  Prueffall: `test_private_go_wrong_version_or_architecture_is_rejected`
+- `tests/test_native_go.py:143`
+  Prueffall: `test_build_phase_cannot_silently_download_go`
+- `tests/test_native_go.py:149`
+  Prueffall: `test_existing_private_go_updates_only_child_environment`
+- `tests/test_native_go.py:162`
+  Prueffall: `test_other_tools_do_not_trigger_go_download`
+- `tests/test_native_go.py:167`
+  Prueffall: `test_low_disk_fails_before_any_toolchain_or_source_download`
+- `tests/test_native_go.py:177`
+  Prueffall: `test_private_download_error_is_logged_without_build_success`
+- `tests/test_native_go.py:186`
+  Prueffall: `test_watchtower_contract_checks_go_mod_minimum_and_help_not_version`
+- `tests/test_native_go.py:194`
+  Prueffall: `test_watchtower_missing_go_logs_own_command_without_fetch_or_marker`
+- `tests/test_native_go.py:204`
+  Prueffall: `test_watchtower_suitable_existing_go_is_preferred`
+- `tests/test_native_go.py:209`
+  Prueffall: `test_watchtower_acceptance_activates_verified_private_go_only_for_child`
+- `tests/test_native_go.py:226`
+  Prueffall: `test_watchtower_dry_run_never_downloads_or_creates_workspace`
+- `tests/test_native_go.py:233`
+  Prueffall: `test_caddy_contract_uses_same_checked_go_minimum_and_version_only_probe`
+- `tests/test_native_go.py:240`
+  Prueffall: `test_caddy_refusal_is_logged_with_its_own_repair_command`
+- `tests/test_native_go.py:252`
+  Prueffall: `test_caddy_acceptance_validates_private_go_and_changes_only_child_path`
+- `tests/test_native_go.py:270`
+  Prueffall: `test_caddy_existing_suitable_go_never_downloads`
+- `tests/test_native_go.py:275`
+  Prueffall: `test_caddy_dry_run_flag_does_not_download_or_modify_workspace`
+- `tests/test_native_go.py:282`
+  Prueffall: `test_cadvisor_contract_matches_go_modules_and_asset_build`
+- `tests/test_native_go.py:291`
+  Prueffall: `test_cadvisor_refusal_logs_own_command_without_fetch_or_marker`
+- `tests/test_native_go.py:305`
+  Prueffall: `test_cadvisor_existing_go_avoids_bootstrap`
+- `tests/test_native_go.py:312`
+  Prueffall: `test_cadvisor_approval_validates_private_go_and_only_changes_child_path`
+- `tests/test_native_go.py:331`
+  Prueffall: `test_cadvisor_download_failure_never_fetches_sources_or_marks_success`
+- `tests/test_native_go.py:342`
+  Prueffall: `test_cadvisor_dry_run_never_downloads`
+- `tests/test_native_go.py:364`
+  Prueffall: `test_minio_version_contract_and_version_only_probe`
+- `tests/test_native_go.py:373`
+  Prueffall: `test_refusal_logs_minio_and_maintenance_warning_without_fetch`
+- `tests/test_native_go.py:388`
+  Prueffall: `test_existing_suitable_go_is_preferred`
+- `tests/test_native_go.py:395`
+  Prueffall: `test_approval_activates_private_go_without_parent_changes`
+- `tests/test_native_go.py:413`
+  Prueffall: `test_download_failure_never_fetches_sources_or_marks_success`
+- `tests/test_native_go.py:424`
+  Prueffall: `test_dry_run_never_downloads_or_creates_workspace`
+
+## tests/test_native_node.py
+
+- `tests/test_native_node.py:35`
+  Prueffall: `test_confirmation_retries_invalid_answer_and_flushes_prompt`
+- `tests/test_native_node.py:44`
+  Prueffall: `test_confirmation_logs_empty_declined_and_eof_separately`
+- `tests/test_native_node.py:53`
+  Prueffall: `test_confirmation_without_terminal_does_not_read`
+- `tests/test_native_node.py:63`
+  Prueffall: `test_libatomic_decline_logs_targeted_repair_without_apt`
+- `tests/test_native_node.py:76`
+  Prueffall: `test_libatomic_explicit_consent_repairs_and_rechecks_once`
+- `tests/test_native_node.py:91`
+  Prueffall: `test_status_and_unsupported_platform_never_repair`
+- `tests/test_native_node.py:103`
+  Prueffall: `test_unknown_loader_error_never_repairs`
+- `tests/test_native_node.py:110`
+  Prueffall: `test_interactive_libatomic_accept_and_decline`
+- `tests/test_native_node.py:128`
+  Prueffall: `test_loader_failure_removes_stage_and_never_marks_toolchain_ready`
+- `tests/test_native_node.py:145`
+  Prueffall: `test_failed_apt_does_not_retry_binary`
+- `tests/test_native_node.py:157`
+  Prueffall: `test_german_repo_prompt_has_public_default`
+- `tests/test_native_node.py:177`
+  Prueffall: `test_supported_node_versions_combine_app_and_pnpm_constraints`
+- `tests/test_native_node.py:183`
+  Prueffall: `test_missing_tools_need_consent_without_any_download`
+- `tests/test_native_node.py:190`
+  Prueffall: `test_interactive_decline_never_downloads`
+- `tests/test_native_node.py:197`
+  Prueffall: `test_existing_pair_is_preferred_and_corepack_network_disabled`
+- `tests/test_native_node.py:207`
+  Prueffall: `test_verified_bootstrap_and_full_inventory_reuse`
+- `tests/test_native_node.py:220`
+  Prueffall: `test_tampered_private_files_fail_without_redownload`
+- `tests/test_native_node.py:228`
+  Prueffall: `test_low_disk_aborts_before_download_and_staging`
+- `tests/test_native_node.py:236`
+  Prueffall: `test_download_failure_preserves_existing_data`
+- `tests/test_native_node.py:245`
+  Prueffall: `test_activate_updates_only_child_path_and_has_no_download`
+- `tests/test_native_node.py:256`
+  Prueffall: `test_dry_run_with_consent_does_not_create_workspace`
+- `tests/test_native_node.py:263`
+  Prueffall: `test_node_download_size_hash_and_host_are_checked`
+- `tests/test_native_node.py:277`
+  Prueffall: `test_foreign_or_insecure_redirect_is_blocked`
+- `tests/test_native_node.py:282`
+  Prueffall: `test_node_unpack_selects_only_regular_binary`
+- `tests/test_native_node.py:296`
+  Prueffall: `test_symlink_in_place_of_node_is_rejected`
+- `tests/test_native_node.py:306`
+  Prueffall: `test_extra_bootstrap_reserve_failure_is_logged_before_source_fetch`
+
+## tests/test_native_node_npm.py
+
+- `tests/test_native_node_npm.py:52`
+  Prueffall: `test_bootstrap_hash_reserve_reuse_and_child_environment`
+- `tests/test_native_node_npm.py:66`
+  Prueffall: `test_config_environment_drops_case_aliases_and_preserves_parent`
+- `tests/test_native_node_npm.py:76`
+  Prueffall: `test_existing_nonempty_config_is_never_overwritten`
+- `tests/test_native_node_npm.py:85`
+  Prueffall: `test_reuse_of_owned_empty_configs_is_idempotent`
+- `tests/test_native_node_npm.py:90`
+  Prueffall: `test_missing_pair_requires_consent`
+- `tests/test_native_node_npm.py:97`
+  Prueffall: `test_existing_pair_preferred`
+- `tests/test_native_node_npm.py:104`
+  Prueffall: `test_download_and_version_failure_leave_no_ready_marker`
+- `tests/test_native_node_npm.py:115`
+  Prueffall: `test_low_disk_never_downloads`
+- `tests/test_native_node_npm.py:122`
+  Prueffall: `test_tampered_cached_file_is_rejected`
+- `tests/test_native_node_npm.py:130`
+  Prueffall: `test_dry_run_never_prepares_node`
+- `tests/test_native_node_npm.py:137`
+  Prueffall: `test_only_node_red_contract_allowed`
+- `tests/test_native_node_npm.py:156`
+  Prueffall: `test_unpack_regular_files_and_portable_launcher`
+- `tests/test_native_node_npm.py:163`
+  Prueffall: `test_unpack_rejects_path_traversal`
+- `tests/test_native_node_npm.py:170`
+  Prueffall: `test_unpack_rejects_archive_links`
+- `tests/test_native_node_npm.py:186`
+  Prueffall: `test_preflight_defers_node_and_npm_to_private_bootstrap`
+
+## tests/test_native_status_and_build_deps.py
+
+- `tests/test_native_status_and_build_deps.py:24`
+  Prueffall: `test_markers_repair_both_files_and_deactivation_does_not_resurrect`
+- `tests/test_native_status_and_build_deps.py:48`
+  Prueffall: `test_no_legacy_import_for_existing_empty_primary`
+- `tests/test_native_status_and_build_deps.py:55`
+  Prueffall: `test_musetalk_source_only_does_not_resurrect_runtime_status`
+- `tests/test_native_status_and_build_deps.py:94`
+  Prueffall: `test_explicit_consent_installs_only_missing_packages`
+- `tests/test_native_status_and_build_deps.py:98`
+  Prueffall: `test_disabled_never_installs`
+- `tests/test_native_status_and_build_deps.py:102`
+  Prueffall: `test_noninteractive_default_does_not_install`
+- `tests/test_native_status_and_build_deps.py:106`
+  Prueffall: `test_package_failure_propagates`
+- `tests/test_native_status_and_build_deps.py:110`
+  Prueffall: `test_existing_rustup_path_is_recognized_without_install`
+
+## tests/test_native_tool_menu.py
+
+- `tests/test_native_tool_menu.py:43`
+  Prueffall: `test_all_native_recipes_are_really_selectable_with_dispatch_and_description`
+- `tests/test_native_tool_menu.py:60`
+  Prueffall: `test_registration_is_idempotent_and_preserves_existing_order_and_selection`
+- `tests/test_native_tool_menu.py:73`
+  Prueffall: `test_status_allowlist_and_direct_script_normalization_use_same_keys`
+- `tests/test_native_tool_menu.py:80`
+  Prueffall: `test_labels_preserve_blockers_and_ordering`
+- `tests/test_native_tool_menu.py:91`
+  Prueffall: `test_future_metadata_additions_are_registered_exactly_once_after_z`
+
+## tests/test_native_uv.py
+
+- `tests/test_native_uv.py:44`
+  Prueffall: `test_version_parser`
+- `tests/test_native_uv.py:49`
+  Prueffall: `test_existing_uv_preserves_parent_environment_and_never_downloads`
+- `tests/test_native_uv.py:60`
+  Prueffall: `test_missing_uv_requires_explicit_consent`
+- `tests/test_native_uv.py:67`
+  Prueffall: `test_broken_existing_uv_still_requires_consent`
+- `tests/test_native_uv.py:75`
+  Prueffall: `test_interactive_refusal`
+- `tests/test_native_uv.py:83`
+  Prueffall: `test_pinned_bootstrap_and_full_inventory_reuse`
+- `tests/test_native_uv.py:96`
+  Prueffall: `test_modified_cached_binary_is_not_activated`
+- `tests/test_native_uv.py:105`
+  Prueffall: `test_low_disk_aborts_before_download_or_staging`
+- `tests/test_native_uv.py:113`
+  Prueffall: `test_download_failure_cleans_only_new_staging`
+- `tests/test_native_uv.py:122`
+  Prueffall: `test_wrong_downloaded_version_has_no_marker`
+- `tests/test_native_uv.py:130`
+  Prueffall: `test_activate_only_changes_child_environment`
+- `tests/test_native_uv.py:143`
+  Prueffall: `test_unsupported_platform_does_not_download`
+- `tests/test_native_uv.py:150`
+  Prueffall: `test_recipe_uses_checkout_settings_and_supported_python`
+- `tests/test_native_uv.py:156`
+  Prueffall: `test_dry_run_with_consent_still_has_no_side_effects`
+- `tests/test_native_uv.py:165`
+  Prueffall: `test_incompatible_python_prevents_uv_download`
+- `tests/test_native_uv.py:185`
+  Prueffall: `test_incompatible_python_prevents_uv_download`
+- `tests/test_native_uv.py:196`
+  Prueffall: `test_recipe_uses_checkout_settings_and_supported_python`
+- `tests/test_native_uv.py:203`
+  Prueffall: `test_dry_run_with_consent_still_has_no_side_effects`
+- `tests/test_native_uv.py:212`
+  Prueffall: `test_messages_name_archivebox_not_searxng`
+- `tests/test_native_uv.py:221`
+  Prueffall: `test_unapproved_recipe_cannot_enable_private_uv`
+- `tests/test_native_uv.py:235`
+  Prueffall: `test_recipe_uses_checkout_settings_and_supported_python`
+- `tests/test_native_uv.py:243`
+  Prueffall: `test_dry_run_with_consent_still_has_no_side_effects`
+- `tests/test_native_uv.py:252`
+  Prueffall: `test_missing_uv_names_the_correct_tool_and_command`
+- `tests/test_native_uv.py:270`
+  Prueffall: `test_recipe_uses_checkout_settings_and_supported_python`
+- `tests/test_native_uv.py:279`
+  Prueffall: `test_dry_run_with_consent_still_has_no_side_effects`
+- `tests/test_native_uv.py:288`
+  Prueffall: `test_missing_uv_names_litellm_not_other_tools`
+
+## tests/test_notion_research.py
+
+- `tests/test_notion_research.py:48`
+  Prueffall: `test_ids_reject_urls_and_normalize`
+- `tests/test_notion_research.py:54`
+  Prueffall: `test_default_and_explicit_plan_do_not_fetch_or_write`
+- `tests/test_notion_research.py:64`
+  Prueffall: `test_cli_bounds_and_mutually_exclusive_actions`
+- `tests/test_notion_research.py:72`
+  Prueffall: `test_token_validation`
+- `tests/test_notion_research.py:77`
+  Prueffall: `test_request_fixed_host_version_timeout`
+- `tests/test_notion_research.py:87`
+  Prueffall: `test_write_routes_and_foreign_hosts_blocked`
+- `tests/test_notion_research.py:96`
+  Prueffall: `test_redirect_rejected`
+- `tests/test_notion_research.py:100`
+  Prueffall: `test_pagination_get_and_post`
+- `tests/test_notion_research.py:112`
+  Prueffall: `test_bad_and_repeated_cursors_abort`
+- `tests/test_notion_research.py:119`
+  Prueffall: `test_pagination_and_request_budgets`
+- `tests/test_notion_research.py:128`
+  Prueffall: `test_429_bounded_retry`
+- `tests/test_notion_research.py:139`
+  Prueffall: `test_retry_after_and_errors_do_not_leak_secrets`
+- `tests/test_notion_research.py:147`
+  Prueffall: `test_response_shape_json_and_size_limits`
+- `tests/test_notion_research.py:156`
+  Prueffall: `test_rich_text_and_titles`
+- `tests/test_notion_research.py:163`
+  Prueffall: `test_recursive_tree_and_cycle_budget`
+- `tests/test_notion_research.py:174`
+  Prueffall: `test_render_escape_code_and_unsupported_warning`
+- `tests/test_notion_research.py:185`
+  Prueffall: `test_missing_children_depth_and_block_limits`
+- `tests/test_notion_research.py:191`
+  Prueffall: `test_collect_search_filter_and_limits`
+- `tests/test_notion_research.py:202`
+  Prueffall: `test_publish_manifest_safe_names_and_separate_runs`
+- `tests/test_notion_research.py:221`
+  Prueffall: `test_duplicate_invalid_pages_leave_no_output`
+- `tests/test_notion_research.py:229`
+  Prueffall: `test_api_provenance_records_fetch_completion`
+- `tests/test_notion_research.py:236`
+  Prueffall: `test_repository_and_filesystem_root_rejected`
+- `tests/test_notion_research.py:241`
+  Prueffall: `test_failed_write_cleans_only_own_stage`
+- `tests/test_notion_research.py:250`
+  Prueffall: `test_snapshot_example_runs_without_client`
+- `tests/test_notion_research.py:257`
+  Prueffall: `test_fetch_failure_never_publishes`
+- `tests/test_notion_research.py:263`
+  Prueffall: `test_documentation_links_and_boundaries`
+
+## tests/test_online_services_docs.py
+
+- `tests/test_online_services_docs.py:13`
+  Prueffall: `test_provider_tables_have_consistent_official_website_columns`
+- `tests/test_online_services_docs.py:47`
+  Prueffall: `test_homepages_do_not_replace_warnings_or_api_credentials`
+- `tests/test_online_services_docs.py:65`
+  Prueffall: `test_all_local_links_resolve`
+- `tests/test_online_services_docs.py:71`
+  Prueffall: `test_index_and_move`
+- `tests/test_online_services_docs.py:81`
+  Prueffall: `test_key_guide_moved_and_menu_updated`
+- `tests/test_online_services_docs.py:93`
+  Prueffall: `test_guide_headings_are_outside_code_blocks`
+- `tests/test_online_services_docs.py:108`
+  Prueffall: `test_catalog_covers_declared_template_credentials`
+- `tests/test_online_services_docs.py:118`
+  Prueffall: `test_purpose_before_status`
+- `tests/test_online_services_docs.py:124`
+  Prueffall: `test_freellmapi_support_is_versioned_and_qualified`
+- `tests/test_online_services_docs.py:144`
+  Prueffall: `test_freellmapi_links_both_key_overviews`
+- `tests/test_online_services_docs.py:154`
+  Prueffall: `test_openrouter_examples_are_not_executed_or_enabled`
+
+## tests/test_openapi_servers.py
+
+- `tests/test_openapi_servers.py:28`
+  Prueffall: `test_registration_pins_six_wrappers_and_ports`
+- `tests/test_openapi_servers.py:43`
+  Prueffall: `test_plans_do_not_write_download_configure_or_start`
+- `tests/test_openapi_servers.py:51`
+  Prueffall: `test_runtime_build_is_time_only_wheel_locked_and_does_not_import_server`
+- `tests/test_openapi_servers.py:71`
+  Prueffall: `test_private_configuration_is_not_overwritten_or_printed`
+- `tests/test_openapi_servers.py:85`
+  Prueffall: `test_invalid_configs_and_wildcard_origins_fail`
+- `tests/test_openapi_servers.py:94`
+  Prueffall: `test_missing_configuration_blocks_start_without_exec`
+- `tests/test_openapi_servers.py:101`
+  Prueffall: `test_start_is_explicit_loopback_and_keeps_keys_out_of_args_and_environment`
+- `tests/test_openapi_servers.py:141`
+  Prueffall: `test_every_route_including_schema_requires_auth`
+- `tests/test_openapi_servers.py:150`
+  Prueffall: `test_dns_rebinding_and_unapproved_browser_origins_fail_closed`
+- `tests/test_openapi_servers.py:157`
+  Prueffall: `test_explicit_origin_preflight_and_authenticated_request`
+- `tests/test_openapi_servers.py:166`
+  Prueffall: `test_documentation_and_local_links`
+
+## tests/test_openhands_worker.py
+
+- `tests/test_openhands_worker.py:15`
+  Prueffall: `test_only_finished_is_success`
+- `tests/test_openhands_worker.py:25`
+  Prueffall: `test_sdk_exception_is_not_swallowed`
+
+## tests/test_openmontage.py
+
+- `tests/test_openmontage.py:45`
+  Prueffall: `test_missing_ensurepip_offers_matching_venv_without_fetch`
+- `tests/test_openmontage.py:60`
+  Prueffall: `test_approved_venv_repair_waits_for_apt_lock_and_rechecks`
+- `tests/test_openmontage.py:74`
+  Prueffall: `test_custom_python_never_triggers_system_apt_repair`
+- `tests/test_openmontage.py:83`
+  Prueffall: `test_plan_never_fetches_or_creates_files`
+- `tests/test_openmontage.py:90`
+  Prueffall: `test_install_core_records_actual_dependency_check`
+- `tests/test_openmontage.py:113`
+  Prueffall: `test_failed_import_rolls_back_new_source_and_environment`
+- `tests/test_openmontage.py:127`
+  Prueffall: `test_existing_source_survives_failed_venv`
+- `tests/test_openmontage.py:142`
+  Prueffall: `test_license_gate_before_package_actions_and_current_log`
+- `tests/test_openmontage.py:152`
+  Prueffall: `test_unmanaged_environment_never_replaced`
+- `tests/test_openmontage.py:159`
+  Prueffall: `test_marker_without_environment_not_installed`
+- `tests/test_openmontage.py:167`
+  Prueffall: `test_uninstall_preserves_sources_projects_and_unmanaged_modules`
+- `tests/test_openmontage.py:186`
+  Prueffall: `test_source_origin_pin_and_dirty_guard`
+- `tests/test_openmontage.py:194`
+  Prueffall: `test_remotion_missing_node_no_target_or_download`
+- `tests/test_openmontage.py:200`
+  Prueffall: `test_remotion_uses_ci_lock_and_disables_scripts`
+- `tests/test_openmontage.py:220`
+  Prueffall: `test_registry_menu_wrappers_and_native_status`
+- `tests/test_openmontage.py:235`
+  Prueffall: `test_docs_references_and_readiness_boundaries`
+
+## tests/test_operation_log.py
+
+- `tests/test_operation_log.py:38`
+  Prueffall: `test_linux_space_rejection_has_own_log_not_old_one`
+- `tests/test_operation_log.py:54`
+  Prueffall: `test_windows_space_rejection_is_logged`
+- `tests/test_operation_log.py:66`
+  Prueffall: `test_installer_output_appends_and_names_are_unique`
+- `tests/test_operation_log.py:79`
+  Prueffall: `test_missing_log_does_not_resolve_to_history`
+- `tests/test_operation_log.py:87`
+  Prueffall: `test_writer_failure_not_reported_as_success`
+- `tests/test_operation_log.py:96`
+  Prueffall: `test_child_failure_exit_code_preserved`
+- `tests/test_operation_log.py:100`
+  Prueffall: `test_failed_creation_clears_old_log_reference`
+- `tests/test_operation_log.py:113`
+  Prueffall: `test_begin_creates_log_before_preflight_and_runner_does_not_truncate`
+- `tests/test_operation_log.py:119`
+  Prueffall: `test_tool_name_is_highlighted_on_screen_but_plain_in_log`
+- `tests/test_operation_log.py:130`
+  Prueffall: `test_redirected_output_has_plain_tool_name`
+- `tests/test_operation_log.py:140`
+  Prueffall: `test_no_color_and_dumb_terminal_disable_forced_color`
+- `tests/test_operation_log.py:146`
+  Prueffall: `test_historical_log_without_tool_line_gets_colored_heading`
+- `tests/test_operation_log.py:159`
+  Prueffall: `test_non_tool_operations_are_not_mislabelled_and_unsafe_names_rejected`
+- `tests/test_operation_log.py:169`
+  Prueffall: `test_tool_label_stays_visible_when_log_tail_omits_header`
+- `tests/test_operation_log.py:181`
+  Prueffall: `test_live_history_and_post_action_views_use_tool_heading`
+- `tests/test_operation_log.py:185`
+  Prueffall: `test_native_installer_log_header_also_identifies_tool`
+
+## tests/test_p0_safety.py
+
+- `tests/test_p0_safety.py:90`
+  Prueffall: `test_backup_restore_recovers_index_worktree_untracked_ignored_and_commits`
+- `tests/test_p0_safety.py:103`
+  Prueffall: `test_sync_preserves_local_branch_and_untracked_files_and_is_idempotent`
+- `tests/test_p0_safety.py:117`
+  Prueffall: `test_untracked_target_collision_refuses_mutation`
+- `tests/test_p0_safety.py:125`
+  Prueffall: `test_disk_failure_never_reaches_checkout`
+- `tests/test_p0_safety.py:133`
+  Prueffall: `test_corrupt_archive_is_rejected_before_restore_target_creation`
+- `tests/test_p0_safety.py:142`
+  Prueffall: `test_existing_restore_target_is_never_overwritten`
+- `tests/test_p0_safety.py:147`
+  Prueffall: `test_backup_inside_checkout_is_rejected_without_lock_file`
+- `tests/test_p0_safety.py:153`
+  Prueffall: `test_credentialed_remote_is_refused_without_disclosing_value`
+- `tests/test_p0_safety.py:160`
+  Prueffall: `test_checkout_failure_retains_verified_snapshot`
+- `tests/test_p0_safety.py:175`
+  Prueffall: `test_cli_dry_run_creates_no_backup_or_lock`
+- `tests/test_p0_safety.py:184`
+  Prueffall: `test_archive_path_traversal_is_rejected`
+- `tests/test_p0_safety.py:189`
+  Prueffall: `test_apply_requires_confirmation_before_backup_or_checkout`
+- `tests/test_p0_safety.py:246`
+  Prueffall: `test_uninstall_retains_files_and_never_removes_volumes`
+- `tests/test_p0_safety.py:258`
+  Prueffall: `test_legacy_uninstall_requires_explicit_adoption`
+- `tests/test_p0_safety.py:266`
+  Prueffall: `test_dry_run_does_not_call_docker_or_change_status`
+- `tests/test_p0_safety.py:272`
+  Prueffall: `test_unsafe_tool_path_is_refused_before_side_effects`
+- `tests/test_p0_safety.py:277`
+  Prueffall: `test_wrong_owner_marker_is_refused`
+- `tests/test_p0_safety.py:282`
+  Prueffall: `test_docker_failure_does_not_clear_installed_status`
+- `tests/test_p0_safety.py:289`
+  Prueffall: `test_pat_never_appears_in_git_arguments_and_temp_files_are_cleaned`
+- `tests/test_p0_safety.py:316`
+  Prueffall: `test_bootstrap_dry_run_does_not_start_interactive_installer`
+- `tests/test_p0_safety.py:322`
+  Prueffall: `test_auth_tempfiles_are_removed_on_failure_exit`
+- `tests/test_p0_safety.py:334`
+  Prueffall: `test_symlink_escape_is_refused_before_docker`
+
+## tests/test_perplexity_mcp_node.py
+
+- `tests/test_perplexity_mcp_node.py:17`
+  Prueffall: `test_prepare_uses_approved_private_contract`
+- `tests/test_perplexity_mcp_node.py:23`
+  Prueffall: `test_dry_run_with_consent_is_readonly`
+- `tests/test_perplexity_mcp_node.py:31`
+  Prueffall: `test_refused_prerequisite_does_not_checkout_or_mark_installed`
+- `tests/test_perplexity_mcp_node.py:41`
+  Prueffall: `test_missing_pair_names_mcp_and_never_downloads_without_consent`
+- `tests/test_perplexity_mcp_node.py:50`
+  Prueffall: `test_bootstrap_private_configs_reserve_and_reuse`
+- `tests/test_perplexity_mcp_node.py:69`
+  Prueffall: `test_build_resolves_both_programs_from_private_child_path`
+
+## tests/test_perplexity_sdk_tools.py
+
+- `tests/test_perplexity_sdk_tools.py:21`
+  Prueffall: `test_assets_have_fixed_official_hosts_sizes_and_hashes`
+- `tests/test_perplexity_sdk_tools.py:29`
+  Prueffall: `test_refusal_prevents_download_or_slot_creation`
+- `tests/test_perplexity_sdk_tools.py:36`
+  Prueffall: `test_missing_tools_are_prepared_together_with_headroom`
+- `tests/test_perplexity_sdk_tools.py:49`
+  Prueffall: `test_bad_python_stops_before_toolchain_download`
+- `tests/test_perplexity_sdk_tools.py:55`
+  Prueffall: `test_activation_requires_existing_tools_and_private_home`
+- `tests/test_perplexity_sdk_tools.py:67`
+  Prueffall: `test_component_hash_failure_leaves_no_slot`
+- `tests/test_perplexity_sdk_tools.py:74`
+  Prueffall: `test_component_installs_once_and_is_reused`
+- `tests/test_perplexity_sdk_tools.py:96`
+  Prueffall: `test_pnpm_retains_complete_bundle_and_verifies_sidecars_on_reuse`
+- `tests/test_perplexity_sdk_tools.py:123`
+  Prueffall: `test_bad_pnpm_layout_never_runs_or_publishes_and_keeps_other_tools`
+- `tests/test_perplexity_sdk_tools.py:145`
+  Prueffall: `test_dry_run_with_consent_never_prepares`
+- `tests/test_perplexity_sdk_tools.py:153`
+  Prueffall: `test_heavy_build_streams_without_starting_a_bazel_server`
+- `tests/test_perplexity_sdk_tools.py:166`
+  Prueffall: `test_bazel_cache_is_external_and_artifacts_survive_temporary_cleanup`
+- `tests/test_perplexity_sdk_tools.py:204`
+  Prueffall: `test_failed_bazel_cleans_only_new_output_not_sources_or_toolchains`
+- `tests/test_perplexity_sdk_tools.py:225`
+  Prueffall: `test_foreign_bazel_output_is_not_copied_or_deleted`
+- `tests/test_perplexity_sdk_tools.py:242`
+  Prueffall: `test_global_bazelisk_is_not_invoked_for_discovery`
+
+## tests/test_perplexity_tooling_docs.py
+
+- `tests/test_perplexity_tooling_docs.py:14`
+  Prueffall: `test_corrected_primary_sources_are_explicit`
+- `tests/test_perplexity_tooling_docs.py:28`
+  Prueffall: `test_local_document_and_skill_links_resolve`
+- `tests/test_perplexity_tooling_docs.py:35`
+  Prueffall: `test_missing_artifacts_are_not_reported_as_generated`
+- `tests/test_perplexity_tooling_docs.py:43`
+  Prueffall: `test_navigation_and_action_boundaries`
+- `tests/test_perplexity_tooling_docs.py:52`
+  Prueffall: `test_tables_remain_consistent`
+
+## tests/test_personnel_documents.py
+
+- `tests/test_personnel_documents.py:26`
+  Prueffall: `test_metadata_always_needs_review`
+- `tests/test_personnel_documents.py:31`
+  Prueffall: `test_sensitive_and_unknown_fields_rejected`
+- `tests/test_personnel_documents.py:36`
+  Prueffall: `test_dates_and_types_rejected`
+- `tests/test_personnel_documents.py:42`
+  Prueffall: `test_absence_flag`
+- `tests/test_personnel_documents.py:46`
+  Prueffall: `test_opt_in_checked_before_file_or_network`
+- `tests/test_personnel_documents.py:54`
+  Prueffall: `test_cloud_model_refused_before_network`
+- `tests/test_personnel_documents.py:60`
+  Prueffall: `test_local_request_mock`
+- `tests/test_personnel_documents.py:74`
+  Prueffall: `test_bad_model_response_not_disclosed`
+- `tests/test_personnel_documents.py:88`
+  Prueffall: `test_redirect_blocked`
+- `tests/test_personnel_documents.py:92`
+  Prueffall: `test_large_input_refused`
+- `tests/test_personnel_documents.py:99`
+  Prueffall: `test_local_documentation_links`
+- `tests/test_personnel_documents.py:107`
+  Prueffall: `test_registry_and_compose`
+- `tests/test_personnel_documents.py:122`
+  Prueffall: `test_unencrypted_backup_excludes_hr_paths`
+- `tests/test_personnel_documents.py:161`
+  Prueffall: `test_plan_and_opt_in_no_side_effects`
+- `tests/test_personnel_documents.py:169`
+  Prueffall: `test_repeated_mock_install_and_preserving_uninstall`
+- `tests/test_personnel_documents.py:176`
+  Prueffall: `test_failed_pull_does_not_start`
+- `tests/test_personnel_documents.py:185`
+  Prueffall: `test_failed_ping_never_marks_success`
+
+## tests/test_personnel_install.py
+
+- `tests/test_personnel_install.py:45`
+  Prueffall: `test_plan_and_missing_status_are_read_only`
+- `tests/test_personnel_install.py:53`
+  Prueffall: `test_install_repeat_and_offline_launcher`
+- `tests/test_personnel_install.py:70`
+  Prueffall: `test_source_change_requires_explicit_update`
+- `tests/test_personnel_install.py:80`
+  Prueffall: `test_fixture_change_detected_and_repaired`
+- `tests/test_personnel_install.py:87`
+  Prueffall: `test_foreign_launcher_preserved`
+- `tests/test_personnel_install.py:94`
+  Prueffall: `test_modified_launcher_never_overwritten_or_deleted`
+- `tests/test_personnel_install.py:102`
+  Prueffall: `test_uninstall_preserves_source_and_own_files`
+- `tests/test_personnel_install.py:112`
+  Prueffall: `test_low_disk_blocks_before_writes`
+- `tests/test_personnel_install.py:117`
+  Prueffall: `test_bad_workspace_rejected`
+- `tests/test_personnel_install.py:122`
+  Prueffall: `test_lock_prevents_parallel_operation`
+- `tests/test_personnel_install.py:130`
+  Prueffall: `test_registry_and_wrapper_use_checkout_manager`
+
+## tests/test_pinokio.py
+
+- `tests/test_pinokio.py:16`
+  Prueffall: `test_registry_and_menu`
+- `tests/test_pinokio.py:33`
+  Prueffall: `test_docs_links`
+- `tests/test_pinokio.py:55`
+  Prueffall: `test_dry_run_and_checks_offline`
+- `tests/test_pinokio.py:64`
+  Prueffall: `test_noninteractive_deferred`
+- `tests/test_pinokio.py:69`
+  Prueffall: `test_confirmed_wait`
+- `tests/test_pinokio.py:79`
+  Prueffall: `test_default_no_browser_or_install`
+- `tests/test_pinokio.py:87`
+  Prueffall: `test_eof_deferred`
+- `tests/test_pinokio.py:91`
+  Prueffall: `test_browser_failure`
+- `tests/test_pinokio.py:98`
+  Prueffall: `test_explicit_browser_not_install`
+- `tests/test_pinokio.py:104`
+  Prueffall: `test_uninstall_does_not_delete`
+- `tests/test_pinokio.py:109`
+  Prueffall: `test_fixed_windows_browser_target`
+
+## tests/test_platform_gap_additions.py
+
+- `tests/test_platform_gap_additions.py:29`
+  Prueffall: `test_private_endpoints_and_listeners_reject_public_wildcard_and_credentials`
+- `tests/test_platform_gap_additions.py:42`
+  Prueffall: `test_only_get_inventory_no_prompts_model_names_or_invented_latency`
+- `tests/test_platform_gap_additions.py:57`
+  Prueffall: `test_bad_or_missing_inventory_is_not_reported_as_healthy_zero`
+- `tests/test_platform_gap_additions.py:70`
+  Prueffall: `test_redirects_and_oversized_numbers_are_rejected`
+- `tests/test_platform_gap_additions.py:82`
+  Prueffall: `test_production_quota_is_patch_not_duplicate_and_compose_has_real_local_limits`
+- `tests/test_platform_gap_additions.py:95`
+  Prueffall: `test_idle_tunnel_requires_secrets_access_and_has_no_public_service`
+- `tests/test_platform_gap_additions.py:109`
+  Prueffall: `test_policies_are_explicit_namespace_opt_in_and_do_not_trust_pod_skip_labels`
+- `tests/test_platform_gap_additions.py:122`
+  Prueffall: `test_gitops_uses_kustomize_not_compose_and_backups_are_paused_offsite`
+- `tests/test_platform_gap_additions.py:138`
+  Prueffall: `test_no_metrics_targets_are_enabled_by_default`
+- `tests/test_platform_gap_additions.py:143`
+  Prueffall: `test_every_native_manifest_tool_has_a_recovery_scenario`
+- `tests/test_platform_gap_additions.py:151`
+  Prueffall: `test_new_documentation_links_resolve`
+- `tests/test_platform_gap_additions.py:161`
+  Prueffall: `test_velero_renderer_never_applies_and_requires_real_digest_shapes`
+- `tests/test_platform_gap_additions.py:189`
+  Prueffall: `test_changed_shell_files_parse_without_execution`
+- `tests/test_platform_gap_additions.py:198`
+  Prueffall: `test_loading_dialog_has_translated_yes_no_for_all_ten_languages`
+- `tests/test_platform_gap_additions.py:238`
+  Prueffall: `test_language_pack_overrides_remain_compatible_and_do_not_leak_to_english`
+
+## tests/test_platform_health.py
+
+- `tests/test_platform_health.py:32`
+  Prueffall: `test_default_offline_never_executes_or_contacts_services`
+- `tests/test_platform_health.py:43`
+  Prueffall: `test_dry_run_overrides_runtime_and_metadata_paths`
+- `tests/test_platform_health.py:50`
+  Prueffall: `test_selected_success_is_not_global_acceptance`
+- `tests/test_platform_health.py:58`
+  Prueffall: `test_selected_failure_is_nonzero`
+- `tests/test_platform_health.py:64`
+  Prueffall: `test_unknown_probe_and_invalid_limits_rejected`
+- `tests/test_platform_health.py:71`
+  Prueffall: `test_missing_runtime_selection_remains_incomplete`
+- `tests/test_platform_health.py:75`
+  Prueffall: `test_p0_pin_failure`
+- `tests/test_platform_health.py:81`
+  Prueffall: `test_low_disk_is_p0`
+- `tests/test_platform_health.py:87`
+  Prueffall: `test_backup_freshness_is_not_restore_proof`
+- `tests/test_platform_health.py:97`
+  Prueffall: `test_stale_backup_fails`
+- `tests/test_platform_health.py:103`
+  Prueffall: `test_secret_metadata_never_reads_content`
+- `tests/test_platform_health.py:110`
+  Prueffall: `test_cli_is_fixed_bounded_and_output_not_logged`
+- `tests/test_platform_health.py:120`
+  Prueffall: `test_wireguard_link_down_is_not_healthy`
+- `tests/test_platform_health.py:125`
+  Prueffall: `test_http_status_redirect_body_limit_and_ollama_schema`
+- `tests/test_platform_health.py:143`
+  Prueffall: `test_http_failure_is_closed`
+- `tests/test_platform_health.py:150`
+  Prueffall: `test_http_wall_budget_expires`
+- `tests/test_platform_health.py:158`
+  Prueffall: `test_missing_or_moving_pin_is_rejected`
+- `tests/test_platform_health.py:168`
+  Prueffall: `test_evidence_symlinks_rejected`
+- `tests/test_platform_health.py:181`
+  Prueffall: `test_default_writes_nothing`
+- `tests/test_platform_health.py:186`
+  Prueffall: `test_fixture_has_checksum_evidence_not_production_acceptance`
+- `tests/test_platform_health.py:203`
+  Prueffall: `test_existing_report_not_overwritten`
+- `tests/test_platform_health.py:211`
+  Prueffall: `test_apply_without_fixture_rejected`
+- `tests/test_platform_health.py:215`
+  Prueffall: `test_dry_run_overrides_apply`
+- `tests/test_platform_health.py:219`
+  Prueffall: `test_restore_failure_has_no_success_evidence`
+- `tests/test_platform_health.py:226`
+  Prueffall: `test_real_restore_guard_preserved`
+- `tests/test_platform_health.py:234`
+  Prueffall: `test_generated_inventory_is_current_and_honest`
+
+## tests/test_platform_inventory.py
+
+- `tests/test_platform_inventory.py:22`
+  Prueffall: `test_all_real_registry_entries_are_present_and_not_runtime_tested`
+- `tests/test_platform_inventory.py:34`
+  Prueffall: `test_unknown_fields_are_not_invented_and_sources_not_promoted`
+- `tests/test_platform_inventory.py:44`
+  Prueffall: `test_declared_status_script_is_not_lost_or_executed`
+- `tests/test_platform_inventory.py:53`
+  Prueffall: `test_unsafe_script_paths_are_rejected_without_reading_them`
+- `tests/test_platform_inventory.py:59`
+  Prueffall: `test_duplicate_ids_are_not_silently_dropped`
+- `tests/test_platform_inventory.py:65`
+  Prueffall: `test_reads_only_registries_and_does_not_modify_them`
+- `tests/test_platform_inventory.py:79`
+  Prueffall: `test_markdown_escapes_table_cells`
+- `tests/test_platform_inventory.py:86`
+  Prueffall: `test_source_urls_remain_explicit_unverified_metadata`
+- `tests/test_platform_inventory.py:93`
+  Prueffall: `test_optional_profile_dependencies_are_preserved`
+
+## tests/test_platform_navigation.py
+
+- `tests/test_platform_navigation.py:31`
+  Prueffall: `test_compact_readme_preserves_legacy_navigation`
+- `tests/test_platform_navigation.py:80`
+  Prueffall: `test_historical_destructive_commands_are_archived_not_recommended`
+- `tests/test_platform_navigation.py:93`
+  Prueffall: `test_new_document_links_resolve`
+- `tests/test_platform_navigation.py:102`
+  Prueffall: `test_terminal_entry_and_fixed_document_targets`
+- `tests/test_platform_navigation.py:152`
+  Prueffall: `test_source_only_has_no_dialog_or_file_effects`
+- `tests/test_platform_navigation.py:158`
+  Prueffall: `test_cancel_and_escape_leave_without_opening_document`
+- `tests/test_platform_navigation.py:164`
+  Prueffall: `test_api_guide_opens_and_returns_through_both_levels`
+- `tests/test_platform_navigation.py:171`
+  Prueffall: `test_each_topic_can_open_and_return`
+- `tests/test_platform_navigation.py:180`
+  Prueffall: `test_unknown_selection_and_cross_topic_document_are_rejected`
+- `tests/test_platform_navigation.py:186`
+  Prueffall: `test_missing_document_reports_failure_without_opening`
+- `tests/test_platform_navigation.py:192`
+  Prueffall: `test_dialog_errors_are_not_converted_to_success`
+
+## tests/test_platform_operations.py
+
+- `tests/test_platform_operations.py:38`
+  Prueffall: `test_default_restore_plan_never_reads_data`
+- `tests/test_platform_operations.py:43`
+  Prueffall: `test_real_restore_without_explicit_data_approval_never_opens_backup`
+- `tests/test_platform_operations.py:48`
+  Prueffall: `test_fixture_really_copies_and_verifies_but_never_claims_runtime`
+- `tests/test_platform_operations.py:55`
+  Prueffall: `test_bad_archive_names_fail`
+- `tests/test_platform_operations.py:61`
+  Prueffall: `test_malformed_manifest_is_rejected_without_output`
+- `tests/test_platform_operations.py:71`
+  Prueffall: `test_restore_rejects_incomplete_and_link_archives_before_output`
+- `tests/test_platform_operations.py:89`
+  Prueffall: `test_hash_failure_retains_partial_without_success`
+- `tests/test_platform_operations.py:105`
+  Prueffall: `test_public_targets_root_user_and_injected_node_are_rejected`
+- `tests/test_platform_operations.py:114`
+  Prueffall: `test_node_requires_matching_name_ready_and_gpu`
+- `tests/test_platform_operations.py:122`
+  Prueffall: `test_ordered_health_gate_uses_pi_and_control_not_arbitrary_shell`
+- `tests/test_platform_operations.py:138`
+  Prueffall: `test_failed_ssh_never_advances_to_model_or_node`
+
+## tests/test_platform_review_examples.py
+
+- `tests/test_platform_review_examples.py:19`
+  Prueffall: `test_review_links_and_tables_are_valid`
+- `tests/test_platform_review_examples.py:38`
+  Prueffall: `test_production_gate_is_inactive_and_fails_closed`
+- `tests/test_platform_review_examples.py:52`
+  Prueffall: `test_baseline_has_least_privilege_and_no_secret_payload`
+- `tests/test_platform_review_examples.py:66`
+  Prueffall: `test_health_plan_never_invokes_curl`
+- `tests/test_platform_review_examples.py:74`
+  Prueffall: `test_mocked_local_health_rejects_redirects_without_external_requests`
+
+## tests/test_pr9_ci_repair.py
+
+- `tests/test_pr9_ci_repair.py:14`
+  Prueffall: `test_legacy_entrypoints_only_delegate_and_archives_refuse_execution`
+- `tests/test_pr9_ci_repair.py:25`
+  Prueffall: `test_scanner_is_source_pinned_and_build_failure_cannot_be_ignored`
+- `tests/test_pr9_ci_repair.py:36`
+  Prueffall: `test_both_scan_gates_remain_strict_and_secret_output_is_redacted`
+- `tests/test_pr9_ci_repair.py:48`
+  Prueffall: `test_native_new_members_have_labels_scripts_and_markers`
+- `tests/test_pr9_ci_repair.py:59`
+  Prueffall: `test_builder_plan_and_unapproved_build_never_run_tools_or_create_output`
+
+## tests/test_private_go.py
+
+- `tests/test_private_go.py:79`
+  Prueffall: `test_platform_mapping_and_pinned_archive_metadata`
+- `tests/test_private_go.py:97`
+  Prueffall: `test_download_checks_size_hash_and_only_official_url`
+- `tests/test_private_go.py:108`
+  Prueffall: `test_wrong_hash_short_and_oversize_downloads_fail`
+- `tests/test_private_go.py:116`
+  Prueffall: `test_timeout_uses_second_official_url_once`
+- `tests/test_private_go.py:126`
+  Prueffall: `test_dns_failure_is_explicit_and_bounded`
+- `tests/test_private_go.py:135`
+  Prueffall: `test_tls_and_http_auth_failures_are_terminal`
+- `tests/test_private_go.py:147`
+  Prueffall: `test_http_404_can_try_second_official_entry`
+- `tests/test_private_go.py:155`
+  Prueffall: `test_partial_read_failure_cleans_own_file_before_retry`
+- `tests/test_private_go.py:168`
+  Prueffall: `test_existing_download_target_never_overwritten`
+- `tests/test_private_go.py:176`
+  Prueffall: `test_redirect_allows_only_exact_official_archive_urls`
+- `tests/test_private_go.py:186`
+  Prueffall: `test_proxy_auto_direct_and_credential_rejection`
+- `tests/test_private_go.py:198`
+  Prueffall: `test_local_archive_is_verified_without_network`
+- `tests/test_private_go.py:211`
+  Prueffall: `test_relative_local_archive_is_refused`
+- `tests/test_private_go.py:215`
+  Prueffall: `test_network_error_is_sanitized`
+- `tests/test_private_go.py:222`
+  Prueffall: `test_full_disk_during_download_is_explicit_not_reported_as_network_error`
+- `tests/test_private_go.py:230`
+  Prueffall: `test_safe_tar_and_zip_extraction_preserves_contents`
+- `tests/test_private_go.py:246`
+  Prueffall: `test_archive_path_traversal_links_and_special_files_are_rejected`
+- `tests/test_private_go.py:261`
+  Prueffall: `test_zip_symlink_is_refused`
+- `tests/test_private_go.py:271`
+  Prueffall: `test_unpacked_limit_and_duplicate_files_are_refused`
+- `tests/test_private_go.py:281`
+  Prueffall: `test_bootstrap_publishes_only_verified_private_bundle`
+- `tests/test_private_go.py:292`
+  Prueffall: `test_reuse_verifies_all_files_without_network`
+- `tests/test_private_go.py:305`
+  Prueffall: `test_failed_validation_cleans_only_current_staging`
+- `tests/test_private_go.py:314`
+  Prueffall: `test_failed_download_or_marker_write_leaves_no_half_toolchain`
+- `tests/test_private_go.py:326`
+  Prueffall: `test_wrong_version_archive_is_not_activated`
+- `tests/test_private_go.py:333`
+  Prueffall: `test_low_disk_prevents_download`
+- `tests/test_private_go.py:341`
+  Prueffall: `test_unowned_private_directory_is_not_replaced`
+
+## tests/test_production_baseline.py
+
+- `tests/test_production_baseline.py:19`
+  Prueffall: `test_manifest_preflight_rejects_examples_and_unpinned_images`
+- `tests/test_production_baseline.py:25`
+  Prueffall: `test_monitoring_preflight_rejects_the_template`
+- `tests/test_production_baseline.py:29`
+  Prueffall: `test_dashboard_has_real_datasource_and_unique_panel_ids`
+- `tests/test_production_baseline.py:36`
+  Prueffall: `test_native_ollama_metrics_are_not_invented`
+- `tests/test_production_baseline.py:42`
+  Prueffall: `test_sops_is_fail_closed_and_does_not_contain_fake_ciphertext`
+- `tests/test_production_baseline.py:49`
+  Prueffall: `test_ci_actions_are_pinned_and_secret_scan_is_enforced`
+- `tests/test_production_baseline.py:60`
+  Prueffall: `test_runtime_boundaries`
+- `tests/test_production_baseline.py:153`
+  Prueffall: `test_dry_run_never_contacts_docker_or_restic`
+- `tests/test_production_baseline.py:158`
+  Prueffall: `test_success_restarts_previously_running_services`
+- `tests/test_production_baseline.py:166`
+  Prueffall: `test_restic_failure_still_restarts_services_and_fails`
+- `tests/test_production_baseline.py:173`
+  Prueffall: `test_env_is_not_executed`
+- `tests/test_production_baseline.py:181`
+  Prueffall: `test_unapproved_downtime_fails_before_docker`
+- `tests/test_production_baseline.py:188`
+  Prueffall: `test_insecure_env_permissions_fail`
+
+## tests/test_propainter.py
+
+- `tests/test_propainter.py:22`
+  Prueffall: `test_registry_source_and_no_runtime`
+- `tests/test_propainter.py:53`
+  Prueffall: `test_plan_and_status_no_creation`
+- `tests/test_propainter.py:63`
+  Prueffall: `test_doctor_missing_and_start_blocked`
+- `tests/test_propainter.py:68`
+  Prueffall: `test_runtime_opt_in_still_blocked`
+- `tests/test_propainter.py:73`
+  Prueffall: `test_license_gate_before_downloads`
+- `tests/test_propainter.py:82`
+  Prueffall: `test_plan_mentions_noncommercial_license`
+- `tests/test_propainter.py:87`
+  Prueffall: `test_license_acceptance_displays_full_text_first`
+- `tests/test_propainter.py:98`
+  Prueffall: `test_license_rejection_blank_and_invalid_fail_closed`
+- `tests/test_propainter.py:107`
+  Prueffall: `test_explicit_license_acceptance_still_displays_text`
+- `tests/test_propainter.py:115`
+  Prueffall: `test_explicit_license_rejection_does_not_prompt`
+- `tests/test_propainter.py:122`
+  Prueffall: `test_missing_license_cannot_be_accepted`
+- `tests/test_propainter.py:129`
+  Prueffall: `test_source_syntax_without_import`
+- `tests/test_propainter.py:141`
+  Prueffall: `test_foreign_source_preserved`
+- `tests/test_propainter.py:151`
+  Prueffall: `test_deactivate_preserves_files`
+- `tests/test_propainter.py:160`
+  Prueffall: `test_unsafe_root_rejected`
+- `tests/test_propainter.py:164`
+  Prueffall: `test_keys_not_inherited_by_installer_subshell`
+- `tests/test_propainter.py:177`
+  Prueffall: `test_cloud_and_gpu_limits_documented`
+- `tests/test_propainter.py:182`
+  Prueffall: `test_sparse_policy_on_unborn_repo`
+- `tests/test_propainter.py:191`
+  Prueffall: `test_real_local_sparse_checkout_excludes_env_and_media`
+
+## tests/test_pyannote_audio.py
+
+- `tests/test_pyannote_audio.py:23`
+  Prueffall: `test_registry_menu_and_pin`
+- `tests/test_pyannote_audio.py:37`
+  Prueffall: `test_cpu_pins_and_privacy`
+- `tests/test_pyannote_audio.py:52`
+  Prueffall: `test_document_links`
+- `tests/test_pyannote_audio.py:83`
+  Prueffall: `test_plan_status_no_creation`
+- `tests/test_pyannote_audio.py:94`
+  Prueffall: `test_doctor_missing_fails`
+- `tests/test_pyannote_audio.py:98`
+  Prueffall: `test_source_check_never_imports`
+- `tests/test_pyannote_audio.py:102`
+  Prueffall: `test_source_ready_not_runtime`
+- `tests/test_pyannote_audio.py:111`
+  Prueffall: `test_foreign_source_preserved`
+- `tests/test_pyannote_audio.py:121`
+  Prueffall: `test_wrong_release_tag_blocked`
+- `tests/test_pyannote_audio.py:130`
+  Prueffall: `test_heavy_opt_in_required`
+- `tests/test_pyannote_audio.py:135`
+  Prueffall: `test_mock_cpu_install_sequence`
+- `tests/test_pyannote_audio.py:152`
+  Prueffall: `test_mock_failure_no_runtime_marker`
+- `tests/test_pyannote_audio.py:167`
+  Prueffall: `test_deactivation_preserves_audio_and_source`
+- `tests/test_pyannote_audio.py:179`
+  Prueffall: `test_start_and_unsafe_path_blocked`
+
+## tests/test_queue_safety.py
+
+- `tests/test_queue_safety.py:44`
+  Prueffall: `test_status_does_not_create_anything`
+- `tests/test_queue_safety.py:49`
+  Prueffall: `test_status_never_executes_config_or_prints_commands`
+- `tests/test_queue_safety.py:60`
+  Prueffall: `test_failed_worker_lock_never_runs_job`
+- `tests/test_queue_safety.py:67`
+  Prueffall: `test_invalid_priority_rejected_before_sqlite`
+- `tests/test_queue_safety.py:75`
+  Prueffall: `test_cancel_only_marks_waiting_jobs`
+- `tests/test_queue_safety.py:88`
+  Prueffall: `test_timeouts_escalate_and_do_not_inherit_locks`
+- `tests/test_queue_safety.py:94`
+  Prueffall: `test_multiline_commands_do_not_inject_rows`
+- `tests/test_queue_safety.py:101`
+  Prueffall: `test_tsv_pause_resume_exit_code_and_submit_routing`
+- `tests/test_queue_safety.py:116`
+  Prueffall: `test_sqlite_migration_preserves_data_and_records_exit_code`
+- `tests/test_queue_safety.py:156`
+  Prueffall: `test_all_entrypoint_dry_runs_are_write_free`
+- `tests/test_queue_safety.py:163`
+  Prueffall: `test_parallel_workers_and_submit_during_running_job`
+
+## tests/test_qwen3_tts.py
+
+- `tests/test_qwen3_tts.py:23`
+  Prueffall: `test_source_contract`
+- `tests/test_qwen3_tts.py:44`
+  Prueffall: `test_dependency_order_and_scope`
+- `tests/test_qwen3_tts.py:57`
+  Prueffall: `test_menu_doc_links`
+- `tests/test_qwen3_tts.py:80`
+  Prueffall: `test_dry_run_no_files`
+- `tests/test_qwen3_tts.py:88`
+  Prueffall: `test_python_dependency_decisions`
+- `tests/test_qwen3_tts.py:117`
+  Prueffall: `test_read_only_actions_never_prepare_dependencies`
+- `tests/test_qwen3_tts.py:124`
+  Prueffall: `test_status_missing`
+- `tests/test_qwen3_tts.py:132`
+  Prueffall: `test_api_actions_rejected`
+- `tests/test_qwen3_tts.py:136`
+  Prueffall: `test_bad_root`
+- `tests/test_qwen3_tts.py:141`
+  Prueffall: `test_foreign_source_preserved`
+- `tests/test_qwen3_tts.py:151`
+  Prueffall: `test_missing_sdk_layout_rejected`
+- `tests/test_qwen3_tts.py:161`
+  Prueffall: `test_expected_subdirectory_accepted`
+- `tests/test_qwen3_tts.py:170`
+  Prueffall: `test_foreign_venv_rejected`
+- `tests/test_qwen3_tts.py:178`
+  Prueffall: `test_system_site_packages_rejected`
+- `tests/test_qwen3_tts.py:187`
+  Prueffall: `test_key_environment_not_inherited`
+- `tests/test_qwen3_tts.py:201`
+  Prueffall: `test_mock_package_build_targets_client_only`
+- `tests/test_qwen3_tts.py:228`
+  Prueffall: `test_failed_package_build_clears_marker`
+- `tests/test_qwen3_tts.py:241`
+  Prueffall: `test_deactivation_keeps_data`
+- `tests/test_qwen3_tts.py:250`
+  Prueffall: `test_runtime_requires_heavy_opt_in`
+- `tests/test_qwen3_tts.py:255`
+  Prueffall: `test_runtime_requires_existing_torch`
+- `tests/test_qwen3_tts.py:260`
+  Prueffall: `test_runtime_constraints_are_passed_and_pip_checked`
+
+## tests/test_qwen_code.py
+
+- `tests/test_qwen_code.py:15`
+  Prueffall: `test_registry_and_menu`
+- `tests/test_qwen_code.py:30`
+  Prueffall: `test_build_contract`
+- `tests/test_qwen_code.py:44`
+  Prueffall: `test_success_marker_and_preservation`
+- `tests/test_qwen_code.py:52`
+  Prueffall: `test_free_router_revision`
+- `tests/test_qwen_code.py:58`
+  Prueffall: `test_documentation_links`
+- `tests/test_qwen_code.py:67`
+  Prueffall: `test_ram_budget`
+- `tests/test_qwen_code.py:76`
+  Prueffall: `test_resource_guards`
+- `tests/test_qwen_code.py:129`
+  Prueffall: `test_missing_tools_prepared_once`
+- `tests/test_qwen_code.py:135`
+  Prueffall: `test_compatible_runtime_untouched`
+- `tests/test_qwen_code.py:140`
+  Prueffall: `test_only_missing_cache_is_prepared`
+- `tests/test_qwen_code.py:146`
+  Prueffall: `test_opt_out`
+- `tests/test_qwen_code.py:151`
+  Prueffall: `test_node_failure_stops_tools`
+- `tests/test_qwen_code.py:156`
+  Prueffall: `test_corepack_failure_stops_cache`
+- `tests/test_qwen_code.py:161`
+  Prueffall: `test_cache_failure_stops`
+- `tests/test_qwen_code.py:166`
+  Prueffall: `test_check_never_installs`
+- `tests/test_qwen_code.py:171`
+  Prueffall: `test_dry_run_no_install`
+- `tests/test_qwen_code.py:176`
+  Prueffall: `test_cache_and_prefix_contract`
+
+## tests/test_qwen_desktop.py
+
+- `tests/test_qwen_desktop.py:18`
+  Prueffall: `test_registry_and_unique_menu_key`
+- `tests/test_qwen_desktop.py:33`
+  Prueffall: `test_local_links_and_prior_candidate_docs`
+- `tests/test_qwen_desktop.py:45`
+  Prueffall: `test_profile_optional`
+- `tests/test_qwen_desktop.py:52`
+  Prueffall: `test_model_catalog_and_refinement_stay_inactive`
+- `tests/test_qwen_desktop.py:67`
+  Prueffall: `test_shell_guards_no_installation`
+- `tests/test_qwen_desktop.py:90`
+  Prueffall: `test_confirmed_prompt_opens_mock_only`
+- `tests/test_qwen_desktop.py:102`
+  Prueffall: `test_pause_eof_or_declined_completion_is_deferred`
+- `tests/test_qwen_desktop.py:112`
+  Prueffall: `test_browser_failure_stops_before_confirmation`
+- `tests/test_qwen_desktop.py:121`
+  Prueffall: `test_menu_manual_completion_not_registered_as_verified`
+- `tests/test_qwen_desktop.py:128`
+  Prueffall: `test_default_no_and_noninteractive_never_open`
+- `tests/test_qwen_desktop.py:145`
+  Prueffall: `test_explicit_option_dispatches_mock`
+- `tests/test_qwen_desktop.py:154`
+  Prueffall: `test_read_only_and_uninstall_never_open`
+- `tests/test_qwen_desktop.py:162`
+  Prueffall: `test_wsl_fixed_url_via_mock_powershell`
+- `tests/test_qwen_desktop.py:172`
+  Prueffall: `test_mock_fallback_and_failure`
+- `tests/test_qwen_desktop.py:198`
+  Prueffall: `test_plan_only`
+- `tests/test_qwen_desktop.py:205`
+  Prueffall: `test_bad_hash_stops`
+- `tests/test_qwen_desktop.py:213`
+  Prueffall: `test_unsigned_fixture_stops_without_execution`
+
+## tests/test_qwen_desktop_study.py
+
+- `tests/test_qwen_desktop_study.py:18`
+  Prueffall: `test_plan_and_absent_status_are_read_only`
+- `tests/test_qwen_desktop_study.py:29`
+  Prueffall: `test_separate_build_sources_and_proof`
+- `tests/test_qwen_desktop_study.py:59`
+  Prueffall: `test_failed_build_keeps_development_but_no_success_marker`
+- `tests/test_qwen_desktop_study.py:71`
+  Prueffall: `test_existing_development_is_never_overwritten`
+- `tests/test_qwen_desktop_study.py:83`
+  Prueffall: `test_uninstall_blocks_development_data`
+- `tests/test_qwen_desktop_study.py:92`
+  Prueffall: `test_build_space_preflight_precedes_checkout`
+- `tests/test_qwen_desktop_study.py:98`
+  Prueffall: `test_paths_cannot_escape_development`
+
+## tests/test_qwen_tooling_docs.py
+
+- `tests/test_qwen_tooling_docs.py:12`
+  Prueffall: `test_corrected_sources_and_retrieval_gaps`
+- `tests/test_qwen_tooling_docs.py:29`
+  Prueffall: `test_local_links_resolve`
+- `tests/test_qwen_tooling_docs.py:34`
+  Prueffall: `test_actual_inline_artifacts_are_distinguished_from_execution`
+- `tests/test_qwen_tooling_docs.py:42`
+  Prueffall: `test_navigation_from_existing_qwen_tools`
+- `tests/test_qwen_tooling_docs.py:48`
+  Prueffall: `test_review_boundaries_and_tables`
+
+## tests/test_rag_compliance_review.py
+
+- `tests/test_rag_compliance_review.py:22`
+  Prueffall: `test_national_directory_lists_every_country_once_with_status`
+- `tests/test_rag_compliance_review.py:35`
+  Prueffall: `test_worldwide_coverage_is_195_entries_not_195_completed_legal_reviews`
+- `tests/test_rag_compliance_review.py:48`
+  Prueffall: `test_doctor_never_gives_legal_approval`
+- `tests/test_rag_compliance_review.py:57`
+  Prueffall: `test_review_age_is_overdue_at_30_days_and_future_dates_not_fresh`
+- `tests/test_rag_compliance_review.py:63`
+  Prueffall: `test_voluntary_frameworks_and_historical_bills_are_not_laws`
+- `tests/test_rag_compliance_review.py:72`
+  Prueffall: `test_rag_assessment_names_missing_evidence_without_releasing_execution`
+- `tests/test_rag_compliance_review.py:79`
+  Prueffall: `test_all_checked_boxes_still_require_human_review`
+- `tests/test_rag_compliance_review.py:87`
+  Prueffall: `test_unknown_jurisdiction_is_visible_without_echoing_input`
+- `tests/test_rag_compliance_review.py:94`
+  Prueffall: `test_schema_rejects_free_text_pii_and_non_boolean_control_values`
+- `tests/test_rag_compliance_review.py:104`
+  Prueffall: `test_external_employment_and_media_features_raise_review_topics`
+- `tests/test_rag_compliance_review.py:113`
+  Prueffall: `test_deletion_is_always_a_plan_respecting_holds_and_missing_stores`
+- `tests/test_rag_compliance_review.py:121`
+  Prueffall: `test_deletion_rejects_duplicate_stores_negative_and_bool_counts`
+- `tests/test_rag_compliance_review.py:132`
+  Prueffall: `test_audit_fixture_is_consistent_but_not_authenticated`
+- `tests/test_rag_compliance_review.py:139`
+  Prueffall: `test_audit_payload_and_timestamp_tampering_are_detected`
+- `tests/test_rag_compliance_review.py:145`
+  Prueffall: `test_audit_tail_removal_needs_an_independent_comparison`
+- `tests/test_rag_compliance_review.py:154`
+  Prueffall: `test_rehashing_is_not_an_authenticity_proof`
+- `tests/test_rag_compliance_review.py:166`
+  Prueffall: `test_canonical_hash_is_independent_of_mapping_insertion_order`
+- `tests/test_rag_compliance_review.py:170`
+  Prueffall: `test_unknown_audit_fields_and_partial_anchor_are_rejected`
+- `tests/test_rag_compliance_review.py:178`
+  Prueffall: `test_empty_audit_without_anchor_is_not_reported_consistent`
+- `tests/test_rag_compliance_review.py:183`
+  Prueffall: `test_duplicate_json_fields_and_nonstandard_numbers_are_rejected`
+- `tests/test_rag_compliance_review.py:191`
+  Prueffall: `test_file_size_limit_and_read_only_cli`
+- `tests/test_rag_compliance_review.py:207`
+  Prueffall: `test_menu_wrapper_docs_and_profiles_link_to_review_without_install`
+- `tests/test_rag_compliance_review.py:224`
+  Prueffall: `test_temporal_half_open_boundaries_and_historical_repealed_version`
+- `tests/test_rag_compliance_review.py:232`
+  Prueffall: `test_temporal_knowledge_date_and_future_validity_never_broaden`
+- `tests/test_rag_compliance_review.py:239`
+  Prueffall: `test_temporal_pending_metadata_and_malformed_intervals_fail_closed`
+- `tests/test_rag_compliance_review.py:250`
+  Prueffall: `test_temporal_duplicate_ids_rejected_and_multijurisdiction_is_not_conflict`
+- `tests/test_rag_compliance_review.py:262`
+  Prueffall: `test_temporal_cli_and_source_inventory`
+- `tests/test_rag_compliance_review.py:274`
+  Prueffall: `test_architecture_diagram_uses_quoted_labels_and_has_text_fallback`
+- `tests/test_rag_compliance_review.py:286`
+  Prueffall: `test_all_local_legal_documentation_links_exist`
+
+## tests/test_rea_source.py
+
+- `tests/test_rea_source.py:55`
+  Prueffall: `test_plan_is_read_only_and_does_not_fetch`
+- `tests/test_rea_source.py:60`
+  Prueffall: `test_default_installs_source_only_not_runtime`
+- `tests/test_rea_source.py:70`
+  Prueffall: `test_update_keeps_same_pin_without_build`
+- `tests/test_rea_source.py:78`
+  Prueffall: `test_invalid_source_does_not_create_marker`
+- `tests/test_rea_source.py:86`
+  Prueffall: `test_build_requires_second_opt_in_before_fetch`
+- `tests/test_rea_source.py:93`
+  Prueffall: `test_failed_build_clears_success_marker_and_logs_failure`
+- `tests/test_rea_source.py:104`
+  Prueffall: `test_build_commands_are_bounded_and_no_setup_is_run`
+- `tests/test_rea_source.py:126`
+  Prueffall: `test_uninstall_preserves_source_and_manual_configuration`
+- `tests/test_rea_source.py:137`
+  Prueffall: `test_low_disk_failure_logged_before_any_fetch`
+- `tests/test_rea_source.py:146`
+  Prueffall: `test_disk_guard`
+- `tests/test_rea_source.py:152`
+  Prueffall: `test_lock_prevents_parallel_operations`
+- `tests/test_rea_source.py:159`
+  Prueffall: `test_failed_marker_write_is_not_installed`
+- `tests/test_rea_source.py:167`
+  Prueffall: `test_foreign_marker_is_preserved`
+- `tests/test_rea_source.py:174`
+  Prueffall: `test_repo_workspace_rejected`
+- `tests/test_rea_source.py:179`
+  Prueffall: `test_fetch_pin_and_staging_cleanup`
+- `tests/test_rea_source.py:187`
+  Prueffall: `test_registry_menu_and_doc_links`
+
+## tests/test_registry_catalog.py
+
+- `tests/test_registry_catalog.py:41`
+  Prueffall: `test_default_checks_only_and_write_is_idempotent`
+- `tests/test_registry_catalog.py:52`
+  Prueffall: `test_legacy_maturity_is_not_runtime_readiness`
+- `tests/test_registry_catalog.py:58`
+  Prueffall: `test_evidence_binds_identity_pin_platform_scope_and_log`
+- `tests/test_registry_catalog.py:80`
+  Prueffall: `test_bad_registry_blocks_generation`
+- `tests/test_registry_catalog.py:87`
+  Prueffall: `test_registry_wrapper_propagates_child_failure`
+- `tests/test_registry_catalog.py:105`
+  Prueffall: `test_setup_dry_run_precedes_any_workspace_helpers`
+
+## tests/test_repository_audit.py
+
+- `tests/test_repository_audit.py:37`
+  Prueffall: `test_minimal_registry_and_legacy_hints`
+- `tests/test_repository_audit.py:42`
+  Prueffall: `test_registry_file_and_directory_case_are_exact_on_every_platform`
+- `tests/test_repository_audit.py:54`
+  Prueffall: `test_real_registry_paths_have_no_errors_with_exact_case`
+- `tests/test_repository_audit.py:60`
+  Prueffall: `test_duplicate_ids_fail`
+- `tests/test_repository_audit.py:63`
+  Prueffall: `test_invalid_status_and_boolean_fail_without_crash`
+- `tests/test_repository_audit.py:69`
+  Prueffall: `test_unknown_and_malformed_references`
+- `tests/test_repository_audit.py:75`
+  Prueffall: `test_invalid_ports_and_duplicates`
+- `tests/test_repository_audit.py:80`
+  Prueffall: `test_paths_cannot_escape_and_directories_are_not_scripts`
+- `tests/test_repository_audit.py:86`
+  Prueffall: `test_source_scope_and_pin`
+- `tests/test_repository_audit.py:93`
+  Prueffall: `test_credential_values_are_never_reported`
+- `tests/test_repository_audit.py:99`
+  Prueffall: `test_parse_errors_do_not_echo_content`
+- `tests/test_repository_audit.py:107`
+  Prueffall: `test_links_ignore_code_urls_and_anchors`
+- `tests/test_repository_audit.py:115`
+  Prueffall: `test_link_case_and_missing_and_fences`
+- `tests/test_repository_audit.py:124`
+  Prueffall: `test_python_parse_never_executes`
+- `tests/test_repository_audit.py:133`
+  Prueffall: `test_personal_windows_links_are_not_treated_as_web_urls`
+
+## tests/test_ruflo_source_docs.py
+
+- `tests/test_ruflo_source_docs.py:13`
+  Prueffall: `test_user_sources_and_retrieval_limits`
+- `tests/test_ruflo_source_docs.py:22`
+  Prueffall: `test_existing_registry_and_wrapper_match_documentation`
+- `tests/test_ruflo_source_docs.py:32`
+  Prueffall: `test_local_links_and_navigation`
+- `tests/test_ruflo_source_docs.py:39`
+  Prueffall: `test_legacy_behavior_not_claimed_private_or_pinned`
+- `tests/test_ruflo_source_docs.py:45`
+  Prueffall: `test_markdown_tables`
+
+## tests/test_script_quality.py
+
+- `tests/test_script_quality.py:47`
+  Prueffall: `test_dry_run_is_write_free_and_does_not_resolve_runtime`
+- `tests/test_script_quality.py:56`
+  Prueffall: `test_missing_status_and_doctor_are_read_only`
+- `tests/test_script_quality.py:65`
+  Prueffall: `test_install_update_check_and_uninstall_each_tool`
+- `tests/test_script_quality.py:83`
+  Prueffall: `test_failed_new_install_rolls_back_source_and_keeps_current_log`
+- `tests/test_script_quality.py:99`
+  Prueffall: `test_existing_unregistered_source_is_not_removed_on_failure`
+- `tests/test_script_quality.py:111`
+  Prueffall: `test_modified_source_refuses_uninstall_and_retains_marker`
+- `tests/test_script_quality.py:120`
+  Prueffall: `test_missing_runtime_is_logged_before_download`
+- `tests/test_script_quality.py:129`
+  Prueffall: `test_low_disk_is_logged_without_fetch`
+- `tests/test_script_quality.py:140`
+  Prueffall: `test_source_delete_does_not_require_runtime`
+- `tests/test_script_quality.py:146`
+  Prueffall: `test_syntax_checks_parse_only_and_do_not_inherit_api_keys`
+- `tests/test_script_quality.py:165`
+  Prueffall: `test_registry_menu_wrappers_and_markers_agree`
+- `tests/test_script_quality.py:180`
+  Prueffall: `test_workspace_rejects_repository_and_relative_paths`
+- `tests/test_script_quality.py:185`
+  Prueffall: `test_explicit_runtime_selection`
+- `tests/test_script_quality.py:192`
+  Prueffall: `test_windows_wsl_launcher_is_rejected_without_execution`
+
+## tests/test_sdnext.py
+
+- `tests/test_sdnext.py:23`
+  Prueffall: `test_contract`
+- `tests/test_sdnext.py:41`
+  Prueffall: `test_docs_menu`
+- `tests/test_sdnext.py:65`
+  Prueffall: `test_dry_run_no_creation`
+- `tests/test_sdnext.py:73`
+  Prueffall: `test_missing_ensurepip_without_consent`
+- `tests/test_sdnext.py:86`
+  Prueffall: `test_explicit_consent_installs_matching_package_and_rechecks`
+- `tests/test_sdnext.py:97`
+  Prueffall: `test_package_failure_stops`
+- `tests/test_sdnext.py:109`
+  Prueffall: `test_custom_interpreter_not_repaired_with_apt`
+- `tests/test_sdnext.py:120`
+  Prueffall: `test_working_python_needs_no_packages`
+- `tests/test_sdnext.py:130`
+  Prueffall: `test_package_success_without_ensurepip_still_fails`
+- `tests/test_sdnext.py:142`
+  Prueffall: `test_dependency_preparation_after_guard_and_log_before_clone`
+- `tests/test_sdnext.py:150`
+  Prueffall: `test_status_no_install`
+- `tests/test_sdnext.py:159`
+  Prueffall: `test_doctor_missing`
+- `tests/test_sdnext.py:162`
+  Prueffall: `test_start_blocked`
+- `tests/test_sdnext.py:166`
+  Prueffall: `test_bad_path`
+- `tests/test_sdnext.py:169`
+  Prueffall: `test_repo_path_rejected`
+- `tests/test_sdnext.py:172`
+  Prueffall: `test_foreign_source_preserved`
+- `tests/test_sdnext.py:182`
+  Prueffall: `test_syntax_check_no_import_and_venv_reuse`
+- `tests/test_sdnext.py:198`
+  Prueffall: `test_bad_venv_preserved`
+- `tests/test_sdnext.py:211`
+  Prueffall: `test_clone_failure_does_not_make_venv`
+- `tests/test_sdnext.py:225`
+  Prueffall: `test_source_identity_checks`
+- `tests/test_sdnext.py:239`
+  Prueffall: `test_deactivate_keeps_all_data`
+
+## tests/test_secure_core_refactor.py
+
+- `tests/test_secure_core_refactor.py:29`
+  Prueffall: `test_ciphertext_gate_allows_only_age_and_rejects_duplicates`
+- `tests/test_secure_core_refactor.py:44`
+  Prueffall: `test_literal_env_is_never_a_shell_script`
+- `tests/test_secure_core_refactor.py:52`
+  Prueffall: `test_decrypt_writes_0600_without_overwriting_and_suppresses_errors`
+- `tests/test_secure_core_refactor.py:73`
+  Prueffall: `test_documentation_links_and_inventory_match_the_playbook`
+- `tests/test_secure_core_refactor.py:85`
+  Prueffall: `test_verified_bootstrap_never_executes_a_new_main`
+- `tests/test_secure_core_refactor.py:94`
+  Prueffall: `test_ansible_preserves_private_data_and_uses_success_receipts`
+- `tests/test_secure_core_refactor.py:106`
+  Prueffall: `test_backup_is_readonly_scoped_and_never_inits_or_unlocks`
+- `tests/test_secure_core_refactor.py:121`
+  Prueffall: `test_limits_and_traefik_are_opt_in_and_do_not_expose_dashboard`
+- `tests/test_secure_core_refactor.py:137`
+  Prueffall: `test_bash_syntax_without_running_installers`
+- `tests/test_secure_core_refactor.py:145`
+  Prueffall: `test_backup_failure_prevents_retention_without_any_network`
+
+## tests/test_security_audit_docs.py
+
+- `tests/test_security_audit_docs.py:16`
+  Prueffall: `test_local_links_exist_and_line_references_are_in_range`
+- `tests/test_security_audit_docs.py:28`
+  Prueffall: `test_fences_are_closed_and_audit_does_not_claim_live_access`
+- `tests/test_security_audit_docs.py:38`
+  Prueffall: `test_observer_example_has_no_privileged_resource_or_verb`
+- `tests/test_security_audit_docs.py:45`
+  Prueffall: `test_network_examples_have_both_gateway_backend_directions`
+- `tests/test_security_audit_docs.py:53`
+  Prueffall: `test_examples_are_not_added_to_active_kustomization`
+
+## tests/test_setup_shell_contracts.py
+
+- `tests/test_setup_shell_contracts.py:36`
+  Prueffall: `test_specific_disk_reserves_survive_fallback_deduplication`
+- `tests/test_setup_shell_contracts.py:52`
+  Prueffall: `test_status_loader_writes_the_callers_map`
+- `tests/test_setup_shell_contracts.py:63`
+  Prueffall: `test_both_profile_menu_variants_cancel_before_read_or_action`
+- `tests/test_setup_shell_contracts.py:83`
+  Prueffall: `test_profile_markers_change_only_after_successful_child`
+- `tests/test_setup_shell_contracts.py:104`
+  Prueffall: `test_loading_formats_allow_only_expected_string_slots`
+- `tests/test_setup_shell_contracts.py:119`
+  Prueffall: `test_loading_notice_keeps_arguments_literal`
+- `tests/test_setup_shell_contracts.py:137`
+  Prueffall: `test_bootstrap_terminal_redirection_does_not_truncate`
+
+## tests/test_sfizz.py
+
+- `tests/test_sfizz.py:23`
+  Prueffall: `test_registry_and_source_contract`
+- `tests/test_sfizz.py:45`
+  Prueffall: `test_menu_and_doc_links`
+- `tests/test_sfizz.py:66`
+  Prueffall: `test_dry_run_and_missing_status_do_not_write`
+- `tests/test_sfizz.py:76`
+  Prueffall: `test_missing_doctor_fails_and_start_rejected`
+- `tests/test_sfizz.py:80`
+  Prueffall: `test_unsafe_root_rejected`
+- `tests/test_sfizz.py:84`
+  Prueffall: `test_foreign_checkout_preserved`
+- `tests/test_sfizz.py:93`
+  Prueffall: `test_all_pinned_modules_orchestrated_without_real_git`
+- `tests/test_sfizz.py:104`
+  Prueffall: `test_failed_fetch_never_sets_marker`
+- `tests/test_sfizz.py:113`
+  Prueffall: `test_build_commands_mocked_no_execution`
+- `tests/test_sfizz.py:127`
+  Prueffall: `test_build_failure_clears_stale_success`
+- `tests/test_sfizz.py:138`
+  Prueffall: `test_elf_hash_check_without_running_binary`
+- `tests/test_sfizz.py:157`
+  Prueffall: `test_parallelism_and_foreign_build_rejected`
+- `tests/test_sfizz.py:162`
+  Prueffall: `test_real_local_nested_git_provenance_and_dirty_detection`
+
+## tests/test_shell_error_contracts.py
+
+- `tests/test_shell_error_contracts.py:24`
+  Prueffall: `test_exit_handlers_preserve_success_failure_and_interrupt_status`
+- `tests/test_shell_error_contracts.py:47`
+  Prueffall: `test_qwen_build_and_source_checks_both_gate_status`
+- `tests/test_shell_error_contracts.py:70`
+  Prueffall: `test_binary_wheel_package_list_is_one_argument`
+- `tests/test_shell_error_contracts.py:79`
+  Prueffall: `test_failed_directory_change_cannot_continue_build_or_mark_success`
+- `tests/test_shell_error_contracts.py:97`
+  Prueffall: `test_pause_input_preserves_literal_backslashes`
+
+## tests/test_shell_helper_contracts.py
+
+- `tests/test_shell_helper_contracts.py:69`
+  Prueffall: `test_package_lists_preserve_arguments_without_globbing`
+- `tests/test_shell_helper_contracts.py:92`
+  Prueffall: `test_failed_npm_install_never_marks_success`
+- `tests/test_shell_helper_contracts.py:106`
+  Prueffall: `test_exit_traps_keep_elapsed_time_and_exit_status`
+- `tests/test_shell_helper_contracts.py:121`
+  Prueffall: `test_penpot_external_source_contract`
+- `tests/test_shell_helper_contracts.py:151`
+  Prueffall: `test_paperless_retry_budget_and_status`
+
+## tests/test_shell_manager_contracts.py
+
+- `tests/test_shell_manager_contracts.py:41`
+  Prueffall: `test_model_input_cancellation_is_success_without_actions`
+- `tests/test_shell_manager_contracts.py:55`
+  Prueffall: `test_selected_model_is_one_quoted_argument`
+- `tests/test_shell_manager_contracts.py:67`
+  Prueffall: `test_model_metric_slug_does_not_change_the_cli_argument`
+- `tests/test_shell_manager_contracts.py:86`
+  Prueffall: `test_all_prompt_cancellations_exit_cleanly_under_errexit`
+- `tests/test_shell_manager_contracts.py:94`
+  Prueffall: `test_menu_guards_handle_cancel_and_missing_choice`
+- `tests/test_shell_manager_contracts.py:108`
+  Prueffall: `test_form_password_and_language_cancellation_cleanup`
+- `tests/test_shell_manager_contracts.py:130`
+  Prueffall: `test_latest_log_handles_spaces_newlines_and_no_matches`
+- `tests/test_shell_manager_contracts.py:146`
+  Prueffall: `test_nameref_updates_caller_map`
+- `tests/test_shell_manager_contracts.py:156`
+  Prueffall: `test_allowlisted_dynamic_environment_export`
+- `tests/test_shell_manager_contracts.py:163`
+  Prueffall: `test_shared_paths_and_log_result_remain_public`
+- `tests/test_shell_manager_contracts.py:177`
+  Prueffall: `test_build_approval_rejects_regular_file_without_truncation`
+
+## tests/test_shell_tool_contracts.py
+
+- `tests/test_shell_tool_contracts.py:33`
+  Prueffall: `test_command_failure_branches`
+- `tests/test_shell_tool_contracts.py:79`
+  Prueffall: `test_llama_build_command_is_deferred`
+- `tests/test_shell_tool_contracts.py:92`
+  Prueffall: `test_mysql_identifier_escaping_is_literal`
+- `tests/test_shell_tool_contracts.py:112`
+  Prueffall: `test_queue_status_is_read_only_and_tolerates_cat_failure`
+- `tests/test_shell_tool_contracts.py:135`
+  Prueffall: `test_browser_use_delegates_without_losing_arguments`
+
+## tests/test_signed_release.py
+
+- `tests/test_signed_release.py:52`
+  Prueffall: `test_valid_contract_uses_independent_key_and_explicit_signature`
+- `tests/test_signed_release.py:60`
+  Prueffall: `test_invalid_signature_fails_closed`
+- `tests/test_signed_release.py:65`
+  Prueffall: `test_renamed_repository_is_exact_and_old_metadata_is_not_reinterpreted`
+- `tests/test_signed_release.py:76`
+  Prueffall: `test_payload_tampering_is_rejected`
+- `tests/test_signed_release.py:81`
+  Prueffall: `test_wrong_tag_repo_commit_and_schema_are_rejected`
+- `tests/test_signed_release.py:92`
+  Prueffall: `test_duplicate_json_keys_are_rejected`
+- `tests/test_signed_release.py:98`
+  Prueffall: `test_extra_duplicate_or_traversal_checksums_are_rejected`
+- `tests/test_signed_release.py:105`
+  Prueffall: `test_release_supplied_key_is_rejected_before_signature_call`
+- `tests/test_signed_release.py:112`
+  Prueffall: `test_mutable_originals_are_not_reread_after_signature`
+- `tests/test_signed_release.py:120`
+  Prueffall: `test_non_versioned_tag_is_rejected_before_signature_call`
+- `tests/test_signed_release.py:164`
+  Prueffall: `test_default_plan_never_fetches_backs_up_or_checks_out`
+- `tests/test_signed_release.py:170`
+  Prueffall: `test_dirty_or_risky_repository_is_refused_before_backup`
+- `tests/test_signed_release.py:178`
+  Prueffall: `test_backup_and_verification_precede_fetch_and_checkout`
+- `tests/test_signed_release.py:185`
+  Prueffall: `test_tag_mismatch_preserves_backup_and_never_checks_out`
+- `tests/test_signed_release.py:195`
+  Prueffall: `test_export_reads_only_local_tag_and_produces_no_signature`
+- `tests/test_signed_release.py:218`
+  Prueffall: `test_export_refuses_existing_or_inside_repository_destination`
+- `tests/test_signed_release.py:231`
+  Prueffall: `test_git_environment_cannot_redirect_repository_or_inject_config`
+
+## tests/test_social_avatar_docs.py
+
+- `tests/test_social_avatar_docs.py:17`
+  Prueffall: `test_registry_menu_and_sources`
+- `tests/test_social_avatar_docs.py:38`
+  Prueffall: `test_existing_profile_and_tools_not_duplicated`
+- `tests/test_social_avatar_docs.py:51`
+  Prueffall: `test_plan_is_inactive`
+- `tests/test_social_avatar_docs.py:63`
+  Prueffall: `test_local_links`
+- `tests/test_social_avatar_docs.py:85`
+  Prueffall: `test_runtime_actions_blocked`
+- `tests/test_social_avatar_docs.py:89`
+  Prueffall: `test_checks_do_not_enable_cloud_or_publish`
+
+## tests/test_source_preservation.py
+
+- `tests/test_source_preservation.py:58`
+  Prueffall: `test_fetch_failure_preserves_existing_source_without_reclone`
+- `tests/test_source_preservation.py:66`
+  Prueffall: `test_pull_failure_preserves_existing_source_without_reclone`
+- `tests/test_source_preservation.py:73`
+  Prueffall: `test_partial_or_non_git_target_is_not_replaced`
+- `tests/test_source_preservation.py:81`
+  Prueffall: `test_origin_mismatch_is_not_moved_or_fetched`
+- `tests/test_source_preservation.py:88`
+  Prueffall: `test_failed_first_clone_keeps_partial_files_without_retry`
+- `tests/test_source_preservation.py:94`
+  Prueffall: `test_successful_existing_update_keeps_local_files`
+
+## tests/test_stable_audio_open.py
+
+- `tests/test_stable_audio_open.py:23`
+  Prueffall: `test_source_contract`
+- `tests/test_stable_audio_open.py:48`
+  Prueffall: `test_menu_doc_links`
+- `tests/test_stable_audio_open.py:70`
+  Prueffall: `test_dry_run_no_files`
+- `tests/test_stable_audio_open.py:78`
+  Prueffall: `test_explicit_bad_python_is_not_replaced`
+- `tests/test_stable_audio_open.py:86`
+  Prueffall: `test_compatible_interpreter_reused`
+- `tests/test_stable_audio_open.py:97`
+  Prueffall: `test_python_build_disabled_and_noninteractive_default`
+- `tests/test_stable_audio_open.py:108`
+  Prueffall: `test_authorized_build_passes_selected_path`
+- `tests/test_stable_audio_open.py:119`
+  Prueffall: `test_low_resources_prevent_python_download`
+- `tests/test_stable_audio_open.py:129`
+  Prueffall: `test_python_clone_failure_propagates_without_build`
+- `tests/test_stable_audio_open.py:138`
+  Prueffall: `test_existing_incomplete_python_not_overwritten`
+- `tests/test_stable_audio_open.py:146`
+  Prueffall: `test_status_missing`
+- `tests/test_stable_audio_open.py:154`
+  Prueffall: `test_api_actions_rejected`
+- `tests/test_stable_audio_open.py:158`
+  Prueffall: `test_bad_root`
+- `tests/test_stable_audio_open.py:163`
+  Prueffall: `test_foreign_source_preserved`
+- `tests/test_stable_audio_open.py:173`
+  Prueffall: `test_missing_sdk_layout_rejected`
+- `tests/test_stable_audio_open.py:183`
+  Prueffall: `test_expected_subdirectory_accepted`
+- `tests/test_stable_audio_open.py:192`
+  Prueffall: `test_foreign_venv_rejected`
+- `tests/test_stable_audio_open.py:202`
+  Prueffall: `test_system_site_packages_rejected`
+- `tests/test_stable_audio_open.py:217`
+  Prueffall: `test_python_310_preflight_accepted`
+- `tests/test_stable_audio_open.py:227`
+  Prueffall: `test_incompatible_python_blocks_before_venv`
+- `tests/test_stable_audio_open.py:238`
+  Prueffall: `test_key_environment_not_inherited`
+- `tests/test_stable_audio_open.py:250`
+  Prueffall: `test_mock_package_build_targets_client_only`
+- `tests/test_stable_audio_open.py:277`
+  Prueffall: `test_failed_package_build_clears_marker`
+- `tests/test_stable_audio_open.py:290`
+  Prueffall: `test_deactivation_keeps_data`
+- `tests/test_stable_audio_open.py:299`
+  Prueffall: `test_legacy_runtime_rejected_before_tools`
+- `tests/test_stable_audio_open.py:304`
+  Prueffall: `test_low_total_ram_blocks_even_in_conditional`
+- `tests/test_stable_audio_open.py:315`
+  Prueffall: `test_safety_documentation`
+
+## tests/test_supir_source.py
+
+- `tests/test_supir_source.py:23`
+  Prueffall: `test_registry_and_menu`
+- `tests/test_supir_source.py:37`
+  Prueffall: `test_safety_contract`
+- `tests/test_supir_source.py:47`
+  Prueffall: `test_docs_explain_limitations`
+- `tests/test_supir_source.py:84`
+  Prueffall: `test_plan_status_no_network_or_creation`
+- `tests/test_supir_source.py:95`
+  Prueffall: `test_missing_doctor_fails`
+- `tests/test_supir_source.py:99`
+  Prueffall: `test_inspection_does_not_import_code`
+- `tests/test_supir_source.py:103`
+  Prueffall: `test_source_registration_is_idempotent_no_runtime`
+- `tests/test_supir_source.py:115`
+  Prueffall: `test_runtime_opt_in_fails_before_creation`
+- `tests/test_supir_source.py:122`
+  Prueffall: `test_runtime_guard_ignores_heavy_permission`
+- `tests/test_supir_source.py:131`
+  Prueffall: `test_foreign_checkout_preserved`
+- `tests/test_supir_source.py:141`
+  Prueffall: `test_invalid_syntax_no_success_marker`
+- `tests/test_supir_source.py:149`
+  Prueffall: `test_deactivation_preserves_models_and_sources`
+- `tests/test_supir_source.py:160`
+  Prueffall: `test_start_blocked_and_unsafe_workspace_rejected`
+
+## tests/test_tgi.py
+
+- `tests/test_tgi.py:23`
+  Prueffall: `test_registry_and_build_scope`
+- `tests/test_tgi.py:41`
+  Prueffall: `test_document_links`
+- `tests/test_tgi.py:61`
+  Prueffall: `test_dry_run_status_no_creation`
+- `tests/test_tgi.py:71`
+  Prueffall: `test_missing_doctor_and_start_blocked`
+- `tests/test_tgi.py:76`
+  Prueffall: `test_heavy_opt_in_before_tools`
+- `tests/test_tgi.py:85`
+  Prueffall: `test_foreign_source_preserved`
+- `tests/test_tgi.py:95`
+  Prueffall: `test_syntax_only_never_imports`
+- `tests/test_tgi.py:107`
+  Prueffall: `test_mock_launcher_build_and_hash_without_execution`
+- `tests/test_tgi.py:124`
+  Prueffall: `test_build_failure_clears_marker`
+- `tests/test_tgi.py:136`
+  Prueffall: `test_deactivate_preserves_source`
+- `tests/test_tgi.py:145`
+  Prueffall: `test_invalid_root`
+
+## tests/test_token8341_docs.py
+
+- `tests/test_token8341_docs.py:13`
+  Prueffall: `test_local_links_and_index`
+- `tests/test_token8341_docs.py:20`
+  Prueffall: `test_python_example_syntax_without_execution`
+- `tests/test_token8341_docs.py:32`
+  Prueffall: `test_examples_keep_secrets_empty_and_cloud_disabled`
+- `tests/test_token8341_docs.py:42`
+  Prueffall: `test_unverified_claims_and_legal_limits_are_visible`
+- `tests/test_token8341_docs.py:49`
+  Prueffall: `test_research_distinguishes_evidence_from_unverified_community_claims`
+- `tests/test_token8341_docs.py:67`
+  Prueffall: `test_host_uncertainty_does_not_enable_cloud_or_automatic_fallback`
+
+## tests/test_tool_commands.py
+
+- `tests/test_tool_commands.py:43`
+  Prueffall: `test_catalog_is_read_only_and_has_every_tool`
+- `tests/test_tool_commands.py:56`
+  Prueffall: `test_missing_or_non_github_recipe_and_blockers_do_not_get_execution`
+- `tests/test_tool_commands.py:63`
+  Prueffall: `test_path_and_argument_injection_and_duplicate_ids_are_rejected`
+- `tests/test_tool_commands.py:74`
+  Prueffall: `test_writes_need_matching_tool_action_and_apply`
+- `tests/test_tool_commands.py:82`
+  Prueffall: `test_approved_dispatch_is_argv_only_sanitized_and_preserves_exit`
+- `tests/test_tool_commands.py:95`
+  Prueffall: `test_unreviewed_tool_never_executes_even_with_confirmation`
+- `tests/test_tool_commands.py:100`
+  Prueffall: `test_read_actions_do_not_accept_dependency_bootstrap`
+- `tests/test_tool_commands.py:104`
+  Prueffall: `test_windows_execution_never_falls_back_to_wsl`
+- `tests/test_tool_commands.py:109`
+  Prueffall: `test_generated_table_covers_real_registry_and_has_no_drift`
+- `tests/test_tool_commands.py:117`
+  Prueffall: `test_default_show_never_runs_a_process`
+- `tests/test_tool_commands.py:124`
+  Prueffall: `test_early_setup_entry_precedes_workspace_and_dialog`
+
+## tests/test_tool_coverage_audit.py
+
+- `tests/test_tool_coverage_audit.py:53`
+  Prueffall: `test_registry_menu_and_missing_files_are_independent`
+- `tests/test_tool_coverage_audit.py:61`
+  Prueffall: `test_placeholder_never_counted_as_working_installation`
+- `tests/test_tool_coverage_audit.py:66`
+  Prueffall: `test_sources_deduplicate_normalize_and_keep_provenance`
+- `tests/test_tool_coverage_audit.py:77`
+  Prueffall: `test_bare_github_references_are_included_but_topics_are_not`
+- `tests/test_tool_coverage_audit.py:82`
+  Prueffall: `test_missing_recipe_and_duplicates_reported`
+- `tests/test_tool_coverage_audit.py:92`
+  Prueffall: `test_report_deterministic_local_links_and_scope`
+- `tests/test_tool_coverage_audit.py:101`
+  Prueffall: `test_read_only_scan_does_not_change_files`
+- `tests/test_tool_coverage_audit.py:107`
+  Prueffall: `test_native_registration_adds_allowlisted_keys_without_duplicate_existing`
+- `tests/test_tool_coverage_audit.py:117`
+  Prueffall: `test_unused_native_allowlist_does_not_change_menu_inventory`
+- `tests/test_tool_coverage_audit.py:122`
+  Prueffall: `test_shell_expressions_are_not_menu_names_and_never_executed`
+
+## tests/test_tool_menu_order.py
+
+- `tests/test_tool_menu_order.py:23`
+  Prueffall: `test_actual_baseline_is_unique_sorted_and_new_keys_stay_appended`
+- `tests/test_tool_menu_order.py:34`
+  Prueffall: `test_bad_input_is_not_executed_or_echoed`
+- `tests/test_tool_menu_order.py:64`
+  Prueffall: `test_all_registered_tools_are_sorted_without_losing_entries`
+- `tests/test_tool_menu_order.py:100`
+  Prueffall: `test_future_tools_and_case_insensitive_order`
+- `tests/test_tool_menu_order.py:113`
+  Prueffall: `test_formerly_appended_tools_join_the_alphabetical_list`
+- `tests/test_tool_menu_order.py:122`
+  Prueffall: `test_browser_and_study_tools_join_a_z_after_separator`
+- `tests/test_tool_menu_order.py:128`
+  Prueffall: `test_core_order_above_separator_is_preserved`
+- `tests/test_tool_menu_order.py:132`
+  Prueffall: `test_missing_invalid_or_duplicate_baseline_keeps_all_entries`
+- `tests/test_tool_menu_order.py:143`
+  Prueffall: `test_crlf_and_unterminated_baseline_and_failed_sort`
+- `tests/test_tool_menu_order.py:152`
+  Prueffall: `test_duplicate_menu_key_does_not_change_selection`
+
+## tests/test_tool_ssh_docs.py
+
+- `tests/test_tool_ssh_docs.py:38`
+  Prueffall: `test_every_tool_guide_and_external_registry_guide_is_included`
+- `tests/test_tool_ssh_docs.py:46`
+  Prueffall: `test_default_check_is_read_only_and_write_is_idempotent`
+- `tests/test_tool_ssh_docs.py:59`
+  Prueffall: `test_only_marked_section_changes_and_malformed_markers_fail`
+- `tests/test_tool_ssh_docs.py:67`
+  Prueffall: `test_malformed_late_guide_prevents_all_writes`
+- `tests/test_tool_ssh_docs.py:76`
+  Prueffall: `test_paths_cannot_escape_repository`
+- `tests/test_tool_ssh_docs.py:82`
+  Prueffall: `test_unapproved_and_desktop_tools_never_get_install_commands`
+- `tests/test_tool_ssh_docs.py:92`
+  Prueffall: `test_approved_actions_are_separate_and_require_exact_confirmation`
+- `tests/test_tool_ssh_docs.py:104`
+  Prueffall: `test_relative_links_and_new_generic_guides`
+- `tests/test_tool_ssh_docs.py:118`
+  Prueffall: `test_generated_bash_is_syntax_checked_without_execution`
+- `tests/test_tool_ssh_docs.py:128`
+  Prueffall: `test_real_repository_has_no_drift_or_unregistered_plan_ids`
+- `tests/test_tool_ssh_docs.py:140`
+  Prueffall: `test_all_registered_tools_have_an_existing_specific_ssh_guide`
+- `tests/test_tool_ssh_docs.py:149`
+  Prueffall: `test_future_tool_without_doc_blocks_check_and_write`
+- `tests/test_tool_ssh_docs.py:157`
+  Prueffall: `test_generic_ssh_or_another_tools_plan_does_not_count`
+- `tests/test_tool_ssh_docs.py:166`
+  Prueffall: `test_report_includes_each_id_with_a_resolvable_guide`
+- `tests/test_tool_ssh_docs.py:173`
+  Prueffall: `test_new_entry_pages_have_only_resolvable_local_document_and_script_links`
+- `tests/test_tool_ssh_docs.py:182`
+  Prueffall: `test_report_symlink_is_rejected`
+
+## tests/test_traefik_storage.py
+
+- `tests/test_traefik_storage.py:39`
+  Prueffall: `test_menu_reserves_match_native_recipes`
+- `tests/test_traefik_storage.py:52`
+  Prueffall: `test_traefik_rejects_reported_host_space_and_checks_exact_boundary`
+- `tests/test_traefik_storage.py:65`
+  Prueffall: `test_opentelemetry_uses_same_host_reserve_as_its_native_recipe`
+- `tests/test_traefik_storage.py:76`
+  Prueffall: `test_measurements_never_lower_the_native_minimum`
+
+## tests/test_veo_api.py
+
+- `tests/test_veo_api.py:23`
+  Prueffall: `test_source_contract`
+- `tests/test_veo_api.py:44`
+  Prueffall: `test_dependency_order_and_scope`
+- `tests/test_veo_api.py:56`
+  Prueffall: `test_menu_doc_links`
+- `tests/test_veo_api.py:78`
+  Prueffall: `test_dry_run_no_files`
+- `tests/test_veo_api.py:86`
+  Prueffall: `test_python_dependency_decisions`
+- `tests/test_veo_api.py:115`
+  Prueffall: `test_read_only_actions_never_prepare_dependencies`
+- `tests/test_veo_api.py:122`
+  Prueffall: `test_status_missing`
+- `tests/test_veo_api.py:129`
+  Prueffall: `test_api_actions_rejected`
+- `tests/test_veo_api.py:133`
+  Prueffall: `test_bad_root`
+- `tests/test_veo_api.py:138`
+  Prueffall: `test_foreign_source_preserved`
+- `tests/test_veo_api.py:148`
+  Prueffall: `test_missing_sdk_layout_rejected`
+- `tests/test_veo_api.py:158`
+  Prueffall: `test_expected_subdirectory_accepted`
+- `tests/test_veo_api.py:167`
+  Prueffall: `test_foreign_venv_rejected`
+- `tests/test_veo_api.py:175`
+  Prueffall: `test_system_site_packages_rejected`
+- `tests/test_veo_api.py:184`
+  Prueffall: `test_key_environment_not_inherited`
+- `tests/test_veo_api.py:196`
+  Prueffall: `test_mock_package_build_targets_client_only`
+- `tests/test_veo_api.py:222`
+  Prueffall: `test_failed_package_build_clears_marker`
+- `tests/test_veo_api.py:235`
+  Prueffall: `test_deactivation_keeps_data`
+
+## tests/test_video_datasets_docs.py
+
+- `tests/test_video_datasets_docs.py:17`
+  Prueffall: `test_registry_explicit_source_or_planned`
+- `tests/test_video_datasets_docs.py:29`
+  Prueffall: `test_menu_and_status`
+- `tests/test_video_datasets_docs.py:38`
+  Prueffall: `test_existing_profile_reused`
+- `tests/test_video_datasets_docs.py:47`
+  Prueffall: `test_example_is_inactive`
+- `tests/test_video_datasets_docs.py:57`
+  Prueffall: `test_local_links_and_source_catalog`
+- `tests/test_video_datasets_docs.py:80`
+  Prueffall: `test_install_update_uninstall_blocked`
+- `tests/test_video_datasets_docs.py:85`
+  Prueffall: `test_dry_run_and_checks_do_not_claim_installation`
+
+## tests/test_vidubb.py
+
+- `tests/test_vidubb.py:22`
+  Prueffall: `test_registry_source_and_no_runtime`
+- `tests/test_vidubb.py:53`
+  Prueffall: `test_plan_and_status_no_creation`
+- `tests/test_vidubb.py:63`
+  Prueffall: `test_doctor_missing_and_start_blocked`
+- `tests/test_vidubb.py:68`
+  Prueffall: `test_runtime_opt_in_still_blocked`
+- `tests/test_vidubb.py:73`
+  Prueffall: `test_source_syntax_without_import`
+- `tests/test_vidubb.py:84`
+  Prueffall: `test_foreign_source_preserved`
+- `tests/test_vidubb.py:94`
+  Prueffall: `test_deactivate_preserves_files`
+- `tests/test_vidubb.py:103`
+  Prueffall: `test_unsafe_root_rejected`
+- `tests/test_vidubb.py:107`
+  Prueffall: `test_sparse_policy_on_unborn_repo`
+- `tests/test_vidubb.py:116`
+  Prueffall: `test_real_local_sparse_checkout_excludes_env_and_media`
+
+## tests/test_void_model.py
+
+- `tests/test_void_model.py:22`
+  Prueffall: `test_registry_source_and_no_runtime`
+- `tests/test_void_model.py:53`
+  Prueffall: `test_plan_and_status_no_creation`
+- `tests/test_void_model.py:63`
+  Prueffall: `test_doctor_missing_and_start_blocked`
+- `tests/test_void_model.py:68`
+  Prueffall: `test_runtime_opt_in_still_blocked`
+- `tests/test_void_model.py:73`
+  Prueffall: `test_source_syntax_without_import`
+- `tests/test_void_model.py:85`
+  Prueffall: `test_foreign_source_preserved`
+- `tests/test_void_model.py:95`
+  Prueffall: `test_deactivate_preserves_files`
+- `tests/test_void_model.py:104`
+  Prueffall: `test_unsafe_root_rejected`
+- `tests/test_void_model.py:108`
+  Prueffall: `test_keys_not_inherited_by_installer_subshell`
+- `tests/test_void_model.py:121`
+  Prueffall: `test_cloud_and_gpu_limits_documented`
+- `tests/test_void_model.py:126`
+  Prueffall: `test_sparse_policy_on_unborn_repo`
+- `tests/test_void_model.py:135`
+  Prueffall: `test_real_local_sparse_checkout_excludes_env_and_media`
+
+## tests/test_vps_delivery.py
+
+- `tests/test_vps_delivery.py:32`
+  Prueffall: `test_success_is_read_only`
+- `tests/test_vps_delivery.py:37`
+  Prueffall: `test_low_disk_fails`
+- `tests/test_vps_delivery.py:41`
+  Prueffall: `test_low_total_or_available_ram_fails`
+- `tests/test_vps_delivery.py:47`
+  Prueffall: `test_active_swap_fails_without_changes`
+- `tests/test_vps_delivery.py:53`
+  Prueffall: `test_relative_data_path_rejected`
+- `tests/test_vps_delivery.py:57`
+  Prueffall: `test_single_unknown_or_invalid_cpu_count_fails_before_disk_access`
+- `tests/test_vps_delivery.py:64`
+  Prueffall: `test_two_and_half_gib_available_is_not_enough_for_scheduling_headroom`
+- `tests/test_vps_delivery.py:69`
+  Prueffall: `test_runtime_check_is_bounded_read_only_and_propagates_failure`
+- `tests/test_vps_delivery.py:84`
+  Prueffall: `test_runtime_timeout_is_not_a_success`
+- `tests/test_vps_delivery.py:92`
+  Prueffall: `test_small_vps_quota_is_not_the_workstation_budget`
+- `tests/test_vps_delivery.py:105`
+  Prueffall: `test_overlay_reuses_existing_base_and_claim`
+- `tests/test_vps_delivery.py:114`
+  Prueffall: `test_gateway_uses_secret_reference_and_no_fallback`
+- `tests/test_vps_delivery.py:121`
+  Prueffall: `test_plan_and_apply_boundaries`
+- `tests/test_vps_delivery.py:133`
+  Prueffall: `test_dashboard_has_latency_and_unique_panels`
+- `tests/test_vps_delivery.py:140`
+  Prueffall: `test_native_exporter_port_matches_monitoring_default`
+- `tests/test_vps_delivery.py:186`
+  Prueffall: `test_help_does_not_touch_runtime`
+- `tests/test_vps_delivery.py:191`
+  Prueffall: `test_unknown_option_fails_before_hostcheck`
+- `tests/test_vps_delivery.py:197`
+  Prueffall: `test_apply_requires_explicit_context_and_confirmation_before_checks`
+- `tests/test_vps_delivery.py:202`
+  Prueffall: `test_plan_has_no_remote_kubectl_commands`
+- `tests/test_vps_delivery.py:209`
+  Prueffall: `test_secret_manifest_rejected_before_apply`
+- `tests/test_vps_delivery.py:216`
+  Prueffall: `test_server_dry_run_precedes_apply_and_rollout`
+- `tests/test_vps_delivery.py:226`
+  Prueffall: `test_failed_server_validation_never_applies_or_waits_for_rollout`
+
+## tests/test_vps_secrets.py
+
+- `tests/test_vps_secrets.py:21`
+  Prueffall: `test_allowlist_strips_extra_metadata_and_normalizes_payload`
+- `tests/test_vps_secrets.py:27`
+  Prueffall: `test_wrong_namespace_or_key_is_rejected`
+- `tests/test_vps_secrets.py:39`
+  Prueffall: `test_decryption_and_apply_are_captured_without_disk_plaintext`
+- `tests/test_vps_secrets.py:51`
+  Prueffall: `test_invalid_payload_never_contacts_kubernetes`
+- `tests/test_vps_secrets.py:60`
+  Prueffall: `test_failed_server_dry_run_never_applies`
+
+## tests/test_wan21_source.py
+
+- `tests/test_wan21_source.py:23`
+  Prueffall: `test_registry_and_menu`
+- `tests/test_wan21_source.py:37`
+  Prueffall: `test_guards_and_dependency_contract`
+- `tests/test_wan21_source.py:53`
+  Prueffall: `test_document_links`
+- `tests/test_wan21_source.py:85`
+  Prueffall: `test_plan_and_status_create_nothing`
+- `tests/test_wan21_source.py:96`
+  Prueffall: `test_doctor_missing_fails_without_creation`
+- `tests/test_wan21_source.py:100`
+  Prueffall: `test_syntax_checks_do_not_import_model`
+- `tests/test_wan21_source.py:104`
+  Prueffall: `test_source_ready_is_not_runtime_ready`
+- `tests/test_wan21_source.py:113`
+  Prueffall: `test_foreign_source_preserved`
+- `tests/test_wan21_source.py:123`
+  Prueffall: `test_heavy_preflight_requires_opt_in_before_gpu`
+- `tests/test_wan21_source.py:132`
+  Prueffall: `test_unknown_runtime_start_blocked`
+- `tests/test_wan21_source.py:136`
+  Prueffall: `test_unsafe_workspace_rejected`
+- `tests/test_wan21_source.py:140`
+  Prueffall: `test_mock_runtime_sequence`
+- `tests/test_wan21_source.py:156`
+  Prueffall: `test_mock_runtime_failure_removes_marker`
+
+## tests/test_webinar_platform_menu.py
+
+- `tests/test_webinar_platform_menu.py:27`
+  Prueffall: `test_linux_dispatch_preserves_spaces_and_action`
+- `tests/test_webinar_platform_menu.py:36`
+  Prueffall: `test_windows_dispatch_uses_only_native_powershell`
+- `tests/test_webinar_platform_menu.py:47`
+  Prueffall: `test_invalid_target_tool_or_action_never_dispatches`
+- `tests/test_webinar_platform_menu.py:59`
+  Prueffall: `test_qwen_linux_build_uses_separate_helper`
+- `tests/test_webinar_platform_menu.py:68`
+  Prueffall: `test_qwen_windows_build_uses_separate_native_launcher`
+- `tests/test_webinar_platform_menu.py:79`
+  Prueffall: `test_cancel_platform_and_decline_confirmation_do_nothing`
+- `tests/test_webinar_platform_menu.py:98`
+  Prueffall: `test_separator_is_between_core_and_alphabetical_tools`
+- `tests/test_webinar_platform_menu.py:117`
+  Prueffall: `test_button_dispatch_does_not_change_linux_status`
+- `tests/test_webinar_platform_menu.py:130`
+  Prueffall: `test_successful_windows_action_never_updates_linux_status`
+- `tests/test_webinar_platform_menu.py:154`
+  Prueffall: `test_qwen_plan_works_without_python_and_uses_windows_target`
+- `tests/test_webinar_platform_menu.py:166`
+  Prueffall: `test_qwen_status_ignores_inherited_linux_user_path`
+- `tests/test_webinar_platform_menu.py:176`
+  Prueffall: `test_plan_without_python_or_file_changes`
+- `tests/test_webinar_platform_menu.py:186`
+  Prueffall: `test_native_python_status_does_not_install`
+
+## tests/test_webinar_releases.py
+
+- `tests/test_webinar_releases.py:30`
+  Prueffall: `test_host_shortage_reports_required_free_and_missing_space`
+- `tests/test_webinar_releases.py:45`
+  Prueffall: `test_marp_prompt_is_a_complete_visible_line_before_reading`
+- `tests/test_webinar_releases.py:66`
+  Prueffall: `test_marp_eof_or_decline_does_not_install`
+- `tests/test_webinar_releases.py:82`
+  Prueffall: `test_marp_noninteractive_ask_does_not_read_or_install`
+- `tests/test_webinar_releases.py:97`
+  Prueffall: `test_marp_loader_stderr_reaches_current_operation_log`
+- `tests/test_webinar_releases.py:124`
+  Prueffall: `test_approved_marp_repair_installs_only_recognized_package_then_rechecks`
+- `tests/test_webinar_releases.py:145`
+  Prueffall: `test_unknown_library_glibc_or_nonloader_error_never_installs_packages`
+- `tests/test_webinar_releases.py:157`
+  Prueffall: `test_marp_repair_is_bounded_and_never_marks_wrong_version_success`
+- `tests/test_webinar_releases.py:172`
+  Prueffall: `test_other_tools_do_not_trigger_marp_apt_repair`
+- `tests/test_webinar_releases.py:180`
+  Prueffall: `test_failed_apt_does_not_report_repaired`
+- `tests/test_webinar_releases.py:191`
+  Prueffall: `test_registry_and_menu`
+- `tests/test_webinar_releases.py:205`
+  Prueffall: `test_pinned_assets_valid_and_no_beta`
+- `tests/test_webinar_releases.py:213`
+  Prueffall: `test_plan_no_writes_network_or_processes`
+- `tests/test_webinar_releases.py:223`
+  Prueffall: `test_platform_selection_and_rejection`
+- `tests/test_webinar_releases.py:230`
+  Prueffall: `test_setup_flag_aliases_and_conflicts`
+- `tests/test_webinar_releases.py:238`
+  Prueffall: `test_redirect_allowlist`
+- `tests/test_webinar_releases.py:243`
+  Prueffall: `test_unsafe_archive_paths`
+- `tests/test_webinar_releases.py:249`
+  Prueffall: `test_zip_extract_and_traversal_duplicate_rejection`
+- `tests/test_webinar_releases.py:264`
+  Prueffall: `test_tar_links_rejected`
+- `tests/test_webinar_releases.py:275`
+  Prueffall: `test_download_hash_and_length_enforced`
+- `tests/test_webinar_releases.py:290`
+  Prueffall: `test_failed_install_rolls_back_only_new_stage`
+- `tests/test_webinar_releases.py:301`
+  Prueffall: `test_missing_runtime_entry_no_success_marker`
+- `tests/test_webinar_releases.py:310`
+  Prueffall: `test_install_binary_status_and_guarded_uninstall`
+- `tests/test_webinar_releases.py:331`
+  Prueffall: `test_current_resource_failure_logged`
+
+## tests/test_webinar_stack_docs.py
+
+- `tests/test_webinar_stack_docs.py:14`
+  Prueffall: `test_local_references_resolve`
+- `tests/test_webinar_stack_docs.py:20`
+  Prueffall: `test_guide_reachable_from_existing_entrypoints`
+- `tests/test_webinar_stack_docs.py:26`
+  Prueffall: `test_primary_repositories_not_search_result_links`
+- `tests/test_webinar_stack_docs.py:36`
+  Prueffall: `test_no_unbalanced_fences_or_activated_deployment_examples`
+
+## tests/test_whisperx.py
+
+- `tests/test_whisperx.py:26`
+  Prueffall: `test_torch_metadata_accepts_matching_stack_rejects_mixed_variants`
+- `tests/test_whisperx.py:46`
+  Prueffall: `test_source_contract`
+- `tests/test_whisperx.py:69`
+  Prueffall: `test_dependency_order_and_scope`
+- `tests/test_whisperx.py:82`
+  Prueffall: `test_menu_doc_links`
+- `tests/test_whisperx.py:104`
+  Prueffall: `test_dry_run_no_files`
+- `tests/test_whisperx.py:112`
+  Prueffall: `test_python_dependency_decisions`
+- `tests/test_whisperx.py:141`
+  Prueffall: `test_read_only_actions_never_prepare_dependencies`
+- `tests/test_whisperx.py:148`
+  Prueffall: `test_status_missing`
+- `tests/test_whisperx.py:156`
+  Prueffall: `test_api_actions_rejected`
+- `tests/test_whisperx.py:160`
+  Prueffall: `test_bad_root`
+- `tests/test_whisperx.py:165`
+  Prueffall: `test_foreign_source_preserved`
+- `tests/test_whisperx.py:175`
+  Prueffall: `test_missing_sdk_layout_rejected`
+- `tests/test_whisperx.py:185`
+  Prueffall: `test_expected_subdirectory_accepted`
+- `tests/test_whisperx.py:195`
+  Prueffall: `test_foreign_venv_rejected`
+- `tests/test_whisperx.py:203`
+  Prueffall: `test_system_site_packages_rejected`
+- `tests/test_whisperx.py:212`
+  Prueffall: `test_key_environment_not_inherited`
+- `tests/test_whisperx.py:226`
+  Prueffall: `test_mock_package_build_targets_client_only`
+- `tests/test_whisperx.py:253`
+  Prueffall: `test_failed_package_build_clears_marker`
+- `tests/test_whisperx.py:266`
+  Prueffall: `test_deactivation_keeps_data`
+- `tests/test_whisperx.py:275`
+  Prueffall: `test_legacy_runtime_rejected_before_tools`
+- `tests/test_whisperx.py:280`
+  Prueffall: `test_low_total_ram_blocks_even_in_conditional`
+- `tests/test_whisperx.py:291`
+  Prueffall: `test_safety_documentation`
+- `tests/test_whisperx.py:296`
+  Prueffall: `test_runtime_package_mocked_with_constraints_and_pip_check`
+- `tests/test_whisperx.py:323`
+  Prueffall: `test_runtime_pip_check_failure_never_registers_success`
+- `tests/test_whisperx.py:345`
+  Prueffall: `test_runtime_rejects_missing_torch_before_writes`
+- `tests/test_whisperx.py:356`
+  Prueffall: `test_native_dependency_wheels_and_no_false_menu_success`
+
+## tests/test_windmill.py
+
+- `tests/test_windmill.py:25`
+  Prueffall: `test_registry`
+- `tests/test_windmill.py:43`
+  Prueffall: `test_menu_and_doc_links`
+- `tests/test_windmill.py:82`
+  Prueffall: `test_plan_no_files`
+- `tests/test_windmill.py:90`
+  Prueffall: `test_empty_status`
+- `tests/test_windmill.py:95`
+  Prueffall: `test_start_blocked`
+- `tests/test_windmill.py:99`
+  Prueffall: `test_missing_doctor`
+- `tests/test_windmill.py:102`
+  Prueffall: `test_license_opt_in`
+- `tests/test_windmill.py:107`
+  Prueffall: `test_arm_no_wrong_asset`
+- `tests/test_windmill.py:115`
+  Prueffall: `test_bad_root`
+- `tests/test_windmill.py:118`
+  Prueffall: `test_source_only_no_execution`
+- `tests/test_windmill.py:131`
+  Prueffall: `test_foreign_source_preserved`
+- `tests/test_windmill.py:141`
+  Prueffall: `test_mock_binary_install_reuse_status`
+- `tests/test_windmill.py:157`
+  Prueffall: `test_wrong_hash_never_promoted`
+- `tests/test_windmill.py:168`
+  Prueffall: `test_not_elf_never_promoted`
+- `tests/test_windmill.py:178`
+  Prueffall: `test_failed_download`
+- `tests/test_windmill.py:189`
+  Prueffall: `test_existing_binary_preserved`
+- `tests/test_windmill.py:199`
+  Prueffall: `test_deactivation_preserves_data`
+
+## tests/test_xerj.py
+
+- `tests/test_xerj.py:53`
+  Prueffall: `test_recipe_is_pinned_locked_opt_in_without_neural_defaults`
+- `tests/test_xerj.py:70`
+  Prueffall: `test_build_uses_engine_workspace_and_only_version_probe`
+- `tests/test_xerj.py:84`
+  Prueffall: `test_existing_root_rust_recipe_retains_original_command`
+- `tests/test_xerj.py:93`
+  Prueffall: `test_missing_compiled_binary_fails_without_marker_or_probe`
+- `tests/test_xerj.py:102`
+  Prueffall: `test_failed_version_probe_is_not_build_acceptance`
+- `tests/test_xerj.py:112`
+  Prueffall: `test_plan_and_status_never_fetch_or_start_programs`
+- `tests/test_xerj.py:122`
+  Prueffall: `test_lifecycle_wrappers_parse_without_execution`
+- `tests/test_xerj.py:133`
+  Prueffall: `test_menu_appends_tool_without_changing_frozen_sort_baseline`
+
+## tests/test_xerj_build_timeout.py
+
+- `tests/test_xerj_build_timeout.py:18`
+  Prueffall: `test_default_and_explicit_budget`
+- `tests/test_xerj_build_timeout.py:25`
+  Prueffall: `test_invalid_budget_stops_preflight_before_workspace_or_download`
+- `tests/test_xerj_build_timeout.py:36`
+  Prueffall: `test_only_cargo_build_streams_not_version_or_sysroot`
+- `tests/test_xerj_build_timeout.py:46`
+  Prueffall: `test_timeout_and_compiler_errors_are_not_retried_or_success`
+- `tests/test_xerj_build_timeout.py:54`
+  Prueffall: `test_timeout_removes_only_new_build_and_preserves_compiler_and_logs`
+- `tests/test_xerj_build_timeout.py:80`
+  Prueffall: `test_build_keeps_locked_features_and_jobs_and_passes_selected_budget`
+- `tests/test_xerj_build_timeout.py:107`
+  Prueffall: `test_quick_receipt_records_profile_and_legacy_receipt_remains_valid`
+
+## tests/test_youtube_agent_skill.py
+
+- `tests/test_youtube_agent_skill.py:60`
+  Prueffall: `test_dry_runs_are_read_only_offline`
+- `tests/test_youtube_agent_skill.py:67`
+  Prueffall: `test_install_copies_exact_eleven_skills_and_six_helpers`
+- `tests/test_youtube_agent_skill.py:80`
+  Prueffall: `test_existing_voice_never_overwritten_or_deleted`
+- `tests/test_youtube_agent_skill.py:87`
+  Prueffall: `test_project_local_has_global_voice_and_recorded_target`
+- `tests/test_youtube_agent_skill.py:99`
+  Prueffall: `test_invalid_projects_are_refused`
+- `tests/test_youtube_agent_skill.py:105`
+  Prueffall: `test_moved_project_can_be_deregistered_without_touching_moved_data`
+- `tests/test_youtube_agent_skill.py:116`
+  Prueffall: `test_source_only_has_no_activation`
+- `tests/test_youtube_agent_skill.py:124`
+  Prueffall: `test_declined_or_noninteractive_never_activates`
+- `tests/test_youtube_agent_skill.py:133`
+  Prueffall: `test_explicit_accept_is_supported`
+- `tests/test_youtube_agent_skill.py:137`
+  Prueffall: `test_foreign_skill_blocks_all_copying`
+- `tests/test_youtube_agent_skill.py:147`
+  Prueffall: `test_idempotent_update_uses_existing_pin`
+- `tests/test_youtube_agent_skill.py:155`
+  Prueffall: `test_modified_skill_blocks_uninstall_without_partial_deletion`
+- `tests/test_youtube_agent_skill.py:165`
+  Prueffall: `test_extra_files_block_uninstall`
+- `tests/test_youtube_agent_skill.py:172`
+  Prueffall: `test_repair_restores_only_missing_files`
+- `tests/test_youtube_agent_skill.py:181`
+  Prueffall: `test_uninstall_allows_missing_owned_files_preserves_sources_voice_other_skills`
+- `tests/test_youtube_agent_skill.py:197`
+  Prueffall: `test_failed_copy_rolls_back_only_new_files`
+- `tests/test_youtube_agent_skill.py:210`
+  Prueffall: `test_preflight_failure_has_current_log`
+- `tests/test_youtube_agent_skill.py:221`
+  Prueffall: `test_bad_source_name_or_missing_helper_cannot_activate`
+- `tests/test_youtube_agent_skill.py:229`
+  Prueffall: `test_record_tampering_is_rejected`
+- `tests/test_youtube_agent_skill.py:238`
+  Prueffall: `test_real_checkout_verifier_checks_git_pin_and_missing_helpers`
+- `tests/test_youtube_agent_skill.py:252`
+  Prueffall: `test_conflicting_actions_are_rejected_before_writes`
+- `tests/test_youtube_agent_skill.py:257`
+  Prueffall: `test_registry_menu_docs_and_wrappers`
+
+## tests/test_yue.py
+
+- `tests/test_yue.py:22`
+  Prueffall: `test_registry_source_and_no_runtime`
+- `tests/test_yue.py:53`
+  Prueffall: `test_plan_and_status_no_creation`
+- `tests/test_yue.py:63`
+  Prueffall: `test_doctor_missing_and_start_blocked`
+- `tests/test_yue.py:68`
+  Prueffall: `test_runtime_opt_in_still_blocked`
+- `tests/test_yue.py:73`
+  Prueffall: `test_source_syntax_without_import`
+- `tests/test_yue.py:85`
+  Prueffall: `test_foreign_source_preserved`
+- `tests/test_yue.py:95`
+  Prueffall: `test_deactivate_preserves_files`
+- `tests/test_yue.py:104`
+  Prueffall: `test_unsafe_root_rejected`
+- `tests/test_yue.py:108`
+  Prueffall: `test_keys_not_inherited_by_installer_subshell`
+- `tests/test_yue.py:121`
+  Prueffall: `test_cloud_and_gpu_limits_documented`
+- `tests/test_yue.py:126`
+  Prueffall: `test_sparse_policy_on_unborn_repo`
+- `tests/test_yue.py:135`
+  Prueffall: `test_real_local_sparse_checkout_excludes_env_and_media`
+
+Statisch benannte Testpositionen: **2577**. Kein Nachweis bestandener Tests.

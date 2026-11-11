@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+### 2026-11-11: Audit um nachvollziehbare Einzelinventare erweitert
+
+- Ergaenzender Audit mit dreiteiliger Tool-Beweisregel und gesondertem Auditstatus.
+- Statischer Quellenindex fuer bewegliche Referenzen, Clone-/Paketaufrufe,
+  Netz-/Privilegien-/Ressourcenmuster ohne Ausgabe von Quellzeilen oder Secret-Werten.
+- Testinventar pro benanntem Python-/Bats-Fall und Referenzkandidaten;
+  fehlende lexikalische Referenz ausdruecklich kein Beweis fuer toten Code.
+- Legacy-Queue- und Workbench-Konflikte dokumentiert, enge Gitleaks-Ausnahmen
+  bestaetigt; keine produktiven Pfade ausgefuehrt oder Daten entfernt.
+
 ### 2026-11-11: Sichere Diagnose und Betriebsreview
 
 - Review mit Prioritaeten, Quellfundstellen und Wahrheitstabelle aller 402 Haupttools.
