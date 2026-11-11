@@ -1,0 +1,70 @@
+{
+  "schema": 1,
+  "checked_on": "2026-11-11",
+  "ci_head": "ca91555c3f6ab5b5af79622f8b1ede8fc7cd7a4c",
+  "job_id": 130423315111,
+  "push_attempt_2": {
+    "job_id": 130429822865,
+    "statuses": [502, 504]
+  },
+  "scope": "four-exact-metadata-references-only; no domain or status exemption",
+  "references": [
+    {
+      "id": "dsgvo",
+      "url": "https://op.europa.eu/en/publication-detail/-/publication/3e485e15-11bd-11e6-ba9a-01aa75ed71a1/language-de",
+      "ci_status": [
+        0
+      ],
+      "probe_status": 502,
+      "classification": "UNVERIFIED_REFERENCE",
+      "files": [
+        "docs/_API-Keys/OnlineOnKeyServices/token8341.md",
+        "docs/tutorials/webinar-stack.md",
+        "docs/legal/README.md",
+        "docs/legal/INTERNATIONAL_SOURCES.md",
+        "docs/quality/EXTERNAL_LINK_POLICY.md"
+      ]
+    },
+    {
+      "id": "ai-act",
+      "url": "https://op.europa.eu/en/publication-detail/-/publication/dc8116a1-3fe6-11ef-865a-01aa75ed71a1/language-de",
+      "ci_status": [
+        0,
+        502
+      ],
+      "probe_status": 502,
+      "classification": "UNVERIFIED_REFERENCE",
+      "files": [
+        "docs/_API-Keys/OnlineOnKeyServices/token8341.md",
+        "docs/legal/INTERNATIONAL_SOURCES.md",
+        "docs/quality/EXTERNAL_LINK_POLICY.md"
+      ]
+    },
+    {
+      "id": "dsm",
+      "url": "https://op.europa.eu/en/publication-detail/-/publication/214471fe-786e-11e9-9f05-01aa75ed71a1/language-de",
+      "ci_status": [
+        502
+      ],
+      "probe_status": 502,
+      "classification": "UNVERIFIED_REFERENCE",
+      "files": [
+        "docs/legal/INTERNATIONAL_SOURCES.md",
+        "docs/quality/EXTERNAL_LINK_POLICY.md"
+      ]
+    },
+    {
+      "id": "nis-2",
+      "url": "https://op.europa.eu/en/publication-detail/-/publication/9b84d482-85bd-11ed-9887-01aa75ed71a1/language-de",
+      "ci_status": [
+        0
+      ],
+      "probe_status": 502,
+      "classification": "UNVERIFIED_REFERENCE",
+      "files": [
+        "docs/legal/INTERNATIONAL_SOURCES.md",
+        "docs/quality/EXTERNAL_LINK_POLICY.md"
+      ]
+    }
+  ]
+}

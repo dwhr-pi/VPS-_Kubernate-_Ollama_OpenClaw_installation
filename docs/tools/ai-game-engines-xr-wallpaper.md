@@ -69,7 +69,9 @@ Grafik-/Audio-Entwicklungsbibliotheken muessen separat bereitstehen. Es gibt kei
 apt-/pip-, Treiber- oder SDK-Umbau. Hoestens zwei Buildjobs, vier Stunden Zeitlimit und begrenzte,
 laufende Logausgabe; geprueft wird nur `--headless --version`, kein Editorfenster oder Projekt.
 Siehe
-[offizieller Linux-Buildweg](https://docs.godotengine.org/en/stable/engine_details/development/compiling/compiling_for_linuxbsd.html).
+[offizieller Linux-Buildweg am geprueften Dokumentationscommit](https://github.com/godotengine/godot-docs/blob/6d86d7c7f3b8f4f56c71e113022d72fe80b2c84d/engine_details/development/compiling/compiling_for_linuxbsd.rst).
+Originaladresse: `https://docs.godotengine.org/en/stable/engine_details/development/compiling/compiling_for_linuxbsd.html`
+(CI HTTP 429 am 11.11.2026; nicht als aktuell erreichbarer Web-Beleg gewertet).
 
 Godot-Buildziel: `~/.openclaw_ultimate_user_data/tools/godot_build/runtime/bin/`. Die anderen
 Eintraege nutzen ihren eigenen `tools/<id>/runtime/`-Ordner. Ein Update prueft denselben Pin, nicht
@@ -129,7 +131,9 @@ dem nativen Host, samt Treibern und Controller-Bindings erforderlich. XROrigin3D
 Eingabeaktionen muessen im Projekt eingerichtet werden; Initialisierung kann fehlschlagen. XR Tools
 liefert Hilfsszenen, nicht die SteamVR-Installation. Die pauschale Aussage, ein beliebiges Spiel
 werde per Knopfdruck VR, ist nicht zutreffend.
-[Godot-XR-Einrichtung](https://docs.godotengine.org/en/stable/tutorials/xr/setting_up_xr.html).
+[Godot-XR-Einrichtung am geprueften Dokumentationscommit](https://github.com/godotengine/godot-docs/blob/6d86d7c7f3b8f4f56c71e113022d72fe80b2c84d/tutorials/xr/setting_up_xr.rst).
+Originaladresse: `https://docs.godotengine.org/en/stable/tutorials/xr/setting_up_xr.html`
+(CI HTTP 429 am 11.11.2026).
 
 Unity bietet XR-Pakete, Unreal OpenXR-Plugins und O3DE einen OpenXR-Gem-Weg.
 Geraete-/Rendering-Kompatibilitaet ist pro Engine, Runtime und Version zu pruefen; insbesondere

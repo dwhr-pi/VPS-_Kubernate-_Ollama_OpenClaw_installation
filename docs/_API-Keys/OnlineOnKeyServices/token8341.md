@@ -304,7 +304,7 @@ zutreffende pauschale Rechtsbewertung. Fuer erfasste Verarbeitungen bleiben die 
 Verantwortlichen bestehen; Drittlandtransfers brauchen zusaetzlich eine tragfaehige Grundlage und
 Bewertung nach Kapitel V, etwa geeignete Garantien unter den Voraussetzungen des Art. 46. Eine
 Vertragsklausel allein ist keine Sicherheitsgarantie. Siehe
-[DSGVO, insbesondere Art. 3, 28 und 44-49](https://op.europa.eu/en/publication-detail/-/publication/3e485e15-11bd-11e6-ba9a-01aa75ed71a1/language-de).
+[DSGVO, insbesondere Art. 3, 28 und 44-49 - Quellstatus, nicht verifiziert](../../quality/PR24_LINKCHECK_2026-11-11.md#dsgvo).
 
 Vor Produktivfreigabe: Rechtsgrundlage, Rollen/AV-Vertrag, tatsaechliche Verarbeitungsorte,
 Unterauftragnehmer, Transferbewertung, Aufbewahrung, Training/Caching, Loeschrechte und technische
@@ -313,7 +313,7 @@ Nachweise bleibt die Freigabe gesperrt; lokale Ollama-Modelle bevorzugen. Auch l
 benoetigt Rechte-, Loesch- und Sicherheitskonzepte.
 
 Der
-[EU AI Act](https://op.europa.eu/en/publication-detail/-/publication/dc8116a1-3fe6-11ef-865a-01aa75ed71a1/language-de)
+[EU AI Act - Quellstatus, nicht verifiziert](../../quality/PR24_LINKCHECK_2026-11-11.md#ai-act)
 ist getrennt zu betrachten: konkrete Rolle, Verwendungszweck, Risikoklasse und anwendbare Fristen
 pruefen; insbesondere koennen Transparenzpflichten relevant sein. Weder API-Kompatibilitaet noch ein
 bestimmter Serverstandort beweist AI-Act-Konformitaet. Keine pauschale juristische Freigabe durch
@@ -371,5 +371,17 @@ konsolidierte Rechtspruefung. Keine Anmeldung und keine Provider-Inferenz.
 
 | Alt-Adresse (Abruf fehlgeschlagen)                                     | Erreichbarer Nachweis                                                                                                      |
 | ---------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| `https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:32016R0679` | [Primaerquelle](https://op.europa.eu/en/publication-detail/-/publication/3e485e15-11bd-11e6-ba9a-01aa75ed71a1/language-de) |
-| `https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:32024R1689` | [Primaerquelle](https://op.europa.eu/en/publication-detail/-/publication/dc8116a1-3fe6-11ef-865a-01aa75ed71a1/language-de) |
+| `https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:32016R0679` | [Quellstatus, nicht verifiziert](../../quality/PR24_LINKCHECK_2026-11-11.md#dsgvo) |
+| `https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:32024R1689` | [Quellstatus, nicht verifiziert](../../quality/PR24_LINKCHECK_2026-11-11.md#ai-act) |
+
+## Nachpruefung der EU-Metadaten am 11.11.2026
+
+Die folgenden Originalreferenzen bleiben erhalten, sind nach CI-Transportfehlern bzw. HTTP 502
+und separatem HTTP 502 derzeit nicht inhaltsverifiziert. Der fruehere Quellenstand bleibt historisch,
+keine neue konsolidierte Rechtspruefung wird behauptet. Einzelbelege und Abrufgrenzen:
+[PR-24-Quellenbericht](../../quality/PR24_LINKCHECK_2026-11-11.md). Keine Domain-/Status-Ausnahme im Linkchecker.
+
+| Historische Metadatenadresse | Nachpruefung |
+| --- | --- |
+| `https://op.europa.eu/en/publication-detail/-/publication/3e485e15-11bd-11e6-ba9a-01aa75ed71a1/language-de` | unverifizierte Originalreferenz; 11.11.2026, HTTP 502 |
+| `https://op.europa.eu/en/publication-detail/-/publication/dc8116a1-3fe6-11ef-865a-01aa75ed71a1/language-de` | unverifizierte Originalreferenz; 11.11.2026, HTTP 502 |

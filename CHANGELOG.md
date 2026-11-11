@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+### 2026-11-11: PR-24-Linkquellen nachvollziehbar korrigiert
+
+- Godot-Linux-/XR-Weblinks nach CI HTTP 429 durch gelesene offizielle
+  Dokumentationsquellen am festen Commit ersetzt; Originaladressen erhalten.
+- Vier amtliche EU-Metadatenseiten nach CI- und Einzelabrufproblemen
+  (Transportstatus 0/HTTP 502/504) datiert als aktuell unverifizierte
+  Originalreferenzen dokumentiert. Historische Zuordnung bleibt erhalten.
+- Keine Domain-/Status-Ausnahme, keine Aenderung am Linkchecker.
+  ScamAdviser bleibt nach separatem HTTP 200 aktiv.
+
 ### 2026-11-11: Audit um nachvollziehbare Einzelinventare erweitert
 
 - Ergaenzender Audit mit dreiteiliger Tool-Beweisregel und gesondertem Auditstatus.

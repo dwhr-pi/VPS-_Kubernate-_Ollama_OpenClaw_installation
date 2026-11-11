@@ -181,15 +181,15 @@ Wiederaufnahme als aktiver Link braucht einen nachvollziehbaren erfolgreichen Ab
 | `https://amtliche-handbuecher.bundesfinanzministerium.de/ao/2026/Anhaenge/BMF-Schreiben-und-gleichlautende-Laendererlasse/Anhang-33/inhalt.html` (BMF GoBD; unverifizierte Originalreferenz, CI HTTP 503, 30.10.2026) | 503                                           |
 | `https://www.gnu.org/software/gdb/` (GNU GDB; unverifizierte Originalreferenz, CI Transportfehler, 30.10.2026)                                                                                                        | 0                                             |
 | `https://www.gnu.org/software/bash/` (GNU Bash; unverifizierte Originalreferenz, CI Transportfehler, 30.10.2026)                                                                                                      | 0                                             |
-| [DSGVO DE ELI](https://op.europa.eu/en/publication-detail/-/publication/3e485e15-11bd-11e6-ba9a-01aa75ed71a1/language-de)                                                                                             | 202                                           |
+| [DSGVO DE ELI - Quellstatus, nicht verifiziert](PR24_LINKCHECK_2026-11-11.md#dsgvo)                                                                                             | 202                                           |
 | `https://www.gesetze-im-internet.de/urhg/__69d.html` (UrhG 69d; unverifizierte Originalreferenz, CI Transportfehler, 30.10.2026)                                                                                      | 0                                             |
 | `https://www.gesetze-im-internet.de/urhg/__69e.html` (UrhG 69e; unverifizierte Originalreferenz, CI Transportfehler, 30.10.2026)                                                                                      | 0                                             |
 | [Veo](https://ai.google.dev/gemini-api/docs/veo)                                                                                                                                                                      | 0                                             |
-| [AI Act](https://op.europa.eu/en/publication-detail/-/publication/dc8116a1-3fe6-11ef-865a-01aa75ed71a1/language-de)                                                                                                   | 202                                           |
+| [AI Act - Quellstatus, nicht verifiziert](PR24_LINKCHECK_2026-11-11.md#ai-act)                                                                                                   | 202                                           |
 | `https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202601744` (OJ 2026/1744; unverifizierte Originalreferenz, CI HTTP 202, 30.10.2026)                                                                         | 202; Zuordnung zu AI Omnibus nicht bestaetigt |
-| [DSGVO ELI](https://op.europa.eu/en/publication-detail/-/publication/3e485e15-11bd-11e6-ba9a-01aa75ed71a1/language-de)                                                                                                | 202                                           |
-| [DSM](https://op.europa.eu/en/publication-detail/-/publication/214471fe-786e-11e9-9f05-01aa75ed71a1/language-de)                                                                                                      | 202                                           |
-| [NIS-2](https://op.europa.eu/en/publication-detail/-/publication/9b84d482-85bd-11ed-9887-01aa75ed71a1/language-de)                                                                                                    | 202                                           |
+| [DSGVO ELI - Quellstatus, nicht verifiziert](PR24_LINKCHECK_2026-11-11.md#dsgvo)                                                                                                | 202                                           |
+| [DSM - Quellstatus, nicht verifiziert](PR24_LINKCHECK_2026-11-11.md#dsm)                                                                                                      | 202                                           |
+| [NIS-2 - Quellstatus, nicht verifiziert](PR24_LINKCHECK_2026-11-11.md#nis-2)                                                                                                    | 202                                           |
 | `https://www.gesetze-im-internet.de/` (Gesetze im Internet; unverifizierte Originalreferenz, CI Transportfehler, 30.10.2026)                                                                                          | 0                                             |
 | `https://www.law.go.kr/` (Korea; unverifizierte Originalreferenz, CI Transportfehler, 30.10.2026)                                                                                                                     | 0                                             |
 | `https://www.pdpc.gov.sg/` (Singapur; unverifizierte Originalreferenz, CI HTTP 202, 30.10.2026)                                                                                                                       | 202                                           |
@@ -202,8 +202,8 @@ Wiederaufnahme als aktiver Link braucht einen nachvollziehbaren erfolgreichen Ab
 | [Google Preise](https://ai.google.dev/gemini-api/docs/pricing)                                                                                                                                                        | 0                                             |
 | [Google Billing](https://ai.google.dev/gemini-api/docs/billing)                                                                                                                                                       | 0                                             |
 | [Google Einstieg](https://ai.google.dev/)                                                                                                                                                                             | 0                                             |
-| [DSGVO CELEX](https://op.europa.eu/en/publication-detail/-/publication/3e485e15-11bd-11e6-ba9a-01aa75ed71a1/language-de)                                                                                              | 202                                           |
-| [AI Act CELEX](https://op.europa.eu/en/publication-detail/-/publication/dc8116a1-3fe6-11ef-865a-01aa75ed71a1/language-de)                                                                                             | 202                                           |
+| [DSGVO CELEX - Quellstatus, nicht verifiziert](PR24_LINKCHECK_2026-11-11.md#dsgvo)                                                                                              | 202                                           |
+| [AI Act CELEX - Quellstatus, nicht verifiziert](PR24_LINKCHECK_2026-11-11.md#ai-act)                                                                                             | 202                                           |
 | [Google API Key](https://ai.google.dev/gemini-api/docs/api-key)                                                                                                                                                       | 0                                             |
 | `https://media.defense.gov/2022/Aug/29/2003066362/1/1/0/CTR_KUBERNETES_HARDENING_GUIDANCE_1.2_20220829.PDF` (NSA/CISA Kubernetes 1.2; unverifizierte Originalreferenz, CI HTTP 403, 30.10.2026)                       | 403                                           |
 
@@ -214,13 +214,27 @@ abgerufen und anhand von Titel und CELEX bzw. offizieller Projektquelle zugeordn
 EU-Metadatensaetze belegen die jeweilige Originalveroeffentlichung, nicht eine aktuelle
 konsolidierte Rechtspruefung. Keine Anmeldung und keine Provider-Inferenz.
 
-| Alt-Adresse (Abruf fehlgeschlagen)                                     | Erreichbarer Nachweis                                                                                                      |
+| Alt-Adresse (Abruf fehlgeschlagen)                                     | Damaliger Nachweis und aktueller Quellstatus                                                                                 |
 | ---------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| `https://eur-lex.europa.eu/eli/reg/2016/679/oj?locale=de`              | [Primaerquelle](https://op.europa.eu/en/publication-detail/-/publication/3e485e15-11bd-11e6-ba9a-01aa75ed71a1/language-de) |
-| `https://eur-lex.europa.eu/eli/reg/2016/679/oj`                        | [Primaerquelle](https://op.europa.eu/en/publication-detail/-/publication/3e485e15-11bd-11e6-ba9a-01aa75ed71a1/language-de) |
-| `https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:32016R0679` | [Primaerquelle](https://op.europa.eu/en/publication-detail/-/publication/3e485e15-11bd-11e6-ba9a-01aa75ed71a1/language-de) |
-| `https://eur-lex.europa.eu/eli/reg/2024/1689/oj`                       | [Primaerquelle](https://op.europa.eu/en/publication-detail/-/publication/dc8116a1-3fe6-11ef-865a-01aa75ed71a1/language-de) |
-| `https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:32024R1689` | [Primaerquelle](https://op.europa.eu/en/publication-detail/-/publication/dc8116a1-3fe6-11ef-865a-01aa75ed71a1/language-de) |
-| `https://eur-lex.europa.eu/eli/dir/2019/790/oj`                        | [Primaerquelle](https://op.europa.eu/en/publication-detail/-/publication/214471fe-786e-11e9-9f05-01aa75ed71a1/language-de) |
-| `https://eur-lex.europa.eu/eli/dir/2022/2555/oj`                       | [Primaerquelle](https://op.europa.eu/en/publication-detail/-/publication/9b84d482-85bd-11ed-9887-01aa75ed71a1/language-de) |
+| `https://eur-lex.europa.eu/eli/reg/2016/679/oj?locale=de`              | [Quellstatus, nicht verifiziert](PR24_LINKCHECK_2026-11-11.md#dsgvo) |
+| `https://eur-lex.europa.eu/eli/reg/2016/679/oj`                        | [Quellstatus, nicht verifiziert](PR24_LINKCHECK_2026-11-11.md#dsgvo) |
+| `https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:32016R0679` | [Quellstatus, nicht verifiziert](PR24_LINKCHECK_2026-11-11.md#dsgvo) |
+| `https://eur-lex.europa.eu/eli/reg/2024/1689/oj`                       | [Quellstatus, nicht verifiziert](PR24_LINKCHECK_2026-11-11.md#ai-act) |
+| `https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:32024R1689` | [Quellstatus, nicht verifiziert](PR24_LINKCHECK_2026-11-11.md#ai-act) |
+| `https://eur-lex.europa.eu/eli/dir/2019/790/oj`                        | [Quellstatus, nicht verifiziert](PR24_LINKCHECK_2026-11-11.md#dsm) |
+| `https://eur-lex.europa.eu/eli/dir/2022/2555/oj`                       | [Quellstatus, nicht verifiziert](PR24_LINKCHECK_2026-11-11.md#nis-2) |
 | `https://docs.paperless-ngx.com/api/`                                  | [Primaerquelle](https://github.com/paperless-ngx/paperless-ngx/blob/main/docs/api.md)                                      |
+
+## Nachpruefung der EU-Metadaten am 11.11.2026
+
+Die folgenden Originalreferenzen bleiben erhalten, sind nach CI-Transportfehlern bzw. HTTP 502
+und separatem HTTP 502 derzeit nicht inhaltsverifiziert. Der fruehere Quellenstand bleibt historisch,
+keine neue konsolidierte Rechtspruefung wird behauptet. Einzelbelege und Abrufgrenzen:
+[PR-24-Quellenbericht](PR24_LINKCHECK_2026-11-11.md). Keine Domain-/Status-Ausnahme im Linkchecker.
+
+| Historische Metadatenadresse | Nachpruefung |
+| --- | --- |
+| `https://op.europa.eu/en/publication-detail/-/publication/3e485e15-11bd-11e6-ba9a-01aa75ed71a1/language-de` | unverifizierte Originalreferenz; 11.11.2026, HTTP 502 |
+| `https://op.europa.eu/en/publication-detail/-/publication/dc8116a1-3fe6-11ef-865a-01aa75ed71a1/language-de` | unverifizierte Originalreferenz; 11.11.2026, HTTP 502 |
+| `https://op.europa.eu/en/publication-detail/-/publication/214471fe-786e-11e9-9f05-01aa75ed71a1/language-de` | unverifizierte Originalreferenz; 11.11.2026, HTTP 502 |
+| `https://op.europa.eu/en/publication-detail/-/publication/9b84d482-85bd-11ed-9887-01aa75ed71a1/language-de` | unverifizierte Originalreferenz; 11.11.2026, HTTP 502 |
