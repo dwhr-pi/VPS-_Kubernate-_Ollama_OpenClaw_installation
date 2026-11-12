@@ -23,6 +23,8 @@ Android-/iPhone-App sowie deren Discovery-/Startgrenzen ausdruecklich vorbereite
 [Enterprise-Haertung schrittweise abarbeiten](architecture/ENTERPRISE_HARDENING_ROADMAP.md):
 E01-E09 mit P1-P3, konkreten Checklisten, Voraussetzungen, Abnahme und Rueckbau.
 Zuerst Metrics-Zugang, Restore und Sandbox; danach Streaming/Tracing, zuletzt HA und Autoscaling.
+[Haertungsstand](architecture/HARDENING_IMPLEMENTATION_2026_11_12.md): Metrics-Bridge, Preflight und Sandbox
+mit gesonderten Zielabnahmen und ohne automatisches Deployment.
 
 [Natives Betriebshandbuch](NATIVE_OPERATIONS_HANDBOOK.md): zusammengefuehrte
 MCP-/WebUI-/SSO-/Wartungs-Vorlagen, Make-Einstieg und sichere Backup-Grenzen.

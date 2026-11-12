@@ -80,6 +80,8 @@ jobs:
             "$tools/kustomize" build "deploy/kustomize/overlays/$overlay" > "$output/$overlay.yaml"
           done
           "$tools/kustomize" build deploy/kustomize/monitoring-operator > "$output/monitoring-operator.yaml"
+          "$tools/kustomize" build k8s/overlays/metrics-isolation > "$output/metrics-isolation.yaml"
+          "$tools/kustomize" build k8s/optional/tool-sandbox > "$output/tool-sandbox.yaml"
           # These synthetic digests only satisfy template linting. Nothing is deployed or published.
           fixture_digest="sha256:$(printf '%064d' 1)"
           "$tools/helm" lint charts/monitoring-lite --strict \
@@ -90,6 +92,7 @@ jobs:
           for file in "$output"/*.yaml; do "$tools/kube-linter" lint "$file"; done
           export KUSTOMIZE_BIN="$tools/kustomize"
           python3 -B -m unittest discover -s tests -p test_declarative_delivery.py -v
+          python3 -B -m unittest discover -s tests -p test_metrics_isolation.py -v
           bash -n scripts/setup-cluster.sh
 
   staging:

@@ -14,13 +14,13 @@ Neue Dateien muessen vor der Regeneration im Git-Index stehen.
 
 ## Bewegliches Wort latest/main/master (lexikalisch)
 
-577 Fundstellen, keine automatische Risikoeinstufung.
+586 Fundstellen, keine automatische Risikoeinstufung.
 
 - `.github/workflows/build-and-push.yml:4`
 - `.github/workflows/build-and-push.yml:16`
 - `.github/workflows/coding-agents.yml:22`
 - `.github/workflows/deploy.yml:7`
-- `.github/workflows/deploy.yml:98`
+- `.github/workflows/deploy.yml:101`
 - `.github/workflows/documentation-server-offline.yml:12`
 - `.github/workflows/install-lab-offline.yml:14`
 - `.github/workflows/next-level-health.yml:7`
@@ -158,6 +158,15 @@ Neue Dateien muessen vor der Regeneration im Git-Index stehen.
 - `install.sh:714`
 - `install.sh:723`
 - `install.sh:728`
+- `k8s/overlays/metrics-isolation/litellm_metrics_proxy.py:43`
+- `k8s/overlays/metrics-isolation/litellm_metrics_proxy.py:54`
+- `k8s/overlays/metrics-isolation/litellm_metrics_proxy.py:72`
+- `k8s/overlays/metrics-isolation/litellm_metrics_proxy.py:98`
+- `k8s/overlays/metrics-isolation/litellm_metrics_proxy.py:99`
+- `k8s/overlays/metrics-isolation/litellm_metrics_proxy.py:101`
+- `k8s/overlays/metrics-isolation/litellm_metrics_proxy.py:102`
+- `k8s/overlays/metrics-isolation/litellm_metrics_proxy.py:150`
+- `k8s/overlays/metrics-isolation/litellm_metrics_proxy.py:183`
 - `scripts/agents/install_cli.py:405`
 - `scripts/agents/install_cli.py:459`
 - `scripts/agents/mcp_launcher.py:22`
@@ -305,8 +314,8 @@ Neue Dateien muessen vor der Regeneration im Git-Index stehen.
 - `scripts/operations/backup_restore_test.py:60`
 - `scripts/operations/installation_inventory.py:267`
 - `scripts/operations/installation_inventory.py:300`
-- `scripts/operations/platform_health.py:196`
-- `scripts/operations/platform_health.py:218`
+- `scripts/operations/platform_health.py:217`
+- `scripts/operations/platform_health.py:242`
 - `scripts/operations/reset_installation.py:144`
 - `scripts/operations/reset_installation.py:180`
 - `scripts/operations/restore_drill.py:117`
@@ -834,7 +843,7 @@ Neue Dateien muessen vor der Regeneration im Git-Index stehen.
 
 ## Netz-/Port-Kandidat
 
-209 Fundstellen, keine automatische Risikoeinstufung.
+217 Fundstellen, keine automatische Risikoeinstufung.
 
 - `charts/monitoring-lite/templates/network-policy.yaml:26`
 - `charts/monitoring-lite/templates/network-policy.yaml:42`
@@ -895,6 +904,14 @@ Neue Dateien muessen vor der Regeneration im Git-Index stehen.
 - `k8s/overlays/gpu/ingress-network-policy.yml:32`
 - `k8s/overlays/gpu/ingress-network-policy.yml:43`
 - `k8s/overlays/gpu/ingress-network-policy.yml:54`
+- `k8s/overlays/metrics-isolation/gateway-sidecar.yaml:13`
+- `k8s/overlays/metrics-isolation/gateway-sidecar.yaml:14`
+- `k8s/overlays/metrics-isolation/kustomization.yaml:31`
+- `k8s/overlays/metrics-isolation/litellm_metrics_proxy.py:153`
+- `k8s/overlays/metrics-isolation/litellm_metrics_proxy.py:170`
+- `k8s/overlays/metrics-isolation/litellm_metrics_proxy.py:172`
+- `k8s/overlays/metrics-isolation/metrics-service.yaml:9`
+- `k8s/overlays/metrics-isolation/network-policy.yaml:15`
 - `k8s/overlays/vps-cpu/service.yaml:17`
 - `k8s/platform/cloudflared-tunnel.yaml:43`
 - `k8s/platform/cloudflared-tunnel.yaml:71`
@@ -1048,7 +1065,7 @@ Neue Dateien muessen vor der Regeneration im Git-Index stehen.
 
 ## Privilegien-/Host-Kandidat
 
-654 Fundstellen, keine automatische Risikoeinstufung.
+657 Fundstellen, keine automatische Risikoeinstufung.
 
 - `.github/workflows/next-level-health.yml:17`
 - `.github/workflows/next-level-health.yml:18`
@@ -1087,10 +1104,13 @@ Neue Dateien muessen vor der Regeneration im Git-Index stehen.
 - `k8s/gitops/memory/qdrant.yaml:84`
 - `k8s/openclaw-deployment.yaml:14`
 - `k8s/openclaw-deployment.yaml:23`
+- `k8s/optional/tool-sandbox/job.yaml:18`
+- `k8s/optional/tool-sandbox/job.yaml:28`
 - `k8s/overlays/gpu/gateway-patch.yml:16`
 - `k8s/overlays/gpu/gateway-patch.yml:25`
 - `k8s/overlays/gpu/k8s-ollama-deployment.yaml:16`
 - `k8s/overlays/gpu/k8s-ollama-deployment.yaml:27`
+- `k8s/overlays/metrics-isolation/gateway-sidecar.yaml:19`
 - `k8s/overlays/production/resources.yml:12`
 - `k8s/overlays/production/resources.yml:24`
 - `k8s/overlays/production/resources.yml:47`
@@ -1707,7 +1727,7 @@ Neue Dateien muessen vor der Regeneration im Git-Index stehen.
 
 ## Ressourcen-/Persistenz-Kandidat
 
-53 Fundstellen, keine automatische Risikoeinstufung.
+54 Fundstellen, keine automatische Risikoeinstufung.
 
 - `charts/monitoring-lite/templates/namespace.yaml:16`
 - `charts/monitoring-lite/templates/workloads.yaml:9`
@@ -1747,6 +1767,7 @@ Neue Dateien muessen vor der Regeneration im Git-Index stehen.
 - `k8s/monitoring/prometheus-values.yml:18`
 - `k8s/monitoring/prometheus-values.yml:41`
 - `k8s/monitoring/prometheus-values.yml:85`
+- `k8s/optional/tool-sandbox/isolation.yaml:10`
 - `k8s/overlays/gpu/agent-workspace-pvc.yml:3`
 - `k8s/overlays/gpu/agent-workspace-pvc.yml:9`
 - `k8s/overlays/gpu/k8s-ollama-deployment.yaml:21`

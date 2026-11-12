@@ -1,0 +1,11 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: ai-tool-sandbox
+resources:
+  - namespace.yaml
+  - job.yaml
+  - isolation.yaml
+images:
+  - name: sandbox-runtime
+    newName: registry.example.invalid/reviewed-tool-runtime
+    newTag: REPLACE_WITH_REVIEWED_PIN

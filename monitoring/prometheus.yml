@@ -10,6 +10,7 @@ scrape_configs:
     metrics_path: /metrics
     authorization:
       type: Bearer
+      # Dedicated scrape token for the loopback bridge, never the LiteLLM master key.
       credentials_file: /run/secrets/litellm-metrics-token
     # Explicitly empty until private targets have been approved; not a successful scrape.
     file_sd_configs:

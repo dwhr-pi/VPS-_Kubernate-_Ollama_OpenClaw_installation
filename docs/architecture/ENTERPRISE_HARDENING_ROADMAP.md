@@ -5,9 +5,10 @@ Er ist keine Produktionsfreigabe und behauptet keine bereits getestete Cluster- 
 
 ## Hier weiterarbeiten
 
-**Naechstes Arbeitspaket: E01, Metrics-Zugang vom LiteLLM-Master-Key trennen.**
-Zuerst die API-/Authentifizierungsmoeglichkeiten des gepinnten LiteLLM-Quellstands pruefen.
-Nicht einfach den Secret-Namen tauschen: Ohne passenden Empfaenger wuerde der Scrape nur mit 401 scheitern.
+**Naechstes Arbeitspaket: E01 am Ziel abnehmen, danach E02 und E03.**
+Der [Implementierungsstand](HARDENING_IMPLEMENTATION_2026_11_12.md) enthaelt
+die GET-only-Metrics-Bridge, ein opt-in Overlay und Offline-Negativtests.
+Secret-Bereitstellung, echte Rotation, Operator-RBAC und CNI-Wirksamkeit sind noch nicht abgenommen.
 Danach E02 und E03 abschliessen, bevor produktive Agenten fremden Code ausfuehren oder sensible Daten verarbeiten.
 Neue Infrastruktur nicht auf einmal aktivieren; pro Arbeitspaket einen kleinen, separat pruefbaren PR erstellen.
 
@@ -45,9 +46,9 @@ Ein Haken bedeutet bestandene Abnahme mit verlinktem Nachweis, nicht nur vorhand
 
 | Prioritaet | ID | Arbeitspaket | Abhaengigkeit | Stand |
 | --- | --- | --- | --- | --- |
-| P1 | E01 | Metrics-Zugang mit minimalen Rechten | Gepinnter LiteLLM-Stand | Offen |
+| P1 | E01 | Metrics-Zugang mit minimalen Rechten | Gepinnter LiteLLM-Stand | Code/Fixtures vorhanden; Zielabnahme offen |
 | P1 | E02 | Qdrant-/Agenten-Restore | Separater Testdatensatz und Sicherungsziel | Offen |
-| P1 | E03 | MCP-/Code-Sandbox | Gepruefte Host-/Runtime-Voraussetzungen | Offen |
+| P1 | E03 | MCP-/Code-Sandbox | Gepruefte Host-/Runtime-Voraussetzungen | Suspendierte Vorlage; Isolation offen |
 | P2 | E04 | Begrenztes echtes Streaming | Broker-Vertrag und Offline-Fixtures | Offen |
 | P2 | E05 | Inferenz-SLOs und GPU-Telemetrie | E04, fuer vLLM dessen Build-Abnahme | Teilvorbereitung: Katalog/Dashboard |
 | P2 | E06 | Redigiertes Agenten-Tracing | E01, Datenflussentscheidung | Langfuse-Rezept vorhanden |
@@ -59,11 +60,13 @@ Ein Haken bedeutet bestandene Abnahme mit verlinktem Nachweis, nicht nur vorhand
 
 ### E01: Metrics-Zugang trennen
 
-Fundstelle: [LiteLLM-ServiceMonitor](../../k8s/monitoring/litellm-service-monitor.yml) verwendet
-`litellm-runtime/master-key`. Prometheus braucht keine Gateway-Administrationsrechte.
+Ausgangsbefund: Der [LiteLLM-ServiceMonitor](../../k8s/monitoring/litellm-service-monitor.yml)
+verwendete `litellm-runtime/master-key`. Er referenziert jetzt den eigenen
+Scrape-Token; dafuer ist das neue Metrics-Isolation-Overlay erforderlich.
+Prometheus braucht keine Gateway-Administrationsrechte.
 
-- [ ] Am gepinnten Quellstand feststellen, welche eingeschraenkte Metrics-Authentifizierung unterstuetzt wird.
-- [ ] Falls noetig einen separaten Metrics-Proxy planen: nur GET `/metrics`, keine API-/Admin-Weiterleitung.
+- [x] Gepinnten Auth-Code gelesen; keine exklusiv auf Metrics begrenzte Tokenfaehigkeit als gesichert behauptet.
+- [x] Separaten Metrics-Proxy implementiert: nur GET `/metrics`, keine API-/Admin-Weiterleitung.
 - [ ] Eigenen Scrape-Token ausserhalb von Git erzeugen; Secret-/Mount-/RBAC-Vertrag separat dokumentieren.
 - [ ] Den eventuell weiter benoetigten Upstream-Master-Key nur im Proxy halten, nicht an Prometheus geben.
 - [ ] NetworkPolicies fuer Prometheus -> Proxy und Proxy -> Gateway begrenzen; bisherige Freigaben anpassen.
@@ -73,6 +76,8 @@ Fundstelle: [LiteLLM-ServiceMonitor](../../k8s/monitoring/litellm-service-monito
 **Fertig, wenn:** eingeschraenkter Zugriff samt Rotation und Negativtests am Ziel nachgewiesen ist.
 Rueckfall: neue Scrape-Anbindung deaktivieren und ueberwachen, nicht Auth abschalten oder Key-Rechte ausweiten.
 Bei Verdacht auf Offenlegung den alten Master-Key nach geprueftem Rotationsplan ersetzen.
+Offline-Negativtests sind vorhanden; die offenen Haken verlangen reale Zieltests,
+nicht nur synthetische Transport-/Secret-Fixtures.
 
 ### E02: Restore statt nur PVC
 

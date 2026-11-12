@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+### 2026-11-12: Metrics-Isolation und sichere Preflight-Grenzen
+
+- Gepinnten LiteLLM-Auth-Code geprueft; GET-only-Bridge mit eigenem Scrape-Token und opt-in Kustomize-Overlay.
+- Master-Key aus dem ServiceMonitor entfernt; private Metrics-Service-/Netzwerk- und Ausfallregeln angepasst.
+- Native systemd-Vorlage, synthetische Negativtests und Linux-/macOS-/Windows-CI ergaenzt.
+- Preflight auf Offline-Doctor umgestellt; freie VRAM-Kapazitaet nur ausdruecklich pro GPU pruefen.
+- Suspendierte netzwerklose Sandbox-Vorlage vorbereitet; echte Runtime-/Restore-/Cluster-Abnahmen bleiben offen.
+
 ### 2026-11-12: Projektbrief und gefuehrter Public-Key-Import
 
 - Offline-Formulare fuer Film, Buch, Betriebssystem und allgemeine Vorhaben mit versionierten Zwischenstaenden.

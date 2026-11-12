@@ -33,13 +33,13 @@ spec:
           annotations:
             summary: 'Ollama inventory unavailable; exporter HTTP success is insufficient'
         - alert: LLMOpsGatewayScrapeUnavailable
-          expr: up{namespace="llmops",service="litellm"} == 0
+          expr: up{namespace="llmops",service="litellm-metrics"} == 0
           for: 5m
           labels: {severity: warning}
           annotations:
             summary: 'LiteLLM scrape unavailable; verify token and private network'
         - alert: LLMOpsGatewayScrapeMissing
-          expr: absent(up{namespace="llmops",service="litellm"})
+          expr: absent(up{namespace="llmops",service="litellm-metrics"})
           for: 10m
           labels: {severity: warning}
           annotations:

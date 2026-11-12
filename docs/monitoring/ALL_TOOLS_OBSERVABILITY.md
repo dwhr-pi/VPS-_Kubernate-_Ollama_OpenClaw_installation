@@ -11,6 +11,8 @@ Die Git-Source-Installationsrichtlinie gilt unveraendert; keine Docker-/Compose-
 Die uebergreifende Reihenfolge steht im
 [Arbeitsplan E01-E09](../architecture/ENTERPRISE_HARDENING_ROADMAP.md):
 Metrics-Zugang zuerst absichern, dann Inferenz-SLOs und Tracing abnehmen; Autoscaling bleibt ein spaeterer Schritt.
+[Metrics-Isolation und Aktivierungsgrenzen](../architecture/HARDENING_IMPLEMENTATION_2026_11_12.md):
+eigener Scrape-Token statt Master-Key im ServiceMonitor; opt-in Overlay erforderlich.
 
 ## Was abgedeckt ist
 

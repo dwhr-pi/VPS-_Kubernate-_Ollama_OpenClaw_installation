@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "review_date": "2026-11-12",
+  "local_head_before_changes": "3b4c62e81f8afe75a13f0f97170b5242c9e095b6",
+  "github_main_read_only": "ea1714bf590d4d181b132d430a3eba5dca1307e8",
+  "comparison": "Main object available locally; HEAD differs in 14 files before this patch. No fetch, merge, checkout or publication.",
+  "recipe_pin": "f2118fc7670ba3fa736d9b8f4deef9077a45a720",
+  "sources": [
+    {
+      "url": "https://raw.githubusercontent.com/BerriAI/litellm/f2118fc7670ba3fa736d9b8f4deef9077a45a720/litellm/proxy/auth/user_api_key_auth.py",
+      "sha256": "1de0a04e542af2bbadc797a8fe548a80db463ecbdf088bf48baa4bc50847fef2",
+      "read": true,
+      "finding": "Metrics authentication guard at lines 210-213; valid master-key authentication yields PROXY_ADMIN at lines 2717-2725. No exclusive metrics-only credential capability established by this review."
+    },
+    {
+      "url": "https://raw.githubusercontent.com/BerriAI/litellm/f2118fc7670ba3fa736d9b8f4deef9077a45a720/litellm/proxy/_types.py",
+      "sha256": "0fcc435ef22cd46467bcbf68d5e829e625de7d706d06da508d5ae18c6cd40402",
+      "read": true,
+      "finding": "Route definitions inspected; no conclusion that every virtual-key role is metrics-only."
+    },
+    {
+      "url": "https://raw.githubusercontent.com/BerriAI/litellm/f2118fc7670ba3fa736d9b8f4deef9077a45a720/litellm/proxy/proxy_server.py",
+      "sha256": "0eaf520be0203691733c882ae641b9d74bb28d8b5408d81eb9b550822cb94062",
+      "read": true,
+      "finding": "Inspected source, not executed or installed. No complete dependency or runtime audit."
+    }
+  ],
+  "not_verified": [
+    "Native LiteLLM build and exact deployed runtime version",
+    "Prometheus Operator Secret RBAC and target selection",
+    "CNI enforcement and additional additive NetworkPolicies",
+    "Real token rotation, TLS or remote scrape",
+    "Restore, isolation runtime, CUDA and inference SLO acceptance"
+  ]
+}

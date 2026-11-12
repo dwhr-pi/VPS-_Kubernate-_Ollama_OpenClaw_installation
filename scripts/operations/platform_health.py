@@ -117,6 +117,24 @@ def private_metadata(path):
     return info
 
 
+def gpu_capacity(minimum_mib):
+    executable = shutil.which('nvidia-smi')
+    if not executable:
+        return False, 'nvidia-smi fehlt; keine Installation'
+    try:
+        result = subprocess.run([executable, '--query-gpu=memory.free', '--format=csv,noheader,nounits'],
+                                stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, timeout=TIMEOUT, check=False)
+        if result.returncode or len(result.stdout) > 4096:
+            raise ValueError('Invalid capacity response')
+        rows = result.stdout.decode('ascii').splitlines()
+        if not 1 <= len(rows) <= 32 or any(not re.fullmatch(r'[0-9]{1,9}', row.strip()) for row in rows):
+            raise ValueError('Invalid capacity rows')
+        passed = any(int(row.strip()) >= minimum_mib for row in rows)
+        return passed, 'Momentaufnahme pro GPU; keine Reservierung, CUDA-/Toolkit- oder Modell-Abnahme'
+    except (OSError, ValueError, UnicodeError, subprocess.TimeoutExpired):
+        return False, 'GPU-Kapazitaet nicht sicher pruefbar'
+
+
 def pin_check(root):
     rows = json.loads((root / 'config/docker_to_github.json').read_text(encoding='utf-8'))['tools']
     if not isinstance(rows, list) or not all(isinstance(row, dict) for row in rows):
@@ -156,6 +174,9 @@ def run(args, root=ROOT):
         for name in selected:
             passed, message = http_probe(name) if name in SERVICES else host_probe(name, args.k3s_unit)
             add(name, passed, message)
+        if args.min_free_vram_mib is not None:
+            passed, message = gpu_capacity(args.min_free_vram_mib)
+            add('gpu-free-vram', passed, message, 'P0')
         if args.secret_metadata:
             try:
                 info = private_metadata(args.secret_metadata)
@@ -202,10 +223,13 @@ def main(argv=None):
     parser.add_argument('--require', action='append', choices=(*SERVICES, *HOSTS), default=[])
     parser.add_argument('--k3s-unit', choices=('k3s', 'k3s-agent'), default='k3s')
     parser.add_argument('--min-free-gib', type=positive, default=8)
+    parser.add_argument('--min-free-vram-mib', type=positive)
     parser.add_argument('--secret-metadata', type=Path)
     parser.add_argument('--backup-evidence', type=Path)
     parser.add_argument('--max-backup-age-hours', type=positive, default=48)
     args = parser.parse_args(argv)
+    if args.min_free_vram_mib is not None and 'gpu' not in args.require:
+        parser.error('--min-free-vram-mib erfordert --require gpu; Abfrage nur mit --runtime')
     try:
         report, code = run(args)
     except OSError:

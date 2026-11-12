@@ -1,0 +1,51 @@
+name: Hardening - offline boundaries
+
+on:
+  pull_request:
+    paths:
+      - k8s/overlays/metrics-isolation/**
+      - k8s/optional/tool-sandbox/**
+      - k8s/monitoring/**
+      - scripts/preflight.sh
+      - scripts/operations/platform_health.py
+      - tests/test_metrics_isolation.py
+      - tests/test_hardening_preflight.py
+      - .github/workflows/hardening-boundaries.yml
+  push:
+    paths:
+      - k8s/overlays/metrics-isolation/**
+      - k8s/optional/tool-sandbox/**
+      - k8s/monitoring/**
+      - scripts/preflight.sh
+      - scripts/operations/platform_health.py
+      - tests/test_metrics_isolation.py
+      - tests/test_hardening_preflight.py
+      - .github/workflows/hardening-boundaries.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fixtures:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, macos-15, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 5
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+      PYTHONUTF8: "1"
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+      - name: Mocked transport, synthetic credentials and hardware responses only
+        run: |
+          python -B -m unittest discover -s tests -p test_metrics_isolation.py -v
+          python -B -m unittest discover -s tests -p test_hardening_preflight.py -v
+          python -B -m unittest discover -s tests -p test_platform_health.py -v

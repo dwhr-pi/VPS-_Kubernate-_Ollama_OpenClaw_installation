@@ -2085,6 +2085,21 @@ Parametrisierung und dynamisch erzeugte Tests koennen mehr Laufzeitfaelle liefer
 - `tests/test_grok_tooling_docs.py:59`
   Prueffall: `test_markdown_tables_have_consistent_columns`
 
+## tests/test_hardening_preflight.py
+
+- `tests/test_hardening_preflight.py:22`
+  Prueffall: `test_vram_threshold_does_not_trigger_implicit_hardware_access`
+- `tests/test_hardening_preflight.py:28`
+  Prueffall: `test_requested_threshold_failure_is_not_runtime_acceptance`
+- `tests/test_hardening_preflight.py:36`
+  Prueffall: `test_vram_is_per_device_not_summed`
+- `tests/test_hardening_preflight.py:43`
+  Prueffall: `test_bad_or_unknown_capacity_fails_closed`
+- `tests/test_hardening_preflight.py:49`
+  Prueffall: `test_preflight_reuses_offline_doctor_without_docker_requirement`
+- `tests/test_hardening_preflight.py:55`
+  Prueffall: `test_sandbox_is_suspended_networkless_and_unprivileged`
+
 ## tests/test_hermes_jarvis_docs.py
 
 - `tests/test_hermes_jarvis_docs.py:16`
@@ -3174,6 +3189,35 @@ Parametrisierung und dynamisch erzeugte Tests koennen mehr Laufzeitfaelle liefer
   Prueffall: `test_file_links_and_unsafe_modes_are_rejected`
 - `tests/test_metrics_config.py:190`
   Prueffall: `test_busy_lock_rejects_without_overwrite_then_merges`
+
+## tests/test_metrics_isolation.py
+
+- `tests/test_metrics_isolation.py:47`
+  Prueffall: `test_scrape_uses_upstream_not_client_token`
+- `tests/test_metrics_isolation.py:53`
+  Prueffall: `test_missing_wrong_duplicate_and_master_credentials_denied`
+- `tests/test_metrics_isolation.py:62`
+  Prueffall: `test_inference_admin_queries_encoded_paths_and_methods_never_forward`
+- `tests/test_metrics_isolation.py:72`
+  Prueffall: `test_request_bodies_and_chunked_framing_denied`
+- `tests/test_metrics_isolation.py:79`
+  Prueffall: `test_rotation_invalidates_old_token_without_restart`
+- `tests/test_metrics_isolation.py:88`
+  Prueffall: `test_equal_missing_and_malformed_secrets_fail_closed`
+- `tests/test_metrics_isolation.py:96`
+  Prueffall: `test_upstream_errors_oversize_and_token_echo_never_escape`
+- `tests/test_metrics_isolation.py:103`
+  Prueffall: `test_health_does_not_read_secrets_or_probe_upstream`
+- `tests/test_metrics_isolation.py:109`
+  Prueffall: `test_default_plan_never_opens_a_file_or_socket`
+- `tests/test_metrics_isolation.py:115`
+  Prueffall: `test_transport_is_fixed_get_no_redirect_and_closes`
+- `tests/test_metrics_isolation.py:126`
+  Prueffall: `test_transport_success_and_body_size_limit`
+- `tests/test_metrics_isolation.py:138`
+  Prueffall: `test_manifest_token_boundary_and_no_unrestricted_listener_service`
+- `tests/test_metrics_isolation.py:161`
+  Prueffall: `test_actual_overlay_removes_direct_scrape_and_reuses_runtime`
 
 ## tests/test_minisign_bootstrap.py
 
@@ -6065,4 +6109,4 @@ Parametrisierung und dynamisch erzeugte Tests koennen mehr Laufzeitfaelle liefer
 - `tests/test_yue.py:135`
   Prueffall: `test_real_local_sparse_checkout_excludes_env_and_media`
 
-Statisch benannte Testpositionen: **2711**. Kein Nachweis bestandener Tests.
+Statisch benannte Testpositionen: **2730**. Kein Nachweis bestandener Tests.
