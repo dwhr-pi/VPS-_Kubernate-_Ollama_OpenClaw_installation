@@ -5,6 +5,7 @@ const path = require("node:path");
 const { pathToFileURL } = require("node:url");
 const { promisify } = require("node:util");
 const RETRY_DELAY_MS = 5000;
+const TRANSIENT_HTTP_STATUS = new Set([0, 500, 502, 503, 504]);
 
 function validateResults(results, options) {
   if (!Array.isArray(results)) throw new Error("Missing link-check results");
@@ -40,13 +41,15 @@ async function checkDocument(
     initial
       .filter(
         (result) =>
-          result.status === "dead" && result.statusCode === 0 && /^https?:\/\//.test(result.link),
+          result.status === "dead" &&
+          TRANSIENT_HTTP_STATUS.has(result.statusCode) &&
+          /^https?:\/\//.test(result.link),
       )
       .map((result) => result.link),
   );
   if (!retry.size) return initial;
 
-  report(`Retrying ${retry.size} HTTP(S) transport failure(s) once after ${RETRY_DELAY_MS}ms`);
+  report(`Retrying ${retry.size} HTTP(S) transient failure(s) once after ${RETRY_DELAY_MS}ms`);
   await wait(RETRY_DELAY_MS);
   // Reuse the complete upstream parser and identical options, not a reduced URL parser.
   const repeated = new Map(

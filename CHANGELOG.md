@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+### 2026-11-12: PR-27-Folgekorrektur fuer Konfigurationsscan und HTTP 502
+
+- Non-root-Podkontext im Sidecar-Patch explizit deklariert und gegen die Basis abgesichert.
+- Genau einen Wiederholungsversuch fuer HTTP 500/502/503/504 ergaenzt; dauerhafte Fehler bleiben rot.
+- Originalquellen und bisherige HTTP-/Ignore-Regeln erhalten; macOS-Abbrueche getrennt von Testfehlern dokumentiert.
+
 ### 2026-11-12: CI-Korrekturen fuer PR 27
 
 - TTL fuer den suspendierten Sandbox-Beispieljob ergaenzt, statt die KubeLinter-Regel abzuschalten.

@@ -327,10 +327,10 @@ Neue Dateien muessen vor der Regeneration im Git-Index stehen.
 - `scripts/profiles/coding_agents.py:255`
 - `scripts/projects/project_brief.py:227`
 - `scripts/projects/project_brief.py:336`
-- `scripts/quality/check_markdown_links.cjs:63`
-- `scripts/quality/check_markdown_links.cjs:92`
-- `scripts/quality/check_markdown_links.cjs:93`
-- `scripts/quality/check_markdown_links.cjs:102`
+- `scripts/quality/check_markdown_links.cjs:66`
+- `scripts/quality/check_markdown_links.cjs:95`
+- `scripts/quality/check_markdown_links.cjs:96`
+- `scripts/quality/check_markdown_links.cjs:105`
 - `scripts/quality/development_install.py:358`
 - `scripts/quality/development_install.py:425`
 - `scripts/quality/development_toolchains.py:183`
@@ -904,8 +904,8 @@ Neue Dateien muessen vor der Regeneration im Git-Index stehen.
 - `k8s/overlays/gpu/ingress-network-policy.yml:32`
 - `k8s/overlays/gpu/ingress-network-policy.yml:43`
 - `k8s/overlays/gpu/ingress-network-policy.yml:54`
-- `k8s/overlays/metrics-isolation/gateway-sidecar.yaml:13`
-- `k8s/overlays/metrics-isolation/gateway-sidecar.yaml:14`
+- `k8s/overlays/metrics-isolation/gateway-sidecar.yaml:20`
+- `k8s/overlays/metrics-isolation/gateway-sidecar.yaml:21`
 - `k8s/overlays/metrics-isolation/kustomization.yaml:31`
 - `k8s/overlays/metrics-isolation/litellm_metrics_proxy.py:153`
 - `k8s/overlays/metrics-isolation/litellm_metrics_proxy.py:170`
@@ -1065,7 +1065,7 @@ Neue Dateien muessen vor der Regeneration im Git-Index stehen.
 
 ## Privilegien-/Host-Kandidat
 
-657 Fundstellen, keine automatische Risikoeinstufung.
+659 Fundstellen, keine automatische Risikoeinstufung.
 
 - `.github/workflows/next-level-health.yml:17`
 - `.github/workflows/next-level-health.yml:18`
@@ -1110,7 +1110,9 @@ Neue Dateien muessen vor der Regeneration im Git-Index stehen.
 - `k8s/overlays/gpu/gateway-patch.yml:25`
 - `k8s/overlays/gpu/k8s-ollama-deployment.yaml:16`
 - `k8s/overlays/gpu/k8s-ollama-deployment.yaml:27`
-- `k8s/overlays/metrics-isolation/gateway-sidecar.yaml:19`
+- `k8s/overlays/metrics-isolation/gateway-sidecar.yaml:11`
+- `k8s/overlays/metrics-isolation/gateway-sidecar.yaml:25`
+- `k8s/overlays/metrics-isolation/gateway-sidecar.yaml:29`
 - `k8s/overlays/production/resources.yml:12`
 - `k8s/overlays/production/resources.yml:24`
 - `k8s/overlays/production/resources.yml:47`

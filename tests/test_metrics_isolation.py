@@ -155,6 +155,17 @@ class MetricsIsolation(unittest.TestCase):
         for item in ("readOnlyRootFilesystem: true", "limits:", "capabilities: {drop: [ALL]}", "defaultMode: 0440"):
             self.assertIn(item, sidecar)
 
+    def test_standalone_patch_preserves_base_nonroot_identity(self):
+        sidecar = (OVERLAY / 'gateway-sidecar.yaml').read_text()
+        base = (ROOT / 'k8s/base/litellm.yml').read_text()
+        block = r'^      securityContext:\n((?:^        \S[^\n]*\n)+)'
+        expected = re.findall(block, base, re.M)
+        self.assertEqual(len(expected), 1)
+        self.assertEqual(re.findall(block, sidecar, re.M), expected)
+        self.assertIn('automountServiceAccountToken: false', sidecar)
+        for value in ('runAsNonRoot: true', 'runAsUser: 10001', 'runAsGroup: 10001'):
+            self.assertEqual(sidecar.count(value), 2)
+
 
 @unittest.skipUnless(os.environ.get('KUSTOMIZE_BIN'), 'Pinned Kustomize unavailable; CI renders the real overlay')
 class RenderContracts(unittest.TestCase):

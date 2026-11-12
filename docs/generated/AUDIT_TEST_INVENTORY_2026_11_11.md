@@ -3218,7 +3218,9 @@ Parametrisierung und dynamisch erzeugte Tests koennen mehr Laufzeitfaelle liefer
   Prueffall: `test_transport_success_and_body_size_limit`
 - `tests/test_metrics_isolation.py:138`
   Prueffall: `test_manifest_token_boundary_and_no_unrestricted_listener_service`
-- `tests/test_metrics_isolation.py:161`
+- `tests/test_metrics_isolation.py:158`
+  Prueffall: `test_standalone_patch_preserves_base_nonroot_identity`
+- `tests/test_metrics_isolation.py:172`
   Prueffall: `test_actual_overlay_removes_direct_scrape_and_reuses_runtime`
 
 ## tests/test_minisign_bootstrap.py
@@ -6115,4 +6117,4 @@ Parametrisierung und dynamisch erzeugte Tests koennen mehr Laufzeitfaelle liefer
 - `tests/test_yue.py:135`
   Prueffall: `test_real_local_sparse_checkout_excludes_env_and_media`
 
-Statisch benannte Testpositionen: **2733**. Kein Nachweis bestandener Tests.
+Statisch benannte Testpositionen: **2734**. Kein Nachweis bestandener Tests.

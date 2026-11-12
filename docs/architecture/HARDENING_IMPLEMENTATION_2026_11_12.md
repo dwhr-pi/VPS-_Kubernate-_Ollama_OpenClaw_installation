@@ -27,6 +27,9 @@ im LiteLLM-Pod hinzu. Es entsteht keine zweite Gateway-Workload-Definition.
 Die Bridge verwendet dieselbe separat gepruefte native Python-Runtime wie
 LiteLLM, fuehrt aber nur ihren stdlib-Code aus. Keine zusaetzlichen Pakete,
 kein Docker-Fallback und kein Paketdownload beim Start.
+Der Sidecar-Patch deklariert den aus der Basis bekannten Non-root-Podkontext
+zusaetzlich selbst, damit auch der standalone Trivy-Scan kein mehrdeutiges
+Default-Privilegienprofil sieht. Ein Vertragstest haelt beide Identitaeten gleich.
 
 | Verbindung | Zugang | Erlaubt |
 | --- | --- | --- |
