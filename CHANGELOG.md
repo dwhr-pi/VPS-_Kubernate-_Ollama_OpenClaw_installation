@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+### 2026-11-12: Plattformuebergreifende App-Erkennung vorbereitet
+
+- Opt-in Metadaten-Scanner fuer Windows, macOS und Linux mit sicheren Grenzen und deaktivierten Startrechten.
+- Gemeinsames Vorschlags-Schema, mehrdeutige/unbekannte Apps und lokale Pfad-Redaktion hinzugefuegt.
+- Android-/iPhone-Grenzen sowie kuenftige Installer-/Icon-/App-Anbindung dokumentiert; keine mobile App behauptet.
+- Synthetische Fixtures und Ubuntu-/macOS-/Windows-CI-Matrix ohne Host-Inventur ergaenzt.
+
 ### 2026-11-12: Desktop-Launcher und Ressourcenansicht spezifiziert
 
 - Opt-in Installer-Katalog, gepruefte App-/Icon-Artefakte und ID-basierte Starts mit Bestaetigung dokumentiert.

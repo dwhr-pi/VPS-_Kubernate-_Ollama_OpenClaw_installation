@@ -326,6 +326,51 @@ Parametrisierung und dynamisch erzeugte Tests koennen mehr Laufzeitfaelle liefer
 - `tests/test_api_registration_docs.py:93`
   Prueffall: `test_markdown_tables_have_consistent_columns`
 
+## tests/test_app_inventory.py
+
+- `tests/test_app_inventory.py:32`
+  Prueffall: `test_default_plan_never_scans_or_reads_hints`
+- `tests/test_app_inventory.py:40`
+  Prueffall: `test_cli_requires_consent_roots_and_actual_platform`
+- `tests/test_app_inventory.py:49`
+  Prueffall: `test_linux_reads_name_but_never_exports_exec_or_tokens`
+- `tests/test_app_inventory.py:60`
+  Prueffall: `test_unknown_ai_apps_are_unmapped_proposals`
+- `tests/test_app_inventory.py:67`
+  Prueffall: `test_unknown_non_ai_apps_require_extra_export_opt_in`
+- `tests/test_app_inventory.py:73`
+  Prueffall: `test_windows_filename_only_and_installers_are_not_launchers`
+- `tests/test_app_inventory.py:82`
+  Prueffall: `test_macos_xml_and_binary_plist_without_executing_bundle`
+- `tests/test_app_inventory.py:95`
+  Prueffall: `test_mobile_plans_are_explicit_and_scans_refused`
+- `tests/test_app_inventory.py:103`
+  Prueffall: `test_hidden_link_and_broken_metadata_are_not_exported`
+- `tests/test_app_inventory.py:111`
+  Prueffall: `test_malformed_plists_and_entities_are_bounded_failures`
+- `tests/test_app_inventory.py:121`
+  Prueffall: `test_oversized_metadata_is_not_parsed`
+- `tests/test_app_inventory.py:127`
+  Prueffall: `test_windows_reparse_attribute_is_a_link_boundary`
+- `tests/test_app_inventory.py:132`
+  Prueffall: `test_all_scan_parameters_are_bounded_before_traversal`
+- `tests/test_app_inventory.py:141`
+  Prueffall: `test_sensitive_hidden_directories_are_not_descended`
+- `tests/test_app_inventory.py:148`
+  Prueffall: `test_depth_and_entry_limits_report_partial_scope`
+- `tests/test_app_inventory.py:159`
+  Prueffall: `test_deadline_stops_without_marking_full_inventory`
+- `tests/test_app_inventory.py:166`
+  Prueffall: `test_local_paths_need_explicit_output_opt_in`
+- `tests/test_app_inventory.py:171`
+  Prueffall: `test_device_alias_separates_candidates_without_reading_hostname`
+- `tests/test_app_inventory.py:180`
+  Prueffall: `test_broad_and_credential_roots_are_refused`
+- `tests/test_app_inventory.py:190`
+  Prueffall: `test_symlink_and_hardlink_metadata_are_not_read`
+- `tests/test_app_inventory.py:198`
+  Prueffall: `test_cli_scan_fixture_and_schema_contract`
+
 ## tests/test_archivebox_python.py
 
 - `tests/test_archivebox_python.py:34`
@@ -5982,4 +6027,4 @@ Parametrisierung und dynamisch erzeugte Tests koennen mehr Laufzeitfaelle liefer
 - `tests/test_yue.py:135`
   Prueffall: `test_real_local_sparse_checkout_excludes_env_and_media`
 
-Statisch benannte Testpositionen: **2674**. Kein Nachweis bestandener Tests.
+Statisch benannte Testpositionen: **2695**. Kein Nachweis bestandener Tests.

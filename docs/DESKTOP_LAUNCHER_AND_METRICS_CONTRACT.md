@@ -9,6 +9,9 @@ Es wurde kein URL-Protokoll registriert, kein lokaler Startdienst eingerichtet, 
 ausgelesen und keine Anwendung gestartet. Die bestehenden Installer wurden durch diese Dokumentation nicht erweitert.
 Die [Git-Source-Installationsrichtlinie](INSTALLATION_POLICY.md) und alle getrennten Freigaben bleiben verbindlich.
 
+Neu vorbereitet: [Windows/macOS/Linux-Inventarscan und Android-/iPhone-Grenzen](CROSS_PLATFORM_APP_DISCOVERY.md).
+Dieser opt-in Metadatenadapter liefert Vorschlaege, aber noch keine App-Starts oder Installer-Registrierung.
+
 ## Drei getrennte Ansichten
 
 ```text

@@ -13,6 +13,8 @@ produktionsreif.
 Katalogeintrag, installierte Software und betriebsbereiter Dienst sind unterschiedliche Anzeigen.
 [Desktop-Apps mit Icons starten und Ressourcen-Reiter planen](DESKTOP_LAUNCHER_AND_METRICS_CONTRACT.md):
 opt-in Installer-Katalog, ID-Allowlist und getrennte Prometheus-/Grafana-Anbindung; noch kein implementierter Launcher.
+[Plattformen und App-Erkennung](CROSS_PLATFORM_APP_DISCOVERY.md): begrenzter Desktop-Scan implementiert,
+Android-/iPhone-App sowie deren Discovery-/Startgrenzen ausdruecklich vorbereitet.
 
 [Enterprise-Haertung schrittweise abarbeiten](architecture/ENTERPRISE_HARDENING_ROADMAP.md):
 E01-E09 mit P1-P3, konkreten Checklisten, Voraussetzungen, Abnahme und Rueckbau.

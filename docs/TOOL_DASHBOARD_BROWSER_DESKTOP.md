@@ -12,6 +12,9 @@ Keine Anwendung, Browseransicht, Verbindung zum Cluster oder Installation wird d
 Der [Launcher-/Installer- und Metrikvertrag](DESKTOP_LAUNCHER_AND_METRICS_CONTRACT.md) beschreibt den Ausbau.
 Eine lokale App braucht einen separat freigegebenen nativen Starter; eine Webseite darf keine beliebigen EXEs starten.
 
+[Auch macOS, Linux, Android und iPhone beruecksichtigen](CROSS_PLATFORM_APP_DISCOVERY.md):
+begrenzter Desktop-Inventarscan jetzt vorhanden; mobile App-Erkennung und App-Starts bleiben separat zu entwickeln.
+
 ## Welcher Weg passt zu mir?
 
 | Wunsch | Passender Baustein | Stand im Setup und Grenze |

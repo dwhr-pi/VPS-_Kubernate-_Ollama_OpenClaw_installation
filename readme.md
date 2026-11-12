@@ -8,6 +8,7 @@ Grafana fuer Messwerte und Alarme, optional eine gemeinsame Tool-Startseite.
 [Boardroom](docs/tools/boardroom.md) hilft bei Entscheidungen, ist aber selbst kein Dashboard.
 Noch keine fertig eingerichtete Gesamtsicht: Katalog, Installation und laufende Dienste bleiben getrennt.
 [Ausbau: lokale Apps mit Icons starten und Ressourcen anzeigen](docs/DESKTOP_LAUNCHER_AND_METRICS_CONTRACT.md).
+[Plattformen und opt-in App-Erkennung: Windows, macOS, Linux, Android/iPhone](docs/CROSS_PLATFORM_APP_DISCOVERY.md).
 
 [Natives Betriebshandbuch: WebUI, Dejavu-MCP, SSO und Wartung](docs/NATIVE_OPERATIONS_HANDBOOK.md)
 mit getrennten Freigaben und ehrlichen Nachweisgrenzen, ohne Docker-Fallback.

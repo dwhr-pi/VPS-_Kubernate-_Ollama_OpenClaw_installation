@@ -14,7 +14,7 @@ Neue Dateien muessen vor der Regeneration im Git-Index stehen.
 
 ## Bewegliches Wort latest/main/master (lexikalisch)
 
-571 Fundstellen, keine automatische Risikoeinstufung.
+573 Fundstellen, keine automatische Risikoeinstufung.
 
 - `.github/workflows/build-and-push.yml:4`
 - `.github/workflows/build-and-push.yml:16`
@@ -208,6 +208,8 @@ Neue Dateien muessen vor der Regeneration im Git-Index stehen.
 - `scripts/custom_source_manager.sh:100`
 - `scripts/custom_source_manager.sh:106`
 - `scripts/custom_source_manager.sh:325`
+- `scripts/desktop/app_inventory.py:214`
+- `scripts/desktop/app_inventory.py:247`
 - `scripts/documentation_server/lifecycle.py:235`
 - `scripts/documentation_server/lifecycle.py:273`
 - `scripts/documentation_server/server.py:270`
