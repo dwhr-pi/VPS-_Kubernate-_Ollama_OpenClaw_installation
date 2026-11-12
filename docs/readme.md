@@ -7,6 +7,10 @@ produktionsreif.
 
 ## Hier beginnen
 
+[Projektformular und Prompt-Workflows](PROJECT_BRIEF_AND_PROMPT_WORKFLOWS.md):
+Film, Buch oder Betriebssystem schrittweise planen, im Browser bearbeiten und
+ueber Tage fortsetzen; Chat-/MCP-Uebergabe ohne automatische Ausfuehrung.
+
 **Alle Tools im Browser oder als Windows-App sehen, einschliesslich Kubernetes/K3s:**
 [Dashboard-Einstieg mit Headlamp, Grafana und optionaler Startseite](TOOL_DASHBOARD_BROWSER_DESKTOP.md).
 [Boardroom](tools/boardroom.md) kann die Auswahl bewerten, ist aber kein fertiges Dashboard.

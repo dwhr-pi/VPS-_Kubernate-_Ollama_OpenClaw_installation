@@ -4583,6 +4583,29 @@ Parametrisierung und dynamisch erzeugte Tests koennen mehr Laufzeitfaelle liefer
 - `tests/test_production_baseline.py:188`
   Prueffall: `test_insecure_env_permissions_fail`
 
+## tests/test_project_brief.py
+
+- `tests/test_project_brief.py:18`
+  Prueffall: `test_every_template_and_optional_role_remain_blocked`
+- `tests/test_project_brief.py:30`
+  Prueffall: `test_bad_fields_and_ids_refused`
+- `tests/test_project_brief.py:39`
+  Prueffall: `test_unicode_size_cannot_create_an_unreadable_revision`
+- `tests/test_project_brief.py:45`
+  Prueffall: `test_html_does_not_embed_untrusted_markup`
+- `tests/test_project_brief.py:55`
+  Prueffall: `test_browser_script_syntax`
+- `tests/test_project_brief.py:60`
+  Prueffall: `test_revisions_never_overwrite_and_stale_import_rejected`
+- `tests/test_project_brief.py:77`
+  Prueffall: `test_default_new_is_no_write_and_repository_is_refused`
+- `tests/test_project_brief.py:85`
+  Prueffall: `test_stdio_handshake_plan_and_eof`
+- `tests/test_project_brief.py:97`
+  Prueffall: `test_unbounded_mcp_input_rejected`
+- `tests/test_project_brief.py:100`
+  Prueffall: `test_chat_can_request_form_without_file_access`
+
 ## tests/test_propainter.py
 
 - `tests/test_propainter.py:22`
@@ -4623,6 +4646,19 @@ Parametrisierung und dynamisch erzeugte Tests koennen mehr Laufzeitfaelle liefer
   Prueffall: `test_sparse_policy_on_unborn_repo`
 - `tests/test_propainter.py:191`
   Prueffall: `test_real_local_sparse_checkout_excludes_env_and_media`
+
+## tests/test_public_key_import.py
+
+- `tests/test_public_key_import.py:26`
+  Prueffall: `test_import_and_repeat_preserve_both_files`
+- `tests/test_public_key_import.py:34`
+  Prueffall: `test_existing_different_file_never_overwritten`
+- `tests/test_public_key_import.py:41`
+  Prueffall: `test_wrong_hash_or_private_extension_never_creates_destination`
+- `tests/test_public_key_import.py:48`
+  Prueffall: `test_default_does_not_read_missing_source`
+- `tests/test_public_key_import.py:52`
+  Prueffall: `test_symlink_refused_where_supported`
 
 ## tests/test_pyannote_audio.py
 
@@ -6029,4 +6065,4 @@ Parametrisierung und dynamisch erzeugte Tests koennen mehr Laufzeitfaelle liefer
 - `tests/test_yue.py:135`
   Prueffall: `test_real_local_sparse_checkout_excludes_env_and_media`
 
-Statisch benannte Testpositionen: **2696**. Kein Nachweis bestandener Tests.
+Statisch benannte Testpositionen: **2711**. Kein Nachweis bestandener Tests.

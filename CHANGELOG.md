@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+### 2026-11-12: Projektbrief und gefuehrter Public-Key-Import
+
+- Offline-Formulare fuer Film, Buch, Betriebssystem und allgemeine Vorhaben mit versionierten Zwischenstaenden.
+- Rollenplan, gesperrter Masterprompt und experimentelles read-only MCP ohne Modell-/Dienststarts.
+- Public-Key-Import mit unabhaengigem Fingerprint, exklusivem Ziel und unveraenderter Quelle.
+- GitHub-Clone, begrenzten Bootstrap-Download und signierte Installation klar getrennt dokumentiert.
+- Historisches Release bleibt unveraendert; Helfer sind neue Quellen, keine nachtraeglich signierten Assets.
+
 ### 2026-11-12: Versionierter vLLM-Metrikbeleg fuer PR 26
 
 - Wiederholt rate-limitierte HTML-Quelle mit Originaladresse/Befund erhalten und aktive GitHub-Belege gepinnt.

@@ -7,6 +7,40 @@ vollstaendige Fresh-Host-Installation ist damit nicht abgenommen.
 Fuer einen bereits installierten Checkout gilt der
 [signierte Updatepfad](SIGNED_RELEASES.md#standard-update).
 
+**Die Reihenfolge ist:** Werkzeuge pruefen, Public Key separat beziehen,
+GitHub-Quellstand herunterladen und unabhaengig pruefen, signierte Assets
+verifizieren, erst dann bewusst installieren. Ein Git-Clone allein prueft
+keine Minisign-Signatur. Windows ist der Ablage-/Desktop-Rechner; die native
+Installation laeuft in Linux oder WSL. Kein Docker-Fallback.
+
+## GitHub-Setup herunterladen oder klonen: der Unterschied
+
+Die neue Repository-Adresse ist
+[OpenClaw-AI_Infrastructure-_Ultimate_Setup](https://github.com/dwhr-pi/OpenClaw-AI_Infrastructure-_Ultimate_Setup).
+**Code > HTTPS** zeigt die Clone-Adresse. Fuer eine reine Quellcodeansicht
+kannst du unter Windows PowerShell in einen neuen, noch nicht vorhandenen
+Ordner klonen:
+
+```powershell
+git -c core.hooksPath=NUL clone --no-checkout --no-recurse-submodules `
+  https://github.com/dwhr-pi/OpenClaw-AI_Infrastructure-_Ultimate_Setup.git `
+  "$HOME/Documents/GitHub/OpenClaw-Quellpruefung"
+git -C "$HOME/Documents/GitHub/OpenClaw-Quellpruefung" log -1 --format="%H %s"
+```
+
+Das laedt Git-Objekte, checkt aber noch keine Dateien aus und fuehrt nichts
+aus. Vor einem Checkout den ausgewaehlten vollstaendigen Commit separat
+bestaetigen und Quellen pruefen. Vorhandene Ordner nicht leeren oder
+ueberschreiben. Ein Browser-ZIP ist ebenfalls nur Quelltext und kein
+verifiziertes Installationspaket. GitHub Desktop ist fuer diesen
+signierten Installationsweg nicht erforderlich.
+
+Fuer die eigentliche **Linux-/WSL-Neuinstallation** ist der begrenzte
+Download in Abschnitt 3 einfacher: Er holt exakt den Release-Tag von GitHub
+und entpackt nur die Pruefdateien. Abschnitt 5 klont das vollstaendige Setup
+anschliessend selbst. Du musst daher nicht erst manuell ein zweites Setup
+installieren oder einen laufenden Checkout veraendern.
+
 ## 1. Terminal und Voraussetzungen
 
 Unter Windows das **Ubuntu-/WSL-Terminal** oeffnen, nicht PowerShell.
@@ -40,21 +74,17 @@ vertrauenswuerdigen Kanal beziehen. Wenn sie unter Windows in
 erreichbar. Den Windows-Benutzernamen einsetzen, nicht den Ubuntu-Namen.
 Das `c` in `/mnt/c` ist klein.
 
-```bash
-windows_key='/mnt/c/Users/DEIN_WINDOWS_NAME/Documents/OpenClaw-Vertrauensschluessel/release.pub'
-key="$HOME/.config/openclaw-trust/release.pub"
+Fuer das alte signierte Release ist **keine Kopie zwingend erforderlich**:
+Den vorhandenen Public Key direkt ueber seinen absoluten Pfad verwenden.
+Dies liest den Public Key, veraendert ihn aber nicht:
 
-test -f "$windows_key" &&
-mkdir -p "${key%/*}" &&
-cp -n -- "$windows_key" "$key" &&
-cmp -- "$windows_key" "$key" &&
-sha256sum "$key"
+```bash
+key='/mnt/c/Users/DEIN_WINDOWS_NAME/Documents/OpenClaw-Vertrauensschluessel/release.pub'
+test -f "$key" && test ! -L "$key" && sha256sum "$key"
 ```
 
-Auf nativem Linux die separat erhaltene Datei in denselben privaten
-Trust-Ordner kopieren oder `key` auf ihren absoluten Pfad setzen.
-Eine bestehende Windows-/WSL-Kopie wird nicht ueberschrieben. Bei
-Abweichung oder fehlender Datei hier stoppen.
+Auf nativem Linux `key` auf den absoluten Pfad der separat erhaltenen
+Datei setzen. Bei Abweichung oder fehlender Datei hier stoppen.
 
 Den angezeigten SHA256-Wert mit dem **unabhaengig bestaetigten** Hash
 der Maintainer-Kopie vergleichen, z. B. persoenlich oder ueber einen
@@ -62,6 +92,49 @@ bereits bekannten sicheren Kanal. Die Release-Assets enthalten absichtlich
 keinen Vertrauensschluessel. `release.key` und die Passphrase werden
 auf dem Installationsziel nie benoetigt. Siehe
 [Schluesselhandhabung](MINISIGN_KEY_HANDLING.md).
+
+### Gefuehrter Import im aktuellen geprueften Setup
+
+Neu hinzugefuegt ist ein lokaler Python-Helfer. In einem **bereits
+unabhaengig geprueften aktuellen Checkout**, der diese Datei enthaelt:
+
+```bash
+python3 -I -B scripts/security/import_release_public_key.py --interactive --apply
+```
+
+Er fragt: **Genauer absoluter Pfad zur release.pub** und **unabhaengig
+bestaetigter SHA256**. WSL erwartet `/mnt/c/...`, nicht `C:\...`.
+Unter Windows PowerShell funktioniert derselbe Helfer mit `python` statt
+`python3` und einem absoluten Windows-Pfad. Danach fuer die Installation
+ins Linux-/WSL-Terminal wechseln und dessen Trust-Pfad verwenden.
+Eine Windows-Kopie im Windows-Home ist nicht automatisch im WSL-Home.
+
+Alternativ ohne Rueckfragen:
+
+```bash
+python3 -I -B scripts/security/import_release_public_key.py \
+  --source '/mnt/c/Users/DEIN_WINDOWS_NAME/Documents/OpenClaw-Vertrauensschluessel/release.pub' \
+  --expected-sha256 HIER_DEN_UNABHAENGIG_BESTAETIGTEN_SHA256_EINSETZEN --apply
+key="$HOME/.config/openclaw-trust/release.pub"
+```
+
+Die Quelle wird nur gelesen, niemals geloescht, umbenannt oder ueberschrieben.
+Das Ziel wird exklusiv neu erstellt; ein bytegleicher vorhandener Schluessel
+bleibt unangetastet, ein anderer wird abgelehnt. Format, Groesse und Hash
+werden geprueft; `release.key`, Symlinks und Junctions werden abgelehnt.
+Ohne `--apply` werden keine Dateien gelesen oder kopiert. Keine
+automatische Schluesselrotation, kein Login, kein Installer-/Dienststart.
+Unter Windows die geerbten Benutzer-ACLs des Trust-Ordners kontrollieren;
+der Helfer ist kein Ersatz fuer eine ACL- oder Multiuser-Sicherheitspruefung.
+Die Formatpruefung orientiert sich an den
+[Minisign-Strukturen](https://github.com/jedisct1/minisign/blob/master/src/minisign.h);
+sie ersetzt weder den unabhaengigen Fingerprint noch die Signaturpruefung.
+
+**Bootstrap-Grenze:** Der Helfer ist nicht im historischen Release
+`v11.17.0` enthalten. Ihn nicht ungeprueft von `main` herunterladen und als
+Vertrauensanker ausfuehren. Bei einer Erstinstallation mit dem alten
+Release den obigen direkten Public-Key-Pfad nutzen. Der Import kann nach
+unabhaengiger Pruefung eines neueren Quellstands erfolgen.
 
 ## 3. Bootstrap von GitHub beziehen und pruefen
 

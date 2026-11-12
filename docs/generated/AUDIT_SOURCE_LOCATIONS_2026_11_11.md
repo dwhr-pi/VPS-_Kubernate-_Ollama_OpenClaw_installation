@@ -14,7 +14,7 @@ Neue Dateien muessen vor der Regeneration im Git-Index stehen.
 
 ## Bewegliches Wort latest/main/master (lexikalisch)
 
-573 Fundstellen, keine automatische Risikoeinstufung.
+577 Fundstellen, keine automatische Risikoeinstufung.
 
 - `.github/workflows/build-and-push.yml:4`
 - `.github/workflows/build-and-push.yml:16`
@@ -316,6 +316,8 @@ Neue Dateien muessen vor der Regeneration im Git-Index stehen.
 - `scripts/profiles/coding_agents.py:206`
 - `scripts/profiles/coding_agents.py:227`
 - `scripts/profiles/coding_agents.py:255`
+- `scripts/projects/project_brief.py:227`
+- `scripts/projects/project_brief.py:336`
 - `scripts/quality/check_markdown_links.cjs:63`
 - `scripts/quality/check_markdown_links.cjs:92`
 - `scripts/quality/check_markdown_links.cjs:93`
@@ -372,6 +374,8 @@ Neue Dateien muessen vor der Regeneration im Git-Index stehen.
 - `scripts/security/env_vault.py:297`
 - `scripts/security/history_secret_triage.py:29`
 - `scripts/security/history_secret_triage.py:61`
+- `scripts/security/import_release_public_key.py:71`
+- `scripts/security/import_release_public_key.py:94`
 - `scripts/security/kube-bench-audit.sh:26`
 - `scripts/security/legacy_core_uninstall.py:108`
 - `scripts/security/legacy_core_uninstall.py:138`
@@ -1044,7 +1048,7 @@ Neue Dateien muessen vor der Regeneration im Git-Index stehen.
 
 ## Privilegien-/Host-Kandidat
 
-653 Fundstellen, keine automatische Risikoeinstufung.
+654 Fundstellen, keine automatische Risikoeinstufung.
 
 - `.github/workflows/next-level-health.yml:17`
 - `.github/workflows/next-level-health.yml:18`
@@ -1190,6 +1194,7 @@ Neue Dateien muessen vor der Regeneration im Git-Index stehen.
 - `scripts/profiles/Rechtsberatung_Steuerrecht_uninstall.sh:26`
 - `scripts/profiles/Rechtsberatung_Steuerrecht_uninstall.sh:30`
 - `scripts/profiles/Rechtsberatung_Steuerrecht_uninstall.sh:31`
+- `scripts/projects/project_brief.py:299`
 - `scripts/ruflo_install.sh:40`
 - `scripts/security/ensure_minisign.sh:40`
 - `scripts/security/ensure_minisign.sh:41`
