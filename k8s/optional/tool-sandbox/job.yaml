@@ -1,0 +1,37 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: isolated-tool-fixture
+spec:
+  suspend: true
+  backoffLimit: 0
+  activeDeadlineSeconds: 60
+  ttlSecondsAfterFinished: 3600
+  template:
+    spec:
+      restartPolicy: Never
+      serviceAccountName: isolated-tool
+      automountServiceAccountToken: false
+      # Host runtime must be installed and negatively tested before unsuspending.
+      runtimeClassName: runsc
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+        seccompProfile: {type: RuntimeDefault}
+      containers:
+        - name: tool
+          image: sandbox-runtime
+          command: [python3, -I, -B, -c, "print('isolated fixture; not a security acceptance test')"]
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {cpu: 100m, memory: 64Mi, ephemeral-storage: 16Mi}
+            limits: {cpu: 500m, memory: 256Mi, ephemeral-storage: 64Mi}
+          volumeMounts:
+            - {name: scratch, mountPath: /tmp}
+      volumes:
+        - name: scratch
+          emptyDir: {sizeLimit: 16Mi}

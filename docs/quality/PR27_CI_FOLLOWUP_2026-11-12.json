@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "review_date": "2026-11-12",
+  "head_before_fixes": "05abbed5f9207152457f0b8d462593b18e10bed1",
+  "configuration_scan": {
+    "run_id": 43213707589,
+    "job_id": 131167492538,
+    "rule": "KSV-0118",
+    "severity": "HIGH",
+    "file": "k8s/overlays/metrics-isolation/gateway-sidecar.yaml",
+    "finding": "Raw strategic patch lacks explicit pod security context. Rendered base inherits non-root settings, but standalone scan cannot establish that inheritance.",
+    "fix": "Declare the identical non-root pod identity and explicit container UID/GID in the patch; enforce parity with the existing base. No scanner ignore or severity change."
+  },
+  "linkchecks": [
+    {
+      "run_id": 43213707786,
+      "job_id": 131167492866,
+      "event": "pull_request",
+      "url": "https://github.com/ggml-org/llama.cpp",
+      "ci_http_status": 502,
+      "anonymous_followup_status": 200,
+      "followup_bytes": 387920,
+      "sha256_of_observed_response": "f736ecc21d46e139a50b35d398e37ed83e4ad5b12a938c0f6c7a95d1884a6d98"
+    },
+    {
+      "run_id": 43213698505,
+      "job_id": 131167463332,
+      "event": "push",
+      "url": "https://github.com/bwendell/gemini-desktop",
+      "ci_http_status": 502,
+      "anonymous_followup_status": 200,
+      "followup_bytes": 308627,
+      "sha256_of_observed_response": "63e0d9788cb89c7d668c00f5de824d0f233cf4ad2b1c66293d8b2f279f83618c"
+    }
+  ],
+  "retry_contract": {
+    "wrapper_retry_statuses": [0, 500, 502, 503, 504],
+    "max_document_attempts": 2,
+    "delay_ms": 5000,
+    "parser_and_options": "Same complete upstream Markdown parser and unchanged JSON config on both calls.",
+    "failure_semantics": "Only originally retryable targets may recover via real successful results; permanent errors, missing results and newly ignored results never clear failures.",
+    "successful_status_codes_changed": false,
+    "ignore_patterns_changed": false,
+    "upstream_429_policy_changed": false
+  },
+  "macos_push_cancellations": [
+    {"run_id": 43213698474, "job_id": 131167463561, "conclusion": "cancelled", "steps": null},
+    {"run_id": 43213698488, "job_id": 131167463254, "conclusion": "cancelled", "steps": null}
+  ],
+  "macos_scope": "Both corresponding PR matrix workflows succeeded on this commit. Cancelled push jobs expose no test steps; cancellation cause is unconfirmed. Do not remove macOS coverage or call cancellations successful.",
+  "not_verified": ["New CI run after these fixes", "Local Trivy execution", "Local native macOS execution", "Permanent availability of external sites"]
+}

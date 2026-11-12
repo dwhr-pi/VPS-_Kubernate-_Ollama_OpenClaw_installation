@@ -48,8 +48,8 @@ test("a repeated transport failure remains failed after exactly one retry", asyn
   assert.equal(f.calls.length, 2);
 });
 
-test("HTTP errors, local files and ignored targets never trigger transport retry", async () => {
-  for (const entry of [0, 202, 401, 403, 404, 429, 500, 503]
+test("permanent HTTP errors, local files and ignored targets never trigger wrapper retry", async () => {
+  for (const entry of [0, 202, 401, 403, 404, 429, 501, 505, 522]
     .map((code) => result(code === 0 ? "missing.md" : "https://example.invalid/a", code))
     .concat([result("account", 0, "ignored")])) {
     const f = fixture([[entry]]);
@@ -59,8 +59,8 @@ test("HTTP errors, local files and ignored targets never trigger transport retry
   }
 });
 
-test("retry of a mixed document cannot erase original 202, 403 or 404 failures", async () => {
-  for (const code of [202, 403, 404]) {
+test("retry of a mixed document cannot erase original nonretryable failures", async () => {
+  for (const code of [202, 401, 403, 404, 429, 501, 505, 522]) {
     const fixed = result("https://example.invalid/retry", 0);
     const permanent = result("https://example.invalid/permanent", code);
     const f = fixture([
@@ -70,6 +70,39 @@ test("retry of a mixed document cannot erase original 202, 403 or 404 failures",
     const actual = await checkDocument("text", options, f.check, f.runtime);
     assert.equal(actual[0].status, "alive");
     assert.deepEqual(actual[1], permanent);
+  }
+});
+
+test("selected transient 5xx errors recover only after a genuine successful repeat", async () => {
+  for (const code of [500, 502, 503, 504]) {
+    const url = "https://example.invalid/a";
+    const f = fixture([[result(url, code)], [result(url, 200)]]);
+    const actual = await checkDocument("full document", options, f.check, f.runtime);
+    assert.equal(actual[0].status, "alive");
+    assert.equal(f.calls.length, 2);
+    assert.deepEqual(f.delays, [RETRY_DELAY_MS]);
+    for (const args of f.calls) assert.deepEqual(args, ["full document", options]);
+  }
+});
+
+test("persistent, missing, ignored and permanent retry results never turn 5xx green", async () => {
+  for (const code of [500, 502, 503, 504]) {
+    const dead = result("https://example.invalid/a", code);
+    for (const repeated of [[dead], [], [result(dead.link, 0, "ignored")], [result(dead.link, 403)]]) {
+      const f = fixture([[dead], repeated]);
+      const actual = await checkDocument("text", options, f.check, f.runtime);
+      assert.equal(actual[0].status, "dead");
+      assert.equal(f.calls.length, 2);
+    }
+  }
+});
+
+test("local-file and non-HTTP failures never trigger 5xx retries", async () => {
+  for (const url of ["missing.md", "file:///missing.md", "ftp://example.invalid/file"]) {
+    const dead = result(url, 502);
+    const f = fixture([[dead]]);
+    assert.deepEqual(await checkDocument("text", options, f.check, f.runtime), [dead]);
+    assert.equal(f.calls.length, 1);
   }
 });
 
@@ -96,6 +129,7 @@ test("errors and malformed successful statuses fail closed", async () => {
     [new Error("parser failed")],
     [null],
     [[result("a", 202, "alive")]],
+    [[result("https://example.invalid/a", 502, "alive")]],
     [[result("a", 200), result("a", 200)]],
     [[{ link: "a", status: "unknown" }]],
   ]) {

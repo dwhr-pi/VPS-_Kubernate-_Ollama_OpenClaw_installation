@@ -4,6 +4,27 @@ Stand: 31.10.2026. Keine Merge- oder Produktionsfreigabe.
 
 ## Verbindlicher Check
 
+Weiterer Nachtrag PR 27 nach Commit `05abbed` vom 12.11.2026: Die PR- und
+Push-Linkchecks scheiterten an HTTP 502 bei zwei unterschiedlichen, weiterhin
+erreichbaren GitHub-Repositories. Beide Originaladressen wurden danach mit
+HTTP 200 gelesen und bleiben aktive Quellen. Der gemeinsame Runner wiederholt
+jetzt auch ausgewaehlte temporaere HTTP-Fehler genau einmal; 5xx werden nicht
+als erfolgreich akzeptiert. Befunde, abgebrochene macOS-Push-Jobs und die
+standalone Trivy-Patchkorrektur stehen im
+[Folgebericht](PR27_CI_FOLLOWUP_2026-11-12.json). Fruehere Berichte bleiben erhalten.
+
+Nachtrag PR 27 vom 12.11.2026: Der Push-Lauf `43207287611`, Job `131145567743`,
+meldete Google HTTP 500 und beim Beautiful-Soup-Source-Ziel Transportstatus 0.
+Die Google-Mitteilung wurde anschliessend vollstaendig mit HTTP 200 gelesen;
+der aktive Link bleibt erhalten. Launchpad lief auch beim anonymen Einzelabruf
+in ein Timeout. Die offizielle Beautiful-Soup-Website bestaetigt das Source-Ziel,
+nicht dessen aktuelle Erreichbarkeit. Im
+[Werkzeugvergleich](../tutorials/grok-development-tooling.md) bleibt die exakte
+Launchpad-Adresse deshalb mit datiertem Befund als Code erhalten; die gelesene
+offizielle Projektwebsite bleibt der aktive Beleg.
+[Pruefbericht und Grenzen](PR27_CI_REFERENCE_REVIEW_2026-11-12.json).
+Keine neue Ignore-Regel, keine Status-Aufweichung und keine Retry-Erweiterung.
+
 Nachtrag PR 26 vom 12.11.2026: Die vLLM-Metrik-Webfassung lieferte im Push-Linkcheck wiederholt HTTP 429,
 auch nach den bereits konfigurierten begrenzten 429-Retries. Die Originaladresse bleibt im
 [Haertungsplan](../architecture/ENTERPRISE_HARDENING_ROADMAP.md#vllm-quellennachweis-vom-12112026)
@@ -55,13 +76,18 @@ Link-Abnahme. Der dedizierte Workflow prueft weiterhin alle Markdown-Dateien, ni
 
 Der gemeinsame Runner verwendet weiterhin diese unveraenderte Upstream-Bibliothek mit ihrer
 vollstaendigen Markdown-Auswertung und derselben JSON-Konfiguration. Ausschliesslich bei
-HTTP(S)-Transportstatus 0 wird nach fuenf Sekunden genau einmal dasselbe Dokument erneut geprueft.
-Nur die urspruenglichen Transportfehler duerfen durch die neuen echten Pruefergebnisse ersetzt
-werden. Urspruengliche HTTP-202/403/404-Fehler, lokale Dateifehler und sonstige Fehler bleiben
+HTTP(S)-Transportstatus 0 oder HTTP 500/502/503/504 wird nach fuenf Sekunden
+genau einmal dasselbe Dokument erneut geprueft. Nur die urspruenglichen
+wiederholbaren Fehler duerfen durch neue echte Pruefergebnisse ersetzt werden.
+HTTP-202/401/403/404/501/505-Fehler, lokale Dateifehler und sonstige Fehler bleiben
 fehlgeschlagen, auch wenn ein anderer Link den Wiederholungsversuch ausloest. Keine Endlosschleife,
 keine Domain-Ausnahme, kein `continue-on-error`. Fehlende oder nachtraeglich ignorierte Ergebnisse
 loeschen keinen Fehler; Parser-/Ergebnisfehler scheitern geschlossen. Beide echten Programme
 (Upstream-CLI und Runner) durchlaufen denselben Offline-Datei-Exitcode-Test.
+HTTP 429 behaelt ausschliesslich die bereits vorhandene begrenzte
+Upstream-Retry-Regel; der Wrapper fuegt dafuer keinen weiteren Versuch hinzu.
+Auch nach dem zweiten Durchlauf tote Ziele bleiben Fehler. Es werden weder
+zusaetzliche erfolgreiche HTTP-Statuscodes noch Domain-Ausnahmen eingefuehrt.
 
 Die zusaetzliche Einzelpruefung unter `scripts/quality/external_link_probe.py` ersetzt diesen Parser
 und seine vollstaendige Markdown-Abdeckung nicht. Sie untersucht explizite Markdown-Ziele mit GET,

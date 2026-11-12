@@ -125,7 +125,8 @@ class PlatformContracts(unittest.TestCase):
         self.assertIn("prometheus.io/scrape: 'false'", content)
         monitor = (ROOT / 'k8s/monitoring/litellm-service-monitor.yml').read_text()
         self.assertIn('authorization:', monitor)
-        self.assertIn('credentials: {name: litellm-runtime, key: master-key}', monitor)
+        self.assertIn('credentials: {name: litellm-metrics-scrape, key: token}', monitor)
+        self.assertNotIn('master-key', monitor)
 
 
 if __name__ == '__main__':

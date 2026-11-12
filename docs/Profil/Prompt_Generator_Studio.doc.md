@@ -30,6 +30,11 @@ Promptbibliotheken koennen vertrauliche Strategien, Markenstimme oder interne Pr
 
 ## Quickstart
 
+Neu: [Offline-Projektformular und versionierte Rollenplaene](../PROJECT_BRIEF_AND_PROMPT_WORKFLOWS.md)
+fuer Film, Buch, Betriebssystem und allgemeine Projekte. Dieser Helfer
+funktioniert ohne Profilinstallation und ohne Modell- oder Dienststart.
+Das bestehende Profil installiert ihn nicht als Hintergrunddienst.
+
 1. Profil installieren.
 2. Prompt-Ziel waehlen: Text, Bild, Video, Musik, Code oder Agent.
 3. Ausgabeformat festlegen.

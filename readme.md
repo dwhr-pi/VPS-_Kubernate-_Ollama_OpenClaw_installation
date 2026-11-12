@@ -10,6 +10,9 @@ Noch keine fertig eingerichtete Gesamtsicht: Katalog, Installation und laufende 
 [Ausbau: lokale Apps mit Icons starten und Ressourcen anzeigen](docs/DESKTOP_LAUNCHER_AND_METRICS_CONTRACT.md).
 [Plattformen und opt-in App-Erkennung: Windows, macOS, Linux, Android/iPhone](docs/CROSS_PLATFORM_APP_DISCOVERY.md).
 
+[Projektformular fuer Film, Buch, Betriebssystem und andere Vorhaben](docs/PROJECT_BRIEF_AND_PROMPT_WORKFLOWS.md):
+editierbarer Offline-Brief, Zwischenstaende und Rollenplan statt vorgetaeuschter Freigaben.
+
 [Natives Betriebshandbuch: WebUI, Dejavu-MCP, SSO und Wartung](docs/NATIVE_OPERATIONS_HANDBOOK.md)
 mit getrennten Freigaben und ehrlichen Nachweisgrenzen, ohne Docker-Fallback.
 

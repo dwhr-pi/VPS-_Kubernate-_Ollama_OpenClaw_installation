@@ -1,0 +1,39 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: llmops
+resources:
+  - ../../base
+  - metrics-service.yaml
+  - network-policy.yaml
+configMapGenerator:
+  - name: litellm-metrics-code
+    files: [litellm_metrics_proxy.py]
+images:
+  - name: litellm-runtime
+    newName: registry.example.invalid/litellm
+    newTag: REPLACE_WITH_REVIEWED_PIN
+patches:
+  - path: gateway-sidecar.yaml
+  - target:
+      group: networking.k8s.io
+      version: v1
+      kind: NetworkPolicy
+      name: gateway-and-monitoring-to-litellm
+    patch: |-
+      - op: replace
+        path: /spec/ingress
+        value:
+          - from:
+              - namespaceSelector:
+                  matchLabels: {kubernetes.io/metadata.name: traefik}
+                podSelector:
+                  matchLabels: {app.kubernetes.io/name: traefik}
+            ports:
+              - {protocol: TCP, port: 4000}
+  - target:
+      version: v1
+      kind: Service
+      name: litellm
+    patch: |-
+      - op: remove
+        path: /metadata/labels/llmops-metrics

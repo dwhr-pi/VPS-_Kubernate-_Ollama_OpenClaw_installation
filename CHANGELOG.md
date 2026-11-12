@@ -2,6 +2,35 @@
 
 ## Unreleased
 
+### 2026-11-12: PR-27-Folgekorrektur fuer Konfigurationsscan und HTTP 502
+
+- Non-root-Podkontext im Sidecar-Patch explizit deklariert und gegen die Basis abgesichert.
+- Genau einen Wiederholungsversuch fuer HTTP 500/502/503/504 ergaenzt; dauerhafte Fehler bleiben rot.
+- Originalquellen und bisherige HTTP-/Ignore-Regeln erhalten; macOS-Abbrueche getrennt von Testfehlern dokumentiert.
+
+### 2026-11-12: CI-Korrekturen fuer PR 27
+
+- TTL fuer den suspendierten Sandbox-Beispieljob ergaenzt, statt die KubeLinter-Regel abzuschalten.
+- Eigene macOS-Temp-Fixtures auf physische Pfade normalisiert; produktive Symlink-Grenzen bleiben unveraendert.
+- Zusaetzliche Symlink-Negativtests fuer Projektbrief und Public-Key-Import ergaenzt.
+- Launchpad-Originaladresse mit Timeout-Befund erhalten; Google nach erfolgreichem Einzelabruf weiter aktiv pruefen.
+
+### 2026-11-12: Metrics-Isolation und sichere Preflight-Grenzen
+
+- Gepinnten LiteLLM-Auth-Code geprueft; GET-only-Bridge mit eigenem Scrape-Token und opt-in Kustomize-Overlay.
+- Master-Key aus dem ServiceMonitor entfernt; private Metrics-Service-/Netzwerk- und Ausfallregeln angepasst.
+- Native systemd-Vorlage, synthetische Negativtests und Linux-/macOS-/Windows-CI ergaenzt.
+- Preflight auf Offline-Doctor umgestellt; freie VRAM-Kapazitaet nur ausdruecklich pro GPU pruefen.
+- Suspendierte netzwerklose Sandbox-Vorlage vorbereitet; echte Runtime-/Restore-/Cluster-Abnahmen bleiben offen.
+
+### 2026-11-12: Projektbrief und gefuehrter Public-Key-Import
+
+- Offline-Formulare fuer Film, Buch, Betriebssystem und allgemeine Vorhaben mit versionierten Zwischenstaenden.
+- Rollenplan, gesperrter Masterprompt und experimentelles read-only MCP ohne Modell-/Dienststarts.
+- Public-Key-Import mit unabhaengigem Fingerprint, exklusivem Ziel und unveraenderter Quelle.
+- GitHub-Clone, begrenzten Bootstrap-Download und signierte Installation klar getrennt dokumentiert.
+- Historisches Release bleibt unveraendert; Helfer sind neue Quellen, keine nachtraeglich signierten Assets.
+
 ### 2026-11-12: Versionierter vLLM-Metrikbeleg fuer PR 26
 
 - Wiederholt rate-limitierte HTML-Quelle mit Originaladresse/Befund erhalten und aktive GitHub-Belege gepinnt.

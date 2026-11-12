@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "review_date": "2026-11-12",
+  "head_before_fixes": "0d26440bf986786d8965c23f7830a04e5b85635b",
+  "linkcheck": {
+    "run_id": 43207287611,
+    "job_id": 131145567743,
+    "references": [
+      {
+        "original_url": "https://blog.google/innovation-and-ai/products/gemini-notebook/notebooklm-gemini-notebook/",
+        "ci_http_status": 500,
+        "followup_http_status": 200,
+        "followup_read": "Anonymous HTTPS GET, no proxy or credentials; complete 354640-byte response, notebook content marker present. Independently read in research browser.",
+        "sha256_of_observed_response": "5473f4af719ec17847101a5a5c09fe14f0226c0d259dc80a65a43aa60e21999f",
+        "decision": "Keep the original active reference; this successful follow-up is not evidence that every future CI request will succeed."
+      },
+      {
+        "original_url": "https://code.launchpad.net/beautifulsoup",
+        "ci_http_status": 0,
+        "followup_result": "TimeoutError after 20 seconds, no content read by the direct anonymous request.",
+        "research_browser_result": "Older cached page readable; not accepted as current anonymous endpoint verification.",
+        "primary_source_read": "https://www.crummy.com/software/BeautifulSoup/",
+        "primary_source_scope": "Official website explicitly links the exact Launchpad source target. This proves the source attribution, not endpoint availability or build acceptance.",
+        "decision": "Keep exact URL as inline code with date and failure; keep the already-present official website as active source. No arbitrary replacement or domain ignore."
+      }
+    ]
+  },
+  "other_ci_causes": {
+    "gitops_run": 43209925000,
+    "gitops_job": 131154619504,
+    "gitops_failure": "KubeLinter job-ttl-seconds-after-finished: suspended sandbox fixture lacks TTL. Other preceding rendered plans and Helm lint passed.",
+    "hardening_macos_job": 131145570621,
+    "hardening_failure": "Backup-evidence fixture uses macOS /var symlink; private_metadata correctly rejects linked paths.",
+    "project_brief_macos_job": 131154617934,
+    "project_brief_failure": "Temporary project directory uses macOS /var symlink; safe_path correctly rejects linked ancestors.",
+    "fix_boundary": "Canonicalize only owned temporary fixture roots, not arbitrary production user paths. Preserve production link guards and add negative regressions."
+  },
+  "not_claimed": [
+    "Current CI success after a new push",
+    "Permanent removal of transient external failures",
+    "Native macOS execution on the local Windows host",
+    "New cluster or sandbox runtime acceptance"
+  ]
+}

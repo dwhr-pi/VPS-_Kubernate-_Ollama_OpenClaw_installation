@@ -1,4 +1,4 @@
-# Nach Installation der Operator-CRDs bewusst separat anwenden.
+# Requires the opt-in metrics-isolation overlay and reviewed Operator CRDs.
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
@@ -10,11 +10,11 @@ spec:
   selector:
     matchLabels: {llmops-metrics: litellm}
   endpoints:
-    - port: http
+    - port: metrics
       path: /metrics
       interval: 30s
       scrapeTimeout: 10s
       # Secret liegt im Namespace dieses ServiceMonitor, nicht im Git.
       authorization:
         type: Bearer
-        credentials: {name: litellm-runtime, key: master-key}
+        credentials: {name: litellm-metrics-scrape, key: token}

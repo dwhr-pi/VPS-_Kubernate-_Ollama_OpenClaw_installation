@@ -192,7 +192,9 @@ Jedes getrackte Unterverzeichnis wird erfasst; ein Verzeichnis kann mehrere Tool
 - `k8s/gitops/memory/`
 - `k8s/gitops/platform/`
 - `k8s/monitoring/`
+- `k8s/optional/tool-sandbox/`
 - `k8s/overlays/gpu/`
+- `k8s/overlays/metrics-isolation/`
 - `k8s/overlays/production/`
 - `k8s/overlays/vps-cpu/`
 - `k8s/platform/`

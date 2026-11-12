@@ -1,0 +1,33 @@
+[Unit]
+Description=Restricted local LiteLLM metrics bridge (opt-in)
+After=network.target
+
+[Service]
+Type=simple
+User=openclaw-metrics
+Group=openclaw-metrics
+LoadCredential=scrape-token:/etc/openclaw-private/metrics-scrape-token
+LoadCredential=master-key:/etc/openclaw-private/litellm-master-key
+ExecStart=/usr/bin/python3 -I -B /opt/openclaw-reviewed/k8s/overlays/metrics-isolation/litellm_metrics_proxy.py --serve --scrape-token-file %d/scrape-token --master-key-file %d/master-key
+Restart=on-failure
+RestartSec=10
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+CapabilityBoundingSet=
+RestrictAddressFamilies=AF_INET AF_UNIX
+IPAddressDeny=any
+IPAddressAllow=localhost
+UMask=0077
+MemoryMax=96M
+CPUQuota=25%
+TasksMax=16
+
+[Install]
+WantedBy=multi-user.target

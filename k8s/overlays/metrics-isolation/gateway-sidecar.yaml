@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: litellm
+spec:
+  template:
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+        fsGroup: 10001
+        seccompProfile: {type: RuntimeDefault}
+      containers:
+        - name: metrics-bridge
+          # Reuse the reviewed native Python gateway runtime; no additional base download.
+          image: litellm-runtime
+          command: [python3, -I, -B, /etc/metrics-code/litellm_metrics_proxy.py]
+          args: [--serve, --listen-address, 0.0.0.0]
+          ports:
+            - {name: metrics, containerPort: 9092}
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 10001
+            runAsGroup: 10001
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {cpu: 25m, memory: 32Mi, ephemeral-storage: 8Mi}
+            limits: {cpu: 250m, memory: 96Mi, ephemeral-storage: 32Mi}
+          startupProbe:
+            httpGet: {path: /healthz, port: metrics}
+            periodSeconds: 5
+            failureThreshold: 12
+          readinessProbe:
+            httpGet: {path: /healthz, port: metrics}
+            periodSeconds: 10
+          livenessProbe:
+            httpGet: {path: /healthz, port: metrics}
+            periodSeconds: 30
+          volumeMounts:
+            - {name: metrics-code, mountPath: /etc/metrics-code, readOnly: true}
+            - {name: metrics-scrape, mountPath: /run/metrics-scrape, readOnly: true}
+            - {name: metrics-upstream, mountPath: /run/metrics-upstream, readOnly: true}
+      volumes:
+        - name: metrics-code
+          configMap: {name: litellm-metrics-code, defaultMode: 0444}
+        - name: metrics-scrape
+          secret:
+            secretName: litellm-metrics-scrape
+            defaultMode: 0440
+            items: [{key: token, path: token}]
+        - name: metrics-upstream
+          secret:
+            secretName: litellm-runtime
+            defaultMode: 0440
+            items: [{key: master-key, path: master-key}]

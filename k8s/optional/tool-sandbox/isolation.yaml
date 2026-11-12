@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: deny-all
+spec:
+  podSelector: {}
+  policyTypes: [Ingress, Egress]
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: bounded-tools
+spec:
+  hard:
+    pods: '2'
+    requests.cpu: '1'
+    requests.memory: 256Mi
+    limits.cpu: '1'
+    limits.memory: 512Mi
+    requests.ephemeral-storage: 64Mi
+    limits.ephemeral-storage: 128Mi
+    persistentvolumeclaims: '0'
+    services.nodeports: '0'
