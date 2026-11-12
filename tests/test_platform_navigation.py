@@ -33,6 +33,8 @@ class PlatformNavigation(unittest.TestCase):
         archive = (ROOT / 'docs/legacy/README_FULL_2026_11_01.md').read_text(encoding='utf-8')
         fixture = json.loads((ROOT / 'tests/fixtures/legacy_readme_navigation.json').read_text(encoding='utf-8'))
         visible = re.sub(r'<details>.*?</details>', '', root, flags=re.S)
+        # Keep entry callouts as prose without adding navigation headings (MD036).
+        self.assertNotRegex(visible.split('## ', 1)[0], r'(?m)^\*\*[^*\n]+\*\*\s*$')
         self.assertLess(len(visible.splitlines()), 200)
         self.assertEqual(headings(visible), [
             'OpenClaw & AI Infrastructure - Ultimate Setup',

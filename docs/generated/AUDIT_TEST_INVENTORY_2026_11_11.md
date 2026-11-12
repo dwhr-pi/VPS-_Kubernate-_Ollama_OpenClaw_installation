@@ -4425,25 +4425,25 @@ Parametrisierung und dynamisch erzeugte Tests koennen mehr Laufzeitfaelle liefer
 
 - `tests/test_platform_navigation.py:31`
   Prueffall: `test_compact_readme_preserves_legacy_navigation`
-- `tests/test_platform_navigation.py:80`
+- `tests/test_platform_navigation.py:82`
   Prueffall: `test_historical_destructive_commands_are_archived_not_recommended`
-- `tests/test_platform_navigation.py:93`
+- `tests/test_platform_navigation.py:95`
   Prueffall: `test_new_document_links_resolve`
-- `tests/test_platform_navigation.py:102`
+- `tests/test_platform_navigation.py:104`
   Prueffall: `test_terminal_entry_and_fixed_document_targets`
-- `tests/test_platform_navigation.py:152`
+- `tests/test_platform_navigation.py:154`
   Prueffall: `test_source_only_has_no_dialog_or_file_effects`
-- `tests/test_platform_navigation.py:158`
+- `tests/test_platform_navigation.py:160`
   Prueffall: `test_cancel_and_escape_leave_without_opening_document`
-- `tests/test_platform_navigation.py:164`
+- `tests/test_platform_navigation.py:166`
   Prueffall: `test_api_guide_opens_and_returns_through_both_levels`
-- `tests/test_platform_navigation.py:171`
+- `tests/test_platform_navigation.py:173`
   Prueffall: `test_each_topic_can_open_and_return`
-- `tests/test_platform_navigation.py:180`
+- `tests/test_platform_navigation.py:182`
   Prueffall: `test_unknown_selection_and_cross_topic_document_are_rejected`
-- `tests/test_platform_navigation.py:186`
+- `tests/test_platform_navigation.py:188`
   Prueffall: `test_missing_document_reports_failure_without_opening`
-- `tests/test_platform_navigation.py:192`
+- `tests/test_platform_navigation.py:194`
   Prueffall: `test_dialog_errors_are_not_converted_to_success`
 
 ## tests/test_platform_operations.py

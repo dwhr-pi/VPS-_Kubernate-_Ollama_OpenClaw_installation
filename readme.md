@@ -1,6 +1,6 @@
 # OpenClaw & AI Infrastructure - Ultimate Setup
 
-**Alle Tools im Blick: Browser oder Desktop**
+**Alle Tools im Blick:** Browser oder Desktop.
 
 **Auch Kubernetes/K3s laesst sich grafisch anzeigen:** Headlamp als Browseroberflaeche oder Windows-App,
 Grafana fuer Messwerte und Alarme, optional eine gemeinsame Tool-Startseite.

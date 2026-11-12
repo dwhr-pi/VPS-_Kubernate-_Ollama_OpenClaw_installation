@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+### 2026-11-12: README-Lint fuer PR 26
+
+- Dashboard-Einstieg als normalen Absatz statt reiner Fettdruck-Ueberschrift formatiert (MD036).
+- Vorhandenen Navigationstest um die Einleitungsgrenze ergaenzt; keine Lint-Regel abgeschwaecht.
+
 ### 2026-11-12: Plattformuebergreifende App-Erkennung vorbereitet
 
 - Opt-in Metadaten-Scanner fuer Windows, macOS und Linux mit sicheren Grenzen und deaktivierten Startrechten.
