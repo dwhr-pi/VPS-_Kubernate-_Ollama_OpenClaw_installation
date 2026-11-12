@@ -284,7 +284,8 @@ Die P1-Schritte zuerst abnehmen; P2/P3 bleiben bis zur Erfuellung ihrer Vorausse
 
 ## Primaerquellen
 
-- [vLLM-Metrikvertrag](https://docs.vllm.ai/en/latest/usage/metrics/)
+- [vLLM-Metrikdokumentation, gepinnte Quelle][vllm-metrics-doc]
+- [vLLM-Metrikdefinitionen, derselbe Quellstand][vllm-metrics-code]
 - [LiteLLM: Retries und Fallbacks](https://docs.litellm.ai/docs/router/learn/reliability)
 - [LiteLLM: Caching](https://docs.litellm.ai/docs/proxy/caching)
 - [KEDA: Prometheus-Scaler](https://keda.sh/docs/2.21/scalers/prometheus/)
@@ -295,3 +296,21 @@ Die P1-Schritte zuerst abnehmen; P2/P3 bleiben bis zur Erfuellung ihrer Vorausse
 
 Die verlinkten beweglichen Upstream-Dokumentationen sind Orientierung, kein Ersatz fuer den im Arbeitspaket
 festgelegten Pin und dessen eigene Dokumentation. Keine ungeprueften Quellskripte ausfuehren.
+
+### vLLM-Quellennachweis vom 12.11.2026
+
+Originaladresse: `https://docs.vllm.ai/en/latest/usage/metrics/`.
+Der Push-Linkcheck fuer Setup-Commit `225cd6433ef723185f0a885fad90392fd2a4e94d` lieferte wiederholt HTTP 429,
+zuletzt im abgeschlossenen Versuch 3 des Runs `43169373456`, Job `131031998607`.
+Der Browserabruf war lesbar; das ersetzt keinen erfolgreichen anonymen CI-Abruf.
+Die Originaladresse ist damit fuer den CI-Zugang weiterhin unbestaetigt, nicht als dauerhaft ungueltig eingestuft.
+
+Die aktiven Belege oben verwenden die inhaltlich gelesenen offiziellen Dateien an Commit
+`4c43254d52785d7a69300fdfb6c79987200c277c`. Die Dokumentationsdatei enthaelt generierte Tabellen-Verweise;
+Queue-, Token- und TTFT-Namen wurden deshalb zusaetzlich in `vllm/v1/metrics/loggers.py` am selben Pin geprueft.
+[Datierter Befund mit Datei-Hashes](../quality/VLLM_METRICS_REFERENCE_2026-11-12.json).
+Das ist ein versionierter Dokumentationsbeleg, keine Aenderung eines Runtime-/Installations-Pins und kein Lasttest.
+Keine Domain-Ausnahme, kein akzeptiertes HTTP 429 und keine Aenderung des Link-Gates.
+
+[vllm-metrics-doc]: https://github.com/vllm-project/vllm/blob/4c43254d52785d7a69300fdfb6c79987200c277c/docs/usage/metrics.md
+[vllm-metrics-code]: https://github.com/vllm-project/vllm/blob/4c43254d52785d7a69300fdfb6c79987200c277c/vllm/v1/metrics/loggers.py

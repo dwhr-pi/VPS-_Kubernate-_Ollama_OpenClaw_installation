@@ -4,6 +4,14 @@ Stand: 31.10.2026. Keine Merge- oder Produktionsfreigabe.
 
 ## Verbindlicher Check
 
+Nachtrag PR 26 vom 12.11.2026: Die vLLM-Metrik-Webfassung lieferte im Push-Linkcheck wiederholt HTTP 429,
+auch nach den bereits konfigurierten begrenzten 429-Retries. Die Originaladresse bleibt im
+[Haertungsplan](../architecture/ENTERPRISE_HARDENING_ROADMAP.md#vllm-quellennachweis-vom-12112026)
+als Code mit Befund erhalten. Aktive Belege sind zwei gelesene offizielle GitHub-Dateien am gleichen vollen Commit:
+Dokumentation plus Metrikdefinitionen, weil die Markdown-Quelle generierte Tabellen einbindet.
+[Pruefumfang, Quellpositionen und SHA256](VLLM_METRICS_REFERENCE_2026-11-12.json).
+Kein Nachweis dauerhafter Unerreichbarkeit, kein Versionsupgrade und keine Lockerung der Link-Pruefung.
+
 Nachtrag PR 10 vom 05.11.2026: Der Push-Lauf `41978791716`, Job `127083798023`,
 scheiterte ausschliesslich an der FFmpeg-Filter-Webfassung mit Transportstatus 0;
 der PR-Linkcheck desselben Commits `f72af3a9` war erfolgreich. Der unabhaengige

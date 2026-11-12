@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+### 2026-11-12: Versionierter vLLM-Metrikbeleg fuer PR 26
+
+- Wiederholt rate-limitierte HTML-Quelle mit Originaladresse/Befund erhalten und aktive GitHub-Belege gepinnt.
+- Dokumentation und Metrikdefinitionen am selben Commit gelesen; Datei-Hashes und Offline-Regression ergaenzt.
+- Keine Link-Ausnahme, Status-Aufweichung, Runtime-Pin-Aenderung oder Inferenz ausgefuehrt.
+
 ### 2026-11-12: README-Lint fuer PR 26
 
 - Dashboard-Einstieg als normalen Absatz statt reiner Fettdruck-Ueberschrift formatiert (MD036).

@@ -1,0 +1,46 @@
+{
+  "review_date": "2026-11-12",
+  "original_url": "https://docs.vllm.ai/en/latest/usage/metrics/",
+  "setup_commit": "225cd6433ef723185f0a885fad90392fd2a4e94d",
+  "ci_evidence": {
+    "run_id": 43169373456,
+    "attempt": 3,
+    "job_id": 131031998607,
+    "reported_http_status": 429,
+    "scope": "Latest completed attempt inspected; attempt 4 was still running during this review."
+  },
+  "classification": "Original HTML readable in research browser, repeated CI rate limit; not confirmed for anonymous CI access.",
+  "upstream_repo": "vllm-project/vllm",
+  "upstream_commit": "4c43254d52785d7a69300fdfb6c79987200c277c",
+  "read_method": "Anonymous GitHub contents API at the full commit; bytes decoded and read without executing source.",
+  "files": [
+    {
+      "path": "docs/usage/metrics.md",
+      "url": "https://github.com/vllm-project/vllm/blob/4c43254d52785d7a69300fdfb6c79987200c277c/docs/usage/metrics.md",
+      "sha256": "e9ccdc8256873f4273c7e0e66ebafea93a04fe3dd98e628f445d8ab7032c3e3e",
+      "bytes": 6156,
+      "read_http_status": 200,
+      "github_blob_http_status": 200
+    },
+    {
+      "path": "vllm/v1/metrics/loggers.py",
+      "url": "https://github.com/vllm-project/vllm/blob/4c43254d52785d7a69300fdfb6c79987200c277c/vllm/v1/metrics/loggers.py",
+      "sha256": "ea496be83251b8baa88ba6e28c648f737d9d22f72f151e955fe887ead6f236b3",
+      "bytes": 56835,
+      "read_http_status": 200,
+      "github_blob_http_status": 200
+    }
+  ],
+  "metric_name_evidence": [
+    {"name": "vllm:num_requests_waiting", "file": "vllm/v1/metrics/loggers.py", "line": 532},
+    {"name": "vllm:generation_tokens", "file": "vllm/v1/metrics/loggers.py", "line": 774},
+    {"name": "vllm:time_to_first_token_seconds", "file": "vllm/v1/metrics/loggers.py", "line": 889}
+  ],
+  "limits": [
+    "The Markdown documentation contains generated-table directives; the logger source was read separately.",
+    "Names apply to this reference commit, not every deployed vLLM version.",
+    "No model, installer, container, service or inference started.",
+    "No runtime/build pin, link-check configuration, retry policy or alive status changed.",
+    "Browser and GitHub responses do not guarantee successful future CI requests."
+  ]
+}

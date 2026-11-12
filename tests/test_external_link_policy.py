@@ -30,6 +30,25 @@ class Response:
 
 
 class ExternalLinkPolicyTests(unittest.TestCase):
+    def test_vllm_metric_reference_keeps_original_and_pinned_primary_sources(self):
+        evidence = json.loads((ROOT / 'docs/quality/VLLM_METRICS_REFERENCE_2026-11-12.json').read_text(encoding='utf-8'))
+        text = (ROOT / 'docs/architecture/ENTERPRISE_HARDENING_ROADMAP.md').read_text(encoding='utf-8')
+        self.assertEqual(evidence['ci_evidence']['reported_http_status'], 429)
+        self.assertEqual(evidence['ci_evidence']['attempt'], 3)
+        self.assertIn('`' + evidence['original_url'] + '`', text)
+        self.assertNotIn('](' + evidence['original_url'] + ')', text)
+        self.assertRegex(evidence['upstream_commit'], r'^[a-f0-9]{40}$')
+        self.assertEqual({row['path'] for row in evidence['files']},
+                         {'docs/usage/metrics.md', 'vllm/v1/metrics/loggers.py'})
+        for row in evidence['files']:
+            expected = 'https://github.com/vllm-project/vllm/blob/' + evidence['upstream_commit'] + '/' + row['path']
+            self.assertEqual(row['url'], expected)
+            self.assertIn(expected, text)
+            self.assertRegex(row['sha256'], r'^[a-f0-9]{64}$')
+            self.assertGreater(row['bytes'], 0)
+        self.assertEqual({row['name'] for row in evidence['metric_name_evidence']},
+                         {'vllm:num_requests_waiting', 'vllm:generation_tokens', 'vllm:time_to_first_token_seconds'})
+
     def setUp(self):
         self.config = json.loads(
             (ROOT / ".github/markdown-link-check.json").read_text(encoding="utf-8")
