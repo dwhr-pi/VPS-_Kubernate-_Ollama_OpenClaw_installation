@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+### 2026-11-12: PR-25-CI-Reparatur
+
+- shfmt-konforme Fehlerbehandlung im CI-Bootstrap; keine geaenderten Exitcodes.
+- Markdown-Zeilenlaengen und literale Webhook-URL korrigiert, ohne Lint-Regeln zu lockern.
+- OIDC-Beispielpatch auch einzeln mit expliziter Pod-/Container-Haertung versehen;
+  Non-root, RuntimeDefault, Read-only-RootFS und Capability-Drop als Regression abgesichert.
+
 ### 2026-11-11: Native Betriebs- und MCP-Vorlagen
 
 - Zusammengehoerige und doppelte Benutzer-Anhaenge in einem Betriebshandbuch

@@ -218,6 +218,18 @@ class NativeMaintenance(unittest.TestCase):
 
 
 class BundleDocumentation(unittest.TestCase):
+    def test_oidc_patch_keeps_base_pod_and_container_security_explicit(self):
+        patch_text = (ROOT / 'examples/open-webui/openwebui-oidc.patch.yaml').read_text()
+        for value in ('automountServiceAccountToken: false', 'runAsNonRoot: true',
+                      'runAsUser: 10001', 'runAsGroup: 10001', 'fsGroup: 10001',
+                      'type: RuntimeDefault', 'allowPrivilegeEscalation: false',
+                      'readOnlyRootFilesystem: true', 'drop: [ALL]'):
+            self.assertIn(value, patch_text)
+        self.assertIn('      securityContext:\n        runAsNonRoot: true', patch_text)
+        self.assertIn('          securityContext:\n            allowPrivilegeEscalation: false', patch_text)
+        self.assertNotIn('readOnlyRootFilesystem: false', patch_text)
+        self.assertNotIn('runAsUser: 0', patch_text)
+
     def test_keycloak_and_make_defaults_are_not_privileged_or_destructive(self):
         client = json.loads((ROOT / 'examples/open-webui/keycloak-client.json').read_text())
         self.assertNotIn('secret', client)

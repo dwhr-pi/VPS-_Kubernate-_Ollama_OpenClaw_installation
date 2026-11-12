@@ -1,6 +1,7 @@
 # MOSS-Music
 
-Musikverstehen: Beschreibung, Lyrics-ASR, Struktur-/Akkordanalyse und musikalische Fragen. Kein Songgenerator und kein Ersatz fuer MOSS-TTS.
+Musikverstehen: Beschreibung, Lyrics-ASR, Struktur-/Akkordanalyse und musikalische Fragen. Kein Songgenerator
+und kein Ersatz fuer MOSS-TTS.
 
 Optionaler Menuepunkt **MOSS_Music**, Bereitschaft `planned`, keine fertige Runtime.
 Primaerquelle: [OpenMOSS/MOSS-Music](https://github.com/OpenMOSS/MOSS-Music).
@@ -9,9 +10,11 @@ README und vorhandene Lizenzdateien werden gegen die SHA256 im Quellenmanifest g
 
 ## Lizenz und Risiken
 
-Die README nennt Apache-2.0 fuer die Modelle; am Root liegt keine separate Code-LICENSE. Code-, Modell-, Encoder- und Drittbedingungen vor Build/Weitergabe klaeren.
+Die README nennt Apache-2.0 fuer die Modelle; am Root liegt keine separate Code-LICENSE. Code-, Modell-,
+Encoder- und Drittbedingungen vor Build/Weitergabe klaeren.
 
-8B Instruct und Thinking sind verschiedene Checkpoints; inklusive Audio-Komponenten nennt der Upstream rund 9.1B Gesamtparameter. Speicher, Transkriptionsqualitaet und Gesangssprachen sind hier nicht abgenommen.
+8B Instruct und Thinking sind verschiedene Checkpoints; inklusive Audio-Komponenten nennt der Upstream rund 9.1B
+Gesamtparameter. Speicher, Transkriptionsqualitaet und Gesangssprachen sind hier nicht abgenommen.
 
 ## Native Quellenverwaltung
 
@@ -96,7 +99,8 @@ Keine automatische Installation, kein Browser-/Modell-/Produktivdienststart durc
 Nach jedem bewusst ausgefuehrten Befehl den Exitcode unmittelbar mit `echo $?` pruefen;
 zum Verlassen des VPS-Terminals `exit` verwenden.
 
-[SSH-Voraussetzungen und Sicherheitsgrenzen](../HEADLESS_SETUP.md) | [Befehle aller registrierten Tools](../generated/HEADLESS_TOOL_COMMANDS.md)
+[SSH-Voraussetzungen und Sicherheitsgrenzen](../HEADLESS_SETUP.md) | [Befehle aller registrierten
+Tools](../generated/HEADLESS_TOOL_COMMANDS.md)
 
 Dieser Abschnitt wird aus der Registry erzeugt. Pflege: `python3 -I -B scripts/quality/tool_ssh_docs.py --write`.
 

@@ -56,6 +56,9 @@ if [[ ${BASH_SOURCE[0]} == "$0" ]]; then
   case ${1:-install} in
     --sources) qa_sources ;;
     install) qa_install ;;
-    *) printf '%s\n' 'Unsupported QA bootstrap action.' >&2; exit 2 ;;
+    *)
+      printf '%s\n' 'Unsupported QA bootstrap action.' >&2
+      exit 2
+      ;;
   esac
 fi

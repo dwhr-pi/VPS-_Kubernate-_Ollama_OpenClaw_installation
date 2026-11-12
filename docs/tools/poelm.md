@@ -1,6 +1,7 @@
 # PoeLM
 
-Meter-/Reim-konditionierte Poesieforschung mit annotierten Textkorpora; Versuche fuer Spanisch und Baskisch, keine pauschale deutsche Sprachfreigabe.
+Meter-/Reim-konditionierte Poesieforschung mit annotierten Textkorpora; Versuche fuer Spanisch und Baskisch,
+keine pauschale deutsche Sprachfreigabe.
 
 Optionaler Menuepunkt **PoeLM**, Bereitschaft `planned`, keine fertige Runtime.
 Primaerquelle: [aitorormazabal/poetry_generation](https://github.com/aitorormazabal/poetry_generation).
@@ -9,9 +10,11 @@ README und vorhandene Lizenzdateien werden gegen die SHA256 im Quellenmanifest g
 
 ## Lizenz und Risiken
 
-Keine Root-LICENSE am geprueften Pin. Oeffentliche GitHub-Sichtbarkeit ist keine bestaetigte allgemeine Nutzungs-/Weitergabelizenz.
+Keine Root-LICENSE am geprueften Pin. Oeffentliche GitHub-Sichtbarkeit ist keine bestaetigte allgemeine
+Nutzungs-/Weitergabelizenz.
 
-Korpusaufbereitung, SentencePiece, Training und Generierung werden nicht ausgefuehrt. Keine Trainingskorpora oder fertigen Gewichte werden mitinstalliert.
+Korpusaufbereitung, SentencePiece, Training und Generierung werden nicht ausgefuehrt. Keine Trainingskorpora
+oder fertigen Gewichte werden mitinstalliert.
 
 ## Native Quellenverwaltung
 
@@ -96,7 +99,8 @@ Keine automatische Installation, kein Browser-/Modell-/Produktivdienststart durc
 Nach jedem bewusst ausgefuehrten Befehl den Exitcode unmittelbar mit `echo $?` pruefen;
 zum Verlassen des VPS-Terminals `exit` verwenden.
 
-[SSH-Voraussetzungen und Sicherheitsgrenzen](../HEADLESS_SETUP.md) | [Befehle aller registrierten Tools](../generated/HEADLESS_TOOL_COMMANDS.md)
+[SSH-Voraussetzungen und Sicherheitsgrenzen](../HEADLESS_SETUP.md) | [Befehle aller registrierten
+Tools](../generated/HEADLESS_TOOL_COMMANDS.md)
 
 Dieser Abschnitt wird aus der Registry erzeugt. Pflege: `python3 -I -B scripts/quality/tool_ssh_docs.py --write`.
 

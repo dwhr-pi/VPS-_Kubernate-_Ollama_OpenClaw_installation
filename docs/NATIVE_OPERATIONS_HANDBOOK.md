@@ -22,14 +22,22 @@ Container, Volumes und Installationen bleiben unberuehrt.
 
 ## Korrekturen der gelieferten Compose-Vorlagen
 
-- Oeffentliche Port-Mappings fuer 11434, 8000, 9090 und 9093 werden nicht uebernommen. Dienste bleiben auf Loopback oder privat hinter WireGuard/Auth/TLS.
-- latest/main und Paketinstallationen beim Dienststart sind kein reproduzierbarer Build. Vorhandene Kustomize-Basis bleibt Single Source of Truth.
-- Ollama ist kein nativer Prometheus-Scrape-Endpunkt. Der [Exporter und Gateway-Monitor](MODEL_ROUTING_EXPORT_AND_MONITORING.md) liefern getrennte Metriken.
-- Der gezeigte Dejavu-Worker erstellt nur ein Beispiel-Schema und schlaeft. Er extrahiert keine Fingerprints und bietet keine FastAPI-Endpunkte. Das Beispiel-Schema wird nicht in eine echte Dejavu-Datenbank migriert.
-- Ein stdio-MCP-Server wird vom MCP-Host gestartet; ein unbeaufsichtigter Hintergrunddienst ohne verbundenes stdin/stdout liefert keine automatische Agentenanbindung.
-- Rohe Client-Prints auf stdout wuerden MCP-Nachrichten stoeren. Der Adapter schreibt dort nur den Protokollverkehr; Diagnosen bleiben generisch auf stderr.
-- Automatische VRAM-Bereinigung oder Neustarts aus Log-Schluesselwoertern werden nicht aktiviert. Der [Log-Monitor](OLLAMA_LOG_MONITOR.md) ist nur Diagnose.
-- Discord erwartet den nativen Receiver/Payload, keinen generischen Alertmanager-Webhook und keinen vermeintlich automatisch passenden Slack-Payload.
+- Oeffentliche Port-Mappings fuer 11434, 8000, 9090 und 9093 werden nicht uebernommen. Dienste bleiben auf
+  Loopback oder privat hinter WireGuard/Auth/TLS.
+- latest/main und Paketinstallationen beim Dienststart sind kein reproduzierbarer Build. Vorhandene
+  Kustomize-Basis bleibt Single Source of Truth.
+- Ollama ist kein nativer Prometheus-Scrape-Endpunkt. Der [Exporter und
+  Gateway-Monitor](MODEL_ROUTING_EXPORT_AND_MONITORING.md) liefern getrennte Metriken.
+- Der gezeigte Dejavu-Worker erstellt nur ein Beispiel-Schema und schlaeft. Er extrahiert keine Fingerprints und
+  bietet keine FastAPI-Endpunkte. Das Beispiel-Schema wird nicht in eine echte Dejavu-Datenbank migriert.
+- Ein stdio-MCP-Server wird vom MCP-Host gestartet; ein unbeaufsichtigter Hintergrunddienst ohne verbundenes
+  stdin/stdout liefert keine automatische Agentenanbindung.
+- Rohe Client-Prints auf stdout wuerden MCP-Nachrichten stoeren. Der Adapter schreibt dort nur den
+  Protokollverkehr; Diagnosen bleiben generisch auf stderr.
+- Automatische VRAM-Bereinigung oder Neustarts aus Log-Schluesselwoertern werden nicht aktiviert. Der
+  [Log-Monitor](OLLAMA_LOG_MONITOR.md) ist nur Diagnose.
+- Discord erwartet den nativen Receiver/Payload, keinen generischen Alertmanager-Webhook und keinen vermeintlich
+  automatisch passenden Slack-Payload.
 
 ## SSH und sichere Make-Ziele
 
@@ -226,8 +234,10 @@ Auch eine fehlgeschlagene Silence-/Backup-Operation darf nicht als Erfolg verdec
 
 ## Quellen und Abnahme
 
-[MCP Python SDK v1-Pin](https://github.com/modelcontextprotocol/python-sdk/tree/8c2fa6eabacde869d75568e33b9d466b58c2f512),
-[Open-WebUI-Konfiguration am Pin](https://github.com/open-webui/open-webui/blob/b0e6098e940942281d9c83f3529ea117287a3a22/backend/open_webui/config.py),
+[MCP Python SDK
+v1-Pin](https://github.com/modelcontextprotocol/python-sdk/tree/8c2fa6eabacde869d75568e33b9d466b58c2f512),
+[Open-WebUI-Konfiguration am
+Pin](https://github.com/open-webui/open-webui/blob/b0e6098e940942281d9c83f3529ea117287a3a22/backend/open_webui/config.py),
 [Keycloak OIDC](https://www.keycloak.org/docs/latest/server_admin/index.html#oidc-clients),
 [Alertmanager API v2](https://github.com/prometheus/alertmanager/blob/main/api/v2/openapi.yaml).
 Zwei alte Open-WebUI-Dokumentationspfade lieferten bei der Pruefung 404;

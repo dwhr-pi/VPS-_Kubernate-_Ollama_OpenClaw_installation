@@ -9,9 +9,11 @@ README und vorhandene Lizenzdateien werden gegen die SHA256 im Quellenmanifest g
 
 ## Lizenz und Risiken
 
-Die LICENSE am Pin erlaubt nur akademische, Forschungs- und Bildungszwecke und schliesst kommerzielle sowie produktive Nutzung aus. "Commercial-grade" in der README ist keine kommerzielle Lizenzfreigabe.
+Die LICENSE am Pin erlaubt nur akademische, Forschungs- und Bildungszwecke und schliesst kommerzielle sowie
+produktive Nutzung aus. "Commercial-grade" in der README ist keine kommerzielle Lizenzfreigabe.
 
-Der dokumentierte Docker-Einstieg wird nicht uebernommen. Checkpoints, Codec, GPU-Runtime und Musik-/Stimmenrechte sind separat zu pruefen; kein automatischer Wechsel auf andere SongGeneration-Versionen.
+Der dokumentierte Docker-Einstieg wird nicht uebernommen. Checkpoints, Codec, GPU-Runtime und
+Musik-/Stimmenrechte sind separat zu pruefen; kein automatischer Wechsel auf andere SongGeneration-Versionen.
 
 ## Native Quellenverwaltung
 
@@ -96,7 +98,8 @@ Keine automatische Installation, kein Browser-/Modell-/Produktivdienststart durc
 Nach jedem bewusst ausgefuehrten Befehl den Exitcode unmittelbar mit `echo $?` pruefen;
 zum Verlassen des VPS-Terminals `exit` verwenden.
 
-[SSH-Voraussetzungen und Sicherheitsgrenzen](../HEADLESS_SETUP.md) | [Befehle aller registrierten Tools](../generated/HEADLESS_TOOL_COMMANDS.md)
+[SSH-Voraussetzungen und Sicherheitsgrenzen](../HEADLESS_SETUP.md) | [Befehle aller registrierten
+Tools](../generated/HEADLESS_TOOL_COMMANDS.md)
 
 Dieser Abschnitt wird aus der Registry erzeugt. Pflege: `python3 -I -B scripts/quality/tool_ssh_docs.py --write`.
 

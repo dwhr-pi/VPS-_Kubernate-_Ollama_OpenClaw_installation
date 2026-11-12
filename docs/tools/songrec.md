@@ -9,7 +9,9 @@ Gepruefter Pin (2026-11-11): `0f677c702666448642753f0e4da2fa262da67bc8`.
 Lizenz: GPL-3.0. README und vorhandene Lizenzdateien werden gegen
 die SHA256 im Quellenmanifest geprueft.
 
-Rust-Shazam-Client fuer Linux mit GUI und CLI, keine lokale Shazam-Datenbank. Fingerprints gehen an den externen Shazam-Dienst. Native Rust-/Systembibliotheken und optional GTK/Audio sind separat zu bauen; ein vermeintliches SongRec-Core-Python-SDK wird nicht erfunden. Keine Mikrofonaufnahme oder Erkennungsanfrage automatisch starten.
+Rust-Shazam-Client fuer Linux mit GUI und CLI, keine lokale Shazam-Datenbank. Fingerprints gehen an den externen
+Shazam-Dienst. Native Rust-/Systembibliotheken und optional GTK/Audio sind separat zu bauen; ein vermeintliches
+SongRec-Core-Python-SDK wird nicht erfunden. Keine Mikrofonaufnahme oder Erkennungsanfrage automatisch starten.
 
 ## Native Quellenverwaltung
 
@@ -93,7 +95,8 @@ Keine automatische Installation, kein Browser-/Modell-/Produktivdienststart durc
 Nach jedem bewusst ausgefuehrten Befehl den Exitcode unmittelbar mit `echo $?` pruefen;
 zum Verlassen des VPS-Terminals `exit` verwenden.
 
-[SSH-Voraussetzungen und Sicherheitsgrenzen](../HEADLESS_SETUP.md) | [Befehle aller registrierten Tools](../generated/HEADLESS_TOOL_COMMANDS.md)
+[SSH-Voraussetzungen und Sicherheitsgrenzen](../HEADLESS_SETUP.md) | [Befehle aller registrierten
+Tools](../generated/HEADLESS_TOOL_COMMANDS.md)
 
 Dieser Abschnitt wird aus der Registry erzeugt. Pflege: `python3 -I -B scripts/quality/tool_ssh_docs.py --write`.
 

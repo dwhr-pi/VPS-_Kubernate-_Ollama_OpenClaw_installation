@@ -1,6 +1,7 @@
 # PoeTone
 
-Evaluation und Generate-Critic-Forschung fuer chinesische Songci/Cipai, nicht allgemeine garantierte deutsche Songtext-Metrik.
+Evaluation und Generate-Critic-Forschung fuer chinesische Songci/Cipai, nicht allgemeine garantierte deutsche
+Songtext-Metrik.
 
 Optionaler Menuepunkt **PoeTone**, Bereitschaft `planned`, keine fertige Runtime.
 Primaerquelle: [ZhanQu945/PoeTone](https://github.com/ZhanQu945/PoeTone).
@@ -11,7 +12,8 @@ README und vorhandene Lizenzdateien werden gegen die SHA256 im Quellenmanifest g
 
 Keine Root-LICENSE am geprueften Pin; Modell-, Datensatz- und gegebenenfalls API-Bedingungen sind gesondert offen.
 
-Upstream-Dateien enthalten auch Auswertungswege fuer Cloud-Modelle. Keine Evaluation, API-Aufrufe, Keys, Trainings- oder Downloadskripte ausfuehren.
+Upstream-Dateien enthalten auch Auswertungswege fuer Cloud-Modelle. Keine Evaluation, API-Aufrufe, Keys,
+Trainings- oder Downloadskripte ausfuehren.
 
 ## Native Quellenverwaltung
 
@@ -96,7 +98,8 @@ Keine automatische Installation, kein Browser-/Modell-/Produktivdienststart durc
 Nach jedem bewusst ausgefuehrten Befehl den Exitcode unmittelbar mit `echo $?` pruefen;
 zum Verlassen des VPS-Terminals `exit` verwenden.
 
-[SSH-Voraussetzungen und Sicherheitsgrenzen](../HEADLESS_SETUP.md) | [Befehle aller registrierten Tools](../generated/HEADLESS_TOOL_COMMANDS.md)
+[SSH-Voraussetzungen und Sicherheitsgrenzen](../HEADLESS_SETUP.md) | [Befehle aller registrierten
+Tools](../generated/HEADLESS_TOOL_COMMANDS.md)
 
 Dieser Abschnitt wird aus der Registry erzeugt. Pflege: `python3 -I -B scripts/quality/tool_ssh_docs.py --write`.
 

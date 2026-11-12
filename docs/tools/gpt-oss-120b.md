@@ -9,7 +9,10 @@ Gepruefter Pin (2026-11-11): `277020131d524f06bed5f66b694a92ed7f6e5224`.
 Lizenz: Apache-2.0; Modell-Nutzungsbedingungen separat pruefen. README und vorhandene Lizenzdateien werden gegen
 die SHA256 im Quellenmanifest geprueft.
 
-Open-Weight-Modell openai/gpt-oss-120b, nicht vollstaendig offengelegte Trainingsdaten. Upstream nennt eine einzelne 80-GB-GPU fuer MXFP4; keine RTX-5080-Passgarantie. Harmony-Format und kompatible Inferenzruntime erforderlich. Zugang zu modellgeneriertem Reasoning ist kein Korrektheitsbeweis und muss nicht an Endnutzer ausgegeben werden.
+Open-Weight-Modell openai/gpt-oss-120b, nicht vollstaendig offengelegte Trainingsdaten. Upstream nennt eine
+einzelne 80-GB-GPU fuer MXFP4; keine RTX-5080-Passgarantie. Harmony-Format und kompatible Inferenzruntime
+erforderlich. Zugang zu modellgeneriertem Reasoning ist kein Korrektheitsbeweis und muss nicht an Endnutzer
+ausgegeben werden.
 
 ## Native Quellenverwaltung
 
@@ -93,7 +96,8 @@ Keine automatische Installation, kein Browser-/Modell-/Produktivdienststart durc
 Nach jedem bewusst ausgefuehrten Befehl den Exitcode unmittelbar mit `echo $?` pruefen;
 zum Verlassen des VPS-Terminals `exit` verwenden.
 
-[SSH-Voraussetzungen und Sicherheitsgrenzen](../HEADLESS_SETUP.md) | [Befehle aller registrierten Tools](../generated/HEADLESS_TOOL_COMMANDS.md)
+[SSH-Voraussetzungen und Sicherheitsgrenzen](../HEADLESS_SETUP.md) | [Befehle aller registrierten
+Tools](../generated/HEADLESS_TOOL_COMMANDS.md)
 
 Dieser Abschnitt wird aus der Registry erzeugt. Pflege: `python3 -I -B scripts/quality/tool_ssh_docs.py --write`.
 

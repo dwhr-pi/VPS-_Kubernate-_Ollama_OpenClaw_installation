@@ -9,7 +9,10 @@ Gepruefter Pin (2026-11-11): `620a5eadc89ff464d339367dd9c9973a93215c81`.
 Lizenz: Apache-2.0. README und vorhandene Lizenzdateien werden gegen
 die SHA256 im Quellenmanifest geprueft.
 
-Reasoning-Modell Qwen/QwQ-32B; GitHub-Quellen enthalten nicht die Gewichte. Rechnerisch 16 GB bei 4 Bit oder 64 GB bei 16 Bit nur fuer 32B Gewichte; Metadaten/KV-Cache/Runtime kommen hinzu. Daher keine Zusage fuer vollstaendige 16-GB-VRAM-Residenz. Recht/Steuern/Buchhaltung brauchen eigene Evaluation und deterministische Werkzeuge.
+Reasoning-Modell Qwen/QwQ-32B; GitHub-Quellen enthalten nicht die Gewichte. Rechnerisch 16 GB bei 4 Bit oder 64
+GB bei 16 Bit nur fuer 32B Gewichte; Metadaten/KV-Cache/Runtime kommen hinzu. Daher keine Zusage fuer
+vollstaendige 16-GB-VRAM-Residenz. Recht/Steuern/Buchhaltung brauchen eigene Evaluation und deterministische
+Werkzeuge.
 
 ## Native Quellenverwaltung
 
@@ -93,7 +96,8 @@ Keine automatische Installation, kein Browser-/Modell-/Produktivdienststart durc
 Nach jedem bewusst ausgefuehrten Befehl den Exitcode unmittelbar mit `echo $?` pruefen;
 zum Verlassen des VPS-Terminals `exit` verwenden.
 
-[SSH-Voraussetzungen und Sicherheitsgrenzen](../HEADLESS_SETUP.md) | [Befehle aller registrierten Tools](../generated/HEADLESS_TOOL_COMMANDS.md)
+[SSH-Voraussetzungen und Sicherheitsgrenzen](../HEADLESS_SETUP.md) | [Befehle aller registrierten
+Tools](../generated/HEADLESS_TOOL_COMMANDS.md)
 
 Dieser Abschnitt wird aus der Registry erzeugt. Pflege: `python3 -I -B scripts/quality/tool_ssh_docs.py --write`.
 

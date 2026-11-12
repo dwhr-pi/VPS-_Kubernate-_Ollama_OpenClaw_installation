@@ -1040,7 +1040,7 @@ Neue Dateien muessen vor der Regeneration im Git-Index stehen.
 
 ## Privilegien-/Host-Kandidat
 
-651 Fundstellen, keine automatische Risikoeinstufung.
+653 Fundstellen, keine automatische Risikoeinstufung.
 
 - `.github/workflows/next-level-health.yml:17`
 - `.github/workflows/next-level-health.yml:18`
@@ -1064,6 +1064,8 @@ Neue Dateien muessen vor der Regeneration im Git-Index stehen.
 - `examples/hybrid-production-review/velero-values.yaml:46`
 - `examples/manus-ci-cd/kubernetes.yml.example:24`
 - `examples/manus-ci-cd/kubernetes.yml.example:45`
+- `examples/open-webui/openwebui-oidc.patch.yaml:14`
+- `examples/open-webui/openwebui-oidc.patch.yaml:24`
 - `install.sh:618`
 - `install.sh:619`
 - `k8s/base/litellm.yml:52`

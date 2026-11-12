@@ -9,7 +9,9 @@ Gepruefter Pin (2026-11-11): `98f3c33a790f1f51bb2fced97d55cb05a0e1c13b`.
 Lizenz: GPL-3.0. README und vorhandene Lizenzdateien werden gegen
 die SHA256 im Quellenmanifest geprueft.
 
-Linux-/GNOME-GUI mit GTK, GStreamer, Rust und Meson. Nutzt laut Upstream die externe AudD-API, keinen eigenen offenen Erkennungsindex. Offline gespeicherte Aufnahmen sind keine Offline-Erkennung. Keine automatische Mikrofonfreigabe, GUI, Anmeldung oder API-Nutzung.
+Linux-/GNOME-GUI mit GTK, GStreamer, Rust und Meson. Nutzt laut Upstream die externe AudD-API, keinen eigenen
+offenen Erkennungsindex. Offline gespeicherte Aufnahmen sind keine Offline-Erkennung. Keine automatische
+Mikrofonfreigabe, GUI, Anmeldung oder API-Nutzung.
 
 ## Native Quellenverwaltung
 
@@ -93,7 +95,8 @@ Keine automatische Installation, kein Browser-/Modell-/Produktivdienststart durc
 Nach jedem bewusst ausgefuehrten Befehl den Exitcode unmittelbar mit `echo $?` pruefen;
 zum Verlassen des VPS-Terminals `exit` verwenden.
 
-[SSH-Voraussetzungen und Sicherheitsgrenzen](../HEADLESS_SETUP.md) | [Befehle aller registrierten Tools](../generated/HEADLESS_TOOL_COMMANDS.md)
+[SSH-Voraussetzungen und Sicherheitsgrenzen](../HEADLESS_SETUP.md) | [Befehle aller registrierten
+Tools](../generated/HEADLESS_TOOL_COMMANDS.md)
 
 Dieser Abschnitt wird aus der Registry erzeugt. Pflege: `python3 -I -B scripts/quality/tool_ssh_docs.py --write`.
 

@@ -15,6 +15,11 @@ SPEC.loader.exec_module(monitor)
 
 
 class LogMonitor(unittest.TestCase):
+    def test_documented_webhook_template_is_code_not_a_live_link(self):
+        text = (ROOT / 'docs/OLLAMA_LOG_MONITOR.md').read_text()
+        self.assertIn('`https://discord.com/api/webhooks/ID/TOKEN`', text)
+        self.assertNotIn('](https://discord.com/api/webhooks/ID/TOKEN)', text)
+
     def test_default_plan_never_accesses_cluster_or_credentials(self):
         with patch.object(monitor, 'snapshot') as poll, patch.object(monitor, 'read_webhook') as read:
             with redirect_stdout(io.StringIO()) as output:

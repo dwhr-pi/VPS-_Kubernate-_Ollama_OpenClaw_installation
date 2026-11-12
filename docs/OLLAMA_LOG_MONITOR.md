@@ -68,7 +68,7 @@ Zum obigen bewusst ausgefuehrten Befehl beide Optionen ergaenzen:
 --send-discord --webhook-file /privater/pfad/discord-webhook
 ```
 
-Erwartet wird https://discord.com/api/webhooks/ID/TOKEN ohne /slack, Query oder
+Erwartet wird `https://discord.com/api/webhooks/ID/TOKEN` ohne /slack, Query oder
 Weiterleitung. Nur 200/204 gelten als Versand-Erfolg; keine 403/429-Ausnahme.
 Fehlschlaege werden ohne sensible Fehlerdetails gemeldet und nicht sofort wiederholt.
 

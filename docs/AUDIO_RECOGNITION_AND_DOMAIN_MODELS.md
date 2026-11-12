@@ -57,8 +57,10 @@ die Modellkarte, nicht pauschal alle Repository-Inhalte.
 2. Android-/Desktop-Clients auf passenden Endgeraeten betreiben, nicht als K3s-Daemon ausgeben.
 3. Dejavu-Datenbank privat halten; Import und Erkennung nur fuer freigegebene Audiodateien.
 4. Gewichte separat nach Lizenz, Revision, Pruefsummen, Speicherreserve und GPU-Kompatibilitaet freigeben.
-5. Ollama/vLLM nur mit passender Modell-/Quantisierungsunterstuetzung auf dem lokalen Worker einrichten. Kein automatischer Modell-Pull.
-6. VPS zu Worker nur ueber WireGuard und authentifizierte, begrenzte Endpunkte; keine oeffentlichen Ollama-/Datenbankports.
+5. Ollama/vLLM nur mit passender Modell-/Quantisierungsunterstuetzung auf dem lokalen Worker einrichten. Kein
+automatischer Modell-Pull.
+6. VPS zu Worker nur ueber WireGuard und authentifizierte, begrenzte Endpunkte; keine oeffentlichen
+Ollama-/Datenbankports.
 7. OpenClaw/MCP nur erlaubte Werkzeuge geben; Dokumente und Ergebnisse sind keine vertrauenswuerdigen Befehle.
 
 [Modell-Einrichtung](models/README.md) ergaenzt die Quellenverwaltung.

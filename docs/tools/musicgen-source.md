@@ -1,6 +1,7 @@
 # MusicGen / AudioCraft: sicherer Quellenweg
 
-Quellenbasis fuer MusicGen im vorhandenen Meta-AudioCraft-Projekt. Der bestehende Registry-Eintrag musicgen bleibt erhalten, kein zweites AudioCraft-Tool.
+Quellenbasis fuer MusicGen im vorhandenen Meta-AudioCraft-Projekt. Der bestehende Registry-Eintrag musicgen
+bleibt erhalten, kein zweites AudioCraft-Tool.
 
 Optionaler Menuepunkt **MusicGen**, Bereitschaft `planned`, keine fertige Runtime.
 Primaerquelle: [facebookresearch/audiocraft](https://github.com/facebookresearch/audiocraft).
@@ -11,7 +12,9 @@ README und vorhandene Lizenzdateien werden gegen die SHA256 im Quellenmanifest g
 
 AudioCraft-Code MIT, Modellgewichte CC-BY-NC-4.0; keine pauschale kommerzielle Nutzungserlaubnis.
 
-Das Menue verwendet jetzt musicgen_source_* statt des planned-Stubs bzw. des Legacy-Dispatchs. scripts/tools/musicgen_install.sh und alte /opt-Installationen bleiben unveraendert; dieser Legacy-Paketpfad ist kein freigegebener automatischer Runtime-Build. AudioGen bleibt separat erhalten.
+Das Menue verwendet jetzt musicgen_source_* statt des planned-Stubs bzw. des Legacy-Dispatchs.
+scripts/tools/musicgen_install.sh und alte /opt-Installationen bleiben unveraendert; dieser Legacy-Paketpfad ist
+kein freigegebener automatischer Runtime-Build. AudioGen bleibt separat erhalten.
 
 ## Native Quellenverwaltung
 
@@ -96,7 +99,8 @@ Keine automatische Installation, kein Browser-/Modell-/Produktivdienststart durc
 Nach jedem bewusst ausgefuehrten Befehl den Exitcode unmittelbar mit `echo $?` pruefen;
 zum Verlassen des VPS-Terminals `exit` verwenden.
 
-[SSH-Voraussetzungen und Sicherheitsgrenzen](../HEADLESS_SETUP.md) | [Befehle aller registrierten Tools](../generated/HEADLESS_TOOL_COMMANDS.md)
+[SSH-Voraussetzungen und Sicherheitsgrenzen](../HEADLESS_SETUP.md) | [Befehle aller registrierten
+Tools](../generated/HEADLESS_TOOL_COMMANDS.md)
 
 Dieser Abschnitt wird aus der Registry erzeugt. Pflege: `python3 -I -B scripts/quality/tool_ssh_docs.py --write`.
 

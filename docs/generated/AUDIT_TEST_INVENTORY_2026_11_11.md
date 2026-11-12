@@ -3763,8 +3763,10 @@ Parametrisierung und dynamisch erzeugte Tests koennen mehr Laufzeitfaelle liefer
 - `tests/test_native_operations_bundle.py:210`
   Prueffall: `test_exact_confirmation_dispatches_only_the_scoped_operation`
 - `tests/test_native_operations_bundle.py:221`
-  Prueffall: `test_keycloak_and_make_defaults_are_not_privileged_or_destructive`
+  Prueffall: `test_oidc_patch_keeps_base_pod_and_container_security_explicit`
 - `tests/test_native_operations_bundle.py:233`
+  Prueffall: `test_keycloak_and_make_defaults_are_not_privileged_or_destructive`
+- `tests/test_native_operations_bundle.py:245`
   Prueffall: `test_all_handbook_links_and_sso_refs_resolve`
 
 ## tests/test_native_status_and_build_deps.py
@@ -3912,20 +3914,22 @@ Parametrisierung und dynamisch erzeugte Tests koennen mehr Laufzeitfaelle liefer
 ## tests/test_ollama_log_monitor.py
 
 - `tests/test_ollama_log_monitor.py:18`
+  Prueffall: `test_documented_webhook_template_is_code_not_a_live_link`
+- `tests/test_ollama_log_monitor.py:23`
   Prueffall: `test_default_plan_never_accesses_cluster_or_credentials`
-- `tests/test_ollama_log_monitor.py:26`
+- `tests/test_ollama_log_monitor.py:31`
   Prueffall: `test_runtime_and_external_delivery_need_explicit_approvals`
-- `tests/test_ollama_log_monitor.py:35`
+- `tests/test_ollama_log_monitor.py:40`
   Prueffall: `test_bounded_command_and_rejected_shell_fragments`
-- `tests/test_ollama_log_monitor.py:50`
+- `tests/test_ollama_log_monitor.py:55`
   Prueffall: `test_categories_cooldown_and_failed_delivery_are_redacted`
-- `tests/test_ollama_log_monitor.py:64`
+- `tests/test_ollama_log_monitor.py:69`
   Prueffall: `test_failures_back_off_without_exposing_exception_text`
-- `tests/test_ollama_log_monitor.py:77`
+- `tests/test_ollama_log_monitor.py:82`
   Prueffall: `test_native_discord_payload_and_no_redirect_or_proxy`
-- `tests/test_ollama_log_monitor.py:96`
+- `tests/test_ollama_log_monitor.py:101`
   Prueffall: `test_snapshot_size_and_crash_status_fail_closed`
-- `tests/test_ollama_log_monitor.py:105`
+- `tests/test_ollama_log_monitor.py:110`
   Prueffall: `test_child_environment_does_not_inherit_provider_tokens`
 
 ## tests/test_online_services_docs.py
@@ -5955,4 +5959,4 @@ Parametrisierung und dynamisch erzeugte Tests koennen mehr Laufzeitfaelle liefer
 - `tests/test_yue.py:135`
   Prueffall: `test_real_local_sparse_checkout_excludes_env_and_media`
 
-Statisch benannte Testpositionen: **2662**. Kein Nachweis bestandener Tests.
+Statisch benannte Testpositionen: **2664**. Kein Nachweis bestandener Tests.

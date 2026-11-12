@@ -1,9 +1,11 @@
 # CTGS
 
-Constrained Text Generation Studio: Tokenfilter/-Bestrafung und weitere Constraint-Techniken fuer kreatives Schreiben; kein einzelnes Sprachmodell.
+Constrained Text Generation Studio: Tokenfilter/-Bestrafung und weitere Constraint-Techniken fuer kreatives
+Schreiben; kein einzelnes Sprachmodell.
 
 Optionaler Menuepunkt **CTGS**, Bereitschaft `planned`, keine fertige Runtime.
-Primaerquelle: [Hellisotherpeople/Constrained-Text-Generation-Studio](https://github.com/Hellisotherpeople/Constrained-Text-Generation-Studio).
+Primaerquelle:
+[Hellisotherpeople/Constrained-Text-Generation-Studio](https://github.com/Hellisotherpeople/Constrained-Text-Generation-Studio).
 Gepruefter Pin: `42a1b2799556b310e4702b8ece16bb720ee21cdd`.
 README und vorhandene Lizenzdateien werden gegen die SHA256 im Quellenmanifest geprueft.
 
@@ -11,7 +13,8 @@ README und vorhandene Lizenzdateien werden gegen die SHA256 im Quellenmanifest g
 
 Code MIT; Modelle, FastText-Daten und weitere Abhaengigkeiten gesondert pruefen.
 
-Ein Upstream-Erststart kann Modelle und FastText-Embeddings laden. Deshalb kein GUI-/Server-/Importstart. Ein harter Tokenfilter beweist nicht automatisch phonetisch richtige Reime oder natuerliches Metrum.
+Ein Upstream-Erststart kann Modelle und FastText-Embeddings laden. Deshalb kein GUI-/Server-/Importstart. Ein
+harter Tokenfilter beweist nicht automatisch phonetisch richtige Reime oder natuerliches Metrum.
 
 ## Native Quellenverwaltung
 
@@ -96,7 +99,8 @@ Keine automatische Installation, kein Browser-/Modell-/Produktivdienststart durc
 Nach jedem bewusst ausgefuehrten Befehl den Exitcode unmittelbar mit `echo $?` pruefen;
 zum Verlassen des VPS-Terminals `exit` verwenden.
 
-[SSH-Voraussetzungen und Sicherheitsgrenzen](../HEADLESS_SETUP.md) | [Befehle aller registrierten Tools](../generated/HEADLESS_TOOL_COMMANDS.md)
+[SSH-Voraussetzungen und Sicherheitsgrenzen](../HEADLESS_SETUP.md) | [Befehle aller registrierten
+Tools](../generated/HEADLESS_TOOL_COMMANDS.md)
 
 Dieser Abschnitt wird aus der Registry erzeugt. Pflege: `python3 -I -B scripts/quality/tool_ssh_docs.py --write`.
 
