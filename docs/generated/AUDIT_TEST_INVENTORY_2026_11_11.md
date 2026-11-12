@@ -5298,40 +5298,48 @@ Parametrisierung und dynamisch erzeugte Tests koennen mehr Laufzeitfaelle liefer
 
 ## tests/test_signed_release.py
 
-- `tests/test_signed_release.py:52`
+- `tests/test_signed_release.py:56`
   Prueffall: `test_valid_contract_uses_independent_key_and_explicit_signature`
-- `tests/test_signed_release.py:60`
+- `tests/test_signed_release.py:64`
   Prueffall: `test_invalid_signature_fails_closed`
-- `tests/test_signed_release.py:65`
+- `tests/test_signed_release.py:69`
   Prueffall: `test_renamed_repository_is_exact_and_old_metadata_is_not_reinterpreted`
-- `tests/test_signed_release.py:76`
+- `tests/test_signed_release.py:80`
   Prueffall: `test_payload_tampering_is_rejected`
-- `tests/test_signed_release.py:81`
+- `tests/test_signed_release.py:85`
   Prueffall: `test_wrong_tag_repo_commit_and_schema_are_rejected`
-- `tests/test_signed_release.py:92`
+- `tests/test_signed_release.py:96`
   Prueffall: `test_duplicate_json_keys_are_rejected`
-- `tests/test_signed_release.py:98`
+- `tests/test_signed_release.py:102`
   Prueffall: `test_extra_duplicate_or_traversal_checksums_are_rejected`
-- `tests/test_signed_release.py:105`
+- `tests/test_signed_release.py:109`
   Prueffall: `test_release_supplied_key_is_rejected_before_signature_call`
-- `tests/test_signed_release.py:112`
+- `tests/test_signed_release.py:116`
   Prueffall: `test_mutable_originals_are_not_reread_after_signature`
-- `tests/test_signed_release.py:120`
+- `tests/test_signed_release.py:124`
   Prueffall: `test_non_versioned_tag_is_rejected_before_signature_call`
-- `tests/test_signed_release.py:164`
+- `tests/test_signed_release.py:168`
   Prueffall: `test_default_plan_never_fetches_backs_up_or_checks_out`
-- `tests/test_signed_release.py:170`
+- `tests/test_signed_release.py:174`
   Prueffall: `test_dirty_or_risky_repository_is_refused_before_backup`
-- `tests/test_signed_release.py:178`
+- `tests/test_signed_release.py:182`
   Prueffall: `test_backup_and_verification_precede_fetch_and_checkout`
-- `tests/test_signed_release.py:185`
+- `tests/test_signed_release.py:189`
   Prueffall: `test_tag_mismatch_preserves_backup_and_never_checks_out`
-- `tests/test_signed_release.py:195`
+- `tests/test_signed_release.py:199`
   Prueffall: `test_export_reads_only_local_tag_and_produces_no_signature`
-- `tests/test_signed_release.py:218`
+- `tests/test_signed_release.py:222`
   Prueffall: `test_export_refuses_existing_or_inside_repository_destination`
-- `tests/test_signed_release.py:231`
+- `tests/test_signed_release.py:235`
   Prueffall: `test_git_environment_cannot_redirect_repository_or_inject_config`
+- `tests/test_signed_release.py:256`
+  Prueffall: `test_platform_examples_do_not_mix_shell_syntax`
+- `tests/test_signed_release.py:299`
+  Prueffall: `test_ubuntu_clone_example_preserves_spaces_and_url_as_arguments`
+- `tests/test_signed_release.py:306`
+  Prueffall: `test_failed_clone_does_not_execute_log`
+- `tests/test_signed_release.py:312`
+  Prueffall: `test_existing_target_is_not_reused_or_deleted`
 
 ## tests/test_social_avatar_docs.py
 
@@ -6117,4 +6125,4 @@ Parametrisierung und dynamisch erzeugte Tests koennen mehr Laufzeitfaelle liefer
 - `tests/test_yue.py:135`
   Prueffall: `test_real_local_sparse_checkout_excludes_env_and_media`
 
-Statisch benannte Testpositionen: **2734**. Kein Nachweis bestandener Tests.
+Statisch benannte Testpositionen: **2738**. Kein Nachweis bestandener Tests.

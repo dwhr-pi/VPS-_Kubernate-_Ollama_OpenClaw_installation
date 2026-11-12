@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+### 2026-11-12: Clone-Anleitung fuer Ubuntu/Bash und PowerShell getrennt
+
+- Direkt kopierbaren Ubuntu-/Linux-/WSL-Block vorangestellt; keine PowerShell-Backticks in Bash-Beispielen.
+- Beide Clone-Wege ohne Zeilenfortsetzung, mit neuem Zielordner und Abbruch bei Fehlern dokumentiert.
+- Bestehende Installation vom optionalen Quellpruefungs-Clone getrennt; keine Datenloeschung oder Installerstarts.
+
 ### 2026-11-12: PR-27-Folgekorrektur fuer Konfigurationsscan und HTTP 502
 
 - Non-root-Podkontext im Sidecar-Patch explizit deklariert und gegen die Basis abgesichert.

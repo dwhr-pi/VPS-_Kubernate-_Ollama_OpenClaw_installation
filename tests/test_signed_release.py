@@ -3,7 +3,11 @@ from contextlib import nullcontext
 import hashlib
 import importlib.util
 import json
+import os
 from pathlib import Path
+import re
+import shutil
+import subprocess
 import tempfile
 from types import SimpleNamespace
 import unittest
@@ -240,6 +244,75 @@ class GitEnvironmentTests(unittest.TestCase):
             self.assertNotIn(key, env)
         self.assertEqual(env['GIT_CONFIG_NOSYSTEM'], '1')
         self.assertEqual(env['GIT_CONFIG_GLOBAL'], safety.os.devnull)
+
+
+class InstallationTerminalExamples(unittest.TestCase):
+    def block(self, terminal):
+        text = (ROOT / 'docs/INSTALL_SIGNED_RELEASE.md').read_text(encoding='utf-8')
+        title = '### Ubuntu, Linux und WSL: Bash' if terminal == 'bash' else '### Windows: Nur PowerShell'
+        section = text.split(title, 1)[1]
+        return re.search(r'```' + terminal + r'\n(.*?)```', section, re.S).group(1)
+
+    def test_platform_examples_do_not_mix_shell_syntax(self):
+        bash = self.block('bash')
+        powershell = self.block('powershell')
+        self.assertIn('core.hooksPath=/dev/null', bash)
+        self.assertNotIn('NUL', bash)
+        self.assertNotIn('`', bash)
+        self.assertNotIn('`', powershell)
+        self.assertIn('core.hooksPath=NUL', powershell)
+        self.assertIn('if ($LASTEXITCODE -ne 0)', powershell)
+        for block in (bash, powershell):
+            self.assertIn('--no-checkout --no-recurse-submodules', block)
+            self.assertIn('--template=', block)
+
+    def run_bash_fixture(self, clone_status=0, existing=False):
+        bash = 'C:/Program Files/Git/bin/bash.exe' if os.name == 'nt' else shutil.which('bash')
+        if not bash or not Path(bash).is_file():
+            self.skipTest('Native Bash unavailable; never use WSL as fallback')
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            home = root / 'home with spaces'
+            home.mkdir()
+            target = home / 'OpenClaw-Quellpruefung'
+            if existing:
+                target.mkdir()
+            calls = root / 'git-calls'
+            env = dict(os.environ, HOME=home.as_posix(), FIXTURE_CALLS=calls.as_posix(),
+                       FIXTURE_CLONE_STATUS=str(clone_status))
+            # Shell function shadows Git: no real network, clone, hooks or checkout.
+            stub = '''printf '%s\\n' "$HOME/OpenClaw-Quellpruefung"
+git() {
+  printf '%s\\0' BEGIN "$@" END >> "$FIXTURE_CALLS"
+  if [ "$1" = '-c' ]; then return "$FIXTURE_CLONE_STATUS"; fi
+  if [ "$1" = '-C' ]; then return 0; fi
+  return 97
+}
+'''
+            result = subprocess.run([bash, '--noprofile', '--norc', '-c', stub + self.block('bash')],
+                                    env=env, capture_output=True, text=True, timeout=15)
+            recorded = calls.read_bytes().split(b'\0')[:-1] if calls.exists() else []
+            tokens = [value.decode('utf-8') for value in recorded]
+            # Git Bash may spell the same Windows temp directory as /tmp/...
+            return result, tokens, result.stdout.splitlines()[0]
+
+    def test_ubuntu_clone_example_preserves_spaces_and_url_as_arguments(self):
+        result, tokens, target = self.run_bash_fixture()
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(tokens, ['BEGIN', '-c', 'core.hooksPath=/dev/null', 'clone', '--template=',
+                                 '--no-checkout', '--no-recurse-submodules', release.REPO, target, 'END',
+                                 'BEGIN', '-C', target, 'log', '-1', '--format=%H %s', 'END'])
+
+    def test_failed_clone_does_not_execute_log(self):
+        result, tokens, _ = self.run_bash_fixture(clone_status=1)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertEqual(tokens.count('BEGIN'), 1)
+        self.assertNotIn('-C', tokens)
+
+    def test_existing_target_is_not_reused_or_deleted(self):
+        result, tokens, _ = self.run_bash_fixture(existing=True)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertEqual(tokens, [])
 
 
 if __name__ == '__main__':

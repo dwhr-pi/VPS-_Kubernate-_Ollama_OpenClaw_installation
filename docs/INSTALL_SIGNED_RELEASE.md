@@ -18,18 +18,60 @@ Installation laeuft in Linux oder WSL. Kein Docker-Fallback.
 Die neue Repository-Adresse ist
 [OpenClaw-AI_Infrastructure-_Ultimate_Setup](https://github.com/dwhr-pi/OpenClaw-AI_Infrastructure-_Ultimate_Setup).
 **Code > HTTPS** zeigt die Clone-Adresse. Fuer eine reine Quellcodeansicht
-kannst du unter Windows PowerShell in einen neuen, noch nicht vorhandenen
-Ordner klonen:
+kannst du in einen neuen, noch nicht vorhandenen Ordner klonen.
+**Nur den Block fuer dein aktuelles Terminal verwenden.** Ein Prompt wie
+`ubuntu@Letsung-MiniPC1:~/openclaw_ultimate_setup$` ist Bash, nicht PowerShell.
+Das gilt auch im Ubuntu-Terminal unter WSL und nach einer SSH-Anmeldung.
 
-```powershell
-git -c core.hooksPath=NUL clone --no-checkout --no-recurse-submodules `
-  https://github.com/dwhr-pi/OpenClaw-AI_Infrastructure-_Ultimate_Setup.git `
-  "$HOME/Documents/GitHub/OpenClaw-Quellpruefung"
-git -C "$HOME/Documents/GitHub/OpenClaw-Quellpruefung" log -1 --format="%H %s"
+### Ubuntu, Linux und WSL: Bash
+
+Dieser Block passt zu deinem gezeigten Ubuntu-Terminal. Er verwendet keine
+Zeilenfortsetzungen und klont bewusst in einen separaten Quellpruefungsordner:
+
+```bash
+(
+  set -euo pipefail
+  target="$HOME/OpenClaw-Quellpruefung"
+  if [ -e "$target" ] || [ -L "$target" ]; then
+    printf '%s\n' 'Ziel existiert bereits. Nicht loeschen; anderen neuen Zielnamen waehlen.' >&2
+    exit 1
+  fi
+  git -c core.hooksPath=/dev/null clone --template= --no-checkout --no-recurse-submodules https://github.com/dwhr-pi/OpenClaw-AI_Infrastructure-_Ultimate_Setup.git "$target"
+  git -C "$target" log -1 --format="%H %s"
+)
 ```
 
+Bei deinem Ubuntu-Benutzer ist das Ziel normalerweise
+`/home/ubuntu/OpenClaw-Quellpruefung`. Der vorhandene Ordner
+`~/openclaw_ultimate_setup` wird nicht veraendert. Falls dieser bereits dein
+installiertes Setup ist, brauchst du keinen zweiten Clone zur Installation:
+verwende den oben verlinkten signierten Updatepfad.
+
+### Windows: Nur PowerShell, nicht Ubuntu/WSL
+
+Ein Prompt wie `PS C:\Users\DEIN_NAME>` kennzeichnet PowerShell. Auch hier
+stehen die Git-Aufrufe jeweils auf genau einer Zeile:
+
+```powershell
+$target = Join-Path $HOME 'OpenClaw-Quellpruefung'
+if (Test-Path -LiteralPath $target) { throw 'Ziel existiert bereits; anderen neuen Zielnamen waehlen.' }
+git -c core.hooksPath=NUL clone --template= --no-checkout --no-recurse-submodules https://github.com/dwhr-pi/OpenClaw-AI_Infrastructure-_Ultimate_Setup.git $target
+if ($LASTEXITCODE -ne 0) { throw 'Clone fehlgeschlagen. Nicht fortfahren.' }
+git -C $target log -1 --format="%H %s"
+```
+
+### Warum der kopierte Befehl in Bash scheiterte
+
+PowerShell verwendet den Backtick als Zeilenfortsetzung. Bash interpretiert
+Backticks dagegen als Befehlsersetzung und versucht dadurch die Repository-URL
+als Programm auszufuehren. In Bash ist `/dev/null` der passende Hook-Pfad,
+nicht das Windows-Geraet `NUL`. Die obigen Clone-Beispiele vermeiden deshalb
+Zeilenfortsetzungen vollstaendig. Spaetere Bash-Beispiele mit `\` sind nur fuer
+Bash gedacht; nach diesem Zeichen darf kein Leerzeichen stehen.
+
 Das laedt Git-Objekte, checkt aber noch keine Dateien aus und fuehrt nichts
-aus. Vor einem Checkout den ausgewaehlten vollstaendigen Commit separat
+aus dem Repository aus. Bei einem Fehler stoppen; der Log-Aufruf nach dem
+Clone wird dann nicht ausgefuehrt. Vor einem Checkout den ausgewaehlten vollstaendigen Commit separat
 bestaetigen und Quellen pruefen. Vorhandene Ordner nicht leeren oder
 ueberschreiben. Ein Browser-ZIP ist ebenfalls nur Quelltext und kein
 verifiziertes Installationspaket. GitHub Desktop ist fuer diesen
