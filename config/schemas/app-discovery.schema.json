@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OpenClaw local app discovery, not a launch authorization",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "kind", "platform", "device_id", "created_at", "scope", "max_depth", "complete_scope", "full_os_inventory", "stats", "local_paths_included", "executed", "network_requested", "registration_changed", "candidates"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "kind": {"const": "openclaw-app-discovery"},
+    "platform": {"enum": ["windows", "macos", "linux", "android", "ios"]},
+    "device_id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,63}$"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "scope": {"const": "explicit-application-directories"},
+    "max_depth": {"type": "integer", "minimum": 0, "maximum": 3},
+    "complete_scope": {"type": "boolean"},
+    "full_os_inventory": {"const": false},
+    "local_paths_included": {"type": "boolean"},
+    "executed": {"const": false},
+    "network_requested": {"const": false},
+    "registration_changed": {"const": false},
+    "stats": {
+      "type": "object", "additionalProperties": false,
+      "required": ["roots", "visited", "skipped", "errors"],
+      "properties": {
+        "roots": {"type": "integer", "minimum": 1, "maximum": 8},
+        "visited": {"type": "integer", "minimum": 0, "maximum": 2000},
+        "skipped": {"type": "integer", "minimum": 0},
+        "errors": {"type": "integer", "minimum": 0}
+      }
+    },
+    "candidates": {"type": "array", "maxItems": 2000, "items": {"$ref": "#/$defs/candidate"}}
+  },
+  "$defs": {
+    "candidate": {
+      "type": "object", "additionalProperties": false,
+      "required": ["candidate_id", "platform", "display_name", "identity_hint", "version_hint", "registry_candidates", "match_basis", "discovery_state", "installation_status", "launch_enabled", "confirmation_required", "icon"],
+      "properties": {
+        "candidate_id": {"type": "string", "pattern": "^[a-f0-9]{24}$"},
+        "platform": {"enum": ["windows", "macos", "linux", "android", "ios"]},
+        "display_name": {"type": "string", "minLength": 1, "maxLength": 120},
+        "identity_hint": {"type": "string", "maxLength": 120},
+        "version_hint": {"type": "string", "maxLength": 120},
+        "registry_candidates": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Za-z0-9_.-]+$"}},
+        "match_basis": {"enum": ["name-hint", "ai-name-heuristic", "unclassified"]},
+        "discovery_state": {"const": "metadata-only"},
+        "installation_status": {"const": "unverified"},
+        "launch_enabled": {"const": false},
+        "confirmation_required": {"const": true},
+        "local_metadata_path": {"type": "string"},
+        "icon": {
+          "type": "object", "additionalProperties": false, "required": ["state", "name_hint"],
+          "properties": {
+            "state": {"enum": ["reference-only", "placeholder"]},
+            "name_hint": {"type": "string", "maxLength": 120}
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,100 @@
+{
+  "apiVersion": "monitoring.coreos.com/v1",
+  "kind": "PrometheusRule",
+  "metadata": {
+    "name": "openclaw-all-tools",
+    "namespace": "monitoring",
+    "labels": {
+      "release": "llmops-monitoring"
+    }
+  },
+  "spec": {
+    "groups": [
+      {
+        "name": "openclaw-tool-targets",
+        "rules": [
+          {
+            "record": "openclaw:tool_scrape_up:max",
+            "expr": "max by (monitoring_scope, tool) (up{tool!=\"\",monitoring_scope!=\"\"})"
+          },
+          {
+            "alert": "OpenClawToolTargetDown",
+            "expr": "up{tool!=\"\",monitoring_scope!=\"\"} == 0",
+            "for": "5m",
+            "labels": {
+              "severity": "warning"
+            },
+            "annotations": {
+              "summary": "Tool-Metrikziel {{ $labels.tool }} nicht erreichbar; kein Funktionsnachweis"
+            }
+          },
+          {
+            "alert": "OpenClawToolExpectedTargetMissing",
+            "expr": "(max by (monitoring_scope, tool) (openclaw_tool_monitoring_expected) == 1) unless on (monitoring_scope, tool) openclaw:tool_scrape_up:max",
+            "for": "10m",
+            "labels": {
+              "severity": "warning"
+            },
+            "annotations": {
+              "summary": "Freigegebenes Metrikziel {{ $labels.tool }} fehlt in der Discovery"
+            }
+          },
+          {
+            "alert": "OpenClawToolCatalogMissing",
+            "expr": "(up{openclaw_tool_catalog=\"enabled\"} == 1) unless on (job, instance) openclaw_tool_catalog_count",
+            "for": "10m",
+            "labels": {
+              "severity": "warning"
+            },
+            "annotations": {
+              "summary": "Textfile-Katalog fehlt trotz erreichbarem, explizit markiertem Collector"
+            }
+          }
+        ]
+      },
+      {
+        "name": "openclaw-tool-kubernetes",
+        "rules": [
+          {
+            "alert": "OpenClawToolPodNotReady",
+            "expr": "((max by (namespace, pod) (kube_pod_status_ready{condition=\"true\"}) == 0) and on (namespace, pod) (max by (namespace, pod) (kube_pod_status_phase{phase=~\"Pending|Running|Unknown\"}) == 1)) * on (namespace, pod) group_left (label_openclaw_tool) max by (namespace, pod, label_openclaw_tool) (kube_pod_labels{label_openclaw_tool!=\"\"})",
+            "for": "10m",
+            "labels": {
+              "severity": "warning"
+            },
+            "annotations": {
+              "summary": "Tool-Pod {{ $labels.label_openclaw_tool }} nicht bereit"
+            }
+          },
+          {
+            "alert": "OpenClawToolPodRestarting",
+            "expr": "(sum by (namespace, pod) (increase(kube_pod_container_status_restarts_total[15m])) > 3) * on (namespace, pod) group_left (label_openclaw_tool) max by (namespace, pod, label_openclaw_tool) (kube_pod_labels{label_openclaw_tool!=\"\"})",
+            "for": "5m",
+            "labels": {
+              "severity": "warning"
+            },
+            "annotations": {
+              "summary": "Tool-Pod {{ $labels.label_openclaw_tool }} startet wiederholt neu"
+            }
+          }
+        ]
+      },
+      {
+        "name": "openclaw-tool-hardware",
+        "rules": [
+          {
+            "alert": "OpenClawGPUHighTemperature",
+            "expr": "DCGM_FI_DEV_GPU_TEMP > 85",
+            "for": "10m",
+            "labels": {
+              "severity": "warning"
+            },
+            "annotations": {
+              "summary": "GPU {{ $labels.gpu }} ueber 85 Grad; Hardwaregrenze separat pruefen"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

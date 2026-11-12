@@ -9,6 +9,13 @@ verschiedenen Blickwinkeln. Der Chairman fasst die Argumente zusammen und
 empfiehlt einen konkreten naechsten Schritt. Diese Rollen simulieren eine
 Expertenrunde; sie sind kein Nachweis unabhaengiger Laufzeit-Agenten.
 
+## Dashboard und Tool-Uebersicht
+
+[Alle Tools im Browser oder auf dem Windows-Desktop sehen](../TOOL_DASHBOARD_BROWSER_DESKTOP.md):
+Headlamp fuer Kubernetes, Grafana fuer Messwerte und optional eine gemeinsame Startseite.
+Boardroom kann die Auswahl und redigierte Statusberichte bewerten, ist aber selbst keine grafische
+Clusterverwaltung. Es hat keinen automatisch vorhandenen Web-Endpunkt und erteilt keine Installationsfreigabe.
+
 ## Aufrufen
 
 Im eingerichteten Agenten-Client mit verfuegbarem Boardroom-Profil beispielsweise:

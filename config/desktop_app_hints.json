@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "description": "Name hints only; not publisher identities, compatibility proof or launch permissions.",
+  "hints": [
+    {"names": ["Qwen Code Desktop", "Qwen Desktop", "qwen-code-desktop"], "registry_candidates": ["qwen_desktop", "qwen_desktop_build"]},
+    {"names": ["Gemini Desktop", "gemini-desktop"], "registry_candidates": ["gemini_desktop_bwendell", "gemini_desktop_dortanes"]},
+    {"names": ["Ollama"], "registry_candidates": ["ollama"]}
+  ]
+}

@@ -2,6 +2,10 @@
 
 ## Zweck
 
+Fuer eine sichtbare Tool-/Kubernetes-Uebersicht siehe den
+[Dashboard-Einstieg fuer Browser und Windows-Desktop](../TOOL_DASHBOARD_BROWSER_DESKTOP.md).
+Dieses Profil unterstuetzt Entscheidungen dazu, ersetzt aber weder Headlamp noch Grafana.
+
 Das Profil `Boardroom` ist ein Entscheidungs- und Review-Profil fuer das Ultimate KI Setup mit
 Ollama und OpenClaw. Es simuliert eine kleine Expertenrunde, die strategische Entscheidungen aus
 mehreren Perspektiven prueft und danach ein klares Chairman-Verdict erzeugt.

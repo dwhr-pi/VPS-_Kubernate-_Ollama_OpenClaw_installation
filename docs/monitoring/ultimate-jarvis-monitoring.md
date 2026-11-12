@@ -10,6 +10,8 @@ Monitoring fuer Ultimate JARVIS soll zuerst leichtgewichtig starten.
 
 ## Erweitert
 
+[Alle Tools: Prometheus-Regeln, Grafana-JSON und Monitoring-Abdeckung](ALL_TOOLS_OBSERVABILITY.md).
+
 - Prometheus
 - Grafana
 - Loki

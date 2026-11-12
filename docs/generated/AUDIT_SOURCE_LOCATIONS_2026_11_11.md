@@ -14,7 +14,7 @@ Neue Dateien muessen vor der Regeneration im Git-Index stehen.
 
 ## Bewegliches Wort latest/main/master (lexikalisch)
 
-569 Fundstellen, keine automatische Risikoeinstufung.
+573 Fundstellen, keine automatische Risikoeinstufung.
 
 - `.github/workflows/build-and-push.yml:4`
 - `.github/workflows/build-and-push.yml:16`
@@ -208,6 +208,8 @@ Neue Dateien muessen vor der Regeneration im Git-Index stehen.
 - `scripts/custom_source_manager.sh:100`
 - `scripts/custom_source_manager.sh:106`
 - `scripts/custom_source_manager.sh:325`
+- `scripts/desktop/app_inventory.py:214`
+- `scripts/desktop/app_inventory.py:247`
 - `scripts/documentation_server/lifecycle.py:235`
 - `scripts/documentation_server/lifecycle.py:273`
 - `scripts/documentation_server/server.py:270`
@@ -283,6 +285,8 @@ Neue Dateien muessen vor der Regeneration im Git-Index stehen.
 - `scripts/monitoring/ollama_log_monitor.py:162`
 - `scripts/monitoring/ollama_readonly_exporter.py:99`
 - `scripts/monitoring/ollama_readonly_exporter.py:126`
+- `scripts/monitoring/tool_observability.py:172`
+- `scripts/monitoring/tool_observability.py:207`
 - `scripts/mynextcloud/check_upstream.sh:40`
 - `scripts/mynextcloud/check_upstream.sh:55`
 - `scripts/mynextcloud/install_server_dev.sh:22`
@@ -378,8 +382,8 @@ Neue Dateien muessen vor der Regeneration im Git-Index stehen.
 - `scripts/security/native_export_backup.py:123`
 - `scripts/security/native_export_backup.py:161`
 - `scripts/security/native_export_backup.py:179`
-- `scripts/security/native_monitoring_config.py:42`
-- `scripts/security/native_monitoring_config.py:81`
+- `scripts/security/native_monitoring_config.py:45`
+- `scripts/security/native_monitoring_config.py:85`
 - `scripts/security/prepare_release.py:48`
 - `scripts/security/prepare_release.py:61`
 - `scripts/security/private_env.py:93`

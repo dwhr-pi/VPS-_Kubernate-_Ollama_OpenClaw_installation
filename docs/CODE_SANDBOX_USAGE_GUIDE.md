@@ -1,5 +1,11 @@
 # Code Sandbox Usage Guide
 
+> **Historischer Entwurf, keine aktuelle Installationsanleitung.** Die folgenden Docker-/Podman-Pfade
+> und `/opt`-Beispiele belegen keine aktive Isolation und sind kein freigegebener Installationsweg.
+> Massgeblich sind die [Installationsrichtlinie](INSTALLATION_POLICY.md) und
+> [Arbeitspaket E03: Sandbox wirklich isolieren](architecture/ENTERPRISE_HARDENING_ROADMAP.md#e03-sandbox-wirklich-isolieren).
+> Keine dieser historischen Startanweisungen ungeprueft ausfuehren; kein automatischer Dienststart oder Host-Fallback.
+
 ## Kurzfassung
 
 `Code_Sandbox` ist in diesem Repository aktuell ein vorbereitetes Sandbox-Modul. Es ist noch kein

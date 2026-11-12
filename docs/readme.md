@@ -7,6 +7,19 @@ produktionsreif.
 
 ## Hier beginnen
 
+**Alle Tools im Browser oder als Windows-App sehen, einschliesslich Kubernetes/K3s:**
+[Dashboard-Einstieg mit Headlamp, Grafana und optionaler Startseite](TOOL_DASHBOARD_BROWSER_DESKTOP.md).
+[Boardroom](tools/boardroom.md) kann die Auswahl bewerten, ist aber kein fertiges Dashboard.
+Katalogeintrag, installierte Software und betriebsbereiter Dienst sind unterschiedliche Anzeigen.
+[Desktop-Apps mit Icons starten und Ressourcen-Reiter planen](DESKTOP_LAUNCHER_AND_METRICS_CONTRACT.md):
+opt-in Installer-Katalog, ID-Allowlist und getrennte Prometheus-/Grafana-Anbindung; noch kein implementierter Launcher.
+[Plattformen und App-Erkennung](CROSS_PLATFORM_APP_DISCOVERY.md): begrenzter Desktop-Scan implementiert,
+Android-/iPhone-App sowie deren Discovery-/Startgrenzen ausdruecklich vorbereitet.
+
+[Enterprise-Haertung schrittweise abarbeiten](architecture/ENTERPRISE_HARDENING_ROADMAP.md):
+E01-E09 mit P1-P3, konkreten Checklisten, Voraussetzungen, Abnahme und Rueckbau.
+Zuerst Metrics-Zugang, Restore und Sandbox; danach Streaming/Tracing, zuletzt HA und Autoscaling.
+
 [Natives Betriebshandbuch](NATIVE_OPERATIONS_HANDBOOK.md): zusammengefuehrte
 MCP-/WebUI-/SSO-/Wartungs-Vorlagen, Make-Einstieg und sichere Backup-Grenzen.
 

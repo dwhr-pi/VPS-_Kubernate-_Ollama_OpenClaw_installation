@@ -1,5 +1,15 @@
 # OpenClaw & AI Infrastructure - Ultimate Setup
 
+**Alle Tools im Blick:** Browser oder Desktop.
+
+**Auch Kubernetes/K3s laesst sich grafisch anzeigen:** Headlamp als Browseroberflaeche oder Windows-App,
+Grafana fuer Messwerte und Alarme, optional eine gemeinsame Tool-Startseite.
+[Dashboard-Einstieg und Installationsgrenzen](docs/TOOL_DASHBOARD_BROWSER_DESKTOP.md).
+[Boardroom](docs/tools/boardroom.md) hilft bei Entscheidungen, ist aber selbst kein Dashboard.
+Noch keine fertig eingerichtete Gesamtsicht: Katalog, Installation und laufende Dienste bleiben getrennt.
+[Ausbau: lokale Apps mit Icons starten und Ressourcen anzeigen](docs/DESKTOP_LAUNCHER_AND_METRICS_CONTRACT.md).
+[Plattformen und opt-in App-Erkennung: Windows, macOS, Linux, Android/iPhone](docs/CROSS_PLATFORM_APP_DISCOVERY.md).
+
 [Natives Betriebshandbuch: WebUI, Dejavu-MCP, SSO und Wartung](docs/NATIVE_OPERATIONS_HANDBOOK.md)
 mit getrennten Freigaben und ehrlichen Nachweisgrenzen, ohne Docker-Fallback.
 
@@ -56,10 +66,12 @@ Hinweise auf Unterstuetzung sind keine zusaetzliche Lizenzbedingung.
 - **Architektur:** [Hybrid-Plattform](docs/architecture/), [Kubernetes-Baseline](docs/PRODUCTION_BASELINE.md).
   [Ressourcen, Storage und GitOps-Abnahme](docs/LLMOPS_ARCHITECTURE_INCREMENT_2026-11-03.md).
   [Infrastrukturreview: Monitoring, MCP und sichere Retries](docs/INFRASTRUCTURE_REVIEW_2026-11-07.md).
+  [Arbeitsplan: Enterprise-Haertung in neun Schritten](docs/architecture/ENTERPRISE_HARDENING_ROADMAP.md).
 - **Betrieb:** [Installation, Neustart und Update](#installation-und-betrieb), [Backup und Restore](docs/INSTALLATION_STATUS_BACKUP.md).
   [Umzug auf den neuen Repository-Namen](docs/REPOSITORY_RENAME.md).
 - **Sicherheit:** [Signierte Releases](docs/SIGNED_RELEASES.md), [sicherer Kernpfad](docs/SECURE_CORE_REFACTOR.md).
 - **Tools und Profile:** [Tool-Matrix](docs/generated/TOOL_MATRIX.md), [Profil-Matrix](docs/generated/PROFILE_MATRIX.md).
+  [Tool-Monitoring und Grafana](docs/monitoring/ALL_TOOLS_OBSERVABILITY.md).
 - **Dokumentation und Historie:** [Wegweiser](docs/readme.md), [historische Langfassung](docs/legacy/README_FULL_2026_11_01.md).
 
 Zum Lesen im Setup: Hauptmenue **10 - Dokumentation & API-Key Guide**.

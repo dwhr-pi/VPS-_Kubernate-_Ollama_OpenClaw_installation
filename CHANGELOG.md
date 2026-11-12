@@ -2,6 +2,48 @@
 
 ## Unreleased
 
+### 2026-11-12: Versionierter vLLM-Metrikbeleg fuer PR 26
+
+- Wiederholt rate-limitierte HTML-Quelle mit Originaladresse/Befund erhalten und aktive GitHub-Belege gepinnt.
+- Dokumentation und Metrikdefinitionen am selben Commit gelesen; Datei-Hashes und Offline-Regression ergaenzt.
+- Keine Link-Ausnahme, Status-Aufweichung, Runtime-Pin-Aenderung oder Inferenz ausgefuehrt.
+
+### 2026-11-12: README-Lint fuer PR 26
+
+- Dashboard-Einstieg als normalen Absatz statt reiner Fettdruck-Ueberschrift formatiert (MD036).
+- Vorhandenen Navigationstest um die Einleitungsgrenze ergaenzt; keine Lint-Regel abgeschwaecht.
+
+### 2026-11-12: Plattformuebergreifende App-Erkennung vorbereitet
+
+- Opt-in Metadaten-Scanner fuer Windows, macOS und Linux mit sicheren Grenzen und deaktivierten Startrechten.
+- Gemeinsames Vorschlags-Schema, mehrdeutige/unbekannte Apps und lokale Pfad-Redaktion hinzugefuegt.
+- Android-/iPhone-Grenzen sowie kuenftige Installer-/Icon-/App-Anbindung dokumentiert; keine mobile App behauptet.
+- Synthetische Fixtures und Ubuntu-/macOS-/Windows-CI-Matrix ohne Host-Inventur ergaenzt.
+
+### 2026-11-12: Desktop-Launcher und Ressourcenansicht spezifiziert
+
+- Opt-in Installer-Katalog, gepruefte App-/Icon-Artefakte und ID-basierte Starts mit Bestaetigung dokumentiert.
+- Vorhandene Qwen-/Gemini-Wege abgegrenzt; keine automatische URI-Registrierung oder Programmstarts.
+- Separaten Ressourcen-Reiter mit Grafana sowie Linux-/Kubernetes-/Windows-Metrikgrenzen beschrieben.
+
+### 2026-11-12: Dashboard-Einstieg fuer Browser und Windows
+
+- Tool-/Kubernetes-Uebersicht mit Headlamp, Grafana und optionaler Startseite weit vorne dokumentiert.
+- Installation, Katalog und Laufzeit getrennt; read-only Rechte, Windows-Signaturgrenzen und offene Integration erklaert.
+- Boardroom als Entscheidungsprofil mit dem Dashboard-Einstieg verknuepft, ohne eigenen Web-Dienst zu behaupten.
+
+### 2026-11-12: Architekturreview als abarbeitbarer Haertungsplan
+
+- Arbeitspakete E01-E09 mit P1-P3, belegtem Bestand, Abhaengigkeiten und konkreten Abnahmekriterien dokumentiert.
+- Inaktive vLLM-/KEDA-Vorlage, Nachweisformat und sichere Rueckbaugrenzen ergaenzt.
+- Einstieg verlinkt und historischen Sandbox-Leitfaden gegen aktuelle Installationsvorgaben abgegrenzt.
+
+### 2026-11-12: Monitoring-Abdeckung aller Registry-Tools
+
+- Vollstaendiger Offline-Katalog, Grafana-JSON mit Scope-/Tool-Filtern und klare Nachweisgrenzen.
+- Gemeinsame Quelle fuer native Regeln und opt-in PrometheusRule; keine Dienststarts oder erfundenen Metriken.
+- Explizite Discovery-Erwartungen, Target-/Pod-/GPU-Alarme, Generator-Driftcheck und Offline-Testfaelle.
+
 ### 2026-11-12: PR-25-CI-Reparatur
 
 - shfmt-konforme Fehlerbehandlung im CI-Bootstrap; keine geaenderten Exitcodes.

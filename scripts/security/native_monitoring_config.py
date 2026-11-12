@@ -23,14 +23,17 @@ def endpoint(value):
     return f'[{ip}]:{int(port)}' if ip.version == 6 else f'{ip}:{int(port)}'
 
 
-def configurations(litellm, node, exporter, token, receiver, rules):
+def configurations(litellm, node, exporter, token, receiver, rules, include_tool_rules=False):
     jobs = [{'job_name': 'prometheus', 'static_configs': [{'targets': ['127.0.0.1:9090']}]}]
     for name, target in (('litellm', litellm), ('node', node), ('ollama-exporter', exporter)):
         job = {'job_name': name, 'static_configs': [{'targets': [endpoint(target)]}], 'sample_limit': 20000}
         if name == 'litellm':
             job['authorization'] = {'type': 'Bearer', 'credentials_file': str(token)}
         jobs.append(job)
-    prom = {'global': {'scrape_interval': '30s', 'scrape_timeout': '10s'}, 'rule_files': [str(rules)],
+    rule_files = [str(rules)]
+    if include_tool_rules:
+        rule_files.append(str(Path(rules).with_name('tool-rules.yml')))
+    prom = {'global': {'scrape_interval': '30s', 'scrape_timeout': '10s'}, 'rule_files': rule_files,
             'alerting': {'alertmanagers': [{'static_configs': [{'targets': ['127.0.0.1:9093']}]}]},
             'scrape_configs': jobs}
     alert = {'route': {'receiver': 'operator', 'group_by': ['alertname', 'job'], 'group_wait': '30s',
@@ -48,6 +51,7 @@ def main(argv=None):
     parser.add_argument('--ollama-exporter', default='127.0.0.1:9404')
     parser.add_argument('--token-file', type=Path)
     parser.add_argument('--receiver-file', type=Path)
+    parser.add_argument('--tool-rules', action='store_true', help='Include opt-in registry tool alert rules')
     args = parser.parse_args(argv)
     if not args.apply:
         print('Plan only: private targets, external receiver file, native daemons. No reads/writes/reload/notification.')
@@ -65,7 +69,7 @@ def main(argv=None):
         if url.scheme != 'https' or not url.hostname or url.username or url.password or url.fragment:
             raise ValueError('Own HTTPS receiver required')
         prom, alert = configurations(args.litellm, args.node, args.ollama_exporter,
-                                     args.token_file, args.receiver_file, repo / 'monitoring/alerts.yml')
+                                     args.token_file, args.receiver_file, repo / 'monitoring/alerts.yml', args.tool_rules)
         with private.directory(args.output, create=True, private=True) as target:
             # Two exclusive files, no replacement. Partial output is never silently adopted.
             private.publish(target, 'prometheus.json', json.dumps(prom, indent=2).encode())
