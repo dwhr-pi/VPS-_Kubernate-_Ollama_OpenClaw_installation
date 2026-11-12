@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   repo-health:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
       - name: Checkout
@@ -23,8 +23,7 @@ jobs:
 
       - name: Install QA tools
         run: |
-          sudo apt-get update
-          sudo apt-get install -y shellcheck shfmt python3
+          bash scripts/ci/install_qa_tools.sh
 
       - name: Validate JSON-compatible config
         run: bash scripts/validate_config.sh

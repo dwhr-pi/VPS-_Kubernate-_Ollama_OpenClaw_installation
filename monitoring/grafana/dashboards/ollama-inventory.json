@@ -1,0 +1,14 @@
+{
+  "uid": "ollama-inventory-reviewed",
+  "title": "Ollama: Inventar und GPU, keine Inferenzmessung",
+  "schemaVersion": 39,
+  "version": 1,
+  "refresh": "30s",
+  "time": {"from": "now-1h", "to": "now"},
+  "panels": [
+    {"id": 1, "title": "Inventarabfrage erfolgreich (nicht Inferenzgesundheit)", "type": "stat", "datasource": {"type": "prometheus", "uid": "prometheus"}, "gridPos": {"h": 6, "w": 12, "x": 0, "y": 0}, "targets": [{"refId": "A", "expr": "ollama_monitor_up"}]},
+    {"id": 2, "title": "Geladene Modelle", "type": "timeseries", "datasource": {"type": "prometheus", "uid": "prometheus"}, "gridPos": {"h": 6, "w": 12, "x": 12, "y": 0}, "targets": [{"refId": "A", "expr": "ollama_monitor_loaded_models"}]},
+    {"id": 3, "title": "Ollama size_vram, geladene Modelle (Bytes)", "type": "timeseries", "datasource": {"type": "prometheus", "uid": "prometheus"}, "fieldConfig": {"defaults": {"unit": "bytes"}, "overrides": []}, "gridPos": {"h": 8, "w": 12, "x": 0, "y": 6}, "targets": [{"refId": "A", "expr": "ollama_monitor_loaded_vram_bytes"}]},
+    {"id": 4, "title": "GPU-Framebuffer belegt (DCGM, optional)", "type": "timeseries", "datasource": {"type": "prometheus", "uid": "prometheus"}, "fieldConfig": {"defaults": {"unit": "percent", "min": 0, "max": 100}, "overrides": []}, "gridPos": {"h": 8, "w": 12, "x": 12, "y": 6}, "targets": [{"refId": "A", "expr": "100 * DCGM_FI_DEV_FB_USED / (DCGM_FI_DEV_FB_USED + DCGM_FI_DEV_FB_FREE)", "legendFormat": "{{instance}} / GPU {{gpu}}"}]}
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "models": [
+    {"model": "llama3.1:8b", "task": "general", "quantization": "Q4_K_M", "max_context": 4096, "required_vram_mib": 8192, "license_reviewed": false, "runtime_reviewed": false},
+    {"model": "qwen2.5-coder:7b", "task": "code", "quantization": "Q4_K_M", "max_context": 4096, "required_vram_mib": 8192, "license_reviewed": false, "runtime_reviewed": false},
+    {"model": "qwq:32b", "task": "finance", "quantization": "Q4_K_M", "max_context": 4096, "required_vram_mib": 24576, "license_reviewed": false, "runtime_reviewed": false},
+    {"model": "deepseek-r1:14b", "task": "finance", "quantization": "Q4_K_M", "max_context": 4096, "required_vram_mib": 16384, "license_reviewed": false, "runtime_reviewed": false}
+  ]
+}

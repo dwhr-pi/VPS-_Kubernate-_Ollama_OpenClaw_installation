@@ -7,6 +7,16 @@ Cloud-Freigabe.
 
 ## Navigation
 
+- [LTX API / Lightricks](OnlineOnKeyServices/ltx.md): kostenpflichtige externe
+  Videoerzeugung, getrennt vom vorhandenen GitHub-Quelltool.
+- [DeepSeek API](OnlineOnKeyServices/deepseek.md): Cloud-Zugang getrennt von
+  DeepSeek-R1 und dessen lokalen Modell-/Quelllizenzen.
+- [Together AI](OnlineOnKeyServices/together.md): paid-prepaid, eigener Key,
+  Budget- und Organisationsdatenschutz gesondert pruefen.
+
+- [MiniMax API](OnlineOnKeyServices/minimax.md): direkter Cloud-Anbieter,
+  Pay-as-you-go und M Plan getrennt vom lokalen MiniMax-M3-Modellbetrieb.
+
 - [Manus API-Key](manus.md): Developers settings, Agenten-/Task-API, Gratis-/Zahlungsgrenzen und
   sichere Ablage; kein Modellrouter oder Installer.
 

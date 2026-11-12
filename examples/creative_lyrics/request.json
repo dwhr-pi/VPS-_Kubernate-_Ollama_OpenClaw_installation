@@ -1,0 +1,12 @@
+{
+  "mode": "creative",
+  "topic": "Dunkelheit, Licht und Verantwortung",
+  "genre": "Kurzes Gedicht",
+  "structure": "stanza",
+  "language": "de",
+  "scheme": "AABB",
+  "syllables_per_line": 4,
+  "meter": "0101",
+  "allow_slant": false,
+  "endings": {"A": ["Nacht", "Pracht", "Macht", "Wacht"], "B": ["Licht", "Sicht", "Gedicht", "Pflicht"]}
+}

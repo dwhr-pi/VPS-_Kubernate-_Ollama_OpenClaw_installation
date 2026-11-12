@@ -345,6 +345,17 @@ Parametrisierung und dynamisch erzeugte Tests koennen mehr Laufzeitfaelle liefer
 - `tests/test_archivebox_python.py:116`
   Prueffall: `test_low_disk_prevents_uv_bootstrap`
 
+## tests/test_audio_domain_catalog.py
+
+- `tests/test_audio_domain_catalog.py:17`
+  Prueffall: `test_unique_pinned_source_entries`
+- `tests/test_audio_domain_catalog.py:46`
+  Prueffall: `test_existing_deepseek_identity_is_not_duplicated`
+- `tests/test_audio_domain_catalog.py:50`
+  Prueffall: `test_platform_and_external_service_boundaries`
+- `tests/test_audio_domain_catalog.py:58`
+  Prueffall: `test_document_navigation_resolves`
+
 ## tests/test_audio_review_docs.py
 
 - `tests/test_audio_review_docs.py:17`
@@ -765,6 +776,21 @@ Parametrisierung und dynamisch erzeugte Tests koennen mehr Laufzeitfaelle liefer
 - `tests/test_chattts.py:263`
   Prueffall: `test_runtime_constraints_are_passed_and_pip_checked`
 
+## tests/test_ci_qa_bootstrap.py
+
+- `tests/test_ci_qa_bootstrap.py:23`
+  Prueffall: `test_source_render_is_read_only_signed_and_not_azure`
+- `tests/test_ci_qa_bootstrap.py:33`
+  Prueffall: `test_install_refuses_non_ci_and_self_hosted_before_mutation`
+- `tests/test_ci_qa_bootstrap.py:66`
+  Prueffall: `test_existing_commands_skip_apt_but_still_verify_versions`
+- `tests/test_ci_qa_bootstrap.py:76`
+  Prueffall: `test_missing_tool_uses_isolated_signed_sources_for_both_apt_calls`
+- `tests/test_ci_qa_bootstrap.py:92`
+  Prueffall: `test_update_failure_is_fatal_without_install_or_success_versions`
+- `tests/test_ci_qa_bootstrap.py:101`
+  Prueffall: `test_workflows_keep_checks_and_pin_supported_runner`
+
 ## tests/test_ci_repair_contracts.py
 
 - `tests/test_ci_repair_contracts.py:15`
@@ -869,6 +895,21 @@ Parametrisierung und dynamisch erzeugte Tests koennen mehr Laufzeitfaelle liefer
   Prueffall: `test_profile_install_rejects_low_disk`
 - `tests/test_coding_agent_profiles.py:127`
   Prueffall: `test_documentation_is_explicit_about_missing_runtime`
+
+## tests/test_coding_model_handbook.py
+
+- `tests/test_coding_model_handbook.py:14`
+  Prueffall: `test_qwen_model_is_distinct_from_client_and_pinned`
+- `tests/test_coding_model_handbook.py:29`
+  Prueffall: `test_each_model_guide_links_languages_and_weight_setup`
+- `tests/test_coding_model_handbook.py:41`
+  Prueffall: `test_weights_are_not_plaintext_and_identity_is_not_self_report`
+- `tests/test_coding_model_handbook.py:49`
+  Prueffall: `test_training_is_measurement_driven_and_successor_data_is_retokenized`
+- `tests/test_coding_model_handbook.py:60`
+  Prueffall: `test_example_corpus_is_canonical_and_not_training_approved`
+- `tests/test_coding_model_handbook.py:85`
+  Prueffall: `test_local_navigation_and_fenced_blocks_are_valid`
 
 ## tests/test_coding_profile_metadata.py
 
@@ -2074,6 +2115,23 @@ Parametrisierung und dynamisch erzeugte Tests koennen mehr Laufzeitfaelle liefer
 - `tests/test_hf_hub.py:156`
   Prueffall: `test_cli_metadata_contract_without_execution`
 
+## tests/test_hybrid_cloud_mcp_docs.py
+
+- `tests/test_hybrid_cloud_mcp_docs.py:15`
+  Prueffall: `test_chapter_separates_candidates_from_installed_runtimes`
+- `tests/test_hybrid_cloud_mcp_docs.py:21`
+  Prueffall: `test_minimax_has_license_and_hardware_boundaries`
+- `tests/test_hybrid_cloud_mcp_docs.py:30`
+  Prueffall: `test_obot_has_source_license_and_operational_caveats`
+- `tests/test_hybrid_cloud_mcp_docs.py:40`
+  Prueffall: `test_together_is_paid_and_requires_explicit_cloud_approval`
+- `tests/test_hybrid_cloud_mcp_docs.py:49`
+  Prueffall: `test_external_citations_are_specific_https_sources_without_credentials`
+- `tests/test_hybrid_cloud_mcp_docs.py:62`
+  Prueffall: `test_local_navigation_targets_exist`
+- `tests/test_hybrid_cloud_mcp_docs.py:68`
+  Prueffall: `test_existing_guides_link_the_chapter_without_replacing_history`
+
 ## tests/test_hybrid_production_examples.py
 
 - `tests/test_hybrid_production_examples.py:21`
@@ -2711,6 +2769,37 @@ Parametrisierung und dynamisch erzeugte Tests koennen mehr Laufzeitfaelle liefer
 - `tests/test_local_gateway_policy.py:89`
   Prueffall: `test_one_action_only_and_finance_blocked`
 
+## tests/test_lyric_constraints.py
+
+- `tests/test_lyric_constraints.py:30`
+  Prueffall: `test_sample_form_and_three_output_sections`
+- `tests/test_lyric_constraints.py:42`
+  Prueffall: `test_supported_schemes_have_terminal_not_initial_constraints`
+- `tests/test_lyric_constraints.py:58`
+  Prueffall: `test_blank_extra_and_unusual_line_breaks_are_rejected`
+- `tests/test_lyric_constraints.py:66`
+  Prueffall: `test_known_syllable_and_stress_errors_fail`
+- `tests/test_lyric_constraints.py:73`
+  Prueffall: `test_unknown_words_and_numbers_never_become_success`
+- `tests/test_lyric_constraints.py:81`
+  Prueffall: `test_terminal_controls_are_not_rendered_from_drafts_or_annotations`
+- `tests/test_lyric_constraints.py:95`
+  Prueffall: `test_same_end_word_and_invalid_rhyme_groups_fail`
+- `tests/test_lyric_constraints.py:108`
+  Prueffall: `test_invalid_request_and_lexicon_inputs_are_bounded`
+- `tests/test_lyric_constraints.py:129`
+  Prueffall: `test_json_duplicates_binary_oversize_and_links_are_not_accepted`
+- `tests/test_lyric_constraints.py:147`
+  Prueffall: `test_plan_needs_no_outlines_and_writes_no_files`
+- `tests/test_lyric_constraints.py:157`
+  Prueffall: `test_generation_requires_approval_and_has_no_fallback`
+- `tests/test_lyric_constraints.py:169`
+  Prueffall: `test_current_outlines_type_and_bounded_retries_are_stubbed_not_inferred`
+- `tests/test_lyric_constraints.py:189`
+  Prueffall: `test_cli_renders_utf8_ipa_without_backend_import`
+- `tests/test_lyric_constraints.py:200`
+  Prueffall: `test_documentation_keeps_runtime_and_phonetics_unverified`
+
 ## tests/test_manus_delivery_examples.py
 
 - `tests/test_manus_delivery_examples.py:47`
@@ -3052,6 +3141,34 @@ Parametrisierung und dynamisch erzeugte Tests koennen mehr Laufzeitfaelle liefer
 - `tests/test_minisign_bootstrap.py:70`
   Prueffall: `test_verifier_dependency_gate_precedes_download_and_verification`
 
+## tests/test_model_gateway_sources.py
+
+- `tests/test_model_gateway_sources.py:39`
+  Prueffall: `test_plan_and_missing_status_never_create_or_fetch`
+- `tests/test_model_gateway_sources.py:55`
+  Prueffall: `test_source_install_status_update_and_idempotent_uninstall`
+- `tests/test_model_gateway_sources.py:82`
+  Prueffall: `test_manifest_contract_cannot_be_overridden_by_changed_marker`
+- `tests/test_model_gateway_sources.py:97`
+  Prueffall: `test_failed_contract_rolls_back_only_new_runtime`
+- `tests/test_model_gateway_sources.py:111`
+  Prueffall: `test_unsafe_contract_paths_and_unmanaged_directories_rejected`
+- `tests/test_model_gateway_sources.py:123`
+  Prueffall: `test_registry_has_only_pinned_opt_in_source_entries`
+- `tests/test_model_gateway_sources.py:141`
+  Prueffall: `test_provider_docs_keep_cloud_and_local_sources_separate`
+
+## tests/test_model_pipeline_plan.py
+
+- `tests/test_model_pipeline_plan.py:21`
+  Prueffall: `test_only_installed_reviewed_fitting_models_can_be_proposed`
+- `tests/test_model_pipeline_plan.py:31`
+  Prueffall: `test_license_and_task_boundaries_never_silently_fallback`
+- `tests/test_model_pipeline_plan.py:40`
+  Prueffall: `test_export_is_two_stage_and_never_registers_or_rewrites`
+- `tests/test_model_pipeline_plan.py:50`
+  Prueffall: `test_invalid_values_and_duplicate_models_are_rejected`
+
 ## tests/test_moshi.py
 
 - `tests/test_moshi.py:24`
@@ -3174,6 +3291,21 @@ Parametrisierung und dynamisch erzeugte Tests koennen mehr Laufzeitfaelle liefer
   Prueffall: `test_gap_entrypoint_dispatches_runtime_and_keeps_source_opt_in`
 - `tests/test_musetalk_runtime.py:182`
   Prueffall: `test_source_only_uninstall_cannot_orphan_python_environment`
+
+## tests/test_music_research_catalog.py
+
+- `tests/test_music_research_catalog.py:21`
+  Prueffall: `test_each_verified_project_is_unique_pinned_and_source_only`
+- `tests/test_music_research_catalog.py:40`
+  Prueffall: `test_songsage_cannot_report_a_successful_install`
+- `tests/test_music_research_catalog.py:54`
+  Prueffall: `test_songsage_source_is_not_a_guessed_same_named_repository`
+- `tests/test_music_research_catalog.py:63`
+  Prueffall: `test_musicgen_keeps_its_registry_identity_without_dispatching_legacy`
+- `tests/test_music_research_catalog.py:75`
+  Prueffall: `test_licenses_and_runtime_limits_are_not_replaced_by_open_source_claims`
+- `tests/test_music_research_catalog.py:86`
+  Prueffall: `test_catalog_local_navigation_is_complete`
 
 ## tests/test_native_build_deps.py
 
@@ -3598,6 +3730,45 @@ Parametrisierung und dynamisch erzeugte Tests koennen mehr Laufzeitfaelle liefer
 - `tests/test_native_node_npm.py:186`
   Prueffall: `test_preflight_defers_node_and_npm_to_private_bootstrap`
 
+## tests/test_native_operations_bundle.py
+
+- `tests/test_native_operations_bundle.py:40`
+  Prueffall: `test_default_plan_never_loads_sdk_reads_token_or_contacts_backend`
+- `tests/test_native_operations_bundle.py:48`
+  Prueffall: `test_upload_and_runtime_flags_cannot_grant_themselves`
+- `tests/test_native_operations_bundle.py:55`
+  Prueffall: `test_public_metadata_redirect_and_plain_remote_urls_are_rejected`
+- `tests/test_native_operations_bundle.py:65`
+  Prueffall: `test_audio_paths_magic_size_and_hardlinks_are_bounded`
+- `tests/test_native_operations_bundle.py:82`
+  Prueffall: `test_default_client_never_uploads_or_registers`
+- `tests/test_native_operations_bundle.py:93`
+  Prueffall: `test_backend_health_is_not_runtime_acceptance`
+- `tests/test_native_operations_bundle.py:101`
+  Prueffall: `test_recognition_emits_only_reviewed_fields_and_generic_filename`
+- `tests/test_native_operations_bundle.py:120`
+  Prueffall: `test_invalid_backend_status_and_data_are_not_echoed`
+- `tests/test_native_operations_bundle.py:133`
+  Prueffall: `test_oversized_backend_reply_is_rejected_before_json_decode`
+- `tests/test_native_operations_bundle.py:141`
+  Prueffall: `test_stdio_sdk_is_stubbed_and_write_tool_is_not_registered`
+- `tests/test_native_operations_bundle.py:163`
+  Prueffall: `test_scopes_are_exact_utc_finite_and_never_global`
+- `tests/test_native_operations_bundle.py:176`
+  Prueffall: `test_plan_and_bad_confirmation_never_mutate`
+- `tests/test_native_operations_bundle.py:186`
+  Prueffall: `test_silence_id_and_delete_use_actual_api_contract`
+- `tests/test_native_operations_bundle.py:203`
+  Prueffall: `test_nonloopback_credentials_and_redirects_are_refused`
+- `tests/test_native_operations_bundle.py:210`
+  Prueffall: `test_exact_confirmation_dispatches_only_the_scoped_operation`
+- `tests/test_native_operations_bundle.py:221`
+  Prueffall: `test_oidc_patch_keeps_base_pod_and_container_security_explicit`
+- `tests/test_native_operations_bundle.py:233`
+  Prueffall: `test_keycloak_and_make_defaults_are_not_privileged_or_destructive`
+- `tests/test_native_operations_bundle.py:245`
+  Prueffall: `test_all_handbook_links_and_sso_refs_resolve`
+
 ## tests/test_native_status_and_build_deps.py
 
 - `tests/test_native_status_and_build_deps.py:24`
@@ -3740,29 +3911,50 @@ Parametrisierung und dynamisch erzeugte Tests koennen mehr Laufzeitfaelle liefer
 - `tests/test_notion_research.py:263`
   Prueffall: `test_documentation_links_and_boundaries`
 
+## tests/test_ollama_log_monitor.py
+
+- `tests/test_ollama_log_monitor.py:18`
+  Prueffall: `test_documented_webhook_template_is_code_not_a_live_link`
+- `tests/test_ollama_log_monitor.py:23`
+  Prueffall: `test_default_plan_never_accesses_cluster_or_credentials`
+- `tests/test_ollama_log_monitor.py:31`
+  Prueffall: `test_runtime_and_external_delivery_need_explicit_approvals`
+- `tests/test_ollama_log_monitor.py:40`
+  Prueffall: `test_bounded_command_and_rejected_shell_fragments`
+- `tests/test_ollama_log_monitor.py:55`
+  Prueffall: `test_categories_cooldown_and_failed_delivery_are_redacted`
+- `tests/test_ollama_log_monitor.py:69`
+  Prueffall: `test_failures_back_off_without_exposing_exception_text`
+- `tests/test_ollama_log_monitor.py:82`
+  Prueffall: `test_native_discord_payload_and_no_redirect_or_proxy`
+- `tests/test_ollama_log_monitor.py:101`
+  Prueffall: `test_snapshot_size_and_crash_status_fail_closed`
+- `tests/test_ollama_log_monitor.py:110`
+  Prueffall: `test_child_environment_does_not_inherit_provider_tokens`
+
 ## tests/test_online_services_docs.py
 
 - `tests/test_online_services_docs.py:13`
   Prueffall: `test_provider_tables_have_consistent_official_website_columns`
 - `tests/test_online_services_docs.py:47`
   Prueffall: `test_homepages_do_not_replace_warnings_or_api_credentials`
-- `tests/test_online_services_docs.py:65`
+- `tests/test_online_services_docs.py:75`
   Prueffall: `test_all_local_links_resolve`
-- `tests/test_online_services_docs.py:71`
-  Prueffall: `test_index_and_move`
 - `tests/test_online_services_docs.py:81`
+  Prueffall: `test_index_and_move`
+- `tests/test_online_services_docs.py:91`
   Prueffall: `test_key_guide_moved_and_menu_updated`
-- `tests/test_online_services_docs.py:93`
+- `tests/test_online_services_docs.py:103`
   Prueffall: `test_guide_headings_are_outside_code_blocks`
-- `tests/test_online_services_docs.py:108`
-  Prueffall: `test_catalog_covers_declared_template_credentials`
 - `tests/test_online_services_docs.py:118`
+  Prueffall: `test_catalog_covers_declared_template_credentials`
+- `tests/test_online_services_docs.py:128`
   Prueffall: `test_purpose_before_status`
-- `tests/test_online_services_docs.py:124`
+- `tests/test_online_services_docs.py:134`
   Prueffall: `test_freellmapi_support_is_versioned_and_qualified`
-- `tests/test_online_services_docs.py:144`
-  Prueffall: `test_freellmapi_links_both_key_overviews`
 - `tests/test_online_services_docs.py:154`
+  Prueffall: `test_freellmapi_links_both_key_overviews`
+- `tests/test_online_services_docs.py:164`
   Prueffall: `test_openrouter_examples_are_not_executed_or_enabled`
 
 ## tests/test_openapi_servers.py
@@ -3866,6 +4058,19 @@ Parametrisierung und dynamisch erzeugte Tests koennen mehr Laufzeitfaelle liefer
   Prueffall: `test_live_history_and_post_action_views_use_tool_heading`
 - `tests/test_operation_log.py:185`
   Prueffall: `test_native_installer_log_header_also_identifies_tool`
+
+## tests/test_orchestration_docs.py
+
+- `tests/test_orchestration_docs.py:11`
+  Prueffall: `test_local_navigation_resolves`
+- `tests/test_orchestration_docs.py:19`
+  Prueffall: `test_dashboard_does_not_confuse_inventory_ram_and_inference`
+- `tests/test_orchestration_docs.py:30`
+  Prueffall: `test_discord_uses_secret_reference_and_no_raw_logs`
+- `tests/test_orchestration_docs.py:39`
+  Prueffall: `test_service_is_non_root_opt_in_and_bounded`
+- `tests/test_orchestration_docs.py:48`
+  Prueffall: `test_performance_alerts_separate_ram_gpu_and_gateway`
 
 ## tests/test_p0_safety.py
 
@@ -5754,4 +5959,4 @@ Parametrisierung und dynamisch erzeugte Tests koennen mehr Laufzeitfaelle liefer
 - `tests/test_yue.py:135`
   Prueffall: `test_real_local_sparse_checkout_excludes_env_and_media`
 
-Statisch benannte Testpositionen: **2578**. Kein Nachweis bestandener Tests.
+Statisch benannte Testpositionen: **2664**. Kein Nachweis bestandener Tests.

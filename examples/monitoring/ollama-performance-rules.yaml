@@ -1,0 +1,39 @@
+# Opt-in only: requires actual LiteLLM, cAdvisor, kube-state-metrics and DCGM series.
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: llmops-reviewed-performance
+  namespace: monitoring
+  labels:
+    release: llmops-monitoring
+spec:
+  groups:
+    - name: llmops-reviewed-performance
+      rules:
+        - alert: LLMOpsGatewayHighLatency
+          expr: histogram_quantile(0.95, sum by (le, model) (rate(litellm_request_total_latency_metric_bucket{namespace="llmops"}[5m]))) > 15
+          for: 5m
+          labels:
+            severity: warning
+            namespace: llmops
+          annotations:
+            summary: Gateway request p95 over 15 seconds; not raw Ollama latency
+        - alert: LLMOpsOllamaRAMPressure
+          expr: |-
+            max by (namespace, pod, container) (container_memory_working_set_bytes{namespace="llmops",container="ollama",image!=""})
+            / on (namespace, pod, container)
+            max by (namespace, pod, container) (kube_pod_container_resource_limits{namespace="llmops",container="ollama",resource="memory",unit="byte"} > 0)
+            > 0.9
+          for: 2m
+          labels:
+            severity: critical
+          annotations:
+            summary: Ollama container RAM above 90 percent of nonzero limit; not GPU VRAM
+        - alert: LLMOpsGPUFramebufferCritical
+          expr: DCGM_FI_DEV_FB_USED / (DCGM_FI_DEV_FB_USED + DCGM_FI_DEV_FB_FREE) > 0.9
+          for: 2m
+          labels:
+            severity: critical
+            namespace: llmops
+          annotations:
+            summary: Monitored GPU framebuffer above 90 percent; scope DCGM targets to approved workers

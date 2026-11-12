@@ -1,5 +1,10 @@
 # MusicGen: Python, PyAV und Speicher
 
+Aktueller Menue-/Registry-Pfad: [gepruefte MusicGen-/AudioCraft-Quellen](tools/musicgen-source.md).
+Die folgende Anleitung bleibt als experimenteller Legacy-Paketpfad erhalten,
+ist aber nicht die aktuelle Menueverdrahtung. Keine vorhandene /opt-Installation
+oder Nutzerdaten werden durch den neuen Quellenweg entfernt oder migriert.
+
 Das Protokoll scheitert an PyAV 11: `pkg-config` findet keine FFmpeg- Entwicklungsbibliotheken. Der
 Installer ergaenzt `pkg-config`, `ffmpeg` und die sieben `libav*-dev`/`libsw*-dev`-Pakete und prueft
 deren Metadaten. FFmpeg allein ersetzt die Entwicklungspakete nicht.
@@ -40,7 +45,8 @@ getrennt beachten.
 
 ## TODO
 
-- Registry bleibt planned bis zum echten Zielsystemtest.
+- Runtime bleibt planned bis zum echten Zielsystemtest; die bestehende Registry-ID
+  verwendet inzwischen einen getrennten Quellenhandler, keinen Runtime-Nachweis.
 - FFmpeg/PyAV unter Ubuntu 24.04, ARM-Wheels und native Builds validieren.
 - Alte PyTorch-Pakete auf Schwachstellen pruefen; Lockfile und CUDA-Auswahl ergaenzen.
 - RAM-/GPU-Preflight ergaenzen; venv-Backup nach erfolgreichem Test bewusst aufraeumen.

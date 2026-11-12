@@ -1,5 +1,8 @@
 # Lokale KI-Audio-Chain: Arrangement bis Export
 
+[Lyrics vorbereiten und Reim-/Silbenvorgaben pruefen](../CREATIVE_LYRICS.md):
+optionaler vorgeschalteter Offline-Schritt, kein automatisches Audio-Rendering.
+
 Die sechs gewuenschten Tools waren bereits registriert. Diese Ergaenzung nutzt
 die vorhandenen IDs und das Profil **AI_Singer**, ohne doppelte Tools oder einen
 automatischen Modell-/GPU-/Dienststart einzufuehren. Docker wurde auf Nutzerwunsch

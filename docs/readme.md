@@ -7,6 +7,28 @@ produktionsreif.
 
 ## Hier beginnen
 
+[Natives Betriebshandbuch](NATIVE_OPERATIONS_HANDBOOK.md): zusammengefuehrte
+MCP-/WebUI-/SSO-/Wartungs-Vorlagen, Make-Einstieg und sichere Backup-Grenzen.
+
+[Modell-Routing, Export und Monitoring](MODEL_ROUTING_EXPORT_AND_MONITORING.md):
+Offline-Vorschlaege statt automatischer Gewichtsinstallation oder Konfigurationsaenderung.
+
+[Ollama-Log-Monitor](OLLAMA_LOG_MONITOR.md): begrenzte opt-in Kubernetes-Abfragen,
+redigierte Kategorien, optionaler Discord-Versand und nicht-root systemd-Vorlage.
+
+[Musikerkennung und Rechts-/Finanzmodelle](AUDIO_RECOGNITION_AND_DOMAIN_MODELS.md):
+Audile, SongRec, Mousai, Dejavu und lokale Reasoning-Modelle mit SSH-Anleitungen.
+
+[Musik-/Lyrics-Modellkatalog](MUSIC_LYRICS_MODEL_CATALOG.md): vollstaendige
+Einordnung der angefragten Projekte mit Lizenz-, Installations- und Runtime-Grenzen.
+
+[Gedichte, Songtexte und Reime](CREATIVE_LYRICS.md): Promptvorlage, Outlines,
+eSpeak NG, offline pruefbare Strophen und ehrliche Phonetik-/Metrikgrenzen.
+
+[Coding-Modelle: Qwen, DeepSeek, MiniMax, Sprachen und Einrichtung](models/README.md):
+Assembler, Open Weights, Coding-Clients, RAG, Weitertraining, Datenmigration
+und nachvollziehbare Modellherkunft; keine automatischen Modell-Downloads.
+
 [Signiertes Setup neu installieren](INSTALL_SIGNED_RELEASE.md):
 Windows-Public-Key uebernehmen, Bootstrap beziehen, Release pruefen und installieren.
 
@@ -27,6 +49,10 @@ priorisierte Befunde, drei begrenzte Monitoring-/MCP-/Retry-Patches und offene R
 
 [Hybrid-K3s: Ollama und OpenClaw absichern](kubernetes/hybrid-ollama-openclaw.md):
 GPU und Modellcache, OpenClaw-Patch mit Secret-Referenz, Netzwerkisolation und Abnahmeplan.
+
+[Hybride und fortgeschrittene KI-Infrastruktur](HYBRID_CLOUD_MCP.md):
+MiniMax-M3 mit Lizenz-/Speichergrenzen, Obot als MCP-Gateway-Kandidat und
+Together als separat freizugebende, bezahlte Cloud-Route.
 
 [Boardroom](tools/boardroom.md): eigenstaendiges Entscheidungsprofil mit Beispielaufruf und Profilreferenz.
 

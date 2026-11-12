@@ -1,5 +1,27 @@
 # Tool Index
 
+[Alle angefragten Musik-/Lyrics-Projekte](MUSIC_LYRICS_MODEL_CATALOG.md):
+LeVo 2, MOSS-Music, PoeLM, PoeTone, CoPoet und CTGS als Quellen; MusicGen mit
+separatem Quellenweg; SongSage ehrlich geplant, ohne bestaetigte GitHub-Quelle.
+
+[Outlines](tools/outlines.md) und [eSpeak NG](tools/espeak-ng.md): optionale
+GitHub-Quelltools fuer strukturierte Ausgabe und IPA-Hilfe. Der
+[lokale Reim-/Lyric-Workflow](CREATIVE_LYRICS.md) prueft Entwuerfe offline,
+ohne Modell-, Audio- oder Dienststart.
+
+[Qwen Coder](tools/qwen-coder.md): neues Modell-Quelltool, getrennt vom
+bereits vorhandenen Qwen-Code-Client. [Modellhandbuch](models/README.md):
+Programmiersprachen/Assembler, Gewichte, RAG, Training und Modellherkunft.
+
+[MiniMax-M3](tools/minimax-m3.md), [Obot](tools/obot.md) und
+[DeepSeek-R1](tools/deepseek-r1.md): optionale gepinnte GitHub-Quelltools,
+keine fertigen Runtime-/Modellinstallationen. [LTX Video](tools/ltx-video.md)
+bleibt ebenfalls Quellenverwaltung. Cloud-Zugaenge separat unter
+[MiniMax](_API-Keys/OnlineOnKeyServices/minimax.md),
+[Together](_API-Keys/OnlineOnKeyServices/together.md),
+[DeepSeek](_API-Keys/OnlineOnKeyServices/deepseek.md) und
+[LTX / Lightricks](_API-Keys/OnlineOnKeyServices/ltx.md).
+
 **[Node-RED: GitHub-Build und private Node/npm-Basis](tools/node-red.md)**: fehlendes Node/npm nach
 Zustimmung bereitstellen; keine Flows oder Dienste starten.
 

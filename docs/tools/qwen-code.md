@@ -1,5 +1,10 @@
 # Qwen Code aus GitHub installieren, ohne Docker
 
+[Qwen Coder als Modell](qwen-coder.md) ist ein separates Tool.
+Die [Modell-Einrichtungsanleitung](../models/README.md) beschreibt lokale
+Gewichte, Sprachtests und Anschluss an Coding-Clients. Der Client-Build
+allein installiert oder trainiert kein Modell.
+
 Ergaenzende Anleitung:
 [Qwen-AI-Interview und Entwicklungswerkzeuge](../tutorials/qwen-development-tooling.md).
 Chat-Aussagen ueber Sandbox-Funktionen sind kein Nachweis lokaler CLI-Faehigkeiten.

@@ -240,7 +240,6 @@ python3 -I -B scripts/tool_commands.py show cogvideox
 python3 -I -B scripts/tool_commands.py show gradio
 python3 -I -B scripts/tool_commands.py show hermes_agent_jarvis
 python3 -I -B scripts/tool_commands.py show liveportrait
-python3 -I -B scripts/tool_commands.py show ltx_video
 python3 -I -B scripts/tool_commands.py show obs
 python3 -I -B scripts/tool_commands.py show qwen_desktop_build
 python3 -I -B scripts/tool_commands.py show sadtalker
@@ -306,18 +305,6 @@ tool-spezifischen Plattform-, Lizenz- und Laufzeitgrenzen oben gelten weiterhin.
 Fuer die interaktive Installation nach Pruefung `bash setup_ultimate.sh` im
 VPS-Terminal oeffnen, dort im Tool-Management das gewuenschte Tool
 `LivePortrait` (ID `liveportrait`) waehlen und die Einzelfreigaben lesen.
-Fehlt der Eintrag oder ist der native Weg gesperrt, hier stoppen: keine
-Legacy-/Docker-Ausweichinstallation und kein automatischer Plattformwechsel.
-
-### SSH-Aktionen: `ltx_video`
-
-Kein freigegebener unbeaufsichtigter Docker-freier Adapter. Der Plan nennt
-vorhandene Skriptpfade; diese nicht ungeprueft ausfuehren. Die
-tool-spezifischen Plattform-, Lizenz- und Laufzeitgrenzen oben gelten weiterhin.
-
-Fuer die interaktive Installation nach Pruefung `bash setup_ultimate.sh` im
-VPS-Terminal oeffnen, dort im Tool-Management das gewuenschte Tool
-`LTX_Video` (ID `ltx_video`) waehlen und die Einzelfreigaben lesen.
 Fehlt der Eintrag oder ist der native Weg gesperrt, hier stoppen: keine
 Legacy-/Docker-Ausweichinstallation und kein automatischer Plattformwechsel.
 

@@ -1,0 +1,33 @@
+# Opt-in only: verify installed CRD supports discordConfigs and apiURL SecretKeySelector.
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: AlertmanagerConfig
+metadata:
+  name: llmops-discord
+  namespace: llmops
+  labels:
+    release: llmops-monitoring
+spec:
+  route:
+    receiver: discard
+    groupBy: [alertname, severity]
+    groupWait: 30s
+    groupInterval: 5m
+    repeatInterval: 4h
+    routes:
+      - receiver: discord-critical
+        matchers:
+          - name: severity
+            value: critical
+            matchType: '='
+  receivers:
+    - name: discard
+    - name: discord-critical
+      discordConfigs:
+        - apiURL:
+            name: llmops-discord-webhook
+            key: url
+          sendResolved: true
+          title: OpenClaw runtime alert
+          message: Inspect the private monitoring dashboard; no application logs included.
+          httpConfig:
+            followRedirects: false

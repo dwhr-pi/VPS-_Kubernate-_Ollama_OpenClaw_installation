@@ -903,6 +903,7 @@ get_tool_install_fallback_min_free_mb() {
   local tool_key="$1"
 
   case "$tool_key" in
+    "MiniMax_M3" | "Obot" | "DeepSeek_R1" | "Qwen_Coder" | "Outlines" | "eSpeak_NG" | "Audile" | "SongRec" | "Mousai" | "Dejavu" | "Qwen3_235B_A22B" | "QwQ_32B" | "GPT_OSS_120B" | "LeVo_2" | "MOSS_Music" | "PoeLM" | "PoeTone" | "CoPoet" | "CTGS" | "MusicGen") printf '2048' ;;
     "Traefik") printf '16384' ;;
     "OpenTelemetry") printf '8192' ;;
     "Langfuse" | "Grafana_Alloy") printf '49152' ;;
@@ -3415,7 +3416,7 @@ TOOL_SCRIPT_NAMES["Ray"]="ray"
 TOOL_SCRIPT_NAMES["EnviroLLM"]="envirollm"
 TOOL_SCRIPT_NAMES["Suno_API"]="suno_api"
 TOOL_SCRIPT_NAMES["Udio_API"]="udio_api"
-TOOL_SCRIPT_NAMES["MusicGen"]="musicgen"
+TOOL_SCRIPT_NAMES["MusicGen"]="musicgen_source"
 TOOL_SCRIPT_NAMES["Riffusion"]="riffusion"
 TOOL_SCRIPT_NAMES["ControlNet"]="controlnet"
 TOOL_SCRIPT_NAMES["Music2P_Pipeline"]="music2p_pipeline"
@@ -4885,6 +4886,54 @@ TOOLS["AutoGPT"]="OFFEN: AutoGPT Platform hat noch keinen abgenommenen nativen G
 TOOLS["Supabase"]="OFFEN: native Gesamtplattform samt Datenbank/Auth/Storage noch nicht abgenommen; kein Docker-Fallback."
 TOOL_KEYS+=("PyAirbyte")
 TOOL_KEYS+=("Markdown_Docs_Server")
+TOOL_KEYS+=("MiniMax_M3")
+TOOL_KEYS+=("Obot")
+TOOL_KEYS+=("DeepSeek_R1")
+TOOL_KEYS+=("Qwen_Coder")
+TOOL_KEYS+=("Outlines")
+TOOL_KEYS+=("eSpeak_NG")
+TOOL_KEYS+=("LeVo_2" "MOSS_Music" "SongSage" "PoeLM" "PoeTone" "CoPoet" "CTGS")
+TOOL_KEYS+=("Audile" "SongRec" "Mousai" "Dejavu" "Qwen3_235B_A22B" "QwQ_32B" "GPT_OSS_120B")
+TOOL_SCRIPT_NAMES["Audile"]="audile"
+TOOLS["Audile"]="Nur Quellen; Runtime separat offen. docs/tools/audile.md"
+TOOL_SCRIPT_NAMES["SongRec"]="songrec"
+TOOLS["SongRec"]="Nur Quellen; Runtime separat offen. docs/tools/songrec.md"
+TOOL_SCRIPT_NAMES["Mousai"]="mousai"
+TOOLS["Mousai"]="Nur Quellen; Runtime separat offen. docs/tools/mousai.md"
+TOOL_SCRIPT_NAMES["Dejavu"]="dejavu"
+TOOLS["Dejavu"]="Nur Quellen; Runtime separat offen. docs/tools/dejavu.md"
+TOOL_SCRIPT_NAMES["Qwen3_235B_A22B"]="qwen3_235b"
+TOOLS["Qwen3_235B_A22B"]="Nur Quellen; Runtime separat offen. docs/tools/qwen3-235b.md"
+TOOL_SCRIPT_NAMES["QwQ_32B"]="qwq_32b"
+TOOLS["QwQ_32B"]="Nur Quellen; Runtime separat offen. docs/tools/qwq-32b.md"
+TOOL_SCRIPT_NAMES["GPT_OSS_120B"]="gpt_oss_120b"
+TOOLS["GPT_OSS_120B"]="Nur Quellen; Runtime separat offen. docs/tools/gpt-oss-120b.md"
+TOOL_SCRIPT_NAMES["LeVo_2"]="levo_2"
+TOOL_SCRIPT_NAMES["MOSS_Music"]="moss_music"
+TOOL_SCRIPT_NAMES["SongSage"]="songsage"
+TOOL_SCRIPT_NAMES["PoeLM"]="poelm"
+TOOL_SCRIPT_NAMES["PoeTone"]="poetone"
+TOOL_SCRIPT_NAMES["CoPoet"]="copoet"
+TOOL_SCRIPT_NAMES["CTGS"]="ctgs"
+TOOLS["LeVo_2"]="Nur Forschungsquellen; keine kommerzielle/produktive Freigabe. docs/tools/levo-2.md"
+TOOLS["MOSS_Music"]="Musikverstehen, keine Songgenerierung; nur Quellen. docs/tools/moss-music.md"
+TOOLS["SongSage"]="Geplant: offizieller GitHub-Quellcode nicht bestaetigt; Installation gesperrt. docs/tools/songsage.md"
+TOOLS["PoeLM"]="Spanische/baskische Poesieforschung; Quellen, Lizenzklaerung offen. docs/tools/poelm.md"
+TOOLS["PoeTone"]="Chinesische Songci-Forschung; nur Quellen, keine API-Aufrufe. docs/tools/poetone.md"
+TOOLS["CoPoet"]="T5-Poesieforschung; nur Quellen, keine Modelle/Evaluation. docs/tools/copoet.md"
+TOOLS["CTGS"]="Constrained Text Generation Studio; nur Quellen, kein GUI-/Modellstart. docs/tools/ctgs.md"
+TOOL_SCRIPT_NAMES["Outlines"]="outlines"
+TOOL_SCRIPT_NAMES["eSpeak_NG"]="espeak_ng"
+TOOLS["Outlines"]="Structured-Output-GitHub-Quellen; keine Modelle/Python-Runtime. docs/tools/outlines.md"
+TOOLS["eSpeak_NG"]="Phonetik-GitHub-Quellen; kein Build oder Audiostart. docs/tools/espeak-ng.md"
+TOOL_SCRIPT_NAMES["Qwen_Coder"]="qwen_coder"
+TOOLS["Qwen_Coder"]="Qwen-Coder-Modellquellen; getrennt von Qwen Code, keine Gewichte/Inferenz. docs/tools/qwen-coder.md"
+TOOL_SCRIPT_NAMES["MiniMax_M3"]="minimax_m3"
+TOOL_SCRIPT_NAMES["Obot"]="obot"
+TOOL_SCRIPT_NAMES["DeepSeek_R1"]="deepseek_r1"
+TOOLS["MiniMax_M3"]="Nur gepinnte GitHub-Modellquellen; keine Gewichte/Inferenz. docs/tools/minimax-m3.md"
+TOOLS["Obot"]="Nur gepinnte GitHub-Quellen; nativer Runtime-Build offen, kein Dienststart. docs/tools/obot.md"
+TOOLS["DeepSeek_R1"]="MIT-Modellfamilie; nur GitHub-Quellen, keine Gewichte/Inferenz. docs/tools/deepseek-r1.md"
 TOOL_SCRIPT_NAMES["Markdown_Docs_Server"]="markdown_docs_server"
 TOOLS["Markdown_Docs_Server"]="Offline-Handbuch mit Suche und Themenmenue; GitHub-Quellen, nur 127.0.0.1, kein Autostart. docs/tools/markdown-docs-server.md"
 TOOLS["PyAirbyte"]="Separates GitHub-Python-SDK; kein Airbyte-Core-Ersatz. docs/DOCKER_TO_GITHUB.md"

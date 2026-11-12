@@ -1,5 +1,8 @@
 # OpenClaw & AI Infrastructure - Ultimate Setup
 
+[Natives Betriebshandbuch: WebUI, Dejavu-MCP, SSO und Wartung](docs/NATIVE_OPERATIONS_HANDBOOK.md)
+mit getrennten Freigaben und ehrlichen Nachweisgrenzen, ohne Docker-Fallback.
+
 HE/Oracle Control/DMZ -> WireGuard -> Pi (WoL) -> RTX/K3s-Worker zuhause.
 Interne APIs bleiben privat; GPU, Tunnel, Cloud und privilegierte Dienste sind opt-in.
 Keine pauschale Produktionsfreigabe: Supply-Chain und echte Laufzeit-/Restore-Abnahmen bleiben offen.

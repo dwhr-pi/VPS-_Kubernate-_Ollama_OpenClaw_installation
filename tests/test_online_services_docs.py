@@ -46,6 +46,16 @@ class OnlineServicesDocs(unittest.TestCase):
 
     def test_homepages_do_not_replace_warnings_or_api_credentials(self):
         catalog = (DIRECTORY.parent / "PROVIDER_KEY_CATALOG.md").read_text(encoding="utf-8")
+        minimax = (DIRECTORY / "minimax.md").read_text(encoding="utf-8")
+        for relative in ("README.md", "PROVIDER_KEY_CATALOG.md", "OnlineOnKeyServices/README.md"):
+            self.assertIn("minimax.md", (DIRECTORY.parent / relative).read_text(encoding="utf-8"))
+        for phrase in ("MINIMAX_API_KEY", "M Plan Subscription Key", "Pay-as-you-go",
+                       "kein automatischer Cloud-Fallback", "Kein Live-Nachweis",
+                       "nicht global", "keinen Gratiszugang", "ZDR"):
+            self.assertIn(phrase, minimax)
+        for url in ("https://platform.minimax.io/docs/guides/quickstart-preparation",
+                    "https://platform.minimax.io/docs/pricing/overview"):
+            self.assertIn(url, minimax)
         for term in ("https://openai.com/", "https://www.anthropic.com/", "https://ai.google.dev/",
                      "https://www.moonshot.ai/", "https://huggingface.co/", "https://openrouter.ai/"):
             self.assertIn(term, catalog)

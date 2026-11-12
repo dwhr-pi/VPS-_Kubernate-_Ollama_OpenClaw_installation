@@ -23,3 +23,10 @@ Der MCP Server Hub sammelt sichere, lokale MCP-Server fuer OpenClaw/Codex-kompat
 ## Installationsstatus
 
 `documentation-first`. Erst Healthchecks und Tool-Gates bauen, dann im Menue aktivieren.
+
+## Optionaler Gateway-Kandidat
+
+[Obot und Cloud-/Modellgrenzen](HYBRID_CLOUD_MCP.md#2-obot-mcp-gateway-platform-kandidat-kein-fertiger-installer):
+Quellenbewertung, Community-Limits und Betriebsabhaengigkeiten.
+[Obot-Quellenverwaltung](tools/obot.md) ist im Tool-Menue aufgenommen;
+kein fertiger nativer Runtime-Installer, kein automatischer Dienststart und kein Docker-Fallback.

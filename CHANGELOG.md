@@ -2,6 +2,109 @@
 
 ## Unreleased
 
+### 2026-11-12: PR-25-CI-Reparatur
+
+- shfmt-konforme Fehlerbehandlung im CI-Bootstrap; keine geaenderten Exitcodes.
+- Markdown-Zeilenlaengen und literale Webhook-URL korrigiert, ohne Lint-Regeln zu lockern.
+- OIDC-Beispielpatch auch einzeln mit expliziter Pod-/Container-Haertung versehen;
+  Non-root, RuntimeDefault, Read-only-RootFS und Capability-Drop als Regression abgesichert.
+
+### 2026-11-11: Native Betriebs- und MCP-Vorlagen
+
+- Zusammengehoerige und doppelte Benutzer-Anhaenge in einem Betriebshandbuch
+  eingeordnet; bestehende README/Installationsrichtlinie nicht ersetzt.
+- Opt-in Dejavu-stdio-Adapter mit gepinntem MCP-v1-Vertrag, privatem Staging,
+  begrenzten Uploads, read-only Default und ohne DB-Initialisierung ergaenzt.
+- Scoped Alertmanager-Plan/API-Operationen mit exakter Freigabe, Make-Ziele
+  standardmaessig offline; Start-, Update- und Restore-Automatik gesperrt.
+- Inaktive OIDC-/Keycloak-Beispiele ohne Klartext-Secrets oder Redirect-Wildcards;
+  Rollenmanagement bis zur gesonderten Token-/SSO-Abnahme deaktiviert.
+
+### 2026-11-11: Gepruefte Monitoring-Vorlagen
+
+- Begrenzter opt-in Kubernetes-Log-Monitor ohne Shell oder Docker, mit
+  redigierten Fehlerkategorien, Cooldown und Backoff; kein automatischer Start.
+- Nicht-root systemd-/RBAC-Beispiele und separat freizugebender nativer
+  Discord-Receiver mit Secret-Referenz statt eingebettetem Webhook.
+- Grafana-Inventaransicht verwendet vorhandene Exporter-/DCGM-Metriken;
+  kein erfundener Prometheus-Endpunkt auf Ollamas Root-Pfad.
+- Log-Monitor-Regressionen und Hinweis zu statischen Logit-Masken ergaenzt.
+- Offline-Routing-/GGUF-Exportplanner, inaktive Kandidaten und Prompt-/Modell-
+  Dokumentvorlagen ergaenzt. Keine automatische Registrierung, Inferenz oder
+  Aenderung der aktiven OpenClaw-Konfiguration; echte Abnahme bleibt offen.
+
+### 2026-11-11: Musikerkennung und Domain-Modelle
+
+- Audile, SongRec, Mousai, Dejavu, Qwen3-235B-A22B, QwQ-32B und GPT-OSS-120B
+  als optionale gepinnte Quellenrezepte mit SHA256-Vertraegen aufgenommen.
+- Bestehendes DeepSeek-R1 ohne Dublette weiterverwendet. Neue Menueeintraege,
+  SSH-Anleitungen und Rechts-/Finanz-Prompt mit Quellen-/Freigabepflicht.
+- Externe Erkennung von lokaler Fingerprint-Datenbank und GitHub-Quellen von
+  Gewichten getrennt; kein Docker, automatischer Start oder Runtime-Nachweis.
+- Offline-Lifecycle-Fixtures auf alle neuen Quellen erweitert.
+
+### 2026-11-11: Musik-/Lyrics-Abdeckung und CI-APT-Isolation
+
+- LeVo_2, MOSS_Music, PoeLM, PoeTone, CoPoet und CTGS mit GitHub-Pins,
+  SHA256-Vertraegen, SSH-Anleitungen und Quellen-Lifecycle aufgenommen.
+- SongSage als geplant mit begruendetem, lesendem Exit-3-Guard; keine
+  Verwechslung mit gleichnamigen Projekten und keine erfundene GitHub-Quelle.
+- Vorhandene MusicGen-ID auf getrennte Quellenverwaltung verdrahtet;
+  Legacy-Skripte, /opt und Benutzerdaten unveraendert erhalten.
+- Wiederholte CI-APT-DNS-Fehler: nur auf GitHub-gehostetem Ubuntu 24.04 amd64
+  fehlende QA-Pakete aus direkten signierten Ubuntu-Quellen bereitstellen.
+  Keine dauerhafte APT-Quellenaenderung und keine abgeschwaechten Pruefungen.
+
+### 2026-11-11: Reim-/Lyric-Werkzeuge und begrenzte Offline-Pruefung
+
+- Outlines und eSpeak_NG als optionale gepinnte GitHub-Quelltools mit SHA256-
+  Vertraegen und getrenntem Quellen-/Runtime-Status ins Menue aufgenommen.
+- Standardbibliotheks-Pruefer mit Endwort-Regex, kuratierten IPA-/Silben-/
+  Betonungsdaten, Schema-/Groessenlimits und ehrlichen unvollstaendigen Ergebnissen.
+- Aktuelle optionale Outlines-Regex-Anbindung mit expliziter Freigabe und
+  Versuchslimit; keine Modelllade-/Download-/Cloud-Fallback-Funktion.
+- Promptvorlage und Audio-/AI-Singer-Verknuepfungen dokumentiert; kein
+  automatischer Profil-, Modell-, Audio-, Trainings- oder Dienststart.
+
+### 2026-11-11: Qwen Coder und Modellhandbuch
+
+- Qwen_Coder als separates gepinntes GitHub-Quelltool neben dem bestehenden
+  Qwen-Code-Client aufgenommen; gleicher begrenzter Quellen-Lifecycle.
+- Modellhandbuch zu Sprachen einschliesslich Assembler, Open-Weights-
+  Einrichtung, nativen Runtimes und vorhandenen Coding-Clients ergaenzt.
+- Gewichte sind kein Klartext-RAG-Korpus: RAG, Wissensluecken, SFT/LoRA,
+  Datenmigration, Evaluation und nachweisbare Basismodellherkunft getrennt.
+- Synthetische Datensatz-/Holdout-Vorlagen mit Offline-Vertragstests;
+  keine Modell-, Gewichts-, Trainings- oder Runtime-Installation ausgefuehrt.
+
+### 2026-11-11: GitHub-Quelltools und getrennte Anbieter-APIs
+
+- MiniMax_M3, Obot und DeepSeek_R1 mit Commit-Pins, SHA256-Vertraegen,
+  Menueeintraegen und Install/Status/Doctor/Update/Uninstall aufgenommen.
+- Nur Quellenverwaltung; source_prepared ist keine gebaute oder getestete
+  Runtime. Keine Modelle, Docker-Installation oder automatischen Dienststarts.
+- LTX bleibt vorhandenes Quelltool, jetzt mit eigener SSH-Anleitung und
+  dokumentierter Lightricks-API. Together und DeepSeek ebenfalls im API-Index.
+- Native Runtime-Builds, Modellinstallation, SBOM und End-to-End-Abnahmen offen.
+
+### 2026-11-11: MiniMax im API-Bereich
+
+- Eigene MiniMax-API-Anleitung mit Links aus API-Index, Online-Diensten und
+  Anbieter-Katalog; Cloud-Zugang vom lokalen M3-Modellbetrieb getrennt.
+- Pay-as-you-go, M Plan, Kosten-/Datenschutzfreigabe und sichere Key-Ablage
+  dokumentiert; keine Installation oder Provider-Aktivierung.
+
+### 2026-11-11: Hybrid-, Cloud- und MCP-Kapitel
+
+- MiniMax-M3 mit Open-Weight-/Community-Lizenzabgrenzung und konservativer
+  Rohgewichtsrechnung dokumentiert; kein Einzel-RTX- oder 1M-Kontext-Versprechen.
+- Obot als noch nicht installierter MCP-Gateway-Kandidat mit MIT-Quellstand,
+  Community-Limits und Produktions-/Offline-Abhaengigkeiten eingeordnet.
+- Together-Billing gezielt nachgeprueft: paid-prepaid, kein allgemeines Trial,
+  15 USD Erstkauf; Cloud-Route bleibt separat freizugeben.
+- Kapitel selbst aktiviert keine Dienste, Modelle oder Providerkonten;
+  spaetere Quellen-Registry-Ergaenzung separat oben dokumentiert.
+
 ### 2026-11-11: PR-24-Linkquellen nachvollziehbar korrigiert
 
 - Godot-Linux-/XR-Weblinks nach CI HTTP 429 durch gelesene offizielle

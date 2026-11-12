@@ -38,6 +38,11 @@ Anbieter prüfen.
 
 ## 1. Modellanbieter und Modellzugänge
 
+Gezielte Ergaenzung vom 11.11.2026: [DeepSeek API](OnlineOnKeyServices/deepseek.md)
+mit `DEEPSEEK_API_KEY` und [Together AI](OnlineOnKeyServices/together.md) mit
+`TOGETHER_API_KEY`; nur Dokumentation, keine installierten Connectoren.
+Beide sind von lokal betriebenen Modellfamilien getrennt.
+
 | Anbieter / Zugang       | Offizielle Webseite                                      | Im Setup deklarierter Schlüssel             | Zweck und Grenze                                                                                                     |
 | ----------------------- | -------------------------------------------------------- | ------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
 | OpenAI                  | [openai.com](https://openai.com/)                        | `OPENAI_API_KEY`                            | Direkter externer Modellzugang; nicht mit einem fremden OpenAI-kompatiblen Dienst verwechseln                        |
@@ -46,7 +51,7 @@ Anbieter prüfen.
 | Google Gemini           | [Google AI for Developers](https://ai.google.dev/)       | `GEMINI_API_KEY`, optional `GOOGLE_API_KEY` | Je Client passenden Namen verwenden; nicht Kalender-OAuth                                                            |
 | Kimi / Moonshot         | [Moonshot AI](https://www.moonshot.ai/)                  | `KIMI_API_KEY`                              | Projektspezifisches Vorlagenfeld; tatsächlichen API-Client prüfen                                                    |
 | Z.AI / GLM              | [z.ai](https://z.ai/)                                    | `ZAI_API_KEY`                               | Optionales Provider-Feld der OpenClaw-Vorlage                                                                        |
-| MiniMax                 | [minimax.io](https://www.minimax.io/)                    | `MINIMAX_API_KEY`                           | Optionaler externer Zugang, Modell-/Produktfreigabe prüfen                                                           |
+| [MiniMax API](OnlineOnKeyServices/minimax.md) | [minimax.io](https://www.minimax.io/) | `MINIMAX_API_KEY` | Optionaler Cloud-Zugang; Pay-as-you-go und M Plan getrennt, kein lokaler M3-Build und kein garantierter Gratiszugang |
 | Synthetic               | [synthetic.new](https://synthetic.new/)                  | `SYNTHETIC_API_KEY`                         | Optionaler Provider-/Gateway-Zugang                                                                                  |
 | EULLM                   | Nicht eindeutig festgelegt                               | `EULLM_API_KEY` plus `EULLM_BASE_URL`       | Juristischer Connector-Platzhalter; kein eindeutig festgelegter Anbieter und kein Funktionsnachweis                  |
 | Hugging Face            | [huggingface.co](https://huggingface.co/)                | `HF_TOKEN`                                  | Hub, geschützte Modelle/Datensätze oder Inferenz nach Berechtigung; kein Pflicht-Key für alle öffentlichen Downloads |
@@ -75,6 +80,9 @@ davon unabhängig. Für nicht deklarierte Direkt-Provider werden hier bewusst ke
 unterstützten ENV-Namen erfunden.
 
 ## 3. Recherche, Sprache, Audio und Video
+
+[LTX API von Lightricks](OnlineOnKeyServices/ltx.md): `LTXV_API_KEY`, separater
+kostenpflichtiger Video-Dienst, keine Freigabe durch das lokale LTX-Quelltool.
 
 Ergaenzung vom 24.10.2026: [Manus Agenten-/Task-API](manus.md), offizielle Webseite
 [manus.im](https://manus.im/), dokumentierter Name `MANUS_API_KEY`. Nur Anbieter-Dokumentation,

@@ -1,0 +1,36 @@
+[Unit]
+Description=Bounded read-only Ollama Kubernetes log monitor
+Wants=network-online.target
+After=network-online.target
+StartLimitIntervalSec=600
+StartLimitBurst=3
+
+[Service]
+Type=simple
+User=ollama-monitor
+Group=ollama-monitor
+WorkingDirectory=/opt/openclaw-monitor
+LoadCredential=kubeconfig:/etc/openclaw-monitor/kubeconfig
+Environment=KUBECONFIG=%d/kubeconfig
+ExecStart=/usr/bin/python3 -I -B /opt/openclaw-monitor/ollama_log_monitor.py --watch --apply --context monitored-cluster --namespace llmops --selector app=ollama --container ollama --duration 86400
+Restart=on-failure
+RestartSec=60
+TimeoutStopSec=25
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+CapabilityBoundingSet=
+UMask=0077
+MemoryMax=128M
+CPUQuota=20%
+TasksMax=32
+
+[Install]
+WantedBy=multi-user.target
