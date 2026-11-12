@@ -86,9 +86,11 @@ class Diagnostics(unittest.TestCase):
 
     def test_backup_freshness_is_not_restore_proof(self):
         with tempfile.TemporaryDirectory() as directory:
-            evidence = Path(directory) / 'evidence'
+            # Use the physical fixture path; /var on macOS is intentionally rejected.
+            evidence = Path(directory).resolve() / 'evidence'
             evidence.write_text('not a backup')
-            with patch.object(health, 'http_probe', return_value=(True, 'fixture')):
+            with patch.object(health, 'http_probe', return_value=(True, 'fixture')), \
+                    patch.object(health.time, 'time', return_value=evidence.stat().st_mtime + 60):
                 code, report = self.cli('doctor', '--runtime', '--min-free-gib', '0.001',
                                         '--require', 'ollama', '--backup-evidence', str(evidence))
             self.assertEqual(code, 0)
@@ -167,7 +169,7 @@ class Diagnostics(unittest.TestCase):
 
     def test_evidence_symlinks_rejected(self):
         with tempfile.TemporaryDirectory() as directory:
-            root = Path(directory)
+            root = Path(directory).resolve()
             (root / 'actual').write_text('fixture')
             try:
                 (root / 'linked').symlink_to(root / 'actual')

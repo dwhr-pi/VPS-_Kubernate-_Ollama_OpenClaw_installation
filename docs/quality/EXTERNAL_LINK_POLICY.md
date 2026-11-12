@@ -4,6 +4,18 @@ Stand: 31.10.2026. Keine Merge- oder Produktionsfreigabe.
 
 ## Verbindlicher Check
 
+Nachtrag PR 27 vom 12.11.2026: Der Push-Lauf `43207287611`, Job `131145567743`,
+meldete Google HTTP 500 und beim Beautiful-Soup-Source-Ziel Transportstatus 0.
+Die Google-Mitteilung wurde anschliessend vollstaendig mit HTTP 200 gelesen;
+der aktive Link bleibt erhalten. Launchpad lief auch beim anonymen Einzelabruf
+in ein Timeout. Die offizielle Beautiful-Soup-Website bestaetigt das Source-Ziel,
+nicht dessen aktuelle Erreichbarkeit. Im
+[Werkzeugvergleich](../tutorials/grok-development-tooling.md) bleibt die exakte
+Launchpad-Adresse deshalb mit datiertem Befund als Code erhalten; die gelesene
+offizielle Projektwebsite bleibt der aktive Beleg.
+[Pruefbericht und Grenzen](PR27_CI_REFERENCE_REVIEW_2026-11-12.json).
+Keine neue Ignore-Regel, keine Status-Aufweichung und keine Retry-Erweiterung.
+
 Nachtrag PR 26 vom 12.11.2026: Die vLLM-Metrik-Webfassung lieferte im Push-Linkcheck wiederholt HTTP 429,
 auch nach den bereits konfigurierten begrenzten 429-Retries. Die Originaladresse bleibt im
 [Haertungsplan](../architecture/ENTERPRISE_HARDENING_ROADMAP.md#vllm-quellennachweis-vom-12112026)

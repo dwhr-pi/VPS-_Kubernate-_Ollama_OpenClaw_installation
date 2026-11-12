@@ -5,6 +5,7 @@ import importlib.util
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 SPEC = importlib.util.spec_from_file_location("public_import", ROOT / "scripts/security/import_release_public_key.py")
@@ -16,7 +17,8 @@ class PublicKeyImportTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
-        self.root = Path(self.temp.name)
+        # Canonical fixture path avoids macOS /var without relaxing import guards.
+        self.root = Path(self.temp.name).resolve()
         self.source = self.root / "fixture.pub"
         self.data = b"untrusted comment: synthetic fixture, not a real key\n" + base64.b64encode(b"Ed" + b"\x01" * 40) + b"\n"
         self.source.write_bytes(self.data)
@@ -57,6 +59,10 @@ class PublicKeyImportTests(unittest.TestCase):
             self.skipTest("Symlink privilege unavailable")
         with self.assertRaises(ValueError):
             keys.import_key(linked, self.destination, self.digest)
+
+    def test_link_guard_remains_active_without_symlink_privilege(self):
+        with patch.object(Path, 'is_symlink', return_value=True), self.assertRaises(ValueError):
+            keys.import_key(self.source, self.destination, self.digest)
 
 
 if __name__ == "__main__":

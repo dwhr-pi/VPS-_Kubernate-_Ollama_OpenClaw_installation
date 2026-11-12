@@ -7,6 +7,7 @@ import shutil
 import subprocess
 import tempfile
 import unittest
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 SPEC = importlib.util.spec_from_file_location("project_brief", ROOT / "scripts/projects/project_brief.py")
@@ -59,11 +60,13 @@ class ProjectBriefTests(unittest.TestCase):
 
     def test_revisions_never_overwrite_and_stale_import_rejected(self):
         with tempfile.TemporaryDirectory() as directory:
-            project = Path(directory) / "project"
+            # macOS /var is a symlink; canonicalize only our owned fixture root.
+            root = Path(directory).resolve()
+            project = root / "project"
             brief.main(["new", "--project", str(project), "--apply"])
             original = project / "revision-000001" / "brief.json"
             before = original.read_bytes()
-            draft = Path(directory) / "draft.json"
+            draft = root / "draft.json"
             value = json.loads(before)
             value["fields"]["goal"] = "A detective film"
             draft.write_text(json.dumps(value), encoding="utf-8")
@@ -76,11 +79,17 @@ class ProjectBriefTests(unittest.TestCase):
 
     def test_default_new_is_no_write_and_repository_is_refused(self):
         with tempfile.TemporaryDirectory() as directory:
-            project = Path(directory) / "not-created"
+            project = Path(directory).resolve() / "not-created"
             brief.main(["new", "--project", str(project)])
             self.assertFalse(project.exists())
         with self.assertRaises(ValueError):
             brief.safe_path(ROOT / "private-project")
+
+    def test_linked_project_paths_remain_rejected(self):
+        with tempfile.TemporaryDirectory() as directory:
+            project = Path(directory).resolve() / 'project'
+            with patch.object(Path, 'is_symlink', return_value=True), self.assertRaises(ValueError):
+                brief.safe_path(project)
 
     def test_stdio_handshake_plan_and_eof(self):
         requests = [dict(jsonrpc="2.0", id=1, method="initialize", params={"protocolVersion": "2025-06-18"}),

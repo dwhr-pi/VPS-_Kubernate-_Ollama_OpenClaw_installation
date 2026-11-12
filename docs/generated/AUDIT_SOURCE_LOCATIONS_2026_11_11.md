@@ -1104,8 +1104,8 @@ Neue Dateien muessen vor der Regeneration im Git-Index stehen.
 - `k8s/gitops/memory/qdrant.yaml:84`
 - `k8s/openclaw-deployment.yaml:14`
 - `k8s/openclaw-deployment.yaml:23`
-- `k8s/optional/tool-sandbox/job.yaml:18`
-- `k8s/optional/tool-sandbox/job.yaml:28`
+- `k8s/optional/tool-sandbox/job.yaml:19`
+- `k8s/optional/tool-sandbox/job.yaml:29`
 - `k8s/overlays/gpu/gateway-patch.yml:16`
 - `k8s/overlays/gpu/gateway-patch.yml:25`
 - `k8s/overlays/gpu/k8s-ollama-deployment.yaml:16`

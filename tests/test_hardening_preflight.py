@@ -55,7 +55,7 @@ class HardeningPreflight(unittest.TestCase):
     def test_sandbox_is_suspended_networkless_and_unprivileged(self):
         folder = ROOT / 'k8s/optional/tool-sandbox'
         job = (folder / 'job.yaml').read_text()
-        for value in ('suspend: true', 'backoffLimit: 0', 'activeDeadlineSeconds: 60',
+        for value in ('suspend: true', 'backoffLimit: 0', 'activeDeadlineSeconds: 60', 'ttlSecondsAfterFinished: 3600',
                       'runtimeClassName: runsc', 'automountServiceAccountToken: false',
                       'readOnlyRootFilesystem: true', 'capabilities: {drop: [ALL]}'):
             self.assertIn(value, job)

@@ -10,6 +10,7 @@ on:
       - scripts/operations/platform_health.py
       - tests/test_metrics_isolation.py
       - tests/test_hardening_preflight.py
+      - tests/test_platform_health.py
       - .github/workflows/hardening-boundaries.yml
   push:
     paths:
@@ -20,6 +21,7 @@ on:
       - scripts/operations/platform_health.py
       - tests/test_metrics_isolation.py
       - tests/test_hardening_preflight.py
+      - tests/test_platform_health.py
       - .github/workflows/hardening-boundaries.yml
   workflow_dispatch:
 

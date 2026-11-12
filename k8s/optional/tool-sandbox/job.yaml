@@ -6,6 +6,7 @@ spec:
   suspend: true
   backoffLimit: 0
   activeDeadlineSeconds: 60
+  ttlSecondsAfterFinished: 3600
   template:
     spec:
       restartPolicy: Never

@@ -139,6 +139,9 @@ getrennten Namespace mit Restricted Pod Security, Default-Deny, Quota und
 tokenlosem ServiceAccount vor. Der Beispieljob ist `suspend: true`, ohne
 Host-Mounts/Secrets und mit Non-root, Read-only-Root, Capability-Drop,
 CPU/RAM/Scratch-Grenzen, Laufzeitlimit und ohne automatische Wiederholungen.
+Die Job-TTL entfernt ausschliesslich den beendeten Beispieljob und seine Pods
+nach einer Stunde. Bei spaeteren echten Tests Logs/Nachweise vorher getrennt
+sichern; der suspendierte Job und Benutzerdateien werden dadurch nicht geloescht.
 
 `runtimeClassName: runsc` behauptet keine vorhandene Runtime. gVisor muss
 vorher nativ eingerichtet und am Ziel getestet sein; fehlende Runtime darf

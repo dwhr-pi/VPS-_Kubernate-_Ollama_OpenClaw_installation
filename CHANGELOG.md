@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+### 2026-11-12: CI-Korrekturen fuer PR 27
+
+- TTL fuer den suspendierten Sandbox-Beispieljob ergaenzt, statt die KubeLinter-Regel abzuschalten.
+- Eigene macOS-Temp-Fixtures auf physische Pfade normalisiert; produktive Symlink-Grenzen bleiben unveraendert.
+- Zusaetzliche Symlink-Negativtests fuer Projektbrief und Public-Key-Import ergaenzt.
+- Launchpad-Originaladresse mit Timeout-Befund erhalten; Google nach erfolgreichem Einzelabruf weiter aktiv pruefen.
+
 ### 2026-11-12: Metrics-Isolation und sichere Preflight-Grenzen
 
 - Gepinnten LiteLLM-Auth-Code geprueft; GET-only-Bridge mit eigenem Scrape-Token und opt-in Kustomize-Overlay.

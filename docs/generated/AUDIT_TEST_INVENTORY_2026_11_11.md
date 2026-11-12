@@ -2076,13 +2076,15 @@ Parametrisierung und dynamisch erzeugte Tests koennen mehr Laufzeitfaelle liefer
 
 - `tests/test_grok_tooling_docs.py:14`
   Prueffall: `test_primary_sources_and_corrections_remain_traceable`
-- `tests/test_grok_tooling_docs.py:30`
+- `tests/test_grok_tooling_docs.py:29`
+  Prueffall: `test_launchpad_original_remains_with_transport_evidence_not_an_ignore_rule`
+- `tests/test_grok_tooling_docs.py:39`
   Prueffall: `test_skill_metadata_and_relative_links`
-- `tests/test_grok_tooling_docs.py:41`
+- `tests/test_grok_tooling_docs.py:50`
   Prueffall: `test_report_preserves_evidence_and_not_run_state`
-- `tests/test_grok_tooling_docs.py:49`
+- `tests/test_grok_tooling_docs.py:58`
   Prueffall: `test_integration_is_discoverable_without_active_workflow`
-- `tests/test_grok_tooling_docs.py:59`
+- `tests/test_grok_tooling_docs.py:68`
   Prueffall: `test_markdown_tables_have_consistent_columns`
 
 ## tests/test_hardening_preflight.py
@@ -4411,39 +4413,39 @@ Parametrisierung und dynamisch erzeugte Tests koennen mehr Laufzeitfaelle liefer
   Prueffall: `test_low_disk_is_p0`
 - `tests/test_platform_health.py:87`
   Prueffall: `test_backup_freshness_is_not_restore_proof`
-- `tests/test_platform_health.py:97`
+- `tests/test_platform_health.py:99`
   Prueffall: `test_stale_backup_fails`
-- `tests/test_platform_health.py:103`
+- `tests/test_platform_health.py:105`
   Prueffall: `test_secret_metadata_never_reads_content`
-- `tests/test_platform_health.py:110`
+- `tests/test_platform_health.py:112`
   Prueffall: `test_cli_is_fixed_bounded_and_output_not_logged`
-- `tests/test_platform_health.py:120`
+- `tests/test_platform_health.py:122`
   Prueffall: `test_wireguard_link_down_is_not_healthy`
-- `tests/test_platform_health.py:125`
+- `tests/test_platform_health.py:127`
   Prueffall: `test_http_status_redirect_body_limit_and_ollama_schema`
-- `tests/test_platform_health.py:143`
+- `tests/test_platform_health.py:145`
   Prueffall: `test_http_failure_is_closed`
-- `tests/test_platform_health.py:150`
+- `tests/test_platform_health.py:152`
   Prueffall: `test_http_wall_budget_expires`
-- `tests/test_platform_health.py:158`
+- `tests/test_platform_health.py:160`
   Prueffall: `test_missing_or_moving_pin_is_rejected`
-- `tests/test_platform_health.py:168`
+- `tests/test_platform_health.py:170`
   Prueffall: `test_evidence_symlinks_rejected`
-- `tests/test_platform_health.py:181`
+- `tests/test_platform_health.py:183`
   Prueffall: `test_default_writes_nothing`
-- `tests/test_platform_health.py:186`
+- `tests/test_platform_health.py:188`
   Prueffall: `test_fixture_has_checksum_evidence_not_production_acceptance`
-- `tests/test_platform_health.py:203`
+- `tests/test_platform_health.py:205`
   Prueffall: `test_existing_report_not_overwritten`
-- `tests/test_platform_health.py:211`
+- `tests/test_platform_health.py:213`
   Prueffall: `test_apply_without_fixture_rejected`
-- `tests/test_platform_health.py:215`
+- `tests/test_platform_health.py:217`
   Prueffall: `test_dry_run_overrides_apply`
-- `tests/test_platform_health.py:219`
+- `tests/test_platform_health.py:221`
   Prueffall: `test_restore_failure_has_no_success_evidence`
-- `tests/test_platform_health.py:226`
+- `tests/test_platform_health.py:228`
   Prueffall: `test_real_restore_guard_preserved`
-- `tests/test_platform_health.py:234`
+- `tests/test_platform_health.py:236`
   Prueffall: `test_generated_inventory_is_current_and_honest`
 
 ## tests/test_platform_inventory.py
@@ -4629,25 +4631,27 @@ Parametrisierung und dynamisch erzeugte Tests koennen mehr Laufzeitfaelle liefer
 
 ## tests/test_project_brief.py
 
-- `tests/test_project_brief.py:18`
+- `tests/test_project_brief.py:19`
   Prueffall: `test_every_template_and_optional_role_remain_blocked`
-- `tests/test_project_brief.py:30`
+- `tests/test_project_brief.py:31`
   Prueffall: `test_bad_fields_and_ids_refused`
-- `tests/test_project_brief.py:39`
+- `tests/test_project_brief.py:40`
   Prueffall: `test_unicode_size_cannot_create_an_unreadable_revision`
-- `tests/test_project_brief.py:45`
+- `tests/test_project_brief.py:46`
   Prueffall: `test_html_does_not_embed_untrusted_markup`
-- `tests/test_project_brief.py:55`
+- `tests/test_project_brief.py:56`
   Prueffall: `test_browser_script_syntax`
-- `tests/test_project_brief.py:60`
+- `tests/test_project_brief.py:61`
   Prueffall: `test_revisions_never_overwrite_and_stale_import_rejected`
-- `tests/test_project_brief.py:77`
+- `tests/test_project_brief.py:80`
   Prueffall: `test_default_new_is_no_write_and_repository_is_refused`
-- `tests/test_project_brief.py:85`
+- `tests/test_project_brief.py:88`
+  Prueffall: `test_linked_project_paths_remain_rejected`
+- `tests/test_project_brief.py:94`
   Prueffall: `test_stdio_handshake_plan_and_eof`
-- `tests/test_project_brief.py:97`
+- `tests/test_project_brief.py:106`
   Prueffall: `test_unbounded_mcp_input_rejected`
-- `tests/test_project_brief.py:100`
+- `tests/test_project_brief.py:109`
   Prueffall: `test_chat_can_request_form_without_file_access`
 
 ## tests/test_propainter.py
@@ -4693,16 +4697,18 @@ Parametrisierung und dynamisch erzeugte Tests koennen mehr Laufzeitfaelle liefer
 
 ## tests/test_public_key_import.py
 
-- `tests/test_public_key_import.py:26`
+- `tests/test_public_key_import.py:28`
   Prueffall: `test_import_and_repeat_preserve_both_files`
-- `tests/test_public_key_import.py:34`
+- `tests/test_public_key_import.py:36`
   Prueffall: `test_existing_different_file_never_overwritten`
-- `tests/test_public_key_import.py:41`
+- `tests/test_public_key_import.py:43`
   Prueffall: `test_wrong_hash_or_private_extension_never_creates_destination`
-- `tests/test_public_key_import.py:48`
+- `tests/test_public_key_import.py:50`
   Prueffall: `test_default_does_not_read_missing_source`
-- `tests/test_public_key_import.py:52`
+- `tests/test_public_key_import.py:54`
   Prueffall: `test_symlink_refused_where_supported`
+- `tests/test_public_key_import.py:63`
+  Prueffall: `test_link_guard_remains_active_without_symlink_privilege`
 
 ## tests/test_pyannote_audio.py
 
@@ -6109,4 +6115,4 @@ Parametrisierung und dynamisch erzeugte Tests koennen mehr Laufzeitfaelle liefer
 - `tests/test_yue.py:135`
   Prueffall: `test_real_local_sparse_checkout_excludes_env_and_media`
 
-Statisch benannte Testpositionen: **2730**. Kein Nachweis bestandener Tests.
+Statisch benannte Testpositionen: **2733**. Kein Nachweis bestandener Tests.

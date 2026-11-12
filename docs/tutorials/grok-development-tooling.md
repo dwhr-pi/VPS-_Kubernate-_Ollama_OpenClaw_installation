@@ -48,7 +48,7 @@ Pakete und kein Auftrag zur Masseninstallation.
 | Web und Templates                | [FastAPI](https://github.com/fastapi/fastapi), [Uvicorn](https://github.com/encode/uvicorn), [Starlette](https://github.com/Kludex/starlette), [Flask](https://github.com/pallets/flask), [Django](https://github.com/django/django), [Jinja](https://github.com/pallets/jinja) |
 | Datenbank und Versionsverwaltung | [SQLAlchemy](https://github.com/sqlalchemy/sqlalchemy), [Git](https://github.com/git/git)                                                                                                                                                                                       |
 | Qualitaet                        | [Ruff](https://github.com/astral-sh/ruff), [Black](https://github.com/psf/black), [mypy](https://github.com/python/mypy)                                                                                                                                                        |
-| HTML-Parsing                     | [Beautiful Soup: offizielle Website](https://www.crummy.com/software/BeautifulSoup/) und deren [Source-Ziel auf Launchpad](https://code.launchpad.net/beautifulsoup)                                                                                                            |
+| HTML-Parsing                     | [Beautiful Soup: offizielle Website](https://www.crummy.com/software/BeautifulSoup/); deren Source-Ziel `https://code.launchpad.net/beautifulsoup` bleibt erhalten, aber aktuell unbestaetigt erreichbar (CI Status 0, Einzelabruf Timeout am 12.11.2026) |
 
 **Quellenkorrekturen:** [encode/starlette](https://github.com/encode/starlette) leitet auf
 Kludex/starlette um. wention/BeautifulSoup4 aus dem Interview nicht als offizielles Upstream-Repo

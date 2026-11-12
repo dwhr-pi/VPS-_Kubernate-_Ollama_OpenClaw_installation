@@ -15,7 +15,6 @@ class GrokToolingDocsTests(unittest.TestCase):
         text = DOC.read_text(encoding="utf-8")
         for url in (
             "https://www.crummy.com/software/BeautifulSoup/",
-            "https://code.launchpad.net/beautifulsoup",
             "https://github.com/Kludex/starlette",
             "https://github.com/huggingface/text-generation-inference",
             "https://github.com/sgl-project/sglang",
@@ -26,6 +25,16 @@ class GrokToolingDocsTests(unittest.TestCase):
         self.assertEqual(text.count("](https://github.com/encode/httpx)"), 1)
         self.assertIn("22.10.2026", text)
         self.assertIn("Wartungsmodus", text)
+
+    def test_launchpad_original_remains_with_transport_evidence_not_an_ignore_rule(self):
+        text = DOC.read_text(encoding='utf-8')
+        original = 'https://code.launchpad.net/beautifulsoup'
+        self.assertIn('`' + original + '`', text)
+        self.assertNotIn('](' + original + ')', text)
+        self.assertIn('CI Status 0, Einzelabruf Timeout am 12.11.2026', text)
+        self.assertIn('](https://www.crummy.com/software/BeautifulSoup/)', text)
+        config = (ROOT / '.github/markdown-link-check.json').read_text()
+        self.assertNotIn('launchpad', config)
 
     def test_skill_metadata_and_relative_links(self):
         fields = dict(line.split(": ", 1) for line in
