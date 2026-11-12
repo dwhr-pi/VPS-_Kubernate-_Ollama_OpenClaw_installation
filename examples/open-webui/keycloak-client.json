@@ -1,0 +1,34 @@
+{
+  "clientId": "open-webui",
+  "name": "OpenClaw Open WebUI - reviewed example",
+  "enabled": true,
+  "protocol": "openid-connect",
+  "publicClient": false,
+  "clientAuthenticatorType": "client-secret",
+  "standardFlowEnabled": true,
+  "implicitFlowEnabled": false,
+  "directAccessGrantsEnabled": false,
+  "serviceAccountsEnabled": false,
+  "fullScopeAllowed": false,
+  "redirectUris": ["https://ai.example.invalid/oauth/oidc/callback"],
+  "webOrigins": ["https://ai.example.invalid"],
+  "defaultClientScopes": ["profile", "email"],
+  "attributes": {"pkce.code.challenge.method": "S256"},
+  "protocolMappers": [
+    {
+      "name": "openwebui-client-roles",
+      "protocol": "openid-connect",
+      "protocolMapper": "oidc-usermodel-client-role-mapper",
+      "consentRequired": false,
+      "config": {
+        "usermodel.clientRoleMapping.clientId": "open-webui",
+        "claim.name": "openwebui_roles",
+        "jsonType.label": "String",
+        "multivalued": "true",
+        "id.token.claim": "true",
+        "access.token.claim": "true",
+        "userinfo.token.claim": "true"
+      }
+    }
+  ]
+}

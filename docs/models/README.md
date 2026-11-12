@@ -6,6 +6,9 @@ Native GitHub-Source-Builds bleiben Vorgabe; kein Docker-Fallback.
 
 ## Navigation
 
+- [Modell-Detailseiten-Vorlage](MODEL_PAGE_TEMPLATE.md)
+- [Offline-Routing, GGUF-Exportplan und Monitoring](../MODEL_ROUTING_EXPORT_AND_MONITORING.md)
+
 - [Qwen-Coder-Tool und Quellen-Lifecycle](../tools/qwen-coder.md)
 - [Open Weights, RAG und erkennbare Modellherkunft](WEIGHTS_RAG_AND_PROVENANCE.md)
 - [Wissensluecken, Weitertraining und Nachfolgemodelle](TRAINING_AND_EVALUATION.md)

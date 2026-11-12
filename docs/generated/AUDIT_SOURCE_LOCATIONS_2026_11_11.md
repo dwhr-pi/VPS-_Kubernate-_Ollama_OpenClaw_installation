@@ -14,7 +14,7 @@ Neue Dateien muessen vor der Regeneration im Git-Index stehen.
 
 ## Bewegliches Wort latest/main/master (lexikalisch)
 
-555 Fundstellen, keine automatische Risikoeinstufung.
+569 Fundstellen, keine automatische Risikoeinstufung.
 
 - `.github/workflows/build-and-push.yml:4`
 - `.github/workflows/build-and-push.yml:16`
@@ -80,17 +80,17 @@ Neue Dateien muessen vor der Regeneration im Git-Index stehen.
 - `config/legal/sources.json:37`
 - `config/models.yaml:16`
 - `config/paperless_ngx.env.example:5`
-- `config/tools.yml:791`
-- `config/tools.yml:2155`
-- `config/tools.yml:5602`
-- `config/tools.yml:5611`
-- `config/tools.yml:5621`
-- `config/tools.yml:5630`
-- `config/tools.yml:5697`
-- `config/tools.yml:5706`
-- `config/tools.yml:5754`
-- `config/tools.yml:5763`
-- `config/tools.yml:7081`
+- `config/tools.yml:1154`
+- `config/tools.yml:2518`
+- `config/tools.yml:5965`
+- `config/tools.yml:5974`
+- `config/tools.yml:5984`
+- `config/tools.yml:5993`
+- `config/tools.yml:6060`
+- `config/tools.yml:6069`
+- `config/tools.yml:6117`
+- `config/tools.yml:6126`
+- `config/tools.yml:7452`
 - `examples/docker-compose/monitoring.yml:3`
 - `examples/docker-compose/monitoring.yml:12`
 - `examples/docker-compose/monitoring.yml:21`
@@ -173,6 +173,8 @@ Neue Dateien muessen vor der Regeneration im Git-Index stehen.
 - `scripts/audio/audio_pipeline.py:88`
 - `scripts/audio/audio_pipeline.py:93`
 - `scripts/audio/audio_pipeline.py:110`
+- `scripts/audio/openclaw_dejavu_mcp_server.py:199`
+- `scripts/audio/openclaw_dejavu_mcp_server.py:228`
 - `scripts/audio/run_full_song.py:57`
 - `scripts/audio/run_full_song.py:84`
 - `scripts/audit_tool_coverage.py:203`
@@ -191,6 +193,10 @@ Neue Dateien muessen vor der Regeneration im Git-Index stehen.
 - `scripts/blender_ai_asset_pipeline.py:85`
 - `scripts/blender_ai_asset_pipeline.py:97`
 - `scripts/check_setup_updates.sh:2`
+- `scripts/ci/install_qa_tools.sh:7`
+- `scripts/ci/install_qa_tools.sh:8`
+- `scripts/ci/install_qa_tools.sh:9`
+- `scripts/ci/install_qa_tools.sh:10`
 - `scripts/cleanup_installation_residues.sh:199`
 - `scripts/cleanup_installation_residues.sh:321`
 - `scripts/creative/lyric_constraints.py:206`
@@ -271,6 +277,10 @@ Neue Dateien muessen vor der Regeneration im Git-Index stehen.
 - `scripts/lib/tool_dispatch.py:48`
 - `scripts/memory/offload_plan.py:43`
 - `scripts/memory/offload_plan.py:61`
+- `scripts/models/openclaw_pipeline.py:114`
+- `scripts/models/openclaw_pipeline.py:144`
+- `scripts/monitoring/ollama_log_monitor.py:123`
+- `scripts/monitoring/ollama_log_monitor.py:162`
 - `scripts/monitoring/ollama_readonly_exporter.py:99`
 - `scripts/monitoring/ollama_readonly_exporter.py:126`
 - `scripts/mynextcloud/check_upstream.sh:40`
@@ -297,6 +307,8 @@ Neue Dateien muessen vor der Regeneration im Git-Index stehen.
 - `scripts/operations/reset_installation.py:180`
 - `scripts/operations/restore_drill.py:117`
 - `scripts/operations/restore_drill.py:156`
+- `scripts/ops/alertmanager_maintenance.py:75`
+- `scripts/ops/alertmanager_maintenance.py:114`
 - `scripts/profiles/coding_agents.py:206`
 - `scripts/profiles/coding_agents.py:227`
 - `scripts/profiles/coding_agents.py:255`
@@ -506,6 +518,8 @@ Neue Dateien muessen vor der Regeneration im Git-Index stehen.
 - `scripts/tools/helpers/sfizz_common.sh:75`
 - `scripts/tools/helpers/stable_audio_open_common.sh:175`
 - `scripts/tools/helpers/tgi_common.sh:66`
+- `scripts/tools/helpers/unreleased_research.py:6`
+- `scripts/tools/helpers/unreleased_research.py:19`
 - `scripts/tools/helpers/veo_api_common.sh:189`
 - `scripts/tools/helpers/vidubb_common.sh:110`
 - `scripts/tools/helpers/void_model_common.sh:110`
@@ -638,16 +652,14 @@ Neue Dateien muessen vor der Regeneration im Git-Index stehen.
 
 ## Paketinstallation (Lockfile separat pruefen)
 
-171 Fundstellen, keine automatische Risikoeinstufung.
+169 Fundstellen, keine automatische Risikoeinstufung.
 
-- `.github/workflows/ci.yml:23`
 - `.github/workflows/ci.yml:24`
 - `.github/workflows/linkcheck.yml:20`
 - `.github/workflows/next-level-health.yml:18`
-- `.github/workflows/repo-health.yml:27`
 - `.github/workflows/shellcheck.yml:13`
-- `config/tools.yml:2574`
-- `config/tools.yml:3536`
+- `config/tools.yml:2937`
+- `config/tools.yml:3899`
 - `install.sh:619`
 - `scripts/auto_update.sh:39`
 - `scripts/auto_update.sh:43`
@@ -814,7 +826,7 @@ Neue Dateien muessen vor der Regeneration im Git-Index stehen.
 
 ## Netz-/Port-Kandidat
 
-204 Fundstellen, keine automatische Risikoeinstufung.
+209 Fundstellen, keine automatische Risikoeinstufung.
 
 - `charts/monitoring-lite/templates/network-policy.yaml:26`
 - `charts/monitoring-lite/templates/network-policy.yaml:42`
@@ -822,7 +834,7 @@ Neue Dateien muessen vor der Regeneration im Git-Index stehen.
 - `charts/monitoring-lite/templates/network-policy.yaml:74`
 - `charts/monitoring-lite/templates/workloads.yaml:28`
 - `charts/monitoring-lite/templates/workloads.yaml:59`
-- `config/tools.yml:2008`
+- `config/tools.yml:2371`
 - `config/traefik-local/traefik.yml:4`
 - `config/traefik-local/traefik.yml:12`
 - `deploy/kustomize/optional/direct-openclaw-ollama/network-policy.yaml:11`
@@ -905,6 +917,11 @@ Neue Dateien muessen vor der Regeneration im Git-Index stehen.
 - `scripts/agents/workbench.py:180`
 - `scripts/agents/workbench.py:181`
 - `scripts/agents/workbench.py:182`
+- `scripts/audio/openclaw_dejavu_mcp_server.py:20`
+- `scripts/audio/openclaw_dejavu_mcp_server.py:33`
+- `scripts/audio/openclaw_dejavu_mcp_server.py:34`
+- `scripts/audio/openclaw_dejavu_mcp_server.py:36`
+- `scripts/audio/openclaw_dejavu_mcp_server.py:40`
 - `scripts/backup_stateful_services.sh:119`
 - `scripts/benchmarks/rag_evaluate.py:24`
 - `scripts/bootstrap_gitops.sh:7`
@@ -1023,22 +1040,18 @@ Neue Dateien muessen vor der Regeneration im Git-Index stehen.
 
 ## Privilegien-/Host-Kandidat
 
-653 Fundstellen, keine automatische Risikoeinstufung.
+651 Fundstellen, keine automatische Risikoeinstufung.
 
-- `.github/workflows/ci.yml:22`
-- `.github/workflows/ci.yml:23`
 - `.github/workflows/next-level-health.yml:17`
 - `.github/workflows/next-level-health.yml:18`
-- `.github/workflows/repo-health.yml:26`
-- `.github/workflows/repo-health.yml:27`
 - `.github/workflows/shellcheck.yml:13`
 - `charts/monitoring-lite/templates/workloads.yaml:52`
 - `charts/monitoring-lite/templates/workloads.yaml:65`
 - `config/docker_to_github.json:22`
 - `config/docker_to_github.json:1988`
-- `config/tools.yml:1113`
-- `config/tools.yml:1136`
-- `config/tools.yml:2239`
+- `config/tools.yml:1476`
+- `config/tools.yml:1499`
+- `config/tools.yml:2602`
 - `deploy/kustomize/optional/open-webui/workload.yaml:39`
 - `deploy/kustomize/optional/open-webui/workload.yaml:51`
 - `deploy/kustomize/platform-dns01/kustomization.yaml:3`
@@ -1091,6 +1104,8 @@ Neue Dateien muessen vor der Regeneration im Git-Index stehen.
 - `scripts/auto_update.sh:39`
 - `scripts/auto_update.sh:43`
 - `scripts/bootstrap_gitops.sh:39`
+- `scripts/ci/install_qa_tools.sh:47`
+- `scripts/ci/install_qa_tools.sh:48`
 - `scripts/cleanup_installation_residues.sh:159`
 - `scripts/cleanup_installation_residues.sh:176`
 - `scripts/cleanup_installation_residues.sh:177`
@@ -1675,7 +1690,7 @@ Neue Dateien muessen vor der Regeneration im Git-Index stehen.
 - `setup_ultimate.sh:1301`
 - `setup_ultimate.sh:2758`
 - `setup_ultimate.sh:4742`
-- `setup_ultimate.sh:5202`
+- `setup_ultimate.sh:5232`
 - `systemd/openclaw-workspace-backup.service.example:9`
 - `systemd/openclaw-workspace-backup.service.example:14`
 

@@ -1,0 +1,32 @@
+# Example strategic-merge patch only; not included by any Kustomization.
+# Base keeps replicas: 0. Review actual runtime version and private IdP egress first.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: open-webui
+  namespace: ai-webui
+spec:
+  template:
+    spec:
+      containers:
+        - name: open-webui
+          env:
+            - {name: WEBUI_AUTH, value: "true"}
+            - {name: ENABLE_SIGNUP, value: "false"}
+            - {name: ENABLE_OAUTH, value: "true"}
+            - {name: ENABLE_OAUTH_SIGNUP, value: "false"}
+            - {name: OAUTH_MERGE_ACCOUNTS_BY_EMAIL, value: "false"}
+            - {name: OPENID_PROVIDER_URL, value: "https://identity.example.invalid/realms/openclaw/.well-known/openid-configuration"}
+            - {name: OPENID_REDIRECT_URI, value: "https://ai.example.invalid/oauth/oidc/callback"}
+            - {name: OAUTH_CLIENT_ID, value: "open-webui"}
+            - name: OAUTH_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef: {name: open-webui-oidc, key: client-secret}
+            - {name: OAUTH_PROVIDER_NAME, value: "OpenClaw SSO"}
+            - {name: OAUTH_SCOPES, value: "openid email profile"}
+            - {name: OAUTH_CODE_CHALLENGE_METHOD, value: "S256"}
+            - {name: OAUTH_ALLOWED_DOMAINS, value: "example.invalid"}
+            - {name: ENABLE_OAUTH_ROLE_MANAGEMENT, value: "false"}
+            - {name: OAUTH_ROLES_CLAIM, value: "openwebui_roles"}
+            - {name: OAUTH_ALLOWED_ROLES, value: "openwebui-user,openwebui-admin"}
+            - {name: OAUTH_ADMIN_ROLES, value: "openwebui-admin"}

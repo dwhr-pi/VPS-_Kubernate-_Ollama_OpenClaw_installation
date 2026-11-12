@@ -7,6 +7,21 @@ produktionsreif.
 
 ## Hier beginnen
 
+[Natives Betriebshandbuch](NATIVE_OPERATIONS_HANDBOOK.md): zusammengefuehrte
+MCP-/WebUI-/SSO-/Wartungs-Vorlagen, Make-Einstieg und sichere Backup-Grenzen.
+
+[Modell-Routing, Export und Monitoring](MODEL_ROUTING_EXPORT_AND_MONITORING.md):
+Offline-Vorschlaege statt automatischer Gewichtsinstallation oder Konfigurationsaenderung.
+
+[Ollama-Log-Monitor](OLLAMA_LOG_MONITOR.md): begrenzte opt-in Kubernetes-Abfragen,
+redigierte Kategorien, optionaler Discord-Versand und nicht-root systemd-Vorlage.
+
+[Musikerkennung und Rechts-/Finanzmodelle](AUDIO_RECOGNITION_AND_DOMAIN_MODELS.md):
+Audile, SongRec, Mousai, Dejavu und lokale Reasoning-Modelle mit SSH-Anleitungen.
+
+[Musik-/Lyrics-Modellkatalog](MUSIC_LYRICS_MODEL_CATALOG.md): vollstaendige
+Einordnung der angefragten Projekte mit Lizenz-, Installations- und Runtime-Grenzen.
+
 [Gedichte, Songtexte und Reime](CREATIVE_LYRICS.md): Promptvorlage, Outlines,
 eSpeak NG, offline pruefbare Strophen und ehrliche Phonetik-/Metrikgrenzen.
 

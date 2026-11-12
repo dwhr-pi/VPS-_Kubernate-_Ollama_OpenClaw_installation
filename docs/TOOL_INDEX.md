@@ -1,5 +1,9 @@
 # Tool Index
 
+[Alle angefragten Musik-/Lyrics-Projekte](MUSIC_LYRICS_MODEL_CATALOG.md):
+LeVo 2, MOSS-Music, PoeLM, PoeTone, CoPoet und CTGS als Quellen; MusicGen mit
+separatem Quellenweg; SongSage ehrlich geplant, ohne bestaetigte GitHub-Quelle.
+
 [Outlines](tools/outlines.md) und [eSpeak NG](tools/espeak-ng.md): optionale
 GitHub-Quelltools fuer strukturierte Ausgabe und IPA-Hilfe. Der
 [lokale Reim-/Lyric-Workflow](CREATIVE_LYRICS.md) prueft Entwuerfe offline,

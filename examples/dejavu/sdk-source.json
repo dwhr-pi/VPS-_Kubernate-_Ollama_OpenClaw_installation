@@ -1,0 +1,12 @@
+{
+  "scope": "compatibility-evidence-not-installer-or-lockfile",
+  "source": "https://github.com/modelcontextprotocol/python-sdk.git",
+  "tag": "v1.30.0",
+  "commit": "8c2fa6eabacde869d75568e33b9d466b58c2f512",
+  "contracts": {
+    "src/mcp/server/fastmcp/server.py": "1b1c8cd4f6e350f7d4f62627764ed7c0f51e85872d32aba9d9da560a2bd2c50c"
+  },
+  "runtime_sdk_version": "1.30.0",
+  "native_dependency_lock_sbom_and_runtime_acceptance": false,
+  "automatic_installation": false
+}

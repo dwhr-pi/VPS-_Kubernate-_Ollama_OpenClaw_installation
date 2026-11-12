@@ -6,6 +6,10 @@ Dienste durch diese Dokumentation. Quellen-Fixtures sind keine Runtime-Abnahme.
 
 ## Bestand und tatsaechlicher Umfang
 
+[Ergaenzender Musik-/Lyrics-Katalog](MUSIC_LYRICS_MODEL_CATALOG.md):
+YuE, LeVo 2, ACE-Step, MusicGen, MOSS-Music, SongSage, PoeLM, PoeTone, CoPoet
+und CTGS mit ihren getrennten Quellen-/Lizenz-/Runtime-Grenzen.
+
 | Bestandteil | Aufgabe | Implementiert | Offen |
 | --- | --- | --- | --- |
 | [Outlines](tools/outlines.md) | Strukturierte Ausgabe / eingeschraenktes Decoding | Gepinnte Quellenverwaltung und optionaler Python-Adapter | Nativer Paket-/Backend-Build, echtes LLM-Decoding |
@@ -38,6 +42,13 @@ gelesen; ein nicht erreichbarer alter Dokumentationspfad ist kein Beleg fuer
 Kompatibilitaet. Quelle: [Output Types am Pin](https://github.com/dottxt-ai/outlines/blob/c52af8472c6fe8a607a733ec11b709476af77a96/docs/features/core/output_types.md).
 
 ## 2. Reim, Silben und Metrum getrennt behandeln
+
+Ein globaler Transformers-LogitsProcessor mit fester Token-ID-Whitelist prueft
+ebenfalls keine Reime oder Silben: Subword-Token sind keine Woerter, und die
+Maske kennt weder Zeilenposition noch Aussprache. Eine leere oder zum Vokabular
+unpassende Liste kann das Decoding blockieren. Der vorhandene Outlines-Adapter
+erzwingt daher nur die dokumentierte Struktur; danach folgt die unabhaengige,
+begrenzte Lexikonpruefung. Kein weiterer gleichnamiger Generator wird angelegt.
 
 Ein Vollreim wird phonetisch ab dem letzten betonten Vokal beurteilt; gleiche
 Schreibendung genuegt nicht. Aussprache, Vokallaenge und Dialekt beruecksichtigen.

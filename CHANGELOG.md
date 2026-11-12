@@ -2,6 +2,52 @@
 
 ## Unreleased
 
+### 2026-11-11: Native Betriebs- und MCP-Vorlagen
+
+- Zusammengehoerige und doppelte Benutzer-Anhaenge in einem Betriebshandbuch
+  eingeordnet; bestehende README/Installationsrichtlinie nicht ersetzt.
+- Opt-in Dejavu-stdio-Adapter mit gepinntem MCP-v1-Vertrag, privatem Staging,
+  begrenzten Uploads, read-only Default und ohne DB-Initialisierung ergaenzt.
+- Scoped Alertmanager-Plan/API-Operationen mit exakter Freigabe, Make-Ziele
+  standardmaessig offline; Start-, Update- und Restore-Automatik gesperrt.
+- Inaktive OIDC-/Keycloak-Beispiele ohne Klartext-Secrets oder Redirect-Wildcards;
+  Rollenmanagement bis zur gesonderten Token-/SSO-Abnahme deaktiviert.
+
+### 2026-11-11: Gepruefte Monitoring-Vorlagen
+
+- Begrenzter opt-in Kubernetes-Log-Monitor ohne Shell oder Docker, mit
+  redigierten Fehlerkategorien, Cooldown und Backoff; kein automatischer Start.
+- Nicht-root systemd-/RBAC-Beispiele und separat freizugebender nativer
+  Discord-Receiver mit Secret-Referenz statt eingebettetem Webhook.
+- Grafana-Inventaransicht verwendet vorhandene Exporter-/DCGM-Metriken;
+  kein erfundener Prometheus-Endpunkt auf Ollamas Root-Pfad.
+- Log-Monitor-Regressionen und Hinweis zu statischen Logit-Masken ergaenzt.
+- Offline-Routing-/GGUF-Exportplanner, inaktive Kandidaten und Prompt-/Modell-
+  Dokumentvorlagen ergaenzt. Keine automatische Registrierung, Inferenz oder
+  Aenderung der aktiven OpenClaw-Konfiguration; echte Abnahme bleibt offen.
+
+### 2026-11-11: Musikerkennung und Domain-Modelle
+
+- Audile, SongRec, Mousai, Dejavu, Qwen3-235B-A22B, QwQ-32B und GPT-OSS-120B
+  als optionale gepinnte Quellenrezepte mit SHA256-Vertraegen aufgenommen.
+- Bestehendes DeepSeek-R1 ohne Dublette weiterverwendet. Neue Menueeintraege,
+  SSH-Anleitungen und Rechts-/Finanz-Prompt mit Quellen-/Freigabepflicht.
+- Externe Erkennung von lokaler Fingerprint-Datenbank und GitHub-Quellen von
+  Gewichten getrennt; kein Docker, automatischer Start oder Runtime-Nachweis.
+- Offline-Lifecycle-Fixtures auf alle neuen Quellen erweitert.
+
+### 2026-11-11: Musik-/Lyrics-Abdeckung und CI-APT-Isolation
+
+- LeVo_2, MOSS_Music, PoeLM, PoeTone, CoPoet und CTGS mit GitHub-Pins,
+  SHA256-Vertraegen, SSH-Anleitungen und Quellen-Lifecycle aufgenommen.
+- SongSage als geplant mit begruendetem, lesendem Exit-3-Guard; keine
+  Verwechslung mit gleichnamigen Projekten und keine erfundene GitHub-Quelle.
+- Vorhandene MusicGen-ID auf getrennte Quellenverwaltung verdrahtet;
+  Legacy-Skripte, /opt und Benutzerdaten unveraendert erhalten.
+- Wiederholte CI-APT-DNS-Fehler: nur auf GitHub-gehostetem Ubuntu 24.04 amd64
+  fehlende QA-Pakete aus direkten signierten Ubuntu-Quellen bereitstellen.
+  Keine dauerhafte APT-Quellenaenderung und keine abgeschwaechten Pruefungen.
+
 ### 2026-11-11: Reim-/Lyric-Werkzeuge und begrenzte Offline-Pruefung
 
 - Outlines und eSpeak_NG als optionale gepinnte GitHub-Quelltools mit SHA256-

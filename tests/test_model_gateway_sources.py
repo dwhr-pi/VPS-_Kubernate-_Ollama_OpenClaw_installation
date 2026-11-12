@@ -14,7 +14,9 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'scripts/tools/helpers'))
 import gap_tools as tool
 
-KEYS = ('minimax_m3', 'obot', 'deepseek_r1', 'qwen_coder', 'outlines', 'espeak_ng')
+KEYS = ('minimax_m3', 'obot', 'deepseek_r1', 'qwen_coder', 'outlines', 'espeak_ng',
+        'levo_2', 'moss_music', 'poelm', 'poetone', 'copoet', 'ctgs', 'musicgen_source',
+        'audile', 'songrec', 'mousai', 'dejavu', 'qwen3_235b', 'qwq_32b', 'gpt_oss_120b')
 
 
 class SourceLifecycle(unittest.TestCase):
@@ -122,7 +124,8 @@ class SourceLifecycle(unittest.TestCase):
         registry = json.loads((ROOT / 'config/tools.yml').read_text(encoding='utf-8'))['tools']
         for key in KEYS:
             spec = tool.SPECS[key]
-            row, = [row for row in registry if row['id'] == key]
+            row, = [row for row in registry if row['name'] == spec['name']]
+            self.assertEqual(row['id'], 'musicgen' if key == 'musicgen_source' else key)
             self.assertEqual(row['source_commit'], spec['pin'])
             self.assertEqual(row['readiness'], 'planned')
             self.assertFalse(row['auto_install'])

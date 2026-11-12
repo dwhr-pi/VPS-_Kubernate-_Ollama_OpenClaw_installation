@@ -35,6 +35,7 @@ Nur Repository-Metadaten, kein Nachweis installierter oder produktionsfaehiger P
 | arq | planned | unknown | unknown | not-mapped | not-mapped |
 | asterisk | planned | unknown | unknown | not-mapped | not-mapped |
 | audacity | experimental | unknown | f515da46486301d48db89f195729ef0c87980668 | scripts/tools/audacity_doctor.sh | scripts/tools/audacity_update.sh |
+| audile | experimental | planned | a3f225946a35fcf97f7b61d8d985b84968bbf65a | scripts/tools/audile_doctor.sh | scripts/tools/audile_update.sh |
 | audiobook_studio | planned | unknown | unknown | not-mapped | not-mapped |
 | audiogen | experimental | unknown | 72cb16f9fb239e9cf03f7bd997198c7d7a67a01c | scripts/tools/audiogen_doctor.sh | scripts/tools/audiogen_update.sh |
 | audioldm2 | experimental | unknown | b5786c5dc0ae8f766337fdc1b67ab6046586d14d | scripts/tools/audioldm2_doctor.sh | scripts/tools/audioldm2_update.sh |
@@ -83,10 +84,12 @@ Nur Repository-Metadaten, kein Nachweis installierter oder produktionsfaehiger P
 | comfyui_gguf | experimental | unknown | 6ea2651e7df66d7585f6ffee804b20e92fb38b8a | scripts/tools/comfyui_gguf_doctor.sh | scripts/tools/comfyui_gguf_update.sh |
 | concat | experimental | unknown | unknown | scripts/tools/concat_doctor.sh | scripts/tools/concat_update.sh |
 | continue_dev | unknown | unknown | unknown | not-mapped | not-mapped |
+| copoet | experimental | planned | 65d6266f7ea3d80f111742904f7c97dba733e3be | scripts/tools/copoet_doctor.sh | scripts/tools/copoet_update.sh |
 | coqui_tts | experimental | unknown | unknown | not-mapped | not-mapped |
 | cosign | planned | unknown | unknown | not-mapped | not-mapped |
 | crewai | unknown | unknown | unknown | not-mapped | not-mapped |
 | crowdsec | experimental | unknown | 725b6659dee54dd7a5f314e587b99512531e4237 | scripts/tools/crowdsec_doctor.sh | scripts/tools/crowdsec_update.sh |
+| ctgs | experimental | planned | 42a1b2799556b310e4702b8ece16bb720ee21cdd | scripts/tools/ctgs_doctor.sh | scripts/tools/ctgs_update.sh |
 | dbt | optional | unknown | unknown | not-mapped | not-mapped |
 | ddclient | planned | unknown | unknown | not-mapped | not-mapped |
 | ddclient_he | planned | unknown | unknown | not-mapped | not-mapped |
@@ -94,6 +97,7 @@ Nur Repository-Metadaten, kein Nachweis installierter oder produktionsfaehiger P
 | deepfilternet | experimental | unknown | 978576aa8400552a4ce9730838c635aa30db5e61 | scripts/tools/deepfilternet_doctor.sh | scripts/tools/deepfilternet_update.sh |
 | deepseek_r1 | experimental | planned | 0cf78561f1d51c84a21b2190626b21116d5c68bb | scripts/tools/deepseek_r1_doctor.sh | scripts/tools/deepseek_r1_update.sh |
 | deepspeed | experimental | unknown | 3133d9d689a67ab1d4feebf8166f19ee28cace6a | scripts/tools/deepspeed_doctor.sh | scripts/tools/deepspeed_update.sh |
+| dejavu | experimental | planned | e56a4a221ad204654a191d217f92aebf3f058b62 | scripts/tools/dejavu_doctor.sh | scripts/tools/dejavu_update.sh |
 | delve | experimental | unknown | 0b7bffc7d40411f8361e10009e73fb9c9b318fb6 | scripts/tools/delve_doctor.sh | scripts/tools/delve_update.sh |
 | demucs | unknown | unknown | unknown | not-mapped | not-mapped |
 | diffsinger | experimental | planned | cb7869b8733a3882679c328994ee162845092cff | scripts/tools/diffsinger_doctor.sh | scripts/tools/diffsinger_update.sh |
@@ -147,6 +151,7 @@ Nur Repository-Metadaten, kein Nachweis installierter oder produktionsfaehiger P
 | godot_xr_tools | experimental | unknown | 6366586be10484c7affd21685a279d7d71b74437 | scripts/tools/godot_xr_tools_doctor.sh | scripts/tools/godot_xr_tools_update.sh |
 | golangci_lint | experimental | unknown | eabc2638a66daf5bb6c6fb052a32fa3ef7b6600d | scripts/tools/golangci_lint_doctor.sh | scripts/tools/golangci_lint_update.sh |
 | gopls | experimental | unknown | 0b62b3fcb903046d1ed6e0c50a94871e9fdcae2a | scripts/tools/gopls_doctor.sh | scripts/tools/gopls_update.sh |
+| gpt_oss_120b | experimental | planned | 277020131d524f06bed5f66b694a92ed7f6e5224 | scripts/tools/gpt_oss_120b_doctor.sh | scripts/tools/gpt_oss_120b_update.sh |
 | gradio | experimental | unknown | 15199c0faf5fa2a477ab9cf25178010ce8bc480e | scripts/tools/gradio_doctor.sh | scripts/tools/gradio_update.sh |
 | gradle | planned | unknown | unknown | not-mapped | not-mapped |
 | grafana | experimental | unknown | 9641b46829cb0172875ea6dd323bcec88fcf2cda | scripts/tools/grafana_doctor.sh | scripts/tools/grafana_update.sh |
@@ -191,6 +196,7 @@ Nur Repository-Metadaten, kein Nachweis installierter oder produktionsfaehiger P
 | langflow | unknown | unknown | unknown | not-mapped | not-mapped |
 | langfuse | experimental | unknown | e139e39b9ee56475c1a6df2d8ca58a3eaffc69b1 | scripts/tools/langfuse_doctor.sh | scripts/tools/langfuse_update.sh |
 | langgraph | unknown | unknown | unknown | not-mapped | not-mapped |
+| levo_2 | experimental | planned | 653cbcf4716101834900c75b7d5da43b07e15d5b | scripts/tools/levo_2_doctor.sh | scripts/tools/levo_2_update.sh |
 | lightrag | unknown | unknown | unknown | not-mapped | not-mapped |
 | listmonk | experimental | unknown | unknown | scripts/tools/listmonk_doctor.sh | scripts/tools/listmonk_update.sh |
 | litellm | experimental | unknown | f2118fc7670ba3fa736d9b8f4deef9077a45a720 | scripts/tools/litellm_doctor.sh | scripts/tools/litellm_update.sh |
@@ -240,9 +246,11 @@ Nur Repository-Metadaten, kein Nachweis installierter oder produktionsfaehiger P
 | modelcontextprotocol_servers | planned | unknown | unknown | not-mapped | not-mapped |
 | moshi | experimental | unknown | e6a55d2722a65870ef52a6c9f6ecfc0e90f38362 | scripts/tools/moshi_doctor.sh | scripts/tools/moshi_update.sh |
 | mosquitto | experimental | unknown | 83f2620f0b955b89aadce32cceb96a8e81950f5e | scripts/tools/mosquitto_doctor.sh | scripts/tools/mosquitto_update.sh |
+| moss_music | experimental | planned | ad107c7ddaa06de168a0dfbc18d3e1e6a40c0e5e | scripts/tools/moss_music_doctor.sh | scripts/tools/moss_music_update.sh |
 | moss_tts | experimental | unknown | 934d6826b084c46a0d033402174d5f8ac4ed2519 | scripts/tools/moss_tts_doctor.sh | scripts/tools/moss_tts_update.sh |
+| mousai | experimental | planned | 98f3c33a790f1f51bb2fced97d55cb05a0e1c13b | scripts/tools/mousai_doctor.sh | scripts/tools/mousai_update.sh |
 | musetalk | experimental | unknown | 0a89dec45a0192b824e3cf4daf96c239440c5ed8 | scripts/tools/musetalk_doctor.sh | scripts/tools/musetalk_update.sh |
-| musicgen | planned | unknown | unknown | not-mapped | not-mapped |
+| musicgen | planned | planned | 72cb16f9fb239e9cf03f7bd997198c7d7a67a01c | scripts/tools/musicgen_source_doctor.sh | scripts/tools/musicgen_source_update.sh |
 | mypy | experimental | unknown | 935ba8afba7ceacca0651579450c74339f343016 | scripts/tools/mypy_doctor.sh | scripts/tools/mypy_update.sh |
 | n8n | unknown | unknown | unknown | not-mapped | not-mapped |
 | neo4j | experimental | unknown | 2994b43b44f35bf6520bd2667ab181bb76a45585 | scripts/tools/neo4j_doctor.sh | scripts/tools/neo4j_update.sh |
@@ -294,6 +302,8 @@ Nur Repository-Metadaten, kein Nachweis installierter oder produktionsfaehiger P
 | pm2 | planned | unknown | unknown | not-mapped | not-mapped |
 | podcast_studio | planned | unknown | unknown | not-mapped | not-mapped |
 | podman | planned | unknown | unknown | not-mapped | not-mapped |
+| poelm | experimental | planned | 26a882b2b571a834a218d539e8b76c8296e10dde | scripts/tools/poelm_doctor.sh | scripts/tools/poelm_update.sh |
+| poetone | experimental | planned | fe2f40b351fb71e019ac0bf8ff113a67d80676f2 | scripts/tools/poetone_doctor.sh | scripts/tools/poetone_update.sh |
 | postgres | unknown | unknown | unknown | not-mapped | not-mapped |
 | pre_commit | unknown | unknown | unknown | not-mapped | not-mapped |
 | prefect | planned | unknown | unknown | not-mapped | not-mapped |
@@ -308,12 +318,14 @@ Nur Repository-Metadaten, kein Nachweis installierter oder produktionsfaehiger P
 | pytest | unknown | unknown | unknown | not-mapped | not-mapped |
 | qdrant | experimental | unknown | 222b2e44ab1c3f17e8246396ead6558e45041df7 | scripts/tools/qdrant_doctor.sh | scripts/tools/qdrant_update.sh |
 | queue_manager | planned | unknown | unknown | not-mapped | not-mapped |
+| qwen3_235b | experimental | planned | 7a2f61ffc7a20d47efcd2bf97f6f2bf52729042e | scripts/tools/qwen3_235b_doctor.sh | scripts/tools/qwen3_235b_update.sh |
 | qwen3_tts | experimental | unknown | 022e286b98fbec7e1e916cb940cdf532cd9f488e | scripts/tools/qwen3_tts_doctor.sh | scripts/tools/qwen3_tts_update.sh |
 | qwen_code | experimental | unknown | c1a8218f38203e272e6e965778ed6a2795cfeed7 | scripts/tools/qwen_code_doctor.sh | scripts/tools/qwen_code_update.sh |
 | qwen_coder | experimental | planned | 33bc6aabd7791ad7b32f7e92104f11f2359ba890 | scripts/tools/qwen_coder_doctor.sh | scripts/tools/qwen_coder_update.sh |
 | qwen_desktop | planned | unknown | unknown | scripts/tools/qwen_desktop_doctor.sh | scripts/tools/qwen_desktop_update.sh |
 | qwen_desktop_build | experimental | unknown | bf66a26c978dac68af31fbc093eb53044e204b24 | scripts/tools/qwen_desktop_build_doctor.sh | scripts/tools/qwen_desktop_build_update.sh |
 | qwen_desktop_study | experimental | unknown | bf66a26c978dac68af31fbc093eb53044e204b24 | scripts/tools/qwen_desktop_study_doctor.sh | scripts/tools/qwen_desktop_study_update.sh |
+| qwq_32b | experimental | planned | 620a5eadc89ff464d339367dd9c9973a93215c81 | scripts/tools/qwq_32b_doctor.sh | scripts/tools/qwq_32b_update.sh |
 | rabbitmq | planned | unknown | unknown | not-mapped | not-mapped |
 | radicale | planned | unknown | unknown | not-mapped | not-mapped |
 | rclone | unknown | unknown | unknown | not-mapped | not-mapped |
@@ -345,6 +357,8 @@ Nur Repository-Metadaten, kein Nachweis installierter oder produktionsfaehiger P
 | sieve | planned | unknown | unknown | not-mapped | not-mapped |
 | skyreels_a1 | planned | unknown | unknown | not-mapped | not-mapped |
 | snappymail | planned | unknown | unknown | not-mapped | not-mapped |
+| songrec | experimental | planned | 0f677c702666448642753f0e4da2fa262da67bc8 | scripts/tools/songrec_doctor.sh | scripts/tools/songrec_update.sh |
+| songsage | planned | planned | unknown | scripts/tools/songsage_doctor.sh | scripts/tools/songsage_update.sh |
 | sops | planned | unknown | unknown | not-mapped | not-mapped |
 | spark_tts | planned | unknown | unknown | not-mapped | not-mapped |
 | sqlfluff | experimental | unknown | 7f5ad66db2fe906827280fd6dfef6eb83565b4e8 | scripts/tools/sqlfluff_doctor.sh | scripts/tools/sqlfluff_update.sh |

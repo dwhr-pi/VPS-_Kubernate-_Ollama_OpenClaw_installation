@@ -1,5 +1,9 @@
 # AI Singer
 
+[Weitere Musik-/Lyrics-Forschungswerkzeuge](../MUSIC_LYRICS_MODEL_CATALOG.md)
+sind separat im Tool-Menue verfuegbar, nicht automatisch Bestandteil eines
+Profilstarts. Insbesondere LeVo-Lizenz und SongSage-Installationsguard beachten.
+
 Optionales Zubehoer: [Reim-/Lyric-Workflow](../CREATIVE_LYRICS.md),
 [Outlines](../tools/outlines.md) und [eSpeak NG](../tools/espeak-ng.md).
 Nur Quellenverwaltung und Offline-Textpruefung; keine automatische Installation,

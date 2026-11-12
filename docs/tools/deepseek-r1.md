@@ -1,5 +1,8 @@
 # DeepSeek-R1: offene Modellfamilie und GitHub-Quellen
 
+[Rechts-/Finanzmodelle und sichere Promptvorlage](../AUDIO_RECOGNITION_AND_DOMAIN_MODELS.md):
+Anwendungsgrenzen, deterministische Berechnungen und menschliche Freigabe.
+
 ## Lizenz und Abgrenzung
 
 **DeepSeek ist ein Anbieter, kein einheitliches Lizenzpaket.** Fuer dieses Tool
