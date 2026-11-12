@@ -1,0 +1,117 @@
+{
+  "rule_files": ["../../monitoring/tool-rules.yml"],
+  "evaluation_interval": "1m",
+  "tests": [
+    {
+      "name": "Unmonitored source and CLI tools do not page",
+      "interval": "1m",
+      "input_series": [
+        {"series": "openclaw_tool_info{monitoring_scope=\"home\",tool=\"songrec\"}", "values": "1x20"}
+      ],
+      "alert_rule_test": [
+        {"eval_time": "15m", "alertname": "OpenClawToolExpectedTargetMissing", "exp_alerts": []},
+        {"eval_time": "15m", "alertname": "OpenClawToolTargetDown", "exp_alerts": []}
+      ]
+    },
+    {
+      "name": "Expected target missing in one scope is not hidden by another scope",
+      "interval": "1m",
+      "input_series": [
+        {"series": "openclaw_tool_monitoring_expected{monitoring_scope=\"home\",tool=\"ollama\"}", "values": "1x20"},
+        {"series": "up{monitoring_scope=\"vps\",tool=\"ollama\",job=\"inventory\",instance=\"fixture\"}", "values": "1x20"}
+      ],
+      "alert_rule_test": [
+        {"eval_time": "15m", "alertname": "OpenClawToolExpectedTargetMissing", "exp_alerts": [
+          {"exp_labels": {"monitoring_scope": "home", "tool": "ollama", "severity": "warning"},
+           "exp_annotations": {"summary": "Freigegebenes Metrikziel ollama fehlt in der Discovery"}}
+        ]}
+      ]
+    },
+    {
+      "name": "Target down is distinct from missing discovery",
+      "interval": "1m",
+      "input_series": [
+        {"series": "openclaw_tool_monitoring_expected{monitoring_scope=\"home\",tool=\"ollama\"}", "values": "1x20"},
+        {"series": "up{monitoring_scope=\"home\",tool=\"ollama\",job=\"inventory\",instance=\"fixture\"}", "values": "0x20"}
+      ],
+      "alert_rule_test": [
+        {"eval_time": "15m", "alertname": "OpenClawToolExpectedTargetMissing", "exp_alerts": []},
+        {"eval_time": "15m", "alertname": "OpenClawToolTargetDown", "exp_alerts": [
+          {"exp_labels": {"monitoring_scope": "home", "tool": "ollama", "job": "inventory", "instance": "fixture", "severity": "warning"},
+           "exp_annotations": {"summary": "Tool-Metrikziel ollama nicht erreichbar; kein Funktionsnachweis"}}
+        ]}
+      ]
+    },
+    {
+      "name": "Healthy scrape does not trigger target alerts",
+      "interval": "1m",
+      "input_series": [
+        {"series": "openclaw_tool_monitoring_expected{monitoring_scope=\"home\",tool=\"ollama\"}", "values": "1x20"},
+        {"series": "up{monitoring_scope=\"home\",tool=\"ollama\",job=\"inventory\",instance=\"fixture\"}", "values": "1x20"}
+      ],
+      "alert_rule_test": [
+        {"eval_time": "15m", "alertname": "OpenClawToolExpectedTargetMissing", "exp_alerts": []},
+        {"eval_time": "15m", "alertname": "OpenClawToolTargetDown", "exp_alerts": []}
+      ]
+    },
+    {
+      "name": "Explicit catalog collector detects missing textfile",
+      "interval": "1m",
+      "input_series": [
+        {"series": "up{job=\"node\",instance=\"fixture\",openclaw_tool_catalog=\"enabled\"}", "values": "1x20"}
+      ],
+      "alert_rule_test": [
+        {"eval_time": "15m", "alertname": "OpenClawToolCatalogMissing", "exp_alerts": [
+          {"exp_labels": {"job": "node", "instance": "fixture", "openclaw_tool_catalog": "enabled", "severity": "warning"},
+           "exp_annotations": {"summary": "Textfile-Katalog fehlt trotz erreichbarem, explizit markiertem Collector"}}
+        ]}
+      ]
+    },
+    {
+      "name": "Tool pod readiness requires explicit label",
+      "interval": "1m",
+      "input_series": [
+        {"series": "kube_pod_status_ready{namespace=\"llmops\",pod=\"fixture\",condition=\"true\"}", "values": "0x20"},
+        {"series": "kube_pod_status_phase{namespace=\"llmops\",pod=\"fixture\",phase=\"Running\"}", "values": "1x20"},
+        {"series": "kube_pod_labels{namespace=\"llmops\",pod=\"fixture\",label_openclaw_tool=\"ollama\"}", "values": "1x20"},
+        {"series": "kube_pod_status_ready{namespace=\"llmops\",pod=\"completed-job\",condition=\"true\"}", "values": "0x20"},
+        {"series": "kube_pod_status_phase{namespace=\"llmops\",pod=\"completed-job\",phase=\"Succeeded\"}", "values": "1x20"},
+        {"series": "kube_pod_labels{namespace=\"llmops\",pod=\"completed-job\",label_openclaw_tool=\"ollama\"}", "values": "1x20"},
+        {"series": "kube_pod_status_ready{namespace=\"other\",pod=\"unmarked\",condition=\"true\"}", "values": "0x20"}
+      ],
+      "alert_rule_test": [
+        {"eval_time": "15m", "alertname": "OpenClawToolPodNotReady", "exp_alerts": [
+          {"exp_labels": {"namespace": "llmops", "pod": "fixture", "label_openclaw_tool": "ollama", "severity": "warning"},
+           "exp_annotations": {"summary": "Tool-Pod ollama nicht bereit"}}
+        ]}
+      ]
+    },
+    {
+      "name": "Repeated restarts identify explicit tool pod",
+      "interval": "1m",
+      "input_series": [
+        {"series": "kube_pod_container_status_restarts_total{namespace=\"llmops\",pod=\"fixture\",container=\"ollama\"}", "values": "0+1x30"},
+        {"series": "kube_pod_labels{namespace=\"llmops\",pod=\"fixture\",label_openclaw_tool=\"ollama\"}", "values": "1x30"}
+      ],
+      "alert_rule_test": [
+        {"eval_time": "25m", "alertname": "OpenClawToolPodRestarting", "exp_alerts": [
+          {"exp_labels": {"namespace": "llmops", "pod": "fixture", "label_openclaw_tool": "ollama", "severity": "warning"},
+           "exp_annotations": {"summary": "Tool-Pod ollama startet wiederholt neu"}}
+        ]}
+      ]
+    },
+    {
+      "name": "GPU temperature sustained threshold",
+      "interval": "1m",
+      "input_series": [
+        {"series": "DCGM_FI_DEV_GPU_TEMP{instance=\"fixture\",gpu=\"0\"}", "values": "86x20"}
+      ],
+      "alert_rule_test": [
+        {"eval_time": "15m", "alertname": "OpenClawGPUHighTemperature", "exp_alerts": [
+          {"exp_labels": {"instance": "fixture", "gpu": "0", "severity": "warning"},
+           "exp_annotations": {"summary": "GPU 0 ueber 85 Grad; Hardwaregrenze separat pruefen"}}
+        ]}
+      ]
+    }
+  ]
+}

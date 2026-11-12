@@ -1,0 +1,432 @@
+{
+  "uid": "openclaw-all-tools",
+  "title": "OpenClaw: Alle Tools und Monitoring-Abdeckung",
+  "schemaVersion": 39,
+  "version": 1,
+  "timezone": "browser",
+  "refresh": "1m",
+  "tags": [
+    "openclaw",
+    "tools",
+    "coverage"
+  ],
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "templating": {
+    "list": [
+      {
+        "name": "DS_PROMETHEUS",
+        "type": "datasource",
+        "query": "prometheus",
+        "label": "Prometheus",
+        "current": {
+          "text": "prometheus",
+          "value": "prometheus"
+        }
+      },
+      {
+        "name": "scope",
+        "type": "query",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${DS_PROMETHEUS}"
+        },
+        "query": "label_values(openclaw_tool_info, monitoring_scope)",
+        "refresh": 1,
+        "multi": true,
+        "includeAll": true,
+        "allValue": ".*",
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        }
+      },
+      {
+        "name": "tool",
+        "type": "query",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${DS_PROMETHEUS}"
+        },
+        "query": "label_values(openclaw_tool_info{monitoring_scope=~\"$scope\"}, tool)",
+        "refresh": 1,
+        "multi": true,
+        "includeAll": true,
+        "allValue": ".*",
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        }
+      }
+    ]
+  },
+  "panels": [
+    {
+      "id": 1,
+      "type": "text",
+      "title": "Nachweisgrenzen",
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 4
+      },
+      "options": {
+        "mode": "markdown",
+        "content": "Alle Registry-Tools sind Katalogeintraege, nicht installiert oder gesund. Ein erfolgreicher Scrape ist kein erfolgreicher Tool-Aufruf. Fehlende Reihen bedeuten **keine Daten**, nicht Erfolg. GPU/Host-Werte sind nicht einzelnen Tools zugeordnet. CLI, Desktop und Quellen ohne Exporter bleiben Laufzeit-unbestaetigt."
+      }
+    },
+    {
+      "id": 2,
+      "title": "Alle Tools im Katalog",
+      "type": "table",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 4,
+        "w": 12,
+        "h": 8
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "noValue": "Keine Daten"
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "max by (monitoring_scope, tool) (openclaw_tool_info{monitoring_scope=~\"$scope\",tool=~\"$tool\"})",
+          "instant": true,
+          "format": "table"
+        }
+      ],
+      "options": {
+        "showHeader": true,
+        "enablePagination": true
+      }
+    },
+    {
+      "id": 3,
+      "title": "Explizit erwartete Metrikziele",
+      "type": "table",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 4,
+        "w": 12,
+        "h": 8
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "noValue": "Keine Daten"
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "max by (monitoring_scope, tool) (openclaw_tool_monitoring_expected{monitoring_scope=~\"$scope\",tool=~\"$tool\"})",
+          "instant": true,
+          "format": "table"
+        }
+      ],
+      "options": {
+        "showHeader": true,
+        "enablePagination": true
+      }
+    },
+    {
+      "id": 4,
+      "title": "Scrape-Status je Ziel (nicht Tool-Gesundheit)",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 12,
+        "w": 12,
+        "h": 8
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "noValue": "Keine Daten"
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "up{monitoring_scope=~\"$scope\",tool=~\"$tool\",tool!=\"\"}",
+          "instant": false,
+          "format": "time_series"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Erwartet, aber kein Ziel entdeckt",
+      "type": "table",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 12,
+        "w": 12,
+        "h": 8
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "noValue": "Keine Daten"
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "(max by (monitoring_scope, tool) (openclaw_tool_monitoring_expected{monitoring_scope=~\"$scope\",tool=~\"$tool\"}) == 1) unless on (monitoring_scope, tool) max by (monitoring_scope, tool) (up{monitoring_scope=~\"$scope\",tool=~\"$tool\",tool!=\"\"})",
+          "instant": true,
+          "format": "table"
+        }
+      ],
+      "options": {
+        "showHeader": true,
+        "enablePagination": true
+      }
+    },
+    {
+      "id": 6,
+      "title": "Scrape-Dauer (keine Inferenzlatenz)",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 20,
+        "w": 12,
+        "h": 8
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s",
+          "noValue": "Keine Daten"
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "scrape_duration_seconds{monitoring_scope=~\"$scope\",tool=~\"$tool\",tool!=\"\"}",
+          "instant": false,
+          "format": "time_series"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "title": "Aktive Tool-Alarme",
+      "type": "table",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 20,
+        "w": 12,
+        "h": 8
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "noValue": "Keine Daten"
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "ALERTS{alertname=~\"OpenClawTool.*\",alertstate=\"firing\"}",
+          "instant": true,
+          "format": "table"
+        }
+      ],
+      "options": {
+        "showHeader": true,
+        "enablePagination": true
+      }
+    },
+    {
+      "id": 8,
+      "title": "Tool-Pods bereit (KSM-Allowlist erforderlich)",
+      "type": "table",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 28,
+        "w": 12,
+        "h": 8
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "noValue": "Keine Daten"
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "max by (namespace, pod) (kube_pod_status_ready{condition=\"true\"}) * on (namespace, pod) group_left (label_openclaw_tool) max by (namespace, pod, label_openclaw_tool) (kube_pod_labels{label_openclaw_tool=~\"$tool\",label_openclaw_tool!=\"\"})",
+          "instant": true,
+          "format": "table"
+        }
+      ],
+      "options": {
+        "showHeader": true,
+        "enablePagination": true
+      }
+    },
+    {
+      "id": 9,
+      "title": "Host-RAM verfuegbar, alle erfassten Hosts",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 28,
+        "w": 12,
+        "h": 8
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "bytes",
+          "noValue": "Keine Daten"
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "node_memory_MemAvailable_bytes",
+          "instant": false,
+          "format": "time_series"
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "title": "GPU-VRAM, alle erfassten GPUs (optional)",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 36,
+        "w": 12,
+        "h": 8
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "bytes",
+          "noValue": "Keine Daten"
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "DCGM_FI_DEV_FB_USED * 1024 * 1024",
+          "instant": false,
+          "format": "time_series"
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "title": "GPU-Temperatur, alle erfassten GPUs (optional)",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 36,
+        "w": 12,
+        "h": 8
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "celsius",
+          "noValue": "Keine Daten"
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "DCGM_FI_DEV_GPU_TEMP",
+          "instant": false,
+          "format": "time_series"
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "title": "Ollama-Inventar (keine Inferenz)",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 44,
+        "w": 12,
+        "h": 8
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "noValue": "Keine Daten"
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "ollama_monitor_up",
+          "instant": false,
+          "format": "time_series"
+        }
+      ]
+    }
+  ]
+}

@@ -5425,6 +5425,29 @@ Parametrisierung und dynamisch erzeugte Tests koennen mehr Laufzeitfaelle liefer
 - `tests/test_tool_menu_order.py:152`
   Prueffall: `test_duplicate_menu_key_does_not_change_selection`
 
+## tests/test_tool_observability.py
+
+- `tests/test_tool_observability.py:18`
+  Prueffall: `test_all_registry_ids_are_covered_once`
+- `tests/test_tool_observability.py:29`
+  Prueffall: `test_expectations_are_explicit_bounded_and_deduplicated`
+- `tests/test_tool_observability.py:40`
+  Prueffall: `test_default_plan_never_reads_registry_or_writes`
+- `tests/test_tool_observability.py:47`
+  Prueffall: `test_cli_cannot_silently_ignore_scope_or_unknown_tool`
+- `tests/test_tool_observability.py:52`
+  Prueffall: `test_generated_files_have_no_drift`
+- `tests/test_tool_observability.py:56`
+  Prueffall: `test_native_rules_and_operator_resource_share_exact_groups`
+- `tests/test_tool_observability.py:71`
+  Prueffall: `test_private_config_includes_rules_only_when_requested`
+- `tests/test_tool_observability.py:83`
+  Prueffall: `test_dashboard_has_variable_datasource_unique_ids_and_no_fake_health`
+- `tests/test_tool_observability.py:96`
+  Prueffall: `test_duplicate_registry_ids_are_refused`
+- `tests/test_tool_observability.py:105`
+  Prueffall: `test_promtool_fixtures_cover_missing_down_healthy_and_unmonitored`
+
 ## tests/test_tool_ssh_docs.py
 
 - `tests/test_tool_ssh_docs.py:38`
@@ -5959,4 +5982,4 @@ Parametrisierung und dynamisch erzeugte Tests koennen mehr Laufzeitfaelle liefer
 - `tests/test_yue.py:135`
   Prueffall: `test_real_local_sparse_checkout_excludes_env_and_media`
 
-Statisch benannte Testpositionen: **2664**. Kein Nachweis bestandener Tests.
+Statisch benannte Testpositionen: **2674**. Kein Nachweis bestandener Tests.

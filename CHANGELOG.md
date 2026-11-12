@@ -2,6 +2,30 @@
 
 ## Unreleased
 
+### 2026-11-12: Desktop-Launcher und Ressourcenansicht spezifiziert
+
+- Opt-in Installer-Katalog, gepruefte App-/Icon-Artefakte und ID-basierte Starts mit Bestaetigung dokumentiert.
+- Vorhandene Qwen-/Gemini-Wege abgegrenzt; keine automatische URI-Registrierung oder Programmstarts.
+- Separaten Ressourcen-Reiter mit Grafana sowie Linux-/Kubernetes-/Windows-Metrikgrenzen beschrieben.
+
+### 2026-11-12: Dashboard-Einstieg fuer Browser und Windows
+
+- Tool-/Kubernetes-Uebersicht mit Headlamp, Grafana und optionaler Startseite weit vorne dokumentiert.
+- Installation, Katalog und Laufzeit getrennt; read-only Rechte, Windows-Signaturgrenzen und offene Integration erklaert.
+- Boardroom als Entscheidungsprofil mit dem Dashboard-Einstieg verknuepft, ohne eigenen Web-Dienst zu behaupten.
+
+### 2026-11-12: Architekturreview als abarbeitbarer Haertungsplan
+
+- Arbeitspakete E01-E09 mit P1-P3, belegtem Bestand, Abhaengigkeiten und konkreten Abnahmekriterien dokumentiert.
+- Inaktive vLLM-/KEDA-Vorlage, Nachweisformat und sichere Rueckbaugrenzen ergaenzt.
+- Einstieg verlinkt und historischen Sandbox-Leitfaden gegen aktuelle Installationsvorgaben abgegrenzt.
+
+### 2026-11-12: Monitoring-Abdeckung aller Registry-Tools
+
+- Vollstaendiger Offline-Katalog, Grafana-JSON mit Scope-/Tool-Filtern und klare Nachweisgrenzen.
+- Gemeinsame Quelle fuer native Regeln und opt-in PrometheusRule; keine Dienststarts oder erfundenen Metriken.
+- Explizite Discovery-Erwartungen, Target-/Pod-/GPU-Alarme, Generator-Driftcheck und Offline-Testfaelle.
+
 ### 2026-11-12: PR-25-CI-Reparatur
 
 - shfmt-konforme Fehlerbehandlung im CI-Bootstrap; keine geaenderten Exitcodes.

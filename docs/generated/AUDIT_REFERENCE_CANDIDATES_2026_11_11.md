@@ -181,6 +181,7 @@ Jedes getrackte Unterverzeichnis wird erfasst; ein Verzeichnis kann mehrere Tool
 - `deploy/kustomize/overlays/vps-cpu/`
 - `deploy/kustomize/overlays/vps-cpu-local-storage/`
 - `deploy/kustomize/platform-dns01/`
+- `deploy/kustomize/tool-observability/`
 - `k8s/`
 - `k8s/base/`
 - `k8s/base/security/`
